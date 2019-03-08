@@ -1,0 +1,18 @@
+parameters:
+    ignoreErrors:
+        - '#Call to an undefined method Chevereto\\Core\\Message::.*#'
+        - '#Instantiated class Chevereto\\Core\\Utils\\Message not found#'
+        - '#Call to method .* on an unknown class Chevereto\\Core\\Utils\\Message#'
+        - '#Constant PATH not found#'
+        - '#Constant ROOT_PATH not found#'
+        - '#Constant ROOT_PATH_RELATIVE not found#'
+        - '#Constant Chevereto\\Core\\App\\.* not found#'
+        - '#Calling static::init\(\) outside of class scope#'
+        - '#Constant CORE_NS_HANDLE not found#'
+        - '#Constant TIME_BOOTSTRAP not found#'
+        - '#Constant PATH_CLASSES not found#'
+        - '#Constant PATH_APP not found#'
+        - '#Constant APP_NS_HANDLE not found#'
+        - '#Constant ROOT_PATH_VENDOR not found#'
+        - '#Parameter * of class ReflectionFunction constructor expects Closure|string, callable given#'
+        - '#Access to an undefined property DateInterval::\$w#'

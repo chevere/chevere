@@ -1,0 +1,20 @@
+{
+    "wildcards": {
+        "user": {
+            "description": "User ide.",
+            "regex": "[0-9]+"
+        },
+        "friend": {
+            "description": "Friend ide.",
+            "regex": "[0-9]+"
+        },
+        "lover": {
+            "description": "Lover ide.",
+            "regex": "[0-9]+"
+        },
+        "pene": {
+            "description": "Picoroso.",
+            "regex": "[0-9]+"
+        }
+    }
+}

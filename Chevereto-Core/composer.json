@@ -1,0 +1,25 @@
+{
+  "name": "chevereto/core",
+  "description": "Chevereto Framework",
+  "homepage": "http://github.com/Chevereto/core",
+  "type": "library",
+  "license": "MIT",
+  "authors": [{
+    "name": "Rodolfo Berrios",
+    "email": "inbox@rodolfoberrios.com",
+    "homepage": "http://rodolfoberrios.com"
+  }],
+  "require": {
+    "php": ">=7.2",
+    "monolog/monolog": "~1.24",
+    "symfony/http-foundation": "~4.2",
+    "symfony/var-dumper": "~4.2",
+    "symfony/console": "~4.2",
+    "jakub-onderka/php-console-color": "~0.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Chevereto\\Core\\": "src/"
+    }
+  }
+}

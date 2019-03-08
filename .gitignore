@@ -1,0 +1,5 @@
+vendor/
+docs/
+app/system/logs/
+Chevereto-Core/logs/
+composer.lock

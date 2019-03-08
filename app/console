@@ -1,0 +1,7 @@
+#!/usr/bin/env php
+<?php
+/**
+ * This file provides CLI access using: php app/console <command>
+ * You can also use: php index.php <command>
+ */
+require_once dirname(__DIR__) . '/index.php';
