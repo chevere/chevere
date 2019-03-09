@@ -15,6 +15,7 @@ use Exception;
  * $json = new Json($data);
  * $json->setResponse('message', 'code')->print();
  */
+// TODO: Use {json:api}
 class Json extends Utils\Printable
 {
     const CODE = 'code';
