@@ -118,7 +118,7 @@ class Config
             //     $scheme .= 's';
             // }
             //
-            static::set(static::HTTP_SCHEME, $scheme);
+            static::set(static::HTTP_SCHEME, $scheme ?? 'http');
         }
         if (static::has(static::TIMEZONE)) {
             date_default_timezone_set(static::get(static::TIMEZONE));
