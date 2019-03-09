@@ -74,6 +74,7 @@ class Config
      *
      * @throws ConfigException
      */
+    // FIXME: HTTP_SCHEME should be set at a later point
     public static function apply() : void
     {
         if (static::getValues() == null) {
@@ -107,9 +108,9 @@ class Config
         if (static::has(static::HTTP_SCHEME)) {
             $scheme = static::get(static::HTTP_SCHEME);
         } else {
-            $app = App::instance();
-            $request = $app->getRequest();
-            $scheme = $app->getRequest()->getScheme();
+            // $app = App::instance();
+            // $request = $app->getRequest();
+            // $scheme = $app->getRequest()->getScheme();
             //
             // Auto detect protocol (old way, la csm)
             // $scheme = 'http';
