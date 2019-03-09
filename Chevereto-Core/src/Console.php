@@ -23,8 +23,10 @@ use Exception;
  */
 class Console
 {
+    const OBJECTS = ['app', 'logger', 'client', 'input', 'output', 'io', 'command'];
+
     protected static $app;
-    protected static $name = 'console';
+    protected static $name = __NAMESPACE__ . ' console';
     protected static $version = '1.0';
     protected static $logger;
     protected static $client;
@@ -32,12 +34,22 @@ class Console
     protected static $output;
     protected static $io;
     protected static $command;
-    protected static $bag;
 
     /**
-     * Initializates the Console facade.
-     *
-     * Use only if you want to debug the console.
+     * Detects if an object exists in the instance (static dependency injection).
+     */
+    public static function has(string $id) : bool
+    {
+        if (in_array($id, static::OBJECTS) == false) {
+            throw new CoreException(
+                (new Message("The object %s isn't handled by this class."))
+                    ->code('%s', $id)
+            );
+        }
+        return isset(static::$$id);
+    }
+    /**
+     * Init the Console facade.
      *
      * @param InputInterface $input A Symfony\Component\Console\Input\InputInterface.
      * @param ConsoleOutput $output Symfony Console output.
@@ -49,32 +61,33 @@ class Console
         static::$client = new ConsoleClient(static::$name, static::$version);
         static::$input = $input ?? new ArgvInput();
         static::$output = $output ?? new ConsoleOutput();
-        static::$io = new SymfonyStyle(static::$input, static::$output);
+        static::$io = new SymfonyStyle(static::input(), static::$output);
         static::client()->add(new Command\RequestCommand(static::$logger));
         static::client()->add(new Command\RunCommand(static::$logger));
         static::client()->add(new Command\InspectCommand(static::$logger));
         static::client()->setAutoExit(false);
-        static::client()->run(static::$input, static::$output);
+        static::client()->run(static::input(), static::$output);
     }
     /**
-     * Sets the app which interacts with this Console.
+     * Binds the App which interacts with this Console.
      *
      * @param App $app Chevereto\Core Application.
      *
-     * @return bool TRUE if Console binds to $app (cli).
+     * @return bool TRUE if Console binds to an App.
      */
-    public static function setApp(App $app) : bool
+    public static function bind(App $app) : bool
     {
         if (php_sapi_name() == 'cli') {
-            static::$app = $app;
+            static::setApp($app);
             return true;
         }
         return false;
     }
-    /**
-     * Provides access to the currently binded $app.
-     */
-    public static function getApp() : ?App
+    public static function setApp(App $app)
+    {
+        static::$app = $app;
+    }
+    public static function getApp() : App
     {
         return static::$app;
     }
@@ -82,18 +95,21 @@ class Console
     {
         static::$command = $command;
     }
-    public static function getCommand() : ?Command
+    public static function getCommand() : Command
     {
         return static::$command;
     }
     /**
-     * Run the current console command.
+     * Run the console command (if any).
      */
     public static function run()
     {
         $exitCode = null;
+        if (static::has('command') == false) {
+            exit($exitCode);
+        }
         $command = static::getCommand();
-        if ($command instanceof Command && method_exists($command, 'callback')) {
+        if (method_exists($command, 'callback')) {
             $app = static::getApp();
             if ($app == null) {
                 throw new Exception('No app instance is defined.');
@@ -114,7 +130,7 @@ class Console
     {
         return static::$input;
     }
-    public static function getInputString() : ?string
+    public static function getInputString() : string
     {
         return (string) static::$input;
     }
@@ -128,12 +144,10 @@ class Console
     }
     public static function exists() : bool
     {
-        return isset(static::$io);
+        return isset(static::$client);
     }
 }
 // Automatic init this class in CLI
 if (php_sapi_name() == 'cli') {
-    (function () {
-        static::init();
-    })->bindTo(null, Console::class)();
+    Console::init();
 }

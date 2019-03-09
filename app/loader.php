@@ -41,7 +41,7 @@ $app->setRouter($router);
 // dump(include 'BACKUP.routing.php');
 
 // Console binds if php_sapi_name = cli
-if (Console::setApp($app)) {
+if (Console::bind($app)) {
     Console::run();
 } else {
     $app->setRequestFromGlobals();
