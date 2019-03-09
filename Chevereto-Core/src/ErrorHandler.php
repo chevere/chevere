@@ -435,7 +435,7 @@ class ErrorHandler
         } else {
             if (php_sapi_name() == 'cli') {
                 $this->clientRemoteAddress = $_SERVER['argv'][0];
-                $this->clientUserAgent = Console::getInputString();
+                $this->clientUserAgent = Console::inputString();
             } else {
                 $this->clientRemoteAddress = Http::clientIp();
                 foreach ($map as $k => $v) {

@@ -12,61 +12,51 @@ namespace Chevereto\Core;
 use Monolog\Logger;
 use Symfony\Component\Console\Application as ConsoleClient;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 use Exception;
 
 /**
- * This class provides a facade for Monolog\Logger and Symfony\Component\Console.
+ * This class provides static access to the console.
  */
 class Console
 {
-    const OBJECTS = ['app', 'logger', 'client', 'input', 'output', 'io', 'command'];
-
     protected static $app;
-    protected static $name = __NAMESPACE__ . ' console';
-    protected static $version = '1.0';
-    protected static $logger;
-    protected static $client;
-    protected static $input;
-    protected static $output;
-    protected static $io;
-    protected static $command;
+    public static $cli;
 
-    /**
-     * Detects if an object exists in the instance (static dependency injection).
-     */
-    public static function has(string $id) : bool
-    {
-        if (in_array($id, static::OBJECTS) == false) {
-            throw new CoreException(
-                (new Message("The object %s isn't handled by this class."))
-                    ->code('%s', $id)
-            );
-        }
-        return isset(static::$$id);
-    }
     /**
      * Init the Console facade.
-     *
-     * @param InputInterface $input A Symfony\Component\Console\Input\InputInterface.
-     * @param ConsoleOutput $output Symfony Console output.
-     * @param Logger $logger Logger.
      */
-    public static function init(InputInterface $input = null, ConsoleOutput $output = null, Logger $logger = null)
+    public static function init()
     {
-        static::$logger = $logger ?? new Logger(static::$name);
-        static::$client = new ConsoleClient(static::$name, static::$version);
-        static::$input = $input ?? new ArgvInput();
-        static::$output = $output ?? new ConsoleOutput();
-        static::$io = new SymfonyStyle(static::input(), static::$output);
-        static::client()->add(new Command\RequestCommand(static::$logger));
-        static::client()->add(new Command\RunCommand(static::$logger));
-        static::client()->add(new Command\InspectCommand(static::$logger));
-        static::client()->setAutoExit(false);
-        static::client()->run(static::input(), static::$output);
+        $cli = new Cli();
+        static::$cli = $cli;
+        
+        $name = $cli->getName();
+        $version = $cli->getVersion();
+
+        $input = new ArgvInput();
+        $output = new ConsoleOutput();
+        $logger = new Logger($name);
+
+        $client = new ConsoleClient($name, $version);
+
+        $cli->setLogger($logger);
+        $cli->setInput($input);
+        $cli->setOutput($output);
+        $cli->setIo(
+            new SymfonyStyle($input, $output)
+        );
+        $cli->setClient($client);
+
+        $client->add(new Command\RequestCommand($cli));
+        $client->add(new Command\RunCommand($cli));
+        $client->add(new Command\InspectCommand($cli));
+        $client->setAutoExit(false);
+
+        $cli->runner();
     }
     /**
      * Binds the App which interacts with this Console.
@@ -91,13 +81,12 @@ class Console
     {
         return static::$app;
     }
-    public static function setCommand(Command $command)
+    /**
+     * Get the value of cli
+     */
+    public static function cli() : Cli
     {
-        static::$command = $command;
-    }
-    public static function getCommand() : Command
-    {
-        return static::$command;
+        return static::$cli;
     }
     /**
      * Run the console command (if any).
@@ -105,10 +94,11 @@ class Console
     public static function run()
     {
         $exitCode = null;
-        if (static::has('command') == false) {
+        $cli = static::cli();
+        if ($cli->has('command') == false) {
             exit($exitCode);
         }
-        $command = static::getCommand();
+        $command = $cli->getCommand();
         if (method_exists($command, 'callback')) {
             $app = static::getApp();
             if ($app == null) {
@@ -118,34 +108,56 @@ class Console
         }
         exit($exitCode);
     }
+    /**
+     * Get logger.
+     */
     public static function logger() : Logger
     {
-        return static::$logger;
+        return static::$cli->getLogger();
     }
+    /**
+     * Get client.
+     */
     public static function client() : ConsoleClient
     {
-        return static::$client;
+        return static::$cli->getClient();
     }
-    public static function input() : ArgvInput
+    /**
+     * Get input.
+     */
+    public static function input() : Input
     {
-        return static::$input;
+        return static::$cli->getInput();
     }
-    public static function getInputString() : string
+    /**
+     * Get input string.
+     */
+    public static function inputString() : string
     {
-        return (string) static::$input;
+        return (string) static::$cli->getInput();
     }
+    /**
+     * Get output.
+     */
     public static function output() : ConsoleOutput
     {
-        return static::$output;
+        return static::$cli->getOutput();
     }
+    /**
+     * Get IO.
+     */
     public static function io() : SymfonyStyle
     {
-        return static::$io;
+        return static::$cli->getIo();
     }
+    /**
+     * Detects if console context exists.
+     */
     public static function exists() : bool
     {
-        return isset(static::$client);
+        return isset(static::$cli);
     }
+    // TODO: Fast methods to write to console (context aware so we don't neet to call ::exit)
 }
 // Automatic init this class in CLI
 if (php_sapi_name() == 'cli') {

@@ -39,10 +39,12 @@ class InspectCommand extends Command
      */
     public function callback(App $app) : int
     {
-        $callable = $this->input->getArgument('callable');
+        $cli = $this->getCli();
+        $io = $cli->getIo();
+        $callable = $cli->getInput()->getArgument('callable');
         $callableFilePath = Path::fromHandle($callable);
         if (File::exists($callableFilePath) == false) {
-            $this->io->error(
+            $io->error(
                 (new Message("Callable %s doesn't exists"))
                     ->strtr('%s', $callableFilePath)
             );
@@ -63,12 +65,12 @@ class InspectCommand extends Command
             $dir = $dir ? dirname($dir) : '.';
         } while ($dir != '.');
         //black, red, green, yellow, blue, magenta, cyan, white, default
-        $this->io->text('<fg=blue>' . $callableFilePath . '</>');
+        $io->text('<fg=blue>' . $callableFilePath . '</>');
         $arguments = [];
         if ($invoke->getDeclaringClass()->isInternal()) {
-            $this->io->note('Cannot determine default value for internal functions');
+            $io->note('Cannot determine default value for internal functions');
         }
-        $this->io->text([null, '<fg=yellow>Arguments:</>']);
+        $io->text([null, '<fg=yellow>Arguments:</>']);
         foreach ($invoke->getParameters() as $parameter) {
             $aux = null;
             if ($parameter->getType()) {
@@ -83,7 +85,7 @@ class InspectCommand extends Command
             }
             $arguments[] = $aux;
         }
-        $this->io->listing($arguments);
+        $io->listing($arguments);
         return 1;
     }
 }

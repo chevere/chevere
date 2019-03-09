@@ -44,7 +44,7 @@ class RequestCommand extends Command
     public function callback(App $app) : int
     {
         // Map cli arguments to Request::create
-        $arguments = $this->input->getArguments();
+        $arguments = $this->getCli()->getInput()->getArguments();
         $requestArguments = [];
         $r = new ReflectionMethod(Request::class, 'create');
         foreach ($r->getParameters() as $requestArg) {

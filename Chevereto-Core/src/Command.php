@@ -9,9 +9,7 @@
  */
 namespace Chevereto\Core;
 
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,13 +32,16 @@ class Command extends SymfonyCommand implements Interfaces\CommandInterface
     const OPTION_OPTIONAL = InputOption::VALUE_OPTIONAL;
     const OPTION_IS_ARRAY = InputOption::VALUE_IS_ARRAY;
 
-    protected $input;
-    protected $output;
-    protected $io;
-    protected $logger;
-    public function __construct(LoggerInterface $logger)
+    // protected $input;
+    // protected $output;
+    // protected $io;
+    // protected $logger;
+    protected $cli;
+
+    public function __construct(Cli $cli)
     {
-        $this->logger = $logger;
+        // $this->logger = $logger;
+        $this->cli = $cli;
         parent::__construct();
     }
     /**
@@ -48,10 +49,10 @@ class Command extends SymfonyCommand implements Interfaces\CommandInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->input = $input;
-        $this->output = $output;
-        $this->io = new SymfonyStyle($input, $output);
-        Console::setCommand($this);
+        // $this->input = $input;
+        // $this->output = $output;
+        // $this->io = new SymfonyStyle($input, $output);
+        $this->getCli()->setCommand($this);
     }
     /**
      * Callback contains the actual command in-app instructions.
@@ -60,5 +61,12 @@ class Command extends SymfonyCommand implements Interfaces\CommandInterface
     {
         // TODO: Deberia ser LogicException
         throw new CoreException('You must override the '. __FUNCTION__ . '() method in the concrete command class.');
+    }
+    /**
+     * Get cli.
+     */
+    public function getCli() : Cli
+    {
+        return $this->cli;
     }
 }

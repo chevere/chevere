@@ -42,17 +42,19 @@ class RunCommand extends Command
      */
     public function callback(App $app) : int
     {
-        $callable = $this->input->getArgument('callable');
+        $cli = $this->getCli();
+        $input = $cli->getInput();
+        $callable = $input->getArgument('callable');
         if (is_callable($callable) || class_exists($callable)) {
             $callableSome = $callable;
         } else {
             $callableSome = Path::fromHandle($callable);
             if (File::exists($callableSome) == false) {
-                $this->io->error(sprintf('Unable to locate callable %s', $callable));
+                $cli->getIo()->error(sprintf('Unable to locate callable %s', $callable));
                 return 0;
             }
         }
-        $app->setArguments($this->input->getOption('argument'));
+        $app->setArguments($input->getOption('argument'));
         $app->run($callableSome);
         return 1;
     }
