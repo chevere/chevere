@@ -30,20 +30,21 @@ class Apis
     /**
      * Automatically finds controllers in the given path and generate the API route binding.
      *
-     * @param string $pathIdentifier Path identifier representing a dir containing controllers.
+     * @param string $basename API basename ('api').
+     * @param string $pathIdentifier Path identifier representing the dir containing API controllers (relative to app).
      */
-    public function register(string $pathIdentifier) : self
+    public function register(string $basename, string $pathIdentifier) : self
     {
         try {
             if (isset($this->apis[$pathIdentifier])) {
-                throw new Exception(
+                throw new CoreException(
                     (new Message("Path identified by %s has been already bound"))
                         ->code('%s', $pathIdentifier)
                 );
             }
             $directory = Path::fromHandle($pathIdentifier);
             if (File::exists($directory) == false) {
-                throw new Exception(
+                throw new CoreException(
                     (new Message("Directory %s doesn't exists."))
                         ->code('%s', $directory)
                     );
@@ -88,7 +89,7 @@ class Apis
                  */
                 $resourceFilePath = $filePath . '/resource.json';
                 if (File::exists($resourceFilePath)) {
-                    if($jsonResource = file_get_contents($resourceFilePath)) {
+                    if ($jsonResource = file_get_contents($resourceFilePath)) {
                         $jsonResource = json_decode($jsonResource);
                     }
                     if (isset($jsonResource) && isset($jsonResource->wildcards)) {
@@ -227,7 +228,7 @@ class Apis
             $replaced = preg_replace(Route::REGEX_WILDCARD_SEARCH, '', $endpoint);
             $dirRoute = $replaced != null ? Path::normalize($replaced) : null;
             $resourceWildcards = $RESOURCE_WILDCARDS[$dirRoute] ?? [];
-            $endpointRoute = Path::normalize('/' . $pathIdentifier . '/' . $endpoint);
+            $endpointRoute = Path::normalize('/' . $basename . '/' . $endpoint);
             $explode = explode('/', $endpoint);
             $endsWithWildcard = preg_match(Route::REGEX_WILDCARD_SEARCH, (string) end($explode), $matches) != false;
             // Set Options => <http method>,
@@ -246,7 +247,7 @@ class Apis
                 }
             }
             $route = Route::bind($endpointRoute)->methods($httpMethods);
-            $this->routeKeys[$endpointRoute] = [$pathIdentifier, $endpoint];
+            $this->routeKeys[$endpointRoute] = [$basename, $endpoint];
             // Define Route wildcard "where" if needed
             if ($routeWildcards = $route->getWildcards()) {
                 // dump($routeWildcards, $resourceWildcards);
@@ -265,23 +266,20 @@ class Apis
             $API[$endpoint] = $api;
         }
         ksort($API);
-        Route::bind('/' . $pathIdentifier)
+        Route::bind('/' . $basename)
             ->method('HEAD', Controllers\ApiHead::class)
             ->method('OPTIONS', Controllers\ApiOptions::class)
             ->method('GET', Controllers\ApiGet::class);
         Routes::instance()->process();
-        $this->apis[$pathIdentifier] = $API;
+        $this->apis[$basename] = $API;
         $baseOpts = [
             'HEAD' => Controllers\ApiHead::OPTIONS,
             'OPTIONS' => Controllers\ApiOptions::OPTIONS,
             'GET' => Controllers\ApiGet::OPTIONS,
         ];
-        $this->bases[$pathIdentifier] = ['OPTIONS' => $baseOpts];
-        $this->routeKeys['/' . $pathIdentifier] = [$pathIdentifier];
+        $this->bases[$basename] = ['OPTIONS' => $baseOpts];
+        $this->routeKeys['/' . $basename] = [$basename];
         return $this;
-    }
-    public function make()
-    {
     }
     public function getKeys() : array
     {
