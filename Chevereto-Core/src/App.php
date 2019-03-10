@@ -412,6 +412,7 @@ class App
     protected function setPath(string $key, string $group, $var) : void
     {
         $varType = gettype($var);
+        // TODO: Strong typing needed here
         if ($varType == 'array') {
             if (count($var) !== 1) {
                 throw new Exception('Argument #2 count must be 1 if you want to use an array');

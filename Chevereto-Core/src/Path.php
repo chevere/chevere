@@ -211,7 +211,7 @@ class Path
             $rootContext = App\PATH;
         } else {
             if (static::isAbsolute($rootContext) == false) {
-                throw new Exception(
+                throw new CoreException(
                     (new Message('String %a must be an absolute path, %v provided.'))
                         ->code('%a', '$rootContext')
                         ->code('%v', $rootContext)

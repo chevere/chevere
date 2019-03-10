@@ -22,8 +22,8 @@ $app = new App();
 
 $apis = new Apis();
 $apis
-    ->register('api')
-    ->register('api-alt');
+    ->register('api', 'apis/api')
+    ->register('api-alt', 'apis/api-alt');
 
 $app->setApis($apis);
 
