@@ -51,14 +51,26 @@ class Cli
         return isset($this->{$id});
     }
 
-    public function __construct(string $name = null, string $version = null)
+    // TODO: Inject logger?
+    public function __construct(Input $input)
     {
-        if ($name == null) {
-            $this->name = static::NAME;
-        }
-        if ($version == null) {
-            $this->version = static::VERSION;
-        }
+        $this->name = static::NAME;
+        $this->version = static::VERSION;
+        $output = new ConsoleOutput();
+        $client = new ConsoleClient($this->name, $this->version);
+        $logger = new Logger($this->name);
+
+        $this->setInput($input);
+        $this->setOutput($output);
+        $this->setClient($client);
+        $this->setLogger($logger);
+        $this->setIo(
+            new SymfonyStyle($input, $output)
+        );
+        $client->add(new Command\RequestCommand($this));
+        $client->add(new Command\RunCommand($this));
+        $client->add(new Command\InspectCommand($this));
+        $client->setAutoExit(false);
     }
     /**
      * Run the CLI client.

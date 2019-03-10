@@ -23,39 +23,28 @@ use Exception;
  */
 class Console
 {
+    const VERBOSITY_QUIET = ConsoleOutput::VERBOSITY_QUIET;
+    const VERBOSITY_NORMAL = ConsoleOutput::VERBOSITY_NORMAL;
+    const VERBOSITY_VERBOSE = ConsoleOutput::VERBOSITY_VERBOSE;
+    const VERBOSITY_VERY_VERBOSE = ConsoleOutput::VERBOSITY_VERY_VERBOSE;
+    const VERBOSITY_DEBUG = ConsoleOutput::VERBOSITY_DEBUG;
+    
+    const OUTPUT_NORMAL = ConsoleOutput::OUTPUT_NORMAL;
+    const OUTPUT_RAW = ConsoleOutput::OUTPUT_RAW;
+    const OUTPUT_PLAIN = ConsoleOutput::OUTPUT_PLAIN;
+
     protected static $app;
-    public static $cli;
+    protected static $cli;
+    protected static $available;
 
     /**
      * Init the Console facade.
      */
     public static function init()
     {
-        $cli = new Cli();
+        $cli = new Cli(new ArgvInput());
         static::$cli = $cli;
-        
-        $name = $cli->getName();
-        $version = $cli->getVersion();
-
-        $input = new ArgvInput();
-        $output = new ConsoleOutput();
-        $logger = new Logger($name);
-
-        $client = new ConsoleClient($name, $version);
-
-        $cli->setLogger($logger);
-        $cli->setInput($input);
-        $cli->setOutput($output);
-        $cli->setIo(
-            new SymfonyStyle($input, $output)
-        );
-        $cli->setClient($client);
-
-        $client->add(new Command\RequestCommand($cli));
-        $client->add(new Command\RunCommand($cli));
-        $client->add(new Command\InspectCommand($cli));
-        $client->setAutoExit(false);
-
+        static::$available = true;
         $cli->runner();
     }
     /**
@@ -113,53 +102,74 @@ class Console
      */
     public static function logger() : Logger
     {
-        return static::$cli->getLogger();
+        return static::cli()->getLogger();
     }
     /**
      * Get client.
      */
     public static function client() : ConsoleClient
     {
-        return static::$cli->getClient();
+        return static::cli()->getClient();
     }
     /**
      * Get input.
      */
     public static function input() : Input
     {
-        return static::$cli->getInput();
+        return static::cli()->getInput();
     }
     /**
      * Get input string.
      */
     public static function inputString() : string
     {
-        return (string) static::$cli->getInput();
+        return (string) static::cli()->getInput();
     }
     /**
      * Get output.
      */
     public static function output() : ConsoleOutput
     {
-        return static::$cli->getOutput();
+        return static::cli()->getOutput();
     }
     /**
      * Get IO.
      */
     public static function io() : SymfonyStyle
     {
-        return static::$cli->getIo();
+        return static::cli()->getIo();
     }
     /**
-     * Detects if console context exists.
+     * Detects if Console is available.
      */
-    public static function exists() : bool
+    public static function isAvailable() : bool
     {
-        return isset(static::$cli);
+        return (bool) static::$available;
     }
-    // TODO: Fast methods to write to console (context aware so we don't neet to call ::exit)
-}
-// Automatic init this class in CLI
-if (php_sapi_name() == 'cli') {
-    Console::init();
+    /**
+     * Write messages to the console.
+     *
+     * @param string|iterable $messages The message as an iterable of strings or a single string.
+     * @param int             $options  A bitmask of options (one of the OUTPUT or VERBOSITY constants), 0 is considered the same as self::OUTPUT_NORMAL | self::VERBOSITY_NORMAL
+     */
+    public static function write($messages, int $options = self::OUTPUT_NORMAL) : void
+    {
+        if (static::isAvailable() == false) {
+            return;
+        }
+        static::io()->write($messages, false, $options);
+    }
+    /**
+     * Write messages (new lines) to the console.
+     *
+     * @param string|iterable $messages The message as an iterable of strings or a single string.
+     * @param int             $options  A bitmask of options (one of the OUTPUT or VERBOSITY constants), 0 is considered the same as self::OUTPUT_NORMAL | self::VERBOSITY_NORMAL
+     */
+    public static function writeln($messages, int $options = self::OUTPUT_NORMAL) : void
+    {
+        if (static::isAvailable() == false) {
+            return;
+        }
+        static::io()->writeln($messages, $options);
+    }
 }

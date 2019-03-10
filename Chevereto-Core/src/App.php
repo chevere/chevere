@@ -47,9 +47,6 @@ class App
 
     protected static $instance;
     protected static $args;
-    // protected static $objects = [
-    //     'logger', 'router', ''
-    // ];
 
     protected $arguments = [];
     protected $controllerArguments = [];

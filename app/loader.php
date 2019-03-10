@@ -1,6 +1,10 @@
 <?php
 namespace Chevereto\Core;
 
+// if (CLI && Console::io()->confirm('no/yes')) {
+//     Console::writeln('<info>You said YES!</>');
+// }
+
 // $arr = [
 //     'api' => [],
 //     'api-alt' => [],

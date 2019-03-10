@@ -34,6 +34,15 @@ require PATH . 'utils/phpcheck.php';
 require PATH . 'src/Dumper.php';
 require PATH . 'src/Console.php';
 
+// Init Console only in CLI
+if (php_sapi_name() == 'cli') {
+    Console::init();
+}
+// This constant allows safe short syntax like `CLI && Console::io()` in all namespaces.
+define('CLI', Console::isAvailable());
+// define(APP_NS_HANDLE . 'CLI', Console::isAvailable());
+// define(CORE_NS_HANDLE . 'CLI', Console::isAvailable());
+
 // TODO: App autoloader solamente!
 require PATH . 'autoloader.php';
 spl_autoload_register(CORE_NS_HANDLE . 'autoloader');
