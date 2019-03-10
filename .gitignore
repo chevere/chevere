@@ -1,5 +1,5 @@
 vendor/
 docs/
-app/system/logs/
+app/var/
 Chevereto-Core/logs/
 composer.lock
