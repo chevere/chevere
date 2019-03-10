@@ -37,7 +37,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  */
 class ErrorHandler
 {
-    // Use path separator to customize how logs will be stored
+    // Customize the relative folder where logs will be stored
     const DEFAULT_LOG_DATE_FORMAT = 'Y/m/d/';
     // null will read app/config.php. Any boolean value will override that
     const DEBUG = null;
@@ -319,7 +319,7 @@ class ErrorHandler
         $path = Path::normalize($path);
         $path = rtrim($path, '/') . '/';
         $date = gmdate($this->logDateFormat, $this->timestamp);
-        $this->logFilename = $path . $this->loggerLevel . '/' . $date . $this->loggerLevel . '.log';
+        $this->logFilename = $path . $this->loggerLevel . '/' . $date . $this->timestamp . '_' . $this->id . '.log';
     }
     protected function setLogger() : self
     {
