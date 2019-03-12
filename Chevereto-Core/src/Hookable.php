@@ -53,7 +53,7 @@ namespace Chevereto\Core;
  * @see SimpleController
  * @see Router
  */
-class Hookable
+abstract class Hookable
 {
     /**
      * Register and run hookable code entries before and after.
@@ -93,7 +93,7 @@ class Hookable
      * Static versions are limited as $this is not being passed through.
      * No variable can be touched, it just adds procedures.
      *
-     * @see hook()
+     * @see hookable()
      */
     public static function section(string $anchor, callable $callable) : void
     {
@@ -102,7 +102,7 @@ class Hookable
     /**
      * Static version of hookableBefore
      *
-     * @see hookBefore()
+     * @see hookableBefore()
      */
     public static function before(string $anchor, callable $callable) : void
     {
@@ -111,7 +111,7 @@ class Hookable
     /**
      * Static version hookable after
      *
-     * @see after()
+     * @see hookableAfter()
      */
     public static function after(string $anchor, callable $callable) : void
     {

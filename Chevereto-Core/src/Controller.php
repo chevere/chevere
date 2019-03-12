@@ -31,7 +31,7 @@ use ReflectionClass;
  * @see Interfaces\Controller
  * @see Interfaces\APIs
  */
-class Controller extends Hookable implements Interfaces\ControllerInterface, Interfaces\ApiInterface
+class Controller extends Hookable
 {
     const TYPE_DECLARATIONS = ['array', 'callable', 'bool', 'float', 'int', 'string', 'iterable'];
     const OPTIONS = [];
