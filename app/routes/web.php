@@ -3,7 +3,8 @@ namespace Chevereto\Core;
 
 // Add route:
 Route::bind('/', 'callables:index')
-  ->name('homepage');
+  ->name('homepage')
+  ->middleware(new Middleware());
 
 Route::bind('/cache')
   ->method('GET', 'callables:cache')

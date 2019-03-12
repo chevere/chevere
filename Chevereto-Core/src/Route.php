@@ -127,7 +127,7 @@ class Route
             $optionalsIndex = [];
             foreach ($wildcards[0] as $k => $v) {
                 // Change {wildcard} to {n} (n is the wildcard index)
-                if($this->set != null) {
+                if ($this->set != null) {
                     $this->set = Utils\Str::replaceFirst($v, "{{$k}}", $this->set);
                 }
                 $wildcard = $wildcards[1][$k];
@@ -423,6 +423,10 @@ class Route
             $regex = str_replace("{{$k}}", '(' . $this->wheres[$v] . ')', $regex);
         }
         return $regex;
+    }
+    public function middleware($var)
+    {
+        $this->middleware[] = $var;
     }
     public function getWildcards() : ?array
     {

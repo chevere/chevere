@@ -3,13 +3,17 @@ declare(strict_types=1);
 
 namespace App;
 
-use function Chevereto\Core\dump;
+use function Chevereto\Core\dd;
+use Chevereto\Core\App;
+use Chevereto\Core\Console;
 use Chevereto\Core\Json;
 use Chevereto\Core\Http\JsonResponse;
 
 return new class extends Controller {
     public function __invoke()
     {
+        Console::writeln(['Running ' . __FILE__, 'EXIT']);
+        exit;
         $json = new Json();
         $json->setResponse('Hello, World!', 100);
         $json

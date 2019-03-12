@@ -149,17 +149,27 @@ class App
      *
      * @param string $callableSome Controller (path or class name).
      */
-    public function run(string $callableSome = null)
+    public function run(string $callable = null)
     {
-        if ($callableSome == null) {
+        if ($callable == null) {
             try {
-                $callableSome = $this->getRouting()->getController($this->getRequest());
+                $callable = $this->getRouting()->getController($this->getRequest());
                 $this->setRoute($this->getRouting()->getRoute());
             } catch (RouterException $e) {
                 dd('APP RUN RESPONSE: ' . $e->getCode());
             }
         }
-        $response = $this->runner($callableSome);
+        if (isset($this->route->middleware)) {
+            $request = $this->request;
+            $response = $this->response;
+            foreach ($this->route->middleware as $k => $v) {
+                $v($callable, function ($request, $response, $next) {
+                    Console::writeln('Next closure stuff here...');
+                });
+            }
+        }
+        Console::writeln('About to get response...');
+        $response = $this->runner($callable);
         $response->send();
     }
     public function runner($callable) : Response
