@@ -12,8 +12,9 @@ namespace Chevereto\Core\Http;
 use Exception;
 use Closure;
 
-use Chevereto\Core\Console;
 use function Chevereto\Core\dump;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Middleware provides a way to filter the Http request.
@@ -21,17 +22,19 @@ use function Chevereto\Core\dump;
 // Restringir acceso a la app (terminate, headers, redirects)
 class Middleware
 {
-    // Before REQUEST middleware
-    public function __invoke(Request $request, closure $next)
+    public function process(Request $request, RequestHandler $handler)
     {
-        Console::log('Peform action...');
-        return $next($request);
+        // dump($request->getRealMethod());
+        return $handler->handle($request);
+        // $response = $handler->handle($request);
     }
-    // After REQUEST middleware
-    // public function __invoke(Request $request, closure $next)
-    // {
-    //     $response = $next($request);
-    //     Console::log('Peform action...');
-    //     return $response;
-    // }
+}
+class Middleware2
+{
+    public function process(Request $request, RequestHandler $handler)
+    {
+        $handler
+            ->response(Response::HTTP_NOT_FOUND, 'NOT ENCONTRADO');
+        // return $handler->handle($request);
+    }
 }

@@ -182,11 +182,14 @@ class App
                     ->code('%t', gettype($callable))
             );
         }
+        // TODO: Don't use middleware. Built something own.
         // HTTP request middleware
         // if ($middlewares = $this->route->getMiddlewares()) {
-        //     \dd($middlewares);
+        //     // dump($middlewares);
+        //     $handler = new Http\RequestHandler($middlewares);
+        //     $runner = $handler->runner($this->request);
         // }
-        // Arguments taken from wildcards
+        // Use arguments taken from wildcards
         if ($this->arguments == null) {
             $this->setArguments($this->getRouting()->getArguments());
         }
