@@ -4,11 +4,13 @@
   "homepage": "http://github.com/Chevereto/core",
   "type": "library",
   "license": "MIT",
-  "authors": [{
-    "name": "Rodolfo Berrios",
-    "email": "inbox@rodolfoberrios.com",
-    "homepage": "http://rodolfoberrios.com"
-  }],
+  "authors": [
+    {
+      "name": "Rodolfo Berrios",
+      "email": "inbox@rodolfoberrios.com",
+      "homepage": "http://rodolfoberrios.com"
+    }
+  ],
   "require": {
     "php": ">=7.2",
     "monolog/monolog": "~1.24",
