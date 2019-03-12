@@ -172,4 +172,11 @@ class Console
         }
         static::io()->writeln($messages, $options);
     }
+    public static function log($messages)
+    {
+        if (static::isAvailable() == false) {
+            return;
+        }
+        static::io()->writeln($messages);
+    }
 }
