@@ -16,7 +16,7 @@ use Chevereto\Core\Message;
 use Chevereto\Core\App;
 use Chevereto\Core\Controller;
 use Chevereto\Core\Json;
-use Chevereto\Core\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Identical to OPTIONS.

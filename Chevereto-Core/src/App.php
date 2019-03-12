@@ -13,7 +13,7 @@ namespace Chevereto\Core;
 
 use Monolog\Logger;
 
-use Symfony\Component\Console\Application as ConsoleApp;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use Exception;
@@ -90,16 +90,16 @@ class App
     {
         return $this->router;
     }
-    // FIXME: Need "had" for Route, Routing, Router, Http\Request, Http\Response, Apis
+    // FIXME: Need "had" for Route, Routing, Router, Request, Response, Apis
     public function hasRequest() : bool
     {
-        return $this->request instanceof Http\Request;
+        return $this->request instanceof Request;
     }
-    public function getRequest() : Http\Request
+    public function getRequest() : Request
     {
         return $this->request;
     }
-    public function getResponse() : Http\Response
+    public function getResponse() : Response
     {
         return $this->response;
     }
@@ -145,7 +145,7 @@ class App
         @fclose($fh);
     }
     /**
-     * Run the callable.
+     * Run callable and send the response.
      *
      * @param string $callableSome Controller (path or class name).
      */
@@ -159,21 +159,15 @@ class App
                 dd('APP RUN RESPONSE: ' . $e->getCode());
             }
         }
-        if (isset($this->route->middleware)) {
-            $request = $this->request;
-            $response = $this->response;
-            foreach ($this->route->middleware as $k => $v) {
-                $v($callable, function ($request, $response, $next) {
-                    Console::writeln('Next closure stuff here...');
-                });
-            }
-        }
-        Console::writeln('About to get response...');
         $response = $this->runner($callable);
         $response->send();
     }
+    /**
+     * Run a callable and return its response
+     */
     public function runner($callable) : Response
     {
+        // Callable stuff
         $classExists = class_exists($callable);
         $isCallable = is_callable($callable);
         if ($classExists || $isCallable) {
@@ -188,28 +182,32 @@ class App
                     ->code('%t', gettype($callable))
             );
         }
-        // Arguments taken directly from wildcards
+        // HTTP request middleware
+        // if ($middlewares = $this->route->getMiddlewares()) {
+        //     \dd($middlewares);
+        // }
+        // Arguments taken from wildcards
         if ($this->arguments == null) {
             $this->setArguments($this->getRouting()->getArguments());
         }
-        $i = 0;
         if (is_object($callable)) {
             $invoke = new ReflectionMethod($callable, '__invoke');
         } else {
             $invoke = new ReflectionFunction($callable);
         }
-        $orderedArguments = [];
+        $controllerArguments = [];
+        $parameterIndex = 0;
         // Magically create typehinted objects
         foreach ($invoke->getParameters() as $parameter) {
-            $rType = $parameter->getType();
-            $type = $rType != null ? $rType->getName() : null;
-            $value = $this->arguments[$parameter->getName()] ?? $this->arguments[$i] ?? null;
+            $parameterType = $parameter->getType();
+            $type = $parameterType != null ? $parameterType->getName() : null;
+            $value = $this->arguments[$parameter->getName()] ?? $this->arguments[$parameterIndex] ?? null;
             if ($type == null || in_array($type, Controller::TYPE_DECLARATIONS)) {
-                $orderedArguments[] = $value ?? ($parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);
+                $controllerArguments[] = $value ?? ($parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);
             } else {
                 // Object typehint
                 if ($value === null && $parameter->allowsNull()) {
-                    $orderedArguments[] = null;
+                    $controllerArguments[] = null;
                 } else {
                     $hasConstruct = method_exists($type, '__construct');
                     if ($hasConstruct == false) {
@@ -221,26 +219,17 @@ class App
                                 ->code('%f', $callable)
                         );
                     }
-                    $orderedArguments[] = new $type($value);
+                    $controllerArguments[] = new $type($value);
                 }
             }
-            $i++;
+            $parameterIndex++;
         }
-        /**
-         * Controller gets called here.
-         */
-        // $middlewares = [true, true, false];
-        // foreach ($middlewares as $condition) {
-        //     if ($condition === false) {
-        //         dd('FALSE CONDITION DIE!');
-        //     }
-        // }
-        $this->controllerArguments = $orderedArguments;
+        $this->controllerArguments = $controllerArguments;
         $output = $callable(...$this->controllerArguments);
-        if ($output instanceof Http\Response || $output instanceof Http\JsonResponse) {
+        if ($output instanceof Response || $output instanceof JsonResponse) {
             $response = $output;
         } else {
-            $response = new Http\JsonResponse($output);
+            $response = new JsonResponse($output);
         }
         return $response;
     }
@@ -261,7 +250,7 @@ class App
     public function __construct(array $appPaths = null)
     {
         self::$instance = $this;
-        $this->response = new Http\Response();
+        $this->response = new Response();
         // uses $this->request:
         static::setBasePaths();
         // Checkout it app/build exists
@@ -305,7 +294,7 @@ class App
         return $this->arguments ?? [];
     }
     // goes before ::run()
-    public function setRequest(Http\Request $request) : self
+    public function setRequest(Request $request) : self
     {
         $this->request = $request;
         $pathinfo = ltrim($this->request->getPathInfo(), '/');
@@ -314,7 +303,7 @@ class App
     }
     public function setRequestFromGlobals()
     {
-        $this->setRequest(Http\Request::createFromGlobals());
+        $this->setRequest(Request::createFromGlobals());
     }
     public static function instance() : self
     {

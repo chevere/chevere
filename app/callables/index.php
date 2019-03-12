@@ -7,13 +7,13 @@ use function Chevereto\Core\dd;
 use Chevereto\Core\App;
 use Chevereto\Core\Console;
 use Chevereto\Core\Json;
-use Chevereto\Core\Http\JsonResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 return new class extends Controller {
     public function __invoke()
     {
         Console::writeln(['Running ' . __FILE__, 'EXIT']);
-        exit;
+        // exit;
         $json = new Json();
         $json->setResponse('Hello, World!', 100);
         $json

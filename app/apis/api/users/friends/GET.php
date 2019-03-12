@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
-use Chevereto\Core\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 return new class extends Controller {
     // public function __invoke(\App\User $user, \App\User $friend = null)

@@ -11,6 +11,8 @@ namespace Chevereto\Core;
 
 use Exception;
 
+use Symfony\Component\HttpFoundation\Request;
+
 /**
  * This class is part of the Router thing and is used to enable a OOP way to access the Routing table.
  */
@@ -136,9 +138,9 @@ class Routing
     /**
      * Get controller filepath who satisfy the Request from the Routes.
      *
-     * @param Http\Request $request Request object.
+     * @param Request $request Request object.
      */
-    public function getController(Http\Request $request) : ?string
+    public function getController(Request $request) : ?string
     {
         $pathInfo = $request->getPathInfo();
         // Fix pathInfo extra slashes

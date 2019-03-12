@@ -11,7 +11,7 @@ namespace Chevereto\Core\Command;
 
 use Chevereto\Core\App;
 use Chevereto\Core\Command;
-use Chevereto\Core\Http\Request;
+use Symfony\Component\HttpFoundation\Request;
 
 use ReflectionMethod;
 
@@ -35,8 +35,7 @@ class RequestCommand extends Command
             ->addArgument('cookies', Command::ARGUMENT_OPTIONAL, 'Cookies', [])
             ->addArgument('files', Command::ARGUMENT_OPTIONAL, 'Files', [])
             ->addArgument('server', Command::ARGUMENT_OPTIONAL, 'Server', [])
-            ->addArgument('content', Command::ARGUMENT_OPTIONAL, 'Content', null)
-        ;
+            ->addArgument('content', Command::ARGUMENT_OPTIONAL, 'Content', null);
     }
     /**
      * Forge a request.
