@@ -61,6 +61,7 @@ class Route
     protected $wheres;
     protected $set;
     protected $powerSet;
+    protected $middlewares;
 
     /**
      * Route constructor
@@ -424,9 +425,14 @@ class Route
         }
         return $regex;
     }
-    public function middleware($var)
+    public function middleware($var) : self
     {
-        $this->middleware[] = $var;
+        $this->middlewares[] = $var;
+        return $this;
+    }
+    public function getMiddlewares() : ?array
+    {
+        return $this->middlewares;
     }
     public function getWildcards() : ?array
     {
