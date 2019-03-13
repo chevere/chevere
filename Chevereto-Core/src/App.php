@@ -55,19 +55,40 @@ class App
 
     protected $logger;
     protected $router;
+    // protected $client;
     protected $request;
     protected $response;
     protected $apis;
     protected $routing;
     protected $route;
+    protected $dispatcher;
 
-    public function get(string $id)
+    /**
+     * Get the value of dispatcher
+     */
+    public function getDispatcher() : EventDispatcher
     {
+        return $this->dispatcher;
     }
-    // public function has(string $id) : bool {
-    //     return
+    /**
+     * Set the value of dispatcher
+     *
+     * @return  self
+     */
+    public function setDispatcher(EventDispatcher $dispatcher)
+    {
+        $this->dispatcher = $dispatcher;
+        return $this;
+    }
+    // public function setClient(Client $client) : self
+    // {
+    //     $this->client = $client;
+    //     return $this;
     // }
-
+    // public function getClient() : Client
+    // {
+    //     return $this->client;
+    // }
     protected function setRoute(Route $route) : self
     {
         $this->route = $route;
@@ -253,7 +274,7 @@ class App
     public function __construct(array $appPaths = null)
     {
         self::$instance = $this;
-        $this->response = new Response();
+        // $this->response = new Response();
         // uses $this->request:
         static::setBasePaths();
         // Checkout it app/build exists

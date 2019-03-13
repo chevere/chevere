@@ -11,6 +11,9 @@ namespace Chevereto\Core\Http;
 
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * RequestHandler handles the middleware associated to the request.
+ */
 class RequestHandler
 {
     protected $queue;
@@ -23,14 +26,14 @@ class RequestHandler
     public function runner($request)
     {
         reset($this->queue);
-        return $this->handle($request);
+        return $this->continue($request);
     }
     // Middleware handler
-    public function handle($request)
+    public function continue($request)
     {
         if ($middleware = current($this->queue)) {
             next($this->queue);
-            return $middleware->process($request, $this);
+            return $middleware($request, $this);
         }
     }
     public function response(int $http_code, string $content = null, array $headers = [])

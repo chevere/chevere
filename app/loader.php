@@ -1,33 +1,34 @@
 <?php
 namespace Chevereto\Core;
 
-// if (CLI && Console::io()->confirm('no/yes')) {
-//     Console::writeln('<info>You said YES!</>');
-// }
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
-// $arr = [
-//     'api' => [],
-//     'api-alt' => [],
-// ];
-// $keys = array_keys($arr);
-// dd($keys, array_search('api', $keys, true));
-// Log::notice('Notice: Miralo nomas...');
+$dispatcher = new EventDispatcher();
+ 
+// register listener for the 'demo.event' event
+$listener = new Listener();
+$dispatcher->addListener('demo.event', array($listener, 'onDemoEvent'));
 
-// error_reporting(E_ALL);
+dump($dispatcher);
+// dispatch
+// $dispatcher->dispatch(Event::NAME, new Event());
 
-// dd(Validate::colorHEX('#F_F0000'));
+die();
 
-// Create the app
+/**
+ * App initialization
+ */
 $app = new App();
 
+/**
+ * Build the API
+ */
 $apis = new Apis();
 $apis
     ->register('api', 'apis/api')
     ->register('api-alt', 'apis/api-alt');
 
 $app->setApis($apis);
-
-// dd(Routes::instance());
 
 /**
  * Router handles all the App routes (API + explicit) and manages the Routes.
@@ -39,6 +40,12 @@ $router
     ->make(); // Router from cache > fly
 
 $app->setRouter($router);
+
+/**
+ * Client defines the app user
+ */
+// $client = new Client();
+// $app->setClient($client);
 
 // $apis = App::instance()->getApis(); // ->get('api-alt')
 

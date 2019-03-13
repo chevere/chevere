@@ -22,19 +22,19 @@ use Symfony\Component\HttpFoundation\Response;
 // Restringir acceso a la app (terminate, headers, redirects)
 class Middleware
 {
-    public function process(Request $request, RequestHandler $handler)
+    public function __invoke(Request $request, RequestHandler $handler)
     {
-        // dump($request->getRealMethod());
-        return $handler->handle($request);
-        // $response = $handler->handle($request);
+        dump($request->getRealMethod());
+        return $handler->continue($request);
+        // $response = $handler->continue($request);
     }
 }
 class Middleware2
 {
-    public function process(Request $request, RequestHandler $handler)
+    public function __invoke(Request $request, RequestHandler $handler)
     {
         $handler
             ->response(Response::HTTP_NOT_FOUND, 'NOT ENCONTRADO');
-        // return $handler->handle($request);
+        // return $handler->continue($request);
     }
 }
