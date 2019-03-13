@@ -22,6 +22,7 @@ use ReflectionClass;
  */
 class Route
 {
+    use Traits\CallableTrait;
     /**
      * Array containing all the HTTP methods.
      */
@@ -225,9 +226,8 @@ class Route
      *
      * @param string $httpMethod HTTP method.
      * @param string $callable Callable which satisfy the method request.
-     * @param string $rootContext Root context (defaults to 'app').
      */
-    public function method(string $httpMethod, string $callable, string $rootContext = null) : self
+    public function method(string $httpMethod, string $callable) : self
     {
         // Validate HTTP method
         if (in_array($httpMethod, static::HTTP_METHODS) == false) {
@@ -235,41 +235,7 @@ class Route
                 (new Message('Unknown HTTP method %s.'))->code('%s', $httpMethod)
             );
         }
-        // Detect class or anon (file)
-        if (class_exists($callable)) {
-            $r = new ReflectionClass($callable);
-            if ($r->hasMethod('__invoke') == false) {
-                throw new RouteException(
-                    (new Message("Missing %s method in class %c"))
-                    ->code('%s', '__invoke')
-                    ->code('%c', $callable)
-                );
-            }
-            $callableSome = $callable;
-        } else {
-            $callableSome = Path::relativeFromHandle($callable, $rootContext);
-            // Check callable existance
-            if ($callableSome == null || File::exists($callableSome, true) == false) {
-                throw new RouteException(
-                    (new Message('Missing %m callable file %f.'))
-                        ->code('%f', $callableSome) // display the pretty thing
-                        ->code('%m', $httpMethod)
-                );
-            }
-            // Had to make this sandwich since we are calling an anon callable.
-            $errorLevel = error_reporting();
-            error_reporting($errorLevel ^ E_NOTICE);
-            $anonCallable = include $callableSome;
-            error_reporting($errorLevel);
-            // Check callable
-            if (is_callable($anonCallable) == false) {
-                throw new RouteException(
-                    (new Message('Return type of %s is not type %t.'))
-                        ->code('%s', $callableSome)
-                        ->code('%t', 'callable')
-            );
-            }
-        }
+        $callableSome = $this->getCallableSome($callable);
         // Check HTTP dupes
         // if (isset($this->methods[$httpMethod])) {
         //     throw new RouteException(
@@ -363,7 +329,7 @@ class Route
         return $this;
     }
     /**
-     * Get a defined callable.
+     * Get a defined callable (callable string, callable absolute)
      *
      * @param string $httpMethod An HTTP method.
      */
@@ -376,9 +342,9 @@ class Route
                     ->code('%s', $httpMethod)
             );
         }
-        if (Utils\Str::endsWith('.php', $callable)) {
-            $callable = Path::absolute($callable);
-        }
+        // if (Utils\Str::endsWith('.php', $callable)) {
+        //     $callable = Path::absolute($callable);
+        // }
         return $callable;
     }
     /**
@@ -425,9 +391,9 @@ class Route
         }
         return $regex;
     }
-    public function middleware($var) : self
+    public function middleware(string $callable) : self
     {
-        $this->middlewares[] = $var;
+        $this->middlewares[] = $this->getCallableSome($callable);
         return $this;
     }
     public function getMiddlewares() : ?array

@@ -22,7 +22,7 @@ class Head extends Controller
      */
     public function __invoke()
     {
-        $route = App::instance()->getRoute();
+        $route = $this->getApp()->getRoute();
         $routeKey = $route->getKey();
         dd($routeKey);
         $invoke = $this->invoke(__NAMESPACE__ . '\ApiGet', func_get_args());

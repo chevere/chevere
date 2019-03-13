@@ -27,7 +27,7 @@ class ApiHead extends Controller
     ];
     public function __invoke(/*string $callable = null*/)
     {
-        $app = App::instance();
+        $app = $this->getApp();
         $route = $app->getRoute();
         $callable = $route->getCallable('GET');
         //

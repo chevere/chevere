@@ -16,12 +16,3 @@ return [
     //   LC_MONETARY =>
     // ]
 ];
-
-/**
- * OPCACHE
- * ON: 285
- * OFF: 63
- * AUTO: 125
- *
- * HELLO: 1199
- */

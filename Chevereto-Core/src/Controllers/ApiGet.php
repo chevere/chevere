@@ -31,7 +31,7 @@ class ApiGet extends Controller
      */
     public function __invoke(string $endpoint = null)
     {
-        $app = App::instance();
+        $app = $this->getApp();
         $route = $app->getRoute();
         $endpoint = $route->getKey();
         //

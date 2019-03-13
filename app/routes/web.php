@@ -4,8 +4,8 @@ namespace Chevereto\Core;
 // Add route:
 Route::bind('/', 'callables:index')
   ->name('homepage')
-  ->middleware(new Http\Middleware())
-  ->middleware(new Http\Middleware2());
+  ->middleware('middleware:RoleBanned')
+  ->middleware('middleware:RoleAdmin');
 
 Route::bind('/cache')
   ->method('GET', 'callables:cache')

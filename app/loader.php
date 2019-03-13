@@ -2,6 +2,7 @@
 namespace Chevereto\Core;
 
 use Symfony\Component\HttpFoundation\Request;
+use Chevereto\Core\Http\RequestHandler;
 
 /**
  * App initialization
@@ -28,6 +29,8 @@ $router
     ->make(); // Router from cache > fly
 
 $app->setRouter($router);
+
+// \dd(Routes::instance());
 
 /**
  * Console binds if php_sapi_name = cli.

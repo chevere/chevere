@@ -12,8 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 return new class extends Controller {
     public function __invoke()
     {
-        // Console::writeln(['Running ' . __FILE__, 'EXIT']);
-        // exit;
+        // $app = $this->getApp();
         $json = new Json();
         $json->setResponse('Hello, World!', 100);
         $json

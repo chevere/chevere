@@ -22,6 +22,8 @@ use ReflectionFunction;
 
 class App
 {
+    use Traits\CallableTrait;
+    
     const NAMESPACES = ['App', __NAMESPACE__];
     const APP_DEFINITIONS = ['NAME', 'WEBSITE', 'VERSION'];
     const ROOT = 'root';
@@ -53,31 +55,43 @@ class App
     protected $rootPaths;
     protected $paths;
 
+    // "Services"
+    protected $config;
     protected $logger;
     protected $router;
-    // protected $client;
     protected $request;
     protected $response;
     protected $apis;
     protected $routing;
     protected $route;
-    protected $dispatcher;
+    protected $cache;
+    protected $db;
+    protected $handler;
 
+    // public function setConfig(Config $config) : self
+    // {
+    //     $this->config = $config;
+    //     return $this;
+    // }
+    // public function getConfig() : Config
+    // {
+    //     return $this->config;
+    // }
     /**
-     * Get the value of dispatcher
+     * Get the value of handler
      */
-    public function getDispatcher() : EventDispatcher
+    public function getHandler() : Handler
     {
-        return $this->dispatcher;
+        return $this->handler;
     }
     /**
-     * Set the value of dispatcher
+     * Set the value of handler
      *
      * @return  self
      */
-    public function setDispatcher(EventDispatcher $dispatcher)
+    public function setHandler(Handler $handler)
     {
-        $this->dispatcher = $dispatcher;
+        $this->handler = $handler;
         return $this;
     }
     // public function setClient(Client $client) : self
@@ -184,32 +198,19 @@ class App
         $response->send();
     }
     /**
-     * Run a callable and return its response
+     * Run a callable and return its response.
      */
-    public function runner($callable) : Response
+    public function runner(string $callableString)
     {
-        // Callable stuff
-        $classExists = class_exists($callable);
-        $isCallable = is_callable($callable);
-        if ($classExists || $isCallable) {
-            $callable = $classExists ? new $callable : $callable;
-        } else {
-            $callable = include $callable;
-        }
-        if (is_callable($callable) == false) {
-            throw new Exception(
-                (new Message('Expected %s callable, %t provided.'))
-                    ->code('%s', '$callable')
-                    ->code('%t', gettype($callable))
-            );
-        }
-        // TODO: Don't use middleware. Built something own.
+        $callable = $this->getCallable($callableString);
         // HTTP request middleware
-        // if ($middlewares = $this->route->getMiddlewares()) {
-        //     // dump($middlewares);
-        //     $handler = new Http\RequestHandler($middlewares);
-        //     $runner = $handler->runner($this->request);
-        // }
+        if ($middlewares = $this->route->getMiddlewares()) {
+            // foreach ($middlewares as $k => $v) {
+            //     dump('Middleware', $this->getCallable($v));
+            // }
+            $handler = new Handler($middlewares);
+            $runner = $handler->runner($this);
+        }
         // Use arguments taken from wildcards
         if ($this->arguments == null) {
             $this->setArguments($this->getRouting()->getArguments());
@@ -263,8 +264,11 @@ class App
     /**
      * Farewell kids, my planet needs me.
      */
-    public function terminate()
+    public function terminate(string $message = null)
     {
+        if ($message) {
+            Console::log($message);
+        }
         exit();
     }
     public function setLogger(Logger $logger)
