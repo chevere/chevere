@@ -31,7 +31,7 @@ use ReflectionClass;
  * @see Interfaces\Controller
  * @see Interfaces\APIs
  */
-class Controller extends Hookable
+class Controller extends Hookable implements Interfaces\ControllerInterface
 {
     const TYPE_DECLARATIONS = ['array', 'callable', 'bool', 'float', 'int', 'string', 'iterable'];
     const OPTIONS = [];
@@ -42,6 +42,7 @@ class Controller extends Hookable
     // use Traits\PropGet;
 
     protected $routing;
+    protected $app;
     /**
      * Invoke another controller.
      *
@@ -93,6 +94,19 @@ class Controller extends Hookable
             $that->{$k} = $v;
         }
         return $that(...$parameters);
+    }
+    public function hasApp() : bool
+    {
+        return $this->app instanceof App;
+    }
+    public function getApp() : App
+    {
+        return $this->app;
+    }
+    public function setApp(App $app) : self
+    {
+        $this->app = $app;
+        return $this;
     }
     /**
      * Stores $_VARS for handling,

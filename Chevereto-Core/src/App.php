@@ -215,6 +215,9 @@ class App
             $this->setArguments($this->getRouting()->getArguments());
         }
         if (is_object($callable)) {
+            if ($callable instanceof Interfaces\ControllerInterface) {
+                $callable->setApp($this);
+            }
             $invoke = new ReflectionMethod($callable, '__invoke');
         } else {
             $invoke = new ReflectionFunction($callable);
@@ -325,10 +328,10 @@ class App
         $this->request->attributes->set('requestArray', explode('/', $pathinfo));
         return $this;
     }
-    public function setRequestFromGlobals()
-    {
-        $this->setRequest(Request::createFromGlobals());
-    }
+    // public function setRequestFromGlobals()
+    // {
+    //     $this->setRequest(Request::createFromGlobals());
+    // }
     public static function instance() : self
     {
         if (self::$instance == null) {

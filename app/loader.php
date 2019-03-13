@@ -1,19 +1,7 @@
 <?php
 namespace Chevereto\Core;
 
-use Symfony\Component\EventDispatcher\EventDispatcher;
-
-$dispatcher = new EventDispatcher();
- 
-// register listener for the 'demo.event' event
-$listener = new Listener();
-$dispatcher->addListener('demo.event', array($listener, 'onDemoEvent'));
-
-dump($dispatcher);
-// dispatch
-// $dispatcher->dispatch(Event::NAME, new Event());
-
-die();
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * App initialization
@@ -42,24 +30,17 @@ $router
 $app->setRouter($router);
 
 /**
- * Client defines the app user
+ * Console binds if php_sapi_name = cli.
+ * Console::run() always exit.
  */
-// $client = new Client();
-// $app->setClient($client);
-
-// $apis = App::instance()->getApis(); // ->get('api-alt')
-
-// dump(include 'BACKUP.routing.php');
-
-// Console binds if php_sapi_name = cli
 if (Console::bind($app)) {
     Console::run();
 } else {
-    $app->setRequestFromGlobals();
+    $request = Request::createFromGlobals();
+    $app->setRequest($request);
 }
 
 $app->run();
-exit();
 
 // Hook::before('deleteUser@api/users:DELETE', function ($that) {
 //     // $that->private = 'muahahahaha';
