@@ -9,8 +9,6 @@
  */
 namespace Chevereto\Core;
 
-use Chevereto\Core\Utils\Str;
-use Chevereto\Core\Path;
 use Chevereto\Core\Interfaces\HandlerInterface;
 
 /**
@@ -29,12 +27,22 @@ class Handler implements HandlerInterface
      *
      * @param array $queue An array containing callables or callable strings.
      */
-    public function __construct(array $queue)
+    public function __construct(array $queue = null)
+    {
+        if (null != $queue) {
+            $this->setQueue($queue);
+        }
+    }
+    /**
+     * Set Handler queue.
+     */
+    public function setQueue(array $queue) : self
     {
         foreach ($queue as $k => &$v) {
             $v = $this->getCallable($v);
         }
         $this->queue = $queue;
+        return $this;
     }
     /**
      * Initiates the Handler runner.
