@@ -205,7 +205,7 @@ class App
             //     dump('Middleware', $this->getCallable($v));
             // }
             $handler = new Handler($middlewares);
-            $runner = $handler->runner($this);
+            $handler->runner($this);
         }
         // Use arguments taken from wildcards
         if ($this->arguments == null) {

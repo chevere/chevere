@@ -16,11 +16,10 @@ use Chevereto\Core\Interfaces\MiddlewareInterface;
 return new class implements MiddlewareInterface {
     public function __invoke(App $app, HandlerInterface $handler)
     {
-        $userRole = 'user';
-        if ('banned' == $userRole) {
-            return $handler->stop($app);
-        }
-        
+        // $userRole = 'user';
+        // if ('banned' == $userRole) {
+        //     return $handler->stop($app);
+        // }
         return $handler->process($app);
     }
 };

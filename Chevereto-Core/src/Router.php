@@ -31,7 +31,7 @@ class Router
     ];
 
     /** @var bool */
-    protected $isDone = false;
+    protected $isProcessDone = false;
     /**
      * Contains the registry of files that generates routing.
      */

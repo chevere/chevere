@@ -16,14 +16,13 @@ use Chevereto\Core\Interfaces\MiddlewareInterface;
 return new class implements MiddlewareInterface {
     public function __invoke(App $app, HandlerInterface $handler)
     {
-        \dump('RoleAdmin?');
-        dump($app->getArguments());
+        // \dump(__FILE__ . ': RoleAdmin?');
+        // \dump($app->getArguments());
         // $userRole = $app->getUser()->role;
         // $userRole = 'user';
         // if ('admin' != $userRole) {
         //     // return $handler->stop();
         // }
-        
         return $handler->process($app);
     }
 };

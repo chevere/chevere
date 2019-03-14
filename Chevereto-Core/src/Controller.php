@@ -113,6 +113,15 @@ class Controller extends Hookable implements Interfaces\ControllerInterface
         }
         return $that(...$parameters);
     }
+    // public function __invoke()
+    // {
+    //     // TODO: Deberia ser LogicException
+    //     throw new CoreException(
+    //         (new Message('You must override the %s method in the concrete %c class.'))
+    //             ->code('%s', __FUNCTION__)
+    //             ->code('%c', __CLASS__)
+    //     );
+    // }
     /**
      * Stores $_VARS for handling,
      */

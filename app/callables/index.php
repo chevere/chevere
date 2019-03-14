@@ -12,13 +12,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 return new class extends Controller {
     public function __invoke()
     {
-        // $app = $this->getApp();
         $json = new Json();
         $json->setResponse('Hello, World!', 100);
         $json
             ->addData('api', ['entry' => 'HTTP GET /api', 'description' => 'Retrieves the exposed API.'])
             ->addData('cli', ['entry' => 'php app/console list', 'description' => 'Lists console commands.']);
-        
         return (new JsonResponse())->setContent($json)->setStatusCode(200);
     }
 };
