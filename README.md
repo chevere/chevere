@@ -16,4 +16,5 @@ This is an unreleased application prototype, the package resides in 'Chevereto-C
 
 ## phpstan
 
+`phpstan analyze Chevereto-Core/src --level 7`
 `php phpstan.phar analyze Chevereto-Core/src --level 7`
