@@ -10,27 +10,24 @@ use Chevereto\Core\Http\RequestHandler;
 $app = new App();
 
 /**
- * Build the API
+ * Build the API.
  */
 $apis = new Apis();
 $apis
     ->register('api', 'apis/api')
     ->register('api-alt', 'apis/api-alt');
 
-$app->setApis($apis);
+$app->setApis($apis); // App handles cache
 
 /**
- * Router handles all the App routes (API + explicit) and manages the Routes.
+ * Build the explicit routing, API is already routed at this point.
  */
 $router = new Router();
 $router
-    ->register('routes:dashboard')
-    ->register('routes:web')
-    ->make(); // Router from cache > fly
+    ->prepare('routes:dashboard')
+    ->prepare('routes:web');
 
-$app->setRouter($router);
-
-// \dd(Routes::instance());
+$app->setRouter($router);  // App handles cache
 
 /**
  * Console binds if php_sapi_name = cli.

@@ -49,7 +49,7 @@ class ApiGet extends Controller
         //
         $statusCode = 200;
         $json = new Json();
-        if ($endpointData = App::instance()->getApis()->getEndpoint($endpoint)) {
+        if ($endpointData = $this->getApp()->getApis()->getEndpoint($endpoint)) {
             $json->setResponse(sprintf('Endpoint %s exposed', $endpoint), $statusCode);
             // $json->addData('endpoint', $endpoint);
             foreach ($endpointData as $property => $data) {

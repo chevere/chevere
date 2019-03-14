@@ -43,7 +43,7 @@ class ApiHead extends Controller
             }
         }
         //
-        $response = $app->runner($callable);
+        $response = $app->getCallableHandler($callable);
         $response->setContent(null);
         return $response;
     }

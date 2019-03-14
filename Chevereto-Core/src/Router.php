@@ -30,6 +30,8 @@ class Router
         self::PATH_WILDCARD_CAPTURE => '{([A-z0-9]+)}', // {wildcard}
     ];
 
+    /** @var bool */
+    protected $isDone = false;
     /**
      * Contains the registry of files that generates routing.
      */
@@ -41,12 +43,12 @@ class Router
     {
     }
     /**
-     * Add a route collection to the registry.
+     * Add a route declaration to the registry.
      *
      * @param string $fileHandle File handle to look for.
      * @param string $context Context for the file handle.
      */
-    public function register(string $fileHandle, string $context = null) : self
+    public function prepare(string $fileHandle, string $context = null) : self
     {
         $filePath = Path::fromHandle(...func_get_args());
         $relativeFilePath = Path::relative($filePath);
@@ -59,10 +61,14 @@ class Router
         $this->registers[] = $filePath;
         return $this;
     }
+    public function isProcessDone() : bool
+    {
+        return (bool) $this->isProcessDone;
+    }
     /**
-     * Makes the $routing table
+     * Makes the routing table.
      */
-    public function make()
+    public function processRoutes() : void
     {
         if ($this->registers == null) {
             throw new Exception(
@@ -70,10 +76,12 @@ class Router
                     ->code('%s', __METHOD__)
             );
         }
+        // TODO: Cache check
         foreach ($this->registers as $k => $register) {
             include $register;
         }
         Routes::instance()->process();
+        $this->isProcessDone = true;
     }
     public function getRegisters() : array
     {

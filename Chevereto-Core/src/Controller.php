@@ -42,7 +42,25 @@ class Controller extends Hookable implements Interfaces\ControllerInterface
     // use Traits\PropGet;
 
     protected $routing;
+
+    /** @var App */
     protected $app;
+    
+    // TODO: Traits\App;
+
+    public function hasApp() : bool
+    {
+        return $this->app instanceof App;
+    }
+    public function getApp() : App
+    {
+        return $this->app;
+    }
+    public function setApp(App $app) : self
+    {
+        $this->app = $app;
+        return $this;
+    }
     /**
      * Invoke another controller.
      *
@@ -95,28 +113,15 @@ class Controller extends Hookable implements Interfaces\ControllerInterface
         }
         return $that(...$parameters);
     }
-    public function hasApp() : bool
-    {
-        return $this->app instanceof App;
-    }
-    public function getApp() : App
-    {
-        return $this->app;
-    }
-    public function setApp(App $app) : self
-    {
-        $this->app = $app;
-        return $this;
-    }
     /**
      * Stores $_VARS for handling,
      */
-    protected function setProperties(array $properties) : void
-    {
-        foreach ($properties as $k => $v) {
-            $this->{$k} = $v;
-        }
-    }
+    // protected function setProperties(array $properties) : void
+    // {
+    //     foreach ($properties as $k => $v) {
+    //         $this->{$k} = $v;
+    //     }
+    // }
 }
 class ControllerException extends CoreException
 {

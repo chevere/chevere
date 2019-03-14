@@ -12,9 +12,8 @@ namespace Chevereto\Core;
 use Exception;
 
 /**
- * Routes is an auxiliar Route class which static stores the constructed Route objects.
- *
- * It is used to generate the routing array (simple array) for faster routing process.
+ * Routes is an auxiliar Route class which stores the constructed Route objects.
+ * Used to generate the routing array (simple array) for faster routing process.
  */
 class Routes
 {
@@ -66,7 +65,7 @@ class Routes
      *
      * @return array Array containing routing table.
      */
-    public function getRouting() : array
+    public function getRouting() : ?array
     {
         return $this->routing;
     }

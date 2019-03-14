@@ -35,10 +35,10 @@ class App
     const LOGS = 'logs';
     const UTILS = 'utils';
     const FILENAME_HACKS = 'hacks';
-    const FILENAME_BASE_FUNCTIONS = 'base';
+    // const FILENAME_BASE_FUNCTIONS = 'base';
     const CONFIG_FILENAME = 'config';
     const ROOT_PATHS = [self::APP => 'app', self::VENDOR => 'vendor'];
-    const CORE_PATH_ALIAS = 'core>';
+    // const CORE_PATH_ALIAS = 'core>';
     // PATH_* (uppercased)
     const CORE_PATHS = [
         self::CLASSES => PATH_CLASSES,
@@ -52,11 +52,11 @@ class App
 
     protected $arguments = [];
     protected $controllerArguments = [];
-    protected $rootPaths;
-    protected $paths;
+    protected $rootPaths = [];
+    protected $paths = [];
 
     // "Services"
-    protected $config;
+    protected $config; // TODO: Config object
     protected $logger;
     protected $router;
     protected $request;
@@ -68,15 +68,8 @@ class App
     protected $db;
     protected $handler;
 
-    // public function setConfig(Config $config) : self
-    // {
-    //     $this->config = $config;
-    //     return $this;
-    // }
-    // public function getConfig() : Config
-    // {
-    //     return $this->config;
-    // }
+    // const SERVICES = ['config', 'logger', 'router', 'request', 'response', 'apis', 'routing', 'route', 'cache', 'db', 'handler'];
+
     /**
      * Get the value of handler
      */
@@ -180,12 +173,13 @@ class App
         @fclose($fh);
     }
     /**
-     * Run callable and send the response.
+     * Run the callable and dispatch the handler.
      *
      * @param string $callableSome Controller (path or class name).
      */
     public function run(string $callable = null)
     {
+        // TODO: Run should detect if the app misses things needed for running.
         if ($callable == null) {
             try {
                 $callable = $this->getRouting()->getController($this->getRequest());
@@ -194,16 +188,18 @@ class App
                 dd('APP RUN RESPONSE: ' . $e->getCode());
             }
         }
-        $response = $this->runner($callable);
-        $response->send();
+        $handler = $this->getCallableHandler($callable);
+        $handler->send();
     }
     /**
-     * Run a callable and return its response.
+     * Runs a explicit provided callable and return its handler.
      */
-    public function runner(string $callableString)
+    public function getCallableHandler(string $callable)
     {
+        $callableString = $callable;
         $callable = $this->getCallable($callableString);
         // HTTP request middleware
+        // TODO: Remove route from app?
         if ($middlewares = $this->route->getMiddlewares()) {
             // foreach ($middlewares as $k => $v) {
             //     dump('Middleware', $this->getCallable($v));
@@ -281,8 +277,6 @@ class App
     public function __construct(array $appPaths = null)
     {
         self::$instance = $this;
-        // $this->response = new Response();
-        // uses $this->request:
         static::setBasePaths();
         // Checkout it app/build exists
         if (stream_resolve_include_path(static::buildFileName()) == false) {
@@ -299,7 +293,6 @@ class App
         Runtime::setDefaultCharset();
         Load::app(static::FILENAME_HACKS);
         Runtime::fixTimeZone();
-        // Runtime::fixServer();
         Runtime::registerErrorHandler();
         Config::load();
         Config::apply();
@@ -307,22 +300,23 @@ class App
         if ($appPaths !== null) {
             static::setPaths($appPaths);
         }
-        // Uses $this->request:
-        static::defineHttpStuff();
     }
     public function setRouter(Router $router) : self
     {
+        if (false == $router->isProcessDone()) {
+            $router->processRoutes();
+        }
         $this->router = $router;
         $this->routing = new Routing(Routes::instance());
         return $this;
     }
     public function setArguments(array $arguments = null)
     {
-        $this->arguments = $arguments ?? [];
+        $this->arguments = $arguments;
     }
-    public function getArguments() : ?array
+    public function getArguments() : array
     {
-        return $this->arguments ?? [];
+        return $this->arguments;
     }
     // goes before ::run()
     public function setRequest(Request $request) : self
@@ -330,6 +324,11 @@ class App
         $this->request = $request;
         $pathinfo = ltrim($this->request->getPathInfo(), '/');
         $this->request->attributes->set('requestArray', explode('/', $pathinfo));
+
+        $host = $_SERVER['HTTP_HOST'] ?? null;
+        $this->define('HTTP_HOST', $host);
+        $this->define('URL', App\HTTP_SCHEME . '://' . $host . ROOT_PATH_RELATIVE);
+
         return $this;
     }
     // public function setRequestFromGlobals()
@@ -345,7 +344,7 @@ class App
     }
     public function getHash() : string
     {
-        return ($this->constant('App\VERSION') ?: null) . static::buildtime();
+        return ($this->getConstant('App\VERSION') ?: null) . static::buildtime();
     }
     public function path(string $key=null, string $group='App') : ?string
     {
@@ -354,7 +353,7 @@ class App
     public function setPaths(array $appPaths) : void
     {
         // Ignore custom app classes path
-        $appPaths[static::CLASSES] = $this->constant('PATH_CLASSES');
+        $appPaths[static::CLASSES] = $this->getConstant('PATH_CLASSES');
         $keyClass = array_search(static::CLASSES, $appPaths);
         if ($keyClass !== false) {
             unset($appPaths[$keyClass]);
@@ -481,7 +480,7 @@ class App
         return $this->rootPaths()[$key];
     }
     // Returns $rootPaths
-    public function rootPaths() : array
+    public function rootPaths() : ?array
     {
         return $this->rootPaths;
     }
@@ -526,19 +525,9 @@ class App
             }
         }
     }
-    public function defineHttpStuff()
-    {
-        $host = $_SERVER['HTTP_HOST'] ?? null;
-        $this->define('HTTP_HOST', $host);
-        $this->define('URL', App\HTTP_SCHEME . '://' . $host . ROOT_PATH_RELATIVE);
-    }
-    public function constant(string $name, string $namespace = 'App') : ?string
+    public function getConstant(string $name, string $namespace = 'App') : ?string
     {
         $constant = "\\$namespace\\$name";
         return defined($constant) ? constant($constant) : null;
-    }
-    public function url(string $path = null) : string
-    {
-        return $this->constant('URL') . $path;
     }
 }

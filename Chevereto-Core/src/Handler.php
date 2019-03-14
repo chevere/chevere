@@ -14,7 +14,10 @@ use Chevereto\Core\Path;
 use Chevereto\Core\Interfaces\HandlerInterface;
 
 /**
- * Handles the request workflow.
+ * TODO: Add stop, redirect and other methods needed to alter the flow.
+ */
+/**
+ * Handles middleware.
  */
 class Handler implements HandlerInterface
 {
