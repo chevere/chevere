@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Exception;
 use ReflectionMethod;
 use ReflectionFunction;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class App
 {
@@ -249,13 +250,18 @@ class App
             $parameterIndex++;
         }
         $this->controllerArguments = $controllerArguments;
-        $output = $callable(...$this->controllerArguments);
-        if ($output instanceof Response || $output instanceof JsonResponse) {
-            $response = $output;
+        $response = $callable(...$this->controllerArguments);
+        if ($response instanceof Response || $response instanceof JsonResponse) {
+            return $response;
         } else {
-            $response = new JsonResponse($output);
+            if ($response instanceof \Chevereto\Core\ResponseData) {
+                // TODO: Response middelware
+                // TODO: Templates
+                return $response->generateHttpResponse();
+            } else {
+                return new JsonResponse($response);
+            }
         }
-        return $response;
     }
     /**
      * Farewell kids, my planet needs me.

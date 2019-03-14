@@ -470,10 +470,10 @@ class ErrorHandler
                 foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
                     $error[$v] = $this->getTableValue($v);
                 }
-                $json->addData('error', $error);
+                $json->addDataKey('error', $error);
             break;
         }
-        $json->addData('log', $log);
+        $json->addDataKey('log', $log);
         $json->setResponse(...$response);
         $this->output = (string) $json; // printable json string
     }

@@ -7,10 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Chevereto\Core\Utils;
+namespace Chevereto\Core\Traits;
 
 use Exception;
-use \Chevereto\Core\Interfaces\PrintableInterface;
+use Chevereto\Core\Interfaces\PrintableInterface;
 
 /**
  * Printable provides an interface for classes who may use __toString().
@@ -19,7 +19,7 @@ use \Chevereto\Core\Interfaces\PrintableInterface;
  * @see Utils\Benchmark
  * @see JSON
  */
-abstract class Printable implements PrintableInterface
+trait Printable
 {
     /**
      * The printable string.

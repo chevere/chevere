@@ -16,8 +16,10 @@ use Exception;
  * $json->setResponse('message', 'code')->print();
  */
 // TODO: Use {json:api}
-class Json extends Utils\Printable
+class Json extends Data implements Interfaces\PrintableInterface
 {
+    use Traits\Printable;
+    
     const CODE = 'code';
     const DATA = 'data';
     const DESCRIPTION = 'description';
@@ -38,12 +40,7 @@ class Json extends Utils\Printable
      *
      * @param array $data Data array.
      */
-    public function __construct(array $data = null)
-    {
-        if ($data !== null) {
-            $this->data = $data;
-        }
-    }
+    
     /**
      * Set the JSON response data.
      *
@@ -57,19 +54,37 @@ class Json extends Utils\Printable
         $this->response = [static::CODE => $code, static::MESSAGE => $message];
         return $this;
     }
+    public function getResponse() : ?array
+    {
+        return $this->response;
+    }
+    public function setResponseKey(string $key, $var)
+    {
+        $this->response[$key] = $var;
+    }
+    // public function setDataKey(string $key, $var) : self
+    // {
+    //     $this->data[$key] = $var;
+    //     return $this;
+    // }
     /**
      * Add data keys to data variable.
      *
      * @param string $key Data key.
-     * @param mixed $value Data value.
+     * @param mixed $var Data value.
      *
      * @return $this Chaineable.
      */
-    public function addData(string $key, $value) : self
-    {
-        $this->data[$key] = $value;
-        return $this;
-    }
+    // public function addDataKey(string $key, $var) : self
+    // {
+    //     $this->data[$key] = $var;
+    //     return $this;
+    // }
+    // public function removeDataKey(string $key) : self
+    // {
+    //     unset($this->data[$key]);
+    //     return $this;
+    // }
     /**
      * Sets callback (JSONP).
      *

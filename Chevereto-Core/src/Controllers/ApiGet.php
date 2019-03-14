@@ -51,12 +51,12 @@ class ApiGet extends Controller
         $json = new Json();
         if ($endpointData = $this->getApp()->getApis()->getEndpoint($endpoint)) {
             $json->setResponse(sprintf('Endpoint %s exposed', $endpoint), $statusCode);
-            // $json->addData('endpoint', $endpoint);
+            // $json->addDataKey('endpoint', $endpoint);
             foreach ($endpointData as $property => $data) {
                 if ($property == 'wildcards') {
                     continue;
                 }
-                $json->addData((string) $property, $data);
+                $json->addDataKey((string) $property, $data);
             }
         } else {
             $statusCode = 404;
