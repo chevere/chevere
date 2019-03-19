@@ -826,7 +826,7 @@ class ErrorHandler
      * Returns the error type.
      *
      * @param int $code PHP error code.
-     * 
+     *
      * @return string Error type (string), null if the error code doesn't match
      * any error type.
      */
@@ -838,7 +838,7 @@ class ErrorHandler
      * Returns the logger level.
      *
      * @param int $code PHP error code.
-     * 
+     *
      * @return string Logger level (string), null if the error code doesn't match
      * any error type.
      */

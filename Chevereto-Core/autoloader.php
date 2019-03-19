@@ -23,7 +23,7 @@ function autoloader($class)
         return;
     }
     $relativeClass = str_replace('\\', '/', substr($class, $len));
-    $file = constant($ns . 'PATH_CLASSES') . $relativeClass . '.php';
+    $file = ROOT_PATH . DIRECTORY_SEPARATOR . constant(CORE_NS_HANDLE . ($ns == 'App\\' ? 'App\\' : null) . 'PATH') . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR . $relativeClass . '.php';
     if (stream_resolve_include_path($file)) {
         include $file;
     }

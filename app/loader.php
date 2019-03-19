@@ -9,6 +9,8 @@ use Chevereto\Core\Http\RequestHandler;
  */
 $app = new App();
 
+// dd($app->definitions());
+
 /**
  * Build the API.
  */

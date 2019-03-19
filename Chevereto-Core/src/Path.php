@@ -208,7 +208,7 @@ class Path
         $path = static::normalize($pathIdentifier);
         // Do this to apply Path methods only on explicit $rootContext
         if ($rootContext == null) {
-            $rootContext = App\PATH;
+            $rootContext = ROOT_PATH . App\PATH;
         } else {
             if (static::isAbsolute($rootContext) == false) {
                 throw new CoreException(

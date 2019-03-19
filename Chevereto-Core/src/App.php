@@ -31,20 +31,15 @@ class App
     const RELATIVE = 'relative';
     const APP = 'app';
     const VENDOR = 'vendor';
-    const CLASSES = 'classes';
-    const FUNCTIONS = 'functions';
     const LOGS = 'logs';
-    const UTILS = 'utils';
     const FILENAME_HACKS = 'hacks';
-    // const FILENAME_BASE_FUNCTIONS = 'base';
     const CONFIG_FILENAME = 'config';
     const ROOT_PATHS = [self::APP => 'app', self::VENDOR => 'vendor'];
-    // const CORE_PATH_ALIAS = 'core>';
     // PATH_* (uppercased)
     const CORE_PATHS = [
-        self::CLASSES => PATH_CLASSES,
-        self::FUNCTIONS => 'functions',
-        self::UTILS => 'utils',
+        // self::CLASSES => PATH_CLASSES,
+        // self::FUNCTIONS => 'functions',
+        // self::UTILS => 'utils',
         self::LOGS => 'logs'
     ];
 
@@ -71,6 +66,23 @@ class App
 
     // const SERVICES = ['config', 'logger', 'router', 'request', 'response', 'apis', 'routing', 'route', 'cache', 'db', 'handler'];
 
+    /**
+     * @param array $appPaths An array containing app paths (see app/paths.php)
+     */
+    public function __construct(array $appPaths = null)
+    {
+        self::$instance = $this;
+        // Checkout it app/build exists
+        if (stream_resolve_include_path(static::buildFileName()) == false) {
+            static::checkout();
+        }
+        Runtime::setDefaultCharset();
+        Load::app(static::FILENAME_HACKS);
+        Runtime::fixTimeZone();
+        Runtime::registerErrorHandler();
+        Config::load();
+        Config::apply();
+    }
     /**
      * Get the value of handler
      */
@@ -134,7 +146,7 @@ class App
     }
     public static function buildFileName() : string
     {
-        return PATH_APP . 'build';
+        return App\PATH . 'build';
     }
     public function setApis(Apis $apis) : self
     {
@@ -200,11 +212,7 @@ class App
         $callableString = $callable;
         $callable = $this->getCallable($callableString);
         // HTTP request middleware
-        // TODO: Remove route from app?
         if ($middlewares = $this->route->getMiddlewares()) {
-            // foreach ($middlewares as $k => $v) {
-            //     dump('Middleware', $this->getCallable($v));
-            // }
             $handler = new Handler($middlewares);
             $handler->runner($this);
         }
@@ -277,36 +285,6 @@ class App
     {
         $this->logger = $logger;
     }
-    /**
-     * @param array $appPaths An array containing app paths (see app/paths.php)
-     */
-    public function __construct(array $appPaths = null)
-    {
-        self::$instance = $this;
-        static::setBasePaths();
-        // Checkout it app/build exists
-        if (stream_resolve_include_path(static::buildFileName()) == false) {
-            static::checkout();
-        }
-        // Clone App definitions (app/app.php) to Chevereto\Core\App
-        foreach (static::APP_DEFINITIONS as $v) {
-            static::define(__NAMESPACE__ . '\App\\' . $v, constant('\App\\' . $v));
-        }
-        // If no $appPaths, set it from default paths file
-        if ($appPaths === null) {
-            $appPaths = Load::app('paths');
-        }
-        Runtime::setDefaultCharset();
-        Load::app(static::FILENAME_HACKS);
-        Runtime::fixTimeZone();
-        Runtime::registerErrorHandler();
-        Config::load();
-        Config::apply();
-        static::define('HTTP_SCHEME', Config::get(Config::HTTP_SCHEME));
-        if ($appPaths !== null) {
-            static::setPaths($appPaths);
-        }
-    }
     public function setRouter(Router $router) : self
     {
         if (false == $router->isProcessDone()) {
@@ -330,17 +308,11 @@ class App
         $this->request = $request;
         $pathinfo = ltrim($this->request->getPathInfo(), '/');
         $this->request->attributes->set('requestArray', explode('/', $pathinfo));
-
         $host = $_SERVER['HTTP_HOST'] ?? null;
-        $this->define('HTTP_HOST', $host);
-        $this->define('URL', App\HTTP_SCHEME . '://' . $host . ROOT_PATH_RELATIVE);
-
+        // $this->define('HTTP_HOST', $host);
+        // $this->define('URL', App\HTTP_SCHEME . '://' . $host . ROOT_PATH_RELATIVE);
         return $this;
     }
-    // public function setRequestFromGlobals()
-    // {
-    //     $this->setRequest(Request::createFromGlobals());
-    // }
     public static function instance() : self
     {
         if (self::$instance == null) {
@@ -352,188 +324,11 @@ class App
     {
         return ($this->getConstant('App\VERSION') ?: null) . static::buildtime();
     }
-    public function path(string $key=null, string $group='App') : ?string
+    public function getPath(string $key=null, string $group='App') : ?string
     {
-        return $this->paths()[$group][$key];
-    }
-    public function setPaths(array $appPaths) : void
-    {
-        // Ignore custom app classes path
-        $appPaths[static::CLASSES] = $this->getConstant('PATH_CLASSES');
-        $keyClass = array_search(static::CLASSES, $appPaths);
-        if ($keyClass !== false) {
-            unset($appPaths[$keyClass]);
-        }
-        // Sets and defines App\PATH_* based on loader paths array
-        foreach ($appPaths as $k => $v) {
-            $this->setPath(is_int($k) ? $v : $k, 'App', $v);
-        }
-        ksort($this->paths);
-    }
-    public function definitions() : array
-    {
-        $definitions = [];
-        $raw = get_defined_constants(true)['user'];
-        foreach ($raw as $k => $v) {
-            if (Utils\Str::startsWith(APP_NS_HANDLE, $k) || Utils\Str::startsWith(CORE_NS_HANDLE, $k)) {
-                $definitions[$k] = $v;
-            }
-        }
-        ksort($definitions);
-        return $definitions;
-    }
-    // Define a constant in both App and Chevereto\Core namespace
-    public function define(string $name, $value) : void
-    {
-        $queue = [];
-        if (strpos($name, '\\') === false) {
-            $name = APP_NS_HANDLE . $name;
-        }
-        $queue = [$name => $value];
-        // Dupe App\Definitions to Chevereto\Core\App\Definitions, exlude ROOT_ stuff
-        if (Utils\Str::startsWith(APP_NS_HANDLE, $name) && !Utils\Str::startsWith(APP_NS_HANDLE . strtoupper(static::ROOT) . '_', $name)) {
-            $queue[__NAMESPACE__ . "\\$name"] = $value;
-        }
-        foreach ($queue as $name => $value) {
-            if (defined($name)) {
-                continue;
-            }
-            define($name, $value);
-        }
-    }
-    // Sets the base system paths (root + core)
-    protected function setBasePaths() : void
-    {
-        // Sets $rootPaths and defines Chevereto\Core\* paths
-        $this->setRootPath(__NAMESPACE__, PATH); // PATH (Chevereto\Core path)
-        // FIXME: Windows symlinks
-        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-            $this->setRootPath(static::VENDOR, dirname(PATH) . '/vendor'); // ROOT_PATH_VENDOR
-        } else {
-            $this->setRootPath(static::VENDOR, dirname(dirname(PATH))); // ROOT_PATH_VENDOR
-        }
-        $this->setRootPath(static::ROOT, dirname(ROOT_PATH_VENDOR)); // ROOT_PATH
-        // The concept of "relative" path doesn't exists in CLI
-        if (php_sapi_name() != 'cli') {
-            $relative = dirname($_SERVER['SCRIPT_NAME']);
-        } else {
-            $relative = '__CLI__';
-        }
-        $this->setRootPath(static::RELATIVE, $relative); // ROOT_PATH_RELATIVE
-        $this->setRootPath('App', ROOT_PATH . static::ROOT_PATHS[static::APP]); // ROOT_PATH_APP
-        foreach (static::ROOT_PATHS as $k => $v) {
-            $this->setPath($k, static::ROOT, $v);
-        }
-        // Defines Chevereto\Core\PATH_* (see static::CORE_PATHS)
-        foreach (static::CORE_PATHS as $k => $v) {
-            $this->setPath($k, __NAMESPACE__, $v);
-        }
-    }
-    // Returns $paths[$group]
-    public function paths(string $group=null) : ?array
-    {
-        if ($group == null) {
-            return $this->paths;
-        }
-        $paths = $this->paths();
-        if ($paths != null && !array_key_exists($group, $paths)) {
-            throw new Exception(
-                (new Message('Group parameter %s not found in paths array'))->code('%s', $group)
-            );
-        }
-        return $paths[$group];
     }
     // Sets $paths by group (root, App, Chevereto\Core)
     protected function setPath(string $key, string $group, $var) : void
     {
-        $varType = gettype($var);
-        // TODO: Strong typing needed here
-        if ($varType == 'array') {
-            if (count($var) !== 1) {
-                throw new Exception('Argument #2 count must be 1 if you want to use an array');
-            }
-            reset($var);
-            $firstKey = key($var);
-            $aux = $this->path($firstKey, $group);
-            $root = isset($aux) ? $aux : $firstKey;
-            $path = $root . (string) $var[$firstKey];
-        } elseif ($varType == 'string') {
-            $root = $this->rootPaths[$group];
-            if (strpos($var, $root) === false) {
-                $path = $root . $var;
-            } else {
-                $path = $var;
-            }
-        } else {
-            throw new Exception(
-                (new Message('Argument #2 must be string or array, %s provided'))->code('%s', $varType)
-            );
-        }
-        $this->paths[$group][$key] = Sanitize::path($path);
-        if (in_array($group, static::NAMESPACES)) {
-            $groupHandle = $group . '\PATH_' . strtoupper(str_replace('/', '_', $key));
-            if (defined($groupHandle) == false) {
-                $this->define($groupHandle, $this->path($key, $group));
-            }
-        }
-    }
-    // Returns $rootPaths[$key]
-    public function rootPath(string $key=null) : string
-    {
-        if ($key === null) {
-            $key = static::ROOT;
-        }
-        return $this->rootPaths()[$key];
-    }
-    // Returns $rootPaths
-    public function rootPaths() : ?array
-    {
-        return $this->rootPaths;
-    }
-    // Populates $rootPaths
-    protected function setRootPath(string $namespace, string $val) : void
-    {
-        if ($this->rootPaths && array_key_exists($namespace, $this->rootPaths)) {
-            throw new Exception(
-                (new Message('Cannot redeclare %s root path'))->code('%s', $namespace)
-            );
-        }
-        $value = Sanitize::path($val);
-        $this->rootPaths[$namespace] = $value;
-        if (in_array($namespace, static::NAMESPACES)) {
-            $handle = 'PATH';
-        } else {
-            $handle = static::ROOT . '_PATH';
-            $aux = str_replace('\\', '_', $namespace);
-            if ($aux !== static::ROOT) {
-                $handle .= '_' . $aux;
-            }
-        }
-        // App namespace PATHS
-        $appHandle = null;
-        if ($handle == 'PATH' && $namespace == 'App') {
-            $handle = $namespace . '\\' . strtoupper($handle); // App\PATH
-            $appHandle = $handle;
-            $aux = true;
-        } else {
-            $handle = strtoupper($handle);
-        }
-        $coreHandle = Core::namespaced($handle);
-        // Defines path at Chevereto\Core namespace
-        if (defined($coreHandle) == false) {
-            $this->define($coreHandle, $value);
-        }
-        if (isset($aux)) {
-            $auxHandle = $appHandle ?: APP_NS_HANDLE . $handle;
-            // Defines path at App namespace
-            if (defined($auxHandle) == false) {
-                $this->define($auxHandle, $value);
-            }
-        }
-    }
-    public function getConstant(string $name, string $namespace = 'App') : ?string
-    {
-        $constant = "\\$namespace\\$name";
-        return defined($constant) ? constant($constant) : null;
     }
 }
