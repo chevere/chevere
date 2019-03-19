@@ -13,7 +13,7 @@ use Chevereto\Core\App;
 
 interface DataInterface
 {
-    public function addDataKey(string $key, $var);
+    // public function addDataKey(string $key, $var);
     public function setDataKey(string $key, $var);
     public function removeDataKey(string $key);
 }

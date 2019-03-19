@@ -5,9 +5,21 @@ use Symfony\Component\HttpFoundation\Request;
 use Chevereto\Core\Http\RequestHandler;
 
 /**
- * App initialization
+ * App initialization goes before Config
  */
 $app = new App();
+
+/**
+ * Set the App Config
+ */
+$config = new Config();
+$config
+    ->addFromFile(':config')
+    ->addFromArray(['key' => 'value']);
+
+$app->setConfig($config);
+$app->applyConfig();
+
 
 // dd($app->definitions());
 

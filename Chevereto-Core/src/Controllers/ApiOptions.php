@@ -52,7 +52,7 @@ class ApiOptions extends Controller
         $apis = $app->getApis();
         if ($endpointData = $apis->getBaseOptions($endpoint) ?? $apis->getEndpoint($endpoint)) {
             $json->setResponse(sprintf('Endpoint %s OPTIONS exposed.', $endpoint), $statusCode);
-            $json->addDataKey('OPTIONS', $endpointData['OPTIONS']);
+            $json->setDataKey('OPTIONS', $endpointData['OPTIONS']);
         } else {
             $statusCode = 404;
             $json->setResponse("Endpoint doesn't exists", $statusCode);

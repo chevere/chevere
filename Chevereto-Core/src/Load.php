@@ -11,14 +11,12 @@ namespace Chevereto\Core;
 
 use Exception;
 
-use const Chevereto\Core\PATH;
-use const Chevereto\Core\App\PATH as APP_PATH;
-
 // TODO: Deprecate constant use: PATH, App\PATH, App\PATH_CONTROLLERS
 class Load
 {
     const INCLUDE = 'include';
     const INCLUDE_ONCE = 'include_once';
+
     /**
      * Includes PHP based on the given arguments.
      *
@@ -59,13 +57,13 @@ class Load
      */
     public static function app(string $filename, array $vars = null, $constructor = self::INCLUDE_ONCE)
     {
-        return static::php(APP_PATH . $filename, $vars, $constructor);
+        return static::php(App\PATH . $filename, $vars, $constructor);
     }
     /**
      * Alias of Load::php, relative to app/controllers context.
      */
     public static function controller(string $filename, array $vars = null, $constructor = self::INCLUDE_ONCE)
     {
-        return static::php(APP_PATH . 'controllers' . $filename, $vars, $constructor);
+        return static::php(App\PATH . 'controllers' . $filename, $vars, $constructor);
     }
 }

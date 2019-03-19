@@ -84,11 +84,11 @@ class ResponseData implements DataInterface
         $this->getData()->setDataKey(...func_get_args());
         return $this;
     }
-    public function addDataKey(string $key, $var)
-    {
-        $this->getData()->addData(...func_get_args());
-        return $this;
-    }
+    // public function addDataKey(string $key, $var)
+    // {
+    //     $this->getData()->addData(...func_get_args());
+    //     return $this;
+    // }
     public function removeDataKey(string $key)
     {
         $this->getData()->addData(...func_get_args());

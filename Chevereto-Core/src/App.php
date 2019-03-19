@@ -7,18 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-// Documentacion a medias, quizas ordenar un poco.
-// Se deberá completar en el camino.
 namespace Chevereto\Core;
-
-use Monolog\Logger;
-
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 use Exception;
 use ReflectionMethod;
 use ReflectionFunction;
+
+use Monolog\Logger;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class App
@@ -26,33 +23,27 @@ class App
     use Traits\CallableTrait;
     
     const NAMESPACES = ['App', __NAMESPACE__];
-    const APP_DEFINITIONS = ['NAME', 'WEBSITE', 'VERSION'];
-    const ROOT = 'root';
-    const RELATIVE = 'relative';
     const APP = 'app';
-    const VENDOR = 'vendor';
-    const LOGS = 'logs';
     const FILENAME_HACKS = 'hacks';
-    const CONFIG_FILENAME = 'config';
-    const ROOT_PATHS = [self::APP => 'app', self::VENDOR => 'vendor'];
-    // PATH_* (uppercased)
-    const CORE_PATHS = [
-        // self::CLASSES => PATH_CLASSES,
-        // self::FUNCTIONS => 'functions',
-        // self::UTILS => 'utils',
-        self::LOGS => 'logs'
-    ];
+    const FILENAME_CONFIG = 'config';
+
+    // Defaults
+    const DEFAULT_LOCALE = 'en_US.UTF8';
+    const DEFAULT_CHARSET = 'utf-8';
+    const DEFAULT_ERROR_TYPES = E_ALL ^ E_NOTICE;
+    const DEFAULT_ERROR_HANDLER = __NAMESPACE__ . '\ErrorHandler::error';
+    const DEFAULT_EXCEPTION_HANDLER = __NAMESPACE__ . '\ErrorHandler::exception';
 
     protected static $instance;
     protected static $args;
 
+    // TODO: Document the diff here
     protected $arguments = [];
     protected $controllerArguments = [];
-    protected $rootPaths = [];
-    protected $paths = [];
 
-    // "Services"
-    protected $config; // TODO: Config object
+    // App objects
+    protected $config;
+    protected $runtime;
     protected $logger;
     protected $router;
     protected $request;
@@ -64,24 +55,59 @@ class App
     protected $db;
     protected $handler;
 
-    // const SERVICES = ['config', 'logger', 'router', 'request', 'response', 'apis', 'routing', 'route', 'cache', 'db', 'handler'];
+    const OBJECTS = ['config', 'logger', 'router', 'request', 'response', 'apis', 'routing', 'route', 'cache', 'db', 'handler'];
 
     /**
-     * @param array $appPaths An array containing app paths (see app/paths.php)
+     * @param bool $withAutoRuntime TRUE to automatic set default runtime.
      */
-    public function __construct(array $appPaths = null)
+    public function __construct(bool $withAutoRuntime = true)
     {
+        if (true == $withAutoRuntime) {
+            // TODO: This runtime layer must be at Core bootstrap level
+            $this->runtime = (new Runtime())
+                ->setErrorHandler(static::DEFAULT_ERROR_HANDLER)
+                ->setExceptionHandler(static::DEFAULT_EXCEPTION_HANDLER)
+                ->setLocale(static::DEFAULT_LOCALE)
+                ->setDefaultCharset(static::DEFAULT_CHARSET)
+                ->fixTimeZone();
+        }
         self::$instance = $this;
         // Checkout it app/build exists
-        if (stream_resolve_include_path(static::buildFileName()) == false) {
-            static::checkout();
+        if (stream_resolve_include_path($this->getBuildFilePath()) == false) {
+            $this->checkout();
         }
-        Runtime::setDefaultCharset();
         Load::app(static::FILENAME_HACKS);
-        Runtime::fixTimeZone();
-        Runtime::registerErrorHandler();
-        Config::load();
-        Config::apply();
+    }
+    // TODO: Make trait
+    public function hasObject(string $key) : bool
+    {
+        if (false == (in_array($key, static::OBJECTS) || property_exists($this, $key))) {
+            return false;
+        }
+        return isset($this->{$key});
+    }
+    public function setConfig(Config $config) : self
+    {
+        $this->config = $config;
+        return $this;
+    }
+    public function getConfig() : Config
+    {
+        return $this->config;
+    }
+    /**
+     * Applies the Config to the App instance
+     */
+    public function applyConfig() : self
+    {
+        if (false == $this->hasObject('config')) {
+            throw new CoreException(
+                (new Message('Unable to apply app configuration (no %s has been set).'))
+                    ->code('%s', Config::class)
+            );
+        }
+        dd($has, $this->config);
+        return $this;
     }
     /**
      * Get the value of handler
@@ -100,15 +126,6 @@ class App
         $this->handler = $handler;
         return $this;
     }
-    // public function setClient(Client $client) : self
-    // {
-    //     $this->client = $client;
-    //     return $this;
-    // }
-    // public function getClient() : Client
-    // {
-    //     return $this->client;
-    // }
     protected function setRoute(Route $route) : self
     {
         $this->route = $route;
@@ -144,9 +161,9 @@ class App
     {
         return $this->response;
     }
-    public static function buildFileName() : string
+    public static function getBuildFilePath() : string
     {
-        return App\PATH . 'build';
+        return ROOT_PATH . App\PATH . 'build';
     }
     public function setApis(Apis $apis) : self
     {
@@ -164,14 +181,14 @@ class App
     /**
      * Get build time
      */
-    public function buildtime() : ?string
+    public function getBuildTime() : ?string
     {
-        $filename = $this->buildFileName();
+        $filename = $this->getBuildFilePath();
         return File::exists($filename) ? (string) file_get_contents($filename) : null;
     }
     public function checkout() : void
     {
-        $filename = $this->buildFileName();
+        $filename = $this->getBuildFilePath();
         $fh = @fopen($filename, 'w');
         if (!$fh) {
             throw new Exception(
@@ -212,7 +229,7 @@ class App
         $callableString = $callable;
         $callable = $this->getCallable($callableString);
         // HTTP request middleware
-        if ($middlewares = $this->route->getMiddlewares()) {
+        if ($this->route instanceof Route && $middlewares = $this->route->getMiddlewares()) {
             $handler = new Handler($middlewares);
             $handler->runner($this);
         }
@@ -322,13 +339,11 @@ class App
     }
     public function getHash() : string
     {
-        return ($this->getConstant('App\VERSION') ?: null) . static::buildtime();
+        return ($this->getConstant('App\VERSION') ?: null) . $this->getBuildTime();
     }
-    public function getPath(string $key=null, string $group='App') : ?string
+    public function getConstant(string $name, string $namespace = 'App') : ?string
     {
-    }
-    // Sets $paths by group (root, App, Chevereto\Core)
-    protected function setPath(string $key, string $group, $var) : void
-    {
+        $constant = "\\$namespace\\$name";
+        return defined($constant) ? constant($constant) : null;
     }
 }

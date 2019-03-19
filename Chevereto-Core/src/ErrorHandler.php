@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+// TODO: Use object instance
 namespace Chevereto\Core;
 
 use ErrorException;
@@ -36,6 +37,7 @@ use Symfony\Component\HttpFoundation\Response;
  *
  * Psst, edit the constants when extending.
  */
+// TODO: Re-factor
 class ErrorHandler
 {
     // Customize the relative folder where logs will be stored
@@ -43,7 +45,7 @@ class ErrorHandler
     // null will read app/config.php. Any boolean value will override that
     const DEBUG = null;
     // null will use App\PATH_LOGS ? PATH_LOGS ? traverse
-    const PATH_LOGS = null;
+    const PATH_LOGS = ROOT_PATH . App\PATH . 'var/logs/';
     // Title with debug = false
     const NO_DEBUG_TITLE = 'Something went wrong';
     // Content with debug = false
@@ -299,23 +301,19 @@ class ErrorHandler
      * If disabled, it will hide the error content.
      * In any case, this class should always logs everything into the error log.
      */
-    protected function setLogDateFormat(?string $format = null) : void
+    protected function setLogDateFormat(string $format = null) : void
     {
-        $this->logDateFormat = $format ?? (Config::has('logDateFormat') ? Config::get('logDateFormat') : static::DEFAULT_LOG_DATE_FORMAT);
+        $this->logDateFormat = static::DEFAULT_LOG_DATE_FORMAT ?? $format ?? (Config::has('logDateFormat') ? Config::get('logDateFormat') : static::DEFAULT_LOG_DATE_FORMAT);
     }
     /**
      * Sets log filename
      *
-     * Both App and Chevereto\Core logs to the same place.
+     * Both App and Chevereto\Core logs to app/var/logs.
      */
-    protected function setLogFilename(?string $path = null) : void
+    protected function setLogFilename(string $path = null) : void
     {
         if ($path == null) {
-            if (static::PATH_LOGS == null) {
-                $path = defined('App\PATH_LOGS') ? App\PATH_LOGS : (defined('PATH_LOGS') ? PATH_LOGS : (PATH . App::LOGS . '/'));
-            } else {
-                $path = static::PATH_LOGS;
-            }
+            $path = static::PATH_LOGS;
         }
         $path = Path::normalize($path);
         $path = rtrim($path, '/') . '/';
@@ -343,7 +341,8 @@ class ErrorHandler
     protected function setDebug() : self
     {
         if (static::DEBUG === null) { // Set it from config
-            $debug = Config::has('debug') ? (bool) Config::get('debug') : false;
+            // $debug = Config::has('debug') ? (bool) Config::get('debug') : false;
+            $debug = true;
         } else { // Set it from static
             $debug = static::DEBUG;
         }
@@ -470,10 +469,10 @@ class ErrorHandler
                 foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
                     $error[$v] = $this->getTableValue($v);
                 }
-                $json->addDataKey('error', $error);
+                $json->setDataKey('error', $error);
             break;
         }
-        $json->addDataKey('log', $log);
+        $json->setDataKey('log', $log);
         $json->setResponse(...$response);
         $this->output = (string) $json; // printable json string
     }

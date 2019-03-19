@@ -9,50 +9,72 @@
  */
 namespace Chevereto\Core;
 
+use Chevereto\Core\CoreException;
+
 use Exception;
 use DateTimeZone;
 
-class Runtime
+/**
+ * Runtime applies runtime changes and provide information about the system runtime.
+ */
+class Runtime extends Data
 {
-    const DEFAULT_LOCALE = 'en_US.UTF8';
-    const DEFAULT_CHARSET = 'utf-8';
-    /**
-     * Set default charset.
-     */
-    public static function setDefaultCharset() : void
+    public function __construct()
     {
-        setlocale(LC_ALL, static::DEFAULT_LOCALE);
-        @ini_set('default_charset', static::DEFAULT_CHARSET);
+        // $this->setDataKey('OS', PHP_OS);
     }
-    /**
-     * Register own error handler for exceptions and errors.
-     */
-    public static function registerErrorHandler() : void
+    public function setLocale(string $locale) : self
     {
-        set_exception_handler('Chevereto\Core\ErrorHandler::exception');
-        set_error_handler('Chevereto\Core\ErrorHandler::error', E_ALL ^ E_NOTICE);
+        setlocale(LC_ALL, $locale);
+        $this->setDataKey('locale', $locale);
+        return $this;
+    }
+    public function setDefaultCharset(string $charset) : self
+    {
+        @ini_set('default_charset', $charset);
+        $this->setDataKey('defaultCharset', $charset);
+        return $this;
+    }
+    public function setErrorHandler(callable $errorHandler, int $errorTypes = null) : self
+    {
+        $types = $errorTypes ?? E_ALL ^ E_NOTICE;
+        set_error_handler($errorHandler, $types);
+        $this->setDataKey('errorHandler', $errorHandler);
+        $this->setDataKey('errorHandler.types', $types);
+        return $this;
+    }
+    public function setExceptionHandler(string $exceptionHandler = null) : self
+    {
+        set_exception_handler($exceptionHandler);
+        $this->setDataKey('exceptionHandler', $exceptionHandler);
+        return $this;
     }
     /**
      * Fix timezone issues
      *
      * Tries to fix common bad configuration issues related to timezone.
      */
-    public static function fixTimeZone() : void
+    public function fixTimeZone() : self
     {
         $tzg = @date_default_timezone_get();
         $tzs = @date_default_timezone_set($tzg);
         $utcId = DateTimeZone::listIdentifiers(DateTimeZone::UTC);
-        if (!$tzs && !@date_default_timezone_set($utcId[0])) { // No UTC? My gosh....
+        if (false == $tzs && false == @date_default_timezone_set($utcId[0])) { // No UTC? My gosh....
             trigger_error("Invalid timezone identifier '$tzg'. Configure your PHP installation with a valid timezone identifier http://php.net/manual/en/timezones.php", E_USER_ERROR);
         }
+        $this->setDataKey('timezone', $tzg);
+        return $this;
     }
     /**
      * Checks if the server is running under Windows.
      *
      * @return bool TRUE if server runs on Windows.
      */
-    public function isWindowsOs() : bool
-    {
-        return (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ?: false);
-    }
+    // public static function isWindowsOs() : bool
+    // {
+    //     return (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ?: false);
+    // }
+}
+class RuntimeException extends CoreException
+{
 }

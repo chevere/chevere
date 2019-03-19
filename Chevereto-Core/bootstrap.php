@@ -1,6 +1,7 @@
 <?php
 namespace Chevereto\Core;
 
+// TODO: Composer autoload para App
 define(__NAMESPACE__ . '\TIME_BOOTSTRAP', microtime(true));
 
 /**

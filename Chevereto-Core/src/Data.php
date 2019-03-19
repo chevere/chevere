@@ -18,6 +18,15 @@ class Data implements Interfaces\DataInterface
             $this->data = $data;
         }
     }
+    public function addData(array $data) : self
+    {
+        if (null == $this->data) {
+            $this->data = $data;
+        } else {
+            $this->data = array_merge_recursive($this->data, $data);
+        }
+        return $this;
+    }
     public function setData(array $data) : self
     {
         $this->data = $data;
@@ -27,11 +36,16 @@ class Data implements Interfaces\DataInterface
     {
         return $this->data;
     }
-    public function addDataKey(string $key, $var) : self
+    public function hasDataKey(string $key) : bool
     {
-        $this->data[$key] = $var;
-        return $this;
+        return array_key_exists($key, $this->data);
     }
+    // FIXME: setDataKey does the same isn't?
+    // public function addDataKey(string $key, $var) : self
+    // {
+    //     $this->data[$key] = $var;
+    //     return $this;
+    // }
     public function setDataKey(string $key, $var) : self
     {
         $this->data[$key] = $var;
