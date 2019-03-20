@@ -16,7 +16,6 @@ use Chevereto\Core\Data;
 return new class extends Controller {
     public function __invoke() : ResponseData
     {
-        throw new CoreException('SHiiieeet');
         $json = new Json();
         $json->setResponse('Hello, World!', 100);
         $json
