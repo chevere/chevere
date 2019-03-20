@@ -29,16 +29,6 @@ class App
     const FILENAME_HACKS = 'hacks';
     const FILENAME_CONFIG = 'config';
 
-    // Default configuration
-    const DEFAULT_DEBUG = 0;
-    const DEFAULT_LOCALE = 'en_US.UTF8';
-    const DEFAULT_DEFAULT_CHARSET = 'utf-8';
-    const DEFAULT_ERROR_REPORTING_LEVEL = E_ALL ^ E_NOTICE;
-    const DEFAULT_ERROR_HANDLER = __NAMESPACE__ . '\ErrorHandler::error';
-    const DEFAULT_EXCEPTION_HANDLER = __NAMESPACE__ . '\ErrorHandler::exception';
-    const DEFAULT_URI_SCHEME = 'https';
-    const DEFAULT_TIMEZONE = 'UTC';
-
     protected static $defaultRuntime;
     protected static $instance;
     protected static $args;
@@ -120,62 +110,7 @@ class App
                     ->code('%s', Config::class)
             );
         }
-        foreach ([Config::ERROR_HANDLER, Config::EXCEPTION_HANDLER] as $v) {
-            if ($this->getConfig()->hasDataKey($v)) {
-                $this->configureEeHandler($v);
-            }
-        }
-        dd($this->runtime);
-        /**
-         * Determine the HTTP sheme based on config values, failover to $_SERVER
-         * detection. This workaround is just because some don't know how to
-         * bind https, meaning that $_SERVER is not a 100% reliable source for
-         * scheme information.
-         */
-        // if ($this->has(static::HTTP_SCHEME)) {
-        //     $scheme = $this->get(static::HTTP_SCHEME);
-        // } else {
-        // $app = App::instance();
-        // $request = $app->getRequest();
-        // $scheme = $app->getRequest()->getScheme();
-        //
-        // Auto detect protocol (old way, la csm)
-        // $scheme = 'http';
-        // if ((isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') || (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on')) {
-        //     $scheme .= 's';
-        // }
-        //
-        // $this->set(static::HTTP_SCHEME, $scheme ?? 'http');
-        // }
-        
-        // dd($config->getDataKey('uriScheme'));
-        // $this->configureTimeZone();
-        return $this;
-    }
-    protected function configureEeHandler(string $handler) : void
-    {
-        $callableHandler = $this->getConfig()->getDataKey($handler);
-        if ($callableHandler == $this->getRuntime()->getDataKey($handler)) {
-            return;
-        }
-        $fnStr = ucfirst($handler);
-        if (null == $callableHandler) {
-            $this->getRuntime()->{'restore' . $fnStr}();
-            return;
-        }
-        if (is_callable($callableHandler)) {
-            $this->getRuntime()->{'set' . $fnStr}($callableHandler);
-        } else {
-            throw new ConfigException($handler);
-        }
-    }
-    protected function configureTimeZone() : self
-    {
-        $configTz = $this->getConfig()->getDataKey(Config::TIMEZONE);
-        $runtimeTz = $this->getRuntime()->getDataKey(Config::TIMEZONE);
-        if ($configTz != $runtimeTz) {
-            $this->getRuntime()->setDefaultTimeZone($configTz);
-        }
+        $this->getRuntime()->setFromConfig($this->getConfig());
         return $this;
     }
     /**
@@ -415,25 +350,7 @@ class App
         $constant = "\\$namespace\\$name";
         return defined($constant) ? constant($constant) : null;
     }
-    /**
-     * Applies the default Runtime and return its data.
-     */
-    public static function runtimeDefaults() : ?array
-    {
-        static::setDefaultRuntime(
-            (new Runtime())
-                ->setDebug(static::DEFAULT_DEBUG)
-                ->setLocale(static::DEFAULT_LOCALE)
-                ->setDefaultCharset(static::DEFAULT_DEFAULT_CHARSET)
-                ->setErrorHandler(static::DEFAULT_ERROR_HANDLER)
-                ->setExceptionHandler(static::DEFAULT_EXCEPTION_HANDLER)
-                ->setUriScheme(static::DEFAULT_URI_SCHEME)
-                ->setDefaultTimeZone(static::DEFAULT_TIMEZONE)
-        );
-
-        return static::getDefaultRuntime()->getData();
-    }
-    protected static function setDefaultRuntime(Runtime $runtime) : void
+    public static function setDefaultRuntime(Runtime $runtime) : void
     {
         static::$defaultRuntime = $runtime;
     }

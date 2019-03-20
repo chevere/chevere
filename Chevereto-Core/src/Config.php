@@ -31,7 +31,7 @@ class Config extends Data
     const ERROR_HANDLER = 'errorHandler';
     const EXCEPTION_HANDLER = 'exceptionHandler';
     const URI_SCHEME = 'uriScheme';
-    const TIMEZONE = 'timezone';
+    const TIMEZONE = 'timeZone';
     // Cache modes
     // const CACHE_MODE_ON = 'on';
     // const CACHE_MODE_OFF = 'off';

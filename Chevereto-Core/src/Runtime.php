@@ -19,9 +19,21 @@ use DateTimeZone;
  */
 class Runtime extends Data
 {
-    public function __construct()
+    public function __construct(Config $config = null)
     {
-        // $this->setDataKey('OS', PHP_OS);
+        if (null != $config) {
+            return $this->setFromConfig($config);
+        }
+    }
+    public function setFromConfig(Config $config) : self
+    {
+        foreach ($config->getData() as $k => $v) {
+            $fnName = 'set' . ucwords($k);
+            if (method_exists($this, $fnName)) {
+                $this->{$fnName}($v);
+            }
+        }
+        return $this;
     }
     public function setLocale(string $locale) : self
     {
@@ -35,8 +47,11 @@ class Runtime extends Data
         $this->setDataKey(Config::DEFAULT_CHARSET, $charset);
         return $this;
     }
-    public function setErrorHandler(callable $errorHandler, int $errorTypes = null) : self
+    public function setErrorHandler(callable $errorHandler = null, int $errorTypes = null) : self
     {
+        if (null == $errorHandler) {
+            return $this->restoreErrorHandler();
+        }
         $types = $errorTypes ?? E_ALL ^ E_NOTICE;
         set_error_handler($errorHandler, $types);
         $this->setDataKey(Config::ERROR_HANDLER, $errorHandler);
@@ -55,6 +70,9 @@ class Runtime extends Data
     }
     public function setExceptionHandler(string $exceptionHandler = null) : self
     {
+        if (null == $exceptionHandler) {
+            return $this->restoreExceptionHandler();
+        }
         set_exception_handler($exceptionHandler);
         $this->setDataKey(Config::EXCEPTION_HANDLER, $exceptionHandler);
         return $this;
@@ -92,6 +110,11 @@ class Runtime extends Data
     public function setUriScheme(string $scheme) : self
     {
         $this->setDataKey(Config::URI_SCHEME, $scheme);
+        return $this;
+    }
+    public function setDebug(int $debugLevel) : self
+    {
+        $this->setDataKey(Config::DEBUG, $debugLevel);
         return $this;
     }
 }

@@ -2,6 +2,7 @@
 namespace Chevereto\Core;
 
 use Chevereto\Core\App;
+use Chevereto\Core\Config;
 
 define(__NAMESPACE__ . '\TIME_BOOTSTRAP', microtime(true));
 define(__NAMESPACE__ . '\ERROR_LEVEL_BOOTSTRAP', error_reporting());
@@ -47,13 +48,25 @@ if (php_sapi_name() == 'cli') {
 }
 
 /**
- * Initiate the default runtime settings
+ * Kickstand
  */
-define(CORE_NS_HANDLE . 'RUNTIME_DEFAULTS', App::runtimeDefaults());
-
-// FIXME: Better way to register dd & dump functions
-new Dumper();
-
+App::setDefaultRuntime(
+    new Runtime(
+        (new Config())
+            ->addFromArray([
+                Config::DEBUG => 0,
+                Config::LOCALE => 'en_US.UTF8',
+                Config::DEFAULT_CHARSET => 'utf-8',
+                Config::TIMEZONE => 'UTC',
+                Config::ERROR_REPORTING_LEVEL => E_ALL ^ E_NOTICE,
+                Config::ERROR_HANDLER => CORE_NS_HANDLE . 'ErrorHandler::error',
+                Config::EXCEPTION_HANDLER => CORE_NS_HANDLE . 'ErrorHandler::exception',
+                Config::URI_SCHEME => 'https',
+                Config::TIMEZONE => 'UTC',
+            ])
+            ->addFromFile(':config')
+    )
+);
 
 // This constant allows safe short syntax like `CLI && Console::io()` in all namespaces.
 define('CLI', Console::isAvailable());
