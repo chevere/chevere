@@ -99,17 +99,3 @@ class Dumper
         die(1);
     }
 }
-/**
- * Dumps information about one or more variables.
- */
-function dump(...$vars)
-{
-    Dumper::dump(...$vars);
-}
-/**
- * Dumps information about one or more variables and die().
- */
-function dd(...$vars)
-{
-    Dumper::dd(...$vars);
-}
