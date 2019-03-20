@@ -39,8 +39,8 @@ class Config extends Data
     // Cache modes apply
     // const ROUTER_CACHE_MODE = 'routerCacheMode';
 
+    private $_data = [];
     protected $loadedFiles = [];
-    protected $loaded;
 
     protected $asserts = [
         self::DEBUG             => [0, 1],
@@ -53,36 +53,50 @@ class Config extends Data
         self::TIMEZONE          => __NAMESPACE__ . '\Validate::timezone',
     ];
 
-    public function __construct(string $configFilehandle = null)
+    public function __construct(string $fileHandle = null)
     {
-        if (null != $configFilehandle) {
-            $this->addFromFile($configFilehandle);
+        if (null != $fileHandle) {
+            return $this->processFromFile($fileHandle);
         }
     }
-    /**
-     * Load and validate app config.
-     *
-     * @throws Exception.
-     */
-    public function addFromFile(string $configFilehandle) : self
+    public function addFile(string $fileHandle) : self
     {
-        $configFilepath = Path::fromHandle($configFilehandle);
-        $this->loadedFiles[] = $configFilepath;
-        $array = Load::php($configFilepath);
-        $this->addFromArray($array);
+        $filepath = Path::fromHandle($fileHandle);
+        $this->loadedFiles[] = $filepath;
+        $array = Load::php($filepath);
+        return $this->dataAdder($array);
+    }
+    public function addArray(array $array) : self
+    {
+        return $this->dataAdder($array);
+    }
+    protected function dataAdder(array $data) : self
+    {
+        $this->_data = array_replace_recursive($this->_data, $data);
         return $this;
     }
-    public function addFromArray(array $config) : self
+    public function process() : self
     {
         try {
-            $this->validate($config);
+            $this->validate();
         } catch (Exception $e) {
             throw new CoreException(
-                (new Message($e->getMessage() . ' ' . 'at %s'))->b('%s', $this->loaded)
+                (new Message($e->getMessage() . ' ' . 'at %s'))->b('%s', '0000000000000000')
             );
         }
-        $this->addData($config);
+        $this->addData($this->_data);
         return $this;
+    }
+
+    public function processFromFile(string $fileHandle) : self
+    {
+        $this->addFile($fileHandle);
+        return $this->process();
+    }
+    public function processFromArray(array $config) : self
+    {
+        $this->addArray($config);
+        return $this->process();
     }
     /**
      * Get config assert value.
@@ -126,21 +140,17 @@ class Config extends Data
     }
     /**
      * Validate config values.
-     *
-     * @param array $values Key paired string (see Config::$asserts)
      */
-    public function validate(array $config)
+    protected function validate()
     {
         $exceptions = [];
-        if (is_array($config)) {
-            foreach ($config as $k => $v) {
-                try {
-                    if ($v != null) {
-                        $this->validator((string) $k, $v);
-                    }
-                } catch (Exception $e) {
-                    $exceptions[] = $e->getMessage();
+        foreach ($this->_data as $k => $v) {
+            try {
+                if ($v != null) {
+                    $this->validator((string) $k, $v);
                 }
+            } catch (Exception $e) {
+                $exceptions[] = $e->getMessage();
             }
         }
         if ($exceptions != false) {

@@ -14,8 +14,8 @@ $app = new App();
  */
 $config = new Config();
 $config
-    ->addFromFile(':config')
-    ->addFromArray(['key' => 'value']);
+    ->processFromFile(':config')
+    ->processFromArray(['key' => 'value']);
 
 $app->setConfig($config);
 $app->configure();

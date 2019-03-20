@@ -27,7 +27,6 @@ class App
     const NAMESPACES = ['App', __NAMESPACE__];
     const APP = 'app';
     const FILENAME_HACKS = 'hacks';
-    const FILENAME_CONFIG = 'config';
 
     protected static $defaultRuntime;
     protected static $instance;
@@ -110,7 +109,7 @@ class App
                     ->code('%s', Config::class)
             );
         }
-        $this->getRuntime()->setFromConfig($this->getConfig());
+        $this->getRuntime()->runConfig($this->getConfig());
         return $this;
     }
     /**
@@ -153,10 +152,10 @@ class App
         return $this->router;
     }
     // FIXME: Need "had" for Route, Routing, Router, Request, Response, Apis
-    public function hasRequest() : bool
-    {
-        return $this->request instanceof Request;
-    }
+    // public function hasRequest() : bool
+    // {
+    //     return $this->request instanceof Request;
+    // }
     public function getRequest() : Request
     {
         return $this->request;

@@ -47,24 +47,36 @@ if (php_sapi_name() == 'cli') {
     Console::init();
 }
 
+const DEFAULT_ERROR_HANDLING = [
+    Config::ERROR_REPORTING_LEVEL => E_ALL ^ E_NOTICE,
+    Config::ERROR_HANDLER => CORE_NS_HANDLE . 'ErrorHandler::error',
+    Config::EXCEPTION_HANDLER => CORE_NS_HANDLE . 'ErrorHandler::exception',
+];
+
+/**
+ * Default error and exception handler
+ */
+new Runtime(
+    (new Config())
+        ->processFromArray(DEFAULT_ERROR_HANDLING)
+);
+
 /**
  * Kickstand
  */
 App::setDefaultRuntime(
     new Runtime(
         (new Config())
-            ->addFromArray([
+            ->addArray([
                 Config::DEBUG => 0,
                 Config::LOCALE => 'en_US.UTF8',
                 Config::DEFAULT_CHARSET => 'utf-8',
                 Config::TIMEZONE => 'UTC',
-                Config::ERROR_REPORTING_LEVEL => E_ALL ^ E_NOTICE,
-                Config::ERROR_HANDLER => CORE_NS_HANDLE . 'ErrorHandler::error',
-                Config::EXCEPTION_HANDLER => CORE_NS_HANDLE . 'ErrorHandler::exception',
                 Config::URI_SCHEME => 'https',
                 Config::TIMEZONE => 'UTC',
-            ])
-            ->addFromFile(':config')
+            ] + DEFAULT_ERROR_HANDLING)
+            ->addFile(':config')
+            ->process()
     )
 );
 

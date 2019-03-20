@@ -22,10 +22,10 @@ class Runtime extends Data
     public function __construct(Config $config = null)
     {
         if (null != $config) {
-            return $this->setFromConfig($config);
+            return $this->runConfig($config);
         }
     }
-    public function setFromConfig(Config $config) : self
+    public function runConfig(Config $config) : self
     {
         foreach ($config->getData() as $k => $v) {
             $fnName = 'set' . ucwords($k);
