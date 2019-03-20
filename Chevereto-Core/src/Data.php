@@ -23,7 +23,7 @@ class Data implements Interfaces\DataInterface
         if (null == $this->data) {
             $this->data = $data;
         } else {
-            $this->data = array_merge_recursive($this->data, $data);
+            $this->data = array_replace_recursive($this->data, $data);
         }
         return $this;
     }
