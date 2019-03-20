@@ -84,10 +84,11 @@ class Dump
      *
      * @param mixed $anything Anything.
      * @param int $indent Left padding (spaces) for this entry.
+     * @param array $dontDump Array containing classes that won't get dumped.
      *
      * @return string Parsed dump string.
      */
-    public static function out($anything, int $indent = null, array $noExpand = []) : string
+    public static function out($anything, int $indent = null, array $dontDump = []) : string
     {
         // Maybe improve this to support any circular reference?
         if (is_array($anything)) {
@@ -122,7 +123,7 @@ class Dump
                     if ($isCircularRef) {
                         $val .= static::wrap(static::_OPERATOR, "(<i>circular array reference</i>)");
                     } else {
-                        $val .= static::out($aux, $indent, $noExpand);
+                        $val .= static::out($aux, $indent, $dontDump);
                     }
                 }
                 $parentheses = 'size=' . count($expression);
@@ -130,7 +131,7 @@ class Dump
             case static::TYPE_OBJECT:
                 $indent++;
                 $reflection = new ReflectionObject($expression);
-                if (in_array($reflection->getName(), $noExpand)) {
+                if (in_array($reflection->getName(), $dontDump)) {
                     $val .= static::wrap(static::_OPERATOR, '<i>'. $reflection->getName() .'</i>');
                     continue;
                 }
@@ -169,7 +170,7 @@ class Dump
                     if ($isCircularRef) {
                         $val .= static::wrap(static::_OPERATOR, "(<i>circular object reference</i>)");
                     } else {
-                        $val .= static::out($aux, $indent, $noExpand);
+                        $val .= static::out($aux, $indent, $dontDump);
                     }
                 }
                 $className = get_class($expression);
