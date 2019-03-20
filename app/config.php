@@ -6,12 +6,11 @@ namespace Chevereto\Core;
 return [
     // 'session.save_path' => 'wea',
     Config::DEBUG => 1,
-    Config::TIMEZONE => 'America/Santiago',
-    Config::ROUTER_CACHE_MODE => Config::CACHE_MODE_OFF,
-    // Named exception and error handler. Use NULL to disable Chevereto\Core handler
+    Config::TIMEZONE => 'UTC',
+    // Config::ROUTER_CACHE_MODE => Config::CACHE_MODE_OFF,
     Config::EXCEPTION_HANDLER => null,
     Config::ERROR_HANDLER => null,
-    // Config::HTTP_SCHEME => 'https',
+    Config::URI_SCHEME => 'http',
     // Config::LOCALE = [
     //   LC_MONETARY =>
     // ]

@@ -9,6 +9,8 @@
  */
 namespace Chevereto\Core;
 
+use Chevereto\Core\Utils\Str;
+
 use Exception;
 use ReflectionMethod;
 use ReflectionFunction;
@@ -27,13 +29,17 @@ class App
     const FILENAME_HACKS = 'hacks';
     const FILENAME_CONFIG = 'config';
 
-    // Defaults
+    // Default configuration
+    const DEFAULT_DEBUG = 0;
     const DEFAULT_LOCALE = 'en_US.UTF8';
-    const DEFAULT_CHARSET = 'utf-8';
-    const DEFAULT_ERROR_TYPES = E_ALL ^ E_NOTICE;
+    const DEFAULT_DEFAULT_CHARSET = 'utf-8';
+    const DEFAULT_ERROR_REPORTING_LEVEL = E_ALL ^ E_NOTICE;
     const DEFAULT_ERROR_HANDLER = __NAMESPACE__ . '\ErrorHandler::error';
     const DEFAULT_EXCEPTION_HANDLER = __NAMESPACE__ . '\ErrorHandler::exception';
+    const DEFAULT_URI_SCHEME = 'https';
+    const DEFAULT_TIMEZONE = 'UTC';
 
+    protected static $defaultRuntime;
     protected static $instance;
     protected static $args;
 
@@ -42,8 +48,8 @@ class App
     protected $controllerArguments = [];
 
     // App objects
-    protected $config;
     protected $runtime;
+    protected $config;
     protected $logger;
     protected $router;
     protected $request;
@@ -55,21 +61,15 @@ class App
     protected $db;
     protected $handler;
 
-    const OBJECTS = ['config', 'logger', 'router', 'request', 'response', 'apis', 'routing', 'route', 'cache', 'db', 'handler'];
+    const OBJECTS = ['runtime', 'config', 'logger', 'router', 'request', 'response', 'apis', 'routing', 'route', 'cache', 'db', 'handler'];
 
     /**
      * @param bool $withAutoRuntime TRUE to automatic set default runtime.
      */
-    public function __construct(bool $withAutoRuntime = true)
+    public function __construct()
     {
-        if (true == $withAutoRuntime) {
-            // TODO: This runtime layer must be at Core bootstrap level
-            $this->runtime = (new Runtime())
-                ->setErrorHandler(static::DEFAULT_ERROR_HANDLER)
-                ->setExceptionHandler(static::DEFAULT_EXCEPTION_HANDLER)
-                ->setLocale(static::DEFAULT_LOCALE)
-                ->setDefaultCharset(static::DEFAULT_CHARSET)
-                ->fixTimeZone();
+        if (static::hasStaticProp('defaultRuntime')) {
+            $this->setRuntime(static::getDefaultRuntime());
         }
         self::$instance = $this;
         // Checkout it app/build exists
@@ -86,6 +86,20 @@ class App
         }
         return isset($this->{$key});
     }
+    // TODO: Make trait
+    public static function hasStaticProp(string $key) : bool
+    {
+        return isset(static::$$key);
+    }
+    public function setRuntime(Runtime $runtime) : self
+    {
+        $this->runtime = $runtime;
+        return $this;
+    }
+    public function getRuntime() : Runtime
+    {
+        return $this->runtime;
+    }
     public function setConfig(Config $config) : self
     {
         $this->config = $config;
@@ -96,17 +110,72 @@ class App
         return $this->config;
     }
     /**
-     * Applies the Config to the App instance
+     * Applies Config to the App instance
      */
-    public function applyConfig() : self
+    public function configure() : self
     {
         if (false == $this->hasObject('config')) {
             throw new CoreException(
-                (new Message('Unable to apply app configuration (no %s has been set).'))
+                (new Message('Unable to apply config (no %s has been set).'))
                     ->code('%s', Config::class)
             );
         }
-        dd($has, $this->config);
+        foreach ([Config::ERROR_HANDLER, Config::EXCEPTION_HANDLER] as $v) {
+            if ($this->getConfig()->hasDataKey($v)) {
+                $this->configureEeHandler($v);
+            }
+        }
+        dd($this->runtime);
+        /**
+         * Determine the HTTP sheme based on config values, failover to $_SERVER
+         * detection. This workaround is just because some don't know how to
+         * bind https, meaning that $_SERVER is not a 100% reliable source for
+         * scheme information.
+         */
+        // if ($this->has(static::HTTP_SCHEME)) {
+        //     $scheme = $this->get(static::HTTP_SCHEME);
+        // } else {
+        // $app = App::instance();
+        // $request = $app->getRequest();
+        // $scheme = $app->getRequest()->getScheme();
+        //
+        // Auto detect protocol (old way, la csm)
+        // $scheme = 'http';
+        // if ((isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') || (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on')) {
+        //     $scheme .= 's';
+        // }
+        //
+        // $this->set(static::HTTP_SCHEME, $scheme ?? 'http');
+        // }
+        
+        // dd($config->getDataKey('uriScheme'));
+        // $this->configureTimeZone();
+        return $this;
+    }
+    protected function configureEeHandler(string $handler) : void
+    {
+        $callableHandler = $this->getConfig()->getDataKey($handler);
+        if ($callableHandler == $this->getRuntime()->getDataKey($handler)) {
+            return;
+        }
+        $fnStr = ucfirst($handler);
+        if (null == $callableHandler) {
+            $this->getRuntime()->{'restore' . $fnStr}();
+            return;
+        }
+        if (is_callable($callableHandler)) {
+            $this->getRuntime()->{'set' . $fnStr}($callableHandler);
+        } else {
+            throw new ConfigException($handler);
+        }
+    }
+    protected function configureTimeZone() : self
+    {
+        $configTz = $this->getConfig()->getDataKey(Config::TIMEZONE);
+        $runtimeTz = $this->getRuntime()->getDataKey(Config::TIMEZONE);
+        if ($configTz != $runtimeTz) {
+            $this->getRuntime()->setDefaultTimeZone($configTz);
+        }
         return $this;
     }
     /**
@@ -215,7 +284,7 @@ class App
                 $callable = $this->getRouting()->getController($this->getRequest());
                 $this->setRoute($this->getRouting()->getRoute());
             } catch (RouterException $e) {
-                dd('APP RUN RESPONSE: ' . $e->getCode());
+                die('APP RUN RESPONSE: ' . $e->getCode());
             }
         }
         $handler = $this->getCallableHandler($callable);
@@ -345,5 +414,31 @@ class App
     {
         $constant = "\\$namespace\\$name";
         return defined($constant) ? constant($constant) : null;
+    }
+    /**
+     * Applies the default Runtime and return its data.
+     */
+    public static function runtimeDefaults() : ?array
+    {
+        static::setDefaultRuntime(
+            (new Runtime())
+                ->setDebug(static::DEFAULT_DEBUG)
+                ->setLocale(static::DEFAULT_LOCALE)
+                ->setDefaultCharset(static::DEFAULT_DEFAULT_CHARSET)
+                ->setErrorHandler(static::DEFAULT_ERROR_HANDLER)
+                ->setExceptionHandler(static::DEFAULT_EXCEPTION_HANDLER)
+                ->setUriScheme(static::DEFAULT_URI_SCHEME)
+                ->setDefaultTimeZone(static::DEFAULT_TIMEZONE)
+        );
+
+        return static::getDefaultRuntime()->getData();
+    }
+    protected static function setDefaultRuntime(Runtime $runtime) : void
+    {
+        static::$defaultRuntime = $runtime;
+    }
+    public static function getDefaultRuntime() : Runtime
+    {
+        return static::$defaultRuntime;
     }
 }

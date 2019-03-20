@@ -26,27 +26,46 @@ class Runtime extends Data
     public function setLocale(string $locale) : self
     {
         setlocale(LC_ALL, $locale);
-        $this->setDataKey('locale', $locale);
+        $this->setDataKey(Config::LOCALE, $locale);
         return $this;
     }
     public function setDefaultCharset(string $charset) : self
     {
         @ini_set('default_charset', $charset);
-        $this->setDataKey('defaultCharset', $charset);
+        $this->setDataKey(Config::DEFAULT_CHARSET, $charset);
         return $this;
     }
     public function setErrorHandler(callable $errorHandler, int $errorTypes = null) : self
     {
         $types = $errorTypes ?? E_ALL ^ E_NOTICE;
         set_error_handler($errorHandler, $types);
-        $this->setDataKey('errorHandler', $errorHandler);
-        $this->setDataKey('errorHandler.types', $types);
+        $this->setDataKey(Config::ERROR_HANDLER, $errorHandler);
+        $this->setDataKey(Config::ERROR_REPORTING_LEVEL, $types);
+        return $this;
+    }
+    public function restoreErrorHandler() : self
+    {
+        restore_error_handler();
+        $errorHandler = set_error_handler(function () {
+        });
+        restore_error_handler();
+        $this->setDataKey(Config::ERROR_HANDLER, $errorHandler);
+        $this->setDataKey(Config::ERROR_REPORTING_LEVEL, error_reporting());
         return $this;
     }
     public function setExceptionHandler(string $exceptionHandler = null) : self
     {
         set_exception_handler($exceptionHandler);
-        $this->setDataKey('exceptionHandler', $exceptionHandler);
+        $this->setDataKey(Config::EXCEPTION_HANDLER, $exceptionHandler);
+        return $this;
+    }
+    public function restoreExceptionHandler() : self
+    {
+        restore_exception_handler();
+        $handler = set_exception_handler(function () {
+        });
+        restore_exception_handler();
+        $this->setDataKey(Config::EXCEPTION_HANDLER, $handler);
         return $this;
     }
     /**
@@ -62,18 +81,19 @@ class Runtime extends Data
         if (false == $tzs && false == @date_default_timezone_set($utcId[0])) { // No UTC? My gosh....
             trigger_error("Invalid timezone identifier '$tzg'. Configure your PHP installation with a valid timezone identifier http://php.net/manual/en/timezones.php", E_USER_ERROR);
         }
-        $this->setDataKey('timezone', $tzg);
+        $this->setDataKey(Config::TIMEZONE, $tzg);
         return $this;
     }
-    /**
-     * Checks if the server is running under Windows.
-     *
-     * @return bool TRUE if server runs on Windows.
-     */
-    // public static function isWindowsOs() : bool
-    // {
-    //     return (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ?: false);
-    // }
+    public function setDefaultTimeZone(string $timeZone) : self
+    {
+        date_default_timezone_set($timeZone);
+        $this->setDataKey(Config::TIMEZONE, $timeZone);
+    }
+    public function setUriScheme(string $scheme) : self
+    {
+        $this->setDataKey(Config::URI_SCHEME, $scheme);
+        return $this;
+    }
 }
 class RuntimeException extends CoreException
 {

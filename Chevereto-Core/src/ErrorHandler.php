@@ -223,7 +223,7 @@ class ErrorHandler
             ->setXhrConditional()
             ->setSignatureProperties()
             ->setConstantProperties()
-            ->setServerProperties()
+            // ->setServerProperties()
             ->setDebug()
             ->setBodyClass()
             ->setExceptionProperties()
@@ -860,5 +860,9 @@ class ErrorHandler
     public static function exception($e) : void
     {
         static::exceptionHandler(...func_get_args());
+    }
+    public static function exception2($e) : void
+    {
+        dd('Nos fuimos a la mierda');
     }
 }

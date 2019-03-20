@@ -18,7 +18,7 @@ $config
     ->addFromArray(['key' => 'value']);
 
 $app->setConfig($config);
-$app->applyConfig();
+$app->configure();
 
 
 // dd($app->definitions());

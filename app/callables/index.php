@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace App;
 
 use function Chevereto\Core\dd;
+
 use Chevereto\Core\App;
+use Chevereto\Core\CoreException;
 use Chevereto\Core\ResponseData;
 use Chevereto\Core\Json;
 use Chevereto\Core\Data;
@@ -14,6 +16,7 @@ use Chevereto\Core\Data;
 return new class extends Controller {
     public function __invoke() : ResponseData
     {
+        throw new CoreException('SHiiieeet');
         $json = new Json();
         $json->setResponse('Hello, World!', 100);
         $json

@@ -69,7 +69,7 @@ class Dumper
         }
         $dump .= Utils\Dump::wrap('_function', $trace[$offset]['function'] . '()');
         if (isset($trace[0]['file'])) {
-            $dump .= "\n". Utils\Dump::wrap('_file', $trace[0]['file']) . Utils\Dump::wrap('_operator', ':' . $trace[0]['line']);
+            $dump .= "\n". Utils\Dump::wrap('_file', Path::normalize($trace[0]['file'])) . Utils\Dump::wrap('_operator', ':' . $trace[0]['line']);
         }
         $dump .=  "\n\n";
         $i = 1;

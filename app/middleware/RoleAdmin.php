@@ -16,7 +16,7 @@ use Chevereto\Core\Interfaces\MiddlewareInterface;
 return new class implements MiddlewareInterface {
     public function __invoke(App $app, HandlerInterface $handler)
     {
-        \dump(__FILE__);
+        // \dump(__FILE__);
         // \dump($app->getArguments());
         // $userRole = $app->getUser()->role;
         // $userRole = 'user';

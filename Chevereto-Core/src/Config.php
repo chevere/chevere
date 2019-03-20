@@ -18,32 +18,39 @@ use Chevereto\Core\Path;
 // use Symfony\Component\HttpFoundation\Request;
 
 /**
- * System configuration class
+ * App configuration (runtime)
  */
 class Config extends Data
 {
     // Config keys
+
     const DEBUG = 'debug';
+    const LOCALE = 'locale';
+    const DEFAULT_CHARSET = 'defaultCharset';
+    const ERROR_REPORTING_LEVEL = 'errorReportingLevel';
+    const ERROR_HANDLER = 'errorHandler';
+    const EXCEPTION_HANDLER = 'exceptionHandler';
+    const URI_SCHEME = 'uriScheme';
     const TIMEZONE = 'timezone';
-    const EXCEPTION_HANDLER = 'exception_handler';
-    const ERROR_HANDLER = 'error_handler';
-    const HTTP_SCHEME = 'http_scheme';
     // Cache modes
-    const CACHE_MODE_ON = 'on';
-    const CACHE_MODE_OFF = 'off';
-    const CACHE_MODE_AUTO = 'auto';
+    // const CACHE_MODE_ON = 'on';
+    // const CACHE_MODE_OFF = 'off';
+    // const CACHE_MODE_AUTO = 'auto';
     // Cache modes apply
-    const ROUTER_CACHE_MODE = 'router_cache_mode';
+    // const ROUTER_CACHE_MODE = 'routerCacheMode';
 
     protected $loadedFiles = [];
     protected $loaded;
 
     protected $asserts = [
         self::DEBUG             => [0, 1],
-        self::TIMEZONE          => __NAMESPACE__ . '\Validate::timezone',
-        self::EXCEPTION_HANDLER => 'is_callable',
+        // locale
+        // charset
+        // error reporting
         self::ERROR_HANDLER     => 'is_callable',
-        self::HTTP_SCHEME       => ['http', 'https'],
+        self::EXCEPTION_HANDLER => 'is_callable',
+        self::URI_SCHEME       => ['http', 'https'],
+        self::TIMEZONE          => __NAMESPACE__ . '\Validate::timezone',
     ];
 
     public function __construct(string $configFilehandle = null)

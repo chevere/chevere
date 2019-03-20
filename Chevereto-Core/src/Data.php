@@ -51,6 +51,10 @@ class Data implements Interfaces\DataInterface
         $this->data[$key] = $var;
         return $this;
     }
+    public function getDataKey(string $key)
+    {
+        return $this->data[$key] ?? null;
+    }
     public function removeDataKey(string $key) : self
     {
         unset($this->data[$key]);
