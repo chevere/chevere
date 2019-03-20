@@ -10,6 +10,9 @@
 // OK
 namespace Chevereto\Core\Utils;
 
+use Chevereto\Core\Path;
+use Chevereto\Core\Utils\Str;
+
 use ReflectionObject;
 use ReflectionProperty;
 
@@ -39,6 +42,8 @@ class Dump
     const _OPERATOR = '_operator';
     const _FUNCTION = '_function';
 
+    const ANON_CLASS = 'class@anonymous';
+
     /**
      * Default color palette for each type and thing used.
      * [algo => color]
@@ -51,7 +56,7 @@ class Dump
         self::TYPE_NULL      => '#7f8c8d', // grey
         self::TYPE_OBJECT    => '#e74c3c', // red
         self::TYPE_ARRAY     => '#2ecc71', // green
-        self::_FILE          => '#7f8c8d', // grey
+        self::_FILE          => null,
         self::_CLASS         => '#3498db', // blue
         self::_OPERATOR      => '#7f8c8d', // grey
         self::_FUNCTION      => '#9b59b6', // purple
@@ -69,7 +74,7 @@ class Dump
         self::TYPE_NULL      => 'color_245', // grey
         self::TYPE_OBJECT    => 'color_167', // red
         self::TYPE_ARRAY     => 'color_41', // green
-        self::_FILE          => 'color_245', // grey
+        self::_FILE          => null,
         self::_CLASS         => 'color_147', // blue
         self::_OPERATOR      => 'color_245', // grey
         self::_FUNCTION      => 'color_127', // purple
@@ -82,7 +87,7 @@ class Dump
      *
      * @return string Parsed dump string.
      */
-    public static function out($anything, int $indent = null) : string
+    public static function out($anything, int $indent = null, array $noExpand = []) : string
     {
         // Maybe improve this to support any circular reference?
         if (is_array($anything)) {
@@ -117,7 +122,7 @@ class Dump
                     if ($isCircularRef) {
                         $val .= static::wrap(static::_OPERATOR, "(<i>circular array reference</i>)");
                     } else {
-                        $val .= static::out($aux, $indent);
+                        $val .= static::out($aux, $indent, $noExpand);
                     }
                 }
                 $parentheses = 'size=' . count($expression);
@@ -125,6 +130,10 @@ class Dump
             case static::TYPE_OBJECT:
                 $indent++;
                 $reflection = new ReflectionObject($expression);
+                if (in_array($reflection->getName(), $noExpand)) {
+                    $val .= static::wrap(static::_OPERATOR, '<i>'. $reflection->getName() .'</i>');
+                    continue;
+                }
                 $propertiesFiltered = [
                     'public' => ReflectionProperty::IS_PUBLIC,
                     'protected' => ReflectionProperty::IS_PROTECTED,
@@ -160,10 +169,14 @@ class Dump
                     if ($isCircularRef) {
                         $val .= static::wrap(static::_OPERATOR, "(<i>circular object reference</i>)");
                     } else {
-                        $val .= static::out($aux, $indent);
+                        $val .= static::out($aux, $indent, $noExpand);
                     }
                 }
-                $parentheses = get_class($expression);
+                $className = get_class($expression);
+                if (Str::startsWith(static::ANON_CLASS, $className)) {
+                    $className = Path::normalize($className);
+                }
+                $parentheses = $className;
             break;
             default:
                 $is_string = is_string($expression);
@@ -222,7 +235,7 @@ class Dump
             }
             return '<span style="color:' . $color . '">' . $dump . '</span>';
         } else {
-            return $dump;
+            return (string) $dump;
         }
     }
 }

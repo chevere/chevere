@@ -486,7 +486,6 @@ class ErrorHandler
      */
     protected function setStack() : self
     {
-        $anonClass = 'class@anonymous';
         $richStack = [];
         $plainStack = [];
         $consoleStack = [];
@@ -505,22 +504,25 @@ class ErrorHandler
             if (isset($frame['args']) && is_array($frame['args'])) {
                 foreach ($frame['args'] as $k => $v) {
                     $aux = 'Arg#' . ($k+1) . ' ';
-                    $plainArgs[] = $aux . Utils\DumpPlain::out($v);
-                    $richArgs[] = $aux . Utils\Dump::out($v);
+                    $plainArgs[] = $aux . Utils\DumpPlain::out($v, null, [App::class]);
+                    $richArgs[] = $aux . Utils\Dump::out($v, null, [App::class]);
                 }
                 if ($plainArgs) {
                     $plainArgsString = "\n" . implode("\n", $plainArgs);
                     $richArgsString = "\n" . implode("\n", $richArgs);
                 }
             }
-            if (isset($frame['class']) && Utils\Str::startsWith($anonClass, $frame['class'])) {
-                $frameFile = Utils\Str::replaceFirst($anonClass, null, $frame['class']);
+            if (isset($frame['class']) && Utils\Str::startsWith(Utils\Dump::ANON_CLASS, $frame['class'])) {
+                $frameFile = Utils\Str::replaceFirst(Utils\Dump::ANON_CLASS, null, $frame['class']);
                 $frame['file'] = substr($frameFile, 0, strpos($frameFile, '.php') + 4);
-                $frame['class'] = $anonClass;
+                $frame['class'] = Utils\Dump::ANON_CLASS;
                 $frame['line'] = null;
             }
             if ($frame['function'] == Core::namespaced('autoloader')) {
                 $frame['file'] = $frame['file'] ?? (PATH . 'autoloader.php');
+            }
+            if (isset($frame['file']) && Utils\Str::contains('\\', $frame['file'])) {
+                $frame['file'] = Path::normalize($frame['file']);
             }
             $plainTable = [
                 '%x%' => ($i & 1) ? 'pre--even' : null,

@@ -11,7 +11,7 @@ namespace Chevereto\Core\Utils;
 
 class DumpPlain extends Dump
 {
-    public static function out($expression, int $indent = null) : string
+    public static function out($expression, int $indent = null, array $noExpand = []) : string
     {
         $return = parent::out(...func_get_args());
         return strip_tags($return);
