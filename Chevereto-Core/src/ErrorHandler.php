@@ -8,6 +8,11 @@
  * file that was distributed with this source code.
  */
 // TODO: Use object instance
+// TODO: Missing Client (HTML)
+// TODO: Missing Request (HTML)
+// TODO: Missing Server (HTML)
+// TODO: Missing Client (CLI)
+// TODO: Missing Server (CLI)
 namespace Chevereto\Core;
 
 use ErrorException;
