@@ -13,7 +13,7 @@ use Exception;
 
 class Session
 {
-    const DEFAULT_PATH = App\PATH_SESSIONS;
+    const DEFAULT_PATH = 1;
 
     /**
      * A session start runtime.
@@ -38,7 +38,7 @@ class Session
             throw new Exception($errorMessage);
         }
         $opts['gc_probability'] = 1;
-        $path = ($options['save_path'] ?: Config::get('session.save_path')) ?: session_save_path(); // session_save_path returns null for /tmp (sys aware)
+        $path = $options['save_path'] ?? session_save_path(); // session_save_path returns null for /tmp (sys aware)
         if ($path != null) {
             static::checkPath($path);
             $opts['save_path'] = $path;

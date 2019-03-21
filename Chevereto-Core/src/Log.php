@@ -223,6 +223,3 @@ class Log
         dump($message, 'debug');
     }
 }
-(function () {
-    static::init();
-})->bindTo(null, Log::class)();

@@ -10,6 +10,7 @@
 namespace Chevereto\Core\Traits;
 
 use Exception;
+use Closure;
 
 use Chevereto\Core\File;
 use Chevereto\Core\Path;
@@ -19,6 +20,7 @@ use Chevereto\Core\Utils\Str;
 
 trait CallableTrait
 {
+    // callableString = 'TheCallable::fn, Class, functionName)
     public function getCallable(string $callableString) : callable
     {
         $classExists = class_exists($callableString);
@@ -43,7 +45,7 @@ trait CallableTrait
      *
      * @param string $callableString A callable string.
      */
-    public function getCallableSome(string $callableString) : string
+    public function getCallableSome(string $callableString) : ?string
     {
         if (is_callable($callableString)) {
             return $callableString;
@@ -68,10 +70,10 @@ trait CallableTrait
     /**
      * Same as ::getCallableSome() but this returns an absolute path for callable files.
      */
-    public function getCallableSomeAbsolute(string $callable) : string
+    public function getCallableSomeAbsolute(string $callable) : ?string
     {
         $callableSome = $this->getCallableSome($callable);
-        if (Str::endsWith('.php', $callableSome)) {
+        if (null != $callableSome && Str::endsWith('.php', $callableSome)) {
             return Path::absolute($callableSome);
         } else {
             return $callableSome;

@@ -35,7 +35,7 @@ class ApiHead extends Controller
             $message =
                 (new Message('You have to provide the %s argument when running this callable without route context.'))
                     ->code('%s', 'callable');
-            if (Console::exists()) {
+            if (Console::isAvailable()) {
                 Console::io()->error($message);
                 exit;
             } else {

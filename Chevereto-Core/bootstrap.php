@@ -39,9 +39,6 @@ define(CORE_NS_HANDLE . 'PATH', $PATH);
  */
 define(CORE_NS_HANDLE . 'App\PATH', $AppPATH);
 
-// PHP version checker
-// require PATH . '/utils/phpcheck.php';
-
 // Init console if sapi = cli
 if (php_sapi_name() == 'cli') {
     Console::init();

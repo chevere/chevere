@@ -203,20 +203,20 @@ class Http
      */
     public static function requestUrl(bool $configAware = true) : string
     {
-        if ($configAware && Config::has(Config::HTTP_SCHEME)) {
-            $scheme = Config::get(Config::HTTP_SCHEME);
-        }
-        $app = App::instance();
-        if ($app->hasRequest()) {
-            $request = $app->getRequest();
-            $scheme = $scheme ?? (defined('App\HTTP_SCHEME') ? App\HTTP_SCHEME : $request->getScheme());
-            $host = $request->getHttpHost();
-            $basePath = $request->getBasePath();
-        } else {
-            $scheme = $scheme ?? 'http';
-            $host = $_SERVER['HTTP_HOST'];
-            $basePath = $_SERVER['REQUEST_URI'];
-        }
-        return $scheme . sprintf('://%s', $host . $basePath);
+        // if ($configAware && Config::has(Config::HTTP_SCHEME)) {
+        //     $scheme = Config::get(Config::HTTP_SCHEME);
+        // }
+        // $app = App::instance();
+        // if ($app->hasObject('request')) {
+        //     $request = $app->getRequest();
+        //     $scheme = $scheme ?? (defined('App\HTTP_SCHEME') ? App\HTTP_SCHEME : $request->getScheme());
+        //     $host = $request->getHttpHost();
+        //     $basePath = $request->getBasePath();
+        // } else {
+        //     $scheme = $scheme ?? 'http';
+        //     $host = $_SERVER['HTTP_HOST'];
+        //     $basePath = $_SERVER['REQUEST_URI'];
+        // }
+        // return $scheme . sprintf('://%s', $host . $basePath);
     }
 }

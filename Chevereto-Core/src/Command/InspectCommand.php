@@ -45,7 +45,7 @@ class InspectCommand extends Command
         $callableFilePath = Path::fromHandle($callable);
         if (File::exists($callableFilePath) == false) {
             $io->error(
-                (new Message("Callable %s doesn't exists"))
+                (string) (new Message("Callable %s doesn't exists"))
                     ->strtr('%s', $callableFilePath)
             );
             return 1;

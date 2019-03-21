@@ -12,7 +12,7 @@ namespace Chevereto\Core;
 use Monolog\Logger;
 use Symfony\Component\Console\Application as ConsoleClient;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Console\Input\Input;
+use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 use Exception;
@@ -36,23 +36,8 @@ class Cli
     protected $io;
     protected $command;
 
-    /**
-     * Detects if an object exists in the instance.
-     */
-    public function has(string $id) : bool
-    {
-        if (in_array($id, static::OBJECTS) == false) {
-            throw new CoreException(
-                (new Message("The object %s isn't handled by %c."))
-                    ->code('%s', $id)
-                    ->code('%c', __CLASS__)
-            );
-        }
-        return isset($this->{$id});
-    }
-
     // TODO: Inject logger?
-    public function __construct(Input $input)
+    public function __construct(ArgvInput $input)
     {
         $this->name = static::NAME;
         $this->version = static::VERSION;
@@ -71,6 +56,20 @@ class Cli
         $client->add(new Command\RunCommand($this));
         $client->add(new Command\InspectCommand($this));
         $client->setAutoExit(false);
+    }
+    /**
+     * Detects if an object exists in the instance.
+     */
+    public function has(string $id) : bool
+    {
+        if (in_array($id, static::OBJECTS) == false) {
+            throw new CoreException(
+                (new Message("The object %s isn't handled by %c."))
+                    ->code('%s', $id)
+                    ->code('%c', __CLASS__)
+            );
+        }
+        return isset($this->{$id});
     }
     /**
      * Run the CLI client.
@@ -104,7 +103,7 @@ class Cli
      *
      * @return  self
      */
-    public function setInput(Input $input) : self
+    public function setInput(ArgvInput $input) : self
     {
         $this->input = $input;
         return $this;
@@ -175,8 +174,10 @@ class Cli
     }
     /**
      * Get the value of input.
+     *
+     * @return ArgvInput
      */
-    public function getInput() : Input
+    public function getInput() : ArgvInput
     {
         return $this->input;
     }

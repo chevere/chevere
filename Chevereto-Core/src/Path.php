@@ -26,18 +26,6 @@ class Path
         return ROOT_PATH . $relativePath;
     }
     /**
-     * Converts relative path to absolute path (relative to html root).
-     *
-     * @param string $relativePath A relative path.
-     *
-     * @return string Absolute path relative to Html root.
-     */
-    public static function absoluteHtml(string $relativePath) : string
-    {
-        $relativePath = Utils\Str::forwardSlashes($relativePath);
-        return str_replace(ROOT_PATH_RELATIVE, ROOT_PATH, $relativePath);
-    }
-    /**
      * Converts absolute path to relative path.
      *
      * @param string $absolutePath An absolute path in the system.

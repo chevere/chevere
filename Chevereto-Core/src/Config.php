@@ -55,8 +55,9 @@ class Config extends Data
 
     public function __construct(string $fileHandle = null)
     {
+        parent::__construct();
         if (null != $fileHandle) {
-            return $this->processFromFile($fileHandle);
+            $this->processFromFile($fileHandle);
         }
     }
     public function addFile(string $fileHandle) : self
@@ -130,9 +131,9 @@ class Config extends Data
         return array_key_exists($key, $this->getAsserts());
     }
     /**
-     * Returns the loaded configuration file path.
+     * Returns the loaded configuration filepaths.
      *
-     * @return string Loaded file path.
+     * @return array Loaded filepaths.
      */
     public function getLoadedFiles() : array
     {
@@ -198,13 +199,16 @@ class ConfigException extends Exception
 {
     public function __construct($key, $code = 0, Exception $previous = null)
     {
-        $value = 'test' ?? Config::get($key);
-        if (is_bool($value)) {
-            $value = $value ? 'TRUE' : 'FALSE';
-        }
+        // $value = 'test' ?? Config::get($key);
+        // FIXME: Re-factor this
+        $value = '00000000000000000xTest';
+        // if (is_bool($value)) {
+        //     $value = $value ? 'TRUE' : 'FALSE';
+        // }
         $message = "Unexpected config value $value for <b>$key</b> config key";
-        $assert = 'try' ?? Config::getAssert($key);
-        if (isset($assert) && is_array($assert)) {
+        // $assert = 'try' ?? Config::getAssert($key);
+        $assert = '00000000000000000xTry';
+        if (null != $assert && is_array($assert)) {
             $message .= ' (expecting <code>' . implode('</code> or <code>', $assert) . '</code>)';
         }
         parent::__construct($message, $code, $previous);

@@ -28,6 +28,7 @@ use Psr\Log\LogLevel;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * Super flat and minimal error handler utility.
@@ -308,7 +309,9 @@ class ErrorHandler
      */
     protected function setLogDateFormat(string $format = null) : void
     {
-        $this->logDateFormat = static::DEFAULT_LOG_DATE_FORMAT ?? $format ?? (Config::has('logDateFormat') ? Config::get('logDateFormat') : static::DEFAULT_LOG_DATE_FORMAT);
+        // $this->logDateFormat = static::DEFAULT_LOG_DATE_FORMAT ?? $format ?? (Config::has('logDateFormat') ? Config::get('logDateFormat') : static::DEFAULT_LOG_DATE_FORMAT);
+        // FIXME: Configurable log format?
+        $this->logDateFormat = $format ?? static::DEFAULT_LOG_DATE_FORMAT;
     }
     /**
      * Sets log filename
@@ -431,7 +434,7 @@ class ErrorHandler
         ];
         $app = App::instance();
 
-        if ($app->hasRequest()) {
+        if ($app->hasObject('request')) {
             $request = $app->getRequest();
             $this->clientRemoteAddress = $request->getClientIp();
             foreach ($map as $k => $v) {

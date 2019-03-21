@@ -31,15 +31,16 @@ class Dumper
             return;
         }
         $trace = debug_backtrace();
-        $callerFile = Path::normalize($trace[0]['file']);
-        if (Utils\Str::endsWith('resources/functions/dump.php', $callerFile) && $trace[0]['class'] == __CLASS__ && $trace[0]['function'] == __FUNCTION__) {
-            array_shift($trace);
-        }
+        // Avoid being self dumped - use VarDumper::dump to dump here.
         $caller = $trace[0];
-        // Avoid being self dumped, use VarDumper::dump to dump here.
         while (isset($trace[0]['file']) && $trace[0]['file'] == __FILE__) {
             array_shift($trace);
             $caller = $trace[0];
+        }
+
+        $callerFile = Path::normalize($trace[0]['file']);
+        if (Utils\Str::endsWith('resources/functions/dump.php', $callerFile) && $trace[0]['class'] == __CLASS__ && in_array($trace[0]['function'], ['dump', 'dd'])) {
+            array_shift($trace);
         }
         $maker = (isset($caller['class']) ? $caller['class'] . $caller['type'] : null) . $caller['function'] . '()';
         $dump = null;

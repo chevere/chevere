@@ -9,9 +9,11 @@
  */
 namespace Chevereto\Core;
 
+// FIXME: Data hint
+
 class Data implements Interfaces\DataInterface
 {
-    protected $data;
+    protected $data = [];
     public function __construct(array $data = null)
     {
         if ($data !== null) {
@@ -32,9 +34,9 @@ class Data implements Interfaces\DataInterface
         $this->data = $data;
         return $this;
     }
-    public function getData() : ?array
+    public function getData() : array
     {
-        return $this->data;
+        return $this->data ?? [];
     }
     public function hasDataKey(string $key) : bool
     {

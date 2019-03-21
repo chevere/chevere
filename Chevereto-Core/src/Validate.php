@@ -179,25 +179,27 @@ class Validate
      */
     public static function realUrl(string $url) : bool
     {
-        if (static::url($url) == false) {
-            return false;
-        }
-        $res = false;
-        if (function_exists('curl_init')) {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_NOBODY, 1);
-            curl_setopt($ch, CURLOPT_FAILONERROR, 0);
-            curl_setopt($ch, CURLOPT_AUTOREFERER, 1);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-            $res = @curl_exec($ch);
-            curl_close($ch);
-        } elseif (ini_get('allow_url_fopen')) {
-            $res = file_get_contents($url);
-        }
-        return $res != false;
+        return false;
+        // TODO: Migrate to Guzzle
+        // if (static::url($url) == false) {
+        //     return false;
+        // }
+        // $res = false;
+        // if (function_exists('curl_init')) {
+        //     $ch = curl_init();
+        //     curl_setopt($ch, CURLOPT_URL, $url);
+        //     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+        //     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        //     curl_setopt($ch, CURLOPT_NOBODY, 1);
+        //     curl_setopt($ch, CURLOPT_FAILONERROR, 0);
+        //     curl_setopt($ch, CURLOPT_AUTOREFERER, 1);
+        //     curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        //     $res = @curl_exec($ch);
+        //     curl_close($ch);
+        // } elseif (ini_get('allow_url_fopen')) {
+        //     $res = file_get_contents($url);
+        // }
+        // return $res != false;
     }
     /**
      * Checks HTTPS URL string.

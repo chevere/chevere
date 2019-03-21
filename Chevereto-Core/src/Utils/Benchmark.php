@@ -9,6 +9,9 @@
  */
 namespace Chevereto\Core\Utils;
 
+use Chevereto\Core\Message;
+use Chevereto\Core\Traits\Printable;
+
 use Exception;
 
 // FIXME: A class using toString can't trhow exceptions!
@@ -32,8 +35,9 @@ $benchmark = (new Benchmark(1000, 30))
 print $benchmark;
 */
 
-class Benchmark extends Printable
+class Benchmark
 {
+    use Printable;
     /**
      * Determines the number of colums used for output
      */

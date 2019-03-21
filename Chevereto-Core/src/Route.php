@@ -70,7 +70,7 @@ class Route
      * @param string $key Route string.
      * @param string $callable Callable for GET.
      */
-    public function __construct(string $key, string $callable = null, string $rootContext = null)
+    public function __construct(string $key, string $callable = null)
     {
         $hasHandlebars = Utils\Str::contains('{', $key) || Utils\Str::contains('}', $key);
         try {
@@ -185,7 +185,7 @@ class Route
             }
         }
         if ($callable) {
-            $this->method('GET', $callable, $rootContext);
+            $this->method('GET', $callable);
         }
     }
     /**

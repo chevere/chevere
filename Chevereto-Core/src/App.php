@@ -52,9 +52,6 @@ class App
 
     const OBJECTS = ['runtime', 'config', 'logger', 'router', 'request', 'response', 'apis', 'routing', 'route', 'cache', 'db', 'handler'];
 
-    /**
-     * @param bool $withAutoRuntime TRUE to automatic set default runtime.
-     */
     public function __construct()
     {
         if (static::hasStaticProp('defaultRuntime')) {
@@ -151,11 +148,6 @@ class App
     {
         return $this->router;
     }
-    // FIXME: Need "had" for Route, Routing, Router, Request, Response, Apis
-    // public function hasRequest() : bool
-    // {
-    //     return $this->request instanceof Request;
-    // }
     public function getRequest() : Request
     {
         return $this->request;
@@ -208,12 +200,12 @@ class App
     /**
      * Run the callable and dispatch the handler.
      *
-     * @param string $callableSome Controller (path or class name).
+     * @param string $callable Controller (path or class name).
      */
     public function run(string $callable = null)
     {
         // TODO: Run should detect if the app misses things needed for running.
-        if ($callable == null) {
+        if (null == $callable) {
             try {
                 $callable = $this->getRouting()->getController($this->getRequest());
                 $this->setRoute($this->getRouting()->getRoute());
@@ -221,8 +213,10 @@ class App
                 die('APP RUN RESPONSE: ' . $e->getCode());
             }
         }
-        $handler = $this->getCallableHandler($callable);
-        $handler->send();
+        if (null != $callable) {
+            $handler = $this->getCallableHandler($callable);
+            $handler->send();
+        }
     }
     /**
      * Runs a explicit provided callable and return its handler.

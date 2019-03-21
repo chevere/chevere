@@ -5,7 +5,7 @@
  */
 namespace Chevereto\Core;
 
-const MIN_PHP_VERSION = '7.2.0'; // Can't touch this!
+const MIN_PHP_VERSION = '7.2.0';
 if (version_compare(PHP_VERSION, MIN_PHP_VERSION, '<')) {
     http_response_code(500);
     trigger_error('This server is running PHP v' . PHP_VERSION . ' and ' . __NAMESPACE__ . ' requires at least PHP v' . MIN_PHP_VERSION, E_USER_ERROR);

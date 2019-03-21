@@ -21,8 +21,9 @@ class Runtime extends Data
 {
     public function __construct(Config $config = null)
     {
+        parent::__construct();
         if (null != $config) {
-            return $this->runConfig($config);
+            $this->runConfig($config);
         }
     }
     public function runConfig(Config $config) : self
@@ -68,7 +69,7 @@ class Runtime extends Data
         $this->setDataKey(Config::ERROR_REPORTING_LEVEL, error_reporting());
         return $this;
     }
-    public function setExceptionHandler(string $exceptionHandler = null) : self
+    public function setExceptionHandler(callable $exceptionHandler = null) : self
     {
         if (null == $exceptionHandler) {
             return $this->restoreExceptionHandler();

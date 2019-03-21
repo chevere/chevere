@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\JsonResponse as HttpFoundationJsonResponse;
  */
 class ResponseData implements DataInterface
 {
-    /** @var DataInterface */
+    /** @var Data */
     protected $data;
     /** @var int */
     protected $code;
@@ -31,10 +31,10 @@ class ResponseData implements DataInterface
             $this->setCode($code);
         }
         if (null != $data) {
-            $this->setData($data instanceof DataInterface ? $data : new Data($data));
+            $this->setData($data instanceof Data ? $data : new Data($data));
         }
     }
-    // FIXME: RespondeData must not handle the response!
+    // FIXME: ResponseData must not handle the response!
     public function generateHttpResponse() : HttpFoundationResponse
     {
         $class = HttpFoundationResponse::class;
@@ -42,10 +42,13 @@ class ResponseData implements DataInterface
         if ($data instanceof Json) {
             $class = HttpFoundationJsonResponse::class;
         } else {
-            if (false == method_exists($data, '__toString')) {
-                $dataData = $data->getData();
-            }
-            $data = null;
+            // if (method_exists($data, 'getData')) {
+            //     // $dataData = $data->getData();
+            // }
+            // if ($data instanceof DataInterface) {
+            // }
+            // // if(method_exists($data, '__toString'))
+            // $data = null;
         }
         return (new $class())
             ->setContent($data)
@@ -64,15 +67,15 @@ class ResponseData implements DataInterface
     /**
      * Sets the response data.
      *
-     * @param DataInterface $data
+     * @param Data $data
      */
-    public function setData(DataInterface $data)
+    public function setData(Data $data)
     {
         $this->data = $data;
         
         return $this;
     }
-    public function getData() : ?DataInterface
+    public function getData() : Data
     {
         return $this->data;
     }

@@ -11,6 +11,8 @@
 // Combo object + static
 namespace Chevereto\Core\Utils;
 
+use Chevereto\Core\Message;
+
 use Exception;
 
 class Color

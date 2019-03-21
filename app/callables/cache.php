@@ -11,7 +11,7 @@ return new class extends Controller {
     public function __invoke(User $uno = null)
     {
         // throw new CoreException('eeee');
-        dd('Hola mundo!');
+        // dd('Hola mundo!');
     }
 };
 return function (User $uno = null, string $dos = 'dos') {

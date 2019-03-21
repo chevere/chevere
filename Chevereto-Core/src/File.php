@@ -68,7 +68,7 @@ class File
     public static function mimetype(string $filename) : ?string
     {
         switch (true) {
-            case function_exists('finfo_open'):
+            case defined('FILEINFO_MIME_TYPE') && function_exists('finfo_open'):
                 return finfo_file(finfo_open(FILEINFO_MIME_TYPE), $filename);
             break;
             case function_exists('mime_content_type'):

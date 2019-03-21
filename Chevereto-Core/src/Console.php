@@ -114,7 +114,7 @@ class Console
     /**
      * Get input.
      */
-    public static function input() : Input
+    public static function input() : ArgvInput
     {
         return static::cli()->getInput();
     }
@@ -123,7 +123,11 @@ class Console
      */
     public static function inputString() : string
     {
-        return (string) static::cli()->getInput();
+        $input = static::input();
+        if (method_exists($input, '__toString')) {
+            return static::input()->__toString();
+        }
+        return 'n/a';
     }
     /**
      * Get output.
@@ -149,8 +153,8 @@ class Console
     /**
      * Write messages to the console.
      *
-     * @param string|iterable $messages The message as an iterable of strings or a single string.
-     * @param int             $options  A bitmask of options (one of the OUTPUT or VERBOSITY constants), 0 is considered the same as self::OUTPUT_NORMAL | self::VERBOSITY_NORMAL
+     * @param string|array  $messages The message as an iterable of strings or a single string.
+     * @param int           $options  A bitmask of options (one of the OUTPUT or VERBOSITY constants), 0 is considered the same as self::OUTPUT_NORMAL | self::VERBOSITY_NORMAL
      */
     public static function write($messages, int $options = self::OUTPUT_NORMAL) : void
     {
@@ -162,8 +166,8 @@ class Console
     /**
      * Write messages (new lines) to the console.
      *
-     * @param string|iterable $messages The message as an iterable of strings or a single string.
-     * @param int             $options  A bitmask of options (one of the OUTPUT or VERBOSITY constants), 0 is considered the same as self::OUTPUT_NORMAL | self::VERBOSITY_NORMAL
+     * @param string|array $messages The message as an iterable of strings or a single string.
+     * @param int          $options  A bitmask of options (one of the OUTPUT or VERBOSITY constants), 0 is considered the same as self::OUTPUT_NORMAL | self::VERBOSITY_NORMAL
      */
     public static function writeln($messages, int $options = self::OUTPUT_NORMAL) : void
     {
