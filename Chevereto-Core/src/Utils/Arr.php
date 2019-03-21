@@ -39,7 +39,7 @@ class Arr
                 default:
                 case static::DEFAULT_FILTER:
                     if (!array_key_exists($v, $array)) {
-                        continue;
+                        break;
                     }
                     $return[$v] = $array[$v];
                 break;

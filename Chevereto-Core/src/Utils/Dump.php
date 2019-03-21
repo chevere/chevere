@@ -133,7 +133,7 @@ class Dump
                 $reflection = new ReflectionObject($expression);
                 if (in_array($reflection->getName(), $dontDump)) {
                     $val .= static::wrap(static::_OPERATOR, '<i>'. $reflection->getName() .'</i>');
-                    continue;
+                    break;
                 }
                 $propertiesFiltered = [
                     'public' => ReflectionProperty::IS_PUBLIC,
