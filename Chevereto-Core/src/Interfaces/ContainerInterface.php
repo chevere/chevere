@@ -7,13 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Chevereto\Core\Traits;
+namespace Chevereto\Core\Interfaces;
 
-trait Instance
+interface ContainerInterface
 {
-    protected static $instance;
-    public static function instance()
-    {
-        return self::$instance;
-    }
+    public function hasObject(string $key) : bool;
 }

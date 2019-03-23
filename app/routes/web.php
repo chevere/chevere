@@ -7,7 +7,7 @@ Route::bind('/', 'callables:index')
   ->middleware('middleware:RoleBanned')
   ->middleware('middleware:RoleAdmin');
 
-Route::bind('/cache')
+Route::bind('/cache/{user?}')
   ->method('GET', 'callables:cache')
   ->method('POST', 'callables:cache')
   ->name('cache');

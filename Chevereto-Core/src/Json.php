@@ -9,6 +9,9 @@
  */
 namespace Chevereto\Core;
 
+use Chevereto\Core\Traits\DataTrait;
+use Chevereto\Core\Traits\PrintableTrait;
+
 use Exception;
 
 /**
@@ -16,9 +19,10 @@ use Exception;
  * $json->setResponse('message', 'code')->print();
  */
 // TODO: Use {json:api}
-class Json extends Data implements Interfaces\PrintableInterface
+class Json implements Interfaces\PrintableInterface
 {
-    use Traits\Printable;
+    use DataTrait;
+    use PrintableTrait;
     
     const CODE = 'code';
     const DATA = 'data';
@@ -29,7 +33,6 @@ class Json extends Data implements Interfaces\PrintableInterface
     const CONTENT_TYPE = ['Content-type' => 'application/json; charset=UTF-8'];
 
     protected $response;
-    protected $data;
     protected $callback;
     protected $status;
     protected $printable;
@@ -61,41 +64,6 @@ class Json extends Data implements Interfaces\PrintableInterface
     public function setResponseKey(string $key, $var)
     {
         $this->response[$key] = $var;
-    }
-    // public function setDataKey(string $key, $var) : self
-    // {
-    //     $this->data[$key] = $var;
-    //     return $this;
-    // }
-    /**
-     * Add data keys to data variable.
-     *
-     * @param string $key Data key.
-     * @param mixed $var Data value.
-     *
-     * @return $this Chaineable.
-     */
-    // public function addDataKey(string $key, $var) : self
-    // {
-    //     $this->data[$key] = $var;
-    //     return $this;
-    // }
-    // public function removeDataKey(string $key) : self
-    // {
-    //     unset($this->data[$key]);
-    //     return $this;
-    // }
-    /**
-     * Sets callback (JSONP).
-     *
-     * @param string $callback JSONP callback.
-     *
-     * @return $this Chaineable.
-     */
-    public function callback(string $callback) : self
-    {
-        $this->callback = $callback;
-        return $this;
     }
     /**
      * Executes the JSON format operation.

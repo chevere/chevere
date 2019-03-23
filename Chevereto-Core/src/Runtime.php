@@ -10,6 +10,7 @@
 namespace Chevereto\Core;
 
 use Chevereto\Core\CoreException;
+use Chevereto\Core\Traits\DataTrait;
 
 use Exception;
 use DateTimeZone;

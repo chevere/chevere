@@ -35,7 +35,7 @@ class ApiHead extends Controller
             $message =
                 (new Message('You have to provide the %s argument when running this callable without route context.'))
                     ->code('%s', 'callable');
-            if (Console::isAvailable()) {
+            if (Console::isRunning()) {
                 Console::io()->error($message);
                 exit;
             } else {
@@ -43,7 +43,7 @@ class ApiHead extends Controller
             }
         }
         //
-        $response = $app->getCallableHandler($callable);
+        $response = $app->getControllerObject($callable);
         $response->setContent(null);
         return $response;
     }

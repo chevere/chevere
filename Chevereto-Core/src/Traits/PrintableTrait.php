@@ -19,7 +19,7 @@ use Chevereto\Core\Interfaces\PrintableInterface;
  * @see Utils\Benchmark
  * @see JSON
  */
-trait Printable
+trait PrintableTrait
 {
     /**
      * The printable string.

@@ -39,29 +39,28 @@ class ApiGet extends Controller
             $message =
                 (new Message('You have to provide the %s argument when running this callable without route context.'))
                     ->code('%s', 'endpoint');
-            if (Console::isAvailable()) {
+            if (Console::isRunning()) {
                 Console::io()->error($message);
                 exit;
             } else {
                 throw new CoreException($message);
             }
         }
-        //
+        $response = $this->getResponse();
         $statusCode = 200;
-        $json = new Json();
+        // $json = new Json();
         if ($endpointData = $this->getApp()->getApis()->getEndpoint($endpoint)) {
-            $json->setResponse(sprintf('Endpoint %s exposed', $endpoint), $statusCode);
-            // $json->setDataKey('endpoint', $endpoint);
+            $response->setMeta(['api' => $endpoint]);
             foreach ($endpointData as $property => $data) {
                 if ($property == 'wildcards') {
                     continue;
                 }
-                $json->setDataKey((string) $property, $data);
+                $response->addData('endpoint', $property, $data);
             }
         } else {
             $statusCode = 404;
-            $json->setResponse("Endpoint doesn't exists", $statusCode);
+            // $response->setResponse("Endpoint doesn't exists", $statusCode);
         }
-        return (new JsonResponse())->setContent($json)->setStatusCode($statusCode);
+        $response->setStatusCode($statusCode);
     }
 }

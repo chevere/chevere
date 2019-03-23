@@ -7,12 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Chevereto\Core\Interfaces;
+namespace Chevereto\Core\Traits;
 
-use Chevereto\Core\App;
-
-interface ControllerInterface
+trait InstanceTrait
 {
-    // public function setApp(App $app);
-    // public function getApp() : App;
+    protected static $instance;
+    public static function instance()
+    {
+        return self::$instance;
+    }
 }

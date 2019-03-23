@@ -6,14 +6,39 @@ namespace Chevereto\Core;
 use App\User;
 use Chevereto\Core\CoreException;
 use Chevereto\Core\App;
+use Chevereto\Core\Response;
+use Chevereto\Core\Interfaces\RenderableInterface;
+use Chevereto\Core\Utils\Str;
 
-return new class extends Controller {
-    public function __invoke(User $uno = null)
+use Symfony\Component\HttpFoundation\JsonResponse;
+
+return new class extends Controller /*implements RenderableInterface*/ {
+    public function __invoke(User $user = null)
     {
-        // throw new CoreException('eeee');
-        // dd('Hola mundo!');
+        $this->getResponse()->val = 'val en invoke';
+        // $this->getApp()->getResponse()->val = 'val invoke pero manoseado por cadena';
+        $getString = $user ?? 'null user provided data';
+        // Modifica data en n lineas
+        $response = $this->getResponse();
+        $response->setData(['type' => 'articles', 'id' => $getString]);
+        
+        return $this;
+        // dd((string) $response);
+        // ...validation...
+        if (false == Str::startsWithNumeric((string) $getString)) {
+            $this->getResponse()->setData(['deeez', 'nuts']);
+            // $this->getResponse()->setStatusCode(400);
+            return $this;
+        }
+        // Store string
+        $getString = ucwords((string) $getString);
+        // $this->setDataKey('UserString', $getString);
+        // $data = $this->getData();
+        // dd($data);
     }
-};
-return function (User $uno = null, string $dos = 'dos') {
-    dd('Hola mundo!', $uno, $dos);
+    public function render() : ?string
+    {
+        $response = $this->getResponse();
+        return var_export($response->getData(), true);
+    }
 };

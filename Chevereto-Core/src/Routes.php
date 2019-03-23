@@ -17,7 +17,7 @@ use Exception;
  */
 class Routes
 {
-    use Traits\Instance;
+    use Traits\InstanceTrait;
 
     const KEY_ROUTE_ID = 'id';
     const KEY_ROUTE_SET = 'set';

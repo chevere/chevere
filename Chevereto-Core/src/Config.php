@@ -14,6 +14,7 @@ use Exception;
 
 use Chevereto\Core\Message;
 use Chevereto\Core\Path;
+use Chevereto\Core\Traits\DataTrait;
 
 // use Symfony\Component\HttpFoundation\Request;
 

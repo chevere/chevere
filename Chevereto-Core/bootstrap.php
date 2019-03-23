@@ -78,7 +78,7 @@ App::setDefaultRuntime(
 );
 
 // This constant allows safe short syntax like `CLI && Console::io()` in all namespaces.
-define('CLI', Console::isAvailable());
+define('CLI', Console::isRunning());
 
 // TODO: Composer autoload para App
 require PATH . '/autoloader.php';

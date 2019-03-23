@@ -9,10 +9,9 @@
  */
 namespace Chevereto\Core\Interfaces;
 
-use Chevereto\Core\App;
+use Chevereto\Core\Response;
 
-interface ControllerInterface
+interface RenderableInterface
 {
-    // public function setApp(App $app);
-    // public function getApp() : App;
+    public function render() : ?string;
 }

@@ -9,6 +9,9 @@
  */
 namespace Chevereto\Core;
 
+use Chevereto\Core\Traits\ContainerTrait;
+use Chevereto\Core\Interfaces\ContainerInterface;
+
 use Monolog\Logger;
 use Symfony\Component\Console\Application as ConsoleClient;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -20,9 +23,11 @@ use Exception;
 /**
  * This class provides console for Chevereto\Core and it is a facade of Symfony\Component\Console.
  */
-class Cli
+class Cli implements ContainerInterface
 {
-    const OBJECTS = ['logger', 'client', 'input', 'output', 'io', 'command'];
+    use ContainerTrait;
+
+    protected $objects = ['logger', 'client', 'input', 'output', 'io', 'command'];
 
     const NAME = __NAMESPACE__ . ' cli';
     const VERSION = '1.0';
@@ -56,20 +61,6 @@ class Cli
         $client->add(new Command\RunCommand($this));
         $client->add(new Command\InspectCommand($this));
         $client->setAutoExit(false);
-    }
-    /**
-     * Detects if an object exists in the instance.
-     */
-    public function has(string $id) : bool
-    {
-        if (in_array($id, static::OBJECTS) == false) {
-            throw new CoreException(
-                (new Message("The object %s isn't handled by %c."))
-                    ->code('%s', $id)
-                    ->code('%c', __CLASS__)
-            );
-        }
-        return isset($this->{$id});
     }
     /**
      * Run the CLI client.

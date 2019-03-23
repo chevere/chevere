@@ -10,6 +10,8 @@
 namespace Chevereto\Core;
 
 use Chevereto\Core\Utils\Str;
+use Chevereto\Core\Response as CheveretoResponse;
+use Chevereto\Core\Interfaces\RenderableInterface;
 
 use Exception;
 use ReflectionMethod;
@@ -17,12 +19,14 @@ use ReflectionFunction;
 
 use Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+// use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class App
 {
+    use Traits\InstanceTrait;
     use Traits\CallableTrait;
+    use Traits\ContainerTrait;
     
     const NAMESPACES = ['App', __NAMESPACE__];
     const APP = 'app';
@@ -50,7 +54,7 @@ class App
     protected $db;
     protected $handler;
 
-    const OBJECTS = ['runtime', 'config', 'logger', 'router', 'request', 'response', 'apis', 'routing', 'route', 'cache', 'db', 'handler'];
+    protected $objects = ['runtime', 'config', 'logger', 'router', 'request', 'response', 'apis', 'routing', 'route', 'cache', 'db', 'handler'];
 
     public function __construct()
     {
@@ -63,14 +67,6 @@ class App
             $this->checkout();
         }
         Load::app(static::FILENAME_HACKS);
-    }
-    // TODO: Make trait
-    public function hasObject(string $key) : bool
-    {
-        if (false == (in_array($key, static::OBJECTS) || property_exists($this, $key))) {
-            return false;
-        }
-        return isset($this->{$key});
     }
     // TODO: Make trait
     public static function hasStaticProp(string $key) : bool
@@ -152,6 +148,10 @@ class App
     {
         return $this->request;
     }
+    public function setResponse(Response $response) : self {
+        $this->response = $response;
+        return $this;
+    }
     public function getResponse() : Response
     {
         return $this->response;
@@ -214,33 +214,42 @@ class App
             }
         }
         if (null != $callable) {
-            $handler = $this->getCallableHandler($callable);
-            $handler->send();
+            $controller = $this->getControllerObject($callable);
+            if($controller instanceof Interfaces\RenderableInterface) {
+                print $controller->render();
+            } else {
+                // dd($this->getResponse()->val, $controller->getResponse()->val);
+                $controller->getResponse()->sendJson();
+            }
         }
+        die();
     }
     /**
-     * Runs a explicit provided callable and return its handler.
+     * Runs a explicit provided callable.
      */
-    public function getCallableHandler(string $callable)
+    public function getControllerObject(string $callable)
     {
-        $callableString = $callable;
-        $callable = $this->getCallable($callableString);
+        $this->setResponse(new Response);
+        $controller = $this->getCallable($callable);
+        if ($controller instanceof Interfaces\ControllerInterface) {
+            $controller->setApp($this);
+            $controller->getResponse()->val = 'val en app';
+        }
         // HTTP request middleware
+        // TODO: Re-Check
         if ($this->route instanceof Route && $middlewares = $this->route->getMiddlewares()) {
             $handler = new Handler($middlewares);
             $handler->runner($this);
         }
         // Use arguments taken from wildcards
-        if ($this->arguments == null) {
-            $this->setArguments($this->getRouting()->getArguments());
+        if ($this->arguments == null && $routingArgs = $this->getRouting()->getArguments()) {
+            $this->setArguments($routingArgs);
         }
-        if (is_object($callable)) {
-            if ($callable instanceof Interfaces\ControllerInterface) {
-                $callable->setApp($this);
-            }
-            $invoke = new ReflectionMethod($callable, '__invoke');
+        if (is_object($controller)) {
+            
+            $invoke = new ReflectionMethod($controller, '__invoke');
         } else {
-            $invoke = new ReflectionFunction($callable);
+            $invoke = new ReflectionFunction($controller);
         }
         $controllerArguments = [];
         $parameterIndex = 0;
@@ -263,7 +272,7 @@ class App
                                 ->code('%s', $type)
                                 ->code('%o', $type . ' $' . $parameter->getName() . ($parameter->isDefaultValueAvailable() ? ' = ' . $parameter->getDefaultValue() : null))
                                 ->code('%n', '#'. $parameter->getPosition())
-                                ->code('%f', $callable)
+                                ->code('%f', $controller)
                         );
                     }
                     $controllerArguments[] = new $type($value);
@@ -272,18 +281,8 @@ class App
             $parameterIndex++;
         }
         $this->controllerArguments = $controllerArguments;
-        $response = $callable(...$this->controllerArguments);
-        if ($response instanceof Response || $response instanceof JsonResponse) {
-            return $response;
-        } else {
-            if ($response instanceof \Chevereto\Core\ResponseData) {
-                // TODO: Response middelware
-                // TODO: Templates
-                return $response->generateHttpResponse();
-            } else {
-                return new JsonResponse($response);
-            }
-        }
+        $controller(...$this->controllerArguments);
+        return $controller;
     }
     /**
      * Farewell kids, my planet needs me.
@@ -308,7 +307,7 @@ class App
         $this->routing = new Routing(Routes::instance());
         return $this;
     }
-    public function setArguments(array $arguments = null)
+    public function setArguments(array $arguments = [])
     {
         $this->arguments = $arguments;
     }
@@ -326,13 +325,6 @@ class App
         // $this->define('HTTP_HOST', $host);
         // $this->define('URL', App\HTTP_SCHEME . '://' . $host . ROOT_PATH_RELATIVE);
         return $this;
-    }
-    public static function instance() : self
-    {
-        if (self::$instance == null) {
-            throw new CoreException('Theres no ' . __CLASS__ .  ' app instance');
-        }
-        return self::$instance;
     }
     public function getHash() : string
     {

@@ -9,57 +9,16 @@
  */
 namespace Chevereto\Core;
 
-// FIXME: Data hint
+use Chevereto\Core\Interfaces\DataInterface;
+use Chevereto\Core\Traits\DataTrait;
 
-class Data implements Interfaces\DataInterface
+class Data implements DataInterface
 {
-    protected $data = [];
+    use DataTrait;
     public function __construct(array $data = null)
     {
         if ($data !== null) {
             $this->data = $data;
         }
-    }
-    public function addData(array $data) : self
-    {
-        if (null == $this->data) {
-            $this->data = $data;
-        } else {
-            $this->data = array_replace_recursive($this->data, $data);
-        }
-        return $this;
-    }
-    public function setData(array $data) : self
-    {
-        $this->data = $data;
-        return $this;
-    }
-    public function getData() : array
-    {
-        return $this->data ?? [];
-    }
-    public function hasDataKey(string $key) : bool
-    {
-        return array_key_exists($key, $this->data);
-    }
-    // FIXME: setDataKey does the same isn't?
-    // public function addDataKey(string $key, $var) : self
-    // {
-    //     $this->data[$key] = $var;
-    //     return $this;
-    // }
-    public function setDataKey(string $key, $var) : self
-    {
-        $this->data[$key] = $var;
-        return $this;
-    }
-    public function getDataKey(string $key)
-    {
-        return $this->data[$key] ?? null;
-    }
-    public function removeDataKey(string $key) : self
-    {
-        unset($this->data[$key]);
-        return $this;
     }
 }

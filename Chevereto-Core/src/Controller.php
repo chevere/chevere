@@ -9,6 +9,13 @@
  */
 namespace Chevereto\Core;
 
+use Chevereto\Core\Json;
+use Chevereto\Core\Response;
+use Chevereto\Core\Interfaces\ControllerInterface;
+use Chevereto\Core\Interfaces\ContainerInterface;
+use Chevereto\Core\Traits\ContainerTrait;
+use Chevereto\Core\Traits\HookableTrait;
+
 use Exception;
 use ReflectionClass;
 
@@ -31,26 +38,26 @@ use ReflectionClass;
  * @see Interfaces\Controller
  * @see Interfaces\APIs
  */
-class Controller extends Hookable implements Interfaces\ControllerInterface
+// TODO: Create Container Interface
+class Controller implements ControllerInterface, ContainerInterface
 {
+    use HookableTrait;
+    use ContainerTrait;
+
     const TYPE_DECLARATIONS = ['array', 'callable', 'bool', 'float', 'int', 'string', 'iterable'];
     const OPTIONS = [];
-    // const METHODS = ['POST'];
-
-    // This allows to trace whom reads and write the non-accessible properties.
-    // use Traits\PropSet;
-    // use Traits\PropGet;
-
-    protected $routing;
 
     /** @var App */
-    protected $app;
-    
-    // TODO: Traits\App;
+    private $app;
 
-    public function hasApp() : bool
+    public function setResponse(Response $response) : self
     {
-        return $this->app instanceof App;
+        $this->getApp()->setResponse($response);
+        return $this;
+    }
+    public function getResponse() : Response
+    {
+        return $this->getApp()->getResponse();
     }
     public function getApp() : App
     {
@@ -106,31 +113,12 @@ class Controller extends Hookable implements Interfaces\ControllerInterface
                     ->code('%t', gettype($controller))
             );
         }
-        
         // Pass this to that so you can this while you that dawg!
         foreach (get_object_vars($this) as $k => $v) {
             $that->{$k} = $v;
         }
         return $that(...$parameters);
     }
-    // public function __invoke()
-    // {
-    //     // TODO: Deberia ser LogicException
-    //     throw new CoreException(
-    //         (new Message('You must override the %s method in the concrete %c class.'))
-    //             ->code('%s', __FUNCTION__)
-    //             ->code('%c', __CLASS__)
-    //     );
-    // }
-    /**
-     * Stores $_VARS for handling,
-     */
-    // protected function setProperties(array $properties) : void
-    // {
-    //     foreach ($properties as $k => $v) {
-    //         $this->{$k} = $v;
-    //     }
-    // }
 }
 class ControllerException extends CoreException
 {
