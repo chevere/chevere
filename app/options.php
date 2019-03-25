@@ -14,7 +14,6 @@ namespace Chevereto\Core;
 
 return
   (new AppOptions())
-      ->addConfigFile(':config')
       ->addApi('api', 'apis/api')
       ->addApi('api-alt', 'apis/api-alt')
       ->addRoute('routes:dashboard')

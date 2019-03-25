@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,6 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
 use Exception;
@@ -21,7 +24,7 @@ class Routes
 
     const KEY_ROUTE_ID = 'id';
     const KEY_ROUTE_SET = 'set';
-    
+
     // Properties used to collect the collection
     protected $routes = []; // [id => (serialized) Route,]
     protected $uniques = []; // [route => id,]
@@ -31,26 +34,30 @@ class Routes
 
     public function __construct()
     {
+        // dd(\debug_backtrace());
         static::$instance = $this;
     }
+
     /**
      * Get Route objects.
      *
      * @return array Array containing Route objects [id => Route,]
      */
-    public function getRoutes() : array
+    public function getRoutes(): array
     {
         return $this->routes;
     }
+
     /**
      * Get uniques table.
      *
      * @return array Array containing Route objects [route => id,]
      */
-    public function getUniques() : array
+    public function getUniques(): array
     {
         return $this->uniques;
     }
+
     /**
      * Get named table.
      *
@@ -60,29 +67,32 @@ class Routes
     {
         return $this->named;
     }
+
     /**
      * Get routing table.
      *
-     * @return array Array containing routing table.
+     * @return array array containing routing table
      */
-    public function getRouting() : ?array
+    public function getRouting(): ?array
     {
         return $this->routing;
     }
+
     /**
      * Clears the Routes static properties.
      */
-    public function clear() : void
+    public function clear(): void
     {
         $this->routes = [];
         $this->uniques = [];
         $this->named = [];
         $this->routing = [];
     }
+
     /**
      * Allocate Route object in the Routes instance.
      */
-    public function allocate(Route $route) : void
+    public function allocate(Route $route): void
     {
         if ($route->getId() === null) {
             $this->routes[] = $route;
@@ -96,10 +106,11 @@ class Routes
             $this->named[$route->getName()] = $route->getId();
         }
     }
+
     /**
      * Generate routing and routesSerialized arrays.
      */
-    public function process() : void
+    public function process(): void
     {
         if ($this->routes == false) {
             throw new RoutesException(
@@ -123,13 +134,14 @@ class Routes
         }
         ksort($this->routing);
     }
+
     /**
      * Group a Route into the routing table.
      *
-     * @param Route $route Route instance.
-     * @param string $routeSet Route set, used when dealing with powerSet.
+     * @param Route  $route    route instance
+     * @param string $routeSet route set, used when dealing with powerSet
      */
-    protected function group(Route $route, string $routeSet = null) : void
+    protected function group(Route $route, string $routeSet = null): void
     {
         if ($routeSet) {
             $routeSetHandle = $routeSet;
@@ -163,13 +175,14 @@ class Routes
         }
         $this->routing[$count][$type][$regex] = $var;
     }
+
     /**
      * Get a route object from its id.
      *
-     * @param mixed $identifier Int Route Id; String Route name, (opt Route string)
-     * @param bool $searchUnique True to search for route object on $this->uniques.
+     * @param mixed $identifier   Int Route Id; String Route name, (opt Route string)
+     * @param bool  $searchUnique true to search for route object on $this->uniques
      */
-    protected function getRoute($identifier, bool $searchUnique = false) : Route
+    protected function getRoute($identifier, bool $searchUnique = false): Route
     {
         // Determine the object id
         if (is_numeric($identifier)) {
@@ -184,16 +197,18 @@ class Routes
                 );
             }
         }
+
         return $this->routes[$id];
     }
+
     /**
      * Removes a route from the collection.
      *
-     * @param mixed $identifier Int Route Id; String Route name.
+     * @param mixed $identifier int Route Id; String Route name
      *
-     * @throws RoutesException if route doesn't exists.
+     * @throws RoutesException if route doesn't exists
      */
-    protected function removeRoute($identifier, bool $searchUnique = false) : bool
+    protected function removeRoute($identifier, bool $searchUnique = false): bool
     {
         $route = $this->getRoute(...func_get_args());
         unset(
@@ -207,6 +222,7 @@ class Routes
                 $route->setId($k);
             }
         }
+
         return true;
     }
 }
