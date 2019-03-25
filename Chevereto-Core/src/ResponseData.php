@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,9 +9,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
-use Chevereto\Core\Json;
 use Chevereto\Core\Interfaces\DataInterface;
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
 use Symfony\Component\HttpFoundation\JsonResponse as HttpFoundationJsonResponse;
@@ -24,7 +26,7 @@ class ResponseData implements DataInterface
     protected $data;
     /** @var int */
     protected $code;
-    
+
     public function __construct(int $code = 200, $data = null)
     {
         if (null != $code) {
@@ -34,8 +36,9 @@ class ResponseData implements DataInterface
             $this->setData($data instanceof Data ? $data : new Data($data));
         }
     }
+
     // FIXME: ResponseData must not handle the response!
-    public function generateHttpResponse() : HttpFoundationResponse
+    public function generateHttpResponse(): HttpFoundationResponse
     {
         $class = HttpFoundationResponse::class;
         $data = $this->getData();
@@ -50,20 +53,24 @@ class ResponseData implements DataInterface
             // // if(method_exists($data, '__toString'))
             // $data = null;
         }
+
         return (new $class())
             ->setContent($data)
             ->setStatusCode($this->code);
     }
+
     /**
      * Sets the response code (HTTP).
      *
-     * @param int $code HTTP status code.
+     * @param int $code HTTP status code
      */
-    public function setCode(int $code) : self
+    public function setCode(int $code): self
     {
         $this->code = $code;
+
         return $this;
     }
+
     /**
      * Sets the response data.
      *
@@ -72,21 +79,25 @@ class ResponseData implements DataInterface
     public function setData(Data $data)
     {
         $this->data = $data;
-        
+
         return $this;
     }
-    public function getData() : Data
+
+    public function getData(): Data
     {
         return $this->data;
     }
+
     /**
-     * Set data proxy
+     * Set data proxy.
      */
     public function setDataKey(string $key, $var)
     {
         $this->getData()->setDataKey(...func_get_args());
+
         return $this;
     }
+
     // public function addDataKey(string $key, $var)
     // {
     //     $this->getData()->addData(...func_get_args());
@@ -95,6 +106,7 @@ class ResponseData implements DataInterface
     public function removeDataKey(string $key)
     {
         $this->getData()->addData(...func_get_args());
+
         return $this;
     }
 }

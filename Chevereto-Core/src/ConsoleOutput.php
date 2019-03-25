@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,6 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
 use Symfony\Component\Console\Output\ConsoleOutput as BaseOutput;
@@ -18,20 +21,22 @@ use Symfony\Component\Console\Output\ConsoleOutput as BaseOutput;
 class ConsoleOutput extends BaseOutput
 {
     protected $chvBag = [];
+
     /**
      * Stores a variable in the BufferedOutput.
      *
-     * @param string $key Variable key.
-     * @param string $var A variable.
+     * @param string $key variable key
+     * @param string $var a variable
      */
-    public function storeVar(string $key, $var) : void
+    public function storeVar(string $key, $var): void
     {
         $this->chvBag[$key] = $var;
     }
+
     /**
      * Retrieves a variable value.
      *
-     * @param string $key Variable key.
+     * @param string $key variable key
      */
     public function getVar(string $key)
     {

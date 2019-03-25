@@ -1,8 +1,8 @@
 <?php
-// OK
-namespace Chevereto\Core\Utils;
 
-use Exception;
+// OK
+
+namespace Chevereto\Core\Utils;
 
 class Str
 {
@@ -10,19 +10,20 @@ class Str
      * Replace the first occurrence of the search string with the replacement
      * string.
      *
-     * @param string $search  Value being searched for.
-     * @param string $replace Replacement value that replaces found search
-     * values.
-     * @param string $subject String being searched and replaced on.
+     * @param string $search  value being searched for
+     * @param string $replace replacement value that replaces found search
+     *                        values
+     * @param string $subject string being searched and replaced on
      *
-     * @return string Returns a string with the replaced value.
+     * @return string returns a string with the replaced value
      */
-    public static function replaceFirst(string $search, string $replace=null, string $subject) : string
+    public static function replaceFirst(string $search, string $replace = null, string $subject): string
     {
         $pos = strpos($subject, $search);
         if ($pos !== false) {
             $subject = substr_replace($subject, $replace, $pos, strlen($search));
         }
+
         return $subject ?? '';
     }
 
@@ -30,104 +31,114 @@ class Str
      * Replace the last occurrence of the search string with the replacement
      * string.
      *
-     * @param string $search  Value being searched for.
-     * @param string $replace Replacement value that replaces found search
-     * values.
-     * @param string $subject String being searched and replaced on.
+     * @param string $search  value being searched for
+     * @param string $replace replacement value that replaces found search
+     *                        values
+     * @param string $subject string being searched and replaced on
      *
-     * @return string Returns a string with the replaced value.
+     * @return string returns a string with the replaced value
      */
-    public static function replaceLast(string $search, string $replace=null, string $subject) : string
+    public static function replaceLast(string $search, string $replace = null, string $subject): string
     {
         $pos = strrpos($subject, $search);
         if ($pos !== false) {
             $subject = substr_replace($subject, $replace, $pos, strlen($search));
         }
+
         return $subject ?? '';
     }
+
     /**
      * Converts backslash into forward slashes.
      *
-     * @param string $var Path which will get forward slashes.
+     * @param string $var path which will get forward slashes
      */
-    public static function forwardSlashes(string $var) : string
+    public static function forwardSlashes(string $var): string
     {
         return str_replace('\\', '/', $var);
     }
+
     /**
-     * Detects if a string contains another sub-string
+     * Detects if a string contains another sub-string.
      *
      * @param string $needle
      * @param string $haystack
      */
-    public static function contains(string $needle, string $haystack) : bool
+    public static function contains(string $needle, string $haystack): bool
     {
         return strpos($haystack, $needle) !== false;
     }
+
     /**
      * Detects if a string begins with the given needle.
      *
-     * @param string $needle   Value being searched for.
-     * @param string $haystack String being searched.
+     * @param string $needle   value being searched for
+     * @param string $haystack string being searched
      *
-     * @return bool TRUE if the haystack begins with the given needle.
+     * @return bool TRUE if the haystack begins with the given needle
      *
-     * @link http://php.net/manual/en/function.substr-compare.php
+     * @see http://php.net/manual/en/function.substr-compare.php
      */
-    public static function startsWith(string $needle, string $haystack) : bool
+    public static function startsWith(string $needle, string $haystack): bool
     {
         $needleLen = strlen($needle);
         if ($needleLen > strlen($haystack)) {
             return false;
         }
+
         return 0 === substr_compare($haystack, $needle, 0, $needleLen);
     }
+
     /**
      * Detects if a string ends with the given needle.
      *
-     * @param string $needle   Value being searched for.
-     * @param string $haystack String being searched.
+     * @param string $needle   value being searched for
+     * @param string $haystack string being searched
      *
-     * @return bool TRUE if the haystack ends with the given needle.
+     * @return bool TRUE if the haystack ends with the given needle
      *
-     * @link http://php.net/manual/en/function.substr-compare.php
+     * @see http://php.net/manual/en/function.substr-compare.php
      */
-    public static function endsWith(string $needle, string $haystack) : bool
+    public static function endsWith(string $needle, string $haystack): bool
     {
         $needleLen = strlen($needle);
         if ($needleLen > strlen($haystack)) {
             return false;
         }
+
         return 0 === substr_compare($haystack, $needle, -$needleLen);
     }
-    public static function startsWithNumeric(string $haystack) : bool
+
+    public static function startsWithNumeric(string $haystack): bool
     {
         return strlen($haystack) > 0 && ctype_digit(substr($haystack, 0, 1));
     }
+
     /**
      * A timing safe string equals comparison.
      *
      * To prevent leaking length information, it is important that user input is
      * always used as the second parameter.
      *
-     * @param string $safe Internal (safe) value to be checked.
-     * @param string $user User submitted (unsafe) value.
+     * @param string $safe internal (safe) value to be checked
+     * @param string $user user submitted (unsafe) value
      *
-     * @return boolean TRUE if the two strings are identical.
+     * @return bool TRUE if the two strings are identical
      */
-    public static function compare(string $safe, string $user) : bool
+    public static function compare(string $safe, string $user): bool
     {
         $safe .= chr(0);
         $user .= chr(0);
         $safeLen = strlen($safe);
         $userLen = strlen($user);
         $result = $safeLen - $userLen;
-        for ($i = 0; $i < $userLen; $i++) {
+        for ($i = 0; $i < $userLen; ++$i) {
             $result |= (ord($safe[$i % $safeLen]) ^ ord($user[$i]));
         }
         // They are only identical strings if $result is exactly 0...
         return $result === 0;
     }
+
     /**
      * Truncate string.
      *
@@ -136,13 +147,13 @@ class Str
      *
      * Taken from http://www.chirp.com.au/ and improved for Chevereto.
      *
-     * @param string $string 	 String to be truncated.
-     * @param mixed  $limit      Integer for character lengh based trimming, string for needle based trimming.
-     * @param string $pad		 String to be appended to the truncated string, default "...".
+     * @param string $string string to be truncated
+     * @param mixed  $limit  integer for character lengh based trimming, string for needle based trimming
+     * @param string $pad    String to be appended to the truncated string, default "...".
      *
-     * @return string Truncated string.
+     * @return string truncated string
      */
-    public static function truncate(string $string, $limit, string $pad='...') : string
+    public static function truncate(string $string, $limit, string $pad = '...'): string
     {
         $encoding = 'UTF-8';
         $break = null;
@@ -155,73 +166,79 @@ class Str
             return $string;
         }
         if (is_null($break) || $break == '') {
-            $string = trim(mb_substr($string, 0, $limit - strlen($pad), $encoding)) . $pad;
+            $string = trim(mb_substr($string, 0, $limit - strlen($pad), $encoding)).$pad;
         } else {
             if (false != ($breakpoint = strpos($string, $break, $limit))) {
                 if ($breakpoint < mb_strlen($string, $encoding) - 1) {
-                    $string = trim(mb_substr($string, 0, $breakpoint, $encoding)) . $pad;
+                    $string = trim(mb_substr($string, 0, $breakpoint, $encoding)).$pad;
                 }
             }
         }
+
         return $string ?? '';
     }
+
     /**
-     * Shorthand for UTF-8 mb_strtolower
+     * Shorthand for UTF-8 mb_strtolower.
      *
      * @param string $string
      *
-     * @return string Lowercased string.
+     * @return string lowercased string
      */
-    public static function toLowercase(string $string) : string
+    public static function toLowercase(string $string): string
     {
         return mb_strtolower($string, 'UTF-8');
     }
+
     /**
-     * Strip non-alphanumeric chars from string
+     * Strip non-alphanumeric chars from string.
      *
      * @param string $string
      *
-     * @return string String without non-alphanumeric chars.
+     * @return string string without non-alphanumeric chars
      */
-    public static function stripNonAlnum(string $string) : string
+    public static function stripNonAlnum(string $string): string
     {
         return preg_replace('/[^[:alnum:][:space:]]/u', '', $string) ?? '';
     }
+
     /**
      * Strip whitespaces from string.
      *
      * @param string $string
      *
-     * @return string String without whitespaces.
+     * @return string string without whitespaces
      */
-    public static function stripWhitespace(string $string) : string
+    public static function stripWhitespace(string $string): string
     {
         return preg_replace('/\s+/', '', $string) ?? '';
     }
+
     /**
      * Strip extra whitespace from string.
      *
      * @param string $string
      *
-     * @return string String without extra whitespaces.
+     * @return string string without extra whitespaces
      */
-    public static function stripExtraWhitespace(string $string) : string
+    public static function stripExtraWhitespace(string $string): string
     {
         return preg_replace('/\s+/', ' ', $string) ?? '';
     }
+
     /**
      * Remove all the accents of an string.
      *
      * Sanitizes (removes) all the accents present in a string so it allows to
      * convert strings like 'ykésâêén' into 'ykesaeen'.
      *
-     * @param string $string String to be sanitized.
+     * @param string $string string to be sanitized
      *
-     * @return string Unaccented sanitized string.
+     * @return string unaccented sanitized string
      *
-     * @link http://www.evaisse.net/2008/php-translit-remove-accent-unaccent-21001
+     * @see http://www.evaisse.net/2008/php-translit-remove-accent-unaccent-21001
      */
-    public static function unaccent(string $string) : string
+    public static function unaccent(string $string): string
     {
         $string = (string) $string;
         if (function_exists('mb_detect_encoding')) {
@@ -230,7 +247,7 @@ class Str
         } else {
             $length = strlen($string);
             $utf8 = true;
-            for ($i=0; $i<$length; $i++) {
+            for ($i = 0; $i < $length; ++$i) {
                 $c = ord($string[$i]);
                 if ($c < 0x80) {
                     $n = 0; // 0bbbbbbb
@@ -247,7 +264,7 @@ class Str
                 } else {
                     return '';
                 }
-                for ($j=0; $j<$n; $j++) { // n bytes matching 10bbbbbb follow ?
+                for ($j = 0; $j < $n; ++$j) { // n bytes matching 10bbbbbb follow ?
                     if ((++$i == $length) || ((ord($string[$i]) & 0xC0) != 0x80)) {
                         $utf8 = false;
                         break;
@@ -355,42 +372,46 @@ class Str
                 'ị' => 'i', 'ậ' => 'a', 'ệ' => 'e', 'ỉ' => 'i', 'ộ' => 'o', 'ồ' => 'o',
                 'ề' => 'e', 'ơ' => 'o', 'ạ' => 'a', 'ẵ' => 'a', 'ư' => 'u', 'ắ' => 'a',
                 'ằ' => 'a', 'ầ' => 'a', 'Ḩ' => 'H', 'Ḑ' => 'D', 'ḑ' => 'd',
-                'ş' => 's', 'ţ' => 't', 'ễ'	=> 'e'
+                'ş' => 's', 'ţ' => 't', 'ễ' => 'e',
             ];
         $string = str_replace(array_keys($transliteration), array_values($transliteration), $string);
         // Missing something?
         if (strpos($string = htmlentities($string, ENT_QUOTES, 'UTF-8'), '&') !== false) {
             $replaced = preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|tilde|uml);~i', '$1', $string);
+
             return $replaced == null ? '' : html_entity_decode($replaced, ENT_QUOTES, 'UTF-8');
         }
+
         return $string ?? '';
     }
+
     /**
-     * Right-tail a string
+     * Right-tail a string.
      *
      * Appends a string with a tail string, without repeats.
      *
      * @param string $string
-     * @param string $tail String tail.
+     * @param string $tail   string tail
      *
-     * @return string Right-tailed string.
+     * @return string right-tailed string
      */
-    public static function rtail(string $string, string $tail) : string
+    public static function rtail(string $string, string $tail): string
     {
-        return rtrim($string, $tail) . $tail;
+        return rtrim($string, $tail).$tail;
     }
+
     /**
-     * Left-tail a string
+     * Left-tail a string.
      *
      * Prepends a string with a tail string, without repeats.
      *
      * @param string $string
-     * @param string $tail String tail.
+     * @param string $tail   string tail
      *
-     * @return string Right-tailed string.
+     * @return string right-tailed string
      */
-    public static function ltail(string $string, string $tail) : string
+    public static function ltail(string $string, string $tail): string
     {
-        return $tail . ltrim($string, $tail);
+        return $tail.ltrim($string, $tail);
     }
 }

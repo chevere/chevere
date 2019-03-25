@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,9 +9,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Chevereto\Core\Utils;
 
-use Exception;
+namespace Chevereto\Core\Utils;
 
 // $var = 'inbox@rodolfoberrios.com es mi correo y http://rodolfoberrios.com mi URL y www.wea.com es una weaita';
 // $res = new Linkify($var);
@@ -31,51 +32,59 @@ class Linkify
     public $safe = true;
     public $callback;
     public $attributes = [];
+
     /**
      * (string) $object will cast exec().
      */
-    public function __tostring()
+    public function __toString()
     {
         if ($this->return == null) {
             $this->exec();
         }
+
         return $this->return;
     }
+
     /**
      * Convert applicable URLs and emails from into clickable links.
      *
      * Inspired from https://github.com/misd-service-development/php-linkify
      *
-     * @param string $string Source text to linkify.
+     * @param string $string source text to linkify
      */
     public function __construct(string $string)
     {
         $this->string = $string;
     }
+
     /**
      * Set linkify callback callable.
      *
-     * @param callable $callable Callable.
+     * @param callable $callable callable
      *
      * @return self
      */
-    public function callback(callable $callable) : self
+    public function callback(callable $callable): self
     {
         $this->callback = $callable;
+
         return $this;
     }
+
     /**
      * Set linkify safe flag.
      *
-     * @param bool $boolean TRUE to set the safe flag (removes any dangerous chars).
+     * @param bool $boolean TRUE to set the safe flag (removes any dangerous chars)
      *
      * @return self
      */
-    public function safe(bool $boolean) : self
+    public function safe(bool $boolean): self
     {
         $this->safe = $boolean;
+
         return $this;
     }
+
     /**
      * Set linkify link attributes.
      *
@@ -83,15 +92,17 @@ class Linkify
      *
      * @return self
      */
-    public function attributes(array $attributes) : self
+    public function attributes(array $attributes): self
     {
         $this->attributes = $attributes;
+
         return $this;
     }
+
     /**
      * Execute text linkify.
      */
-    public function exec() : void
+    public function exec(): void
     {
         $string = $this->string;
         $attr = null;
@@ -119,7 +130,7 @@ class Linkify
         $chunks = preg_split('/(<.+?>)/is', $string, 0, PREG_SPLIT_DELIM_CAPTURE);
         $openTag = null;
         if (is_array($chunks)) {
-            for ($i=0; $i<count($chunks); $i++) {
+            for ($i = 0; $i < count($chunks); ++$i) {
                 if ($i % 2 === 0) { // even numbers are text
                     // Only process this chunk if there are no unclosed $ignoreTags
                     if (null === $openTag && isset($chunks[$i])) {
@@ -130,12 +141,12 @@ class Linkify
                     // Only process this tag if there are no unclosed $ignoreTags
                     if (null === $openTag) {
                         // Check whether this tag is contained in $ignoreTags and is not self-closing
-                        if (isset($chunks[$i]) && preg_match("`<(" . implode('|', $ignoreTags) . ").*(?<!/)>$`is", $chunks[$i], $matches)) {
+                        if (isset($chunks[$i]) && preg_match('`<('.implode('|', $ignoreTags).').*(?<!/)>$`is', $chunks[$i], $matches)) {
                             $openTag = $matches[1];
                         }
                     } else {
                         // Otherwise, check whether this is the closing tag for $openTag.
-                        if (isset($chunks[$i]) && preg_match('`</\s*' . $openTag . '>`i', $chunks[$i], $matches)) {
+                        if (isset($chunks[$i]) && preg_match('`</\s*'.$openTag.'>`i', $chunks[$i], $matches)) {
                             $openTag = null;
                         }
                     }
@@ -144,15 +155,16 @@ class Linkify
             $this->return = implode($chunks);
         }
     }
+
     /**
      * Linkify email addresses.
      *
-     * @param string $string Source text to linkify.
-     * @param array  $options Associative options (attributes => callback fn).
+     * @param string $string  source text to linkify
+     * @param array  $options associative options (attributes => callback fn)
      *
-     * @return string HTML code with clickable links.
+     * @return string HTML code with clickable links
      */
-    public static function emails(string $string, array $options = [self::ATTRIBUTES => '']) : ?string
+    public static function emails(string $string, array $options = [self::ATTRIBUTES => '']): ?string
     {
         $pattern = '~(?xi)
             \b
@@ -164,7 +176,7 @@ class Linkify
             [A-Z]{2,4}       # Something
         ~';
         $callback = function ($match) use ($options) {
-            $href = 'mailto:' . $match[0];
+            $href = 'mailto:'.$match[0];
             $link = $match[0];
             if (isset($options[static::CALLBACK])) {
                 $cb = $options[static::CALLBACK]($href, $link);
@@ -172,19 +184,22 @@ class Linkify
                     return $cb;
                 }
             }
-            return '<a href="' .$href . '"' . $options[static::ATTRIBUTES] . '>' . $link . '</a>';
+
+            return '<a href="'.$href.'"'.$options[static::ATTRIBUTES].'>'.$link.'</a>';
         };
+
         return preg_replace_callback($pattern, $callback, $string);
     }
+
     /**
      * Linkify URLs.
      *
-     * @param string $string Source text to linkify.
-     * @param array  $options Options (Link attributes + callback fn).
+     * @param string $string  source text to linkify
+     * @param array  $options options (Link attributes + callback fn)
      *
-     * @return string HTML code with clickable links.
+     * @return string HTML code with clickable links
      */
-    public static function URLs(string $string, array $options = [self::ATTRIBUTES => '']) : ?string
+    public static function URLs(string $string, array $options = [self::ATTRIBUTES => '']): ?string
     {
         $pattern = '~(?xi)
             (?:
@@ -209,9 +224,9 @@ class Linkify
         ~';
         $callback = function ($match) use ($options) {
             $link = $match[0];
-            $pattern = "~^(ht|f)tps?://~";
+            $pattern = '~^(ht|f)tps?://~';
             if (0 === preg_match($pattern, $match[0])) {
-                $match[0] = 'http://' . $match[0];
+                $match[0] = 'http://'.$match[0];
             }
             if (isset($options[static::CALLBACK])) {
                 $cb = $options[static::CALLBACK]($match[0], $link);
@@ -219,8 +234,10 @@ class Linkify
                     return $cb;
                 }
             }
-            return '<a href="' . $match[0] . '"' . $options[static::ATTRIBUTES] . '>' . $link . '</a>';
+
+            return '<a href="'.$match[0].'"'.$options[static::ATTRIBUTES].'>'.$link.'</a>';
         };
+
         return preg_replace_callback($pattern, $callback, $string);
     }
 }

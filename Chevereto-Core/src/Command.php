@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,6 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
@@ -44,6 +47,7 @@ class Command extends SymfonyCommand implements Interfaces\CommandInterface
         $this->cli = $cli;
         parent::__construct();
     }
+
     /**
      * Execute the command before "app".
      */
@@ -54,18 +58,20 @@ class Command extends SymfonyCommand implements Interfaces\CommandInterface
         // $this->io = new SymfonyStyle($input, $output);
         $this->getCli()->setCommand($this);
     }
+
     /**
      * Callback contains the actual command in-app instructions.
      */
     public function callback(App $app)
     {
         // TODO: Deberia ser LogicException
-        throw new CoreException('You must override the '. __FUNCTION__ . '() method in the concrete command class.');
+        throw new CoreException('You must override the '.__FUNCTION__.'() method in the concrete command class.');
     }
+
     /**
      * Get cli.
      */
-    public function getCli() : Cli
+    public function getCli(): Cli
     {
         return $this->cli;
     }

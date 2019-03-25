@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -8,14 +10,12 @@
  * file that was distributed with this source code.
  */
 // OK
+
 namespace Chevereto\Core\Utils;
 
 use Chevereto\Core\Path;
-use Chevereto\Core\Utils\Str;
-
 use ReflectionObject;
 use ReflectionProperty;
-
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 /**
@@ -25,7 +25,7 @@ use JakubOnderka\PhpConsoleColor\ConsoleColor;
 class Dump
 {
     /**
-     * Variable types
+     * Variable types.
      */
     const TYPE_STRING = 'string';
     const TYPE_FLOAT = 'float';
@@ -46,49 +46,50 @@ class Dump
 
     /**
      * Default color palette for each type and thing used.
-     * [algo => color]
+     * [algo => color].
      */
     const PALETTE = [
-        self::TYPE_STRING    => '#e67e22', // orange
-        self::TYPE_FLOAT     => '#f1c40f', // yellow
-        self::TYPE_INTEGER   => '#f1c40f', // yellow
-        self::TYPE_BOOLEAN   => '#9b59b6', // purple
-        self::TYPE_NULL      => '#7f8c8d', // grey
-        self::TYPE_OBJECT    => '#e74c3c', // red
-        self::TYPE_ARRAY     => '#2ecc71', // green
-        self::_FILE          => null,
-        self::_CLASS         => '#3498db', // blue
-        self::_OPERATOR      => '#7f8c8d', // grey
-        self::_FUNCTION      => '#9b59b6', // purple
+        self::TYPE_STRING => '#e67e22', // orange
+        self::TYPE_FLOAT => '#f1c40f', // yellow
+        self::TYPE_INTEGER => '#f1c40f', // yellow
+        self::TYPE_BOOLEAN => '#9b59b6', // purple
+        self::TYPE_NULL => '#7f8c8d', // grey
+        self::TYPE_OBJECT => '#e74c3c', // red
+        self::TYPE_ARRAY => '#2ecc71', // green
+        self::_FILE => null,
+        self::_CLASS => '#3498db', // blue
+        self::_OPERATOR => '#7f8c8d', // grey
+        self::_FUNCTION => '#9b59b6', // purple
     ];
 
     /**
      * Default color palette for each type and thing used.
-     * [algo => color]
+     * [algo => color].
      */
     const CONSOLE_PALETTE = [
-        self::TYPE_STRING    => 'color_136', // yellow
-        self::TYPE_FLOAT     => 'color_136', // yellow
-        self::TYPE_INTEGER   => 'color_136', // yellow
-        self::TYPE_BOOLEAN   => 'color_127', // purple
-        self::TYPE_NULL      => 'color_245', // grey
-        self::TYPE_OBJECT    => 'color_167', // red
-        self::TYPE_ARRAY     => 'color_41', // green
-        self::_FILE          => null,
-        self::_CLASS         => 'color_147', // blue
-        self::_OPERATOR      => 'color_245', // grey
-        self::_FUNCTION      => 'color_127', // purple
+        self::TYPE_STRING => 'color_136', // yellow
+        self::TYPE_FLOAT => 'color_136', // yellow
+        self::TYPE_INTEGER => 'color_136', // yellow
+        self::TYPE_BOOLEAN => 'color_127', // purple
+        self::TYPE_NULL => 'color_245', // grey
+        self::TYPE_OBJECT => 'color_167', // red
+        self::TYPE_ARRAY => 'color_41', // green
+        self::_FILE => null,
+        self::_CLASS => 'color_147', // blue
+        self::_OPERATOR => 'color_245', // grey
+        self::_FUNCTION => 'color_127', // purple
     ];
+
     /**
      * Dumps information about a variable.
      *
-     * @param mixed $anything Anything.
-     * @param int $indent Left padding (spaces) for this entry.
-     * @param array $dontDump Array containing classes that won't get dumped.
+     * @param mixed $anything anything
+     * @param int   $indent   left padding (spaces) for this entry
+     * @param array $dontDump array containing classes that won't get dumped
      *
-     * @return string Parsed dump string.
+     * @return string parsed dump string
      */
-    public static function out($anything, int $indent = null, array $dontDump = []) : string
+    public static function out($anything, int $indent = null, array $dontDump = []): string
     {
         // Maybe improve this to support any circular reference?
         if (is_array($anything)) {
@@ -96,7 +97,7 @@ class Dump
         } else {
             $expression = $anything;
         }
-        
+
         if ($indent == null) {
             $indent = 0;
         }
@@ -117,22 +118,22 @@ class Dump
                 $indent++;
                 foreach ($expression as $k => $v) {
                     $operator = static::wrap(static::_OPERATOR, '=>');
-                    $val .= "\n$prefix " . htmlspecialchars((string) $k) . " $operator ";
+                    $val .= "\n$prefix ".htmlspecialchars((string) $k)." $operator ";
                     $aux = $v;
                     $isCircularRef = is_array($aux) && isset($aux[$k]) && $aux == $aux[$k];
                     if ($isCircularRef) {
-                        $val .= static::wrap(static::_OPERATOR, "(<i>circular array reference</i>)");
+                        $val .= static::wrap(static::_OPERATOR, '(<i>circular array reference</i>)');
                     } else {
                         $val .= static::out($aux, $indent, $dontDump);
                     }
                 }
-                $parentheses = 'size=' . count($expression);
+                $parentheses = 'size='.count($expression);
             break;
             case static::TYPE_OBJECT:
                 $indent++;
                 $reflection = new ReflectionObject($expression);
                 if (in_array($reflection->getName(), $dontDump)) {
-                    $val .= static::wrap(static::_OPERATOR, '<i>'. $reflection->getName() .'</i>');
+                    $val .= static::wrap(static::_OPERATOR, '<i>'.$reflection->getName().'</i>');
                     break;
                 }
                 $propertiesFiltered = [
@@ -157,7 +158,7 @@ class Dump
                     $isCircularRef = false;
                     $visibility = implode(' ', $properties[$k]['visibility'] ?? $properties['visibility']);
                     $operator = static::wrap(static::_OPERATOR, '->');
-                    $val .= "\n$prefix <i>$visibility</i> " . htmlspecialchars($k) . " $operator ";
+                    $val .= "\n$prefix <i>$visibility</i> ".htmlspecialchars($k)." $operator ";
                     $aux = $v['value'];
                     if (is_object($aux) && property_exists($aux, $k)) {
                         $r = new ReflectionObject($aux);
@@ -168,7 +169,7 @@ class Dump
                         }
                     }
                     if ($isCircularRef) {
-                        $val .= static::wrap(static::_OPERATOR, "(<i>circular object reference</i>)");
+                        $val .= static::wrap(static::_OPERATOR, '(<i>circular object reference</i>)');
                     } else {
                         $val .= static::out($aux, $indent, $dontDump);
                     }
@@ -183,7 +184,7 @@ class Dump
                 $is_string = is_string($expression);
                 $is_numeric = is_numeric($expression);
                 if ($is_string || $is_numeric) {
-                    $parentheses = 'length=' . strlen($is_numeric ? ((string) $expression) : $expression);
+                    $parentheses = 'length='.strlen($is_numeric ? ((string) $expression) : $expression);
                     // $val .= htmlspecialchars($expression);
                     $val .= strval($expression);
                 }
@@ -201,40 +202,45 @@ class Dump
         if (isset($parentheses) && strpos($parentheses, '=') !== false) {
             $parentheses = '<i>'.$parentheses.'</i>';
         }
+
         return strtr($template, [
-            '%type'	=> static::wrap($type, $type),
-            '%val'	=> $val,
+            '%type' => static::wrap($type, $type),
+            '%val' => $val,
             '%parentheses' => isset($parentheses) ? static::wrap(static::_OPERATOR, '('.$parentheses.')') : null,
         ]);
     }
+
     /**
      * Get color for palette key.
      *
-     * @param string $key Color palette key.
+     * @param string $key color palette key
      *
-     * @return string Color.
+     * @return string color
      */
-    public static function color(string $key) : ?string
+    public static function color(string $key): ?string
     {
         return php_sapi_name() == 'cli' ? static::CONSOLE_PALETTE[$key] ?? null : static::PALETTE[$key] ?? null;
     }
+
     /**
      * Wrap dump data into HTML.
      *
-     * @param string $key Algo.
-     * @param mixed $dump Dump data.
+     * @param string $key  algo
+     * @param mixed  $dump dump data
      *
-     * @return string Wrapped dump data.
+     * @return string wrapped dump data
      */
-    public static function wrap(string $key, $dump) : ?string
+    public static function wrap(string $key, $dump): ?string
     {
         $color = static::color($key);
         if (isset($color)) {
             if (php_sapi_name() == 'cli') {
                 $consoleColor = new ConsoleColor();
+
                 return $consoleColor->apply($color, $dump);
             }
-            return '<span style="color:' . $color . '">' . $dump . '</span>';
+
+            return '<span style="color:'.$color.'">'.$dump.'</span>';
         } else {
             return (string) $dump;
         }

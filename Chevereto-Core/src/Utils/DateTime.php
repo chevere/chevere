@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -8,6 +10,7 @@
  * file that was distributed with this source code.
  */
 // OK
+
 namespace Chevereto\Core\Utils;
 
 use Exception;
@@ -65,12 +68,12 @@ class DateTime extends \DateTime implements \DateTimeInterface
     // El pueblinski minski está morinski de hambrinski!
     const MATRIOSHKA = [
         self::UNIT_YEAR => 1,
-        self::UNIT_MONTH => 1/12,
-        self::UNIT_WEEK => 1/4,
-        self::UNIT_DAY => 1/7,
-        self::UNIT_HOUR => 1/24,
-        self::UNIT_MINUTE => 1/60,
-        self::UNIT_SECOND => 1/60,
+        self::UNIT_MONTH => 1 / 12,
+        self::UNIT_WEEK => 1 / 4,
+        self::UNIT_DAY => 1 / 7,
+        self::UNIT_HOUR => 1 / 24,
+        self::UNIT_MINUTE => 1 / 60,
+        self::UNIT_SECOND => 1 / 60,
     ];
 
     const MINUTE_SECONDS = 60;
@@ -89,43 +92,46 @@ class DateTime extends \DateTime implements \DateTimeInterface
         self::UNIT_MONTH => self::MONTH_SECONDS,
         self::UNIT_YEAR => self::YEAR_SECONDS,
     ];
+
     /**
      * Get datetime UTC ATOM (RFC3339).
      *
-     * @param string $format Date format to use.
+     * @param string $format date format to use
      *
-     * @return string Datetime UTC.
+     * @return string datetime UTC
      */
-    public static function getUTC(string $format=self::ATOM) : string
+    public static function getUTC(string $format = self::ATOM): string
     {
         return gmdate($format);
     }
+
     /**
      * Format datetime as MySQL datetime format.
      *
-     * @param string $datetime Timestamp.
+     * @param string $datetime timestamp
      *
-     * @return string Datetime MySQL (YYYY-MM-DD HH:MM:SS).
+     * @return string datetime MySQL (YYYY-MM-DD HH:MM:SS)
      */
-    public static function formatSQL(string $datetime = null) : string
+    public static function formatSQL(string $datetime = null): string
     {
         if ($datetime == null) {
             return static::getUTC(static::SQL);
         }
+
         return (new self($datetime))->format(static::SQL);
     }
+
     /**
      * Get time elapsed as a short-easy-to-read string.
      *
      * It will use time() to compare DateTime and it wull return a
      * time elapsed string like "2 days ago".
      *
-     * @param bool $full TRUE to return all the thing, FALSE to return short version.
+     * @param bool $full TRUE to return all the thing, FALSE to return short version
      *
-     * @return array Rounded human readable elapsed time.
-     *
+     * @return array rounded human readable elapsed time
      */
-    public function timeAgo(bool $full = false) : ?array
+    public function timeAgo(bool $full = false): ?array
     {
         $return = [];
         $now = new self();
@@ -152,7 +158,7 @@ class DateTime extends \DateTime implements \DateTimeInterface
         }
         // Round to the next magnitude unit
         $nextUnit = $keys[intval(array_search($magnitude, $keys)) + 1];
-        $nextVal = $nextUnit == null ? 0 : round($plusSecs/static::SECONDS_TABLE[$nextUnit], 0, PHP_ROUND_HALF_DOWN);
+        $nextVal = $nextUnit == null ? 0 : round($plusSecs / static::SECONDS_TABLE[$nextUnit], 0, PHP_ROUND_HALF_DOWN);
         if ($nextVal > 0) {
             // Rounded next value in current magnitude order
             $round = round($nextVal * static::SECONDS_TABLE[$nextUnit] / static::SECONDS_TABLE[$magnitude], 1, PHP_ROUND_HALF_DOWN); // n.{1}
@@ -174,24 +180,26 @@ class DateTime extends \DateTime implements \DateTimeInterface
                 $return[$nextUnit] = $nextVal; // This adds the remaining timeperiod thing
             }
         }
+
         return $return; // Is this not what you expected to see?
     }
+
     /**
      * Returns the difference between two dates in the target time unit.
-     * Useful to compare datetimes in a given unit
+     * Useful to compare datetimes in a given unit.
      *
-     * @param string $datetime datetime.
-     * @param string $unit   Time unit (default 's') [s;i;h;d;w;m;y].
+     * @param string $datetime datetime
+     * @param string $unit     time unit (default 's') [s;i;h;d;w;m;y]
      *
-     * @return float Time diff between the two datetimes.
+     * @return float time diff between the two datetimes
      */
-    public function timeBetween(string $datetime, string $unit = self::UNIT_SECOND) : float
+    public function timeBetween(string $datetime, string $unit = self::UNIT_SECOND): float
     {
         if (!isset(static::SECONDS_TABLE[$unit])) {
-            throw new Exception("Unexpected unit <code>$unit</code>, you can only use one of the following units: <code>".implode(', ', static::UNITS) . '</code>');
+            throw new Exception("Unexpected unit <code>$unit</code>, you can only use one of the following units: <code>".implode(', ', static::UNITS).'</code>');
         }
         $then = new self($datetime);
         $diff = abs($then->getTimestamp() - $this->getTimestamp()); // In seconds
-        return $diff == 0 ? 0 : floatval($diff/static::SECONDS_TABLE[$unit]);
+        return $diff == 0 ? 0 : floatval($diff / static::SECONDS_TABLE[$unit]);
     }
 }

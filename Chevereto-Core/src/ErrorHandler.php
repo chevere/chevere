@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -13,20 +15,19 @@
 // TODO: Missing Server (HTML)
 // TODO: Missing Client (CLI)
 // TODO: Missing Server (CLI)
+
 namespace Chevereto\Core;
 
 use ErrorException;
 use ReflectionObject;
 use ReflectionProperty;
 use DateTimeZone;
-
 use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\FirePHPHandler;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -51,7 +52,7 @@ class ErrorHandler
     // null will read app/config.php. Any boolean value will override that
     const DEBUG = null;
     // null will use App\PATH_LOGS ? PATH_LOGS ? traverse
-    const PATH_LOGS = ROOT_PATH . App\PATH . 'var/logs/';
+    const PATH_LOGS = ROOT_PATH.App\PATH.'var/logs/';
     // Title with debug = false
     const NO_DEBUG_TITLE = 'Something went wrong';
     // Content with debug = false
@@ -64,7 +65,7 @@ class ErrorHandler
         border-top: 0;
     }';
     /**
-     * Stack template
+     * Stack template.
      *
      * HTML template for each stack entry
      *
@@ -88,7 +89,7 @@ class ErrorHandler
     const HTML_BODY_NO_DEBUG_TEMPLATE = '<main><div><div class="t t--scream">%title%</div>%content%<p class="fine-print">%datetimeUtc% • %id%</p></div></main>';
     // HTML body for debug = true
     const HTML_BODY_DEBUG_TEMPLATE = '<main class="main--stack"><div>%content%<div class="c note user-select-none"><b>Note:</b> This message is being displayed because of active debug mode. Remember to turn this off when going production by editing <code>%configFilePath%</code></div></div></main>';
-    const CONFIG_FILE_PATH = App\PATH . 'config.php';
+    const CONFIG_FILE_PATH = App\PATH.'config.php';
     const COLUMNS = 120;
     // Line break
     const HR = '<div class="hr"><span>------------------------------------------------------------</span></div>';
@@ -103,7 +104,7 @@ class ErrorHandler
     const SECTION_SERVER = 'server';
 
     /**
-     * Verbose aware console sections
+     * Verbose aware console sections.
      */
     const CONSOLE_TABLE = [
         self::SECTION_TITLE => OutputInterface::VERBOSITY_QUIET,
@@ -117,45 +118,45 @@ class ErrorHandler
     ];
     /**
      * PHP error to monolog table
-     * code => [monolog code, title]
+     * code => [monolog code, title].
      */
     const ERROR_TABLE = [
-        E_ERROR             => 'Fatal error',
-        E_WARNING           => 'Warning',
-        E_PARSE             => 'Parse error',
-        E_NOTICE            => 'Notice',
-        E_CORE_ERROR        => 'Core error',
-        E_CORE_WARNING      => 'Core warning',
-        E_COMPILE_ERROR     => 'Compile error',
-        E_COMPILE_WARNING   => 'Compile warning',
-        E_USER_ERROR        => 'Fatal error',
-        E_USER_WARNING      => 'Warning',
-        E_USER_NOTICE       => 'Notice',
-        E_STRICT            => 'Strict standars',
+        E_ERROR => 'Fatal error',
+        E_WARNING => 'Warning',
+        E_PARSE => 'Parse error',
+        E_NOTICE => 'Notice',
+        E_CORE_ERROR => 'Core error',
+        E_CORE_WARNING => 'Core warning',
+        E_COMPILE_ERROR => 'Compile error',
+        E_COMPILE_WARNING => 'Compile warning',
+        E_USER_ERROR => 'Fatal error',
+        E_USER_WARNING => 'Warning',
+        E_USER_NOTICE => 'Notice',
+        E_STRICT => 'Strict standars',
         E_RECOVERABLE_ERROR => 'Recoverable error',
-        E_DEPRECATED        => 'Deprecated',
-        E_USER_DEPRECATED   => 'Deprecated',
+        E_DEPRECATED => 'Deprecated',
+        E_USER_DEPRECATED => 'Deprecated',
     ];
     /**
      * PHP error code LogLevel table
-     * Taken from Monolog\ErrorHandler (defaultErrorLevelMap)
+     * Taken from Monolog\ErrorHandler (defaultErrorLevelMap).
      */
-    const PHP_LOG_LEVEL  = [
-        E_ERROR             => LogLevel::CRITICAL,
-        E_WARNING           => LogLevel::WARNING,
-        E_PARSE             => LogLevel::ALERT,
-        E_NOTICE            => LogLevel::NOTICE,
-        E_CORE_ERROR        => LogLevel::CRITICAL,
-        E_CORE_WARNING      => LogLevel::WARNING,
-        E_COMPILE_ERROR     => LogLevel::ALERT,
-        E_COMPILE_WARNING   => LogLevel::WARNING,
-        E_USER_ERROR        => LogLevel::ERROR,
-        E_USER_WARNING      => LogLevel::WARNING,
-        E_USER_NOTICE       => LogLevel::NOTICE,
-        E_STRICT            => LogLevel::NOTICE,
+    const PHP_LOG_LEVEL = [
+        E_ERROR => LogLevel::CRITICAL,
+        E_WARNING => LogLevel::WARNING,
+        E_PARSE => LogLevel::ALERT,
+        E_NOTICE => LogLevel::NOTICE,
+        E_CORE_ERROR => LogLevel::CRITICAL,
+        E_CORE_WARNING => LogLevel::WARNING,
+        E_COMPILE_ERROR => LogLevel::ALERT,
+        E_COMPILE_WARNING => LogLevel::WARNING,
+        E_USER_ERROR => LogLevel::ERROR,
+        E_USER_WARNING => LogLevel::WARNING,
+        E_USER_NOTICE => LogLevel::NOTICE,
+        E_STRICT => LogLevel::NOTICE,
         E_RECOVERABLE_ERROR => LogLevel::ERROR,
-        E_DEPRECATED        => LogLevel::NOTICE,
-        E_USER_DEPRECATED   => LogLevel::NOTICE,
+        E_DEPRECATED => LogLevel::NOTICE,
+        E_USER_DEPRECATED => LogLevel::NOTICE,
     ];
     /**
      * You can bind any of these by turning $propName into %propName% in your
@@ -198,7 +199,7 @@ class ErrorHandler
     public $hr; // HR
 
     /**
-     * Protected properties won't be applied on templates
+     * Protected properties won't be applied on templates.
      */
     protected $isXmlHttpRequest;
     protected $exception;
@@ -214,9 +215,9 @@ class ErrorHandler
     protected $logger;
     protected $headers;
     protected $consoleSections;
-    
+
     /**
-     * Exception handler
+     * Exception handler.
      *
      * Turns exceptions into printable messages, both HTML and error log.
      *
@@ -245,10 +246,11 @@ class ErrorHandler
             ->setOutput()
             ->out();
     }
+
     /**
-     * Detects XMLHttpRequest (XHR)
+     * Detects XMLHttpRequest (XHR).
      */
-    protected function setXhrConditional() : self
+    protected function setXhrConditional(): self
     {
         // if (App::instance() && App::instance()->getRequest() instanceof App) {
         //     $this->isXmlHttpRequest = App::instance()->getRequest()->isXmlHttpRequest();
@@ -257,8 +259,9 @@ class ErrorHandler
         // }
         return $this;
     }
+
     /**
-     * Handle HTTP status
+     * Handle HTTP status.
      *
      * Sets HTTP status code 500 (if possible). Done here to issue HTTP 500 on
      * own class errors (syntax and whatnot).
@@ -271,64 +274,73 @@ class ErrorHandler
     //         Http::setStatusCode(500);
     //     }
     // }
+
     /**
-     * Sets signature properties (time + id)
+     * Sets signature properties (time + id).
      *
      * Assign properties used to identify the error incident.
      */
-    protected function setSignatureProperties() : self
+    protected function setSignatureProperties(): self
     {
         $this->datetimeUtc = Utils\DateTime::getUTC();
         $this->timestamp = @strtotime($this->datetimeUtc);
         $this->id = uniqid();
+
         return $this;
     }
+
     /**
-     * Sets constant properties from const values
+     * Sets constant properties from const values.
      */
-    protected function setConstantProperties() : self
+    protected function setConstantProperties(): self
     {
         // Set these directly from const
         $this->configFilePath = static::CONFIG_FILE_PATH;
         $this->css = static::CSS;
         $this->hr = static::HR;
+
         return $this;
     }
-    protected function setLogProperties() : self
+
+    protected function setLogProperties(): self
     {
         $this->setLogDateFormat();
         $this->setLogFilename();
+
         return $this;
     }
+
     /**
-     * Set debug flag from const DEBUG > Config
+     * Set debug flag from const DEBUG > Config.
      *
      * If debug is enabled, all the error information will be printed.
      * If disabled, it will hide the error content.
      * In any case, this class should always logs everything into the error log.
      */
-    protected function setLogDateFormat(string $format = null) : void
+    protected function setLogDateFormat(string $format = null): void
     {
         // $this->logDateFormat = static::DEFAULT_LOG_DATE_FORMAT ?? $format ?? (Config::has('logDateFormat') ? Config::get('logDateFormat') : static::DEFAULT_LOG_DATE_FORMAT);
         // FIXME: Configurable log format?
         $this->logDateFormat = $format ?? static::DEFAULT_LOG_DATE_FORMAT;
     }
+
     /**
-     * Sets log filename
+     * Sets log filename.
      *
      * Both App and Chevereto\Core logs to app/var/logs.
      */
-    protected function setLogFilename(string $path = null) : void
+    protected function setLogFilename(string $path = null): void
     {
         if ($path == null) {
             $path = static::PATH_LOGS;
         }
         $path = Path::normalize($path);
-        $path = rtrim($path, '/') . '/';
+        $path = rtrim($path, '/').'/';
         $date = gmdate($this->logDateFormat, $this->timestamp);
-        $this->logFilename = $path . $this->loggerLevel . '/' . $date . $this->timestamp . '_' . $this->id . '.log';
+        $this->logFilename = $path.$this->loggerLevel.'/'.$date.$this->timestamp.'_'.$this->id.'.log';
     }
-    protected function setLogger() : self
+
+    protected function setLogger(): self
     {
         $formatter = new LineFormatter(null, null, true, true);
         $handler = new StreamHandler($this->logFilename);
@@ -337,16 +349,18 @@ class ErrorHandler
         $this->logger->setTimezone(new DateTimeZone('UTC'));
         $this->logger->pushHandler($handler);
         $this->logger->pushHandler(new FirePHPHandler());
+
         return $this;
     }
+
     /**
-     * Set debug flag from const DEBUG > Config
+     * Set debug flag from const DEBUG > Config.
      *
      * If debug is enabled, all the error information will be printed.
      * If disabled, it will hide the error content.
      * In any case, this class should always logs everything into the error log.
      */
-    protected function setDebug() : self
+    protected function setDebug(): self
     {
         if (static::DEBUG === null) { // Set it from config
             // $debug = Config::has('debug') ? (bool) Config::get('debug') : false;
@@ -355,46 +369,53 @@ class ErrorHandler
             $debug = static::DEBUG;
         }
         $this->debug = $debug;
+
         return $this;
     }
-    
+
     /**
-     * Sets body class based on headers sent
+     * Sets body class based on headers sent.
      *
      * If headers have been sent, it will use display:block instead of
      * display:flex.
      */
-    protected function setBodyClass() : self
+    protected function setBodyClass(): self
     {
         $this->bodyClass = headers_sent() == false ? 'body--flex' : 'body--block';
+
         return $this;
     }
+
     /**
-     * Wraps text with hr
+     * Wraps text with hr.
      *
-     * @param string $text Text to wrap.
-     * @return string Wrapped text.
+     * @param string $text text to wrap
+     *
+     * @return string wrapped text
      */
-    protected function wrapTextHr(string $text) : string
+    protected function wrapTextHr(string $text): string
     {
-        return $this->hr . "\n" . $text . "\n" . $this->hr;
+        return $this->hr."\n".$text."\n".$this->hr;
     }
+
     /**
-     * Set arguments
+     * Set arguments.
      *
      * When called, the exception arguments are passed directly to this method.
      *
      * @see exceptionHandler
      */
-    protected function setArguments() : self
+    protected function setArguments(): self
     {
         $this->arguments = func_get_args();
+
         return $this;
     }
+
     /**
-     * Sets the exeption properties from the Exception object
+     * Sets the exeption properties from the Exception object.
      */
-    protected function setExceptionProperties() : self
+    protected function setExceptionProperties(): self
     {
         $this->exception = $this->arguments[0];
         $this->className = get_class($this->exception);
@@ -402,7 +423,7 @@ class ErrorHandler
             // Get rid of own namespace
             $this->className = Utils\Str::replaceFirst(CORE_NS_HANDLE, null, $this->className);
         }
-        $this->thrown = $this->className . ' thrown';
+        $this->thrown = $this->className.' thrown';
         if ($this->exception instanceof ErrorException) {
             $code = $this->exception->getSeverity();
             $e_type = $code;
@@ -416,21 +437,23 @@ class ErrorHandler
         $this->message = $this->exception->getMessage();
         $this->file = Path::normalize($this->exception->getFile());
         $this->line = Path::normalize((string) $this->exception->getLine());
+
         return $this;
     }
+
     /**
      * Sets the server properties from $_SERVER.
      */
-    protected function setServerProperties() : self
+    protected function setServerProperties(): self
     {
         // $this->url = Http::requestUrl();
         $map = [
-            'serverPort'        => 'SERVER_PORT',
-            'clientUserAgent'   => 'HTTP_USER_AGENT',
-            'requestMethod'     => 'REQUEST_METHOD',
-            'serverName'        => 'SERVER_NAME',
-            'serverProtocol'    => 'SERVER_PROTOCOL',
-            'serverSoftware'    => 'SERVER_SOFTWARE',
+            'serverPort' => 'SERVER_PORT',
+            'clientUserAgent' => 'HTTP_USER_AGENT',
+            'requestMethod' => 'REQUEST_METHOD',
+            'serverName' => 'SERVER_NAME',
+            'serverProtocol' => 'SERVER_PROTOCOL',
+            'serverSoftware' => 'SERVER_SOFTWARE',
         ];
         $app = App::instance();
 
@@ -451,13 +474,14 @@ class ErrorHandler
                 }
             }
         }
-        
+
         return $this;
     }
+
     /**
      * Generate JSON response.
      */
-    protected function setJsonOutput() : void
+    protected function setJsonOutput(): void
     {
         $json = new Json();
         $this->headers = array_merge($this->headers, Json::CONTENT_TYPE);
@@ -472,7 +496,7 @@ class ErrorHandler
                 unset($log['filename']);
             break;
             case 1:
-                $response[0] = $this->thrown . ' in ' . $this->getTableValue('file') . ':' . $this->getTableValue('line');
+                $response[0] = $this->thrown.' in '.$this->getTableValue('file').':'.$this->getTableValue('line');
                 $error = [];
                 foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
                     $error[$v] = $this->getTableValue($v);
@@ -484,10 +508,11 @@ class ErrorHandler
         $json->setResponse(...$response);
         $this->output = (string) $json; // printable json string
     }
+
     /**
      * Set stacks from exception trace. This class is CLI aware.
      */
-    protected function setStack() : self
+    protected function setStack(): self
     {
         $richStack = [];
         $plainStack = [];
@@ -506,13 +531,13 @@ class ErrorHandler
             $richArgsString = null;
             if (isset($frame['args']) && is_array($frame['args'])) {
                 foreach ($frame['args'] as $k => $v) {
-                    $aux = 'Arg#' . ($k+1) . ' ';
-                    $plainArgs[] = $aux . Utils\DumpPlain::out($v, null, [App::class]);
-                    $richArgs[] = $aux . Utils\Dump::out($v, null, [App::class]);
+                    $aux = 'Arg#'.($k + 1).' ';
+                    $plainArgs[] = $aux.Utils\DumpPlain::out($v, null, [App::class]);
+                    $richArgs[] = $aux.Utils\Dump::out($v, null, [App::class]);
                 }
                 if ($plainArgs) {
-                    $plainArgsString = "\n" . implode("\n", $plainArgs);
-                    $richArgsString = "\n" . implode("\n", $richArgs);
+                    $plainArgsString = "\n".implode("\n", $plainArgs);
+                    $richArgsString = "\n".implode("\n", $richArgs);
                 }
             }
             if (isset($frame['class']) && Utils\Str::startsWith(Utils\Dump::ANON_CLASS, $frame['class'])) {
@@ -522,7 +547,7 @@ class ErrorHandler
                 $frame['line'] = null;
             }
             if ($frame['function'] == Core::namespaced('autoloader')) {
-                $frame['file'] = $frame['file'] ?? (PATH . 'autoloader.php');
+                $frame['file'] = $frame['file'] ?? (PATH.'autoloader.php');
             }
             if (isset($frame['file']) && Utils\Str::contains('\\', $frame['file'])) {
                 $frame['file'] = Path::normalize($frame['file']);
@@ -532,7 +557,7 @@ class ErrorHandler
                 '%i%' => $i,
                 '%f%' => $frame['file'] ?? null,
                 '%l%' => $frame['line'] ?? null,
-                '%fl%' => isset($frame['file']) ? ($frame['file'] . ':' . $frame['line']) : null,
+                '%fl%' => isset($frame['file']) ? ($frame['file'].':'.$frame['line']) : null,
                 '%c%' => $frame['class'] ?? null,
                 '%t%' => $frame['type'] ?? null,
                 '%m%' => $frame['function'],
@@ -557,32 +582,35 @@ class ErrorHandler
             }
             $plainStack[] = strtr(static::HTML_STACK_TEMPLATE, $plainTable);
             $richStack[] = strtr(static::HTML_STACK_TEMPLATE, $richTable);
-            $i++;
+            ++$i;
         }
-        $glue = "\n" . $this->hr . "\n";
+        $glue = "\n".$this->hr."\n";
         $this->consoleStack = strip_tags(implode($glue, $consoleStack));
         $this->richStack = $this->wrapTextHr(implode($glue, $richStack));
         $this->plainStack = $this->wrapTextHr(implode($glue, $plainStack));
+
         return $this;
     }
+
     /**
      * Set rich content section.
      *
-     * @param string $key Content section key.
-     * @param array $section Section content [title, content].
+     * @param string $key     content section key
+     * @param array  $section section content [title, content]
      */
-    protected function setRichContentSection(string $key, array $section) : void
+    protected function setRichContentSection(string $key, array $section): void
     {
         $section[0] = Utils\Str::replaceFirst('# ', '<span class="hide"># </span>', $section[0]);
         $this->richContentSections[$key] = $section;
     }
+
     /**
      * Set plain content section.
      *
-     * @param string $key Content section key.
-     * @param array $section Section content [title, content].
+     * @param string $key     content section key
+     * @param array  $section section content [title, content]
      */
-    protected function setPlainContentSection(string $key, array $section) : void
+    protected function setPlainContentSection(string $key, array $section): void
     {
         $this->plainContentSections[$key] = $section;
     }
@@ -590,25 +618,26 @@ class ErrorHandler
     /**
      * Set content section (CLI).
      *
-     * @param string $key Console section key.
-     * @param array $section Section content [title, <content>].
+     * @param string $key     console section key
+     * @param array  $section section content [title, <content>]
      */
-    protected function setConsoleSection(string $key, array $section) : void
+    protected function setConsoleSection(string $key, array $section): void
     {
         $section = array_map(function (string $value) {
             return strip_tags(html_entity_decode($value));
         }, $section);
         $this->consoleSections[$key] = $section;
     }
+
     /**
      * Sets content sections. This function is CLI aware.
      */
-    protected function setContentSections() : self
+    protected function setContentSections(): self
     {
         // Plain (txt) is the default "always do" format.
         $plain = [
             static::SECTION_TITLE => ['%title% <span>in&nbsp;%file%:%line%</span>'],
-            static::SECTION_MESSAGE => ['# Message', '%message%' . ($this->code ? ' [Code #%code%]' : null)],
+            static::SECTION_MESSAGE => ['# Message', '%message%'.($this->code ? ' [Code #%code%]' : null)],
             static::SECTION_TIME => ['# Time', '%datetimeUtc% [%timestamp%]'],
         ];
         $plain[static::SECTION_ID] = ['# Incident ID:%id%', 'Logged at %logFilename%'];
@@ -643,38 +672,44 @@ class ErrorHandler
                 $this->setRichContentSection($keyString, $v);
             }
         }
+
         return $this;
     }
+
     /**
-     * Sets content properties
+     * Sets content properties.
      *
      * Basically sets title and message.
      */
-    protected function setContentProperties() : self
+    protected function setContentProperties(): self
     {
         $this->title = $this->thrown;
         $this->message = nl2br($this->message);
+
         return $this;
     }
+
     /**
-     * Pass $GLOBALS to content sections
+     * Pass $GLOBALS to content sections.
      */
-    protected function appendContentGlobals() : self
+    protected function appendContentGlobals(): self
     {
         foreach (['GET', 'POST', 'FILES', 'COOKIE', 'SESSION', 'SERVER'] as $v) {
-            $k = '_'. $v;
+            $k = '_'.$v;
             $v = isset($GLOBALS[$k]) ? $GLOBALS[$k] : null;
             if ($v) {
-                $this->setRichContentSection($k, ['$' . $k, $this->wrapTextHr('<pre>' . Utils\Dump::out($v) . '</pre>')]);
-                $this->setPlainContentSection($k, ['$' . $k, strip_tags($this->wrapTextHr(Utils\DumpPlain::out($v)))]);
+                $this->setRichContentSection($k, ['$'.$k, $this->wrapTextHr('<pre>'.Utils\Dump::out($v).'</pre>')]);
+                $this->setPlainContentSection($k, ['$'.$k, strip_tags($this->wrapTextHr(Utils\DumpPlain::out($v)))]);
             }
         }
+
         return $this;
     }
+
     /**
-     * Generate the content template from content sections
+     * Generate the content template from content sections.
      */
-    protected function generateContentTemplate() : self
+    protected function generateContentTemplate(): self
     {
         $sections_length = count($this->plainContentSections);
         $i = 0;
@@ -682,59 +717,63 @@ class ErrorHandler
             $richSection = $this->richContentSections[$k] ?? null;
             $section_length = count($plainSection);
             if ($i == 0 || isset($plainSection[1])) {
-                $this->richContentTemplate .= '<div class="t' . ($i == 0 ? ' t--scream' : null) . '">' . $richSection[0] . '</div>';
+                $this->richContentTemplate .= '<div class="t'.($i == 0 ? ' t--scream' : null).'">'.$richSection[0].'</div>';
                 $this->plainContentTemplate .= html_entity_decode($plainSection[0]);
                 if ($i == 0) {
-                    $this->richContentTemplate .= "\n" . '<div class="hide">' . str_repeat('=', static::COLUMNS) . '</div>';
-                    $this->plainContentTemplate .= "\n" . str_repeat('=', static::COLUMNS);
+                    $this->richContentTemplate .= "\n".'<div class="hide">'.str_repeat('=', static::COLUMNS).'</div>';
+                    $this->plainContentTemplate .= "\n".str_repeat('=', static::COLUMNS);
                 }
             }
             if ($i > 0) {
                 $j = $section_length == 1 ? 0 : 1;
-                for ($j; $j<$section_length; $j++) {
+                for ($j; $j < $section_length; ++$j) {
                     if ($section_length > 1) {
                         $this->richContentTemplate .= "\n";
                         $this->plainContentTemplate .= "\n";
                     }
-                    $this->richContentTemplate .= '<div class="c">' . $richSection[$j] . '</div>';
+                    $this->richContentTemplate .= '<div class="c">'.$richSection[$j].'</div>';
                     $this->plainContentTemplate .= $plainSection[$j];
                 }
             }
-            if ($i+1 < $sections_length) {
-                $this->richContentTemplate .= "\n" . '<br>' . "\n";
+            if ($i + 1 < $sections_length) {
+                $this->richContentTemplate .= "\n".'<br>'."\n";
                 $this->plainContentTemplate .= "\n\n";
             }
-            $i++;
+            ++$i;
         }
+
         return $this;
     }
+
     /**
-     * Set table value
+     * Set table value.
      *
      * Table stores the template placeholders and its value.
      *
-     * @param string $key Table key.
-     * @param mixed $value Value.
+     * @param string $key   table key
+     * @param mixed  $value value
      */
-    protected function setTableValue(string $key, $value) : void
+    protected function setTableValue(string $key, $value): void
     {
         $this->table["%$key%"] = $value;
     }
+
     /**
-     * Get table value
+     * Get table value.
      *
      * Retrieve a value stored in the table.
      *
-     * @param string $key Table key.
+     * @param string $key table key
      */
     protected function getTableValue(string $key)
     {
         return $this->table["%$key%"] ?? null;
     }
+
     /**
-     * Parse content template with properties
+     * Parse content template with properties.
      */
-    protected function parseContentTemplate() : self
+    protected function parseContentTemplate(): self
     {
         $properties = (new ReflectionObject($this))->getProperties(ReflectionProperty::IS_PUBLIC);
         foreach ($properties as $property) {
@@ -743,12 +782,14 @@ class ErrorHandler
         $this->content = strtr($this->richContentTemplate, $this->table);
         $this->plainContent = strtr($this->plainContentTemplate, $this->table);
         $this->setTableValue('content', $this->content);
+
         return $this;
     }
+
     /**
-     * Set HTML output
+     * Set HTML output.
      */
-    protected function setHtmlOutput() : void
+    protected function setHtmlOutput(): void
     {
         switch ($this->debug) {
             default:
@@ -765,10 +806,11 @@ class ErrorHandler
         $this->setTableValue('body', strtr($bodyTemplate, $this->table));
         $this->output = strtr(static::HTML_TEMPLATE, $this->table);
     }
+
     /**
-     * Set console output
+     * Set console output.
      */
-    protected function setConsoleOutput() : void
+    protected function setConsoleOutput(): void
     {
         foreach ($this->consoleSections as $k => $v) {
             if ($k == 'title') {
@@ -786,10 +828,11 @@ class ErrorHandler
         }
         Console::io()->writeln('');
     }
+
     /**
-     * Set output property
+     * Set output property.
      */
-    protected function setOutput() : self
+    protected function setOutput(): self
     {
         $this->headers = [];
         if ($this->isXmlHttpRequest == true) {
@@ -801,12 +844,14 @@ class ErrorHandler
                 $this->setHtmlOutput();
             }
         }
+
         return $this;
     }
+
     /**
-     * Prints output HTTP (HTML+JSON)
+     * Prints output HTTP (HTML+JSON).
      */
-    protected function out() : void
+    protected function out(): void
     {
         if ($this->isXmlHttpRequest) {
             $response = new JsonResponse();
@@ -821,53 +866,59 @@ class ErrorHandler
         }
         $response->send();
     }
+
     /**
-     * Writes error log (monolog)
+     * Writes error log (monolog).
      */
-    protected function loggerExec() : self
+    protected function loggerExec(): self
     {
         $log = strip_tags($this->plainContent);
-        $log .= "\n\n" . str_repeat('=', static::COLUMNS);
+        $log .= "\n\n".str_repeat('=', static::COLUMNS);
         $this->logger->log($this->loggerLevel, $log);
+
         return $this;
     }
+
     /**
      * Returns the error type.
      *
-     * @param int $code PHP error code.
+     * @param int $code PHP error code
      *
-     * @return string Error type (string), null if the error code doesn't match
-     * any error type.
+     * @return string error type (string), null if the error code doesn't match
+     *                any error type
      */
-    protected static function getErrorByCode(int $code) : ?string
+    protected static function getErrorByCode(int $code): ?string
     {
         return static::ERROR_TABLE[$code];
     }
+
     /**
      * Returns the logger level.
      *
-     * @param int $code PHP error code.
+     * @param int $code PHP error code
      *
-     * @return string Logger level (string), null if the error code doesn't match
-     * any error type.
+     * @return string logger level (string), null if the error code doesn't match
+     *                any error type
      */
-    protected static function getLoggerLevel(int $code) : ?string
+    protected static function getLoggerLevel(int $code): ?string
     {
         return static::PHP_LOG_LEVEL[$code] ?? null;
     }
+
     /**
-     * Procedural-style error handler
+     * Procedural-style error handler.
      *
      * Turns every PHP error into an exception, for better error traceability.
      */
-    public static function error($severity, $message, $file, $line) : void
+    public static function error($severity, $message, $file, $line): void
     {
         throw new ErrorException($message, 0, $severity, $file, $line);
     }
+
     /**
-     * Procedural-syle exception handler
+     * Procedural-syle exception handler.
      */
-    public static function exception($e) : void
+    public static function exception($e): void
     {
         static::exceptionHandler(...func_get_args());
     }

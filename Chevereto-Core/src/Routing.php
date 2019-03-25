@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,10 +9,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
 use Exception;
-
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -25,29 +27,33 @@ class Routing
     protected $id;
     protected $matches = [];
     protected $set;
-    public function getRoutes() : Routes
+
+    public function getRoutes(): Routes
     {
         return $this->routes;
     }
-    public function getRoute() : Route
+
+    public function getRoute(): Route
     {
         return $this->route;
     }
+
     /**
      * Creates a new Routing object.
      *
-     * @param Routes $routes A Routes object.
+     * @param Routes $routes a Routes object
      */
     public function __construct(Routes $routes)
     {
         $this->routes = $routes;
     }
+
     /**
      * Get a routing group.
      *
-     * @param int $id The group id registered in the routing group table.
+     * @param int $id the group id registered in the routing group table
      */
-    protected function getGroup(int $id) : ?array
+    protected function getGroup(int $id): ?array
     {
         $group = $this->getRoutes()->getRouting()[$id];
         if ($group == null) {
@@ -57,17 +63,19 @@ class Routing
                     ->code('%c', __CLASS__)
             );
         }
+
         return $group;
     }
+
     /**
      * Get a route by its id.
      *
-     * @param int $id The Route id registered in the routing flat table.
+     * @param int $id the Route id registered in the routing flat table
      */
-    protected function getRouteById(int $id) : Route
+    protected function getRouteById(int $id): Route
     {
         $routeSome = $this->getRoutes()->getRoutes()[$id];
-        $route = is_object($routeSome) ? $routeSome : unserialize($routeSome, ['allowed_classes' => [__NAMESPACE__ . '\Route']]);
+        $route = is_object($routeSome) ? $routeSome : unserialize($routeSome, ['allowed_classes' => [__NAMESPACE__.'\Route']]);
         if ($route instanceof Route) {
             return $route;
         } else {
@@ -78,13 +86,14 @@ class Routing
             );
         }
     }
+
     /**
      * Resolve routing for the given path info.
      *
-     * @param string $pathInfo Request path.
-     * @param array $priorityOrder Resolution priority order.
+     * @param string $pathInfo      request path
+     * @param array  $priorityOrder resolution priority order
      */
-    protected function resolve(string $pathInfo, array $priorityOrder) : ?Route
+    protected function resolve(string $pathInfo, array $priorityOrder): ?Route
     {
         $requestTrim = ltrim($pathInfo, '/');
         $components = $requestTrim == null ? [] : explode('/', $requestTrim);
@@ -101,16 +110,19 @@ class Routing
                     $this->id = $prop[Routes::KEY_ROUTE_ID] ?? null;
                     $this->set = $prop[Routes::KEY_ROUTE_SET] ?? null;
                     $this->route = $this->getRouteById($this->id);
+
                     return $this->route;
                 }
             }
         }
+
         return null;
     }
+
     /**
      * Get wildcard matches.
      */
-    protected function getWildcardMatches() : ?array
+    protected function getWildcardMatches(): ?array
     {
         if ($this->route == null || $this->matches == null || $this->route->getWildcards() == null) {
             return null;
@@ -133,14 +145,16 @@ class Routing
         foreach ($this->matches as $k => $v) {
             $return[$this->route->getWildcards()[$map[$k]]] = $v;
         }
+
         return $return;
     }
+
     /**
      * Get controller filepath who satisfy the Request from the Routes.
      *
-     * @param Request $request Request object.
+     * @param Request $request request object
      */
-    public function getController(Request $request) : ?string
+    public function getController(Request $request): ?string
     {
         $pathInfo = $request->getPathInfo();
         // Fix pathInfo extra slashes
@@ -162,14 +176,16 @@ class Routing
             throw new RouterException('Not found', 404);
         }
     }
+
     /**
      * Get controller arguments [name => value].
      * TODO: Reflect controller, determine the actual passed values.
      */
-    public function getArguments() : ?array
+    public function getArguments(): ?array
     {
         return $this->getWildcardMatches();
     }
+
     // public function getRouting() : ?self
     // {
     //     return $this;

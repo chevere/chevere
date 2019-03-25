@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,23 +9,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
 use Chevereto\Core\Traits\DataTrait;
 use Chevereto\Core\Traits\PrintableTrait;
 
-use Exception;
-
 /**
  * $json = new Json($data);
- * $json->setResponse('message', 'code')->print();
+ * $json->setResponse('message', 'code')->print();.
  */
 // TODO: Use {json:api}
 class Json implements Interfaces\PrintableInterface
 {
     use DataTrait;
     use PrintableTrait;
-    
+
     const CODE = 'code';
     const DATA = 'data';
     const DESCRIPTION = 'description';
@@ -36,39 +37,43 @@ class Json implements Interfaces\PrintableInterface
     protected $callback;
     protected $status;
     protected $printable;
-    
+
     public $content;
     /**
-     * JSON data constructor
+     * JSON data constructor.
      *
-     * @param array $data Data array.
+     * @param array $data data array
      */
-    
+
     /**
      * Set the JSON response data.
      *
-     * @param string $message App response message.
-     * @param int $code App responde code.
+     * @param string $message app response message
+     * @param int    $code    app responde code
      *
-     * @return $this Chaineable.
+     * @return $this chaineable
      */
-    public function setResponse(string $message, int $code = null) : self
+    public function setResponse(string $message, int $code = null): self
     {
         $this->response = [static::CODE => $code, static::MESSAGE => $message];
+
         return $this;
     }
-    public function getResponse() : ?array
+
+    public function getResponse(): ?array
     {
         return $this->response;
     }
+
     public function setResponseKey(string $key, $var)
     {
         $this->response[$key] = $var;
     }
+
     /**
      * Executes the JSON format operation.
      */
-    public function exec() : void
+    public function exec(): void
     {
         $output = [
             static::RESPONSE => $this->response,

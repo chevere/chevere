@@ -1,4 +1,5 @@
 <?php
+
 namespace Chevereto\Core;
 
 // Add route:
@@ -13,7 +14,6 @@ Route::bind('/cache/{user?}')
   ->name('cache');
 
 Route::bind('/test/{var0?}-{var1?}-{var2}', 'callables:index');
-
 
 // Get route:
 // Route::get('homepage')
@@ -36,7 +36,7 @@ Route::bind('/{dyn2}')
   ->name('dyn_route_2')
   ->methods([
     'GET' => 'callables:index',
-    'POST' => 'callables:index'
+    'POST' => 'callables:index',
   ])
   ->where('dyn2', '[0-9]+');
 

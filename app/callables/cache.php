@@ -1,18 +1,14 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Chevereto\Core;
 
 use App\User;
-use Chevereto\Core\CoreException;
-use Chevereto\Core\App;
-use Chevereto\Core\Response;
 use Chevereto\Core\Interfaces\RenderableInterface;
 use Chevereto\Core\Utils\Str;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
-
-return new class extends Controller /*implements RenderableInterface*/ {
+return new class() extends Controller /*implements RenderableInterface*/ {
     public function __invoke(User $user = null)
     {
         $this->getResponse()->val = 'val en invoke';
@@ -21,7 +17,7 @@ return new class extends Controller /*implements RenderableInterface*/ {
         // Modifica data en n lineas
         $response = $this->getResponse();
         $response->setData(['type' => 'articles', 'id' => $getString]);
-        
+
         return $this;
         // dd((string) $response);
         // ...validation...
@@ -36,9 +32,11 @@ return new class extends Controller /*implements RenderableInterface*/ {
         // $data = $this->getData();
         // dd($data);
     }
-    public function render() : ?string
+
+    public function render(): ?string
     {
         $response = $this->getResponse();
+
         return var_export($response->getData(), true);
     }
 };

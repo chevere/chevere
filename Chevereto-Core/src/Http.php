@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,6 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
 use Exception;
@@ -65,17 +68,18 @@ class Http
         505 => 'HTTP Version Not Supported',
         506 => 'Variant Also Negotiates',
         507 => 'Insufficient Storage',
-        510 => 'Not Extended'
+        510 => 'Not Extended',
     ];
+
     /**
      * Sets HTTP status code.
      *
      * @param int $code HTTP status code.
-     * TODO: GET RID OF THIS
+     *                  TODO: GET RID OF THIS
      *
-     * @throws Exception If $code is not a valid HTTP status code.
+     * @throws Exception if $code is not a valid HTTP status code
      */
-    public static function setStatusCode(int $code, bool $force = false) : void
+    public static function setStatusCode(int $code, bool $force = false): void
     {
         //FIXME: Deprecate usage, keep method.
         echo 'GET RADS';
@@ -107,25 +111,26 @@ class Http
     //     http_response_code($code);
     //     header($status, true, $code);
     }
+
     /**
      * Gets the HTTP header description corresponding to its code.
      *
-     * @param int $code HTTP status code.
+     * @param int $code HTTP status code
      *
-     * @return string HTTP status code description.
+     * @return string HTTP status code description
      */
-    public static function statusDescription(int $code) : string
+    public static function statusDescription(int $code): string
     {
         return static::STATUS_CODES[$code];
     }
+
     /**
      * Redirects to another URL.
      *
-     * @param string $to URL or App\URL relative path.
-     *
-     * @param int $status HTTP status code.
+     * @param string $to     URL or App\URL relative path
+     * @param int    $status HTTP status code
      */
-    public static function redirect(string $to, int $status = 301) : void
+    public static function redirect(string $to, int $status = 301): void
     {
         // FIXME: Deprecate?
         // if (!filter_var($to, FILTER_VALIDATE_URL)) {
@@ -140,35 +145,38 @@ class Http
         // header("Location: $url");
         // die();
     }
+
     /**
      * Stop execution with HTTP status code.
      *
-     * @param int $status HTTP status code.
+     * @param int $status HTTP status code
      */
-    public static function die(int $status) : void
+    public static function die(int $status): void
     {
         static::setStatusCode($status);
         die();
     }
+
     /**
-     * Detects if the actual request was made via XMLHttpRequest using $_SERVER
+     * Detects if the actual request was made via XMLHttpRequest using $_SERVER.
      *
-     * @return bool TRUE if the actual request was made via XHR.
+     * @return bool TRUE if the actual request was made via XHR
      */
-    public static function isXHR() : bool
+    public static function isXHR(): bool
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
     }
+
     /**
      * Get client remote address (client's IP).
      *
-     * @return string Client IP address.
+     * @return string client IP address
      */
-    public static function clientIp() : ?string
+    public static function clientIp(): ?string
     {
         $addr = null;
         if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            $addr =  !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : (!empty($_ENV['REMOTE_ADDR']) ? $_ENV['REMOTE_ADDR'] : $addr);
+            $addr = !empty($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : (!empty($_ENV['REMOTE_ADDR']) ? $_ENV['REMOTE_ADDR'] : $addr);
             $entries = preg_split('/[, ]/', $_SERVER['HTTP_X_FORWARDED_FOR']);
             if (is_array($entries) && reset($entries) != false) {
                 while (list(, $entry) = each($entries)) {
@@ -179,7 +187,7 @@ class Http
                                       '/^127\.0\.0\.1/',
                                       '/^192\.168\..*/',
                                       '/^172\.((1[6-9])|(2[0-9])|(3[0-1]))\..*/',
-                                      '/^10\..*/'];
+                                      '/^10\..*/', ];
                         $ip = preg_replace($privateIp, $addr, $ipList[1]);
                         if ($addr != $ip) { //  and !isset($_SERVER['HTTP_CF_CONNECTING_IP']
                             $addr = $ip;
@@ -192,16 +200,18 @@ class Http
             $remoteAddr = isset($_SERVER['HTTP_CF_CONNECTING_IP']) ? $_SERVER['HTTP_CF_CONNECTING_IP'] : $_SERVER['REMOTE_ADDR'];
             $addr = !empty($remoteAddr) ? $remoteAddr : (!empty($_ENV['REMOTE_ADDR']) ? $_ENV['REMOTE_ADDR'] : $addr);
         }
+
         return $addr;
     }
+
     /**
-     * Get request URL
+     * Get request URL.
      *
      * @param bool $configAware True if this should be app/config.php aware.
      *
-     * @return string Current URL.
+     * @return string current URL
      */
-    public static function requestUrl(bool $configAware = true) : string
+    public static function requestUrl(bool $configAware = true): string
     {
         // if ($configAware && Config::has(Config::HTTP_SCHEME)) {
         //     $scheme = Config::get(Config::HTTP_SCHEME);

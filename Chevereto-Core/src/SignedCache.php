@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,6 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
 use Exception;
@@ -45,70 +48,80 @@ class SignedCache
         // This class and the caller are always added to signerArray
         $this->signerArray = [Core::getClassFilename($this), debug_backtrace()[0]['file']];
     }
+
     /**
      * Sets the cache signature.
      *
-     * @param string $signature Signature string.
+     * @param string $signature signature string
      */
-    public function setSignature(string $signature) : self
+    public function setSignature(string $signature): self
     {
         $this->signature = $signature;
+
         return $this;
     }
+
     /**
-     * @param string $filename Signer file.
+     * @param string $filename signer file
      */
-    public function addSigner(string $filename) : self
+    public function addSigner(string $filename): self
     {
         $this->signerArray[] = $filename;
+
         return $this;
     }
+
     /**
      * Sets the filename to write the cache to.
      *
      * @param string $filename Basename of the file bla bla TODO: Check this
      */
-    public function setFilename(string $filename) : self
+    public function setFilename(string $filename): self
     {
         $this->filename = $filename;
         $dir = dirname($filename);
         $this->dir = Path::tailDir($dir);
+
         return $this;
     }
+
     /**
      * Sets the contents of the cache.
      *
-     * @param string $contents Contents to be cached.
+     * @param string $contents contents to be cached
      */
-    public function setContents($contents) : self
+    public function setContents($contents): self
     {
         $this->contents = $contents;
+
         return $this;
     }
+
     /**
      * Saves the cache.
      *
      * @throws Exception
      */
-    public function save() : void
+    public function save(): void
     {
         if ($this->signFilename == null) {
             $this->setSignFilename();
         }
-        $this->writer($this->filename, "<?php\n\nreturn " . var_export($this->contents, true) . ';');
+        $this->writer($this->filename, "<?php\n\nreturn ".var_export($this->contents, true).';');
         $filemtime = filemtime($this->filename);
         if ($filemtime == false) {
             throw new Exception('Unable to retrieve filemtime.');
         }
         $this->writer($this->signFilename, (string) $filemtime);
     }
+
     /**
-     * Cache writer
+     * Cache writer.
      *
-     * @param string $filename Filename to write.
-     * @param string $contents $contents Contents to write to filename.
+     * @param string $filename filename to write
+     * @param string $contents $contents Contents to write to filename
      */
-    protected function writer(string $filename, string $contents) : void
+    protected function writer(string $filename, string $contents): void
     {
         $fh = fopen($filename, 'w');
         if ($fh == false) {
@@ -135,12 +148,13 @@ class SignedCache
             (new OPcache($filename))->cache();
         }
     }
+
     /**
      * Check if cache signature contents (filemtime) matches the target filename filemtime.
      *
-     * @return bool TRUE if the cache exists.
+     * @return bool TRUE if the cache exists
      */
-    public function check() : bool
+    public function check(): bool
     {
         if ($this->signFilename == null) {
             $this->setSignFilename();
@@ -150,12 +164,14 @@ class SignedCache
         }
         $signFilemtime = file_get_contents($this->signFilename);
         $cacheFilemtime = filemtime($this->filename);
+
         return $signFilemtime == $cacheFilemtime;
     }
+
     /**
      * Set signature filename.
      */
-    protected function setSignFilename() : void
+    protected function setSignFilename(): void
     {
         $errors = [];
         $signatures = [];
@@ -171,18 +187,19 @@ class SignedCache
         }
         if ($errors) {
             // FIXME: Usar new Message()
-            $message = 'Missing file ' . implode('</code>, <code>', $errors);
+            $message = 'Missing file '.implode('</code>, <code>', $errors);
             throw new Exception($message);
         }
         $this->signature = implode('.', $signatures);
-        $this->signFilename = $this->dir . $this->getKey();
+        $this->signFilename = $this->dir.$this->getKey();
     }
+
     /**
      * Generates the cache key.
      *
-     * @return string A hash generated using several file-related signatures.
+     * @return string a hash generated using several file-related signatures
      */
-    protected function getKey() : string
+    protected function getKey(): string
     {
         $signerFilemtime = null;
         foreach ($this->signerArray as $file) {
@@ -195,27 +212,30 @@ class SignedCache
         }
         $app = App::instance();
         $appHash = $app->getHash();
-        return $this->hash($signerFilemtime . $this->signature . $appHash);
+
+        return $this->hash($signerFilemtime.$this->signature.$appHash);
     }
+
     /**
-     * Hashes a string using static::HASH_FUNCTION
+     * Hashes a string using static::HASH_FUNCTION.
      *
-     * @param string $string Target string to hash.
+     * @param string $string target string to hash
      *
-     * @return string Hashed string.
+     * @return string hashed string
      */
-    protected function hash(string $string) : string
+    protected function hash(string $string): string
     {
         return (static::HASH_FUNCTION)($string);
     }
+
     /**
      * Get a hashed representation of the file contents.
      *
-     * @param string $filename Target file path.
+     * @param string $filename target file path
      *
-     * @return string Hashed fle contents.
+     * @return string hashed fle contents
      */
-    protected function hashFile(string $filename) : string
+    protected function hashFile(string $filename): string
     {
         if ($fgc = file_get_contents($filename)) {
             return $this->hash($fgc);
@@ -223,12 +243,13 @@ class SignedCache
             throw new Exception('Unable to file_get_contents.');
         }
     }
+
     /**
      * Clear the cache by removing all files in the cache working directory.
      *
      * @throws Exception
      */
-    public function clear() : void
+    public function clear(): void
     {
         if (File::exists($this->dir, true) == false) {
             mkdir($this->dir);

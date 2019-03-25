@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -8,22 +10,21 @@
  * file that was distributed with this source code.
  */
 // OK? Cambiar a new Html(string)->toBBCode(), ->toMarkdown()
-namespace Chevereto\Core;
 
-use Exception;
+namespace Chevereto\Core;
 
 class Html
 {
     /**
      * Converts HTML code to BBCode.
      *
-     * @param string $html HTML code.
+     * @param string $html HTML code
      *
-     * @return string BBCode.
+     * @return string BBCode
      *
-     * @link http://kuikie.com/snippets/snippet.php/90-17/php-function-to-convert-bbcode-to-html
+     * @see http://kuikie.com/snippets/snippet.php/90-17/php-function-to-convert-bbcode-to-html
      */
-    public static function toBBCode(string $html) : string
+    public static function toBBCode(string $html): string
     {
         $htmltags = [
             '/\<b\>(.*?)\<\/b\>/is',
@@ -47,7 +48,7 @@ class Html
             '/\<em\>(.*?)\<\/em\>/is',
             '/\<a href=\"mailto:(.*?)\"(.*?)\>(.*?)\<\/a\>/is',
             '/\<a .*?href=\"(.*?)\"(.*?)\>http:\/\/(.*?)\<\/a\>/is',
-            '/\<a .*?href=\"(.*?)\"(.*?)\>(.*?)\<\/a\>/is'
+            '/\<a .*?href=\"(.*?)\"(.*?)\>(.*?)\<\/a\>/is',
         ];
         $bbtags = [
             '[b]$1[/b]',
@@ -71,7 +72,7 @@ class Html
             '[i]$1[/i]',
             '[email=$1]$3[/email]',
             '[url]$1[/url]',
-            '[url=$1]$3[/url]'
+            '[url=$1]$3[/url]',
         ];
         $html = str_replace("\n", ' ', $html);
         $ntext = preg_replace($htmltags, $bbtags, $html);
@@ -86,6 +87,7 @@ class Html
         }
         $ntext = strip_tags($ntext);
         $ntext = trim(html_entity_decode($ntext, ENT_QUOTES, 'UTF-8'));
+
         return $ntext;
     }
 }

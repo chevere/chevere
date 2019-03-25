@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,6 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
 use Exception;
@@ -18,9 +21,9 @@ class Session
     /**
      * A session start runtime.
      *
-     * @param Array $options Associative array of options (just like session_start).
+     * @param array $options associative array of options (just like session_start)
      */
-    public static function start(array $options = null) : void
+    public static function start(array $options = null): void
     {
         $sessionStatus = PHP_SESSION_DISABLED;
         if (is_callable('session_status')) {
@@ -28,10 +31,10 @@ class Session
         }
         switch ($sessionStatus) {
             case PHP_SESSION_DISABLED:
-                $errorMessage = "Unable to start a session because sessions are disabled in this server";
+                $errorMessage = 'Unable to start a session because sessions are disabled in this server';
             break;
             case PHP_SESSION_ACTIVE:
-                $errorMessage = "Unable to start a new session because a session have been already started";
+                $errorMessage = 'Unable to start a new session because a session have been already started';
             break;
         }
         if (isset($errorMessage)) {
@@ -55,12 +58,13 @@ class Session
             );
         }
     }
+
     /**
      * Check session path read/write permission.
      *
-     * @param string $path Session path.
+     * @param string $path session path
      */
-    public static function checkPath(string $path) : void
+    public static function checkPath(string $path): void
     {
         if (File::exists($path) == false) {
             throw new Exception(
@@ -70,16 +74,16 @@ class Session
         $realPath = @realpath($path); // realpath on this path probably needs pre-webroot directory access
         if ($realPath) { // Check read/write on session path
             foreach (['read', 'write'] as $k) {
-                $fn = 'is_' . $k . 'able';
+                $fn = 'is_'.$k.'able';
                 if (is_callable($fn) && $fn($realPath) == false) {
                     $errors[] = $k;
                 }
             }
             if (isset($errors)) {
                 // FIXME: Usar new Message()
-                throw new Exception(strtr("Sessions are not working on this server due to missing %s permission on session path <b>%f</b>", [
-                    '%s' => '<b>' . implode('</b>/<b>', $errors) . '</b>',
-                    '%f' => $path
+                throw new Exception(strtr('Sessions are not working on this server due to missing %s permission on session path <b>%f</b>', [
+                    '%s' => '<b>'.implode('</b>/<b>', $errors).'</b>',
+                    '%f' => $path,
                 ]));
             }
         }

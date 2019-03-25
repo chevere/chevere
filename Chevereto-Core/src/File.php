@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,6 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
 //FIXME: Detect missing fileinfo extension
@@ -46,26 +49,27 @@ class File
      */
     const MIMETYPES = [
         'image/x-windows-bmp' => 'bmp',
-        'image/x-ms-bmp'      => 'bmp',
-        'image/bmp'           => 'bmp',
-        'image/gif'           => 'gif',
-        'image/pjpeg'         => 'jpg',
-        'image/jpeg'          => 'jpg',
-        'image/x-png'         => 'png',
-        'image/png'           => 'png',
-        'image/x-tiff'        => 'tiff',
-        'image/tiff'          => 'tiff',
-        'image/x-icon'        => 'ico',
-        'image/x-rgb'         => 'rgb',
+        'image/x-ms-bmp' => 'bmp',
+        'image/bmp' => 'bmp',
+        'image/gif' => 'gif',
+        'image/pjpeg' => 'jpg',
+        'image/jpeg' => 'jpg',
+        'image/x-png' => 'png',
+        'image/png' => 'png',
+        'image/x-tiff' => 'tiff',
+        'image/tiff' => 'tiff',
+        'image/x-icon' => 'ico',
+        'image/x-rgb' => 'rgb',
     ];
+
     /**
      * Gets the mimetype of a file.
      *
-     * @param string $filename File to read.
+     * @param string $filename file to read
      *
-     * @return string Mimetipe.
+     * @return string mimetipe
      */
-    public static function mimetype(string $filename) : ?string
+    public static function mimetype(string $filename): ?string
     {
         switch (true) {
             case defined('FILEINFO_MIME_TYPE') && function_exists('finfo_open'):
@@ -86,53 +90,58 @@ class File
             break;
         }
     }
+
     /**
      * Gets the corresponding file extension from a known mimetype string.
      *
-     * @param string $mimetype File mimetype string.
+     * @param string $mimetype file mimetype string
      *
-     * @return string File extension.
+     * @return string file extension
      */
-    public static function extensionFromMime(string $mimetype) : ?string
+    public static function extensionFromMime(string $mimetype): ?string
     {
         return static::MIMETYPES[$mimetype];
     }
+
     /**
      * Gets a file extension based on the pathinfo() function.
      *
-     * @param string $filename File path you wish to retrieve its extension.
+     * @param string $filename file path you wish to retrieve its extension
      *
-     * @return string File extension.
+     * @return string file extension
      */
-    public static function extension(string $filename) : ?string
+    public static function extension(string $filename): ?string
     {
         if ($mime = static::mimetype($filename)) {
             return static::extensionFromMime($mime);
         }
+
         return null;
     }
+
     /**
-     * Gets the name of a file from its file path
+     * Gets the name of a file from its file path.
      *
-     * @param string $filename File you wish to retrieve its name.
+     * @param string $filename file you wish to retrieve its name
      *
-     * @return string File name.
+     * @return string file name
      */
-    public static function name(string $filename) : string
+    public static function name(string $filename): string
     {
         return pathinfo($filename, PATHINFO_FILENAME);
     }
+
     /**
      * Get a safe file basename (sanitized).
      *
      * Based on the given options, this function generates a safe to use sanitized file name.
      *
-     * @param string $filename Candidate file name.
-     * @param array $options see (static::NAME_DEFAULT_OPTIONS)
+     * @param string $filename candidate file name
+     * @param array  $options  see (static::NAME_DEFAULT_OPTIONS)
      *
-     * @return string Sanitized file name.
+     * @return string sanitized file name
      */
-    public static function safeName(string $filename, array $options = []) : string
+    public static function safeName(string $filename, array $options = []): string
     {
         //FIXME: Rebuilt
         // if ($options != null) {
@@ -195,6 +204,7 @@ class File
         // }
         // return $name . '.' . $fileExtension;
     }
+
     /**
      * Gets an unique and available file name in the given file path.
      *
@@ -202,11 +212,11 @@ class File
      * file path by slightly randomizing the file basename.
      *
      * @param string $filename File path
-     * @param array  $options static::NAME_DEFAULT_OPTIONS
+     * @param array  $options  static::NAME_DEFAULT_OPTIONS
      *
-     * @return string Available file path.
+     * @return string available file path
      */
-    public static function uniqueFilePath(string $filename, array $options = []) : ?string
+    public static function uniqueFilePath(string $filename, array $options = []): ?string
     {
         $pathinfo = pathinfo($filename);
         $path = $pathinfo['dirname'];
@@ -218,19 +228,21 @@ class File
             if ($options[static::METHOD] == static::NAME_ORIGINAL) {
                 $options[static::METHOD] = static::NAME_MIXED;
             }
-            $uniqueFilePath = rtrim($path, '/')  . '/' . static::safeName($filename, $options);
+            $uniqueFilePath = rtrim($path, '/').'/'.static::safeName($filename, $options);
         }
+
         return $uniqueFilePath;
     }
+
     /**
-     * Fast wat to determine if a file or directory exists using stream_resolve_include_path
+     * Fast wat to determine if a file or directory exists using stream_resolve_include_path.
      *
-     * @param string $filename Absolute file path
-     * @param bool $clearCache TRUE to call clearstatcache.
+     * @param string $filename   Absolute file path
+     * @param bool   $clearCache TRUE to call clearstatcache
      *
-     * @return bool TRUE if the $filename exists.
+     * @return bool TRUE if the $filename exists
      */
-    public static function exists(string $filename, bool $clearCache = true) : bool
+    public static function exists(string $filename, bool $clearCache = true): bool
     {
         if ($clearCache) {
             clearstatcache(true);
@@ -240,16 +252,18 @@ class File
         if (Path::isAbsolute($filename) == false) {
             $filename = Path::absolute($filename);
         }
+
         return stream_resolve_include_path($filename) !== false;
     }
+
     /**
-     * Remove all the files in the target $path
+     * Remove all the files in the target $path.
      *
-     * @param string $path Target directory path.
+     * @param string $path target directory path
      *
      * @throws Exception
      */
-    public static function removeAll(string $path) : void
+    public static function removeAll(string $path): void
     {
         if (is_dir($path) == false) {
             throw new Exception(
@@ -277,47 +291,50 @@ class File
         if ($failed != false) {
             $exceptionMessage = [];
             foreach ($failed as $k => $v) {
-                $exceptionMessage[] = '<b>' . $k . '</b>:' . $v;
+                $exceptionMessage[] = '<b>'.$k.'</b>:'.$v;
             }
             // FIXME: Usar new Message()
-            throw new Exception('Unable to remove ' . implode('; ', $exceptionMessage));
+            throw new Exception('Unable to remove '.implode('; ', $exceptionMessage));
         }
     }
+
     /**
      * Retrieves information about a file.
      *
-     * @param string $filename File.
+     * @param string $filename file
      *
-     * @return array File info array.
+     * @return array file info array
      */
-    public static function info(string $filename) : array
+    public static function info(string $filename): array
     {
         if (($filesize = filesize($filename)) == false) {
             return [];
         }
         $mime = static::mimetype($filename);
         $basename = basename($filename); // file.ext
-        $name = Utils\Str::replaceLast('.' . File::extension($filename), null, $basename); // file
+        $name = Utils\Str::replaceLast('.'.File::extension($filename), null, $basename); // file
         $info = [
-            'basename'	    => $basename,
-            'name'	        => $name,
-            'extension'     => $mime != null ? File::extensionFromMime($mime) : null,
-            'size'		    => intval($filesize),
-            'size_format'   => Utils\Bytes::format((string) $filesize),
-            'mime'          => $mime,
+            'basename' => $basename,
+            'name' => $name,
+            'extension' => $mime != null ? File::extensionFromMime($mime) : null,
+            'size' => intval($filesize),
+            'size_format' => Utils\Bytes::format((string) $filesize),
+            'mime' => $mime,
             // 'url'		=> absolutePathToUrl($filename),
-            'md5'		    => md5_file($filename)
+            'md5' => md5_file($filename),
         ];
+
         return $info;
     }
+
     /**
      * Get file path identifier.
      *
      * Path identifiers are always relative to App\PATH.
      *
-     * @param string $file File path, if null it will detect file caller.
+     * @param string $file file path, if null it will detect file caller
      */
-    public static function identifier(string $file = null) : string
+    public static function identifier(string $file = null): string
     {
         if ($file == null) {
             $file = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0]['file'];
@@ -329,6 +346,7 @@ class File
         if ($dirname == rtrim(App\PATH, '/')) { // Means that $file is at App\PATH
             $dirname = null;
         }
-        return $dirname . ':' . $pathinfo['filename'];
+
+        return $dirname.':'.$pathinfo['filename'];
     }
 }

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,22 +9,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Chevereto\Core\Validate;
 
-use Exception;
+namespace Chevereto\Core\Validate;
 
 class Image
 {
     /**
      * Detects if an image file is animated or not.
      *
-     * @param string $filename Image file path.
+     * @param string $filename image file path
      *
-     * @return bool TRUE if the image file correspond to an animated image.
+     * @return bool TRUE if the image file correspond to an animated image
      *
-     * @link http://php.net/manual/en/function.imagecreatefromgif.php#104473
+     * @see http://php.net/manual/en/function.imagecreatefromgif.php#104473
      */
-    public static function animated(string $filename) : bool
+    public static function animated(string $filename): bool
     {
         if (!($fh = @fopen($filename, 'rb'))) {
             return false;
@@ -37,6 +38,7 @@ class Image
             }
         }
         @fclose($fh);
+
         return $count > 1;
     }
 }

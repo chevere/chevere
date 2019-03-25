@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,10 +9,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core\Command;
 
 use ReflectionMethod;
-
 use Chevereto\Core\App;
 use Chevereto\Core\Path;
 use Chevereto\Core\Command;
@@ -27,6 +29,7 @@ use Chevereto\Core\Utils\Dump;
 class InspectCommand extends Command
 {
     protected static $defaultName = 'inspect';
+
     protected function configure()
     {
         $this
@@ -34,10 +37,11 @@ class InspectCommand extends Command
           ->setHelp('This command allows you to inspect any callable')
           ->addArgument('callable', Command::ARGUMENT_REQUIRED, 'The callable handle (name, fileHandle)');
     }
+
     /**
      * Inspect the target callable.
      */
-    public function callback(App $app) : int
+    public function callback(App $app): int
     {
         $cli = $this->getCli();
         $io = $cli->getIo();
@@ -48,6 +52,7 @@ class InspectCommand extends Command
                 (string) (new Message("Callable %s doesn't exists"))
                     ->strtr('%s', $callableFilePath)
             );
+
             return 1;
         }
         $controller = include $callableFilePath;
@@ -56,8 +61,8 @@ class InspectCommand extends Command
         $resource = [];
         do {
             // FIXME: Usar metodo para resolver $resourceFilePath
-            $resourceFilePathRelative = $dir . '/resource.json';
-            $resourceFilePath = App\PATH . $resourceFilePathRelative;
+            $resourceFilePathRelative = $dir.'/resource.json';
+            $resourceFilePath = App\PATH.$resourceFilePathRelative;
             if (File::exists($resourceFilePath) && $resourceString = file_get_contents($resourceFilePath)) {
                 $resourceArr = json_decode($resourceString, true)['wildcards'] ?? [];
                 $resource = array_merge($resourceArr, $resource);
@@ -65,7 +70,7 @@ class InspectCommand extends Command
             $dir = $dir ? dirname($dir) : '.';
         } while ($dir != '.');
         //black, red, green, yellow, blue, magenta, cyan, white, default
-        $io->text('<fg=blue>' . $callableFilePath . '</>');
+        $io->text('<fg=blue>'.$callableFilePath.'</>');
         $arguments = [];
         if ($invoke->getDeclaringClass()->isInternal()) {
             $io->note('Cannot determine default value for internal functions');
@@ -74,18 +79,19 @@ class InspectCommand extends Command
         foreach ($invoke->getParameters() as $parameter) {
             $aux = null;
             if ($parameter->getType()) {
-                $aux .= $parameter->getType() . ' ';
+                $aux .= $parameter->getType().' ';
             }
-            $aux .= '$' . $parameter->getName();
+            $aux .= '$'.$parameter->getName();
             if ($parameter->isDefaultValueAvailable()) {
-                $aux .= ' = ' . ($parameter->getDefaultValue() ?? 'null');
+                $aux .= ' = '.($parameter->getDefaultValue() ?? 'null');
             }
             if ($resource != null && $res = $resource[$parameter->getName()] ?? null) {
-                $aux .= ' ' . Dump::wrap(Dump::_OPERATOR, '--desc ' . $res['description'] . ' --regex ' . $res['regex']);
+                $aux .= ' '.Dump::wrap(Dump::_OPERATOR, '--desc '.$res['description'].' --regex '.$res['regex']);
             }
             $arguments[] = $aux;
         }
         $io->listing($arguments);
+
         return 1;
     }
 }

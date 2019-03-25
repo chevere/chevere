@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,6 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
 use Exception;
@@ -61,7 +64,6 @@ use stdClass;
  * ## Remarks
  * message is *always* optional.
  */
-
 class Validation
 {
     // Validation tasks
@@ -84,56 +86,62 @@ class Validation
     protected $group;
     // Flag used for single mode
     protected $isSingle;
+
     /**
      * Single validation shorthand.
      *
      * Performs single-line validation for a given value.
      *
-     * @param string $id Validation id.
-     * @param mixed $value Value to test against for.
-     * @param mixed $callable A callable (string, closure, ::method and Class:method)
-     * @param string $message Message for Exception.
+     * @param string $id       validation id
+     * @param mixed  $value    value to test against for
+     * @param mixed  $callable A callable (string, closure, ::method and Class:method)
+     * @param string $message  message for Exception
      *
-     * @return bool True if validation succed.
+     * @return bool true if validation succed
      */
-    public static function single(string $id, $value, $callable, string $message = null) : bool
+    public static function single(string $id, $value, $callable, string $message = null): bool
     {
         $args = func_get_args();
         array_unshift($args, 'validation');
+
         return (new static())
             ->add(...func_get_args())
             ->validate();
     }
+
     /**
      * Grouped validation shorthand (aka the grupillo stuff).
      *
      * Used to perform grouped validation (same value, different callables and messages).
      *
      * @param string $id
-     * @param mixed $value
+     * @param mixed  $value
      */
-    public static function grouped(string $id, $value) : self
+    public static function grouped(string $id, $value): self
     {
         return (new static())
             ->group(...func_get_args());
     }
-    public function group(string $id, $value) : self
+
+    public function group(string $id, $value): self
     {
         // TODO: Validate $id
         $this->group = func_get_args();
+
         return $this;
     }
+
     /**
      * Adds a new validation task.
      *
-     * @param string $id        The input identifier.
-     * @param mixed $value      Value to test agains for.
-     * @param mixed $callable   Callable (callable, string)
-     * @param string $message   Message returned if the input doesn't validate. Use %v for input value, %s for htmlspecialchars value and %i for id.
+     * @param string $id       the input identifier
+     * @param mixed  $value    value to test agains for
+     * @param mixed  $callable Callable (callable, string)
+     * @param string $message  Message returned if the input doesn't validate. Use %v for input value, %s for htmlspecialchars value and %i for id.
      *
      * @return $this
      */
-    public function add(string $id, $value, $callable, string $message = null) : self
+    public function add(string $id, $value, $callable, string $message = null): self
     {
         // Validate ID
         if (strlen($id) == 0 || ctype_space($id)) {
@@ -155,13 +163,13 @@ class Validation
             // ::callable shorthand (use a method from parent caller class)
             if (Utils\Str::startsWith('::', $callable)) {
                 $class = debug_backtrace()[1]['class'];
-                $callable = $class . $callable;
+                $callable = $class.$callable;
             } else {
                 // Class::method shorthand (use a method from somewhere else in the namespace)
                 if (Utils\Str::contains('::', $callable) && Utils\Str::contains('\\', $callable) == false) {
                     $explode = explode('\\', debug_backtrace()[1]['class']);
                     array_pop($explode);
-                    $callable = implode('\\', $explode) . '\\' . $callable;
+                    $callable = implode('\\', $explode).'\\'.$callable;
                 }
             }
         }
@@ -178,17 +186,19 @@ class Validation
         $task->message = $message ?? 'unspecified error.';
         // Reg the validation task
         $this->tasks[$id] = $task;
-        $this->taskCount++;
+        ++$this->taskCount;
+
         return $this;
     }
+
     /**
      * Append method for grouped validator.
      *
-     * @param string $id        The input identifier (sub-group).
-     * @param mixed $callable   Callable (callable, string)
-     * @param string $message   Message returned if the input doesn't validate. Use %v for input value, %s for htmlspecialchars value and %i for id.
+     * @param string $id       the input identifier (sub-group)
+     * @param mixed  $callable Callable (callable, string)
+     * @param string $message  Message returned if the input doesn't validate. Use %v for input value, %s for htmlspecialchars value and %i for id.
      */
-    public function append(string $id, $callable, string $message = null) : self
+    public function append(string $id, $callable, string $message = null): self
     {
         if ($this->group == false) {
             throw new Exception(
@@ -200,7 +210,7 @@ class Validation
         Validation::single(
             '$id',
             $id,
-            function (string $string) : bool {
+            function (string $string): bool {
                 return
                 strlen($string) > 0
                 && Utils\Str::startsWith(' ', $string) == false
@@ -208,9 +218,11 @@ class Validation
             },
             "String %s must contain at least one character and it should't contain neither leading or trailing whitespace characters."
         );
-        $this->add($this->group[0] . ' ' . $id, $this->group[1], $callable, $message);
+        $this->add($this->group[0].' '.$id, $this->group[1], $callable, $message);
+
         return $this;
     }
+
     // /**
     //  * Append method for re-usable validator.
     //  *
@@ -229,12 +241,13 @@ class Validation
     //     $this->add(...array_merge(func_get_args(), $this->reuse));
     //     return $this;
     // }
+
     /**
      * Execute the validation tasks.
      *
-     * @throws ValidationException on invalidated tasks.
+     * @throws ValidationException on invalidated tasks
      *
-     * @return bool TRUE if validates.
+     * @return bool TRUE if validates
      */
     public function validate()
     {
@@ -271,8 +284,10 @@ class Validation
             $this->message = implode("\n", $aux);
             throw new ValidationException($this->message);
         }
+
         return true;
     }
+
     /**
      * Provides read-only access to all object properties.
      */

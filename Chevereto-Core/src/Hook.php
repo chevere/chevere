@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,6 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
 use Exception;
@@ -64,42 +67,46 @@ class Hook
 
     /**
      * Hook a hookable entry (before). Shorthand of bind().
+     *
      * @see bind()
      *
-     * @param string    $id         Hookable id.
-     * @param callable  $callable   Callable to run.
-     * @param int       $priority   Priority in which this should be called. Lower the number, higher the priority.
-     *                              If the priority is already taken, it gets added based on inclusion order.
+     * @param string   $id       hookable id
+     * @param callable $callable callable to run
+     * @param int      $priority Priority in which this should be called. Lower the number, higher the priority.
+     *                           If the priority is already taken, it gets added based on inclusion order.
      */
-    public static function before(string $id, callable $callable, int $priority = null) : void
+    public static function before(string $id, callable $callable, int $priority = null): void
     {
         static::bind($id, $callable, $priority, static::BEFORE);
     }
+
     /**
      * Hook a hookable entry (after). Shorthand of bind().
+     *
      * @see bind()
      *
-     * @param string    $id         Hookable id.
-     * @param callable  $callable   Callable to run.
-     * @param int       $priority   Priority in which this should be called. Lower the number, higher the priority.
-     *                              If the priority is already taken, it gets added based on inclusion order.
+     * @param string   $id       hookable id
+     * @param callable $callable callable to run
+     * @param int      $priority Priority in which this should be called. Lower the number, higher the priority.
+     *                           If the priority is already taken, it gets added based on inclusion order.
      */
-    public static function after(string $id, callable $callable, int $priority = null) : void
+    public static function after(string $id, callable $callable, int $priority = null): void
     {
         static::bind($id, $callable, $priority, static::AFTER);
     }
+
     /**
      * Stock hook definition in hook table (internal method).
      *
-     * @param string    $id         Hookable id.
-     * @param callable  $callable   Callable to run.
-     * @param int       $priority   Priority in which this should be called. Lower the number, higher the priority.
-     *                              If the priority is already taken, it gets added based on inclusion order.
+     * @param string   $id       hookable id
+     * @param callable $callable callable to run
+     * @param int      $priority Priority in which this should be called. Lower the number, higher the priority.
+     *                           If the priority is already taken, it gets added based on inclusion order.
      *
      * @see before()
      * @see after()
      */
-    protected static function bind(string $id, callable $callable, int $priority = null, string $pos) : void
+    protected static function bind(string $id, callable $callable, int $priority = null, string $pos): void
     {
         $parsed = static::parseIdentifier($id);
         extract($parsed);
@@ -116,15 +123,16 @@ class Hook
             ksort(static::$hooks[$f][$a][$pos]);
         }
     }
+
     /**
-     * Parse hookable identifier
+     * Parse hookable identifier.
      *
-     * @param string $id Hookable identifier
-     * @param int $trace Backtrace caller id for :path resolution.
+     * @param string $id    Hookable identifier
+     * @param int    $trace backtrace caller id for :path resolution
      *
      * @return array ['anchor' => '<anchor>', 'file' => '<dirname>/<file_name>.php']
      */
-    protected static function parseIdentifier(string $id, int $trace = 3) : array
+    protected static function parseIdentifier(string $id, int $trace = 3): array
     {
         if (Utils\Str::contains('@', $id)) {
             $anchored = explode('@', $id);
@@ -133,21 +141,23 @@ class Hook
         } else {
             $pathIdentifier = $id;
         }
+
         return [
             static::ANCHOR => $anchor ?? null,
-            static::FILE => Path::fromHandle($pathIdentifier)
+            static::FILE => Path::fromHandle($pathIdentifier),
         ];
     }
+
     /**
      * Get all hooks for the given file, anchor and position.
      *
-     * @param string $file Hookeable file.
-     * @param string $anchor Hookable anchor.
-     * @param string $pos Hookable position (before, after).
+     * @param string $file   hookeable file
+     * @param string $anchor hookable anchor
+     * @param string $pos    hookable position (before, after)
      *
-     * @return array An array containing al the callables in order.
+     * @return array an array containing al the callables in order
      */
-    public static function getAt(string $file, string $anchor, string $pos = null) : array
+    public static function getAt(string $file, string $anchor, string $pos = null): array
     {
         if (static::$hooks == null || isset(static::$hooks[$file]) == false) {
             return [];
@@ -166,74 +176,80 @@ class Hook
                             ->code('%a', static::AFTER)
                     );
                 }
+
                 return static::$hooks[$file][$anchor][$pos] ?? [];
             break;
         }
     }
+
     /**
      * Execute all hooks for the given anchor (before and after).
      *
-     * @param string $anchor Hookable anchor.
+     * @param string   $anchor   hookable anchor
      * @param callable $callable
-     * @param object $that That is this.
+     * @param object   $that     that is this
      *
      * @see Hookeable
      */
-    public static function exec(string $anchor, callable $callable, object $that = null) : void
+    public static function exec(string $anchor, callable $callable, object $that = null): void
     {
         $file = static::getCallerFile();
         $file ? static::execAt($file, $anchor, static::BEFORE, $that) : null;
         $callable($that);
         $file ? static::execAt($file, $anchor, static::AFTER, $that) : null;
     }
+
     /**
      * Exec all before hooks for the given anchor.
      *
-     * @param string $anchor Hookable anchor.
+     * @param string   $anchor   hookable anchor
      * @param callable $callable
-     * @param object $that That is this.
+     * @param object   $that     that is this
      *
      * @see Hookeable
      */
-    public static function execBefore(string $anchor, callable $callable, object $that = null) : void
+    public static function execBefore(string $anchor, callable $callable, object $that = null): void
     {
         if ($file = static::getCallerFile()) {
             static::execAt($file, $anchor, static::BEFORE, $that);
         }
         $callable($that);
     }
+
     /**
      * Exec all after hooks for the given anchor.
      *
-     * @param string $anchor Hookable anchor.
+     * @param string   $anchor   hookable anchor
      * @param callable $callable
-     * @param object $that That is this.
+     * @param object   $that     that is this
      *
      * @see Hookeable
      */
-    public static function execAfter(string $anchor, callable $callable, object $that = null) : void
+    public static function execAfter(string $anchor, callable $callable, object $that = null): void
     {
         $callable($that);
         if ($file = static::getCallerFile()) {
             static::execAt($file, $anchor, static::AFTER, $that);
         }
     }
-    protected static function getCallerFile() : ?string
+
+    protected static function getCallerFile(): ?string
     {
         // 0:Hook, 1:Hookable, 3:Caller
         return Path::normalize(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2]['file']);
     }
+
     /**
      * Execute hooks for given file, anchor and position.
      *
-     * @param string $file Hookeable file.
+     * @param string $file   hookeable file
      * @param string $anchor Hookable anchor
-     * @param string $pos Hookable position
-     * @param object $that That is this.
+     * @param string $pos    Hookable position
+     * @param object $that   that is this
      *
      * @see Hookeable
      */
-    public static function execAt(string $file, string $anchor, string $pos, object $that = null) : void
+    public static function execAt(string $file, string $anchor, string $pos, object $that = null): void
     {
         $hooks = Hook::getAt($file, $anchor, $pos);
         if ($hooks == false) {
@@ -245,35 +261,37 @@ class Hook
             }
         }
     }
+
     /**
      * Exec before hooks for the given file and anchor.
      *
      * Shorthand for execAt().
      *
-     * @param string $file Hookeable file.
+     * @param string $file   hookeable file
      * @param string $anchor Hookable anchor
-     * @param object $that That is this.
+     * @param object $that   that is this
      *
      * @see execAt()
      * @see Hookeable
      */
-    public static function execBeforeAt(string $file, string $anchor, object $that = null) : void
+    public static function execBeforeAt(string $file, string $anchor, object $that = null): void
     {
         static::execAt($file, $anchor, static::BEFORE, $that);
     }
+
     /**
      * Exec after hooks for the given file and anchor.
      *
      * Shorthand for execAt().
      *
-     * @param string $file Hookeable file.
+     * @param string $file   hookeable file
      * @param string $anchor Hookable anchor
-     * @param object $that That is this.
+     * @param object $that   that is this
      *
      * @see execAt()
      * @see Hookeable
      */
-    public static function execAfterAt(string $file, string $anchor, object $that = null) : void
+    public static function execAfterAt(string $file, string $anchor, object $that = null): void
     {
         static::execAt($file, $anchor, static::AFTER, $that);
     }

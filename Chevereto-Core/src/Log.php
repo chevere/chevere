@@ -1,4 +1,5 @@
 <?php
+
 // Deprecate Static
 declare(strict_types=1);
 
@@ -13,11 +14,11 @@ use Symfony\Component\Console\Output\OutputInterface;
  * <null>: (imprime 0-4)
  * -v: Increaded verbosity (imprime 0-5)
  * -vv: (imprime 0-6)
- * -vvv: (imprime 0-7)
+ * -vvv: (imprime 0-7).
  */
 
 /**
- * SEVERITY LEVELS
+ * SEVERITY LEVELS.
  *
  * 0: Emergency
  * 1: Alert
@@ -57,14 +58,15 @@ class Log
     ];
     const VERBOSITY_MAP = [
         OutputInterface::VERBOSITY_QUIET => [], // -q no messages
-        OutputInterface::VERBOSITY_NORMAL => [0,1,2,3,4], // <null> emergency-warning
-        OutputInterface::VERBOSITY_VERBOSE => [0,1,2,3,4,5], // -v emergency-notice
-        OutputInterface::VERBOSITY_VERY_VERBOSE => [0,1,2,3,4,5,6], // -vv emergency-info
-        OutputInterface::VERBOSITY_DEBUG => [0,1,2,3,4,5,6,7], // -vvv emergency-debug
+        OutputInterface::VERBOSITY_NORMAL => [0, 1, 2, 3, 4], // <null> emergency-warning
+        OutputInterface::VERBOSITY_VERBOSE => [0, 1, 2, 3, 4, 5], // -v emergency-notice
+        OutputInterface::VERBOSITY_VERY_VERBOSE => [0, 1, 2, 3, 4, 5, 6], // -vv emergency-info
+        OutputInterface::VERBOSITY_DEBUG => [0, 1, 2, 3, 4, 5, 6, 7], // -vvv emergency-debug
     ];
     protected static $loggerContainer = [];
     protected static $verboseSet = [];
     protected static $useConsole = false;
+
     /**
      * Creates Log object.
      */
@@ -80,17 +82,20 @@ class Log
         static::$verboseSet = Utils\Arr::filterArray(static::SEVERITY_LEVELS, static::$verboseSet);
         static::$verboseSet = array_flip(static::$verboseSet);
     }
+
     /**
      * Allows to set the target log channel.
-     *  (slack, files, email, etc)
+     *  (slack, files, email, etc).
      */
     public static function channel(string $channelName)
     {
     }
+
     protected static function isLevelBeingUsed(string $levelName)
     {
         return isset(static::$verboseSet[$levelName]);
     }
+
     /**
      * Adds a log record at the EMERGENCY level.
      *
@@ -108,6 +113,7 @@ class Log
     {
         dump($message, 'emergency');
     }
+
     /**
      * Adds a log record at the ALERT level.
      *
@@ -119,12 +125,13 @@ class Log
      * - "Unable to connect to DB server."
      * - "Class <class> doesn't exists."
      *
-     * @param  string $message The log message
+     * @param string $message The log message
      */
     public static function alert(string $message, array $context = null)
     {
         dump($message, 'alert');
     }
+
     /**
      * Adds a log record at the CRITICAL level.
      *
@@ -135,26 +142,28 @@ class Log
      * - "MySQL server <server> gone."
      * - "Unrecoverable DB error: <error>"
      *
-     * @param  string $message The log message
+     * @param string $message The log message
      */
     public static function critical(string $message, array $context = null)
     {
         dump($message, 'critical');
     }
+
     /**
-    * Adds a log record at the ERROR level.
-    *
-    * Error messages indicate non-urgent failures.
-    *
-    * Examples:
-    * - ""
-    *
-    * @param  string $message The log message
-    */
+     * Adds a log record at the ERROR level.
+     *
+     * Error messages indicate non-urgent failures.
+     *
+     * Examples:
+     * - ""
+     *
+     * @param string $message The log message
+     */
     public static function error(string $message, array $context = null)
     {
         dump($message, 'error');
     }
+
     /**
      * Adds a log record at the WARNING level.
      *
@@ -164,12 +173,13 @@ class Log
      * - "Filesystem is 90% full."
      * - "Method <method> is deprecated in %f:%l. Migrate to <newMethod> to avoid an ALERT."
      *
-     * @param  string $message The log message
+     * @param string $message The log message
      */
     public static function warning(string $message, array $context = null)
     {
         dump($message, 'warning');
     }
+
     /**
      * Adds a log record at the NOTICE level.
      *
@@ -180,7 +190,7 @@ class Log
      * - "External storage server <server> is unrecheable. Switching to local storage."
      * - "Username <username> already exists. Trying to create user <usernameAlt>..."
      *
-     * @param  string $message The log message
+     * @param string $message The log message
      */
     public static function notice(string $message, array $context = null)
     {
@@ -190,6 +200,7 @@ class Log
             Console::logger()->critical($message);
         }
     }
+
     /**
      * TODO: Default level?
      * Adds a log record at the INFO level.
@@ -200,7 +211,7 @@ class Log
      * - "Router initialized."
      * - "Showing user profile for user <id>."
      *
-     * @param  string $message The log message
+     * @param string $message The log message
      */
     public static function info(string $message, array $context = null)
     {
@@ -208,6 +219,7 @@ class Log
             dump($message);
         }
     }
+
     /**
      * Adds a log record at the DEBUG level.
      *
@@ -216,7 +228,7 @@ class Log
      * Examples:
      * - "
      *
-     * @param  string $message The log message
+     * @param string $message The log message
      */
     public static function debug(string $message, array $context = null)
     {

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,6 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
 /**
@@ -62,58 +65,63 @@ abstract class Hookable
      *      $that
      * });
      *
-     * @param string $anchor Hook anchor.
-     * @param callable $callable Callable.
+     * @param string   $anchor   hook anchor
+     * @param callable $callable callable
      */
-    public function hookable(string $anchor, callable $callable) : void
+    public function hookable(string $anchor, callable $callable): void
     {
         Hook::exec($anchor, $callable, $this);
     }
+
     /**
      * Register a hookable entry before.
      *
      * @see hookable()
      */
-    public function hookableBefore(string $anchor, callable $callable) : void
+    public function hookableBefore(string $anchor, callable $callable): void
     {
         Hook::execBefore($anchor, $callable, $this);
     }
+
     /**
      * Register a hookable entry after.
      *
      * @see hookable()
      */
-    public function hookableAfter(string $anchor, callable $callable) : void
+    public function hookableAfter(string $anchor, callable $callable): void
     {
         Hook::execAfter($anchor, $callable, $this);
     }
+
     /**
-     * Static version of hookable()
+     * Static version of hookable().
      *
      * Static versions are limited as $this is not being passed through.
      * No variable can be touched, it just adds procedures.
      *
      * @see hookable()
      */
-    public static function section(string $anchor, callable $callable) : void
+    public static function section(string $anchor, callable $callable): void
     {
         Hook::exec(...func_get_args());
     }
+
     /**
-     * Static version of hookableBefore
+     * Static version of hookableBefore.
      *
      * @see hookableBefore()
      */
-    public static function before(string $anchor, callable $callable) : void
+    public static function before(string $anchor, callable $callable): void
     {
         Hook::execBefore(...func_get_args());
     }
+
     /**
-     * Static version hookable after
+     * Static version hookable after.
      *
      * @see hookableAfter()
      */
-    public static function after(string $anchor, callable $callable) : void
+    public static function after(string $anchor, callable $callable): void
     {
         Hook::execAfter(...func_get_args());
     }

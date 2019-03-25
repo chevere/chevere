@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,10 +9,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core\Utils;
 
 use Chevereto\Core\Message;
-
 use Exception;
 
 class Number
@@ -18,12 +20,12 @@ class Number
     /**
      * Abbreviate a number adding its alpha suffix.
      *
-     * @param mixed $number Number to be abbreviated.
-     * @param int $precision Round precision.
+     * @param mixed $number    number to be abbreviated
+     * @param int   $precision round precision
      *
      * @return string Abbreviated number (ie. 2K or 1M).
      */
-    public static function abbreviate($number, int $precision=0) : ?string
+    public static function abbreviate($number, int $precision = 0): ?string
     {
         if (is_numeric($number)) {
             $num = $number;
@@ -44,27 +46,30 @@ class Number
                 9 => 'B',
                 6 => 'M',
                 3 => 'K',
-                0 => null
+                0 => null,
             ];
             foreach ($abbreviations as $exponent => $abbreviation) {
                 if ($num >= pow(10, $exponent)) {
                     $div = $num / pow(10, $exponent);
                     $float = floatval($div);
-                    $num = $abbreviation == null ? (string) $float : (round($float, $precision) . $abbreviation);
+                    $num = $abbreviation == null ? (string) $float : (round($float, $precision).$abbreviation);
                     break;
                 }
             }
         }
+
         return (string) $num;
     }
+
     /**
      * Converts a fraction into a decimal (float).
      *
-     * @param string $fraction A fraction number (like 1/25).
+     * @param string $fraction a fraction number (like 1/25)
      */
-    public static function fractionToDecimal($fraction) : ?float
+    public static function fractionToDecimal($fraction): ?float
     {
         [$top, $bottom] = explode('/', $fraction);
+
         return (float) ($bottom == 0 ? $fraction : ($top / $bottom));
     }
 }

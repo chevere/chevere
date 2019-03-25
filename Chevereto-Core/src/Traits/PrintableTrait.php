@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,10 +9,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Chevereto\Core\Traits;
 
-use Exception;
-use Chevereto\Core\Interfaces\PrintableInterface;
+namespace Chevereto\Core\Traits;
 
 /**
  * Printable provides an interface for classes who may use __toString().
@@ -25,18 +25,21 @@ trait PrintableTrait
      * The printable string.
      */
     protected $printable;
+
     /**
      * Allows to cast this object as string.
      *
-     * @return string Printable.
+     * @return string printable
      */
-    public function __toString() : ?string
+    public function __toString(): ?string
     {
         if ($this->printable == null) {
             $this->exec();
         }
+
         return $this->printable ?? '';
     }
+
     /**
      * Print object string.
      */
@@ -45,6 +48,6 @@ trait PrintableTrait
         if ($this->printable == null) {
             $this->exec();
         }
-        print (string) $this; // invokes __toString, such trucazo.
+        echo (string) $this; // invokes __toString, such trucazo.
     }
 }
