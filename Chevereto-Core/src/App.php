@@ -54,16 +54,23 @@ class App extends Container
 
     public function __construct(AppParameters $parameters = null)
     {
+        // Attach the Routes instance (collection of routes handled by the App
+        $this->routes = new Routes();
         if (static::hasStaticProp('defaultRuntime')) {
             $this->setRuntime(static::getDefaultRuntime());
         }
-        // Checkout it app/build exists
+        // Checkout if no app/build exists
         if (stream_resolve_include_path($this->getBuildFilePath()) == false) {
             $this->checkout();
         }
         Load::php(static::FILEHANDLE_HACKS);
         if (null == $parameters) {
-            $parameters = AppParameters::createFromFile(static::FILEHANDLE_PARAMETERS);
+            try {
+                $arrayFile = new ArrayFile(static::FILEHANDLE_PARAMETERS);
+            } catch (Exception $e) {
+                throw new CoreException($e);
+            }
+            $parameters = new AppParameters($arrayFile->toArray());
         }
         try {
             if ($configFiles = $parameters->getDataKey(AppParameters::CONFIG_FILES)) {
@@ -91,6 +98,8 @@ class App extends Container
         } catch (Exception $e) {
             throw new CoreException($e);
         }
+        // Must get rid of the Routes instance
+        Routes::destroyInstance();
         if (Console::bind($this)) {
             Console::run(); //Console::run() always exit.
         } else {
@@ -296,7 +305,6 @@ class App extends Container
         $controller = $this->getCallable($callable);
         if ($controller instanceof Controller) {
             $controller->setApp($this);
-            $controller->getResponse()->val = 'val en app';
         }
         // HTTP request middleware
         // TODO: Re-Check
@@ -309,8 +317,19 @@ class App extends Container
             $this->setArguments($routingArgs);
         }
         if (is_object($controller)) {
-            $invoke = new ReflectionMethod($controller, '__invoke');
+            $method = '__invoke';
         } else {
+            if (Utils\Str::contains('::', $controller)) {
+                $controllerExplode = explode('::', $controller);
+                $controller = $controllerExplode[0];
+                $method = $controllerExplode[1];
+            }
+        }
+        if (isset($method)) {
+            $invoke = new ReflectionMethod($controller, $method);
+        } else {
+            // FIXME: php app/console run Chevereto\Core\Path::fromHandle
+            dd(is_callable($controller));
             $invoke = new ReflectionFunction($controller);
         }
         $controllerArguments = [];

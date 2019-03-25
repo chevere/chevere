@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,13 +9,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core\Command;
 
 use Chevereto\Core\App;
+use Chevereto\Core\Utils\DumpPlain;
 use Chevereto\Core\File;
 use Chevereto\Core\Path;
 use Chevereto\Core\Command;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * The RunCommand allows to run any callable present in the app.
@@ -24,6 +27,7 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 class RunCommand extends Command
 {
     protected static $defaultName = 'run';
+
     protected function configure()
     {
         $this
@@ -37,25 +41,35 @@ class RunCommand extends Command
                 'Callable arguments (in declarative order)'
             );
     }
+
     /**
-     * Run a callable.
+     * Run ANY callable.
      */
-    public function callback(App $app) : int
+    public function callback(App $app): int
     {
         $cli = $this->getCli();
         $input = $cli->getInput();
-        $callable = $input->getArgument('callable');
-        if (is_callable($callable) || class_exists($callable)) {
-            $callableSome = $callable;
+        $callableInput = $input->getArgument('callable');
+
+        if (is_callable($callableInput) || class_exists($callableInput)) {
+            $callable = $callableInput;
         } else {
-            $callableSome = Path::fromHandle($callable);
-            if (File::exists($callableSome) == false) {
+            $callable = Path::fromHandle($callable);
+            if (false == File::exists($callable)) {
                 $cli->getIo()->error(sprintf('Unable to locate callable %s', $callable));
+
                 return 0;
             }
         }
-        $app->setArguments($input->getOption('argument'));
-        $app->run($callableSome);
+        // Pass explicit callables, "weird" callables (Class::__invoke) runs in the App.
+        if (is_callable($callable)) {
+            $return = $callable(...$input->getOption('argument'));
+            $cli->getIo()->block(DumpPlain::out($return), 'RETURN', 'fg=black;bg=green', ' ', true);
+        } else {
+            $app->setArguments($input->getOption('argument'));
+            $app->run($callable);
+        }
+
         return 1;
     }
 }
