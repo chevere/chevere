@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
+// FIXME: App parameters must be passed as simple array for the end-user.
 return
   (new AppOptions())
       ->addApi('api', 'apis/api')
