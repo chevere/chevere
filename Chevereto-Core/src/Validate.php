@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,6 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
 // FIXME: Use Symfony validator, detect missing curl extension.
@@ -19,11 +22,11 @@ class Validate
     /**
      * Check for valid timezone.
      *
-     * @param string $timezone Timezone id.
+     * @param string $timezone timezone id
      *
-     * @return bool TRUE if $timezone is a valid timezone.
+     * @return bool TRUE if $timezone is a valid timezone
      */
-    public static function timezone(string $timezone) : bool
+    public static function timezone(string $timezone): bool
     {
         if ($timezone == '') {
             false;
@@ -35,42 +38,46 @@ class Validate
                 $valid[$item['timezone_id']] = true;
             }
         }
+
         return isset($valid[$timezone]);
     }
+
     /**
      * Check if the given date interval is valid or not.
      *
-     * @param string $dateinterval Date interval.
+     * @param string $dateinterval date interval
      *
-     * @return bool TRUE if the date interval is valid.
+     * @return bool TRUE if the date interval is valid
      */
-    public static function dateInterval(string $dateinterval) : bool
+    public static function dateInterval(string $dateinterval): bool
     {
         try {
             new DateInterval($dateinterval);
+
             return true;
         } catch (Exception $e) {
             return false;
         }
     }
+
     /**
      * Finds if a variable is a real email address.
      *
      * This function checks if an email address is valid and if the email
      * address is real or not.
      *
-     * @param string $email Email address to check.
+     * @param string $email email address to check
      *
-     * @return bool TRUE if the email address is valid.
+     * @return bool TRUE if the email address is valid
      */
-    public static function emailReal(string $email) : bool
+    public static function emailReal(string $email): bool
     {
         $valid = true;
         $atIndex = strrpos($email, '@');
         if ($atIndex === false) {
             $valid = false;
         } else {
-            $domain = substr($email, $atIndex+1);
+            $domain = substr($email, $atIndex + 1);
             $local = substr($email, 0, $atIndex);
             $localLen = strlen($local);
             $domainLen = strlen($domain);
@@ -80,7 +87,7 @@ class Validate
             } elseif ($domainLen < 1 || $domainLen > 255) {
                 // domain part length exceeded
                 $valid = false;
-            } elseif ($local[0] == '.' || $local[$localLen-1] == '.') {
+            } elseif ($local[0] == '.' || $local[$localLen - 1] == '.') {
                 // local part starts or ends with '.'
                 $valid = false;
             } elseif (preg_match('/\\.\\./', $local)) {
@@ -98,7 +105,7 @@ class Validate
             )) {
                 // character not valid in local part unless
                 // local part is quoted
-                if (!preg_match('/^"(\\\\"|[^"])+"$/', str_replace("\\\\", "", $local))) {
+                if (!preg_match('/^"(\\\\"|[^"])+"$/', str_replace('\\\\', '', $local))) {
                     $valid = false;
                 }
             }
@@ -107,50 +114,56 @@ class Validate
                 $valid = false;
             }
         }
+
         return $valid;
     }
+
     /**
      * Validate HEX color.
      *
-     * @param string $color Color to test, like #FF0000.
+     * @param string $color color to test, like #FF0000
      *
-     * @return bool TRUE if $color is a valid HEX color.
+     * @return bool TRUE if $color is a valid HEX color
      */
-    public static function colorHEX(string $color) : bool
+    public static function colorHEX(string $color): bool
     {
         $val = ltrim($color, '#');
-        return !!preg_match('/^([a-f0-9]{3}){1,2}$/i', $val);
+
+        return (bool) preg_match('/^([a-f0-9]{3}){1,2}$/i', $val);
     }
+
     /**
      * Validate an IP address.
      *
-     * @param string $ip IP address to check.
+     * @param string $ip IP address to check
      *
-     * @return bool TRUE if $ip is a valid IPV4 or IPV6 address.
+     * @return bool TRUE if $ip is a valid IPV4 or IPV6 address
      */
-    public static function ipAddress(string $ip) : bool
+    public static function ipAddress(string $ip): bool
     {
         return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) || filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6);
     }
+
     /**
      * Checks if a string type is an integer using regex.
      *
-     * @param string $string Value to be checked.
+     * @param string $string value to be checked
      *
-     * @return bool TRUE if the value is an integer.
+     * @return bool TRUE if the value is an integer
      */
-    public static function integer(string $string) : bool
+    public static function integer(string $string): bool
     {
         return !preg_match('/\D/', $string);
     }
+
     /**
      * Checks if a variable looks like an URL.
      *
-     * @param string $url URL being evaluated.
+     * @param string $url URL being evaluated
      *
-     * @return bool TRUE if the variable looks like an URL.
+     * @return bool TRUE if the variable looks like an URL
      */
-    public static function url(string $url) : bool
+    public static function url(string $url): bool
     {
         if (filter_var($url, FILTER_VALIDATE_URL)) { // Note: This doesn't validate if the URL contains foreign chars
             return true;
@@ -168,16 +181,18 @@ class Validate
             // At this point, this thing looks like an URL
             return true;
         }
+
         return false;
     }
+
     /**
      * Checks if an URL is valid and real using cURL.
      *
-     * @param string $url URL being evaluated.
+     * @param string $url URL being evaluated
      *
-     * @return bool TRUE if the variable is an real and valid URL.
+     * @return bool TRUE if the variable is an real and valid URL
      */
-    public static function realUrl(string $url) : bool
+    public static function realUrl(string $url): bool
     {
         return false;
         // TODO: Migrate to Guzzle
@@ -201,30 +216,33 @@ class Validate
         // }
         // return $res != false;
     }
+
     /**
      * Checks HTTPS URL string.
      *
-     * @param string $url URL.
+     * @param string $url URL
      *
-     * @return bool TRUE if $url protocol is HTTPS.
+     * @return bool TRUE if $url protocol is HTTPS
      */
-    public static function HttpsUrl(string $url) : bool
+    public static function HttpsUrl(string $url): bool
     {
         return Utils\Str::startsWith('https://', $url);
     }
+
     /**
      * Checks if a regular expression pattern is valid.
      *
-     * @param string $regex Regular expresion pattern.
+     * @param string $regex regular expresion pattern
      *
-     * @return bool TRUE if $regex is a valid regular expression.
+     * @return bool TRUE if $regex is a valid regular expression
      */
-    public static function regex(string $regex) : bool
+    public static function regex(string $regex): bool
     {
         set_error_handler(function () {
         }, E_WARNING);
         $return = preg_match($regex, '') !== false;
         restore_error_handler();
+
         return $return;
     }
 }

@@ -871,8 +871,4 @@ class ErrorHandler
     {
         static::exceptionHandler(...func_get_args());
     }
-    public static function exception2($e) : void
-    {
-        dd('Nos fuimos a la mierda');
-    }
 }

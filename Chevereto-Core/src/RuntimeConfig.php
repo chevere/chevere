@@ -9,7 +9,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-// TODO: Use object instance.
 
 namespace Chevereto\Core;
 
@@ -54,27 +53,14 @@ class RuntimeConfig extends Data
 
     public function addFile(string $fileHandle): self
     {
-        $filepath = Path::fromHandle($fileHandle);
-        if (false == File::exists($filepath)) {
-            throw new CoreException(
-                (new Message("Unable to add config file %s (%f doesn't exists)"))
-                    ->code('%s', $fileHandle)
-                    ->code('%f', $filepath)
-            );
+        try {
+            $arrayFile = new ArrayFile($fileHandle);
+        } catch (Exception $e) {
+            throw new CoreException($e);
         }
-        $array = Load::php($filepath);
-        $type = gettype($array);
-        if (false == is_array($array)) {
-            throw new CoreException(
-                (new Message('Expecting return type %a, %t provided in %f.'))
-                    ->code('%a', 'array')
-                    ->code('%t', $type)
-                    ->code('%f', $filepath)
-            );
-        }
-        $this->loadedFiles[] = $filepath;
+        $this->loadedFiles[] = $arrayFile->getFilepath();
 
-        return $this->dataAdder($array);
+        return $this->dataAdder($arrayFile->toArray());
     }
 
     public function addArray(array $array): self

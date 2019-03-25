@@ -27,6 +27,7 @@ class App extends Container
 
     const NAMESPACES = ['App', __NAMESPACE__];
     const APP = 'app';
+    const FILEHANDLE_PARAMETERS = ':parameters';
     const FILEHANDLE_HACKS = ':hacks';
 
     protected static $defaultRuntime;
@@ -51,7 +52,7 @@ class App extends Container
 
     protected $objects = ['runtime', 'config', 'logger', 'router', 'request', 'response', 'apis', 'routing', 'route', 'cache', 'db', 'handler'];
 
-    public function __construct(AppOptions $options = null)
+    public function __construct(AppParameters $parameters = null)
     {
         if (static::hasStaticProp('defaultRuntime')) {
             $this->setRuntime(static::getDefaultRuntime());
@@ -61,11 +62,11 @@ class App extends Container
             $this->checkout();
         }
         Load::php(static::FILEHANDLE_HACKS);
-        if (null == $options) {
-            $options = AppOptions::createFromFile(':options');
+        if (null == $parameters) {
+            $parameters = AppParameters::createFromFile(static::FILEHANDLE_PARAMETERS);
         }
         try {
-            if ($configFiles = $options->getConfigFiles()) {
+            if ($configFiles = $parameters->getDataKey(AppParameters::CONFIG_FILES)) {
                 if ($this->hasObject('runtime')) {
                     $this->getRuntime()->runConfig(
                         (new RuntimeConfig())
@@ -74,14 +75,14 @@ class App extends Container
                 }
             }
             // App handles cache
-            if ($apis = $options->getApis()) {
+            if ($apis = $parameters->getDataKey(AppParameters::APIS)) {
                 $this->setApis(
                     (new Apis())
                         ->registerArray($apis)
                 );
             }
             // App handles cache
-            if ($routes = $options->getRoutes()) {
+            if ($routes = $parameters->getDatakey(AppParameters::ROUTES)) {
                 $this->setRouter(
                     (new Router())
                         ->prepareArray($routes)

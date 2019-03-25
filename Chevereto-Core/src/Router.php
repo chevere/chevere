@@ -63,8 +63,8 @@ class Router
 
     public function prepareArray(array $array): self
     {
-        foreach ($array as $fileHandle => $context) {
-            $this->prepare($fileHandle, $context);
+        foreach ($array as $fileHandle) {
+            $this->prepare($fileHandle, null);
         }
 
         return $this;
