@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,19 +9,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
-use Chevereto\Core\CoreException;
-use Chevereto\Core\Message;
 use Chevereto\Core\Traits\DataTrait;
-
 use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
-
 use Exception;
 use InvalidArgumentException;
 
 /**
- * JSON:API HTTP Response handler
+ * JSON:API HTTP Response handler.
  *
  * Forked version of Symfony\Component\HttpFoundation\JsonResponse (Igor Wiedler <igor@wiedler.ch>)
  * (c) Fabien Potencier <fabien@symfony.com>
@@ -79,49 +78,65 @@ class Response extends HttpFoundationResponse
             $this->setData($data);
         }
     }
-    public function getData() : ?array {
+
+    public function getData(): ?array
+    {
         return $this->data;
     }
-    public function addData(string $type, string $id, array $attributes = null) : self
+
+    public function addData(string $type, string $id, array $attributes = null): self
     {
         $data = [
             'type' => $type,
-            'id' => $id
+            'id' => $id,
         ];
-        if(null != $attributes) {
+        if (null != $attributes) {
             $data['attributes'] = $attributes;
         }
+
         return $this->appendData($data);
     }
-    public function appendData(array $data) : self {
+
+    public function appendData(array $data): self
+    {
         $this->data[] = $data;
+
         return $this;
     }
-    public function setMeta(array $data) : self
+
+    public function setMeta(array $data): self
     {
         $this->meta = $data;
+
         return $this;
     }
-    public function getMeta() : ?array
+
+    public function getMeta(): ?array
     {
         return $this->meta;
     }
-    public function hasDataKey(string $key) : bool
+
+    public function hasDataKey(string $key): bool
     {
         return array_key_exists($key, $this->meta);
     }
-    public function setMetaKey(string $key, $var) : self
+
+    public function setMetaKey(string $key, $var): self
     {
         $this->meta[$key] = $var;
+
         return $this;
     }
+
     public function getMetaKey(string $key)
     {
         return $this->meta[$key] ?? null;
     }
-    public function removeMetaKey(string $key) : self
+
+    public function removeMetaKey(string $key): self
     {
         unset($this->meta[$key]);
+
         return $this;
     }
 
@@ -134,7 +149,7 @@ class Response extends HttpFoundationResponse
      *
      * @throws InvalidArgumentException When the callback name is not valid
      */
-    public function setCallback($callback = null) : self
+    public function setCallback($callback = null): self
     {
         if (null !== $callback) {
             // partially taken from http://www.geekality.net/2011/08/03/valid-javascript-identifier/
@@ -155,8 +170,10 @@ class Response extends HttpFoundationResponse
             }
         }
         $this->callback = $callback;
+
         return $this;
     }
+
     /**
      * Sets the data to be sent as JSON.
      *
@@ -166,7 +183,7 @@ class Response extends HttpFoundationResponse
      *
      * @throws InvalidArgumentException
      */
-    protected function genJsonString() : self
+    protected function genJsonString(): self
     {
         try {
             $output = [
@@ -176,7 +193,7 @@ class Response extends HttpFoundationResponse
             ];
             // JSON_PRETTY_PRINT
             $encodingOptions = $this->encodingOptions;
-            if(true ?? Console::isRunning()) {
+            if (CLI) {
                 $encodingOptions = $encodingOptions | JSON_PRETTY_PRINT;
             }
             $jsonString = json_encode($output, $encodingOptions);
@@ -191,8 +208,10 @@ class Response extends HttpFoundationResponse
             throw new InvalidArgumentException(json_last_error_msg());
         }
         $this->jsonString = $jsonString;
+
         return $this;
     }
+
     /**
      * Returns options used while encoding data to JSON.
      *
@@ -210,9 +229,10 @@ class Response extends HttpFoundationResponse
      *
      * @return $this
      */
-    public function setEncodingOptions(int $encodingOptions) : self
+    public function setEncodingOptions(int $encodingOptions): self
     {
         $this->encodingOptions = $encodingOptions;
+
         return $this;
     }
 
@@ -221,11 +241,12 @@ class Response extends HttpFoundationResponse
      *
      * @return $this
      */
-    protected function setJsonContent() : self
+    protected function setJsonContent(): self
     {
         if (null !== $this->callback) {
             // Not using application/javascript for compatibility reasons with older browsers.
             $this->headers->set('Content-Type', 'text/javascript');
+
             return $this->setContent(sprintf('/**/%s(%s);', $this->callback, $this->jsonString));
         }
         // Only set the header when there is none or when it equals 'text/javascript' (from a previous update with callback)
@@ -233,11 +254,14 @@ class Response extends HttpFoundationResponse
         if (!$this->headers->has('Content-Type') || 'text/javascript' === $this->headers->get('Content-Type')) {
             $this->headers->set('Content-Type', 'application/vnd.api+json');
         }
+
         return $this->setContent($this->jsonString);
     }
-    public function sendJson() : self
+
+    public function sendJson(): self
     {
         $this->genJsonString()->setJsonContent();
+
         return parent::send();
     }
 }

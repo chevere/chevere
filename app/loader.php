@@ -1,60 +1,27 @@
 <?php
+
 namespace Chevereto\Core;
 
-use Symfony\Component\HttpFoundation\Request;
-use Chevereto\Core\Http\RequestHandler;
-
-/**
- * App initialization goes before Config
+/*
+ * La App es un conjunto que resuelve REQUEST -> RESPONSE
+ * Este request pasa por un server o es injectado por cli.
+ *
+ * No se definen variables para no caer en $global.
+ *
+ * Que pasa si quiero hacer pruebas o lint en requests forgeados?
+ * Como se que puedo hacer con la app?
  */
-$app = new App();
 
-/**
- * Set the App Config
- */
-$config = new Config();
-$config
-    ->processFromFile(':config')
-    ->processFromArray(['key' => 'value']);
+// $appConfig = [
+//     'configFiles' => [':config'],
+//     'apis' => [
+//         'api' => 'apis/api',
+//         'api-alt' => 'apis/api-alt',
+//     ],
+//     'routes' => ['routes:dashboard', 'routes:web'],
+// ];
 
-$app->setConfig($config);
-$app->configure();
-
-
-// dd($app->definitions());
-
-/**
- * Build the API.
- */
-$apis = new Apis();
-$apis
-    ->register('api', 'apis/api')
-    ->register('api-alt', 'apis/api-alt');
-
-$app->setApis($apis); // App handles cache
-
-/**
- * Build the explicit routing, API is already routed at this point.
- */
-$router = new Router();
-$router
-    ->prepare('routes:dashboard')
-    ->prepare('routes:web');
-
-$app->setRouter($router);  // App handles cache
-
-/**
- * Console binds if php_sapi_name = cli.
- * Console::run() always exit.
- */
-if (Console::bind($app)) {
-    Console::run();
-} else {
-    $request = Request::createFromGlobals();
-    $app->setRequest($request);
-}
-
-$app->run();
+new App(include 'options.php');
 
 // Hook::before('deleteUser@api/users:DELETE', function ($that) {
 //     // $that->private = 'muahahahaha';
@@ -75,7 +42,6 @@ $app->run();
 // Hook::after('deleteUser@api/users:DELETE', function ($that) {
 //     $that->source .= ' HOOK-AFTER-P5';
 // }, 5);
-
 
 // echo '<pre>' . Utils\Dump::out(Hook::getAll()) . '</pre>';
 

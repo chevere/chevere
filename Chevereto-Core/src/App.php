@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,27 +9,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Chevereto\Core;
 
-use Chevereto\Core\Utils\Str;
-use Chevereto\Core\Response as CheveretoResponse;
-use Chevereto\Core\Interfaces\RenderableInterface;
+namespace Chevereto\Core;
 
 use Exception;
 use ReflectionMethod;
 use ReflectionFunction;
-
 use Monolog\Logger;
 use Symfony\Component\HttpFoundation\Request;
-// use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
-class App
+// use Symfony\Component\HttpFoundation\Response;
+
+class App extends Container
 {
-    use Traits\InstanceTrait;
     use Traits\CallableTrait;
-    use Traits\ContainerTrait;
-    
+
     const NAMESPACES = ['App', __NAMESPACE__];
     const APP = 'app';
     const FILENAME_HACKS = 'hacks';
@@ -56,45 +52,86 @@ class App
 
     protected $objects = ['runtime', 'config', 'logger', 'router', 'request', 'response', 'apis', 'routing', 'route', 'cache', 'db', 'handler'];
 
-    public function __construct()
+    public function __construct(AppOptions $options = null)
     {
         if (static::hasStaticProp('defaultRuntime')) {
             $this->setRuntime(static::getDefaultRuntime());
         }
-        self::$instance = $this;
         // Checkout it app/build exists
         if (stream_resolve_include_path($this->getBuildFilePath()) == false) {
             $this->checkout();
         }
         Load::app(static::FILENAME_HACKS);
+        if (null != $options) {
+            try {
+                if ($configFiles = $options->getConfigFiles()) {
+                    $this
+                        ->setConfig(
+                            (new Config())
+                                ->processFromFiles($configFiles)
+                        )
+                        ->configure();
+                }
+                // App handles cache
+                if ($apis = $options->getApis()) {
+                    $this->setApis(
+                        (new Apis())
+                            ->registerArray($apis)
+                    );
+                }
+                // App handles cache
+                if ($routes = $options->getRoutes()) {
+                    $this->setRouter(
+                        (new Router())
+                            ->prepareArray($routes)
+                    );
+                }
+            } catch (Exception $e) {
+                throw new CoreException($e);
+            }
+        }
+        if (Console::bind($this)) {
+            Console::run(); //Console::run() always exit.
+        } else {
+            $this->setRequest(Request::createFromGlobals());
+        }
     }
+
     // TODO: Make trait
-    public static function hasStaticProp(string $key) : bool
+    public static function hasStaticProp(string $key): bool
     {
         return isset(static::$$key);
     }
-    public function setRuntime(Runtime $runtime) : self
+
+    // FIXME: Must be protected
+    public function setRuntime(Runtime $runtime): self
     {
         $this->runtime = $runtime;
+
         return $this;
     }
-    public function getRuntime() : Runtime
+
+    public function getRuntime(): Runtime
     {
         return $this->runtime;
     }
-    public function setConfig(Config $config) : self
+
+    protected function setConfig(Config $config): self
     {
         $this->config = $config;
+
         return $this;
     }
-    public function getConfig() : Config
+
+    public function getConfig(): Config
     {
         return $this->config;
     }
+
     /**
-     * Applies Config to the App instance
+     * Applies Config to the App.
      */
-    public function configure() : self
+    protected function configure(): self
     {
         if (false == $this->hasObject('config')) {
             throw new CoreException(
@@ -103,85 +140,110 @@ class App
             );
         }
         $this->getRuntime()->runConfig($this->getConfig());
+
         return $this;
     }
+
     /**
-     * Get the value of handler
+     * Get the value of handler.
      */
-    public function getHandler() : Handler
+    public function getHandler(): Handler
     {
         return $this->handler;
     }
+
     /**
-     * Set the value of handler
+     * Set the value of handler.
      *
-     * @return  self
+     * @return self
      */
-    public function setHandler(Handler $handler)
+    protected function setHandler(Handler $handler)
     {
         $this->handler = $handler;
+
         return $this;
     }
-    protected function setRoute(Route $route) : self
+
+    protected function setRoute(Route $route): self
     {
         $this->route = $route;
+
         return $this;
     }
-    public function getRoute() : Route
+
+    public function getRoute(): Route
     {
         return $this->route;
     }
-    protected function setRouting(Routing $routing) : self
+
+    protected function setRouting(Routing $routing): self
     {
         $this->routing = $routing;
+
         return $this;
     }
-    public function getRouting() : Routing
+
+    public function getRouting(): Routing
     {
         return $this->routing;
     }
-    public function getRouter() : Router
+
+    public function getRouter(): Router
     {
         return $this->router;
     }
-    public function getRequest() : Request
+
+    public function getRequest(): Request
     {
         return $this->request;
     }
-    public function setResponse(Response $response) : self {
+
+    // FIXME: Must be protected
+    public function setResponse(Response $response): self
+    {
         $this->response = $response;
+
         return $this;
     }
-    public function getResponse() : Response
+
+    public function getResponse(): Response
     {
         return $this->response;
     }
-    public static function getBuildFilePath() : string
+
+    public static function getBuildFilePath(): string
     {
-        return ROOT_PATH . App\PATH . 'build';
+        return ROOT_PATH.App\PATH.'build';
     }
-    public function setApis(Apis $apis) : self
+
+    protected function setApis(Apis $apis): self
     {
         $this->apis = $apis;
+
         return $this;
     }
-    public function getApis() : Apis
+
+    public function getApis(): Apis
     {
         return $this->apis;
     }
-    public function getApi(string $key = null) : ?array
+
+    public function getApi(string $key = null): ?array
     {
         return $this->apis->get($key ?? 'api');
     }
+
     /**
-     * Get build time
+     * Get build time.
      */
-    public function getBuildTime() : ?string
+    public function getBuildTime(): ?string
     {
         $filename = $this->getBuildFilePath();
+
         return File::exists($filename) ? (string) file_get_contents($filename) : null;
     }
-    public function checkout() : void
+
+    public function checkout(): void
     {
         $filename = $this->getBuildFilePath();
         $fh = @fopen($filename, 'w');
@@ -197,10 +259,11 @@ class App
         }
         @fclose($fh);
     }
+
     /**
      * Run the callable and dispatch the handler.
      *
-     * @param string $callable Controller (path or class name).
+     * @param string $callable controller (path or class name)
      */
     public function run(string $callable = null)
     {
@@ -210,28 +273,28 @@ class App
                 $callable = $this->getRouting()->getController($this->getRequest());
                 $this->setRoute($this->getRouting()->getRoute());
             } catch (RouterException $e) {
-                die('APP RUN RESPONSE: ' . $e->getCode());
+                die('APP RUN RESPONSE: '.$e->getCode());
             }
         }
         if (null != $callable) {
             $controller = $this->getControllerObject($callable);
-            if($controller instanceof Interfaces\RenderableInterface) {
-                print $controller->render();
+            if ($controller instanceof Interfaces\RenderableInterface) {
+                echo $controller->render();
             } else {
                 // dd($this->getResponse()->val, $controller->getResponse()->val);
                 $controller->getResponse()->sendJson();
             }
         }
-        die();
     }
+
     /**
      * Runs a explicit provided callable.
      */
     public function getControllerObject(string $callable)
     {
-        $this->setResponse(new Response);
+        $this->setResponse(new Response());
         $controller = $this->getCallable($callable);
-        if ($controller instanceof Interfaces\ControllerInterface) {
+        if ($controller instanceof Controller) {
             $controller->setApp($this);
             $controller->getResponse()->val = 'val en app';
         }
@@ -246,7 +309,6 @@ class App
             $this->setArguments($routingArgs);
         }
         if (is_object($controller)) {
-            
             $invoke = new ReflectionMethod($controller, '__invoke');
         } else {
             $invoke = new ReflectionFunction($controller);
@@ -270,20 +332,22 @@ class App
                         throw new Exception(
                             (new Message("Class %s doesn't have a constructor. %n %o typehinted in %f invoke function."))
                                 ->code('%s', $type)
-                                ->code('%o', $type . ' $' . $parameter->getName() . ($parameter->isDefaultValueAvailable() ? ' = ' . $parameter->getDefaultValue() : null))
-                                ->code('%n', '#'. $parameter->getPosition())
+                                ->code('%o', $type.' $'.$parameter->getName().($parameter->isDefaultValueAvailable() ? ' = '.$parameter->getDefaultValue() : null))
+                                ->code('%n', '#'.$parameter->getPosition())
                                 ->code('%f', $controller)
                         );
                     }
                     $controllerArguments[] = new $type($value);
                 }
             }
-            $parameterIndex++;
+            ++$parameterIndex;
         }
         $this->controllerArguments = $controllerArguments;
         $controller(...$this->controllerArguments);
+
         return $controller;
     }
+
     /**
      * Farewell kids, my planet needs me.
      */
@@ -294,29 +358,49 @@ class App
         }
         exit();
     }
+
+    // FIXME: Must be protected
     public function setLogger(Logger $logger)
     {
         $this->logger = $logger;
     }
-    public function setRouter(Router $router) : self
+
+    protected function setRouter(Router $router): self
     {
         if (false == $router->isProcessDone()) {
             $router->processRoutes();
         }
         $this->router = $router;
         $this->routing = new Routing(Routes::instance());
+
         return $this;
     }
+
+    // FIXME: Must be protected?
     public function setArguments(array $arguments = [])
     {
         $this->arguments = $arguments;
     }
-    public function getArguments() : array
+
+    public function getArguments(): array
     {
         return $this->arguments;
     }
-    // goes before ::run()
-    public function setRequest(Request $request) : self
+
+    /**
+     * Forges a request (if no Request has been set).
+     */
+    public function forgeRequest(Request $request): self
+    {
+        if ($this->hasObject('request')) {
+            throw new CoreException('Unable to forge request when the request has been already set.');
+        }
+        $this->setRequest($request);
+
+        return $this;
+    }
+
+    protected function setRequest(Request $request): self
     {
         $this->request = $request;
         $pathinfo = ltrim($this->request->getPathInfo(), '/');
@@ -326,20 +410,25 @@ class App
         // $this->define('URL', App\HTTP_SCHEME . '://' . $host . ROOT_PATH_RELATIVE);
         return $this;
     }
-    public function getHash() : string
+
+    public function getHash(): string
     {
-        return ($this->getConstant('App\VERSION') ?: null) . $this->getBuildTime();
+        return ($this->getConstant('App\VERSION') ?: null).$this->getBuildTime();
     }
-    public function getConstant(string $name, string $namespace = 'App') : ?string
+
+    public function getConstant(string $name, string $namespace = 'App'): ?string
     {
         $constant = "\\$namespace\\$name";
+
         return defined($constant) ? constant($constant) : null;
     }
-    public static function setDefaultRuntime(Runtime $runtime) : void
+
+    public static function setDefaultRuntime(Runtime $runtime): void
     {
         static::$defaultRuntime = $runtime;
     }
-    public static function getDefaultRuntime() : Runtime
+
+    public static function getDefaultRuntime(): Runtime
     {
         return static::$defaultRuntime;
     }

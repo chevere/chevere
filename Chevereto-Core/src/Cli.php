@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,29 +9,26 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
 use Chevereto\Core\Traits\ContainerTrait;
-use Chevereto\Core\Interfaces\ContainerInterface;
-
 use Monolog\Logger;
 use Symfony\Component\Console\Application as ConsoleClient;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-use Exception;
-
 /**
  * This class provides console for Chevereto\Core and it is a facade of Symfony\Component\Console.
  */
-class Cli implements ContainerInterface
+class Cli extends Container
 {
-    use ContainerTrait;
+    // use ContainerTrait;
 
     protected $objects = ['logger', 'client', 'input', 'output', 'io', 'command'];
 
-    const NAME = __NAMESPACE__ . ' cli';
+    const NAME = __NAMESPACE__.' cli';
     const VERSION = '1.0';
 
     protected $name;
@@ -62,6 +61,7 @@ class Cli implements ContainerInterface
         $client->add(new Command\InspectCommand($this));
         $client->setAutoExit(false);
     }
+
     /**
      * Run the CLI client.
      */
@@ -69,141 +69,165 @@ class Cli implements ContainerInterface
     {
         $this->client->run($this->input, $this->output);
     }
+
     /**
-     * Set the value of name
+     * Set the value of name.
      *
-     * @return  self
+     * @return self
      */
-    public function setName(string $name) : self
+    public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
+
     /**
      * Set the value of version.
      *
-     * @return  self
+     * @return self
      */
-    public function setVersion(string $version) : self
+    public function setVersion(string $version): self
     {
         $this->version = $version;
+
         return $this;
     }
+
     /**
      * Set the value of input.
      *
-     * @return  self
+     * @return self
      */
-    public function setInput(ArgvInput $input) : self
+    public function setInput(ArgvInput $input): self
     {
         $this->input = $input;
+
         return $this;
     }
+
     /**
      * Set the value of output.
      *
-     * @return  self
+     * @return self
      */
-    public function setOutput(ConsoleOutput $output) : self
+    public function setOutput(ConsoleOutput $output): self
     {
         $this->output = $output;
+
         return $this;
     }
+
     /**
      * Set the value of logger.
      *
-     * @return  self
+     * @return self
      */
-    public function setLogger(Logger $logger) : self
+    public function setLogger(Logger $logger): self
     {
         $this->logger = $logger;
+
         return $this;
     }
+
     /**
      * Set the value of client.
      *
-     * @return  self
+     * @return self
      */
-    public function setClient(ConsoleClient $client) : self
+    public function setClient(ConsoleClient $client): self
     {
         $this->client = $client;
+
         return $this;
     }
+
     /**
      * Set the value of io.
      *
-     * @return  self
+     * @return self
      */
-    public function setIo(SymfonyStyle $io) : self
+    public function setIo(SymfonyStyle $io): self
     {
         $this->io = $io;
+
         return $this;
     }
+
     /**
      * Set the value of command.
      *
-     * @return  self
+     * @return self
      */
-    public function setCommand(Command $command) : self
+    public function setCommand(Command $command): self
     {
         $this->command = $command;
+
         return $this;
     }
+
     /**
      * Get the value of name.
      */
-    public function getName() : string
+    public function getName(): string
     {
         return $this->name;
     }
+
     /**
-     * Get the value of version
+     * Get the value of version.
      */
-    public function getVersion() : string
+    public function getVersion(): string
     {
         return $this->version;
     }
+
     /**
      * Get the value of input.
      *
      * @return ArgvInput
      */
-    public function getInput() : ArgvInput
+    public function getInput(): ArgvInput
     {
         return $this->input;
     }
+
     /**
      * Get the value of output.
      */
-    public function getOutput() : ConsoleOutput
+    public function getOutput(): ConsoleOutput
     {
         return $this->output;
     }
+
     /**
      * Get the value of logger.
      */
-    public function getLogger() : Logger
+    public function getLogger(): Logger
     {
         return $this->logger;
     }
+
     /**
      * Get the value of client.
      */
-    public function getClient() : ConsoleClient
+    public function getClient(): ConsoleClient
     {
         return $this->client;
     }
+
     /**
      * Get the value of io.
      */
-    public function getIo() : SymfonyStyle
+    public function getIo(): SymfonyStyle
     {
         return $this->io;
     }
+
     /**
      * Get the value of command.
      */
-    public function getCommand() : Command
+    public function getCommand(): Command
     {
         return $this->command;
     }

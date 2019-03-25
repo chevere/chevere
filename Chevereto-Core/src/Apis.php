@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,10 +9,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
 use Exception;
-use Reflector;
 use ReflectionParameter;
 use ReflectionMethod;
 use RecursiveDirectoryIterator;
@@ -27,18 +29,19 @@ class Apis
     protected $bases = [];
     // ['/api-key/v1/endpoint' => ['api-key', 'v1/endpoint'],]
     protected $routeKeys = [];
+
     /**
      * Automatically finds controllers in the given path and generate the API route binding.
      *
-     * @param string $basename API basename ('api').
-     * @param string $pathIdentifier Path identifier representing the dir containing API controllers (relative to app).
+     * @param string $basename       API basename ('api')
+     * @param string $pathIdentifier path identifier representing the dir containing API controllers (relative to app)
      */
-    public function register(string $basename, string $pathIdentifier) : self
+    public function register(string $basename, string $pathIdentifier): self
     {
         try {
             if (isset($this->apis[$pathIdentifier])) {
                 throw new CoreException(
-                    (new Message("Path identified by %s has been already bound"))
+                    (new Message('Path identified by %s has been already bound'))
                         ->code('%s', $pathIdentifier)
                 );
             }
@@ -85,9 +88,9 @@ class Apis
             if ($filename->isDir()) {
                 /**
                  * resource.json contains the properties descriptions for the __invoke
-                 * object-hinted arguments _invoke(User $user) ($user = user = the resource)
+                 * object-hinted arguments _invoke(User $user) ($user = user = the resource).
                  */
-                $resourceFilePath = $filePath . '/resource.json';
+                $resourceFilePath = $filePath.'/resource.json';
                 if (File::exists($resourceFilePath)) {
                     if ($jsonResource = file_get_contents($resourceFilePath)) {
                         $jsonResource = json_decode($jsonResource);
@@ -109,7 +112,7 @@ class Apis
                     continue;
                 }
                 $dir = dirname($dir); // /endpoint
-                $realDir = $relativeDirectory . $dir; // /api/endpoint
+                $realDir = $relativeDirectory.$dir; // /api/endpoint
                 $controller = include $filePath;
                 // Don't mind about these
                 if (!$controller instanceof Controller) {
@@ -118,7 +121,7 @@ class Apis
                 // Determine required {wildcards??} needed for Route
                 $invoke = new ReflectionMethod($controller, '__invoke');
                 // Store options
-                $OPTIONS[$filePathRelativeApp] = defined(get_class($controller) . '::OPTIONS') ? $controller::OPTIONS : null;
+                $OPTIONS[$filePathRelativeApp] = defined(get_class($controller).'::OPTIONS') ? $controller::OPTIONS : null;
                 $paramCount = $invoke->getNumberOfParameters();
                 $explode = explode('/', $dir);
                 $explodeCount = count($explode);
@@ -147,20 +150,20 @@ class Apis
                     // level - 1 => required params
                     // ie: user/friends = level 2 => required params = 1 = user/{param}/friends
                     foreach ($params = $invoke->getParameters() as $k => $param) {
-                        $counter++;
+                        ++$counter;
                         $error = null;
                         if ($required = ($param->isOptional() || $param->isDefaultValueAvailable()) == false) {
-                            $requiredCntAux++;
+                            ++$requiredCntAux;
                         }
                         $mustBeRequired = $counter <= $requiredCnt;
                         if ($mustBeRequired && $required == false) {
                             $errors[] = (new Message('Parameter %s must not be declared with a default value for API endpoint %e at %f.'))
-                                ->code('%s', '$' . $param->getName())
+                                ->code('%s', '$'.$param->getName())
                                 ->code('%e', "$httpVerb:$realDir")
                                 ->code('%f', $filePathRelative);
                             continue;
                         }
-                        $getType =  $param->hasType() ? $param->getType() : null;
+                        $getType = $param->hasType() ? $param->getType() : null;
                         $type = $getType != null ? $getType->getName() : null;
                         // $type null means no declaration in __invoke, don't mind about it
                         if ($type) {
@@ -192,7 +195,7 @@ class Apis
                         $endpoint[] = $v;
                         $wildcard = $wildcards[$k] ?? null;
                         if ($wildcard) {
-                            $wildcardRoute = '{' . $wildcard . '}';
+                            $wildcardRoute = '{'.$wildcard.'}';
                             $iLastWildcard = $k == $explodeCount - 1;
                             $iOptional = $wildcardsRequire[$wildcard] == false;
                             if ($iLastWildcard && $iOptional) {
@@ -228,7 +231,7 @@ class Apis
             $replaced = preg_replace(Route::REGEX_WILDCARD_SEARCH, '', $endpoint);
             $dirRoute = $replaced != null ? Path::normalize($replaced) : null;
             $resourceWildcards = $RESOURCE_WILDCARDS[$dirRoute] ?? [];
-            $endpointRoute = Path::normalize('/' . $basename . '/' . $endpoint);
+            $endpointRoute = Path::normalize('/'.$basename.'/'.$endpoint);
             $explode = explode('/', $endpoint);
             $endsWithWildcard = preg_match(Route::REGEX_WILDCARD_SEARCH, (string) end($explode), $matches) != false;
             // Set Options => <http method>,
@@ -266,7 +269,7 @@ class Apis
             $API[$endpoint] = $api;
         }
         ksort($API);
-        Route::bind('/' . $basename)
+        Route::bind('/'.$basename)
             ->method('HEAD', Controllers\ApiHead::class)
             ->method('OPTIONS', Controllers\ApiOptions::class)
             ->method('GET', Controllers\ApiGet::class);
@@ -278,18 +281,31 @@ class Apis
             'GET' => Controllers\ApiGet::OPTIONS,
         ];
         $this->bases[$basename] = ['OPTIONS' => $baseOpts];
-        $this->routeKeys['/' . $basename] = [$basename];
+        $this->routeKeys['/'.$basename] = [$basename];
+
         return $this;
     }
-    public function getKeys() : array
+
+    public function registerArray(array $array): self
+    {
+        foreach ($array as $basename => $pathIdentifier) {
+            $this->register($basename, $pathIdentifier);
+        }
+
+        return $this;
+    }
+
+    public function getKeys(): array
     {
         return array_keys($this->apis);
     }
-    public function getBaseOptions(string $key) : ?array
+
+    public function getBaseOptions(string $key): ?array
     {
         return $this->bases[ltrim($key, '/')] ?? null;
     }
-    public function getEndpoint(string $key) : ?array
+
+    public function getEndpoint(string $key): ?array
     {
         if ($keys = $this->routeKeys[$key] ?? null) {
             $api = $this->get($keys[0]);
@@ -302,21 +318,36 @@ class Apis
             return null;
         }
     }
+
+    /**
+     * Gets the API key of the alleged endpoint key.
+     */
+    public function getEndpointApiKey(string $key): ?string
+    {
+        if ($keys = $this->routeKeys[$key] ?? null) {
+            return $keys[0];
+        }
+
+        return null;
+    }
+
     /**
      * Get an API.
      *
-     * @param string $key The API key (path identifier).
+     * @param string $key the API key (path identifier)
      */
-    public function get(string $key = 'api') : ?array
+    public function get(string $key = 'api'): ?array
     {
         return $this->apis[$key] ?? null;
     }
-    public function getRouteKeys() : ?array
+
+    public function getRouteKeys(): ?array
     {
         return $this->routeKeys ?? null;
     }
+
     /**
-     * Get the error associated with invalid controller __invoke(Class $hint)
+     * Get the error associated with invalid controller __invoke(Class $hint).
      */
     protected static function getInvokeHintError(string $filename, string $class = null, ReflectionMethod $invoke, ReflectionParameter $param)
     {
@@ -325,10 +356,11 @@ class Apis
         } elseif (method_exists($class, '__construct') == false) {
             $error = 'Unable to typehint object <code>%c</code> (no constructor defined)';
         }
+
         return isset($error) ? strtr($error, [
             '%n' => ($param->getPosition() + 1),
             '%l' => $invoke->getStartLine(),
-            '%v' => '$' . $param->name,
+            '%v' => '$'.$param->name,
             '%c' => $class,
             '%f' => $filename,
         ]) : false;

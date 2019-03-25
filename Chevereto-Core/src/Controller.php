@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,15 +9,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
-use Chevereto\Core\Json;
-use Chevereto\Core\Response;
-use Chevereto\Core\Interfaces\ControllerInterface;
-use Chevereto\Core\Interfaces\ContainerInterface;
 use Chevereto\Core\Traits\ContainerTrait;
 use Chevereto\Core\Traits\HookableTrait;
-
 use Exception;
 use ReflectionClass;
 
@@ -39,42 +37,60 @@ use ReflectionClass;
  * @see Interfaces\APIs
  */
 // TODO: Create Container Interface
-class Controller implements ControllerInterface, ContainerInterface
+class Controller extends Container
 {
     use HookableTrait;
-    use ContainerTrait;
+    // use ContainerTrait;
 
     const TYPE_DECLARATIONS = ['array', 'callable', 'bool', 'float', 'int', 'string', 'iterable'];
     const OPTIONS = [];
 
+    protected $objects = ['app'];
+
     /** @var App */
     private $app;
 
-    public function setResponse(Response $response) : self
+    public function getRoute(): Route
+    {
+        return $this->getApp()->getRoute();
+    }
+
+    public function getApis(): Apis
+    {
+        return $this->getApp()->getApis();
+    }
+
+    public function setResponse(Response $response): self
     {
         $this->getApp()->setResponse($response);
+
         return $this;
     }
-    public function getResponse() : Response
+
+    public function getResponse(): Response
     {
         return $this->getApp()->getResponse();
     }
-    public function getApp() : App
+
+    public function getApp(): App
     {
         return $this->app;
     }
-    public function setApp(App $app) : self
+
+    public function setApp(App $app): self
     {
         $this->app = $app;
+
         return $this;
     }
+
     /**
      * Invoke another controller.
      *
      * @param string $controller Path handle. Start with @, to use the caller dir as root context.
-     * @param mixed $parameters Invoke pararameter or parameters (array).
+     * @param mixed  $parameters invoke pararameter or parameters (array)
      *
-     * @return mixed Output array or whatever the controller may output.
+     * @return mixed output array or whatever the controller may output
      */
     public function invoke(string $controller, $parameters = null)
     {
@@ -90,7 +106,7 @@ class Controller implements ControllerInterface, ContainerInterface
             //         ->code('%c', $controller)
             //     );
             // }
-            $that = new $controller;
+            $that = new $controller();
         } else {
             $controllerArgs = [$controller];
             if (Utils\Str::startsWith('@', $controller)) {
@@ -117,6 +133,7 @@ class Controller implements ControllerInterface, ContainerInterface
         foreach (get_object_vars($this) as $k => $v) {
             $that->{$k} = $v;
         }
+
         return $that(...$parameters);
     }
 }

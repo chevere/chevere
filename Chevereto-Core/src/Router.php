@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,6 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
 use Exception;
@@ -36,19 +39,14 @@ class Router
      * Contains the registry of files that generates routing.
      */
     protected $registers = [];
-    /**
-     * Contains the Routes $routing table & found $route
-     */
-    public function __construct()
-    {
-    }
+
     /**
      * Add a route declaration to the registry.
      *
-     * @param string $fileHandle File handle to look for.
-     * @param string $context Context for the file handle.
+     * @param string $fileHandle file handle to look for
+     * @param string $context    context for the file handle
      */
-    public function prepare(string $fileHandle, string $context = null) : self
+    public function prepare(string $fileHandle, string $context = null): self
     {
         $filePath = Path::fromHandle(...func_get_args());
         $relativeFilePath = Path::relative($filePath);
@@ -59,16 +57,28 @@ class Router
             );
         }
         $this->registers[] = $filePath;
+
         return $this;
     }
-    public function isProcessDone() : bool
+
+    public function prepareArray(array $array): self
+    {
+        foreach ($array as $fileHandle => $context) {
+            $this->prepare($fileHandle, $context);
+        }
+
+        return $this;
+    }
+
+    public function isProcessDone(): bool
     {
         return (bool) $this->isProcessDone;
     }
+
     /**
      * Makes the routing table.
      */
-    public function processRoutes() : void
+    public function processRoutes(): void
     {
         if ($this->registers == null) {
             throw new Exception(
@@ -83,7 +93,8 @@ class Router
         Routes::instance()->process();
         $this->isProcessDone = true;
     }
-    public function getRegisters() : array
+
+    public function getRegisters(): array
     {
         return $this->registers;
     }

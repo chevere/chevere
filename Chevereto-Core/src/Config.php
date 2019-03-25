@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -8,18 +10,15 @@
  * file that was distributed with this source code.
  */
 // TODO: Use object instance.
+
 namespace Chevereto\Core;
 
 use Exception;
 
-use Chevereto\Core\Message;
-use Chevereto\Core\Path;
-use Chevereto\Core\Traits\DataTrait;
-
 // use Symfony\Component\HttpFoundation\Request;
 
 /**
- * App configuration (runtime)
+ * App configuration (runtime).
  */
 class Config extends Data
 {
@@ -44,14 +43,14 @@ class Config extends Data
     protected $loadedFiles = [];
 
     protected $asserts = [
-        self::DEBUG             => [0, 1],
+        self::DEBUG => [0, 1],
         // locale
         // charset
         // error reporting
-        self::ERROR_HANDLER     => 'is_callable',
+        self::ERROR_HANDLER => 'is_callable',
         self::EXCEPTION_HANDLER => 'is_callable',
-        self::URI_SCHEME       => ['http', 'https'],
-        self::TIMEZONE          => __NAMESPACE__ . '\Validate::timezone',
+        self::URI_SCHEME => ['http', 'https'],
+        self::TIMEZONE => __NAMESPACE__.'\Validate::timezone',
     ];
 
     public function __construct(string $fileHandle = null)
@@ -61,85 +60,116 @@ class Config extends Data
             $this->processFromFile($fileHandle);
         }
     }
-    public function addFile(string $fileHandle) : self
+
+    public function addFile(string $fileHandle): self
     {
         $filepath = Path::fromHandle($fileHandle);
+        if (false == File::exists($filepath)) {
+            throw new CoreException(
+                (new Message("Unable to add config file %s (%f doesn't exists)"))
+                    ->code('%s', $fileHandle)
+                    ->code('%f', $filepath)
+            );
+        }
         $this->loadedFiles[] = $filepath;
         $array = Load::php($filepath);
+
         return $this->dataAdder($array);
     }
-    public function addArray(array $array) : self
+
+    public function addArray(array $array): self
     {
         return $this->dataAdder($array);
     }
-    protected function dataAdder(array $data) : self
+
+    protected function dataAdder(array $data): self
     {
         $this->_data = array_replace_recursive($this->_data, $data);
+
         return $this;
     }
-    public function process() : self
+
+    public function process(): self
     {
         try {
             $this->validate();
         } catch (Exception $e) {
             throw new CoreException(
-                (new Message($e->getMessage() . ' ' . 'at %s'))->b('%s', '0000000000000000')
+                (new Message($e->getMessage().' '.'at %s'))->b('%s', '0000000000000000')
             );
         }
         $this->addData($this->_data);
+
         return $this;
     }
 
-    public function processFromFile(string $fileHandle) : self
+    public function processFromFile(string $fileHandle): self
     {
         $this->addFile($fileHandle);
+
         return $this->process();
     }
-    public function processFromArray(array $config) : self
+
+    public function processFromFiles(array $filesHandle): self
+    {
+        foreach ($filesHandle as $v) {
+            $this->addFile($v);
+        }
+
+        return $this->process();
+    }
+
+    public function processFromArray(array $config): self
     {
         $this->addArray($config);
+
         return $this->process();
     }
+
     /**
      * Get config assert value.
      *
-     * @param string $key Config key to retrieve assert value.
+     * @param string $key config key to retrieve assert value
      *
-     * @return mixed Assert value, callable (string) or [values,] (array).
+     * @return mixed assert value, callable (string) or [values,] (array)
      */
     public function getAssert(string $key)
     {
         return $this->getAsserts()[$key];
     }
+
     /**
      * Get config asserts.
      *
-     * @return array Asserts.
+     * @return array asserts
      */
-    public function getAsserts() : array
+    public function getAsserts(): array
     {
         return $this->asserts;
     }
+
     /**
      * Detects if the target assert key exists.
      *
-     * @param string $key Target assert key.
+     * @param string $key target assert key
      *
-     * @return bool TRUE is the assert key exists.
+     * @return bool TRUE is the assert key exists
      */
-    public function hasAssert(string $key) : bool
+    public function hasAssert(string $key): bool
     {
         return array_key_exists($key, $this->getAsserts());
     }
+
     /**
      * Returns the loaded configuration filepaths.
      *
-     * @return array Loaded filepaths.
+     * @return array loaded filepaths
      */
-    public function getLoadedFiles() : array
+    public function getLoadedFiles(): array
     {
         return $this->loadedFiles;
     }
+
     /**
      * Validate config values.
      */
@@ -156,14 +186,15 @@ class Config extends Data
             }
         }
         if ($exceptions != false) {
-            throw new Exception('Invalid configuration: ' . implode('; ', $exceptions));
+            throw new Exception('Invalid configuration: '.implode('; ', $exceptions));
         }
     }
+
     /**
      * Validator function.
      *
-     * @param string $key Key to validate.
-     * @param mixed $value Value to validate.
+     * @param string $key   key to validate
+     * @param mixed  $value value to validate
      */
     protected function validator(string $key, $value)
     {
@@ -210,7 +241,7 @@ class ConfigException extends Exception
         // $assert = 'try' ?? Config::getAssert($key);
         $assert = '00000000000000000xTry';
         if (null != $assert && is_array($assert)) {
-            $message .= ' (expecting <code>' . implode('</code> or <code>', $assert) . '</code>)';
+            $message .= ' (expecting <code>'.implode('</code> or <code>', $assert).'</code>)';
         }
         parent::__construct($message, $code, $previous);
     }

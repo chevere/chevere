@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,10 +9,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
 use Exception;
-use ReflectionClass;
 
 // TODO: Route lock (disables further modification)
 // TODO: Reg events, determine who changes a route.
@@ -27,17 +29,17 @@ class Route
      * Array containing all the HTTP methods.
      */
     const HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'COPY', 'HEAD', 'OPTIONS', 'LINK', 'UNLINK', 'PURGE', 'LOCK', 'UNLOCK', 'PROPFIND', 'VIEW', 'TRACE',  'CONNECT'];
-    
+
     /**
-     * Route without wildcards
+     * Route without wildcards.
      */
     const TYPE_STATIC = 'static';
     /**
-     * Route containing wildcards and static components
+     * Route containing wildcards and static components.
      */
     const TYPE_MIXED = 'mixed';
     /**
-     * Route containing only wildcards, no static components
+     * Route containing only wildcards, no static components.
      */
     const TYPE_DYNAMIC = 'dynamic';
     /**
@@ -45,7 +47,7 @@ class Route
      */
     const REGEX_WILDCARD_WHERE = '[A-z0-9_\-\%]+';
     /**
-     * Regex pattern used to detect {wildcard} and {wildcard?}
+     * Regex pattern used to detect {wildcard} and {wildcard?}.
      */
     const REGEX_WILDCARD_SEARCH = '/{([a-z_][\w_]*\??)}/i';
     /**
@@ -65,10 +67,10 @@ class Route
     protected $middlewares;
 
     /**
-     * Route constructor
+     * Route constructor.
      *
-     * @param string $key Route string.
-     * @param string $callable Callable for GET.
+     * @param string $key      route string
+     * @param string $callable callable for GET
      */
     public function __construct(string $key, string $callable = null)
     {
@@ -77,7 +79,7 @@ class Route
             Validation::grouped('$key', $key)
                 ->append(
                     'value',
-                    function (string $string) : bool {
+                    function (string $string): bool {
                         return
                             $string == '/' ?: (
                                 strlen($string) > 0
@@ -92,21 +94,22 @@ class Route
                 )
                 ->append(
                     'unique',
-                    function (string $string) : bool {
+                    function (string $string): bool {
                         $collection = Routes::instance();
                         if ($collection == null) {
                             return true;
                         }
+
                         return isset($collection->getUniques()[$string]) == false;
                     },
-                    "Route %s has been already declared."
+                    'Route %s has been already declared.'
                 )
                 ->append(
                     'wildcards',
-                    function (string $string) use ($hasHandlebars) : bool {
-                        return !$hasHandlebars ?: preg_match_all('/{([0-9]+)}/', $string) == false ;
+                    function (string $string) use ($hasHandlebars): bool {
+                        return !$hasHandlebars ?: preg_match_all('/{([0-9]+)}/', $string) == false;
                     },
-                    (string) (new Message("Wildcards in the form of %s are reserved."))
+                    (string) (new Message('Wildcards in the form of %s are reserved.'))
                         ->code('%s', '{n}')
                 )
                 ->validate();
@@ -142,7 +145,7 @@ class Route
                 }
                 if (in_array($wildcardTrim, $this->wildcards)) {
                     throw new RouteException(
-                        (new Message("Must declare one unique wildcard per capturing group, duplicated %s detected in route %r."))
+                        (new Message('Must declare one unique wildcard per capturing group, duplicated %s detected in route %r.'))
                             ->code('%s', $wildcards[0][$k])
                             ->code('%r', $key)
                     );
@@ -174,7 +177,7 @@ class Route
                         $auxSet = Path::normalize($auxSet);
                     }
                     ksort($auxWildcards);
-                    /**
+                    /*
                      * Maps expected regex indexed matches [0,1,2,] to registered wildcard index [index=>n].
                      * For example, a set /test-{0}--{2} will capture 0->0 and 1->2. Storing the expected index allows\
                      * to easily map matches => wildcards => values.
@@ -188,19 +191,20 @@ class Route
             $this->method('GET', $callable);
         }
     }
+
     /**
      * Set route name.
      *
      * @param string $name
      */
-    public function name(string $name) : self
+    public function name(string $name): self
     {
         // Validate $name
         try {
             Validation::grouped('$name', $name)
                 ->append(
                     'value',
-                    function (string $string) : bool {
+                    function (string $string): bool {
                         return (bool) preg_match(Route::REGEX_NAME, $string);
                     },
                     (string) (new Message("Expecting at least one alphanumeric, underscore, hypen or dot character. String '%s' provided."))
@@ -208,10 +212,10 @@ class Route
                 )
                 ->append(
                     'unique',
-                    function (string $string) : bool {
+                    function (string $string): bool {
                         return isset(Routes::instance()->getNamed()[$string]) == false;
                     },
-                    "Route name %s has been already taken."
+                    'Route name %s has been already taken.'
                 )
                 ->validate();
         } catch (Exception $e) {
@@ -219,15 +223,17 @@ class Route
         }
         $this->name = $name;
         $this->collect();
+
         return $this;
     }
+
     /**
      * Sets HTTP method to callable binding. Allocates Routes.
      *
-     * @param string $httpMethod HTTP method.
-     * @param string $callable Callable which satisfy the method request.
+     * @param string $httpMethod HTTP method
+     * @param string $callable   callable which satisfy the method request
      */
-    public function method(string $httpMethod, string $callable) : self
+    public function method(string $httpMethod, string $callable): self
     {
         // Validate HTTP method
         if (in_array($httpMethod, static::HTTP_METHODS) == false) {
@@ -245,27 +251,31 @@ class Route
         // }
         $this->methods[$httpMethod] = $callableSome;
         $this->collect();
+
         return $this;
     }
+
     /**
      * Sets HTTP method to callable binding (multiple version).
      *
      * @param array $httpMethodsCallables An array containing [httpMethod => callable,]
      */
-    public function methods(array $httpMethodsCallables) : self
+    public function methods(array $httpMethodsCallables): self
     {
         foreach ($httpMethodsCallables as $httpMethod => $controller) {
             $this->method($httpMethod, $controller);
         }
+
         return $this;
     }
+
     /**
      * Sets where conditionals for the route wildcards.
-     * @param string $wildcardName Wildcard name.
-     * @param string $regex Regex pattern.
      *
+     * @param string $wildcardName wildcard name
+     * @param string $regex        regex pattern
      */
-    public function where(string $wildcardName, string $regex) : self
+    public function where(string $wildcardName, string $regex): self
     {
         // The actual {wildcard}
         $wildcard = "{{$wildcardName}}";
@@ -274,19 +284,19 @@ class Route
             Validation::grouped('$wildcardName', $wildcardName)
                 ->append(
                     'value',
-                    function (string $string) : bool {
+                    function (string $string): bool {
                         return
                             Utils\Str::startsWithNumeric($string) == false
-                            &&  preg_match('/^[a-z0-9_]+$/i', $string);
+                            && preg_match('/^[a-z0-9_]+$/i', $string);
                     },
                     "String %s must contain only alphanumeric and underscore characters and it shouldn't start with a numeric value."
                 )
                 ->append(
                     'match',
-                    function (string $string) use ($wildcard) : bool {
+                    function (string $string) use ($wildcard): bool {
                         return
                             Utils\Str::contains($wildcard, $this->key)
-                            || Utils\Str::contains('{' . "$string?" . '}', $this->key);
+                            || Utils\Str::contains('{'."$string?".'}', $this->key);
                     },
                     (string) (new Message("Wildcard %s doesn't exists in %r."))
                         ->code('%s', $wildcard)
@@ -294,18 +304,18 @@ class Route
                 )
                 ->append(
                     'unique',
-                    function (string $string) : bool {
+                    function (string $string): bool {
                         return isset($this->wheres[$string]) == false;
                     },
-                    (string) (new Message("Where clause for %s wildcard has been already declared."))
+                    (string) (new Message('Where clause for %s wildcard has been already declared.'))
                         ->code('%s', $wildcard)
                 )
                 ->validate();
             Validation::single(
                 '$regex',
                 $regex,
-                function (string $string) : bool {
-                    return Validate::regex('/' . $string . '/');
+                function (string $string): bool {
+                    return Validate::regex('/'.$string.'/');
                 },
                 'Invalid regex pattern %s.'
             );
@@ -314,26 +324,30 @@ class Route
         }
         $this->wheres[$wildcardName] = $regex;
         $this->collect();
+
         return $this;
     }
+
     /**
      * Sets where conditionals for the route wildcards (multiple version).
      *
      * @param array $wildcardsPatterns An array containing [wildcardName => regexPattern,]
      */
-    public function wheres(array $wildcardsPatterns) : self
+    public function wheres(array $wildcardsPatterns): self
     {
         foreach ($wildcardsPatterns as $wildcardName => $regexPattern) {
             $this->where($wildcardName, $regexPattern);
         }
+
         return $this;
     }
+
     /**
-     * Get a defined callable (callable string, callable absolute)
+     * Get a defined callable (callable string, callable absolute).
      *
-     * @param string $httpMethod An HTTP method.
+     * @param string $httpMethod an HTTP method
      */
-    public function getCallable(string $httpMethod) : string
+    public function getCallable(string $httpMethod): string
     {
         $callable = $this->methods[$httpMethod] ?? null;
         if ($callable == null) {
@@ -347,33 +361,38 @@ class Route
         // }
         return $callable;
     }
+
     /**
      * Collects the Route object in the Routes instance.
      */
-    protected function collect() : self
+    protected function collect(): self
     {
-        $collection = Routes::instance() ?? new Routes;
+        $collection = Routes::instance() ?? new Routes();
         $collection->allocate($this);
+
         return $this;
     }
+
     /**
      * Fill object missing properties and whatnot.
      */
-    public function fill() : self
+    public function fill(): self
     {
         foreach ($this->wildcards as $k => $v) {
             if (isset($this->wheres[$v]) == false) {
                 $this->wheres[$v] = static::REGEX_WILDCARD_WHERE;
             }
         }
+
         return $this;
     }
+
     /**
      * Get route regex.
      *
-     * @param string $key Route string to use, leave it blank to use $this->set ?? $this->key.
+     * @param string $key route string to use, leave it blank to use $this->set ?? $this->key
      */
-    public function regex(string $key = null) : string
+    public function regex(string $key = null): string
     {
         $regex = $key ?? $this->set ?? $this->key;
         if ($regex == null) {
@@ -382,94 +401,109 @@ class Route
                     ->code('%s', '$key')
             );
         }
-        $regex = '^' . $regex . '$';
+        $regex = '^'.$regex.'$';
         if (Utils\Str::contains('{', $regex) == false) {
             return $regex;
         }
         foreach ($this->wildcards as $k => $v) {
-            $regex = str_replace("{{$k}}", '(' . $this->wheres[$v] . ')', $regex);
+            $regex = str_replace("{{$k}}", '('.$this->wheres[$v].')', $regex);
         }
+
         return $regex;
     }
-    public function middleware(string $callable) : self
+
+    public function middleware(string $callable): self
     {
         $this->middlewares[] = $this->getCallableSome($callable);
+
         return $this;
     }
-    public function getMiddlewares() : ?array
+
+    public function getMiddlewares(): ?array
     {
         return $this->middlewares;
     }
-    public function getWildcards() : ?array
+
+    public function getWildcards(): ?array
     {
         return $this->wildcards;
     }
-    public function getPowerSet() : ?array
+
+    public function getPowerSet(): ?array
     {
         return $this->powerSet;
     }
-    public function getKey() : ?string
+
+    public function getKey(): ?string
     {
         return $this->key;
     }
-    public function getName() : ?string
+
+    public function getName(): ?string
     {
         return $this->name;
     }
 
-    public function getSet() : ?string
+    public function getSet(): ?string
     {
         return $this->set;
     }
-    public function getId() : ?int
+
+    public function getId(): ?int
     {
         return $this->id ?? null;
     }
-    public function setId(int $id) : void
+
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
+
     /**
      * Get a route object from the Routes. Public alias of Routes::getRoute.
      *
-     * @param mixed $idOrName Route id (int); Route name (string).
+     * @param mixed $idOrName route id (int); Route name (string)
      */
-    public static function get($idOrName) : self
+    public static function get($idOrName): self
     {
         $object = Routes::instance()->getRoute(...func_get_args());
+
         return $object;
     }
+
     /**
      * Binds a Route object.
      *
-     * @param string $key Route key.
-     * @param string $callable Get Callable.
+     * @param string $key      route key
+     * @param string $callable get Callable
      */
-    public static function bind(string $key, string $callable = null, string $rootContext = null) : self
+    public static function bind(string $key, string $callable = null, string $rootContext = null): self
     {
         return new static(...func_get_args());
     }
+
     /**
-     * Unbind a Route (/route) from the Routes.
+     * Unbind a Route (/route) from Routes.
      *
      * @param string $key Route string (as defined using ::bind())
      *
-     * @return bool TRUE if the route was removed.
+     * @return bool TRUE if the route was removed
      *
-     * @throws RoutesException if the route doesn't exists.
+     * @throws RoutesException if the route doesn't exists
      */
-    public static function unbind(string $key) : bool
+    public static function unbind(string $key): bool
     {
         return Routes::instance()->removeRoute($key, true);
     }
+
     /**
-     * Removes a Route from the Routes.
+     * Removes a Route from Routes.
      *
-     * @param mixed $idOrName Route id (int); Route name (string).
+     * @param mixed $idOrName route id (int); Route name (string)
      *
-     * @throws RoutesException if the route doesn't exists.
+     * @throws RoutesException if the route doesn't exists
      */
-    public static function remove($idOrName) : bool
+    public static function remove($idOrName): bool
     {
         return Routes::instance()->removeRoute($idOrName);
     }

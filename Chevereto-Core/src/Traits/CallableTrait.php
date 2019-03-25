@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,10 +9,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Chevereto\Core\Traits;
 
-use Exception;
-use Closure;
+namespace Chevereto\Core\Traits;
 
 use Chevereto\Core\File;
 use Chevereto\Core\Path;
@@ -21,12 +21,12 @@ use Chevereto\Core\Utils\Str;
 trait CallableTrait
 {
     // callableString = 'TheCallable::fn, Class, functionName)
-    public function getCallable(string $callableString) : callable
+    public function getCallable(string $callableString): callable
     {
         $classExists = class_exists($callableString);
         $isCallable = is_callable($callableString);
         if ($classExists || $isCallable) {
-            $callable = $classExists ? new $callableString : $callableString;
+            $callable = $classExists ? new $callableString() : $callableString;
         } else {
             $callable = include $callableString;
         }
@@ -38,14 +38,16 @@ trait CallableTrait
                     ->code('%f', $callableString)
             );
         }
+
         return $callable;
     }
+
     /**
      * Retuns the callable some (callable string, callable relative filepath).
      *
-     * @param string $callableString A callable string.
+     * @param string $callableString a callable string
      */
-    public function getCallableSome(string $callableString) : ?string
+    public function getCallableSome(string $callableString): ?string
     {
         if (is_callable($callableString)) {
             return $callableString;
@@ -63,14 +65,16 @@ trait CallableTrait
             } else {
                 $callableFile = Path::fromHandle($callableString);
                 $this->checkCallableFile($callableFile);
+
                 return Path::relative($callableFile);
             }
         }
     }
+
     /**
      * Same as ::getCallableSome() but this returns an absolute path for callable files.
      */
-    public function getCallableSomeAbsolute(string $callable) : ?string
+    public function getCallableSomeAbsolute(string $callable): ?string
     {
         $callableSome = $this->getCallableSome($callable);
         if (null != $callableSome && Str::endsWith('.php', $callableSome)) {
@@ -79,6 +83,7 @@ trait CallableTrait
             return $callableSome;
         }
     }
+
     /**
      * Checks if a callable file exists.
      */

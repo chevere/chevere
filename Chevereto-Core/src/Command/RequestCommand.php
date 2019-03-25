@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,12 +9,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core\Command;
 
 use Chevereto\Core\App;
 use Chevereto\Core\Command;
 use Symfony\Component\HttpFoundation\Request;
-
 use ReflectionMethod;
 
 /**
@@ -24,6 +26,7 @@ use ReflectionMethod;
 class RequestCommand extends Command
 {
     protected static $defaultName = 'request';
+
     protected function configure()
     {
         $this
@@ -37,10 +40,11 @@ class RequestCommand extends Command
             ->addArgument('server', Command::ARGUMENT_OPTIONAL, 'Server', [])
             ->addArgument('content', Command::ARGUMENT_OPTIONAL, 'Content', null);
     }
+
     /**
      * Forge a request.
      */
-    public function callback(App $app) : int
+    public function callback(App $app): int
     {
         // Map cli arguments to Request::create
         $arguments = $this->getCli()->getInput()->getArguments();
@@ -49,9 +53,8 @@ class RequestCommand extends Command
         foreach ($r->getParameters() as $requestArg) {
             $requestArguments[] = $arguments[$requestArg->getName()] ?? $requestArg->getDefaultValue() ?? null;
         }
-        $request = Request::create(...$requestArguments);
-        $app->setRequest($request);
-        $app->run();
+        $app->forgeRequest(Request::create(...$requestArguments))->run();
+
         return 1;
     }
 }
