@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Chevereto\Core;
 
 define(__NAMESPACE__.'\TIME_BOOTSTRAP', microtime(true));
@@ -43,16 +45,17 @@ if (php_sapi_name() == 'cli') {
 }
 
 const DEFAULT_ERROR_HANDLING = [
-    Config::ERROR_REPORTING_LEVEL => E_ALL ^ E_NOTICE,
-    Config::ERROR_HANDLER => CORE_NS_HANDLE.'ErrorHandler::error',
-    Config::EXCEPTION_HANDLER => CORE_NS_HANDLE.'ErrorHandler::exception',
+    RuntimeConfig::DEBUG => 0,
+    // RuntimeConfig::ERROR_REPORTING_LEVEL => E_ALL ^ E_NOTICE,
+    RuntimeConfig::ERROR_HANDLER => CORE_NS_HANDLE.'ErrorHandler::error',
+    RuntimeConfig::EXCEPTION_HANDLER => CORE_NS_HANDLE.'ErrorHandler::exception',
 ];
 
 /*
  * Default error and exception handler
  */
 new Runtime(
-    (new Config())
+    (new RuntimeConfig())
         ->processFromArray(DEFAULT_ERROR_HANDLING)
 );
 
@@ -64,14 +67,12 @@ define(CORE_NS_HANDLE.'CLI', Console::isRunning());
  */
 App::setDefaultRuntime(
     new Runtime(
-        (new Config())
+        (new RuntimeConfig())
             ->addArray([
-                Config::DEBUG => 0,
-                Config::LOCALE => 'en_US.UTF8',
-                Config::DEFAULT_CHARSET => 'utf-8',
-                Config::TIMEZONE => 'UTC',
-                Config::URI_SCHEME => 'https',
-                Config::TIMEZONE => 'UTC',
+                RuntimeConfig::LOCALE => 'en_US.UTF8',
+                RuntimeConfig::DEFAULT_CHARSET => 'utf-8',
+                RuntimeConfig::TIMEZONE => 'UTC',
+                RuntimeConfig::URI_SCHEME => 'https',
             ] + DEFAULT_ERROR_HANDLING)
             ->addFile(':config')
             ->process()

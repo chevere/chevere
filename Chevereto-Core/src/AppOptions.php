@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
+use Exception;
+
 class AppOptions
 {
     protected $configFiles;
@@ -23,6 +25,15 @@ class AppOptions
         $this->configFiles = [];
         $this->apis = [];
         $this->routes = [];
+    }
+
+    public function toArray(): array
+    {
+        return [
+            'configFiles' => $this->configFiles,
+            'apis' => $this->apis,
+            'routes' => $this->routes,
+        ];
     }
 
     public function addConfigFile(string $fileHandle): self
@@ -59,5 +70,21 @@ class AppOptions
     public function getRoutes(): array
     {
         return $this->routes;
+    }
+
+    public static function createFromFile(string $fileHandle): self
+    {
+        $filepath = Path::fromHandle($fileHandle);
+        try {
+            $return = Load::php($filepath);
+        } catch (Exception $e) {
+            throw new \InvalidArgumentException(
+                (string) (new Message('Unable to locate file specefied by %s (resolved as %f).'))
+                    ->code('%s', $fileHandle)
+                    ->code('%f', $filepath)
+            );
+        }
+
+        return $return;
     }
 }

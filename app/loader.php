@@ -2,26 +2,7 @@
 
 namespace Chevereto\Core;
 
-/*
- * La App es un conjunto que resuelve REQUEST -> RESPONSE
- * Este request pasa por un server o es injectado por cli.
- *
- * No se definen variables para no caer en $global.
- *
- * Que pasa si quiero hacer pruebas o lint en requests forgeados?
- * Como se que puedo hacer con la app?
- */
-
-// $appConfig = [
-//     'configFiles' => [':config'],
-//     'apis' => [
-//         'api' => 'apis/api',
-//         'api-alt' => 'apis/api-alt',
-//     ],
-//     'routes' => ['routes:dashboard', 'routes:web'],
-// ];
-
-new App(include 'options.php');
+$app = (new App())->run();
 
 // Hook::before('deleteUser@api/users:DELETE', function ($that) {
 //     // $that->private = 'muahahahaha';

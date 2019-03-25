@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevereto\Core.
  *
@@ -26,10 +27,9 @@ class App extends Container
 
     const NAMESPACES = ['App', __NAMESPACE__];
     const APP = 'app';
-    const FILENAME_HACKS = 'hacks';
+    const FILEHANDLE_HACKS = ':hacks';
 
     protected static $defaultRuntime;
-    protected static $instance;
     protected static $args;
 
     // TODO: Document the diff here
@@ -38,7 +38,6 @@ class App extends Container
 
     // App objects
     protected $runtime;
-    protected $config;
     protected $logger;
     protected $router;
     protected $request;
@@ -61,34 +60,35 @@ class App extends Container
         if (stream_resolve_include_path($this->getBuildFilePath()) == false) {
             $this->checkout();
         }
-        Load::app(static::FILENAME_HACKS);
-        if (null != $options) {
-            try {
-                if ($configFiles = $options->getConfigFiles()) {
-                    $this
-                        ->setConfig(
-                            (new Config())
-                                ->processFromFiles($configFiles)
-                        )
-                        ->configure();
-                }
-                // App handles cache
-                if ($apis = $options->getApis()) {
-                    $this->setApis(
-                        (new Apis())
-                            ->registerArray($apis)
+        Load::php(static::FILEHANDLE_HACKS);
+        if (null == $options) {
+            $options = AppOptions::createFromFile(':options');
+        }
+        try {
+            if ($configFiles = $options->getConfigFiles()) {
+                if ($this->hasObject('runtime')) {
+                    $this->getRuntime()->runConfig(
+                        (new RuntimeConfig())
+                            ->processFromFiles($configFiles)
                     );
                 }
-                // App handles cache
-                if ($routes = $options->getRoutes()) {
-                    $this->setRouter(
-                        (new Router())
-                            ->prepareArray($routes)
-                    );
-                }
-            } catch (Exception $e) {
-                throw new CoreException($e);
             }
+            // App handles cache
+            if ($apis = $options->getApis()) {
+                $this->setApis(
+                    (new Apis())
+                        ->registerArray($apis)
+                );
+            }
+            // App handles cache
+            if ($routes = $options->getRoutes()) {
+                $this->setRouter(
+                    (new Router())
+                        ->prepareArray($routes)
+                );
+            }
+        } catch (Exception $e) {
+            throw new CoreException($e);
         }
         if (Console::bind($this)) {
             Console::run(); //Console::run() always exit.
@@ -103,8 +103,7 @@ class App extends Container
         return isset(static::$$key);
     }
 
-    // FIXME: Must be protected
-    public function setRuntime(Runtime $runtime): self
+    protected function setRuntime(Runtime $runtime): self
     {
         $this->runtime = $runtime;
 
@@ -116,33 +115,33 @@ class App extends Container
         return $this->runtime;
     }
 
-    protected function setConfig(Config $config): self
-    {
-        $this->config = $config;
+    // protected function setRuntimeConfig(RuntimeConfig $config): self
+    // {
+    //     $this->runtimeConfig = $config;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
-    public function getConfig(): Config
-    {
-        return $this->config;
-    }
+    // public function getRuntimeConfig(): RuntimeConfig
+    // {
+    //     return $this->runtimeConfig;
+    // }
 
     /**
-     * Applies Config to the App.
+     * Applies the RuntimeConfig.
      */
-    protected function configure(): self
-    {
-        if (false == $this->hasObject('config')) {
-            throw new CoreException(
-                (new Message('Unable to apply config (no %s has been set).'))
-                    ->code('%s', Config::class)
-            );
-        }
-        $this->getRuntime()->runConfig($this->getConfig());
+    // protected function configure(): self
+    // {
+    //     if (false == $this->hasObject('runtimeConfig')) {
+    //         throw new CoreException(
+    //             (new Message('Unable to apply runtimeConfig (no %s has been set).'))
+    //                 ->code('%s', RuntimeConfig::class)
+    //         );
+    //     }
+    //     $this->getRuntime()->runConfig($this->getRuntimeConfig());
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * Get the value of handler.

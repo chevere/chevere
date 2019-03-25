@@ -15,31 +15,22 @@ namespace Chevereto\Core;
 
 use Exception;
 
-// use Symfony\Component\HttpFoundation\Request;
-
 /**
- * App configuration (runtime).
+ * Runtime configurator.
  */
-class Config extends Data
+class RuntimeConfig extends Data
 {
     // Config keys
-
     const DEBUG = 'debug';
     const LOCALE = 'locale';
     const DEFAULT_CHARSET = 'defaultCharset';
-    const ERROR_REPORTING_LEVEL = 'errorReportingLevel';
+    // const ERROR_REPORTING_LEVEL = 'errorReportingLevel';
     const ERROR_HANDLER = 'errorHandler';
     const EXCEPTION_HANDLER = 'exceptionHandler';
     const URI_SCHEME = 'uriScheme';
     const TIMEZONE = 'timeZone';
-    // Cache modes
-    // const CACHE_MODE_ON = 'on';
-    // const CACHE_MODE_OFF = 'off';
-    // const CACHE_MODE_AUTO = 'auto';
-    // Cache modes apply
-    // const ROUTER_CACHE_MODE = 'routerCacheMode';
 
-    private $_data = [];
+    protected $data = [];
     protected $loadedFiles = [];
 
     protected $asserts = [
@@ -71,8 +62,17 @@ class Config extends Data
                     ->code('%f', $filepath)
             );
         }
-        $this->loadedFiles[] = $filepath;
         $array = Load::php($filepath);
+        $type = gettype($array);
+        if (false == is_array($array)) {
+            throw new CoreException(
+                (new Message('Expecting return type %a, %t provided in %f.'))
+                    ->code('%a', 'array')
+                    ->code('%t', $type)
+                    ->code('%f', $filepath)
+            );
+        }
+        $this->loadedFiles[] = $filepath;
 
         return $this->dataAdder($array);
     }
@@ -84,7 +84,17 @@ class Config extends Data
 
     protected function dataAdder(array $data): self
     {
-        $this->_data = array_replace_recursive($this->_data, $data);
+        foreach (array_keys($data) as $key) {
+            $fnName = 'set'.ucwords($key);
+            if (false == method_exists(Runtime::class, $fnName)) {
+                throw new CoreException(
+                    (new Message('Unrecognized %c key "%s".'))
+                        ->code('%c', __CLASS__)
+                        ->strtr('%s', $key)
+                );
+            }
+            $this->data[$key] = $data[$key];
+        }
 
         return $this;
     }
@@ -98,7 +108,7 @@ class Config extends Data
                 (new Message($e->getMessage().' '.'at %s'))->b('%s', '0000000000000000')
             );
         }
-        $this->addData($this->_data);
+        $this->addData($this->data);
 
         return $this;
     }
@@ -176,7 +186,7 @@ class Config extends Data
     protected function validate()
     {
         $exceptions = [];
-        foreach ($this->_data as $k => $v) {
+        foreach ($this->data as $k => $v) {
             try {
                 if ($v != null) {
                     $this->validator((string) $k, $v);
