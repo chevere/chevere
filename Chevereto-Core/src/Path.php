@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
  *
@@ -7,6 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Chevereto\Core;
 
 use Exception;
@@ -16,42 +19,46 @@ class Path
     /**
      * Converts relative path to absolute path.
      *
-     * @param string $relativePath A relative path (relative to html root).
+     * @param string $relativePath a relative path (relative to html root)
      *
-     * @return string Absolute path.
+     * @return string absolute path
      */
-    public static function absolute(string $relativePath) : string
+    public static function absolute(string $relativePath): string
     {
         $relativePath = Utils\Str::forwardSlashes($relativePath);
-        return ROOT_PATH . $relativePath;
+
+        return ROOT_PATH.$relativePath;
     }
+
     /**
      * Converts absolute path to relative path.
      *
-     * @param string $absolutePath An absolute path in the system.
-     * @param string $rootContext Root context directory.
+     * @param string $absolutePath an absolute path in the system
+     * @param string $rootContext  root context directory
      *
-     * @return string Relative path (relative to html root).
+     * @return string relative path (relative to html root)
      */
-    public static function relative(string $absolutePath, string $rootContext = null) : ?string
+    public static function relative(string $absolutePath, string $rootContext = null): ?string
     {
         $absolutePath = Utils\Str::forwardSlashes($absolutePath);
         $root = ROOT_PATH;
         if ($rootContext) {
-            $root .= $rootContext . '/';
+            $root .= $rootContext.'/';
         }
+
         return Utils\Str::replaceFirst($root, null, $absolutePath);
     }
+
     /**
      * Returns whether the file path is an absolute path.
      *
-     * @link https://github.com/symfony/symfony/blob/4.2/src/Symfony/Component/Filesystem/Filesystem.php
+     * @see https://github.com/symfony/symfony/blob/4.2/src/Symfony/Component/Filesystem/Filesystem.php
      *
      * @param string $file A file path
      *
      * @return bool
      */
-    public static function isAbsolute($file) : bool
+    public static function isAbsolute($file): bool
     {
         return strspn($file, '/\\', 0, 1)
             || (
@@ -62,6 +69,7 @@ class Path
             || null !== parse_url($file, PHP_URL_SCHEME)
         ;
     }
+
     /**
      * Normalize a filesystem path.
      *
@@ -72,11 +80,11 @@ class Path
      *
      * Forked from WordPress.
      *
-     * @param string $path Path to normalize.
+     * @param string $path path to normalize
      *
-     * @return string Normalized path, without trailing slash.
+     * @return string normalized path, without trailing slash
      */
-    public static function normalize(string $path) : string
+    public static function normalize(string $path): string
     {
         $wrapper = '';
         if ($stream = static::isStream($path)) {
@@ -92,23 +100,26 @@ class Path
         }
         // Chevereto: Get rid of any extra slashes at the begining if needed
         if (Utils\Str::startsWith('/', $path)) {
-            $path = '/' . ltrim($path, '/');
+            $path = '/'.ltrim($path, '/');
         }
         // Windows paths should uppercase the drive letter
         if (':' === substr($path, 1, 1)) {
             $path = ucfirst($path);
         }
-        return rtrim($wrapper . $path, '/');
+
+        return rtrim($wrapper.$path, '/');
     }
+
     /**
-     * Resolve a given path (dots)
+     * Resolve a given path (dots).
      *
      * Taken from https://stackoverflow.com/a/53598213/1145912
      *
      * @param string $path Path to resolve
+     *
      * @return string Resolved path
      */
-    public static function resolve(string $path) : string
+    public static function resolve(string $path): string
     {
         $n = 0;
         $aux = preg_replace("/\/\.\//", '/', $path);
@@ -116,23 +127,25 @@ class Path
         $partsReverse = [];
         for ($i = count($parts) - 1; $i >= 0; --$i) {
             if (trim($parts[$i]) === '..') {
-                $n++;
+                ++$n;
             } else {
                 if ($n > 0) {
-                    $n--;
+                    --$n;
                 } else {
                     $partsReverse[] = $parts[$i];
                 }
             }
         }
+
         return implode('/', array_reverse($partsReverse));
     }
+
     /**
-     * Test if a given path is a stream URL
+     * Test if a given path is a stream URL.
      *
-     * @param string $path The resource path or URL.
+     * @param string $path the resource path or URL
      */
-    public static function isStream(string $path) : bool
+    public static function isStream(string $path): bool
     {
         if (Utils\Str::contains('://', $path) == false) {
             return false;
@@ -144,29 +157,32 @@ class Path
             return false;
         }
     }
+
     /**
-     * Convert array to path
+     * Convert array to path.
      *
      * @param array $array ['path', 'from', 'array']
      *
      * @return string path/from/array
      */
-    public static function relativeFromArray(array $array) : string
+    public static function relativeFromArray(array $array): string
     {
         return implode('/', $array);
     }
+
     /**
-     * Convert array to path
+     * Convert array to path.
      *
      * @param array $array ['path', 'from', 'array']
      *
      * @return string /path/from/array
-     * FIXME: Windows paths?
+     *                FIXME: Windows paths?
      */
-    public static function absoluteFromArray(array $array) : string
+    public static function absoluteFromArray(array $array): string
     {
-        return '/' . implode('/', $array);
+        return '/'.implode('/', $array);
     }
+
     /**
      * Returns the path from a path identifier.
      *
@@ -179,12 +195,12 @@ class Path
      * - The dirname is relative to App\Path.
      * - dirname allows absolute paths.
      *
-     * @param string $pathIdentifier Path identifier (<dirname>:<file>).
-     * @param string $rootContext Root context for the $pathIdentifier. Must be an absolute path.
+     * @param string $pathIdentifier path identifier (<dirname>:<file>)
+     * @param string $rootContext    Root context for the $pathIdentifier. Must be an absolute path.
      *
-     * @return string Absolute path.
+     * @return string absolute path
      */
-    public static function fromHandle(string $pathIdentifier, string $rootContext = null) : string
+    public static function fromHandle(string $pathIdentifier, string $rootContext = null): string
     {
         try {
             Validation::single('$pathIdentifier', $pathIdentifier, function (string $string) {
@@ -196,7 +212,7 @@ class Path
         $path = static::normalize($pathIdentifier);
         // Do this to apply Path methods only on explicit $rootContext
         if ($rootContext == null) {
-            $rootContext = ROOT_PATH . App\PATH;
+            $rootContext = ROOT_PATH.App\PATH;
         } else {
             if (static::isAbsolute($rootContext) == false) {
                 throw new CoreException(
@@ -241,25 +257,29 @@ class Path
         }
         // $path is not an absolute path neither a wrapper or anything like that
         if (static::isAbsolute($path) == false) {
-            $path = $rootContext . $path;
+            $path = $rootContext.$path;
         }
         // Resolve . and ..
         $path = static::resolve($path);
+
         return $path;
     }
-    public static function relativeFromHandle(string $handle, string $rootContext = null) : ?string
+
+    public static function relativeFromHandle(string $handle, string $rootContext = null): ?string
     {
         $path = static::fromHandle(...func_get_args());
+
         return static::relative($path, $rootContext);
     }
+
     /**
      * Adds a trailing slash for a given string.
      *
-     * @param string $dir Directory to tail.
-     * @return string Tailed directory (slash).
+     * @param string $dir directory to tail
      *
+     * @return string tailed directory (slash)
      */
-    public static function tailDir(string $dir) : string
+    public static function tailDir(string $dir): string
     {
         return Utils\Str::rtail($dir, '/');
     }

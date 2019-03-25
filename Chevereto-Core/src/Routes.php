@@ -34,7 +34,6 @@ class Routes
 
     public function __construct()
     {
-        // dd(\debug_backtrace());
         static::$instance = $this;
     }
 

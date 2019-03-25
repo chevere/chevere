@@ -13,7 +13,6 @@ declare(strict_types=1);
 use Chevereto\Core\AppParameters;
 
 return [
-  AppParameters::CONFIG_FILES => [':config'],
   AppParameters::APIS => [
     'api' => 'apis/api',
     'api-alt' => 'apis/api-alt',

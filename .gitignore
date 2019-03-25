@@ -3,4 +3,5 @@ vendor/
 docs/
 app/var/
 Chevereto-Core/logs/
+var/
 composer.lock

@@ -27,6 +27,7 @@ class App extends Container
 
     const NAMESPACES = ['App', __NAMESPACE__];
     const APP = 'app';
+    const FILEHANDLE_CONFIG = ':config';
     const FILEHANDLE_PARAMETERS = ':parameters';
     const FILEHANDLE_HACKS = ':hacks';
 
