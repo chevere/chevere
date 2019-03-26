@@ -18,6 +18,7 @@ use Exception;
 // TODO: Reg events, determine who changes a route.
 // TODO: Enable alt routes [/taken, /also-taken, /availabe]
 // TODO: L10n support
+// FIXME: Each new Route() only creates the object (checks object integrity) and do not collect.
 
 /**
  * This one works with Routes static.

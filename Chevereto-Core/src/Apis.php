@@ -249,6 +249,7 @@ class Apis
                     $api['OPTIONS'][$k] = $v[1];
                 }
             }
+            // FIXME: Apis must contain a Routes collector
             $route = Route::bind($endpointRoute)->methods($httpMethods);
             $this->routeKeys[$endpointRoute] = [$basename, $endpoint];
             // Define Route wildcard "where" if needed

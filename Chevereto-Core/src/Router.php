@@ -61,7 +61,7 @@ class Router
         return $this;
     }
 
-    public function prepareArray(array $array): self
+    public function prepareMultiple(array $array): self
     {
         foreach ($array as $fileHandle) {
             $this->prepare($fileHandle, null);

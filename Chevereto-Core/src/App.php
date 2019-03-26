@@ -82,18 +82,29 @@ class App extends Container
                     );
                 }
             }
-            // App handles cache
+            /*
+             * Apis has its own Router at $this->getApis()->getRouter()
+             * FIXME: Read from cache?
+             */
+            // FIXME: App handles cache
             if ($apis = $parameters->getDataKey(AppParameters::APIS)) {
                 $this->setApis(
                     (new Apis())
                         ->registerArray($apis)
                 );
             }
-            // App handles cache
+            /*
+             * - Each new Route() only creates the object (checks object integrity) and do not collect.
+             * - Provide route access with some helper like Route::get('homepage@routes:web') which gets name=homepage from routes/web.php
+             * - app/console dump:routes route:web -> Shows the return (generated objects) of this file
+             * - App autoinjects a "Router", which could be Router::fromCache(...) or new Router() and provides access to Routes (cached or new)
+             * - RouteCollection contains the array of mapped routes (objects or serialized arrays (cached))
+             */
+            // FIXME: App handles cache
             if ($routes = $parameters->getDatakey(AppParameters::ROUTES)) {
                 $this->setRouter(
                     (new Router())
-                        ->prepareArray($routes)
+                        ->prepareMultiple($routes)
                 );
             }
         } catch (Exception $e) {
