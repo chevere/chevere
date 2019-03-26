@@ -1,5 +1,5 @@
 <?php
 
-namespace Chevereto\Core;
+use Chevereto\Core\Route;
 
-Route::bind('/dashboard/{algo}/{sub}', 'callables:dashboard');
+return [Route::bind('/dashboard/{algo}/{sub}', 'callables:dashboard')];

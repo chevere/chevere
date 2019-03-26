@@ -93,18 +93,18 @@ class Route
                     },
                     "String %i must start with a forward slash, it shouldn't contain neither whitespace, backslashes or extra forward slashes and it should be specified without a trailing slash."
                 )
-                ->append(
-                    'unique',
-                    function (string $string): bool {
-                        $collection = Routes::instance();
-                        if ($collection == null) {
-                            return true;
-                        }
+                // ->append(
+                //     'unique',
+                //     function (string $string): bool {
+                //         $collection = Routes::instance();
+                //         if ($collection == null) {
+                //             return true;
+                //         }
 
-                        return isset($collection->getUniques()[$string]) == false;
-                    },
-                    'Route %s has been already declared.'
-                )
+                //         return isset($collection->getUniques()[$string]) == false;
+                //     },
+                //     'Route %s has been already declared.'
+                // )
                 ->append(
                     'wildcards',
                     function (string $string) use ($hasHandlebars): bool {
@@ -211,19 +211,19 @@ class Route
                     (string) (new Message("Expecting at least one alphanumeric, underscore, hypen or dot character. String '%s' provided."))
                         ->code('%p', Route::REGEX_NAME)
                 )
-                ->append(
-                    'unique',
-                    function (string $string): bool {
-                        return isset(Routes::instance()->getNamed()[$string]) == false;
-                    },
-                    'Route name %s has been already taken.'
-                )
+                // ->append(
+                //     'unique',
+                //     function (string $string): bool {
+                //         return isset(Routes::instance()->getNamed()[$string]) == false;
+                //     },
+                //     'Route name %s has been already taken.'
+                // )
                 ->validate();
         } catch (Exception $e) {
             throw new RouteException($e);
         }
         $this->name = $name;
-        $this->collect();
+        // $this->collect();
 
         return $this;
     }
@@ -251,7 +251,7 @@ class Route
         //     );
         // }
         $this->methods[$httpMethod] = $callableSome;
-        $this->collect();
+        // $this->collect();
 
         return $this;
     }
@@ -324,7 +324,7 @@ class Route
             throw new RouteException($e->getMessage());
         }
         $this->wheres[$wildcardName] = $regex;
-        $this->collect();
+        // $this->collect();
 
         return $this;
     }
@@ -366,13 +366,13 @@ class Route
     /**
      * Collects the Route object in the Routes instance.
      */
-    protected function collect(): self
-    {
-        $collection = Routes::instance() ?? new Routes();
-        $collection->allocate($this);
+    // protected function collect(): self
+    // {
+    //     $collection = Routes::instance() ?? new Routes();
+    //     $collection->allocate($this);
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     /**
      * Fill object missing properties and whatnot.
@@ -465,12 +465,12 @@ class Route
      *
      * @param mixed $idOrName route id (int); Route name (string)
      */
-    public static function get($idOrName): self
-    {
-        $object = Routes::instance()->getRoute(...func_get_args());
+    // public static function get($idOrName): self
+    // {
+    //     $object = Routes::instance()->getRoute(...func_get_args());
 
-        return $object;
-    }
+    //     return $object;
+    // }
 
     /**
      * Binds a Route object.
@@ -497,17 +497,17 @@ class Route
         return Routes::instance()->removeRoute($key, true);
     }
 
-    /**
+    /*
      * Removes a Route from Routes.
      *
      * @param mixed $idOrName route id (int); Route name (string)
      *
      * @throws RoutesException if the route doesn't exists
      */
-    public static function remove($idOrName): bool
-    {
-        return Routes::instance()->removeRoute($idOrName);
-    }
+    // public static function remove($idOrName): bool
+    // {
+    //     return Routes::instance()->removeRoute($idOrName);
+    // }
 }
 
 class RouteException extends CoreException

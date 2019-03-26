@@ -274,7 +274,7 @@ class Apis
             ->method('HEAD', Controllers\ApiHead::class)
             ->method('OPTIONS', Controllers\ApiOptions::class)
             ->method('GET', Controllers\ApiGet::class);
-        Routes::instance()->process();
+        // Routes::instance()->process();
         $this->apis[$basename] = $API;
         $baseOpts = [
             'HEAD' => Controllers\ApiHead::OPTIONS,

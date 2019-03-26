@@ -56,7 +56,7 @@ class App extends Container
     public function __construct(AppParameters $parameters = null)
     {
         // Attach the Routes instance (collection of routes handled by the App
-        $this->routes = new Routes();
+        // $this->routes = new Routes('routes:web');
         if (static::hasStaticProp('defaultRuntime')) {
             $this->setRuntime(static::getDefaultRuntime());
         }
@@ -83,7 +83,7 @@ class App extends Container
                 }
             }
             /*
-             * Apis has its own Router at $this->getApis()->getRouter()
+             * FIXME: Apis must get Router injected, so the route collection is the same.
              * FIXME: Read from cache?
              */
             // FIXME: App handles cache
@@ -94,7 +94,7 @@ class App extends Container
                 );
             }
             /*
-             * - Each new Route() only creates the object (checks object integrity) and do not collect.
+            //  * - Each new Route() only creates the object (checks object integrity) and do not collect.
              * - Provide route access with some helper like Route::get('homepage@routes:web') which gets name=homepage from routes/web.php
              * - app/console dump:routes route:web -> Shows the return (generated objects) of this file
              * - App autoinjects a "Router", which could be Router::fromCache(...) or new Router() and provides access to Routes (cached or new)
@@ -102,6 +102,12 @@ class App extends Container
              */
             // FIXME: App handles cache
             if ($routes = $parameters->getDatakey(AppParameters::ROUTES)) {
+                $routeObjects = [];
+                foreach ($routes as $fileHandle) {
+                    $routeObjects[] = new Routes($fileHandle);
+                }
+                dd($routeObjects[0]->getFileHandle());
+                die(__METHOD__.':'.__LINE__);
                 $this->setRouter(
                     (new Router())
                         ->prepareMultiple($routes)
@@ -111,7 +117,7 @@ class App extends Container
             throw new CoreException($e);
         }
         // Must get rid of the Routes instance
-        Routes::destroyInstance();
+        // Routes::destroyInstance();
         if (Console::bind($this)) {
             Console::run(); //Console::run() always exit.
         } else {
@@ -402,7 +408,7 @@ class App extends Container
             $router->processRoutes();
         }
         $this->router = $router;
-        $this->routing = new Routing(Routes::instance());
+        // $this->routing = new Routing(Routes::instance());
 
         return $this;
     }
