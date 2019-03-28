@@ -32,7 +32,10 @@ class App extends Container
     const FILEHANDLE_HACKS = ':hacks';
 
     protected static $defaultRuntime;
-    protected static $args;
+    // protected static $args;
+
+    /** @var bool */
+    protected $isCached;
 
     // TODO: Document the diff here
     protected $arguments = [];
@@ -55,71 +58,72 @@ class App extends Container
 
     public function __construct(AppParameters $parameters = null)
     {
-        // Attach the Routes instance (collection of routes handled by the App
-        // $this->routes = new Routes('routes:web');
+        $this->isCached = false;
+        $this->setRouter(new Router());
         if (static::hasStaticProp('defaultRuntime')) {
             $this->setRuntime(static::getDefaultRuntime());
         }
-        // Checkout if no app/build exists
         if (stream_resolve_include_path($this->getBuildFilePath()) == false) {
             $this->checkout();
         }
         Load::php(static::FILEHANDLE_HACKS);
         if (null == $parameters) {
+            $arrayFile = new ArrayFile(static::FILEHANDLE_PARAMETERS, 'array');
             try {
-                $arrayFile = new ArrayFile(static::FILEHANDLE_PARAMETERS);
             } catch (Exception $e) {
                 throw new CoreException($e);
             }
             $parameters = new AppParameters($arrayFile->toArray());
         }
-        try {
-            if ($configFiles = $parameters->getDataKey(AppParameters::CONFIG_FILES)) {
-                if ($this->hasObject('runtime')) {
-                    $this->getRuntime()->runConfig(
-                        (new RuntimeConfig())
-                            ->processFromFiles($configFiles)
-                    );
-                }
-            }
-            /*
-             * FIXME: Apis must get Router injected, so the route collection is the same.
-             * FIXME: Read from cache?
-             */
-            // FIXME: App handles cache
-            if ($apis = $parameters->getDataKey(AppParameters::APIS)) {
-                $this->setApis(
-                    (new Apis())
-                        ->registerArray($apis)
+        if ($configFiles = $parameters->getDataKey(AppParameters::CONFIG_FILES)) {
+            if ($this->hasObject('runtime')) {
+                $this->getRuntime()->runConfig(
+                    (new RuntimeConfig())
+                        ->processFromFiles($configFiles)
                 );
             }
-            /*
-            //  * - Each new Route() only creates the object (checks object integrity) and do not collect.
-             * - Provide route access with some helper like Route::get('homepage@routes:web') which gets name=homepage from routes/web.php
-             * - app/console dump:routes route:web -> Shows the return (generated objects) of this file
-             * - App autoinjects a "Router", which could be Router::fromCache(...) or new Router() and provides access to Routes (cached or new)
-             * - RouteCollection contains the array of mapped routes (objects or serialized arrays (cached))
-             */
-            // FIXME: App handles cache
-            if ($routes = $parameters->getDatakey(AppParameters::ROUTES)) {
-                $routeObjects = [];
-                foreach ($routes as $fileHandle) {
-                    $routeObjects[] = new Routes($fileHandle);
-                }
-                dd($routeObjects[0]->getFileHandle());
-                die(__METHOD__.':'.__LINE__);
-                $this->setRouter(
-                    (new Router())
-                        ->prepareMultiple($routes)
-                );
-            }
-        } catch (Exception $e) {
-            throw new CoreException($e);
         }
-        // Must get rid of the Routes instance
-        // Routes::destroyInstance();
+        /*
+         * (A) Router cache : The array which is used to resolve /req -> route (routing)
+         * (B) Routes cache : The array of serialized Routes ['id' => Route serialized]
+         * (C) Apis cache : The array containing the exposed API
+         * ...
+         * CHECK IF APP IS CACHED UNDER THE PROVIDED APIS+ROUTES
+         * ...
+         * new App:
+         * 1. setParams (Runtime, [apis], [routes])
+         * 2. isCached
+         *      ? Router && API from Cache
+         *      : Router && API on-the-fly
+         * 3. Resolve controller
+         *      - Router -> maps route id -> get Route -> return callable
+         *
+         * - Provide route access with some helper like Route::get('homepage@routes:web') which gets name=homepage from routes/web.php
+         * - app/console dump:routes route:web -> Shows the return (generated objects) of this file
+         * - App autoinjects a "Router", which could be Router::fromCache(...) or new Router() and provides access to Routes (cached or new)
+         * - RouteCollection contains the array of mapped routes (objects or serialized arrays (cached))
+         */
+        if ($paramApis = $parameters->getDataKey(AppParameters::APIS)) {
+            $apis = new Apis($this->getRouter());
+            if (false == $this->isCached) {
+                foreach ($paramApis as $apiKey => $apiPath) {
+                    $apis->register($apiKey, $apiPath);
+                }
+            }
+            $this->setApis($apis);
+        }
+        if ($paramRoutes = $parameters->getDatakey(AppParameters::ROUTES)) {
+            // ['handle' => [Routes,]]
+            foreach ($paramRoutes as $fileHandle) {
+                foreach ((new Routes($fileHandle))->getArrayFile()->toArray() as $k => $route) {
+                    $this->getRouter()->addRoute($route, $fileHandle);
+                }
+            }
+        }
+        dd($this->getRouter()->getRoutes());
+
         if (Console::bind($this)) {
-            Console::run(); //Console::run() always exit.
+            Console::run(); // Note: Console::run() always exit.
         } else {
             $this->setRequest(Request::createFromGlobals());
         }
@@ -404,11 +408,7 @@ class App extends Container
 
     protected function setRouter(Router $router): self
     {
-        if (false == $router->isProcessDone()) {
-            $router->processRoutes();
-        }
         $this->router = $router;
-        // $this->routing = new Routing(Routes::instance());
 
         return $this;
     }

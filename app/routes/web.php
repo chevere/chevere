@@ -4,17 +4,17 @@ use Chevereto\Core\Route;
 
 // TODO: Use keys to be able to extend routes elsewhere.
 return [
-  Route::bind('/', 'callables:index')
-    ->name('homepage')
-    ->middleware('middleware:RoleBanned')
-    ->middleware('middleware:RoleAdmin'),
+  'index' => Route::bind('/', 'callables:index')
+      ->name('homepage')
+      ->middleware('middleware:RoleBanned')
+      ->middleware('middleware:RoleAdmin'),
   Route::bind('/cache/{user?}')
     ->method('GET', 'callables:cache')
     ->method('POST', 'callables:cache')
     ->name('cache'),
   Route::bind('/test/{var0?}-{var1?}-{var2}', 'callables:index'),
   Route::bind('/{dyn2}')
-    ->name('dyn_route_2')
+    ->name('DyN')
     ->methods([
       'GET' => 'callables:index',
       'POST' => 'callables:index',

@@ -21,14 +21,19 @@ use RecursiveIteratorIterator;
 
 class Apis
 {
-    // Cacheable props
-    protected $cacheable = ['apis', 'bases', 'routeKeys'];
-    // ['api-key' => [<endpoint> => [<options>],],]
+    /** @var Router */
+    protected $router;
+    /** @var array ['api-key' => [<endpoint> => [<options>]]] */
     protected $apis = [];
-    // ['api-key' => [<options>]]
+    /** @var array ['api-key' => [<options>]] */
     protected $bases = [];
-    // ['/api-key/v1/endpoint' => ['api-key', 'v1/endpoint'],]
+    /** @var array ['/api-key/v1/endpoint' => ['api-key', 'v1/endpoint']] */
     protected $routeKeys = [];
+
+    public function __construct(Router $router)
+    {
+        $this->router = $router;
+    }
 
     /**
      * Automatically finds controllers in the given path and generate the API route binding.
@@ -249,8 +254,8 @@ class Apis
                     $api['OPTIONS'][$k] = $v[1];
                 }
             }
-            // FIXME: Apis must contain a Routes collector
             $route = Route::bind($endpointRoute)->methods($httpMethods);
+            $route->setId($endpoint);
             $this->routeKeys[$endpointRoute] = [$basename, $endpoint];
             // Define Route wildcard "where" if needed
             if ($routeWildcards = $route->getWildcards()) {
@@ -267,14 +272,15 @@ class Apis
                 // Define API wildcards from $routeWildcards
                 $api['wildcards'] = $usable;
             }
+            $this->getRouter()->addRoute($route, $basename);
             $API[$endpoint] = $api;
         }
         ksort($API);
+
         Route::bind('/'.$basename)
             ->method('HEAD', Controllers\ApiHead::class)
             ->method('OPTIONS', Controllers\ApiOptions::class)
             ->method('GET', Controllers\ApiGet::class);
-        // Routes::instance()->process();
         $this->apis[$basename] = $API;
         $baseOpts = [
             'HEAD' => Controllers\ApiHead::OPTIONS,
@@ -287,13 +293,9 @@ class Apis
         return $this;
     }
 
-    public function registerArray(array $array): self
+    public function getRouter(): Router
     {
-        foreach ($array as $basename => $pathIdentifier) {
-            $this->register($basename, $pathIdentifier);
-        }
-
-        return $this;
+        return $this->router;
     }
 
     public function getKeys(): array

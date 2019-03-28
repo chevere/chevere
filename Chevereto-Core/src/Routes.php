@@ -13,41 +13,61 @@ declare(strict_types=1);
 namespace Chevereto\Core;
 
 /**
- * Routes contains a collection (ArrayFile) of routes defined in a single file.
+ * Routes provides a way to interact with files that return a PHP array.
  */
 class Routes
 {
     /** @var string */
     protected $fileHandle;
+
     /** @var array */
-    protected $array;
+    // protected $array;
+
+    /** @var ArrayFile */
+    protected $arrayFile;
 
     public function __construct(string $fileHandle)
     {
-        $this->setArray((new ArrayFile($fileHandle, Route::class))->toArray());
         $this->setFileHandle($fileHandle);
     }
 
-    public function getArray(): array
-    {
-        return $this->array ?? [];
-    }
+    // public function getArray(): array
+    // {
+    //     return $this->array ?? [];
+    // }
 
-    protected function setArray(array $array): self
-    {
-        $this->array = $array;
+    // protected function setArray(): self
+    // {
+    //     $this->array = $this->getArrayFile()->toArray();
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getFileHandle(): string
     {
         return $this->fileHandle;
     }
 
-    protected function setFileHandle(string $fileHandle): self
+    public function setFileHandle(string $fileHandle): self
     {
+        $this->setArrayFile(new ArrayFile($fileHandle, Route::class));
         $this->fileHandle = $fileHandle;
+
+        return $this;
+    }
+
+    public function getArrayFile(): ArrayFile
+    {
+        return $this->arrayFile;
+    }
+
+    protected function setArrayFile(ArrayFile $arrayFile)
+    {
+        foreach ($arrayFile->toArray() as $k => $route) {
+            $route->setId((string) $k);
+        }
+        $this->arrayFile = $arrayFile;
+        // $this->array = $arrayFile->toArray();
 
         return $this;
     }

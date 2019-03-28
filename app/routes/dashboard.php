@@ -2,4 +2,7 @@
 
 use Chevereto\Core\Route;
 
-return [Route::bind('/dashboard/{algo}/{sub}', 'callables:dashboard')];
+return [
+  'algo' => Route::bind('/dashboard/{algo?}', 'callables:dashboard'),
+  Route::bind('/dashboard/{algo}/{sub}', 'callables:dashboard'),
+];

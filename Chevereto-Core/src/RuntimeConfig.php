@@ -53,8 +53,8 @@ class RuntimeConfig extends Data
 
     public function addFile(string $fileHandle): self
     {
+        $arrayFile = new ArrayFile($fileHandle);
         try {
-            $arrayFile = new ArrayFile($fileHandle);
         } catch (Exception $e) {
             throw new CoreException($e);
         }

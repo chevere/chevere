@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Core;
+use Chevereto\Core\App;
 
 (new App())->run();
 

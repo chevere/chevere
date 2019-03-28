@@ -18,7 +18,6 @@ use Exception;
 // TODO: Reg events, determine who changes a route.
 // TODO: Enable alt routes [/taken, /also-taken, /availabe]
 // TODO: L10n support
-// FIXME: Each new Route() only creates the object (checks object integrity) and do not collect.
 
 /**
  * This one works with Routes static.
@@ -26,52 +25,41 @@ use Exception;
 class Route
 {
     use Traits\CallableTrait;
-    /**
-     * Array containing all the HTTP methods.
-     */
+    /** @const Array containing all the HTTP methods. */
     const HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'COPY', 'HEAD', 'OPTIONS', 'LINK', 'UNLINK', 'PURGE', 'LOCK', 'UNLOCK', 'PROPFIND', 'VIEW', 'TRACE',  'CONNECT'];
 
-    /**
-     * Route without wildcards.
-     */
+    /** @const string Route without wildcards. */
     const TYPE_STATIC = 'static';
-    /**
-     * Route containing wildcards and static components.
-     */
+    /** @const string Route containing wildcards and static components. */
     const TYPE_MIXED = 'mixed';
-    /**
-     * Route containing only wildcards, no static components.
-     */
+    /** @const string Route containing only wildcards, no static components. */
     const TYPE_DYNAMIC = 'dynamic';
-    /**
-     * Regex pattern used by default (no explicit where).
-     */
+    /** @const string Regex pattern used by default (no explicit where). */
     const REGEX_WILDCARD_WHERE = '[A-z0-9_\-\%]+';
-    /**
-     * Regex pattern used to detect {wildcard} and {wildcard?}.
-     */
+    /** @const string Regex pattern used to detect {wildcard} and {wildcard?}. */
     const REGEX_WILDCARD_SEARCH = '/{([a-z_][\w_]*\??)}/i';
-    /**
-     * Regex pattern used to validate route name.
-     */
+    /** @const string Regex pattern used to validate route name. */
     const REGEX_NAME = '/^[\w\-\.]+$/i';
 
+    /** @var string */
     protected $id;
     protected $key;
     protected $name;
-    protected $methods = [];
-    protected $wildcards = [];
-    protected $maker = [];
     protected $wheres;
     protected $set;
     protected $powerSet;
+
+    /** @var array */
+    protected $methods;
+    protected $wildcards;
+    protected $maker; // TODO: Deprecate
     protected $middlewares;
 
     /**
      * Route constructor.
      *
-     * @param string $key      route string
-     * @param string $callable callable for GET
+     * @param string $key      Route key string
+     * @param string $callable Callable for GET
      */
     public function __construct(string $key, string $callable = null)
     {
@@ -120,7 +108,7 @@ class Route
         $maker = debug_backtrace(0, 1)[0];
         $maker['file'] = Path::relative($maker['file']);
         $this->maker = $maker;
-        $this->key = $key;
+        $this->setKey((string) $key);
 
         // Detect valid wildcards
         if ($hasHandlebars && preg_match_all(static::REGEX_WILDCARD_SEARCH, $key, $wildcards)) {
@@ -144,7 +132,7 @@ class Route
                 } else {
                     $wildcardTrim = $wildcard;
                 }
-                if (in_array($wildcardTrim, $this->wildcards)) {
+                if (in_array($wildcardTrim, $this->getWildcards())) {
                     throw new RouteException(
                         (new Message('Must declare one unique wildcard per capturing group, duplicated %s detected in route %r.'))
                             ->code('%s', $wildcards[0][$k])
@@ -155,7 +143,7 @@ class Route
             }
             // Determine if route contains optional wildcards
             if ($optionals) {
-                $mandatoryDiff = array_diff($this->wildcards, $optionalsIndex);
+                $mandatoryDiff = array_diff($this->getWildcards(), $optionalsIndex);
                 $mandatorIndex = [];
                 foreach ($mandatoryDiff as $k => $wildcard) {
                     $mandatorIndex[$k] = null;
@@ -223,7 +211,6 @@ class Route
             throw new RouteException($e);
         }
         $this->name = $name;
-        // $this->collect();
 
         return $this;
     }
@@ -251,7 +238,6 @@ class Route
         //     );
         // }
         $this->methods[$httpMethod] = $callableSome;
-        // $this->collect();
 
         return $this;
     }
@@ -296,12 +282,12 @@ class Route
                     'match',
                     function (string $string) use ($wildcard): bool {
                         return
-                            Utils\Str::contains($wildcard, $this->key)
-                            || Utils\Str::contains('{'."$string?".'}', $this->key);
+                            Utils\Str::contains($wildcard, $this->getKey())
+                            || Utils\Str::contains('{'."$string?".'}', $this->getKey());
                     },
                     (string) (new Message("Wildcard %s doesn't exists in %r."))
                         ->code('%s', $wildcard)
-                        ->code('%r', $this->key)
+                        ->code('%r', $this->getKey())
                 )
                 ->append(
                     'unique',
@@ -324,7 +310,6 @@ class Route
             throw new RouteException($e->getMessage());
         }
         $this->wheres[$wildcardName] = $regex;
-        // $this->collect();
 
         return $this;
     }
@@ -364,22 +349,11 @@ class Route
     }
 
     /**
-     * Collects the Route object in the Routes instance.
-     */
-    // protected function collect(): self
-    // {
-    //     $collection = Routes::instance() ?? new Routes();
-    //     $collection->allocate($this);
-
-    //     return $this;
-    // }
-
-    /**
      * Fill object missing properties and whatnot.
      */
     public function fill(): self
     {
-        foreach ($this->wildcards as $k => $v) {
+        foreach ($this->getWildcards() as $k => $v) {
             if (isset($this->wheres[$v]) == false) {
                 $this->wheres[$v] = static::REGEX_WILDCARD_WHERE;
             }
@@ -395,7 +369,7 @@ class Route
      */
     public function regex(string $key = null): string
     {
-        $regex = $key ?? $this->set ?? $this->key;
+        $regex = $key ?? $this->set ?? $this->getKey();
         if ($regex == null) {
             throw new RouteException(
                 (new Message('Unable to process regex for empty %s.'))
@@ -406,7 +380,7 @@ class Route
         if (Utils\Str::contains('{', $regex) == false) {
             return $regex;
         }
-        foreach ($this->wildcards as $k => $v) {
+        foreach ($this->getWildcards() as $k => $v) {
             $regex = str_replace("{{$k}}", '('.$this->wheres[$v].')', $regex);
         }
 
@@ -422,55 +396,52 @@ class Route
 
     public function getMiddlewares(): ?array
     {
-        return $this->middlewares;
+        return $this->middlewares ?? [];
     }
 
     public function getWildcards(): ?array
     {
-        return $this->wildcards;
+        return $this->wildcards ?? [];
     }
 
     public function getPowerSet(): ?array
     {
-        return $this->powerSet;
+        return $this->powerSet ?? [];
     }
 
-    public function getKey(): ?string
+    protected function setKey(string $key): self
+    {
+        $this->key = $key;
+
+        return $this;
+    }
+
+    public function getKey(): string
     {
         return $this->key;
     }
 
     public function getName(): ?string
     {
-        return $this->name;
+        return $this->name ?? null;
     }
 
     public function getSet(): ?string
     {
-        return $this->set;
+        return $this->set ?? null;
     }
 
-    public function getId(): ?int
+    public function getId(): string
     {
-        return $this->id ?? null;
+        return $this->id;
     }
 
-    public function setId(int $id): void
+    public function setId(string $id): self
     {
         $this->id = $id;
+
+        return $this;
     }
-
-    /**
-     * Get a route object from the Routes. Public alias of Routes::getRoute.
-     *
-     * @param mixed $idOrName route id (int); Route name (string)
-     */
-    // public static function get($idOrName): self
-    // {
-    //     $object = Routes::instance()->getRoute(...func_get_args());
-
-    //     return $object;
-    // }
 
     /**
      * Binds a Route object.
@@ -482,32 +453,6 @@ class Route
     {
         return new static(...func_get_args());
     }
-
-    /**
-     * Unbind a Route (/route) from Routes.
-     *
-     * @param string $key Route string (as defined using ::bind())
-     *
-     * @return bool TRUE if the route was removed
-     *
-     * @throws RoutesException if the route doesn't exists
-     */
-    public static function unbind(string $key): bool
-    {
-        return Routes::instance()->removeRoute($key, true);
-    }
-
-    /*
-     * Removes a Route from Routes.
-     *
-     * @param mixed $idOrName route id (int); Route name (string)
-     *
-     * @throws RoutesException if the route doesn't exists
-     */
-    // public static function remove($idOrName): bool
-    // {
-    //     return Routes::instance()->removeRoute($idOrName);
-    // }
 }
 
 class RouteException extends CoreException
