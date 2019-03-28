@@ -175,7 +175,15 @@ class Router
                         return $routeSome;
                     }
                     if (is_string($routeSome)) {
-                        return unserialize($routeSome, ['allowed_classes' => Route::class]);
+                        $this->routes[$pointer[1]][$pointer[0]] = unserialize($routeSome, ['allowed_classes' => Route::class]);
+
+                        return $this->routes[$pointer[1]][$pointer[0]];
+                    } else {
+                        throw new LogicException(
+                            (string) (new Message('Unexpected type %t in routes table %h.'))
+                                ->code('%t', gettype($routeSome))
+                                ->code('%h', $pointer[0].'@'.$pointer[1])
+                        );
                     }
                 }
             }

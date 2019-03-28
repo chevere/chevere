@@ -37,8 +37,9 @@ class App extends Container
     /** @var bool */
     protected $isCached;
 
-    // TODO: Document the diff here
+    /** @var array An array containing the plain arguments (scalar data) s */
     protected $arguments = [];
+    /** @var array An array containing the prepared controller arguments (object injection) */
     protected $controllerArguments = [];
 
     // App objects
@@ -309,7 +310,6 @@ class App extends Container
         }
         if (null != $callable) {
             $controller = $this->getControllerObject($callable);
-            // dd($callable);
             if ($controller instanceof Interfaces\RenderableInterface) {
                 echo $controller->render();
             } else {
@@ -323,7 +323,7 @@ class App extends Container
      */
     public function getControllerObject(string $callable)
     {
-        $this->setResponse(new Response());
+        // $this->setResponse(new Response());
         $controller = $this->getCallable($callable);
         if ($controller instanceof Controller) {
             $controller->setApp($this);
@@ -344,16 +344,14 @@ class App extends Container
             }
         }
         if (isset($method)) {
-            $invoke = new ReflectionMethod($controller, $method);
+            $reflection = new ReflectionMethod($controller, $method);
         } else {
-            // FIXME: php app/console run Chevereto\Core\Path::fromHandle
-            dd(is_callable($controller));
-            $invoke = new ReflectionFunction($controller);
+            $reflection = new ReflectionFunction($controller);
         }
         $controllerArguments = [];
         $parameterIndex = 0;
         // Magically create typehinted objects
-        foreach ($invoke->getParameters() as $parameter) {
+        foreach ($reflection->getParameters() as $parameter) {
             $parameterType = $parameter->getType();
             $type = $parameterType != null ? $parameterType->getName() : null;
             $value = $this->arguments[$parameter->getName()] ?? $this->arguments[$parameterIndex] ?? null;
@@ -409,7 +407,9 @@ class App extends Container
         return $this;
     }
 
-    // FIXME: Must be protected?
+    /**
+     * Sets the plain App arguments (scalar data).
+     */
     public function setArguments(array $arguments = [])
     {
         $this->arguments = $arguments;
@@ -418,6 +418,19 @@ class App extends Container
     public function getArguments(): array
     {
         return $this->arguments;
+    }
+
+    /**
+     * Sets the rich controller arguments (object injection).
+     */
+    public function setControllerArguments(array $arguments = [])
+    {
+        $this->controllerArguments = $arguments;
+    }
+
+    public function getControllerArguments(): array
+    {
+        return $this->controllerArguments ?? [];
     }
 
     /**
