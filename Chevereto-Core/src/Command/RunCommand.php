@@ -54,7 +54,7 @@ class RunCommand extends Command
         if (is_callable($callableInput) || class_exists($callableInput)) {
             $callable = $callableInput;
         } else {
-            $callable = Path::fromHandle($callable);
+            $callable = Path::fromHandle($callableInput);
             if (false == File::exists($callable)) {
                 $cli->getIo()->error(sprintf('Unable to locate callable %s', $callable));
 
