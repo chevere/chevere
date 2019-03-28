@@ -58,8 +58,8 @@ class App extends Container
 
     public function __construct(AppParameters $parameters = null)
     {
-        $this->isCached = false;
         $this->setRouter(new Router());
+        $this->isCached = false;
         if (static::hasStaticProp('defaultRuntime')) {
             $this->setRuntime(static::getDefaultRuntime());
         }
@@ -120,8 +120,6 @@ class App extends Container
                 }
             }
         }
-        dd($this->getRouter()->getRoutes());
-
         if (Console::bind($this)) {
             Console::run(); // Note: Console::run() always exit.
         } else {
@@ -214,11 +212,6 @@ class App extends Container
         return $this;
     }
 
-    public function getRouting(): Routing
-    {
-        return $this->routing;
-    }
-
     public function getRouter(): Router
     {
         return $this->router;
@@ -301,18 +294,25 @@ class App extends Container
         // TODO: Run should detect if the app misses things needed for running.
         if (null == $callable) {
             try {
-                $callable = $this->getRouting()->getController($this->getRequest());
-                $this->setRoute($this->getRouting()->getRoute());
+                $this->setRoute(
+                    $this->getRouter()->resolve($this->getRequest()->getPathInfo())
+                );
+                $callable = $this->getRoute()->getCallable(
+                    $this->getRequest()->getMethod()
+                );
+                $this->setArguments(
+                    $this->getRouter()->getArguments()
+                );
             } catch (RouterException $e) {
                 die('APP RUN RESPONSE: '.$e->getCode());
             }
         }
         if (null != $callable) {
             $controller = $this->getControllerObject($callable);
+            // dd($callable);
             if ($controller instanceof Interfaces\RenderableInterface) {
                 echo $controller->render();
             } else {
-                // dd($this->getResponse()->val, $controller->getResponse()->val);
                 $controller->getResponse()->sendJson();
             }
         }
@@ -333,10 +333,6 @@ class App extends Container
         if ($this->route instanceof Route && $middlewares = $this->route->getMiddlewares()) {
             $handler = new Handler($middlewares);
             $handler->runner($this);
-        }
-        // Use arguments taken from wildcards
-        if ($this->arguments == null && $routingArgs = $this->getRouting()->getArguments()) {
-            $this->setArguments($routingArgs);
         }
         if (is_object($controller)) {
             $method = '__invoke';

@@ -254,8 +254,7 @@ class Apis
                     $api['OPTIONS'][$k] = $v[1];
                 }
             }
-            $route = Route::bind($endpointRoute)->methods($httpMethods);
-            $route->setId($endpoint);
+            $route = Route::bind($endpointRoute)->methods($httpMethods)->setId($endpoint);
             $this->routeKeys[$endpointRoute] = [$basename, $endpoint];
             // Define Route wildcard "where" if needed
             if ($routeWildcards = $route->getWildcards()) {
@@ -277,10 +276,12 @@ class Apis
         }
         ksort($API);
 
-        Route::bind('/'.$basename)
+        $route = Route::bind('/'.$basename)
             ->method('HEAD', Controllers\ApiHead::class)
             ->method('OPTIONS', Controllers\ApiOptions::class)
-            ->method('GET', Controllers\ApiGet::class);
+            ->method('GET', Controllers\ApiGet::class)
+            ->setId($basename);
+        $this->getRouter()->addRoute($route, $basename);
         $this->apis[$basename] = $API;
         $baseOpts = [
             'HEAD' => Controllers\ApiHead::OPTIONS,

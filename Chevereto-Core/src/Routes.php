@@ -31,18 +31,6 @@ class Routes
         $this->setFileHandle($fileHandle);
     }
 
-    // public function getArray(): array
-    // {
-    //     return $this->array ?? [];
-    // }
-
-    // protected function setArray(): self
-    // {
-    //     $this->array = $this->getArrayFile()->toArray();
-
-    //     return $this;
-    // }
-
     public function getFileHandle(): string
     {
         return $this->fileHandle;
@@ -67,7 +55,6 @@ class Routes
             $route->setId((string) $k);
         }
         $this->arrayFile = $arrayFile;
-        // $this->array = $arrayFile->toArray();
 
         return $this;
     }
