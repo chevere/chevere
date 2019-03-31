@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
+use RuntimeException;
 use Exception;
 use ReflectionMethod;
 use ReflectionFunction;
@@ -273,16 +274,20 @@ class App extends Container
         $filename = $this->getBuildFilePath();
         $fh = @fopen($filename, 'w');
         if (!$fh) {
-            throw new Exception(
-                (new Message('Unable to open %f for writing'))->code('%f', $filename)
+            throw new RuntimeException(
+                (string) (new Message('Unable to open %f for writing'))->code('%f', $filename)
             );
         }
         if (@fwrite($fh, (string) time()) == false) {
-            throw new Exception(
-                (new Message('Unable to write to %f'))->code('%f', $filename)
+            throw new RuntimeException(
+                (string) (new Message('Unable to write to %f'))->code('%f', $filename)
             );
         }
-        @fclose($fh);
+        if (false == @fclose($fh)) {
+            throw new RuntimeException(
+                (string) (new Message('Unable to close %f'))->code('%f', $filename)
+            );
+        }
     }
 
     /**

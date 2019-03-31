@@ -12,6 +12,9 @@ declare(strict_types=1);
 
 namespace Chevereto\Core\Validate;
 
+use Chevereto\Core\Message;
+use RuntimeException;
+
 class Image
 {
     /**
@@ -37,7 +40,11 @@ class Image
                 break;
             }
         }
-        @fclose($fh);
+        if (false == @fclose($fh)) {
+            throw new RuntimeException(
+                (string) (new Message('Unable to close %f.'))->code('%f', $filename)
+            );
+        }
 
         return $count > 1;
     }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Chevereto\Core;
 
 use DateTimeZone;
+use RuntimeException;
 
 /**
  * Runtime applies runtime changes and provide information about the App Runtime.
@@ -52,7 +53,13 @@ class Runtime extends Data
 
     public function setDefaultCharset(string $charset): self
     {
-        @ini_set('default_charset', $charset);
+        if (false === @ini_set('default_charset', $charset)) {
+            throw new RuntimeException(
+                (string) (new Message('Unable to set %s %v.'))
+                    ->code('%s', 'default_charset')
+                    ->code('%v', $charset)
+            );
+        }
         $this->setDataKey(RuntimeConfig::DEFAULT_CHARSET, $charset);
 
         return $this;
@@ -144,7 +151,4 @@ class Runtime extends Data
 
         return $this;
     }
-}
-class RuntimeException extends CoreException
-{
 }
