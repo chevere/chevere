@@ -3,21 +3,22 @@
   "description": "Chevereto app",
   "type": "library",
   "license": "MIT",
-  "authors": [
-    {
-      "name": "Rodolfo Berrios",
-      "email": "inbox@rodolfoberrios.com"
+  "authors": [{
+    "name": "Rodolfo Berrios",
+    "email": "inbox@rodolfoberrios.com"
+  }],
+  "repositories": [{
+    "type": "path",
+    "url": "./Chevereto-Core",
+    "options": {
+      "symlink": true
     }
-  ],
-  "repositories": [
-    {
-      "type": "path",
-      "url": "./Chevereto-Core",
-      "options": {
-        "symlink": true
-      }
+  }],
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/src/"
     }
-  ],
+  },
   "require": {
     "chevereto/core": "@dev"
   },

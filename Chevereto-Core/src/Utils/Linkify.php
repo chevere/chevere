@@ -147,7 +147,7 @@ class Linkify
                         }
                     } else {
                         // Otherwise, check whether this is the closing tag for $openTag.
-                        if (isset($chunks[$i]) && preg_match('`</\s*'.$openTag.'>`i', $chunks[$i], $matches)) {
+                        if (null !== $openTag && isset($chunks[$i]) && preg_match('`</\s*'.$openTag.'>`i', $chunks[$i], $matches)) {
                             $openTag = null;
                         }
                     }

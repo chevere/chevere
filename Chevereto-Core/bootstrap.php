@@ -10,13 +10,12 @@ define(__NAMESPACE__.'\ERROR_LEVEL_BOOTSTRAP', error_reporting());
 // Namespace handles (adds trailing slashes)
 const CORE_NS_HANDLE = __NAMESPACE__.'\\';
 const APP_NS_HANDLE = 'App\\';
-// Namespace handle lenghts (hard set)
-const NS_HANDLE_LENGTHS = [CORE_NS_HANDLE => 15, APP_NS_HANDLE => 4];
 
 /*
  * Assuming that this file has been loaded from /app/bootstrap.php
  */
-define(CORE_NS_HANDLE.'BOOTSTRAPPER', debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)[0]['file']);
+// Fools scrutinizer?
+define('Chevereto\Core\BOOTSTRAPPER', debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)[0]['file']);
 
 /*
  * Chevereto\Core\ROOT_PATH
@@ -75,8 +74,3 @@ App::setDefaultRuntime(
             ->process()
     )
 );
-
-// TODO: Composer autoload para App
-require PATH.'/autoloader.php';
-// Failover loader
-spl_autoload_register(CORE_NS_HANDLE.'autoloader');
