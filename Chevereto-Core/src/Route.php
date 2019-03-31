@@ -73,33 +73,21 @@ class Route
                             $string == '/' ?: (
                                 strlen($string) > 0
                                 && Utils\Str::startsWith('/', $string)
-                                && Utils\Str::endsWith('/', $string) == false
-                                && Utils\Str::contains('//', $string) == false
-                                && Utils\Str::contains(' ', $string) == false
-                                && Utils\Str::contains('\\', $string) == false
+                                && false == Utils\Str::endsWith('/', $string)
+                                && false == Utils\Str::contains('//', $string)
+                                && false == Utils\Str::contains(' ', $string)
+                                && false == Utils\Str::contains('\\', $string)
                             );
                     },
                     "String %i must start with a forward slash, it shouldn't contain neither whitespace, backslashes or extra forward slashes and it should be specified without a trailing slash."
                 )
-                // ->append(
-                //     'unique',
-                //     function (string $string): bool {
-                //         $collection = Routes::instance();
-                //         if ($collection == null) {
-                //             return true;
-                //         }
-
-                //         return isset($collection->getUniques()[$string]) == false;
-                //     },
-                //     'Route %s has been already declared.'
-                // )
                 ->append(
                     'wildcards',
                     function (string $string) use ($hasHandlebars): bool {
-                        return !$hasHandlebars ?: preg_match_all('/{([0-9]+)}/', $string) == false;
+                        return !$hasHandlebars ?: preg_match_all('/{([0-9]+)}/', $string) === 0;
                     },
                     (string) (new Message('Wildcards in the form of %s are reserved.'))
-                        ->code('%s', '{n}')
+                        ->code('%s', '/{n}')
                 )
                 ->validate();
         } catch (Exception $e) {
@@ -447,7 +435,7 @@ class Route
      * Binds a Route object.
      *
      * @param string $key      route key
-     * @param string $callable get Callable
+     * @param string $callable Callable string
      */
     public static function bind(string $key, string $callable = null, string $rootContext = null): self
     {

@@ -2,7 +2,6 @@
 
 use Chevereto\Core\Route;
 
-// TODO: Use keys to be able to extend routes elsewhere.
 return [
   'index' => Route::bind('/', 'callables:index')
       ->name('homepage')
@@ -21,12 +20,3 @@ return [
     ])
     ->where('dyn2', '[0-9]+'),
 ];
-// // Get route:
-// // Route::get('homepage')
-// //   ->method('POST', 'callables:postComments');
-
-// // Remove route (using /route/path):
-// // Route::unbind('/');
-
-// // Remove route (specified by its id or name)
-// // Route::remove('homepage');

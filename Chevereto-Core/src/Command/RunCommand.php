@@ -63,6 +63,7 @@ class RunCommand extends Command
         }
         // Pass explicit callables, "weird" callables (Class::__invoke) runs in the App.
         if (is_callable($callable)) {
+            // TODO: Must fix the argument typehint, maybe do combo with DI
             $return = $callable(...$input->getOption('argument'));
             $cli->getIo()->block(DumpPlain::out($return), 'RETURN', 'fg=black;bg=green', ' ', true);
         } else {

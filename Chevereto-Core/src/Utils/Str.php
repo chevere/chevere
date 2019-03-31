@@ -142,38 +142,24 @@ class Str
     /**
      * Truncate string.
      *
-     * Truncates any given text based in either number of characters or the first
-     * occurrence of a needle.
+     * Truncates any given text based in either number of characters.
      *
      * Taken from http://www.chirp.com.au/ and improved for Chevereto.
      *
      * @param string $string string to be truncated
-     * @param mixed  $limit  integer for character lengh based trimming, string for needle based trimming
+     * @param int  $limit  integer for character lengh based trimming
      * @param string $pad    String to be appended to the truncated string, default "...".
      *
      * @return string truncated string
      */
-    public static function truncate(string $string, $limit, string $pad = '...'): string
+    public static function truncate(string $string, int $limit, string $pad = '...'): string
     {
         $encoding = 'UTF-8';
         $break = null;
-        if (is_int($limit)) {
-            $limit = $limit;
-        } elseif (is_string($limit)) {
-            $break = $limit;
-        }
         if (mb_strlen($string, $encoding) <= $limit) {
             return $string;
         }
-        if (is_null($break) || $break == '') {
-            $string = trim(mb_substr($string, 0, $limit - strlen($pad), $encoding)).$pad;
-        } else {
-            if (false != ($breakpoint = strpos($string, $break, $limit))) {
-                if ($breakpoint < mb_strlen($string, $encoding) - 1) {
-                    $string = trim(mb_substr($string, 0, $breakpoint, $encoding)).$pad;
-                }
-            }
-        }
+        $string = trim(mb_substr($string, 0, $limit - strlen($pad), $encoding)).$pad;
 
         return $string ?? '';
     }

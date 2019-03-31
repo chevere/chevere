@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
-/**
+/*
  * This class provide a common interface for creating messages.
  *
  * It works by setting a message string and then using chaineable methods it
@@ -20,6 +20,9 @@ namespace Chevereto\Core;
  *
  * Useful for creating messages that needs to wrapped in different tags
  * and/or need to be translatable (l10n).
+ */
+/**
+ * @method string code(string $search, string $replace)
  */
 class Message
 {

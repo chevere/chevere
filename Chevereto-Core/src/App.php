@@ -122,6 +122,7 @@ class App extends Container
                 }
             }
         }
+        $this->setResponse(new Response());
         if (Console::bind($this)) {
             Console::run(); // Note: Console::run() always exit.
         } else {
@@ -328,7 +329,6 @@ class App extends Container
      */
     public function getControllerObject(string $callable)
     {
-        // $this->setResponse(new Response());
         $controller = $this->getCallable($callable);
         if ($controller instanceof Controller) {
             $controller->setApp($this);
@@ -417,6 +417,7 @@ class App extends Container
      */
     public function setArguments(array $arguments = [])
     {
+        dd($arguments);
         $this->arguments = $arguments;
     }
 

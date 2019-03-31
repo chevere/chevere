@@ -53,7 +53,7 @@ class Runtime extends Data
 
     public function setDefaultCharset(string $charset): self
     {
-        if (false === @ini_set('default_charset', $charset)) {
+        if (!@ini_set('default_charset', $charset)) {
             throw new RuntimeException(
                 (string) (new Message('Unable to set %s %v.'))
                     ->code('%s', 'default_charset')

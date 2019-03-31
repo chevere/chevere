@@ -12,9 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
-use Exception;
 use LogicException;
-use InvalidArgumentException;
 
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).
@@ -62,16 +60,8 @@ class ArrayFile
      */
     public function __construct(string $fileHandle, string $typeSome = null)
     {
-        try {
-            $filepath = Path::fromHandle($fileHandle);
-            $arrayFile = Load::php($filepath);
-        } catch (ErrorException | Exception $e) {
-            throw new InvalidArgumentException(
-                (string) (new Message('Unable to locate file specified by %s (resolved as %f).'))
-                    ->code('%s', $fileHandle)
-                    ->code('%f', $filepath)
-            );
-        }
+        $filepath = Path::fromHandle($fileHandle);
+        $arrayFile = Load::php($filepath);
         $this->filepath = $filepath;
         $arrayFileType = gettype($arrayFile);
         if (false == is_array($arrayFile)) {

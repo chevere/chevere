@@ -15,6 +15,7 @@ namespace Chevereto\Core;
 use Exception;
 use ReflectionParameter;
 use ReflectionMethod;
+use RuntimeException;
 use RecursiveDirectoryIterator;
 use FilesystemIterator;
 use RecursiveIteratorIterator;
@@ -51,7 +52,7 @@ class Apis
                 );
             }
             $directory = Path::fromHandle($pathIdentifier);
-            if (File::exists($directory) == false) {
+            if (!File::exists($directory)) {
                 throw new CoreException(
                     (new Message("Directory %s doesn't exists."))
                         ->code('%s', $directory)
@@ -73,7 +74,7 @@ class Apis
             $directoryIterator = new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS);
             $recursiveIterator = new RecursiveIteratorIterator($directoryIterator, RecursiveIteratorIterator::SELF_FIRST);
         } catch (Exception $e) {
-            throw new RouterException($e);
+            throw new RuntimeException($e);
         }
         $errors = [];
         $pop = [];
@@ -113,7 +114,7 @@ class Apis
             } else {
                 $httpVerb = basename($dir, '.php');
                 // Only valid HTTP request methods allowed, ignore the rest
-                if (in_array($httpVerb, Route::HTTP_METHODS) == false) {
+                if (!in_array($httpVerb, Route::HTTP_METHODS)) {
                     continue;
                 }
                 $dir = dirname($dir); // /endpoint
@@ -157,11 +158,11 @@ class Apis
                     foreach ($params = $invoke->getParameters() as $k => $param) {
                         ++$counter;
                         $error = null;
-                        if ($required = ($param->isOptional() || $param->isDefaultValueAvailable()) == false) {
+                        if ($required = ($param->isOptional() || !$param->isDefaultValueAvailable())) {
                             ++$requiredCntAux;
                         }
                         $mustBeRequired = $counter <= $requiredCnt;
-                        if ($mustBeRequired && $required == false) {
+                        if ($mustBeRequired && !$required) {
                             $errors[] = (new Message('Parameter %s must not be declared with a default value for API endpoint %e at %f.'))
                                 ->code('%s', '$'.$param->getName())
                                 ->code('%e', "$httpVerb:$realDir")
@@ -180,7 +181,7 @@ class Apis
                                 continue;
                             }
                         }
-                        if (isset($RESOURCE_WILDCARDS[$dir][$param->name]) == false) {
+                        if (!isset($RESOURCE_WILDCARDS[$dir][$param->name])) {
                             // Fill unexistant resource in resource.json
                             $RESOURCE_WILDCARDS[$dir][$param->name] = new RouteWildcard();
                         }
@@ -224,7 +225,7 @@ class Apis
             }
         } // foreach filename
         if ($errors) {
-            throw new RouterException(implode("\n", $errors));
+            throw new ApiException(implode("\n", $errors));
         }
         ksort($ROUTE_MAP);
         // $ROUTE_MAP defines API routing
@@ -238,7 +239,7 @@ class Apis
             $resourceWildcards = $RESOURCE_WILDCARDS[$dirRoute] ?? [];
             $endpointRoute = Path::normalize('/'.$basename.'/'.$endpoint);
             $explode = explode('/', $endpoint);
-            $endsWithWildcard = preg_match(Route::REGEX_WILDCARD_SEARCH, (string) end($explode), $matches) != false;
+            $endsWithWildcard = preg_match(Route::REGEX_WILDCARD_SEARCH, (string) end($explode), $matches) > 0;
             // Set Options => <http method>,
             foreach ($httpMethods as $httpMethod => $controllerFilePath) {
                 $options = $OPTIONS[$controllerFilePath];
@@ -249,7 +250,7 @@ class Apis
                 'OPTIONS' => [Controllers\ApiOptions::class, Controllers\ApiOptions::OPTIONS],
                 'HEAD' => [Controllers\ApiHead::class, Controllers\ApiHead::OPTIONS],
             ] as $k => $v) {
-                if (isset($httpMethods[$k]) == false) {
+                if (!isset($httpMethods[$k])) {
                     $httpMethods[$k] = $v[0];
                     $api['OPTIONS'][$k] = $v[1];
                 }

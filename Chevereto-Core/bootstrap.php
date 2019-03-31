@@ -14,26 +14,25 @@ const APP_NS_HANDLE = 'App\\';
 /*
  * Assuming that this file has been loaded from /app/bootstrap.php
  */
-// Fools scrutinizer?
 define('Chevereto\Core\BOOTSTRAPPER', debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)[0]['file']);
 
 /*
  * Chevereto\Core\ROOT_PATH
  * Root path containing /app
  */
-define(CORE_NS_HANDLE.'ROOT_PATH', rtrim(str_replace('\\', '/', dirname(BOOTSTRAPPER, 2)), '/').'/');
+define('Chevereto\Core\ROOT_PATH', rtrim(str_replace('\\', '/', dirname(BOOTSTRAPPER, 2)), '/').'/');
 
 /*
  * Chevereto\Core\PATH
  * Relative path to Chevereto\Core, usually 'vendor/chevereto/chevereto-core'
  */
-define(CORE_NS_HANDLE.'PATH', rtrim(str_replace(ROOT_PATH, null, str_replace('\\', '/', __DIR__)), '/').'/');
+define('Chevereto\Core\PATH', rtrim(str_replace(ROOT_PATH, null, str_replace('\\', '/', __DIR__)), '/').'/');
 
 /*
  * Chevereto\Core\App\PATH
  * Relative path to app, usually 'app'
  */
-define(CORE_NS_HANDLE.'App\PATH', basename(dirname(BOOTSTRAPPER)).'/');
+define('Chevereto\Core\App\PATH', basename(dirname(BOOTSTRAPPER)).'/');
 
 // Init console if sapi = cli
 if (php_sapi_name() == 'cli') {
@@ -43,8 +42,8 @@ if (php_sapi_name() == 'cli') {
 const DEFAULT_ERROR_HANDLING = [
     RuntimeConfig::DEBUG => 0,
     // RuntimeConfig::ERROR_REPORTING_LEVEL => E_ALL ^ E_NOTICE,
-    RuntimeConfig::ERROR_HANDLER => CORE_NS_HANDLE.'ErrorHandler::error',
-    RuntimeConfig::EXCEPTION_HANDLER => CORE_NS_HANDLE.'ErrorHandler::exception',
+    RuntimeConfig::ERROR_HANDLER => 'Chevereto\Core\ErrorHandler::error',
+    RuntimeConfig::EXCEPTION_HANDLER => 'Chevereto\Core\ErrorHandler::exception',
 ];
 
 /*
@@ -56,7 +55,7 @@ new Runtime(
 );
 
 // This constant allows safe short syntax like `CLI && Console::io()` in all namespaces.
-define(CORE_NS_HANDLE.'CLI', Console::isRunning());
+define('Chevereto\Core\CLI', Console::isRunning());
 
 /*
  * Kickstand
