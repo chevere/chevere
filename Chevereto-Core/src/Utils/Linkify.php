@@ -130,7 +130,8 @@ class Linkify
         $chunks = preg_split('/(<.+?>)/is', $string, 0, PREG_SPLIT_DELIM_CAPTURE);
         $openTag = null;
         if (is_array($chunks)) {
-            for ($i = 0; $i < count($chunks); ++$i) {
+            $chunkCnt = count($chunks);
+            for ($i = 0; $i < $chunkCnt; ++$i) {
                 if ($i % 2 === 0) { // even numbers are text
                     // Only process this chunk if there are no unclosed $ignoreTags
                     if (null === $openTag && isset($chunks[$i])) {
