@@ -21,7 +21,7 @@ abstract class Container
      */
     public function hasObject(string $key): bool
     {
-        if (false == (in_array($key, $this->objects) || property_exists($this, $key))) {
+        if (!(in_array($key, $this->objects) || property_exists($this, $key))) {
             return false;
         }
 

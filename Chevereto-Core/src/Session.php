@@ -49,7 +49,7 @@ class Session
         if ($options) {
             $opts = array_merge($options, $opts);
         }
-        if (session_start($opts) == false) {
+        if (!session_start($opts)) {
             throw new Exception(
                 (new Message('Sessions are not working on this server as %f returned false meaning that PHP is unable to handle sessions in this server. Try fixing %s permissions at %p'))
                     ->code('%f', 'session_start()')
@@ -66,7 +66,7 @@ class Session
      */
     public static function checkPath(string $path): void
     {
-        if (File::exists($path) == false) {
+        if (!File::exists($path)) {
             throw new Exception(
                 (new Message("Path %s doesn't exists"))->b('%s', $path)
             );
@@ -75,7 +75,7 @@ class Session
         if ($realPath) { // Check read/write on session path
             foreach (['read', 'write'] as $k) {
                 $fn = 'is_'.$k.'able';
-                if (is_callable($fn) && $fn($realPath) == false) {
+                if (!is_callable($fn) && $fn($realPath)) {
                     $errors[] = $k;
                 }
             }

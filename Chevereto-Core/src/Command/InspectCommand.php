@@ -48,23 +48,21 @@ class InspectCommand extends Command
     {
         $cli = $this->getCli();
         $io = $cli->getIo();
-        $callableInput = $cli->getInput()->getArgument('callable');
-
+        $callableInput = (string) $cli->getInput()->getArgument('callable');
         $isCallable = is_callable($callableInput);
-        // $classExists = class_exists($callableInput);
         if ($isCallable) {
             $callable = $callableInput;
             $callableSome = $callableInput;
         } else {
             $callableFilepath = Path::fromHandle($callableInput);
-            if (false == File::exists($callableFilepath)) {
+            if (!File::exists($callableFilepath)) {
                 $io->error(sprintf('Unable to locate callable %s', $callableInput));
 
                 return 0;
             }
             $callableSome = $callableFilepath;
             $callable = Load::php($callableFilepath);
-            if (false == is_callable($callable)) {
+            if (!is_callable($callable)) {
                 $io->error(
                     (new Message('Expecting %t return type, %s provided in %f'))
                         ->code('%t', 'callable')
@@ -86,6 +84,9 @@ class InspectCommand extends Command
         }
         if (isset($method)) {
             $reflection = new ReflectionMethod($callable, $method);
+        // if ($reflection->getDeclaringClass()->isInternal()) {
+            //     $io->note('Cannot determine default value for internal functions');
+            // }
         } else {
             $reflection = new ReflectionFunction($callable);
         }
@@ -107,9 +108,7 @@ class InspectCommand extends Command
         }
 
         $arguments = [];
-        if ($reflection->getDeclaringClass()->isInternal()) {
-            $io->note('Cannot determine default value for internal functions');
-        }
+
         $i = 0;
         foreach ($reflection->getParameters() as $parameter) {
             $aux = null;

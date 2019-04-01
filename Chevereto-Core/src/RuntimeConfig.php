@@ -72,7 +72,7 @@ class RuntimeConfig extends Data
     {
         foreach (array_keys($data) as $key) {
             $fnName = 'set'.ucwords($key);
-            if (false == method_exists(Runtime::class, $fnName)) {
+            if (!method_exists(Runtime::class, $fnName)) {
                 throw new CoreException(
                     (new Message('Unrecognized %c key "%s".'))
                         ->code('%c', __CLASS__)
@@ -194,7 +194,7 @@ class RuntimeConfig extends Data
      */
     protected function validator(string $key, $value)
     {
-        if (array_key_exists($key, $this->getAsserts()) == false) {
+        if (!array_key_exists($key, $this->getAsserts())) {
             // FIXME: Usar new Message()
             // throw new Exception("Unexistant config key <b>$key</b>");
             return;
@@ -208,7 +208,7 @@ class RuntimeConfig extends Data
                 }
             break;
             case 'array':
-                if (in_array($value, $assert, true) == false) {
+                if (!in_array($value, $assert, true)) {
                     throw new ConfigException($key);
                 }
             break;

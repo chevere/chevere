@@ -64,7 +64,7 @@ class ArrayFile
         $arrayFile = Load::php($filepath);
         $this->filepath = $filepath;
         $arrayFileType = gettype($arrayFile);
-        if (false == is_array($arrayFile)) {
+        if (!is_array($arrayFile)) {
             throw new LogicException(
                 (string) (new Message('Expecting file %f return type %a, %t provided.'))
                     ->code('%a', 'array')
@@ -72,7 +72,7 @@ class ArrayFile
                     ->code('%f', $filepath)
             );
         }
-        if (null != $typeSome) {
+        if (null !== $typeSome) {
             if (isset(static::TYPE_VALIDATORS[$typeSome])) {
                 $this->type = $typeSome;
             } else {
@@ -92,7 +92,7 @@ class ArrayFile
                         ->code('%s', $typeSome)
                 );
             }
-            $this->validate($arrayFile);
+            $this->validate(/* @scrutinizer ignore-type */ $arrayFile);
         }
         $this->array = $arrayFile;
     }

@@ -93,7 +93,7 @@ class Console
     {
         $exitCode = null;
         $cli = static::cli();
-        if ($cli->hasObject('command') == false) {
+        if (!$cli->hasObject('command')) {
             exit($exitCode);
         }
         $command = $cli->getCommand();
@@ -176,7 +176,7 @@ class Console
      */
     public static function write($messages, int $options = self::OUTPUT_NORMAL): void
     {
-        if (static::isRunning() == false) {
+        if (!static::isRunning()) {
             return;
         }
         static::io()->write($messages, false, $options);
@@ -190,7 +190,7 @@ class Console
      */
     public static function writeln($messages, int $options = self::OUTPUT_NORMAL): void
     {
-        if (static::isRunning() == false) {
+        if (!static::isRunning()) {
             return;
         }
         static::io()->writeln($messages, $options);
@@ -198,7 +198,7 @@ class Console
 
     public static function log($messages)
     {
-        if (static::isRunning() == false) {
+        if (!static::isRunning()) {
             return;
         }
         static::io()->writeln($messages);

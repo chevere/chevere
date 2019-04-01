@@ -176,7 +176,7 @@ class DateTime extends \DateTime implements \DateTimeInterface
                 } else {
                     $return[$magnitude] = $value;
                 }
-            } elseif ($full == true) {
+            } elseif ($full === true) {
                 $return[$nextUnit] = $nextVal; // This adds the remaining timeperiod thing
             }
         }

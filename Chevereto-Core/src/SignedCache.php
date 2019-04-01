@@ -109,7 +109,7 @@ class SignedCache
         }
         $this->writer($this->filename, "<?php\n\nreturn ".var_export($this->contents, true).';');
         $filemtime = filemtime($this->filename);
-        if ($filemtime == false) {
+        if ($filemtime === false) {
             throw new Exception('Unable to retrieve filemtime.');
         }
         $this->writer($this->signFilename, (string) $filemtime);
@@ -124,12 +124,12 @@ class SignedCache
     protected function writer(string $filename, string $contents): void
     {
         $fh = fopen($filename, 'w');
-        if ($fh == false) {
+        if (!$fh) {
             throw new Exception(
                 (new Message('Unable to open (w) %s for cache'))->code('%s', $filename)
             );
         }
-        if (flock($fh, LOCK_EX) == false) {
+        if (!flock($fh, LOCK_EX)) {
             throw new Exception(
                 (new Message('Unable to %s file %f for cache'))
                     ->code('%s', 'LOCK_EX')
@@ -139,7 +139,7 @@ class SignedCache
         $fwrite = fwrite($fh, $contents);
         flock($fh, LOCK_UN);
         fclose($fh);
-        if ($fwrite == false) {
+        if (!$fwrite) {
             throw new Exception(
                 (new Message('Unable to write cache to %s'))->code('%s', $filename)
             );
@@ -159,7 +159,7 @@ class SignedCache
         if ($this->signFilename == null) {
             $this->setSignFilename();
         }
-        if (File::exists($this->signFilename) == false) {
+        if (!File::exists($this->signFilename)) {
             return false;
         }
         $signFilemtime = file_get_contents($this->signFilename);
@@ -175,10 +175,10 @@ class SignedCache
     {
         $errors = [];
         $signatures = [];
-        if (isset($this->signature) == false) {
+        if (!isset($this->signature)) {
             $this->signature = null;
             foreach ($this->signerArray as $signer) {
-                if (File::exists($signer) == false) {
+                if (!File::exists($signer)) {
                     $errors[] = $signer;
                     continue;
                 }
@@ -203,7 +203,7 @@ class SignedCache
     {
         $signerFilemtime = null;
         foreach ($this->signerArray as $file) {
-            if (File::exists($file) == false) {
+            if (!File::exists($file)) {
                 throw new Exception(
                     (new Message("File %s doesn't exists"))->code('%s', $file)
                 );
@@ -251,7 +251,7 @@ class SignedCache
      */
     public function clear(): void
     {
-        if (File::exists($this->dir, true) == false) {
+        if (!File::exists($this->dir, true)) {
             mkdir($this->dir);
         } else {
             File::removeAll($this->dir);

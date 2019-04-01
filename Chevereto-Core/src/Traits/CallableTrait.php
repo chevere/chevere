@@ -30,7 +30,7 @@ trait CallableTrait
         } else {
             $callable = include $callableString;
         }
-        if (is_callable($callable) == false) {
+        if (!is_callable($callable)) {
             throw new CoreException(
                 (new Message('Expected %s callable, %t provided in %f.'))
                     ->code('%s', '$callable')
@@ -90,7 +90,7 @@ trait CallableTrait
     protected function checkCallableFile(string $callableFile)
     {
         // Check callable existance
-        if (false == File::exists($callableFile, true)) {
+        if (!File::exists($callableFile, true)) {
             throw new CoreException(
                 (new Message("Callable %s doesn't exists."))
                     ->code('%s', $callableFile)
@@ -102,7 +102,7 @@ trait CallableTrait
         $anonCallable = include $callableFile;
         error_reporting($errorLevel);
         // Check callable
-        if (is_callable($anonCallable) == false) {
+        if (!is_callable($anonCallable)) {
             throw new CoreException(
             (new Message('File %f is not a valid %t.'))
                 ->code('%f', $callableFile)

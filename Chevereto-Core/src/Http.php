@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
-use Exception;
 use Symfony\Component\HttpFoundation\Request;
 
 class Http
@@ -72,96 +71,11 @@ class Http
     ];
 
     /**
-     * Sets HTTP status code.
-     *
-     * @param int $code HTTP status code.
-     *                  TODO: GET RID OF THIS
-     *
-     * @throws Exception if $code is not a valid HTTP status code
-     */
-    public static function setStatusCode(int $code, bool $force = false): void
-    {
-        //FIXME: Deprecate usage, keep method.
-        echo 'GET RADS';
-        die();
-        //     if (App::instance() instanceof App) {
-    //         $protocol = App::instance()->getRequest()->server->get('SERVER_PROTOCOL');
-    //     } else {
-    //         $protocol = $_SERVER['SERVER_PROTOCOL'];
-    //     }
-    //     if ('HTTP/1.1' != $protocol && 'HTTP/1.0' != $protocol) {
-    //         $protocol = 'HTTP/1.0';
-    //     }
-    //     if (($desc = static::statusDescription($code)) == null) {
-    //         throw new Exception(
-    //             (new Message('Invalid HTTP code %s'))->code('%s', "$protocol $code")
-    //         );
-    //     }
-    //     $status = "$protocol $code $desc";
-    //     if (headers_sent()) {
-    //         if (($httpResponseCode = http_response_code()) != $code) {
-    //             $responseStatus = "$protocol $httpResponseCode " . static::statusDescription($httpResponseCode);
-    //             throw new Exception(
-    //                 (new Message('Unable to set %s - %r has been already set'))
-    //                     ->code('%s', $status)
-    //                     ->code('%r', $responseStatus)
-    //             );
-    //         }
-    //     }
-    //     http_response_code($code);
-    //     header($status, true, $code);
-    }
-
-    /**
-     * Gets the HTTP header description corresponding to its code.
-     *
-     * @param int $code HTTP status code
-     *
-     * @return string HTTP status code description
-     */
-    public static function statusDescription(int $code): string
-    {
-        return static::STATUS_CODES[$code];
-    }
-
-    /**
-     * Redirects to another URL.
-     *
-     * @param string $to     URL or App\URL relative path
-     * @param int    $status HTTP status code
-     */
-    public static function redirect(string $to, int $status = 301): void
-    {
-        // FIXME: Deprecate?
-        // if (!filter_var($to, FILTER_VALIDATE_URL)) {
-        //     $url = App::url($to);
-        // } else {
-        //     $url = $to;
-        // }
-        // $url = preg_replace('|[^a-z0-9-~+_.?#=&;,/:%!]|i', '', $url);
-        // if (php_sapi_name() != 'cgi-fcgi') {
-        //     static::setStatusCode($status);
-        // }
-        // header("Location: $url");
-        // die();
-    }
-
-    /**
-     * Stop execution with HTTP status code.
-     *
-     * @param int $status HTTP status code
-     */
-    public static function die(int $status): void
-    {
-        static::setStatusCode($status);
-        die();
-    }
-
-    /**
      * Detects if the actual request was made via XMLHttpRequest using $_SERVER.
      *
      * @return bool TRUE if the actual request was made via XHR
      */
+    // FIXME: Deprecate
     public static function isXHR(): bool
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
@@ -202,31 +116,5 @@ class Http
         }
 
         return $addr;
-    }
-
-    /**
-     * Get request URL.
-     *
-     * @param bool $configAware True if this should be app/config.php aware.
-     *
-     * @return string current URL
-     */
-    public static function requestUrl(bool $configAware = true): string
-    {
-        // if ($configAware && Config::has(Config::HTTP_SCHEME)) {
-        //     $scheme = Config::get(Config::HTTP_SCHEME);
-        // }
-        // $app = App::instance();
-        // if ($app->hasObject('request')) {
-        //     $request = $app->getRequest();
-        //     $scheme = $scheme ?? (defined('App\HTTP_SCHEME') ? App\HTTP_SCHEME : $request->getScheme());
-        //     $host = $request->getHttpHost();
-        //     $basePath = $request->getBasePath();
-        // } else {
-        //     $scheme = $scheme ?? 'http';
-        //     $host = $_SERVER['HTTP_HOST'];
-        //     $basePath = $_SERVER['REQUEST_URI'];
-        // }
-        // return $scheme . sprintf('://%s', $host . $basePath);
     }
 }

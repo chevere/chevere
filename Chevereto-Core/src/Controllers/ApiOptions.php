@@ -43,7 +43,8 @@ class ApiOptions extends Controller
             ->code('%s', '(string) $endpoint');
             if (CLI) {
                 Console::io()->error($message);
-                exit;
+
+                return;
             } else {
                 throw new CoreException($message);
             }

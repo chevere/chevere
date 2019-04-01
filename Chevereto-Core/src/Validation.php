@@ -166,14 +166,14 @@ class Validation
                 $callable = $class.$callable;
             } else {
                 // Class::method shorthand (use a method from somewhere else in the namespace)
-                if (Utils\Str::contains('::', $callable) && Utils\Str::contains('\\', $callable) == false) {
+                if (Utils\Str::contains('::', $callable) && !Utils\Str::contains('\\', $callable)) {
                     $explode = explode('\\', debug_backtrace()[1]['class']);
                     array_pop($explode);
                     $callable = implode('\\', $explode).'\\'.$callable;
                 }
             }
         }
-        if (is_callable($callable) == false) {
+        if (!is_callable($callable)) {
             throw new Exception(
                 (new Message('%a argument is not a valid callable for validation task %t.'))
                     ->code('%t', $id)
@@ -200,7 +200,7 @@ class Validation
      */
     public function append(string $id, $callable, string $message = null): self
     {
-        if ($this->group == false) {
+        if (!$this->group) {
             throw new Exception(
                 (new Message('Unable to append validation task %s, the validation group has not been defined.'))
                     ->code('%s', $id)
@@ -213,8 +213,8 @@ class Validation
             function (string $string): bool {
                 return
                 strlen($string) > 0
-                && Utils\Str::startsWith(' ', $string) == false
-                && Utils\Str::endsWith(' ', $string) == false;
+                && !Utils\Str::startsWith(' ', $string)
+                && !Utils\Str::endsWith(' ', $string);
             },
             "String %s must contain at least one character and it should't contain neither leading or trailing whitespace characters."
         );
@@ -261,7 +261,7 @@ class Validation
             // Task results
             $result = new stdClass();
             $result->validates = $validate;
-            $result->message = $validate == false ? (string) (new Message($task->message))
+            $result->message = !$validate ? (string) (new Message($task->message))
                 ->code('%i', $k)
                 ->code('%t', gettype($task->value))
                 ->code('%v', $task->value)
@@ -270,7 +270,7 @@ class Validation
             $this->results[$k] = $result;
             array_push($this->{$validate ? 'valid' : 'invalid'}, $k);
             // Global result
-            if ($validate == false && $this->validates == true) {
+            if (!$validate && $this->validates === true) {
                 $this->validates = $validate;
             }
         }

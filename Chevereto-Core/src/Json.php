@@ -78,18 +78,18 @@ class Json implements Interfaces\PrintableInterface
         $output = [
             static::RESPONSE => $this->response,
         ];
-        if ($this->data) {
+        if (isset($this->data)) {
             $output[static::DATA] = $this->data;
         }
         $jsonEncode = json_encode($output, JSON_PRETTY_PRINT);
-        if ($jsonEncode == false) {
+        if (!$jsonEncode) {
             $code = 500;
             $output = [
                 static::RESPONSE => [static::CODE => $code, static::MESSAGE => "Data couldn't be encoded into json"],
             ];
             $jsonEncode = json_encode($output, JSON_PRETTY_PRINT);
         }
-        if (is_null($this->callback) == false) {
+        if (!is_null($this->callback)) {
             $this->printable = sprintf('%s(%s);', $this->callback, $jsonEncode);
         } else {
             $this->printable = $jsonEncode;

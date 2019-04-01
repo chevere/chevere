@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
+use Exception;
+
 class AppParameters extends Data
 {
     const CONFIG_FILES = 'configFiles';
@@ -27,7 +29,7 @@ class AppParameters extends Data
     public function __construct(array $parameters)
     {
         foreach ($parameters as $key => $v) {
-            if (false == in_array($key, static::KEYS)) {
+            if (!in_array($key, static::KEYS)) {
                 throw new CoreException(
                     (new Message('Unrecognized %c key "%s".'))
                         ->code('%c', __CLASS__)

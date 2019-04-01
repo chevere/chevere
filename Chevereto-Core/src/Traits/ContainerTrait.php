@@ -16,7 +16,7 @@ trait ContainerTrait
 {
     public function hasObject(string $key): bool
     {
-        if (false == property_exists($this, 'objects') || false == (in_array($key, $this->objects) || property_exists($this, $key))) {
+        if (!property_exists($this, 'objects') || !(in_array($key, $this->objects) || property_exists($this, $key))) {
             return false;
         }
 

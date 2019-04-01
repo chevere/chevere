@@ -122,7 +122,7 @@ class Runtime extends Data
         $tzg = @date_default_timezone_get();
         $tzs = @date_default_timezone_set($tzg);
         $utcId = DateTimeZone::listIdentifiers(DateTimeZone::UTC);
-        if (false == $tzs && false == @date_default_timezone_set($utcId[0])) { // No UTC? My gosh....
+        if (!$tzs && !@date_default_timezone_set($utcId[0])) { // No UTC? My gosh....
             trigger_error("Invalid timezone identifier '$tzg'. Configure your PHP installation with a valid timezone identifier http://php.net/manual/en/timezones.php", E_USER_ERROR);
         }
         $this->setDataKey(RuntimeConfig::TIMEZONE, $tzg);

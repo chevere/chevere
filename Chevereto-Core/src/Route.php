@@ -73,10 +73,10 @@ class Route
                             $string == '/' ?: (
                                 strlen($string) > 0
                                 && Utils\Str::startsWith('/', $string)
-                                && false == Utils\Str::endsWith('/', $string)
-                                && false == Utils\Str::contains('//', $string)
-                                && false == Utils\Str::contains(' ', $string)
-                                && false == Utils\Str::contains('\\', $string)
+                                && !Utils\Str::endsWith('/', $string)
+                                && !Utils\Str::contains('//', $string)
+                                && !Utils\Str::contains(' ', $string)
+                                && !Utils\Str::contains('\\', $string)
                             );
                     },
                     "String %i must start with a forward slash, it shouldn't contain neither whitespace, backslashes or extra forward slashes and it should be specified without a trailing slash."

@@ -119,7 +119,7 @@ class Hook
         $a = ${static::ANCHOR};
         $priority_exists = isset(static::$hooks[$f][$a][$pos][$priority]);
         static::$hooks[$f][$a][$pos][$priority][] = $hook;
-        if ($priority_exists == false) {
+        if (!$priority_exists) {
             ksort(static::$hooks[$f][$a][$pos]);
         }
     }
@@ -159,7 +159,7 @@ class Hook
      */
     public static function getAt(string $file, string $anchor, string $pos = null): array
     {
-        if (static::$hooks == null || isset(static::$hooks[$file]) == false) {
+        if (static::$hooks == null || !isset(static::$hooks[$file])) {
             return [];
         }
         $numArgs = func_num_args();
@@ -168,7 +168,7 @@ class Hook
                 return static::$hooks[$file][$anchor] ?? [];
             break;
             case 3:
-                if (in_array($pos, [static::BEFORE, static::AFTER]) == false) {
+                if (!in_array($pos, [static::BEFORE, static::AFTER])) {
                     throw new Exception(
                         (new Message('Invalid %s argument value, expecting %b, %a.'))
                             ->code('%s', '$pos')
@@ -252,7 +252,7 @@ class Hook
     public static function execAt(string $file, string $anchor, string $pos, object $that = null): void
     {
         $hooks = Hook::getAt($file, $anchor, $pos);
-        if ($hooks == false) {
+        if (!$hooks) {
             return;
         }
         foreach ($hooks as $priority => $entries) {

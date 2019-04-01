@@ -147,7 +147,7 @@ class Path
      */
     public static function isStream(string $path): bool
     {
-        if (Utils\Str::contains('://', $path) == false) {
+        if (!Utils\Str::contains('://', $path)) {
             return false;
         }
         $explode = explode('://', $path, 2);
@@ -204,7 +204,7 @@ class Path
     {
         try {
             Validation::single('$pathIdentifier', $pathIdentifier, function (string $string) {
-                return $string != '' && ctype_space($string) == false;
+                return $string != '' && !ctype_space($string);
             }, 'Handle value needed, empty or null string provided.');
         } catch (Exception $e) {
             throw new PathException($e);
@@ -214,7 +214,7 @@ class Path
         if ($rootContext == null) {
             $rootContext = ROOT_PATH.App\PATH;
         } else {
-            if (static::isAbsolute($rootContext) == false) {
+            if (!static::isAbsolute($rootContext)) {
                 throw new CoreException(
                     (new Message('String %a must be an absolute path, %v provided.'))
                         ->code('%a', '$rootContext')
@@ -256,7 +256,7 @@ class Path
             }
         }
         // $path is not an absolute path neither a wrapper or anything like that
-        if (static::isAbsolute($path) == false) {
+        if (!static::isAbsolute($path)) {
             $path = $rootContext.$path;
         }
         // Resolve . and ..
@@ -267,7 +267,7 @@ class Path
 
     public static function relativeFromHandle(string $handle, string $rootContext = null): ?string
     {
-        $path = static::fromHandle(...func_get_args());
+        $path = static::fromHandle(/* @scrutinizer ignore-type */...func_get_args());
 
         return static::relative($path, $rootContext);
     }

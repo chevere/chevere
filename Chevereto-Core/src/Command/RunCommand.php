@@ -49,13 +49,13 @@ class RunCommand extends Command
     {
         $cli = $this->getCli();
         $input = $cli->getInput();
-        $callableInput = $input->getArgument('callable');
+        $callableInput = (string) $input->getArgument('callable');
 
         if (is_callable($callableInput) || class_exists($callableInput)) {
             $callable = $callableInput;
         } else {
             $callable = Path::fromHandle($callableInput);
-            if (false == File::exists($callable)) {
+            if (!File::exists($callable)) {
                 $cli->getIo()->error(sprintf('Unable to locate callable %s', $callable));
 
                 return 0;
@@ -67,7 +67,11 @@ class RunCommand extends Command
             $return = $callable(...$input->getOption('argument'));
             $cli->getIo()->block(DumpPlain::out($return), 'RETURN', 'fg=black;bg=green', ' ', true);
         } else {
-            $app->setArguments($input->getOption('argument'));
+            if ($arguments = $input->getOption('argument')) {
+                if (is_array($arguments)) {
+                    $app->setArguments($arguments);
+                }
+            }
             $app->run($callable);
         }
 

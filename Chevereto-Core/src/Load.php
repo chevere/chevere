@@ -33,7 +33,7 @@ class Load
      */
     public static function php(string $filepath, array $vars = null, string $constructor = self::INCLUDE)
     {
-        if (false == Str::endsWith('.php', $filepath)) {
+        if (!Str::endsWith('.php', $filepath)) {
             $filepath = Path::fromHandle($filepath);
         }
         // Extract varName => varValue

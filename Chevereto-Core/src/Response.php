@@ -75,7 +75,7 @@ class Response extends HttpFoundationResponse
     {
         parent::__construct('', $status, $headers);
         if (null != $data) {
-            $this->setData($data);
+            // $this->setData($data);
         }
     }
 

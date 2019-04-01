@@ -331,7 +331,7 @@ class ErrorHandler
      */
     protected function setLogFilename(string $path = null): void
     {
-        if ($path == null) {
+        if ($path === null) {
             $path = static::PATH_LOGS;
         }
         $path = Path::normalize($path);
@@ -381,7 +381,7 @@ class ErrorHandler
      */
     protected function setBodyClass(): self
     {
-        $this->bodyClass = headers_sent() == false ? 'body--flex' : 'body--block';
+        $this->bodyClass = !headers_sent() ? 'body--flex' : 'body--block';
 
         return $this;
     }
@@ -455,15 +455,15 @@ class ErrorHandler
             'serverProtocol' => 'SERVER_PROTOCOL',
             'serverSoftware' => 'SERVER_SOFTWARE',
         ];
-        $app = App::instance();
+        // $app = App::instance();
 
-        if ($app->hasObject('request')) {
-            $request = $app->getRequest();
-            $this->clientRemoteAddress = $request->getClientIp();
-            foreach ($map as $k => $v) {
-                $this->{$k} = $request->server->get($v);
-            }
-        } else {
+        // if ($app->hasObject('request')) {
+        //     $request = $app->getRequest();
+        //     $this->clientRemoteAddress = $request->getClientIp();
+        //     foreach ($map as $k => $v) {
+        //         $this->{$k} = $request->server->get($v);
+        //     }
+        // } else {
             if (php_sapi_name() == 'cli') {
                 $this->clientRemoteAddress = $_SERVER['argv'][0];
                 $this->clientUserAgent = Console::inputString();
@@ -473,7 +473,7 @@ class ErrorHandler
                     $this->{$k} = $_SERVER[$v];
                 }
             }
-        }
+        // }
 
         return $this;
     }
@@ -505,7 +505,7 @@ class ErrorHandler
             break;
         }
         $json->setDataKey('log', $log);
-        $json->setResponse(...$response);
+        $json->setResponse(/** @scrutinizer ignore-type */...$response);
         $this->output = (string) $json; // printable json string
     }
 

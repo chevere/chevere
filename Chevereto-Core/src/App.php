@@ -50,13 +50,12 @@ class App extends Container
     protected $request;
     protected $response;
     protected $apis;
-    protected $routing;
     protected $route;
     protected $cache;
     protected $db;
     protected $handler;
 
-    protected $objects = ['runtime', 'config', 'logger', 'router', 'request', 'response', 'apis', 'routing', 'route', 'cache', 'db', 'handler'];
+    protected $objects = ['runtime', 'config', 'logger', 'router', 'request', 'response', 'apis', 'route', 'cache', 'db', 'handler'];
 
     public function __construct(AppParameters $parameters = null)
     {
@@ -65,16 +64,12 @@ class App extends Container
         if (static::hasStaticProp('defaultRuntime')) {
             $this->setRuntime(static::getDefaultRuntime());
         }
-        if (stream_resolve_include_path($this->getBuildFilePath()) == false) {
+        if (false === stream_resolve_include_path($this->getBuildFilePath())) {
             $this->checkout();
         }
         Load::php(static::FILEHANDLE_HACKS);
         if (null == $parameters) {
             $arrayFile = new ArrayFile(static::FILEHANDLE_PARAMETERS, 'array');
-            try {
-            } catch (Exception $e) {
-                throw new CoreException($e);
-            }
             $parameters = new AppParameters($arrayFile->toArray());
         }
         if ($configFiles = $parameters->getDataKey(AppParameters::CONFIG_FILES)) {
@@ -107,7 +102,7 @@ class App extends Container
          */
         if ($paramApis = $parameters->getDataKey(AppParameters::APIS)) {
             $apis = new Apis($this->getRouter());
-            if (false == $this->isCached) {
+            if (!$this->isCached) {
                 foreach ($paramApis as $apiKey => $apiPath) {
                     $apis->register($apiKey, $apiPath);
                 }
@@ -208,13 +203,6 @@ class App extends Container
         return $this->route;
     }
 
-    protected function setRouting(Routing $routing): self
-    {
-        $this->routing = $routing;
-
-        return $this;
-    }
-
     public function getRouter(): Router
     {
         return $this->router;
@@ -273,8 +261,8 @@ class App extends Container
     public function checkout(): void
     {
         $filename = $this->getBuildFilePath();
-        $fh = @fopen($filename, 'w');
-        if (!$fh) {
+        $fh = fopen($filename, 'w');
+        if (false === $fh) {
             throw new RuntimeException(
                 (string) (new Message('Unable to open %f for writing'))->code('%f', $filename)
             );
@@ -284,7 +272,7 @@ class App extends Container
                 (string) (new Message('Unable to write to %f'))->code('%f', $filename)
             );
         }
-        if (false == @fclose($fh)) {
+        if (false === @fclose($fh)) {
             throw new RuntimeException(
                 (string) (new Message('Unable to close %f'))->code('%f', $filename)
             );
@@ -298,8 +286,7 @@ class App extends Container
      */
     public function run(string $callable = null)
     {
-        // TODO: Run should detect if the app misses things needed for running.
-        if (null == $callable) {
+        if (null === $callable) {
             try {
                 $this->setRoute(
                     $this->getRouter()->resolve($this->getRequest()->getPathInfo())
@@ -310,8 +297,8 @@ class App extends Container
                 $this->setArguments(
                     $this->getRouter()->getArguments()
                 );
-            } catch (RouterException $e) {
-                die('APP RUN RESPONSE: '.$e->getCode());
+            } catch (Exception $e) {
+                echo 'APP RUN RESPONSE: '.$e->getCode();
             }
         }
         if (null != $callable) {
@@ -329,7 +316,7 @@ class App extends Container
      */
     public function getControllerObject(string $callable)
     {
-        $controller = $this->getCallable($callable);
+        $controller = $callable ?? $this->getCallable($callable);
         if ($controller instanceof Controller) {
             $controller->setApp($this);
         }
@@ -342,6 +329,7 @@ class App extends Container
         if (is_object($controller)) {
             $method = '__invoke';
         } else {
+            // FIXME: $this->getCallable ??
             if (Utils\Str::contains('::', $controller)) {
                 $controllerExplode = explode('::', $controller);
                 $controller = $controllerExplode[0];
@@ -360,7 +348,7 @@ class App extends Container
             $parameterType = $parameter->getType();
             $type = $parameterType != null ? $parameterType->getName() : null;
             $value = $this->arguments[$parameter->getName()] ?? $this->arguments[$parameterIndex] ?? null;
-            if ($type == null || in_array($type, Controller::TYPE_DECLARATIONS)) {
+            if ($type === null || in_array($type, Controller::TYPE_DECLARATIONS)) {
                 $controllerArguments[] = $value ?? ($parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);
             } else {
                 // Object typehint
@@ -368,7 +356,7 @@ class App extends Container
                     $controllerArguments[] = null;
                 } else {
                     $hasConstruct = method_exists($type, '__construct');
-                    if ($hasConstruct == false) {
+                    if (!$hasConstruct) {
                         throw new Exception(
                             (new Message("Class %s doesn't have a constructor. %n %o typehinted in %f invoke function."))
                                 ->code('%s', $type)
@@ -391,12 +379,13 @@ class App extends Container
     /**
      * Farewell kids, my planet needs me.
      */
+    // TODO: Stuff
     public function terminate(string $message = null)
     {
         if ($message) {
             Console::log($message);
         }
-        exit();
+        // exit();
     }
 
     // FIXME: Must be protected
@@ -417,7 +406,6 @@ class App extends Container
      */
     public function setArguments(array $arguments = [])
     {
-        dd($arguments);
         $this->arguments = $arguments;
     }
 
@@ -457,7 +445,7 @@ class App extends Container
         $this->request = $request;
         $pathinfo = ltrim($this->request->getPathInfo(), '/');
         $this->request->attributes->set('requestArray', explode('/', $pathinfo));
-        $host = $_SERVER['HTTP_HOST'] ?? null;
+        // $host = $_SERVER['HTTP_HOST'] ?? null;
         // $this->define('HTTP_HOST', $host);
         // $this->define('URL', App\HTTP_SCHEME . '://' . $host . ROOT_PATH_RELATIVE);
         return $this;

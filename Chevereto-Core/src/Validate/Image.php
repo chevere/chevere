@@ -40,7 +40,7 @@ class Image
                 break;
             }
         }
-        if (false == @fclose($fh)) {
+        if (!@fclose($fh)) {
             throw new RuntimeException(
                 (string) (new Message('Unable to close %f.'))->code('%f', $filename)
             );

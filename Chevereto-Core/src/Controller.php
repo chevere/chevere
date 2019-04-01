@@ -99,7 +99,7 @@ class Controller extends Container
         }
         if (class_exists($controller)) {
             // $r = new ReflectionClass($controller);
-            // if ($r->hasMethod('__invoke') == false) {
+            // if (!$r->hasMethod('__invoke')) {
             //     throw new ControllerException(
             //         (new Message("Missing %s method in class %c"))
             //         ->code('%s', '__invoke')
@@ -110,11 +110,11 @@ class Controller extends Container
         } else {
             $controllerArgs = [$controller];
             if (Utils\Str::startsWith('@', $controller)) {
-                $context = dirname(debug_backtrace(false, 1)[0]['file']);
+                $context = dirname(debug_backtrace(0, 1)[0]['file']);
                 $controllerArgs = [substr($controller, 1), $context];
             }
-            $filename = Path::fromHandle(...$controllerArgs);
-            if (File::exists($filename) == false) {
+            $filename = Path::fromHandle(/* @scrutinizer ignore-type */...$controllerArgs);
+            if (!File::exists($filename)) {
                 throw new Exception(
                     (new Message("Unable to invoke controller %s (filename doesn't exists)."))
                     ->code('%s', $filename)
@@ -122,7 +122,7 @@ class Controller extends Container
             }
             $that = Load::php($filename);
         }
-        if (is_callable($that) == false) {
+        if (!is_callable($that)) {
             throw new Exception(
                 (new Message('Expected %s callable, %t provided.'))
                     ->code('%s', '$controller')

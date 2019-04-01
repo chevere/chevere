@@ -49,7 +49,7 @@ class Dumper
         $maker = (isset($caller['class']) ? $caller['class'].$caller['type'] : null).$caller['function'].'()';
         $dump = null;
         if (php_sapi_name() == 'cli') {
-            $consoleColor = new ConsoleColor();
+            // $consoleColor = new ConsoleColor();
             $output = new ConsoleOutput();
             $outputFormatter = new OutputFormatter(true);
             $output->setFormatter($outputFormatter);
@@ -63,7 +63,7 @@ class Dumper
             // $output->writeln([$outputHr, $formattedBlock, $outputHr]);
             $output->writeln(['', '<dumper>'.$maker.'</>', $outputHr]);
         } else {
-            if (headers_sent() == false) {
+            if (!headers_sent()) {
                 $dump .= '<html style="background: '.static::BACKGROUND_SHADE.';"><head></head><body>';
             }
             $dump .= '<pre style="'.static::STYLE.'">';
@@ -106,6 +106,6 @@ class Dumper
     public static function dd(...$vars)
     {
         Dumper::dump(...$vars);
-        die(1);
+        die();
     }
 }

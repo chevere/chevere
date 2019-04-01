@@ -71,24 +71,21 @@ class File
      */
     public static function mimetype(string $filename): ?string
     {
-        switch (true) {
-            case defined('FILEINFO_MIME_TYPE') && function_exists('finfo_open'):
-                return finfo_file(finfo_open(FILEINFO_MIME_TYPE), $filename);
-            break;
-            case function_exists('mime_content_type'):
-                return (string) mime_content_type($filename);
-            break;
-            //   IMAGE ONLY!
-            //   case function_exists('getimagesize'):
-            //       return getimagesize($filename)['mime'];
-            //   break;
-            //   case function_exists('exif_imagetype'):
-            //       return exif_imagetype($filename); // try
-            //   break;
-            default:
-                return null;
-            break;
+        if (defined('FILEINFO_MIME_TYPE') && function_exists('finfo_open')) {
+            return finfo_file(finfo_open(FILEINFO_MIME_TYPE), $filename);
         }
+        if (function_exists('mime_content_type')) {
+            return (string) mime_content_type($filename);
+        }
+
+        return null;
+        //   IMAGE ONLY!
+        //   case function_exists('getimagesize'):
+        //       return getimagesize($filename)['mime'];
+        //   break;
+        //   case function_exists('exif_imagetype'):
+        //       return exif_imagetype($filename); // try
+        //   break;
     }
 
     /**
@@ -249,7 +246,7 @@ class File
         }
         // Only tweak relative paths, without wrappers or anything else
         // Note that stream_resolve_include_path won't work with relative paths if no chdir().
-        if (Path::isAbsolute($filename) == false) {
+        if (!Path::isAbsolute($filename)) {
             $filename = Path::absolute($filename);
         }
 
@@ -265,7 +262,7 @@ class File
      */
     public static function removeAll(string $path): void
     {
-        if (is_dir($path) == false) {
+        if (!is_dir($path)) {
             throw new Exception(
                 (new Message('String %s is not recognized as a directory'))->code('%s', $path)
             );
@@ -307,7 +304,8 @@ class File
      */
     public static function info(string $filename): array
     {
-        if (($filesize = filesize($filename)) == false) {
+        $filesize = filesize($filename);
+        if (!$filesize) {
             return [];
         }
         $mime = static::mimetype($filename);

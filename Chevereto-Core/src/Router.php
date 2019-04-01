@@ -192,5 +192,3 @@ class Router
         return null;
     }
 }
-
-// Route::get('id@<fileHandle>');

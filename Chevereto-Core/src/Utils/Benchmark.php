@@ -144,8 +144,8 @@ class Benchmark
             $runs = 0;
             $timeInit = microtime(true);
             for ($i = 0; $i < $this->times; ++$i) {
-                $isPHPAborted = $this->canPHPKeepGoing() == false;
-                $isSelfAborted = $this->canSelfKeepGoing() == false;
+                $isPHPAborted = !$this->canPHPKeepGoing();
+                $isSelfAborted = !$this->canSelfKeepGoing();
                 if ($isPHPAborted || $isSelfAborted) {
                     $isAborted = true;
                     break;
@@ -172,7 +172,7 @@ class Benchmark
             // Add the extra % taken... wow, such insight
             foreach ($this->index as $k => $v) {
                 $timeTaken = $results[$k]['time'];
-                if (isset($fastestTime) == false) {
+                if (!isset($fastestTime)) {
                     $fastestTime = $timeTaken;
                 } else {
                     $results[$k]['adds'] = round(100 * (($timeTaken - $fastestTime) / $fastestTime)).'%';

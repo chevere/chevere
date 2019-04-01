@@ -1,5 +1,6 @@
 <?php
 
+// FIXME: ** getControllerObject
 declare(strict_types=1);
 /*
  * This file is part of Chevereto\Core.
@@ -38,11 +39,13 @@ class ApiHead extends Controller
                     ->code('%s', 'callable');
             if (CLI) {
                 Console::io()->error($message);
-                exit;
+
+                return;
             } else {
                 throw new CoreException($message);
             }
         }
+
         $response = $this->getApp()->getControllerObject($callable);
         $response->setData(null);
     }
