@@ -356,9 +356,9 @@ class Apis
      */
     protected static function getInvokeHintError(string $filename, string $class = null, ReflectionMethod $invoke, ReflectionParameter $param)
     {
-        if ($class == false || class_exists($class) == false) {
+        if (null === $class || !class_exists($class)) {
             $error = 'Class <code>%c</code> doesn\'t exist or it hasn\'t being loaded, the system is unable to resolve implicit <code>%v</code> binding in <code>%f:%l:%n</code>';
-        } elseif (method_exists($class, '__construct') == false) {
+        } elseif (!method_exists($class, '__construct')) {
             $error = 'Unable to typehint object <code>%c</code> (no constructor defined)';
         }
 
