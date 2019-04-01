@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class App extends Container
 {
-    use Traits\CallableTrait;
+    use Traits\CallableTrait; // TODO: Implement interfaces
 
     const NAMESPACES = ['App', __NAMESPACE__];
     const APP = 'app';
@@ -267,12 +267,12 @@ class App extends Container
                 (string) (new Message('Unable to open %f for writing'))->code('%f', $filename)
             );
         }
-        if (@fwrite($fh, (string) time()) == false) {
+        if (!@fwrite($fh, (string) time())) {
             throw new RuntimeException(
                 (string) (new Message('Unable to write to %f'))->code('%f', $filename)
             );
         }
-        if (false === @fclose($fh)) {
+        if (!@fclose($fh)) {
             throw new RuntimeException(
                 (string) (new Message('Unable to close %f'))->code('%f', $filename)
             );
@@ -316,7 +316,7 @@ class App extends Container
      */
     public function getControllerObject(string $callable)
     {
-        $controller = $callable ?? $this->getCallable($callable);
+        $controller = $this->getCallable($callable);
         if ($controller instanceof Controller) {
             $controller->setApp($this);
         }

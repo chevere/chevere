@@ -98,7 +98,7 @@ class Dump
             $expression = $anything;
         }
 
-        if ($indent == null) {
+        if ($indent === null) {
             $indent = 0;
         }
         $val = null;

@@ -267,7 +267,7 @@ class Path
 
     public static function relativeFromHandle(string $handle, string $rootContext = null): ?string
     {
-        $path = static::fromHandle(/* @scrutinizer ignore-type */...func_get_args());
+        $path = static::fromHandle(...func_get_args());
 
         return static::relative($path, $rootContext);
     }

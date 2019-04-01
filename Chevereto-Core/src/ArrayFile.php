@@ -92,7 +92,7 @@ class ArrayFile
                         ->code('%s', $typeSome)
                 );
             }
-            $this->validate(/* @scrutinizer ignore-type */ $arrayFile);
+            $this->validate($arrayFile);
         }
         $this->array = $arrayFile;
     }

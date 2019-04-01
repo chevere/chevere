@@ -105,7 +105,7 @@ class ResponseData implements DataInterface
     // }
     public function removeDataKey(string $key)
     {
-        $this->getData()->addData(/* @scrutinizer ignore-type */ ...func_get_args());
+        $this->getData()->addData(...func_get_args());
 
         return $this;
     }

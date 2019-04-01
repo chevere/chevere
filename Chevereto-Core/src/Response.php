@@ -258,7 +258,7 @@ class Response extends HttpFoundationResponse
         return $this->setContent($this->jsonString);
     }
 
-    public function sendJson(): self
+    public function sendJson(): HttpFoundationResponse
     {
         $this->genJsonString()->setJsonContent();
 

@@ -138,69 +138,69 @@ class File
      *
      * @return string sanitized file name
      */
-    public static function safeName(string $filename, array $options = []): string
-    {
-        //FIXME: Rebuilt
-        // if ($options != null) {
-        //     $validation = [
-        //         static::METHOD => [
-        //             function ($v) {
-        //                 return (is_callable($v) || in_array($v, static::NAMING_OPTIONS));
-        //             },
-        //             "Invalid naming method %s, try with <code>" . implode('</code>, <code>', static::NAMING_OPTIONS) . "</code>"
-        //         ],
-        //         static::MAX_LENGTH => [
-        //             'is_int',
-        //             'Expecting integer value, <code>%t</code> provided'
-        //         ]
-        //     ];
-        //     $validation[static::RANDOM_LENGTH] = $validation[static::MAX_LENGTH];
-        //     $validation[static::RANDOM_FILL_LENGTH] = $validation[static::MAX_LENGTH];
-        //     try {
-        //         $Validation = new Validation();
-        //         foreach ($options as $k => $v) {
-        //             $Validation->add($k, $validation[$k][0], $validation[$k][1])->value($v);
-        //         }
-        //         $Validation->validate();
-        //     } catch (Exception $e) {
-        //         throw new ValidationException($e);
-        //     }
-        // }
-        // $options = array_merge(static::NAME_DEFAULT_OPTIONS, $options);
-        // $fileExtension = static::extension($filename);
-        // $clean = substr($filename, 0, -(strlen($fileExtension) + 1));
-        // $clean = Utils\Str::unaccent($clean); // change áéíóú to aeiou
-        // $clean = preg_replace('/[^\.\w\d-]/i', '', $clean); // remove any non alphanumeric, non underscore, non hyphen and non period
-        // // Non alphanumeric name uh..
-        // if (strlen($clean) == 0) {
-        //     $clean = Utils\Random::string($options[static::RANDOM_LENGTH] * .5);
-        // }
-        // // $unlimitedFilename = $clean; // No max_length limit
-        // $clean = substr($clean, 0, $options[static::MAX_LENGTH]);
+    // public static function safeName(string $filename, array $options = []): string
+    // {
+    //FIXME: Rebuilt
+    // if ($options != null) {
+    //     $validation = [
+    //         static::METHOD => [
+    //             function ($v) {
+    //                 return (is_callable($v) || in_array($v, static::NAMING_OPTIONS));
+    //             },
+    //             "Invalid naming method %s, try with <code>" . implode('</code>, <code>', static::NAMING_OPTIONS) . "</code>"
+    //         ],
+    //         static::MAX_LENGTH => [
+    //             'is_int',
+    //             'Expecting integer value, <code>%t</code> provided'
+    //         ]
+    //     ];
+    //     $validation[static::RANDOM_LENGTH] = $validation[static::MAX_LENGTH];
+    //     $validation[static::RANDOM_FILL_LENGTH] = $validation[static::MAX_LENGTH];
+    //     try {
+    //         $Validation = new Validation();
+    //         foreach ($options as $k => $v) {
+    //             $Validation->add($k, $validation[$k][0], $validation[$k][1])->value($v);
+    //         }
+    //         $Validation->validate();
+    //     } catch (Exception $e) {
+    //         throw new ValidationException($e);
+    //     }
+    // }
+    // $options = array_merge(static::NAME_DEFAULT_OPTIONS, $options);
+    // $fileExtension = static::extension($filename);
+    // $clean = substr($filename, 0, -(strlen($fileExtension) + 1));
+    // $clean = Utils\Str::unaccent($clean); // change áéíóú to aeiou
+    // $clean = preg_replace('/[^\.\w\d-]/i', '', $clean); // remove any non alphanumeric, non underscore, non hyphen and non period
+    // // Non alphanumeric name uh..
+    // if (strlen($clean) == 0) {
+    //     $clean = Utils\Random::string($options[static::RANDOM_LENGTH] * .5);
+    // }
+    // // $unlimitedFilename = $clean; // No max_length limit
+    // $clean = substr($clean, 0, $options[static::MAX_LENGTH]);
 
-        // if (is_callable($options[static::METHOD])) {
-        //     $name = $options[static::METHOD]($filename, $clean, $fileExtension, $options);
-        // } else {
-        //     switch ($options[static::METHOD]) {
-        //         default:
-        //         case static::NAME_ORIGINAL:
-        //             $name = $clean;
-        //         break;
-        //         case static::NAME_RANDOM:
-        //             $name = Utils\Random::string($options[static::RANDOM_LENGTH]);
-        //         break;
-        //         case static::NAME_MIXED:
-        //             if (strlen($clean) >= $options[static::MAX_LENGTH]) {
-        //                 $name = substr($clean, 0, $options[static::MAX_LENGTH] - 5);
-        //             } else {
-        //                 $name = $clean;
-        //             }
-        //             $name .= Utils\Random::string($options[static::RANDOM_FILL_LENGTH]);
-        //         break;
-        //     }
-        // }
-        // return $name . '.' . $fileExtension;
-    }
+    // if (is_callable($options[static::METHOD])) {
+    //     $name = $options[static::METHOD]($filename, $clean, $fileExtension, $options);
+    // } else {
+    //     switch ($options[static::METHOD]) {
+    //         default:
+    //         case static::NAME_ORIGINAL:
+    //             $name = $clean;
+    //         break;
+    //         case static::NAME_RANDOM:
+    //             $name = Utils\Random::string($options[static::RANDOM_LENGTH]);
+    //         break;
+    //         case static::NAME_MIXED:
+    //             if (strlen($clean) >= $options[static::MAX_LENGTH]) {
+    //                 $name = substr($clean, 0, $options[static::MAX_LENGTH] - 5);
+    //             } else {
+    //                 $name = $clean;
+    //             }
+    //             $name .= Utils\Random::string($options[static::RANDOM_FILL_LENGTH]);
+    //         break;
+    //     }
+    // }
+    // return $name . '.' . $fileExtension;
+    // }
 
     /**
      * Gets an unique and available file name in the given file path.

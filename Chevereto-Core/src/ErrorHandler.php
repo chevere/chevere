@@ -505,7 +505,7 @@ class ErrorHandler
             break;
         }
         $json->setDataKey('log', $log);
-        $json->setResponse(/** @scrutinizer ignore-type */...$response);
+        $json->setResponse(...$response);
         $this->output = (string) $json; // printable json string
     }
 

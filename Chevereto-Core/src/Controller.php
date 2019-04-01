@@ -113,7 +113,7 @@ class Controller extends Container
                 $context = dirname(debug_backtrace(0, 1)[0]['file']);
                 $controllerArgs = [substr($controller, 1), $context];
             }
-            $filename = Path::fromHandle(/* @scrutinizer ignore-type */...$controllerArgs);
+            $filename = Path::fromHandle(...$controllerArgs);
             if (!File::exists($filename)) {
                 throw new Exception(
                     (new Message("Unable to invoke controller %s (filename doesn't exists)."))

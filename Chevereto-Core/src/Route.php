@@ -187,13 +187,6 @@ class Route
                     (string) (new Message("Expecting at least one alphanumeric, underscore, hypen or dot character. String '%s' provided."))
                         ->code('%p', Route::REGEX_NAME)
                 )
-                // ->append(
-                //     'unique',
-                //     function (string $string): bool {
-                //         return isset(Routes::instance()->getNamed()[$string]) == false;
-                //     },
-                //     'Route name %s has been already taken.'
-                // )
                 ->validate();
         } catch (Exception $e) {
             throw new RouteException($e);
@@ -212,7 +205,7 @@ class Route
     public function method(string $httpMethod, string $callable): self
     {
         // Validate HTTP method
-        if (in_array($httpMethod, static::HTTP_METHODS) == false) {
+        if (!in_array($httpMethod, static::HTTP_METHODS)) {
             throw new RouteException(
                 (new Message('Unknown HTTP method %s.'))->code('%s', $httpMethod)
             );
@@ -261,7 +254,7 @@ class Route
                     'value',
                     function (string $string): bool {
                         return
-                            Utils\Str::startsWithNumeric($string) == false
+                            !Utils\Str::startsWithNumeric($string)
                             && preg_match('/^[a-z0-9_]+$/i', $string);
                     },
                     "String %s must contain only alphanumeric and underscore characters and it shouldn't start with a numeric value."
@@ -280,7 +273,7 @@ class Route
                 ->append(
                     'unique',
                     function (string $string): bool {
-                        return isset($this->wheres[$string]) == false;
+                        return !isset($this->wheres[$string]);
                     },
                     (string) (new Message('Where clause for %s wildcard has been already declared.'))
                         ->code('%s', $wildcard)
@@ -342,7 +335,7 @@ class Route
     public function fill(): self
     {
         foreach ($this->getWildcards() as $k => $v) {
-            if (isset($this->wheres[$v]) == false) {
+            if (!isset($this->wheres[$v])) {
                 $this->wheres[$v] = static::REGEX_WILDCARD_WHERE;
             }
         }
@@ -365,7 +358,7 @@ class Route
             );
         }
         $regex = '^'.$regex.'$';
-        if (Utils\Str::contains('{', $regex) == false) {
+        if (!Utils\Str::contains('{', $regex)) {
             return $regex;
         }
         foreach ($this->getWildcards() as $k => $v) {

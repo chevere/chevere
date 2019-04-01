@@ -40,6 +40,7 @@ class Session
         if (isset($errorMessage)) {
             throw new Exception($errorMessage);
         }
+        $opts = [];
         $opts['gc_probability'] = 1;
         $path = $options['save_path'] ?? session_save_path(); // session_save_path returns null for /tmp (sys aware)
         if ($path != null) {

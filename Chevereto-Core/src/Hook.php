@@ -252,7 +252,7 @@ class Hook
     public static function execAt(string $file, string $anchor, string $pos, object $that = null): void
     {
         $hooks = Hook::getAt($file, $anchor, $pos);
-        if (!$hooks) {
+        if (!isset($hooks)) {
             return;
         }
         foreach ($hooks as $priority => $entries) {
