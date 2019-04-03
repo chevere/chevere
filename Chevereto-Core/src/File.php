@@ -317,7 +317,7 @@ class File
         $info = [
             'basename' => $basename,
             'name' => $name,
-            'extension' => File::extensionFromMime($mime),
+            'extension' => isset($mime) ? File::extensionFromMime($mime) : null,
             'size' => intval($filesize),
             'size_format' => Utils\Bytes::format((string) $filesize),
             'mime' => $mime,

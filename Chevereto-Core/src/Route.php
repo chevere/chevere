@@ -310,22 +310,20 @@ class Route
     }
 
     /**
-     * Get a defined callable (callable string, callable absolute).
+     * Get a defined route callable.
      *
      * @param string $httpMethod an HTTP method
      */
     public function getCallable(string $httpMethod): string
     {
         $callable = $this->methods[$httpMethod] ?? null;
-        if ($callable == null) {
+        if (null === $callable) {
             throw new RouteException(
                 (new Message('No controller is associated to HTTP method %s.'))
                     ->code('%s', $httpMethod)
             );
         }
-        // if (Utils\Str::endsWith('.php', $callable)) {
-        //     $callable = Path::absolute($callable);
-        // }
+
         return $callable;
     }
 

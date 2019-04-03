@@ -291,6 +291,7 @@ class Validation
     /**
      * Provides read-only access to all object properties.
      */
+    // FIXME: I don't like this.
     public function __call($name, $args)
     {
         if (property_exists($this, $name)) {

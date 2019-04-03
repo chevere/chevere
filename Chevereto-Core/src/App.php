@@ -15,6 +15,7 @@ namespace Chevereto\Core;
 
 use RuntimeException;
 use Exception;
+use LogicException;
 use ReflectionMethod;
 use ReflectionFunction;
 use Monolog\Logger;
@@ -290,7 +291,7 @@ class App extends Container
         if (!isset($callable)) {
             try {
                 $route = $this->getRouter()->resolve($this->getHttpRequest()->getPathInfo());
-                if ($route instanceof Route) {
+                if (!empty($route)) {
                     $this->setRoute($route);
                     // Resolved callable
                     $callable = $route->getCallable(
@@ -300,10 +301,10 @@ class App extends Container
                         $this->getRouter()->getArguments()
                     );
                 } else {
-                    die('404 - Not found');
+                    echo '404 - Not found';
                 }
             } catch (Exception $e) {
-                die('Exception at App: '.$e->getCode());
+                echo 'Exception at App: '.$e->getCode();
             }
         }
         $controller = $this->getControllerObject($callable);
@@ -324,7 +325,6 @@ class App extends Container
             $controller->setApp($this);
         }
         // HTTP request middleware
-        // TODO: Re-Check
         if ($this->route instanceof Route) {
             $middlewares = $this->route->getMiddlewares();
             if (!empty($middlewares)) {

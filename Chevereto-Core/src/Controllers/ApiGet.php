@@ -35,17 +35,18 @@ class ApiGet extends Controller
         $route = $this->getApp()->getObject('route');
         if ($route) {
             $endpoint = $route->getKey();
-        }
-        if (null == $endpoint) {
-            $message =
-                (new Message('Must provide a %s argument when running this callable without route context.'))
-                    ->code('%s', '(string) $endpoint');
-            if (CLI) {
-                Console::io()->error($message);
+        } else {
+            if (!isset($endpoint)) {
+                $message =
+                    (new Message('Must provide a %s argument when running this callable without route context.'))
+                        ->code('%s', '(string) $endpoint');
+                if (CLI) {
+                    Console::io()->error($message);
 
-                return;
-            } else {
-                throw new CoreException($message);
+                    return;
+                } else {
+                    throw new CoreException($message);
+                }
             }
         }
         $response = $this->getResponse();

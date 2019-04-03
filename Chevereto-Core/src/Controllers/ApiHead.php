@@ -27,25 +27,37 @@ class ApiHead extends Controller
         'description' => 'GET without message-body.',
     ];
 
-    public function __invoke()
+    public function __invoke(string $endpoint = null)
     {
-        $route = $this->getApp()->getRoute();
-        $callable = $route->getCallable('GET');
-
-        if ($callable == null) {
-            $message =
-                (new Message('You have to provide the %s argument when running this callable without route context.'))
-                    ->code('%s', 'callable');
-            if (CLI) {
-                Console::io()->error($message);
-
-                return;
-            } else {
-                throw new CoreException($message);
-            }
+        if (isset($endpoint)) {
+            $route = $this->getApp()->getRouter()->resolve($endpoint);
+        } else {
+            $route = $this->getApp()->getObject('route');
+            $endpoint = $route->getKey();
         }
 
-        $response = $this->getApp()->getControllerObject($callable);
-        $response->setData(null);
+        if (null === $route) {
+            return;
+        }
+
+        $callable = $route->getCallable('GET');
+
+        // if (isset($route)) {
+        // } else {
+        //     $message = (new Message('You have to provide the %s argument when running this callable without route context.'))
+        //         ->code('%s', '(string) $endpoint');
+
+        //     if (CLI) {
+        //         Console::io()->error($message);
+
+        //         return;
+        //     } else {
+        //         throw new CoreException($message);
+        //     }
+        // }
+
+        $controller = $this->getApp()->getControllerObject($callable);
+        $controller->getResponse()->setNoBody();
+        dd($controller->getResponse());
     }
 }

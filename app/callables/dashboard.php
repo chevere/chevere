@@ -4,16 +4,23 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
-return new class() extends Controller {
-    public function __invoke($algo = null, $sub = null): array
-    {
-        return [
-            'algo' => $algo,
-            'sub' => $sub,
-            //   'this' => $this
-        ];
-    }
+return function ($algo = null, $sub = null) {
+    return [
+        'algo' => $algo,
+        'sub' => $sub,
+    ];
 };
+
+// return new class() extends Controller {
+//     public function __invoke($algo = null, $sub = null): array
+//     {
+//         return [
+//             'algo' => $algo,
+//             'sub' => $sub,
+//             //   'this' => $this
+//         ];
+//     }
+// };
 
 /*
  * Cuando se usa un lambda, no hay acceso a $this

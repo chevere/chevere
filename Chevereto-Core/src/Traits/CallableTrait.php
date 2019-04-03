@@ -23,7 +23,7 @@ trait CallableTrait
     /**
      * @param $callableString callable string (function, method)
      *
-     * @return callable a callable, srlsy
+     * @return callable a callable (closure, object, string)
      */
     public function getCallable(string $callableString): callable
     {
@@ -45,7 +45,7 @@ trait CallableTrait
             );
         }
 
-        // @var callable
+        // @var invokable object|closure|string
         return $callable;
     }
 

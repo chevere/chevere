@@ -32,6 +32,9 @@ class Response extends HttpResponse
     // https://jsonapi.org/format/1.0/
     const JSON_API_VERSION = '1.0';
 
+    /** @var bool */
+    protected $hasBody = true;
+
     protected $jsonString;
     protected $callback;
 
@@ -260,8 +263,20 @@ class Response extends HttpResponse
 
     public function sendJson(): HttpResponse
     {
-        $this->genJsonString()->setJsonContent();
+        if ($this->hasBody) {
+            $this->genJsonString()->setJsonContent();
+        }
 
         return parent::send();
+    }
+
+    /**
+     * Completely removes the response body. Needed when dealing with HEAD responses.
+     */
+    public function setNoBody(): self
+    {
+        $this->hasBody = false;
+
+        return $this;
     }
 }
