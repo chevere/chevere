@@ -43,7 +43,7 @@ class Session
         $opts = [];
         $opts['gc_probability'] = 1;
         $path = $options['save_path'] ?? session_save_path(); // session_save_path returns null for /tmp (sys aware)
-        if ($path != null) {
+        if (isset($path)) {
             static::checkPath($path);
             $opts['save_path'] = $path;
         }

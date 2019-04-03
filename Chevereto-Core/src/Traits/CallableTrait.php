@@ -54,7 +54,7 @@ trait CallableTrait
         } else {
             if (class_exists($callableString)) {
                 if (method_exists($callableString, '__invoke')) {
-                    return $callableString;
+                    return (string) $callableString;
                 } else {
                     throw new CoreException(
                         (new Message('Missing %s method in class %c'))

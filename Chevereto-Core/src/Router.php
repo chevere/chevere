@@ -125,7 +125,7 @@ class Router
             $regex = $route->regex();
         }
         // Determine grouping type (static, mixed, dynamic)
-        if (null == $route->getSet()) {
+        if (null === $route->getSet()) {
             $type = Route::TYPE_STATIC;
         } else {
             if (null != $routeSetHandle) {

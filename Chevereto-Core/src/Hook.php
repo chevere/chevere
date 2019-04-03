@@ -180,6 +180,8 @@ class Hook
                 return static::$hooks[$file][$anchor][$pos] ?? [];
             break;
         }
+
+        return [];
     }
 
     /**

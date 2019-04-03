@@ -28,7 +28,6 @@ use Exception;
  */
 class SignedCache
 {
-    const DIR = App\PATH_CACHE;
     const HASH_FUNCTION = 'md5';
 
     protected $mode;
@@ -210,8 +209,9 @@ class SignedCache
             }
             $signerFilemtime .= filemtime($file);
         }
-        $app = App::instance();
-        $appHash = $app->getHash();
+        // $app = App::instance();
+        // $appHash = $app->getHash();
+        $appHash = 'duh';
 
         return $this->hash($signerFilemtime.$this->signature.$appHash);
     }

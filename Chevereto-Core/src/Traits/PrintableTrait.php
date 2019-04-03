@@ -50,4 +50,6 @@ trait PrintableTrait
         }
         echo (string) $this; // invokes __toString, such trucazo.
     }
+
+    abstract public function exec(): void;
 }

@@ -23,6 +23,7 @@ namespace Chevereto\Core;
  */
 /**
  * @method string code(string $search, string $replace)
+ * @method string b(string $search, string $replace)
  */
 class Message
 {

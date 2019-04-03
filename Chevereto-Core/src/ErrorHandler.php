@@ -28,8 +28,8 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Handler\FirePHPHandler;
 use Psr\Log\LogLevel;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
+use Symfony\Component\HttpFoundation\JsonResponse as HttpJsonResponse;
 
 /**
  * Super flat and minimal error handler utility.
@@ -854,9 +854,9 @@ class ErrorHandler
     protected function out(): void
     {
         if ($this->isXmlHttpRequest) {
-            $response = new JsonResponse();
+            $response = new HttpJsonResponse();
         } else {
-            $response = new Response();
+            $response = new HttpResponse();
         }
         $response->setContent($this->output);
         $response->setLastModified(new Utils\DateTime());

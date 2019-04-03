@@ -103,7 +103,7 @@ class Benchmark
      */
     public function add($callable, string $name = null): self
     {
-        if ($name == null) {
+        if (!isset($name)) {
             if ($this->unnammedCnt == null) {
                 $this->unnammedCnt = '1';
             }

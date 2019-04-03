@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Chevereto\Core;
 
 use Chevereto\Core\Traits\DataTrait;
-use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Exception;
 use InvalidArgumentException;
 
@@ -23,7 +23,7 @@ use InvalidArgumentException;
  * Forked version of Symfony\Component\HttpFoundation\JsonResponse (Igor Wiedler <igor@wiedler.ch>)
  * (c) Fabien Potencier <fabien@symfony.com>
  */
-class Response extends HttpFoundationResponse
+class Response extends HttpResponse
 {
     // use DataTrait;
 
@@ -258,7 +258,7 @@ class Response extends HttpFoundationResponse
         return $this->setContent($this->jsonString);
     }
 
-    public function sendJson(): HttpFoundationResponse
+    public function sendJson(): HttpResponse
     {
         $this->genJsonString()->setJsonContent();
 

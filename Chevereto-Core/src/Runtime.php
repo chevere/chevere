@@ -73,7 +73,7 @@ class Runtime extends Data
         // $types = $errorTypes ?? E_ALL ^ E_NOTICE;
         set_error_handler($errorHandler);
         $this->setDataKey(RuntimeConfig::ERROR_HANDLER, $errorHandler);
-        // $this->setDataKey(RuntimeConfig::ERROR_REPORTING_LEVEL, $types);
+        $this->setDataKey(RuntimeConfig::ERROR_REPORTING_LEVEL, error_reporting());
 
         return $this;
     }

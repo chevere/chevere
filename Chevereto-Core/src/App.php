@@ -18,9 +18,7 @@ use Exception;
 use ReflectionMethod;
 use ReflectionFunction;
 use Monolog\Logger;
-use Symfony\Component\HttpFoundation\Request;
-
-// use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request as HttpRequest;
 
 class App extends Container
 {
@@ -121,7 +119,7 @@ class App extends Container
         if (Console::bind($this)) {
             Console::run(); // Note: Console::run() always exit.
         } else {
-            $this->setRequest(Request::createFromGlobals());
+            $this->setHttpRequest(HttpRequest::createFromGlobals());
         }
     }
 
@@ -208,7 +206,7 @@ class App extends Container
         return $this->router;
     }
 
-    public function getRequest(): Request
+    public function getHttpRequest(): HttpRequest
     {
         return $this->request;
     }
@@ -282,32 +280,35 @@ class App extends Container
     /**
      * Run the callable and dispatch the handler.
      *
-     * @param string $callable controller (path or class name)
+     * @param string $callable controller, needed when doing console command or testing
      */
     public function run(string $callable = null)
     {
-        if (null === $callable) {
+        // No callable: Resolve HttpRequest then
+        if (!isset($callable)) {
             try {
-                $this->setRoute(
-                    $this->getRouter()->resolve($this->getRequest()->getPathInfo())
-                );
-                $callable = $this->getRoute()->getCallable(
-                    $this->getRequest()->getMethod()
-                );
-                $this->setArguments(
-                    $this->getRouter()->getArguments()
-                );
+                $route = $this->getRouter()->resolve($this->getHttpRequest()->getPathInfo());
+                if ($route instanceof Route) {
+                    $this->setRoute($route);
+                    // Resolved callable
+                    $callable = $route->getCallable(
+                        $this->getHttpRequest()->getMethod()
+                    );
+                    $this->setArguments(
+                        $this->getRouter()->getArguments()
+                    );
+                } else {
+                    die('404 - Not found');
+                }
             } catch (Exception $e) {
-                echo 'APP RUN RESPONSE: '.$e->getCode();
+                die('Exception at App: '.$e->getCode());
             }
         }
-        if (null != $callable) {
-            $controller = $this->getControllerObject($callable);
-            if ($controller instanceof Interfaces\RenderableInterface) {
-                echo $controller->render();
-            } else {
-                $controller->getResponse()->sendJson();
-            }
+        $controller = $this->getControllerObject($callable);
+        if ($controller instanceof Interfaces\RenderableInterface) {
+            echo $controller->render();
+        } else {
+            $controller->getResponse()->sendJson();
         }
     }
 
@@ -322,19 +323,32 @@ class App extends Container
         }
         // HTTP request middleware
         // TODO: Re-Check
-        if ($this->route instanceof Route && $middlewares = $this->route->getMiddlewares()) {
-            $handler = new Handler($middlewares);
-            $handler->runner($this);
-        }
-        if (is_object($controller)) {
-            $method = '__invoke';
-        } else {
-            // FIXME: $this->getCallable ??
-            if (Utils\Str::contains('::', $controller)) {
-                $controllerExplode = explode('::', $controller);
-                $controller = $controllerExplode[0];
-                $method = $controllerExplode[1];
+        if ($this->route instanceof Route) {
+            $middlewares = $this->route->getMiddlewares();
+            if (!empty($middlewares)) {
+                $handler = new Handler($middlewares);
+                $handler->runner($this);
             }
+        }
+        $controllerType = gettype($controller);
+        switch ($controllerType) {
+            case 'object':
+                $method = '__invoke';
+            break;
+            case 'string':
+                if (Utils\Str::contains('::', $controller)) {
+                    $controllerExplode = explode('::', $controller);
+                    $controller = $controllerExplode[0];
+                    $method = $controllerExplode[1];
+                }
+            break;
+            default:
+                throw new LogicException(
+                    (string) (new Message('Expecting %s controller type, %t provided for callable string %c.'))
+                        ->code('%s', 'invokable object|string')
+                        ->code('%t', $controllerType)
+                        ->code('%c', $callable)
+                );
         }
         if (isset($method)) {
             $reflection = new ReflectionMethod($controller, $method);
@@ -430,17 +444,17 @@ class App extends Container
     /**
      * Forges a request (if no Request has been set).
      */
-    public function forgeRequest(Request $request): self
+    public function forgeHttpRequest(HttpRequest $request): self
     {
         if ($this->hasObject('request')) {
             throw new CoreException('Unable to forge request when the request has been already set.');
         }
-        $this->setRequest($request);
+        $this->setHttpRequest($request);
 
         return $this;
     }
 
-    protected function setRequest(Request $request): self
+    protected function setHttpRequest(HttpRequest $request): self
     {
         $this->request = $request;
         $pathinfo = ltrim($this->request->getPathInfo(), '/');

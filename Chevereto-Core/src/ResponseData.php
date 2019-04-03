@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Chevereto\Core;
 
 use Chevereto\Core\Interfaces\DataInterface;
-use Symfony\Component\HttpFoundation\Response as HttpFoundationResponse;
-use Symfony\Component\HttpFoundation\JsonResponse as HttpFoundationJsonResponse;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
+use Symfony\Component\HttpFoundation\JsonResponse as HttpJsonResponse;
 
 /**
  * ResponseData provides a way in which we can store and retrieve Response data.
@@ -29,21 +29,19 @@ class ResponseData implements DataInterface
 
     public function __construct(int $code = 200, $data = null)
     {
-        if (null != $code) {
-            $this->setCode($code);
-        }
-        if (null != $data) {
+        $this->setCode($code);
+        if (isset($data)) {
             $this->setData($data instanceof Data ? $data : new Data($data));
         }
     }
 
     // FIXME: ResponseData must not handle the response!
-    public function generateHttpResponse(): HttpFoundationResponse
+    public function generateHttpResponse(): HttpResponse
     {
-        $class = HttpFoundationResponse::class;
+        $class = HttpResponse::class;
         $data = $this->getData();
         if ($data instanceof Json) {
-            $class = HttpFoundationJsonResponse::class;
+            $class = HttpJsonResponse::class;
         } else {
             // if (method_exists($data, 'getData')) {
             //     // $dataData = $data->getData();

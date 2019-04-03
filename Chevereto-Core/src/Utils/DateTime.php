@@ -114,7 +114,7 @@ class DateTime extends \DateTime implements \DateTimeInterface
      */
     public static function formatSQL(string $datetime = null): string
     {
-        if ($datetime == null) {
+        if (!isset($datetime)) {
             return static::getUTC(static::SQL);
         }
 

@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
-use Symfony\Component\HttpFoundation\Request;
-
 class Http
 {
     const STATUS_CODES = [

@@ -258,8 +258,8 @@ class Apis
             $route = Route::bind($endpointRoute)->methods($httpMethods)->setId($endpoint);
             $this->routeKeys[$endpointRoute] = [$basename, $endpoint];
             // Define Route wildcard "where" if needed
-            if ($routeWildcards = $route->getWildcards()) {
-                // dump($routeWildcards, $resourceWildcards);
+            $routeWildcards = $route->getWildcards();
+            if (!empty($routeWildcards)) {
                 $filtered = Utils\Arr::filterArray($resourceWildcards, $routeWildcards);
                 foreach ($filtered as $wildcardName => $wildcard) {
                     if ($regex = $wildcard->regex()) {

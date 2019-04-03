@@ -41,7 +41,6 @@ if (php_sapi_name() == 'cli') {
 
 const DEFAULT_ERROR_HANDLING = [
     RuntimeConfig::DEBUG => 0,
-    // RuntimeConfig::ERROR_REPORTING_LEVEL => E_ALL ^ E_NOTICE,
     RuntimeConfig::ERROR_HANDLER => 'Chevereto\Core\ErrorHandler::error',
     RuntimeConfig::EXCEPTION_HANDLER => 'Chevereto\Core\ErrorHandler::exception',
 ];

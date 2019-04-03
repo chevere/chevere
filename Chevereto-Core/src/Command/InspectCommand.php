@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Core\Command;
 
+use const Chevereto\Core\App\PATH;
 use Chevereto\Core\App;
 use Chevereto\Core\Load;
 use Chevereto\Core\Message;
@@ -98,7 +99,7 @@ class InspectCommand extends Command
             $dir = Path::relative(dirname($callableFilepath), App::APP);
             do {
                 $resourceFilePathRelative = $dir.'/resource.json';
-                $resourceFilePath = App\PATH.$resourceFilePathRelative;
+                $resourceFilePath = PATH.$resourceFilePathRelative;
                 if (File::exists($resourceFilePath) && $resourceString = file_get_contents($resourceFilePath)) {
                     $resourceArr = json_decode($resourceString, true)['wildcards'] ?? [];
                     $resource = array_merge($resourceArr, $resource);

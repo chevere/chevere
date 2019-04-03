@@ -52,7 +52,7 @@ class Number
                 if ($num >= pow(10, $exponent)) {
                     $div = $num / pow(10, $exponent);
                     $float = floatval($div);
-                    $num = $abbreviation == null ? (string) $float : (round($float, $precision).$abbreviation);
+                    $num = null === $abbreviation ? (string) $float : (round($float, $precision).$abbreviation);
                     break;
                 }
             }

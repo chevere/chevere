@@ -23,7 +23,7 @@ class RuntimeConfig extends Data
     const DEBUG = 'debug';
     const LOCALE = 'locale';
     const DEFAULT_CHARSET = 'defaultCharset';
-    // const ERROR_REPORTING_LEVEL = 'errorReportingLevel';
+    const ERROR_REPORTING_LEVEL = 'errorReportingLevel'; // Not set, but its current value gets collected in the data array
     const ERROR_HANDLER = 'errorHandler';
     const EXCEPTION_HANDLER = 'exceptionHandler';
     const URI_SCHEME = 'uriScheme';
@@ -46,7 +46,7 @@ class RuntimeConfig extends Data
     public function __construct(string $fileHandle = null)
     {
         parent::__construct();
-        if (null != $fileHandle) {
+        if (isset($fileHandle)) {
             $this->processFromFile($fileHandle);
         }
     }

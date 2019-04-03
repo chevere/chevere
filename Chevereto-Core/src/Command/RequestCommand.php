@@ -14,7 +14,7 @@ namespace Chevereto\Core\Command;
 
 use Chevereto\Core\App;
 use Chevereto\Core\Command;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request as HttpRequest;
 use ReflectionMethod;
 
 /**
@@ -49,11 +49,11 @@ class RequestCommand extends Command
         // Map cli arguments to Request::create
         $arguments = $this->getCli()->getInput()->getArguments();
         $requestArguments = [];
-        $r = new ReflectionMethod(Request::class, 'create');
+        $r = new ReflectionMethod(HttpRequest::class, 'create');
         foreach ($r->getParameters() as $requestArg) {
             $requestArguments[] = $arguments[$requestArg->getName()] ?? $requestArg->getDefaultValue() ?? null;
         }
-        $app->forgeRequest(Request::create(...$requestArguments))->run();
+        $app->forgeHttpRequest(HttpRequest::create(...$requestArguments))->run();
 
         return 1;
     }

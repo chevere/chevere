@@ -107,7 +107,6 @@ class Dump
         if ($type == 'double') {
             $type = static::TYPE_FLOAT;
         }
-        $objects = [];
         switch ($type) {
             case static::TYPE_BOOLEAN:
                 $val .= $expression ? 'TRUE' : 'FALSE';
@@ -131,7 +130,7 @@ class Dump
             break;
             case static::TYPE_OBJECT:
                 $indent++;
-                $reflection = new ReflectionObject($expression);
+                $reflection = new ReflectionObject(/* @scrutinizer ignore-type */ $expression);
                 if (in_array($reflection->getName(), $dontDump)) {
                     $val .= static::wrap(static::_OPERATOR, '<i>'.$reflection->getName().'</i>');
                     break;
@@ -148,8 +147,7 @@ class Dump
                     foreach ($v as $kk => $vv) {
                         if (!isset($properties[$vv->getName()])) {
                             $vv->setAccessible(true);
-                            $value = $vv->getValue($expression);
-                            $properties[$vv->getName()] = ['value' => $vv->getValue($expression)];
+                            $properties[$vv->getName()] = ['value' => $vv->getValue(/* @scrutinizer ignore-type */ $expression)];
                         }
                         $properties[$vv->getName()]['visibility'][] = $k;
                     }
@@ -174,7 +172,7 @@ class Dump
                         $val .= static::out($aux, $indent, $dontDump);
                     }
                 }
-                $className = get_class($expression);
+                $className = get_class(/* @scrutinizer ignore-type */ $expression);
                 if (Str::startsWith(static::ANON_CLASS, $className)) {
                     $className = Path::normalize($className);
                 }

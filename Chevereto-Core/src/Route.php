@@ -351,7 +351,7 @@ class Route
     public function regex(string $key = null): string
     {
         $regex = $key ?? $this->set ?? $this->getKey();
-        if ($regex == null) {
+        if (!isset($regex)) {
             throw new RouteException(
                 (new Message('Unable to process regex for empty %s.'))
                     ->code('%s', '$key')

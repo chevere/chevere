@@ -14,7 +14,7 @@ namespace Chevereto\Core;
 
 use Chevereto\Core\Traits\ContainerTrait;
 use Monolog\Logger;
-use Symfony\Component\Console\Application as ConsoleClient;
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -46,7 +46,7 @@ class Cli extends Container
         $this->name = static::NAME;
         $this->version = static::VERSION;
         $output = new ConsoleOutput();
-        $client = new ConsoleClient($this->name, $this->version);
+        $client = new Application($this->name, $this->version);
         $logger = new Logger($this->name);
 
         $this->setInput($input);
@@ -135,7 +135,7 @@ class Cli extends Container
      *
      * @return self
      */
-    public function setClient(ConsoleClient $client): self
+    public function setClient(Application $client): self
     {
         $this->client = $client;
 
@@ -211,7 +211,7 @@ class Cli extends Container
     /**
      * Get the value of client.
      */
-    public function getClient(): ConsoleClient
+    public function getClient(): Application
     {
         return $this->client;
     }
