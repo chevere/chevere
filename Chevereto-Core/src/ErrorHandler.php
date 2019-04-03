@@ -9,12 +9,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-// TODO: Use object instance
-// TODO: Missing Client (HTML)
-// TODO: Missing Request (HTML)
-// TODO: Missing Server (HTML)
-// TODO: Missing Client (CLI)
-// TODO: Missing Server (CLI)
+// TODO: Missing HTML: Client, Request, Server. CLI: Client, Server
 // FIXME: ParseError is not throwing usable data (try by removing ; in app $paramRoutes = $parameters->getDatakey(AppParameters::ROUTES))
 
 namespace Chevereto\Core;
