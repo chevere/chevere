@@ -29,6 +29,8 @@ class RuntimeConfig extends Data
     const URI_SCHEME = 'uriScheme';
     const TIMEZONE = 'timeZone';
 
+    protected static $instance;
+
     protected $data = [];
     protected $loadedFiles = [];
 
@@ -45,6 +47,7 @@ class RuntimeConfig extends Data
 
     public function __construct(string $fileHandle = null)
     {
+        static::$instance = $this;
         parent::__construct();
         if (isset($fileHandle)) {
             $this->processFromFile($fileHandle);
@@ -214,6 +217,29 @@ class RuntimeConfig extends Data
                         ->code('%a', 'array')
                     );
         }
+    }
+
+    /**
+     * Provides persistent access to the Runtime data array.
+     *
+     * @return array|null
+     */
+    public static function readData(): ?array
+    {
+        if (isset(static::$instance)) {
+            return static::$instance->getData();
+        }
+
+        return null;
+    }
+
+    public static function readDataKey(string $key)
+    {
+        if (isset(static::$instance)) {
+            return static::$instance->getDataKey($key);
+        }
+
+        return null;
     }
 }
 class ConfigException extends Exception
