@@ -10,7 +10,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 // TODO: Missing HTML: Client, Request, Server. CLI: Client, Server
-// FIXME: ParseError is not throwing usable data (try by removing ; in app $paramRoutes = $parameters->getDatakey(AppParameters::ROUTES))
 
 namespace Chevereto\Core;
 
@@ -226,7 +225,7 @@ class ErrorHandler
             ->setXhrConditional()
             ->setSignatureProperties()
             ->setConstantProperties()
-            // ->setServerProperties()
+            ->setServerProperties()
             ->setDebug()
             ->setBodyClass()
             ->setExceptionProperties()
@@ -358,14 +357,7 @@ class ErrorHandler
      */
     protected function setDebug(): self
     {
-        // if (static::DEBUG === null) { // Set it from config
-        //     // $debug = Config::has('debug') ? (bool) Config::get('debug') : false;
-        //     $debug = true;
-        // } else { // Set it from static
-        //     $debug = static::DEBUG;
-        // }
-        $debug = static::DEBUG;
-        $this->debug = $debug;
+        $this->debug = (bool) RuntimeConfig::readDataKey('debug');
 
         return $this;
     }
@@ -434,7 +426,7 @@ class ErrorHandler
         $this->message = $this->exception->getMessage();
         $this->file = Path::normalize($this->exception->getFile());
         $this->line = (string) $this->exception->getLine();
-        
+
         return $this;
     }
 
@@ -443,7 +435,7 @@ class ErrorHandler
      */
     protected function setServerProperties(): self
     {
-        // $this->url = Http::requestUrl();
+        // $this->url = $_SERVER['REQUEST_URI'] ?? 'unknown';
         $map = [
             'serverPort' => 'SERVER_PORT',
             'clientUserAgent' => 'HTTP_USER_AGENT',
@@ -456,20 +448,20 @@ class ErrorHandler
 
         // if ($app->hasObject('request')) {
         //     $request = $app->getRequest();
-        //     $this->clientRemoteAddress = $request->getClientIp();
+        //     $this->clientRemoteAddress = Http::clientIp();
         //     foreach ($map as $k => $v) {
         //         $this->{$k} = $request->server->get($v);
         //     }
         // } else {
-            if (php_sapi_name() == 'cli') {
-                $this->clientRemoteAddress = $_SERVER['argv'][0];
-                $this->clientUserAgent = Console::inputString();
-            } else {
-                $this->clientRemoteAddress = Http::clientIp();
-                foreach ($map as $k => $v) {
-                    $this->{$k} = $_SERVER[$v];
-                }
+        if (php_sapi_name() == 'cli') {
+            $this->clientRemoteAddress = $_SERVER['argv'][0];
+            $this->clientUserAgent = Console::inputString();
+        } else {
+            $this->clientRemoteAddress = Http::clientIp();
+            foreach ($map as $k => $v) {
+                $this->{$k} = $_SERVER[$v];
             }
+        }
         // }
 
         return $this;
@@ -526,6 +518,15 @@ class ErrorHandler
             $richArgs = [];
             $plainArgsString = null;
             $richArgsString = null;
+            // Fill empty file+line using reflection
+            if (!array_key_exists('file', $frame) && isset($frame['class'])) {
+                $reflector = new \ReflectionMethod($frame['class'], $frame['function']);
+                $filename = $reflector->getFileName();
+                if(false !== $filename) {
+                    $frame['file'] = $filename;
+                    $frame['line'] = $reflector->getStartLine();
+                }
+            }
             if (isset($frame['args']) && is_array($frame['args'])) {
                 foreach ($frame['args'] as $k => $v) {
                     $aux = 'Arg#'.($k + 1).' ';
