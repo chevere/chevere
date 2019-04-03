@@ -111,7 +111,7 @@ class App extends Container
             }
             $this->setApis($apis);
         }
-        $paramRoutes = $parameters->getDatakey(AppParameters::ROUTES)
+        $paramRoutes = $parameters->getDatakey(AppParameters::ROUTES);
         if (isset($paramRoutes)) {
             // ['handle' => [Routes,]]
             foreach ($paramRoutes as $fileHandle) {
@@ -216,8 +216,7 @@ class App extends Container
         return $this->request;
     }
 
-    // FIXME: Must be protected
-    public function setResponse(Response $response): self
+    protected function setResponse(Response $response): self
     {
         $this->response = $response;
 
@@ -338,7 +337,7 @@ class App extends Container
         // TODO: Re-Check
         if ($this->route instanceof Route) {
             $middlewares = $this->route->getMiddlewares();
-            if(isset($middlewares)) {
+            if ($middlewares) {
                 $handler = new Handler($middlewares);
                 $handler->runner($this);
             }
@@ -395,8 +394,7 @@ class App extends Container
         // exit();
     }
 
-    // FIXME: Must be protected
-    public function setLogger(Logger $logger)
+    protected function setLogger(Logger $logger)
     {
         $this->logger = $logger;
     }

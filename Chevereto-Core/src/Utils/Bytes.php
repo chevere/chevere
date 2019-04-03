@@ -37,7 +37,7 @@ class Bytes
         }
 
         $array_search = array_search($suffix, static::UNITS);
-        if (isset($array_search)) {
+        if (false !== $array_search) {
             $powFactor = (int) $array_search + 1;
         } else {
             $powFactor = 0;

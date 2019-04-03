@@ -67,7 +67,7 @@ class Handler implements HandlerInterface
     public function process(App $app)
     {
         $middleware = current($this->queue);
-        if (isset($middleware)) {
+        if ($middleware) {
             next($this->queue);
 
             return $middleware($app, $this);

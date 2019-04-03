@@ -88,7 +88,7 @@ class Path
     {
         $wrapper = '';
         $stream = static::isStream($path);
-        if (isset($stream)) {
+        if ($stream) {
             [$wrapper, $path] = $stream;
             $wrapper .= '://';
         }

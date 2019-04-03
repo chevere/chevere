@@ -33,7 +33,7 @@ class ApiOptions extends Controller
     public function __invoke(string $endpoint = null)
     {
         $route = $this->getApp()->getObject('route');
-        if (isset($route)) {
+        if ($route) {
             $endpoint = $route->getKey();
         }
         if ($endpoint == null) {
@@ -53,7 +53,7 @@ class ApiOptions extends Controller
         $apis = $this->getApis();
         $apiKey = $apis->getEndpointApiKey($endpoint);
         $endpointData = $apis->getBaseOptions($endpoint) ?? $apis->getEndpoint($endpoint);
-        if (isset($endpointData)) {
+        if ($endpointData) {
             $response->setMeta(['api' => $apiKey]);
             $response->addData('OPTIONS', $endpoint, $endpointData['OPTIONS']);
         } else {

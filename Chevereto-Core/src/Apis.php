@@ -99,7 +99,7 @@ class Apis
                 $resourceFilePath = $filePath.'/resource.json';
                 if (File::exists($resourceFilePath)) {
                     $jsonResource = file_get_contents($resourceFilePath);
-                    if (isset($jsonResource)) {
+                    if (false !== $jsonResource) {
                         $jsonResource = json_decode($jsonResource);
                     }
                     if (isset($jsonResource) && isset($jsonResource->wildcards)) {
@@ -228,6 +228,7 @@ class Apis
             }
         } // foreach filename
         if ($errors) {
+            dd($errors);
             throw new ApiException(implode("\n", $errors));
         }
         ksort($ROUTE_MAP);
@@ -262,7 +263,7 @@ class Apis
             $this->routeKeys[$endpointRoute] = [$basename, $endpoint];
             // Define Route wildcard "where" if needed
             $routeWildcards = $route->getWildcards();
-            if (isset($routeWildcards)) {
+            if ($routeWildcards) {
                 // dump($routeWildcards, $resourceWildcards);
                 $filtered = Utils\Arr::filterArray($resourceWildcards, $routeWildcards);
                 foreach ($filtered as $wildcardName => $wildcard) {
@@ -361,7 +362,7 @@ class Apis
     /**
      * Get the error associated with invalid controller __invoke(Class $hint).
      */
-    protected static function getInvokeHintError(string $filename, string $class = null, ReflectionMethod $invoke, ReflectionParameter $param)
+    protected static function getInvokeHintError(string $filename, string $class = null, ReflectionMethod $invoke, ReflectionParameter $param): ?string
     {
         if (null === $class || !class_exists($class)) {
             $error = 'Class <code>%c</code> doesn\'t exist or it hasn\'t being loaded, the system is unable to resolve implicit <code>%v</code> binding in <code>%f:%l:%n</code>';
@@ -375,7 +376,7 @@ class Apis
             '%v' => '$'.$param->name,
             '%c' => $class,
             '%f' => $filename,
-        ]) : false;
+        ]) : null;
     }
 }
 class ApiException extends CoreException

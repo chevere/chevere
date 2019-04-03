@@ -33,10 +33,10 @@ class ApiGet extends Controller
     public function __invoke(string $endpoint = null)
     {
         $route = $this->getApp()->getObject('route');
-        if (isset($route)) {
+        if ($route) {
             $endpoint = $route->getKey();
         }
-        if ($endpoint == null) {
+        if (null == $endpoint) {
             $message =
                 (new Message('Must provide a %s argument when running this callable without route context.'))
                     ->code('%s', '(string) $endpoint');
@@ -51,7 +51,7 @@ class ApiGet extends Controller
         $response = $this->getResponse();
         $statusCode = 200;
         $endpointData = $this->getApis()->getEndpoint($endpoint);
-        if (isset($endpointData)) {
+        if ($endpointData) {
             $response->setMeta(['api' => $endpoint]);
             foreach ($endpointData as $property => $data) {
                 if ($property == 'wildcards') {

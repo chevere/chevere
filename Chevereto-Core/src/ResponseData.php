@@ -37,7 +37,7 @@ class ResponseData implements DataInterface
         }
     }
 
-    // FIXME: ResponseData must not handle the response!
+    // TODO: ResponseData must not handle the response!
     public function generateHttpResponse(): HttpFoundationResponse
     {
         $class = HttpFoundationResponse::class;

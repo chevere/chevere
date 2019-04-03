@@ -68,10 +68,9 @@ class RunCommand extends Command
             $cli->getIo()->block(DumpPlain::out($return), 'RETURN', 'fg=black;bg=green', ' ', true);
         } else {
             $arguments = $input->getOption('argument');
-            if (isset($arguments)) {
-                if (is_array($arguments)) {
-                    $app->setArguments($arguments);
-                }
+            // argument was declared as array
+            if (is_array($arguments)) {
+                $app->setArguments($arguments);
             }
             $app->run($callable);
         }

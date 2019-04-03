@@ -100,7 +100,7 @@ class InspectCommand extends Command
                 $resourceFilePathRelative = $dir.'/resource.json';
                 $resourceFilePath = App\PATH.$resourceFilePathRelative;
                 $resourceString = file_get_contents($resourceFilePath);
-                if (File::exists($resourceFilePath) && isset($resourceString)) {
+                if (File::exists($resourceFilePath) && $resourceString) {
                     $resourceArr = json_decode($resourceString, true)['wildcards'] ?? [];
                     $resource = array_merge($resourceArr, $resource);
                 }
@@ -121,7 +121,7 @@ class InspectCommand extends Command
                 $aux .= ' = '.($parameter->getDefaultValue() ?? 'null');
             }
             $res = $resource[$parameter->getName()] ?? null;
-            if (null != $resource && isset($res)) {
+            if (isset($res)) {
                 $aux .= ' '.Dump::wrap(Dump::_OPERATOR, '--description '.$res['description'].' --regex '.$res['regex']);
             }
             $arguments[] = "#$i $aux";

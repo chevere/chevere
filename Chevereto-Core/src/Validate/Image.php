@@ -36,7 +36,7 @@ class Image
         while (!feof($fh) && $count < 2) {
             //read 100kb at a time
             $chunk = fread($fh, 1024 * 100);
-            if (isset($chunk)) {
+            if (false !== $chunk) {
                 $count += preg_match_all('#\x00\x21\xF9\x04.{4}\x00(\x2C|\x21)#s', $chunk, $matches);
             } else {
                 break;

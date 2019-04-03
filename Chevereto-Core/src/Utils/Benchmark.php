@@ -16,8 +16,6 @@ use Chevereto\Core\Message;
 use Chevereto\Core\Traits\Printable;
 use Exception;
 
-// FIXME: A class using toString can't trhow exceptions!
-
 /**
  * Benchmark provides a simple way to determine which code procedure perform faster compared to others.
  */
