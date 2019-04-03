@@ -52,7 +52,7 @@ class Route
     /** @var array */
     protected $methods;
     protected $wildcards;
-    protected $maker; // TODO: Deprecate
+    protected $maker;
     protected $middlewares;
 
     /**
@@ -93,6 +93,7 @@ class Route
         } catch (Exception $e) {
             throw new RouteException($e);
         }
+        // TODO: Maker must be more smarty, have historic change record
         $maker = debug_backtrace(0, 1)[0];
         $maker['file'] = Path::relative($maker['file']);
         $this->maker = $maker;
