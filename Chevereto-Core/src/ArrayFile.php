@@ -107,7 +107,8 @@ class ArrayFile
         $validator = static::TYPE_VALIDATORS[$this->type];
         foreach ($array as $k => $v) {
             // First layer of validation (type), do another validation for objects
-            if ($validate = $validator($v)) {
+            $validate = $validator($v);
+            if (isset($validate)) {
                 if ($this->type == 'object') {
                     if (null != $this->className) {
                         $validate = get_class($v) == $this->className;

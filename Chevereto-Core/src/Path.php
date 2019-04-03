@@ -87,7 +87,8 @@ class Path
     public static function normalize(string $path): string
     {
         $wrapper = '';
-        if ($stream = static::isStream($path)) {
+        $stream = static::isStream($path);
+        if (isset($stream)) {
             [$wrapper, $path] = $stream;
             $wrapper .= '://';
         }

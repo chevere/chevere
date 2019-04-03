@@ -109,7 +109,8 @@ class File
      */
     public static function extension(string $filename): ?string
     {
-        if ($mime = static::mimetype($filename)) {
+        $mime = static::mimetype($filename);
+        if (isset($mime)) {
             return static::extensionFromMime($mime);
         }
 

@@ -237,7 +237,8 @@ class SignedCache
      */
     protected function hashFile(string $filename): string
     {
-        if ($fgc = file_get_contents($filename)) {
+        $fgc = file_get_contents($filename);
+        if (isset($fgc)) {
             return $this->hash($fgc);
         } else {
             throw new Exception('Unable to file_get_contents.');

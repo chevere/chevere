@@ -47,7 +47,8 @@ class Router
         $route->fill();
         $id = $route->getId();
         $key = $route->getKey();
-        if ($keyedRoute = $this->getRouteKeys()[$key] ?? null) {
+        $keyedRoute = $this->getRouteKeys()[$key] ?? null;
+        if (isset($keyedRoute)) {
             throw new LogicException(
                 (string) (new Message('Route key %s has been already declared by %r.'))
                     ->code('%s', $key)
@@ -55,7 +56,8 @@ class Router
             );
         }
         $pointer = [$route->getId(), $basename];
-        if ($name = $route->getName()) {
+        $name = $route->getName();
+        if (isset($name)) {
             $namedRoute = $this->getNamedRoutes()[$name] ?? null;
             if (isset($namedRoute)) {
                 throw new LogicException(

@@ -210,7 +210,8 @@ class Hook
      */
     public static function execBefore(string $anchor, callable $callable, object $that = null): void
     {
-        if ($file = static::getCallerFile()) {
+        $file = static::getCallerFile();
+        if (isset($file)) {
             static::execAt($file, $anchor, static::BEFORE, $that);
         }
         $callable($that);
@@ -228,7 +229,8 @@ class Hook
     public static function execAfter(string $anchor, callable $callable, object $that = null): void
     {
         $callable($that);
-        if ($file = static::getCallerFile()) {
+        $file = static::getCallerFile();
+        if (isset($file)) {
             static::execAt($file, $anchor, static::AFTER, $that);
         }
     }

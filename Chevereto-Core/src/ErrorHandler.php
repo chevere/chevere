@@ -362,12 +362,13 @@ class ErrorHandler
      */
     protected function setDebug(): self
     {
-        if (static::DEBUG === null) { // Set it from config
-            // $debug = Config::has('debug') ? (bool) Config::get('debug') : false;
-            $debug = true;
-        } else { // Set it from static
-            $debug = static::DEBUG;
-        }
+        // if (static::DEBUG === null) { // Set it from config
+        //     // $debug = Config::has('debug') ? (bool) Config::get('debug') : false;
+        //     $debug = true;
+        // } else { // Set it from static
+        //     $debug = static::DEBUG;
+        // }
+        $debug = static::DEBUG;
         $this->debug = $debug;
 
         return $this;

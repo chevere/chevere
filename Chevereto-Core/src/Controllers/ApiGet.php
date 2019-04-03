@@ -32,7 +32,8 @@ class ApiGet extends Controller
      */
     public function __invoke(string $endpoint = null)
     {
-        if ($route = $this->getApp()->getObject('route')) {
+        $route = $this->getApp()->getObject('route');
+        if (isset($route)) {
             $endpoint = $route->getKey();
         }
         if ($endpoint == null) {
@@ -49,7 +50,8 @@ class ApiGet extends Controller
         }
         $response = $this->getResponse();
         $statusCode = 200;
-        if ($endpointData = $this->getApis()->getEndpoint($endpoint)) {
+        $endpointData = $this->getApis()->getEndpoint($endpoint);
+        if (isset($endpointData)) {
             $response->setMeta(['api' => $endpoint]);
             foreach ($endpointData as $property => $data) {
                 if ($property == 'wildcards') {

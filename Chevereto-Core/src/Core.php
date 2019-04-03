@@ -38,7 +38,8 @@ class Core
      */
     public static function getClassFilename($class): string
     {
-        if ($filename = (new ReflectionClass($class))->getFileName()) {
+        $filename = (new ReflectionClass($class))->getFileName();
+        if (isset($filename)) {
             return $filename;
         } else {
             throw new Exception('Unable to retrieve class filename.');

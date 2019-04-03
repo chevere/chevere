@@ -72,7 +72,8 @@ class App extends Container
             $arrayFile = new ArrayFile(static::FILEHANDLE_PARAMETERS, 'array');
             $parameters = new AppParameters($arrayFile->toArray());
         }
-        if ($configFiles = $parameters->getDataKey(AppParameters::CONFIG_FILES)) {
+        $configFiles = $parameters->getDataKey(AppParameters::CONFIG_FILES);
+        if (isset($configFiles)) {
             if ($this->hasObject('runtime')) {
                 $this->getRuntime()->runConfig(
                     (new RuntimeConfig())
@@ -100,7 +101,8 @@ class App extends Container
          * - App autoinjects a "Router", which could be Router::fromCache(...) or new Router() and provides access to Routes (cached or new)
          * - RouteCollection contains the array of mapped routes (objects or serialized arrays (cached))
          */
-        if ($paramApis = $parameters->getDataKey(AppParameters::APIS)) {
+        $paramApis = $parameters->getDataKey(AppParameters::APIS);
+        if (isset($paramApis)) {
             $apis = new Apis($this->getRouter());
             if (!$this->isCached) {
                 foreach ($paramApis as $apiKey => $apiPath) {
@@ -109,7 +111,8 @@ class App extends Container
             }
             $this->setApis($apis);
         }
-        if ($paramRoutes = $parameters->getDatakey(AppParameters::ROUTES)) {
+        $paramRoutes = $parameters->getDatakey(AppParameters::ROUTES)
+        if (isset($paramRoutes)) {
             // ['handle' => [Routes,]]
             foreach ($paramRoutes as $fileHandle) {
                 foreach ((new Routes($fileHandle))->getArrayFile()->toArray() as $k => $route) {
@@ -301,7 +304,7 @@ class App extends Container
                 echo 'APP RUN RESPONSE: '.$e->getCode();
             }
         }
-        if (null != $callable) {
+        if (null !== $callable) {
             $controller = $this->getControllerObject($callable);
             if ($controller instanceof Interfaces\RenderableInterface) {
                 echo $controller->render();
@@ -317,23 +320,27 @@ class App extends Container
     public function getControllerObject(string $callable)
     {
         $controller = $this->getCallable($callable);
-        if ($controller instanceof Controller) {
-            $controller->setApp($this);
-        }
-        // HTTP request middleware
-        // TODO: Re-Check
-        if ($this->route instanceof Route && $middlewares = $this->route->getMiddlewares()) {
-            $handler = new Handler($middlewares);
-            $handler->runner($this);
-        }
+        // dd($callable, $controller);
         if (is_object($controller)) {
             $method = '__invoke';
+            if ($controller instanceof Controller) {
+                $controller->setApp($this);
+            }
         } else {
-            // FIXME: $this->getCallable ??
             if (Utils\Str::contains('::', $controller)) {
                 $controllerExplode = explode('::', $controller);
                 $controller = $controllerExplode[0];
                 $method = $controllerExplode[1];
+            }
+        }
+
+        // HTTP request middleware
+        // TODO: Re-Check
+        if ($this->route instanceof Route) {
+            $middlewares = $this->route->getMiddlewares();
+            if(isset($middlewares)) {
+                $handler = new Handler($middlewares);
+                $handler->runner($this);
             }
         }
         if (isset($method)) {
