@@ -37,9 +37,9 @@ class InspectCommand extends Command
     protected function configure()
     {
         $this
-          ->setDescription('Inspect any callable')
-          ->setHelp('This command allows you to inspect any callable')
-          ->addArgument('callable', Command::ARGUMENT_REQUIRED, 'The callable handle (name, fileHandle)');
+            ->setDescription('Inspect any callable')
+            ->setHelp('This command allows you to inspect any callable')
+            ->addArgument('callable', Command::ARGUMENT_REQUIRED, 'The callable handle (name, fileHandle)');
     }
 
     /**

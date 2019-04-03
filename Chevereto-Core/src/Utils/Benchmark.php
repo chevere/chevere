@@ -19,22 +19,18 @@ use Exception;
 /**
  * Benchmark provides a simple way to determine which code procedure perform faster compared to others.
  */
-
- /*
-$benchmark = (new Benchmark(1000, 30))
-    ->arguments(1, 3)
-    ->add(function (int $a, int $b) {
-        return $a + $b;
-    }, 'Sum')
-    ->add(function (int $a, int $b) {
-        return $a/$b;
-    }, 'Division')
-    ->add(function (int $a, int $b) {
-        return $a * $b;
-    }, 'Multiply');
-print $benchmark;
-*/
-
+// $benchmark = (new Benchmark(1000, 30))
+//     ->arguments(1, 3)
+//     ->add(function (int $a, int $b) {
+//         return $a + $b;
+//     }, 'Sum')
+//     ->add(function (int $a, int $b) {
+//         return $a/$b;
+//     }, 'Division')
+//     ->add(function (int $a, int $b) {
+//         return $a * $b;
+//     }, 'Multiply');
+// print $benchmark;
 class Benchmark
 {
     use Printable;

@@ -311,11 +311,13 @@ class App extends Container
                 return;
             }
         }
-        $controller = $this->getControllerObject($callable ?? $resolvedCallable);
-        if ($controller instanceof Interfaces\RenderableInterface) {
-            echo $controller->render();
-        } else {
-            $controller->getResponse()->sendJson();
+        if (isset($callable) || isset($resolvedCallable)) {
+            $controller = $this->getControllerObject($callable ?? $resolvedCallable);
+            if ($controller instanceof Interfaces\RenderableInterface) {
+                echo $controller->render();
+            } else {
+                $controller->getResponse()->sendJson();
+            }
         }
     }
 

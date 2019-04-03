@@ -24,7 +24,7 @@ use Exception;
 class ApiOptions extends Controller
 {
     const OPTIONS = [
-      'description' => 'Retrieve endpoint OPTIONS.',
+        'description' => 'Retrieve endpoint OPTIONS.',
     ];
 
     /**
