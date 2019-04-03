@@ -358,18 +358,19 @@ class App extends Container
         } else {
             $reflection = new ReflectionFunction($controller);
         }
+
         $controllerArguments = [];
         $parameterIndex = 0;
         // Magically create typehinted objects
         foreach ($reflection->getParameters() as $parameter) {
             $parameterType = $parameter->getType();
-            $type = $parameterType != null ? $parameterType->getName() : null;
+            $type = null != $parameterType ? $parameterType->getName() : null;
             $value = $this->arguments[$parameter->getName()] ?? $this->arguments[$parameterIndex] ?? null;
-            if ($type === null || in_array($type, Controller::TYPE_DECLARATIONS)) {
+            if (null === $type || in_array($type, Controller::TYPE_DECLARATIONS)) {
                 $controllerArguments[] = $value ?? ($parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);
             } else {
                 // Object typehint
-                if ($value === null && $parameter->allowsNull()) {
+                if (null === $value && $parameter->allowsNull()) {
                     $controllerArguments[] = null;
                 } else {
                     $hasConstruct = method_exists($type, '__construct');
