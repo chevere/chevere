@@ -70,7 +70,8 @@ class App extends Container
             $arrayFile = new ArrayFile(static::FILEHANDLE_PARAMETERS, 'array');
             $parameters = new AppParameters($arrayFile->toArray());
         }
-        if ($configFiles = $parameters->getDataKey(AppParameters::CONFIG_FILES)) {
+        $configFiles = $parameters->getDataKey(AppParameters::CONFIG_FILES);
+        if (isset($configFiles)) {
             if ($this->hasObject('runtime')) {
                 $this->getRuntime()->runConfig(
                     (new RuntimeConfig())
@@ -98,7 +99,8 @@ class App extends Container
          * - App autoinjects a "Router", which could be Router::fromCache(...) or new Router() and provides access to Routes (cached or new)
          * - RouteCollection contains the array of mapped routes (objects or serialized arrays (cached))
          */
-        if ($paramApis = $parameters->getDataKey(AppParameters::APIS)) {
+        $paramApis = $parameters->getDataKey(AppParameters::APIS);
+        if (isset($paramApis)) {
             $apis = new Apis($this->getRouter());
             if (!$this->isCached) {
                 foreach ($paramApis as $apiKey => $apiPath) {
@@ -107,7 +109,8 @@ class App extends Container
             }
             $this->setApis($apis);
         }
-        if ($paramRoutes = $parameters->getDatakey(AppParameters::ROUTES)) {
+        $paramRoutes = $parameters->getDatakey(AppParameters::ROUTES);
+        if (isset($paramRoutes)) {
             // ['handle' => [Routes,]]
             foreach ($paramRoutes as $fileHandle) {
                 foreach ((new Routes($fileHandle))->getArrayFile()->toArray() as $k => $route) {
@@ -211,8 +214,7 @@ class App extends Container
         return $this->request;
     }
 
-    // FIXME: Must be protected
-    public function setResponse(Response $response): self
+    protected function setResponse(Response $response): self
     {
         $this->response = $response;
 
@@ -402,8 +404,7 @@ class App extends Container
         // exit();
     }
 
-    // FIXME: Must be protected
-    public function setLogger(Logger $logger)
+    protected function setLogger(Logger $logger)
     {
         $this->logger = $logger;
     }

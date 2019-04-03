@@ -54,10 +54,6 @@ class RuntimeConfig extends Data
     public function addFile(string $fileHandle): self
     {
         $arrayFile = new ArrayFile($fileHandle);
-        try {
-        } catch (Exception $e) {
-            throw new CoreException($e);
-        }
         $this->loadedFiles[] = $arrayFile->getFilepath();
 
         return $this->dataAdder($arrayFile->toArray());
@@ -91,7 +87,7 @@ class RuntimeConfig extends Data
             $this->validate();
         } catch (Exception $e) {
             throw new CoreException(
-                (new Message($e->getMessage().' '.'at %s'))->b('%s', '0000000000000000')
+                (new Message($e->getMessage().' at %s'))->b('%s', '0000000000000000')
             );
         }
         $this->addData($this->data);
@@ -187,7 +183,7 @@ class RuntimeConfig extends Data
     }
 
     /**
-     * Validator function.
+     * Validator validates only if an assert is declared.
      *
      * @param string $key   key to validate
      * @param mixed  $value value to validate
@@ -195,8 +191,6 @@ class RuntimeConfig extends Data
     protected function validator(string $key, $value)
     {
         if (!array_key_exists($key, $this->getAsserts())) {
-            // FIXME: Usar new Message()
-            // throw new Exception("Unexistant config key <b>$key</b>");
             return;
         }
         $assert = $this->getAsserts()[$key];
@@ -219,7 +213,6 @@ class RuntimeConfig extends Data
                         ->code('%s', 'string')
                         ->code('%a', 'array')
                     );
-            break;
         }
     }
 }
@@ -228,7 +221,7 @@ class ConfigException extends Exception
     public function __construct($key, $code = 0, Exception $previous = null)
     {
         // $value = 'test' ?? Config::get($key);
-        // FIXME: Re-factor this
+        // TODO: Re-factor this
         $value = '00000000000000000xTest';
         // if (is_bool($value)) {
         //     $value = $value ? 'TRUE' : 'FALSE';

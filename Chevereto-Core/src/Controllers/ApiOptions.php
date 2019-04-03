@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Chevereto\Core\Controllers;
 
 use const Chevereto\Core\CLI;
-use Chevereto\Core\Apis;
 use Chevereto\Core\Console;
 use Chevereto\Core\CoreException;
 use Chevereto\Core\Message;
@@ -33,8 +32,8 @@ class ApiOptions extends Controller
      */
     public function __invoke(string $endpoint = null)
     {
-        // $this->getApp()->setApis(new Apis())->getApis();
-        if ($route = $this->getApp()->getObject('route')) {
+        $route = $this->getApp()->getObject('route');
+        if ($route) {
             $endpoint = $route->getKey();
         }
         if ($endpoint == null) {
@@ -53,7 +52,8 @@ class ApiOptions extends Controller
         $statusCode = 200;
         $apis = $this->getApis();
         $apiKey = $apis->getEndpointApiKey($endpoint);
-        if ($endpointData = $apis->getBaseOptions($endpoint) ?? $apis->getEndpoint($endpoint)) {
+        $endpointData = $apis->getBaseOptions($endpoint) ?? $apis->getEndpoint($endpoint);
+        if ($endpointData) {
             $response->setMeta(['api' => $apiKey]);
             $response->addData('OPTIONS', $endpoint, $endpointData['OPTIONS']);
         } else {

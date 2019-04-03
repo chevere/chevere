@@ -20,14 +20,20 @@ use Chevereto\Core\Utils\Str;
 
 trait CallableTrait
 {
-    // callableString = 'TheCallable::fn, Class, functionName)
+    /**
+     * @param $callableString callable string (function, method)
+     *
+     * @return callable a callable, srlsy
+     */
     public function getCallable(string $callableString): callable
     {
         $classExists = class_exists($callableString);
         $isCallable = is_callable($callableString);
         if ($classExists || $isCallable) {
+            // @var object|string
             $callable = $classExists ? new $callableString() : $callableString;
         } else {
+            // @var any
             $callable = include $callableString;
         }
         if (!is_callable($callable)) {
@@ -39,6 +45,7 @@ trait CallableTrait
             );
         }
 
+        // @var callable
         return $callable;
     }
 

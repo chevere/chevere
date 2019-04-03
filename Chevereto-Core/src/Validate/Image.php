@@ -28,13 +28,15 @@ class Image
      */
     public static function animated(string $filename): bool
     {
-        if (!($fh = @fopen($filename, 'rb'))) {
+        $fh = @fopen($filename, 'rb');
+        if (!$fh) {
             return false;
         }
         $count = 0;
         while (!feof($fh) && $count < 2) {
             //read 100kb at a time
-            if ($chunk = fread($fh, 1024 * 100)) {
+            $chunk = fread($fh, 1024 * 100);
+            if (false !== $chunk) {
                 $count += preg_match_all('#\x00\x21\xF9\x04.{4}\x00(\x2C|\x21)#s', $chunk, $matches);
             } else {
                 break;

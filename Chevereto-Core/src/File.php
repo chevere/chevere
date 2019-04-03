@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
-//FIXME: Detect missing fileinfo extension
+//TODO: Detect missing fileinfo extension
 
 use Exception;
 use ErrorException;
@@ -109,7 +109,8 @@ class File
      */
     public static function extension(string $filename): ?string
     {
-        if ($mime = static::mimetype($filename)) {
+        $mime = static::mimetype($filename);
+        if (isset($mime)) {
             return static::extensionFromMime($mime);
         }
 
@@ -290,8 +291,10 @@ class File
             foreach ($failed as $k => $v) {
                 $exceptionMessage[] = '<b>'.$k.'</b>:'.$v;
             }
-            // FIXME: Usar new Message()
-            throw new Exception('Unable to remove '.implode('; ', $exceptionMessage));
+            throw new Exception(
+                (string) (new Message('Unable to remove %s.'))
+                    ->code('%s', implode('; ', $exceptionMessage))
+            );
         }
     }
 

@@ -98,7 +98,8 @@ class Apis
                  */
                 $resourceFilePath = $filePath.'/resource.json';
                 if (File::exists($resourceFilePath)) {
-                    if ($jsonResource = file_get_contents($resourceFilePath)) {
+                    $jsonResource = file_get_contents($resourceFilePath);
+                    if (false !== $jsonResource) {
                         $jsonResource = json_decode($jsonResource);
                     }
                     if (isset($jsonResource) && isset($jsonResource->wildcards)) {
@@ -158,7 +159,8 @@ class Apis
                     foreach ($params = $invoke->getParameters() as $k => $param) {
                         ++$counter;
                         $error = null;
-                        if ($required = ($param->isOptional() || !$param->isDefaultValueAvailable())) {
+                        $required = ($param->isOptional() || !$param->isDefaultValueAvailable());
+                        if ($required) {
                             ++$requiredCntAux;
                         }
                         $mustBeRequired = $counter <= $requiredCnt;
@@ -176,7 +178,8 @@ class Apis
                             if (in_array($type, Controller::TYPE_DECLARATIONS)) {
                                 continue;
                             }
-                            if ($error = static::getInvokeHintError($filePath, $type, $invoke, $param)) {
+                            $error = static::getInvokeHintError($filePath, $type, $invoke, $param);
+                            if (isset($error)) {
                                 $errors[] = $error;
                                 continue;
                             }
@@ -225,6 +228,7 @@ class Apis
             }
         } // foreach filename
         if ($errors) {
+            dd($errors);
             throw new ApiException(implode("\n", $errors));
         }
         ksort($ROUTE_MAP);
@@ -262,7 +266,8 @@ class Apis
             if (!empty($routeWildcards)) {
                 $filtered = Utils\Arr::filterArray($resourceWildcards, $routeWildcards);
                 foreach ($filtered as $wildcardName => $wildcard) {
-                    if ($regex = $wildcard->regex()) {
+                    $regex = $wildcard->regex();
+                    if (isset($regex)) {
                         $route->where($wildcardName, $regex);
                     }
                 }
@@ -312,7 +317,8 @@ class Apis
 
     public function getEndpoint(string $key): ?array
     {
-        if ($keys = $this->routeKeys[$key] ?? null) {
+        $keys = $this->routeKeys[$key] ?? null;
+        if (isset($keys)) {
             $api = $this->get($keys[0]);
             if (isset($keys[1])) {
                 return $api[$keys[1]];
@@ -329,7 +335,8 @@ class Apis
      */
     public function getEndpointApiKey(string $key): ?string
     {
-        if ($keys = $this->routeKeys[$key] ?? null) {
+        $keys = $this->routeKeys[$key] ?? null;
+        if (isset($keys)) {
             return $keys[0];
         }
 
@@ -354,7 +361,7 @@ class Apis
     /**
      * Get the error associated with invalid controller __invoke(Class $hint).
      */
-    protected static function getInvokeHintError(string $filename, string $class = null, ReflectionMethod $invoke, ReflectionParameter $param)
+    protected static function getInvokeHintError(string $filename, string $class = null, ReflectionMethod $invoke, ReflectionParameter $param): ?string
     {
         if (null === $class || !class_exists($class)) {
             $error = 'Class <code>%c</code> doesn\'t exist or it hasn\'t being loaded, the system is unable to resolve implicit <code>%v</code> binding in <code>%f:%l:%n</code>';
@@ -368,7 +375,7 @@ class Apis
             '%v' => '$'.$param->name,
             '%c' => $class,
             '%f' => $filename,
-        ]) : false;
+        ]) : null;
     }
 }
 class ApiException extends CoreException

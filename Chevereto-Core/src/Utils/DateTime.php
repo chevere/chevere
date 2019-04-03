@@ -145,7 +145,8 @@ class DateTime extends \DateTime implements \DateTimeInterface
         $magnitude = null;
         $plusSecs = 0;
         foreach ($secondsTable as $k => $v) {
-            if (($val = $interval->{$k}) > 0) {
+            $val = property_exists($interval, $k) ? $interval->{$k} : null;
+            if (isset($val) && $val > 0) {
                 if ($magnitude == null) {
                     // Start with the highest magnitude (y, m, etc...)
                     $return = [$k => $val];

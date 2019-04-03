@@ -19,18 +19,18 @@ return new class() extends Controller /*implements RenderableInterface*/ {
         $response->setData(['type' => 'articles', 'id' => $getString]);
 
         return $this;
-        // dd((string) $response);
-        // ...validation...
-        if (false == Str::startsWithNumeric((string) $getString)) {
-            $this->getResponse()->setData(['deeez', 'nuts']);
-            // $this->getResponse()->setStatusCode(400);
-            return $this;
-        }
-        // Store string
-        $getString = ucwords((string) $getString);
-        // $this->setDataKey('UserString', $getString);
-        // $data = $this->getData();
-        // dd($data);
+        // // dd((string) $response);
+        // // ...validation...
+        // if (false == Str::startsWithNumeric((string) $getString)) {
+        //     $this->getResponse()->setData(['deeez', 'nuts']);
+        //     // $this->getResponse()->setStatusCode(400);
+        //     return $this;
+        // }
+        // // Store string
+        // $getString = ucwords((string) $getString);
+        // // $this->setDataKey('UserString', $getString);
+        // // $data = $this->getData();
+        // // dd($data);
     }
 
     public function render(): ?string

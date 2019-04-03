@@ -73,7 +73,7 @@ class Http
      *
      * @return bool TRUE if the actual request was made via XHR
      */
-    // FIXME: Deprecate
+    // TODO: Deprecate
     public static function isXHR(): bool
     {
         return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';

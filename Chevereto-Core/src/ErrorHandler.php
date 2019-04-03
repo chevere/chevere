@@ -15,6 +15,7 @@ declare(strict_types=1);
 // TODO: Missing Server (HTML)
 // TODO: Missing Client (CLI)
 // TODO: Missing Server (CLI)
+// FIXME: ParseError is not throwing usable data (try by removing ; in app $paramRoutes = $parameters->getDatakey(AppParameters::ROUTES))
 
 namespace Chevereto\Core;
 
@@ -320,7 +321,7 @@ class ErrorHandler
     protected function setLogDateFormat(string $format = null): void
     {
         // $this->logDateFormat = static::DEFAULT_LOG_DATE_FORMAT ?? $format ?? (Config::has('logDateFormat') ? Config::get('logDateFormat') : static::DEFAULT_LOG_DATE_FORMAT);
-        // FIXME: Configurable log format?
+        // TODO: Configurable log format?
         $this->logDateFormat = $format ?? static::DEFAULT_LOG_DATE_FORMAT;
     }
 
@@ -362,12 +363,13 @@ class ErrorHandler
      */
     protected function setDebug(): self
     {
-        if (static::DEBUG === null) { // Set it from config
-            // $debug = Config::has('debug') ? (bool) Config::get('debug') : false;
-            $debug = true;
-        } else { // Set it from static
-            $debug = static::DEBUG;
-        }
+        // if (static::DEBUG === null) { // Set it from config
+        //     // $debug = Config::has('debug') ? (bool) Config::get('debug') : false;
+        //     $debug = true;
+        // } else { // Set it from static
+        //     $debug = static::DEBUG;
+        // }
+        $debug = static::DEBUG;
         $this->debug = $debug;
 
         return $this;
@@ -436,8 +438,8 @@ class ErrorHandler
         $this->loggerLevel = static::getLoggerLevel($e_type) ?? 'error';
         $this->message = $this->exception->getMessage();
         $this->file = Path::normalize($this->exception->getFile());
-        $this->line = Path::normalize((string) $this->exception->getLine());
-
+        $this->line = (string) $this->exception->getLine();
+        
         return $this;
     }
 

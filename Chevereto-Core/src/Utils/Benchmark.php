@@ -16,8 +16,6 @@ use Chevereto\Core\Message;
 use Chevereto\Core\Traits\Printable;
 use Exception;
 
-// FIXME: A class using toString can't trhow exceptions!
-
 /**
  * Benchmark provides a simple way to determine which code procedure perform faster compared to others.
  */
@@ -222,9 +220,9 @@ class Benchmark
         }
         $total = ' Time taken: '.round($this->time, 4).' s';
         $cols = strlen($total);
-        if ($cols > $this->COLUMNS) {
-            // $times = Number::abbreviate($runs, 2);
-        }
+        // if ($cols > $this->COLUMNS) {
+        //     $times = Number::abbreviate($runs, 2);
+        // }
         $return[] = str_repeat(' ', (int) max(0, $this->COLUMNS - strlen($total))).$total;
         $this->printable = '<pre>'.implode("\n", $return).'</pre>';
     }

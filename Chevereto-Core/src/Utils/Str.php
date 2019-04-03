@@ -147,7 +147,7 @@ class Str
      * Taken from http://www.chirp.com.au/ and improved for Chevereto.
      *
      * @param string $string string to be truncated
-     * @param int  $limit  integer for character lengh based trimming
+     * @param int    $limit  integer for character lengh based trimming
      * @param string $pad    String to be appended to the truncated string, default "...".
      *
      * @return string truncated string
@@ -362,7 +362,8 @@ class Str
             ];
         $string = str_replace(array_keys($transliteration), array_values($transliteration), $string);
         // Missing something?
-        if (strpos($string = htmlentities($string, ENT_QUOTES, 'UTF-8'), '&') !== false) {
+        $string = htmlentities($string, ENT_QUOTES, 'UTF-8');
+        if (strpos($string, '&') !== false) {
             $replaced = preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|tilde|uml);~i', '$1', $string);
 
             return $replaced == null ? '' : html_entity_decode($replaced, ENT_QUOTES, 'UTF-8');

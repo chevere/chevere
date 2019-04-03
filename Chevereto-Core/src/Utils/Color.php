@@ -76,7 +76,6 @@ class Color
                         ->code('%a', 'array')
                         ->code('%t', $type)
                 );
-            break;
         }
         $hex = '#';
         $hex .= str_pad(dechex($val[0]), 2, '0', STR_PAD_LEFT);

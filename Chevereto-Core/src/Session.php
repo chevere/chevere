@@ -81,7 +81,7 @@ class Session
                 }
             }
             if (isset($errors)) {
-                // FIXME: Usar new Message()
+                // TODO: Usar new Message()
                 throw new Exception(strtr('Sessions are not working on this server due to missing %s permission on session path <b>%f</b>', [
                     '%s' => '<b>'.implode('</b>/<b>', $errors).'</b>',
                     '%f' => $path,

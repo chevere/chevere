@@ -166,7 +166,6 @@ class Hook
         switch ($numArgs) {
             case 2:
                 return static::$hooks[$file][$anchor] ?? [];
-            break;
             case 3:
                 if (!in_array($pos, [static::BEFORE, static::AFTER])) {
                     throw new Exception(
@@ -178,7 +177,6 @@ class Hook
                 }
 
                 return static::$hooks[$file][$anchor][$pos] ?? [];
-            break;
         }
 
         return [];
@@ -212,7 +210,8 @@ class Hook
      */
     public static function execBefore(string $anchor, callable $callable, object $that = null): void
     {
-        if ($file = static::getCallerFile()) {
+        $file = static::getCallerFile();
+        if (isset($file)) {
             static::execAt($file, $anchor, static::BEFORE, $that);
         }
         $callable($that);
@@ -230,7 +229,8 @@ class Hook
     public static function execAfter(string $anchor, callable $callable, object $that = null): void
     {
         $callable($that);
-        if ($file = static::getCallerFile()) {
+        $file = static::getCallerFile();
+        if (isset($file)) {
             static::execAt($file, $anchor, static::AFTER, $that);
         }
     }

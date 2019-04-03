@@ -38,11 +38,15 @@ class Core
      */
     public static function getClassFilename($class): string
     {
-        if ($filename = (new ReflectionClass($class))->getFileName()) {
-            return $filename;
-        } else {
-            throw new Exception('Unable to retrieve class filename.');
+        $filename = (new ReflectionClass($class))->getFileName();
+        if (false === $filename) {
+            throw new Exception(
+                (string) (new Message('Class %s is defined in the PHP core or in a extension.'))
+                    ->code('%s', $class)
+            );
         }
+
+        return $filename;
     }
 
     /**
