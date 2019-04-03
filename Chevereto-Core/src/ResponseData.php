@@ -44,15 +44,16 @@ class ResponseData implements DataInterface
         $data = $this->getData();
         if ($data instanceof Json) {
             $class = HttpFoundationJsonResponse::class;
-        } else {
-            // if (method_exists($data, 'getData')) {
-            //     // $dataData = $data->getData();
-            // }
-            // if ($data instanceof DataInterface) {
-            // }
-            // // if(method_exists($data, '__toString'))
-            // $data = null;
         }
+        //  else {
+        //     if (method_exists($data, 'getData')) {
+        //         // $dataData = $data->getData();
+        //     }
+        //     if ($data instanceof DataInterface) {
+        //     }
+        //     // if(method_exists($data, '__toString'))
+        //     $data = null;
+        // }
 
         return (new $class())
             ->setContent($data)

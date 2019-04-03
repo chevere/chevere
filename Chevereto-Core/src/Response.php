@@ -74,9 +74,9 @@ class Response extends HttpFoundationResponse
     public function __construct(array $data = null, int $status = 200, array $headers = [])
     {
         parent::__construct('', $status, $headers);
-        if (null != $data) {
-            // $this->setData($data);
-        }
+        // if (null != $data) {
+        //     $this->setData($data);
+        // }
     }
 
     public function getData(): ?array

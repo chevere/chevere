@@ -19,11 +19,11 @@ return new class() extends Controller {
  * Cuando se usa un lambda, no hay acceso a $this
  * TODO: $parameter name must match the router declaration!
  */
-return function ($algo = null, $sub = null) use ($vars, $routing) {
-    return [
-        'algo' => $algo,
-        'sub' => $sub,
-        'vars' => $vars,
-        'routing' => (array) $routing,
-    ];
-};
+// return function ($algo = null, $sub = null) use ($vars, $routing) {
+//     return [
+//         'algo' => $algo,
+//         'sub' => $sub,
+//         'vars' => $vars,
+//         'routing' => (array) $routing,
+//     ];
+// };

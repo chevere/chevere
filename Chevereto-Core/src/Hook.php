@@ -166,7 +166,6 @@ class Hook
         switch ($numArgs) {
             case 2:
                 return static::$hooks[$file][$anchor] ?? [];
-            break;
             case 3:
                 if (!in_array($pos, [static::BEFORE, static::AFTER])) {
                     throw new Exception(
@@ -178,7 +177,6 @@ class Hook
                 }
 
                 return static::$hooks[$file][$anchor][$pos] ?? [];
-            break;
         }
     }
 

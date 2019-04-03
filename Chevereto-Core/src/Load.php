@@ -43,10 +43,8 @@ class Load
         switch ($constructor) {
             case static::INCLUDE:
                 return include $filepath;
-            break;
             case static::INCLUDE_ONCE:
                 return include_once $filepath;
-            break;
         }
     }
 

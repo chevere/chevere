@@ -222,9 +222,9 @@ class Benchmark
         }
         $total = ' Time taken: '.round($this->time, 4).' s';
         $cols = strlen($total);
-        if ($cols > $this->COLUMNS) {
-            // $times = Number::abbreviate($runs, 2);
-        }
+        // if ($cols > $this->COLUMNS) {
+        //     $times = Number::abbreviate($runs, 2);
+        // }
         $return[] = str_repeat(' ', (int) max(0, $this->COLUMNS - strlen($total))).$total;
         $this->printable = '<pre>'.implode("\n", $return).'</pre>';
     }

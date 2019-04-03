@@ -54,10 +54,6 @@ class RuntimeConfig extends Data
     public function addFile(string $fileHandle): self
     {
         $arrayFile = new ArrayFile($fileHandle);
-        try {
-        } catch (Exception $e) {
-            throw new CoreException($e);
-        }
         $this->loadedFiles[] = $arrayFile->getFilepath();
 
         return $this->dataAdder($arrayFile->toArray());
@@ -91,7 +87,7 @@ class RuntimeConfig extends Data
             $this->validate();
         } catch (Exception $e) {
             throw new CoreException(
-                (new Message($e->getMessage().' '.'at %s'))->b('%s', '0000000000000000')
+                (new Message($e->getMessage().' at %s'))->b('%s', '0000000000000000')
             );
         }
         $this->addData($this->data);
@@ -219,7 +215,6 @@ class RuntimeConfig extends Data
                         ->code('%s', 'string')
                         ->code('%a', 'array')
                     );
-            break;
         }
     }
 }

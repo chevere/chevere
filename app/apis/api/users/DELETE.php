@@ -20,10 +20,9 @@ return new class() extends Controller {
             $that->private .= ' - MC HAMMER';
             $that->source .= ' nuuuuts ';
         });
-        dump('source after hook: '.$this->source, $this->private);
-        die();
+        // dump('source after hook: '.$this->source, $this->private);
 
-        return ['deleted' => $user];
+        // return ['deleted' => $user];
     }
 
     const OPTIONS = [
