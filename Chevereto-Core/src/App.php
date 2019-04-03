@@ -23,7 +23,8 @@ use Symfony\Component\HttpFoundation\Request as HttpRequest;
 
 class App extends Container
 {
-    use Traits\CallableTrait; // TODO: Implement interfaces
+    use Traits\CallableTrait;
+    use Traits\StaticTrait;
 
     const NAMESPACES = ['App', __NAMESPACE__];
     const APP = 'app';
@@ -125,12 +126,6 @@ class App extends Container
         } else {
             $this->setHttpRequest(HttpRequest::createFromGlobals());
         }
-    }
-
-    // TODO: Make trait
-    public static function hasStaticProp(string $key): bool
-    {
-        return isset(static::$$key);
     }
 
     protected function setRuntime(Runtime $runtime): self
@@ -401,13 +396,12 @@ class App extends Container
     /**
      * Farewell kids, my planet needs me.
      */
-    // TODO: Stuff
     public function terminate(string $message = null)
     {
         if ($message) {
             Console::log($message);
         }
-        // exit();
+        // callTermEvent();
     }
 
     protected function setLogger(Logger $logger)
