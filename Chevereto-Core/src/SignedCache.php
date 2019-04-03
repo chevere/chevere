@@ -123,7 +123,7 @@ class SignedCache
     protected function writer(string $filename, string $contents): void
     {
         $fh = fopen($filename, 'w');
-        if (!$fh) {
+        if (false === $fh) {
             throw new Exception(
                 (new Message('Unable to open (w) %s for cache'))->code('%s', $filename)
             );

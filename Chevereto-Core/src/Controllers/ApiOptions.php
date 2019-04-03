@@ -14,9 +14,9 @@ namespace Chevereto\Core\Controllers;
 
 use const Chevereto\Core\CLI;
 use Chevereto\Core\Console;
-use Chevereto\Core\CoreException;
 use Chevereto\Core\Message;
 use Chevereto\Core\Controller;
+use Exception;
 
 /**
  * Identical to OPTIONS.
@@ -38,14 +38,14 @@ class ApiOptions extends Controller
         }
         if ($endpoint == null) {
             $message =
-                (new Message('Must provide a %s argument when running this callable without route context.'))
-            ->code('%s', '(string) $endpoint');
+                (string) (new Message('Must provide a %s argument when running this callable without route context.'))
+            ->code('%s', '$endpoint');
             if (CLI) {
                 Console::io()->error($message);
 
                 return;
             } else {
-                throw new CoreException($message);
+                throw new Exception($message);
             }
         }
         $response = $this->getResponse();

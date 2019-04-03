@@ -29,7 +29,7 @@ class Image
     public static function animated(string $filename): bool
     {
         $fh = @fopen($filename, 'rb');
-        if (!$fh) {
+        if (false === $fh) {
             return false;
         }
         $count = 0;

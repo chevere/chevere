@@ -254,7 +254,7 @@ class Validation
         $this->validates = true;
         foreach ($this->tasks as $k => $task) {
             $this->results[$k] = [];
-            $validate = true;
+            // $validate = true;
             $result = call_user_func($task->callable, $task->value) === true;
             $task->result = $result;
             $validate = $result;

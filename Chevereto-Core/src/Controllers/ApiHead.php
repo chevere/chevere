@@ -16,6 +16,7 @@ use const Chevereto\Core\CLI;
 use Chevereto\Core\Console;
 use Chevereto\Core\Message;
 use Chevereto\Core\Controller;
+use Exception;
 
 /**
  * Identical to GET, but without any message-boby in the response.
@@ -32,23 +33,21 @@ class ApiHead extends Controller
             $route = $this->getApp()->getRouter()->resolve($endpoint);
         } else {
             $route = $this->getApp()->getObject('route');
-            if (isset($route)) {
-                $endpoint = $route->getKey();
-            } else {
+            if (!isset($route)) {
                 $message =
-                    (new Message('Must provide the %s argument when running this callable without route context.'))
+                    (string) (new Message('Must provide the %s argument when running this callable without route context.'))
                         ->code('%s', '$endpoint');
                 if (CLI) {
                     Console::io()->error($message);
 
                     return;
                 } else {
-                    throw new CoreException($message);
+                    throw new Exception($message);
                 }
             }
         }
 
-        if (null === $route) {
+        if (!isset($route)) {
             $this->getResponse()->setStatusCode(404)->setNoBody();
 
             return;

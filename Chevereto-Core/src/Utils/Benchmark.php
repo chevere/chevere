@@ -219,7 +219,7 @@ class Benchmark
             $return[] = $line;
         }
         $total = ' Time taken: '.round($this->time, 4).' s';
-        $cols = strlen($total);
+        // $cols = strlen($total);
         // if ($cols > $this->COLUMNS) {
         //     $times = Number::abbreviate($runs, 2);
         // }

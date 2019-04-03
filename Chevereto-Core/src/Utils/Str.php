@@ -155,7 +155,6 @@ class Str
     public static function truncate(string $string, int $limit, string $pad = '...'): string
     {
         $encoding = 'UTF-8';
-        $break = null;
         if (mb_strlen($string, $encoding) <= $limit) {
             return $string;
         }

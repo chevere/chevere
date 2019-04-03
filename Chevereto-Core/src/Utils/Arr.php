@@ -35,7 +35,6 @@ class Arr
      */
     public static function filterArray(array $array, array $keys, $mode = self::FILTER_EXCLUSION): array
     {
-        $arr = $array;
         $return = [];
         foreach ($keys as $k => $v) {
             switch ($mode) {
@@ -64,7 +63,7 @@ class Arr
      */
     public static function utf8Encode(array &$array): array
     {
-        array_walk_recursive($array, function (&$val, $key) {
+        array_walk_recursive($array, function (&$val) {
             $val = mb_convert_encoding($val, 'UTF-8', mb_detect_encoding($val));
         });
 

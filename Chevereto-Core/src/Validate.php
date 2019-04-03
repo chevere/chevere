@@ -194,7 +194,7 @@ class Validate
      */
     public static function realUrl(string $url): bool
     {
-        return false;
+        return (bool) $url;
         // TODO: Migrate to Guzzle
         // if (static::url($url) == false) {
         //     return false;

@@ -294,7 +294,7 @@ class App extends Container
                 if (!empty($route)) {
                     $this->setRoute($route);
                     // Resolved callable
-                    $callable = $route->getCallable(
+                    $resolvedCallable = $route->getCallable(
                         $this->getHttpRequest()->getMethod()
                     );
                     $this->setArguments(
@@ -302,12 +302,16 @@ class App extends Container
                     );
                 } else {
                     echo '404 - Not found';
+
+                    return;
                 }
             } catch (Exception $e) {
                 echo 'Exception at App: '.$e->getCode();
+
+                return;
             }
         }
-        $controller = $this->getControllerObject($callable);
+        $controller = $this->getControllerObject($callable ?? $resolvedCallable);
         if ($controller instanceof Interfaces\RenderableInterface) {
             echo $controller->render();
         } else {

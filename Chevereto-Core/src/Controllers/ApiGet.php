@@ -14,9 +14,9 @@ namespace Chevereto\Core\Controllers;
 
 use const Chevereto\Core\CLI;
 use Chevereto\Core\Console;
-use Chevereto\Core\CoreException;
 use Chevereto\Core\Message;
 use Chevereto\Core\Controller;
+use Exception;
 
 /**
  * Expose an API endpoint.
@@ -40,19 +40,19 @@ class ApiGet extends Controller
                 $endpoint = $route->getKey();
             } else {
                 $message =
-                    (new Message('Must provide the %s argument when running this callable without route context.'))
+                    (string) (new Message('Must provide the %s argument when running this callable without route context.'))
                         ->code('%s', '$endpoint');
                 if (CLI) {
                     Console::io()->error($message);
 
                     return;
                 } else {
-                    throw new CoreException($message);
+                    throw new Exception($message);
                 }
             }
         }
 
-        if (null === $route) {
+        if (!isset($route)) {
             $this->getResponse()->setStatusCode(404);
 
             return;
