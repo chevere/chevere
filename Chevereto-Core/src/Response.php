@@ -279,4 +279,9 @@ class Response extends HttpResponse
 
         return $this;
     }
+
+    public function getStatusString(): string
+    {
+        return sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText);
+    }
 }
