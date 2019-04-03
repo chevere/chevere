@@ -13,7 +13,6 @@ declare(strict_types=1);
 namespace Chevereto\Core\Controllers;
 
 use const Chevereto\Core\CLI;
-use Chevereto\Core\CoreException;
 use Chevereto\Core\Console;
 use Chevereto\Core\Message;
 use Chevereto\Core\Controller;
@@ -33,31 +32,34 @@ class ApiHead extends Controller
             $route = $this->getApp()->getRouter()->resolve($endpoint);
         } else {
             $route = $this->getApp()->getObject('route');
-            $endpoint = $route->getKey();
+            if (isset($route)) {
+                $endpoint = $route->getKey();
+            } else {
+                $message =
+                    (new Message('Must provide the %s argument when running this callable without route context.'))
+                        ->code('%s', '$endpoint');
+                if (CLI) {
+                    Console::io()->error($message);
+
+                    return;
+                } else {
+                    throw new CoreException($message);
+                }
+            }
         }
 
         if (null === $route) {
+            $this->getResponse()->setStatusCode(404)->setNoBody();
+
             return;
         }
 
         $callable = $route->getCallable('GET');
 
-        // if (isset($route)) {
-        // } else {
-        //     $message = (new Message('You have to provide the %s argument when running this callable without route context.'))
-        //         ->code('%s', '(string) $endpoint');
-
-        //     if (CLI) {
-        //         Console::io()->error($message);
-
-        //         return;
-        //     } else {
-        //         throw new CoreException($message);
-        //     }
-        // }
-
         $controller = $this->getApp()->getControllerObject($callable);
         $controller->getResponse()->setNoBody();
-        dd($controller->getResponse());
+        if (CLI) {
+            Console::io()->block($controller->getResponse()->getStatusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
+        }
     }
 }
