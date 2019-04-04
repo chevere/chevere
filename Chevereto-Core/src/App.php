@@ -19,7 +19,6 @@ use LogicException;
 use ReflectionMethod;
 use ReflectionFunction;
 use Monolog\Logger;
-use Symfony\Component\HttpFoundation\Request as HttpRequest;
 
 class App extends Container
 {
@@ -47,7 +46,7 @@ class App extends Container
     protected $runtime;
     protected $logger;
     protected $router;
-    protected $request;
+    protected $httpRequest;
     protected $response;
     protected $apis;
     protected $route;
@@ -55,7 +54,7 @@ class App extends Container
     protected $db;
     protected $handler;
 
-    protected $objects = ['runtime', 'config', 'logger', 'router', 'request', 'response', 'apis', 'route', 'cache', 'db', 'handler'];
+    protected $objects = ['runtime', 'config', 'logger', 'router', 'httpRequest', 'response', 'apis', 'route', 'cache', 'db', 'handler'];
 
     public function __construct(AppParameters $parameters = null)
     {
@@ -134,19 +133,34 @@ class App extends Container
         return isset(static::$instance);
     }
 
-    public static function readRuntimeData(): ?array
+    /**
+     * Provides access to the App HttpRequest instance.
+     *
+     * @return HttpRequest|null
+     */
+    public static function requestInstance(): ?HttpRequest
     {
         if (isset(static::$instance)) {
-            return static::$instance->getRuntime()->getData();
+            // Request isn't there when doing cli (unless you run the request command)
+            if (static::$instance->hasObject('httpRequest')) {
+                return static::$instance->getHttpRequest();
+            }
         }
 
         return null;
     }
 
-    public static function readRuntimeDataKey(string $key)
+    /**
+     * Provides access to the App Runtime instance.
+     *
+     * @return Runtime|null
+     */
+    public static function runtimeInstance(): ?Runtime
     {
         if (isset(static::$instance)) {
-            return static::$instance->getRuntime()->getDataKey($key);
+            if (static::$instance->hasObject('runtime')) {
+                return static::$instance->getRuntime();
+            }
         }
 
         return null;
@@ -231,7 +245,7 @@ class App extends Container
 
     public function getHttpRequest(): HttpRequest
     {
-        return $this->request;
+        return $this->httpRequest;
     }
 
     protected function setResponse(Response $response): self
@@ -482,9 +496,9 @@ class App extends Container
 
     protected function setHttpRequest(HttpRequest $request): self
     {
-        $this->request = $request;
-        $pathinfo = ltrim($this->request->getPathInfo(), '/');
-        $this->request->attributes->set('requestArray', explode('/', $pathinfo));
+        $this->httpRequest = $request;
+        $pathinfo = ltrim($this->httpRequest->getPathInfo(), '/');
+        $this->httpRequest->attributes->set('requestArray', explode('/', $pathinfo));
         // $host = $_SERVER['HTTP_HOST'] ?? null;
         // $this->define('HTTP_HOST', $host);
         // $this->define('URL', App\HTTP_SCHEME . '://' . $host . ROOT_PATH_RELATIVE);

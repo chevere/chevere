@@ -13,8 +13,8 @@ declare(strict_types=1);
 namespace Chevereto\Core\Command;
 
 use Chevereto\Core\App;
+use Chevereto\Core\HttpRequest;
 use Chevereto\Core\Command;
-use Symfony\Component\HttpFoundation\Request as HttpRequest;
 use ReflectionMethod;
 
 /**

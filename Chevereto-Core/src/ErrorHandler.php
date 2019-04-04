@@ -9,7 +9,6 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-// TODO: Missing HTML: Client, Request, Server.
 
 namespace Chevereto\Core;
 
@@ -39,11 +38,10 @@ use Symfony\Component\HttpFoundation\JsonResponse as HttpJsonResponse;
  *
  * Psst, edit the constants when extending.
  */
-// TODO: Re-factor
 class ErrorHandler
 {
     // Customize the relative folder where logs will be stored
-    const DEFAULT_LOG_DATE_FORMAT = 'Y/m/d/';
+    const LOG_DATE_FOLDER = 'Y/m/d/';
     // null will read app/config.php. Any boolean value will override that
     const DEBUG = null;
     // null will use App\PATH_LOGS ? PATH_LOGS ? traverse
@@ -53,7 +51,7 @@ class ErrorHandler
     // Content with debug = false
     const NO_DEBUG_CONTENT = '<p>The system has failed and the server wasn\'t able to fulfil your request. This incident has been logged.</p><p>Please try again later and if the problem persist don\'t hesitate to contact your system administrator.</p>';
     // CSS stylesheet
-    const CSS = 'html{color:#000;font:16px Helvetica,Arial,sans-serif;line-height:1.3;background:#3498db;background:-moz-linear-gradient(top,#3498db 0%,#8e44ad 100%);background:-webkit-linear-gradient(top,#3498db 0%,#8e44ad 100%);background:linear-gradient(to bottom,#3498db 0%,#8e44ad 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#3498db",endColorstr="#8e44ad",GradientType=0)}.body--block{margin:20px}.body--flex{margin:0;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.user-select-none{-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}main{background:none;display:block;padding:0;margin:0;border:0;width:470px}.body--block main{margin:0 auto}@media (min-width:768px){main{padding:20px}}.main--stack{width:100%;max-width:900px}.hr{display:block;height:1px;color:transparent;background:hsl(192,15%,84%)}.hr>span{opacity:0;line-height:0}.main--stack hr:last-of-type{margin-bottom:0}.t{font-weight:700;margin-bottom:5px}.t--scream{font-size:2.25em;margin-bottom:0}.t--scream span{font-size:.667em;font-weight:400}.t--scream span::before{white-space:pre;content:"\A"}.t>.hide{display:inline-block}.c code{padding:2px 5px}.c code,.c pre{background:hsl(192,15%,95%);line-height:normal}.c pre.pre--even{background:hsl(192,15%,97%)}.c pre{overflow:auto;word-wrap:break-word;font-family:Consolas,monospace,sans-serif;display:block;margin:0;padding:10px}main>div{padding:20px;background:#FFF}main>div,main>div> *{word-break:break-word;white-space:normal}@media (min-width:768px){main>div{-webkit-box-shadow:2px 2px 4px 0 rgba(0,0,0,.09);box-shadow:2px 2px 4px 0 rgba(0,0,0,.09);border-radius:2px}}main>div>:first-child{margin-top:0}main>div>:last-child{margin-bottom:0}.note{margin:1em 0}.fine-print{color:#BBB}.hide{width:0;height:0;opacity:0}
+    const CSS = 'html{color:#000;font:16px Helvetica,Arial,sans-serif;line-height:1.3;background:#3498db;background:-moz-linear-gradient(top,#3498db 0%,#8e44ad 100%);background:-webkit-linear-gradient(top,#3498db 0%,#8e44ad 100%);background:linear-gradient(to bottom,#3498db 0%,#8e44ad 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#3498db",endColorstr="#8e44ad",GradientType=0)}.body--block{margin:20px}.body--flex{margin:0;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.user-select-none{-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}main{background:none;display:block;padding:0;margin:0;border:0;width:470px}.body--block main{margin:0 auto}@media (min-width:768px){main{padding:20px}}.main--stack{width:100%;max-width:900px}.hr{display:block;height:1px;color:transparent;background:hsl(192,15%,84%)}.hr>span{opacity:0;line-height:0}.main--stack hr:last-of-type{margin-bottom:0}.t{font-weight:700;margin-bottom:5px}.t--scream{font-size:2.25em;margin-bottom:0}.t--scream span{font-size:.667em;font-weight:400}.t--scream span::before{white-space:pre;content:"\A"}.t>.hide{display:inline-block}.c code{padding:2px 5px}.c code,.c pre{background:hsl(192,15%,95%);line-height:normal}.c pre.pre--even{background:hsl(192,15%,97%)}.c pre{overflow:auto;word-wrap:break-word;font-family:Consolas,monospace,sans-serif;display:block;margin:0;padding:10px}main>div{padding:20px;background:#FFF}main>div,main>div> *{word-break:break-word;white-space:normal}@media (min-width:768px){main>div{-webkit-box-shadow:2px 2px 4px 0 rgba(0,0,0,.09);box-shadow:2px 2px 4px 0 rgba(0,0,0,.09);border-radius:2px}}main>div>:first-child{margin-top:0}main>div>:last-child{margin-bottom:0}.note{margin:1em 0}.fine-print{color:#BBB}.hide{width:0;height:0;opacity:0;overflow:hidden}
     .c pre {
         border: 1px solid hsl(192,15%,84%);
         border-bottom: 0; 
@@ -179,9 +177,9 @@ class ErrorHandler
     public $logFilename;
     public $url;
     public $requestMethod;
-    public $clientRemoteAddress;
+    public $clientIp;
     public $clientUserAgent;
-    public $serverName;
+    public $serverHost;
     public $serverProtocol;
     public $serverPort;
     public $serverSoftware;
@@ -256,21 +254,6 @@ class ErrorHandler
     }
 
     /**
-     * Handle HTTP status.
-     *
-     * Sets HTTP status code 500 (if possible). Done here to issue HTTP 500 on
-     * own class errors (syntax and whatnot).
-     *
-     * Later, Response will set the real HTTP 500 code.
-     */
-    // protected static function handleHttpStatus() : void
-    // {
-    //     if (headers_sent() == false) {
-    //         Http::setStatusCode(500);
-    //     }
-    // }
-
-    /**
      * Sets signature properties (time + id).
      *
      * Assign properties used to identify the error incident.
@@ -305,18 +288,11 @@ class ErrorHandler
         return $this;
     }
 
-    /**
-     * Set debug flag from const DEBUG > Config.
-     *
-     * If debug is enabled, all the error information will be printed.
-     * If disabled, it will hide the error content.
-     * In any case, this class should always logs everything into the error log.
-     */
-    protected function setLogDateFormat(string $format = null): void
+    protected function setLogDateFormat(): self
     {
-        // $this->logDateFormat = static::DEFAULT_LOG_DATE_FORMAT ?? $format ?? (Config::has('logDateFormat') ? Config::get('logDateFormat') : static::DEFAULT_LOG_DATE_FORMAT);
-        // TODO: Configurable log format?
-        $this->logDateFormat = $format ?? static::DEFAULT_LOG_DATE_FORMAT;
+        $this->logDateFormat = static::LOG_DATE_FOLDER;
+
+        return $this;
     }
 
     /**
@@ -324,15 +300,17 @@ class ErrorHandler
      *
      * Both App and Chevereto\Core logs to app/var/logs.
      */
-    protected function setLogFilename(string $path = null): void
+    protected function setLogFilename(string $path = null): self
     {
-        if ($path === null) {
+        if (!isset($path)) {
             $path = static::PATH_LOGS;
         }
         $path = Path::normalize($path);
         $path = rtrim($path, '/').'/';
         $date = gmdate($this->logDateFormat, $this->timestamp);
         $this->logFilename = $path.$this->loggerLevel.'/'.$date.$this->timestamp.'_'.$this->id.'.log';
+
+        return $this;
     }
 
     protected function setLogger(): self
@@ -361,7 +339,7 @@ class ErrorHandler
         $error_reporting = error_reporting();
         error_reporting(0);
         try {
-            $debug = App::readRuntimeDataKey('debug');
+            $debug = App::runtimeInstance()->getDataKey('debug');
         } catch (\Throwable $e) { // Don't panic, such trucazo!
         }
         error_reporting($error_reporting);
@@ -443,34 +421,20 @@ class ErrorHandler
      */
     protected function setServerProperties(): self
     {
-        $this->url = $_SERVER['REQUEST_URI'] ?? 'unknown';
-        $map = [
-            'serverPort' => 'SERVER_PORT',
-            'clientUserAgent' => 'HTTP_USER_AGENT',
-            'requestMethod' => 'REQUEST_METHOD',
-            'serverName' => 'SERVER_NAME',
-            'serverProtocol' => 'SERVER_PROTOCOL',
-            'serverSoftware' => 'SERVER_SOFTWARE',
-        ];
-        // $app = App::instance();
-
-        // if ($app->hasObject('request')) {
-        //     $request = $app->getRequest();
-        //     $this->clientRemoteAddress = Http::clientIp();
-        //     foreach ($map as $k => $v) {
-        //         $this->{$k} = $request->server->get($v);
-        //     }
-        // } else {
         if (php_sapi_name() == 'cli') {
-            $this->clientRemoteAddress = $_SERVER['argv'][0];
+            $this->clientIp = $_SERVER['argv'][0];
             $this->clientUserAgent = Console::inputString();
         } else {
-            $this->clientRemoteAddress = Http::clientIp();
-            foreach ($map as $k => $v) {
-                $this->{$k} = $_SERVER[$v];
-            }
+            $request = App::requestInstance();
+            $this->url = $request->readInfoKey('requestUri') ?? 'unknown';
+            $this->clientUserAgent = $request->getHeaders()->get('User-Agent');
+            $this->requestMethod = $request->readInfoKey('method');
+            $this->serverHost = $request->readInfoKey('host');
+            $this->serverPort = $request->readInfoKey('port');
+            $this->serverProtocol = $request->readInfoKey('protocolVersion');
+            $this->serverSoftware = $request->getServer()->get('SERVER_SOFTWARE');
+            $this->clientIp = $request->readInfoKey('clientIp');
         }
-        // }
 
         return $this;
     }
@@ -647,10 +611,10 @@ class ErrorHandler
             static::SECTION_TIME => ['# Time', '%datetimeUtc% [%timestamp%]'],
         ];
         $plain[static::SECTION_ID] = ['# Incident ID:%id%', 'Logged at %logFilename%'];
-        $plain[self::SECTION_STACK] = ['Stack trace', '%plainStack%'];
-        $plain[static::SECTION_CLIENT] = ['# Client', '%clientRemoteAddress% %clientUserAgent%'];
+        $plain[static::SECTION_STACK] = ['# Stack trace', '%plainStack%'];
+        $plain[static::SECTION_CLIENT] = ['# Client', '%clientIp% %clientUserAgent%'];
         $plain[static::SECTION_REQUEST] = ['# Request', '%serverProtocol% %requestMethod% %url%'];
-        $plain[static::SECTION_SERVER] = ['# Server', '%serverName% (port:%serverPort%) %serverSoftware%'];
+        $plain[static::SECTION_SERVER] = ['# Server', '%serverHost% (port:%serverPort%) %serverSoftware%'];
 
         if (php_sapi_name() == 'cli') {
             $verbosity = Console::output()->getVerbosity();
@@ -667,12 +631,12 @@ class ErrorHandler
                 if ($lvl === false || $verbosity < $lvl) {
                     continue;
                 }
-                if ($k == self::SECTION_STACK) {
+                if ($k == static::SECTION_STACK) {
                     $v[1] = '%consoleStack%';
                 }
                 $this->setConsoleSection($keyString, $v);
             } else {
-                if ($k == self::SECTION_STACK) {
+                if ($k == static::SECTION_STACK) {
                     $v[1] = '%richStack%';
                 }
                 $this->setRichContentSection($keyString, $v);

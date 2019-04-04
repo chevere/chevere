@@ -12,17 +12,10 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
-use Chevereto\Core\Traits\DataTrait;
 use Chevereto\Core\Traits\PrintableTrait;
 
-/**
- * $json = new Json($data);
- * $json->setResponse('message', 'code')->print();.
- */
-// TODO: Use {json:api}
-class Json implements Interfaces\PrintableInterface
+class Json extends Data implements Interfaces\PrintableInterface
 {
-    use DataTrait;
     use PrintableTrait;
 
     const CODE = 'code';

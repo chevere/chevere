@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
-use Chevereto\Core\Traits\DataTrait;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Exception;
 use InvalidArgumentException;
@@ -25,8 +24,6 @@ use InvalidArgumentException;
  */
 class Response extends HttpResponse
 {
-    // use DataTrait;
-
     public $val;
 
     // https://jsonapi.org/format/1.0/
