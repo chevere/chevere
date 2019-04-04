@@ -32,8 +32,8 @@ class App extends Container
     const FILEHANDLE_PARAMETERS = ':parameters';
     const FILEHANDLE_HACKS = ':hacks';
 
+    protected static $instance;
     protected static $defaultRuntime;
-    // protected static $args;
 
     /** @var bool */
     protected $isCached;
@@ -59,6 +59,7 @@ class App extends Container
 
     public function __construct(AppParameters $parameters = null)
     {
+        static::$instance = $this;
         $this->setRouter(new Router());
         $this->isCached = false;
         if (static::hasStaticProp('defaultRuntime')) {
@@ -126,6 +127,29 @@ class App extends Container
         } else {
             $this->setHttpRequest(HttpRequest::createFromGlobals());
         }
+    }
+
+    public static function hasInstance(): bool
+    {
+        return isset(static::$instance);
+    }
+
+    public static function readRuntimeData(): ?array
+    {
+        if (isset(static::$instance)) {
+            return static::$instance->getRuntime()->getData();
+        }
+
+        return null;
+    }
+
+    public static function readRuntimeDataKey(string $key)
+    {
+        if (isset(static::$instance)) {
+            return static::$instance->getRuntime()->getDataKey($key);
+        }
+
+        return null;
     }
 
     protected function setRuntime(Runtime $runtime): self

@@ -9,7 +9,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-// TODO: Missing HTML: Client, Request, Server. CLI: Client, Server
+// TODO: Missing HTML: Client, Request, Server.
 
 namespace Chevereto\Core;
 
@@ -357,7 +357,15 @@ class ErrorHandler
      */
     protected function setDebug(): self
     {
-        $this->debug = (bool) RuntimeConfig::readDataKey('debug');
+        $debug = static::DEBUG;
+        $error_reporting = error_reporting();
+        error_reporting(0);
+        try {
+            $debug = App::readRuntimeDataKey('debug');
+        } catch (\Throwable $e) { // Don't panic, such trucazo!
+        }
+        error_reporting($error_reporting);
+        $this->debug = (bool) $debug;
 
         return $this;
     }
@@ -435,7 +443,7 @@ class ErrorHandler
      */
     protected function setServerProperties(): self
     {
-        // $this->url = $_SERVER['REQUEST_URI'] ?? 'unknown';
+        $this->url = $_SERVER['REQUEST_URI'] ?? 'unknown';
         $map = [
             'serverPort' => 'SERVER_PORT',
             'clientUserAgent' => 'HTTP_USER_AGENT',
@@ -522,7 +530,7 @@ class ErrorHandler
             if (!array_key_exists('file', $frame) && isset($frame['class'])) {
                 $reflector = new \ReflectionMethod($frame['class'], $frame['function']);
                 $filename = $reflector->getFileName();
-                if(false !== $filename) {
+                if (false !== $filename) {
                     $frame['file'] = $filename;
                     $frame['line'] = $reflector->getStartLine();
                 }
