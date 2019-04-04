@@ -14,10 +14,10 @@ namespace Chevereto\Core;
 
 use Exception;
 
-// TODO: Route lock (disables further modification)
-// TODO: Reg events, determine who changes a route.
-// TODO: Enable alt routes [/taken, /also-taken, /availabe]
-// TODO: L10n support
+// IDEA Route lock (disables further modification)
+// IDEA: Reg events, determine who changes a route.
+// IDEA: Enable alt routes [/taken, /also-taken, /availabe]
+// IDEA: L10n support
 
 /**
  * This one works with Routes static.

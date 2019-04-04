@@ -1,6 +1,6 @@
 # Chevereto\Core
 
-Modern API-first web application framework, in the works.
+Modern API-first extensible web application framework, in the works.
 
 ## Note: This is a work-in-progress
 
@@ -13,8 +13,3 @@ Run: `rd -r -force "vendor"; composer update chevereto/core --prefer-source`
 This will create the /vendor dir with all the Chevereto\Core dependencies. You can also use it to re-build the thing.
 
 This is an unreleased application prototype, the package resides in 'Chevereto-Core' (repository type: path).
-
-## phpstan
-
-`phpstan analyze Chevereto-Core/src --level 7`
-`php phpstan.phar analyze Chevereto-Core/src --level 7`
