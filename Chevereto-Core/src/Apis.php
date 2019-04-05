@@ -156,7 +156,7 @@ class Apis
                     $wildcards = []; // index for of $wildcardsRequire
                     // level - 1 => required params
                     // ie: user/friends = level 2 => required params = 1 = user/{param}/friends
-                    foreach ($params = $invoke->getParameters() as $k => $param) {
+                    foreach ($invoke->getParameters() as $k => $param) {
                         ++$counter;
                         $error = null;
                         $required = ($param->isOptional() || !$param->isDefaultValueAvailable());
@@ -199,9 +199,9 @@ class Apis
                         continue;
                     }
                     // Turn $dir (users/friends) into $endpoint (users/{wildcard}/friends) based on controller _invoke parameters
-                    $endpoint = [];
+                    $endpointComp = [];
                     foreach ($explode as $k => $v) {
-                        $endpoint[] = $v;
+                        $endpointComp[] = $v;
                         $wildcard = $wildcards[$k] ?? null;
                         if ($wildcard) {
                             $wildcardRoute = '{'.$wildcard.'}';
@@ -209,17 +209,17 @@ class Apis
                             $iOptional = $wildcardsRequire[$wildcard] == false;
                             if ($iLastWildcard && $iOptional) {
                                 // Append last optional wildcard as {wildcard}
-                                $endpoint[] = $wildcardRoute;
+                                $endpointComp[] = $wildcardRoute;
                                 // Store "required" version
-                                $ROUTE_MAP[implode('/', $endpoint)][$httpVerb] = $filePathRelativeApp;
+                                $ROUTE_MAP[implode('/', $endpointComp)][$httpVerb] = $filePathRelativeApp;
                                 // Remove "required", allows to store "optional" version
-                                array_pop($endpoint);
+                                array_pop($endpointComp);
                             } else {
-                                $endpoint[] = $wildcardRoute;
+                                $endpointComp[] = $wildcardRoute;
                             }
                         }
                     }
-                    $endpoint = implode('/', $endpoint);
+                    $endpoint = implode('/', $endpointComp);
                 } else {
                     // plain _invoke(), runs only on top level
                     $endpoint = $dir;
@@ -231,6 +231,7 @@ class Apis
             throw new ApiException(implode("\n", $errors));
         }
         ksort($ROUTE_MAP);
+        dd($ROUTE_MAP);
         // $ROUTE_MAP defines API routing
         foreach ($ROUTE_MAP as $endpoint => $httpMethods) {
             $api = [];
@@ -258,6 +259,7 @@ class Apis
                     $api['OPTIONS'][$k] = $v[1];
                 }
             }
+            // dd($httpMethods);
             $route = Route::bind($endpointRoute)->methods($httpMethods)->setId($endpoint);
             $this->routeKeys[$endpointRoute] = [$basename, $endpoint];
             // Define Route wildcard "where" if needed
@@ -280,6 +282,8 @@ class Apis
             $API[$endpoint] = $api;
         }
         ksort($API);
+
+        dd($this->getRouter()->getRoutes());
 
         $route = Route::bind('/'.$basename)
             ->method('HEAD', Controllers\ApiHead::class)

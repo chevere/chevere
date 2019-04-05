@@ -16,7 +16,7 @@ use const Chevereto\Core\CLI;
 use Chevereto\Core\Console;
 use Chevereto\Core\Message;
 use Chevereto\Core\Controller;
-use Exception;
+use InvalidArgumentException;
 
 /**
  * Expose an API endpoint.
@@ -26,6 +26,8 @@ class ApiGet extends Controller
     const OPTIONS = [
         'description' => 'Retrieve endpoint.',
     ];
+
+    private $endpoint;
 
     /**
      * @param string $endpoint an API endpoint (/api)
@@ -40,15 +42,15 @@ class ApiGet extends Controller
                 $endpoint = $route->getKey();
             } else {
                 $message =
-                    (string) (new Message('Must provide the %s argument when running this callable without route context.'))
-                        ->code('%s', '$endpoint');
+                    (string)
+                        (new Message('Must provide the %s argument when running this callable without route context.'))
+                            ->code('%s', '$endpoint');
                 if (CLI) {
                     Console::io()->error($message);
 
                     return;
-                } else {
-                    throw new Exception($message);
                 }
+                throw new InvalidArgumentException($message);
             }
         }
 
@@ -58,20 +60,23 @@ class ApiGet extends Controller
             return;
         }
 
-        $response = $this->getResponse();
-        $statusCode = 200;
-        $endpointData = $this->getApis()->getEndpoint($endpoint);
+        $this->endpoint = $endpoint;
+
+        $this->process();
+    }
+
+    private function process()
+    {
+        $endpointData = $this->getApis()->getEndpoint($this->endpoint);
         if ($endpointData) {
-            $response->setMeta(['api' => $endpoint]);
+            $this->getResponse()->setMeta(['api' => $this->endpoint]);
             foreach ($endpointData as $property => $data) {
                 if ($property == 'wildcards') {
                     continue;
                 }
-                $response->addData('endpoint', $property, $data);
+                $this->getResponse()->addData('endpoint', $property, $data);
             }
-        } else {
-            $statusCode = 404;
         }
-        $response->setStatusCode($statusCode);
+        $this->getResponse()->setStatusCode(200);
     }
 }

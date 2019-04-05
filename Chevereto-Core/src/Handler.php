@@ -22,6 +22,8 @@ use Chevereto\Core\Interfaces\HandlerInterface;
  */
 class Handler implements HandlerInterface
 {
+    use Traits\CallableTrait;
+
     protected $queue;
 
     /**

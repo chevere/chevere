@@ -292,6 +292,7 @@ class App extends Container
         if (!isset($callable)) {
             try {
                 $route = $this->getRouter()->resolve($this->getHttpRequest()->getPathInfo());
+                dd($route);
                 if (!empty($route)) {
                     $this->setRoute($route);
                     // Resolved callable
@@ -317,7 +318,7 @@ class App extends Container
             if ($controller instanceof Interfaces\RenderableInterface) {
                 echo $controller->render();
             } else {
-                $controller->getResponse()->sendJson();
+                $controller->getResponse()->send();
             }
         }
     }
@@ -336,13 +337,13 @@ class App extends Container
             $controller->setApp($this);
         }
 
-        if ($this->route instanceof Route) {
-            $middlewares = $this->route->getMiddlewares();
-            if (!empty($middlewares)) {
-                $handler = new Handler($middlewares);
-                $handler->runner($this);
-            }
-        }
+        // if ($this->route instanceof Route) {
+        //     $middlewares = $this->route->getMiddlewares();
+        //     if (!empty($middlewares)) {
+        //         $handler = new Handler($middlewares);
+        //         $handler->runner($this);
+        //     }
+        // }
 
         $callableWrap->setPassedArguments($this->arguments);
 

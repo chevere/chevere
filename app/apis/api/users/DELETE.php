@@ -9,7 +9,7 @@ use App\User;
 return new class() extends Controller {
     private $private = "Can't touch this!";
 
-    public function __invoke(User $user)
+    public function __invoke(User $user = null)
     {
         dump($this);
         $GET = $this->invoke('@:GET', $user);

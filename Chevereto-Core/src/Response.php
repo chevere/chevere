@@ -30,7 +30,7 @@ class Response extends HttpResponse
     const JSON_API_VERSION = '1.0';
 
     /** @var bool */
-    protected $hasBody = true;
+    protected $hasBody = false;
 
     protected $jsonString;
     protected $callback;
@@ -79,9 +79,21 @@ class Response extends HttpResponse
         // }
     }
 
-    public function getData(): ?array
+    public function hasData(): bool
+    {
+        return !empty($this->data);
+    }
+
+    public function getData(): array
     {
         return $this->data;
+    }
+
+    public function unsetData(): self
+    {
+        $this->data = null;
+
+        return $this;
     }
 
     public function addData(string $type, string $id, array $attributes = null): self
@@ -102,6 +114,11 @@ class Response extends HttpResponse
         $this->data[] = $data;
 
         return $this;
+    }
+
+    public function hasMeta(): bool
+    {
+        return !empty($this->meta);
     }
 
     public function setMeta(array $data): self
@@ -258,8 +275,9 @@ class Response extends HttpResponse
         return $this->setContent($this->jsonString);
     }
 
-    public function sendJson(): HttpResponse
+    public function send(): HttpResponse
     {
+        $this->setHasBody($this->hasData());
         if ($this->hasBody) {
             $this->genJsonString()->setJsonContent();
         }
@@ -267,12 +285,9 @@ class Response extends HttpResponse
         return parent::send();
     }
 
-    /**
-     * Completely removes the response body. Needed when dealing with HEAD responses.
-     */
-    public function setNoBody(): self
+    public function setHasBody(bool $bool): self
     {
-        $this->hasBody = false;
+        $this->hasBody = $bool;
 
         return $this;
     }

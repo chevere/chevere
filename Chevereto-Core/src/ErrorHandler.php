@@ -425,14 +425,16 @@ class ErrorHandler
             $this->clientUserAgent = Console::inputString();
         } else {
             $request = App::requestInstance();
-            $this->url = $request->readInfoKey('requestUri') ?? 'unknown';
-            $this->clientUserAgent = $request->getHeaders()->get('User-Agent');
-            $this->requestMethod = $request->readInfoKey('method');
-            $this->serverHost = $request->readInfoKey('host');
-            $this->serverPort = $request->readInfoKey('port');
-            $this->serverProtocol = $request->readInfoKey('protocolVersion');
-            $this->serverSoftware = $request->getServer()->get('SERVER_SOFTWARE');
-            $this->clientIp = $request->readInfoKey('clientIp');
+            if (null !== $request) {
+                $this->url = $request->readInfoKey('requestUri') ?? 'unknown';
+                $this->clientUserAgent = $request->getHeaders()->get('User-Agent');
+                $this->requestMethod = $request->readInfoKey('method');
+                $this->serverHost = $request->readInfoKey('host');
+                $this->serverPort = $request->readInfoKey('port');
+                $this->serverProtocol = $request->readInfoKey('protocolVersion');
+                $this->serverSoftware = $request->getServer()->get('SERVER_SOFTWARE');
+                $this->clientIp = $request->readInfoKey('clientIp');
+            }
         }
 
         return $this;

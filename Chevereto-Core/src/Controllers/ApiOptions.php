@@ -16,7 +16,7 @@ use const Chevereto\Core\CLI;
 use Chevereto\Core\Console;
 use Chevereto\Core\Message;
 use Chevereto\Core\Controller;
-use Exception;
+use InvalidArgumentException;
 
 /**
  * Identical to OPTIONS.
@@ -26,6 +26,9 @@ class ApiOptions extends Controller
     const OPTIONS = [
         'description' => 'Retrieve endpoint OPTIONS.',
     ];
+
+    /** @var string */
+    private $endpoint;
 
     /**
      * @param string $endpoint an API endpoint (/api)
@@ -37,29 +40,41 @@ class ApiOptions extends Controller
             $endpoint = $route->getKey();
         }
         if ($endpoint == null) {
-            $message =
-                (string) (new Message('Must provide a %s argument when running this callable without route context.'))
-            ->code('%s', '$endpoint');
-            if (CLI) {
-                Console::io()->error($message);
-
-                return;
-            } else {
-                throw new Exception($message);
-            }
+            return $this->handleError();
         }
-        $response = $this->getResponse();
+        $this->endpoint = $endpoint;
+        $this->process();
+    }
+
+    protected function handleError()
+    {
+        $this->getResponse()->setStatusCode(400);
+        $message =
+                (string)
+                    (new Message('Must provide a %s argument when running this callable without route context.'))
+                        ->code('%s', '$endpoint');
+        if (CLI) {
+            Console::io()->error($message);
+
+            return;
+        } else {
+            throw new InvalidArgumentException($message);
+        }
+    }
+
+    private function process()
+    {
         $statusCode = 200;
         $apis = $this->getApis();
-        $apiKey = $apis->getEndpointApiKey($endpoint);
-        $endpointData = $apis->getBaseOptions($endpoint) ?? $apis->getEndpoint($endpoint);
+        $apiKey = $apis->getEndpointApiKey($this->endpoint);
+        $endpointData = $apis->getBaseOptions($this->endpoint) ?? $apis->getEndpoint($this->endpoint);
         if ($endpointData) {
-            $response->setMeta(['api' => $apiKey]);
-            $response->addData('OPTIONS', $endpoint, $endpointData['OPTIONS']);
+            $this->getResponse()->setMeta(['api' => $apiKey]);
+            $this->getResponse()->addData('OPTIONS', $this->endpoint, $endpointData['OPTIONS']);
         } else {
             $statusCode = 404;
             // $json->setResponse("Endpoint doesn't exists", $statusCode);
         }
-        $response->setStatusCode($statusCode);
+        $this->getResponse()->setStatusCode($statusCode);
     }
 }

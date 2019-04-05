@@ -16,7 +16,8 @@ use const Chevereto\Core\CLI;
 use Chevereto\Core\Console;
 use Chevereto\Core\Message;
 use Chevereto\Core\Controller;
-use Exception;
+use Chevereto\Core\Route;
+use InvalidArgumentException;
 
 /**
  * Identical to GET, but without any message-boby in the response.
@@ -27,6 +28,9 @@ class ApiHead extends Controller
         'description' => 'GET without message-body.',
     ];
 
+    /** @var Route */
+    private $route;
+
     public function __invoke(string $endpoint = null)
     {
         if (isset($endpoint)) {
@@ -35,27 +39,35 @@ class ApiHead extends Controller
             $route = $this->getApp()->getObject('route');
             if (!isset($route)) {
                 $message =
-                    (string) (new Message('Must provide the %s argument when running this callable without route context.'))
-                        ->code('%s', '$endpoint');
+                    (string)
+                        (new Message('Must provide the %s argument when running this callable without route context.'))
+                            ->code('%s', '$endpoint');
                 if (CLI) {
                     Console::io()->error($message);
 
                     return;
                 } else {
-                    throw new Exception($message);
+                    throw new InvalidArgumentException($message);
                 }
             }
         }
 
         if (!isset($route)) {
-            $this->getResponse()->setStatusCode(404)->setNoBody();
+            $this->getResponse()->setStatusCode(404);
 
             return;
         }
 
-        $callable = $route->getCallable('GET');
+        $this->route = $route;
+
+        $this->process();
+    }
+
+    private function process()
+    {
+        $callable = $this->route->getCallable('GET');
         $controller = $this->getApp()->getControllerObject($callable);
-        $controller->getResponse()->setNoBody();
+        $controller->getResponse()->unsetData();
         if (CLI) {
             Console::io()->block($controller->getResponse()->getStatusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
         }
