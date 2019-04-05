@@ -35,7 +35,7 @@ class ApiOptions extends Controller
      */
     public function __invoke(string $endpoint = null)
     {
-        $route = $this->getApp()->getObject('route');
+        $route = $this->getApp()->getRoute();
         if ($route) {
             $endpoint = $route->getKey();
         }

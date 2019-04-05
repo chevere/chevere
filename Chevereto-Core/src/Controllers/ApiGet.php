@@ -37,8 +37,8 @@ class ApiGet extends Controller
         if (isset($endpoint)) {
             $route = $this->getApp()->getRouter()->resolve($endpoint);
         } else {
-            $route = $this->getApp()->getObject('route');
-            if (isset($route)) {
+            if ($this->getApp()->hasRoute()) {
+                $route = $this->getApp()->getRoute();
                 $endpoint = $route->getKey();
             } else {
                 $message =

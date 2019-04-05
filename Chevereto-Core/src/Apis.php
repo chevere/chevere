@@ -231,7 +231,7 @@ class Apis
             throw new ApiException(implode("\n", $errors));
         }
         ksort($ROUTE_MAP);
-        dd($ROUTE_MAP);
+        // dd($ROUTE_MAP);
         // $ROUTE_MAP defines API routing
         foreach ($ROUTE_MAP as $endpoint => $httpMethods) {
             $api = [];
@@ -283,7 +283,7 @@ class Apis
         }
         ksort($API);
 
-        dd($this->getRouter()->getRoutes());
+        // dd($this->getRouter()->getRoutes());
 
         $route = Route::bind('/'.$basename)
             ->method('HEAD', Controllers\ApiHead::class)

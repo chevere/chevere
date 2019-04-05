@@ -20,9 +20,6 @@ use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Exception;
 
-/**
- * This class provides static access to the console.
- */
 class Console
 {
     const VERBOSITY_QUIET = ConsoleOutput::VERBOSITY_QUIET;
@@ -93,7 +90,7 @@ class Console
     {
         $exitCode = null;
         $cli = static::cli();
-        if (!$cli->hasObject('command')) {
+        if (!$cli->hasCommand()) {
             exit($exitCode);
         }
         $command = $cli->getCommand();

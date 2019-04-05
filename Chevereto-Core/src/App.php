@@ -17,6 +17,18 @@ use RuntimeException;
 use Exception;
 use Monolog\Logger;
 
+/**
+ * @method string hasRuntime(): bool
+ * @method string hasLogger(): bool
+ * @method string hasRouter(): bool
+ * @method string hasHttpRequest(): bool
+ * @method string hasResponse(): bool
+ * @method string hasApis(): bool
+ * @method string hasRoute(): bool
+ * @method string hasCache(): bool
+ * //@method string hasDb(): bool
+ * @method string hasHandler(): bool
+ */
 class App extends Container
 {
     use Traits\StaticTrait;
@@ -33,24 +45,65 @@ class App extends Container
     /** @var bool */
     protected $isCached;
 
-    /** @var array An array containing the plain arguments (scalar data) s */
-    protected $arguments = [];
+    /** @var array An array containing string arguments (from request uri, cli) */
+    protected $arguments;
     /** @var array An array containing the prepared controller arguments (object injection) */
-    protected $controllerArguments = [];
+    protected $controllerArguments;
 
-    // App objects
+    // App objects constants, must match the $prop name.
+    const OBJECT_RUNTIME = 'runtime';
+    const OBJECT_LOGGER = 'logger';
+    const OBJECT_ROUTER = 'router';
+    const OBJECT_HTTP_REQUEST = 'httpRequest';
+    const OBJECT_RESPONSE = 'response';
+    const OBJECT_APIS = 'apis';
+    const OBJECT_ROUTE = 'route';
+    const OBJECT_CACHE = 'cache';
+    const OBJECT_DB = 'db';
+    const OBJECT_HANDLER = 'handler';
+
+    protected $objects = [
+        self::OBJECT_RUNTIME => Runtime::class,
+        self::OBJECT_LOGGER => Logger::class,
+        self::OBJECT_ROUTER => Router::class,
+        self::OBJECT_HTTP_REQUEST => HttpRequest::class,
+        self::OBJECT_RESPONSE => Response::class,
+        self::OBJECT_APIS => Apis::class,
+        self::OBJECT_ROUTE => Route::class,
+        self::OBJECT_CACHE => Cache::class,
+        self::OBJECT_DB => 'Db::class',
+        self::OBJECT_HANDLER => Handler::class,
+    ];
+
+    /** @var Runtime */
     protected $runtime;
-    protected $logger;
-    protected $router;
-    protected $httpRequest;
-    protected $response;
-    protected $apis;
-    protected $route;
-    protected $cache;
-    protected $db;
-    protected $handler;
 
-    protected $objects = ['runtime', 'config', 'logger', 'router', 'httpRequest', 'response', 'apis', 'route', 'cache', 'db', 'handler'];
+    /** @var Logger */
+    protected $logger;
+
+    /** @var Router */
+    protected $router;
+
+    /** @var HttpRequest */
+    protected $httpRequest;
+
+    /** @var Response */
+    protected $response;
+
+    /** @var Apis */
+    protected $apis;
+
+    /** @var Route */
+    protected $route;
+
+    /** @var Cache */
+    protected $cache;
+
+    /** @var Db */
+    protected $db;
+
+    /** @var Handler */
+    protected $handler;
 
     public function __construct(AppParameters $parameters = null)
     {
@@ -70,7 +123,7 @@ class App extends Container
         }
         $configFiles = $parameters->getDataKey(AppParameters::CONFIG_FILES);
         if (isset($configFiles)) {
-            if ($this->hasObject('runtime')) {
+            if (isset($this->runtime)) {
                 $this->getRuntime()->runConfig(
                     (new RuntimeConfig())
                         ->processFromFiles($configFiles)
@@ -138,7 +191,7 @@ class App extends Container
     {
         if (isset(static::$instance)) {
             // Request isn't there when doing cli (unless you run the request command)
-            if (static::$instance->hasObject('httpRequest')) {
+            if (isset(static::$instance->httpRequest)) {
                 return static::$instance->getHttpRequest();
             }
         }
@@ -154,7 +207,7 @@ class App extends Container
     public static function runtimeInstance(): ?Runtime
     {
         if (isset(static::$instance)) {
-            if (static::$instance->hasObject('runtime')) {
+            if (isset(static::$instance->runtime)) {
                 return static::$instance->getRuntime();
             }
         }
@@ -292,7 +345,6 @@ class App extends Container
         if (!isset($callable)) {
             try {
                 $route = $this->getRouter()->resolve($this->getHttpRequest()->getPathInfo());
-                dd($route);
                 if (!empty($route)) {
                     $this->setRoute($route);
                     // Resolved callable
@@ -345,7 +397,9 @@ class App extends Container
         //     }
         // }
 
-        $callableWrap->setPassedArguments($this->arguments);
+        if (is_array($this->arguments)) {
+            $callableWrap->setPassedArguments($this->getArguments());
+        }
 
         $this->controllerArguments = $callableWrap->getArguments();
         $controller(...$this->controllerArguments);
@@ -379,7 +433,7 @@ class App extends Container
     /**
      * Sets the plain App arguments (scalar data).
      */
-    public function setArguments(array $arguments = [])
+    public function setArguments(array $arguments)
     {
         $this->arguments = $arguments;
     }
@@ -392,14 +446,14 @@ class App extends Container
     /**
      * Sets the rich controller arguments (object injection).
      */
-    public function setControllerArguments(array $arguments = [])
+    public function setControllerArguments(array $arguments)
     {
         $this->controllerArguments = $arguments;
     }
 
     public function getControllerArguments(): array
     {
-        return $this->controllerArguments ?? [];
+        return $this->controllerArguments;
     }
 
     /**
@@ -407,7 +461,7 @@ class App extends Container
      */
     public function forgeHttpRequest(HttpRequest $request): self
     {
-        if ($this->hasObject('request')) {
+        if (isset($this->httpRequest)) {
             throw new CoreException('Unable to forge request when the request has been already set.');
         }
         $this->setHttpRequest($request);
@@ -420,9 +474,7 @@ class App extends Container
         $this->httpRequest = $request;
         $pathinfo = ltrim($this->httpRequest->getPathInfo(), '/');
         $this->httpRequest->attributes->set('requestArray', explode('/', $pathinfo));
-        // $host = $_SERVER['HTTP_HOST'] ?? null;
-        // $this->define('HTTP_HOST', $host);
-        // $this->define('URL', App\HTTP_SCHEME . '://' . $host . ROOT_PATH_RELATIVE);
+
         return $this;
     }
 

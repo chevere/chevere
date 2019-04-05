@@ -27,7 +27,7 @@ use ReflectionParameter;
  * - A class implementing ::__invoke
  * - A fileHandle string representing the path of a file wich returns a callable
  */
-class CallableWrap extends Container
+class CallableWrap
 {
     // const SOURCE_FUNCTION = 'function';
     // const SOURCE_METHOD = 'method';
@@ -40,9 +40,6 @@ class CallableWrap extends Container
 
     // const SOURCES = [self::SOURCE_FUNCTION, self::SOURCE_METHOD, self::SOURCE_CLASS, self::SOURCE_FILEHANDLE];
     const TYPES = [self::TYPE_FUNCTION, self::TYPE_CLASS];
-
-    // TODO: Name "containerProperties"
-    protected $objects = ['callableHandle', 'callable', 'callableFilepath', 'type', 'class', 'method', 'reflectionFunction', 'reflectionMethod', 'arguments', 'passedArguments'];
 
     /** @var string The callable string handle used to construct the object */
     // is_array (function)
@@ -105,8 +102,8 @@ class CallableWrap extends Container
             if (class_exists($callableHandle)) {
                 if (method_exists($callableHandle, '__invoke')) {
                     $this
-                        ->setCallable(/** @scrutinizer ignore-type */ new $callableHandle()) // string!
-                        ->setClass(/** @scrutinizer ignore-type */ $callableHandle) // string!
+                        ->setCallable(/* @scrutinizer ignore-type */ new $callableHandle()) // string!
+                        ->setClass(/* @scrutinizer ignore-type */ $callableHandle) // string!
                         ->setMethod('__invoke')
                         ->setIsAnon(false)
                         ->prepare();
@@ -121,7 +118,7 @@ class CallableWrap extends Container
             }
         }
         // Some work needed when dealing with fileHandle
-        if (!$this->hasObject('callable')) {
+        if (!isset($this->callable)) {
             if (Utils\Str::contains('::', $callableHandle)) {
                 $this->callableHandleMethodExplode = explode('::', $callableHandle);
                 $class = $this->callableHandleMethodExplode[0];
@@ -285,8 +282,8 @@ class CallableWrap extends Container
     // Process the callable and fill the object properties
     protected function prepare()
     {
-        if ($this->hasObject(static::TYPE_CLASS)) {
-            $this->setType($this->hasObject(static::TYPE_METHOD) ? static::TYPE_CLASS : static::TYPE_FUNCTION);
+        if (isset($this->class)) {
+            $this->setType(isset($this->method) ? static::TYPE_CLASS : static::TYPE_FUNCTION);
         } else {
             if (is_object($this->getCallable())) {
                 $this->setMethod('__invoke');
@@ -338,12 +335,12 @@ class CallableWrap extends Container
 
     protected function hasReflection(): bool
     {
-        return $this->hasObject('reflectionFunction') || $this->hasObject('reflectionMethod');
+        return isset($this->reflectionFunction) || isset($this->reflectionMethod);
     }
 
     protected function getReflection(): \ReflectionFunctionAbstract
     {
-        return $this->hasObject('reflectionFunction')
+        return isset($this->reflectionFunction)
             ? $this->getReflectionFunction()
             : $this->getReflectionMethod();
     }
@@ -380,7 +377,7 @@ class CallableWrap extends Container
         // Magically create typehinted arguments
         foreach ($this->getReflection()->getParameters() as $parameter) {
             $parameterType = $parameter->getType();
-            $type = null != $parameterType ? $parameterType->getName() : null;
+            $type = isset($parameterType) ? $parameterType->getName() : null;
             $value = $this->getPassedArguments()[$parameter->getName()] ?? $this->getPassedArguments()[$parameterIndex] ?? null;
             if (null === $type || in_array($type, Controller::TYPE_DECLARATIONS)) {
                 $arguments[] = $value ?? ($parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);

@@ -36,8 +36,9 @@ class ApiHead extends Controller
         if (isset($endpoint)) {
             $route = $this->getApp()->getRouter()->resolve($endpoint);
         } else {
-            $route = $this->getApp()->getObject('route');
-            if (!isset($route)) {
+            if ($this->getApp()->hasRoute()) {
+                $route = $this->getApp()->getRoute();
+            } else {
                 $message =
                     (string)
                         (new Message('Must provide the %s argument when running this callable without route context.'))

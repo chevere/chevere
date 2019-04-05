@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
-use Chevereto\Core\Traits\ContainerTrait;
 use Monolog\Logger;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -21,26 +20,51 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * This class provides console for Chevereto\Core and it is a facade of Symfony\Component\Console.
+ *
+ * @method string hasInput(): bool
+ * @method string hasOutput(): bool
+ * @method string hasLogger(): bool
+ * @method string hasClient(): bool
+ * @method string hasIo(): bool
+ * @method string hasCommand(): bool
  */
 class Cli extends Container
 {
-    // use ContainerTrait;
-
-    protected $objects = ['logger', 'client', 'input', 'output', 'io', 'command'];
+    protected $objects = [
+        'input' => ArgvInput::class,
+        'output' => ConsoleOutput::class,
+        'logger' => Logger::class,
+        'client' => Application::class,
+        'io' => SymfonyStyle::class,
+        'command' => Command::class,
+    ];
 
     const NAME = __NAMESPACE__.' cli';
     const VERSION = '1.0';
 
-    protected $name;
-    protected $version;
+    /** @var ArgvInput */
     protected $input;
+
+    /** @var ConsoleOutput */
     protected $output;
+
+    /** @var Logger */
     protected $logger;
+
+    /** @var Application */
     protected $client;
+
+    /** @var SymfonyStyle */
     protected $io;
+
+    /** @var Command */
     protected $command;
 
-    // TODO: Inject logger?
+    /** @var string Cli name */
+    protected $name;
+    /** @var string Cli version */
+    protected $version;
+
     public function __construct(ArgvInput $input)
     {
         $this->name = static::NAME;
@@ -70,11 +94,6 @@ class Cli extends Container
         $this->client->run($this->input, $this->output);
     }
 
-    /**
-     * Set the value of name.
-     *
-     * @return self
-     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -82,11 +101,6 @@ class Cli extends Container
         return $this;
     }
 
-    /**
-     * Set the value of version.
-     *
-     * @return self
-     */
     public function setVersion(string $version): self
     {
         $this->version = $version;
@@ -94,11 +108,6 @@ class Cli extends Container
         return $this;
     }
 
-    /**
-     * Set the value of input.
-     *
-     * @return self
-     */
     public function setInput(ArgvInput $input): self
     {
         $this->input = $input;
@@ -106,11 +115,6 @@ class Cli extends Container
         return $this;
     }
 
-    /**
-     * Set the value of output.
-     *
-     * @return self
-     */
     public function setOutput(ConsoleOutput $output): self
     {
         $this->output = $output;
@@ -118,11 +122,6 @@ class Cli extends Container
         return $this;
     }
 
-    /**
-     * Set the value of logger.
-     *
-     * @return self
-     */
     public function setLogger(Logger $logger): self
     {
         $this->logger = $logger;
@@ -130,11 +129,6 @@ class Cli extends Container
         return $this;
     }
 
-    /**
-     * Set the value of client.
-     *
-     * @return self
-     */
     public function setClient(Application $client): self
     {
         $this->client = $client;
@@ -142,11 +136,6 @@ class Cli extends Container
         return $this;
     }
 
-    /**
-     * Set the value of io.
-     *
-     * @return self
-     */
     public function setIo(SymfonyStyle $io): self
     {
         $this->io = $io;
@@ -154,11 +143,6 @@ class Cli extends Container
         return $this;
     }
 
-    /**
-     * Set the value of command.
-     *
-     * @return self
-     */
     public function setCommand(Command $command): self
     {
         $this->command = $command;
@@ -166,67 +150,41 @@ class Cli extends Container
         return $this;
     }
 
-    /**
-     * Get the value of name.
-     */
     public function getName(): string
     {
         return $this->name;
     }
 
-    /**
-     * Get the value of version.
-     */
     public function getVersion(): string
     {
         return $this->version;
     }
 
-    /**
-     * Get the value of input.
-     *
-     * @return ArgvInput
-     */
     public function getInput(): ArgvInput
     {
         return $this->input;
     }
 
-    /**
-     * Get the value of output.
-     */
     public function getOutput(): ConsoleOutput
     {
         return $this->output;
     }
 
-    /**
-     * Get the value of logger.
-     */
     public function getLogger(): Logger
     {
         return $this->logger;
     }
 
-    /**
-     * Get the value of client.
-     */
     public function getClient(): Application
     {
         return $this->client;
     }
 
-    /**
-     * Get the value of io.
-     */
     public function getIo(): SymfonyStyle
     {
         return $this->io;
     }
 
-    /**
-     * Get the value of command.
-     */
     public function getCommand(): Command
     {
         return $this->command;

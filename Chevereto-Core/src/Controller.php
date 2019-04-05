@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
-use Chevereto\Core\Traits\ContainerTrait;
 use Chevereto\Core\Traits\HookableTrait;
 use Exception;
 use ReflectionClass;
@@ -40,7 +39,6 @@ use ReflectionClass;
 class Controller extends Container
 {
     use HookableTrait;
-    // use ContainerTrait;
 
     const TYPE_DECLARATIONS = ['array', 'callable', 'bool', 'float', 'int', 'string', 'iterable'];
     const OPTIONS = [];

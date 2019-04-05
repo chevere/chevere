@@ -17,6 +17,8 @@ use Chevereto\Core\HttpRequest;
 use Chevereto\Core\Command;
 use ReflectionMethod;
 
+// TODO: Check php app/console request /api
+
 /**
  * The RequestCommand allows to pass a forged request to the App instance.
  *
