@@ -19,7 +19,6 @@ use Monolog\Logger;
 
 class App extends Container
 {
-    use Traits\CallableTrait;
     use Traits\StaticTrait;
 
     const NAMESPACES = ['App', __NAMESPACE__];
@@ -174,34 +173,6 @@ class App extends Container
     {
         return $this->runtime;
     }
-
-    // protected function setRuntimeConfig(RuntimeConfig $config): self
-    // {
-    //     $this->runtimeConfig = $config;
-
-    //     return $this;
-    // }
-
-    // public function getRuntimeConfig(): RuntimeConfig
-    // {
-    //     return $this->runtimeConfig;
-    // }
-
-    /**
-     * Applies the RuntimeConfig.
-     */
-    // protected function configure(): self
-    // {
-    //     if (false == $this->hasObject('runtimeConfig')) {
-    //         throw new CoreException(
-    //             (new Message('Unable to apply runtimeConfig (no %s has been set).'))
-    //                 ->code('%s', RuntimeConfig::class)
-    //         );
-    //     }
-    //     $this->getRuntime()->runConfig($this->getRuntimeConfig());
-
-    //     return $this;
-    // }
 
     /**
      * Get the value of handler.

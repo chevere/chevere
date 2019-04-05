@@ -229,7 +229,7 @@ class ConfigException extends Exception
         $message = "Unexpected config value $value for <b>$key</b> config key";
         // $assert = 'try' ?? Config::getAssert($key);
         $assert = '00000000000000000xTry';
-        $message .= ' (expecting <code>'.implode('</code> or <code>', $assert).'</code>)';
+        $message .= ' (expecting <code>'.$assert.'</code>)';
         parent::__construct($message, $code, $previous);
     }
 }
