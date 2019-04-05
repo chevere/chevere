@@ -122,60 +122,75 @@ class CallableWrap
         }
         // Some work needed when dealing with fileHandle
         if (!isset($this->callable)) {
-            if (Utils\Str::contains('::', $callableHandle)) {
-                $this->callableHandleMethodExplode = explode('::', $callableHandle);
-                $class = $this->callableHandleMethodExplode[0];
-                if (!class_exists($class)) {
-                    throw new LogicException(
-                        (string)
-                            (new Message('Callable string %s is targeting not found class %c.'))
-                                ->code('%s', $callableHandle)
-                                ->code('%c', $class)
-                    );
-                }
-                $method = $this->callableHandleMethodExplode[1];
-                if (0 === strpos($method, '__')) {
-                    throw new LogicException(
-                        (string)
-                            (new Message('Callable string %s is targeting the magic method %m.'))
-                                ->code('%s', $callableHandle)
-                                ->code('%m', $method)
-                    );
-                }
-                if (!method_exists($class, $method)) {
-                    throw new LogicException(
-                        (string)
-                            (new Message('Callable string %s is targeting an nonexistent method %m.'))
-                                ->code('%s', $callableHandle)
-                                ->code('%m', $method)
-                    );
-                }
-            } else {
-                $callableFilepath = Path::fromHandle($callableHandle);
-                if (!File::exists($callableFilepath)) {
-                    throw new LogicException(
-                        (string)
-                            (new Message('Unable to locate any callable specified by %s.'))
-                                ->code('%s', $callableHandle)
-                    );
-                }
-                $callable = include $callableFilepath;
-                if (!is_callable($callable)) {
-                    throw new LogicException(
-                        (string)
-                            (new Message('Expected %s callable, %t provided in %f.'))
-                                ->code('%s', '$callable')
-                                ->code('%t', gettype($callable))
-                                ->code('%f', $callableHandle)
-                    );
-                }
-                $this
-                    ->setIsFileHandle(true)
-                    ->setCallable($callable)
-                    ->setCallableFilepath($callableFilepath)
-                    ->prepare();
-            }
+            $this->processCallableHandle();
         }
+    }
+
+    protected function processCallableHandle(): void
+    {
+        if (Utils\Str::contains('::', $this->callableHandle)) {
+            $this->processCallableHandleMethod();
+        } else {
+            $this->processCallableHandleFile();
+        }
+    }
+
+    protected function processCallableHandleMethod(): void
+    {
+        $this->callableHandleMethodExplode = explode('::', $this->callableHandle);
+        $class = $this->callableHandleMethodExplode[0];
+        if (!class_exists($class)) {
+            throw new LogicException(
+                (string)
+                    (new Message('Callable string %s is targeting not found class %c.'))
+                        ->code('%s', $this->callableHandle)
+                        ->code('%c', $class)
+            );
+        }
+        $method = $this->callableHandleMethodExplode[1];
+        if (0 === strpos($method, '__')) {
+            throw new LogicException(
+                (string)
+                    (new Message('Callable string %s is targeting the magic method %m.'))
+                        ->code('%s', $this->callableHandle)
+                        ->code('%m', $method)
+            );
+        }
+        if (!method_exists($class, $method)) {
+            throw new LogicException(
+                (string)
+                    (new Message('Callable string %s is targeting an nonexistent method %m.'))
+                        ->code('%s', $this->callableHandle)
+                        ->code('%m', $method)
+            );
+        }
+    }
+
+    protected function processCallableHandleFile(): void
+    {
+        $callableFilepath = Path::fromHandle($this->callableHandle);
+        if (!File::exists($callableFilepath)) {
+            throw new LogicException(
+                (string)
+                    (new Message('Unable to locate any callable specified by %s.'))
+                        ->code('%s', $this->callableHandle)
+            );
+        }
+        $callable = include $callableFilepath;
+        if (!is_callable($callable)) {
+            throw new LogicException(
+                (string)
+                    (new Message('Expected %s callable, %t provided in %f.'))
+                        ->code('%s', '$callable')
+                        ->code('%t', gettype($callable))
+                        ->code('%f', $this->callableHandle)
+            );
+        }
+        $this
+            ->setIsFileHandle(true)
+            ->setCallable($callable)
+            ->setCallableFilepath($callableFilepath)
+            ->prepare();
     }
 
     protected function setCallableHandle(string $callableHandle): self
