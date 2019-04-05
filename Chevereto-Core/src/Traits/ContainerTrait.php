@@ -10,39 +10,37 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Core;
+namespace Chevereto\Core\Traits;
 
-abstract class Container
+use Chevereto\Core\Utils\Str;
+
+trait ContainerTrait
 {
     /** @var array An array containing propName => className|null */
-    protected $objects = [];
+    // protected $objects;
 
     /**
      * Retrieves the $objects property.
      */
-    public function getObjectSignatures(): array
+    public function getObjectTypes(): array
     {
         return $this->objects;
     }
 
     /**
-     * Provides ::hasAlgo, ::getAlgoObject magic. "Algo" refers to an object property ($algo) known by the Container.
+     * Provides ::hasAlgo. "Algo" refers to a property ($algo) in the object.
      */
     final public function __call(string $name, array $arguments = null)
     {
-        if (Utils\Str::startsWith('has', $name)) {
+        if (Str::startsWith('has', $name)) {
             $propertyName = lcfirst(substr($name, 3));
 
             return $this->_callHasAlgo($propertyName);
         }
-        // if (Utils\Str::startsWith('get', $name) && Utils\Str::endsWith('Object', $name)) {
-        //     // Chars: get=3, Object=6
-        //     return $this->_callGetAlgoObject(substr(substr($name, 0, -6), 3));
-        // }
     }
 
     /**
-     * The ::hasAlgo magic.
+     * The ::hasAlgo magic check properties and the object type (if any).
      */
     private function _callHasAlgo(string $propertyName): bool
     {
@@ -61,12 +59,12 @@ abstract class Container
     /*
      * The ::GetAlgoObject is similar to a getAlgo getter, but this one won't throw type exception.
      */
-    // private function _callGetAlgoObject(string $algo): ?object
-    // {
-    //     $propertyName = lcfirst($algo);
-    //     $getMethod = 'get'.$algo;
-    //     dd($algo, $propertyName, $getMethod);
+  // private function _callGetAlgoObject(string $algo): ?object
+  // {
+  //     $propertyName = lcfirst($algo);
+  //     $getMethod = 'get'.$algo;
+  //     dd($algo, $propertyName, $getMethod);
 
-    //     return null;
-    // }
+  //     return null;
+  // }
 }

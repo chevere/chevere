@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
-use Chevereto\Core\Traits\HookableTrait;
 use Exception;
 use ReflectionClass;
 
@@ -34,16 +33,22 @@ use ReflectionClass;
  * @see Hookable
  * @see Interfaces\Controller
  * @see Interfaces\APIs
+ *
+ * Magic methods created by Container:
+ *
+ * @method string hasApp(): bool
  */
-// TODO: Create Container Interface
-class Controller extends Container
+class Controller implements Interfaces\ContainerInterface
 {
-    use HookableTrait;
+    use Traits\ContainerTrait;
+    use Traits\HookableTrait;
+
+    protected $objects = [
+        'app' => App::class,
+    ];
 
     const TYPE_DECLARATIONS = ['array', 'callable', 'bool', 'float', 'int', 'string', 'iterable'];
     const OPTIONS = [];
-
-    protected $objects = ['app'];
 
     /** @var App */
     private $app;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 namespace Chevereto\Core;
 
 use Exception;
+use Symfony\Component\Console\Exception\LogicException;
 
 // IDEA Route lock (disables further modification)
 // IDEA: Reg events, determine who changes a route.
@@ -20,10 +21,26 @@ use Exception;
 // IDEA: L10n support
 
 /**
- * This one works with Routes static.
+ * ALLFATHER GIVE ME ROUTEH!
+ *
+ * @method string hasId(): bool
+ * @method string hasKey(): bool
+ * @method string hasName(): bool
+ * @method string hasWheres(): bool
+ * @method string hasSet(): bool
+ * @method string hasPowerSet(): bool
+ * @method string hasMethods(): bool
+ * @method string hasWildcards(): bool
+ * @method string hasMaker(): bool
+ * @method string hasMiddlewares(): bool
+ * @method string hasHandlebars(): bool
+ * @method string hasOptionals(): bool
+ * @method string hasOptionalsIndex(): bool
+ * @method string hasMandatoryIndex(): bool
  */
-class Route
+class Route extends RouteValidator
 {
+    use Traits\ContainerTrait;
     use Traits\CallableTrait;
 
     /** @const Array containing all the HTTP methods. */
@@ -62,16 +79,16 @@ class Route
     protected $middlewares;
 
     /** @var bool */
-    private $hasHandlebars;
+    protected $handlebars;
 
     /** @var array */
-    private $optionals;
+    protected $optionals;
 
     /** @var array */
-    private $optionalsIndex;
+    protected $optionalsIndex;
 
     /** @var array */
-    private $mandatorIndex;
+    protected $mandatoryIndex;
 
     /**
      * Route constructor.
@@ -81,38 +98,10 @@ class Route
      */
     public function __construct(string $key, string $callable = null)
     {
-        $this->hasHandlebars = Utils\Str::contains('{', $key) || Utils\Str::contains('}', $key);
-        try {
-            Validation::grouped('$key', $key)
-                ->append(
-                    'value',
-                    function (string $string): bool {
-                        return
-                            $string == '/' ?: (
-                                strlen($string) > 0
-                                && Utils\Str::startsWith('/', $string)
-                                && !Utils\Str::endsWith('/', $string)
-                                && !Utils\Str::contains('//', $string)
-                                && !Utils\Str::contains(' ', $string)
-                                && !Utils\Str::contains('\\', $string)
-                            );
-                    },
-                    "String %i must start with a forward slash, it shouldn't contain neither whitespace, backslashes or extra forward slashes and it should be specified without a trailing slash."
-                )
-                ->append(
-                    'wildcards',
-                    function (string $string): bool {
-                        return !$this->hasHandlebars ?: preg_match_all('/{([0-9]+)}/', $string) === 0;
-                    },
-                    (string) (new Message('Wildcards in the form of %s are reserved.'))
-                        ->code('%s', '/{n}')
-                )
-                ->validate();
-        } catch (Exception $e) {
-            throw new RouteException($e);
-        }
-        $this->processMaker();
+        $this->handlebars = Utils\Str::contains('{', $key) || Utils\Str::contains('}', $key);
+        $this->processKeyValidation($key);
         $this->setKey($key);
+        $this->processMaker();
         $this->processWildcards();
 
         if (isset($callable)) {
@@ -129,7 +118,7 @@ class Route
 
     protected function processWildcards(): void
     {
-        if ($this->hasHandlebars && preg_match_all(static::REGEX_WILDCARD_SEARCH, $this->key, $matches)) {
+        if ($this->handlebars && preg_match_all(static::REGEX_WILDCARD_SEARCH, $this->key, $matches)) {
             // $matches[0] => [{wildcard}, {wildcard?},...]
             // $matches[1] => [wildcard, wildcard?,...]
             // Build the route handle, needed for regex replacements
@@ -147,9 +136,9 @@ class Route
         // Determine if route contains optional wildcards
         if (!empty($this->optionals)) {
             $mandatoryDiff = array_diff($this->getWildcards(), $this->optionalsIndex);
-            $this->mandatorIndex = [];
+            $this->mandatoryIndex = [];
             foreach ($mandatoryDiff as $k => $v) {
-                $this->mandatorIndex[$k] = null;
+                $this->mandatoryIndex[$k] = null;
             }
             // Generate the optionals power set, keeping its index keys in case of duplicated optionals
             $powerSet = Utils\Arr::powerSet($this->optionals, true);
@@ -164,7 +153,7 @@ class Route
         foreach ($powerSet as $set) {
             $auxSet = $this->set;
             // auxWildcards keys represent the wildcards being used. Iterate it with foreach.
-            $auxWildcards = $this->mandatorIndex;
+            $auxWildcards = $this->mandatoryIndex;
             foreach ($set as $replaceKey => $replaceValue) {
                 $replace = $this->optionals[$replaceKey];
                 if ($replaceValue !== null) {
@@ -200,7 +189,7 @@ class Route
             } else {
                 $wildcardTrim = $wildcard;
             }
-            if (in_array($wildcardTrim, $this->getWildcards())) {
+            if ($this->hasWildcards() && in_array($wildcardTrim, $this->getWildcards())) {
                 throw new RouteException(
                     (new Message('Must declare one unique wildcard per capturing group, duplicated %s detected in route %r.'))
                         ->code('%s', $matches[0][$k])
@@ -287,54 +276,16 @@ class Route
      */
     public function where(string $wildcardName, string $regex): self
     {
-        // The actual {wildcard}
-        $wildcard = "{{$wildcardName}}";
         // Validate $wildcardName
-        try {
-            Validation::grouped('$wildcardName', $wildcardName)
-                ->append(
-                    'value',
-                    function (string $string): bool {
-                        return
-                            !Utils\Str::startsWithNumeric($string)
-                            && preg_match('/^[a-z0-9_]+$/i', $string);
-                    },
-                    "String %s must contain only alphanumeric and underscore characters and it shouldn't start with a numeric value."
-                )
-                ->append(
-                    'match',
-                    function (string $string) use ($wildcard): bool {
-                        return
-                            Utils\Str::contains($wildcard, $this->getKey())
-                            || Utils\Str::contains('{'."$string?".'}', $this->getKey());
-                    },
-                    (string) (new Message("Wildcard %s doesn't exists in %r."))
-                        ->code('%s', $wildcard)
-                        ->code('%r', $this->getKey())
-                )
-                ->append(
-                    'unique',
-                    function (string $string): bool {
-                        return !isset($this->wheres[$string]);
-                    },
-                    (string) (new Message('Where clause for %s wildcard has been already declared.'))
-                        ->code('%s', $wildcard)
-                )
-                ->validate();
-            Validation::single(
-                '$regex',
-                $regex,
-                function (string $string): bool {
-                    return Validate::regex('/'.$string.'/');
-                },
-                'Invalid regex pattern %s.'
-            );
-        } catch (Exception $e) {
-            throw new RouteException($e->getMessage());
-        }
+        $this->processWildcardValidation($wildcardName, $regex);
         $this->wheres[$wildcardName] = $regex;
 
         return $this;
+    }
+
+    public static function getHandlebarsWrap(string $string): string
+    {
+        return "{{$string}}";
     }
 
     /**
@@ -359,10 +310,11 @@ class Route
     public function getCallable(string $httpMethod): string
     {
         $callable = $this->methods[$httpMethod] ?? null;
-        if (null === $callable) {
-            throw new RouteException(
-                (new Message('No controller is associated to HTTP method %s.'))
-                    ->code('%s', $httpMethod)
+        if (!isset($callable)) {
+            throw new LogicException(
+                (string)
+                    (new Message('No callable is associated to HTTP method %s.'))
+                        ->code('%s', $httpMethod)
             );
         }
 
@@ -374,9 +326,11 @@ class Route
      */
     public function fill(): self
     {
-        foreach ($this->getWildcards() as $k => $v) {
-            if (!isset($this->wheres[$v])) {
-                $this->wheres[$v] = static::REGEX_WILDCARD_WHERE;
+        if ($this->hasWildcards()) {
+            foreach ($this->getWildcards() as $k => $v) {
+                if (!isset($this->wheres[$v])) {
+                    $this->wheres[$v] = static::REGEX_WILDCARD_WHERE;
+                }
             }
         }
 
@@ -415,19 +369,19 @@ class Route
         return $this;
     }
 
-    public function getMiddlewares(): ?array
+    public function getMiddlewares(): array
     {
-        return $this->middlewares ?? [];
+        return $this->middlewares;
     }
 
-    public function getWildcards(): ?array
+    public function getWildcards(): array
     {
-        return $this->wildcards ?? [];
+        return $this->wildcards;
     }
 
-    public function getPowerSet(): ?array
+    public function getPowerSet(): array
     {
-        return $this->powerSet ?? [];
+        return $this->powerSet;
     }
 
     protected function setKey(string $key): self
@@ -442,14 +396,14 @@ class Route
         return $this->key;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
-        return $this->name ?? null;
+        return $this->name;
     }
 
-    public function getSet(): ?string
+    public function getSet(): string
     {
-        return $this->set ?? null;
+        return $this->set;
     }
 
     public function getId(): string

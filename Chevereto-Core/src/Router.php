@@ -56,8 +56,8 @@ class Router
             );
         }
         $pointer = [$route->getId(), $basename];
-        $name = $route->getName();
-        if (isset($name)) {
+        if ($route->hasName()) {
+            $name = $route->getName();
             $namedRoute = $this->getNamedRoutes()[$name] ?? null;
             if (isset($namedRoute)) {
                 throw new LogicException(
@@ -72,7 +72,7 @@ class Router
         $this->routes[$basename][$id] = $route;
 
         // Use $route->powerSet when needed
-        if (null != $route->getPowerSet()) {
+        if ($route->hasPowerSet()) {
             foreach ($route->getPowerSet() as $k => $wildcardsIndex) {
                 // n => .. => regex => [route, wildcards]
                 $this->routing($pointer, $route, $k); // $route->regex($k)
@@ -123,11 +123,11 @@ class Router
             $routeSetHandle = $routeSet;
             $regex = $route->regex($routeSetHandle);
         } else {
-            $routeSetHandle = $route->getSet() ?? $route->getKey();
+            $routeSetHandle = $route->hasSet() ? $route->getSet() : $route->getKey();
             $regex = $route->regex();
         }
         // Determine grouping type (static, mixed, dynamic)
-        if (null === $route->getSet()) {
+        if ($route->hasSet()) {
             $type = Route::TYPE_STATIC;
         } else {
             if (null != $routeSetHandle) {

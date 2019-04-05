@@ -21,6 +21,8 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 /**
  * This class provides console for Chevereto\Core and it is a facade of Symfony\Component\Console.
  *
+ * Magic methods created by Container:
+ *
  * @method string hasInput(): bool
  * @method string hasOutput(): bool
  * @method string hasLogger(): bool
@@ -28,8 +30,10 @@ use Symfony\Component\Console\Output\ConsoleOutput;
  * @method string hasIo(): bool
  * @method string hasCommand(): bool
  */
-class Cli extends Container
+class Cli implements Interfaces\ContainerInterface
 {
+    use Traits\ContainerTrait;
+
     protected $objects = [
         'input' => ArgvInput::class,
         'output' => ConsoleOutput::class,

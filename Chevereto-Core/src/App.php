@@ -18,6 +18,10 @@ use Exception;
 use Monolog\Logger;
 
 /**
+ * App contains the whole thing.
+ *
+ * Magic methods created by Container:
+ *
  * @method string hasRuntime(): bool
  * @method string hasLogger(): bool
  * @method string hasRouter(): bool
@@ -29,9 +33,24 @@ use Monolog\Logger;
  * //@method string hasDb(): bool
  * @method string hasHandler(): bool
  */
-class App extends Container
+class App implements Interfaces\ContainerInterface
 {
+    use Traits\ContainerTrait;
     use Traits\StaticTrait;
+
+    /** @var array The propName => ClassName map for the Container */
+    protected $objects = [
+        'runtime' => Runtime::class,
+        'logger' => Logger::class,
+        'router' => Router::class,
+        'httpRequest' => HttpRequest::class,
+        'response' => Response::class,
+        'apis' => Apis::class,
+        'route' => Route::class,
+        'cache' => 'Cache::class',
+        'db' => 'Db::class',
+        'handler' => Handler::class,
+    ];
 
     const NAMESPACES = ['App', __NAMESPACE__];
     const APP = 'app';
@@ -49,20 +68,6 @@ class App extends Container
     protected $arguments;
     /** @var array An array containing the prepared controller arguments (object injection) */
     protected $controllerArguments;
-
-    /** @var array The propName => ClassName map for the Container */
-    protected $objects = [
-        'runtime' => Runtime::class,
-        'logger' => Logger::class,
-        'router' => Router::class,
-        'httpRequest' => HttpRequest::class,
-        'response' => Response::class,
-        'apis' => Apis::class,
-        'route' => Route::class,
-        'cache' => 'Cache::class',
-        'db' => 'Db::class',
-        'handler' => Handler::class,
-    ];
 
     /** @var Runtime */
     protected $runtime;
