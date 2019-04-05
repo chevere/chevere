@@ -54,7 +54,6 @@ class ApiHead extends Controller
         }
 
         $callable = $route->getCallable('GET');
-
         $controller = $this->getApp()->getControllerObject($callable);
         $controller->getResponse()->setNoBody();
         if (CLI) {

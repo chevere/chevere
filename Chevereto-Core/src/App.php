@@ -15,9 +15,6 @@ namespace Chevereto\Core;
 
 use RuntimeException;
 use Exception;
-use LogicException;
-use ReflectionMethod;
-use ReflectionFunction;
 use Monolog\Logger;
 
 class App extends Container
@@ -327,7 +324,7 @@ class App extends Container
                 if (!empty($route)) {
                     $this->setRoute($route);
                     // Resolved callable
-                    $resolvedCallable = $route->getCallable(
+                    $callable = $route->getCallable(
                         $this->getHttpRequest()->getMethod()
                     );
                     $this->setArguments(
@@ -344,8 +341,8 @@ class App extends Container
                 return;
             }
         }
-        if (isset($callable) || isset($resolvedCallable)) {
-            $controller = $this->getControllerObject($callable ?? $resolvedCallable);
+        if (isset($callable)) {
+            $controller = $this->getControllerObject($callable);
             if ($controller instanceof Interfaces\RenderableInterface) {
                 echo $controller->render();
             } else {
@@ -355,15 +352,19 @@ class App extends Container
     }
 
     /**
-     * Runs a explicit provided callable.
+     * Runs a explicit provided callable string.
+     *
+     * @param string $callable function or method name
      */
     public function getControllerObject(string $callable)
     {
-        $controller = $this->getCallable($callable);
+        $callableWrap = new CallableWrap($callable);
+        $controller = $callableWrap->getCallable();
+
         if ($controller instanceof Controller) {
             $controller->setApp($this);
         }
-        // HTTP request middleware
+
         if ($this->route instanceof Route) {
             $middlewares = $this->route->getMiddlewares();
             if (!empty($middlewares)) {
@@ -371,62 +372,10 @@ class App extends Container
                 $handler->runner($this);
             }
         }
-        $controllerType = gettype($controller);
-        switch ($controllerType) {
-            case 'object':
-                $method = '__invoke';
-            break;
-            case 'string':
-                if (Utils\Str::contains('::', $controller)) {
-                    $controllerExplode = explode('::', $controller);
-                    $controller = $controllerExplode[0];
-                    $method = $controllerExplode[1];
-                }
-            break;
-            default:
-                throw new LogicException(
-                    (string) (new Message('Expecting %s controller type, %t provided for callable string %c.'))
-                        ->code('%s', 'invokable object|string')
-                        ->code('%t', $controllerType)
-                        ->code('%c', $callable)
-                );
-        }
-        if (isset($method)) {
-            $reflection = new ReflectionMethod($controller, $method);
-        } else {
-            $reflection = new ReflectionFunction($controller);
-        }
 
-        $controllerArguments = [];
-        $parameterIndex = 0;
-        // Magically create typehinted objects
-        foreach ($reflection->getParameters() as $parameter) {
-            $parameterType = $parameter->getType();
-            $type = null != $parameterType ? $parameterType->getName() : null;
-            $value = $this->arguments[$parameter->getName()] ?? $this->arguments[$parameterIndex] ?? null;
-            if (null === $type || in_array($type, Controller::TYPE_DECLARATIONS)) {
-                $controllerArguments[] = $value ?? ($parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);
-            } else {
-                // Object typehint
-                if (null === $value && $parameter->allowsNull()) {
-                    $controllerArguments[] = null;
-                } else {
-                    $hasConstruct = method_exists($type, '__construct');
-                    if (!$hasConstruct) {
-                        throw new Exception(
-                            (new Message("Class %s doesn't have a constructor. %n %o typehinted in %f invoke function."))
-                                ->code('%s', $type)
-                                ->code('%o', $type.' $'.$parameter->getName().($parameter->isDefaultValueAvailable() ? ' = '.$parameter->getDefaultValue() : null))
-                                ->code('%n', '#'.$parameter->getPosition())
-                                ->code('%f', $controller)
-                        );
-                    }
-                    $controllerArguments[] = new $type($value);
-                }
-            }
-            ++$parameterIndex;
-        }
-        $this->controllerArguments = $controllerArguments;
+        $callableWrap->setPassedArguments($this->arguments);
+
+        $this->controllerArguments = $callableWrap->getArguments();
         $controller(...$this->controllerArguments);
 
         return $controller;

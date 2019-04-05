@@ -210,6 +210,9 @@ class Path
         } catch (Exception $e) {
             throw new PathException($e);
         }
+        if (Utils\Str::endsWith('.php', $pathIdentifier) && File::exists($pathIdentifier)) {
+            return static::isAbsolute($pathIdentifier) ? $pathIdentifier : static::absolute($pathIdentifier);
+        }
         $path = static::normalize($pathIdentifier);
         // Do this to apply Path methods only on explicit $rootContext
         if (!isset($rootContext)) {

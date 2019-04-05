@@ -228,7 +228,6 @@ class Apis
             }
         } // foreach filename
         if ($errors) {
-            dd($errors);
             throw new ApiException(implode("\n", $errors));
         }
         ksort($ROUTE_MAP);

@@ -17,36 +17,65 @@ use Chevereto\Core\Path;
 use Chevereto\Core\Message;
 use Chevereto\Core\CoreException;
 use Chevereto\Core\Utils\Str;
+use LogicException;
 
 trait CallableTrait
 {
     /**
-     * @param $callableString callable string (function, method)
+     * @param $callableString callable string (function, method, fileHandle pointing to a return callable)
      *
      * @return callable a callable (closure, object, string)
      */
     public function getCallable(string $callableString): callable
     {
-        $classExists = class_exists($callableString);
-        $isCallable = is_callable($callableString);
-        if ($classExists || $isCallable) {
-            // @var object|string
-            $callable = $classExists ? new $callableString() : $callableString;
+        if (is_callable($callableString)) {
+            return $callableString;
+        }
+        if (class_exists($callableString) && method_exists($callableString, '__invoke')) {
+            return new $callableString();
+        }
+        if (Str::contains('::', $callableString)) {
+            $callableStrExplode = explode('::', $callableString);
+            $class = $callableStrExplode[0];
+            if (!class_exists($class)) {
+                throw new LogicException(
+                    (string) (new Message('Callable string %s is targeting not found class %c.'))
+                        ->code('%s', $callableString)
+                        ->code('%c', $class)
+                );
+            }
+            $method = $callableStrExplode[1];
+            if (0 === strpos($method, '__')) {
+                throw new LogicException(
+                    (string) (new Message('Callable string %s is targeting the magic method %m.'))
+                        ->code('%s', $callableString)
+                        ->code('%m', $method)
+                );
+            }
+            if (!method_exists($class, $method)) {
+                throw new LogicException(
+                    (string) (new Message('Callable string %s is targeting a not found method %m.'))
+                        ->code('%s', $callableString)
+                        ->code('%m', $method)
+                );
+            }
         } else {
-            // @var any
             $callable = include $callableString;
-        }
-        if (!is_callable($callable)) {
-            throw new CoreException(
-                (new Message('Expected %s callable, %t provided in %f.'))
-                    ->code('%s', '$callable')
-                    ->code('%t', gettype($callable))
-                    ->code('%f', $callableString)
-            );
-        }
+            if (!is_callable($callable)) {
+                throw new CoreException(
+                    (new Message('Expected %s callable, %t provided in %f.'))
+                        ->code('%s', '$callable')
+                        ->code('%t', gettype($callable))
+                        ->code('%f', $callableString)
+                );
+            }
 
-        // @var invokable object|closure|string
-        return $callable;
+            return $callable;
+        }
+        throw new LogicException(
+            (string) (new Message('Callable string %s is not callable by any means.'))
+                ->code('%s', $callableString)
+        );
     }
 
     /**
