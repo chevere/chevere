@@ -63,6 +63,8 @@ use stdClass;
  *
  * ## Remarks
  * message is *always* optional.
+ *
+ * @method string value($value)
  */
 class Validation
 {

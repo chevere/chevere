@@ -137,9 +137,8 @@ class DateTime extends \DateTime implements \DateTimeInterface
         $now = new self();
         // $timestamp = $now->getTimestamp() - $this->getTimestamp();
         $interval = $now->diff($this);
-        // FIXME: Access to an undefined property DateInterval::$w
-        $interval->w = floor($interval->d / 7); // Add 'weeks' to this interval
-        $interval->d -= intval(round($interval->w * 7, 0));
+        // $interval->w = floor($interval->d / 7); // Add 'weeks' to this interval
+        // $interval->d -= intval(round($interval->w * 7, 0));
         $secondsTable = array_reverse(static::SECONDS_TABLE);
         $keys = array_keys($secondsTable);
         $magnitude = null;

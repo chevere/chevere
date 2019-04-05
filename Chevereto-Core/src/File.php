@@ -173,7 +173,7 @@ class File
         $clean = preg_replace('/[^\.\w\d-]/i', '', $clean); // remove any non alphanumeric, non underscore, non hyphen and non period
         // Non alphanumeric name uh..
         if (strlen($clean) == 0) {
-            $clean = Utils\Random::string($options[static::RANDOM_LENGTH] * .5);
+            $clean = Utils\Random::string(intval($options[static::RANDOM_LENGTH] * .5));
         }
         // $unlimitedFilename = $clean; // No max_length limit
         $clean = substr($clean, 0, $options[static::MAX_LENGTH]);
