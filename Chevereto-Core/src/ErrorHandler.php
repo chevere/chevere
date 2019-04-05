@@ -335,7 +335,6 @@ class ErrorHandler
      */
     protected function setDebug(): self
     {
-        $debug = static::DEBUG;
         $error_reporting = error_reporting();
         error_reporting(0);
         try {
@@ -343,7 +342,7 @@ class ErrorHandler
         } catch (\Throwable $e) { // Don't panic, such trucazo!
         }
         error_reporting($error_reporting);
-        $this->debug = (bool) $debug;
+        $this->debug = (bool) ($debug ?? static::DEBUG);
 
         return $this;
     }

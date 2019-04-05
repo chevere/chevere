@@ -87,9 +87,9 @@ class Log
      * Allows to set the target log channel.
      *  (slack, files, email, etc).
      */
-    public static function channel(string $channelName)
-    {
-    }
+    // public static function channel(string $channelName)
+    // {
+    // }
 
     protected static function isLevelBeingUsed(string $levelName)
     {
@@ -109,7 +109,7 @@ class Log
      *
      * @param string $message The log message
      */
-    public static function emergency(string $message, array $context = null)
+    public static function emergency(string $message)
     {
         dump($message, 'emergency');
     }
@@ -127,7 +127,7 @@ class Log
      *
      * @param string $message The log message
      */
-    public static function alert(string $message, array $context = null)
+    public static function alert(string $message)
     {
         dump($message, 'alert');
     }
@@ -144,7 +144,7 @@ class Log
      *
      * @param string $message The log message
      */
-    public static function critical(string $message, array $context = null)
+    public static function critical(string $message)
     {
         dump($message, 'critical');
     }
@@ -159,7 +159,7 @@ class Log
      *
      * @param string $message The log message
      */
-    public static function error(string $message, array $context = null)
+    public static function error(string $message)
     {
         dump($message, 'error');
     }
@@ -175,7 +175,7 @@ class Log
      *
      * @param string $message The log message
      */
-    public static function warning(string $message, array $context = null)
+    public static function warning(string $message)
     {
         dump($message, 'warning');
     }
@@ -192,7 +192,7 @@ class Log
      *
      * @param string $message The log message
      */
-    public static function notice(string $message, array $context = null)
+    public static function notice(string $message)
     {
         // dump('Notice called :', $message);
         if (static::isLevelBeingUsed('notice')) {
@@ -213,7 +213,7 @@ class Log
      *
      * @param string $message The log message
      */
-    public static function info(string $message, array $context = null)
+    public static function info(string $message)
     {
         if (static::isLevelBeingUsed(__FUNCTION__)) {
             dump($message);
@@ -230,7 +230,7 @@ class Log
      *
      * @param string $message The log message
      */
-    public static function debug(string $message, array $context = null)
+    public static function debug(string $message)
     {
         dump($message, 'debug');
     }

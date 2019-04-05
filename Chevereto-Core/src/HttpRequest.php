@@ -106,7 +106,7 @@ class HttpRequest extends Request
     {
         $info = [];
         foreach (static::MAP as $k => $v) {
-            $info[$k] = static::readInfoKey($k);
+            $info[$k] = $this->readInfoKey($k);
         }
 
         return $info;

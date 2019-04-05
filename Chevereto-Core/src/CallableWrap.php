@@ -105,8 +105,8 @@ class CallableWrap extends Container
             if (class_exists($callableHandle)) {
                 if (method_exists($callableHandle, '__invoke')) {
                     $this
-                        ->setCallable(new $callableHandle())
-                        ->setClass($callableHandle)
+                        ->setCallable(/** @scrutinizer ignore-type */ new $callableHandle()) // string!
+                        ->setClass(/** @scrutinizer ignore-type */ $callableHandle) // string!
                         ->setMethod('__invoke')
                         ->setIsAnon(false)
                         ->prepare();
@@ -315,7 +315,7 @@ class CallableWrap extends Container
     /**
      * Undocumented function.
      *
-     * @return ReflectionParameter[]
+     * @return array an array containing ReflectionParameter members
      */
     public function getParameters(): ?array
     {
@@ -350,6 +350,9 @@ class CallableWrap extends Container
 
     protected function processReflection(): self
     {
+        if ($this->hasReflection()) {
+            return $this;
+        }
         if (is_object($this->getCallable())) {
             $this->reflectionMethod = new ReflectionMethod($this->getCallable(), $this->getMethod());
         } else {
@@ -361,9 +364,7 @@ class CallableWrap extends Container
 
     protected function processParameters(): self
     {
-        if (!$this->hasReflection()) {
-            $this->processReflection();
-        }
+        $this->processReflection();
         $reflection = $this->getReflection();
 
         $this->setParameters($reflection->getParameters());
@@ -373,9 +374,7 @@ class CallableWrap extends Container
 
     protected function processArguments(): self
     {
-        if (!$this->hasReflection()) {
-            $this->processReflection();
-        }
+        $this->processReflection();
         $arguments = [];
         $parameterIndex = 0;
         // Magically create typehinted arguments

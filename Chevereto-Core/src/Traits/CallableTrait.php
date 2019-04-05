@@ -108,19 +108,6 @@ trait CallableTrait
     }
 
     /**
-     * Same as ::getCallableSome() but this returns an absolute path for callable files.
-     */
-    // public function getCallableSomeAbsolute(string $callable): ?string
-    // {
-    //     $callableSome = $this->getCallableSome($callable);
-    //     if (null != $callableSome && Str::endsWith('.php', $callableSome)) {
-    //         return Path::absolute($callableSome);
-    //     } else {
-    //         return $callableSome;
-    //     }
-    // }
-
-    /**
      * Checks if a callable file exists.
      */
     protected function checkCallableFile(string $callableFile)
