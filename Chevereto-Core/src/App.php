@@ -158,7 +158,7 @@ class App extends Container
                 }
             }
         }
-        dd($this->getRouter()->getRoutes());
+        // dd($this->getRouter()->getRoutes());
         $this->setResponse(new Response());
         if (Console::bind($this)) {
             Console::run(); // Note: Console::run() always exit.

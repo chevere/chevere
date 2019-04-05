@@ -67,8 +67,11 @@ class Route
     /** @var array */
     private $optionals;
 
-    /** @var string */
+    /** @var array */
     private $optionalsIndex;
+
+    /** @var array */
+    private $mandatorIndex;
 
     /**
      * Route constructor.
@@ -135,41 +138,51 @@ class Route
             $this->optionals = [];
             $this->optionalsIndex = [];
             $this->processWildcardMatches($matches);
-            // Determine if route contains optional wildcards
-            if (!empty($this->optionals)) {
-                $mandatoryDiff = array_diff($this->getWildcards(), $this->optionalsIndex);
-                $mandatorIndex = [];
-                foreach ($mandatoryDiff as $k => $v) {
-                    $mandatorIndex[$k] = null;
-                }
-                // Generate the optionals power set, keeping its index keys in case of duplicated optionals
-                $powerSet = Utils\Arr::powerSet($this->optionals, true);
-                // Build the route set, it will contain all the possible route combinations
-                $routeSet = [];
-                foreach ($powerSet as $set) {
-                    $auxSet = $this->set;
-                    // auxWildcards keys represent the wildcards being used. Iterate it with foreach.
-                    $auxWildcards = $mandatorIndex;
-                    foreach ($set as $replaceKey => $replaceValue) {
-                        $replace = $this->optionals[$replaceKey];
-                        if ($replaceValue !== null) {
-                            $replaceValue = "{{$replaceValue}}";
-                            $auxWildcards[$replace] = null;
-                        }
-                        $auxSet = str_replace("{{$replace}}", $replaceValue ?? '', $auxSet);
-                        $auxSet = Path::normalize($auxSet);
-                    }
-                    ksort($auxWildcards);
-                    /*
-                     * Maps expected regex indexed matches [0,1,2,] to registered wildcard index [index=>n].
-                     * For example, a set /test-{0}--{2} will capture 0->0 and 1->2. Storing the expected index allows\
-                     * to easily map matches => wildcards => values.
-                     */
-                    $routeSet[$auxSet] = array_keys($auxWildcards);
-                }
-                $this->powerSet = $routeSet;
-            }
+            $this->processOptionals();
         }
+    }
+
+    protected function processOptionals(): void
+    {
+        // Determine if route contains optional wildcards
+        if (!empty($this->optionals)) {
+            $mandatoryDiff = array_diff($this->getWildcards(), $this->optionalsIndex);
+            $this->mandatorIndex = [];
+            foreach ($mandatoryDiff as $k => $v) {
+                $this->mandatorIndex[$k] = null;
+            }
+            // Generate the optionals power set, keeping its index keys in case of duplicated optionals
+            $powerSet = Utils\Arr::powerSet($this->optionals, true);
+            // Build the route set, it will contain all the possible route combinations
+            $this->processPowerSet($powerSet);
+        }
+    }
+
+    protected function processPowerSet(array $powerSet): void
+    {
+        $routeSet = [];
+        foreach ($powerSet as $set) {
+            $auxSet = $this->set;
+            // auxWildcards keys represent the wildcards being used. Iterate it with foreach.
+            $auxWildcards = $this->mandatorIndex;
+            foreach ($set as $replaceKey => $replaceValue) {
+                $replace = $this->optionals[$replaceKey];
+                if ($replaceValue !== null) {
+                    $replaceValue = "{{$replaceValue}}";
+                    $auxWildcards[$replace] = null;
+                }
+                $auxSet = str_replace("{{$replace}}", $replaceValue ?? '', $auxSet);
+                $auxSet = Path::normalize($auxSet);
+            }
+            ksort($auxWildcards);
+            /*
+             * Maps expected regex indexed matches [0,1,2,] to registered wildcard index [index=>n].
+             * For example, a set /test-{0}--{2} will capture 0->0 and 1->2. Storing the expected index allows\
+             * to easily map matches => wildcards => values.
+             */
+            $routeSet[$auxSet] = array_keys($auxWildcards);
+        }
+        $this->powerSet = $routeSet;
     }
 
     protected function processWildcardMatches(array $matches): void
