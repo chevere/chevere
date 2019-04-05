@@ -25,7 +25,7 @@ use Monolog\Logger;
  * @method string hasResponse(): bool
  * @method string hasApis(): bool
  * @method string hasRoute(): bool
- * @method string hasCache(): bool
+ * //@method string hasCache(): bool
  * //@method string hasDb(): bool
  * @method string hasHandler(): bool
  */
@@ -50,29 +50,18 @@ class App extends Container
     /** @var array An array containing the prepared controller arguments (object injection) */
     protected $controllerArguments;
 
-    // App objects constants, must match the $prop name.
-    const OBJECT_RUNTIME = 'runtime';
-    const OBJECT_LOGGER = 'logger';
-    const OBJECT_ROUTER = 'router';
-    const OBJECT_HTTP_REQUEST = 'httpRequest';
-    const OBJECT_RESPONSE = 'response';
-    const OBJECT_APIS = 'apis';
-    const OBJECT_ROUTE = 'route';
-    const OBJECT_CACHE = 'cache';
-    const OBJECT_DB = 'db';
-    const OBJECT_HANDLER = 'handler';
-
+    /** @var array The propName => ClassName map for the Container */
     protected $objects = [
-        self::OBJECT_RUNTIME => Runtime::class,
-        self::OBJECT_LOGGER => Logger::class,
-        self::OBJECT_ROUTER => Router::class,
-        self::OBJECT_HTTP_REQUEST => HttpRequest::class,
-        self::OBJECT_RESPONSE => Response::class,
-        self::OBJECT_APIS => Apis::class,
-        self::OBJECT_ROUTE => Route::class,
-        self::OBJECT_CACHE => Cache::class,
-        self::OBJECT_DB => 'Db::class',
-        self::OBJECT_HANDLER => Handler::class,
+        'runtime' => Runtime::class,
+        'logger' => Logger::class,
+        'router' => Router::class,
+        'httpRequest' => HttpRequest::class,
+        'response' => Response::class,
+        'apis' => Apis::class,
+        'route' => Route::class,
+        'cache' => 'Cache::class',
+        'db' => 'Db::class',
+        'handler' => Handler::class,
     ];
 
     /** @var Runtime */
@@ -341,13 +330,11 @@ class App extends Container
      */
     public function run(string $callable = null)
     {
-        // No callable: Resolve HttpRequest then
         if (!isset($callable)) {
             try {
                 $route = $this->getRouter()->resolve($this->getHttpRequest()->getPathInfo());
                 if (!empty($route)) {
                     $this->setRoute($route);
-                    // Resolved callable
                     $callable = $route->getCallable(
                         $this->getHttpRequest()->getMethod()
                     );
@@ -397,11 +384,13 @@ class App extends Container
         //     }
         // }
 
-        if (is_array($this->arguments)) {
+        if (!empty($this->arguments)) {
             $callableWrap->setPassedArguments($this->getArguments());
+            $this->controllerArguments = $callableWrap->getArguments();
+        } else {
+            $this->controllerArguments = [];
         }
 
-        $this->controllerArguments = $callableWrap->getArguments();
         $controller(...$this->controllerArguments);
 
         return $controller;
