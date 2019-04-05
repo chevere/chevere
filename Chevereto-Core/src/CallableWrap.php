@@ -87,6 +87,9 @@ class CallableWrap
     /** @var bool True if the callable represents a anon function or class */
     protected $isAnon;
 
+    /** @var array An array containg typehinted arguments ready to use */
+    private $typedArguments;
+
     public function __construct(string $callableHandle)
     {
         $this
@@ -372,39 +375,37 @@ class CallableWrap
     protected function processArguments(): self
     {
         $this->processReflection();
-        $arguments = [];
+        $this->typedArguments = [];
         $parameterIndex = 0;
+
         // Magically create typehinted arguments
         foreach ($this->getReflection()->getParameters() as $parameter) {
+            $type = null;
             $parameterType = $parameter->getType();
-            $type = isset($parameterType) ? $parameterType->getName() : null;
-            $value = $this->getPassedArguments()[$parameter->getName()] ?? $this->getPassedArguments()[$parameterIndex] ?? null;
-            if (null === $type || in_array($type, Controller::TYPE_DECLARATIONS)) {
-                $arguments[] = $value ?? ($parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);
-            } else {
-                // Object typehint
-                if (null === $value && $parameter->allowsNull()) {
-                    $arguments[] = null;
-                } else {
-                    // $hasConstruct = method_exists($type, '__construct');
-                    // if (!$hasConstruct) {
-                    //     throw new LogicException(
-                    //         (string)
-                    //             (new Message("Class %s doesn't have a constructor. %n %o typehinted in %f invoke function."))
-                    //                 ->code('%s', $type)
-                    //                 ->code('%o', $type.' $'.$parameter->getName().($parameter->isDefaultValueAvailable() ? ' = '.$parameter->getDefaultValue() : null))
-                    //                 ->code('%n', '#'.$parameter->getPosition())
-                    //                 ->code('%f', $controller)
-                    //     );
-                    // }
-                    $arguments[] = new $type($value);
-                }
+            if (isset($parameterType)) {
+                $type = $parameterType->getName();
             }
+            $this->processTypedArgument(
+                $parameter,
+                $type,
+                $this->getPassedArguments()[$parameter->getName()] ?? $this->getPassedArguments()[$parameterIndex] ?? null
+            );
             ++$parameterIndex;
         }
-        $this->setArguments($arguments);
+        $this->setArguments($this->typedArguments);
 
         return $this;
+    }
+
+    protected function processTypedArgument(ReflectionParameter $parameter, string $type = null, $value = null): void
+    {
+        if (!isset($type) || in_array($type, Controller::TYPE_DECLARATIONS)) {
+            $this->typedArguments[] = $value ?? ($parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);
+        } elseif (null === $value && $parameter->allowsNull()) {
+            $this->typedArguments[] = null;
+        } else {
+            $this->typedArguments[] = new $type($value);
+        }
     }
 
     /**
