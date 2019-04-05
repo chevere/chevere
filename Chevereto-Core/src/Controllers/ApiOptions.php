@@ -39,8 +39,10 @@ class ApiOptions extends Controller
             $route = $this->getApp()->getRoute();
             $endpoint = $route->getKey();
         }
-        if ($endpoint == null) {
-            return $this->handleError();
+        if (!isset($endpoint)) {
+            $this->handleError();
+
+            return;
         }
         $this->endpoint = $endpoint;
         $this->process();

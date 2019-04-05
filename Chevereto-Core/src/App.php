@@ -85,10 +85,10 @@ class App extends Container
     /** @var Route */
     protected $route;
 
-    /** @var Cache */
+    /** @var string */
     protected $cache;
 
-    /** @var Db */
+    /** @var string */
     protected $db;
 
     /** @var Handler */
@@ -158,6 +158,7 @@ class App extends Container
                 }
             }
         }
+        dd($this->getRouter()->getRoutes());
         $this->setResponse(new Response());
         if (Console::bind($this)) {
             Console::run(); // Note: Console::run() always exit.

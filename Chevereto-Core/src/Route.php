@@ -25,19 +25,25 @@ use Exception;
 class Route
 {
     use Traits\CallableTrait;
+
     /** @const Array containing all the HTTP methods. */
     const HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'COPY', 'HEAD', 'OPTIONS', 'LINK', 'UNLINK', 'PURGE', 'LOCK', 'UNLOCK', 'PROPFIND', 'VIEW', 'TRACE', 'CONNECT'];
 
     /** @const string Route without wildcards. */
     const TYPE_STATIC = 'static';
+
     /** @const string Route containing wildcards and static components. */
     const TYPE_MIXED = 'mixed';
+
     /** @const string Route containing only wildcards, no static components. */
     const TYPE_DYNAMIC = 'dynamic';
+
     /** @const string Regex pattern used by default (no explicit where). */
-    const REGEX_WILDCARD_WHERE = '[A-z0-9_\-\%]+';
+    const REGEX_WILDCARD_WHERE = '[A-z0-9\_\-\%]+';
+
     /** @const string Regex pattern used to detect {wildcard} and {wildcard?}. */
-    const REGEX_WILDCARD_SEARCH = '/{([a-z_][\w_]*\??)}/i';
+    const REGEX_WILDCARD_SEARCH = '/{([a-z\_][\w_]*\??)}/i';
+
     /** @const string Regex pattern used to validate route name. */
     const REGEX_NAME = '/^[\w\-\.]+$/i';
 
@@ -55,6 +61,15 @@ class Route
     protected $maker;
     protected $middlewares;
 
+    /** @var bool */
+    private $hasHandlebars;
+
+    /** @var array */
+    private $optionals;
+
+    /** @var string */
+    private $optionalsIndex;
+
     /**
      * Route constructor.
      *
@@ -63,7 +78,7 @@ class Route
      */
     public function __construct(string $key, string $callable = null)
     {
-        $hasHandlebars = Utils\Str::contains('{', $key) || Utils\Str::contains('}', $key);
+        $this->hasHandlebars = Utils\Str::contains('{', $key) || Utils\Str::contains('}', $key);
         try {
             Validation::grouped('$key', $key)
                 ->append(
@@ -83,8 +98,8 @@ class Route
                 )
                 ->append(
                     'wildcards',
-                    function (string $string) use ($hasHandlebars): bool {
-                        return !$hasHandlebars ?: preg_match_all('/{([0-9]+)}/', $string) === 0;
+                    function (string $string): bool {
+                        return !$this->hasHandlebars ?: preg_match_all('/{([0-9]+)}/', $string) === 0;
                     },
                     (string) (new Message('Wildcards in the form of %s are reserved.'))
                         ->code('%s', '/{n}')
@@ -93,52 +108,42 @@ class Route
         } catch (Exception $e) {
             throw new RouteException($e);
         }
-        // TODO: Maker must be more smarty, have historic change record
+        $this->processMaker();
+        $this->setKey($key);
+        $this->processWildcards();
+
+        if (isset($callable)) {
+            $this->method('GET', $callable);
+        }
+    }
+
+    protected function processMaker(): void
+    {
         $maker = debug_backtrace(0, 1)[0];
         $maker['file'] = Path::relative($maker['file']);
         $this->maker = $maker;
-        $this->setKey((string) $key);
+    }
 
-        // Detect valid wildcards
-        if ($hasHandlebars && preg_match_all(static::REGEX_WILDCARD_SEARCH, $key, $wildcards)) {
-            // $wildcards[0] => [{wildcard}, {wildcard?},...]
-            // $wildcards[1] => [wildcard, wildcard?,...]
+    protected function processWildcards(): void
+    {
+        if ($this->hasHandlebars && preg_match_all(static::REGEX_WILDCARD_SEARCH, $this->key, $matches)) {
+            // $matches[0] => [{wildcard}, {wildcard?},...]
+            // $matches[1] => [wildcard, wildcard?,...]
             // Build the route handle, needed for regex replacements
-            $this->set = $key;
+            $this->set = $this->key;
             // Build the optionals array, needed for creating route power set if needed
-            $optionals = [];
-            $optionalsIndex = [];
-            foreach ($wildcards[0] as $k => $v) {
-                // Change {wildcard} to {n} (n is the wildcard index)
-                if ($this->set != null) {
-                    $this->set = Utils\Str::replaceFirst($v, "{{$k}}", $this->set);
-                }
-                $wildcard = $wildcards[1][$k];
-                if (Utils\Str::endsWith('?', $wildcard)) {
-                    $wildcardTrim = Utils\Str::replaceLast('?', null, $wildcard);
-                    $optionals[] = $k;
-                    $optionalsIndex[$k] = $wildcardTrim;
-                } else {
-                    $wildcardTrim = $wildcard;
-                }
-                if (in_array($wildcardTrim, $this->getWildcards())) {
-                    throw new RouteException(
-                        (new Message('Must declare one unique wildcard per capturing group, duplicated %s detected in route %r.'))
-                            ->code('%s', $wildcards[0][$k])
-                            ->code('%r', $key)
-                    );
-                }
-                $this->wildcards[] = $wildcardTrim;
-            }
+            $this->optionals = [];
+            $this->optionalsIndex = [];
+            $this->processWildcardMatches($matches);
             // Determine if route contains optional wildcards
-            if ($optionals) {
-                $mandatoryDiff = array_diff($this->getWildcards(), $optionalsIndex);
+            if (!empty($this->optionals)) {
+                $mandatoryDiff = array_diff($this->getWildcards(), $this->optionalsIndex);
                 $mandatorIndex = [];
-                foreach ($mandatoryDiff as $k => $wildcard) {
+                foreach ($mandatoryDiff as $k => $v) {
                     $mandatorIndex[$k] = null;
                 }
                 // Generate the optionals power set, keeping its index keys in case of duplicated optionals
-                $powerSet = Utils\Arr::powerSet($optionals, true);
+                $powerSet = Utils\Arr::powerSet($this->optionals, true);
                 // Build the route set, it will contain all the possible route combinations
                 $routeSet = [];
                 foreach ($powerSet as $set) {
@@ -146,7 +151,7 @@ class Route
                     // auxWildcards keys represent the wildcards being used. Iterate it with foreach.
                     $auxWildcards = $mandatorIndex;
                     foreach ($set as $replaceKey => $replaceValue) {
-                        $replace = $optionals[$replaceKey];
+                        $replace = $this->optionals[$replaceKey];
                         if ($replaceValue !== null) {
                             $replaceValue = "{{$replaceValue}}";
                             $auxWildcards[$replace] = null;
@@ -165,8 +170,31 @@ class Route
                 $this->powerSet = $routeSet;
             }
         }
-        if ($callable) {
-            $this->method('GET', $callable);
+    }
+
+    protected function processWildcardMatches(array $matches): void
+    {
+        foreach ($matches[0] as $k => $v) {
+            // Change {wildcard} to {n} (n is the wildcard index)
+            if (isset($this->set)) {
+                $this->set = Utils\Str::replaceFirst($v, "{{$k}}", $this->set);
+            }
+            $wildcard = $matches[1][$k];
+            if (Utils\Str::endsWith('?', $wildcard)) {
+                $wildcardTrim = Utils\Str::replaceLast('?', null, $wildcard);
+                $this->optionals[] = $k;
+                $this->optionalsIndex[$k] = $wildcardTrim;
+            } else {
+                $wildcardTrim = $wildcard;
+            }
+            if (in_array($wildcardTrim, $this->getWildcards())) {
+                throw new RouteException(
+                    (new Message('Must declare one unique wildcard per capturing group, duplicated %s detected in route %r.'))
+                        ->code('%s', $matches[0][$k])
+                        ->code('%r', $this->key)
+                );
+            }
+            $this->wildcards[] = $wildcardTrim;
         }
     }
 
