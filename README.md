@@ -1,3 +1,5 @@
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/rodolfoberrios/chevereto-core/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/rodolfoberrios/chevereto-core/?branch=master) [![CodeFactor](https://www.codefactor.io/repository/github/rodolfoberrios/chevereto-core/badge)](https://www.codefactor.io/repository/github/rodolfoberrios/chevereto-core)
+
 # Chevereto\Core
 
 Modern API-first extensible web application framework, in the works.
