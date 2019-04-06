@@ -4,19 +4,19 @@ use Chevereto\Core\Route;
 
 return [
   'index' => Route::bind('/', 'callables:index')
-      ->name('homepage')
-      ->middleware('middleware:RoleBanned')
-      ->middleware('middleware:RoleAdmin'),
+      ->setName('homepage')
+      ->addMiddleware('middleware:RoleBanned')
+      ->addMiddleware('middleware:RoleAdmin'),
   Route::bind('/cache/{user?}')
-    ->method('GET', 'callables:cache')
-    ->method('POST', 'callables:cache')
-    ->name('cache'),
+    ->setMethod('GET', 'callables:cache')
+    ->setMethod('POST', 'callables:cache')
+    ->setName('cache'),
   Route::bind('/test/{var0?}-{var1?}-{var2}', 'callables:index'),
   Route::bind('/{dyn2}')
-    ->name('DyN')
-    ->methods([
+    ->setName('DyN')
+    ->setMethods([
       'GET' => 'callables:index',
       'POST' => 'callables:index',
     ])
-    ->where('dyn2', '[0-9]+'),
+    ->setWhere('dyn2', '[0-9]+'),
 ];

@@ -55,7 +55,7 @@ class Json extends Data implements Interfaces\PrintableInterface
 
     public function getResponse(): ?array
     {
-        return $this->response;
+        return $this->response ?? null;
     }
 
     public function setResponseKey(string $key, $var)

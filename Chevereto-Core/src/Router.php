@@ -25,8 +25,7 @@ class Router
     const SET = 'set';
 
     /**
-     * @var array An array containing Route members (objects, serialized)
-     *            fileHandle => [id => @Route],
+     * @var array An array containing Route members (objects, serialized) fileHandle => [id => @Route],
      */
     protected $routes;
 
@@ -55,9 +54,9 @@ class Router
                     ->code('%r', $keyedRoute[0].'@'.$keyedRoute[1])
             );
         }
-        $pointer = [$route->getId(), $basename];
-        if ($route->hasName()) {
-            $name = $route->getName();
+        $pointer = [$id, $basename];
+        $name = $route->getName();
+        if (isset($name)) {
             $namedRoute = $this->getNamedRoutes()[$name] ?? null;
             if (isset($namedRoute)) {
                 throw new LogicException(
@@ -71,9 +70,9 @@ class Router
 
         $this->routes[$basename][$id] = $route;
 
-        // Use $route->powerSet when needed
-        if ($route->hasPowerSet()) {
-            foreach ($route->getPowerSet() as $k => $wildcardsIndex) {
+        $powerSet = $route->getPowerSet();
+        if (isset($powerSet)) {
+            foreach ($powerSet as $k => $wildcardsIndex) {
                 // n => .. => regex => [route, wildcards]
                 $this->routing($pointer, $route, $k); // $route->regex($k)
             }
@@ -85,29 +84,29 @@ class Router
         $this->routeKeys[$key] = $pointer;
     }
 
-    public function getRoutes(): array
+    public function getRoutes(): ?array
     {
-        return $this->routes ?? [];
+        return $this->routes ?? null;
     }
 
-    public function getRouteKeys(): array
+    public function getRouteKeys(): ?array
     {
-        return $this->routeKeys ?? [];
+        return $this->routeKeys ?? null;
     }
 
-    public function getNamedRoutes(): array
+    public function getNamedRoutes(): ?array
     {
-        return $this->namedRoutes ?? [];
+        return $this->namedRoutes ?? null;
     }
 
-    public function getRouting(): array
+    public function getRouting(): ?array
     {
-        return $this->routing ?? [];
+        return $this->routing ?? null;
     }
 
-    public function getArguments(): array
+    public function getArguments(): ?array
     {
-        return $this->arguments ?? [];
+        return $this->arguments ?? null;
     }
 
     /**
@@ -119,15 +118,16 @@ class Router
      */
     protected function routing(array $pointer, Route $route, string $routeSet = null): void
     {
+        $routeGetSet = $route->getSet();
         if ($routeSet) {
             $routeSetHandle = $routeSet;
             $regex = $route->regex($routeSetHandle);
         } else {
-            $routeSetHandle = $route->hasSet() ? $route->getSet() : $route->getKey();
+            $routeSetHandle = $routeGetSet ?? $route->getKey();
             $regex = $route->regex();
         }
         // Determine grouping type (static, mixed, dynamic)
-        if ($route->hasSet()) {
+        if (isset($routeGetSet)) {
             $type = Route::TYPE_STATIC;
         } else {
             if (null != $routeSetHandle) {

@@ -260,16 +260,16 @@ class Apis
                 }
             }
             // dd($httpMethods);
-            $route = Route::bind($endpointRoute)->methods($httpMethods)->setId($endpoint);
+            $route = Route::bind($endpointRoute)->setId($endpoint)->setMethods($httpMethods);
             $this->routeKeys[$endpointRoute] = [$basename, $endpoint];
             // Define Route wildcard "where" if needed
-            if ($route->hasWildcards()) {
-                $routeWildcards = $route->getWildcards();
+            $routeWildcards = $route->getWildcards();
+            if (isset($routeWildcards)) {
                 $filtered = Utils\Arr::filterArray($resourceWildcards, $routeWildcards);
                 foreach ($filtered as $wildcardName => $wildcard) {
                     $regex = $wildcard->regex();
                     if (isset($regex)) {
-                        $route->where($wildcardName, $regex);
+                        $route->setWhere($wildcardName, $regex);
                     }
                 }
                 $usable = array_map(function (RouteWildcard $wildcard) {
@@ -283,12 +283,10 @@ class Apis
         }
         ksort($API);
 
-        // dd($this->getRouter()->getRoutes());
-
         $route = Route::bind('/'.$basename)
-            ->method('HEAD', Controllers\ApiHead::class)
-            ->method('OPTIONS', Controllers\ApiOptions::class)
-            ->method('GET', Controllers\ApiGet::class)
+            ->setMethod('HEAD', Controllers\ApiHead::class)
+            ->setMethod('OPTIONS', Controllers\ApiOptions::class)
+            ->setMethod('GET', Controllers\ApiGet::class)
             ->setId($basename);
         $this->getRouter()->addRoute($route, $basename);
         $this->apis[$basename] = $API;

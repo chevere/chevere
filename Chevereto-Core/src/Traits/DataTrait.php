@@ -37,7 +37,7 @@ trait DataTrait
 
     public function getData(): ?array
     {
-        return $this->data;
+        return $this->data ?? null;
     }
 
     public function toArray(): array

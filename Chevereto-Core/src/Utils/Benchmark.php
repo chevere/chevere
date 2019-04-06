@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Chevereto\Core\Utils;
 
 use Chevereto\Core\Message;
-use Chevereto\Core\Traits\Printable;
+use Chevereto\Core\Traits\PrintableTrait;
 use Exception;
 
 /**
@@ -33,7 +33,7 @@ use Exception;
 // print $benchmark;
 class Benchmark
 {
-    use Printable;
+    use PrintableTrait;
     /**
      * Determines the number of colums used for output.
      */

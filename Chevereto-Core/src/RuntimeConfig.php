@@ -137,7 +137,7 @@ class RuntimeConfig extends Data
      */
     public function getAsserts(): array
     {
-        return $this->asserts;
+        return $this->asserts ?? null;
     }
 
     /**
@@ -157,9 +157,9 @@ class RuntimeConfig extends Data
      *
      * @return array loaded filepaths
      */
-    public function getLoadedFiles(): array
+    public function getLoadedFiles(): ?array
     {
-        return $this->loadedFiles;
+        return $this->loadedFiles ?? null;
     }
 
     /**

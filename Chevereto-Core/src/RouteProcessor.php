@@ -40,7 +40,7 @@ abstract class RouteProcessor extends RouteValidator
     {
         // Determine if route contains optional wildcards
         if (!empty($this->optionals)) {
-            $mandatoryDiff = array_diff($this->getWildcards(), $this->optionalsIndex);
+            $mandatoryDiff = array_diff($this->wildcards ?? [], $this->optionalsIndex);
             $this->mandatoryIndex = [];
             foreach ($mandatoryDiff as $k => $v) {
                 $this->mandatoryIndex[$k] = null;
@@ -94,7 +94,7 @@ abstract class RouteProcessor extends RouteValidator
             } else {
                 $wildcardTrim = $wildcard;
             }
-            if ($this->hasWildcards() && in_array($wildcardTrim, $this->getWildcards())) {
+            if (in_array($wildcardTrim, $this->wildcards ?? [])) {
                 throw new RouteException(
                     (new Message('Must declare one unique wildcard per capturing group, duplicated %s detected in route %r.'))
                         ->code('%s', $matches[0][$k])

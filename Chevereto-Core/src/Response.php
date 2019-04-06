@@ -84,9 +84,9 @@ class Response extends HttpResponse
         return !empty($this->data);
     }
 
-    public function getData(): array
+    public function getData(): ?array
     {
-        return $this->data;
+        return $this->data ?? null;
     }
 
     public function unsetData(): self
@@ -130,7 +130,7 @@ class Response extends HttpResponse
 
     public function getMeta(): ?array
     {
-        return $this->meta;
+        return $this->meta ?? null;
     }
 
     public function hasDataKey(string $key): bool

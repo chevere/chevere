@@ -20,34 +20,8 @@ use Symfony\Component\Console\Exception\LogicException;
 // IDEA: Enable alt routes [/taken, /also-taken, /availabe]
 // IDEA: L10n support
 
-/**
- * ALLFATHER GIVE ME ROUTEH!
- *
- * @method bool   hasId()
- * @method bool   hasKey()
- * @method bool   hasName()
- * @method bool   hasWheres()
- * @method bool   hasSet()
- * @method bool   hasPowerSet()
- * @method bool   hasMethods()
- * @method bool   hasWildcards()
- * @method bool   hasMaker()
- * @method bool   hasMiddlewares()
- * @method bool   hasHandlebars()
- * @method bool   hasOptionals()
- * @method bool   hasOptionalsIndex()
- * @method bool   hasMandatoryIndex()
- * @method array  getMiddlewares()
- * @method array  getWildcards()
- * @method array  getPowerSet()
- * @method string getKey()
- * @method string getName()
- * @method string getSet()
- * @method string getId()
- */
 class Route extends RouteProcessor
 {
-    use Traits\ContainerTrait;
     use Traits\CallableTrait;
 
     /** @const Array containing all the HTTP methods. */
@@ -71,30 +45,46 @@ class Route extends RouteProcessor
     /** @const string Regex pattern used to validate route name. */
     const REGEX_NAME = '/^[\w\-\.]+$/i';
 
-    /** @var string */
+    /** @var string Route id relative to the ArrayFile */
     protected $id;
-    protected $key;
-    protected $name;
-    protected $wheres;
-    protected $set;
-    protected $powerSet;
 
-    /** @var array */
+    /** @var string Route key like /api/endpoint/{var?} */
+    protected $key;
+
+    /** @var string Route name (if any, must be unique) */
+    protected $name;
+
+    /** @var array Where clauses based on wildcards */
+    protected $wheres;
+
+    /** @var array An array containg ['methodName' => 'callable',] */
     protected $methods;
-    protected $wildcards;
-    protected $maker;
+
+    /** @var array An array containg Route middlewares */
     protected $middlewares;
 
-    /** @var bool */
+    /** @var array An array containg wildcards */
+    protected $wildcards;
+
+    /** @var string Key set representation */
+    protected $set;
+
+    /** @var array An array containing all the key sets for the route (optionals combo) */
+    protected $powerSet;
+
+    /** @var array An array containg details about the Route maker */
+    protected $maker;
+
+    /** @var bool True if the route key has handlebars (wildcards) */
     protected $handlebars;
 
-    /** @var array */
+    /** @var array An array containing the optional wildcards */
     protected $optionals;
 
-    /** @var array */
+    /** @var array An array indexing the optional wildcards */
     protected $optionalsIndex;
 
-    /** @var array */
+    /** @var array An array indexing the mandatory wildcards */
     protected $mandatoryIndex;
 
     /**
@@ -112,16 +102,38 @@ class Route extends RouteProcessor
         $this->processWildcards();
 
         if (isset($callable)) {
-            $this->method('GET', $callable);
+            $this->setMethod('GET', $callable);
         }
     }
 
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    protected function setKey(string $key): self
+    {
+        $this->key = $key;
+
+        return $this;
+    }
+
+    public function getKey(): string
+    {
+        return $this->key;
+    }
+
     /**
-     * Set route name.
-     *
-     * @param string $name
+     * @param string $name route name, must be unique
      */
-    public function name(string $name): self
+    public function setName(string $name): self
     {
         // Validate $name
         try {
@@ -143,13 +155,57 @@ class Route extends RouteProcessor
         return $this;
     }
 
+    public function getName(): ?string
+    {
+        return $this->name ?? null;
+    }
+
+    /**
+     * Sets where conditionals for the route wildcards.
+     *
+     * @param string $wildcardName wildcard name
+     * @param string $regex        regex pattern
+     */
+    public function setWhere(string $wildcardName, string $regex): self
+    {
+        // Validate $wildcardName
+        $this->processWildcardValidation($wildcardName, $regex);
+        $this->wheres[$wildcardName] = $regex;
+
+        return $this;
+    }
+
+    public function getWhere(string $wildcardName): ?string
+    {
+        return $this->wheres[$wildcardName] ?? null;
+    }
+
+    /**
+     * Sets where conditionals for the route wildcards (multiple version).
+     *
+     * @param array $wildcardsPatterns An array containing [wildcardName => regexPattern,]
+     */
+    public function setWheres(array $wildcardsPatterns): self
+    {
+        foreach ($wildcardsPatterns as $wildcardName => $regexPattern) {
+            $this->where($wildcardName, $regexPattern);
+        }
+
+        return $this;
+    }
+
+    public function getWheres(): ?array
+    {
+        return $this->wheres ?? null;
+    }
+
     /**
      * Sets HTTP method to callable binding. Allocates Routes.
      *
      * @param string $httpMethod HTTP method
      * @param string $callable   callable which satisfy the method request
      */
-    public function method(string $httpMethod, string $callable): self
+    public function setMethod(string $httpMethod, string $callable): self
     {
         // Validate HTTP method
         if (!in_array($httpMethod, static::HTTP_METHODS)) {
@@ -170,52 +226,65 @@ class Route extends RouteProcessor
         return $this;
     }
 
+    public function getMethod(string $httpMethod): ?string
+    {
+        return $this->methods[$httpMethod] ?? null;
+    }
+
     /**
      * Sets HTTP method to callable binding (multiple version).
      *
      * @param array $httpMethodsCallables An array containing [httpMethod => callable,]
      */
-    public function methods(array $httpMethodsCallables): self
+    public function setMethods(array $httpMethodsCallables): self
     {
         foreach ($httpMethodsCallables as $httpMethod => $controller) {
-            $this->method($httpMethod, $controller);
+            $this->setMethod($httpMethod, $controller);
         }
 
         return $this;
     }
 
-    /**
-     * Sets where conditionals for the route wildcards.
-     *
-     * @param string $wildcardName wildcard name
-     * @param string $regex        regex pattern
-     */
-    public function where(string $wildcardName, string $regex): self
+    public function getMethods(): ?array
     {
-        // Validate $wildcardName
-        $this->processWildcardValidation($wildcardName, $regex);
-        $this->wheres[$wildcardName] = $regex;
+        return $this->methods ?? null;
+    }
+
+    public function addMiddleware(string $callable): self
+    {
+        $this->middlewares[] = $this->getCallableSome($callable);
 
         return $this;
+    }
+
+    public function getMiddlewares(): ?array
+    {
+        return $this->middlewares ?? null;
+    }
+
+    public function getWildcards(): ?array
+    {
+        return $this->wildcards ?? null;
+    }
+
+    public function getSet(): ?string
+    {
+        return $this->set ?? null;
+    }
+
+    public function getPowerSet(): ?array
+    {
+        return $this->powerSet ?? null;
+    }
+
+    public function getMaker(): array
+    {
+        return $this->maker;
     }
 
     public static function getHandlebarsWrap(string $string): string
     {
         return "{{$string}}";
-    }
-
-    /**
-     * Sets where conditionals for the route wildcards (multiple version).
-     *
-     * @param array $wildcardsPatterns An array containing [wildcardName => regexPattern,]
-     */
-    public function wheres(array $wildcardsPatterns): self
-    {
-        foreach ($wildcardsPatterns as $wildcardName => $regexPattern) {
-            $this->where($wildcardName, $regexPattern);
-        }
-
-        return $this;
     }
 
     /**
@@ -242,8 +311,8 @@ class Route extends RouteProcessor
      */
     public function fill(): self
     {
-        if ($this->hasWildcards()) {
-            foreach ($this->getWildcards() as $k => $v) {
+        if (isset($this->wildcards)) {
+            foreach ($this->wildcards as $k => $v) {
                 if (!isset($this->wheres[$v])) {
                     $this->wheres[$v] = static::REGEX_WILDCARD_WHERE;
                 }
@@ -254,13 +323,13 @@ class Route extends RouteProcessor
     }
 
     /**
-     * Get route regex.
+     * Gets route regex depending on the passed key (if any).
      *
      * @param string $key route string to use, leave it blank to use $this->set ?? $this->key
      */
     public function regex(string $key = null): string
     {
-        $regex = $key ?? $this->set ?? $this->getKey();
+        $regex = $key ?? $this->set ?? $this->key;
         if (!isset($regex)) {
             throw new RouteException(
                 (new Message('Unable to process regex for empty %s.'))
@@ -271,32 +340,13 @@ class Route extends RouteProcessor
         if (!Utils\Str::contains('{', $regex)) {
             return $regex;
         }
-        foreach ($this->getWildcards() as $k => $v) {
-            $regex = str_replace("{{$k}}", '('.$this->wheres[$v].')', $regex);
+        if (isset($this->wildcards)) {
+            foreach ($this->wildcards as $k => $v) {
+                $regex = str_replace("{{$k}}", '('.$this->wheres[$v].')', $regex);
+            }
         }
 
         return $regex;
-    }
-
-    public function middleware(string $callable): self
-    {
-        $this->middlewares[] = $this->getCallableSome($callable);
-
-        return $this;
-    }
-
-    protected function setKey(string $key): self
-    {
-        $this->key = $key;
-
-        return $this;
-    }
-
-    public function setId(string $id): self
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     /**

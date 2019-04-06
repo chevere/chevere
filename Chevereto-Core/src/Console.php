@@ -90,10 +90,10 @@ class Console
     {
         $exitCode = null;
         $cli = static::cli();
-        if (!$cli->hasCommand()) {
+        $command = $cli->getCommand();
+        if (null === $command) {
             exit($exitCode);
         }
-        $command = $cli->getCommand();
         if (method_exists($command, 'callback')) {
             $app = static::getApp();
             if ($app == null) {

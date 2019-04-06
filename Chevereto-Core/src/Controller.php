@@ -39,14 +39,9 @@ use ReflectionClass;
  * @method bool hasApp()
  * @method App  getApp()
  */
-class Controller implements Interfaces\ContainerInterface
+class Controller
 {
-    use Traits\ContainerTrait;
     use Traits\HookableTrait;
-
-    protected $objects = [
-        'app' => App::class,
-    ];
 
     const TYPE_DECLARATIONS = ['array', 'callable', 'bool', 'float', 'int', 'string', 'iterable'];
     const OPTIONS = [];
@@ -54,12 +49,12 @@ class Controller implements Interfaces\ContainerInterface
     /** @var App */
     private $app;
 
-    public function getRoute(): Route
+    public function getRoute(): ?Route
     {
         return $this->getApp()->getRoute();
     }
 
-    public function getApis(): Apis
+    public function getApis(): ?Apis
     {
         return $this->getApp()->getApis();
     }
@@ -71,7 +66,7 @@ class Controller implements Interfaces\ContainerInterface
         return $this;
     }
 
-    public function getResponse(): Response
+    public function getResponse(): ?Response
     {
         return $this->getApp()->getResponse();
     }
@@ -81,6 +76,11 @@ class Controller implements Interfaces\ContainerInterface
         $this->app = $app;
 
         return $this;
+    }
+
+    public function getApp(): App
+    {
+        return $this->app;
     }
 
     /**

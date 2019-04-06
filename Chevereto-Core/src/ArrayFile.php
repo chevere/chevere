@@ -143,11 +143,11 @@ class ArrayFile
 
     public function getType(): ?string
     {
-        return $this->type;
+        return $this->type ?? null;
     }
 
     public function toArray(): array
     {
-        return $this->array;
+        return $this->array ?? [];
     }
 }

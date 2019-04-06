@@ -98,7 +98,7 @@ class CallableWrap extends CallableWrapProcessor
 
     public function getCallableFilepath(): ?string
     {
-        return $this->callableFilepath;
+        return $this->callableFilepath ?? null;
     }
 
     protected function setType(string $type): self
@@ -128,9 +128,9 @@ class CallableWrap extends CallableWrapProcessor
         return $this;
     }
 
-    public function getClass(): string
+    public function getClass(): ?string
     {
-        return $this->class;
+        return $this->class ?? null;
     }
 
     protected function setMethod(string $method): self
@@ -140,9 +140,9 @@ class CallableWrap extends CallableWrapProcessor
         return $this;
     }
 
-    public function getMethod(): string
+    public function getMethod(): ?string
     {
-        return $this->method;
+        return $this->method ?? null;
     }
 
     protected function setIsFileHandle(bool $isFileHandle): self
@@ -210,17 +210,17 @@ class CallableWrap extends CallableWrapProcessor
             $this->processParameters();
         }
 
-        return $this->parameters;
+        return $this->parameters ?? null;
     }
 
-    protected function getReflectionFunction(): ReflectionFunction
+    protected function getReflectionFunction(): ?ReflectionFunction
     {
-        return $this->reflectionFunction;
+        return $this->reflectionFunction ?? null;
     }
 
-    protected function getReflectionMethod(): ReflectionMethod
+    protected function getReflectionMethod(): ?ReflectionMethod
     {
-        return $this->reflectionMethod;
+        return $this->reflectionMethod ?? null;
     }
 
     protected function hasReflection(): bool
@@ -228,7 +228,7 @@ class CallableWrap extends CallableWrapProcessor
         return isset($this->reflectionFunction) || isset($this->reflectionMethod);
     }
 
-    protected function getReflection(): \ReflectionFunctionAbstract
+    public function getReflection(): \ReflectionFunctionAbstract
     {
         return isset($this->reflectionFunction)
             ? $this->getReflectionFunction()
@@ -249,9 +249,9 @@ class CallableWrap extends CallableWrapProcessor
         return $this;
     }
 
-    public function getPassedArguments(): array
+    public function getPassedArguments(): ?array
     {
-        return $this->passedArguments;
+        return $this->passedArguments ?? null;
     }
 
     /**
@@ -274,6 +274,6 @@ class CallableWrap extends CallableWrapProcessor
             $this->processArguments();
         }
 
-        return $this->arguments;
+        return $this->arguments ?? null;
     }
 }

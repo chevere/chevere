@@ -34,7 +34,7 @@ class Data implements DataInterface, IteratorAggregate, Countable
      *
      * @return ArrayIterator An ArrayIterator instance
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->data);
     }

@@ -19,44 +19,10 @@ use Monolog\Logger;
 
 /**
  * App contains the whole thing.
- *
- * Magic methods created by Container:
- *
- * @method bool        hasRuntime()
- * @method bool        hasLogger()
- * @method bool        hasRouter()
- * @method bool        hasHttpRequest()
- * @method bool        hasResponse()
- * @method bool        hasApis()
- * @method bool        hasRoute()
- * @method bool        hasHandler()
- * @method Router      getRouter()
- * @method Runtime     getRuntime()
- * @method Route       getRoute()
- * @method HttpRequest getHttpRequest()
- * @method Response    getResponse()
- * @method Apis        getApis()
- * @method array       getArguments()
- * @method array       getControllerArguments()
  */
-class App implements Interfaces\ContainerInterface
+class App
 {
-    use Traits\ContainerTrait;
     use Traits\StaticTrait;
-
-    /** @var array The propName => ClassName map for the Container */
-    const OBJECTS = [
-        'runtime' => Runtime::class,
-        'logger' => Logger::class,
-        'router' => Router::class,
-        'httpRequest' => HttpRequest::class,
-        'response' => Response::class,
-        'apis' => Apis::class,
-        'route' => Route::class,
-        'cache' => 'Cache::class',
-        'db' => 'Db::class',
-        'handler' => Handler::class,
-    ];
 
     const NAMESPACES = ['App', __NAMESPACE__];
     const APP = 'app';
@@ -72,6 +38,7 @@ class App implements Interfaces\ContainerInterface
 
     /** @var array An array containing string arguments (from request uri, cli) */
     protected $arguments;
+
     /** @var array An array containing the prepared controller arguments (object injection) */
     protected $controllerArguments;
 
@@ -124,7 +91,7 @@ class App implements Interfaces\ContainerInterface
         $configFiles = $parameters->getDataKey(AppParameters::CONFIG_FILES);
         if (isset($configFiles)) {
             if (isset($this->runtime)) {
-                $this->getRuntime()->runConfig(
+                $this->runtime->runConfig(
                     (new RuntimeConfig())
                         ->processFromFiles($configFiles)
                 );
@@ -177,42 +144,34 @@ class App implements Interfaces\ContainerInterface
         }
     }
 
-    // public static function hasInstance(): bool
-    // {
-    //     return isset(static::$instance);
-    // }
-
     /**
-     * Provides access to the App HttpRequest instance.
-     *
-     * @return HttpRequest|null
+     * @param array $arguments string arguments captured or injected
      */
-    public static function requestInstance(): ?HttpRequest
+    public function setArguments(array $arguments): self
     {
-        if (isset(static::$instance)) {
-            // Request isn't there when doing cli (unless you run the request command)
-            if (isset(static::$instance->httpRequest)) {
-                return static::$instance->getHttpRequest();
-            }
-        }
+        $this->arguments = $arguments;
 
-        return null;
+        return $this;
+    }
+
+    public function getArguments(): ?array
+    {
+        return $this->arguments ?? null;
     }
 
     /**
-     * Provides access to the App Runtime instance.
-     *
-     * @return Runtime|null
+     * @param array $arguments Prepared controller arguments
      */
-    public static function runtimeInstance(): ?Runtime
+    public function setControllerArguments(array $arguments): self
     {
-        if (isset(static::$instance)) {
-            if (isset(static::$instance->runtime)) {
-                return static::$instance->getRuntime();
-            }
-        }
+        $this->controllerArguments = $arguments;
 
-        return null;
+        return $this;
+    }
+
+    public function getControllerArguments(): ?array
+    {
+        return $this->controllerArguments ?? null;
     }
 
     protected function setRuntime(Runtime $runtime): self
@@ -222,31 +181,47 @@ class App implements Interfaces\ContainerInterface
         return $this;
     }
 
-    /**
-     * Get the value of handler.
-     */
-    // protected function getHandler(): Handler
-    // {
-    //     return $this->handler;
-    // }
-
-    /**
-     * Set the value of handler.
-     *
-     * @return self
-     */
-    protected function setHandler(Handler $handler)
+    public function getRuntime(): ?Runtime
     {
-        $this->handler = $handler;
+        return $this->runtime ?? null;
+    }
+
+    protected function setLogger(Logger $logger): self
+    {
+        $this->logger = $logger;
 
         return $this;
     }
 
-    protected function setRoute(Route $route): self
+    public function getLogger(): ?Logger
     {
-        $this->route = $route;
+        return $this->logger ?? null;
+    }
+
+    protected function setRouter(Router $router): self
+    {
+        $this->router = $router;
 
         return $this;
+    }
+
+    public function getRouter(): ?Router
+    {
+        return $this->router ?? null;
+    }
+
+    protected function setHttpRequest(HttpRequest $request): self
+    {
+        $this->httpRequest = $request;
+        $pathinfo = ltrim($this->httpRequest->getPathInfo(), '/');
+        $this->httpRequest->attributes->set('requestArray', explode('/', $pathinfo));
+
+        return $this;
+    }
+
+    public function getHttpRequest(): ?HttpRequest
+    {
+        return $this->httpRequest ?? null;
     }
 
     protected function setResponse(Response $response): self
@@ -256,9 +231,9 @@ class App implements Interfaces\ContainerInterface
         return $this;
     }
 
-    public static function getBuildFilePath(): string
+    public function getResponse(): ?Response
     {
-        return ROOT_PATH.App\PATH.'build';
+        return $this->response ?? null;
     }
 
     protected function setApis(Apis $apis): self
@@ -268,14 +243,45 @@ class App implements Interfaces\ContainerInterface
         return $this;
     }
 
+    public function getApis(): ?Apis
+    {
+        return $this->apis ?? null;
+    }
+
     public function getApi(string $key = null): ?array
     {
         return $this->apis->get($key ?? 'api');
     }
 
-    /**
-     * Get build time.
-     */
+    protected function setRoute(Route $route): self
+    {
+        $this->route = $route;
+
+        return $this;
+    }
+
+    public function getRoute(): ?Route
+    {
+        return $this->route ?? null;
+    }
+
+    protected function setHandler(Handler $handler)
+    {
+        $this->handler = $handler;
+
+        return $this;
+    }
+
+    public function getHandler(): ?Handler
+    {
+        return $this->handler ?? null;
+    }
+
+    public static function getBuildFilePath(): string
+    {
+        return ROOT_PATH.App\PATH.'build';
+    }
+
     public function getBuildTime(): ?string
     {
         $filename = $this->getBuildFilePath();
@@ -313,14 +319,14 @@ class App implements Interfaces\ContainerInterface
     {
         if (!isset($callable)) {
             try {
-                $route = $this->getRouter()->resolve($this->getHttpRequest()->getPathInfo());
+                $route = $this->getRouter()->resolve($this->httpRequest->getPathInfo());
                 if (!empty($route)) {
                     $this->setRoute($route);
                     $callable = $route->getCallable(
-                        $this->getHttpRequest()->getMethod()
+                        $this->httpRequest->getMethod()
                     );
                     $this->setArguments(
-                        $this->getRouter()->getArguments()
+                        $this->router->getArguments()
                     );
                 } else {
                     echo '404 - Not found';
@@ -366,7 +372,7 @@ class App implements Interfaces\ContainerInterface
         // }
 
         if (!empty($this->arguments)) {
-            $callableWrap->setPassedArguments($this->getArguments());
+            $callableWrap->setPassedArguments($this->arguments);
             $this->controllerArguments = $callableWrap->getArguments();
         } else {
             $this->controllerArguments = [];
@@ -387,36 +393,8 @@ class App implements Interfaces\ContainerInterface
         // callTermEvent();
     }
 
-    protected function setLogger(Logger $logger)
-    {
-        $this->logger = $logger;
-    }
-
-    protected function setRouter(Router $router): self
-    {
-        $this->router = $router;
-
-        return $this;
-    }
-
     /**
-     * Sets the plain App arguments (scalar data).
-     */
-    public function setArguments(array $arguments)
-    {
-        $this->arguments = $arguments;
-    }
-
-    /**
-     * Sets the rich controller arguments (object injection).
-     */
-    public function setControllerArguments(array $arguments)
-    {
-        $this->controllerArguments = $arguments;
-    }
-
-    /**
-     * Forges a request (if no Request has been set).
+     * Forges a request if no Request has been set.
      */
     public function forgeHttpRequest(HttpRequest $request): self
     {
@@ -424,15 +402,6 @@ class App implements Interfaces\ContainerInterface
             throw new CoreException('Unable to forge request when the request has been already set.');
         }
         $this->setHttpRequest($request);
-
-        return $this;
-    }
-
-    protected function setHttpRequest(HttpRequest $request): self
-    {
-        $this->httpRequest = $request;
-        $pathinfo = ltrim($this->httpRequest->getPathInfo(), '/');
-        $this->httpRequest->attributes->set('requestArray', explode('/', $pathinfo));
 
         return $this;
     }
@@ -457,5 +426,38 @@ class App implements Interfaces\ContainerInterface
     public static function getDefaultRuntime(): Runtime
     {
         return static::$defaultRuntime;
+    }
+
+    /**
+     * Provides access to the App HttpRequest instance.
+     *
+     * @return HttpRequest|null
+     */
+    public static function requestInstance(): ?HttpRequest
+    {
+        if (isset(static::$instance)) {
+            // Request isn't there when doing cli (unless you run the request command)
+            if (isset(static::$instance->httpRequest)) {
+                return static::$instance->httpRequest;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Provides access to the App Runtime instance.
+     *
+     * @return Runtime|null
+     */
+    public static function runtimeInstance(): ?Runtime
+    {
+        if (isset(static::$instance)) {
+            if (isset(static::$instance->runtime)) {
+                return static::$instance->getRuntime();
+            }
+        }
+
+        return null;
     }
 }

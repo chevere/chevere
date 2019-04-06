@@ -20,39 +20,17 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
  * This class provides console for Chevereto\Core and it is a facade of Symfony\Component\Console.
- *
- * Magic methods created by Container:
- *
- * @method bool          hasInput()
- * @method bool          hasOutput()
- * @method bool          hasLogger()
- * @method bool          hasClient()
- * @method bool          hasIo()
- * @method bool          hasCommand()
- * @method string        getName()
- * @method string        getVersion()
- * @method ArgvInput     getInput()
- * @method ConsoleOutput getOutput()
- * @method Logger        getLogger()
- * @method Application   getClient()
- * @method SymfonyStyle  getIo()
- * @method Command       getCommand()
  */
-class Cli implements Interfaces\ContainerInterface
+class Cli
 {
-    use Traits\ContainerTrait;
-
-    protected $objects = [
-        'input' => ArgvInput::class,
-        'output' => ConsoleOutput::class,
-        'logger' => Logger::class,
-        'client' => Application::class,
-        'io' => SymfonyStyle::class,
-        'command' => Command::class,
-    ];
-
     const NAME = __NAMESPACE__.' cli';
     const VERSION = '1.0';
+
+    /** @var string Cli name */
+    protected $name;
+
+    /** @var string Cli version */
+    protected $version;
 
     /** @var ArgvInput */
     protected $input;
@@ -71,11 +49,6 @@ class Cli implements Interfaces\ContainerInterface
 
     /** @var Command */
     protected $command;
-
-    /** @var string Cli name */
-    protected $name;
-    /** @var string Cli version */
-    protected $version;
 
     public function __construct(ArgvInput $input)
     {
@@ -113,11 +86,21 @@ class Cli implements Interfaces\ContainerInterface
         return $this;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     public function setVersion(string $version): self
     {
         $this->version = $version;
 
         return $this;
+    }
+
+    public function getVersion(): string
+    {
+        return $this->version;
     }
 
     public function setInput(ArgvInput $input): self
@@ -127,11 +110,21 @@ class Cli implements Interfaces\ContainerInterface
         return $this;
     }
 
+    public function getInput(): ?ArgvInput
+    {
+        return $this->input ?? null;
+    }
+
     public function setOutput(ConsoleOutput $output): self
     {
         $this->output = $output;
 
         return $this;
+    }
+
+    public function getOutput(): ?ConsoleOutput
+    {
+        return $this->output ?? null;
     }
 
     public function setLogger(Logger $logger): self
@@ -141,11 +134,21 @@ class Cli implements Interfaces\ContainerInterface
         return $this;
     }
 
+    public function getLogger(): ?Logger
+    {
+        return $this->logger ?? null;
+    }
+
     public function setClient(Application $client): self
     {
         $this->client = $client;
 
         return $this;
+    }
+
+    public function getClient(): ?Application
+    {
+        return $this->client ?? null;
     }
 
     public function setIo(SymfonyStyle $io): self
@@ -155,10 +158,20 @@ class Cli implements Interfaces\ContainerInterface
         return $this;
     }
 
+    public function getIo(): ?SymfonyStyle
+    {
+        return $this->io ?? null;
+    }
+
     public function setCommand(Command $command): self
     {
         $this->command = $command;
 
         return $this;
+    }
+
+    public function getCommand(): ?Command
+    {
+        return $this->command ?? null;
     }
 }
