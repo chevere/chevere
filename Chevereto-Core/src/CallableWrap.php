@@ -29,62 +29,6 @@ use ReflectionParameter;
  */
 class CallableWrap extends CallableWrapProcessor
 {
-    const TYPE_FUNCTION = 'function';
-    const TYPE_METHOD = 'method';
-    const TYPE_CLASS = 'class';
-
-    // const SOURCES = [self::SOURCE_FUNCTION, self::SOURCE_METHOD, self::SOURCE_CLASS, self::SOURCE_FILEHANDLE];
-    const TYPES = [self::TYPE_FUNCTION, self::TYPE_CLASS];
-
-    /** @var string The callable string handle used to construct the object */
-    // is_array (function)
-    // Chevereto\Core\Path::fromHandle (method)
-    // Chevereto\Core\Controllers\ApiGet (class implementing invoke)
-    // callables:index (fileHandle return callable)
-    protected $callableHandle;
-
-    /** @var array explode('::', $callableHandle) */
-    protected $callableHandleMethodExplode;
-
-    /** @var callable The actual callable */
-    protected $callable;
-
-    /** @var string The callable file (if any) */
-    protected $callableFilepath;
-
-    /** @var string The callable type (function, method, class) */
-    protected $type;
-
-    /** @var string Class name (if any) */
-    protected $class;
-
-    /** @var string Method name (if any) */
-    protected $method;
-
-    /** @var ReflectionFunction The reflected callable (function) */
-    protected $reflectionFunction;
-
-    /** @var ReflectionMethod The reflected callable (method) */
-    protected $reflectionMethod;
-
-    /** @var string[] Callable parameters */
-    protected $parameters;
-
-    /** @var array Callable arguments */
-    protected $arguments;
-
-    /** @var array Passed callable arguments */
-    protected $passedArguments;
-
-    /** @var bool True if the callable comes from a fileHandle */
-    protected $isFileHandle;
-
-    /** @var bool True if the callable represents a anon function or class */
-    protected $isAnon;
-
-    /** @var array An array containg typehinted arguments ready to use */
-    private $typedArguments;
-
     public function __construct(string $callableHandle)
     {
         $this
