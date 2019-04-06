@@ -36,7 +36,8 @@ use ReflectionClass;
  *
  * Magic methods created by Container:
  *
- * @method string hasApp(): bool
+ * @method bool hasApp()
+ * @method App  getApp()
  */
 class Controller implements Interfaces\ContainerInterface
 {
@@ -73,11 +74,6 @@ class Controller implements Interfaces\ContainerInterface
     public function getResponse(): Response
     {
         return $this->getApp()->getResponse();
-    }
-
-    public function getApp(): App
-    {
-        return $this->app;
     }
 
     public function setApp(App $app): self

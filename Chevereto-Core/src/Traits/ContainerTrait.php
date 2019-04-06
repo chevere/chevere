@@ -12,19 +12,28 @@ declare(strict_types=1);
 
 namespace Chevereto\Core\Traits;
 
+use Chevereto\Core\Message;
+use Chevereto\Core\Path;
 use Chevereto\Core\Utils\Str;
+use LogicException;
+use ReflectionMethod;
 
 trait ContainerTrait
 {
+    /** @var bool True if the instance contains static::OBJECTS */
+    private $_objects;
+
     /** @var array An array containing propName => className|null */
     // protected $objects;
 
     /**
      * Retrieves the $objects property.
      */
-    public function getObjectTypes(): array
+    public function hasObjectsDefinition(): bool
     {
-        return $this->objects;
+        $this->_detectObjectsDefinition();
+
+        return $this->_objects;
     }
 
     /**
@@ -32,10 +41,36 @@ trait ContainerTrait
      */
     final public function __call(string $name, array $arguments = null)
     {
-        if (Str::startsWith('has', $name)) {
-            $propertyName = lcfirst(substr($name, 3));
+        if (method_exists($this, $name)) {
+            $reflection = new ReflectionMethod($this, $name);
+            $caller = debug_backtrace(0, 1)[0];
+            $caller['file'] = Path::relative(Path::normalize($caller['file']));
+            throw new LogicException(
+                (string)
+                    (new Message('Call to %p method %s in %f.'))
+                        ->code('%p', $reflection->isPrivate() ? 'private' : 'protected')
+                        ->code('%s', __CLASS__.'::'.$name)
+                        ->code('%f', $caller['file'].':'.$caller['line'])
+            );
+        }
+        $this->_detectObjectsDefinition();
+        $prefix = substr($name, 0, 3); // Covers get,set,has
+        $propertyName = lcfirst(Str::replaceFirst($prefix, null, $name));
+        if (in_array($prefix, ['has', 'get'])) {
+            $hasAlgo = $this->_callHasAlgo($propertyName);
+            if ('has' === $prefix) {
+                return $hasAlgo;
+            }
+            if ($hasAlgo) {
+                return $this->{$propertyName};
+            }
+        }
+    }
 
-            return $this->_callHasAlgo($propertyName);
+    private function _detectObjectsDefinition(): void
+    {
+        if (!isset($this->_objects)) {
+            $this->_objects = defined(__CLASS__.'::OBJECTS');
         }
     }
 
@@ -48,23 +83,13 @@ trait ContainerTrait
         if (!isset($property)) {
             return false;
         }
-        $acceptedClass = $this->objects[$propertyName] ?? null;
-        if (isset($acceptedClass)) {
-            return $property instanceof $acceptedClass;
+        if ($this->_objects) {
+            $acceptedClass = static::OBJECTS[$propertyName] ?? null;
+            if (isset($acceptedClass)) {
+                return $property instanceof $acceptedClass;
+            }
         }
 
         return true;
     }
-
-    /*
-     * The ::GetAlgoObject is similar to a getAlgo getter, but this one won't throw type exception.
-     */
-  // private function _callGetAlgoObject(string $algo): ?object
-  // {
-  //     $propertyName = lcfirst($algo);
-  //     $getMethod = 'get'.$algo;
-  //     dd($algo, $propertyName, $getMethod);
-
-  //     return null;
-  // }
 }

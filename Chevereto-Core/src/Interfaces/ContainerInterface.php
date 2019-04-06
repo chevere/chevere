@@ -14,7 +14,7 @@ namespace Chevereto\Core\Interfaces;
 
 interface ContainerInterface
 {
-    public function getObjectTypes(): array;
+    public function hasObjectsDefinition(): bool;
 
     public function __call(string $name, array $arguments = null);
 }

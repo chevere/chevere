@@ -14,7 +14,7 @@ const APP_NS_HANDLE = 'App\\';
 /*
  * Assuming that this file has been loaded from /app/bootstrap.php
  */
-define('Chevereto\Core\BOOTSTRAPPER', debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS)[0]['file']);
+define('Chevereto\Core\BOOTSTRAPPER', debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0]['file']);
 
 /*
  * Chevereto\Core\ROOT_PATH

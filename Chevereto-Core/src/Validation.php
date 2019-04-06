@@ -164,12 +164,12 @@ class Validation
         if (is_string($callable)) {
             // ::callable shorthand (use a method from parent caller class)
             if (Utils\Str::startsWith('::', $callable)) {
-                $class = debug_backtrace()[1]['class'];
+                $class = debug_backtrace(0, 2)[1]['class'];
                 $callable = $class.$callable;
             } else {
                 // Class::method shorthand (use a method from somewhere else in the namespace)
                 if (Utils\Str::contains('::', $callable) && !Utils\Str::contains('\\', $callable)) {
-                    $explode = explode('\\', debug_backtrace()[1]['class']);
+                    $explode = explode('\\', debug_backtrace(0, 2)[1]['class']);
                     array_pop($explode);
                     $callable = implode('\\', $explode).'\\'.$callable;
                 }

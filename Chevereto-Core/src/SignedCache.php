@@ -45,7 +45,7 @@ class SignedCache
     public function __construct()
     {
         // This class and the caller are always added to signerArray
-        $this->signerArray = [Core::getClassFilename($this), debug_backtrace()[0]['file']];
+        $this->signerArray = [Core::getClassFilename($this), debug_backtrace(0, 1)[0]['file']];
     }
 
     /**

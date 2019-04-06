@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
-abstract class RouteProcesssor extends RouteValidator
+abstract class RouteProcessor extends RouteValidator
 {
     protected function processMaker(): void
     {

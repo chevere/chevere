@@ -23,12 +23,20 @@ use Symfony\Component\Console\Output\ConsoleOutput;
  *
  * Magic methods created by Container:
  *
- * @method string hasInput(): bool
- * @method string hasOutput(): bool
- * @method string hasLogger(): bool
- * @method string hasClient(): bool
- * @method string hasIo(): bool
- * @method string hasCommand(): bool
+ * @method bool          hasInput()
+ * @method bool          hasOutput()
+ * @method bool          hasLogger()
+ * @method bool          hasClient()
+ * @method bool          hasIo()
+ * @method bool          hasCommand()
+ * @method string        getName()
+ * @method string        getVersion()
+ * @method ArgvInput     getInput()
+ * @method ConsoleOutput getOutput()
+ * @method Logger        getLogger()
+ * @method Application   getClient()
+ * @method SymfonyStyle  getIo()
+ * @method Command       getCommand()
  */
 class Cli implements Interfaces\ContainerInterface
 {
@@ -152,45 +160,5 @@ class Cli implements Interfaces\ContainerInterface
         $this->command = $command;
 
         return $this;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getVersion(): string
-    {
-        return $this->version;
-    }
-
-    public function getInput(): ArgvInput
-    {
-        return $this->input;
-    }
-
-    public function getOutput(): ConsoleOutput
-    {
-        return $this->output;
-    }
-
-    public function getLogger(): Logger
-    {
-        return $this->logger;
-    }
-
-    public function getClient(): Application
-    {
-        return $this->client;
-    }
-
-    public function getIo(): SymfonyStyle
-    {
-        return $this->io;
-    }
-
-    public function getCommand(): Command
-    {
-        return $this->command;
     }
 }

@@ -23,22 +23,29 @@ use Symfony\Component\Console\Exception\LogicException;
 /**
  * ALLFATHER GIVE ME ROUTEH!
  *
- * @method string hasId(): bool
- * @method string hasKey(): bool
- * @method string hasName(): bool
- * @method string hasWheres(): bool
- * @method string hasSet(): bool
- * @method string hasPowerSet(): bool
- * @method string hasMethods(): bool
- * @method string hasWildcards(): bool
- * @method string hasMaker(): bool
- * @method string hasMiddlewares(): bool
- * @method string hasHandlebars(): bool
- * @method string hasOptionals(): bool
- * @method string hasOptionalsIndex(): bool
- * @method string hasMandatoryIndex(): bool
+ * @method bool   hasId()
+ * @method bool   hasKey()
+ * @method bool   hasName()
+ * @method bool   hasWheres()
+ * @method bool   hasSet()
+ * @method bool   hasPowerSet()
+ * @method bool   hasMethods()
+ * @method bool   hasWildcards()
+ * @method bool   hasMaker()
+ * @method bool   hasMiddlewares()
+ * @method bool   hasHandlebars()
+ * @method bool   hasOptionals()
+ * @method bool   hasOptionalsIndex()
+ * @method bool   hasMandatoryIndex()
+ * @method array  getMiddlewares()
+ * @method array  getWildcards()
+ * @method array  getPowerSet()
+ * @method string getKey()
+ * @method string getName()
+ * @method string getSet()
+ * @method string getId()
  */
-class Route extends RouteProcesssor
+class Route extends RouteProcessor
 {
     use Traits\ContainerTrait;
     use Traits\CallableTrait;
@@ -278,46 +285,11 @@ class Route extends RouteProcesssor
         return $this;
     }
 
-    public function getMiddlewares(): array
-    {
-        return $this->middlewares;
-    }
-
-    public function getWildcards(): array
-    {
-        return $this->wildcards;
-    }
-
-    public function getPowerSet(): array
-    {
-        return $this->powerSet;
-    }
-
     protected function setKey(string $key): self
     {
         $this->key = $key;
 
         return $this;
-    }
-
-    public function getKey(): string
-    {
-        return $this->key;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function getSet(): string
-    {
-        return $this->set;
-    }
-
-    public function getId(): string
-    {
-        return $this->id;
     }
 
     public function setId(string $id): self

@@ -27,13 +27,8 @@ use ReflectionParameter;
  * - A class implementing ::__invoke
  * - A fileHandle string representing the path of a file wich returns a callable
  */
-class CallableWrap
+class CallableWrap extends CallableWrapProcessor
 {
-    // const SOURCE_FUNCTION = 'function';
-    // const SOURCE_METHOD = 'method';
-    // const SOURCE_CLASS = 'class';
-    // const SOURCE_FILEHANDLE = 'fileHandle';
-
     const TYPE_FUNCTION = 'function';
     const TYPE_METHOD = 'method';
     const TYPE_CLASS = 'class';
@@ -124,73 +119,6 @@ class CallableWrap
         if (!isset($this->callable)) {
             $this->processCallableHandle();
         }
-    }
-
-    protected function processCallableHandle(): void
-    {
-        if (Utils\Str::contains('::', $this->callableHandle)) {
-            $this->processCallableHandleMethod();
-        } else {
-            $this->processCallableHandleFile();
-        }
-    }
-
-    protected function processCallableHandleMethod(): void
-    {
-        $this->callableHandleMethodExplode = explode('::', $this->callableHandle);
-        $class = $this->callableHandleMethodExplode[0];
-        if (!class_exists($class)) {
-            throw new LogicException(
-                (string)
-                    (new Message('Callable string %s is targeting not found class %c.'))
-                        ->code('%s', $this->callableHandle)
-                        ->code('%c', $class)
-            );
-        }
-        $method = $this->callableHandleMethodExplode[1];
-        if (0 === strpos($method, '__')) {
-            throw new LogicException(
-                (string)
-                    (new Message('Callable string %s is targeting the magic method %m.'))
-                        ->code('%s', $this->callableHandle)
-                        ->code('%m', $method)
-            );
-        }
-        if (!method_exists($class, $method)) {
-            throw new LogicException(
-                (string)
-                    (new Message('Callable string %s is targeting an nonexistent method %m.'))
-                        ->code('%s', $this->callableHandle)
-                        ->code('%m', $method)
-            );
-        }
-    }
-
-    protected function processCallableHandleFile(): void
-    {
-        $callableFilepath = Path::fromHandle($this->callableHandle);
-        if (!File::exists($callableFilepath)) {
-            throw new LogicException(
-                (string)
-                    (new Message('Unable to locate any callable specified by %s.'))
-                        ->code('%s', $this->callableHandle)
-            );
-        }
-        $callable = include $callableFilepath;
-        if (!is_callable($callable)) {
-            throw new LogicException(
-                (string)
-                    (new Message('Expected %s callable, %t provided in %f.'))
-                        ->code('%s', '$callable')
-                        ->code('%t', gettype($callable))
-                        ->code('%f', $this->callableHandle)
-            );
-        }
-        $this
-            ->setIsFileHandle(true)
-            ->setCallable($callable)
-            ->setCallableFilepath($callableFilepath)
-            ->prepare();
     }
 
     protected function setCallableHandle(string $callableHandle): self
@@ -361,66 +289,6 @@ class CallableWrap
         return isset($this->reflectionFunction)
             ? $this->getReflectionFunction()
             : $this->getReflectionMethod();
-    }
-
-    protected function processReflection(): self
-    {
-        if ($this->hasReflection()) {
-            return $this;
-        }
-        if (is_object($this->getCallable())) {
-            $this->reflectionMethod = new ReflectionMethod($this->getCallable(), $this->getMethod());
-        } else {
-            $this->reflectionFunction = new ReflectionFunction($this->getCallable());
-        }
-
-        return $this;
-    }
-
-    protected function processParameters(): self
-    {
-        $this->processReflection();
-        $reflection = $this->getReflection();
-
-        $this->setParameters($reflection->getParameters());
-
-        return $this;
-    }
-
-    protected function processArguments(): self
-    {
-        $this->processReflection();
-        $this->typedArguments = [];
-        $parameterIndex = 0;
-
-        // Magically create typehinted arguments
-        foreach ($this->getReflection()->getParameters() as $parameter) {
-            $type = null;
-            $parameterType = $parameter->getType();
-            if (isset($parameterType)) {
-                $type = $parameterType->getName();
-            }
-            $this->processTypedArgument(
-                $parameter,
-                $type,
-                $this->getPassedArguments()[$parameter->getName()] ?? $this->getPassedArguments()[$parameterIndex] ?? null
-            );
-            ++$parameterIndex;
-        }
-        $this->setArguments($this->typedArguments);
-
-        return $this;
-    }
-
-    protected function processTypedArgument(ReflectionParameter $parameter, string $type = null, $value = null): void
-    {
-        if (!isset($type) || in_array($type, Controller::TYPE_DECLARATIONS)) {
-            $this->typedArguments[] = $value ?? ($parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);
-        } elseif (null === $value && $parameter->allowsNull()) {
-            $this->typedArguments[] = null;
-        } else {
-            $this->typedArguments[] = new $type($value);
-        }
     }
 
     /**

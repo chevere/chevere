@@ -22,16 +22,22 @@ use Monolog\Logger;
  *
  * Magic methods created by Container:
  *
- * @method string hasRuntime(): bool
- * @method string hasLogger(): bool
- * @method string hasRouter(): bool
- * @method string hasHttpRequest(): bool
- * @method string hasResponse(): bool
- * @method string hasApis(): bool
- * @method string hasRoute(): bool
- * //@method string hasCache(): bool
- * //@method string hasDb(): bool
- * @method string hasHandler(): bool
+ * @method bool        hasRuntime()
+ * @method bool        hasLogger()
+ * @method bool        hasRouter()
+ * @method bool        hasHttpRequest()
+ * @method bool        hasResponse()
+ * @method bool        hasApis()
+ * @method bool        hasRoute()
+ * @method bool        hasHandler()
+ * @method Router      getRouter()
+ * @method Runtime     getRuntime()
+ * @method Route       getRoute()
+ * @method HttpRequest getHttpRequest()
+ * @method Response    getResponse()
+ * @method Apis        getApis()
+ * @method array       getArguments()
+ * @method array       getControllerArguments()
  */
 class App implements Interfaces\ContainerInterface
 {
@@ -39,7 +45,7 @@ class App implements Interfaces\ContainerInterface
     use Traits\StaticTrait;
 
     /** @var array The propName => ClassName map for the Container */
-    protected $objects = [
+    const OBJECTS = [
         'runtime' => Runtime::class,
         'logger' => Logger::class,
         'router' => Router::class,
@@ -163,7 +169,6 @@ class App implements Interfaces\ContainerInterface
                 }
             }
         }
-        // dd($this->getRouter()->getRoutes());
         $this->setResponse(new Response());
         if (Console::bind($this)) {
             Console::run(); // Note: Console::run() always exit.
@@ -172,10 +177,10 @@ class App implements Interfaces\ContainerInterface
         }
     }
 
-    public static function hasInstance(): bool
-    {
-        return isset(static::$instance);
-    }
+    // public static function hasInstance(): bool
+    // {
+    //     return isset(static::$instance);
+    // }
 
     /**
      * Provides access to the App HttpRequest instance.
@@ -217,18 +222,13 @@ class App implements Interfaces\ContainerInterface
         return $this;
     }
 
-    public function getRuntime(): Runtime
-    {
-        return $this->runtime;
-    }
-
     /**
      * Get the value of handler.
      */
-    public function getHandler(): Handler
-    {
-        return $this->handler;
-    }
+    // protected function getHandler(): Handler
+    // {
+    //     return $this->handler;
+    // }
 
     /**
      * Set the value of handler.
@@ -249,31 +249,11 @@ class App implements Interfaces\ContainerInterface
         return $this;
     }
 
-    public function getRoute(): Route
-    {
-        return $this->route;
-    }
-
-    public function getRouter(): Router
-    {
-        return $this->router;
-    }
-
-    public function getHttpRequest(): HttpRequest
-    {
-        return $this->httpRequest;
-    }
-
     protected function setResponse(Response $response): self
     {
         $this->response = $response;
 
         return $this;
-    }
-
-    public function getResponse(): Response
-    {
-        return $this->response;
     }
 
     public static function getBuildFilePath(): string
@@ -286,11 +266,6 @@ class App implements Interfaces\ContainerInterface
         $this->apis = $apis;
 
         return $this;
-    }
-
-    public function getApis(): Apis
-    {
-        return $this->apis;
     }
 
     public function getApi(string $key = null): ?array
@@ -396,7 +371,6 @@ class App implements Interfaces\ContainerInterface
         } else {
             $this->controllerArguments = [];
         }
-
         $controller(...$this->controllerArguments);
 
         return $controller;
@@ -433,22 +407,12 @@ class App implements Interfaces\ContainerInterface
         $this->arguments = $arguments;
     }
 
-    public function getArguments(): array
-    {
-        return $this->arguments;
-    }
-
     /**
      * Sets the rich controller arguments (object injection).
      */
     public function setControllerArguments(array $arguments)
     {
         $this->controllerArguments = $arguments;
-    }
-
-    public function getControllerArguments(): array
-    {
-        return $this->controllerArguments;
     }
 
     /**
