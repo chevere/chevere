@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
-abstract class AppProcessor
+abstract class AppProcessor extends AppStatic
 {
     protected function processCheckout(): void
     {

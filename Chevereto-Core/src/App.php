@@ -246,11 +246,6 @@ class App extends AppProcessor
         return $this->handler ?? null;
     }
 
-    public static function getBuildFilePath(): string
-    {
-        return ROOT_PATH.App\PATH.'build';
-    }
-
     public function getBuildTime(): ?string
     {
         $filename = $this->getBuildFilePath();
@@ -385,48 +380,5 @@ class App extends AppProcessor
         $constant = "\\$namespace\\$name";
 
         return defined($constant) ? constant($constant) : null;
-    }
-
-    public static function setDefaultRuntime(Runtime $runtime): void
-    {
-        static::$defaultRuntime = $runtime;
-    }
-
-    public static function getDefaultRuntime(): Runtime
-    {
-        return static::$defaultRuntime;
-    }
-
-    /**
-     * Provides access to the App HttpRequest instance.
-     *
-     * @return HttpRequest|null
-     */
-    public static function requestInstance(): ?HttpRequest
-    {
-        if (isset(static::$instance)) {
-            // Request isn't there when doing cli (unless you run the request command)
-            if (isset(static::$instance->httpRequest)) {
-                return static::$instance->httpRequest;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * Provides access to the App Runtime instance.
-     *
-     * @return Runtime|null
-     */
-    public static function runtimeInstance(): ?Runtime
-    {
-        if (isset(static::$instance)) {
-            if (isset(static::$instance->runtime)) {
-                return static::$instance->getRuntime();
-            }
-        }
-
-        return null;
     }
 }
