@@ -20,7 +20,7 @@ use Monolog\Logger;
 /**
  * App contains the whole thing.
  */
-class App
+class App extends AppProcessor
 {
     use Traits\StaticTrait;
 
@@ -111,62 +111,6 @@ class App
         $this->processParamRoutes($parameters->getDatakey(AppParameters::ROUTES));
         $this->setResponse(new Response());
         $this->processSapi();
-    }
-
-    protected function processCheckout(): void
-    {
-        if (false === stream_resolve_include_path($this->getBuildFilePath())) {
-            $this->checkout();
-        }
-    }
-
-    protected function processConfigFiles(array $configFiles = null): void
-    {
-        if (!isset($configFiles)) {
-            return;
-        }
-        if (isset($this->runtime)) {
-            $this->runtime->runConfig(
-                (new RuntimeConfig())
-                    ->processFromFiles($configFiles)
-            );
-        }
-    }
-
-    protected function processApis(array $paramApis = null): void
-    {
-        if (!isset($paramApis)) {
-            return;
-        }
-        $apis = new Apis($this->router);
-        if (!$this->isCached) {
-            foreach ($paramApis as $apiKey => $apiPath) {
-                $apis->register($apiKey, $apiPath);
-            }
-        }
-        $this->setApis($apis);
-    }
-
-    protected function processParamRoutes(array $paramRoutes = null): void
-    {
-        if (!isset($paramRoutes)) {
-            return;
-        }
-        // ['handle' => [Routes,]]
-        foreach ($paramRoutes as $fileHandle) {
-            foreach ((new Routes($fileHandle))->getArrayFile()->toArray() as $k => $route) {
-                $this->router->addRoute($route, $fileHandle);
-            }
-        }
-    }
-
-    protected function processSapi(): void
-    {
-        if (Console::bind($this)) {
-            Console::run(); // Note: Console::run() always exit.
-        } else {
-            $this->setHttpRequest(HttpRequest::createFromGlobals());
-        }
     }
 
     /**
