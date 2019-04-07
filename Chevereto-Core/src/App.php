@@ -290,31 +290,6 @@ class App extends AppProcessor
         }
     }
 
-    protected function routerResolve(string $pathInfo): void
-    {
-        try {
-            $route = $this->router->resolve($pathInfo);
-            if (isset($route)) {
-                $this->setRoute($route);
-                $this->callable = $route->getCallable(
-                    $this->httpRequest->getMethod()
-                );
-                $routerArgs = $this->router->getArguments();
-                if (isset($routerArgs)) {
-                    $this->setArguments($routerArgs);
-                }
-            } else {
-                echo 'NO ROUTE FOUND';
-
-                return;
-            }
-        } catch (\Throwable $e) {
-            echo 'Exception at App: '.$e->getCode();
-
-            return;
-        }
-    }
-
     /**
      * Runs a explicit provided callable string.
      *
