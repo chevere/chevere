@@ -70,4 +70,14 @@ abstract class AppProcessor extends AppStatic
             $this->setHttpRequest(HttpRequest::createFromGlobals());
         }
     }
+
+    protected function processCallable(string $callable): void
+    {
+        $controller = $this->getControllerObject($callable);
+        if ($controller instanceof Interfaces\RenderableInterface) {
+            echo $controller->render();
+        } else {
+            $controller->getResponse()->send();
+        }
+    }
 }

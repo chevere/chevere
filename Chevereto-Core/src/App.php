@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevereto\Core;
 
 use RuntimeException;
-use Exception;
 use Monolog\Logger;
 
 /**
@@ -282,34 +281,37 @@ class App extends AppProcessor
     public function run(string $callable = null)
     {
         if (!isset($callable)) {
-            try {
-                $route = $this->router->resolve($this->httpRequest->getPathInfo());
-                if (!empty($route)) {
-                    $this->setRoute($route);
-                    $callable = $route->getCallable(
-                        $this->httpRequest->getMethod()
-                    );
-                    $this->setArguments(
-                        $this->router->getArguments()
-                    );
-                } else {
-                    echo '404 - Not found';
+            $this->routerResolve($this->httpRequest->getPathInfo());
+        } else {
+            $this->callable = $callable;
+        }
+        if (isset($this->callable)) {
+            $this->processCallable($this->callable);
+        }
+    }
 
-                    return;
+    protected function routerResolve(string $pathInfo): void
+    {
+        try {
+            $route = $this->router->resolve($pathInfo);
+            if (isset($route)) {
+                $this->setRoute($route);
+                $this->callable = $route->getCallable(
+                    $this->httpRequest->getMethod()
+                );
+                $routerArgs = $this->router->getArguments();
+                if (isset($routerArgs)) {
+                    $this->setArguments($routerArgs);
                 }
-            } catch (Exception $e) {
-                echo 'Exception at App: '.$e->getCode();
+            } else {
+                echo 'NO ROUTE FOUND';
 
                 return;
             }
-        }
-        if (isset($callable)) {
-            $controller = $this->getControllerObject($callable);
-            if ($controller instanceof Interfaces\RenderableInterface) {
-                echo $controller->render();
-            } else {
-                $controller->getResponse()->send();
-            }
+        } catch (\Throwable $e) {
+            echo 'Exception at App: '.$e->getCode();
+
+            return;
         }
     }
 
