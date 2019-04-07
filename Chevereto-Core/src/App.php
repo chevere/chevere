@@ -72,6 +72,26 @@ class App
     /** @var Handler */
     protected $handler;
 
+    /*
+    * (A) Router cache : The array which is used to resolve /req -> route (routing)
+    * (B) Routes cache : The array of serialized Routes ['id' => Route serialized]
+    * (C) Apis cache : The array containing the exposed API
+    * ...
+    * CHECK IF APP IS CACHED UNDER THE PROVIDED APIS+ROUTES
+    * ...
+    * new App:
+    * 1. setParams (Runtime, [apis], [routes])
+    * 2. isCached
+    *      ? Router && API from Cache
+    *      : Router && API on-the-fly
+    * 3. Resolve controller
+    *      - Router -> maps route id -> get Route -> return callable
+    *
+    * - Provide route access with some helper like Route::get('homepage@routes:web') which gets name=homepage from routes/web.php
+    * - app/console dump:routes route:web -> Shows the return (generated objects) of this file
+    * - App autoinjects a "Router", which could be Router::fromCache(...) or new Router() and provides access to Routes (cached or new)
+    * - RouteCollection contains the array of mapped routes (objects or serialized arrays (cached))
+    */
     public function __construct(AppParameters $parameters = null)
     {
         static::$instance = $this;
@@ -80,63 +100,68 @@ class App
         if (static::hasStaticProp('defaultRuntime')) {
             $this->setRuntime(static::getDefaultRuntime());
         }
-        if (false === stream_resolve_include_path($this->getBuildFilePath())) {
-            $this->checkout();
-        }
+        $this->processCheckout();
         Load::php(static::FILEHANDLE_HACKS);
-        if (null == $parameters) {
+        if (!isset($parameters)) {
             $arrayFile = new ArrayFile(static::FILEHANDLE_PARAMETERS, 'array');
             $parameters = new AppParameters($arrayFile->toArray());
         }
-        $configFiles = $parameters->getDataKey(AppParameters::CONFIG_FILES);
-        if (isset($configFiles)) {
-            if (isset($this->runtime)) {
-                $this->runtime->runConfig(
-                    (new RuntimeConfig())
-                        ->processFromFiles($configFiles)
-                );
-            }
-        }
-        /*
-         * (A) Router cache : The array which is used to resolve /req -> route (routing)
-         * (B) Routes cache : The array of serialized Routes ['id' => Route serialized]
-         * (C) Apis cache : The array containing the exposed API
-         * ...
-         * CHECK IF APP IS CACHED UNDER THE PROVIDED APIS+ROUTES
-         * ...
-         * new App:
-         * 1. setParams (Runtime, [apis], [routes])
-         * 2. isCached
-         *      ? Router && API from Cache
-         *      : Router && API on-the-fly
-         * 3. Resolve controller
-         *      - Router -> maps route id -> get Route -> return callable
-         *
-         * - Provide route access with some helper like Route::get('homepage@routes:web') which gets name=homepage from routes/web.php
-         * - app/console dump:routes route:web -> Shows the return (generated objects) of this file
-         * - App autoinjects a "Router", which could be Router::fromCache(...) or new Router() and provides access to Routes (cached or new)
-         * - RouteCollection contains the array of mapped routes (objects or serialized arrays (cached))
-         */
-        $paramApis = $parameters->getDataKey(AppParameters::APIS);
-        if (isset($paramApis)) {
-            $apis = new Apis($this->getRouter());
-            if (!$this->isCached) {
-                foreach ($paramApis as $apiKey => $apiPath) {
-                    $apis->register($apiKey, $apiPath);
-                }
-            }
-            $this->setApis($apis);
-        }
-        $paramRoutes = $parameters->getDatakey(AppParameters::ROUTES);
-        if (isset($paramRoutes)) {
-            // ['handle' => [Routes,]]
-            foreach ($paramRoutes as $fileHandle) {
-                foreach ((new Routes($fileHandle))->getArrayFile()->toArray() as $k => $route) {
-                    $this->getRouter()->addRoute($route, $fileHandle);
-                }
-            }
-        }
+        $this->processConfigFiles($parameters->getDataKey(AppParameters::CONFIG_FILES));
+        $this->processApis($parameters->getDataKey(AppParameters::APIS));
+        $this->processParamRoutes($parameters->getDatakey(AppParameters::ROUTES));
         $this->setResponse(new Response());
+        $this->processSapi();
+    }
+
+    protected function processCheckout(): void
+    {
+        if (false === stream_resolve_include_path($this->getBuildFilePath())) {
+            $this->checkout();
+        }
+    }
+
+    protected function processConfigFiles(array $configFiles = null): void
+    {
+        if (!isset($configFiles)) {
+            return;
+        }
+        if (isset($this->runtime)) {
+            $this->runtime->runConfig(
+                (new RuntimeConfig())
+                    ->processFromFiles($configFiles)
+            );
+        }
+    }
+
+    protected function processApis(array $paramApis = null): void
+    {
+        if (!isset($paramApis)) {
+            return;
+        }
+        $apis = new Apis($this->router);
+        if (!$this->isCached) {
+            foreach ($paramApis as $apiKey => $apiPath) {
+                $apis->register($apiKey, $apiPath);
+            }
+        }
+        $this->setApis($apis);
+    }
+
+    protected function processParamRoutes(array $paramRoutes = null): void
+    {
+        if (!isset($paramRoutes)) {
+            return;
+        }
+        // ['handle' => [Routes,]]
+        foreach ($paramRoutes as $fileHandle) {
+            foreach ((new Routes($fileHandle))->getArrayFile()->toArray() as $k => $route) {
+                $this->router->addRoute($route, $fileHandle);
+            }
+        }
+    }
+
+    protected function processSapi(): void
+    {
         if (Console::bind($this)) {
             Console::run(); // Note: Console::run() always exit.
         } else {
@@ -319,7 +344,7 @@ class App
     {
         if (!isset($callable)) {
             try {
-                $route = $this->getRouter()->resolve($this->httpRequest->getPathInfo());
+                $route = $this->router->resolve($this->httpRequest->getPathInfo());
                 if (!empty($route)) {
                     $this->setRoute($route);
                     $callable = $route->getCallable(
