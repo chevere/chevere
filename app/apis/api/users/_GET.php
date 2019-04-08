@@ -7,14 +7,14 @@ namespace App;
 use Chevereto\Core\Controller;
 
 return new class() extends Controller {
-    const DESCRIPTION = 'Obtiene un usuario.';
+    const DESCRIPTION = 'Obtiene usuarios.';
 
-    public function __construct(User $user)
+    public function __construct($input)
     {
+        $this->user = new User($input);
     }
 
     public function __invoke()
     {
-        dd('user', $this->user);
     }
 };

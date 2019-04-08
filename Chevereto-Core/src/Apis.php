@@ -131,6 +131,7 @@ class Apis
                 }
                 $dir = dirname($dir); // /endpoint
                 $realDir = $relativeDirectory.$dir; // /api/endpoint
+                // Must include to trigger php panic (if any)
                 $controller = include $filePath;
                 // Don't mind about these
                 if (!$controller instanceof Controller) {

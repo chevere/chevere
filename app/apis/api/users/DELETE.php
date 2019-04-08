@@ -2,30 +2,28 @@
 
 declare(strict_types=1);
 
-namespace Chevereto\Core;
+namespace App;
 
-use App\User;
+use Chevereto\Core\Controller;
+
+// dd($realDir);
 
 return new class() extends Controller {
-    private $private = "Can't touch this!";
+    const DESCRIPTION = 'Deletes an user.';
 
-    public function __invoke(User $user = null)
+    // private $private = "Can't touch this!";
+    public function __construct(User $user)
     {
-        dump($this);
-        $GET = $this->invoke('@:GET', $user);
-        $this->source = 'deez';
-        // dump('source prior hook: ' . $this->source);
-        // $that is "this"
-        $this->hookable('deleteUser', function ($that) use ($user) {
-            $that->private .= ' - MC HAMMER';
-            $that->source .= ' nuuuuts ';
-        });
-        // dump('source after hook: '.$this->source, $this->private);
-
-        // return ['deleted' => $user];
     }
 
-    const OPTIONS = [
-        'description' => 'Deletes an user.',
-    ];
+    public function __invoke()
+    {
+        // $GET = $this->invoke('@:GET', $user);
+        // $this->source = 'deez';
+        // // $that is "this"
+        // $this->hookable('deleteUser', function ($that) use ($user) {
+        //     $that->private .= ' - MC HAMMER';
+        //     $that->source .= ' nuuuuts ';
+        // });
+    }
 };
