@@ -24,12 +24,15 @@ class Apis
 {
     /** @var Router */
     protected $router;
+
     /** @var array ['api-key' => [<endpoint> => [<options>]]] */
-    protected $apis = [];
+    protected $apis;
+
     /** @var array ['api-key' => [<options>]] */
-    protected $bases = [];
+    protected $bases;
+
     /** @var array ['/api-key/v1/endpoint' => ['api-key', 'v1/endpoint']] */
-    protected $routeKeys = [];
+    protected $routeKeys;
 
     public function __construct(Router $router)
     {
@@ -72,25 +75,33 @@ class Apis
         $RESOURCE_WILDCARDS = [];
         try {
             $directoryIterator = new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS);
-            $recursiveIterator = new RecursiveIteratorIterator($directoryIterator, RecursiveIteratorIterator::SELF_FIRST);
-        } catch (Exception $e) {
+            $filter = new ApisFilterIterator($directoryIterator);
+            $recursiveIterator = new RecursiveIteratorIterator($filter, RecursiveIteratorIterator::SELF_FIRST);
+        } catch (\Throwable $e) {
             throw new RuntimeException($e);
         }
         $errors = [];
         $pop = [];
         $resource = null;
+
+        $REFACTOR = [];
         // Iterate over all the files in the target API directory, fills $RESOURCE_WILDCARDS
         foreach ($recursiveIterator as $filename) {
             // TODO: Tiene que leer / (api:GET, api:resource.json)
-            $filePath = (string) $filename;
-            $filePath = Utils\Str::forwardSlashes($filePath);
+            $filePath = Utils\Str::forwardSlashes((string) $filename);
+            $REFACTOR[] = $filePath;
+
             // app/api/endpoint/VERB.php (used in error messages)
             $filePathRelative = Path::relative($filePath);
+
             // api/endpoint/VERB.php
             $filePathRelativeApp = Path::relative($filePath, App::APP);
+
+            // endpoint/VERB.php
             $dir = Utils\Str::replaceFirst($directory, null, $filePath);
+
             // Dirs = resources & version
-            // Files = closure controllers
+            // Files = HTTP controllers (VERB.php)
             if ($filename->isDir()) {
                 /**
                  * resource.json contains the properties descriptions for the __invoke
@@ -227,6 +238,8 @@ class Apis
                 $ROUTE_MAP[$endpoint][$httpVerb] = $filePathRelativeApp;
             }
         } // foreach filename
+
+        dd($REFACTOR);
         if ($errors) {
             throw new ApiException(implode("\n", $errors));
         }
