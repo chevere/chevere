@@ -29,17 +29,8 @@ use ReflectionClass;
 
 /**
  * Controller is the defacto controller in Chevereto\Core.
- *
- * @see Hookable
- * @see Interfaces\Controller
- * @see Interfaces\APIs
- *
- * Magic methods created by Container:
- *
- * @method bool hasApp()
- * @method App  getApp()
  */
-class Controller
+abstract class Controller implements Interfaces\ControllerInterface
 {
     use Traits\HookableTrait;
 
@@ -59,7 +50,7 @@ class Controller
         return $this->getApp()->getApis();
     }
 
-    public function setResponse(Response $response): self
+    public function setResponse(Response $response): Interfaces\ControllerInterface
     {
         $this->getApp()->setResponse($response);
 
@@ -71,7 +62,7 @@ class Controller
         return $this->getApp()->getResponse();
     }
 
-    public function setApp(App $app): self
+    public function setApp(App $app): Interfaces\ControllerInterface
     {
         $this->app = $app;
 
@@ -83,14 +74,6 @@ class Controller
         return $this->app;
     }
 
-    /**
-     * Invoke another controller.
-     *
-     * @param string $controller Path handle. Start with @, to use the caller dir as root context.
-     * @param mixed  $parameters invoke pararameter or parameters (array)
-     *
-     * @return mixed output array or whatever the controller may output
-     */
     public function invoke(string $controller, $parameters = null)
     {
         if (gettype($parameters) != 'array') {

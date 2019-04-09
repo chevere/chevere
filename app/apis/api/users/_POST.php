@@ -7,18 +7,18 @@ namespace App;
 use Chevereto\Core\Controller;
 
 return new class() extends Controller {
-    const DESCRIPTION = 'Updates an user.';
+    const DESCRIPTION = 'Creates an user.';
     const PARAMETERS = [
+        'username' => [
+            'description' => 'Username.',
+        ],
         'email' => [
             'description' => 'User email.',
         ],
     ];
 
-    public function __construct(User $user)
-    {
-    }
-
     public function __invoke()
     {
+        return 'post user';
     }
 };
