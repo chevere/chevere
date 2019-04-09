@@ -31,7 +31,7 @@ class ApiHead extends Controller
     /** @var Route */
     private $route;
 
-    public function __invoke(string $endpoint = null)
+    public function __invoke()
     {
         if (isset($endpoint)) {
             $route = $this->getApp()->getRouter()->resolve($endpoint);

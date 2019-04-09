@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
-use RecursiveIterator;
 use RecursiveFilterIterator;
 
 /**
@@ -21,32 +20,43 @@ use RecursiveFilterIterator;
  */
 class ApisFilterIterator extends RecursiveFilterIterator
 {
-    const ROOT_PREFIX = '_';
-    /** @var array HTTP methods accepted by this filter [HTTP_METHOD,] */
-    const ACCEPT_METHODS = Route::HTTP_METHODS;
+    /** @var array The accepted files array [GET.php, _GET.php, POST.php, ...] */
+    protected $acceptedFilenames;
 
-    /** @var array The usable accepted files array [HTTP_METHOD.php, filename.ext,] */
-    protected static $acceptedFiles;
-
-    public function __construct(RecursiveIterator $iterator)
+    /**
+     * @param array  $acceptedMethods Accepted HTTP methods [GET,POST,etc.]
+     * @param string $methodPrefix    Method prefix used for root endpoint (no resource)
+     *
+     * @return self
+     */
+    public function generateAcceptedFilenames(array $acceptedMethods, string $methodPrefix): self
     {
-        parent::__construct($iterator);
-        if (!isset(static::$acceptedFiles)) {
-            // Generate the filename filter for HTTP methods (METHOD, _METHOD)
-            foreach (static::ACCEPT_METHODS as $v) {
-                static::$acceptedFiles[] = "$v.php";
-                static::$acceptedFiles[] = static::ROOT_PREFIX."$v.php";
-            }
+        foreach ($acceptedMethods as $v) {
+            $this->acceptedFilenames[] = $v.'.php';
+            $this->acceptedFilenames[] = $methodPrefix.$v.'.php';
         }
 
-        // dd(static::$acceptedFiles);
+        return $this;
     }
 
-    public function accept()
+    /**
+     * Overrides default getChildren to support the filter.
+     */
+    public function getChildren()
+    {
+        $children = parent::getChildren();
+        $children->acceptedFilenames = $this->acceptedFilenames;
+
+        return $children;
+    }
+
+    /**
+     * The filter accept function.
+     */
+    public function accept(): bool
     {
         return $this->current()->isDir()
           ? true
-          : in_array($this->current()->getFilename(), static::$acceptedFiles
-        );
+          : in_array($this->current()->getFilename(), $this->acceptedFilenames);
     }
 }

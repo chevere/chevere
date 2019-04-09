@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Api\Users;
 
 use Chevereto\Core\Controller;
 
 // dd($realDir);
 
-return new class() extends Controller {
+class DELETE extends Controller
+{
     const DESCRIPTION = 'Deletes an user.';
 
     // private $private = "Can't touch this!";
@@ -26,4 +27,4 @@ return new class() extends Controller {
         //     $that->source .= ' nuuuuts ';
         // });
     }
-};
+}

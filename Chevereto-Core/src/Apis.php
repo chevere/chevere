@@ -15,13 +15,18 @@ namespace Chevereto\Core;
 use Exception;
 use ReflectionParameter;
 use ReflectionMethod;
-use RuntimeException;
 use RecursiveDirectoryIterator;
 use FilesystemIterator;
 use RecursiveIteratorIterator;
 
 class Apis
 {
+    /** @var string Prefix used for endpoints without a defined resource (/endpoint) */
+    const METHOD_ROOT_PREFIX = '_';
+
+    /** @var array HTTP methods accepted by this filter [HTTP_METHOD,] */
+    const ACCEPT_METHODS = Route::HTTP_METHODS;
+
     /** @var Router */
     protected $router;
 
@@ -73,23 +78,28 @@ class Apis
         $API = [];
         // Wildcards from resource.json
         $RESOURCE_WILDCARDS = [];
-        try {
-            $directoryIterator = new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS);
-            $filter = new ApisFilterIterator($directoryIterator);
-            $recursiveIterator = new RecursiveIteratorIterator($filter, RecursiveIteratorIterator::SELF_FIRST);
-        } catch (\Throwable $e) {
-            throw new RuntimeException($e);
-        }
+
         $errors = [];
         $pop = [];
         $resource = null;
 
-        $REFACTOR = [];
+        $iterator = new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS);
+        $filter = (new ApisFilterIterator($iterator))
+            ->generateAcceptedFilenames(static::ACCEPT_METHODS, static::METHOD_ROOT_PREFIX);
+        $recursiveIterator = new RecursiveIteratorIterator($filter, RecursiveIteratorIterator::SELF_FIRST);
+
+        $files = [];
+        foreach ($recursiveIterator as $filename) {
+            $files[] = Utils\Str::forwardSlashes((string) $filename);
+        }
+        dd($files);
+
+        return $this;
+
         // Iterate over all the files in the target API directory, fills $RESOURCE_WILDCARDS
         foreach ($recursiveIterator as $filename) {
             // TODO: Tiene que leer / (api:GET, api:resource.json)
             $filePath = Utils\Str::forwardSlashes((string) $filename);
-            $REFACTOR[] = $filePath;
 
             // app/api/endpoint/VERB.php (used in error messages)
             $filePathRelative = Path::relative($filePath);

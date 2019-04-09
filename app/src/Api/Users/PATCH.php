@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Api\Users;
 
 use Chevereto\Core\Controller;
 
-return new class() extends Controller {
+class PATCH extends Controller
+{
     const DESCRIPTION = 'Updates an user.';
     const PARAMETERS = [
         'email' => [
@@ -21,4 +22,4 @@ return new class() extends Controller {
     public function __invoke()
     {
     }
-};
+}

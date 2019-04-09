@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Api\Users;
 
 use Chevereto\Core\Controller;
 
-return new class() extends Controller {
+class _POST extends Controller
+{
     const DESCRIPTION = 'Creates an user.';
     const PARAMETERS = [
         'username' => [
@@ -21,4 +22,4 @@ return new class() extends Controller {
     {
         return 'post user';
     }
-};
+}

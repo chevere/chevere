@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Controllers;
 
-use Chevereto\Core\App;
+use Chevereto\Core\Controller;
 
-return new class() extends Controller {
+class Index extends Controller
+{
     public function __invoke()
     {
         $this->getResponse()
@@ -15,4 +16,4 @@ return new class() extends Controller {
             ->addData('info', 'cli', ['entry' => 'php app/console list', 'description' => 'Lists console commands.'])
             ->setStatusCode(200);
     }
-};
+}

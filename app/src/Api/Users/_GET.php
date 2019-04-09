@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App;
+namespace App\Api\Users;
 
 use Chevereto\Core\Controller;
 
-return new class() extends Controller {
+class _GET extends Controller
+{
     const DESCRIPTION = 'Obtiene usuarios.';
 
     public function __construct($input)
@@ -17,4 +18,4 @@ return new class() extends Controller {
     public function __invoke()
     {
     }
-};
+}

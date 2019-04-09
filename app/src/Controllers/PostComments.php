@@ -2,9 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Chevereto\Core;
+namespace App\Controllers;
 
-return new class() extends Controller {
+use Chevereto\Core\Controller;
+
+class PostComments extends Controller
+{
     public function __invoke($parameters)
     {
         dump($parameters, $this->_input, $this->_routing);
@@ -16,4 +19,4 @@ return new class() extends Controller {
     {
         echo ' extra output ';
     }
-};
+}

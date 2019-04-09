@@ -33,7 +33,7 @@ class ApiOptions extends Controller
     /**
      * @param string $endpoint an API endpoint (/api)
      */
-    public function __invoke(string $endpoint = null)
+    public function __invoke()
     {
         $route = $this->getApp()->getRoute();
         if (isset($route)) {

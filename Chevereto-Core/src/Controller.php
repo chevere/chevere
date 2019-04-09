@@ -40,6 +40,17 @@ abstract class Controller implements Interfaces\ControllerInterface
     /** @var App */
     private $app;
 
+    /**
+     * Automatically create the defined Controller RESOURCES.
+     */
+    public function __construct()
+    {
+        foreach (static::RESOURCES as $property => $className) {
+            // A valid resource must have a constructor like __construct(string $var)
+            $this->{$property} = new $className($this->getArgument($property));
+        }
+    }
+
     public function getRoute(): ?Route
     {
         return $this->getApp()->getRoute();
