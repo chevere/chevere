@@ -55,8 +55,6 @@ class ApisFilterIterator extends RecursiveFilterIterator
      */
     public function accept(): bool
     {
-        return $this->current()->isDir()
-          ? true
-          : in_array($this->current()->getFilename(), $this->acceptedFilenames);
+        return in_array($this->current()->getFilename(), $this->acceptedFilenames);
     }
 }

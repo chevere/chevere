@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Users;
 
+use App\User;
 use Chevereto\Core\Controller;
 
 class GET extends Controller
@@ -19,7 +20,7 @@ class GET extends Controller
     /** @var User The user entity */
     protected $user;
 
-    public function __invoke() // For all kind of Controllers, no args!
+    public function __invoke() // NOTE: For all kind of Controllers: No args! (interface limitation)
     {
         dd('user', $this->user);
     }

@@ -158,6 +158,7 @@ class Dump
                     $operator = static::wrap(static::_OPERATOR, '->');
                     $val .= "\n$prefix <i>$visibility</i> ".htmlspecialchars($k)." $operator ";
                     $aux = $v['value'];
+                    // FIXME: Doesn't work with BetterReflection objects
                     if (is_object($aux) && property_exists($aux, $k)) {
                         $r = new ReflectionObject($aux);
                         $p = $r->getProperty($k);
@@ -171,6 +172,7 @@ class Dump
                     } else {
                         $val .= static::out($aux, $indent, $dontDump);
                     }
+                    $val = $val;
                 }
                 $className = get_class(/* @scrutinizer ignore-type */ $expression);
                 if (Str::startsWith(static::ANON_CLASS, $className)) {
