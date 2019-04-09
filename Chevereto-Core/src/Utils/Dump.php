@@ -172,7 +172,6 @@ class Dump
                     } else {
                         $val .= static::out($aux, $indent, $dontDump);
                     }
-                    $val = $val;
                 }
                 $className = get_class(/* @scrutinizer ignore-type */ $expression);
                 if (Str::startsWith(static::ANON_CLASS, $className)) {
