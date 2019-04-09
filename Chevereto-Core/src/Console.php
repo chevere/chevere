@@ -44,7 +44,6 @@ class Console
         $cli = new Cli(new ArgvInput());
         static::$cli = $cli;
         static::$available = true;
-        $cli->runner();
     }
 
     /**
@@ -88,8 +87,8 @@ class Console
      */
     public static function run()
     {
-        $exitCode = null;
         $cli = static::cli();
+        $exitCode = $cli->runner();
         $command = $cli->getCommand();
         if (null === $command) {
             exit($exitCode);

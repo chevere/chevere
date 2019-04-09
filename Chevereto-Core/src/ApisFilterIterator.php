@@ -21,11 +21,9 @@ use RecursiveFilterIterator;
  */
 class ApisFilterIterator extends RecursiveFilterIterator
 {
+    const ROOT_PREFIX = '_';
     /** @var array HTTP methods accepted by this filter [HTTP_METHOD,] */
     const ACCEPT_METHODS = Route::HTTP_METHODS;
-
-    /** @var array Special accepted files [filename.ext,] */
-    const ACCEPT_FILES = ['resource.json'];
 
     /** @var array The usable accepted files array [HTTP_METHOD.php, filename.ext,] */
     protected static $acceptedFiles;
@@ -33,9 +31,15 @@ class ApisFilterIterator extends RecursiveFilterIterator
     public function __construct(RecursiveIterator $iterator)
     {
         parent::__construct($iterator);
-        static::$acceptedFiles = array_merge(array_map(function ($val) {
-            return $val.'.php';
-        }, static::ACCEPT_METHODS), static::ACCEPT_FILES);
+        if (!isset(static::$acceptedFiles)) {
+            // Generate the filename filter for HTTP methods (METHOD, _METHOD)
+            foreach (static::ACCEPT_METHODS as $v) {
+                static::$acceptedFiles[] = "$v.php";
+                static::$acceptedFiles[] = static::ROOT_PREFIX."$v.php";
+            }
+        }
+
+        // dd(static::$acceptedFiles);
     }
 
     public function accept()

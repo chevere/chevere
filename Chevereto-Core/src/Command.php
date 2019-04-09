@@ -53,9 +53,6 @@ class Command extends SymfonyCommand implements Interfaces\CommandInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        // $this->input = $input;
-        // $this->output = $output;
-        // $this->io = new SymfonyStyle($input, $output);
         $this->getCli()->setCommand($this);
     }
 
