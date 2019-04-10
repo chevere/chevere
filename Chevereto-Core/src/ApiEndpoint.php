@@ -45,7 +45,7 @@ class ApiEndpoint
     protected $resources;
 
     /** @var bool True if the controller class must implement RESOURCES. Prefixed Classes (_ClassName) won't be resourced. */
-    protected $mustBeResourced;
+    protected $hasResource;
 
     /**
      * @param string $className A className implementing the ControllerInterface
@@ -55,20 +55,40 @@ class ApiEndpoint
         $this->reflection = new ReflectionClass($className);
         $this->className = $this->reflection->getName();
         $this->classShortName = $this->reflection->getShortName();
-        $this->mustBeResourced = !Utils\Str::startsWith(Apis::METHOD_ROOT_PREFIX, $this->classShortName);
+        $this->hasResource = !Utils\Str::startsWith(Apis::METHOD_ROOT_PREFIX, $this->classShortName);
         $this->httpMethod = Utils\Str::replaceFirst(Apis::METHOD_ROOT_PREFIX, null, $this->classShortName);
-        $this->assertInterface();
-        $this->description = $this->reflection->hasConstant(static::CONST_DESCRIPTION) ? $this->reflection->getConstant(static::CONST_DESCRIPTION) : null;
-        $this->resources = $this->reflection->hasConstant(static::CONST_RESOURCES) ? $this->reflection->getConstant(static::CONST_RESOURCES) : null;
+        $this->assertControllerInterface();
+        $this->description = $this->reflection->hasConstant(static::CONST_DESCRIPTION)
+            ? $this->reflection->getConstant(static::CONST_DESCRIPTION)
+            : null;
+        $this->resources = $this->reflection->hasConstant(static::CONST_RESOURCES)
+            ? $this->reflection->getConstant(static::CONST_RESOURCES)
+            : null;
         $this->assertConstResource();
+        $this->process();
+
+        /**
+         * Data needed for the Route:
+         * --
+         * - Name (id)
+         * - Method
+         * - /key/{res}.
+         */
 
         return $this;
     }
 
     /**
+     * Process the Controller,.
+     */
+    protected function process(): void
+    {
+    }
+
+    /**
      * Throws a logic exception if the passed interface is not implemented in the reflected class.
      */
-    protected function assertInterface(): void
+    protected function assertControllerInterface(): void
     {
         if (!$this->reflection->implementsInterface(static::CONTROLLER_INTERFACE)) {
             throw new LogicException(
@@ -96,7 +116,7 @@ class ApiEndpoint
      */
     protected function assertConstResourceNeed(): void
     {
-        if (isset($this->resources) && !$this->mustBeResourced) {
+        if (isset($this->resources) && !$this->hasResource) {
             throw new LogicException(
                 (string)
                     (new Message('Class %s defines %r but this Controller class targets a non-resourced endpoint: %e. Remove the unused %r declaration.'))
@@ -112,7 +132,7 @@ class ApiEndpoint
      */
     protected function assertConstResourceType(): void
     {
-        if (isset($this->resources) && $this->mustBeResourced && !is_array($this->resources)) {
+        if (isset($this->resources) && $this->hasResource && !is_array($this->resources)) {
             throw new LogicException(
                 (string)
                     (new Message('Class %s must define %r of type %t, %f found.'))
@@ -129,7 +149,7 @@ class ApiEndpoint
      */
     protected function assertConstResourceMissed(): void
     {
-        if (!isset($this->resources) && $this->mustBeResourced) {
+        if (!isset($this->resources) && $this->hasResource) {
             throw new LogicException(
                 (string)
                     (new Message('Class %s must define %r.'))
