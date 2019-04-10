@@ -12,42 +12,117 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
-use Exception;
+use LogicException;
 
 class AppParameters extends Data
 {
     const CONFIG_FILES = 'configFiles';
-    const APIS = 'apis';
+
+    /**
+     * @var string Used to describe the path (relative to app) where App scans for API HTTP Controllers.
+     *
+     * {@example 'api' => 'src/Api'}
+     */
+    const API = 'api';
+
+    /**
+     * @var string Used to describe the array which lists the route files (relative to app).
+     *
+     * {@example 'routes' => ['routes:dashboard', 'routes:web',]}
+     */
     const ROUTES = 'routes';
 
-    const KEYS = [
-        self::CONFIG_FILES,
-        self::APIS,
-        self::ROUTES,
+    /**
+     * The keys accepted by this class, with the gettype at right side.
+     */
+    protected $keys = [
+        self::CONFIG_FILES => 'array',
+        self::API => 'string',
+        self::ROUTES => 'array',
     ];
 
-    public function __construct(array $parameters)
+    /** @var array The parameters array used to construct the object */
+    protected $parameters;
+
+    /** @var string|null The file source (for instances created using ::createFromFile) */
+    protected $sourceFilepath;
+
+    /**
+     * @param array  $parameters The parameters array
+     * @param string $context    The context of the source $parameters
+     */
+    public function __construct(array $parameters, string $context = 'array')
     {
-        foreach ($parameters as $key => $v) {
-            if (!in_array($key, static::KEYS)) {
-                throw new CoreException(
-                    (new Message('Unrecognized %c key "%s".'))
-                        ->code('%c', __CLASS__)
-                        ->strtr('%s', $key)
-                );
-            }
-        }
+        $this->parameters = $parameters;
+        $this->context = $context;
+        $this->validate($parameters);
         $this->setData($parameters);
     }
 
+    /**
+     * Throws a LogicException if the thing doesn't validate.
+     */
+    protected function validate(array $parameters): void
+    {
+        foreach ($parameters as $key => $val) {
+            $this->validateKeyExists($key);
+            $this->validateKeyType($key, $val);
+        }
+    }
+
+    /**
+     * Throws a LogicException if the key doesn't exists in $parameters.
+     *
+     * @param string $key The AppParameter key
+     */
+    protected function validateKeyExists(string $key): void
+    {
+        if (!array_key_exists($key, $this->keys)) {
+            throw new LogicException(
+                (string)
+                    (new Message('Unrecognized %c key "%s".'))
+                        ->code('%c', __CLASS__)
+                        ->strtr('%s', $key)
+            );
+        }
+    }
+
+    /**
+     * Throws a LogicException if the key type doesn't meet the type in $keys.
+     *
+     * @param string $key The AppParameter key
+     */
+    protected function validateKeyType(string $key, $val): void
+    {
+        $gettype = gettype($val);
+        if ($gettype !== $this->keys[$key]) {
+            throw new LogicException(
+                (string)
+                    (new Message('Expecting type %s, %t provided for key "%k" in %c.'))
+                        ->code('%s', $this->keys[$key])
+                        ->code('%t', $gettype)
+                        ->strtr('%k', $key)
+                        ->code('%c', $this->context)
+            );
+        }
+    }
+
+    protected function setSourceFilepath(string $filepath): self
+    {
+        $this->sourceFilepath = $filepath;
+
+        return $this;
+    }
+
+    /**
+     * Creates AppParameters instance from file.
+     *
+     * @param string $fileHandle filehandle
+     */
     public static function createFromFile(string $fileHandle)
     {
-        try {
-            $arrayFile = new ArrayFile($fileHandle);
-        } catch (Exception $e) {
-            throw new CoreException($e);
-        }
+        $arrayFile = new ArrayFile($fileHandle);
 
-        return new static($arrayFile->toArray());
+        return new AppParameters($arrayFile->toArray(), $arrayFile->getFilepath());
     }
 }

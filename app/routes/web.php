@@ -1,22 +1,27 @@
 <?php
 
+namespace App;
+
 use Chevereto\Core\Route;
 
 return [
-  'index' => Route::bind('/', 'callables:index')
+  'index' => Route::bind('/', Controllers\Index::class)
       ->setName('homepage')
       ->addMiddleware('middleware:RoleBanned')
       ->addMiddleware('middleware:RoleAdmin'),
+
   Route::bind('/cache/{user?}')
-    ->setMethod('GET', 'callables:cache')
-    ->setMethod('POST', 'callables:cache')
+    ->setMethod('GET', Controllers\Cache::class)
+    ->setMethod('POST', Controllers\Cache::class)
     ->setName('cache'),
-  Route::bind('/test/{var0?}-{var1?}-{var2}', 'callables:index'),
+
+  Route::bind('/test/{var0?}-{var1?}-{var2}', Controllers\Index::class),
+
   Route::bind('/{dyn2}')
     ->setName('DyN')
     ->setMethods([
-      'GET' => 'callables:index',
-      'POST' => 'callables:index',
+      'GET' => Controllers\Index::class,
+      'POST' => Controllers\Index::class,
     ])
     ->setWhere('dyn2', '[0-9]+'),
 ];

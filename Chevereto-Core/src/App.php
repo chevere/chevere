@@ -102,11 +102,10 @@ class App extends AppProcessor
         $this->processCheckout();
         Load::php(static::FILEHANDLE_HACKS);
         if (!isset($parameters)) {
-            $arrayFile = new ArrayFile(static::FILEHANDLE_PARAMETERS, 'array');
-            $parameters = new AppParameters($arrayFile->toArray());
+            $parameters = AppParameters::createFromFile(static::FILEHANDLE_PARAMETERS);
         }
         $this->processConfigFiles($parameters->getDataKey(AppParameters::CONFIG_FILES));
-        $this->processApis($parameters->getDataKey(AppParameters::APIS));
+        $this->processApi($parameters->getDataKey(AppParameters::API));
         $this->processParamRoutes($parameters->getDatakey(AppParameters::ROUTES));
         $this->setResponse(new Response());
         $this->processSapi();

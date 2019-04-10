@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevereto\Core.
  *
@@ -13,7 +14,6 @@ declare(strict_types=1);
 namespace Chevereto\Core;
 
 use Exception;
-use ReflectionClass;
 
 // Define a hookable code entry:
 // $this->hook('myHook', function ($that) use ($var) {
@@ -44,10 +44,10 @@ abstract class Controller implements Interfaces\ControllerInterface
      */
     public function __construct()
     {
-        foreach (static::RESOURCES as $property => $className) {
-            // A valid resource must have a constructor like __construct(string $var)
-            $this->{$property} = new $className($this->getArgument($property));
-        }
+        // foreach (static::RESOURCES as $property => $className) {
+        //     // A valid resource must have a constructor like __construct(string $var)
+        //     $this->{$property} = new $className($this->getArgument($property));
+        // }
     }
 
     public function getRoute(): ?Route
@@ -134,6 +134,17 @@ abstract class Controller implements Interfaces\ControllerInterface
         if (isset($description)) {
             $this->setDescription = $description;
         }
+
+        return $this;
+    }
+
+    public function __invoke()
+    {
+        throw new LogicException(
+            (string)
+                (new Message('Class %c Must implement its own %s method.'))
+                    ->code()
+        );
     }
 }
 class ControllerException extends CoreException

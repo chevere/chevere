@@ -39,9 +39,7 @@ class User extends FromString implements CreateFromString
     /**
      * @param string Username
      *
-     * @see FromString
-     * @see $stringDescription
-     * @see $stringRegex
+     * @see FromString, $stringDescription, $stringRegex
      */
     public function createFromString(string $string): CreateFromString
     {

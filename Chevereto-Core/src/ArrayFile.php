@@ -40,6 +40,8 @@ class ArrayFile
         'string' => 'is_string',
     ];
 
+    // NOTE: Why these?
+
     /** @var array */
     protected $array;
 
@@ -56,7 +58,7 @@ class ArrayFile
 
     /**
      * @param string $fileHandle Path handle or absolute filepath
-     * @param array  $typeSome   if set, the array members must match the target type, classname or interface
+     * @param array  $typeSome   If set, the array members must match the target type, classname or interface
      */
     public function __construct(string $fileHandle, string $typeSome = null)
     {

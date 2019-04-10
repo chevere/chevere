@@ -8,4 +8,7 @@ use Chevereto\Core\Controller;
 
 class Dashboard extends Controller
 {
+    public function __invoke()
+    {
+    }
 }
