@@ -1,8 +1,8 @@
 <?php
 
 declare(strict_types=1);
-/*
 
+/*
  * This file is part of Chevereto\Core.
  *
  * (c) Rodolfo Berrios <rodolfo@chevereto.com>
@@ -11,10 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Core\Traits;
+namespace Chevereto\Core\Interfaces;
 
-trait DecoratedConstructorTrait
+/**
+ * Provides an interface for objects that can be constructed from a string.
+ */
+interface CreateFromString
 {
-    protected $description = 'No description.';
-    protected $regex = '.*';
+    public function createFromString(string $string): CreateFromString;
 }

@@ -9,18 +9,18 @@ use Chevereto\Core\Controller;
 
 class GET extends Controller
 {
-    // Route->setDescription('Obtiene un usuario.')
+    /** @var string Controller description */
     const DESCRIPTION = 'Obtiene un usuario.';
 
-    // Route->setType('user', User::class)
+    /** @var array Controller resources [propName => className] */
     const RESOURCES = [
         'user' => User::class,
     ];
 
-    /** @var User The user entity */
+    /** @var User The user entity resource */
     protected $user;
 
-    public function __invoke() // NOTE: For all kind of Controllers: No args! (interface limitation)
+    public function __invoke() // NOTE: No args! (interface limitation)
     {
         dd('user', $this->user);
     }

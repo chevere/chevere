@@ -13,10 +13,11 @@ declare(strict_types=1);
 use Chevereto\Core\AppParameters;
 
 return [
-  AppParameters::APIS => [
-    'api' => 'apis/api',
-    'api-alt' => 'apis/api-alt',
-  ],
+  // No more, just one API
+  // AppParameters::APIS => [
+  //   'api' => 'apis/api',
+  //   'api-alt' => 'apis/api-alt',
+  // ],
   AppParameters::ROUTES => [
     'routes:dashboard',
     'routes:web',

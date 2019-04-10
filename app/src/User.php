@@ -4,23 +4,65 @@ declare(strict_types=1);
 
 namespace App;
 
-use Chevereto\Core\Traits\DecoratedConstructorTrait;
+use LogicException;
+use Chevereto\Core\Message;
+use Chevereto\Core\FromString; // Sets the base string descriptor ($stringDescription, $stringRegex)
+use Chevereto\Core\Interfaces\CreateFromString; // Exposes that has ::createFromString
 
-class User
+class User extends FromString implements CreateFromString
 {
-    use DecoratedConstructorTrait;
+    /** {@inheritdoc} */
+    protected static $stringDescription = 'Username';
 
-    protected $description = 'User id.';
-    protected $regex = '[0-8]+';
+    /** {@inheritdoc} */
+    protected static $stringRegex = '[a-z]+';
 
-    public function __construct(string $id)
+    /** @var string The string argument passed in ::createFromString() */
+    protected $fromStringArgument;
+
+    /** @var bool True if the object was contructed passing an argument */
+    protected $hasConstructArgument;
+
+    /**
+     * @param int $id The user id
+     */
+    public function __construct(int $id = null)
     {
-        $this->id = $id;
-        $this->name = 'NaMe';
+        if (isset($id)) {
+            $this->hasConstructArgument = true;
+        // DB HANDLE
+        } else {
+            $this->hasConstructArgument = false;
+        }
     }
 
-    public function __toString()
+    /**
+     * @param string Username
+     *
+     * @see FromString
+     * @see $stringDescription
+     * @see $stringRegex
+     */
+    public function createFromString(string $string): CreateFromString
     {
+        $this->assertNoConstructArgument();
+        $this->assertFromString($string);
+        $this->fromStringArgument = $string;
+
         return $this;
+    }
+
+    /**
+     * Throws a LogicException if the class was constructed with an argument.
+     */
+    protected function assertNoConstructArgument(): void
+    {
+        if ($this->hasConstructArgument) {
+            throw new LogicException(
+                (string)
+                    (new Message('An instance of %s has been already created (WHERE?).'))
+                        ->code('%s', __CLASS__)
+            );
+        }
     }
 }

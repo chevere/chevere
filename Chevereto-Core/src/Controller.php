@@ -16,7 +16,6 @@ use Exception;
 use ReflectionClass;
 
 // Define a hookable code entry:
-// * $this is a Controller instance.
 // $this->hook('myHook', function ($that) use ($var) {
 //     $that->bar = 'foo'; // $that is $this (the controller instance)
 //     $var = 'foobar'; // Alters $var since it hass been passed by the 'use' constructor.
@@ -128,6 +127,13 @@ abstract class Controller implements Interfaces\ControllerInterface
         }
 
         return $that(...$parameters);
+    }
+
+    public function setDescription(string $description = null): self
+    {
+        if (isset($description)) {
+            $this->setDescription = $description;
+        }
     }
 }
 class ControllerException extends CoreException

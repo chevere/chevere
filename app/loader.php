@@ -13,12 +13,7 @@ declare(strict_types=1);
 namespace App;
 
 use Chevereto\Core\App;
-use Chevereto\Core\ApiEndpoint;
 
-$endpoint = new ApiEndpoint(\App\Api\Users\GET::class);
-
-return $endpoint;
-die();
 (new App())->run();
 
 // Hook::before('deleteUser@api/users:DELETE', function ($that) {

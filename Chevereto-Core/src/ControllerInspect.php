@@ -15,13 +15,17 @@ namespace Chevereto\Core;
 
 use LogicException;
 use ReflectionClass;
+use Roave\BetterReflection\BetterReflection;
 
 // use Roave\BetterReflection\BetterReflection;
 
-class ApiEndpoint
+class ControllerInspect
 {
     /** @var string The Controller interface */
-    const CONTROLLER_INTERFACE = Interfaces\ControllerInterface::class;
+    const INTERFACE_CONTROLLER = Interfaces\ControllerInterface::class;
+
+    /** @var string The CreateFromString interface */
+    const INTERFACE_CREATE_FROM_STRING = Interfaces\CreateFromString::class;
 
     const CONST_DESCRIPTION = 'DESCRIPTION';
     const CONST_RESOURCES = 'RESOURCES';
@@ -47,6 +51,9 @@ class ApiEndpoint
     /** @var bool True if the controller class must implement RESOURCES. Prefixed Classes (_ClassName) won't be resourced. */
     protected $hasResource;
 
+    /** @var array|null Instructions for creating resources from string [propname => [regex, description],] */
+    protected $resourcesFromString;
+
     /**
      * @param string $className A className implementing the ControllerInterface
      */
@@ -65,24 +72,29 @@ class ApiEndpoint
             ? $this->reflection->getConstant(static::CONST_RESOURCES)
             : null;
         $this->assertConstResource();
-        $this->process();
-
-        /**
-         * Data needed for the Route:
-         * --
-         * - Name (id)
-         * - Method
-         * - /key/{res}.
-         */
-
-        return $this;
+        $this->assertProcessResources();
     }
 
     /**
      * Process the Controller,.
      */
-    protected function process(): void
+    protected function assertProcessResources(): void
     {
+        if ($this->resources) {
+            $resourcesFromString = [];
+            foreach ($this->resources as $propName => $resourceClassName) {
+                // Better reflection is needed due to this: https://bugs.php.net/bug.php?id=69804
+                $resourceReflection = (new BetterReflection())
+                    ->classReflector()
+                    ->reflect($resourceClassName);
+                if ($resourceReflection->implementsInterface(static::INTERFACE_CREATE_FROM_STRING)) {
+                    $resourcesFromString[$propName] = [$resourceReflection->getStaticPropertyValue('stringRegex'), $resourceReflection->getStaticPropertyValue('stringDescription')];
+                }
+            }
+            if (!empty($resourcesFromString)) {
+                $this->resourcesFromString = $resourcesFromString;
+            }
+        }
     }
 
     /**
@@ -90,12 +102,12 @@ class ApiEndpoint
      */
     protected function assertControllerInterface(): void
     {
-        if (!$this->reflection->implementsInterface(static::CONTROLLER_INTERFACE)) {
+        if (!$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER)) {
             throw new LogicException(
                 (string)
                     (new Message('Class %s must implement the %i interface.'))
                         ->code('%s', $this->reflection->getName())
-                        ->code('%i', static::CONTROLLER_INTERFACE)
+                        ->code('%i', static::INTERFACE_CONTROLLER)
             );
         }
     }
