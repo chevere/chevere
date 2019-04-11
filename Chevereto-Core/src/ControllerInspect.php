@@ -33,9 +33,6 @@ class ControllerInspect
     /** @var string The class name, passed in the constructor */
     protected $className;
 
-    /** @var string The class name without its namespace */
-    protected $classShortName;
-
     /** @var string The HTTP METHOD tied to the passed $className */
     protected $httpMethod;
 
@@ -61,9 +58,10 @@ class ControllerInspect
     {
         $this->reflection = new ReflectionClass($className);
         $this->className = $this->reflection->getName();
-        $this->classShortName = $this->reflection->getShortName();
-        $this->hasResource = !Utils\Str::startsWith(Apis::METHOD_ROOT_PREFIX, $this->classShortName);
-        $this->httpMethod = Utils\Str::replaceFirst(Apis::METHOD_ROOT_PREFIX, null, $this->classShortName);
+        $classShortName = $this->reflection->getShortName();
+        $this->filepath = $this->reflection->getFileName();
+        $this->hasResource = !Utils\Str::startsWith(Api::METHOD_ROOT_PREFIX, $classShortName);
+        $this->httpMethod = Utils\Str::replaceFirst(Api::METHOD_ROOT_PREFIX, null, $classShortName);
         $this->assertControllerInterface();
         $this->description = $this->reflection->hasConstant(static::CONST_DESCRIPTION)
             ? $this->reflection->getConstant(static::CONST_DESCRIPTION)
@@ -105,9 +103,10 @@ class ControllerInspect
         if (!$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER)) {
             throw new LogicException(
                 (string)
-                    (new Message('Class %s must implement the %i interface.'))
+                    (new Message('Class %s must implement the %i interface at %f.'))
                         ->code('%s', $this->reflection->getName())
                         ->code('%i', static::INTERFACE_CONTROLLER)
+                        ->code('%f', $this->filepath)
             );
         }
     }
@@ -131,10 +130,11 @@ class ControllerInspect
         if (isset($this->resources) && !$this->hasResource) {
             throw new LogicException(
                 (string)
-                    (new Message('Class %s defines %r but this Controller class targets a non-resourced endpoint: %e. Remove the unused %r declaration.'))
+                    (new Message('Class %s defines %r but this Controller class targets a non-resourced endpoint: %e. Remove the unused %r declaration at %f.'))
                         ->code('%s', $this->className)
                         ->code('%r', 'const '.static::CONST_RESOURCES)
                         ->code('%e', $this->httpMethod.' api/users')
+                        ->code('%f', $this->filepath)
             );
         }
     }
@@ -147,11 +147,12 @@ class ControllerInspect
         if (isset($this->resources) && $this->hasResource && !is_array($this->resources)) {
             throw new LogicException(
                 (string)
-                    (new Message('Class %s must define %r of type %t, %f found.'))
+                    (new Message('Class %s must define %r of type %t, %x found at %f.'))
                         ->code('%s', $this->className)
                         ->code('%r', 'const '.static::CONST_RESOURCES)
                         ->code('%t', 'array')
-                        ->code('%f', gettype($this->resources))
+                        ->code('%x', gettype($this->resources))
+                        ->code('%f', $this->filepath)
             );
         }
     }
@@ -164,9 +165,10 @@ class ControllerInspect
         if (!isset($this->resources) && $this->hasResource) {
             throw new LogicException(
                 (string)
-                    (new Message('Class %s must define %r.'))
+                    (new Message('Class %s must define %r at %f.'))
                         ->code('%s', $this->className)
                         ->code('%r', 'const '.static::CONST_RESOURCES)
+                        ->code('%f', $this->filepath)
             );
         }
     }
@@ -181,12 +183,48 @@ class ControllerInspect
                 if (!class_exists($className)) {
                     throw new LogicException(
                         (string)
-                            (new Message('Class %s not found for %c Controller.'))
+                            (new Message('Class %s not found for %c Controller at %f.'))
                                 ->code('%s', $className)
                                 ->code('%c', $this->className)
+                                ->code('%f', $this->filepath)
                     );
                 }
             }
         }
+    }
+
+    public function getClassName(): string
+    {
+        return $this->className;
+    }
+
+    public function getHttpMethod(): string
+    {
+        return $this->httpMethod;
+    }
+
+    public function getReflection(): ReflectionClass
+    {
+        return $this->reflection;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function getResources(): ?array
+    {
+        return $this->resources;
+    }
+
+    public function hasResource(): bool
+    {
+        return $this->hasResource;
+    }
+
+    public function getResourcesFromString(): ?array
+    {
+        return $this->resourcesFromString;
     }
 }

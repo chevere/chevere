@@ -49,10 +49,11 @@ class Api
     /**
      * Automatically finds controllers in the given path and generate the API route binding.
      *
-     * @param string $pathIdentifier path identifier representing the dir containing API controllers (usually relative to app)
+     * @param string $pathIdentifier path identifier (relative to app/) representing the dir containing API controllers
      */
     public function register(string $pathIdentifier): self
     {
+        $pathIdentifier = Utils\Str::rtail($pathIdentifier, '/');
         if (isset($this->apis[$pathIdentifier])) {
             throw new LogicException(
                 (string)
@@ -89,11 +90,15 @@ class Api
             ->generateAcceptedFilenames(static::ACCEPT_METHODS, static::METHOD_ROOT_PREFIX);
         $recursiveIterator = new RecursiveIteratorIterator($filter);
 
-        $files = [];
+        /** @var array Contains the iterated files */
+        $controllers = [];
         foreach ($recursiveIterator as $filename) {
-            $files[] = Utils\Str::forwardSlashes((string) $filename);
+            $filepathAbsolute = Utils\Str::forwardSlashes((string) $filename);
+
+            $className = $this->getClassNameFromFilepath($filepathAbsolute);
+            $controllers[] = new ControllerInspect($className);
         }
-        dd($files);
+        dd($controllers);
 
         return $this;
 
@@ -324,6 +329,22 @@ class Api
         $this->routeKeys['/'.$basename] = [$basename];
 
         return $this;
+    }
+
+    /**
+     * Returns the namespaced class name for the specified filepath.
+     *
+     * @param string $filepath the class filepath
+     *
+     * @return string the class name detected according autoloading standard (PSR-4)
+     */
+    protected function getClassNameFromFilepath(string $filepath): string
+    {
+        $filepathRelative = Path::relative($filepath);
+        $filepathNoExt = Utils\Str::replaceLast('.php', null, $filepathRelative);
+        $filepathReplaceNS = Utils\Str::replaceFirst(App\PATH.'src/', APP_NS_HANDLE, $filepathNoExt);
+
+        return str_replace('/', '\\', $filepathReplaceNS);
     }
 
     public function getRouter(): Router

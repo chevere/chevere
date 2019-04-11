@@ -13,7 +13,7 @@ declare(strict_types=1);
 use Chevereto\Core\AppParameters;
 
 return [
-  AppParameters::API => 'src/Api',
+  AppParameters::API => 'src/Api/',
   AppParameters::ROUTES => [
     'routes:dashboard',
     'routes:web',

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Api\Users;
 
-use App\User;
 use Chevereto\Core\Controller;
 
 // dd($realDir);
@@ -12,9 +11,6 @@ use Chevereto\Core\Controller;
 class DELETE extends Controller
 {
     const DESCRIPTION = 'Deletes an user.';
-    const RESOURCES = [
-        'user' => User::class,
-    ];
 
     // private $private = "Can't touch this!";
     public function __construct(User $user)

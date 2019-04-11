@@ -19,7 +19,7 @@ class AppParameters extends Data
     const CONFIG_FILES = 'configFiles';
 
     /**
-     * @var string Used to describe the path (relative to app) where App scans for API HTTP Controllers.
+     * @var string Used to describe the path where App scans for API HTTP Controllers. Target path must be autoloaded.
      *
      * {@example 'api' => 'src/Api'}
      */
