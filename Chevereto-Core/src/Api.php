@@ -12,14 +12,16 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
-use Exception;
+use LogicException;
 use ReflectionParameter;
 use ReflectionMethod;
 use RecursiveDirectoryIterator;
-use FilesystemIterator;
 use RecursiveIteratorIterator;
 
-class Apis
+/**
+ * Api provides tools to create and retrieve the App Api.
+ */
+class Api
 {
     /** @var string Prefix used for endpoints without a defined resource (/endpoint) */
     const METHOD_ROOT_PREFIX = '_';
@@ -27,7 +29,7 @@ class Apis
     /** @var array HTTP methods accepted by this filter [HTTP_METHOD,] */
     const ACCEPT_METHODS = Route::HTTP_METHODS;
 
-    /** @var Router */
+    /** @var Router The injected Router, needed to add Routes to the injector instance */
     protected $router;
 
     /** @var array ['api-key' => [<endpoint> => [<options>]]] */
@@ -47,46 +49,45 @@ class Apis
     /**
      * Automatically finds controllers in the given path and generate the API route binding.
      *
-     * @param string $basename       API basename ('api')
-     * @param string $pathIdentifier path identifier representing the dir containing API controllers (relative to app)
+     * @param string $pathIdentifier path identifier representing the dir containing API controllers (usually relative to app)
      */
-    public function register(string $basename, string $pathIdentifier): self
+    public function register(string $pathIdentifier): self
     {
-        try {
-            if (isset($this->apis[$pathIdentifier])) {
-                throw new CoreException(
-                    (new Message('Path identified by %s has been already bound'))
+        if (isset($this->apis[$pathIdentifier])) {
+            throw new LogicException(
+                (string)
+                    (new Message('Path identified by %s has been already bound.'))
                         ->code('%s', $pathIdentifier)
-                );
-            }
-            $directory = Path::fromHandle($pathIdentifier);
-            if (!File::exists($directory)) {
-                throw new CoreException(
-                    (new Message("Directory %s doesn't exists."))
-                        ->code('%s', $directory)
-                    );
-            }
-            $relativeDirectory = Path::relative($directory, App::APP);
-        } catch (Exception $e) {
-            throw new ApiException($e);
+            );
         }
-        // $ROUTE_MAP = [route? => [<http method> => <callable relative to app>]]]
+        /** @var string The API directory (absolute path) */
+        $directoryAbsolute = Path::fromHandle($pathIdentifier);
+        if (!File::exists($directoryAbsolute)) {
+            throw new LogicException(
+                (string)
+                    (new Message("Directory %s doesn't exists."))
+                        ->code('%s', $directoryAbsolute)
+            );
+        }
+        /** @var string The API directory (relative path) */
+        $directoryRelative = Path::relative($directoryAbsolute, App::APP);
+
+        /** @var array Maps [route => [http_method => controller]]] */
         $ROUTE_MAP = [];
-        // $OPTIONS = [<callable relative to app> => OPTIONS]
+
+        /** @var array [callable => OPTIONS] */
         $OPTIONS = [];
-        // Public exposed API
+
+        /** @var array Public exposed API */
         $API = [];
-        // Wildcards from resource.json
-        $RESOURCE_WILDCARDS = [];
 
         $errors = [];
-        $pop = [];
-        $resource = null;
 
-        $iterator = new RecursiveDirectoryIterator($directory, FilesystemIterator::SKIP_DOTS);
-        $filter = (new ApisFilterIterator($iterator))
+        // Iterate the $directoryAbsolute filtering accepted filenames and folders
+        $iterator = new RecursiveDirectoryIterator($directoryAbsolute, RecursiveDirectoryIterator::SKIP_DOTS);
+        $filter = (new ApiFilterIterator($iterator))
             ->generateAcceptedFilenames(static::ACCEPT_METHODS, static::METHOD_ROOT_PREFIX);
-        $recursiveIterator = new RecursiveIteratorIterator($filter, RecursiveIteratorIterator::SELF_FIRST);
+        $recursiveIterator = new RecursiveIteratorIterator($filter);
 
         $files = [];
         foreach ($recursiveIterator as $filename) {
@@ -108,7 +109,7 @@ class Apis
             $filePathRelativeApp = Path::relative($filePath, App::APP);
 
             // endpoint/VERB.php
-            $dir = Utils\Str::replaceFirst($directory, null, $filePath);
+            $dir = Utils\Str::replaceFirst($directoryAbsolute, null, $filePath);
 
             // Dirs = resources & version
             // Files = HTTP controllers (VERB.php)
@@ -140,7 +141,7 @@ class Apis
                     continue;
                 }
                 $dir = dirname($dir); // /endpoint
-                $realDir = $relativeDirectory.$dir; // /api/endpoint
+                $realDir = $directoryRelative.$dir; // /api/endpoint
                 // Must include to trigger php panic (if any)
                 $controller = include $filePath;
                 // Don't mind about these

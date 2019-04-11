@@ -56,8 +56,8 @@ class App extends AppProcessor
     /** @var Response */
     protected $response;
 
-    /** @var Apis */
-    protected $apis;
+    /** @var Api */
+    protected $api;
 
     /** @var Route */
     protected $route;
@@ -203,21 +203,16 @@ class App extends AppProcessor
         return $this->response ?? null;
     }
 
-    protected function setApis(Apis $apis): self
+    protected function setApi(Api $api): self
     {
-        $this->apis = $apis;
+        $this->api = $api;
 
         return $this;
     }
 
-    public function getApis(): ?Apis
+    public function getApi(): ?Api
     {
-        return $this->apis ?? null;
-    }
-
-    public function getApi(string $key = null): ?array
-    {
-        return $this->apis->get($key ?? 'api');
+        return $this->api ?? null;
     }
 
     protected function setRoute(Route $route): self

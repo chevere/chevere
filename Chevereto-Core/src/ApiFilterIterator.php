@@ -18,7 +18,7 @@ use RecursiveFilterIterator;
 /**
  * Provides filtering for the Api register process (directory scan).
  */
-class ApisFilterIterator extends RecursiveFilterIterator
+class ApiFilterIterator extends RecursiveFilterIterator
 {
     /** @var array The accepted files array [GET.php, _GET.php, POST.php, ...] */
     protected $acceptedFilenames;
@@ -55,9 +55,6 @@ class ApisFilterIterator extends RecursiveFilterIterator
      */
     public function accept(): bool
     {
-        return $this->current()->isDir()
-          ? true
-          : in_array($this->current()->getFilename(), static::$acceptedFiles
-        );
+        return $this->hasChildren() || in_array($this->current()->getFilename(), $this->acceptedFilenames);
     }
 }

@@ -67,7 +67,7 @@ class ApiOptions extends Controller
     private function process()
     {
         $statusCode = 200;
-        $apis = $this->getApis();
+        $apis = $this->getApi();
         $apiKey = $apis->getEndpointApiKey($this->endpoint);
         $endpointData = $apis->getBaseOptions($this->endpoint) ?? $apis->getEndpoint($this->endpoint);
         if ($endpointData) {

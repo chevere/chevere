@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevereto\Core\Interfaces;
 
 use Chevereto\Core\Route;
-use Chevereto\Core\Apis;
 use Chevereto\Core\Response;
 use Chevereto\Core\App;
+use Chevereto\Core\Api;
 
 interface ControllerInterface
 {
@@ -24,7 +24,7 @@ interface ControllerInterface
 
     public function getRoute(): ?Route;
 
-    public function getApis(): ?Apis;
+    public function getApi(): ?Api;
 
     public function setResponse(Response $response): ControllerInterface;
 

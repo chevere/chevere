@@ -35,16 +35,16 @@ abstract class AppProcessor extends AppStatic
         }
     }
 
-    protected function processApi(string $paramApi = null): void
+    protected function processApi(string $pathIdentifier = null): void
     {
-        if (!isset($paramApi)) {
+        if (!isset($pathIdentifier)) {
             return;
         }
-        $apis = new Apis($this->router);
+        $api = new Api($this->router);
         if (!$this->isCached) {
-            // $apis->register($apiKey, $apiPath);
+            $api->register($pathIdentifier);
         }
-        $this->setApis($apis);
+        $this->setApi($api);
     }
 
     protected function processParamRoutes(array $paramRoutes = null): void

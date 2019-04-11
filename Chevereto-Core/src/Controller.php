@@ -55,9 +55,9 @@ abstract class Controller implements Interfaces\ControllerInterface
         return $this->getApp()->getRoute();
     }
 
-    public function getApis(): ?Apis
+    public function getApi(): ?Api
     {
-        return $this->getApp()->getApis();
+        return $this->getApp()->getApi();
     }
 
     public function setResponse(Response $response): Interfaces\ControllerInterface

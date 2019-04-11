@@ -67,7 +67,7 @@ class ApiGet extends Controller
 
     private function process()
     {
-        $endpointData = $this->getApis()->getEndpoint($this->endpoint);
+        $endpointData = $this->getApi()->getEndpoint($this->endpoint);
         if ($endpointData) {
             $this->getResponse()->setMeta(['api' => $this->endpoint]);
             foreach ($endpointData as $property => $data) {

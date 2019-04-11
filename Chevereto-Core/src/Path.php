@@ -185,7 +185,7 @@ class Path
     }
 
     /**
-     * Returns the path from a path identifier.
+     * Returns the path (trailing slash) associated with a path identifier.
      *
      * Path identifiers refers to the standarized way in which files and paths
      * are handled by internal APIs like Hookable or Router.
@@ -199,7 +199,7 @@ class Path
      * @param string $pathIdentifier path identifier (<dirname>:<file>)
      * @param string $rootContext    Root context for the $pathIdentifier. Must be an absolute path.
      *
-     * @return string absolute path
+     * @return string absolute path like /home/user/folder/ or /home/user/folder/file.php
      */
     public static function fromHandle(string $pathIdentifier, string $rootContext = null): string
     {
