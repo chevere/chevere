@@ -14,7 +14,7 @@ namespace Chevereto\Core\Utils;
 
 class DumpPlain extends Dump
 {
-    public static function out($expression, int $indent = null, array $dontDump = []): string
+    public static function out($expression, int $indent = null, array $dontDump = [], $depth = 0): string
     {
         $return = parent::out(...func_get_args());
 

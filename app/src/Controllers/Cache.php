@@ -9,7 +9,7 @@ use Chevereto\Core\Controller;
 
 class Cache extends Controller
 {
-    const RESOURCES = [
+    protected static $resources = [
         'user' => User::class,
     ];
 

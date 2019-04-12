@@ -27,13 +27,13 @@ class ControllerInspect
     /** @var string The CreateFromString interface */
     const INTERFACE_CREATE_FROM_STRING = Interfaces\CreateFromString::class;
 
-    const CONST_DESCRIPTION = 'DESCRIPTION';
-    const CONST_RESOURCES = 'RESOURCES';
+    const PROP_DESCRIPTION = 'description';
+    const PROP_RESOURCES = 'resources';
 
     /** @var string The class name, passed in the constructor */
     protected $className;
 
-    /** @var string The HTTP METHOD tied to the passed $className */
+    /** @var string|null The HTTP METHOD tied to the passed $className */
     protected $httpMethod;
 
     /** @var ReflectionClass The reflected controller class */
@@ -46,7 +46,7 @@ class ControllerInspect
     protected $resources;
 
     /** @var bool True if the controller class must implement RESOURCES. Prefixed Classes (_ClassName) won't be resourced. */
-    protected $hasResource;
+    protected $useResource;
 
     /** @var array|null Instructions for creating resources from string [propname => [regex, description],] */
     protected $resourcesFromString;
@@ -56,19 +56,16 @@ class ControllerInspect
      */
     public function __construct(string $className)
     {
-        $this->reflection = new ReflectionClass($className);
+        $this->reflection = (new BetterReflection())->classReflector()->reflect($className);
         $this->className = $this->reflection->getName();
-        $classShortName = $this->reflection->getShortName();
-        $this->filepath = $this->reflection->getFileName();
-        $this->hasResource = !Utils\Str::startsWith(Api::METHOD_ROOT_PREFIX, $classShortName);
-        $this->httpMethod = Utils\Str::replaceFirst(Api::METHOD_ROOT_PREFIX, null, $classShortName);
         $this->assertControllerInterface();
-        $this->description = $this->reflection->hasConstant(static::CONST_DESCRIPTION)
-            ? $this->reflection->getConstant(static::CONST_DESCRIPTION)
-            : null;
-        $this->resources = $this->reflection->hasConstant(static::CONST_RESOURCES)
-            ? $this->reflection->getConstant(static::CONST_RESOURCES)
-            : null;
+        $this->filepath = $this->reflection->getFileName();
+        $classShortName = $this->reflection->getShortName();
+        $this->useResource = !Utils\Str::startsWith(Api::METHOD_ROOT_PREFIX, $classShortName);
+        $this->httpMethod = Utils\Str::replaceFirst(Api::METHOD_ROOT_PREFIX, null, $classShortName);
+        $this->description = $className::getDescription();
+        $this->resources = $className::getResources();
+        $this->parameters = $className::getParameters();
         $this->assertConstResource();
         $this->assertProcessResources();
     }
@@ -106,7 +103,7 @@ class ControllerInspect
                     (new Message('Class %s must implement the %i interface at %f.'))
                         ->code('%s', $this->reflection->getName())
                         ->code('%i', static::INTERFACE_CONTROLLER)
-                        ->code('%f', $this->filepath)
+                        ->code('%f', $this->reflection->getFileName())
             );
         }
     }
@@ -127,12 +124,12 @@ class ControllerInspect
      */
     protected function assertConstResourceNeed(): void
     {
-        if (isset($this->resources) && !$this->hasResource) {
+        if (isset($this->resources) && !$this->useResource) {
             throw new LogicException(
                 (string)
                     (new Message('Class %s defines %r but this Controller class targets a non-resourced endpoint: %e. Remove the unused %r declaration at %f.'))
                         ->code('%s', $this->className)
-                        ->code('%r', 'const '.static::CONST_RESOURCES)
+                        ->code('%r', 'const '.static::PROP_RESOURCES)
                         ->code('%e', $this->httpMethod.' api/users')
                         ->code('%f', $this->filepath)
             );
@@ -144,12 +141,12 @@ class ControllerInspect
      */
     protected function assertConstResourceType(): void
     {
-        if (isset($this->resources) && $this->hasResource && !is_array($this->resources)) {
+        if (isset($this->resources) && $this->useResource && !is_array($this->resources)) {
             throw new LogicException(
                 (string)
                     (new Message('Class %s must define %r of type %t, %x found at %f.'))
                         ->code('%s', $this->className)
-                        ->code('%r', 'const '.static::CONST_RESOURCES)
+                        ->code('%r', 'const '.static::PROP_RESOURCES)
                         ->code('%t', 'array')
                         ->code('%x', gettype($this->resources))
                         ->code('%f', $this->filepath)
@@ -162,12 +159,12 @@ class ControllerInspect
      */
     protected function assertConstResourceMissed(): void
     {
-        if (!isset($this->resources) && $this->hasResource) {
+        if (!isset($this->resources) && $this->useResource) {
             throw new LogicException(
                 (string)
                     (new Message('Class %s must define %r at %f.'))
                         ->code('%s', $this->className)
-                        ->code('%r', 'const '.static::CONST_RESOURCES)
+                        ->code('%r', 'const '.static::PROP_RESOURCES)
                         ->code('%f', $this->filepath)
             );
         }
@@ -198,7 +195,7 @@ class ControllerInspect
         return $this->className;
     }
 
-    public function getHttpMethod(): string
+    public function getHttpMethod(): ?string
     {
         return $this->httpMethod;
     }
@@ -218,9 +215,9 @@ class ControllerInspect
         return $this->resources;
     }
 
-    public function hasResource(): bool
+    public function useResource(): bool
     {
-        return $this->hasResource;
+        return $this->useResource;
     }
 
     public function getResourcesFromString(): ?array

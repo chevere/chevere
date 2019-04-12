@@ -9,11 +9,11 @@ use Chevereto\Core\Controller;
 
 class PATCH extends Controller
 {
-    const DESCRIPTION = 'Updates an user.';
-    const RESOURCES = [
+    protected static $description = 'Updates an user.';
+    protected static $resources = [
         'user' => User::class,
     ];
-    const PARAMETERS = [
+    protected static $parameters = [
         'email' => [
             'description' => 'User email.',
         ],

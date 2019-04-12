@@ -8,8 +8,8 @@ use Chevereto\Core\Controller;
 
 class _POST extends Controller
 {
-    const DESCRIPTION = 'Creates an user.';
-    const PARAMETERS = [
+    protected static $description = 'Creates an user.';
+    protected static $parameters = [
         'username' => [
             'description' => 'Username.',
         ],

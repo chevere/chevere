@@ -8,7 +8,7 @@ use Chevereto\Core\Controller;
 
 class _GET extends Controller
 {
-    const DESCRIPTION = 'Obtiene usuarios.';
+    protected static $description = 'Obtiene usuarios.';
 
     public function __construct($input)
     {

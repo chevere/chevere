@@ -89,8 +89,9 @@ class Dump
      *
      * @return string parsed dump string
      */
-    public static function out($anything, int $indent = null, array $dontDump = []): string
+    public static function out($anything, int $indent = null, array $dontDump = [], $depth = 0): string
     {
+        ++$depth;
         // Maybe improve this to support any circular reference?
         if (is_array($anything)) {
             $expression = array_merge([], $anything);
@@ -160,17 +161,27 @@ class Dump
                     $aux = $v['value'];
                     // FIXME: Doesn't work with BetterReflection objects
                     if (is_object($aux) && property_exists($aux, $k)) {
-                        $r = new ReflectionObject($aux);
-                        $p = $r->getProperty($k);
-                        $p->setAccessible(true);
-                        if ($p->getValue($aux) == $aux) {
-                            $isCircularRef = true;
+                        try {
+                            $r = new ReflectionObject($aux);
+                            $p = $r->getProperty($k);
+                            $p->setAccessible(true);
+
+                            if ($aux == $p->getValue($aux)) {
+                                $isCircularRef = true;
+                            }
+                        } catch (\Throwable $e) {
+                            continue;
                         }
                     }
+                    // $isCircularRef = true;
                     if ($isCircularRef) {
                         $val .= static::wrap(static::_OPERATOR, '(<i>circular object reference</i>)');
                     } else {
-                        $val .= static::out($aux, $indent, $dontDump);
+                        if ($depth < 4) {
+                            $val .= static::out($aux, $indent, $dontDump, $depth);
+                        } else {
+                            $val .= static::wrap(static::_OPERATOR, '(<i>max depth reached</i>)');
+                        }
                     }
                 }
                 $className = get_class(/* @scrutinizer ignore-type */ $expression);

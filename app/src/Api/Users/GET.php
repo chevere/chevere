@@ -10,10 +10,10 @@ use Chevereto\Core\Controller;
 class GET extends Controller
 {
     /** @var string Controller description */
-    const DESCRIPTION = 'Obtiene un usuario.';
+    protected static $description = 'Obtiene un usuario.';
 
     /** @var array Controller resources [propName => className] */
-    const RESOURCES = [
+    protected static $resources = [
         'user' => User::class,
     ];
 

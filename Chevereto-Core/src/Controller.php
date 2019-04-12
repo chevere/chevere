@@ -39,6 +39,15 @@ abstract class Controller implements Interfaces\ControllerInterface
     /** @var App */
     private $app;
 
+    /** @var string|null Controller description */
+    protected static $description = null;
+
+    /** @var array|null Controller resources [propName => className] */
+    protected static $resources;
+
+    /** @var array|null Parameters passed via headers */
+    protected static $parameters;
+
     /**
      * Automatically create the defined Controller RESOURCES.
      */
@@ -145,6 +154,21 @@ abstract class Controller implements Interfaces\ControllerInterface
                 (new Message('Class %c Must implement its own %s method.'))
                     ->code()
         );
+    }
+
+    final public static function getDescription(): ?string
+    {
+        return static::$description;
+    }
+
+    final public static function getResources(): ?array
+    {
+        return static::$resources;
+    }
+
+    final public static function getParameters(): ?array
+    {
+        return static::$parameters;
     }
 }
 class ControllerException extends CoreException

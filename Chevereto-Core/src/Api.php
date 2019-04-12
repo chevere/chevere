@@ -98,7 +98,7 @@ class Api
             $className = $this->getClassNameFromFilepath($filepathAbsolute);
             $controllers[] = new ControllerInspect($className);
         }
-        dd($controllers);
+        dd($controllers[0]);
 
         return $this;
 

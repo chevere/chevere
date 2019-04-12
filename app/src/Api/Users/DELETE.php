@@ -7,12 +7,10 @@ namespace App\Api\Users;
 use App\User;
 use Chevereto\Core\Controller;
 
-// dd($realDir);
-
 class DELETE extends Controller
 {
-    const DESCRIPTION = 'Deletes an user.';
-    const RESOURCES = [
+    protected static $description = 'Deletes an user.';
+    protected static $resources = [
         'user' => User::class,
     ];
 

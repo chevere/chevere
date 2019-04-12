@@ -43,4 +43,25 @@ interface ControllerInterface
      * @return mixed output array or whatever the controller may output
      */
     public function invoke(string $controller, $parameters = null);
+
+    /**
+     * Provides access to the Controller $description static.
+     *
+     * @return string|null
+     */
+    public static function getDescription(): ?string;
+
+    /**
+     * Provides access to the Controller $resources static.
+     *
+     * @return array|null
+     */
+    public static function getResources(): ?array;
+
+    /**
+     * Provides access to the Controller $parameters static.
+     *
+     * @return array|null
+     */
+    public static function getParameters(): ?array;
 }
