@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace App\Api\Users;
 
 use App\User;
-use Chevereto\Core\Controller;
 
-class PATCH extends Controller
+class PATCH extends Resource
 {
     protected static $description = 'Updates an user.';
-    protected static $resources = [
-        'user' => User::class,
-    ];
+
     protected static $parameters = [
         'email' => [
             'description' => 'User email.',

@@ -5,14 +5,10 @@ declare(strict_types=1);
 namespace App\Api\Users;
 
 use App\User;
-use Chevereto\Core\Controller;
 
-class DELETE extends Controller
+class DELETE extends Resource
 {
     protected static $description = 'Deletes an user.';
-    protected static $resources = [
-        'user' => User::class,
-    ];
 
     // private $private = "Can't touch this!";
     public function __construct(User $user)

@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Core;
 
-class RouteWildcard
+class RouteWildcard implements Interfaces\ToArrayInterface
 {
     protected $description = null;
     protected $regex;

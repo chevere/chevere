@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevereto\Core.
  *
@@ -10,12 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Core\Interfaces;
+namespace Chevereto\Core;
 
-interface DataInterface extends ToArrayInterface
+/**
+ * Creates endpoints from ControlerInspect object.
+ */
+class ControllerAsEndpoint
 {
-    // public function addDataKey(string $key, $var);
-    public function setDataKey(string $key, $var);
-
-    public function removeDataKey(string $key);
+    public function __construct(ControllerInspect $controllerInspect)
+    {
+    }
 }

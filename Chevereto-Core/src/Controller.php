@@ -48,17 +48,6 @@ abstract class Controller implements Interfaces\ControllerInterface
     /** @var array|null Parameters passed via headers */
     protected static $parameters;
 
-    /**
-     * Automatically create the defined Controller RESOURCES.
-     */
-    public function __construct()
-    {
-        // foreach (static::RESOURCES as $property => $className) {
-        //     // A valid resource must have a constructor like __construct(string $var)
-        //     $this->{$property} = new $className($this->getArgument($property));
-        // }
-    }
-
     public function getRoute(): ?Route
     {
         return $this->getApp()->getRoute();
@@ -136,15 +125,6 @@ abstract class Controller implements Interfaces\ControllerInterface
         }
 
         return $that(...$parameters);
-    }
-
-    public function setDescription(string $description = null): self
-    {
-        if (isset($description)) {
-            $this->setDescription = $description;
-        }
-
-        return $this;
     }
 
     public function __invoke()

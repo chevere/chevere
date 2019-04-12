@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevereto\Core.
  *
@@ -12,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevereto\Core\Interfaces;
 
-interface DataInterface extends ToArrayInterface
+interface ControllerResourceInterface
 {
-    // public function addDataKey(string $key, $var);
-    public function setDataKey(string $key, $var);
-
-    public function removeDataKey(string $key);
+  /**
+   * Get the resource property name
+   */
+  public static function getResourceName(): string;
 }

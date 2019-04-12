@@ -24,9 +24,7 @@ use InvalidArgumentException;
  */
 class ApiHead extends Controller
 {
-    const OPTIONS = [
-        'description' => 'GET without message-body.',
-    ];
+    protected static $description = 'GET without message-body.';
 
     /** @var Route */
     private $route;

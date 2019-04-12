@@ -23,9 +23,7 @@ use InvalidArgumentException;
  */
 class ApiOptions extends Controller
 {
-    const OPTIONS = [
-        'description' => 'Retrieve endpoint OPTIONS.',
-    ];
+    protected static $description = 'Retrieve endpoint OPTIONS.';
 
     /** @var string */
     private $endpoint;
