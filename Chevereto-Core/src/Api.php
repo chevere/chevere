@@ -32,14 +32,14 @@ class Api
     /** @var Router The injected Router, needed to add Routes to the injector instance */
     protected $router;
 
-    /** @var array ['api-key' => [<endpoint> => [<options>]]] */
-    protected $apis;
+    /** @var array [<endpoint> => [<options>]] */
+    protected $api;
 
     /** @var array ['api-key' => [<options>]] */
-    protected $bases;
+    // protected $bases;
 
     /** @var array ['/api-key/v1/endpoint' => ['api-key', 'v1/endpoint']] */
-    protected $routeKeys;
+    // protected $routeKeys;
 
     public function __construct(Router $router)
     {
@@ -54,7 +54,7 @@ class Api
     public function register(string $pathIdentifier): self
     {
         $pathIdentifier = Utils\Str::rtail($pathIdentifier, '/');
-        if (isset($this->apis[$pathIdentifier])) {
+        if (isset($this->api[$pathIdentifier])) {
             throw new LogicException(
                 (string)
                     (new Message('Path identified by %s has been already bound.'))
@@ -105,6 +105,8 @@ class Api
             $ROUTE_MAP[$pathComponent][$inspected->getHttpMethod()] = $inspected->getClassName();
         }
 
+        // dd($CONTROLLERS['App\Api\Users\Friends\_GET']);
+
         ksort($ROUTE_MAP);
 
         /** @var string The API basepath (usually 'api') */
@@ -148,7 +150,7 @@ class Api
                 foreach ($resource as $wildcardKey => $resourceMeta) {
                     $route->setWhere($wildcardKey, $resourceMeta['regex']);
                 }
-                $api['wildcards'] = $resource;
+                $api['resource'] = $resource;
             }
             $API[$pathComponent] = $api;
             $this->getRouter()->addRoute($route, $basePath);
@@ -156,13 +158,15 @@ class Api
         }
         ksort($API);
 
+        dd($API);
+
         $route = Route::bind('/'.$basePath)
             ->setMethod('HEAD', Controllers\ApiHead::class)
             ->setMethod('OPTIONS', Controllers\ApiOptions::class)
             ->setMethod('GET', Controllers\ApiGet::class)
             ->setId($basePath);
         $this->getRouter()->addRoute($route, $basePath);
-        $this->apis[$basePath] = $API;
+        $this->api[$basePath] = $API;
         $baseOpts = [
             'HEAD' => Controllers\ApiHead::OPTIONS,
             'OPTIONS' => Controllers\ApiOptions::OPTIONS,
@@ -195,15 +199,15 @@ class Api
         return $this->router;
     }
 
-    public function getKeys(): array
-    {
-        return array_keys($this->apis);
-    }
+    // public function getKeys(): array
+    // {
+    //     return array_keys($this->api);
+    // }
 
-    public function getBaseOptions(string $key): ?array
-    {
-        return $this->bases[ltrim($key, '/')] ?? null;
-    }
+    // public function getBaseOptions(string $key): ?array
+    // {
+    //     return $this->bases[ltrim($key, '/')] ?? null;
+    // }
 
     public function getEndpoint(string $key): ?array
     {
@@ -234,13 +238,13 @@ class Api
     }
 
     /**
-     * Get an API.
+     * Get a exposed API array.
      *
-     * @param string $key the API key (path identifier)
+     * @param string $key the API key (base pathName)
      */
     public function get(string $key = 'api'): ?array
     {
-        return $this->apis[$key] ?? null;
+        return $this->api[$key] ?? null;
     }
 
     public function getRouteKeys(): ?array

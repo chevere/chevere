@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Chevereto\Core;
 
 /**
- * Abstract class used for API resourced Controllers.
+ * Abstract class used for API resourced Controllers with relationships.
  */
-abstract class ControllerResource extends Controller implements Interfaces\ControllerResourceInterface
+abstract class ControllerRelationship extends Controller implements Interfaces\ControllerRelationshipInterface
 {
-    protected static $resources = [];
+    const RELATIONSHIP = null;
 
-    public static function getResourceName(): string
+    public static function getRelationship(): string
     {
-        return array_keys(static::getResources())[0];
+        return static::RELATIONSHIP;
     }
 }

@@ -40,17 +40,26 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     /** @var string The class name, passed in the constructor */
     protected $className;
 
+    /** @var string Absolute path to the inspected class */
+    protected $filepath;
+
     /** @var string|null The HTTP METHOD tied to the passed $className */
     protected $httpMethod;
 
     /** @var ReflectionClass The reflected controller class */
     protected $reflection;
 
-    /** @var string|null Endpoint description taken from const DESCRIPTION */
+    /** @var string|null Controller description */
     protected $description;
 
-    /** @var array|null Endpoint resources taken from const RESOURCES */
+    /** @var array|null Controller resources */
     protected $resources;
+
+    /** @var array|null Controller parameters */
+    protected $parameters;
+
+    /** @var string|null Controller relationship */
+    protected $relationship;
 
     /** @var bool True if the controller class must implement RESOURCES. Prefixed Classes (_ClassName) won't be resourced. */
     protected $useResource;
@@ -60,6 +69,12 @@ class ControllerInspect implements Interfaces\ToArrayInterface
 
     /** @var string The path component associated with the inspected Controller, used by Api */
     protected $pathComponent;
+
+    /** @var bool True if the inspected Controller implements Interfaces\ControllerResourceIterface */
+    protected $isResource;
+
+    /** @var bool True if the inspected Controller implements Interfaces\ControllerRelationshipIterface */
+    protected $isRelationship;
 
     /**
      * @param string $className A class name implementing the ControllerInterface
@@ -71,11 +86,20 @@ class ControllerInspect implements Interfaces\ToArrayInterface
         $this->assertControllerInterface();
         $this->filepath = $this->reflection->getFileName();
         $classShortName = $this->reflection->getShortName();
-        $this->useResource = !Utils\Str::startsWith(Api::METHOD_ROOT_PREFIX, $classShortName);
-        $this->assertControllerResourceInterface();
+        $this->isResource = $this->reflection->implementsInterface(Interfaces\ControllerResourceInterface::class);
+        $this->isRelationship = $this->reflection->implementsInterface(Interfaces\ControllerRelationshipInterface::class);
+        $this->useResource = $this->isResource || $this->isRelationship;
+        if (!Utils\Str::startsWith(Api::METHOD_ROOT_PREFIX, $classShortName)) {
+            $this->assertControllerResourceInterface();
+        }
         $this->httpMethod = Utils\Str::replaceFirst(Api::METHOD_ROOT_PREFIX, null, $classShortName);
         $this->description = $className::getDescription();
-        $this->resources = $className::getResources();
+        if ($this->isResource) {
+            $this->resources = $className::getResources();
+        } elseif ($this->isRelationship) {
+            $this->relationship = $className::getRelationship();
+            $this->resources = $this->relationship::getResources();
+        }
         $this->parameters = $className::getParameters();
         $this->assertConstResource();
         $this->assertProcessResources();
@@ -187,7 +211,7 @@ class ControllerInspect implements Interfaces\ToArrayInterface
      */
     protected function assertConstResourceMissed(): void
     {
-        if (!isset($this->resources) && $this->useResource) {
+        if (!isset($this->resources) && $this->isResource) {
             throw new LogicException(
                 (string)
                     (new Message('Class %s must define %r at %f.'))
@@ -227,12 +251,22 @@ class ControllerInspect implements Interfaces\ToArrayInterface
         $classNs = dirname($this->className);
         /** @var string The class namespace without App (Api\Users) */
         $classNsNoApp = Utils\Str::replaceFirst(APP_NS_HANDLE, null, $classNs);
-        /** @var string The class namespace without App, lowercased with forward slashes. */
+        /** @var string The class namespace without App, lowercased with forward slashes (api/users) */
         $pathComponent = strtolower(Utils\Str::forwardSlashes($classNsNoApp));
+        /** @var array Exploded / $pathComponent */
+        $pathComponents = explode('/', $pathComponent);
         if ($this->useResource) {
             /** @var string The Controller resource wildcard path component {resource} */
             $resourceWildcard = '{'.array_keys($this->resources)[0].'}';
-            $pathComponent .= '/'.$resourceWildcard;
+            if ($this->isResource) {
+                // Append the resource wildcard: api/users/{wildcard}
+                $pathComponent .= '/'.$resourceWildcard;
+            } elseif ($this->isRelationship) {
+                /** @var string Pop the last path component, in this case a related resource */
+                $related = array_pop($pathComponents);
+                // Inject the resource wildcard: api/users/{wildcard}/related
+                $pathComponent = implode('/', $pathComponents).'/'.$resourceWildcard.'/'.$related;
+            }
         }
         $this->pathComponent = $pathComponent;
     }
@@ -275,6 +309,16 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     public function getPathComponent(): string
     {
         return $this->pathComponent;
+    }
+
+    public function isResource(): bool
+    {
+        return $this->isResource;
+    }
+
+    public function isRelationship(): bool
+    {
+        return $this->isRelationship;
     }
 
     public function toArray(): array

@@ -173,7 +173,6 @@ class Dump
                             continue;
                         }
                     }
-                    // $isCircularRef = true;
                     if ($isCircularRef) {
                         $val .= static::wrap(static::_OPERATOR, '(<i>circular object reference</i>)');
                     } else {

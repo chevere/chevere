@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Core\Controllers;
 
+use function Chevereto\Core\dd;
 use const Chevereto\Core\CLI;
 use Chevereto\Core\Console;
 use Chevereto\Core\Message;
@@ -65,11 +66,12 @@ class ApiOptions extends Controller
     private function process()
     {
         $statusCode = 200;
-        $apis = $this->getApi();
-        $apiKey = $apis->getEndpointApiKey($this->endpoint);
-        $endpointData = $apis->getBaseOptions($this->endpoint) ?? $apis->getEndpoint($this->endpoint);
+        $api = $this->getApi();
+        $apiKey = $api->getEndpointApiKey($this->endpoint);
+        dd($apiKey);
+        $endpointData = $api->getBaseOptions($this->endpoint) ?? $api->getEndpoint($this->endpoint);
         if ($endpointData) {
-            $this->getResponse()->setMeta(['api' => $apiKey]);
+            // $this->getResponse()->setMeta(['api' => $apiKey]);
             $this->getResponse()->addData('OPTIONS', $this->endpoint, $endpointData['OPTIONS']);
         } else {
             $statusCode = 404;
