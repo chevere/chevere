@@ -101,11 +101,16 @@ class Api
             $pathComponent = $inspected->getPathComponent();
             if ($inspected->useResource()) {
                 $RESOURCED[$pathComponent] = $inspected->getResourcesFromString();
+                /*
+                 * For relationships we need to create the /endpoint/{id}/relationships/relation URLs.
+                 * @see https://jsonapi.org/recommendations/
+                 */
+                if ($inspected->isRelatedResource()) {
+                    $ROUTE_MAP[$inspected->getRelationshipPathComponent()]['GET'] = $inspected->getRelationship();
+                }
             }
             $ROUTE_MAP[$pathComponent][$inspected->getHttpMethod()] = $inspected->getClassName();
         }
-
-        // dd($CONTROLLERS['App\Api\Users\Friends\_GET']);
 
         ksort($ROUTE_MAP);
 
@@ -118,6 +123,9 @@ class Api
             foreach ($httpMethods as $httpMethod => $controllerClassName) {
                 $httpMethodOptions = [];
                 $httpMethodOptions['description'] = $controllerClassName::getDescription();
+                // if ($controllerClassName == 'App\Api\Users\Resource') {
+                //     dd(\App\Api\Users\Resource::getDescription());
+                // }
                 $controllerParameters = $controllerClassName::getParameters();
                 if (isset($controllerParameters)) {
                     $httpMethodOptions['parameters'] = $controllerParameters;
@@ -157,8 +165,6 @@ class Api
             $API[$pathComponent] = $api;
         }
         ksort($API);
-
-        dd($API);
 
         $route = Route::bind('/'.$basePath)
             ->setMethod('HEAD', Controllers\ApiHead::class)

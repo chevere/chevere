@@ -138,17 +138,17 @@ abstract class Controller implements Interfaces\ControllerInterface
 
     final public static function getDescription(): ?string
     {
-        return static::$description;
+        return static::$description ?? null;
     }
 
     final public static function getResources(): ?array
     {
-        return static::$resources;
+        return static::$resources ?? null;
     }
 
     final public static function getParameters(): ?array
     {
-        return static::$parameters;
+        return static::$parameters ?? null;
     }
 }
 class ControllerException extends CoreException

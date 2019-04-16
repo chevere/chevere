@@ -18,10 +18,12 @@ namespace Chevereto\Core;
  */
 abstract class ControllerRelationship extends Controller implements Interfaces\ControllerRelationshipInterface
 {
-    const RELATIONSHIP = null;
+    protected static $description = 'Describes endpoint relationship.';
 
-    public static function getRelationship(): string
+    protected static $relatedResource = null;
+
+    public static function getRelatedResource(): ?string
     {
-        return static::RELATIONSHIP;
+        return static::$relatedResource ?? null;
     }
 }

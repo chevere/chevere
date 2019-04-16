@@ -58,7 +58,10 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     /** @var array|null Controller parameters */
     protected $parameters;
 
-    /** @var string|null Controller relationship */
+    /** @var string|null Controller related resource (if any) */
+    protected $relatedResource;
+
+    /** @var string|null Controller relationship class (if any) */
     protected $relationship;
 
     /** @var bool True if the controller class must implement RESOURCES. Prefixed Classes (_ClassName) won't be resourced. */
@@ -70,11 +73,14 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     /** @var string The path component associated with the inspected Controller, used by Api */
     protected $pathComponent;
 
+    /** @var string|null Same as $pathComponent but for the related relationship URL (if any) */
+    protected $relationshipPathComponent;
+
     /** @var bool True if the inspected Controller implements Interfaces\ControllerResourceIterface */
     protected $isResource;
 
     /** @var bool True if the inspected Controller implements Interfaces\ControllerRelationshipIterface */
-    protected $isRelationship;
+    protected $isRelatedResource;
 
     /**
      * @param string $className A class name implementing the ControllerInterface
@@ -87,8 +93,8 @@ class ControllerInspect implements Interfaces\ToArrayInterface
         $this->filepath = $this->reflection->getFileName();
         $classShortName = $this->reflection->getShortName();
         $this->isResource = $this->reflection->implementsInterface(Interfaces\ControllerResourceInterface::class);
-        $this->isRelationship = $this->reflection->implementsInterface(Interfaces\ControllerRelationshipInterface::class);
-        $this->useResource = $this->isResource || $this->isRelationship;
+        $this->isRelatedResource = $this->reflection->implementsInterface(Interfaces\ControllerRelationshipInterface::class);
+        $this->useResource = $this->isResource || $this->isRelatedResource;
         if (!Utils\Str::startsWith(Api::METHOD_ROOT_PREFIX, $classShortName)) {
             $this->assertControllerResourceInterface();
         }
@@ -96,9 +102,17 @@ class ControllerInspect implements Interfaces\ToArrayInterface
         $this->description = $className::getDescription();
         if ($this->isResource) {
             $this->resources = $className::getResources();
-        } elseif ($this->isRelationship) {
-            $this->relationship = $className::getRelationship();
-            $this->resources = $this->relationship::getResources();
+        } elseif ($this->isRelatedResource) {
+            $this->relatedResource = $className::getRelatedResource();
+            if (!isset($this->relatedResource)) {
+                throw new LogicException(
+                    (string)
+                        (new Message('Class %s implements %i interface, but it doesnt define any related resource.'))
+                            ->code('%s', $className)
+                            ->code('%i', Interfaces\ControllerRelationshipInterface::class)
+                );
+            }
+            $this->resources = $this->relatedResource::getResources();
         }
         $this->parameters = $className::getParameters();
         $this->assertConstResource();
@@ -261,11 +275,24 @@ class ControllerInspect implements Interfaces\ToArrayInterface
             if ($this->isResource) {
                 // Append the resource wildcard: api/users/{wildcard}
                 $pathComponent .= '/'.$resourceWildcard;
-            } elseif ($this->isRelationship) {
+            } elseif ($this->isRelatedResource) {
                 /** @var string Pop the last path component, in this case a related resource */
                 $related = array_pop($pathComponents);
                 // Inject the resource wildcard: api/users/{wildcard}/related
                 $pathComponent = implode('/', $pathComponents).'/'.$resourceWildcard.'/'.$related;
+                /*
+                * Code below generates api/users/{user}/relationships/friends (relationship URL)
+                * from api/users/{user}/friends (related resource URL).
+                */
+                $pathComponentArray = explode('/', $pathComponent);
+                $relationship = array_pop($pathComponentArray);
+                $relatedPathComponentArray = array_merge($pathComponentArray, ['relationships'], [$relationship]);
+                /** @var string Something like api/users/{user}/relationships/friends */
+                $relatedPathComponent = implode('/', $relatedPathComponentArray);
+                // $ROUTE_MAP[$relatedPathComponent]['GET'] = $this->className;
+                $this->relationshipPathComponent = $relatedPathComponent;
+                // ->implementsInterface(Interfaces\ControllerRelationshipInterface::class)
+                $this->relationship = $this->reflection->getParentClass()->getName();
             }
         }
         $this->pathComponent = $pathComponent;
@@ -296,6 +323,16 @@ class ControllerInspect implements Interfaces\ToArrayInterface
         return $this->resources;
     }
 
+    public function getRelatedResource(): ?string
+    {
+        return $this->relatedResource ?? null;
+    }
+
+    public function getRelationship(): ?string
+    {
+        return $this->relationship ?? null;
+    }
+
     public function useResource(): bool
     {
         return $this->useResource;
@@ -311,14 +348,22 @@ class ControllerInspect implements Interfaces\ToArrayInterface
         return $this->pathComponent;
     }
 
+    /**
+     * @return mixed string if the inspected controller is a related resource, null if otherwise
+     */
+    public function getRelationshipPathComponent(): ?string
+    {
+        return $this->relationshipPathComponent ?? null;
+    }
+
     public function isResource(): bool
     {
         return $this->isResource;
     }
 
-    public function isRelationship(): bool
+    public function isRelatedResource(): bool
     {
-        return $this->isRelationship;
+        return $this->isRelatedResource;
     }
 
     public function toArray(): array

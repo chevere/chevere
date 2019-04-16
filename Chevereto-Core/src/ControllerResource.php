@@ -18,6 +18,8 @@ namespace Chevereto\Core;
  */
 abstract class ControllerResource extends Controller implements Interfaces\ControllerResourceInterface
 {
+    // protected static $description = 'Describes the endpoint resource.';
+
     protected static $resources = [];
 
     public static function getResourceName(): string

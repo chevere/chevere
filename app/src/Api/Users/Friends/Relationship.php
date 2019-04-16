@@ -9,5 +9,5 @@ use Chevereto\Core\ControllerRelationship;
 
 abstract class Relationship extends ControllerRelationship
 {
-    const RELATIONSHIP = Resource::class;
+    protected static $relatedResource = Resource::class;
 }

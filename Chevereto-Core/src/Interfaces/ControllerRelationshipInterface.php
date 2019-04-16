@@ -18,5 +18,5 @@ interface ControllerRelationshipInterface
     /**
      * Get the relationship property value.
      */
-    public static function getRelationship(): string;
+    public static function getRelatedResource(): ?string;
 }
