@@ -262,7 +262,7 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     protected function processPathComponent(): void
     {
         /** @var string The class namespace, like App\Api\Users for class App\Api\Users\DELETE */
-        $classNs = dirname($this->className);
+        $classNs = Utils\Str::replaceLast('\\'.$this->reflection->getShortName(), null, $this->className);
         /** @var string The class namespace without App (Api\Users) */
         $classNsNoApp = Utils\Str::replaceFirst(APP_NS_HANDLE, null, $classNs);
         /** @var string The class namespace without App, lowercased with forward slashes (api/users) */

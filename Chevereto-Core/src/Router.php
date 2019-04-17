@@ -48,6 +48,7 @@ class Router
         $key = $route->getKey();
         $keyedRoute = $this->getRouteKeys()[$key] ?? null;
         if (isset($keyedRoute)) {
+            dd($this->getRouteKeys());
             throw new LogicException(
                 (string) (new Message('Route key %s has been already declared by %r.'))
                     ->code('%s', $key)

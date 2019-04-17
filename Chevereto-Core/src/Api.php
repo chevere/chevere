@@ -93,8 +93,10 @@ class Api
             ->generateAcceptedFilenames(static::ACCEPT_METHODS, static::METHOD_ROOT_PREFIX);
         $recursiveIterator = new RecursiveIteratorIterator($filter);
 
+        $ee = [];
         foreach ($recursiveIterator as $filename) {
             $filepathAbsolute = Utils\Str::forwardSlashes((string) $filename);
+            $ee[] = $filepathAbsolute;
             $className = $this->getClassNameFromFilepath($filepathAbsolute);
             $inspected = new ControllerInspect($className);
             $CONTROLLERS[$className] = $inspected;
