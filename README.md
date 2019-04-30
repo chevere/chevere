@@ -78,4 +78,4 @@ test test.
 
 ## License
 
-The Chevereto\Core Framework is licensed under the MIT license. See [License File](LICENSE.md) for more information.
+The Chevereto\Core Framework is licensed under the MIT license. See [License File](LICENSE) for more information.
