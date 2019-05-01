@@ -8,7 +8,7 @@ Modern API-first extensible web application framework, in the works.
 
 ## Note: This is a work-in-progress
 
-The project is under beta development and is not recommended to use it for production.  If you want to test and
+The project is under beta development and is not recommended to use it for production. If you want to test and
 contribute you are most than welcome.
 
 ## Sell me the thing
@@ -24,7 +24,7 @@ service vary a lot and that build the API for it is an awkward process. My relea
 logic, templating, the API exposed data and the JavaScript bindings became a nightmare. The motivation is to address the
 issue by providing a flexible web application structure for the kind of applications that gets new features frequently.
 
-In Chevereto\Core is *natural* to invoke other controllers (API endpoints), set hooks (events) for granular flexibility,
+In Chevereto\Core is _natural_ to invoke other controllers (API endpoints), set hooks (events) for granular flexibility,
 and it encourages console driven development.
 
 ## Why
@@ -63,7 +63,7 @@ After cloning this, you will need to install its dependencies which is achieved 
 ```console
 foo@bar:~$ cd ~/chevereto-core
 foo@bar:~$ git clone https://github.com/rodolfoberrios/chevereto-core.git
-foo@bar:~$ rd -r -force "vendor"; composer update chevereto/core --prefer-source
+foo@bar:~$ rm -rf "vendor" && composer update chevereto/core --prefer-source
 ```
 
 ^This will create the `vendor` dir with all the Chevereto\Core dependencies.
