@@ -9,7 +9,7 @@ Modern API-first extensible web application framework, in the works.
 ## Note: This is a work-in-progress
 
 The project is under beta development and is not recommended to use it for production. If you want to test and
-contribute you are most than welcome.
+contribute you are more than welcome.
 
 ## Sell me the thing
 
