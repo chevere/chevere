@@ -42,18 +42,22 @@ preview the changes. You only need to write the appropriate console command and 
 
 Chevereto\Core works by defining the application as a self-exposed API, tailored to fit your business logic. The
 controllers, defined as HTTP verbs, automatically wire your API. For example a controller at `app/src/Api/Users/GET.php`
-translates to `GET api/users/{user}`. Same goes to related endpoints, like `GET api/users/{user}/friends` which gets
+translates to `GET api/users/{user}`. Same goes to `GET api/users/{user}/friends` which gets
 sourced from `app/src/Api/Users/Friends/_GET.php`.
 
 For example, the endpoint `GET api/users/1` retrieves the user defined by `1`. The controller responsible for this
-action is autowired to `app/src/Api/User/GET.php`. Same goes for another example, the endpoint `POST api/users` allows
-to create a user and the controller responsible for this action is autowired from `app/src/Api/Users/POST.php`. You can
-check the `app/src` folder to get an idea on how it looks like.
+action is autowired to `app/src/Api/User/GET.php`. You can check the `app/src` folder to get an idea on how it looks
+like.
 
-Wildcards are also autowired and its regex pattern is taken directly from the entity, for example `App\User`.
+Wildcards are also autowired and its regex pattern is taken directly from the entity, for example `App\User`. You can
+also do manual routing and manually set the wildcard patterns for each route. Doing this you can create the conventional
+ web page endpoints like `/login`, `/profile/{user}`, `/{dynamic}-{stuff}`, etc.
 
-By the way, you can also do manual routing and manually set the wildcard patterns for each route. Doing this you can
-create the conventional web page endpoints like `/login`, `/profile/{user}`, `/{dynamic}-{stuff}`, etc.
+### REST / GraphQL
+
+REST is our default standard. For the kind of application that Chevereto aims to be it needs a REST API for general
+operations and GraphQL could be added later (same autowiring concept). The idea (for now) is to have best of both
+worlds.
 
 ## Building
 
