@@ -1,6 +1,6 @@
 [![Scrutinizer Code
-Quality](https://scrutinizer-ci.com/g/rodolfoberrios/chevereto-chevere/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/rodolfoberrios/chevereto-chevere/?branch=master)
-[![CodeFactor](https://www.codefactor.io/repository/github/rodolfoberrios/chevereto-chevere/badge)](https://www.codefactor.io/repository/github/rodolfoberrios/chevereto-chevere)
+Quality](https://scrutinizer-ci.com/g/rodolfoberrios/chevere/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/rodolfoberrios/chevere/?branch=master)
+[![CodeFactor](https://www.codefactor.io/repository/github/rodolfoberrios/chevere/badge)](https://www.codefactor.io/repository/github/rodolfoberrios/chevere)
 
 # Chevere
 
