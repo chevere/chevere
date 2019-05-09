@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 /*
- * This file is part of Chevereto\Core.
+ * This file is part of Chevere.
  *
  * (c) Rodolfo Berrios <rodolfo@chevereto.com>
  *
