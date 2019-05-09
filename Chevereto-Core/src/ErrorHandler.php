@@ -51,7 +51,7 @@ class ErrorHandler
     // Content with debug = false
     const NO_DEBUG_CONTENT = '<p>The system has failed and the server wasn\'t able to fulfil your request. This incident has been logged.</p><p>Please try again later and if the problem persist don\'t hesitate to contact your system administrator.</p>';
     // CSS stylesheet
-    const CSS = 'html{color:#000;font:16px Helvetica,Arial,sans-serif;line-height:1.3;background:#3498db;background:-moz-linear-gradient(top,#3498db 0%,#8e44ad 100%);background:-webkit-linear-gradient(top,#3498db 0%,#8e44ad 100%);background:linear-gradient(to bottom,#3498db 0%,#8e44ad 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#3498db",endColorstr="#8e44ad",GradientType=0)}.body--block{margin:20px}.body--flex{margin:0;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.user-select-none{-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}main{background:none;display:block;padding:0;margin:0;border:0;width:470px}.body--block main{margin:0 auto}@media (min-width:768px){main{padding:20px}}.main--stack{width:100%;max-width:900px}.hr{display:block;height:1px;color:transparent;background:hsl(192,15%,84%)}.hr>span{opacity:0;line-height:0}.main--stack hr:last-of-type{margin-bottom:0}.t{font-weight:700;margin-bottom:5px}.t--scream{font-size:2.25em;margin-bottom:0}.t--scream span{font-size:.667em;font-weight:400}.t--scream span::before{white-space:pre;content:"\A"}.t>.hide{display:inline-block}.c code{padding:2px 5px}.c code,.c pre{background:hsl(192,15%,95%);line-height:normal}.c pre.pre--even{background:hsl(192,15%,97%)}.c pre{overflow:auto;word-wrap:break-word;font-family:Consolas,monospace,sans-serif;display:block;margin:0;padding:10px}main>div{padding:20px;background:#FFF}main>div,main>div> *{word-break:break-word;white-space:normal}@media (min-width:768px){main>div{-webkit-box-shadow:2px 2px 4px 0 rgba(0,0,0,.09);box-shadow:2px 2px 4px 0 rgba(0,0,0,.09);border-radius:2px}}main>div>:first-child{margin-top:0}main>div>:last-child{margin-bottom:0}.note{margin:1em 0}.fine-print{color:#BBB}.hide{width:0;height:0;opacity:0;overflow:hidden}
+    const CSS = 'html{color:#000;font:16px Helvetica,Arial,sans-serif;line-height:1.3;background:#3498db;background:-moz-linear-gradient(top,#3498db 0%,#8e44ad 100%);background:-webkit-linear-gradient(top,#3498db 0%,#8e44ad 100%);background:linear-gradient(to bottom,#3498db 0%,#8e44ad 100%);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#3498db",endColorstr="#8e44ad",GradientType=0)}.body--block{margin:20px}.body--flex{margin:0;display:-webkit-box;display:-ms-flexbox;display:flex;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;justify-content:center}.user-select-none{-webkit-touch-callout:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}main{background:none;display:block;padding:0;margin:0;border:0;width:470px}.body--block main{margin:0 auto}@media (min-width:768px){main{padding:20px}}.main--stack{width:100%;max-width:900px}.hr{display:block;height:1px;color:transparent;background:hsl(192,15%,84%)}.hr>span{opacity:0;line-height:0}.main--stack hr:last-of-type{margin-bottom:0}.t{font-weight:700;margin-bottom:5px}.t--scream{font-size:2.25em;margin-bottom:0}.t--scream span{font-size:.667em;font-weight:400}.t--scream span::before{white-space:pre;content:"\A"}.t>.hide{display:inline-block}.c code{padding:2px 5px}.c code,.c pre{background:hsl(192,15%,95%);line-height:normal}.c pre.pre--even{background:hsl(192,15%,97%)}.c pre{overflow:auto;word-wrap:break-word;font-size:13px;font-family:Consolas,monospace,sans-serif;display:block;margin:0;padding:10px}main>div{padding:20px;background:#FFF}main>div,main>div> *{word-break:break-word;white-space:normal}@media (min-width:768px){main>div{-webkit-box-shadow:2px 2px 4px 0 rgba(0,0,0,.09);box-shadow:2px 2px 4px 0 rgba(0,0,0,.09);border-radius:2px}}main>div>:first-child{margin-top:0}main>div>:last-child{margin-bottom:0}.note{margin:1em 0}.fine-print{color:#BBB}.hide{width:0;height:0;opacity:0;overflow:hidden}
     .c pre {
         border: 1px solid hsl(192,15%,84%);
         border-bottom: 0; 
@@ -486,79 +486,11 @@ class ErrorHandler
             $this->message = $this->message;
             unset($trace[0]);
         }
-        foreach ($trace as $frame) {
-            $plainArgs = [];
-            $richArgs = [];
-            $plainArgsString = null;
-            $richArgsString = null;
-            // Fill empty file+line using reflection
-            if (!array_key_exists('file', $frame) && isset($frame['class'])) {
-                $reflector = new \ReflectionMethod($frame['class'], $frame['function']);
-                $filename = $reflector->getFileName();
-                if (false !== $filename) {
-                    $frame['file'] = $filename;
-                    $frame['line'] = $reflector->getStartLine();
-                }
-            }
-            if (isset($frame['args']) && is_array($frame['args'])) {
-                foreach ($frame['args'] as $k => $v) {
-                    $aux = 'Arg#'.($k + 1).' ';
-                    $plainArgs[] = $aux.Utils\DumpPlain::out($v, null, [App::class]);
-                    $richArgs[] = $aux.Utils\Dump::out($v, null, [App::class]);
-                }
-                if ($plainArgs) {
-                    $plainArgsString = "\n".implode("\n", $plainArgs);
-                    $richArgsString = "\n".implode("\n", $richArgs);
-                }
-            }
-            if (isset($frame['class']) && Utils\Str::startsWith(Utils\Dump::ANON_CLASS, $frame['class'])) {
-                $frameFile = Utils\Str::replaceFirst(Utils\Dump::ANON_CLASS, null, $frame['class']);
-                $frame['file'] = substr($frameFile, 0, strpos($frameFile, '.php') + 4);
-                $frame['class'] = Utils\Dump::ANON_CLASS;
-                $frame['line'] = null;
-            }
-            if ($frame['function'] == Core::namespaced('autoloader')) {
-                $frame['file'] = $frame['file'] ?? (PATH.'autoloader.php');
-            }
-            if (isset($frame['file']) && Utils\Str::contains('\\', $frame['file'])) {
-                $frame['file'] = Path::normalize($frame['file']);
-            }
-            $plainTable = [
-                '%x%' => ($i & 1) ? 'pre--even' : null,
-                '%i%' => $i,
-                '%f%' => $frame['file'] ?? null,
-                '%l%' => $frame['line'] ?? null,
-                '%fl%' => isset($frame['file']) ? ($frame['file'].':'.$frame['line']) : null,
-                '%c%' => $frame['class'] ?? null,
-                '%t%' => $frame['type'] ?? null,
-                '%m%' => $frame['function'],
-                '%a%' => $plainArgsString,
-            ];
-            $richTable = $plainTable;
-            array_pop($richTable);
-            // Dump types map
-            foreach ([
-                    '%f%' => Utils\Dump::_FILE,
-                    '%l%' => Utils\Dump::_FILE,
-                    '%fl%' => Utils\Dump::_FILE,
-                    '%c%' => Utils\Dump::_CLASS,
-                    '%t%' => Utils\Dump::_OPERATOR,
-                    '%m%' => Utils\Dump::_FUNCTION,
-                ] as $k => $v) {
-                $richTable[$k] = isset($plainTable[$k]) ? Utils\Dump::wrap($v, $plainTable[$k]) : null;
-            }
-            $richTable['%a%'] = $richArgsString;
-            if (php_sapi_name() == 'cli') {
-                $consoleStack[] = strtr(static::CONSOLE_STACK_TEMPLATE, $richTable);
-            }
-            $plainStack[] = strtr(static::HTML_STACK_TEMPLATE, $plainTable);
-            $richStack[] = strtr(static::HTML_STACK_TEMPLATE, $richTable);
-            ++$i;
-        }
+        $errorStack = new ErrorHandlerStack($trace);
         $glue = "\n".$this->hr."\n";
-        $this->consoleStack = strip_tags(implode($glue, $consoleStack));
-        $this->richStack = $this->wrapTextHr(implode($glue, $richStack));
-        $this->plainStack = $this->wrapTextHr(implode($glue, $plainStack));
+        $this->consoleStack = strip_tags(implode($glue, $errorStack->getConsole()));
+        $this->richStack = $this->wrapTextHr(implode($glue, $errorStack->getRich()));
+        $this->plainStack = $this->wrapTextHr(implode($glue, $errorStack->getPlain()));
 
         return $this;
     }
