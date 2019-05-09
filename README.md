@@ -2,7 +2,7 @@
 Quality](https://scrutinizer-ci.com/g/rodolfoberrios/chevereto-core/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/rodolfoberrios/chevereto-core/?branch=master)
 [![CodeFactor](https://www.codefactor.io/repository/github/rodolfoberrios/chevereto-core/badge)](https://www.codefactor.io/repository/github/rodolfoberrios/chevereto-core)
 
-# Chevereto\Core
+# Chevere
 
 Modern API-first extensible web application framework, in the works.
 
@@ -24,14 +24,14 @@ service vary a lot and that build the API for it is an awkward process. My relea
 logic, templating, the API exposed data and the JavaScript bindings became a nightmare. The motivation is to address the
 issue by providing a flexible web application structure for the kind of applications that gets new features frequently.
 
-In Chevereto\Core is _natural_ to invoke other controllers (API endpoints), set hooks (events) for granular flexibility,
+In Chevere is _natural_ to invoke other controllers (API endpoints), set hooks (events) for granular flexibility,
 and it encourages console driven development.
 
 ## Why
 
-Chevereto\Core is my answer to a modern PHP web application, and my answer is aware of my context of an indie software
-vendor who delivers a production-ready software. Everything expressed in Chevereto\Core comes from thousands of client
-comments, suggestions, troubles and issues. If you still don't realize it, Chevereto\Core is a framework shaped by the
+Chevere is my answer to a modern PHP web application, and my answer is aware of my context of an indie software
+vendor who delivers a production-ready software. Everything expressed in Chevere comes from thousands of client
+comments, suggestions, troubles and issues. If you still don't realize it, Chevere is a framework shaped by the
 feedback of a real high-grade production application.
 
 Also, it applies modern coding standards and encourages console driven development. Using the console means that you
@@ -40,7 +40,7 @@ preview the changes. You only need to write the appropriate console command and 
 
 ## How it works
 
-Chevereto\Core works by defining the application as a self-exposed API, tailored to fit your business logic. The
+Chevere works by defining the application as a self-exposed API, tailored to fit your business logic. The
 controllers, defined as HTTP verbs, automatically wire your API. For example a controller at `app/src/Api/Users/GET.php`
 translates to `GET api/users/{user}` . Same goes to `GET api/users/{user}/friends` which gets sourced from
 `app/src/Api/Users/Friends/_GET.php`.
@@ -69,7 +69,7 @@ foo@bar:~$ git clone https://github.com/rodolfoberrios/chevereto-core.git
 foo@bar:~$ rm -rf "vendor" && composer update chevereto/core --prefer-source
 ```
 
-^This will create the `vendor` dir with all the Chevereto\Core dependencies.
+^This will create the `vendor` dir with all the Chevere dependencies.
 
 This is an unreleased application prototype, the actual framework package resides in `Chevereto-Core` (repository type:
 path).
@@ -81,4 +81,4 @@ test test.
 
 ## License
 
-The Chevereto\Core Framework is licensed under the MIT license. See [License File](LICENSE) for more information.
+The Chevere Framework is licensed under the MIT license. See [License File](LICENSE) for more information.
