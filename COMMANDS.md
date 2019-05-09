@@ -1,12 +1,10 @@
-phpmd Chevereto-Core text design
-phpmd Chevereto-Core text codesize
-phpmd Chevereto-Core text naming
+phpmd Chevereto-Chevere text design
+phpmd Chevereto-Chevere text codesize
+phpmd Chevereto-Chevere text naming
 
-phploc Chevereto-Core
+phploc Chevereto-Chevere
 
-phpstan analyze Chevereto-Core/src --level 7
-php phpstan.phar analyze Chevereto-Core/src --level 7
+phpstan analyze Chevereto-Chevere/src --level 7
+php phpstan.phar analyze Chevereto-Chevere/src --level 7
 
-rd -r -force "vendor"; composer update chevereto/core --prefer-source
-
-phpmetrics --report-html=E:\Chevereto\GIT\chevereto-core\_reports E:\Chevereto\GIT\chevereto-core\Chevereto-Core
+rd -r -force "vendor"; composer update chevereto/chevere --prefer-source

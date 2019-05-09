@@ -9,7 +9,7 @@
   }],
   "repositories": [{
     "type": "path",
-    "url": "./Chevereto-Core",
+    "url": "./Chevereto-Chevere",
     "options": {
       "symlink": true
     }
@@ -20,7 +20,7 @@
     }
   },
   "require": {
-    "chevereto/core": "@dev"
+    "chevereto/chevere": "@dev"
   },
   "config": {
     "optimize-autoloader": true

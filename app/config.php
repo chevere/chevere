@@ -1,6 +1,6 @@
 <?php
 
-use Chevereto\Core\RuntimeConfig;
+use Chevereto\Chevere\RuntimeConfig;
 
 return [
     RuntimeConfig::TIMEZONE => 'America/Bogota',

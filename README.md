@@ -1,6 +1,6 @@
 [![Scrutinizer Code
-Quality](https://scrutinizer-ci.com/g/rodolfoberrios/chevereto-core/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/rodolfoberrios/chevereto-core/?branch=master)
-[![CodeFactor](https://www.codefactor.io/repository/github/rodolfoberrios/chevereto-core/badge)](https://www.codefactor.io/repository/github/rodolfoberrios/chevereto-core)
+Quality](https://scrutinizer-ci.com/g/rodolfoberrios/chevereto-chevere/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/rodolfoberrios/chevereto-chevere/?branch=master)
+[![CodeFactor](https://www.codefactor.io/repository/github/rodolfoberrios/chevereto-chevere/badge)](https://www.codefactor.io/repository/github/rodolfoberrios/chevereto-chevere)
 
 # Chevere
 
@@ -61,17 +61,17 @@ and GraphQL could be added later (same autowiring concept). The idea (for now) i
 ## Building
 
 After cloning this, you will need to install its dependencies which is achieved using
-[Composer](https://getcomposer.org/). Assuming that you want to clone it to `~/chevereto-core`:
+[Composer](https://getcomposer.org/). Assuming that you want to clone it to `~/chevereto-chevere`:
 
 ```console
-foo@bar:~$ cd ~/chevereto-core
-foo@bar:~$ git clone https://github.com/rodolfoberrios/chevereto-core.git
-foo@bar:~$ rm -rf "vendor" && composer update chevereto/core --prefer-source
+foo@bar:~$ cd ~/chevereto-chevere
+foo@bar:~$ git clone https://github.com/rodolfoberrios/chevereto-chevere.git
+foo@bar:~$ rm -rf "vendor" && composer update chevereto/chevere --prefer-source
 ```
 
 ^This will create the `vendor` dir with all the Chevere dependencies.
 
-This is an unreleased application prototype, the actual framework package resides in `Chevereto-Core` (repository type:
+This is an unreleased application prototype, the actual framework package resides in `Chevereto-Chevere` (repository type:
 path).
 
 ## Contributing

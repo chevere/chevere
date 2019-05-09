@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App;
 
 use LogicException;
-use Chevereto\Core\Message;
-use Chevereto\Core\FromString; // Sets the base string descriptor ($stringDescription, $stringRegex)
-use Chevereto\Core\Interfaces\CreateFromString; // Exposes that has ::createFromString
+use Chevereto\Chevere\Message;
+use Chevereto\Chevere\FromString; // Sets the base string descriptor ($stringDescription, $stringRegex)
+use Chevereto\Chevere\Interfaces\CreateFromString; // Exposes that has ::createFromString
 
 class User extends FromString implements CreateFromString
 {

@@ -12,9 +12,9 @@ declare(strict_types=1);
 
 namespace App;
 
-use Chevereto\Core\App;
-use Chevereto\Core\Interfaces\HandlerInterface;
-use Chevereto\Core\Interfaces\MiddlewareInterface;
+use Chevereto\Chevere\App;
+use Chevereto\Chevere\Interfaces\HandlerInterface;
+use Chevereto\Chevere\Interfaces\MiddlewareInterface;
 
 return new class() implements MiddlewareInterface {
     public function __invoke(App $app, HandlerInterface $handler)

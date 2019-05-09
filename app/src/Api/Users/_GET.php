@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Users;
 
-use Chevereto\Core\Controller;
+use Chevereto\Chevere\Controller;
 
 class _GET extends Controller
 {
