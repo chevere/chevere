@@ -15,6 +15,9 @@ namespace Chevereto\Chevere\ErrorHandler;
 
 use Chevereto\Chevere\Utils\Dump;
 
+/**
+ * Handles the ErrorHandler Exception stack trace.
+ */
 class Stack
 {
     /** @var array */
@@ -26,6 +29,10 @@ class Stack
     /** @var array */
     protected $console;
 
+    protected $richStack;
+    protected $plainStack;
+    protected $consoleStack;
+
     /** @var array The table used to map the rich stack */
     private $richTable;
 
@@ -34,6 +41,8 @@ class Stack
 
     /** @var int Trace entry pointer */
     private $i;
+
+    protected $hr = ErrorHandler::HR;
 
     /**
      * @param array $trace An Exception trace
@@ -50,6 +59,31 @@ class Stack
             $this->processRich($this->richTable);
             ++$this->i;
         }
+    }
+
+    public function getConsoleStack(): ?string
+    {
+        return strip_tags($this->glueString($this->console));
+    }
+
+    public function getRichStack(): ?string
+    {
+        return $this->wrapStringHr($this->glueString($this->rich));
+    }
+
+    public function getPlainStack(): ?string
+    {
+        return $this->wrapStringHr($this->glueString($this->plain));
+    }
+
+    protected function glueString(string $string)
+    {
+        return implode("\n" . $this->hr . "\n", $string);
+    }
+
+    protected function wrapStringHr(string $text): string
+    {
+        return $this->hr . "\n" . $text . "\n" . $this->hr;
     }
 
     protected function setPlainTable(TraceEntry $entry): void
@@ -107,17 +141,17 @@ class Stack
         $this->rich[] = strtr(ErrorHandler::HTML_STACK_TEMPLATE, $richTable);
     }
 
-    public function getRich(): array
+    public function getRich()
     {
         return $this->rich ?? [];
     }
 
-    public function getPlain(): array
+    public function getPlain()
     {
         return $this->plain ?? [];
     }
 
-    public function getConsole(): array
+    public function getConsole()
     {
         return $this->console ?? [];
     }
