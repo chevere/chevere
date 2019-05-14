@@ -18,6 +18,9 @@
     "jakub-onderka/php-console-color": "~0.2",
     "roave/better-reflection": "~3.2"
   },
+  "require-dev": {
+    "phpunit/phpunit": "^8"
+  },
   "autoload": {
     "files": ["utils/phpcheck.php", "resources/functions/dump.php"],
     "psr-4": {
