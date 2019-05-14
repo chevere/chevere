@@ -147,6 +147,7 @@ abstract class AppAbstract extends AppProcessor
     public function run(string $callable = null)
     {
         if (!isset($callable)) {
+            // TODO: Detect valid request (method, etc) - Fails for `php app/console request /`
             $this->routerResolve($this->httpRequest->getPathInfo());
         } else {
             $this->callable = $callable;

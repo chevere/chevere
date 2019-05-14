@@ -101,6 +101,7 @@ return PhpCsFixer\Config::create()
         'unary_operator_spaces' => true,
         'whitespace_after_comma_in_array' => true,
         'header_comment' => ['header' => $header],
+        'declare_strict_types' => true,
     ))
     //->setIndent("\t")
     ->setLineEnding("\n")

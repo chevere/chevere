@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -45,7 +46,7 @@ class ErrorHandler
     // null will read app/config.php. Any boolean value will override that
     const DEBUG = null;
     // null will use App\PATH_LOGS ? PATH_LOGS ? traverse
-    const PATH_LOGS = ROOT_PATH.App\PATH.'var/logs/';
+    const PATH_LOGS = ROOT_PATH . App\PATH . 'var/logs/';
     // Title with debug = false
     const NO_DEBUG_TITLE = 'Something went wrong';
     // Content with debug = false
@@ -82,7 +83,7 @@ class ErrorHandler
     const HTML_BODY_NO_DEBUG_TEMPLATE = '<main><div><div class="t t--scream">%title%</div>%content%<p class="fine-print">%datetimeUtc% • %id%</p></div></main>';
     // HTML body for debug = true
     const HTML_BODY_DEBUG_TEMPLATE = '<main class="main--stack"><div>%content%<div class="c note user-select-none"><b>Note:</b> This message is being displayed because of active debug mode. Remember to turn this off when going production by editing <code>%configFilePath%</code></div></div></main>';
-    const CONFIG_FILE_PATH = App\PATH.'config.php';
+    const CONFIG_FILE_PATH = App\PATH . 'config.php';
     const COLUMNS = 120;
     // Line break
     const HR = '<div class="hr"><span>------------------------------------------------------------</span></div>';
@@ -306,9 +307,9 @@ class ErrorHandler
             $path = static::PATH_LOGS;
         }
         $path = Path::normalize($path);
-        $path = rtrim($path, '/').'/';
+        $path = rtrim($path, '/') . '/';
         $date = gmdate($this->logDateFormat, $this->timestamp);
-        $this->logFilename = $path.$this->loggerLevel.'/'.$date.$this->timestamp.'_'.$this->id.'.log';
+        $this->logFilename = $path . $this->loggerLevel . '/' . $date . $this->timestamp . '_' . $this->id . '.log';
 
         return $this;
     }
@@ -369,7 +370,7 @@ class ErrorHandler
      */
     protected function wrapTextHr(string $text): string
     {
-        return $this->hr."\n".$text."\n".$this->hr;
+        return $this->hr . "\n" . $text . "\n" . $this->hr;
     }
 
     /**
@@ -397,7 +398,7 @@ class ErrorHandler
             // Get rid of own namespace
             $this->className = Utils\Str::replaceFirst(CORE_NS_HANDLE, null, $this->className);
         }
-        $this->thrown = $this->className.' thrown';
+        $this->thrown = $this->className . ' thrown';
         if ($this->exception instanceof ErrorException) {
             $code = $this->exception->getSeverity();
             $e_type = $code;
@@ -458,7 +459,7 @@ class ErrorHandler
                 unset($log['filename']);
             break;
             case 1:
-                $response[0] = $this->thrown.' in '.$this->getTableValue('file').':'.$this->getTableValue('line');
+                $response[0] = $this->thrown . ' in ' . $this->getTableValue('file') . ':' . $this->getTableValue('line');
                 $error = [];
                 foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
                     $error[$v] = $this->getTableValue($v);
@@ -486,11 +487,11 @@ class ErrorHandler
             $this->message = $this->message;
             unset($trace[0]);
         }
-        $errorStack = new ErrorHandlerStack($trace);
-        $glue = "\n".$this->hr."\n";
-        $this->consoleStack = strip_tags(implode($glue, $errorStack->getConsole()));
-        $this->richStack = $this->wrapTextHr(implode($glue, $errorStack->getRich()));
-        $this->plainStack = $this->wrapTextHr(implode($glue, $errorStack->getPlain()));
+        $errorHandlerStack = new ErrorHandler\Stack($trace);
+        $glue = "\n" . $this->hr . "\n";
+        $this->consoleStack = strip_tags(implode($glue, $errorHandlerStack->getConsole()));
+        $this->richStack = $this->wrapTextHr(implode($glue, $errorHandlerStack->getRich()));
+        $this->plainStack = $this->wrapTextHr(implode($glue, $errorHandlerStack->getPlain()));
 
         return $this;
     }
@@ -540,7 +541,7 @@ class ErrorHandler
         // Plain (txt) is the default "always do" format.
         $plain = [
             static::SECTION_TITLE => ['%title% <span>in&nbsp;%file%:%line%</span>'],
-            static::SECTION_MESSAGE => ['# Message', '%message%'.($this->code ? ' [Code #%code%]' : null)],
+            static::SECTION_MESSAGE => ['# Message', '%message%' . ($this->code ? ' [Code #%code%]' : null)],
             static::SECTION_TIME => ['# Time', '%datetimeUtc% [%timestamp%]'],
         ];
         $plain[static::SECTION_ID] = ['# Incident ID:%id%', 'Logged at %logFilename%'];
@@ -598,11 +599,11 @@ class ErrorHandler
     protected function appendContentGlobals(): self
     {
         foreach (['GET', 'POST', 'FILES', 'COOKIE', 'SESSION', 'SERVER'] as $v) {
-            $k = '_'.$v;
+            $k = '_' . $v;
             $v = isset($GLOBALS[$k]) ? $GLOBALS[$k] : null;
             if ($v) {
-                $this->setRichContentSection($k, ['$'.$k, $this->wrapTextHr('<pre>'.Utils\Dump::out($v).'</pre>')]);
-                $this->setPlainContentSection($k, ['$'.$k, strip_tags($this->wrapTextHr(Utils\DumpPlain::out($v)))]);
+                $this->setRichContentSection($k, ['$' . $k, $this->wrapTextHr('<pre>' . Utils\Dump::out($v) . '</pre>')]);
+                $this->setPlainContentSection($k, ['$' . $k, strip_tags($this->wrapTextHr(Utils\DumpPlain::out($v)))]);
             }
         }
 
@@ -620,11 +621,11 @@ class ErrorHandler
             $richSection = $this->richContentSections[$k] ?? null;
             $section_length = count($plainSection);
             if ($i == 0 || isset($plainSection[1])) {
-                $this->richContentTemplate .= '<div class="t'.($i == 0 ? ' t--scream' : null).'">'.$richSection[0].'</div>';
+                $this->richContentTemplate .= '<div class="t' . ($i == 0 ? ' t--scream' : null) . '">' . $richSection[0] . '</div>';
                 $this->plainContentTemplate .= html_entity_decode($plainSection[0]);
                 if ($i == 0) {
-                    $this->richContentTemplate .= "\n".'<div class="hide">'.str_repeat('=', static::COLUMNS).'</div>';
-                    $this->plainContentTemplate .= "\n".str_repeat('=', static::COLUMNS);
+                    $this->richContentTemplate .= "\n" . '<div class="hide">' . str_repeat('=', static::COLUMNS) . '</div>';
+                    $this->plainContentTemplate .= "\n" . str_repeat('=', static::COLUMNS);
                 }
             }
             if ($i > 0) {
@@ -634,12 +635,12 @@ class ErrorHandler
                         $this->richContentTemplate .= "\n";
                         $this->plainContentTemplate .= "\n";
                     }
-                    $this->richContentTemplate .= '<div class="c">'.$richSection[$j].'</div>';
+                    $this->richContentTemplate .= '<div class="c">' . $richSection[$j] . '</div>';
                     $this->plainContentTemplate .= $plainSection[$j];
                 }
             }
             if ($i + 1 < $sections_length) {
-                $this->richContentTemplate .= "\n".'<br>'."\n";
+                $this->richContentTemplate .= "\n" . '<br>' . "\n";
                 $this->plainContentTemplate .= "\n\n";
             }
             ++$i;
@@ -776,7 +777,7 @@ class ErrorHandler
     protected function loggerExec(): self
     {
         $log = strip_tags($this->plainContent);
-        $log .= "\n\n".str_repeat('=', static::COLUMNS);
+        $log .= "\n\n" . str_repeat('=', static::COLUMNS);
         $this->logger->log($this->loggerLevel, $log);
 
         return $this;

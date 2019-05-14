@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
+use Throwable;
+
 abstract class AppProcessor extends AppStatic
 {
     protected function processCheckout(): void
@@ -97,8 +99,8 @@ abstract class AppProcessor extends AppStatic
 
                 return;
             }
-        } catch (\Throwable $e) {
-            echo 'Exception at App: '.$e->getCode();
+        } catch (Throwable $e) {
+            echo 'Exception at App: ' . $e->getCode();
 
             return;
         }
