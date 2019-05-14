@@ -2,7 +2,7 @@
 Quality](https://scrutinizer-ci.com/g/rodolfoberrios/chevere/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/rodolfoberrios/chevere/?branch=master)
 [![CodeFactor](https://www.codefactor.io/repository/github/rodolfoberrios/chevere/badge)](https://www.codefactor.io/repository/github/rodolfoberrios/chevere)
 
-# Chevere
+# Chévere
 
 Modern API-first extensible web application framework, in the works.
 
