@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -62,12 +63,9 @@ class Command extends SymfonyCommand implements Interfaces\CommandInterface
     public function callback(App $app)
     {
         // TODO: Deberia ser LogicException
-        throw new CoreException('You must override the '.__FUNCTION__.'() method in the concrete command class.');
+        throw new CoreException('You must override the ' . __FUNCTION__ . '() method in the concrete command class.');
     }
 
-    /**
-     * Get cli.
-     */
     public function getCli(): Cli
     {
         return $this->cli;
