@@ -11,8 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\ErrorHandler;
 
+use const Chevereto\Chevere\ROOT_PATH;
+use const Chevereto\Chevere\CORE_NS_HANDLE;
+use const Chevereto\Chevere\App\PATH;
+use Chevereto\Chevere\App;
+use Chevereto\Chevere\Json;
+use Chevereto\Chevere\Console;
+use Chevereto\Chevere\Path;
+use Chevereto\Chevere\Utils\Dump;
+use Chevereto\Chevere\Utils\DumpPlain;
+use Chevereto\Chevere\Utils\DateTime;
+use Chevereto\Chevere\Utils\Str;
+use Throwable;
 use ErrorException;
 use ReflectionObject;
 use ReflectionProperty;
@@ -261,7 +273,7 @@ class ErrorHandler
      */
     protected function setSignatureProperties(): self
     {
-        $this->datetimeUtc = Utils\DateTime::getUTC();
+        $this->datetimeUtc = DateTime::getUTC();
         $this->timestamp = @strtotime($this->datetimeUtc);
         $this->id = uniqid();
 
@@ -340,7 +352,7 @@ class ErrorHandler
         error_reporting(0);
         try {
             $debug = App::runtimeInstance()->getDataKey('debug');
-        } catch (\Throwable $e) { // Don't panic, such trucazo!
+        } catch (Throwable $e) { // Don't panic, such trucazo!
         }
         error_reporting($error_reporting);
         $this->debug = (bool) ($debug ?? static::DEBUG);
@@ -394,9 +406,9 @@ class ErrorHandler
     {
         $this->exception = $this->arguments[0];
         $this->className = get_class($this->exception);
-        if (Utils\Str::startsWith(CORE_NS_HANDLE, $this->className)) {
+        if (Str::startsWith(CORE_NS_HANDLE, $this->className)) {
             // Get rid of own namespace
-            $this->className = Utils\Str::replaceFirst(CORE_NS_HANDLE, null, $this->className);
+            $this->className = Str::replaceFirst(CORE_NS_HANDLE, null, $this->className);
         }
         $this->thrown = $this->className . ' thrown';
         if ($this->exception instanceof ErrorException) {
@@ -421,7 +433,7 @@ class ErrorHandler
      */
     protected function setServerProperties(): self
     {
-        if (php_sapi_name() == 'cli') {
+        if ('cli' == php_sapi_name()) {
             $this->clientIp = $_SERVER['argv'][0];
             $this->clientUserAgent = Console::inputString();
         } else {
@@ -487,7 +499,7 @@ class ErrorHandler
             $this->message = $this->message;
             unset($trace[0]);
         }
-        $errorHandlerStack = new ErrorHandler\Stack($trace);
+        $errorHandlerStack = new Stack($trace);
         $glue = "\n" . $this->hr . "\n";
         $this->consoleStack = strip_tags(implode($glue, $errorHandlerStack->getConsole()));
         $this->richStack = $this->wrapTextHr(implode($glue, $errorHandlerStack->getRich()));
@@ -504,7 +516,7 @@ class ErrorHandler
      */
     protected function setRichContentSection(string $key, array $section): void
     {
-        $section[0] = Utils\Str::replaceFirst('# ', '<span class="hide"># </span>', $section[0]);
+        $section[0] = Str::replaceFirst('# ', '<span class="hide"># </span>', $section[0]);
         $this->richContentSections[$key] = $section;
     }
 
@@ -550,19 +562,19 @@ class ErrorHandler
         $plain[static::SECTION_REQUEST] = ['# Request', '%serverProtocol% %requestMethod% %url%'];
         $plain[static::SECTION_SERVER] = ['# Server', '%serverHost% (port:%serverPort%) %serverSoftware%'];
 
-        if (php_sapi_name() == 'cli') {
+        if ('cli' == php_sapi_name()) {
             $verbosity = Console::output()->getVerbosity();
         }
 
         foreach ($plain as $k => $v) {
             $keyString = (string) $k;
-            if (php_sapi_name() == 'cli' && static::CONSOLE_TABLE[$k] == false) {
+            if ('cli' == php_sapi_name() && false == static::CONSOLE_TABLE[$k]) {
                 continue;
             }
             $this->setPlainContentSection($keyString, $v);
             if (isset($verbosity)) {
                 $lvl = static::CONSOLE_TABLE[$k];
-                if ($lvl === false || $verbosity < $lvl) {
+                if (false === $lvl || $verbosity < $lvl) {
                     continue;
                 }
                 if ($k == static::SECTION_STACK) {
@@ -602,8 +614,8 @@ class ErrorHandler
             $k = '_' . $v;
             $v = isset($GLOBALS[$k]) ? $GLOBALS[$k] : null;
             if ($v) {
-                $this->setRichContentSection($k, ['$' . $k, $this->wrapTextHr('<pre>' . Utils\Dump::out($v) . '</pre>')]);
-                $this->setPlainContentSection($k, ['$' . $k, strip_tags($this->wrapTextHr(Utils\DumpPlain::out($v)))]);
+                $this->setRichContentSection($k, ['$' . $k, $this->wrapTextHr('<pre>' . Dump::out($v) . '</pre>')]);
+                $this->setPlainContentSection($k, ['$' . $k, strip_tags($this->wrapTextHr(DumpPlain::out($v)))]);
             }
         }
 
@@ -620,16 +632,16 @@ class ErrorHandler
         foreach ($this->plainContentSections as $k => $plainSection) {
             $richSection = $this->richContentSections[$k] ?? null;
             $section_length = count($plainSection);
-            if ($i == 0 || isset($plainSection[1])) {
-                $this->richContentTemplate .= '<div class="t' . ($i == 0 ? ' t--scream' : null) . '">' . $richSection[0] . '</div>';
+            if (0 == $i || isset($plainSection[1])) {
+                $this->richContentTemplate .= '<div class="t' . (0 == $i ? ' t--scream' : null) . '">' . $richSection[0] . '</div>';
                 $this->plainContentTemplate .= html_entity_decode($plainSection[0]);
-                if ($i == 0) {
+                if (0 == $i) {
                     $this->richContentTemplate .= "\n" . '<div class="hide">' . str_repeat('=', static::COLUMNS) . '</div>';
                     $this->plainContentTemplate .= "\n" . str_repeat('=', static::COLUMNS);
                 }
             }
             if ($i > 0) {
-                $j = $section_length == 1 ? 0 : 1;
+                $j = 1 == $section_length ? 0 : 1;
                 for ($j; $j < $section_length; ++$j) {
                     if ($section_length > 1) {
                         $this->richContentTemplate .= "\n";
@@ -717,14 +729,14 @@ class ErrorHandler
     protected function setConsoleOutput(): void
     {
         foreach ($this->consoleSections as $k => $v) {
-            if ($k == 'title') {
+            if ('title' == $k) {
                 $tpl = $v[0];
             } else {
                 Console::io()->section(strtr($v[0], $this->table));
                 $tpl = $v[1];
             }
             $message = strtr($tpl, $this->table);
-            if ($k == 'title') {
+            if ('title' == $k) {
                 Console::io()->error($message);
             } else {
                 Console::io()->writeln($message);
@@ -739,10 +751,10 @@ class ErrorHandler
     protected function setOutput(): self
     {
         $this->headers = [];
-        if ($this->isXmlHttpRequest == true) {
+        if (true == $this->isXmlHttpRequest) {
             $this->setJsonOutput();
         } else {
-            if (php_sapi_name() == 'cli') {
+            if ('cli' == php_sapi_name()) {
                 $this->setConsoleOutput();
             } else {
                 $this->setHtmlOutput();
@@ -763,7 +775,7 @@ class ErrorHandler
             $response = new HttpResponse();
         }
         $response->setContent($this->output);
-        $response->setLastModified(new Utils\DateTime());
+        $response->setLastModified(new DateTime());
         $response->setStatusCode(500);
         foreach ($this->headers as $k => $v) {
             $response->headers->set($k, $v);

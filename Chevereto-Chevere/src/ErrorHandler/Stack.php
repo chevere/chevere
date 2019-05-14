@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\ErrorHandler;
 
-use Chevereto\Chevere\ErrorHandler;
 use Chevereto\Chevere\Utils\Dump;
 
 class Stack

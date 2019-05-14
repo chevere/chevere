@@ -2,13 +2,22 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of Chevere.
+ *
+ * (c) Rodolfo Berrios <rodolfo@chevereto.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Chevereto\Chevere;
 
-define(__NAMESPACE__.'\TIME_BOOTSTRAP', microtime(true));
-define(__NAMESPACE__.'\ERROR_LEVEL_BOOTSTRAP', error_reporting());
+define(__NAMESPACE__ . '\TIME_BOOTSTRAP', microtime(true));
+define(__NAMESPACE__ . '\ERROR_LEVEL_BOOTSTRAP', error_reporting());
 
 // Namespace handles (adds trailing slashes)
-const CORE_NS_HANDLE = __NAMESPACE__.'\\';
+const CORE_NS_HANDLE = __NAMESPACE__ . '\\';
 const APP_NS_HANDLE = 'App\\';
 
 /*
@@ -20,29 +29,29 @@ define('Chevereto\Chevere\BOOTSTRAPPER', debug_backtrace(DEBUG_BACKTRACE_IGNORE_
  * Chevereto\Chevere\ROOT_PATH
  * Root path containing /app
  */
-define('Chevereto\Chevere\ROOT_PATH', rtrim(str_replace('\\', '/', dirname(BOOTSTRAPPER, 2)), '/').'/');
+define('Chevereto\Chevere\ROOT_PATH', rtrim(str_replace('\\', '/', dirname(BOOTSTRAPPER, 2)), '/') . '/');
 
 /*
  * Chevereto\Chevere\PATH
  * Relative path to Chevereto\Core, usually 'vendor/chevereto/chevereto-core'
  */
-define('Chevereto\Chevere\PATH', rtrim(str_replace(ROOT_PATH, null, str_replace('\\', '/', __DIR__)), '/').'/');
+define('Chevereto\Chevere\PATH', rtrim(str_replace(ROOT_PATH, null, str_replace('\\', '/', __DIR__)), '/') . '/');
 
 /*
  * Chevereto\Chevere\App\PATH
  * Relative path to app, usually 'app'
  */
-define('Chevereto\Chevere\App\PATH', basename(dirname(BOOTSTRAPPER)).'/');
+define('Chevereto\Chevere\App\PATH', basename(dirname(BOOTSTRAPPER)) . '/');
 
 // Init console if sapi = cli
-if (php_sapi_name() == 'cli') {
+if ('cli' == php_sapi_name()) {
     Console::init();
 }
 
 const DEFAULT_ERROR_HANDLING = [
     RuntimeConfig::DEBUG => 1,
-    RuntimeConfig::ERROR_HANDLER => 'Chevereto\Chevere\ErrorHandler::error',
-    RuntimeConfig::EXCEPTION_HANDLER => 'Chevereto\Chevere\ErrorHandler::exception',
+    RuntimeConfig::ERROR_HANDLER => 'Chevereto\Chevere\ErrorHandler\ErrorHandler::error',
+    RuntimeConfig::EXCEPTION_HANDLER => 'Chevereto\Chevere\ErrorHandler\ErrorHandler::exception',
 ];
 
 /*
