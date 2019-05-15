@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -28,7 +29,7 @@ class Validate
      */
     public static function timezone(string $timezone): bool
     {
-        if ($timezone == '') {
+        if ('' == $timezone) {
             false;
         }
         $valid = [];
@@ -58,64 +59,6 @@ class Validate
         } catch (Exception $e) {
             return false;
         }
-    }
-
-    /**
-     * Finds if a variable is a real email address.
-     *
-     * This function checks if an email address is valid and if the email
-     * address is real or not.
-     *
-     * @param string $email email address to check
-     *
-     * @return bool TRUE if the email address is valid
-     */
-    public static function emailReal(string $email): bool
-    {
-        $valid = true;
-        $atIndex = strrpos($email, '@');
-        if ($atIndex === false) {
-            $valid = false;
-        } else {
-            $domain = substr($email, $atIndex + 1);
-            $local = substr($email, 0, $atIndex);
-            $localLen = strlen($local);
-            $domainLen = strlen($domain);
-            if ($localLen < 1 || $localLen > 64) {
-                // local part length exceeded
-                $valid = false;
-            } elseif ($domainLen < 1 || $domainLen > 255) {
-                // domain part length exceeded
-                $valid = false;
-            } elseif ($local[0] == '.' || $local[$localLen - 1] == '.') {
-                // local part starts or ends with '.'
-                $valid = false;
-            } elseif (preg_match('/\\.\\./', $local)) {
-                // local part has two consecutive dots
-                $valid = false;
-            } elseif (!preg_match('/^[A-Za-z0-9\\-\\.]+$/', $domain)) {
-                // character not valid in domain part
-                $valid = false;
-            } elseif (preg_match('/\\.\\./', $domain)) {
-                // domain part has two consecutive dots
-                $valid = false;
-            } elseif (!preg_match(
-                '/^(\\\\.|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/',
-                str_replace('\\\\', '', $local)
-            )) {
-                // character not valid in local part unless
-                // local part is quoted
-                if (!preg_match('/^"(\\\\"|[^"])+"$/', str_replace('\\\\', '', $local))) {
-                    $valid = false;
-                }
-            }
-            if ($valid && !(checkdnsrr($domain, 'MX') || checkdnsrr($domain, 'A'))) {
-                // domain not found in DNS
-                $valid = false;
-            }
-        }
-
-        return $valid;
     }
 
     /**
@@ -175,7 +118,7 @@ class Validate
             }
             $schemes = ['http', 'https', 'ftp', 'ftps', 'mailto', 'news', 'irc', 'gopher', 'nntp', 'feed', 'telnet', 'mms', 'rtsp', 'svn', 'tel', 'fax', 'xmpp'];
             $scheme = $parsedUrl['scheme'] ?? null;
-            if ($scheme == null || !in_array(strtolower($scheme), $schemes) || !isset($parsedUrl['host'])) { // Must be a valid scheme
+            if (null == $scheme || !in_array(strtolower($scheme), $schemes) || !isset($parsedUrl['host'])) { // Must be a valid scheme
                 return false;
             }
             // At this point, this thing looks like an URL
@@ -240,7 +183,7 @@ class Validate
     {
         set_error_handler(function () {
         }, E_WARNING);
-        $return = preg_match($regex, '') !== false;
+        $return = false !== preg_match($regex, '');
         restore_error_handler();
 
         return $return;
