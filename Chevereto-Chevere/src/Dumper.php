@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
-use JakubOnderka\PhpConsoleColor\ConsoleColor;
-use Symfony\Component\VarDumper\VarDumper;
-use Symfony\Component\Console\Helper\FormatterHelper;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
 class Dumper
 {
@@ -26,79 +24,196 @@ class Dumper
     const BACKGROUND_SHADE = '#2c3e50';
     const STYLE = 'font: 16px Consolas, monospace, sans-serif; color: #ecf0f1; padding: 15px; margin: 10px 0; word-break: break-word; white-space: pre-wrap; background: '.self::BACKGROUND.'; display: block; text-align: left; border: none; border-radius: 4px;';
 
+    protected $vars;
+
+    /** @var int */
+    protected $numArgs;
+
+    /** @var ConsoleOutputInterface */
+    protected $consoleOutput;
+
+    protected $string;
+
+    /** @var string */
+    protected $outputHr;
+
+    protected $debugBacktrace;
+
+    protected $caller;
+
+    protected $callerFilepath;
+
+    /** @var int */
+    protected $offset = 1;
+
+    public function __construct(...$vars)
+    {
+        $this->vars = $vars;
+        $this->numArgs = func_num_args();
+    }
+
     /**
      * Dumps information about one or more variables.
      */
     public static function dump(...$vars): void
     {
-        $numArgs = func_num_args();
-        if ($numArgs == 0) {
+        $that = new static(...$vars);
+        if ($that->numArgs == 0) {
             return;
         }
-        $trace = debug_backtrace();
-        // Avoid being self dumped - use VarDumper::dump to dump here.
-        $caller = $trace[0];
-        while (isset($trace[0]['file']) && $trace[0]['file'] == __FILE__) {
-            array_shift($trace);
-            $caller = $trace[0];
-        }
+        $that->debugBacktrace = debug_backtrace();
+        $that->caller = $that->debugBacktrace[0];
+        $that->handleDebugBacktrace();
+        $that->setCallerFilepath($that->debugBacktrace[0]['file']);
+        $that->handleSelfCaller();
+        $that->string = null;
+        $that->handleOutput();
+        $that->handleClass();
+        $that->appendFunction($that->debugBacktrace[$that->offset]['function']);
+        $that->handleFile();
+        $that->string .= "\n\n";
+        $that->handleArgs();
+        $that->string = trim($that->string).'</pre>';
+        $that->handleProccessOutput();
+    }
 
-        $callerFile = Path::normalize($trace[0]['file']);
-        if (Utils\Str::endsWith('resources/functions/dump.php', $callerFile) && $trace[0]['class'] == __CLASS__ && in_array($trace[0]['function'], ['dump', 'dd'])) {
-            array_shift($trace);
+    protected function handleDebugBacktrace(): void
+    {
+        while (isset($this->debugBacktrace[0]['file']) && $this->debugBacktrace[0]['file'] == __FILE__) {
+            $this->shiftDebugBacktrace();
+            $this->setCaller($this->debugBacktrace[0]);
         }
-        $maker = (isset($caller['class']) ? $caller['class'].$caller['type'] : null).$caller['function'].'()';
-        $dump = null;
+    }
+
+    protected function setCaller(): void
+    {
+        $this->caller = $this->debugBacktrace[0];
+    }
+
+    protected function setCallerFilepath(string $filepath): void
+    {
+        $this->callerFilepath = Path::normalize($filepath);
+    }
+
+    protected function handleSelfCaller(): void
+    {
+        if (Utils\Str::endsWith('resources/functions/dump.php', $this->callerFilepath) && $this->debugBacktrace[0]['class'] == __CLASS__ && in_array($this->debugBacktrace[0]['function'], ['dump', 'dd'])) {
+            $this->shiftDebugBacktrace();
+        }
+    }
+
+    protected function shiftDebugBacktrace(): void
+    {
+        array_shift($this->debugBacktrace);
+    }
+
+    protected function handleOutput(): void
+    {
         if (php_sapi_name() == 'cli') {
-            // $consoleColor = new ConsoleColor();
-            $output = new ConsoleOutput();
-            $outputFormatter = new OutputFormatter(true);
-            $output->setFormatter($outputFormatter);
-            $output->getFormatter()->setStyle('block', new OutputFormatterStyle('red', 'black'));
-            $output->getFormatter()->setStyle('dumper', new OutputFormatterStyle('blue', null, ['bold']));
-            $output->getFormatter()->setStyle('hr', new OutputFormatterStyle('blue'));
-            $outputHr = '<hr>'.str_repeat('-', 60).'</>';
-            $output->getFormatter()->setStyle('hr', new OutputFormatterStyle('blue', null));
-            // $formatter = new FormatterHelper();
-            // $formattedBlock = $formatter->formatBlock($maker, 'dumper', true);
-            // $output->writeln([$outputHr, $formattedBlock, $outputHr]);
-            $output->writeln(['', '<dumper>'.$maker.'</>', $outputHr]);
+            $this->handleConsoleOutput();
         } else {
-            if (!headers_sent()) {
-                $dump .= '<html style="background: '.static::BACKGROUND_SHADE.';"><head></head><body>';
-            }
-            $dump .= '<pre style="'.static::STYLE.'">';
+            $this->handleHtmlOutput();
         }
-        $offset = 1;
-        if (isset($trace[1]) && isset($trace[1]['class'])) {
-            $class = $trace[$offset]['class'];
+    }
+
+    protected function handleConsoleOutput(): void
+    {
+        $this->consoleOutput = new ConsoleOutput();
+        $outputFormatter = new OutputFormatter(true);
+        $this->consoleOutput->setFormatter($outputFormatter);
+        $this->consoleOutput->getFormatter()->setStyle('block', new OutputFormatterStyle('red', 'black'));
+        $this->consoleOutput->getFormatter()->setStyle('dumper', new OutputFormatterStyle('blue', null, ['bold']));
+        $this->consoleOutput->getFormatter()->setStyle('hr', new OutputFormatterStyle('blue'));
+        $this->outputHr = '<hr>'.str_repeat('-', 60).'</>';
+        $this->consoleOutput->getFormatter()->setStyle('hr', new OutputFormatterStyle('blue', null));
+        $maker = (isset($this->caller['class']) ? $this->caller['class'].$this->caller['type'] : null).$this->caller['function'].'()';
+        $this->consoleOutput->writeln(['', '<dumper>'.$maker.'</>', $this->outputHr]);
+    }
+
+    protected function handleHtmlOutput(): void
+    {
+        if (false === headers_sent()) {
+            $this->appendHtmlOpenBody();
+        }
+        $this->appendStyle();
+    }
+
+    protected function appendHtmlOpenBody(): void
+    {
+        $this->string .= '<html style="background: '.static::BACKGROUND_SHADE.';"><head></head><body>';
+    }
+
+    protected function appendStyle(): void
+    {
+        $this->string .= '<pre style="'.static::STYLE.'">';
+    }
+
+    protected function handleClass(): void
+    {
+        if (isset($this->debugBacktrace[1]['class'])) {
+            $class = $this->debugBacktrace[$this->offset]['class'];
             if (Utils\Str::startsWith('class@anonymous', $class)) {
                 $class = explode('0x', $class)[0];
             }
-            $dump .= Utils\Dump::wrap('_class', $class).$trace[$offset]['type'];
+            $this->appendClass($class, $this->debugBacktrace[$this->offset]['type']);
         }
-        $dump .= Utils\Dump::wrap('_function', $trace[$offset]['function'].'()');
-        if (isset($trace[0]['file'])) {
-            $dump .= "\n".Utils\Dump::wrap('_file', Path::normalize($trace[0]['file']).':'.$trace[0]['line']);
+    }
+
+    protected function appendClass(string $class, string $type): void
+    {
+        $this->string .= Utils\Dump::wrap('_class', $class).$type;
+    }
+
+    protected function appendFunction(string $function): void
+    {
+        $this->string .= Utils\Dump::wrap('_function', $function.'()');
+    }
+
+    protected function handleFile(): void
+    {
+        if (isset($this->debugBacktrace[0]['file'])) {
+            $this->appendFilepath($this->debugBacktrace[0]['file'], $this->debugBacktrace[0]['line']);
         }
-        $dump .= "\n\n";
-        $i = 1;
-        foreach ($vars as $k => $value) {
-            if ($numArgs > 1) {
-                $dump .= 'Arg#'.$i.' ';
-            }
-            $val = Utils\Dump::out($value, 0);
-            $dump .= $val."\n\n";
-            ++$i;
+    }
+
+    protected function appendFilepath(string $file, int $line): void
+    {
+        $this->string .= "\n".Utils\Dump::wrap('_file', Path::normalize($file).':'.$line);
+    }
+
+    protected function handleArgs(): void
+    {
+        $pos = 1;
+        foreach ($this->vars as $value) {
+            $this->appendArg($pos, $value);
+            ++$pos;
         }
-        $dump = trim($dump).'</pre>';
-        if (isset($output)) {
-            $dumpConsole = strip_tags($dump);
-            $output->writeln($dumpConsole, ConsoleOutput::OUTPUT_RAW);
-            isset($outputHr) ? $output->writeln($outputHr) : null;
+    }
+
+    protected function appendArg(int $pos, $value): void
+    {
+        $this->string .= 'Arg#'.$pos.' '.Utils\Dump::out($value, 0)."\n\n";
+    }
+
+    protected function handleProccessOutput(): void
+    {
+        if (isset($this->consoleOutput)) {
+            $this->processConsoleOutput();
         } else {
-            echo $dump;
+            $this->processPrintOutput();
         }
+    }
+
+    protected function processConsoleOutput(): void
+    {
+        $stripped = strip_tags($this->string);
+        $this->consoleOutput->writeln($stripped, ConsoleOutput::OUTPUT_RAW);
+        isset($that->outputHr) ? $this->consoleOutput->writeln($that->outputHr) : null;
+    }
+
+    protected function processPrintOutput(): void
+    {
+        echo $this->string;
     }
 
     /**
