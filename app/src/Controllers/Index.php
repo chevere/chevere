@@ -20,7 +20,7 @@ class Index extends Controller
 {
     public function __invoke()
     {
-        dump('Dumper Test');
+        dump($this);
         die();
         $this->getResponse()
             ->setMeta(['Hello' => 'World!'])

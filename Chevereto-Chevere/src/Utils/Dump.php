@@ -164,9 +164,7 @@ class Dump
                 $this->handleArrayType();
             break;
             case static::TYPE_OBJECT:
-                if (false === $this->handleObjectType()) {
-                    break;
-                }
+                $this->handleObjectType();
             break;
             default:
                 $this->handleDefaultType();
@@ -174,14 +172,14 @@ class Dump
         }
     }
 
-    protected function handleObjectType(): bool
+    protected function handleObjectType(): void
     {
         ++$this->indent;
         $this->reflectionObject = new ReflectionObject($this->expression);
         if (in_array($this->reflectionObject->getName(), $this->dontDump)) {
             $this->appendVal(static::wrap(static::_OPERATOR, '<i>' . $this->reflectionObject->getName() . '</i>'));
 
-            return false;
+            return;
         }
         $this->handleSetObjectProperties();
         $this->processObjectProperties();
@@ -302,7 +300,7 @@ class Dump
         }
     }
 
-    protected function appendVal(string $val): void
+    protected function appendVal($val): void
     {
         $this->val .= $val;
     }
