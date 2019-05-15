@@ -57,6 +57,7 @@ class Benchmark
     public $timeTakenReadable;
     public $times;
     public $timeLimit = null;
+    /** @var array */
     public $results;
 
     /** @var array */
@@ -67,6 +68,12 @@ class Benchmark
 
     /** @var bool */
     private $isPHPAborted;
+
+    /** @var bool */
+    private $isSelfAborted;
+
+    /** @var float */
+    private $startTimestamp;
 
     /**
      * @param int $times     number of times to run each function
@@ -134,56 +141,13 @@ class Benchmark
     public function exec(): void
     {
         $this->index = [];
-        $results = [];
-        $aux = 0;
+        $this->results = [];
         $this->isAborted = false;
         $this->isPHPAborted = false;
-        $isSelfAborted = false;
-        $benchmarkStartTime = microtime(true);
-        foreach ($this->callables as $k => $v) {
-            if ($this->isAborted) {
-                $this->time = microtime(true) - $benchmarkStartTime;
-                break;
-            }
-            $runs = 0;
-            $timeInit = microtime(true);
-            for ($i = 0; $i < $this->times; ++$i) {
-                $this->isPHPAborted = !$this->canPHPKeepGoing();
-                $isSelfAborted = !$this->canSelfKeepGoing();
-                if ($this->isPHPAborted || $isSelfAborted) {
-                    $this->isAborted = true;
-                    break;
-                }
-                $v(...($this->arguments ?: []));
-                ++$runs;
-            }
-            ++$aux;
-            if ($aux == $this->totalCnt) {
-                $this->time = microtime(true) - $benchmarkStartTime;
-            }
-            $timeFinish = microtime(true);
-            $timeTaken = floatval($timeFinish - $timeInit);
-            $this->index[$k] = $timeTaken;
-            $results[$k] = [
-                'time' => $timeTaken,
-                'runs' => $runs,
-            ];
-        }
-        asort($this->index);
-        if (1 == count($this->index)) {
-            $this->results = $results;
-        } else {
-            // Add the extra % taken... wow, such insight
-            foreach ($this->index as $k => $v) {
-                $timeTaken = $results[$k]['time'];
-                if (!isset($fastestTime)) {
-                    $fastestTime = $timeTaken;
-                } else {
-                    $results[$k]['adds'] = round(100 * (($timeTaken - $fastestTime) / $fastestTime)) . '%';
-                }
-                $this->results[$k] = $results[$k];
-            }
-        }
+        $this->isSelfAborted = false;
+        $this->startTimestamp = microtime(true);
+        $this->handleCallables();
+        $this->processCallablesStats();
         $title = __CLASS__ . ' results';
         $border = 1;
         $lineChar = '-';
@@ -205,6 +169,55 @@ class Benchmark
         $this->timeTakenReadable = ' Time taken: ' . round($this->time, 4) . ' s';
         $this->res[] = str_repeat(' ', (int) max(0, $this->columns - strlen($this->timeTakenReadable))) . $this->timeTakenReadable;
         $this->printable = '<pre>' . implode("\n", $this->res) . '</pre>';
+    }
+
+    protected function handleCallables(): void
+    {
+        $i = 0;
+        foreach ($this->callables as $k => $v) {
+            if ($this->isAborted) {
+                $this->time = microtime(true) - $this->startTimestamp;
+                break;
+            }
+            $runs = 0;
+            $timeInit = microtime(true);
+            for ($i = 0; $i < $this->times; ++$i) {
+                $this->isPHPAborted = !$this->canPHPKeepGoing();
+                $this->isSelfAborted = !$this->canSelfKeepGoing();
+                if ($this->isPHPAborted || $this->isSelfAborted) {
+                    $this->isAborted = true;
+                    break;
+                }
+                $v(...($this->arguments ?: []));
+                ++$runs;
+            }
+            ++$i;
+            if ($i == $this->totalCnt) {
+                $this->time = microtime(true) - $this->startTimestamp;
+            }
+            $timeFinish = microtime(true);
+            $timeTaken = floatval($timeFinish - $timeInit);
+            $this->index[$k] = $timeTaken;
+            $this->results[$k] = [
+                'time' => $timeTaken,
+                'runs' => $runs,
+            ];
+        }
+    }
+
+    protected function processCallablesStats(): void
+    {
+        asort($this->index);
+        if (count($this->index) > 1) {
+            foreach ($this->index as $k => $v) {
+                $timeTaken = $this->results[$k]['time'];
+                if (!isset($fastestTime)) {
+                    $fastestTime = $timeTaken;
+                } else {
+                    $this->results[$k]['adds'] = round(100 * (($timeTaken - $fastestTime) / $fastestTime)) . '%';
+                }
+            }
+        }
     }
 
     protected function processResults(): void
