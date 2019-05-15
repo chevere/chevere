@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -23,7 +24,7 @@ class DumpPlain extends Dump
 
     public static function wrap(string $key, $dump = null): string
     {
-        if ($dump === null) {
+        if (null === $dump) {
             $dump = $key;
         }
 

@@ -99,6 +99,9 @@ class Dump
     protected $val;
 
     /** @var string */
+    protected $prefix;
+
+    /** @var string */
     protected $expression;
 
     /** @var string */
@@ -122,11 +125,11 @@ class Dump
     /** @var Reflector */
     private $reflectionObject;
 
-    public function __construct($var, int $indent = 0, array $dontDump = [], int $depth = 0)
+    public function __construct($var, int $indent = null, array $dontDump = [], int $depth = 0)
     {
         ++$depth;
         $this->var = $var;
-        $this->indent = $indent;
+        $this->indent = $indent ?? 0;
         $this->dontDump = $dontDump;
         $this->depth = $depth;
         // Maybe improve this to support any circular reference?
@@ -136,7 +139,7 @@ class Dump
             $this->expression = $this->var;
         }
         $this->val = null;
-        // $prefix = str_repeat(' <span style="border-left: 1px solid #bdc3c7;"></span>  ', $this->indent);
+        $this->prefix = str_repeat(' <span style="border-left: 1px solid #bdc3c7;"></span>  ', $this->indent);
         $this->type = gettype($this->expression);
         if ('double' == $this->type) {
             $this->type = static::TYPE_FLOAT;
@@ -208,7 +211,7 @@ class Dump
             $isCircularRef = false;
             $visibility = implode(' ', $this->properties[$k]['visibility'] ?? $this->properties['visibility']);
             $operator = static::wrap(static::_OPERATOR, '->');
-            $this->appendVal("\n$prefix <i>$visibility</i> " . htmlspecialchars($k) . " $operator ");
+            $this->appendVal("\n$this->prefix <i>$visibility</i> " . htmlspecialchars($k) . " $operator ");
             $aux = $v['value'];
             if (is_object($aux) && property_exists($aux, $k)) {
                 try {
@@ -240,13 +243,13 @@ class Dump
         ++$this->indent;
         foreach ($this->expression as $k => $v) {
             $operator = static::wrap(static::_OPERATOR, '=>');
-            $this->appendVal("\n$prefix " . htmlspecialchars((string) $k) . " $operator ");
+            $this->appendVal("\n$this->prefix " . htmlspecialchars((string) $k) . " $operator ");
             $aux = $v;
             $isCircularRef = is_array($aux) && isset($aux[$k]) && $aux == $aux[$k];
             if ($isCircularRef) {
                 $this->appendVal(static::wrap(static::_OPERATOR, '(<i>circular array reference</i>)'));
             } else {
-                $this->appendVal(new static($aux, $this->indent, $this->dontDump));
+                $this->appendVal((string) new static($aux, $this->indent, $this->dontDump));
             }
         }
         $this->setParentheses('size=' . count($this->expression));
