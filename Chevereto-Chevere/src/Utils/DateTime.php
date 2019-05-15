@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -9,6 +10,7 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 // OK
 
 namespace Chevereto\Chevere\Utils;
@@ -122,69 +124,6 @@ class DateTime extends \DateTime implements \DateTimeInterface
     }
 
     /**
-     * Get time elapsed as a short-easy-to-read string.
-     *
-     * It will use time() to compare DateTime and it wull return a
-     * time elapsed string like "2 days ago".
-     *
-     * @param bool $full TRUE to return all the thing, FALSE to return short version
-     *
-     * @return array rounded human readable elapsed time
-     */
-    public function timeAgo(bool $full = false): ?array
-    {
-        $return = [];
-        $now = new self();
-        // $timestamp = $now->getTimestamp() - $this->getTimestamp();
-        $interval = $now->diff($this);
-        // $interval->w = floor($interval->d / 7); // Add 'weeks' to this interval
-        // $interval->d -= intval(round($interval->w * 7, 0));
-        $secondsTable = array_reverse(static::SECONDS_TABLE);
-        $keys = array_keys($secondsTable);
-        $magnitude = null;
-        $plusSecs = 0;
-        foreach ($secondsTable as $k => $v) {
-            $val = property_exists($interval, $k) ? $interval->{$k} : null;
-            if (isset($val) && $val > 0) {
-                if ($magnitude == null) {
-                    // Start with the highest magnitude (y, m, etc...)
-                    $return = [$k => $val];
-                    $magnitude = $k;
-                } else {
-                    // Acumulate everything else as seconds
-                    $plusSecs += $val * static::SECONDS_TABLE[$k];
-                }
-            }
-        }
-        // Round to the next magnitude unit
-        $nextUnit = $keys[intval(array_search($magnitude, $keys)) + 1];
-        $nextVal = $nextUnit == null ? 0 : round($plusSecs / static::SECONDS_TABLE[$nextUnit], 0, PHP_ROUND_HALF_DOWN);
-        if ($nextVal > 0) {
-            // Rounded next value in current magnitude order
-            $round = round($nextVal * static::SECONDS_TABLE[$nextUnit] / static::SECONDS_TABLE[$magnitude], 1, PHP_ROUND_HALF_DOWN); // n.{1}
-            if ($round >= 0.7) {
-                $value = $return[$magnitude] + round($round, 0, PHP_ROUND_HALF_DOWN);
-                $approach = $value * static::MATRIOSHKA[$magnitude]; // Rounded value in prior magnitude unit
-                if ($approach >= 1) {
-                    if ($magnitude == 'y') {
-                        $prevUnit = $magnitude;
-                    } else {
-                        $prevUnit = $keys[intval(array_search($magnitude, $keys)) - 1];
-                        unset($return[$magnitude]);
-                    }
-                    $return[$prevUnit] = $approach;
-                } else {
-                    $return[$magnitude] = $value;
-                }
-            } elseif ($full === true) {
-                $return[$nextUnit] = $nextVal; // This adds the remaining timeperiod thing
-            }
-        }
-
-        return $return; // Is this not what you expected to see?
-    }
-
-    /**
      * Returns the difference between two dates in the target time unit.
      * Useful to compare datetimes in a given unit.
      *
@@ -196,10 +135,10 @@ class DateTime extends \DateTime implements \DateTimeInterface
     public function timeBetween(string $datetime, string $unit = self::UNIT_SECOND): float
     {
         if (!isset(static::SECONDS_TABLE[$unit])) {
-            throw new Exception("Unexpected unit <code>$unit</code>, you can only use one of the following units: <code>".implode(', ', static::UNITS).'</code>');
+            throw new Exception("Unexpected unit <code>$unit</code>, you can only use one of the following units: <code>" . implode(', ', static::UNITS) . '</code>');
         }
         $then = new self($datetime);
         $diff = abs($then->getTimestamp() - $this->getTimestamp()); // In seconds
-        return $diff == 0 ? 0 : floatval($diff / static::SECONDS_TABLE[$unit]);
+        return 0 == $diff ? 0 : floatval($diff / static::SECONDS_TABLE[$unit]);
     }
 }
