@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -15,6 +16,8 @@ namespace Chevereto\Chevere\Utils;
 use Chevereto\Chevere\Message;
 use Chevereto\Chevere\Traits\PrintableTrait;
 use Exception;
+
+// TODO: Needs console output
 
 /**
  * Benchmark provides a simple way to determine which code procedure perform faster compared to others.
@@ -34,11 +37,9 @@ use Exception;
 class Benchmark
 {
     use PrintableTrait;
-    /**
-     * Determines the number of colums used for output.
-     */
+    /** @var int Determines the number of colums used for output. */
     const COLUMNS = 50;
-    protected $COLUMNS;
+    protected $columns;
 
     protected $callables;
     protected $arguments;
@@ -52,13 +53,22 @@ class Benchmark
     protected $constructTime;
     protected $requestTime;
 
+    public $lineSeparator;
+    public $timeTakenReadable;
     public $times;
     public $timeLimit = null;
     public $results;
 
+    /** @var array */
+    private $res;
+
+    /** @var bool */
+    private $isAborted;
+
+    /** @var bool */
+    private $isPHPAborted;
+
     /**
-     * Construct the Benchmark object.
-     *
      * @param int $times     number of times to run each function
      * @param int $timeLimit time limit for this benchmark, in seconds
      */
@@ -69,10 +79,10 @@ class Benchmark
         $this->requestTime = $_SERVER['REQUEST_TIME_FLOAT'] ?: 0;
         $this->times = $times;
         $this->totalCnt = 0;
-        if ($timeLimit !== null) {
+        if (null !== $timeLimit) {
             $this->timeLimit = $timeLimit;
         }
-        $this->COLUMNS = (int) static::COLUMNS;
+        $this->columns = (int) static::COLUMNS;
     }
 
     /**
@@ -98,13 +108,13 @@ class Benchmark
     public function add($callable, string $name = null): self
     {
         if (!isset($name)) {
-            if ($this->unnammedCnt == null) {
+            if (null == $this->unnammedCnt) {
                 $this->unnammedCnt = '1';
             }
-            $name = 'Unnammed#'.$this->unnammedCnt;
+            $name = 'Unnammed#' . $this->unnammedCnt;
             ++$this->unnammedCnt;
         }
-        if ($this->callables != null && array_key_exists($name, $this->callables)) {
+        if (null != $this->callables && array_key_exists($name, $this->callables)) {
             throw new Exception(
                 (new Message('Duplicate callable declaration %s'))->code('%s', $name)
             );
@@ -126,22 +136,22 @@ class Benchmark
         $this->index = [];
         $results = [];
         $aux = 0;
-        $isAborted = false;
-        $isPHPAborted = false;
+        $this->isAborted = false;
+        $this->isPHPAborted = false;
         $isSelfAborted = false;
         $benchmarkStartTime = microtime(true);
         foreach ($this->callables as $k => $v) {
-            if ($isAborted) {
+            if ($this->isAborted) {
                 $this->time = microtime(true) - $benchmarkStartTime;
                 break;
             }
             $runs = 0;
             $timeInit = microtime(true);
             for ($i = 0; $i < $this->times; ++$i) {
-                $isPHPAborted = !$this->canPHPKeepGoing();
+                $this->isPHPAborted = !$this->canPHPKeepGoing();
                 $isSelfAborted = !$this->canSelfKeepGoing();
-                if ($isPHPAborted || $isSelfAborted) {
-                    $isAborted = true;
+                if ($this->isPHPAborted || $isSelfAborted) {
+                    $this->isAborted = true;
                     break;
                 }
                 $v(...($this->arguments ?: []));
@@ -155,12 +165,12 @@ class Benchmark
             $timeTaken = floatval($timeFinish - $timeInit);
             $this->index[$k] = $timeTaken;
             $results[$k] = [
-              'time' => $timeTaken,
-              'runs' => $runs,
+                'time' => $timeTaken,
+                'runs' => $runs,
             ];
         }
         asort($this->index);
-        if (count($this->index) == 1) {
+        if (1 == count($this->index)) {
             $this->results = $results;
         } else {
             // Add the extra % taken... wow, such insight
@@ -169,63 +179,69 @@ class Benchmark
                 if (!isset($fastestTime)) {
                     $fastestTime = $timeTaken;
                 } else {
-                    $results[$k]['adds'] = round(100 * (($timeTaken - $fastestTime) / $fastestTime)).'%';
+                    $results[$k]['adds'] = round(100 * (($timeTaken - $fastestTime) / $fastestTime)) . '%';
                 }
                 $this->results[$k] = $results[$k];
             }
         }
-        $title = __CLASS__.' results';
+        $title = __CLASS__ . ' results';
         $border = 1;
         $lineChar = '-';
-        $line = str_repeat($lineChar, $this->COLUMNS);
-        $pad = (int) round(($this->COLUMNS - (strlen($title) + $border)) / 2, 0);
-        $head = '|'.str_repeat(' ', $pad).$title.str_repeat(' ', floor($pad) == $pad ? ($pad - 1) : $pad).'|';
-        $return = [
-            $line,
+        $this->lineSeparator = str_repeat($lineChar, $this->columns);
+        $pad = (int) round(($this->columns - (strlen($title) + $border)) / 2, 0);
+        $head = '|' . str_repeat(' ', $pad) . $title . str_repeat(' ', floor($pad) == $pad ? ($pad - 1) : $pad) . '|';
+        $this->res = [
+            $this->lineSeparator,
             $head,
-            $line,
-            'Start: '.DateTime::getUTC(),
-            'Hostname: '.gethostname(),
-            'PHP version: '.phpversion(),
-            'Server: '.php_uname('s').' '.php_uname('r').' '.php_uname('m'),
-            $line,
+            $this->lineSeparator,
+            'Start: ' . DateTime::getUTC(),
+            'Hostname: ' . gethostname(),
+            'PHP version: ' . phpversion(),
+            'Server: ' . php_uname('s') . ' ' . php_uname('r') . ' ' . php_uname('m'),
+            $this->lineSeparator,
         ];
+        $this->processResults();
+        $this->handleAbortedRes();
+        $this->timeTakenReadable = ' Time taken: ' . round($this->time, 4) . ' s';
+        $this->res[] = str_repeat(' ', (int) max(0, $this->columns - strlen($this->timeTakenReadable))) . $this->timeTakenReadable;
+        $this->printable = '<pre>' . implode("\n", $this->res) . '</pre>';
+    }
+
+    protected function processResults(): void
+    {
         $i = 1;
         foreach ($this->results as $k => $v) {
             $res = $k;
-            if ($i == 1) {
+            if (1 == $i) {
                 if (count($this->index) > 1) {
                     $res .= ' (fastest)';
                 }
                 ++$i;
             } else {
-                $res .= ' ('.$v['adds'].' slower)';
+                $res .= ' (' . $v['adds'] . ' slower)';
             }
-            $return[] = $res;
-            $resRuns = Number::abbreviate($v['runs']).' runs';
-            $resRuns .= ' in '.round($v['time'], 4).' s';
+            $this->res[] = $res;
+            $resRuns = Number::abbreviate($v['runs']) . ' runs';
+            $resRuns .= ' in ' . round($v['time'], 4) . ' s';
             if ($v['runs'] != $this->times) {
-                $resRuns .= ' ~ missed '.($this->times - $v['runs']).' runs';
+                $resRuns .= ' ~ missed ' . ($this->times - $v['runs']) . ' runs';
             }
-            $return[] = $resRuns;
-            $return[] = $line;
+            $this->res[] = $resRuns;
+            $this->res[] = $this->lineSeparator;
         }
-        if ($isAborted) {
-            $return[] = 'Note: Process aborted ('.($isPHPAborted ? 'PHP' : 'self').' time limit)';
-            $return[] = $line;
+    }
+
+    protected function handleAbortedRes(): void
+    {
+        if ($this->isAborted) {
+            $this->res[] = 'Note: Process aborted (' . ($this->isPHPAborted ? 'PHP' : 'self') . ' time limit)';
+            $this->res[] = $this->lineSeparator;
         }
-        $total = ' Time taken: '.round($this->time, 4).' s';
-        // $cols = strlen($total);
-        // if ($cols > $this->COLUMNS) {
-        //     $times = Number::abbreviate($runs, 2);
-        // }
-        $return[] = str_repeat(' ', (int) max(0, $this->COLUMNS - strlen($total))).$total;
-        $this->printable = '<pre>'.implode("\n", $return).'</pre>';
     }
 
     protected function canSelfKeepGoing(): bool
     {
-        if ($this->timeLimit != null && microtime(true) - $this->constructTime > $this->timeLimit) {
+        if (null != $this->timeLimit && microtime(true) - $this->constructTime > $this->timeLimit) {
             return false;
         }
 
@@ -234,7 +250,7 @@ class Benchmark
 
     protected function canPHPKeepGoing(): bool
     {
-        if ($this->maxExecutionTime != 0 && microtime(true) - $this->requestTime > $this->maxExecutionTime) {
+        if (0 != $this->maxExecutionTime && microtime(true) - $this->requestTime > $this->maxExecutionTime) {
             return false;
         }
 
