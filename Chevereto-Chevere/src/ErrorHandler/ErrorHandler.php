@@ -37,7 +37,7 @@ use Symfony\Component\HttpFoundation\JsonResponse as HttpJsonResponse;
  * - Configurable debug output (app/config.php)
  * - CLI channel
  */
-class ErrorHandler extends Processor implements ErrorHandlerInterface
+class ErrorHandler extends ErrorHandlerAbstract implements ErrorHandlerInterface
 {
     /**
      * @param mixed $args Arguments passed to the error exception (severity, message, file, line; Exception)
@@ -166,40 +166,6 @@ class ErrorHandler extends Processor implements ErrorHandlerInterface
                 $this->setRichContentSection($k, ['$' . $k, $this->wrapStringHr('<pre>' . Dump::out($v) . '</pre>')]);
                 $this->setPlainContentSection($k, ['$' . $k, strip_tags($this->wrapStringHr(DumpPlain::out($v)))]);
             }
-        }
-    }
-
-    protected function generateContentTemplate()
-    {
-        $sections_length = count($this->plainContentSections);
-        $i = 0;
-        foreach ($this->plainContentSections as $k => $plainSection) {
-            $richSection = $this->richContentSections[$k] ?? null;
-            $section_length = count($plainSection);
-            if (0 == $i || isset($plainSection[1])) {
-                $this->richContentTemplate .= '<div class="t' . (0 == $i ? ' t--scream' : null) . '">' . $richSection[0] . '</div>';
-                $this->plainContentTemplate .= html_entity_decode($plainSection[0]);
-                if (0 == $i) {
-                    $this->richContentTemplate .= "\n" . '<div class="hide">' . str_repeat('=', static::COLUMNS) . '</div>';
-                    $this->plainContentTemplate .= "\n" . str_repeat('=', static::COLUMNS);
-                }
-            }
-            if ($i > 0) {
-                $j = 1 == $section_length ? 0 : 1;
-                for ($j; $j < $section_length; ++$j) {
-                    if ($section_length > 1) {
-                        $this->richContentTemplate .= "\n";
-                        $this->plainContentTemplate .= "\n";
-                    }
-                    $this->richContentTemplate .= '<div class="c">' . $richSection[$j] . '</div>';
-                    $this->plainContentTemplate .= $plainSection[$j];
-                }
-            }
-            if ($i + 1 < $sections_length) {
-                $this->richContentTemplate .= "\n" . '<br>' . "\n";
-                $this->plainContentTemplate .= "\n\n";
-            }
-            ++$i;
         }
     }
 

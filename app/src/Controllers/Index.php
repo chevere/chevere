@@ -14,14 +14,11 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Chevereto\Chevere\Controller;
-use function Chevereto\Chevere\dump;
 
 class Index extends Controller
 {
     public function __invoke()
     {
-        dump($this);
-        die();
         $this->getResponse()
             ->setMeta(['Hello' => 'World!'])
             ->addData('info', 'api', ['entry' => 'HTTP GET /api', 'description' => 'Retrieves the exposed API.'])
