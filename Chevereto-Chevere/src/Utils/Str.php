@@ -1,6 +1,15 @@
 <?php
 
-// OK
+declare(strict_types=1);
+
+/*
+ * This file is part of Chevere.
+ *
+ * (c) Rodolfo Berrios <rodolfo@chevereto.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 namespace Chevereto\Chevere\Utils;
 
@@ -120,7 +129,7 @@ class Str
     public static function replaceFirst(string $search, string $replace = null, string $subject): string
     {
         $pos = strpos($subject, $search);
-        if ($pos !== false) {
+        if (false !== $pos) {
             $subject = substr_replace($subject, $replace, $pos, strlen($search));
         }
 
@@ -141,7 +150,7 @@ class Str
     public static function replaceLast(string $search, string $replace = null, string $subject): string
     {
         $pos = strrpos($subject, $search);
-        if ($pos !== false) {
+        if (false !== $pos) {
             $subject = substr_replace($subject, $replace, $pos, strlen($search));
         }
 
@@ -166,7 +175,7 @@ class Str
      */
     public static function contains(string $needle, string $haystack): bool
     {
-        return strpos($haystack, $needle) !== false;
+        return false !== strpos($haystack, $needle);
     }
 
     /**
@@ -236,7 +245,7 @@ class Str
             $result |= (ord($safe[$i % $safeLen]) ^ ord($user[$i]));
         }
         // They are only identical strings if $result is exactly 0...
-        return $result === 0;
+        return 0 === $result;
     }
 
     /**
@@ -258,7 +267,7 @@ class Str
         if (mb_strlen($string, $encoding) <= $limit) {
             return $string;
         }
-        $string = trim(mb_substr($string, 0, $limit - strlen($pad), $encoding)).$pad;
+        $string = trim(mb_substr($string, 0, $limit - strlen($pad), $encoding)) . $pad;
 
         return $string ?? '';
     }
@@ -328,7 +337,7 @@ class Str
         $string = (string) $string;
         // TODO: polyfill needed.
         $encoding = mb_detect_encoding($string) ?: false;
-        $utf8 = $encoding == 'utf-8';
+        $utf8 = 'utf-8' == $encoding;
         if (!$utf8) {
             $string = utf8_encode($string);
         }
@@ -336,10 +345,10 @@ class Str
         $string = str_replace(array_keys(static::TRANSLITERATION), array_values(static::TRANSLITERATION), $string);
         // Missing something?
         $string = htmlentities($string, ENT_QUOTES, 'UTF-8');
-        if (strpos($string, '&') !== false) {
+        if (false !== strpos($string, '&')) {
             $replaced = preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|tilde|uml);~i', '$1', $string);
 
-            return $replaced == null ? '' : html_entity_decode($replaced, ENT_QUOTES, 'UTF-8');
+            return null == $replaced ? '' : html_entity_decode($replaced, ENT_QUOTES, 'UTF-8');
         }
 
         return $string ?? '';
@@ -357,7 +366,7 @@ class Str
      */
     public static function rtail(string $string, string $tail): string
     {
-        return rtrim($string, $tail).$tail;
+        return rtrim($string, $tail) . $tail;
     }
 
     /**
@@ -372,6 +381,6 @@ class Str
      */
     public static function ltail(string $string, string $tail): string
     {
-        return $tail.ltrim($string, $tail);
+        return $tail . ltrim($string, $tail);
     }
 }

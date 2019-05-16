@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -9,7 +10,8 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-// OK? Hacer objeto servicio? new Color(string, Color::RGB)->toHex()
+
+// Hacer objeto servicio? new Color(string, Color::RGB)->toHex()
 // Combo object + static
 
 namespace Chevereto\Chevere\Utils;
@@ -33,10 +35,10 @@ class Color
     public static function hexToRgb(string $hex, bool $array = true)
     {
         $hex = str_replace('#', '', $hex);
-        if (strlen($hex) == 3) {
-            $r = hexdec(substr($hex, 0, 1).substr($hex, 0, 1));
-            $g = hexdec(substr($hex, 1, 1).substr($hex, 1, 1));
-            $b = hexdec(substr($hex, 2, 1).substr($hex, 2, 1));
+        if (3 == strlen($hex)) {
+            $r = hexdec(substr($hex, 0, 1) . substr($hex, 0, 1));
+            $g = hexdec(substr($hex, 1, 1) . substr($hex, 1, 1));
+            $b = hexdec(substr($hex, 2, 1) . substr($hex, 2, 1));
         } else {
             $r = hexdec(substr($hex, 0, 2));
             $g = hexdec(substr($hex, 2, 2));
@@ -44,7 +46,7 @@ class Color
         }
         $rgb = [$r, $g, $b];
 
-        return $array ? $rgb : ('rgb('.implode(',', $rgb).')');
+        return $array ? $rgb : ('rgb(' . implode(',', $rgb) . ')');
     }
 
     /**

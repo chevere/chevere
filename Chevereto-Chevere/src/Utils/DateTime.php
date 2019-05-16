@@ -11,8 +11,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-// OK
-
 namespace Chevereto\Chevere\Utils;
 
 use Exception;

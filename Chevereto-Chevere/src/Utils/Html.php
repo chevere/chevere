@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -9,7 +10,8 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-// OK? Cambiar a new Html(string)->toBBCode(), ->toMarkdown()
+
+// Cambiar a new Html(string)->toBBCode(), ->toMarkdown()
 
 namespace Chevereto\Chevere;
 
