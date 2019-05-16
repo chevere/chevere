@@ -260,11 +260,6 @@ abstract class DumpAbstract
         }
     }
 
-    protected function setClassName(string $className): void
-    {
-        $this->className = $className;
-    }
-
     protected function handleDefaultType(): void
     {
         $is_string = is_string($this->expression);
@@ -288,50 +283,11 @@ abstract class DumpAbstract
         }
     }
 
-    protected function setTemplate(string $template): void
-    {
-        $this->template = $template;
-    }
-
     protected function handleSetParentheses(): void
     {
         if (isset($this->parentheses) && false !== strpos($this->parentheses, '=')) {
             $this->setParentheses('<i>' . $this->parentheses . '</i>');
         }
-    }
-
-    protected function appendVal($val): void
-    {
-        $this->val .= $val;
-    }
-
-    protected function setParentheses(string $parentheses): void
-    {
-        $this->parentheses = $parentheses;
-    }
-
-    protected function setOutput(string $output): void
-    {
-        $this->output = $output;
-    }
-
-    public function __toString(): string
-    {
-        return $this->output;
-    }
-
-    /**
-     * Dumps information about a variable.
-     *
-     * @param mixed $var      anything
-     * @param int   $indent   left padding (spaces) for this entry
-     * @param array $dontDump array containing classes that won't get dumped
-     *
-     * @return string parsed dump string
-     */
-    public static function out($var, int $indent = null, array $dontDump = [], int $depth = 0): string
-    {
-        return (string) new static(...func_get_args());
     }
 
     /**
