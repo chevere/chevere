@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
+use OuterIterator;
 use LogicException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -31,7 +32,19 @@ class Api
     protected $pathIdentifier;
 
     /** @var array Route mapping [route => [http_method => Controller]]] */
-    protected $routeMap;
+    protected $routesMap;
+
+    /** @var array Maps [endpoint => (array) resource [regex =>, description =>,]] (for wildcard routes) */
+    protected $resourcesMap;
+
+    /* @var array Maps [Controller => ControllerInspect] */
+    protected $controllersMap;
+
+    /** @var OuterIterator */
+    protected $recursiveIterator;
+
+    /* @var array Endpoint API properties */
+    protected $api;
 
     /** @var string Target API directory (absolute) */
     protected $directory;
@@ -68,15 +81,9 @@ class Api
         /* @var string The API directory (relative path) */
         // $directoryRelative = Path::relative($this->directory, App::APP);
 
-        $this->routeMap = [];
-
-        /** @var array Maps [Controller => ControllerInspect] */
-        $CONTROLLERS = [];
-
-        /** @var array Maps [endpoint => (array) resource [regex =>, description =>,]] (for wildcard routes) */
-        $RESOURCED = [];
-
-        /* @var array Public exposed API */
+        $this->routesMap = [];
+        $this->resourcesMap = [];
+        $this->controllersMap = [];
         $this->api = [];
 
         $errors = [];
@@ -85,31 +92,71 @@ class Api
         $iterator = new RecursiveDirectoryIterator($this->directory, RecursiveDirectoryIterator::SKIP_DOTS);
         $filter = (new ApiFilterIterator($iterator))
             ->generateAcceptedFilenames(static::ACCEPT_METHODS, static::METHOD_ROOT_PREFIX);
-        $recursiveIterator = new RecursiveIteratorIterator($filter);
+        $this->recursiveIterator = new RecursiveIteratorIterator($filter);
 
-        foreach ($recursiveIterator as $filename) {
+        $this->processRecursiveIteration();
+
+        $this->processRoutesMap();
+
+        $apiRoute = Route::bind('/' . $this->basePath)
+            ->setMethod('HEAD', Controllers\ApiHead::class)
+            ->setMethod('OPTIONS', Controllers\ApiOptions::class)
+            ->setMethod('GET', Controllers\ApiGet::class)
+            ->setId($this->basePath);
+        $this->getRouter()->addRoute($apiRoute, $this->basePath);
+        $this->addApis($this->basePath, $this->api);
+        $this->addRouteKeys($this->basePath);
+    }
+
+    protected function handleDuplicates(): void
+    {
+        if (isset($this->apis[$this->pathIdentifier])) {
+            throw new LogicException(
+                (string)
+                    (new Message('Path identified by %s has been already bound.'))
+                        ->code('%s', $this->pathIdentifier)
+            );
+        }
+    }
+
+    protected function handleMissingDirectory(): void
+    {
+        if (!File::exists($this->directory)) {
+            throw new LogicException(
+                (string)
+                    (new Message("Directory %s doesn't exists."))
+                        ->code('%s', $this->directory)
+            );
+        }
+    }
+
+    protected function processRecursiveIteration(): void
+    {
+        foreach ($this->recursiveIterator as $filename) {
             $filepathAbsolute = Utils\Str::forwardSlashes((string) $filename);
             $className = $this->getClassNameFromFilepath($filepathAbsolute);
             $inspected = new ControllerInspect($className);
-            $CONTROLLERS[$className] = $inspected;
+            $this->controllersMap[$className] = $inspected;
             $pathComponent = $inspected->getPathComponent();
             if ($inspected->useResource()) {
-                $RESOURCED[$pathComponent] = $inspected->getResourcesFromString();
+                $this->resourcesMap[$pathComponent] = $inspected->getResourcesFromString();
                 /*
                  * For relationships we need to create the /endpoint/{id}/relationships/relation URLs.
                  * @see https://jsonapi.org/recommendations/
                  */
                 if ($inspected->isRelatedResource()) {
-                    $this->routeMap[$inspected->getRelationshipPathComponent()]['GET'] = $inspected->getRelationship();
+                    $this->routesMap[$inspected->getRelationshipPathComponent()]['GET'] = $inspected->getRelationship();
                 }
             }
-            $this->routeMap[$pathComponent][$inspected->getHttpMethod()] = $inspected->getClassName();
+            $this->routesMap[$pathComponent][$inspected->getHttpMethod()] = $inspected->getClassName();
         }
         $this->basePath = explode('/', $pathComponent)[0];
+        ksort($this->routesMap);
+    }
 
-        ksort($this->routeMap);
-
-        foreach ($this->routeMap as $pathComponent => $httpMethods) {
+    protected function processRoutesMap(): void
+    {
+        foreach ($this->routesMap as $pathComponent => $httpMethods) {
             $endpointApi = [];
             // Set Options => <http method>,
             foreach ($httpMethods as $httpMethod => $controllerClassName) {
@@ -142,7 +189,7 @@ class Api
             $endpointRouteKey = Utils\Str::ltail($pathComponent, '/');
             $route = Route::bind($endpointRouteKey)->setId($pathComponent)->setMethods($httpMethods);
             // Define Route wildcard "where" if needed
-            $resource = $RESOURCED[$pathComponent] ?? null;
+            $resource = $this->resourcesMap[$pathComponent] ?? null;
             if (isset($resource)) {
                 foreach ($resource as $wildcardKey => $resourceMeta) {
                     $route->setWhere($wildcardKey, $resourceMeta['regex']);
@@ -154,37 +201,6 @@ class Api
             $this->api[$pathComponent] = $endpointApi;
         }
         ksort($this->api);
-
-        $apiRoute = Route::bind('/' . $this->basePath)
-            ->setMethod('HEAD', Controllers\ApiHead::class)
-            ->setMethod('OPTIONS', Controllers\ApiOptions::class)
-            ->setMethod('GET', Controllers\ApiGet::class)
-            ->setId($this->basePath);
-        $this->getRouter()->addRoute($apiRoute, $this->basePath);
-        $this->addApis($this->basePath, $this->api);
-        $this->addRouteKeys($this->basePath);
-    }
-
-    protected function handleDuplicates(): void
-    {
-        if (isset($this->apis[$this->pathIdentifier])) {
-            throw new LogicException(
-                (string)
-                    (new Message('Path identified by %s has been already bound.'))
-                        ->code('%s', $this->pathIdentifier)
-            );
-        }
-    }
-
-    protected function handleMissingDirectory(): void
-    {
-        if (!File::exists($this->directory)) {
-            throw new LogicException(
-                (string)
-                    (new Message("Directory %s doesn't exists."))
-                        ->code('%s', $this->directory)
-            );
-        }
     }
 
     protected function addApis(string $basePath, array $api): void
