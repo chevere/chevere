@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -29,7 +30,7 @@ class Router
      */
     protected $routes;
 
-    /** @var array An array containing the unique route keys (/api/endpoint, /blog) */
+    /** @var array Contains ['/route/key' => [id, 'route/key']] */
     protected $routeKeys;
 
     /** @var array An array containing the named routes [name => [id, fileHandle]] */
@@ -41,6 +42,7 @@ class Router
     /** @var array Arguments taken from wildcard matches. */
     protected $arguments;
 
+    // FIXME: Wtf does basename here?
     public function addRoute(Route $route, string $basename)
     {
         $route->fill();
@@ -52,7 +54,7 @@ class Router
             throw new LogicException(
                 (string) (new Message('Route key %s has been already declared by %r.'))
                     ->code('%s', $key)
-                    ->code('%r', $keyedRoute[0].'@'.$keyedRoute[1])
+                    ->code('%r', $keyedRoute[0] . '@' . $keyedRoute[1])
             );
         }
         $pointer = [$id, $basename];
@@ -63,7 +65,7 @@ class Router
                 throw new LogicException(
                     (string) (new Message('Route name %s has been already taken by %r.'))
                         ->code('%s', $name)
-                        ->code('%r', $namedRoute[0].'@'.$namedRoute[1])
+                        ->code('%r', $namedRoute[0] . '@' . $namedRoute[1])
                 );
             }
             $this->namedRoutes[$name] = $pointer;
@@ -142,7 +144,7 @@ class Router
         if (null != $routeSetHandle) {
             $routeSetHandleTrim = ltrim($routeSetHandle, '/');
             $explode = explode('/', $routeSetHandleTrim);
-            $count = $route->getKey() == '/' ? 0 : count($explode);
+            $count = '/' == $route->getKey() ? 0 : count($explode);
         } else {
             $count = 0;
         }
@@ -161,11 +163,11 @@ class Router
     public function resolve(string $pathInfo): ?Route
     {
         $requestTrim = ltrim($pathInfo, '/');
-        $components = $requestTrim == null ? [] : explode('/', $requestTrim);
+        $components = null == $requestTrim ? [] : explode('/', $requestTrim);
         $componentsCount = count($components);
         foreach (static::PRIORITY_ORDER as $type) {
             $routesTable = $this->getRouting()[$componentsCount][$type] ?? null;
-            if ($routesTable === null) {
+            if (null === $routesTable) {
                 continue;
             }
             foreach ($routesTable as $regex => $prop) {
@@ -185,7 +187,7 @@ class Router
                         throw new LogicException(
                             (string) (new Message('Unexpected type %t in routes table %h.'))
                                 ->code('%t', gettype($routeSome))
-                                ->code('%h', $pointer[0].'@'.$pointer[1])
+                                ->code('%h', $pointer[0] . '@' . $pointer[1])
                         );
                     }
                 }
