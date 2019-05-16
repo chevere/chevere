@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Utils;
 
+use JakubOnderka\PhpConsoleColor\ConsoleColor;
+
 /**
  * Another var_dump replacement.
  * FIXME: Doesn't work with BetterReflection objects.
@@ -76,5 +78,41 @@ class Dump extends DumpAbstract
     public static function out($var, int $indent = null, array $dontDump = [], int $depth = 0): string
     {
         return (string) new static(...func_get_args());
+    }
+
+    /**
+     * Get color for palette key.
+     *
+     * @param string $key color palette key
+     *
+     * @return string color
+     */
+    public static function getColorForKey(string $key): ?string
+    {
+        return 'cli' == php_sapi_name() ? static::CONSOLE_PALETTE[$key] ?? null : static::PALETTE[$key] ?? null;
+    }
+
+    /**
+     * Wrap dump data into HTML.
+     *
+     * @param string $key  Type or algo key (see constants)
+     * @param mixed  $dump dump data
+     *
+     * @return string wrapped dump data
+     */
+    public static function wrap(string $key, $dump): ?string
+    {
+        $color = static::getColorForKey($key);
+        if (isset($color)) {
+            if ('cli' == php_sapi_name()) {
+                $consoleColor = new ConsoleColor();
+
+                return $consoleColor->apply($color, $dump);
+            }
+
+            return '<span style="color:' . $color . '">' . $dump . '</span>';
+        } else {
+            return (string) $dump;
+        }
     }
 }

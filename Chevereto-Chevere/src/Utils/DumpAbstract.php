@@ -16,7 +16,6 @@ declare(strict_types=1);
 namespace Chevereto\Chevere\Utils;
 
 use Chevereto\Chevere\Path;
-use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Reflector;
 use ReflectionObject;
 use ReflectionProperty;
@@ -287,42 +286,6 @@ abstract class DumpAbstract
     {
         if (isset($this->parentheses) && false !== strpos($this->parentheses, '=')) {
             $this->setParentheses('<i>' . $this->parentheses . '</i>');
-        }
-    }
-
-    /**
-     * Get color for palette key.
-     *
-     * @param string $key color palette key
-     *
-     * @return string color
-     */
-    public static function getColorForKey(string $key): ?string
-    {
-        return 'cli' == php_sapi_name() ? static::CONSOLE_PALETTE[$key] ?? null : static::PALETTE[$key] ?? null;
-    }
-
-    /**
-     * Wrap dump data into HTML.
-     *
-     * @param string $key  Type or algo key (see constants)
-     * @param mixed  $dump dump data
-     *
-     * @return string wrapped dump data
-     */
-    public static function wrap(string $key, $dump): ?string
-    {
-        $color = static::getColorForKey($key);
-        if (isset($color)) {
-            if ('cli' == php_sapi_name()) {
-                $consoleColor = new ConsoleColor();
-
-                return $consoleColor->apply($color, $dump);
-            }
-
-            return '<span style="color:' . $color . '">' . $dump . '</span>';
-        } else {
-            return (string) $dump;
         }
     }
 }
