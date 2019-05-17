@@ -130,7 +130,7 @@ class ErrorHandler implements ErrorHandlerInterface
     public $loadedConfigFilesString;
 
     /** @var bool True, debug enabled */
-    protected $isDebugEnabled;
+    public $isDebugEnabled;
 
     /**
      * @param mixed $args Arguments passed to the error exception (severity, message, file, line; Exception)
@@ -148,13 +148,14 @@ class ErrorHandler implements ErrorHandlerInterface
         $this->setLogFilePath(static::PATH_LOGS);
         $this->setLogger(__NAMESPACE__);
 
-        $this->formatter = new Formatter($this);
-        $this->formatter->setLineBreak(Template::BOX_BREAK_HTML);
-        $this->formatter->setCss(Style::CSS);
+        $formatter = new Formatter($this);
+        $formatter->setLineBreak(Template::BOX_BREAK_HTML);
+        $formatter->setCss(Style::CSS);
+        $formatter->parseTemplate();
 
-        // $this->loggerWrite($this->formatter->plainContent);
+        // $this->loggerWrite($formatter->plainContent);
 
-        (new Output($this))->out();
+        (new Output($this, $formatter))->out();
     }
 
     protected function setTimeProperties(string $time): void

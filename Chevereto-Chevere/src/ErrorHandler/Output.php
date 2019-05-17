@@ -24,16 +24,19 @@ class Output
     /** @var ErrorHandler */
     protected $errorHandler;
 
+    /** @var Formatter */
+    protected $formatter;
+
     /** @var string */
     protected $output;
 
     /** @var array */
-    protected $headers;
+    protected $headers = [];
 
-    public function __construct(ErrorHandler $errorHandler)
+    public function __construct(ErrorHandler $errorHandler, Formatter $formatter)
     {
         $this->errorHandler = $errorHandler;
-        $this->headers = [];
+        $this->formatter = $formatter;
         if ($errorHandler->httpRequest && $errorHandler->httpRequest->isXmlHttpRequest()) {
             $this->setJsonOutput();
         } else {
@@ -51,19 +54,19 @@ class Output
         $this->headers = array_merge($this->headers, Json::CONTENT_TYPE);
         $response = [Template::NO_DEBUG_TITLE_PLAIN, 500];
         $log = [
-            'id' => $this->getTableValue('id'),
+            'id' => $this->formatter->getTemplateTag('id'),
             'level' => $this->loggerLevel,
-            'filename' => $this->getTableValue('logFilename'),
+            'filename' => $this->formatter->getTemplateTag('logFilename'),
         ];
-        switch ($this->isDebugEnabled) {
+        switch ($this->errorHandler->isDebugEnabled) {
             case 0:
                 unset($log['filename']);
             break;
             case 1:
-                $response[0] = $this->thrown . ' in ' . $this->getTableValue('file') . ':' . $this->getTableValue('line');
+                $response[0] = $this->thrown . ' in ' . $this->formatter->getTemplateTag('file') . ':' . $this->formatter->getTemplateTag('line');
                 $error = [];
                 foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
-                    $error[$v] = $this->getTableValue($v);
+                    $error[$v] = $this->formatter->getTemplateTag($v);
                 }
                 $json->setDataKey('error', $error);
             break;
@@ -75,32 +78,32 @@ class Output
 
     protected function setHtmlOutput(): void
     {
-        switch ($this->isDebugEnabled) {
+        switch ($this->errorHandler->isDebugEnabled) {
             default:
             case 0:
                 $this->content = Template::NO_DEBUG_CONTENT_HTML;
-                $this->setTableValue('content', $this->content);
-                $this->setTableValue('title', Template::NO_DEBUG_TITLE_PLAIN);
+                $this->formatter->addTemplateTag('content', $this->content);
+                $this->formatter->addTemplateTag('title', Template::NO_DEBUG_TITLE_PLAIN);
                 $bodyTemplate = Template::NO_DEBUG_BODY_HTML;
             break;
             case 1:
                 $bodyTemplate = Template::DEBUG_BODY_HTML;
             break;
         }
-        $this->setTableValue('body', strtr($bodyTemplate, $this->errorHandler->formatter->table));
-        $this->output = strtr(Template::HTML_TEMPLATE, $this->errorHandler->formatter->table);
+        $this->formatter->addTemplateTag('body', strtr($bodyTemplate, $this->formatter->templateTags));
+        $this->output = strtr(Template::HTML_TEMPLATE, $this->formatter->templateTags);
     }
 
     protected function setConsoleOutput(): void
     {
-        foreach ($this->errorHandler->formatter->consoleSections as $k => $v) {
+        foreach ($this->formatter->consoleSections as $k => $v) {
             if ('title' == $k) {
                 $tpl = $v[0];
             } else {
-                Console::io()->section(strtr($v[0], $this->errorHandler->formatter->table));
+                Console::io()->section(strtr($v[0], $this->formatter->templateTags));
                 $tpl = $v[1];
             }
-            $message = strtr($tpl, $this->errorHandler->formatter->table);
+            $message = strtr($tpl, $this->formatter->templateTags);
             if ('title' == $k) {
                 Console::io()->error($message);
             } else {

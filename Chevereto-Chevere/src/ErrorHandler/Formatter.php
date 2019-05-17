@@ -15,8 +15,6 @@ namespace Chevereto\Chevere\ErrorHandler;
 
 use Throwable;
 use ErrorException;
-use ReflectionObject;
-use ReflectionProperty;
 use const Chevereto\Chevere\CORE_NS_HANDLE;
 use Chevereto\Chevere\Console;
 use Chevereto\Chevere\Path;
@@ -141,9 +139,8 @@ class Formatter
         $this->processStack();
         $this->processContentSections();
         $this->processContentGlobals();
-        $this->generateContentTemplate();
+        $this->generateTemplates();
         $this->setContentProperties();
-        $this->parseContentTemplate();
         $this->setBodyClass();
     }
 
@@ -164,7 +161,7 @@ class Formatter
             $this->clientUserAgent = Console::inputString();
         } else {
             if ($httpRequest = $this->errorHandler->httpRequest) {
-                $this->url = $httpRequest->readInfoKey('requestUri') ?? 'unknown';
+                $this->uri = $httpRequest->readInfoKey('requestUri') ?? 'unknown';
                 $this->clientUserAgent = $httpRequest->getHeaders()->get('User-Agent');
                 $this->httpRequestMethod = $httpRequest->readInfoKey('method');
                 $this->serverHost = $httpRequest->readInfoKey('host');
@@ -215,7 +212,7 @@ class Formatter
         }
         $stack = new Stack($trace);
         // FIXME: Case-aware stack filling, console is not needed in web
-        $this->consoleStack = $stack->getConsoleStack();
+        // $this->consoleStack = $stack->getConsoleStack();
         $this->richStack = $stack->getRichStack();
         $this->plainStack = $stack->getPlainStack();
     }
@@ -231,7 +228,7 @@ class Formatter
         $plain[static::SECTION_ID] = ['# Incident ID:%id%', 'Logged at %logFilename%'];
         $plain[static::SECTION_STACK] = ['# Stack trace', '%plainStack%'];
         $plain[static::SECTION_CLIENT] = ['# Client', '%clientIp% %clientUserAgent%'];
-        $plain[static::SECTION_REQUEST] = ['# Request', '%serverProtocol% %httpRequestMethod% %url%'];
+        $plain[static::SECTION_REQUEST] = ['# Request', '%serverProtocol% %httpRequestMethod% %uri%'];
         $plain[static::SECTION_SERVER] = ['# Server', '%serverHost% (port:%serverPort%) %serverSoftware%'];
 
         if ('cli' == php_sapi_name()) {
@@ -311,18 +308,42 @@ class Formatter
         $this->message = nl2br($this->message);
     }
 
-    protected function parseContentTemplate()
+    public function parseTemplate()
     {
-        $properties = (new ReflectionObject($this))->getProperties(ReflectionProperty::IS_PUBLIC);
-        foreach ($properties as $property) {
-            $this->setTableValue($property->getName(), $property->getValue($this));
-        }
-        $this->content = strtr($this->richContentTemplate, $this->table);
-        $this->plainContent = strtr($this->plainContentTemplate, $this->table);
-        $this->setTableValue('content', $this->content);
+        $this->templateTags = [
+            '%id%' => $this->errorHandler->id,
+            '%datetimeUtc%' => $this->errorHandler->datetimeUtc,
+            '%timestamp%' => $this->errorHandler->timestamp,
+            '%loadedConfigFilesString%' => $this->errorHandler->loadedConfigFilesString,
+            '%logFilename%' => $this->errorHandler->logFilename,
+            '%css%' => $this->css,
+            '%bodyClass%' => $this->bodyClass,
+            '%body%' => null,
+            '%title%' => $this->title,
+            '%content%' => $this->content,
+            '%title%' => $this->title,
+            '%file%' => $this->file,
+            '%line%' => $this->line,
+            '%message%' => $this->message,
+            '%code%' => $this->code,
+            '%plainStack%' => $this->plainStack,
+            '%consoleStack%' => $this->consoleStack,
+            '%richStack%' => $this->richStack,
+            '%clientIp%' => $this->clientIp,
+            '%clientUserAgent%' => $this->clientUserAgent,
+            '%serverProtocol%' => $this->serverProtocol,
+            '%httpRequestMethod%' => $this->httpRequestMethod,
+            '%uri%' => $this->uri ?? null,
+            '%serverHost%' => $this->serverHost,
+            '%serverPort%' => $this->serverPort,
+            '%serverSoftware%' => $this->serverSoftware,
+        ];
+        $this->content = strtr($this->richContentTemplate, $this->templateTags);
+        $this->plainContent = strtr($this->plainContentTemplate, $this->templateTags);
+        $this->addTemplateTag('content', $this->content);
     }
 
-    protected function generateContentTemplate()
+    protected function generateTemplates()
     {
         $sections_length = count($this->plainContentSections);
         $i = 0;
@@ -369,19 +390,19 @@ class Formatter
     /**
      * $table stores the template placeholders and its value.
      *
-     * @param string $key   table key
-     * @param mixed  $value value
+     * @param string $tagName Template tag name
+     * @param mixed  $value   value
      */
-    protected function setTableValue(string $key, $value): void
+    public function addTemplateTag(string $tagName, $value): void
     {
-        $this->table["%$key%"] = $value;
+        $this->templateTags["%$tagName%"] = $value;
     }
 
     /**
-     * @param string $key table key
+     * @param string $tagName Template tag name
      */
-    protected function getTableValue(string $key)
+    public function getTemplateTag(string $tagName)
     {
-        return $this->table["%$key%"] ?? null;
+        return $this->templateTags["%$tagName%"] ?? null;
     }
 }

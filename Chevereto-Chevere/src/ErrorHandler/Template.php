@@ -41,8 +41,9 @@ class Template
     const STACK_ITEM_CONSOLE = "#%i% %fl%\n%c%%t%%m%()%a%";
 
     /**
-     * HTML placeholders (HTML_TEMPLATE, NO_DEBUG_BODY_HTML, DEBUG_BODY_HTML, BOX_BREAK_HTML)
-     * - TODO:.
+     * HTML placeholders (HTML_TEMPLATE, NO_DEBUG_BODY_HTML, DEBUG_BODY_HTML, BOX_BREAK_HTML).
+     *
+     * @see Formatter::parseTemplate
      */
 
     /** @var string HTML template (whole document) */
