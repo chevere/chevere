@@ -21,6 +21,9 @@ use Symfony\Component\HttpFoundation\JsonResponse as HttpJsonResponse;
 
 class Output
 {
+    public $content;
+    public $templateTags;
+
     /** @var ErrorHandler */
     protected $errorHandler;
 
@@ -33,10 +36,16 @@ class Output
     /** @var array */
     protected $headers = [];
 
+    protected $richContentTemplate;
+
+    protected $plainContentTemplate;
+
     public function __construct(ErrorHandler $errorHandler, Formatter $formatter)
     {
         $this->errorHandler = $errorHandler;
         $this->formatter = $formatter;
+        $this->generateTemplates();
+        $this->parseTemplate();
         if ($errorHandler->httpRequest && $errorHandler->httpRequest->isXmlHttpRequest()) {
             $this->setJsonOutput();
         } else {
@@ -90,8 +99,8 @@ class Output
                 $bodyTemplate = Template::DEBUG_BODY_HTML;
             break;
         }
-        $this->formatter->addTemplateTag('body', strtr($bodyTemplate, $this->formatter->templateTags));
-        $this->output = strtr(Template::HTML_TEMPLATE, $this->formatter->templateTags);
+        $this->formatter->addTemplateTag('body', strtr($bodyTemplate, $this->templateTags));
+        $this->output = strtr(Template::HTML_TEMPLATE, $this->templateTags);
     }
 
     protected function setConsoleOutput(): void
@@ -100,10 +109,10 @@ class Output
             if ('title' == $k) {
                 $tpl = $v[0];
             } else {
-                Console::io()->section(strtr($v[0], $this->formatter->templateTags));
+                Console::io()->section(strtr($v[0], $this->templateTags));
                 $tpl = $v[1];
             }
-            $message = strtr($tpl, $this->formatter->templateTags);
+            $message = strtr($tpl, $this->templateTags);
             if ('title' == $k) {
                 Console::io()->error($message);
             } else {
@@ -111,6 +120,94 @@ class Output
             }
         }
         Console::io()->writeln('');
+    }
+
+    protected function generateTemplates()
+    {
+        $sections_length = count($this->formatter->plainContentSections);
+        $i = 0;
+        foreach ($this->formatter->plainContentSections as $k => $plainSection) {
+            $richSection = $this->richContentSections[$k] ?? null;
+            $section_length = count($plainSection);
+            if (0 == $i || isset($plainSection[1])) {
+                $this->richContentTemplate .= '<div class="t' . (0 == $i ? ' t--scream' : null) . '">' . $richSection[0] . '</div>';
+                $this->plainContentTemplate .= html_entity_decode($plainSection[0]);
+                if (0 == $i) {
+                    $this->richContentTemplate .= "\n" . '<div class="hide">' . str_repeat('=', $this->formatter::COLUMNS) . '</div>';
+                    $this->plainContentTemplate .= "\n" . str_repeat('=', $this->formatter::COLUMNS);
+                }
+            }
+            if ($i > 0) {
+                $j = 1 == $section_length ? 0 : 1;
+                for ($j; $j < $section_length; ++$j) {
+                    if ($section_length > 1) {
+                        $this->richContentTemplate .= "\n";
+                        $this->plainContentTemplate .= "\n";
+                    }
+                    $this->richContentTemplate .= '<div class="c">' . $richSection[$j] . '</div>';
+                    $this->plainContentTemplate .= $plainSection[$j];
+                }
+            }
+            if ($i + 1 < $sections_length) {
+                $this->richContentTemplate .= "\n" . '<br>' . "\n";
+                $this->plainContentTemplate .= "\n\n";
+            }
+            ++$i;
+        }
+    }
+
+    public function parseTemplate()
+    {
+        $this->templateTags = [
+            '%id%' => $this->errorHandler->id,
+            '%datetimeUtc%' => $this->errorHandler->datetimeUtc,
+            '%timestamp%' => $this->errorHandler->timestamp,
+            '%loadedConfigFilesString%' => $this->errorHandler->loadedConfigFilesString,
+            '%logFilename%' => $this->errorHandler->logFilename,
+            '%css%' => $this->formatter->css,
+            '%bodyClass%' => $this->formatter->bodyClass,
+            '%body%' => null,
+            '%title%' => $this->formatter->title,
+            '%content%' => $this->content,
+            '%title%' => $this->formatter->title,
+            '%file%' => $this->formatter->file,
+            '%line%' => $this->formatter->line,
+            '%message%' => $this->formatter->message,
+            '%code%' => $this->formatter->code,
+            '%plainStack%' => $this->formatter->plainStack,
+            '%consoleStack%' => $this->formatter->consoleStack,
+            '%richStack%' => $this->formatter->richStack,
+            '%clientIp%' => $this->formatter->clientIp,
+            '%clientUserAgent%' => $this->formatter->clientUserAgent,
+            '%serverProtocol%' => $this->formatter->serverProtocol,
+            '%httpRequestMethod%' => $this->formatter->httpRequestMethod,
+            '%uri%' => $this->formatter->uri ?? null,
+            '%serverHost%' => $this->formatter->serverHost,
+            '%serverPort%' => $this->formatter->serverPort,
+            '%serverSoftware%' => $this->formatter->serverSoftware,
+        ];
+        $this->content = strtr($this->richContentTemplate, $this->templateTags);
+        $this->plainContent = strtr($this->plainContentTemplate, $this->templateTags);
+        $this->addTemplateTag('content', $this->content);
+    }
+
+    /**
+     * $table stores the template placeholders and its value.
+     *
+     * @param string $tagName Template tag name
+     * @param mixed  $value   value
+     */
+    public function addTemplateTag(string $tagName, $value): void
+    {
+        $this->templateTags["%$tagName%"] = $value;
+    }
+
+    /**
+     * @param string $tagName Template tag name
+     */
+    public function getTemplateTag(string $tagName)
+    {
+        return $this->templateTags["%$tagName%"] ?? null;
     }
 
     public function out(): void

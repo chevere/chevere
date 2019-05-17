@@ -151,11 +151,11 @@ class ErrorHandler implements ErrorHandlerInterface
         $formatter = new Formatter($this);
         $formatter->setLineBreak(Template::BOX_BREAK_HTML);
         $formatter->setCss(Style::CSS);
-        $formatter->parseTemplate();
 
         // $this->loggerWrite($formatter->plainContent);
 
-        (new Output($this, $formatter))->out();
+        $output = new Output($this, $formatter);
+        $output->out();
     }
 
     protected function setTimeProperties(string $time): void

@@ -99,20 +99,17 @@ class Formatter
     public $thrown;
 
     // The actual stacks
-    protected $plainStack;
-    protected $richStack;
-    protected $consoleStack;
+    public $plainStack;
+    public $richStack;
+    public $consoleStack;
 
     /** @var array */
-    protected $plainContentSections;
+    public $plainContentSections;
 
     /** @var array */
-    protected $richContentSections;
+    public $richContentSections;
 
     public $consoleSections;
-
-    protected $richContentTemplate;
-    protected $plainContentTemplate;
 
     /** @var string The plain content representation */
     public $plainContent;
@@ -124,8 +121,6 @@ class Formatter
     public $file;
     public $line;
     public $loggerLevel;
-
-    public $content;
 
     public $title;
 
@@ -139,7 +134,6 @@ class Formatter
         $this->processStack();
         $this->processContentSections();
         $this->processContentGlobals();
-        $this->generateTemplates();
         $this->setContentProperties();
         $this->setBodyClass();
     }
@@ -308,75 +302,6 @@ class Formatter
         $this->message = nl2br($this->message);
     }
 
-    public function parseTemplate()
-    {
-        $this->templateTags = [
-            '%id%' => $this->errorHandler->id,
-            '%datetimeUtc%' => $this->errorHandler->datetimeUtc,
-            '%timestamp%' => $this->errorHandler->timestamp,
-            '%loadedConfigFilesString%' => $this->errorHandler->loadedConfigFilesString,
-            '%logFilename%' => $this->errorHandler->logFilename,
-            '%css%' => $this->css,
-            '%bodyClass%' => $this->bodyClass,
-            '%body%' => null,
-            '%title%' => $this->title,
-            '%content%' => $this->content,
-            '%title%' => $this->title,
-            '%file%' => $this->file,
-            '%line%' => $this->line,
-            '%message%' => $this->message,
-            '%code%' => $this->code,
-            '%plainStack%' => $this->plainStack,
-            '%consoleStack%' => $this->consoleStack,
-            '%richStack%' => $this->richStack,
-            '%clientIp%' => $this->clientIp,
-            '%clientUserAgent%' => $this->clientUserAgent,
-            '%serverProtocol%' => $this->serverProtocol,
-            '%httpRequestMethod%' => $this->httpRequestMethod,
-            '%uri%' => $this->uri ?? null,
-            '%serverHost%' => $this->serverHost,
-            '%serverPort%' => $this->serverPort,
-            '%serverSoftware%' => $this->serverSoftware,
-        ];
-        $this->content = strtr($this->richContentTemplate, $this->templateTags);
-        $this->plainContent = strtr($this->plainContentTemplate, $this->templateTags);
-        $this->addTemplateTag('content', $this->content);
-    }
-
-    protected function generateTemplates()
-    {
-        $sections_length = count($this->plainContentSections);
-        $i = 0;
-        foreach ($this->plainContentSections as $k => $plainSection) {
-            $richSection = $this->richContentSections[$k] ?? null;
-            $section_length = count($plainSection);
-            if (0 == $i || isset($plainSection[1])) {
-                $this->richContentTemplate .= '<div class="t' . (0 == $i ? ' t--scream' : null) . '">' . $richSection[0] . '</div>';
-                $this->plainContentTemplate .= html_entity_decode($plainSection[0]);
-                if (0 == $i) {
-                    $this->richContentTemplate .= "\n" . '<div class="hide">' . str_repeat('=', static::COLUMNS) . '</div>';
-                    $this->plainContentTemplate .= "\n" . str_repeat('=', static::COLUMNS);
-                }
-            }
-            if ($i > 0) {
-                $j = 1 == $section_length ? 0 : 1;
-                for ($j; $j < $section_length; ++$j) {
-                    if ($section_length > 1) {
-                        $this->richContentTemplate .= "\n";
-                        $this->plainContentTemplate .= "\n";
-                    }
-                    $this->richContentTemplate .= '<div class="c">' . $richSection[$j] . '</div>';
-                    $this->plainContentTemplate .= $plainSection[$j];
-                }
-            }
-            if ($i + 1 < $sections_length) {
-                $this->richContentTemplate .= "\n" . '<br>' . "\n";
-                $this->plainContentTemplate .= "\n\n";
-            }
-            ++$i;
-        }
-    }
-
     /**
      * @param string $text text to wrap
      *
@@ -385,24 +310,5 @@ class Formatter
     protected function wrapStringHr(string $text): string
     {
         return $this->lineBreak . "\n" . $text . "\n" . $this->lineBreak;
-    }
-
-    /**
-     * $table stores the template placeholders and its value.
-     *
-     * @param string $tagName Template tag name
-     * @param mixed  $value   value
-     */
-    public function addTemplateTag(string $tagName, $value): void
-    {
-        $this->templateTags["%$tagName%"] = $value;
-    }
-
-    /**
-     * @param string $tagName Template tag name
-     */
-    public function getTemplateTag(string $tagName)
-    {
-        return $this->templateTags["%$tagName%"] ?? null;
     }
 }
