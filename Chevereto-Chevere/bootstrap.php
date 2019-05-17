@@ -65,9 +65,6 @@ new Runtime(
 // This constant allows safe short syntax like `CLI && Console::io()` in all namespaces.
 define('Chevereto\Chevere\CLI', Console::isRunning());
 
-/*
- * Kickstand
- */
 App::setDefaultRuntime(
     new Runtime(
         (new RuntimeConfig())

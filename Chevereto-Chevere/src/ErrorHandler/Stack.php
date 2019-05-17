@@ -42,7 +42,7 @@ class Stack
     /** @var int Trace entry pointer */
     private $i;
 
-    protected $hr = ErrorHandler::HR;
+    protected $hr = Template::BOX_BREAK_HTML;
 
     /**
      * @param array $trace An Exception trace
@@ -76,9 +76,9 @@ class Stack
         return $this->wrapStringHr($this->glueString($this->plain));
     }
 
-    protected function glueString(string $string)
+    protected function glueString(array $array)
     {
-        return implode("\n" . $this->hr . "\n", $string);
+        return implode("\n" . $this->hr . "\n", $array);
     }
 
     protected function wrapStringHr(string $text): string
@@ -128,17 +128,17 @@ class Stack
 
     protected function processConsole(array $richTable): void
     {
-        $this->console[] = strtr(ErrorHandler::CONSOLE_STACK_TEMPLATE, $richTable);
+        $this->console[] = strtr(Template::STACK_ITEM_CONSOLE, $richTable);
     }
 
     protected function processPlain(array $plainTable): void
     {
-        $this->plain[] = strtr(ErrorHandler::HTML_STACK_TEMPLATE, $plainTable);
+        $this->plain[] = strtr(Template::STACK_ITEM_HTML, $plainTable);
     }
 
     protected function processRich(array $richTable): void
     {
-        $this->rich[] = strtr(ErrorHandler::HTML_STACK_TEMPLATE, $richTable);
+        $this->rich[] = strtr(Template::STACK_ITEM_HTML, $richTable);
     }
 
     public function getRich()

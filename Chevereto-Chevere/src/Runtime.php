@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -16,25 +17,29 @@ use DateTimeZone;
 use RuntimeException;
 
 /**
- * Runtime applies runtime changes and provide information about the App Runtime.
+ * Runtime applies runtime config and provide data about the App Runtime.
  */
 class Runtime extends Data
 {
-    public function __construct(RuntimeConfig $config = null)
+    /** @var RuntimeConfig */
+    protected $runtimeConfig;
+
+    public function __construct(?RuntimeConfig $runtimeConfig)
     {
         parent::__construct();
-        if (null != $config) {
-            $this->runConfig($config);
+        if (null != $runtimeConfig) {
+            $this->runtimeConfig = $runtimeConfig;
+            $this->runConfig($runtimeConfig);
         }
     }
 
-    public function runConfig(RuntimeConfig $config): self
+    public function runConfig(RuntimeConfig $runtimeConfig): self
     {
-        foreach ($config->getData() as $k => $v) {
+        foreach ($runtimeConfig->getData() as $k => $v) {
             if ($v === $this->getDataKey($k)) {
                 continue;
             }
-            $fnName = 'set'.ucwords($k);
+            $fnName = 'set' . ucwords($k);
             if (method_exists($this, $fnName)) {
                 $this->{$fnName}($v);
             }
@@ -150,5 +155,10 @@ class Runtime extends Data
         $this->setDataKey(RuntimeConfig::DEBUG, $debugLevel);
 
         return $this;
+    }
+
+    public function getRuntimeConfig(): RuntimeConfig
+    {
+        return $this->runtimeConfig;
     }
 }
