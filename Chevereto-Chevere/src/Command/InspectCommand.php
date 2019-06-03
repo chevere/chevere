@@ -20,7 +20,7 @@ use Chevereto\Chevere\Message;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Command;
 use Chevereto\Chevere\File;
-use Chevereto\Chevere\Utils\Dump;
+use Chevereto\Chevere\Dump\Dump;
 use Chevereto\Chevere\Utils\Str;
 use Reflector;
 use ReflectionMethod;
@@ -138,15 +138,15 @@ class InspectCommand extends Command
         foreach ($this->reflector->getParameters() as $parameter) {
             $aux = null;
             if ($parameter->getType()) {
-                $aux .= $parameter->getType() . ' ';
+                $aux .= $parameter->getType().' ';
             }
-            $aux .= '$' . $parameter->getName();
+            $aux .= '$'.$parameter->getName();
             if ($parameter->isDefaultValueAvailable()) {
-                $aux .= ' = ' . ($parameter->getDefaultValue() ?? 'null');
+                $aux .= ' = '.($parameter->getDefaultValue() ?? 'null');
             }
             $res = $resource[$parameter->getName()] ?? null;
             if (isset($res)) {
-                $aux .= ' ' . Dump::wrap(Dump::_OPERATOR, '--description ' . $res['description'] . ' --regex ' . $res['regex']);
+                $aux .= ' '.Dump::wrap(Dump::_OPERATOR, '--description '.$res['description'].' --regex '.$res['regex']);
             }
             $this->arguments[] = "#$i $aux";
             ++$i;

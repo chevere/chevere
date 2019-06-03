@@ -11,10 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Utils;
+namespace Chevereto\Chevere\Dump;
 
+use Chevereto\Chevere\Interfaces\DumpInterface;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Chevereto\Chevere\Path;
+use Chevereto\Chevere\Utils\Str;
 use Reflector;
 use ReflectionObject;
 use ReflectionProperty;
@@ -23,7 +25,7 @@ use ReflectionProperty;
  * Another var_dump replacement.
  * FIXME: Doesn't work with BetterReflection objects.
  */
-class Dump
+class Dump implements DumpInterface
 {
     const TYPE_STRING = 'string';
     const TYPE_FLOAT = 'float';
@@ -318,40 +320,16 @@ class Dump
         return $this->output;
     }
 
-    /**
-     * Dumps information about a variable.
-     *
-     * @param mixed $var      anything
-     * @param int   $indent   left padding (spaces) for this entry
-     * @param array $dontDump array containing classes that won't get dumped
-     *
-     * @return string parsed dump string
-     */
     public static function out($var, int $indent = null, array $dontDump = [], int $depth = 0): string
     {
         return (string) new static(...func_get_args());
     }
 
-    /**
-     * Get color for palette key.
-     *
-     * @param string $key color palette key
-     *
-     * @return string color
-     */
     public static function getColorForKey(string $key): ?string
     {
         return 'cli' == php_sapi_name() ? static::CONSOLE_PALETTE[$key] ?? null : static::PALETTE[$key] ?? null;
     }
 
-    /**
-     * Wrap dump data into HTML.
-     *
-     * @param string $key  Type or algo key (see constants)
-     * @param mixed  $dump dump data
-     *
-     * @return string wrapped dump data
-     */
     public static function wrap(string $key, $dump): ?string
     {
         $color = static::getColorForKey($key);

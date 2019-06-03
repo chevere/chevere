@@ -18,8 +18,8 @@ use ErrorException;
 use const Chevereto\Chevere\CORE_NS_HANDLE;
 use Chevereto\Chevere\Console;
 use Chevereto\Chevere\Path;
-use Chevereto\Chevere\Utils\Dump;
-use Chevereto\Chevere\Utils\DumpPlain;
+use Chevereto\Chevere\Dump\Dump;
+use Chevereto\Chevere\Dump\DumpPlain;
 use Chevereto\Chevere\Utils\Str;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -179,7 +179,7 @@ class Formatter
         if (Str::startsWith(CORE_NS_HANDLE, $this->className)) {
             $this->className = Str::replaceFirst(CORE_NS_HANDLE, null, $this->className);
         }
-        $this->thrown = $this->className . ' thrown';
+        $this->thrown = $this->className.' thrown';
         if ($this->exception instanceof ErrorException) {
             $code = $this->exception->getSeverity();
             $e_type = $code;
@@ -216,7 +216,7 @@ class Formatter
         // Plain (txt) is the default "always do" format.
         $plain = [
             static::SECTION_TITLE => ['%title% <span>in&nbsp;%file%:%line%</span>'],
-            static::SECTION_MESSAGE => ['# Message', '%message%' . ($this->code ? ' [Code #%code%]' : null)],
+            static::SECTION_MESSAGE => ['# Message', '%message%'.($this->code ? ' [Code #%code%]' : null)],
             static::SECTION_TIME => ['# Time', '%datetimeUtc% [%timestamp%]'],
         ];
         $plain[static::SECTION_ID] = ['# Incident ID:%id%', 'Logged at %logFilename%'];
@@ -256,11 +256,11 @@ class Formatter
     protected function processContentGlobals()
     {
         foreach (['GET', 'POST', 'FILES', 'COOKIE', 'SESSION', 'SERVER'] as $v) {
-            $k = '_' . $v;
+            $k = '_'.$v;
             $v = isset($GLOBALS[$k]) ? $GLOBALS[$k] : null;
             if ($v) {
-                $this->setRichContentSection($k, ['$' . $k, $this->wrapStringHr('<pre>' . Dump::out($v) . '</pre>')]);
-                $this->setPlainContentSection($k, ['$' . $k, strip_tags($this->wrapStringHr(DumpPlain::out($v)))]);
+                $this->setRichContentSection($k, ['$'.$k, $this->wrapStringHr('<pre>'.Dump::out($v).'</pre>')]);
+                $this->setPlainContentSection($k, ['$'.$k, strip_tags($this->wrapStringHr(DumpPlain::out($v)))]);
             }
         }
     }
@@ -309,6 +309,6 @@ class Formatter
      */
     protected function wrapStringHr(string $text): string
     {
-        return $this->lineBreak . "\n" . $text . "\n" . $this->lineBreak;
+        return $this->lineBreak."\n".$text."\n".$this->lineBreak;
     }
 }

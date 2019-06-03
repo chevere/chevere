@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Chevereto\Chevere\Command;
 
 use Chevereto\Chevere\App;
-use Chevereto\Chevere\Utils\DumpPlain;
+use Chevereto\Chevere\Dump\DumpPlain;
 use Chevereto\Chevere\File;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Command;

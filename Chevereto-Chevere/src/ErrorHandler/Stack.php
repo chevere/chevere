@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\ErrorHandler;
 
-use Chevereto\Chevere\Utils\Dump;
+use Chevereto\Chevere\Dump\Dump;
 
 /**
  * Handles the ErrorHandler Exception stack trace.
@@ -78,12 +78,12 @@ class Stack
 
     protected function glueString(array $array)
     {
-        return implode("\n" . $this->hr . "\n", $array);
+        return implode("\n".$this->hr."\n", $array);
     }
 
     protected function wrapStringHr(string $text): string
     {
-        return $this->hr . "\n" . $text . "\n" . $this->hr;
+        return $this->hr."\n".$text."\n".$this->hr;
     }
 
     protected function setPlainTable(TraceEntry $entry): void
@@ -93,7 +93,7 @@ class Stack
             '%i%' => $this->i,
             '%f%' => $entry->getArray()['file'] ?? null,
             '%l%' => $entry->getArray()['line'] ?? null,
-            '%fl%' => isset($entry->getArray()['file']) ? ($entry->getArray()['file'] . ':' . $entry->getArray()['line']) : null,
+            '%fl%' => isset($entry->getArray()['file']) ? ($entry->getArray()['file'].':'.$entry->getArray()['line']) : null,
             '%c%' => $entry->getArray()['class'] ?? null,
             '%t%' => $entry->getArray()['type'] ?? null,
             '%m%' => $entry->getArray()['function'],

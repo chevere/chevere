@@ -17,8 +17,8 @@ use ReflectionMethod;
 use Chevereto\Chevere\Core;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Utils\Str;
-use Chevereto\Chevere\Utils\Dump;
-use Chevereto\Chevere\Utils\DumpPlain;
+use Chevereto\Chevere\Dump\Dump;
+use Chevereto\Chevere\Dump\DumpPlain;
 
 /**
  * TraceEntry prepares the Exception trace for being used with our Stack.
@@ -90,13 +90,13 @@ class TraceEntry
     protected function setFrameArguments()
     {
         foreach ($this->entry['args'] as $k => $v) {
-            $aux = 'Arg#' . ($k + 1) . ' ';
-            $plainArgs[] = $aux . DumpPlain::out($v, null, [App::class]);
-            $richArgs[] = $aux . Dump::out($v, null, [App::class]);
+            $aux = 'Arg#'.($k + 1).' ';
+            $plainArgs[] = $aux.DumpPlain::out($v, null, [App::class]);
+            $richArgs[] = $aux.Dump::out($v, null, [App::class]);
         }
         if (isset($plainArgs)) {
-            $this->plainArgs = "\n" . implode("\n", $plainArgs);
-            $this->richArgs = "\n" . implode("\n", $richArgs);
+            $this->plainArgs = "\n".implode("\n", $plainArgs);
+            $this->richArgs = "\n".implode("\n", $richArgs);
         }
     }
 
@@ -124,7 +124,7 @@ class TraceEntry
 
     protected function processCoreAutoloader()
     {
-        $this->entry['file'] = $this->entry['file'] ?? (PATH . 'autoloader.php');
+        $this->entry['file'] = $this->entry['file'] ?? (PATH.'autoloader.php');
     }
 
     protected function handleProcessNormalizeFile()
