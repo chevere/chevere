@@ -15,12 +15,12 @@ namespace Chevereto\Chevere\Command;
 
 use const Chevereto\Chevere\App\PATH;
 use Chevereto\Chevere\App;
+use Chevereto\Chevere\VarDumper\VarDumper;
 use Chevereto\Chevere\Load;
 use Chevereto\Chevere\Message;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Command;
 use Chevereto\Chevere\File;
-use Chevereto\Chevere\Dump\Dump;
 use Chevereto\Chevere\Utils\Str;
 use Reflector;
 use ReflectionMethod;
@@ -146,7 +146,7 @@ class InspectCommand extends Command
             }
             $res = $resource[$parameter->getName()] ?? null;
             if (isset($res)) {
-                $aux .= ' '.Dump::wrap(Dump::_OPERATOR, '--description '.$res['description'].' --regex '.$res['regex']);
+                $aux .= ' '.VarDumper::wrap(VarDumper::_OPERATOR, '--description '.$res['description'].' --regex '.$res['regex']);
             }
             $this->arguments[] = "#$i $aux";
             ++$i;

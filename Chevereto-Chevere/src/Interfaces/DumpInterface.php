@@ -14,8 +14,6 @@ namespace Chevereto\Chevere\Interfaces;
 
 interface DumpInterface
 {
-    public function __toString(): string;
-
     /**
      * Dumps information about a variable.
      *
@@ -26,23 +24,4 @@ interface DumpInterface
      * @return string parsed dump string
      */
     public static function out($var, int $indent = null, array $dontDump = [], int $depth = 0): string;
-
-    /**
-     * Get color for palette key.
-     *
-     * @param string $key color palette key
-     *
-     * @return string color
-     */
-    public static function getColorForKey(string $key): ?string;
-
-    /**
-     * Wrap dump data into HTML.
-     *
-     * @param string $key  Type or algo key (see constants)
-     * @param mixed  $dump dump data
-     *
-     * @return string wrapped dump data
-     */
-    public static function wrap(string $key, $dump): ?string;
 }

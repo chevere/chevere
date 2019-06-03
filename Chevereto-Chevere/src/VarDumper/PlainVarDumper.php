@@ -11,15 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Dump;
+namespace Chevereto\Chevere\VarDumper;
 
-class DumpPlain extends Dump
+/**
+ * Exactly the same as Dump but stripping any format decorators.
+ */
+abstract class PlainVarDumper extends VarDumper
 {
     public static function out($expression, int $indent = null, array $dontDump = [], $depth = 0): string
     {
-        $return = parent::out(...func_get_args());
-
-        return strip_tags($return);
+        return strip_tags(parent::out(...func_get_args()));
     }
 
     public static function wrap(string $key, $dump = null): string

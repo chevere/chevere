@@ -17,8 +17,8 @@ use ReflectionMethod;
 use Chevereto\Chevere\Core;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Utils\Str;
-use Chevereto\Chevere\Dump\Dump;
-use Chevereto\Chevere\Dump\DumpPlain;
+use Chevereto\Chevere\VarDumper\VarDumper;
+use Chevereto\Chevere\VarDumper\PlainVarDumper;
 
 /**
  * TraceEntry prepares the Exception trace for being used with our Stack.
@@ -91,8 +91,8 @@ class TraceEntry
     {
         foreach ($this->entry['args'] as $k => $v) {
             $aux = 'Arg#'.($k + 1).' ';
-            $plainArgs[] = $aux.DumpPlain::out($v, null, [App::class]);
-            $richArgs[] = $aux.Dump::out($v, null, [App::class]);
+            $richArgs[] = $aux.VarDumper::out($v, null, [App::class]);
+            $plainArgs[] = $aux.PlainVarDumper::out($v, null, [App::class]);
         }
         if (isset($plainArgs)) {
             $this->plainArgs = "\n".implode("\n", $plainArgs);
@@ -102,16 +102,16 @@ class TraceEntry
 
     protected function handleProcessAnonClass()
     {
-        if (isset($this->entry['class']) && Str::startsWith(Dump::ANON_CLASS, $this->entry['class'])) {
+        if (isset($this->entry['class']) && Str::startsWith(VarDumper::ANON_CLASS, $this->entry['class'])) {
             $this->processAnonClass();
         }
     }
 
     protected function processAnonClass()
     {
-        $entryFile = Str::replaceFirst(Dump::ANON_CLASS, null, $this->entry['class']);
+        $entryFile = Str::replaceFirst(VarDumper::ANON_CLASS, null, $this->entry['class']);
         $this->entry['file'] = substr($entryFile, 0, strpos($entryFile, '.php') + 4);
-        $this->entry['class'] = Dump::ANON_CLASS;
+        $this->entry['class'] = VarDumper::ANON_CLASS;
         $this->entry['line'] = null;
     }
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Chevereto\Chevere\Command;
 
 use Chevereto\Chevere\App;
-use Chevereto\Chevere\Dump\DumpPlain;
+use Chevereto\Chevere\VarDumper\PlainVarDumper;
 use Chevereto\Chevere\File;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Command;
@@ -65,7 +65,7 @@ class RunCommand extends Command
         if (is_callable($callable)) {
             // TODO: Must fix the argument typehint, maybe do combo with DI
             $return = $callable(...$input->getOption('argument'));
-            $cli->getIo()->block(DumpPlain::out($return), 'RETURN', 'fg=black;bg=green', ' ', true);
+            $cli->getIo()->block(PlainVarDumper::out($return), 'RETURN', 'fg=black;bg=green', ' ', true);
         } else {
             $arguments = $input->getOption('argument');
             // argument was declared as array

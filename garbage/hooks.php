@@ -30,6 +30,6 @@ declare(strict_types=1);
 //     $that->source .= ' HOOK-AFTER-P5';
 // }, 5);
 
-// echo '<pre>' . Utils\Dump::out(Hook::getAll()) . '</pre>';
+// echo '<pre>' . VarDumper::out(Hook::getAll()) . '</pre>';
 
 // dump(Hook::getAll());

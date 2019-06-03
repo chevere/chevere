@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
-use Chevereto\Chevere\Dump\Dump;
+use Chevereto\Chevere\VarDumper\VarDumper;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
@@ -166,12 +166,12 @@ class Dumper
 
     protected function appendClass(string $class, string $type): void
     {
-        $this->output .= Dump::wrap('_class', $class).$type;
+        $this->output .= VarDumper::wrap('_class', $class).$type;
     }
 
     protected function appendFunction(string $function): void
     {
-        $this->output .= Dump::wrap('_function', $function.'()');
+        $this->output .= VarDumper::wrap('_function', $function.'()');
     }
 
     protected function handleFile(): void
@@ -183,7 +183,7 @@ class Dumper
 
     protected function appendFilepath(string $file, int $line): void
     {
-        $this->output .= "\n".Dump::wrap('_file', Path::normalize($file).':'.$line);
+        $this->output .= "\n".VarDumper::wrap('_file', Path::normalize($file).':'.$line);
     }
 
     protected function handleArgs(): void
@@ -197,7 +197,7 @@ class Dumper
 
     protected function appendArg(int $pos, $value): void
     {
-        $this->output .= 'Arg#'.$pos.' '.Dump::out($value, 0)."\n\n";
+        $this->output .= 'Arg#'.$pos.' '.VarDumper::out($value, 0)."\n\n";
     }
 
     protected function handleProccessOutput(): void

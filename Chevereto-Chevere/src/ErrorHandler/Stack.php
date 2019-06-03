@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\ErrorHandler;
 
-use Chevereto\Chevere\Dump\Dump;
+use Chevereto\Chevere\VarDumper\VarDumper;
 
 /**
  * Handles the ErrorHandler Exception stack trace.
@@ -107,14 +107,14 @@ class Stack
         array_pop($this->richTable);
         // Dump types map
         foreach ([
-            '%f%' => Dump::_FILE,
-            '%l%' => Dump::_FILE,
-            '%fl%' => Dump::_FILE,
-            '%c%' => Dump::_CLASS,
-            '%t%' => Dump::_OPERATOR,
-            '%m%' => Dump::_FUNCTION,
+            '%f%' => VarDumper::_FILE,
+            '%l%' => VarDumper::_FILE,
+            '%fl%' => VarDumper::_FILE,
+            '%c%' => VarDumper::_CLASS,
+            '%t%' => VarDumper::_OPERATOR,
+            '%m%' => VarDumper::_FUNCTION,
         ] as $k => $v) {
-            $this->richTable[$k] = isset($this->plainTable[$k]) ? Dump::wrap($v, $this->plainTable[$k]) : null;
+            $this->richTable[$k] = isset($this->plainTable[$k]) ? VarDumper::wrap($v, $this->plainTable[$k]) : null;
         }
         $this->richTable['%a%'] = $entry->getRichArgs();
     }

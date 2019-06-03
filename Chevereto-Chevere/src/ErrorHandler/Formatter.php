@@ -18,8 +18,8 @@ use ErrorException;
 use const Chevereto\Chevere\CORE_NS_HANDLE;
 use Chevereto\Chevere\Console;
 use Chevereto\Chevere\Path;
-use Chevereto\Chevere\Dump\Dump;
-use Chevereto\Chevere\Dump\DumpPlain;
+use Chevereto\Chevere\VarDumper\VarDumper;
+use Chevereto\Chevere\VarDumper\PlainVarDumper;
 use Chevereto\Chevere\Utils\Str;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -259,8 +259,8 @@ class Formatter
             $k = '_'.$v;
             $v = isset($GLOBALS[$k]) ? $GLOBALS[$k] : null;
             if ($v) {
-                $this->setRichContentSection($k, ['$'.$k, $this->wrapStringHr('<pre>'.Dump::out($v).'</pre>')]);
-                $this->setPlainContentSection($k, ['$'.$k, strip_tags($this->wrapStringHr(DumpPlain::out($v)))]);
+                $this->setRichContentSection($k, ['$'.$k, $this->wrapStringHr('<pre>'.VarDumper::out($v).'</pre>')]);
+                $this->setPlainContentSection($k, ['$'.$k, strip_tags($this->wrapStringHr(PlainVarDumper::out($v)))]);
             }
         }
     }

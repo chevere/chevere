@@ -11,21 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Dump;
+namespace Chevereto\Chevere\VarDumper;
 
-use Chevereto\Chevere\Interfaces\DumpInterface;
-use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Utils\Str;
+use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Reflector;
-use ReflectionObject;
 use ReflectionProperty;
+use ReflectionObject;
 
 /**
- * Another var_dump replacement.
- * FIXME: Doesn't work with BetterReflection objects.
+ * Analyze a variable and provide an output string representation of its type and data.
  */
-class Dump implements DumpInterface
+class VarDumper
 {
     const TYPE_STRING = 'string';
     const TYPE_FLOAT = 'float';
@@ -39,42 +37,6 @@ class Dump implements DumpInterface
     const _OPERATOR = '_operator';
     const _FUNCTION = '_function';
     const ANON_CLASS = 'class@anonymous';
-
-    /**
-     * Default color palette for each type and thing used.
-     * [id => color].
-     */
-    const PALETTE = [
-        self::TYPE_STRING => '#e67e22', // orange
-        self::TYPE_FLOAT => '#f1c40f', // yellow
-        self::TYPE_INTEGER => '#f1c40f', // yellow
-        self::TYPE_BOOLEAN => '#9b59b6', // purple
-        self::TYPE_NULL => '#7f8c8d', // grey
-        self::TYPE_OBJECT => '#e74c3c', // red
-        self::TYPE_ARRAY => '#2ecc71', // green
-        self::_FILE => null,
-        self::_CLASS => '#3498db', // blue
-        self::_OPERATOR => '#7f8c8d', // grey
-        self::_FUNCTION => '#9b59b6', // purple
-    ];
-
-    /**
-     * Default color palette for each type and thing used.
-     * [id => color_code].
-     */
-    const CONSOLE_PALETTE = [
-        self::TYPE_STRING => 'color_136', // yellow
-        self::TYPE_FLOAT => 'color_136', // yellow
-        self::TYPE_INTEGER => 'color_136', // yellow
-        self::TYPE_BOOLEAN => 'color_127', // purple
-        self::TYPE_NULL => 'color_245', // grey
-        self::TYPE_OBJECT => 'color_167', // red
-        self::TYPE_ARRAY => 'color_41', // green
-        self::_FILE => null,
-        self::_CLASS => 'color_147', // blue
-        self::_OPERATOR => 'color_245', // grey
-        self::_FUNCTION => 'color_127', // purple
-    ];
 
     const PROPERTIES_REFLECTION_MAP = [
         'public' => ReflectionProperty::IS_PUBLIC,
@@ -148,28 +110,28 @@ class Dump implements DumpInterface
         $this->handleSetTemplate();
         $this->handleSetParentheses();
         $this->setOutput(strtr($this->template, [
-            '%type' => static::wrap($this->type, $this->type),
-            '%val' => $this->val,
-            '%parentheses' => isset($this->parentheses) ? static::wrap(static::_OPERATOR, '('.$this->parentheses.')') : null,
-        ]));
+        '%type' => static::wrap($this->type, $this->type),
+        '%val' => $this->val,
+        '%parentheses' => isset($this->parentheses) ? static::wrap(static::_OPERATOR, '('.$this->parentheses.')') : null,
+    ]));
     }
 
     protected function handleTypes(): void
     {
         switch ($this->type) {
-            case static::TYPE_BOOLEAN:
-                $this->appendVal($this->expression ? 'TRUE' : 'FALSE');
-            break;
-            case static::TYPE_ARRAY:
-                $this->handleArrayType();
-            break;
-            case static::TYPE_OBJECT:
-                $this->handleObjectType();
-            break;
-            default:
-                $this->handleDefaultType();
-            break;
-        }
+        case static::TYPE_BOOLEAN:
+            $this->appendVal($this->expression ? 'TRUE' : 'FALSE');
+        break;
+        case static::TYPE_ARRAY:
+            $this->handleArrayType();
+        break;
+        case static::TYPE_OBJECT:
+            $this->handleObjectType();
+        break;
+        default:
+            $this->handleDefaultType();
+        break;
+    }
     }
 
     protected function handleObjectType(): void
@@ -273,14 +235,14 @@ class Dump implements DumpInterface
     protected function handleSetTemplate(): void
     {
         switch ($this->type) {
-            case static::TYPE_ARRAY:
-            case static::TYPE_OBJECT:
-                $this->setTemplate('%type %parentheses%val');
-            break;
-            default:
-                $this->setTemplate('%type %val %parentheses');
-            break;
-        }
+        case static::TYPE_ARRAY:
+        case static::TYPE_OBJECT:
+            $this->setTemplate('%type %parentheses%val');
+        break;
+        default:
+            $this->setTemplate('%type %val %parentheses');
+        break;
+    }
     }
 
     protected function handleSetParentheses(): void
@@ -320,16 +282,26 @@ class Dump implements DumpInterface
         return $this->output;
     }
 
-    public static function out($var, int $indent = null, array $dontDump = [], int $depth = 0): string
-    {
-        return (string) new static(...func_get_args());
-    }
-
+    /**
+     * Get color for palette key.
+     *
+     * @param string $key color palette key
+     *
+     * @return string color
+     */
     public static function getColorForKey(string $key): ?string
     {
-        return 'cli' == php_sapi_name() ? static::CONSOLE_PALETTE[$key] ?? null : static::PALETTE[$key] ?? null;
+        return 'cli' == php_sapi_name() ? Pallete::CONSOLE[$key] ?? null : Pallete::PALETTE[$key] ?? null;
     }
 
+    /**
+     * Wrap dump data into HTML.
+     *
+     * @param string $key  Type or algo key (see constants)
+     * @param mixed  $dump dump data
+     *
+     * @return string wrapped dump data
+     */
     public static function wrap(string $key, $dump): ?string
     {
         $color = static::getColorForKey($key);
@@ -344,5 +316,10 @@ class Dump implements DumpInterface
         } else {
             return (string) $dump;
         }
+    }
+
+    public static function out($var, int $indent = null, array $dontDump = [], int $depth = 0): string
+    {
+        return (string) new VarDumper(...func_get_args());
     }
 }
