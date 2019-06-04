@@ -51,34 +51,7 @@ class VarDumper extends VarDumperStatic
     protected $template;
 
     /** @var string */
-    protected $parentheses;
-
-    /** @var string */
-    protected $type;
-
-    /** @var mixed */
-    protected $val;
-
-    /** @var string */
-    protected $prefix;
-
-    /** @var string */
-    protected $expression;
-
-    /** @var string */
     protected $className;
-
-    /** @var mixed */
-    private $var;
-
-    /** @var int */
-    private $indent;
-
-    /** @var array */
-    private $dontDump;
-
-    /** @var int */
-    private $depth;
 
     /** @var array */
     private $properties;
@@ -86,67 +59,104 @@ class VarDumper extends VarDumperStatic
     /** @var Reflector */
     private $reflectionObject;
 
+    /** @var mixed */
+    public $var;
+
+    /** @var string */
+    public $expression;
+
+    /** @var int */
+    public $indent;
+
+    /** @var array */
+    public $dontDump;
+
+    /** @var int */
+    public $depth;
+
+    /** @var mixed */
+    public $val;
+
+    /** @var string */
+    public $prefix;
+
+    /** @var string */
+    public $type;
+
+    /** @var string */
+    public $parentheses;
+
+    //////////////////////////
+
+    /** @var Formatter */
+    protected $formatter;
+
     public function __construct($var, int $indent = null, array $dontDump = [], int $depth = 0)
     {
         ++$depth;
         $this->var = $var;
-        $this->indent = $indent ?? 0;
-        $this->dontDump = $dontDump;
-        $this->depth = $depth;
         // Maybe improve this to support any circular reference?
         if (is_array($this->var)) {
             $this->expression = array_merge([], $this->var);
         } else {
             $this->expression = $this->var;
         }
+        $this->indent = $indent ?? 0;
+        $this->dontDump = $dontDump;
+        $this->depth = $depth;
         $this->val = null;
-        $this->prefix = str_repeat(' <span style="border-left: 1px solid #bdc3c7;"></span>  ', $this->indent);
+        $this->prefix = str_repeat(Template::HTML_INLINE_PREFIX, $this->indent);
         $this->type = gettype($this->expression);
         if ('double' == $this->type) {
-            $this->type = static::TYPE_FLOAT;
+            $this->type = VarDumper::TYPE_FLOAT;
         }
-        $this->handleTypes();
+        $this->handleType($this->type);
         $this->handleSetTemplate();
         $this->handleSetParentheses();
-        $this->setOutput(strtr($this->template, [
-        '%type' => static::wrap($this->type, $this->type),
-        '%val' => $this->val,
-        '%parentheses' => isset($this->parentheses) ? static::wrap(static::_OPERATOR, '('.$this->parentheses.')') : null,
-    ]));
+        $this->output = strtr($this->template, [
+            '%type' => static::wrap($this->type, $this->type),
+            '%val' => $this->val,
+            '%parentheses' => isset($this->parentheses) ? static::wrap(static::_OPERATOR, '('.$this->parentheses.')') : null,
+        ]);
     }
 
-    protected function handleTypes(): void
+    protected function handleType(string $type): void
     {
-        switch ($this->type) {
-        case static::TYPE_BOOLEAN:
-            $this->appendVal($this->expression ? 'TRUE' : 'FALSE');
-        break;
-        case static::TYPE_ARRAY:
-            $this->handleArrayType();
-        break;
-        case static::TYPE_OBJECT:
-            $this->handleObjectType();
-        break;
-        default:
-            $this->handleDefaultType();
-        break;
-    }
+        switch ($type) {
+            case static::TYPE_BOOLEAN:
+                $this->processBoolean();
+            break;
+            case static::TYPE_ARRAY:
+                $this->processArray();
+            break;
+            case static::TYPE_OBJECT:
+                $this->processObject();
+            break;
+            default:
+                $this->processDefault();
+            break;
+        }
     }
 
-    protected function handleObjectType(): void
+    protected function processBoolean(): void
+    {
+        $this->val .= $this->expression ? 'TRUE' : 'FALSE';
+    }
+
+    protected function processObject(): void
     {
         ++$this->indent;
         $this->reflectionObject = new ReflectionObject($this->expression);
         if (in_array($this->reflectionObject->getName(), $this->dontDump)) {
-            $this->appendVal(static::wrap(static::_OPERATOR, '<i>'.$this->reflectionObject->getName().'</i>'));
+            $this->val .= static::wrap(static::_OPERATOR, '<i>'.$this->reflectionObject->getName().'</i>');
 
             return;
         }
         $this->handleSetObjectProperties();
         $this->processObjectProperties();
-        $this->setClassName(get_class($this->expression));
+        $this->className = get_class($this->expression);
         $this->handleNormalizeClassName();
-        $this->setParentheses($this->className);
+        $this->parentheses = $this->className;
     }
 
     protected function handleSetObjectProperties(): void
@@ -170,14 +180,13 @@ class VarDumper extends VarDumperStatic
             $isCircularRef = false;
             $visibility = implode(' ', $this->properties[$k]['visibility'] ?? $this->properties['visibility']);
             $operator = static::wrap(static::_OPERATOR, '->');
-            $this->appendVal("\n$this->prefix <i>$visibility</i> ".htmlspecialchars($k)." $operator ");
+            $this->val .= "\n".$this->prefix."<i>$visibility</i> ".htmlspecialchars($k)." $operator ";
             $aux = $v['value'];
             if (is_object($aux) && property_exists($aux, $k)) {
                 try {
                     $r = new ReflectionObject($aux);
                     $p = $r->getProperty($k);
                     $p->setAccessible(true);
-
                     if ($aux == $p->getValue($aux)) {
                         $isCircularRef = true;
                     }
@@ -186,94 +195,69 @@ class VarDumper extends VarDumperStatic
                 }
             }
             if ($isCircularRef) {
-                $this->appendVal(static::wrap(static::_OPERATOR, '(<i>circular object reference</i>)'));
+                $this->val .= static::wrap(static::_OPERATOR, '(<i>circular object reference</i>)');
             } else {
                 if ($this->depth < 4) {
-                    $this->appendVal(new static($aux, $this->indent, $this->dontDump, $this->depth));
+                    $this->val .= new static($aux, $this->indent, $this->dontDump, $this->depth);
                 } else {
-                    $this->appendVal(static::wrap(static::_OPERATOR, '(<i>max depth reached</i>)'));
+                    $this->val .= static::wrap(static::_OPERATOR, '(<i>max depth reached</i>)');
                 }
             }
         }
     }
 
-    protected function handleArrayType(): void
+    protected function processArray(): void
     {
         ++$this->indent;
         foreach ($this->expression as $k => $v) {
             $operator = static::wrap(static::_OPERATOR, '=>');
-            $this->appendVal("\n$this->prefix ".htmlspecialchars((string) $k)." $operator ");
+            $this->val .= "\n".$this->prefix.' '.htmlspecialchars((string) $k)." $operator ";
             $aux = $v;
             $isCircularRef = is_array($aux) && isset($aux[$k]) && $aux == $aux[$k];
             if ($isCircularRef) {
-                $this->appendVal(static::wrap(static::_OPERATOR, '(<i>circular array reference</i>)'));
+                $this->val .= static::wrap(static::_OPERATOR, '(<i>circular array reference</i>)');
             } else {
-                $this->appendVal((string) new static($aux, $this->indent, $this->dontDump));
+                $this->val .= (string) new static($aux, $this->indent, $this->dontDump);
             }
         }
-        $this->setParentheses('size='.count($this->expression));
+        $this->parentheses = 'size='.count($this->expression);
     }
 
     protected function handleNormalizeClassName(): void
     {
         if (Str::startsWith(static::ANON_CLASS, $this->className)) {
-            $this->setClassName(Path::normalize($this->className));
+            $this->className = Path::normalize($this->className);
         }
     }
 
-    protected function handleDefaultType(): void
+    protected function processDefault(): void
     {
         $is_string = is_string($this->expression);
         $is_numeric = is_numeric($this->expression);
         if ($is_string || $is_numeric) {
-            $this->setParentheses('length='.strlen($is_numeric ? ((string) $this->expression) : $this->expression));
-            $this->appendVal(strval($this->expression)); // htmlspecialchars($this->expression)
+            $this->parentheses = 'length='.strlen($is_numeric ? ((string) $this->expression) : $this->expression);
+            $this->val .= strval($this->expression); // htmlspecialchars($this->expression)
         }
     }
 
     protected function handleSetTemplate(): void
     {
         switch ($this->type) {
-        case static::TYPE_ARRAY:
-        case static::TYPE_OBJECT:
-            $this->setTemplate('%type %parentheses%val');
-        break;
-        default:
-            $this->setTemplate('%type %val %parentheses');
-        break;
-    }
+            case static::TYPE_ARRAY:
+            case static::TYPE_OBJECT:
+                $this->template = '%type %parentheses%val';
+            break;
+            default:
+                $this->template = '%type %val %parentheses';
+            break;
+        }
     }
 
     protected function handleSetParentheses(): void
     {
         if (isset($this->parentheses) && false !== strpos($this->parentheses, '=')) {
-            $this->setParentheses('<i>'.$this->parentheses.'</i>');
+            $this->parentheses = '<i>'.$this->parentheses.'</i>';
         }
-    }
-
-    protected function setClassName(string $className): void
-    {
-        $this->className = $className;
-    }
-
-    protected function setTemplate(string $template): void
-    {
-        $this->template = $template;
-    }
-
-    protected function appendVal($val): void
-    {
-        $this->val .= $val;
-    }
-
-    protected function setParentheses(string $parentheses): void
-    {
-        $this->parentheses = $parentheses;
-    }
-
-    protected function setOutput(string $output): void
-    {
-        $this->output = $output;
     }
 
     public function __toString(): string

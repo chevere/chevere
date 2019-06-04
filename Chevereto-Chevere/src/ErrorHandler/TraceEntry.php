@@ -21,7 +21,7 @@ use Chevereto\Chevere\VarDumper\VarDumper;
 use Chevereto\Chevere\VarDumper\PlainVarDumper;
 
 /**
- * TraceEntry prepares the Exception trace for being used with our Stack.
+ * TraceEntry prepares the exception trace for being used with Stack.
  */
 class TraceEntry
 {

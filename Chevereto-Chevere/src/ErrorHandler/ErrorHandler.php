@@ -32,15 +32,7 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Handler\FirePHPHandler;
 
 /**
- * Super flat and minimal error handler utility.
- *
- * - Handles PHP errors as exceptions
- * - Provides clean and usable messages in HTML/markdown format
- * - Logs to system using Monolog
- * - Logs on a daily basis or any alternative datetime format you want to
- * - Uses UTC for everything
- * - Configurable debug output (app/config.php)
- * - CLI channel
+ * The Chevere ErrorHandler.
  */
 class ErrorHandler implements ErrorHandlerInterface
 {
@@ -51,7 +43,7 @@ class ErrorHandler implements ErrorHandlerInterface
     const DEBUG = null;
 
     /** @var string Null will use App\PATH_LOGS ? PATH_LOGS ? traverse */
-    const PATH_LOGS = ROOT_PATH . App\PATH . 'var/logs/';
+    const PATH_LOGS = ROOT_PATH.App\PATH.'var/logs/';
 
     /** Readable PHP error mapping */
     const ERROR_TABLE = [
@@ -223,9 +215,9 @@ class ErrorHandler implements ErrorHandlerInterface
     {
         $this->loggerLevel = 'eeee';
         $path = Path::normalize($basePath);
-        $path = rtrim($path, '/') . '/';
+        $path = rtrim($path, '/').'/';
         $date = gmdate($this->logDateFolderFormat, $this->timestamp);
-        $this->logFilename = $path . $this->loggerLevel . '/' . $date . $this->timestamp . '_' . $this->id . '.log';
+        $this->logFilename = $path.$this->loggerLevel.'/'.$date.$this->timestamp.'_'.$this->id.'.log';
     }
 
     protected function setLogger(string $name)

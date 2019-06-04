@@ -24,7 +24,7 @@ use Chevereto\Chevere\Utils\Str;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Provides formatting in HTML (default), plain text and console (colorized).
+ * Formats the error exception in HTML (default), console and plain text.
  */
 class Formatter
 {

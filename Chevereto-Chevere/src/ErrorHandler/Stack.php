@@ -16,7 +16,7 @@ namespace Chevereto\Chevere\ErrorHandler;
 use Chevereto\Chevere\VarDumper\VarDumper;
 
 /**
- * Handles the ErrorHandler Exception stack trace.
+ * Handles the ErrorHandler exception stack trace.
  */
 class Stack
 {

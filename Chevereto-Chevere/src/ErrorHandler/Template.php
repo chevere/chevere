@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\ErrorHandler;
 
+/**
+ * Stores the template strings used by ErrorHandler.
+ */
 class Template
 {
     /** @var string Title used when debug is disabled (App config) */

@@ -19,6 +19,9 @@ use Chevereto\Chevere\Json;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Symfony\Component\HttpFoundation\JsonResponse as HttpJsonResponse;
 
+/**
+ * Provides ErrorHandler output by passing a Formatter.
+ */
 class Output
 {
     public $content;
@@ -72,7 +75,7 @@ class Output
                 unset($log['filename']);
             break;
             case 1:
-                $response[0] = $this->thrown . ' in ' . $this->formatter->getTemplateTag('file') . ':' . $this->formatter->getTemplateTag('line');
+                $response[0] = $this->thrown.' in '.$this->formatter->getTemplateTag('file').':'.$this->formatter->getTemplateTag('line');
                 $error = [];
                 foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
                     $error[$v] = $this->formatter->getTemplateTag($v);
@@ -130,11 +133,11 @@ class Output
             $richSection = $this->richContentSections[$k] ?? null;
             $section_length = count($plainSection);
             if (0 == $i || isset($plainSection[1])) {
-                $this->richContentTemplate .= '<div class="t' . (0 == $i ? ' t--scream' : null) . '">' . $richSection[0] . '</div>';
+                $this->richContentTemplate .= '<div class="t'.(0 == $i ? ' t--scream' : null).'">'.$richSection[0].'</div>';
                 $this->plainContentTemplate .= html_entity_decode($plainSection[0]);
                 if (0 == $i) {
-                    $this->richContentTemplate .= "\n" . '<div class="hide">' . str_repeat('=', $this->formatter::COLUMNS) . '</div>';
-                    $this->plainContentTemplate .= "\n" . str_repeat('=', $this->formatter::COLUMNS);
+                    $this->richContentTemplate .= "\n".'<div class="hide">'.str_repeat('=', $this->formatter::COLUMNS).'</div>';
+                    $this->plainContentTemplate .= "\n".str_repeat('=', $this->formatter::COLUMNS);
                 }
             }
             if ($i > 0) {
@@ -144,12 +147,12 @@ class Output
                         $this->richContentTemplate .= "\n";
                         $this->plainContentTemplate .= "\n";
                     }
-                    $this->richContentTemplate .= '<div class="c">' . $richSection[$j] . '</div>';
+                    $this->richContentTemplate .= '<div class="c">'.$richSection[$j].'</div>';
                     $this->plainContentTemplate .= $plainSection[$j];
                 }
             }
             if ($i + 1 < $sections_length) {
-                $this->richContentTemplate .= "\n" . '<br>' . "\n";
+                $this->richContentTemplate .= "\n".'<br>'."\n";
                 $this->plainContentTemplate .= "\n\n";
             }
             ++$i;
