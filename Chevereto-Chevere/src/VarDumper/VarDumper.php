@@ -86,11 +86,6 @@ class VarDumper extends VarDumperStatic
     /** @var string */
     public $parentheses;
 
-    //////////////////////////
-
-    /** @var Formatter */
-    protected $formatter;
-
     public function __construct($var, int $indent = null, array $dontDump = [], int $depth = 0)
     {
         ++$depth;
@@ -110,19 +105,7 @@ class VarDumper extends VarDumperStatic
         if ('double' == $this->type) {
             $this->type = VarDumper::TYPE_FLOAT;
         }
-        $this->handleType($this->type);
-        $this->handleSetTemplate();
-        $this->handleSetParentheses();
-        $this->output = strtr($this->template, [
-            '%type' => static::wrap($this->type, $this->type),
-            '%val' => $this->val,
-            '%parentheses' => isset($this->parentheses) ? static::wrap(static::_OPERATOR, '('.$this->parentheses.')') : null,
-        ]);
-    }
-
-    protected function handleType(string $type): void
-    {
-        switch ($type) {
+        switch ($this->type) {
             case static::TYPE_BOOLEAN:
                 $this->processBoolean();
             break;
@@ -136,6 +119,13 @@ class VarDumper extends VarDumperStatic
                 $this->processDefault();
             break;
         }
+        $this->handleSetTemplate();
+        $this->handleSetParentheses();
+        $this->output = strtr($this->template, [
+            '%type' => static::wrap($this->type, $this->type),
+            '%val' => $this->val,
+            '%parentheses' => isset($this->parentheses) ? static::wrap(static::_OPERATOR, '('.$this->parentheses.')') : null,
+        ]);
     }
 
     protected function processBoolean(): void
@@ -148,7 +138,7 @@ class VarDumper extends VarDumperStatic
         ++$this->indent;
         $this->reflectionObject = new ReflectionObject($this->expression);
         if (in_array($this->reflectionObject->getName(), $this->dontDump)) {
-            $this->val .= static::wrap(static::_OPERATOR, '<i>'.$this->reflectionObject->getName().'</i>');
+            $this->val .= static::wrap(static::_OPERATOR, static::getEmphasized($this->reflectionObject->getName()));
 
             return;
         }
@@ -180,7 +170,7 @@ class VarDumper extends VarDumperStatic
             $isCircularRef = false;
             $visibility = implode(' ', $this->properties[$k]['visibility'] ?? $this->properties['visibility']);
             $operator = static::wrap(static::_OPERATOR, '->');
-            $this->val .= "\n".$this->prefix."<i>$visibility</i> ".htmlspecialchars($k)." $operator ";
+            $this->val .= "\n".$this->prefix.static::getEmphasized($visibility).' '.htmlspecialchars($k)." $operator ";
             $aux = $v['value'];
             if (is_object($aux) && property_exists($aux, $k)) {
                 try {
@@ -195,12 +185,12 @@ class VarDumper extends VarDumperStatic
                 }
             }
             if ($isCircularRef) {
-                $this->val .= static::wrap(static::_OPERATOR, '(<i>circular object reference</i>)');
+                $this->val .= static::wrap(static::_OPERATOR, '('.static::getEmphasized('circular object reference').')');
             } else {
                 if ($this->depth < 4) {
                     $this->val .= new static($aux, $this->indent, $this->dontDump, $this->depth);
                 } else {
-                    $this->val .= static::wrap(static::_OPERATOR, '(<i>max depth reached</i>)');
+                    $this->val .= static::wrap(static::_OPERATOR, '('.static::getEmphasized('max depth reached').')');
                 }
             }
         }
@@ -215,7 +205,7 @@ class VarDumper extends VarDumperStatic
             $aux = $v;
             $isCircularRef = is_array($aux) && isset($aux[$k]) && $aux == $aux[$k];
             if ($isCircularRef) {
-                $this->val .= static::wrap(static::_OPERATOR, '(<i>circular array reference</i>)');
+                $this->val .= static::wrap(static::_OPERATOR, '('.static::getEmphasized('circular array reference').')');
             } else {
                 $this->val .= (string) new static($aux, $this->indent, $this->dontDump);
             }
@@ -256,8 +246,13 @@ class VarDumper extends VarDumperStatic
     protected function handleSetParentheses(): void
     {
         if (isset($this->parentheses) && false !== strpos($this->parentheses, '=')) {
-            $this->parentheses = '<i>'.$this->parentheses.'</i>';
+            $this->parentheses = static::getEmphasized($this->parentheses);
         }
+    }
+
+    public static function getEmphasized(string $string): string
+    {
+        return sprintf(Template::HTML_EMPHASIS, $string);
     }
 
     public function __toString(): string
