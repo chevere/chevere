@@ -144,7 +144,9 @@ class VarDumper extends VarDumperStatic
             return;
         }
         $this->setProperties();
-        $this->processObjectProperties();
+        foreach ($this->properties as $k => $v) {
+            $this->processObjectProperty($k, $v);
+        }
         $this->className = get_class($this->expression);
         $this->handleNormalizeClassName();
         $this->parentheses = $this->className;
@@ -165,35 +167,30 @@ class VarDumper extends VarDumperStatic
         }
     }
 
-    protected function processObjectProperties(): void
+    protected function processObjectProperty($key, $var): void
     {
-        foreach ($this->properties as $k => $v) {
-            $isCircularRef = false;
-            $visibility = implode(' ', $this->properties[$k]['visibility'] ?? $this->properties['visibility']);
-            $operator = static::wrap(static::_OPERATOR, '->');
-            $this->val .= "\n".$this->prefix.static::getEmphasized($visibility).' '.htmlspecialchars($k)." $operator ";
-            $aux = $v['value'];
-            if (is_object($aux) && property_exists($aux, $k)) {
-                try {
-                    $r = new ReflectionObject($aux);
-                    $p = $r->getProperty($k);
-                    $p->setAccessible(true);
-                    if ($aux == $p->getValue($aux)) {
-                        $isCircularRef = true;
-                    }
-                } catch (Throwable $e) {
-                    continue;
+        $visibility = implode(' ', $var['visibility'] ?? $this->properties['visibility']);
+        $operator = static::wrap(static::_OPERATOR, '->');
+        $this->val .= "\n".$this->prefix.static::getEmphasized($visibility).' '.htmlspecialchars($key)." $operator ";
+        $aux = $var['value'];
+        if (is_object($aux) && property_exists($aux, $key)) {
+            try {
+                $r = new ReflectionObject($aux);
+                $p = $r->getProperty($key);
+                $p->setAccessible(true);
+                if ($aux == $p->getValue($aux)) {
+                    $this->val .= static::wrap(static::_OPERATOR, '('.static::getEmphasized('circular object reference').')');
                 }
+
+                return;
+            } catch (Throwable $e) {
+                return;
             }
-            if ($isCircularRef) {
-                $this->val .= static::wrap(static::_OPERATOR, '('.static::getEmphasized('circular object reference').')');
-            } else {
-                if ($this->depth < 4) {
-                    $this->val .= new static($aux, $this->indent, $this->dontDump, $this->depth);
-                } else {
-                    $this->val .= static::wrap(static::_OPERATOR, '('.static::getEmphasized('max depth reached').')');
-                }
-            }
+        }
+        if ($this->depth < 4) {
+            $this->val .= new static($aux, $this->indent, $this->dontDump, $this->depth);
+        } else {
+            $this->val .= static::wrap(static::_OPERATOR, '('.static::getEmphasized('max depth reached').')');
         }
     }
 
