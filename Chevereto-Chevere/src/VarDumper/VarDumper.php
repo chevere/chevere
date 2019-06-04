@@ -105,7 +105,7 @@ class VarDumper extends VarDumperStatic
         if ('double' == $this->type) {
             $this->type = VarDumper::TYPE_FLOAT;
         }
-
+        $this->handleType();
         $this->handleSetTemplate();
         $this->handleSetParentheses();
         $this->output = strtr($this->template, [
@@ -115,16 +115,18 @@ class VarDumper extends VarDumperStatic
         ]);
     }
 
-    protected function handleType(string $type): void
+    protected function handleType(): void
     {
-        switch ($type) {
+        switch ($this->type) {
             case static::TYPE_BOOLEAN:
-                $this->processBoolean();
+                $this->val .= $this->expression ? 'TRUE' : 'FALSE';
             break;
             case static::TYPE_ARRAY:
+                ++$this->indent;
                 $this->processArray();
             break;
             case static::TYPE_OBJECT:
+                ++$this->indent;
                 $this->processObject();
             break;
             default:
@@ -133,28 +135,22 @@ class VarDumper extends VarDumperStatic
         }
     }
 
-    protected function processBoolean(): void
-    {
-        $this->val .= $this->expression ? 'TRUE' : 'FALSE';
-    }
-
     protected function processObject(): void
     {
-        ++$this->indent;
         $this->reflectionObject = new ReflectionObject($this->expression);
         if (in_array($this->reflectionObject->getName(), $this->dontDump)) {
             $this->val .= static::wrap(static::_OPERATOR, static::getEmphasized($this->reflectionObject->getName()));
 
             return;
         }
-        $this->handleSetObjectProperties();
+        $this->setProperties();
         $this->processObjectProperties();
         $this->className = get_class($this->expression);
         $this->handleNormalizeClassName();
         $this->parentheses = $this->className;
     }
 
-    protected function handleSetObjectProperties(): void
+    protected function setProperties(): void
     {
         $this->properties = [];
         foreach (static::PROPERTIES_REFLECTION_MAP as $k => &$v) {
@@ -203,7 +199,6 @@ class VarDumper extends VarDumperStatic
 
     protected function processArray(): void
     {
-        ++$this->indent;
         foreach ($this->expression as $k => $v) {
             $operator = static::wrap(static::_OPERATOR, '=>');
             $this->val .= "\n".$this->prefix.' '.htmlspecialchars((string) $k)." $operator ";
