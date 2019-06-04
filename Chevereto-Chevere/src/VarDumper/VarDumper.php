@@ -105,7 +105,19 @@ class VarDumper extends VarDumperStatic
         if ('double' == $this->type) {
             $this->type = VarDumper::TYPE_FLOAT;
         }
-        switch ($this->type) {
+
+        $this->handleSetTemplate();
+        $this->handleSetParentheses();
+        $this->output = strtr($this->template, [
+            '%type' => static::wrap($this->type, $this->type),
+            '%val' => $this->val,
+            '%parentheses' => isset($this->parentheses) ? static::wrap(static::_OPERATOR, '('.$this->parentheses.')') : null,
+        ]);
+    }
+
+    protected function handleType(string $type): void
+    {
+        switch ($type) {
             case static::TYPE_BOOLEAN:
                 $this->processBoolean();
             break;
@@ -119,13 +131,6 @@ class VarDumper extends VarDumperStatic
                 $this->processDefault();
             break;
         }
-        $this->handleSetTemplate();
-        $this->handleSetParentheses();
-        $this->output = strtr($this->template, [
-            '%type' => static::wrap($this->type, $this->type),
-            '%val' => $this->val,
-            '%parentheses' => isset($this->parentheses) ? static::wrap(static::_OPERATOR, '('.$this->parentheses.')') : null,
-        ]);
     }
 
     protected function processBoolean(): void
