@@ -94,15 +94,17 @@ class Output
             default:
             case 0:
                 $this->content = Template::NO_DEBUG_CONTENT_HTML;
-                $this->formatter->addTemplateTag('content', $this->content);
-                $this->formatter->addTemplateTag('title', Template::NO_DEBUG_TITLE_PLAIN);
+                $this->addTemplateTag('content', $this->content);
+                $this->addTemplateTag('title', Template::NO_DEBUG_TITLE_PLAIN);
                 $bodyTemplate = Template::NO_DEBUG_BODY_HTML;
             break;
             case 1:
                 $bodyTemplate = Template::DEBUG_BODY_HTML;
             break;
         }
-        $this->formatter->addTemplateTag('body', strtr($bodyTemplate, $this->templateTags));
+        // HTML error content is empty!
+        // dd($this->templateTags['%content%']);
+        $this->addTemplateTag('body', strtr($bodyTemplate, $this->templateTags));
         $this->output = strtr(Template::HTML_TEMPLATE, $this->templateTags);
     }
 
