@@ -24,7 +24,7 @@ class Number
      */
     public static function abbreviate(int $number, int $precision = 0): ?string
     {
-        if ($num != 0) {
+        if ($number != 0) {
             $abbreviations = [
                 24 => 'Y',
                 21 => 'Z',
@@ -37,16 +37,16 @@ class Number
                 0 => null,
             ];
             foreach ($abbreviations as $exponent => $abbreviation) {
-                if ($num >= pow(10, $exponent)) {
-                    $div = $num / pow(10, $exponent);
+                if ($number >= pow(10, $exponent)) {
+                    $div = $number / pow(10, $exponent);
                     $float = floatval($div);
-                    $num = null === $abbreviation ? (string) $float : (round($float, $precision).$abbreviation);
+                    $number = null === $abbreviation ? (string) $float : (round($float, $precision).$abbreviation);
                     break;
                 }
             }
         }
 
-        return (string) $num;
+        return (string) $number;
     }
 
     /**
