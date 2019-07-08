@@ -14,18 +14,13 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Chevereto\Chevere\Controller;
-use Chevereto\Chevere\Path;
 
-// use Chevereto\Chevere\PathHandle;
+// use Chevereto\Chevere\Utils\Random;
 
 class Index extends Controller
 {
     public function __invoke()
     {
-        // $res = PathHandle::get('controllers:index');
-        $res = Path::fromHandle('controllers:ee');
-        dump($res);
-        die();
         // throw new \Exception('duh');
         $this->getResponse()
             ->setMeta(['Hello' => 'World!'])
