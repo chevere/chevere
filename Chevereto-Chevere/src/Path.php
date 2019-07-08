@@ -208,7 +208,7 @@ class Path
             $handleContext = ROOT_PATH.App\PATH;
         }
         $handleContext = static::tailDir($handleContext);
-        $pathHandle->validateContext($handleContext)->setContext($handleContext);
+        $pathHandle->setContext($handleContext)->validateContext();
         $pathHandle->process();
 
         return $pathHandle->getPath();

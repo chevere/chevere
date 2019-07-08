@@ -23,13 +23,19 @@ class PathHandle
     /** @var string */
     protected $path;
 
+    /** @var string|null */
+    protected $filename;
+
+    /** @var array|null */
+    protected $explode;
+
     /**
      * @param string $identifier Path identifier (<dirname>:<file>)
      */
     public function __construct(string $identifier)
     {
-        $this->validateIdentifier($identifier);
         $this->identifier = $identifier;
+        $this->validateIdentifier();
     }
 
     /**
@@ -42,24 +48,41 @@ class PathHandle
         return $this;
     }
 
-    public function validateIdentifier(string $identifier)
+    public function validateIdentifier()
     {
-        if (!($identifier != '' && !ctype_space($identifier))) {
+        if (!($this->identifier != '' && !ctype_space($this->identifier))) {
             throw new CoreException(
                 (new Message('String %a needed, %v provided.'))
                     ->code('%a', '$identifier')
-                    ->code('%v', ' empty or null string')
+                    ->code('%v', 'empty or null string')
             );
+        }
+        if (Utils\Str::contains(':', $this->identifier)) {
+            if (Utils\Str::endsWith(':', $this->identifier)) {
+                throw new CoreException(
+                    (new Message('Wrong string %a format, %v provided (trailing colon).'))
+                        ->code('%a', '$identifier')
+                        ->code('%v', $this->identifier)
+                );
+            }
+            $this->filename = $this->filenameFromIdentifier();
+            if (Utils\Str::contains('/', $this->filename)) {
+                throw new CoreException(
+                    (new Message('Wrong string %a format, %v provided (path separators in filename).'))
+                        ->code('%a', '$identifier')
+                        ->code('%v', $this->identifier)
+                );
+            }
         }
     }
 
-    public function validateContext(string $context)
+    public function validateContext()
     {
-        if (!Path::isAbsolute($context)) {
+        if (!Path::isAbsolute($this->context)) {
             throw new CoreException(
                 (new Message('String %a must be an absolute path, %v provided.'))
                     ->code('%a', '$context')
-                    ->code('%v', $context)
+                    ->code('%v', $this->context)
             );
         }
 
@@ -73,14 +96,9 @@ class PathHandle
         }
         $this->path = Path::normalize($this->identifier);
         if (Utils\Str::contains(':', $this->path)) {
-            $this->processIdentifier();
+            $this->path = $this->processIdentifier();
         } else {
-            // If $this->path does't contains ":", we assume that it is a directory or a explicit filepath
-            $extension = pathinfo($this->path, PATHINFO_EXTENSION);
-            // No extension => add trailing slash to path
-            if ($extension == false) {
-                $this->path = Path::tailDir($this->path);
-            }
+            $this->path = $this->processPath();
         }
         // $this->path is not an absolute path neither a wrapper or anything like that
         if (!Path::isAbsolute($this->path)) {
@@ -90,29 +108,38 @@ class PathHandle
         $this->path = Path::resolve($this->path);
     }
 
-    protected function processIdentifier()
+    public function filenameFromIdentifier(): string
     {
-        $explode = explode(':', $this->path);
-        $filename = end($explode);
-        if (is_string($filename)) {
-            // Last prop doesn't look like a filename
-            if (Utils\Str::contains('/', $filename)) {
-                unset($filename);
-            } else {
-                // Append .php by default
-                if (pathinfo($filename, PATHINFO_EXTENSION) == null) {
-                    $filename .= '.php';
-                }
-                // Unset the last element (file) from $explode
-                array_pop($explode);
-                // Rebuild path
-                $this->path = join(':', $explode);
-                if (strlen($this->path) > 0) {
-                    $this->path = Path::tailDir($this->path);
-                }
-                $this->path .= $filename;
-            }
+        $this->explode = explode(':', $this->identifier);
+
+        return end($this->explode);
+    }
+
+    protected function processIdentifier(): string
+    {
+        if (pathinfo($this->filename, PATHINFO_EXTENSION) == null) {
+            $this->filename .= '.php';
         }
+        array_pop($this->explode);
+        $path = join(':', $this->explode);
+        if (strlen($path) > 0) {
+            $path = Path::tailDir($path);
+        }
+        $path .= $this->filename;
+
+        return $path;
+    }
+
+    protected function processPath(): string
+    {
+        // If $this->path does't contains ":", we assume that it is a directory or a explicit filepath
+        $extension = pathinfo($this->path, PATHINFO_EXTENSION);
+        // No extension => add trailing slash to path
+        if ($extension == false) {
+            return Path::tailDir($this->path);
+        }
+
+        return $this->path;
     }
 
     public function getPath(): string

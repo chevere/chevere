@@ -23,7 +23,7 @@ class Index extends Controller
     public function __invoke()
     {
         // $res = PathHandle::get('controllers:index');
-        $res = Path::fromHandle('controllers:index');
+        $res = Path::fromHandle('controllers:ee');
         dump($res);
         die();
         // throw new \Exception('duh');
