@@ -12,9 +12,6 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Utils;
 
-use Chevereto\Chevere\Message;
-use Exception;
-
 class Number
 {
     /**
@@ -25,17 +22,8 @@ class Number
      *
      * @return string Abbreviated number (ie. 2K or 1M).
      */
-    public static function abbreviate($number, int $precision = 0): ?string
+    public static function abbreviate(int $number, int $precision = 0): ?string
     {
-        if (is_numeric($number)) {
-            $num = $number;
-        } else {
-            throw new Exception(
-                (new Message('Expecting %a to be a numeric type, %t provided.'))
-                    ->code('%a', '$number')
-                    ->code('%t', gettype($number))
-            );
-        }
         if ($num != 0) {
             $abbreviations = [
                 24 => 'Y',

@@ -26,7 +26,7 @@ class PathHandle
     /** @var string|null */
     protected $filename;
 
-    /** @var array|null */
+    /** @var array */
     protected $explode;
 
     /**
