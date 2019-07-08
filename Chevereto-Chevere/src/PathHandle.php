@@ -71,43 +71,48 @@ class PathHandle
         if (Utils\Str::endsWith('.php', $this->identifier) && File::exists($this->identifier)) {
             return Path::isAbsolute($this->identifier) ? $this->identifier : Path::absolute($this->identifier);
         }
-        $path = Path::normalize($this->identifier);
-        if (Utils\Str::contains(':', $path)) {
-            $explode = explode(':', $path);
-            $filename = end($explode);
-            if (is_string($filename)) {
-                // Last prop doesn't look like a filename
-                if (Utils\Str::contains('/', $filename)) {
-                    unset($filename);
-                } else {
-                    // Append .php by default
-                    if (pathinfo($filename, PATHINFO_EXTENSION) == null) {
-                        $filename .= '.php';
-                    }
-                    // Unset the last element (file) from $explode
-                    array_pop($explode);
-                    // Rebuild path
-                    $path = join(':', $explode);
-                    if (strlen($path) > 0) {
-                        $path = Path::tailDir($path);
-                    }
-                    $path .= $filename;
-                }
-            }
+        $this->path = Path::normalize($this->identifier);
+        if (Utils\Str::contains(':', $this->path)) {
+            $this->processIdentifier();
         } else {
-            // If $path does't contains ":", we assume that it is a directory or a explicit filepath
-            $extension = pathinfo($path, PATHINFO_EXTENSION);
+            // If $this->path does't contains ":", we assume that it is a directory or a explicit filepath
+            $extension = pathinfo($this->path, PATHINFO_EXTENSION);
             // No extension => add trailing slash to path
             if ($extension == false) {
-                $path = Path::tailDir($path);
+                $this->path = Path::tailDir($this->path);
             }
         }
-        // $path is not an absolute path neither a wrapper or anything like that
-        if (!Path::isAbsolute($path)) {
-            $path = $this->context.$path;
+        // $this->path is not an absolute path neither a wrapper or anything like that
+        if (!Path::isAbsolute($this->path)) {
+            $this->path = $this->context.$this->path;
         }
         // Resolve . and ..
-        $this->path = Path::resolve($path);
+        $this->path = Path::resolve($this->path);
+    }
+
+    protected function processIdentifier()
+    {
+        $explode = explode(':', $this->path);
+        $filename = end($explode);
+        if (is_string($filename)) {
+            // Last prop doesn't look like a filename
+            if (Utils\Str::contains('/', $filename)) {
+                unset($filename);
+            } else {
+                // Append .php by default
+                if (pathinfo($filename, PATHINFO_EXTENSION) == null) {
+                    $filename .= '.php';
+                }
+                // Unset the last element (file) from $explode
+                array_pop($explode);
+                // Rebuild path
+                $this->path = join(':', $explode);
+                if (strlen($this->path) > 0) {
+                    $this->path = Path::tailDir($this->path);
+                }
+                $this->path .= $filename;
+            }
+        }
     }
 
     public function getPath(): string
