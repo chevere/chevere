@@ -14,12 +14,19 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Chevereto\Chevere\Controller;
+use Chevereto\Chevere\Path;
+
+// use Chevereto\Chevere\PathHandle;
 
 class Index extends Controller
 {
     public function __invoke()
     {
-        throw new \Exception('duh');
+        // $res = PathHandle::get('controllers:index');
+        $res = Path::fromHandle('controllers:index');
+        dump($res);
+        die();
+        // throw new \Exception('duh');
         $this->getResponse()
             ->setMeta(['Hello' => 'World!'])
             ->addData('info', 'api', ['entry' => 'HTTP GET /api', 'description' => 'Retrieves the exposed API.'])

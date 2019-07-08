@@ -12,8 +12,6 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
-use Exception;
-
 class Path
 {
     /**
@@ -203,70 +201,17 @@ class Path
      */
     public static function fromHandle(string $pathIdentifier, string $rootContext = null): string
     {
-        try {
-            Validation::single('$pathIdentifier', $pathIdentifier, function (string $string) {
-                return $string != '' && !ctype_space($string);
-            }, 'Handle value needed, empty or null string provided.');
-        } catch (Exception $e) {
-            throw new PathException($e);
-        }
-        if (Utils\Str::endsWith('.php', $pathIdentifier) && File::exists($pathIdentifier)) {
-            return static::isAbsolute($pathIdentifier) ? $pathIdentifier : static::absolute($pathIdentifier);
-        }
-        $path = static::normalize($pathIdentifier);
-        // Do this to apply Path methods only on explicit $rootContext
-        if (!isset($rootContext)) {
-            $rootContext = ROOT_PATH.App\PATH;
+        $pathHandle = new PathHandle($pathIdentifier);
+        if ($rootContext) {
+            $handleContext = static::resolve(static::normalize($rootContext));
         } else {
-            if (!static::isAbsolute($rootContext)) {
-                throw new CoreException(
-                    (new Message('String %a must be an absolute path, %v provided.'))
-                        ->code('%a', '$rootContext')
-                        ->code('%v', $rootContext)
-                );
-            }
-            $rootContext = static::resolve(static::normalize($rootContext));
+            $handleContext = ROOT_PATH.App\PATH;
         }
-        $rootContext = static::tailDir($rootContext);
-        // Resolve the target file (if any)
-        if (Utils\Str::contains(':', $path)) {
-            $explode = explode(':', $path);
-            $filename = end($explode);
-            if (is_string($filename)) {
-                // Last prop doesn't look like a filename
-                if (Utils\Str::contains('/', $filename)) {
-                    unset($filename);
-                } else {
-                    // Append .php by default
-                    if (pathinfo($filename, PATHINFO_EXTENSION) == null) {
-                        $filename .= '.php';
-                    }
-                    // Unset the last element (file) from $explode
-                    array_pop($explode);
-                    // Rebuild path
-                    $path = join(':', $explode);
-                    if (strlen($path) > 0) {
-                        $path = static::tailDir($path);
-                    }
-                    $path .= $filename;
-                }
-            }
-        } else {
-            // If $path does't contains ":", we assume that it is a directory or a explicit filepath
-            $extension = pathinfo($path, PATHINFO_EXTENSION);
-            // No extension => add trailing slash to path
-            if ($extension == false) {
-                $path = static::tailDir($path);
-            }
-        }
-        // $path is not an absolute path neither a wrapper or anything like that
-        if (!static::isAbsolute($path)) {
-            $path = $rootContext.$path;
-        }
-        // Resolve . and ..
-        $path = static::resolve($path);
+        $handleContext = static::tailDir($handleContext);
+        $pathHandle->validateContext($handleContext)->setContext($handleContext);
+        $pathHandle->process();
 
-        return $path;
+        return $pathHandle->getPath();
     }
 
     public static function relativeFromHandle(string $handle, string $rootContext = null): ?string

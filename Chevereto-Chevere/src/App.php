@@ -481,10 +481,8 @@ class App implements AppInterface
      */
     public static function runtimeInstance(): ?Runtime
     {
-        if (isset(static::$instance)) {
-            if (isset(static::$instance->runtime)) {
-                return static::$instance->getRuntime();
-            }
+        if (isset(static::$instance) && $runtimeInstance = static::$instance->getRuntime()) {
+            return $runtimeInstance;
         }
 
         return null;
