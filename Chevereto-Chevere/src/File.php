@@ -12,39 +12,10 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
-//TODO: Detect missing fileinfo extension
-
-use Exception;
-use ErrorException;
-use RecursiveIteratorIterator;
-use RecursiveDirectoryIterator;
-
-// $var = ROOT_PATH . 'home_cover.png';
-// $res = File::uniqueFilePath($var, [
-//     File::METHOD => File::NAME_ORIGINAL,
-//     File::MAX_LENGTH => 200,
-//     File::RANDOM_LENGTH => 20,
-//     File::RANDOM_FILL_LENGTH => 5,
-// ]);
-
 class File
 {
-    const METHOD = 'METHOD';
-    const MAX_LENGTH = 'MAX_LENGTH';
-    const RANDOM_LENGTH = 'RANDOM_LENGTH';
-    const RANDOM_FILL_LENGTH = 'RANDOM_FILL_LENGTH';
-    const NAME_ORIGINAL = 'NAME_ORIGINAL';
-    const NAME_RANDOM = 'NAME_RANDOM';
-    const NAME_MIXED = 'NAME_MIXED';
-    const NAME_DEFAULT_OPTIONS = [
-        self::METHOD => self::NAME_ORIGINAL,
-        self::MAX_LENGTH => 200,
-        self::RANDOM_LENGTH => 20,
-        self::RANDOM_FILL_LENGTH => 5,
-    ];
-
     /**
-     * @todo More entries.
+     * @TODO: use ralouphie/mimey
      */
     const MIMETYPES = [
         'image/x-windows-bmp' => 'bmp',
@@ -78,13 +49,6 @@ class File
         }
 
         return null;
-        //   IMAGE ONLY!
-        //   case function_exists('getimagesize'):
-        //       return getimagesize($filename)['mime'];
-        //   break;
-        //   case function_exists('exif_imagetype'):
-        //       return exif_imagetype($filename); // try
-        //   break;
     }
 
     /**
@@ -129,35 +93,6 @@ class File
     }
 
     /**
-     * Gets an unique and available file name in the given file path.
-     *
-     * Checks if $filename exists and if so, it will determinate an alternative
-     * file path by slightly randomizing the file basename.
-     *
-     * @param string $filename File path
-     * @param array  $options  static::NAME_DEFAULT_OPTIONS
-     *
-     * @return string available file path
-     */
-    public static function uniqueFilePath(string $filename, array $options = []): ?string
-    {
-        $pathinfo = pathinfo($filename);
-        $path = $pathinfo['dirname'];
-        $filename = $pathinfo['basename'];
-        // Note: Options will get validated by ::safeName
-        $uniqueFilePath = null;
-        $options = array_merge(static::NAME_DEFAULT_OPTIONS, $options);
-        while (static::exists($filename)) {
-            if ($options[static::METHOD] == static::NAME_ORIGINAL) {
-                $options[static::METHOD] = static::NAME_MIXED;
-            }
-            $uniqueFilePath = rtrim($path, '/').'/'.static::safeName($filename, $options);
-        }
-
-        return $uniqueFilePath;
-    }
-
-    /**
      * Fast wat to determine if a file or directory exists using stream_resolve_include_path.
      *
      * @param string $filename   Absolute file path
@@ -177,50 +112,6 @@ class File
         }
 
         return stream_resolve_include_path($filename) !== false;
-    }
-
-    /**
-     * Remove all the files in the target $path.
-     *
-     * @param string $path target directory path
-     *
-     * @throws Exception
-     */
-    public static function removeAll(string $path): void
-    {
-        if (!is_dir($path)) {
-            throw new Exception(
-                (new Message('String %s is not recognized as a directory'))->code('%s', $path)
-            );
-        }
-        $iterator = new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS);
-        $files = new RecursiveIteratorIterator($iterator, RecursiveIteratorIterator::CHILD_FIRST);
-        $failed = [];
-        foreach ($files as $fileinfo) {
-            $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
-            $file = $fileinfo->getRealPath();
-            if (File::exists($file)) {
-                try {
-                    $res = $todo($file);
-                } catch (ErrorException $e) {
-                    $res = false;
-                    $errorMessage = $e->getMessage();
-                }
-                if ($res == false) {
-                    $failed[$file] = $errorMessage ?? 'No error available';
-                }
-            }
-        }
-        if ($failed != false) {
-            $exceptionMessage = [];
-            foreach ($failed as $k => $v) {
-                $exceptionMessage[] = '<b>'.$k.'</b>:'.$v;
-            }
-            throw new Exception(
-                (string) (new Message('Unable to remove %s.'))
-                    ->code('%s', implode('; ', $exceptionMessage))
-            );
-        }
     }
 
     /**
@@ -260,7 +151,7 @@ class File
      *
      * @param string $file file path, if null it will detect file caller
      */
-    public static function identifier(string $file = null): string
+    public static function identifier(?string $file): string
     {
         if (!isset($file)) {
             $file = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0]['file'];
