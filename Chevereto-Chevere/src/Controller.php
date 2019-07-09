@@ -90,7 +90,7 @@ abstract class Controller implements Interfaces\ControllerInterface
         if (class_exists($controller)) {
             // $r = new ReflectionClass($controller);
             // if (!$r->hasMethod('__invoke')) {
-            //     throw new ControllerException(
+            //     throw new CoreException(
             //         (new Message("Missing %s method in class %c"))
             //         ->code('%s', '__invoke')
             //         ->code('%c', $controller)
@@ -150,7 +150,4 @@ abstract class Controller implements Interfaces\ControllerInterface
     {
         return static::$parameters ?? null;
     }
-}
-class ControllerException extends CoreException
-{
 }

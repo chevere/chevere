@@ -233,6 +233,3 @@ class Path
         return Utils\Str::rtail($dir, '/');
     }
 }
-class PathException extends CoreException
-{
-}

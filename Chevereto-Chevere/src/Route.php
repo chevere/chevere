@@ -149,7 +149,7 @@ class Route
                 )
                 ->validate();
         } catch (Exception $e) {
-            throw new RouteException($e);
+            throw new CoreException($e);
         }
         $this->name = $name;
 
@@ -210,14 +210,14 @@ class Route
     {
         // Validate HTTP method
         if (!in_array($httpMethod, static::HTTP_METHODS)) {
-            throw new RouteException(
+            throw new CoreException(
                 (new Message('Unknown HTTP method %s.'))->code('%s', $httpMethod)
             );
         }
         $callableSome = $this->getCallableSome($callable);
         // Check HTTP dupes
         // if (isset($this->methods[$httpMethod])) {
-        //     throw new RouteException(
+        //     throw new CoreException(
         //         (new Message('Method %s has been already registered.'))
         //             ->code('%s', $httpMethod)
         //     );
@@ -332,7 +332,7 @@ class Route
     {
         $regex = $key ?? $this->set ?? $this->key;
         if (!isset($regex)) {
-            throw new RouteException(
+            throw new CoreException(
                 (new Message('Unable to process regex for empty %s.'))
                     ->code('%s', '$key')
             );
@@ -442,7 +442,7 @@ class Route
                 $wildcardTrim = $wildcard;
             }
             if (in_array($wildcardTrim, $this->wildcards ?? [])) {
-                throw new RouteException(
+                throw new CoreException(
                     (new Message('Must declare one unique wildcard per capturing group, duplicated %s detected in route %r.'))
                         ->code('%s', $matches[0][$k])
                         ->code('%r', $this->key)
@@ -528,11 +528,7 @@ class Route
                 'Invalid regex pattern %s.'
             );
         } catch (Exception $e) {
-            throw new RouteException($e->getMessage());
+            throw new CoreException($e->getMessage());
         }
     }
-}
-
-class RouteException extends CoreException
-{
 }

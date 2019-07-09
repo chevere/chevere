@@ -79,6 +79,3 @@ class Handler implements HandlerInterface
         $app->terminate(__METHOD__.' Terminated the app execution.');
     }
 }
-class HandlerException extends CoreException
-{
-}
