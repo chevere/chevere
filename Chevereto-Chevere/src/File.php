@@ -15,7 +15,7 @@ namespace Chevereto\Chevere;
 class File
 {
     /**
-     * @TODO: use ralouphie/mimey
+     * @TODO: use ralouphie/mimey https://packagist.org/packages/ralouphie/mimey
      */
     const MIMETYPES = [
         'image/x-windows-bmp' => 'bmp',

@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
+use Throwable;
 use Exception;
 use Symfony\Component\Console\Exception\LogicException;
 
@@ -20,7 +21,7 @@ use Symfony\Component\Console\Exception\LogicException;
 // IDEA: Enable alt routes [/taken, /also-taken, /availabe]
 // IDEA: L10n support
 
-class Route extends RouteProcessor
+class Route
 {
     use Traits\CallableTrait;
 
@@ -358,6 +359,177 @@ class Route extends RouteProcessor
     public static function bind(string $key, string $callable = null, string $rootContext = null): self
     {
         return new static(...func_get_args());
+    }
+
+    protected function processMaker(): void
+    {
+        $maker = debug_backtrace(0, 1)[0];
+        $maker['file'] = Path::relative($maker['file']);
+        $this->maker = $maker;
+    }
+
+    protected function processWildcards(): void
+    {
+        if ($this->handlebars && preg_match_all(static::REGEX_WILDCARD_SEARCH, $this->key, $matches)) {
+            // $matches[0] => [{wildcard}, {wildcard?},...]
+            // $matches[1] => [wildcard, wildcard?,...]
+            // Build the route handle, needed for regex replacements
+            $this->set = $this->key;
+            // Build the optionals array, needed for creating route power set if needed
+            $this->optionals = [];
+            $this->optionalsIndex = [];
+            $this->processWildcardMatches($matches);
+            $this->processOptionals();
+        }
+    }
+
+    protected function processOptionals(): void
+    {
+        // Determine if route contains optional wildcards
+        if (!empty($this->optionals)) {
+            $mandatoryDiff = array_diff($this->wildcards ?? [], $this->optionalsIndex);
+            $this->mandatoryIndex = [];
+            foreach ($mandatoryDiff as $k => $v) {
+                $this->mandatoryIndex[$k] = null;
+            }
+            // Generate the optionals power set, keeping its index keys in case of duplicated optionals
+            $powerSet = Utils\Arr::powerSet($this->optionals, true);
+            // Build the route set, it will contain all the possible route combinations
+            $this->processPowerSet($powerSet);
+        }
+    }
+
+    protected function processPowerSet(array $powerSet): void
+    {
+        $routeSet = [];
+        foreach ($powerSet as $set) {
+            $auxSet = $this->set;
+            // auxWildcards keys represent the wildcards being used. Iterate it with foreach.
+            $auxWildcards = $this->mandatoryIndex;
+            foreach ($set as $replaceKey => $replaceValue) {
+                $replace = $this->optionals[$replaceKey];
+                if ($replaceValue !== null) {
+                    $replaceValue = "{{$replaceValue}}";
+                    $auxWildcards[$replace] = null;
+                }
+                $auxSet = str_replace("{{$replace}}", $replaceValue ?? '', $auxSet);
+                $auxSet = Path::normalize($auxSet);
+            }
+            ksort($auxWildcards);
+            /*
+             * Maps expected regex indexed matches [0,1,2,] to registered wildcard index [index=>n].
+             * For example, a set /test-{0}--{2} will capture 0->0 and 1->2. Storing the expected index allows\
+             * to easily map matches => wildcards => values.
+             */
+            $routeSet[$auxSet] = array_keys($auxWildcards);
+        }
+        $this->powerSet = $routeSet;
+    }
+
+    protected function processWildcardMatches(array $matches): void
+    {
+        foreach ($matches[0] as $k => $v) {
+            // Change {wildcard} to {n} (n is the wildcard index)
+            if (isset($this->set)) {
+                $this->set = Utils\Str::replaceFirst($v, "{{$k}}", $this->set);
+            }
+            $wildcard = $matches[1][$k];
+            if (Utils\Str::endsWith('?', $wildcard)) {
+                $wildcardTrim = Utils\Str::replaceLast('?', null, $wildcard);
+                $this->optionals[] = $k;
+                $this->optionalsIndex[$k] = $wildcardTrim;
+            } else {
+                $wildcardTrim = $wildcard;
+            }
+            if (in_array($wildcardTrim, $this->wildcards ?? [])) {
+                throw new RouteException(
+                    (new Message('Must declare one unique wildcard per capturing group, duplicated %s detected in route %r.'))
+                        ->code('%s', $matches[0][$k])
+                        ->code('%r', $this->key)
+                );
+            }
+            $this->wildcards[] = $wildcardTrim;
+        }
+    }
+
+    protected function processKeyValidation(string $key): void
+    {
+        try {
+            Validation::grouped('$key', $key)
+                ->append(
+                    'value',
+                    function (string $string): bool {
+                        return
+                            $string == '/' ?: (
+                                strlen($string) > 0
+                                && Utils\Str::startsWith('/', $string)
+                                && !Utils\Str::endsWith('/', $string)
+                                && !Utils\Str::contains('//', $string)
+                                && !Utils\Str::contains(' ', $string)
+                                && !Utils\Str::contains('\\', $string)
+                            );
+                    },
+                    "String %i must start with a forward slash, it shouldn't contain neither whitespace, backslashes or extra forward slashes and it should be specified without a trailing slash."
+                )
+                ->append(
+                    'wildcards',
+                    function (string $string): bool {
+                        return !$this->handlebars ?: preg_match_all('/{([0-9]+)}/', $string) === 0;
+                    },
+                    (string) (new Message('Wildcards in the form of %s are reserved.'))
+                        ->code('%s', '/{n}')
+                )
+                ->validate();
+        } catch (Throwable $e) {
+            throw new CoreException($e);
+        }
+    }
+
+    protected function processWildcardValidation(string $wildcardName, string $regex): void
+    {
+        $wildcard = $this->getHandlebarsWrap($wildcardName);
+        try {
+            Validation::grouped('$wildcardName', $wildcardName)
+                ->append(
+                    'value',
+                    function (string $string): bool {
+                        return
+                            !Utils\Str::startsWithNumeric($string)
+                            && preg_match('/^[a-z0-9_]+$/i', $string);
+                    },
+                    "String %s must contain only alphanumeric and underscore characters and it shouldn't start with a numeric value."
+                )
+                ->append(
+                    'match',
+                    function (string $string) use ($wildcard): bool {
+                        return
+                            Utils\Str::contains($wildcard, $this->getKey())
+                            || Utils\Str::contains('{'."$string?".'}', $this->getKey());
+                    },
+                    (string) (new Message("Wildcard %s doesn't exists in %r."))
+                        ->code('%s', $wildcard)
+                        ->code('%r', $this->getKey())
+                )
+                ->append(
+                    'unique',
+                    function (string $string): bool {
+                        return !isset($this->wheres[$string]);
+                    },
+                    (string) (new Message('Where clause for %s wildcard has been already declared.'))
+                        ->code('%s', $wildcard)
+                )
+                ->validate();
+            Validation::single(
+                '$regex',
+                $regex,
+                function (string $string): bool {
+                    return Validate::regex('/'.$string.'/');
+                },
+                'Invalid regex pattern %s.'
+            );
+        } catch (Exception $e) {
+            throw new RouteException($e->getMessage());
+        }
     }
 }
 
