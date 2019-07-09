@@ -180,7 +180,7 @@ class CallableWrap
         return $this->callableFilepath ?? null;
     }
 
-    protected function setType(string $type): self
+    protected function validateType(string $type)
     {
         if (!in_array($type, static::TYPES)) {
             throw new LogicException(
@@ -190,9 +190,6 @@ class CallableWrap
                         ->code('%v', implode(', ', static::TYPES))
             );
         }
-        $this->type = $type;
-
-        return $this;
     }
 
     public function getType(): string
@@ -224,22 +221,23 @@ class CallableWrap
     protected function prepare()
     {
         if (isset($this->class)) {
-            $this->setType(isset($this->method) ? static::TYPE_CLASS : static::TYPE_FUNCTION);
+            $this->type = isset($this->method) ? static::TYPE_CLASS : static::TYPE_FUNCTION;
         } else {
             if (is_object($this->getCallable())) {
                 $this->method = '__invoke';
                 $reflection = new ReflectionClass($this->getCallable());
-                $this->setType(static::TYPE_CLASS);
+                $this->type = static::TYPE_CLASS;
                 $this->isAnon = $reflection->isAnonymous();
                 $this->class = $this->isAnon() ? 'class@anonymous' : $reflection->getName();
             } else {
-                $this->setType(static::TYPE_FUNCTION);
+                $this->type = static::TYPE_FUNCTION;
                 if (isset($this->callableHandleMethodExplode)) {
                     $this->class = $this->callableHandleMethodExplode[0];
                     $this->method = $this->callableHandleMethodExplode[1];
                 }
             }
         }
+        $this->validateType($this->type);
     }
 
     /**
