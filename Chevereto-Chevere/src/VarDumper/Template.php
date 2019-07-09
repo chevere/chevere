@@ -18,6 +18,6 @@ namespace Chevereto\Chevere\VarDumper;
  */
 class Template
 {
-    const HTML_INLINE_PREFIX = ' <span style="border-left: 1px solid #bdc3c7;"></span>  ';
+    const HTML_INLINE_PREFIX = ' <span style="border-left: 1px solid rgba(236,240,241,.1);"></span>  ';
     const HTML_EMPHASIS = '<em>%s</em>';
 }

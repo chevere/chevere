@@ -15,10 +15,8 @@ namespace Chevereto\Chevere\ErrorHandler;
 
 use Throwable;
 use ErrorException;
-use const Chevereto\Chevere\CORE_NS_HANDLE;
 use const Chevereto\Chevere\CLI;
 use Chevereto\Chevere\Console;
-use Chevereto\Chevere\Path;
 use Chevereto\Chevere\VarDumper\VarDumper;
 use Chevereto\Chevere\VarDumper\PlainVarDumper;
 use Chevereto\Chevere\Utils\Str;
@@ -112,26 +110,25 @@ class Formatter
 
     public $consoleSections;
 
-    /** @var string The plain content representation */
-    public $plainContent;
-
     // Exception properties FIXME: BETTER NAMES
     public $code;
     public $message;
     public $type;
     public $file;
     public $line;
+    /** @var string */
     public $loggerLevel;
 
     public $title;
 
     public $table;
 
-    public function __construct(ErrorHandler $errorHandler)
+    public function __construct(ErrorHandler $errorHandler, ExceptionHandler $exceptionHandler)
     {
         $this->errorHandler = $errorHandler;
+        $this->exceptionHandler = $exceptionHandler;
         $this->processServerProperties();
-        $this->proccessException();
+        $this->proccessExceptionHandler();
         $this->processStack();
         $this->processContentSections();
         $this->processContentGlobals();
@@ -173,36 +170,25 @@ class Formatter
         $this->bodyClass = !headers_sent() ? 'body--flex' : 'body--block';
     }
 
-    protected function proccessException()
+    protected function proccessExceptionHandler()
     {
-        $this->exception = $this->errorHandler->arguments[0];
-        $this->className = get_class($this->exception);
-        if (Str::startsWith(CORE_NS_HANDLE, $this->className)) {
-            $this->className = Str::replaceFirst(CORE_NS_HANDLE, null, $this->className);
-        }
+        $this->exception = $this->exceptionHandler->exception;
+        $this->className = $this->exceptionHandler->className;
         $this->thrown = $this->className.' thrown';
-        if ($this->exception instanceof ErrorException) {
-            $code = $this->exception->getSeverity();
-            $e_type = $code;
-        } else {
-            $code = $this->exception->getCode();
-            $e_type = E_ERROR;
-        }
-        $this->code = $code;
-        $this->type = $this->errorHandler::getErrorByCode($e_type);
-        $this->loggerLevel = $this->errorHandler::getLoggerLevel($e_type) ?? 'error'; // FIXME: logger level is referenced everywhere
-        $this->message = $this->exception->getMessage();
-        $this->file = Path::normalize($this->exception->getFile());
-        $this->line = (string) $this->exception->getLine();
+        $this->code = $this->exceptionHandler->code;
+        $this->type = $this->exceptionHandler->type;
+        $this->loggerLevel = $this->exceptionHandler->loggerLevel;
+        $this->message = $this->exceptionHandler->message;
+        $this->file = $this->exceptionHandler->file;
+        $this->line = $this->exceptionHandler->line;
     }
 
     protected function processStack()
     {
         $i = 0;
-        $trace = $this->exception->getTrace();
-        if ($this->exception instanceof ErrorException) {
-            $this->thrown = $this->type;
-            $this->message = $this->message;
+        $trace = $this->exceptionHandler->exception->getTrace();
+        if ($this->exceptionHandler->exception instanceof ErrorException) {
+            $this->thrown = $this->exceptionHandler->type;
             unset($trace[0]);
         }
         $stack = new Stack($trace);
@@ -218,7 +204,7 @@ class Formatter
         // Plain (txt) is the default "always do" format.
         $plain = [
             static::SECTION_TITLE => ['%title% <span>in&nbsp;%file%:%line%</span>'],
-            static::SECTION_MESSAGE => ['# Message', '%message%'.($this->code ? ' [Code #%code%]' : null)],
+            static::SECTION_MESSAGE => ['# Message', '%message%'.($this->exceptionHandler->code ? ' [Code #%code%]' : null)],
             static::SECTION_TIME => ['# Time', '%datetimeUtc% [%timestamp%]'],
         ];
         $plain[static::SECTION_ID] = ['# Incident ID:%id%', 'Logged at %logFilename%'];
@@ -257,14 +243,14 @@ class Formatter
 
     protected function processContentGlobals()
     {
-        foreach (['GET', 'POST', 'FILES', 'COOKIE', 'SESSION', 'SERVER'] as $v) {
-            $k = '_'.$v;
-            $v = isset($GLOBALS[$k]) ? $GLOBALS[$k] : null;
-            if ($v) {
-                $this->setRichContentSection($k, ['$'.$k, $this->wrapStringHr('<pre>'.VarDumper::out($v).'</pre>')]);
-                $this->setPlainContentSection($k, ['$'.$k, strip_tags($this->wrapStringHr(PlainVarDumper::out($v)))]);
-            }
-        }
+        // foreach (['GET', 'POST', 'FILES', 'COOKIE', 'SESSION', 'SERVER'] as $v) {
+        //     $k = '_'.$v;
+        //     $v = isset($GLOBALS[$k]) ? $GLOBALS[$k] : null;
+        //     if ($v) {
+        //         $this->setRichContentSection($k, ['$'.$k, $this->wrapStringHr('<pre>'.VarDumper::out($v).'</pre>')]);
+        //         $this->setPlainContentSection($k, ['$'.$k, strip_tags($this->wrapStringHr(PlainVarDumper::out($v)))]);
+        //     }
+        // }
     }
 
     /**

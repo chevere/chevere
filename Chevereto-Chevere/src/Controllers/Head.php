@@ -27,7 +27,7 @@ class Head extends Controller
     {
         $route = $this->getApp()->getRoute();
         $routeKey = $route->getKey();
-        dd($routeKey);
+        dx($routeKey);
         $invoke = $this->invoke(__NAMESPACE__.'\ApiGet', func_get_args());
         $invoke->setContent(null);
 

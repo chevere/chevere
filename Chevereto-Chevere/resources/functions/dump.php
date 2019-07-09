@@ -10,19 +10,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+use Chevereto\Chevere\Dumper;
 
 /**
  * Dumps information about one or more variables.
  */
-function dump(...$vars)
+function d(...$vars)
 {
     Dumper::dump(...$vars);
 }
 /**
  * Dumps information about one or more variables and die().
  */
-function dd(...$vars)
+function dx(...$vars)
 {
-    Dumper::dd(...$vars);
+    Dumper::dx(...$vars);
 }

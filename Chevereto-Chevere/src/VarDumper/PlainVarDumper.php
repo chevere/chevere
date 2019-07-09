@@ -16,19 +16,15 @@ namespace Chevereto\Chevere\VarDumper;
 /**
  * Exactly the same as Dump but stripping any format decorators.
  */
-abstract class PlainVarDumper extends VarDumper
+class PlainVarDumper extends VarDumper
 {
     public static function out($expression, int $indent = null, array $dontDump = [], $depth = 0): string
     {
         return strip_tags(parent::out(...func_get_args()));
     }
 
-    public static function wrap(string $key, $dump = null): string
+    public static function wrap(string $key, $dump): ?string
     {
-        if (null === $dump) {
-            $dump = $key;
-        }
-
         return strip_tags($dump);
     }
 }

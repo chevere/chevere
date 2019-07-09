@@ -24,9 +24,9 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
  */
 class Dumper
 {
-    const BACKGROUND = '#2c3e50';
-    const BACKGROUND_SHADE = '#2c3e50';
-    const STYLE = 'font: 16px Consolas, monospace, sans-serif; color: #ecf0f1; padding: 15px; margin: 10px 0; word-break: break-word; white-space: pre-wrap; background: '.self::BACKGROUND.'; display: block; text-align: left; border: none; border-radius: 4px;';
+    const BACKGROUND = '#132537';
+    const BACKGROUND_SHADE = '#132537';
+    const STYLE = 'font: 14px Consolas, monospace, sans-serif; line-height: 1.2; color: #ecf0f1; padding: 15px; margin: 10px 0; word-break: break-word; white-space: pre-wrap; background: '.self::BACKGROUND.'; display: block; text-align: left; border: none; border-radius: 4px;';
 
     protected $vars;
 
@@ -102,7 +102,7 @@ class Dumper
 
     protected function handleSelfCaller(): void
     {
-        if (Utils\Str::endsWith('resources/functions/dump.php', $this->callerFilepath) && __CLASS__ == $this->debugBacktrace[0]['class'] && in_array($this->debugBacktrace[0]['function'], ['dump', 'dd'])) {
+        if (Utils\Str::endsWith('resources/functions/dump.php', $this->callerFilepath) && __CLASS__ == $this->debugBacktrace[0]['class'] && in_array($this->debugBacktrace[0]['function'], ['dump', 'dx'])) {
             $this->shiftDebugBacktrace();
         }
     }
@@ -224,9 +224,9 @@ class Dumper
     /**
      * Dumps information about one or more variables and die().
      */
-    public static function dd(...$vars)
+    public static function dx(...$vars)
     {
         Dumper::dump(...$vars);
-        die();
+        die(1);
     }
 }

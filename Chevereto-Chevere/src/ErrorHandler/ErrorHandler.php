@@ -82,16 +82,10 @@ class ErrorHandler implements ErrorHandlerInterface
         E_USER_DEPRECATED => LogLevel::NOTICE,
     ];
 
-    /**
-     * You can bind any of these by turning $propName into %propName% in your
-     * template constants. When extending, is easier to touch the constants, not
-     * the properties.
-     */
     public $body;
     public $class;
     public $datetimeUtc;
     public $timestamp;
-    // public $id;
     public $logFilename;
 
     // public $loadedConfigFilesString;
@@ -99,7 +93,9 @@ class ErrorHandler implements ErrorHandlerInterface
     /** @var array Arguments passed to the static exception handler */
     public $arguments;
 
+    /** @var string */
     protected $logDateFolderFormat;
+
     protected $logger;
 
     /** @var HttpRequest The detected/forged HTTP request */
@@ -123,29 +119,37 @@ class ErrorHandler implements ErrorHandlerInterface
     /** @var bool True, debug enabled */
     public $isDebugEnabled;
 
+    /** @var array */
+    protected $args;
+
     /**
      * @param mixed $args Arguments passed to the error exception (severity, message, file, line; Exception)
      */
     public function __construct(...$args)
     {
         $this->setTimeProperties('now');
-        $this->setId(uniqid('', true));
-        $this->setArguments($args);
+        $this->id = uniqid('', true);
+        // $this->arguments = $args;
         $this->handleHttpRequest(App::requestInstance());
-        $this->setRuntimeInstance(App::runtimeInstance());
-        $this->setDebug((bool) $this->runtimeInstance->getDataKey('debug'));
+        $this->runtimeInstance = App::runtimeInstance();
+        $this->isDebugEnabled = (bool) $this->runtimeInstance->getDataKey('debug');
         $this->setloadedConfigFiles($this->runtimeInstance->getRuntimeConfig()->getLoadedFiles());
-        $this->setLogDateFolderFormat(static::LOG_DATE_FOLDER_FORMAT);
-        $this->setLogFilePath(static::PATH_LOGS);
+        $this->logDateFolderFormat = static::LOG_DATE_FOLDER_FORMAT;
+
+        $exceptionHandler = new ExceptionHandler($args[0]);
+
+        $this->loggerLevel = $exceptionHandler->loggerLevel;
+        $this->setLogFilePathProperties(static::PATH_LOGS, );
         $this->setLogger(__NAMESPACE__);
 
-        $formatter = new Formatter($this);
+        $formatter = new Formatter($this, $exceptionHandler);
         $formatter->setLineBreak(Template::BOX_BREAK_HTML);
         $formatter->setCss(Style::CSS);
 
-        // $this->loggerWrite($formatter->plainContent);
-
         $output = new Output($this, $formatter);
+
+        $this->loggerWrite($output->plainContent);
+
         $output->out();
     }
 
@@ -156,36 +160,11 @@ class ErrorHandler implements ErrorHandlerInterface
         $this->timestamp = strtotime($this->datetimeUtc);
     }
 
-    protected function setArguments($args): void
-    {
-        $this->arguments = $args;
-    }
-
     protected function handleHttpRequest(?HttpRequest $httpRequest): void
     {
         if ($httpRequest) {
-            $this->setHttpRequest($httpRequest);
+            $this->httpRequest = $httpRequest;
         }
-    }
-
-    protected function setRuntimeInstance(Runtime $runtime): void
-    {
-        $this->runtimeInstance = $runtime;
-    }
-
-    protected function setDebug(bool $isDebugEnabled)
-    {
-        $this->isDebugEnabled = $isDebugEnabled;
-    }
-
-    protected function setHttpRequest(HttpRequest $httpRequest): void
-    {
-        $this->httpRequest = $httpRequest;
-    }
-
-    protected function setId(string $id)
-    {
-        $this->id = $id;
     }
 
     protected function setloadedConfigFiles(array $loadedConfigFiles)
@@ -194,20 +173,15 @@ class ErrorHandler implements ErrorHandlerInterface
         $this->loadedConfigFilesString = implode(';', $this->loadedConfigFiles);
     }
 
-    protected function setLogDateFolderFormat(string $logDateFolderFormat)
+    protected function setLogFilePathProperties(string $basePath)
     {
-        $this->logDateFolderFormat = $logDateFolderFormat;
-    }
-
-    protected function setLogFilePath(string $basePath)
-    {
-        $this->loggerLevel = 'eeee';
         $path = Path::normalize($basePath);
         $path = rtrim($path, '/').'/';
         $date = gmdate($this->logDateFolderFormat, $this->timestamp);
         $this->logFilename = $path.$this->loggerLevel.'/'.$date.$this->timestamp.'_'.$this->id.'.log';
     }
 
+    // TODO: Refactor: pass logger as object
     protected function setLogger(string $name)
     {
         $lineFormatter = new LineFormatter(null, null, true, true);
@@ -220,9 +194,9 @@ class ErrorHandler implements ErrorHandlerInterface
 
     protected function loggerWrite(string $plainContent)
     {
-        // $log = strip_tags($plainContent);
-        // $log .= "\n\n" . str_repeat('=', static::COLUMNS);
-        // $this->logger->log($this->loggerLevel, $log);
+        $log = strip_tags($plainContent);
+        $log .= "\n\n".str_repeat('=', Formatter::COLUMNS);
+        $this->logger->log($this->loggerLevel, $log);
     }
 
     protected static function exceptionHandler(): void

@@ -25,7 +25,13 @@ use Symfony\Component\HttpFoundation\JsonResponse as HttpJsonResponse;
  */
 class Output
 {
+    /** @var string The rich (console/html) content representation */
     public $content;
+
+    /** @var string The plain content representation (log txt) */
+    public $plainContent;
+
+    /** @var array */
     public $templateTags;
 
     /** @var ErrorHandler */
@@ -33,6 +39,9 @@ class Output
 
     /** @var Formatter */
     protected $formatter;
+
+    /** @var ExceptionHandler */
+    protected $exceptionHandler;
 
     /** @var string */
     protected $output;
@@ -99,7 +108,6 @@ class Output
             $this->addTemplateTag('title', Template::NO_DEBUG_TITLE_PLAIN);
             $bodyTemplate = Template::NO_DEBUG_BODY_HTML;
         }
-        // TODO: HTML error content is empty!
         $this->addTemplateTag('body', strtr($bodyTemplate, $this->templateTags));
         $this->output = strtr(Template::HTML_TEMPLATE, $this->templateTags);
     }
@@ -189,6 +197,7 @@ class Output
         ];
         $this->content = strtr($this->richContentTemplate, $this->templateTags);
         $this->plainContent = strtr($this->plainContentTemplate, $this->templateTags);
+        // dd($this->plainContentTemplate);
         $this->addTemplateTag('content', $this->content);
     }
 
