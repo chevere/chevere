@@ -21,7 +21,7 @@ class Index extends Controller
 {
     public function __invoke()
     {
-        // throw new \Exception('duh');
+        throw new \Exception('duh');
         $this->getResponse()
             ->setMeta(['Hello' => 'World!'])
             ->addData('info', 'api', ['entry' => 'HTTP GET /api', 'description' => 'Retrieves the exposed API.'])

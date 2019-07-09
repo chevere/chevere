@@ -23,7 +23,6 @@ use Chevereto\Chevere\Runtime;
 use Chevereto\Chevere\Interfaces\ErrorHandlerInterface;
 use DateTime;
 use ErrorException;
-use Throwable;
 use DateTimeZone;
 use Psr\Log\LogLevel;
 use Monolog\Logger;
@@ -173,17 +172,6 @@ class ErrorHandler implements ErrorHandlerInterface
     {
         $this->runtimeInstance = $runtime;
     }
-
-    // protected function handleDebug(int $errorReporting): void
-    // {
-    //     error_reporting(0);
-    //     try {
-    //         $debug = $this->runtimeInstance->getDataKey('debug');
-    //     } catch (Throwable $e) {
-    //     }
-    //     error_reporting($errorReporting);
-    //     $this->setDebug((bool) ($debug ?? static::DEBUG));
-    // }
 
     protected function setDebug(bool $isDebugEnabled)
     {

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\ErrorHandler;
 
+use const Chevereto\Chevere\CLI;
 use DateTime;
 use Chevereto\Chevere\Console;
 use Chevereto\Chevere\Json;
@@ -52,7 +53,7 @@ class Output
         if ($errorHandler->httpRequest && $errorHandler->httpRequest->isXmlHttpRequest()) {
             $this->setJsonOutput();
         } else {
-            if ('cli' == php_sapi_name()) {
+            if (CLI) {
                 $this->setConsoleOutput();
             } else {
                 $this->setHtmlOutput();
@@ -90,20 +91,15 @@ class Output
 
     protected function setHtmlOutput(): void
     {
-        switch ($this->errorHandler->isDebugEnabled) {
-            default:
-            case 0:
-                $this->content = Template::NO_DEBUG_CONTENT_HTML;
-                $this->addTemplateTag('content', $this->content);
-                $this->addTemplateTag('title', Template::NO_DEBUG_TITLE_PLAIN);
-                $bodyTemplate = Template::NO_DEBUG_BODY_HTML;
-            break;
-            case 1:
-                $bodyTemplate = Template::DEBUG_BODY_HTML;
-            break;
+        if ($this->errorHandler->isDebugEnabled) {
+            $bodyTemplate = Template::DEBUG_BODY_HTML;
+        } else {
+            $this->content = Template::NO_DEBUG_CONTENT_HTML;
+            $this->addTemplateTag('content', $this->content);
+            $this->addTemplateTag('title', Template::NO_DEBUG_TITLE_PLAIN);
+            $bodyTemplate = Template::NO_DEBUG_BODY_HTML;
         }
-        // HTML error content is empty!
-        // dd($this->templateTags['%content%']);
+        // TODO: HTML error content is empty!
         $this->addTemplateTag('body', strtr($bodyTemplate, $this->templateTags));
         $this->output = strtr(Template::HTML_TEMPLATE, $this->templateTags);
     }
@@ -132,7 +128,7 @@ class Output
         $sections_length = count($this->formatter->plainContentSections);
         $i = 0;
         foreach ($this->formatter->plainContentSections as $k => $plainSection) {
-            $richSection = $this->richContentSections[$k] ?? null;
+            $richSection = $this->formatter->richContentSections[$k] ?? null;
             $section_length = count($plainSection);
             if (0 == $i || isset($plainSection[1])) {
                 $this->richContentTemplate .= '<div class="t'.(0 == $i ? ' t--scream' : null).'">'.$richSection[0].'</div>';

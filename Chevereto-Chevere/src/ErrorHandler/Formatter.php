@@ -16,6 +16,7 @@ namespace Chevereto\Chevere\ErrorHandler;
 use Throwable;
 use ErrorException;
 use const Chevereto\Chevere\CORE_NS_HANDLE;
+use const Chevereto\Chevere\CLI;
 use Chevereto\Chevere\Console;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\VarDumper\VarDumper;
@@ -150,7 +151,7 @@ class Formatter
 
     protected function processServerProperties()
     {
-        if ('cli' == php_sapi_name()) {
+        if (CLI) {
             $this->clientIp = $_SERVER['argv'][0];
             $this->clientUserAgent = Console::inputString();
         } else {
@@ -205,8 +206,9 @@ class Formatter
             unset($trace[0]);
         }
         $stack = new Stack($trace);
-        // FIXME: Case-aware stack filling, console is not needed in web
-        // $this->consoleStack = $stack->getConsoleStack();
+        if (CLI) {
+            $this->consoleStack = $stack->getConsoleStack();
+        }
         $this->richStack = $stack->getRichStack();
         $this->plainStack = $stack->getPlainStack();
     }
@@ -225,13 +227,13 @@ class Formatter
         $plain[static::SECTION_REQUEST] = ['# Request', '%serverProtocol% %httpRequestMethod% %uri%'];
         $plain[static::SECTION_SERVER] = ['# Server', '%serverHost% (port:%serverPort%) %serverSoftware%'];
 
-        if ('cli' == php_sapi_name()) {
+        if (CLI) {
             $verbosity = Console::output()->getVerbosity();
         }
 
         foreach ($plain as $k => $v) {
             $keyString = (string) $k;
-            if ('cli' == php_sapi_name() && false == static::CONSOLE_TABLE[$k]) {
+            if (CLI && false == static::CONSOLE_TABLE[$k]) {
                 continue;
             }
             $this->setPlainContentSection($keyString, $v);
