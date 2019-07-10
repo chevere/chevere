@@ -40,7 +40,7 @@ class CallableWrap
     protected $callableHandleMethodExplode;
 
     /** @var string The callable string handle used to construct the object */
-    protected $callableHandle;
+    public $callableHandle;
 
     /** @var array An array containg typehinted arguments ready to use */
     private $typedArguments;
@@ -49,37 +49,37 @@ class CallableWrap
     protected $reflectionMethod;
 
     /** @var callable The actual callable */
-    protected $callable;
+    public $callable;
 
     /** @var string The callable file (if any) */
-    protected $callableFilepath;
+    public $callableFilepath;
 
     /** @var string The callable type (function, method, class) */
-    protected $type;
+    public $type;
 
     /** @var string Class name (if any) */
-    protected $class;
+    public $class;
 
     /** @var string Method name (if any) */
-    protected $method;
+    public $method;
 
     /** @var ReflectionFunction The reflected callable (function) */
     protected $reflectionFunction;
 
     /** @var string[] Callable parameters */
-    protected $parameters;
+    public $parameters;
 
     /** @var array Callable arguments */
-    protected $arguments;
+    public $arguments;
 
     /** @var array Passed callable arguments */
     protected $passedArguments;
 
     /** @var bool True if the callable comes from a fileHandle */
-    protected $isFileHandle;
+    public $isFileHandle;
 
     /** @var bool True if the callable represents a anon function or class */
-    protected $isAnon;
+    public $isAnon;
 
     public function __construct(string $callableHandle)
     {
@@ -165,21 +165,6 @@ class CallableWrap
         }
     }
 
-    public function getCallableHandle(): string
-    {
-        return $this->callableHandle;
-    }
-
-    public function getCallable(): callable
-    {
-        return $this->callable;
-    }
-
-    public function getCallableFilepath(): ?string
-    {
-        return $this->callableFilepath ?? null;
-    }
-
     protected function validateType(string $type)
     {
         if (!in_array($type, static::TYPES)) {
@@ -192,43 +177,18 @@ class CallableWrap
         }
     }
 
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    public function getClass(): ?string
-    {
-        return $this->class ?? null;
-    }
-
-    public function getMethod(): ?string
-    {
-        return $this->method ?? null;
-    }
-
-    public function isFileHandle(): bool
-    {
-        return $this->isFileHandle;
-    }
-
-    public function isAnon(): bool
-    {
-        return $this->isAnon;
-    }
-
     // Process the callable and fill the object properties
     protected function prepare()
     {
         if (isset($this->class)) {
             $this->type = isset($this->method) ? static::TYPE_CLASS : static::TYPE_FUNCTION;
         } else {
-            if (is_object($this->getCallable())) {
+            if (is_object($this->callable)) {
                 $this->method = '__invoke';
-                $reflection = new ReflectionClass($this->getCallable());
+                $reflection = new ReflectionClass($this->callable);
                 $this->type = static::TYPE_CLASS;
                 $this->isAnon = $reflection->isAnonymous();
-                $this->class = $this->isAnon() ? 'class@anonymous' : $reflection->getName();
+                $this->class = $this->isAnon ? 'class@anonymous' : $reflection->getName();
             } else {
                 $this->type = static::TYPE_FUNCTION;
                 if (isset($this->callableHandleMethodExplode)) {
@@ -254,16 +214,6 @@ class CallableWrap
         return $this->parameters ?? null;
     }
 
-    protected function getReflectionFunction(): ?ReflectionFunction
-    {
-        return $this->reflectionFunction ?? null;
-    }
-
-    protected function getReflectionMethod(): ?ReflectionMethod
-    {
-        return $this->reflectionMethod ?? null;
-    }
-
     protected function hasReflection(): bool
     {
         return isset($this->reflectionFunction) || isset($this->reflectionMethod);
@@ -272,8 +222,8 @@ class CallableWrap
     public function getReflection(): \ReflectionFunctionAbstract
     {
         return isset($this->reflectionFunction)
-            ? $this->getReflectionFunction()
-            : $this->getReflectionMethod();
+            ? $this->reflectionFunction
+            : $this->reflectionMethod;
     }
 
     /**
@@ -290,11 +240,6 @@ class CallableWrap
         return $this;
     }
 
-    public function getPassedArguments(): ?array
-    {
-        return $this->passedArguments ?? null;
-    }
-
     public function getArguments(): array
     {
         if (!isset($this->arguments)) {
@@ -309,10 +254,10 @@ class CallableWrap
         if ($this->hasReflection()) {
             return $this;
         }
-        if (is_object($this->getCallable())) {
-            $this->reflectionMethod = new ReflectionMethod($this->getCallable(), $this->getMethod());
+        if (is_object($this->callable)) {
+            $this->reflectionMethod = new ReflectionMethod($this->callable, $this->method);
         } else {
-            $this->reflectionFunction = new ReflectionFunction($this->getCallable());
+            $this->reflectionFunction = new ReflectionFunction($this->callable);
         }
 
         return $this;
@@ -343,7 +288,7 @@ class CallableWrap
             $this->processTypedArgument(
                 $parameter,
                 $type,
-                $this->getPassedArguments()[$parameter->getName()] ?? $this->getPassedArguments()[$parameterIndex] ?? null
+                $this->passedArguments[$parameter->getName()] ?? $this->passedArguments[$parameterIndex] ?? null
             );
             ++$parameterIndex;
         }

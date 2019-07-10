@@ -138,14 +138,14 @@ class Api
             $inspected = new ControllerInspect($className);
             $this->controllersMap[$className] = $inspected;
             $pathComponent = $inspected->pathComponent;
-            if ($inspected->useResource()) {
+            if ($inspected->useResource) {
                 $this->resourcesMap[$pathComponent] = $inspected->resourcesFromString;
                 /*
                  * For relationships we need to create the /endpoint/{id}/relationships/relation URLs.
                  * @see https://jsonapi.org/recommendations/
                  */
                 if ($inspected->isRelatedResource) {
-                    $this->routesMap[$inspected->relationshipPathComponent]['GET'] = $inspected->getRelationship();
+                    $this->routesMap[$inspected->relationshipPathComponent]['GET'] = $inspected->relationship;
                 }
             }
             $this->routesMap[$pathComponent][$inspected->httpMethod] = $inspected->className;

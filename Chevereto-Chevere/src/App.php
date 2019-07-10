@@ -167,7 +167,7 @@ class App implements AppInterface
     public function getControllerObject(string $callable)
     {
         $callableWrap = new CallableWrap($callable);
-        $controller = $callableWrap->getCallable();
+        $controller = $callableWrap->callable;
 
         if ($controller instanceof Controller) {
             $controller->setApp($this);

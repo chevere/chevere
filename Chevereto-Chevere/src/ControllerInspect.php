@@ -38,16 +38,16 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     const PROP_RESOURCES = 'resources';
 
     /** @var string The class name, passed in the constructor */
-    protected $className;
+    public $className;
 
     /** @var string Absolute path to the inspected class */
-    protected $filepath;
+    public $filepath;
 
     /** @var string|null The HTTP METHOD tied to the passed $className */
-    protected $httpMethod;
+    public $httpMethod;
 
     /** @var ReflectionClass The reflected controller class */
-    protected $reflection;
+    public $reflection;
 
     /** @var string|null Controller description */
     public $description;
@@ -74,7 +74,7 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     public $pathComponent;
 
     /** @var string|null Same as $pathComponent but for the related relationship URL (if any) */
-    protected $relationshipPathComponent;
+    public $relationshipPathComponent;
 
     /** @var bool True if the inspected Controller implements Interfaces\ControllerResourceIterface */
     public $isResource;
@@ -124,74 +124,6 @@ class ControllerInspect implements Interfaces\ToArrayInterface
         $this->processPathComponent();
     }
 
-    // public function getClassName(): string
-    // {
-    //     return $this->className;
-    // }
-
-    // public function getHttpMethod(): ?string
-    // {
-    //     return $this->httpMethod;
-    // }
-
-    // public function getReflection(): ReflectionClass
-    // {
-    //     return $this->reflection;
-    // }
-
-    // public function getDescription(): ?string
-    // {
-    //     return $this->description;
-    // }
-
-    // public function getResources(): ?array
-    // {
-    //     return $this->resources;
-    // }
-
-    // public function getRelatedResource(): ?string
-    // {
-    //     return $this->relatedResource ?? null;
-    // }
-
-    // public function getRelationship(): ?string
-    // {
-    //     return $this->relationship ?? null;
-    // }
-
-    // public function useResource(): bool
-    // {
-    //     return $this->useResource;
-    // }
-
-    // public function getResourcesFromString(): ?array
-    // {
-    //     return $this->resourcesFromString;
-    // }
-
-    // public function getPathComponent(): string
-    // {
-    //     return $this->pathComponent;
-    // }
-
-    /**
-     * @return mixed string if the inspected controller is a related resource, null if otherwise
-     */
-    // public function getRelationshipPathComponent(): ?string
-    // {
-    //     return $this->relationshipPathComponent ?? null;
-    // }
-
-    // public function isResource(): bool
-    // {
-    //     return $this->isResource;
-    // }
-
-    // public function isRelatedResource(): bool
-    // {
-    //     return $this->isRelatedResource;
-    // }
-
     public function toArray(): array
     {
         return [
@@ -205,9 +137,6 @@ class ControllerInspect implements Interfaces\ToArrayInterface
         ];
     }
 
-    /**
-     * Process the Controller,.
-     */
     protected function handleProcessResources(): void
     {
         if ($this->resources) {
