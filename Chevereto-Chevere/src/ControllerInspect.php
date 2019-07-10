@@ -50,37 +50,37 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     protected $reflection;
 
     /** @var string|null Controller description */
-    protected $description;
-
-    /** @var array|null Controller resources */
-    protected $resources;
+    public $description;
 
     /** @var array|null Controller parameters */
-    protected $parameters;
+    public $parameters;
+
+    /** @var array|null Controller resources */
+    public $resources;
 
     /** @var string|null Controller related resource (if any) */
-    protected $relatedResource;
+    public $relatedResource;
 
     /** @var string|null Controller relationship class (if any) */
-    protected $relationship;
+    public $relationship;
 
     /** @var bool True if the controller class must implement RESOURCES. Prefixed Classes (_ClassName) won't be resourced. */
-    protected $useResource;
+    public $useResource;
 
     /** @var array|null Instructions for creating resources from string [propname => [regex, description],] */
-    protected $resourcesFromString;
+    public $resourcesFromString;
 
     /** @var string The path component associated with the inspected Controller, used by Api */
-    protected $pathComponent;
+    public $pathComponent;
 
     /** @var string|null Same as $pathComponent but for the related relationship URL (if any) */
     protected $relationshipPathComponent;
 
     /** @var bool True if the inspected Controller implements Interfaces\ControllerResourceIterface */
-    protected $isResource;
+    public $isResource;
 
     /** @var bool True if the inspected Controller implements Interfaces\ControllerRelationshipIterface */
-    protected $isRelatedResource;
+    public $isRelatedResource;
 
     /**
      * @param string $className A class name implementing the ControllerInterface
@@ -124,73 +124,73 @@ class ControllerInspect implements Interfaces\ToArrayInterface
         $this->processPathComponent();
     }
 
-    public function getClassName(): string
-    {
-        return $this->className;
-    }
+    // public function getClassName(): string
+    // {
+    //     return $this->className;
+    // }
 
-    public function getHttpMethod(): ?string
-    {
-        return $this->httpMethod;
-    }
+    // public function getHttpMethod(): ?string
+    // {
+    //     return $this->httpMethod;
+    // }
 
-    public function getReflection(): ReflectionClass
-    {
-        return $this->reflection;
-    }
+    // public function getReflection(): ReflectionClass
+    // {
+    //     return $this->reflection;
+    // }
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
+    // public function getDescription(): ?string
+    // {
+    //     return $this->description;
+    // }
 
-    public function getResources(): ?array
-    {
-        return $this->resources;
-    }
+    // public function getResources(): ?array
+    // {
+    //     return $this->resources;
+    // }
 
-    public function getRelatedResource(): ?string
-    {
-        return $this->relatedResource ?? null;
-    }
+    // public function getRelatedResource(): ?string
+    // {
+    //     return $this->relatedResource ?? null;
+    // }
 
-    public function getRelationship(): ?string
-    {
-        return $this->relationship ?? null;
-    }
+    // public function getRelationship(): ?string
+    // {
+    //     return $this->relationship ?? null;
+    // }
 
-    public function useResource(): bool
-    {
-        return $this->useResource;
-    }
+    // public function useResource(): bool
+    // {
+    //     return $this->useResource;
+    // }
 
-    public function getResourcesFromString(): ?array
-    {
-        return $this->resourcesFromString;
-    }
+    // public function getResourcesFromString(): ?array
+    // {
+    //     return $this->resourcesFromString;
+    // }
 
-    public function getPathComponent(): string
-    {
-        return $this->pathComponent;
-    }
+    // public function getPathComponent(): string
+    // {
+    //     return $this->pathComponent;
+    // }
 
     /**
      * @return mixed string if the inspected controller is a related resource, null if otherwise
      */
-    public function getRelationshipPathComponent(): ?string
-    {
-        return $this->relationshipPathComponent ?? null;
-    }
+    // public function getRelationshipPathComponent(): ?string
+    // {
+    //     return $this->relationshipPathComponent ?? null;
+    // }
 
-    public function isResource(): bool
-    {
-        return $this->isResource;
-    }
+    // public function isResource(): bool
+    // {
+    //     return $this->isResource;
+    // }
 
-    public function isRelatedResource(): bool
-    {
-        return $this->isRelatedResource;
-    }
+    // public function isRelatedResource(): bool
+    // {
+    //     return $this->isRelatedResource;
+    // }
 
     public function toArray(): array
     {

@@ -98,7 +98,7 @@ class Api
 
         $this->processRoutesMap();
 
-        $apiRoute = Route::bind('/' . $this->basePath)
+        $apiRoute = Route::bind('/'.$this->basePath)
             ->setMethod('HEAD', Controllers\ApiHead::class)
             ->setMethod('OPTIONS', Controllers\ApiOptions::class)
             ->setMethod('GET', Controllers\ApiGet::class)
@@ -137,18 +137,18 @@ class Api
             $className = $this->getClassNameFromFilepath($filepathAbsolute);
             $inspected = new ControllerInspect($className);
             $this->controllersMap[$className] = $inspected;
-            $pathComponent = $inspected->getPathComponent();
+            $pathComponent = $inspected->pathComponent;
             if ($inspected->useResource()) {
-                $this->resourcesMap[$pathComponent] = $inspected->getResourcesFromString();
+                $this->resourcesMap[$pathComponent] = $inspected->resourcesFromString;
                 /*
                  * For relationships we need to create the /endpoint/{id}/relationships/relation URLs.
                  * @see https://jsonapi.org/recommendations/
                  */
-                if ($inspected->isRelatedResource()) {
-                    $this->routesMap[$inspected->getRelationshipPathComponent()]['GET'] = $inspected->getRelationship();
+                if ($inspected->isRelatedResource) {
+                    $this->routesMap[$inspected->relationshipPathComponent]['GET'] = $inspected->getRelationship();
                 }
             }
-            $this->routesMap[$pathComponent][$inspected->getHttpMethod()] = $inspected->getClassName();
+            $this->routesMap[$pathComponent][$inspected->httpMethod] = $inspected->className;
         }
         $this->basePath = explode('/', $pathComponent)[0];
         ksort($this->routesMap);
@@ -210,7 +210,7 @@ class Api
 
     protected function addRouteKeys(string $basePath): void
     {
-        $this->routeKeys['/' . $basePath] = [$basePath];
+        $this->routeKeys['/'.$basePath] = [$basePath];
     }
 
     /**
@@ -224,7 +224,7 @@ class Api
     {
         $filepathRelative = Path::relative($filepath);
         $filepathNoExt = Utils\Str::replaceLast('.php', null, $filepathRelative);
-        $filepathReplaceNS = Utils\Str::replaceFirst(App\PATH . 'src/', APP_NS_HANDLE, $filepathNoExt);
+        $filepathReplaceNS = Utils\Str::replaceFirst(App\PATH.'src/', APP_NS_HANDLE, $filepathNoExt);
 
         return str_replace('/', '\\', $filepathReplaceNS);
     }
