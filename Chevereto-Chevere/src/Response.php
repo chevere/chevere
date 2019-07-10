@@ -200,33 +200,39 @@ class Response extends HttpResponse
      *
      * @throws InvalidArgumentException
      */
-    protected function genJsonString(): self
+    protected function setJsonString(): self
+    {
+        $output = [
+            'jsonapi' => $this->jsonapi,
+            'meta' => $this->getMeta(),
+            'data' => $this->getData(),
+        ];
+        // JSON_PRETTY_PRINT
+        $encodingOptions = $this->encodingOptions;
+        if (CLI) {
+            $encodingOptions = $encodingOptions | JSON_PRETTY_PRINT;
+        }
+
+        $this->jsonString = $this->getJsonEncodedOutput($output, $encodingOptions);
+
+        return $this;
+    }
+
+    protected function getJsonEncodedOutput(array $data, array $encodingOptions): string
     {
         try {
-            $output = [
-                'jsonapi' => $this->jsonapi,
-                'meta' => $this->getMeta(),
-                'data' => $this->getData(),
-            ];
-            // JSON_PRETTY_PRINT
-            $encodingOptions = $this->encodingOptions;
-            if (CLI) {
-                $encodingOptions = $encodingOptions | JSON_PRETTY_PRINT;
+            $json = json_encode($data, $encodingOptions);
+            if (JSON_ERROR_NONE !== json_last_error()) {
+                throw new InvalidArgumentException(json_last_error_msg());
             }
-            $jsonString = json_encode($output, $encodingOptions);
+
+            return $json;
         } catch (Exception $e) {
             if ('Exception' === get_class($e) && 0 === strpos($e->getMessage(), 'Failed calling ')) {
                 throw $e->getPrevious() ?: $e;
             }
             throw $e;
         }
-
-        if (JSON_ERROR_NONE !== json_last_error()) {
-            throw new InvalidArgumentException(json_last_error_msg());
-        }
-        $this->jsonString = $jsonString;
-
-        return $this;
     }
 
     /**
@@ -253,23 +259,27 @@ class Response extends HttpResponse
         return $this;
     }
 
-    /**
-     * Updates the content and headers according to the JSON data and callback.
-     *
-     * @return $this
-     */
-    protected function setJsonContent(): self
+    protected function setJsonHeaders(): self
     {
         if (null !== $this->callback) {
             // Not using application/javascript for compatibility reasons with older browsers.
             $this->headers->set('Content-Type', 'text/javascript');
 
-            return $this->setContent(sprintf('/**/%s(%s);', $this->callback, $this->jsonString));
+            return $this;
         }
         // Only set the header when there is none or when it equals 'text/javascript' (from a previous update with callback)
         // in order to not overwrite a custom definition.
         if (!$this->headers->has('Content-Type') || 'text/javascript' === $this->headers->get('Content-Type')) {
             $this->headers->set('Content-Type', 'application/vnd.api+json');
+        }
+
+        return $this;
+    }
+
+    public function setJsonContent(): self
+    {
+        if (null !== $this->callback) {
+            return $this->setContent(sprintf('/**/%s(%s);', $this->callback, $this->jsonString));
         }
 
         return $this->setContent($this->jsonString);
@@ -279,7 +289,10 @@ class Response extends HttpResponse
     {
         $this->setHasBody($this->hasData());
         if ($this->hasBody) {
-            $this->genJsonString()->setJsonContent();
+            $this
+                ->setJsonHeaders()
+                ->setJsonString()
+                ->setJsonContent();
         }
 
         return parent::send();

@@ -50,7 +50,7 @@ class Router
         $this->handleRouteKey($key);
         $pointer = [$id, $basename];
         $name = $route->getName();
-        $this->handleRouteName($name);
+        $this->handleRouteName($name, $pointer);
         $this->routes[$basename][$id] = $route;
         $powerSet = $route->getPowerSet();
         if (isset($powerSet)) {
@@ -78,7 +78,7 @@ class Router
         }
     }
 
-    protected function handleRouteName(string $name)
+    protected function handleRouteName(?string $name, array $pointer)
     {
         if (isset($name)) {
             $namedRoute = $this->getNamedRoutes()[$name] ?? null;
