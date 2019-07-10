@@ -37,9 +37,6 @@ class CallableWrap
 
     const TYPES = [self::TYPE_FUNCTION, self::TYPE_CLASS];
 
-    /** @var array explode('::', $callableHandle) */
-    protected $callableHandleMethodExplode;
-
     /** @var string The callable string handle used to construct the object */
     public $callableHandle;
 
@@ -96,27 +93,16 @@ class CallableWrap
             $this->process();
         } else {
             if (class_exists($callableHandle)) {
-                if (method_exists($callableHandle, '__invoke')) {
-                    $this->callable = new $callableHandle();
-                    $this->class = $callableHandle;
-                    $this->method = '__invoke';
-                    $this->isAnon = false;
-                    $this->process();
-                } else {
-                    throw new LogicException(
-                        (string)
-                            (new Message('Missing magic method %s in class %c.'))
-                                ->code('%s', '__invoke')
-                                ->code('%c', $callableHandle)
-                    );
-                }
+                $this->handleCallableClass($callableHandle);
             }
         }
         // Some work needed when dealing with fileHandle
         if (!isset($this->callable)) {
             if (Utils\Str::contains('::', $this->callableHandle)) {
-                $this->callableHandleMethodExplode = explode('::', $this->callableHandle);
-                $this->handleCallableClass($this->callableHandleMethodExplode);
+                $explode = explode('::', $this->callableHandle);
+                $this->class = $explode[0];
+                $this->method = $explode[1];
+                $this->handleCallableClassMethod($this->class, $this->method);
             } else {
                 $this->handleCallableFile($this->callableHandle);
                 $this->process();
@@ -124,32 +110,47 @@ class CallableWrap
         }
     }
 
-    protected function handleCallableClass(array $explode): void
+    protected function handleCallableClass(string $callableClass): void
     {
-        $class = $explode[0];
-        $callableHandle = implode('::', $callableHandle);
+        if (method_exists($callableClass, '__invoke')) {
+            $this->callable = new $callableClass();
+            $this->class = $callableClass;
+            $this->method = '__invoke';
+            $this->isAnon = false;
+            $this->process();
+        } else {
+            throw new LogicException(
+                (string)
+                    (new Message('Missing magic method %s in class %c.'))
+                        ->code('%s', '__invoke')
+                        ->code('%c', $callableClass)
+            );
+        }
+    }
+
+    protected function handleCallableClassMethod(string $class, string $method): void
+    {
+        // $class = $explode[0];
+        $callableHandle = "$class::$method";
         if (!class_exists($class)) {
             throw new LogicException(
                 (string)
-                    (new Message('Callable string %s is targeting not found class %c.'))
-                        ->code('%s', $callableHandle)
+                    (new Message('Callable string handle targeting not found class %c.'))
                         ->code('%c', $class)
             );
         }
-        $method = $explode[1];
+        // $method = $explode[1];
         if (0 === strpos($method, '__')) {
             throw new LogicException(
                 (string)
-                    (new Message('Callable string %s is targeting the magic method %m.'))
-                        ->code('%s', $callableHandle)
+                    (new Message('Callable string handle targeting magic method %m.'))
                         ->code('%m', $method)
             );
         }
         if (!method_exists($class, $method)) {
             throw new LogicException(
                 (string)
-                    (new Message('Callable string %s is targeting an nonexistent method %m.'))
-                        ->code('%s', $callableHandle)
+                    (new Message('Callable string handle targeting an nonexistent method %m.'))
                         ->code('%m', $method)
             );
         }
@@ -206,10 +207,6 @@ class CallableWrap
                 $this->class = $this->isAnon ? 'class@anonymous' : $reflection->getName();
             } else {
                 $this->type = static::TYPE_FUNCTION;
-                if (isset($this->callableHandleMethodExplode)) {
-                    $this->class = $this->callableHandleMethodExplode[0];
-                    $this->method = $this->callableHandleMethodExplode[1];
-                }
             }
         }
         $this->validateType($this->type);
