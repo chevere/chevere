@@ -30,10 +30,6 @@ class Stack
     /** @var array */
     protected $console;
 
-    protected $richStack;
-    protected $plainStack;
-    protected $consoleStack;
-
     /** @var array The table used to map the rich stack */
     private $richTable;
 

@@ -16,14 +16,13 @@ namespace Chevereto\Chevere\VarDumper;
 use Reflector;
 use ReflectionProperty;
 use ReflectionObject;
-use const Chevereto\Chevere\CLI;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Utils\Str;
 
 /**
  * Analyze a variable and provide an output string representation of its type and data.
  */
-class VarDumper
+class VarDumper extends StaticVarDumper
 {
     const TYPE_STRING = 'string';
     const TYPE_FLOAT = 'float';
@@ -102,10 +101,7 @@ class VarDumper
         $this->depth = $depth;
         $this->val = null;
         $this->prefix = str_repeat(Template::HTML_INLINE_PREFIX, $this->indent);
-        $this->type = gettype($this->expression);
-        if ('double' == $this->type) {
-            $this->type = VarDumper::TYPE_FLOAT;
-        }
+        $this->handleSetType();
         $this->handleType();
         $this->handleSetTemplate();
         $this->handleSetParentheses();
@@ -114,6 +110,14 @@ class VarDumper
             '%val' => $this->val,
             '%parentheses' => isset($this->parentheses) ? static::wrap(static::_OPERATOR, '('.$this->parentheses.')') : null,
         ]);
+    }
+
+    protected function handleSetType(): void
+    {
+        $this->type = gettype($this->expression);
+        if ('double' == $this->type) {
+            $this->type = VarDumper::TYPE_FLOAT;
+        }
     }
 
     protected function handleType(): void
@@ -140,7 +144,7 @@ class VarDumper
     {
         $this->reflectionObject = new ReflectionObject($this->expression);
         if (in_array($this->reflectionObject->getName(), $this->dontDump)) {
-            $this->val .= static::wrap(static::_OPERATOR, static::getEmphasized($this->reflectionObject->getName()));
+            $this->val .= static::wrap(static::_OPERATOR, $this->getEmphasized($this->reflectionObject->getName()));
 
             return;
         }
@@ -172,7 +176,7 @@ class VarDumper
     {
         $visibility = implode(' ', $var['visibility'] ?? $this->properties['visibility']);
         $operator = static::wrap(static::_OPERATOR, '->');
-        $this->val .= "\n".$this->prefix.static::getEmphasized($visibility).' '.htmlspecialchars($key)." $operator ";
+        $this->val .= "\n".$this->prefix.$this->getEmphasized($visibility).' '.htmlspecialchars($key)." $operator ";
         $aux = $var['value'];
         if (is_object($aux) && property_exists($aux, $key)) {
             try {
@@ -180,7 +184,7 @@ class VarDumper
                 $p = $r->getProperty($key);
                 $p->setAccessible(true);
                 if ($aux == $p->getValue($aux)) {
-                    $this->val .= static::wrap(static::_OPERATOR, '('.static::getEmphasized('circular object reference').')');
+                    $this->val .= static::wrap(static::_OPERATOR, '('.$this->getEmphasized('circular object reference').')');
                 }
 
                 return;
@@ -191,7 +195,7 @@ class VarDumper
         if ($this->depth < 4) {
             $this->val .= (new static($aux, $this->indent, $this->dontDump, $this->depth))->toString();
         } else {
-            $this->val .= static::wrap(static::_OPERATOR, '('.static::getEmphasized('max depth reached').')');
+            $this->val .= static::wrap(static::_OPERATOR, '('.$this->getEmphasized('max depth reached').')');
         }
     }
 
@@ -203,7 +207,7 @@ class VarDumper
             $aux = $v;
             $isCircularRef = is_array($aux) && isset($aux[$k]) && $aux == $aux[$k];
             if ($isCircularRef) {
-                $this->val .= static::wrap(static::_OPERATOR, '('.static::getEmphasized('circular array reference').')');
+                $this->val .= static::wrap(static::_OPERATOR, '('.$this->getEmphasized('circular array reference').')');
             } else {
                 $this->val .= (new static($aux, $this->indent, $this->dontDump))->toString();
             }
@@ -244,11 +248,11 @@ class VarDumper
     protected function handleSetParentheses(): void
     {
         if (isset($this->parentheses) && false !== strpos($this->parentheses, '=')) {
-            $this->parentheses = static::getEmphasized($this->parentheses);
+            $this->parentheses = $this->getEmphasized($this->parentheses);
         }
     }
 
-    public static function getEmphasized(string $string): string
+    public function getEmphasized(string $string): string
     {
         return sprintf(Template::HTML_EMPHASIS, $string);
     }
@@ -256,40 +260,5 @@ class VarDumper
     public function toString(): string
     {
         return $this->output ?? '';
-    }
-
-    /**
-     * Get color for palette key.
-     *
-     * @param string $key color palette key
-     *
-     * @return string color
-     */
-    public static function getColorForKey(string $key): ?string
-    {
-        return CLI ? Pallete::CONSOLE[$key] ?? null : Pallete::PALETTE[$key] ?? null;
-    }
-
-    /**
-     * Wrap dump data HTML / CLI aware.
-     *
-     * @param string $key  Type or algo key (see constants)
-     * @param mixed  $dump dump data
-     *
-     * @return string wrapped dump data
-     */
-    public static function wrap(string $key, string $dump): ?string
-    {
-        $wrapper = new Wrapper($key, $dump);
-        if (CLI) {
-            $wrapper->useCLI(true);
-        }
-
-        return $wrapper->toString();
-    }
-
-    public static function out($var, int $indent = null, array $dontDump = [], int $depth = 0): string
-    {
-        return (new static(...func_get_args()))->toString();
     }
 }
