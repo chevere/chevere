@@ -115,7 +115,11 @@ class ControllerInspect implements Interfaces\ToArrayInterface
             $this->resources = $this->relatedResource::getResources();
         }
         $this->parameters = $className::getParameters();
-        $this->handleConstResource();
+
+        $this->handleConstResourceNeed();
+        $this->handleConstResourceType();
+        $this->handleConstResourceMissed();
+        $this->handleConstResourceValid();
         $this->handleProcessResources();
         $this->processPathComponent();
     }
@@ -258,13 +262,6 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     /**
      * Throws a LogicException if the usage of const RESOURCES is invalid.
      */
-    protected function handleConstResource(): void
-    {
-        $this->handleConstResourceNeed();
-        $this->handleConstResourceType();
-        $this->handleConstResourceMissed();
-        $this->handleConstResourceValid();
-    }
 
     /**
      * Throws a LogicException if const RESOURCES is set but not needed.
