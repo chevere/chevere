@@ -18,6 +18,7 @@ use ReflectionMethod;
 use ReflectionFunction;
 use ReflectionParameter;
 use ReflectionClass;
+use ReflectionFunctionAbstract;
 
 /**
  * CallableWrap provides a object oriented way to interact with Chevereto\Core accepted callable strings.
@@ -48,6 +49,12 @@ class CallableWrap
     /** @var ReflectionMethod The reflected callable (method) */
     protected $reflectionMethod;
 
+    /** @var ReflectionFunction The reflected callable (function) */
+    protected $reflectionFunction;
+
+    /** @var ReflectionFunctionAbstract */
+    protected $reflection;
+
     /** @var callable The actual callable */
     public $callable;
 
@@ -62,9 +69,6 @@ class CallableWrap
 
     /** @var string Method name (if any) */
     public $method;
-
-    /** @var ReflectionFunction The reflected callable (function) */
-    protected $reflectionFunction;
 
     /** @var string[] Callable parameters */
     public $parameters;
@@ -89,7 +93,7 @@ class CallableWrap
         if (is_callable($this->callableHandle)) {
             $this->callable = $callableHandle;
             $this->isAnon = false;
-            $this->processCallable();
+            $this->process();
         } else {
             if (class_exists($callableHandle)) {
                 if (method_exists($callableHandle, '__invoke')) {
@@ -97,7 +101,7 @@ class CallableWrap
                     $this->class = $callableHandle;
                     $this->method = '__invoke';
                     $this->isAnon = false;
-                    $this->processCallable();
+                    $this->process();
                 } else {
                     throw new LogicException(
                         (string)
@@ -115,7 +119,7 @@ class CallableWrap
                 $this->handleCallableClass($this->callableHandleMethodExplode);
             } else {
                 $this->handleCallableFile($this->callableHandle);
-                $this->processCallable();
+                $this->process();
             }
         }
     }
@@ -189,7 +193,7 @@ class CallableWrap
     }
 
     // Process the callable and fill the object properties
-    protected function processCallable()
+    protected function process()
     {
         if (isset($this->class)) {
             $this->type = isset($this->method) ? static::TYPE_CLASS : static::TYPE_FUNCTION;
@@ -209,32 +213,6 @@ class CallableWrap
             }
         }
         $this->validateType($this->type);
-    }
-
-    /**
-     * Undocumented function.
-     *
-     * @return array an array containing ReflectionParameter members
-     */
-    public function getParameters(): ?array
-    {
-        if (!isset($this->parameters)) {
-            $this->processParameters();
-        }
-
-        return $this->parameters ?? null;
-    }
-
-    protected function hasReflection(): bool
-    {
-        return isset($this->reflectionFunction) || isset($this->reflectionMethod);
-    }
-
-    public function getReflection(): \ReflectionFunctionAbstract
-    {
-        return isset($this->reflectionFunction)
-            ? $this->reflectionFunction
-            : $this->reflectionMethod;
     }
 
     /**
@@ -262,7 +240,7 @@ class CallableWrap
 
     protected function processReflection(): self
     {
-        if ($this->hasReflection()) {
+        if ($this->reflectionFunction) {
             return $this;
         }
         if (is_object($this->callable)) {
@@ -270,6 +248,7 @@ class CallableWrap
         } else {
             $this->reflectionFunction = new ReflectionFunction($this->callable);
         }
+        $this->reflection = $this->reflectionFunction ?? $this->reflectionMethod;
 
         return $this;
     }
@@ -277,8 +256,7 @@ class CallableWrap
     protected function processParameters(): self
     {
         $this->processReflection();
-        $reflection = $this->getReflection();
-        $this->parameters = $reflection->getParameters();
+        $this->parameters = $this->reflection->getParameters();
 
         return $this;
     }
@@ -290,7 +268,7 @@ class CallableWrap
         $parameterIndex = 0;
 
         // Magically create typehinted arguments
-        foreach ($this->getReflection()->getParameters() as $parameter) {
+        foreach ($this->reflection->getParameters() as $parameter) {
             $type = null;
             $parameterType = $parameter->getType();
             if (isset($parameterType)) {
