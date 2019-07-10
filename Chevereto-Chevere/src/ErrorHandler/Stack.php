@@ -13,7 +13,10 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\ErrorHandler;
 
+use const Chevereto\Chevere\CLI;
 use Chevereto\Chevere\VarDumper\VarDumper;
+use Chevereto\Chevere\VarDumper\Wrapper;
+use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 /**
  * Handles the ErrorHandler exception stack trace.
@@ -53,10 +56,13 @@ class Stack
         foreach ($trace as $entry) {
             $traceEntry = new TraceEntry($entry);
             $this->setPlainTable($traceEntry);
-            $this->setRichTable($traceEntry);
+            if (CLI) {
+                $consoleColor = new ConsoleColor();
+            }
+            $this->setRichTable($traceEntry, $consoleColor ?? null);
             $this->handleProcessConsole();
-            $this->processPlain($this->plainTable);
-            $this->processRich($this->richTable);
+            $this->plain[] = strtr(Template::STACK_ITEM_HTML, $this->plainTable);
+            $this->rich[] = strtr(Template::STACK_ITEM_HTML, $this->richTable);
             ++$this->i;
         }
     }
@@ -101,7 +107,7 @@ class Stack
         ];
     }
 
-    protected function setRichTable(TraceEntry $entry): void
+    protected function setRichTable(TraceEntry $entry, ?ConsoleColor $consoleColor): void
     {
         $this->richTable = $this->plainTable;
         array_pop($this->richTable);
@@ -114,45 +120,19 @@ class Stack
             '%t%' => VarDumper::_OPERATOR,
             '%m%' => VarDumper::_FUNCTION,
         ] as $k => $v) {
-            $this->richTable[$k] = isset($this->plainTable[$k]) ? VarDumper::wrap($v, $this->plainTable[$k]) : null;
+            $wrapper = new Wrapper($v, (string) $this->plainTable[$k]);
+            if ($consoleColor) {
+                $wrapper->setCLI($consoleColor);
+            }
+            $this->richTable[$k] = isset($this->plainTable[$k]) ? $wrapper->toString() : null;
         }
         $this->richTable['%a%'] = $entry->getRichArgs();
     }
 
     protected function handleProcessConsole(): void
     {
-        if ('cli' == php_sapi_name()) {
-            $this->processConsole($this->richTable);
+        if (CLI) {
+            $this->console[] = strtr(Template::STACK_ITEM_CONSOLE, $this->richTable);
         }
-    }
-
-    protected function processConsole(array $richTable): void
-    {
-        $this->console[] = strtr(Template::STACK_ITEM_CONSOLE, $richTable);
-    }
-
-    protected function processPlain(array $plainTable): void
-    {
-        $this->plain[] = strtr(Template::STACK_ITEM_HTML, $plainTable);
-    }
-
-    protected function processRich(array $richTable): void
-    {
-        $this->rich[] = strtr(Template::STACK_ITEM_HTML, $richTable);
-    }
-
-    public function getRich()
-    {
-        return $this->rich ?? [];
-    }
-
-    public function getPlain()
-    {
-        return $this->plain ?? [];
-    }
-
-    public function getConsole()
-    {
-        return $this->console ?? [];
     }
 }

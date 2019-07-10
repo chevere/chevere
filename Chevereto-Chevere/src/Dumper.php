@@ -114,7 +114,7 @@ class Dumper
 
     protected function handleOutput(): void
     {
-        if ('cli' == php_sapi_name()) {
+        if (CLI) {
             $this->handleConsoleOutput();
         } else {
             $this->handleHtmlOutput();

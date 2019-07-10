@@ -16,6 +16,7 @@ namespace Chevereto\Chevere\VarDumper;
 use Reflector;
 use ReflectionProperty;
 use ReflectionObject;
+use const Chevereto\Chevere\CLI;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Utils\Str;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
@@ -189,7 +190,7 @@ class VarDumper
             }
         }
         if ($this->depth < 4) {
-            $this->val .= new static($aux, $this->indent, $this->dontDump, $this->depth);
+            $this->val .= (new static($aux, $this->indent, $this->dontDump, $this->depth))->toString();
         } else {
             $this->val .= static::wrap(static::_OPERATOR, '('.static::getEmphasized('max depth reached').')');
         }
@@ -205,7 +206,7 @@ class VarDumper
             if ($isCircularRef) {
                 $this->val .= static::wrap(static::_OPERATOR, '('.static::getEmphasized('circular array reference').')');
             } else {
-                $this->val .= (string) new static($aux, $this->indent, $this->dontDump);
+                $this->val .= (new static($aux, $this->indent, $this->dontDump))->toString();
             }
         }
         $this->parentheses = 'size='.count($this->expression);
@@ -253,9 +254,9 @@ class VarDumper
         return sprintf(Template::HTML_EMPHASIS, $string);
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
-        return $this->output;
+        return $this->output ?? '';
     }
 
     /**
@@ -267,35 +268,29 @@ class VarDumper
      */
     public static function getColorForKey(string $key): ?string
     {
-        return 'cli' == php_sapi_name() ? Pallete::CONSOLE[$key] ?? null : Pallete::PALETTE[$key] ?? null;
+        return CLI ? Pallete::CONSOLE[$key] ?? null : Pallete::PALETTE[$key] ?? null;
     }
 
     /**
-     * Wrap dump data into HTML.
+     * Wrap dump data HTML / CLI aware.
      *
      * @param string $key  Type or algo key (see constants)
      * @param mixed  $dump dump data
      *
      * @return string wrapped dump data
      */
-    public static function wrap(string $key, $dump): ?string
+    public static function wrap(string $key, string $dump): ?string
     {
-        $color = static::getColorForKey($key);
-        if (isset($color)) {
-            if ('cli' == php_sapi_name()) {
-                $consoleColor = new ConsoleColor();
-
-                return $consoleColor->apply($color, $dump);
-            }
-
-            return '<span style="color:'.$color.'">'.$dump.'</span>';
-        } else {
-            return (string) $dump;
+        $wrapper = new Wrapper($key, $dump);
+        if (CLI) {
+            $wrapper->setCLI(new ConsoleColor());
         }
+
+        return $wrapper->toString();
     }
 
     public static function out($var, int $indent = null, array $dontDump = [], int $depth = 0): string
     {
-        return (string) new static(...func_get_args());
+        return (new static(...func_get_args()))->toString();
     }
 }
