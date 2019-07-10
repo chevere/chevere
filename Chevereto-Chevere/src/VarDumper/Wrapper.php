@@ -41,9 +41,9 @@ class Wrapper
         $this->dump = $dump;
     }
 
-    public function setCLI(ConsoleColor $consoleColor)
+    public function useCLI(bool $boolean)
     {
-        $this->consoleColor = $consoleColor;
+        $this->consoleColor = new ConsoleColor();
         $this->isCLI = true;
     }
 
@@ -67,29 +67,43 @@ class Wrapper
         if ($this->isCLI) {
             return Pallete::CONSOLE[$this->key] ?? '';
         }
-
-        return Pallete::PALETTE[$this->key] ?? '';
     }
 
-    // static @ wrap(string $key, $dump)
+    public function getCLIColor(): ?string
+    {
+        return Pallete::CONSOLE[$this->key] ?? null;
+    }
+
+    public function getHTMLColor(): ?string
+    {
+        return Pallete::PALETTE[$this->key] ?? null;
+    }
+
+    public function wrapCLI(): string
+    {
+        if ($color = $this->getCLIColor($this->key)) {
+            return $this->consoleColor->apply($color, $this->dump);
+        }
+
+        return $this->dump;
+    }
+
+    public function wrapHTML()
+    {
+        if ($color = $this->getHTMLColor($this->key)) {
+            return '<span style="color:'.$color.'">'.$this->dump.'</span>';
+        }
+
+        return $this->dump;
+    }
 
     /**
      * Wrap dump data.
      *
-     * @param string $dump dump data
-     *
      * @return string wrapped dump data
      */
-    public function wrap(string $dump): ?string
+    public function wrap(): string
     {
-        if ($color = $this->getColor()) {
-            if ($this->isCLI) {
-                return $this->consoleColor->apply($color, $dump);
-            }
-
-            return '<span style="color:'.$color.'">'.$dump.'</span>';
-        } else {
-            return $dump;
-        }
+        return $this->isCLI ? $this->wrapCLI() : $this->wrapHTML();
     }
 }

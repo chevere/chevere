@@ -19,7 +19,6 @@ use ReflectionObject;
 use const Chevereto\Chevere\CLI;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Utils\Str;
-use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 /**
  * Analyze a variable and provide an output string representation of its type and data.
@@ -283,7 +282,7 @@ class VarDumper
     {
         $wrapper = new Wrapper($key, $dump);
         if (CLI) {
-            $wrapper->setCLI(new ConsoleColor());
+            $wrapper->useCLI(true);
         }
 
         return $wrapper->toString();

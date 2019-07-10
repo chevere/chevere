@@ -15,8 +15,6 @@ namespace Chevereto\Chevere\ErrorHandler;
 
 use const Chevereto\Chevere\CLI;
 use Chevereto\Chevere\VarDumper\VarDumper;
-use Chevereto\Chevere\VarDumper\Wrapper;
-use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 /**
  * Handles the ErrorHandler exception stack trace.
@@ -56,10 +54,7 @@ class Stack
         foreach ($trace as $entry) {
             $traceEntry = new TraceEntry($entry);
             $this->setPlainTable($traceEntry);
-            if (CLI) {
-                $consoleColor = new ConsoleColor();
-            }
-            $this->setRichTable($traceEntry, $consoleColor ?? null);
+            $this->setRichTable($traceEntry);
             $this->handleProcessConsole();
             $this->plain[] = strtr(Template::STACK_ITEM_HTML, $this->plainTable);
             $this->rich[] = strtr(Template::STACK_ITEM_HTML, $this->richTable);
@@ -107,7 +102,7 @@ class Stack
         ];
     }
 
-    protected function setRichTable(TraceEntry $entry, ?ConsoleColor $consoleColor): void
+    protected function setRichTable(TraceEntry $entry): void
     {
         $this->richTable = $this->plainTable;
         array_pop($this->richTable);
@@ -120,11 +115,8 @@ class Stack
             '%t%' => VarDumper::_OPERATOR,
             '%m%' => VarDumper::_FUNCTION,
         ] as $k => $v) {
-            $wrapper = new Wrapper($v, (string) $this->plainTable[$k]);
-            if ($consoleColor) {
-                $wrapper->setCLI($consoleColor);
-            }
-            $this->richTable[$k] = isset($this->plainTable[$k]) ? $wrapper->toString() : null;
+            $wrapper = VarDumper::wrap($v, (string) $this->plainTable[$k]);
+            $this->richTable[$k] = isset($this->plainTable[$k]) ? $wrapper : null;
         }
         $this->richTable['%a%'] = $entry->getRichArgs();
     }
