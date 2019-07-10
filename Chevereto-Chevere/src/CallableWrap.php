@@ -89,7 +89,7 @@ class CallableWrap
         if (is_callable($this->callableHandle)) {
             $this->callable = $callableHandle;
             $this->isAnon = false;
-            $this->prepare();
+            $this->processCallable();
         } else {
             if (class_exists($callableHandle)) {
                 if (method_exists($callableHandle, '__invoke')) {
@@ -97,7 +97,7 @@ class CallableWrap
                     $this->class = $callableHandle;
                     $this->method = '__invoke';
                     $this->isAnon = false;
-                    $this->prepare();
+                    $this->processCallable();
                 } else {
                     throw new LogicException(
                         (string)
@@ -112,57 +112,68 @@ class CallableWrap
         if (!isset($this->callable)) {
             if (Utils\Str::contains('::', $this->callableHandle)) {
                 $this->callableHandleMethodExplode = explode('::', $this->callableHandle);
-                $class = $this->callableHandleMethodExplode[0];
-                if (!class_exists($class)) {
-                    throw new LogicException(
-                        (string)
-                            (new Message('Callable string %s is targeting not found class %c.'))
-                                ->code('%s', $this->callableHandle)
-                                ->code('%c', $class)
-                    );
-                }
-                $method = $this->callableHandleMethodExplode[1];
-                if (0 === strpos($method, '__')) {
-                    throw new LogicException(
-                        (string)
-                            (new Message('Callable string %s is targeting the magic method %m.'))
-                                ->code('%s', $this->callableHandle)
-                                ->code('%m', $method)
-                    );
-                }
-                if (!method_exists($class, $method)) {
-                    throw new LogicException(
-                        (string)
-                            (new Message('Callable string %s is targeting an nonexistent method %m.'))
-                                ->code('%s', $this->callableHandle)
-                                ->code('%m', $method)
-                    );
-                }
+                $this->handleCallableClass($this->callableHandleMethodExplode);
             } else {
-                $callableFilepath = Path::fromHandle($this->callableHandle);
-                if (!File::exists($callableFilepath)) {
-                    throw new LogicException(
-                        (string)
-                            (new Message('Unable to locate any callable specified by %s.'))
-                                ->code('%s', $this->callableHandle)
-                    );
-                }
-                $callable = include $callableFilepath;
-                if (!is_callable($callable)) {
-                    throw new LogicException(
-                        (string)
-                            (new Message('Expected %s callable, %t provided in %f.'))
-                                ->code('%s', '$callable')
-                                ->code('%t', gettype($callable))
-                                ->code('%f', $this->callableHandle)
-                    );
-                }
-                $this->isFileHandle = true;
-                $this->callable = $callable;
-                $this->callableFilepath = $callableFilepath;
-                $this->prepare();
+                $this->handleCallableFile($this->callableHandle);
+                $this->processCallable();
             }
         }
+    }
+
+    protected function handleCallableClass(array $explode, string $callableHandle): void
+    {
+        $class = $explode[0];
+        $callableHandle = implode('::', $callableHandle);
+        if (!class_exists($class)) {
+            throw new LogicException(
+                (string)
+                    (new Message('Callable string %s is targeting not found class %c.'))
+                        ->code('%s', $callableHandle)
+                        ->code('%c', $class)
+            );
+        }
+        $method = $explode[1];
+        if (0 === strpos($method, '__')) {
+            throw new LogicException(
+                (string)
+                    (new Message('Callable string %s is targeting the magic method %m.'))
+                        ->code('%s', $callableHandle)
+                        ->code('%m', $method)
+            );
+        }
+        if (!method_exists($class, $method)) {
+            throw new LogicException(
+                (string)
+                    (new Message('Callable string %s is targeting an nonexistent method %m.'))
+                        ->code('%s', $callableHandle)
+                        ->code('%m', $method)
+            );
+        }
+    }
+
+    protected function handleCallableFile(string $callableHandle): void
+    {
+        $callableFilepath = Path::fromHandle($callableHandle);
+        if (!File::exists($callableFilepath)) {
+            throw new LogicException(
+                (string)
+                    (new Message('Unable to locate any callable specified by %s.'))
+                        ->code('%s', $callableHandle)
+            );
+        }
+        $callable = include $callableFilepath;
+        if (!is_callable($callable)) {
+            throw new LogicException(
+                (string)
+                    (new Message('Expected %s callable, %t provided in %f.'))
+                        ->code('%s', '$callable')
+                        ->code('%t', gettype($callable))
+                        ->code('%f', $callableHandle)
+            );
+        }
+        $this->isFileHandle = true;
+        $this->callable = $callable;
+        $this->callableFilepath = $callableFilepath;
     }
 
     protected function validateType(string $type)
@@ -178,7 +189,7 @@ class CallableWrap
     }
 
     // Process the callable and fill the object properties
-    protected function prepare()
+    protected function processCallable()
     {
         if (isset($this->class)) {
             $this->type = isset($this->method) ? static::TYPE_CLASS : static::TYPE_FUNCTION;
