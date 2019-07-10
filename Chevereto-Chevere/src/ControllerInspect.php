@@ -18,7 +18,7 @@ use ReflectionClass;
 use Roave\BetterReflection\BetterReflection;
 
 /**
- * Provides information about any Controller implementing the Interfaces\ControllerInterface interface.
+ * Provides information about any Controller implementing Interfaces\ControllerInterface interface.
  */
 class ControllerInspect implements Interfaces\ToArrayInterface
 {
@@ -100,6 +100,21 @@ class ControllerInspect implements Interfaces\ToArrayInterface
         }
         $this->httpMethod = Utils\Str::replaceFirst(Api::METHOD_ROOT_PREFIX, null, $classShortName);
         $this->description = $className::getDescription();
+        $this->handleResources($className);
+        $this->parameters = $className::getParameters();
+        try {
+            $this->handleConstResourceNeed();
+            $this->handleConstResourceType();
+            $this->handleConstResourceMissed();
+            $this->handleConstResourceValid();
+        } catch (Throwable $e) {
+        }
+        $this->handleProcessResources();
+        $this->processPathComponent();
+    }
+
+    protected function handleResources(string $className)
+    {
         if ($this->isResource) {
             $this->resources = $className::getResources();
         } elseif ($this->isRelatedResource) {
@@ -114,14 +129,6 @@ class ControllerInspect implements Interfaces\ToArrayInterface
             }
             $this->resources = $this->relatedResource::getResources();
         }
-        $this->parameters = $className::getParameters();
-
-        $this->handleConstResourceNeed();
-        $this->handleConstResourceType();
-        $this->handleConstResourceMissed();
-        $this->handleConstResourceValid();
-        $this->handleProcessResources();
-        $this->processPathComponent();
     }
 
     public function toArray(): array
@@ -135,28 +142,6 @@ class ControllerInspect implements Interfaces\ToArrayInterface
             'resourcesFromString' => $this->resourcesFromString,
             'pathComponent' => $this->pathComponent,
         ];
-    }
-
-    protected function handleProcessResources(): void
-    {
-        if ($this->resources) {
-            $resourcesFromString = [];
-            foreach ($this->resources as $propName => $resourceClassName) {
-                // Better reflection is needed due to this: https://bugs.php.net/bug.php?id=69804
-                $resourceReflection = (new BetterReflection())
-                    ->classReflector()
-                    ->reflect($resourceClassName);
-                if ($resourceReflection->implementsInterface(static::INTERFACE_CREATE_FROM_STRING)) {
-                    $resourcesFromString[$propName] = [
-                        'regex' => $resourceReflection->getStaticPropertyValue('stringRegex'),
-                        'description' => $resourceReflection->getStaticPropertyValue('stringDescription'),
-                    ];
-                }
-            }
-            if (!empty($resourcesFromString)) {
-                $this->resourcesFromString = $resourcesFromString;
-            }
-        }
     }
 
     /**
@@ -198,15 +183,12 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     protected function handleConstResourceNeed(): void
     {
         if (isset($this->resources) && !$this->useResource) {
-            throw new LogicException(
-                (string)
-                    (new Message('Class %s defines %r but this Controller class targets a non-resourced endpoint: %e. Remove the unused %r declaration at %f.'))
-                        ->code('%s', $this->className)
-                        ->code('%r', 'const '.static::PROP_RESOURCES)
-                        ->code('%e', $this->httpMethod.' api/users')
-                        ->code('%f', $this->filepath)
-            );
+            throw new LogicException('Class %s defines %r but this Controller class targets a non-resourced endpoint: %e. Remove the unused %r declaration at %f.');
         }
+        // '%s', $this->className
+        // '%r', 'const '.static::PROP_RESOURCES
+        // '%e', $this->httpMethod.' api/users'
+        // '%f', $this->filepath
     }
 
     /**
@@ -215,16 +197,13 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     protected function handleConstResourceType(): void
     {
         if (isset($this->resources) && $this->useResource && !is_array($this->resources)) {
-            throw new LogicException(
-                (string)
-                    (new Message('Class %s must define %r of type %t, %x found at %f.'))
-                        ->code('%s', $this->className)
-                        ->code('%r', 'const '.static::PROP_RESOURCES)
-                        ->code('%t', 'array')
-                        ->code('%x', gettype($this->resources))
-                        ->code('%f', $this->filepath)
-            );
+            throw new LogicException('Class %s must define %r of type %t, %x found at %f.');
         }
+        // '%s', $this->className
+        // '%r', 'const '.static::PROP_RESOURCES
+        // '%t', 'array'
+        // '%x', gettype($this->resources)
+        // '%f', $this->filepath
     }
 
     /**
@@ -233,14 +212,11 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     protected function handleConstResourceMissed(): void
     {
         if (!isset($this->resources) && $this->isResource) {
-            throw new LogicException(
-                (string)
-                    (new Message('Class %s must define %r at %f.'))
-                        ->code('%s', $this->className)
-                        ->code('%r', 'const '.static::PROP_RESOURCES)
-                        ->code('%f', $this->filepath)
-            );
+            throw new LogicException('Class %s must define %r at %f.');
         }
+        // '%s', $this->className
+        // '%r', 'const '.static::PROP_RESOURCES
+        // '%f', $this->filepath
     }
 
     /**
@@ -255,10 +231,32 @@ class ControllerInspect implements Interfaces\ToArrayInterface
                         (string)
                             (new Message('Class %s not found for %c Controller at %f.'))
                                 ->code('%s', $className)
-                                ->code('%c', $this->className)
-                                ->code('%f', $this->filepath)
                     );
                 }
+            }
+        }
+        // '%c', $this->className
+        // '%f', $this->filepath
+    }
+
+    protected function handleProcessResources(): void
+    {
+        if ($this->resources) {
+            $resourcesFromString = [];
+            foreach ($this->resources as $propName => $resourceClassName) {
+                // Better reflection is needed due to this: https://bugs.php.net/bug.php?id=69804
+                $resourceReflection = (new BetterReflection())
+                    ->classReflector()
+                    ->reflect($resourceClassName);
+                if ($resourceReflection->implementsInterface(static::INTERFACE_CREATE_FROM_STRING)) {
+                    $resourcesFromString[$propName] = [
+                        'regex' => $resourceReflection->getStaticPropertyValue('stringRegex'),
+                        'description' => $resourceReflection->getStaticPropertyValue('stringDescription'),
+                    ];
+                }
+            }
+            if (!empty($resourcesFromString)) {
+                $this->resourcesFromString = $resourcesFromString;
             }
         }
     }
@@ -268,22 +266,16 @@ class ControllerInspect implements Interfaces\ToArrayInterface
      */
     protected function processPathComponent(): void
     {
-        /** @var string The class namespace, like App\Api\Users for class App\Api\Users\DELETE */
-        $classNs = Utils\Str::replaceLast('\\'.$this->reflection->getShortName(), null, $this->className);
-        /** @var string The class namespace without App (Api\Users) */
-        $classNsNoApp = Utils\Str::replaceFirst(APP_NS_HANDLE, null, $classNs);
-        /** @var string The class namespace without App, lowercased with forward slashes (api/users) */
-        $pathComponent = strtolower(Utils\Str::forwardSlashes($classNsNoApp));
-        /** @var array Exploded / $pathComponent */
+        $classNamespace = Utils\Str::replaceLast('\\'.$this->reflection->getShortName(), null, $this->className);
+        $classNamespaceNoApp = Utils\Str::replaceFirst(APP_NS_HANDLE, null, $classNamespace);
+        $pathComponent = strtolower(Utils\Str::forwardSlashes($classNamespaceNoApp));
         $pathComponents = explode('/', $pathComponent);
         if ($this->useResource) {
-            /** @var string The Controller resource wildcard path component {resource} */
             $resourceWildcard = '{'.array_keys($this->resources)[0].'}';
             if ($this->isResource) {
                 // Append the resource wildcard: api/users/{wildcard}
                 $pathComponent .= '/'.$resourceWildcard;
             } elseif ($this->isRelatedResource) {
-                /** @var string Pop the last path component, in this case a related resource */
                 $related = array_pop($pathComponents);
                 // Inject the resource wildcard: api/users/{wildcard}/related
                 $pathComponent = implode('/', $pathComponents).'/'.$resourceWildcard.'/'.$related;
@@ -294,9 +286,8 @@ class ControllerInspect implements Interfaces\ToArrayInterface
                 $pathComponentArray = explode('/', $pathComponent);
                 $relationship = array_pop($pathComponentArray);
                 $relatedPathComponentArray = array_merge($pathComponentArray, ['relationships'], [$relationship]);
-                /** @var string Something like api/users/{user}/relationships/friends */
+                // Something like api/users/{user}/relationships/friends
                 $relatedPathComponent = implode('/', $relatedPathComponentArray);
-                // $ROUTE_MAP[$relatedPathComponent]['GET'] = $this->className;
                 $this->relationshipPathComponent = $relatedPathComponent;
                 // ->implementsInterface(Interfaces\ControllerRelationshipInterface::class)
                 $this->relationship = $this->reflection->getParentClass()->getName();
