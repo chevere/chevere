@@ -124,7 +124,7 @@ class CallableWrap
         }
     }
 
-    protected function handleCallableClass(array $explode, string $callableHandle): void
+    protected function handleCallableClass(array $explode): void
     {
         $class = $explode[0];
         $callableHandle = implode('::', $callableHandle);
