@@ -130,8 +130,6 @@ class CallableWrap
 
     protected function handleCallableClassMethod(string $class, string $method): void
     {
-        // $class = $explode[0];
-        $callableHandle = "$class::$method";
         if (!class_exists($class)) {
             throw new LogicException(
                 (string)
@@ -139,7 +137,6 @@ class CallableWrap
                         ->code('%c', $class)
             );
         }
-        // $method = $explode[1];
         if (0 === strpos($method, '__')) {
             throw new LogicException(
                 (string)

@@ -42,37 +42,16 @@ class Router
     /** @var array Arguments taken from wildcard matches. */
     protected $arguments;
 
-    // FIXME: Wtf does basename here?
     public function addRoute(Route $route, string $basename)
     {
         $route->fill();
         $id = $route->getId();
         $key = $route->getKey();
-        $keyedRoute = $this->getRouteKeys()[$key] ?? null;
-        if (isset($keyedRoute)) {
-            dd($this->getRouteKeys());
-            throw new LogicException(
-                (string) (new Message('Route key %s has been already declared by %r.'))
-                    ->code('%s', $key)
-                    ->code('%r', $keyedRoute[0] . '@' . $keyedRoute[1])
-            );
-        }
+        $this->handleRouteKey($key);
         $pointer = [$id, $basename];
         $name = $route->getName();
-        if (isset($name)) {
-            $namedRoute = $this->getNamedRoutes()[$name] ?? null;
-            if (isset($namedRoute)) {
-                throw new LogicException(
-                    (string) (new Message('Route name %s has been already taken by %r.'))
-                        ->code('%s', $name)
-                        ->code('%r', $namedRoute[0] . '@' . $namedRoute[1])
-                );
-            }
-            $this->namedRoutes[$name] = $pointer;
-        }
-
+        $this->handleRouteName($name);
         $this->routes[$basename][$id] = $route;
-
         $powerSet = $route->getPowerSet();
         if (isset($powerSet)) {
             foreach ($powerSet as $k => $wildcardsIndex) {
@@ -85,6 +64,33 @@ class Router
         }
         ksort($this->routing);
         $this->routeKeys[$key] = $pointer;
+    }
+
+    protected function handleRouteKey(string $key)
+    {
+        $keyedRoute = $this->getRouteKeys()[$key] ?? null;
+        if (isset($keyedRoute)) {
+            throw new LogicException(
+                (string) (new Message('Route key %s has been already declared by %r.'))
+                    ->code('%s', $key)
+                    ->code('%r', $keyedRoute[0].'@'.$keyedRoute[1])
+            );
+        }
+    }
+
+    protected function handleRouteName(string $name)
+    {
+        if (isset($name)) {
+            $namedRoute = $this->getNamedRoutes()[$name] ?? null;
+            if (isset($namedRoute)) {
+                throw new LogicException(
+                    (string) (new Message('Route name %s has been already taken by %r.'))
+                        ->code('%s', $name)
+                        ->code('%r', $namedRoute[0].'@'.$namedRoute[1])
+                );
+            }
+            $this->namedRoutes[$name] = $pointer;
+        }
     }
 
     public function getRoutes(): ?array
@@ -187,7 +193,7 @@ class Router
                         throw new LogicException(
                             (string) (new Message('Unexpected type %t in routes table %h.'))
                                 ->code('%t', gettype($routeSome))
-                                ->code('%h', $pointer[0] . '@' . $pointer[1])
+                                ->code('%h', $pointer[0].'@'.$pointer[1])
                         );
                     }
                 }
