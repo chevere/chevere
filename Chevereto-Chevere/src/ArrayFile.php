@@ -78,6 +78,7 @@ class ArrayFile
             $message = (string) (new Message($e->getMessage()))
                 ->code('%arrayFileType%', $arrayFileType)
                 ->code('%filepath%', $filepath)
+                ->code('%members%', $this->className ?? $this->interfaceName ?? $this->type)
                 ->code('%typeSome%', $typeSome);
             throw new LogicException($message);
         }
@@ -126,9 +127,7 @@ class ArrayFile
     {
         $validator = static::TYPE_VALIDATORS[$this->type];
         foreach ($array as $k => $v) {
-            $validate = $validator($v);
-            // First layer of validation (type)
-            if ($validate) {
+            if ($validate = $validator($v)) {
                 // Do another validation for objects
                 if ($this->type == 'object') {
                     if (null != $this->className) {
@@ -139,21 +138,24 @@ class ArrayFile
                 }
             }
             if (false == $validate) {
-                $type = gettype($v);
-                if ($type == 'object') {
-                    $type .= ' '.get_class($v);
-                }
-                throw new LogicException(
-                    (string) (new Message('Expecting array containing only %w members, %s found at %f (key %k).'))
-                        ->code('%w', $this->className ?? $this->interfaceName ?? $this->type)
-                        ->code('%s', $type)
-                        ->code('%f', $this->filepath)
-                        ->code('%k', $k)
-                );
+                $this->handleInvalidation($k, $v);
             }
         }
 
         return $this;
+    }
+
+    protected function handleInvalidation($k, $v)
+    {
+        $type = gettype($v);
+        if ($type == 'object') {
+            $type .= ' '.get_class($v);
+        }
+        throw new LogicException(
+                (string) (new Message('Expecting array containing only %members% members, %type% found at %filepath% (key %key%).'))
+                    ->code('%type%', $type)
+                    ->code('%key%', $k)
+        );
     }
 
     public function getFilepath(): string
