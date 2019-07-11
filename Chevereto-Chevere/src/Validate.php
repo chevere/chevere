@@ -108,6 +108,7 @@ class Validate
      */
     public static function url(string $url): bool
     {
+        // TODO: Migrate to Guzzle
         return false;
     }
 

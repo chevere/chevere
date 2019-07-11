@@ -182,20 +182,12 @@ class Router
                     $this->arguments = $matches;
                     $pointer = $prop[static::ID];
                     $routeSome = $this->routes[$pointer[1]][$pointer[0]] ?? null;
-                    if ($routeSome instanceof Route) {
-                        return $routeSome;
+                    $routerResolver = new RouterResolver($routeSome, $pointer);
+                    if ($routerResolver->isUnserialized) {
+                        $this->routes[$pointer[1]][$pointer[0]] = $routerResolver->get();
                     }
-                    if (is_string($routeSome)) {
-                        $this->routes[$pointer[1]][$pointer[0]] = unserialize($routeSome, ['allowed_classes' => Route::class]);
 
-                        return $this->routes[$pointer[1]][$pointer[0]];
-                    } else {
-                        throw new LogicException(
-                            (string) (new Message('Unexpected type %t in routes table %h.'))
-                                ->code('%t', gettype($routeSome))
-                                ->code('%h', $pointer[0].'@'.$pointer[1])
-                        );
-                    }
+                    return $routerResolver->get();
                 }
             }
         }
