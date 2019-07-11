@@ -169,10 +169,10 @@ class Router
     public function resolve(string $pathInfo): ?Route
     {
         $requestTrim = ltrim($pathInfo, '/');
-        $components = null == $requestTrim ? [] : explode('/', $requestTrim);
+        $components = $this->getComponents($requestTrim);
         $componentsCount = count($components);
-        foreach (static::PRIORITY_ORDER as $type) {
-            $routesTable = $this->getRouting()[$componentsCount][$type] ?? null;
+        foreach (static::PRIORITY_ORDER as $priority) {
+            $routesTable = $this->getRoutesTable($componentsCount, $priority);
             if (null === $routesTable) {
                 continue;
             }
@@ -193,5 +193,15 @@ class Router
         }
 
         return null;
+    }
+
+    protected function getComponents(string $requestTrim): array
+    {
+        return null == $requestTrim ? [] : explode('/', $requestTrim);
+    }
+
+    protected function getRoutesTable(int $key, string $priority): ?array
+    {
+        return $this->routing[$key][$priority] ?? null;
     }
 }
