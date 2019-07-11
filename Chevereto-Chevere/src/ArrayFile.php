@@ -69,15 +69,8 @@ class ArrayFile
         $arrayFileType = gettype($fileArray);
         try {
             $this->handleFileArray($fileArray);
-            if (null !== $this->typeSome) {
-                if (isset(static::TYPE_VALIDATORS[$this->typeSome])) {
-                    $this->type = $this->typeSome;
-                } else {
-                    $this->handleClassAndInterfaceName($this->typeSome);
-                    if (null != $this->className || null != $this->interfaceName) {
-                        $this->type = 'object';
-                    }
-                }
+            if (null !== $typeSome) {
+                $this->handleTypeSome($this->typeSome);
                 $this->handleNullType($this->type);
                 $this->validate($fileArray);
             }
@@ -95,6 +88,18 @@ class ArrayFile
     {
         if (!is_array($fileArray)) {
             throw new LogicException('Expecting file %filepath% return type array, %arrayFileType% provided.');
+        }
+    }
+
+    protected function handleTypeSome($typeSome)
+    {
+        if (isset(static::TYPE_VALIDATORS[$typeSome])) {
+            $this->type = $typeSome;
+        } else {
+            $this->handleClassAndInterfaceName($typeSome);
+            if (null != $this->className || null != $this->interfaceName) {
+                $this->type = 'object';
+            }
         }
     }
 
