@@ -130,11 +130,7 @@ class ArrayFile
             if ($validate = $validator($v)) {
                 // Do another validation for objects
                 if ($this->type == 'object') {
-                    if (null != $this->className) {
-                        $validate = get_class($v) == $this->className;
-                    } elseif (null != $this->interfaceName) {
-                        $validate = $v instanceof $this->interfaceName;
-                    }
+                    $validate = $this->getValidateObject($v, $this->className, $this->interfaceName);
                 }
             }
             if (false == $validate) {
@@ -143,6 +139,17 @@ class ArrayFile
         }
 
         return $this;
+    }
+
+    protected function getValidateObject(object $object, ?string $className, ?string $interfaceName): bool
+    {
+        if (null != $className) {
+            return get_class($object) == $className;
+        } elseif (null != $interfaceName) {
+            return $object instanceof $interfaceName;
+        }
+
+        return false;
     }
 
     protected function handleInvalidation($k, $v)
