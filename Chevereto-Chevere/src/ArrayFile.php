@@ -128,7 +128,6 @@ class ArrayFile
         $validator = static::TYPE_VALIDATORS[$this->type];
         foreach ($array as $k => $v) {
             if ($validate = $validator($v)) {
-                // Do another validation for objects
                 if ($this->type == 'object') {
                     $validate = $this->getValidateObject($v, $this->className, $this->interfaceName);
                 }

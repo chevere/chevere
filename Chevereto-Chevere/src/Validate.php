@@ -102,29 +102,12 @@ class Validate
     /**
      * Checks if a variable looks like an URL.
      *
-     * @param string $url URL being evaluated
+     * @param string $url URL being evaluate
      *
      * @return bool TRUE if the variable looks like an URL
      */
     public static function url(string $url): bool
     {
-        if (filter_var($url, FILTER_VALIDATE_URL)) { // Note: This doesn't validate if the URL contains foreign chars
-            return true;
-        }
-        if (strlen($url) !== strlen(utf8_encode($url))) {
-            $parsedUrl = parse_url($url);
-            if (!is_countable($parsedUrl) || count($parsedUrl) < 2) { // At least scheme and host
-                return false;
-            }
-            $schemes = ['http', 'https', 'ftp', 'ftps', 'mailto', 'news', 'irc', 'gopher', 'nntp', 'feed', 'telnet', 'mms', 'rtsp', 'svn', 'tel', 'fax', 'xmpp'];
-            $scheme = $parsedUrl['scheme'] ?? null;
-            if (null == $scheme || !in_array(strtolower($scheme), $schemes) || !isset($parsedUrl['host'])) { // Must be a valid scheme
-                return false;
-            }
-            // At this point, this thing looks like an URL
-            return true;
-        }
-
         return false;
     }
 
