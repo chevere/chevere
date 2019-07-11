@@ -104,7 +104,8 @@ class App implements AppInterface
         $this->processCheckout();
         Load::php(static::FILEHANDLE_HACKS);
         if (!isset($parameters)) {
-            $parameters = AppParameters::createFromFile(static::FILEHANDLE_PARAMETERS);
+            $pathHandle = Path::handle(static::FILEHANDLE_PARAMETERS);
+            $parameters = AppParameters::createFromFile($pathHandle);
         }
         $this->processConfigFiles($parameters->getDataKey(AppParameters::CONFIG_FILES));
         $this->processApi($parameters->getDataKey(AppParameters::API));
@@ -395,9 +396,10 @@ class App implements AppInterface
             return;
         }
         // ['handle' => [Routes,]]
-        foreach ($paramRoutes as $fileHandle) {
+        foreach ($paramRoutes as $fileHandleString) {
+            $fileHandle = Path::handle($fileHandleString);
             foreach ((new Routes($fileHandle))->getArrayFile()->toArray() as $k => $route) {
-                $this->router->addRoute($route, $fileHandle);
+                $this->router->addRoute($route, $fileHandleString);
             }
         }
     }

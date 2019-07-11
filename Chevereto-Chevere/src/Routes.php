@@ -26,9 +26,9 @@ class Routes
     /** @var ArrayFile */
     protected $arrayFile;
 
-    public function __construct(string $fileHandle)
+    public function __construct(PathHandle $pathHandle)
     {
-        $this->setFileHandle($fileHandle);
+        $this->setFileHandle($pathHandle);
     }
 
     public function getFileHandle(): string
@@ -36,10 +36,10 @@ class Routes
         return $this->fileHandle;
     }
 
-    public function setFileHandle(string $fileHandle): self
+    public function setFileHandle(PathHandle $pathHandle): self
     {
-        $this->setArrayFile(new ArrayFile($fileHandle, Route::class));
-        $this->fileHandle = $fileHandle;
+        $this->setArrayFile(new ArrayFile($pathHandle, Route::class));
+        $this->fileHandle = $pathHandle->getPath();
 
         return $this;
     }

@@ -51,9 +51,9 @@ class RuntimeConfig extends Data
         }
     }
 
-    public function addFile(string $fileHandle): self
+    public function addFile(PathHandle $pathHandle): self
     {
-        $arrayFile = new ArrayFile($fileHandle);
+        $arrayFile = new ArrayFile($pathHandle);
         $this->loadedFiles[] = $arrayFile->getFilepath();
 
         return $this->dataAdder($arrayFile->toArray());

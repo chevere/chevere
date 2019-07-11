@@ -201,6 +201,13 @@ class Path
      */
     public static function fromHandle(string $pathIdentifier, string $rootContext = null): string
     {
+        $pathHandle = static::handle(...func_get_args());
+
+        return $pathHandle->getPath();
+    }
+
+    public static function handle(string $pathIdentifier, string $rootContext = null): PathHandle
+    {
         $pathHandle = new PathHandle($pathIdentifier);
         if ($rootContext) {
             $handleContext = static::resolve(static::normalize($rootContext));
@@ -211,7 +218,7 @@ class Path
         $pathHandle->setContext($handleContext)->validateContext();
         $pathHandle->process();
 
-        return $pathHandle->getPath();
+        return $pathHandle;
     }
 
     public static function relativeFromHandle(string $handle, string $rootContext = null): ?string

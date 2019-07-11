@@ -119,9 +119,9 @@ class AppParameters extends Data
      *
      * @param string $fileHandle filehandle
      */
-    public static function createFromFile(string $fileHandle)
+    public static function createFromFile(PathHandle $pathHandle)
     {
-        $arrayFile = new ArrayFile($fileHandle);
+        $arrayFile = new ArrayFile($pathHandle);
 
         return new AppParameters($arrayFile->toArray(), $arrayFile->getFilepath());
     }

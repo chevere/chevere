@@ -60,9 +60,9 @@ class ArrayFile
      * @param string $fileHandle Path handle or absolute filepath
      * @param array  $typeSome   If set, the array members must match the target type, classname or interface
      */
-    public function __construct(string $fileHandle, string $typeSome = null)
+    public function __construct(PathHandle $pathHandle, string $typeSome = null)
     {
-        $filepath = Path::fromHandle($fileHandle);
+        $filepath = $pathHandle->getPath();
         $arrayFile = Load::php($filepath);
         $this->filepath = $filepath;
         $arrayFileType = gettype($arrayFile);
@@ -101,8 +101,6 @@ class ArrayFile
 
     /**
      * Validates array content type.
-     *
-     * @param string $fileHandle Path handle or absolute filepath
      */
     protected function validate(array $array): self
     {
