@@ -38,11 +38,11 @@ interface ControllerInterface
      * Invoke another controller.
      *
      * @param string $controller Path handle. Start with @, to use the caller dir as root context.
-     * @param mixed  $parameters invoke pararameter or parameters (array)
+     * @param mixed  $parameters invoke pararameters
      *
      * @return mixed output array or whatever the controller may output
      */
-    public function invoke(string $controller, $parameters = null);
+    public function invoke(string $controller, ...$parameters);
 
     /**
      * Provides access to the Controller $description static.

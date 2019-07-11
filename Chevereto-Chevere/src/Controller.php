@@ -82,36 +82,9 @@ abstract class Controller implements Interfaces\ControllerInterface
         return $this->app;
     }
 
-    public function invoke(string $controller, $parameters = null)
+    public function invoke(string $controller, ...$parameters)
     {
-        if (gettype($parameters) != 'array') {
-            $parameters = [$parameters];
-        }
-        if (class_exists($controller)) {
-            // $r = new ReflectionClass($controller);
-            // if (!$r->hasMethod('__invoke')) {
-            //     throw new CoreException(
-            //         (new Message("Missing %s method in class %c"))
-            //         ->code('%s', '__invoke')
-            //         ->code('%c', $controller)
-            //     );
-            // }
-            $that = new $controller();
-        } else {
-            $controllerArgs = [$controller];
-            if (Utils\Str::startsWith('@', $controller)) {
-                $context = dirname(debug_backtrace(0, 1)[0]['file']);
-                $controllerArgs = [substr($controller, 1), $context];
-            }
-            $filename = Path::fromHandle(...$controllerArgs);
-            if (!File::exists($filename)) {
-                throw new Exception(
-                    (new Message("Unable to invoke controller %s (filename doesn't exists)."))
-                    ->code('%s', $filename)
-                );
-            }
-            $that = Load::php($filename);
-        }
+        $that = $this->getCallable($controller);
         if (!is_callable($that)) {
             throw new Exception(
                 (new Message('Expected %s callable, %t provided.'))
@@ -125,6 +98,28 @@ abstract class Controller implements Interfaces\ControllerInterface
         }
 
         return $that(...$parameters);
+    }
+
+    protected function getCallable(string $controller): callable
+    {
+        if (class_exists($controller)) {
+            return new $controller();
+        } else {
+            $controllerArgs = [$controller];
+            if (Utils\Str::startsWith('@', $controller)) {
+                $context = dirname(debug_backtrace(0, 1)[0]['file']);
+                $controllerArgs = [substr($controller, 1), $context];
+            }
+            $filename = Path::fromHandle(...$controllerArgs);
+            if (!File::exists($filename)) {
+                throw new Exception(
+                    (new Message("Unable to invoke controller %s (filename doesn't exists)."))
+                    ->code('%s', $filename)
+                );
+            }
+
+            return Load::php($filename);
+        }
     }
 
     public function __invoke()
