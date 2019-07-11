@@ -74,7 +74,7 @@ App::setDefaultRuntime(
                 RuntimeConfig::TIMEZONE => 'UTC',
                 RuntimeConfig::URI_SCHEME => 'https',
             ] + DEFAULT_ERROR_HANDLING)
-            ->addFile(Path::handle(App::FILEHANDLE_CONFIG))
+            ->addFile(App::FILEHANDLE_CONFIG)
             ->process()
     )
 );

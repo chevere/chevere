@@ -43,18 +43,16 @@ class RuntimeConfig extends Data
         self::TIMEZONE => __NAMESPACE__.'\Validate::timezone',
     ];
 
-    public function __construct(string $fileHandle = null)
+    public function __construct()
     {
         parent::__construct();
-        if (isset($fileHandle)) {
-            $this->processFromFile($fileHandle);
-        }
     }
 
-    public function addFile(PathHandle $pathHandle): self
+    public function addFile(string $filepath): self
     {
-        $arrayFile = new ArrayFile($pathHandle);
-        $this->loadedFiles[] = $arrayFile->getFilepath();
+        $fileHandle = Path::handle($filepath);
+        $arrayFile = new ArrayFile($fileHandle);
+        $this->loadedFiles[] = $filepath;
 
         return $this->dataAdder($arrayFile->toArray());
     }
