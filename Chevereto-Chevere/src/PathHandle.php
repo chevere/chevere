@@ -142,6 +142,7 @@ class PathHandle
         return $this->path;
     }
 
+    // TODO: Interface
     public function getPath(): string
     {
         return $this->path;

@@ -63,40 +63,55 @@ class ArrayFile
     public function __construct(PathHandle $pathHandle, string $typeSome = null)
     {
         $filepath = $pathHandle->getPath();
-        $arrayFile = Load::php($filepath);
+        $this->typeSome = $typeSome;
+        $fileArray = Load::php($filepath);
         $this->filepath = $filepath;
-        $arrayFileType = gettype($arrayFile);
-        if (!is_array($arrayFile)) {
-            throw new LogicException(
-                (string) (new Message('Expecting file %f return type %a, %t provided.'))
-                    ->code('%a', 'array')
-                    ->code('%t', $arrayFileType)
-                    ->code('%f', $filepath)
-            );
-        }
-        if (null !== $typeSome) {
-            if (isset(static::TYPE_VALIDATORS[$typeSome])) {
-                $this->type = $typeSome;
-            } else {
-                if (class_exists($typeSome)) {
-                    $this->className = $typeSome;
-                } elseif (interface_exists($typeSome)) {
-                    $this->interfaceName = $typeSome;
+        $arrayFileType = gettype($fileArray);
+        try {
+            $this->handleFileArray($fileArray);
+            if (null !== $this->typeSome) {
+                if (isset(static::TYPE_VALIDATORS[$this->typeSome])) {
+                    $this->type = $this->typeSome;
+                } else {
+                    $this->handleClassAndInterfaceName($this->typeSome);
+                    if (null != $this->className || null != $this->interfaceName) {
+                        $this->type = 'object';
+                    }
                 }
-                if (null != $this->className || null != $this->interfaceName) {
-                    $this->type = 'object';
-                }
+                $this->handleNullType($this->type);
+                $this->validate($fileArray);
             }
-            if (null == $this->type) {
-                throw new LogicException(
-                    (string) (new Message('Argument #2 must be a valid data type, class name or interface name. %s provided.'))
-                        ->code('%a', '$typeSome')
-                        ->code('%s', $typeSome)
-                );
-            }
-            $this->validate($arrayFile);
+        } catch (LogicException $e) {
+            $message = (string) (new Message($e->getMessage()))
+                ->code('%arrayFileType%', $arrayFileType)
+                ->code('%filepath%', $filepath)
+                ->code('%typeSome%', $typeSome);
+            throw new LogicException($message);
         }
-        $this->array = $arrayFile;
+        $this->array = $fileArray;
+    }
+
+    protected function handleFileArray($fileArray)
+    {
+        if (!is_array($fileArray)) {
+            throw new LogicException('Expecting file %filepath% return type array, %arrayFileType% provided.');
+        }
+    }
+
+    protected function handleClassAndInterfaceName(string $typeSome)
+    {
+        if (class_exists($typeSome)) {
+            $this->className = $typeSome;
+        } elseif (interface_exists($typeSome)) {
+            $this->interfaceName = $typeSome;
+        }
+    }
+
+    protected function handleNullType($type)
+    {
+        if (null == $type) {
+            throw new LogicException('Argument #2 must be a valid data type, class name or interface name. %typeSome% provided.');
+        }
     }
 
     /**
