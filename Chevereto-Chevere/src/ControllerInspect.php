@@ -40,6 +40,9 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     /** @var string The class name, passed in the constructor */
     public $className;
 
+    /** @var string The class shortname name */
+    public $classShortName;
+
     /** @var string Absolute path to the inspected class */
     public $filepath;
 
@@ -89,25 +92,33 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     {
         $this->reflection = new ReflectionClass($className);
         $this->className = $this->reflection->getName();
-        $this->handleControllerInterface();
+        $this->classShortName = $this->reflection->getShortName();
         $this->filepath = $this->reflection->getFileName();
-        $classShortName = $this->reflection->getShortName();
         $this->isResource = $this->reflection->implementsInterface(Interfaces\ControllerResourceInterface::class);
         $this->isRelatedResource = $this->reflection->implementsInterface(Interfaces\ControllerRelationshipInterface::class);
         $this->useResource = $this->isResource || $this->isRelatedResource;
-        if (!Utils\Str::startsWith(Api::METHOD_ROOT_PREFIX, $classShortName)) {
-            $this->handleControllerResourceInterface();
-        }
-        $this->httpMethod = Utils\Str::replaceFirst(Api::METHOD_ROOT_PREFIX, null, $classShortName);
+        $this->httpMethod = Utils\Str::replaceFirst(Api::METHOD_ROOT_PREFIX, null, $this->classShortName);
         $this->description = $className::getDescription();
         $this->handleResources($className);
         $this->parameters = $className::getParameters();
         try {
+            $this->handleControllerResourceInterface();
+            $this->handleControllerInterface();
             $this->handleConstResourceNeed();
             $this->handleConstResourceType();
             $this->handleConstResourceMissed();
             $this->handleConstResourceValid();
-        } catch (Throwable $e) {
+        } catch (LogicException $e) {
+            $message = (new Message($e->getMessage()))
+                ->code('%interfaceController%', static::INTERFACE_CONTROLLER)
+                ->code('%reflectionName%', $this->reflection->getName())
+                ->code('%interfaceControllerResource%', static::INTERFACE_CONTROLLER_RESOURCE)
+                ->code('%reflectionFilename%', $this->reflection->getFileName())
+                ->code('%endpoint%', $this->httpMethod.' api/users')
+                ->code('%className%', $this->className)
+                ->code('%propResources%', 'const '.static::PROP_RESOURCES)
+                ->code('%filepath%', $this->filepath);
+            throw new LogicException((string) $message);
         }
         $this->handleProcessResources();
         $this->processPathComponent();
@@ -150,26 +161,14 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     protected function handleControllerInterface(): void
     {
         if (!$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER)) {
-            throw new LogicException(
-                (string)
-                    (new Message('Class %s must implement the %i interface at %f.'))
-                        ->code('%s', $this->reflection->getName())
-                        ->code('%i', static::INTERFACE_CONTROLLER)
-                        ->code('%f', $this->reflection->getFileName())
-            );
+            throw new LogicException('Class %reflectionName% must implement the %interfaceController% interface at %reflectionFilename%.');
         }
     }
 
     protected function handleControllerResourceInterface(): void
     {
-        if ($this->useResource && !$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER_RESOURCE)) {
-            throw new LogicException(
-                (string)
-                    (new Message('Class %s must implement the %i interface at %f.'))
-                        ->code('%s', $this->reflection->getName())
-                        ->code('%i', static::INTERFACE_CONTROLLER_RESOURCE)
-                        ->code('%f', $this->reflection->getFileName())
-            );
+        if (!Utils\Str::startsWith(Api::METHOD_ROOT_PREFIX, $this->classShortName) && $this->useResource && !$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER_RESOURCE)) {
+            throw new LogicException('Class %reflectionName% must implement the %interfaceControllerResource% interface at %reflectionFilename%.');
         }
     }
 
@@ -183,12 +182,8 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     protected function handleConstResourceNeed(): void
     {
         if (isset($this->resources) && !$this->useResource) {
-            throw new LogicException('Class %s defines %r but this Controller class targets a non-resourced endpoint: %e. Remove the unused %r declaration at %f.');
+            throw new LogicException('Class %className% defines %propResources% but this Controller class targets a non-resourced endpoint: %endpoint%. Remove the unused %propResources% declaration at %filepath%.');
         }
-        // '%s', $this->className
-        // '%r', 'const '.static::PROP_RESOURCES
-        // '%e', $this->httpMethod.' api/users'
-        // '%f', $this->filepath
     }
 
     /**
@@ -197,13 +192,8 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     protected function handleConstResourceType(): void
     {
         if (isset($this->resources) && $this->useResource && !is_array($this->resources)) {
-            throw new LogicException('Class %s must define %r of type %t, %x found at %f.');
+            throw new LogicException('Class %className% must define %propResources% of type array, '.gettype($this->resources).' found at %filepath%.');
         }
-        // '%s', $this->className
-        // '%r', 'const '.static::PROP_RESOURCES
-        // '%t', 'array'
-        // '%x', gettype($this->resources)
-        // '%f', $this->filepath
     }
 
     /**
@@ -212,11 +202,8 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     protected function handleConstResourceMissed(): void
     {
         if (!isset($this->resources) && $this->isResource) {
-            throw new LogicException('Class %s must define %r at %f.');
+            throw new LogicException('Class %className% must define %propResources% at %filepath%.');
         }
-        // '%s', $this->className
-        // '%r', 'const '.static::PROP_RESOURCES
-        // '%f', $this->filepath
     }
 
     /**
