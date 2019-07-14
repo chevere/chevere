@@ -158,47 +158,20 @@ class Api
     {
         foreach ($this->routesMap as $pathComponent => $httpMethods) {
             $endpointApi = [];
-            // Set Options => <http method>,
-            foreach ($httpMethods as $httpMethod => $controllerClassName) {
-                $httpMethodOptions = [];
-                $httpMethodOptions['description'] = $controllerClassName::getDescription();
-                $controllerParameters = $controllerClassName::getParameters();
-                if (isset($controllerParameters)) {
-                    $httpMethodOptions['parameters'] = $controllerParameters;
-                }
-                $endpointApi['OPTIONS'][$httpMethod] = $httpMethodOptions;
-            }
-            // Autofill OPTIONS and HEAD
-            foreach ([
-                'OPTIONS' => [
-                    Controllers\ApiOptions::class, [
-                        'description' => Controllers\ApiOptions::getDescription(),                    ],
-                ],
-                'HEAD' => [
-                    Controllers\ApiHead::class, [
-                        'description' => Controllers\ApiHead::getDescription(),
-                    ],
-                ],
-            ] as $k => $v) {
-                if (!isset($httpMethods[$k])) {
-                    $httpMethods[$k] = $v[0];
-                    $endpointApi['OPTIONS'][$k] = $v[1];
-                }
-            }
+            $apiEndpoint = new ApiEndpoint($httpMethods);
             /** @var string Full qualified route key for $pathComponent like /api/users/{user} */
             $endpointRouteKey = Utils\Str::ltail($pathComponent, '/');
-            $route = Route::bind($endpointRouteKey)->setId($pathComponent)->setMethods($httpMethods);
+            $route = Route::bind($endpointRouteKey)->setId($pathComponent)->setMethods($apiEndpoint->getHttpMethods());
             // Define Route wildcard "where" if needed
             $resource = $this->resourcesMap[$pathComponent] ?? null;
             if (isset($resource)) {
                 foreach ($resource as $wildcardKey => $resourceMeta) {
                     $route->setWhere($wildcardKey, $resourceMeta['regex']);
                 }
-                $endpointApi['resource'] = $resource;
+                $apiEndpoint->setResource($resource);
             }
-            $this->api[$pathComponent] = $endpointApi;
             $this->getRouter()->addRoute($route, $this->basePath);
-            $this->api[$pathComponent] = $endpointApi;
+            $this->api[$pathComponent] = $apiEndpoint->toArray();
         }
         ksort($this->api);
     }

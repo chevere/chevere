@@ -16,9 +16,64 @@ namespace Chevereto\Chevere;
 /**
  * Creates endpoints from ControlerInspect object.
  */
-class ControllerAsEndpoint
+class ApiEndpoint
 {
-    public function __construct(ControllerInspect $controllerInspect)
+    /** @var array */
+    public $array;
+
+    public function __construct(array $httpMethods)
     {
+        $this->array = [];
+        $this->httpMethods = $httpMethods;
+        $this->fillEndpointOptions($this->httpMethods, $this->array);
+        $this->autofillMissingOptionsHead($this->httpMethods, $this->array);
+    }
+
+    public function getHttpMethods(): array
+    {
+        return $this->httpMethods;
+    }
+
+    public function toArray(): array
+    {
+        return $this->array;
+    }
+
+    public function setResource(?array $resource): void
+    {
+        $this->array['resource'] = $resource;
+    }
+
+    protected function fillEndpointOptions(array &$httpMethods, array &$endpointApi)
+    {
+        foreach ($httpMethods as $httpMethod => $controllerClassName) {
+            $httpMethodOptions = [];
+            $httpMethodOptions['description'] = $controllerClassName::getDescription();
+            $controllerParameters = $controllerClassName::getParameters();
+            if (isset($controllerParameters)) {
+                $httpMethodOptions['parameters'] = $controllerParameters;
+            }
+            $endpointApi['OPTIONS'][$httpMethod] = $httpMethodOptions;
+        }
+    }
+
+    protected function autofillMissingOptionsHead(array &$httpMethods, array &$endpointApi)
+    {
+        foreach ([
+            'OPTIONS' => [
+                Controllers\ApiOptions::class, [
+                    'description' => Controllers\ApiOptions::getDescription(),                    ],
+            ],
+            'HEAD' => [
+                Controllers\ApiHead::class, [
+                    'description' => Controllers\ApiHead::getDescription(),
+                ],
+            ],
+        ] as $k => $v) {
+            if (!isset($httpMethods[$k])) {
+                $httpMethods[$k] = $v[0];
+                $endpointApi['OPTIONS'][$k] = $v[1];
+            }
+        }
     }
 }
