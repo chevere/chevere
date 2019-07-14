@@ -201,56 +201,69 @@ class Formatter
 
     protected function processContentSections()
     {
-        // Plain (txt) is the default "always do" format.
-        $plain = [
+        $sections = [
             static::SECTION_TITLE => ['%title% <span>in&nbsp;%file%:%line%</span>'],
             static::SECTION_MESSAGE => ['# Message', '%message%'.($this->exceptionHandler->code ? ' [Code #%code%]' : null)],
             static::SECTION_TIME => ['# Time', '%datetimeUtc% [%timestamp%]'],
+            static::SECTION_ID => ['# Incident ID:%id%', 'Logged at %logFilename%'],
+            static::SECTION_STACK => ['# Stack trace', '%plainStack%'],
+            static::SECTION_CLIENT => ['# Client', '%clientIp% %clientUserAgent%'],
+            static::SECTION_REQUEST => ['# Request', '%serverProtocol% %httpRequestMethod% %uri%'],
+            static::SECTION_SERVER => ['# Server', '%serverHost% (port:%serverPort%) %serverSoftware%'],
         ];
-        $plain[static::SECTION_ID] = ['# Incident ID:%id%', 'Logged at %logFilename%'];
-        $plain[static::SECTION_STACK] = ['# Stack trace', '%plainStack%'];
-        $plain[static::SECTION_CLIENT] = ['# Client', '%clientIp% %clientUserAgent%'];
-        $plain[static::SECTION_REQUEST] = ['# Request', '%serverProtocol% %httpRequestMethod% %uri%'];
-        $plain[static::SECTION_SERVER] = ['# Server', '%serverHost% (port:%serverPort%) %serverSoftware%'];
 
         if (CLI) {
             $verbosity = Console::output()->getVerbosity();
         }
+        $this->processContentSectionsArray($sections, $verbosity ?? null);
+    }
 
-        foreach ($plain as $k => $v) {
+    protected function processContentSectionsArray(array $sections, ?int $verbosity)
+    {
+        foreach ($sections as $k => $v) {
             $keyString = (string) $k;
             if (CLI && false == static::CONSOLE_TABLE[$k]) {
                 continue;
             }
             $this->setPlainContentSection($keyString, $v);
             if (isset($verbosity)) {
-                $lvl = static::CONSOLE_TABLE[$k];
-                if (false === $lvl || $verbosity < $lvl) {
+                $verbosityLevel = static::CONSOLE_TABLE[$k];
+                if (false === $verbosityLevel || $verbosity < $verbosityLevel) {
                     continue;
                 }
-                if ($k == static::SECTION_STACK) {
-                    $v[1] = '%consoleStack%';
-                }
+                $this->handleSetConsoleStackSection($k, $v);
                 $this->setConsoleSection($keyString, $v);
             } else {
-                if ($k == static::SECTION_STACK) {
-                    $v[1] = '%richStack%';
-                }
+                $this->handleSetRichStackSection($k, $v);
                 $this->setRichContentSection($keyString, $v);
             }
         }
     }
 
+    protected function handleSetRichStackSection(string $key, array &$value)
+    {
+        if ($key == static::SECTION_STACK) {
+            $value[1] = '%richStack%';
+        }
+    }
+
+    protected function handleSetConsoleStackSection(string $key, array &$value)
+    {
+        if ($key == static::SECTION_STACK) {
+            $value[1] = '%consoleStack%';
+        }
+    }
+
     protected function processContentGlobals()
     {
-        // foreach (['GET', 'POST', 'FILES', 'COOKIE', 'SESSION', 'SERVER'] as $v) {
-        //     $k = '_'.$v;
-        //     $v = isset($GLOBALS[$k]) ? $GLOBALS[$k] : null;
-        //     if ($v) {
-        //         $this->setRichContentSection($k, ['$'.$k, $this->wrapStringHr('<pre>'.VarDumper::out($v).'</pre>')]);
-        //         $this->setPlainContentSection($k, ['$'.$k, strip_tags($this->wrapStringHr(PlainVarDumper::out($v)))]);
-        //     }
-        // }
+        foreach (['GET', 'POST', 'FILES', 'COOKIE', 'SESSION', 'SERVER'] as $v) {
+            $k = '_'.$v;
+            $v = isset($GLOBALS[$k]) ? $GLOBALS[$k] : null;
+            if ($v) {
+                $this->setRichContentSection($k, ['$'.$k, $this->wrapStringHr('<pre>'.VarDumper::out($v).'</pre>')]);
+                $this->setPlainContentSection($k, ['$'.$k, strip_tags($this->wrapStringHr(PlainVarDumper::out($v)))]);
+            }
+        }
     }
 
     /**
