@@ -30,6 +30,9 @@ class TemplateStrings
     /** @var int */
     protected $sectionsLength;
 
+    /** @var int */
+    protected $i;
+
     /** @var string */
     public $rich;
 
@@ -65,63 +68,64 @@ class TemplateStrings
 
     public function process(int $i)
     {
-        $this->appendSection($i, $this->rich, $this->plain, $this->richSection, $this->plainSection, $this->titleBreak);
-        $this->appendSectionContent($i, $this->rich, $this->plain, $this->richSection, $this->plainSection, $this->sectionLength);
+        $this->i = $i;
+        $this->appendSectionWrap();
+        $this->appendSectionContents();
         if ($i + 1 < $this->sectionsLength) {
-            $this->appendRichSectionBreak($this->rich);
-            $this->appendPlainSectionBreak($this->plain);
+            $this->appendRichSectionBreak();
+            $this->appendPlainSectionBreak();
         }
     }
 
-    protected function appendSectionContent(int $i, string &$rich, string &$plain, ?array $richSection, array $plainSection, int $sectionLength)
+    protected function appendSectionContents()
     {
-        if ($i > 0) {
-            $j = 1 == $sectionLength ? 0 : 1;
-            for ($j; $j < $sectionLength; ++$j) {
-                if ($sectionLength > 1) {
-                    $this->appendEOL($rich);
-                    $this->appendEOL($plain);
+        if ($this->i > 0) {
+            $j = 1 == $this->sectionLength ? 0 : 1;
+            for ($j; $j < $this->sectionLength; ++$j) {
+                if ($this->sectionLength > 1) {
+                    $this->appendEOL();
                 }
-                $rich .= '<div class="c">'.$richSection[$j].'</div>';
-                $plain .= $plainSection[$j];
+                $this->rich .= '<div class="c">'.$this->richSection[$j].'</div>';
+                $this->plain .= $this->plainSection[$j];
             }
         }
     }
 
-    protected function appendSection(int $i, string &$rich, string &$plain, ?array $richSection, array $plainSection, string $titleBreak)
+    protected function appendSectionWrap()
     {
-        if (0 == $i || isset($plainSection[1])) {
-            $rich .= '<div class="t'.(0 == $i ? ' t--scream' : null).'">'.$richSection[0].'</div>';
-            $plain .= html_entity_decode($plainSection[0]);
-            if (0 == $i) {
-                $this->appendRichTitleBreak($rich, $titleBreak);
-                $this->appendPlainTitleBreak($plain, $titleBreak);
+        if (0 == $this->i || isset($this->plainSection[1])) {
+            $this->rich .= '<div class="t'.(0 == $this->i ? ' t--scream' : null).'">'.$this->richSection[0].'</div>';
+            $this->plain .= html_entity_decode($this->plainSection[0]);
+            if (0 == $this->i) {
+                $this->appendRichTitleBreak($this->rich, $this->titleBreak);
+                $this->appendPlainTitleBreak($this->plain, $this->titleBreak);
             }
         }
     }
 
-    protected function appendRichTitleBreak(string &$rich, string $break)
+    protected function appendRichTitleBreak()
     {
-        $rich .= "\n".'<div class="hide">'.$break.'</div>';
+        $this->rich .= "\n".'<div class="hide">'.$this->titleBreak.'</div>';
     }
 
-    protected function appendPlainTitleBreak(string &$plain, string $break)
+    protected function appendPlainTitleBreak()
     {
-        $plain .= "\n".$break;
+        $this->plain .= "\n".$this->titleBreak;
     }
 
-    protected function appendEOL(string &$template)
+    protected function appendEOL()
     {
-        $template .= "\n";
+        $this->rich .= "\n";
+        $this->plain .= "\n";
     }
 
-    protected function appendRichSectionBreak(string &$rich)
+    protected function appendRichSectionBreak()
     {
-        $rich .= "\n".'<br>'."\n";
+        $this->rich .= "\n".'<br>'."\n";
     }
 
-    protected function appendPlainSectionBreak(string &$plain)
+    protected function appendPlainSectionBreak()
     {
-        $plain .= "\n\n";
+        $this->plain .= "\n\n";
     }
 }
