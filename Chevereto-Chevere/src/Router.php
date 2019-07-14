@@ -26,21 +26,21 @@ class Router
     const SET = 'set';
 
     /**
-     * @var array An array containing Route members (objects, serialized) fileHandle => [id => @Route],
+     * @var ?array An array containing Route members (objects, serialized) fileHandle => [id => @Route],
      */
-    protected $routes;
+    public $routes;
 
-    /** @var array Contains ['/route/key' => [id, 'route/key']] */
-    protected $routeKeys;
+    /** @var ?array Contains ['/route/key' => [id, 'route/key']] */
+    public $routeKeys;
 
-    /** @var array An array containing the named routes [name => [id, fileHandle]] */
-    protected $namedRoutes;
+    /** @var ?array An array containing the named routes [name => [id, fileHandle]] */
+    public $namedRoutes;
 
-    /** @var array An array containing a mapped representation, used when resolving routing. */
-    protected $routing;
+    /** @var ?array An array containing a mapped representation, used when resolving routing. */
+    public $routing;
 
-    /** @var array Arguments taken from wildcard matches. */
-    protected $arguments;
+    /** @var ?array Arguments taken from wildcard matches. */
+    public $arguments;
 
     public function addRoute(Route $route, string $basename)
     {
@@ -68,7 +68,7 @@ class Router
 
     protected function handleRouteKey(string $key)
     {
-        $keyedRoute = $this->getRouteKeys()[$key] ?? null;
+        $keyedRoute = $this->routeKeys[$key] ?? null;
         if (isset($keyedRoute)) {
             throw new LogicException(
                 (string) (new Message('Route key %s has been already declared by %r.'))
@@ -81,7 +81,7 @@ class Router
     protected function handleRouteName(?string $name, array $pointer)
     {
         if (isset($name)) {
-            $namedRoute = $this->getNamedRoutes()[$name] ?? null;
+            $namedRoute = $this->namedRoutes[$name] ?? null;
             if (isset($namedRoute)) {
                 throw new LogicException(
                     (string) (new Message('Route name %s has been already taken by %r.'))
@@ -91,31 +91,6 @@ class Router
             }
             $this->namedRoutes[$name] = $pointer;
         }
-    }
-
-    public function getRoutes(): ?array
-    {
-        return $this->routes ?? null;
-    }
-
-    public function getRouteKeys(): ?array
-    {
-        return $this->routeKeys ?? null;
-    }
-
-    public function getNamedRoutes(): ?array
-    {
-        return $this->namedRoutes ?? null;
-    }
-
-    public function getRouting(): ?array
-    {
-        return $this->routing ?? null;
-    }
-
-    public function getArguments(): ?array
-    {
-        return $this->arguments ?? null;
     }
 
     /**

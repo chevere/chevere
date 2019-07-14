@@ -432,7 +432,7 @@ class App implements AppInterface
                 $this->callable = $route->getCallable(
                     $this->httpRequest->getMethod()
                 );
-                $routerArgs = $this->router->getArguments();
+                $routerArgs = $this->router->arguments;
                 if (isset($routerArgs)) {
                     $this->setArguments($routerArgs);
                 }
