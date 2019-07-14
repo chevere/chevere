@@ -49,15 +49,15 @@ class Output
     /** @var array */
     protected $headers = [];
 
-    protected $richContentTemplate;
+    protected $richTemplate;
 
-    protected $plainContentTemplate;
+    protected $plainTemplate;
 
     public function __construct(ErrorHandler $errorHandler, Formatter $formatter)
     {
         $this->errorHandler = $errorHandler;
         $this->formatter = $formatter;
-        $this->generateTemplates();
+        $this->generateTemplates($formatter);
         $this->parseTemplate();
         if ($errorHandler->httpRequest && $errorHandler->httpRequest->isXmlHttpRequest()) {
             $this->setJsonOutput();
@@ -131,38 +131,20 @@ class Output
         Console::io()->writeln('');
     }
 
-    protected function generateTemplates()
+    protected function generateTemplates(Formatter $formatter)
     {
-        $sections_length = count($this->formatter->plainContentSections);
+        $templateStrings = new TemplateStrings($formatter);
+        $templateStrings->setTitleBreak(str_repeat('=', $formatter::COLUMNS));
         $i = 0;
-        foreach ($this->formatter->plainContentSections as $k => $plainSection) {
-            $richSection = $this->formatter->richContentSections[$k] ?? null;
-            $section_length = count($plainSection);
-            if (0 == $i || isset($plainSection[1])) {
-                $this->richContentTemplate .= '<div class="t'.(0 == $i ? ' t--scream' : null).'">'.$richSection[0].'</div>';
-                $this->plainContentTemplate .= html_entity_decode($plainSection[0]);
-                if (0 == $i) {
-                    $this->richContentTemplate .= "\n".'<div class="hide">'.str_repeat('=', $this->formatter::COLUMNS).'</div>';
-                    $this->plainContentTemplate .= "\n".str_repeat('=', $this->formatter::COLUMNS);
-                }
-            }
-            if ($i > 0) {
-                $j = 1 == $section_length ? 0 : 1;
-                for ($j; $j < $section_length; ++$j) {
-                    if ($section_length > 1) {
-                        $this->richContentTemplate .= "\n";
-                        $this->plainContentTemplate .= "\n";
-                    }
-                    $this->richContentTemplate .= '<div class="c">'.$richSection[$j].'</div>';
-                    $this->plainContentTemplate .= $plainSection[$j];
-                }
-            }
-            if ($i + 1 < $sections_length) {
-                $this->richContentTemplate .= "\n".'<br>'."\n";
-                $this->plainContentTemplate .= "\n\n";
-            }
+        foreach ($formatter->plainContentSections as $k => $plainSection) {
+            $templateStrings
+                ->setPlainSection($plainSection)
+                ->setRichSection($formatter->richContentSections[$k] ?? null)
+                ->process($i);
             ++$i;
         }
+        $this->richTemplate = $templateStrings->rich;
+        $this->plainTemplate = $templateStrings->plain;
     }
 
     public function parseTemplate()
@@ -195,9 +177,8 @@ class Output
             '%serverPort%' => $this->formatter->serverPort,
             '%serverSoftware%' => $this->formatter->serverSoftware,
         ];
-        $this->content = strtr($this->richContentTemplate, $this->templateTags);
-        $this->plainContent = strtr($this->plainContentTemplate, $this->templateTags);
-        // dd($this->plainContentTemplate);
+        $this->content = strtr($this->richTemplate, $this->templateTags);
+        $this->plainContent = strtr($this->plainTemplate, $this->templateTags);
         $this->addTemplateTag('content', $this->content);
     }
 
