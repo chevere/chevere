@@ -215,29 +215,37 @@ class Formatter
         if (CLI) {
             $verbosity = Console::output()->getVerbosity();
         }
-        $this->processContentSectionsArray($sections, $verbosity ?? null);
+        $this->buildContentSections($sections, $verbosity ?? null);
     }
 
-    protected function processContentSectionsArray(array $sections, ?int $verbosity)
+    protected function buildContentSections(array $sections, ?int $verbosity)
     {
         foreach ($sections as $k => $v) {
-            $keyString = (string) $k;
             if (CLI && false == static::CONSOLE_TABLE[$k]) {
                 continue;
             }
-            $this->setPlainContentSection($keyString, $v);
-            if (isset($verbosity)) {
-                $verbosityLevel = static::CONSOLE_TABLE[$k];
-                if (false === $verbosityLevel || $verbosity < $verbosityLevel) {
-                    continue;
-                }
-                $this->handleSetConsoleStackSection($k, $v);
-                $this->setConsoleSection($keyString, $v);
-            } else {
-                $this->handleSetRichStackSection($k, $v);
-                $this->setRichContentSection($keyString, $v);
+            if (false == $this->processContentSectionsArray((string) $k, $v, $verbosity)) {
+                continue;
             }
         }
+    }
+
+    protected function processContentSectionsArray(string $key, array $value, ?int $verbosity): bool
+    {
+        $this->setPlainContentSection($key, $value);
+        if (isset($verbosity)) {
+            $verbosityLevel = static::CONSOLE_TABLE[$key];
+            if (false === $verbosityLevel || $verbosity < $verbosityLevel) {
+                return false;
+            }
+            $this->handleSetConsoleStackSection($key, $value);
+            $this->setConsoleSection($key, $value);
+        } else {
+            $this->handleSetRichStackSection($key, $value);
+            $this->setRichContentSection($key, $value);
+        }
+
+        return true;
     }
 
     protected function handleSetRichStackSection(string $key, array &$value)
