@@ -100,40 +100,14 @@ class Router
      * @param Route  $route    route object
      * @param string $routeSet route set, used when dealing with a powerSet
      */
-    protected function routing(array $pointer, Route $route, string $routeSet = null): void
+    protected function routing(array $pointer, Route $route, ?string $routeSet = null): void
     {
-        $routeGetSet = $route->getSet();
-        if ($routeSet) {
-            $routeSetHandle = $routeSet;
-            $regex = $route->regex($routeSetHandle);
-        } else {
-            $routeSetHandle = $routeGetSet ?? $route->getKey();
-            $regex = $route->regex();
-        }
-        // Determine grouping type (static, mixed, dynamic)
-        if (isset($routeGetSet)) {
-            $type = Route::TYPE_STATIC;
-        } else {
-            if (null != $routeSetHandle) {
-                $pregReplace = preg_replace('/{[0-9]+}/', '', $routeSetHandle);
-                if (null != $pregReplace) {
-                    $pregReplace = trim(Path::normalize($pregReplace), '/');
-                }
-            }
-            $type = isset($pregReplace) ? Route::TYPE_MIXED : Route::TYPE_DYNAMIC;
-        }
-        if (null != $routeSetHandle) {
-            $routeSetHandleTrim = ltrim($routeSetHandle, '/');
-            $explode = explode('/', $routeSetHandleTrim);
-            $count = '/' == $route->getKey() ? 0 : count($explode);
-        } else {
-            $count = 0;
-        }
+        $routing = new Routing($route);
         $var = [static::ID => $pointer];
         if ($routeSet) {
-            $var[static::SET] = $routeSetHandle;
+            $var[static::SET] = $routing->routeSetHandle;
         }
-        $this->routing[$count][$type][$regex] = $var;
+        $this->routing[$routing->count][$routing->type][$routing->regex] = $var;
     }
 
     /**
