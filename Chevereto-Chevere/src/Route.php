@@ -20,7 +20,7 @@ use Symfony\Component\Console\Exception\LogicException;
 // IDEA: Enable alt routes [/taken, /also-taken, /availabe]
 // IDEA: L10n support
 
-class Route
+class Route extends RouteAbstract implements Interfaces\RouteInterface
 {
     use Traits\CallableTrait;
 
@@ -76,7 +76,7 @@ class Route
     protected $maker;
 
     /** @var bool True if the route key has handlebars (wildcards) */
-    protected $handlebars;
+    protected $hasHandlebars;
 
     /** @var array An array containing the optional wildcards */
     protected $optionals;
@@ -95,7 +95,7 @@ class Route
      */
     public function __construct(string $key, string $callable = null)
     {
-        $this->handlebars = Utils\Str::contains('{', $key) || Utils\Str::contains('}', $key);
+        $this->hasHandlebars = Utils\Str::contains('{', $key) || Utils\Str::contains('}', $key);
         $this->processKeyValidation($key);
         $this->setKey($key);
         $this->processMaker();
@@ -106,28 +106,11 @@ class Route
         }
     }
 
-    public function setId(string $id): self
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
     protected function setKey(string $key): self
     {
         $this->key = $key;
 
         return $this;
-    }
-
-    public function getKey(): string
-    {
-        return $this->key;
     }
 
     /**
@@ -147,11 +130,6 @@ class Route
         $this->name = $name;
 
         return $this;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name ?? null;
     }
 
     /**
@@ -237,6 +215,28 @@ class Route
         }
 
         return $this;
+    }
+
+    public function setId(string $id): self
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getKey(): string
+    {
+        return $this->key;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name ?? null;
     }
 
     public function getMethods(): ?array
@@ -363,7 +363,7 @@ class Route
 
     protected function processWildcards(): void
     {
-        if ($this->handlebars && preg_match_all(static::REGEX_WILDCARD_SEARCH, $this->key, $matches)) {
+        if ($this->hasHandlebars && preg_match_all(static::REGEX_WILDCARD_SEARCH, $this->key, $matches)) {
             // $matches[0] => [{wildcard}, {wildcard?},...]
             // $matches[1] => [wildcard, wildcard?,...]
             // Build the route handle, needed for regex replacements
@@ -461,7 +461,7 @@ class Route
                     ->code('%s', $key)
             );
         }
-        $wildcardValidate = !$this->handlebars ?: preg_match_all('/{([0-9]+)}/', $key) === 0;
+        $wildcardValidate = !$this->hasHandlebars ?: preg_match_all('/{([0-9]+)}/', $key) === 0;
         if (!$wildcardValidate) {
             throw new CoreException(
                 (new Message('Wildcards in the form of %s are reserved.'))
