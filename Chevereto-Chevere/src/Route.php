@@ -133,7 +133,7 @@ class Route implements Interfaces\RouteInterface
      */
     public function setWhere(string $wildcardName, string $regex): self
     {
-        $this->processWildcardValidation($wildcardName, $regex);
+        $wildcardValidation = new RouteWildcardValidation($wildcardName, $regex, $this);
         $this->wheres[$wildcardName] = $regex;
 
         return $this;
@@ -266,11 +266,6 @@ class Route implements Interfaces\RouteInterface
     public function getMaker(): array
     {
         return $this->maker;
-    }
-
-    public static function getHandlebarsWrap(string $string): string
-    {
-        return "{{$string}}";
     }
 
     /**
@@ -436,40 +431,6 @@ class Route implements Interfaces\RouteInterface
                 );
             }
             $this->wildcards[] = $wildcardTrim;
-        }
-    }
-
-    protected function processWildcardValidation(string $wildcardName, string $regex): void
-    {
-        $wildcard = $this->getHandlebarsWrap($wildcardName);
-        $validateFormat = !Utils\Str::startsWithNumeric($wildcardName) && preg_match('/^[a-z0-9_]+$/i', $wildcardName);
-        if (!$validateFormat) {
-            throw new CoreException(
-                (new Message("String %s must contain only alphanumeric and underscore characters and it shouldn't start with a numeric value."))
-                    ->code('%s', $wildcardName)
-            );
-        }
-        $validateMatch = Utils\Str::contains($wildcard, $this->getKey()) || Utils\Str::contains('{'."$wildcardName?".'}', $this->getKey());
-        if (!$validateMatch) {
-            throw new CoreException(
-                (new Message("Wildcard %s doesn't exists in %r."))
-                    ->code('%s', $wildcard)
-                    ->code('%r', $this->getKey())
-            );
-        }
-        $validateUnique = !isset($this->wheres[$wildcardName]);
-        if (!$validateUnique) {
-            throw new CoreException(
-                (new Message('Where clause for %s wildcard has been already declared.'))
-                    ->code('%s', $wildcard)
-            );
-        }
-        $validateRegex = Validate::regex('/'.$wildcardName.'/');
-        if (!$validateRegex) {
-            throw new CoreException(
-                (new Message('Invalid regex pattern %s.'))
-                    ->code('%s', $regex)
-            );
         }
     }
 }
