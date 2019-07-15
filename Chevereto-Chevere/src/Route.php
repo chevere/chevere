@@ -20,7 +20,7 @@ use Symfony\Component\Console\Exception\LogicException;
 // IDEA: Enable alt routes [/taken, /also-taken, /availabe]
 // IDEA: L10n support
 
-class Route extends RouteAbstract implements Interfaces\RouteInterface
+class Route implements Interfaces\RouteInterface
 {
     use Traits\CallableTrait;
 
@@ -95,22 +95,13 @@ class Route extends RouteAbstract implements Interfaces\RouteInterface
      */
     public function __construct(string $key, string $callable = null)
     {
-        $this->hasHandlebars = Utils\Str::contains('{', $key) || Utils\Str::contains('}', $key);
-        $this->processKeyValidation($key);
-        $this->setKey($key);
-        $this->processMaker();
+        $this->key = $key;
+        $routeKeyValidation = new RouteKeyValidation($this->key);
+        $this->maker = $this->getMakerData();
         $this->processWildcards();
-
         if (isset($callable)) {
             $this->setMethod('GET', $callable);
         }
-    }
-
-    protected function setKey(string $key): self
-    {
-        $this->key = $key;
-
-        return $this;
     }
 
     /**
@@ -140,7 +131,6 @@ class Route extends RouteAbstract implements Interfaces\RouteInterface
      */
     public function setWhere(string $wildcardName, string $regex): self
     {
-        // Validate $wildcardName
         $this->processWildcardValidation($wildcardName, $regex);
         $this->wheres[$wildcardName] = $regex;
 
@@ -354,16 +344,17 @@ class Route extends RouteAbstract implements Interfaces\RouteInterface
         return new static(...func_get_args());
     }
 
-    protected function processMaker(): void
+    protected function getMakerData(): array
     {
         $maker = debug_backtrace(0, 1)[0];
         $maker['file'] = Path::relative($maker['file']);
-        $this->maker = $maker;
+
+        return $maker;
     }
 
     protected function processWildcards(): void
     {
-        if ($this->hasHandlebars && preg_match_all(static::REGEX_WILDCARD_SEARCH, $this->key, $matches)) {
+        if (preg_match_all(static::REGEX_WILDCARD_SEARCH, $this->key, $matches)) {
             // $matches[0] => [{wildcard}, {wildcard?},...]
             // $matches[1] => [wildcard, wildcard?,...]
             // Build the route handle, needed for regex replacements
@@ -388,11 +379,11 @@ class Route extends RouteAbstract implements Interfaces\RouteInterface
             // Generate the optionals power set, keeping its index keys in case of duplicated optionals
             $powerSet = Utils\Arr::powerSet($this->optionals, true);
             // Build the route set, it will contain all the possible route combinations
-            $this->processPowerSet($powerSet);
+            $this->powerSet = $this->processPowerSet($powerSet);
         }
     }
 
-    protected function processPowerSet(array $powerSet): void
+    protected function processPowerSet(array $powerSet): array
     {
         $routeSet = [];
         foreach ($powerSet as $set) {
@@ -416,7 +407,8 @@ class Route extends RouteAbstract implements Interfaces\RouteInterface
              */
             $routeSet[$auxSet] = array_keys($auxWildcards);
         }
-        $this->powerSet = $routeSet;
+
+        return $routeSet;
     }
 
     protected function processWildcardMatches(array $matches): void
@@ -442,31 +434,6 @@ class Route extends RouteAbstract implements Interfaces\RouteInterface
                 );
             }
             $this->wildcards[] = $wildcardTrim;
-        }
-    }
-
-    protected function processKeyValidation(string $key): void
-    {
-        $keyValidate = $key == '/' ?: (
-            strlen($key) > 0
-            && Utils\Str::startsWith('/', $key)
-            && !Utils\Str::endsWith('/', $key)
-            && !Utils\Str::contains('//', $key)
-            && !Utils\Str::contains(' ', $key)
-            && !Utils\Str::contains('\\', $key)
-        );
-        if (!$keyValidate) {
-            throw new CoreException(
-                (new Message("String %s must start with a forward slash, it shouldn't contain neither whitespace, backslashes or extra forward slashes and it should be specified without a trailing slash."))
-                    ->code('%s', $key)
-            );
-        }
-        $wildcardValidate = !$this->hasHandlebars ?: preg_match_all('/{([0-9]+)}/', $key) === 0;
-        if (!$wildcardValidate) {
-            throw new CoreException(
-                (new Message('Wildcards in the form of %s are reserved.'))
-                    ->code('%s', '/{n}')
-            );
         }
     }
 
