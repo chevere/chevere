@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -13,7 +14,7 @@ declare(strict_types=1);
 namespace Chevereto\Chevere;
 
 use Exception;
-use Symfony\Component\Console\Exception\LogicException;
+use LogicException;
 
 // IDEA Route lock (disables further modification)
 // IDEA: Reg events, determine who changes a route.
@@ -96,6 +97,7 @@ class Route implements Interfaces\RouteInterface
     public function __construct(string $key, string $callable = null)
     {
         $this->key = $key;
+        // Try, to catch the message 9hehe
         $routeKeyValidation = new RouteKeyValidation($this->key);
         $this->maker = $this->getMakerData();
         $this->processWildcards();

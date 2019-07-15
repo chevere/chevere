@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -50,14 +51,20 @@ class RouteKeyValidation
 
     protected function validateFormat(string $key): bool
     {
-        return $key == '/' ?: (
-            strlen($key) > 0
-            && Utils\Str::startsWith('/', $key)
-            && !Utils\Str::endsWith('/', $key)
+        if ('/' == $key) {
+            return true;
+        }
+
+        return strlen($key) > 0 && Utils\Str::startsWith('/', $key)
+            && $this->validateFormatSlashes($key);
+    }
+
+    protected function validateFormatSlashes(string $key): bool
+    {
+        return !Utils\Str::endsWith('/', $key)
             && !Utils\Str::contains('//', $key)
             && !Utils\Str::contains(' ', $key)
-            && !Utils\Str::contains('\\', $key)
-        );
+            && !Utils\Str::contains('\\', $key);
     }
 
     protected function validateWildcard(string $key): bool
