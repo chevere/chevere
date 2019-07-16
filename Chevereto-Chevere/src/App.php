@@ -21,7 +21,7 @@ use Throwable;
 /**
  * App contains the whole thing.
  */
-class App implements AppInterface
+class App extends AppStatic implements AppInterface
 {
     use Traits\StaticTrait;
 
@@ -30,9 +30,6 @@ class App implements AppInterface
     const FILEHANDLE_CONFIG = ':config';
     const FILEHANDLE_PARAMETERS = ':parameters';
     const FILEHANDLE_HACKS = ':hacks';
-
-    protected static $instance;
-    protected static $defaultRuntime;
 
     /** @var bool */
     protected $isCached;
@@ -95,7 +92,7 @@ class App implements AppInterface
     */
     public function __construct(AppParameters $parameters = null)
     {
-        static::$instance = $this;
+        $this->setStaticInstance();
         $this->setRouter(new Router());
         $this->isCached = false;
         if (static::hasStaticProp('defaultRuntime')) {
@@ -446,47 +443,5 @@ class App implements AppInterface
 
             return;
         }
-    }
-
-    public static function getBuildFilePath(): string
-    {
-        return ROOT_PATH.App\PATH.'build';
-    }
-
-    public static function setDefaultRuntime(Runtime $runtime): void
-    {
-        static::$defaultRuntime = $runtime;
-    }
-
-    public static function getDefaultRuntime(): Runtime
-    {
-        return static::$defaultRuntime;
-    }
-
-    /**
-     * Provides access to the App HttpRequest instance.
-     *
-     * @return HttpRequest|null
-     */
-    public static function requestInstance(): ?HttpRequest
-    {
-        // Request isn't there when doing cli (unless you run the request command)
-        return isset(static::$instance) && isset(static::$instance->httpRequest)
-            ? static::$instance->httpRequest
-            : null;
-    }
-
-    /**
-     * Provides access to the App Runtime instance.
-     *
-     * @return Runtime|null
-     */
-    public static function runtimeInstance(): ?Runtime
-    {
-        if (isset(static::$instance) && $runtimeInstance = static::$instance->getRuntime()) {
-            return $runtimeInstance;
-        }
-
-        return null;
     }
 }
