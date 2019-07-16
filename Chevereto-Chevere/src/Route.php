@@ -64,7 +64,7 @@ class Route implements Interfaces\RouteInterface
     /** @var array An array containg Route middlewares */
     protected $middlewares;
 
-    /** @var array An array containg wildcards */
+    /** @var array */
     protected $wildcards;
 
     /** @var string Key set representation */
@@ -85,10 +85,15 @@ class Route implements Interfaces\RouteInterface
     public function __construct(string $key, string $callable = null)
     {
         $this->key = $key;
-        // Try, to catch the message 9hehe
-        $routeKeyValidation = new RouteKeyValidation($this->key);
+        // TODO: Try, to catch the message 9hehe
+        $keyValidation = new RouteKeyValidation($this->key);
         $this->maker = $this->getMakerData();
-        $routeWildcards = new RouteWildcards($this->key);
+        if ($keyValidation->hasHandlebars) {
+            $routeWildcards = new RouteWildcards($this->key);
+            $this->set = $routeWildcards->set;
+            $this->powerSet = $routeWildcards->powerSet;
+            $this->wildcards = $routeWildcards->wildcards;
+        }
         if (isset($callable)) {
             $this->setMethod('GET', $callable);
         }

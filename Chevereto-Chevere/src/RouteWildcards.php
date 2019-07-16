@@ -16,7 +16,13 @@ namespace Chevereto\Chevere;
 class RouteWildcards
 {
     /** @var string Key set representation */
-    protected $set;
+    public $set;
+
+    /** @var array */
+    public $wildcards;
+
+    /** @var array An array containing all the key sets for the route (optionals combo) */
+    public $powerSet;
 
     /** @var array An array containing the optional wildcards */
     protected $optionals;
@@ -27,51 +33,49 @@ class RouteWildcards
     /** @var array An array indexing the mandatory wildcards */
     protected $mandatoryIndex;
 
-    /** @var array An array containing all the key sets for the route (optionals combo) */
-    protected $powerSet;
-
     public function __construct(string $routeString)
     {
         // $matches[0] => [{wildcard}, {wildcard?},...]
         // $matches[1] => [wildcard, wildcard?,...]
-        if (preg_match_all(Route::REGEX_WILDCARD_SEARCH, $routeString, $matches)) {
-            $this->set = $routeString;
-            $this->optionals = [];
-            $this->optionalsIndex = [];
-            foreach ($matches[0] as $k => $v) {
-                // Change {wildcard} to {n} (n is the wildcard index)
-                if (isset($this->set)) {
-                    $this->set = Utils\Str::replaceFirst($v, "{{$k}}", $this->set);
-                }
-                $wildcard = $matches[1][$k];
-                if (Utils\Str::endsWith('?', $wildcard)) {
-                    $wildcardTrim = Utils\Str::replaceLast('?', null, $wildcard);
-                    $this->optionals[] = $k;
-                    $this->optionalsIndex[$k] = $wildcardTrim;
-                } else {
-                    $wildcardTrim = $wildcard;
-                }
-                if (in_array($wildcardTrim, $this->wildcards ?? [])) {
-                    throw new CoreException(
-                        (new Message('Must declare one unique wildcard per capturing group, duplicated %s detected in route %r.'))
-                            ->code('%s', $matches[0][$k])
-                            ->code('%r', $routeString)
-                    );
-                }
-                $this->wildcards[] = $wildcardTrim;
+        if (!preg_match_all(Route::REGEX_WILDCARD_SEARCH, $routeString, $matches)) {
+            return;
+        }
+        $this->set = $routeString;
+        $this->optionals = [];
+        $this->optionalsIndex = [];
+        foreach ($matches[0] as $k => $v) {
+            // Change {wildcard} to {n} (n is the wildcard index)
+            if (isset($this->set)) {
+                $this->set = Utils\Str::replaceFirst($v, "{{$k}}", $this->set);
             }
-            // Determine if route contains optional wildcards
-            if (!empty($this->optionals)) {
-                $mandatoryDiff = array_diff($this->wildcards ?? [], $this->optionalsIndex);
-                $this->mandatoryIndex = [];
-                foreach ($mandatoryDiff as $k => $v) {
-                    $this->mandatoryIndex[$k] = null;
-                }
-                // Generate the optionals power set, keeping its index keys in case of duplicated optionals
-                $powerSet = Utils\Arr::powerSet($this->optionals, true);
-                // Build the route set, it will contain all the possible route combinations
-                $this->powerSet = $this->processPowerSet($powerSet);
+            $wildcard = $matches[1][$k];
+            if (Utils\Str::endsWith('?', $wildcard)) {
+                $wildcardTrim = Utils\Str::replaceLast('?', null, $wildcard);
+                $this->optionals[] = $k;
+                $this->optionalsIndex[$k] = $wildcardTrim;
+            } else {
+                $wildcardTrim = $wildcard;
             }
+            if (in_array($wildcardTrim, $this->wildcards ?? [])) {
+                throw new CoreException(
+                    (new Message('Must declare one unique wildcard per capturing group, duplicated %s detected in route %r.'))
+                        ->code('%s', $matches[0][$k])
+                        ->code('%r', $routeString)
+                );
+            }
+            $this->wildcards[] = $wildcardTrim;
+        }
+        // Determine if route contains optional wildcards
+        if (!empty($this->optionals)) {
+            $mandatoryDiff = array_diff($this->wildcards ?? [], $this->optionalsIndex);
+            $this->mandatoryIndex = [];
+            foreach ($mandatoryDiff as $k => $v) {
+                $this->mandatoryIndex[$k] = null;
+            }
+            // Generate the optionals power set, keeping its index keys in case of duplicated optionals
+            $powerSet = Utils\Arr::powerSet($this->optionals, true);
+            // Build the route set, it will contain all the possible route combinations
+            $this->powerSet = $this->processPowerSet($powerSet);
         }
     }
 

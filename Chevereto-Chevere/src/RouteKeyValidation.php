@@ -16,10 +16,10 @@ namespace Chevereto\Chevere;
 class RouteKeyValidation
 {
     /** @var string */
-    protected $key;
+    public $key;
 
     /** @var bool */
-    protected $hasHandlebars;
+    public $hasHandlebars;
 
     public function __construct(string $key)
     {
