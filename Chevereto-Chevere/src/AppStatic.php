@@ -26,11 +26,6 @@ abstract class AppStatic
         static::$instance = $this;
     }
 
-    public static function getBuildFilePath(): string
-    {
-        return ROOT_PATH.App\PATH.'build';
-    }
-
     public static function setDefaultRuntime(Runtime $runtime): void
     {
         static::$defaultRuntime = $runtime;

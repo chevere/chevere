@@ -15,7 +15,6 @@ namespace Chevereto\Chevere;
 
 use Monolog\Logger;
 use Chevereto\Chevere\Interfaces\AppInterface;
-use RuntimeException;
 use Throwable;
 
 /**
@@ -25,6 +24,7 @@ class App extends AppStatic implements AppInterface
 {
     use Traits\StaticTrait;
 
+    const BUILD_FILEPATH = ROOT_PATH.App\PATH.'build';
     const NAMESPACES = ['App', __NAMESPACE__];
     const APP = 'app';
     const FILEHANDLE_CONFIG = ':config';
@@ -67,9 +67,6 @@ class App extends AppStatic implements AppInterface
     /** @var string */
     protected $db;
 
-    /** @var Handler */
-    protected $handler;
-
     /*
     * (A) Router cache : The array which is used to resolve /req -> route (routing)
     * (B) Routes cache : The array of serialized Routes ['id' => Route serialized]
@@ -98,7 +95,9 @@ class App extends AppStatic implements AppInterface
         if (static::hasStaticProp('defaultRuntime')) {
             $this->runtime = static::getDefaultRuntime();
         }
-        $this->processCheckout();
+        if (false === stream_resolve_include_path(static::BUILD_FILEPATH)) {
+            new AppCheckout(static::BUILD_FILEPATH);
+        }
         Load::php(static::FILEHANDLE_HACKS);
         if (!isset($parameters)) {
             $pathHandle = Path::handle(static::FILEHANDLE_PARAMETERS);
@@ -113,30 +112,7 @@ class App extends AppStatic implements AppInterface
 
     public function getBuildTime(): ?string
     {
-        $filename = $this->getBuildFilePath();
-
-        return File::exists($filename) ? (string) file_get_contents($filename) : null;
-    }
-
-    public function checkout(): void
-    {
-        $filename = $this->getBuildFilePath();
-        $fh = fopen($filename, 'w');
-        if (false === $fh) {
-            throw new RuntimeException(
-                (string) (new Message('Unable to open %f for writing'))->code('%f', $filename)
-            );
-        }
-        if (!@fwrite($fh, (string) time())) {
-            throw new RuntimeException(
-                (string) (new Message('Unable to write to %f'))->code('%f', $filename)
-            );
-        }
-        if (!@fclose($fh)) {
-            throw new RuntimeException(
-                (string) (new Message('Unable to close %f'))->code('%f', $filename)
-            );
-        }
+        return File::exists(static::BUILD_FILEPATH) ? (string) file_get_contents(static::BUILD_FILEPATH) : null;
     }
 
     /**
@@ -254,13 +230,6 @@ class App extends AppStatic implements AppInterface
         $this->controllerArguments = $arguments;
 
         return $this;
-    }
-
-    protected function processCheckout(): void
-    {
-        if (false === stream_resolve_include_path($this->getBuildFilePath())) {
-            $this->checkout();
-        }
     }
 
     protected function processConfigFiles(array $configFiles = null): void
