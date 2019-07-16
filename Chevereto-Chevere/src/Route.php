@@ -76,18 +76,6 @@ class Route implements Interfaces\RouteInterface
     /** @var array An array containg details about the Route maker */
     protected $maker;
 
-    /** @var bool True if the route key has handlebars (wildcards) */
-    protected $hasHandlebars;
-
-    /** @var array An array containing the optional wildcards */
-    protected $optionals;
-
-    /** @var array An array indexing the optional wildcards */
-    protected $optionalsIndex;
-
-    /** @var array An array indexing the mandatory wildcards */
-    protected $mandatoryIndex;
-
     /**
      * Route constructor.
      *
@@ -100,49 +88,7 @@ class Route implements Interfaces\RouteInterface
         // Try, to catch the message 9hehe
         $routeKeyValidation = new RouteKeyValidation($this->key);
         $this->maker = $this->getMakerData();
-        if (preg_match_all(static::REGEX_WILDCARD_SEARCH, $this->key, $matches)) {
-            // $matches[0] => [{wildcard}, {wildcard?},...]
-            // $matches[1] => [wildcard, wildcard?,...]
-            // Build the route handle, needed for regex replacements
-            $this->set = $this->key;
-            // Build the optionals array, needed for creating route power set if needed
-            $this->optionals = [];
-            $this->optionalsIndex = [];
-            foreach ($matches[0] as $k => $v) {
-                // Change {wildcard} to {n} (n is the wildcard index)
-                if (isset($this->set)) {
-                    $this->set = Utils\Str::replaceFirst($v, "{{$k}}", $this->set);
-                }
-                $wildcard = $matches[1][$k];
-                if (Utils\Str::endsWith('?', $wildcard)) {
-                    $wildcardTrim = Utils\Str::replaceLast('?', null, $wildcard);
-                    $this->optionals[] = $k;
-                    $this->optionalsIndex[$k] = $wildcardTrim;
-                } else {
-                    $wildcardTrim = $wildcard;
-                }
-                if (in_array($wildcardTrim, $this->wildcards ?? [])) {
-                    throw new CoreException(
-                        (new Message('Must declare one unique wildcard per capturing group, duplicated %s detected in route %r.'))
-                            ->code('%s', $matches[0][$k])
-                            ->code('%r', $this->key)
-                    );
-                }
-                $this->wildcards[] = $wildcardTrim;
-            }
-            // Determine if route contains optional wildcards
-            if (!empty($this->optionals)) {
-                $mandatoryDiff = array_diff($this->wildcards ?? [], $this->optionalsIndex);
-                $this->mandatoryIndex = [];
-                foreach ($mandatoryDiff as $k => $v) {
-                    $this->mandatoryIndex[$k] = null;
-                }
-                // Generate the optionals power set, keeping its index keys in case of duplicated optionals
-                $powerSet = Utils\Arr::powerSet($this->optionals, true);
-                // Build the route set, it will contain all the possible route combinations
-                $this->powerSet = $this->processPowerSet($powerSet);
-            }
-        }
+        $routeWildcards = new RouteWildcards($this->key);
         if (isset($callable)) {
             $this->setMethod('GET', $callable);
         }
@@ -389,37 +335,5 @@ class Route implements Interfaces\RouteInterface
         $maker['file'] = Path::relative($maker['file']);
 
         return $maker;
-    }
-
-    protected function processOptionalWildcards(): void
-    {
-    }
-
-    protected function processPowerSet(array $powerSet): array
-    {
-        $routeSet = [];
-        foreach ($powerSet as $set) {
-            $auxSet = $this->set;
-            // auxWildcards keys represent the wildcards being used. Iterate it with foreach.
-            $auxWildcards = $this->mandatoryIndex;
-            foreach ($set as $replaceKey => $replaceValue) {
-                $replace = $this->optionals[$replaceKey];
-                if ($replaceValue !== null) {
-                    $replaceValue = "{{$replaceValue}}";
-                    $auxWildcards[$replace] = null;
-                }
-                $auxSet = str_replace("{{$replace}}", $replaceValue ?? '', $auxSet);
-                $auxSet = Path::normalize($auxSet);
-            }
-            ksort($auxWildcards);
-            /*
-             * Maps expected regex indexed matches [0,1,2,] to registered wildcard index [index=>n].
-             * For example, a set /test-{0}--{2} will capture 0->0 and 1->2. Storing the expected index allows\
-             * to easily map matches => wildcards => values.
-             */
-            $routeSet[$auxSet] = array_keys($auxWildcards);
-        }
-
-        return $routeSet;
     }
 }
