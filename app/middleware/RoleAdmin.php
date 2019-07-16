@@ -20,7 +20,7 @@ return new class() implements MiddlewareInterface {
     public function __invoke(App $app, HandlerInterface $handler)
     {
         // \dump(__FILE__);
-        // \dump($app->getArguments());
+        // \dump($app->arguments;
         // $userRole = $app->getUser()->role;
         // $userRole = 'user';
         // if ('admin' != $userRole) {

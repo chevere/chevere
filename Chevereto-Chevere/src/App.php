@@ -34,26 +34,26 @@ class App extends AppStatic implements AppInterface
     /** @var bool */
     protected $isCached;
 
-    /** @var array An array containing string arguments (from request uri, cli) */
-    protected $arguments;
+    /** @var ?array An array containing string arguments (from request uri, cli) */
+    public $arguments;
 
     /** @var array An array containing the prepared controller arguments (object injection) */
     protected $controllerArguments;
 
     /** @var Runtime */
-    protected $runtime;
+    public $runtime;
 
     /** @var Logger */
     protected $logger;
 
     /** @var Router */
-    protected $router;
+    public $router;
 
     /** @var HttpRequest */
     protected $httpRequest;
 
     /** @var Response */
-    protected $response;
+    public $response;
 
     /** @var Api */
     protected $api;
@@ -93,10 +93,10 @@ class App extends AppStatic implements AppInterface
     public function __construct(AppParameters $parameters = null)
     {
         $this->setStaticInstance();
-        $this->setRouter(new Router());
+        $this->router = new Router();
         $this->isCached = false;
         if (static::hasStaticProp('defaultRuntime')) {
-            $this->setRuntime(static::getDefaultRuntime());
+            $this->runtime = static::getDefaultRuntime();
         }
         $this->processCheckout();
         Load::php(static::FILEHANDLE_HACKS);
@@ -107,7 +107,7 @@ class App extends AppStatic implements AppInterface
         $this->processConfigFiles($parameters->getDataKey(AppParameters::CONFIG_FILES));
         $this->processApi($parameters->getDataKey(AppParameters::API));
         $this->processParamRoutes($parameters->getDatakey(AppParameters::ROUTES));
-        $this->setResponse(new Response());
+        $this->response = new Response();
         $this->processSapi();
     }
 
@@ -226,61 +226,12 @@ class App extends AppStatic implements AppInterface
         return defined($constant) ? constant($constant) : null;
     }
 
-    protected function setRuntime(Runtime $runtime): self
-    {
-        $this->runtime = $runtime;
-
-        return $this;
-    }
-
-    protected function setLogger(Logger $logger): self
-    {
-        $this->logger = $logger;
-
-        return $this;
-    }
-
-    protected function setRouter(Router $router): self
-    {
-        $this->router = $router;
-
-        return $this;
-    }
-
     protected function setHttpRequest(HttpRequest $request): self
     {
         $this->httpRequest = $request;
 
         $pathinfo = ltrim($this->httpRequest->getPathInfo(), '/');
         $this->httpRequest->attributes->set('requestArray', explode('/', $pathinfo));
-
-        return $this;
-    }
-
-    protected function setResponse(Response $response): self
-    {
-        $this->response = $response;
-
-        return $this;
-    }
-
-    protected function setApi(Api $api): self
-    {
-        $this->api = $api;
-
-        return $this;
-    }
-
-    protected function setRoute(Route $route): self
-    {
-        $this->route = $route;
-
-        return $this;
-    }
-
-    protected function setHandler(Handler $handler)
-    {
-        $this->handler = $handler;
 
         return $this;
     }
@@ -293,11 +244,6 @@ class App extends AppStatic implements AppInterface
         $this->arguments = $arguments;
 
         return $this;
-    }
-
-    public function getArguments(): ?array
-    {
-        return $this->arguments ?? null;
     }
 
     /**
@@ -384,7 +330,7 @@ class App extends AppStatic implements AppInterface
         if (!$this->isCached) {
             $api->register($pathIdentifier);
         }
-        $this->setApi($api);
+        $this->api = $api;
     }
 
     protected function processParamRoutes(array $paramRoutes = null): void
@@ -425,7 +371,7 @@ class App extends AppStatic implements AppInterface
         try {
             $route = $this->router->resolve($pathInfo);
             if (isset($route)) {
-                $this->setRoute($route);
+                $this->route = $route;
                 $this->callable = $route->getCallable(
                     $this->httpRequest->getMethod()
                 );

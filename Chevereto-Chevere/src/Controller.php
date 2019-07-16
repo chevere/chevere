@@ -60,7 +60,7 @@ abstract class Controller implements Interfaces\ControllerInterface
 
     public function setResponse(Response $response): Interfaces\ControllerInterface
     {
-        $this->getApp()->setResponse($response);
+        $this->getApp()->response = $response;
 
         return $this;
     }
