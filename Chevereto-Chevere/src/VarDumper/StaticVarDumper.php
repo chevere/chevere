@@ -40,6 +40,6 @@ abstract class StaticVarDumper
 
     public static function out($var, int $indent = null, array $dontDump = [], int $depth = 0): string
     {
-        return (new static(...func_get_args()))->toString();
+        return (/* @scrutinizer ignore-call */ new static(...func_get_args()))->toString();
     }
 }

@@ -86,8 +86,6 @@ class Api
         $this->controllersMap = [];
         $this->api = [];
 
-        $errors = [];
-
         // Iterate the $this->directory filtering accepted filenames and folders
         $iterator = new RecursiveDirectoryIterator($this->directory, RecursiveDirectoryIterator::SKIP_DOTS);
         $filter = (new ApiFilterIterator($iterator))

@@ -97,8 +97,8 @@ class TemplateStrings
             $this->rich .= '<div class="t'.(0 == $this->i ? ' t--scream' : null).'">'.$this->richSection[0].'</div>';
             $this->plain .= html_entity_decode($this->plainSection[0]);
             if (0 == $this->i) {
-                $this->appendRichTitleBreak($this->rich, $this->titleBreak);
-                $this->appendPlainTitleBreak($this->plain, $this->titleBreak);
+                $this->appendRichTitleBreak();
+                $this->appendPlainTitleBreak();
             }
         }
     }

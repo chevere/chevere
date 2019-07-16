@@ -89,7 +89,7 @@ class App extends AppStatic implements AppInterface
     */
     public function __construct(AppParameters $parameters = null)
     {
-        $this->setStaticInstance();
+        static::setStaticInstance($this);
         $this->router = new Router();
         $this->isCached = false;
         if (static::hasStaticProp('defaultRuntime')) {

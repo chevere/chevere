@@ -176,15 +176,13 @@ class Benchmark
 
     protected function handleCallables(): void
     {
-        $i = 0;
         foreach ($this->callables as $k => $v) {
             if ($this->isAborted) {
                 $this->time = microtime(true) - $this->startTimestamp;
                 break;
             }
-            $runs = 0;
             $timeInit = microtime(true);
-            $runCallables = $this->runCallables($this->times);
+            $this->runCallables($this->times);
             $timeFinish = microtime(true);
             $timeTaken = floatval($timeFinish - $timeInit);
             $this->index[$k] = $timeTaken;

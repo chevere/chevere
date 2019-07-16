@@ -185,7 +185,6 @@ class Formatter
 
     protected function processStack()
     {
-        $i = 0;
         $trace = $this->exceptionHandler->exception->getTrace();
         if ($this->exceptionHandler->exception instanceof ErrorException) {
             $this->thrown = $this->exceptionHandler->type;
@@ -224,7 +223,7 @@ class Formatter
             if (CLI && false == static::CONSOLE_TABLE[$k]) {
                 continue;
             }
-            if (false == $this->processContentSectionsArray((string) $k, $v, $verbosity)) {
+            if (false === $this->processContentSectionsArray((string) $k, $v, $verbosity)) {
                 continue;
             }
         }

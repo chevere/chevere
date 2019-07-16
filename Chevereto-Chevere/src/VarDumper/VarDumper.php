@@ -62,7 +62,7 @@ class VarDumper extends StaticVarDumper
     /** @var mixed */
     public $var;
 
-    /** @var string */
+    /** @var mixed */
     public $expression;
 
     /** @var int */

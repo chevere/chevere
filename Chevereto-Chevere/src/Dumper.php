@@ -86,13 +86,8 @@ class Dumper
     {
         while (isset($this->debugBacktrace[0]['file']) && __FILE__ == $this->debugBacktrace[0]['file']) {
             $this->shiftDebugBacktrace();
-            $this->setCaller($this->debugBacktrace[0]);
+            $this->caller = $this->debugBacktrace[0];
         }
-    }
-
-    protected function setCaller(): void
-    {
-        $this->caller = $this->debugBacktrace[0];
     }
 
     protected function setCallerFilepath(string $filepath): void

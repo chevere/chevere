@@ -126,7 +126,7 @@ class Route implements Interfaces\RouteInterface
      */
     public function setWhere(string $wildcardName, string $regex): self
     {
-        $wildcardValidation = new RouteWildcardValidation($wildcardName, $regex, $this);
+        new RouteWildcardValidation($wildcardName, $regex, $this);
         $this->wheres[$wildcardName] = $regex;
 
         return $this;
