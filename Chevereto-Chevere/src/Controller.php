@@ -50,12 +50,12 @@ abstract class Controller implements Interfaces\ControllerInterface
 
     public function getRoute(): ?Route
     {
-        return $this->getApp()->getRoute();
+        return $this->getApp()->route;
     }
 
     public function getApi(): ?Api
     {
-        return $this->getApp()->getApi();
+        return $this->getApp()->api;
     }
 
     public function setResponse(Response $response): Interfaces\ControllerInterface
@@ -67,7 +67,7 @@ abstract class Controller implements Interfaces\ControllerInterface
 
     public function getResponse(): ?Response
     {
-        return $this->getApp()->getResponse();
+        return $this->getApp()->response;
     }
 
     public function setApp(App $app): Interfaces\ControllerInterface

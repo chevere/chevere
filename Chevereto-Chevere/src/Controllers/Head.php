@@ -25,7 +25,7 @@ class Head extends Controller
      */
     public function __invoke()
     {
-        $route = $this->getApp()->getRoute();
+        $route = $this->getApp()->route;
         $routeUri = $route->getUri();
         dx($routeUri);
         $invoke = $this->invoke(__NAMESPACE__.'\ApiGet', ...func_get_args());

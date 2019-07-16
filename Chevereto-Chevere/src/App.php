@@ -34,32 +34,32 @@ class App extends AppStatic implements AppInterface
     /** @var bool */
     protected $isCached;
 
-    /** @var ?array An array containing string arguments (from request uri, cli) */
+    /** @var array|null An array containing string arguments (from request uri, cli) */
     public $arguments;
 
-    /** @var array An array containing the prepared controller arguments (object injection) */
-    protected $controllerArguments;
+    /** @var array|null An array containing the prepared controller arguments (object injection) */
+    public $controllerArguments;
 
     /** @var Runtime */
     public $runtime;
 
     /** @var Logger */
-    protected $logger;
+    public $logger;
 
     /** @var Router */
     public $router;
 
     /** @var HttpRequest */
-    protected $httpRequest;
+    public $httpRequest;
 
     /** @var Response */
     public $response;
 
     /** @var Api */
-    protected $api;
+    public $api;
 
     /** @var Route */
-    protected $route;
+    public $route;
 
     /** @var string */
     protected $cache;
@@ -254,51 +254,6 @@ class App extends AppStatic implements AppInterface
         $this->controllerArguments = $arguments;
 
         return $this;
-    }
-
-    public function getControllerArguments(): ?array
-    {
-        return $this->controllerArguments ?? null;
-    }
-
-    public function getRuntime(): ?Runtime
-    {
-        return $this->runtime ?? null;
-    }
-
-    public function getLogger(): ?Logger
-    {
-        return $this->logger ?? null;
-    }
-
-    public function getRouter(): ?Router
-    {
-        return $this->router ?? null;
-    }
-
-    public function getHttpRequest(): ?HttpRequest
-    {
-        return $this->httpRequest ?? null;
-    }
-
-    public function getResponse(): ?Response
-    {
-        return $this->response ?? null;
-    }
-
-    public function getApi(): ?Api
-    {
-        return $this->api ?? null;
-    }
-
-    public function getRoute(): ?Route
-    {
-        return $this->route ?? null;
-    }
-
-    public function getHandler(): ?Handler
-    {
-        return $this->handler ?? null;
     }
 
     protected function processCheckout(): void

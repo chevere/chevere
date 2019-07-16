@@ -35,9 +35,9 @@ class ApiGet extends Controller
     public function __invoke()
     {
         if (isset($endpoint)) {
-            $route = $this->getApp()->getRouter()->resolve($endpoint);
+            $route = $this->getApp()->router->resolve($endpoint);
         } else {
-            $route = $this->getApp()->getRoute();
+            $route = $this->getApp()->route;
             if (isset($route)) {
                 $endpoint = $route->getUri();
             } else {

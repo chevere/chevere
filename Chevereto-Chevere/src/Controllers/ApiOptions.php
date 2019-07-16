@@ -34,7 +34,7 @@ class ApiOptions extends Controller
      */
     public function __invoke()
     {
-        $route = $this->getApp()->getRoute();
+        $route = $this->getApp()->route;
         if (isset($route)) {
             $endpoint = $route->getUri();
         }

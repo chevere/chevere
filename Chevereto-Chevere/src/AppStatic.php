@@ -57,7 +57,7 @@ abstract class AppStatic
      */
     public static function runtimeInstance(): ?Runtime
     {
-        if (isset(static::$instance) && $runtimeInstance = static::$instance->getRuntime()) {
+        if (isset(static::$instance) && $runtimeInstance = static::$instance->runtime) {
             return $runtimeInstance;
         }
 
