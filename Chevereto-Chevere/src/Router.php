@@ -46,8 +46,8 @@ class Router
     {
         $route->fill();
         $id = $route->getId();
-        $key = $route->getKey();
-        $this->handleRouteKey($key);
+        $uri = $route->getUri();
+        $this->handleRouteKey($uri);
         $pointer = [$id, $basename];
         $name = $route->getName();
         $this->handleRouteName($name, $pointer);
@@ -63,7 +63,7 @@ class Router
             $this->routing($pointer, $route);
         }
         ksort($this->routing);
-        $this->routeKeys[$key] = $pointer;
+        $this->routeKeys[$uri] = $pointer;
     }
 
     protected function handleRouteKey(string $key)

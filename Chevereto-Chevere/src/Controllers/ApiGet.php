@@ -39,7 +39,7 @@ class ApiGet extends Controller
         } else {
             $route = $this->getApp()->getRoute();
             if (isset($route)) {
-                $endpoint = $route->getKey();
+                $endpoint = $route->getUri();
             } else {
                 $message =
                     (string)

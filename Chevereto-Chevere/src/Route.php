@@ -49,8 +49,8 @@ class Route implements Interfaces\RouteInterface
     /** @var string Route id relative to the ArrayFile */
     protected $id;
 
-    /** @var string Route key like /api/endpoint/{var?} */
-    protected $key;
+    /** @var string Route uri like /api/endpoint/{var?} */
+    protected $uri;
 
     /** @var string Route name (if any, must be unique) */
     protected $name;
@@ -79,17 +79,17 @@ class Route implements Interfaces\RouteInterface
     /**
      * Route constructor.
      *
-     * @param string $key      Route key string
+     * @param string $uri      Route uri (key string)
      * @param string $callable Callable for GET
      */
-    public function __construct(string $key, string $callable = null)
+    public function __construct(string $uri, string $callable = null)
     {
-        $this->key = $key;
+        $this->uri = $uri;
         // TODO: Try, to catch the message 9hehe
-        $keyValidation = new RouteKeyValidation($this->key);
+        $keyValidation = new RouteKeyValidation($this->uri);
         $this->maker = $this->getMakerData();
         if ($keyValidation->hasHandlebars) {
-            $routeWildcards = new RouteWildcards($this->key);
+            $routeWildcards = new RouteWildcards($this->uri);
             $this->set = $routeWildcards->set;
             $this->powerSet = $routeWildcards->powerSet;
             $this->wildcards = $routeWildcards->wildcards;
@@ -214,9 +214,9 @@ class Route implements Interfaces\RouteInterface
         return $this->id;
     }
 
-    public function getKey(): string
+    public function getUri(): string
     {
-        return $this->key;
+        return $this->uri;
     }
 
     public function getName(): ?string
@@ -299,11 +299,11 @@ class Route implements Interfaces\RouteInterface
     /**
      * Gets route regex depending on the passed key (if any).
      *
-     * @param string $key route string to use, leave it blank to use $this->set ?? $this->key
+     * @param string $key route string to use, leave it blank to use $this->set ?? $this->uri
      */
     public function regex(string $key = null): string
     {
-        $regex = $key ?? $this->set ?? $this->key;
+        $regex = $key ?? $this->set ?? $this->uri;
         if (!isset($regex)) {
             throw new CoreException(
                 (new Message('Unable to process regex for empty %s.'))

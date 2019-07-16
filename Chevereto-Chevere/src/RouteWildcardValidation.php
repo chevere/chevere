@@ -32,7 +32,7 @@ class RouteWildcardValidation
         $this->wildcardName = $wildcardName;
         $this->wildcardString = "{{$wildcardName}}";
         $this->regex = $regex;
-        $this->routeKey = $route->getKey();
+        $this->uri = $route->getUri();
         $this->routeWheres = $route->getWheres();
         $this->handleValidateFormat();
         $this->handleValidateMatch();
@@ -57,11 +57,11 @@ class RouteWildcardValidation
 
     protected function handleValidateMatch()
     {
-        if (!$this->validateMatch($this->wildcardName, $this->routeKey)) {
+        if (!$this->validateMatch($this->wildcardName, $this->uri)) {
             throw new CoreException(
                 (new Message("Wildcard %s doesn't exists in %r."))
                     ->code('%s', $this->wildcardString)
-                    ->code('%r', $this->routeKey)
+                    ->code('%r', $this->uri)
             );
         }
     }

@@ -45,7 +45,7 @@ class Routing
             $this->routeSetHandle = $routeSet;
             $this->regex = $this->route->regex($routeSet);
         } else {
-            $this->routeSetHandle = $routeSet ?? $this->route->getKey();
+            $this->routeSetHandle = $routeSet ?? $this->route->getUri();
             $this->regex = $this->route->regex();
         }
     }
@@ -70,7 +70,7 @@ class Routing
         if (null != $routeSetHandle) {
             $routeSetHandleTrim = ltrim($routeSetHandle, '/');
             $explode = explode('/', $routeSetHandleTrim);
-            $this->count = '/' == $this->route->getKey() ? 0 : count($explode);
+            $this->count = '/' == $this->route->getUri() ? 0 : count($explode);
         } else {
             $this->count = 0;
         }
