@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
-class Path
+abstract class Path
 {
     /**
      * Converts relative path to absolute path.

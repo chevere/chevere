@@ -84,10 +84,7 @@ class Api
         $this->handleDuplicates();
         $this->directory = Path::fromHandle($this->pathIdentifier);
         $this->handleMissingDirectory();
-
-        /* @var string The API directory (relative path) */
-        // $directoryRelative = Path::relative($this->directory, App::APP);
-
+        $this->basePath = strtolower(basename($this->directory));
         $this->routesMap = [];
         $this->resourcesMap = [];
         $this->controllersMap = [];
@@ -173,7 +170,6 @@ class Api
             }
             $this->routesMap[$pathComponent][$inspected->httpMethod] = $inspected->className;
         }
-        $this->basePath = explode('/', $pathComponent)[0];
         ksort($this->routesMap);
     }
 

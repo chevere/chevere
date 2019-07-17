@@ -66,7 +66,7 @@ class TraceEntry
     protected function handleProcessMissingClassFile()
     {
         if (!array_key_exists('file', $this->entry) && isset($this->entry['class'])) {
-            return $this->processMissingClassFile();
+            $this->processMissingClassFile();
         }
     }
 

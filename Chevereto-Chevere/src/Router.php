@@ -36,7 +36,7 @@ class Router
     /** @var ?array An array containing the named routes [name => [id, fileHandle]] */
     public $namedRoutes;
 
-    /** @var ?array An array containing a mapped representation, used when resolving routing. */
+    /** @var array Mapped representation, used when resolving routing. */
     public $routing;
 
     /** @var ?array Arguments taken from wildcard matches. */

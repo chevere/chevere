@@ -30,7 +30,9 @@ class RuntimeConfig extends Data
     const TIMEZONE = 'timeZone';
 
     protected $data = [];
-    protected $loadedFiles = [];
+
+    /** @var array Loaded configuration filepaths. */
+    protected $loadedFilepaths = [];
 
     protected $asserts = [
         self::DEBUG => [0, 1],
@@ -52,7 +54,7 @@ class RuntimeConfig extends Data
     {
         $fileHandle = Path::handle($filepath);
         $arrayFile = new ArrayFile($fileHandle);
-        $this->loadedFiles[] = $filepath;
+        $this->loadedFilepaths[] = $filepath;
 
         return $this->dataAdder($arrayFile->toArray());
     }
@@ -125,17 +127,7 @@ class RuntimeConfig extends Data
      */
     public function getAssert(string $key)
     {
-        return $this->getAsserts()[$key];
-    }
-
-    /**
-     * Get config asserts.
-     *
-     * @return array asserts
-     */
-    public function getAsserts(): array
-    {
-        return $this->asserts ?? null;
+        return $this->asserts[$key];
     }
 
     /**
@@ -147,17 +139,17 @@ class RuntimeConfig extends Data
      */
     public function hasAssert(string $key): bool
     {
-        return array_key_exists($key, $this->getAsserts());
+        return array_key_exists($key, $this->asserts);
     }
 
     /**
      * Returns the loaded configuration filepaths.
      *
-     * @return array loaded filepaths
+     * @return array Loaded filepaths, []
      */
-    public function getLoadedFiles(): ?array
+    public function getLoadedFilepaths(): array
     {
-        return $this->loadedFiles ?? null;
+        return $this->loadedFilepaths;
     }
 
     /**
@@ -188,10 +180,10 @@ class RuntimeConfig extends Data
      */
     protected function validator(string $key, $value)
     {
-        if (!array_key_exists($key, $this->getAsserts())) {
+        if (!array_key_exists($key, $this->asserts)) {
             return;
         }
-        $assert = $this->getAsserts()[$key];
+        $assert = $this->asserts[$key];
         $type = gettype($assert);
         switch ($type) {
             case 'string': // a callable name

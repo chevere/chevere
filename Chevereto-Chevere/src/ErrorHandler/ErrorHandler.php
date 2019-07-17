@@ -133,7 +133,7 @@ class ErrorHandler implements ErrorHandlerInterface
         $this->handleHttpRequest(App::requestInstance());
         $this->runtimeInstance = App::runtimeInstance();
         $this->isDebugEnabled = (bool) $this->runtimeInstance->getDataKey('debug');
-        $this->setloadedConfigFiles($this->runtimeInstance->getRuntimeConfig()->getLoadedFiles());
+        $this->setloadedConfigFiles($this->runtimeInstance->getRuntimeConfig()->getLoadedFilepaths());
         $this->logDateFolderFormat = static::LOG_DATE_FOLDER_FORMAT;
 
         $exceptionHandler = new ExceptionHandler($args[0]);

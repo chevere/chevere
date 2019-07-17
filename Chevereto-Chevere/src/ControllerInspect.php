@@ -253,9 +253,7 @@ class ControllerInspect implements Interfaces\ToArrayInterface
      */
     protected function processPathComponent(): void
     {
-        $classNamespace = Utils\Str::replaceLast('\\'.$this->reflection->getShortName(), null, $this->className);
-        $classNamespaceNoApp = Utils\Str::replaceFirst(APP_NS_HANDLE, null, $classNamespace);
-        $pathComponent = strtolower(Utils\Str::forwardSlashes($classNamespaceNoApp));
+        $pathComponent = $this->getPathComponent($this->className);
         $pathComponents = explode('/', $pathComponent);
         if ($this->useResource) {
             $resourceWildcard = '{'.array_keys($this->resources)[0].'}';
@@ -281,5 +279,14 @@ class ControllerInspect implements Interfaces\ToArrayInterface
             }
         }
         $this->pathComponent = $pathComponent;
+    }
+
+    protected function getPathComponent(string $className): string
+    {
+        $classShortName = substr($className, strrpos($className, '\\') + 1);
+        $classNamespace = Utils\Str::replaceLast('\\'.$classShortName, null, $className);
+        $classNamespaceNoApp = Utils\Str::replaceFirst(APP_NS_HANDLE, null, $classNamespace);
+
+        return strtolower(Utils\Str::forwardSlashes($classNamespaceNoApp));
     }
 }
