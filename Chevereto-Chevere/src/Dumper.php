@@ -97,7 +97,7 @@ class Dumper
 
     protected function handleSelfCaller(): void
     {
-        if (Utils\Str::endsWith('resources/functions/dump.php', $this->callerFilepath) && __CLASS__ == $this->debugBacktrace[0]['class'] && in_array($this->debugBacktrace[0]['function'], ['dump', 'dx'])) {
+        if (Utils\Str::endsWith('resources/functions/dump.php', $this->callerFilepath) && __CLASS__ == $this->debugBacktrace[0]['class'] && in_array($this->debugBacktrace[0]['function'], ['dump', 'dd'])) {
             $this->shiftDebugBacktrace();
         }
     }
@@ -219,7 +219,7 @@ class Dumper
     /**
      * Dumps information about one or more variables and die().
      */
-    public static function dx(...$vars)
+    public static function dd(...$vars)
     {
         Dumper::dump(...$vars);
         die(1);

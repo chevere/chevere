@@ -218,7 +218,7 @@ class Response extends HttpResponse
         return $this;
     }
 
-    protected function getJsonEncodedOutput(array $data, array $encodingOptions): string
+    protected function getJsonEncodedOutput(array $data, int $encodingOptions): string
     {
         try {
             $json = json_encode($data, $encodingOptions);

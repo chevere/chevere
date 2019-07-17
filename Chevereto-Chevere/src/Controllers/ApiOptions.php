@@ -26,23 +26,21 @@ class ApiOptions extends Controller
     protected static $description = 'Retrieve endpoint OPTIONS.';
 
     /** @var string */
-    private $endpoint;
+    private $uri;
 
-    /**
-     * @param string $endpoint an API endpoint (/api)
-     */
     public function __invoke()
     {
         $route = $this->getApp()->route;
         if (isset($route)) {
-            $endpoint = $route->getUri();
+            $uri = $route->getUri();
         }
-        if (!isset($endpoint)) {
+        if (!isset($uri)) {
             $this->handleError();
 
             return;
         }
-        $this->endpoint = $endpoint;
+        $this->uri = $uri;
+        $this->endpoint = ltrim($this->uri, '/');
         $this->process();
     }
 
@@ -50,9 +48,9 @@ class ApiOptions extends Controller
     {
         $this->getResponse()->setStatusCode(400);
         $message =
-                (string)
-                    (new Message('Must provide a %s argument when running this callable without route context.'))
-                        ->code('%s', '$endpoint');
+            (string)
+                (new Message('Must provide a %s argument when running this callable without route context.'))
+                    ->code('%s', '$uri');
         if (CLI) {
             Console::io()->error($message);
 
@@ -66,12 +64,10 @@ class ApiOptions extends Controller
     {
         $statusCode = 200;
         $api = $this->getApi();
-        $apiKey = $api->getEndpointApiKey($this->endpoint);
-        dump($apiKey);
-        $endpointData = $api->getBaseOptions($this->endpoint) ?? $api->getEndpoint($this->endpoint);
-        if ($endpointData) {
-            // $this->getResponse()->setMeta(['api' => $apiKey]);
-            $this->getResponse()->addData('OPTIONS', $this->endpoint, $endpointData['OPTIONS']);
+        dd($api);
+        $endpoint = $api->getEndpoint($this->endpoint);
+        if ($endpoint) {
+            $this->getResponse()->addData('OPTIONS', $this->uri, $endpoint['OPTIONS']);
         } else {
             $statusCode = 404;
             // $json->setResponse("Endpoint doesn't exists", $statusCode);

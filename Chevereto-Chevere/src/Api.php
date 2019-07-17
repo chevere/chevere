@@ -37,13 +37,13 @@ class Api
     /** @var array Maps [endpoint => (array) resource [regex =>, description =>,]] (for wildcard routes) */
     protected $resourcesMap;
 
-    /* @var array Maps [Controller => ControllerInspect] */
+    /** @var array Maps [Controller => ControllerInspect] */
     protected $controllersMap;
 
     /** @var OuterIterator */
     protected $recursiveIterator;
 
-    /* @var array Endpoint API properties */
+    /** @var array Endpoint API properties */
     protected $api;
 
     /** @var string Target API directory (absolute) */
@@ -55,12 +55,19 @@ class Api
     /** @var array Public exposed APIs groupped by basePath [basePath => [api],] */
     protected $apis;
 
-    /** @var string The API basepath, like 'api' */
-    protected $basePath;
-
     /** @var array Contains ['/api/route/algo' => [id, 'route/algo']] */
-    protected $routeKeys;
+    protected $routeUris;
 
+    /** @var string The API basepath, like 'api' */
+    private $basePath;
+
+    /** @var Route */
+    private $route;
+
+    /** @var string */
+    private $uri;
+
+    /** @var Router */
     public function __construct(Router $router)
     {
         $this->router = $router;
@@ -97,14 +104,14 @@ class Api
 
         $this->processRoutesMap();
 
-        $apiRoute = Route::bind('/'.$this->basePath)
+        $this->uri = '/'.$this->basePath;
+        $this->route = Route::bind($this->uri)
             ->setMethod('HEAD', Controllers\ApiHead::class)
             ->setMethod('OPTIONS', Controllers\ApiOptions::class)
             ->setMethod('GET', Controllers\ApiGet::class)
             ->setId($this->basePath);
-        $this->getRouter()->addRoute($apiRoute, $this->basePath);
-        $this->addApis($this->basePath, $this->api);
-        $this->addRouteKeys($this->basePath);
+        $this->getRouter()->addRoute($this->route, $this->basePath);
+        $this->apis[$this->basePath] = $this->api;
     }
 
     protected function handleEmptyRecursiveIterator(): void
@@ -170,29 +177,19 @@ class Api
             $apiEndpoint = new ApiEndpoint($httpMethods);
             /** @var string Full qualified route key for $pathComponent like /api/users/{user} */
             $endpointRouteKey = Utils\Str::ltail($pathComponent, '/');
-            $route = Route::bind($endpointRouteKey)->setId($pathComponent)->setMethods($apiEndpoint->getHttpMethods());
+            $this->route = Route::bind($endpointRouteKey)->setId($pathComponent)->setMethods($apiEndpoint->getHttpMethods());
             // Define Route wildcard "where" if needed
             $resource = $this->resourcesMap[$pathComponent] ?? null;
             if (isset($resource)) {
                 foreach ($resource as $wildcardKey => $resourceMeta) {
-                    $route->setWhere($wildcardKey, $resourceMeta['regex']);
+                    $this->route->setWhere($wildcardKey, $resourceMeta['regex']);
                 }
                 $apiEndpoint->setResource($resource);
             }
-            $this->getRouter()->addRoute($route, $this->basePath);
+            $this->getRouter()->addRoute($this->route, $this->basePath);
             $this->api[$pathComponent] = $apiEndpoint->toArray();
         }
         ksort($this->api);
-    }
-
-    protected function addApis(string $basePath, array $api): void
-    {
-        $this->apis[$basePath] = $api;
-    }
-
-    protected function addRouteKeys(string $basePath): void
-    {
-        $this->routeKeys['/'.$basePath] = [$basePath];
     }
 
     /**
@@ -216,16 +213,16 @@ class Api
         return $this->router;
     }
 
-    public function getEndpoint(string $key): ?array
+    public function getEndpoint(string $endpoint): ?array
     {
-        $routeKey = $this->routeKeys[$key] ?? null;
-        if (isset($routeKey)) {
-            $api = $this->get($routeKey[0]);
-            if (isset($routeKey[1])) {
-                return $api[$routeKey[1]];
-            } else {
-                return $api ?? null;
+        $routeKey = $this->getUriApiKey($endpoint);
+        if ($routeKey) {
+            $api = $this->get($routeKey);
+            if (isset($api[$endpoint])) {
+                return $api[$endpoint];
             }
+
+            return $api;
         }
 
         return null;
@@ -234,14 +231,19 @@ class Api
     /**
      * Gets the API key of the alleged endpoint key.
      */
-    public function getEndpointApiKey(string $key): ?string
+    public function getUriApiKey(string $uri): string
     {
-        $routeKey = $this->routeKeys[$key] ?? null;
-        if (isset($routeKey)) {
-            return $routeKey[0];
+        $endpoint = ltrim($uri, '/');
+        $base = strtok($endpoint, '/');
+
+        if (!isset($this->apis[$base])) {
+            throw new LogicException(
+                (string) (new Message('No API for the %s URI.'))
+                    ->code('%s', $uri)
+            );
         }
 
-        return null;
+        return $base;
     }
 
     /**
@@ -252,10 +254,5 @@ class Api
     public function get(string $key = 'api'): ?array
     {
         return $this->apis[$key] ?? null;
-    }
-
-    public function getRouteKeys(): ?array
-    {
-        return $this->routeKeys ?? null;
     }
 }

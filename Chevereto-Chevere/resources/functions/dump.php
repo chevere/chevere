@@ -15,14 +15,14 @@ use Chevereto\Chevere\Dumper;
 /**
  * Dumps information about one or more variables.
  */
-function d(...$vars)
+function dump(...$vars)
 {
     Dumper::dump(...$vars);
 }
 /**
  * Dumps information about one or more variables and die().
  */
-function dx(...$vars)
+function dd(...$vars)
 {
-    Dumper::dx(...$vars);
+    Dumper::dd(...$vars);
 }
