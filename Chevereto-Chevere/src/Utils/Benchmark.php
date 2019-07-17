@@ -182,7 +182,7 @@ class Benchmark
                 break;
             }
             $timeInit = microtime(true);
-            $this->runCallables($this->times);
+            $this->runCallable($v);
             $timeFinish = microtime(true);
             $timeTaken = floatval($timeFinish - $timeInit);
             $this->index[$k] = $timeTaken;
@@ -193,16 +193,16 @@ class Benchmark
         }
     }
 
-    protected function runCallables(int $times): void
+    protected function runCallable(callable $callable): void
     {
-        for ($i = 0; $i < $times; ++$i) {
+        for ($i = 0; $i < $this->times; ++$i) {
             $this->isPHPAborted = !$this->canPHPKeepGoing();
             $this->isSelfAborted = !$this->canSelfKeepGoing();
             if ($this->isPHPAborted || $this->isSelfAborted) {
                 $this->isAborted = true;
                 break;
             }
-            $v(...($this->arguments ?: []));
+            $callable(...($this->arguments ?: []));
             ++$this->runs;
         }
         ++$i;

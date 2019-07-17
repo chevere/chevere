@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Controllers;
 
-use function Chevereto\Chevere\dd;
 use const Chevereto\Chevere\CLI;
 use Chevereto\Chevere\Console;
 use Chevereto\Chevere\Message;
@@ -68,7 +67,7 @@ class ApiOptions extends Controller
         $statusCode = 200;
         $api = $this->getApi();
         $apiKey = $api->getEndpointApiKey($this->endpoint);
-        dd($apiKey);
+        dump($apiKey);
         $endpointData = $api->getBaseOptions($this->endpoint) ?? $api->getEndpoint($this->endpoint);
         if ($endpointData) {
             // $this->getResponse()->setMeta(['api' => $apiKey]);

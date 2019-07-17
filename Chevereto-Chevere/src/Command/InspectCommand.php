@@ -45,7 +45,8 @@ class InspectCommand extends Command
     /** @var Reflector */
     protected $reflector;
 
-    /** @var string */
+    // TODO: Non-ambiguous types. Use $callableString $callableObject?
+    /** @var object|string */
     protected $callable;
 
     /** @var string */

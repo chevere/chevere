@@ -32,7 +32,7 @@ abstract class StaticVarDumper
     {
         $wrapper = new Wrapper($key, $dump);
         if (CLI) {
-            $wrapper->useCli(true);
+            $wrapper->useCli();
         }
 
         return $wrapper->toString();
