@@ -42,8 +42,8 @@ abstract class Controller implements Interfaces\ControllerInterface
     /** @var string|null Controller description */
     protected static $description = null;
 
-    /** @var array|null Controller resources [propName => className] */
-    protected static $resources;
+    /** @var array Controller resources [propName => className] */
+    protected static $resources = [];
 
     /** @var array|null Parameters passed via headers */
     protected static $parameters;
@@ -124,11 +124,11 @@ abstract class Controller implements Interfaces\ControllerInterface
 
     public function __invoke()
     {
-        throw new LogicException(
-            (string)
-                (new Message('Class %c Must implement its own %s method.'))
-                    ->code()
-        );
+        // throw new LogicException(
+        //     (string)
+        //         (new Message('Class %c Must implement its own %s method.'))
+        //             ->code()
+        // );
     }
 
     final public static function getDescription(): ?string
@@ -136,9 +136,9 @@ abstract class Controller implements Interfaces\ControllerInterface
         return static::$description ?? null;
     }
 
-    final public static function getResources(): ?array
+    final public static function getResources(): array
     {
-        return static::$resources ?? null;
+        return static::$resources;
     }
 
     final public static function getParameters(): ?array

@@ -58,8 +58,8 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     /** @var array|null Controller parameters */
     public $parameters;
 
-    /** @var array|null Controller resources */
-    public $resources;
+    /** @var array Controller resources */
+    public $resources = [];
 
     /** @var string|null Controller related resource (if any) */
     public $relatedResource;
@@ -105,7 +105,7 @@ class ControllerInspect implements Interfaces\ToArrayInterface
             $this->handleControllerResourceInterface();
             $this->handleControllerInterface();
             $this->handleConstResourceNeed();
-            $this->handleConstResourceType();
+            // $this->handleConstResourceType();
             $this->handleConstResourceMissed();
             $this->handleConstResourceValid();
         } catch (LogicException $e) {
@@ -181,7 +181,7 @@ class ControllerInspect implements Interfaces\ToArrayInterface
      */
     protected function handleConstResourceNeed(): void
     {
-        if (isset($this->resources) && !$this->useResource) {
+        if (!empty($this->resources) && !$this->useResource) {
             throw new LogicException('Class %className% defines %propResources% but this Controller class targets a non-resourced endpoint: %endpoint%. Remove the unused %propResources% declaration at %filepath%.');
         }
     }
@@ -189,19 +189,19 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     /**
      * Throws a LogicException if const RESOURCES doesn't match the expected type.
      */
-    protected function handleConstResourceType(): void
-    {
-        if (isset($this->resources) && $this->useResource && !is_array($this->resources)) {
-            throw new LogicException('Class %className% must define %propResources% of type array, '.gettype($this->resources).' found at %filepath%.');
-        }
-    }
+    // protected function handleConstResourceType(): void
+    // {
+    //     if (!empty($this->resources) && $this->useResource && !is_array($this->resources)) {
+    //         throw new LogicException('Class %className% must define %propResources% of type array, '.gettype($this->resources).' found at %filepath%.');
+    //     }
+    // }
 
     /**
      * Throws a LogicException if RESOURCES are needed but missed.
      */
     protected function handleConstResourceMissed(): void
     {
-        if (!isset($this->resources) && $this->isResource) {
+        if (empty($this->resources) && $this->isResource) {
             throw new LogicException('Class %className% must define %propResources% at %filepath%.');
         }
     }
@@ -211,19 +211,15 @@ class ControllerInspect implements Interfaces\ToArrayInterface
      */
     protected function handleConstResourceValid(): void
     {
-        if (isset($this->resources)) {
-            foreach ($this->resources as $propertyName => $className) {
-                if (!class_exists($className)) {
-                    throw new LogicException(
-                        (string)
-                            (new Message('Class %s not found for %c Controller at %f.'))
-                                ->code('%s', $className)
-                    );
-                }
+        foreach ($this->resources as $propertyName => $className) {
+            if (!class_exists($className)) {
+                throw new LogicException(
+                    (string)
+                        (new Message('Class %s not found for %c Controller at %f.'))
+                            ->code('%s', $className)
+                );
             }
         }
-        // '%c', $this->className
-        // '%f', $this->filepath
     }
 
     protected function handleProcessResources(): void
