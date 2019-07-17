@@ -105,13 +105,19 @@ class Api
         $this->processRoutesMap();
 
         $this->uri = '/'.$this->basePath;
+
+        $httpMethods = [
+            'HEAD' => Controllers\ApiHead::class,
+            'OPTIONS' => Controllers\ApiOptions::class,
+            'GET' => Controllers\ApiGet::class,
+        ];
+        $apiEndpoint = new ApiEndpoint($httpMethods);
+
         $this->route = Route::bind($this->uri)
-            ->setMethod('HEAD', Controllers\ApiHead::class)
-            ->setMethod('OPTIONS', Controllers\ApiOptions::class)
-            ->setMethod('GET', Controllers\ApiGet::class)
+            ->setMethods($httpMethods)
             ->setId($this->basePath);
         $this->getRouter()->addRoute($this->route, $this->basePath);
-        $this->apis[$this->basePath] = $this->api;
+        $this->apis[$this->basePath] = $apiEndpoint->toArray();
     }
 
     protected function handleEmptyRecursiveIterator(): void

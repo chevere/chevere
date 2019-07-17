@@ -64,9 +64,8 @@ class ApiOptions extends Controller
     {
         $statusCode = 200;
         $api = $this->getApi();
-        dd($api);
         $endpoint = $api->getEndpoint($this->endpoint);
-        if ($endpoint) {
+        if ($endpoint['OPTIONS']) {
             $this->getResponse()->addData('OPTIONS', $this->uri, $endpoint['OPTIONS']);
         } else {
             $statusCode = 404;
