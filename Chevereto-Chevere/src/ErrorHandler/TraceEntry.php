@@ -82,22 +82,27 @@ class TraceEntry
 
     protected function handleSetEntryArguments()
     {
-        if (isset($this->entry['args']) && is_array($this->entry['args'])) {
+        if (is_array($this->entry['args'])) {
             $this->setFrameArguments();
         }
     }
 
     protected function setFrameArguments()
     {
+        $this->plainArgs = "\n";
+        $this->richArgs = "\n";
         foreach ($this->entry['args'] as $k => $v) {
             $aux = 'Arg#'.($k + 1).' ';
-            $richArgs[] = $aux.VarDumper::out($v, null, [App::class]);
-            $plainArgs[] = $aux.PlainVarDumper::out($v, null, [App::class]);
+            $this->plainArgs .= $aux.PlainVarDumper::out($v, null, [App::class])."\n";
+            $this->richArgs .= $aux.VarDumper::out($v, null, [App::class])."\n";
         }
-        if (isset($plainArgs)) {
-            $this->plainArgs = "\n".implode("\n", $plainArgs);
-            $this->richArgs = "\n".implode("\n", $richArgs);
-        }
+        $this->chopArgStringNl($this->plainArgs);
+        $this->chopArgStringNl($this->richArgs);
+    }
+
+    protected function chopArgStringNl(string &$string): void
+    {
+        substr($string, 0, -2);
     }
 
     protected function handleProcessAnonClass()

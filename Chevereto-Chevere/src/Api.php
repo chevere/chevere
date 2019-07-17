@@ -90,8 +90,9 @@ class Api
         $iterator = new RecursiveDirectoryIterator($this->directory, RecursiveDirectoryIterator::SKIP_DOTS);
         $filter = (new ApiFilterIterator($iterator))
             ->generateAcceptedFilenames(static::ACCEPT_METHODS, static::METHOD_ROOT_PREFIX);
-        $this->recursiveIterator = new RecursiveIteratorIterator($filter);
 
+        $this->recursiveIterator = new RecursiveIteratorIterator($filter);
+        $this->handleEmptyRecursiveIterator();
         $this->processRecursiveIteration();
 
         $this->processRoutesMap();
@@ -104,6 +105,17 @@ class Api
         $this->getRouter()->addRoute($apiRoute, $this->basePath);
         $this->addApis($this->basePath, $this->api);
         $this->addRouteKeys($this->basePath);
+    }
+
+    protected function handleEmptyRecursiveIterator(): void
+    {
+        if (iterator_count($this->recursiveIterator) == 0) {
+            throw new LogicException(
+                (string)
+                    (new Message('No API methods found in the %s path.'))
+                        ->code('%s', $this->directory)
+            );
+        }
     }
 
     protected function handleDuplicates(): void
@@ -155,7 +167,6 @@ class Api
     protected function processRoutesMap(): void
     {
         foreach ($this->routesMap as $pathComponent => $httpMethods) {
-            $endpointApi = [];
             $apiEndpoint = new ApiEndpoint($httpMethods);
             /** @var string Full qualified route key for $pathComponent like /api/users/{user} */
             $endpointRouteKey = Utils\Str::ltail($pathComponent, '/');

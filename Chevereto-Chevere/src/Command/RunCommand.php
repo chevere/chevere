@@ -10,6 +10,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+// TODO: Deprecate callables by file
+
 namespace Chevereto\Chevere\Command;
 
 use Chevereto\Chevere\App;

@@ -11,6 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+// TODO: Static inspection!
+// TODO: Deprecate callables by file
+
 namespace Chevereto\Chevere\Command;
 
 use const Chevereto\Chevere\App\PATH;
@@ -144,10 +147,10 @@ class InspectCommand extends Command
             if ($parameter->isDefaultValueAvailable()) {
                 $aux .= ' = '.($parameter->getDefaultValue() ?? 'null');
             }
-            $res = $resource[$parameter->getName()] ?? null;
-            if (isset($res)) {
-                $aux .= ' '.VarDumper::wrap(VarDumper::_OPERATOR, '--description '.$res['description'].' --regex '.$res['regex']);
-            }
+            // $res = $resource[$parameter->getName()] ?? null;
+            // if (isset($res)) {
+            //     $aux .= ' '.VarDumper::wrap(VarDumper::_OPERATOR, '--description '.$res['description'].' --regex '.$res['regex']);
+            // }
             $this->arguments[] = "#$i $aux";
             ++$i;
         }

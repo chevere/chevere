@@ -21,7 +21,7 @@ abstract class AppStatic
     /** @var Runtime */
     protected static $defaultRuntime;
 
-    protected function setStaticInstance(App $app)
+    protected static function setStaticInstance(App $app)
     {
         static::$instance = $app;
     }

@@ -27,12 +27,13 @@ class ApiGet extends Controller
         'description' => 'Retrieve endpoint.',
     ];
 
-    private $endpoint;
+    /** @var string */
+    protected $endpoint;
 
     /**
      * @param string $endpoint an API endpoint (/api)
      */
-    public function __invoke()
+    public function __invoke(?string $endpoint = null)
     {
         if (isset($endpoint)) {
             $route = $this->getApp()->router->resolve($endpoint);

@@ -208,7 +208,7 @@ class Dumper
     {
         $stripped = strip_tags($this->output);
         $this->consoleOutput->writeln($stripped, ConsoleOutput::OUTPUT_RAW);
-        isset($that->outputHr) ? $this->consoleOutput->writeln($that->outputHr) : null;
+        isset($this->outputHr) ? $this->consoleOutput->writeln($this->outputHr) : null;
     }
 
     protected function processPrintOutput(): void

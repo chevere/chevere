@@ -30,7 +30,7 @@ class Wrapper
     public $consoleColor;
 
     /** @var bool */
-    protected $isCLI = false;
+    protected $isCli = false;
 
     /**
      * @param string $key color palette key
@@ -41,10 +41,10 @@ class Wrapper
         $this->dump = $dump;
     }
 
-    public function useCLI(bool $boolean)
+    public function useCli()
     {
         $this->consoleColor = new ConsoleColor();
-        $this->isCLI = true;
+        $this->isCli = true;
     }
 
     /**
@@ -54,7 +54,7 @@ class Wrapper
      */
     public function toString(): string
     {
-        return $this->wrap($this->dump) ?? '';
+        return $this->wrap() ?? '';
     }
 
     /**
@@ -64,33 +64,33 @@ class Wrapper
      */
     public function getColor(): string
     {
-        if ($this->isCLI) {
+        if ($this->isCli) {
             return Pallete::CONSOLE[$this->key] ?? '';
         }
     }
 
-    public function getCLIColor(): ?string
+    protected function getCliColor(string $key): ?string
     {
-        return Pallete::CONSOLE[$this->key] ?? null;
+        return Pallete::CONSOLE[$key] ?? null;
     }
 
-    public function getHTMLColor(): ?string
+    protected function getHtmlColor(string $key): ?string
     {
-        return Pallete::PALETTE[$this->key] ?? null;
+        return Pallete::PALETTE[$key] ?? null;
     }
 
-    public function wrapCLI(): string
+    protected function wrapCli(): string
     {
-        if ($color = $this->getCLIColor($this->key)) {
+        if ($color = $this->getCliColor($this->key)) {
             return $this->consoleColor->apply($color, $this->dump);
         }
 
         return $this->dump;
     }
 
-    public function wrapHTML()
+    protected function wrapHtml()
     {
-        if ($color = $this->getHTMLColor($this->key)) {
+        if ($color = $this->getHtmlColor($this->key)) {
             return '<span style="color:'.$color.'">'.$this->dump.'</span>';
         }
 
@@ -104,6 +104,6 @@ class Wrapper
      */
     public function wrap(): string
     {
-        return $this->isCLI ? $this->wrapCLI() : $this->wrapHTML();
+        return $this->isCli ? $this->wrapCli() : $this->wrapHtml();
     }
 }
