@@ -39,13 +39,13 @@ abstract class Controller implements Interfaces\ControllerInterface
     /** @var App */
     private $app;
 
-    /** @var string|null Controller description */
-    protected static $description = null;
+    /** @var string Controller description */
+    protected static $description;
 
     /** @var array Controller resources [propName => className] */
-    protected static $resources = [];
+    protected static $resources;
 
-    /** @var array|null Parameters passed via headers */
+    /** @var array Parameters passed via headers */
     protected static $parameters;
 
     public function getRoute(): ?Route
@@ -133,16 +133,16 @@ abstract class Controller implements Interfaces\ControllerInterface
 
     final public static function getDescription(): ?string
     {
-        return static::$description ?? null;
+        return static::$description;
     }
 
-    final public static function getResources(): array
+    final public static function getResources(): ?array
     {
         return static::$resources;
     }
 
     final public static function getParameters(): ?array
     {
-        return static::$parameters ?? null;
+        return static::$parameters;
     }
 }

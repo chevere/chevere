@@ -52,31 +52,31 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     /** @var ReflectionClass The reflected controller class */
     public $reflection;
 
-    /** @var string|null Controller description */
+    /** @var string Controller description */
     public $description;
 
-    /** @var array|null Controller parameters */
+    /** @var array Controller parameters */
     public $parameters;
 
     /** @var array Controller resources */
-    public $resources = [];
+    public $resources;
 
-    /** @var string|null Controller related resource (if any) */
+    /** @var string Controller related resource (if any) */
     public $relatedResource;
 
-    /** @var string|null Controller relationship class (if any) */
+    /** @var string Controller relationship class (if any) */
     public $relationship;
 
     /** @var bool True if the controller class must implement RESOURCES. Prefixed Classes (_ClassName) won't be resourced. */
     public $useResource;
 
-    /** @var array|null Instructions for creating resources from string [propname => [regex, description],] */
+    /** @var array Instructions for creating resources from string [propname => [regex, description],] */
     public $resourcesFromString;
 
     /** @var string The path component associated with the inspected Controller, used by Api */
     public $pathComponent;
 
-    /** @var string|null Same as $pathComponent but for the related relationship URL (if any) */
+    /** @var string Same as $pathComponent but for the related relationship URL (if any) */
     public $relationshipPathComponent;
 
     /** @var bool True if the inspected Controller implements Interfaces\ControllerResourceIterface */
@@ -130,7 +130,7 @@ class ControllerInspect implements Interfaces\ToArrayInterface
             $this->resources = $className::getResources();
         } elseif ($this->isRelatedResource) {
             $this->relatedResource = $className::getRelatedResource();
-            if (!isset($this->relatedResource)) {
+            if (empty($this->relatedResource)) {
                 throw new LogicException(
                     (string)
                         (new Message('Class %s implements %i interface, but it doesnt define any related resource.'))
@@ -181,27 +181,17 @@ class ControllerInspect implements Interfaces\ToArrayInterface
      */
     protected function handleConstResourceNeed(): void
     {
-        if (!empty($this->resources) && !$this->useResource) {
+        if ($this->resources && !$this->useResource) {
             throw new LogicException('Class %className% defines %propResources% but this Controller class targets a non-resourced endpoint: %endpoint%. Remove the unused %propResources% declaration at %filepath%.');
         }
     }
-
-    /**
-     * Throws a LogicException if const RESOURCES doesn't match the expected type.
-     */
-    // protected function handleConstResourceType(): void
-    // {
-    //     if (!empty($this->resources) && $this->useResource && !is_array($this->resources)) {
-    //         throw new LogicException('Class %className% must define %propResources% of type array, '.gettype($this->resources).' found at %filepath%.');
-    //     }
-    // }
 
     /**
      * Throws a LogicException if RESOURCES are needed but missed.
      */
     protected function handleConstResourceMissed(): void
     {
-        if (empty($this->resources) && $this->isResource) {
+        if (null == $this->resources && $this->isResource) {
             throw new LogicException('Class %className% must define %propResources% at %filepath%.');
         }
     }
@@ -211,20 +201,22 @@ class ControllerInspect implements Interfaces\ToArrayInterface
      */
     protected function handleConstResourceValid(): void
     {
-        foreach ($this->resources as $propertyName => $className) {
-            if (!class_exists($className)) {
-                throw new LogicException(
-                    (string)
-                        (new Message('Class %s not found for %c Controller at %f.'))
-                            ->code('%s', $className)
-                );
+        if (is_iterable($this->resources)) {
+            foreach ($this->resources as $propertyName => $className) {
+                if (!class_exists($className)) {
+                    throw new LogicException(
+                        (string)
+                            (new Message('Class %s not found for %c Controller at %f.'))
+                                ->code('%s', $className)
+                    );
+                }
             }
         }
     }
 
     protected function handleProcessResources(): void
     {
-        if ($this->resources) {
+        if (is_iterable($this->resources)) {
             $resourcesFromString = [];
             foreach ($this->resources as $propName => $resourceClassName) {
                 // Better reflection is needed due to this: https://bugs.php.net/bug.php?id=69804
