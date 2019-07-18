@@ -16,6 +16,9 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Command;
 
+use Reflector;
+use ReflectionMethod;
+use ReflectionFunction;
 use const Chevereto\Chevere\App\PATH;
 use Chevereto\Chevere\App;
 use Chevereto\Chevere\VarDumper\VarDumper;
@@ -25,8 +28,6 @@ use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Command;
 use Chevereto\Chevere\File;
 use Chevereto\Chevere\Utils\Str;
-use ReflectionMethod;
-use ReflectionFunction;
 
 /**
  * The InspectCommand allows to get callable information using CLI.
@@ -41,7 +42,7 @@ class InspectCommand extends Command
     /** @var array */
     protected $arguments = [];
 
-    /** @var ReflectionFunctionAbstract */
+    /** @var Reflector */
     protected $reflector;
 
     // TODO: Non-ambiguous types. Use $callableString $callableObject?

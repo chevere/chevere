@@ -37,25 +37,25 @@ class Routing
     {
         $this->route = $route;
         $this->routeSet = $this->route->getSet();
-        $this->handleRouteSetHandleRegex($this->routeSet);
-        $this->handleType($this->routeSet);
-        $this->handleCount($this->routeSetHandle);
+        $this->handleRouteSetHandleRegex();
+        $this->handleType();
+        $this->handleCount();
     }
 
-    protected function handleRouteSetHandleRegex(?string $routeSet)
+    protected function handleRouteSetHandleRegex()
     {
-        if ($routeSet) {
-            $this->routeSetHandle = $routeSet;
-            $this->regex = $this->route->regex($routeSet);
+        if ($this->routeSet) {
+            $this->routeSetHandle = $this->routeSet;
+            $this->regex = $this->route->regex($this->routeSet);
         } else {
-            $this->routeSetHandle = $routeSet ?? $this->route->getUri();
+            $this->routeSetHandle = $this->routeSet ?? $this->route->getUri();
             $this->regex = $this->route->regex();
         }
     }
 
-    protected function handleType(?string $routeSet)
+    protected function handleType()
     {
-        if (isset($routeSet)) {
+        if (isset($this->routeSet)) {
             $this->type = Route::TYPE_STATIC;
         } else {
             if (null != $this->routeSetHandle) {
@@ -68,10 +68,10 @@ class Routing
         }
     }
 
-    protected function handleCount(?string $routeSetHandle)
+    protected function handleCount()
     {
-        if (null != $routeSetHandle) {
-            $routeSetHandleTrim = ltrim($routeSetHandle, '/');
+        if (null != $this->routeSetHandle) {
+            $routeSetHandleTrim = ltrim($this->routeSetHandle, '/');
             $explode = explode('/', $routeSetHandleTrim);
             $this->count = '/' == $this->route->getUri() ? 0 : count($explode);
         } else {

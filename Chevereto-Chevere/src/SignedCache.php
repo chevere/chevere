@@ -255,7 +255,8 @@ class SignedCache
         if (!File::exists($this->dir, true)) {
             mkdir($this->dir);
         } else {
-            File::removeAll($this->dir);
+            // TODO: Symfony fs handle
+            // File::removeAll($this->dir);
         }
     }
 }

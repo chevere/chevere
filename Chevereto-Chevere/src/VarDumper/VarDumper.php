@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\VarDumper;
 
+use Throwable;
 use Reflector;
 use ReflectionProperty;
 use ReflectionObject;
@@ -160,7 +161,8 @@ class VarDumper extends StaticVarDumper
     protected function setProperties(): void
     {
         $this->properties = [];
-        foreach (static::PROPERTIES_REFLECTION_MAP as $k => &$v) {
+        foreach (static::PROPERTIES_REFLECTION_MAP as $k => $v) {
+            /** @scrutinizer ignore-call */
             $v = $this->reflectionObject->getProperties($v);
             foreach ($v as $kk => $vv) {
                 if (!isset($this->properties[$vv->getName()])) {
