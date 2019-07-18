@@ -21,6 +21,9 @@ class ApiEndpoint
     /** @var array */
     public $array;
 
+    /** @var array */
+    public $httpMethods;
+
     public function __construct(array $httpMethods)
     {
         $this->array = [];

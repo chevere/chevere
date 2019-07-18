@@ -115,18 +115,24 @@ class App extends AppStatic implements AppInterface
         return File::exists(static::BUILD_FILEPATH) ? (string) file_get_contents(static::BUILD_FILEPATH) : null;
     }
 
+    public function setCallable(string $callable): self
+    {
+        $this->callable = $callable;
+
+        return $this;
+    }
+
     /**
      * Run the callable and dispatch the handler.
      *
      * @param string $callable controller, needed when doing console command or testing
      */
-    public function run(string $callable = null)
+    public function run()
     {
-        if (!isset($callable)) {
-            // TODO: Detect valid request (method, etc) - Fails for `php app/console request /`
-            $this->routerResolve($this->httpRequest->getPathInfo());
-        } else {
-            $this->callable = $callable;
+        // TODO: Detect valid request (method, etc) - Fails for `php app/console request /`
+        if (!isset($this->callable)) {
+            dd('nooooeeee');
+            $this->routerResolveCallable($this->httpRequest->getPathInfo());
         }
         if (isset($this->callable)) {
             $this->processCallable($this->callable);
@@ -290,28 +296,27 @@ class App extends AppStatic implements AppInterface
         }
     }
 
-    protected function routerResolve(string $pathInfo): void
+    protected function routerResolveCallable(string $pathInfo): void
     {
-        try {
-            $route = $this->router->resolve($pathInfo);
-            if (isset($route)) {
-                $this->route = $route;
-                $this->callable = $route->getCallable(
+        // try {
+        $this->route = $this->router->resolve($pathInfo);
+        if (isset($this->route)) {
+            $this->callable = $this->route->getCallable(
                     $this->httpRequest->getMethod()
                 );
-                $routerArgs = $this->router->arguments;
-                if (isset($routerArgs)) {
-                    $this->setArguments($routerArgs);
-                }
-            } else {
-                echo 'NO ROUTE FOUND';
-
-                return;
+            $routerArgs = $this->router->arguments;
+            if (isset($routerArgs)) {
+                $this->setArguments($routerArgs);
             }
-        } catch (Throwable $e) {
-            echo 'Exception at App: '.$e->getCode();
+        } else {
+            echo 'NO ROUTE FOUND';
 
             return;
         }
+        // } catch (Throwable $e) {
+        //     echo 'Exception at App: '.$e->getCode();
+
+        //     return;
+        // }
     }
 }

@@ -181,7 +181,7 @@ class ControllerInspect implements Interfaces\ToArrayInterface
      */
     protected function handleConstResourceNeed(): void
     {
-        if ($this->resources && !$this->useResource) {
+        if (!empty($this->resources) && !$this->useResource) {
             throw new LogicException('Class %className% defines %propResources% but this Controller class targets a non-resourced endpoint: %endpoint%. Remove the unused %propResources% declaration at %filepath%.');
         }
     }
