@@ -133,8 +133,10 @@ class ErrorHandler implements ErrorHandlerInterface
         $this->setTimeProperties('now');
         $this->id = uniqid('', true);
         // $this->arguments = $args;
-        $this->handleRequestInstance();
-
+        $request = App::requestInstance();
+        if (isset($request)) {
+            $this->httpRequest = $request;
+        }
         $this->runtimeInstance = App::runtimeInstance();
         $this->isDebugEnabled = (bool) $this->runtimeInstance->getDataKey('debug');
         $this->setloadedConfigFiles($this->runtimeInstance->getRuntimeConfig()->getLoadedFilepaths());
@@ -162,14 +164,6 @@ class ErrorHandler implements ErrorHandlerInterface
         $this->dateTime = new DateTime($time, new DateTimeZone('UTC'));
         $this->datetimeUtc = $this->dateTime->format(DateTime::ATOM);
         $this->timestamp = strtotime($this->datetimeUtc);
-    }
-
-    protected function handleRequestInstance(): void
-    {
-        try {
-            $this->httpRequest = App::requestInstance();
-        } catch (\Throwable $e) {
-        }
     }
 
     protected function setloadedConfigFiles(array $loadedConfigFiles)

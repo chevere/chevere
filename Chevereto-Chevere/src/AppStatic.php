@@ -41,14 +41,14 @@ abstract class AppStatic
     /**
      * Provides access to the App HttpRequest instance.
      */
-    public static function requestInstance(): HttpRequest
+    public static function requestInstance(): ?HttpRequest
     {
         // Request isn't there when doing cli (unless you run the request command)
         if (isset(static::$instance) && isset(static::$instance->httpRequest)) {
             return static::$instance->httpRequest;
         }
 
-        throw new RuntimeException('NO REQUEST INSTANCE EVERYTHING SMELLS!');
+        return null;
     }
 
     /**
