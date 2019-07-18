@@ -119,7 +119,7 @@ abstract class Controller implements Interfaces\ControllerInterface
             // TODO: Need new CallableFile (just like ArrayFile)
             return Load::php($this->filename);
         }
-        throw new LogicException('NO CALLABLE');
+        // throw new LogicException('NO CALLABLE');
     }
 
     protected function handleFilemane()
