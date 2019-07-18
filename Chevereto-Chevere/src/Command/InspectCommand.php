@@ -25,7 +25,6 @@ use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Command;
 use Chevereto\Chevere\File;
 use Chevereto\Chevere\Utils\Str;
-use Reflector;
 use ReflectionMethod;
 use ReflectionFunction;
 
@@ -42,7 +41,7 @@ class InspectCommand extends Command
     /** @var array */
     protected $arguments = [];
 
-    /** @var Reflector */
+    /** @var ReflectionFunctionAbstract */
     protected $reflector;
 
     // TODO: Non-ambiguous types. Use $callableString $callableObject?

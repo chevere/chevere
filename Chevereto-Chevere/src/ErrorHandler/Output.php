@@ -76,19 +76,19 @@ class Output
         $this->headers = array_merge($this->headers, Json::CONTENT_TYPE);
         $response = [Template::NO_DEBUG_TITLE_PLAIN, 500];
         $log = [
-            'id' => $this->formatter->getTemplateTag('id'),
-            'level' => $this->loggerLevel,
-            'filename' => $this->formatter->getTemplateTag('logFilename'),
+            'id' => $this->getTemplateTag('id'),
+            'level' => $this->formatter->loggerLevel,
+            'filename' => $this->getTemplateTag('logFilename'),
         ];
         switch ($this->errorHandler->isDebugEnabled) {
             case 0:
                 unset($log['filename']);
             break;
             case 1:
-                $response[0] = $this->formatter->thrown.' in '.$this->formatter->getTemplateTag('file').':'.$this->formatter->getTemplateTag('line');
+                $response[0] = $this->formatter->thrown.' in '.$this->getTemplateTag('file').':'.$this->getTemplateTag('line');
                 $error = [];
                 foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
-                    $error[$v] = $this->formatter->getTemplateTag($v);
+                    $error[$v] = $this->getTemplateTag($v);
                 }
                 $json->setDataKey('error', $error);
             break;

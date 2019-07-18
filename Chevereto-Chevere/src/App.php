@@ -304,18 +304,12 @@ class App extends AppStatic implements AppInterface
     {
         // try {
         $this->route = $this->router->resolve($pathInfo);
-        if (isset($this->route)) {
-            $this->callable = $this->route->getCallable(
-                    $this->httpRequest->getMethod()
-                );
-            $routerArgs = $this->router->arguments;
-            if (isset($routerArgs)) {
-                $this->setArguments($routerArgs);
-            }
-        } else {
-            echo 'NO ROUTE FOUND';
-
-            return;
+        $this->callable = $this->route->getCallable(
+            $this->httpRequest->getMethod()
+        );
+        $routerArgs = $this->router->arguments;
+        if (isset($routerArgs)) {
+            $this->setArguments($routerArgs);
         }
         // } catch (Throwable $e) {
         //     echo 'Exception at App: '.$e->getCode();

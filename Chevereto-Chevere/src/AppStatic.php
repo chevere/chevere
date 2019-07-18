@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
+use RuntimeException;
+
 abstract class AppStatic
 {
     /** @var App */
@@ -39,23 +41,24 @@ abstract class AppStatic
     /**
      * Provides access to the App HttpRequest instance.
      */
-    public static function requestInstance(): ?HttpRequest
+    public static function requestInstance(): HttpRequest
     {
         // Request isn't there when doing cli (unless you run the request command)
-        return isset(static::$instance) && isset(static::$instance->httpRequest)
-            ? static::$instance->httpRequest
-            : null;
+        if (isset(static::$instance) && isset(static::$instance->httpRequest)) {
+            return static::$instance->httpRequest;
+        }
+
+        throw new RuntimeException('NO REQUEST INSTANCE EVERYTHING SMELLS!');
     }
 
     /**
      * Provides access to the App Runtime instance.
      */
-    public static function runtimeInstance(): ?Runtime
+    public static function runtimeInstance(): Runtime
     {
         if (isset(static::$instance) && $runtimeInstance = static::$instance->runtime) {
             return $runtimeInstance;
         }
-
-        return null;
+        throw new RuntimeException('NO RUNTIME INSTANCE EVERYTHING BURNS!');
     }
 }

@@ -115,7 +115,7 @@ class Router
      *
      * @param string $pathInfo request path
      */
-    public function resolve(string $pathInfo): ?Route
+    public function resolve(string $pathInfo): Route
     {
         $requestTrim = ltrim($pathInfo, '/');
         $components = $this->getComponents($requestTrim);
@@ -140,8 +140,7 @@ class Router
                 }
             }
         }
-
-        return null;
+        throw new LogicException('NO ROUTING!!!!!');
     }
 
     protected function getComponents(string $requestTrim): array
