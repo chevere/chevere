@@ -221,12 +221,12 @@ class Route implements Interfaces\RouteInterface
 
     public function getName(): ?string
     {
-        return $this->name ?? null;
+        return $this->name;
     }
 
     public function getMethods(): ?array
     {
-        return $this->methods ?? null;
+        return $this->methods;
     }
 
     public function addMiddleware(string $callable): self
@@ -238,22 +238,22 @@ class Route implements Interfaces\RouteInterface
 
     public function getMiddlewares(): ?array
     {
-        return $this->middlewares ?? null;
+        return $this->middlewares;
     }
 
     public function getWildcards(): ?array
     {
-        return $this->wildcards ?? null;
+        return $this->wildcards;
     }
 
     public function getSet(): ?string
     {
-        return $this->set ?? null;
+        return $this->set;
     }
 
     public function getPowerSet(): ?array
     {
-        return $this->powerSet ?? null;
+        return $this->powerSet;
     }
 
     public function getMaker(): array
@@ -268,6 +268,7 @@ class Route implements Interfaces\RouteInterface
      */
     public function getCallable(string $httpMethod): string
     {
+        // TODO: NO HEAD CALLABLE (auto for GET)
         $callable = $this->methods[$httpMethod] ?? null;
         if (!isset($callable)) {
             throw new LogicException(
@@ -291,6 +292,9 @@ class Route implements Interfaces\RouteInterface
                     $this->wheres[$v] = static::REGEX_WILDCARD_WHERE;
                 }
             }
+        }
+        if (isset($this->methods['GET']) && !isset($this->methods['HEAD'])) {
+            $this->setMethod('HEAD', Controllers\Head::class);
         }
 
         return $this;

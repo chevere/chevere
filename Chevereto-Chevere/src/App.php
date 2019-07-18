@@ -170,7 +170,7 @@ class App extends AppStatic implements AppInterface
         } else {
             $this->controllerArguments = [];
         }
-        dd($this->arguments, $this->controllerArguments);
+        // dd($this->arguments, $this->controllerArguments);
         $controller(...$this->controllerArguments);
 
         return $controller;

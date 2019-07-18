@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Controllers;
 
+use const Chevereto\Chevere\CLI;
+use Chevereto\Chevere\Console;
 use Chevereto\Chevere\Controller;
 
 class Head extends Controller
@@ -26,11 +28,10 @@ class Head extends Controller
     public function __invoke()
     {
         $route = $this->getApp()->route;
-        $routeUri = $route->getUri();
-        dd($routeUri);
-        $invoke = $this->invoke(__NAMESPACE__.'\ApiGet', ...func_get_args());
-        $invoke->setContent(null);
-
-        return $invoke;
+        $this->invoke($route->getMethod('GET'));
+        $this->getResponse()->unsetContent();
+        if (CLI) {
+            Console::io()->block($this->getResponse()->getStatusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
+        }
     }
 }

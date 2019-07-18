@@ -89,8 +89,9 @@ class Response extends HttpResponse
         return $this->data ?? null;
     }
 
-    public function unsetData(): self
+    public function unsetContent(): self
     {
+        $this->setContent(null);
         $this->data = null;
 
         return $this;

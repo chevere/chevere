@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\ErrorHandler;
 
+use DateTime;
+use ErrorException;
+use DateTimeZone;
 use const Chevereto\Chevere\ROOT_PATH;
 use const Chevereto\Chevere\App\PATH;
 use Chevereto\Chevere\App;
@@ -21,9 +24,6 @@ use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Runtime;
 // use Chevereto\Chevere\Utils\DateTime;
 use Chevereto\Chevere\Interfaces\ErrorHandlerInterface;
-use DateTime;
-use ErrorException;
-use DateTimeZone;
 use Psr\Log\LogLevel;
 use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
@@ -133,7 +133,8 @@ class ErrorHandler implements ErrorHandlerInterface
         $this->setTimeProperties('now');
         $this->id = uniqid('', true);
         // $this->arguments = $args;
-        $this->handleHttpRequest(App::requestInstance());
+        $this->handleRequestInstance();
+
         $this->runtimeInstance = App::runtimeInstance();
         $this->isDebugEnabled = (bool) $this->runtimeInstance->getDataKey('debug');
         $this->setloadedConfigFiles($this->runtimeInstance->getRuntimeConfig()->getLoadedFilepaths());
@@ -163,10 +164,11 @@ class ErrorHandler implements ErrorHandlerInterface
         $this->timestamp = strtotime($this->datetimeUtc);
     }
 
-    protected function handleHttpRequest(?HttpRequest $httpRequest): void
+    protected function handleRequestInstance(): void
     {
-        if ($httpRequest) {
-            $this->httpRequest = $httpRequest;
+        try {
+            $this->httpRequest = App::requestInstance();
+        } catch (\Throwable $e) {
         }
     }
 

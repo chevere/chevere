@@ -128,7 +128,7 @@ class Router
             foreach ($routesTable as $regex => $prop) {
                 if (preg_match("#$regex#", $pathInfo, $matches)) {
                     array_shift($matches);
-                    $this->arguments = $matches;
+                    // $this->arguments = $matches;
                     $pointer = $prop[static::ID];
                     $routeSome = $this->routes[$pointer[1]][$pointer[0]] ?? null;
                     $routerResolver = new RouterResolver($routeSome, $pointer);

@@ -65,7 +65,7 @@ class ApiHead extends Controller
     {
         $callable = $this->route->getCallable('GET');
         $controller = $this->getApp()->getControllerObject($callable);
-        $controller->getResponse()->unsetData();
+        $controller->getResponse()->unsetContent();
         if (CLI) {
             Console::io()->block($controller->getResponse()->getStatusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
         }
