@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevereto\Chevere;
 
 use Exception;
+use LogicException;
 
 // Define a hookable code entry:
 // $this->hook('myHook', function ($that) use ($var) {
@@ -116,10 +117,7 @@ abstract class Controller implements Interfaces\ControllerInterface
             $this->filename = Path::fromHandle(...$controllerArgs);
             $this->handleFilemane();
             // TODO: Need new CallableFile (just like ArrayFile)
-            $callableReturn = Load::php($this->filename);
-            if (is_callable($callableReturn)) {
-                return $callableReturn;
-            }
+            return Load::php($this->filename);
         }
         throw new LogicException('NO CALLABLE');
     }
