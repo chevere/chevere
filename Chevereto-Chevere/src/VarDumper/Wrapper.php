@@ -57,18 +57,6 @@ class Wrapper
         return $this->wrap() ?? '';
     }
 
-    /**
-     * Get color for palette key.
-     *
-     * @return string color
-     */
-    public function getColor(): string
-    {
-        if ($this->isCli) {
-            return Pallete::CONSOLE[$this->key] ?? '';
-        }
-    }
-
     protected function getCliColor(string $key): ?string
     {
         return Pallete::CONSOLE[$key] ?? null;

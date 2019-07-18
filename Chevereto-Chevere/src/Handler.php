@@ -44,7 +44,8 @@ class Handler implements HandlerInterface
     public function setQueue(array $queue): self
     {
         foreach ($queue as $k => &$v) {
-            $v = $this->getCallable($v);
+            // TODO: A ver que pasó aquí?
+            // $v = $this->getCallable($v);
         }
         $this->queue = $queue;
 

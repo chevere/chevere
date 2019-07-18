@@ -124,11 +124,11 @@ class Formatter
 
     public $table;
 
-    /** @var Throwable */
+    /** @var ExceptionHandler */
     protected $exceptionHandler;
 
     /** @var string */
-    protected $uri;
+    public $uri;
 
     public function __construct(ErrorHandler $errorHandler, ExceptionHandler $exceptionHandler)
     {

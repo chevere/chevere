@@ -42,4 +42,6 @@ abstract class StaticVarDumper
     {
         return (/* @scrutinizer ignore-call */ new static(...func_get_args()))->toString();
     }
+
+    abstract public function toString(): string;
 }

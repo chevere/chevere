@@ -24,11 +24,14 @@ class Routing
     /** @var string */
     public $regex;
 
-    /** @var ?string */
+    /** @var string */
     public $routeSet;
 
     /** @var string */
     public $routeSetHandle;
+
+    /** @var Route */
+    public $route;
 
     public function __construct(Route $route)
     {

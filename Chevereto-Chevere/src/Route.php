@@ -145,7 +145,7 @@ class Route implements Interfaces\RouteInterface
     public function setWheres(array $wildcardsPatterns): self
     {
         foreach ($wildcardsPatterns as $wildcardName => $regexPattern) {
-            $this->where($wildcardName, $regexPattern);
+            $this->setWhere($wildcardName, $regexPattern);
         }
 
         return $this;

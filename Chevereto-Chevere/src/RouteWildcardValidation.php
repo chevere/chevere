@@ -27,6 +27,9 @@ class RouteWildcardValidation
     /** @var string */
     protected $routeKey;
 
+    /** @var string */
+    public $uri;
+
     public function __construct(string $wildcardName, string $regex, Route $route)
     {
         $this->wildcardName = $wildcardName;
