@@ -110,9 +110,9 @@ class Cli
         return $this;
     }
 
-    public function getInput(): ?ArgvInput
+    public function getInput(): ArgvInput
     {
-        return $this->input ?? null;
+        return $this->input;
     }
 
     public function setOutput(ConsoleOutput $output): self
@@ -122,9 +122,9 @@ class Cli
         return $this;
     }
 
-    public function getOutput(): ?ConsoleOutput
+    public function getOutput(): ConsoleOutput
     {
-        return $this->output ?? null;
+        return $this->output;
     }
 
     public function setLogger(Logger $logger): self
@@ -134,9 +134,9 @@ class Cli
         return $this;
     }
 
-    public function getLogger(): ?Logger
+    public function getLogger(): Logger
     {
-        return $this->logger ?? null;
+        return $this->logger;
     }
 
     public function setClient(Application $client): self
@@ -146,9 +146,9 @@ class Cli
         return $this;
     }
 
-    public function getClient(): ?Application
+    public function getClient(): Application
     {
-        return $this->client ?? null;
+        return $this->client;
     }
 
     public function setIo(SymfonyStyle $io): self
@@ -158,9 +158,9 @@ class Cli
         return $this;
     }
 
-    public function getIo(): ?SymfonyStyle
+    public function getIo(): SymfonyStyle
     {
-        return $this->io ?? null;
+        return $this->io;
     }
 
     public function setCommand(Command $command): self

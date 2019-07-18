@@ -96,6 +96,9 @@ class ErrorHandler implements ErrorHandlerInterface
     /** @var string */
     protected $logDateFolderFormat;
 
+    /** @var string */
+    public $loggerLevel;
+
     protected $logger;
 
     /** @var HttpRequest The detected/forged HTTP request */

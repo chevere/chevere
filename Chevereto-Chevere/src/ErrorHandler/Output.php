@@ -85,7 +85,7 @@ class Output
                 unset($log['filename']);
             break;
             case 1:
-                $response[0] = $this->thrown.' in '.$this->formatter->getTemplateTag('file').':'.$this->formatter->getTemplateTag('line');
+                $response[0] = $this->formatter->thrown.' in '.$this->formatter->getTemplateTag('file').':'.$this->formatter->getTemplateTag('line');
                 $error = [];
                 foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
                     $error[$v] = $this->formatter->getTemplateTag($v);
