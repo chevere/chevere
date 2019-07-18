@@ -30,7 +30,7 @@ class RouteWildcardValidation
     /** @var string */
     public $uri;
 
-    /** @var string */
+    /** @var array */
     public $routeWheres;
 
     public function __construct(string $wildcardName, string $regex, Route $route)
