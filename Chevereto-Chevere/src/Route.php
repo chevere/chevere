@@ -183,9 +183,9 @@ class Route implements Interfaces\RouteInterface
         return $this;
     }
 
-    public function getMethod(string $httpMethod): ?string
+    public function getMethodCallable(string $httpMethod): ?string
     {
-        return $this->methods[$httpMethod] ?? null;
+        return $this->methods[$httpMethod];
     }
 
     /**

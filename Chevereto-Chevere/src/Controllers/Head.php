@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -28,10 +29,13 @@ class Head extends Controller
     public function __invoke()
     {
         $route = $this->getApp()->route;
-        $this->invoke($route->getMethod('GET'));
-        $this->getResponse()->unsetContent();
-        if (CLI) {
-            Console::io()->block($this->getResponse()->getStatusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
+        $methodCallabe = $route->getMethodCallable('GET');
+        if ($methodCallabe) {
+            $this->invoke($methodCallabe);
+            $this->getResponse()->unsetContent();
+            if (CLI) {
+                Console::io()->block($this->getResponse()->getStatusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
+            }
         }
     }
 }
