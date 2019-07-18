@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
+use RuntimeException;
+
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).
  */

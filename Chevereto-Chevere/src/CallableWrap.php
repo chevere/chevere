@@ -229,7 +229,7 @@ class CallableWrap
             $this->processArguments();
         }
 
-        return $this->arguments ?? null;
+        return $this->arguments ?? [];
     }
 
     protected function processReflection(): self
@@ -275,6 +275,7 @@ class CallableWrap
             );
             ++$parameterIndex;
         }
+        // dd($this->reflection->getParameters());
         $this->arguments = $this->typedArguments;
 
         return $this;

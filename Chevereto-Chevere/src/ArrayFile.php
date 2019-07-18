@@ -54,7 +54,11 @@ class ArrayFile
 
     /** @var string */
     protected $type;
+
+    /** @var string */
     protected $className;
+
+    /** @var string */
     protected $interfaceName;
 
     /**
@@ -130,7 +134,7 @@ class ArrayFile
         foreach ($array as $k => $v) {
             if ($validate = $validator($v)) {
                 if ($this->type == 'object') {
-                    $validate = $this->getValidateObject($v, $this->className, $this->interfaceName);
+                    $validate = $this->getValidateObject($v);
                 }
             }
             if (false == $validate) {
@@ -141,12 +145,12 @@ class ArrayFile
         return $this;
     }
 
-    protected function getValidateObject(object $object, ?string $className, ?string $interfaceName): bool
+    protected function getValidateObject(object $object): bool
     {
-        if (null != $className) {
-            return get_class($object) == $className;
-        } elseif (null != $interfaceName) {
-            return $object instanceof $interfaceName;
+        if (isset($this->className)) {
+            return get_class($object) == $this->className;
+        } elseif (isset($this->interfaceName)) {
+            return $object instanceof $this->interfaceName;
         }
 
         return false;

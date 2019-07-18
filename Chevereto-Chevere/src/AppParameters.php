@@ -47,6 +47,9 @@ class AppParameters extends Data
     /** @var string|null The file source (for instances created using ::createFromFile) */
     protected $sourceFilepath;
 
+    /** @var string Context of the source $parameters */
+    protected $context;
+
     /**
      * @param array  $parameters The parameters array
      * @param string $context    The context of the source $parameters

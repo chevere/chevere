@@ -166,9 +166,11 @@ class App extends AppStatic implements AppInterface
         if (!empty($this->arguments)) {
             $callableWrap->setPassedArguments($this->arguments);
             $this->controllerArguments = $callableWrap->getArguments();
+        // dd($callableWrap);
         } else {
             $this->controllerArguments = [];
         }
+        dd($this->arguments, $this->controllerArguments);
         $controller(...$this->controllerArguments);
 
         return $controller;
