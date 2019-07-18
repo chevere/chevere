@@ -67,6 +67,9 @@ class App extends AppStatic implements AppInterface
     /** @var string */
     protected $db;
 
+    /** @var string */
+    protected $callable;
+
     /*
     * (A) Router cache : The array which is used to resolve /req -> route (routing)
     * (B) Routes cache : The array of serialized Routes ['id' => Route serialized]
@@ -131,8 +134,7 @@ class App extends AppStatic implements AppInterface
     {
         // TODO: Detect valid request (method, etc) - Fails for `php app/console request /`
         if (!isset($this->callable)) {
-            dd('nooooeeee');
-            $this->routerResolveCallable($this->httpRequest->getPathInfo());
+            $this->processResolveCallable($this->httpRequest->getPathInfo());
         }
         if (isset($this->callable)) {
             $this->processCallable($this->callable);
@@ -296,7 +298,7 @@ class App extends AppStatic implements AppInterface
         }
     }
 
-    protected function routerResolveCallable(string $pathInfo): void
+    protected function processResolveCallable(string $pathInfo): void
     {
         // try {
         $this->route = $this->router->resolve($pathInfo);

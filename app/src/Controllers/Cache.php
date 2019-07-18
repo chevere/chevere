@@ -15,6 +15,7 @@ class Cache extends Controller
 
     public function __invoke()
     {
+        // echo 'hola';
     }
 
     public function render(): ?string

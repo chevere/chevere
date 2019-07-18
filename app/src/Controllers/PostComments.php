@@ -6,11 +6,12 @@ namespace App\Controllers;
 
 use Chevereto\Chevere\Controller;
 
+// TODO: Need access to post parameters (+header)
 class PostComments extends Controller
 {
-    public function __invoke($parameters)
+    public function __invoke()
     {
-        dump($parameters, $this->_input, $this->_routing);
+        dump($this);
         echo 'Hola sub/post world!';
         $this->extra();
     }

@@ -74,7 +74,8 @@ class RunCommand extends Command
             if (is_array($arguments)) {
                 $app->setArguments($arguments);
             }
-            $app->run($callable);
+            $app->setCallable($callable);
+            $app->run();
         }
 
         return 1;
