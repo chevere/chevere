@@ -183,11 +183,6 @@ class Route implements Interfaces\RouteInterface
         return $this;
     }
 
-    public function getMethodCallable(string $httpMethod): ?string
-    {
-        return $this->methods[$httpMethod];
-    }
-
     /**
      * Sets HTTP method to callable binding (multiple version).
      *
@@ -224,7 +219,7 @@ class Route implements Interfaces\RouteInterface
         return $this->name;
     }
 
-    public function getMethods(): ?array
+    public function getMethods(): array
     {
         return $this->methods;
     }
@@ -268,7 +263,6 @@ class Route implements Interfaces\RouteInterface
      */
     public function getCallable(string $httpMethod): string
     {
-        // TODO: NO HEAD CALLABLE (auto for GET)
         $callable = $this->methods[$httpMethod] ?? null;
         if (!isset($callable)) {
             throw new LogicException(

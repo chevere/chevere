@@ -29,7 +29,7 @@ class Head extends Controller
     public function __invoke()
     {
         $route = $this->getApp()->route;
-        $methodCallabe = $route->getMethodCallable('GET');
+        $methodCallabe = $route->getCallable('GET');
         if ($methodCallabe) {
             $this->invoke($methodCallabe);
             $this->getResponse()->unsetContent();
