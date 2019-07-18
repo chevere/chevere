@@ -39,6 +39,9 @@ abstract class Controller implements Interfaces\ControllerInterface
     /** @var App */
     private $app;
 
+    /** @var string */
+    private $filename;
+
     /** @var string Controller description */
     protected static $description;
 
@@ -110,15 +113,24 @@ abstract class Controller implements Interfaces\ControllerInterface
                 $context = dirname(debug_backtrace(0, 1)[0]['file']);
                 $controllerArgs = [substr($controller, 1), $context];
             }
-            $filename = Path::fromHandle(...$controllerArgs);
-            if (!File::exists($filename)) {
-                throw new Exception(
-                    (new Message("Unable to invoke controller %s (filename doesn't exists)."))
-                    ->code('%s', $filename)
-                );
-            }
+            $this->filename = Path::fromHandle(...$controllerArgs);
+            $this->handleFilemane();
             // TODO: Need new CallableFile (just like ArrayFile)
-            return Load::php($filename);
+            $callableReturn = Load::php($this->filename);
+            if (is_callable($callableReturn)) {
+                return $callableReturn;
+            }
+        }
+        throw new LogicException('NO CALLABLE');
+    }
+
+    protected function handleFilemane()
+    {
+        if (!File::exists($this->filename)) {
+            throw new Exception(
+                (new Message("Unable to invoke controller %s (filename doesn't exists)."))
+                ->code('%s', $this->filename)
+            );
         }
     }
 
