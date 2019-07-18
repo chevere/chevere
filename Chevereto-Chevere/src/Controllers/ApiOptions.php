@@ -28,6 +28,9 @@ class ApiOptions extends Controller
     /** @var string */
     private $uri;
 
+    /** @var string */
+    private $endpoint;
+
     public function __invoke()
     {
         $route = $this->getApp()->route;

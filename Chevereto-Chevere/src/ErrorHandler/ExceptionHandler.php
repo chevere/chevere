@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevereto\Chevere\ErrorHandler;
 
 use Throwable;
+use ErrorException;
 use const Chevereto\Chevere\CORE_NS_HANDLE;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Utils\Str;
@@ -62,6 +63,7 @@ class ExceptionHandler
             $this->className = Str::replaceFirst(CORE_NS_HANDLE, null, $this->className);
         }
         if ($exception instanceof ErrorException) {
+            /* @scrutinizer ignore-call */
             $this->code = $exception->getSeverity();
             $this->errorType = $this->code;
         } else {

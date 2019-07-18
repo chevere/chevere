@@ -116,12 +116,19 @@ class Formatter
     public $type;
     public $file;
     public $line;
+
     /** @var string */
     public $loggerLevel;
 
     public $title;
 
     public $table;
+
+    /** @var Throwable */
+    protected $exceptionHandler;
+
+    /** @var string */
+    protected $uri;
 
     public function __construct(ErrorHandler $errorHandler, ExceptionHandler $exceptionHandler)
     {
