@@ -84,7 +84,7 @@ class TraceEntry
 
     protected function handleSetEntryArguments()
     {
-        if (is_array($this->entry['args'])) {
+        if (isset($this->entry['args']) && is_array($this->entry['args'])) {
             $this->setFrameArguments();
         }
     }
