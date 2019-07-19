@@ -69,6 +69,7 @@ class ApiOptions extends Controller
         $api = $this->getApi();
         $endpoint = $api->getEndpoint($this->endpoint);
         if ($endpoint['OPTIONS']) {
+            // FIXME: Why 3 add data params??
             $this->getResponse()->addData('OPTIONS', $this->uri, $endpoint['OPTIONS']);
         } else {
             $statusCode = 404;

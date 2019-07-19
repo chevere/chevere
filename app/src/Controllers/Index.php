@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Chevereto\Chevere\Controller;
+use Chevereto\Chevere\JsonApi\Data;
 
 // use Chevereto\Chevere\Utils\Random;
 
@@ -22,11 +23,21 @@ class Index extends Controller
     public function __invoke()
     {
         // throw new \Exception('duh');
+        $api = new Data('api', 'info');
+        $api->addAttribute('entry', 'HTTP GET /api');
+        $api->addAttribute('description', 'Retrieves the exposed API.');
+        // $api->validate();
+
+        $cli = new Data('cli', 'info');
+        $cli->addAttribute('entry', 'php app/console list');
+        $cli->addAttribute('description', 'Lists console commands.');
+        // $api->validate();
+
         $this
             ->getResponse()
                 ->setMeta(['Hello' => 'World!'])
-                ->addData('info', 'api', ['entry' => 'HTTP GET /api', 'description' => 'Retrieves the exposed API.'])
-                ->addData('info', 'cli', ['entry' => 'php app/console list', 'description' => 'Lists console commands.'])
+                ->addData($api)
+                ->addData($cli)
                 ->setStatusCode(200);
     }
 }

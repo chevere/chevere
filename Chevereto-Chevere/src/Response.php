@@ -16,6 +16,7 @@ namespace Chevereto\Chevere;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Exception;
 use InvalidArgumentException;
+use Chevereto\Chevere\JsonApi\Data;
 
 /**
  * JSON:API HTTP Response handler.
@@ -98,22 +99,9 @@ class Response extends HttpResponse
         return $this;
     }
 
-    public function addData(string $type, string $id, array $attributes = null): self
+    public function addData(Data $data): self
     {
-        $data = [
-            'type' => $type,
-            'id' => $id,
-        ];
-        if (null != $attributes) {
-            $data['attributes'] = $attributes;
-        }
-
-        return $this->appendData($data);
-    }
-
-    public function appendData(array $data): self
-    {
-        $this->data[] = $data;
+        $this->data[] = $data->toArray();
 
         return $this;
     }

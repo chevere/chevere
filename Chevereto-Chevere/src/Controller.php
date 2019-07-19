@@ -91,7 +91,7 @@ abstract class Controller implements Interfaces\ControllerInterface
         $that = $this->getCallable($controller);
         if (!is_callable($that)) {
             throw new Exception(
-                (new Message('Expected %s callable, %t provided.'))
+                (string) (new Message('Expected %s callable, %t provided.'))
                     ->code('%s', '$controller')
                     ->code('%t', gettype($controller))
             );
@@ -109,24 +109,25 @@ abstract class Controller implements Interfaces\ControllerInterface
         if (class_exists($controller)) {
             return new $controller();
         } else {
-            $controllerArgs = [$controller];
-            if (Utils\Str::startsWith('@', $controller)) {
-                $context = dirname(debug_backtrace(0, 1)[0]['file']);
-                $controllerArgs = [substr($controller, 1), $context];
-            }
-            $this->filename = Path::fromHandle(...$controllerArgs);
-            $this->handleFilemane();
-            // TODO: Need new CallableFile (just like ArrayFile)
-            return Load::php($this->filename);
+            throw new LogicException('NO CALLABLE');
+            // $controllerArgs = [$controller];
+            // if (Utils\Str::startsWith('@', $controller)) {
+            //     $context = dirname(debug_backtrace(0, 1)[0]['file']);
+            //     $controllerArgs = [substr($controller, 1), $context];
+            // }
+            // dd(debug_backtrace(0, 2), $context, $controllerArgs);
+            // $this->filename = Path::fromHandle(...$controllerArgs);
+            // $this->handleFilemane();
+            // // TODO: Need new CallableFile (just like ArrayFile)
+            // return Load::php($this->filename);
         }
-        // throw new LogicException('NO CALLABLE');
     }
 
     protected function handleFilemane()
     {
         if (!File::exists($this->filename)) {
             throw new Exception(
-                (new Message("Unable to invoke controller %s (filename doesn't exists)."))
+                (string) (new Message("Unable to invoke controller %s (filename doesn't exists)."))
                 ->code('%s', $this->filename)
             );
         }
