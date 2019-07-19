@@ -120,13 +120,13 @@ class Api
             'OPTIONS' => OptionsController::class,
             'GET' => GetController::class,
         ];
-        $apiEndpoint = new ApiEndpoint($httpMethods);
+        $endpoint = new Endpoint($httpMethods);
 
         $this->route = Route::bind($this->uri)
             ->setMethods($httpMethods)
             ->setId($this->basePath);
         $this->getRouter()->addRoute($this->route, $this->basePath);
-        $this->apis[$this->basePath] = $apiEndpoint->toArray();
+        $this->apis[$this->basePath] = $endpoint->toArray();
     }
 
     protected function handleEmptyRecursiveIterator(): void
@@ -188,20 +188,20 @@ class Api
     protected function processRoutesMap(): void
     {
         foreach ($this->routesMap as $pathComponent => $httpMethods) {
-            $apiEndpoint = new ApiEndpoint($httpMethods);
+            $endpoint = new Endpoint($httpMethods);
             /** @var string Full qualified route key for $pathComponent like /api/users/{user} */
             $endpointRouteKey = Str::ltail($pathComponent, '/');
-            $this->route = Route::bind($endpointRouteKey)->setId($pathComponent)->setMethods($apiEndpoint->getHttpMethods());
+            $this->route = Route::bind($endpointRouteKey)->setId($pathComponent)->setMethods($endpoint->getHttpMethods());
             // Define Route wildcard "where" if needed
             $resource = $this->resourcesMap[$pathComponent] ?? null;
             if (isset($resource)) {
                 foreach ($resource as $wildcardKey => $resourceMeta) {
                     $this->route->setWhere($wildcardKey, $resourceMeta['regex']);
                 }
-                $apiEndpoint->setResource($resource);
+                $endpoint->setResource($resource);
             }
             $this->getRouter()->addRoute($this->route, $this->basePath);
-            $this->api[$pathComponent] = $apiEndpoint->toArray();
+            $this->api[$pathComponent] = $endpoint->toArray();
         }
         ksort($this->api);
     }

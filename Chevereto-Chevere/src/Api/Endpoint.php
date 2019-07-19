@@ -19,7 +19,7 @@ use Chevereto\Chevere\Controllers\Api\HeadController;
 /**
  * Creates endpoints from ControlerInspect object.
  */
-class ApiEndpoint
+class Endpoint
 {
     /** @var array */
     public $array;
