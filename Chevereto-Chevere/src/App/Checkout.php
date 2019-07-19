@@ -18,7 +18,7 @@ use RuntimeException;
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).
  */
-class AppCheckout
+class Checkout
 {
     public function __construct(string $filename)
     {

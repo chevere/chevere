@@ -18,7 +18,7 @@ use Chevereto\Chevere\ArrayFile;
 use Chevereto\Chevere\PathHandle;
 use Chevereto\Chevere\Message;
 
-class AppParameters extends Data
+class Parameters extends Data
 {
     const CONFIG_FILES = 'configFiles';
 
@@ -122,7 +122,7 @@ class AppParameters extends Data
     }
 
     /**
-     * Creates AppParameters instance from file.
+     * Creates Parameters instance from file.
      *
      * @param string $fileHandle filehandle
      */

@@ -16,6 +16,7 @@ namespace Chevereto\Chevere;
 use LogicException;
 use ReflectionClass;
 use Roave\BetterReflection\BetterReflection;
+use Chevereto\Chevere\Api\Api;
 
 /**
  * Provides information about any Controller implementing Interfaces\ControllerInterface interface.

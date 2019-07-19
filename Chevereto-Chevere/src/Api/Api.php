@@ -11,12 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\Api;
 
 use OuterIterator;
 use LogicException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use const Chevereto\Chevere\APP_NS_HANDLE;
+use const Chevereto\Chevere\App\PATH as AppPath;
+use Chevereto\Chevere\Route;
+use Chevereto\Chevere\Router;
+use Chevereto\Chevere\Message;
+use Chevereto\Chevere\ControllerInspect;
+use Chevereto\Chevere\Path;
+use Chevereto\Chevere\File;
+use Chevereto\Chevere\Utility\Str;
+use Chevereto\Chevere\Controllers\Api\HeadController;
+use Chevereto\Chevere\Controllers\Api\OptionsController;
+use Chevereto\Chevere\Controllers\Api\GetController;
 
 /**
  * Api provides tools to create and retrieve the App Api.
@@ -80,7 +92,7 @@ class Api
      */
     public function register(string $pathIdentifier)
     {
-        $this->pathIdentifier = Utility\Str::rtail($pathIdentifier, '/');
+        $this->pathIdentifier = Str::rtail($pathIdentifier, '/');
         $this->handleDuplicates();
         $this->directory = Path::fromHandle($this->pathIdentifier);
         $this->handleMissingDirectory();
@@ -104,9 +116,9 @@ class Api
         $this->uri = '/'.$this->basePath;
 
         $httpMethods = [
-            'HEAD' => Controllers\Api\Head::class,
-            'OPTIONS' => Controllers\Api\Options::class,
-            'GET' => Controllers\Api\Get::class,
+            'HEAD' => HeadController::class,
+            'OPTIONS' => OptionsController::class,
+            'GET' => GetController::class,
         ];
         $apiEndpoint = new ApiEndpoint($httpMethods);
 
@@ -153,7 +165,7 @@ class Api
     protected function processRecursiveIteration(): void
     {
         foreach ($this->recursiveIterator as $filename) {
-            $filepathAbsolute = Utility\Str::forwardSlashes((string) $filename);
+            $filepathAbsolute = Str::forwardSlashes((string) $filename);
             $className = $this->getClassNameFromFilepath($filepathAbsolute);
             $inspected = new ControllerInspect($className);
             $this->controllersMap[$className] = $inspected;
@@ -178,7 +190,7 @@ class Api
         foreach ($this->routesMap as $pathComponent => $httpMethods) {
             $apiEndpoint = new ApiEndpoint($httpMethods);
             /** @var string Full qualified route key for $pathComponent like /api/users/{user} */
-            $endpointRouteKey = Utility\Str::ltail($pathComponent, '/');
+            $endpointRouteKey = Str::ltail($pathComponent, '/');
             $this->route = Route::bind($endpointRouteKey)->setId($pathComponent)->setMethods($apiEndpoint->getHttpMethods());
             // Define Route wildcard "where" if needed
             $resource = $this->resourcesMap[$pathComponent] ?? null;
@@ -204,8 +216,8 @@ class Api
     protected function getClassNameFromFilepath(string $filepath): string
     {
         $filepathRelative = Path::relative($filepath);
-        $filepathNoExt = Utility\Str::replaceLast('.php', null, $filepathRelative);
-        $filepathReplaceNS = Utility\Str::replaceFirst(App\PATH.'src/', APP_NS_HANDLE, $filepathNoExt);
+        $filepathNoExt = Str::replaceLast('.php', null, $filepathRelative);
+        $filepathReplaceNS = Str::replaceFirst(AppPath.'src/', APP_NS_HANDLE, $filepathNoExt);
 
         return str_replace('/', '\\', $filepathReplaceNS);
     }

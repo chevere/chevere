@@ -16,7 +16,7 @@ namespace Chevereto\Chevere\Interfaces;
 use Chevereto\Chevere\Route;
 use Chevereto\Chevere\Response;
 use Chevereto\Chevere\App\App;
-use Chevereto\Chevere\Api;
+use Chevereto\Chevere\Api\Api;
 
 interface ControllerInterface
 {

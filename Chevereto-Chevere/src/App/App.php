@@ -23,7 +23,7 @@ use Chevereto\Chevere\Runtime;
 use Chevereto\Chevere\Router;
 use Chevereto\Chevere\HttpRequest;
 use Chevereto\Chevere\Response;
-use Chevereto\Chevere\Api;
+use Chevereto\Chevere\Api\Api;
 use Chevereto\Chevere\File;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Controller;
@@ -110,7 +110,7 @@ class App extends AppStatic implements AppInterface
     * - App autoinjects a "Router", which could be Router::fromCache(...) or new Router() and provides access to Routes (cached or new)
     * - RouteCollection contains the array of mapped routes (objects or serialized arrays (cached))
     */
-    public function __construct(AppParameters $parameters = null)
+    public function __construct(Parameters $parameters = null)
     {
         static::setStaticInstance($this);
         $this->router = new Router();
@@ -119,16 +119,16 @@ class App extends AppStatic implements AppInterface
             $this->runtime = static::getDefaultRuntime();
         }
         if (false === stream_resolve_include_path(static::BUILD_FILEPATH)) {
-            new AppCheckout(static::BUILD_FILEPATH);
+            new Checkout(static::BUILD_FILEPATH);
         }
         Load::php(static::FILEHANDLE_HACKS);
         if (!isset($parameters)) {
             $pathHandle = Path::handle(static::FILEHANDLE_PARAMETERS);
-            $parameters = AppParameters::createFromFile($pathHandle);
+            $parameters = Parameters::createFromFile($pathHandle);
         }
-        $this->processConfigFiles($parameters->getDataKey(AppParameters::CONFIG_FILES));
-        $this->processApi($parameters->getDataKey(AppParameters::API));
-        $this->processParamRoutes($parameters->getDatakey(AppParameters::ROUTES));
+        $this->processConfigFiles($parameters->getDataKey(Parameters::CONFIG_FILES));
+        $this->processApi($parameters->getDataKey(Parameters::API));
+        $this->processParamRoutes($parameters->getDatakey(Parameters::ROUTES));
         $this->response = new Response();
         $this->processSapi();
     }

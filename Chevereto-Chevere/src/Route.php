@@ -15,6 +15,7 @@ namespace Chevereto\Chevere;
 
 use Exception;
 use LogicException;
+use Chevereto\Chevere\Controllers\HeadController;
 
 // IDEA Route lock (disables further modification)
 // IDEA: Reg events, determine who changes a route.
@@ -288,7 +289,7 @@ class Route implements Interfaces\RouteInterface
             }
         }
         if (isset($this->methods['GET']) && !isset($this->methods['HEAD'])) {
-            $this->setMethod('HEAD', Controllers\Head::class);
+            $this->setMethod('HEAD', HeadController::class);
         }
 
         return $this;

@@ -10,11 +10,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Chevereto\Chevere\App\AppParameters;
+use Chevereto\Chevere\App\Parameters;
 
 return [
-  AppParameters::API => 'src/Api/',
-  AppParameters::ROUTES => [
+  Parameters::API => 'src/Api/',
+  Parameters::ROUTES => [
     'routes:dashboard',
     'routes:web',
   ],

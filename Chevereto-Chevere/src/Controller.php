@@ -16,6 +16,7 @@ namespace Chevereto\Chevere;
 use Exception;
 use LogicException;
 use Chevereto\Chevere\App\App;
+use Chevereto\Chevere\Api\Api;
 
 // Define a hookable code entry:
 // $this->hook('myHook', function ($that) use ($var) {

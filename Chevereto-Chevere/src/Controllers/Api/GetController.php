@@ -21,7 +21,7 @@ use InvalidArgumentException;
 /**
  * Exposes an API endpoint.
  */
-class Get extends Controller
+class GetController extends Controller
 {
     const OPTIONS = [
         'description' => 'Retrieve endpoint.',

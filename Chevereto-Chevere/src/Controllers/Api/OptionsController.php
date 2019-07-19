@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Controllers;
+namespace Chevereto\Chevere\Controllers\Api;
 
 use const Chevereto\Chevere\CLI;
 use Chevereto\Chevere\Console;
@@ -19,9 +19,9 @@ use Chevereto\Chevere\Controller;
 use InvalidArgumentException;
 
 /**
- * Identical to OPTIONS.
+ * Exposes API endpoint options.
  */
-class ApiOptions extends Controller
+class OptionsController extends Controller
 {
     protected static $description = 'Retrieve endpoint OPTIONS.';
 
