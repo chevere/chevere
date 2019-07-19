@@ -180,7 +180,6 @@ class ErrorHandler implements ErrorHandlerInterface
         $this->logFilename = $path.$this->loggerLevel.'/'.$date.$this->timestamp.'_'.$this->id.'.log';
     }
 
-    // TODO: Refactor: pass logger as object
     protected function setLogger(string $name)
     {
         $lineFormatter = new LineFormatter(null, null, true, true);
@@ -219,7 +218,6 @@ class ErrorHandler implements ErrorHandlerInterface
      * @return string error type (string), null if the error code doesn't match
      *                any error type
      */
-    // TODO: Add to interface
     public static function getErrorByCode(int $code): ?string
     {
         return static::ERROR_TABLE[$code];
@@ -231,7 +229,6 @@ class ErrorHandler implements ErrorHandlerInterface
      * @return string logger level (string), null if the error code doesn't match
      *                any error type
      */
-    // TODO: Add to interface
     public static function getLoggerLevel(int $code): ?string
     {
         return static::PHP_LOG_LEVEL[$code] ?? null;

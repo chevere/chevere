@@ -267,7 +267,7 @@ class Str
         if (mb_strlen($string, $encoding) <= $limit) {
             return $string;
         }
-        $string = trim(mb_substr($string, 0, $limit - strlen($pad), $encoding)) . $pad;
+        $string = trim(mb_substr($string, 0, $limit - strlen($pad), $encoding)).$pad;
 
         return $string ?? '';
     }
@@ -335,7 +335,6 @@ class Str
     public static function unaccent(string $string): string
     {
         $string = (string) $string;
-        // TODO: polyfill needed.
         $encoding = mb_detect_encoding($string) ?: false;
         $utf8 = 'utf-8' == $encoding;
         if (!$utf8) {
@@ -366,7 +365,7 @@ class Str
      */
     public static function rtail(string $string, string $tail): string
     {
-        return rtrim($string, $tail) . $tail;
+        return rtrim($string, $tail).$tail;
     }
 
     /**
@@ -381,6 +380,6 @@ class Str
      */
     public static function ltail(string $string, string $tail): string
     {
-        return $tail . ltrim($string, $tail);
+        return $tail.ltrim($string, $tail);
     }
 }

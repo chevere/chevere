@@ -14,8 +14,7 @@ namespace Chevereto\Chevere;
 
 use Chevereto\Chevere\Utils\Str;
 
-// TODO: Deprecate constant use: PATH, App\PATH, App\PATH_CONTROLLERS
-class Load
+abstract class Load
 {
     const INCLUDE = 'include';
     const INCLUDE_ONCE = 'include_once';
@@ -47,28 +46,4 @@ class Load
                 return include_once $filepath;
         }
     }
-
-    /*
-     * Alias of Load::php, relative to PATH context (core root).
-     */
-    // public static function core(string $filename, array $vars = null, $constructor = self::INCLUDE_ONCE)
-    // {
-    //     return static::php(PATH . $filename, $vars, $constructor);
-    // }
-
-    /*
-     * Alias of Load::php, relative to App\PATH context.
-     */
-    // public static function app(string $filename, array $vars = null, $constructor = self::INCLUDE_ONCE)
-    // {
-    //     return static::php(App\PATH.$filename, $vars, $constructor);
-    // }
-
-    /*
-     * Alias of Load::php, relative to app/controllers context.
-     */
-    // public static function controller(string $filename, array $vars = null, $constructor = self::INCLUDE_ONCE)
-    // {
-    //     return static::php(App\PATH.'controllers'.$filename, $vars, $constructor);
-    // }
 }

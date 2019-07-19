@@ -133,7 +133,6 @@ class App extends AppStatic implements AppInterface
      */
     public function run()
     {
-        // TODO: Detect valid request (method, etc) - Fails for `php app/console request /`
         if (!isset($this->callable)) {
             $this->processResolveCallable($this->httpRequest->getPathInfo());
         }
