@@ -18,7 +18,7 @@ use RecursiveFilterIterator;
 /**
  * Provides filtering for the Api register process (directory scan).
  */
-class ApiFilterIterator extends RecursiveFilterIterator
+class FilterIterator extends RecursiveFilterIterator
 {
     /** @var array The accepted files array [GET.php, _GET.php, POST.php, ...] */
     protected $acceptedFilenames;

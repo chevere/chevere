@@ -104,7 +104,7 @@ class Api
 
         // Iterate the $this->directory filtering accepted filenames and folders
         $iterator = new RecursiveDirectoryIterator($this->directory, RecursiveDirectoryIterator::SKIP_DOTS);
-        $filter = (new ApiFilterIterator($iterator))
+        $filter = (new FilterIterator($iterator))
             ->generateAcceptedFilenames(static::ACCEPT_METHODS, static::METHOD_ROOT_PREFIX);
 
         $this->recursiveIterator = new RecursiveIteratorIterator($filter);
