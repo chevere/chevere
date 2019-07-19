@@ -14,7 +14,7 @@ declare(strict_types=1);
 // Hacer objeto servicio? new Color(string, Color::RGB)->toHex()
 // Combo object + static
 
-namespace Chevereto\Chevere\Utils;
+namespace Chevereto\Chevere\Utility;
 
 use Chevereto\Chevere\Message;
 use Exception;

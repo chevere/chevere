@@ -309,7 +309,7 @@ class Route implements Interfaces\RouteInterface
             );
         }
         $regex = '^'.$regex.'$';
-        if (!Utils\Str::contains('{', $regex)) {
+        if (!Utility\Str::contains('{', $regex)) {
             return $regex;
         }
         if (isset($this->wildcards)) {

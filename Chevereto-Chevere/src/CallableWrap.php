@@ -98,7 +98,7 @@ class CallableWrap
         }
         // Some work needed when dealing with fileHandle
         if (!isset($this->callable)) {
-            if (Utils\Str::contains('::', $this->callableHandle)) {
+            if (Utility\Str::contains('::', $this->callableHandle)) {
                 $explode = explode('::', $this->callableHandle);
                 $this->class = $explode[0];
                 $this->method = $explode[1];

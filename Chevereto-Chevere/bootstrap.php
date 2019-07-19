@@ -57,10 +57,10 @@ const DEFAULT_ERROR_HANDLING = [
 /*
  * Default error and exception handler
  */
-new Runtime(
-    (new RuntimeConfig())
-        ->processFromArray(DEFAULT_ERROR_HANDLING)
-);
+// new Runtime(
+//     (new RuntimeConfig())
+//         ->processFromArray(DEFAULT_ERROR_HANDLING)
+// );
 
 // This constant allows safe short syntax like `CLI && Console::io()` in all namespaces.
 define('Chevereto\Chevere\CLI', Console::isRunning());

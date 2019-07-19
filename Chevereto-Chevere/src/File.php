@@ -129,13 +129,13 @@ class File
         }
         $mime = static::mimetype($filename);
         $basename = basename($filename); // file.ext
-        $name = Utils\Str::replaceLast('.'.File::extension($filename), null, $basename); // file
+        $name = Utility\Str::replaceLast('.'.File::extension($filename), null, $basename); // file
         $info = [
             'basename' => $basename,
             'name' => $name,
             'extension' => isset($mime) ? File::extensionFromMime($mime) : null,
             'size' => intval($filesize),
-            'size_format' => Utils\Bytes::format((string) $filesize),
+            'size_format' => Utility\Bytes::format((string) $filesize),
             'mime' => $mime,
             // 'url'		=> absolutePathToUrl($filename),
             'md5' => md5_file($filename),
@@ -159,7 +159,7 @@ class File
         $pathinfo = pathinfo($file);
         $dirname = $pathinfo['dirname'];
         // Relativize to App\PATH
-        $dirname = Utils\Str::replaceFirst(App\PATH, null, $dirname);
+        $dirname = Utility\Str::replaceFirst(App\PATH, null, $dirname);
         if ($dirname == rtrim(App\PATH, '/')) { // Means that $file is at App\PATH
             $dirname = null;
         }

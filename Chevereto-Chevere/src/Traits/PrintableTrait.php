@@ -16,7 +16,7 @@ namespace Chevereto\Chevere\Traits;
  * Printable provides an interface for classes who may use __toString().
  *
  * @see Interfaces\PrintableInterface
- * @see Utils\Benchmark
+ * @see Utility\Benchmark
  * @see JSON
  */
 trait PrintableTrait

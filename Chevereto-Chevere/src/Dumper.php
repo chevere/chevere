@@ -97,7 +97,7 @@ class Dumper
 
     protected function handleSelfCaller(): void
     {
-        if (Utils\Str::endsWith('resources/functions/dump.php', $this->callerFilepath) && __CLASS__ == $this->debugBacktrace[0]['class'] && in_array($this->debugBacktrace[0]['function'], ['dump', 'dd'])) {
+        if (Utility\Str::endsWith('resources/functions/dump.php', $this->callerFilepath) && __CLASS__ == $this->debugBacktrace[0]['class'] && in_array($this->debugBacktrace[0]['function'], ['dump', 'dd'])) {
             $this->shiftDebugBacktrace();
         }
     }
@@ -152,7 +152,7 @@ class Dumper
     {
         if (isset($this->debugBacktrace[1]['class'])) {
             $class = $this->debugBacktrace[$this->offset]['class'];
-            if (Utils\Str::startsWith('class@anonymous', $class)) {
+            if (Utility\Str::startsWith('class@anonymous', $class)) {
                 $class = explode('0x', $class)[0];
             }
             $this->appendClass($class, $this->debugBacktrace[$this->offset]['type']);

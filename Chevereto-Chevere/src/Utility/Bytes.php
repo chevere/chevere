@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Utils;
+namespace Chevereto\Chevere\Utility;
 
 abstract class Bytes
 {

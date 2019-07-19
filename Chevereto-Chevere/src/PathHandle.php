@@ -57,8 +57,8 @@ class PathHandle
                     ->code('%v', 'empty or null string')
             );
         }
-        if (Utils\Str::contains(':', $this->identifier)) {
-            if (Utils\Str::endsWith(':', $this->identifier)) {
+        if (Utility\Str::contains(':', $this->identifier)) {
+            if (Utility\Str::endsWith(':', $this->identifier)) {
                 throw new CoreException(
                     (new Message('Wrong string %a format, %v provided (trailing colon).'))
                         ->code('%a', '$identifier')
@@ -66,7 +66,7 @@ class PathHandle
                 );
             }
             $this->filename = $this->filenameFromIdentifier();
-            if (Utils\Str::contains('/', $this->filename)) {
+            if (Utility\Str::contains('/', $this->filename)) {
                 throw new CoreException(
                     (new Message('Wrong string %a format, %v provided (path separators in filename).'))
                         ->code('%a', '$identifier')
@@ -91,11 +91,11 @@ class PathHandle
 
     public function process()
     {
-        if (Utils\Str::endsWith('.php', $this->identifier) && File::exists($this->identifier)) {
+        if (Utility\Str::endsWith('.php', $this->identifier) && File::exists($this->identifier)) {
             return Path::isAbsolute($this->identifier) ? $this->identifier : Path::absolute($this->identifier);
         }
         $this->path = Path::normalize($this->identifier);
-        if (Utils\Str::contains(':', $this->path)) {
+        if (Utility\Str::contains(':', $this->path)) {
             $this->path = $this->processIdentifier();
         } else {
             $this->path = $this->processPath();

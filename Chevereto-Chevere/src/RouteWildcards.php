@@ -60,11 +60,11 @@ class RouteWildcards
         foreach ($this->matches[0] as $k => $v) {
             // Change {wildcard} to {n} (n is the wildcard index)
             if (isset($this->set)) {
-                $this->set = Utils\Str::replaceFirst($v, "{{$k}}", $this->set);
+                $this->set = Utility\Str::replaceFirst($v, "{{$k}}", $this->set);
             }
             $wildcard = $this->matches[1][$k];
-            if (Utils\Str::endsWith('?', $wildcard)) {
-                $wildcardTrim = Utils\Str::replaceLast('?', null, $wildcard);
+            if (Utility\Str::endsWith('?', $wildcard)) {
+                $wildcardTrim = Utility\Str::replaceLast('?', null, $wildcard);
                 $this->optionals[] = $k;
                 $this->optionalsIndex[$k] = $wildcardTrim;
             } else {
@@ -87,7 +87,7 @@ class RouteWildcards
             $mandatoryDiff = array_diff($this->wildcards ?? [], $this->optionalsIndex);
             $this->mandatoryIndex = $this->getIndex($mandatoryDiff);
             // Generate the optionals power set, keeping its index keys in case of duplicated optionals
-            $powerSet = Utils\Arr::powerSet($this->optionals, true);
+            $powerSet = Utility\Arr::powerSet($this->optionals, true);
             // Build the route set, it will contain all the possible route combinations
             $this->powerSet = $this->processPowerSet($powerSet);
         }

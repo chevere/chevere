@@ -79,7 +79,7 @@ class Log
         $verbosity = static::$useConsole ? Console::output()->getVerbosity() : OutputInterface::VERBOSITY_NORMAL;
         // Set array levelName => int to handle levels
         static::$verboseSet = static::VERBOSITY_MAP[$verbosity];
-        static::$verboseSet = Utils\Arr::filterArray(static::SEVERITY_LEVELS, static::$verboseSet);
+        static::$verboseSet = Utility\Arr::filterArray(static::SEVERITY_LEVELS, static::$verboseSet);
         static::$verboseSet = array_flip(static::$verboseSet);
     }
 

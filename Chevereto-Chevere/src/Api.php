@@ -80,7 +80,7 @@ class Api
      */
     public function register(string $pathIdentifier)
     {
-        $this->pathIdentifier = Utils\Str::rtail($pathIdentifier, '/');
+        $this->pathIdentifier = Utility\Str::rtail($pathIdentifier, '/');
         $this->handleDuplicates();
         $this->directory = Path::fromHandle($this->pathIdentifier);
         $this->handleMissingDirectory();
@@ -153,7 +153,7 @@ class Api
     protected function processRecursiveIteration(): void
     {
         foreach ($this->recursiveIterator as $filename) {
-            $filepathAbsolute = Utils\Str::forwardSlashes((string) $filename);
+            $filepathAbsolute = Utility\Str::forwardSlashes((string) $filename);
             $className = $this->getClassNameFromFilepath($filepathAbsolute);
             $inspected = new ControllerInspect($className);
             $this->controllersMap[$className] = $inspected;
@@ -178,7 +178,7 @@ class Api
         foreach ($this->routesMap as $pathComponent => $httpMethods) {
             $apiEndpoint = new ApiEndpoint($httpMethods);
             /** @var string Full qualified route key for $pathComponent like /api/users/{user} */
-            $endpointRouteKey = Utils\Str::ltail($pathComponent, '/');
+            $endpointRouteKey = Utility\Str::ltail($pathComponent, '/');
             $this->route = Route::bind($endpointRouteKey)->setId($pathComponent)->setMethods($apiEndpoint->getHttpMethods());
             // Define Route wildcard "where" if needed
             $resource = $this->resourcesMap[$pathComponent] ?? null;
@@ -204,8 +204,8 @@ class Api
     protected function getClassNameFromFilepath(string $filepath): string
     {
         $filepathRelative = Path::relative($filepath);
-        $filepathNoExt = Utils\Str::replaceLast('.php', null, $filepathRelative);
-        $filepathReplaceNS = Utils\Str::replaceFirst(App\PATH.'src/', APP_NS_HANDLE, $filepathNoExt);
+        $filepathNoExt = Utility\Str::replaceLast('.php', null, $filepathRelative);
+        $filepathReplaceNS = Utility\Str::replaceFirst(App\PATH.'src/', APP_NS_HANDLE, $filepathNoExt);
 
         return str_replace('/', '\\', $filepathReplaceNS);
     }

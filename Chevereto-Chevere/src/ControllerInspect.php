@@ -97,7 +97,7 @@ class ControllerInspect implements Interfaces\ToArrayInterface
         $this->isResource = $this->reflection->implementsInterface(Interfaces\ControllerResourceInterface::class);
         $this->isRelatedResource = $this->reflection->implementsInterface(Interfaces\ControllerRelationshipInterface::class);
         $this->useResource = $this->isResource || $this->isRelatedResource;
-        $this->httpMethod = Utils\Str::replaceFirst(Api::METHOD_ROOT_PREFIX, null, $this->classShortName);
+        $this->httpMethod = Utility\Str::replaceFirst(Api::METHOD_ROOT_PREFIX, null, $this->classShortName);
         $this->description = $className::getDescription();
         $this->handleResources($className);
         $this->parameters = $className::getParameters();
@@ -167,7 +167,7 @@ class ControllerInspect implements Interfaces\ToArrayInterface
 
     protected function handleControllerResourceInterface(): void
     {
-        if (!Utils\Str::startsWith(Api::METHOD_ROOT_PREFIX, $this->classShortName) && $this->useResource && !$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER_RESOURCE)) {
+        if (!Utility\Str::startsWith(Api::METHOD_ROOT_PREFIX, $this->classShortName) && $this->useResource && !$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER_RESOURCE)) {
             throw new LogicException('Class %reflectionName% must implement the %interfaceControllerResource% interface at %reflectionFilename%.');
         }
     }
@@ -272,9 +272,9 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     protected function getPathComponent(string $className): string
     {
         $classShortName = substr($className, strrpos($className, '\\') + 1);
-        $classNamespace = Utils\Str::replaceLast('\\'.$classShortName, null, $className);
-        $classNamespaceNoApp = Utils\Str::replaceFirst(APP_NS_HANDLE, null, $classNamespace);
+        $classNamespace = Utility\Str::replaceLast('\\'.$classShortName, null, $className);
+        $classNamespaceNoApp = Utility\Str::replaceFirst(APP_NS_HANDLE, null, $classNamespace);
 
-        return strtolower(Utils\Str::forwardSlashes($classNamespaceNoApp));
+        return strtolower(Utility\Str::forwardSlashes($classNamespaceNoApp));
     }
 }

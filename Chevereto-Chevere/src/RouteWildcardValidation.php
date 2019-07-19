@@ -58,7 +58,7 @@ class RouteWildcardValidation
 
     protected function validateFormat(string $wildcardName): bool
     {
-        return !Utils\Str::startsWithNumeric($wildcardName) && preg_match('/^[a-z0-9_]+$/i', $wildcardName);
+        return !Utility\Str::startsWithNumeric($wildcardName) && preg_match('/^[a-z0-9_]+$/i', $wildcardName);
     }
 
     protected function handleValidateMatch()
@@ -74,7 +74,7 @@ class RouteWildcardValidation
 
     protected function validateMatch(string $wildcardName, string $routeKey): bool
     {
-        return Utils\Str::contains("{{$wildcardName}}", $routeKey) || Utils\Str::contains('{'."$wildcardName?".'}', $routeKey);
+        return Utility\Str::contains("{{$wildcardName}}", $routeKey) || Utility\Str::contains('{'."$wildcardName?".'}', $routeKey);
     }
 
     protected function handleValidateUnique()

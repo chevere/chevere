@@ -55,16 +55,16 @@ class RouteKeyValidation
             return true;
         }
 
-        return strlen($key) > 0 && Utils\Str::startsWith('/', $key)
+        return strlen($key) > 0 && Utility\Str::startsWith('/', $key)
             && $this->validateFormatSlashes($key);
     }
 
     protected function validateFormatSlashes(string $key): bool
     {
-        return !Utils\Str::endsWith('/', $key)
-            && !Utils\Str::contains('//', $key)
-            && !Utils\Str::contains(' ', $key)
-            && !Utils\Str::contains('\\', $key);
+        return !Utility\Str::endsWith('/', $key)
+            && !Utility\Str::contains('//', $key)
+            && !Utility\Str::contains(' ', $key)
+            && !Utility\Str::contains('\\', $key);
     }
 
     protected function validateWildcard(string $key): bool
@@ -74,6 +74,6 @@ class RouteKeyValidation
 
     protected function hasHandlebars(string $key): bool
     {
-        return Utils\Str::contains('{', $key) || Utils\Str::contains('}', $key);
+        return Utility\Str::contains('{', $key) || Utility\Str::contains('}', $key);
     }
 }

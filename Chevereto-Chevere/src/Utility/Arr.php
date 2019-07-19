@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Utils;
+namespace Chevereto\Chevere\Utility;
 
 /**
  * Array handling and transformation utils.
@@ -28,8 +28,8 @@ abstract class Arr
      * @param array  $array source array to be filtered (key => value)
      * @param array  $keys  array keys to filter (keys as comma-separated values)
      * @param string $mode  Mode to filter the array:
-     *                      Utils\Arr::FILTER_EXCLUSION grabs filter values from source array.
-     *                      Utils\Arr::FILTER_REMOVE removes filter values from the source array.
+     *                      Utility\Arr::FILTER_EXCLUSION grabs filter values from source array.
+     *                      Utility\Arr::FILTER_REMOVE removes filter values from the source array.
      *
      * @return array the filtered array
      */

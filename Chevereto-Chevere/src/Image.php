@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Chevereto\Chevere;
 
 /**
- * Utils\Image.
+ * Utility\Image.
  */
 class Image
 {

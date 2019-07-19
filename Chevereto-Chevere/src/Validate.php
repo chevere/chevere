@@ -153,7 +153,7 @@ class Validate
      */
     public static function HttpsUrl(string $url): bool
     {
-        return Utils\Str::startsWith('https://', $url);
+        return Utility\Str::startsWith('https://', $url);
     }
 
     /**

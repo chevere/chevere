@@ -23,7 +23,7 @@ abstract class Path
      */
     public static function absolute(string $relativePath): string
     {
-        $relativePath = Utils\Str::forwardSlashes($relativePath);
+        $relativePath = Utility\Str::forwardSlashes($relativePath);
 
         return ROOT_PATH.$relativePath;
     }
@@ -38,13 +38,13 @@ abstract class Path
      */
     public static function relative(string $absolutePath, string $rootContext = null): ?string
     {
-        $absolutePath = Utils\Str::forwardSlashes($absolutePath);
+        $absolutePath = Utility\Str::forwardSlashes($absolutePath);
         $root = ROOT_PATH;
         if ($rootContext) {
             $root .= $rootContext.'/';
         }
 
-        return Utils\Str::replaceFirst($root, null, $absolutePath);
+        return Utility\Str::replaceFirst($root, null, $absolutePath);
     }
 
     /**
@@ -98,7 +98,7 @@ abstract class Path
             return '';
         }
         // Chevereto: Get rid of any extra slashes at the begining if needed
-        if (Utils\Str::startsWith('/', $path)) {
+        if (Utility\Str::startsWith('/', $path)) {
             $path = '/'.ltrim($path, '/');
         }
         // Windows paths should uppercase the drive letter
@@ -146,7 +146,7 @@ abstract class Path
      */
     public static function isStream(string $path): bool
     {
-        if (!Utils\Str::contains('://', $path)) {
+        if (!Utility\Str::contains('://', $path)) {
             return false;
         }
         $explode = explode('://', $path, 2);
@@ -237,6 +237,6 @@ abstract class Path
      */
     public static function tailDir(string $dir): string
     {
-        return Utils\Str::rtail($dir, '/');
+        return Utility\Str::rtail($dir, '/');
     }
 }
