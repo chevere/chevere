@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 // TODO: Deprecate callables by file
 
-namespace Chevereto\Chevere\Command;
+namespace Chevereto\Chevere\Commands;
 
 use Chevereto\Chevere\App;
 use Chevereto\Chevere\VarDumper\PlainVarDumper;

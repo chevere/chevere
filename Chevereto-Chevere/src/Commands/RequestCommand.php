@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Command;
+namespace Chevereto\Chevere\Commands;
 
 use Chevereto\Chevere\App;
 use Chevereto\Chevere\HttpRequest;

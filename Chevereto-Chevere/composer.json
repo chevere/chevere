@@ -13,7 +13,6 @@
     "php": ">=7.2",
     "monolog/monolog": "~1.24",
     "symfony/http-foundation": "~4.2",
-    "symfony/var-dumper": "~4.2",
     "symfony/console": "~4.2",
     "jakub-onderka/php-console-color": "~0.2",
     "roave/better-reflection": "~3.2"
