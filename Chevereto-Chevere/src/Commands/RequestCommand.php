@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Commands;
 
-use Chevereto\Chevere\App;
+use Chevereto\Chevere\App\App;
 use Chevereto\Chevere\HttpRequest;
 use Chevereto\Chevere\Command;
 use ReflectionMethod;

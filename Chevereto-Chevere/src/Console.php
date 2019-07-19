@@ -12,13 +12,14 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
+use Exception;
 use Monolog\Logger;
 use Symfony\Component\Console\Application as ConsoleClient;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Exception;
+use Chevereto\Chevere\App\App;
 
 class Console
 {

@@ -11,22 +11,41 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\App;
 
 use Throwable;
 use LogicException;
+use const Chevereto\Chevere\ROOT_PATH;
+use const Chevereto\Chevere\App\PATH as AppPath;
 use Monolog\Logger;
+use Chevereto\Chevere\Console;
+use Chevereto\Chevere\Runtime;
+use Chevereto\Chevere\Router;
+use Chevereto\Chevere\HttpRequest;
+use Chevereto\Chevere\Response;
+use Chevereto\Chevere\Api;
+use Chevereto\Chevere\File;
+use Chevereto\Chevere\Path;
+use Chevereto\Chevere\Controller;
+use Chevereto\Chevere\Load;
+use Chevereto\Chevere\Route;
+use Chevereto\Chevere\Routes;
+use Chevereto\Chevere\CallableWrap;
+use Chevereto\Chevere\Message;
+use Chevereto\Chevere\RuntimeConfig;
 use Chevereto\Chevere\Interfaces\AppInterface;
+use Chevereto\Chevere\Interfaces\RenderableInterface;
+use Chevereto\Chevere\Traits\StaticTrait;
 
 /**
  * App contains the whole thing.
  */
 class App extends AppStatic implements AppInterface
 {
-    use Traits\StaticTrait;
+    use StaticTrait;
 
-    const BUILD_FILEPATH = ROOT_PATH.App\PATH.'build';
-    const NAMESPACES = ['App', __NAMESPACE__];
+    const BUILD_FILEPATH = ROOT_PATH.AppPath.'build';
+    const NAMESPACES = ['App', 'Chevereto\Chevere'];
     const APP = 'app';
     const FILEHANDLE_CONFIG = ':config';
     const FILEHANDLE_PARAMETERS = ':parameters';
@@ -306,7 +325,7 @@ class App extends AppStatic implements AppInterface
     protected function processCallable(string $callable): void
     {
         $controller = $this->getControllerObject($callable);
-        if ($controller instanceof Interfaces\RenderableInterface) {
+        if ($controller instanceof RenderableInterface) {
             echo $controller->render();
         } else {
             $controller->getResponse()->send();

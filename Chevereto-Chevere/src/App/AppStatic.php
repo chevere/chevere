@@ -11,9 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\App;
 
 use RuntimeException;
+use Chevereto\Chevere\Runtime;
+use Chevereto\Chevere\HttpRequest;
 
 abstract class AppStatic
 {

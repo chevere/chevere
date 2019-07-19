@@ -15,7 +15,7 @@ namespace Chevereto\Chevere\ErrorHandler;
 
 use ReflectionMethod;
 use const Chevereto\Chevere\PATH;
-use Chevereto\Chevere\App;
+use Chevereto\Chevere\App\App;
 use Chevereto\Chevere\Core;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Utility\Str;

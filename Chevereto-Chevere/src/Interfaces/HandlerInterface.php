@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Interfaces;
 
-use Chevereto\Chevere\App;
+use Chevereto\Chevere\App\App;
 
 interface HandlerInterface
 {

@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Chevereto\Chevere\AppParameters;
+use Chevereto\Chevere\App\AppParameters;
 
 return [
   AppParameters::API => 'src/Api/',

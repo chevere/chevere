@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Commands;
 
-use Chevereto\Chevere\App;
+use Chevereto\Chevere\App\App;
 use Chevereto\Chevere\VarDumper\PlainVarDumper;
 use Chevereto\Chevere\File;
 use Chevereto\Chevere\Path;

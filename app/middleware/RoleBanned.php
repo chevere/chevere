@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace App;
 
-use Chevereto\Chevere\App;
+use Chevereto\Chevere\App\App;
 use Chevereto\Chevere\Interfaces\HandlerInterface;
 use Chevereto\Chevere\Interfaces\MiddlewareInterface;
 

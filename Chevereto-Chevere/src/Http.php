@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
-class Http
+abstract class Http
 {
     const STATUS_CODES = [
         100 => 'Continue',

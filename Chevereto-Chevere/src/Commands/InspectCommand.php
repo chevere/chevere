@@ -20,7 +20,7 @@ use Reflector;
 use ReflectionMethod;
 use ReflectionFunction;
 use const Chevereto\Chevere\App\PATH;
-use Chevereto\Chevere\App;
+use Chevereto\Chevere\App\App;
 use Chevereto\Chevere\VarDumper\VarDumper;
 use Chevereto\Chevere\Load;
 use Chevereto\Chevere\Message;

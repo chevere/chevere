@@ -18,6 +18,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Chevereto\Chevere\App\App;
 
 class Command extends SymfonyCommand implements Interfaces\CommandInterface
 {
@@ -63,7 +64,7 @@ class Command extends SymfonyCommand implements Interfaces\CommandInterface
     public function callback(App $app)
     {
         // TODO: Deberia ser LogicException
-        throw new CoreException('You must override the ' . __FUNCTION__ . '() method in the concrete command class.');
+        throw new CoreException('You must override the '.__FUNCTION__.'() method in the concrete command class.');
     }
 
     public function getCli(): Cli

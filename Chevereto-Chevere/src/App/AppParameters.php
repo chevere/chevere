@@ -10,9 +10,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\App;
 
 use LogicException;
+use Chevereto\Chevere\Data;
+use Chevereto\Chevere\ArrayFile;
+use Chevereto\Chevere\PathHandle;
+use Chevereto\Chevere\Message;
 
 class AppParameters extends Data
 {
@@ -126,6 +130,6 @@ class AppParameters extends Data
     {
         $arrayFile = new ArrayFile($pathHandle);
 
-        return new AppParameters($arrayFile->toArray(), $arrayFile->getFilepath());
+        return new static($arrayFile->toArray(), $arrayFile->getFilepath());
     }
 }

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
+use Chevereto\Chevere\App\App;
+
 define(__NAMESPACE__.'\TIME_BOOTSTRAP', microtime(true));
 define(__NAMESPACE__.'\ERROR_LEVEL_BOOTSTRAP', error_reporting());
 
@@ -73,7 +75,7 @@ App::setDefaultRuntime(
                 RuntimeConfig::DEFAULT_CHARSET => 'utf-8',
                 RuntimeConfig::TIMEZONE => 'UTC',
                 RuntimeConfig::URI_SCHEME => 'https',
-            ] + DEFAULT_ERROR_HANDLING)
+            ])
             ->addFile(App::FILEHANDLE_CONFIG)
             ->process()
     )

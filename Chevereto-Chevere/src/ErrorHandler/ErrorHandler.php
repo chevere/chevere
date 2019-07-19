@@ -17,8 +17,8 @@ use DateTime;
 use ErrorException;
 use DateTimeZone;
 use const Chevereto\Chevere\ROOT_PATH;
-use const Chevereto\Chevere\App\PATH;
-use Chevereto\Chevere\App;
+use const Chevereto\Chevere\App\PATH as AppPath;
+use Chevereto\Chevere\App\App;
 use Chevereto\Chevere\HttpRequest;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Runtime;
@@ -42,7 +42,7 @@ class ErrorHandler implements ErrorHandlerInterface
     const DEBUG = null;
 
     /** @var string Null will use App\PATH_LOGS ? PATH_LOGS ? traverse */
-    const PATH_LOGS = ROOT_PATH.App\PATH.'var/logs/';
+    const PATH_LOGS = ROOT_PATH.AppPath.'var/logs/';
 
     /** Readable PHP error mapping */
     const ERROR_TABLE = [
