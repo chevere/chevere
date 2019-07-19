@@ -104,9 +104,9 @@ class Api
         $this->uri = '/'.$this->basePath;
 
         $httpMethods = [
-            'HEAD' => Controllers\ApiHead::class,
-            'OPTIONS' => Controllers\ApiOptions::class,
-            'GET' => Controllers\ApiGet::class,
+            'HEAD' => Controllers\Api\Head::class,
+            'OPTIONS' => Controllers\Api\Options::class,
+            'GET' => Controllers\Api\Get::class,
         ];
         $apiEndpoint = new ApiEndpoint($httpMethods);
 

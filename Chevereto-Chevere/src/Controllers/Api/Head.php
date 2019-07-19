@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Controllers;
+namespace Chevereto\Chevere\Controllers\Api;
 
 use const Chevereto\Chevere\CLI;
 use Chevereto\Chevere\Console;
@@ -23,7 +23,7 @@ use InvalidArgumentException;
 /**
  * Identical to GET, but without any message-boby in the response.
  */
-class ApiHead extends Controller
+class Head extends Controller
 {
     protected static $description = 'GET without message-body.';
 

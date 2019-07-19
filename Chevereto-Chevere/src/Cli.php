@@ -65,9 +65,9 @@ class Cli
         $this->setIo(
             new SymfonyStyle($input, $output)
         );
-        $client->add(new Command\RequestCommand($this));
-        $client->add(new Command\RunCommand($this));
-        $client->add(new Command\InspectCommand($this));
+        $client->add(new Commands\RequestCommand($this));
+        $client->add(new Commands\RunCommand($this));
+        $client->add(new Commands\InspectCommand($this));
         $client->setAutoExit(false);
     }
 

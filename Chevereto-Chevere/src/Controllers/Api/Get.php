@@ -10,7 +10,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Controllers;
+namespace Chevereto\Chevere\Controllers\Api;
 
 use const Chevereto\Chevere\CLI;
 use Chevereto\Chevere\Console;
@@ -19,9 +19,9 @@ use Chevereto\Chevere\Controller;
 use InvalidArgumentException;
 
 /**
- * Expose an API endpoint.
+ * Exposes an API endpoint.
  */
-class ApiGet extends Controller
+class Get extends Controller
 {
     const OPTIONS = [
         'description' => 'Retrieve endpoint.',
@@ -75,6 +75,7 @@ class ApiGet extends Controller
                 if ($property == 'wildcards') {
                     continue;
                 }
+                // TODO: Use json:api immutable
                 $this->getResponse()->addData('endpoint', $property, $data);
             }
         }

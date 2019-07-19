@@ -64,12 +64,12 @@ class ApiEndpoint
     {
         foreach ([
             'OPTIONS' => [
-                Controllers\ApiOptions::class, [
-                    'description' => Controllers\ApiOptions::getDescription(),                    ],
+                Controllers\Api\Options::class, [
+                    'description' => Controllers\Api\Options::getDescription(),                    ],
             ],
             'HEAD' => [
-                Controllers\ApiHead::class, [
-                    'description' => Controllers\ApiHead::getDescription(),
+                Controllers\Api\Head::class, [
+                    'description' => Controllers\Api\Head::getDescription(),
                 ],
             ],
         ] as $k => $v) {
