@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
+use Throwable;
+use LogicException;
 use Monolog\Logger;
 use Chevereto\Chevere\Interfaces\AppInterface;
-use Throwable;
 
 /**
  * App contains the whole thing.
@@ -188,14 +189,27 @@ class App extends AppStatic implements AppInterface
     }
 
     /**
-     * Forges a request if no Request has been set.
+     * Forges an HttpRequest, wrapper for Symfony HttpRequest::create().
+     *
+     * @param string               $uri        The URI
+     * @param string               $method     The HTTP method
+     * @param array                $parameters The query (GET) or request (POST) parameters
+     * @param array                $cookies    The request cookies ($_COOKIE)
+     * @param array                $files      The request files ($_FILES)
+     * @param array                $server     The server parameters ($_SERVER)
+     * @param string|resource|null $content    The raw body data
      */
-    public function forgeHttpRequest(HttpRequest $request): self
+    public function forgeHttpRequest(...$requestArguments): self
     {
         if (isset($this->httpRequest)) {
-            throw new CoreException('Unable to forge request when the request has been already set.');
+            throw new LogicException('Unable to forge request when the request has been already set.');
         }
-        $this->setHttpRequest($request);
+        if (!in_array($requestArguments[1], Route::HTTP_METHODS)) {
+            throw new LogicException(
+                (string) (new Message('Unknown HTTP request method %s'))->code('%s', $requestArguments[1])
+            );
+        }
+        $this->setHttpRequest(HttpRequest::create(...$requestArguments));
 
         return $this;
     }
@@ -304,9 +318,7 @@ class App extends AppStatic implements AppInterface
     {
         // try {
         $this->route = $this->router->resolve($pathInfo);
-        $this->callable = $this->route->getCallable(
-            $this->httpRequest->getMethod()
-        );
+        $this->callable = $this->route->getCallable($this->httpRequest->getMethod());
         $routerArgs = $this->router->arguments;
         if (isset($routerArgs)) {
             $this->setArguments($routerArgs);

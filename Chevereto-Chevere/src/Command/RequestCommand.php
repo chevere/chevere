@@ -55,7 +55,7 @@ class RequestCommand extends Command
         foreach ($r->getParameters() as $requestArg) {
             $requestArguments[] = $arguments[$requestArg->getName()] ?? $requestArg->getDefaultValue() ?? null;
         }
-        $app->forgeHttpRequest(HttpRequest::create(...$requestArguments))->run();
+        $app->forgeHttpRequest(...$requestArguments)->run();
 
         return 1;
     }
