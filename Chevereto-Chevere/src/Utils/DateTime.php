@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevereto\Chevere\Utils;
 
 use Exception;
+use DateTimeInterface;
 
 // $var = new DateTime('2016-5-05');
 // $var = '2017-12-05 01:02:03';
@@ -33,7 +34,7 @@ use Exception;
 // $res = (new DateTime($var))->modify('-2 years, -2 seconds')->format(DateTime::ATOM);
 // dump($var, $res, $to);
 
-class DateTime extends \DateTime implements \DateTimeInterface
+class DateTime extends \DateTime implements DateTimeInterface
 {
     const UNIT_HOUR = 'h';
     const UNIT_MINUTE = 'i';
@@ -133,7 +134,7 @@ class DateTime extends \DateTime implements \DateTimeInterface
     public function timeBetween(string $datetime, string $unit = self::UNIT_SECOND): float
     {
         if (!isset(static::SECONDS_TABLE[$unit])) {
-            throw new Exception("Unexpected unit <code>$unit</code>, you can only use one of the following units: <code>" . implode(', ', static::UNITS) . '</code>');
+            throw new Exception("Unexpected unit <code>$unit</code>, you can only use one of the following units: <code>".implode(', ', static::UNITS).'</code>');
         }
         $then = new self($datetime);
         $diff = abs($then->getTimestamp() - $this->getTimestamp()); // In seconds

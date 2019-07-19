@@ -17,7 +17,7 @@ use Throwable;
 use ErrorException;
 use const Chevereto\Chevere\CORE_NS_HANDLE;
 use Chevereto\Chevere\Path;
-use Chevereto\Chevere\Utils\Str;
+use Chevereto\Chevere\Utility\Str;
 
 /**
  * Handles the error exception throwable.

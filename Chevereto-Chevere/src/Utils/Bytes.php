@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Utils;
 
-class Bytes
+abstract class Bytes
 {
     const UNITS = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 

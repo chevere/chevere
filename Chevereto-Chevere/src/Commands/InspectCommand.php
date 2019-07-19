@@ -27,7 +27,7 @@ use Chevereto\Chevere\Message;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Command;
 use Chevereto\Chevere\File;
-use Chevereto\Chevere\Utils\Str;
+use Chevereto\Chevere\Utility\Str;
 
 /**
  * The InspectCommand allows to get callable information using CLI.

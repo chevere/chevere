@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Utils;
 
-class Str
+abstract class Str
 {
     const TRANSLITERATION = [
         'Ĳ' => 'I', 'Ö' => 'O', 'Œ' => 'O', 'Ü' => 'U', 'ä' => 'a', 'æ' => 'a',

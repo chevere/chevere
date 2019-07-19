@@ -19,7 +19,7 @@ use const Chevereto\Chevere\CLI;
 use Chevereto\Chevere\Console;
 use Chevereto\Chevere\VarDumper\VarDumper;
 use Chevereto\Chevere\VarDumper\PlainVarDumper;
-use Chevereto\Chevere\Utils\Str;
+use Chevereto\Chevere\Utility\Str;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**

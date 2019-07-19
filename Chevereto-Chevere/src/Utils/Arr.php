@@ -15,7 +15,7 @@ namespace Chevereto\Chevere\Utils;
 /**
  * Array handling and transformation utils.
  */
-class Arr
+abstract class Arr
 {
     const FILTER_EXCLUSION = 'filter_exclusion';
     const FILTER_REMOVE = 'filter_remove';

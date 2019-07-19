@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Utils;
 
-class Random
+abstract class Random
 {
     /**
      * Generate random numeric values within a limited range.

@@ -18,7 +18,7 @@ use Reflector;
 use ReflectionProperty;
 use ReflectionObject;
 use Chevereto\Chevere\Path;
-use Chevereto\Chevere\Utils\Str;
+use Chevereto\Chevere\Utility\Str;
 
 /**
  * Analyze a variable and provide an output string representation of its type and data.

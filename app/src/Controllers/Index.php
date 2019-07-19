@@ -16,8 +16,6 @@ namespace App\Controllers;
 use Chevereto\Chevere\Controller;
 use Chevereto\Chevere\JsonApi\Data;
 
-// use Chevereto\Chevere\Utils\Random;
-
 class Index extends Controller
 {
     public function __invoke()

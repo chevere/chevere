@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Utils;
 
-class Number
+abstract class Number
 {
     /**
      * Abbreviate a number adding its alpha suffix.

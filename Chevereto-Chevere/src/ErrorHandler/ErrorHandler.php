@@ -22,7 +22,7 @@ use Chevereto\Chevere\App;
 use Chevereto\Chevere\HttpRequest;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Runtime;
-// use Chevereto\Chevere\Utils\DateTime;
+// use Chevereto\Chevere\Utility\DateTime;
 use Chevereto\Chevere\Interfaces\ErrorHandlerInterface;
 use Psr\Log\LogLevel;
 use Monolog\Logger;

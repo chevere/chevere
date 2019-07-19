@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
-use Chevereto\Chevere\Utils\Str;
+use Chevereto\Chevere\Utility\Str;
 
 abstract class Load
 {
