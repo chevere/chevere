@@ -58,7 +58,7 @@ class Routing
 
     protected function handleType()
     {
-        if (isset($this->routeSet)) {
+        if (!isset($this->routeSet)) {
             $this->type = Route::TYPE_STATIC;
         } else {
             if (null != $this->routeSetHandle) {
@@ -67,7 +67,7 @@ class Routing
                     $pregReplace = trim(Path::normalize($pregReplace), '/');
                 }
             }
-            $this->type = isset($pregReplace) ? Route::TYPE_MIXED : Route::TYPE_DYNAMIC;
+            $this->type = isset($pregReplace) ? Route::TYPE_DYNAMIC : Route::TYPE_STATIC;
         }
     }
 

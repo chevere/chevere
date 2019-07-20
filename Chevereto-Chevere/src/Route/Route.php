@@ -38,10 +38,7 @@ class Route implements RouteInterface
     /** @const string Route without wildcards. */
     const TYPE_STATIC = 'static';
 
-    /** @const string Route containing wildcards and static components. */
-    const TYPE_MIXED = 'mixed';
-
-    /** @const string Route containing only wildcards, no static components. */
+    /** @const string Route containing wildcards. */
     const TYPE_DYNAMIC = 'dynamic';
 
     /** @const string Regex pattern used by default (no explicit where). */
@@ -95,6 +92,7 @@ class Route implements RouteInterface
         // TODO: Try, to catch the message 9hehe
         $keyValidation = new KeyValidation($this->uri);
         $this->maker = $this->getMakerData();
+        // $this->set = $this->uri;
         if ($keyValidation->hasHandlebars) {
             $wildcards = new Wildcards($this->uri);
             $this->set = $wildcards->set;

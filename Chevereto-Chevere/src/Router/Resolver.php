@@ -18,7 +18,7 @@ use Chevereto\Chevere\Message;
 use Chevereto\Chevere\Route\Route;
 
 /**
- * Routes takes a bunch of Routes and generates a routing table (php array).
+ * TODO: Rename. This class simply returns a route object (runtime or unserialize).
  */
 class Resolver
 {

@@ -22,7 +22,7 @@ use Chevereto\Chevere\Route\Route;
  */
 class Router
 {
-    const PRIORITY_ORDER = [Route::TYPE_STATIC, Route::TYPE_MIXED, Route::TYPE_DYNAMIC];
+    const PRIORITY_ORDER = [Route::TYPE_STATIC, Route::TYPE_DYNAMIC];
 
     const ID = 'id';
     const SET = 'set';
@@ -150,8 +150,11 @@ class Router
         return null == $requestTrim ? [] : explode('/', $requestTrim);
     }
 
+    // TODO: Routing index are wrong
     protected function getRoutesTable(int $key, string $priority): ?array
     {
+        dd($this);
+
         return $this->routing[$key][$priority] ?? null;
     }
 }
