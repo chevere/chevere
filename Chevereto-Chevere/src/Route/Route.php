@@ -11,20 +11,26 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\Route;
 
 use Exception;
 use LogicException;
+use Chevereto\Chevere\Message;
+use Chevereto\Chevere\Path;
+use Chevereto\Chevere\CoreException;
 use Chevereto\Chevere\Controllers\HeadController;
+use Chevereto\Chevere\Traits\CallableTrait;
+use Chevereto\Chevere\Utility\Str;
+use Chevereto\Chevere\Interfaces\RouteInterface;
 
 // IDEA Route lock (disables further modification)
 // IDEA: Reg events, determine who changes a route.
 // IDEA: Enable alt routes [/taken, /also-taken, /availabe]
 // IDEA: L10n support
 
-class Route implements Interfaces\RouteInterface
+class Route implements RouteInterface
 {
-    use Traits\CallableTrait;
+    use CallableTrait;
 
     /** @const Array containing all the HTTP methods. */
     const HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'COPY', 'HEAD', 'OPTIONS', 'LINK', 'UNLINK', 'PURGE', 'LOCK', 'UNLOCK', 'PROPFIND', 'VIEW', 'TRACE', 'CONNECT'];
@@ -87,13 +93,13 @@ class Route implements Interfaces\RouteInterface
     {
         $this->uri = $uri;
         // TODO: Try, to catch the message 9hehe
-        $keyValidation = new RouteKeyValidation($this->uri);
+        $keyValidation = new KeyValidation($this->uri);
         $this->maker = $this->getMakerData();
         if ($keyValidation->hasHandlebars) {
-            $routeWildcards = new RouteWildcards($this->uri);
-            $this->set = $routeWildcards->set;
-            $this->powerSet = $routeWildcards->powerSet;
-            $this->wildcards = $routeWildcards->wildcards;
+            $wildcards = new Wildcards($this->uri);
+            $this->set = $wildcards->set;
+            $this->powerSet = $wildcards->powerSet;
+            $this->wildcards = $wildcards->wildcards;
         }
         if (isset($callable)) {
             $this->setMethod('GET', $callable);
@@ -106,12 +112,12 @@ class Route implements Interfaces\RouteInterface
     public function setName(string $name): self
     {
         // Validate $name
-        if (!preg_match(Route::REGEX_NAME, $name)) {
+        if (!preg_match(static::REGEX_NAME, $name)) {
             throw new Exception(
                 (string)
                     (new Message("Expecting at least one alphanumeric, underscore, hypen or dot character. String '%s' provided."))
                         ->code('%s', $name)
-                        ->code('%p', Route::REGEX_NAME)
+                        ->code('%p', static::REGEX_NAME)
             );
         }
         $this->name = $name;
@@ -127,7 +133,7 @@ class Route implements Interfaces\RouteInterface
      */
     public function setWhere(string $wildcardName, string $regex): self
     {
-        new RouteWildcardValidation($wildcardName, $regex, $this);
+        new WildcardValidation($wildcardName, $regex, $this);
         $this->wheres[$wildcardName] = $regex;
 
         return $this;
@@ -310,7 +316,7 @@ class Route implements Interfaces\RouteInterface
             );
         }
         $regex = '^'.$regex.'$';
-        if (!Utility\Str::contains('{', $regex)) {
+        if (!Str::contains('{', $regex)) {
             return $regex;
         }
         if (isset($this->wildcards)) {

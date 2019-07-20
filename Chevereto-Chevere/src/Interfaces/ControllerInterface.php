@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Interfaces;
 
-use Chevereto\Chevere\Route;
+use Chevereto\Chevere\Route\Route;
 use Chevereto\Chevere\Response;
 use Chevereto\Chevere\App\App;
 use Chevereto\Chevere\Api\Api;

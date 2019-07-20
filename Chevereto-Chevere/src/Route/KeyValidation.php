@@ -11,9 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\Route;
 
-class RouteKeyValidation
+use Chevereto\Chevere\CoreException;
+use Chevereto\Chevere\Message;
+use Chevereto\Chevere\Utility\Str;
+
+class KeyValidation
 {
     /** @var string */
     public $key;
@@ -55,16 +59,16 @@ class RouteKeyValidation
             return true;
         }
 
-        return strlen($key) > 0 && Utility\Str::startsWith('/', $key)
+        return strlen($key) > 0 && Str::startsWith('/', $key)
             && $this->validateFormatSlashes($key);
     }
 
     protected function validateFormatSlashes(string $key): bool
     {
-        return !Utility\Str::endsWith('/', $key)
-            && !Utility\Str::contains('//', $key)
-            && !Utility\Str::contains(' ', $key)
-            && !Utility\Str::contains('\\', $key);
+        return !Str::endsWith('/', $key)
+            && !Str::contains('//', $key)
+            && !Str::contains(' ', $key)
+            && !Str::contains('\\', $key);
     }
 
     protected function validateWildcard(string $key): bool
@@ -74,6 +78,6 @@ class RouteKeyValidation
 
     protected function hasHandlebars(string $key): bool
     {
-        return Utility\Str::contains('{', $key) || Utility\Str::contains('}', $key);
+        return Str::contains('{', $key) || Str::contains('}', $key);
     }
 }

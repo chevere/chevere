@@ -12,6 +12,8 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
+use Chevereto\Chevere\Route\Route;
+
 /**
  * Routes provides a way to interact with files that return a PHP array.
  */

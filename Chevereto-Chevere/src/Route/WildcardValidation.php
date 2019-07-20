@@ -11,9 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\Route;
 
-class RouteWildcardValidation
+use Chevereto\Chevere\Message;
+use Chevereto\Chevere\Validate;
+use Chevereto\Chevere\CoreException;
+use Chevereto\Chevere\Utility\Str;
+
+class WildcardValidation
 {
     /** @var string */
     protected $wildcardName;
@@ -58,7 +63,7 @@ class RouteWildcardValidation
 
     protected function validateFormat(string $wildcardName): bool
     {
-        return !Utility\Str::startsWithNumeric($wildcardName) && preg_match('/^[a-z0-9_]+$/i', $wildcardName);
+        return !Str::startsWithNumeric($wildcardName) && preg_match('/^[a-z0-9_]+$/i', $wildcardName);
     }
 
     protected function handleValidateMatch()
@@ -74,7 +79,7 @@ class RouteWildcardValidation
 
     protected function validateMatch(string $wildcardName, string $routeKey): bool
     {
-        return Utility\Str::contains("{{$wildcardName}}", $routeKey) || Utility\Str::contains('{'."$wildcardName?".'}', $routeKey);
+        return Str::contains("{{$wildcardName}}", $routeKey) || Str::contains('{'."$wildcardName?".'}', $routeKey);
     }
 
     protected function handleValidateUnique()

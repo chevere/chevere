@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevereto\Chevere;
 
 use LogicException;
+use Chevereto\Chevere\Route\Route;
 
 /**
  * Routes takes a bunch of Routes and generates a routing table (php array).

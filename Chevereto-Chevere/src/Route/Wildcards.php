@@ -11,9 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\Route;
 
-class RouteWildcards
+use Chevereto\Chevere\Message;
+use Chevereto\Chevere\Path;
+use Chevereto\Chevere\CoreException;
+use Chevereto\Chevere\Utility\Str;
+use Chevereto\Chevere\Utility\Arr;
+
+class Wildcards
 {
     /** @var string Key set representation */
     public $set;
@@ -60,11 +66,11 @@ class RouteWildcards
         foreach ($this->matches[0] as $k => $v) {
             // Change {wildcard} to {n} (n is the wildcard index)
             if (isset($this->set)) {
-                $this->set = Utility\Str::replaceFirst($v, "{{$k}}", $this->set);
+                $this->set = Str::replaceFirst($v, "{{$k}}", $this->set);
             }
             $wildcard = $this->matches[1][$k];
-            if (Utility\Str::endsWith('?', $wildcard)) {
-                $wildcardTrim = Utility\Str::replaceLast('?', null, $wildcard);
+            if (Str::endsWith('?', $wildcard)) {
+                $wildcardTrim = Str::replaceLast('?', null, $wildcard);
                 $this->optionals[] = $k;
                 $this->optionalsIndex[$k] = $wildcardTrim;
             } else {
@@ -87,7 +93,7 @@ class RouteWildcards
             $mandatoryDiff = array_diff($this->wildcards ?? [], $this->optionalsIndex);
             $this->mandatoryIndex = $this->getIndex($mandatoryDiff);
             // Generate the optionals power set, keeping its index keys in case of duplicated optionals
-            $powerSet = Utility\Arr::powerSet($this->optionals, true);
+            $powerSet = Arr::powerSet($this->optionals, true);
             // Build the route set, it will contain all the possible route combinations
             $this->powerSet = $this->processPowerSet($powerSet);
         }

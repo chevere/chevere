@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Chevereto\Chevere\Route;
+use Chevereto\Chevere\Route\Route;
 
 return [
   Route::bind('/dashboard/{algo?}', Controllers\Dashboard::class),

@@ -28,7 +28,7 @@ use Chevereto\Chevere\File;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Controller;
 use Chevereto\Chevere\Load;
-use Chevereto\Chevere\Route;
+use Chevereto\Chevere\Route\Route;
 use Chevereto\Chevere\Routes;
 use Chevereto\Chevere\CallableWrap;
 use Chevereto\Chevere\Message;

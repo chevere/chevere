@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
+use Chevereto\Chevere\Route\Route;
+
 class Routing
 {
     /** @var int */

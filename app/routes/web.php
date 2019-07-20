@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Chevereto\Chevere\Route;
+use Chevereto\Chevere\Route\Route;
 
 return [
   'index' => Route::bind('/', Controllers\Index::class)

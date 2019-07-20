@@ -17,6 +17,7 @@ use Exception;
 use LogicException;
 use Chevereto\Chevere\App\App;
 use Chevereto\Chevere\Api\Api;
+use Chevereto\Chevere\Route\Route;
 
 // Define a hookable code entry:
 // $this->hook('myHook', function ($that) use ($var) {
