@@ -53,11 +53,6 @@ Wildcards are also autowired and its regex pattern is taken directly from the en
 also do manual routing and manually set the wildcard patterns for each route. Doing this you can create the conventional
 web page endpoints like `/login`, `/profile/{user}`, `/{dynamic}-{stuff}`, etc.
 
-### REST / GraphQL
-
-REST is our default. For the kind of application that Chevereto aims to be it needs a REST API for general operations
-and GraphQL could be added later (same autowiring concept). The idea (for now) is to have best of both worlds.
-
 ## Building
 
 After cloning this, you will need to install its dependencies which is achieved using
@@ -65,7 +60,7 @@ After cloning this, you will need to install its dependencies which is achieved 
 
 ```console
 foo@bar:~$ cd ~/chevereto-chevere
-foo@bar:~$ git clone https://github.com/rodolfoberrios/chevereto-chevere.git
+foo@bar:~$ git clone https://github.com/rodolfoberrios/chevere.git
 foo@bar:~$ rm -rf "vendor" && composer update chevereto/chevere --prefer-source
 ```
 
@@ -73,11 +68,6 @@ foo@bar:~$ rm -rf "vendor" && composer update chevereto/chevere --prefer-source
 
 This is an unreleased application prototype, the actual framework package resides in `Chevereto-Chevere` (repository type:
 path).
-
-## Contributing
-
-You can help testing. At this time I'm refactoring this so pay attention to the console commands and basically test test
-test test.
 
 ## License
 
