@@ -20,7 +20,7 @@ use RecursiveIteratorIterator;
 use const Chevereto\Chevere\APP_NS_HANDLE;
 use const Chevereto\Chevere\App\PATH as AppPath;
 use Chevereto\Chevere\Route\Route;
-use Chevereto\Chevere\Router;
+use Chevereto\Chevere\Router\Router;
 use Chevereto\Chevere\Message;
 use Chevereto\Chevere\Controller\Inspect as ControllerInspect;
 use Chevereto\Chevere\Path;

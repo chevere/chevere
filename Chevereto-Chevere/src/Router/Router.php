@@ -11,10 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\Router;
 
 use LogicException;
+use Chevereto\Chevere\Message;
 use Chevereto\Chevere\Route\Route;
+use Chevereto\Chevere\Routing;
 
 /**
  * Routes takes a bunch of Routes and generates a routing table (php array).
@@ -132,12 +134,12 @@ class Router
                     // $this->arguments = $matches;
                     $pointer = $prop[static::ID];
                     $routeSome = $this->routes[$pointer[1]][$pointer[0]] ?? null;
-                    $routerResolver = new RouterResolver($routeSome, $pointer);
-                    if ($routerResolver->isUnserialized) {
-                        $this->routes[$pointer[1]][$pointer[0]] = $routerResolver->get();
+                    $resolver = new Resolver($routeSome, $pointer);
+                    if ($resolver->isUnserialized) {
+                        $this->routes[$pointer[1]][$pointer[0]] = $resolver->get();
                     }
 
-                    return $routerResolver->get();
+                    return $resolver->get();
                 }
             }
         }

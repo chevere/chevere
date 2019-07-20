@@ -11,15 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\Router;
 
 use LogicException;
+use Chevereto\Chevere\Message;
 use Chevereto\Chevere\Route\Route;
 
 /**
  * Routes takes a bunch of Routes and generates a routing table (php array).
  */
-class RouterResolver
+class Resolver
 {
     /** @var mixed */
     public $routeSome;

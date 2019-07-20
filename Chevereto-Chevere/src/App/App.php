@@ -20,7 +20,7 @@ use const Chevereto\Chevere\App\PATH as AppPath;
 use Monolog\Logger;
 use Chevereto\Chevere\Console;
 use Chevereto\Chevere\Runtime;
-use Chevereto\Chevere\Router;
+use Chevereto\Chevere\Router\Router;
 use Chevereto\Chevere\HttpRequest;
 use Chevereto\Chevere\Response;
 use Chevereto\Chevere\Api\Api;
