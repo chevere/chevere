@@ -11,9 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\Router;
 
 use Chevereto\Chevere\Route\Route;
+use Chevereto\Chevere\Path;
 
 class Routing
 {

@@ -16,7 +16,6 @@ namespace Chevereto\Chevere\Router;
 use LogicException;
 use Chevereto\Chevere\Message;
 use Chevereto\Chevere\Route\Route;
-use Chevereto\Chevere\Routing;
 
 /**
  * Routes takes a bunch of Routes and generates a routing table (php array).
