@@ -29,6 +29,7 @@ use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Controller\Controller;
 use Chevereto\Chevere\Load;
 use Chevereto\Chevere\Route\Route;
+use Chevereto\Chevere\Route\ArrayFileWrap as RouteArrayFileWrap;
 use Chevereto\Chevere\Routes;
 use Chevereto\Chevere\CallableWrap;
 use Chevereto\Chevere\Message;
@@ -307,7 +308,7 @@ class App extends AppStatic implements AppInterface
         // ['handle' => [Routes,]]
         foreach ($paramRoutes as $fileHandleString) {
             $fileHandle = Path::handle($fileHandleString);
-            foreach ((new Routes($fileHandle))->getArrayFile()->toArray() as $k => $route) {
+            foreach ((new RouteArrayFileWrap($fileHandle))->getArrayFile()->toArray() as $k => $route) {
                 $this->router->addRoute($route, $fileHandleString);
             }
         }

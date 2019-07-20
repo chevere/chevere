@@ -10,14 +10,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\Route;
 
-use Chevereto\Chevere\Route\Route;
+use Chevereto\Chevere\PathHandle;
+use Chevereto\Chevere\ArrayFile;
 
 /**
- * Routes provides a way to interact with files that return a PHP array.
+ * Routes provides a way to interact with Route array files.
  */
-class Routes
+class ArrayFileWrap
 {
     /** @var string */
     protected $fileHandle;
