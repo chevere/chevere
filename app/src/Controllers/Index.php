@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use Chevereto\Chevere\Controller;
+use Chevereto\Chevere\Controller\Controller;
 use Chevereto\Chevere\JsonApi\Data;
 
 class Index extends Controller

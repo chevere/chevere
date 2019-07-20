@@ -15,7 +15,7 @@ namespace Chevereto\Chevere\Controllers\Api;
 use const Chevereto\Chevere\CLI;
 use Chevereto\Chevere\Console;
 use Chevereto\Chevere\Message;
-use Chevereto\Chevere\Controller;
+use Chevereto\Chevere\Controller\Controller;
 use InvalidArgumentException;
 
 /**

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use Chevereto\Chevere\Controller;
+use Chevereto\Chevere\Controller\Controller;
 
 // TODO: Need access to post parameters (+header)
 class PostComments extends Controller

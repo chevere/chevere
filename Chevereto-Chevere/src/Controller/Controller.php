@@ -11,13 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\Controller;
 
 use Exception;
 use LogicException;
+use Chevereto\Chevere\Response;
+use Chevereto\Chevere\Message;
 use Chevereto\Chevere\App\App;
 use Chevereto\Chevere\Api\Api;
 use Chevereto\Chevere\Route\Route;
+use Chevereto\Chevere\Interfaces\ControllerInterface;
+use Chevereto\Chevere\Traits\HookableTrait;
 
 // Define a hookable code entry:
 // $this->hook('myHook', function ($that) use ($var) {
@@ -33,9 +37,9 @@ use Chevereto\Chevere\Route\Route;
 /**
  * Controller is the defacto controller in Chevereto\Chevere.
  */
-abstract class Controller implements Interfaces\ControllerInterface
+abstract class Controller implements ControllerInterface
 {
-    use Traits\HookableTrait;
+    use HookableTrait;
 
     const TYPE_DECLARATIONS = ['array', 'callable', 'bool', 'float', 'int', 'string', 'iterable'];
     const OPTIONS = [];
@@ -65,7 +69,7 @@ abstract class Controller implements Interfaces\ControllerInterface
         return $this->getApp()->api;
     }
 
-    public function setResponse(Response $response): Interfaces\ControllerInterface
+    public function setResponse(Response $response): ControllerInterface
     {
         $this->getApp()->response = $response;
 
@@ -77,7 +81,7 @@ abstract class Controller implements Interfaces\ControllerInterface
         return $this->getApp()->response;
     }
 
-    public function setApp(App $app): Interfaces\ControllerInterface
+    public function setApp(App $app): ControllerInterface
     {
         $this->app = $app;
 

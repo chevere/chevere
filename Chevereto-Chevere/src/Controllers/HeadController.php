@@ -15,7 +15,7 @@ namespace Chevereto\Chevere\Controllers;
 
 use const Chevereto\Chevere\CLI;
 use Chevereto\Chevere\Console;
-use Chevereto\Chevere\Controller;
+use Chevereto\Chevere\Controller\Controller;
 
 class HeadController extends Controller
 {

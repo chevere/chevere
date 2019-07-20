@@ -11,12 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\Controller;
+
+use Chevereto\Chevere\Interfaces\ControllerRelationshipInterface;
 
 /**
  * Abstract class used for API resourced Controllers with relationships.
  */
-abstract class ControllerRelationship extends Controller implements Interfaces\ControllerRelationshipInterface
+abstract class Relationship extends Controller implements ControllerRelationshipInterface
 {
     protected static $description = 'Describes endpoint relationship.';
 

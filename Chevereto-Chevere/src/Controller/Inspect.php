@@ -11,26 +11,34 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\Controller;
 
 use LogicException;
 use ReflectionClass;
 use Roave\BetterReflection\BetterReflection;
+use const Chevereto\Chevere\APP_NS_HANDLE;
+use Chevereto\Chevere\Message;
 use Chevereto\Chevere\Api\Api;
+use Chevereto\Chevere\Utility\Str;
+use Chevereto\Chevere\Interfaces\ToArrayInterface;
+use Chevereto\Chevere\Interfaces\ControllerInterface;
+use Chevereto\Chevere\Interfaces\ControllerResourceInterface;
+use Chevereto\Chevere\Interfaces\CreateFromString;
+use Chevereto\Chevere\Interfaces\ControllerRelationshipInterface;
 
 /**
- * Provides information about any Controller implementing Interfaces\ControllerInterface interface.
+ * Provides information about any Controller implementing ControllerInterface interface.
  */
-class ControllerInspect implements Interfaces\ToArrayInterface
+class Inspect implements ToArrayInterface
 {
     /** @var string The Controller interface */
-    const INTERFACE_CONTROLLER = Interfaces\ControllerInterface::class;
+    const INTERFACE_CONTROLLER = ControllerInterface::class;
 
     /** @var string The Controller interface */
-    const INTERFACE_CONTROLLER_RESOURCE = Interfaces\ControllerResourceInterface::class;
+    const INTERFACE_CONTROLLER_RESOURCE = ControllerResourceInterface::class;
 
     /** @var string The CreateFromString interface */
-    const INTERFACE_CREATE_FROM_STRING = Interfaces\CreateFromString::class;
+    const INTERFACE_CREATE_FROM_STRING = CreateFromString::class;
 
     /** @var string The description property name */
     const PROP_DESCRIPTION = 'description';
@@ -80,10 +88,10 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     /** @var string Same as $pathComponent but for the related relationship URL (if any) */
     public $relationshipPathComponent;
 
-    /** @var bool True if the inspected Controller implements Interfaces\ControllerResourceIterface */
+    /** @var bool True if the inspected Controller implements ControllerResourceIterface */
     public $isResource;
 
-    /** @var bool True if the inspected Controller implements Interfaces\ControllerRelationshipIterface */
+    /** @var bool True if the inspected Controller implements ControllerRelationshipIterface */
     public $isRelatedResource;
 
     /**
@@ -95,10 +103,10 @@ class ControllerInspect implements Interfaces\ToArrayInterface
         $this->className = $this->reflection->getName();
         $this->classShortName = $this->reflection->getShortName();
         $this->filepath = $this->reflection->getFileName();
-        $this->isResource = $this->reflection->implementsInterface(Interfaces\ControllerResourceInterface::class);
-        $this->isRelatedResource = $this->reflection->implementsInterface(Interfaces\ControllerRelationshipInterface::class);
+        $this->isResource = $this->reflection->implementsInterface(ControllerResourceInterface::class);
+        $this->isRelatedResource = $this->reflection->implementsInterface(ControllerRelationshipInterface::class);
         $this->useResource = $this->isResource || $this->isRelatedResource;
-        $this->httpMethod = Utility\Str::replaceFirst(Api::METHOD_ROOT_PREFIX, null, $this->classShortName);
+        $this->httpMethod = Str::replaceFirst(Api::METHOD_ROOT_PREFIX, null, $this->classShortName);
         $this->description = $className::getDescription();
         $this->handleResources($className);
         $this->parameters = $className::getParameters();
@@ -136,7 +144,7 @@ class ControllerInspect implements Interfaces\ToArrayInterface
                     (string)
                         (new Message('Class %s implements %i interface, but it doesnt define any related resource.'))
                             ->code('%s', $className)
-                            ->code('%i', Interfaces\ControllerRelationshipInterface::class)
+                            ->code('%i', ControllerRelationshipInterface::class)
                 );
             }
             $this->resources = $this->relatedResource::getResources();
@@ -168,7 +176,7 @@ class ControllerInspect implements Interfaces\ToArrayInterface
 
     protected function handleControllerResourceInterface(): void
     {
-        if (!Utility\Str::startsWith(Api::METHOD_ROOT_PREFIX, $this->classShortName) && $this->useResource && !$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER_RESOURCE)) {
+        if (!Str::startsWith(Api::METHOD_ROOT_PREFIX, $this->classShortName) && $this->useResource && !$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER_RESOURCE)) {
             throw new LogicException('Class %reflectionName% must implement the %interfaceControllerResource% interface at %reflectionFilename%.');
         }
     }
@@ -263,7 +271,7 @@ class ControllerInspect implements Interfaces\ToArrayInterface
                 // Something like api/users/{user}/relationships/friends
                 $relatedPathComponent = implode('/', $relatedPathComponentArray);
                 $this->relationshipPathComponent = $relatedPathComponent;
-                // ->implementsInterface(Interfaces\ControllerRelationshipInterface::class)
+                // ->implementsInterface(ControllerRelationshipInterface::class)
                 $this->relationship = $this->reflection->getParentClass()->getName();
             }
         }
@@ -273,9 +281,9 @@ class ControllerInspect implements Interfaces\ToArrayInterface
     protected function getPathComponent(string $className): string
     {
         $classShortName = substr($className, strrpos($className, '\\') + 1);
-        $classNamespace = Utility\Str::replaceLast('\\'.$classShortName, null, $className);
-        $classNamespaceNoApp = Utility\Str::replaceFirst(APP_NS_HANDLE, null, $classNamespace);
+        $classNamespace = Str::replaceLast('\\'.$classShortName, null, $className);
+        $classNamespaceNoApp = Str::replaceFirst(APP_NS_HANDLE, null, $classNamespace);
 
-        return strtolower(Utility\Str::forwardSlashes($classNamespaceNoApp));
+        return strtolower(Str::forwardSlashes($classNamespaceNoApp));
     }
 }

@@ -11,12 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\Controller;
+
+use Chevereto\Chevere\Interfaces\ControllerResourceInterface;
 
 /**
  * Abstract class used for API resourced Controllers.
  */
-abstract class ControllerResource extends Controller implements Interfaces\ControllerResourceInterface
+abstract class Resource extends Controller implements ControllerResourceInterface
 {
     // protected static $description = 'Describes the endpoint resource.';
 

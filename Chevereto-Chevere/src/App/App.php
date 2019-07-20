@@ -26,7 +26,7 @@ use Chevereto\Chevere\Response;
 use Chevereto\Chevere\Api\Api;
 use Chevereto\Chevere\File;
 use Chevereto\Chevere\Path;
-use Chevereto\Chevere\Controller;
+use Chevereto\Chevere\Controller\Controller;
 use Chevereto\Chevere\Load;
 use Chevereto\Chevere\Route\Route;
 use Chevereto\Chevere\Routes;
