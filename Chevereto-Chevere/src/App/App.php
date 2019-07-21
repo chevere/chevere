@@ -21,7 +21,7 @@ use Monolog\Logger;
 use Chevereto\Chevere\Console;
 use Chevereto\Chevere\Runtime\Runtime;
 use Chevereto\Chevere\Router\Router;
-use Chevereto\Chevere\HttpFoundation\HttpRequest;
+use Chevereto\Chevere\HttpFoundation\Request;
 use Chevereto\Chevere\HttpFoundation\Response;
 use Chevereto\Chevere\Api\Api;
 use Chevereto\Chevere\File;
@@ -70,7 +70,7 @@ class App extends AppStatic implements AppInterface
     /** @var Router */
     public $router;
 
-    /** @var HttpRequest */
+    /** @var Request */
     public $httpRequest;
 
     /** @var Response */
@@ -209,7 +209,7 @@ class App extends AppStatic implements AppInterface
     }
 
     /**
-     * Forges an HttpRequest, wrapper for Symfony HttpRequest::create().
+     * Forges anRequest, wrapper for Symfony Request::create().
      *
      * @param string               $uri        The URI
      * @param string               $method     The HTTP method
@@ -229,7 +229,7 @@ class App extends AppStatic implements AppInterface
                 (string) (new Message('Unknown HTTP request method %s'))->code('%s', $requestArguments[1])
             );
         }
-        $this->setHttpRequest(HttpRequest::create(...$requestArguments));
+        $this->setHttpRequest(Request::create(...$requestArguments));
 
         return $this;
     }
@@ -246,7 +246,7 @@ class App extends AppStatic implements AppInterface
         return defined($constant) ? constant($constant) : null;
     }
 
-    protected function setHttpRequest(HttpRequest $request): self
+    protected function setHttpRequest(Request $request): self
     {
         $this->httpRequest = $request;
 
@@ -320,7 +320,7 @@ class App extends AppStatic implements AppInterface
         if (Console::bind($this)) {
             Console::run(); // Note: Console::run() always exit.
         } else {
-            $this->setHttpRequest(HttpRequest::createFromGlobals());
+            $this->setHttpRequest(Request::createFromGlobals());
         }
     }
 

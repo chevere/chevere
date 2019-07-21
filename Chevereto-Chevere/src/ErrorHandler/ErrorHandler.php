@@ -19,7 +19,7 @@ use DateTimeZone;
 use const Chevereto\Chevere\ROOT_PATH;
 use const Chevereto\Chevere\App\PATH as AppPath;
 use Chevereto\Chevere\App\App;
-use Chevereto\Chevere\HttpFoundation\HttpRequest;
+use Chevereto\Chevere\HttpFoundation\Request;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Runtime\Runtime;
 // use Chevereto\Chevere\Utility\DateTime;
@@ -101,7 +101,7 @@ class ErrorHandler implements ErrorHandlerInterface
 
     protected $logger;
 
-    /** @var HttpRequest The detected/forged HTTP request */
+    /** @var Request The detected/forged HTTP request */
     public $httpRequest;
 
     /** @var Runtime */

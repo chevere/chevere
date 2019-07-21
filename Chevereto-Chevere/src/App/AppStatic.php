@@ -15,7 +15,7 @@ namespace Chevereto\Chevere\App;
 
 use RuntimeException;
 use Chevereto\Chevere\Runtime\Runtime;
-use Chevereto\Chevere\HttpFoundation\HttpRequest;
+use Chevereto\Chevere\HttpFoundation\Request;
 
 abstract class AppStatic
 {
@@ -41,9 +41,9 @@ abstract class AppStatic
     }
 
     /**
-     * Provides access to the App HttpRequest instance.
+     * Provides access to the App Request instance.
      */
-    public static function requestInstance(): ?HttpRequest
+    public static function requestInstance(): ?Request
     {
         // Request isn't there when doing cli (unless you run the request command)
         if (isset(static::$instance) && isset(static::$instance->httpRequest)) {

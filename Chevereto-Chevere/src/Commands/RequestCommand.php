@@ -13,7 +13,7 @@ declare(strict_types=1);
 namespace Chevereto\Chevere\Commands;
 
 use Chevereto\Chevere\App\App;
-use Chevereto\Chevere\HttpFoundation\HttpRequest;
+use Chevereto\Chevere\HttpFoundation\Request;
 use Chevereto\Chevere\Command;
 use ReflectionMethod;
 
@@ -49,7 +49,7 @@ class RequestCommand extends Command
         // Map cli arguments to Request::create
         $arguments = $this->getCli()->getInput()->getArguments();
         $requestArguments = [];
-        $r = new ReflectionMethod(HttpRequest::class, 'create');
+        $r = new ReflectionMethod(Request::class, 'create');
         foreach ($r->getParameters() as $requestArg) {
             $requestArguments[] = $arguments[$requestArg->getName()] ?? $requestArg->getDefaultValue() ?? null;
         }

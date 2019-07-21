@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\HttpFoundation;
 
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request as HttpRequest;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\ServerBag;
 
-class HttpRequest extends Request
+class Request extends HttpRequest
 {
     // Left side: Our standard, right side Request function name
     const MAP = [
