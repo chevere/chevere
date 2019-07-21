@@ -10,6 +10,16 @@ return [
       ->addMiddleware('middleware:RoleBanned')
       ->addMiddleware('middleware:RoleAdmin'),
 
+  Route::bind('/ruta/dos')->setMethod('GET', Controllers\Index::class),
+  Route::bind('/ruta/tres')->setMethod('GET', Controllers\Index::class),
+  Route::bind('/ruta/cuatro')->setMethod('GET', Controllers\Index::class),
+  Route::bind('/ruta/cinco')->setMethod('GET', Controllers\Index::class),
+  Route::bind('/ruta/seis')->setMethod('GET', Controllers\Index::class),
+  Route::bind('/ruta/siete')->setMethod('GET', Controllers\Index::class),
+  Route::bind('/ruta/ocho')->setMethod('GET', Controllers\Index::class),
+  Route::bind('/ruta/nueve')->setMethod('GET', Controllers\Index::class),
+  Route::bind('/ruta/diez')->setMethod('GET', Controllers\Index::class),
+
   Route::bind('/cache/{user?}')
     ->setMethod('GET', Controllers\Cache::class)
     ->setMethod('POST', Controllers\Cache::class)

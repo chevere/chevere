@@ -130,6 +130,7 @@ class App extends AppStatic implements AppInterface
         $this->processConfigFiles($parameters->getDataKey(Parameters::CONFIG_FILES));
         $this->processApi($parameters->getDataKey(Parameters::API));
         $this->processParamRoutes($parameters->getDatakey(Parameters::ROUTES));
+        $this->router->getRegex();
         $this->response = new Response();
         $this->processSapi();
     }

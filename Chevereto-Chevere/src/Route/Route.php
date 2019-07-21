@@ -96,9 +96,13 @@ class Route implements RouteInterface
         if ($keyValidation->hasHandlebars) {
             $wildcards = new Wildcards($this->uri);
             $this->set = $wildcards->set;
+            $this->setHandle = $this->set;
             $this->powerSet = $wildcards->powerSet;
             $this->wildcards = $wildcards->wildcards;
+        } else {
+            $this->setHandle = $this->uri;
         }
+        $this->handleType();
         if (isset($callable)) {
             $this->setMethod('GET', $callable);
         }
@@ -295,22 +299,22 @@ class Route implements RouteInterface
         if (isset($this->methods['GET']) && !isset($this->methods['HEAD'])) {
             $this->setMethod('HEAD', HeadController::class);
         }
+        $this->regex = $this->regex();
 
         return $this;
     }
 
     /**
-     * Gets route regex depending on the passed key (if any).
+     * Gets route regex.
      *
      * @param string $key route string to use, leave it blank to use $this->set ?? $this->uri
      */
-    public function regex(string $key = null): string
+    public function regex(): string
     {
-        $regex = $key ?? $this->set ?? $this->uri;
+        $regex = $this->set ?? $this->uri;
         if (!isset($regex)) {
             throw new CoreException(
-                (new Message('Unable to process regex for empty %s.'))
-                    ->code('%s', '$key')
+                (new Message('Unable to process regex for empty regex.'))
             );
         }
         $regex = '^'.$regex.'$';
@@ -343,5 +347,19 @@ class Route implements RouteInterface
         $maker['file'] = Path::relative($maker['file']);
 
         return $maker;
+    }
+
+    protected function handleType()
+    {
+        if (!isset($this->set)) {
+            $this->type = Route::TYPE_STATIC;
+        } else {
+            // Sets (optionals) are like /route/{0}
+            $pregReplace = preg_replace('/{[0-9]+}/', '', $this->set);
+            if (null != $pregReplace) {
+                $pregReplace = trim(Path::normalize($pregReplace), '/');
+            }
+            $this->type = isset($pregReplace) ? Route::TYPE_DYNAMIC : Route::TYPE_STATIC;
+        }
     }
 }
