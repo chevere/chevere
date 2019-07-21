@@ -19,7 +19,7 @@ use const Chevereto\Chevere\ROOT_PATH;
 use const Chevereto\Chevere\App\PATH as AppPath;
 use Monolog\Logger;
 use Chevereto\Chevere\Console;
-use Chevereto\Chevere\Runtime;
+use Chevereto\Chevere\Runtime\Runtime;
 use Chevereto\Chevere\Router\Router;
 use Chevereto\Chevere\HttpRequest;
 use Chevereto\Chevere\Response;
@@ -33,7 +33,7 @@ use Chevereto\Chevere\Route\ArrayFileWrap as RouteArrayFileWrap;
 use Chevereto\Chevere\Routes;
 use Chevereto\Chevere\CallableWrap;
 use Chevereto\Chevere\Message;
-use Chevereto\Chevere\RuntimeConfig;
+use Chevereto\Chevere\Runtime\Config;
 use Chevereto\Chevere\Interfaces\AppInterface;
 use Chevereto\Chevere\Interfaces\RenderableInterface;
 use Chevereto\Chevere\Traits\StaticTrait;
@@ -283,7 +283,7 @@ class App extends AppStatic implements AppInterface
         }
         if (isset($this->runtime)) {
             $this->runtime->runConfig(
-                (new RuntimeConfig())
+                (new Config())
                     ->processFromFiles($configFiles)
             );
         }

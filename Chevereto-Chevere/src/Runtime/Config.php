@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -10,14 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\Runtime;
 
 use Exception;
+use Chevereto\Chevere\Data;
+use Chevereto\Chevere\Path;
+use Chevereto\Chevere\Message;
+use Chevereto\Chevere\ArrayFile;
+use Chevereto\Chevere\CoreException;
+use Chevereto\Chevere\Validate;
 
 /**
  * Runtime configurator.
  */
-class RuntimeConfig extends Data
+class Config extends Data
 {
     // Config keys
     const DEBUG = 'debug';
@@ -42,7 +49,7 @@ class RuntimeConfig extends Data
         self::ERROR_HANDLER => 'is_callable',
         self::EXCEPTION_HANDLER => 'is_callable',
         self::URI_SCHEME => ['http', 'https'],
-        self::TIMEZONE => __NAMESPACE__.'\Validate::timezone',
+        self::TIMEZONE => Validate::class.'::timezone',
     ];
 
     public function __construct()

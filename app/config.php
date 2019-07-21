@@ -1,12 +1,12 @@
 <?php
 
-use Chevereto\Chevere\RuntimeConfig;
+use Chevereto\Chevere\Runtime\Config;
 
 return [
-    RuntimeConfig::TIMEZONE => 'America/Bogota',
-    RuntimeConfig::DEBUG => 1,
-    RuntimeConfig::TIMEZONE => 'UTC',
-    // RuntimeConfig::ERROR_HANDLER => null,
-    // RuntimeConfig::EXCEPTION_HANDLER => null,
-    RuntimeConfig::URI_SCHEME => 'http',
+    Config::TIMEZONE => 'America/Bogota',
+    Config::DEBUG => 1,
+    Config::TIMEZONE => 'UTC',
+    // Config::ERROR_HANDLER => null,
+    // Config::EXCEPTION_HANDLER => null,
+    Config::URI_SCHEME => 'http',
 ];

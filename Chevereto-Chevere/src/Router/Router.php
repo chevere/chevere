@@ -29,9 +29,7 @@ class Router
 
     const REGEX_TEPLATE = '#^(?%s)$#x';
 
-    /**
-     * @var ?array An array containing Route members (objects, serialized) fileHandle => [id => @Route],
-     */
+    /** @var array Route members (objects, serialized) [id => Route] */
     public $routes;
 
     /** @var array Contains ['/route/key' => [id, 'route/key']] */
@@ -40,11 +38,17 @@ class Router
     /** @var array An array containing the named routes [name => [id, fileHandle]] */
     public $namedRoutes;
 
-    /** @var array Mapped representation, used when resolving routing. */
-    public $routing;
+    /** @var string Regex representation, used when resolving routing. */
+    public $regex;
 
     /** @var array Arguments taken from wildcard matches. */
     public $arguments;
+
+    /** @var array [basename => [route id,]]. */
+    protected $baseIndex;
+
+    /** @var array [regex => Route id]. */
+    protected $regexIndex;
 
     public function addRoute(Route $route, string $basename)
     {

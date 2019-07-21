@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Chevereto\Chevere;
 
 use Chevereto\Chevere\App\App;
+use Chevereto\Chevere\Runtime\Runtime;
+use Chevereto\Chevere\Runtime\Config;
 
 define(__NAMESPACE__.'\TIME_BOOTSTRAP', microtime(true));
 define(__NAMESPACE__.'\ERROR_LEVEL_BOOTSTRAP', error_reporting());
@@ -51,16 +53,16 @@ if ('cli' == php_sapi_name()) {
 }
 
 const DEFAULT_ERROR_HANDLING = [
-    RuntimeConfig::DEBUG => 1,
-    RuntimeConfig::ERROR_HANDLER => 'Chevereto\Chevere\ErrorHandler\ErrorHandler::error',
-    RuntimeConfig::EXCEPTION_HANDLER => 'Chevereto\Chevere\ErrorHandler\ErrorHandler::exception',
+    Config::DEBUG => 1,
+    Config::ERROR_HANDLER => 'Chevereto\Chevere\ErrorHandler\ErrorHandler::error',
+    Config::EXCEPTION_HANDLER => 'Chevereto\Chevere\ErrorHandler\ErrorHandler::exception',
 ];
 
 /*
  * Default error and exception handler
  */
 // new Runtime(
-//     (new RuntimeConfig())
+//     (new Config())
 //         ->processFromArray(DEFAULT_ERROR_HANDLING)
 // );
 
@@ -69,13 +71,13 @@ define('Chevereto\Chevere\CLI', Console::isRunning());
 
 App::setDefaultRuntime(
     new Runtime(
-        (new RuntimeConfig())
+        (new Config())
             ->addArray([
-                RuntimeConfig::LOCALE => 'en_US.UTF8',
-                RuntimeConfig::DEFAULT_CHARSET => 'utf-8',
-                RuntimeConfig::TIMEZONE => 'UTC',
-                RuntimeConfig::URI_SCHEME => 'https',
-            ])
+                Config::LOCALE => 'en_US.UTF8',
+                Config::DEFAULT_CHARSET => 'utf-8',
+                Config::TIMEZONE => 'UTC',
+                Config::URI_SCHEME => 'https',
+            ] + DEFAULT_ERROR_HANDLING)
             ->addFile(App::FILEHANDLE_CONFIG)
             ->process()
     )

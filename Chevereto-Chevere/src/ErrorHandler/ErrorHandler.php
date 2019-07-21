@@ -21,7 +21,7 @@ use const Chevereto\Chevere\App\PATH as AppPath;
 use Chevereto\Chevere\App\App;
 use Chevereto\Chevere\HttpRequest;
 use Chevereto\Chevere\Path;
-use Chevereto\Chevere\Runtime;
+use Chevereto\Chevere\Runtime\Runtime;
 // use Chevereto\Chevere\Utility\DateTime;
 use Chevereto\Chevere\Interfaces\ErrorHandlerInterface;
 use Psr\Log\LogLevel;

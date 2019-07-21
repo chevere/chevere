@@ -11,35 +11,36 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\Runtime;
 
 use DateTimeZone;
 use RuntimeException;
+use Chevereto\Chevere\Data;
 
 /**
  * Runtime applies runtime config and provide data about the App Runtime.
  */
 class Runtime extends Data
 {
-    /** @var RuntimeConfig */
-    protected $runtimeConfig;
+    /** @var Config */
+    protected $config;
 
-    public function __construct(?RuntimeConfig $runtimeConfig)
+    public function __construct(?Config $config)
     {
         parent::__construct();
-        if (null != $runtimeConfig) {
-            $this->runtimeConfig = $runtimeConfig;
-            $this->runConfig($runtimeConfig);
+        if (null != $config) {
+            $this->config = $config;
+            $this->runConfig($config);
         }
     }
 
-    public function runConfig(RuntimeConfig $runtimeConfig): self
+    public function runConfig(Config $config): self
     {
-        foreach ($runtimeConfig->getData() as $k => $v) {
+        foreach ($config->getData() as $k => $v) {
             if ($v === $this->getDataKey($k)) {
                 continue;
             }
-            $fnName = 'set' . ucwords($k);
+            $fnName = 'set'.ucwords($k);
             if (method_exists($this, $fnName)) {
                 $this->{$fnName}($v);
             }
@@ -51,7 +52,7 @@ class Runtime extends Data
     public function setLocale(string $locale): self
     {
         setlocale(LC_ALL, $locale);
-        $this->setDataKey(RuntimeConfig::LOCALE, $locale);
+        $this->setDataKey(Config::LOCALE, $locale);
 
         return $this;
     }
@@ -65,7 +66,7 @@ class Runtime extends Data
                     ->code('%v', $charset)
             );
         }
-        $this->setDataKey(RuntimeConfig::DEFAULT_CHARSET, $charset);
+        $this->setDataKey(Config::DEFAULT_CHARSET, $charset);
 
         return $this;
     }
@@ -77,8 +78,8 @@ class Runtime extends Data
         }
         // $types = $errorTypes ?? E_ALL ^ E_NOTICE;
         set_error_handler($errorHandler);
-        $this->setDataKey(RuntimeConfig::ERROR_HANDLER, $errorHandler);
-        $this->setDataKey(RuntimeConfig::ERROR_REPORTING_LEVEL, error_reporting());
+        $this->setDataKey(Config::ERROR_HANDLER, $errorHandler);
+        $this->setDataKey(Config::ERROR_REPORTING_LEVEL, error_reporting());
 
         return $this;
     }
@@ -89,8 +90,8 @@ class Runtime extends Data
         $errorHandler = set_error_handler(function () {
         });
         restore_error_handler();
-        $this->setDataKey(RuntimeConfig::ERROR_HANDLER, $errorHandler);
-        $this->setDataKey(RuntimeConfig::ERROR_REPORTING_LEVEL, error_reporting());
+        $this->setDataKey(Config::ERROR_HANDLER, $errorHandler);
+        $this->setDataKey(Config::ERROR_REPORTING_LEVEL, error_reporting());
 
         return $this;
     }
@@ -101,7 +102,7 @@ class Runtime extends Data
             return $this->restoreExceptionHandler();
         }
         set_exception_handler($exceptionHandler);
-        $this->setDataKey(RuntimeConfig::EXCEPTION_HANDLER, $exceptionHandler);
+        $this->setDataKey(Config::EXCEPTION_HANDLER, $exceptionHandler);
 
         return $this;
     }
@@ -112,7 +113,7 @@ class Runtime extends Data
         $handler = set_exception_handler(function () {
         });
         restore_exception_handler();
-        $this->setDataKey(RuntimeConfig::EXCEPTION_HANDLER, $handler);
+        $this->setDataKey(Config::EXCEPTION_HANDLER, $handler);
 
         return $this;
     }
@@ -130,7 +131,7 @@ class Runtime extends Data
         if (!$tzs && !@date_default_timezone_set($utcId[0])) { // No UTC? My gosh....
             trigger_error("Invalid timezone identifier '$tzg'. Configure your PHP installation with a valid timezone identifier http://php.net/manual/en/timezones.php", E_USER_ERROR);
         }
-        $this->setDataKey(RuntimeConfig::TIMEZONE, $tzg);
+        $this->setDataKey(Config::TIMEZONE, $tzg);
 
         return $this;
     }
@@ -138,27 +139,27 @@ class Runtime extends Data
     public function setTimeZone(string $timeZone): self
     {
         date_default_timezone_set($timeZone);
-        $this->setDataKey(RuntimeConfig::TIMEZONE, $timeZone);
+        $this->setDataKey(Config::TIMEZONE, $timeZone);
 
         return $this;
     }
 
     public function setUriScheme(string $scheme): self
     {
-        $this->setDataKey(RuntimeConfig::URI_SCHEME, $scheme);
+        $this->setDataKey(Config::URI_SCHEME, $scheme);
 
         return $this;
     }
 
     public function setDebug(int $debugLevel): self
     {
-        $this->setDataKey(RuntimeConfig::DEBUG, $debugLevel);
+        $this->setDataKey(Config::DEBUG, $debugLevel);
 
         return $this;
     }
 
-    public function getRuntimeConfig(): RuntimeConfig
+    public function getRuntimeConfig(): Config
     {
-        return $this->runtimeConfig;
+        return $this->config;
     }
 }
