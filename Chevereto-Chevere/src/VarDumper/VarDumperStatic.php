@@ -18,7 +18,7 @@ use const Chevereto\Chevere\CLI;
 /**
  * Analyze a variable and provide an output string representation of its type and data.
  */
-abstract class StaticVarDumper
+abstract class VarDumperStatic
 {
     /**
      * Wrap dump data HTML / CLI aware.

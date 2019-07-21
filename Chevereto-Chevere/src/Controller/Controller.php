@@ -15,7 +15,7 @@ namespace Chevereto\Chevere\Controller;
 
 use Exception;
 use LogicException;
-use Chevereto\Chevere\Response;
+use Chevereto\Chevere\HttpFoundation\Response;
 use Chevereto\Chevere\Message;
 use Chevereto\Chevere\App\App;
 use Chevereto\Chevere\Api\Api;

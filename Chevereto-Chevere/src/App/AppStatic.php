@@ -15,7 +15,7 @@ namespace Chevereto\Chevere\App;
 
 use RuntimeException;
 use Chevereto\Chevere\Runtime\Runtime;
-use Chevereto\Chevere\HttpRequest;
+use Chevereto\Chevere\HttpFoundation\HttpRequest;
 
 abstract class AppStatic
 {

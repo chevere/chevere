@@ -23,7 +23,7 @@ use Chevereto\Chevere\Utility\Str;
 /**
  * Analyze a variable and provide an output string representation of its type and data.
  */
-class VarDumper extends StaticVarDumper
+class VarDumper extends VarDumperStatic
 {
     const TYPE_STRING = 'string';
     const TYPE_FLOAT = 'float';

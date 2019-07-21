@@ -11,11 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\HttpFoundation;
 
-use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Exception;
 use InvalidArgumentException;
+use const Chevereto\Chevere\CLI;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Chevereto\Chevere\JsonApi\Data;
 
 /**
@@ -120,7 +121,7 @@ class Response extends HttpResponse
 
     public function getMeta(): ?array
     {
-        return $this->meta ?? null;
+        return $this->meta;
     }
 
     public function hasDataKey(string $key): bool
@@ -137,7 +138,7 @@ class Response extends HttpResponse
 
     public function getMetaKey(string $key)
     {
-        return $this->meta[$key] ?? null;
+        return $this->meta[$key];
     }
 
     public function removeMetaKey(string $key): self
