@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Traits;
 
-use Chevereto\Chevere\Hook;
+use Chevereto\Chevere\Hooking\Hook;
 
 /**
  * This class provides a hookable API allowing to define anchor points where

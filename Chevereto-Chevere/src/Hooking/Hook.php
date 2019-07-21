@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -10,9 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevereto\Chevere\Hooking;
 
 use Exception;
+use Chevereto\Chevere\Path;
+use Chevereto\Chevere\Message;
+use Chevereto\Chevere\Utility\Str;
 
 /**
  * Hooks refers to code that gets injected at determinated sections of the
@@ -134,7 +138,7 @@ class Hook
      */
     protected static function parseIdentifier(string $id, int $trace = 3): array
     {
-        if (Utility\Str::contains('@', $id)) {
+        if (Str::contains('@', $id)) {
             $anchored = explode('@', $id);
             $anchor = $anchored[0];
             $pathIdentifier = $anchored[1];
@@ -253,7 +257,7 @@ class Hook
      */
     public static function execAt(string $file, string $anchor, string $pos, object $that = null): void
     {
-        $hooks = Hook::getAt($file, $anchor, $pos);
+        $hooks = static::getAt($file, $anchor, $pos);
         if (!isset($hooks)) {
             return;
         }

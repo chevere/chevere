@@ -19,6 +19,7 @@ use Chevereto\Chevere\HttpFoundation\Response;
 use Chevereto\Chevere\Message;
 use Chevereto\Chevere\App\App;
 use Chevereto\Chevere\Api\Api;
+use Chevereto\Chevere\Hooking\Hook;
 use Chevereto\Chevere\Route\Route;
 use Chevereto\Chevere\Interfaces\ControllerInterface;
 use Chevereto\Chevere\Traits\HookableTrait;
