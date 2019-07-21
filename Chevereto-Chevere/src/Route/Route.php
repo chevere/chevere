@@ -339,7 +339,7 @@ class Route implements RouteInterface
 
     protected function getMakerData(): array
     {
-        $maker = debug_backtrace(0, 1)[0];
+        $maker = debug_backtrace(0, 3)[2];
         $maker['file'] = Path::relative($maker['file']);
 
         return $maker;
