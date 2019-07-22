@@ -15,7 +15,7 @@ namespace Chevere\ErrorHandler;
 
 use const Chevere\CLI;
 use DateTime;
-use Chevere\Console;
+use Chevere\Console\Console;
 use Chevere\Json;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Symfony\Component\HttpFoundation\JsonResponse as HttpJsonResponse;

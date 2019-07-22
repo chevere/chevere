@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Controllers\Api;
 
 use const Chevere\CLI;
-use Chevere\Console;
+use Chevere\Console\Console;
 use Chevere\Message;
 use Chevere\Controller\Controller;
 use InvalidArgumentException;
@@ -68,7 +68,6 @@ class OptionsController extends Controller
         $api = $this->getApi();
         $endpoint = $api->getEndpoint($this->endpoint);
         if ($endpoint['OPTIONS']) {
-            // FIXME: Why 3 add data params??
             $this->getResponse()->addData('OPTIONS', $this->uri, $endpoint['OPTIONS']);
         } else {
             $statusCode = 404;

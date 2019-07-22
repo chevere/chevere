@@ -11,17 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere;
+namespace Chevere\Console;
 
 use LogicException;
-use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Command\Command as ConsoleCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Chevere\App\App;
+use Chevere\Interfaces\CommandInterface;
 
-class Command extends SymfonyCommand implements Interfaces\CommandInterface
+class Command extends ConsoleCommand implements CommandInterface
 {
     /**
      * Provide input arguments contants shortcuts.

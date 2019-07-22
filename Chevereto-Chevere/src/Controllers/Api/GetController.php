@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Controllers\Api;
 
 use const Chevere\CLI;
-use Chevere\Console;
+use Chevere\Console\Console;
 use Chevere\Message;
 use Chevere\Controller\Controller;
 use InvalidArgumentException;
+
+// TODO: Use json:api immutable
 
 /**
  * Exposes an API endpoint.
@@ -74,7 +76,6 @@ class GetController extends Controller
                 if ($property == 'wildcards') {
                     continue;
                 }
-                // TODO: Use json:api immutable
                 $this->getResponse()->addData('endpoint', $property, $data);
             }
         }

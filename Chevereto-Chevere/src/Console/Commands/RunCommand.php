@@ -12,14 +12,15 @@ declare(strict_types=1);
  */
 
 // TODO: Deprecate callables by file
+// TODO: Must fix the argument typehint, maybe do combo with DI
 
-namespace Chevere\Commands;
+namespace Chevere\Console\Commands;
 
 use Chevere\App\App;
-use Chevere\VarDumper\PlainVarDumper;
 use Chevere\File;
 use Chevere\Path;
-use Chevere\Command;
+use Chevere\Console\Command;
+use Chevere\VarDumper\PlainVarDumper;
 
 /**
  * The RunCommand allows to run any callable present in the app.
@@ -66,7 +67,6 @@ class RunCommand extends Command
         }
         // Pass explicit callables, "weird" callables (Class::__invoke) runs in the App.
         if (is_callable($callable)) {
-            // TODO: Must fix the argument typehint, maybe do combo with DI
             $return = $callable(...$input->getOption('argument'));
             $cli->getIo()->block(PlainVarDumper::out($return), 'RETURN', 'fg=black;bg=green', ' ', true);
         } else {

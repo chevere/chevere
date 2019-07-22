@@ -13,19 +13,20 @@ declare(strict_types=1);
 
 // TODO: Static inspection!
 // TODO: Deprecate callables by file
+// TODO: Non-ambiguous types. Use $callableString $callableObject?
 
-namespace Chevere\Commands;
+namespace Chevere\Console\Commands;
 
 use Reflector;
 use ReflectionMethod;
 use ReflectionFunction;
 use const Chevere\App\PATH;
 use Chevere\App\App;
+use Chevere\Console\Command;
 use Chevere\VarDumper\VarDumper;
 use Chevere\Load;
 use Chevere\Message;
 use Chevere\Path;
-use Chevere\Command;
 use Chevere\File;
 use Chevere\Utility\Str;
 
@@ -45,7 +46,6 @@ class InspectCommand extends Command
     /** @var Reflector */
     protected $reflector;
 
-    // TODO: Non-ambiguous types. Use $callableString $callableObject?
     /** @var object|string */
     protected $callable;
 

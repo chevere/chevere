@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\App;
 
-use Throwable;
 use LogicException;
 use const Chevere\ROOT_PATH;
 use const Chevere\App\PATH as AppPath;
 use Monolog\Logger;
-use Chevere\Console;
 use Chevere\Runtime\Runtime;
 use Chevere\Router\Router;
 use Chevere\HttpFoundation\Request;
@@ -30,7 +28,7 @@ use Chevere\Controller\Controller;
 use Chevere\Load;
 use Chevere\Route\Route;
 use Chevere\Route\ArrayFileWrap as RouteArrayFileWrap;
-use Chevere\Routes;
+use Chevere\Console\Console;
 use Chevere\CallableWrap;
 use Chevere\Message;
 use Chevere\Runtime\Config;

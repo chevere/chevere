@@ -11,13 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere;
+namespace Chevere\Console;
 
 use Monolog\Logger;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Chevere\Console\Commands\RequestCommand;
+use Chevere\Console\Commands\RunCommand;
+use Chevere\Console\Commands\InspectCommand;
 
 /**
  * This class provides console for Chevere and it is a facade of Symfony\Component\Console.
@@ -66,9 +69,9 @@ class Cli
         $this->setIo(
             new SymfonyStyle($input, $output)
         );
-        $client->add(new Commands\RequestCommand($this));
-        $client->add(new Commands\RunCommand($this));
-        $client->add(new Commands\InspectCommand($this));
+        $client->add(new RequestCommand($this));
+        $client->add(new RunCommand($this));
+        $client->add(new InspectCommand($this));
         $client->setAutoExit(false);
     }
 

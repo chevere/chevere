@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Controllers;
 
 use const Chevere\CLI;
-use Chevere\Console;
+use Chevere\Console\Console;
 use Chevere\Controller\Controller;
 
 class HeadController extends Controller

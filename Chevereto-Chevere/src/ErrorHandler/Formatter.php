@@ -16,7 +16,7 @@ namespace Chevere\ErrorHandler;
 use Throwable;
 use ErrorException;
 use const Chevere\CLI;
-use Chevere\Console;
+use Chevere\Console\Console;
 use Chevere\VarDumper\VarDumper;
 use Chevere\VarDumper\PlainVarDumper;
 use Chevere\Utility\Str;

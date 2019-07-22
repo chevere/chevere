@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere;
 
 // FIXME: Use Symfony validator, detect missing curl extension.
+// TODO: Migrate to Guzzle
 
 use Exception;
 use DateInterval;
@@ -108,7 +109,6 @@ class Validate
      */
     public static function url(string $url): bool
     {
-        // TODO: Migrate to Guzzle
         return isset($url);
     }
 
@@ -122,7 +122,6 @@ class Validate
     public static function realUrl(string $url): bool
     {
         return (bool) $url;
-        // TODO: Migrate to Guzzle
         // if (static::url($url) == false) {
         //     return false;
         // }

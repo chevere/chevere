@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Commands;
+namespace Chevere\Console\Commands;
 
+use ReflectionMethod;
 use Chevere\App\App;
 use Chevere\HttpFoundation\Request;
-use Chevere\Command;
-use ReflectionMethod;
+use Chevere\Console\Command;
 
 /**
  * The RequestCommand allows to pass a forged request to the App instance.
