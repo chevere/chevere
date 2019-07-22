@@ -99,9 +99,10 @@ abstract class Controller implements ControllerInterface
         $that = $this->getCallable($controller);
         if (!is_callable($that)) {
             throw new Exception(
-                (string) (new Message('Expected %s callable, %t provided.'))
+                (new Message('Expected %s callable, %t provided.'))
                     ->code('%s', '$controller')
                     ->code('%t', gettype($controller))
+                    ->toString()
             );
         }
         // Pass this to that so you can this while you that dawg!
@@ -134,8 +135,9 @@ abstract class Controller implements ControllerInterface
     {
         if (!File::exists($this->filename)) {
             throw new Exception(
-                (string) (new Message("Unable to invoke controller %s (filename doesn't exists)."))
-                ->code('%s', $this->filename)
+                (new Message("Unable to invoke controller %s (filename doesn't exists)."))
+                    ->code('%s', $this->filename)
+                    ->toString()
             );
         }
     }
@@ -143,9 +145,9 @@ abstract class Controller implements ControllerInterface
     public function __invoke()
     {
         // throw new LogicException(
-        //     (string)
         //         (new Message('Class %c Must implement its own %s method.'))
         //             ->code()
+        //              ->toString()
         // );
     }
 

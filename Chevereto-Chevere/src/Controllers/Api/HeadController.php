@@ -37,10 +37,8 @@ class HeadController extends Controller
         } else {
             $route = $this->getApp()->route;
             if (!isset($route)) {
-                $message =
-                    (string)
-                        (new Message('Must provide the %s argument when running this callable without route context.'))
-                            ->code('%s', '$endpoint');
+                $msg = 'Must provide the %s argument when running this callable without route context.';
+                $message = (new Message($msg))->code('%s', '$endpoint')->toString();
                 if (CLI) {
                     Console::io()->error($message);
 

@@ -120,10 +120,10 @@ class CallableWrap
             $this->process();
         } else {
             throw new LogicException(
-                (string)
-                    (new Message('Missing magic method %s in class %c.'))
-                        ->code('%s', '__invoke')
-                        ->code('%c', $callableClass)
+                (new Message('Missing magic method %s in class %c.'))
+                    ->code('%s', '__invoke')
+                    ->code('%c', $callableClass)
+                    ->toString()
             );
         }
     }
@@ -132,23 +132,23 @@ class CallableWrap
     {
         if (!class_exists($class)) {
             throw new LogicException(
-                (string)
-                    (new Message('Callable string handle targeting not found class %c.'))
-                        ->code('%c', $class)
+                (new Message('Callable string handle targeting not found class %c.'))
+                    ->code('%c', $class)
+                    ->toString()
             );
         }
         if (0 === strpos($method, '__')) {
             throw new LogicException(
-                (string)
-                    (new Message('Callable string handle targeting magic method %m.'))
-                        ->code('%m', $method)
+                (new Message('Callable string handle targeting magic method %m.'))
+                    ->code('%m', $method)
+                    ->toString()
             );
         }
         if (!method_exists($class, $method)) {
             throw new LogicException(
-                (string)
-                    (new Message('Callable string handle targeting an nonexistent method %m.'))
-                        ->code('%m', $method)
+                (new Message('Callable string handle targeting an nonexistent method %m.'))
+                    ->code('%m', $method)
+                    ->toString()
             );
         }
     }
@@ -158,19 +158,19 @@ class CallableWrap
         $callableFilepath = Path::fromHandle($callableHandle);
         if (!File::exists($callableFilepath)) {
             throw new LogicException(
-                (string)
-                    (new Message('Unable to locate any callable specified by %s.'))
-                        ->code('%s', $callableHandle)
+                (new Message('Unable to locate any callable specified by %s.'))
+                    ->code('%s', $callableHandle)
+                    ->toString()
             );
         }
         $callable = include $callableFilepath;
         if (!is_callable($callable)) {
             throw new LogicException(
-                (string)
-                    (new Message('Expected %s callable, %t provided in %f.'))
-                        ->code('%s', '$callable')
-                        ->code('%t', gettype($callable))
-                        ->code('%f', $callableHandle)
+                (new Message('Expected %s callable, %t provided in %f.'))
+                    ->code('%s', '$callable')
+                    ->code('%t', gettype($callable))
+                    ->code('%f', $callableHandle)
+                    ->toString()
             );
         }
         $this->isFileHandle = true;
@@ -182,10 +182,10 @@ class CallableWrap
     {
         if (!in_array($type, static::TYPES)) {
             throw new LogicException(
-                (string)
-                    (new Message('Invalid type %s, expecting one of these: %v.'))
-                        ->code('%s', $type)
-                        ->code('%v', implode(', ', static::TYPES))
+                (new Message('Invalid type %s, expecting one of these: %v.'))
+                    ->code('%s', $type)
+                    ->code('%v', implode(', ', static::TYPES))
+                    ->toString()
             );
         }
     }

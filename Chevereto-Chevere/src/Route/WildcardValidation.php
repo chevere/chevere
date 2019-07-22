@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Route;
 
+use LogicException;
 use Chevereto\Chevere\Message;
 use Chevereto\Chevere\Validate;
-use Chevereto\Chevere\CoreException;
 use Chevereto\Chevere\Utility\Str;
 
 class WildcardValidation
@@ -54,9 +54,10 @@ class WildcardValidation
     protected function handleValidateFormat()
     {
         if (!$this->validateFormat($this->wildcardName)) {
-            throw new CoreException(
+            throw new InvalidArgumentException(
                 (new Message("String %s must contain only alphanumeric and underscore characters and it shouldn't start with a numeric value."))
                     ->code('%s', $this->wildcardName)
+                    ->toString()
             );
         }
     }
@@ -69,10 +70,11 @@ class WildcardValidation
     protected function handleValidateMatch()
     {
         if (!$this->validateMatch($this->wildcardName, $this->uri)) {
-            throw new CoreException(
+            throw new LogicException(
                 (new Message("Wildcard %s doesn't exists in %r."))
                     ->code('%s', $this->wildcardString)
                     ->code('%r', $this->uri)
+                    ->toString()
             );
         }
     }
@@ -85,9 +87,10 @@ class WildcardValidation
     protected function handleValidateUnique()
     {
         if (!$this->validateUnique($this->wildcardName, $this->routeWheres)) {
-            throw new CoreException(
+            throw new LogicException(
                 (new Message('Where clause for %s wildcard has been already declared.'))
                     ->code('%s', $this->wildcardString)
+                    ->toString()
             );
         }
     }
@@ -100,9 +103,10 @@ class WildcardValidation
     protected function handleValidateRegex()
     {
         if (!Validate::regex('/'.$this->wildcardName.'/')) {
-            throw new CoreException(
+            throw new InvalidArgumentException(
                 (new Message('Invalid regex pattern %s.'))
                     ->code('%s', $this->regex)
+                    ->toString()
             );
         }
     }

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Route;
 
+use LogicException;
 use Chevereto\Chevere\Message;
 use Chevereto\Chevere\Path;
-use Chevereto\Chevere\CoreException;
 use Chevereto\Chevere\Utility\Str;
 use Chevereto\Chevere\Utility\Arr;
 
@@ -77,10 +77,11 @@ class Wildcards
                 $wildcardTrim = $wildcard;
             }
             if (in_array($wildcardTrim, $this->wildcards ?? [])) {
-                throw new CoreException(
+                throw new LogicException(
                     (new Message('Must declare one unique wildcard per capturing group, duplicated %s detected in route %r.'))
                         ->code('%s', $this->matches[0][$k])
                         ->code('%r', $this->uri)
+                        ->toString()
                 );
             }
             $this->wildcards[] = $wildcardTrim;

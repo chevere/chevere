@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
+use LogicException;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
@@ -63,8 +64,7 @@ class Command extends SymfonyCommand implements Interfaces\CommandInterface
      */
     public function callback(App $app)
     {
-        // TODO: Deberia ser LogicException
-        throw new CoreException('You must override the '.__FUNCTION__.'() method in the concrete command class.');
+        throw new LogicException('You must override the '.__FUNCTION__.'() method in the concrete command class.');
     }
 
     public function getCli(): Cli

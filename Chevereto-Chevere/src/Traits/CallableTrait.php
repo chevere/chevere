@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -12,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Traits;
 
+use LogicException;
 use Chevereto\Chevere\File;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Message;
-use Chevereto\Chevere\CoreException;
 
 trait CallableTrait
 {
@@ -33,10 +34,11 @@ trait CallableTrait
                 if (method_exists($callableString, '__invoke')) {
                     return (string) $callableString;
                 } else {
-                    throw new CoreException(
+                    throw new LogicException(
                         (new Message('Missing %s method in class %c'))
                             ->code('%s', '__invoke')
                             ->code('%c', $callableString)
+                            ->toString()
                     );
                 }
             } else {
@@ -55,9 +57,10 @@ trait CallableTrait
     {
         // Check callable existance
         if (!File::exists($callableFile, true)) {
-            throw new CoreException(
+            throw new LogicException(
                 (new Message("Callable %s doesn't exists."))
                     ->code('%s', $callableFile)
+                    ->toString()
             );
         }
         // Had to make this sandwich since we are calling an anon callable.
@@ -67,10 +70,11 @@ trait CallableTrait
         error_reporting($errorLevel);
         // Check callable
         if (!is_callable($anonCallable)) {
-            throw new CoreException(
-            (new Message('File %f is not a valid %t.'))
-                ->code('%f', $callableFile)
-                ->code('%t', 'callable')
+            throw new LogicException(
+                (new Message('File %f is not a valid %t.'))
+                    ->code('%f', $callableFile)
+                    ->code('%t', 'callable')
+                    ->toString()
             );
         }
     }

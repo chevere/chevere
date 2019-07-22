@@ -226,7 +226,9 @@ class App extends AppStatic implements AppInterface
         }
         if (!in_array($requestArguments[1], Route::HTTP_METHODS)) {
             throw new LogicException(
-                (string) (new Message('Unknown HTTP request method %s'))->code('%s', $requestArguments[1])
+                (new Message('Unknown HTTP request method %s'))
+                    ->code('%s', $requestArguments[1])
+                    ->toString()
             );
         }
         $this->setHttpRequest(Request::create(...$requestArguments));

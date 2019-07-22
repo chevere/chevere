@@ -57,9 +57,9 @@ class User extends FromString implements CreateFromString
     {
         if ($this->hasConstructArgument) {
             throw new LogicException(
-                (string)
-                    (new Message('An instance of %s has been already created (WHERE?).'))
-                        ->code('%s', __CLASS__)
+                (new Message('An instance of %s has been already created (WHERE?).'))
+                    ->code('%s', __CLASS__)
+                    ->toString()
             );
         }
     }

@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -50,10 +51,8 @@ class OptionsController extends Controller
     protected function handleError()
     {
         $this->getResponse()->setStatusCode(400);
-        $message =
-            (string)
-                (new Message('Must provide a %s argument when running this callable without route context.'))
-                    ->code('%s', '$uri');
+        $msg = 'Must provide a %s argument when running this callable without route context.';
+        $message = (new Message($msg))->code('%s', '$uri')->toString();
         if (CLI) {
             Console::io()->error($message);
 

@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -41,8 +42,9 @@ class Core
         $filename = (new ReflectionClass($class))->getFileName();
         if (false === $filename) {
             throw new Exception(
-                (string) (new Message('Class %s is defined in the PHP core or in a extension.'))
+                (new Message('Class %s is defined in the PHP core or in a extension.'))
                     ->code('%s', $class)
+                    ->toString()
             );
         }
 

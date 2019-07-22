@@ -118,16 +118,18 @@ class Inspect implements ToArrayInterface
             $this->handleConstResourceMissed();
             $this->handleConstResourceValid();
         } catch (LogicException $e) {
-            $message = (new Message($e->getMessage()))
-                ->code('%interfaceController%', static::INTERFACE_CONTROLLER)
-                ->code('%reflectionName%', $this->reflection->getName())
-                ->code('%interfaceControllerResource%', static::INTERFACE_CONTROLLER_RESOURCE)
-                ->code('%reflectionFilename%', $this->reflection->getFileName())
-                ->code('%endpoint%', $this->httpMethod.' api/users')
-                ->code('%className%', $this->className)
-                ->code('%propResources%', 'const '.static::PROP_RESOURCES)
-                ->code('%filepath%', $this->filepath);
-            throw new LogicException((string) $message);
+            throw new LogicException(
+                (new Message($e->getMessage()))
+                    ->code('%interfaceController%', static::INTERFACE_CONTROLLER)
+                    ->code('%reflectionName%', $this->reflection->getName())
+                    ->code('%interfaceControllerResource%', static::INTERFACE_CONTROLLER_RESOURCE)
+                    ->code('%reflectionFilename%', $this->reflection->getFileName())
+                    ->code('%endpoint%', $this->httpMethod.' api/users')
+                    ->code('%className%', $this->className)
+                    ->code('%propResources%', 'const '.static::PROP_RESOURCES)
+                    ->code('%filepath%', $this->filepath)
+                    ->toString()
+            );
         }
         $this->handleProcessResources();
         $this->processPathComponent();
@@ -141,10 +143,10 @@ class Inspect implements ToArrayInterface
             $this->relatedResource = $className::getRelatedResource();
             if (empty($this->relatedResource)) {
                 throw new LogicException(
-                    (string)
-                        (new Message('Class %s implements %i interface, but it doesnt define any related resource.'))
-                            ->code('%s', $className)
-                            ->code('%i', ControllerRelationshipInterface::class)
+                    (new Message('Class %s implements %i interface, but it doesnt define any related resource.'))
+                        ->code('%s', $className)
+                        ->code('%i', ControllerRelationshipInterface::class)
+                        ->toString()
                 );
             }
             $this->resources = $this->relatedResource::getResources();
@@ -214,9 +216,9 @@ class Inspect implements ToArrayInterface
             foreach ($this->resources as $propertyName => $className) {
                 if (!class_exists($className)) {
                     throw new LogicException(
-                        (string)
-                            (new Message('Class %s not found for %c Controller at %f.'))
-                                ->code('%s', $className)
+                        (new Message('Class %s not found for %c Controller at %f.'))
+                            ->code('%s', $className)
+                            ->toString()
                     );
                 }
             }

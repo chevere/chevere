@@ -177,6 +177,7 @@ class Hook
                             ->code('%s', '$pos')
                             ->code('%b', static::BEFORE)
                             ->code('%a', static::AFTER)
+                            ->toString()
                     );
                 }
 

@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -27,8 +28,14 @@ namespace Chevereto\Chevere;
  */
 class Message
 {
-    private $message;
-    private $trTable = [];
+    /** @var string */
+    protected $message;
+
+    /** @var array Translation table [search => replace] */
+    protected $trTable = [];
+
+    /** @var string */
+    protected $output;
 
     /**
      * Creates a new Message instance.
@@ -70,9 +77,9 @@ class Message
     }
 
     /**
-     * Generates the message output using the translation table.
+     * Returns the message output using the translation table.
      */
-    public function __toString(): string
+    public function toString(): string
     {
         return strtr($this->message, $this->trTable);
     }

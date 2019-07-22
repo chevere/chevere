@@ -17,7 +17,6 @@ use Exception;
 use LogicException;
 use Chevereto\Chevere\Message;
 use Chevereto\Chevere\Path;
-use Chevereto\Chevere\CoreException;
 use Chevereto\Chevere\Controllers\HeadController;
 use Chevereto\Chevere\Traits\CallableTrait;
 use Chevereto\Chevere\Utility\Str;
@@ -116,10 +115,10 @@ class Route implements RouteInterface
         // Validate $name
         if (!preg_match(static::REGEX_NAME, $name)) {
             throw new Exception(
-                (string)
-                    (new Message("Expecting at least one alphanumeric, underscore, hypen or dot character. String '%s' provided."))
-                        ->code('%s', $name)
-                        ->code('%p', static::REGEX_NAME)
+                (new Message("Expecting at least one alphanumeric, underscore, hypen or dot character. String '%s' provided."))
+                    ->code('%s', $name)
+                    ->code('%p', static::REGEX_NAME)
+                    ->toString()
             );
         }
         $this->name = $name;
@@ -175,16 +174,18 @@ class Route implements RouteInterface
     {
         // Validate HTTP method
         if (!in_array($httpMethod, static::HTTP_METHODS)) {
-            throw new CoreException(
-                (new Message('Unknown HTTP method %s.'))->code('%s', $httpMethod)
+            throw new InvalidArgumentException(
+                (new Message('Unknown HTTP method %s.'))
+                    ->code('%s', $httpMethod)
+                    ->toString()
             );
         }
         $callableSome = $this->getCallableSome($callable);
         // Check HTTP dupes
         // if (isset($this->methods[$httpMethod])) {
-        //     throw new CoreException(
+        //     throw new InvalidArgumentException(
         //         (new Message('Method %s has been already registered.'))
-        //             ->code('%s', $httpMethod)
+        //             ->code('%s', $httpMethod)->toString()
         //     );
         // }
         $this->methods[$httpMethod] = $callableSome;
@@ -275,9 +276,9 @@ class Route implements RouteInterface
         $callable = $this->methods[$httpMethod] ?? null;
         if (!isset($callable)) {
             throw new LogicException(
-                (string)
-                    (new Message('No callable is associated to HTTP method %s.'))
-                        ->code('%s', $httpMethod)
+                (new Message('No callable is associated to HTTP method %s.'))
+                    ->code('%s', $httpMethod)
+                    ->toString()
             );
         }
 
@@ -313,8 +314,8 @@ class Route implements RouteInterface
     {
         $regex = $this->set ?? $this->uri;
         if (!isset($regex)) {
-            throw new CoreException(
-                (new Message('Unable to process regex for empty regex.'))
+            throw new LogicException(
+                (new Message('Unable to process regex for empty regex (no uri).'))->toString()
             );
         }
         $regex = '^'.$regex.'$';

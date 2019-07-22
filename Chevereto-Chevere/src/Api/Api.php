@@ -132,9 +132,9 @@ class Api
     {
         if (iterator_count($this->recursiveIterator) == 0) {
             throw new LogicException(
-                (string)
-                    (new Message('No API methods found in the %s path.'))
-                        ->code('%s', $this->directory)
+                (new Message('No API methods found in the %s path.'))
+                    ->code('%s', $this->directory)
+                    ->toString()
             );
         }
     }
@@ -143,9 +143,9 @@ class Api
     {
         if (isset($this->apis[$this->pathIdentifier])) {
             throw new LogicException(
-                (string)
-                    (new Message('Path identified by %s has been already bound.'))
-                        ->code('%s', $this->pathIdentifier)
+                (new Message('Path identified by %s has been already bound.'))
+                    ->code('%s', $this->pathIdentifier)
+                    ->toString()
             );
         }
     }
@@ -154,9 +154,9 @@ class Api
     {
         if (!File::exists($this->directory)) {
             throw new LogicException(
-                (string)
-                    (new Message("Directory %s doesn't exists."))
-                        ->code('%s', $this->directory)
+                (new Message("Directory %s doesn't exists."))
+                    ->code('%s', $this->directory)
+                    ->toString()
             );
         }
     }
@@ -251,8 +251,9 @@ class Api
 
         if (!isset($this->apis[$base])) {
             throw new LogicException(
-                (string) (new Message('No API for the %s URI.'))
+                (new Message('No API for the %s URI.'))
                     ->code('%s', $uri)
+                    ->toString()
             );
         }
 

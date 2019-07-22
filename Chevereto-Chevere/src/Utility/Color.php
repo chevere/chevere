@@ -77,6 +77,7 @@ abstract class Color
                         ->code('%s', 'string')
                         ->code('%a', 'array')
                         ->code('%t', $type)
+                        ->toString()
                 );
         }
         $hex = '#';

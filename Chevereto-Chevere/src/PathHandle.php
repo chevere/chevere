@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -11,6 +12,8 @@ declare(strict_types=1);
  */
 
 namespace Chevereto\Chevere;
+
+use InvalidArgumentException;
 
 class PathHandle
 {
@@ -51,26 +54,29 @@ class PathHandle
     public function validateIdentifier()
     {
         if (!($this->identifier != '' && !ctype_space($this->identifier))) {
-            throw new CoreException(
+            throw new InvalidArgumentException(
                 (new Message('String %a needed, %v provided.'))
                     ->code('%a', '$identifier')
                     ->code('%v', 'empty or null string')
+                    ->toString()
             );
         }
         if (Utility\Str::contains(':', $this->identifier)) {
             if (Utility\Str::endsWith(':', $this->identifier)) {
-                throw new CoreException(
+                throw new InvalidArgumentException(
                     (new Message('Wrong string %a format, %v provided (trailing colon).'))
                         ->code('%a', '$identifier')
                         ->code('%v', $this->identifier)
+                        ->toString()
                 );
             }
             $this->filename = $this->filenameFromIdentifier();
             if (Utility\Str::contains('/', $this->filename)) {
-                throw new CoreException(
+                throw new InvalidArgumentException(
                     (new Message('Wrong string %a format, %v provided (path separators in filename).'))
                         ->code('%a', '$identifier')
                         ->code('%v', $this->identifier)
+                        ->toString()
                 );
             }
         }
@@ -79,10 +85,11 @@ class PathHandle
     public function validateContext()
     {
         if (!Path::isAbsolute($this->context)) {
-            throw new CoreException(
+            throw new InvalidArgumentException(
                 (new Message('String %a must be an absolute path, %v provided.'))
                     ->code('%a', '$context')
                     ->code('%v', $this->context)
+                    ->toString()
             );
         }
 

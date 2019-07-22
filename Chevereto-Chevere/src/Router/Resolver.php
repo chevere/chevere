@@ -44,9 +44,9 @@ class Resolver
             return unserialize($this->routeSome, ['allowed_classes' => Route::class]);
         } else {
             throw new LogicException(
-              (string) (new Message('Unexpected type %t in routes table %h.'))
-                  ->code('%t', gettype($this->routeSome))
-                //   ->code('%h', $this->pointer[0].'@'.$this->pointer[1])
+                (new Message('Unexpected type %t in routes table %h.'))
+                    ->code('%t', gettype($this->routeSome))
+                    ->toString()
           );
         }
     }

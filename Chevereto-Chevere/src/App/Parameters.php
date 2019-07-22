@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -86,10 +87,10 @@ class Parameters extends Data
     {
         if (!array_key_exists($key, $this->keys)) {
             throw new LogicException(
-                (string)
-                    (new Message('Unrecognized %c key "%s".'))
-                        ->code('%c', __CLASS__)
-                        ->strtr('%s', $key)
+                (new Message('Unrecognized %c key "%s".'))
+                    ->code('%c', __CLASS__)
+                    ->strtr('%s', $key)
+                    ->toString()
             );
         }
     }
@@ -104,12 +105,12 @@ class Parameters extends Data
         $gettype = gettype($val);
         if ($gettype !== $this->keys[$key]) {
             throw new LogicException(
-                (string)
-                    (new Message('Expecting type %s, %t provided for key "%k" in %c.'))
-                        ->code('%s', $this->keys[$key])
-                        ->code('%t', $gettype)
-                        ->strtr('%k', $key)
-                        ->code('%c', $this->context)
+                (new Message('Expecting type %s, %t provided for key "%k" in %c.'))
+                    ->code('%s', $this->keys[$key])
+                    ->code('%t', $gettype)
+                    ->strtr('%k', $key)
+                    ->code('%c', $this->context)
+                    ->toString()
             );
         }
     }

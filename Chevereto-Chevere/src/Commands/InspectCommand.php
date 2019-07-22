@@ -89,6 +89,7 @@ class InspectCommand extends Command
                         ->code('%t', 'callable')
                         ->code('%s', gettype($this->callable))
                         ->code('%f', $this->callableInput)
+                        ->toString()
                 );
 
                 return 0;

@@ -61,9 +61,10 @@ class Runtime extends Data
     {
         if (!@ini_set('default_charset', $charset)) {
             throw new RuntimeException(
-                (string) (new Message('Unable to set %s %v.'))
+                (new Message('Unable to set %s %v.'))
                     ->code('%s', 'default_charset')
                     ->code('%v', $charset)
+                    ->toString()
             );
         }
         $this->setDataKey(Config::DEFAULT_CHARSET, $charset);

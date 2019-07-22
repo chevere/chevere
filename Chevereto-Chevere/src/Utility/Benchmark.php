@@ -126,7 +126,9 @@ class Benchmark
         }
         if (null != $this->callables && array_key_exists($name, $this->callables)) {
             throw new Exception(
-                (new Message('Duplicate callable declaration %s'))->code('%s', $name)
+                (new Message('Duplicate callable declaration %s'))
+                    ->code('%s', $name)
+                    ->toString()
             );
         }
         if (!is_callable($callable)) {

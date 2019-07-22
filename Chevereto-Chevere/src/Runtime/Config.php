@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevereto\Chevere\Runtime;
 
 use Exception;
+use LogicException;
 use Chevereto\Chevere\Data;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Message;
 use Chevereto\Chevere\ArrayFile;
-use Chevereto\Chevere\CoreException;
 use Chevereto\Chevere\Validate;
 
 /**
@@ -76,10 +76,11 @@ class Config extends Data
         foreach (array_keys($data) as $key) {
             $fnName = 'set'.ucwords($key);
             if (!method_exists(Runtime::class, $fnName)) {
-                throw new CoreException(
+                throw new LogicException(
                     (new Message('Unrecognized %c key "%s".'))
                         ->code('%c', __CLASS__)
                         ->strtr('%s', $key)
+                        ->toString()
                 );
             }
             $this->data[$key] = $data[$key];
@@ -93,8 +94,8 @@ class Config extends Data
         try {
             $this->validate();
         } catch (Exception $e) {
-            throw new CoreException(
-                (new Message($e->getMessage().' at %s'))->b('%s', '0000000000000000')
+            throw new LogicException(
+                (new Message($e->getMessage().' at %s'))->b('%s', '0000000000000000')->toString()
             );
         }
         $this->addData($this->data);
@@ -204,7 +205,7 @@ class Config extends Data
                 }
             break;
             default:
-                throw new CoreException(
+                throw new InvalidArgumentException(
                     (new Message('Invalid assert type %t, use only type %s or %a'))
                         ->code('%t', $type)
                         ->code('%s', 'string')

@@ -25,17 +25,23 @@ class Checkout
         $fh = fopen($filename, 'w');
         if (false === $fh) {
             throw new RuntimeException(
-                (string) (new Message('Unable to open %f for writing'))->code('%f', $filename)
+                (new Message('Unable to open %f for writing'))
+                    ->code('%f', $filename)
+                    ->toString()
             );
         }
         if (!@fwrite($fh, (string) time())) {
             throw new RuntimeException(
-                (string) (new Message('Unable to write to %f'))->code('%f', $filename)
+                (new Message('Unable to write to %f'))
+                    ->code('%f', $filename)
+                    ->toString()
             );
         }
         if (!@fclose($fh)) {
             throw new RuntimeException(
-                (string) (new Message('Unable to close %f'))->code('%f', $filename)
+                (new Message('Unable to close %f'))
+                    ->code('%f', $filename)
+                    ->toString()
             );
         }
     }

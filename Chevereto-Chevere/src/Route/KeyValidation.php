@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Route;
 
-use Chevereto\Chevere\CoreException;
+use InvalidArgumentException;
 use Chevereto\Chevere\Message;
 use Chevereto\Chevere\Utility\Str;
 
@@ -36,9 +36,10 @@ class KeyValidation
     protected function handleValidateFormat()
     {
         if (!$this->validateFormat($this->key)) {
-            throw new CoreException(
+            throw new InvalidArgumentException(
                 (new Message("String %s must start with a forward slash, it shouldn't contain neither whitespace, backslashes or extra forward slashes and it should be specified without a trailing slash."))
                     ->code('%s', $this->key)
+                    ->toString()
             );
         }
     }
@@ -46,9 +47,10 @@ class KeyValidation
     protected function handleWildcards()
     {
         if ($this->hasHandlebars && !$this->validateWildcard($this->key)) {
-            throw new CoreException(
+            throw new InvalidArgumentException(
                 (new Message('Wildcards in the form of %s are reserved.'))
                     ->code('%s', '/{n}')
+                    ->toString()
             );
         }
     }

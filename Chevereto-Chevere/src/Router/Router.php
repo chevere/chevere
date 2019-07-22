@@ -80,9 +80,10 @@ class Router
         $keyedRoute = $this->routeKeys[$key] ?? null;
         if (isset($keyedRoute)) {
             throw new LogicException(
-                (string) (new Message('Route key %s has been already declared by %r.'))
+                (new Message('Route key %s has been already declared by %r.'))
                     ->code('%s', $key)
                     ->code('%r', $keyedRoute[0].'@'.$keyedRoute[1])
+                    ->toString()
             );
         }
     }
@@ -93,9 +94,10 @@ class Router
             $namedRoute = $this->namedRoutes[$name] ?? null;
             if (isset($namedRoute)) {
                 throw new LogicException(
-                    (string) (new Message('Route name %s has been already taken by %r.'))
+                    (new Message('Route name %s has been already taken by %r.'))
                         ->code('%s', $name)
                         ->code('%r', $namedRoute[0].'@'.$namedRoute[1])
+                        ->toString()
                 );
             }
             $this->namedRoutes[$name] = $pointer;

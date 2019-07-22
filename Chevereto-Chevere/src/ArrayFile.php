@@ -80,12 +80,14 @@ class ArrayFile
                 $this->validate($fileArray);
             }
         } catch (LogicException $e) {
-            $message = (string) (new Message($e->getMessage()))
-                ->code('%arrayFileType%', $arrayFileType)
-                ->code('%filepath%', $filepath)
-                ->code('%members%', $this->className ?? $this->interfaceName ?? $this->type)
-                ->code('%typeSome%', $typeSome);
-            throw new LogicException($message);
+            throw new LogicException(
+                (new Message($e->getMessage()))
+                    ->code('%arrayFileType%', $arrayFileType)
+                    ->code('%filepath%', $filepath)
+                    ->code('%members%', $this->className ?? $this->interfaceName ?? $this->type)
+                    ->code('%typeSome%', $typeSome)
+                    ->toString()
+            );
         }
         $this->array = $fileArray;
     }
@@ -163,9 +165,10 @@ class ArrayFile
             $type .= ' '.get_class($v);
         }
         throw new LogicException(
-                (string) (new Message('Expecting array containing only %members% members, %type% found at %filepath% (key %key%).'))
-                    ->code('%type%', $type)
-                    ->code('%key%', $k)
+            (new Message('Expecting array containing only %members% members, %type% found at %filepath% (key %key%).'))
+                ->code('%type%', $type)
+                ->code('%key%', $k)
+                ->toString()
         );
     }
 

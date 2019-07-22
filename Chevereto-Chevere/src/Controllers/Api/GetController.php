@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -42,10 +43,8 @@ class GetController extends Controller
             if (isset($route)) {
                 $endpoint = $route->getUri();
             } else {
-                $message =
-                    (string)
-                        (new Message('Must provide the %s argument when running this callable without route context.'))
-                            ->code('%s', '$endpoint');
+                $msg = 'Must provide the %s argument when running this callable without route context.';
+                $message = (new Message($msg))->code('%s', '$endpoint')->toString();
                 if (CLI) {
                     Console::io()->error($message);
 
