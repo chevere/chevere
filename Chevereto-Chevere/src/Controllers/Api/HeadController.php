@@ -40,7 +40,7 @@ class HeadController extends Controller
                 $msg = 'Must provide the %s argument when running this callable without route context.';
                 $message = (new Message($msg))->code('%s', '$endpoint')->toString();
                 if (CLI) {
-                    Console::cli()->io->error($message);
+                    Console::cli()->out->error($message);
 
                     return;
                 } else {
@@ -66,7 +66,7 @@ class HeadController extends Controller
         $controller = $this->getApp()->getControllerObject($callable);
         $controller->getResponse()->unsetContent();
         if (CLI) {
-            Console::cli()->io->block($controller->getResponse()->getStatusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
+            Console::cli()->out->block($controller->getResponse()->getStatusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
         }
     }
 }

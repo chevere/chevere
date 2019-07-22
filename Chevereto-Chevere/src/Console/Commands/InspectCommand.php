@@ -76,14 +76,14 @@ class InspectCommand extends Command
         } else {
             $this->callableFilepath = Path::fromHandle($this->callableInput);
             if (!File::exists($this->callableFilepath)) {
-                $this->cli->io->error(sprintf('Unable to locate callable %s', $this->callableInput));
+                $this->cli->out->error(sprintf('Unable to locate callable %s', $this->callableInput));
 
                 return 0;
             }
             $callableSome = $this->callableFilepath;
             $this->callable = Load::php($this->callableFilepath);
             if (!is_callable($this->callable)) {
-                $this->cli->io->error(
+                $this->cli->out->error(
                     (new Message('Expecting %t return type, %s provided in %f'))
                         ->code('%t', 'callable')
                         ->code('%s', gettype($this->callable))
@@ -97,7 +97,7 @@ class InspectCommand extends Command
 
         $this->handleSetMethod();
         $this->handleSetReflector();
-        $this->cli->io->block($callableSome, 'INSPECTED', 'fg=black;bg=green', ' ', true);
+        $this->cli->out->block($callableSome, 'INSPECTED', 'fg=black;bg=green', ' ', true);
         $this->processParametersArguments();
         $this->handleProcessArguments();
 
@@ -168,12 +168,12 @@ class InspectCommand extends Command
 
     protected function processArguments(): void
     {
-        $this->cli->io->text(['<fg=yellow>Arguments:</>']);
-        $this->cli->io->listing($this->arguments);
+        $this->cli->out->text(['<fg=yellow>Arguments:</>']);
+        $this->cli->out->listing($this->arguments);
     }
 
     protected function processNoArguments(): void
     {
-        $this->cli->io->text(['<fg=yellow>No arguments</>', null]);
+        $this->cli->out->text(['<fg=yellow>No arguments</>', null]);
     }
 }

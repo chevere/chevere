@@ -23,7 +23,7 @@ use Chevere\Console\Commands\RunCommand;
 use Chevere\Console\Commands\InspectCommand;
 
 /**
- * This class provides console for Chevere and it is a facade of Symfony\Component\Console.
+ * This class provides console facade for Symfony\Component\Console.
  */
 class Cli
 {
@@ -49,7 +49,7 @@ class Cli
     public $client;
 
     /** @var SymfonyStyle */
-    public $io;
+    public $out;
 
     /** @var Command */
     public $command;
@@ -62,7 +62,7 @@ class Cli
         $this->output = new ConsoleOutput();
         $this->client = new Application($this->name, $this->version);
         $this->logger = new Logger($this->name);
-        $this->io = new SymfonyStyle($this->input, $this->output);
+        $this->out = new SymfonyStyle($this->input, $this->output);
         $this->client->add(new RequestCommand($this));
         $this->client->add(new RunCommand($this));
         $this->client->add(new InspectCommand($this));
