@@ -118,17 +118,17 @@ class Output
             if ('title' == $k) {
                 $tpl = $v[0];
             } else {
-                Console::io()->section(strtr($v[0], $this->templateTags));
+                Console::cli()->io->section(strtr($v[0], $this->templateTags));
                 $tpl = $v[1];
             }
             $message = strtr($tpl, $this->templateTags);
             if ('title' == $k) {
-                Console::io()->error($message);
+                Console::cli()->io->error($message);
             } else {
-                Console::io()->writeln($message);
+                Console::cli()->io->writeln($message);
             }
         }
-        Console::io()->writeln('');
+        Console::cli()->io->writeln('');
     }
 
     protected function generateTemplates(Formatter $formatter)

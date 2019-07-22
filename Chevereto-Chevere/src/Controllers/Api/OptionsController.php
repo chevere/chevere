@@ -54,7 +54,7 @@ class OptionsController extends Controller
         $msg = 'Must provide a %s argument when running this callable without route context.';
         $message = (new Message($msg))->code('%s', '$uri')->toString();
         if (CLI) {
-            Console::io()->error($message);
+            Console::cli()->io->error($message);
 
             return;
         } else {

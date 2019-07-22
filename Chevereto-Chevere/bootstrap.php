@@ -67,7 +67,6 @@ const DEFAULT_ERROR_HANDLING = [
 //         ->processFromArray(DEFAULT_ERROR_HANDLING)
 // );
 
-// This constant allows safe short syntax like `CLI && Console::io()` in all namespaces.
 define('Chevere\CLI', Console::isRunning());
 
 App::setDefaultRuntime(

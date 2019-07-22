@@ -39,10 +39,6 @@ class Command extends ConsoleCommand implements CommandInterface
     const OPTION_OPTIONAL = InputOption::VALUE_OPTIONAL;
     const OPTION_IS_ARRAY = InputOption::VALUE_IS_ARRAY;
 
-    // protected $input;
-    // protected $output;
-    // protected $io;
-    // protected $logger;
     /** @var Cli */
     public $cli;
 

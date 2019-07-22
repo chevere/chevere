@@ -22,6 +22,9 @@ use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Chevere\App\App;
 
+/**
+ * Provides static access to the Chevere application console.
+ */
 class Console
 {
     const VERBOSITY_QUIET = ConsoleOutput::VERBOSITY_QUIET;
@@ -58,22 +61,12 @@ class Console
     public static function bind(App $app): bool
     {
         if (php_sapi_name() == 'cli') {
-            static::setApp($app);
+            static::$app = $app;
 
             return true;
         }
 
         return false;
-    }
-
-    public static function setApp(App $app)
-    {
-        static::$app = $app;
-    }
-
-    public static function getApp(): App
-    {
-        return static::$app;
     }
 
     /**
@@ -89,44 +82,18 @@ class Console
      */
     public static function run()
     {
-        $cli = static::cli();
-        $exitCode = $cli->runner();
-        $command = $cli->command;
+        $exitCode = static::$cli->runner();
+        $command = static::$cli->command;
         if (null === $command) {
             exit($exitCode);
         }
         if (method_exists($command, 'callback')) {
-            $app = static::getApp();
-            if ($app == null) {
+            if (static::$app == null) {
                 throw new RuntimeException('No app instance is defined.');
             }
-            $exitCode = $command->callback($app);
+            $exitCode = $command->callback(static::$app);
         }
         exit($exitCode);
-    }
-
-    /**
-     * Get logger.
-     */
-    public static function logger(): Logger
-    {
-        return static::cli()->logger;
-    }
-
-    /**
-     * Get client.
-     */
-    public static function client(): ConsoleClient
-    {
-        return static::cli()->client;
-    }
-
-    /**
-     * Get input.
-     */
-    public static function input(): ArgvInput
-    {
-        return static::cli()->input;
     }
 
     /**
@@ -134,28 +101,11 @@ class Console
      */
     public static function inputString(): string
     {
-        $input = static::input();
-        if (method_exists($input, '__toString')) {
-            return static::input()->__toString();
+        if (method_exists(static::$cli->input, '__toString')) {
+            return static::$cli->input->__toString();
         }
 
-        return 'n/a';
-    }
-
-    /**
-     * Get output.
-     */
-    public static function output(): ConsoleOutput
-    {
-        return static::cli()->output;
-    }
-
-    /**
-     * Get IO.
-     */
-    public static function io(): SymfonyStyle
-    {
-        return static::cli()->io;
+        return '';
     }
 
     /**
