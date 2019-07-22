@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevere;
 
 // FIXME: Use Symfony validator, detect missing curl extension.
 
@@ -165,8 +165,7 @@ class Validate
      */
     public static function regex(string $regex): bool
     {
-        set_error_handler(function () {
-        }, E_WARNING);
+        set_error_handler(function () { }, E_WARNING);
         $return = false !== preg_match($regex, '');
         restore_error_handler();
 

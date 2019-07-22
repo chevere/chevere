@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -10,8 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Interfaces;
+namespace Chevere\Interfaces;
 
 interface RouteInterface
-{
-}
+{ }

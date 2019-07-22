@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\ErrorHandler;
+namespace Chevere\ErrorHandler;
 
 class TemplateStrings
 {
@@ -85,7 +85,7 @@ class TemplateStrings
                 if ($this->sectionLength > 1) {
                     $this->appendEOL();
                 }
-                $this->rich .= '<div class="c">'.$this->richSection[$j].'</div>';
+                $this->rich .= '<div class="c">' . $this->richSection[$j] . '</div>';
                 $this->plain .= $this->plainSection[$j];
             }
         }
@@ -94,7 +94,7 @@ class TemplateStrings
     protected function appendSectionWrap()
     {
         if (0 == $this->i || isset($this->plainSection[1])) {
-            $this->rich .= '<div class="t'.(0 == $this->i ? ' t--scream' : null).'">'.$this->richSection[0].'</div>';
+            $this->rich .= '<div class="t' . (0 == $this->i ? ' t--scream' : null) . '">' . $this->richSection[0] . '</div>';
             $this->plain .= html_entity_decode($this->plainSection[0]);
             if (0 == $this->i) {
                 $this->appendRichTitleBreak();
@@ -105,12 +105,12 @@ class TemplateStrings
 
     protected function appendRichTitleBreak()
     {
-        $this->rich .= "\n".'<div class="hide">'.$this->titleBreak.'</div>';
+        $this->rich .= "\n" . '<div class="hide">' . $this->titleBreak . '</div>';
     }
 
     protected function appendPlainTitleBreak()
     {
-        $this->plain .= "\n".$this->titleBreak;
+        $this->plain .= "\n" . $this->titleBreak;
     }
 
     protected function appendEOL()
@@ -121,7 +121,7 @@ class TemplateStrings
 
     protected function appendRichSectionBreak()
     {
-        $this->rich .= "\n".'<br>'."\n";
+        $this->rich .= "\n" . '<br>' . "\n";
     }
 
     protected function appendPlainSectionBreak()

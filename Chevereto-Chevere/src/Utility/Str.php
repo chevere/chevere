@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Utility;
+namespace Chevere\Utility;
 
 abstract class Str
 {
@@ -267,7 +267,7 @@ abstract class Str
         if (mb_strlen($string, $encoding) <= $limit) {
             return $string;
         }
-        $string = trim(mb_substr($string, 0, $limit - strlen($pad), $encoding)).$pad;
+        $string = trim(mb_substr($string, 0, $limit - strlen($pad), $encoding)) . $pad;
 
         return $string ?? '';
     }
@@ -365,7 +365,7 @@ abstract class Str
      */
     public static function rtail(string $string, string $tail): string
     {
-        return rtrim($string, $tail).$tail;
+        return rtrim($string, $tail) . $tail;
     }
 
     /**
@@ -380,6 +380,6 @@ abstract class Str
      */
     public static function ltail(string $string, string $tail): string
     {
-        return $tail.ltrim($string, $tail);
+        return $tail . ltrim($string, $tail);
     }
 }

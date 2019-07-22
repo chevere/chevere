@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevere;
 
 use ReflectionClass;
 use InvalidArgumentException;
@@ -27,7 +27,7 @@ class Core
      */
     public static function namespaced(string $string): string
     {
-        return CORE_NS_HANDLE.$string;
+        return CORE_NS_HANDLE . $string;
     }
 
     /**

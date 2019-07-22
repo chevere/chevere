@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevere;
 
 use InvalidArgumentException;
 
@@ -109,7 +109,7 @@ class PathHandle
         }
         // $this->path is not an absolute path neither a wrapper or anything like that
         if (!Path::isAbsolute($this->path)) {
-            $this->path = $this->context.$this->path;
+            $this->path = $this->context . $this->path;
         }
         // Resolve . and ..
         $this->path = Path::resolve($this->path);

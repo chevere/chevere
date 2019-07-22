@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Router;
+namespace Chevere\Router;
 
 use LogicException;
-use Chevereto\Chevere\Message;
-use Chevereto\Chevere\Route\Route;
+use Chevere\Message;
+use Chevere\Route\Route;
 
 /**
  * Routes takes a bunch of Routes and generates a routing table (php array).
@@ -82,7 +82,7 @@ class Router
             throw new LogicException(
                 (new Message('Route key %s has been already declared by %r.'))
                     ->code('%s', $key)
-                    ->code('%r', $keyedRoute[0].'@'.$keyedRoute[1])
+                    ->code('%r', $keyedRoute[0] . '@' . $keyedRoute[1])
                     ->toString()
             );
         }
@@ -96,7 +96,7 @@ class Router
                 throw new LogicException(
                     (new Message('Route name %s has been already taken by %r.'))
                         ->code('%s', $name)
-                        ->code('%r', $namedRoute[0].'@'.$namedRoute[1])
+                        ->code('%r', $namedRoute[0] . '@' . $namedRoute[1])
                         ->toString()
                 );
             }
@@ -123,7 +123,7 @@ class Router
         $regex = [];
         foreach ($this->regexIndex as $k => $v) {
             preg_match('#\^(.*)\$#', $k, $matches);
-            $regex[] = '|'.$matches[1]." (*:$v)";
+            $regex[] = '|' . $matches[1] . " (*:$v)";
         }
 
         return sprintf(static::REGEX_TEPLATE, implode('', $regex));

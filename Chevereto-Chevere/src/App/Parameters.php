@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\App;
+namespace Chevere\App;
 
 use LogicException;
-use Chevereto\Chevere\Data;
-use Chevereto\Chevere\ArrayFile;
-use Chevereto\Chevere\PathHandle;
-use Chevereto\Chevere\Message;
+use Chevere\Data;
+use Chevere\ArrayFile;
+use Chevere\PathHandle;
+use Chevere\Message;
 
 class Parameters extends Data
 {

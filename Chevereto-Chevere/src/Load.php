@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevere;
 
-use Chevereto\Chevere\Utility\Str;
+use Chevere\Utility\Str;
 
 abstract class Load
 {

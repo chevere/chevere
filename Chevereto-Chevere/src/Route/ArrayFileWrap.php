@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -10,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Route;
+namespace Chevere\Route;
 
-use Chevereto\Chevere\PathHandle;
-use Chevereto\Chevere\ArrayFile;
+use Chevere\PathHandle;
+use Chevere\ArrayFile;
 
 /**
  * Routes provides a way to interact with Route array files.

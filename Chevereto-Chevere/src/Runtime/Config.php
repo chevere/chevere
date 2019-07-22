@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Runtime;
+namespace Chevere\Runtime;
 
 use Exception;
 use LogicException;
-use Chevereto\Chevere\Data;
-use Chevereto\Chevere\Path;
-use Chevereto\Chevere\Message;
-use Chevereto\Chevere\ArrayFile;
-use Chevereto\Chevere\Validate;
+use Chevere\Data;
+use Chevere\Path;
+use Chevere\Message;
+use Chevere\ArrayFile;
+use Chevere\Validate;
 
 /**
  * Runtime configurator.
@@ -49,7 +49,7 @@ class Config extends Data
         self::ERROR_HANDLER => 'is_callable',
         self::EXCEPTION_HANDLER => 'is_callable',
         self::URI_SCHEME => ['http', 'https'],
-        self::TIMEZONE => Validate::class.'::timezone',
+        self::TIMEZONE => Validate::class . '::timezone',
     ];
 
     public function __construct()
@@ -74,7 +74,7 @@ class Config extends Data
     protected function dataAdder(array $data): self
     {
         foreach (array_keys($data) as $key) {
-            $fnName = 'set'.ucwords($key);
+            $fnName = 'set' . ucwords($key);
             if (!method_exists(Runtime::class, $fnName)) {
                 throw new LogicException(
                     (new Message('Unrecognized %c key "%s".'))
@@ -95,7 +95,7 @@ class Config extends Data
             $this->validate();
         } catch (Exception $e) {
             throw new LogicException(
-                (new Message($e->getMessage().' at %s'))->b('%s', '0000000000000000')->toString()
+                (new Message($e->getMessage() . ' at %s'))->b('%s', '0000000000000000')->toString()
             );
         }
         $this->addData($this->data);
@@ -176,7 +176,7 @@ class Config extends Data
             }
         }
         if ($exceptions != false) {
-            throw new LogicException('Invalid configuration: '.implode('; ', $exceptions));
+            throw new LogicException('Invalid configuration: ' . implode('; ', $exceptions));
         }
     }
 
@@ -198,19 +198,19 @@ class Config extends Data
                 if ($assert($value) == false) {
                     throw new ConfigException($key);
                 }
-            break;
+                break;
             case 'array':
                 if (!in_array($value, $assert, true)) {
                     throw new ConfigException($key);
                 }
-            break;
+                break;
             default:
                 throw new InvalidArgumentException(
                     (new Message('Invalid assert type %t, use only type %s or %a'))
                         ->code('%t', $type)
                         ->code('%s', 'string')
                         ->code('%a', 'array')
-                    );
+                );
         }
     }
 }
@@ -227,7 +227,7 @@ class ConfigException extends Exception
         $message = "Unexpected config value $value for <b>$key</b> config key";
         // $assert = 'try' ?? Config::getAssert($key);
         $assert = '00000000000000000xTry';
-        $message .= ' (expecting <code>'.$assert.'</code>)';
+        $message .= ' (expecting <code>' . $assert . '</code>)';
         parent::__construct($message, $code, $previous);
     }
 }

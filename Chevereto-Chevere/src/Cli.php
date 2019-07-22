@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -10,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevere;
 
 use Monolog\Logger;
 use Symfony\Component\Console\Application;
@@ -19,11 +20,11 @@ use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 /**
- * This class provides console for Chevereto\Chevere and it is a facade of Symfony\Component\Console.
+ * This class provides console for Chevere and it is a facade of Symfony\Component\Console.
  */
 class Cli
 {
-    const NAME = __NAMESPACE__.' cli';
+    const NAME = __NAMESPACE__ . ' cli';
     const VERSION = '1.0';
 
     /** @var string Cli name */

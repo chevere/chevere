@@ -1,9 +1,8 @@
 <?php
 
-// Deprecate Static
 declare(strict_types=1);
 
-namespace Chevereto\Chevere;
+namespace Chevere;
 
 use Monolog\Logger;
 use Symfony\Component\Console\Output\OutputInterface;

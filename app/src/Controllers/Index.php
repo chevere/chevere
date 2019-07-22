@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use Chevereto\Chevere\Controller\Controller;
-use Chevereto\Chevere\JsonApi\Data;
+use Chevere\Controller\Controller;
+use Chevere\JsonApi\Data;
 
 class Index extends Controller
 {
@@ -33,9 +33,9 @@ class Index extends Controller
 
         $this
             ->getResponse()
-                ->setMeta(['Hello' => 'World!'])
-                ->addData($api)
-                ->addData($cli)
-                ->setStatusCode(200);
+            ->setMeta(['Hello' => 'World!'])
+            ->addData($api)
+            ->addData($cli)
+            ->setStatusCode(200);
     }
 }

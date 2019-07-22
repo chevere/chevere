@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Controller;
+namespace Chevere\Controller;
 
-use Chevereto\Chevere\Interfaces\ControllerRelationshipInterface;
+use Chevere\Interfaces\ControllerRelationshipInterface;
 
 /**
  * Abstract class used for API resourced Controllers with relationships.

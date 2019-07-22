@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\VarDumper;
+namespace Chevere\VarDumper;
 
 /**
  * Exactly the same as Dump but stripping any format decorators.

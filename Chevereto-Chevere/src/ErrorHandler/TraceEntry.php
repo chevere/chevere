@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\ErrorHandler;
+namespace Chevere\ErrorHandler;
 
 use ReflectionMethod;
-use const Chevereto\Chevere\PATH;
-use Chevereto\Chevere\App\App;
-use Chevereto\Chevere\Core;
-use Chevereto\Chevere\Path;
-use Chevereto\Chevere\Utility\Str;
-use Chevereto\Chevere\VarDumper\VarDumper;
-use Chevereto\Chevere\VarDumper\PlainVarDumper;
+use const Chevere\PATH;
+use Chevere\App\App;
+use Chevere\Core;
+use Chevere\Path;
+use Chevere\Utility\Str;
+use Chevere\VarDumper\VarDumper;
+use Chevere\VarDumper\PlainVarDumper;
 
 /**
  * TraceEntry prepares the exception trace for being used with Stack.
@@ -94,9 +94,9 @@ class TraceEntry
         $this->plainArgs = "\n";
         $this->richArgs = "\n";
         foreach ($this->entry['args'] as $k => $v) {
-            $aux = 'Arg#'.($k + 1).' ';
-            $this->plainArgs .= $aux.PlainVarDumper::out($v, null, [App::class])."\n";
-            $this->richArgs .= $aux.VarDumper::out($v, null, [App::class])."\n";
+            $aux = 'Arg#' . ($k + 1) . ' ';
+            $this->plainArgs .= $aux . PlainVarDumper::out($v, null, [App::class]) . "\n";
+            $this->richArgs .= $aux . VarDumper::out($v, null, [App::class]) . "\n";
         }
         $this->chopArgStringNl($this->plainArgs);
         $this->chopArgStringNl($this->richArgs);
@@ -131,7 +131,7 @@ class TraceEntry
 
     protected function processCoreAutoloader()
     {
-        $this->entry['file'] = $this->entry['file'] ?? (PATH.'autoloader.php');
+        $this->entry['file'] = $this->entry['file'] ?? (PATH . 'autoloader.php');
     }
 
     protected function handleProcessNormalizeFile()

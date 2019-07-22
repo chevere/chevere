@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\ErrorHandler;
+namespace Chevere\ErrorHandler;
 
 use Throwable;
 use ErrorException;
-use const Chevereto\Chevere\CORE_NS_HANDLE;
-use Chevereto\Chevere\Path;
-use Chevereto\Chevere\Utility\Str;
+use const Chevere\CORE_NS_HANDLE;
+use Chevere\Path;
+use Chevere\Utility\Str;
 
 /**
  * Handles the error exception throwable.

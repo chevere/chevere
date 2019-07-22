@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -10,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Chevereto\Chevere\Dumper;
+use Chevere\Dumper;
 
 /**
  * Dumps information about one or more variables.

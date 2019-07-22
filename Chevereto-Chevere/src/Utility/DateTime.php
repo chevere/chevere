@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Utility;
+namespace Chevere\Utility;
 
 use DateTimeInterface;
 use InvalidArgumentException;
@@ -134,7 +134,7 @@ class DateTime extends \DateTime implements DateTimeInterface
     public function timeBetween(string $datetime, string $unit = self::UNIT_SECOND): float
     {
         if (!isset(static::SECONDS_TABLE[$unit])) {
-            throw new InvalidArgumentException("Unexpected unit <code>$unit</code>, you can only use one of the following units: <code>".implode(', ', static::UNITS).'</code>');
+            throw new InvalidArgumentException("Unexpected unit <code>$unit</code>, you can only use one of the following units: <code>" . implode(', ', static::UNITS) . '</code>');
         }
         $then = new self($datetime);
         $diff = abs($then->getTimestamp() - $this->getTimestamp()); // In seconds

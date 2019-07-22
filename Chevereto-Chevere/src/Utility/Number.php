@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -10,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Utility;
+namespace Chevere\Utility;
 
 abstract class Number
 {
@@ -40,7 +41,7 @@ abstract class Number
                 if ($number >= pow(10, $exponent)) {
                     $div = $number / pow(10, $exponent);
                     $float = floatval($div);
-                    $number = null === $abbreviation ? (string) $float : (round($float, $precision).$abbreviation);
+                    $number = null === $abbreviation ? (string) $float : (round($float, $precision) . $abbreviation);
                     break;
                 }
             }

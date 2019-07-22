@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevere;
 
-use Chevereto\Chevere\VarDumper\VarDumper;
+use Chevere\VarDumper\VarDumper;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
@@ -26,7 +26,7 @@ class Dumper
 {
     const BACKGROUND = '#132537';
     const BACKGROUND_SHADE = '#132537';
-    const STYLE = 'font: 14px Consolas, monospace, sans-serif; line-height: 1.2; color: #ecf0f1; padding: 15px; margin: 10px 0; word-break: break-word; white-space: pre-wrap; background: '.self::BACKGROUND.'; display: block; text-align: left; border: none; border-radius: 4px;';
+    const STYLE = 'font: 14px Consolas, monospace, sans-serif; line-height: 1.2; color: #ecf0f1; padding: 15px; margin: 10px 0; word-break: break-word; white-space: pre-wrap; background: ' . self::BACKGROUND . '; display: block; text-align: left; border: none; border-radius: 4px;';
 
     protected $vars;
 
@@ -73,7 +73,7 @@ class Dumper
         $this->handleFile();
         $this->output .= "\n\n";
         $this->handleArgs();
-        $this->output = trim($this->output).'</pre>';
+        $this->output = trim($this->output) . '</pre>';
         $this->handleProccessOutput();
     }
 
@@ -124,10 +124,10 @@ class Dumper
         $this->consoleOutput->getFormatter()->setStyle('block', new OutputFormatterStyle('red', 'black'));
         $this->consoleOutput->getFormatter()->setStyle('dumper', new OutputFormatterStyle('blue', null, ['bold']));
         $this->consoleOutput->getFormatter()->setStyle('hr', new OutputFormatterStyle('blue'));
-        $this->outputHr = '<hr>'.str_repeat('-', 60).'</>';
+        $this->outputHr = '<hr>' . str_repeat('-', 60) . '</>';
         $this->consoleOutput->getFormatter()->setStyle('hr', new OutputFormatterStyle('blue', null));
-        $maker = (isset($this->caller['class']) ? $this->caller['class'].$this->caller['type'] : null).$this->caller['function'].'()';
-        $this->consoleOutput->writeln(['', '<dumper>'.$maker.'</>', $this->outputHr]);
+        $maker = (isset($this->caller['class']) ? $this->caller['class'] . $this->caller['type'] : null) . $this->caller['function'] . '()';
+        $this->consoleOutput->writeln(['', '<dumper>' . $maker . '</>', $this->outputHr]);
     }
 
     protected function handleHtmlOutput(): void
@@ -140,12 +140,12 @@ class Dumper
 
     protected function appendHtmlOpenBody(): void
     {
-        $this->output .= '<html style="background: '.static::BACKGROUND_SHADE.';"><head></head><body>';
+        $this->output .= '<html style="background: ' . static::BACKGROUND_SHADE . ';"><head></head><body>';
     }
 
     protected function appendStyle(): void
     {
-        $this->output .= '<pre style="'.static::STYLE.'">';
+        $this->output .= '<pre style="' . static::STYLE . '">';
     }
 
     protected function handleClass(): void
@@ -161,12 +161,12 @@ class Dumper
 
     protected function appendClass(string $class, string $type): void
     {
-        $this->output .= VarDumper::wrap('_class', $class).$type;
+        $this->output .= VarDumper::wrap('_class', $class) . $type;
     }
 
     protected function appendFunction(string $function): void
     {
-        $this->output .= VarDumper::wrap('_function', $function.'()');
+        $this->output .= VarDumper::wrap('_function', $function . '()');
     }
 
     protected function handleFile(): void
@@ -178,7 +178,7 @@ class Dumper
 
     protected function appendFilepath(string $file, int $line): void
     {
-        $this->output .= "\n".VarDumper::wrap('_file', Path::normalize($file).':'.$line);
+        $this->output .= "\n" . VarDumper::wrap('_file', Path::normalize($file) . ':' . $line);
     }
 
     protected function handleArgs(): void
@@ -192,7 +192,7 @@ class Dumper
 
     protected function appendArg(int $pos, $value): void
     {
-        $this->output .= 'Arg#'.$pos.' '.VarDumper::out($value, 0)."\n\n";
+        $this->output .= 'Arg#' . $pos . ' ' . VarDumper::out($value, 0) . "\n\n";
     }
 
     protected function handleProccessOutput(): void

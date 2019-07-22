@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\VarDumper;
+namespace Chevere\VarDumper;
 
-use const Chevereto\Chevere\CLI;
+use const Chevere\CLI;
 
 /**
  * Analyze a variable and provide an output string representation of its type and data.
@@ -40,7 +40,7 @@ abstract class VarDumperStatic
 
     public static function out($var, int $indent = null, array $dontDump = [], int $depth = 0): string
     {
-        return (/* @scrutinizer ignore-call */ new static(...func_get_args()))->toString();
+        return (/* @scrutinizer ignore-call */new static(...func_get_args()))->toString();
     }
 
     abstract public function toString(): string;

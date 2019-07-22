@@ -11,19 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\ErrorHandler;
+namespace Chevere\ErrorHandler;
 
 use DateTime;
 use ErrorException;
 use DateTimeZone;
-use const Chevereto\Chevere\ROOT_PATH;
-use const Chevereto\Chevere\App\PATH as AppPath;
-use Chevereto\Chevere\App\App;
-use Chevereto\Chevere\HttpFoundation\Request;
-use Chevereto\Chevere\Path;
-use Chevereto\Chevere\Runtime\Runtime;
-// use Chevereto\Chevere\Utility\DateTime;
-use Chevereto\Chevere\Interfaces\ErrorHandlerInterface;
+use const Chevere\ROOT_PATH;
+use const Chevere\App\PATH as AppPath;
+use Chevere\App\App;
+use Chevere\HttpFoundation\Request;
+use Chevere\Path;
+use Chevere\Runtime\Runtime;
+// use Chevere\Utility\DateTime;
+use Chevere\Interfaces\ErrorHandlerInterface;
 use Psr\Log\LogLevel;
 use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
@@ -42,7 +42,7 @@ class ErrorHandler implements ErrorHandlerInterface
     const DEBUG = null;
 
     /** @var string Null will use App\PATH_LOGS ? PATH_LOGS ? traverse */
-    const PATH_LOGS = ROOT_PATH.AppPath.'var/logs/';
+    const PATH_LOGS = ROOT_PATH . AppPath . 'var/logs/';
 
     /** Readable PHP error mapping */
     const ERROR_TABLE = [
@@ -145,7 +145,7 @@ class ErrorHandler implements ErrorHandlerInterface
         $exceptionHandler = new ExceptionHandler($args[0]);
 
         $this->loggerLevel = $exceptionHandler->loggerLevel;
-        $this->setLogFilePathProperties(static::PATH_LOGS, );
+        $this->setLogFilePathProperties(static::PATH_LOGS,);
         $this->setLogger(__NAMESPACE__);
 
         $formatter = new Formatter($this, $exceptionHandler);
@@ -175,9 +175,9 @@ class ErrorHandler implements ErrorHandlerInterface
     protected function setLogFilePathProperties(string $basePath)
     {
         $path = Path::normalize($basePath);
-        $path = rtrim($path, '/').'/';
+        $path = rtrim($path, '/') . '/';
         $date = gmdate($this->logDateFolderFormat, $this->timestamp);
-        $this->logFilename = $path.$this->loggerLevel.'/'.$date.$this->timestamp.'_'.$this->id.'.log';
+        $this->logFilename = $path . $this->loggerLevel . '/' . $date . $this->timestamp . '_' . $this->id . '.log';
     }
 
     protected function setLogger(string $name)
@@ -193,7 +193,7 @@ class ErrorHandler implements ErrorHandlerInterface
     protected function loggerWrite(string $plainContent)
     {
         $log = strip_tags($plainContent);
-        $log .= "\n\n".str_repeat('=', Formatter::COLUMNS);
+        $log .= "\n\n" . str_repeat('=', Formatter::COLUMNS);
         $this->logger->log($this->loggerLevel, $log);
     }
 

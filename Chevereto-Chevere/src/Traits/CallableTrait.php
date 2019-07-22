@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Traits;
+namespace Chevere\Traits;
 
 use LogicException;
-use Chevereto\Chevere\File;
-use Chevereto\Chevere\Path;
-use Chevereto\Chevere\Message;
+use Chevere\File;
+use Chevere\Path;
+use Chevere\Message;
 
 trait CallableTrait
 {

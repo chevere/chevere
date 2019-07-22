@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Route;
+namespace Chevere\Route;
 
 use InvalidArgumentException;
-use Chevereto\Chevere\Message;
-use Chevereto\Chevere\Utility\Str;
+use Chevere\Message;
+use Chevere\Utility\Str;
 
 class KeyValidation
 {

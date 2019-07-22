@@ -11,24 +11,24 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Api;
+namespace Chevere\Api;
 
 use OuterIterator;
 use LogicException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use const Chevereto\Chevere\APP_NS_HANDLE;
-use const Chevereto\Chevere\App\PATH as AppPath;
-use Chevereto\Chevere\Route\Route;
-use Chevereto\Chevere\Router\Router;
-use Chevereto\Chevere\Message;
-use Chevereto\Chevere\Controller\Inspect as ControllerInspect;
-use Chevereto\Chevere\Path;
-use Chevereto\Chevere\File;
-use Chevereto\Chevere\Utility\Str;
-use Chevereto\Chevere\Controllers\Api\HeadController;
-use Chevereto\Chevere\Controllers\Api\OptionsController;
-use Chevereto\Chevere\Controllers\Api\GetController;
+use const Chevere\APP_NS_HANDLE;
+use const Chevere\App\PATH as AppPath;
+use Chevere\Route\Route;
+use Chevere\Router\Router;
+use Chevere\Message;
+use Chevere\Controller\Inspect as ControllerInspect;
+use Chevere\Path;
+use Chevere\File;
+use Chevere\Utility\Str;
+use Chevere\Controllers\Api\HeadController;
+use Chevere\Controllers\Api\OptionsController;
+use Chevere\Controllers\Api\GetController;
 
 /**
  * Api provides tools to create and retrieve the App Api.
@@ -112,7 +112,7 @@ class Api
 
         $this->processRoutesMap();
 
-        $this->uri = '/'.$this->basePath;
+        $this->uri = '/' . $this->basePath;
 
         $httpMethods = [
             'HEAD' => HeadController::class,
@@ -216,7 +216,7 @@ class Api
     {
         $filepathRelative = Path::relative($filepath);
         $filepathNoExt = Str::replaceLast('.php', null, $filepathRelative);
-        $filepathReplaceNS = Str::replaceFirst(AppPath.'src/', APP_NS_HANDLE, $filepathNoExt);
+        $filepathReplaceNS = Str::replaceFirst(AppPath . 'src/', APP_NS_HANDLE, $filepathNoExt);
 
         return str_replace('/', '\\', $filepathReplaceNS);
     }

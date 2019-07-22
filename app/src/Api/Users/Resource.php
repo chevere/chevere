@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Api\Users;
 
 use App\User;
-use Chevereto\Chevere\Controller\Resource as ControllerResource;
+use Chevere\Controller\Resource as ControllerResource;
 
 abstract class Resource extends ControllerResource
 {

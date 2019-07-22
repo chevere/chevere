@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Api;
+namespace Chevere\Api;
 
 use RecursiveFilterIterator;
 
@@ -32,8 +32,8 @@ class FilterIterator extends RecursiveFilterIterator
     public function generateAcceptedFilenames(array $acceptedMethods, string $methodPrefix): self
     {
         foreach ($acceptedMethods as $v) {
-            $this->acceptedFilenames[] = $v.'.php';
-            $this->acceptedFilenames[] = $methodPrefix.$v.'.php';
+            $this->acceptedFilenames[] = $v . '.php';
+            $this->acceptedFilenames[] = $methodPrefix . $v . '.php';
         }
 
         return $this;

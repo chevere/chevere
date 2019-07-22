@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -10,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevere;
 
-use Chevereto\Chevere\App\App;
-use Chevereto\Chevere\Interfaces\HandlerInterface;
+use Chevere\App\App;
+use Chevere\Interfaces\HandlerInterface;
 
 /**
  * TODO: Add stop, redirect and other methods needed to alter the flow.
@@ -78,6 +79,6 @@ class Handler implements HandlerInterface
 
     public function stop($app)
     {
-        $app->terminate(__METHOD__.' Terminated the app execution.');
+        $app->terminate(__METHOD__ . ' Terminated the app execution.');
     }
 }

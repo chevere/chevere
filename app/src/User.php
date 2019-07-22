@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App;
 
 use LogicException;
-use Chevereto\Chevere\Message;
-use Chevereto\Chevere\FromString; // Sets the base string descriptor ($stringDescription, $stringRegex)
-use Chevereto\Chevere\Interfaces\CreateFromString; // Exposes that has ::createFromString
+use Chevere\Message;
+use Chevere\FromString; // Sets the base string descriptor ($stringDescription, $stringRegex)
+use Chevere\Interfaces\CreateFromString; // Exposes that has ::createFromString
 
 class User extends FromString implements CreateFromString
 {
@@ -30,7 +30,7 @@ class User extends FromString implements CreateFromString
     {
         if (isset($id)) {
             $this->hasConstructArgument = true;
-        // DB HANDLE
+            // DB HANDLE
         } else {
             $this->hasConstructArgument = false;
         }

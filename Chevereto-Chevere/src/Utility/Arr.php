@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -10,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Utility;
+namespace Chevere\Utility;
 
 /**
  * Array handling and transformation utils.
@@ -44,10 +45,10 @@ abstract class Arr
                         break;
                     }
                     $return[$v] = $array[$v];
-                break;
+                    break;
                 case static::FILTER_REMOVE:
                     unset($array[$v]);
-                break;
+                    break;
             }
         }
 

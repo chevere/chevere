@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Api\Users;
 
-use Chevereto\Chevere\Controller\Controller;
+use Chevere\Controller\Controller;
 
 class _GET extends Controller
 {
@@ -16,6 +16,5 @@ class _GET extends Controller
     }
 
     public function __invoke()
-    {
-    }
+    { }
 }

@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Hooking;
+namespace Chevere\Hooking;
 
 use InvalidArgumentException;
-use Chevereto\Chevere\Path;
-use Chevereto\Chevere\Message;
-use Chevereto\Chevere\Utility\Str;
+use Chevere\Path;
+use Chevere\Message;
+use Chevere\Utility\Str;
 
 /**
  * Hooks refers to code that gets injected at determinated sections of the

@@ -14,20 +14,20 @@ declare(strict_types=1);
 // TODO: Static inspection!
 // TODO: Deprecate callables by file
 
-namespace Chevereto\Chevere\Commands;
+namespace Chevere\Commands;
 
 use Reflector;
 use ReflectionMethod;
 use ReflectionFunction;
-use const Chevereto\Chevere\App\PATH;
-use Chevereto\Chevere\App\App;
-use Chevereto\Chevere\VarDumper\VarDumper;
-use Chevereto\Chevere\Load;
-use Chevereto\Chevere\Message;
-use Chevereto\Chevere\Path;
-use Chevereto\Chevere\Command;
-use Chevereto\Chevere\File;
-use Chevereto\Chevere\Utility\Str;
+use const Chevere\App\PATH;
+use Chevere\App\App;
+use Chevere\VarDumper\VarDumper;
+use Chevere\Load;
+use Chevere\Message;
+use Chevere\Path;
+use Chevere\Command;
+use Chevere\File;
+use Chevere\Utility\Str;
 
 /**
  * The InspectCommand allows to get callable information using CLI.
@@ -143,11 +143,11 @@ class InspectCommand extends Command
         foreach ($this->reflector->getParameters() as $parameter) {
             $aux = null;
             if ($parameter->getType()) {
-                $aux .= $parameter->getType().' ';
+                $aux .= $parameter->getType() . ' ';
             }
-            $aux .= '$'.$parameter->getName();
+            $aux .= '$' . $parameter->getName();
             if ($parameter->isDefaultValueAvailable()) {
-                $aux .= ' = '.($parameter->getDefaultValue() ?? 'null');
+                $aux .= ' = ' . ($parameter->getDefaultValue() ?? 'null');
             }
             // $res = $resource[$parameter->getName()] ?? null;
             // if (isset($res)) {

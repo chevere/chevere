@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\ErrorHandler;
+namespace Chevere\ErrorHandler;
 
-use const Chevereto\Chevere\CLI;
+use const Chevere\CLI;
 use DateTime;
-use Chevereto\Chevere\Console;
-use Chevereto\Chevere\Json;
+use Chevere\Console;
+use Chevere\Json;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Symfony\Component\HttpFoundation\JsonResponse as HttpJsonResponse;
 
@@ -83,15 +83,15 @@ class Output
         switch ($this->errorHandler->isDebugEnabled) {
             case 0:
                 unset($log['filename']);
-            break;
+                break;
             case 1:
-                $response[0] = $this->formatter->thrown.' in '.$this->getTemplateTag('file').':'.$this->getTemplateTag('line');
+                $response[0] = $this->formatter->thrown . ' in ' . $this->getTemplateTag('file') . ':' . $this->getTemplateTag('line');
                 $error = [];
                 foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
                     $error[$v] = $this->getTemplateTag($v);
                 }
                 $json->setDataKey('error', $error);
-            break;
+                break;
         }
         $json->setDataKey('log', $log);
         $json->setResponse(...$response);

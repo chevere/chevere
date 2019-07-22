@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Route;
+namespace Chevere\Route;
 
 use LogicException;
-use Chevereto\Chevere\Message;
-use Chevereto\Chevere\Path;
-use Chevereto\Chevere\Utility\Str;
-use Chevereto\Chevere\Utility\Arr;
+use Chevere\Message;
+use Chevere\Path;
+use Chevere\Utility\Str;
+use Chevere\Utility\Arr;
 
 class Wildcards
 {

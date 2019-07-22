@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\VarDumper;
+namespace Chevere\VarDumper;
 
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
@@ -79,7 +79,7 @@ class Wrapper
     protected function wrapHtml()
     {
         if ($color = $this->getHtmlColor($this->key)) {
-            return '<span style="color:'.$color.'">'.$this->dump.'</span>';
+            return '<span style="color:' . $color . '">' . $this->dump . '</span>';
         }
 
         return $this->dump;

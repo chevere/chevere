@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Interfaces;
+namespace Chevere\Interfaces;
 
-use Chevereto\Chevere\Route\Route;
-use Chevereto\Chevere\HttpFoundation\Response;
-use Chevereto\Chevere\App\App;
-use Chevereto\Chevere\Api\Api;
+use Chevere\Route\Route;
+use Chevere\HttpFoundation\Response;
+use Chevere\App\App;
+use Chevere\Api\Api;
 
 interface ControllerInterface
 {

@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -12,13 +13,13 @@ declare(strict_types=1);
 
 // TODO: Deprecate callables by file
 
-namespace Chevereto\Chevere\Commands;
+namespace Chevere\Commands;
 
-use Chevereto\Chevere\App\App;
-use Chevereto\Chevere\VarDumper\PlainVarDumper;
-use Chevereto\Chevere\File;
-use Chevereto\Chevere\Path;
-use Chevereto\Chevere\Command;
+use Chevere\App\App;
+use Chevere\VarDumper\PlainVarDumper;
+use Chevere\File;
+use Chevere\Path;
+use Chevere\Command;
 
 /**
  * The RunCommand allows to run any callable present in the app.

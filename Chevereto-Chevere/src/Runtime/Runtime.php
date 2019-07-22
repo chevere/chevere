@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Runtime;
+namespace Chevere\Runtime;
 
 use DateTimeZone;
 use RuntimeException;
-use Chevereto\Chevere\Data;
+use Chevere\Data;
 
 /**
  * Runtime applies runtime config and provide data about the App Runtime.
@@ -40,7 +40,7 @@ class Runtime extends Data
             if ($v === $this->getDataKey($k)) {
                 continue;
             }
-            $fnName = 'set'.ucwords($k);
+            $fnName = 'set' . ucwords($k);
             if (method_exists($this, $fnName)) {
                 $this->{$fnName}($v);
             }
@@ -88,8 +88,7 @@ class Runtime extends Data
     public function restoreErrorHandler(): self
     {
         restore_error_handler();
-        $errorHandler = set_error_handler(function () {
-        });
+        $errorHandler = set_error_handler(function () { });
         restore_error_handler();
         $this->setDataKey(Config::ERROR_HANDLER, $errorHandler);
         $this->setDataKey(Config::ERROR_REPORTING_LEVEL, error_reporting());
@@ -111,8 +110,7 @@ class Runtime extends Data
     public function restoreExceptionHandler(): self
     {
         restore_exception_handler();
-        $handler = set_exception_handler(function () {
-        });
+        $handler = set_exception_handler(function () { });
         restore_exception_handler();
         $this->setDataKey(Config::EXCEPTION_HANDLER, $handler);
 

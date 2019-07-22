@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use App\User;
-use Chevereto\Chevere\Controller\Controller;
+use Chevere\Controller\Controller;
 
 class Cache extends Controller
 {

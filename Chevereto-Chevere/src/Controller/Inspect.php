@@ -11,20 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Controller;
+namespace Chevere\Controller;
 
 use LogicException;
 use ReflectionClass;
 use Roave\BetterReflection\BetterReflection;
-use const Chevereto\Chevere\APP_NS_HANDLE;
-use Chevereto\Chevere\Message;
-use Chevereto\Chevere\Api\Api;
-use Chevereto\Chevere\Utility\Str;
-use Chevereto\Chevere\Interfaces\ToArrayInterface;
-use Chevereto\Chevere\Interfaces\ControllerInterface;
-use Chevereto\Chevere\Interfaces\ControllerResourceInterface;
-use Chevereto\Chevere\Interfaces\CreateFromString;
-use Chevereto\Chevere\Interfaces\ControllerRelationshipInterface;
+use const Chevere\APP_NS_HANDLE;
+use Chevere\Message;
+use Chevere\Api\Api;
+use Chevere\Utility\Str;
+use Chevere\Interfaces\ToArrayInterface;
+use Chevere\Interfaces\ControllerInterface;
+use Chevere\Interfaces\ControllerResourceInterface;
+use Chevere\Interfaces\CreateFromString;
+use Chevere\Interfaces\ControllerRelationshipInterface;
 
 /**
  * Provides information about any Controller implementing ControllerInterface interface.
@@ -124,9 +124,9 @@ class Inspect implements ToArrayInterface
                     ->code('%reflectionName%', $this->reflection->getName())
                     ->code('%interfaceControllerResource%', static::INTERFACE_CONTROLLER_RESOURCE)
                     ->code('%reflectionFilename%', $this->reflection->getFileName())
-                    ->code('%endpoint%', $this->httpMethod.' api/users')
+                    ->code('%endpoint%', $this->httpMethod . ' api/users')
                     ->code('%className%', $this->className)
-                    ->code('%propResources%', 'const '.static::PROP_RESOURCES)
+                    ->code('%propResources%', 'const ' . static::PROP_RESOURCES)
                     ->code('%filepath%', $this->filepath)
                     ->toString()
             );
@@ -255,14 +255,14 @@ class Inspect implements ToArrayInterface
         $pathComponent = $this->getPathComponent($this->className);
         $pathComponents = explode('/', $pathComponent);
         if ($this->useResource) {
-            $resourceWildcard = '{'.array_keys($this->resources)[0].'}';
+            $resourceWildcard = '{' . array_keys($this->resources)[0] . '}';
             if ($this->isResource) {
                 // Append the resource wildcard: api/users/{wildcard}
-                $pathComponent .= '/'.$resourceWildcard;
+                $pathComponent .= '/' . $resourceWildcard;
             } elseif ($this->isRelatedResource) {
                 $related = array_pop($pathComponents);
                 // Inject the resource wildcard: api/users/{wildcard}/related
-                $pathComponent = implode('/', $pathComponents).'/'.$resourceWildcard.'/'.$related;
+                $pathComponent = implode('/', $pathComponents) . '/' . $resourceWildcard . '/' . $related;
                 /*
                 * Code below generates api/users/{user}/relationships/friends (relationship URL)
                 * from api/users/{user}/friends (related resource URL).
@@ -283,7 +283,7 @@ class Inspect implements ToArrayInterface
     protected function getPathComponent(string $className): string
     {
         $classShortName = substr($className, strrpos($className, '\\') + 1);
-        $classNamespace = Str::replaceLast('\\'.$classShortName, null, $className);
+        $classNamespace = Str::replaceLast('\\' . $classShortName, null, $className);
         $classNamespaceNoApp = Str::replaceFirst(APP_NS_HANDLE, null, $classNamespace);
 
         return strtolower(Str::forwardSlashes($classNamespaceNoApp));

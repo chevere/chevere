@@ -11,17 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Controller;
+namespace Chevere\Controller;
 
 use LogicException;
-use Chevereto\Chevere\HttpFoundation\Response;
-use Chevereto\Chevere\Message;
-use Chevereto\Chevere\App\App;
-use Chevereto\Chevere\Api\Api;
-use Chevereto\Chevere\Hooking\Hook;
-use Chevereto\Chevere\Route\Route;
-use Chevereto\Chevere\Interfaces\ControllerInterface;
-use Chevereto\Chevere\Traits\HookableTrait;
+use Chevere\HttpFoundation\Response;
+use Chevere\Message;
+use Chevere\App\App;
+use Chevere\Api\Api;
+use Chevere\Hooking\Hook;
+use Chevere\Route\Route;
+use Chevere\Interfaces\ControllerInterface;
+use Chevere\Traits\HookableTrait;
 
 // Define a hookable code entry:
 // $this->hook('myHook', function ($that) use ($var) {
@@ -35,7 +35,7 @@ use Chevereto\Chevere\Traits\HookableTrait;
 // });
 
 /**
- * Controller is the defacto controller in Chevereto\Chevere.
+ * Controller is the defacto controller in Chevere.
  */
 abstract class Controller implements ControllerInterface
 {

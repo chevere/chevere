@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\HttpFoundation;
+namespace Chevere\HttpFoundation;
 
 use Exception;
 use InvalidArgumentException;
-use const Chevereto\Chevere\CLI;
+use const Chevere\CLI;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
-use Chevereto\Chevere\JsonApi\Data;
+use Chevere\JsonApi\Data;
 
 /**
  * JSON:API HTTP Response handler.

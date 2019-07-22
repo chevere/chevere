@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Router;
+namespace Chevere\Router;
 
 use LogicException;
-use Chevereto\Chevere\Message;
-use Chevereto\Chevere\Route\Route;
+use Chevere\Message;
+use Chevere\Route\Route;
 
 /**
  * TODO: Rename. This class simply returns a route object (runtime or unserialize).
@@ -47,7 +47,7 @@ class Resolver
                 (new Message('Unexpected type %t in routes table %h.'))
                     ->code('%t', gettype($this->routeSome))
                     ->toString()
-          );
+            );
         }
     }
 }

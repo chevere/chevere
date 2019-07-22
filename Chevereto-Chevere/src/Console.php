@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -10,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevere;
 
 use RuntimeException;
 use Monolog\Logger;
@@ -19,7 +20,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\Input;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Chevereto\Chevere\App\App;
+use Chevere\App\App;
 
 class Console
 {
@@ -50,7 +51,7 @@ class Console
     /**
      * Binds the App which interacts with this Console.
      *
-     * @param App $app Chevereto\Chevere Application
+     * @param App $app Chevere Application
      *
      * @return bool TRUE if Console binds to an App
      */

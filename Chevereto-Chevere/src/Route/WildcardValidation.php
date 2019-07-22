@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Route;
+namespace Chevere\Route;
 
 use LogicException;
-use Chevereto\Chevere\Message;
-use Chevereto\Chevere\Validate;
-use Chevereto\Chevere\Utility\Str;
+use Chevere\Message;
+use Chevere\Validate;
+use Chevere\Utility\Str;
 
 class WildcardValidation
 {
@@ -81,7 +81,7 @@ class WildcardValidation
 
     protected function validateMatch(string $wildcardName, string $routeKey): bool
     {
-        return Str::contains("{{$wildcardName}}", $routeKey) || Str::contains('{'."$wildcardName?".'}', $routeKey);
+        return Str::contains("{{$wildcardName}}", $routeKey) || Str::contains('{' . "$wildcardName?" . '}', $routeKey);
     }
 
     protected function handleValidateUnique()
@@ -102,7 +102,7 @@ class WildcardValidation
 
     protected function handleValidateRegex()
     {
-        if (!Validate::regex('/'.$this->wildcardName.'/')) {
+        if (!Validate::regex('/' . $this->wildcardName . '/')) {
             throw new InvalidArgumentException(
                 (new Message('Invalid regex pattern %s.'))
                     ->code('%s', $this->regex)

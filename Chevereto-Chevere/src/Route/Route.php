@@ -11,16 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Route;
+namespace Chevere\Route;
 
 use LogicException;
 use InvalidArgumentException;
-use Chevereto\Chevere\Message;
-use Chevereto\Chevere\Path;
-use Chevereto\Chevere\Controllers\HeadController;
-use Chevereto\Chevere\Traits\CallableTrait;
-use Chevereto\Chevere\Utility\Str;
-use Chevereto\Chevere\Interfaces\RouteInterface;
+use Chevere\Message;
+use Chevere\Path;
+use Chevere\Controllers\HeadController;
+use Chevere\Traits\CallableTrait;
+use Chevere\Utility\Str;
+use Chevere\Interfaces\RouteInterface;
 
 // IDEA Route lock (disables further modification)
 // IDEA: Reg events, determine who changes a route.
@@ -318,13 +318,13 @@ class Route implements RouteInterface
                 (new Message('Unable to process regex for empty regex (no uri).'))->toString()
             );
         }
-        $regex = '^'.$regex.'$';
+        $regex = '^' . $regex . '$';
         if (!Str::contains('{', $regex)) {
             return $regex;
         }
         if (isset($this->wildcards)) {
             foreach ($this->wildcards as $k => $v) {
-                $regex = str_replace("{{$k}}", '('.$this->wheres[$v].')', $regex);
+                $regex = str_replace("{{$k}}", '(' . $this->wheres[$v] . ')', $regex);
             }
         }
 

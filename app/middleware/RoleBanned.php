@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -12,11 +13,12 @@ declare(strict_types=1);
 
 namespace App;
 
-use Chevereto\Chevere\App\App;
-use Chevereto\Chevere\Interfaces\HandlerInterface;
-use Chevereto\Chevere\Interfaces\MiddlewareInterface;
+use Chevere\App\App;
+use Chevere\Interfaces\HandlerInterface;
+use Chevere\Interfaces\MiddlewareInterface;
 
-return new class() implements MiddlewareInterface {
+return new class () implements MiddlewareInterface
+{
     public function __invoke(App $app, HandlerInterface $handler)
     {
         // \dump(__FILE__);

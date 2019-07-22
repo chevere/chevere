@@ -11,32 +11,32 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\App;
+namespace Chevere\App;
 
 use Throwable;
 use LogicException;
-use const Chevereto\Chevere\ROOT_PATH;
-use const Chevereto\Chevere\App\PATH as AppPath;
+use const Chevere\ROOT_PATH;
+use const Chevere\App\PATH as AppPath;
 use Monolog\Logger;
-use Chevereto\Chevere\Console;
-use Chevereto\Chevere\Runtime\Runtime;
-use Chevereto\Chevere\Router\Router;
-use Chevereto\Chevere\HttpFoundation\Request;
-use Chevereto\Chevere\HttpFoundation\Response;
-use Chevereto\Chevere\Api\Api;
-use Chevereto\Chevere\File;
-use Chevereto\Chevere\Path;
-use Chevereto\Chevere\Controller\Controller;
-use Chevereto\Chevere\Load;
-use Chevereto\Chevere\Route\Route;
-use Chevereto\Chevere\Route\ArrayFileWrap as RouteArrayFileWrap;
-use Chevereto\Chevere\Routes;
-use Chevereto\Chevere\CallableWrap;
-use Chevereto\Chevere\Message;
-use Chevereto\Chevere\Runtime\Config;
-use Chevereto\Chevere\Interfaces\AppInterface;
-use Chevereto\Chevere\Interfaces\RenderableInterface;
-use Chevereto\Chevere\Traits\StaticTrait;
+use Chevere\Console;
+use Chevere\Runtime\Runtime;
+use Chevere\Router\Router;
+use Chevere\HttpFoundation\Request;
+use Chevere\HttpFoundation\Response;
+use Chevere\Api\Api;
+use Chevere\File;
+use Chevere\Path;
+use Chevere\Controller\Controller;
+use Chevere\Load;
+use Chevere\Route\Route;
+use Chevere\Route\ArrayFileWrap as RouteArrayFileWrap;
+use Chevere\Routes;
+use Chevere\CallableWrap;
+use Chevere\Message;
+use Chevere\Runtime\Config;
+use Chevere\Interfaces\AppInterface;
+use Chevere\Interfaces\RenderableInterface;
+use Chevere\Traits\StaticTrait;
 
 /**
  * App contains the whole thing.
@@ -45,8 +45,8 @@ class App extends AppStatic implements AppInterface
 {
     use StaticTrait;
 
-    const BUILD_FILEPATH = ROOT_PATH.AppPath.'build';
-    const NAMESPACES = ['App', 'Chevereto\Chevere'];
+    const BUILD_FILEPATH = ROOT_PATH . AppPath . 'build';
+    const NAMESPACES = ['App', 'Chevere'];
     const APP = 'app';
     const FILEHANDLE_CONFIG = ':config';
     const FILEHANDLE_PARAMETERS = ':parameters';
@@ -187,7 +187,7 @@ class App extends AppStatic implements AppInterface
         if (!empty($this->arguments)) {
             $callableWrap->setPassedArguments($this->arguments);
             $this->controllerArguments = $callableWrap->getArguments();
-        // dd($callableWrap);
+            // dd($callableWrap);
         } else {
             $this->controllerArguments = [];
         }
@@ -238,7 +238,7 @@ class App extends AppStatic implements AppInterface
 
     public function getHash(): string
     {
-        return ($this->getConstant('App\VERSION') ?: null).$this->getBuildTime();
+        return ($this->getConstant('App\VERSION') ?: null) . $this->getBuildTime();
     }
 
     public function getConstant(string $name, string $namespace = 'App'): ?string

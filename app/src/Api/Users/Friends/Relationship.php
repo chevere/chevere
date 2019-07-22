@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Api\Users\Friends;
 
 use App\Api\Users\Resource;
-use Chevereto\Chevere\Controller\Relationship as ControllerRelationship;
+use Chevere\Controller\Relationship as ControllerRelationship;
 
 abstract class Relationship extends ControllerRelationship
 {

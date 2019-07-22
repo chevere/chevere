@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -10,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevere;
 
-use Chevereto\Chevere\Interfaces\DataInterface;
-use Chevereto\Chevere\Traits\DataTrait;
+use Chevere\Interfaces\DataInterface;
+use Chevere\Traits\DataTrait;
 use IteratorAggregate;
 use Countable;
 use ArrayIterator;

@@ -13,6 +13,6 @@ declare(strict_types=1);
 
 namespace App;
 
-use Chevereto\Chevere\App\App;
+use Chevere\App\App;
 
 (new App())->run();

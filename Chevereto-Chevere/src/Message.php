@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevere;
 
 /*
  * This class provide a common interface for creating messages.
@@ -22,6 +22,7 @@ namespace Chevereto\Chevere;
  * Useful for creating messages that needs to wrapped in different tags
  * and/or need to be translatable (l10n).
  */
+
 /**
  * @method string code(string $search, string $replace)
  * @method string b(string $search, string $replace)

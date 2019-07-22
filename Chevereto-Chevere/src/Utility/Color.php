@@ -14,9 +14,9 @@ declare(strict_types=1);
 // Hacer objeto servicio? new Color(string, Color::RGB)->toHex()
 // Combo object + static
 
-namespace Chevereto\Chevere\Utility;
+namespace Chevere\Utility;
 
-use Chevereto\Chevere\Message;
+use Chevere\Message;
 
 abstract class Color
 {
@@ -35,9 +35,9 @@ abstract class Color
     {
         $hex = str_replace('#', '', $hex);
         if (3 == strlen($hex)) {
-            $r = hexdec(substr($hex, 0, 1).substr($hex, 0, 1));
-            $g = hexdec(substr($hex, 1, 1).substr($hex, 1, 1));
-            $b = hexdec(substr($hex, 2, 1).substr($hex, 2, 1));
+            $r = hexdec(substr($hex, 0, 1) . substr($hex, 0, 1));
+            $g = hexdec(substr($hex, 1, 1) . substr($hex, 1, 1));
+            $b = hexdec(substr($hex, 2, 1) . substr($hex, 2, 1));
         } else {
             $r = hexdec(substr($hex, 0, 2));
             $g = hexdec(substr($hex, 2, 2));
@@ -45,7 +45,7 @@ abstract class Color
         }
         $rgb = [$r, $g, $b];
 
-        return $array ? $rgb : ('rgb('.implode(',', $rgb).')');
+        return $array ? $rgb : ('rgb(' . implode(',', $rgb) . ')');
     }
 
     /**
@@ -66,10 +66,10 @@ abstract class Color
                 } else {
                     return null;
                 }
-            break;
+                break;
             case 'array':
                 $val = $rgb;
-            break;
+                break;
             default:
                 throw new InvalidArgumentException(
                     (new Message('Only %s and %a types can be used with this function (type %t provided)'))

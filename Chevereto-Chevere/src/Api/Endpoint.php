@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Api;
+namespace Chevere\Api;
 
-use Chevereto\Chevere\Controllers\Api\OptionsController;
-use Chevereto\Chevere\Controllers\Api\HeadController;
+use Chevere\Controllers\Api\OptionsController;
+use Chevere\Controllers\Api\HeadController;
 
 /**
  * Creates endpoints from ControlerInspect object.
@@ -68,7 +68,8 @@ class Endpoint
         foreach ([
             'OPTIONS' => [
                 OptionsController::class, [
-                    'description' => OptionsController::getDescription(),                    ],
+                    'description' => OptionsController::getDescription(),
+                ],
             ],
             'HEAD' => [
                 HeadController::class, [

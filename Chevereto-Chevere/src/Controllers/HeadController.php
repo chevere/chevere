@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Controllers;
+namespace Chevere\Controllers;
 
-use const Chevereto\Chevere\CLI;
-use Chevereto\Chevere\Console;
-use Chevereto\Chevere\Controller\Controller;
+use const Chevere\CLI;
+use Chevere\Console;
+use Chevere\Controller\Controller;
 
 class HeadController extends Controller
 {

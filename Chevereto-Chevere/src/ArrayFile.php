@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevere;
 
 use LogicException;
 
@@ -162,7 +162,7 @@ class ArrayFile
     {
         $type = gettype($v);
         if ($type == 'object') {
-            $type .= ' '.get_class($v);
+            $type .= ' ' . get_class($v);
         }
         throw new LogicException(
             (new Message('Expecting array containing only %members% members, %type% found at %filepath% (key %key%).'))

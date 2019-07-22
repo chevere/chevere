@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -10,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Commands;
+namespace Chevere\Commands;
 
-use Chevereto\Chevere\App\App;
-use Chevereto\Chevere\HttpFoundation\Request;
-use Chevereto\Chevere\Command;
+use Chevere\App\App;
+use Chevere\HttpFoundation\Request;
+use Chevere\Command;
 use ReflectionMethod;
 
 /**

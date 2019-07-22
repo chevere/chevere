@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /*
  * This file is part of Chevere.
  *
@@ -10,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere;
+namespace Chevere;
 
 class File
 {
@@ -129,7 +130,7 @@ class File
         }
         $mime = static::mimetype($filename);
         $basename = basename($filename); // file.ext
-        $name = Utility\Str::replaceLast('.'.File::extension($filename), null, $basename); // file
+        $name = Utility\Str::replaceLast('.' . File::extension($filename), null, $basename); // file
         $info = [
             'basename' => $basename,
             'name' => $name,
@@ -164,6 +165,6 @@ class File
             $dirname = null;
         }
 
-        return $dirname.':'.$pathinfo['filename'];
+        return $dirname . ':' . $pathinfo['filename'];
     }
 }

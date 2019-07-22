@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevereto\Chevere\Controllers\Api;
+namespace Chevere\Controllers\Api;
 
-use const Chevereto\Chevere\CLI;
-use Chevereto\Chevere\Console;
-use Chevereto\Chevere\Message;
-use Chevereto\Chevere\Controller\Controller;
-use Chevereto\Chevere\Route\Route;
+use const Chevere\CLI;
+use Chevere\Console;
+use Chevere\Message;
+use Chevere\Controller\Controller;
+use Chevere\Route\Route;
 use InvalidArgumentException;
 
 /**
