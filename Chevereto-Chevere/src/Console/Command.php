@@ -43,7 +43,8 @@ class Command extends ConsoleCommand implements CommandInterface
     // protected $output;
     // protected $io;
     // protected $logger;
-    protected $cli;
+    /** @var Cli */
+    public $cli;
 
     public function __construct(Cli $cli)
     {
@@ -57,7 +58,7 @@ class Command extends ConsoleCommand implements CommandInterface
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->getCli()->setCommand($this);
+        $this->cli->setCommand($this);
     }
 
     /**
@@ -66,10 +67,5 @@ class Command extends ConsoleCommand implements CommandInterface
     public function callback(App $app)
     {
         throw new LogicException('You must override the ' . __FUNCTION__ . '() method in the concrete command class.');
-    }
-
-    public function getCli(): Cli
-    {
-        return $this->cli;
     }
 }

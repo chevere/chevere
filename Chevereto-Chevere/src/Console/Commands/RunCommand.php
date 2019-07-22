@@ -51,8 +51,7 @@ class RunCommand extends Command
      */
     public function callback(App $app): int
     {
-        $cli = $this->getCli();
-        $input = $cli->getInput();
+        $input = $this->cli->getInput();
         $callableInput = (string) $input->getArgument('callable');
 
         if (is_callable($callableInput) || class_exists($callableInput)) {
@@ -60,7 +59,7 @@ class RunCommand extends Command
         } else {
             $callable = Path::fromHandle($callableInput);
             if (!File::exists($callable)) {
-                $cli->getIo()->error(sprintf('Unable to locate callable %s', $callable));
+                $this->cli->getIo()->error(sprintf('Unable to locate callable %s', $callable));
 
                 return 0;
             }
@@ -68,7 +67,7 @@ class RunCommand extends Command
         // Pass explicit callables, "weird" callables (Class::__invoke) runs in the App.
         if (is_callable($callable)) {
             $return = $callable(...$input->getOption('argument'));
-            $cli->getIo()->block(PlainVarDumper::out($return), 'RETURN', 'fg=black;bg=green', ' ', true);
+            $this->cli->getIo()->block(PlainVarDumper::out($return), 'RETURN', 'fg=black;bg=green', ' ', true);
         } else {
             $arguments = $input->getOption('argument');
             // argument was declared as array
