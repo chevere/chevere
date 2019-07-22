@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
-use Exception;
 use ReflectionClass;
+use InvalidArgumentException;
 
 class Core
 {
@@ -37,11 +37,11 @@ class Core
      *
      * @return string $filename class file path
      */
-    public static function getClassFilename($class): string
+    public static function getClassFilename($class): ?string
     {
         $filename = (new ReflectionClass($class))->getFileName();
         if (false === $filename) {
-            throw new Exception(
+            throw new InvalidArgumentException(
                 (new Message('Class %s is defined in the PHP core or in a extension.'))
                     ->code('%s', $class)
                     ->toString()

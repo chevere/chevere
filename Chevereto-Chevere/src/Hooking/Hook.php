@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Hooking;
 
-use Exception;
+use InvalidArgumentException;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Message;
 use Chevereto\Chevere\Utility\Str;
@@ -172,7 +172,7 @@ class Hook
                 return static::$hooks[$file][$anchor] ?? [];
             case 3:
                 if (!in_array($pos, [static::BEFORE, static::AFTER])) {
-                    throw new Exception(
+                    throw new InvalidArgumentException(
                         (new Message('Invalid %s argument value, expecting %b, %a.'))
                             ->code('%s', '$pos')
                             ->code('%b', static::BEFORE)

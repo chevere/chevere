@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Controller;
 
-use Exception;
 use LogicException;
 use Chevereto\Chevere\HttpFoundation\Response;
 use Chevereto\Chevere\Message;
@@ -98,7 +97,7 @@ abstract class Controller implements ControllerInterface
     {
         $that = $this->getCallable($controller);
         if (!is_callable($that)) {
-            throw new Exception(
+            throw new LogicException(
                 (new Message('Expected %s callable, %t provided.'))
                     ->code('%s', '$controller')
                     ->code('%t', gettype($controller))
@@ -134,7 +133,7 @@ abstract class Controller implements ControllerInterface
     protected function handleFilemane()
     {
         if (!File::exists($this->filename)) {
-            throw new Exception(
+            throw new LogicException(
                 (new Message("Unable to invoke controller %s (filename doesn't exists)."))
                     ->code('%s', $this->filename)
                     ->toString()

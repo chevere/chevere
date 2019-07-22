@@ -176,7 +176,7 @@ class Config extends Data
             }
         }
         if ($exceptions != false) {
-            throw new Exception('Invalid configuration: '.implode('; ', $exceptions));
+            throw new LogicException('Invalid configuration: '.implode('; ', $exceptions));
         }
     }
 

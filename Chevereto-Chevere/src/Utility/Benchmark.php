@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Utility;
 
+use LogicException;
 use Chevereto\Chevere\Message;
 use Chevereto\Chevere\Traits\PrintableTrait;
-use Exception;
 
 // TODO: Needs console output
 
@@ -115,7 +115,7 @@ class Benchmark
      *
      * @return self
      */
-    public function add($callable, string $name = null): self
+    public function add(callable $callable, string $name = null): self
     {
         if (!isset($name)) {
             if (null == $this->unnammedCnt) {
@@ -125,14 +125,11 @@ class Benchmark
             ++$this->unnammedCnt;
         }
         if (null != $this->callables && array_key_exists($name, $this->callables)) {
-            throw new Exception(
+            throw new LogicException(
                 (new Message('Duplicate callable declaration %s'))
                     ->code('%s', $name)
                     ->toString()
             );
-        }
-        if (!is_callable($callable)) {
-            throw new Exception('Invalid callable declaration (not a callable)');
         }
         ++$this->totalCnt;
         $this->callables[$name] = $callable;

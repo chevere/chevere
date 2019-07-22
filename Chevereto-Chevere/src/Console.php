@@ -12,7 +12,7 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere;
 
-use Exception;
+use RuntimeException;
 use Monolog\Logger;
 use Symfony\Component\Console\Application as ConsoleClient;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -97,7 +97,7 @@ class Console
         if (method_exists($command, 'callback')) {
             $app = static::getApp();
             if ($app == null) {
-                throw new Exception('No app instance is defined.');
+                throw new RuntimeException('No app instance is defined.');
             }
             $exitCode = $command->callback($app);
         }

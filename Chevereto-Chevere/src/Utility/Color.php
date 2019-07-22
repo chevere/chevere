@@ -17,7 +17,6 @@ declare(strict_types=1);
 namespace Chevereto\Chevere\Utility;
 
 use Chevereto\Chevere\Message;
-use Exception;
 
 abstract class Color
 {
@@ -72,7 +71,7 @@ abstract class Color
                 $val = $rgb;
             break;
             default:
-                throw new Exception(
+                throw new InvalidArgumentException(
                     (new Message('Only %s and %a types can be used with this function (type %t provided)'))
                         ->code('%s', 'string')
                         ->code('%a', 'array')

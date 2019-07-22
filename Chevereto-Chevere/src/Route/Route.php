@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevereto\Chevere\Route;
 
-use Exception;
 use LogicException;
+use InvalidArgumentException;
 use Chevereto\Chevere\Message;
 use Chevereto\Chevere\Path;
 use Chevereto\Chevere\Controllers\HeadController;
@@ -114,7 +114,7 @@ class Route implements RouteInterface
     {
         // Validate $name
         if (!preg_match(static::REGEX_NAME, $name)) {
-            throw new Exception(
+            throw new InvalidArgumentException(
                 (new Message("Expecting at least one alphanumeric, underscore, hypen or dot character. String '%s' provided."))
                     ->code('%s', $name)
                     ->code('%p', static::REGEX_NAME)
