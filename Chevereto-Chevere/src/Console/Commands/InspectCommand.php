@@ -68,7 +68,7 @@ class InspectCommand extends Command
 
     public function callback(App $app): int
     {
-        $this->callableInput = (string) $this->cli->getInput()->getArgument('callable');
+        $this->callableInput = (string) $this->cli->input->getArgument('callable');
         $isCallable = is_callable($this->callableInput);
         if ($isCallable) {
             $this->callable = $this->callableInput;
@@ -76,14 +76,14 @@ class InspectCommand extends Command
         } else {
             $this->callableFilepath = Path::fromHandle($this->callableInput);
             if (!File::exists($this->callableFilepath)) {
-                $this->cli->getIo()->error(sprintf('Unable to locate callable %s', $this->callableInput));
+                $this->cli->io->error(sprintf('Unable to locate callable %s', $this->callableInput));
 
                 return 0;
             }
             $callableSome = $this->callableFilepath;
             $this->callable = Load::php($this->callableFilepath);
             if (!is_callable($this->callable)) {
-                $this->cli->getIo()->error(
+                $this->cli->io->error(
                     (new Message('Expecting %t return type, %s provided in %f'))
                         ->code('%t', 'callable')
                         ->code('%s', gettype($this->callable))
@@ -97,7 +97,7 @@ class InspectCommand extends Command
 
         $this->handleSetMethod();
         $this->handleSetReflector();
-        $this->cli->getIo()->block($callableSome, 'INSPECTED', 'fg=black;bg=green', ' ', true);
+        $this->cli->io->block($callableSome, 'INSPECTED', 'fg=black;bg=green', ' ', true);
         $this->processParametersArguments();
         $this->handleProcessArguments();
 
@@ -168,12 +168,12 @@ class InspectCommand extends Command
 
     protected function processArguments(): void
     {
-        $this->cli->getIo()->text(['<fg=yellow>Arguments:</>']);
-        $this->cli->getIo()->listing($this->arguments);
+        $this->cli->io->text(['<fg=yellow>Arguments:</>']);
+        $this->cli->io->listing($this->arguments);
     }
 
     protected function processNoArguments(): void
     {
-        $this->cli->getIo()->text(['<fg=yellow>No arguments</>', null]);
+        $this->cli->io->text(['<fg=yellow>No arguments</>', null]);
     }
 }

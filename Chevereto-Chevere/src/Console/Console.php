@@ -91,7 +91,7 @@ class Console
     {
         $cli = static::cli();
         $exitCode = $cli->runner();
-        $command = $cli->getCommand();
+        $command = $cli->command;
         if (null === $command) {
             exit($exitCode);
         }
@@ -110,7 +110,7 @@ class Console
      */
     public static function logger(): Logger
     {
-        return static::cli()->getLogger();
+        return static::cli()->logger;
     }
 
     /**
@@ -118,7 +118,7 @@ class Console
      */
     public static function client(): ConsoleClient
     {
-        return static::cli()->getClient();
+        return static::cli()->client;
     }
 
     /**
@@ -126,7 +126,7 @@ class Console
      */
     public static function input(): ArgvInput
     {
-        return static::cli()->getInput();
+        return static::cli()->input;
     }
 
     /**
@@ -147,7 +147,7 @@ class Console
      */
     public static function output(): ConsoleOutput
     {
-        return static::cli()->getOutput();
+        return static::cli()->output;
     }
 
     /**
@@ -155,7 +155,7 @@ class Console
      */
     public static function io(): SymfonyStyle
     {
-        return static::cli()->getIo();
+        return static::cli()->io;
     }
 
     /**

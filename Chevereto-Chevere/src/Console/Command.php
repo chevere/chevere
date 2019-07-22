@@ -54,11 +54,11 @@ class Command extends ConsoleCommand implements CommandInterface
     }
 
     /**
-     * Execute the command before "app".
+     * Sets the Cli command to execute. Used internally by Symfony.
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->cli->setCommand($this);
+        $this->cli->command = $this;
     }
 
     /**

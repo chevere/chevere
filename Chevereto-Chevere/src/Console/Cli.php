@@ -31,151 +31,49 @@ class Cli
     const VERSION = '1.0';
 
     /** @var string Cli name */
-    protected $name;
+    public $name;
 
     /** @var string Cli version */
-    protected $version;
+    public $version;
 
     /** @var ArgvInput */
-    protected $input;
+    public $input;
 
     /** @var ConsoleOutput */
-    protected $output;
+    public $output;
 
     /** @var Logger */
-    protected $logger;
+    public $logger;
 
     /** @var Application */
-    protected $client;
+    public $client;
 
     /** @var SymfonyStyle */
-    protected $io;
+    public $io;
 
     /** @var Command */
-    protected $command;
+    public $command;
 
     public function __construct(ArgvInput $input)
     {
+        $this->input = $input;
         $this->name = static::NAME;
         $this->version = static::VERSION;
-        $output = new ConsoleOutput();
-        $client = new Application($this->name, $this->version);
-        $logger = new Logger($this->name);
-
-        $this->setInput($input);
-        $this->setOutput($output);
-        $this->setClient($client);
-        $this->setLogger($logger);
-        $this->setIo(
-            new SymfonyStyle($input, $output)
-        );
-        $client->add(new RequestCommand($this));
-        $client->add(new RunCommand($this));
-        $client->add(new InspectCommand($this));
-        $client->setAutoExit(false);
+        $this->output = new ConsoleOutput();
+        $this->client = new Application($this->name, $this->version);
+        $this->logger = new Logger($this->name);
+        $this->io = new SymfonyStyle($this->input, $this->output);
+        $this->client->add(new RequestCommand($this));
+        $this->client->add(new RunCommand($this));
+        $this->client->add(new InspectCommand($this));
+        $this->client->setAutoExit(false);
     }
 
     /**
-     * Run the CLI client.
+     * Run the Cli client.
      */
     public function runner()
     {
         $this->client->run($this->input, $this->output);
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setVersion(string $version): self
-    {
-        $this->version = $version;
-
-        return $this;
-    }
-
-    public function getVersion(): string
-    {
-        return $this->version;
-    }
-
-    public function setInput(ArgvInput $input): self
-    {
-        $this->input = $input;
-
-        return $this;
-    }
-
-    public function getInput(): ArgvInput
-    {
-        return $this->input;
-    }
-
-    public function setOutput(ConsoleOutput $output): self
-    {
-        $this->output = $output;
-
-        return $this;
-    }
-
-    public function getOutput(): ConsoleOutput
-    {
-        return $this->output;
-    }
-
-    public function setLogger(Logger $logger): self
-    {
-        $this->logger = $logger;
-
-        return $this;
-    }
-
-    public function getLogger(): Logger
-    {
-        return $this->logger;
-    }
-
-    public function setClient(Application $client): self
-    {
-        $this->client = $client;
-
-        return $this;
-    }
-
-    public function getClient(): Application
-    {
-        return $this->client;
-    }
-
-    public function setIo(SymfonyStyle $io): self
-    {
-        $this->io = $io;
-
-        return $this;
-    }
-
-    public function getIo(): SymfonyStyle
-    {
-        return $this->io;
-    }
-
-    public function setCommand(Command $command): self
-    {
-        $this->command = $command;
-
-        return $this;
-    }
-
-    public function getCommand(): ?Command
-    {
-        return $this->command ?? null;
     }
 }
