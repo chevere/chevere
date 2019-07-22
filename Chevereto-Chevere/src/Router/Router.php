@@ -53,15 +53,15 @@ class Router
     public function addRoute(Route $route, string $basename)
     {
         $route->fill();
-        $id = $route->getId();
-        $uri = $route->getUri();
+        $id = $route->id;
+        $uri = $route->uri;
         $this->handleRouteKey($uri);
         $pointer = [$id, $basename];
-        $name = $route->getName();
+        $name = $route->name;
         $this->handleRouteName($name, $pointer);
         $this->routes[] = $route;
         $this->baseIndex[$basename][] = array_key_last($this->routes);
-        $powerSet = $route->getPowerSet();
+        $powerSet = $route->powerSet;
         if (isset($powerSet)) {
             foreach ($powerSet as $k => $wildcardsIndex) {
                 // n => .. => regex => [route, wildcards]
@@ -82,7 +82,7 @@ class Router
             throw new LogicException(
                 (new Message('Route key %s has been already declared by %r.'))
                     ->code('%s', $key)
-                    ->code('%r', $keyedRoute[0] . '@' . $keyedRoute[1])
+                    ->code('%r', $keyedRoute[0].'@'.$keyedRoute[1])
                     ->toString()
             );
         }
@@ -96,7 +96,7 @@ class Router
                 throw new LogicException(
                     (new Message('Route name %s has been already taken by %r.'))
                         ->code('%s', $name)
-                        ->code('%r', $namedRoute[0] . '@' . $namedRoute[1])
+                        ->code('%r', $namedRoute[0].'@'.$namedRoute[1])
                         ->toString()
                 );
             }
@@ -114,7 +114,7 @@ class Router
         $id = array_key_last($this->routes);
         $this->regexIndex[$route->regex] = $id;
         if (Route::TYPE_STATIC == $route->type) {
-            $this->statics[$route->getUri()] = $id;
+            $this->statics[$route->uri] = $id;
         }
     }
 
@@ -123,7 +123,7 @@ class Router
         $regex = [];
         foreach ($this->regexIndex as $k => $v) {
             preg_match('#\^(.*)\$#', $k, $matches);
-            $regex[] = '|' . $matches[1] . " (*:$v)";
+            $regex[] = '|'.$matches[1]." (*:$v)";
         }
 
         return sprintf(static::REGEX_TEPLATE, implode('', $regex));

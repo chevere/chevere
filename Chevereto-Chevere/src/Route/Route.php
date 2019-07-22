@@ -50,34 +50,37 @@ class Route implements RouteInterface
     const REGEX_NAME = '/^[\w\-\.]+$/i';
 
     /** @var string Route id relative to the ArrayFile */
-    protected $id;
+    public $id;
 
     /** @var string Route uri like /api/endpoint/{var?} */
-    protected $uri;
+    public $uri;
 
     /** @var string Route name (if any, must be unique) */
-    protected $name;
+    public $name;
 
     /** @var array Where clauses based on wildcards */
-    protected $wheres;
+    public $wheres;
 
     /** @var array An array containg ['methodName' => 'callable',] */
-    protected $methods;
+    public $methods;
 
     /** @var array An array containg Route middlewares */
-    protected $middlewares;
+    public $middlewares;
 
     /** @var array */
-    protected $wildcards;
+    public $wildcards;
 
     /** @var string Key set representation */
-    protected $set;
+    public $set;
 
     /** @var array An array containing all the key sets for the route (optionals combo) */
-    protected $powerSet;
+    public $powerSet;
 
     /** @var array An array containg details about the Route maker */
-    protected $maker;
+    public $maker;
+
+    /** @var string */
+    public $regex;
 
     /**
      * Route constructor.
@@ -140,11 +143,6 @@ class Route implements RouteInterface
         return $this;
     }
 
-    public function getWhere(string $wildcardName): ?string
-    {
-        return $this->wheres[$wildcardName] ?? null;
-    }
-
     /**
      * Sets where conditionals for the route wildcards (multiple version).
      *
@@ -157,11 +155,6 @@ class Route implements RouteInterface
         }
 
         return $this;
-    }
-
-    public function getWheres(): ?array
-    {
-        return $this->wheres ?? null;
     }
 
     /**
@@ -214,56 +207,11 @@ class Route implements RouteInterface
         return $this;
     }
 
-    public function getId(): string
-    {
-        return $this->id;
-    }
-
-    public function getUri(): string
-    {
-        return $this->uri;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function getMethods(): array
-    {
-        return $this->methods;
-    }
-
     public function addMiddleware(string $callable): self
     {
         $this->middlewares[] = $this->getCallableSome($callable);
 
         return $this;
-    }
-
-    public function getMiddlewares(): ?array
-    {
-        return $this->middlewares;
-    }
-
-    public function getWildcards(): ?array
-    {
-        return $this->wildcards;
-    }
-
-    public function getSet(): ?string
-    {
-        return $this->set;
-    }
-
-    public function getPowerSet(): ?array
-    {
-        return $this->powerSet;
-    }
-
-    public function getMaker(): array
-    {
-        return $this->maker;
     }
 
     /**
@@ -318,13 +266,13 @@ class Route implements RouteInterface
                 (new Message('Unable to process regex for empty regex (no uri).'))->toString()
             );
         }
-        $regex = '^' . $regex . '$';
+        $regex = '^'.$regex.'$';
         if (!Str::contains('{', $regex)) {
             return $regex;
         }
         if (isset($this->wildcards)) {
             foreach ($this->wildcards as $k => $v) {
-                $regex = str_replace("{{$k}}", '(' . $this->wheres[$v] . ')', $regex);
+                $regex = str_replace("{{$k}}", '('.$this->wheres[$v].')', $regex);
             }
         }
 

@@ -44,7 +44,6 @@ class Command extends ConsoleCommand implements CommandInterface
 
     public function __construct(Cli $cli)
     {
-        // $this->logger = $logger;
         $this->cli = $cli;
         parent::__construct();
     }
@@ -62,6 +61,6 @@ class Command extends ConsoleCommand implements CommandInterface
      */
     public function callback(App $app)
     {
-        throw new LogicException('You must override the ' . __FUNCTION__ . '() method in the concrete command class.');
+        throw new LogicException('You must override the '.__FUNCTION__.'() method in the concrete command class.');
     }
 }

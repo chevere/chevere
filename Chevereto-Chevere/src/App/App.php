@@ -43,7 +43,7 @@ class App extends AppStatic implements AppInterface
 {
     use StaticTrait;
 
-    const BUILD_FILEPATH = ROOT_PATH . AppPath . 'build';
+    const BUILD_FILEPATH = ROOT_PATH.AppPath.'build';
     const NAMESPACES = ['App', 'Chevere'];
     const APP = 'app';
     const FILEHANDLE_CONFIG = ':config';
@@ -175,7 +175,7 @@ class App extends AppStatic implements AppInterface
         }
 
         // if ($this->route instanceof Route) {
-        //     $middlewares = $this->route->getMiddlewares();
+        //     $middlewares = $this->route->middlewares;
         //     if (!empty($middlewares)) {
         //         $handler = new Handler($middlewares);
         //         $handler->runner($this);
@@ -185,7 +185,7 @@ class App extends AppStatic implements AppInterface
         if (!empty($this->arguments)) {
             $callableWrap->setPassedArguments($this->arguments);
             $this->controllerArguments = $callableWrap->getArguments();
-            // dd($callableWrap);
+        // dd($callableWrap);
         } else {
             $this->controllerArguments = [];
         }
@@ -236,7 +236,7 @@ class App extends AppStatic implements AppInterface
 
     public function getHash(): string
     {
-        return ($this->getConstant('App\VERSION') ?: null) . $this->getBuildTime();
+        return ($this->getConstant('App\VERSION') ?: null).$this->getBuildTime();
     }
 
     public function getConstant(string $name, string $namespace = 'App'): ?string

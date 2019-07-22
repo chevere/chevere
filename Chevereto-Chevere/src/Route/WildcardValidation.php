@@ -43,8 +43,8 @@ class WildcardValidation
         $this->wildcardName = $wildcardName;
         $this->wildcardString = "{{$wildcardName}}";
         $this->regex = $regex;
-        $this->uri = $route->getUri();
-        $this->routeWheres = $route->getWheres();
+        $this->uri = $route->uri;
+        $this->routeWheres = $route->wheres;
         $this->handleValidateFormat();
         $this->handleValidateMatch();
         $this->handleValidateUnique();
@@ -81,7 +81,7 @@ class WildcardValidation
 
     protected function validateMatch(string $wildcardName, string $routeKey): bool
     {
-        return Str::contains("{{$wildcardName}}", $routeKey) || Str::contains('{' . "$wildcardName?" . '}', $routeKey);
+        return Str::contains("{{$wildcardName}}", $routeKey) || Str::contains('{'."$wildcardName?".'}', $routeKey);
     }
 
     protected function handleValidateUnique()
@@ -102,7 +102,7 @@ class WildcardValidation
 
     protected function handleValidateRegex()
     {
-        if (!Validate::regex('/' . $this->wildcardName . '/')) {
+        if (!Validate::regex('/'.$this->wildcardName.'/')) {
             throw new InvalidArgumentException(
                 (new Message('Invalid regex pattern %s.'))
                     ->code('%s', $this->regex)
