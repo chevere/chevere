@@ -71,7 +71,7 @@ class Formatter
     public $url;
 
     /** @var string */
-    public $httpRequestMethod;
+    public $requestMethod;
 
     /** @var string */
     public $serverHost;
@@ -159,16 +159,16 @@ class Formatter
             $this->clientIp = $_SERVER['argv'][0];
             $this->clientUserAgent = Console::inputString();
         } else {
-            $httpRequest = $this->errorHandler->httpRequest;
-            if (isset($httpRequest)) {
-                $this->uri = $httpRequest->readInfoKey('requestUri') ?? 'unknown';
-                $this->clientUserAgent = $httpRequest->getHeaders()->get('User-Agent');
-                $this->httpRequestMethod = $httpRequest->readInfoKey('method');
-                $this->serverHost = $httpRequest->readInfoKey('host');
-                $this->serverPort = (int) $httpRequest->readInfoKey('port');
-                $this->serverProtocol = $httpRequest->readInfoKey('protocolVersion');
-                $this->serverSoftware = $httpRequest->getServer()->get('SERVER_SOFTWARE');
-                $this->clientIp = $httpRequest->readInfoKey('clientIp');
+            $request = $this->errorHandler->request;
+            if (isset($request)) {
+                $this->uri = $request->readInfoKey('requestUri') ?? 'unknown';
+                $this->clientUserAgent = $request->getHeaders()->get('User-Agent');
+                $this->httpRequestMethod = $request->readInfoKey('method');
+                $this->serverHost = $request->readInfoKey('host');
+                $this->serverPort = (int) $request->readInfoKey('port');
+                $this->serverProtocol = $request->readInfoKey('protocolVersion');
+                $this->serverSoftware = $request->getServer()->get('SERVER_SOFTWARE');
+                $this->clientIp = $request->readInfoKey('clientIp');
             }
         }
     }

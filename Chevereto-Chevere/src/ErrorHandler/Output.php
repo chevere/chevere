@@ -59,7 +59,7 @@ class Output
         $this->formatter = $formatter;
         $this->generateTemplates($formatter);
         $this->parseTemplate();
-        if ($errorHandler->httpRequest && $errorHandler->httpRequest->isXmlHttpRequest()) {
+        if ($errorHandler->request && $errorHandler->request->isXmlHttpRequest()) {
             $this->setJsonOutput();
         } else {
             if (CLI) {
@@ -203,7 +203,7 @@ class Output
 
     public function out(): void
     {
-        if ($this->errorHandler->httpRequest && $this->errorHandler->httpRequest->isXmlHttpRequest()) {
+        if ($this->errorHandler->request && $this->errorHandler->request->isXmlHttpRequest()) {
             $response = new HttpJsonResponse();
         } else {
             $response = new HttpResponse();

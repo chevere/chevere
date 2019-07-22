@@ -46,8 +46,8 @@ abstract class AppStatic
     public static function requestInstance(): ?Request
     {
         // Request isn't there when doing cli (unless you run the request command)
-        if (isset(static::$instance) && isset(static::$instance->httpRequest)) {
-            return static::$instance->httpRequest;
+        if (isset(static::$instance) && isset(static::$instance->request)) {
+            return static::$instance->request;
         }
 
         return null;

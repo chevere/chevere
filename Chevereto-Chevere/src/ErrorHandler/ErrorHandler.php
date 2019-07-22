@@ -102,7 +102,7 @@ class ErrorHandler implements ErrorHandlerInterface
     protected $logger;
 
     /** @var Request The detected/forged HTTP request */
-    public $httpRequest;
+    public $request;
 
     /** @var Runtime */
     protected $runtimeInstance;
@@ -135,7 +135,7 @@ class ErrorHandler implements ErrorHandlerInterface
         // $this->arguments = $args;
         $request = App::requestInstance();
         if (isset($request)) {
-            $this->httpRequest = $request;
+            $this->request = $request;
         }
         $this->runtimeInstance = App::runtimeInstance();
         $this->isDebugEnabled = (bool) $this->runtimeInstance->getDataKey('debug');

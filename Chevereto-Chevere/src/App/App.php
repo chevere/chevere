@@ -71,7 +71,7 @@ class App extends AppStatic implements AppInterface
     public $router;
 
     /** @var Request */
-    public $httpRequest;
+    public $request;
 
     /** @var Response */
     public $response;
@@ -155,7 +155,7 @@ class App extends AppStatic implements AppInterface
     public function run()
     {
         if (!isset($this->callable)) {
-            $this->processResolveCallable($this->httpRequest->getPathInfo());
+            $this->processResolveCallable($this->request->getPathInfo());
         }
         if (isset($this->callable)) {
             $this->processCallable($this->callable);
@@ -221,7 +221,7 @@ class App extends AppStatic implements AppInterface
      */
     public function forgeHttpRequest(...$requestArguments): self
     {
-        if (isset($this->httpRequest)) {
+        if (isset($this->request)) {
             throw new LogicException('Unable to forge request when the request has been already set.');
         }
         if (!in_array($requestArguments[1], Route::HTTP_METHODS)) {
@@ -248,10 +248,10 @@ class App extends AppStatic implements AppInterface
 
     protected function setHttpRequest(Request $request): self
     {
-        $this->httpRequest = $request;
+        $this->request = $request;
 
-        $pathinfo = ltrim($this->httpRequest->getPathInfo(), '/');
-        $this->httpRequest->attributes->set('requestArray', explode('/', $pathinfo));
+        $pathinfo = ltrim($this->request->getPathInfo(), '/');
+        $this->request->attributes->set('requestArray', explode('/', $pathinfo));
 
         return $this;
     }
@@ -338,7 +338,7 @@ class App extends AppStatic implements AppInterface
     {
         // try {
         $this->route = $this->router->resolve($pathInfo);
-        $this->callable = $this->route->getCallable($this->httpRequest->getMethod());
+        $this->callable = $this->route->getCallable($this->request->getMethod());
         $routerArgs = $this->router->arguments;
         if (isset($routerArgs)) {
             $this->setArguments($routerArgs);
