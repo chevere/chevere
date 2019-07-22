@@ -125,6 +125,7 @@ class App extends AppStatic implements AppInterface
             $pathHandle = Path::handle(static::FILEHANDLE_PARAMETERS);
             $parameters = Parameters::createFromFile($pathHandle);
         }
+        dd($parameters);
         $this->processConfigFiles($parameters->getDataKey(Parameters::CONFIG_FILES));
         $this->processApi($parameters->getDataKey(Parameters::API));
         $this->processParamRoutes($parameters->getDatakey(Parameters::ROUTES));

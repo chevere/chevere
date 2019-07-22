@@ -18,11 +18,11 @@ use Chevere\Console\Console;
 use Chevere\Runtime\Runtime;
 use Chevere\Runtime\Config;
 
-define(__NAMESPACE__ . '\TIME_BOOTSTRAP', microtime(true));
-define(__NAMESPACE__ . '\ERROR_LEVEL_BOOTSTRAP', error_reporting());
+define(__NAMESPACE__.'\TIME_BOOTSTRAP', microtime(true));
+define(__NAMESPACE__.'\ERROR_LEVEL_BOOTSTRAP', error_reporting());
 
 // Namespace handles (adds trailing slashes)
-const CORE_NS_HANDLE = __NAMESPACE__ . '\\';
+const CORE_NS_HANDLE = __NAMESPACE__.'\\';
 const APP_NS_HANDLE = 'App\\';
 
 /*
@@ -34,19 +34,19 @@ define('Chevere\BOOTSTRAPPER', debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0
  * Chevere\ROOT_PATH
  * Root path containing /app
  */
-define('Chevere\ROOT_PATH', rtrim(str_replace('\\', '/', dirname(BOOTSTRAPPER, 2)), '/') . '/');
+define('Chevere\ROOT_PATH', rtrim(str_replace('\\', '/', dirname(BOOTSTRAPPER, 2)), '/').'/');
 
 /*
  * Chevere\PATH
  * Relative path to Core, usually 'vendor/chevereto/chevereto-core'
  */
-define('Chevere\PATH', rtrim(str_replace(ROOT_PATH, null, str_replace('\\', '/', __DIR__)), '/') . '/');
+define('Chevere\PATH', rtrim(str_replace(ROOT_PATH, null, str_replace('\\', '/', __DIR__)), '/').'/');
 
 /*
  * Chevere\App\PATH
  * Relative path to app, usually 'app'
  */
-define('Chevere\App\PATH', basename(dirname(BOOTSTRAPPER)) . '/');
+define('Chevere\App\PATH', basename(dirname(BOOTSTRAPPER)).'/');
 
 // Init console if sapi = cli
 if ('cli' == php_sapi_name()) {
@@ -62,10 +62,10 @@ const DEFAULT_ERROR_HANDLING = [
 /*
  * Default error and exception handler
  */
-// new Runtime(
-//     (new Config())
-//         ->processFromArray(DEFAULT_ERROR_HANDLING)
-// );
+new Runtime(
+    (new Config())
+        ->processFromArray(DEFAULT_ERROR_HANDLING)
+);
 
 define('Chevere\CLI', Console::isRunning());
 

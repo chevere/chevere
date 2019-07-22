@@ -25,7 +25,7 @@ class Runtime extends Data
     /** @var Config */
     protected $config;
 
-    public function __construct(?Config $config)
+    public function __construct(Config $config = null)
     {
         parent::__construct();
         if (null != $config) {
@@ -40,7 +40,7 @@ class Runtime extends Data
             if ($v === $this->getDataKey($k)) {
                 continue;
             }
-            $fnName = 'set' . ucwords($k);
+            $fnName = 'set'.ucwords($k);
             if (method_exists($this, $fnName)) {
                 $this->{$fnName}($v);
             }

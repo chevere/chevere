@@ -85,7 +85,7 @@ class Output
                 unset($log['filename']);
                 break;
             case 1:
-                $response[0] = $this->formatter->thrown . ' in ' . $this->getTemplateTag('file') . ':' . $this->getTemplateTag('line');
+                $response[0] = $this->formatter->thrown.' in '.$this->getTemplateTag('file').':'.$this->getTemplateTag('line');
                 $error = [];
                 foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
                     $error[$v] = $this->getTemplateTag($v);
@@ -171,7 +171,7 @@ class Output
             '%clientIp%' => $this->formatter->clientIp,
             '%clientUserAgent%' => $this->formatter->clientUserAgent,
             '%serverProtocol%' => $this->formatter->serverProtocol,
-            '%httpRequestMethod%' => $this->formatter->httpRequestMethod,
+            '%httpRequestMethod%' => $this->formatter->httpRequestMethod ?? 'n/a',
             '%uri%' => $this->formatter->uri ?? null,
             '%serverHost%' => $this->formatter->serverHost,
             '%serverPort%' => $this->formatter->serverPort,
