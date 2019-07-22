@@ -38,7 +38,8 @@ class PathHandle
     public function __construct(string $identifier)
     {
         $this->identifier = $identifier;
-        $this->validateIdentifier();
+        $this->validateStringIdentifier();
+        $this->validateCharIdentifier();
     }
 
     /**
@@ -47,11 +48,12 @@ class PathHandle
     public function setContext(string $context): self
     {
         $this->context = $context;
+        $this->validateContext();
 
         return $this;
     }
 
-    public function validateIdentifier()
+    protected function validateStringIdentifier()
     {
         if (!($this->identifier != '' && !ctype_space($this->identifier))) {
             throw new InvalidArgumentException(
@@ -61,6 +63,10 @@ class PathHandle
                     ->toString()
             );
         }
+    }
+
+    protected function validateCharIdentifier()
+    {
         if (Utility\Str::contains(':', $this->identifier)) {
             if (Utility\Str::endsWith(':', $this->identifier)) {
                 throw new InvalidArgumentException(
@@ -82,7 +88,7 @@ class PathHandle
         }
     }
 
-    public function validateContext()
+    protected function validateContext()
     {
         if (!Path::isAbsolute($this->context)) {
             throw new InvalidArgumentException(
@@ -92,8 +98,6 @@ class PathHandle
                     ->toString()
             );
         }
-
-        return $this;
     }
 
     public function process()
@@ -109,7 +113,7 @@ class PathHandle
         }
         // $this->path is not an absolute path neither a wrapper or anything like that
         if (!Path::isAbsolute($this->path)) {
-            $this->path = $this->context . $this->path;
+            $this->path = $this->context.$this->path;
         }
         // Resolve . and ..
         $this->path = Path::resolve($this->path);

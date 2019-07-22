@@ -28,7 +28,7 @@ abstract class Path
     {
         $relativePath = Utility\Str::forwardSlashes($relativePath);
 
-        return ROOT_PATH . $relativePath;
+        return ROOT_PATH.$relativePath;
     }
 
     /**
@@ -44,7 +44,7 @@ abstract class Path
         $absolutePath = Str::forwardSlashes($absolutePath);
         $root = ROOT_PATH;
         if ($rootContext) {
-            $root .= $rootContext . '/';
+            $root .= $rootContext.'/';
         }
 
         return Str::replaceFirst($root, null, $absolutePath);
@@ -99,14 +99,14 @@ abstract class Path
         }
         // Chevereto: Get rid of any extra slashes at the begining if needed
         if (Str::startsWith('/', $path)) {
-            $path = '/' . ltrim($path, '/');
+            $path = '/'.ltrim($path, '/');
         }
         // Windows paths should uppercase the drive letter
         if (':' === substr($path, 1, 1)) {
             $path = ucfirst($path);
         }
 
-        return rtrim($wrapper . $path, '/');
+        return rtrim($wrapper.$path, '/');
     }
 
     /**
@@ -179,7 +179,7 @@ abstract class Path
      */
     public static function absoluteFromArray(array $array): string
     {
-        return '/' . implode('/', $array);
+        return '/'.implode('/', $array);
     }
 
     /**
@@ -212,10 +212,10 @@ abstract class Path
         if ($rootContext) {
             $handleContext = static::resolve(static::normalize($rootContext));
         } else {
-            $handleContext = ROOT_PATH . App\PATH;
+            $handleContext = ROOT_PATH.App\PATH;
         }
         $handleContext = static::tailDir($handleContext);
-        $pathHandle->setContext($handleContext)->validateContext();
+        $pathHandle->setContext($handleContext);
         $pathHandle->process();
 
         return $pathHandle;
