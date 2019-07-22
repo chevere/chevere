@@ -23,7 +23,7 @@
   "autoload": {
     "files": ["utils/phpcheck.php", "resources/functions/dump.php"],
     "psr-4": {
-      "Chevereto\\Chevere\\": "src/"
+      "Chevere\\": "src/"
     }
   }
 }
