@@ -16,7 +16,7 @@ namespace Chevere\VarDump;
 use const Chevere\CLI;
 
 /**
- * Generates dumps information about a variable. CLI/HTML aware.
+ * Analyze a variable and provide a CLI/HTML aware output string representation of its type and data.
  */
 class VarDump extends VarDumpAbstract
 {

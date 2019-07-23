@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\VarDump;
 
 /**
- * Dumps information about a variable in HTML format.
+ * Analyze a variable and provide a HTML output string representation of its type and data.
  */
 class HtmlVarDump extends VarDump
 {

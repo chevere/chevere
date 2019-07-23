@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\VarDump;
 
 /**
- * Dumps information about a variable in plain text format.
+ * Analyze a variable and provide a plain text output string representation of its type and data.
  */
 class PlainVarDump extends ConsoleVarDump
 {
