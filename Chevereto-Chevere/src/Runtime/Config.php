@@ -49,7 +49,7 @@ class Config extends Data
         self::ERROR_HANDLER => 'is_callable',
         self::EXCEPTION_HANDLER => 'is_callable',
         self::URI_SCHEME => ['http', 'https'],
-        self::TIMEZONE => Validate::class . '::timezone',
+        self::TIMEZONE => Validate::class.'::timezone',
     ];
 
     public function __construct()
@@ -74,7 +74,7 @@ class Config extends Data
     protected function dataAdder(array $data): self
     {
         foreach (array_keys($data) as $key) {
-            $fnName = 'set' . ucwords($key);
+            $fnName = 'set'.ucwords($key);
             if (!method_exists(Runtime::class, $fnName)) {
                 throw new LogicException(
                     (new Message('Unrecognized %c key "%s".'))
@@ -95,7 +95,7 @@ class Config extends Data
             $this->validate();
         } catch (Exception $e) {
             throw new LogicException(
-                (new Message($e->getMessage() . ' at %s'))->b('%s', '0000000000000000')->toString()
+                (new Message($e->getMessage().' at %s'))->b('%s', '0000000000000000')->toString()
             );
         }
         $this->addData($this->data);
@@ -176,7 +176,7 @@ class Config extends Data
             }
         }
         if ($exceptions != false) {
-            throw new LogicException('Invalid configuration: ' . implode('; ', $exceptions));
+            throw new LogicException('Invalid configuration: '.implode('; ', $exceptions));
         }
     }
 
@@ -227,7 +227,7 @@ class ConfigException extends Exception
         $message = "Unexpected config value $value for <b>$key</b> config key";
         // $assert = 'try' ?? Config::getAssert($key);
         $assert = '00000000000000000xTry';
-        $message .= ' (expecting <code>' . $assert . '</code>)';
+        $message .= ' (expecting <code>'.$assert.'</code>)';
         parent::__construct($message, $code, $previous);
     }
 }

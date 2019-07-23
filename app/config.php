@@ -8,5 +8,5 @@ return [
     Config::TIMEZONE => 'UTC',
     // Config::ERROR_HANDLER => null,
     // Config::EXCEPTION_HANDLER => null,
-    Config::URI_SCHEME => 'http',
+    Config::URI_SCHEME => 'https',
 ];

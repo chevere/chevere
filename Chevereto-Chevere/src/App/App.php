@@ -125,8 +125,8 @@ class App extends AppStatic implements AppInterface
             $pathHandle = Path::handle(static::FILEHANDLE_PARAMETERS);
             $parameters = Parameters::createFromFile($pathHandle);
         }
-        dd($parameters);
-        $this->processConfigFiles($parameters->getDataKey(Parameters::CONFIG_FILES));
+        // dd($parameters);
+        // $this->processConfigFiles($parameters->getDataKey(Parameters::CONFIG_FILES));
         $this->processApi($parameters->getDataKey(Parameters::API));
         $this->processParamRoutes($parameters->getDatakey(Parameters::ROUTES));
         $this->router->getRegex();
@@ -277,18 +277,18 @@ class App extends AppStatic implements AppInterface
         return $this;
     }
 
-    protected function processConfigFiles(array $configFiles = null): void
-    {
-        if (!isset($configFiles)) {
-            return;
-        }
-        if (isset($this->runtime)) {
-            $this->runtime->runConfig(
-                (new Config())
-                    ->processFromFiles($configFiles)
-            );
-        }
-    }
+    // protected function processConfigFiles(array $configFiles = null): void
+    // {
+    //     if (!isset($configFiles)) {
+    //         return;
+    //     }
+    //     if (isset($this->runtime)) {
+    //         $this->runtime->runConfig(
+    //             (new Config())
+    //                 ->processFromFiles($configFiles)
+    //         );
+    //     }
+    // }
 
     protected function processApi(string $pathIdentifier = null): void
     {
