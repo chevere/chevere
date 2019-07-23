@@ -11,19 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Chevere\VarDump\Dumper;
+namespace Chevere\VarDump;
 
-/**
- * Dumps information about one or more variables.
- */
-function dump(...$vars)
+class PlainVarDump extends ConsoleVarDump
 {
-    Dumper::dump(...$vars);
-}
-/**
- * Dumps information about one or more variables and die().
- */
-function dd(...$vars)
-{
-    Dumper::dd(...$vars);
+    public static function wrap(string $key, string $dump): ?string
+    {
+        return $dump;
+    }
 }

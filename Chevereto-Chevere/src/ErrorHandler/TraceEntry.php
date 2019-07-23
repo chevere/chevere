@@ -19,8 +19,9 @@ use Chevere\App\App;
 use Chevere\Core;
 use Chevere\Path;
 use Chevere\Utility\Str;
-use Chevere\VarDumper\VarDumper;
-use Chevere\VarDumper\PlainVarDumper;
+use Chevere\VarDump\VarDump;
+use Chevere\VarDump\ConsoleVarDump;
+use Chevere\VarDump\PlainVarDump;
 
 /**
  * TraceEntry prepares the exception trace for being used with Stack.
@@ -94,9 +95,9 @@ class TraceEntry
         $this->plainArgs = "\n";
         $this->richArgs = "\n";
         foreach ($this->entry['args'] as $k => $v) {
-            $aux = 'Arg#' . ($k + 1) . ' ';
-            $this->plainArgs .= $aux . PlainVarDumper::out($v, null, [App::class]) . "\n";
-            $this->richArgs .= $aux . VarDumper::out($v, null, [App::class]) . "\n";
+            $aux = 'Arg#'.($k + 1).' ';
+            $this->plainArgs .= $aux.PlainVarDump::out($v, null, [App::class])."\n";
+            $this->richArgs .= $aux.ConsoleVarDump::out($v, null, [App::class])."\n";
         }
         $this->chopArgStringNl($this->plainArgs);
         $this->chopArgStringNl($this->richArgs);
@@ -109,16 +110,16 @@ class TraceEntry
 
     protected function handleProcessAnonClass()
     {
-        if (isset($this->entry['class']) && Str::startsWith(VarDumper::ANON_CLASS, $this->entry['class'])) {
+        if (isset($this->entry['class']) && Str::startsWith(VarDump::ANON_CLASS, $this->entry['class'])) {
             $this->processAnonClass();
         }
     }
 
     protected function processAnonClass()
     {
-        $entryFile = Str::replaceFirst(VarDumper::ANON_CLASS, null, $this->entry['class']);
+        $entryFile = Str::replaceFirst(VarDump::ANON_CLASS, null, $this->entry['class']);
         $this->entry['file'] = substr($entryFile, 0, strpos($entryFile, '.php') + 4);
-        $this->entry['class'] = VarDumper::ANON_CLASS;
+        $this->entry['class'] = VarDump::ANON_CLASS;
         $this->entry['line'] = null;
     }
 
@@ -131,7 +132,7 @@ class TraceEntry
 
     protected function processCoreAutoloader()
     {
-        $this->entry['file'] = $this->entry['file'] ?? (PATH . 'autoloader.php');
+        $this->entry['file'] = $this->entry['file'] ?? (PATH.'autoloader.php');
     }
 
     protected function handleProcessNormalizeFile()

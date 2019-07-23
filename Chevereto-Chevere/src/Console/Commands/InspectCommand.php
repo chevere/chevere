@@ -23,7 +23,7 @@ use ReflectionFunction;
 use const Chevere\App\PATH;
 use Chevere\App\App;
 use Chevere\Console\Command;
-use Chevere\VarDumper\VarDumper;
+use Chevere\VarDump\VarDump;
 use Chevere\Load;
 use Chevere\Message;
 use Chevere\Path;
@@ -142,15 +142,15 @@ class InspectCommand extends Command
         foreach ($this->reflector->getParameters() as $parameter) {
             $aux = null;
             if ($parameter->getType()) {
-                $aux .= $parameter->getType() . ' ';
+                $aux .= $parameter->getType().' ';
             }
-            $aux .= '$' . $parameter->getName();
+            $aux .= '$'.$parameter->getName();
             if ($parameter->isDefaultValueAvailable()) {
-                $aux .= ' = ' . ($parameter->getDefaultValue() ?? 'null');
+                $aux .= ' = '.($parameter->getDefaultValue() ?? 'null');
             }
             // $res = $resource[$parameter->getName()] ?? null;
             // if (isset($res)) {
-            //     $aux .= ' '.VarDumper::wrap(VarDumper::_OPERATOR, '--description '.$res['description'].' --regex '.$res['regex']);
+            //     $aux .= ' '.VarDump::wrap(VarDump::_OPERATOR, '--description '.$res['description'].' --regex '.$res['regex']);
             // }
             $this->arguments[] = "#$i $aux";
             ++$i;

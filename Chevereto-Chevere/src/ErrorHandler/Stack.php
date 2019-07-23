@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\ErrorHandler;
 
 use const Chevere\CLI;
-use Chevere\VarDumper\VarDumper;
+use Chevere\VarDump\VarDump;
 
 /**
  * Handles the ErrorHandler exception stack trace.
@@ -75,12 +75,12 @@ class Stack
 
     protected function glueString(array $array)
     {
-        return implode("\n" . $this->hr . "\n", $array);
+        return implode("\n".$this->hr."\n", $array);
     }
 
     protected function wrapStringHr(string $text): string
     {
-        return $this->hr . "\n" . $text . "\n" . $this->hr;
+        return $this->hr."\n".$text."\n".$this->hr;
     }
 
     protected function setPlainTable(TraceEntry $entry): void
@@ -90,7 +90,7 @@ class Stack
             '%i%' => $this->i,
             '%f%' => $entry->getArray()['file'] ?? null,
             '%l%' => $entry->getArray()['line'] ?? null,
-            '%fl%' => isset($entry->getArray()['file']) ? ($entry->getArray()['file'] . ':' . $entry->getArray()['line']) : null,
+            '%fl%' => isset($entry->getArray()['file']) ? ($entry->getArray()['file'].':'.$entry->getArray()['line']) : null,
             '%c%' => $entry->getArray()['class'] ?? null,
             '%t%' => $entry->getArray()['type'] ?? null,
             '%m%' => $entry->getArray()['function'],
@@ -104,14 +104,14 @@ class Stack
         array_pop($this->richTable);
         // Dump types map
         foreach ([
-            '%f%' => VarDumper::_FILE,
-            '%l%' => VarDumper::_FILE,
-            '%fl%' => VarDumper::_FILE,
-            '%c%' => VarDumper::_CLASS,
-            '%t%' => VarDumper::_OPERATOR,
-            '%m%' => VarDumper::_FUNCTION,
+            '%f%' => VarDump::_FILE,
+            '%l%' => VarDump::_FILE,
+            '%fl%' => VarDump::_FILE,
+            '%c%' => VarDump::_CLASS,
+            '%t%' => VarDump::_OPERATOR,
+            '%m%' => VarDump::_FUNCTION,
         ] as $k => $v) {
-            $wrapper = VarDumper::wrap($v, (string) $this->plainTable[$k]);
+            $wrapper = VarDump::wrap($v, (string) $this->plainTable[$k]);
             $this->richTable[$k] = isset($this->plainTable[$k]) ? $wrapper : null;
         }
         $this->richTable['%a%'] = $entry->getRichArgs();

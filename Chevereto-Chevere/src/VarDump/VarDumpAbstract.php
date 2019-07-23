@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\VarDumper;
+namespace Chevere\VarDump;
 
 use Throwable;
 use Reflector;
@@ -23,7 +23,7 @@ use Chevere\Utility\Str;
 /**
  * Analyze a variable and provide an output string representation of its type and data.
  */
-class VarDumper extends VarDumperStatic
+abstract class VarDumpAbstract
 {
     const TYPE_STRING = 'string';
     const TYPE_FLOAT = 'float';
@@ -55,12 +55,12 @@ class VarDumper extends VarDumperStatic
     protected $className;
 
     /** @var array */
-    private $properties;
+    protected $properties;
 
     /** @var Reflector */
-    private $reflectionObject;
+    protected $reflectionObject;
 
-    /** @var mixed */
+    /** @var */
     public $var;
 
     /** @var mixed */
@@ -101,7 +101,7 @@ class VarDumper extends VarDumperStatic
         $this->dontDump = $dontDump;
         $this->depth = $depth;
         $this->val = null;
-        $this->prefix = str_repeat(Template::HTML_INLINE_PREFIX, $this->indent);
+        $this->setPrefix();
         $this->handleSetType();
         $this->handleType();
         $this->handleSetTemplate();
@@ -113,11 +113,19 @@ class VarDumper extends VarDumperStatic
         ]);
     }
 
+    abstract protected function setPrefix(): void;
+
+    abstract protected function getEmphasis(string $string): string;
+
+    abstract protected function filterChars(string $string): string;
+
+    abstract public static function wrap(string $key, string $dump): ?string;
+
     protected function handleSetType(): void
     {
         $this->type = gettype($this->expression);
         if ('double' == $this->type) {
-            $this->type = VarDumper::TYPE_FLOAT;
+            $this->type = static::TYPE_FLOAT;
         }
     }
 
@@ -145,7 +153,7 @@ class VarDumper extends VarDumperStatic
     {
         $this->reflectionObject = new ReflectionObject($this->expression);
         if (in_array($this->reflectionObject->getName(), $this->dontDump)) {
-            $this->val .= static::wrap(static::_OPERATOR, $this->getEmphasized($this->reflectionObject->getName()));
+            $this->val .= static::wrap(static::_OPERATOR, $this->getEmphasis($this->reflectionObject->getName()));
 
             return;
         }
@@ -178,7 +186,7 @@ class VarDumper extends VarDumperStatic
     {
         $visibility = implode(' ', $var['visibility'] ?? $this->properties['visibility']);
         $operator = static::wrap(static::_OPERATOR, '->');
-        $this->val .= "\n".$this->prefix.$this->getEmphasized($visibility).' '.htmlspecialchars($key)." $operator ";
+        $this->val .= "\n".$this->prefix.$this->getEmphasis($visibility).' '.$this->filterChars($key)." $operator ";
         $aux = $var['value'];
         if (is_object($aux) && property_exists($aux, $key)) {
             try {
@@ -186,7 +194,7 @@ class VarDumper extends VarDumperStatic
                 $p = $r->getProperty($key);
                 $p->setAccessible(true);
                 if ($aux == $p->getValue($aux)) {
-                    $this->val .= static::wrap(static::_OPERATOR, '('.$this->getEmphasized('circular object reference').')');
+                    $this->val .= static::wrap(static::_OPERATOR, '('.$this->getEmphasis('circular object reference').')');
                 }
 
                 return;
@@ -197,7 +205,7 @@ class VarDumper extends VarDumperStatic
         if ($this->depth < 4) {
             $this->val .= (new static($aux, $this->indent, $this->dontDump, $this->depth))->toString();
         } else {
-            $this->val .= static::wrap(static::_OPERATOR, '('.$this->getEmphasized('max depth reached').')');
+            $this->val .= static::wrap(static::_OPERATOR, '('.$this->getEmphasis('max depth reached').')');
         }
     }
 
@@ -205,11 +213,11 @@ class VarDumper extends VarDumperStatic
     {
         foreach ($this->expression as $k => $v) {
             $operator = static::wrap(static::_OPERATOR, '=>');
-            $this->val .= "\n".$this->prefix.' '.htmlspecialchars((string) $k)." $operator ";
+            $this->val .= "\n".$this->prefix.' '.$this->filterChars((string) $k)." $operator ";
             $aux = $v;
             $isCircularRef = is_array($aux) && isset($aux[$k]) && $aux == $aux[$k];
             if ($isCircularRef) {
-                $this->val .= static::wrap(static::_OPERATOR, '('.$this->getEmphasized('circular array reference').')');
+                $this->val .= static::wrap(static::_OPERATOR, '('.$this->getEmphasis('circular array reference').')');
             } else {
                 $this->val .= (new static($aux, $this->indent, $this->dontDump))->toString();
             }
@@ -230,7 +238,7 @@ class VarDumper extends VarDumperStatic
         $is_numeric = is_numeric($this->expression);
         if ($is_string || $is_numeric) {
             $this->parentheses = 'length='.strlen($is_numeric ? ((string) $this->expression) : $this->expression);
-            $this->val .= strval($this->expression); // htmlspecialchars($this->expression)
+            $this->val .= $this->filterChars(strval($this->expression));
         }
     }
 
@@ -250,13 +258,8 @@ class VarDumper extends VarDumperStatic
     protected function handleSetParentheses(): void
     {
         if (isset($this->parentheses) && false !== strpos($this->parentheses, '=')) {
-            $this->parentheses = $this->getEmphasized($this->parentheses);
+            $this->parentheses = $this->getEmphasis($this->parentheses);
         }
-    }
-
-    public function getEmphasized(string $string): string
-    {
-        return sprintf(Template::HTML_EMPHASIS, $string);
     }
 
     public function toString(): string

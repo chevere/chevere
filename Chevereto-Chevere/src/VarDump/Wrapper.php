@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\VarDumper;
+namespace Chevere\VarDump;
 
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
@@ -48,8 +48,6 @@ class Wrapper
     }
 
     /**
-     * TODO: toString interface.
-     *
      * @return string color
      */
     public function toString(): string
@@ -79,7 +77,7 @@ class Wrapper
     protected function wrapHtml()
     {
         if ($color = $this->getHtmlColor($this->key)) {
-            return '<span style="color:' . $color . '">' . $this->dump . '</span>';
+            return '<span style="color:'.$color.'">'.$this->dump.'</span>';
         }
 
         return $this->dump;

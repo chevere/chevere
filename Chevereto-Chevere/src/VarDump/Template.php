@@ -11,19 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Chevere\VarDump\Dumper;
+namespace Chevere\VarDump;
 
 /**
- * Dumps information about one or more variables.
+ * Stores the template strings used by VarDump.
  */
-function dump(...$vars)
+class Template
 {
-    Dumper::dump(...$vars);
-}
-/**
- * Dumps information about one or more variables and die().
- */
-function dd(...$vars)
-{
-    Dumper::dd(...$vars);
+    const HTML_INLINE_PREFIX = ' <span style="border-left: 1px solid rgba(236,240,241,.1);"></span>  ';
+    const HTML_EMPHASIS = '<em>%s</em>';
 }

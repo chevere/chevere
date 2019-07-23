@@ -11,15 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\VarDumper;
+namespace Chevere\VarDump;
 
 use const Chevere\CLI;
 
-/**
- * Analyze a variable and provide an output string representation of its type and data.
- */
-abstract class VarDumperStatic
+class VarDump extends VarDumpAbstract
 {
+    protected function setPrefix(): void
+    {
+        $this->prefix = str_repeat(' ', $this->indent);
+    }
+
+    protected function getEmphasis(string $string): string
+    {
+        return $string;
+    }
+
+    protected function filterChars(string $string): string
+    {
+        return $string;
+    }
+
     /**
      * Wrap dump data HTML / CLI aware.
      *
@@ -38,10 +50,11 @@ abstract class VarDumperStatic
         return $wrapper->toString();
     }
 
+    /**
+     * Provides VarDump*::out.
+     */
     public static function out($var, int $indent = null, array $dontDump = [], int $depth = 0): string
     {
         return (/* @scrutinizer ignore-call */new static(...func_get_args()))->toString();
     }
-
-    abstract public function toString(): string;
 }

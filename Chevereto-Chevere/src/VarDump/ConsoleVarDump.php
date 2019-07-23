@@ -11,13 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\VarDumper;
+namespace Chevere\VarDump;
 
-/**
- * Stores the template strings used by VarDumper.
- */
-class Template
+class ConsoleVarDump extends VarDump
 {
-    const HTML_INLINE_PREFIX = ' <span style="border-left: 1px solid rgba(236,240,241,.1);"></span>  ';
-    const HTML_EMPHASIS = '<em>%s</em>';
+    public static function wrap(string $key, string $dump): ?string
+    {
+        $wrapper = new Wrapper($key, $dump);
+        $wrapper->useCli();
+
+        return $wrapper->toString();
+    }
 }

@@ -20,7 +20,7 @@ use Chevere\App\App;
 use Chevere\File;
 use Chevere\Path;
 use Chevere\Console\Command;
-use Chevere\VarDumper\PlainVarDumper;
+use Chevere\VarDump\PlainVarDump;
 
 /**
  * The RunCommand allows to run any callable present in the app.
@@ -66,7 +66,7 @@ class RunCommand extends Command
         // Pass explicit callables, "weird" callables (Class::__invoke) runs in the App.
         if (is_callable($callable)) {
             $return = $callable(...$this->cli->input->getOption('argument'));
-            $this->cli->out->block(PlainVarDumper::out($return), 'RETURN', 'fg=black;bg=green', ' ', true);
+            $this->cli->out->block(PlainVarDump::out($return), 'RETURN', 'fg=black;bg=green', ' ', true);
         } else {
             $arguments = $this->cli->input->getOption('argument');
             // argument was declared as array

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\VarDumper;
+namespace Chevere\VarDump;
 
 use const Chevere\CLI;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -56,8 +56,12 @@ class Dumper
     /** @var int */
     protected $offset = 1;
 
+    /** @var VarDump */
+    protected $dumper;
+
     public function __construct(...$vars)
     {
+        $this->dumper = CLI ? ConsoleVarDump::class : HtmlVarDump::class;
         $this->vars = $vars;
         $this->numArgs = func_num_args();
         if (0 == $this->numArgs) {
@@ -111,7 +115,7 @@ class Dumper
 
     protected function handleOutput(): void
     {
-        if (CLI) {
+        if ($this->dumper == ConsoleVarDump::class) {
             $this->handleConsoleOutput();
         } else {
             $this->handleHtmlOutput();
@@ -163,12 +167,12 @@ class Dumper
 
     protected function appendClass(string $class, string $type): void
     {
-        $this->output .= VarDumper::wrap('_class', $class).$type;
+        $this->output .= $this->dumper::wrap('_class', $class).$type;
     }
 
     protected function appendFunction(string $function): void
     {
-        $this->output .= VarDumper::wrap('_function', $function.'()');
+        $this->output .= $this->dumper::wrap('_function', $function.'()');
     }
 
     protected function handleFile(): void
@@ -180,7 +184,7 @@ class Dumper
 
     protected function appendFilepath(string $file, int $line): void
     {
-        $this->output .= "\n".VarDumper::wrap('_file', Path::normalize($file).':'.$line);
+        $this->output .= "\n".$this->dumper::wrap('_file', Path::normalize($file).':'.$line);
     }
 
     protected function handleArgs(): void
@@ -194,7 +198,7 @@ class Dumper
 
     protected function appendArg(int $pos, $value): void
     {
-        $this->output .= 'Arg#'.$pos.' '.VarDumper::out($value, 0)."\n\n";
+        $this->output .= 'Arg#'.$pos.' '.$this->dumper::out($value, 0)."\n\n";
     }
 
     protected function handleProccessOutput(): void
