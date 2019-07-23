@@ -61,31 +61,31 @@ abstract class VarDumpAbstract
     protected $reflectionObject;
 
     /** @var */
-    public $var;
+    protected $var;
 
     /** @var mixed */
-    public $expression;
+    protected $expression;
 
     /** @var int */
-    public $indent;
+    protected $indent;
 
     /** @var array */
-    public $dontDump;
+    protected $dontDump;
 
     /** @var int */
-    public $depth;
+    protected $depth;
 
     /** @var mixed */
-    public $val;
+    protected $val;
 
     /** @var string */
-    public $prefix;
+    protected $prefix;
 
     /** @var string */
-    public $type;
+    protected $type;
 
     /** @var string */
-    public $parentheses;
+    protected $parentheses;
 
     public function __construct($var, int $indent = null, array $dontDump = [], int $depth = 0)
     {
@@ -102,10 +102,10 @@ abstract class VarDumpAbstract
         $this->depth = $depth;
         $this->val = null;
         $this->setPrefix();
-        $this->handleSetType();
+        $this->setType();
         $this->handleType();
-        $this->handleSetTemplate();
-        $this->handleSetParentheses();
+        $this->setTemplate();
+        $this->handleParentheses();
         $this->output = strtr($this->template, [
             '%type' => static::wrap($this->type, $this->type),
             '%val' => $this->val,
@@ -121,7 +121,7 @@ abstract class VarDumpAbstract
 
     abstract public static function wrap(string $key, string $dump): ?string;
 
-    protected function handleSetType(): void
+    protected function setType(): void
     {
         $this->type = gettype($this->expression);
         if ('double' == $this->type) {
@@ -242,7 +242,7 @@ abstract class VarDumpAbstract
         }
     }
 
-    protected function handleSetTemplate(): void
+    protected function setTemplate(): void
     {
         switch ($this->type) {
             case static::TYPE_ARRAY:
@@ -255,7 +255,7 @@ abstract class VarDumpAbstract
         }
     }
 
-    protected function handleSetParentheses(): void
+    protected function handleParentheses(): void
     {
         if (isset($this->parentheses) && false !== strpos($this->parentheses, '=')) {
             $this->parentheses = $this->getEmphasis($this->parentheses);
