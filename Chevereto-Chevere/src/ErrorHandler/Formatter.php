@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\ErrorHandler;
 
+// FIXME: Generar plain + html/console segun corresponda (plain siempre se debe generar)
+
 use Throwable;
 use ErrorException;
 use const Chevere\CLI;
@@ -97,7 +99,6 @@ class Formatter
     /** @var string FIXME: Better name */
     public $thrown;
 
-    // The actual stacks
     public $plainStack;
     public $richStack;
     public $consoleStack;

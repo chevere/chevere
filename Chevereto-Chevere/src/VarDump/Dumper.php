@@ -56,12 +56,12 @@ class Dumper
     /** @var int */
     protected $offset = 1;
 
-    /** @var VarDump */
+    /** @var string */
     protected $dumper;
 
     public function __construct(...$vars)
     {
-        $this->dumper = CLI ? ConsoleVarDump::class : HtmlVarDump::class;
+        $this->dumper = static::dumper();
         $this->vars = $vars;
         $this->numArgs = func_num_args();
         if (0 == $this->numArgs) {
@@ -73,7 +73,11 @@ class Dumper
         $this->setCallerFilepath($this->debugBacktrace[0]['file']);
         $this->handleSelfCaller();
         $this->output = null;
-        $this->handleOutput();
+        if ($this->dumper == ConsoleVarDump::class) {
+            $this->handleConsoleOutput();
+        } else {
+            $this->handleHtmlOutput();
+        }
         $this->handleClass();
         $this->appendFunction($this->debugBacktrace[$this->offset]['function']);
         $this->handleFile();
@@ -81,6 +85,11 @@ class Dumper
         $this->handleArgs();
         $this->output = trim($this->output).'</pre>';
         $this->handleProccessOutput();
+    }
+
+    public static function dumper(): string
+    {
+        return CLI ? ConsoleVarDump::class : HtmlVarDump::class;
     }
 
     public static function dump(...$vars): void
@@ -111,15 +120,6 @@ class Dumper
     protected function shiftDebugBacktrace(): void
     {
         array_shift($this->debugBacktrace);
-    }
-
-    protected function handleOutput(): void
-    {
-        if ($this->dumper == ConsoleVarDump::class) {
-            $this->handleConsoleOutput();
-        } else {
-            $this->handleHtmlOutput();
-        }
     }
 
     protected function handleConsoleOutput(): void
