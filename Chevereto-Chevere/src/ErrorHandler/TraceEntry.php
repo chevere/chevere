@@ -30,9 +30,6 @@ class TraceEntry
     /** @var array Exception trace entry */
     protected $entry;
 
-    /** @var array Input Exception trace entry provided */
-    protected $_entry;
-
     /** @var string Plain representation of the entry arguments */
     protected $plainArgs;
 
@@ -49,7 +46,6 @@ class TraceEntry
 
     public function __construct(array $entry)
     {
-        $this->_entry = $entry;
         $this->entry = $entry;
         $this->varDump = VarDump::RUNTIME;
         $this->handleProcessMissingClassFile();

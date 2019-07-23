@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\VarDump;
 
+use Chevere\VarDump\src\Wrapper;
+
 /**
  * Analyze a variable and provide a CLI output string representation of its type and data.
  */

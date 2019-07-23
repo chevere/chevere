@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\VarDump;
 
 use const Chevere\CLI;
+use Chevere\VarDump\src\Wrapper;
 
 /**
  * Analyze a variable and provide a CLI/HTML aware output string representation of its type and data.

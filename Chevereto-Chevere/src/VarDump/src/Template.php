@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\VarDump;
+namespace Chevere\VarDump\src;
 
 /**
  * The template strings used by VarDump*.
  */
-class Template
+abstract class Template
 {
     const HTML_INLINE_PREFIX = ' <span style="border-left: 1px solid rgba(236,240,241,.1);"></span>  ';
     const HTML_EMPHASIS = '<em>%s</em>';

@@ -11,7 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\VarDump;
+namespace Chevere\VarDump\src;
+
+use Chevere\VarDump\VarDump;
 
 abstract class Pallete
 {
