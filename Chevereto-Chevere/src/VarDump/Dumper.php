@@ -57,11 +57,11 @@ class Dumper
     protected $offset = 1;
 
     /** @var string */
-    protected $dumper;
+    protected $varDump;
 
     public function __construct(...$vars)
     {
-        $this->dumper = static::dumper();
+        $this->varDump = VarDump::RUNTIME;
         $this->vars = $vars;
         $this->numArgs = func_num_args();
         if (0 == $this->numArgs) {
@@ -73,7 +73,7 @@ class Dumper
         $this->setCallerFilepath($this->debugBacktrace[0]['file']);
         $this->handleSelfCaller();
         $this->output = null;
-        if ($this->dumper == ConsoleVarDump::class) {
+        if ($this->varDump == ConsoleVarDump::class) {
             $this->handleConsoleOutput();
         } else {
             $this->handleHtmlOutput();
@@ -85,11 +85,6 @@ class Dumper
         $this->handleArgs();
         $this->output = trim($this->output).'</pre>';
         $this->handleProccessOutput();
-    }
-
-    public static function dumper(): string
-    {
-        return CLI ? ConsoleVarDump::class : HtmlVarDump::class;
     }
 
     public static function dump(...$vars): void
@@ -167,12 +162,12 @@ class Dumper
 
     protected function appendClass(string $class, string $type): void
     {
-        $this->output .= $this->dumper::wrap('_class', $class).$type;
+        $this->output .= $this->varDump::wrap('_class', $class).$type;
     }
 
     protected function appendFunction(string $function): void
     {
-        $this->output .= $this->dumper::wrap('_function', $function.'()');
+        $this->output .= $this->varDump::wrap('_function', $function.'()');
     }
 
     protected function handleFile(): void
@@ -184,7 +179,7 @@ class Dumper
 
     protected function appendFilepath(string $file, int $line): void
     {
-        $this->output .= "\n".$this->dumper::wrap('_file', Path::normalize($file).':'.$line);
+        $this->output .= "\n".$this->varDump::wrap('_file', Path::normalize($file).':'.$line);
     }
 
     protected function handleArgs(): void
@@ -198,7 +193,7 @@ class Dumper
 
     protected function appendArg(int $pos, $value): void
     {
-        $this->output .= 'Arg#'.$pos.' '.$this->dumper::out($value, 0)."\n\n";
+        $this->output .= 'Arg#'.$pos.' '.$this->varDump::out($value, 0)."\n\n";
     }
 
     protected function handleProccessOutput(): void

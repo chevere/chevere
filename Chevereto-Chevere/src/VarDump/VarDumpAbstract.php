@@ -17,6 +17,7 @@ use Throwable;
 use Reflector;
 use ReflectionProperty;
 use ReflectionObject;
+use const Chevere\CLI;
 use Chevere\Path;
 use Chevere\Utility\Str;
 
@@ -25,6 +26,8 @@ use Chevere\Utility\Str;
  */
 abstract class VarDumpAbstract
 {
+    const RUNTIME = CLI ? ConsoleVarDump::class : HtmlVarDump::class;
+
     const TYPE_STRING = 'string';
     const TYPE_FLOAT = 'float';
     const TYPE_INTEGER = 'integer';

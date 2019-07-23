@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\ErrorHandler;
 
-// FIXME: Generar plain + html/console segun corresponda (plain siempre se debe generar)
-
 use Throwable;
 use ErrorException;
 use const Chevere\CLI;
 use Chevere\Console\Console;
+use Chevere\VarDump\VarDump;
 use Chevere\VarDump\PlainVarDump;
-use Chevere\VarDump\ConsoleVarDump;
 use Chevere\Utility\Str;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -131,8 +129,12 @@ class Formatter
     /** @var string */
     public $uri;
 
+    /** @var string */
+    protected $varDump;
+
     public function __construct(ErrorHandler $errorHandler, ExceptionHandler $exceptionHandler)
     {
+        $this->varDump = VarDump::RUNTIME;
         $this->errorHandler = $errorHandler;
         $this->exceptionHandler = $exceptionHandler;
         $this->processServerProperties();
@@ -276,7 +278,11 @@ class Formatter
             $k = '_'.$v;
             $v = isset($GLOBALS[$k]) ? $GLOBALS[$k] : null;
             if ($v) {
-                $this->setRichContentSection($k, ['$'.$k, $this->wrapStringHr('<pre>'.ConsoleVarDump::out($v).'</pre>')]);
+                $wrapped = $this->varDump::out($v);
+                if (!CLI) {
+                    $wrapped = '<pre>'.$wrapped.'</pre>';
+                }
+                $this->setRichContentSection($k, ['$'.$k, $this->wrapStringHr($wrapped)]);
                 $this->setPlainContentSection($k, ['$'.$k, strip_tags($this->wrapStringHr(PlainVarDump::out($v)))]);
             }
         }

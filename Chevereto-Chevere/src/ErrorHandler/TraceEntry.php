@@ -20,7 +20,6 @@ use Chevere\Core;
 use Chevere\Path;
 use Chevere\Utility\Str;
 use Chevere\VarDump\VarDump;
-use Chevere\VarDump\ConsoleVarDump;
 use Chevere\VarDump\PlainVarDump;
 
 /**
@@ -40,6 +39,9 @@ class TraceEntry
     /** @var string Rich representation of the entry arguments (colored) */
     protected $richArgs;
 
+    /** @var string */
+    protected $varDump;
+
     public function getArray(): array
     {
         return $this->entry;
@@ -49,6 +51,7 @@ class TraceEntry
     {
         $this->_entry = $entry;
         $this->entry = $entry;
+        $this->varDump = VarDump::RUNTIME;
         $this->handleProcessMissingClassFile();
         $this->handleSetEntryArguments();
         $this->handleProcessAnonClass();
@@ -97,7 +100,7 @@ class TraceEntry
         foreach ($this->entry['args'] as $k => $v) {
             $aux = 'Arg#'.($k + 1).' ';
             $this->plainArgs .= $aux.PlainVarDump::out($v, null, [App::class])."\n";
-            $this->richArgs .= $aux.ConsoleVarDump::out($v, null, [App::class])."\n";
+            $this->richArgs .= $aux.$this->varDump::out($v, null, [App::class])."\n";
         }
         $this->chopArgStringNl($this->plainArgs);
         $this->chopArgStringNl($this->richArgs);

@@ -149,7 +149,7 @@ class Router
 
             return $resolver->get();
         }
-        dd('eso es todo <code>amiwos</code>!');
+        // dd('eso es todo <code>amiwos</code>!');
         throw new LogicException(
             (new Message('NO ROUTING!!!!! %s'))->code('%s', 'BURN!!!')->toString()
         );
