@@ -19,6 +19,7 @@ use Chevere\Console\Console;
 use Chevere\Json;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Symfony\Component\HttpFoundation\JsonResponse as HttpJsonResponse;
+use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 /**
  * Provides ErrorHandler output by passing a Formatter.
@@ -122,6 +123,12 @@ class Output
                 $tpl = $v[1];
             }
             $message = strtr($tpl, $this->templateTags);
+            // $consoleColor = new ConsoleColor();
+            // $colorized = $consoleColor->apply('reverse', 'color');
+
+            // die($matches[0][0]);
+
+            // $message = strip_tags($message);
             if ('title' == $k) {
                 Console::cli()->out->error($message);
             } else {

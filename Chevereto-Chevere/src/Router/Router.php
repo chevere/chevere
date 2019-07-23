@@ -149,7 +149,9 @@ class Router
 
             return $resolver->get();
         }
-        throw new LogicException('NO ROUTING!!!!!');
+        throw new LogicException(
+            (new Message('NO ROUTING!!!!! %s'))->code('%s', 'BURN!!!')->toString()
+        );
     }
 
     protected function getComponents(string $requestTrim): array

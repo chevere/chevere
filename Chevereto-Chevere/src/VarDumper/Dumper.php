@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\VarDumper;
 
+use const Chevere\CLI;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
@@ -207,8 +208,7 @@ class Dumper
 
     protected function processConsoleOutput(): void
     {
-        $stripped = strip_tags($this->output);
-        $this->consoleOutput->writeln($stripped, ConsoleOutput::OUTPUT_RAW);
+        $this->consoleOutput->writeln($this->output, ConsoleOutput::OUTPUT_RAW);
         isset($this->outputHr) ? $this->consoleOutput->writeln($this->outputHr) : null;
     }
 

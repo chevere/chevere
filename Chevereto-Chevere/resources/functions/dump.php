@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Chevere\Dumper;
+use Chevere\VarDumper\Dumper;
 
 /**
  * Dumps information about one or more variables.

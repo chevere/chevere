@@ -109,7 +109,7 @@ class VarDumper extends VarDumperStatic
         $this->output = strtr($this->template, [
             '%type' => static::wrap($this->type, $this->type),
             '%val' => $this->val,
-            '%parentheses' => isset($this->parentheses) ? static::wrap(static::_OPERATOR, '(' . $this->parentheses . ')') : null,
+            '%parentheses' => isset($this->parentheses) ? static::wrap(static::_OPERATOR, '('.$this->parentheses.')') : null,
         ]);
     }
 
@@ -178,7 +178,7 @@ class VarDumper extends VarDumperStatic
     {
         $visibility = implode(' ', $var['visibility'] ?? $this->properties['visibility']);
         $operator = static::wrap(static::_OPERATOR, '->');
-        $this->val .= "\n" . $this->prefix . $this->getEmphasized($visibility) . ' ' . htmlspecialchars($key) . " $operator ";
+        $this->val .= "\n".$this->prefix.$this->getEmphasized($visibility).' '.htmlspecialchars($key)." $operator ";
         $aux = $var['value'];
         if (is_object($aux) && property_exists($aux, $key)) {
             try {
@@ -186,7 +186,7 @@ class VarDumper extends VarDumperStatic
                 $p = $r->getProperty($key);
                 $p->setAccessible(true);
                 if ($aux == $p->getValue($aux)) {
-                    $this->val .= static::wrap(static::_OPERATOR, '(' . $this->getEmphasized('circular object reference') . ')');
+                    $this->val .= static::wrap(static::_OPERATOR, '('.$this->getEmphasized('circular object reference').')');
                 }
 
                 return;
@@ -197,7 +197,7 @@ class VarDumper extends VarDumperStatic
         if ($this->depth < 4) {
             $this->val .= (new static($aux, $this->indent, $this->dontDump, $this->depth))->toString();
         } else {
-            $this->val .= static::wrap(static::_OPERATOR, '(' . $this->getEmphasized('max depth reached') . ')');
+            $this->val .= static::wrap(static::_OPERATOR, '('.$this->getEmphasized('max depth reached').')');
         }
     }
 
@@ -205,16 +205,16 @@ class VarDumper extends VarDumperStatic
     {
         foreach ($this->expression as $k => $v) {
             $operator = static::wrap(static::_OPERATOR, '=>');
-            $this->val .= "\n" . $this->prefix . ' ' . htmlspecialchars((string) $k) . " $operator ";
+            $this->val .= "\n".$this->prefix.' '.htmlspecialchars((string) $k)." $operator ";
             $aux = $v;
             $isCircularRef = is_array($aux) && isset($aux[$k]) && $aux == $aux[$k];
             if ($isCircularRef) {
-                $this->val .= static::wrap(static::_OPERATOR, '(' . $this->getEmphasized('circular array reference') . ')');
+                $this->val .= static::wrap(static::_OPERATOR, '('.$this->getEmphasized('circular array reference').')');
             } else {
                 $this->val .= (new static($aux, $this->indent, $this->dontDump))->toString();
             }
         }
-        $this->parentheses = 'size=' . count($this->expression);
+        $this->parentheses = 'size='.count($this->expression);
     }
 
     protected function handleNormalizeClassName(): void
@@ -229,7 +229,7 @@ class VarDumper extends VarDumperStatic
         $is_string = is_string($this->expression);
         $is_numeric = is_numeric($this->expression);
         if ($is_string || $is_numeric) {
-            $this->parentheses = 'length=' . strlen($is_numeric ? ((string) $this->expression) : $this->expression);
+            $this->parentheses = 'length='.strlen($is_numeric ? ((string) $this->expression) : $this->expression);
             $this->val .= strval($this->expression); // htmlspecialchars($this->expression)
         }
     }
