@@ -22,7 +22,7 @@ use Chevere\Path;
 use Chevere\Utility\Str;
 
 /**
- * Dumps information about one or more variables.
+ * Dumps information about one or more variables. CLI/HTML aware.
  */
 class Dumper
 {

@@ -16,7 +16,7 @@ namespace Chevere\VarDump;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 /**
- * Wraps dump data into colored output for HTML and console.
+ * Wraps dump data into colored output for CLI and HTML.
  */
 class Wrapper
 {

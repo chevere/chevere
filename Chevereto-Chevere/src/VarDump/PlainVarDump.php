@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\VarDump;
 
+/**
+ * Dumps information about a variable in plain text format.
+ */
 class PlainVarDump extends ConsoleVarDump
 {
     public static function wrap(string $key, string $dump): ?string

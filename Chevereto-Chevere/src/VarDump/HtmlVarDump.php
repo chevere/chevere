@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\VarDump;
 
+/**
+ * Dumps information about a variable in HTML format.
+ */
 class HtmlVarDump extends VarDump
 {
     protected function setPrefix(): void

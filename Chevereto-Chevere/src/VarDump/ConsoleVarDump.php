@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\VarDump;
 
+/**
+ * Dumps information about a variable in CLI format.
+ */
 class ConsoleVarDump extends VarDump
 {
     public static function wrap(string $key, string $dump): ?string

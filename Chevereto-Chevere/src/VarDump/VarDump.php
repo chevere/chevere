@@ -15,6 +15,9 @@ namespace Chevere\VarDump;
 
 use const Chevere\CLI;
 
+/**
+ * Generates dumps information about a variable. CLI/HTML aware.
+ */
 class VarDump extends VarDumpAbstract
 {
     protected function setPrefix(): void
@@ -32,14 +35,6 @@ class VarDump extends VarDumpAbstract
         return $string;
     }
 
-    /**
-     * Wrap dump data HTML / CLI aware.
-     *
-     * @param string $key  Type or algo key (see constants)
-     * @param mixed  $dump dump data
-     *
-     * @return string wrapped dump data
-     */
     public static function wrap(string $key, string $dump): ?string
     {
         $wrapper = new Wrapper($key, $dump);
@@ -50,9 +45,6 @@ class VarDump extends VarDumpAbstract
         return $wrapper->toString();
     }
 
-    /**
-     * Provides VarDump*::out.
-     */
     public static function out($var, int $indent = null, array $dontDump = [], int $depth = 0): string
     {
         return (/* @scrutinizer ignore-call */new static(...func_get_args()))->toString();

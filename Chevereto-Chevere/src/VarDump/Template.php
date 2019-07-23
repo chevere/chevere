@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\VarDump;
 
 /**
- * Stores the template strings used by VarDump.
+ * The template strings used by VarDump*.
  */
 class Template
 {
