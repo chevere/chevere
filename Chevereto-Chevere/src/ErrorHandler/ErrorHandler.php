@@ -22,7 +22,10 @@ use Chevere\App\App;
 use Chevere\HttpFoundation\Request;
 use Chevere\Path;
 use Chevere\Runtime\Runtime;
-// use Chevere\Utility\DateTime;
+use Chevere\ErrorHandler\src\Formatter;
+use Chevere\ErrorHandler\src\Output;
+use Chevere\ErrorHandler\src\Style;
+use Chevere\ErrorHandler\src\Template;
 use Chevere\Interfaces\ErrorHandlerInterface;
 use Psr\Log\LogLevel;
 use Monolog\Logger;
@@ -42,7 +45,7 @@ class ErrorHandler implements ErrorHandlerInterface
     const DEBUG = null;
 
     /** @var string Null will use App\PATH_LOGS ? PATH_LOGS ? traverse */
-    const PATH_LOGS = ROOT_PATH . AppPath . 'var/logs/';
+    const PATH_LOGS = ROOT_PATH.AppPath.'var/logs/';
 
     /** Readable PHP error mapping */
     const ERROR_TABLE = [
@@ -145,7 +148,7 @@ class ErrorHandler implements ErrorHandlerInterface
         $exceptionHandler = new ExceptionHandler($args[0]);
 
         $this->loggerLevel = $exceptionHandler->loggerLevel;
-        $this->setLogFilePathProperties(static::PATH_LOGS,);
+        $this->setLogFilePathProperties(static::PATH_LOGS, );
         $this->setLogger(__NAMESPACE__);
 
         $formatter = new Formatter($this, $exceptionHandler);
@@ -175,9 +178,9 @@ class ErrorHandler implements ErrorHandlerInterface
     protected function setLogFilePathProperties(string $basePath)
     {
         $path = Path::normalize($basePath);
-        $path = rtrim($path, '/') . '/';
+        $path = rtrim($path, '/').'/';
         $date = gmdate($this->logDateFolderFormat, $this->timestamp);
-        $this->logFilename = $path . $this->loggerLevel . '/' . $date . $this->timestamp . '_' . $this->id . '.log';
+        $this->logFilename = $path.$this->loggerLevel.'/'.$date.$this->timestamp.'_'.$this->id.'.log';
     }
 
     protected function setLogger(string $name)
@@ -193,7 +196,7 @@ class ErrorHandler implements ErrorHandlerInterface
     protected function loggerWrite(string $plainContent)
     {
         $log = strip_tags($plainContent);
-        $log .= "\n\n" . str_repeat('=', Formatter::COLUMNS);
+        $log .= "\n\n".str_repeat('=', Formatter::COLUMNS);
         $this->logger->log($this->loggerLevel, $log);
     }
 

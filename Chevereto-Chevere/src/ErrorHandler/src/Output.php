@@ -11,15 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\ErrorHandler;
+namespace Chevere\ErrorHandler\src;
 
 use const Chevere\CLI;
 use DateTime;
-use Chevere\Console\Console;
-use Chevere\Json;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Symfony\Component\HttpFoundation\JsonResponse as HttpJsonResponse;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
+use Chevere\Console\Console;
+use Chevere\ErrorHandler\ErrorHandler;
+use Chevere\ErrorHandler\ExceptionHandler;
+use Chevere\Json;
 
 /**
  * Provides ErrorHandler output by passing a Formatter.

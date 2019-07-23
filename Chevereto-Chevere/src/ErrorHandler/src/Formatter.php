@@ -11,16 +11,18 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\ErrorHandler;
+namespace Chevere\ErrorHandler\src;
 
 use Throwable;
 use ErrorException;
+use Symfony\Component\Console\Output\OutputInterface;
 use const Chevere\CLI;
 use Chevere\Console\Console;
+use Chevere\ErrorHandler\ErrorHandler;
+use Chevere\ErrorHandler\ExceptionHandler;
 use Chevere\VarDump\VarDump;
 use Chevere\VarDump\PlainVarDump;
 use Chevere\Utility\Str;
-use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Formats the error exception in HTML (default), console and plain text.

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\ErrorHandler;
+namespace Chevere\ErrorHandler\src;
 
 use const Chevere\CLI;
 use Chevere\VarDump\VarDump;
