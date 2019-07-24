@@ -11,12 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Route;
+namespace Chevere\Route\src;
 
 use LogicException;
 use Chevere\Message;
 use Chevere\Validate;
 use Chevere\Utility\Str;
+use Chevere\Route\Route;
 
 class WildcardValidation
 {

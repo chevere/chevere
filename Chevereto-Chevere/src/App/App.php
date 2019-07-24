@@ -22,6 +22,7 @@ use Chevere\Router\Router;
 use Chevere\HttpFoundation\Request;
 use Chevere\HttpFoundation\Response;
 use Chevere\Api\Api;
+use Chevere\Api\src\Checkout;
 use Chevere\File;
 use Chevere\Path;
 use Chevere\Controller\Controller;

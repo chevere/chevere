@@ -21,11 +21,13 @@ use const Chevere\APP_NS_HANDLE;
 use const Chevere\App\PATH as AppPath;
 use Chevere\Route\Route;
 use Chevere\Router\Router;
+use Chevere\Api\src\FilterIterator;
+use Chevere\Api\src\Endpoint;
 use Chevere\Message;
-use Chevere\Controller\Inspect as ControllerInspect;
 use Chevere\Path;
 use Chevere\File;
 use Chevere\Utility\Str;
+use Chevere\Controller\Inspect as ControllerInspect;
 use Chevere\Controllers\Api\HeadController;
 use Chevere\Controllers\Api\OptionsController;
 use Chevere\Controllers\Api\GetController;
@@ -112,7 +114,7 @@ class Api
 
         $this->processRoutesMap();
 
-        $this->uri = '/' . $this->basePath;
+        $this->uri = '/'.$this->basePath;
 
         $httpMethods = [
             'HEAD' => HeadController::class,
@@ -216,7 +218,7 @@ class Api
     {
         $filepathRelative = Path::relative($filepath);
         $filepathNoExt = Str::replaceLast('.php', null, $filepathRelative);
-        $filepathReplaceNS = Str::replaceFirst(AppPath . 'src/', APP_NS_HANDLE, $filepathNoExt);
+        $filepathReplaceNS = Str::replaceFirst(AppPath.'src/', APP_NS_HANDLE, $filepathNoExt);
 
         return str_replace('/', '\\', $filepathReplaceNS);
     }

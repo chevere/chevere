@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Api;
+namespace Chevere\Api\src;
 
 use Chevere\Controllers\Api\OptionsController;
 use Chevere\Controllers\Api\HeadController;

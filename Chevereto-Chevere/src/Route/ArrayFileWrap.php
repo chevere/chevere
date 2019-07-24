@@ -17,7 +17,7 @@ use Chevere\PathHandle;
 use Chevere\ArrayFile;
 
 /**
- * Routes provides a way to interact with Route array files.
+ * Provides a way to interact with Route array files.
  */
 class ArrayFileWrap
 {
