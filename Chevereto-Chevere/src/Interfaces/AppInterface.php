@@ -17,5 +17,5 @@ interface AppInterface
 {
     public function setArguments(array $arguments): AppInterface;
 
-    public function setControllerArguments(array $arguments): AppInterface;
+    public function setControllerArguments(array $arguments);
 }

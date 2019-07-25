@@ -40,20 +40,20 @@ class Parameters extends Data
     /**
      * The keys accepted by this class, with the gettype at right side.
      */
-    protected $keys = [
+    private $keys = [
         self::CONFIG_FILES => 'array',
         self::API => 'string',
         self::ROUTES => 'array',
     ];
 
     /** @var array The parameters array used to construct the object */
-    protected $parameters;
+    private $parameters;
 
     /** @var string|null The file source (for instances created using ::createFromFile) */
-    protected $sourceFilepath;
+    private $sourceFilepath;
 
     /** @var string Context of the source $parameters */
-    protected $context;
+    private $context;
 
     /**
      * @param array  $parameters The parameters array

@@ -33,9 +33,9 @@ class HeadController extends Controller
     public function __invoke(?string $endpoint = null)
     {
         if (isset($endpoint)) {
-            $route = $this->getApp()->router->resolve($endpoint);
+            $route = $this->app->router->resolve($endpoint);
         } else {
-            $route = $this->getApp()->route;
+            $route = $this->app->route;
             if (!isset($route)) {
                 $msg = 'Must provide the %s argument when running this callable without route context.';
                 $message = (new Message($msg))->code('%s', '$endpoint')->toString();
@@ -50,7 +50,7 @@ class HeadController extends Controller
         }
 
         if (!isset($route)) {
-            $this->getResponse()->setStatusCode(404);
+            $this->response->setStatusCode(404);
 
             return;
         }
@@ -63,10 +63,10 @@ class HeadController extends Controller
     private function process()
     {
         $callable = $this->route->getCallable('GET');
-        $controller = $this->getApp()->getControllerObject($callable);
-        $controller->getResponse()->unsetContent();
+        $controller = $this->app->getControllerObject($callable);
+        $controller->response->unsetContent();
         if (CLI) {
-            Console::cli()->out->block($controller->getResponse()->getStatusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
+            Console::cli()->out->block($controller->response->getStatusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
         }
     }
 }

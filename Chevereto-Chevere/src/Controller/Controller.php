@@ -17,9 +17,7 @@ use LogicException;
 use Chevere\HttpFoundation\Response;
 use Chevere\Message;
 use Chevere\App\App;
-use Chevere\Api\Api;
 use Chevere\Hooking\Hook;
-use Chevere\Route\Route;
 use Chevere\Interfaces\ControllerInterface;
 use Chevere\Traits\HookableTrait;
 
@@ -45,10 +43,10 @@ abstract class Controller implements ControllerInterface
     const OPTIONS = [];
 
     /** @var App */
-    private $app;
+    protected $app;
 
     /** @var string */
-    private $filename;
+    protected $filename;
 
     /** @var string Controller description */
     protected static $description;
@@ -59,38 +57,16 @@ abstract class Controller implements ControllerInterface
     /** @var array Parameters passed via headers */
     protected static $parameters;
 
-    public function getRoute(): ?Route
-    {
-        return $this->getApp()->route;
-    }
-
-    public function getApi(): ?Api
-    {
-        return $this->getApp()->api;
-    }
-
     public function setResponse(Response $response): ControllerInterface
     {
-        $this->getApp()->response = $response;
+        $this->app->response = $response;
 
         return $this;
     }
 
-    public function getResponse(): ?Response
-    {
-        return $this->getApp()->response;
-    }
-
-    public function setApp(App $app): ControllerInterface
+    public function __construct(App $app)
     {
         $this->app = $app;
-
-        return $this;
-    }
-
-    public function getApp(): App
-    {
-        return $this->app;
     }
 
     public function invoke(string $controller, ...$parameters)
@@ -112,7 +88,7 @@ abstract class Controller implements ControllerInterface
         return $that(...$parameters);
     }
 
-    protected function getCallable(string $controller): callable
+    private function getCallable(string $controller): callable
     {
         if (class_exists($controller)) {
             return new $controller();
@@ -130,7 +106,7 @@ abstract class Controller implements ControllerInterface
         }
     }
 
-    protected function handleFilemane()
+    private function handleFilemane()
     {
         if (!File::exists($this->filename)) {
             throw new LogicException(

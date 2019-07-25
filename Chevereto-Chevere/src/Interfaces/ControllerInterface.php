@@ -13,26 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces;
 
-use Chevere\Route\Route;
 use Chevere\HttpFoundation\Response;
-use Chevere\App\App;
-use Chevere\Api\Api;
 
 interface ControllerInterface
 {
     public function __invoke();
 
-    public function getRoute(): ?Route;
-
-    public function getApi(): ?Api;
-
     public function setResponse(Response $response): ControllerInterface;
-
-    public function getResponse(): ?Response;
-
-    public function setApp(App $app): ControllerInterface;
-
-    public function getApp(): App;
 
     /**
      * Invoke another controller.

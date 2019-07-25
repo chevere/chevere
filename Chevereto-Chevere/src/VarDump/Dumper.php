@@ -83,7 +83,7 @@ class Dumper
         $this->handleFile();
         $this->output .= "\n\n";
         $this->handleArgs();
-        $this->output = trim($this->output).'</pre>';
+        $this->output = trim($this->output);
         $this->handleProccessOutput();
     }
 

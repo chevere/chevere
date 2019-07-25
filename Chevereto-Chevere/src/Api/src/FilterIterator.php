@@ -21,7 +21,7 @@ use RecursiveFilterIterator;
 class FilterIterator extends RecursiveFilterIterator
 {
     /** @var array The accepted files array [GET.php, _GET.php, POST.php, ...] */
-    protected $acceptedFilenames;
+    private $acceptedFilenames;
 
     /**
      * @param array  $acceptedMethods Accepted HTTP methods [GET,POST,etc.]

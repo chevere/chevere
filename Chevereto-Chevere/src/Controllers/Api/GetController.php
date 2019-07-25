@@ -39,9 +39,10 @@ class GetController extends Controller
     public function __invoke(?string $endpoint = null)
     {
         if (isset($endpoint)) {
-            $route = $this->getApp()->router->resolve($endpoint);
+            $route = $this->app->router->resolve($endpoint);
+            $route = $this->resolve($endpoint);
         } else {
-            $route = $this->getApp()->route;
+            $route = $this->app->route;
             if (isset($route)) {
                 $endpoint = $route->uri;
             } else {
@@ -57,7 +58,7 @@ class GetController extends Controller
         }
 
         if (!isset($route)) {
-            $this->getResponse()->setStatusCode(404);
+            $this->response->setStatusCode(404);
 
             return;
         }
@@ -69,16 +70,16 @@ class GetController extends Controller
 
     private function process()
     {
-        $endpointData = $this->getApi()->getEndpoint($this->endpoint);
+        $endpointData = $this->api->getEndpoint($this->endpoint);
         if ($endpointData) {
-            $this->getResponse()->setMeta(['api' => $this->endpoint]);
+            $this->response->setMeta(['api' => $this->endpoint]);
             foreach ($endpointData as $property => $data) {
                 if ($property == 'wildcards') {
                     continue;
                 }
-                $this->getResponse()->addData('endpoint', $property, $data);
+                $this->response->addData('endpoint', $property, $data);
             }
         }
-        $this->getResponse()->setStatusCode(200);
+        $this->response->setStatusCode(200);
     }
 }

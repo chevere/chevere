@@ -34,7 +34,7 @@ class OptionsController extends Controller
 
     public function __invoke()
     {
-        $route = $this->getApp()->route;
+        $route = $this->app->route;
         if (isset($route)) {
             $uri = $route->uri;
         }
@@ -50,7 +50,7 @@ class OptionsController extends Controller
 
     protected function handleError()
     {
-        $this->getResponse()->setStatusCode(400);
+        $this->response->setStatusCode(400);
         $msg = 'Must provide a %s argument when running this callable without route context.';
         $message = (new Message($msg))->code('%s', '$uri')->toString();
         if (CLI) {
@@ -65,14 +65,14 @@ class OptionsController extends Controller
     private function process()
     {
         $statusCode = 200;
-        $api = $this->getApi();
+        $api = $this->api;
         $endpoint = $api->getEndpoint($this->endpoint);
         if ($endpoint['OPTIONS']) {
-            $this->getResponse()->addData('OPTIONS', $this->uri, $endpoint['OPTIONS']);
+            $this->response->addData('OPTIONS', $this->uri, $endpoint['OPTIONS']);
         } else {
             $statusCode = 404;
             // $json->setResponse("Endpoint doesn't exists", $statusCode);
         }
-        $this->getResponse()->setStatusCode($statusCode);
+        $this->response->setStatusCode($statusCode);
     }
 }

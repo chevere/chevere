@@ -22,10 +22,10 @@ use Chevere\Controllers\Api\HeadController;
 class Endpoint
 {
     /** @var array */
-    public $array;
+    private $array;
 
     /** @var array */
-    public $httpMethods;
+    private $httpMethods;
 
     public function __construct(array $httpMethods)
     {

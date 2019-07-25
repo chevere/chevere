@@ -18,11 +18,15 @@ use Chevere\JsonApi\Data;
 
 class Index extends Controller
 {
-    public function __invoke()
+    // /user/{user}/comment
+    // POST /user/rodolfo/comment --params ...
+    // $wildcards = [user => User rodolfo]
+    // $parameters = [name => rodolfo, email=> rodolfo@chevereto.com]
+    public function __invoke(array $wildcards, array $parameters)
     {
         // throw new \Exception('duh');
         $api = new Data('api', 'info');
-        $api->addAttribute('entry', 'HTTP GET /api');
+        $api->addAttribute('entry', 'HTbTP GET /api');
         $api->addAttribute('description', 'Retrieves the exposed API.');
         // $api->validate();
 
@@ -31,11 +35,12 @@ class Index extends Controller
         $cli->addAttribute('description', 'Lists console commands.');
         // $api->validate();
 
-        $this
-            ->getResponse()
-            ->setMeta(['Hello' => 'World!'])
-            ->addData($api)
-            ->addData($cli)
-            ->setStatusCode(200);
+        // $this->response = new Response();
+
+        $response = $this->app->response();
+        $response->setMeta(['Hello' => 'World!']);
+        $response->addData($api);
+        $response->addData($cli);
+        $response->setStatusCode(200);
     }
 }

@@ -20,7 +20,7 @@ class Cache extends Controller
 
     public function render(): ?string
     {
-        $response = $this->getResponse();
+        $response = $this->response;
 
         return var_export($response->getData(), true);
     }

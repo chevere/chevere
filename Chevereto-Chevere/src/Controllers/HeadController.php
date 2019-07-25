@@ -28,13 +28,13 @@ class HeadController extends Controller
      */
     public function __invoke()
     {
-        $route = $this->getApp()->route;
+        $route = $this->app->route;
         $methodCallabe = $route->getCallable('GET');
         if ($methodCallabe) {
             $this->invoke($methodCallabe);
-            $this->getResponse()->unsetContent();
+            $this->response->unsetContent();
             if (CLI) {
-                Console::cli()->out->block($this->getResponse()->getStatusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
+                Console::cli()->out->block($this->response->getStatusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
             }
         }
     }

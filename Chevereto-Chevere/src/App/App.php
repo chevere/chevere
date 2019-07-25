@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\App;
 
 use LogicException;
+use RuntimeException;
 use const Chevere\ROOT_PATH;
 use const Chevere\App\PATH as AppPath;
 use Monolog\Logger;
@@ -26,6 +27,7 @@ use Chevere\Api\src\Checkout;
 use Chevere\File;
 use Chevere\Path;
 use Chevere\Controller\Controller;
+use Chevere\Interfaces\ControllerInterface;
 use Chevere\Load;
 use Chevere\Route\Route;
 use Chevere\Route\ArrayFileWrap as RouteArrayFileWrap;
@@ -40,7 +42,7 @@ use Chevere\Traits\StaticTrait;
 /**
  * App contains the whole thing.
  */
-class App extends AppStatic implements AppInterface
+class App implements AppInterface
 {
     use StaticTrait;
 
@@ -52,43 +54,49 @@ class App extends AppStatic implements AppInterface
     const FILEHANDLE_HACKS = ':hacks';
 
     /** @var bool */
-    protected $isCached;
+    private $isCached;
 
     /** @var array|null An array containing string arguments (from request uri, cli) */
-    public $arguments;
+    private $arguments;
 
     /** @var array|null An array containing the prepared controller arguments (object injection) */
-    public $controllerArguments;
+    private $controllerArguments;
 
     /** @var Runtime */
-    public $runtime;
+    private $runtime;
 
     /** @var Logger */
-    public $logger;
+    private $logger;
 
     /** @var Router */
-    public $router;
+    private $router;
 
     /** @var Request */
-    public $request;
+    private $request;
 
     /** @var Response */
-    public $response;
+    private $response;
 
     /** @var Api */
-    public $api;
+    private $api;
 
     /** @var Route */
-    public $route;
+    private $route;
 
     /** @var string */
-    protected $cache;
+    private $cache;
 
     /** @var string */
-    protected $db;
+    private $db;
 
     /** @var string */
-    protected $callable;
+    private $callable;
+
+    /** @var App */
+    private static $instance;
+
+    /** @var Runtime */
+    private static $defaultRuntime;
 
     /*
     * (A) Router cache : The array which is used to resolve /req -> route (routing)
@@ -169,12 +177,16 @@ class App extends AppStatic implements AppInterface
      */
     public function getControllerObject(string $callable)
     {
-        $callableWrap = new CallableWrap($callable);
-        $controller = $callableWrap->callable;
-
-        if ($controller instanceof Controller) {
-            $controller->setApp($this);
+        if (is_subclass_of($callable, ControllerInterface::class)) {
+            throw new LogicException(
+                (new Message('Callable %s must represent a class implementing the %i interface.'))
+                    ->code('%s', $callable)
+                    ->code('%i', ControllerInterface::class)
+                    ->toString()
+            );
         }
+        $controller = new $callable($this);
+        $callableWrap = new CallableWrap($callable);
 
         // if ($this->route instanceof Route) {
         //     $middlewares = $this->route->middlewares;
@@ -231,7 +243,7 @@ class App extends AppStatic implements AppInterface
                     ->toString()
             );
         }
-        $this->setHttpRequest(Request::create(...$requestArguments));
+        $this->setRequest(Request::create(...$requestArguments));
 
         return $this;
     }
@@ -248,7 +260,7 @@ class App extends AppStatic implements AppInterface
         return defined($constant) ? constant($constant) : null;
     }
 
-    protected function setHttpRequest(Request $request): self
+    protected function setRequest(Request $request): self
     {
         $this->request = $request;
 
@@ -271,11 +283,9 @@ class App extends AppStatic implements AppInterface
     /**
      * @param array $arguments Prepared controller arguments
      */
-    public function setControllerArguments(array $arguments): AppInterface
+    public function setControllerArguments(array $arguments)
     {
         $this->controllerArguments = $arguments;
-
-        return $this;
     }
 
     // protected function processConfigFiles(array $configFiles = null): void
@@ -322,7 +332,7 @@ class App extends AppStatic implements AppInterface
         if (Console::bind($this)) {
             Console::run(); // Note: Console::run() always exit.
         } else {
-            $this->setHttpRequest(Request::createFromGlobals());
+            $this->setRequest(Request::createFromGlobals());
         }
     }
 
@@ -332,8 +342,14 @@ class App extends AppStatic implements AppInterface
         if ($controller instanceof RenderableInterface) {
             echo $controller->render();
         } else {
-            $controller->getResponse()->send();
+            // dd('eee');
+            $controller->app->response->send();
         }
+    }
+
+    public function response(): Response
+    {
+        return $this->response;
     }
 
     protected function processResolveCallable(string $pathInfo): void
@@ -350,5 +366,44 @@ class App extends AppStatic implements AppInterface
 
         //     return;
         // }
+    }
+
+    private static function setStaticInstance(App $app)
+    {
+        static::$instance = $app;
+    }
+
+    public static function setDefaultRuntime(Runtime $runtime): void
+    {
+        static::$defaultRuntime = $runtime;
+    }
+
+    public static function getDefaultRuntime(): Runtime
+    {
+        return static::$defaultRuntime;
+    }
+
+    /**
+     * Provides access to the App Request instance.
+     */
+    public static function requestInstance(): ?Request
+    {
+        // Request isn't there when doing cli (unless you run the request command)
+        if (isset(static::$instance) && isset(static::$instance->request)) {
+            return static::$instance->request;
+        }
+
+        return null;
+    }
+
+    /**
+     * Provides access to the App Runtime instance.
+     */
+    public static function runtimeInstance(): Runtime
+    {
+        if (isset(static::$instance) && $runtimeInstance = static::$instance->runtime) {
+            return $runtimeInstance;
+        }
+        throw new RuntimeException('NO RUNTIME INSTANCE EVERYTHING BURNS!');
     }
 }

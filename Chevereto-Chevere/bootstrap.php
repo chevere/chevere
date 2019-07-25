@@ -62,10 +62,10 @@ const DEFAULT_ERROR_HANDLING = [
 /*
  * Default error and exception handler
  */
-new Runtime(
-    (new Config())
-        ->processFromArray(DEFAULT_ERROR_HANDLING)
-);
+// new Runtime(
+//     (new Config())
+//         ->processFromArray(DEFAULT_ERROR_HANDLING)
+// );
 
 define('Chevere\CLI', Console::isRunning());
 

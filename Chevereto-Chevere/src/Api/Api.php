@@ -43,34 +43,34 @@ class Api
     /** @var array HTTP methods accepted by this filter [HTTP_METHOD,] */
     const ACCEPT_METHODS = Route::HTTP_METHODS;
 
-    protected $pathIdentifier;
+    private $pathIdentifier;
 
     /** @var array Route mapping [route => [http_method => Controller]]] */
-    protected $routesMap;
+    private $routesMap;
 
     /** @var array Maps [endpoint => (array) resource [regex =>, description =>,]] (for wildcard routes) */
-    protected $resourcesMap;
+    private $resourcesMap;
 
     /** @var array Maps [Controller => ControllerInspect] */
-    protected $controllersMap;
+    private $controllersMap;
 
     /** @var OuterIterator */
-    protected $recursiveIterator;
+    private $recursiveIterator;
 
     /** @var array Endpoint API properties */
-    protected $api;
+    private $api;
 
     /** @var string Target API directory (absolute) */
-    protected $directory;
+    private $directory;
 
     /** @var Router The injected Router, needed to add Routes to the injector instance */
-    protected $router;
+    private $router;
 
     /** @var array Public exposed APIs groupped by basePath [basePath => [api],] */
-    protected $apis;
+    private $apis;
 
     /** @var array Contains ['/api/route/algo' => [id, 'route/algo']] */
-    protected $routeUris;
+    private $routeUris;
 
     /** @var string The API basepath, like 'api' */
     private $basePath;
