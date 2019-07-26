@@ -165,9 +165,9 @@ class Route implements RouteInterface
      * Sets HTTP method to callable binding. Allocates Routes.
      *
      * @param string $httpMethod HTTP method
-     * @param string $callable   callable which satisfy the method request
+     * @param string $controller Controller which handles the request
      */
-    public function setMethod(string $httpMethod, string $callable): self
+    public function setMethod(string $httpMethod, string $controller): self
     {
         // Validate HTTP method
         if (!in_array($httpMethod, static::HTTP_METHODS)) {
@@ -177,11 +177,11 @@ class Route implements RouteInterface
                     ->toString()
             );
         }
-        // Validate type
-        if (!is_subclass_of($callable, ControllerInterface::class)) {
+        // FIXME: Unified validation (Controller validator)
+        if (!is_subclass_of($controller, ControllerInterface::class)) {
             throw new LogicException(
                 (new Message('Callable %s must represent a class implementing the %i interface.'))
-                    ->code('%s', $callable)
+                    ->code('%s', $controller)
                     ->code('%i', ControllerInterface::class)
                     ->toString()
             );
@@ -193,7 +193,7 @@ class Route implements RouteInterface
         //             ->code('%s', $httpMethod)->toString()
         //     );
         // }
-        $this->methods[$httpMethod] = $callable;
+        $this->methods[$httpMethod] = $controller;
 
         return $this;
     }

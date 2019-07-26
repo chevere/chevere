@@ -32,7 +32,7 @@ use Chevere\Load;
 use Chevere\Route\Route;
 use Chevere\Route\ArrayFileWrap as RouteArrayFileWrap;
 use Chevere\Console\Console;
-use Chevere\Controller\Wrap;
+use Chevere\Controller\ArgumentsWrap as ControllerArgumentsWrap;
 use Chevere\Message;
 use Chevere\Runtime\Config;
 use Chevere\Interfaces\AppInterface;
@@ -166,28 +166,27 @@ class App implements AppInterface
             $this->processResolveCallable($this->request->getPathInfo());
         }
         if (isset($this->callable)) {
-            $this->processCallable($this->callable);
+            $this->processController($this->callable);
         }
     }
 
     /**
      * Runs a explicit provided callable string.
      *
-     * @param string $callable function or method name
+     * @param string $controller controller name
      */
-    public function getControllerObject(string $callable)
+    public function getControllerObject(string $controller)
     {
-        if (!is_subclass_of($callable, ControllerInterface::class)) {
+        // FIXME: Unified validation (Controller validator)
+        if (!is_subclass_of($controller, ControllerInterface::class)) {
             throw new LogicException(
                 (new Message('Callable %s must represent a class implementing the %i interface.'))
-                    ->code('%s', $callable)
+                    ->code('%s', $controller)
                     ->code('%i', ControllerInterface::class)
                     ->toString()
             );
         }
-        $controller = new $callable($this);
-        $wrap = new Wrap($callable);
-        // dd($wrap);
+        $controller = new $controller($this);
 
         // if ($this->route instanceof Route) {
         //     $middlewares = $this->route->middlewares;
@@ -198,14 +197,12 @@ class App implements AppInterface
         // }
 
         if (!empty($this->arguments)) {
-            $wrap->setPassedArguments($this->arguments);
+            $wrap = new ControllerArgumentsWrap($controller, $this->arguments);
             $this->controllerArguments = $wrap->getArguments();
-        // dd($wrap);
+            $controller(...$this->controllerArguments);
         } else {
-            $this->controllerArguments = [];
+            $controller();
         }
-        // dd($this->arguments, $this->controllerArguments);
-        $controller(...$this->controllerArguments);
 
         return $controller;
     }
@@ -337,14 +334,13 @@ class App implements AppInterface
         }
     }
 
-    protected function processCallable(string $callable): void
+    protected function processController(string $controller): void
     {
-        $controller = $this->getControllerObject($callable);
+        $controller = $this->getControllerObject($controller);
         if ($controller instanceof RenderableInterface) {
             echo $controller->render();
         } else {
-            // dd('eee');
-            $controller->app->response->send();
+            $this->response->send();
         }
     }
 

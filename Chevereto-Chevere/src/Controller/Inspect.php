@@ -124,9 +124,9 @@ class Inspect implements ToArrayInterface
                     ->code('%reflectionName%', $this->reflection->getName())
                     ->code('%interfaceControllerResource%', static::INTERFACE_CONTROLLER_RESOURCE)
                     ->code('%reflectionFilename%', $this->reflection->getFileName())
-                    ->code('%endpoint%', $this->httpMethod . ' api/users')
+                    ->code('%endpoint%', $this->httpMethod.' api/users')
                     ->code('%className%', $this->className)
-                    ->code('%propResources%', 'const ' . static::PROP_RESOURCES)
+                    ->code('%propResources%', 'const '.static::PROP_RESOURCES)
                     ->code('%filepath%', $this->filepath)
                     ->toString()
             );
@@ -255,14 +255,14 @@ class Inspect implements ToArrayInterface
         $pathComponent = $this->getPathComponent($this->className);
         $pathComponents = explode('/', $pathComponent);
         if ($this->useResource) {
-            $resourceWildcard = '{' . array_keys($this->resources)[0] . '}';
+            $resourceWildcard = '{'.array_keys($this->resources)[0].'}';
             if ($this->isResource) {
                 // Append the resource wildcard: api/users/{wildcard}
-                $pathComponent .= '/' . $resourceWildcard;
+                $pathComponent .= '/'.$resourceWildcard;
             } elseif ($this->isRelatedResource) {
                 $related = array_pop($pathComponents);
                 // Inject the resource wildcard: api/users/{wildcard}/related
-                $pathComponent = implode('/', $pathComponents) . '/' . $resourceWildcard . '/' . $related;
+                $pathComponent = implode('/', $pathComponents).'/'.$resourceWildcard.'/'.$related;
                 /*
                 * Code below generates api/users/{user}/relationships/friends (relationship URL)
                 * from api/users/{user}/friends (related resource URL).
@@ -283,7 +283,7 @@ class Inspect implements ToArrayInterface
     protected function getPathComponent(string $className): string
     {
         $classShortName = substr($className, strrpos($className, '\\') + 1);
-        $classNamespace = Str::replaceLast('\\' . $classShortName, null, $className);
+        $classNamespace = Str::replaceLast('\\'.$classShortName, null, $className);
         $classNamespaceNoApp = Str::replaceFirst(APP_NS_HANDLE, null, $classNamespace);
 
         return strtolower(Str::forwardSlashes($classNamespaceNoApp));

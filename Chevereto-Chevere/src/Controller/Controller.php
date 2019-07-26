@@ -60,15 +60,15 @@ class Controller implements ControllerInterface
     /**
      * You must provide your own __invoke.
      */
-    public function __invoke()
-    {
-        throw new LogicException(
-            (new Message('Class %c must implement a %m method.'))
-                ->code('%c', get_class($this))
-                ->code('%m', 'public __invoke')
-                ->toString()
-        );
-    }
+    // public function __invoke()
+    // {
+    //     throw new LogicException(
+    //         (new Message('Class %c must implement a %m method.'))
+    //             ->code('%c', get_class($this))
+    //             ->code('%m', 'public __invoke')
+    //             ->toString()
+    //     );
+    // }
 
     public function setResponse(Response $response)
     {

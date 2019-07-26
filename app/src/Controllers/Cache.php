@@ -13,6 +13,11 @@ class Cache extends Controller
         'user' => User::class,
     ];
 
+    public function __invoke(string $user)
+    {
+        // dd($user);
+    }
+
     public function render(): ?string
     {
         $response = $this->response;

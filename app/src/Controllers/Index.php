@@ -23,12 +23,12 @@ class Index extends Controller
     // $wildcards = [user => User rodolfo]
     // $parameters = [name => rodolfo, email=> rodolfo@chevereto.com]
     // public function __invoke(array $wildcards, array $parameters)
-    public function __invokee(string $user)
+    public function __invoke(string $user)
     {
         dd($user);
         // throw new \Exception('duh');
         $api = new Data('api', 'info');
-        $api->addAttribute('entry', 'HTbTP GET /api');
+        $api->addAttribute('entry', 'HTTP GET /api');
         $api->addAttribute('description', 'Retrieves the exposed API.');
         // $api->validate();
 

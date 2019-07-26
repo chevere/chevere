@@ -139,9 +139,9 @@ class Router
         $requestTrim = ltrim($pathInfo, '/');
         if (preg_match($this->regex, $pathInfo, $matches)) {
             $id = $matches['MARK'];
-            $matches = array_slice($matches, 2);
-            // dd($matches);
-            // $this->arguments = $matches;
+            unset($matches['MARK']);
+            array_shift($matches);
+            $this->arguments = $matches;
             $resolver = new Resolver($this->routes[$id]);
             if ($resolver->isUnserialized) {
                 $this->routes[$id] = $resolver->get();
