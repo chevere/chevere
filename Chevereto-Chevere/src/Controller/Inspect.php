@@ -31,6 +31,8 @@ use Chevere\Interfaces\ControllerRelationshipInterface;
  */
 class Inspect implements ToArrayInterface
 {
+    const METHOD_ROOT_PREFIX = Api::METHOD_ROOT_PREFIX;
+
     /** @var string The Controller interface */
     const INTERFACE_CONTROLLER = ControllerInterface::class;
 
@@ -106,7 +108,7 @@ class Inspect implements ToArrayInterface
         $this->isResource = $this->reflection->implementsInterface(ControllerResourceInterface::class);
         $this->isRelatedResource = $this->reflection->implementsInterface(ControllerRelationshipInterface::class);
         $this->useResource = $this->isResource || $this->isRelatedResource;
-        $this->httpMethod = Str::replaceFirst(Api::METHOD_ROOT_PREFIX, null, $this->classShortName);
+        $this->httpMethod = Str::replaceFirst(static::METHOD_ROOT_PREFIX, null, $this->classShortName);
         $this->description = $className::getDescription();
         $this->handleResources($className);
         $this->parameters = $className::getParameters();
@@ -178,7 +180,7 @@ class Inspect implements ToArrayInterface
 
     protected function handleControllerResourceInterface(): void
     {
-        if (!Str::startsWith(Api::METHOD_ROOT_PREFIX, $this->classShortName) && $this->useResource && !$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER_RESOURCE)) {
+        if (!Str::startsWith(static::METHOD_ROOT_PREFIX, $this->classShortName) && $this->useResource && !$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER_RESOURCE)) {
             throw new LogicException('Class %reflectionName% must implement the %interfaceControllerResource% interface at %reflectionFilename%.');
         }
     }

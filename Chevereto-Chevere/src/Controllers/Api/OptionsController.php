@@ -15,6 +15,7 @@ namespace Chevere\Controllers\Api;
 
 use const Chevere\CLI;
 use Chevere\Console\Console;
+use Chevere\Api\Api;
 use Chevere\Message;
 use Chevere\Controller\Controller;
 use InvalidArgumentException;
@@ -34,7 +35,7 @@ class OptionsController extends Controller
 
     public function __invoke()
     {
-        $route = $this->app->route;
+        $route = $this->app->route();
         if (isset($route)) {
             $uri = $route->uri;
         }
@@ -65,8 +66,8 @@ class OptionsController extends Controller
     private function process()
     {
         $statusCode = 200;
-        $api = $this->api;
-        $endpoint = $api->getEndpoint($this->endpoint);
+        $endpoint = Api::endpoint($this->endpoint);
+        dd($this->endpoint, $endpoint);
         if ($endpoint['OPTIONS']) {
             $this->response->addData('OPTIONS', $this->uri, $endpoint['OPTIONS']);
         } else {

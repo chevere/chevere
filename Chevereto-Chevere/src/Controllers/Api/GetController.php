@@ -16,8 +16,10 @@ namespace Chevere\Controllers\Api;
 use const Chevere\CLI;
 use Chevere\Console\Console;
 use Chevere\Message;
+use Chevere\Api\Api;
 use Chevere\Controller\Controller;
 use InvalidArgumentException;
+use Chevere\JsonApi\Data;
 
 // TODO: Use json:api immutable
 
@@ -26,12 +28,10 @@ use InvalidArgumentException;
  */
 class GetController extends Controller
 {
-    const OPTIONS = [
-        'description' => 'Retrieve endpoint.',
-    ];
+    protected static $description = 'Retrieve endpoint.';
 
     /** @var string */
-    protected $endpoint;
+    private $endpoint;
 
     /**
      * @param string $endpoint an API endpoint (/api)
@@ -42,7 +42,7 @@ class GetController extends Controller
             $route = $this->app->router->resolve($endpoint);
             $route = $this->resolve($endpoint);
         } else {
-            $route = $this->app->route;
+            $route = $this->app->route();
             if (isset($route)) {
                 $endpoint = $route->uri;
             } else {
@@ -58,7 +58,8 @@ class GetController extends Controller
         }
 
         if (!isset($route)) {
-            $this->response->setStatusCode(404);
+            $response = $this->app->response();
+            $response->setStatusCode(404);
 
             return;
         }
@@ -70,16 +71,20 @@ class GetController extends Controller
 
     private function process()
     {
-        $endpointData = $this->api->getEndpoint($this->endpoint);
+        $endpointData = Api::endpoint($this->endpoint);
+        dd($this->endpoint, $endpointData);
         if ($endpointData) {
-            $this->response->setMeta(['api' => $this->endpoint]);
-            foreach ($endpointData as $property => $data) {
-                if ($property == 'wildcards') {
-                    continue;
-                }
-                $this->response->addData('endpoint', $property, $data);
-            }
+            $response = $this->app->response();
+            $response->setMeta(['api' => $this->endpoint]);
+            // foreach ($endpointData as $property => $data) {
+            //     if ($property == 'wildcards') {
+            //         continue;
+            //     }
+            //     $data = new Data($property, 'endpoint');
+            //     $data->addAttribute('entry', $data);
+            //     $response->addData($data);
+            // }
         }
-        $this->response->setStatusCode(200);
+        $response->setStatusCode(200);
     }
 }

@@ -23,6 +23,7 @@ use Chevere\Router\Router;
 use Chevere\HttpFoundation\Request;
 use Chevere\HttpFoundation\Response;
 use Chevere\Api\Api;
+use Chevere\Api\Maker as ApiMaker;
 use Chevere\Api\src\Checkout;
 use Chevere\File;
 use Chevere\Path;
@@ -134,9 +135,8 @@ class App implements AppInterface
             $pathHandle = Path::handle(static::FILEHANDLE_PARAMETERS);
             $parameters = Parameters::createFromFile($pathHandle);
         }
-        // dd($parameters);
         // $this->processConfigFiles($parameters->getDataKey(Parameters::CONFIG_FILES));
-        // $this->processApi($parameters->getDataKey(Parameters::API));
+        $this->processApi($parameters->getDataKey(Parameters::API));
         $this->processParamRoutes($parameters->getDatakey(Parameters::ROUTES));
         $this->response = new Response();
         $this->processSapi();
@@ -304,11 +304,12 @@ class App implements AppInterface
         if (!isset($pathIdentifier)) {
             return;
         }
-        $api = new Api($this->router);
+        $api = new ApiMaker($this->router);
         if (!$this->isCached) {
             $api->register($pathIdentifier);
         }
         $this->api = $api;
+        new Api($api);
     }
 
     protected function processParamRoutes(array $paramRoutes = null): void
@@ -403,5 +404,10 @@ class App implements AppInterface
             return $runtimeInstance;
         }
         throw new RuntimeException('NO RUNTIME INSTANCE EVERYTHING BURNS!');
+    }
+
+    public function route(): Route
+    {
+        return $this->route;
     }
 }
