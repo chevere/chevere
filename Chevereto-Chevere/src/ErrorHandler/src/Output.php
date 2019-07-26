@@ -125,15 +125,14 @@ class Output
                 $tpl = $v[1];
             }
             $message = strtr($tpl, $this->templateTags);
-            // $consoleColor = new ConsoleColor();
-            // $colorized = $consoleColor->apply('reverse', 'color');
-
-            // die($matches[0][0]);
-
-            // $message = strip_tags($message);
             if ('title' == $k) {
                 Console::cli()->out->error($message);
             } else {
+                $message = preg_replace_callback('#<code>(.*?)<\/code>#', function ($matches) {
+                    $consoleColor = new ConsoleColor();
+
+                    return $consoleColor->apply('light_blue', $matches[1]);
+                }, $message);
                 Console::cli()->out->writeln($message);
             }
         }
