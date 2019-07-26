@@ -136,9 +136,8 @@ class App implements AppInterface
         }
         // dd($parameters);
         // $this->processConfigFiles($parameters->getDataKey(Parameters::CONFIG_FILES));
-        $this->processApi($parameters->getDataKey(Parameters::API));
+        // $this->processApi($parameters->getDataKey(Parameters::API));
         $this->processParamRoutes($parameters->getDatakey(Parameters::ROUTES));
-        $this->router->getRegex();
         $this->response = new Response();
         $this->processSapi();
     }
@@ -355,6 +354,7 @@ class App implements AppInterface
         $this->route = $this->router->resolve($pathInfo);
         $this->callable = $this->route->getCallable($this->request->getMethod());
         $routerArgs = $this->router->arguments;
+        // dd($routerArgs);
         if (isset($routerArgs)) {
             $this->setArguments($routerArgs);
         }

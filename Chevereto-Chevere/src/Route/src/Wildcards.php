@@ -20,6 +20,9 @@ use Chevere\Utility\Str;
 use Chevere\Utility\Arr;
 use Chevere\Route\Route;
 
+/**
+ * Interacts with routes that use wildcards.
+ */
 class Wildcards
 {
     /** @var string Key set representation */
@@ -116,15 +119,14 @@ class Wildcards
         $routeSet = [];
         foreach ($powerSet as $set) {
             $auxSet = $this->set;
-            // auxWildcards keys represent the wildcards being used. Iterate it with foreach.
             $auxWildcards = $this->mandatoryIndex;
             foreach ($set as $replaceKey => $replaceValue) {
-                $replace = $this->optionals[$replaceKey];
+                $search = $this->optionals[$replaceKey];
                 if ($replaceValue !== null) {
                     $replaceValue = "{{$replaceValue}}";
-                    $auxWildcards[$replace] = null;
+                    $auxWildcards[$search] = null;
                 }
-                $auxSet = str_replace("{{$replace}}", $replaceValue ?? '', $auxSet);
+                $auxSet = str_replace("{{$search}}", $replaceValue ?? '', $auxSet);
                 $auxSet = Path::normalize($auxSet);
             }
             ksort($auxWildcards);

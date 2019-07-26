@@ -60,17 +60,24 @@ class Router
         $name = $route->name;
         $this->handleRouteName($name, $pointer);
         $this->routes[] = $route;
+        $id = array_key_last($this->routes);
         $this->baseIndex[$basename][] = array_key_last($this->routes);
         $powerSet = $route->powerSet;
         if (isset($powerSet)) {
+            $ix = $id;
             foreach ($powerSet as $k => $wildcardsIndex) {
-                // n => .. => regex => [route, wildcards]
-                $this->routing($route); // $route->regex($k)
+                ++$ix;
+                $this->routes[] = [$id, $k];
+                $this->regexIndex[$route->regex($k)] = $ix;
             }
         } else {
             // n => .. => regex => route
-            $this->routing($route);
+            $this->regexIndex[$route->regex] = $id;
+            if (Route::TYPE_STATIC == $route->type) {
+                $this->statics[$route->uri] = $id;
+            }
         }
+
         $this->regex = $this->getRegex();
         $this->routeKeys[$uri] = $pointer;
     }
@@ -111,11 +118,6 @@ class Router
      */
     protected function routing(Route $route): void
     {
-        $id = array_key_last($this->routes);
-        $this->regexIndex[$route->regex] = $id;
-        if (Route::TYPE_STATIC == $route->type) {
-            $this->statics[$route->uri] = $id;
-        }
     }
 
     public function getRegex(): string
@@ -130,7 +132,7 @@ class Router
     }
 
     /**
-     * Resolve routing for the given path info.
+     * Resolve routing for the given path info, sets matched arguments.
      *
      * @param string $pathInfo request path
      */
@@ -141,29 +143,27 @@ class Router
             $id = $matches['MARK'];
             unset($matches['MARK']);
             array_shift($matches);
-            $this->arguments = $matches;
-            $resolver = new Resolver($this->routes[$id]);
+            $route = $this->routes[$id];
+            if (is_array($route)) {
+                $set = $route[1];
+                $route = $this->routes[$route[0]];
+            }
+            $resolver = new Resolver($route);
             if ($resolver->isUnserialized) {
-                $this->routes[$id] = $resolver->get();
+                $route = $resolver->get();
+                $this->routes[$id] = $route;
+            }
+            $this->arguments = [];
+            foreach ($matches as $k => $v) {
+                $wildcardId = $route->powerSet[$set][$k];
+                $wildcardKey = $route->wildcards[$wildcardId];
+                $this->arguments[$wildcardKey] = $v;
             }
 
-            return $resolver->get();
+            return $route;
         }
-        // dd('eso es todo <code>amiwos</code>!');
         throw new LogicException(
             (new Message('NO ROUTING!!!!! %s'))->code('%s', 'BURN!!!')->toString()
         );
-    }
-
-    protected function getComponents(string $requestTrim): array
-    {
-        return null == $requestTrim ? [] : explode('/', $requestTrim);
-    }
-
-    protected function getRoutesTable(int $key, string $priority): ?array
-    {
-        dd($this->regexIndex, $this->statics);
-
-        return $this->routing[$key][$priority] ?? null;
     }
 }

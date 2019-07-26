@@ -75,7 +75,7 @@ class Route implements RouteInterface
     public $wildcards;
 
     /** @var string Key set representation */
-    public $set;
+    private $set;
 
     /** @var array An array containing all the key sets for the route (optionals combo) */
     public $powerSet;
@@ -268,11 +268,11 @@ class Route implements RouteInterface
     /**
      * Gets route regex.
      *
-     * @param string $key route string to use, leave it blank to use $this->set ?? $this->uri
+     * @param string $set route set, null to use $this->set ?? $this->uri
      */
-    public function regex(): string
+    public function regex(?string $set = null): string
     {
-        $regex = $this->set ?? $this->uri;
+        $regex = $set ?? ($this->set ?? $this->uri);
         if (!isset($regex)) {
             throw new LogicException(
                 (new Message('Unable to process regex for empty regex (no uri).'))->toString()
