@@ -17,8 +17,6 @@ use Chevere\HttpFoundation\Response;
 
 interface ControllerInterface
 {
-    public function __invoke();
-
     public function setResponse(Response $response): ControllerInterface;
 
     /**

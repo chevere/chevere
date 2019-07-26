@@ -117,14 +117,14 @@ abstract class Controller implements ControllerInterface
         }
     }
 
-    public function __invoke()
-    {
-        // throw new LogicException(
-        //         (new Message('Class %c Must implement its own %s method.'))
-        //             ->code()
-        //              ->toString()
-        // );
-    }
+    // public function __invoke()
+    // {
+    //     // throw new LogicException(
+    //     //         (new Message('Class %c Must implement its own %s method.'))
+    //     //             ->code()
+    //     //              ->toString()
+    //     // );
+    // }
 
     final public static function getDescription(): ?string
     {

@@ -32,7 +32,7 @@ use Chevere\Load;
 use Chevere\Route\Route;
 use Chevere\Route\ArrayFileWrap as RouteArrayFileWrap;
 use Chevere\Console\Console;
-use Chevere\CallableWrap;
+use Chevere\Controller\Wrap;
 use Chevere\Message;
 use Chevere\Runtime\Config;
 use Chevere\Interfaces\AppInterface;
@@ -177,7 +177,7 @@ class App implements AppInterface
      */
     public function getControllerObject(string $callable)
     {
-        if (is_subclass_of($callable, ControllerInterface::class)) {
+        if (!is_subclass_of($callable, ControllerInterface::class)) {
             throw new LogicException(
                 (new Message('Callable %s must represent a class implementing the %i interface.'))
                     ->code('%s', $callable)
@@ -186,7 +186,8 @@ class App implements AppInterface
             );
         }
         $controller = new $callable($this);
-        $callableWrap = new CallableWrap($callable);
+        $wrap = new Wrap($callable);
+        dd($wrap);
 
         // if ($this->route instanceof Route) {
         //     $middlewares = $this->route->middlewares;
@@ -197,9 +198,9 @@ class App implements AppInterface
         // }
 
         if (!empty($this->arguments)) {
-            $callableWrap->setPassedArguments($this->arguments);
-            $this->controllerArguments = $callableWrap->getArguments();
-        // dd($callableWrap);
+            $wrap->setPassedArguments($this->arguments);
+            $this->controllerArguments = $wrap->getArguments();
+        // dd($wrap);
         } else {
             $this->controllerArguments = [];
         }

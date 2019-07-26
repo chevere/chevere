@@ -11,11 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere;
+namespace Chevere\Controller;
 
 use LogicException;
 use ReflectionMethod;
-use ReflectionFunction;
 use ReflectionParameter;
 use ReflectionClass;
 use ReflectionFunctionAbstract;
@@ -29,14 +28,8 @@ use ReflectionFunctionAbstract;
  * - A class implementing ::__invoke
  * - A fileHandle string representing the path of a file wich returns a callable
  */
-class CallableWrap
+class Wrap
 {
-    const TYPE_FUNCTION = 'function';
-    const TYPE_METHOD = 'method';
-    const TYPE_CLASS = 'class';
-
-    const TYPES = [self::TYPE_FUNCTION, self::TYPE_CLASS];
-
     /** @var string The callable string handle used to construct the object */
     private $callableHandle;
 
@@ -45,9 +38,6 @@ class CallableWrap
 
     /** @var ReflectionMethod The reflected callable (method) */
     private $reflectionMethod;
-
-    /** @var ReflectionFunction The reflected callable (function) */
-    private $reflectionFunction;
 
     /** @var ReflectionFunctionAbstract */
     private $reflection;
@@ -76,44 +66,19 @@ class CallableWrap
     /** @var array Passed callable arguments */
     private $passedArguments;
 
-    /** @var bool True if the callable comes from a fileHandle */
-    private $isFileHandle;
-
     /** @var bool True if the callable represents a anon function or class */
     private $isAnon;
 
     public function __construct(string $callableHandle)
     {
-        $this->isFileHandle = false;
         $this->callableHandle = $callableHandle;
-        // Direct processing for callable strings and invocable classes
-        if (is_callable($this->callableHandle)) {
-            $this->callable = $callableHandle;
-            $this->isAnon = false;
-            $this->process();
-        } else {
-            if (class_exists($callableHandle)) {
-                $this->handleCallableClass($callableHandle);
-            }
-        }
-        // Some work needed when dealing with fileHandle
-        if (!isset($this->callable)) {
-            if (Utility\Str::contains('::', $this->callableHandle)) {
-                $explode = explode('::', $this->callableHandle);
-                $this->class = $explode[0];
-                $this->method = $explode[1];
-                $this->handleCallableClassMethod($this->class, $this->method);
-            } else {
-                $this->handleCallableFile($this->callableHandle);
-                $this->process();
-            }
-        }
+        $this->handleCallableClass($callableHandle);
     }
 
     protected function handleCallableClass(string $callableClass): void
     {
         if (method_exists($callableClass, '__invoke')) {
-            $this->callable = new $callableClass();
+            $this->callable = $callableClass;
             $this->class = $callableClass;
             $this->method = '__invoke';
             $this->isAnon = false;
@@ -173,28 +138,15 @@ class CallableWrap
                     ->toString()
             );
         }
-        $this->isFileHandle = true;
         $this->callable = $callable;
         $this->callableFilepath = $callableFilepath;
-    }
-
-    protected function validateType(string $type)
-    {
-        if (!in_array($type, static::TYPES)) {
-            throw new LogicException(
-                (new Message('Invalid type %s, expecting one of these: %v.'))
-                    ->code('%s', $type)
-                    ->code('%v', implode(', ', static::TYPES))
-                    ->toString()
-            );
-        }
     }
 
     // Process the callable and fill the object properties
     protected function process()
     {
         if (isset($this->class)) {
-            $this->type = isset($this->method) ? static::TYPE_CLASS : static::TYPE_FUNCTION;
+            $this->type = 'class';
         } else {
             if (is_object($this->callable)) {
                 $this->method = '__invoke';
@@ -206,7 +158,6 @@ class CallableWrap
                 $this->type = static::TYPE_FUNCTION;
             }
         }
-        $this->validateType($this->type);
     }
 
     /**
@@ -232,30 +183,19 @@ class CallableWrap
         return $this->arguments ?? [];
     }
 
-    protected function processReflection(): self
+    protected function processReflection()
     {
-        if ($this->reflectionFunction) {
-            return $this;
-        }
-        if (is_object($this->callable)) {
-            $this->reflectionMethod = new ReflectionMethod($this->callable, $this->method);
-        } else {
-            $this->reflectionFunction = new ReflectionFunction($this->callable);
-        }
-        $this->reflection = $this->reflectionFunction ?? $this->reflectionMethod;
-
-        return $this;
+        $this->reflectionMethod = new ReflectionMethod($this->callable, $this->method);
+        $this->reflection = $this->reflectionMethod;
     }
 
-    protected function processParameters(): self
+    protected function processParameters()
     {
         $this->processReflection();
         $this->parameters = $this->reflection->getParameters();
-
-        return $this;
     }
 
-    protected function processArguments(): self
+    protected function processArguments()
     {
         $this->processReflection();
         $this->typedArguments = [];
@@ -277,8 +217,6 @@ class CallableWrap
         }
         // dd($this->reflection->getParameters());
         $this->arguments = $this->typedArguments;
-
-        return $this;
     }
 
     protected function processTypedArgument(ReflectionParameter $parameter, string $type = null, $value = null): void

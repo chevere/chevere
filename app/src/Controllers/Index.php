@@ -18,12 +18,14 @@ use Chevere\JsonApi\Data;
 
 class Index extends Controller
 {
-    // /user/{user}/comment
+    // /user/{user}/friends/{friend}/comment
     // POST /user/rodolfo/comment --params ...
     // $wildcards = [user => User rodolfo]
     // $parameters = [name => rodolfo, email=> rodolfo@chevereto.com]
-    public function __invoke(array $wildcards, array $parameters)
+    // public function __invoke(array $wildcards, array $parameters)
+    public function __invokee(string $user)
     {
+        dd($user);
         // throw new \Exception('duh');
         $api = new Data('api', 'info');
         $api->addAttribute('entry', 'HTbTP GET /api');
