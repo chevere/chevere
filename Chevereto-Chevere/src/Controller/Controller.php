@@ -35,7 +35,7 @@ use Chevere\Traits\HookableTrait;
 /**
  * Controller is the defacto controller in Chevere.
  */
-abstract class Controller implements ControllerInterface
+class Controller implements ControllerInterface
 {
     use HookableTrait;
 
@@ -57,11 +57,22 @@ abstract class Controller implements ControllerInterface
     /** @var array Parameters passed via headers */
     protected static $parameters;
 
-    public function setResponse(Response $response): ControllerInterface
+    /**
+     * You must provide your own __invoke.
+     */
+    public function __invoke()
+    {
+        throw new LogicException(
+            (new Message('Class %c must implement a %m method.'))
+                ->code('%c', get_class($this))
+                ->code('%m', 'public __invoke')
+                ->toString()
+        );
+    }
+
+    public function setResponse(Response $response)
     {
         $this->app->response = $response;
-
-        return $this;
     }
 
     public function __construct(App $app)
@@ -116,15 +127,6 @@ abstract class Controller implements ControllerInterface
             );
         }
     }
-
-    // public function __invoke()
-    // {
-    //     // throw new LogicException(
-    //     //         (new Message('Class %c Must implement its own %s method.'))
-    //     //             ->code()
-    //     //              ->toString()
-    //     // );
-    // }
 
     final public static function getDescription(): ?string
     {

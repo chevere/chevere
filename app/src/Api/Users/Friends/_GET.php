@@ -12,8 +12,4 @@ class _GET extends Relationship
     {
         $this->user = new User($input);
     }
-
-    public function __invoke()
-    {
-    }
 }

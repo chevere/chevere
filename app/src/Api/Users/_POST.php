@@ -17,9 +17,4 @@ class _POST extends Controller
             'description' => 'User email.',
         ],
     ];
-
-    public function __invoke()
-    {
-        return 'post user';
-    }
 }

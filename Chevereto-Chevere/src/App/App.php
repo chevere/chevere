@@ -187,7 +187,7 @@ class App implements AppInterface
         }
         $controller = new $callable($this);
         $wrap = new Wrap($callable);
-        dd($wrap);
+        // dd($wrap);
 
         // if ($this->route instanceof Route) {
         //     $middlewares = $this->route->middlewares;

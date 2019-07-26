@@ -17,7 +17,7 @@ use Chevere\HttpFoundation\Response;
 
 interface ControllerInterface
 {
-    public function setResponse(Response $response): ControllerInterface;
+    public function setResponse(Response $response);
 
     /**
      * Invoke another controller.
@@ -31,22 +31,16 @@ interface ControllerInterface
 
     /**
      * Provides access to the Controller $description static.
-     *
-     * @return string|null
      */
     public static function getDescription(): ?string;
 
     /**
      * Provides access to the Controller $resources static.
-     *
-     * @return array|null
      */
     public static function getResources(): ?array;
 
     /**
      * Provides access to the Controller $parameters static.
-     *
-     * @return array|null
      */
     public static function getParameters(): ?array;
 }

@@ -19,8 +19,4 @@ class PATCH extends Resource
     public function __construct(User $user)
     {
     }
-
-    public function __invoke()
-    {
-    }
 }

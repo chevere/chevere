@@ -14,7 +14,4 @@ class _GET extends Controller
     {
         $this->user = new User($input);
     }
-
-    public function __invoke()
-    { }
 }

@@ -10,8 +10,4 @@ use Chevere\Controller\Relationship as ControllerRelationship;
 abstract class Relationship extends ControllerRelationship
 {
     protected static $relatedResource = Resource::class;
-
-    public function __invoke()
-    {
-    }
 }
