@@ -5,10 +5,10 @@ namespace App;
 use Chevere\Route\Route;
 
 return [
-  // 'index' => Route::bind('/', Controllers\Index::class)
-  //   ->setName('homepage')
-  //   ->addMiddleware('middleware:RoleBanned')
-  //   ->addMiddleware('middleware:RoleAdmin'),
+  'index' => Route::bind('/', Controllers\Index::class)
+    ->setName('homepage')
+    ->addMiddleware('middleware:RoleBanned')
+    ->addMiddleware('middleware:RoleAdmin'),
 
   // Route::bind('/ruta/dos')->setMethod('GET', Controllers\Index::class),
   // Route::bind('/ruta/tres')->setMethod('GET', Controllers\Index::class),

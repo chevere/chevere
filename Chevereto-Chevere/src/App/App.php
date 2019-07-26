@@ -198,10 +198,11 @@ class App implements AppInterface
         if (!empty($this->arguments)) {
             $wrap = new ControllerArgumentsWrap($controller, $this->arguments);
             $this->controllerArguments = $wrap->getArguments();
-            $controller(...$this->controllerArguments);
         } else {
-            $controller();
+            $this->controllerArguments = [];
         }
+
+        $controller(...$this->controllerArguments);
 
         return $controller;
     }
