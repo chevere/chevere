@@ -189,6 +189,7 @@ class Dumper
             $this->appendArg($pos, $value);
             ++$pos;
         }
+        // $this->output = trim($this->output, '\n');
     }
 
     protected function appendArg(int $pos, $value): void

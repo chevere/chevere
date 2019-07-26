@@ -21,7 +21,8 @@ use Chevere\Route\src\KeyValidation;
 use Chevere\Route\src\Wildcards;
 use Chevere\Route\src\WildcardValidation;
 use Chevere\Controllers\HeadController;
-use Chevere\Traits\CallableTrait;
+// use Chevere\Traits\CallableTrait;
+use Chevere\Interfaces\ControllerInterface;
 use Chevere\Utility\Str;
 use Chevere\Interfaces\RouteInterface;
 
@@ -32,7 +33,7 @@ use Chevere\Interfaces\RouteInterface;
 
 class Route implements RouteInterface
 {
-    use CallableTrait;
+    // use CallableTrait;
 
     /** @const Array containing all the HTTP methods. */
     const HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'COPY', 'HEAD', 'OPTIONS', 'LINK', 'UNLINK', 'PURGE', 'LOCK', 'UNLOCK', 'PROPFIND', 'VIEW', 'TRACE', 'CONNECT'];
@@ -176,7 +177,15 @@ class Route implements RouteInterface
                     ->toString()
             );
         }
-        $callableSome = $this->getCallableSome($callable);
+        // Validate type
+        if (!is_subclass_of($callable, ControllerInterface::class)) {
+            throw new LogicException(
+                (new Message('Callable %s must represent a class implementing the %i interface.'))
+                    ->code('%s', $callable)
+                    ->code('%i', ControllerInterface::class)
+                    ->toString()
+            );
+        }
         // Check HTTP dupes
         // if (isset($this->methods[$httpMethod])) {
         //     throw new InvalidArgumentException(
@@ -184,7 +193,7 @@ class Route implements RouteInterface
         //             ->code('%s', $httpMethod)->toString()
         //     );
         // }
-        $this->methods[$httpMethod] = $callableSome;
+        $this->methods[$httpMethod] = $callable;
 
         return $this;
     }
@@ -212,7 +221,7 @@ class Route implements RouteInterface
 
     public function addMiddleware(string $callable): self
     {
-        $this->middlewares[] = $this->getCallableSome($callable);
+        // $this->middlewares[] = $this->getCallableSome($callable);
 
         return $this;
     }

@@ -24,7 +24,7 @@ use Chevere\Interfaces\HandlerInterface;
  */
 class Handler implements HandlerInterface
 {
-    use Traits\CallableTrait;
+    // use Traits\CallableTrait;
 
     protected $queue;
 
@@ -79,6 +79,6 @@ class Handler implements HandlerInterface
 
     public function stop($app)
     {
-        $app->terminate(__METHOD__ . ' Terminated the app execution.');
+        $app->terminate(__METHOD__.' Terminated the app execution.');
     }
 }

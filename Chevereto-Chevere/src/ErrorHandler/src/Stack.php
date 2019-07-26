@@ -60,7 +60,7 @@ class Stack
 
     public function getConsoleStack(): ?string
     {
-        return strip_tags($this->glueString($this->console));
+        return strip_tags($this->wrapStringHr($this->glueString($this->console)));
     }
 
     public function getRichStack(): ?string

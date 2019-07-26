@@ -98,13 +98,13 @@ class TraceEntry
             $this->plainArgs .= $aux.PlainVarDump::out($v, null, [App::class])."\n";
             $this->richArgs .= $aux.$this->varDump::out($v, null, [App::class])."\n";
         }
-        $this->chopArgStringNl($this->plainArgs);
-        $this->chopArgStringNl($this->richArgs);
+        $this->trimTrailingNl($this->plainArgs);
+        $this->trimTrailingNl($this->richArgs);
     }
 
-    protected function chopArgStringNl(string &$string): void
+    protected function trimTrailingNl(string &$string): void
     {
-        substr($string, 0, -2);
+        $string = rtrim($string, "\n");
     }
 
     protected function handleProcessAnonClass()
