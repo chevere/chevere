@@ -19,7 +19,7 @@ use Chevere\ArrayFile;
 use Chevere\PathHandle;
 use Chevere\Message;
 
-class Parameters extends Data
+final class Parameters extends Data
 {
     const CONFIG_FILES = 'configFiles';
 
@@ -68,9 +68,21 @@ class Parameters extends Data
     }
 
     /**
+     * Creates Parameters instance from file.
+     *
+     * @param string $fileHandle filehandle
+     */
+    public static function createFromFile(PathHandle $pathHandle)
+    {
+        $arrayFile = new ArrayFile($pathHandle);
+
+        return new static($arrayFile->toArray(), $arrayFile->getFilepath());
+    }
+
+    /**
      * Throws a LogicException if the thing doesn't validate.
      */
-    protected function validate(array $parameters): void
+    private function validate(array $parameters): void
     {
         foreach ($parameters as $key => $val) {
             $this->validateKeyExists($key);
@@ -83,7 +95,7 @@ class Parameters extends Data
      *
      * @param string $key The AppParameter key
      */
-    protected function validateKeyExists(string $key): void
+    private function validateKeyExists(string $key): void
     {
         if (!array_key_exists($key, $this->keys)) {
             throw new LogicException(
@@ -100,7 +112,7 @@ class Parameters extends Data
      *
      * @param string $key The AppParameter key
      */
-    protected function validateKeyType(string $key, $val): void
+    private function validateKeyType(string $key, $val): void
     {
         $gettype = gettype($val);
         if ($gettype !== $this->keys[$key]) {
@@ -115,22 +127,10 @@ class Parameters extends Data
         }
     }
 
-    protected function setSourceFilepath(string $filepath): self
+    private function setSourceFilepath(string $filepath): self
     {
         $this->sourceFilepath = $filepath;
 
         return $this;
-    }
-
-    /**
-     * Creates Parameters instance from file.
-     *
-     * @param string $fileHandle filehandle
-     */
-    public static function createFromFile(PathHandle $pathHandle)
-    {
-        $arrayFile = new ArrayFile($pathHandle);
-
-        return new static($arrayFile->toArray(), $arrayFile->getFilepath());
     }
 }

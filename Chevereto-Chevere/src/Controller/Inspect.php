@@ -29,7 +29,7 @@ use Chevere\Interfaces\ControllerRelationshipInterface;
 /**
  * Provides information about any Controller implementing ControllerInterface interface.
  */
-class Inspect implements ToArrayInterface
+final class Inspect implements ToArrayInterface
 {
     const METHOD_ROOT_PREFIX = Api::METHOD_ROOT_PREFIX;
 
@@ -137,7 +137,20 @@ class Inspect implements ToArrayInterface
         $this->processPathComponent();
     }
 
-    protected function handleResources(string $className)
+    public function toArray(): array
+    {
+        return [
+            'className' => $this->className,
+            'httpMethod' => $this->httpMethod,
+            'description' => $this->description,
+            'resources' => $this->resources,
+            'useResource' => $this->useResource,
+            'resourcesFromString' => $this->resourcesFromString,
+            'pathComponent' => $this->pathComponent,
+        ];
+    }
+
+    private function handleResources(string $className)
     {
         if ($this->isResource) {
             $this->resources = $className::getResources();
@@ -155,64 +168,35 @@ class Inspect implements ToArrayInterface
         }
     }
 
-    public function toArray(): array
-    {
-        return [
-            'className' => $this->className,
-            'httpMethod' => $this->httpMethod,
-            'description' => $this->description,
-            'resources' => $this->resources,
-            'useResource' => $this->useResource,
-            'resourcesFromString' => $this->resourcesFromString,
-            'pathComponent' => $this->pathComponent,
-        ];
-    }
-
-    /**
-     * Throws a logic exception if the passed interface is not implemented in the reflected class.
-     */
-    protected function handleControllerInterface(): void
+    private function handleControllerInterface(): void
     {
         if (!$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER)) {
             throw new LogicException('Class %reflectionName% must implement the %interfaceController% interface at %reflectionFilename%.');
         }
     }
 
-    protected function handleControllerResourceInterface(): void
+    private function handleControllerResourceInterface(): void
     {
         if (!Str::startsWith(static::METHOD_ROOT_PREFIX, $this->classShortName) && $this->useResource && !$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER_RESOURCE)) {
             throw new LogicException('Class %reflectionName% must implement the %interfaceControllerResource% interface at %reflectionFilename%.');
         }
     }
 
-    /**
-     * Throws a LogicException if the usage of const RESOURCES is invalid.
-     */
-
-    /**
-     * Throws a LogicException if const RESOURCES is set but not needed.
-     */
-    protected function handleConstResourceNeed(): void
+    private function handleConstResourceNeed(): void
     {
         if (!empty($this->resources) && !$this->useResource) {
             throw new LogicException('Class %className% defines %propResources% but this Controller class targets a non-resourced endpoint: %endpoint%. Remove the unused %propResources% declaration at %filepath%.');
         }
     }
 
-    /**
-     * Throws a LogicException if RESOURCES are needed but missed.
-     */
-    protected function handleConstResourceMissed(): void
+    private function handleConstResourceMissed(): void
     {
         if (null == $this->resources && $this->isResource) {
             throw new LogicException('Class %className% must define %propResources% at %filepath%.');
         }
     }
 
-    /**
-     * Throws a LogicException if RESOURCES maps to invalid classes.
-     */
-    protected function handleConstResourceValid(): void
+    private function handleConstResourceValid(): void
     {
         if (is_iterable($this->resources)) {
             foreach ($this->resources as $propertyName => $className) {
@@ -227,7 +211,7 @@ class Inspect implements ToArrayInterface
         }
     }
 
-    protected function handleProcessResources(): void
+    private function handleProcessResources(): void
     {
         if (is_iterable($this->resources)) {
             $resourcesFromString = [];
@@ -249,10 +233,7 @@ class Inspect implements ToArrayInterface
         }
     }
 
-    /**
-     * Sets $pathComponent based on the inspected values.
-     */
-    protected function processPathComponent(): void
+    private function processPathComponent(): void
     {
         $pathComponent = $this->getPathComponent($this->className);
         $pathComponents = explode('/', $pathComponent);
@@ -282,7 +263,7 @@ class Inspect implements ToArrayInterface
         $this->pathComponent = $pathComponent;
     }
 
-    protected function getPathComponent(string $className): string
+    private function getPathComponent(string $className): string
     {
         $classShortName = substr($className, strrpos($className, '\\') + 1);
         $classNamespace = Str::replaceLast('\\'.$classShortName, null, $className);

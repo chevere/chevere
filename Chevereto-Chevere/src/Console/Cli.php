@@ -25,9 +25,9 @@ use Chevere\Console\Commands\InspectCommand;
 /**
  * This class provides console facade for Symfony\Component\Console.
  */
-class Cli
+final class Cli
 {
-    const NAME = __NAMESPACE__ . ' cli';
+    const NAME = __NAMESPACE__.' cli';
     const VERSION = '1.0';
 
     /** @var string Cli name */
@@ -69,9 +69,6 @@ class Cli
         $this->client->setAutoExit(false);
     }
 
-    /**
-     * Run the Cli client.
-     */
     public function runner()
     {
         $this->client->run($this->input, $this->output);

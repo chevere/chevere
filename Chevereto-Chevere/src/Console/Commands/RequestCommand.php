@@ -24,7 +24,7 @@ use Chevere\Console\Command;
  * Usage:
  * php app/console request <method> <uri>
  */
-class RequestCommand extends Command
+final class RequestCommand extends Command
 {
     protected static $defaultName = 'request';
 
@@ -42,9 +42,6 @@ class RequestCommand extends Command
             ->addArgument('content', Command::ARGUMENT_OPTIONAL, 'Content', null);
     }
 
-    /**
-     * Forge a request.
-     */
     public function callback(App $app): int
     {
         // Map cli arguments to Request::create

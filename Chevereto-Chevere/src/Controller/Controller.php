@@ -70,63 +70,34 @@ class Controller implements ControllerInterface
     //     );
     // }
 
-    public function setResponse(Response $response)
+    final public function setResponse(Response $response)
     {
         $this->app->response = $response;
     }
 
-    public function __construct(App $app)
+    final public function __construct(App $app)
     {
         $this->app = $app;
     }
 
-    public function invoke(string $controller, ...$parameters)
-    {
-        $that = $this->getCallable($controller);
-        if (!is_callable($that)) {
-            throw new LogicException(
-                (new Message('Expected %s callable, %t provided.'))
-                    ->code('%s', '$controller')
-                    ->code('%t', gettype($controller))
-                    ->toString()
-            );
-        }
-        // Pass this to that so you can this while you that dawg!
-        foreach (get_object_vars($this) as $k => $v) {
-            $that->{$k} = $v;
-        }
+    // final public function invoke(string $controller, ...$parameters)
+    // {
+    //     $that = $this->getCallable($controller);
+    //     if (!is_callable($that)) {
+    //         throw new LogicException(
+    //             (new Message('Expected %s callable, %t provided.'))
+    //                 ->code('%s', '$controller')
+    //                 ->code('%t', gettype($controller))
+    //                 ->toString()
+    //         );
+    //     }
+    //     // Pass this to that so you can this while you that dawg!
+    //     foreach (get_object_vars($this) as $k => $v) {
+    //         $that->{$k} = $v;
+    //     }
 
-        return $that(...$parameters);
-    }
-
-    private function getCallable(string $controller): callable
-    {
-        if (class_exists($controller)) {
-            return new $controller();
-        } else {
-            throw new LogicException('NO CALLABLE');
-            // $controllerArgs = [$controller];
-            // if (Utility\Str::startsWith('@', $controller)) {
-            //     $context = dirname(debug_backtrace(0, 1)[0]['file']);
-            //     $controllerArgs = [substr($controller, 1), $context];
-            // }
-            // dd(debug_backtrace(0, 2), $context, $controllerArgs);
-            // $this->filename = Path::fromHandle(...$controllerArgs);
-            // $this->handleFilemane();
-            // return Load::php($this->filename);
-        }
-    }
-
-    private function handleFilemane()
-    {
-        if (!File::exists($this->filename)) {
-            throw new LogicException(
-                (new Message("Unable to invoke controller %s (filename doesn't exists)."))
-                    ->code('%s', $this->filename)
-                    ->toString()
-            );
-        }
-    }
+    //     return $that(...$parameters);
+    // }
 
     final public static function getDescription(): ?string
     {

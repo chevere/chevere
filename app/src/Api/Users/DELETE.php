@@ -10,11 +10,6 @@ class DELETE extends Resource
 {
     protected static $description = 'Deletes an user.';
 
-    // private $private = "Can't touch this!";
-    public function __construct(User $user)
-    {
-    }
-
     public function __invoke()
     {
         // $GET = $this->invoke('@:GET', $user);

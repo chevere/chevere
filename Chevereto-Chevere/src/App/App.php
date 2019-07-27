@@ -43,7 +43,7 @@ use Chevere\Traits\StaticTrait;
 /**
  * App contains the whole thing.
  */
-class App implements AppInterface
+final class App implements AppInterface
 {
     use StaticTrait;
 
@@ -246,27 +246,10 @@ class App implements AppInterface
         return $this;
     }
 
-    public function getHash(): string
-    {
-        return ($this->getConstant('App\VERSION') ?: null).$this->getBuildTime();
-    }
-
-    public function getConstant(string $name, string $namespace = 'App'): ?string
-    {
-        $constant = "\\$namespace\\$name";
-
-        return defined($constant) ? constant($constant) : null;
-    }
-
-    protected function setRequest(Request $request): self
-    {
-        $this->request = $request;
-
-        $pathinfo = ltrim($this->request->getPathInfo(), '/');
-        $this->request->attributes->set('requestArray', explode('/', $pathinfo));
-
-        return $this;
-    }
+    // public function getHash(): string
+    // {
+    //     return ($this->getConstant('App\VERSION') ?: null).$this->getBuildTime();
+    // }
 
     /**
      * @param array $arguments string arguments captured or injected
@@ -284,92 +267,6 @@ class App implements AppInterface
     public function setControllerArguments(array $arguments)
     {
         $this->controllerArguments = $arguments;
-    }
-
-    // protected function processConfigFiles(array $configFiles = null): void
-    // {
-    //     if (!isset($configFiles)) {
-    //         return;
-    //     }
-    //     if (isset($this->runtime)) {
-    //         $this->runtime->runConfig(
-    //             (new Config())
-    //                 ->processFromFiles($configFiles)
-    //         );
-    //     }
-    // }
-
-    protected function processApi(string $pathIdentifier = null): void
-    {
-        if (!isset($pathIdentifier)) {
-            return;
-        }
-        $api = new ApiMaker($this->router);
-        if (!$this->isCached) {
-            $api->register($pathIdentifier);
-        }
-        $this->api = $api;
-        new Api($api);
-    }
-
-    protected function processParamRoutes(array $paramRoutes = null): void
-    {
-        if (!isset($paramRoutes)) {
-            return;
-        }
-        // ['handle' => [Routes,]]
-        foreach ($paramRoutes as $fileHandleString) {
-            $fileHandle = Path::handle($fileHandleString);
-            foreach ((new RouteArrayFileWrap($fileHandle))->getArrayFile()->toArray() as $k => $route) {
-                $this->router->addRoute($route, $fileHandleString);
-            }
-        }
-    }
-
-    protected function processSapi(): void
-    {
-        if (Console::bind($this)) {
-            Console::run(); // Note: Console::run() always exit.
-        } else {
-            $this->setRequest(Request::createFromGlobals());
-        }
-    }
-
-    protected function processController(string $controller): void
-    {
-        $controller = $this->getControllerObject($controller);
-        if ($controller instanceof RenderableInterface) {
-            echo $controller->render();
-        } else {
-            $this->response->send();
-        }
-    }
-
-    public function response(): Response
-    {
-        return $this->response;
-    }
-
-    protected function processResolveCallable(string $pathInfo): void
-    {
-        // try {
-        $this->route = $this->router->resolve($pathInfo);
-        $this->callable = $this->route->getCallable($this->request->getMethod());
-        $routerArgs = $this->router->arguments;
-        // dd($routerArgs);
-        if (isset($routerArgs)) {
-            $this->setArguments($routerArgs);
-        }
-        // } catch (Throwable $e) {
-        //     echo 'Exception at App: '.$e->getCode();
-
-        //     return;
-        // }
-    }
-
-    private static function setStaticInstance(App $app)
-    {
-        static::$instance = $app;
     }
 
     public static function setDefaultRuntime(Runtime $runtime): void
@@ -409,5 +306,101 @@ class App implements AppInterface
     public function route(): Route
     {
         return $this->route;
+    }
+
+    public function response(): Response
+    {
+        return $this->response;
+    }
+
+    // private function processConfigFiles(array $configFiles = null): void
+    // {
+    //     if (!isset($configFiles)) {
+    //         return;
+    //     }
+    //     if (isset($this->runtime)) {
+    //         $this->runtime->runConfig(
+    //             (new Config())
+    //                 ->processFromFiles($configFiles)
+    //         );
+    //     }
+    // }
+
+    private function setRequest(Request $request): self
+    {
+        $this->request = $request;
+
+        $pathinfo = ltrim($this->request->getPathInfo(), '/');
+        $this->request->attributes->set('requestArray', explode('/', $pathinfo));
+
+        return $this;
+    }
+
+    private function processApi(string $pathIdentifier = null): void
+    {
+        if (!isset($pathIdentifier)) {
+            return;
+        }
+        $api = new ApiMaker($this->router);
+        if (!$this->isCached) {
+            $api->register($pathIdentifier);
+        }
+        $this->api = $api;
+        new Api($api);
+    }
+
+    private function processParamRoutes(array $paramRoutes = null): void
+    {
+        if (!isset($paramRoutes)) {
+            return;
+        }
+        // ['handle' => [Routes,]]
+        foreach ($paramRoutes as $fileHandleString) {
+            $fileHandle = Path::handle($fileHandleString);
+            foreach ((new RouteArrayFileWrap($fileHandle))->getArrayFile()->toArray() as $k => $route) {
+                $this->router->addRoute($route, $fileHandleString);
+            }
+        }
+    }
+
+    private function processSapi(): void
+    {
+        if (Console::bind($this)) {
+            Console::run(); // Note: Console::run() always exit.
+        } else {
+            $this->setRequest(Request::createFromGlobals());
+        }
+    }
+
+    private function processController(string $controller): void
+    {
+        $controller = $this->getControllerObject($controller);
+        if ($controller instanceof RenderableInterface) {
+            echo $controller->render();
+        } else {
+            $this->response->send();
+        }
+    }
+
+    private function processResolveCallable(string $pathInfo): void
+    {
+        // try {
+        $this->route = $this->router->resolve($pathInfo);
+        $this->callable = $this->route->getCallable($this->request->getMethod());
+        $routerArgs = $this->router->arguments;
+        // dd($routerArgs);
+        if (isset($routerArgs)) {
+            $this->setArguments($routerArgs);
+        }
+        // } catch (Throwable $e) {
+        //     echo 'Exception at App: '.$e->getCode();
+
+        //     return;
+        // }
+    }
+
+    private static function setStaticInstance(App $app)
+    {
+        static::$instance = $app;
     }
 }

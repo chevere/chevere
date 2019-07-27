@@ -28,27 +28,10 @@ use Chevere\VarDump\PlainVarDump;
  * Usage:
  * php app/console run <pathHandle>
  */
-class RunCommand extends Command
+final class RunCommand extends Command
 {
     protected static $defaultName = 'run';
 
-    protected function configure()
-    {
-        $this
-            ->setDescription('Run any callable')
-            ->setHelp('This command allows you to run any callable')
-            ->addArgument('callable', Command::ARGUMENT_REQUIRED, 'The callable handle (name, fileHandle)')
-            ->addOption(
-                'argument',
-                'a',
-                Command::OPTION_OPTIONAL | Command::OPTION_IS_ARRAY,
-                'Callable arguments (in declarative order)'
-            );
-    }
-
-    /**
-     * Run ANY callable.
-     */
     public function callback(App $app): int
     {
         $callableInput = (string) $this->cli->input->getArgument('callable');
@@ -77,5 +60,19 @@ class RunCommand extends Command
         }
 
         return 1;
+    }
+
+    protected function configure()
+    {
+        $this
+            ->setDescription('Run any callable')
+            ->setHelp('This command allows you to run any callable')
+            ->addArgument('callable', Command::ARGUMENT_REQUIRED, 'The callable handle (name, fileHandle)')
+            ->addOption(
+                'argument',
+                'a',
+                Command::OPTION_OPTIONAL | Command::OPTION_IS_ARRAY,
+                'Callable arguments (in declarative order)'
+            );
     }
 }

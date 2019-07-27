@@ -23,7 +23,6 @@ use ReflectionFunction;
 use const Chevere\App\PATH;
 use Chevere\App\App;
 use Chevere\Console\Command;
-use Chevere\VarDump\VarDump;
 use Chevere\Load;
 use Chevere\Message;
 use Chevere\Path;
@@ -36,7 +35,7 @@ use Chevere\Utility\Str;
  * Usage:
  * php app/console inspect "callable"
  */
-class InspectCommand extends Command
+final class InspectCommand extends Command
 {
     protected static $defaultName = 'inspect';
 
@@ -57,14 +56,6 @@ class InspectCommand extends Command
 
     /** @var string */
     protected $callableFilepath;
-
-    protected function configure()
-    {
-        $this
-            ->setDescription('Inspect any callable')
-            ->setHelp('This command allows you to inspect any callable')
-            ->addArgument('callable', Command::ARGUMENT_REQUIRED, 'The callable handle (name, fileHandle)');
-    }
 
     public function callback(App $app): int
     {
@@ -102,6 +93,14 @@ class InspectCommand extends Command
         $this->handleProcessArguments();
 
         return 1;
+    }
+
+    protected function configure()
+    {
+        $this
+            ->setDescription('Inspect any callable')
+            ->setHelp('This command allows you to inspect any callable')
+            ->addArgument('callable', Command::ARGUMENT_REQUIRED, 'The callable handle (name, fileHandle)');
     }
 
     protected function handleSetMethod(): void

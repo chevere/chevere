@@ -19,16 +19,13 @@ use Chevere\Message;
 /**
  * Api provides a static method to read the exposed API.
  */
-class Api
+final class Api
 {
     /** @var string Prefix used for endpoints without a defined resource (/endpoint) */
     const METHOD_ROOT_PREFIX = '_';
 
     /** @var array */
     private static $api;
-
-    /** @var array */
-    private static $apis;
 
     public function __construct(Maker $api)
     {

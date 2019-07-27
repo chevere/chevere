@@ -17,7 +17,7 @@ use const Chevere\CLI;
 use Chevere\Console\Console;
 use Chevere\Controller\Controller;
 
-class HeadController extends Controller
+final class HeadController extends Controller
 {
     const OPTIONS = [
         'description' => 'GETT without message-body.',

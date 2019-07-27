@@ -23,7 +23,7 @@ use InvalidArgumentException;
 /**
  * Exposes API endpoint options.
  */
-class OptionsController extends Controller
+final class OptionsController extends Controller
 {
     protected static $description = 'Retrieve endpoint OPTIONS.';
 
@@ -49,7 +49,7 @@ class OptionsController extends Controller
         $this->process();
     }
 
-    protected function handleError()
+    private function handleError()
     {
         $this->response->setStatusCode(400);
         $msg = 'Must provide a %s argument when running this callable without route context.';

@@ -27,7 +27,7 @@ interface ControllerInterface
      *
      * @return mixed output array or whatever the controller may output
      */
-    public function invoke(string $controller, ...$parameters);
+    // public function invoke(string $controller, ...$parameters);
 
     /**
      * Provides access to the Controller $description static.

@@ -23,7 +23,7 @@ use InvalidArgumentException;
 /**
  * Identical to GET, but without any message-boby in the response.
  */
-class HeadController extends Controller
+final class HeadController extends Controller
 {
     protected static $description = 'GET without message-body.';
 

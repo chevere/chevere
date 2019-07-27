@@ -26,7 +26,7 @@ use Chevere\JsonApi\Data;
 /**
  * Exposes an API endpoint.
  */
-class GetController extends Controller
+final class GetController extends Controller
 {
     protected static $description = 'Retrieve endpoint.';
 

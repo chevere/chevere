@@ -22,7 +22,7 @@ use Chevere\Interfaces\ControllerInterface;
 /**
  * ArgumentsWrap provides a object oriented way to retrieve typehinted arguments for the controller.
  */
-class ArgumentsWrap
+final class ArgumentsWrap
 {
     /** @var array Typehinted arguments ready to use */
     private $typedArguments;
@@ -51,7 +51,7 @@ class ArgumentsWrap
         return $this->arguments;
     }
 
-    protected function processArguments()
+    private function processArguments()
     {
         $this->reflection = new ReflectionMethod($this->controller, '__invoke');
         $this->typedArguments = [];
@@ -73,7 +73,7 @@ class ArgumentsWrap
         $this->arguments = $this->typedArguments;
     }
 
-    protected function processTypedArgument(ReflectionParameter $parameter, string $type = null, $value = null): void
+    private function processTypedArgument(ReflectionParameter $parameter, string $type = null, $value = null): void
     {
         if (!isset($type) || in_array($type, Controller::TYPE_DECLARATIONS)) {
             $this->typedArguments[] = $value ?? ($parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);

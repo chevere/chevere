@@ -19,7 +19,7 @@ use Chevere\Controllers\Api\HeadController;
 /**
  * Creates endpoints from ControlerInspect object.
  */
-class Endpoint
+final class Endpoint
 {
     /** @var array */
     private $array;
@@ -50,7 +50,7 @@ class Endpoint
         $this->array['resource'] = $resource;
     }
 
-    protected function fillEndpointOptions(array &$httpMethods, array &$endpointApi)
+    private function fillEndpointOptions(array &$httpMethods, array &$endpointApi)
     {
         foreach ($httpMethods as $httpMethod => $controllerClassName) {
             $httpMethodOptions = [];
@@ -63,7 +63,7 @@ class Endpoint
         }
     }
 
-    protected function autofillMissingOptionsHead(array &$httpMethods, array &$endpointApi)
+    private function autofillMissingOptionsHead(array &$httpMethods, array &$endpointApi)
     {
         foreach ([
             'OPTIONS' => [

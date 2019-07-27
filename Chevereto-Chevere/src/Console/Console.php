@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Console;
 
 use RuntimeException;
-use Monolog\Logger;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Chevere\App\App;
@@ -22,7 +21,7 @@ use Chevere\App\App;
 /**
  * Provides static access to the Chevere application console.
  */
-class Console
+final class Console
 {
     const VERBOSITY_QUIET = ConsoleOutput::VERBOSITY_QUIET;
     const VERBOSITY_NORMAL = ConsoleOutput::VERBOSITY_NORMAL;
@@ -35,13 +34,13 @@ class Console
     const OUTPUT_PLAIN = ConsoleOutput::OUTPUT_PLAIN;
 
     /** @var App */
-    protected static $app;
+    private static $app;
 
     /** @var Cli */
-    protected static $cli;
+    private static $cli;
 
     /** @var bool */
-    protected static $available;
+    private static $available;
 
     public static function bind(App $app): bool
     {
@@ -107,7 +106,7 @@ class Console
         if (!static::isRunning()) {
             return;
         }
-        static::io()->write($messages, false, $options);
+        static::$cli->out->write($messages, false, $options);
     }
 
     /**
@@ -121,7 +120,7 @@ class Console
         if (!static::isRunning()) {
             return;
         }
-        static::io()->writeln($messages, $options);
+        static::$cli->out->writeln($messages, $options);
     }
 
     public static function log($messages)
@@ -129,6 +128,6 @@ class Console
         if (!static::isRunning()) {
             return;
         }
-        static::io()->writeln($messages);
+        static::$cli->out->writeln($messages);
     }
 }

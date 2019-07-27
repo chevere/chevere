@@ -18,22 +18,22 @@ use RecursiveFilterIterator;
 /**
  * Provides filtering for the Api register process (directory scan).
  */
-class FilterIterator extends RecursiveFilterIterator
+final class FilterIterator extends RecursiveFilterIterator
 {
-    /** @var array The accepted files array [GET.php, _GET.php, POST.php, ...] */
-    private $acceptedFilenames;
+    /** @var array Accepted files array [GET.php, _GET.php, POST.php, ...] */
+    private $acceptFilenames;
 
     /**
-     * @param array  $acceptedMethods Accepted HTTP methods [GET,POST,etc.]
-     * @param string $methodPrefix    Method prefix used for root endpoint (no resource)
+     * @param array  $methods      Accepted HTTP methods [GET,POST,etc.]
+     * @param string $methodPrefix Method prefix used for root endpoint (no resource)
      *
      * @return self
      */
-    public function generateAcceptedFilenames(array $acceptedMethods, string $methodPrefix): self
+    public function generateAcceptedFilenames(array $methods, string $methodPrefix): self
     {
-        foreach ($acceptedMethods as $v) {
-            $this->acceptedFilenames[] = $v.'.php';
-            $this->acceptedFilenames[] = $methodPrefix.$v.'.php';
+        foreach ($methods as $v) {
+            $this->acceptFilenames[] = $v.'.php';
+            $this->acceptFilenames[] = $methodPrefix.$v.'.php';
         }
 
         return $this;
@@ -45,7 +45,7 @@ class FilterIterator extends RecursiveFilterIterator
     public function getChildren()
     {
         $children = parent::getChildren();
-        $children->acceptedFilenames = $this->acceptedFilenames;
+        $children->acceptFilenames = $this->acceptFilenames;
 
         return $children;
     }
@@ -55,6 +55,6 @@ class FilterIterator extends RecursiveFilterIterator
      */
     public function accept(): bool
     {
-        return $this->hasChildren() || in_array($this->current()->getFilename(), $this->acceptedFilenames);
+        return $this->hasChildren() || in_array($this->current()->getFilename(), $this->acceptFilenames);
     }
 }

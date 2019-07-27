@@ -32,7 +32,7 @@ use Chevere\Controllers\Api\HeadController;
 use Chevere\Controllers\Api\OptionsController;
 use Chevere\Controllers\Api\GetController;
 
-class Maker
+final class Maker
 {
     /** @var array HTTP methods accepted by this filter [HTTP_METHOD,] */
     const ACCEPT_METHODS = Route::HTTP_METHODS;
@@ -80,6 +80,11 @@ class Maker
         $this->router = $router;
     }
 
+    public function api(): array
+    {
+        return $this->api;
+    }
+
     /**
      * Automatically finds controllers in the given path and generate the API route binding.
      *
@@ -103,9 +108,9 @@ class Maker
             ->generateAcceptedFilenames(static::ACCEPT_METHODS, Api::METHOD_ROOT_PREFIX);
 
         $this->recursiveIterator = new RecursiveIteratorIterator($filter);
+
         $this->handleEmptyRecursiveIterator();
         $this->processRecursiveIteration();
-
         $this->processRoutesMap();
 
         $this->uri = '/'.$this->basePath;
@@ -125,7 +130,7 @@ class Maker
         $this->apis[$this->basePath] = true;
     }
 
-    protected function handleEmptyRecursiveIterator(): void
+    private function handleEmptyRecursiveIterator(): void
     {
         if (iterator_count($this->recursiveIterator) == 0) {
             throw new LogicException(
@@ -136,7 +141,7 @@ class Maker
         }
     }
 
-    protected function handleDuplicates(): void
+    private function handleDuplicates(): void
     {
         if (isset($this->apis[$this->pathIdentifier])) {
             throw new LogicException(
@@ -147,7 +152,7 @@ class Maker
         }
     }
 
-    protected function handleMissingDirectory(): void
+    private function handleMissingDirectory(): void
     {
         if (!File::exists($this->directory)) {
             throw new LogicException(
@@ -158,7 +163,7 @@ class Maker
         }
     }
 
-    protected function processRecursiveIteration(): void
+    private function processRecursiveIteration(): void
     {
         foreach ($this->recursiveIterator as $filename) {
             $filepathAbsolute = Str::forwardSlashes((string) $filename);
@@ -181,7 +186,7 @@ class Maker
         ksort($this->routesMap);
     }
 
-    protected function processRoutesMap(): void
+    private function processRoutesMap(): void
     {
         foreach ($this->routesMap as $pathComponent => $httpMethods) {
             $endpoint = new Endpoint($httpMethods);
@@ -209,17 +214,12 @@ class Maker
      *
      * @return string the class name detected according autoloading standard (PSR-4)
      */
-    protected function getClassNameFromFilepath(string $filepath): string
+    private function getClassNameFromFilepath(string $filepath): string
     {
         $filepathRelative = Path::relative($filepath);
         $filepathNoExt = Str::replaceLast('.php', null, $filepathRelative);
         $filepathReplaceNS = Str::replaceFirst(AppPath.'src/', APP_NS_HANDLE, $filepathNoExt);
 
         return str_replace('/', '\\', $filepathReplaceNS);
-    }
-
-    public function api(): array
-    {
-        return $this->api;
     }
 }
