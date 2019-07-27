@@ -25,18 +25,20 @@ use Chevere\JsonApi\Data;
  * Forked version of Symfony\Component\HttpFoundation\JsonResponse (Igor Wiedler <igor@wiedler.ch>)
  * (c) Fabien Potencier <fabien@symfony.com>
  */
-class Response extends HttpResponse
+final class Response extends HttpResponse
 {
-    public $val;
-
     // https://jsonapi.org/format/1.0/
     const JSON_API_VERSION = '1.0';
 
-    /** @var bool */
-    protected $hasBody = false;
+    // Encode <, >, ', &, and " characters in the JSON, making it also safe to be embedded into HTML.
+    // 15 === JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT
+    const DEFAULT_ENCODING_OPTIONS = 15;
 
-    protected $jsonString;
-    protected $callback;
+    /** @var bool */
+    private $hasBody = false;
+
+    private $jsonString;
+    private $callback;
 
     /**
      * A document MUST contain at least one of the following top-level members:
@@ -44,11 +46,13 @@ class Response extends HttpResponse
      * ^ The members data and errors MUST NOT coexist in the same document.
      */
     // the document’s “primary data”
-    protected $data;
+    private $data;
+
     // an array of error objects
-    protected $errors;
+    private $errors;
+
     // a meta object that contains non-standard meta-information.
-    protected $meta;
+    private $meta;
 
     /**
      * A document MAY contain any of these top-level members:
@@ -56,17 +60,15 @@ class Response extends HttpResponse
      * ^ If a document does not contain a top-level data key, the included member MUST NOT be present either.
      */
     // an object describing the server’s implementation.
-    protected $jsonapi = ['version' => self::JSON_API_VERSION];
+    private $jsonapi = ['version' => self::JSON_API_VERSION];
+
     // a links object related to the primary data.
-    protected $links;
+    private $links;
+
     // an array of resource objects that are related to the primary data and/or each other (“included resources”).
-    protected $included;
+    private $included;
 
-    // Encode <, >, ', &, and " characters in the JSON, making it also safe to be embedded into HTML.
-    // 15 === JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT
-    const DEFAULT_ENCODING_OPTIONS = 15;
-
-    protected $encodingOptions = self::DEFAULT_ENCODING_OPTIONS;
+    private $encodingOptions = self::DEFAULT_ENCODING_OPTIONS;
 
     /**
      * @param mixed $data    The response data
@@ -87,9 +89,9 @@ class Response extends HttpResponse
         return !empty($this->data);
     }
 
-    public function getData(): ?array
+    public function getData(): array
     {
-        return $this->data ?? null;
+        return $this->data;
     }
 
     public function unsetContent(): self
@@ -183,50 +185,6 @@ class Response extends HttpResponse
     }
 
     /**
-     * Sets the data to be sent as JSON.
-     *
-     * @param mixed $data
-     *
-     * @return $this
-     *
-     * @throws InvalidArgumentException
-     */
-    protected function setJsonString(): self
-    {
-        $output = [
-            'jsonapi' => $this->jsonapi,
-            'meta' => $this->getMeta(),
-            'data' => $this->getData(),
-        ];
-        // JSON_PRETTY_PRINT
-        $encodingOptions = $this->encodingOptions;
-        if (CLI) {
-            $encodingOptions = $encodingOptions | JSON_PRETTY_PRINT;
-        }
-
-        $this->jsonString = $this->getJsonEncodedOutput($output, $encodingOptions);
-
-        return $this;
-    }
-
-    protected function getJsonEncodedOutput(array $data, int $encodingOptions): string
-    {
-        try {
-            $json = json_encode($data, $encodingOptions);
-            if (JSON_ERROR_NONE !== json_last_error()) {
-                throw new InvalidArgumentException(json_last_error_msg());
-            }
-
-            return $json;
-        } catch (Exception $e) {
-            if ('Exception' === get_class($e) && 0 === strpos($e->getMessage(), 'Failed calling ')) {
-                throw $e->getPrevious() ?: $e;
-            }
-            throw $e;
-        }
-    }
-
-    /**
      * Returns options used while encoding data to JSON.
      *
      * @return int
@@ -246,23 +204,6 @@ class Response extends HttpResponse
     public function setEncodingOptions(int $encodingOptions): self
     {
         $this->encodingOptions = $encodingOptions;
-
-        return $this;
-    }
-
-    protected function setJsonHeaders(): self
-    {
-        if (null !== $this->callback) {
-            // Not using application/javascript for compatibility reasons with older browsers.
-            $this->headers->set('Content-Type', 'text/javascript');
-
-            return $this;
-        }
-        // Only set the header when there is none or when it equals 'text/javascript' (from a previous update with callback)
-        // in order to not overwrite a custom definition.
-        if (!$this->headers->has('Content-Type') || 'text/javascript' === $this->headers->get('Content-Type')) {
-            $this->headers->set('Content-Type', 'application/vnd.api+json');
-        }
 
         return $this;
     }
@@ -299,5 +240,66 @@ class Response extends HttpResponse
     public function getStatusString(): string
     {
         return sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText);
+    }
+
+    /**
+     * Sets the data to be sent as JSON.
+     *
+     * @param mixed $data
+     *
+     * @return $this
+     *
+     * @throws InvalidArgumentException
+     */
+    private function setJsonString(): self
+    {
+        $output = [
+            'jsonapi' => $this->jsonapi,
+            'meta' => $this->getMeta(),
+            'data' => $this->getData(),
+        ];
+        // JSON_PRETTY_PRINT
+        $encodingOptions = $this->encodingOptions;
+        if (CLI) {
+            $encodingOptions = $encodingOptions | JSON_PRETTY_PRINT;
+        }
+
+        $this->jsonString = $this->getJsonEncodedOutput($output, $encodingOptions);
+
+        return $this;
+    }
+
+    private function getJsonEncodedOutput(array $data, int $encodingOptions): string
+    {
+        try {
+            $json = json_encode($data, $encodingOptions);
+            if (JSON_ERROR_NONE !== json_last_error()) {
+                throw new InvalidArgumentException(json_last_error_msg());
+            }
+
+            return $json;
+        } catch (Exception $e) {
+            if ('Exception' === get_class($e) && 0 === strpos($e->getMessage(), 'Failed calling ')) {
+                throw $e->getPrevious() ?: $e;
+            }
+            throw $e;
+        }
+    }
+
+    private function setJsonHeaders(): self
+    {
+        if (null !== $this->callback) {
+            // Not using application/javascript for compatibility reasons with older browsers.
+            $this->headers->set('Content-Type', 'text/javascript');
+
+            return $this;
+        }
+        // Only set the header when there is none or when it equals 'text/javascript' (from a previous update with callback)
+        // in order to not overwrite a custom definition.
+        if (!$this->headers->has('Content-Type') || 'text/javascript' === $this->headers->get('Content-Type')) {
+            $this->headers->set('Content-Type', 'application/vnd.api+json');
+        }
+
+        return $this;
     }
 }

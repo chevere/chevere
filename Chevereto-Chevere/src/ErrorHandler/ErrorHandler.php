@@ -85,48 +85,52 @@ class ErrorHandler implements ErrorHandlerInterface
         E_USER_DEPRECATED => LogLevel::NOTICE,
     ];
 
+    /** @var string Unique id (uniqid) for the handled error */
+    public $id;
+
+    /** @var string */
     public $body;
+
+    /** @var string */
     public $class;
+
+    /** @var string */
     public $datetimeUtc;
+
+    /** @var string */
     public $timestamp;
+
+    /** @var string */
     public $logFilename;
 
-    // public $loadedConfigFilesString;
-
-    /** @var array Arguments passed to the static exception handler */
+    /** @var string */
     public $arguments;
-
-    /** @var string */
-    protected $logDateFolderFormat;
-
-    /** @var string */
-    public $loggerLevel;
-
-    protected $logger;
 
     /** @var Request The detected/forged HTTP request */
     public $request;
 
-    /** @var Runtime */
-    protected $runtimeInstance;
-
-    /** @var DateTime Created in construct (asap) */
-    protected $dateTime;
-
-    /** @var string Unique id (uniqid) for the handled error */
-    public $id;
-
-    /** @var array Contains all the loaded configuration files (App) */
-    protected $loadedConfigFiles;
+    /** @var string */
+    public $loggerLevel;
 
     /** @var string A string representation of $loadedConfigFiles */
     public $loadedConfigFilesString;
 
-    /** @var bool True, debug enabled */
+    /** @var bool */
     public $isDebugEnabled;
 
-    /** @var array */
-    protected $args;
+    /** @var string */
+    private $logDateFolderFormat;
+
+    private $logger;
+
+    /** @var Runtime */
+    private $runtimeInstance;
+
+    /** @var DateTime Created in construct (asap) */
+    private $dateTime;
+
+    /** @var array Contains all the loaded configuration files (App) */
+    private $loadedConfigFiles;
 
     /**
      * @param mixed $args Arguments passed to the error exception (severity, message, file, line; Exception)
@@ -162,49 +166,6 @@ class ErrorHandler implements ErrorHandlerInterface
         $output->out();
     }
 
-    protected function setTimeProperties(string $time): void
-    {
-        $this->dateTime = new DateTime($time, new DateTimeZone('UTC'));
-        $this->datetimeUtc = $this->dateTime->format(DateTime::ATOM);
-        $this->timestamp = strtotime($this->datetimeUtc);
-    }
-
-    protected function setloadedConfigFiles(array $loadedConfigFiles)
-    {
-        $this->loadedConfigFiles = $loadedConfigFiles;
-        $this->loadedConfigFilesString = implode(';', $this->loadedConfigFiles);
-    }
-
-    protected function setLogFilePathProperties(string $basePath)
-    {
-        $path = Path::normalize($basePath);
-        $path = rtrim($path, '/').'/';
-        $date = gmdate($this->logDateFolderFormat, $this->timestamp);
-        $this->logFilename = $path.$this->loggerLevel.'/'.$date.$this->timestamp.'_'.$this->id.'.log';
-    }
-
-    protected function setLogger(string $name)
-    {
-        $lineFormatter = new LineFormatter(null, null, true, true);
-        $streamHandler = (new StreamHandler($this->logFilename))->setFormatter($lineFormatter);
-        $this->logger = new Logger($name);
-        $this->logger->setTimezone(new DateTimeZone('UTC'));
-        $this->logger->pushHandler($streamHandler);
-        $this->logger->pushHandler(new FirePHPHandler());
-    }
-
-    protected function loggerWrite(string $plainContent)
-    {
-        $log = strip_tags($plainContent);
-        $log .= "\n\n".str_repeat('=', Formatter::COLUMNS);
-        $this->logger->log($this->loggerLevel, $log);
-    }
-
-    protected static function exceptionHandler(): void
-    {
-        new static(...func_get_args());
-    }
-
     public static function error($severity, $message, $file, $line): void
     {
         throw new ErrorException($message, 0, $severity, $file, $line);
@@ -235,5 +196,48 @@ class ErrorHandler implements ErrorHandlerInterface
     public static function getLoggerLevel(int $code): ?string
     {
         return static::PHP_LOG_LEVEL[$code] ?? null;
+    }
+
+    private function setTimeProperties(string $time): void
+    {
+        $this->dateTime = new DateTime($time, new DateTimeZone('UTC'));
+        $this->datetimeUtc = $this->dateTime->format(DateTime::ATOM);
+        $this->timestamp = strtotime($this->datetimeUtc);
+    }
+
+    private function setloadedConfigFiles(array $loadedConfigFiles)
+    {
+        $this->loadedConfigFiles = $loadedConfigFiles;
+        $this->loadedConfigFilesString = implode(';', $this->loadedConfigFiles);
+    }
+
+    private function setLogFilePathProperties(string $basePath)
+    {
+        $path = Path::normalize($basePath);
+        $path = rtrim($path, '/').'/';
+        $date = gmdate($this->logDateFolderFormat, $this->timestamp);
+        $this->logFilename = $path.$this->loggerLevel.'/'.$date.$this->timestamp.'_'.$this->id.'.log';
+    }
+
+    private function setLogger(string $name)
+    {
+        $lineFormatter = new LineFormatter(null, null, true, true);
+        $streamHandler = (new StreamHandler($this->logFilename))->setFormatter($lineFormatter);
+        $this->logger = new Logger($name);
+        $this->logger->setTimezone(new DateTimeZone('UTC'));
+        $this->logger->pushHandler($streamHandler);
+        $this->logger->pushHandler(new FirePHPHandler());
+    }
+
+    private function loggerWrite(string $plainContent)
+    {
+        $log = strip_tags($plainContent);
+        $log .= "\n\n".str_repeat('=', Formatter::COLUMNS);
+        $this->logger->log($this->loggerLevel, $log);
+    }
+
+    private static function exceptionHandler(): void
+    {
+        new static(...func_get_args());
     }
 }

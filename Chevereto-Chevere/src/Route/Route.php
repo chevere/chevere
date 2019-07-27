@@ -31,7 +31,7 @@ use Chevere\Interfaces\RouteInterface;
 // IDEA: Enable alt routes [/taken, /also-taken, /availabe]
 // IDEA: L10n support
 
-class Route implements RouteInterface
+final class Route implements RouteInterface
 {
     // use CallableTrait;
 
@@ -75,7 +75,7 @@ class Route implements RouteInterface
     public $wildcards;
 
     /** @var string Key set representation */
-    private $set;
+    public $set;
 
     /** @var array An array containing all the key sets for the route (optionals combo) */
     public $powerSet;
@@ -302,7 +302,7 @@ class Route implements RouteInterface
         return new static(...func_get_args());
     }
 
-    protected function getMakerData(): array
+    private function getMakerData(): array
     {
         $maker = debug_backtrace(0, 3)[2];
         $maker['file'] = Path::relative($maker['file']);
@@ -310,7 +310,7 @@ class Route implements RouteInterface
         return $maker;
     }
 
-    protected function handleType()
+    private function handleType()
     {
         if (!isset($this->set)) {
             $this->type = Route::TYPE_STATIC;

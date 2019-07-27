@@ -22,7 +22,7 @@ use Chevere\Utility\Str;
 /**
  * Handles the error exception throwable.
  */
-class ExceptionHandler
+final class ExceptionHandler
 {
     /** @var Throwable */
     public $exception;
@@ -64,14 +64,16 @@ class ExceptionHandler
         }
         if ($exception instanceof ErrorException) {
             /* @scrutinizer ignore-call */
-            $this->code = $exception->getSeverity();
-            $this->errorType = $this->code;
+            $phpCode = $exception->getSeverity();
+            $this->code = $phpCode;
+            $this->errorType = $phpCode;
         } else {
+            $phpCode = E_ERROR;
             $this->code = $exception->getCode();
-            $this->errorType = E_ERROR;
+            $this->errorType = $phpCode;
         }
-        $this->type = ErrorHandler::getErrorByCode($this->errorType);
-        $this->loggerLevel = ErrorHandler::getLoggerLevel($this->errorType) ?? 'error';
+        $this->type = ErrorHandler::getErrorByCode($phpCode);
+        $this->loggerLevel = ErrorHandler::getLoggerLevel($phpCode) ?? 'error';
         $this->message = $exception->getMessage();
         $this->file = Path::normalize($exception->getFile());
         $this->line = (int) $exception->getLine();

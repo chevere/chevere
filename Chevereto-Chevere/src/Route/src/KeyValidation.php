@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use Chevere\Message;
 use Chevere\Utility\Str;
 
-class KeyValidation
+final class KeyValidation
 {
     /** @var string */
     public $key;
@@ -33,7 +33,7 @@ class KeyValidation
         $this->handleWildcards();
     }
 
-    protected function handleValidateFormat()
+    private function handleValidateFormat()
     {
         if (!$this->validateFormat($this->key)) {
             throw new InvalidArgumentException(
@@ -44,7 +44,7 @@ class KeyValidation
         }
     }
 
-    protected function handleWildcards()
+    private function handleWildcards()
     {
         if ($this->hasHandlebars && !$this->validateWildcard($this->key)) {
             throw new InvalidArgumentException(
@@ -55,7 +55,7 @@ class KeyValidation
         }
     }
 
-    protected function validateFormat(string $key): bool
+    private function validateFormat(string $key): bool
     {
         if ('/' == $key) {
             return true;
@@ -65,7 +65,7 @@ class KeyValidation
             && $this->validateFormatSlashes($key);
     }
 
-    protected function validateFormatSlashes(string $key): bool
+    private function validateFormatSlashes(string $key): bool
     {
         return !Str::endsWith('/', $key)
             && !Str::contains('//', $key)
@@ -73,12 +73,12 @@ class KeyValidation
             && !Str::contains('\\', $key);
     }
 
-    protected function validateWildcard(string $key): bool
+    private function validateWildcard(string $key): bool
     {
         return preg_match_all('/{([0-9]+)}/', $key) === 0;
     }
 
-    protected function hasHandlebars(string $key): bool
+    private function hasHandlebars(string $key): bool
     {
         return Str::contains('{', $key) || Str::contains('}', $key);
     }

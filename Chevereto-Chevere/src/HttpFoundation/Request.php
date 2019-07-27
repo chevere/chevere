@@ -19,9 +19,9 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\ServerBag;
 
-class Request extends HttpRequest
+final class Request extends HttpRequest
 {
-    // Left side: Our standard, right side Request function name
+    // Left side: Chevere, right side Request function name
     const MAP = [
         'isSecure' => 'isSecure',
         'isMethodIdempotent' => 'isMethodIdempotent',
@@ -67,40 +67,26 @@ class Request extends HttpRequest
         'acceptableContentTypes' => 'getAcceptableContentTypes',
     ];
 
-    public function getRequest(): ParameterBag
-    {
-        return $this->request;
-    }
+    /** @var ParameterBag */
+    public $request;
 
-    public function getQuery(): ParameterBag
-    {
-        return $this->query;
-    }
+    /** @var ParameterBag */
+    public $query;
 
-    public function getCookies(): ParameterBag
-    {
-        return $this->cookies;
-    }
+    /** @var ParameterBag */
+    public $cookies;
 
-    public function getAttributes(): ParameterBag
-    {
-        return $this->attributes;
-    }
+    /** @var ParameterBag */
+    public $attributes;
 
-    public function getFiles(): FileBag
-    {
-        return $this->files;
-    }
+    /** @var FileBag */
+    public $files;
 
-    public function getServer(): ServerBag
-    {
-        return $this->server;
-    }
+    /** @var ServerBag */
+    public $server;
 
-    public function getHeaders(): HeaderBag
-    {
-        return $this->headers;
-    }
+    /** @var HeaderBag */
+    public $headers;
 
     public function readInfo(): array
     {

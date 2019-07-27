@@ -23,7 +23,7 @@ use Chevere\Route\Route;
 /**
  * Interacts with routes that use wildcards.
  */
-class Wildcards
+final class Wildcards
 {
     /** @var string Key set representation */
     public $set;
@@ -38,16 +38,16 @@ class Wildcards
     public $powerSet;
 
     /** @var string */
-    protected $uri;
+    private $uri;
 
     /** @var array An array containing the optional wildcards */
-    protected $optionals;
+    private $optionals;
 
     /** @var array An array indexing the optional wildcards */
-    protected $optionalsIndex;
+    private $optionalsIndex;
 
     /** @var array An array indexing the mandatory wildcards */
-    protected $mandatoryIndex;
+    private $mandatoryIndex;
 
     public function __construct(string $uri)
     {
@@ -65,7 +65,7 @@ class Wildcards
         $this->handleOptionals();
     }
 
-    protected function handleMatches()
+    private function handleMatches()
     {
         foreach ($this->matches[0] as $k => $v) {
             // Change {wildcard} to {n} (n is the wildcard index)
@@ -92,7 +92,7 @@ class Wildcards
         }
     }
 
-    protected function handleOptionals()
+    private function handleOptionals()
     {
         if (!empty($this->optionals)) {
             $mandatoryDiff = array_diff($this->wildcards ?? [], $this->optionalsIndex);
@@ -104,7 +104,7 @@ class Wildcards
         }
     }
 
-    protected function getIndex(array $diff): array
+    private function getIndex(array $diff): array
     {
         $index = [];
         foreach ($diff as $k => $v) {
@@ -114,7 +114,7 @@ class Wildcards
         return $index;
     }
 
-    protected function processPowerSet(array $powerSet): array
+    private function processPowerSet(array $powerSet): array
     {
         $routeSet = [];
         foreach ($powerSet as $set) {

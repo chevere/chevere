@@ -19,19 +19,16 @@ use Chevere\Validate;
 use Chevere\Utility\Str;
 use Chevere\Route\Route;
 
-class WildcardValidation
+final class WildcardValidation
 {
     /** @var string */
-    protected $wildcardName;
+    private $wildcardName;
 
     /** @var string */
-    protected $wildcardString;
+    private $wildcardString;
 
     /** @var string */
-    protected $regex;
-
-    /** @var string */
-    protected $routeKey;
+    private $regex;
 
     /** @var string */
     public $uri;
@@ -52,7 +49,7 @@ class WildcardValidation
         $this->handleValidateRegex();
     }
 
-    protected function handleValidateFormat()
+    private function handleValidateFormat()
     {
         if (!$this->validateFormat($this->wildcardName)) {
             throw new InvalidArgumentException(
@@ -63,12 +60,12 @@ class WildcardValidation
         }
     }
 
-    protected function validateFormat(string $wildcardName): bool
+    private function validateFormat(string $wildcardName): bool
     {
         return !Str::startsWithNumeric($wildcardName) && preg_match('/^[a-z0-9_]+$/i', $wildcardName);
     }
 
-    protected function handleValidateMatch()
+    private function handleValidateMatch()
     {
         if (!$this->validateMatch($this->wildcardName, $this->uri)) {
             throw new LogicException(
@@ -80,12 +77,12 @@ class WildcardValidation
         }
     }
 
-    protected function validateMatch(string $wildcardName, string $routeKey): bool
+    private function validateMatch(string $wildcardName, string $routeKey): bool
     {
         return Str::contains("{{$wildcardName}}", $routeKey) || Str::contains('{'."$wildcardName?".'}', $routeKey);
     }
 
-    protected function handleValidateUnique()
+    private function handleValidateUnique()
     {
         if (!$this->validateUnique($this->wildcardName, $this->routeWheres)) {
             throw new LogicException(
@@ -96,12 +93,12 @@ class WildcardValidation
         }
     }
 
-    protected function validateUnique(string $wildcardName, ?array $haystack): bool
+    private function validateUnique(string $wildcardName, ?array $haystack): bool
     {
         return !isset($haystack[$wildcardName]);
     }
 
-    protected function handleValidateRegex()
+    private function handleValidateRegex()
     {
         if (!Validate::regex('/'.$this->wildcardName.'/')) {
             throw new InvalidArgumentException(

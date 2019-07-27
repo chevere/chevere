@@ -19,16 +19,13 @@ use Chevere\ArrayFile;
 /**
  * Provides a way to interact with Route array files.
  */
-class ArrayFileWrap
+final class ArrayFileWrap
 {
     /** @var string */
-    protected $fileHandle;
-
-    /** @var array */
-    // protected $array;
+    private $fileHandle;
 
     /** @var ArrayFile */
-    protected $arrayFile;
+    private $arrayFile;
 
     public function __construct(PathHandle $pathHandle)
     {
@@ -53,7 +50,7 @@ class ArrayFileWrap
         return $this->arrayFile;
     }
 
-    protected function setArrayFile(ArrayFile $arrayFile)
+    private function setArrayFile(ArrayFile $arrayFile)
     {
         foreach ($arrayFile->toArray() as $k => $route) {
             $route->setId((string) $k);
