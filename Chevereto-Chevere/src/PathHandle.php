@@ -15,22 +15,22 @@ namespace Chevere;
 
 use InvalidArgumentException;
 
-class PathHandle
+final class PathHandle
 {
     /** @var string */
-    public $identifier;
+    private $identifier;
 
     /** @var string|null */
-    public $context;
+    private $context;
 
     /** @var string */
-    protected $path;
+    private $path;
 
     /** @var string|null */
-    protected $filename;
+    private $filename;
 
     /** @var array */
-    protected $explode;
+    private $explode;
 
     /**
      * @param string $identifier Path identifier (<dirname>:<file>)
@@ -53,51 +53,9 @@ class PathHandle
         return $this;
     }
 
-    protected function validateStringIdentifier()
+    public function getPath(): string
     {
-        if (!($this->identifier != '' && !ctype_space($this->identifier))) {
-            throw new InvalidArgumentException(
-                (new Message('String %a needed, %v provided.'))
-                    ->code('%a', '$identifier')
-                    ->code('%v', 'empty or null string')
-                    ->toString()
-            );
-        }
-    }
-
-    protected function validateCharIdentifier()
-    {
-        if (Utility\Str::contains(':', $this->identifier)) {
-            if (Utility\Str::endsWith(':', $this->identifier)) {
-                throw new InvalidArgumentException(
-                    (new Message('Wrong string %a format, %v provided (trailing colon).'))
-                        ->code('%a', '$identifier')
-                        ->code('%v', $this->identifier)
-                        ->toString()
-                );
-            }
-            $this->filename = $this->filenameFromIdentifier();
-            if (Utility\Str::contains('/', $this->filename)) {
-                throw new InvalidArgumentException(
-                    (new Message('Wrong string %a format, %v provided (path separators in filename).'))
-                        ->code('%a', '$identifier')
-                        ->code('%v', $this->identifier)
-                        ->toString()
-                );
-            }
-        }
-    }
-
-    protected function validateContext()
-    {
-        if (!Path::isAbsolute($this->context)) {
-            throw new InvalidArgumentException(
-                (new Message('String %a must be an absolute path, %v provided.'))
-                    ->code('%a', '$context')
-                    ->code('%v', $this->context)
-                    ->toString()
-            );
-        }
+        return $this->path;
     }
 
     public function process()
@@ -126,7 +84,54 @@ class PathHandle
         return end($this->explode);
     }
 
-    protected function processIdentifier(): string
+    private function validateStringIdentifier()
+    {
+        if (!($this->identifier != '' && !ctype_space($this->identifier))) {
+            throw new InvalidArgumentException(
+                (new Message('String %a needed, %v provided.'))
+                    ->code('%a', '$identifier')
+                    ->code('%v', 'empty or null string')
+                    ->toString()
+            );
+        }
+    }
+
+    private function validateCharIdentifier()
+    {
+        if (Utility\Str::contains(':', $this->identifier)) {
+            if (Utility\Str::endsWith(':', $this->identifier)) {
+                throw new InvalidArgumentException(
+                    (new Message('Wrong string %a format, %v provided (trailing colon).'))
+                        ->code('%a', '$identifier')
+                        ->code('%v', $this->identifier)
+                        ->toString()
+                );
+            }
+            $this->filename = $this->filenameFromIdentifier();
+            if (Utility\Str::contains('/', $this->filename)) {
+                throw new InvalidArgumentException(
+                    (new Message('Wrong string %a format, %v provided (path separators in filename).'))
+                        ->code('%a', '$identifier')
+                        ->code('%v', $this->identifier)
+                        ->toString()
+                );
+            }
+        }
+    }
+
+    private function validateContext()
+    {
+        if (!Path::isAbsolute($this->context)) {
+            throw new InvalidArgumentException(
+                (new Message('String %a must be an absolute path, %v provided.'))
+                    ->code('%a', '$context')
+                    ->code('%v', $this->context)
+                    ->toString()
+            );
+        }
+    }
+
+    private function processIdentifier(): string
     {
         if (pathinfo($this->filename, PATHINFO_EXTENSION) == null) {
             $this->filename .= '.php';
@@ -141,7 +146,7 @@ class PathHandle
         return $path;
     }
 
-    protected function processPath(): string
+    private function processPath(): string
     {
         // If $this->path does't contains ":", we assume that it is a directory or a explicit filepath
         $extension = pathinfo($this->path, PATHINFO_EXTENSION);
@@ -150,11 +155,6 @@ class PathHandle
             return Path::tailDir($this->path);
         }
 
-        return $this->path;
-    }
-
-    public function getPath(): string
-    {
         return $this->path;
     }
 }

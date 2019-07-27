@@ -33,7 +33,7 @@ class Resolver
         $this->routeSome = $routeSome;
     }
 
-    public function get(): ?Route
+    public function get(): Route
     {
         if ($this->routeSome instanceof Route) {
             return $this->routeSome;

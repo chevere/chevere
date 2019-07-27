@@ -16,7 +16,7 @@ namespace Chevere;
 use ReflectionClass;
 use InvalidArgumentException;
 
-class Core
+final class Core
 {
     /**
      * Returns a string preceded by core namespace.
@@ -27,7 +27,7 @@ class Core
      */
     public static function namespaced(string $string): string
     {
-        return CORE_NS_HANDLE . $string;
+        return CORE_NS_HANDLE.$string;
     }
 
     /**

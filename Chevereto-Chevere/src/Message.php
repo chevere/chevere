@@ -27,16 +27,13 @@ namespace Chevere;
  * @method string code(string $search, string $replace)
  * @method string b(string $search, string $replace)
  */
-class Message
+final class Message
 {
     /** @var string */
-    protected $message;
+    private $message;
 
     /** @var array Translation table [search => replace] */
-    protected $trTable = [];
-
-    /** @var string */
-    protected $output;
+    private $trTable = [];
 
     /**
      * Creates a new Message instance.

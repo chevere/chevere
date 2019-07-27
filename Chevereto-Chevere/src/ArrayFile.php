@@ -18,7 +18,7 @@ use LogicException;
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).
  */
-class ArrayFile
+final class ArrayFile
 {
     /** @const array Type validators, taken from https://www.php.net/manual/en/ref.var.php */
     const TYPE_VALIDATORS = [
@@ -44,22 +44,22 @@ class ArrayFile
     // NOTE: Why these?
 
     /** @var array */
-    protected $array;
+    private $array;
 
     /** @var string */
-    protected $filepath;
+    private $filepath;
 
     /** @var string A type, classname or interface */
-    protected $typeSome;
+    private $typeSome;
 
     /** @var string */
-    protected $type;
+    private $type;
 
     /** @var string */
-    protected $className;
+    private $className;
 
     /** @var string */
-    protected $interfaceName;
+    private $interfaceName;
 
     /**
      * @param string $fileHandle Path handle or absolute filepath
@@ -92,14 +92,29 @@ class ArrayFile
         $this->array = $fileArray;
     }
 
-    protected function handleFileArray($fileArray)
+    public function getFilepath(): string
+    {
+        return $this->filepath;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type ?? null;
+    }
+
+    public function toArray(): array
+    {
+        return $this->array ?? [];
+    }
+
+    private function handleFileArray($fileArray)
     {
         if (!is_array($fileArray)) {
             throw new LogicException('Expecting file %filepath% return type array, %arrayFileType% provided.');
         }
     }
 
-    protected function handleTypeSome($typeSome)
+    private function handleTypeSome($typeSome)
     {
         if (isset(static::TYPE_VALIDATORS[$typeSome])) {
             $this->type = $typeSome;
@@ -111,7 +126,7 @@ class ArrayFile
         }
     }
 
-    protected function handleClassAndInterfaceName(string $typeSome)
+    private function handleClassAndInterfaceName(string $typeSome)
     {
         if (class_exists($typeSome)) {
             $this->className = $typeSome;
@@ -120,7 +135,7 @@ class ArrayFile
         }
     }
 
-    protected function handleNullType($type)
+    private function handleNullType($type)
     {
         if (null == $type) {
             throw new LogicException('Argument #2 must be a valid data type, class name or interface name. %typeSome% provided.');
@@ -130,7 +145,7 @@ class ArrayFile
     /**
      * Validates array content type.
      */
-    protected function validate(array $array): self
+    private function validate(array $array): self
     {
         $validator = static::TYPE_VALIDATORS[$this->type];
         foreach ($array as $k => $v) {
@@ -147,7 +162,7 @@ class ArrayFile
         return $this;
     }
 
-    protected function getValidateObject(object $object): bool
+    private function getValidateObject(object $object): bool
     {
         if (isset($this->className)) {
             return get_class($object) == $this->className;
@@ -158,11 +173,11 @@ class ArrayFile
         return false;
     }
 
-    protected function handleInvalidation($k, $v)
+    private function handleInvalidation($k, $v)
     {
         $type = gettype($v);
         if ($type == 'object') {
-            $type .= ' ' . get_class($v);
+            $type .= ' '.get_class($v);
         }
         throw new LogicException(
             (new Message('Expecting array containing only %members% members, %type% found at %filepath% (key %key%).'))
@@ -170,20 +185,5 @@ class ArrayFile
                 ->code('%key%', $k)
                 ->toString()
         );
-    }
-
-    public function getFilepath(): string
-    {
-        return $this->filepath;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type ?? null;
-    }
-
-    public function toArray(): array
-    {
-        return $this->array ?? [];
     }
 }

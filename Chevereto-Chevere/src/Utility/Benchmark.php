@@ -37,28 +37,28 @@ use Chevere\Traits\PrintableTrait;
 class Benchmark
 {
     use PrintableTrait;
+
     /** @var int Determines the number of colums used for output. */
     const COLUMNS = 50;
-    protected $columns;
 
-    protected $callables;
-    protected $arguments;
-    protected $index;
-    protected $unnammedCnt;
-    protected $totalCnt;
-    protected $time;
-    protected $printable;
+    private $columns;
+    private $callables;
+    private $arguments;
+    private $index;
+    private $unnammedCnt;
+    private $totalCnt;
+    private $time;
+    private $printable;
+    private $maxExecutionTime;
+    private $constructTime;
+    private $requestTime;
+    private $lineSeparator;
+    private $timeTakenReadable;
+    private $times;
+    private $timeLimit = null;
 
-    protected $maxExecutionTime;
-    protected $constructTime;
-    protected $requestTime;
-
-    public $lineSeparator;
-    public $timeTakenReadable;
-    public $times;
-    public $timeLimit = null;
     /** @var array */
-    public $results;
+    private $results;
 
     /** @var array */
     private $res;
@@ -121,7 +121,7 @@ class Benchmark
             if (null == $this->unnammedCnt) {
                 $this->unnammedCnt = '1';
             }
-            $name = 'Unnammed#' . $this->unnammedCnt;
+            $name = 'Unnammed#'.$this->unnammedCnt;
             ++$this->unnammedCnt;
         }
         if (null != $this->callables && array_key_exists($name, $this->callables)) {
@@ -150,129 +150,27 @@ class Benchmark
         $this->startTimestamp = microtime(true);
         $this->handleCallables();
         $this->processCallablesStats();
-        $title = __CLASS__ . ' results';
+        $title = __CLASS__.' results';
         $border = 1;
         $lineChar = '-';
         $this->lineSeparator = str_repeat($lineChar, $this->columns);
         $pad = (int) round(($this->columns - (strlen($title) + $border)) / 2, 0);
-        $head = '|' . str_repeat(' ', $pad) . $title . str_repeat(' ', floor($pad) == $pad ? ($pad - 1) : $pad) . '|';
+        $head = '|'.str_repeat(' ', $pad).$title.str_repeat(' ', floor($pad) == $pad ? ($pad - 1) : $pad).'|';
         $this->res = [
             $this->lineSeparator,
             $head,
             $this->lineSeparator,
-            'Start: ' . DateTime::getUTC(),
-            'Hostname: ' . gethostname(),
-            'PHP version: ' . phpversion(),
-            'Server: ' . php_uname('s') . ' ' . php_uname('r') . ' ' . php_uname('m'),
+            'Start: '.DateTime::getUTC(),
+            'Hostname: '.gethostname(),
+            'PHP version: '.phpversion(),
+            'Server: '.php_uname('s').' '.php_uname('r').' '.php_uname('m'),
             $this->lineSeparator,
         ];
         $this->processResults();
         $this->handleAbortedRes();
-        $this->timeTakenReadable = ' Time taken: ' . round($this->time, 4) . ' s';
-        $this->res[] = str_repeat(' ', (int) max(0, $this->columns - strlen($this->timeTakenReadable))) . $this->timeTakenReadable;
-        $this->printable = '<pre>' . implode("\n", $this->res) . '</pre>';
-    }
-
-    protected function handleCallables(): void
-    {
-        foreach ($this->callables as $k => $v) {
-            if ($this->isAborted) {
-                $this->time = microtime(true) - $this->startTimestamp;
-                break;
-            }
-            $timeInit = microtime(true);
-            $this->runCallable($v);
-            $timeFinish = microtime(true);
-            $timeTaken = floatval($timeFinish - $timeInit);
-            $this->index[$k] = $timeTaken;
-            $this->results[$k] = [
-                'time' => $timeTaken,
-                'runs' => $this->runs,
-            ];
-        }
-    }
-
-    protected function runCallable(callable $callable): void
-    {
-        for ($i = 0; $i < $this->times; ++$i) {
-            $this->isPHPAborted = !$this->canPHPKeepGoing();
-            $this->isSelfAborted = !$this->canSelfKeepGoing();
-            if ($this->isPHPAborted || $this->isSelfAborted) {
-                $this->isAborted = true;
-                break;
-            }
-            $callable(...($this->arguments ?: []));
-            ++$this->runs;
-        }
-        ++$i;
-        if ($i == $this->totalCnt) {
-            $this->time = microtime(true) - $this->startTimestamp;
-        }
-    }
-
-    protected function processCallablesStats(): void
-    {
-        asort($this->index);
-        if (count($this->index) > 1) {
-            foreach ($this->index as $k => $v) {
-                $timeTaken = $this->results[$k]['time'];
-                if (!isset($fastestTime)) {
-                    $fastestTime = $timeTaken;
-                } else {
-                    $this->results[$k]['adds'] = round(100 * (($timeTaken - $fastestTime) / $fastestTime)) . '%';
-                }
-            }
-        }
-    }
-
-    protected function processResults(): void
-    {
-        $i = 1;
-        foreach ($this->results as $k => $v) {
-            $res = $k;
-            if (1 == $i) {
-                if (count($this->index) > 1) {
-                    $res .= ' (fastest)';
-                }
-                ++$i;
-            } else {
-                $res .= ' (' . $v['adds'] . ' slower)';
-            }
-            $this->res[] = $res;
-            $resRuns = Number::abbreviate($v['runs']) . ' runs';
-            $resRuns .= ' in ' . round($v['time'], 4) . ' s';
-            if ($v['runs'] != $this->times) {
-                $resRuns .= ' ~ missed ' . ($this->times - $v['runs']) . ' runs';
-            }
-            $this->res[] = $resRuns;
-            $this->res[] = $this->lineSeparator;
-        }
-    }
-
-    protected function handleAbortedRes(): void
-    {
-        if ($this->isAborted) {
-            $this->res[] = 'Note: Process aborted (' . ($this->isPHPAborted ? 'PHP' : 'self') . ' time limit)';
-            $this->res[] = $this->lineSeparator;
-        }
-    }
-
-    protected function canSelfKeepGoing(): bool
-    {
-        if (null != $this->timeLimit && microtime(true) - $this->constructTime > $this->timeLimit) {
-            return false;
-        }
-
-        return true;
-    }
-
-    protected function canPHPKeepGoing(): bool
-    {
-        if (0 != $this->maxExecutionTime && microtime(true) - $this->requestTime > $this->maxExecutionTime) {
-            return false;
-        }
-
-        return true;
+        $this->timeTakenReadable = ' Time taken: '.round($this->time, 4).' s';
+        $this->res[] = str_repeat(' ', (int) max(0, $this->columns - strlen($this->timeTakenReadable))).$this->timeTakenReadable;
+        $this->printable = '<pre>'.implode("\n", $this->res).'</pre>';
     }
 
     /**
@@ -293,5 +191,107 @@ class Benchmark
         } while (($tf - $ti) < $time);
 
         return $cost;
+    }
+
+    private function handleCallables(): void
+    {
+        foreach ($this->callables as $k => $v) {
+            if ($this->isAborted) {
+                $this->time = microtime(true) - $this->startTimestamp;
+                break;
+            }
+            $timeInit = microtime(true);
+            $this->runCallable($v);
+            $timeFinish = microtime(true);
+            $timeTaken = floatval($timeFinish - $timeInit);
+            $this->index[$k] = $timeTaken;
+            $this->results[$k] = [
+                'time' => $timeTaken,
+                'runs' => $this->runs,
+            ];
+        }
+    }
+
+    private function runCallable(callable $callable): void
+    {
+        for ($i = 0; $i < $this->times; ++$i) {
+            $this->isPHPAborted = !$this->canPHPKeepGoing();
+            $this->isSelfAborted = !$this->canSelfKeepGoing();
+            if ($this->isPHPAborted || $this->isSelfAborted) {
+                $this->isAborted = true;
+                break;
+            }
+            $callable(...($this->arguments ?: []));
+            ++$this->runs;
+        }
+        ++$i;
+        if ($i == $this->totalCnt) {
+            $this->time = microtime(true) - $this->startTimestamp;
+        }
+    }
+
+    private function processCallablesStats(): void
+    {
+        asort($this->index);
+        if (count($this->index) > 1) {
+            foreach ($this->index as $k => $v) {
+                $timeTaken = $this->results[$k]['time'];
+                if (!isset($fastestTime)) {
+                    $fastestTime = $timeTaken;
+                } else {
+                    $this->results[$k]['adds'] = round(100 * (($timeTaken - $fastestTime) / $fastestTime)).'%';
+                }
+            }
+        }
+    }
+
+    private function processResults(): void
+    {
+        $i = 1;
+        foreach ($this->results as $k => $v) {
+            $res = $k;
+            if (1 == $i) {
+                if (count($this->index) > 1) {
+                    $res .= ' (fastest)';
+                }
+                ++$i;
+            } else {
+                $res .= ' ('.$v['adds'].' slower)';
+            }
+            $this->res[] = $res;
+            $resRuns = Number::abbreviate($v['runs']).' runs';
+            $resRuns .= ' in '.round($v['time'], 4).' s';
+            if ($v['runs'] != $this->times) {
+                $resRuns .= ' ~ missed '.($this->times - $v['runs']).' runs';
+            }
+            $this->res[] = $resRuns;
+            $this->res[] = $this->lineSeparator;
+        }
+    }
+
+    private function handleAbortedRes(): void
+    {
+        if ($this->isAborted) {
+            $this->res[] = 'Note: Process aborted ('.($this->isPHPAborted ? 'PHP' : 'self').' time limit)';
+            $this->res[] = $this->lineSeparator;
+        }
+    }
+
+    private function canSelfKeepGoing(): bool
+    {
+        if (null != $this->timeLimit && microtime(true) - $this->constructTime > $this->timeLimit) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function canPHPKeepGoing(): bool
+    {
+        if (0 != $this->maxExecutionTime && microtime(true) - $this->requestTime > $this->maxExecutionTime) {
+            return false;
+        }
+
+        return true;
     }
 }

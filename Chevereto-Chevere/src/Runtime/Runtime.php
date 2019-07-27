@@ -20,10 +20,10 @@ use Chevere\Data;
 /**
  * Runtime applies runtime config and provide data about the App Runtime.
  */
-class Runtime extends Data
+final class Runtime extends Data
 {
     /** @var Config */
-    protected $config;
+    private $config;
 
     public function __construct(Config $config = null)
     {

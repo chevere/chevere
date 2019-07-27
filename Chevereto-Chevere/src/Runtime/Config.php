@@ -24,7 +24,7 @@ use Chevere\Validate;
 /**
  * Runtime configurator.
  */
-class Config extends Data
+final class Config extends Data
 {
     // Config keys
     const DEBUG = 'debug';
@@ -36,12 +36,12 @@ class Config extends Data
     const URI_SCHEME = 'uriScheme';
     const TIMEZONE = 'timeZone';
 
-    protected $data = [];
+    private $data = [];
 
     /** @var array Loaded configuration filepaths. */
-    protected $loadedFilepaths = [];
+    private $loadedFilepaths = [];
 
-    protected $asserts = [
+    private $asserts = [
         self::DEBUG => [0, 1],
         // locale
         // charset
@@ -69,24 +69,6 @@ class Config extends Data
     public function addArray(array $array): self
     {
         return $this->dataAdder($array);
-    }
-
-    protected function dataAdder(array $data): self
-    {
-        foreach (array_keys($data) as $key) {
-            $fnName = 'set'.ucwords($key);
-            if (!method_exists(Runtime::class, $fnName)) {
-                throw new LogicException(
-                    (new Message('Unrecognized %c key "%s".'))
-                        ->code('%c', __CLASS__)
-                        ->strtr('%s', $key)
-                        ->toString()
-                );
-            }
-            $this->data[$key] = $data[$key];
-        }
-
-        return $this;
     }
 
     public function process(): self
@@ -160,10 +142,25 @@ class Config extends Data
         return $this->loadedFilepaths;
     }
 
-    /**
-     * Validate config values.
-     */
-    protected function validate()
+    private function dataAdder(array $data): self
+    {
+        foreach (array_keys($data) as $key) {
+            $fnName = 'set'.ucwords($key);
+            if (!method_exists(Runtime::class, $fnName)) {
+                throw new LogicException(
+                    (new Message('Unrecognized %c key "%s".'))
+                        ->code('%c', __CLASS__)
+                        ->strtr('%s', $key)
+                        ->toString()
+                );
+            }
+            $this->data[$key] = $data[$key];
+        }
+
+        return $this;
+    }
+
+    private function validate()
     {
         $exceptions = [];
         foreach ($this->data as $k => $v) {
@@ -186,7 +183,7 @@ class Config extends Data
      * @param string $key   key to validate
      * @param mixed  $value value to validate
      */
-    protected function validator(string $key, $value)
+    private function validator(string $key, $value)
     {
         if (!array_key_exists($key, $this->asserts)) {
             return;

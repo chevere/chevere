@@ -45,10 +45,10 @@ class Router
     public $arguments;
 
     /** @var array [basename => [route id,]]. */
-    protected $baseIndex;
+    private $baseIndex;
 
     /** @var array [regex => Route id]. */
-    protected $regexIndex;
+    private $regexIndex;
 
     public function addRoute(Route $route, string $basename)
     {
@@ -82,44 +82,6 @@ class Router
         $this->routeKeys[$uri] = $pointer;
     }
 
-    protected function handleRouteKey(string $key)
-    {
-        $keyedRoute = $this->routeKeys[$key] ?? null;
-        if (isset($keyedRoute)) {
-            throw new LogicException(
-                (new Message('Route key %s has been already declared by %r.'))
-                    ->code('%s', $key)
-                    ->code('%r', $keyedRoute[0].'@'.$keyedRoute[1])
-                    ->toString()
-            );
-        }
-    }
-
-    protected function handleRouteName(?string $name, array $pointer)
-    {
-        if (isset($name)) {
-            $namedRoute = $this->namedRoutes[$name] ?? null;
-            if (isset($namedRoute)) {
-                throw new LogicException(
-                    (new Message('Route name %s has been already taken by %r.'))
-                        ->code('%s', $name)
-                        ->code('%r', $namedRoute[0].'@'.$namedRoute[1])
-                        ->toString()
-                );
-            }
-            $this->namedRoutes[$name] = $pointer;
-        }
-    }
-
-    /**
-     * Group a Route into the routing table, sets regexIndex and statics.
-     *
-     * @param Route $route route object
-     */
-    protected function routing(Route $route): void
-    {
-    }
-
     public function getRegex(): string
     {
         $regex = [];
@@ -138,7 +100,6 @@ class Router
      */
     public function resolve(string $pathInfo): Route
     {
-        $requestTrim = ltrim($pathInfo, '/');
         if (preg_match($this->regex, $pathInfo, $matches)) {
             $id = $matches['MARK'];
             unset($matches['MARK']);
@@ -165,5 +126,34 @@ class Router
         throw new LogicException(
             (new Message('NO ROUTING!!!!! %s'))->code('%s', 'BURN!!!')->toString()
         );
+    }
+
+    private function handleRouteKey(string $key)
+    {
+        $keyedRoute = $this->routeKeys[$key] ?? null;
+        if (isset($keyedRoute)) {
+            throw new LogicException(
+                (new Message('Route key %s has been already declared by %r.'))
+                    ->code('%s', $key)
+                    ->code('%r', $keyedRoute[0].'@'.$keyedRoute[1])
+                    ->toString()
+            );
+        }
+    }
+
+    private function handleRouteName(?string $name, array $pointer)
+    {
+        if (isset($name)) {
+            $namedRoute = $this->namedRoutes[$name] ?? null;
+            if (isset($namedRoute)) {
+                throw new LogicException(
+                    (new Message('Route name %s has been already taken by %r.'))
+                        ->code('%s', $name)
+                        ->code('%r', $namedRoute[0].'@'.$namedRoute[1])
+                        ->toString()
+                );
+            }
+            $this->namedRoutes[$name] = $pointer;
+        }
     }
 }

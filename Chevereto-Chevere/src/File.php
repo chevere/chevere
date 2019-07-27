@@ -130,7 +130,7 @@ class File
         }
         $mime = static::mimetype($filename);
         $basename = basename($filename); // file.ext
-        $name = Utility\Str::replaceLast('.' . File::extension($filename), null, $basename); // file
+        $name = Utility\Str::replaceLast('.'.File::extension($filename), null, $basename); // file
         $info = [
             'basename' => $basename,
             'name' => $name,
@@ -165,6 +165,6 @@ class File
             $dirname = null;
         }
 
-        return $dirname . ':' . $pathinfo['filename'];
+        return $dirname.':'.$pathinfo['filename'];
     }
 }

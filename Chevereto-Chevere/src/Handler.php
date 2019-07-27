@@ -22,11 +22,11 @@ use Chevere\Interfaces\HandlerInterface;
 /**
  * Handles middleware.
  */
-class Handler implements HandlerInterface
+final class Handler implements HandlerInterface
 {
     // use Traits\CallableTrait;
 
-    protected $queue;
+    private $queue;
 
     /**
      * Creates the Handler queue.

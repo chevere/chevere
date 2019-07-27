@@ -29,7 +29,7 @@ use ReflectionFunctionAbstract;
  * - A class implementing ::__invoke
  * - A fileHandle string representing the path of a file wich returns a callable
  */
-class CallableWrap
+final class CallableWrap
 {
     const TYPE_FUNCTION = 'function';
     const TYPE_METHOD = 'method';
@@ -110,7 +110,30 @@ class CallableWrap
         }
     }
 
-    protected function handleCallableClass(string $callableClass): void
+    /**
+     * Pass arguments to the callable which will be typehinted by this class.
+     *
+     * @param array $passedArguments
+     *
+     * @return self
+     */
+    public function setPassedArguments(array $passedArguments): self
+    {
+        $this->passedArguments = $passedArguments;
+
+        return $this;
+    }
+
+    public function getArguments(): array
+    {
+        if (!isset($this->arguments)) {
+            $this->processArguments();
+        }
+
+        return $this->arguments ?? [];
+    }
+
+    private function handleCallableClass(string $callableClass): void
     {
         if (method_exists($callableClass, '__invoke')) {
             $this->callable = new $callableClass();
@@ -128,7 +151,7 @@ class CallableWrap
         }
     }
 
-    protected function handleCallableClassMethod(string $class, string $method): void
+    private function handleCallableClassMethod(string $class, string $method): void
     {
         if (!class_exists($class)) {
             throw new LogicException(
@@ -153,7 +176,7 @@ class CallableWrap
         }
     }
 
-    protected function handleCallableFile(string $callableHandle): void
+    private function handleCallableFile(string $callableHandle): void
     {
         $callableFilepath = Path::fromHandle($callableHandle);
         if (!File::exists($callableFilepath)) {
@@ -178,7 +201,7 @@ class CallableWrap
         $this->callableFilepath = $callableFilepath;
     }
 
-    protected function validateType(string $type)
+    private function validateType(string $type)
     {
         if (!in_array($type, static::TYPES)) {
             throw new LogicException(
@@ -191,7 +214,7 @@ class CallableWrap
     }
 
     // Process the callable and fill the object properties
-    protected function process()
+    private function process()
     {
         if (isset($this->class)) {
             $this->type = isset($this->method) ? static::TYPE_CLASS : static::TYPE_FUNCTION;
@@ -209,30 +232,7 @@ class CallableWrap
         $this->validateType($this->type);
     }
 
-    /**
-     * Pass arguments to the callable which will be typehinted by this class.
-     *
-     * @param array $passedArguments
-     *
-     * @return self
-     */
-    public function setPassedArguments(array $passedArguments): self
-    {
-        $this->passedArguments = $passedArguments;
-
-        return $this;
-    }
-
-    public function getArguments(): array
-    {
-        if (!isset($this->arguments)) {
-            $this->processArguments();
-        }
-
-        return $this->arguments ?? [];
-    }
-
-    protected function processReflection(): self
+    private function processReflection(): self
     {
         if ($this->reflectionFunction) {
             return $this;
@@ -247,7 +247,7 @@ class CallableWrap
         return $this;
     }
 
-    protected function processParameters(): self
+    private function processParameters(): self
     {
         $this->processReflection();
         $this->parameters = $this->reflection->getParameters();
@@ -255,7 +255,7 @@ class CallableWrap
         return $this;
     }
 
-    protected function processArguments(): self
+    private function processArguments(): self
     {
         $this->processReflection();
         $this->typedArguments = [];
@@ -281,7 +281,7 @@ class CallableWrap
         return $this;
     }
 
-    protected function processTypedArgument(ReflectionParameter $parameter, string $type = null, $value = null): void
+    private function processTypedArgument(ReflectionParameter $parameter, string $type = null, $value = null): void
     {
         if (!isset($type) || in_array($type, Controller::TYPE_DECLARATIONS)) {
             $this->typedArguments[] = $value ?? ($parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);

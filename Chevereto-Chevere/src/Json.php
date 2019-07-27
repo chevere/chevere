@@ -15,7 +15,7 @@ namespace Chevere;
 
 use Chevere\Traits\PrintableTrait;
 
-class Json extends Data implements Interfaces\PrintableInterface
+final class Json extends Data implements Interfaces\PrintableInterface
 {
     use PrintableTrait;
 
@@ -27,10 +27,13 @@ class Json extends Data implements Interfaces\PrintableInterface
     const RESPONSE = 'response';
     const CONTENT_TYPE = ['Content-type' => 'application/json; charset=UTF-8'];
 
-    protected $response;
-    protected $callback;
-    protected $status;
-    protected $printable;
+    private $response;
+
+    private $callback;
+
+    private $status;
+
+    private $printable;
 
     public $content;
     /**
