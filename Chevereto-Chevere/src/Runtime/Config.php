@@ -36,7 +36,7 @@ final class Config extends Data
     const URI_SCHEME = 'uriScheme';
     const TIMEZONE = 'timeZone';
 
-    private $data = [];
+    protected $data = [];
 
     /** @var array Loaded configuration filepaths. */
     private $loadedFilepaths = [];
