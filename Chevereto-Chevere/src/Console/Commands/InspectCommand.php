@@ -21,7 +21,7 @@ use Reflector;
 use ReflectionMethod;
 use ReflectionFunction;
 use const Chevere\App\PATH;
-use Chevere\App\App;
+use Chevere\Chevere;
 use Chevere\Console\Command;
 use Chevere\Load;
 use Chevere\Message;
@@ -57,7 +57,7 @@ final class InspectCommand extends Command
     /** @var string */
     protected $callableFilepath;
 
-    public function callback(App $app): int
+    public function callback(Chevere $chevere): int
     {
         $this->callableInput = (string) $this->cli->input->getArgument('callable');
         $isCallable = is_callable($this->callableInput);

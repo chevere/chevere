@@ -16,6 +16,4 @@ namespace Chevere\Interfaces;
 interface AppInterface
 {
     public function setArguments(array $arguments): AppInterface;
-
-    public function setControllerArguments(array $arguments);
 }

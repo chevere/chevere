@@ -14,35 +14,27 @@ declare(strict_types=1);
 namespace Chevere\App;
 
 use LogicException;
-use RuntimeException;
 use const Chevere\ROOT_PATH;
 use const Chevere\App\PATH as AppPath;
 use Monolog\Logger;
 use Chevere\Runtime\Runtime;
 use Chevere\Router\Router;
-use Chevere\HttpFoundation\Request;
 use Chevere\HttpFoundation\Response;
-use Chevere\Api\Api;
-use Chevere\Api\Maker as ApiMaker;
 use Chevere\App\src\Checkout;
 use Chevere\ArrayFile;
 use Chevere\File;
 use Chevere\Path;
 use Chevere\Interfaces\ControllerInterface;
-use Chevere\Load;
 use Chevere\Route\Route;
-use Chevere\Route\ArrayFileWrap as RouteArrayFileWrap;
-use Chevere\Console\Console;
 use Chevere\Controller\ArgumentsWrap as ControllerArgumentsWrap;
 use Chevere\Message;
-use Chevere\Interfaces\AppInterface;
-use Chevere\Interfaces\RenderableInterface;
+use Chevere\Chevere;
 use Chevere\Traits\StaticTrait;
 
 /**
  * App contains the whole thing.
  */
-final class App implements AppInterface
+final class App
 {
     use StaticTrait;
 
@@ -71,14 +63,8 @@ final class App implements AppInterface
     /** @var Router */
     private $router;
 
-    /** @var Request */
-    private $request;
-
     /** @var Response */
     private $response;
-
-    /** @var ApiMaker */
-    private $api;
 
     /** @var Route */
     private $route;
@@ -98,8 +84,8 @@ final class App implements AppInterface
     /** @var Runtime */
     private static $defaultRuntime;
 
-    /** @var bool True if run() has been called */
-    private $ran;
+    /** @var Chevere */
+    private $chevere;
 
     /*
     * (A) Router cache : The array which is used to resolve /req -> route (routing)
@@ -121,63 +107,24 @@ final class App implements AppInterface
     * - App autoinjects a "Router", which could be Router::fromCache(...) or new Router() and provides access to Routes (cached or new)
     * - RouteCollection contains the array of mapped routes (objects or serialized arrays (cached))
     */
-    public function __construct(Parameters $parameters = null)
+    public function __construct(Chevere $chevere)
     {
-        self::setStaticInstance($this);
-        $this->router = new Router();
-        $this->isCached = false;
-        if (self::hasStaticProp('defaultRuntime')) {
-            $this->runtime = self::getDefaultRuntime();
-        }
+        $this->response = new Response();
         if (false === stream_resolve_include_path(self::BUILD_FILEPATH)) {
             new Checkout(self::BUILD_FILEPATH);
         }
-        Load::php(self::FILEHANDLE_HACKS);
-        if (!isset($parameters)) {
-            $pathHandle = Path::handle(self::FILEHANDLE_PARAMETERS);
-            $arrayFile = new ArrayFile($pathHandle);
-            $parameters = new Parameters($arrayFile);
-        }
-        // $this->processConfigFiles($parameters->getDataKey(Parameters::CONFIG_FILES));
-        $this->processApi($parameters->getDataKey(Parameters::API));
-        $this->processParamRoutes($parameters->getDatakey(Parameters::ROUTES));
-        $this->response = new Response();
-        $this->processSapi();
+
+        // Load::php(self::FILEHANDLE_HACKS);
+        $pathHandle = Path::handle(self::FILEHANDLE_PARAMETERS);
+        $arrayFile = new ArrayFile($pathHandle);
+        $parameters = new Parameters($arrayFile);
+
+        $chevere->applyParameters($parameters);
     }
 
     public function getBuildTime(): ?string
     {
         return File::exists(self::BUILD_FILEPATH) ? (string) file_get_contents(self::BUILD_FILEPATH) : null;
-    }
-
-    public function setCallable(string $callable): self
-    {
-        $this->callable = $callable;
-
-        return $this;
-    }
-
-    /**
-     * Run the callable and dispatch the handler.
-     *
-     * @param string $callable controller, needed when doing console command or testing
-     */
-    public function run()
-    {
-        if (isset($this->ran)) {
-            throw new LogicException(
-                (new Message('The method %s has been already called. The App can only run once.'))
-                    ->code('%s', __METHOD__)
-                    ->toString()
-            );
-        }
-        $this->ran = true;
-        if (!isset($this->callable)) {
-            $this->processResolveCallable($this->request->getPathInfo());
-        }
-        if (isset($this->callable)) {
-            $this->processController($this->callable);
-        }
     }
 
     /**
@@ -218,101 +165,10 @@ final class App implements AppInterface
         return $controller;
     }
 
-    /**
-     * Farewell kids, my planet needs me.
-     */
-    public function terminate(string $message = null)
-    {
-        if ($message) {
-            Console::log($message);
-        }
-        // callTermEvent();
-    }
-
-    /**
-     * Forges anRequest, wrapper for Symfony Request::create().
-     *
-     * @param string               $uri        The URI
-     * @param string               $method     The HTTP method
-     * @param array                $parameters The query (GET) or request (POST) parameters
-     * @param array                $cookies    The request cookies ($_COOKIE)
-     * @param array                $files      The request files ($_FILES)
-     * @param array                $server     The server parameters ($_SERVER)
-     * @param string|resource|null $content    The raw body data
-     */
-    public function forgeHttpRequest(...$requestArguments): self
-    {
-        if (isset($this->request)) {
-            throw new LogicException('Unable to forge request when the request has been already set.');
-        }
-        if (!in_array($requestArguments[1], Route::HTTP_METHODS)) {
-            throw new LogicException(
-                (new Message('Unknown HTTP request method %s'))
-                    ->code('%s', $requestArguments[1])
-                    ->toString()
-            );
-        }
-        $this->setRequest(Request::create(...$requestArguments));
-
-        return $this;
-    }
-
     // public function getHash(): string
     // {
     //     return ($this->getConstant('App\VERSION') ?: null).$this->getBuildTime();
     // }
-
-    /**
-     * @param array $arguments string arguments captured or injected
-     */
-    public function setArguments(array $arguments): AppInterface
-    {
-        $this->arguments = $arguments;
-
-        return $this;
-    }
-
-    /**
-     * @param array $arguments Prepared controller arguments
-     */
-    public function setControllerArguments(array $arguments)
-    {
-        $this->controllerArguments = $arguments;
-    }
-
-    public static function setDefaultRuntime(Runtime $runtime): void
-    {
-        self::$defaultRuntime = $runtime;
-    }
-
-    public static function getDefaultRuntime(): Runtime
-    {
-        return self::$defaultRuntime;
-    }
-
-    /**
-     * Provides access to the App Request instance.
-     */
-    public static function requestInstance(): ?Request
-    {
-        // Request isn't there when doing cli (unless you run the request command)
-        if (isset(self::$instance) && isset(self::$instance->request)) {
-            return self::$instance->request;
-        }
-
-        return null;
-    }
-
-    /**
-     * Provides access to the App Runtime instance.
-     */
-    public static function runtimeInstance(): Runtime
-    {
-        if (isset(self::$instance) && $runtimeInstance = self::$instance->runtime) {
-            return $runtimeInstance;
-        }
-        throw new RuntimeException('NO RUNTIME INSTANCE EVERYTHING BURNS!');
-    }
 
     public function route(): Route
     {
@@ -336,82 +192,4 @@ final class App implements AppInterface
     //         );
     //     }
     // }
-
-    private function setRequest(Request $request): self
-    {
-        $this->request = $request;
-
-        $pathinfo = ltrim($this->request->getPathInfo(), '/');
-        $this->request->attributes->set('requestArray', explode('/', $pathinfo));
-
-        return $this;
-    }
-
-    private function processApi(string $pathIdentifier = null): void
-    {
-        if (!isset($pathIdentifier)) {
-            return;
-        }
-        $api = new ApiMaker($this->router);
-        if (!$this->isCached) {
-            $api->register($pathIdentifier);
-        }
-        $this->api = $api;
-        new Api($api);
-    }
-
-    private function processParamRoutes(array $paramRoutes = null): void
-    {
-        if (!isset($paramRoutes)) {
-            return;
-        }
-        // ['handle' => [Routes,]]
-        foreach ($paramRoutes as $fileHandleString) {
-            $fileHandle = Path::handle($fileHandleString);
-            foreach ((new RouteArrayFileWrap($fileHandle))->getArrayFile()->toArray() as $k => $route) {
-                $this->router->addRoute($route, $fileHandleString);
-            }
-        }
-    }
-
-    private function processSapi(): void
-    {
-        if (Console::bind($this)) {
-            Console::run(); // Note: Console::run() always exit.
-        } else {
-            $this->setRequest(Request::createFromGlobals());
-        }
-    }
-
-    private function processController(string $controller): void
-    {
-        $controller = $this->getControllerObject($controller);
-        if ($controller instanceof RenderableInterface) {
-            echo $controller->render();
-        } else {
-            $this->response->send();
-        }
-    }
-
-    private function processResolveCallable(string $pathInfo): void
-    {
-        // try {
-        $this->route = $this->router->resolve($pathInfo);
-        $this->callable = $this->route->getCallable($this->request->getMethod());
-        $routerArgs = $this->router->arguments;
-        // dd($routerArgs);
-        if (isset($routerArgs)) {
-            $this->setArguments($routerArgs);
-        }
-        // } catch (Throwable $e) {
-        //     echo 'Exception at App: '.$e->getCode();
-
-        //     return;
-        // }
-    }
-
-    private static function setStaticInstance(App $app)
-    {
-        self::$instance = $app;
-    }
 }

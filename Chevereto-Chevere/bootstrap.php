@@ -65,7 +65,7 @@ new Runtime(
 
 define('Chevere\CLI', Console::isRunning());
 
-App::setDefaultRuntime(
+Chevere::setDefaultRuntime(
     new Runtime(
         (new Config())
             ->addArray([

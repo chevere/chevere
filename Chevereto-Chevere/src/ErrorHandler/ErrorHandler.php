@@ -18,6 +18,7 @@ use ErrorException;
 use DateTimeZone;
 use const Chevere\ROOT_PATH;
 use const Chevere\App\PATH as AppPath;
+use Chevere\Chevere;
 use Chevere\App\App;
 use Chevere\HttpFoundation\Request;
 use Chevere\Path;
@@ -32,6 +33,7 @@ use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\FirePHPHandler;
+use Throwable;
 
 /**
  * The Chevere ErrorHandler.
@@ -140,11 +142,13 @@ class ErrorHandler implements ErrorHandlerInterface
         $this->setTimeProperties('now');
         $this->id = uniqid('', true);
         // $this->arguments = $args;
-        $request = App::requestInstance();
-        if (isset($request)) {
+        try {
+            $request = Chevere::request();
             $this->request = $request;
+        } catch (Throwable $e) {
+            //shh
         }
-        $this->runtimeInstance = App::runtimeInstance();
+        $this->runtimeInstance = Chevere::runtime();
         $this->isDebugEnabled = (bool) $this->runtimeInstance->getDataKey('debug');
         $this->setloadedConfigFiles($this->runtimeInstance->getRuntimeConfig()->getLoadedFilepaths());
         $this->logDateFolderFormat = static::LOG_DATE_FOLDER_FORMAT;

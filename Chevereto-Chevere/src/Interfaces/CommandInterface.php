@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces;
 
-use Chevere\App\App;
+use Chevere\Chevere;
 
 interface CommandInterface
 {
-    public function callback(App $app);
+    public function callback(Chevere $chevere);
 }

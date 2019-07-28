@@ -16,7 +16,7 @@ declare(strict_types=1);
 
 namespace Chevere\Console\Commands;
 
-use Chevere\App\App;
+use Chevere\Chevere;
 use Chevere\File;
 use Chevere\Path;
 use Chevere\Console\Command;
@@ -32,7 +32,7 @@ final class RunCommand extends Command
 {
     protected static $defaultName = 'run';
 
-    public function callback(App $app): int
+    public function callback(Chevere $chevere): int
     {
         $callableInput = (string) $this->cli->input->getArgument('callable');
 
@@ -54,9 +54,10 @@ final class RunCommand extends Command
             $arguments = $this->cli->input->getOption('argument');
             // argument was declared as array
             if (is_array($arguments)) {
-                $app->setArguments($arguments);
+                $chevere->setArguments($arguments);
             }
-            $app->setCallable($callable)->run();
+            $chevere->setController($callable);
+            $chevere->run();
         }
 
         return 1;

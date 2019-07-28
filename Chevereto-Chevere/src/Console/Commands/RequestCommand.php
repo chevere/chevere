@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Console\Commands;
 
 use ReflectionMethod;
-use Chevere\App\App;
+use Chevere\Chevere;
 use Chevere\HttpFoundation\Request;
 use Chevere\Console\Command;
 
@@ -42,7 +42,7 @@ final class RequestCommand extends Command
             ->addArgument('content', Command::ARGUMENT_OPTIONAL, 'Content', null);
     }
 
-    public function callback(App $app): int
+    public function callback(Chevere $chevere): int
     {
         // Map cli arguments to Request::create
         $arguments = $this->cli->input->getArguments();
@@ -51,7 +51,8 @@ final class RequestCommand extends Command
         foreach ($r->getParameters() as $requestArg) {
             $requestArguments[] = $arguments[$requestArg->getName()] ?? $requestArg->getDefaultValue() ?? null;
         }
-        $app->forgeHttpRequest(...$requestArguments)->run();
+        $chevere->forgeHttpRequest(...$requestArguments);
+        $chevere->run();
 
         return 1;
     }

@@ -26,18 +26,16 @@ final class Runtime extends Data
     /** @var Config */
     private $config;
 
-    public function __construct(Config $config = null)
+    public function __construct(Config $config)
     {
         parent::__construct();
-        if (null != $config) {
-            $this->config = $config;
-            $this->runConfig($config);
-        }
+        $this->config = $config;
+        $this->runConfig($config);
     }
 
-    public function runConfig(Config $config): self
+    private function runConfig(): self
     {
-        foreach ($config->getData() as $k => $v) {
+        foreach ($this->config->getData() as $k => $v) {
             if ($v === $this->getDataKey($k)) {
                 continue;
             }

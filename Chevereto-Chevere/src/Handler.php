@@ -76,9 +76,4 @@ final class Handler implements HandlerInterface
             return $middleware($app, $this);
         }
     }
-
-    public function stop($app)
-    {
-        $app->terminate(__METHOD__.' Terminated the app execution.');
-    }
 }
