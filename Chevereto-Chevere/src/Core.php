@@ -27,7 +27,7 @@ final class Core
      */
     public static function namespaced(string $string): string
     {
-        return CORE_NS_HANDLE.$string;
+        return 'Chevere\\'.$string;
     }
 
     /**

@@ -25,6 +25,7 @@ use Chevere\HttpFoundation\Response;
 use Chevere\Api\Api;
 use Chevere\Api\Maker as ApiMaker;
 use Chevere\App\src\Checkout;
+use Chevere\ArrayFile;
 use Chevere\File;
 use Chevere\Path;
 use Chevere\Interfaces\ControllerInterface;
@@ -86,7 +87,7 @@ final class App implements AppInterface
     // private $cache;
 
     /** @var string */
-    private $db;
+    // private $db;
 
     /** @var string */
     private $callable;
@@ -134,7 +135,8 @@ final class App implements AppInterface
         Load::php(self::FILEHANDLE_HACKS);
         if (!isset($parameters)) {
             $pathHandle = Path::handle(self::FILEHANDLE_PARAMETERS);
-            $parameters = Parameters::createFromFile($pathHandle);
+            $arrayFile = new ArrayFile($pathHandle);
+            $parameters = new Parameters($arrayFile);
         }
         // $this->processConfigFiles($parameters->getDataKey(Parameters::CONFIG_FILES));
         $this->processApi($parameters->getDataKey(Parameters::API));

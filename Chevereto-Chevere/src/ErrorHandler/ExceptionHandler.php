@@ -15,7 +15,6 @@ namespace Chevere\ErrorHandler;
 
 use Throwable;
 use ErrorException;
-use const Chevere\CORE_NS_HANDLE;
 use Chevere\Path;
 use Chevere\Utility\Str;
 
@@ -59,8 +58,8 @@ final class ExceptionHandler
     {
         $this->exception = $exception;
         $this->className = get_class($exception);
-        if (Str::startsWith(CORE_NS_HANDLE, $this->className)) {
-            $this->className = Str::replaceFirst(CORE_NS_HANDLE, null, $this->className);
+        if (Str::startsWith('Chevere\\', $this->className)) {
+            $this->className = Str::replaceFirst('Chevere\\', null, $this->className);
         }
         if ($exception instanceof ErrorException) {
             /* @scrutinizer ignore-call */

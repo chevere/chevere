@@ -16,7 +16,6 @@ namespace Chevere\Controller;
 use LogicException;
 use ReflectionClass;
 use Roave\BetterReflection\BetterReflection;
-use const Chevere\APP_NS_HANDLE;
 use Chevere\Message;
 use Chevere\Api\Api;
 use Chevere\Utility\Str;
@@ -267,7 +266,7 @@ final class Inspect implements ToArrayInterface
     {
         $classShortName = substr($className, strrpos($className, '\\') + 1);
         $classNamespace = Str::replaceLast('\\'.$classShortName, null, $className);
-        $classNamespaceNoApp = Str::replaceFirst(APP_NS_HANDLE, null, $classNamespace);
+        $classNamespaceNoApp = Str::replaceFirst('App\\', null, $classNamespace);
 
         return strtolower(Str::forwardSlashes($classNamespaceNoApp));
     }

@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace Chevere\App;
 
 use LogicException;
-use Chevere\Data;
 use Chevere\ArrayFile;
-use Chevere\PathHandle;
+use Chevere\Data;
 use Chevere\Message;
 
 final class Parameters extends Data
@@ -46,45 +45,30 @@ final class Parameters extends Data
         self::ROUTES => 'array',
     ];
 
+    /** @var ArrayFile */
+    private $arrayFile;
+
     /** @var array The parameters array used to construct the object */
     private $parameters;
 
     /** @var string|null The file source (for instances created using ::createFromFile) */
-    private $sourceFilepath;
-
-    /** @var string Context of the source $parameters */
-    private $context;
+    // private $sourceFilepath;
 
     /**
      * @param array  $parameters The parameters array
      * @param string $context    The context of the source $parameters
      */
-    public function __construct(array $parameters, string $context = 'array')
+    public function __construct(ArrayFile $arrayFile)
     {
-        $this->parameters = $parameters;
-        $this->context = $context;
-        $this->validate($parameters);
-        $this->setData($parameters);
+        $this->arrayFile = $arrayFile;
+        $this->parameters = $this->arrayFile->toArray();
+        $this->validate();
+        $this->setData($this->parameters);
     }
 
-    /**
-     * Creates Parameters instance from file.
-     *
-     * @param string $fileHandle filehandle
-     */
-    public static function createFromFile(PathHandle $pathHandle)
+    private function validate(): void
     {
-        $arrayFile = new ArrayFile($pathHandle);
-
-        return new static($arrayFile->toArray(), $arrayFile->getFilepath());
-    }
-
-    /**
-     * Throws a LogicException if the thing doesn't validate.
-     */
-    private function validate(array $parameters): void
-    {
-        foreach ($parameters as $key => $val) {
+        foreach ($this->parameters as $key => $val) {
             $this->validateKeyExists($key);
             $this->validateKeyType($key, $val);
         }
@@ -117,20 +101,13 @@ final class Parameters extends Data
         $gettype = gettype($val);
         if ($gettype !== $this->keys[$key]) {
             throw new LogicException(
-                (new Message('Expecting type %s, %t provided for key "%k" in %c.'))
+                (new Message('Expecting %s type, %t type provided for key %k in %c.'))
                     ->code('%s', $this->keys[$key])
                     ->code('%t', $gettype)
-                    ->strtr('%k', $key)
-                    ->code('%c', $this->context)
+                    ->code('%k', $key)
+                    ->code('%c', $this->arrayFile->getFilepath())
                     ->toString()
             );
         }
     }
-
-    // private function setSourceFilepath(string $filepath): self
-    // {
-    //     $this->sourceFilepath = $filepath;
-
-    //     return $this;
-    // }
 }

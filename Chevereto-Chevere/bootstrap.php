@@ -21,10 +21,6 @@ use Chevere\Runtime\Config;
 define(__NAMESPACE__.'\TIME_BOOTSTRAP', microtime(true));
 define(__NAMESPACE__.'\ERROR_LEVEL_BOOTSTRAP', error_reporting());
 
-// Namespace handles (adds trailing slashes)
-const CORE_NS_HANDLE = __NAMESPACE__.'\\';
-const APP_NS_HANDLE = 'App\\';
-
 /*
  * Assuming that this file has been loaded from /app/bootstrap.php
  */

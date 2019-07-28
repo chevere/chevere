@@ -68,7 +68,7 @@ final class CallableWrap
     private $method;
 
     /** @var string[] Callable parameters */
-    private $parameters;
+    // private $parameters;
 
     /** @var array Callable arguments */
     private $arguments;
