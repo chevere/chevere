@@ -65,7 +65,7 @@ final class App implements AppInterface
     private $runtime;
 
     /** @var Logger */
-    private $logger;
+    // private $logger;
 
     /** @var Router */
     private $router;
@@ -76,14 +76,14 @@ final class App implements AppInterface
     /** @var Response */
     private $response;
 
-    /** @var Api */
+    /** @var ApiMaker */
     private $api;
 
     /** @var Route */
     private $route;
 
     /** @var string */
-    private $cache;
+    // private $cache;
 
     /** @var string */
     private $db;

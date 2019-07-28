@@ -50,6 +50,9 @@ final class Router
     /** @var array [regex => Route id]. */
     private $regexIndex;
 
+    /** @var array Static routes */
+    private $statics;
+
     public function addRoute(Route $route, string $basename)
     {
         $route->fill();

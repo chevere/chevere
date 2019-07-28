@@ -86,6 +86,9 @@ final class Route implements RouteInterface
     /** @var string */
     public $regex;
 
+    /** @var string */
+    public $type;
+
     /**
      * Route constructor.
      *
@@ -98,15 +101,13 @@ final class Route implements RouteInterface
         // TODO: Try, to catch the message 9hehe
         $keyValidation = new KeyValidation($this->uri);
         $this->maker = $this->getMakerData();
-        // $this->set = $this->uri;
         if ($keyValidation->hasHandlebars) {
             $wildcards = new Wildcards($this->uri);
             $this->set = $wildcards->set;
-            $this->setHandle = $this->set;
             $this->powerSet = $wildcards->powerSet;
             $this->wildcards = $wildcards->wildcards;
         } else {
-            $this->setHandle = $this->uri;
+            $this->set = $this->uri;
         }
         $this->handleType();
         if (isset($callable)) {
@@ -222,6 +223,7 @@ final class Route implements RouteInterface
     public function addMiddleware(string $callable): self
     {
         // $this->middlewares[] = $this->getCallableSome($callable);
+        $this->middlewares[] = $callable;
 
         return $this;
     }

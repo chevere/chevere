@@ -127,10 +127,10 @@ final class Parameters extends Data
         }
     }
 
-    private function setSourceFilepath(string $filepath): self
-    {
-        $this->sourceFilepath = $filepath;
+    // private function setSourceFilepath(string $filepath): self
+    // {
+    //     $this->sourceFilepath = $filepath;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 }

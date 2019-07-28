@@ -168,7 +168,7 @@ class Formatter
             if (isset($request)) {
                 $this->uri = $request->readInfoKey('requestUri') ?? 'unknown';
                 $this->clientUserAgent = $request->getHeaders()->get('User-Agent');
-                $this->httpRequestMethod = $request->readInfoKey('method');
+                $this->requestMethod = $request->readInfoKey('method');
                 $this->serverHost = $request->readInfoKey('host');
                 $this->serverPort = (int) $request->readInfoKey('port');
                 $this->serverProtocol = $request->readInfoKey('protocolVersion');
@@ -220,7 +220,7 @@ class Formatter
             static::SECTION_ID => ['# Incident ID:%id%', 'Logged at %logFilename%'],
             static::SECTION_STACK => ['# Stack trace', '%plainStack%'],
             static::SECTION_CLIENT => ['# Client', '%clientIp% %clientUserAgent%'],
-            static::SECTION_REQUEST => ['# Request', '%serverProtocol% %httpRequestMethod% %uri%'],
+            static::SECTION_REQUEST => ['# Request', '%serverProtocol% %requestMethod% %uri%'],
             static::SECTION_SERVER => ['# Server', '%serverHost% (port:%serverPort%) %serverSoftware%'],
         ];
 

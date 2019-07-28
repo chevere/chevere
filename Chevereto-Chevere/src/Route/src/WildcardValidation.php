@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Route\src;
 
 use LogicException;
+use InvalidArgumentException;
 use Chevere\Message;
 use Chevere\Validate;
 use Chevere\Utility\Str;

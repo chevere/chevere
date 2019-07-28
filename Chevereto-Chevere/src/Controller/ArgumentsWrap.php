@@ -15,7 +15,6 @@ namespace Chevere\Controller;
 
 use ReflectionMethod;
 use ReflectionParameter;
-use ReflectionClass;
 use ReflectionFunctionAbstract;
 use Chevere\Interfaces\ControllerInterface;
 
@@ -36,10 +35,12 @@ final class ArgumentsWrap
     /** @var array Usable arguments (FIXME: Better bame) */
     private $arguments;
 
+    /** @var ControllerInterface */
+    private $controller;
+
     public function __construct(ControllerInterface $controller, array $arguments)
     {
         $this->controller = $controller;
-        $reflection = new ReflectionClass($this->controller);
         $this->passedArguments = $arguments;
         if (isset($arguments)) {
             $this->processArguments();

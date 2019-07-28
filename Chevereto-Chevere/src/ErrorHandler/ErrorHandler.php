@@ -97,7 +97,7 @@ class ErrorHandler implements ErrorHandlerInterface
     /** @var string */
     public $datetimeUtc;
 
-    /** @var string */
+    /** @var int */
     public $timestamp;
 
     /** @var string */

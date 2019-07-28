@@ -247,14 +247,6 @@ final class CallableWrap
         return $this;
     }
 
-    private function processParameters(): self
-    {
-        $this->processReflection();
-        $this->parameters = $this->reflection->getParameters();
-
-        return $this;
-    }
-
     private function processArguments(): self
     {
         $this->processReflection();

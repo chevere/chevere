@@ -16,6 +16,7 @@ namespace Chevere\Runtime;
 use DateTimeZone;
 use RuntimeException;
 use Chevere\Data;
+use Chevere\Message;
 
 /**
  * Runtime applies runtime config and provide data about the App Runtime.

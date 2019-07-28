@@ -29,7 +29,7 @@ use Chevere\Utility\Str;
  * 2. <dirname>: Hookeable path (relative to App\PATH)
  * 3. <file_name>: Hookeable file_name
  *
- * Hooks gets registered on static::$hook following this structure:
+ * Hooks gets registered on self::$hook following this structure:
  *
  * string <file>
  *     <anchor> => array
@@ -66,7 +66,7 @@ final class Hook
 
     public static function getAll()
     {
-        return static::$hooks;
+        return self::$hooks;
     }
 
     /**
@@ -81,7 +81,7 @@ final class Hook
      */
     public static function before(string $id, callable $callable, int $priority = null): void
     {
-        static::bind($id, $callable, $priority, static::BEFORE);
+        self::bind($id, $callable, $priority, self::BEFORE);
     }
 
     /**
@@ -96,7 +96,7 @@ final class Hook
      */
     public static function after(string $id, callable $callable, int $priority = null): void
     {
-        static::bind($id, $callable, $priority, static::AFTER);
+        self::bind($id, $callable, $priority, self::AFTER);
     }
 
     /**
@@ -112,19 +112,19 @@ final class Hook
      */
     private static function bind(string $id, callable $callable, int $priority = null, string $pos): void
     {
-        $parsed = static::parseIdentifier($id);
+        $parsed = self::parseIdentifier($id);
         extract($parsed);
         $hook = [
-            static::CALLABLE => $callable,
-            static::MAKER => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1],
+            self::CALLABLE => $callable,
+            self::MAKER => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1],
         ];
         $priority = $priority ?? self::DEFAULT_PRIORITY;
-        $f = ${static::FILE};
-        $a = ${static::ANCHOR};
-        $priority_exists = isset(static::$hooks[$f][$a][$pos][$priority]);
-        static::$hooks[$f][$a][$pos][$priority][] = $hook;
+        $f = ${self::FILE};
+        $a = ${self::ANCHOR};
+        $priority_exists = isset(self::$hooks[$f][$a][$pos][$priority]);
+        self::$hooks[$f][$a][$pos][$priority][] = $hook;
         if (!$priority_exists) {
-            ksort(static::$hooks[$f][$a][$pos]);
+            ksort(self::$hooks[$f][$a][$pos]);
         }
     }
 
@@ -147,8 +147,8 @@ final class Hook
         }
 
         return [
-            static::ANCHOR => $anchor ?? null,
-            static::FILE => Path::fromHandle($pathIdentifier),
+            self::ANCHOR => $anchor ?? null,
+            self::FILE => Path::fromHandle($pathIdentifier),
         ];
     }
 
@@ -163,25 +163,25 @@ final class Hook
      */
     public static function getAt(string $file, string $anchor, string $pos = null): array
     {
-        if (static::$hooks == null || !isset(static::$hooks[$file])) {
+        if (self::$hooks == null || !isset(self::$hooks[$file])) {
             return [];
         }
         $numArgs = func_num_args();
         switch ($numArgs) {
             case 2:
-                return static::$hooks[$file][$anchor] ?? [];
+                return self::$hooks[$file][$anchor] ?? [];
             case 3:
-                if (!in_array($pos, [static::BEFORE, static::AFTER])) {
+                if (!in_array($pos, [self::BEFORE, self::AFTER])) {
                     throw new InvalidArgumentException(
                         (new Message('Invalid %s argument value, expecting %b, %a.'))
                             ->code('%s', '$pos')
-                            ->code('%b', static::BEFORE)
-                            ->code('%a', static::AFTER)
+                            ->code('%b', self::BEFORE)
+                            ->code('%a', self::AFTER)
                             ->toString()
                     );
                 }
 
-                return static::$hooks[$file][$anchor][$pos] ?? [];
+                return self::$hooks[$file][$anchor][$pos] ?? [];
         }
 
         return [];
@@ -198,10 +198,10 @@ final class Hook
      */
     public static function exec(string $anchor, callable $callable, object $that = null): void
     {
-        $file = static::getCallerFile();
-        $file ? static::execAt($file, $anchor, static::BEFORE, $that) : null;
+        $file = self::getCallerFile();
+        $file ? self::execAt($file, $anchor, self::BEFORE, $that) : null;
         $callable($that);
-        $file ? static::execAt($file, $anchor, static::AFTER, $that) : null;
+        $file ? self::execAt($file, $anchor, self::AFTER, $that) : null;
     }
 
     /**
@@ -215,9 +215,9 @@ final class Hook
      */
     public static function execBefore(string $anchor, callable $callable, object $that = null): void
     {
-        $file = static::getCallerFile();
+        $file = self::getCallerFile();
         if (isset($file)) {
-            static::execAt($file, $anchor, static::BEFORE, $that);
+            self::execAt($file, $anchor, self::BEFORE, $that);
         }
         $callable($that);
     }
@@ -234,9 +234,9 @@ final class Hook
     public static function execAfter(string $anchor, callable $callable, object $that = null): void
     {
         $callable($that);
-        $file = static::getCallerFile();
+        $file = self::getCallerFile();
         if (isset($file)) {
-            static::execAt($file, $anchor, static::AFTER, $that);
+            self::execAt($file, $anchor, self::AFTER, $that);
         }
     }
 
@@ -258,13 +258,13 @@ final class Hook
      */
     public static function execAt(string $file, string $anchor, string $pos, object $that = null): void
     {
-        $hooks = static::getAt($file, $anchor, $pos);
+        $hooks = self::getAt($file, $anchor, $pos);
         if (!isset($hooks)) {
             return;
         }
         foreach ($hooks as $priority => $entries) {
             foreach ($entries as $entry) {
-                $entry[static::CALLABLE]($that);
+                $entry[self::CALLABLE]($that);
             }
         }
     }
@@ -283,7 +283,7 @@ final class Hook
      */
     public static function execBeforeAt(string $file, string $anchor, object $that = null): void
     {
-        static::execAt($file, $anchor, static::BEFORE, $that);
+        self::execAt($file, $anchor, self::BEFORE, $that);
     }
 
     /**
@@ -300,6 +300,6 @@ final class Hook
      */
     public static function execAfterAt(string $file, string $anchor, object $that = null): void
     {
-        static::execAt($file, $anchor, static::AFTER, $that);
+        self::execAt($file, $anchor, self::AFTER, $that);
     }
 }
