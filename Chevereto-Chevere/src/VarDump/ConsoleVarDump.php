@@ -18,7 +18,7 @@ use Chevere\VarDump\src\Wrapper;
 /**
  * Analyze a variable and provide a CLI output string representation of its type and data.
  */
-class ConsoleVarDump extends VarDump
+final class ConsoleVarDump extends VarDump
 {
     public static function wrap(string $key, string $dump): ?string
     {

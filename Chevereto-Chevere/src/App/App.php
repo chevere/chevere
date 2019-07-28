@@ -161,6 +161,14 @@ final class App implements AppInterface
      */
     public function run()
     {
+        if (isset($this->ran)) {
+            throw new LogicException(
+                (new Message('The method %s has been already called. The App can only run once.'))
+                    ->code('%s', __METHOD__)
+                    ->toString()
+            );
+        }
+        $this->ran = true;
         if (!isset($this->callable)) {
             $this->processResolveCallable($this->request->getPathInfo());
         }

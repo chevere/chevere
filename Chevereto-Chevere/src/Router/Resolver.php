@@ -20,7 +20,7 @@ use Chevere\Route\Route;
 /**
  * TODO: Rename. This class simply returns a route object (runtime or unserialize).
  */
-class Resolver
+final class Resolver
 {
     /** @var mixed */
     public $routeSome;

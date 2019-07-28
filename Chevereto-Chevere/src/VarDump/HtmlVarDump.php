@@ -19,7 +19,7 @@ use Chevere\VarDump\src\Wrapper;
 /**
  * Analyze a variable and provide a HTML output string representation of its type and data.
  */
-class HtmlVarDump extends VarDump
+final class HtmlVarDump extends VarDump
 {
     protected function setPrefix(): void
     {

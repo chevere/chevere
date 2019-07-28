@@ -24,40 +24,40 @@ use Chevere\Utility\Str;
 /**
  * Dumps information about one or more variables. CLI/HTML aware.
  */
-class Dumper
+final class Dumper
 {
     const BACKGROUND = '#132537';
     const BACKGROUND_SHADE = '#132537';
     const STYLE = 'font: 14px Consolas, monospace, sans-serif; line-height: 1.2; color: #ecf0f1; padding: 15px; margin: 10px 0; word-break: break-word; white-space: pre-wrap; background: '.self::BACKGROUND.'; display: block; text-align: left; border: none; border-radius: 4px;';
 
-    protected $vars;
+    private $vars;
 
     /** @var int */
-    protected $numArgs;
+    private $numArgs;
 
     /** @var ConsoleOutputInterface */
-    protected $consoleOutput;
+    private $consoleOutput;
 
     /** @var string */
-    protected $output;
+    private $output;
 
     /** @var string */
-    protected $outputHr;
+    private $outputHr;
 
     /** @var array */
-    protected $debugBacktrace;
+    private $debugBacktrace;
 
     /** @var string */
-    protected $caller;
+    private $caller;
 
     /** @var string */
-    protected $callerFilepath;
+    private $callerFilepath;
 
     /** @var int */
-    protected $offset = 1;
+    private $offset = 1;
 
     /** @var string */
-    protected $varDump;
+    private $varDump;
 
     public function __construct(...$vars)
     {
@@ -92,7 +92,16 @@ class Dumper
         new static(...$vars);
     }
 
-    protected function handleDebugBacktrace(): void
+    /**
+     * Dumps information about one or more variables and die().
+     */
+    public static function dd(...$vars)
+    {
+        static::dump(...$vars);
+        die(1);
+    }
+
+    private function handleDebugBacktrace(): void
     {
         while (isset($this->debugBacktrace[0]['file']) && __FILE__ == $this->debugBacktrace[0]['file']) {
             $this->shiftDebugBacktrace();
@@ -100,24 +109,24 @@ class Dumper
         }
     }
 
-    protected function setCallerFilepath(string $filepath): void
+    private function setCallerFilepath(string $filepath): void
     {
         $this->callerFilepath = Path::normalize($filepath);
     }
 
-    protected function handleSelfCaller(): void
+    private function handleSelfCaller(): void
     {
         if (Str::endsWith('resources/functions/dump.php', $this->callerFilepath) && __CLASS__ == $this->debugBacktrace[0]['class'] && in_array($this->debugBacktrace[0]['function'], ['dump', 'dd'])) {
             $this->shiftDebugBacktrace();
         }
     }
 
-    protected function shiftDebugBacktrace(): void
+    private function shiftDebugBacktrace(): void
     {
         array_shift($this->debugBacktrace);
     }
 
-    protected function handleConsoleOutput(): void
+    private function handleConsoleOutput(): void
     {
         $this->consoleOutput = new ConsoleOutput();
         $outputFormatter = new OutputFormatter(true);
@@ -131,7 +140,7 @@ class Dumper
         $this->consoleOutput->writeln(['', '<dumper>'.$maker.'</>', $this->outputHr]);
     }
 
-    protected function handleHtmlOutput(): void
+    private function handleHtmlOutput(): void
     {
         if (false === headers_sent()) {
             $this->appendHtmlOpenBody();
@@ -139,17 +148,17 @@ class Dumper
         $this->appendStyle();
     }
 
-    protected function appendHtmlOpenBody(): void
+    private function appendHtmlOpenBody(): void
     {
         $this->output .= '<html style="background: '.static::BACKGROUND_SHADE.';"><head></head><body>';
     }
 
-    protected function appendStyle(): void
+    private function appendStyle(): void
     {
         $this->output .= '<pre style="'.static::STYLE.'">';
     }
 
-    protected function handleClass(): void
+    private function handleClass(): void
     {
         if (isset($this->debugBacktrace[1]['class'])) {
             $class = $this->debugBacktrace[$this->offset]['class'];
@@ -160,29 +169,29 @@ class Dumper
         }
     }
 
-    protected function appendClass(string $class, string $type): void
+    private function appendClass(string $class, string $type): void
     {
         $this->output .= $this->varDump::wrap('_class', $class).$type;
     }
 
-    protected function appendFunction(string $function): void
+    private function appendFunction(string $function): void
     {
         $this->output .= $this->varDump::wrap('_function', $function.'()');
     }
 
-    protected function handleFile(): void
+    private function handleFile(): void
     {
         if (isset($this->debugBacktrace[0]['file'])) {
             $this->appendFilepath($this->debugBacktrace[0]['file'], $this->debugBacktrace[0]['line']);
         }
     }
 
-    protected function appendFilepath(string $file, int $line): void
+    private function appendFilepath(string $file, int $line): void
     {
         $this->output .= "\n".$this->varDump::wrap('_file', Path::normalize($file).':'.$line);
     }
 
-    protected function handleArgs(): void
+    private function handleArgs(): void
     {
         $pos = 1;
         foreach ($this->vars as $value) {
@@ -192,12 +201,12 @@ class Dumper
         // $this->output = trim($this->output, '\n');
     }
 
-    protected function appendArg(int $pos, $value): void
+    private function appendArg(int $pos, $value): void
     {
         $this->output .= 'Arg#'.$pos.' '.$this->varDump::out($value, 0)."\n\n";
     }
 
-    protected function handleProccessOutput(): void
+    private function handleProccessOutput(): void
     {
         if (isset($this->consoleOutput)) {
             $this->processConsoleOutput();
@@ -206,23 +215,14 @@ class Dumper
         }
     }
 
-    protected function processConsoleOutput(): void
+    private function processConsoleOutput(): void
     {
         $this->consoleOutput->writeln($this->output, ConsoleOutput::OUTPUT_RAW);
         isset($this->outputHr) ? $this->consoleOutput->writeln($this->outputHr) : null;
     }
 
-    protected function processPrintOutput(): void
+    private function processPrintOutput(): void
     {
         echo $this->output;
-    }
-
-    /**
-     * Dumps information about one or more variables and die().
-     */
-    public static function dd(...$vars)
-    {
-        static::dump(...$vars);
-        die(1);
     }
 }

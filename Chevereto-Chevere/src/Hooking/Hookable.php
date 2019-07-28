@@ -57,7 +57,7 @@ namespace Chevere\Hooking;
  * @see SimpleController
  * @see Router
  */
-abstract class Hookable
+final class Hookable
 {
     /**
      * Register and run hookable code entries before and after.

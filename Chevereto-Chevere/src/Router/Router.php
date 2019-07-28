@@ -20,7 +20,7 @@ use Chevere\Route\Route;
 /**
  * Routes takes a bunch of Routes and generates a routing table (php array).
  */
-class Router
+final class Router
 {
     const PRIORITY_ORDER = [Route::TYPE_STATIC, Route::TYPE_DYNAMIC];
 

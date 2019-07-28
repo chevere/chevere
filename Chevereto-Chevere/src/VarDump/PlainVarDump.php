@@ -16,7 +16,7 @@ namespace Chevere\VarDump;
 /**
  * Analyze a variable and provide a plain text output string representation of its type and data.
  */
-class PlainVarDump extends ConsoleVarDump
+final class PlainVarDump extends VarDump
 {
     public static function wrap(string $key, string $dump): ?string
     {

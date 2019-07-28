@@ -51,7 +51,7 @@ use Chevere\Utility\Str;
 // Hook::bind('myHook@controller:file', Hook::BEFORE, function ($that) {
 //     $that->source .= ' nosehaceeso no';
 // });
-class Hook
+final class Hook
 {
     const ALIAS_PATH_CORE = 'core>';
     const ANCHOR = 'anchor';
@@ -62,7 +62,7 @@ class Hook
     const AFTER = 'after';
     const DEFAULT_PRIORITY = 10;
 
-    protected static $hooks;
+    private static $hooks;
 
     public static function getAll()
     {
@@ -110,7 +110,7 @@ class Hook
      * @see before()
      * @see after()
      */
-    protected static function bind(string $id, callable $callable, int $priority = null, string $pos): void
+    private static function bind(string $id, callable $callable, int $priority = null, string $pos): void
     {
         $parsed = static::parseIdentifier($id);
         extract($parsed);
@@ -136,7 +136,7 @@ class Hook
      *
      * @return array ['anchor' => '<anchor>', 'file' => '<dirname>/<file_name>.php']
      */
-    protected static function parseIdentifier(string $id, int $trace = 3): array
+    private static function parseIdentifier(string $id, int $trace = 3): array
     {
         if (Str::contains('@', $id)) {
             $anchored = explode('@', $id);
@@ -240,7 +240,7 @@ class Hook
         }
     }
 
-    protected static function getCallerFile(): ?string
+    private static function getCallerFile(): ?string
     {
         // 0:Hook, 1:Hookable, 3:Caller
         return Path::normalize(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2]['file']);
