@@ -45,7 +45,7 @@ final class Console
     public static function bind(App $app): bool
     {
         if (php_sapi_name() == 'cli') {
-            static::$app = $app;
+            self::$app = $app;
 
             return true;
         }
@@ -56,35 +56,35 @@ final class Console
     public static function init()
     {
         $cli = new Cli(new ArgvInput());
-        static::$cli = $cli;
-        static::$available = true;
+        self::$cli = $cli;
+        self::$available = true;
     }
 
     public static function cli(): Cli
     {
-        return static::$cli;
+        return self::$cli;
     }
 
     public static function run()
     {
-        $exitCode = static::$cli->runner();
-        $command = static::$cli->command;
+        $exitCode = self::$cli->runner();
+        $command = self::$cli->command;
         if (null === $command) {
             exit($exitCode);
         }
         if (method_exists($command, 'callback')) {
-            if (static::$app == null) {
+            if (self::$app == null) {
                 throw new RuntimeException('No app instance is defined.');
             }
-            $exitCode = $command->callback(static::$app);
+            $exitCode = $command->callback(self::$app);
         }
         exit($exitCode);
     }
 
     public static function inputString(): string
     {
-        if (method_exists(static::$cli->input, '__toString')) {
-            return static::$cli->input->__toString();
+        if (method_exists(self::$cli->input, '__toString')) {
+            return self::$cli->input->__toString();
         }
 
         return '';
@@ -92,7 +92,7 @@ final class Console
 
     public static function isRunning(): bool
     {
-        return (bool) static::$available;
+        return (bool) self::$available;
     }
 
     /**
@@ -103,10 +103,10 @@ final class Console
      */
     public static function write($messages, int $options = self::OUTPUT_NORMAL): void
     {
-        if (!static::isRunning()) {
+        if (!self::isRunning()) {
             return;
         }
-        static::$cli->out->write($messages, false, $options);
+        self::$cli->out->write($messages, false, $options);
     }
 
     /**
@@ -117,17 +117,17 @@ final class Console
      */
     public static function writeln($messages, int $options = self::OUTPUT_NORMAL): void
     {
-        if (!static::isRunning()) {
+        if (!self::isRunning()) {
             return;
         }
-        static::$cli->out->writeln($messages, $options);
+        self::$cli->out->writeln($messages, $options);
     }
 
     public static function log($messages)
     {
-        if (!static::isRunning()) {
+        if (!self::isRunning()) {
             return;
         }
-        static::$cli->out->writeln($messages);
+        self::$cli->out->writeln($messages);
     }
 }

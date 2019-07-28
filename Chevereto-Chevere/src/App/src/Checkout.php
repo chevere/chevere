@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\App\src;
 
 use RuntimeException;
+use Chevere\Message;
 
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).

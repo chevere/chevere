@@ -24,7 +24,7 @@ use Chevere\HttpFoundation\Request;
 use Chevere\HttpFoundation\Response;
 use Chevere\Api\Api;
 use Chevere\Api\Maker as ApiMaker;
-use Chevere\Api\src\Checkout;
+use Chevere\App\src\Checkout;
 use Chevere\File;
 use Chevere\Path;
 use Chevere\Interfaces\ControllerInterface;
@@ -97,6 +97,9 @@ final class App implements AppInterface
     /** @var Runtime */
     private static $defaultRuntime;
 
+    /** @var bool True if run() has been called */
+    private $ran;
+
     /*
     * (A) Router cache : The array which is used to resolve /req -> route (routing)
     * (B) Routes cache : The array of serialized Routes ['id' => Route serialized]
@@ -119,18 +122,18 @@ final class App implements AppInterface
     */
     public function __construct(Parameters $parameters = null)
     {
-        static::setStaticInstance($this);
+        self::setStaticInstance($this);
         $this->router = new Router();
         $this->isCached = false;
-        if (static::hasStaticProp('defaultRuntime')) {
-            $this->runtime = static::getDefaultRuntime();
+        if (self::hasStaticProp('defaultRuntime')) {
+            $this->runtime = self::getDefaultRuntime();
         }
-        if (false === stream_resolve_include_path(static::BUILD_FILEPATH)) {
-            new Checkout(static::BUILD_FILEPATH);
+        if (false === stream_resolve_include_path(self::BUILD_FILEPATH)) {
+            new Checkout(self::BUILD_FILEPATH);
         }
-        Load::php(static::FILEHANDLE_HACKS);
+        Load::php(self::FILEHANDLE_HACKS);
         if (!isset($parameters)) {
-            $pathHandle = Path::handle(static::FILEHANDLE_PARAMETERS);
+            $pathHandle = Path::handle(self::FILEHANDLE_PARAMETERS);
             $parameters = Parameters::createFromFile($pathHandle);
         }
         // $this->processConfigFiles($parameters->getDataKey(Parameters::CONFIG_FILES));
@@ -142,7 +145,7 @@ final class App implements AppInterface
 
     public function getBuildTime(): ?string
     {
-        return File::exists(static::BUILD_FILEPATH) ? (string) file_get_contents(static::BUILD_FILEPATH) : null;
+        return File::exists(self::BUILD_FILEPATH) ? (string) file_get_contents(self::BUILD_FILEPATH) : null;
     }
 
     public function setCallable(string $callable): self
@@ -277,12 +280,12 @@ final class App implements AppInterface
 
     public static function setDefaultRuntime(Runtime $runtime): void
     {
-        static::$defaultRuntime = $runtime;
+        self::$defaultRuntime = $runtime;
     }
 
     public static function getDefaultRuntime(): Runtime
     {
-        return static::$defaultRuntime;
+        return self::$defaultRuntime;
     }
 
     /**
@@ -291,8 +294,8 @@ final class App implements AppInterface
     public static function requestInstance(): ?Request
     {
         // Request isn't there when doing cli (unless you run the request command)
-        if (isset(static::$instance) && isset(static::$instance->request)) {
-            return static::$instance->request;
+        if (isset(self::$instance) && isset(self::$instance->request)) {
+            return self::$instance->request;
         }
 
         return null;
@@ -303,7 +306,7 @@ final class App implements AppInterface
      */
     public static function runtimeInstance(): Runtime
     {
-        if (isset(static::$instance) && $runtimeInstance = static::$instance->runtime) {
+        if (isset(self::$instance) && $runtimeInstance = self::$instance->runtime) {
             return $runtimeInstance;
         }
         throw new RuntimeException('NO RUNTIME INSTANCE EVERYTHING BURNS!');
@@ -407,6 +410,6 @@ final class App implements AppInterface
 
     private static function setStaticInstance(App $app)
     {
-        static::$instance = $app;
+        self::$instance = $app;
     }
 }

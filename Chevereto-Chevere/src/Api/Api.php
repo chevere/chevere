@@ -29,16 +29,16 @@ final class Api
 
     public function __construct(Maker $api)
     {
-        static::$api = $api->api();
+        self::$api = $api->api();
     }
 
     public static function endpoint(string $uriKey): ?array
     {
-        $key = static::endpointKey($uriKey);
+        $key = self::endpointKey($uriKey);
         if ($key) {
             $subKey = $uriKey == $key ? '' : $uriKey;
 
-            return static::$api[$key][$subKey];
+            return self::$api[$key][$subKey];
         }
 
         return null;
@@ -49,7 +49,7 @@ final class Api
         $endpoint = ltrim($uri, '/');
         $base = strtok($endpoint, '/');
 
-        if (!isset(static::$api[$base])) {
+        if (!isset(self::$api[$base])) {
             throw new LogicException(
                 (new Message('No API for the %s URI.'))
                     ->code('%s', $uri)

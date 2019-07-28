@@ -63,9 +63,6 @@ final class Maker
     /** @var array Public exposed APIs groupped by basePath [basePath => [api],] */
     private $apis;
 
-    /** @var array Contains ['/api/route/algo' => [id, 'route/algo']] */
-    private $routeUris;
-
     /** @var string The API basepath, like 'api' */
     private $basePath;
 
