@@ -39,6 +39,9 @@ final class App
     const FILEHANDLE_PARAMETERS = ':parameters';
     const FILEHANDLE_HACKS = ':hacks';
 
+    /** @var Chevere */
+    private $chevere;
+
     /** @var array String arguments (from request uri, cli) */
     private $arguments;
 
@@ -46,10 +49,10 @@ final class App
     private $controllerArguments;
 
     /** @var Response */
-    private $response;
+    public $response;
 
     /** @var Route */
-    private $route;
+    public $route;
 
     public function __construct(Chevere $chevere)
     {
@@ -98,15 +101,5 @@ final class App
     public function getHash(): string
     {
         return $this->getBuildTime();
-    }
-
-    public function route(): Route
-    {
-        return $this->chevere->route();
-    }
-
-    public function response(): Response
-    {
-        return $this->response;
     }
 }

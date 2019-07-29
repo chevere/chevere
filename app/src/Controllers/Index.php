@@ -37,7 +37,7 @@ class Index extends Controller
 
         // $this->response = new Response();
 
-        $response = $this->app->response();
+        $response = $this->app->response;
         $response->setMeta(['Hello' => 'World!']);
         $response->addData($api);
         $response->addData($cli);

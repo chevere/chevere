@@ -40,7 +40,7 @@ final class Chevere
     public $app;
 
     /** @var ApiMaker */
-    private $api;
+    private $apiMaker;
 
     /** @var string */
     private $controller;
@@ -80,12 +80,7 @@ final class Chevere
         }
     }
 
-    public function route(): Route
-    {
-        return $this->route;
-    }
-
-    public function applyParameters(AppParameters $parameters)
+    private function applyParameters(AppParameters $parameters)
     {
         // $this->processConfigFiles($parameters->getDataKey(AppParameters::CONFIG_FILES));
         $api = $parameters->getDataKey(AppParameters::API);
@@ -134,7 +129,7 @@ final class Chevere
         $this->controller = $controller;
     }
 
-    public function run()
+    public function run(): void
     {
         if (isset($this->ran)) {
             throw new LogicException(
@@ -163,8 +158,8 @@ final class Chevere
     private function processResolveCallable(string $pathInfo): void
     {
         // try {
-        $this->route = $this->router->resolve($pathInfo);
-        $this->controller = $this->route->getCallable($this->request->getMethod());
+        $this->app->route = $this->router->resolve($pathInfo);
+        $this->controller = $this->app->route->getCallable($this->request->getMethod());
         $routerArgs = $this->router->arguments;
         // dd($routerArgs);
         if (isset($routerArgs)) {
@@ -180,7 +175,7 @@ final class Chevere
     /**
      * @param array $arguments string arguments captured or injected
      */
-    public function setArguments(array $arguments)
+    public function setArguments(array $arguments): void
     {
         $this->arguments = $arguments;
     }
@@ -207,7 +202,7 @@ final class Chevere
         if ($controller instanceof RenderableInterface) {
             echo $controller->render();
         } else {
-            $this->app->response()->send();
+            $this->app->response->send();
         }
     }
 
@@ -224,9 +219,9 @@ final class Chevere
 
     private function processApi(string $pathIdentifier): void
     {
-        $this->api = new ApiMaker($this->router);
-        $this->api->register($pathIdentifier);
-        new Api($this->api);
+        $this->apiMaker = new ApiMaker($this->router);
+        $this->apiMaker->register($pathIdentifier);
+        $this->app->api = new Api($this->apiMaker);
     }
 
     // private function processConfigFiles(array $configFiles = null): void
