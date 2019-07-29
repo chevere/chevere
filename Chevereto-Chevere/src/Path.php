@@ -203,7 +203,7 @@ abstract class Path
     {
         $pathHandle = static::handle(...func_get_args());
 
-        return $pathHandle->getPath();
+        return $pathHandle->toString();
     }
 
     public static function handle(string $pathIdentifier, string $rootContext = null): PathHandle

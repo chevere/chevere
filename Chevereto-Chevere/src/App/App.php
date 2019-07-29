@@ -22,15 +22,12 @@ use Chevere\Interfaces\ControllerInterface;
 use Chevere\Route\Route;
 use Chevere\Controller\ArgumentsWrap as ControllerArgumentsWrap;
 use Chevere\Message;
-use Chevere\Traits\StaticTrait;
 
 /**
  * App contains the whole thing.
  */
 final class App
 {
-    use StaticTrait;
-
     const BUILD_FILEPATH = ROOT_PATH.AppPath.'build';
     const NAMESPACES = ['App', 'Chevere'];
     const APP = 'app';
@@ -63,7 +60,7 @@ final class App
         return File::exists(self::BUILD_FILEPATH) ? (string) file_get_contents(self::BUILD_FILEPATH) : null;
     }
 
-    public function getControllerObject(string $controller)
+    public function run(string $controller, array $arguments): ControllerInterface
     {
         // FIXME: Unified validation (Controller validator)
         if (!is_subclass_of($controller, ControllerInterface::class)) {
@@ -84,14 +81,14 @@ final class App
         //     }
         // }
 
-        if (!empty($this->arguments)) {
-            $wrap = new ControllerArgumentsWrap($controller, $this->arguments);
-            $this->controllerArguments = $wrap->getArguments();
+        if (isset($arguments)) {
+            $wrap = new ControllerArgumentsWrap($controller, $arguments);
+            $controllerArguments = $wrap->getArguments();
         } else {
-            $this->controllerArguments = [];
+            $controllerArguments = [];
         }
 
-        $controller(...$this->controllerArguments);
+        $controller(...$controllerArguments);
 
         return $controller;
     }

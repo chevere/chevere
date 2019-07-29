@@ -53,7 +53,7 @@ final class PathHandle
         return $this;
     }
 
-    public function getPath(): string
+    public function toString(): string
     {
         return $this->path;
     }

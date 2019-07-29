@@ -16,7 +16,6 @@ namespace Chevere\ErrorHandler\src;
 use ReflectionMethod;
 use const Chevere\PATH;
 use Chevere\App\App;
-use Chevere\Core;
 use Chevere\Path;
 use Chevere\Utility\Str;
 use Chevere\VarDump\VarDump;
@@ -124,7 +123,7 @@ class TraceEntry
 
     protected function handleProcessCoreAutoloader()
     {
-        if ($this->entry['function'] == Core::namespaced('autoloader')) {
+        if ($this->entry['function'] == 'Chevere\\autoloader') {
             $this->processCoreAutoloader();
         }
     }

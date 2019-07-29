@@ -21,28 +21,12 @@ use Chevere\ArrayFile;
  */
 final class ArrayFileWrap
 {
-    /** @var string */
-    private $fileHandle;
-
     /** @var ArrayFile */
     private $arrayFile;
 
     public function __construct(PathHandle $pathHandle)
     {
-        $this->setFileHandle($pathHandle);
-    }
-
-    public function getFileHandle(): string
-    {
-        return $this->fileHandle;
-    }
-
-    public function setFileHandle(PathHandle $pathHandle): self
-    {
         $this->setArrayFile(new ArrayFile($pathHandle, Route::class));
-        $this->fileHandle = $pathHandle->getPath();
-
-        return $this;
     }
 
     public function getArrayFile(): ArrayFile

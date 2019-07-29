@@ -23,7 +23,6 @@ use ReflectionFunction;
 use const Chevere\App\PATH;
 use Chevere\App\Loader;
 use Chevere\Console\Command;
-use Chevere\Load;
 use Chevere\Message;
 use Chevere\Path;
 use Chevere\File;
@@ -72,7 +71,7 @@ final class InspectCommand extends Command
                 return 0;
             }
             $callableSome = $this->callableFilepath;
-            $this->callable = Load::php($this->callableFilepath);
+            $this->callable = include $this->callableFilepath;
             if (!is_callable($this->callable)) {
                 $this->cli->out->error(
                     (new Message('Expecting %t return type, %s provided in %f'))

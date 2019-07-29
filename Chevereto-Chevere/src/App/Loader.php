@@ -119,7 +119,7 @@ final class Loader implements LoaderContract
             $this->processResolveCallable($this->request->getPathInfo());
         }
         if (isset($this->controller)) {
-            $this->processController($this->controller);
+            $this->runController($this->controller);
         }
     }
 
@@ -199,9 +199,9 @@ final class Loader implements LoaderContract
         // }
     }
 
-    private function processController(string $controller): void
+    private function runController(string $controller): void
     {
-        $controller = $this->app->getControllerObject($controller);
+        $controller = $this->app->run($controller, $this->arguments);
         if ($controller instanceof RenderableInterface) {
             echo $controller->render();
         } else {

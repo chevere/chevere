@@ -67,9 +67,9 @@ final class ArrayFile
      */
     public function __construct(PathHandle $pathHandle, string $typeSome = null)
     {
-        $filepath = $pathHandle->getPath();
+        $filepath = $pathHandle->toString();
         $this->typeSome = $typeSome;
-        $fileArray = Load::php($filepath);
+        $fileArray = include $filepath;
         $this->filepath = $filepath;
         $arrayFileType = gettype($fileArray);
         try {
