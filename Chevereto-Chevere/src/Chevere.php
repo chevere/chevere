@@ -16,7 +16,8 @@ namespace Chevere;
 use LogicException;
 use RuntimeException;
 use Chevere\App\App;
-use Chevere\App\Parameters;
+use Chevere\App\Checkout as AppCheckout;
+use Chevere\App\Parameters as AppParameters;
 use Chevere\Console\Console;
 use Chevere\Api\Api;
 use Chevere\Api\Maker as ApiMaker;
@@ -60,6 +61,18 @@ final class Chevere
     {
         $this->router = new Router();
         $this->app = new App($this);
+
+        if (false === stream_resolve_include_path(App::BUILD_FILEPATH)) {
+            new AppCheckout(App::BUILD_FILEPATH);
+        }
+
+        // Load::php(self::FILEHANDLE_HACKS);
+        $pathHandle = Path::handle(App::FILEHANDLE_PARAMETERS);
+        $arrayFile = new ArrayFile($pathHandle);
+        $parameters = new AppParameters($arrayFile);
+
+        $this->applyParameters($parameters);
+
         if (Console::bind($this)) {
             Console::run();
         } else {
@@ -67,14 +80,19 @@ final class Chevere
         }
     }
 
-    public function applyParameters(Parameters $parameters)
+    public function route(): Route
     {
-        // $this->processConfigFiles($parameters->getDataKey(Parameters::CONFIG_FILES));
-        $api = $parameters->getDataKey(Parameters::API);
+        return $this->route;
+    }
+
+    public function applyParameters(AppParameters $parameters)
+    {
+        // $this->processConfigFiles($parameters->getDataKey(AppParameters::CONFIG_FILES));
+        $api = $parameters->getDataKey(AppParameters::API);
         if (isset($api)) {
             $this->processApi($api);
         }
-        $routes = $parameters->getDatakey(Parameters::ROUTES);
+        $routes = $parameters->getDatakey(AppParameters::ROUTES);
         if (isset($routes)) {
             $this->processRoutes($routes);
         }
@@ -204,14 +222,23 @@ final class Chevere
         }
     }
 
-    public function processSapi(): void
-    {
-    }
-
     private function processApi(string $pathIdentifier): void
     {
         $this->api = new ApiMaker($this->router);
         $this->api->register($pathIdentifier);
         new Api($this->api);
     }
+
+    // private function processConfigFiles(array $configFiles = null): void
+    // {
+    //     if (!isset($configFiles)) {
+    //         return;
+    //     }
+    //     if (isset($this->runtime)) {
+    //         $this->runtime->runConfig(
+    //             (new Config())
+    //                 ->processFromFiles($configFiles)
+    //         );
+    //     }
+    // }
 }

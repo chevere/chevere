@@ -36,7 +36,7 @@ final class Api
     {
         $key = self::endpointKey($uriKey);
         if ($key) {
-            $subKey = $uriKey == $key ? '' : $uriKey;
+            $subKey = ltrim($uriKey, '/') == $key ? '' : $uriKey;
 
             return self::$api[$key][$subKey];
         }
