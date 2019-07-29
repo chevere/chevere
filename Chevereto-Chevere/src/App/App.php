@@ -53,10 +53,9 @@ final class App
     /** @var Route */
     public $route;
 
-    public function __construct(Loader $loader)
+    public function __construct()
     {
         // $this->loader = $loader;
-        $this->response = new Response();
     }
 
     public function getBuildTime(): ?string

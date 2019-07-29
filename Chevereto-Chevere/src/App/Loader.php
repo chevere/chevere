@@ -21,13 +21,15 @@ use Chevere\Api\Api;
 use Chevere\Api\Maker as ApiMaker;
 use Chevere\Console\Console;
 use Chevere\HttpFoundation\Request;
+use Chevere\HttpFoundation\Response;
 use Chevere\Route\ArrayFileWrap as RouteArrayFileWrap;
 use Chevere\Route\Route;
 use Chevere\Router\Router;
 use Chevere\Runtime\Runtime;
 use Chevere\Interfaces\RenderableInterface;
+use Chevere\Contracts\App\LoaderContract;
 
-final class Loader
+final class Loader implements LoaderContract
 {
     /** @var Runtime */
     private static $runtime;
@@ -53,7 +55,8 @@ final class Loader
     public function __construct()
     {
         $this->router = new Router();
-        $this->app = new App($this);
+        $this->app = new App();
+        $this->app->response = new Response();
 
         if (false === stream_resolve_include_path(App::BUILD_FILEPATH)) {
             new Checkout(App::BUILD_FILEPATH);
@@ -73,34 +76,8 @@ final class Loader
         }
     }
 
-    private function applyParameters(Parameters $parameters)
-    {
-        // $this->processConfigFiles($parameters->getDataKey(Parameters::CONFIG_FILES));
-        $api = $parameters->getDataKey(Parameters::API);
-        if (isset($api)) {
-            $this->processApi($api);
-        }
-        $routes = $parameters->getDatakey(Parameters::ROUTES);
-        if (isset($routes)) {
-            $this->processRoutes($routes);
-        }
-    }
-
-    public static function setDefaultRuntime(Runtime $runtime)
-    {
-        self::$runtime = $runtime;
-    }
-
     /**
-     * Forges a Request, wrapper for Symfony Request::create().
-     *
-     * @param string               $uri        The URI
-     * @param string               $method     The HTTP method
-     * @param array                $parameters The query (GET) or request (POST) parameters
-     * @param array                $cookies    The request cookies ($_COOKIE)
-     * @param array                $files      The request files ($_FILES)
-     * @param array                $server     The server parameters ($_SERVER)
-     * @param string|resource|null $content    The raw body data
+     * {@inheritdoc}
      */
     public function forgeHttpRequest(...$requestArguments): void
     {
@@ -117,11 +94,17 @@ final class Loader
         $this->setRequest(Request::create(...$requestArguments));
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function setController(string $controller): void
     {
         $this->controller = $controller;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function run(): void
     {
         if (isset($this->ran)) {
@@ -137,6 +120,57 @@ final class Loader
         }
         if (isset($this->controller)) {
             $this->processController($this->controller);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setArguments(array $arguments): void
+    {
+        $this->arguments = $arguments;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function runtime(): Runtime
+    {
+        if (isset(self::$runtime)) {
+            return self::$runtime;
+        }
+        throw new RuntimeException('NO RUNTIME INSTANCE EVERYTHING BURNS!');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function request(): Request
+    {
+        if (isset(self::$request)) {
+            return self::$request;
+        }
+        throw new RuntimeException('NO REQUEST INSTANCE EVERYTHING BURNS!');
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function setDefaultRuntime(Runtime $runtime)
+    {
+        self::$runtime = $runtime;
+    }
+
+    private function applyParameters(Parameters $parameters)
+    {
+        // $this->processConfigFiles($parameters->getDataKey(Parameters::CONFIG_FILES));
+        $api = $parameters->getDataKey(Parameters::API);
+        if (isset($api)) {
+            $this->processApi($api);
+        }
+        $routes = $parameters->getDatakey(Parameters::ROUTES);
+        if (isset($routes)) {
+            $this->processRoutes($routes);
         }
     }
 
@@ -163,30 +197,6 @@ final class Loader
 
         //     return;
         // }
-    }
-
-    /**
-     * @param array $arguments string arguments captured or injected
-     */
-    public function setArguments(array $arguments): void
-    {
-        $this->arguments = $arguments;
-    }
-
-    public static function runtime(): Runtime
-    {
-        if (isset(self::$runtime)) {
-            return self::$runtime;
-        }
-        throw new RuntimeException('NO RUNTIME INSTANCE EVERYTHING BURNS!');
-    }
-
-    public static function request(): Request
-    {
-        if (isset(self::$request)) {
-            return self::$request;
-        }
-        throw new RuntimeException('NO REQUEST INSTANCE EVERYTHING BURNS!');
     }
 
     private function processController(string $controller): void
