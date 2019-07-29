@@ -15,18 +15,16 @@ namespace Chevere\App;
 
 use LogicException;
 use RuntimeException;
-use Chevere\App\Checkout as AppCheckout;
-use Chevere\App\Parameters as AppParameters;
-use Chevere\Console\Console;
-use Chevere\Api\Api;
-use Chevere\Path;
 use Chevere\ArrayFile;
+use Chevere\Path;
+use Chevere\Api\Api;
 use Chevere\Api\Maker as ApiMaker;
-use Chevere\Route\Route;
-use Chevere\Route\ArrayFileWrap as RouteArrayFileWrap;
+use Chevere\Console\Console;
 use Chevere\HttpFoundation\Request;
-use Chevere\Runtime\Runtime;
+use Chevere\Route\ArrayFileWrap as RouteArrayFileWrap;
+use Chevere\Route\Route;
 use Chevere\Router\Router;
+use Chevere\Runtime\Runtime;
 use Chevere\Interfaces\RenderableInterface;
 
 final class Loader
@@ -46,9 +44,6 @@ final class Loader
     /** @var Request */
     private $request;
 
-    /** @var Route */
-    private $route;
-
     /** @var Router */
     private $router;
 
@@ -61,13 +56,13 @@ final class Loader
         $this->app = new App($this);
 
         if (false === stream_resolve_include_path(App::BUILD_FILEPATH)) {
-            new AppCheckout(App::BUILD_FILEPATH);
+            new Checkout(App::BUILD_FILEPATH);
         }
 
         // Load::php(self::FILEHANDLE_HACKS);
         $pathHandle = Path::handle(App::FILEHANDLE_PARAMETERS);
         $arrayFile = new ArrayFile($pathHandle);
-        $parameters = new AppParameters($arrayFile);
+        $parameters = new Parameters($arrayFile);
 
         $this->applyParameters($parameters);
 
@@ -78,14 +73,14 @@ final class Loader
         }
     }
 
-    private function applyParameters(AppParameters $parameters)
+    private function applyParameters(Parameters $parameters)
     {
-        // $this->processConfigFiles($parameters->getDataKey(AppParameters::CONFIG_FILES));
-        $api = $parameters->getDataKey(AppParameters::API);
+        // $this->processConfigFiles($parameters->getDataKey(Parameters::CONFIG_FILES));
+        $api = $parameters->getDataKey(Parameters::API);
         if (isset($api)) {
             $this->processApi($api);
         }
-        $routes = $parameters->getDatakey(AppParameters::ROUTES);
+        $routes = $parameters->getDatakey(Parameters::ROUTES);
         if (isset($routes)) {
             $this->processRoutes($routes);
         }
