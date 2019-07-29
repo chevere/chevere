@@ -188,8 +188,7 @@ final class Loader implements LoaderContract
         $this->app->route = $this->router->resolve($pathInfo);
         $this->controller = $this->app->route->getCallable($this->request->getMethod());
         $routerArgs = $this->router->arguments;
-        // dd($routerArgs);
-        if (isset($routerArgs)) {
+        if (!isset($this->arguments) && isset($routerArgs)) {
             $this->setArguments($routerArgs);
         }
         // } catch (Throwable $e) {
@@ -201,7 +200,8 @@ final class Loader implements LoaderContract
 
     private function runController(string $controller): void
     {
-        $controller = $this->app->run($controller, $this->arguments);
+        $this->app->arguments = $this->arguments;
+        $controller = $this->app->run($controller);
         if ($controller instanceof RenderableInterface) {
             echo $controller->render();
         } else {

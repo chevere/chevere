@@ -35,14 +35,8 @@ final class App
     const FILEHANDLE_PARAMETERS = ':parameters';
     const FILEHANDLE_HACKS = ':hacks';
 
-    /** @var Loader */
-    private $loader;
-
     /** @var array String arguments (from request uri, cli) */
-    private $arguments;
-
-    /** @var array Ready to pass controller arguments */
-    private $controllerArguments;
+    public $arguments;
 
     /** @var Response */
     public $response;
@@ -52,7 +46,6 @@ final class App
 
     public function __construct()
     {
-        // $this->loader = $loader;
     }
 
     public function getBuildTime(): ?string
@@ -60,7 +53,7 @@ final class App
         return File::exists(self::BUILD_FILEPATH) ? (string) file_get_contents(self::BUILD_FILEPATH) : null;
     }
 
-    public function run(string $controller, array $arguments): ControllerInterface
+    public function run(string $controller): ControllerInterface
     {
         // FIXME: Unified validation (Controller validator)
         if (!is_subclass_of($controller, ControllerInterface::class)) {
@@ -81,8 +74,8 @@ final class App
         //     }
         // }
 
-        if (isset($arguments)) {
-            $wrap = new ControllerArgumentsWrap($controller, $arguments);
+        if (isset($this->arguments)) {
+            $wrap = new ControllerArgumentsWrap($controller, $this->arguments);
             $controllerArguments = $wrap->getArguments();
         } else {
             $controllerArguments = [];
