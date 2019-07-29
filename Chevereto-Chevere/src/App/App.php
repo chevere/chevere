@@ -22,7 +22,6 @@ use Chevere\Interfaces\ControllerInterface;
 use Chevere\Route\Route;
 use Chevere\Controller\ArgumentsWrap as ControllerArgumentsWrap;
 use Chevere\Message;
-use Chevere\Chevere;
 use Chevere\Traits\StaticTrait;
 
 /**
@@ -39,8 +38,8 @@ final class App
     const FILEHANDLE_PARAMETERS = ':parameters';
     const FILEHANDLE_HACKS = ':hacks';
 
-    /** @var Chevere */
-    private $chevere;
+    /** @var Loader */
+    private $loader;
 
     /** @var array String arguments (from request uri, cli) */
     private $arguments;
@@ -54,9 +53,9 @@ final class App
     /** @var Route */
     public $route;
 
-    public function __construct(Chevere $chevere)
+    public function __construct(Loader $loader)
     {
-        $this->chevere = $chevere;
+        // $this->loader = $loader;
         $this->response = new Response();
     }
 

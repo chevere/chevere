@@ -11,15 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere;
+namespace Chevere\App;
 
 use LogicException;
 use RuntimeException;
-use Chevere\App\App;
 use Chevere\App\Checkout as AppCheckout;
 use Chevere\App\Parameters as AppParameters;
 use Chevere\Console\Console;
 use Chevere\Api\Api;
+use Chevere\Path;
+use Chevere\ArrayFile;
 use Chevere\Api\Maker as ApiMaker;
 use Chevere\Route\Route;
 use Chevere\Route\ArrayFileWrap as RouteArrayFileWrap;
@@ -28,10 +29,7 @@ use Chevere\Runtime\Runtime;
 use Chevere\Router\Router;
 use Chevere\Interfaces\RenderableInterface;
 
-/**
- * Chevere (main).
- */
-final class Chevere
+final class Loader
 {
     /** @var Runtime */
     private static $runtime;

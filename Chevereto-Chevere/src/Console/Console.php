@@ -16,7 +16,7 @@ namespace Chevere\Console;
 use RuntimeException;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Chevere\Chevere;
+use Chevere\App\Loader;
 
 /**
  * Provides static access to the Chevere application console.
@@ -33,8 +33,8 @@ final class Console
     const OUTPUT_RAW = ConsoleOutput::OUTPUT_RAW;
     const OUTPUT_PLAIN = ConsoleOutput::OUTPUT_PLAIN;
 
-    /** @var Chevere */
-    private static $chevere;
+    /** @var Loader */
+    private static $loader;
 
     /** @var Cli */
     private static $cli;
@@ -42,10 +42,10 @@ final class Console
     /** @var bool */
     private static $available;
 
-    public static function bind(Chevere $chevere): bool
+    public static function bind(Loader $loader): bool
     {
         if (php_sapi_name() == 'cli') {
-            self::$chevere = $chevere;
+            self::$loader = $loader;
 
             return true;
         }
@@ -73,10 +73,10 @@ final class Console
             exit($exitCode);
         }
         if (method_exists($command, 'callback')) {
-            if (self::$chevere == null) {
+            if (self::$loader == null) {
                 throw new RuntimeException('No Chevere instance is defined.');
             }
-            $exitCode = $command->callback(self::$chevere);
+            $exitCode = $command->callback(self::$loader);
         }
         exit($exitCode);
     }

@@ -18,9 +18,8 @@ use ErrorException;
 use DateTimeZone;
 use const Chevere\ROOT_PATH;
 use const Chevere\App\PATH as AppPath;
-use Chevere\Chevere;
-use Chevere\App\App;
 use Chevere\HttpFoundation\Request;
+use Chevere\App\Loader;
 use Chevere\Path;
 use Chevere\Runtime\Runtime;
 use Chevere\ErrorHandler\src\Formatter;
@@ -143,12 +142,12 @@ class ErrorHandler implements ErrorHandlerInterface
         $this->id = uniqid('', true);
         // $this->arguments = $args;
         try {
-            $request = Chevere::request();
+            $request = Loader::request();
             $this->request = $request;
         } catch (Throwable $e) {
             //shh
         }
-        $this->runtimeInstance = Chevere::runtime();
+        $this->runtimeInstance = Loader::runtime();
         $this->isDebugEnabled = (bool) $this->runtimeInstance->getDataKey('debug');
         $this->setloadedConfigFiles($this->runtimeInstance->getRuntimeConfig()->getLoadedFilepaths());
         $this->logDateFolderFormat = static::LOG_DATE_FOLDER_FORMAT;

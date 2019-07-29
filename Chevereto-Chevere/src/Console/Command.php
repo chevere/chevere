@@ -19,7 +19,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Chevere\Chevere;
+use Chevere\App\Loader;
 use Chevere\Interfaces\CommandInterface;
 
 class Command extends ConsoleCommand implements CommandInterface
@@ -45,7 +45,7 @@ class Command extends ConsoleCommand implements CommandInterface
     /**
      * Callback contains the actual command in-app instructions.
      */
-    public function callback(Chevere $chevere)
+    public function callback(Loader $loader)
     {
         throw new LogicException('You must override the '.__FUNCTION__.'() method in the concrete command class.');
     }

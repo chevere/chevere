@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere;
 
 use Chevere\App\App;
+use Chevere\App\Loader;
 use Chevere\Console\Console;
 use Chevere\Runtime\Runtime;
 use Chevere\Runtime\Config;
@@ -65,7 +66,7 @@ new Runtime(
 
 define('Chevere\CLI', Console::isRunning());
 
-Chevere::setDefaultRuntime(
+Loader::setDefaultRuntime(
     new Runtime(
         (new Config())
             ->addArray([
