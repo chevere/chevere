@@ -16,11 +16,13 @@ namespace Chevere\Router;
 use LogicException;
 use Chevere\Message;
 use Chevere\Route\Route;
+use Chevere\Contracts\Route\RouteContract;
+use Chevere\Contracts\Router\RouterContract;
 
 /**
  * Routes takes a bunch of Routes and generates a routing table (php array).
  */
-final class Router
+final class Router implements RouterContract
 {
     const PRIORITY_ORDER = [Route::TYPE_STATIC, Route::TYPE_DYNAMIC];
 
@@ -53,7 +55,10 @@ final class Router
     /** @var array Static routes */
     private $statics;
 
-    public function addRoute(Route $route, string $basename)
+    /**
+     * {@inheritdoc}
+     */
+    public function addRoute(RouteContract $route, string $basename)
     {
         $route->fill();
         $id = $route->id;
@@ -85,6 +90,9 @@ final class Router
         $this->routeKeys[$uri] = $pointer;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getRegex(): string
     {
         $regex = [];
@@ -97,11 +105,9 @@ final class Router
     }
 
     /**
-     * Resolve routing for the given path info, sets matched arguments.
-     *
-     * @param string $pathInfo request path
+     * {@inheritdoc}
      */
-    public function resolve(string $pathInfo): Route
+    public function resolve(string $pathInfo): RouteContract
     {
         if (preg_match($this->regex, $pathInfo, $matches)) {
             $id = $matches['MARK'];
@@ -144,6 +150,7 @@ final class Router
         }
     }
 
+    // FIXME: Don't pass null
     private function handleRouteName(?string $name, array $pointer)
     {
         if (isset($name)) {

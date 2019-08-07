@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Api;
 
-use Chevere\Router\Router;
+use Chevere\Contracts\Router\RouterContract;
 
 interface MakerContract
 {
     // FIXME: RouterContract
-    public function __construct(Router $router);
+    public function __construct(RouterContract $router);
 
     public function api(): array;
 

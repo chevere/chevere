@@ -22,6 +22,7 @@ use Chevere\Contracts\App\AppContract;
 use Chevere\Controller\ArgumentsWrap as ControllerArgumentsWrap;
 use Chevere\HttpFoundation\Response;
 use Chevere\Contracts\Controller\ControllerContract;
+use Chevere\Contracts\Route\RouteContract;
 use Chevere\Route\Route;
 
 /**
@@ -42,7 +43,7 @@ final class App implements AppContract
     /** @var Response */
     public $response;
 
-    /** @var Route */
+    /** @var RouteContract */
     public $route;
 
     /**
@@ -68,7 +69,7 @@ final class App implements AppContract
         }
         $controller = new $controller($this);
 
-        // if ($this->route instanceof Route) {
+        // if ($this->route instanceof RouteContract) {
         //     $middlewares = $this->route->middlewares;
         //     if (!empty($middlewares)) {
         //         $handler = new Handler($middlewares);

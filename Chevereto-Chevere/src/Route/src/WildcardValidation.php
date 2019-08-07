@@ -18,7 +18,7 @@ use InvalidArgumentException;
 use Chevere\Message;
 use Chevere\Validate;
 use Chevere\Utility\Str;
-use Chevere\Route\Route;
+use Chevere\Contracts\Route\RouteContract;
 
 final class WildcardValidation
 {
@@ -37,7 +37,7 @@ final class WildcardValidation
     /** @var array */
     public $routeWheres;
 
-    public function __construct(string $wildcardName, string $regex, Route $route)
+    public function __construct(string $wildcardName, string $regex, RouteContract $route)
     {
         $this->wildcardName = $wildcardName;
         $this->wildcardString = "{{$wildcardName}}";

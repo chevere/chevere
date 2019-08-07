@@ -19,7 +19,9 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use const Chevere\App\PATH as AppPath;
 use Chevere\Route\Route;
+use Chevere\Contracts\Route\RouteContract;
 use Chevere\Router\Router;
+use Chevere\Contracts\Router\RouterContract;
 use Chevere\Api\src\FilterIterator;
 use Chevere\Api\src\Endpoint;
 use Chevere\Message;
@@ -57,7 +59,7 @@ final class Maker implements MakerContract
     /** @var string Target API directory (absolute) */
     private $directory;
 
-    /** @var Router The injected Router, needed to add Routes to the injector instance */
+    /** @var RouterContract The injected Router, needed to add Routes to the injector instance */
     private $router;
 
     /** @var array Public exposed APIs groupped by basePath [basePath => [api],] */
@@ -66,13 +68,13 @@ final class Maker implements MakerContract
     /** @var string The API basepath, like 'api' */
     private $basePath;
 
-    /** @var Route */
+    /** @var RouteContract */
     private $route;
 
     /** @var string */
     private $uri;
 
-    public function __construct(Router $router)
+    public function __construct(RouterContract $router)
     {
         $this->router = $router;
     }

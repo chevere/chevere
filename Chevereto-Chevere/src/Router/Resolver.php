@@ -16,11 +16,13 @@ namespace Chevere\Router;
 use LogicException;
 use Chevere\Message;
 use Chevere\Route\Route;
+use Chevere\Contracts\Route\RouteContract;
+use Chevere\Contracts\Router\ResolverContract;
 
 /**
  * TODO: Rename. This class simply returns a route object (runtime or unserialize).
  */
-final class Resolver
+final class Resolver implements ResolverContract
 {
     /** @var mixed */
     public $routeSome;
@@ -33,9 +35,9 @@ final class Resolver
         $this->routeSome = $routeSome;
     }
 
-    public function get(): Route
+    public function get(): RouteContract
     {
-        if ($this->routeSome instanceof Route) {
+        if ($this->routeSome instanceof RouteContract) {
             return $this->routeSome;
         }
         if (is_string($this->routeSome)) {

@@ -23,13 +23,14 @@ use Chevere\Route\src\WildcardValidation;
 use Chevere\Controllers\HeadController;
 use Chevere\Utility\Str;
 use Chevere\Contracts\Controller\ControllerContract;
+use Chevere\Contracts\Route\RouteContract;
 
 // IDEA Route lock (disables further modification)
 // IDEA: Reg events, determine who changes a route.
 // IDEA: Enable alt routes [/taken, /also-taken, /availabe]
 // IDEA: L10n support
 
-final class Route
+final class Route implements RouteContract
 {
     /** @const Array containing all the HTTP methods. */
     const HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'COPY', 'HEAD', 'OPTIONS', 'LINK', 'UNLINK', 'PURGE', 'LOCK', 'UNLOCK', 'PROPFIND', 'VIEW', 'TRACE', 'CONNECT'];
@@ -113,7 +114,7 @@ final class Route
     /**
      * @param string $name route name, must be unique
      */
-    public function setName(string $name): self
+    public function setName(string $name): RouteContract
     {
         // Validate $name
         if (!preg_match(static::REGEX_NAME, $name)) {
@@ -135,7 +136,7 @@ final class Route
      * @param string $wildcardName wildcard name
      * @param string $regex        regex pattern
      */
-    public function setWhere(string $wildcardName, string $regex): self
+    public function setWhere(string $wildcardName, string $regex): RouteContract
     {
         new WildcardValidation($wildcardName, $regex, $this);
         $this->wheres[$wildcardName] = $regex;
@@ -148,7 +149,7 @@ final class Route
      *
      * @param array $wildcardsPatterns An array containing [wildcardName => regexPattern,]
      */
-    public function setWheres(array $wildcardsPatterns): self
+    public function setWheres(array $wildcardsPatterns): RouteContract
     {
         foreach ($wildcardsPatterns as $wildcardName => $regexPattern) {
             $this->setWhere($wildcardName, $regexPattern);
@@ -163,7 +164,7 @@ final class Route
      * @param string $httpMethod HTTP method
      * @param string $controller Controller which handles the request
      */
-    public function setMethod(string $httpMethod, string $controller): self
+    public function setMethod(string $httpMethod, string $controller): RouteContract
     {
         // Validate HTTP method
         if (!in_array($httpMethod, static::HTTP_METHODS)) {
@@ -199,7 +200,7 @@ final class Route
      *
      * @param array $httpMethodsCallables An array containing [httpMethod => callable,]
      */
-    public function setMethods(array $httpMethodsCallables): self
+    public function setMethods(array $httpMethodsCallables): RouteContract
     {
         foreach ($httpMethodsCallables as $httpMethod => $controller) {
             $this->setMethod($httpMethod, $controller);
@@ -208,14 +209,14 @@ final class Route
         return $this;
     }
 
-    public function setId(string $id): self
+    public function setId(string $id): RouteContract
     {
         $this->id = $id;
 
         return $this;
     }
 
-    public function addMiddleware(string $callable): self
+    public function addMiddleware(string $callable): RouteContract
     {
         // $this->middlewares[] = $this->getCallableSome($callable);
         $this->middlewares[] = $callable;
@@ -243,7 +244,7 @@ final class Route
     /**
      * Fill object missing properties and whatnot.
      */
-    public function fill(): self
+    public function fill(): RouteContract
     {
         if (isset($this->wildcards)) {
             foreach ($this->wildcards as $k => $v) {
