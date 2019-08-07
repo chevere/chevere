@@ -23,14 +23,13 @@ use Chevere\Route\src\WildcardValidation;
 use Chevere\Controllers\HeadController;
 use Chevere\Interfaces\ControllerInterface;
 use Chevere\Utility\Str;
-use Chevere\Interfaces\RouteInterface;
 
 // IDEA Route lock (disables further modification)
 // IDEA: Reg events, determine who changes a route.
 // IDEA: Enable alt routes [/taken, /also-taken, /availabe]
 // IDEA: L10n support
 
-final class Route implements RouteInterface
+final class Route
 {
     /** @const Array containing all the HTTP methods. */
     const HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'COPY', 'HEAD', 'OPTIONS', 'LINK', 'UNLINK', 'PURGE', 'LOCK', 'UNLOCK', 'PROPFIND', 'VIEW', 'TRACE', 'CONNECT'];

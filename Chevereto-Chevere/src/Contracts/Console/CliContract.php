@@ -11,7 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Interfaces;
+namespace Chevere\Contracts\Console;
 
-interface RouteInterface
-{ }
+use Symfony\Component\Console\Input\ArgvInput;
+
+interface CliContract
+{
+    public function __construct(ArgvInput $input);
+
+    public function runner();
+}

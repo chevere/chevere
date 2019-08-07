@@ -15,11 +15,12 @@ namespace Chevere\App\src;
 
 use RuntimeException;
 use Chevere\Message;
+use Chevere\Contracts\App\src\CheckoutContract;
 
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).
  */
-final class Checkout
+final class Checkout implements CheckoutContract
 {
     public function __construct(string $filename)
     {

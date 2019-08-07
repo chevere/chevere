@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Console\Commands;
 
 use ReflectionMethod;
-use Chevere\App\Loader;
 use Chevere\HttpFoundation\Request;
 use Chevere\Console\Command;
+use Chevere\Contracts\App\LoaderContract;
 
 /**
  * The RequestCommand allows to pass a forged request to the App instance.
@@ -42,7 +42,7 @@ final class RequestCommand extends Command
             ->addArgument('content', Command::ARGUMENT_OPTIONAL, 'Content', null);
     }
 
-    public function callback(Loader $loader): int
+    public function callback(LoaderContract $loader): int
     {
         // Map cli arguments to Request::create
         $arguments = $this->cli->input->getArguments();

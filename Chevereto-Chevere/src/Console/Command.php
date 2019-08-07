@@ -19,10 +19,11 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Chevere\App\Loader;
-use Chevere\Interfaces\CommandInterface;
+use Chevere\Contracts\App\LoaderContract;
+use Chevere\Contracts\Console\CliContract;
+use Chevere\Contracts\Console\CommandContract;
 
-class Command extends ConsoleCommand implements CommandInterface
+class Command extends ConsoleCommand implements CommandContract
 {
     const ARGUMENT_REQUIRED = InputArgument::REQUIRED;
     const ARGUMENT_OPTIONAL = InputArgument::OPTIONAL;
@@ -33,19 +34,16 @@ class Command extends ConsoleCommand implements CommandInterface
     const OPTION_OPTIONAL = InputOption::VALUE_OPTIONAL;
     const OPTION_IS_ARRAY = InputOption::VALUE_IS_ARRAY;
 
-    /** @var Cli */
+    /** @var CliContract */
     protected $cli;
 
-    final public function __construct(Cli $cli)
+    final public function __construct(CliContract $cli)
     {
         $this->cli = $cli;
         parent::__construct();
     }
 
-    /**
-     * Callback contains the actual command in-app instructions.
-     */
-    public function callback(Loader $loader)
+    public function callback(LoaderContract $loader)
     {
         throw new LogicException('You must override the '.__FUNCTION__.'() method in the concrete command class.');
     }

@@ -16,11 +16,11 @@ declare(strict_types=1);
 
 namespace Chevere\Console\Commands;
 
-use Chevere\App\Loader;
 use Chevere\File;
 use Chevere\Path;
 use Chevere\Console\Command;
 use Chevere\VarDump\PlainVarDump;
+use Chevere\Contracts\App\LoaderContract;
 
 /**
  * The RunCommand allows to run any callable present in the app.
@@ -32,7 +32,7 @@ final class RunCommand extends Command
 {
     protected static $defaultName = 'run';
 
-    public function callback(Loader $loader): int
+    public function callback(LoaderContract $loader): int
     {
         $callableInput = (string) $this->cli->input->getArgument('callable');
 

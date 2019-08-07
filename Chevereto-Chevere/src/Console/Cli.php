@@ -21,11 +21,12 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Chevere\Console\Commands\RequestCommand;
 use Chevere\Console\Commands\RunCommand;
 use Chevere\Console\Commands\InspectCommand;
+use Chevere\Contracts\Console\CliContract;
 
 /**
  * This class provides console facade for Symfony\Component\Console.
  */
-final class Cli
+final class Cli implements CliContract
 {
     const NAME = __NAMESPACE__.' cli';
     const VERSION = '1.0';

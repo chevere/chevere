@@ -11,11 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Interfaces;
+namespace Chevere\Contracts\App\src;
 
-interface ContainerInterface
+interface CheckoutContract
 {
-    public function hasObjectsDefinition(): bool;
-
-    public function __call(string $name, array $arguments = null);
+    public function __construct(string $filename);
 }

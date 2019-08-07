@@ -16,12 +16,14 @@ namespace Chevere\Console;
 use RuntimeException;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Chevere\App\Loader;
+use Chevere\Contracts\App\LoaderContract;
+use Chevere\Contracts\Console\ConsoleContract;
+use Chevere\Contracts\Console\CliContract;
 
 /**
  * Provides static access to the Chevere application console.
  */
-final class Console
+final class Console implements ConsoleContract
 {
     const VERBOSITY_QUIET = ConsoleOutput::VERBOSITY_QUIET;
     const VERBOSITY_NORMAL = ConsoleOutput::VERBOSITY_NORMAL;
@@ -33,16 +35,16 @@ final class Console
     const OUTPUT_RAW = ConsoleOutput::OUTPUT_RAW;
     const OUTPUT_PLAIN = ConsoleOutput::OUTPUT_PLAIN;
 
-    /** @var Loader */
+    /** @var LoaderContract */
     private static $loader;
 
-    /** @var Cli */
+    /** @var CliContract */
     private static $cli;
 
     /** @var bool */
     private static $available;
 
-    public static function bind(Loader $loader): bool
+    public static function bind(LoaderContract $loader): bool
     {
         if (php_sapi_name() == 'cli') {
             self::$loader = $loader;
@@ -60,7 +62,7 @@ final class Console
         self::$available = true;
     }
 
-    public static function cli(): Cli
+    public static function cli(): CliContract
     {
         return self::$cli;
     }
@@ -95,39 +97,27 @@ final class Console
         return (bool) self::$available;
     }
 
-    /**
-     * Write messages to the console.
-     *
-     * @param string|array $messages the message as an iterable of strings or a single string
-     * @param int          $options  A bitmask of options (one of the OUTPUT or VERBOSITY constants), 0 is considered the same as self::OUTPUT_NORMAL | self::VERBOSITY_NORMAL
-     */
-    public static function write($messages, int $options = self::OUTPUT_NORMAL): void
+    public static function write(string $message, int $options = self::OUTPUT_NORMAL): void
     {
         if (!self::isRunning()) {
             return;
         }
-        self::$cli->out->write($messages, false, $options);
+        self::$cli->out->write($message, false, $options);
     }
 
-    /**
-     * Write messages (new lines) to the console.
-     *
-     * @param string|array $messages the message as an iterable of strings or a single string
-     * @param int          $options  A bitmask of options (one of the OUTPUT or VERBOSITY constants), 0 is considered the same as self::OUTPUT_NORMAL | self::VERBOSITY_NORMAL
-     */
-    public static function writeln($messages, int $options = self::OUTPUT_NORMAL): void
+    public static function writeln(string $message, int $options = self::OUTPUT_NORMAL): void
     {
         if (!self::isRunning()) {
             return;
         }
-        self::$cli->out->writeln($messages, $options);
+        self::$cli->out->writeln($message, $options);
     }
 
-    public static function log($messages)
+    public static function log(string $message)
     {
         if (!self::isRunning()) {
             return;
         }
-        self::$cli->out->writeln($messages);
+        self::$cli->out->writeln($message);
     }
 }
