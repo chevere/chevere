@@ -21,7 +21,7 @@ use Chevere\Message;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Controller\ArgumentsWrap as ControllerArgumentsWrap;
 use Chevere\HttpFoundation\Response;
-use Chevere\Interfaces\ControllerInterface;
+use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Route\Route;
 
 /**
@@ -56,13 +56,13 @@ final class App implements AppContract
     /**
      * {@inheritdoc}
      */
-    public function run(string $controller): ControllerInterface
+    public function run(string $controller): ControllerContract
     {
-        if (!is_subclass_of($controller, ControllerInterface::class)) {
+        if (!is_subclass_of($controller, ControllerContract::class)) {
             throw new LogicException(
                 (new Message('Callable %s must represent a class implementing the %i interface.'))
                     ->code('%s', $controller)
-                    ->code('%i', ControllerInterface::class)
+                    ->code('%i', ControllerContract::class)
                     ->toString()
             );
         }

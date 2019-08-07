@@ -16,7 +16,7 @@ namespace Chevere\Controller;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionFunctionAbstract;
-use Chevere\Interfaces\ControllerInterface;
+use Chevere\Contracts\Controller\ControllerContract;
 
 /**
  * ArgumentsWrap provides a object oriented way to retrieve typehinted arguments for the controller.
@@ -35,10 +35,10 @@ final class ArgumentsWrap
     /** @var array Usable arguments (FIXME: Better bame) */
     private $arguments;
 
-    /** @var ControllerInterface */
+    /** @var ControllerContract */
     private $controller;
 
-    public function __construct(ControllerInterface $controller, array $arguments)
+    public function __construct(ControllerContract $controller, array $arguments)
     {
         $this->controller = $controller;
         $this->passedArguments = $arguments;

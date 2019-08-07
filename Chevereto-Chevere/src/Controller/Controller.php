@@ -16,10 +16,10 @@ namespace Chevere\Controller;
 use LogicException;
 use Chevere\HttpFoundation\Response;
 use Chevere\Message;
-use Chevere\App\App;
 use Chevere\Hooking\Hook;
-use Chevere\Interfaces\ControllerInterface;
 use Chevere\Traits\HookableTrait;
+use Chevere\Contracts\App\AppContract;
+use Chevere\Contracts\Controller\ControllerContract;
 
 // Define a hookable code entry:
 // $this->hook('myHook', function ($that) use ($var) {
@@ -35,14 +35,14 @@ use Chevere\Traits\HookableTrait;
 /**
  * Controller is the defacto controller in Chevere.
  */
-class Controller implements ControllerInterface
+class Controller implements ControllerContract
 {
     use HookableTrait;
 
     const TYPE_DECLARATIONS = ['array', 'callable', 'bool', 'float', 'int', 'string', 'iterable'];
     const OPTIONS = [];
 
-    /** @var App */
+    /** @var AppContract */
     protected $app;
 
     /** @var string */
@@ -70,47 +70,30 @@ class Controller implements ControllerInterface
     //     );
     // }
 
-    final public function setResponse(Response $response)
-    {
-        $this->app->response = $response;
-    }
-
-    final public function __construct(App $app)
+    final public function __construct(AppContract $app)
     {
         $this->app = $app;
     }
 
-    // final public function invoke(string $controller, ...$parameters)
-    // {
-    //     $that = $this->getCallable($controller);
-    //     if (!is_callable($that)) {
-    //         throw new LogicException(
-    //             (new Message('Expected %s callable, %t provided.'))
-    //                 ->code('%s', '$controller')
-    //                 ->code('%t', gettype($controller))
-    //                 ->toString()
-    //         );
-    //     }
-    //     // Pass this to that so you can this while you that dawg!
-    //     foreach (get_object_vars($this) as $k => $v) {
-    //         $that->{$k} = $v;
-    //     }
-
-    //     return $that(...$parameters);
-    // }
-
-    final public static function getDescription(): ?string
+    final public function setResponse(Response $response): ControllerContract
     {
-        return static::$description;
+        $this->app->response = $response;
+
+        return $this;
     }
 
-    final public static function getResources(): ?array
+    final public static function description(): string
     {
-        return static::$resources;
+        return static::$description ?? '';
     }
 
-    final public static function getParameters(): ?array
+    final public static function resources(): array
     {
-        return static::$parameters;
+        return static::$resources ?? [];
+    }
+
+    final public static function parameters(): array
+    {
+        return static::$parameters ?? [];
     }
 }

@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace App;
 
-use Chevere\App\App;
+use Chevere\Contracts\App\AppContract;
 use Chevere\Interfaces\HandlerInterface;
 use Chevere\Interfaces\MiddlewareInterface;
 
-return new class () implements MiddlewareInterface
-{
-    public function __invoke(App $app, HandlerInterface $handler)
+return new class() implements MiddlewareInterface {
+    public function __invoke(AppContract $app, HandlerInterface $handler)
     {
         // \dump(__FILE__);
         // \dump($app->arguments;

@@ -21,8 +21,8 @@ use Chevere\Route\src\KeyValidation;
 use Chevere\Route\src\Wildcards;
 use Chevere\Route\src\WildcardValidation;
 use Chevere\Controllers\HeadController;
-use Chevere\Interfaces\ControllerInterface;
 use Chevere\Utility\Str;
+use Chevere\Contracts\Controller\ControllerContract;
 
 // IDEA Route lock (disables further modification)
 // IDEA: Reg events, determine who changes a route.
@@ -174,11 +174,11 @@ final class Route
             );
         }
         // FIXME: Unified validation (Controller validator)
-        if (!is_subclass_of($controller, ControllerInterface::class)) {
+        if (!is_subclass_of($controller, ControllerContract::class)) {
             throw new LogicException(
                 (new Message('Callable %s must represent a class implementing the %i interface.'))
                     ->code('%s', $controller)
-                    ->code('%i', ControllerInterface::class)
+                    ->code('%i', ControllerContract::class)
                     ->toString()
             );
         }

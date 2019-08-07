@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere;
 
-use Chevere\App\App;
+use Chevere\Contracts\App\AppContract;
 use Chevere\Interfaces\HandlerInterface;
 
 /**
@@ -57,7 +57,7 @@ final class Handler implements HandlerInterface
     /**
      * Initiates the Handler runner.
      */
-    public function runner(App $app)
+    public function runner(AppContract $app)
     {
         reset($this->queue);
 
@@ -67,7 +67,7 @@ final class Handler implements HandlerInterface
     /**
      * Process calling.
      */
-    public function process(App $app)
+    public function process(AppContract $app)
     {
         $middleware = current($this->queue);
         if ($middleware) {

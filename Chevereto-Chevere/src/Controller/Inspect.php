@@ -20,20 +20,20 @@ use Chevere\Message;
 use Chevere\Api\Api;
 use Chevere\Utility\Str;
 use Chevere\Contracts\ToArrayContract;
-use Chevere\Interfaces\ControllerInterface;
+use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Interfaces\ControllerResourceInterface;
 use Chevere\Interfaces\CreateFromString;
 use Chevere\Interfaces\ControllerRelationshipInterface;
 
 /**
- * Provides information about any Controller implementing ControllerInterface interface.
+ * Provides information about any Controller implementing ControllerContract interface.
  */
 final class Inspect implements ToArrayContract
 {
     const METHOD_ROOT_PREFIX = Api::METHOD_ROOT_PREFIX;
 
     /** @var string The Controller interface */
-    const INTERFACE_CONTROLLER = ControllerInterface::class;
+    const INTERFACE_CONTROLLER = ControllerContract::class;
 
     /** @var string The Controller interface */
     const INTERFACE_CONTROLLER_RESOURCE = ControllerResourceInterface::class;
@@ -96,7 +96,7 @@ final class Inspect implements ToArrayContract
     public $isRelatedResource;
 
     /**
-     * @param string $className A class name implementing the ControllerInterface
+     * @param string $className A class name implementing the ControllerContract
      */
     public function __construct(string $className)
     {
@@ -108,9 +108,9 @@ final class Inspect implements ToArrayContract
         $this->isRelatedResource = $this->reflection->implementsInterface(ControllerRelationshipInterface::class);
         $this->useResource = $this->isResource || $this->isRelatedResource;
         $this->httpMethod = Str::replaceFirst(static::METHOD_ROOT_PREFIX, null, $this->classShortName);
-        $this->description = $className::getDescription();
+        $this->description = $className::description();
         $this->handleResources($className);
-        $this->parameters = $className::getParameters();
+        $this->parameters = $className::parameters();
         try {
             $this->handleControllerResourceInterface();
             $this->handleControllerInterface();
@@ -152,7 +152,7 @@ final class Inspect implements ToArrayContract
     private function handleResources(string $className)
     {
         if ($this->isResource) {
-            $this->resources = $className::getResources();
+            $this->resources = $className::resources();
         } elseif ($this->isRelatedResource) {
             $this->relatedResource = $className::getRelatedResource();
             if (empty($this->relatedResource)) {
@@ -163,7 +163,7 @@ final class Inspect implements ToArrayContract
                         ->toString()
                 );
             }
-            $this->resources = $this->relatedResource::getResources();
+            $this->resources = $this->relatedResource::resources();
         }
     }
 

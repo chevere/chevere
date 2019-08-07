@@ -55,8 +55,8 @@ final class Endpoint implements EndpointContract
     {
         foreach ($httpMethods as $httpMethod => $controllerClassName) {
             $httpMethodOptions = [];
-            $httpMethodOptions['description'] = $controllerClassName::getDescription();
-            $controllerParameters = $controllerClassName::getParameters();
+            $httpMethodOptions['description'] = $controllerClassName::description();
+            $controllerParameters = $controllerClassName::parameters();
             if (isset($controllerParameters)) {
                 $httpMethodOptions['parameters'] = $controllerParameters;
             }
@@ -69,12 +69,12 @@ final class Endpoint implements EndpointContract
         foreach ([
             'OPTIONS' => [
                 OptionsController::class, [
-                    'description' => OptionsController::getDescription(),
+                    'description' => OptionsController::description(),
                 ],
             ],
             'HEAD' => [
                 HeadController::class, [
-                    'description' => HeadController::getDescription(),
+                    'description' => HeadController::description(),
                 ],
             ],
         ] as $k => $v) {

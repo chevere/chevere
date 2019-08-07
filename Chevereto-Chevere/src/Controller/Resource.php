@@ -26,6 +26,6 @@ abstract class Resource extends Controller implements ControllerResourceInterfac
 
     public static function getResourceName(): string
     {
-        return array_keys(static::getResources())[0];
+        return array_keys(static::resources())[0];
     }
 }

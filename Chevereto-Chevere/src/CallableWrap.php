@@ -267,7 +267,6 @@ final class CallableWrap
             );
             ++$parameterIndex;
         }
-        // dd($this->reflection->getParameters());
         $this->arguments = $this->typedArguments;
 
         return $this;

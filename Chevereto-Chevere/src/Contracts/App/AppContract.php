@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\App;
 
-// FIXME: ControllerContract
-use Chevere\Interfaces\ControllerInterface;
+use Chevere\Contracts\Controller\ControllerContract;
 
 interface AppContract
 {
@@ -26,7 +25,7 @@ interface AppContract
     /**
      * Run a controller on top of the App.
      *
-     * @param string $controller a ControllerInterface controller name
+     * @param string $controller a ControllerContract controller name
      */
-    public function run(string $controller): ControllerInterface;
+    public function run(string $controller): ControllerContract;
 }
