@@ -25,7 +25,7 @@ use Chevere\Validate;
 /**
  * Runtime configurator.
  */
-final class Config extends Data
+final class Config
 {
     // Config keys
     const DEBUG = 'debug';
@@ -37,7 +37,8 @@ final class Config extends Data
     const URI_SCHEME = 'uriScheme';
     const TIMEZONE = 'timeZone';
 
-    protected $data = [];
+    /** @var Data */
+    public $data;
 
     /** @var array Loaded configuration filepaths. */
     private $loadedFilepaths = [];
@@ -55,7 +56,7 @@ final class Config extends Data
 
     public function __construct()
     {
-        parent::__construct();
+        $this->data = new Data();
     }
 
     public function addFile(string $filepath): self
@@ -70,43 +71,6 @@ final class Config extends Data
     public function addArray(array $array): self
     {
         return $this->dataAdder($array);
-    }
-
-    public function process(): self
-    {
-        try {
-            $this->validate();
-        } catch (Exception $e) {
-            throw new LogicException(
-                (new Message($e->getMessage().' at %s'))->b('%s', '0000000000000000')->toString()
-            );
-        }
-        $this->addData($this->data);
-
-        return $this;
-    }
-
-    public function processFromFile(string $fileHandle): self
-    {
-        $this->addFile($fileHandle);
-
-        return $this->process();
-    }
-
-    public function processFromFiles(array $filesHandle): self
-    {
-        foreach ($filesHandle as $v) {
-            $this->addFile($v);
-        }
-
-        return $this->process();
-    }
-
-    public function processFromArray(array $config): self
-    {
-        $this->addArray($config);
-
-        return $this->process();
     }
 
     /**
@@ -155,13 +119,13 @@ final class Config extends Data
                         ->toString()
                 );
             }
-            $this->data[$key] = $data[$key];
+            $this->data->setDataKey($key, $data[$key]);
         }
 
         return $this;
     }
 
-    private function validate()
+    public function validate(): self
     {
         $exceptions = [];
         foreach ($this->data as $k => $v) {
@@ -176,6 +140,8 @@ final class Config extends Data
         if ($exceptions != false) {
             throw new LogicException('Invalid configuration: '.implode('; ', $exceptions));
         }
+
+        return $this;
     }
 
     /**

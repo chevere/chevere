@@ -21,22 +21,25 @@ use Chevere\Message;
 /**
  * Runtime applies runtime config and provide data about the App Runtime.
  */
-final class Runtime extends Data
+final class Runtime
 {
     /** @var Config */
     private $config;
 
+    /** @var Data */
+    public $data;
+
     public function __construct(Config $config)
     {
-        parent::__construct();
+        $this->data = new Data();
         $this->config = $config;
         $this->runConfig($config);
     }
 
     private function runConfig(): self
     {
-        foreach ($this->config->getData() as $k => $v) {
-            if ($v === $this->getDataKey($k)) {
+        foreach ($this->config->data as $k => $v) {
+            if ($v === $this->data->getDataKey($k)) {
                 continue;
             }
             $fnName = 'set'.ucwords($k);
@@ -51,7 +54,7 @@ final class Runtime extends Data
     public function setLocale(string $locale): self
     {
         setlocale(LC_ALL, $locale);
-        $this->setDataKey(Config::LOCALE, $locale);
+        $this->data->setDataKey(Config::LOCALE, $locale);
 
         return $this;
     }
@@ -66,7 +69,7 @@ final class Runtime extends Data
                     ->toString()
             );
         }
-        $this->setDataKey(Config::DEFAULT_CHARSET, $charset);
+        $this->data->setDataKey(Config::DEFAULT_CHARSET, $charset);
 
         return $this;
     }
@@ -78,8 +81,8 @@ final class Runtime extends Data
         }
         // $types = $errorTypes ?? E_ALL ^ E_NOTICE;
         set_error_handler($errorHandler);
-        $this->setDataKey(Config::ERROR_HANDLER, $errorHandler);
-        $this->setDataKey(Config::ERROR_REPORTING_LEVEL, error_reporting());
+        $this->data->setDataKey(Config::ERROR_HANDLER, $errorHandler);
+        $this->data->setDataKey(Config::ERROR_REPORTING_LEVEL, error_reporting());
 
         return $this;
     }
@@ -89,8 +92,8 @@ final class Runtime extends Data
         restore_error_handler();
         $errorHandler = set_error_handler(function () { });
         restore_error_handler();
-        $this->setDataKey(Config::ERROR_HANDLER, $errorHandler);
-        $this->setDataKey(Config::ERROR_REPORTING_LEVEL, error_reporting());
+        $this->data->setDataKey(Config::ERROR_HANDLER, $errorHandler);
+        $this->data->setDataKey(Config::ERROR_REPORTING_LEVEL, error_reporting());
 
         return $this;
     }
@@ -101,7 +104,7 @@ final class Runtime extends Data
             return $this->restoreExceptionHandler();
         }
         set_exception_handler($exceptionHandler);
-        $this->setDataKey(Config::EXCEPTION_HANDLER, $exceptionHandler);
+        $this->data->setDataKey(Config::EXCEPTION_HANDLER, $exceptionHandler);
 
         return $this;
     }
@@ -111,7 +114,7 @@ final class Runtime extends Data
         restore_exception_handler();
         $handler = set_exception_handler(function () { });
         restore_exception_handler();
-        $this->setDataKey(Config::EXCEPTION_HANDLER, $handler);
+        $this->data->setDataKey(Config::EXCEPTION_HANDLER, $handler);
 
         return $this;
     }
@@ -129,7 +132,7 @@ final class Runtime extends Data
         if (!$tzs && !@date_default_timezone_set($utcId[0])) { // No UTC? My gosh....
             trigger_error("Invalid timezone identifier '$tzg'. Configure your PHP installation with a valid timezone identifier http://php.net/manual/en/timezones.php", E_USER_ERROR);
         }
-        $this->setDataKey(Config::TIMEZONE, $tzg);
+        $this->data->setDataKey(Config::TIMEZONE, $tzg);
 
         return $this;
     }
@@ -137,21 +140,21 @@ final class Runtime extends Data
     public function setTimeZone(string $timeZone): self
     {
         date_default_timezone_set($timeZone);
-        $this->setDataKey(Config::TIMEZONE, $timeZone);
+        $this->data->setDataKey(Config::TIMEZONE, $timeZone);
 
         return $this;
     }
 
     public function setUriScheme(string $scheme): self
     {
-        $this->setDataKey(Config::URI_SCHEME, $scheme);
+        $this->data->setDataKey(Config::URI_SCHEME, $scheme);
 
         return $this;
     }
 
     public function setDebug(int $debugLevel): self
     {
-        $this->setDataKey(Config::DEBUG, $debugLevel);
+        $this->data->setDataKey(Config::DEBUG, $debugLevel);
 
         return $this;
     }

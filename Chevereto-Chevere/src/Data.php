@@ -14,14 +14,12 @@ declare(strict_types=1);
 namespace Chevere;
 
 use Chevere\Interfaces\DataInterface;
-use Chevere\Traits\DataTrait;
-use IteratorAggregate;
-use Countable;
 use ArrayIterator;
 
-class Data implements DataInterface, IteratorAggregate, Countable
+class Data implements DataInterface
 {
-    use DataTrait;
+    /** @var array */
+    private $data;
 
     public function __construct(array $data = null)
     {
@@ -30,23 +28,80 @@ class Data implements DataInterface, IteratorAggregate, Countable
         }
     }
 
-    /**
-     * Returns an iterator for data.
-     *
-     * @return ArrayIterator An ArrayIterator instance
-     */
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->data);
     }
 
-    /**
-     * Returns the number of keys.
-     *
-     * @return int The number of keys
-     */
-    public function count()
+    public function count(): int
     {
         return count($this->data);
+    }
+
+    // TODO: Rename to 'set'
+    public function setData(array $data): DataInterface
+    {
+        $this->data = $data;
+
+        return $this;
+    }
+
+    // TODO: Rename to 'add'
+    public function addData(array $data): DataInterface
+    {
+        if (null == $this->data) {
+            $this->data = $data;
+        } else {
+            $this->data = array_replace_recursive($this->data, $data);
+        }
+
+        return $this;
+    }
+
+    // TODO: Rename to 'append'
+    public function appendData($var): DataInterface
+    {
+        $this->data[] = $var;
+
+        return $this;
+    }
+
+    // TODO: Rename to 'get'
+    public function getData(): ?array
+    {
+        return $this->data;
+    }
+
+    public function toArray(): array
+    {
+        return $this->data ?? [];
+    }
+
+    // TODO: Rename to 'has'
+    public function hasDataKey(string $key): bool
+    {
+        return array_key_exists($key, $this->data);
+    }
+
+    // TODO: Rename to 'setKey'
+    public function setDataKey(string $key, $var): DataInterface
+    {
+        $this->data[$key] = $var;
+
+        return $this;
+    }
+
+    // TODO: Rename to 'getKey'
+    public function getDataKey(string $key)
+    {
+        return $this->data[$key] ?? null;
+    }
+
+    // TODO: Rename to 'removeKey'
+    public function removeDataKey(string $key): DataInterface
+    {
+        unset($this->data[$key]);
+
+        return $this;
     }
 }

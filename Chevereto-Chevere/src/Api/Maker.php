@@ -117,7 +117,7 @@ final class Maker
             'GET' => GetController::class,
         ];
         $endpoint = new Endpoint($httpMethods);
-        $this->route = Route::bind($this->uri)
+        $this->route = (new Route($this->uri))
             ->setMethods($httpMethods)
             ->setId($this->basePath);
         $this->router->addRoute($this->route, $this->basePath);
@@ -188,7 +188,9 @@ final class Maker
             $endpoint = new Endpoint($httpMethods);
             /** @var string Full qualified route key for $pathComponent like /api/users/{user} */
             $endpointRouteKey = Str::ltail($pathComponent, '/');
-            $this->route = Route::bind($endpointRouteKey)->setId($pathComponent)->setMethods($endpoint->getHttpMethods());
+            $this->route = (new Route($endpointRouteKey))
+                ->setId($pathComponent)
+                ->setMethods($endpoint->getHttpMethods());
             // Define Route wildcard "where" if needed
             $resource = $this->resourcesMap[$pathComponent] ?? null;
             if (isset($resource)) {

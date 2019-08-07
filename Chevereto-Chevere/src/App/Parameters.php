@@ -18,7 +18,7 @@ use Chevere\ArrayFile;
 use Chevere\Data;
 use Chevere\Message;
 
-final class Parameters extends Data
+final class Parameters
 {
     const CONFIG_FILES = 'configFiles';
 
@@ -51,6 +51,9 @@ final class Parameters extends Data
     /** @var array The parameters array used to construct the object */
     private $parameters;
 
+    /** @var Data */
+    public $data;
+
     /** @var string|null The file source (for instances created using ::createFromFile) */
     // private $sourceFilepath;
 
@@ -62,8 +65,8 @@ final class Parameters extends Data
     {
         $this->arrayFile = $arrayFile;
         $this->parameters = $this->arrayFile->toArray();
+        $this->data = new Data($this->parameters);
         $this->validate();
-        $this->setData($this->parameters);
     }
 
     private function validate(): void

@@ -29,9 +29,9 @@ final class HeadController extends Controller
     public function __invoke()
     {
         $route = $this->app->route;
-        $methodCallabe = $route->getCallable('GET');
-        if ($methodCallabe) {
-            $this->invoke($methodCallabe);
+        $controller = $route->getController('GET');
+        if ($controller) {
+            $this->invoke($controller);
             $this->response->unsetContent();
             if (CLI) {
                 Console::cli()->out->block($this->response->getStatusString(), 'STATUS', 'fg=black;bg=green', ' ', true);

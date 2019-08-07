@@ -21,30 +21,38 @@ interface LoaderContract
     public function __construct();
 
     /**
-     * Forges a Request, wrapper for Symfony Request::create().
-     *
-     * @param string               $uri        The URI
-     * @param string               $method     The HTTP method
-     * @param array                $parameters The query (GET) or request (POST) parameters
-     * @param array                $cookies    The request cookies ($_COOKIE)
-     * @param array                $files      The request files ($_FILES)
-     * @param array                $server     The server parameters ($_SERVER)
-     * @param string|resource|null $content    The raw body data
+     * @param string $controller a fully-qualified controller name
      */
-    public function forgeHttpRequest(...$requestArguments): void;
-
     public function setController(string $controller): void;
 
+    /**
+     * @param array $arguments string arguments to pass to the controller
+     */
+    // TODO: $arguments Datastructure
+    public function setArguments(array $arguments): void;
+
+    /**
+     * @param Request $request
+     */
+    public function setRequest(Request $request): void;
+
+    /**
+     * @param Runtime @runtime
+     */
+    public static function setDefaultRuntime(Runtime $runtime);
+
+    /**
+     * Run the controller.
+     */
     public function run(): void;
 
     /**
-     * @param array $arguments string arguments captured or injected
+     * Retrieve the loaded Runtime.
      */
-    public function setArguments(array $arguments): void;
-
     public static function runtime(): Runtime;
 
+    /**
+     * Retrieve the loaded Request.
+     */
     public static function request(): Request;
-
-    public static function setDefaultRuntime(Runtime $runtime);
 }

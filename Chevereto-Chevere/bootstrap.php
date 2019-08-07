@@ -50,6 +50,8 @@ if ('cli' == php_sapi_name()) {
     Console::init();
 }
 
+define('Chevere\CLI', Console::isRunning());
+
 const DEFAULT_ERROR_HANDLING = [
     Config::DEBUG => 1,
     Config::ERROR_HANDLER => 'Chevere\ErrorHandler\ErrorHandler::error',
@@ -61,10 +63,9 @@ const DEFAULT_ERROR_HANDLING = [
  */
 new Runtime(
     (new Config())
-        ->processFromArray(DEFAULT_ERROR_HANDLING)
+        ->addArray(DEFAULT_ERROR_HANDLING)
+        ->validate()
 );
-
-define('Chevere\CLI', Console::isRunning());
 
 Loader::setDefaultRuntime(
     new Runtime(
@@ -76,6 +77,6 @@ Loader::setDefaultRuntime(
                 Config::URI_SCHEME => 'https',
             ] + DEFAULT_ERROR_HANDLING)
             ->addFile(App::FILEHANDLE_CONFIG)
-            ->process()
+            ->validate()
     )
 );

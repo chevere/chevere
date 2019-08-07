@@ -16,17 +16,18 @@ namespace Chevere\App;
 use LogicException;
 use const Chevere\ROOT_PATH;
 use const Chevere\App\PATH as AppPath;
-use Chevere\HttpFoundation\Response;
 use Chevere\File;
+use Chevere\Message;
+use Chevere\Contracts\App\AppContract;
+use Chevere\Controller\ArgumentsWrap as ControllerArgumentsWrap;
+use Chevere\HttpFoundation\Response;
 use Chevere\Interfaces\ControllerInterface;
 use Chevere\Route\Route;
-use Chevere\Controller\ArgumentsWrap as ControllerArgumentsWrap;
-use Chevere\Message;
 
 /**
- * App contains the whole thing.
+ * The app container.
  */
-final class App
+final class App implements AppContract
 {
     const BUILD_FILEPATH = ROOT_PATH.AppPath.'build';
     const NAMESPACES = ['App', 'Chevere'];
@@ -44,18 +45,19 @@ final class App
     /** @var Route */
     public $route;
 
-    public function __construct()
-    {
-    }
+    /**
+     * {@inheritdoc}
+     */
+    // public function getBuildTime(): ?string
+    // {
+    //     return File::exists(self::BUILD_FILEPATH) ? (string) file_get_contents(self::BUILD_FILEPATH) : null;
+    // }
 
-    public function getBuildTime(): ?string
-    {
-        return File::exists(self::BUILD_FILEPATH) ? (string) file_get_contents(self::BUILD_FILEPATH) : null;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function run(string $controller): ControllerInterface
     {
-        // FIXME: Unified validation (Controller validator)
         if (!is_subclass_of($controller, ControllerInterface::class)) {
             throw new LogicException(
                 (new Message('Callable %s must represent a class implementing the %i interface.'))
@@ -84,10 +86,5 @@ final class App
         $controller(...$controllerArguments);
 
         return $controller;
-    }
-
-    public function getHash(): string
-    {
-        return $this->getBuildTime();
     }
 }

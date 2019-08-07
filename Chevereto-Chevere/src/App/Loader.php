@@ -23,7 +23,6 @@ use Chevere\Console\Console;
 use Chevere\HttpFoundation\Request;
 use Chevere\HttpFoundation\Response;
 use Chevere\Route\ArrayFileWrap as RouteArrayFileWrap;
-use Chevere\Route\Route;
 use Chevere\Router\Router;
 use Chevere\Runtime\Runtime;
 use Chevere\Interfaces\RenderableInterface;
@@ -71,27 +70,7 @@ final class Loader implements LoaderContract
 
         if (Console::bind($this)) {
             Console::run();
-        } else {
-            $this->setRequest(Request::createFromGlobals());
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function forgeHttpRequest(...$requestArguments): void
-    {
-        if (isset($this->request)) {
-            throw new LogicException('Unable to forge request when the request has been already set.');
-        }
-        if (!in_array($requestArguments[1], Route::HTTP_METHODS)) {
-            throw new LogicException(
-                (new Message('Unknown HTTP request method %s'))
-                    ->code('%s', $requestArguments[1])
-                    ->toString()
-            );
-        }
-        $this->setRequest(Request::create(...$requestArguments));
     }
 
     /**
@@ -105,8 +84,30 @@ final class Loader implements LoaderContract
     /**
      * {@inheritdoc}
      */
+    public function setArguments(array $arguments): void
+    {
+        $this->arguments = $arguments;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setRequest(Request $request): void
+    {
+        $this->request = $request;
+
+        $pathinfo = ltrim($this->request->getPathInfo(), '/');
+        $this->request->attributes->set('requestArray', explode('/', $pathinfo));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function run(): void
     {
+        if (!isset($this->request)) {
+            $this->setRequest(Request::createFromGlobals());
+        }
         if (isset($this->ran)) {
             throw new LogicException(
                 (new Message('The method %s has been already called.'))
@@ -121,14 +122,6 @@ final class Loader implements LoaderContract
         if (isset($this->controller)) {
             $this->runController($this->controller);
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setArguments(array $arguments): void
-    {
-        $this->arguments = $arguments;
     }
 
     /**
@@ -163,39 +156,25 @@ final class Loader implements LoaderContract
 
     private function applyParameters(Parameters $parameters)
     {
-        // $this->processConfigFiles($parameters->getDataKey(Parameters::CONFIG_FILES));
-        $api = $parameters->getDataKey(Parameters::API);
+        // $this->processConfigFiles($parameters->data->getDataKey(Parameters::CONFIG_FILES));
+        $api = $parameters->data->getDataKey(Parameters::API);
         if (isset($api)) {
             $this->processApi($api);
         }
-        $routes = $parameters->getDatakey(Parameters::ROUTES);
+        $routes = $parameters->data->getDatakey(Parameters::ROUTES);
         if (isset($routes)) {
             $this->processRoutes($routes);
         }
     }
 
-    private function setRequest(Request $request): void
-    {
-        $this->request = $request;
-
-        $pathinfo = ltrim($this->request->getPathInfo(), '/');
-        $this->request->attributes->set('requestArray', explode('/', $pathinfo));
-    }
-
     private function processResolveCallable(string $pathInfo): void
     {
-        // try {
         $this->app->route = $this->router->resolve($pathInfo);
-        $this->controller = $this->app->route->getCallable($this->request->getMethod());
+        $this->controller = $this->app->route->getController($this->request->getMethod());
         $routerArgs = $this->router->arguments;
         if (!isset($this->arguments) && isset($routerArgs)) {
             $this->setArguments($routerArgs);
         }
-        // } catch (Throwable $e) {
-        //     echo 'Exception at App: '.$e->getCode();
-
-        //     return;
-        // }
     }
 
     private function runController(string $controller): void

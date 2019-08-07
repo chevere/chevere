@@ -21,7 +21,6 @@ use Chevere\Route\src\KeyValidation;
 use Chevere\Route\src\Wildcards;
 use Chevere\Route\src\WildcardValidation;
 use Chevere\Controllers\HeadController;
-// use Chevere\Traits\CallableTrait;
 use Chevere\Interfaces\ControllerInterface;
 use Chevere\Utility\Str;
 use Chevere\Interfaces\RouteInterface;
@@ -33,8 +32,6 @@ use Chevere\Interfaces\RouteInterface;
 
 final class Route implements RouteInterface
 {
-    // use CallableTrait;
-
     /** @const Array containing all the HTTP methods. */
     const HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'COPY', 'HEAD', 'OPTIONS', 'LINK', 'UNLINK', 'PURGE', 'LOCK', 'UNLOCK', 'PROPFIND', 'VIEW', 'TRACE', 'CONNECT'];
 
@@ -65,10 +62,10 @@ final class Route implements RouteInterface
     /** @var array Where clauses based on wildcards */
     public $wheres;
 
-    /** @var array An array containg ['methodName' => 'callable',] */
+    /** @var array ['methodName' => 'controller',] */
     public $methods;
 
-    /** @var array An array containg Route middlewares */
+    /** @var array ['middleware1', 'middleware2'] */
     public $middlewares;
 
     /** @var array */
@@ -92,13 +89,12 @@ final class Route implements RouteInterface
     /**
      * Route constructor.
      *
-     * @param string $uri      Route uri (key string)
-     * @param string $callable Callable for GET
+     * @param string $uri        Route uri (key string)
+     * @param string $controller Callable for GET
      */
-    public function __construct(string $uri, string $callable = null)
+    public function __construct(string $uri, string $controller = null)
     {
         $this->uri = $uri;
-        // TODO: Try, to catch the message 9hehe
         $keyValidation = new KeyValidation($this->uri);
         $this->maker = $this->getMakerData();
         if ($keyValidation->hasHandlebars) {
@@ -110,8 +106,8 @@ final class Route implements RouteInterface
             $this->set = $this->uri;
         }
         $this->handleType();
-        if (isset($callable)) {
-            $this->setMethod('GET', $callable);
+        if (isset($controller)) {
+            $this->setMethod('GET', $controller);
         }
     }
 
@@ -229,22 +225,20 @@ final class Route implements RouteInterface
     }
 
     /**
-     * Get a defined route callable.
-     *
      * @param string $httpMethod an HTTP method
      */
-    public function getCallable(string $httpMethod): string
+    public function getController(string $httpMethod): string
     {
-        $callable = $this->methods[$httpMethod] ?? null;
-        if (!isset($callable)) {
+        $controller = $this->methods[$httpMethod] ?? null;
+        if (!isset($controller)) {
             throw new LogicException(
-                (new Message('No callable is associated to HTTP method %s.'))
+                (new Message('No controller is associated to HTTP method %s.'))
                     ->code('%s', $httpMethod)
                     ->toString()
             );
         }
 
-        return $callable;
+        return $controller;
     }
 
     /**
@@ -299,10 +293,10 @@ final class Route implements RouteInterface
      * @param string $key      route key
      * @param string $callable Callable string
      */
-    public static function bind(string $key, string $callable = null, string $rootContext = null): self
-    {
-        return new static(...func_get_args());
-    }
+    // public static function bind(string $key, string $callable = null, string $rootContext = null): self
+    // {
+    //     return new static(...func_get_args());
+    // }
 
     private function getMakerData(): array
     {

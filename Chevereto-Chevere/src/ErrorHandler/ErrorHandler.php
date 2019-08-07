@@ -148,7 +148,7 @@ class ErrorHandler implements ErrorHandlerInterface
             //shh
         }
         $this->runtimeInstance = Loader::runtime();
-        $this->isDebugEnabled = (bool) $this->runtimeInstance->getDataKey('debug');
+        $this->isDebugEnabled = (bool) $this->runtimeInstance->data->getDataKey('debug');
         $this->setloadedConfigFiles($this->runtimeInstance->getRuntimeConfig()->getLoadedFilepaths());
         $this->logDateFolderFormat = static::LOG_DATE_FOLDER_FORMAT;
 

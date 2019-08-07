@@ -15,7 +15,7 @@ namespace Chevere;
 
 use Chevere\Traits\PrintableTrait;
 
-final class Json extends Data implements Interfaces\PrintableInterface
+final class Json implements Interfaces\PrintableInterface
 {
     use PrintableTrait;
 
@@ -36,11 +36,16 @@ final class Json extends Data implements Interfaces\PrintableInterface
     private $printable;
 
     public $content;
+
     /**
      * JSON data constructor.
      *
      * @param array $data data array
      */
+    public function __construct()
+    {
+        $this->data = new Data();
+    }
 
     /**
      * Set the JSON response data.
@@ -75,8 +80,9 @@ final class Json extends Data implements Interfaces\PrintableInterface
         $output = [
             static::RESPONSE => $this->response,
         ];
-        if (isset($this->data)) {
-            $output[static::DATA] = $this->data;
+        $array = $this->data->toArray();
+        if (isset($array)) {
+            $output[static::DATA] = $array;
         }
         $jsonEncode = json_encode($output, JSON_PRETTY_PRINT);
         if (!$jsonEncode) {

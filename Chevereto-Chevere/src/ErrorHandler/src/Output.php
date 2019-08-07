@@ -93,10 +93,10 @@ class Output
                 foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
                     $error[$v] = $this->getTemplateTag($v);
                 }
-                $json->setDataKey('error', $error);
+                $json->data->setDataKey('error', $error);
                 break;
         }
-        $json->setDataKey('log', $log);
+        $json->data->setDataKey('log', $log);
         $json->setResponse(...$response);
         $this->output = (string) $json;
     }

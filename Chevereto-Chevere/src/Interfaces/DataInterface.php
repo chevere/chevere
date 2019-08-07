@@ -13,10 +13,33 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces;
 
-interface DataInterface extends ToArrayInterface
-{
-    // public function addDataKey(string $key, $var);
-    public function setDataKey(string $key, $var);
+use ArrayIterator;
+use Countable;
+use IteratorAggregate;
 
-    public function removeDataKey(string $key);
+interface DataInterface extends ToArrayInterface, IteratorAggregate, Countable
+{
+    public function __construct(array $data = null);
+
+    public function getIterator(): ArrayIterator;
+
+    public function count(): int;
+
+    public function setData(array $data): DataInterface;
+
+    public function addData(array $data): DataInterface;
+
+    public function appendData($var): DataInterface;
+
+    public function getData(): ?array;
+
+    public function toArray(): array;
+
+    public function hasDataKey(string $key): bool;
+
+    public function setDataKey(string $key, $var): DataInterface;
+
+    public function getDataKey(string $key);
+
+    public function removeDataKey(string $key): DataInterface;
 }
