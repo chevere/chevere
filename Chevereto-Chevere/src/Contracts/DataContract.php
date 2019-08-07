@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Interfaces;
+namespace Chevere\Contracts;
 
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 
-interface DataInterface extends ToArrayInterface, IteratorAggregate, Countable
+interface DataContract extends ToArrayContract, IteratorAggregate, Countable
 {
     public function __construct(array $data = null);
 
@@ -25,11 +25,11 @@ interface DataInterface extends ToArrayInterface, IteratorAggregate, Countable
 
     public function count(): int;
 
-    public function set(array $data): DataInterface;
+    public function set(array $data): DataContract;
 
-    public function add(array $data): DataInterface;
+    public function add(array $data): DataContract;
 
-    public function append($var): DataInterface;
+    public function append($var): DataContract;
 
     public function get(): ?array;
 
@@ -37,9 +37,9 @@ interface DataInterface extends ToArrayInterface, IteratorAggregate, Countable
 
     public function hasKey(string $key): bool;
 
-    public function setKey(string $key, $var): DataInterface;
+    public function setKey(string $key, $var): DataContract;
 
     public function getKey(string $key);
 
-    public function removeKey(string $key): DataInterface;
+    public function removeKey(string $key): DataContract;
 }

@@ -19,7 +19,7 @@ use Roave\BetterReflection\BetterReflection;
 use Chevere\Message;
 use Chevere\Api\Api;
 use Chevere\Utility\Str;
-use Chevere\Interfaces\ToArrayInterface;
+use Chevere\Contracts\ToArrayContract;
 use Chevere\Interfaces\ControllerInterface;
 use Chevere\Interfaces\ControllerResourceInterface;
 use Chevere\Interfaces\CreateFromString;
@@ -28,7 +28,7 @@ use Chevere\Interfaces\ControllerRelationshipInterface;
 /**
  * Provides information about any Controller implementing ControllerInterface interface.
  */
-final class Inspect implements ToArrayInterface
+final class Inspect implements ToArrayContract
 {
     const METHOD_ROOT_PREFIX = Api::METHOD_ROOT_PREFIX;
 

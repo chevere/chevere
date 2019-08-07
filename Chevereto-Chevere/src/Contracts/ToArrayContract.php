@@ -11,9 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Interfaces;
+namespace Chevere\Contracts;
 
-interface ToArrayInterface
+interface ToArrayContract
 {
     /**
      * Returns an array representing the object exposed data as array.

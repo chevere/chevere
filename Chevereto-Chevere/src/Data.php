@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere;
 
-use Chevere\Interfaces\DataInterface;
 use ArrayIterator;
+use Chevere\Contracts\DataContract;
 
-class Data implements DataInterface
+class Data implements DataContract
 {
     /** @var array */
     private $data;
@@ -38,14 +38,14 @@ class Data implements DataInterface
         return count($this->data);
     }
 
-    public function set(array $data): DataInterface
+    public function set(array $data): DataContract
     {
         $this->data = $data;
 
         return $this;
     }
 
-    public function add(array $data): DataInterface
+    public function add(array $data): DataContract
     {
         if (null == $this->data) {
             $this->data = $data;
@@ -56,7 +56,7 @@ class Data implements DataInterface
         return $this;
     }
 
-    public function append($var): DataInterface
+    public function append($var): DataContract
     {
         $this->data[] = $var;
 
@@ -78,7 +78,7 @@ class Data implements DataInterface
         return array_key_exists($key, $this->data);
     }
 
-    public function setKey(string $key, $var): DataInterface
+    public function setKey(string $key, $var): DataContract
     {
         $this->data[$key] = $var;
 
@@ -90,7 +90,7 @@ class Data implements DataInterface
         return $this->data[$key] ?? null;
     }
 
-    public function removeKey(string $key): DataInterface
+    public function removeKey(string $key): DataContract
     {
         unset($this->data[$key]);
 
