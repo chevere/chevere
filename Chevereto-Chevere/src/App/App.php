@@ -78,7 +78,7 @@ final class App implements AppContract
 
         if (isset($this->arguments)) {
             $wrap = new ControllerArgumentsWrap($controller, $this->arguments);
-            $controllerArguments = $wrap->getArguments();
+            $controllerArguments = $wrap->arguments();
         } else {
             $controllerArguments = [];
         }

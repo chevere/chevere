@@ -17,11 +17,12 @@ use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionFunctionAbstract;
 use Chevere\Contracts\Controller\ControllerContract;
+use Chevere\Contracts\Controller\ArgumentsWrapContract;
 
 /**
  * ArgumentsWrap provides a object oriented way to retrieve typehinted arguments for the controller.
  */
-final class ArgumentsWrap
+final class ArgumentsWrap implements ArgumentsWrapContract
 {
     /** @var array Typehinted arguments ready to use */
     private $typedArguments;
@@ -47,7 +48,7 @@ final class ArgumentsWrap
         }
     }
 
-    public function getArguments(): array
+    public function arguments(): array
     {
         return $this->arguments;
     }

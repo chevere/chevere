@@ -26,6 +26,8 @@ use Chevere\Route\ArrayFileWrap as RouteArrayFileWrap;
 use Chevere\Router\Router;
 use Chevere\Runtime\Runtime;
 use Chevere\Interfaces\RenderableInterface;
+use Chevere\Contracts\App\AppContract;
+use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\App\LoaderContract;
 
 final class Loader implements LoaderContract
@@ -33,7 +35,7 @@ final class Loader implements LoaderContract
     /** @var Runtime */
     private static $runtime;
 
-    /** @var App */
+    /** @var AppContract */
     public $app;
 
     /** @var ApiMaker */
@@ -154,7 +156,7 @@ final class Loader implements LoaderContract
         self::$runtime = $runtime;
     }
 
-    private function applyParameters(Parameters $parameters)
+    private function applyParameters(ParametersContract $parameters)
     {
         // $this->processConfigFiles($parameters->data->getKey(Parameters::CONFIG_FILES));
         $api = $parameters->data->getKey(Parameters::API);

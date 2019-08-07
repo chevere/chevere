@@ -19,8 +19,8 @@ use Roave\BetterReflection\BetterReflection;
 use Chevere\Message;
 use Chevere\Api\Api;
 use Chevere\Utility\Str;
-use Chevere\Contracts\ToArrayContract;
 use Chevere\Contracts\Controller\ControllerContract;
+use Chevere\Contracts\Controller\InspectContract;
 use Chevere\Interfaces\ControllerResourceInterface;
 use Chevere\Interfaces\CreateFromString;
 use Chevere\Interfaces\ControllerRelationshipInterface;
@@ -28,7 +28,7 @@ use Chevere\Interfaces\ControllerRelationshipInterface;
 /**
  * Provides information about any Controller implementing ControllerContract interface.
  */
-final class Inspect implements ToArrayContract
+final class Inspect implements InspectContract
 {
     const METHOD_ROOT_PREFIX = Api::METHOD_ROOT_PREFIX;
 
@@ -96,7 +96,7 @@ final class Inspect implements ToArrayContract
     public $isRelatedResource;
 
     /**
-     * @param string $className A class name implementing the ControllerContract
+     * {@inheritdoc}
      */
     public function __construct(string $className)
     {
