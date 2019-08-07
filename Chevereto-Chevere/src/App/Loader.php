@@ -156,12 +156,12 @@ final class Loader implements LoaderContract
 
     private function applyParameters(Parameters $parameters)
     {
-        // $this->processConfigFiles($parameters->data->getDataKey(Parameters::CONFIG_FILES));
-        $api = $parameters->data->getDataKey(Parameters::API);
+        // $this->processConfigFiles($parameters->data->getKey(Parameters::CONFIG_FILES));
+        $api = $parameters->data->getKey(Parameters::API);
         if (isset($api)) {
             $this->processApi($api);
         }
-        $routes = $parameters->data->getDatakey(Parameters::ROUTES);
+        $routes = $parameters->data->getKey(Parameters::ROUTES);
         if (isset($routes)) {
             $this->processRoutes($routes);
         }

@@ -38,16 +38,14 @@ class Data implements DataInterface
         return count($this->data);
     }
 
-    // TODO: Rename to 'set'
-    public function setData(array $data): DataInterface
+    public function set(array $data): DataInterface
     {
         $this->data = $data;
 
         return $this;
     }
 
-    // TODO: Rename to 'add'
-    public function addData(array $data): DataInterface
+    public function add(array $data): DataInterface
     {
         if (null == $this->data) {
             $this->data = $data;
@@ -58,16 +56,14 @@ class Data implements DataInterface
         return $this;
     }
 
-    // TODO: Rename to 'append'
-    public function appendData($var): DataInterface
+    public function append($var): DataInterface
     {
         $this->data[] = $var;
 
         return $this;
     }
 
-    // TODO: Rename to 'get'
-    public function getData(): ?array
+    public function get(): ?array
     {
         return $this->data;
     }
@@ -77,28 +73,24 @@ class Data implements DataInterface
         return $this->data ?? [];
     }
 
-    // TODO: Rename to 'has'
-    public function hasDataKey(string $key): bool
+    public function hasKey(string $key): bool
     {
         return array_key_exists($key, $this->data);
     }
 
-    // TODO: Rename to 'setKey'
-    public function setDataKey(string $key, $var): DataInterface
+    public function setKey(string $key, $var): DataInterface
     {
         $this->data[$key] = $var;
 
         return $this;
     }
 
-    // TODO: Rename to 'getKey'
-    public function getDataKey(string $key)
+    public function getKey(string $key)
     {
         return $this->data[$key] ?? null;
     }
 
-    // TODO: Rename to 'removeKey'
-    public function removeDataKey(string $key): DataInterface
+    public function removeKey(string $key): DataInterface
     {
         unset($this->data[$key]);
 

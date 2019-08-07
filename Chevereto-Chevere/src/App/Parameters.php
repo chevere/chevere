@@ -17,8 +17,9 @@ use LogicException;
 use Chevere\ArrayFile;
 use Chevere\Data;
 use Chevere\Message;
+use Chevere\Contracts\App\ParametersContract;
 
-final class Parameters
+final class Parameters implements ParametersContract
 {
     const CONFIG_FILES = 'configFiles';
 

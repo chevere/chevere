@@ -25,21 +25,21 @@ interface DataInterface extends ToArrayInterface, IteratorAggregate, Countable
 
     public function count(): int;
 
-    public function setData(array $data): DataInterface;
+    public function set(array $data): DataInterface;
 
-    public function addData(array $data): DataInterface;
+    public function add(array $data): DataInterface;
 
-    public function appendData($var): DataInterface;
+    public function append($var): DataInterface;
 
-    public function getData(): ?array;
+    public function get(): ?array;
 
     public function toArray(): array;
 
-    public function hasDataKey(string $key): bool;
+    public function hasKey(string $key): bool;
 
-    public function setDataKey(string $key, $var): DataInterface;
+    public function setKey(string $key, $var): DataInterface;
 
-    public function getDataKey(string $key);
+    public function getKey(string $key);
 
-    public function removeDataKey(string $key): DataInterface;
+    public function removeKey(string $key): DataInterface;
 }

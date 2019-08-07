@@ -30,8 +30,9 @@ use Chevere\Controller\Inspect as ControllerInspect;
 use Chevere\Controllers\Api\HeadController;
 use Chevere\Controllers\Api\OptionsController;
 use Chevere\Controllers\Api\GetController;
+use Chevere\Contracts\Api\MakerContract;
 
-final class Maker
+final class Maker implements MakerContract
 {
     /** @var array HTTP methods accepted by this filter [HTTP_METHOD,] */
     const ACCEPT_METHODS = Route::HTTP_METHODS;
@@ -82,9 +83,7 @@ final class Maker
     }
 
     /**
-     * Automatically finds controllers in the given path and generate the API route binding.
-     *
-     * @param string $pathIdentifier path identifier representing the dir containing API controllers (src/Api/)
+     * {@inheritdoc}
      */
     public function register(string $pathIdentifier)
     {

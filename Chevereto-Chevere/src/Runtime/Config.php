@@ -119,7 +119,7 @@ final class Config
                         ->toString()
                 );
             }
-            $this->data->setDataKey($key, $data[$key]);
+            $this->data->setKey($key, $data[$key]);
         }
 
         return $this;

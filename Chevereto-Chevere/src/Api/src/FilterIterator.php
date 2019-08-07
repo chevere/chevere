@@ -14,22 +14,20 @@ declare(strict_types=1);
 namespace Chevere\Api\src;
 
 use RecursiveFilterIterator;
+use Chevere\Contracts\Api\src\FilterIteratorContract;
 
 /**
  * Provides filtering for the Api register process (directory scan).
  */
-final class FilterIterator extends RecursiveFilterIterator
+final class FilterIterator extends RecursiveFilterIterator implements FilterIteratorContract
 {
     /** @var array Accepted files array [GET.php, _GET.php, POST.php, ...] */
     private $acceptFilenames;
 
     /**
-     * @param array  $methods      Accepted HTTP methods [GET,POST,etc.]
-     * @param string $methodPrefix Method prefix used for root endpoint (no resource)
-     *
-     * @return self
+     * {@inheritdoc}
      */
-    public function generateAcceptedFilenames(array $methods, string $methodPrefix): self
+    public function generateAcceptedFilenames(array $methods, string $methodPrefix): FilterIteratorContract
     {
         foreach ($methods as $v) {
             $this->acceptFilenames[] = $v.'.php';
@@ -40,7 +38,7 @@ final class FilterIterator extends RecursiveFilterIterator
     }
 
     /**
-     * Overrides default getChildren to support the filter.
+     * {@inheritdoc}
      */
     public function getChildren()
     {
@@ -51,7 +49,7 @@ final class FilterIterator extends RecursiveFilterIterator
     }
 
     /**
-     * The filter accept function.
+     * {@inheritdoc}
      */
     public function accept(): bool
     {

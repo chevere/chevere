@@ -15,11 +15,12 @@ namespace Chevere\Api;
 
 use LogicException;
 use Chevere\Message;
+use Chevere\Contracts\Api\ApiContract;
 
 /**
- * Api provides a static method to read the exposed API.
+ * Api provides a static method to read the exposed API inside the app runtime.
  */
-final class Api
+final class Api implements ApiContract
 {
     /** @var string Prefix used for endpoints without a defined resource (/endpoint) */
     const METHOD_ROOT_PREFIX = '_';
@@ -32,7 +33,7 @@ final class Api
         self::$api = $api->api();
     }
 
-    public static function endpoint(string $uriKey): ?array
+    public static function endpoint(string $uriKey): array
     {
         $key = self::endpointKey($uriKey);
         if ($key) {
@@ -41,7 +42,11 @@ final class Api
             return self::$api[$key][$subKey];
         }
 
-        return null;
+        throw new LogicException(
+            (new Message('No endpoint defined for the %s URI.'))
+                ->code('%s', $uriKey)
+                ->toString()
+        );
     }
 
     public static function endpointKey(string $uri): string
@@ -51,7 +56,7 @@ final class Api
 
         if (!isset(self::$api[$base])) {
             throw new LogicException(
-                (new Message('No API for the %s URI.'))
+                (new Message('No API endpoint key for the %s URI.'))
                     ->code('%s', $uri)
                     ->toString()
             );

@@ -15,11 +15,12 @@ namespace Chevere\Api\src;
 
 use Chevere\Controllers\Api\OptionsController;
 use Chevere\Controllers\Api\HeadController;
+use Chevere\Contracts\Api\src\EndpointContract;
 
 /**
  * Creates endpoints from ControlerInspect object.
  */
-final class Endpoint
+final class Endpoint implements EndpointContract
 {
     /** @var array */
     private $array;
@@ -45,7 +46,7 @@ final class Endpoint
         return $this->array;
     }
 
-    public function setResource(?array $resource): void
+    public function setResource(array $resource): void
     {
         $this->array['resource'] = $resource;
     }

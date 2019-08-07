@@ -39,7 +39,7 @@ final class Runtime
     private function runConfig(): self
     {
         foreach ($this->config->data as $k => $v) {
-            if ($v === $this->data->getDataKey($k)) {
+            if ($v === $this->data->getKey($k)) {
                 continue;
             }
             $fnName = 'set'.ucwords($k);
@@ -54,7 +54,7 @@ final class Runtime
     public function setLocale(string $locale): self
     {
         setlocale(LC_ALL, $locale);
-        $this->data->setDataKey(Config::LOCALE, $locale);
+        $this->data->setKey(Config::LOCALE, $locale);
 
         return $this;
     }
@@ -69,7 +69,7 @@ final class Runtime
                     ->toString()
             );
         }
-        $this->data->setDataKey(Config::DEFAULT_CHARSET, $charset);
+        $this->data->setKey(Config::DEFAULT_CHARSET, $charset);
 
         return $this;
     }
@@ -81,8 +81,8 @@ final class Runtime
         }
         // $types = $errorTypes ?? E_ALL ^ E_NOTICE;
         set_error_handler($errorHandler);
-        $this->data->setDataKey(Config::ERROR_HANDLER, $errorHandler);
-        $this->data->setDataKey(Config::ERROR_REPORTING_LEVEL, error_reporting());
+        $this->data->setKey(Config::ERROR_HANDLER, $errorHandler);
+        $this->data->setKey(Config::ERROR_REPORTING_LEVEL, error_reporting());
 
         return $this;
     }
@@ -92,8 +92,8 @@ final class Runtime
         restore_error_handler();
         $errorHandler = set_error_handler(function () { });
         restore_error_handler();
-        $this->data->setDataKey(Config::ERROR_HANDLER, $errorHandler);
-        $this->data->setDataKey(Config::ERROR_REPORTING_LEVEL, error_reporting());
+        $this->data->setKey(Config::ERROR_HANDLER, $errorHandler);
+        $this->data->setKey(Config::ERROR_REPORTING_LEVEL, error_reporting());
 
         return $this;
     }
@@ -104,7 +104,7 @@ final class Runtime
             return $this->restoreExceptionHandler();
         }
         set_exception_handler($exceptionHandler);
-        $this->data->setDataKey(Config::EXCEPTION_HANDLER, $exceptionHandler);
+        $this->data->setKey(Config::EXCEPTION_HANDLER, $exceptionHandler);
 
         return $this;
     }
@@ -114,7 +114,7 @@ final class Runtime
         restore_exception_handler();
         $handler = set_exception_handler(function () { });
         restore_exception_handler();
-        $this->data->setDataKey(Config::EXCEPTION_HANDLER, $handler);
+        $this->data->setKey(Config::EXCEPTION_HANDLER, $handler);
 
         return $this;
     }
@@ -132,7 +132,7 @@ final class Runtime
         if (!$tzs && !@date_default_timezone_set($utcId[0])) { // No UTC? My gosh....
             trigger_error("Invalid timezone identifier '$tzg'. Configure your PHP installation with a valid timezone identifier http://php.net/manual/en/timezones.php", E_USER_ERROR);
         }
-        $this->data->setDataKey(Config::TIMEZONE, $tzg);
+        $this->data->setKey(Config::TIMEZONE, $tzg);
 
         return $this;
     }
@@ -140,21 +140,21 @@ final class Runtime
     public function setTimeZone(string $timeZone): self
     {
         date_default_timezone_set($timeZone);
-        $this->data->setDataKey(Config::TIMEZONE, $timeZone);
+        $this->data->setKey(Config::TIMEZONE, $timeZone);
 
         return $this;
     }
 
     public function setUriScheme(string $scheme): self
     {
-        $this->data->setDataKey(Config::URI_SCHEME, $scheme);
+        $this->data->setKey(Config::URI_SCHEME, $scheme);
 
         return $this;
     }
 
     public function setDebug(int $debugLevel): self
     {
-        $this->data->setDataKey(Config::DEBUG, $debugLevel);
+        $this->data->setKey(Config::DEBUG, $debugLevel);
 
         return $this;
     }
