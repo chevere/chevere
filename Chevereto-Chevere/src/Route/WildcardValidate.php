@@ -32,7 +32,7 @@ final class WildcardValidate
     private $regex;
 
     /** @var string */
-    private $uri;
+    private $path;
 
     /** @var array */
     private $routeWheres;
@@ -42,7 +42,7 @@ final class WildcardValidate
         $this->wildcardName = $wildcardName;
         $this->wildcardString = "{{$wildcardName}}";
         $this->regex = $regex;
-        $this->uri = $route->path;
+        $this->path = $route->path;
         $this->routeWheres = $route->wheres;
         $this->handleValidateFormat();
         $this->handleValidateMatch();
@@ -68,11 +68,11 @@ final class WildcardValidate
 
     private function handleValidateMatch()
     {
-        if (!$this->validateMatch($this->wildcardName, $this->uri)) {
+        if (!$this->validateMatch($this->wildcardName, $this->path)) {
             throw new LogicException(
                 (new Message("Wildcard %s doesn't exists in %r."))
                     ->code('%s', $this->wildcardString)
-                    ->code('%r', $this->uri)
+                    ->code('%r', $this->path)
                     ->toString()
             );
         }

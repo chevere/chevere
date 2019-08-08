@@ -70,7 +70,7 @@ final class Maker implements MakerContract
     private $route;
 
     /** @var string */
-    private $uri;
+    private $path;
 
     public function __construct(RouterContract $router)
     {
@@ -108,7 +108,7 @@ final class Maker implements MakerContract
         $this->processRecursiveIteration();
         $this->processRoutesMap();
 
-        $this->uri = '/'.$this->basePath;
+        $this->path = '/'.$this->basePath;
 
         $methods = new Methods();
         $methods->add(new Method('HEAD', HeadController::class));
@@ -116,7 +116,7 @@ final class Maker implements MakerContract
         $methods->add(new Method('GET', GetController::class));
 
         $endpoint = new Endpoint($methods);
-        $this->route = (new Route($this->uri))
+        $this->route = (new Route($this->path))
             ->setMethods($methods)
             ->setId($this->basePath);
         $this->router->addRoute($this->route, $this->basePath);

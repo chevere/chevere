@@ -53,7 +53,7 @@ final class Endpoint implements EndpointContract
         $this->array['resource'] = $resource;
     }
 
-    private function fillEndpointOptions(array &$endpointApi)
+    private function fillEndpointOptions(array &$endpointApi): void
     {
         foreach ($this->methods as $method) {
             $httpMethod = $method->method();
@@ -68,7 +68,7 @@ final class Endpoint implements EndpointContract
         }
     }
 
-    private function autofillMissingOptionsHead(array &$endpointApi)
+    private function autofillMissingOptionsHead(array &$endpointApi): void
     {
         foreach ([
             'OPTIONS' => [

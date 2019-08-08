@@ -18,8 +18,9 @@ use Chevere\Message;
 use Chevere\Path;
 use Chevere\Utility\Str;
 use Chevere\Utility\Arr;
+use Chevere\Contracts\Route\WildcardsContract;
 
-final class Wildcards
+final class Wildcards implements WildcardsContract
 {
     /** @var string The route path */
     private $path;

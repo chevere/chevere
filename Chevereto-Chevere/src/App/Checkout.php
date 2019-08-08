@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\App\src;
+namespace Chevere\App;
 
 use RuntimeException;
 use Chevere\Message;
-use Chevere\Contracts\App\src\CheckoutContract;
+use Chevere\Contracts\App\CheckoutContract;
 
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).

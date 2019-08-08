@@ -15,4 +15,13 @@ namespace Chevere\Contracts\Route;
 
 interface WildcardsContract
 {
+    public function __construct(string $path);
+
+    public function set(): string;
+
+    public function matches(): array;
+
+    public function wildcards(): array;
+
+    public function powerSet(): array;
 }

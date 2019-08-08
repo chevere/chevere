@@ -28,7 +28,7 @@ final class OptionsController extends Controller
     protected static $description = 'Retrieve endpoint OPTIONS.';
 
     /** @var string */
-    private $uri;
+    private $path;
 
     /** @var string */
     private $endpoint;
@@ -37,15 +37,15 @@ final class OptionsController extends Controller
     {
         $route = $this->app->route;
         if (isset($route)) {
-            $uri = $route->path;
+            $path = $route->path;
         }
-        if (!isset($uri)) {
+        if (!isset($path)) {
             $this->handleError();
 
             return;
         }
-        $this->uri = $uri;
-        $this->endpoint = ltrim($this->uri, '/');
+        $this->path = $path;
+        $this->endpoint = ltrim($this->path, '/');
         $this->process();
     }
 
@@ -53,7 +53,7 @@ final class OptionsController extends Controller
     {
         $this->response->setStatusCode(400);
         $msg = 'Must provide a %s argument when running this callable without route context.';
-        $message = (new Message($msg))->code('%s', '$uri')->toString();
+        $message = (new Message($msg))->code('%s', '$path')->toString();
         if (CLI) {
             Console::cli()->out->error($message);
 
@@ -68,7 +68,7 @@ final class OptionsController extends Controller
         $statusCode = 200;
         $endpoint = $this->app->api->endpoint($this->endpoint);
         if ($endpoint['OPTIONS']) {
-            $this->app->response->addData('OPTIONS', $this->uri, $endpoint['OPTIONS']);
+            $this->app->response->addData('OPTIONS', $this->path, $endpoint['OPTIONS']);
         } else {
             $statusCode = 404;
             // $json->setResponse("Endpoint doesn't exists", $statusCode);
