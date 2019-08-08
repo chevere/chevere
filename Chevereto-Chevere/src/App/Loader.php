@@ -22,13 +22,14 @@ use Chevere\Api\Maker as ApiMaker;
 use Chevere\Console\Console;
 use Chevere\HttpFoundation\Request;
 use Chevere\HttpFoundation\Response;
-use Chevere\Route\ArrayFileWrap as RouteArrayFileWrap;
+use Chevere\ArrayFileWrap;
 use Chevere\Router\Router;
 use Chevere\Runtime\Runtime;
 use Chevere\Interfaces\RenderableInterface;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\App\LoaderContract;
+use Chevere\Contracts\Route\RouteContract;
 
 final class Loader implements LoaderContract
 {
@@ -195,7 +196,11 @@ final class Loader implements LoaderContract
         // ['handle' => [Routes,]]
         foreach ($paramRoutes as $fileHandleString) {
             $fileHandle = Path::handle($fileHandleString);
-            foreach ((new RouteArrayFileWrap($fileHandle))->getArrayFile()->toArray() as $k => $route) {
+            $arrayFile = new ArrayFile($fileHandle, RouteContract::class);
+            $arrayFileWrap = new ArrayFileWrap($arrayFile, function ($k, $route) {
+                $route->setId((string) $k);
+            });
+            foreach ($arrayFileWrap as $k => $route) {
                 $this->router->addRoute($route, $fileHandleString);
             }
         }

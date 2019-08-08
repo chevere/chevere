@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere;
 
+use ArrayIterator;
 use LogicException;
+use IteratorAggregate;
 
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).
  */
-final class ArrayFile
+final class ArrayFile implements IteratorAggregate
 {
     /** @const array Type validators, taken from https://www.php.net/manual/en/ref.var.php */
     const TYPE_VALIDATORS = [
@@ -40,8 +42,6 @@ final class ArrayFile
         'scalar' => 'is_scalar',
         'string' => 'is_string',
     ];
-
-    // NOTE: Why these?
 
     /** @var array */
     private $array;
@@ -90,6 +90,11 @@ final class ArrayFile
             );
         }
         $this->array = $fileArray;
+    }
+
+    public function getIterator(): ArrayIterator
+    {
+        return new ArrayIterator($this->array);
     }
 
     public function getFilepath(): string
@@ -180,7 +185,7 @@ final class ArrayFile
             $type .= ' '.get_class($v);
         }
         throw new LogicException(
-            (new Message('Expecting array containing only %members% members, %type% found at %filepath% (key %key%).'))
+            (new Message('Expecting array containing only %members% members, type %type% found at %filepath% (array key %key%).'))
                 ->code('%type%', $type)
                 ->code('%key%', $k)
                 ->toString()
