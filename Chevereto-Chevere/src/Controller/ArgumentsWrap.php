@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Controller;
 
+use InvalidArgumentException;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionFunctionAbstract;
+use Chevere\Message;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Controller\ArgumentsWrapContract;
 
@@ -43,9 +45,7 @@ final class ArgumentsWrap implements ArgumentsWrapContract
     {
         $this->controller = $controller;
         $this->passedArguments = $arguments;
-        if (isset($arguments)) {
-            $this->processArguments();
-        }
+        $this->processArguments();
     }
 
     public function arguments(): array
@@ -60,6 +60,15 @@ final class ArgumentsWrap implements ArgumentsWrapContract
         $parameterIndex = 0;
         // Magically create typehinted arguments
         foreach ($this->reflection->getParameters() as $parameter) {
+            $name = $parameter->getName();
+            if (!isset($this->passedArguments[$name])) {
+                throw new InvalidArgumentException(
+                    (new Message('Unmatched argument %argument% in %controller%'))
+                        ->code('%argument%', $name)
+                        ->code('%controller%', get_class($this->controller).'::__invoke')
+                        ->toString()
+                );
+            }
             $type = null;
             $parameterType = $parameter->getType();
             if (isset($parameterType)) {
@@ -68,7 +77,7 @@ final class ArgumentsWrap implements ArgumentsWrapContract
             $this->processTypedArgument(
                 $parameter,
                 $type,
-                $this->passedArguments[$parameter->getName()] ?? $this->passedArguments[$parameterIndex] ?? null
+                $this->passedArguments[$name] ?? $this->passedArguments[$parameterIndex] ?? null
             );
             ++$parameterIndex;
         }

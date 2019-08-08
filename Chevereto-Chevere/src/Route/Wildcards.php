@@ -31,7 +31,7 @@ final class Wildcards implements WildcardsContract
     /** @var array */
     private $matches;
 
-    /** @var array */
+    /** @var array string[] */
     private $wildcards;
 
     /** @var array All the key sets for the route (optionals combo) */
@@ -72,7 +72,7 @@ final class Wildcards implements WildcardsContract
         return $this->matches ?? [];
     }
 
-    public function wildcards(): array
+    public function toArray(): array
     {
         return $this->wildcards ?? [];
     }

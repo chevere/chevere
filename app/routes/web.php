@@ -10,8 +10,8 @@ return [
     ->setName('homepage')
     ->addMiddleware('middleware:RoleBanned')
     ->addMiddleware('middleware:RoleAdmin'),
-  (new Route('/cache/{key?}-{cert}-{user?}'))
-    ->setWhere('key', '[0-9]+')
+  (new Route('/cache/{llave?}-{cert}-{user?}'))
+    ->setWhere('llave', '[0-9]+')
     ->setMethod(new Method('GET', Controllers\Cache::class))
     ->setMethod(new Method('POST', Controllers\Cache::class))
     ->setName('cache'),

@@ -77,8 +77,7 @@ interface RouteContract
     /**
      * Gets route regex.
      *
-     * @param string $set route set, null to use $this->set ?? $this->path
+     * @param string $pattern route path pattern (set)
      */
-    // FIXME: Don't pass null
-    public function regex(?string $set = null): string;
+    public function getRegex(string $pattern): string;
 }

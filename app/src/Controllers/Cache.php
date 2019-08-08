@@ -13,9 +13,9 @@ class Cache extends Controller
         'user' => User::class,
     ];
 
-    public function __invoke(string $key, string $user, string $cert)
+    public function __invoke(string $llave, string $user, string $cert)
     {
-        dd(func_get_args(), ['key' => $key, 'user' => $user, 'cert' => $cert]);
+        dd(func_get_args(), ['llave' => $llave, 'user' => $user, 'cert' => $cert]);
     }
 
     public function render(): ?string

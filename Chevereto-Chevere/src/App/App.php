@@ -70,7 +70,7 @@ final class App implements AppContract
         $controller = new $controller($this);
 
         // if ($this->route instanceof RouteContract) {
-        //     $middlewares = $this->route->middlewares;
+        //     $middlewares = $this->route->middlewares();
         //     if (!empty($middlewares)) {
         //         $handler = new Handler($middlewares);
         //         $handler->runner($this);

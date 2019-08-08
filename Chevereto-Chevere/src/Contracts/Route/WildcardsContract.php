@@ -21,7 +21,7 @@ interface WildcardsContract
 
     public function matches(): array;
 
-    public function wildcards(): array;
+    public function toArray(): array;
 
     public function powerSet(): array;
 }

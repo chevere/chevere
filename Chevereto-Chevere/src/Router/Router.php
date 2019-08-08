@@ -61,28 +61,29 @@ final class Router implements RouterContract
     public function addRoute(RouteContract $route, string $basename)
     {
         $route->fill();
-        $id = $route->id;
-        $uri = $route->path;
+        $id = $route->id();
+        $uri = $route->path();
         $this->handleRouteKey($uri);
         $pointer = [$id, $basename];
-        $name = $route->name;
+        $name = $route->hasName() ? $route->name() : null;
         $this->handleRouteName($name, $pointer);
         $this->routes[] = $route;
         $id = array_key_last($this->routes);
         $this->baseIndex[$basename][] = array_key_last($this->routes);
-        $powerSet = $route->powerSet;
-        if (isset($powerSet)) {
+        $powerSet = $route->powerSet();
+        if (!empty($powerSet)) {
             $ix = $id;
-            foreach ($powerSet as $k => $wildcardsIndex) {
+            // TODO: Route assumes a default path + regex
+            foreach ($powerSet as $set => $index) {
                 ++$ix;
-                $this->routes[] = [$id, $k];
-                $this->regexIndex[$route->regex($k)] = $ix;
+                $this->routes[] = [$id, $set];
+                $this->regexIndex[$route->getRegex($set)] = $ix;
             }
         } else {
             // n => .. => regex => route
-            $this->regexIndex[$route->regex] = $id;
-            if (Route::TYPE_STATIC == $route->type) {
-                $this->statics[$route->path] = $id;
+            $this->regexIndex[$route->regex()] = $id;
+            if (Route::TYPE_STATIC == $route->type()) {
+                $this->statics[$route->path()] = $id;
             }
         }
 
@@ -125,9 +126,9 @@ final class Router implements RouterContract
             }
             $this->arguments = [];
             foreach ($matches as $k => $v) {
-                $wildcardId = $route->powerSet[$set][$k];
-                $wildcardKey = $route->wildcards[$wildcardId];
-                $this->arguments[$wildcardKey] = $v;
+                $wildcardId = $route->powerSet()[$set][$k];
+                $wildcardName = $route->wildcardName($wildcardId);
+                $this->arguments[$wildcardName] = $v;
             }
 
             return $route;

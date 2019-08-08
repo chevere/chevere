@@ -47,40 +47,40 @@ final class Route implements RouteContract
     const REGEX_NAME = '/^[\w\-\.]+$/i';
 
     /** @var string Route id relative to the ArrayFile */
-    public $id;
+    private $id;
 
-    /** @var string Route uri like /api/endpoint/{var?} */
-    public $path;
+    /** @var string Route path like /api/users/{user} */
+    private $path;
 
     /** @var string Route name (if any, must be unique) */
-    public $name;
+    private $name;
 
     /** @var array Where clauses based on wildcards */
-    public $wheres;
+    private $wheres;
 
     /** @var array ['method' => 'controller',] */
-    public $methods;
+    private $methods;
 
     /** @var array [MiddlewareContract,] */
-    public $middlewares;
+    private $middlewares;
 
     /** @var array */
-    public $wildcards;
+    private $wildcards;
 
-    /** @var string Key set representation */
-    public $set;
+    /** @var string Route path representation with placeholder wildcards like /api/users/{0} */
+    private $set;
 
-    /** @var array An array containing all the key sets for the route (optionals combo) */
-    public $powerSet;
+    /** @var array Contains all the possible $set combinations when using optional wildcards */
+    private $powerSet;
 
     /** @var array An array containg details about the Route maker */
-    public $maker;
+    private $maker;
 
     /** @var string */
-    public $regex;
+    private $regex;
 
     /** @var string */
-    public $type;
+    private $type;
 
     public function __construct(string $path, string $controller = null)
     {
@@ -91,7 +91,7 @@ final class Route implements RouteContract
             $wildcards = new Wildcards($this->path);
             $this->set = $wildcards->set();
             $this->powerSet = $wildcards->powerSet();
-            $this->wildcards = $wildcards->wildcards();
+            $this->wildcards = $wildcards->toArray();
         } else {
             $this->set = $this->path;
         }
@@ -99,6 +99,56 @@ final class Route implements RouteContract
         if (isset($controller)) {
             $this->setMethod(new Method('GET', $controller));
         }
+    }
+
+    public function id(): string
+    {
+        return $this->id;
+    }
+
+    public function path(): string
+    {
+        return $this->path;
+    }
+
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    public function hasName(): bool
+    {
+        return isset($this->name);
+    }
+
+    public function wheres(): array
+    {
+        return $this->wheres ?? [];
+    }
+
+    public function middlewares(): array
+    {
+        return $this->middlewares ?? [];
+    }
+
+    public function wildcardName(int $key): string
+    {
+        return $this->wildcards[$key] ?? [];
+    }
+
+    public function powerSet(): array
+    {
+        return $this->powerSet ?? [];
+    }
+
+    public function type(): string
+    {
+        return $this->type;
+    }
+
+    public function regex(): string
+    {
+        return $this->regex;
     }
 
     public function setName(string $name): RouteContract
@@ -197,20 +247,24 @@ final class Route implements RouteContract
         if (isset($this->methods['GET']) && !isset($this->methods['HEAD'])) {
             $this->setMethod(new Method('HEAD', HeadController::class));
         }
-        $this->regex = $this->regex();
+        $this->regex = $this->getRegex($this->set ?? $this->path);
 
         return $this;
     }
 
-    public function regex(?string $set = null): string
+    public function getRegex(string $pattern): string
     {
-        $regex = $set ?? ($this->set ?? $this->path);
+        return $this->fetchRegex($pattern);
         if (!isset($regex)) {
             throw new LogicException(
                 (new Message('Unable to process regex for empty regex (no uri).'))->toString()
             );
         }
-        $regex = '^'.$regex.'$';
+    }
+
+    private function fetchRegex(string $pattern): string
+    {
+        $regex = '^'.$pattern.'$';
         if (!Str::contains('{', $regex)) {
             return $regex;
         }
