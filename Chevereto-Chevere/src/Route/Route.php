@@ -90,7 +90,7 @@ final class Route implements RouteContract
         $this->uri = $uri;
         $keyValidation = new KeyValidation($this->uri);
         $this->maker = $this->getMakerData();
-        if ($keyValidation->hasHandlebars) {
+        if ($keyValidation->hasHandlebars()) {
             $wildcards = new Wildcards($this->uri);
             $this->set = $wildcards->set;
             $this->powerSet = $wildcards->powerSet;

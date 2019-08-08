@@ -20,39 +20,40 @@ use Chevere\Utility\Str;
 final class KeyValidation
 {
     /** @var string */
-    public $key;
+    private $key;
 
     /** @var bool */
-    public $hasHandlebars;
+    private $hasHandlebars;
 
     public function __construct(string $key)
     {
-        $this->key = $key;
-        $this->hasHandlebars = $this->hasHandlebars($this->key);
-        $this->handleValidateFormat();
-        $this->handleWildcards();
+        $this->setKey($key);
+        $this->setHasHandlebars();
+        if ($this->hasHandlebars) {
+            $this->validateReservedWildcards();
+        }
     }
 
-    private function handleValidateFormat()
+    public function key(): string
     {
-        if (!$this->validateFormat($this->key)) {
+        return $this->key;
+    }
+
+    public function hasHandlebars(): bool
+    {
+        return $this->hasHandlebars;
+    }
+
+    private function setKey(string $key): void
+    {
+        if (!$this->validateFormat($key)) {
             throw new InvalidArgumentException(
                 (new Message("String %s must start with a forward slash, it shouldn't contain neither whitespace, backslashes or extra forward slashes and it should be specified without a trailing slash."))
-                    ->code('%s', $this->key)
+                    ->code('%s', $key)
                     ->toString()
             );
         }
-    }
-
-    private function handleWildcards()
-    {
-        if ($this->hasHandlebars && !$this->validateWildcard($this->key)) {
-            throw new InvalidArgumentException(
-                (new Message('Wildcards in the form of %s are reserved.'))
-                    ->code('%s', '/{n}')
-                    ->toString()
-            );
-        }
+        $this->key = $key;
     }
 
     private function validateFormat(string $key): bool
@@ -73,13 +74,19 @@ final class KeyValidation
             && !Str::contains('\\', $key);
     }
 
-    private function validateWildcard(string $key): bool
+    private function validateReservedWildcards(): void
     {
-        return preg_match_all('/{([0-9]+)}/', $key) === 0;
+        if (!(preg_match_all('/{([0-9]+)}/', $this->key) === 0)) {
+            throw new InvalidArgumentException(
+                (new Message('Wildcards in the form of %s are reserved.'))
+                    ->code('%s', '/{n}')
+                    ->toString()
+            );
+        }
     }
 
-    private function hasHandlebars(string $key): bool
+    private function setHasHandlebars()
     {
-        return Str::contains('{', $key) || Str::contains('}', $key);
+        $this->hasHandlebars = Str::contains('{', $this->key) || Str::contains('}', $this->key);
     }
 }

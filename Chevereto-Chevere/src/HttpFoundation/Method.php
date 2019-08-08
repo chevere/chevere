@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\HttpFoundation;
 
 use InvalidArgumentException;
-use LogicException;
 use Chevere\Message;
 use Chevere\Contracts\HttpFoundation\MethodContract;
 use Chevere\Contracts\Controller\ControllerContract;
@@ -64,7 +63,7 @@ final class Method implements MethodContract
     private function setController(string $controller)
     {
         if (!is_subclass_of($controller, ControllerContract::class)) {
-            throw new LogicException(
+            throw new InvalidArgumentException(
                 (new Message('Controller %s must implement the %i interface.'))
                     ->code('%s', $controller)
                     ->code('%i', ControllerContract::class)
