@@ -33,7 +33,13 @@ use Chevere\Utility\Str;
  */
 final class InspectCommand extends Command
 {
-    protected static $defaultName = 'inspect';
+    const NAME = 'inspect';
+    const DESCRIPTION = 'Inspect any callable';
+    const HELP = 'This command allows you to inspect any callable';
+
+    const ARGUMENTS = [
+        ['callable', Command::ARGUMENT_REQUIRED, 'A fully-qualified callable name'],
+    ];
 
     /** @var array */
     protected $arguments = [];
@@ -49,9 +55,6 @@ final class InspectCommand extends Command
 
     /** @var string */
     protected $callableInput;
-
-    /** @var string */
-    protected $callableFilepath;
 
     public function callback(LoaderContract $loader): int
     {
@@ -72,14 +75,6 @@ final class InspectCommand extends Command
         $this->handleProcessArguments();
 
         return 1;
-    }
-
-    protected function configure()
-    {
-        $this
-            ->setDescription('Inspect any callable')
-            ->setHelp('This command allows you to inspect any callable')
-            ->addArgument('callable', Command::ARGUMENT_REQUIRED, 'A fully-qualified callable name');
     }
 
     private function handleSetMethod(): void

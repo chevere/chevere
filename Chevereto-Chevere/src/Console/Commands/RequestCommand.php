@@ -22,25 +22,30 @@ use Chevere\Contracts\App\LoaderContract;
  * The RequestCommand allows to pass a forged request to the App instance.
  *
  * Usage:
- * php app/console request <method> <uri>
+ * php app/console request <method> <path>
  */
 final class RequestCommand extends Command
 {
-    protected static $defaultName = 'request';
+    const NAME = 'request';
+    const DESCRIPTION = 'Forge and resolve a HTTP request';
+    const HELP = 'This command allows you to forge a HTTP request';
 
-    protected function configure()
-    {
-        $this
-            ->setDescription('Forge and resolve a HTTP request')
-            ->setHelp('This command allows you to forge a HTTP request')
-            ->addArgument('method', Command::ARGUMENT_OPTIONAL, 'HTTP request method', 'GET')
-            ->addArgument('uri', Command::ARGUMENT_OPTIONAL, 'URI', '/')
-            ->addArgument('parameters', Command::ARGUMENT_OPTIONAL, 'Parameters', [])
-            ->addArgument('cookies', Command::ARGUMENT_OPTIONAL, 'Cookies', [])
-            ->addArgument('files', Command::ARGUMENT_OPTIONAL, 'Files', [])
-            ->addArgument('server', Command::ARGUMENT_OPTIONAL, 'Server', [])
-            ->addArgument('content', Command::ARGUMENT_OPTIONAL, 'Content', null);
-    }
+    const ARGUMENTS = [
+        ['method', Command::ARGUMENT_OPTIONAL, 'HTTP request method', 'GET'],
+        ['path', Command::ARGUMENT_OPTIONAL, 'Path', '/'],
+        ['parameters', Command::ARGUMENT_OPTIONAL, 'Parameters', []],
+        ['cookies', Command::ARGUMENT_OPTIONAL, 'Cookies', []],
+        ['files', Command::ARGUMENT_OPTIONAL, 'Files', []],
+        ['server', Command::ARGUMENT_OPTIONAL, 'Server', []],
+        ['content', Command::ARGUMENT_OPTIONAL, 'Content', null],
+    ];
+
+    /**
+     * Maps Symfony\Component\HttpFoundation\Request::create arguments to this command arguments.
+     */
+    const HTTP_REQUEST_FN_MAP = [
+        'uri' => 'path',
+    ];
 
     public function callback(LoaderContract $loader): int
     {
@@ -48,7 +53,12 @@ final class RequestCommand extends Command
         $requestArguments = [];
         $r = new ReflectionMethod(Request::class, 'create');
         foreach ($r->getParameters() as $requestArg) {
-            $requestArguments[] = $arguments[$requestArg->getName()] ?? $requestArg->getDefaultValue() ?? null;
+            $name = $requestArg->getName();
+            $mapped = self::HTTP_REQUEST_FN_MAP[$name] ?? null;
+            if ($mapped) {
+                $name = $mapped;
+            }
+            $requestArguments[] = $arguments[$name] ?? $requestArg->getDefaultValue() ?? null;
         }
         $loader->setRequest(Request::create(...$requestArguments));
         $loader->run();

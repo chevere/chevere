@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Console;
 
-interface CommandContract
+interface BaseCommandContract
 {
     public function __construct(CliContract $cli);
 
-    public function baseCommand(): BaseCommandContract;
+    public function setCommand(CommandContract $command);
 
-    public function configure();
+    public function command(): CommandContract;
 }

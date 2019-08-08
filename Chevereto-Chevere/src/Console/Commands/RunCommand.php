@@ -30,7 +30,22 @@ use Chevere\Contracts\App\LoaderContract;
  */
 final class RunCommand extends Command
 {
-    protected static $defaultName = 'run';
+    const NAME = 'run';
+    const DESCRIPTION = 'Run any callable';
+    const HELP = 'This command allows you to run any callable';
+
+    const ARGUMENTS = [
+        ['callable', Command::ARGUMENT_REQUIRED, 'A fully-qualified callable name'],
+    ];
+
+    const OPTIONS = [
+        [
+            'argument',
+            'a',
+            Command::OPTION_OPTIONAL | Command::OPTION_IS_ARRAY,
+            'Callable arguments (in declarative order)',
+        ],
+    ];
 
     public function callback(LoaderContract $loader): int
     {
@@ -61,19 +76,5 @@ final class RunCommand extends Command
         }
 
         return 1;
-    }
-
-    protected function configure()
-    {
-        $this
-            ->setDescription('Run any callable')
-            ->setHelp('This command allows you to run any callable')
-            ->addArgument('callable', Command::ARGUMENT_REQUIRED, 'A fully-qualified callable name')
-            ->addOption(
-                'argument',
-                'a',
-                Command::OPTION_OPTIONAL | Command::OPTION_IS_ARRAY,
-                'Callable arguments (in declarative order)'
-            );
     }
 }

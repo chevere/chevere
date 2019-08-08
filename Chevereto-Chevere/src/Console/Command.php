@@ -14,16 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Console;
 
 use LogicException;
-use Symfony\Component\Console\Command\Command as ConsoleCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Console\CliContract;
 use Chevere\Contracts\Console\CommandContract;
+use Chevere\Contracts\Console\BaseCommandContract;
 
-class Command extends ConsoleCommand implements CommandContract
+abstract class Command implements CommandContract
 {
     const ARGUMENT_REQUIRED = InputArgument::REQUIRED;
     const ARGUMENT_OPTIONAL = InputArgument::OPTIONAL;
@@ -34,22 +32,47 @@ class Command extends ConsoleCommand implements CommandContract
     const OPTION_OPTIONAL = InputOption::VALUE_OPTIONAL;
     const OPTION_IS_ARRAY = InputOption::VALUE_IS_ARRAY;
 
+    const NAME = '';
+    const DESCRIPTION = '';
+    const HELP = '';
+
+    const ARGUMENTS = [];
+    const OPTIONS = [];
+
     /** @var CliContract */
     protected $cli;
 
+    /** @var BaseCommandContract */
+    protected $baseCommand;
+
     final public function __construct(CliContract $cli)
     {
-        parent::__construct();
         $this->cli = $cli;
+        $this->baseCommand = new BaseCommand($cli);
+        $this->baseCommand->setCommand($this);
+    }
+
+    final public function baseCommand(): BaseCommandContract
+    {
+        return $this->baseCommand;
+    }
+
+    final public function configure()
+    {
+        $this->baseCommand
+            ->setName(static::NAME)
+            ->setDescription(static::DESCRIPTION)
+            ->setHelp(static::HELP);
+        foreach (static::ARGUMENTS as $arguments) {
+            $this->baseCommand->addArgument(...$arguments);
+        }
+        foreach (static::OPTIONS as $options) {
+            $this->baseCommand->addOption(...$options);
+        }
     }
 
     public function callback(LoaderContract $loader)
     {
         throw new LogicException('You must override the '.__FUNCTION__.'() method in the concrete command class.');
-    }
-
-    final protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $this->cli->command = $this;
     }
 }

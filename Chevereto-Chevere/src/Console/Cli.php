@@ -22,6 +22,7 @@ use Chevere\Console\Commands\RequestCommand;
 use Chevere\Console\Commands\RunCommand;
 use Chevere\Console\Commands\InspectCommand;
 use Chevere\Contracts\Console\CliContract;
+use Chevere\Contracts\Console\CommandContract;
 
 /**
  * This class provides console facade for Symfony\Component\Console.
@@ -52,7 +53,7 @@ final class Cli implements CliContract
     /** @var SymfonyStyle */
     public $out;
 
-    /** @var Command */
+    /** @var CommandContract */
     public $command;
 
     public function __construct(ArgvInput $input)
@@ -64,10 +65,11 @@ final class Cli implements CliContract
         $this->client = new Application($this->name, $this->version);
         $this->logger = new Logger($this->name);
         $this->out = new SymfonyStyle($this->input, $this->output);
+
         $this->client->addCommands([
-            new RequestCommand($this),
-            new RunCommand($this),
-            new InspectCommand($this),
+            (new RequestCommand($this))->baseCommand(),
+            (new RunCommand($this))->baseCommand(),
+            (new InspectCommand($this))->baseCommand(),
         ]);
         $this->client->setAutoExit(false);
     }
