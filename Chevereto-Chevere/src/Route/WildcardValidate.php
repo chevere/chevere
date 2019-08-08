@@ -42,7 +42,7 @@ final class WildcardValidate
         $this->wildcardName = $wildcardName;
         $this->wildcardString = "{{$wildcardName}}";
         $this->regex = $regex;
-        $this->uri = $route->uri;
+        $this->uri = $route->path;
         $this->routeWheres = $route->wheres;
         $this->handleValidateFormat();
         $this->handleValidateMatch();

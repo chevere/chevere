@@ -44,7 +44,7 @@ final class GetController extends Controller
         } else {
             $route = $this->app->route;
             if (isset($route)) {
-                $endpoint = $route->uri;
+                $endpoint = $route->path;
             } else {
                 $msg = 'Must provide the %s argument when running this callable without route context.';
                 $message = (new Message($msg))->code('%s', '$endpoint')->toString();

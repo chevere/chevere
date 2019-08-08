@@ -62,7 +62,7 @@ final class Router implements RouterContract
     {
         $route->fill();
         $id = $route->id;
-        $uri = $route->uri;
+        $uri = $route->path;
         $this->handleRouteKey($uri);
         $pointer = [$id, $basename];
         $name = $route->name;
@@ -82,7 +82,7 @@ final class Router implements RouterContract
             // n => .. => regex => route
             $this->regexIndex[$route->regex] = $id;
             if (Route::TYPE_STATIC == $route->type) {
-                $this->statics[$route->uri] = $id;
+                $this->statics[$route->path] = $id;
             }
         }
 

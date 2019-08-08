@@ -29,7 +29,7 @@ final class Methods implements MethodsContract, IteratorAggregate
     /** @param array ['METHOD' => key,]*/
     private $index;
 
-    public function add(MethodContract $method)
+    public function add(MethodContract $method): void
     {
         $this->methods[] = $method;
         $this->index[$method->method()] = array_key_last($this->methods);

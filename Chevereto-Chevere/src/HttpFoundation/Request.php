@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\FileBag;
 use Symfony\Component\HttpFoundation\ServerBag;
 
+// FIXME: Do a client, not an extension
 final class Request extends HttpRequest
 {
     // Left side: Chevere, right side Request function name

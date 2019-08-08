@@ -13,7 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\HttpFoundation;
 
+use ArrayIterator;
+
 interface MethodsContract
 {
-    public function add(MethodContract $method);
+    public function add(MethodContract $method): void;
+
+    public function has(string $method): bool;
+
+    public function get(string $method): string;
+
+    public function getIterator(): ArrayIterator;
 }

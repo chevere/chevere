@@ -16,27 +16,28 @@ namespace Chevere\Route;
 use InvalidArgumentException;
 use Chevere\Message;
 use Chevere\Utility\Str;
+use Chevere\Contracts\Route\PathValidateContract;
 
-final class UriValidate
+final class PathValidate implements PathValidateContract
 {
     /** @var string */
-    private $uri;
+    private $path;
 
     /** @var bool */
     private $hasHandlebars;
 
-    public function __construct(string $uri)
+    public function __construct(string $path)
     {
-        $this->setKey($uri);
+        $this->setKey($path);
         $this->setHasHandlebars();
         if ($this->hasHandlebars) {
             $this->validateReservedWildcards();
         }
     }
 
-    public function uri(): string
+    public function path(): string
     {
-        return $this->uri;
+        return $this->path;
     }
 
     public function hasHandlebars(): bool
@@ -44,39 +45,39 @@ final class UriValidate
         return $this->hasHandlebars;
     }
 
-    private function setKey(string $uri): void
+    private function setKey(string $path): void
     {
-        if (!$this->validateFormat($uri)) {
+        if (!$this->validateFormat($path)) {
             throw new InvalidArgumentException(
                 (new Message("String %s must start with a forward slash, it shouldn't contain neither whitespace, backslashes or extra forward slashes and it should be specified without a trailing slash."))
-                    ->code('%s', $uri)
+                    ->code('%s', $path)
                     ->toString()
             );
         }
-        $this->uri = $uri;
+        $this->path = $path;
     }
 
-    private function validateFormat(string $uri): bool
+    private function validateFormat(string $path): bool
     {
-        if ('/' == $uri) {
+        if ('/' == $path) {
             return true;
         }
 
-        return strlen($uri) > 0 && Str::startsWith('/', $uri)
-            && $this->validateFormatSlashes($uri);
+        return strlen($path) > 0 && Str::startsWith('/', $path)
+            && $this->validateFormatSlashes($path);
     }
 
-    private function validateFormatSlashes(string $uri): bool
+    private function validateFormatSlashes(string $path): bool
     {
-        return !Str::endsWith('/', $uri)
-            && !Str::contains('//', $uri)
-            && !Str::contains(' ', $uri)
-            && !Str::contains('\\', $uri);
+        return !Str::endsWith('/', $path)
+            && !Str::contains('//', $path)
+            && !Str::contains(' ', $path)
+            && !Str::contains('\\', $path);
     }
 
     private function validateReservedWildcards(): void
     {
-        if (!(preg_match_all('/{([0-9]+)}/', $this->uri) === 0)) {
+        if (!(preg_match_all('/{([0-9]+)}/', $this->path) === 0)) {
             throw new InvalidArgumentException(
                 (new Message('Wildcards in the form of %s are reserved.'))
                     ->code('%s', '/{n}')
@@ -87,6 +88,6 @@ final class UriValidate
 
     private function setHasHandlebars()
     {
-        $this->hasHandlebars = Str::contains('{', $this->uri) || Str::contains('}', $this->uri);
+        $this->hasHandlebars = Str::contains('{', $this->path) || Str::contains('}', $this->path);
     }
 }

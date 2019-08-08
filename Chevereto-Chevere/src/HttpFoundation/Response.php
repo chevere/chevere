@@ -25,6 +25,7 @@ use Chevere\JsonApi\Data;
  * Forked version of Symfony\Component\HttpFoundation\JsonResponse (Igor Wiedler <igor@wiedler.ch>)
  * (c) Fabien Potencier <fabien@symfony.com>
  */
+// FIXME: Do a client, not an extension
 final class Response extends HttpResponse
 {
     // https://jsonapi.org/format/1.0/

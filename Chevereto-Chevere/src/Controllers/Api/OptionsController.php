@@ -37,7 +37,7 @@ final class OptionsController extends Controller
     {
         $route = $this->app->route;
         if (isset($route)) {
-            $uri = $route->uri;
+            $uri = $route->path;
         }
         if (!isset($uri)) {
             $this->handleError();

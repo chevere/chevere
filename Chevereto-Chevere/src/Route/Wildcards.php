@@ -21,6 +21,9 @@ use Chevere\Utility\Arr;
 
 final class Wildcards
 {
+    /** @var string The route path */
+    private $path;
+
     /** @var string Key set representation */
     private $set;
 
@@ -30,31 +33,28 @@ final class Wildcards
     /** @var array */
     private $wildcards;
 
-    /** @var array An array containing all the key sets for the route (optionals combo) */
+    /** @var array All the key sets for the route (optionals combo) */
     private $powerSet;
 
-    /** @var string */
-    private $uri;
-
-    /** @var array An array containing the optional wildcards */
+    /** @var array Optional wildcards */
     private $optionals;
 
-    /** @var array An array indexing the optional wildcards */
+    /** @var array Optional wildcards index */
     private $optionalsIndex;
 
-    /** @var array An array indexing the mandatory wildcards */
+    /** @var array Mandatory wildcards index */
     private $mandatoryIndex;
 
-    public function __construct(string $uri)
+    public function __construct(string $path)
     {
-        $this->uri = $uri;
+        $this->path = $path;
         // $matches[0] => [{wildcard}, {wildcard?},...]
         // $matches[1] => [wildcard, wildcard?,...]
-        if (!preg_match_all(Route::REGEX_WILDCARD_SEARCH, $this->uri, $matches)) {
+        if (!preg_match_all(Route::REGEX_WILDCARD_SEARCH, $this->path, $matches)) {
             return;
         }
         $this->matches = $matches;
-        $this->set = $uri;
+        $this->set = $path;
         $this->optionals = [];
         $this->optionalsIndex = [];
         $this->handleMatches();
@@ -100,7 +100,7 @@ final class Wildcards
                 throw new LogicException(
                     (new Message('Must declare one unique wildcard per capturing group, duplicated %s detected in route %r.'))
                         ->code('%s', $this->matches[0][$k])
-                        ->code('%r', $this->uri)
+                        ->code('%r', $this->path)
                         ->toString()
                 );
             }

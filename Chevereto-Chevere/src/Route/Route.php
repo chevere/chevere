@@ -50,7 +50,7 @@ final class Route implements RouteContract
     public $id;
 
     /** @var string Route uri like /api/endpoint/{var?} */
-    public $uri;
+    public $path;
 
     /** @var string Route name (if any, must be unique) */
     public $name;
@@ -82,18 +82,18 @@ final class Route implements RouteContract
     /** @var string */
     public $type;
 
-    public function __construct(string $uri, string $controller = null)
+    public function __construct(string $path, string $controller = null)
     {
-        $this->uri = $uri;
-        $uriValidate = new UriValidate($this->uri);
+        $pathValidate = new PathValidate($path);
+        $this->path = $path;
         $this->maker = $this->getMakerData();
-        if ($uriValidate->hasHandlebars()) {
-            $wildcards = new Wildcards($this->uri);
+        if ($pathValidate->hasHandlebars()) {
+            $wildcards = new Wildcards($this->path);
             $this->set = $wildcards->set();
             $this->powerSet = $wildcards->powerSet();
             $this->wildcards = $wildcards->wildcards();
         } else {
-            $this->set = $this->uri;
+            $this->set = $this->path;
         }
         $this->handleType();
         if (isset($controller)) {
@@ -204,7 +204,7 @@ final class Route implements RouteContract
 
     public function regex(?string $set = null): string
     {
-        $regex = $set ?? ($this->set ?? $this->uri);
+        $regex = $set ?? ($this->set ?? $this->path);
         if (!isset($regex)) {
             throw new LogicException(
                 (new Message('Unable to process regex for empty regex (no uri).'))->toString()
