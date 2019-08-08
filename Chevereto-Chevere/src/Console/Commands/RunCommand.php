@@ -68,7 +68,7 @@ final class RunCommand extends Command
         $this
             ->setDescription('Run any callable')
             ->setHelp('This command allows you to run any callable')
-            ->addArgument('callable', Command::ARGUMENT_REQUIRED, 'The callable handle (name, fileHandle)')
+            ->addArgument('callable', Command::ARGUMENT_REQUIRED, 'A fully-qualified callable name')
             ->addOption(
                 'argument',
                 'a',

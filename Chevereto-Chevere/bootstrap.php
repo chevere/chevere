@@ -45,7 +45,6 @@ define('Chevere\PATH', rtrim(str_replace(ROOT_PATH, null, str_replace('\\', '/',
  */
 define('Chevere\App\PATH', basename(dirname(BOOTSTRAPPER)).'/');
 
-// Init console if sapi = cli
 if ('cli' == php_sapi_name()) {
     Console::init();
 }

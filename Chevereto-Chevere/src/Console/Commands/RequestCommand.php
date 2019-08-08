@@ -44,14 +44,12 @@ final class RequestCommand extends Command
 
     public function callback(LoaderContract $loader): int
     {
-        // Map cli arguments to Request::create
         $arguments = $this->cli->input->getArguments();
         $requestArguments = [];
         $r = new ReflectionMethod(Request::class, 'create');
         foreach ($r->getParameters() as $requestArg) {
             $requestArguments[] = $arguments[$requestArg->getName()] ?? $requestArg->getDefaultValue() ?? null;
         }
-
         $loader->setRequest(Request::create(...$requestArguments));
         $loader->run();
 

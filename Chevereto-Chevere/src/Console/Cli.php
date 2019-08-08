@@ -64,9 +64,11 @@ final class Cli implements CliContract
         $this->client = new Application($this->name, $this->version);
         $this->logger = new Logger($this->name);
         $this->out = new SymfonyStyle($this->input, $this->output);
-        $this->client->add(new RequestCommand($this));
-        $this->client->add(new RunCommand($this));
-        $this->client->add(new InspectCommand($this));
+        $this->client->addCommands([
+            new RequestCommand($this),
+            new RunCommand($this),
+            new InspectCommand($this),
+        ]);
         $this->client->setAutoExit(false);
     }
 

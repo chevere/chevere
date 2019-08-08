@@ -57,8 +57,7 @@ final class Console implements ConsoleContract
 
     public static function init()
     {
-        $cli = new Cli(new ArgvInput());
-        self::$cli = $cli;
+        self::$cli = new Cli(new ArgvInput());
         self::$available = true;
     }
 

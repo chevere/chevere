@@ -20,12 +20,9 @@ namespace Chevere\Console\Commands;
 use Reflector;
 use ReflectionMethod;
 use ReflectionFunction;
-use const Chevere\App\PATH;
 use Chevere\Contracts\App\LoaderContract;
+use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Console\Command;
-use Chevere\Message;
-use Chevere\Path;
-use Chevere\File;
 use Chevere\Utility\Str;
 
 /**
@@ -59,35 +56,18 @@ final class InspectCommand extends Command
     public function callback(LoaderContract $loader): int
     {
         $this->callableInput = (string) $this->cli->input->getArgument('callable');
-        $isCallable = is_callable($this->callableInput);
-        if ($isCallable) {
+        if (is_subclass_of($this->callableInput, ControllerContract::class)) {
             $this->callable = $this->callableInput;
-            $callableSome = $this->callableInput;
+            $this->method = '__invoke';
         } else {
-            $this->callableFilepath = Path::fromHandle($this->callableInput);
-            if (!File::exists($this->callableFilepath)) {
-                $this->cli->out->error(sprintf('Unable to locate callable %s', $this->callableInput));
-
-                return 0;
-            }
-            $callableSome = $this->callableFilepath;
-            $this->callable = include $this->callableFilepath;
-            if (!is_callable($this->callable)) {
-                $this->cli->out->error(
-                    (new Message('Expecting %t return type, %s provided in %f'))
-                        ->code('%t', 'callable')
-                        ->code('%s', gettype($this->callable))
-                        ->code('%f', $this->callableInput)
-                        ->toString()
-                );
-
-                return 0;
+            if (is_callable($this->callableInput)) {
+                $this->callable = $this->callableInput;
             }
         }
 
         $this->handleSetMethod();
         $this->handleSetReflector();
-        $this->cli->out->block($callableSome, 'INSPECTED', 'fg=black;bg=green', ' ', true);
+        $this->cli->out->block($this->callableInput, 'INSPECTED', 'fg=black;bg=green', ' ', true);
         $this->processParametersArguments();
         $this->handleProcessArguments();
 
@@ -99,10 +79,10 @@ final class InspectCommand extends Command
         $this
             ->setDescription('Inspect any callable')
             ->setHelp('This command allows you to inspect any callable')
-            ->addArgument('callable', Command::ARGUMENT_REQUIRED, 'The callable handle (name, fileHandle)');
+            ->addArgument('callable', Command::ARGUMENT_REQUIRED, 'A fully-qualified callable name');
     }
 
-    protected function handleSetMethod(): void
+    private function handleSetMethod(): void
     {
         if (is_object($this->callable)) {
             $this->method = '__invoke';
@@ -115,7 +95,7 @@ final class InspectCommand extends Command
         }
     }
 
-    protected function handleSetReflector(): void
+    private function handleSetReflector(): void
     {
         if (isset($this->method)) {
             $this->setReflectionMethod();
@@ -124,21 +104,21 @@ final class InspectCommand extends Command
         }
     }
 
-    protected function setReflectionMethod()
+    private function setReflectionMethod()
     {
         $this->reflector = new ReflectionMethod($this->callable, $this->method);
     }
 
-    protected function setReflectionFunction()
+    private function setReflectionFunction()
     {
         $this->reflector = new ReflectionFunction($this->callable);
     }
 
-    protected function processParametersArguments(): void
+    private function processParametersArguments(): void
     {
         $i = 0;
         foreach ($this->reflector->getParameters() as $parameter) {
-            $aux = null;
+            $aux = '';
             if ($parameter->getType()) {
                 $aux .= $parameter->getType().' ';
             }
@@ -155,7 +135,7 @@ final class InspectCommand extends Command
         }
     }
 
-    protected function handleProcessArguments(): void
+    private function handleProcessArguments(): void
     {
         if (null != $this->arguments) {
             $this->processArguments();
@@ -164,13 +144,13 @@ final class InspectCommand extends Command
         }
     }
 
-    protected function processArguments(): void
+    private function processArguments(): void
     {
         $this->cli->out->text(['<fg=yellow>Arguments:</>']);
         $this->cli->out->listing($this->arguments);
     }
 
-    protected function processNoArguments(): void
+    private function processNoArguments(): void
     {
         $this->cli->out->text(['<fg=yellow>No arguments</>', null]);
     }

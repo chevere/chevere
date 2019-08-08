@@ -39,8 +39,8 @@ class Command extends ConsoleCommand implements CommandContract
 
     final public function __construct(CliContract $cli)
     {
-        $this->cli = $cli;
         parent::__construct();
+        $this->cli = $cli;
     }
 
     public function callback(LoaderContract $loader)
@@ -48,9 +48,6 @@ class Command extends ConsoleCommand implements CommandContract
         throw new LogicException('You must override the '.__FUNCTION__.'() method in the concrete command class.');
     }
 
-    /**
-     * Sets the Cli command to execute. Used internally by Symfony.
-     */
     final protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->cli->command = $this;
