@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\HttpFoundation;
 
+use InvalidArgumentException;
 use LogicException;
 use Chevere\Message;
 use Chevere\Contracts\HttpFoundation\MethodContract;
@@ -23,6 +24,9 @@ use Chevere\Contracts\Controller\ControllerContract;
  */
 final class Method implements MethodContract
 {
+    /** Array containing all the known HTTP methods. */
+    const ACCEPT_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'COPY', 'HEAD', 'OPTIONS', 'LINK', 'UNLINK', 'PURGE', 'LOCK', 'UNLOCK', 'PROPFIND', 'VIEW', 'TRACE', 'CONNECT'];
+
     /** @param string HTTP request method */
     private $method;
 
@@ -31,7 +35,7 @@ final class Method implements MethodContract
 
     public function __construct(string $method, string $controller)
     {
-        $this->method = $method;
+        $this->setMethod($method);
         $this->setController($controller);
     }
 
@@ -45,11 +49,23 @@ final class Method implements MethodContract
         return $this->controller;
     }
 
+    private function setMethod(string $method)
+    {
+        if (!in_array($method, self::ACCEPT_METHODS)) {
+            throw new InvalidArgumentException(
+                (new Message('Unknown HTTP method %s.'))
+                    ->code('%s', $method)
+                    ->toString()
+            );
+        }
+        $this->method = $method;
+    }
+
     private function setController(string $controller)
     {
         if (!is_subclass_of($controller, ControllerContract::class)) {
             throw new LogicException(
-                (new Message('Callable %s must represent a class implementing the %i interface.'))
+                (new Message('Controller %s must implement the %i interface.'))
                     ->code('%s', $controller)
                     ->code('%i', ControllerContract::class)
                     ->toString()

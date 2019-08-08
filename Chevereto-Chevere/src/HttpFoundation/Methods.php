@@ -42,9 +42,7 @@ final class Methods implements MethodsContract, IteratorAggregate
 
     public function get(string $method): string
     {
-        $id = $this->index[$method];
-
-        return $this->methods[$id];
+        return $this->methods[$this->index[$method]];
     }
 
     public function getIterator(): ArrayIterator

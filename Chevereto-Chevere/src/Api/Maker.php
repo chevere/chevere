@@ -37,9 +37,6 @@ use Chevere\Contracts\Api\MakerContract;
 
 final class Maker implements MakerContract
 {
-    /** @var array HTTP methods accepted by this filter [HTTP_METHOD,] */
-    const ACCEPT_METHODS = Route::HTTP_METHODS;
-
     private $pathIdentifier;
 
     /** @var array Route mapping [route => [http_method => Controller]]] */
@@ -88,7 +85,7 @@ final class Maker implements MakerContract
     /**
      * {@inheritdoc}
      */
-    public function register(string $pathIdentifier)
+    public function register(string $pathIdentifier): void
     {
         $this->pathIdentifier = Str::rtail($pathIdentifier, '/');
         $this->handleDuplicates();
@@ -103,7 +100,7 @@ final class Maker implements MakerContract
         // Iterate the $this->directory filtering accepted filenames and folders
         $iterator = new RecursiveDirectoryIterator($this->directory, RecursiveDirectoryIterator::SKIP_DOTS);
         $filter = (new FilterIterator($iterator))
-            ->generateAcceptedFilenames(static::ACCEPT_METHODS, Api::METHOD_ROOT_PREFIX);
+            ->generateAcceptedFilenames(Method::ACCEPT_METHODS, Api::METHOD_ROOT_PREFIX);
 
         $this->recursiveIterator = new RecursiveIteratorIterator($filter);
 

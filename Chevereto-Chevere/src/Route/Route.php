@@ -22,7 +22,6 @@ use Chevere\Route\src\Wildcards;
 use Chevere\Route\src\WildcardValidation;
 use Chevere\Controllers\HeadController;
 use Chevere\Utility\Str;
-use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\HttpFoundation\MethodsContract;
 use Chevere\Contracts\HttpFoundation\MethodContract;
@@ -35,9 +34,6 @@ use Chevere\HttpFoundation\Method;
 
 final class Route implements RouteContract
 {
-    /** @const Array containing all the HTTP methods. */
-    const HTTP_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'COPY', 'HEAD', 'OPTIONS', 'LINK', 'UNLINK', 'PURGE', 'LOCK', 'UNLOCK', 'PROPFIND', 'VIEW', 'TRACE', 'CONNECT'];
-
     /** @const string Route without wildcards. */
     const TYPE_STATIC = 'static';
 
@@ -65,10 +61,10 @@ final class Route implements RouteContract
     /** @var array Where clauses based on wildcards */
     public $wheres;
 
-    /** @var array ['methodName' => 'controller',] */
+    /** @var array ['method' => 'controller',] */
     public $methods;
 
-    /** @var array ['middleware1', 'middleware2'] */
+    /** @var array [MiddlewareContract,] */
     public $middlewares;
 
     /** @var array */
@@ -143,24 +139,6 @@ final class Route implements RouteContract
 
     public function setMethod(MethodContract $method): RouteContract
     {
-        // string $httpMethod, string $controller
-        // Validate HTTP method
-        if (!in_array($method->method(), static::HTTP_METHODS)) {
-            throw new InvalidArgumentException(
-                (new Message('Unknown HTTP method %s.'))
-                    ->code('%s', $method->method())
-                    ->toString()
-            );
-        }
-        // FIXME: Unified validation (Controller validator)
-        if (!is_subclass_of($method->controller(), ControllerContract::class)) {
-            throw new LogicException(
-                (new Message('Callable %s must represent a class implementing the %i interface.'))
-                    ->code('%s', $method->controller())
-                    ->code('%i', ControllerContract::class)
-                    ->toString()
-            );
-        }
         if (isset($this->methods[$method->method()])) {
             throw new InvalidArgumentException(
                 (new Message('Method %s has been already registered.'))
@@ -198,7 +176,7 @@ final class Route implements RouteContract
 
     public function getController(string $httpMethod): string
     {
-        $controller = $this->methods[$httpMethod] ?? null;
+        $controller = $this->methods[$httpMethod];
         if (!isset($controller)) {
             throw new LogicException(
                 (new Message('No controller is associated to HTTP method %s.'))

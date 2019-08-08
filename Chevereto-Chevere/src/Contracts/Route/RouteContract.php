@@ -49,15 +49,14 @@ interface RouteContract
     /**
      * Sets HTTP method to callable binding. Allocates Routes.
      *
-     * @param string $httpMethod HTTP method
-     * @param string $controller Controller which handles the request
+     * @param MethodContract $method a HTTP method contract
      */
     public function setMethod(MethodContract $method): RouteContract;
 
     /**
      * Sets HTTP method to callable binding (multiple version).
      *
-     * @param array $methodsControllers An array containing [httpMethod => callable,]
+     * @param MethodsContract $methods a HTTP methods contract
      */
     public function setMethods(MethodsContract $methods): RouteContract;
 
