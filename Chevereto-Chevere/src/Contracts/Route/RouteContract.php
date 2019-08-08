@@ -13,28 +13,73 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Route;
 
+use Chevere\Contracts\HttpFoundation\MethodContract;
+use Chevere\Contracts\HttpFoundation\MethodsContract;
+
 interface RouteContract
 {
+    /**
+     * Route constructor.
+     *
+     * @param string $uri        Route uri (key string)
+     * @param string $controller Callable for GET
+     */
     public function __construct(string $uri, string $controller = null);
 
+    /**
+     * @param string $name route name, must be unique
+     */
     public function setName(string $name): RouteContract;
 
+    /**
+     * Sets where conditionals for the route wildcards.
+     *
+     * @param string $wildcardName wildcard name
+     * @param string $regex        regex pattern
+     */
     public function setWhere(string $wildcardName, string $regex): RouteContract;
 
+    /**
+     * Sets where conditionals for the route wildcards (multiple version).
+     *
+     * @param array $wildcardsPatterns An array containing [wildcardName => regexPattern,]
+     */
     public function setWheres(array $wildcardsPatterns): RouteContract;
 
-    public function setMethod(string $httpMethod, string $controller): RouteContract;
+    /**
+     * Sets HTTP method to callable binding. Allocates Routes.
+     *
+     * @param string $httpMethod HTTP method
+     * @param string $controller Controller which handles the request
+     */
+    public function setMethod(MethodContract $method): RouteContract;
 
-    public function setMethods(array $httpMethodsCallables): RouteContract;
+    /**
+     * Sets HTTP method to callable binding (multiple version).
+     *
+     * @param array $methodsControllers An array containing [httpMethod => callable,]
+     */
+    public function setMethods(MethodsContract $methods): RouteContract;
 
     public function setId(string $id): RouteContract;
 
     public function addMiddleware(string $callable): RouteContract;
 
+    /**
+     * @param string $httpMethod an HTTP method
+     */
     public function getController(string $httpMethod): string;
 
+    /**
+     * Fill object missing properties and whatnot.
+     */
     public function fill(): RouteContract;
 
+    /**
+     * Gets route regex.
+     *
+     * @param string $set route set, null to use $this->set ?? $this->uri
+     */
     // FIXME: Don't pass null
     public function regex(?string $set = null): string;
 }

@@ -24,6 +24,9 @@ use Chevere\Controllers\HeadController;
 use Chevere\Utility\Str;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Route\RouteContract;
+use Chevere\Contracts\HttpFoundation\MethodsContract;
+use Chevere\Contracts\HttpFoundation\MethodContract;
+use Chevere\HttpFoundation\Method;
 
 // IDEA Route lock (disables further modification)
 // IDEA: Reg events, determine who changes a route.
@@ -86,12 +89,6 @@ final class Route implements RouteContract
     /** @var string */
     public $type;
 
-    /**
-     * Route constructor.
-     *
-     * @param string $uri        Route uri (key string)
-     * @param string $controller Callable for GET
-     */
     public function __construct(string $uri, string $controller = null)
     {
         $this->uri = $uri;
@@ -107,13 +104,10 @@ final class Route implements RouteContract
         }
         $this->handleType();
         if (isset($controller)) {
-            $this->setMethod('GET', $controller);
+            $this->setMethod(new Method('GET', $controller));
         }
     }
 
-    /**
-     * @param string $name route name, must be unique
-     */
     public function setName(string $name): RouteContract
     {
         // Validate $name
@@ -130,12 +124,6 @@ final class Route implements RouteContract
         return $this;
     }
 
-    /**
-     * Sets where conditionals for the route wildcards.
-     *
-     * @param string $wildcardName wildcard name
-     * @param string $regex        regex pattern
-     */
     public function setWhere(string $wildcardName, string $regex): RouteContract
     {
         new WildcardValidation($wildcardName, $regex, $this);
@@ -144,11 +132,6 @@ final class Route implements RouteContract
         return $this;
     }
 
-    /**
-     * Sets where conditionals for the route wildcards (multiple version).
-     *
-     * @param array $wildcardsPatterns An array containing [wildcardName => regexPattern,]
-     */
     public function setWheres(array $wildcardsPatterns): RouteContract
     {
         foreach ($wildcardsPatterns as $wildcardName => $regexPattern) {
@@ -158,52 +141,41 @@ final class Route implements RouteContract
         return $this;
     }
 
-    /**
-     * Sets HTTP method to callable binding. Allocates Routes.
-     *
-     * @param string $httpMethod HTTP method
-     * @param string $controller Controller which handles the request
-     */
-    public function setMethod(string $httpMethod, string $controller): RouteContract
+    public function setMethod(MethodContract $method): RouteContract
     {
+        // string $httpMethod, string $controller
         // Validate HTTP method
-        if (!in_array($httpMethod, static::HTTP_METHODS)) {
+        if (!in_array($method->method(), static::HTTP_METHODS)) {
             throw new InvalidArgumentException(
                 (new Message('Unknown HTTP method %s.'))
-                    ->code('%s', $httpMethod)
+                    ->code('%s', $method->method())
                     ->toString()
             );
         }
         // FIXME: Unified validation (Controller validator)
-        if (!is_subclass_of($controller, ControllerContract::class)) {
+        if (!is_subclass_of($method->controller(), ControllerContract::class)) {
             throw new LogicException(
                 (new Message('Callable %s must represent a class implementing the %i interface.'))
-                    ->code('%s', $controller)
+                    ->code('%s', $method->controller())
                     ->code('%i', ControllerContract::class)
                     ->toString()
             );
         }
-        // Check HTTP dupes
-        // if (isset($this->methods[$httpMethod])) {
-        //     throw new InvalidArgumentException(
-        //         (new Message('Method %s has been already registered.'))
-        //             ->code('%s', $httpMethod)->toString()
-        //     );
-        // }
-        $this->methods[$httpMethod] = $controller;
+        if (isset($this->methods[$method->method()])) {
+            throw new InvalidArgumentException(
+                (new Message('Method %s has been already registered.'))
+                    ->code('%s', $method->method())->toString()
+            );
+        }
+        $this->methods[$method->method()] = $method->controller();
 
         return $this;
     }
 
-    /**
-     * Sets HTTP method to callable binding (multiple version).
-     *
-     * @param array $httpMethodsCallables An array containing [httpMethod => callable,]
-     */
-    public function setMethods(array $httpMethodsCallables): RouteContract
+    public function setMethods(MethodsContract $methods): RouteContract
     {
-        foreach ($httpMethodsCallables as $httpMethod => $controller) {
-            $this->setMethod($httpMethod, $controller);
+        foreach ($methods as $method) {
+            $this->setMethod($method);
         }
 
         return $this;
@@ -224,9 +196,6 @@ final class Route implements RouteContract
         return $this;
     }
 
-    /**
-     * @param string $httpMethod an HTTP method
-     */
     public function getController(string $httpMethod): string
     {
         $controller = $this->methods[$httpMethod] ?? null;
@@ -241,9 +210,6 @@ final class Route implements RouteContract
         return $controller;
     }
 
-    /**
-     * Fill object missing properties and whatnot.
-     */
     public function fill(): RouteContract
     {
         if (isset($this->wildcards)) {
@@ -254,18 +220,13 @@ final class Route implements RouteContract
             }
         }
         if (isset($this->methods['GET']) && !isset($this->methods['HEAD'])) {
-            $this->setMethod('HEAD', HeadController::class);
+            $this->setMethod(new Method('HEAD', HeadController::class));
         }
         $this->regex = $this->regex();
 
         return $this;
     }
 
-    /**
-     * Gets route regex.
-     *
-     * @param string $set route set, null to use $this->set ?? $this->uri
-     */
     public function regex(?string $set = null): string
     {
         $regex = $set ?? ($this->set ?? $this->uri);

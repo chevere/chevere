@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Api\src;
 
+use Chevere\Contracts\HttpFoundation\MethodsContract;
+
 interface EndpointContract
 {
-    public function __construct(array $httpMethods);
+    public function __construct(MethodsContract $methods);
 
-    public function getHttpMethods(): array;
+    public function methods(): MethodsContract;
 
     public function toArray(): array;
 

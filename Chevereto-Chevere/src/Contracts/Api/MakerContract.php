@@ -17,7 +17,6 @@ use Chevere\Contracts\Router\RouterContract;
 
 interface MakerContract
 {
-    // FIXME: RouterContract
     public function __construct(RouterContract $router);
 
     public function api(): array;

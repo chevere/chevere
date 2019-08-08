@@ -16,6 +16,8 @@ namespace Chevere\Api\src;
 use Chevere\Controllers\Api\OptionsController;
 use Chevere\Controllers\Api\HeadController;
 use Chevere\Contracts\Api\src\EndpointContract;
+use Chevere\Contracts\HttpFoundation\MethodsContract;
+use Chevere\HttpFoundation\Method;
 
 /**
  * Creates endpoints from ControlerInspect object.
@@ -25,20 +27,20 @@ final class Endpoint implements EndpointContract
     /** @var array */
     private $array;
 
-    /** @var array */
-    private $httpMethods;
+    /** @var MethodsContract */
+    private $methods;
 
-    public function __construct(array $httpMethods)
+    public function __construct(MethodsContract $methods)
     {
         $this->array = [];
-        $this->httpMethods = $httpMethods;
-        $this->fillEndpointOptions($this->httpMethods, $this->array);
-        $this->autofillMissingOptionsHead($this->httpMethods, $this->array);
+        $this->methods = $methods;
+        $this->fillEndpointOptions($this->array);
+        $this->autofillMissingOptionsHead($this->array);
     }
 
-    public function getHttpMethods(): array
+    public function methods(): MethodsContract
     {
-        return $this->httpMethods;
+        return $this->methods;
     }
 
     public function toArray(): array
@@ -51,9 +53,11 @@ final class Endpoint implements EndpointContract
         $this->array['resource'] = $resource;
     }
 
-    private function fillEndpointOptions(array &$httpMethods, array &$endpointApi)
+    private function fillEndpointOptions(array &$endpointApi)
     {
-        foreach ($httpMethods as $httpMethod => $controllerClassName) {
+        foreach ($this->methods as $method) {
+            $httpMethod = $method->method();
+            $controllerClassName = $method->controller();
             $httpMethodOptions = [];
             $httpMethodOptions['description'] = $controllerClassName::description();
             $controllerParameters = $controllerClassName::parameters();
@@ -64,7 +68,7 @@ final class Endpoint implements EndpointContract
         }
     }
 
-    private function autofillMissingOptionsHead(array &$httpMethods, array &$endpointApi)
+    private function autofillMissingOptionsHead(array &$endpointApi)
     {
         foreach ([
             'OPTIONS' => [
@@ -78,8 +82,8 @@ final class Endpoint implements EndpointContract
                 ],
             ],
         ] as $k => $v) {
-            if (!isset($httpMethods[$k])) {
-                $httpMethods[$k] = $v[0];
+            if (!$this->methods->has($k)) {
+                $this->methods->add(new Method($k, $v[0]));
                 $endpointApi['OPTIONS'][$k] = $v[1];
             }
         }

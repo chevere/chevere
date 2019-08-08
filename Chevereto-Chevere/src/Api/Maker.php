@@ -20,7 +20,8 @@ use RecursiveIteratorIterator;
 use const Chevere\App\PATH as AppPath;
 use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
-use Chevere\Router\Router;
+use Chevere\HttpFoundation\Method;
+use Chevere\HttpFoundation\Methods;
 use Chevere\Contracts\Router\RouterContract;
 use Chevere\Api\src\FilterIterator;
 use Chevere\Api\src\Endpoint;
@@ -112,14 +113,14 @@ final class Maker implements MakerContract
 
         $this->uri = '/'.$this->basePath;
 
-        $httpMethods = [
-            'HEAD' => HeadController::class,
-            'OPTIONS' => OptionsController::class,
-            'GET' => GetController::class,
-        ];
-        $endpoint = new Endpoint($httpMethods);
+        $methods = new Methods();
+        $methods->add(new Method('HEAD', HeadController::class));
+        $methods->add(new Method('OPTIONS', OptionsController::class));
+        $methods->add(new Method('GET', GetController::class));
+
+        $endpoint = new Endpoint($methods);
         $this->route = (new Route($this->uri))
-            ->setMethods($httpMethods)
+            ->setMethods($methods)
             ->setId($this->basePath);
         $this->router->addRoute($this->route, $this->basePath);
         $this->api[$this->basePath][''] = $endpoint->toArray();
@@ -186,12 +187,16 @@ final class Maker implements MakerContract
     private function processRoutesMap(): void
     {
         foreach ($this->routesMap as $pathComponent => $httpMethods) {
-            $endpoint = new Endpoint($httpMethods);
+            $methods = new Methods();
+            foreach ($httpMethods as $httpMethod => $controller) {
+                $methods->add(new Method($httpMethod, $controller));
+            }
+            $endpoint = new Endpoint($methods);
             /** @var string Full qualified route key for $pathComponent like /api/users/{user} */
             $endpointRouteKey = Str::ltail($pathComponent, '/');
             $this->route = (new Route($endpointRouteKey))
                 ->setId($pathComponent)
-                ->setMethods($endpoint->getHttpMethods());
+                ->setMethods($endpoint->methods());
             // Define Route wildcard "where" if needed
             $resource = $this->resourcesMap[$pathComponent] ?? null;
             if (isset($resource)) {
