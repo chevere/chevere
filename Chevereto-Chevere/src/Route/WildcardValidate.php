@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Route\src;
+namespace Chevere\Route;
 
 use LogicException;
 use InvalidArgumentException;
@@ -20,7 +20,7 @@ use Chevere\Validate;
 use Chevere\Utility\Str;
 use Chevere\Contracts\Route\RouteContract;
 
-final class WildcardValidation
+final class WildcardValidate
 {
     /** @var string */
     private $wildcardName;
@@ -32,10 +32,10 @@ final class WildcardValidation
     private $regex;
 
     /** @var string */
-    public $uri;
+    private $uri;
 
     /** @var array */
-    public $routeWheres;
+    private $routeWheres;
 
     public function __construct(string $wildcardName, string $regex, RouteContract $route)
     {
@@ -94,6 +94,7 @@ final class WildcardValidation
         }
     }
 
+    // FIXME: Don't pass null
     private function validateUnique(string $wildcardName, ?array $haystack): bool
     {
         return !isset($haystack[$wildcardName]);

@@ -11,32 +11,32 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Route\src;
+namespace Chevere\Route;
 
 use InvalidArgumentException;
 use Chevere\Message;
 use Chevere\Utility\Str;
 
-final class KeyValidation
+final class UriValidate
 {
     /** @var string */
-    private $key;
+    private $uri;
 
     /** @var bool */
     private $hasHandlebars;
 
-    public function __construct(string $key)
+    public function __construct(string $uri)
     {
-        $this->setKey($key);
+        $this->setKey($uri);
         $this->setHasHandlebars();
         if ($this->hasHandlebars) {
             $this->validateReservedWildcards();
         }
     }
 
-    public function key(): string
+    public function uri(): string
     {
-        return $this->key;
+        return $this->uri;
     }
 
     public function hasHandlebars(): bool
@@ -44,39 +44,39 @@ final class KeyValidation
         return $this->hasHandlebars;
     }
 
-    private function setKey(string $key): void
+    private function setKey(string $uri): void
     {
-        if (!$this->validateFormat($key)) {
+        if (!$this->validateFormat($uri)) {
             throw new InvalidArgumentException(
                 (new Message("String %s must start with a forward slash, it shouldn't contain neither whitespace, backslashes or extra forward slashes and it should be specified without a trailing slash."))
-                    ->code('%s', $key)
+                    ->code('%s', $uri)
                     ->toString()
             );
         }
-        $this->key = $key;
+        $this->uri = $uri;
     }
 
-    private function validateFormat(string $key): bool
+    private function validateFormat(string $uri): bool
     {
-        if ('/' == $key) {
+        if ('/' == $uri) {
             return true;
         }
 
-        return strlen($key) > 0 && Str::startsWith('/', $key)
-            && $this->validateFormatSlashes($key);
+        return strlen($uri) > 0 && Str::startsWith('/', $uri)
+            && $this->validateFormatSlashes($uri);
     }
 
-    private function validateFormatSlashes(string $key): bool
+    private function validateFormatSlashes(string $uri): bool
     {
-        return !Str::endsWith('/', $key)
-            && !Str::contains('//', $key)
-            && !Str::contains(' ', $key)
-            && !Str::contains('\\', $key);
+        return !Str::endsWith('/', $uri)
+            && !Str::contains('//', $uri)
+            && !Str::contains(' ', $uri)
+            && !Str::contains('\\', $uri);
     }
 
     private function validateReservedWildcards(): void
     {
-        if (!(preg_match_all('/{([0-9]+)}/', $this->key) === 0)) {
+        if (!(preg_match_all('/{([0-9]+)}/', $this->uri) === 0)) {
             throw new InvalidArgumentException(
                 (new Message('Wildcards in the form of %s are reserved.'))
                     ->code('%s', '/{n}')
@@ -87,6 +87,6 @@ final class KeyValidation
 
     private function setHasHandlebars()
     {
-        $this->hasHandlebars = Str::contains('{', $this->key) || Str::contains('}', $this->key);
+        $this->hasHandlebars = Str::contains('{', $this->uri) || Str::contains('}', $this->uri);
     }
 }

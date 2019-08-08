@@ -11,31 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Route\src;
+namespace Chevere\Route;
 
 use LogicException;
 use Chevere\Message;
 use Chevere\Path;
 use Chevere\Utility\Str;
 use Chevere\Utility\Arr;
-use Chevere\Route\Route;
 
-/**
- * Interacts with routes that use wildcards.
- */
 final class Wildcards
 {
     /** @var string Key set representation */
-    public $set;
+    private $set;
 
     /** @var array */
-    public $matches;
+    private $matches;
 
     /** @var array */
-    public $wildcards;
+    private $wildcards;
 
     /** @var array An array containing all the key sets for the route (optionals combo) */
-    public $powerSet;
+    private $powerSet;
 
     /** @var string */
     private $uri;
@@ -63,6 +59,26 @@ final class Wildcards
         $this->optionalsIndex = [];
         $this->handleMatches();
         $this->handleOptionals();
+    }
+
+    public function set(): string
+    {
+        return $this->set;
+    }
+
+    public function matches(): array
+    {
+        return $this->matches ?? [];
+    }
+
+    public function wildcards(): array
+    {
+        return $this->wildcards ?? [];
+    }
+
+    public function powerSet(): array
+    {
+        return $this->powerSet ?? [];
     }
 
     private function handleMatches()

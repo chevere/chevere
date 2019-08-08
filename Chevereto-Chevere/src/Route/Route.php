@@ -17,9 +17,6 @@ use LogicException;
 use InvalidArgumentException;
 use Chevere\Message;
 use Chevere\Path;
-use Chevere\Route\src\KeyValidation;
-use Chevere\Route\src\Wildcards;
-use Chevere\Route\src\WildcardValidation;
 use Chevere\Controllers\HeadController;
 use Chevere\Utility\Str;
 use Chevere\Contracts\Route\RouteContract;
@@ -88,13 +85,13 @@ final class Route implements RouteContract
     public function __construct(string $uri, string $controller = null)
     {
         $this->uri = $uri;
-        $keyValidation = new KeyValidation($this->uri);
+        $uriValidate = new UriValidate($this->uri);
         $this->maker = $this->getMakerData();
-        if ($keyValidation->hasHandlebars()) {
+        if ($uriValidate->hasHandlebars()) {
             $wildcards = new Wildcards($this->uri);
-            $this->set = $wildcards->set;
-            $this->powerSet = $wildcards->powerSet;
-            $this->wildcards = $wildcards->wildcards;
+            $this->set = $wildcards->set();
+            $this->powerSet = $wildcards->powerSet();
+            $this->wildcards = $wildcards->wildcards();
         } else {
             $this->set = $this->uri;
         }
@@ -122,7 +119,7 @@ final class Route implements RouteContract
 
     public function setWhere(string $wildcardName, string $regex): RouteContract
     {
-        new WildcardValidation($wildcardName, $regex, $this);
+        new WildcardValidate($wildcardName, $regex, $this);
         $this->wheres[$wildcardName] = $regex;
 
         return $this;
