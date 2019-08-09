@@ -19,9 +19,6 @@ use Chevere\Contracts\Api\src\EndpointContract;
 use Chevere\Contracts\HttpFoundation\MethodsContract;
 use Chevere\HttpFoundation\Method;
 
-/**
- * Creates endpoints from ControlerInspect object.
- */
 final class Endpoint implements EndpointContract
 {
     /** @var array */

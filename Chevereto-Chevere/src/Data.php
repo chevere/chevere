@@ -13,19 +13,29 @@ declare(strict_types=1);
 
 namespace Chevere;
 
+use ArrayAccess;
 use ArrayIterator;
 use Chevere\Contracts\DataContract;
 
+/**
+ * Data wrapper.
+ */
 class Data implements DataContract
 {
     /** @var array */
     private $data;
 
-    public function __construct(array $data = null)
+    public static function fromArrayAccess(ArrayAccess $data)
     {
-        if ($data !== null) {
-            $this->data = $data;
-        }
+        $that = new self();
+        $that->data = $data;
+
+        return $that;
+    }
+
+    public function __construct()
+    {
+        $this->data = [];
     }
 
     public function getIterator(): ArrayIterator

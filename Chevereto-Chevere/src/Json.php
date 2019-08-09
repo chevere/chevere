@@ -44,7 +44,7 @@ final class Json implements Interfaces\PrintableInterface
      */
     public function __construct()
     {
-        $this->data = new Data();
+        // $this->data = new Data([]);
     }
 
     /**

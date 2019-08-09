@@ -19,7 +19,7 @@ use IteratorAggregate;
 
 interface DataContract extends ToArrayContract, IteratorAggregate, Countable
 {
-    public function __construct(array $data = null);
+    public function __construct();
 
     public function getIterator(): ArrayIterator;
 

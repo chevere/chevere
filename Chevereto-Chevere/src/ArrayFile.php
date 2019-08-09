@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere;
 
+use ArrayAccess;
 use ArrayIterator;
 use LogicException;
 use IteratorAggregate;
@@ -20,7 +21,7 @@ use IteratorAggregate;
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).
  */
-final class ArrayFile implements IteratorAggregate
+final class ArrayFile implements IteratorAggregate, ArrayAccess
 {
     /** @const array Type validators, taken from https://www.php.net/manual/en/ref.var.php */
     const TYPE_VALIDATORS = [
@@ -90,6 +91,26 @@ final class ArrayFile implements IteratorAggregate
             );
         }
         $this->array = $fileArray;
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $this->array[$offset ?? ''] = $value;
+    }
+
+    public function offsetExists($offset): bool
+    {
+        return isset($this->array[$offset]);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->array[$offset] ?? null;
+    }
+
+    public function offsetUnset($offset)
+    {
+        unset($this->array[$offset]);
     }
 
     public function getIterator(): ArrayIterator

@@ -46,11 +46,8 @@ final class Parameters implements ParametersContract
         self::ROUTES => 'array',
     ];
 
-    /** @var ArrayFile */
+    /** @var ArrayFile The parameters array used to construct the object */
     private $arrayFile;
-
-    /** @var array The parameters array used to construct the object */
-    private $parameters;
 
     /** @var Data */
     public $data;
@@ -65,14 +62,13 @@ final class Parameters implements ParametersContract
     public function __construct(ArrayFile $arrayFile)
     {
         $this->arrayFile = $arrayFile;
-        $this->parameters = $this->arrayFile->toArray();
-        $this->data = new Data($this->parameters);
+        $this->data = Data::fromArrayAccess($this->arrayFile);
         $this->validate();
     }
 
     private function validate(): void
     {
-        foreach ($this->parameters as $key => $val) {
+        foreach ($this->arrayFile as $key => $val) {
             $this->validateKeyExists($key);
             $this->validateKeyType($key, $val);
         }
