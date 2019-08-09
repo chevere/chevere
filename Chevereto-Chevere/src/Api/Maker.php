@@ -34,6 +34,7 @@ use Chevere\Controllers\Api\HeadController;
 use Chevere\Controllers\Api\OptionsController;
 use Chevere\Controllers\Api\GetController;
 use Chevere\Contracts\Api\MakerContract;
+use Throwable;
 
 final class Maker implements MakerContract
 {
@@ -90,7 +91,7 @@ final class Maker implements MakerContract
         $this->pathIdentifier = Str::rtail($pathIdentifier, '/');
         $this->handleDuplicates();
         $this->directory = Path::fromHandle($this->pathIdentifier);
-        $this->handleMissingDirectory();
+        $this->handleInvalidDirectory();
         $this->basePath = strtolower(basename($this->directory));
         $this->routesMap = [];
         $this->resourcesMap = [];
@@ -127,7 +128,12 @@ final class Maker implements MakerContract
 
     private function handleEmptyRecursiveIterator(): void
     {
-        if (iterator_count($this->recursiveIterator) == 0) {
+        try {
+            $count = iterator_count($this->recursiveIterator);
+        } catch (Throwable $e) {
+            throw new LogicException($e->getMessage());
+        }
+        if ($count == 0) {
             throw new LogicException(
                 (new Message('No API methods found in the %s path.'))
                     ->code('%s', $this->directory)
@@ -147,13 +153,20 @@ final class Maker implements MakerContract
         }
     }
 
-    private function handleMissingDirectory(): void
+    private function handleInvalidDirectory(): void
     {
         if (!File::exists($this->directory)) {
             throw new LogicException(
                 (new Message("Directory %s doesn't exists."))
-                    ->code('%s', $this->directory)
-                    ->toString()
+                ->code('%s', $this->directory)
+                ->toString()
+            );
+        }
+        if (!is_readable($this->directory)) {
+            throw new LogicException(
+                (new Message('Directory %s is not readable.'))
+                ->code('%s', $this->directory)
+                ->toString()
             );
         }
     }

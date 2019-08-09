@@ -19,12 +19,12 @@ interface MakerContract
 {
     public function __construct(RouterContract $router);
 
-    public function api(): array;
-
     /**
      * Automatically finds controllers in the given path and generate the API route binding.
      *
      * @param string $pathIdentifier path identifier representing the dir containing API controllers (src/Api/)
      */
     public function register(string $pathIdentifier);
+
+    public function api(): array;
 }

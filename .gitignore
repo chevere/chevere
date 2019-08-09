@@ -7,3 +7,4 @@ Chevereto-Chevere/logs/
 var/
 composer.lock
 .vscode/
+.phpunit.result.cache

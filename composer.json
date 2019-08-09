@@ -22,6 +22,9 @@
   "require": {
     "chevereto/chevere": "@dev"
   },
+  "require-dev": {
+    "phpunit/phpunit": "^8"
+  },
   "config": {
     "optimize-autoloader": true
   }
