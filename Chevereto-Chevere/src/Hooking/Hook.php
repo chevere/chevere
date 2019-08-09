@@ -148,7 +148,7 @@ final class Hook
 
         return [
             self::ANCHOR => $anchor ?? null,
-            self::FILE => Path::fromHandle($pathIdentifier),
+            self::FILE => Path::fromIdentifier($pathIdentifier),
         ];
     }
 

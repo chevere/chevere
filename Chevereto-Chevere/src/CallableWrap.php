@@ -178,7 +178,7 @@ final class CallableWrap
 
     private function handleCallableFile(string $callableHandle): void
     {
-        $callableFilepath = Path::fromHandle($callableHandle);
+        $callableFilepath = Path::fromIdentifier($callableHandle);
         if (!File::exists($callableFilepath)) {
             throw new LogicException(
                 (new Message('Unable to locate any callable specified by %s.'))

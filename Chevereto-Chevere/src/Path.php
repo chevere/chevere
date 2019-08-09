@@ -150,40 +150,12 @@ abstract class Path
             return false;
         }
         $explode = explode('://', $path, 2);
-        if (in_array($explode[0], stream_get_wrappers())) {
-            return true;
-        } else {
-            return false;
-        }
+
+        return in_array($explode[0], stream_get_wrappers());
     }
 
     /**
-     * Convert array to path.
-     *
-     * @param array $array ['path', 'from', 'array']
-     *
-     * @return string path/from/array
-     */
-    public static function relativeFromArray(array $array): string
-    {
-        return implode('/', $array);
-    }
-
-    /**
-     * Convert array to path.
-     *
-     * @param array $array ['path', 'from', 'array']
-     *
-     * @return string /path/from/array
-     *                FIXME: Windows paths?
-     */
-    public static function absoluteFromArray(array $array): string
-    {
-        return '/'.implode('/', $array);
-    }
-
-    /**
-     * Returns the path (trailing slash) associated with a path identifier.
+     * Returns the path associated with a path identifier relative to app.
      *
      * Path identifiers refers to the standarized way in which files and paths
      * are handled by internal APIs like Hookable or Router.
@@ -194,38 +166,30 @@ abstract class Path
      * - The dirname is relative to App\Path.
      * - dirname allows absolute paths.
      *
-     * @param string $pathIdentifier path identifier (<dirname>:<file>)
-     * @param string $rootContext    Root context for the $pathIdentifier. Must be an absolute path.
+     * @param string $appPathIdentifier path identifier relative to app (<dirname>:<file>)
      *
-     * @return string absolute path like /home/user/folder/ or /home/user/folder/file.php
+     * @return string absolute path like /home/user/app/ or /home/user/app/file.php
      */
-    public static function fromHandle(string $pathIdentifier, string $rootContext = null): string
+    public static function fromIdentifier(string $appPathIdentifier): string
     {
         $pathHandle = static::handle(...func_get_args());
 
-        return $pathHandle->toString();
+        return $pathHandle->path();
     }
 
-    public static function handle(string $pathIdentifier, string $rootContext = null): PathHandle
+    /**
+     * Returns a PathHandle for the given path identifier relative to app.
+     *
+     * @param string $appPathIdentifier path identifier relative to app (<dirname>:<file>)
+     */
+    public static function handle(string $appPathIdentifier): PathHandle
     {
-        $pathHandle = new PathHandle($pathIdentifier);
-        if ($rootContext) {
-            $handleContext = static::resolve(static::normalize($rootContext));
-        } else {
-            $handleContext = ROOT_PATH.App\PATH;
-        }
-        $handleContext = static::tailDir($handleContext);
-        $pathHandle->setContext($handleContext);
-        $pathHandle->process();
+        $rootContext = null;
+        // $handleContext = static::resolve(static::normalize($rootContext));
+        $handleContext = static::tailDir(ROOT_PATH.App\PATH);
+        $pathHandle = new PathHandle($appPathIdentifier, $handleContext);
 
         return $pathHandle;
-    }
-
-    public static function relativeFromHandle(string $handle, string $rootContext = null): ?string
-    {
-        $path = static::fromHandle(...func_get_args());
-
-        return static::relative($path, $rootContext);
     }
 
     /**

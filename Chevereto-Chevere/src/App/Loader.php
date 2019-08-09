@@ -17,8 +17,9 @@ use LogicException;
 use RuntimeException;
 use Chevere\ArrayFile;
 use Chevere\Path;
+use Chevere\PathHandle;
 use Chevere\Api\Api;
-use Chevere\Api\Maker as ApiMaker;
+use Chevere\Api\Maker;
 use Chevere\Console\Console;
 use Chevere\HttpFoundation\Request;
 use Chevere\HttpFoundation\Response;
@@ -38,9 +39,6 @@ final class Loader implements LoaderContract
 
     /** @var AppContract */
     public $app;
-
-    /** @var ApiMaker */
-    private $apiMaker;
 
     /** @var string */
     private $controller;
@@ -162,7 +160,8 @@ final class Loader implements LoaderContract
         // $this->processConfigFiles($parameters->data->getKey(Parameters::CONFIG_FILES));
         $api = $parameters->data->getKey(Parameters::API);
         if (isset($api)) {
-            $this->processApi($api);
+            $pathHandle = Path::handle($api);
+            $this->processApi($pathHandle);
         }
         $routes = $parameters->data->getKey(Parameters::ROUTES);
         if (isset($routes)) {
@@ -206,11 +205,11 @@ final class Loader implements LoaderContract
         }
     }
 
-    private function processApi(string $pathIdentifier): void
+    private function processApi(PathHandle $pathHandle): void
     {
-        $this->apiMaker = new ApiMaker($this->router);
-        $this->apiMaker->register($pathIdentifier);
-        $this->app->api = new Api($this->apiMaker);
+        $maker = new Maker($this->router);
+        $maker->register($pathHandle);
+        $this->app->api = new Api($maker);
     }
 
     // private function processConfigFiles(array $configFiles = null): void

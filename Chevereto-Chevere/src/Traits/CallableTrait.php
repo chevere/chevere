@@ -42,7 +42,7 @@ trait CallableTrait
                     );
                 }
             } else {
-                $callableFile = Path::fromHandle($callableString);
+                $callableFile = Path::fromIdentifier($callableString);
                 $this->checkCallableFile($callableFile);
 
                 return Path::relative($callableFile);

@@ -67,7 +67,7 @@ final class ArrayFile implements IteratorAggregate
      */
     public function __construct(PathHandle $pathHandle, string $typeSome = null)
     {
-        $filepath = $pathHandle->toString();
+        $filepath = $pathHandle->path();
         $this->typeSome = $typeSome;
         $fileArray = include $filepath;
         $this->filepath = $filepath;

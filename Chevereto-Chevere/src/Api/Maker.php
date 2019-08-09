@@ -17,6 +17,7 @@ use OuterIterator;
 use LogicException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use Throwable;
 use const Chevere\App\PATH as AppPath;
 use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
@@ -27,6 +28,7 @@ use Chevere\Api\src\FilterIterator;
 use Chevere\Api\src\Endpoint;
 use Chevere\Message;
 use Chevere\Path;
+use Chevere\PathHandle;
 use Chevere\File;
 use Chevere\Utility\Str;
 use Chevere\Controller\Inspect as ControllerInspect;
@@ -34,7 +36,6 @@ use Chevere\Controllers\Api\HeadController;
 use Chevere\Controllers\Api\OptionsController;
 use Chevere\Controllers\Api\GetController;
 use Chevere\Contracts\Api\MakerContract;
-use Throwable;
 
 final class Maker implements MakerContract
 {
@@ -55,14 +56,11 @@ final class Maker implements MakerContract
     /** @var array Endpoint API properties */
     private $api;
 
-    /** @var string Target API directory (absolute) */
-    private $directory;
-
     /** @var RouterContract The injected Router, needed to add Routes to the injector instance */
     private $router;
 
-    /** @var array Public exposed APIs groupped by basePath [basePath => [api],] */
-    private $apis;
+    /** @var array Contains registered API paths via register() */
+    private $registered;
 
     /** @var string The API basepath, like 'api' */
     private $basePath;
@@ -70,7 +68,7 @@ final class Maker implements MakerContract
     /** @var RouteContract */
     private $route;
 
-    /** @var string */
+    /** @var string Target API directory (absolute) */
     private $path;
 
     public function __construct(RouterContract $router)
@@ -78,38 +76,30 @@ final class Maker implements MakerContract
         $this->router = $router;
     }
 
-    public function api(): array
-    {
-        return $this->api;
-    }
-
     /**
      * {@inheritdoc}
      */
-    public function register(string $pathIdentifier): void
+    public function register(PathHandle $pathHandle): void
     {
-        $this->pathIdentifier = Str::rtail($pathIdentifier, '/');
-        $this->handleDuplicates();
-        $this->directory = Path::fromHandle($this->pathIdentifier);
-        $this->handleInvalidDirectory();
-        $this->basePath = strtolower(basename($this->directory));
+        $this->path = $pathHandle->path();
+        $this->validateNoDuplicates();
+        $this->validatePath();
+        $this->basePath = strtolower(basename($this->path));
         $this->routesMap = [];
         $this->resourcesMap = [];
         $this->controllersMap = [];
         $this->api = [];
 
-        // Iterate the $this->directory filtering accepted filenames and folders
-        $iterator = new RecursiveDirectoryIterator($this->directory, RecursiveDirectoryIterator::SKIP_DOTS);
-        $filter = (new FilterIterator($iterator))
-            ->generateAcceptedFilenames(Method::ACCEPT_METHODS, Api::METHOD_ROOT_PREFIX);
-
+        $iterator = new RecursiveDirectoryIterator($this->path, RecursiveDirectoryIterator::SKIP_DOTS);
+        $filter = new FilterIterator($iterator);
+        $filter->generateAcceptedFilenames(Method::ACCEPT_METHODS, Api::METHOD_ROOT_PREFIX);
         $this->recursiveIterator = new RecursiveIteratorIterator($filter);
+        $this->validateRecursiveIterator();
+        $this->processRecursiveIterator();
 
-        $this->handleEmptyRecursiveIterator();
-        $this->processRecursiveIteration();
         $this->processRoutesMap();
 
-        $this->path = '/'.$this->basePath;
+        $path = '/'.$this->basePath;
 
         $methods = new Methods();
         $methods->add(new Method('HEAD', HeadController::class));
@@ -117,16 +107,23 @@ final class Maker implements MakerContract
         $methods->add(new Method('GET', GetController::class));
 
         $endpoint = new Endpoint($methods);
-        $this->route = (new Route($this->path))
+
+        $this->route = (new Route($path))
             ->setMethods($methods)
             ->setId($this->basePath);
+
         $this->router->addRoute($this->route, $this->basePath);
         $this->api[$this->basePath][''] = $endpoint->toArray();
         ksort($this->api);
-        $this->apis[$this->basePath] = true;
+        $this->registered[$this->basePath] = true;
     }
 
-    private function handleEmptyRecursiveIterator(): void
+    public function api(): array
+    {
+        return $this->api;
+    }
+
+    private function validateRecursiveIterator(): void
     {
         try {
             $count = iterator_count($this->recursiveIterator);
@@ -136,42 +133,42 @@ final class Maker implements MakerContract
         if ($count == 0) {
             throw new LogicException(
                 (new Message('No API methods found in the %s path.'))
-                    ->code('%s', $this->directory)
+                    ->code('%s', $this->path)
                     ->toString()
             );
         }
     }
 
-    private function handleDuplicates(): void
+    private function validateNoDuplicates(): void
     {
-        if (isset($this->apis[$this->pathIdentifier])) {
+        if (isset($this->registered[$this->path])) {
             throw new LogicException(
                 (new Message('Path identified by %s has been already bound.'))
-                    ->code('%s', $this->pathIdentifier)
+                    ->code('%s', $this->path)
                     ->toString()
             );
         }
     }
 
-    private function handleInvalidDirectory(): void
+    private function validatePath(): void
     {
-        if (!File::exists($this->directory)) {
+        if (!File::exists($this->path)) {
             throw new LogicException(
                 (new Message("Directory %s doesn't exists."))
-                ->code('%s', $this->directory)
+                ->code('%s', $this->path)
                 ->toString()
             );
         }
-        if (!is_readable($this->directory)) {
+        if (!is_readable($this->path)) {
             throw new LogicException(
                 (new Message('Directory %s is not readable.'))
-                ->code('%s', $this->directory)
+                ->code('%s', $this->path)
                 ->toString()
             );
         }
     }
 
-    private function processRecursiveIteration(): void
+    private function processRecursiveIterator(): void
     {
         foreach ($this->recursiveIterator as $filename) {
             $filepathAbsolute = Str::forwardSlashes((string) $filename);

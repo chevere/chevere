@@ -34,50 +34,29 @@ final class PathHandle
 
     /**
      * @param string $identifier Path identifier (<dirname>:<file>)
+     * @param string $context    Root context for $identifier. Must be absolute path.
      */
-    public function __construct(string $identifier)
+    public function __construct(string $identifier, string $context)
     {
         $this->identifier = $identifier;
+        $this->context = $context;
         $this->validateStringIdentifier();
         $this->validateCharIdentifier();
-    }
-
-    /**
-     * @param string $context Root context for $identifier. Must be absolute path.
-     */
-    public function setContext(string $context): self
-    {
-        $this->context = $context;
         $this->validateContext();
-
-        return $this;
+        $this->process();
     }
 
-    public function toString(): string
+    public function identifier(): string
+    {
+        return $this->identifier;
+    }
+
+    public function path(): string
     {
         return $this->path;
     }
 
-    public function process()
-    {
-        if (Utility\Str::endsWith('.php', $this->identifier) && File::exists($this->identifier)) {
-            return Path::isAbsolute($this->identifier) ? $this->identifier : Path::absolute($this->identifier);
-        }
-        $this->path = Path::normalize($this->identifier);
-        if (Utility\Str::contains(':', $this->path)) {
-            $this->path = $this->processIdentifier();
-        } else {
-            $this->path = $this->processPath();
-        }
-        // $this->path is not an absolute path neither a wrapper or anything like that
-        if (!Path::isAbsolute($this->path)) {
-            $this->path = $this->context.$this->path;
-        }
-        // Resolve . and ..
-        $this->path = Path::resolve($this->path);
-    }
-
-    public function filenameFromIdentifier(): string
+    private function filenameFromIdentifier(): string
     {
         $this->explode = explode(':', $this->identifier);
 
@@ -129,6 +108,25 @@ final class PathHandle
                     ->toString()
             );
         }
+    }
+
+    private function process()
+    {
+        if (Utility\Str::endsWith('.php', $this->identifier) && File::exists($this->identifier)) {
+            return Path::isAbsolute($this->identifier) ? $this->identifier : Path::absolute($this->identifier);
+        }
+        $this->path = Path::normalize($this->identifier);
+        if (Utility\Str::contains(':', $this->path)) {
+            $this->path = $this->processIdentifier();
+        } else {
+            $this->path = $this->processPath();
+        }
+        // $this->path is not an absolute path neither a wrapper or anything like that
+        if (!Path::isAbsolute($this->path)) {
+            $this->path = $this->context.$this->path;
+        }
+        // Resolve . and ..
+        $this->path = Path::resolve($this->path);
     }
 
     private function processIdentifier(): string

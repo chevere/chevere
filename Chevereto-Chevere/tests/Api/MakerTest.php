@@ -11,19 +11,27 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+namespace Tests\Api;
+
 use Throwable;
 use Chevere\Api\Maker;
 use Chevere\Router\Router;
+use Chevere\Contracts\Api\MakerContract;
 use PHPUnit\Framework\TestCase;
 
 final class MakerTest extends TestCase
 {
-    /** @var MakerContractx */
+    /** @var MakerContract */
     protected $maker;
 
     public function setUp(): void
     {
         $this->maker = new Maker(new Router());
+    }
+
+    public function tearDown(): void
+    {
+        unset($this->maker);
     }
 
     /**

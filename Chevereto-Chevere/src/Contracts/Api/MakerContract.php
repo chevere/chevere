@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Api;
 
+use Chevere\PathHandle;
 use Chevere\Contracts\Router\RouterContract;
 
 interface MakerContract
@@ -24,7 +25,7 @@ interface MakerContract
      *
      * @param string $pathIdentifier path identifier representing the dir containing API controllers (src/Api/)
      */
-    public function register(string $pathIdentifier);
+    public function register(PathHandle $pathHandle): void;
 
     public function api(): array;
 }
