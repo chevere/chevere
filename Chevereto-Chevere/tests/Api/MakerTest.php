@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use LogicException;
+use Throwable;
 use Chevere\Api\Maker;
 use Chevere\Router\Router;
 use PHPUnit\Framework\TestCase;
@@ -36,7 +36,7 @@ final class MakerTest extends TestCase
 
     public function testCannotRegisterInvalidPath(): void
     {
-        $this->expectException(LogicException::class);
-        $this->maker->register('');
+        $this->expectException(Throwable::class);
+        $this->maker->register('/dev/null');
     }
 }
