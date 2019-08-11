@@ -24,8 +24,6 @@ use Chevere\Contracts\Route\RouteContract;
 use Chevere\HttpFoundation\Method;
 use Chevere\HttpFoundation\Methods;
 use Chevere\Contracts\Router\RouterContract;
-use Chevere\Api\src\FilterIterator;
-use Chevere\Api\src\Endpoint;
 use Chevere\Message;
 use Chevere\Path;
 use Chevere\PathHandle;

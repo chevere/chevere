@@ -36,7 +36,7 @@ use Chevere\Controllers\Api\OptionsController;
 use Chevere\Controllers\Api\GetController;
 use Chevere\HttpFoundation\Method;
 use Chevere\HttpFoundation\Methods;
-use Chevere\Api\src\Endpoint;
+use Chevere\Api\Endpoint;
 
 final class Loader implements LoaderContract
 {
