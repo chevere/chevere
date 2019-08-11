@@ -16,14 +16,12 @@ namespace Chevere\App;
 use LogicException;
 use const Chevere\ROOT_PATH;
 use const Chevere\App\PATH as AppPath;
-use Chevere\File;
 use Chevere\Message;
 use Chevere\Contracts\App\AppContract;
-use Chevere\Controller\ArgumentsWrap as ControllerArgumentsWrap;
+use Chevere\Controller\ArgumentsWrap;
 use Chevere\HttpFoundation\Response;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Route\RouteContract;
-use Chevere\Route\Route;
 
 /**
  * The app container.
@@ -78,8 +76,8 @@ final class App implements AppContract
         // }
 
         if (isset($this->arguments)) {
-            $wrap = new ControllerArgumentsWrap($controller, $this->arguments);
-            $controllerArguments = $wrap->arguments();
+            $wrap = new ArgumentsWrap($controller, $this->arguments);
+            $controllerArguments = $wrap->typedArguments();
         } else {
             $controllerArguments = [];
         }

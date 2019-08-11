@@ -19,38 +19,34 @@ use ReflectionParameter;
 use ReflectionFunctionAbstract;
 use Chevere\Message;
 use Chevere\Contracts\Controller\ControllerContract;
-use Chevere\Contracts\Controller\ArgumentsWrapContract;
 
 /**
  * ArgumentsWrap provides a object oriented way to retrieve typehinted arguments for the controller.
  */
-final class ArgumentsWrap implements ArgumentsWrapContract
+final class ArgumentsWrap
 {
-    /** @var array Typehinted arguments ready to use */
-    private $typedArguments;
+    /** @var ControllerContract */
+    private $controller;
+
+    /** @var array Passed callable arguments */
+    private $arguments;
 
     /** @var ReflectionFunctionAbstract */
     private $reflection;
 
-    /** @var array Passed callable arguments */
-    private $passedArguments;
-
-    /** @var array Usable arguments (FIXME: Better bame) */
-    private $arguments;
-
-    /** @var ControllerContract */
-    private $controller;
+    /** @var array Typehinted arguments ready to use */
+    private $typedArguments;
 
     public function __construct(ControllerContract $controller, array $arguments)
     {
         $this->controller = $controller;
-        $this->passedArguments = $arguments;
+        $this->arguments = $arguments;
         $this->processArguments();
     }
 
-    public function arguments(): array
+    public function typedArguments(): array
     {
-        return $this->arguments;
+        return $this->typedArguments;
     }
 
     private function processArguments()
@@ -61,7 +57,7 @@ final class ArgumentsWrap implements ArgumentsWrapContract
         // Magically create typehinted arguments
         foreach ($this->reflection->getParameters() as $parameter) {
             $name = $parameter->getName();
-            if (!isset($this->passedArguments[$name])) {
+            if (!isset($this->arguments[$name])) {
                 throw new InvalidArgumentException(
                     (new Message('Unmatched argument %argument% in %controller%'))
                         ->code('%argument%', $name)
@@ -77,11 +73,10 @@ final class ArgumentsWrap implements ArgumentsWrapContract
             $this->processTypedArgument(
                 $parameter,
                 $type,
-                $this->passedArguments[$name] ?? $this->passedArguments[$parameterIndex] ?? null
+                $this->arguments[$name] ?? $this->arguments[$parameterIndex] ?? null
             );
             ++$parameterIndex;
         }
-        $this->arguments = $this->typedArguments;
     }
 
     private function processTypedArgument(ReflectionParameter $parameter, string $type = null, $value = null): void
