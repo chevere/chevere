@@ -31,6 +31,12 @@ use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Route\RouteContract;
+use Chevere\Controllers\Api\HeadController;
+use Chevere\Controllers\Api\OptionsController;
+use Chevere\Controllers\Api\GetController;
+use Chevere\HttpFoundation\Method;
+use Chevere\HttpFoundation\Methods;
+use Chevere\Api\src\Endpoint;
 
 final class Loader implements LoaderContract
 {
@@ -208,7 +214,12 @@ final class Loader implements LoaderContract
     private function processApi(PathHandle $pathHandle): void
     {
         $maker = new Maker($this->router);
-        $maker->register($pathHandle);
+        $methods = new Methods(
+            new Method('HEAD', HeadController::class),
+            new Method('OPTIONS', OptionsController::class),
+            new Method('GET', GetController::class)
+        );
+        $maker->register($pathHandle, new Endpoint($methods));
         $this->app->api = new Api($maker);
     }
 

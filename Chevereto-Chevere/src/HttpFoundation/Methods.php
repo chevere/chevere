@@ -18,9 +18,6 @@ use IteratorAggregate;
 use Chevere\Contracts\HttpFoundation\MethodContract;
 use Chevere\Contracts\HttpFoundation\MethodsContract;
 
-/**
- * Api provides a static method to read the exposed API inside the app runtime.
- */
 final class Methods implements MethodsContract, IteratorAggregate
 {
     /** @param array [MethodContract,]*/
@@ -28,6 +25,13 @@ final class Methods implements MethodsContract, IteratorAggregate
 
     /** @param array ['METHOD' => key,]*/
     private $index;
+
+    public function __construct(MethodContract ...$methods)
+    {
+        foreach ($methods as $k => $method) {
+            $this->add($method);
+        }
+    }
 
     public function add(MethodContract $method): void
     {

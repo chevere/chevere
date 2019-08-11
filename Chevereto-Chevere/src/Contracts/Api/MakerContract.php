@@ -15,6 +15,7 @@ namespace Chevere\Contracts\Api;
 
 use Chevere\PathHandle;
 use Chevere\Contracts\Router\RouterContract;
+use Chevere\HttpFoundation\Methods;
 
 interface MakerContract
 {
@@ -22,10 +23,8 @@ interface MakerContract
 
     /**
      * Automatically finds controllers in the given path and generate the API route binding.
-     *
-     * @param string $pathIdentifier path identifier representing the dir containing API controllers (src/Api/)
      */
-    public function register(PathHandle $pathHandle): void;
+    public function register(PathHandle $pathHandle, Methods $methods): void;
 
     public function api(): array;
 }
