@@ -26,6 +26,26 @@ interface RouteContract
      */
     public function __construct(string $uri, string $controller = null);
 
+    public function id(): string;
+
+    public function path(): string;
+
+    public function name(): string;
+
+    public function hasName(): bool;
+
+    public function wheres(): array;
+
+    public function middlewares(): array;
+
+    public function wildcardName(int $key): string;
+
+    public function keyPowerSet(): array;
+
+    public function type(): string;
+
+    public function regex(): string;
+
     /**
      * @param string $name route name, must be unique
      */
