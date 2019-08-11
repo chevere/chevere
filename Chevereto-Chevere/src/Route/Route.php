@@ -68,10 +68,10 @@ final class Route implements RouteContract
     private $wildcards;
 
     /** @var string Route path representation with placeholder wildcards like /api/users/{0} */
-    private $set;
+    private $key;
 
     /** @var array Contains all the possible $set combinations when using optional wildcards */
-    private $powerSet;
+    private $keyPowerSet;
 
     /** @var array An array containg details about the Route maker */
     private $maker;
@@ -88,12 +88,12 @@ final class Route implements RouteContract
         $this->path = $path;
         $this->maker = $this->getMakerData();
         if ($pathValidate->hasHandlebars()) {
-            $wildcards = new Wildcards($this->path);
-            $this->set = $wildcards->set();
-            $this->powerSet = $wildcards->powerSet();
-            $this->wildcards = $wildcards->toArray();
+            $set = new Set($this->path);
+            $this->key = $set->key();
+            $this->powerSet = $set->keyPowerSet();
+            $this->wildcards = $set->toArray();
         } else {
-            $this->set = $this->path;
+            $this->key = $this->path;
         }
         $this->handleType();
         if (isset($controller)) {
@@ -136,9 +136,9 @@ final class Route implements RouteContract
         return $this->wildcards[$key] ?? [];
     }
 
-    public function powerSet(): array
+    public function keyPowerSet(): array
     {
-        return $this->powerSet ?? [];
+        return $this->keyPowerSet ?? [];
     }
 
     public function type(): string
@@ -169,17 +169,9 @@ final class Route implements RouteContract
 
     public function setWhere(string $wildcardName, string $regex): RouteContract
     {
-        new WildcardValidate($wildcardName, $regex, $this);
+        $wildcard = new Wildcard($wildcardName, $regex);
+        $wildcard->bind($this);
         $this->wheres[$wildcardName] = $regex;
-
-        return $this;
-    }
-
-    public function setWheres(array $wildcardsPatterns): RouteContract
-    {
-        foreach ($wildcardsPatterns as $wildcardName => $regexPattern) {
-            $this->setWhere($wildcardName, $regexPattern);
-        }
 
         return $this;
     }
@@ -247,7 +239,7 @@ final class Route implements RouteContract
         if (isset($this->methods['GET']) && !isset($this->methods['HEAD'])) {
             $this->setMethod(new Method('HEAD', HeadController::class));
         }
-        $this->regex = $this->getRegex($this->set ?? $this->path);
+        $this->regex = $this->getRegex($this->key ?? $this->path);
 
         return $this;
     }
@@ -277,17 +269,6 @@ final class Route implements RouteContract
         return $regex;
     }
 
-    /**
-     * Binds a Route object.
-     *
-     * @param string $key      route key
-     * @param string $callable Callable string
-     */
-    // public static function bind(string $key, string $callable = null, string $rootContext = null): self
-    // {
-    //     return new static(...func_get_args());
-    // }
-
     private function getMakerData(): array
     {
         $maker = debug_backtrace(0, 3)[2];
@@ -296,13 +277,13 @@ final class Route implements RouteContract
         return $maker;
     }
 
-    private function handleType()
+    private function handleType(): void
     {
-        if (!isset($this->set)) {
+        if (!isset($this->key)) {
             $this->type = Route::TYPE_STATIC;
         } else {
             // Sets (optionals) are like /route/{0}
-            $pregReplace = preg_replace('/{[0-9]+}/', '', $this->set);
+            $pregReplace = preg_replace('/{[0-9]+}/', '', $this->key);
             if (null != $pregReplace) {
                 $pregReplace = trim(Path::normalize($pregReplace), '/');
             }

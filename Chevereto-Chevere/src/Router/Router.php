@@ -58,7 +58,7 @@ final class Router implements RouterContract
     /**
      * {@inheritdoc}
      */
-    public function addRoute(RouteContract $route, string $basename)
+    public function addRoute(RouteContract $route, string $basename): void
     {
         $route->fill();
         $id = $route->id();
@@ -66,15 +66,16 @@ final class Router implements RouterContract
         $this->handleRouteKey($uri);
         $pointer = [$id, $basename];
         $name = $route->hasName() ? $route->name() : null;
-        $this->handleRouteName($name, $pointer);
+        if (isset($name)) {
+            $this->handleRouteName($name, $pointer);
+        }
         $this->routes[] = $route;
         $id = array_key_last($this->routes);
         $this->baseIndex[$basename][] = array_key_last($this->routes);
-        $powerSet = $route->powerSet();
-        if (!empty($powerSet)) {
+        $keyPowerSet = $route->keyPowerSet();
+        if (!empty($keyPowerSet)) {
             $ix = $id;
-            // TODO: Route assumes a default path + regex
-            foreach ($powerSet as $set => $index) {
+            foreach ($keyPowerSet as $set => $index) {
                 ++$ix;
                 $this->routes[] = [$id, $set];
                 $this->regexIndex[$route->getRegex($set)] = $ix;
@@ -126,7 +127,7 @@ final class Router implements RouterContract
             }
             $this->arguments = [];
             foreach ($matches as $k => $v) {
-                $wildcardId = $route->powerSet()[$set][$k];
+                $wildcardId = $route->keyPowerSet()[$set][$k];
                 $wildcardName = $route->wildcardName($wildcardId);
                 $this->arguments[$wildcardName] = $v;
             }
@@ -138,7 +139,7 @@ final class Router implements RouterContract
         );
     }
 
-    private function handleRouteKey(string $key)
+    private function handleRouteKey(string $key): void
     {
         $keyedRoute = $this->routeKeys[$key] ?? null;
         if (isset($keyedRoute)) {
@@ -151,20 +152,17 @@ final class Router implements RouterContract
         }
     }
 
-    // FIXME: Don't pass null
-    private function handleRouteName(?string $name, array $pointer)
+    private function handleRouteName(string $name, array $pointer)
     {
-        if (isset($name)) {
-            $namedRoute = $this->namedRoutes[$name] ?? null;
-            if (isset($namedRoute)) {
-                throw new LogicException(
-                    (new Message('Route name %s has been already taken by %r.'))
-                        ->code('%s', $name)
-                        ->code('%r', $namedRoute[0].'@'.$namedRoute[1])
-                        ->toString()
-                );
-            }
-            $this->namedRoutes[$name] = $pointer;
+        $namedRoute = $this->namedRoutes[$name] ?? null;
+        if (isset($namedRoute)) {
+            throw new LogicException(
+                (new Message('Route name %s has been already taken by %r.'))
+                    ->code('%s', $name)
+                    ->code('%r', $namedRoute[0].'@'.$namedRoute[1])
+                    ->toString()
+            );
         }
+        $this->namedRoutes[$name] = $pointer;
     }
 }

@@ -23,5 +23,5 @@ interface WildcardsContract
 
     public function toArray(): array;
 
-    public function powerSet(): array;
+    public function keyPowerSet(): array;
 }

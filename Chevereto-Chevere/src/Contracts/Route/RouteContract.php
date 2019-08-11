@@ -40,13 +40,6 @@ interface RouteContract
     public function setWhere(string $wildcardName, string $regex): RouteContract;
 
     /**
-     * Sets where conditionals for the route wildcards (multiple version).
-     *
-     * @param array $wildcardsPatterns An array containing [wildcardName => regexPattern,]
-     */
-    public function setWheres(array $wildcardsPatterns): RouteContract;
-
-    /**
      * Sets HTTP method to callable binding. Allocates Routes.
      *
      * @param MethodContract $method a HTTP method contract

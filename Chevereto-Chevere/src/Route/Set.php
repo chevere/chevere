@@ -18,15 +18,14 @@ use Chevere\Message;
 use Chevere\Path;
 use Chevere\Utility\Str;
 use Chevere\Utility\Arr;
-use Chevere\Contracts\Route\WildcardsContract;
 
-final class Wildcards implements WildcardsContract
+final class Set
 {
     /** @var string The route path */
     private $path;
 
-    /** @var string Key set representation */
-    private $set;
+    /** @var string Path key set representation ({wildcards} replaced by {n}) */
+    private $key;
 
     /** @var array */
     private $matches;
@@ -35,7 +34,7 @@ final class Wildcards implements WildcardsContract
     private $wildcards;
 
     /** @var array All the key sets for the route (optionals combo) */
-    private $powerSet;
+    private $keyPowerSet;
 
     /** @var array Optional wildcards */
     private $optionals;
@@ -55,16 +54,16 @@ final class Wildcards implements WildcardsContract
             return;
         }
         $this->matches = $matches;
-        $this->set = $path;
+        $this->key = $path;
         $this->optionals = [];
         $this->optionalsIndex = [];
         $this->handleMatches();
         $this->handleOptionals();
     }
 
-    public function set(): string
+    public function key(): string
     {
-        return $this->set;
+        return $this->key;
     }
 
     public function matches(): array
@@ -77,17 +76,17 @@ final class Wildcards implements WildcardsContract
         return $this->wildcards ?? [];
     }
 
-    public function powerSet(): array
+    public function keyPowerSet(): array
     {
-        return $this->powerSet ?? [];
+        return $this->keyPowerSet ?? [];
     }
 
-    private function handleMatches()
+    private function handleMatches(): void
     {
         foreach ($this->matches[0] as $k => $v) {
             // Change {wildcard} to {n} (n is the wildcard index)
-            if (isset($this->set)) {
-                $this->set = Str::replaceFirst($v, "{{$k}}", $this->set);
+            if (isset($this->key)) {
+                $this->key = Str::replaceFirst($v, "{{$k}}", $this->key);
             }
             $wildcard = $this->matches[1][$k];
             if (Str::endsWith('?', $wildcard)) {
@@ -109,7 +108,7 @@ final class Wildcards implements WildcardsContract
         }
     }
 
-    private function handleOptionals()
+    private function handleOptionals(): void
     {
         if (!empty($this->optionals)) {
             $mandatoryDiff = array_diff($this->wildcards ?? [], $this->optionalsIndex);
@@ -117,7 +116,7 @@ final class Wildcards implements WildcardsContract
             // Generate the optionals power set, keeping its index keys in case of duplicated optionals
             $powerSet = Arr::powerSet($this->optionals, true);
             // Build the route set, it will contain all the possible route combinations
-            $this->powerSet = $this->processPowerSet($powerSet);
+            $this->keyPowerSet = $this->processPowerSet($powerSet);
         }
     }
 
@@ -135,7 +134,7 @@ final class Wildcards implements WildcardsContract
     {
         $routeSet = [];
         foreach ($powerSet as $set) {
-            $auxSet = $this->set;
+            $auxSet = $this->key;
             $auxWildcards = $this->mandatoryIndex;
             foreach ($set as $replaceKey => $replaceValue) {
                 $search = $this->optionals[$replaceKey];

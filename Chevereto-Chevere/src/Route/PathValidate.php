@@ -28,7 +28,7 @@ final class PathValidate implements PathValidateContract
 
     public function __construct(string $path)
     {
-        $this->setKey($path);
+        $this->setPath($path);
         $this->setHasHandlebars();
         if ($this->hasHandlebars) {
             $this->validateReservedWildcards();
@@ -45,7 +45,7 @@ final class PathValidate implements PathValidateContract
         return $this->hasHandlebars;
     }
 
-    private function setKey(string $path): void
+    private function setPath(string $path): void
     {
         if (!$this->validateFormat($path)) {
             throw new InvalidArgumentException(
@@ -86,7 +86,7 @@ final class PathValidate implements PathValidateContract
         }
     }
 
-    private function setHasHandlebars()
+    private function setHasHandlebars(): void
     {
         $this->hasHandlebars = Str::contains('{', $this->path) || Str::contains('}', $this->path);
     }
