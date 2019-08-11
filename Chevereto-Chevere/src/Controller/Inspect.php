@@ -115,7 +115,6 @@ final class Inspect implements InspectContract
             $this->handleControllerResourceInterface();
             $this->handleControllerInterface();
             $this->handleConstResourceNeed();
-            // $this->handleConstResourceType();
             $this->handleConstResourceMissed();
             $this->handleConstResourceValid();
         } catch (LogicException $e) {

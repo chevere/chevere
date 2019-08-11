@@ -29,7 +29,7 @@ use Chevere\Path;
 use Chevere\PathHandle;
 use Chevere\File;
 use Chevere\Utility\Str;
-use Chevere\Controller\Inspect as ControllerInspect;
+use Chevere\Controller\Inspect;
 
 final class Maker
 {
@@ -39,7 +39,7 @@ final class Maker
     /** @var array Maps [endpoint => (array) resource [regex =>, description =>,]] (for wildcard routes) */
     private $resourcesMap;
 
-    /** @var array Maps [Controller => ControllerInspect] */
+    /** @var array Maps [Controller => Inspect] */
     private $controllersMap;
 
     /** @var OuterIterator */
@@ -154,7 +154,7 @@ final class Maker
         foreach ($this->recursiveIterator as $filename) {
             $filepathAbsolute = Str::forwardSlashes((string) $filename);
             $className = $this->getClassNameFromFilepath($filepathAbsolute);
-            $inspected = new ControllerInspect($className);
+            $inspected = new Inspect($className);
             $this->controllersMap[$className] = $inspected;
             $pathComponent = $inspected->pathComponent;
             if ($inspected->useResource) {

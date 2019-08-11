@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\App;
 
-// FIXME: RequestContract
 use Chevere\HttpFoundation\Request;
-// FIXME: RuntimeContract
 use Chevere\Runtime\Runtime;
 
 interface LoaderContract

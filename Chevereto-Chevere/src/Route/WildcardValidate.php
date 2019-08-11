@@ -52,7 +52,7 @@ final class WildcardValidate
 
     private function handleValidateFormat()
     {
-        if (!$this->validateFormat($this->wildcardName)) {
+        if (!$this->validateFormat()) {
             throw new InvalidArgumentException(
                 (new Message("String %s must contain only alphanumeric and underscore characters and it shouldn't start with a numeric value."))
                     ->code('%s', $this->wildcardName)
@@ -61,14 +61,14 @@ final class WildcardValidate
         }
     }
 
-    private function validateFormat(string $wildcardName): bool
+    private function validateFormat(): bool
     {
-        return !Str::startsWithNumeric($wildcardName) && preg_match('/^[a-z0-9_]+$/i', $wildcardName);
+        return !Str::startsWithNumeric($this->wildcardName) && preg_match('/^[a-z0-9_]+$/i', $this->wildcardName);
     }
 
     private function handleValidateMatch()
     {
-        if (!$this->validateMatch($this->wildcardName, $this->path)) {
+        if (!$this->validateMatch()) {
             throw new LogicException(
                 (new Message("Wildcard %s doesn't exists in %r."))
                     ->code('%s', $this->wildcardString)
@@ -78,26 +78,20 @@ final class WildcardValidate
         }
     }
 
-    private function validateMatch(string $wildcardName, string $routeKey): bool
+    private function validateMatch(): bool
     {
-        return Str::contains("{{$wildcardName}}", $routeKey) || Str::contains('{'."$wildcardName?".'}', $routeKey);
+        return Str::contains("{{$this->wildcardName}}", $this->path) || Str::contains('{'."$this->wildcardName?".'}', $this->path);
     }
 
     private function handleValidateUnique()
     {
-        if (!$this->validateUnique($this->wildcardName, $this->routeWheres)) {
+        if (isset($this->routeWheres[$this->wildcardName])) {
             throw new LogicException(
                 (new Message('Where clause for %s wildcard has been already declared.'))
                     ->code('%s', $this->wildcardString)
                     ->toString()
             );
         }
-    }
-
-    // FIXME: Don't pass null
-    private function validateUnique(string $wildcardName, ?array $haystack): bool
-    {
-        return !isset($haystack[$wildcardName]);
     }
 
     private function handleValidateRegex()

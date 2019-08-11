@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\App;
 
-// FIXME: ArrayFileContract
 use Chevere\ArrayFile;
 
 interface ParametersContract
