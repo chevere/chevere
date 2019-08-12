@@ -48,7 +48,7 @@ class Benchmark
     private $unnammedCnt;
     private $totalCnt;
     private $time;
-    private $printable;
+    protected $printable;
     private $maxExecutionTime;
     private $constructTime;
     private $requestTime;
@@ -201,6 +201,7 @@ class Benchmark
                 break;
             }
             $timeInit = microtime(true);
+            $this->runs = 0;
             $this->runCallable($v);
             $timeFinish = microtime(true);
             $timeTaken = floatval($timeFinish - $timeInit);
@@ -208,6 +209,7 @@ class Benchmark
             $this->results[$k] = [
                 'time' => $timeTaken,
                 'runs' => $this->runs,
+                // 'adds' => '',
             ];
         }
     }
@@ -239,7 +241,7 @@ class Benchmark
                 if (!isset($fastestTime)) {
                     $fastestTime = $timeTaken;
                 } else {
-                    $this->results[$k]['adds'] = round(100 * (($timeTaken - $fastestTime) / $fastestTime)).'%';
+                    $this->results[$k]['adds'] = round(100 * (($timeTaken - $fastestTime) / $fastestTime), 2).'%';
                 }
             }
         }
@@ -247,22 +249,26 @@ class Benchmark
 
     private function processResults(): void
     {
-        $i = 1;
-        foreach ($this->results as $k => $v) {
-            $res = $k;
+        $i = 0;
+        foreach ($this->index as $name => $time) {
+            ++$i;
+            $resultTitle = $name;
+            $result = $this->results[$name];
             if (1 == $i) {
                 if (count($this->index) > 1) {
-                    $res .= ' (fastest)';
+                    $resultTitle .= ' (fastest)';
                 }
-                ++$i;
             } else {
-                $res .= ' ('.$v['adds'].' slower)';
+                if (!isset($result['adds'])) {
+                    dd($this->results, $this->index);
+                }
+                $resultTitle .= ' ('.$result['adds'].' slower)';
             }
-            $this->res[] = $res;
-            $resRuns = Number::abbreviate($v['runs']).' runs';
-            $resRuns .= ' in '.round($v['time'], 4).' s';
-            if ($v['runs'] != $this->times) {
-                $resRuns .= ' ~ missed '.($this->times - $v['runs']).' runs';
+            $this->res[] = $resultTitle;
+            $resRuns = Number::abbreviate($result['runs']).' runs';
+            $resRuns .= ' in '.round($result['time'], 4).' s';
+            if ($result['runs'] != $this->times) {
+                $resRuns .= ' ~ missed '.($this->times - $result['runs']).' runs';
             }
             $this->res[] = $resRuns;
             $this->res[] = $this->lineSeparator;
