@@ -27,17 +27,18 @@ use Chevere\ErrorHandler\src\Formatter;
 use Chevere\ErrorHandler\src\Output;
 use Chevere\ErrorHandler\src\Style;
 use Chevere\ErrorHandler\src\Template;
-use Chevere\Interfaces\ErrorHandlerInterface;
 use Psr\Log\LogLevel;
 use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\FirePHPHandler;
 
+// use Chevere\Contracts\ErrorHandler\ErrorHandlerContract;
+
 /**
  * The Chevere ErrorHandler.
  */
-class ErrorHandler implements ErrorHandlerInterface
+class ErrorHandler
 {
     /** @var string Relative folder where logs will be stored */
     const LOG_DATE_FOLDER_FORMAT = 'Y/m/d/';
@@ -86,38 +87,38 @@ class ErrorHandler implements ErrorHandlerInterface
         E_USER_DEPRECATED => LogLevel::NOTICE,
     ];
 
-    /** @var string Unique id (uniqid) for the handled error */
-    public $id;
-
-    /** @var string */
-    public $body;
-
-    /** @var string */
-    public $class;
-
-    /** @var string */
-    public $datetimeUtc;
-
     /** @var int */
-    public $timestamp;
+    private $timestamp;
 
     /** @var string */
-    public $logFilename;
+    private $datetimeUtc;
 
     /** @var string */
-    public $arguments;
+    private $logFilename;
 
     /** @var Request The detected/forged HTTP request */
-    public $request;
-
-    /** @var string */
-    public $loggerLevel;
+    private $request;
 
     /** @var string A string representation of $loadedConfigFiles */
-    public $loadedConfigFilesString;
+    private $loadedConfigFilesString;
 
     /** @var bool */
-    public $isDebugEnabled;
+    private $isDebugEnabled;
+
+    /** @var string Unique id (uniqid) for the handled error */
+    private $id;
+
+    /** @var string */
+    private $body;
+
+    /** @var string */
+    private $class;
+
+    /** @var string */
+    private $arguments;
+
+    /** @var string */
+    private $loggerLevel;
 
     /** @var string */
     private $logDateFolderFormat;
@@ -167,6 +168,41 @@ class ErrorHandler implements ErrorHandlerInterface
         $this->loggerWrite($output->plainContent);
 
         $output->out();
+    }
+
+    public function timestamp(): int
+    {
+        return $this->timestamp;
+    }
+
+    public function datetimeUtc(): string
+    {
+        return $this->datetimeUtc;
+    }
+
+    public function logFilename(): string
+    {
+        return $this->logFilename;
+    }
+
+    public function request(): Request
+    {
+        return $this->request;
+    }
+
+    public function loadedConfigFilesString(): string
+    {
+        return $this->loadedConfigFilesString;
+    }
+
+    public function isDebugEnabled(): bool
+    {
+        return $this->isDebugEnabled;
+    }
+
+    public function id(): string
+    {
+        return $this->id;
     }
 
     public static function error($severity, $message, $file, $line): void

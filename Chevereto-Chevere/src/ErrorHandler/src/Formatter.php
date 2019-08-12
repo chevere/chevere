@@ -165,7 +165,7 @@ class Formatter
             $this->clientIp = $_SERVER['argv'][0];
             $this->clientUserAgent = Console::inputString();
         } else {
-            $request = $this->errorHandler->request;
+            $request = $this->errorHandler->request();
             $this->uri = $request->readInfoKey('requestUri') ?? 'unknown';
             $this->clientUserAgent = $request->headers->get('User-Agent');
             $this->requestMethod = $request->readInfoKey('method');

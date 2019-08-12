@@ -62,7 +62,7 @@ class Output
         $this->formatter = $formatter;
         $this->generateTemplates($formatter);
         $this->parseTemplate();
-        if ($errorHandler->request && $errorHandler->request->isXmlHttpRequest()) {
+        if ($errorHandler->request()->isXmlHttpRequest()) {
             $this->setJsonOutput();
         } else {
             if (CLI) {
@@ -83,7 +83,7 @@ class Output
             'level' => $this->formatter->loggerLevel,
             'filename' => $this->getTemplateTag('logFilename'),
         ];
-        switch ($this->errorHandler->isDebugEnabled) {
+        switch ($this->errorHandler->isDebugEnabled()) {
             case 0:
                 unset($log['filename']);
                 break;
@@ -103,7 +103,7 @@ class Output
 
     protected function setHtmlOutput(): void
     {
-        if ($this->errorHandler->isDebugEnabled) {
+        if ($this->errorHandler->isDebugEnabled()) {
             $bodyTemplate = Template::DEBUG_BODY_HTML;
         } else {
             $this->content = Template::NO_DEBUG_CONTENT_HTML;
@@ -158,11 +158,11 @@ class Output
     public function parseTemplate()
     {
         $this->templateTags = [
-            '%id%' => $this->errorHandler->id,
-            '%datetimeUtc%' => $this->errorHandler->datetimeUtc,
-            '%timestamp%' => $this->errorHandler->timestamp,
-            '%loadedConfigFilesString%' => $this->errorHandler->loadedConfigFilesString,
-            '%logFilename%' => $this->errorHandler->logFilename,
+            '%id%' => $this->errorHandler->id(),
+            '%datetimeUtc%' => $this->errorHandler->datetimeUtc(),
+            '%timestamp%' => $this->errorHandler->timestamp(),
+            '%loadedConfigFilesString%' => $this->errorHandler->loadedConfigFilesString(),
+            '%logFilename%' => $this->errorHandler->logFilename(),
             '%css%' => $this->formatter->css,
             '%bodyClass%' => $this->formatter->bodyClass,
             '%body%' => null,
@@ -211,7 +211,7 @@ class Output
 
     public function out(): void
     {
-        if ($this->errorHandler->request && $this->errorHandler->request->isXmlHttpRequest()) {
+        if ($this->errorHandler->request()->isXmlHttpRequest()) {
             $response = new HttpJsonResponse();
         } else {
             $response = new HttpResponse();
