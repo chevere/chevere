@@ -34,7 +34,7 @@ use Chevere\Traits\PrintableTrait;
 //         return $a * $b;
 //     }, 'Multiply');
 // print $benchmark;
-class Benchmark
+final class Benchmark
 {
     use PrintableTrait;
 
@@ -121,7 +121,7 @@ class Benchmark
             if (null == $this->unnammedCnt) {
                 $this->unnammedCnt = '1';
             }
-            $name = 'Unnammed#'.$this->unnammedCnt;
+            $name = 'Unnammed#' . $this->unnammedCnt;
             ++$this->unnammedCnt;
         }
         if (null != $this->callables && array_key_exists($name, $this->callables)) {
@@ -150,27 +150,27 @@ class Benchmark
         $this->startTimestamp = microtime(true);
         $this->handleCallables();
         $this->processCallablesStats();
-        $title = __CLASS__.' results';
+        $title = __CLASS__ . ' results';
         $border = 1;
         $lineChar = '-';
         $this->lineSeparator = str_repeat($lineChar, $this->columns);
         $pad = (int) round(($this->columns - (strlen($title) + $border)) / 2, 0);
-        $head = '|'.str_repeat(' ', $pad).$title.str_repeat(' ', floor($pad) == $pad ? ($pad - 1) : $pad).'|';
+        $head = '|' . str_repeat(' ', $pad) . $title . str_repeat(' ', floor($pad) == $pad ? ($pad - 1) : $pad) . '|';
         $this->res = [
             $this->lineSeparator,
             $head,
             $this->lineSeparator,
-            'Start: '.DateTime::getUTC(),
-            'Hostname: '.gethostname(),
-            'PHP version: '.phpversion(),
-            'Server: '.php_uname('s').' '.php_uname('r').' '.php_uname('m'),
+            'Start: ' . DateTime::getUTC(),
+            'Hostname: ' . gethostname(),
+            'PHP version: ' . phpversion(),
+            'Server: ' . php_uname('s') . ' ' . php_uname('r') . ' ' . php_uname('m'),
             $this->lineSeparator,
         ];
         $this->processResults();
         $this->handleAbortedRes();
-        $this->timeTakenReadable = ' Time taken: '.round($this->time, 4).' s';
-        $this->res[] = str_repeat(' ', (int) max(0, $this->columns - strlen($this->timeTakenReadable))).$this->timeTakenReadable;
-        $this->printable = '<pre>'.implode("\n", $this->res).'</pre>';
+        $this->timeTakenReadable = ' Time taken: ' . round($this->time, 4) . ' s';
+        $this->res[] = str_repeat(' ', (int) max(0, $this->columns - strlen($this->timeTakenReadable))) . $this->timeTakenReadable;
+        $this->printable = '<pre>' . implode("\n", $this->res) . '</pre>';
     }
 
     /**
@@ -241,7 +241,7 @@ class Benchmark
                 if (!isset($fastestTime)) {
                     $fastestTime = $timeTaken;
                 } else {
-                    $this->results[$k]['adds'] = round(100 * (($timeTaken - $fastestTime) / $fastestTime), 2).'%';
+                    $this->results[$k]['adds'] = round(100 * (($timeTaken - $fastestTime) / $fastestTime), 2) . '%';
                 }
             }
         }
@@ -259,16 +259,13 @@ class Benchmark
                     $resultTitle .= ' (fastest)';
                 }
             } else {
-                if (!isset($result['adds'])) {
-                    dd($this->results, $this->index);
-                }
-                $resultTitle .= ' ('.$result['adds'].' slower)';
+                $resultTitle .= ' (' . $result['adds'] . ' slower)';
             }
             $this->res[] = $resultTitle;
-            $resRuns = Number::abbreviate($result['runs']).' runs';
-            $resRuns .= ' in '.round($result['time'], 4).' s';
+            $resRuns = Number::abbreviate($result['runs']) . ' runs';
+            $resRuns .= ' in ' . round($result['time'], 4) . ' s';
             if ($result['runs'] != $this->times) {
-                $resRuns .= ' ~ missed '.($this->times - $result['runs']).' runs';
+                $resRuns .= ' ~ missed ' . ($this->times - $result['runs']) . ' runs';
             }
             $this->res[] = $resRuns;
             $this->res[] = $this->lineSeparator;
@@ -278,7 +275,7 @@ class Benchmark
     private function handleAbortedRes(): void
     {
         if ($this->isAborted) {
-            $this->res[] = 'Note: Process aborted ('.($this->isPHPAborted ? 'PHP' : 'self').' time limit)';
+            $this->res[] = 'Note: Process aborted (' . ($this->isPHPAborted ? 'PHP' : 'self') . ' time limit)';
             $this->res[] = $this->lineSeparator;
         }
     }

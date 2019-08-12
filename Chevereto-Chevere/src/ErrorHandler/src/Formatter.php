@@ -114,7 +114,10 @@ final class Formatter
     public $consoleSections;
 
     // Exception properties FIXME: BETTER NAMES
+
+    /** @var string */
     public $code;
+
     public $message;
     public $type;
     public $file;
@@ -142,15 +145,15 @@ final class Formatter
         $this->errorHandler = $errorHandler;
         $this->exceptionHandler = $exceptionHandler;
         $this->setServerProperties();
-        $this->exception = $this->exceptionHandler->exception;
-        $this->className = $this->exceptionHandler->className;
-        $this->thrown = $this->className.' thrown';
-        $this->code = $this->exceptionHandler->code;
-        $this->type = $this->exceptionHandler->type;
-        $this->loggerLevel = $this->exceptionHandler->loggerLevel;
-        $this->message = $this->exceptionHandler->message;
-        $this->file = $this->exceptionHandler->file;
-        $this->line = $this->exceptionHandler->line;
+        $this->exception = $this->exceptionHandler->exception();
+        $this->className = $this->exceptionHandler->className();
+        $this->thrown = $this->className . ' thrown';
+        $this->code = $this->exceptionHandler->code();
+        $this->type = $this->exceptionHandler->type();
+        $this->loggerLevel = $this->exceptionHandler->loggerLevel();
+        $this->message = $this->exceptionHandler->message();
+        $this->file = $this->exceptionHandler->file();
+        $this->line = $this->exceptionHandler->line();
         $this->processStack();
         $this->processContentSections();
         $this->processContentGlobals();
@@ -193,9 +196,9 @@ final class Formatter
 
     private function processStack()
     {
-        $trace = $this->exceptionHandler->exception->getTrace();
-        if ($this->exceptionHandler->exception instanceof ErrorException) {
-            $this->thrown = $this->exceptionHandler->type;
+        $trace = $this->exceptionHandler->exception()->getTrace();
+        if ($this->exceptionHandler->exception() instanceof ErrorException) {
+            $this->thrown = $this->exceptionHandler->type();
             unset($trace[0]);
         }
         $stack = new Stack($trace);
@@ -210,7 +213,7 @@ final class Formatter
     {
         $sections = [
             static::SECTION_TITLE => ['%title% <span>in&nbsp;%file%:%line%</span>'],
-            static::SECTION_MESSAGE => ['# Message', '%message%'.($this->exceptionHandler->code ? ' [Code #%code%]' : null)],
+            static::SECTION_MESSAGE => ['# Message', '%message%' . ($this->exceptionHandler->code() ? ' [Code #%code%]' : null)],
             static::SECTION_TIME => ['# Time', '%datetimeUtc% [%timestamp%]'],
             static::SECTION_ID => ['# Incident ID:%id%', 'Logged at %logFilename%'],
             static::SECTION_STACK => ['# Stack trace', '%plainStack%'],
@@ -272,15 +275,15 @@ final class Formatter
     private function processContentGlobals()
     {
         foreach (['GET', 'POST', 'FILES', 'COOKIE', 'SESSION', 'SERVER'] as $v) {
-            $k = '_'.$v;
+            $k = '_' . $v;
             $v = isset($GLOBALS[$k]) ? $GLOBALS[$k] : null;
             if ($v) {
                 $wrapped = $this->varDump::out($v);
                 if (!CLI) {
-                    $wrapped = '<pre>'.$wrapped.'</pre>';
+                    $wrapped = '<pre>' . $wrapped . '</pre>';
                 }
-                $this->setRichContentSection($k, ['$'.$k, $this->wrapStringHr($wrapped)]);
-                $this->setPlainContentSection($k, ['$'.$k, strip_tags($this->wrapStringHr(PlainVarDump::out($v)))]);
+                $this->setRichContentSection($k, ['$' . $k, $this->wrapStringHr($wrapped)]);
+                $this->setPlainContentSection($k, ['$' . $k, strip_tags($this->wrapStringHr(PlainVarDump::out($v)))]);
             }
         }
     }
@@ -329,6 +332,6 @@ final class Formatter
      */
     private function wrapStringHr(string $text): string
     {
-        return $this->lineBreak."\n".$text."\n".$this->lineBreak;
+        return $this->lineBreak . "\n" . $text . "\n" . $this->lineBreak;
     }
 }

@@ -20,7 +20,7 @@ use Chevere\VarDump\VarDump;
  * Handles the ErrorHandler exception stack trace.
  */
 // FIXME: One "stack" for each $rich, $plain and $console. Share the same interface.
-class Stack
+final class Stack
 {
     /** @var array */
     private $rich;
@@ -74,17 +74,17 @@ class Stack
         return $this->wrapStringHr($this->glueString($this->plain));
     }
 
-    protected function glueString(array $array)
+    private function glueString(array $array)
     {
         return implode("\n".$this->hr."\n", $array);
     }
 
-    protected function wrapStringHr(string $text): string
+    private function wrapStringHr(string $text): string
     {
         return $this->hr."\n".$text."\n".$this->hr;
     }
 
-    protected function setPlainTable(TraceEntry $entry): void
+    private function setPlainTable(TraceEntry $entry): void
     {
         $this->plainTable = [
             '%x%' => ($this->i & 1) ? 'pre--even' : null,
@@ -99,7 +99,7 @@ class Stack
         ];
     }
 
-    protected function setRichTable(TraceEntry $entry): void
+    private function setRichTable(TraceEntry $entry): void
     {
         $this->richTable = $this->plainTable;
         array_pop($this->richTable);
@@ -118,7 +118,7 @@ class Stack
         $this->richTable['%a%'] = $entry->getRichArgs();
     }
 
-    protected function handleProcessConsole(): void
+    private function handleProcessConsole(): void
     {
         if (CLI) {
             $this->console[] = strtr(Template::STACK_ITEM_CONSOLE, $this->richTable);

@@ -47,7 +47,7 @@ final class ErrorHandler
     const DEBUG = null;
 
     /** @var string Null will use App\PATH_LOGS ? PATH_LOGS ? traverse */
-    const PATH_LOGS = ROOT_PATH.AppPath.'var/logs/';
+    const PATH_LOGS = ROOT_PATH . AppPath . 'var/logs/';
 
     /** Readable PHP error mapping */
     const ERROR_TABLE = [
@@ -91,7 +91,7 @@ final class ErrorHandler
     private $timestamp;
 
     /** @var string */
-    private $utcDateTimeAtom;
+    private $dateTimeAtom;
 
     /** @var string */
     private $logFilename;
@@ -157,7 +157,7 @@ final class ErrorHandler
 
         $this->logDateFolderFormat = static::LOG_DATE_FOLDER_FORMAT;
         $exceptionHandler = new ExceptionHandler($args[0]);
-        $this->loggerLevel = $exceptionHandler->loggerLevel;
+        $this->loggerLevel = $exceptionHandler->loggerLevel();
         $this->setLogFilePathProperties();
         $this->setLogger();
 
@@ -231,9 +231,9 @@ final class ErrorHandler
     private function setLogFilePathProperties(): void
     {
         $path = Path::normalize(static::PATH_LOGS);
-        $path = rtrim($path, '/').'/';
+        $path = rtrim($path, '/') . '/';
         $date = gmdate($this->logDateFolderFormat, $this->timestamp);
-        $this->logFilename = $path.$this->loggerLevel.'/'.$date.$this->timestamp.'_'.$this->id.'.log';
+        $this->logFilename = $path . $this->loggerLevel . '/' . $date . $this->timestamp . '_' . $this->id . '.log';
     }
 
     private function setLogger(): void
@@ -249,7 +249,7 @@ final class ErrorHandler
     private function loggerWrite(): void
     {
         $log = strip_tags($this->output->plainContent());
-        $log .= "\n\n".str_repeat('=', Formatter::COLUMNS);
+        $log .= "\n\n" . str_repeat('=', Formatter::COLUMNS);
         $this->logger->log($this->loggerLevel, $log);
     }
 

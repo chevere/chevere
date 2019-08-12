@@ -26,34 +26,31 @@ use Chevere\Utility\Str;
 final class ExceptionHandler
 {
     /** @var Throwable */
-    public $exception;
-
-    /** @var ErrorHandler */
-    public $errorHandler;
+    private $exception;
 
     /** @var string */
-    public $className;
-
-    /** @var string */
-    public $code;
-
-    /** @var string */
-    public $errorType;
-
-    /** @var string */
-    public $type;
-
-    /** @var string */
-    public $loggerLevel;
-
-    /** @var string */
-    public $message;
-
-    /** @var string */
-    public $file;
+    private $className;
 
     /** @var int */
-    public $line;
+    private $code;
+
+    /** @var string */
+    private $errorType;
+
+    /** @var string */
+    private $type;
+
+    /** @var string */
+    private $loggerLevel;
+
+    /** @var string */
+    private $message;
+
+    /** @var string */
+    private $file;
+
+    /** @var int */
+    private $line;
 
     /** @var Throwable $exception */
     public function __construct(Throwable $exception)
@@ -78,5 +75,50 @@ final class ExceptionHandler
         $this->message = $exception->getMessage();
         $this->file = Path::normalize($exception->getFile());
         $this->line = (int) $exception->getLine();
+    }
+
+    public function exception(): Throwable
+    {
+        return $this->exception;
+    }
+
+    public function className(): string
+    {
+        return $this->className;
+    }
+
+    public function code(): int
+    {
+        return $this->code;
+    }
+
+    public function errorType(): string
+    {
+        return $this->errorType;
+    }
+
+    public function type(): string
+    {
+        return $this->type;
+    }
+
+    public function loggerLevel(): string
+    {
+        return $this->loggerLevel;
+    }
+
+    public function message(): string
+    {
+        return $this->message;
+    }
+
+    public function file(): string
+    {
+        return $this->file;
+    }
+
+    public function line(): int
+    {
+        return $this->line;
     }
 }
