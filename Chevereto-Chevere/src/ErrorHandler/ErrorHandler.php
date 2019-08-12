@@ -248,7 +248,7 @@ final class ErrorHandler
 
     private function loggerWrite(): void
     {
-        $log = strip_tags($this->output->plainContent);
+        $log = strip_tags($this->output->plainContent());
         $log .= "\n\n".str_repeat('=', Formatter::COLUMNS);
         $this->logger->log($this->loggerLevel, $log);
     }

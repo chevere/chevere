@@ -29,13 +29,13 @@ use Chevere\Json;
 final class Output
 {
     /** @var string The rich (console/html) content representation */
-    public $content;
+    private $content;
 
     /** @var string The plain content representation (log txt) */
-    public $plainContent;
+    private $plainContent;
 
     /** @var array */
-    public $templateTags;
+    private $templateTags;
 
     /** @var ErrorHandler */
     private $errorHandler;
@@ -73,7 +73,28 @@ final class Output
         }
     }
 
-    public function parseTemplate(): void
+    public function plainContent(): string
+    {
+        return $this->plainContent;
+    }
+
+    public function out(): void
+    {
+        if ($this->errorHandler->request()->isXmlHttpRequest()) {
+            $response = new HttpJsonResponse();
+        } else {
+            $response = new HttpResponse();
+        }
+        $response->setContent($this->output);
+        $response->setLastModified(new DateTime());
+        $response->setStatusCode(500);
+        foreach ($this->headers as $k => $v) {
+            $response->headers->set($k, $v);
+        }
+        $response->send();
+    }
+
+    private function parseTemplate(): void
     {
         $this->templateTags = [
             '%id%' => $this->errorHandler->id(),
@@ -114,7 +135,7 @@ final class Output
      * @param string $tagName Template tag name
      * @param mixed  $value   value
      */
-    public function addTemplateTag(string $tagName, $value): void
+    private function addTemplateTag(string $tagName, $value): void
     {
         $this->templateTags["%$tagName%"] = $value;
     }
@@ -122,25 +143,9 @@ final class Output
     /**
      * @param string $tagName Template tag name
      */
-    public function getTemplateTag(string $tagName): string
+    private function getTemplateTag(string $tagName): string
     {
         return $this->templateTags["%$tagName%"];
-    }
-
-    public function out(): void
-    {
-        if ($this->errorHandler->request()->isXmlHttpRequest()) {
-            $response = new HttpJsonResponse();
-        } else {
-            $response = new HttpResponse();
-        }
-        $response->setContent($this->output);
-        $response->setLastModified(new DateTime());
-        $response->setStatusCode(500);
-        foreach ($this->headers as $k => $v) {
-            $response->headers->set($k, $v);
-        }
-        $response->send();
     }
 
     private function setJsonOutput(): void
