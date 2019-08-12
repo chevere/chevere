@@ -23,6 +23,7 @@ use Chevere\ErrorHandler\ExceptionHandler;
 use Chevere\VarDump\VarDump;
 use Chevere\VarDump\PlainVarDump;
 use Chevere\Utility\Str;
+use Chevere\HttpFoundation\Request;
 
 /**
  * Formats the error exception in HTML (default), console and plain text.
@@ -165,16 +166,14 @@ class Formatter
             $this->clientUserAgent = Console::inputString();
         } else {
             $request = $this->errorHandler->request;
-            if (isset($request)) {
-                $this->uri = $request->readInfoKey('requestUri') ?? 'unknown';
-                $this->clientUserAgent = $request->getHeaders()->get('User-Agent');
-                $this->requestMethod = $request->readInfoKey('method');
-                $this->serverHost = $request->readInfoKey('host');
-                $this->serverPort = (int) $request->readInfoKey('port');
-                $this->serverProtocol = $request->readInfoKey('protocolVersion');
-                $this->serverSoftware = $request->getServer()->get('SERVER_SOFTWARE');
-                $this->clientIp = $request->readInfoKey('clientIp');
-            }
+            $this->uri = $request->readInfoKey('requestUri') ?? 'unknown';
+            $this->clientUserAgent = $request->headers->get('User-Agent');
+            $this->requestMethod = $request->readInfoKey('method');
+            $this->serverHost = $request->readInfoKey('host');
+            $this->serverPort = (int) $request->readInfoKey('port');
+            $this->serverProtocol = $request->readInfoKey('protocolVersion');
+            $this->serverSoftware = $request->headers->get('SERVER_SOFTWARE');
+            $this->clientIp = $request->readInfoKey('clientIp');
         }
     }
 

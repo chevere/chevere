@@ -19,8 +19,8 @@ use Chevere\Console\Console;
 use Chevere\Runtime\Runtime;
 use Chevere\Runtime\Config;
 
-// define(__NAMESPACE__.'\TIME_BOOTSTRAP', microtime(true));
-// define(__NAMESPACE__.'\ERROR_LEVEL_BOOTSTRAP', error_reporting());
+define(__NAMESPACE__.'\TIME_BOOTSTRAP', microtime(true));
+define(__NAMESPACE__.'\ERROR_LEVEL_BOOTSTRAP', error_reporting());
 
 /*
  * Assuming that this file has been loaded from /app/bootstrap.php

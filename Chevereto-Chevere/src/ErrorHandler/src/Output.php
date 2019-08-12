@@ -179,7 +179,7 @@ class Output
             '%clientIp%' => $this->formatter->clientIp,
             '%clientUserAgent%' => $this->formatter->clientUserAgent,
             '%serverProtocol%' => $this->formatter->serverProtocol,
-            '%httpRequestMethod%' => $this->formatter->httpRequestMethod ?? 'n/a',
+            '%requestMethod%' => $this->formatter->requestMethod ?? 'n/a',
             '%uri%' => $this->formatter->uri ?? null,
             '%serverHost%' => $this->formatter->serverHost,
             '%serverPort%' => $this->formatter->serverPort,

@@ -16,6 +16,7 @@ namespace Chevere\ErrorHandler;
 use DateTime;
 use ErrorException;
 use DateTimeZone;
+use Throwable;
 use const Chevere\ROOT_PATH;
 use const Chevere\App\PATH as AppPath;
 use Chevere\HttpFoundation\Request;
@@ -32,7 +33,6 @@ use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\FirePHPHandler;
-use Throwable;
 
 /**
  * The Chevere ErrorHandler.
@@ -143,10 +143,10 @@ class ErrorHandler implements ErrorHandlerInterface
         // $this->arguments = $args;
         try {
             $request = Loader::request();
-            $this->request = $request;
         } catch (Throwable $e) {
-            //shh
+            $request = Request::createFromGlobals();
         }
+        $this->request = $request;
         $this->runtimeInstance = Loader::runtime();
         $this->isDebugEnabled = (bool) $this->runtimeInstance->data->getKey('debug');
         $this->setloadedConfigFiles($this->runtimeInstance->getRuntimeConfig()->getLoadedFilepaths());
