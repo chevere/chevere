@@ -28,7 +28,7 @@ use Chevere\HttpFoundation\Request;
 /**
  * Formats the error exception in HTML (default), console and plain text.
  */
-// FIXME: No public properties
+// FIXME: No public properties, use a bag
 final class Formatter
 {
     /** @var string Number of fixed columns for plaintext display */
