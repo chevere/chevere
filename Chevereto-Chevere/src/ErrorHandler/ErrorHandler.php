@@ -126,7 +126,7 @@ final class ErrorHandler
     private $logger;
 
     /** @var Runtime */
-    private $runtimeInstance;
+    private $runtime;
 
     /** @var DateTime Created in construct (asap) */
     private $dateTime;
@@ -144,22 +144,21 @@ final class ErrorHandler
     {
         $this->setTimeProperties();
         $this->id = uniqid('', true);
-        // $this->arguments = $args;
         try {
             $request = Loader::request();
         } catch (Throwable $e) {
             $request = Request::createFromGlobals();
         }
         $this->request = $request;
-        $this->runtimeInstance = Loader::runtime();
-        $this->isDebugEnabled = (bool) $this->runtimeInstance->data->getKey('debug');
+        $this->runtime = Loader::runtime();
+        $this->isDebugEnabled = (bool) $this->runtime->data->getKey('debug');
+
         $this->setloadedConfigFiles();
+
         $this->logDateFolderFormat = static::LOG_DATE_FOLDER_FORMAT;
-
         $exceptionHandler = new ExceptionHandler($args[0]);
-
         $this->loggerLevel = $exceptionHandler->loggerLevel;
-        $this->setLogFilePathProperties(static::PATH_LOGS, );
+        $this->setLogFilePathProperties();
         $this->setLogger();
 
         $formatter = new Formatter($this, $exceptionHandler);
@@ -223,15 +222,15 @@ final class ErrorHandler
         $this->timestamp = strtotime($this->dateTimeAtom);
     }
 
-    private function setloadedConfigFiles()
+    private function setloadedConfigFiles(): void
     {
-        $this->loadedConfigFiles = $this->runtimeInstance->getRuntimeConfig()->getLoadedFilepaths();
+        $this->loadedConfigFiles = $this->runtime->getRuntimeConfig()->getLoadedFilepaths();
         $this->loadedConfigFilesString = implode(';', $this->loadedConfigFiles);
     }
 
-    private function setLogFilePathProperties(string $basePath): void
+    private function setLogFilePathProperties(): void
     {
-        $path = Path::normalize($basePath);
+        $path = Path::normalize(static::PATH_LOGS);
         $path = rtrim($path, '/').'/';
         $date = gmdate($this->logDateFolderFormat, $this->timestamp);
         $this->logFilename = $path.$this->loggerLevel.'/'.$date.$this->timestamp.'_'.$this->id.'.log';
@@ -247,7 +246,7 @@ final class ErrorHandler
         $this->logger->pushHandler(new FirePHPHandler());
     }
 
-    private function loggerWrite()
+    private function loggerWrite(): void
     {
         $log = strip_tags($this->output->plainContent);
         $log .= "\n\n".str_repeat('=', Formatter::COLUMNS);

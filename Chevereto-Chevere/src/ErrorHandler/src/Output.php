@@ -24,9 +24,9 @@ use Chevere\ErrorHandler\ExceptionHandler;
 use Chevere\Json;
 
 /**
- * Provides ErrorHandler output by passing a Formatter.
+ * Provides ErrorHandler output by passing a Formatter. FIXME: Don't handle responses!
  */
-class Output
+final class Output
 {
     /** @var string The rich (console/html) content representation */
     public $content;
@@ -38,29 +38,29 @@ class Output
     public $templateTags;
 
     /** @var ErrorHandler */
-    protected $errorHandler;
+    private $errorHandler;
 
     /** @var Formatter */
-    protected $formatter;
+    private $formatter;
 
     /** @var ExceptionHandler */
-    protected $exceptionHandler;
+    private $exceptionHandler;
 
     /** @var string */
-    protected $output;
+    private $output;
 
     /** @var array */
-    protected $headers = [];
+    private $headers = [];
 
-    protected $richTemplate;
+    private $richTemplate;
 
-    protected $plainTemplate;
+    private $plainTemplate;
 
     public function __construct(ErrorHandler $errorHandler, Formatter $formatter)
     {
         $this->errorHandler = $errorHandler;
         $this->formatter = $formatter;
-        $this->generateTemplates($formatter);
+        $this->generateTemplates();
         $this->parseTemplate();
         if ($errorHandler->request()->isXmlHttpRequest()) {
             $this->setJsonOutput();
@@ -73,89 +73,7 @@ class Output
         }
     }
 
-    protected function setJsonOutput(): void
-    {
-        $json = new Json();
-        $this->headers = array_merge($this->headers, Json::CONTENT_TYPE);
-        $response = [Template::NO_DEBUG_TITLE_PLAIN, 500];
-        $log = [
-            'id' => $this->getTemplateTag('id'),
-            'level' => $this->formatter->loggerLevel,
-            'filename' => $this->getTemplateTag('logFilename'),
-        ];
-        switch ($this->errorHandler->isDebugEnabled()) {
-            case 0:
-                unset($log['filename']);
-                break;
-            case 1:
-                $response[0] = $this->formatter->thrown.' in '.$this->getTemplateTag('file').':'.$this->getTemplateTag('line');
-                $error = [];
-                foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
-                    $error[$v] = $this->getTemplateTag($v);
-                }
-                $json->data->setKey('error', $error);
-                break;
-        }
-        $json->data->setKey('log', $log);
-        $json->setResponse(...$response);
-        $this->output = (string) $json;
-    }
-
-    protected function setHtmlOutput(): void
-    {
-        if ($this->errorHandler->isDebugEnabled()) {
-            $bodyTemplate = Template::DEBUG_BODY_HTML;
-        } else {
-            $this->content = Template::NO_DEBUG_CONTENT_HTML;
-            $this->addTemplateTag('content', $this->content);
-            $this->addTemplateTag('title', Template::NO_DEBUG_TITLE_PLAIN);
-            $bodyTemplate = Template::NO_DEBUG_BODY_HTML;
-        }
-        $this->addTemplateTag('body', strtr($bodyTemplate, $this->templateTags));
-        $this->output = strtr(Template::HTML_TEMPLATE, $this->templateTags);
-    }
-
-    protected function setConsoleOutput(): void
-    {
-        foreach ($this->formatter->consoleSections as $k => $v) {
-            if ('title' == $k) {
-                $tpl = $v[0];
-            } else {
-                Console::cli()->out->section(strtr($v[0], $this->templateTags));
-                $tpl = $v[1];
-            }
-            $message = strtr($tpl, $this->templateTags);
-            if ('title' == $k) {
-                Console::cli()->out->error($message);
-            } else {
-                $message = preg_replace_callback('#<code>(.*?)<\/code>#', function ($matches) {
-                    $consoleColor = new ConsoleColor();
-
-                    return $consoleColor->apply('light_blue', $matches[1]);
-                }, $message);
-                Console::cli()->out->writeln($message);
-            }
-        }
-        Console::cli()->out->writeln('');
-    }
-
-    protected function generateTemplates(Formatter $formatter)
-    {
-        $templateStrings = new TemplateStrings($formatter);
-        $templateStrings->setTitleBreak(str_repeat('=', $formatter::COLUMNS));
-        $i = 0;
-        foreach ($formatter->plainContentSections as $k => $plainSection) {
-            $templateStrings
-                ->setPlainSection($plainSection)
-                ->setRichSection($formatter->richContentSections[$k] ?? null)
-                ->process($i);
-            ++$i;
-        }
-        $this->richTemplate = $templateStrings->rich;
-        $this->plainTemplate = $templateStrings->plain;
-    }
-
-    public function parseTemplate()
+    public function parseTemplate(): void
     {
         $this->templateTags = [
             '%id%' => $this->errorHandler->id(),
@@ -204,9 +122,9 @@ class Output
     /**
      * @param string $tagName Template tag name
      */
-    public function getTemplateTag(string $tagName)
+    public function getTemplateTag(string $tagName): string
     {
-        return $this->templateTags["%$tagName%"] ?? null;
+        return $this->templateTags["%$tagName%"];
     }
 
     public function out(): void
@@ -223,5 +141,87 @@ class Output
             $response->headers->set($k, $v);
         }
         $response->send();
+    }
+
+    private function setJsonOutput(): void
+    {
+        $json = new Json();
+        $this->headers = array_merge($this->headers, Json::CONTENT_TYPE);
+        $response = [Template::NO_DEBUG_TITLE_PLAIN, 500];
+        $log = [
+            'id' => $this->getTemplateTag('id'),
+            'level' => $this->formatter->loggerLevel,
+            'filename' => $this->getTemplateTag('logFilename'),
+        ];
+        switch ($this->errorHandler->isDebugEnabled()) {
+            case 0:
+                unset($log['filename']);
+                break;
+            case 1:
+                $response[0] = $this->formatter->thrown.' in '.$this->getTemplateTag('file').':'.$this->getTemplateTag('line');
+                $error = [];
+                foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
+                    $error[$v] = $this->getTemplateTag($v);
+                }
+                $json->data->setKey('error', $error);
+                break;
+        }
+        $json->data->setKey('log', $log);
+        $json->setResponse(...$response);
+        $this->output = (string) $json;
+    }
+
+    private function setHtmlOutput(): void
+    {
+        if ($this->errorHandler->isDebugEnabled()) {
+            $bodyTemplate = Template::DEBUG_BODY_HTML;
+        } else {
+            $this->content = Template::NO_DEBUG_CONTENT_HTML;
+            $this->addTemplateTag('content', $this->content);
+            $this->addTemplateTag('title', Template::NO_DEBUG_TITLE_PLAIN);
+            $bodyTemplate = Template::NO_DEBUG_BODY_HTML;
+        }
+        $this->addTemplateTag('body', strtr($bodyTemplate, $this->templateTags));
+        $this->output = strtr(Template::HTML_TEMPLATE, $this->templateTags);
+    }
+
+    private function setConsoleOutput(): void
+    {
+        foreach ($this->formatter->consoleSections as $k => $v) {
+            if ('title' == $k) {
+                $tpl = $v[0];
+            } else {
+                Console::cli()->out->section(strtr($v[0], $this->templateTags));
+                $tpl = $v[1];
+            }
+            $message = strtr($tpl, $this->templateTags);
+            if ('title' == $k) {
+                Console::cli()->out->error($message);
+            } else {
+                $message = preg_replace_callback('#<code>(.*?)<\/code>#', function ($matches) {
+                    $consoleColor = new ConsoleColor();
+
+                    return $consoleColor->apply('light_blue', $matches[1]);
+                }, $message);
+                Console::cli()->out->writeln($message);
+            }
+        }
+        Console::cli()->out->writeln('');
+    }
+
+    private function generateTemplates(): void
+    {
+        $templateStrings = new TemplateStrings($this->formatter);
+        $templateStrings->setTitleBreak(str_repeat('=', $this->formatter::COLUMNS));
+        $i = 0;
+        foreach ($this->formatter->plainContentSections as $k => $plainSection) {
+            $templateStrings
+                ->setPlainSection($plainSection)
+                ->setRichSection($this->formatter->richContentSections[$k] ?? null)
+                ->process($i);
+            ++$i;
+        }
+        $this->richTemplate = $templateStrings->rich;
+        $this->plainTemplate = $templateStrings->plain;
     }
 }
