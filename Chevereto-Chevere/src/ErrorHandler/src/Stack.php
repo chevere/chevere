@@ -19,16 +19,17 @@ use Chevere\VarDump\VarDump;
 /**
  * Handles the ErrorHandler exception stack trace.
  */
+// FIXME: One "stack" for each $rich, $plain and $console. Share the same interface.
 class Stack
 {
     /** @var array */
-    protected $rich;
+    private $rich;
 
     /** @var array */
-    protected $plain;
+    private $plain;
 
     /** @var array */
-    protected $console;
+    private $console;
 
     /** @var array The table used to map the rich stack */
     private $richTable;
@@ -39,7 +40,7 @@ class Stack
     /** @var int Trace entry pointer */
     private $i;
 
-    protected $hr = Template::BOX_BREAK_HTML;
+    private $hr = Template::BOX_BREAK_HTML;
 
     /**
      * @param array $trace An Exception trace

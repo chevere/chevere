@@ -28,7 +28,8 @@ use Chevere\HttpFoundation\Request;
 /**
  * Formats the error exception in HTML (default), console and plain text.
  */
-class Formatter
+// FIXME: No public properties
+final class Formatter
 {
     /** @var string Number of fixed columns for plaintext display */
     const COLUMNS = 120;
@@ -92,7 +93,7 @@ class Formatter
     public $bodyClass;
 
     /** @var Throwable */
-    protected $exception;
+    private $exception;
 
     /** @var string */
     public $className;
@@ -127,21 +128,29 @@ class Formatter
     public $table;
 
     /** @var ExceptionHandler */
-    protected $exceptionHandler;
+    private $exceptionHandler;
 
     /** @var string */
     public $uri;
 
     /** @var string */
-    protected $varDump;
+    private $varDump;
 
     public function __construct(ErrorHandler $errorHandler, ExceptionHandler $exceptionHandler)
     {
         $this->varDump = VarDump::RUNTIME;
         $this->errorHandler = $errorHandler;
         $this->exceptionHandler = $exceptionHandler;
-        $this->processServerProperties();
-        $this->proccessExceptionHandler();
+        $this->setServerProperties();
+        $this->exception = $this->exceptionHandler->exception;
+        $this->className = $this->exceptionHandler->className;
+        $this->thrown = $this->className.' thrown';
+        $this->code = $this->exceptionHandler->code;
+        $this->type = $this->exceptionHandler->type;
+        $this->loggerLevel = $this->exceptionHandler->loggerLevel;
+        $this->message = $this->exceptionHandler->message;
+        $this->file = $this->exceptionHandler->file;
+        $this->line = $this->exceptionHandler->line;
         $this->processStack();
         $this->processContentSections();
         $this->processContentGlobals();
@@ -159,43 +168,30 @@ class Formatter
         $this->css = $css;
     }
 
-    protected function processServerProperties()
+    private function setServerProperties()
     {
         if (CLI) {
             $this->clientIp = $_SERVER['argv'][0];
             $this->clientUserAgent = Console::inputString();
         } else {
-            $request = $this->errorHandler->request();
-            $this->uri = $request->readInfoKey('requestUri') ?? 'unknown';
-            $this->clientUserAgent = $request->headers->get('User-Agent');
-            $this->requestMethod = $request->readInfoKey('method');
-            $this->serverHost = $request->readInfoKey('host');
-            $this->serverPort = (int) $request->readInfoKey('port');
-            $this->serverProtocol = $request->readInfoKey('protocolVersion');
-            $this->serverSoftware = $request->headers->get('SERVER_SOFTWARE');
-            $this->clientIp = $request->readInfoKey('clientIp');
+            // FIXME: This sh*t works horrible!
+            $this->uri = $this->errorHandler->request()->readInfoKey('requestUri') ?? 'unknown';
+            $this->clientUserAgent = $this->errorHandler->request()->headers->get('User-Agent');
+            $this->requestMethod = $this->errorHandler->request()->readInfoKey('method');
+            $this->serverHost = $this->errorHandler->request()->readInfoKey('host');
+            $this->serverPort = (int) $this->errorHandler->request()->readInfoKey('port');
+            $this->serverProtocol = $this->errorHandler->request()->readInfoKey('protocolVersion');
+            $this->serverSoftware = $this->errorHandler->request()->headers->get('SERVER_SOFTWARE');
+            $this->clientIp = $this->errorHandler->request()->readInfoKey('clientIp');
         }
     }
 
-    protected function setBodyClass()
+    private function setBodyClass()
     {
         $this->bodyClass = !headers_sent() ? 'body--flex' : 'body--block';
     }
 
-    protected function proccessExceptionHandler()
-    {
-        $this->exception = $this->exceptionHandler->exception;
-        $this->className = $this->exceptionHandler->className;
-        $this->thrown = $this->className.' thrown';
-        $this->code = $this->exceptionHandler->code;
-        $this->type = $this->exceptionHandler->type;
-        $this->loggerLevel = $this->exceptionHandler->loggerLevel;
-        $this->message = $this->exceptionHandler->message;
-        $this->file = $this->exceptionHandler->file;
-        $this->line = $this->exceptionHandler->line;
-    }
-
-    protected function processStack()
+    private function processStack()
     {
         $trace = $this->exceptionHandler->exception->getTrace();
         if ($this->exceptionHandler->exception instanceof ErrorException) {
@@ -210,7 +206,7 @@ class Formatter
         $this->plainStack = $stack->getPlainStack();
     }
 
-    protected function processContentSections()
+    private function processContentSections()
     {
         $sections = [
             static::SECTION_TITLE => ['%title% <span>in&nbsp;%file%:%line%</span>'],
@@ -229,7 +225,7 @@ class Formatter
         $this->buildContentSections($sections, $verbosity ?? null);
     }
 
-    protected function buildContentSections(array $sections, ?int $verbosity)
+    private function buildContentSections(array $sections, ?int $verbosity)
     {
         foreach ($sections as $k => $v) {
             if (CLI && false == static::CONSOLE_TABLE[$k]) {
@@ -241,7 +237,7 @@ class Formatter
         }
     }
 
-    protected function processContentSectionsArray(string $key, array $value, ?int $verbosity): bool
+    private function processContentSectionsArray(string $key, array $value, ?int $verbosity): bool
     {
         $this->setPlainContentSection($key, $value);
         if (isset($verbosity)) {
@@ -259,21 +255,21 @@ class Formatter
         return true;
     }
 
-    protected function handleSetRichStackSection(string $key, array &$value)
+    private function handleSetRichStackSection(string $key, array &$value)
     {
         if ($key == static::SECTION_STACK) {
             $value[1] = '%richStack%';
         }
     }
 
-    protected function handleSetConsoleStackSection(string $key, array &$value)
+    private function handleSetConsoleStackSection(string $key, array &$value)
     {
         if ($key == static::SECTION_STACK) {
             $value[1] = '%consoleStack%';
         }
     }
 
-    protected function processContentGlobals()
+    private function processContentGlobals()
     {
         foreach (['GET', 'POST', 'FILES', 'COOKIE', 'SESSION', 'SERVER'] as $v) {
             $k = '_'.$v;
@@ -293,7 +289,7 @@ class Formatter
      * @param string $key     content section key
      * @param array  $section section content [title, content]
      */
-    protected function setPlainContentSection(string $key, array $section): void
+    private function setPlainContentSection(string $key, array $section): void
     {
         $this->plainContentSections[$key] = $section;
     }
@@ -302,7 +298,7 @@ class Formatter
      * @param string $key     console section key
      * @param array  $section section content [title, <content>]
      */
-    protected function setConsoleSection(string $key, array $section): void
+    private function setConsoleSection(string $key, array $section): void
     {
         $section = array_map(function (string $value) {
             return strip_tags(html_entity_decode($value));
@@ -314,13 +310,13 @@ class Formatter
      * @param string $key     content section key
      * @param array  $section section content [title, content]
      */
-    protected function setRichContentSection(string $key, array $section): void
+    private function setRichContentSection(string $key, array $section): void
     {
         $section[0] = Str::replaceFirst('# ', '<span class="hide"># </span>', $section[0]);
         $this->richContentSections[$key] = $section;
     }
 
-    protected function setContentProperties()
+    private function setContentProperties()
     {
         $this->title = $this->thrown;
         $this->message = nl2br($this->message);
@@ -331,7 +327,7 @@ class Formatter
      *
      * @return string wrapped text
      */
-    protected function wrapStringHr(string $text): string
+    private function wrapStringHr(string $text): string
     {
         return $this->lineBreak."\n".$text."\n".$this->lineBreak;
     }
