@@ -73,8 +73,8 @@ final class ExceptionHandler
             $this->code = $exception->getCode();
             $this->errorType = $phpCode;
         }
-        $this->type = ErrorHandler::getErrorByCode($phpCode);
-        $this->loggerLevel = ErrorHandler::getLoggerLevel($phpCode) ?? 'error';
+        $this->type = ErrorHandler::ERROR_TABLE[$phpCode];
+        $this->loggerLevel = ErrorHandler::PHP_LOG_LEVEL[$phpCode] ?? 'error';
         $this->message = $exception->getMessage();
         $this->file = Path::normalize($exception->getFile());
         $this->line = (int) $exception->getLine();

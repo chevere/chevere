@@ -159,7 +159,7 @@ class Output
     {
         $this->templateTags = [
             '%id%' => $this->errorHandler->id(),
-            '%datetimeUtc%' => $this->errorHandler->datetimeUtc(),
+            '%datetimeUtc%' => $this->errorHandler->dateTimeAtom(),
             '%timestamp%' => $this->errorHandler->timestamp(),
             '%loadedConfigFilesString%' => $this->errorHandler->loadedConfigFilesString(),
             '%logFilename%' => $this->errorHandler->logFilename(),
