@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\ErrorHandler\src;
 
+// FIXME: Code font (inline) must be smaller
 /**
  * Stores the styling (CSS) for ErrorHandler.
  */

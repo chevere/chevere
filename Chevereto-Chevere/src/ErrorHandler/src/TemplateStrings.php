@@ -13,25 +13,25 @@ declare(strict_types=1);
 
 namespace Chevere\ErrorHandler\src;
 
-class TemplateStrings
+final class TemplateStrings
 {
     /** @var string */
-    protected $titleBreak;
+    private $titleBreak;
 
     /** @var array */
-    protected $richSection;
+    private $richSection;
 
     /** @var array */
-    protected $plainSection;
+    private $plainSection;
 
     /** @var int */
-    protected $sectionLength;
+    private $sectionLength;
 
     /** @var int */
-    protected $sectionsLength;
+    private $sectionsLength;
 
     /** @var int */
-    protected $i;
+    private $i;
 
     /** @var string */
     public $rich;
@@ -77,7 +77,7 @@ class TemplateStrings
         }
     }
 
-    protected function appendSectionContents()
+    private function appendSectionContents()
     {
         if ($this->i > 0) {
             $j = 1 == $this->sectionLength ? 0 : 1;
@@ -85,16 +85,16 @@ class TemplateStrings
                 if ($this->sectionLength > 1) {
                     $this->appendEOL();
                 }
-                $this->rich .= '<div class="c">'.$this->richSection[$j].'</div>';
+                $this->rich .= '<div class="c">' . $this->richSection[$j] . '</div>';
                 $this->plain .= $this->plainSection[$j];
             }
         }
     }
 
-    protected function appendSectionWrap()
+    private function appendSectionWrap()
     {
         if (0 == $this->i || isset($this->plainSection[1])) {
-            $this->rich .= '<div class="t'.(0 == $this->i ? ' t--scream' : null).'">'.$this->richSection[0].'</div>';
+            $this->rich .= '<div class="t' . (0 == $this->i ? ' t--scream' : null) . '">' . $this->richSection[0] . '</div>';
             $this->plain .= html_entity_decode($this->plainSection[0]);
             if (0 == $this->i) {
                 $this->appendRichTitleBreak();
@@ -103,28 +103,28 @@ class TemplateStrings
         }
     }
 
-    protected function appendRichTitleBreak()
+    private function appendRichTitleBreak()
     {
-        $this->rich .= "\n".'<div class="hide">'.$this->titleBreak.'</div>';
+        $this->rich .= "\n" . '<div class="hide">' . $this->titleBreak . '</div>';
     }
 
-    protected function appendPlainTitleBreak()
+    private function appendPlainTitleBreak()
     {
-        $this->plain .= "\n".$this->titleBreak;
+        $this->plain .= "\n" . $this->titleBreak;
     }
 
-    protected function appendEOL()
+    private function appendEOL()
     {
         $this->rich .= "\n";
         $this->plain .= "\n";
     }
 
-    protected function appendRichSectionBreak()
+    private function appendRichSectionBreak()
     {
-        $this->rich .= "\n".'<br>'."\n";
+        $this->rich .= "\n" . '<br>' . "\n";
     }
 
-    protected function appendPlainSectionBreak()
+    private function appendPlainSectionBreak()
     {
         $this->plain .= "\n\n";
     }

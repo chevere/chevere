@@ -109,15 +109,6 @@ final class ErrorHandler
     private $id;
 
     /** @var string */
-    private $body;
-
-    /** @var string */
-    private $class;
-
-    /** @var string */
-    private $arguments;
-
-    /** @var string */
     private $loggerLevel;
 
     /** @var string */
@@ -127,9 +118,6 @@ final class ErrorHandler
 
     /** @var Runtime */
     private $runtime;
-
-    /** @var DateTime Created in construct (asap) */
-    private $dateTime;
 
     /** @var array Contains all the loaded configuration files (App) */
     private $loadedConfigFiles;

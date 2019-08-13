@@ -18,8 +18,6 @@ use ErrorException;
 use Chevere\Path;
 use Chevere\Utility\Str;
 
-// FIXME: Code font (inline) must be smaller
-
 /**
  * Handles the error exception throwable.
  */

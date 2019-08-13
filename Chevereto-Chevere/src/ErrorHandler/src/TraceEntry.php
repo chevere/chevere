@@ -21,8 +21,6 @@ use Chevere\Utility\Str;
 use Chevere\VarDump\VarDump;
 use Chevere\VarDump\PlainVarDump;
 
-use const Chevere\CLI;
-
 /**
  * TraceEntry prepares the exception trace for being used with Stack.
  */
@@ -92,7 +90,6 @@ final class TraceEntry
     {
         $this->rich = $this->plain;
         array_pop($this->rich);
-        // Dump types map
         foreach ([
             '%f%' => VarDump::_FILE,
             '%l%' => VarDump::_FILE,
