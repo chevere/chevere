@@ -23,12 +23,11 @@ use Chevere\ErrorHandler\ExceptionHandler;
 use Chevere\VarDump\VarDump;
 use Chevere\VarDump\PlainVarDump;
 use Chevere\Utility\Str;
-use Chevere\HttpFoundation\Request;
+use Chevere\Data;
 
 /**
  * Formats the error exception in HTML (default), console and plain text.
  */
-// FIXME: No public properties, use a bag
 final class Formatter
 {
     /** @var string Number of fixed columns for plaintext display */
@@ -57,108 +56,49 @@ final class Formatter
     ];
 
     /** @var ErrorHandler */
-    public $errorHandler;
+    private $errorHandler;
 
     /** @var string */
-    public $css;
-
-    /** @var string */
-    public $lineBreak;
-
-    /** @var string IP address */
-    public $clientIp;
-
-    /** @var string User-Agent */
-    public $clientUserAgent;
-
-    /** @var string The request URI */
-    public $url;
-
-    /** @var string */
-    public $requestMethod;
-
-    /** @var string */
-    public $serverHost;
-
-    /** @var int */
-    public $serverPort;
-
-    /** @var string */
-    public $serverProtocol;
-
-    /** @var string */
-    public $serverSoftware;
-
-    /** @var string */
-    public $bodyClass;
-
-    /** @var Throwable */
-    private $exception;
-
-    /** @var string */
-    public $className;
-
-    /** @var string FIXME: Better name */
-    public $thrown;
-
-    public $plainStack;
-    public $richStack;
-    public $consoleStack;
+    private $lineBreak;
 
     /** @var array */
-    public $plainContentSections;
+    private $plainContentSections;
 
     /** @var array */
-    public $richContentSections;
+    private $richContentSections;
 
-    public $consoleSections;
-
-    // Exception properties FIXME: BETTER NAMES
+    private $consoleSections;
 
     /** @var string */
-    public $code;
-
-    public $message;
-    public $type;
-    public $file;
-    public $line;
-
-    /** @var string */
-    public $loggerLevel;
-
-    public $title;
-
-    public $table;
+    private $varDump;
 
     /** @var ExceptionHandler */
     private $exceptionHandler;
 
-    /** @var string */
-    public $uri;
+    /** @var Throwable */
+    private $exception;
 
-    /** @var string */
-    private $varDump;
+    /** @var Data */
+    private $data;
 
     public function __construct(ErrorHandler $errorHandler, ExceptionHandler $exceptionHandler)
     {
         $this->varDump = VarDump::RUNTIME;
         $this->errorHandler = $errorHandler;
         $this->exceptionHandler = $exceptionHandler;
-        $this->setServerProperties();
         $this->exception = $this->exceptionHandler->exception();
-        $this->className = $this->exceptionHandler->className();
-        $this->thrown = $this->className . ' thrown';
-        $this->code = $this->exceptionHandler->code();
-        $this->type = $this->exceptionHandler->type();
-        $this->loggerLevel = $this->exceptionHandler->loggerLevel();
-        $this->message = $this->exceptionHandler->message();
-        $this->file = $this->exceptionHandler->file();
-        $this->line = $this->exceptionHandler->line();
+        $this->data = $this->exceptionHandler->data();
+        $this->setServerProperties();
+        $this->data->add([
+            'thrown' => $this->exceptionHandler->data()->getKey('className').' thrown',
+        ]);
         $this->processStack();
         $this->processContentSections();
         $this->processContentGlobals();
-        $this->setContentProperties();
-        $this->setBodyClass();
+        $this->data->add([
+            'title' => $this->data->getKey('thrown'),
+            'bodyClass' => !headers_sent() ? 'body--flex' : 'body--block',
+        ]);
     }
 
     public function setLineBreak(string $lineBreak)
@@ -168,52 +108,103 @@ final class Formatter
 
     public function setCss(string $css)
     {
-        $this->css = $css;
+        $this->data->setKey('css', $css);
+    }
+
+    public function plainContentSections(): array
+    {
+        return $this->plainContentSections;
+    }
+
+    public function richContentSections(): array
+    {
+        return $this->richContentSections;
+    }
+
+    public function consoleSections(): array
+    {
+        return $this->consoleSections;
+    }
+
+    public function getTemplateTags(): array
+    {
+        return [
+            '%id%' => $this->errorHandler->data()->getKey('id'),
+            '%datetimeUtc%' => $this->errorHandler->data()->getKey('dateTimeAtom'),
+            '%timestamp%' => $this->errorHandler->data()->getKey('timestamp'),
+            '%loadedConfigFilesString%' => $this->errorHandler->data()->getKey('loadedConfigFilesString'),
+            '%logFilename%' => $this->errorHandler->data()->getKey('logFilename'),
+            '%css%' => $this->dataKey('css'),
+            '%bodyClass%' => $this->dataKey('bodyClass'),
+            '%body%' => null,
+            '%title%' => $this->dataKey('title'),
+            '%content%' => null,
+            '%title%' => $this->dataKey('title'),
+            '%file%' => $this->dataKey('file'),
+            '%line%' => $this->dataKey('line'),
+            '%message%' => $this->dataKey('message'),
+            '%code%' => $this->dataKey('code'),
+            '%plainStack%' => $this->dataKey('plainStack'),
+            '%consoleStack%' => $this->dataKey('consoleStack'),
+            '%richStack%' => $this->dataKey('richStack'),
+            '%clientIp%' => $this->dataKey('clientIp'),
+            '%clientUserAgent%' => $this->dataKey('clientUserAgent'),
+            '%serverProtocol%' => $this->dataKey('serverProtocol'),
+            '%requestMethod%' => $this->dataKey('requestMethod'),
+            '%uri%' => $this->dataKey('uri') ?? null,
+            '%serverHost%' => $this->dataKey('serverHost'),
+            '%serverPort%' => $this->dataKey('serverPort'),
+            '%serverSoftware%' => $this->dataKey('serverSoftware'),
+        ];
+    }
+
+    public function dataKey(string $key)
+    {
+        return $this->data->getKey($key);
     }
 
     private function setServerProperties()
     {
         if (CLI) {
-            $this->clientIp = $_SERVER['argv'][0];
-            $this->clientUserAgent = Console::inputString();
+            $this->data->add([
+                'clientIp' => $_SERVER['argv'][0],
+                'clientUserAgent' => Console::inputString(),
+            ]);
         } else {
-            // FIXME: This sh*t works horrible!
-            $this->uri = $this->errorHandler->request()->readInfoKey('requestUri') ?? 'unknown';
-            $this->clientUserAgent = $this->errorHandler->request()->headers->get('User-Agent');
-            $this->requestMethod = $this->errorHandler->request()->readInfoKey('method');
-            $this->serverHost = $this->errorHandler->request()->readInfoKey('host');
-            $this->serverPort = (int) $this->errorHandler->request()->readInfoKey('port');
-            $this->serverProtocol = $this->errorHandler->request()->readInfoKey('protocolVersion');
-            $this->serverSoftware = $this->errorHandler->request()->headers->get('SERVER_SOFTWARE');
-            $this->clientIp = $this->errorHandler->request()->readInfoKey('clientIp');
+            $this->data->add([
+                // FIXME: Drop this
+                'uri' => $this->errorHandler->request()->readInfoKey('requestUri') ?? 'unknown',
+                'clientUserAgent' => $this->errorHandler->request()->headers->get('User-Agent'),
+                'requestMethod' => $this->errorHandler->request()->readInfoKey('method'),
+                'serverHost' => $this->errorHandler->request()->readInfoKey('host'),
+                'serverPort' => (int) $this->errorHandler->request()->readInfoKey('port'),
+                'serverProtocol' => $this->errorHandler->request()->readInfoKey('protocolVersion'),
+                'serverSoftware' => $this->errorHandler->request()->headers->get('SERVER_SOFTWARE'),
+                'clientIp' => $this->errorHandler->request()->readInfoKey('clientIp'),
+            ]);
         }
-    }
-
-    private function setBodyClass()
-    {
-        $this->bodyClass = !headers_sent() ? 'body--flex' : 'body--block';
     }
 
     private function processStack()
     {
         $trace = $this->exceptionHandler->exception()->getTrace();
         if ($this->exceptionHandler->exception() instanceof ErrorException) {
-            $this->thrown = $this->exceptionHandler->type();
+            $this->data->setKey('thrown', $this->exceptionHandler->type());
             unset($trace[0]);
         }
         $stack = new Stack($trace);
         if (CLI) {
-            $this->consoleStack = $stack->getConsole();
+            $this->data->setKey('consoleStack', $stack->getConsole());
         }
-        $this->richStack = $stack->getRich();
-        $this->plainStack = $stack->getPlain();
+        $this->data->setKey('richStack', $stack->getRich());
+        $this->data->setKey('plainStack', $stack->getPlain());
     }
 
     private function processContentSections()
     {
         $sections = [
             static::SECTION_TITLE => ['%title% <span>in&nbsp;%file%:%line%</span>'],
-            static::SECTION_MESSAGE => ['# Message', '%message%' . ($this->exceptionHandler->code() ? ' [Code #%code%]' : null)],
+            static::SECTION_MESSAGE => ['# Message', '%message%'.($this->exceptionHandler->data()->getKey('code') ? ' [Code #%code%]' : null)],
             static::SECTION_TIME => ['# Time', '%datetimeUtc% [%timestamp%]'],
             static::SECTION_ID => ['# Incident ID:%id%', 'Logged at %logFilename%'],
             static::SECTION_STACK => ['# Stack trace', '%plainStack%'],
@@ -275,15 +266,15 @@ final class Formatter
     private function processContentGlobals()
     {
         foreach (['GET', 'POST', 'FILES', 'COOKIE', 'SESSION', 'SERVER'] as $v) {
-            $k = '_' . $v;
+            $k = '_'.$v;
             $v = isset($GLOBALS[$k]) ? $GLOBALS[$k] : null;
             if ($v) {
                 $wrapped = $this->varDump::out($v);
                 if (!CLI) {
-                    $wrapped = '<pre>' . $wrapped . '</pre>';
+                    $wrapped = '<pre>'.$wrapped.'</pre>';
                 }
-                $this->setRichContentSection($k, ['$' . $k, $this->wrapStringHr($wrapped)]);
-                $this->setPlainContentSection($k, ['$' . $k, strip_tags($this->wrapStringHr(PlainVarDump::out($v)))]);
+                $this->setRichContentSection($k, ['$'.$k, $this->wrapStringHr($wrapped)]);
+                $this->setPlainContentSection($k, ['$'.$k, strip_tags($this->wrapStringHr(PlainVarDump::out($v)))]);
             }
         }
     }
@@ -319,12 +310,6 @@ final class Formatter
         $this->richContentSections[$key] = $section;
     }
 
-    private function setContentProperties()
-    {
-        $this->title = $this->thrown;
-        $this->message = nl2br($this->message);
-    }
-
     /**
      * @param string $text text to wrap
      *
@@ -332,6 +317,6 @@ final class Formatter
      */
     private function wrapStringHr(string $text): string
     {
-        return $this->lineBreak . "\n" . $text . "\n" . $this->lineBreak;
+        return $this->lineBreak."\n".$text."\n".$this->lineBreak;
     }
 }

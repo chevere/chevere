@@ -25,6 +25,7 @@ class Index extends Controller
     // public function __invoke(array $wildcards, array $parameters)
     public function __invoke()
     {
+        throw new \Exception('Ups');
         $api = new Data('api', 'info');
         $api->addAttribute('entry', 'HTTP GET /api');
         $api->addAttribute('description', 'Retrieves the exposed API.');

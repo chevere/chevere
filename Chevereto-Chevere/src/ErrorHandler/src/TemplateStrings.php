@@ -46,14 +46,15 @@ final class TemplateStrings
     {
         $this->rich = '';
         $this->plain = '';
-        $this->sectionsLength = count($formatter->plainContentSections);
-        $this->setTitleBreak(str_repeat('=', $formatter::COLUMNS));
+        $this->sectionsLength = count($formatter->plainContentSections());
+        $this->titleBreak = str_repeat('=', $formatter::COLUMNS);
         $this->i = 0;
-        foreach ($formatter->plainContentSections as $k => $plainSection) {
-            $this->setPlainSection($plainSection);
-            $richSection = $formatter->richContentSections[$k] ?? null;
+        foreach ($formatter->plainContentSections() as $k => $plainSection) {
+            $this->plainSection = $plainSection;
+            $this->sectionLength = count($plainSection);
+            $richSection = $formatter->richContentSections()[$k];
             if ($richSection) {
-                $this->setRichSection($richSection);
+                $this->richSection = $richSection;
             }
             $this->process();
             ++$this->i;
@@ -68,22 +69,6 @@ final class TemplateStrings
     public function plain(): string
     {
         return $this->plain;
-    }
-
-    private function setTitleBreak(string $titleBreak): void
-    {
-        $this->titleBreak = $titleBreak;
-    }
-
-    private function setRichSection(array $richSection): void
-    {
-        $this->richSection = $richSection;
-    }
-
-    private function setPlainSection(array $plainSection): void
-    {
-        $this->plainSection = $plainSection;
-        $this->sectionLength = count($plainSection);
     }
 
     private function process(): void
@@ -104,7 +89,7 @@ final class TemplateStrings
                 if ($this->sectionLength > 1) {
                     $this->appendEOL();
                 }
-                $this->rich .= '<div class="c">' . $this->richSection[$j] . '</div>';
+                $this->rich .= '<div class="c">'.$this->richSection[$j].'</div>';
                 $this->plain .= $this->plainSection[$j];
             }
         }
@@ -113,7 +98,7 @@ final class TemplateStrings
     private function appendSectionWrap(): void
     {
         if (0 == $this->i || isset($this->plainSection[1])) {
-            $this->rich .= '<div class="t' . (0 == $this->i ? ' t--scream' : null) . '">' . $this->richSection[0] . '</div>';
+            $this->rich .= '<div class="t'.(0 == $this->i ? ' t--scream' : null).'">'.$this->richSection[0].'</div>';
             $this->plain .= html_entity_decode($this->plainSection[0]);
             if (0 == $this->i) {
                 $this->appendRichTitleBreak();
@@ -124,12 +109,12 @@ final class TemplateStrings
 
     private function appendRichTitleBreak(): void
     {
-        $this->rich .= "\n" . '<div class="hide">' . $this->titleBreak . '</div>';
+        $this->rich .= "\n".'<div class="hide">'.$this->titleBreak.'</div>';
     }
 
     private function appendPlainTitleBreak(): void
     {
-        $this->plain .= "\n" . $this->titleBreak;
+        $this->plain .= "\n".$this->titleBreak;
     }
 
     private function appendEOL(): void
@@ -140,7 +125,7 @@ final class TemplateStrings
 
     private function appendRichSectionBreak(): void
     {
-        $this->rich .= "\n" . '<br>' . "\n";
+        $this->rich .= "\n".'<br>'."\n";
     }
 
     private function appendPlainSectionBreak(): void

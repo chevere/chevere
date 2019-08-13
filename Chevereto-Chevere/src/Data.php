@@ -25,7 +25,12 @@ class Data implements DataContract
     /** @var array */
     private $data;
 
-    public static function fromArrayAccess(ArrayAccess $data)
+    public function __construct()
+    {
+        $this->data = [];
+    }
+
+    public static function fromArray(array $data): DataContract
     {
         $that = new self();
         $that->data = $data;
@@ -33,9 +38,12 @@ class Data implements DataContract
         return $that;
     }
 
-    public function __construct()
+    public static function fromArrayAccess(ArrayAccess $data): DataContract
     {
-        $this->data = [];
+        $that = new self();
+        $that->data = $data;
+
+        return $that;
     }
 
     public function getIterator(): ArrayIterator

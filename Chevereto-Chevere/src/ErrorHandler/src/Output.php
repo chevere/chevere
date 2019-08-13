@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\JsonResponse as HttpJsonResponse;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Chevere\Console\Console;
 use Chevere\ErrorHandler\ErrorHandler;
-use Chevere\ErrorHandler\ExceptionHandler;
 use Chevere\Json;
 
 /**
@@ -28,11 +27,11 @@ use Chevere\Json;
  */
 final class Output
 {
-    /** @var string The rich (console/html) content representation */
+    /** @var string The console|html content representation */
     private $content;
 
-    /** @var string The plain content representation (log txt) */
-    private $plainContent;
+    /** @var string The text/plain content representation */
+    private $textPlain;
 
     /** @var array */
     private $templateTags;
@@ -60,7 +59,7 @@ final class Output
         $this->errorHandler = $errorHandler;
         $this->formatter = $formatter;
         $this->generateTemplates();
-        $this->parseTemplate();
+        $this->parseTemplates();
         if ($errorHandler->request()->isXmlHttpRequest()) {
             $this->setJsonOutput();
         } else {
@@ -72,9 +71,9 @@ final class Output
         }
     }
 
-    public function plainContent(): string
+    public function textPlain(): string
     {
-        return $this->plainContent;
+        return $this->textPlain;
     }
 
     public function out(): void
@@ -93,39 +92,12 @@ final class Output
         $response->send();
     }
 
-    private function parseTemplate(): void
+    private function parseTemplates(): void
     {
-        $this->templateTags = [
-            '%id%' => $this->errorHandler->id(),
-            '%datetimeUtc%' => $this->errorHandler->dateTimeAtom(),
-            '%timestamp%' => $this->errorHandler->timestamp(),
-            '%loadedConfigFilesString%' => $this->errorHandler->loadedConfigFilesString(),
-            '%logFilename%' => $this->errorHandler->logFilename(),
-            '%css%' => $this->formatter->css,
-            '%bodyClass%' => $this->formatter->bodyClass,
-            '%body%' => null,
-            '%title%' => $this->formatter->title,
-            '%content%' => $this->content,
-            '%title%' => $this->formatter->title,
-            '%file%' => $this->formatter->file,
-            '%line%' => $this->formatter->line,
-            '%message%' => $this->formatter->message,
-            '%code%' => $this->formatter->code,
-            '%plainStack%' => $this->formatter->plainStack,
-            '%consoleStack%' => $this->formatter->consoleStack,
-            '%richStack%' => $this->formatter->richStack,
-            '%clientIp%' => $this->formatter->clientIp,
-            '%clientUserAgent%' => $this->formatter->clientUserAgent,
-            '%serverProtocol%' => $this->formatter->serverProtocol,
-            '%requestMethod%' => $this->formatter->requestMethod ?? 'n/a',
-            '%uri%' => $this->formatter->uri ?? null,
-            '%serverHost%' => $this->formatter->serverHost,
-            '%serverPort%' => $this->formatter->serverPort,
-            '%serverSoftware%' => $this->formatter->serverSoftware,
-        ];
+        $this->templateTags = $this->formatter->getTemplateTags();
         $this->content = strtr($this->richTemplate, $this->templateTags);
-        $this->plainContent = strtr($this->plainTemplate, $this->templateTags);
         $this->addTemplateTag('content', $this->content);
+        $this->textPlain = strtr($this->plainTemplate, $this->templateTags);
     }
 
     /**
@@ -154,7 +126,7 @@ final class Output
         $response = [Template::NO_DEBUG_TITLE_PLAIN, 500];
         $log = [
             'id' => $this->getTemplateTag('id'),
-            'level' => $this->formatter->loggerLevel,
+            'level' => $this->formatter->dataKey('loggerLevel'),
             'filename' => $this->getTemplateTag('logFilename'),
         ];
         switch ($this->errorHandler->isDebugEnabled()) {
@@ -162,7 +134,7 @@ final class Output
                 unset($log['filename']);
                 break;
             case 1:
-                $response[0] = $this->formatter->thrown . ' in ' . $this->getTemplateTag('file') . ':' . $this->getTemplateTag('line');
+                $response[0] = $this->formatter->dataKey('thrown').' in '.$this->getTemplateTag('file').':'.$this->getTemplateTag('line');
                 $error = [];
                 foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
                     $error[$v] = $this->getTemplateTag($v);
@@ -191,7 +163,7 @@ final class Output
 
     private function setConsoleOutput(): void
     {
-        foreach ($this->formatter->consoleSections as $k => $v) {
+        foreach ($this->formatter->consoleSections() as $k => $v) {
             if ('title' == $k) {
                 $tpl = $v[0];
             } else {
@@ -216,8 +188,6 @@ final class Output
     private function generateTemplates(): void
     {
         $templateStrings = new TemplateStrings($this->formatter);
-
-
         $this->richTemplate = $templateStrings->rich();
         $this->plainTemplate = $templateStrings->plain();
     }

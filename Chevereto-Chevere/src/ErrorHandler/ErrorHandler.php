@@ -21,6 +21,7 @@ use const Chevere\ROOT_PATH;
 use const Chevere\App\PATH as AppPath;
 use Chevere\HttpFoundation\Request;
 use Chevere\App\Loader;
+use Chevere\Data;
 use Chevere\Path;
 use Chevere\Runtime\Runtime;
 use Chevere\ErrorHandler\src\Formatter;
@@ -87,26 +88,14 @@ final class ErrorHandler
         E_USER_DEPRECATED => LogLevel::NOTICE,
     ];
 
-    /** @var int */
-    private $timestamp;
-
-    /** @var string */
-    private $dateTimeAtom;
-
-    /** @var string */
-    private $logFilename;
+    /** @var Data */
+    private $data;
 
     /** @var Request The detected/forged HTTP request */
     private $request;
 
-    /** @var string A string representation of $loadedConfigFiles */
-    private $loadedConfigFilesString;
-
     /** @var bool */
     private $isDebugEnabled;
-
-    /** @var string Unique id (uniqid) for the handled error */
-    private $id;
 
     /** @var string */
     private $loggerLevel;
@@ -130,8 +119,9 @@ final class ErrorHandler
      */
     public function __construct(...$args)
     {
+        $this->data = new Data();
         $this->setTimeProperties();
-        $this->id = uniqid('', true);
+        $this->data->setkey('id', uniqid('', true));
         try {
             $request = Loader::request();
         } catch (Throwable $e) {
@@ -145,7 +135,7 @@ final class ErrorHandler
 
         $this->logDateFolderFormat = static::LOG_DATE_FOLDER_FORMAT;
         $exceptionHandler = new ExceptionHandler($args[0]);
-        $this->loggerLevel = $exceptionHandler->loggerLevel();
+        $this->loggerLevel = $exceptionHandler->data()->getKey('loggerLevel');
         $this->setLogFilePathProperties();
         $this->setLogger();
 
@@ -158,29 +148,9 @@ final class ErrorHandler
         $this->output->out();
     }
 
-    public function timestamp(): int
+    public function data(): Data
     {
-        return $this->timestamp;
-    }
-
-    public function dateTimeAtom(): string
-    {
-        return $this->dateTimeAtom;
-    }
-
-    public function logFilename(): string
-    {
-        return $this->logFilename;
-    }
-
-    public function request(): Request
-    {
-        return $this->request;
-    }
-
-    public function loadedConfigFilesString(): string
-    {
-        return $this->loadedConfigFilesString;
+        return $this->data;
     }
 
     public function isDebugEnabled(): bool
@@ -188,9 +158,9 @@ final class ErrorHandler
         return $this->isDebugEnabled;
     }
 
-    public function id(): string
+    public function request(): Request
     {
-        return $this->id;
+        return $this->request;
     }
 
     public static function error($severity, $message, $file, $line): void
@@ -206,28 +176,36 @@ final class ErrorHandler
     private function setTimeProperties(): void
     {
         $dt = new DateTime('now', new DateTimeZone('UTC'));
-        $this->dateTimeAtom = $dt->format(DateTime::ATOM);
-        $this->timestamp = strtotime($this->dateTimeAtom);
+        $dateTimeAtom = $dt->format(DateTime::ATOM);
+        $this->data->add([
+            'dateTimeAtom' => $dateTimeAtom,
+            'timestamp' => strtotime($dateTimeAtom),
+        ]);
     }
 
     private function setloadedConfigFiles(): void
     {
         $this->loadedConfigFiles = $this->runtime->getRuntimeConfig()->getLoadedFilepaths();
-        $this->loadedConfigFilesString = implode(';', $this->loadedConfigFiles);
+        $this->data->setKey('loadedConfigFilesString', implode(';', $this->loadedConfigFiles));
     }
 
     private function setLogFilePathProperties(): void
     {
         $path = Path::normalize(static::PATH_LOGS);
         $path = rtrim($path, '/') . '/';
-        $date = gmdate($this->logDateFolderFormat, $this->timestamp);
-        $this->logFilename = $path . $this->loggerLevel . '/' . $date . $this->timestamp . '_' . $this->id . '.log';
+        $date = gmdate($this->logDateFolderFormat, $this->data->getKey('timestamp'));
+        $id = $this->data->getKey('id');
+        $timestamp = $this->data->getKey('timestamp');
+        $logFilename = $path . $this->loggerLevel . '/' . $date . $timestamp . '_' . $id . '.log';
+        $this->data->setKey('logFilename', $logFilename);
     }
 
     private function setLogger(): void
     {
         $lineFormatter = new LineFormatter(null, null, true, true);
-        $streamHandler = (new StreamHandler($this->logFilename))->setFormatter($lineFormatter);
+        $logFilename = $this->data->getKey('logFilename');
+        $streamHandler = new StreamHandler($logFilename);
+        $streamHandler->setFormatter($lineFormatter);
         $this->logger = new Logger(__NAMESPACE__);
         $this->logger->setTimezone(new DateTimeZone('UTC'));
         $this->logger->pushHandler($streamHandler);
@@ -236,7 +214,7 @@ final class ErrorHandler
 
     private function loggerWrite(): void
     {
-        $log = strip_tags($this->output->plainContent());
+        $log = strip_tags($this->output->textPlain());
         $log .= "\n\n" . str_repeat('=', Formatter::COLUMNS);
         $this->logger->log($this->loggerLevel, $log);
     }
