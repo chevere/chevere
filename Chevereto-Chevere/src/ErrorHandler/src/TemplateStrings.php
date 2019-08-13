@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\ErrorHandler\src;
 
+/**
+ * Generates template strings for Output.
+ */
 final class TemplateStrings
 {
     /** @var string */
@@ -45,15 +48,15 @@ final class TemplateStrings
         $this->plain = '';
         $this->sectionsLength = count($formatter->plainContentSections);
         $this->setTitleBreak(str_repeat('=', $formatter::COLUMNS));
-        $i = 0;
+        $this->i = 0;
         foreach ($formatter->plainContentSections as $k => $plainSection) {
             $this->setPlainSection($plainSection);
             $richSection = $formatter->richContentSections[$k] ?? null;
             if ($richSection) {
-                $this->setRichSection($formatter->richContentSections[$k]);
+                $this->setRichSection($richSection);
             }
-            $this->process($i);
-            ++$i;
+            $this->process();
+            ++$this->i;
         }
     }
 
@@ -83,12 +86,11 @@ final class TemplateStrings
         $this->sectionLength = count($plainSection);
     }
 
-    private function process(int $i): void
+    private function process(): void
     {
-        $this->i = $i;
         $this->appendSectionWrap();
         $this->appendSectionContents();
-        if ($i + 1 < $this->sectionsLength) {
+        if ($this->i + 1 < $this->sectionsLength) {
             $this->appendRichSectionBreak();
             $this->appendPlainSectionBreak();
         }

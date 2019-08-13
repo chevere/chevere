@@ -43,17 +43,16 @@ final class Output
     /** @var Formatter */
     private $formatter;
 
-    /** @var ExceptionHandler */
-    private $exceptionHandler;
-
     /** @var string */
     private $output;
 
     /** @var array */
     private $headers = [];
 
+    /** @var string The rich template string. Note: Placeholders won't be visible when dumping to console */
     private $richTemplate;
 
+    /** @var string The plain template string. */
     private $plainTemplate;
 
     public function __construct(ErrorHandler $errorHandler, Formatter $formatter)
@@ -218,8 +217,8 @@ final class Output
     {
         $templateStrings = new TemplateStrings($this->formatter);
 
+
         $this->richTemplate = $templateStrings->rich();
-        // dd($this->richTemplate);
         $this->plainTemplate = $templateStrings->plain();
     }
 }
