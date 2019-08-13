@@ -58,20 +58,22 @@ final class Router implements RouterContract
     /**
      * {@inheritdoc}
      */
-    public function addRoute(RouteContract $route, string $basename): void
+    public function addRoute(RouteContract $route, string $group): void
     {
+        dd($route, $group);
         $route->fill();
         $id = $route->id();
         $uri = $route->path();
         $this->handleRouteKey($uri);
-        $pointer = [$id, $basename];
+        $pointer = [$id, $group];
+        dump($pointer);
         $name = $route->hasName() ? $route->name() : null;
         if (isset($name)) {
             $this->handleRouteName($name, $pointer);
         }
         $this->routes[] = $route;
         $id = array_key_last($this->routes);
-        $this->baseIndex[$basename][] = array_key_last($this->routes);
+        $this->baseIndex[$group][] = array_key_last($this->routes);
         $keyPowerSet = $route->keyPowerSet();
         if (!empty($keyPowerSet)) {
             $ix = $id;
