@@ -21,37 +21,56 @@ use Chevere\Utility\Str;
 use Chevere\VarDump\VarDump;
 use Chevere\VarDump\PlainVarDump;
 
+use const Chevere\CLI;
+
 /**
  * TraceEntry prepares the exception trace for being used with Stack.
  */
-class TraceEntry
+final class TraceEntry
 {
     /** @var array Exception trace entry */
-    protected $entry;
+    private $entry;
+
+    /** @var int Key for the passed trace entry */
+    private $key;
 
     /** @var string Plain representation of the entry arguments */
-    protected $plainArgs;
+    private $plainArgs;
 
     /** @var string Rich representation of the entry arguments (colored) */
-    protected $richArgs;
+    private $richArgs;
 
     /** @var string */
-    protected $varDump;
+    private $varDump;
 
-    public function getArray(): array
-    {
-        return $this->entry;
-    }
+    /** @var array */
+    private $rich;
 
-    public function __construct(array $entry)
+    /** @var array */
+    private $plain;
+
+    public function __construct(array $entry, int $key)
     {
         $this->entry = $entry;
+        $this->key = $key;
         $this->varDump = VarDump::RUNTIME;
         $this->handleProcessMissingClassFile();
         $this->handleSetEntryArguments();
         $this->handleProcessAnonClass();
         $this->handleProcessCoreAutoloader();
         $this->handleProcessNormalizeFile();
+        $this->setPlain();
+        $this->setRich();
+    }
+
+    public function rich(): array
+    {
+        return $this->rich;
+    }
+
+    public function plain(): array
+    {
+        return $this->plain;
     }
 
     public function getPlainArgs(): ?string
@@ -64,14 +83,48 @@ class TraceEntry
         return $this->richArgs;
     }
 
-    protected function handleProcessMissingClassFile()
+    private function setPlain(): void
+    {
+        $this->plain = [
+            '%x%' => ($this->key & 1) ? 'pre--even' : null,
+            '%i%' => $this->key,
+            '%f%' => $this->entry['file'] ?? null,
+            '%l%' => $this->entry['line'] ?? null,
+            '%fl%' => isset($this->entry['file']) ? ($this->entry['file'] . ':' . $this->entry['line']) : null,
+            '%c%' => $this->entry['class'] ?? null,
+            '%t%' => $this->entry['type'] ?? null,
+            '%m%' => $this->entry['function'],
+            '%a%' => $this->getPlainArgs(),
+        ];
+    }
+
+    private function setRich(): void
+    {
+        $this->rich = $this->plain;
+        array_pop($this->rich);
+        // Dump types map
+        foreach ([
+            '%f%' => VarDump::_FILE,
+            '%l%' => VarDump::_FILE,
+            '%fl%' => VarDump::_FILE,
+            '%c%' => VarDump::_CLASS,
+            '%t%' => VarDump::_OPERATOR,
+            '%m%' => VarDump::_FUNCTION,
+        ] as $k => $v) {
+            $wrapper = VarDump::wrap($v, (string) $this->plain[$k]);
+            $this->rich[$k] = isset($this->plain[$k]) ? $wrapper : null;
+        }
+        $this->rich['%a%'] = $this->getRichArgs();
+    }
+
+    private function handleProcessMissingClassFile()
     {
         if (!array_key_exists('file', $this->entry) && isset($this->entry['class'])) {
             $this->processMissingClassFile();
         }
     }
 
-    protected function processMissingClassFile()
+    private function processMissingClassFile()
     {
         $reflector = new ReflectionMethod($this->entry['class'], $this->entry['function']);
         $filename = $reflector->getFileName();
@@ -81,39 +134,39 @@ class TraceEntry
         }
     }
 
-    protected function handleSetEntryArguments()
+    private function handleSetEntryArguments()
     {
         if (isset($this->entry['args']) && is_array($this->entry['args'])) {
             $this->setFrameArguments();
         }
     }
 
-    protected function setFrameArguments()
+    private function setFrameArguments()
     {
         $this->plainArgs = "\n";
         $this->richArgs = "\n";
         foreach ($this->entry['args'] as $k => $v) {
-            $aux = 'Arg#'.($k + 1).' ';
-            $this->plainArgs .= $aux.PlainVarDump::out($v, null, [App::class])."\n";
-            $this->richArgs .= $aux.$this->varDump::out($v, null, [App::class])."\n";
+            $aux = 'Arg#' . ($k + 1) . ' ';
+            $this->plainArgs .= $aux . PlainVarDump::out($v, null, [App::class]) . "\n";
+            $this->richArgs .= $aux . $this->varDump::out($v, null, [App::class]) . "\n";
         }
         $this->trimTrailingNl($this->plainArgs);
         $this->trimTrailingNl($this->richArgs);
     }
 
-    protected function trimTrailingNl(string &$string): void
+    private function trimTrailingNl(string &$string): void
     {
         $string = rtrim($string, "\n");
     }
 
-    protected function handleProcessAnonClass()
+    private function handleProcessAnonClass()
     {
         if (isset($this->entry['class']) && Str::startsWith(VarDump::ANON_CLASS, $this->entry['class'])) {
             $this->processAnonClass();
         }
     }
 
-    protected function processAnonClass()
+    private function processAnonClass()
     {
         $entryFile = Str::replaceFirst(VarDump::ANON_CLASS, null, $this->entry['class']);
         $this->entry['file'] = substr($entryFile, 0, strpos($entryFile, '.php') + 4);
@@ -121,26 +174,26 @@ class TraceEntry
         $this->entry['line'] = null;
     }
 
-    protected function handleProcessCoreAutoloader()
+    private function handleProcessCoreAutoloader()
     {
         if ($this->entry['function'] == 'Chevere\\autoloader') {
             $this->processCoreAutoloader();
         }
     }
 
-    protected function processCoreAutoloader()
+    private function processCoreAutoloader()
     {
-        $this->entry['file'] = $this->entry['file'] ?? (PATH.'autoloader.php');
+        $this->entry['file'] = $this->entry['file'] ?? (PATH . 'autoloader.php');
     }
 
-    protected function handleProcessNormalizeFile()
+    private function handleProcessNormalizeFile()
     {
         if (isset($this->entry['file']) && Str::contains('\\', $this->entry['file'])) {
             $this->processNormalizeFile();
         }
     }
 
-    protected function processNormalizeFile()
+    private function processNormalizeFile()
     {
         $this->entry['file'] = Path::normalize($this->entry['file']);
     }

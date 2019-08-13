@@ -91,7 +91,6 @@ final class Router implements RouterContract
 
         $this->regex = $this->getRegex();
         $this->routesIndex[$this->route->path()] = $this->routeMap;
-        dump($this->routesIndex, $this->routes);
     }
 
     public function arguments(): array
