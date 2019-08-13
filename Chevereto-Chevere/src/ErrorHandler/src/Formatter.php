@@ -203,10 +203,10 @@ final class Formatter
         }
         $stack = new Stack($trace);
         if (CLI) {
-            $this->consoleStack = $stack->getConsoleStack();
+            $this->consoleStack = $stack->getConsole();
         }
-        $this->richStack = $stack->getRichStack();
-        $this->plainStack = $stack->getPlainStack();
+        $this->richStack = $stack->getRich();
+        $this->plainStack = $stack->getPlain();
     }
 
     private function processContentSections()

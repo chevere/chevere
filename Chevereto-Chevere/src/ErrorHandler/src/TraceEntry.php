@@ -73,16 +73,6 @@ final class TraceEntry
         return $this->plain;
     }
 
-    public function getPlainArgs(): ?string
-    {
-        return $this->plainArgs;
-    }
-
-    public function getRichArgs(): ?string
-    {
-        return $this->richArgs;
-    }
-
     private function setPlain(): void
     {
         $this->plain = [
@@ -94,7 +84,7 @@ final class TraceEntry
             '%c%' => $this->entry['class'] ?? null,
             '%t%' => $this->entry['type'] ?? null,
             '%m%' => $this->entry['function'],
-            '%a%' => $this->getPlainArgs(),
+            '%a%' => $this->plainArgs ?? null,
         ];
     }
 
@@ -114,7 +104,7 @@ final class TraceEntry
             $wrapper = VarDump::wrap($v, (string) $this->plain[$k]);
             $this->rich[$k] = isset($this->plain[$k]) ? $wrapper : null;
         }
-        $this->rich['%a%'] = $this->getRichArgs();
+        $this->rich['%a%'] = $this->richArgs;
     }
 
     private function handleProcessMissingClassFile()

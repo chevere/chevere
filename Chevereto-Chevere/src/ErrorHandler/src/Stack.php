@@ -46,17 +46,17 @@ final class Stack
         }
     }
 
-    public function getConsoleStack(): ?string
+    public function getConsole(): ?string
     {
         return strip_tags($this->wrapStringHr($this->glueString($this->console)));
     }
 
-    public function getRichStack(): ?string
+    public function getRich(): ?string
     {
         return $this->wrapStringHr($this->glueString($this->rich));
     }
 
-    public function getPlainStack(): ?string
+    public function getPlain(): ?string
     {
         return $this->wrapStringHr($this->glueString($this->plain));
     }
