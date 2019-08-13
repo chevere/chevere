@@ -34,39 +34,56 @@ final class TemplateStrings
     private $i;
 
     /** @var string */
-    public $rich;
+    private $rich;
 
     /** @var string */
-    public $plain;
+    private $plain;
 
     public function __construct(Formatter $formatter)
     {
         $this->rich = '';
         $this->plain = '';
         $this->sectionsLength = count($formatter->plainContentSections);
+        $this->setTitleBreak(str_repeat('=', $formatter::COLUMNS));
+        $i = 0;
+        foreach ($formatter->plainContentSections as $k => $plainSection) {
+            $this->setPlainSection($plainSection);
+            $richSection = $formatter->richContentSections[$k] ?? null;
+            if ($richSection) {
+                $this->setRichSection($formatter->richContentSections[$k]);
+            }
+            $this->process($i);
+            ++$i;
+        }
     }
 
-    public function setTitleBreak(string $titleBreak)
+    public function rich(): string
+    {
+        return $this->rich;
+    }
+
+    public function plain(): string
+    {
+        return $this->plain;
+    }
+
+    private function setTitleBreak(string $titleBreak): void
     {
         $this->titleBreak = $titleBreak;
     }
 
-    public function setRichSection(?array $richSection): self
+    private function setRichSection(array $richSection): void
     {
         $this->richSection = $richSection;
-
-        return $this;
     }
 
-    public function setPlainSection(?array $plainSection): self
+    private function setPlainSection(array $plainSection): void
     {
         $this->plainSection = $plainSection;
         $this->sectionLength = count($plainSection);
-
-        return $this;
     }
 
-    public function process(int $i)
+    private function process(int $i): void
     {
         $this->i = $i;
         $this->appendSectionWrap();
@@ -77,7 +94,7 @@ final class TemplateStrings
         }
     }
 
-    private function appendSectionContents()
+    private function appendSectionContents(): void
     {
         if ($this->i > 0) {
             $j = 1 == $this->sectionLength ? 0 : 1;
@@ -91,7 +108,7 @@ final class TemplateStrings
         }
     }
 
-    private function appendSectionWrap()
+    private function appendSectionWrap(): void
     {
         if (0 == $this->i || isset($this->plainSection[1])) {
             $this->rich .= '<div class="t' . (0 == $this->i ? ' t--scream' : null) . '">' . $this->richSection[0] . '</div>';
@@ -103,28 +120,28 @@ final class TemplateStrings
         }
     }
 
-    private function appendRichTitleBreak()
+    private function appendRichTitleBreak(): void
     {
         $this->rich .= "\n" . '<div class="hide">' . $this->titleBreak . '</div>';
     }
 
-    private function appendPlainTitleBreak()
+    private function appendPlainTitleBreak(): void
     {
         $this->plain .= "\n" . $this->titleBreak;
     }
 
-    private function appendEOL()
+    private function appendEOL(): void
     {
         $this->rich .= "\n";
         $this->plain .= "\n";
     }
 
-    private function appendRichSectionBreak()
+    private function appendRichSectionBreak(): void
     {
         $this->rich .= "\n" . '<br>' . "\n";
     }
 
-    private function appendPlainSectionBreak()
+    private function appendPlainSectionBreak(): void
     {
         $this->plain .= "\n\n";
     }

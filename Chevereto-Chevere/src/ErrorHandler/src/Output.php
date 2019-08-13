@@ -163,7 +163,7 @@ final class Output
                 unset($log['filename']);
                 break;
             case 1:
-                $response[0] = $this->formatter->thrown.' in '.$this->getTemplateTag('file').':'.$this->getTemplateTag('line');
+                $response[0] = $this->formatter->thrown . ' in ' . $this->getTemplateTag('file') . ':' . $this->getTemplateTag('line');
                 $error = [];
                 foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
                     $error[$v] = $this->getTemplateTag($v);
@@ -217,16 +217,9 @@ final class Output
     private function generateTemplates(): void
     {
         $templateStrings = new TemplateStrings($this->formatter);
-        $templateStrings->setTitleBreak(str_repeat('=', $this->formatter::COLUMNS));
-        $i = 0;
-        foreach ($this->formatter->plainContentSections as $k => $plainSection) {
-            $templateStrings
-                ->setPlainSection($plainSection)
-                ->setRichSection($this->formatter->richContentSections[$k] ?? null)
-                ->process($i);
-            ++$i;
-        }
-        $this->richTemplate = $templateStrings->rich;
-        $this->plainTemplate = $templateStrings->plain;
+
+        $this->richTemplate = $templateStrings->rich();
+        // dd($this->richTemplate);
+        $this->plainTemplate = $templateStrings->plain();
     }
 }
