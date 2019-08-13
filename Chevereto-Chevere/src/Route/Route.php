@@ -24,9 +24,6 @@ use Chevere\Contracts\HttpFoundation\MethodsContract;
 use Chevere\Contracts\HttpFoundation\MethodContract;
 use Chevere\HttpFoundation\Method;
 
-// IDEA Route lock (disables further modification)
-// IDEA: Reg events, determine who changes a route.
-// IDEA: Enable alt routes [/taken, /also-taken, /availabe]
 // IDEA: L10n support
 
 final class Route implements RouteContract
@@ -90,7 +87,7 @@ final class Route implements RouteContract
         if ($pathValidate->hasHandlebars()) {
             $set = new Set($this->path);
             $this->key = $set->key();
-            $this->powerSet = $set->keyPowerSet();
+            $this->keyPowerSet = $set->keyPowerSet();
             $this->wildcards = $set->toArray();
         } else {
             $this->key = $this->path;
@@ -256,13 +253,13 @@ final class Route implements RouteContract
 
     private function fetchRegex(string $pattern): string
     {
-        $regex = '^'.$pattern.'$';
+        $regex = '^' . $pattern . '$';
         if (!Str::contains('{', $regex)) {
             return $regex;
         }
         if (isset($this->wildcards)) {
             foreach ($this->wildcards as $k => $v) {
-                $regex = str_replace("{{$k}}", '('.$this->wheres[$v].')', $regex);
+                $regex = str_replace("{{$k}}", '(' . $this->wheres[$v] . ')', $regex);
             }
         }
 

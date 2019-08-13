@@ -32,19 +32,19 @@ final class Router implements RouterContract
     const REGEX_TEPLATE = '#^(?%s)$#x';
 
     /** @var array Route members (objects, serialized) [id => Route] */
-    public $routes;
+    private $routes;
 
-    /** @var array Contains ['/route/key' => [id, 'route/key']] */
-    public $routeKeys;
+    /** @var array Contains ['/path' => [id, 'route/key']] */
+    private $routesIndex;
 
     /** @var array An array containing the named routes [name => [id, fileHandle]] */
-    public $namedRoutes;
+    private $named;
 
-    /** @var string Regex representation, used when resolving routing. */
-    public $regex;
+    /** @var string Regex representation, used when resolving routing */
+    private $regex;
 
-    /** @var array Arguments taken from wildcard matches. */
-    public $arguments;
+    /** @var array Arguments taken from wildcard matches */
+    private $arguments;
 
     /** @var array [basename => [route id,]]. */
     private $baseIndex;
@@ -55,22 +55,21 @@ final class Router implements RouterContract
     /** @var array Static routes */
     private $statics;
 
+    /** @var RouteContract */
+    private $route;
+
+    /** @var array Stores the map for a given route ['group' => group, 'id' => routeId] */
+    private $routeMap;
+
     /**
      * {@inheritdoc}
      */
     public function addRoute(RouteContract $route, string $group): void
     {
-        dd($route, $group);
-        $route->fill();
-        $id = $route->id();
-        $uri = $route->path();
-        $this->handleRouteKey($uri);
-        $pointer = [$id, $group];
-        dump($pointer);
-        $name = $route->hasName() ? $route->name() : null;
-        if (isset($name)) {
-            $this->handleRouteName($name, $pointer);
-        }
+        $this->route = $route->fill();
+        $this->routeMap = ['group' => $group, 'id' => $this->route->id()];
+        $this->validateUniqueRoutePath();
+        $this->handleRouteName();
         $this->routes[] = $route;
         $id = array_key_last($this->routes);
         $this->baseIndex[$group][] = array_key_last($this->routes);
@@ -91,7 +90,13 @@ final class Router implements RouterContract
         }
 
         $this->regex = $this->getRegex();
-        $this->routeKeys[$uri] = $pointer;
+        $this->routesIndex[$this->route->path()] = $this->routeMap;
+        dump($this->routesIndex, $this->routes);
+    }
+
+    public function arguments(): array
+    {
+        return $this->arguments ?? [];
     }
 
     /**
@@ -102,7 +107,7 @@ final class Router implements RouterContract
         $regex = [];
         foreach ($this->regexIndex as $k => $v) {
             preg_match('#\^(.*)\$#', $k, $matches);
-            $regex[] = '|'.$matches[1]." (*:$v)";
+            $regex[] = '|' . $matches[1] . " (*:$v)";
         }
 
         return sprintf(static::REGEX_TEPLATE, implode('', $regex));
@@ -141,30 +146,34 @@ final class Router implements RouterContract
         );
     }
 
-    private function handleRouteKey(string $key): void
+    private function validateUniqueRoutePath(): void
     {
-        $keyedRoute = $this->routeKeys[$key] ?? null;
+        $keyedRoute = $this->routesIndex[$this->route->path()] ?? null;
         if (isset($keyedRoute)) {
             throw new LogicException(
                 (new Message('Route key %s has been already declared by %r.'))
-                    ->code('%s', $key)
-                    ->code('%r', $keyedRoute[0].'@'.$keyedRoute[1])
+                    ->code('%s', $this->route->path())
+                    ->code('%r', $keyedRoute[0] . '@' . $keyedRoute[1])
                     ->toString()
             );
         }
     }
 
-    private function handleRouteName(string $name, array $pointer)
+    private function handleRouteName(): void
     {
-        $namedRoute = $this->namedRoutes[$name] ?? null;
+        $name = $this->route->hasName() ? $this->route->name() : null;
+        if (!isset($name)) {
+            return;
+        }
+        $namedRoute = $this->named[$name] ?? null;
         if (isset($namedRoute)) {
             throw new LogicException(
                 (new Message('Route name %s has been already taken by %r.'))
                     ->code('%s', $name)
-                    ->code('%r', $namedRoute[0].'@'.$namedRoute[1])
+                    ->code('%r', $namedRoute[0] . '@' . $namedRoute[1])
                     ->toString()
             );
         }
-        $this->namedRoutes[$name] = $pointer;
+        $this->named[$name] = $this->routeMap;
     }
 }

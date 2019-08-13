@@ -18,11 +18,16 @@ use Chevere\Contracts\Route\RouteContract;
 interface RouterContract
 {
     /**
+     * Adds a route to the target routing group.
+     * 
      * @param RouteContract $route
      * @param string        $basename The API basename (like 'api')
      */
     public function addRoute(RouteContract $route, string $group): void;
 
+    /**
+     * Returns a string containing the full routing regex string.
+     */
     public function getRegex(): string;
 
     /**

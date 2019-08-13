@@ -179,7 +179,7 @@ final class Loader implements LoaderContract
     {
         $this->app->route = $this->router->resolve($pathInfo);
         $this->controller = $this->app->route->getController($this->request->getMethod());
-        $routerArgs = $this->router->arguments;
+        $routerArgs = $this->router->arguments();
         if (!isset($this->arguments) && isset($routerArgs)) {
             $this->setArguments($routerArgs);
         }
