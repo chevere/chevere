@@ -16,7 +16,7 @@ namespace Chevere\App;
 use LogicException;
 use RuntimeException;
 use Chevere\ArrayFile\ArrayFile;
-use Chevere\ArrayFile\ArrayFileWrap;
+use Chevere\ArrayFile\ArrayFileCallback;
 use Chevere\Path\Path;
 use Chevere\Path\PathHandle;
 use Chevere\Api\Api;
@@ -202,7 +202,7 @@ final class Loader implements LoaderContract
         foreach ($paramRoutes as $fileHandleString) {
             $fileHandle = Path::handle($fileHandleString);
             $arrayFile = new ArrayFile($fileHandle, RouteContract::class);
-            $arrayFileWrap = new ArrayFileWrap($arrayFile, function ($k, $route) {
+            $arrayFileWrap = new ArrayFileCallback($arrayFile, function ($k, $route) {
                 $route->setId((string) $k);
             });
             foreach ($arrayFileWrap as $k => $route) {

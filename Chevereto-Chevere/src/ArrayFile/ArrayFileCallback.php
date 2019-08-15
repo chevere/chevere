@@ -17,9 +17,9 @@ use ArrayIterator;
 use IteratorAggregate;
 
 /**
- * Provides wrapping for ArrayFile.
+ * Provides a wrapping callback for ArrayFile.
  */
-final class ArrayFileWrap implements IteratorAggregate
+final class ArrayFileCallback implements IteratorAggregate
 {
     /** @var ArrayFile */
     private $arrayFile;
