@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere;
 
 /**
- * ArrayFile provides a object oriented method to interact with array files (return []).
+ * Type provides type hinting and validation toolchain.
  */
 final class Type
 {
@@ -51,6 +51,9 @@ final class Type
     /** @var string The detected interface name (if any) */
     private $interfaceName;
 
+    /**
+     * @var string a primitive type, class name or interface
+     */
     public function __construct(string $typeSome)
     {
         $this->typeSome = $typeSome;
