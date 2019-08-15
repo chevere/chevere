@@ -16,7 +16,7 @@ namespace Chevere\ErrorHandler;
 use Throwable;
 use ErrorException;
 use Chevere\Data\Data;
-use Chevere\Path;
+use Chevere\Path\Path;
 use Chevere\Utility\Str;
 use Chevere\Data\Traits\DataAccessTrait;
 use Chevere\Data\Traits\DataKeyTrait;

@@ -19,6 +19,7 @@ use ReflectionFunction;
 use ReflectionParameter;
 use ReflectionClass;
 use ReflectionFunctionAbstract;
+use Chevere\Path\Path;
 
 /**
  * Wrap provides a object oriented way to interact with Chevere controllers.

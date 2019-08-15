@@ -22,7 +22,7 @@ use const Chevere\App\PATH as AppPath;
 use Chevere\HttpFoundation\Request;
 use Chevere\App\Loader;
 use Chevere\Data\Data;
-use Chevere\Path;
+use Chevere\Path\Path;
 use Chevere\Runtime\Runtime;
 use Chevere\ErrorHandler\src\Formatter;
 use Chevere\ErrorHandler\src\Output;

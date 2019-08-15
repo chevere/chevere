@@ -18,7 +18,7 @@ use Reflector;
 use ReflectionProperty;
 use ReflectionObject;
 use const Chevere\CLI;
-use Chevere\Path;
+use Chevere\Path\Path;
 use Chevere\Utility\Str;
 
 /**

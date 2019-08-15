@@ -15,7 +15,7 @@ namespace Chevere\Route;
 
 use LogicException;
 use Chevere\Message;
-use Chevere\Path;
+use Chevere\Path\Path;
 use Chevere\Utility\Str;
 use Chevere\Utility\Arr;
 

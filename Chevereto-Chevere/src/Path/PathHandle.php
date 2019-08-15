@@ -11,9 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere;
+namespace Chevere\Path;
 
 use InvalidArgumentException;
+use Chevere\File;
+use Chevere\Message;
+use Chevere\Utility\Str;
 
 final class PathHandle
 {
@@ -77,8 +80,8 @@ final class PathHandle
 
     private function validateCharIdentifier()
     {
-        if (Utility\Str::contains(':', $this->identifier)) {
-            if (Utility\Str::endsWith(':', $this->identifier)) {
+        if (Str::contains(':', $this->identifier)) {
+            if (Str::endsWith(':', $this->identifier)) {
                 throw new InvalidArgumentException(
                     (new Message('Wrong string %a format, %v provided (trailing colon).'))
                         ->code('%a', '$identifier')
@@ -87,7 +90,7 @@ final class PathHandle
                 );
             }
             $this->filename = $this->filenameFromIdentifier();
-            if (Utility\Str::contains('/', $this->filename)) {
+            if (Str::contains('/', $this->filename)) {
                 throw new InvalidArgumentException(
                     (new Message('Wrong string %a format, %v provided (path separators in filename).'))
                         ->code('%a', '$identifier')
@@ -112,11 +115,11 @@ final class PathHandle
 
     private function process()
     {
-        if (Utility\Str::endsWith('.php', $this->identifier) && File::exists($this->identifier)) {
+        if (Str::endsWith('.php', $this->identifier) && File::exists($this->identifier)) {
             return Path::isAbsolute($this->identifier) ? $this->identifier : Path::absolute($this->identifier);
         }
         $this->path = Path::normalize($this->identifier);
-        if (Utility\Str::contains(':', $this->path)) {
+        if (Str::contains(':', $this->path)) {
             $this->path = $this->processIdentifier();
         } else {
             $this->path = $this->processPath();

@@ -17,6 +17,7 @@ use ArrayAccess;
 use ArrayIterator;
 use LogicException;
 use IteratorAggregate;
+use Chevere\Path\PathHandle;
 
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).

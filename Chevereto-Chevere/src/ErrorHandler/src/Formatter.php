@@ -184,7 +184,7 @@ final class Formatter
     {
         $trace = $this->exceptionHandler->exception()->getTrace();
         if ($this->exceptionHandler->exception() instanceof ErrorException) {
-            $this->data->setKey('thrown', $this->exceptionHandler->type());
+            $this->data->setKey('thrown', $this->exceptionHandler->dataKey('type'));
             unset($trace[0]);
         }
         $stack = new Stack($trace);

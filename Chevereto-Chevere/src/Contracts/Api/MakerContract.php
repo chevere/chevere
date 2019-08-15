@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Api;
 
-use Chevere\PathHandle;
+use Chevere\Path\PathHandle;
 use Chevere\Contracts\Router\RouterContract;
 use Chevere\HttpFoundation\Methods;
 

@@ -11,11 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere;
+namespace Chevere\Path;
 
+use const Chevere\ROOT_PATH;
+use const Chevere\App\PATH as AppPath;
 use Chevere\Utility\Str;
 
-abstract class Path
+final class Path
 {
     /**
      * Converts relative path to absolute path.
@@ -26,7 +28,7 @@ abstract class Path
      */
     public static function absolute(string $relativePath): string
     {
-        $relativePath = Utility\Str::forwardSlashes($relativePath);
+        $relativePath = Str::forwardSlashes($relativePath);
 
         return ROOT_PATH.$relativePath;
     }
@@ -186,7 +188,7 @@ abstract class Path
     {
         $rootContext = null;
         // $handleContext = static::resolve(static::normalize($rootContext));
-        $handleContext = static::tailDir(ROOT_PATH.App\PATH);
+        $handleContext = static::tailDir(ROOT_PATH.AppPath);
         $pathHandle = new PathHandle($appPathIdentifier, $handleContext);
 
         return $pathHandle;

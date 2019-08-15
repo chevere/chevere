@@ -17,7 +17,7 @@ use Exception;
 use LogicException;
 use InvalidArgumentException;
 use Chevere\Data\Data;
-use Chevere\Path;
+use Chevere\Path\Path;
 use Chevere\Message;
 use Chevere\ArrayFile;
 use Chevere\Validate;

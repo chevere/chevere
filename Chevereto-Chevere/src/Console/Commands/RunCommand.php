@@ -17,7 +17,7 @@ declare(strict_types=1);
 namespace Chevere\Console\Commands;
 
 use Chevere\File;
-use Chevere\Path;
+use Chevere\Path\Path;
 use Chevere\Console\Command;
 use Chevere\VarDump\PlainVarDump;
 use Chevere\Contracts\App\LoaderContract;

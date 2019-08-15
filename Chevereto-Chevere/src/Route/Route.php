@@ -16,7 +16,7 @@ namespace Chevere\Route;
 use LogicException;
 use InvalidArgumentException;
 use Chevere\Message;
-use Chevere\Path;
+use Chevere\Path\Path;
 use Chevere\Controllers\HeadController;
 use Chevere\Utility\Str;
 use Chevere\Contracts\Route\RouteContract;
@@ -253,13 +253,13 @@ final class Route implements RouteContract
 
     private function fetchRegex(string $pattern): string
     {
-        $regex = '^' . $pattern . '$';
+        $regex = '^'.$pattern.'$';
         if (!Str::contains('{', $regex)) {
             return $regex;
         }
         if (isset($this->wildcards)) {
             foreach ($this->wildcards as $k => $v) {
-                $regex = str_replace("{{$k}}", '(' . $this->wheres[$v] . ')', $regex);
+                $regex = str_replace("{{$k}}", '('.$this->wheres[$v].')', $regex);
             }
         }
 
