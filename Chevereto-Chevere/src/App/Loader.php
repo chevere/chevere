@@ -37,6 +37,7 @@ use Chevere\Controllers\Api\GetController;
 use Chevere\HttpFoundation\Method;
 use Chevere\HttpFoundation\Methods;
 use Chevere\Api\Endpoint;
+use Chevere\Type;
 
 final class Loader implements LoaderContract
 {
@@ -201,7 +202,8 @@ final class Loader implements LoaderContract
         // ['handle' => [Routes,]]
         foreach ($paramRoutes as $fileHandleString) {
             $fileHandle = Path::handle($fileHandleString);
-            $arrayFile = new ArrayFile($fileHandle, RouteContract::class);
+            $type = new Type(RouteContract::class);
+            $arrayFile = new ArrayFile($fileHandle, $type);
             $arrayFileWrap = new ArrayFileCallback($arrayFile, function ($k, $route) {
                 $route->setId((string) $k);
             });

@@ -18,6 +18,7 @@ use ArrayIterator;
 use LogicException;
 use IteratorAggregate;
 use Chevere\Message;
+use Chevere\Type;
 use Chevere\Path\PathHandle;
 
 /**
@@ -25,27 +26,6 @@ use Chevere\Path\PathHandle;
  */
 final class ArrayFile implements IteratorAggregate, ArrayAccess
 {
-    /** @const array Type validators [primitive => validator], taken from https://www.php.net/manual/en/ref.var.php */
-    const TYPE_VALIDATORS = [
-        'array' => 'is_array',
-        'bool' => 'is_bool',
-        'callable' => 'is_callable',
-        'countable' => 'is_countable',
-        'double' => 'is_double',
-        'float' => 'is_float',
-        'int' => 'is_int',
-        'integer' => 'is_integer',
-        'iterable' => 'is_iterable',
-        'long' => 'is_long',
-        'null' => 'is_null',
-        'numeric' => 'is_numeric',
-        'object' => 'is_object',
-        'real' => 'is_real',
-        'resource' => 'is_resource',
-        'scalar' => 'is_scalar',
-        'string' => 'is_string',
-    ];
-
     /** @var array The array returned by the file */
     private $array;
 
@@ -58,37 +38,33 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
     /** @var string The primitive type for typeMatch */
     private $typePrimitive;
 
-    /** @var string */
-    private $typeMatchClassName;
+    /******** */
 
-    /** @var string */
-    private $typeMatchInterfaceName;
+    /** @var Type */
+    private $type;
 
     /**
      * @param string $fileHandle Path handle or absolute filepath
-     * @param array  $typeMatch  If set, the array members must match the target type, classname or interface
+     * @param Type   $type       If set, the array members must match the target type, classname or interface
      */
-    public function __construct(PathHandle $pathHandle, string $typeMatch = null)
+    public function __construct(PathHandle $pathHandle, Type $type = null)
     {
         $filepath = $pathHandle->path();
-        $this->typeMatch = $typeMatch;
         $this->array = include $filepath;
         $this->filepath = $filepath;
-        $arrayFileType = gettype($this->array);
+        $this->arrayFileType = gettype($this->array);
         try {
-            $this->validateArrayType();
-            if (null !== $typeMatch) {
-                $this->handleTypeSome();
-                $this->validateNotNullType();
+            $this->validateIsArray();
+            if (null !== $type) {
+                $this->type = $type;
                 $this->validate();
             }
         } catch (LogicException $e) {
             throw new LogicException(
                 (new Message($e->getMessage()))
-                    ->code('%arrayFileType%', $arrayFileType)
+                    ->code('%arrayFileType%', $this->arrayFileType)
                     ->code('%filepath%', $filepath)
-                    ->code('%members%', $this->typeMatchClassName ?? $this->typeMatchInterfaceName ?? $this->typePrimitive)
-                    ->code('%typeMatch%', $typeMatch)
+                    ->code('%members%', $this->type->typeString())
                     ->toString()
             );
         }
@@ -126,7 +102,7 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
 
     public function getType(): ?string
     {
-        return $this->typePrimitive ?? null;
+        return $this->type->primitive() ?? null;
     }
 
     public function toArray(): array
@@ -134,38 +110,10 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
         return $this->array ?? [];
     }
 
-    private function validateArrayType(): void
+    private function validateIsArray(): void
     {
         if (!is_array($this->array)) {
             throw new LogicException('Expecting file %filepath% return type array, %arrayFileType% provided.');
-        }
-    }
-
-    private function handleTypeSome(): void
-    {
-        if (isset(static::TYPE_VALIDATORS[$this->typeMatch])) {
-            $this->typePrimitive = $this->typeMatch;
-        } else {
-            $this->handleClassAndInterfaceName();
-            if (null != $this->typeMatchClassName || null != $this->typeMatchInterfaceName) {
-                $this->typePrimitive = 'object';
-            }
-        }
-    }
-
-    private function handleClassAndInterfaceName(): void
-    {
-        if (class_exists($this->typeMatch)) {
-            $this->typeMatchClassName = $this->typeMatch;
-        } elseif (interface_exists($this->typeMatch)) {
-            $this->typeMatchInterfaceName = $this->typeMatch;
-        }
-    }
-
-    private function validateNotNullType(): void
-    {
-        if (null == $this->typePrimitive) {
-            throw new LogicException('Argument #2 must be a valid data type, class name or interface name. %typeMatch% provided.');
         }
     }
 
@@ -174,35 +122,24 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
      */
     private function validate(): void
     {
-        $validator = static::TYPE_VALIDATORS[$this->typePrimitive];
-        foreach ($this->array as $k => $v) {
-            if ($validate = $validator($v)) {
-                if ($this->typePrimitive == 'object') {
-                    $validate = $this->getValidateObject($v);
+        $validator = $this->type->validator();
+        foreach ($this->array as $k => $object) {
+            if ($validate = $validator($object)) {
+                if ($this->type->primitive() == 'object') {
+                    $validate = $this->type->validate($object);
                 }
             }
-            if (false == $validate) {
-                $this->handleInvalidation($k, $v);
+            if (!$validate) {
+                $this->handleInvalidation($k, $object);
             }
         }
     }
 
-    private function getValidateObject(object $object): bool
+    private function handleInvalidation($k, $object): void
     {
-        if (isset($this->typeMatchClassName)) {
-            return get_class($object) == $this->typeMatchClassName;
-        } elseif (isset($this->typeMatchInterfaceName)) {
-            return $object instanceof $this->typeMatchInterfaceName;
-        }
-
-        return false;
-    }
-
-    private function handleInvalidation($k, $v): void
-    {
-        $type = gettype($v);
+        $type = gettype($object);
         if ($type == 'object') {
-            $type .= ' '.get_class($v);
+            $type .= ' '.get_class($object);
         }
         throw new LogicException(
             (new Message('Expecting array containing only %members% members, type %type% found at %filepath% (array key %key%).'))
