@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\App;
 
-use Chevere\ArrayFile;
+use Chevere\ArrayFile\ArrayFile;
 
 interface ParametersContract
 {

@@ -15,7 +15,8 @@ namespace Chevere\App;
 
 use LogicException;
 use RuntimeException;
-use Chevere\ArrayFile;
+use Chevere\ArrayFile\ArrayFile;
+use Chevere\ArrayFile\ArrayFileWrap;
 use Chevere\Path\Path;
 use Chevere\Path\PathHandle;
 use Chevere\Api\Api;
@@ -23,7 +24,6 @@ use Chevere\Api\Maker;
 use Chevere\Console\Console;
 use Chevere\HttpFoundation\Request;
 use Chevere\HttpFoundation\Response;
-use Chevere\ArrayFileWrap;
 use Chevere\Router\Router;
 use Chevere\Runtime\Runtime;
 use Chevere\Interfaces\RenderableInterface;

@@ -11,12 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere;
+namespace Chevere\ArrayFile;
 
 use ArrayAccess;
 use ArrayIterator;
 use LogicException;
 use IteratorAggregate;
+use Chevere\Message;
 use Chevere\Path\PathHandle;
 
 /**
