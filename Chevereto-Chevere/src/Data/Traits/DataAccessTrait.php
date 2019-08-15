@@ -11,8 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Traits;
+namespace Chevere\Data\Traits;
 
-trait DataTrait
+use Chevere\Data\Data;
+
+trait DataAccessTrait
 {
+    /** @var Data */
+    private $data;
+
+    public function data(): Data
+    {
+        return $this->data;
+    }
 }

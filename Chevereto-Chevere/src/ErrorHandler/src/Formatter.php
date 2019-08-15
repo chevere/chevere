@@ -23,7 +23,7 @@ use Chevere\ErrorHandler\ExceptionHandler;
 use Chevere\VarDump\VarDump;
 use Chevere\VarDump\PlainVarDump;
 use Chevere\Utility\Str;
-use Chevere\Data;
+use Chevere\Data\Data;
 
 /**
  * Formats the error exception in HTML (default), console and plain text.
@@ -90,7 +90,7 @@ final class Formatter
         $this->data = $this->exceptionHandler->data();
         $this->setServerProperties();
         $this->data->add([
-            'thrown' => $this->exceptionHandler->data()->getKey('className').' thrown',
+            'thrown' => $this->exceptionHandler->dataKey('className').' thrown',
         ]);
         $this->processStack();
         $this->processContentSections();
@@ -129,38 +129,33 @@ final class Formatter
     public function getTemplateTags(): array
     {
         return [
-            '%id%' => $this->errorHandler->data()->getKey('id'),
-            '%datetimeUtc%' => $this->errorHandler->data()->getKey('dateTimeAtom'),
-            '%timestamp%' => $this->errorHandler->data()->getKey('timestamp'),
-            '%loadedConfigFilesString%' => $this->errorHandler->data()->getKey('loadedConfigFilesString'),
-            '%logFilename%' => $this->errorHandler->data()->getKey('logFilename'),
-            '%css%' => $this->dataKey('css'),
-            '%bodyClass%' => $this->dataKey('bodyClass'),
+            '%id%' => $this->errorHandler->dataKey('id'),
+            '%datetimeUtc%' => $this->errorHandler->dataKey('dateTimeAtom'),
+            '%timestamp%' => $this->errorHandler->dataKey('timestamp'),
+            '%loadedConfigFilesString%' => $this->errorHandler->dataKey('loadedConfigFilesString'),
+            '%logFilename%' => $this->errorHandler->dataKey('logFilename'),
+            '%css%' => $this->data->getKey('css'),
+            '%bodyClass%' => $this->data->getKey('bodyClass'),
             '%body%' => null,
-            '%title%' => $this->dataKey('title'),
+            '%title%' => $this->data->getKey('title'),
             '%content%' => null,
-            '%title%' => $this->dataKey('title'),
-            '%file%' => $this->dataKey('file'),
-            '%line%' => $this->dataKey('line'),
-            '%message%' => $this->dataKey('message'),
-            '%code%' => $this->dataKey('code'),
-            '%plainStack%' => $this->dataKey('plainStack'),
-            '%consoleStack%' => $this->dataKey('consoleStack'),
-            '%richStack%' => $this->dataKey('richStack'),
-            '%clientIp%' => $this->dataKey('clientIp'),
-            '%clientUserAgent%' => $this->dataKey('clientUserAgent'),
-            '%serverProtocol%' => $this->dataKey('serverProtocol'),
-            '%requestMethod%' => $this->dataKey('requestMethod'),
-            '%uri%' => $this->dataKey('uri') ?? null,
-            '%serverHost%' => $this->dataKey('serverHost'),
-            '%serverPort%' => $this->dataKey('serverPort'),
-            '%serverSoftware%' => $this->dataKey('serverSoftware'),
+            '%title%' => $this->data->getKey('title'),
+            '%file%' => $this->data->getKey('file'),
+            '%line%' => $this->data->getKey('line'),
+            '%message%' => $this->data->getKey('message'),
+            '%code%' => $this->data->getKey('code'),
+            '%plainStack%' => $this->data->getKey('plainStack'),
+            '%consoleStack%' => $this->data->getKey('consoleStack'),
+            '%richStack%' => $this->data->getKey('richStack'),
+            '%clientIp%' => $this->data->getKey('clientIp'),
+            '%clientUserAgent%' => $this->data->getKey('clientUserAgent'),
+            '%serverProtocol%' => $this->data->getKey('serverProtocol'),
+            '%requestMethod%' => $this->data->getKey('requestMethod'),
+            '%uri%' => $this->data->getKey('uri') ?? null,
+            '%serverHost%' => $this->data->getKey('serverHost'),
+            '%serverPort%' => $this->data->getKey('serverPort'),
+            '%serverSoftware%' => $this->data->getKey('serverSoftware'),
         ];
-    }
-
-    public function dataKey(string $key)
-    {
-        return $this->data->getKey($key);
     }
 
     private function setServerProperties()
@@ -204,7 +199,7 @@ final class Formatter
     {
         $sections = [
             static::SECTION_TITLE => ['%title% <span>in&nbsp;%file%:%line%</span>'],
-            static::SECTION_MESSAGE => ['# Message', '%message%'.($this->exceptionHandler->data()->getKey('code') ? ' [Code #%code%]' : null)],
+            static::SECTION_MESSAGE => ['# Message', '%message%'.($this->exceptionHandler->dataKey('code') ? ' [Code #%code%]' : null)],
             static::SECTION_TIME => ['# Time', '%datetimeUtc% [%timestamp%]'],
             static::SECTION_ID => ['# Incident ID:%id%', 'Logged at %logFilename%'],
             static::SECTION_STACK => ['# Stack trace', '%plainStack%'],

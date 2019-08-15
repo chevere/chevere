@@ -16,7 +16,7 @@ namespace Chevere\ErrorHandler\src;
 /**
  * Generates template strings for Output.
  */
-final class TemplateStrings
+final class TemplatedStrings
 {
     /** @var string */
     private $titleBreak;
@@ -52,7 +52,7 @@ final class TemplateStrings
         foreach ($formatter->plainContentSections() as $k => $plainSection) {
             $this->plainSection = $plainSection;
             $this->sectionLength = count($plainSection);
-            $richSection = $formatter->richContentSections()[$k];
+            $richSection = $formatter->richContentSections()[$k] ?? null;
             if ($richSection) {
                 $this->richSection = $richSection;
             }

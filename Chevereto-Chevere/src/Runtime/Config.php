@@ -16,7 +16,7 @@ namespace Chevere\Runtime;
 use Exception;
 use LogicException;
 use InvalidArgumentException;
-use Chevere\Data;
+use Chevere\Data\Data;
 use Chevere\Path;
 use Chevere\Message;
 use Chevere\ArrayFile;

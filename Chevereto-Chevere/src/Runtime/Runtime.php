@@ -15,7 +15,7 @@ namespace Chevere\Runtime;
 
 use DateTimeZone;
 use RuntimeException;
-use Chevere\Data;
+use Chevere\Data\Data;
 use Chevere\Message;
 
 /**

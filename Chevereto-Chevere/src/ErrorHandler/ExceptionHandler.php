@@ -15,15 +15,20 @@ namespace Chevere\ErrorHandler;
 
 use Throwable;
 use ErrorException;
-use Chevere\Data;
+use Chevere\Data\Data;
 use Chevere\Path;
 use Chevere\Utility\Str;
+use Chevere\Data\Traits\DataAccessTrait;
+use Chevere\Data\Traits\DataKeyTrait;
 
 /**
  * Handles the error exception throwable.
  */
 final class ExceptionHandler
 {
+    use DataAccessTrait;
+    use DataKeyTrait;
+
     /** @var Throwable */
     private $exception;
 
@@ -58,57 +63,11 @@ final class ExceptionHandler
             'message' => $exception->getMessage(),
             'file' => Path::normalize($exception->getFile()),
             'line' => (int) $exception->getLine(),
-
         ]);
-    }
-
-    public function data(): Data
-    {
-        return $this->data;
     }
 
     public function exception(): Throwable
     {
         return $this->exception;
     }
-
-    // public function className(): string
-    // {
-    //     return $this->className;
-    // }
-
-    // public function code(): int
-    // {
-    //     return $this->code;
-    // }
-
-    // public function errorType(): string
-    // {
-    //     return $this->errorType;
-    // }
-
-    // public function type(): string
-    // {
-    //     return $this->type;
-    // }
-
-    // public function loggerLevel(): string
-    // {
-    //     return $this->loggerLevel;
-    // }
-
-    // public function message(): string
-    // {
-    //     return $this->message;
-    // }
-
-    // public function file(): string
-    // {
-    //     return $this->file;
-    // }
-
-    // public function line(): int
-    // {
-    //     return $this->line;
-    // }
 }

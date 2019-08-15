@@ -15,7 +15,7 @@ namespace Chevere\App;
 
 use LogicException;
 use Chevere\ArrayFile;
-use Chevere\Data;
+use Chevere\Data\Data;
 use Chevere\Message;
 use Chevere\Contracts\App\ParametersContract;
 

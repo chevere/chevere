@@ -187,7 +187,7 @@ final class Output
 
     private function generateTemplates(): void
     {
-        $templateStrings = new TemplateStrings($this->formatter);
+        $templateStrings = new TemplatedStrings($this->formatter);
         $this->richTemplate = $templateStrings->rich();
         $this->plainTemplate = $templateStrings->plain();
     }

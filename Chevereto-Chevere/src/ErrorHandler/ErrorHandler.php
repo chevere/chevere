@@ -21,7 +21,7 @@ use const Chevere\ROOT_PATH;
 use const Chevere\App\PATH as AppPath;
 use Chevere\HttpFoundation\Request;
 use Chevere\App\Loader;
-use Chevere\Data;
+use Chevere\Data\Data;
 use Chevere\Path;
 use Chevere\Runtime\Runtime;
 use Chevere\ErrorHandler\src\Formatter;
@@ -33,6 +33,8 @@ use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\FirePHPHandler;
+use Chevere\Data\Traits\DataAccessTrait;
+use Chevere\Data\Traits\DataKeyTrait;
 
 // use Chevere\Contracts\ErrorHandler\ErrorHandlerContract;
 
@@ -41,6 +43,9 @@ use Monolog\Handler\FirePHPHandler;
  */
 final class ErrorHandler
 {
+    use DataAccessTrait;
+    use DataKeyTrait;
+
     /** @var string Relative folder where logs will be stored */
     const LOG_DATE_FOLDER_FORMAT = 'Y/m/d/';
 
@@ -48,7 +53,7 @@ final class ErrorHandler
     const DEBUG = null;
 
     /** @var string Null will use App\PATH_LOGS ? PATH_LOGS ? traverse */
-    const PATH_LOGS = ROOT_PATH . AppPath . 'var/logs/';
+    const PATH_LOGS = ROOT_PATH.AppPath.'var/logs/';
 
     /** Readable PHP error mapping */
     const ERROR_TABLE = [
@@ -135,7 +140,7 @@ final class ErrorHandler
 
         $this->logDateFolderFormat = static::LOG_DATE_FOLDER_FORMAT;
         $exceptionHandler = new ExceptionHandler($args[0]);
-        $this->loggerLevel = $exceptionHandler->data()->getKey('loggerLevel');
+        $this->loggerLevel = $exceptionHandler->dataKey('loggerLevel');
         $this->setLogFilePathProperties();
         $this->setLogger();
 
@@ -146,11 +151,6 @@ final class ErrorHandler
         $this->output = new Output($this, $formatter);
         $this->loggerWrite();
         $this->output->out();
-    }
-
-    public function data(): Data
-    {
-        return $this->data;
     }
 
     public function isDebugEnabled(): bool
@@ -192,11 +192,11 @@ final class ErrorHandler
     private function setLogFilePathProperties(): void
     {
         $path = Path::normalize(static::PATH_LOGS);
-        $path = rtrim($path, '/') . '/';
+        $path = rtrim($path, '/').'/';
         $date = gmdate($this->logDateFolderFormat, $this->data->getKey('timestamp'));
         $id = $this->data->getKey('id');
         $timestamp = $this->data->getKey('timestamp');
-        $logFilename = $path . $this->loggerLevel . '/' . $date . $timestamp . '_' . $id . '.log';
+        $logFilename = $path.$this->loggerLevel.'/'.$date.$timestamp.'_'.$id.'.log';
         $this->data->setKey('logFilename', $logFilename);
     }
 
@@ -215,7 +215,7 @@ final class ErrorHandler
     private function loggerWrite(): void
     {
         $log = strip_tags($this->output->textPlain());
-        $log .= "\n\n" . str_repeat('=', Formatter::COLUMNS);
+        $log .= "\n\n".str_repeat('=', Formatter::COLUMNS);
         $this->logger->log($this->loggerLevel, $log);
     }
 
