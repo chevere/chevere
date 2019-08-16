@@ -19,7 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use const Chevere\CLI;
 use Chevere\Console\Console;
 use Chevere\ErrorHandler\ErrorHandler;
-use Chevere\ErrorHandler\ExceptionHandler;
+use Chevere\ErrorHandler\ExceptionWrap;
 use Chevere\VarDump\VarDump;
 use Chevere\VarDump\PlainVarDump;
 use Chevere\Utility\Str;
@@ -72,8 +72,8 @@ final class Formatter
     /** @var string */
     private $varDump;
 
-    /** @var ExceptionHandler */
-    private $exceptionHandler;
+    /** @var ExceptionWrap */
+    private $exceptionWrap;
 
     /** @var Throwable */
     private $exception;
@@ -81,16 +81,16 @@ final class Formatter
     /** @var Data */
     private $data;
 
-    public function __construct(ErrorHandler $errorHandler, ExceptionHandler $exceptionHandler)
+    public function __construct(ErrorHandler $errorHandler)
     {
         $this->varDump = VarDump::RUNTIME;
         $this->errorHandler = $errorHandler;
-        $this->exceptionHandler = $exceptionHandler;
-        $this->exception = $this->exceptionHandler->exception();
-        $this->data = $this->exceptionHandler->data();
+        $this->exceptionWrap = $this->errorHandler->exceptionWrap();
+        $this->exception = $this->exceptionWrap->exception();
+        $this->data = $this->exceptionWrap->data();
         $this->setServerProperties();
         $this->data->add([
-            'thrown' => $this->exceptionHandler->dataKey('className').' thrown',
+            'thrown' => $this->exceptionWrap->dataKey('className').' thrown',
         ]);
         $this->processStack();
         $this->processContentSections();
@@ -182,9 +182,9 @@ final class Formatter
 
     private function processStack()
     {
-        $trace = $this->exceptionHandler->exception()->getTrace();
-        if ($this->exceptionHandler->exception() instanceof ErrorException) {
-            $this->data->setKey('thrown', $this->exceptionHandler->dataKey('type'));
+        $trace = $this->exceptionWrap->exception()->getTrace();
+        if ($this->exceptionWrap->exception() instanceof ErrorException) {
+            $this->data->setKey('thrown', $this->exceptionWrap->dataKey('type'));
             unset($trace[0]);
         }
         $stack = new Stack($trace);
@@ -199,7 +199,7 @@ final class Formatter
     {
         $sections = [
             static::SECTION_TITLE => ['%title% <span>in&nbsp;%file%:%line%</span>'],
-            static::SECTION_MESSAGE => ['# Message', '%message%'.($this->exceptionHandler->dataKey('code') ? ' [Code #%code%]' : null)],
+            static::SECTION_MESSAGE => ['# Message', '%message%'.($this->exceptionWrap->dataKey('code') ? ' [Code #%code%]' : null)],
             static::SECTION_TIME => ['# Time', '%datetimeUtc% [%timestamp%]'],
             static::SECTION_ID => ['# Incident ID:%id%', 'Logged at %logFilename%'],
             static::SECTION_STACK => ['# Stack trace', '%plainStack%'],

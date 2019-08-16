@@ -22,9 +22,9 @@ use Chevere\Data\Traits\DataAccessTrait;
 use Chevere\Data\Traits\DataKeyTrait;
 
 /**
- * Handles the error exception throwable.
+ * Wraps throwable exception.
  */
-final class ExceptionHandler
+final class ExceptionWrap
 {
     use DataAccessTrait;
     use DataKeyTrait;

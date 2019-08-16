@@ -177,8 +177,10 @@ final class Loader implements LoaderContract
         // $this->processConfigFiles($parameters->data->getKey(Parameters::CONFIG_FILES));
         $api = $parameters->data->getKey(Parameters::API);
         if (isset($api)) {
-            $pathHandle = Path::handle($api);
-            $this->processApi($pathHandle); // 36ms no cache
+            // $this->stopwatch->record('BeforeApiHandle');
+            // $pathHandle = Path::handle($api);
+            // $this->stopwatch->record('AfterApiHandle');
+            // $this->processApi($pathHandle); // 36ms no cache
         }
         $routes = $parameters->data->getKey(Parameters::ROUTES);
         if (isset($routes)) {

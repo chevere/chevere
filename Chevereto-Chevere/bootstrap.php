@@ -17,9 +17,17 @@ use Chevere\App\App;
 use Chevere\App\Loader;
 use Chevere\Console\Console;
 use Chevere\Runtime\Runtime;
-use Chevere\Runtime\Config;
+use Chevere\Runtime\Sets\RuntimeSetDebug;
+use Chevere\Runtime\Sets\RuntimeSetDefaultCharset;
+use Chevere\Runtime\Sets\RuntimeSetPrecision;
+use Chevere\Runtime\Sets\RuntimeSetTimeZone;
+use Chevere\Runtime\Sets\RuntimeSetUriScheme;
+use Chevere\Runtime\Sets\RuntimeSetLocale;
+use Chevere\Runtime\Sets\RuntimeSetErrorHandler;
+use Chevere\Runtime\Sets\RuntimeSetExceptionHandler;
 
-define(__NAMESPACE__.'\TIME_BOOTSTRAP', microtime(true));
+$Stopwatch = new \Chevere\Stopwatch();
+
 define(__NAMESPACE__.'\ERROR_LEVEL_BOOTSTRAP', error_reporting());
 
 /*
@@ -46,36 +54,26 @@ define('Chevere\PATH', rtrim(str_replace(ROOT_PATH, null, str_replace('\\', '/',
 define('Chevere\App\PATH', basename(dirname(BOOTSTRAPPER)).'/');
 
 if ('cli' == php_sapi_name()) {
-    Console::init();
+    Console::init(); //10ms
 }
 
 define('Chevere\CLI', Console::isRunning());
 
-const DEFAULT_ERROR_HANDLING = [
-    Config::DEBUG => 1,
-    Config::ERROR_HANDLER => 'Chevere\ErrorHandler\ErrorHandler::error',
-    Config::EXCEPTION_HANDLER => 'Chevere\ErrorHandler\ErrorHandler::exception',
-];
-
-/*
- * Default error and exception handler
- */
-// new Runtime(
-//     (new Config())
-//         ->addArray(DEFAULT_ERROR_HANDLING)
-//         ->validate()
-// );
+new Runtime(
+    new RuntimeSetDebug('1'),
+    new RuntimeSetErrorHandler('Chevere\ErrorHandler\ErrorHandler::error'),
+    new RuntimeSetExceptionHandler('Chevere\ErrorHandler\ErrorHandler::exception'),
+); // 1ms
 
 Loader::setDefaultRuntime(
     new Runtime(
-        (new Config())
-            ->addArray([
-                Config::LOCALE => 'en_US.UTF8',
-                Config::DEFAULT_CHARSET => 'utf-8',
-                Config::TIMEZONE => 'UTC',
-                Config::URI_SCHEME => 'https',
-            ] + DEFAULT_ERROR_HANDLING)
-            ->addFile(App::FILEHANDLE_CONFIG)
-            ->validate()
+        new RuntimeSetLocale('en_US.UTF8'),
+        new RuntimeSetDefaultCharset('utf-8'),
+        new RuntimeSetPrecision('16'),
+        new RuntimeSetUriScheme('https'),
+        new RuntimeSetTimeZone('UTC'),
     )
-);
+); // 3ms
+            // ->addFile(App::FILEHANDLE_CONFIG)
+// $Stopwatch->stop();
+// dd($Stopwatch->records());

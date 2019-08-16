@@ -105,6 +105,9 @@ final class ErrorHandler
     /** @var string */
     private $loggerLevel;
 
+    /** @var ExceptionWrap */
+    private $exceptionWrap;
+
     /** @var string */
     private $logDateFolderFormat;
 
@@ -134,17 +137,17 @@ final class ErrorHandler
         }
         $this->request = $request;
         $this->runtime = Loader::runtime();
-        $this->isDebugEnabled = (bool) $this->runtime->data->getKey('debug');
+        $this->isDebugEnabled = (bool) $this->runtime->dataKey('debug');
 
         $this->setloadedConfigFiles();
 
         $this->logDateFolderFormat = static::LOG_DATE_FOLDER_FORMAT;
-        $exceptionHandler = new ExceptionHandler($args[0]);
-        $this->loggerLevel = $exceptionHandler->dataKey('loggerLevel');
+        $this->exceptionWrap = new ExceptionWrap($args[0]);
+        $this->loggerLevel = $this->exceptionWrap->dataKey('loggerLevel');
         $this->setLogFilePathProperties();
         $this->setLogger();
 
-        $formatter = new Formatter($this, $exceptionHandler);
+        $formatter = new Formatter($this);
         $formatter->setLineBreak(Template::BOX_BREAK_HTML);
         $formatter->setCss(Style::CSS);
 
@@ -161,6 +164,11 @@ final class ErrorHandler
     public function request(): Request
     {
         return $this->request;
+    }
+
+    public function exceptionWrap(): ExceptionWrap
+    {
+        return $this->exceptionWrap;
     }
 
     public static function error($severity, $message, $file, $line): void
@@ -185,8 +193,9 @@ final class ErrorHandler
 
     private function setloadedConfigFiles(): void
     {
-        $this->loadedConfigFiles = $this->runtime->getRuntimeConfig()->getLoadedFilepaths();
-        $this->data->setKey('loadedConfigFilesString', implode(';', $this->loadedConfigFiles));
+        //FIXME:
+        // $this->loadedConfigFiles = $this->runtime->getRuntimeConfig()->getLoadedFilepaths();
+        // $this->data->setKey('loadedConfigFilesString', implode(';', $this->loadedConfigFiles));
     }
 
     private function setLogFilePathProperties(): void

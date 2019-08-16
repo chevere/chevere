@@ -38,11 +38,20 @@ final class Stopwatch
     public function __construct()
     {
         $this->timeStart = microtime(true);
-        $this->records = [];
+        $this->records = [
+            'start' => 0,
+        ];
     }
 
     public function record(string $flagName): void
     {
+        if ('stop' == $flagName) {
+            throw new InvalidArgumentException(
+                (new Message('Use of reserved flag name %flagName%.'))
+                    ->code('%flagName%', 'stop')
+                    ->toString()
+            );
+        }
         if (isset($this->records[$flagName])) {
             throw new InvalidArgumentException(
                 (new Message('Flag name %flagName% has be already registered, you must use an unique flag for each %className% instance.'))
@@ -51,16 +60,22 @@ final class Stopwatch
                     ->toString()
             );
         }
-        $this->records[$flagName] = $this->microtimeToRead(microtime(true) - $this->timeStart);
+        $this->records[$flagName] = microtime(true);
     }
 
-    public function stop(): string
+    // $this->microtimeToRead()
+
+    public function stop(): void
     {
         $this->timeEnd = microtime(true);
         $this->timeElapsed = $this->timeEnd - $this->timeStart;
         $this->timeElapsedRead = $this->microtimeToRead($this->timeElapsed);
-
-        return $this->timeElapsedRead;
+        $prevMicrotime = 0;
+        $this->records['stop'] = $this->timeEnd;
+        foreach ($this->records as $flag => $microtime) {
+            $this->records[$flag] = $this->microtimeToRead($microtime - $prevMicrotime);
+            $prevMicrotime = $microtime > 0 ? $microtime : $this->timeStart;
+        }
     }
 
     public function records(): array
