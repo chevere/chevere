@@ -136,7 +136,7 @@ final class Loader implements LoaderContract
             $this->processResolveCallable($this->request->getPathInfo());
         }
         // $this->stopwatch->stop();
-        // dd($this->stopwatch->records(), $this->stopwatch->timeElapsedRead());
+        // // dd($this->stopwatch->records(), $this->stopwatch->timeElapsedRead());
         if (isset($this->controller)) {
             $this->runController($this->controller);
         }
@@ -178,9 +178,10 @@ final class Loader implements LoaderContract
         $api = $parameters->data->getKey(Parameters::API);
         if (isset($api)) {
             // $this->stopwatch->record('BeforeApiHandle');
-            // $pathHandle = Path::handle($api);
+            $pathHandle = Path::handle($api);
             // $this->stopwatch->record('AfterApiHandle');
-            // $this->processApi($pathHandle); // 36ms no cache
+            $this->processApi($pathHandle); // 36ms no cache
+            // $this->stopwatch->record('AfterProcessApi');
         }
         $routes = $parameters->data->getKey(Parameters::ROUTES);
         if (isset($routes)) {

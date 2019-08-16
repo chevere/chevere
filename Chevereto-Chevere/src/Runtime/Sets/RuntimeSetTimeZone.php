@@ -28,7 +28,10 @@ class RuntimeSetTimeZone implements RuntimeSetContract
 
     public function set()
     {
-        if (!Validate::timezone($this->value)) {
+        if (date_default_timezone_get() == $this->value) {
+            return;
+        }
+        if ('UTC' != $this->value && !Validate::timezone($this->value)) {
             throw new InvalidArgumentException(
                 (new Message('Invalid timezone %timezone%.'))
                     ->code('%timezone%', $this->value)

@@ -95,6 +95,6 @@ final class Stopwatch
 
     private function microtimeToRead(float $microtime): string
     {
-        return round($microtime * 1000, 2).' ms';
+        return number_format($microtime * 1000, 2).' ms';
     }
 }
