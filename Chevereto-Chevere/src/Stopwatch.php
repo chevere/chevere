@@ -43,8 +43,13 @@ final class Stopwatch
 
     public function record(string $flagName): void
     {
-        if ('' == $flagName) {
-            throw new InvalidArgumentException('You must indicate the flag name');
+        if (isset($this->records[$flagName])) {
+            throw new InvalidArgumentException(
+                (new Message('Flag name %flagName% has be already registered, you must use an unique flag for each %className% instance.'))
+                    ->code('%flagName%', $flagName)
+                    ->code('%className%', __CLASS__)
+                    ->toString()
+            );
         }
         $this->records[$flagName] = $this->microtimeToRead(microtime(true) - $this->timeStart);
     }
