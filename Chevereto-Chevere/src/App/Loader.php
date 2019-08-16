@@ -61,9 +61,13 @@ final class Loader implements LoaderContract
 
     public function __construct()
     {
+        // $this->stopwatch = new \Chevere\Stopwatch();
+
         $this->router = new Router();
         $this->app = new App();
         $this->app->response = new Response();
+
+        // $this->stopwatch->record('AfterRouteAppResponse');
 
         if (false === stream_resolve_include_path(App::BUILD_FILEPATH)) {
             new Checkout(App::BUILD_FILEPATH);
@@ -74,7 +78,11 @@ final class Loader implements LoaderContract
         $arrayFile = new ArrayFile($pathHandle);
         $parameters = new Parameters($arrayFile);
 
+        // $this->stopwatch->record('BeforeApplyParameters');
+
         $this->applyParameters($parameters);
+
+        // $this->stopwatch->record('AfterApplyParameters');
 
         if (Console::bind($this)) {
             Console::run();
@@ -127,6 +135,8 @@ final class Loader implements LoaderContract
         if (!isset($this->controller)) {
             $this->processResolveCallable($this->request->getPathInfo());
         }
+        // $this->stopwatch->stop();
+        // dd($this->stopwatch->records(), $this->stopwatch->timeElapsedRead());
         if (isset($this->controller)) {
             $this->runController($this->controller);
         }
@@ -168,11 +178,11 @@ final class Loader implements LoaderContract
         $api = $parameters->data->getKey(Parameters::API);
         if (isset($api)) {
             $pathHandle = Path::handle($api);
-            $this->processApi($pathHandle);
+            $this->processApi($pathHandle); // 36ms no cache
         }
         $routes = $parameters->data->getKey(Parameters::ROUTES);
         if (isset($routes)) {
-            $this->processRoutes($routes);
+            $this->processRoutes($routes); // 0.8ms no cache
         }
     }
 
@@ -221,7 +231,7 @@ final class Loader implements LoaderContract
             new Method('OPTIONS', OptionsController::class),
             new Method('GET', GetController::class)
         );
-        $maker->register($pathHandle, new Endpoint($methods));
+        $maker->register($pathHandle, new Endpoint($methods)); // 41ms no cache
         $this->app->api = new Api($maker);
     }
 

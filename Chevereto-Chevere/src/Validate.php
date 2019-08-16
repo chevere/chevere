@@ -16,6 +16,30 @@ namespace Chevere;
 class Validate
 {
     /**
+     * Fast way to check for valid timezone.
+     *
+     * @param string $timezone timezone id
+     *
+     * @return bool TRUE if $timezone is a valid timezone
+     */
+    public static function timezone(string $timezone): bool
+    {
+        $return = false;
+        $list = timezone_abbreviations_list();
+        foreach ($list as $zone) {
+            foreach ($zone as $item) {
+                $tz = $item['timezone_id'] ?? null;
+                if (isset($tz) && $timezone == $tz) {
+                    $return = true;
+                    break 2;
+                }
+            }
+        }
+
+        return $return;
+    }
+
+    /**
      * Checks if a regular expression pattern is valid.
      *
      * @param string $regex regular expresion pattern

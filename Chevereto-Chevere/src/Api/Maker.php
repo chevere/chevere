@@ -30,6 +30,7 @@ use Chevere\Path\PathHandle;
 use Chevere\File;
 use Chevere\Utility\Str;
 use Chevere\Controller\Inspect;
+use Chevere\Api\src\FilterIterator;
 
 final class Maker
 {

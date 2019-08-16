@@ -60,11 +60,11 @@ const DEFAULT_ERROR_HANDLING = [
 /*
  * Default error and exception handler
  */
-new Runtime(
-    (new Config())
-        ->addArray(DEFAULT_ERROR_HANDLING)
-        ->validate()
-);
+// new Runtime(
+//     (new Config())
+//         ->addArray(DEFAULT_ERROR_HANDLING)
+//         ->validate()
+// );
 
 Loader::setDefaultRuntime(
     new Runtime(
