@@ -61,7 +61,7 @@ Loader::setDefaultRuntime(
         new RuntimeSetDefaultCharset('utf-8'), // 0.2ms
         new RuntimeSetPrecision('16'), // 0.2ms
         new RuntimeSetUriScheme('https'), // 0.2ms
-        new RuntimeSetTimeZone('UTC'), // 1.85
+        new RuntimeSetTimeZone('UTC') // 1.85
     )
 ); // 0.6ms wrapper
 
