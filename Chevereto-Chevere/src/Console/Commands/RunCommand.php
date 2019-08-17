@@ -21,6 +21,7 @@ use Chevere\Path\Path;
 use Chevere\Console\Command;
 use Chevere\VarDump\PlainVarDump;
 use Chevere\Contracts\App\LoaderContract;
+use Chevere\Path\PathHandle;
 
 /**
  * The RunCommand allows to run any callable present in the app.
@@ -54,7 +55,8 @@ final class RunCommand extends Command
         if (is_callable($callableInput) || class_exists($callableInput)) {
             $callable = $callableInput;
         } else {
-            $callable = Path::fromIdentifier($callableInput);
+            $pathHandle = new PathHandle($callableInput);
+            $callable = $pathHandle->path();
             if (!File::exists($callable)) {
                 $this->cli->out->error(sprintf('Unable to locate callable %s', $callable));
 

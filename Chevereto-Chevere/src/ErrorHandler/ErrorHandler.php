@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\ErrorHandler;
 
+use const Chevere\APP_PATH;
+
 use DateTime;
 use ErrorException;
 use DateTimeZone;
 use Throwable;
-use const Chevere\ROOT_PATH;
-use const Chevere\App\PATH as AppPath;
 use Chevere\HttpFoundation\Request;
 use Chevere\App\Loader;
 use Chevere\Data\Data;
@@ -53,7 +53,7 @@ final class ErrorHandler
     const DEBUG = null;
 
     /** @var string Null will use App\PATH_LOGS ? PATH_LOGS ? traverse */
-    const PATH_LOGS = ROOT_PATH.AppPath.'var/logs/';
+    const PATH_LOGS = APP_PATH.'var/logs/';
 
     /** Readable PHP error mapping */
     const ERROR_TABLE = [

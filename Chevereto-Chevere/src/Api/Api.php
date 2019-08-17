@@ -33,6 +33,11 @@ final class Api implements ApiContract
         self::$api = $api->api();
     }
 
+    public function get(): array
+    {
+        return self::$api;
+    }
+
     public static function endpoint(string $uriKey): array
     {
         $key = self::endpointKey($uriKey);

@@ -26,17 +26,12 @@ use Chevere\Runtime\Sets\RuntimeSetLocale;
 use Chevere\Runtime\Sets\RuntimeSetErrorHandler;
 use Chevere\Runtime\Sets\RuntimeSetExceptionHandler;
 
-define(__NAMESPACE__.'\ERROR_LEVEL_BOOTSTRAP', error_reporting());
-
 /*
  * Assuming that this file has been loaded from /app/bootstrap.php
  */
 define('Chevere\BOOTSTRAPPER', debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0]['file']);
 
-/*
- * Chevere\ROOT_PATH
- * Root path containing /app
- */
+/* Root path containing /app */
 define('Chevere\ROOT_PATH', rtrim(str_replace('\\', '/', dirname(BOOTSTRAPPER, 2)), '/').'/');
 
 /*
@@ -45,11 +40,9 @@ define('Chevere\ROOT_PATH', rtrim(str_replace('\\', '/', dirname(BOOTSTRAPPER, 2
  */
 define('Chevere\PATH', rtrim(str_replace(ROOT_PATH, null, str_replace('\\', '/', __DIR__)), '/').'/');
 
-/*
- * Chevere\App\PATH
- * Relative path to app, usually 'app'
- */
-define('Chevere\App\PATH', basename(dirname(BOOTSTRAPPER)).'/');
+/* Relative path to app, usually 'app' */
+define('Chevere\APP_PATH_RELATIVE', basename(dirname(BOOTSTRAPPER)).'/');
+define('Chevere\APP_PATH', ROOT_PATH . APP_PATH_RELATIVE);
 
 if ('cli' == php_sapi_name()) {
     Console::init(); //10ms

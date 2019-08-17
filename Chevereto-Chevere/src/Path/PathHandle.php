@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Path;
 
+use const Chevere\APP_PATH;
+
 use InvalidArgumentException;
 use Chevere\File;
 use Chevere\Message;
@@ -26,7 +28,7 @@ final class PathHandle
     /** @var string|null */
     private $context;
 
-    /** @var string */
+    /** @var string absolute path like /home/user/app/ or /home/user/app/file.php */
     private $path;
 
     /** @var string|null */
@@ -36,13 +38,21 @@ final class PathHandle
     private $explode;
 
     /**
-     * @param string $identifier Path identifier (<dirname>:<file>)
-     * @param string $context    Root context for $identifier. Must be absolute path.
+     * Path identifier refers to the standarized way in which files and paths
+     * are handled by internal APIs like Hookable or Router.
+     *
+     * A path identifier looks like this:
+     * dirname:file
+     *
+     * - The dirname is relative to APP_PATH
+     * - dirname allows absolute paths
+     *
+     * @param string $identifier path identifier relative to app (<dirname>:<file>)
      */
-    public function __construct(string $identifier, string $context)
+    public function __construct(string $identifier)
     {
         $this->identifier = $identifier;
-        $this->context = $context;
+        $this->context = APP_PATH;
         $this->validateStringIdentifier();
         $this->validateCharIdentifier();
         $this->validateContext();

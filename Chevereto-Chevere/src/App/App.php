@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\App;
 
 use LogicException;
-use const Chevere\ROOT_PATH;
-use const Chevere\App\PATH as AppPath;
+
+use const Chevere\APP_PATH;
 use Chevere\Message;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Controller\ArgumentsWrap;
@@ -28,7 +28,7 @@ use Chevere\Contracts\Route\RouteContract;
  */
 final class App implements AppContract
 {
-    const BUILD_FILEPATH = ROOT_PATH.AppPath.'build';
+    const BUILD_FILEPATH = APP_PATH.'build';
     const NAMESPACES = ['App', 'Chevere'];
     const APP = 'app';
     const FILEHANDLE_CONFIG = ':config';

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Path;
 
 use const Chevere\ROOT_PATH;
-use const Chevere\App\PATH as AppPath;
 use Chevere\Utility\Str;
 
 final class Path
@@ -156,42 +155,10 @@ final class Path
         return in_array($explode[0], stream_get_wrappers());
     }
 
-    /**
-     * Returns the path associated with a path identifier relative to app.
-     *
-     * Path identifiers refers to the standarized way in which files and paths
-     * are handled by internal APIs like Hookable or Router.
-     *
-     * A path identifier looks like this:
-     * dirname:file
-     *
-     * - The dirname is relative to App\Path.
-     * - dirname allows absolute paths.
-     *
-     * @param string $appPathIdentifier path identifier relative to app (<dirname>:<file>)
-     *
-     * @return string absolute path like /home/user/app/ or /home/user/app/file.php
-     */
-    public static function fromIdentifier(string $appPathIdentifier): string
+    public static function fromIdentifier(string $identifier) : string
     {
-        $pathHandle = static::handle(...func_get_args());
-
-        return $pathHandle->path();
-    }
-
-    /**
-     * Returns a PathHandle for the given path identifier relative to app.
-     *
-     * @param string $appPathIdentifier path identifier relative to app (<dirname>:<file>)
-     */
-    public static function handle(string $appPathIdentifier): PathHandle
-    {
-        $rootContext = null;
-        // $handleContext = static::resolve(static::normalize($rootContext));
-        $handleContext = static::tailDir(ROOT_PATH.AppPath);
-        $pathHandle = new PathHandle($appPathIdentifier, $handleContext);
-
-        return $pathHandle;
+        $that = new PathHandle($identifier);
+        return $that->path();
     }
 
     /**

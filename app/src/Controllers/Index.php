@@ -14,7 +14,10 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Chevere\Controller\Controller;
+use Chevere\FileReturn;
 use Chevere\JsonApi\Data;
+use Chevere\Path\Path;
+use Chevere\Path\PathHandle;
 
 class Index extends Controller
 {

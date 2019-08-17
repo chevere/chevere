@@ -37,6 +37,8 @@ use Chevere\Controllers\Api\GetController;
 use Chevere\HttpFoundation\Method;
 use Chevere\HttpFoundation\Methods;
 use Chevere\Api\Endpoint;
+use Chevere\FileReturn;
+use Chevere\FileReturn\FileReturnRead;
 use Chevere\Type;
 
 final class Loader implements LoaderContract
@@ -74,7 +76,7 @@ final class Loader implements LoaderContract
         }
 
         // Load::php(self::FILEHANDLE_HACKS);
-        $pathHandle = Path::handle(App::FILEHANDLE_PARAMETERS);
+        $pathHandle = new PathHandle(App::FILEHANDLE_PARAMETERS);
         $arrayFile = new ArrayFile($pathHandle);
         $parameters = new Parameters($arrayFile);
 
@@ -178,9 +180,13 @@ final class Loader implements LoaderContract
         $api = $parameters->data->getKey(Parameters::API);
         if (isset($api)) {
             // $this->stopwatch->record('BeforeApiHandle');
-            $pathHandle = Path::handle($api);
+            $pathHandle = new PathHandle($api);
             // $this->stopwatch->record('AfterApiHandle');
             $this->processApi($pathHandle); // 36ms no cache
+            $cacheHandle = new PathHandle('cache:api');
+            $cacheFile = new FileReturnRead($cacheHandle);
+            // $cacheFile->set($this->app->api->get());
+            dd('ee', $cacheFile);
             // $this->stopwatch->record('AfterProcessApi');
         }
         $routes = $parameters->data->getKey(Parameters::ROUTES);
@@ -214,7 +220,7 @@ final class Loader implements LoaderContract
     {
         // ['handle' => [Routes,]]
         foreach ($paramRoutes as $fileHandleString) {
-            $fileHandle = Path::handle($fileHandleString);
+            $fileHandle = new PathHandle($fileHandleString);
             $type = new Type(RouteContract::class);
             $arrayFile = new ArrayFile($fileHandle, $type);
             $arrayFileWrap = new ArrayFileCallback($arrayFile, function ($k, $route) {

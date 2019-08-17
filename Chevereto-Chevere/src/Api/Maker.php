@@ -18,7 +18,7 @@ use LogicException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Throwable;
-use const Chevere\App\PATH as AppPath;
+use const Chevere\APP_PATH_RELATIVE;
 use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\HttpFoundation\Method;
@@ -212,7 +212,7 @@ final class Maker
     {
         $filepathRelative = Path::relative($filepath);
         $filepathNoExt = Str::replaceLast('.php', null, $filepathRelative);
-        $filepathReplaceNS = Str::replaceFirst(AppPath.'src/', 'App\\', $filepathNoExt);
+        $filepathReplaceNS = Str::replaceFirst(APP_PATH_RELATIVE.'src/', 'App\\', $filepathNoExt);
 
         return str_replace('/', '\\', $filepathReplaceNS);
     }

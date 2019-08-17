@@ -20,6 +20,7 @@ use ReflectionParameter;
 use ReflectionClass;
 use ReflectionFunctionAbstract;
 use Chevere\Path\Path;
+use Chevere\Path\PathHandle;
 
 /**
  * Wrap provides a object oriented way to interact with Chevere controllers.
