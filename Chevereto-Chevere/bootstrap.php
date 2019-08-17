@@ -29,19 +29,20 @@ use Chevere\Runtime\Sets\RuntimeSetExceptionHandler;
 /*
  * Assuming that this file has been loaded from /app/bootstrap.php
  */
+
 define('Chevere\BOOTSTRAPPER', debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0]['file']);
 
 /* Root path containing /app */
-define('Chevere\ROOT_PATH', rtrim(str_replace('\\', '/', dirname(BOOTSTRAPPER, 2)), '/').'/');
+define('Chevere\ROOT_PATH', rtrim(str_replace('\\', '/', dirname(BOOTSTRAPPER, 2)), '/') . '/');
 
 /*
  * Chevere\PATH
  * Relative path to Core, usually 'vendor/chevereto/chevereto-core'
  */
-define('Chevere\PATH', rtrim(str_replace(ROOT_PATH, null, str_replace('\\', '/', __DIR__)), '/').'/');
+define('Chevere\PATH', rtrim(str_replace(ROOT_PATH, null, str_replace('\\', '/', __DIR__)), '/') . '/');
 
 /* Relative path to app, usually 'app' */
-define('Chevere\APP_PATH_RELATIVE', basename(dirname(BOOTSTRAPPER)).'/');
+define('Chevere\APP_PATH_RELATIVE', basename(dirname(BOOTSTRAPPER)) . '/');
 define('Chevere\APP_PATH', ROOT_PATH . APP_PATH_RELATIVE);
 
 if ('cli' == php_sapi_name()) {
@@ -50,16 +51,21 @@ if ('cli' == php_sapi_name()) {
 
 define('Chevere\CLI', Console::isRunning());
 
+// $sw = new Stopwatch();
 Loader::setDefaultRuntime(
     new Runtime(
-        new RuntimeSetDebug('1'),
-        new RuntimeSetErrorHandler('Chevere\ErrorHandler\ErrorHandler::error'),
-        new RuntimeSetExceptionHandler('Chevere\ErrorHandler\ErrorHandler::exception'),
-        new RuntimeSetLocale('en_US.UTF8'),
-        new RuntimeSetDefaultCharset('utf-8'),
-        new RuntimeSetPrecision('16'),
-        new RuntimeSetUriScheme('https'),
-        new RuntimeSetTimeZone('UTC'),
+        new RuntimeSetDebug('1'), // 0.2ms
+        new RuntimeSetErrorHandler('Chevere\ErrorHandler\ErrorHandler::error'), // 0.9ms
+        new RuntimeSetExceptionHandler('Chevere\ErrorHandler\ErrorHandler::exception'), // 0.5ms
+        new RuntimeSetLocale('en_US.UTF8'), // 0.2ms
+        new RuntimeSetDefaultCharset('utf-8'), // 0.2ms
+        new RuntimeSetPrecision('16'), // 0.2ms
+        new RuntimeSetUriScheme('https'), // 0.2ms
+        new RuntimeSetTimeZone('UTC'), // 1.85
     )
-);
+); // 0.6ms wrapper
+
+// $sw->stop();
+// dd($sw->records(), 'BOOTSTRAP');
+
     // ->addFile(App::FILEHANDLE_CONFIG)

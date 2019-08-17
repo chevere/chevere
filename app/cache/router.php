@@ -1,3 +1,0 @@
-<?php
-
-return 'O:23:"Chevere\\Path\\PathHandle":5:{s:35:"' . "\0" . 'Chevere\\Path\\PathHandle' . "\0" . 'identifier";s:12:"cache:router";s:32:"' . "\0" . 'Chevere\\Path\\PathHandle' . "\0" . 'context";s:30:"/home/rodolfo/git/chevere/app/";s:29:"' . "\0" . 'Chevere\\Path\\PathHandle' . "\0" . 'path";s:46:"/home/rodolfo/git/chevere/app/cache/router.php";s:33:"' . "\0" . 'Chevere\\Path\\PathHandle' . "\0" . 'filename";s:10:"router.php";s:32:"' . "\0" . 'Chevere\\Path\\PathHandle' . "\0" . 'explode";a:1:{i:0;s:5:"cache";}}';

@@ -24,7 +24,7 @@ use Chevere\Api\Maker;
 use Chevere\Console\Console;
 use Chevere\HttpFoundation\Request;
 use Chevere\HttpFoundation\Response;
-use Chevere\Router\Router;
+use Chevere\Router\Maker as RouterMaker;
 use Chevere\Runtime\Runtime;
 use Chevere\Interfaces\RenderableInterface;
 use Chevere\Contracts\App\AppContract;
@@ -37,12 +37,15 @@ use Chevere\Controllers\Api\GetController;
 use Chevere\HttpFoundation\Method;
 use Chevere\HttpFoundation\Methods;
 use Chevere\Api\Endpoint;
+use Chevere\Router\Router;
 use Chevere\Router\RouterRead;
 use Chevere\Type;
 use Chevere\Stopwatch;
 
 final class Loader implements LoaderContract
 {
+    const CACHED = true;
+
     /** @var Runtime */
     private static $runtime;
 
@@ -63,21 +66,21 @@ final class Loader implements LoaderContract
 
     public function __construct()
     {
-        $this->router = new Router();
+        $this->routerMaker = new RouterMaker();
         $this->app = new App();
         $this->app->response = new Response();
-        
+
         if (false === stream_resolve_include_path(App::BUILD_FILEPATH)) {
             new Checkout(App::BUILD_FILEPATH);
         }
-        
+
         // Load::php(self::FILEHANDLE_HACKS);
         $pathHandle = new PathHandle(App::FILEHANDLE_PARAMETERS);
         $arrayFile = new ArrayFile($pathHandle);
         $parameters = new Parameters($arrayFile);
-        
-        $this->applyParameters($parameters);
-        
+
+        $this->applyParameters($parameters); //router
+
         if (Console::bind($this)) {
             Console::run();
         }
@@ -118,7 +121,7 @@ final class Loader implements LoaderContract
         if (!isset($this->request)) {
             $this->setRequest(Request::createFromGlobals());
         }
-        
+
         if (isset($this->ran)) {
             throw new LogicException(
                 (new Message('The method %s has been already called.'))
@@ -127,7 +130,7 @@ final class Loader implements LoaderContract
             );
         }
         $this->ran = true;
-        
+
         if (!isset($this->controller)) {
             $this->processResolveCallable($this->request->getPathInfo());
         }
@@ -169,22 +172,21 @@ final class Loader implements LoaderContract
 
     private function applyParameters(ParametersContract $parameters)
     {
-        // $this->processConfigFiles($parameters->data->getKey(Parameters::CONFIG_FILES));
         $api = $parameters->data->getKey(Parameters::API);
         if (isset($api)) {
-            if (true) {
+            if (static::CACHED) {
                 $this->app->api = new Api();
             } else {
-                $pathHandle = new PathHandle($api);
-                $this->processApi($pathHandle);
+                $this->makeAppApi(new PathHandle($api));
             }
         }
         $routes = $parameters->data->getKey(Parameters::ROUTES);
         if (isset($routes)) {
-            if (true) {
-                $this->app->router->fromCache($this->router);
+            if (static::CACHED) {
+                $this->router = new Router();
             } else {
-                $this->processRoutes($routes); // 0.8ms no cache
+                $this->addRoutes($routes);
+                $this->router = new Router($this->routerMaker);
             }
         }
     }
@@ -210,9 +212,9 @@ final class Loader implements LoaderContract
         }
     }
 
-    private function processRoutes(array $paramRoutes): void
+    /** @@param array $paramRoutes  'handle' => [Routes,]] */
+    private function addRoutes(array $paramRoutes): void
     {
-        // ['handle' => [Routes,]]
         foreach ($paramRoutes as $fileHandleString) {
             $fileHandle = new PathHandle($fileHandleString);
             $type = new Type(RouteContract::class);
@@ -221,15 +223,16 @@ final class Loader implements LoaderContract
                 $route->setId((string) $k);
             });
             foreach ($arrayFileWrap as $k => $route) {
-                $this->router->addRoute($route, $fileHandleString);
+                $this->routerMaker->addRoute($route, $fileHandleString);
             }
         }
-        // dd($this->router);
+        $this->routerMaker->cache();
     }
 
-    private function processApi(PathHandle $pathHandle): void
+    private function makeAppApi(PathHandle $pathHandle): void
     {
-        $maker = new Maker($this->router);
+        dd($this->routerMaker, 'ee');
+        $maker = new Maker($this->routerMaker);
         $methods = new Methods(
             new Method('HEAD', HeadController::class),
             new Method('OPTIONS', OptionsController::class),

@@ -39,26 +39,20 @@ final class File
         return stream_resolve_include_path($filename) !== false;
     }
 
-    /*
-     * Get file path identifier.
-     *
-     * Path identifiers are always relative to App\PATH.
-     *
-     * @param string $file file path, if null it will detect file caller
-     */
-    // public static function identifier(?string $file): string
-    // {
-    //     if (!isset($file)) {
-    //         $file = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0]['file'];
-    //     }
-    //     $pathinfo = pathinfo($file);
-    //     $dirname = $pathinfo['dirname'];
-    //     // Relativize to App\PATH
-    //     $dirname = Utility\Str::replaceFirst(App\PATH, null, $dirname);
-    //     if ($dirname == rtrim(App\PATH, '/')) { // Means that $file is at App\PATH
-    //         $dirname = null;
-    //     }
-
-    //     return $dirname.':'.$pathinfo['filename'];
-    // }
+    public static function put(string $filename, $contents)
+    {
+        if (!static::exists($filename)) {
+            $dirname = dirname($filename);
+            if (!static::exists($dirname)) {
+                Path::create($dirname);
+            }
+        }
+        if (false === @file_put_contents($filename, $contents)) {
+            throw new RuntimeException(
+                (new Message('Unable to write content to file %filepath%'))
+                    ->code('%filepath%', $filename)
+                    ->toString()
+            );
+        }
+    }
 }

@@ -89,7 +89,7 @@ final class Maker
 
         $this->processRoutesMap();
 
-        $path = '/'.$this->basePath;
+        $path = '/' . $this->basePath;
         $this->api[$this->basePath][''] = $endpoint->toArray();
 
         $route = new Route($path);
@@ -137,15 +137,15 @@ final class Maker
         if (!File::exists($this->path)) {
             throw new LogicException(
                 (new Message("Directory %s doesn't exists."))
-                ->code('%s', $this->path)
-                ->toString()
+                    ->code('%s', $this->path)
+                    ->toString()
             );
         }
         if (!is_readable($this->path)) {
             throw new LogicException(
                 (new Message('Directory %s is not readable.'))
-                ->code('%s', $this->path)
-                ->toString()
+                    ->code('%s', $this->path)
+                    ->toString()
             );
         }
     }
@@ -212,7 +212,7 @@ final class Maker
     {
         $filepathRelative = Path::relative($filepath);
         $filepathNoExt = Str::replaceLast('.php', null, $filepathRelative);
-        $filepathReplaceNS = Str::replaceFirst(APP_PATH_RELATIVE.'src/', 'App\\', $filepathNoExt);
+        $filepathReplaceNS = Str::replaceFirst(APP_PATH_RELATIVE . 'src/', 'App\\', $filepathNoExt);
 
         return str_replace('/', '\\', $filepathReplaceNS);
     }

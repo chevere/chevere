@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\FileReturn;
 
 use RuntimeException;
-use Chevere\Message;
+use Chevere\File;
 use Chevere\Path\PathHandle;
 
 final class FileReturnWrite
@@ -39,24 +39,13 @@ final class FileReturnWrite
         }
         $this->varExport = var_export($this->var, true);
         $this->export = FileReturnRead::PHP_RETURN . $this->varExport . ';';
-        $this->put();
+        File::put($this->path, $this->export);
     }
 
     private function switchVar(&$var)
     {
         if (is_object($var)) {
             $var = serialize($var);
-        }
-    }
-
-    private function put()
-    {
-        if (false === file_put_contents($this->path, $this->export)) {
-            throw new RuntimeException(
-                (new Message('Unable to write content to file %filepath%'))
-                    ->code('%filepath%', $this->path)
-                    ->toString()
-            );
         }
     }
 }

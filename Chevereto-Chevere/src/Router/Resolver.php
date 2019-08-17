@@ -19,37 +19,26 @@ use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\ResolverContract;
 
-/**
- * TODO: Rename. This class simply returns a route object (runtime or unserialize).
- */
-final class Resolver implements ResolverContract
+final class Resolver
 {
-    /** @var mixed */
-    public $routeSome;
+    /** @var RouteContract */
+    private $route;
 
-    /** @var bool */
-    public $isUnserialized = false;
-
-    public function __construct($routeSome)
+    public function __construct(string $serialized)
     {
-        $this->routeSome = $routeSome;
+        if (is_string($serialized)) {
+            $this->route = unserialize($serialized, ['allowed_classes' => [Route::class]]);
+        } else {
+            throw new LogicException(
+                (new Message('Unexpected type %t in routes table %h.'))
+                    ->code('%t', gettype($serialized))
+                    ->toString()
+            );
+        }
     }
 
     public function get(): RouteContract
     {
-        if ($this->routeSome instanceof RouteContract) {
-            return $this->routeSome;
-        }
-        if (is_string($this->routeSome)) {
-            $this->isUnserialized = true;
-
-            return unserialize($this->routeSome, ['allowed_classes' => Route::class]);
-        } else {
-            throw new LogicException(
-                (new Message('Unexpected type %t in routes table %h.'))
-                    ->code('%t', gettype($this->routeSome))
-                    ->toString()
-            );
-        }
+        return $this->route;
     }
 }

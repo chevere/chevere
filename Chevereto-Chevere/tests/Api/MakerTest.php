@@ -15,7 +15,7 @@ namespace Tests\Api;
 
 use Throwable;
 use Chevere\Api\Maker;
-use Chevere\Router\Router;
+// use Chevere\Router\Router;
 use Chevere\Contracts\Api\MakerContract;
 use PHPUnit\Framework\TestCase;
 

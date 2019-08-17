@@ -37,14 +37,15 @@ final class Stopwatch
 
     public function __construct()
     {
-        $this->timeStart = microtime(true);
         $this->records = [
             'start' => 0,
         ];
+        $this->timeStart = microtime(true);
     }
 
     public function record(string $flagName): void
     {
+        $now = microtime(true);
         if ('stop' == $flagName) {
             throw new InvalidArgumentException(
                 (new Message('Use of reserved flag name %flagName%.'))
@@ -60,7 +61,8 @@ final class Stopwatch
                     ->toString()
             );
         }
-        $this->records[$flagName] = microtime(true);
+        $then = microtime(true);
+        $this->records[$flagName] = $then - ($now - $then);
     }
 
     // $this->microtimeToRead()
@@ -95,6 +97,6 @@ final class Stopwatch
 
     private function microtimeToRead(float $microtime): string
     {
-        return number_format($microtime * 1000, 2).' ms';
+        return number_format($microtime * 1000, 2) . ' ms';
     }
 }

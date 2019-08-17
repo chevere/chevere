@@ -14,7 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Path;
 
 use const Chevere\ROOT_PATH;
+
+use Chevere\Message;
 use Chevere\Utility\Str;
+use RuntimeException;
 
 final class Path
 {
@@ -29,7 +32,7 @@ final class Path
     {
         $relativePath = Str::forwardSlashes($relativePath);
 
-        return ROOT_PATH.$relativePath;
+        return ROOT_PATH . $relativePath;
     }
 
     /**
@@ -45,7 +48,7 @@ final class Path
         $absolutePath = Str::forwardSlashes($absolutePath);
         $root = ROOT_PATH;
         if ($rootContext) {
-            $root .= $rootContext.'/';
+            $root .= $rootContext . '/';
         }
 
         return Str::replaceFirst($root, null, $absolutePath);
@@ -67,6 +70,21 @@ final class Path
                 && ':' === $file[1]
                 && strspn($file, '/\\', 2, 1))
             || null !== parse_url($file, PHP_URL_SCHEME);
+    }
+
+    /**
+     * Creates a path
+     * @return string The created path (absolute)
+     */
+    public static function create(string $path): string
+    {
+        if (!mkdir($path, 0777, true)) {
+            throw new RuntimeException(
+                (new Message('Unable to create path %path%'))
+                    ->code('%path%', $path)
+            );
+        }
+        return $path;
     }
 
     /**
@@ -100,14 +118,14 @@ final class Path
         }
         // Chevereto: Get rid of any extra slashes at the begining if needed
         if (Str::startsWith('/', $path)) {
-            $path = '/'.ltrim($path, '/');
+            $path = '/' . ltrim($path, '/');
         }
         // Windows paths should uppercase the drive letter
         if (':' === substr($path, 1, 1)) {
             $path = ucfirst($path);
         }
 
-        return rtrim($wrapper.$path, '/');
+        return rtrim($wrapper . $path, '/');
     }
 
     /**
@@ -155,7 +173,7 @@ final class Path
         return in_array($explode[0], stream_get_wrappers());
     }
 
-    public static function fromIdentifier(string $identifier) : string
+    public static function fromIdentifier(string $identifier): string
     {
         $that = new PathHandle($identifier);
         return $that->path();
