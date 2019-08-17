@@ -37,6 +37,7 @@ use Chevere\Controllers\Api\GetController;
 use Chevere\HttpFoundation\Method;
 use Chevere\HttpFoundation\Methods;
 use Chevere\Api\Endpoint;
+use Chevere\Router\RouterRead;
 use Chevere\Type;
 use Chevere\Stopwatch;
 
@@ -65,7 +66,6 @@ final class Loader implements LoaderContract
         $this->router = new Router();
         $this->app = new App();
         $this->app->response = new Response();
-        
         
         if (false === stream_resolve_include_path(App::BUILD_FILEPATH)) {
             new Checkout(App::BUILD_FILEPATH);
@@ -181,7 +181,11 @@ final class Loader implements LoaderContract
         }
         $routes = $parameters->data->getKey(Parameters::ROUTES);
         if (isset($routes)) {
-            $this->processRoutes($routes); // 0.8ms no cache
+            if (true) {
+                $this->app->router->fromCache($this->router);
+            } else {
+                $this->processRoutes($routes); // 0.8ms no cache
+            }
         }
     }
 
@@ -220,6 +224,7 @@ final class Loader implements LoaderContract
                 $this->router->addRoute($route, $fileHandleString);
             }
         }
+        // dd($this->router);
     }
 
     private function processApi(PathHandle $pathHandle): void

@@ -18,11 +18,13 @@ use Chevere\Message;
 use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
+use Chevere\FileReturn\FileReturnWrite;
+use Chevere\Path\PathHandle;
 
 /**
  * Routes takes a bunch of Routes and generates a routing table (php array).
  */
-final class Router implements RouterContract
+final class Router
 {
     const PRIORITY_ORDER = [Route::TYPE_STATIC, Route::TYPE_DYNAMIC];
 
@@ -98,10 +100,23 @@ final class Router implements RouterContract
         return $this->arguments ?? [];
     }
 
+    public function cache()
+    {
+        $regexHandle = new PathHandle('cache:router-regex');
+        $routesHandle = new PathHandle('cache:router-routes');
+        $indexHandle = new PathHandle('cache:router-index');
+        $regex = new FileReturnWrite($regexHandle);
+        $routes = new FileReturnWrite($routesHandle);
+        $index = new FileReturnWrite($indexHandle);
+        $regex->set($this->regex);
+        $routes->set($this->routes);
+        $index->set($this->routesIndex);
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function getRegex(): string
+    private function getRegex(): string
     {
         $regex = [];
         foreach ($this->regexIndex as $k => $v) {
@@ -110,39 +125,6 @@ final class Router implements RouterContract
         }
 
         return sprintf(static::REGEX_TEPLATE, implode('', $regex));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function resolve(string $pathInfo): RouteContract
-    {
-        if (preg_match($this->regex, $pathInfo, $matches)) {
-            $id = $matches['MARK'];
-            unset($matches['MARK']);
-            array_shift($matches);
-            $route = $this->routes[$id];
-            if (is_array($route)) {
-                $set = $route[1];
-                $route = $this->routes[$route[0]];
-            }
-            $resolver = new Resolver($route);
-            if ($resolver->isUnserialized) {
-                $route = $resolver->get();
-                $this->routes[$id] = $route;
-            }
-            $this->arguments = [];
-            foreach ($matches as $k => $v) {
-                $wildcardId = $route->keyPowerSet()[$set][$k];
-                $wildcardName = $route->wildcardName($wildcardId);
-                $this->arguments[$wildcardName] = $v;
-            }
-
-            return $route;
-        }
-        throw new LogicException(
-            (new Message('NO ROUTING!!!!! %s'))->code('%s', 'BURN!!!')->toString()
-        );
     }
 
     private function validateUniqueRoutePath(): void
