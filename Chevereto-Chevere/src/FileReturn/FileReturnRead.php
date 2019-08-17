@@ -17,6 +17,7 @@ use RuntimeException;
 use Chevere\File;
 use Chevere\Message;
 use Chevere\Path\PathHandle;
+use InvalidArgumentException;
 
 final class FileReturnRead
 {
@@ -31,14 +32,8 @@ final class FileReturnRead
     public function __construct(PathHandle $pathHandle)
     {
         $this->path = $pathHandle->path();
-        $this->validate();
-        $this->include();
-    }
-
-    public function include()
-    {
         if (!File::exists($this->path)) {
-            throw new RuntimeException(
+            throw new InvalidArgumentException(
                 (new Message("File %filepath% file doesn't exists"))
                     ->code('%filepath%', $this->path)
                     ->toString()
@@ -47,7 +42,6 @@ final class FileReturnRead
         $this->validate();
         $this->raw = include $this->path;
     }
-
 
     public function raw()
     {

@@ -16,6 +16,8 @@ namespace Chevere\Api;
 use LogicException;
 use Chevere\Message;
 use Chevere\Contracts\Api\ApiContract;
+use Chevere\FileReturn\FileReturnRead;
+use Chevere\Path\PathHandle;
 
 /**
  * Api provides a static method to read the exposed API inside the app runtime.
@@ -28,9 +30,15 @@ final class Api implements ApiContract
     /** @var array */
     private static $api;
 
-    public function __construct(Maker $api)
+    public function __construct(Maker $api = null)
     {
-        self::$api = $api->api();
+        if (isset($api)) {
+            self::$api = $api->api();
+        } else {
+            $pathHandle = new PathHandle('cache:api');
+            $cache = new FileReturnRead($pathHandle);
+            self::$api = $cache->raw();
+        }
     }
 
     public function get(): array

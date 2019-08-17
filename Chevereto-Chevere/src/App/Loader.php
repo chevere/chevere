@@ -37,9 +37,8 @@ use Chevere\Controllers\Api\GetController;
 use Chevere\HttpFoundation\Method;
 use Chevere\HttpFoundation\Methods;
 use Chevere\Api\Endpoint;
-use Chevere\FileReturn;
-use Chevere\FileReturn\FileReturnRead;
 use Chevere\Type;
+use Chevere\Stopwatch;
 
 final class Loader implements LoaderContract
 {
@@ -63,29 +62,22 @@ final class Loader implements LoaderContract
 
     public function __construct()
     {
-        // $this->stopwatch = new \Chevere\Stopwatch();
-
         $this->router = new Router();
         $this->app = new App();
         $this->app->response = new Response();
-
-        // $this->stopwatch->record('AfterRouteAppResponse');
-
+        
+        
         if (false === stream_resolve_include_path(App::BUILD_FILEPATH)) {
             new Checkout(App::BUILD_FILEPATH);
         }
-
+        
         // Load::php(self::FILEHANDLE_HACKS);
         $pathHandle = new PathHandle(App::FILEHANDLE_PARAMETERS);
         $arrayFile = new ArrayFile($pathHandle);
         $parameters = new Parameters($arrayFile);
-
-        // $this->stopwatch->record('BeforeApplyParameters');
-
+        
         $this->applyParameters($parameters);
-
-        // $this->stopwatch->record('AfterApplyParameters');
-
+        
         if (Console::bind($this)) {
             Console::run();
         }
@@ -126,6 +118,7 @@ final class Loader implements LoaderContract
         if (!isset($this->request)) {
             $this->setRequest(Request::createFromGlobals());
         }
+        
         if (isset($this->ran)) {
             throw new LogicException(
                 (new Message('The method %s has been already called.'))
@@ -134,11 +127,11 @@ final class Loader implements LoaderContract
             );
         }
         $this->ran = true;
+        
         if (!isset($this->controller)) {
             $this->processResolveCallable($this->request->getPathInfo());
         }
-        // $this->stopwatch->stop();
-        // // dd($this->stopwatch->records(), $this->stopwatch->timeElapsedRead());
+
         if (isset($this->controller)) {
             $this->runController($this->controller);
         }
@@ -179,15 +172,12 @@ final class Loader implements LoaderContract
         // $this->processConfigFiles($parameters->data->getKey(Parameters::CONFIG_FILES));
         $api = $parameters->data->getKey(Parameters::API);
         if (isset($api)) {
-            // $this->stopwatch->record('BeforeApiHandle');
-            $pathHandle = new PathHandle($api);
-            // $this->stopwatch->record('AfterApiHandle');
-            $this->processApi($pathHandle); // 36ms no cache
-            $cacheHandle = new PathHandle('cache:api');
-            $cacheFile = new FileReturnRead($cacheHandle);
-            // $cacheFile->set($this->app->api->get());
-            dd('ee', $cacheFile);
-            // $this->stopwatch->record('AfterProcessApi');
+            if (true) {
+                $this->app->api = new Api();
+            } else {
+                $pathHandle = new PathHandle($api);
+                $this->processApi($pathHandle);
+            }
         }
         $routes = $parameters->data->getKey(Parameters::ROUTES);
         if (isset($routes)) {

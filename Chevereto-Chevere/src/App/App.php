@@ -22,6 +22,7 @@ use Chevere\Controller\ArgumentsWrap;
 use Chevere\HttpFoundation\Response;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Route\RouteContract;
+use Chevere\Stopwatch;
 
 /**
  * The app container.
@@ -83,6 +84,10 @@ final class App implements AppContract
         }
 
         $controller(...$controllerArguments);
+
+        $stopwatch->record('call controller');
+
+        
 
         return $controller;
     }
