@@ -44,7 +44,7 @@ use Chevere\Stopwatch;
 
 final class Loader implements LoaderContract
 {
-    const CACHED = false;
+    const CACHED = true;
 
     /** @var Runtime */
     private static $runtime;
@@ -232,7 +232,7 @@ final class Loader implements LoaderContract
             $arrayFileWrap = new ArrayFileCallback($arrayFile, function ($k, $route) {
                 $route->setId((string) $k);
             });
-            foreach ($arrayFileWrap as $k => $route) {
+            foreach ($arrayFileWrap as $route) {
                 $this->routerMaker->addRoute($route, $fileHandleString);
             }
         }

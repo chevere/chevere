@@ -16,7 +16,7 @@ namespace Chevere\Api;
 use LogicException;
 use Chevere\Message;
 use Chevere\Contracts\Api\ApiContract;
-use Chevere\FileReturn\FileReturnRead;
+use Chevere\FileReturn\FileReturn;
 use Chevere\Path\PathHandle;
 
 /**
@@ -35,8 +35,7 @@ final class Api implements ApiContract
         if (isset($api)) {
             self::$api = $api->api();
         } else {
-            $pathHandle = new PathHandle('cache:api');
-            $cache = new FileReturnRead($pathHandle);
+            $cache = new FileReturn(new PathHandle('cache:api'));
             self::$api = $cache->raw();
         }
     }

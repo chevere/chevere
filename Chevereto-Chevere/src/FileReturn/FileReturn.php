@@ -19,7 +19,7 @@ use Chevere\Message;
 use Chevere\Path\PathHandle;
 use InvalidArgumentException;
 
-final class FileReturnRead
+final class FileReturn
 {
     const PHP_RETURN = "<?php\n\nreturn ";
     const PHP_RETURN_CHARS = 14;

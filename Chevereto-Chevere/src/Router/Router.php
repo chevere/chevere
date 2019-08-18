@@ -18,7 +18,7 @@ use Chevere\Message;
 use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
-use Chevere\FileReturn\FileReturnRead;
+use Chevere\FileReturn\FileReturn;
 use Chevere\Path\PathHandle;
 
 /**
@@ -42,15 +42,14 @@ final class Router
 
     public function __construct(Maker $maker = null)
     {
-
         if (isset($maker)) {
             $this->regex = $maker->regex();
             $this->routes = $maker->routes();
             $this->routesIndex = $maker->routesIndex();
         } else {
-            $regex = new FileReturnRead(new PathHandle('cache/router:regex'));
-            $routes = new FileReturnRead(new PathHandle('cache/router:routes'));
-            $routesIndex = new FileReturnRead(new PathHandle('cache/router:routesIndex'));
+            $regex = new FileReturn(new PathHandle('cache/router:regex'));
+            $routes = new FileReturn(new PathHandle('cache/router:routes'));
+            $routesIndex = new FileReturn(new PathHandle('cache/router:routesIndex'));
             $this->regex = $regex->raw();
             $this->routes = $routes->raw();
             $this->routesIndex = $routesIndex->raw();

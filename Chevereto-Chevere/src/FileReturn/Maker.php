@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\FileReturn;
 
-use RuntimeException;
 use Chevere\File;
 use Chevere\Path\PathHandle;
 
-final class FileReturnWrite
+final class Maker
 {
     /** @var string */
     private $path;
@@ -27,7 +26,7 @@ final class FileReturnWrite
         $this->path = $pathHandle->path();
     }
 
-    public function set($var)
+    public function put($var)
     {
         $this->var = $var;
         if (is_iterable($this->var)) {
@@ -38,7 +37,7 @@ final class FileReturnWrite
             $this->switchVar($this->var);
         }
         $this->varExport = var_export($this->var, true);
-        $this->export = FileReturnRead::PHP_RETURN . $this->varExport . ';';
+        $this->export = FileReturn::PHP_RETURN . $this->varExport . ';';
         File::put($this->path, $this->export);
     }
 

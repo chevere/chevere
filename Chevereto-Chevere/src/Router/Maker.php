@@ -17,7 +17,7 @@ use LogicException;
 use Chevere\Message;
 use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
-use Chevere\FileReturn\FileReturnWrite;
+use Chevere\FileReturn\FileReturn\Maker as FileReturnMaker;
 use Chevere\Path\PathHandle;
 
 /**
@@ -58,7 +58,8 @@ final class Maker
     private $routeMap;
 
     public function __construct()
-    { }
+    {
+    }
 
     /**
      * {@inheritdoc}
@@ -109,12 +110,12 @@ final class Maker
 
     public function cache()
     {
-        $regex = new FileReturnWrite(new PathHandle('cache/router:regex'));
-        $routes = new FileReturnWrite(new PathHandle('cache/router:routes'));
-        $routesIndex = new FileReturnWrite(new PathHandle('cache/router:routesIndex'));
-        $regex->set($this->regex);
-        $routes->set($this->routes);
-        $routesIndex->set($this->routesIndex);
+        $regex = new FileReturnMaker(new PathHandle('cache/router:regex'));
+        $routes = new FileReturnMaker(new PathHandle('cache/router:routes'));
+        $routesIndex = new FileReturnMaker(new PathHandle('cache/router:routesIndex'));
+        $regex->put($this->regex);
+        $routes->put($this->routes);
+        $routesIndex->put($this->routesIndex);
     }
 
     /**
