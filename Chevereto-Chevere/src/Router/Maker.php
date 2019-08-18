@@ -17,8 +17,9 @@ use LogicException;
 use Chevere\Message;
 use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
-use Chevere\FileReturn\FileReturn\Maker as FileReturnMaker;
+use Chevere\FileReturn\Maker as FileReturnMaker;
 use Chevere\Path\PathHandle;
+use Chevere\Cache\Maker as CacheMaker;
 
 /**
  * Maker takes a bunch of Routes and generates a routing table (php array).
@@ -110,12 +111,10 @@ final class Maker
 
     public function cache()
     {
-        $regex = new FileReturnMaker(new PathHandle('cache/router:regex'));
-        $routes = new FileReturnMaker(new PathHandle('cache/router:routes'));
-        $routesIndex = new FileReturnMaker(new PathHandle('cache/router:routesIndex'));
-        $regex->put($this->regex);
-        $routes->put($this->routes);
-        $routesIndex->put($this->routesIndex);
+        $cache = new CacheMaker('router');
+        $cache->put('regex', $this->regex);
+        $cache->put('routes', $this->routes);
+        $cache->put('routesIndex', $this->routesIndex);
     }
 
     /**

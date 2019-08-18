@@ -178,13 +178,13 @@ final class CallableWrap
         }
     }
 
-    private function handleCallableFile(string $callableHandle): void
+    private function handleCallableFile(string $callableIdentifier): void
     {
-        $callableFilepath = Path::fromIdentifier($callableHandle);
+        $callableFilepath = Path::fromIdentifier($callableIdentifier);
         if (!File::exists($callableFilepath)) {
             throw new LogicException(
-                (new Message('Unable to locate any callable specified by %s.'))
-                    ->code('%s', $callableHandle)
+                (new Message('Unable to locate a callable specified by %s.'))
+                    ->code('%s', $callableIdentifier)
                     ->toString()
             );
         }
@@ -194,7 +194,7 @@ final class CallableWrap
                 (new Message('Expected %s callable, %t provided in %f.'))
                     ->code('%s', '$callable')
                     ->code('%t', gettype($callable))
-                    ->code('%f', $callableHandle)
+                    ->code('%f', $callableIdentifier)
                     ->toString()
             );
         }

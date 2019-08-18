@@ -28,7 +28,7 @@ class Index extends Controller
     // public function __invoke(array $wildcards, array $parameters)
     public function __invoke()
     {
-        // dd(number_format(1000 * (microtime(true) - BOOT_TIMESTAMP), 2) . ' ms');
+        dd(number_format(1000 * (microtime(true) - BOOT_TIMESTAMP), 2) . ' ms');
         // throw new \Exception('Ups');
         $api = new Data('api', 'info');
         $api->addAttribute('entry', 'HTTP GET /api');

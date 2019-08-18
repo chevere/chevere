@@ -44,7 +44,7 @@ use Chevere\Stopwatch;
 
 final class Loader implements LoaderContract
 {
-    const CACHED = true;
+    const CACHED = false;
 
     /** @var Runtime */
     private static $runtime;
@@ -236,7 +236,6 @@ final class Loader implements LoaderContract
                 $this->routerMaker->addRoute($route, $fileHandleString);
             }
         }
-        $this->routerMaker->cache();
     }
 
     private function createApiMaker(PathHandle $pathHandle): void

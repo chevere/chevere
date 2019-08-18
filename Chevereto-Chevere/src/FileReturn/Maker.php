@@ -18,17 +18,30 @@ use Chevere\Path\PathHandle;
 
 final class Maker
 {
+    const CHECKSUM_ALGO = 'sha512';
+    
     /** @var string */
     private $path;
 
-    public function __construct(PathHandle $pathHandle)
+    private $var;
+
+    /** @var string */
+    private $checksum;
+
+    public function __construct(PathHandle $pathHandle, $var)
     {
         $this->path = $pathHandle->path();
+        $this->var = $var;
+        $this->put();
     }
 
-    public function put($var)
+    public function checksum(): string
     {
-        $this->var = $var;
+        return $this->checksum;
+    }
+
+    private function put()
+    {
         if (is_iterable($this->var)) {
             foreach ($this->var as $k => &$v) {
                 $this->switchVar($v);
@@ -36,9 +49,10 @@ final class Maker
         } else {
             $this->switchVar($this->var);
         }
-        $this->varExport = var_export($this->var, true);
-        $this->export = FileReturn::PHP_RETURN . $this->varExport . ';';
-        File::put($this->path, $this->export);
+        $varExport = var_export($this->var, true);
+        $export = FileReturn::PHP_RETURN . $varExport . ';';
+        File::put($this->path, $export);
+        $this->checksum = hash_file(static::CHECKSUM_ALGO, $this->path);
     }
 
     private function switchVar(&$var)
