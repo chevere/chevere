@@ -77,7 +77,7 @@ class Controller implements ControllerContract
 
     final public function setResponse(Response $response): ControllerContract
     {
-        $this->app->response = $response;
+        $this->app->setResponse($response);
 
         return $this;
     }

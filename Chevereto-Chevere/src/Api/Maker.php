@@ -23,7 +23,6 @@ use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\HttpFoundation\Method;
 use Chevere\HttpFoundation\Methods;
-use Chevere\Contracts\Router\RouterContract;
 use Chevere\Message;
 use Chevere\Path\Path;
 use Chevere\Path\PathHandle;
@@ -31,6 +30,7 @@ use Chevere\File;
 use Chevere\Utility\Str;
 use Chevere\Controller\Inspect;
 use Chevere\Api\src\FilterIterator;
+use Chevere\Router\Maker as RouterMaker;
 
 final class Maker
 {
@@ -49,8 +49,8 @@ final class Maker
     /** @var array Endpoint API properties */
     private $api;
 
-    /** @var RouterContract The injected Router, needed to add Routes to the injector instance */
-    private $router;
+    /** @var RouterMaker The injected Router, needed to add Routes to the injector instance */
+    private $routerMaker;
 
     /** @var array Contains registered API paths via register() */
     private $registered;
@@ -64,9 +64,9 @@ final class Maker
     /** @var string Target API directory (absolute) */
     private $path;
 
-    public function __construct(RouterContract $router)
+    public function __construct(RouterMaker $router)
     {
-        $this->router = $router;
+        $this->routerMaker = $router;
     }
 
     public function register(PathHandle $pathHandle, Endpoint $endpoint): void
@@ -77,7 +77,7 @@ final class Maker
         $this->basePath = strtolower(basename($this->path));
         $this->routesMap = [];
         $this->resourcesMap = [];
-        $this->controllersMap = [];
+        // $this->controllersMap = [];
         $this->api = [];
 
         $iterator = new RecursiveDirectoryIterator($this->path, RecursiveDirectoryIterator::SKIP_DOTS);
@@ -94,7 +94,7 @@ final class Maker
 
         $route = new Route($path);
         $route->setMethods($endpoint->methods())->setId($this->basePath);
-        $this->router->addRoute($route, $this->basePath);
+        $this->routerMaker->addRoute($route, $this->basePath);
 
         $this->registered[$this->basePath] = true;
         ksort($this->api);
@@ -156,7 +156,7 @@ final class Maker
             $filepathAbsolute = Str::forwardSlashes((string) $filename);
             $className = $this->getClassNameFromFilepath($filepathAbsolute);
             $inspected = new Inspect($className);
-            $this->controllersMap[$className] = $inspected;
+            // $this->controllersMap[$className] = $inspected;
             $pathComponent = $inspected->pathComponent;
             if ($inspected->useResource) {
                 $this->resourcesMap[$pathComponent] = $inspected->resourcesFromString;
@@ -195,7 +195,7 @@ final class Maker
                 }
                 $endpoint->setResource($resource);
             }
-            $this->router->addRoute($this->route, $this->basePath);
+            $this->routerMaker->addRoute($this->route, $this->basePath);
             $this->api[$this->basePath][$pathComponent] = $endpoint->toArray();
         }
         ksort($this->api);

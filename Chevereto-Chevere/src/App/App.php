@@ -22,6 +22,7 @@ use Chevere\Controller\ArgumentsWrap;
 use Chevere\HttpFoundation\Response;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Route\RouteContract;
+use Chevere\Route\Route;
 use Chevere\Stopwatch;
 
 /**
@@ -37,13 +38,43 @@ final class App implements AppContract
     const FILEHANDLE_HACKS = ':hacks';
 
     /** @var array String arguments (from request uri, cli) */
-    public $arguments;
+    private $arguments;
 
     /** @var Response */
-    public $response;
+    private $response;
 
     /** @var RouteContract */
-    public $route;
+    private $route;
+
+    public function setResponse(Response $response)
+    {
+        $this->response = $response;
+    }
+
+    public function setRoute(Route $route)
+    {
+        $this->route = $route;
+    }
+
+    public function setArguments(array $arguments)
+    {
+        $this->arguments = $arguments;
+    }
+
+    public function response(): Response
+    {
+        return $this->response;
+    }
+
+    public function route(): Route
+    {
+        return $this->route;
+    }
+
+    public function arguments(): array
+    {
+        return $this->arguments ?? [];
+    }
 
     /**
      * {@inheritdoc}
@@ -66,6 +97,7 @@ final class App implements AppContract
                     ->toString()
             );
         }
+
         $controller = new $controller($this);
 
         // if ($this->route instanceof RouteContract) {
@@ -84,10 +116,6 @@ final class App implements AppContract
         }
 
         $controller(...$controllerArguments);
-
-        $stopwatch->record('call controller');
-
-        
 
         return $controller;
     }

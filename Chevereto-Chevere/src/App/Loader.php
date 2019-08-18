@@ -20,7 +20,7 @@ use Chevere\ArrayFile\ArrayFileCallback;
 use Chevere\Path\Path;
 use Chevere\Path\PathHandle;
 use Chevere\Api\Api;
-use Chevere\Api\Maker;
+use Chevere\Api\Maker as ApiMaker;
 use Chevere\Console\Console;
 use Chevere\HttpFoundation\Request;
 use Chevere\HttpFoundation\Response;
@@ -44,13 +44,19 @@ use Chevere\Stopwatch;
 
 final class Loader implements LoaderContract
 {
-    const CACHED = true;
+    const CACHED = false;
 
     /** @var Runtime */
     private static $runtime;
 
     /** @var AppContract */
     public $app;
+
+    /** @var Api */
+    private $api;
+
+    /** @var ApiMaker */
+    private $apiMaker;
 
     /** @var string */
     private $controller;
@@ -60,6 +66,9 @@ final class Loader implements LoaderContract
 
     /** @var Router */
     private $router;
+    
+    /** @var RouterMaker */
+    private $routerMaker;
 
     /** @var bool True if run() has been called */
     private $ran;
@@ -68,7 +77,7 @@ final class Loader implements LoaderContract
     {
         $this->routerMaker = new RouterMaker();
         $this->app = new App();
-        $this->app->response = new Response();
+        $this->app->setResponse(new Response());
 
         if (false === stream_resolve_include_path(App::BUILD_FILEPATH)) {
             new Checkout(App::BUILD_FILEPATH);
@@ -175,9 +184,10 @@ final class Loader implements LoaderContract
         $api = $parameters->data->getKey(Parameters::API);
         if (isset($api)) {
             if (static::CACHED) {
-                $this->app->api = new Api();
+                $this->api = new Api();
             } else {
-                $this->makeAppApi(new PathHandle($api));
+                $this->createApiMaker(new PathHandle($api));
+                $this->api = new Api($this->apiMaker);
             }
         }
         $routes = $parameters->data->getKey(Parameters::ROUTES);
@@ -193,8 +203,8 @@ final class Loader implements LoaderContract
 
     private function processResolveCallable(string $pathInfo): void
     {
-        $this->app->route = $this->router->resolve($pathInfo);
-        $this->controller = $this->app->route->getController($this->request->getMethod());
+        $this->app->setRoute($this->router->resolve($pathInfo));
+        $this->controller = $this->app->route()->getController($this->request->getMethod());
         $routerArgs = $this->router->arguments();
         if (!isset($this->arguments) && isset($routerArgs)) {
             $this->setArguments($routerArgs);
@@ -203,16 +213,16 @@ final class Loader implements LoaderContract
 
     private function runController(string $controller): void
     {
-        $this->app->arguments = $this->arguments;
+        $this->app->setArguments($this->arguments);
         $controller = $this->app->run($controller);
         if ($controller instanceof RenderableInterface) {
             echo $controller->render();
         } else {
-            $this->app->response->send();
+            $this->app->response()->send();
         }
     }
 
-    /** @@param array $paramRoutes  'handle' => [Routes,]] */
+    /** @param array $paramRoutes  'handle' => [Routes,]] */
     private function addRoutes(array $paramRoutes): void
     {
         foreach ($paramRoutes as $fileHandleString) {
@@ -229,17 +239,15 @@ final class Loader implements LoaderContract
         $this->routerMaker->cache();
     }
 
-    private function makeAppApi(PathHandle $pathHandle): void
+    private function createApiMaker(PathHandle $pathHandle): void
     {
-        dd($this->routerMaker, 'ee');
-        $maker = new Maker($this->routerMaker);
+        $this->apiMaker = new ApiMaker($this->routerMaker);
         $methods = new Methods(
             new Method('HEAD', HeadController::class),
             new Method('OPTIONS', OptionsController::class),
             new Method('GET', GetController::class)
         );
-        $maker->register($pathHandle, new Endpoint($methods)); // 41ms no cache
-        $this->app->api = new Api($maker);
+        $this->apiMaker->register($pathHandle, new Endpoint($methods)); // 41ms no cache
     }
 
     // private function processConfigFiles(array $configFiles = null): void
