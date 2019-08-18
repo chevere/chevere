@@ -30,6 +30,7 @@ use Chevere\File;
 use Chevere\Utility\Str;
 use Chevere\Controller\Inspect;
 use Chevere\Api\src\FilterIterator;
+use Chevere\Cache\Cache;
 use Chevere\Router\Maker as RouterMaker;
 
 final class Maker
@@ -103,6 +104,12 @@ final class Maker
     public function api(): array
     {
         return $this->api;
+    }
+
+    public function cache(): void
+    {
+        $cache = new Cache('api');
+        $cache->put('api', $this->api);
     }
 
     private function validateRecursiveIterator(): void

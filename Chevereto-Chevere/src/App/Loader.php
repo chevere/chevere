@@ -44,7 +44,7 @@ use Chevere\Stopwatch;
 
 final class Loader implements LoaderContract
 {
-    const CACHED = false;
+    const CACHED = true;
 
     /** @var Runtime */
     private static $runtime;

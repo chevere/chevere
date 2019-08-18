@@ -19,7 +19,7 @@ use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\FileReturn\Maker as FileReturnMaker;
 use Chevere\Path\PathHandle;
-use Chevere\Cache\Maker as CacheMaker;
+use Chevere\Cache\Cache;
 
 /**
  * Maker takes a bunch of Routes and generates a routing table (php array).
@@ -111,7 +111,7 @@ final class Maker
 
     public function cache()
     {
-        $cache = new CacheMaker('router');
+        $cache = new Cache('router');
         $cache->put('regex', $this->regex);
         $cache->put('routes', $this->routes);
         $cache->put('routesIndex', $this->routesIndex);

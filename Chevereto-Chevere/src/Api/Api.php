@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Api;
 
+use Chevere\Cache\Cache;
 use LogicException;
 use Chevere\Message;
 use Chevere\Contracts\Api\ApiContract;
@@ -30,13 +31,14 @@ final class Api implements ApiContract
     /** @var array */
     private static $api;
 
-    public function __construct(Maker $api = null)
+    public function __construct(Maker $maker = null)
     {
-        if (isset($api)) {
-            self::$api = $api->api();
+        if (isset($maker)) {
+            self::$api = $maker->api();
+            $maker->cache();
         } else {
-            $cache = new FileReturn(new PathHandle('cache:api'));
-            self::$api = $cache->raw();
+            $cache = new Cache('api');
+            self::$api = $cache->get('api')->raw();
         }
     }
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Router;
 
+use Chevere\Cache\Cache;
 use LogicException;
 use Chevere\Message;
 use Chevere\Route\Route;
@@ -49,12 +50,10 @@ final class Router
             $this->routesIndex = $maker->routesIndex();
             $maker->cache();
         } else {
-            $regex = new FileReturn(new PathHandle('cache/router:regex'));
-            $routes = new FileReturn(new PathHandle('cache/router:routes'));
-            $routesIndex = new FileReturn(new PathHandle('cache/router:routesIndex'));
-            $this->regex = $regex->raw();
-            $this->routes = $routes->raw();
-            $this->routesIndex = $routesIndex->raw();
+            $cache = new Cache('router');
+            $this->regex = $cache->get('regex')->raw();
+            $this->routes = $cache->get('routes')->raw();
+            $this->routesIndex = $cache->get('routesIndex')->raw();
         }
     }
 

@@ -35,6 +35,11 @@ final class Maker
         $this->put();
     }
 
+    public function path(): string
+    {
+        return $this->path;
+    }
+
     public function checksum(): string
     {
         return $this->checksum;
