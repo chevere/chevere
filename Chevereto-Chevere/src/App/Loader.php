@@ -37,14 +37,16 @@ use Chevere\Controllers\Api\GetController;
 use Chevere\HttpFoundation\Method;
 use Chevere\HttpFoundation\Methods;
 use Chevere\Api\Endpoint;
+use Chevere\File;
+use Chevere\Message;
 use Chevere\Router\Router;
 use Chevere\Router\RouterRead;
 use Chevere\Type;
 use Chevere\Stopwatch;
 
-final class Loader implements LoaderContract
+final class Loader
 {
-    const CACHED = true;
+    const CACHED = false;
 
     /** @var Runtime */
     private static $runtime;
@@ -75,24 +77,25 @@ final class Loader implements LoaderContract
 
     public function __construct()
     {
+        // if (!File::exists(App::BUILD_FILEPATH)) {
+        //     throw new RuntimeException(
+        //         (new Message('The application needs to be built before being able to use %className%.'))
+        //             ->code('%className%', __CLASS__)
+        //             ->toString()
+        //     );
+        // }
+
         $this->routerMaker = new RouterMaker();
         $this->app = new App();
         $this->app->setResponse(new Response());
 
-        if (false === stream_resolve_include_path(App::BUILD_FILEPATH)) {
-            new Checkout(App::BUILD_FILEPATH);
-        }
-
-        // Load::php(self::FILEHANDLE_HACKS);
         $pathHandle = new PathHandle(App::FILEHANDLE_PARAMETERS);
         $arrayFile = new ArrayFile($pathHandle);
         $parameters = new Parameters($arrayFile);
 
-        $this->applyParameters($parameters); //router
+        $this->applyParameters($parameters);
 
-        if (Console::bind($this)) {
-            Console::run();
-        }
+        Console::bind($this);
     }
 
     /**
@@ -106,9 +109,10 @@ final class Loader implements LoaderContract
     /**
      * {@inheritdoc}
      */
-    public function setArguments(array $arguments): void
+    public function setArguments(array $arguments): self
     {
         $this->arguments = $arguments;
+        return $this;
     }
 
     /**

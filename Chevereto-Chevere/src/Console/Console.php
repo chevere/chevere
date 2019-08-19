@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Console;
 
+use Chevere\App\Loader;
 use RuntimeException;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -23,7 +24,7 @@ use Chevere\Contracts\Console\CliContract;
 /**
  * Provides static access to the Chevere application console.
  */
-final class Console implements ConsoleContract
+final class Console
 {
     const VERBOSITY_QUIET = ConsoleOutput::VERBOSITY_QUIET;
     const VERBOSITY_NORMAL = ConsoleOutput::VERBOSITY_NORMAL;
@@ -44,7 +45,7 @@ final class Console implements ConsoleContract
     /** @var bool */
     private static $available;
 
-    public static function bind(LoaderContract $loader): bool
+    public static function bind(Loader $loader): bool
     {
         if (php_sapi_name() == 'cli') {
             self::$loader = $loader;

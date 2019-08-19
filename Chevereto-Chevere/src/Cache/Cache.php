@@ -81,7 +81,6 @@ final class Cache
         $pathHandle = new PathHandle($fileIdentifier);
         $fileReturn = new FileReturn($pathHandle);
         $fileReturn->put($var);
-        dd($fileReturn);
         $checksum = $fileReturn->checksum();
         $this->array[$this->name][$key] = [
             'path' => $pathHandle->path(),

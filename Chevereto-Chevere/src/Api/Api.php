@@ -38,11 +38,8 @@ final class Api implements ApiContract
             self::$api = $maker->api();
             $maker->cache();
         } else {
-            $sw = new Stopwatch();
             $cache = new Cache('api');
             $isCached = $cache->exists('api');
-            $sw->stop();
-            dd($isCached, $sw->records());
             self::$api = $cache->get('api')->raw();
         }
     }

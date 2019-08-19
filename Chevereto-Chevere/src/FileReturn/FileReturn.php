@@ -23,6 +23,7 @@ final class FileReturn
 {
     const PHP_RETURN = "<?php\n\nreturn ";
     const PHP_RETURN_CHARS = 14;
+    const CHECKSUM_ALGO = 'sha512';
     
     /** @var string */
     private $path;
@@ -32,14 +33,6 @@ final class FileReturn
     public function __construct(PathHandle $pathHandle)
     {
         $this->path = $pathHandle->path();
-        if (!File::exists($this->path)) {
-            throw new RuntimeException(
-                (new Message("File %filepath% file doesn't exists"))
-                    ->code('%filepath%', $this->path)
-                    ->toString()
-            );
-        }
-        $this->validate();
     }
 
     public function path(): string
@@ -58,6 +51,14 @@ final class FileReturn
     public function raw()
     {
         if (!isset($this->raw)) {
+            if (!File::exists($this->path)) {
+                throw new RuntimeException(
+                    (new Message("File %filepath% file doesn't exists"))
+                        ->code('%filepath%', $this->path)
+                        ->toString()
+                );
+            }
+            $this->validateContents();
             $this->raw = include $this->path;
         }
         return $this->raw;
@@ -78,6 +79,9 @@ final class FileReturn
         return $this->var;
     }
 
+    /**
+     * Put $var into the FileReturn file
+     */
     public function put($var)
     {
         if (is_iterable($var)) {
@@ -93,12 +97,25 @@ final class FileReturn
         $this->checksum = $this->getHashFile();
     }
 
+    /**
+     * OPCache the FileReturn file
+     */
+    public function compile()
+    {
+        opcache_compile_file($this->path);
+    }
+
+    public function invalidateCache()
+    {
+        opcache_invalidate($this->path);
+    }
+
     private function getHashFile()
     {
         return hash_file(static::CHECKSUM_ALGO, $this->path);
     }
 
-    private function validate()
+    private function validateContents()
     {
         $handle = fopen($this->path, 'r');
         $contents = fread($handle, static::PHP_RETURN_CHARS);
