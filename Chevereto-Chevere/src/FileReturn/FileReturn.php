@@ -33,7 +33,7 @@ final class FileReturn
     {
         $this->path = $pathHandle->path();
         if (!File::exists($this->path)) {
-            throw new InvalidArgumentException(
+            throw new RuntimeException(
                 (new Message("File %filepath% file doesn't exists"))
                     ->code('%filepath%', $this->path)
                     ->toString()

@@ -60,6 +60,13 @@ final class Cache
         return new FileReturn(new PathHandle($fileIdentifier));
     }
 
+    public function exists(string $key): bool
+    {
+        $fileIdentifier = $this->getFileIdentifier($key);
+        $path = Path::fromIdentifier($fileIdentifier);
+        return File::exists($path);
+    }
+
     /**
      * Put cache
      *

@@ -19,6 +19,7 @@ use Chevere\Message;
 use Chevere\Contracts\Api\ApiContract;
 use Chevere\FileReturn\FileReturn;
 use Chevere\Path\PathHandle;
+use Chevere\Stopwatch;
 
 /**
  * Api provides a static method to read the exposed API inside the app runtime.
@@ -37,7 +38,11 @@ final class Api implements ApiContract
             self::$api = $maker->api();
             $maker->cache();
         } else {
+            $sw = new Stopwatch();
             $cache = new Cache('api');
+            $isCached = $cache->exists('api');
+            $sw->stop();
+            dd($isCached, $sw->records());
             self::$api = $cache->get('api')->raw();
         }
     }
