@@ -17,7 +17,6 @@ use LogicException;
 use Chevere\Message;
 use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
-use Chevere\FileReturn\Maker as FileReturnMaker;
 use Chevere\Path\PathHandle;
 use Chevere\Cache\Cache;
 

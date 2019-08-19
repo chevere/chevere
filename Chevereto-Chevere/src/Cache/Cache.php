@@ -18,7 +18,6 @@ use InvalidArgumentException;
 use Chevere\Message;
 use Chevere\File;
 use Chevere\FileReturn\FileReturn;
-use Chevere\FileReturn\Maker as FileReturnMaker;
 use Chevere\Path\Path;
 use Chevere\Path\PathHandle;
 
@@ -67,19 +66,21 @@ final class Cache
      * @param string $key Cache key
      * @param mixed $var Anything, but keep it restricted to one-dimension iterables at most.
      *
-     * @return array A FileReturnMaker instance for the cached file.
+     * @return array A FileReturn instance for the cached file.
      */
-    public function put(string $key, $var): FileReturnMaker
+    public function put(string $key, $var): FileReturn
     {
         $fileIdentifier = $this->getFileIdentifier($key);
         $pathHandle = new PathHandle($fileIdentifier);
-        $fileReturnMaker = new FileReturnMaker($pathHandle, $var);
-        $checksum = $fileReturnMaker->checksum();
+        $fileReturn = new FileReturn($pathHandle);
+        $fileReturn->put($var);
+        dd($fileReturn);
+        $checksum = $fileReturn->checksum();
         $this->array[$this->name][$key] = [
             'path' => $pathHandle->path(),
             'checksum' => $checksum,
         ];
-        return $fileReturnMaker;
+        return $fileReturn;
     }
 
     /**

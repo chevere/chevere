@@ -40,18 +40,33 @@ final class FileReturn
             );
         }
         $this->validate();
-        $this->raw = include $this->path;
+    }
+
+    public function path(): string
+    {
+        return $this->path;
+    }
+
+    public function checksum(): string
+    {
+        if (!isset($this->checksum)) {
+            $this->checksum = $this->getHashFile();
+        }
+        return $this->checksum;
     }
 
     public function raw()
     {
+        if (!isset($this->raw)) {
+            $this->raw = include $this->path;
+        }
         return $this->raw;
     }
 
     public function get()
     {
         if (!isset($this->var)) {
-            $this->var = $this->raw;
+            $this->var = $this->raw();
             if (is_iterable($this->var)) {
                 foreach ($this->var as $k => &$v) {
                     $this->unseralize($v);
@@ -61,6 +76,26 @@ final class FileReturn
             }
         }
         return $this->var;
+    }
+
+    public function put($var)
+    {
+        if (is_iterable($var)) {
+            foreach ($var as $k => &$v) {
+                $this->switchVar($v);
+            }
+        } else {
+            $this->switchVar($var);
+        }
+        $varExport = var_export($var, true);
+        $export = FileReturn::PHP_RETURN . $varExport . ';';
+        File::put($this->path, $export);
+        $this->checksum = $this->getHashFile();
+    }
+
+    private function getHashFile()
+    {
+        return hash_file(static::CHECKSUM_ALGO, $this->path);
     }
 
     private function validate()
@@ -74,6 +109,15 @@ final class FileReturn
                     ->code('%filepath%', $this->path)
                     ->toString()
             );
+        }
+    }
+
+    
+
+    private function switchVar(&$var)
+    {
+        if (is_object($var)) {
+            $var = serialize($var);
         }
     }
 

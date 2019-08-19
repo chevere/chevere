@@ -16,12 +16,7 @@ namespace Chevere\Router;
 use Chevere\Cache\Cache;
 use LogicException;
 use Chevere\Message;
-use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
-use Chevere\Contracts\Router\RouterContract;
-use Chevere\FileReturn\FileReturn;
-use Chevere\FileReturn\Maker as FileReturnMaker;
-use Chevere\Path\PathHandle;
 
 /**s
  * Routes takes a bunch of Routes and generates a routing table (php array).
