@@ -75,6 +75,9 @@ final class Loader implements LoaderContract
     /** @var array An array containing the collection of Cache->toArray() data (checksums) */
     private $cacheChecksums;
 
+    /** @var bool True if the console loop ran */
+    private $consoleLoop;
+
     public function __construct()
     {
         Console::bind($this);
