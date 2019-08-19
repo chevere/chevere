@@ -20,29 +20,14 @@ use Chevere\Contracts\App\CheckoutContract;
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).
  */
-final class Checkout implements CheckoutContract
+final class Checkout
 {
-    public function __construct(string $filename)
+    public function __construct()
     {
-        $fh = fopen($filename, 'w');
-        if (false === $fh) {
+        if (!file_put_contents(App::BUILD_FILEPATH, (string) time())) {
             throw new RuntimeException(
-                (new Message('Unable to open %f for writing'))
-                    ->code('%f', $filename)
-                    ->toString()
-            );
-        }
-        if (!@fwrite($fh, (string) time())) {
-            throw new RuntimeException(
-                (new Message('Unable to write to %f'))
-                    ->code('%f', $filename)
-                    ->toString()
-            );
-        }
-        if (!@fclose($fh)) {
-            throw new RuntimeException(
-                (new Message('Unable to close %f'))
-                    ->code('%f', $filename)
+                (new Message('Unable to checkout to %file%'))
+                    ->code('%file', App::BUILD_FILEPATH)
                     ->toString()
             );
         }

@@ -36,10 +36,9 @@ final class Api implements ApiContract
     {
         if (isset($maker)) {
             self::$api = $maker->api();
-            $maker->cache();
+            $maker->setCache();
         } else {
             $cache = new Cache('api');
-            $isCached = $cache->exists('api');
             self::$api = $cache->get('api')->raw();
         }
     }

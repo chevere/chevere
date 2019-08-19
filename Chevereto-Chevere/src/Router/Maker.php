@@ -57,6 +57,9 @@ final class Maker
     /** @var array Stores the map for a given route ['group' => group, 'id' => routeId] */
     private $routeMap;
 
+    /** @var Cache */
+    private $cache;
+
     public function __construct()
     {
     }
@@ -108,12 +111,17 @@ final class Maker
         return $this->routesIndex;
     }
 
-    public function cache()
+    public function setCache()
     {
-        $cache = new Cache('router');
-        $cache->put('regex', $this->regex);
-        $cache->put('routes', $this->routes);
-        $cache->put('routesIndex', $this->routesIndex);
+        $this->cache = new Cache('router');
+        $this->cache->put('regex', $this->regex);
+        $this->cache->put('routes', $this->routes);
+        $this->cache->put('routesIndex', $this->routesIndex);
+    }
+
+    public function cache(): Cache
+    {
+        return $this->cache;
     }
 
     /**
@@ -137,7 +145,7 @@ final class Maker
             throw new LogicException(
                 (new Message('Route key %s has been already declared by %r.'))
                     ->code('%s', $this->route->path())
-                    ->code('%r', $keyedRoute[0] . '@' . $keyedRoute[1])
+                    ->code('%r', $keyedRoute['id'] . '@' . $keyedRoute['group'])
                     ->toString()
             );
         }

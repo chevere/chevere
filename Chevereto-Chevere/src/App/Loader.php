@@ -72,11 +72,14 @@ final class Loader implements LoaderContract
     /** @var bool True if run() has been called */
     private $ran;
 
+    /** @var array An array containing the collection of Cache->toArray() data (checksums) */
+    private $cacheChecksums;
+
     public function __construct()
     {
         Console::bind($this);
         
-        if (!Console::isBuilding() && !File::exists(App::BUILD_FILEPATH)) {
+        if (!DEV_MODE && !Console::isBuilding() && !File::exists(App::BUILD_FILEPATH)) {
             throw new RuntimeException(
                 (new Message('The application needs to be built before being able to use %className%.'))
                     ->code('%className%', __CLASS__)
@@ -98,21 +101,24 @@ final class Loader implements LoaderContract
         if (DEV_MODE || Console::isBuilding()) {
             $this->build();
         }
-
+        
         $this->applyParameters();
     }
 
     public function build(): void
     {
+        $this->cacheChecksums = [];
         if (isset($this->paramApi)) {
             $this->createApiMaker(new PathHandle($this->paramApi));
             $this->api = new Api($this->apiMaker);
+            $this->cacheChecksums = $this->apiMaker->cache()->toArray();
         }
         if (isset($this->paramRoutes)) {
             $this->addRoutes($this->paramRoutes);
             $this->router = new Router($this->routerMaker);
+            $this->cacheChecksums = array_merge($this->routerMaker->cache()->toArray(), $this->cacheChecksums);
         }
-        new Checkout(App::BUILD_FILEPATH);
+        new Checkout();
     }
 
     /**
@@ -141,6 +147,11 @@ final class Loader implements LoaderContract
 
         $pathinfo = ltrim($this->request->getPathInfo(), '/');
         $this->request->attributes->set('requestArray', explode('/', $pathinfo));
+    }
+
+    public function cacheChecksums(): array
+    {
+        return $this->cacheChecksums;
     }
 
     /**

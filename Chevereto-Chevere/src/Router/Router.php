@@ -43,7 +43,7 @@ final class Router
             $this->regex = $maker->regex();
             $this->routes = $maker->routes();
             $this->routesIndex = $maker->routesIndex();
-            $maker->cache();
+            $maker->setcache();
         } else {
             $cache = new Cache('router');
             $this->regex = $cache->get('regex')->raw();

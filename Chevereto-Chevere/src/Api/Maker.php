@@ -65,6 +65,9 @@ final class Maker
     /** @var string Target API directory (absolute) */
     private $path;
 
+    /** @var Cache */
+    private $cache;
+
     public function __construct(RouterMaker $router)
     {
         $this->routerMaker = $router;
@@ -106,10 +109,15 @@ final class Maker
         return $this->api;
     }
 
-    public function cache(): void
+    public function setCache(): void
     {
-        $cache = new Cache('api');
-        $cache->put('api', $this->api);
+        $this->cache = new Cache('api');
+        $this->cache->put('api', $this->api);
+    }
+
+    public function cache() : Cache
+    {
+        return $this->cache;
     }
 
     private function validateRecursiveIterator(): void

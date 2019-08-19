@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Console;
 
+use Chevere\Console\Commands\BuildCommand;
 use Monolog\Logger;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -70,6 +71,7 @@ final class Cli implements CliContract
             (new RequestCommand($this))->baseCommand(),
             (new RunCommand($this))->baseCommand(),
             (new InspectCommand($this))->baseCommand(),
+            (new BuildCommand($this))->baseCommand(),
         ]);
         $this->client->setAutoExit(false);
     }

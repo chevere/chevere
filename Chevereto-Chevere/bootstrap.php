@@ -26,7 +26,9 @@ use Chevere\Runtime\Sets\RuntimeSetLocale;
 use Chevere\Runtime\Sets\RuntimeSetErrorHandler;
 use Chevere\Runtime\Sets\RuntimeSetExceptionHandler;
 
+/** DEV_MODE true rebuild the App on every load */
 define('Chevere\DEV_MODE', false);
+
 /*
  * Assuming that this file has been loaded from /app/bootstrap.php
  */
