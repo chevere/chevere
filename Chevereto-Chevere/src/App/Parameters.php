@@ -18,9 +18,12 @@ use Chevere\ArrayFile\ArrayFile;
 use Chevere\Data\Data;
 use Chevere\Message;
 use Chevere\Contracts\App\ParametersContract;
+use Chevere\Data\Traits\DataKeyTrait;
 
 final class Parameters implements ParametersContract
 {
+    use DataKeyTrait;
+
     const CONFIG_FILES = 'configFiles';
 
     /**
@@ -50,7 +53,7 @@ final class Parameters implements ParametersContract
     private $arrayFile;
 
     /** @var Data */
-    public $data;
+    private $data;
 
     /** @var string|null The file source (for instances created using ::createFromFile) */
     // private $sourceFilepath;

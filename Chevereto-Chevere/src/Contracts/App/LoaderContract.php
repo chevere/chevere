@@ -29,7 +29,7 @@ interface LoaderContract
      * @param array $arguments string arguments to pass to the controller
      */
     // TODO: $arguments Datastructure
-    public function setArguments(array $arguments): void;
+    public function setArguments(array $arguments): LoaderContract;
 
     /**
      * @param Request $request

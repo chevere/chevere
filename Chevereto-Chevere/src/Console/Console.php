@@ -45,6 +45,9 @@ final class Console
     /** @var bool */
     private static $available;
 
+    /** @var string The first argument (command) passed */
+    private static $command;
+
     public static function bind(Loader $loader): bool
     {
         if (php_sapi_name() == 'cli') {
@@ -58,8 +61,15 @@ final class Console
 
     public static function init()
     {
-        self::$cli = new Cli(new ArgvInput());
+        $input = new ArgvInput();
+        self::$command = $input->getFirstArgument();
+        self::$cli = new Cli($input);
         self::$available = true;
+    }
+
+    public static function isBuilding(): bool
+    {
+        return self::isRunning() && 'build' == self::$command;
     }
 
     public static function cli(): CliContract
@@ -69,6 +79,9 @@ final class Console
 
     public static function run()
     {
+        if (!self::isRunning()) {
+            return;
+        }
         $exitCode = self::$cli->runner();
         $command = self::$cli->command;
         if (null === $command) {

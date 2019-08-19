@@ -15,9 +15,9 @@ namespace Chevere\App;
 
 use LogicException;
 use RuntimeException;
+use const Chevere\DEV_MODE;
 use Chevere\ArrayFile\ArrayFile;
 use Chevere\ArrayFile\ArrayFileCallback;
-use Chevere\Path\Path;
 use Chevere\Path\PathHandle;
 use Chevere\Api\Api;
 use Chevere\Api\Maker as ApiMaker;
@@ -28,8 +28,6 @@ use Chevere\Router\Maker as RouterMaker;
 use Chevere\Runtime\Runtime;
 use Chevere\Interfaces\RenderableInterface;
 use Chevere\Contracts\App\AppContract;
-use Chevere\Contracts\App\ParametersContract;
-use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Controllers\Api\HeadController;
 use Chevere\Controllers\Api\OptionsController;
@@ -37,14 +35,13 @@ use Chevere\Controllers\Api\GetController;
 use Chevere\HttpFoundation\Method;
 use Chevere\HttpFoundation\Methods;
 use Chevere\Api\Endpoint;
+use Chevere\Contracts\App\LoaderContract;
 use Chevere\File;
 use Chevere\Message;
 use Chevere\Router\Router;
-use Chevere\Router\RouterRead;
 use Chevere\Type;
-use Chevere\Stopwatch;
 
-final class Loader
+final class Loader implements LoaderContract
 {
     const CACHED = false;
 
@@ -77,13 +74,15 @@ final class Loader
 
     public function __construct()
     {
-        // if (!File::exists(App::BUILD_FILEPATH)) {
-        //     throw new RuntimeException(
-        //         (new Message('The application needs to be built before being able to use %className%.'))
-        //             ->code('%className%', __CLASS__)
-        //             ->toString()
-        //     );
-        // }
+        Console::bind($this);
+        
+        if (!Console::isBuilding() && !File::exists(App::BUILD_FILEPATH)) {
+            throw new RuntimeException(
+                (new Message('The application needs to be built before being able to use %className%.'))
+                    ->code('%className%', __CLASS__)
+                    ->toString()
+            );
+        }
 
         $this->routerMaker = new RouterMaker();
         $this->app = new App();
@@ -91,11 +90,29 @@ final class Loader
 
         $pathHandle = new PathHandle(App::FILEHANDLE_PARAMETERS);
         $arrayFile = new ArrayFile($pathHandle);
-        $parameters = new Parameters($arrayFile);
+        $this->parameters = new Parameters($arrayFile);
+    
+        $this->paramApi = $this->parameters->dataKey(Parameters::API);
+        $this->paramRoutes = $this->parameters->dataKey(Parameters::ROUTES);
 
-        $this->applyParameters($parameters);
+        if (DEV_MODE || Console::isBuilding()) {
+            $this->build();
+        }
 
-        Console::bind($this);
+        $this->applyParameters();
+    }
+
+    public function build(): void
+    {
+        if (isset($this->paramApi)) {
+            $this->createApiMaker(new PathHandle($this->paramApi));
+            $this->api = new Api($this->apiMaker);
+        }
+        if (isset($this->paramRoutes)) {
+            $this->addRoutes($this->paramRoutes);
+            $this->router = new Router($this->routerMaker);
+        }
+        new Checkout(App::BUILD_FILEPATH);
     }
 
     /**
@@ -109,7 +126,7 @@ final class Loader
     /**
      * {@inheritdoc}
      */
-    public function setArguments(array $arguments): self
+    public function setArguments(array $arguments): LoaderContract
     {
         $this->arguments = $arguments;
         return $this;
@@ -131,6 +148,10 @@ final class Loader
      */
     public function run(): void
     {
+        if (Console::isRunning() && !isset($this->consoleLoop)) {
+            $this->consoleLoop = true;
+            Console::run();
+        }
         if (!isset($this->request)) {
             $this->setRequest(Request::createFromGlobals());
         }
@@ -183,25 +204,13 @@ final class Loader
         self::$runtime = $runtime;
     }
 
-    private function applyParameters(ParametersContract $parameters)
+    private function applyParameters()
     {
-        $api = $parameters->data->getKey(Parameters::API);
-        if (isset($api)) {
-            if (static::CACHED) {
-                $this->api = new Api();
-            } else {
-                $this->createApiMaker(new PathHandle($api));
-                $this->api = new Api($this->apiMaker);
-            }
+        if (isset($this->paramApi) && !isset($this->api)) {
+            $this->api = new Api();
         }
-        $routes = $parameters->data->getKey(Parameters::ROUTES);
-        if (isset($routes)) {
-            if (static::CACHED) {
-                $this->router = new Router();
-            } else {
-                $this->addRoutes($routes);
-                $this->router = new Router($this->routerMaker);
-            }
+        if (isset($this->paramRoutes) && !isset($this->router)) {
+            $this->router = new Router();
         }
     }
 
