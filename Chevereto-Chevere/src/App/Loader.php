@@ -65,7 +65,7 @@ final class Loader implements LoaderContract
 
     /** @var Router */
     private $router;
-    
+
     /** @var RouterMaker */
     private $routerMaker;
 
@@ -81,7 +81,7 @@ final class Loader implements LoaderContract
     public function __construct()
     {
         Console::bind($this);
-        
+
         if (!DEV_MODE && !Console::isBuilding() && !File::exists(App::BUILD_FILEPATH)) {
             throw new RuntimeException(
                 (new Message('The application needs to be built before being able to use %className%.'))
@@ -94,17 +94,19 @@ final class Loader implements LoaderContract
         $this->app = new App();
         $this->app->setResponse(new Response());
 
-        $pathHandle = new PathHandle(App::FILEHANDLE_PARAMETERS);
-        $arrayFile = new ArrayFile($pathHandle);
-        $this->parameters = new Parameters($arrayFile);
-    
+        $this->parameters = new Parameters(
+            new ArrayFile(
+                new PathHandle(App::FILEHANDLE_PARAMETERS)
+            )
+        );
+
         $this->paramApi = $this->parameters->dataKey(Parameters::API);
         $this->paramRoutes = $this->parameters->dataKey(Parameters::ROUTES);
 
         if (DEV_MODE || Console::isBuilding()) {
             $this->build();
         }
-        
+
         $this->applyParameters();
     }
 
@@ -253,9 +255,10 @@ final class Loader implements LoaderContract
     private function addRoutes(array $paramRoutes): void
     {
         foreach ($paramRoutes as $fileHandleString) {
-            $fileHandle = new PathHandle($fileHandleString);
-            $type = new Type(RouteContract::class);
-            $arrayFile = new ArrayFile($fileHandle, $type);
+            $arrayFile = new ArrayFile(
+                new PathHandle($fileHandleString),
+                new Type(RouteContract::class)
+            );
             $arrayFileWrap = new ArrayFileCallback($arrayFile, function ($k, $route) {
                 $route->setId((string) $k);
             });

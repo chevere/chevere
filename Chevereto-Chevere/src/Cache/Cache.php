@@ -46,24 +46,24 @@ final class Cache
     {
         $this->validateKey($name);
         $this->name = $name;
-        $this->baseKey = 'cache/'.$name . ':';
+        $this->baseKey = 'cache/' . $name . ':';
     }
 
     /**
-     * Get cache
+     * Get cache as a FileReturn object
      *
      * @return FileReturn A FileReturn instance for the cache file.
      */
     public function get(string $key): FileReturn
     {
-        $fileIdentifier = $this->getFileIdentifier($key);
-        return new FileReturn(new PathHandle($fileIdentifier));
+        return new FileReturn(
+            new PathHandle($this->getFileIdentifier($key))
+        );
     }
 
     public function exists(string $key): bool
     {
-        $fileIdentifier = $this->getFileIdentifier($key);
-        $path = Path::fromIdentifier($fileIdentifier);
+        $path = Path::fromIdentifier($this->getFileIdentifier($key));
         return File::exists($path);
     }
 
@@ -77,22 +77,16 @@ final class Cache
      */
     public function put(string $key, $var): FileReturn
     {
-        $fileIdentifier = $this->getFileIdentifier($key);
-        $pathHandle = new PathHandle($fileIdentifier);
-        $fileReturn = new FileReturn($pathHandle);
+        $fileReturn = $this->get($key);
         $fileReturn->put($var);
-        $checksum = $fileReturn->checksum();
         $this->array[$this->name][$key] = [
-            'path' => $pathHandle->path(),
-            'checksum' => $checksum,
+            'path' => $fileReturn->path(),
+            'checksum' => $fileReturn->checksum(),
         ];
         return $fileReturn;
     }
 
-    /**
-     * Remove cache
-     */
-    public function remove(string $key)
+    public function remove(string $key): void
     {
         $fileIdentifier = $this->getFileIdentifier($key);
         $path = Path::fromIdentifier($fileIdentifier);
@@ -119,7 +113,7 @@ final class Cache
 
     private function validateKey(string $key): void
     {
-        if (preg_match_all('#['.static::ILLEGAL_KEY_CHARACTERS.']#', $key, $matches)) {
+        if (preg_match_all('#[' . static::ILLEGAL_KEY_CHARACTERS . ']#', $key, $matches)) {
             $matches = array_unique($matches[0]);
             $forbidden = implode(', ', $matches);
             throw new InvalidArgumentException(

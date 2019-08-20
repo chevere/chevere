@@ -21,6 +21,8 @@ use Chevere\Message;
 use Chevere\Type;
 use Chevere\Path\PathHandle;
 
+// FIXME: Make a client for injecting type. Don't pass type in construct pls.
+
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).
  */
@@ -139,7 +141,7 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
     {
         $type = gettype($object);
         if ($type == 'object') {
-            $type .= ' '.get_class($object);
+            $type .= ' ' . get_class($object);
         }
         throw new LogicException(
             (new Message('Expecting array containing only %members% members, type %type% found at %filepath% (array key %key%).'))

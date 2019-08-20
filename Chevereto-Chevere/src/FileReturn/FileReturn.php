@@ -17,17 +17,17 @@ use RuntimeException;
 use Chevere\File;
 use Chevere\Message;
 use Chevere\Path\PathHandle;
-use InvalidArgumentException;
 
 final class FileReturn
 {
     const PHP_RETURN = "<?php\n\nreturn ";
     const PHP_RETURN_CHARS = 14;
     const CHECKSUM_ALGO = 'sha512';
-    
-    /** @var string */
+
+    /** @var string Absolute path to file */
     private $path;
 
+    /** @var string Raw file contents (as is) */
     private $raw;
 
     public function __construct(PathHandle $pathHandle)
@@ -64,6 +64,10 @@ final class FileReturn
         return $this->raw;
     }
 
+    /**
+     * Gets the content of the file appling unserialize.
+     * TODO: Rename to something with more context
+     */
     public function get()
     {
         if (!isset($this->var)) {
@@ -80,7 +84,7 @@ final class FileReturn
     }
 
     /**
-     * Put $var into the FileReturn file
+     * Put $var into the file using var_export return
      */
     public function put($var)
     {
@@ -128,8 +132,6 @@ final class FileReturn
             );
         }
     }
-
-    
 
     private function switchVar(&$var)
     {
