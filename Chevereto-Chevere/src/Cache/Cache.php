@@ -73,7 +73,7 @@ final class Cache
      * @param string $key Cache key
      * @param mixed $var Anything, but keep it restricted to one-dimension iterables at most.
      *
-     * @return array A FileReturn instance for the cached file.
+     * @return FileReturn A FileReturn instance for the cached file.
      */
     public function put(string $key, $var): FileReturn
     {

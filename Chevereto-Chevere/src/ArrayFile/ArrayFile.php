@@ -36,15 +36,7 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
     private $arrayFileType;
 
     /** @var string The file containing return [array] */
-    private $filepath;
-
-    /** @var string A type, class name or interface that all array members must implement */
-    private $typeMatch;
-
-    /** @var string The primitive type for typeMatch */
-    private $typePrimitive;
-
-    /******** */
+    private $path;
 
     /** @var Type */
     private $type;

@@ -62,7 +62,7 @@ final class Parameters implements ParametersContract
     public function __construct(ArrayFile $arrayFile)
     {
         $this->arrayFile = $arrayFile;
-        $this->data = Data::fromArrayAccess($this->arrayFile);
+        $this->data = Data::fromArray($this->arrayFile->toArray());
         $this->validate();
     }
 
