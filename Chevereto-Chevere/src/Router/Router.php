@@ -17,6 +17,7 @@ use Chevere\Cache\Cache;
 use LogicException;
 use Chevere\Message;
 use Chevere\Contracts\Route\RouteContract;
+use Chevere\Path\PathHandle;
 
 /**s
  * Routes takes a bunch of Routes and generates a routing table (php array).
@@ -78,7 +79,7 @@ final class Router
                 $this->routes[$id] = $route;
             }
             $this->arguments = [];
-            if ($set) {
+            if (isset($set)) {
                 foreach ($matches as $k => $v) {
                     $wildcardId = $route->keyPowerSet()[$set][$k];
                     $wildcardName = $route->wildcardName($wildcardId);

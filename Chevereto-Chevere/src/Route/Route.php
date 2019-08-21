@@ -23,8 +23,10 @@ use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\HttpFoundation\MethodsContract;
 use Chevere\Contracts\HttpFoundation\MethodContract;
 use Chevere\HttpFoundation\Method;
+use Chevere\Path\PathHandle;
 
 // IDEA: L10n support
+// FIXME: Use object properties
 
 final class Route implements RouteContract
 {
@@ -81,6 +83,7 @@ final class Route implements RouteContract
 
     public function __construct(string $path, string $controller = null)
     {
+        $this->pathHandle = new PathHandle('app:eee');
         $pathValidate = new PathValidate($path);
         $this->path = $path;
         $this->maker = $this->getMakerData();
@@ -243,13 +246,13 @@ final class Route implements RouteContract
 
     public function getRegex(string $pattern): string
     {
-        $regex = '^'.$pattern.'$';
+        $regex = '^' . $pattern . '$';
         if (!Str::contains('{', $regex)) {
             return $regex;
         }
         if (isset($this->wildcards)) {
             foreach ($this->wildcards as $k => $v) {
-                $regex = str_replace("{{$k}}", '('.$this->wheres[$v].')', $regex);
+                $regex = str_replace("{{$k}}", '(' . $this->wheres[$v] . ')', $regex);
             }
         }
 
