@@ -8,3 +8,4 @@ var/
 composer.lock
 .vscode/
 .phpunit.result.cache
+app/build
