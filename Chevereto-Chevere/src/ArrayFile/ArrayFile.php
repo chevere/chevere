@@ -15,6 +15,7 @@ namespace Chevere\ArrayFile;
 
 use ArrayAccess;
 use ArrayIterator;
+use Chevere\FileReturn\FileReturn;
 use LogicException;
 use IteratorAggregate;
 use Chevere\Message;
@@ -31,6 +32,9 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
     /** @var array The array returned by the file */
     private $array;
 
+    /** @var string The return type of the file */
+    private $arrayFileType;
+
     /** @var string The file containing return [array] */
     private $filepath;
 
@@ -46,14 +50,16 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
     private $type;
 
     /**
-     * @param string $fileHandle Path handle or absolute filepath
+     * @param PathHandle $pathHandle Path handle or absolute filepath
      * @param Type   $type       If set, the array members must match the target type, classname or interface
      */
     public function __construct(PathHandle $pathHandle, Type $type = null)
     {
+        $fileReturn = new FileReturn($pathHandle);
+        $fileReturn->setStrict(false);
         $filepath = $pathHandle->path();
-        $this->array = include $filepath;
-        $this->filepath = $filepath;
+        $this->array = $fileReturn->raw();
+        $this->path = $filepath;
         $this->arrayFileType = gettype($this->array);
         try {
             $this->validateIsArray();
@@ -97,9 +103,9 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
         return new ArrayIterator($this->array);
     }
 
-    public function getFilepath(): string
+    public function path(): string
     {
-        return $this->filepath;
+        return $this->path;
     }
 
     public function getType(): ?string

@@ -17,6 +17,7 @@ use RuntimeException;
 use Chevere\File;
 use Chevere\Message;
 use Chevere\Path\PathHandle;
+use Throwable;
 
 final class FileReturn
 {
@@ -30,9 +31,18 @@ final class FileReturn
     /** @var string Raw file contents (as is) */
     private $raw;
 
+    /** @var bool True for strick validation (PHP_RETURN), false for regex validation (return <algo>) */
+    private $strict;
+
     public function __construct(PathHandle $pathHandle)
     {
+        $this->strict =  true;
         $this->path = $pathHandle->path();
+    }
+
+    public function setStrict(bool $toggle)
+    {
+        $this->strict = $toggle;
     }
 
     public function path(): string
@@ -58,7 +68,7 @@ final class FileReturn
                         ->toString()
                 );
             }
-            $this->validateContents();
+            $this->validate();
             $this->raw = include $this->path;
         }
         return $this->raw;
@@ -119,14 +129,35 @@ final class FileReturn
         return hash_file(static::CHECKSUM_ALGO, $this->path);
     }
 
-    private function validateContents()
+    private function validate()
+    {
+        if ($this->strict) {
+            $this->validateStrict();
+        } else {
+            $this->validateNonStrict();
+        }
+    }
+
+    private function validateStrict(): void
     {
         $handle = fopen($this->path, 'r');
-        $contents = fread($handle, static::PHP_RETURN_CHARS);
+        $this->contents = fread($handle, static::PHP_RETURN_CHARS);
         fclose($handle);
-        if ($contents !== static::PHP_RETURN) {
+        if ($this->contents !== static::PHP_RETURN) {
             throw new RuntimeException(
-                (new Message('Unexpected contents in %filepath%'))
+                (new Message('Unexpected contents in %filepath% (strict validation)'))
+                    ->code('%filepath%', $this->path)
+                    ->toString()
+            );
+        }
+    }
+
+    private function validateNonStrict(): void
+    {
+        $this->contents =  file_get_contents($this->path);
+        if (!preg_match_all('#<\?php([\S\s]*)\s*return\s*[\S\s]*;#', $this->contents)) {
+            throw new RuntimeException(
+                (new Message('Unexpected contents in %filepath% (non-strict validation)'))
                     ->code('%filepath%', $this->path)
                     ->toString()
             );
