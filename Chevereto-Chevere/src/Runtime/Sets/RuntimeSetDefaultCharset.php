@@ -22,8 +22,6 @@ class RuntimeSetDefaultCharset implements RuntimeSetContract
 {
     use RuntimeSet;
 
-    const ID = 'defaultCharset';
-
     public function set(): void
     {
         if (!@ini_set('default_charset', $this->value)) {

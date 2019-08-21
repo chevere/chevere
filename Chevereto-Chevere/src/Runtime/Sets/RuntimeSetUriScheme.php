@@ -22,7 +22,7 @@ class RuntimeSetUriScheme implements RuntimeSetContract
 {
     use RuntimeSet;
 
-    const ID = 'uriScheme';
+    private $id = 'uriScheme';
 
     public function set(): void
     {

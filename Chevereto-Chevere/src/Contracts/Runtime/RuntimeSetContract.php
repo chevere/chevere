@@ -15,7 +15,7 @@ namespace Chevere\Contracts\Runtime;
 
 interface RuntimeSetContract
 {
-    // public function __construct(string $value = null);
+    public function __construct(string $value = null);
 
     public function set(): void;
 }

@@ -22,7 +22,6 @@ class RuntimeSetDebug implements RuntimeSetContract
 {
     use RuntimeSet;
 
-    const ID = 'debug';
     const ACCEPT = [0, 1];
 
     public function set(): void

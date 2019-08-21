@@ -24,8 +24,6 @@ class RuntimeSetTimeZone implements RuntimeSetContract
 {
     use RuntimeSet;
 
-    const ID = 'timeZone';
-
     public function set(): void
     {
         if (date_default_timezone_get() == $this->value) {

@@ -22,8 +22,6 @@ class RuntimeSetErrorHandler implements RuntimeSetContract
 {
     use RuntimeSet;
 
-    const ID = 'errorHandler';
-
     public function set(): void
     {
         if (null == $this->value) {

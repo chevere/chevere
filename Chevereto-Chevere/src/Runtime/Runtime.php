@@ -17,6 +17,7 @@ use Chevere\Data\Data;
 use Chevere\Contracts\Runtime\RuntimeSetContract;
 use Chevere\Contracts\DataContract;
 use Chevere\Data\Traits\DataKeyTrait;
+use ReflectionClass;
 
 /**
  * Runtime applies runtime config and provide data about the App Runtime.
@@ -32,8 +33,7 @@ final class Runtime
     {
         $this->data = new Data();
         foreach ($runtimeContract as $k => $runtimeSet) {
-            $runtimeSet->set();
-            $this->data->setKey($runtimeSet::ID, $runtimeSet->value());
+            $this->data->setKey($runtimeSet->name(), $runtimeSet->value());
         }
         $this->data->setKey('errorReportingLevel', error_reporting());
         $this->config = $this->data->toArray();

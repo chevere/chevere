@@ -14,6 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Runtime\Traits;
 
 use Chevere\Contracts\DataContract;
+use Chevere\Stopwatch;
+use Chevere\Utility\Str;
+use ReflectionClass;
 
 trait RuntimeSet
 {
@@ -34,8 +37,12 @@ trait RuntimeSet
         return $this->value;
     }
 
-    public function id(): string
+    public function name(): string
     {
-        return static::ID;
+        $explode = explode('\\', __CLASS__);
+        $name = Str::replaceFirst('RuntimeSet', '', end($explode));
+        return lcfirst($name);
     }
+
+    abstract public function set(): void;
 }

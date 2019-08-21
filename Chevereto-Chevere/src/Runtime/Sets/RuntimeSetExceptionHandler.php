@@ -22,8 +22,6 @@ class RuntimeSetExceptionHandler implements RuntimeSetContract
 {
     use RuntimeSet;
 
-    const ID = 'exceptionHandler';
-
     /** @var string */
     private $value;
 
