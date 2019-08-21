@@ -78,20 +78,37 @@ final class FileReturn
         return $this->checksum;
     }
 
+    public function contents(): string
+    {
+        if (!isset($this->contents)) {
+            $this->contents = file_get_contents($this->path);
+        }
+        return $this->contents;
+    }
+
     public function raw()
     {
         if (!isset($this->raw)) {
             if (!File::exists($this->path)) {
                 throw new RuntimeException(
-                    (new Message("File %filepath% file doesn't exists"))
+                    (new Message("File %filepath% doesn't exists."))
                         ->code('%filepath%', $this->path)
                         ->toString()
                 );
             }
             $this->validate();
             $this->raw = include $this->path;
+            $this->type = gettype($this->raw);
         }
         return $this->raw;
+    }
+
+    public function type(): string
+    {
+        if (!isset($this->type)) {
+            $this->type = gettype($this->raw());
+        }
+        return $this->type;
     }
 
     /**
@@ -129,6 +146,7 @@ final class FileReturn
         $export = FileReturn::PHP_RETURN . $varExport . ';';
         File::put($this->path, $export);
         $this->checksum = $this->getHashFile();
+        unset($this->contents);
     }
 
     /**
@@ -183,15 +201,15 @@ final class FileReturn
 
     private function validateNonStrict(): void
     {
-        $contents =  file_get_contents($this->path);
-        if (!$contents) {
+        $this->contents = $this->contents();
+        if (!$this->contents) {
             throw new RuntimeException(
                 (new Message('Unable to get file %filepath% contents'))
                     ->code('%filepath%', $this->path)
                     ->toString()
             );
         }
-        if (!preg_match_all('#<\?php([\S\s]*)\s*return\s*[\S\s]*;#', $contents)) {
+        if (!preg_match_all('#<\?php([\S\s]*)\s*return\s*[\S\s]*;#', $this->contents)) {
             throw new RuntimeException(
                 (new Message('Unexpected contents in %filepath% (non-strict validation)'))
                     ->code('%filepath%', $this->path)

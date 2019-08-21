@@ -41,9 +41,6 @@ final class Maker
     /** @var array Maps [endpoint => (array) resource [regex =>, description =>,]] (for wildcard routes) */
     private $resourcesMap;
 
-    /** @var array Maps [Controller => Inspect] */
-    private $controllersMap;
-
     /** @var OuterIterator */
     private $recursiveIterator;
 
@@ -115,7 +112,7 @@ final class Maker
         $this->cache->put('api', $this->api);
     }
 
-    public function cache() : Cache
+    public function cache(): Cache
     {
         return $this->cache;
     }

@@ -29,14 +29,18 @@ use Chevere\Path\PathHandle;
  */
 final class ArrayFile implements IteratorAggregate, ArrayAccess
 {
+
+    /** @var mixed The return variable */
+    private $raw;
+
     /** @var array The array returned by the file */
     private $array;
 
-    /** @var string The return type of the file */
-    private $arrayFileType;
+    /** @var PathHandle */
+    private $pathHandle;
 
-    /** @var string The file containing return [array] */
-    private $path;
+    /** @var FileReturn */
+    private $fileReturn;
 
     /** @var Type */
     private $type;
@@ -47,14 +51,13 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
      */
     public function __construct(PathHandle $pathHandle, Type $type = null)
     {
-        $fileReturn = new FileReturn($pathHandle);
-        $fileReturn->setStrict(false);
-        $filepath = $pathHandle->path();
-        $this->array = $fileReturn->raw();
-        $this->path = $filepath;
-        $this->arrayFileType = gettype($this->array);
+        $this->pathHandle = $pathHandle;
+        $this->fileReturn = new FileReturn($pathHandle);
+        $this->fileReturn->setStrict(false);
+
         try {
             $this->validateIsArray();
+            $this->array = $this->fileReturn->raw();
             if (null !== $type) {
                 $this->type = $type;
                 $this->validate();
@@ -62,8 +65,8 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
         } catch (LogicException $e) {
             throw new LogicException(
                 (new Message($e->getMessage()))
-                    ->code('%arrayFileType%', $this->arrayFileType)
-                    ->code('%filepath%', $filepath)
+                    ->code('%returnType%', $this->fileReturn->type())
+                    ->code('%filepath%', $this->pathHandle->path())
                     ->code('%members%', $this->type->typeString())
                     ->toString()
             );
@@ -112,8 +115,8 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
 
     private function validateIsArray(): void
     {
-        if (!is_array($this->array)) {
-            throw new LogicException('Expecting file %filepath% return type array, %arrayFileType% provided.');
+        if ('array' !== $this->fileReturn->type()) {
+            throw new LogicException('Expecting file %filepath% return type array, %returnType% provided.');
         }
     }
 
