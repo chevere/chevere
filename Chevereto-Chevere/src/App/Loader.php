@@ -78,6 +78,9 @@ final class Loader implements LoaderContract
     /** @var bool True if the console loop ran */
     private $consoleLoop;
 
+    /** @var Parameters */
+    private $parameters;
+
     public function __construct()
     {
         Console::bind($this);
@@ -100,9 +103,6 @@ final class Loader implements LoaderContract
             )
         );
 
-        $this->paramApi = $this->parameters->dataKey(Parameters::API);
-        $this->paramRoutes = $this->parameters->dataKey(Parameters::ROUTES);
-
         if (DEV_MODE || Console::isBuilding()) {
             $this->build();
         }
@@ -113,12 +113,12 @@ final class Loader implements LoaderContract
     public function build(): void
     {
         $this->cacheChecksums = [];
-        if (isset($this->paramApi)) {
-            $this->createApiMaker(new PathHandle($this->paramApi));
+        if (!empty($this->parameters->api())) {
+            $this->createApiMaker(new PathHandle($this->parameters->api()));
             $this->api = new Api($this->apiMaker);
             $this->cacheChecksums = $this->apiMaker->cache()->toArray();
         }
-        if (isset($this->paramRoutes)) {
+        if (!empty($this->paramRoutes)) {
             $this->addRoutes($this->paramRoutes);
             $this->router = new Router($this->routerMaker);
             $this->cacheChecksums = array_merge($this->routerMaker->cache()->toArray(), $this->cacheChecksums);
@@ -222,10 +222,10 @@ final class Loader implements LoaderContract
 
     private function applyParameters()
     {
-        if (isset($this->paramApi) && !isset($this->api)) {
+        if (!empty($this->parameters->api()) && !isset($this->api)) {
             $this->api = new Api();
         }
-        if (isset($this->paramRoutes) && !isset($this->router)) {
+        if (!empty($this->parameters->routes()) && !isset($this->router)) {
             $this->router = new Router();
         }
     }

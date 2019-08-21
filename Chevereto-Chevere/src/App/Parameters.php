@@ -45,7 +45,7 @@ final class Parameters implements ParametersContract
      * The keys accepted by this class, with the gettype at right side.
      */
     private $keys = [
-        self::CONFIG_FILES => 'array',
+        // self::CONFIG_FILES => 'array',
         self::API => 'string',
         self::ROUTES => 'array',
     ];
@@ -53,17 +53,23 @@ final class Parameters implements ParametersContract
     /** @var ArrayFile The parameters array used to construct the object */
     private $arrayFile;
 
-    /** @var DataContract */
-    private $data;
-
-    /** @var string|null The file source (for instances created using ::createFromFile) */
-    // private $sourceFilepath;
-
     public function __construct(ArrayFile $arrayFile)
     {
         $this->arrayFile = $arrayFile;
-        $this->data = Data::fromArray($this->arrayFile->toArray());
         $this->validate();
+        $array = $this->arrayFile->toArray();
+        $this->api = $array[static::API];
+        $this->routes = $array[static::ROUTES];
+    }
+
+    public function api(): string
+    {
+        return $this->api ?? '';
+    }
+
+    public function routes(): array
+    {
+        return $this->routes ?? [];
     }
 
     private function validate(): void
