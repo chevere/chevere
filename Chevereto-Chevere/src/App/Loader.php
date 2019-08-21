@@ -118,8 +118,8 @@ final class Loader implements LoaderContract
             $this->api = new Api($this->apiMaker);
             $this->cacheChecksums = $this->apiMaker->cache()->toArray();
         }
-        if (!empty($this->paramRoutes)) {
-            $this->addRoutes($this->paramRoutes);
+        if (!empty($this->parameters->routes())) {
+            $this->addRoutes($this->parameters->routes());
             $this->router = new Router($this->routerMaker);
             $this->cacheChecksums = array_merge($this->routerMaker->cache()->toArray(), $this->cacheChecksums);
         }

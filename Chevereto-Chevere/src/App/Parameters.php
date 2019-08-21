@@ -53,6 +53,12 @@ final class Parameters implements ParametersContract
     /** @var ArrayFile The parameters array used to construct the object */
     private $arrayFile;
 
+    /** @var string */
+    private $api;
+
+    /** @var array */
+    private $routes;
+
     public function __construct(ArrayFile $arrayFile)
     {
         $this->arrayFile = $arrayFile;
