@@ -14,13 +14,22 @@ declare(strict_types=1);
 namespace Chevere\Contracts\App;
 
 use Chevere\Contracts\Controller\ControllerContract;
+use Chevere\Contracts\Route\RouteContract;
+use Chevere\HttpFoundation\Response;
 
 interface AppContract
 {
-    /**
-     * Retrieves the application buildtime.
-     */
-    // public function getBuildTime(): ?string;
+    public function setResponse(Response $response): void;
+
+    public function setRoute(RouteContract $route): void;
+
+    public function setArguments(array $arguments): void;
+
+    public function response(): Response;
+
+    public function route(): RouteContract;
+
+    public function arguments(): array;
 
     /**
      * Run a controller on top of the App.

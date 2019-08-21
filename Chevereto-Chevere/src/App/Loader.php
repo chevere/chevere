@@ -81,6 +81,9 @@ final class Loader implements LoaderContract
     /** @var Parameters */
     private $parameters;
 
+    /** @var array */
+    private $arguments;
+
     public function __construct()
     {
         Console::bind($this);

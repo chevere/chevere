@@ -46,17 +46,17 @@ final class App implements AppContract
     /** @var RouteContract */
     private $route;
 
-    public function setResponse(Response $response)
+    public function setResponse(Response $response): void
     {
         $this->response = $response;
     }
 
-    public function setRoute(Route $route)
+    public function setRoute(RouteContract $route): void
     {
         $this->route = $route;
     }
 
-    public function setArguments(array $arguments)
+    public function setArguments(array $arguments): void
     {
         $this->arguments = $arguments;
     }
