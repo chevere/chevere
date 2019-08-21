@@ -86,13 +86,10 @@ final class Type
         switch (true) {
             case isset($this->className, $this->interfaceName):
                 return $this->isClassName($objectClass) || $this->isInterfaceInstance($object);
-            break;
             case isset($this->className):
                 return $this->isClassName($objectClass);
-            break;
             case isset($this->interfaceName):
                 return $this->isInterfaceInstance($object);
-            break;
         }
 
         return false;

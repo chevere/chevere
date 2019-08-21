@@ -45,7 +45,7 @@ final class FileReturn
     /** @var string The file contents */
     private $contents;
 
-    /** @var string Raw file return (no serialize) */
+    /** @var mixed Raw return statement var */
     private $raw;
 
     /** @var mixed A variable (PHP code) */

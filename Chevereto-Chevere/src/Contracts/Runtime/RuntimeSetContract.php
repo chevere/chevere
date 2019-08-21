@@ -17,5 +17,5 @@ interface RuntimeSetContract
 {
     // public function __construct(string $value = null);
 
-    // public function set();
+    public function set(): void;
 }

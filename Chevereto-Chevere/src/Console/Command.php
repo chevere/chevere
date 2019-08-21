@@ -73,6 +73,6 @@ abstract class Command implements CommandContract
 
     public function callback(LoaderContract $loader)
     {
-        throw new LogicException('You must override the '.__FUNCTION__.'() method in the concrete command class.');
+        throw new LogicException('You must override the ' . __FUNCTION__ . '() method in the concrete command class.');
     }
 }

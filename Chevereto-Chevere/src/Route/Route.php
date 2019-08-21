@@ -132,7 +132,7 @@ final class Route implements RouteContract
 
     public function wildcardName(int $key): string
     {
-        return $this->wildcards[$key] ?? [];
+        return $this->wildcards[$key] ?? '';
     }
 
     public function keyPowerSet(): array

@@ -25,7 +25,7 @@ class RuntimeSetDebug implements RuntimeSetContract
     const ID = 'debug';
     const ACCEPT = [0, 1];
 
-    public function set()
+    public function set(): void
     {
         if (!in_array($this->value, static::ACCEPT)) {
             throw new RuntimeException(

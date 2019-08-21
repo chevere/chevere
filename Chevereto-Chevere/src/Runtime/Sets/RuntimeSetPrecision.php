@@ -24,7 +24,7 @@ class RuntimeSetPrecision implements RuntimeSetContract
 
     const ID = 'precision';
 
-    public function set()
+    public function set(): void
     {
         if (!@ini_set('precision', $this->value)) {
             throw new RuntimeException(

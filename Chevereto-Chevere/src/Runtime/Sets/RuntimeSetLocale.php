@@ -24,7 +24,7 @@ class RuntimeSetLocale implements RuntimeSetContract
 
     const ID = 'locale';
 
-    public function set()
+    public function set(): void
     {
         if (!setlocale(LC_ALL, $this->value)) {
             throw new RuntimeException(

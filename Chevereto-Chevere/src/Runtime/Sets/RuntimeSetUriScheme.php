@@ -24,7 +24,7 @@ class RuntimeSetUriScheme implements RuntimeSetContract
 
     const ID = 'uriScheme';
 
-    public function set()
+    public function set(): void
     {
         $accept = ['http', 'https'];
         if (!in_array($this->value, $accept)) {

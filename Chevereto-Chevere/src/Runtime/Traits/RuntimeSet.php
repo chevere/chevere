@@ -38,6 +38,4 @@ trait RuntimeSet
     {
         return static::ID;
     }
-
-    abstract public function set();
 }
