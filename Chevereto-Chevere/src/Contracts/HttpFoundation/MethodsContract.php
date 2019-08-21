@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\HttpFoundation;
 
+use IteratorAggregate;
 use ArrayIterator;
 
-interface MethodsContract
+interface MethodsContract extends IteratorAggregate
 {
     public function add(MethodContract $method): void;
 

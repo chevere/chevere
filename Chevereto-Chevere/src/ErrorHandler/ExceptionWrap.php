@@ -43,7 +43,7 @@ final class ExceptionWrap
         $this->data = new Data();
         $className = get_class($exception);
         if (Str::startsWith('Chevere\\', $className)) {
-            $className = Str::replaceFirst('Chevere\\', null, $className);
+            $className = Str::replaceFirst('Chevere\\', '', $className);
         }
         if ($exception instanceof ErrorException) {
             /* @scrutinizer ignore-call */

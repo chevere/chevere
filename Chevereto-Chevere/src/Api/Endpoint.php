@@ -31,8 +31,8 @@ final class Endpoint implements EndpointContract
     {
         $this->array = [];
         $this->methods = $methods;
-        $this->fillEndpointOptions($this->array);
-        $this->autofillMissingOptionsHead($this->array);
+        $this->fillEndpointOptions();
+        $this->autofillMissingOptionsHead();
     }
 
     public function methods(): MethodsContract
@@ -50,7 +50,7 @@ final class Endpoint implements EndpointContract
         $this->array['resource'] = $resource;
     }
 
-    private function fillEndpointOptions(array &$endpointApi): void
+    private function fillEndpointOptions(): void
     {
         foreach ($this->methods as $method) {
             $httpMethod = $method->method();
@@ -61,11 +61,11 @@ final class Endpoint implements EndpointContract
             if (isset($controllerParameters)) {
                 $httpMethodOptions['parameters'] = $controllerParameters;
             }
-            $endpointApi['OPTIONS'][$httpMethod] = $httpMethodOptions;
+            $this->array['OPTIONS'][$httpMethod] = $httpMethodOptions;
         }
     }
 
-    private function autofillMissingOptionsHead(array &$endpointApi): void
+    private function autofillMissingOptionsHead(): void
     {
         foreach ([
             'OPTIONS' => [
@@ -81,7 +81,7 @@ final class Endpoint implements EndpointContract
         ] as $k => $v) {
             if (!$this->methods->has($k)) {
                 $this->methods->add(new Method($k, $v[0]));
-                $endpointApi['OPTIONS'][$k] = $v[1];
+                $this->array['OPTIONS'][$k] = $v[1];
             }
         }
     }

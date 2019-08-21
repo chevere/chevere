@@ -90,7 +90,7 @@ final class Set
             }
             $wildcard = $this->matches[1][$k];
             if (Str::endsWith('?', $wildcard)) {
-                $wildcardTrim = Str::replaceLast('?', null, $wildcard);
+                $wildcardTrim = Str::replaceLast('?', '', $wildcard);
                 $this->optionals[] = $k;
                 $this->optionalsIndex[$k] = $wildcardTrim;
             } else {

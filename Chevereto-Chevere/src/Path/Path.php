@@ -51,7 +51,7 @@ final class Path
             $root .= $rootContext . '/';
         }
 
-        return Str::replaceFirst($root, null, $absolutePath);
+        return Str::replaceFirst($root, '', $absolutePath);
     }
 
     /**
