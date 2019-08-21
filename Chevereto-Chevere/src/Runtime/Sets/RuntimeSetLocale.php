@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Runtime\Sets;
 
+use RuntimeException;
+use Chevere\Message;
 use Chevere\Contracts\Runtime\RuntimeSetContract;
 use Chevere\Runtime\Traits\RuntimeSet;
 

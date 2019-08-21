@@ -15,7 +15,7 @@ namespace Chevere\Runtime\Sets;
 
 use InvalidArgumentException;
 use RuntimeException;
-use Chevre\Message;
+use Chevere\Message;
 use Chevere\Contracts\Runtime\RuntimeSetContract;
 use Chevere\Runtime\Traits\RuntimeSet;
 use Chevere\Validate;

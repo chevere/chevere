@@ -18,12 +18,12 @@ abstract class Number
     /**
      * Abbreviate a number adding its alpha suffix.
      *
-     * @param mixed $number    number to be abbreviated
-     * @param int   $precision round precision
+     * @param int $number    number to be abbreviated
+     * @param int $precision round precision
      *
      * @return string Abbreviated number (ie. 2K or 1M).
      */
-    public static function abbreviate(int $number, int $precision = 0): ?string
+    public static function abbreviate(int $number, int $precision = 0): string
     {
         if ($number != 0) {
             $abbreviations = [

@@ -83,7 +83,6 @@ final class Route implements RouteContract
 
     public function __construct(string $path, string $controller = null)
     {
-        $this->pathHandle = new PathHandle('app:eee');
         $pathValidate = new PathValidate($path);
         $this->path = $path;
         $this->maker = $this->getMakerData();

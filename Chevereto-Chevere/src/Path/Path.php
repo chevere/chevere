@@ -114,7 +114,7 @@ final class Path
         $path = str_replace('\\', '/', $path ?? '');
         // Replace multiple slashes down to a singular, allowing for network shares having two slashes.
         $path = preg_replace('|(?<=.)/+|', '/', $path);
-        if ($path == null || is_array($path)) {
+        if ($path == null) {
             return '';
         }
         // Chevereto: Get rid of any extra slashes at the begining if needed

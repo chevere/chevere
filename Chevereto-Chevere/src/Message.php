@@ -40,9 +40,9 @@ final class Message
      *
      * @param string $message The message string
      */
-    public function __construct(string $message, array $tr = null)
+    public function __construct(string $message)
     {
-        $this->message = $tr ? strtr($message, $tr) : $message;
+        $this->message = $message;
     }
 
     /**
