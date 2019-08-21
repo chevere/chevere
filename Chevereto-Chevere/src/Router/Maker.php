@@ -81,8 +81,8 @@ final class Maker
             $ix = $id;
             foreach ($keyPowerSet as $set => $index) {
                 ++$ix;
-                $this->routes[] = [$id, $set];
-                $this->regexIndex[$route->getRegex($set)] = $ix;
+                $this->routes[] = [$id, (string) $set];
+                $this->regexIndex[$route->getRegex((string) $set)] = $ix;
             }
         } else {
             // n => .. => regex => route
