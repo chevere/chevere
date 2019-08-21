@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Data\Traits;
 
 use Chevere\Data\Data;
+use Chevere\Contracts\DataContract;
 
 trait DataKeyTrait
 {
-    /** @var Data */
+    /** @var DataContract */
     private $data;
 
     public function dataKey(string $key)

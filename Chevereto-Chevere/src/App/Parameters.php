@@ -18,6 +18,7 @@ use Chevere\ArrayFile\ArrayFile;
 use Chevere\Data\Data;
 use Chevere\Message;
 use Chevere\Contracts\App\ParametersContract;
+use Chevere\Contracts\DataContract;
 use Chevere\Data\Traits\DataKeyTrait;
 
 final class Parameters implements ParametersContract
@@ -52,16 +53,12 @@ final class Parameters implements ParametersContract
     /** @var ArrayFile The parameters array used to construct the object */
     private $arrayFile;
 
-    /** @var Data */
+    /** @var DataContract */
     private $data;
 
     /** @var string|null The file source (for instances created using ::createFromFile) */
     // private $sourceFilepath;
 
-    /**
-     * @param array  $parameters The parameters array
-     * @param string $context    The context of the source $parameters
-     */
     public function __construct(ArrayFile $arrayFile)
     {
         $this->arrayFile = $arrayFile;

@@ -23,7 +23,7 @@ use Chevere\ErrorHandler\ExceptionWrap;
 use Chevere\VarDump\VarDump;
 use Chevere\VarDump\PlainVarDump;
 use Chevere\Utility\Str;
-use Chevere\Data\Data;
+use Chevere\Contracts\DataContract;
 
 /**
  * Formats the error exception in HTML (default), console and plain text.
@@ -78,7 +78,7 @@ final class Formatter
     /** @var Throwable */
     private $exception;
 
-    /** @var Data */
+    /** @var DataContract */
     private $data;
 
     public function __construct(ErrorHandler $errorHandler)

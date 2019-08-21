@@ -66,7 +66,7 @@ final class App implements AppContract
         return $this->response;
     }
 
-    public function route(): Route
+    public function route(): RouteContract
     {
         return $this->route;
     }

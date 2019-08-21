@@ -33,6 +33,7 @@ use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\FirePHPHandler;
+use Chevere\Contracts\DataContract;
 use Chevere\Data\Traits\DataAccessTrait;
 use Chevere\Data\Traits\DataKeyTrait;
 
@@ -93,7 +94,7 @@ final class ErrorHandler
         E_USER_DEPRECATED => LogLevel::NOTICE,
     ];
 
-    /** @var Data */
+    /** @var DataContract */
     private $data;
 
     /** @var Request The detected/forged HTTP request */
