@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace Chevere\HttpFoundation;
 
 use ArrayIterator;
-use IteratorAggregate;
 use Chevere\Contracts\HttpFoundation\MethodContract;
 use Chevere\Contracts\HttpFoundation\MethodsContract;
 
-final class Methods implements MethodsContract, IteratorAggregate
+final class Methods implements MethodsContract
 {
     /** @param array [MethodContract,]*/
     private $methods;

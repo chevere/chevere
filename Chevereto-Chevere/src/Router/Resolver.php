@@ -18,6 +18,7 @@ use Chevere\Message;
 use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\ResolverContract;
+use Throwable;
 
 final class Resolver
 {
@@ -26,12 +27,12 @@ final class Resolver
 
     public function __construct(string $serialized)
     {
-        if (is_string($serialized)) {
+        try {
             $this->route = unserialize($serialized, ['allowed_classes' => [Route::class]]);
-        } else {
+        } catch (Throwable $e) {
             throw new LogicException(
-                (new Message('Unexpected type %t in routes table %h.'))
-                    ->code('%t', gettype($serialized))
+                (new Message('Unable to unserialize: %e'))
+                    ->code('%e', $e->getMessage())
                     ->toString()
             );
         }

@@ -126,7 +126,7 @@ abstract class Str
      *
      * @return string returns a string with the replaced value
      */
-    public static function replaceFirst(string $search, string $replace = null, string $subject): string
+    public static function replaceFirst(string $search, string $replace, string $subject): string
     {
         $pos = strpos($subject, $search);
         if (false !== $pos) {
@@ -147,7 +147,7 @@ abstract class Str
      *
      * @return string returns a string with the replaced value
      */
-    public static function replaceLast(string $search, string $replace = null, string $subject): string
+    public static function replaceLast(string $search, string $replace, string $subject): string
     {
         $pos = strrpos($subject, $search);
         if (false !== $pos) {

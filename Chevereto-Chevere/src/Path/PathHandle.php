@@ -19,19 +19,20 @@ use InvalidArgumentException;
 use Chevere\File;
 use Chevere\Message;
 use Chevere\Utility\Str;
+use LogicException;
 
 final class PathHandle
 {
     /** @var string */
     private $identifier;
 
-    /** @var string|null */
-    private $context;
+    /** @var string */
+    private $context = APP_PATH;
 
     /** @var string absolute path like /home/user/app/ or /home/user/app/file.php */
     private $path;
 
-    /** @var string|null */
+    /** @var string */
     private $filename;
 
     /** @var array */
@@ -52,7 +53,6 @@ final class PathHandle
     public function __construct(string $identifier)
     {
         $this->identifier = $identifier;
-        $this->context = APP_PATH;
         $this->validateStringIdentifier();
         $this->validateCharIdentifier();
         $this->validateContext();
@@ -72,8 +72,14 @@ final class PathHandle
     private function filenameFromIdentifier(): string
     {
         $this->explode = explode(':', $this->identifier);
-
-        return end($this->explode);
+        $end = end($this->explode);
+        if (!$end) {
+            throw new LogicException(
+                (new Message('The identifier doesn\'t contain a file'))
+                    ->toString()
+            );
+        }
+        return $end;
     }
 
     private function validateStringIdentifier()

@@ -64,6 +64,9 @@ final class Api implements ApiContract
         );
     }
 
+    /**
+     * @return string The the endpoint basename for the given URI.
+     */
     public static function endpointKey(string $uri): string
     {
         $endpoint = ltrim($uri, '/');

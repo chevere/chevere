@@ -51,7 +51,7 @@ final class Path
             $root .= $rootContext . '/';
         }
 
-        return Str::replaceFirst($root, null, $absolutePath);
+        return Str::replaceFirst($root, '', $absolutePath);
     }
 
     /**
@@ -63,7 +63,7 @@ final class Path
      *
      * @return bool
      */
-    public static function isAbsolute($file): bool
+    public static function isAbsolute(string $file): bool
     {
         return strspn($file, '/\\', 0, 1)
             || (\strlen($file) > 3 && ctype_alpha($file[0])
@@ -74,6 +74,7 @@ final class Path
 
     /**
      * Creates a path
+     *
      * @return string The created path (absolute)
      */
     public static function create(string $path): string

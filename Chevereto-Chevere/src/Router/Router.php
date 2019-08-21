@@ -67,6 +67,7 @@ final class Router
             unset($matches['MARK']);
             array_shift($matches);
             $route = $this->routes[$id];
+            // Array when the route is a powerSet [id, set]
             if (is_array($route)) {
                 $set = $route[1];
                 $route = $this->routes[$route[0]];
@@ -77,10 +78,12 @@ final class Router
                 $this->routes[$id] = $route;
             }
             $this->arguments = [];
-            foreach ($matches as $k => $v) {
-                $wildcardId = $route->keyPowerSet()[$set][$k];
-                $wildcardName = $route->wildcardName($wildcardId);
-                $this->arguments[$wildcardName] = $v;
+            if ($set) {
+                foreach ($matches as $k => $v) {
+                    $wildcardId = $route->keyPowerSet()[$set][$k];
+                    $wildcardName = $route->wildcardName($wildcardId);
+                    $this->arguments[$wildcardName] = $v;
+                }
             }
 
             return $route;

@@ -226,7 +226,7 @@ final class Maker
     private function getClassNameFromFilepath(string $filepath): string
     {
         $filepathRelative = Path::relative($filepath);
-        $filepathNoExt = Str::replaceLast('.php', null, $filepathRelative);
+        $filepathNoExt = Str::replaceLast('.php', '', $filepathRelative);
         $filepathReplaceNS = Str::replaceFirst(APP_PATH_RELATIVE . 'src/', 'App\\', $filepathNoExt);
 
         return str_replace('/', '\\', $filepathReplaceNS);

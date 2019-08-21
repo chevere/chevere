@@ -155,7 +155,7 @@ final class TraceEntry
 
     private function processAnonClass()
     {
-        $entryFile = Str::replaceFirst(VarDump::ANON_CLASS, null, $this->entry['class']);
+        $entryFile = Str::replaceFirst(VarDump::ANON_CLASS, '', $this->entry['class']);
         $this->entry['file'] = substr($entryFile, 0, strpos($entryFile, '.php') + 4);
         $this->entry['class'] = VarDump::ANON_CLASS;
         $this->entry['line'] = null;

@@ -30,6 +30,9 @@ final class Wildcard
     /** @var string */
     private $regex;
 
+    /** @var Route */
+    private $route;
+
     public function __construct(string $wildcardName, string $regex)
     {
         $this->wildcardName = $wildcardName;

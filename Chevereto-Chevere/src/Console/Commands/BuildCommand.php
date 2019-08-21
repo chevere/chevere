@@ -28,10 +28,9 @@ final class BuildCommand extends Command
 {
     const NAME = 'build';
     const DESCRIPTION = 'Build the App';
-    const HELP = 'This command builds the App creating its Router and API';
+    const HELP = 'This command builds the App';
 
     const ARGUMENTS = [];
-
 
     public function callback(LoaderContract $loader): int
     {

@@ -107,7 +107,7 @@ final class Inspect implements InspectContract
         $this->isResource = $this->reflection->implementsInterface(ControllerResourceInterface::class);
         $this->isRelatedResource = $this->reflection->implementsInterface(ControllerRelationshipInterface::class);
         $this->useResource = $this->isResource || $this->isRelatedResource;
-        $this->httpMethod = Str::replaceFirst(static::METHOD_ROOT_PREFIX, null, $this->classShortName);
+        $this->httpMethod = Str::replaceFirst(static::METHOD_ROOT_PREFIX, '', $this->classShortName);
         $this->description = $className::description();
         $this->handleResources($className);
         $this->parameters = $className::parameters();
@@ -264,8 +264,8 @@ final class Inspect implements InspectContract
     private function getPathComponent(string $className): string
     {
         $classShortName = substr($className, strrpos($className, '\\') + 1);
-        $classNamespace = Str::replaceLast('\\'.$classShortName, null, $className);
-        $classNamespaceNoApp = Str::replaceFirst('App\\', null, $classNamespace);
+        $classNamespace = Str::replaceLast('\\'.$classShortName, '', $className);
+        $classNamespaceNoApp = Str::replaceFirst('App\\', '', $classNamespace);
 
         return strtolower(Str::forwardSlashes($classNamespaceNoApp));
     }

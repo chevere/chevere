@@ -38,14 +38,6 @@ class Data implements DataContract
         return $that;
     }
 
-    public static function fromArrayAccess(ArrayAccess $data): DataContract
-    {
-        $that = new self();
-        $that->data = $data;
-
-        return $that;
-    }
-
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->data);

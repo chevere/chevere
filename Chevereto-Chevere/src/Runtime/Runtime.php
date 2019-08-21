@@ -15,6 +15,7 @@ namespace Chevere\Runtime;
 
 use Chevere\Data\Data;
 use Chevere\Contracts\Runtime\RuntimeSetContract;
+use Chevere\Contracts\DataContract;
 use Chevere\Data\Traits\DataKeyTrait;
 
 /**
@@ -24,7 +25,7 @@ final class Runtime
 {
     use DataKeyTrait;
 
-    /** @var Data */
+    /** @var DataContract */
     private $data;
 
     public function __construct(RuntimeSetContract ...$runtimeContract)

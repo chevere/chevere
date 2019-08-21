@@ -243,16 +243,6 @@ final class Route implements RouteContract
 
     public function getRegex(string $pattern): string
     {
-        return $this->fetchRegex($pattern);
-        if (!isset($regex)) {
-            throw new LogicException(
-                (new Message('Unable to process regex for empty regex (no uri).'))->toString()
-            );
-        }
-    }
-
-    private function fetchRegex(string $pattern): string
-    {
         $regex = '^'.$pattern.'$';
         if (!Str::contains('{', $regex)) {
             return $regex;
