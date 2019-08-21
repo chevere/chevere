@@ -22,8 +22,6 @@ class RuntimeSetUriScheme implements RuntimeSetContract
 {
     use RuntimeSet;
 
-    private $id = 'uriScheme';
-
     public function set(): void
     {
         $accept = ['http', 'https'];

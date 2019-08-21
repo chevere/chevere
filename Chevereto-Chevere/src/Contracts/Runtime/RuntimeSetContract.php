@@ -18,4 +18,6 @@ interface RuntimeSetContract
     public function __construct(string $value = null);
 
     public function set(): void;
+
+    public function name(): string;
 }
