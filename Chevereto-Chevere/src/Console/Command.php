@@ -18,7 +18,6 @@ use Symfony\Component\Console\Input\InputOption;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Console\CliContract;
 use Chevere\Contracts\Console\CommandContract;
-use Chevere\Contracts\Console\CommandWrapContract;
 use Chevere\Contracts\Console\SymfonyCommandContract;
 
 /**

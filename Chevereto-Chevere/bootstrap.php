@@ -58,8 +58,8 @@ define('Chevere\CLI', Console::isRunning());
 Loader::setDefaultRuntime(
     new Runtime(
         new RuntimeSetDebug('1'), // 0.2ms
-        // new RuntimeSetErrorHandler('Chevere\ErrorHandler\ErrorHandler::error'), // 0.9ms
-        // new RuntimeSetExceptionHandler('Chevere\ErrorHandler\ErrorHandler::exception'), // 0.5ms
+        new RuntimeSetErrorHandler('Chevere\ErrorHandler\ErrorHandler::error'), // 0.9ms
+        new RuntimeSetExceptionHandler('Chevere\ErrorHandler\ErrorHandler::exception'), // 0.5ms
         new RuntimeSetLocale('en_US.UTF8'), // 0.2ms
         new RuntimeSetDefaultCharset('utf-8'), // 0.2ms
         new RuntimeSetPrecision('16'), // 0.2ms
