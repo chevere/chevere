@@ -17,7 +17,7 @@ interface CommandContract
 {
     public function __construct(CliContract $cli);
 
-    public function baseCommand(): BaseCommandContract;
+    public function symfonyCommand(): SymfonyCommandContract;
 
     public function configure();
 }

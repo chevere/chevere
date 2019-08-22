@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Console;
 
-interface BaseCommandContract
+interface SymfonyCommandContract
 {
     public function __construct(CliContract $cli);
 
-    public function setCommand(CommandContract $command);
+    public function chevereSetCommand(CommandContract $command);
 
-    public function command(): CommandContract;
+    public function chevereCommand(): CommandContract;
 }

@@ -68,10 +68,10 @@ final class Cli implements CliContract
         $this->out = new SymfonyStyle($this->input, $this->output);
 
         $this->client->addCommands([
-            (new RequestCommand($this))->baseCommand(),
-            (new RunCommand($this))->baseCommand(),
-            (new InspectCommand($this))->baseCommand(),
-            (new BuildCommand($this))->baseCommand(),
+            (new RequestCommand($this))->symfonyCommand(),
+            (new RunCommand($this))->symfonyCommand(),
+            (new InspectCommand($this))->symfonyCommand(),
+            (new BuildCommand($this))->symfonyCommand(),
         ]);
         $this->client->setAutoExit(false);
     }

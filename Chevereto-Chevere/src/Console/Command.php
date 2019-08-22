@@ -13,14 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Console;
 
-use LogicException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Console\CliContract;
 use Chevere\Contracts\Console\CommandContract;
-use Chevere\Contracts\Console\BaseCommandContract;
+use Chevere\Contracts\Console\CommandWrapContract;
+use Chevere\Contracts\Console\SymfonyCommandContract;
 
+/**
+ * This is the base command of all Chevere commands.
+ */
 abstract class Command implements CommandContract
 {
     const ARGUMENT_REQUIRED = InputArgument::REQUIRED;
@@ -42,37 +45,34 @@ abstract class Command implements CommandContract
     /** @var CliContract */
     protected $cli;
 
-    /** @var BaseCommandContract */
-    protected $baseCommand;
+    /** @var SymfonyCommandContract */
+    protected $symfonyCommand;
 
     final public function __construct(CliContract $cli)
     {
         $this->cli = $cli;
-        $this->baseCommand = new BaseCommand($cli);
-        $this->baseCommand->setCommand($this);
+        $this->symfonyCommand = new SymfonyCommand($cli);
+        $this->symfonyCommand->chevereSetCommand($this);
     }
 
-    final public function baseCommand(): BaseCommandContract
+    final public function symfonyCommand(): SymfonyCommandContract
     {
-        return $this->baseCommand;
+        return $this->symfonyCommand;
     }
 
     final public function configure()
     {
-        $this->baseCommand
+        $this->symfonyCommand
             ->setName(static::NAME)
             ->setDescription(static::DESCRIPTION)
             ->setHelp(static::HELP);
         foreach (static::ARGUMENTS as $arguments) {
-            $this->baseCommand->addArgument(...$arguments);
+            $this->symfonyCommand->addArgument(...$arguments);
         }
         foreach (static::OPTIONS as $options) {
-            $this->baseCommand->addOption(...$options);
+            $this->symfonyCommand->addOption(...$options);
         }
     }
 
-    public function callback(LoaderContract $loader)
-    {
-        throw new LogicException('You must override the ' . __FUNCTION__ . '() method in the concrete command class.');
-    }
+    abstract public function callback(LoaderContract $loader);
 }
