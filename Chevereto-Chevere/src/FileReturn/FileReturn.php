@@ -48,6 +48,9 @@ final class FileReturn
     /** @var mixed Raw return statement var */
     private $raw;
 
+    /** @var string The raw return type (gettype) */
+    private $type;
+
     /** @var mixed A variable (PHP code) */
     private $var;
 
@@ -179,7 +182,7 @@ final class FileReturn
     private function validateStrict(): void
     {
         $handle = fopen($this->path, 'r');
-        if (!$handle) {
+        if (false === $handle) {
             throw new RuntimeException(
                 (new Message('Unable to %fn% %filepath% in %mode% mode'))
                     ->code('%fn%', 'fopen')

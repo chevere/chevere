@@ -21,7 +21,7 @@ trait DataAccessTrait
     /** @var DataContract */
     private $data;
 
-    public function data(): Data
+    public function data(): DataContract
     {
         return $this->data;
     }

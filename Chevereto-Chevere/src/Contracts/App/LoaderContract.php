@@ -31,14 +31,8 @@ interface LoaderContract
     // TODO: $arguments Datastructure
     public function setArguments(array $arguments): LoaderContract;
 
-    /**
-     * @param Request $request
-     */
     public function setRequest(Request $request): void;
 
-    /**
-     * @param Runtime @runtime
-     */
     public static function setDefaultRuntime(Runtime $runtime);
 
     /**

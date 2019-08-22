@@ -31,8 +31,6 @@ final class Json implements Interfaces\PrintableInterface
 
     private $callback;
 
-    private $status;
-
     private $printable;
 
     public $content;

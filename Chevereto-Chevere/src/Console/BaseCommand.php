@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Console;
 
-use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Chevere\Contracts\Console\CliContract;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Chevere\Contracts\Console\CommandContract;
 use Chevere\Contracts\Console\BaseCommandContract;
 
-final class BaseCommand extends Command implements BaseCommandContract
+final class BaseCommand extends SymfonyCommand implements BaseCommandContract
 {
     /** @var CliContract */
     protected $cli;

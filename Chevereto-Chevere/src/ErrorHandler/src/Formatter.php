@@ -24,12 +24,15 @@ use Chevere\VarDump\VarDump;
 use Chevere\VarDump\PlainVarDump;
 use Chevere\Utility\Str;
 use Chevere\Contracts\DataContract;
+use Chevere\Data\Traits\DataKeyTrait;
 
 /**
  * Formats the error exception in HTML (default), console and plain text.
  */
 final class Formatter
 {
+    use DataKeyTrait;
+    
     /** @var string Number of fixed columns for plaintext display */
     const COLUMNS = 120;
 

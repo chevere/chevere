@@ -117,7 +117,7 @@ final class Parameters implements ParametersContract
                     ->code('%s', $this->keys[$key])
                     ->code('%t', $gettype)
                     ->code('%k', $key)
-                    ->code('%c', $this->arrayFile->path())
+                    ->code('%c', $this->arrayFile->pathHandle()->path())
                     ->toString()
             );
         }

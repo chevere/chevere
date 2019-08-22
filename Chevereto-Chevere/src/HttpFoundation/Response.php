@@ -49,9 +49,6 @@ final class Response extends HttpResponse
     // the document’s “primary data”
     private $data;
 
-    // an array of error objects
-    private $errors;
-
     // a meta object that contains non-standard meta-information.
     private $meta;
 
@@ -62,12 +59,6 @@ final class Response extends HttpResponse
      */
     // an object describing the server’s implementation.
     private $jsonapi = ['version' => self::JSON_API_VERSION];
-
-    // a links object related to the primary data.
-    private $links;
-
-    // an array of resource objects that are related to the primary data and/or each other (“included resources”).
-    private $included;
 
     private $encodingOptions = self::DEFAULT_ENCODING_OPTIONS;
 

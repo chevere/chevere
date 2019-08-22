@@ -110,7 +110,7 @@ final class Console
         return (bool) self::$available;
     }
 
-    public static function write(string $message, int $options = self::OUTPUT_NORMAL): void
+    public static function write(string $message, int $options = Console::OUTPUT_NORMAL): void
     {
         if (!self::isRunning()) {
             return;
@@ -118,7 +118,7 @@ final class Console
         self::$cli->out->write($message, false, $options);
     }
 
-    public static function writeln(string $message, int $options = self::OUTPUT_NORMAL): void
+    public static function writeln(string $message, int $options = Console::OUTPUT_NORMAL): void
     {
         if (!self::isRunning()) {
             return;

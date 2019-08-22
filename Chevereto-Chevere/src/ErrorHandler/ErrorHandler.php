@@ -118,7 +118,7 @@ final class ErrorHandler
     private $runtime;
 
     /** @var array Contains all the loaded configuration files (App) */
-    private $loadedConfigFiles;
+    // private $loadedConfigFiles;
 
     /** @var Output */
     private $output;

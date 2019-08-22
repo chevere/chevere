@@ -29,10 +29,6 @@ use Chevere\Path\PathHandle;
  */
 final class ArrayFile implements IteratorAggregate, ArrayAccess
 {
-
-    /** @var mixed The return variable */
-    private $raw;
-
     /** @var array The array returned by the file */
     private $array;
 
@@ -98,14 +94,9 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
         return new ArrayIterator($this->array);
     }
 
-    public function path(): string
+    public function pathHandle(): PathHandle
     {
-        return $this->path;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type->primitive() ?? null;
+        return $this->pathHandle;
     }
 
     public function toArray(): array
