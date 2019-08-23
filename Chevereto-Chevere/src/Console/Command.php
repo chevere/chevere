@@ -50,8 +50,13 @@ abstract class Command implements CommandContract
     final public function __construct(CliContract $cli)
     {
         $this->cli = $cli;
-        $this->symfonyCommand = new SymfonyCommand($cli);
-        $this->symfonyCommand->chevereSetCommand($this);
+        $this->symfonyCommand = new SymfonyCommand($this);
+        $this->configure();
+    }
+
+    public function cli(): CliContract
+    {
+        return $this->cli;
     }
 
     final public function symfonyCommand(): SymfonyCommandContract
@@ -59,7 +64,9 @@ abstract class Command implements CommandContract
         return $this->symfonyCommand;
     }
 
-    final public function configure()
+    abstract public function callback(LoaderContract $loader);
+
+    final protected function configure()
     {
         $this->symfonyCommand
             ->setName(static::NAME)
@@ -72,6 +79,4 @@ abstract class Command implements CommandContract
             $this->symfonyCommand->addOption(...$options);
         }
     }
-
-    abstract public function callback(LoaderContract $loader);
 }

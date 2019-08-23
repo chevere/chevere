@@ -27,26 +27,16 @@ use Chevere\Contracts\Console\SymfonyCommandContract;
 final class SymfonyCommand extends BaseCommand implements SymfonyCommandContract
 {
     /** @var CliContract */
-    protected $chevereCli;
+    private $chevereCli;
 
     /** @var CommandContract */
-    protected $chevereCommand;
+    private $chevereCommand;
 
-    public function __construct(CliContract $cli)
-    {
-        $this->chevereCli = $cli;
-        parent::__construct();
-    }
-
-    public function chevereSetCommand(CommandContract $command)
+    public function __construct(CommandContract $command)
     {
         $this->chevereCommand = $command;
-        $this->chevereCommand->configure();
-    }
-
-    public function chevereCommand(): CommandContract
-    {
-        return $this->chevereCommand;
+        $this->chevereCli = $command->cli();
+        parent::__construct();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

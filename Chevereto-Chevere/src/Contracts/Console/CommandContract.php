@@ -18,6 +18,4 @@ interface CommandContract
     public function __construct(CliContract $cli);
 
     public function symfonyCommand(): SymfonyCommandContract;
-
-    public function configure();
 }
