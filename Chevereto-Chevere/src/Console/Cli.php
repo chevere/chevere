@@ -105,7 +105,7 @@ final class Cli implements CliContract
         return $this->logger;
     }
 
-    public function setCommand(CommandContract $command)
+    public function setCommand(CommandContract $command): void
     {
         $this->command =  $command;
     }
@@ -119,11 +119,7 @@ final class Cli implements CliContract
     }
 
     /**
-     * Runs the current command.
-     *
-     * @return int 0 if everything went fine, or an error code
-     *
-     * @throws Exception When running fails. Bypass this when {@link setCatchExceptions()}.
+     * {@inheritdoc}
      */
     public function runner(): int
     {
