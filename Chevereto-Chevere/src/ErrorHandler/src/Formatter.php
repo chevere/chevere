@@ -212,7 +212,7 @@ final class Formatter
         ];
 
         if (CLI) {
-            $verbosity = Console::cli()->output->getVerbosity();
+            $verbosity = Console::cli()->output()->getVerbosity();
         }
         $this->buildContentSections($sections, $verbosity ?? null);
     }

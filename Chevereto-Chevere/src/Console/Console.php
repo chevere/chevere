@@ -67,9 +67,14 @@ final class Console
         self::$available = true;
     }
 
+    public static function command(): string
+    {
+        return self::$command;
+    }
+
     public static function isBuilding(): bool
     {
-        return self::isRunning() && 'build' == self::$command;
+        return self::isRunning() && 'build' == self::command();
     }
 
     public static function cli(): CliContract
@@ -83,7 +88,10 @@ final class Console
             return;
         }
         $exitCode = self::$cli->runner();
-        $command = self::$cli->command;
+        if (0 !== $exitCode) {
+            die();
+        }
+        $command = self::$cli->command();
         if (null === $command) {
             exit($exitCode);
         }
@@ -98,8 +106,8 @@ final class Console
 
     public static function inputString(): string
     {
-        if (method_exists(self::$cli->input, '__toString')) {
-            return self::$cli->input->__toString();
+        if (method_exists(self::$cli->input(), '__toString')) {
+            return self::$cli->input()->__toString();
         }
 
         return '';
@@ -115,7 +123,7 @@ final class Console
         if (!self::isRunning()) {
             return;
         }
-        self::$cli->out->write($message, false, $options);
+        self::$cli->out()->write($message, false, $options);
     }
 
     public static function writeln(string $message, int $options = Console::OUTPUT_NORMAL): void
@@ -123,7 +131,7 @@ final class Console
         if (!self::isRunning()) {
             return;
         }
-        self::$cli->out->writeln($message, $options);
+        self::$cli->out()->writeln($message, $options);
     }
 
     public static function log(string $message)
@@ -131,6 +139,6 @@ final class Console
         if (!self::isRunning()) {
             return;
         }
-        self::$cli->out->writeln($message);
+        self::$cli->out()->writeln($message);
     }
 }

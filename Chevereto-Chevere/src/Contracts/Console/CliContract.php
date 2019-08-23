@@ -19,5 +19,5 @@ interface CliContract
 {
     public function __construct(ArgvInput $input);
 
-    public function runner();
+    public function runner(): int;
 }

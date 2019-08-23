@@ -49,4 +49,9 @@ interface LoaderContract
      * Retrieve the loaded Request.
      */
     public static function request(): Request;
+
+    /**
+     * Retrieves the file checksums, available only when building the App.
+     */
+    public function cacheChecksums(): array;
 }

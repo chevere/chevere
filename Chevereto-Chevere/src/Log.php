@@ -75,7 +75,7 @@ class Log
             static::$useConsole = true;
         }
         static::$loggerContainer['app'] = new Logger('app');
-        $verbosity = static::$useConsole ? Console::cli()->output->getVerbosity() : OutputInterface::VERBOSITY_NORMAL;
+        $verbosity = static::$useConsole ? Console::cli()->output()->getVerbosity() : OutputInterface::VERBOSITY_NORMAL;
         // Set array levelName => int to handle levels
         static::$verboseSet = static::VERBOSITY_MAP[$verbosity];
         static::$verboseSet = Utility\Arr::filterArray(static::SEVERITY_LEVELS, static::$verboseSet);
@@ -196,7 +196,7 @@ class Log
         // dump('Notice called :', $message);
         if (static::isLevelBeingUsed('notice')) {
             // dump($message);
-            Console::cli()->logger->critical($message);
+            Console::cli()->logger()->critical($message);
         }
     }
 

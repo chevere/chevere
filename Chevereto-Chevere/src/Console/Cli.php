@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Console;
 
+use Exception;
+use RuntimeException;
 use Chevere\Console\Commands\BuildCommand;
 use Monolog\Logger;
 use Symfony\Component\Console\Application;
@@ -24,6 +26,7 @@ use Chevere\Console\Commands\RunCommand;
 use Chevere\Console\Commands\InspectCommand;
 use Chevere\Contracts\Console\CliContract;
 use Chevere\Contracts\Console\CommandContract;
+use Symfony\Component\Console\Exception\CommandNotFoundException;
 
 /**
  * This class provides console facade for Symfony\Component\Console.
@@ -34,28 +37,28 @@ final class Cli implements CliContract
     const VERSION = '1.0';
 
     /** @var string Cli name */
-    public $name;
+    private $name;
 
     /** @var string Cli version */
-    public $version;
+    private $version;
 
     /** @var ArgvInput */
-    public $input;
+    private $input;
 
     /** @var ConsoleOutput */
-    public $output;
+    private $output;
 
     /** @var Logger */
-    public $logger;
+    private $logger;
 
     /** @var Application */
-    public $client;
+    private $client;
 
     /** @var SymfonyStyle */
-    public $out;
+    private $out;
 
     /** @var CommandContract */
-    public $command;
+    private $command;
 
     public function __construct(ArgvInput $input)
     {
@@ -64,6 +67,7 @@ final class Cli implements CliContract
         $this->version = static::VERSION;
         $this->output = new ConsoleOutput();
         $this->client = new Application($this->name, $this->version);
+        $this->client->setAutoExit(false);
         $this->logger = new Logger($this->name);
         $this->out = new SymfonyStyle($this->input, $this->output);
 
@@ -73,11 +77,56 @@ final class Cli implements CliContract
             (new InspectCommand($this))->symfonyCommand(),
             (new BuildCommand($this))->symfonyCommand(),
         ]);
-        $this->client->setAutoExit(false);
+        $command = Console::command();
+        try {
+            $this->client->get($command);
+        } catch (CommandNotFoundException $e) {
+            // Shhhh, let Fabien's handle this...
+        }
     }
 
-    public function runner()
+    public function input(): ArgvInput
     {
-        $this->client->run($this->input, $this->output);
+        return $this->input;
+    }
+
+    public function out(): SymfonyStyle
+    {
+        return $this->out;
+    }
+
+    public function output(): ConsoleOutput
+    {
+        return $this->output;
+    }
+
+    public function logger(): Logger
+    {
+        return $this->logger;
+    }
+
+    public function setCommand(CommandContract $command)
+    {
+        $this->command =  $command;
+    }
+
+    public function command(): CommandContract
+    {
+        // if (!isset($this->command)) {
+        //     throw new RuntimeException('Command not found');
+        // }
+        return $this->command;
+    }
+
+    /**
+     * Runs the current command.
+     *
+     * @return int 0 if everything went fine, or an error code
+     *
+     * @throws Exception When running fails. Bypass this when {@link setCatchExceptions()}.
+     */
+    public function runner(): int
+    {
+        return $this->client->run($this->input, $this->output);
     }
 }

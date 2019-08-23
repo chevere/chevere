@@ -49,7 +49,7 @@ final class RequestCommand extends Command
 
     public function callback(LoaderContract $loader): int
     {
-        $arguments = $this->cli->input->getArguments();
+        $arguments = $this->cli->input()->getArguments();
         $requestArguments = [];
         $r = new ReflectionMethod(Request::class, 'create');
         foreach ($r->getParameters() as $requestArg) {

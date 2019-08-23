@@ -50,7 +50,7 @@ final class RunCommand extends Command
 
     public function callback(LoaderContract $loader): int
     {
-        $callableInput = (string) $this->cli->input->getArgument('callable');
+        $callableInput = (string) $this->cli->input()->getArgument('callable');
 
         if (is_callable($callableInput) || class_exists($callableInput)) {
             $callable = $callableInput;
@@ -58,17 +58,17 @@ final class RunCommand extends Command
             $pathHandle = new PathHandle($callableInput);
             $callable = $pathHandle->path();
             if (!File::exists($callable)) {
-                $this->cli->out->error(sprintf('Unable to locate callable %s', $callable));
+                $this->cli->out()->error(sprintf('Unable to locate callable %s', $callable));
 
                 return 0;
             }
         }
         // Pass explicit callables, "weird" callables (Class::__invoke) runs in the App.
         if (is_callable($callable)) {
-            $return = $callable(...$this->cli->input->getOption('argument'));
-            $this->cli->out->block(PlainVarDump::out($return), 'RETURN', 'fg=black;bg=green', ' ', true);
+            $return = $callable(...$this->cli->input()->getOption('argument'));
+            $this->cli->out()->block(PlainVarDump::out($return), 'RETURN', 'fg=black;bg=green', ' ', true);
         } else {
-            $arguments = $this->cli->input->getOption('argument');
+            $arguments = $this->cli->input()->getOption('argument');
             // argument was declared as array
             if (is_array($arguments)) {
                 $loader->setArguments($arguments);
