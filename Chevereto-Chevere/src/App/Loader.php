@@ -167,14 +167,37 @@ final class Loader implements LoaderContract
      */
     public function run(): void
     {
+        $this->handleRunConsole();
+        $this->handleRunRequest();
+        $this->setRan();
+
+        if (!isset($this->controller)) {
+            $this->processResolveCallable($this->request->getPathInfo());
+        }
+
+        if (!isset($this->controller)) {
+            throw new RuntimeException('DESCONTROL');
+        }
+        $this->runController($this->controller);
+    }
+
+    private function handleRunConsole()
+    {
         if (Console::isRunning() && !isset($this->consoleLoop)) {
             $this->consoleLoop = true;
             Console::run();
         }
+    }
+
+    private function handleRunRequest()
+    {
         if (!isset($this->request)) {
             $this->setRequest(Request::createFromGlobals());
         }
+    }
 
+    private function setRan()
+    {
         if (isset($this->ran)) {
             throw new LogicException(
                 (new Message('The method %s has been already called.'))
@@ -183,14 +206,6 @@ final class Loader implements LoaderContract
             );
         }
         $this->ran = true;
-
-        if (!isset($this->controller)) {
-            $this->processResolveCallable($this->request->getPathInfo());
-        }
-
-        if (isset($this->controller)) {
-            $this->runController($this->controller);
-        }
     }
 
     /**

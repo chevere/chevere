@@ -38,6 +38,12 @@ final class Router
     /** @var array Arguments taken from wildcard matches */
     private $arguments;
 
+    /** @var RouteContract */
+    private $route;
+
+    /** @var array */
+    private $routeSet;
+
     public function __construct(Maker $maker = null)
     {
         if (isset($maker)) {
@@ -64,33 +70,41 @@ final class Router
     public function resolve(string $pathInfo): RouteContract
     {
         if (preg_match($this->regex, $pathInfo, $matches)) {
-            $id = $matches['MARK'];
-            unset($matches['MARK']);
-            array_shift($matches);
-            $route = $this->routes[$id];
-            // Array when the route is a powerSet [id, set]
-            if (is_array($route)) {
-                $set = $route[1];
-                $route = $this->routes[$route[0]];
-            }
-            if (is_string($route)) {
-                $resolver = new Resolver($route);
-                $route = $resolver->get();
-                $this->routes[$id] = $route;
-            }
-            $this->arguments = [];
-            if (isset($set)) {
-                foreach ($matches as $k => $v) {
-                    $wildcardId = $route->keyPowerSet()[$set][$k];
-                    $wildcardName = $route->wildcardName($wildcardId);
-                    $this->arguments[$wildcardName] = $v;
-                }
-            }
-
-            return $route;
+            return $this->resolver($matches);
         }
+        // FIXME: Use RouteNotFoundException
         throw new LogicException(
-            (new Message('NO ROUTING!!!!! %s'))->code('%s', 'BURN!!!')->toString()
+            (new Message('No routing defined for %s'))
+                ->code('%s', $pathInfo)
+                ->toString()
         );
+    }
+
+    private function resolver(array $matches): RouteContract
+    {
+        $id = $matches['MARK'];
+        unset($matches['MARK']);
+        array_shift($matches);
+        $route = $this->routes[$id];
+        // Array when the route is a powerSet [id, set]
+        if (is_array($route)) {
+            $this->set = $route[1];
+            $route = $this->routes[$route[0]];
+        }
+        if (is_string($route)) {
+            $resolver = new Resolver($route);
+            $route = $resolver->get();
+            $this->routes[$id] = $route;
+        }
+        $this->arguments = [];
+        if (isset($this->set)) {
+            foreach ($matches as $k => $v) {
+                $wildcardId = $route->keyPowerSet()[$this->set][$k];
+                $wildcardName = $route->wildcardName($wildcardId);
+                $this->arguments[$wildcardName] = $v;
+            }
+        }
+
+        return $route;
     }
 }

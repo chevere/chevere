@@ -11,40 +11,40 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Tests\Api;
+// namespace Tests\Api;
 
-use Throwable;
-use Chevere\Api\Maker;
-// use Chevere\Router\Router;
-use Chevere\Contracts\Api\MakerContract;
-use PHPUnit\Framework\TestCase;
+// use Throwable;
+// use Chevere\Api\Maker;
+// // use Chevere\Router\Router;
+// use Chevere\Contracts\Api\MakerContract;
+// use PHPUnit\Framework\TestCase;
 
-final class MakerTest extends TestCase
-{
-    /** @var MakerContract */
-    protected $maker;
+// final class MakerTest extends TestCase
+// {
+//     /** @var MakerContract */
+//     protected $maker;
 
-    public function setUp(): void
-    {
-        $this->maker = new Maker(new Router());
-    }
+//     public function setUp(): void
+//     {
+//         $this->maker = new Maker(new Router());
+//     }
 
-    public function tearDown(): void
-    {
-        unset($this->maker);
-    }
+//     public function tearDown(): void
+//     {
+//         unset($this->maker);
+//     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
-    public function testCanRegisterApiPath(): void
-    {
-        $this->maker->register('src/Api/');
-    }
+//     /**
+//      * @doesNotPerformAssertions
+//      */
+//     public function testCanRegisterApiPath(): void
+//     {
+//         $this->maker->register('src/Api/');
+//     }
 
-    public function testCannotRegisterInvalidPath(): void
-    {
-        $this->expectException(Throwable::class);
-        $this->maker->register('/dev/null');
-    }
-}
+//     public function testCannotRegisterInvalidPath(): void
+//     {
+//         $this->expectException(Throwable::class);
+//         $this->maker->register('/dev/null');
+//     }
+// }
