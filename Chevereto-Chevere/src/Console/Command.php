@@ -54,7 +54,7 @@ abstract class Command implements CommandContract
         $this->configure();
     }
 
-    public function cli(): CliContract
+    final public function cli(): CliContract
     {
         return $this->cli;
     }
@@ -64,9 +64,9 @@ abstract class Command implements CommandContract
         return $this->symfonyCommand;
     }
 
-    abstract public function callback(LoaderContract $loader);
+    abstract public function callback(LoaderContract $loader): int;
 
-    final protected function configure()
+    final protected function configure(): void
     {
         $this->symfonyCommand
             ->setName(static::NAME)
