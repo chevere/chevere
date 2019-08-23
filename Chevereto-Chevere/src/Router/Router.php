@@ -38,12 +38,6 @@ final class Router
     /** @var array Arguments taken from wildcard matches */
     private $arguments;
 
-    /** @var RouteContract */
-    private $route;
-
-    /** @var array */
-    private $routeSet;
-
     public function __construct(Maker $maker = null)
     {
         if (isset($maker)) {
@@ -88,7 +82,7 @@ final class Router
         $route = $this->routes[$id];
         // Array when the route is a powerSet [id, set]
         if (is_array($route)) {
-            $this->set = $route[1];
+            $set = $route[1];
             $route = $this->routes[$route[0]];
         }
         if (is_string($route)) {
@@ -97,9 +91,9 @@ final class Router
             $this->routes[$id] = $route;
         }
         $this->arguments = [];
-        if (isset($this->set)) {
+        if (isset($set)) {
             foreach ($matches as $k => $v) {
-                $wildcardId = $route->keyPowerSet()[$this->set][$k];
+                $wildcardId = $route->keyPowerSet()[$set][$k];
                 $wildcardName = $route->wildcardName($wildcardId);
                 $this->arguments[$wildcardName] = $v;
             }
