@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Runtime\Traits;
 
-use Chevere\Contracts\DataContract;
-use Chevere\Stopwatch;
 use Chevere\Utility\Str;
-use ReflectionClass;
+use Chevere\Contracts\DataContract;
 
 trait RuntimeSet
 {

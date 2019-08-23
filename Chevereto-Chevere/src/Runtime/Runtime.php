@@ -36,6 +36,6 @@ final class Runtime
             $this->data->setKey($runtimeSet->name(), $runtimeSet->value());
         }
         $this->data->setKey('errorReportingLevel', error_reporting());
-        $this->config = $this->data->toArray();
+        // $this->config = $this->data->toArray();
     }
 }

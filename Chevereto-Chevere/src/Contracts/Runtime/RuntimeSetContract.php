@@ -19,5 +19,7 @@ interface RuntimeSetContract
 
     public function set(): void;
 
+    public function value(): ?string;
+
     public function name(): string;
 }
