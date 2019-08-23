@@ -22,6 +22,9 @@ class RuntimeSetErrorHandler implements RuntimeSetContract
 {
     use RuntimeSet;
 
+    /** @var callable */
+    private $value;
+
     public function set(): void
     {
         if (null == $this->value) {
@@ -35,6 +38,11 @@ class RuntimeSetErrorHandler implements RuntimeSetContract
             }
             set_error_handler($this->value);
         }
+    }
+
+    public function value(): ?callable
+    {
+        return $this->value;
     }
 
     private function restoreErrorHandler(): void

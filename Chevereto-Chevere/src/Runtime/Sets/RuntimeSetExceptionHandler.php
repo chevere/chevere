@@ -22,7 +22,7 @@ class RuntimeSetExceptionHandler implements RuntimeSetContract
 {
     use RuntimeSet;
 
-    /** @var string */
+    /** @var callable */
     private $value;
 
     public function set(): void
@@ -38,6 +38,11 @@ class RuntimeSetExceptionHandler implements RuntimeSetContract
             }
             set_exception_handler($this->value);
         }
+    }
+
+    public function value(): ?callable
+    {
+        return $this->value;
     }
 
     private function restoreExceptionHandler(): void
