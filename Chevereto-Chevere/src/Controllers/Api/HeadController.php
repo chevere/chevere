@@ -63,7 +63,7 @@ final class HeadController extends Controller
     private function process()
     {
         $controller = $this->route->getController('GET');
-        $runController = $this->app->run($controller);
+        $this->app->run($controller);
         $this->app->response()->unsetContent();
         if (CLI) {
             Console::cli()->out()->block($this->app->response()->getStatusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
