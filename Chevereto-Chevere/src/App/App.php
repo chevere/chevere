@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\App;
 
+use Chevere\Contracts\Api\ApiContract;
 use LogicException;
 
 use const Chevere\APP_PATH;
@@ -36,17 +37,25 @@ final class App implements AppContract
     const FILEHANDLE_PARAMETERS = ':parameters';
     const FILEHANDLE_HACKS = ':hacks';
 
-    /** @var array String arguments (from request uri, cli) */
-    private $arguments;
+    /** @var ApiContract */
+    private $api;
 
     /** @var Response */
     private $response;
+
+    /** @var array String arguments (from request uri, cli) */
+    private $arguments;
 
     /** @var RouteContract */
     private $route;
 
     /** @var RouterContract */
     private $router;
+
+    public function setApi(ApiContract $api): void
+    {
+        $this->api = $api;
+    }
 
     public function setResponse(Response $response): void
     {
@@ -66,6 +75,11 @@ final class App implements AppContract
     public function setArguments(array $arguments): void
     {
         $this->arguments = $arguments;
+    }
+
+    public function api(): ApiContract
+    {
+        return $this->api;
     }
 
     public function response(): Response
