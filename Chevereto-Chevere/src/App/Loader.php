@@ -36,6 +36,7 @@ use Chevere\HttpFoundation\Method;
 use Chevere\HttpFoundation\Methods;
 use Chevere\Api\Endpoint;
 use Chevere\Contracts\App\LoaderContract;
+use Chevere\Contracts\Router\RouterContract;
 use Chevere\File;
 use Chevere\Message;
 use Chevere\Router\Router;

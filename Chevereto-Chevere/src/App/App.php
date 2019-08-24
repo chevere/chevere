@@ -23,7 +23,6 @@ use Chevere\HttpFoundation\Response;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
-use Chevere\Router\Router;
 
 /**
  * The app container.
@@ -46,7 +45,7 @@ final class App implements AppContract
     /** @var RouteContract */
     private $route;
 
-    /** @var Router */
+    /** @var RouterContract */
     private $router;
 
     public function setResponse(Response $response): void
@@ -77,6 +76,11 @@ final class App implements AppContract
     public function route(): RouteContract
     {
         return $this->route;
+    }
+
+    public function router(): RouterContract
+    {
+        return $this->router;
     }
 
     public function arguments(): array

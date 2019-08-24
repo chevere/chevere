@@ -51,7 +51,7 @@ final class OptionsController extends Controller
 
     private function handleError()
     {
-        $this->response->setStatusCode(400);
+        $this->app->response()->setStatusCode(400);
         $msg = 'Must provide a %s argument when running this callable without route context.';
         $message = (new Message($msg))->code('%s', '$path')->toString();
         if (CLI) {
@@ -73,6 +73,6 @@ final class OptionsController extends Controller
             $statusCode = 404;
             // $json->setResponse("Endpoint doesn't exists", $statusCode);
         }
-        $this->response->setStatusCode($statusCode);
+        $this->app->response()->setStatusCode($statusCode);
     }
 }

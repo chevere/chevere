@@ -15,6 +15,7 @@ namespace Chevere\Contracts\App;
 
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Route\RouteContract;
+use Chevere\Contracts\Router\RouterContract;
 use Chevere\HttpFoundation\Response;
 
 interface AppContract
@@ -23,11 +24,13 @@ interface AppContract
 
     public function setRoute(RouteContract $route): void;
 
+    public function setRouter(RouterContract $router): void;
+
     public function setArguments(array $arguments): void;
 
     public function response(): Response;
 
-    public function route(): RouteContract;
+    public function router(): RouterContract;
 
     public function arguments(): array;
 

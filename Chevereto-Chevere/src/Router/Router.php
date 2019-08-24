@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Router;
 
-use Chevere\Cache\Cache;
 use LogicException;
 use Chevere\Message;
+use Chevere\Cache\Cache;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
-use Chevere\Path\PathHandle;
 
 /**s
  * Routes takes a bunch of Routes and generates a routing table (php array).

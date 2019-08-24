@@ -50,7 +50,7 @@ final class HeadController extends Controller
         }
 
         if (!isset($route)) {
-            $this->response->setStatusCode(404);
+            $this->app->response()->setStatusCode(404);
 
             return;
         }
@@ -64,7 +64,7 @@ final class HeadController extends Controller
     {
         $controller = $this->route->getController('GET');
         $runController = $this->app->run($controller);
-        $runController->response->unsetContent();
+        $this->app->response()->unsetContent();
         if (CLI) {
             Console::cli()->out()->block($runController->response->getStatusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
         }

@@ -32,9 +32,9 @@ final class HeadController extends Controller
         $controller = $route->getController('GET');
         if ($controller) {
             $this->invoke($controller);
-            $this->response->unsetContent();
+            $this->app->response()->unsetContent();
             if (CLI) {
-                Console::cli()->out()->block($this->response->getStatusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
+                Console::cli()->out()->block($this->app->response()->getStatusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
             }
         }
     }
