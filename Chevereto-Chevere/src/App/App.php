@@ -22,8 +22,8 @@ use Chevere\Controller\ArgumentsWrap;
 use Chevere\HttpFoundation\Response;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Route\RouteContract;
-use Chevere\Route\Route;
-use Chevere\Stopwatch;
+use Chevere\Contracts\Router\RouterContract;
+use Chevere\Router\Router;
 
 /**
  * The app container.
@@ -46,6 +46,9 @@ final class App implements AppContract
     /** @var RouteContract */
     private $route;
 
+    /** @var Router */
+    private $router;
+
     public function setResponse(Response $response): void
     {
         $this->response = $response;
@@ -54,6 +57,11 @@ final class App implements AppContract
     public function setRoute(RouteContract $route): void
     {
         $this->route = $route;
+    }
+
+    public function setRouter(RouterContract $router): void
+    {
+        $this->router = $router;
     }
 
     public function setArguments(array $arguments): void

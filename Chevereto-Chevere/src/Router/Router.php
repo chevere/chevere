@@ -17,12 +17,13 @@ use Chevere\Cache\Cache;
 use LogicException;
 use Chevere\Message;
 use Chevere\Contracts\Route\RouteContract;
+use Chevere\Contracts\Router\RouterContract;
 use Chevere\Path\PathHandle;
 
 /**s
  * Routes takes a bunch of Routes and generates a routing table (php array).
  */
-final class Router
+final class Router implements RouterContract
 {
     const REGEX_TEPLATE = '#^(?%s)$#x';
 

@@ -13,22 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Router;
 
+use Chevere\Router\Maker;
 use Chevere\Contracts\Route\RouteContract;
 
 interface RouterContract
 {
-    /**
-     * Adds a route to the target routing group.
-     * 
-     * @param RouteContract $route
-     * @param string        $basename The API basename (like 'api')
-     */
-    public function addRoute(RouteContract $route, string $group): void;
+    public function __construct(Maker $maker = null);
 
-    /**
-     * Returns a string containing the full routing regex string.
-     */
-    public function getRegex(): string;
+    public function arguments(): array;
 
     /**
      * Resolve routing for the given path info, sets matched arguments.

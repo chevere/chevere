@@ -35,7 +35,7 @@ final class OptionsController extends Controller
 
     public function __invoke()
     {
-        $route = $this->app->route;
+        $route = $this->app->route();
         if (isset($route)) {
             $path = $route->path();
         }
@@ -66,9 +66,9 @@ final class OptionsController extends Controller
     private function process()
     {
         $statusCode = 200;
-        $endpoint = $this->app->api->endpoint($this->endpoint);
+        $endpoint = $this->app->api()->endpoint($this->endpoint);
         if ($endpoint['OPTIONS']) {
-            $this->app->response->addData('OPTIONS', $this->path, $endpoint['OPTIONS']);
+            $this->app->response()->addData('OPTIONS', $this->path, $endpoint['OPTIONS']);
         } else {
             $statusCode = 404;
             // $json->setResponse("Endpoint doesn't exists", $statusCode);

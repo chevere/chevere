@@ -33,9 +33,9 @@ final class HeadController extends Controller
     public function __invoke(?string $endpoint = null)
     {
         if (isset($endpoint)) {
-            $route = $this->app->router->resolve($endpoint);
+            $route = $this->app->router()->resolve($endpoint);
         } else {
-            $route = $this->app->route;
+            $route = $this->app->route();
             if (!isset($route)) {
                 $msg = 'Must provide the %s argument when running this callable without route context.';
                 $message = (new Message($msg))->code('%s', '$endpoint')->toString();

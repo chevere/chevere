@@ -63,7 +63,7 @@ final class Loader implements LoaderContract
     /** @var Request */
     private $request;
 
-    /** @var Router */
+    /** @var RouterContract */
     private $router;
 
     /** @var RouterMaker */
@@ -243,9 +243,11 @@ final class Loader implements LoaderContract
         if (!empty($this->parameters->api()) && !isset($this->api)) {
             $this->api = new Api();
         }
+        // $this->app->setApi($this->api);
         if (!empty($this->parameters->routes()) && !isset($this->router)) {
             $this->router = new Router();
         }
+        $this->app->setRouter($this->router);
     }
 
     private function processResolveCallable(string $pathInfo): void
