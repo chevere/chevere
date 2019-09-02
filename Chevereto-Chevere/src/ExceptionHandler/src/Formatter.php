@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\ErrorHandler\src;
+namespace Chevere\ExceptionHandler\src;
 
 use Throwable;
 use ErrorException;
 use Symfony\Component\Console\Output\OutputInterface;
 use const Chevere\CLI;
 use Chevere\Console\Console;
-use Chevere\ErrorHandler\ErrorHandler;
-use Chevere\ErrorHandler\ExceptionWrap;
+use Chevere\ExceptionHandler\ExceptionHandler;
+use Chevere\ExceptionHandler\Wrap;
 use Chevere\VarDump\VarDump;
 use Chevere\VarDump\PlainVarDump;
 use Chevere\Utility\Str;
@@ -36,7 +36,7 @@ final class Formatter
     /** @var string Number of fixed columns for plaintext display */
     const COLUMNS = 120;
 
-    /** ErrorHandler sections */
+    /** ExceptionHandler sections */
     const SECTION_TITLE = 'title';
     const SECTION_MESSAGE = 'message';
     const SECTION_ID = 'id';
@@ -58,8 +58,8 @@ final class Formatter
         self::SECTION_SERVER => false,
     ];
 
-    /** @var ErrorHandler */
-    private $errorHandler;
+    /** @var ExceptionHandler */
+    private $exceptionHandler;
 
     /** @var string */
     private $lineBreak;
@@ -75,8 +75,8 @@ final class Formatter
     /** @var string */
     private $varDump;
 
-    /** @var ExceptionWrap */
-    private $exceptionWrap;
+    /** @var Wrap */
+    private $wrap;
 
     /** @var Throwable */
     private $exception;
@@ -84,16 +84,16 @@ final class Formatter
     /** @var DataContract */
     private $data;
 
-    public function __construct(ErrorHandler $errorHandler)
+    public function __construct(ExceptionHandler $exceptionHandler)
     {
         $this->varDump = VarDump::RUNTIME;
-        $this->errorHandler = $errorHandler;
-        $this->exceptionWrap = $this->errorHandler->exceptionWrap();
-        $this->exception = $this->exceptionWrap->exception();
-        $this->data = $this->exceptionWrap->data();
+        $this->exceptionHandler = $exceptionHandler;
+        $this->wrap = $this->exceptionHandler->wrap();
+        $this->exception = $this->wrap->exception();
+        $this->data = $this->wrap->data();
         $this->setServerProperties();
         $this->data->add([
-            'thrown' => $this->exceptionWrap->dataKey('className').' thrown',
+            'thrown' => $this->wrap->dataKey('className').' thrown',
         ]);
         $this->processStack();
         $this->processContentSections();
@@ -132,11 +132,11 @@ final class Formatter
     public function getTemplateTags(): array
     {
         return [
-            '%id%' => $this->errorHandler->dataKey('id'),
-            '%datetimeUtc%' => $this->errorHandler->dataKey('dateTimeAtom'),
-            '%timestamp%' => $this->errorHandler->dataKey('timestamp'),
-            '%loadedConfigFilesString%' => $this->errorHandler->dataKey('loadedConfigFilesString'),
-            '%logFilename%' => $this->errorHandler->dataKey('logFilename'),
+            '%id%' => $this->exceptionHandler->dataKey('id'),
+            '%datetimeUtc%' => $this->exceptionHandler->dataKey('dateTimeAtom'),
+            '%timestamp%' => $this->exceptionHandler->dataKey('timestamp'),
+            '%loadedConfigFilesString%' => $this->exceptionHandler->dataKey('loadedConfigFilesString'),
+            '%logFilename%' => $this->exceptionHandler->dataKey('logFilename'),
             '%css%' => $this->data->getKey('css'),
             '%bodyClass%' => $this->data->getKey('bodyClass'),
             '%body%' => null,
@@ -171,23 +171,23 @@ final class Formatter
         } else {
             $this->data->add([
                 // FIXME: Drop this
-                'uri' => $this->errorHandler->request()->readInfoKey('requestUri') ?? 'unknown',
-                'clientUserAgent' => $this->errorHandler->request()->headers->get('User-Agent'),
-                'requestMethod' => $this->errorHandler->request()->readInfoKey('method'),
-                'serverHost' => $this->errorHandler->request()->readInfoKey('host'),
-                'serverPort' => (int) $this->errorHandler->request()->readInfoKey('port'),
-                'serverProtocol' => $this->errorHandler->request()->readInfoKey('protocolVersion'),
-                'serverSoftware' => $this->errorHandler->request()->headers->get('SERVER_SOFTWARE'),
-                'clientIp' => $this->errorHandler->request()->readInfoKey('clientIp'),
+                'uri' => $this->exceptionHandler->request()->readInfoKey('requestUri') ?? 'unknown',
+                'clientUserAgent' => $this->exceptionHandler->request()->headers->get('User-Agent'),
+                'requestMethod' => $this->exceptionHandler->request()->readInfoKey('method'),
+                'serverHost' => $this->exceptionHandler->request()->readInfoKey('host'),
+                'serverPort' => (int) $this->exceptionHandler->request()->readInfoKey('port'),
+                'serverProtocol' => $this->exceptionHandler->request()->readInfoKey('protocolVersion'),
+                'serverSoftware' => $this->exceptionHandler->request()->headers->get('SERVER_SOFTWARE'),
+                'clientIp' => $this->exceptionHandler->request()->readInfoKey('clientIp'),
             ]);
         }
     }
 
     private function processStack()
     {
-        $trace = $this->exceptionWrap->exception()->getTrace();
-        if ($this->exceptionWrap->exception() instanceof ErrorException) {
-            $this->data->setKey('thrown', $this->exceptionWrap->dataKey('type'));
+        $trace = $this->wrap->exception()->getTrace();
+        if ($this->wrap->exception() instanceof ErrorException) {
+            $this->data->setKey('thrown', $this->wrap->dataKey('type'));
             unset($trace[0]);
         }
         $stack = new Stack($trace);
@@ -202,7 +202,7 @@ final class Formatter
     {
         $sections = [
             static::SECTION_TITLE => ['%title% <span>in&nbsp;%file%:%line%</span>'],
-            static::SECTION_MESSAGE => ['# Message', '%message%'.($this->exceptionWrap->dataKey('code') ? ' [Code #%code%]' : null)],
+            static::SECTION_MESSAGE => ['# Message', '%message%'.($this->wrap->dataKey('code') ? ' [Code #%code%]' : null)],
             static::SECTION_TIME => ['# Time', '%datetimeUtc% [%timestamp%]'],
             static::SECTION_ID => ['# Incident ID:%id%', 'Logged at %logFilename%'],
             static::SECTION_STACK => ['# Stack trace', '%plainStack%'],

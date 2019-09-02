@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\ErrorHandler;
+namespace Chevere\ExceptionHandler\src;
 
 use Throwable;
 use ErrorException;
@@ -21,11 +21,12 @@ use Chevere\Utility\Str;
 use Chevere\Contracts\DataContract;
 use Chevere\Data\Traits\DataAccessTrait;
 use Chevere\Data\Traits\DataKeyTrait;
+use Chevere\ExceptionHandler\ExceptionHandler;
 
 /**
  * Wraps throwable exception.
  */
-final class ExceptionWrap
+final class Wrap
 {
     use DataAccessTrait;
     use DataKeyTrait;
@@ -59,8 +60,8 @@ final class ExceptionWrap
             'className' => $className,
             'code' => $code,
             'errorType' => $errorType,
-            'type' => ErrorHandler::ERROR_TABLE[$phpCode],
-            'loggerLevel' => ErrorHandler::PHP_LOG_LEVEL[$phpCode] ?? 'error',
+            'type' => ExceptionHandler::ERROR_TABLE[$phpCode],
+            'loggerLevel' => ExceptionHandler::PHP_LOG_LEVEL[$phpCode] ?? 'error',
             'message' => $exception->getMessage(),
             'file' => Path::normalize($exception->getFile()),
             'line' => (int) $exception->getLine(),

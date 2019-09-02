@@ -9,5 +9,6 @@ use Chevere\Controller\Controller;
 class Dashboard extends Controller
 {
     public function __invoke()
-    { }
+    {
+    }
 }

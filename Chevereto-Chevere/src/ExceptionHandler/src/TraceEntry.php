@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\ErrorHandler\src;
+namespace Chevere\ExceptionHandler\src;
 
 use ReflectionMethod;
 use const Chevere\PATH;

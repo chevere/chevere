@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\ErrorHandler\src;
+namespace Chevere\ExceptionHandler\src;
 
 // FIXME: Code font (inline) must be smaller
 /**
- * Stores the styling (CSS) for ErrorHandler.
+ * Stores the styling (CSS) for ExceptionHandler.
  */
 class Style
 {

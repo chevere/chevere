@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\ErrorHandler\src;
+namespace Chevere\ExceptionHandler\src;
 
 use const Chevere\CLI;
 use DateTime;
@@ -19,11 +19,11 @@ use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Symfony\Component\HttpFoundation\JsonResponse as HttpJsonResponse;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Chevere\Console\Console;
-use Chevere\ErrorHandler\ErrorHandler;
+use Chevere\ExceptionHandler\ExceptionHandler;
 use Chevere\Json;
 
 /**
- * Provides ErrorHandler output by passing a Formatter. FIXME: Don't handle responses!
+ * Provides ExceptionHandler output by passing a Formatter. FIXME: Don't handle responses!
  */
 final class Output
 {
@@ -36,8 +36,8 @@ final class Output
     /** @var array */
     private $templateTags;
 
-    /** @var ErrorHandler */
-    private $errorHandler;
+    /** @var ExceptionHandler */
+    private $exceptionHandler;
 
     /** @var Formatter */
     private $formatter;
@@ -54,13 +54,13 @@ final class Output
     /** @var string The plain template string. */
     private $plainTemplate;
 
-    public function __construct(ErrorHandler $errorHandler, Formatter $formatter)
+    public function __construct(ExceptionHandler $exceptionHandler, Formatter $formatter)
     {
-        $this->errorHandler = $errorHandler;
+        $this->exceptionHandler = $exceptionHandler;
         $this->formatter = $formatter;
         $this->generateTemplates();
         $this->parseTemplates();
-        if ($errorHandler->request()->isXmlHttpRequest()) {
+        if ($exceptionHandler->request()->isXmlHttpRequest()) {
             $this->setJsonOutput();
         } else {
             if (CLI) {
@@ -78,7 +78,7 @@ final class Output
 
     public function out(): void
     {
-        if ($this->errorHandler->request()->isXmlHttpRequest()) {
+        if ($this->exceptionHandler->request()->isXmlHttpRequest()) {
             $response = new HttpJsonResponse();
         } else {
             $response = new HttpResponse();
@@ -129,7 +129,7 @@ final class Output
             'level' => $this->formatter->dataKey('loggerLevel'),
             'filename' => $this->getTemplateTag('logFilename'),
         ];
-        switch ($this->errorHandler->isDebugEnabled()) {
+        switch ($this->exceptionHandler->isDebugEnabled()) {
             case 0:
                 unset($log['filename']);
                 break;
@@ -149,7 +149,7 @@ final class Output
 
     private function setHtmlOutput(): void
     {
-        if ($this->errorHandler->isDebugEnabled()) {
+        if ($this->exceptionHandler->isDebugEnabled()) {
             $bodyTemplate = Template::DEBUG_BODY_HTML;
         } else {
             $this->content = Template::NO_DEBUG_CONTENT_HTML;

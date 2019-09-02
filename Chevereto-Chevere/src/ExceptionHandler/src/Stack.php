@@ -11,12 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\ErrorHandler\src;
+namespace Chevere\ExceptionHandler\src;
 
 use const Chevere\CLI;
 
 /**
- * Handles the ErrorHandler exception stack trace.
+ * Handles the ExceptionHandler exception stack trace.
  */
 final class Stack
 {

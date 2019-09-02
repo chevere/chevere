@@ -11,10 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\ErrorHandler\src;
+namespace Chevere\ExceptionHandler\src;
 
 /**
- * Stores the template strings used by ErrorHandler.
+ * Stores the template strings used by ExceptionHandler.
  */
 class Template
 {
@@ -50,7 +50,7 @@ class Template
      */
 
     /** @var string HTML template (whole document) */
-    const HTML_TEMPLATE = '<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Chevere\ErrorHandler"><style>%css%</style></head><body class="%bodyClass%">%body%</body></html>';
+    const HTML_TEMPLATE = '<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Chevere\ExceptionHandler"><style>%css%</style></head><body class="%bodyClass%">%body%</body></html>';
 
     /** @var string HTML body used when debug is disabled (App config) */
     const NO_DEBUG_BODY_HTML = '<main><div><div class="t t--scream">%title%</div>%content%<p class="fine-print">%datetimeUtc% • %id%</p></div></main>';

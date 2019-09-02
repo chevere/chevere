@@ -11,12 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\ErrorHandler;
+namespace Chevere\ExceptionHandler;
 
 use const Chevere\APP_PATH;
 
 use DateTime;
-use ErrorException;
 use DateTimeZone;
 use Throwable;
 use Chevere\HttpFoundation\Request;
@@ -24,10 +23,11 @@ use Chevere\App\Loader;
 use Chevere\Data\Data;
 use Chevere\Path\Path;
 use Chevere\Runtime\Runtime;
-use Chevere\ErrorHandler\src\Formatter;
-use Chevere\ErrorHandler\src\Output;
-use Chevere\ErrorHandler\src\Style;
-use Chevere\ErrorHandler\src\Template;
+use Chevere\ExceptionHandler\src\Formatter;
+use Chevere\ExceptionHandler\src\Output;
+use Chevere\ExceptionHandler\src\Style;
+use Chevere\ExceptionHandler\src\Template;
+use Chevere\ExceptionHandler\src\Wrap;
 use Psr\Log\LogLevel;
 use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
@@ -37,12 +37,10 @@ use Chevere\Contracts\DataContract;
 use Chevere\Data\Traits\DataAccessTrait;
 use Chevere\Data\Traits\DataKeyTrait;
 
-// use Chevere\Contracts\ErrorHandler\ErrorHandlerContract;
-
 /**
- * The Chevere ErrorHandler.
+ * The Chevere exception handler.
  */
-final class ErrorHandler
+final class ExceptionHandler
 {
     use DataAccessTrait;
     use DataKeyTrait;
@@ -106,8 +104,8 @@ final class ErrorHandler
     /** @var string */
     private $loggerLevel;
 
-    /** @var ExceptionWrap */
-    private $exceptionWrap;
+    /** @var Wrap */
+    private $wrap;
 
     /** @var string */
     private $logDateFolderFormat;
@@ -143,8 +141,8 @@ final class ErrorHandler
         $this->setloadedConfigFiles();
 
         $this->logDateFolderFormat = static::LOG_DATE_FOLDER_FORMAT;
-        $this->exceptionWrap = new ExceptionWrap($args[0]);
-        $this->loggerLevel = $this->exceptionWrap->dataKey('loggerLevel');
+        $this->wrap = new Wrap($args[0]);
+        $this->loggerLevel = $this->wrap->dataKey('loggerLevel');
         $this->setLogFilePathProperties();
         $this->setLogger();
 
@@ -167,19 +165,14 @@ final class ErrorHandler
         return $this->request;
     }
 
-    public function exceptionWrap(): ExceptionWrap
+    public function wrap(): Wrap
     {
-        return $this->exceptionWrap;
-    }
-
-    public static function error($severity, $message, $file, $line): void
-    {
-        throw new ErrorException($message, 0, $severity, $file, $line);
+        return $this->wrap;
     }
 
     public static function exception($e): void
     {
-        static::exceptionHandler(...func_get_args());
+        new static($e);
     }
 
     private function setTimeProperties(): void
@@ -227,10 +220,5 @@ final class ErrorHandler
         $log = strip_tags($this->output->textPlain());
         $log .= "\n\n".str_repeat('=', Formatter::COLUMNS);
         $this->logger->log($this->loggerLevel, $log);
-    }
-
-    private static function exceptionHandler(): void
-    {
-        new static(...func_get_args());
     }
 }

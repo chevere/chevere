@@ -29,7 +29,7 @@ use Chevere\Path\PathHandle;
  * cached.php >>> <?php return 'my cached data';
  *
  */
-final class Cache
+final class Cache 
 {
     const ILLEGAL_KEY_CHARACTERS = '\.\/\\\~\:';
 
