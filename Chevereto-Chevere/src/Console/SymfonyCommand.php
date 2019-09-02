@@ -22,7 +22,6 @@ use Chevere\Contracts\Console\SymfonyCommandContract;
 
 /**
  * Wrapper for Symfony\Component\Console\Command\Command
- * As this class extends, this wrapper allows to add functionality without causing naming collisions.
  */
 final class SymfonyCommand extends BaseCommand implements SymfonyCommandContract
 {
@@ -30,17 +29,22 @@ final class SymfonyCommand extends BaseCommand implements SymfonyCommandContract
     private $chevereCli;
 
     /** @var CommandContract */
-    private $chevereCommand;
+    private $command;
 
     public function __construct(CommandContract $command)
     {
-        $this->chevereCommand = $command;
+        $this->command = $command;
         $this->chevereCli = $command->cli();
         parent::__construct();
     }
 
+    protected function initialize(InputInterface $input, OutputInterface $output)
+    {
+        $this->chevereCli->setCommand($this->command);
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->chevereCli->setCommand($this->chevereCommand);
+        return 0;
     }
 }

@@ -13,14 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Console;
 
-use Exception;
-use RuntimeException;
-use Chevere\Console\Commands\BuildCommand;
 use Monolog\Logger;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Chevere\Console\Commands\BuildCommand;
 use Chevere\Console\Commands\RequestCommand;
 use Chevere\Console\Commands\RunCommand;
 use Chevere\Console\Commands\InspectCommand;
@@ -29,11 +27,11 @@ use Chevere\Contracts\Console\CommandContract;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
 
 /**
- * This class provides console facade for Symfony\Component\Console.
+ * This class provides Chevere CLI.
  */
 final class Cli implements CliContract
 {
-    const NAME = __NAMESPACE__.' cli';
+    const NAME = __NAMESPACE__ . ' cli';
     const VERSION = '1.0';
 
     /** @var string Cli name */
@@ -77,6 +75,7 @@ final class Cli implements CliContract
             (new InspectCommand($this))->symfonyCommand(),
             (new BuildCommand($this))->symfonyCommand(),
         ]);
+
         $command = Console::command();
         try {
             $this->client->get($command);
@@ -112,9 +111,6 @@ final class Cli implements CliContract
 
     public function command(): CommandContract
     {
-        // if (!isset($this->command)) {
-        //     throw new RuntimeException('Command not found');
-        // }
         return $this->command;
     }
 

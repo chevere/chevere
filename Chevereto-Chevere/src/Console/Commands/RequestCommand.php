@@ -30,13 +30,14 @@ final class RequestCommand extends Command
     const DESCRIPTION = 'Forge and resolve a HTTP request';
     const HELP = 'This command allows you to forge a HTTP request';
 
+    // FIXME: Required parsing, maybe use json as string for (*)
     const ARGUMENTS = [
         ['method', Command::ARGUMENT_OPTIONAL, 'HTTP request method', 'GET'],
         ['path', Command::ARGUMENT_OPTIONAL, 'Path', '/'],
-        ['parameters', Command::ARGUMENT_OPTIONAL, 'Parameters', []],
-        ['cookies', Command::ARGUMENT_OPTIONAL, 'Cookies', []],
-        ['files', Command::ARGUMENT_OPTIONAL, 'Files', []],
-        ['server', Command::ARGUMENT_OPTIONAL, 'Server', []],
+        ['parameters', Command::ARGUMENT_OPTIONAL, 'Parameters', []], // *
+        ['cookies', Command::ARGUMENT_OPTIONAL, 'Cookies', []], // *
+        ['files', Command::ARGUMENT_OPTIONAL, 'Files', []], // *
+        ['server', Command::ARGUMENT_OPTIONAL, 'Server', []], // *
         ['content', Command::ARGUMENT_OPTIONAL, 'Content', null],
     ];
 

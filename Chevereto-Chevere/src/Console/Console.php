@@ -20,6 +20,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Console\ConsoleContract;
 use Chevere\Contracts\Console\CliContract;
+use Throwable;
 
 /**
  * Provides static access to the Chevere application console.
@@ -91,17 +92,15 @@ final class Console
         if (0 !== $exitCode) {
             die();
         }
-        $command = self::$cli->command();
-        if (null === $command) {
+        try {
+            $command = self::$cli->command();
+        } catch (Throwable $e) {
             exit($exitCode);
         }
-        if (method_exists($command, 'callback')) {
-            if (self::$loader == null) {
-                throw new RuntimeException('No Chevere instance is defined.');
-            }
-            $exitCode = $command->callback(self::$loader);
+        if (self::$loader == null) {
+            throw new RuntimeException('No Chevere instance is defined.');
         }
-        exit($exitCode);
+        exit($command->callback(self::$loader));
     }
 
     public static function inputString(): string
