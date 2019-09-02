@@ -30,35 +30,50 @@ final class RequestCommand extends Command
     const DESCRIPTION = 'Forge and resolve a HTTP request';
     const HELP = 'This command allows you to forge a HTTP request';
 
-    // FIXME: Required parsing, maybe use json as string for (*)
     const ARGUMENTS = [
         ['method', Command::ARGUMENT_OPTIONAL, 'HTTP request method', 'GET'],
-        ['path', Command::ARGUMENT_OPTIONAL, 'Path', '/'],
-        ['parameters', Command::ARGUMENT_OPTIONAL, 'Parameters', []], // *
-        ['cookies', Command::ARGUMENT_OPTIONAL, 'Cookies', []], // *
-        ['files', Command::ARGUMENT_OPTIONAL, 'Files', []], // *
-        ['server', Command::ARGUMENT_OPTIONAL, 'Server', []], // *
-        ['content', Command::ARGUMENT_OPTIONAL, 'Content', null],
+        ['uri', Command::ARGUMENT_OPTIONAL, 'URI', '/'],
     ];
 
-    /**
-     * Maps Symfony\Component\HttpFoundation\Request::create arguments to this command arguments.
-     */
-    const HTTP_REQUEST_FN_MAP = [
-        'uri' => 'path',
+    const OPTIONS = [
+        ['parameters', 'p', Command::OPTION_OPTIONAL, 'Parameters [json]', []],
+        ['cookies', 'c', Command::OPTION_OPTIONAL, '$_COOKIE [json]', []],
+        ['files', 'f', Command::OPTION_OPTIONAL, '$_FILES [json]', []],
+        ['server', 's', Command::OPTION_OPTIONAL, '$_SERVER [json]', []],
+        ['content', 'r', Command::OPTION_OPTIONAL, 'Raw body data', null],
     ];
+
+    /** If required, this will map command arguments and options to Request::create */
+    const HTTP_REQUEST_FN_MAP = [
+        // 'uri' => 'uri',
+        // 'method' => 'method',
+        // 'parameters' => 'parameters',
+        // 'cookies' => 'cookies',
+        // 'files' => 'files',
+        // 'server' => 'server',
+        // 'content' => 'content'
+    ];
+
+
+    // List of arguments which are passed as JSON
+    const JSON_OPTIONS = ['parameters', 'cookies', 'files', 'server'];
 
     public function callback(LoaderContract $loader): int
     {
         $arguments = $this->cli->input()->getArguments();
+        $options = $this->cli->input()->getOptions();
+
+        $jsonOptions = [];
+        foreach (static::JSON_OPTIONS as $v) {
+            $jsonOptions[$v] = is_string($options[$v]) ? json_decode($options[$v], true) : $options[$v];
+        }
+
+        $options = array_merge($options, $jsonOptions);
+
         $requestArguments = [];
         $r = new ReflectionMethod(Request::class, 'create');
         foreach ($r->getParameters() as $requestArg) {
             $name = $requestArg->getName();
-            $mapped = self::HTTP_REQUEST_FN_MAP[$name] ?? null;
-            if ($mapped) {
-                $name = $mapped;
-            }
             $requestArguments[] = $arguments[$name] ?? $requestArg->getDefaultValue() ?? null;
         }
         $loader->setRequest(Request::create(...$requestArguments));
@@ -66,4 +81,10 @@ final class RequestCommand extends Command
 
         return 1;
     }
+
+    // private function getMappedName(string $name): string
+    // {
+    //     $mapped = self::HTTP_REQUEST_FN_MAP[$name] ?? null;
+    //     return $mapped ?? $name;
+    // }
 }
