@@ -32,6 +32,7 @@ final class BuildCommand extends Command
 
     public function callback(LoaderContract $loader): int
     {
+        $loader->build();
         $this->cli->out()->block('App built', 'SUCCESS', 'fg=black;bg=green', ' ', true);
         $checksums = [];
         foreach ($loader->cacheChecksums() as $name => $keys) {

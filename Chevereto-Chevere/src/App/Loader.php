@@ -107,7 +107,7 @@ final class Loader implements LoaderContract
             )
         );
 
-        if (DEV_MODE || Console::isBuilding()) {
+        if (DEV_MODE && !Console::isBuilding()) {
             $this->build();
         }
 
