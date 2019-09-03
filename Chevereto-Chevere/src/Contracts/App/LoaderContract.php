@@ -20,6 +20,8 @@ interface LoaderContract
 {
     public function __construct();
 
+    public function build(): void;
+
     /**
      * @param string $controller a fully-qualified controller name
      */
