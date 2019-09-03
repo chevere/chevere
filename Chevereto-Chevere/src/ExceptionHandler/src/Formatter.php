@@ -169,15 +169,14 @@ final class Formatter
             ]);
         } else {
             $this->data->add([
-                // FIXME: Drop this
-                'uri' => $this->exceptionHandler->request()->readInfoKey('requestUri') ?? 'unknown',
+                'uri' => $this->exceptionHandler->request()->getRequestUri() ?? 'unknown',
                 'clientUserAgent' => $this->exceptionHandler->request()->headers->get('User-Agent'),
-                'requestMethod' => $this->exceptionHandler->request()->readInfoKey('method'),
-                'serverHost' => $this->exceptionHandler->request()->readInfoKey('host'),
-                'serverPort' => (int) $this->exceptionHandler->request()->readInfoKey('port'),
-                'serverProtocol' => $this->exceptionHandler->request()->readInfoKey('protocolVersion'),
+                'requestMethod' => $this->exceptionHandler->request()->getMethod(),
+                'serverHost' => $this->exceptionHandler->request()->getHost(),
+                'serverPort' => (int) $this->exceptionHandler->request()->getPort(),
+                'serverProtocol' => $this->exceptionHandler->request()->getProtocolVersion(),
                 'serverSoftware' => $this->exceptionHandler->request()->headers->get('SERVER_SOFTWARE'),
-                'clientIp' => $this->exceptionHandler->request()->readInfoKey('clientIp'),
+                'clientIp' => $this->exceptionHandler->request()->getClientIp(),
             ]);
         }
     }
