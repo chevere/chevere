@@ -6,15 +6,13 @@ declare(strict_types=1);
  * This file is part of Chevere.
  *
  * (c) Rodolfo Berrios <rodolfo@chevereto.com>
+ * 
+ * This file contains part of Symfony code.
+ * 
+ * (c) Fabien Potencier <fabien@symfony.com>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- */
-
-/*
- * This file contains part of Symfony code.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
  */
 
 namespace Chevere\Contracts\Http;
