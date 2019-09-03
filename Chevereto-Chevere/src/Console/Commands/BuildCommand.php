@@ -28,8 +28,6 @@ final class BuildCommand extends Command
     const DESCRIPTION = 'Build the App';
     const HELP = 'This command builds the App';
 
-    const ARGUMENTS = [];
-
     public function callback(LoaderContract $loader): int
     {
         $loader->build();
@@ -41,6 +39,6 @@ final class BuildCommand extends Command
             }
         }
         $this->cli->style()->table(['Cache', 'Key', 'Path', 'Checksum'], $checksums);
-        return 1;
+        return 0;
     }
 }

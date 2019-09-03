@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Console\Commands;
 
+use InvalidArgumentException;
+use JsonException;
 use ReflectionMethod;
 use Chevere\Http\Request;
 use Chevere\Console\Command;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Message;
-use InvalidArgumentException;
-use JsonException;
 
 /**
  * The RequestCommand allows to pass a forged request to the App instance.
