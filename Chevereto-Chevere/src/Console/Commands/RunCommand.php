@@ -58,7 +58,7 @@ final class RunCommand extends Command
             $pathHandle = new PathHandle($callableInput);
             $callable = $pathHandle->path();
             if (!File::exists($callable)) {
-                $this->cli->out()->error(sprintf('Unable to locate callable %s', $callable));
+                $this->cli->style()->error(sprintf('Unable to locate callable %s', $callable));
 
                 return 0;
             }
@@ -66,7 +66,7 @@ final class RunCommand extends Command
         // Pass explicit callables, "weird" callables (Class::__invoke) runs in the App.
         if (is_callable($callable)) {
             $return = $callable(...$this->cli->input()->getOption('argument'));
-            $this->cli->out()->block(PlainVarDump::out($return), 'RETURN', 'fg=black;bg=green', ' ', true);
+            $this->cli->style()->block(PlainVarDump::out($return), 'RETURN', 'fg=black;bg=green', ' ', true);
         } else {
             $arguments = $this->cli->input()->getOption('argument');
             // argument was declared as array

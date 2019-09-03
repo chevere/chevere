@@ -167,22 +167,22 @@ final class Output
             if ('title' == $k) {
                 $tpl = $v[0];
             } else {
-                Console::cli()->out()->section(strtr($v[0], $this->templateTags));
+                Console::cli()->style()->section(strtr($v[0], $this->templateTags));
                 $tpl = $v[1];
             }
             $message = strtr($tpl, $this->templateTags);
             if ('title' == $k) {
-                Console::cli()->out()->error($message);
+                Console::cli()->style()->error($message);
             } else {
                 $message = preg_replace_callback('#<code>(.*?)<\/code>#', function ($matches) {
                     $consoleColor = new ConsoleColor();
 
                     return $consoleColor->apply('light_blue', $matches[1]);
                 }, $message);
-                Console::cli()->out()->writeln($message);
+                Console::cli()->style()->writeln($message);
             }
         }
-        Console::cli()->out()->writeln('');
+        Console::cli()->style()->writeln('');
     }
 
     private function generateTemplates(): void

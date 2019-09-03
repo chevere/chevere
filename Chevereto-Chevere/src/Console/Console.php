@@ -122,7 +122,7 @@ final class Console
         if (!self::isRunning()) {
             return;
         }
-        self::$cli->out()->write($message, false, $options);
+        self::$cli->style()->write($message, false, $options);
     }
 
     public static function writeln(string $message, int $options = Console::OUTPUT_NORMAL): void
@@ -130,7 +130,7 @@ final class Console
         if (!self::isRunning()) {
             return;
         }
-        self::$cli->out()->writeln($message, $options);
+        self::$cli->style()->writeln($message, $options);
     }
 
     public static function log(string $message)
@@ -138,6 +138,6 @@ final class Console
         if (!self::isRunning()) {
             return;
         }
-        self::$cli->out()->writeln($message);
+        self::$cli->style()->writeln($message);
     }
 }

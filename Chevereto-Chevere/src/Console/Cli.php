@@ -53,7 +53,7 @@ final class Cli implements CliContract
     private $client;
 
     /** @var SymfonyStyle */
-    private $out;
+    private $style;
 
     /** @var CommandContract */
     private $command;
@@ -67,7 +67,7 @@ final class Cli implements CliContract
         $this->client = new Application($this->name, $this->version);
         $this->client->setAutoExit(false);
         $this->logger = new Logger($this->name);
-        $this->out = new SymfonyStyle($this->input, $this->output);
+        $this->style = new SymfonyStyle($this->input, $this->output);
 
         $this->client->addCommands([
             (new RequestCommand($this))->symfonyCommand(),
@@ -89,9 +89,9 @@ final class Cli implements CliContract
         return $this->input;
     }
 
-    public function out(): SymfonyStyle
+    public function style(): SymfonyStyle
     {
-        return $this->out;
+        return $this->style;
     }
 
     public function output(): ConsoleOutput

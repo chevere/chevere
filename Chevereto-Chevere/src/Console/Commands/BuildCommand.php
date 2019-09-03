@@ -33,14 +33,14 @@ final class BuildCommand extends Command
     public function callback(LoaderContract $loader): int
     {
         $loader->build();
-        $this->cli->out()->block('App built', 'SUCCESS', 'fg=black;bg=green', ' ', true);
+        $this->cli->style()->block('App built', 'SUCCESS', 'fg=black;bg=green', ' ', true);
         $checksums = [];
         foreach ($loader->cacheChecksums() as $name => $keys) {
             foreach ($keys as $key => $array) {
                 $checksums[] = [$name, $key, $array['path'], substr($array['checksum'], 0, 8)];
             }
         }
-        $this->cli->out()->table(['Cache', 'Key', 'Path', 'Checksum'], $checksums);
+        $this->cli->style()->table(['Cache', 'Key', 'Path', 'Checksum'], $checksums);
         return 1;
     }
 }

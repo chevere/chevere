@@ -70,7 +70,7 @@ final class InspectCommand extends Command
 
         $this->handleSetMethod();
         $this->handleSetReflector();
-        $this->cli->out()->block($this->callableInput, 'INSPECTED', 'fg=black;bg=green', ' ', true);
+        $this->cli->style()->block($this->callableInput, 'INSPECTED', 'fg=black;bg=green', ' ', true);
         $this->processParametersArguments();
         $this->handleProcessArguments();
 
@@ -141,12 +141,12 @@ final class InspectCommand extends Command
 
     private function processArguments(): void
     {
-        $this->cli->out()->text(['<fg=yellow>Arguments:</>']);
-        $this->cli->out()->listing($this->arguments);
+        $this->cli->style()->text(['<fg=yellow>Arguments:</>']);
+        $this->cli->style()->listing($this->arguments);
     }
 
     private function processNoArguments(): void
     {
-        $this->cli->out()->text(['<fg=yellow>No arguments</>', null]);
+        $this->cli->style()->text(['<fg=yellow>No arguments</>', null]);
     }
 }

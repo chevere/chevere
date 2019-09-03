@@ -48,7 +48,7 @@ final class GetController extends Controller
                 $msg = 'Must provide the %s argument when running this callable without route context.';
                 $message = (new Message($msg))->code('%s', '$endpoint')->toString();
                 if (CLI) {
-                    Console::cli()->out()->error($message);
+                    Console::cli()->style()->error($message);
 
                     return;
                 }

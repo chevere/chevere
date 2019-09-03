@@ -29,18 +29,18 @@ final class SymfonyCommand extends BaseCommand implements SymfonyCommandContract
     private $chevereCli;
 
     /** @var CommandContract */
-    private $command;
+    private $chevereCommand;
 
     public function __construct(CommandContract $command)
     {
-        $this->command = $command;
+        $this->chevereCommand = $command;
         $this->chevereCli = $command->cli();
         parent::__construct();
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->chevereCli->setCommand($this->command);
+        $this->chevereCli->setCommand($this->chevereCommand);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

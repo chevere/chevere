@@ -25,7 +25,7 @@ interface CliContract
 
     public function input(): ArgvInput;
 
-    public function out(): SymfonyStyle;
+    public function style(): SymfonyStyle;
 
     public function output(): ConsoleOutput;
 
