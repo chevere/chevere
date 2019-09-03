@@ -3,7 +3,7 @@
 namespace App;
 
 use Chevere\Route\Route;
-use Chevere\HttpFoundation\Method;
+use Chevere\Http\Method;
 
 return [
   'index' => (new Route('/', Controllers\Index::class))

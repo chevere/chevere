@@ -17,7 +17,7 @@ use Chevere\Contracts\Api\ApiContract;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
-use Chevere\HttpFoundation\Response;
+use Chevere\Http\Response;
 
 interface AppContract
 {

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\App;
 
-use Chevere\HttpFoundation\Request;
+use Chevere\Http\Request;
 use Chevere\Runtime\Runtime;
 
 interface LoaderContract

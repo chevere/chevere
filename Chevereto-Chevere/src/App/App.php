@@ -20,7 +20,7 @@ use const Chevere\APP_PATH;
 use Chevere\Message;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Controller\ArgumentsWrap;
-use Chevere\HttpFoundation\Response;
+use Chevere\Http\Response;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;

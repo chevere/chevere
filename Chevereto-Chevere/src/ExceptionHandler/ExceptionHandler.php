@@ -18,7 +18,7 @@ use const Chevere\APP_PATH;
 use DateTime;
 use DateTimeZone;
 use Throwable;
-use Chevere\HttpFoundation\Request;
+use Chevere\Http\Request;
 use Chevere\App\Loader;
 use Chevere\Data\Data;
 use Chevere\Path\Path;

@@ -20,10 +20,9 @@ use Chevere\Path\Path;
 use Chevere\Controllers\HeadController;
 use Chevere\Utility\Str;
 use Chevere\Contracts\Route\RouteContract;
-use Chevere\Contracts\HttpFoundation\MethodsContract;
-use Chevere\Contracts\HttpFoundation\MethodContract;
-use Chevere\HttpFoundation\Method;
-use Chevere\Path\PathHandle;
+use Chevere\Contracts\Http\MethodsContract;
+use Chevere\Contracts\Http\MethodContract;
+use Chevere\Http\Method;
 
 // IDEA: L10n support
 // FIXME: Use object properties

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Console\Commands;
 
 use ReflectionMethod;
-use Chevere\HttpFoundation\Request;
+use Chevere\Http\Request;
 use Chevere\Console\Command;
 use Chevere\Contracts\App\LoaderContract;
 

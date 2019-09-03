@@ -11,11 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\HttpFoundation;
+namespace Chevere\Http;
 
 use ArrayIterator;
-use Chevere\Contracts\HttpFoundation\MethodContract;
-use Chevere\Contracts\HttpFoundation\MethodsContract;
+use Chevere\Contracts\Http\MethodContract;
+use Chevere\Contracts\Http\MethodsContract;
 
 final class Methods implements MethodsContract
 {

@@ -16,8 +16,8 @@ namespace Chevere\Api;
 use Chevere\Controllers\Api\OptionsController;
 use Chevere\Controllers\Api\HeadController;
 use Chevere\Contracts\Api\src\EndpointContract;
-use Chevere\Contracts\HttpFoundation\MethodsContract;
-use Chevere\HttpFoundation\Method;
+use Chevere\Contracts\Http\MethodsContract;
+use Chevere\Http\Method;
 
 final class Endpoint implements EndpointContract
 {

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Controller;
 
-use Chevere\HttpFoundation\Response;
+use Chevere\Http\Response;
 use Chevere\Contracts\App\AppContract;
 
 interface ControllerContract

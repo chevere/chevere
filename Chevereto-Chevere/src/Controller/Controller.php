@@ -13,10 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Controller;
 
-use LogicException;
-use Chevere\HttpFoundation\Response;
-use Chevere\Message;
-use Chevere\Hooking\Hook;
+use Chevere\Http\Response;
 use Chevere\Traits\HookableTrait;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\Controller\ControllerContract;

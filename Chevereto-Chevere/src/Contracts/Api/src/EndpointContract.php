@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Api\src;
 
-use Chevere\Contracts\HttpFoundation\MethodsContract;
+use Chevere\Contracts\Http\MethodsContract;
 
 interface EndpointContract
 {

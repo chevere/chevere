@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Route;
 
-use Chevere\Contracts\HttpFoundation\MethodContract;
-use Chevere\Contracts\HttpFoundation\MethodsContract;
+use Chevere\Contracts\Http\MethodContract;
+use Chevere\Contracts\Http\MethodsContract;
 
 interface RouteContract
 {

@@ -15,7 +15,7 @@ namespace Chevere\Contracts\Api;
 
 use Chevere\Path\PathHandle;
 use Chevere\Contracts\Router\RouterContract;
-use Chevere\HttpFoundation\Methods;
+use Chevere\Http\Methods;
 
 interface MakerContract
 {
