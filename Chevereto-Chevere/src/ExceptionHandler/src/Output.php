@@ -21,6 +21,7 @@ use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Chevere\Console\Console;
 use Chevere\ExceptionHandler\ExceptionHandler;
 use Chevere\Json;
+use Chevere\Message;
 
 /**
  * Provides ExceptionHandler output by passing a Formatter. FIXME: Don't handle responses!
@@ -174,11 +175,7 @@ final class Output
             if ('title' == $k) {
                 Console::cli()->style()->error($message);
             } else {
-                $message = preg_replace_callback('#<code>(.*?)<\/code>#', function ($matches) {
-                    $consoleColor = new ConsoleColor();
-
-                    return $consoleColor->apply('light_blue', $matches[1]);
-                }, $message);
+                $message = (new Message($message))->toCliString();
                 Console::cli()->style()->writeln($message);
             }
         }

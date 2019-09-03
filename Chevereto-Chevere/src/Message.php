@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere;
 
+use JakubOnderka\PhpConsoleColor\ConsoleColor;
+
 /*
  * This class provide a common interface for creating messages.
  *
@@ -80,5 +82,15 @@ final class Message
     public function toString(): string
     {
         return strtr($this->message, $this->trTable);
+    }
+
+    public function toCliString(): string
+    {
+        $message = $this->toString();
+        return preg_replace_callback('#<code>(.*?)<\/code>#', function ($matches) {
+            $consoleColor = new ConsoleColor();
+
+            return $consoleColor->apply(['light_blue'], $matches[1]);
+        }, $message);
     }
 }
