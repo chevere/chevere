@@ -27,7 +27,7 @@ interface DataContract extends ToArrayContract, IteratorAggregate, Countable
 
     public function set(array $data): DataContract;
 
-    public function add(array $data): DataContract;
+    public function merge(array $data): DataContract;
 
     public function append($var): DataContract;
 

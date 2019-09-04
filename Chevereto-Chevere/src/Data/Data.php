@@ -55,15 +55,13 @@ class Data implements DataContract
         return $this;
     }
 
-    public function add(array $data): DataContract
+    public function merge(array $data): DataContract
     {
-        if (null == $this->data) {
-            $this->data = $data;
-        } else {
-            $this->data = array_replace_recursive($this->data, $data);
+        if (isset($this->data)) {
+            $data = array_merge_recursive($this->data, $data);
         }
 
-        return $this;
+        return $this->set($data);
     }
 
     public function append($var): DataContract

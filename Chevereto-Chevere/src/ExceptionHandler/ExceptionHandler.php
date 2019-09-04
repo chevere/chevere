@@ -179,7 +179,7 @@ final class ExceptionHandler
     {
         $dt = new DateTime('now', new DateTimeZone('UTC'));
         $dateTimeAtom = $dt->format(DateTime::ATOM);
-        $this->data->add([
+        $this->data->merge([
             'dateTimeAtom' => $dateTimeAtom,
             'timestamp' => strtotime($dateTimeAtom),
         ]);

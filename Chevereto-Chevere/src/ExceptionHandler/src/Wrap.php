@@ -56,7 +56,7 @@ final class Wrap
             $code = $exception->getCode();
             $errorType = $phpCode;
         }
-        $this->data->add([
+        $this->data->merge([
             'className' => $className,
             'code' => $code,
             'errorType' => $errorType,

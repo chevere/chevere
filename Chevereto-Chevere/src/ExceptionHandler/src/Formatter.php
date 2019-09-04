@@ -91,13 +91,13 @@ final class Formatter
         $this->exception = $this->wrap->exception();
         $this->data = $this->wrap->data();
         $this->setServerProperties();
-        $this->data->add([
+        $this->data->merge([
             'thrown' => $this->wrap->dataKey('className') . ' thrown',
         ]);
         $this->processStack();
         $this->processContentSections();
         $this->processContentGlobals();
-        $this->data->add([
+        $this->data->merge([
             'title' => $this->data->getKey('thrown'),
             'bodyClass' => !headers_sent() ? 'body--flex' : 'body--block',
         ]);
@@ -163,12 +163,12 @@ final class Formatter
     private function setServerProperties()
     {
         if (CLI) {
-            $this->data->add([
+            $this->data->merge([
                 'clientIp' => $_SERVER['argv'][0],
                 'clientUserAgent' => Console::inputString(),
             ]);
         } else {
-            $this->data->add([
+            $this->data->merge([
                 'uri' => $this->exceptionHandler->request()->getRequestUri() ?? 'unknown',
                 'clientUserAgent' => $this->exceptionHandler->request()->headers->get('User-Agent'),
                 'requestMethod' => $this->exceptionHandler->request()->getMethod(),
