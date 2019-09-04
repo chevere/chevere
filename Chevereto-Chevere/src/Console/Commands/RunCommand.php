@@ -11,17 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-// TODO: Deprecate callables by file
-// TODO: Must fix the argument typehint, maybe do combo with DI
-
 namespace Chevere\Console\Commands;
 
-use Chevere\File;
-use Chevere\Path\Path;
+use Closure;
 use Chevere\Console\Command;
 use Chevere\VarDump\PlainVarDump;
 use Chevere\Contracts\App\LoaderContract;
-use Chevere\Path\PathHandle;
+use Chevere\Controller\Controller;
+use Chevere\Message;
+use InvalidArgumentException;
+use Symfony\Component\Console\Helper\FormatterHelper;
 
 /**
  * The RunCommand allows to run any callable present in the app.
@@ -48,35 +47,57 @@ final class RunCommand extends Command
         ],
     ];
 
+    /** @var LoaderContract */
+    private $loader;
+
+    /** @var string */
+    private $callable;
+
+    /** @var array */
+    private $arguments;
+
     public function callback(LoaderContract $loader): int
     {
-        $callableInput = (string) $this->cli->input()->getArgument('callable');
+        $this->loader = $loader;
+        $this->callable = (string) $this->cli->input()->getArgument('callable');
+        $this->arguments = $this->cli->input()->getOption('argument');
 
-        if (is_callable($callableInput) || class_exists($callableInput)) {
-            $callable = $callableInput;
+        if (is_subclass_of($this->callable, Controller::class)) {
+            $this->runController();
         } else {
-            $pathHandle = new PathHandle($callableInput);
-            $callable = $pathHandle->path();
-            if (!File::exists($callable)) {
-                $this->cli->style()->error(sprintf('Unable to locate callable %s', $callable));
+            if (class_exists($this->callable)) {
+                $isCallable = method_exists($this->callable, '__invoke');
+            } else {
+                $isCallable = is_callable($this->callable);
+            }
+            if (!$isCallable) {
+                throw new InvalidArgumentException(
+                    (new Message('No callable found for %s string.'))
+                        ->code('%s', $this->callable)
+                        ->toString()
+                );
+            }
 
-                return 0;
+            ob_start();
+            $callable = $this->callable;
+            $return = $callable(...$this->arguments);
+            $buffer = ob_get_contents();
+            ob_end_clean();
+
+            $this->cli->style()->writeln($return);
+            if ($buffer != '') {
+                $this->cli->style()->writeln($buffer);
             }
-        }
-        // Pass explicit callables, "weird" callables (Class::__invoke) runs in the App.
-        if (is_callable($callable)) {
-            $return = $callable(...$this->cli->input()->getOption('argument'));
-            $this->cli->style()->block(PlainVarDump::out($return), 'RETURN', 'fg=black;bg=green', ' ', true);
-        } else {
-            $arguments = $this->cli->input()->getOption('argument');
-            // argument was declared as array
-            if (is_array($arguments)) {
-                $loader->setArguments($arguments);
-            }
-            $loader->setController($callable);
-            $loader->run();
         }
 
         return 1;
+    }
+
+    private function runController(): int
+    {
+        $this->loader->setArguments($this->arguments);
+        $this->loader->setController($this->callable);
+        $this->loader->run();
+        return 0;
     }
 }
