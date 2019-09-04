@@ -32,10 +32,10 @@ final class RunCommand extends Command
 {
     const NAME = 'run';
     const DESCRIPTION = 'Run any callable';
-    const HELP = 'This command allows you to run any callable';
+    const HELP = 'Outputs <fg=magenta>(type)</> <fg=blue>$return</> line and <fg=yellow>buffer</> (if exists)';
 
     const ARGUMENTS = [
-        ['callable', Command::ARGUMENT_REQUIRED, 'A fully-qualified callable name'],
+        ['callable', Command::ARGUMENT_REQUIRED, 'A fully-qualified callable name or Controller'],
     ];
 
     const OPTIONS = [
@@ -44,6 +44,12 @@ final class RunCommand extends Command
             'a',
             Command::OPTION_OPTIONAL | Command::OPTION_IS_ARRAY,
             'Callable arguments (in declarative order)',
+        ],
+        [
+            'plain',
+            'p',
+            Command::OPTION_NONE,
+            'Plain return line and output (if exists)',
         ],
     ];
 
@@ -84,10 +90,19 @@ final class RunCommand extends Command
             $buffer = ob_get_contents();
             ob_end_clean();
 
-            $this->cli->style()->writeln($return);
-            if ($buffer != '') {
-                $this->cli->style()->writeln($buffer);
+            $export = var_export($return, true);
+            $isBonito = (bool) !$this->cli->input()->getOption('plain');
+
+            if ($isBonito) {
+                $lines = ['<fg=magenta>(' . gettype($return) . ')</> <fg=blue>' . $export . '</>'];
+            } else {
+                $lines = [$export];
             }
+            if ($buffer != '') {
+                $lines[] = !$isBonito ? $buffer : ('<fg=yellow>' . $buffer . '</>');
+            }
+
+            $this->cli->style()->writeln($lines);
         }
 
         return 1;
