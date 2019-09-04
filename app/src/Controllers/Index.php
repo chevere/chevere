@@ -15,7 +15,7 @@ namespace App\Controllers;
 
 use Chevere\Controller\Controller;
 use Chevere\FileReturn;
-use Chevere\JsonApi\Data;
+use Chevere\JsonApi\Data as JsonData;
 use Chevere\Path\Path;
 use Chevere\Path\PathHandle;
 
@@ -30,22 +30,18 @@ class Index extends Controller
     {
         // dd(number_format(1000 * (microtime(true) - BOOT_TIMESTAMP), 2) . ' ms');
         // throw new \Exception('Ups');
-        $api = new Data('api', 'info');
+        $api = new JsonData('api', 'info');
         $api->addAttribute('entry', 'HTTP GET /api');
         $api->addAttribute('description', 'Retrieves the exposed API.');
-        // $api->validate();
 
-        $cli = new Data('cli', 'info');
+        $cli = new JsonData('cli', 'info');
         $cli->addAttribute('entry', 'php app/console list');
         $cli->addAttribute('description', 'Lists console commands.');
-        // $api->validate();
-
-        // $this->response = new Response();
 
         $response = $this->app->response();
         $response->setMeta(['Hello' => 'World!']);
         $response->addData($api);
         $response->addData($cli);
-        $response->setStatusCode(200);
+        $response->symfony()->setStatusCode(200);
     }
 }

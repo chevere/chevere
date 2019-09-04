@@ -15,10 +15,8 @@ namespace Chevere\App;
 
 use LogicException;
 use Chevere\ArrayFile\ArrayFile;
-use Chevere\Data\Data;
 use Chevere\Message;
 use Chevere\Contracts\App\ParametersContract;
-use Chevere\Contracts\DataContract;
 use Chevere\Data\Traits\DataKeyTrait;
 
 final class Parameters implements ParametersContract

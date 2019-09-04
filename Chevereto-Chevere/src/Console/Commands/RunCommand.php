@@ -20,6 +20,7 @@ use Chevere\Contracts\App\LoaderContract;
 use Chevere\Controller\Controller;
 use Chevere\Message;
 use InvalidArgumentException;
+use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Symfony\Component\Console\Helper\FormatterHelper;
 
 /**
@@ -32,7 +33,7 @@ final class RunCommand extends Command
 {
     const NAME = 'run';
     const DESCRIPTION = 'Run any callable';
-    const HELP = 'Outputs <fg=magenta>(type)</> <fg=blue>$return</> line and <fg=yellow>buffer</> (if exists)';
+    const HELP = 'Outputs <fg=magenta>type</> <fg=blue>callable return</> line and <fg=yellow>buffer</> (if exists)';
 
     const ARGUMENTS = [
         ['callable', Command::ARGUMENT_REQUIRED, 'A fully-qualified callable name or Controller'],
@@ -93,8 +94,10 @@ final class RunCommand extends Command
             $export = var_export($return, true);
             $isBonito = (bool) !$this->cli->input()->getOption('plain');
 
+            $cc = new ConsoleColor();
+
             if ($isBonito) {
-                $lines = ['<fg=magenta>(' . gettype($return) . ')</> <fg=blue>' . $export . '</>'];
+                $lines = ['<fg=magenta>' . $cc->apply('italic', gettype($return)) . '</> <fg=blue>' . $export . '</>'];
             } else {
                 $lines = [$export];
             }

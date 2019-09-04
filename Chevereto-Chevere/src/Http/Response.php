@@ -16,64 +16,45 @@ namespace Chevere\Http;
 use Exception;
 use InvalidArgumentException;
 use const Chevere\CLI;
-use Symfony\Component\HttpFoundation\Response as HttpResponse;
-use Chevere\JsonApi\Data;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Chevere\JsonApi\Data as JsonData;
+use Chevere\Contracts\DataContract;
+use Chevere\Data\Data;
 
-/**
- * JSON:API HTTP Response handler.
- *
- * Forked version of Symfony\Component\HttpFoundation\JsonResponse (Igor Wiedler <igor@wiedler.ch>)
- * (c) Fabien Potencier <fabien@symfony.com>
- */
-// FIXME: Do a client, not an extension
-final class Response extends HttpResponse
+final class Response
 {
-    // https://jsonapi.org/format/1.0/
-    const JSON_API_VERSION = '1.0';
-
     // Encode <, >, ', &, and " characters in the JSON, making it also safe to be embedded into HTML.
     // 15 === JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT
     const DEFAULT_ENCODING_OPTIONS = 15;
 
+    private $encodingOptions = self::DEFAULT_ENCODING_OPTIONS;
+
     /** @var bool */
-    private $hasBody = false;
+    // private $hasBody = false;
 
     private $jsonString;
+
     private $callback;
 
-    /**
-     * A document MUST contain at least one of the following top-level members:
-     * data,errors,meta
-     * ^ The members data and errors MUST NOT coexist in the same document.
-     */
-    // the document’s “primary data”
+    /** @var DataContract */
     private $data;
 
     // a meta object that contains non-standard meta-information.
     private $meta;
 
-    /**
-     * A document MAY contain any of these top-level members:
-     * jsonapi, links, included
-     * ^ If a document does not contain a top-level data key, the included member MUST NOT be present either.
-     */
-    // an object describing the server’s implementation.
-    private $jsonapi = ['version' => self::JSON_API_VERSION];
+    /** @var SymfonyResponse */
+    private $symfony;
 
-    private $encodingOptions = self::DEFAULT_ENCODING_OPTIONS;
-
-    /**
-     * @param mixed $data    The response data
-     * @param int   $status  The response status code
-     * @param array $headers An array of response headers
-     * @param bool  $json    If the data is already a JSON string
-     */
-    public function __construct(array $data = null, int $status = 200, array $headers = [])
+    public function __construct()
     {
-        parent::__construct('', $status, $headers);
-        // if (null != $data) {
-        //     $this->setData($data);
-        // }
+        $status = 200;
+        $headers = [];
+        $this->symfony = new SymfonyResponse('', $status, $headers);
+    }
+
+    public function symfony(): symfonyResponse
+    {
+        return $this->symfony;
     }
 
     public function hasData(): bool
@@ -83,20 +64,21 @@ final class Response extends HttpResponse
 
     public function getData(): array
     {
-        return $this->data;
+        return $this->data->toArray();
     }
 
-    public function unsetContent(): self
+    public function unsetContent(): void
     {
-        $this->setContent(null);
+        $this->symfony->setContent(null);
         $this->data = null;
-
-        return $this;
     }
 
-    public function addData(Data $data): self
+    public function addData(JsonData $data): self
     {
-        $this->data[] = $data->toArray();
+        if (!$this->hasData()) {
+            $this->data = new Data();
+        }
+        $this->data->append($data->toArray());
 
         return $this;
     }
@@ -116,64 +98,6 @@ final class Response extends HttpResponse
     public function getMeta(): ?array
     {
         return $this->meta;
-    }
-
-    public function hasDataKey(string $key): bool
-    {
-        return array_key_exists($key, $this->meta);
-    }
-
-    public function setMetaKey(string $key, $var): self
-    {
-        $this->meta[$key] = $var;
-
-        return $this;
-    }
-
-    public function getMetaKey(string $key)
-    {
-        return $this->meta[$key];
-    }
-
-    public function removeMetaKey(string $key): self
-    {
-        unset($this->meta[$key]);
-
-        return $this;
-    }
-
-    /**
-     * Sets the JSONP callback.
-     *
-     * @param string|null $callback The JSONP callback or null to use none
-     *
-     * @return $this
-     *
-     * @throws InvalidArgumentException When the callback name is not valid
-     */
-    public function setCallback($callback = null): self
-    {
-        if (null !== $callback) {
-            // partially taken from http://www.geekality.net/2011/08/03/valid-javascript-identifier/
-            // partially taken from https://github.com/willdurand/JsonpCallbackValidator
-            //      JsonpCallbackValidator is released under the MIT License. See https://github.com/willdurand/JsonpCallbackValidator/blob/v1.1.0/LICENSE for details.
-            //      (c) William Durand <william.durand1@gmail.com>
-            $pattern = '/^[$_\p{L}][$_\p{L}\p{Mn}\p{Mc}\p{Nd}\p{Pc}\x{200C}\x{200D}]*(?:\[(?:"(?:\\\.|[^"\\\])*"|\'(?:\\\.|[^\'\\\])*\'|\d+)\])*?$/u';
-            $reserved = [
-                'break', 'do', 'instanceof', 'typeof', 'case', 'else', 'new', 'var', 'catch', 'finally', 'return', 'void', 'continue', 'for', 'switch', 'while',
-                'debugger', 'function', 'this', 'with', 'default', 'if', 'throw', 'delete', 'in', 'try', 'class', 'enum', 'extends', 'super', 'const', 'export',
-                'import', 'implements', 'let', 'private', 'public', 'yield', 'interface', 'package', 'protected', 'static', 'null', 'true', 'false',
-            ];
-            $parts = explode('.', $callback);
-            foreach ($parts as $part) {
-                if (!preg_match($pattern, $part) || in_array($part, $reserved, true)) {
-                    throw new InvalidArgumentException('The callback name is not valid.');
-                }
-            }
-        }
-        $this->callback = $callback;
-
-        return $this;
     }
 
     /**
@@ -203,13 +127,15 @@ final class Response extends HttpResponse
     public function setJsonContent(): self
     {
         if (null !== $this->callback) {
-            return $this->setContent(sprintf('/**/%s(%s);', $this->callback, $this->jsonString));
+            return $this->symfony->setContent(sprintf('/**/%s(%s);', $this->callback, $this->jsonString));
         }
 
-        return $this->setContent($this->jsonString);
+        $this->symfony->setContent($this->jsonString);
+
+        return $this;
     }
 
-    public function send(): HttpResponse
+    public function send(): SymfonyResponse
     {
         $this->setHasBody($this->hasData());
         if ($this->hasBody) {
@@ -219,7 +145,7 @@ final class Response extends HttpResponse
                 ->setJsonContent();
         }
 
-        return parent::send();
+        return $this->symfony()->send();
     }
 
     public function setHasBody(bool $bool): self
@@ -246,7 +172,7 @@ final class Response extends HttpResponse
     private function setJsonString(): self
     {
         $output = [
-            'jsonapi' => $this->jsonapi,
+            // 'jsonapi' => $this->jsonapi,
             'meta' => $this->getMeta(),
             'data' => $this->getData(),
         ];
@@ -282,14 +208,14 @@ final class Response extends HttpResponse
     {
         if (null !== $this->callback) {
             // Not using application/javascript for compatibility reasons with older browsers.
-            $this->headers->set('Content-Type', 'text/javascript');
+            $this->symfony->headers->set('Content-Type', 'text/javascript');
 
             return $this;
         }
         // Only set the header when there is none or when it equals 'text/javascript' (from a previous update with callback)
         // in order to not overwrite a custom definition.
-        if (!$this->headers->has('Content-Type') || 'text/javascript' === $this->headers->get('Content-Type')) {
-            $this->headers->set('Content-Type', 'application/vnd.api+json');
+        if (!$this->symfony->headers->has('Content-Type') || 'text/javascript' === $this->symfony->headers->get('Content-Type')) {
+            $this->symfony->headers->set('Content-Type', 'application/vnd.api+json');
         }
 
         return $this;

@@ -22,6 +22,6 @@ class Cache extends Controller
     {
         $response = $this->response;
 
-        return var_export($response->getData(), true);
+        // return var_export($response->getData(), true);
     }
 }
