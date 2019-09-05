@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces;
 
-use Chevere\Contracts\App\AppContract;
-
 interface HandlerInterface
 {
-    public function process(AppContract $app);
+    // public function handle();
 
-    public function stop(AppContract $app);
+    // public function stop();
 }

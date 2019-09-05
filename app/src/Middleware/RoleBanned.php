@@ -11,21 +11,20 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App;
+namespace App\Middleware;
 
 use Chevere\Contracts\App\AppContract;
 use Chevere\Interfaces\HandlerInterface;
 use Chevere\Interfaces\MiddlewareInterface;
 
-return new class() implements MiddlewareInterface {
+class RoleBanned implements MiddlewareInterface
+{
     public function __invoke(AppContract $app, HandlerInterface $handler)
     {
-        // \dump(__FILE__);
-        // \dump($app->arguments;
-        // $userRole = $app->getUser()->role;
+        \dump(__FILE__);
         // $userRole = 'user';
-        // if ('admin' != $userRole) {
-        //     // return $handler->stop();
+        // if ('banned' == $userRole) {
+        //     return $handler->stop($app);
         // }
         return $handler->process($app);
     }

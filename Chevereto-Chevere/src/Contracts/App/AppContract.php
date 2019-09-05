@@ -33,7 +33,7 @@ interface AppContract
 
     public function api(): ApiContract;
 
-    public function response(): Response;
+    // public function response(): Response;
 
     public function route(): RouteContract;
 

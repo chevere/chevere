@@ -265,11 +265,11 @@ final class Loader implements LoaderContract
     {
         $this->app->setArguments($this->arguments);
         $controller = $this->app->run($controller);
-        if ($controller instanceof RenderableInterface) {
-            echo $controller->render();
-        } else {
-            $this->app->response()->send();
-        }
+        // if ($controller instanceof RenderableInterface) {
+        //     echo $controller->render();
+        // } else {
+        $this->app->response()->send();
+        // }
     }
 
     /** @param array $paramRoutes  'handle' => [Routes,]] */

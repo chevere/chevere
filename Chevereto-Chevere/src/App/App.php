@@ -24,6 +24,7 @@ use Chevere\Http\Response;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
+use Chevere\Handler;
 
 /**
  * The app container.
@@ -82,10 +83,10 @@ final class App implements AppContract
         return $this->api;
     }
 
-    public function response(): Response
-    {
-        return $this->response;
-    }
+    // public function response(): Response
+    // {
+    //     return $this->response;
+    // }
 
     public function route(): RouteContract
     {
@@ -117,22 +118,23 @@ final class App implements AppContract
     {
         if (!is_subclass_of($controller, ControllerContract::class)) {
             throw new LogicException(
-                (new Message('Callable %s must represent a class implementing the %i interface.'))
+                (new Message('Controller %s must implement the %c contract.'))
                     ->code('%s', $controller)
                     ->code('%i', ControllerContract::class)
                     ->toString()
             );
         }
 
-        $controller = new $controller($this);
+        $middlewares = $this->route->middlewares();
+        if (!empty($middlewares)) {
+            $handler = new Handler($middlewares, $this);
+            $handler->runner();
+            if ($handler->exception) {
+                dd($handler->exception->getMessage(), 'Aborted at ' . __FILE__ . ':' . __LINE__);
+            }
+        }
 
-        // if ($this->route instanceof RouteContract) {
-        //     $middlewares = $this->route->middlewares();
-        //     if (!empty($middlewares)) {
-        //         $handler = new Handler($middlewares);
-        //         $handler->runner($this);
-        //     }
-        // }
+        $controller = new $controller($this);
 
         if (isset($this->arguments)) {
             $wrap = new ArgumentsWrap($controller, $this->arguments);

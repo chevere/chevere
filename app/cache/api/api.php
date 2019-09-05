@@ -7,6 +7,13 @@ return array (
     array (
       'OPTIONS' => 
       array (
+        'GET' => 
+        array (
+          'description' => 'Obtiene usuarios.',
+          'parameters' => 
+          array (
+          ),
+        ),
         'POST' => 
         array (
           'description' => 'Creates an user.',
@@ -20,13 +27,6 @@ return array (
             array (
               'description' => 'User email.',
             ),
-          ),
-        ),
-        'GET' => 
-        array (
-          'description' => 'Obtiene usuarios.',
-          'parameters' => 
-          array (
           ),
         ),
         'OPTIONS' => 
@@ -43,13 +43,6 @@ return array (
     array (
       'OPTIONS' => 
       array (
-        'DELETE' => 
-        array (
-          'description' => 'Deletes an user.',
-          'parameters' => 
-          array (
-          ),
-        ),
         'PATCH' => 
         array (
           'description' => 'Updates an user.',
@@ -59,6 +52,13 @@ return array (
             array (
               'description' => 'User email.',
             ),
+          ),
+        ),
+        'DELETE' => 
+        array (
+          'description' => 'Deletes an user.',
+          'parameters' => 
+          array (
           ),
         ),
         'GET' => 

@@ -13,8 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere;
 
+use App\Middleware\RoleAdmin;
 use Chevere\Contracts\App\AppContract;
+use Chevere\Http\Response;
 use Chevere\Interfaces\HandlerInterface;
+use Chevere\Interfaces\MiddlewareInterface;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Throwable;
 
 /**
  * TODO: Add stop, redirect and other methods needed to alter the flow.
@@ -24,56 +29,46 @@ use Chevere\Interfaces\HandlerInterface;
  */
 final class Handler implements HandlerInterface
 {
-    // use Traits\CallableTrait;
+    /** @var AppContract */
+    private $app;
 
+    /** @var array */
     private $queue;
 
+    /** @var bool */
+    private $stopped;
+
     /**
-     * Creates the Handler queue.
-     *
      * @param array $queue an array containing callables or callable strings
      */
-    public function __construct(array $queue = null)
+    // FIXME: Move this to another layer
+    public function __construct(array $queue, AppContract $app)
     {
-        if (null != $queue) {
-            $this->setQueue($queue);
-        }
-    }
-
-    /**
-     * Set Handler queue.
-     */
-    public function setQueue(array $queue): self
-    {
-        foreach ($queue as $k => &$v) {
-            // TODO: A ver que pasó aquí?
-            // $v = $this->getCallable($v);
-        }
+        $this->app = $app;
         $this->queue = $queue;
-
-        return $this;
     }
 
-    /**
-     * Initiates the Handler runner.
-     */
-    public function runner(AppContract $app)
+    // FIXME: Move this to another layer
+    public function runner()
     {
         reset($this->queue);
 
-        return $this->process($app);
+        return $this->handle();
     }
 
-    /**
-     * Process calling.
-     */
-    public function process(AppContract $app)
+    public function handle(): MiddlewareInterface
     {
         $middleware = current($this->queue);
         if ($middleware) {
             next($this->queue);
 
-            return $middleware($app, $this);
+            return new $middleware($this);
         }
+    }
+
+    public function stop(Throwable $e)
+    {
+        $this->stopped = true;
+        $this->exception = $e;
     }
 }
