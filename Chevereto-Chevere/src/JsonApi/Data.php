@@ -13,66 +13,47 @@ declare(strict_types=1);
 
 namespace Chevere\JsonApi;
 
-use LogicException;
-
 /**
- * JSON:API Data.
+ * The document’s “primary data” is a representation of the resource or collection of resources targeted by a request.
+ *
+ * Primary data MUST be either:
+ * - a single resource object, a single resource identifier object, or null, for requests that target single resources
+ * - an array of resource objects, an array of resource identifier objects, or an empty array ([]), for requests that target resource collections
+ *
+ * ! If a document does not contain a top-level data key, the included member MUST NOT be present either.
+ * ! The members data and errors MUST NOT coexist in the same document.
  */
-class Data
+final class Data
 {
     /** @var string */
-    protected $id;
+    private $type;
 
     /** @var string */
-    protected $type;
+    private $id;
 
-    /** @var array */
-    protected $attributes;
+    /** @var iterable */
+    private $attributes;
 
-    /** @var bool */
-    protected $isValidated;
-
-    public function __construct(string $id, string $type)
+    public function __construct(string $type, string $id)
     {
-        $this->id = $id;
         $this->type = $type;
+        $this->id = $id;
     }
 
-    public function addAttribute(string $attributeName, string $data): self
+    public function addAttribute(string $name, string $data): void
     {
-        $this->attributes[$attributeName] = $data;
-
-        return $this;
-    }
-
-    public function validate()
-    {
-        if (!isset($this->id)) {
-            throw new LogicException('Missing id parameter.');
-        }
-        if (!isset($this->type)) {
-            throw new LogicException('Missing type parameter.');
-        }
-        $this->isValidated = true;
-    }
-
-    public function isValidated(): bool
-    {
-        return (bool) $this->isValidated;
+        $this->attributes[$name] = $data;
     }
 
     public function toArray(): array
     {
-        if (!isset($this->isValidated)) {
-            $this->validate();
-        }
-
-        return [
+        $return = [
             'type' => $this->type,
             'id' => $this->id,
-            'attributes' => $this->attributes,
-            // 'description' => $this->description,
-            // 'data' => $this->description,
         ];
+        if (isset($this->attributes)) {
+            $return['attributes'] = $this->attributes;
+        }
+        return $return;
     }
 }

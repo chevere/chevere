@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Data;
 
-use ArrayAccess;
 use ArrayIterator;
 use Chevere\Contracts\DataContract;
 

@@ -83,10 +83,10 @@ final class App implements AppContract
         return $this->api;
     }
 
-    // public function response(): Response
-    // {
-    //     return $this->response;
-    // }
+    public function response(): Response
+    {
+        return $this->response;
+    }
 
     public function route(): RouteContract
     {

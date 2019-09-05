@@ -17,9 +17,10 @@ use Exception;
 use InvalidArgumentException;
 use const Chevere\CLI;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
-use Chevere\JsonApi\Data as JsonData;
+// use Chevere\JsonApi\Data as JsonData;
 use Chevere\Contracts\DataContract;
-use Chevere\Data\Data;
+
+// use Chevere\Data\Data;
 
 final class Response
 {
@@ -73,15 +74,15 @@ final class Response
         $this->data = null;
     }
 
-    public function addData(JsonData $data): self
-    {
-        if (!$this->hasData()) {
-            $this->data = new Data();
-        }
-        $this->data->append($data->toArray());
+    // public function addData(JsonData $data): self
+    // {
+    //     if (!$this->hasData()) {
+    //         $this->data = new Data();
+    //     }
+    //     $this->data->append($data->toArray());
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function hasMeta(): bool
     {

@@ -17,6 +17,9 @@ use Chevere\Http\Response;
 use Chevere\Traits\HookableTrait;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\Controller\ControllerContract;
+use Chevere\Contracts\DataContract;
+use Chevere\Data\Data;
+use Chevere\JsonApi\JsonApi;
 
 // Define a hookable code entry:
 // $this->hook('myHook', function ($that) use ($var) {
@@ -42,8 +45,11 @@ class Controller implements ControllerContract
     /** @var AppContract */
     protected $app;
 
-    /** @var string */
-    protected $filename;
+    // /** @var DataContract */
+    // protected $data;
+
+    /** @var JsonApi */
+    protected $document;
 
     /** @var string Controller description */
     protected static $description;
@@ -70,6 +76,8 @@ class Controller implements ControllerContract
     final public function __construct(AppContract $app)
     {
         $this->app = $app;
+        $this->document = new JsonApi();
+        // $this->data = new Data();
     }
 
     final public function setResponse(Response $response): ControllerContract

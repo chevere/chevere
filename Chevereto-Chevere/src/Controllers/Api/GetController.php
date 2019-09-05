@@ -19,7 +19,8 @@ use Chevere\Message;
 use Chevere\Api\Api;
 use Chevere\Controller\Controller;
 use InvalidArgumentException;
-use Chevere\JsonApi\Data;
+
+// use Chevere\JsonApi\Data;
 
 // TODO: Use json:api immutable
 

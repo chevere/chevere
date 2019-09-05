@@ -1,0 +1,1 @@
+The members data and errors MUST NOT coexist in the same document.

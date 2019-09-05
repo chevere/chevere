@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Middleware;
+namespace App\Middlewares;
 
 use Chevere\Contracts\App\AppContract;
 use Chevere\Interfaces\HandlerInterface;

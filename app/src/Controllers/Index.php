@@ -14,31 +14,21 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Chevere\Controller\Controller;
-use Chevere\Data\Data;
+use Chevere\JsonApi\Data;
 
 class Index extends Controller
 {
     public function __invoke()
     {
-        $data = new Data();
-        $data->append([
-            'type'          => 'info',
-            'id'            => 'api',
-            'attributes'    => [
-                'entry' => 'HTTP GET /api',
-                'description' => 'Retrieves the exposed API.',
-            ],
-        ]);
-        $data->append([
-            'type'          => 'info',
-            'id'            => 'cli',
-            'attributes'    => [
-                'entry' => 'php app/console list',
-                'description' => 'Lists console commands.',
-            ],
-        ]);
-        dd($data->toArray());
+        $api = new Data('info', 'api');
+        $api->addAttribute('entry', 'HTTP GET /api');
+        $api->addAttribute('description', 'Retrieves the exposed API.');
 
-        $this->setData($data);
+        $cli = new Data('info', 'cli');
+        $cli->addAttribute('entry', 'php app/console list');
+        $cli->addAttribute('description', 'Retrieves the console command list.');
+
+        $this->document->appendData($api, $cli);
+        dd($this->document);
     }
 }
