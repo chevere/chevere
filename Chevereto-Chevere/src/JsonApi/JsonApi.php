@@ -36,7 +36,19 @@ final class JsonApi
     public function appendData(Data ...$data)
     {
         foreach ($data as $d) {
-            $this->data[] = $data;
+            $this->data[] = $d;
         }
+    }
+
+    public function toArray()
+    {
+        $data = [];
+        foreach ($this->data as $d) {
+            $data[] = $d->toArray();
+        }
+        $return = [
+          'data' => $data
+        ];
+        return $return;
     }
 }

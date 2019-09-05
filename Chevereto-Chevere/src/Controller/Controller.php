@@ -45,9 +45,6 @@ class Controller implements ControllerContract
     /** @var AppContract */
     protected $app;
 
-    // /** @var DataContract */
-    // protected $data;
-
     /** @var JsonApi */
     protected $document;
 
@@ -77,7 +74,11 @@ class Controller implements ControllerContract
     {
         $this->app = $app;
         $this->document = new JsonApi();
-        // $this->data = new Data();
+    }
+
+    final public function document(): JsonApi
+    {
+        return $this->document;
     }
 
     final public function setResponse(Response $response): ControllerContract

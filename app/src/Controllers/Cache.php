@@ -6,6 +6,7 @@ namespace App\Controllers;
 
 use App\User;
 use Chevere\Controller\Controller;
+use Chevere\Http\Response;
 
 class Cache extends Controller
 {
@@ -15,7 +16,8 @@ class Cache extends Controller
 
     public function __invoke(string $llave, string $user, string $cert)
     {
-        dd(func_get_args(), ['llave' => $llave, 'user' => $user, 'cert' => $cert]);
+        // $this->app->response()->symfony()->setContent('eee');
+        // dd(func_get_args(), ['llave' => $llave, 'user' => $user, 'cert' => $cert]);
     }
 
     public function render(): ?string

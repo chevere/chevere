@@ -268,6 +268,7 @@ final class Loader implements LoaderContract
         // if ($controller instanceof RenderableInterface) {
         //     echo $controller->render();
         // } else {
+        $this->app->response()->setJsonContent($controller->document()->toArray());
         $this->app->response()->send();
         // }
     }

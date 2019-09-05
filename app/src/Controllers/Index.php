@@ -29,6 +29,6 @@ class Index extends Controller
         $cli->addAttribute('description', 'Retrieves the console command list.');
 
         $this->document->appendData($api, $cli);
-        dd($this->document);
+        // dd($this->document);
     }
 }
