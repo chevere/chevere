@@ -52,7 +52,7 @@ if ('cli' == php_sapi_name()) {
     Console::init(); //10ms
 }
 
-define('Chevere\CLI', Console::isRunning());
+define('Chevere\CLI', Console::isAvailable());
 
 // $sw = new Stopwatch();
 Loader::setDefaultRuntime(

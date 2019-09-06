@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Http;
 
+use Chevere\Console\Console;
 use Chevere\Contracts\Http\ResponseContract;
 use Chevere\Contracts\Http\Symfony\ResponseContract as SymfonyResponseContract;
 use Chevere\JsonApi\JsonApi;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+
+use const Chevere\CLI;
 
 /**
  * Response wraps HttpFoundation response (Symfony).
@@ -68,6 +71,22 @@ final class Response extends SymfonyResponse implements ResponseContract, Symfon
     {
         if (!$this->headers->has('Content-Type') || 'text/javascript' === $this->headers->get('Content-Type')) {
             $this->headers->set('Content-Type', 'application/vnd.api+json');
+        }
+    }
+
+    public function send()
+    {
+        if (CLI) {
+            ob_start();
+            parent::send();
+            $buffer = ob_get_contents();
+            ob_end_clean();
+            Console::writeln('<fg=magenta>' . $this->getStatusString() . '</>');
+            Console::writeln('<fg=yellow>' . $this->headers . '</>');
+            Console::write($buffer);
+            die(0);
+        } else {
+            return parent::send();
         }
     }
 }

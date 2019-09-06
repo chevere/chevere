@@ -33,7 +33,7 @@ final class RunCommand extends Command
 {
     const NAME = 'run';
     const DESCRIPTION = 'Run any callable';
-    const HELP = 'Outputs <fg=magenta>type</> <fg=blue>callable return</> line and <fg=yellow>buffer</> (if exists)';
+    const HELP = 'Outputs <fg=magenta>type</>, callable return, and <fg=yellow>buffer</> (if exists)';
 
     const ARGUMENTS = [
         ['callable', Command::ARGUMENT_REQUIRED, 'A fully-qualified callable name or Controller'],
@@ -47,10 +47,22 @@ final class RunCommand extends Command
             'Callable arguments (in declarative order)',
         ],
         [
+            'return',
+            'r',
+            Command::OPTION_NONE,
+            'Return only (no buffer)',
+        ],
+        [
+            'buffer',
+            'b',
+            Command::OPTION_NONE,
+            'Buffer only (no return)',
+        ],
+        [
             'plain',
             'p',
             Command::OPTION_NONE,
-            'Plain return line and output (if exists)',
+            'Plain output (no type nor decorations)',
         ],
     ];
 
@@ -92,17 +104,32 @@ final class RunCommand extends Command
             ob_end_clean();
 
             $export = var_export($return, true);
-            $isBonito = (bool) !$this->cli->input()->getOption('plain');
+
+            $isPlain = (bool) $this->cli->input()->getOption('plain');
+            $isReturn = (bool) $this->cli->input()->getOption('return');
+            $isBuffer = (bool) $this->cli->input()->getOption('buffer');
+
+            if (!$isReturn && !$isBuffer) {
+                $isReturn = true;
+                $isBuffer = true;
+            }
 
             $cc = new ConsoleColor();
 
-            if ($isBonito) {
-                $lines = ['<fg=magenta>' . $cc->apply('italic', gettype($return)) . '</> <fg=blue>' . $export . '</>'];
-            } else {
-                $lines = [$export];
+            if ($isReturn) {
+                if ($isPlain) {
+                    $lines = [$export];
+                } else {
+                    $lines = ['<fg=magenta>' . $cc->apply('italic', gettype($return)) . '</> ' . $export];
+                }
             }
-            if ($buffer != '') {
-                $lines[] = !$isBonito ? $buffer : ('<fg=yellow>' . $buffer . '</>');
+
+            if ($isBuffer && $buffer != '') {
+                if ($isPlain) {
+                    $lines[] = $buffer;
+                } else {
+                    $lines[] = '<fg=yellow>' . $buffer . '</>';
+                }
             }
 
             $this->cli->style()->writeln($lines);

@@ -186,7 +186,7 @@ final class Loader implements LoaderContract
 
     private function handleConsole()
     {
-        if (Console::isRunning() && !isset($this->consoleLoop)) {
+        if (Console::isAvailable() && !isset($this->consoleLoop)) {
             $this->consoleLoop = true;
             Console::run();
         }
@@ -258,6 +258,7 @@ final class Loader implements LoaderContract
         try {
             $route = $this->router->resolve($pathInfo);
         } catch (RouteNotFoundException $e) {
+            $this->app->response()->setStatusCode(404);
             $this->app->response()->setContent('404');
             $this->app->response()->prepare($this->app->request());
             $this->app->response()->send();

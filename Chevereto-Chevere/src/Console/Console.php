@@ -20,6 +20,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Console\ConsoleContract;
 use Chevere\Contracts\Console\CliContract;
+use Chevere\Message;
 use Throwable;
 
 /**
@@ -75,7 +76,7 @@ final class Console
 
     public static function isBuilding(): bool
     {
-        return self::isRunning() && 'build' == self::command();
+        return self::isAvailable() && 'build' == self::command();
     }
 
     public static function cli(): CliContract
@@ -85,8 +86,13 @@ final class Console
 
     public static function run()
     {
-        if (!self::isRunning()) {
-            return;
+        if (!self::isAvailable()) {
+            throw new RuntimeException(
+                (new Message('Unable to call %method% when %class% is not available.'))
+                    ->code('%method%', __METHOD__)
+                    ->code('%class%', __CLASS__)
+                    ->toString()
+            );
         }
         $exitCode = self::$cli->runner();
         if (0 !== $exitCode) {
@@ -112,32 +118,18 @@ final class Console
         return '';
     }
 
-    public static function isRunning(): bool
+    public static function isAvailable(): bool
     {
         return (bool) self::$available;
     }
 
     public static function write(string $message, int $options = Console::OUTPUT_NORMAL): void
     {
-        if (!self::isRunning()) {
-            return;
-        }
         self::$cli->style()->write($message, false, $options);
     }
 
     public static function writeln(string $message, int $options = Console::OUTPUT_NORMAL): void
     {
-        if (!self::isRunning()) {
-            return;
-        }
         self::$cli->style()->writeln($message, $options);
-    }
-
-    public static function log(string $message)
-    {
-        if (!self::isRunning()) {
-            return;
-        }
-        self::$cli->style()->writeln($message);
     }
 }
