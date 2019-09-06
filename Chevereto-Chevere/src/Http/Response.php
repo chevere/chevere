@@ -83,7 +83,7 @@ final class Response extends SymfonyResponse implements ResponseContract, Symfon
             ob_end_clean();
             Console::writeln('<fg=magenta>' . $this->getStatusString() . '</>');
             Console::writeln('<fg=yellow>' . $this->headers . '</>');
-            Console::write($buffer);
+            Console::write(rtrim($buffer) . "\r\n");
             die(0);
         } else {
             return parent::send();
