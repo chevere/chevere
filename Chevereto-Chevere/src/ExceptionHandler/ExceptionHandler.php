@@ -52,7 +52,7 @@ final class ExceptionHandler
     const DEBUG = null;
 
     /** @var string Null will use App\PATH_LOGS ? PATH_LOGS ? traverse */
-    const PATH_LOGS = APP_PATH.'var/logs/';
+    const PATH_LOGS = APP_PATH . 'var/logs/';
 
     /** Readable PHP error mapping */
     const ERROR_TABLE = [
@@ -130,11 +130,10 @@ final class ExceptionHandler
         $this->setTimeProperties();
         $this->data->setkey('id', uniqid('', true));
         try {
-            $request = Loader::request();
+            $this->request = Loader::request();
         } catch (Throwable $e) {
-            $request = Request::createFromGlobals();
+            $this->request = Request::createFromGlobals();
         }
-        $this->request = $request;
         $this->runtime = Loader::runtime();
         $this->isDebugEnabled = (bool) $this->runtime->dataKey('debug');
 
@@ -195,11 +194,11 @@ final class ExceptionHandler
     private function setLogFilePathProperties(): void
     {
         $path = Path::normalize(static::PATH_LOGS);
-        $path = rtrim($path, '/').'/';
+        $path = rtrim($path, '/') . '/';
         $date = gmdate($this->logDateFolderFormat, $this->data->getKey('timestamp'));
         $id = $this->data->getKey('id');
         $timestamp = $this->data->getKey('timestamp');
-        $logFilename = $path.$this->loggerLevel.'/'.$date.$timestamp.'_'.$id.'.log';
+        $logFilename = $path . $this->loggerLevel . '/' . $date . $timestamp . '_' . $id . '.log';
         $this->data->setKey('logFilename', $logFilename);
     }
 
@@ -218,7 +217,7 @@ final class ExceptionHandler
     private function loggerWrite(): void
     {
         $log = strip_tags($this->output->textPlain());
-        $log .= "\n\n".str_repeat('=', Formatter::COLUMNS);
+        $log .= "\n\n" . str_repeat('=', Formatter::COLUMNS);
         $this->logger->log($this->loggerLevel, $log);
     }
 }

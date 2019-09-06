@@ -13,25 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Http;
 
-use JsonException;
-use InvalidArgumentException;
-use const Chevere\CLI;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
-use Chevere\Message;
-
-// use Chevere\Data\Data;
 
 final class Response
 {
-    // Encode <, >, ', &, and " characters in the JSON, making it also safe to be embedded into HTML.
-    const DEFAULT_ENCODING_OPTIONS = JSON_THROW_ON_ERROR | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT;
-
-    /** @var int Bitmask */
-    private $encodingOptions;
-
-    /** @var string */
-    private $jsonString;
-
     /** @var SymfonyResponse */
     private $symfony;
 
@@ -50,46 +35,20 @@ final class Response
         $this->symfony->setContent(null);
     }
 
-    public function setJsonContent(array $json): void
+    public function setJsonContent(string $jsonString): void
     {
         $this->setJsonHeaders();
-        $this->setJsonString($json);
-        $this->symfony->setContent($this->jsonString);
+        $this->symfony->setContent($jsonString);
     }
 
     public function send(): SymfonyResponse
     {
-        return $this->symfony()->send();
+        return $this->symfony->send();
     }
 
     public function getStatusString(): string
     {
         return sprintf('HTTP/%s %s %s', $this->symfony->version, $this->symfony->statusCode, $this->symfony->statusText);
-    }
-
-    private function setJsonString(array $data): void
-    {
-        $this->encodingOptions = static::DEFAULT_ENCODING_OPTIONS;
-        if (CLI) {
-            $this->encodingOptions = $this->encodingOptions | JSON_PRETTY_PRINT;
-        }
-        $this->jsonString = $this->getJsonEncodedOutput($data);
-        if (CLI) {
-            $this->jsonString .= "\n";
-        }
-    }
-
-    private function getJsonEncodedOutput(array $data): string
-    {
-        try {
-            return json_encode($data, $this->encodingOptions, 512);
-        } catch (JsonException $e) {
-            throw new InvalidArgumentException(
-                (new Message('Unable to encode array as JSON (%m).'))
-                    ->strtr('%m', $e->getMessage())
-                    ->toString()
-            );
-        }
     }
 
     private function setJsonHeaders()

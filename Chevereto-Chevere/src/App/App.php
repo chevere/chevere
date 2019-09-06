@@ -25,13 +25,14 @@ use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
 use Chevere\Handler;
+use Chevere\Http\Request;
 
 /**
  * The app container.
  */
 final class App implements AppContract
 {
-    const BUILD_FILEPATH = APP_PATH.'build';
+    const BUILD_FILEPATH = APP_PATH . 'build';
     const NAMESPACES = ['App', 'Chevere'];
     const APP = 'app';
     const FILEHANDLE_CONFIG = ':config';
@@ -40,6 +41,9 @@ final class App implements AppContract
 
     /** @var ApiContract */
     private $api;
+
+    /** @var Request */
+    private $request;
 
     /** @var Response */
     private $response;
@@ -56,6 +60,11 @@ final class App implements AppContract
     public function setApi(ApiContract $api): void
     {
         $this->api = $api;
+    }
+
+    public function setRequest(Request $request): void
+    {
+        $this->request = $request;
     }
 
     public function setResponse(Response $response): void
@@ -81,6 +90,11 @@ final class App implements AppContract
     public function api(): ApiContract
     {
         return $this->api;
+    }
+
+    public function request(): Request
+    {
+        return $this->request;
     }
 
     public function response(): Response

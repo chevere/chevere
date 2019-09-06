@@ -36,6 +36,11 @@ return array (
     'group' => 'routes:dashboard',
     'id' => '1',
   ),
+  '/home' => 
+  array (
+    'group' => 'routes:web',
+    'id' => '0',
+  ),
   '/' => 
   array (
     'group' => 'routes:web',
@@ -44,6 +49,6 @@ return array (
   '/cache/{llave?}-{cert}-{user?}' => 
   array (
     'group' => 'routes:web',
-    'id' => '0',
+    'id' => '1',
   ),
 );

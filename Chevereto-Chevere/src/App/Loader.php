@@ -36,9 +36,11 @@ use Chevere\Http\Method;
 use Chevere\Http\Methods;
 use Chevere\Api\Endpoint;
 use Chevere\Contracts\App\LoaderContract;
+use Chevere\Contracts\Render\RenderContract;
 use Chevere\Contracts\Router\RouterContract;
 use Chevere\File;
 use Chevere\Message;
+use Chevere\Router\Exception\RouteNotFoundException;
 use Chevere\Router\Router;
 use Chevere\Type;
 
@@ -153,9 +155,9 @@ final class Loader implements LoaderContract
     public function setRequest(Request $request): void
     {
         $this->request = $request;
-
         $pathinfo = ltrim($this->request->getPathInfo(), '/');
         $this->request->attributes->set('requestArray', explode('/', $pathinfo));
+        $this->app->setRequest($this->request);
     }
 
     public function cacheChecksums(): array
@@ -168,8 +170,8 @@ final class Loader implements LoaderContract
      */
     public function run(): void
     {
-        $this->handleRunConsole();
-        $this->handleRunRequest();
+        $this->handleConsole();
+        $this->handleRequest();
         $this->setRan();
 
         if (!isset($this->controller)) {
@@ -182,7 +184,7 @@ final class Loader implements LoaderContract
         $this->runController($this->controller);
     }
 
-    private function handleRunConsole()
+    private function handleConsole()
     {
         if (Console::isRunning() && !isset($this->consoleLoop)) {
             $this->consoleLoop = true;
@@ -190,7 +192,7 @@ final class Loader implements LoaderContract
         }
     }
 
-    private function handleRunRequest()
+    private function handleRequest()
     {
         if (!isset($this->request)) {
             $this->setRequest(Request::createFromGlobals());
@@ -253,7 +255,14 @@ final class Loader implements LoaderContract
 
     private function processResolveCallable(string $pathInfo): void
     {
-        $this->app->setRoute($this->router->resolve($pathInfo));
+        try {
+            $route = $this->router->resolve($pathInfo);
+        } catch (RouteNotFoundException $e) {
+            $this->app->response()->symfony()->setContent('404');
+            $this->app->response()->send();
+            die();
+        }
+        $this->app->setRoute($route);
         $this->controller = $this->app->route()->getController($this->request->getMethod());
         $routerArgs = $this->router->arguments();
         if (!isset($this->arguments) && isset($routerArgs)) {
@@ -265,12 +274,13 @@ final class Loader implements LoaderContract
     {
         $this->app->setArguments($this->arguments);
         $controller = $this->app->run($controller);
-        // if ($controller instanceof RenderableInterface) {
-        //     echo $controller->render();
-        // } else {
-        $this->app->response()->setJsonContent($controller->document()->toArray());
-        $this->app->response()->send();
-        // }
+        if ($controller instanceof RenderContract) {
+            $controller->render();
+        } else {
+            $this->app->response()->setJsonContent($controller->document()->toString());
+            $this->app->response()->symfony()->prepare($this->app->request());
+            $this->app->response()->send();
+        }
     }
 
     /** @param array $paramRoutes  'handle' => [Routes,]] */

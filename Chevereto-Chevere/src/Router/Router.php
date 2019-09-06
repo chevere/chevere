@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Router;
 
-use LogicException;
 use Chevere\Message;
 use Chevere\Cache\Cache;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
+use Chevere\Router\Exception\RouteNotFoundException;
 
 /**s
  * Routes takes a bunch of Routes and generates a routing table (php array).
@@ -66,9 +66,8 @@ final class Router implements RouterContract
         if (preg_match($this->regex, $pathInfo, $matches)) {
             return $this->resolver($matches);
         }
-        // FIXME: Use RouteNotFoundException
-        throw new LogicException(
-            (new Message('No routing defined for %s'))
+        throw new RouteNotFoundException(
+            (new Message('No route defined for %s'))
                 ->code('%s', $pathInfo)
                 ->toString()
         );
