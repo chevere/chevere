@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Http;
 
-use Chevere\Contracts\Http\RequestContract;
+use Chevere\Contracts\Http\Symfony\RequestContract as SymfonyRequestContract;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
-final class Request extends SymfonyRequest implements RequestContract
+final class Request extends SymfonyRequest implements SymfonyRequestContract
 { }

@@ -258,7 +258,8 @@ final class Loader implements LoaderContract
         try {
             $route = $this->router->resolve($pathInfo);
         } catch (RouteNotFoundException $e) {
-            $this->app->response()->symfony()->setContent('404');
+            $this->app->response()->setContent('404');
+            $this->app->response()->prepare($this->app->request());
             $this->app->response()->send();
             die();
         }
@@ -277,8 +278,9 @@ final class Loader implements LoaderContract
         if ($controller instanceof RenderContract) {
             $controller->render();
         } else {
-            $this->app->response()->setJsonContent($controller->document()->toString());
-            $this->app->response()->symfony()->prepare($this->app->request());
+            $jsonApi = $controller->document();
+            $this->app->response()->setJsonContent($jsonApi);
+            $this->app->response()->prepare($this->app->request());
             $this->app->response()->send();
         }
     }

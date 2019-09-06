@@ -13,48 +13,61 @@ declare(strict_types=1);
 
 namespace Chevere\Http;
 
+use Chevere\Contracts\Http\ResponseContract;
+use Chevere\Contracts\Http\Symfony\ResponseContract as SymfonyResponseContract;
+use Chevere\JsonApi\JsonApi;
 use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 
-final class Response
+/**
+ * Response wraps HttpFoundation response (Symfony).
+ */
+final class Response extends SymfonyResponse implements ResponseContract, SymfonyResponseContract
 {
-    /** @var SymfonyResponse */
-    private $symfony;
+    /** @var string */
+    protected $version;
 
-    public function __construct()
-    {
-        $this->symfony = new SymfonyResponse('', 200, []);
-    }
+    /** @var int */
+    protected $statusCode;
 
-    public function symfony(): symfonyResponse
-    {
-        return $this->symfony;
-    }
+    /** @var string */
+    protected $statusText;
 
-    public function unsetContent(): void
-    {
-        $this->symfony->setContent(null);
-    }
+    /** @var ResponseHeaderBag */
+    public $headers;
 
-    public function setJsonContent(string $jsonString): void
+    /**
+     * {@inheritdoc}
+     */
+    public function setJsonContent(JsonApi $jsonApi): void
     {
         $this->setJsonHeaders();
-        $this->symfony->setContent($jsonString);
+        $this->setContent($jsonApi->toString());
     }
 
-    public function send(): SymfonyResponse
-    {
-        return $this->symfony->send();
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function getStatusString(): string
     {
-        return sprintf('HTTP/%s %s %s', $this->symfony->version, $this->symfony->statusCode, $this->symfony->statusText);
+        return sprintf('HTTP/%s %s %s', $this->version, $this->statusCode, $this->statusText);
     }
 
-    private function setJsonHeaders()
+    /**
+     * {@inheritdoc}
+     */
+    public function getNoBody(): string
     {
-        if (!$this->symfony->headers->has('Content-Type') || 'text/javascript' === $this->symfony->headers->get('Content-Type')) {
-            $this->symfony->headers->set('Content-Type', 'application/vnd.api+json');
+        return $this->getStatusString() . "\r\n" . $this->headers . "\r\n";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setJsonHeaders(): void
+    {
+        if (!$this->headers->has('Content-Type') || 'text/javascript' === $this->headers->get('Content-Type')) {
+            $this->headers->set('Content-Type', 'application/vnd.api+json');
         }
     }
 }

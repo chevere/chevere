@@ -16,7 +16,7 @@ class Cache extends Controller
 
     public function __invoke(string $llave, string $user, string $cert)
     {
-        // $this->app->response()->symfony()->setContent('eee');
+        // $this->app->response()->setContent('eee');
         // dd(func_get_args(), ['llave' => $llave, 'user' => $user, 'cert' => $cert]);
     }
 
