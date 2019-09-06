@@ -26,7 +26,6 @@ use Chevere\Http\Request;
 use Chevere\Http\Response;
 use Chevere\Router\Maker as RouterMaker;
 use Chevere\Runtime\Runtime;
-use Chevere\Interfaces\RenderableInterface;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Controllers\Api\HeadController;
@@ -125,7 +124,7 @@ final class Loader implements LoaderContract
             $this->cacheChecksums = $this->apiMaker->cache()->toArray();
         }
         if (!empty($this->parameters->routes())) {
-            $this->addRoutes($this->parameters->routes());
+            $this->routerMaker->addRoutesArrays($this->parameters->routes());
             $this->router = new Router($this->routerMaker);
             $this->cacheChecksums = array_merge($this->routerMaker->cache()->toArray(), $this->cacheChecksums);
         }
@@ -286,23 +285,6 @@ final class Loader implements LoaderContract
         }
     }
 
-    /** @param array $paramRoutes  'handle' => [Routes,]] */
-    private function addRoutes(array $paramRoutes): void
-    {
-        foreach ($paramRoutes as $fileHandleString) {
-            $arrayFile = new ArrayFile(
-                new PathHandle($fileHandleString),
-                new Type(RouteContract::class)
-            );
-            $arrayFileWrap = new ArrayFileCallback($arrayFile, function ($k, $route) {
-                $route->setId((string) $k);
-            });
-            foreach ($arrayFileWrap as $route) {
-                $this->routerMaker->addRoute($route, $fileHandleString);
-            }
-        }
-    }
-
     private function createApiMaker(PathHandle $pathHandle): void
     {
         $this->apiMaker = new ApiMaker($this->routerMaker);
@@ -313,17 +295,4 @@ final class Loader implements LoaderContract
         );
         $this->apiMaker->register($pathHandle, new Endpoint($methods)); // 41ms no cache
     }
-
-    // private function processConfigFiles(array $configFiles = null): void
-    // {
-    //     if (!isset($configFiles)) {
-    //         return;
-    //     }
-    //     if (isset($this->runtime)) {
-    //         $this->runtime->runConfig(
-    //             (new Config())
-    //                 ->processFromFiles($configFiles)
-    //         );
-    //     }
-    // }
 }

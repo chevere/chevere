@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Router;
 
+use Chevere\ArrayFile\ArrayFile;
+use Chevere\ArrayFile\ArrayFileCallback;
 use LogicException;
 use Chevere\Message;
 use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Path\PathHandle;
 use Chevere\Cache\Cache;
+use Chevere\Type;
 
 /**
  * Maker takes a bunch of Routes and generates a routing table (php array).
@@ -61,8 +64,7 @@ final class Maker
     private $cache;
 
     public function __construct()
-    {
-    }
+    { }
 
     /**
      * {@inheritdoc}
@@ -94,6 +96,27 @@ final class Maker
 
         $this->regex = $this->getRegex();
         $this->routesIndex[$this->route->path()] = $this->routeMap;
+    }
+
+    /** 
+     * Adds routes (ArrayFile) specified by path handle.
+     * 
+     * @param array $paramRoutes ['routes:web', 'routes:dashboard']
+     */
+    public function addRoutesArrays(array $paramRoutes): void
+    {
+        foreach ($paramRoutes as $fileHandleString) {
+            $arrayFile = new ArrayFile(
+                new PathHandle($fileHandleString),
+                new Type(RouteContract::class)
+            );
+            $arrayFileWrap = new ArrayFileCallback($arrayFile, function ($k, $route) {
+                $route->setId((string) $k);
+            });
+            foreach ($arrayFileWrap as $route) {
+                $this->addRoute($route, $fileHandleString);
+            }
+        }
     }
 
     public function regex(): string
