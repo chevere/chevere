@@ -3,6 +3,7 @@ _reports/
 vendor/
 docs/
 app/var/
+app/cache/
 Chevereto-Chevere/logs/
 var/
 composer.lock
