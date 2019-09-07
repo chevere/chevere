@@ -149,15 +149,23 @@ final class RequestCommand extends Command
 
     public function render(Response $response)
     {
+        $isNoFormat = (bool) $this->getOption('noformat');
         $isHeaders = (bool) $this->getOption('headers');
         $isBody = (bool) $this->getOption('body');
+
         if (!$isHeaders && !$isBody) {
             $isHeaders = true;
             $isBody = true;
         }
-        $this->cli->style()->writeln('<fg=magenta>' . $response->chvStatus() . '</>');
+        $status = $response->chvStatus();
+        $headers = $response->chvHeaders();
+        if (!$isNoFormat) {
+            $status = '<fg=magenta>' . $status . '</>';
+            $headers = '<fg=yellow>' . $headers . '</>';
+        }
+        $this->cli->style()->writeln($status);
         if ($isHeaders) {
-            $this->cli->style()->writeln('<fg=yellow>' . $response->chvHeaders() . '</>');
+            $this->cli->style()->writeln($headers);
         }
         if ($isBody) {
             $this->cli->style()->write($response->chvBuffer() . "\r\n");

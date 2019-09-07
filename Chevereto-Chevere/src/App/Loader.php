@@ -265,6 +265,8 @@ final class Loader implements LoaderContract
             $this->app->response()->send();
             if (CLI) {
                 throw new RouteNotFoundException($e->getMessage());
+            } else {
+                die();
             }
         }
         $this->app->setRoute($route);
