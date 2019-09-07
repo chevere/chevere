@@ -45,12 +45,12 @@ abstract class Command implements CommandContract
     protected $cli;
 
     /** @var SymfonyCommandContract */
-    protected $symfonyCommand;
+    protected $symfony;
 
     final public function __construct(CliContract $cli)
     {
         $this->cli = $cli;
-        $this->symfonyCommand = new SymfonyCommand($this);
+        $this->symfony = new SymfonyCommand($this);
         $this->configure();
     }
 
@@ -59,24 +59,34 @@ abstract class Command implements CommandContract
         return $this->cli;
     }
 
-    final public function symfonyCommand(): SymfonyCommandContract
+    final public function symfony(): SymfonyCommandContract
     {
-        return $this->symfonyCommand;
+        return $this->symfony;
+    }
+
+    final public function getArgument(string $argument)
+    {
+        return $this->cli->input()->getArgument($argument);
+    }
+
+    final public function getOption(string $option)
+    {
+        return $this->cli->input()->getOption($option);
     }
 
     abstract public function callback(LoaderContract $loader): int;
 
     final protected function configure(): void
     {
-        $this->symfonyCommand
+        $this->symfony
             ->setName(static::NAME)
             ->setDescription(static::DESCRIPTION)
             ->setHelp(static::HELP);
         foreach (static::ARGUMENTS as $arguments) {
-            $this->symfonyCommand->addArgument(...$arguments);
+            $this->symfony->addArgument(...$arguments);
         }
         foreach (static::OPTIONS as $options) {
-            $this->symfonyCommand->addOption(...$options);
+            $this->symfony->addOption(...$options);
         }
     }
 }

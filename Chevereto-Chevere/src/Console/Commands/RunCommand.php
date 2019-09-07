@@ -75,74 +75,103 @@ final class RunCommand extends Command
     /** @var array */
     private $arguments;
 
+    /** @var mixed */
+    private $return;
+
+    /** @var string */
+    private $export;
+
+    /** @var string */
+    private $buffer;
+
     public function callback(LoaderContract $loader): int
     {
         $this->loader = $loader;
-        $this->callable = (string) $this->cli->input()->getArgument('callable');
-        $this->arguments = $this->cli->input()->getOption('argument');
+        $this->callable = (string) $this->getArgument('callable');
+        $this->arguments = $this->getOption('argument');
 
         if (is_subclass_of($this->callable, Controller::class)) {
             $this->runController();
         } else {
-            if (class_exists($this->callable)) {
-                $isCallable = method_exists($this->callable, '__invoke');
-            } else {
-                $isCallable = is_callable($this->callable);
-            }
-            if (!$isCallable) {
-                throw new InvalidArgumentException(
-                    (new Message('No callable found for %s string.'))
-                        ->code('%s', $this->callable)
-                        ->toString()
-                );
-            }
-
-            ob_start();
-            $callable = $this->callable;
-            $return = $callable(...$this->arguments);
-            $buffer = ob_get_contents();
-            ob_end_clean();
-
-            $export = var_export($return, true);
-
-            $isPlain = (bool) $this->cli->input()->getOption('plain');
-            $isReturn = (bool) $this->cli->input()->getOption('return');
-            $isBuffer = (bool) $this->cli->input()->getOption('buffer');
-
-            if (!$isReturn && !$isBuffer) {
-                $isReturn = true;
-                $isBuffer = true;
-            }
-
-            $cc = new ConsoleColor();
-
-            if ($isReturn) {
-                if ($isPlain) {
-                    $lines = [$export];
-                } else {
-                    $lines = ['<fg=magenta>' . $cc->apply('italic', gettype($return)) . '</> ' . $export];
-                }
-            }
-
-            if ($isBuffer && $buffer != '') {
-                if ($isPlain) {
-                    $lines[] = $buffer;
-                } else {
-                    $lines[] = '<fg=yellow>' . $buffer . '</>';
-                }
-            }
-
-            $this->cli->style()->writeln($lines);
+            $this->runCallable();
         }
 
         return 1;
     }
 
-    private function runController(): int
+    private function runController(): void
     {
         $this->loader->setArguments($this->arguments);
         $this->loader->setController($this->callable);
         $this->loader->run();
-        return 0;
+    }
+
+    private function runCallable(): void
+    {
+        $this->validateCallable();
+        $this->bufferedRunCallable();
+
+        $isPlain = (bool) $this->getOption('plain');
+        $isReturn = (bool) $this->getOption('return');
+        $isBuffer = (bool) $this->getOption('buffer');
+
+        if (!$isReturn && !$isBuffer) {
+            $isReturn = true;
+            $isBuffer = true;
+        }
+
+        $cc = new ConsoleColor();
+
+        if ($isReturn) {
+            if ($isPlain) {
+                $lines = [$this->export];
+            } else {
+                $lines = ['<fg=magenta>' . $cc->apply('italic', gettype($this->return)) . '</> ' . $this->export];
+            }
+        }
+
+        if ($isBuffer && $this->buffer != '') {
+            if ($isPlain) {
+                $lines[] = $this->buffer;
+            } else {
+                $lines[] = '<fg=yellow>' . $this->buffer . '</>';
+            }
+        }
+
+        $this->cli->style()->writeln($lines);
+    }
+
+    private function validateCallable(): void
+    {
+        if (class_exists($this->callable)) {
+            $isCallable = method_exists($this->callable, '__invoke');
+        } else {
+            $isCallable = is_callable($this->callable);
+        }
+        if (!$isCallable) {
+            throw new InvalidArgumentException(
+                (new Message('No callable found for %s string.'))
+                    ->code('%s', $this->callable)
+                    ->toString()
+            );
+        }
+    }
+
+    /**
+     * Run the callable capturing its return and buffer.
+     * 
+     * Sets @var mixed $return @var string $buffer @var string $export
+     */
+    private function bufferedRunCallable(): void
+    {
+        ob_start();
+        $callable = $this->callable;
+        $this->return = $callable(...$this->arguments);
+        $buffer = ob_get_contents();
+        if (false !== $buffer) {
+            $this->buffer = $buffer;
+        }
+        ob_end_clean();
+        $this->export = var_export($this->return, true);
     }
 }

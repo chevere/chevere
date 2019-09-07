@@ -70,10 +70,10 @@ final class Cli implements CliContract
         $this->style = new SymfonyStyle($this->input, $this->output);
 
         $this->client->addCommands([
-            (new RequestCommand($this))->symfonyCommand(),
-            (new RunCommand($this))->symfonyCommand(),
-            (new InspectCommand($this))->symfonyCommand(),
-            (new BuildCommand($this))->symfonyCommand(),
+            (new RequestCommand($this))->symfony(),
+            (new RunCommand($this))->symfony(),
+            (new InspectCommand($this))->symfony(),
+            (new BuildCommand($this))->symfony(),
         ]);
 
         $command = Console::command();

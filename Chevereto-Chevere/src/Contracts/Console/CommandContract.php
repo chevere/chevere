@@ -21,7 +21,7 @@ interface CommandContract
 
     public function cli(): CliContract;
 
-    public function symfonyCommand(): SymfonyCommandContract;
+    public function symfony(): SymfonyCommandContract;
 
     public function callback(LoaderContract $loader): int;
 }
