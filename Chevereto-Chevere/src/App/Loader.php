@@ -15,6 +15,8 @@ namespace Chevere\App;
 
 use LogicException;
 use RuntimeException;
+
+use const Chevere\CLI;
 use const Chevere\DEV_MODE;
 use Chevere\ArrayFile\ArrayFile;
 use Chevere\ArrayFile\ArrayFileCallback;
@@ -261,7 +263,9 @@ final class Loader implements LoaderContract
             $this->app->response()->setContent('404');
             $this->app->response()->prepare($this->app->request());
             $this->app->response()->send();
-            die();
+            if (CLI) {
+                throw new RouteNotFoundException($e->getMessage());
+            }
         }
         $this->app->setRoute($route);
         $this->controller = $this->app->route()->getController($this->request->getMethod());

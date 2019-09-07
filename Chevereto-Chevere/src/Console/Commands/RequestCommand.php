@@ -21,6 +21,7 @@ use Chevere\Console\Command;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Message;
 use Chevere\Http\Response;
+use Chevere\Router\Exception\RouteNotFoundException;
 
 /**
  * The RequestCommand allows to pass a forged request to the App instance.
@@ -134,7 +135,10 @@ final class RequestCommand extends Command
             $requestFnArguments[] = $passedArguments[$name] ?? $requestArg->getDefaultValue() ?? null;
         }
         $loader->setRequest(Request::create(...$requestFnArguments));
-        $loader->run();
+
+        try {
+            $loader->run();
+        } catch (RouteNotFoundException $e) { }
 
         $response = $loader->app->response();
 
