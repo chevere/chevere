@@ -84,6 +84,18 @@ final class RunCommand extends Command
     /** @var string */
     private $buffer;
 
+    /** @var bool */
+    private $isNoFormat;
+
+    /** @var bool */
+    private $isReturn;
+
+    /** @var bool */
+    private $isBuffer;
+
+    /** @var array */
+    private $lines;
+
     public function callback(LoaderContract $loader): int
     {
         $this->loader = $loader;
@@ -111,34 +123,18 @@ final class RunCommand extends Command
         $this->validateCallable();
         $this->bufferedRunCallable();
 
-        $isNoFormat = (bool) $this->getOption('noformat');
-        $isReturn = (bool) $this->getOption('return');
-        $isBuffer = (bool) $this->getOption('buffer');
+        $this->isNoFormat = (bool) $this->getOption('noformat');
+        $this->isReturn = (bool) $this->getOption('return');
+        $this->isBuffer = (bool) $this->getOption('buffer');
 
-        if (!$isReturn && !$isBuffer) {
-            $isReturn = true;
-            $isBuffer = true;
+        if (!$this->isReturn && !$this->isBuffer) {
+            $this->isReturn = true;
+            $this->isBuffer = true;
         }
 
-        $cc = new ConsoleColor();
+        $this->setLines();
 
-        if ($isReturn) {
-            if ($isNoFormat) {
-                $lines = [$this->export];
-            } else {
-                $lines = ['<fg=magenta>' . $cc->apply('italic', gettype($this->return)) . '</> ' . $this->export];
-            }
-        }
-
-        if ($isBuffer && $this->buffer != '') {
-            if ($isNoFormat) {
-                $lines[] = $this->buffer;
-            } else {
-                $lines[] = '<fg=yellow>' . $this->buffer . '</>';
-            }
-        }
-
-        $this->cli->style()->writeln($lines);
+        $this->cli->style()->writeln($this->lines);
     }
 
     private function validateCallable(): void
@@ -173,5 +169,25 @@ final class RunCommand extends Command
         }
         ob_end_clean();
         $this->export = var_export($this->return, true);
+    }
+
+    private function setLines(): void
+    {
+        $this->lines = [];
+        $cc = new ConsoleColor();
+        if ($this->isReturn) {
+            if ($this->isNoFormat) {
+                $this->lines = [$this->export];
+            } else {
+                $this->lines = ['<fg=magenta>' . $cc->apply('italic', gettype($this->return)) . '</> ' . $this->export];
+            }
+        }
+        if ($this->isBuffer && $this->buffer != '') {
+            if ($this->isNoFormat) {
+                $this->lines[] = $this->buffer;
+            } else {
+                $this->lines[] = '<fg=yellow>' . $this->buffer . '</>';
+            }
+        }
     }
 }
