@@ -50,19 +50,19 @@ final class RunCommand extends Command
             'return',
             'r',
             Command::OPTION_NONE,
-            'Return only (no buffer)',
+            'Output return',
         ],
         [
             'buffer',
             'b',
             Command::OPTION_NONE,
-            'Buffer only (no return)',
+            'Output buffer',
         ],
         [
-            'plain',
-            'p',
+            'noformat',
+            'x',
             Command::OPTION_NONE,
-            'Plain output (no type nor decorations)',
+            'No output type nor decorations',
         ],
     ];
 
@@ -111,7 +111,7 @@ final class RunCommand extends Command
         $this->validateCallable();
         $this->bufferedRunCallable();
 
-        $isPlain = (bool) $this->getOption('plain');
+        $isNoFormat = (bool) $this->getOption('noformat');
         $isReturn = (bool) $this->getOption('return');
         $isBuffer = (bool) $this->getOption('buffer');
 
@@ -123,7 +123,7 @@ final class RunCommand extends Command
         $cc = new ConsoleColor();
 
         if ($isReturn) {
-            if ($isPlain) {
+            if ($isNoFormat) {
                 $lines = [$this->export];
             } else {
                 $lines = ['<fg=magenta>' . $cc->apply('italic', gettype($this->return)) . '</> ' . $this->export];
@@ -131,7 +131,7 @@ final class RunCommand extends Command
         }
 
         if ($isBuffer && $this->buffer != '') {
-            if ($isPlain) {
+            if ($isNoFormat) {
                 $lines[] = $this->buffer;
             } else {
                 $lines[] = '<fg=yellow>' . $this->buffer . '</>';

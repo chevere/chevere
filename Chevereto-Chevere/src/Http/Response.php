@@ -79,14 +79,27 @@ final class Response extends SymfonyResponse implements ResponseContract, Symfon
         if (CLI) {
             ob_start();
             parent::send();
-            $buffer = ob_get_contents();
+            $this->chvBuffer = ob_get_contents();
             ob_end_clean();
-            Console::writeln('<fg=magenta>' . $this->getStatusString() . '</>');
-            Console::writeln('<fg=yellow>' . $this->headers . '</>');
-            Console::write(rtrim($buffer) . "\r\n");
-            die(0);
+            $this->chvStatus = $this->getStatusString();
+            $this->chvHeaders = trim((string) $this->headers);
         } else {
             return parent::send();
         }
+    }
+
+    public function chvStatus(): string
+    {
+        return $this->chvStatus;
+    }
+
+    public function chvHeaders(): string
+    {
+        return $this->chvHeaders;
+    }
+
+    public function chvBuffer(): string
+    {
+        return $this->chvBuffer;
     }
 }

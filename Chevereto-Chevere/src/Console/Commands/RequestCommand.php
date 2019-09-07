@@ -20,6 +20,7 @@ use Chevere\Http\Request;
 use Chevere\Console\Command;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Message;
+use Chevere\Http\Response;
 
 /**
  * The RequestCommand allows to pass a forged request to the App instance.
@@ -41,11 +42,59 @@ final class RequestCommand extends Command
     ];
 
     const OPTIONS = [
-        ['parameters', 'p', Command::OPTION_OPTIONAL, 'Parameters [json]', []],
-        ['cookies', 'c', Command::OPTION_OPTIONAL, '$_COOKIE [json]', []],
-        ['files', 'f', Command::OPTION_OPTIONAL, '$_FILES [json]', []],
-        ['server', 's', Command::OPTION_OPTIONAL, '$_SERVER [json]', []],
-        ['content', 'r', Command::OPTION_OPTIONAL, 'Raw body data', null],
+        [
+            'parameters',
+            'p',
+            Command::OPTION_OPTIONAL,
+            'Parameters [json]',
+            []
+        ],
+        [
+            'cookies',
+            'c',
+            Command::OPTION_OPTIONAL,
+            '$_COOKIE [json]',
+            []
+        ],
+        [
+            'files',
+            'f',
+            Command::OPTION_OPTIONAL,
+            '$_FILES [json]',
+            []
+        ],
+        [
+            'server',
+            's',
+            Command::OPTION_OPTIONAL,
+            '$_SERVER [json]',
+            []
+        ],
+        [
+            'content',
+            null,
+            Command::OPTION_OPTIONAL,
+            'Raw body data',
+            null
+        ],
+        [
+            'headers',
+            'H',
+            Command::OPTION_NONE,
+            'Output headers',
+        ],
+        [
+            'body',
+            'B',
+            Command::OPTION_NONE,
+            'Output body',
+        ],
+        [
+            'noformat',
+            'x',
+            Command::OPTION_NONE,
+            'No output decorations',
+        ],
     ];
 
     // List of arguments which are passed as JSON
@@ -87,6 +136,28 @@ final class RequestCommand extends Command
         $loader->setRequest(Request::create(...$requestFnArguments));
         $loader->run();
 
+        $response = $loader->app->response();
+
+        $this->render($response);
+
         return 1;
+    }
+
+    public function render(Response $response)
+    {
+        $isHeaders = (bool) $this->getOption('headers');
+        $isBody = (bool) $this->getOption('body');
+        if (!$isHeaders && !$isBody) {
+            $isHeaders = true;
+            $isBody = true;
+        }
+        $this->cli->style()->writeln('<fg=magenta>' . $response->chvStatus() . '</>');
+        if ($isHeaders) {
+            $this->cli->style()->writeln('<fg=yellow>' . $response->chvHeaders() . '</>');
+        }
+        if ($isBody) {
+            $this->cli->style()->write($response->chvBuffer() . "\r\n");
+        }
+        die(0);
     }
 }

@@ -69,9 +69,6 @@ final class JsonApi
     {
         $this->setArray();
         $this->string = $this->getEncodedString();
-        if (CLI) {
-            $this->string .= "\n";
-        }
     }
 
     private function setArray(): void
