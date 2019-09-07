@@ -1,0 +1,20 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Api\Users;
+
+use Chevere\Controller\Controller;
+
+class _POST extends Controller
+{
+    protected static $description = 'Creates an user.';
+    protected static $parameters = [
+        'username' => [
+            'description' => 'Username.',
+        ],
+        'email' => [
+            'description' => 'User email.',
+        ],
+    ];
+}

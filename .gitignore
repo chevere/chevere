@@ -1,0 +1,13 @@
+_trash/
+_reports/
+vendor/
+docs/
+app/var/
+app/cache/
+Chevereto-Chevere/logs/
+var/
+composer.lock
+.vscode/
+.phpunit.result.cache
+app/build
+/devnotes/
