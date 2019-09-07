@@ -42,10 +42,10 @@ abstract class Command implements CommandContract
     const OPTIONS = [];
 
     /** @var CliContract */
-    protected $cli;
+    private $cli;
 
     /** @var SymfonyCommandContract */
-    protected $symfony;
+    private $symfony;
 
     final public function __construct(CliContract $cli)
     {

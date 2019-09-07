@@ -58,7 +58,7 @@ final class InspectCommand extends Command
 
     public function callback(LoaderContract $loader): int
     {
-        $this->callableInput = (string) $this->cli->input()->getArgument('callable');
+        $this->callableInput = (string) $this->cli()->input()->getArgument('callable');
         if (is_subclass_of($this->callableInput, ControllerContract::class)) {
             $this->callable = $this->callableInput;
             $this->method = '__invoke';
@@ -70,7 +70,7 @@ final class InspectCommand extends Command
 
         $this->handleSetMethod();
         $this->handleSetReflector();
-        $this->cli->style()->block($this->callableInput, 'INSPECTED', 'fg=black;bg=green', ' ', true);
+        $this->cli()->style()->block($this->callableInput, 'INSPECTED', 'fg=black;bg=green', ' ', true);
         $this->processParametersArguments();
         $this->handleProcessArguments();
 
@@ -115,11 +115,11 @@ final class InspectCommand extends Command
         foreach ($this->reflector->getParameters() as $parameter) {
             $aux = '';
             if ($parameter->getType()) {
-                $aux .= $parameter->getType().' ';
+                $aux .= $parameter->getType() . ' ';
             }
-            $aux .= '$'.$parameter->getName();
+            $aux .= '$' . $parameter->getName();
             if ($parameter->isDefaultValueAvailable()) {
-                $aux .= ' = '.($parameter->getDefaultValue() ?? 'null');
+                $aux .= ' = ' . ($parameter->getDefaultValue() ?? 'null');
             }
             // $res = $resource[$parameter->getName()] ?? null;
             // if (isset($res)) {
@@ -141,12 +141,12 @@ final class InspectCommand extends Command
 
     private function processArguments(): void
     {
-        $this->cli->style()->text(['<fg=yellow>Arguments:</>']);
-        $this->cli->style()->listing($this->arguments);
+        $this->cli()->style()->text(['<fg=yellow>Arguments:</>']);
+        $this->cli()->style()->listing($this->arguments);
     }
 
     private function processNoArguments(): void
     {
-        $this->cli->style()->text(['<fg=yellow>No arguments</>', null]);
+        $this->cli()->style()->text(['<fg=yellow>No arguments</>', null]);
     }
 }

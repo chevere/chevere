@@ -98,36 +98,25 @@ final class RequestCommand extends Command
         ],
     ];
 
+    /** @var array */
+    private $arguments;
+
+    /** @var array */
+    private $options;
+
+    /** @var array */
+    private $jsonOptions;
+
     // List of arguments which are passed as JSON
     const JSON_OPTIONS = ['parameters', 'cookies', 'files', 'server'];
 
     public function callback(LoaderContract $loader): int
     {
-        $arguments = $this->cli->input()->getArguments();
-        $options = $this->cli->input()->getOptions();
+        $this->arguments = $this->cli()->input()->getArguments();
+        $this->options = (array) $this->cli()->input()->getOptions();
+        $this->setJsonOptions();
 
-        $jsonOptions = [];
-        foreach (static::JSON_OPTIONS as $v) {
-            if (is_string($options[$v])) {
-                try {
-                    $json = json_decode($options[$v], true, 512, JSON_THROW_ON_ERROR);
-                } catch (JsonException $e) {
-                    throw new InvalidArgumentException(
-                        (new Message('Unable to parse %o option %s as JSON (%m).'))
-                            ->code('%o', $v)
-                            ->code('%s', $options[$v])
-                            ->strtr('%m', $e->getMessage())
-                            ->toString()
-                    );
-                }
-            } else {
-                $json = $options[$v];
-            }
-            $jsonOptions[$v] = $json;
-        }
-
-        $passedArguments = array_merge($options, $jsonOptions, $arguments);
-
+        $passedArguments = array_merge($this->options, $this->jsonOptions, $this->arguments);
         $requestFnArguments = [];
         $r = new ReflectionMethod(Request::class, 'create');
         foreach ($r->getParameters() as $requestArg) {
@@ -138,13 +127,14 @@ final class RequestCommand extends Command
 
         try {
             $loader->run();
-        } catch (RouteNotFoundException $e) { }
+        } catch (RouteNotFoundException $e) {
+            // $e Shhhh... This is just to capture the CLI output
+        }
 
         $response = $loader->app->response();
-
         $this->render($response);
 
-        return 1;
+        return 0;
     }
 
     public function render(Response $response)
@@ -152,7 +142,6 @@ final class RequestCommand extends Command
         $isNoFormat = (bool) $this->getOption('noformat');
         $isHeaders = (bool) $this->getOption('headers');
         $isBody = (bool) $this->getOption('body');
-
         if (!$isHeaders && !$isBody) {
             $isHeaders = true;
             $isBody = true;
@@ -163,13 +152,36 @@ final class RequestCommand extends Command
             $status = '<fg=magenta>' . $status . '</>';
             $headers = '<fg=yellow>' . $headers . '</>';
         }
-        $this->cli->style()->writeln($status);
+        $this->cli()->style()->writeln($status);
         if ($isHeaders) {
-            $this->cli->style()->writeln($headers);
+            $this->cli()->style()->writeln($headers);
         }
         if ($isBody) {
-            $this->cli->style()->write($response->chvBuffer() . "\r\n");
+            $this->cli()->style()->write($response->chvBuffer() . "\r\n");
         }
         die(0);
+    }
+
+    private function setJsonOptions(): void
+    {
+        $this->jsonOptions = [];
+        foreach (static::JSON_OPTIONS as $v) {
+            if (is_string($this->options[$v])) {
+                try {
+                    $json = json_decode($this->options[$v], true, 512, JSON_THROW_ON_ERROR);
+                } catch (JsonException $e) {
+                    throw new InvalidArgumentException(
+                        (new Message('Unable to parse %o option %s as JSON (%m).'))
+                            ->code('%o', $v)
+                            ->code('%s', $this->options[$v])
+                            ->strtr('%m', $e->getMessage())
+                            ->toString()
+                    );
+                }
+            } else {
+                $json = $this->options[$v];
+            }
+            $this->jsonOptions[$v] = $json;
+        }
     }
 }

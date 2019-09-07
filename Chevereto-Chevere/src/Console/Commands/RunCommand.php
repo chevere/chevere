@@ -73,7 +73,7 @@ final class RunCommand extends Command
     private $callable;
 
     /** @var array */
-    private $arguments;
+    protected $argument;
 
     /** @var mixed */
     private $return;
@@ -100,7 +100,7 @@ final class RunCommand extends Command
     {
         $this->loader = $loader;
         $this->callable = (string) $this->getArgument('callable');
-        $this->arguments = $this->getOption('argument');
+        $this->argument = $this->getOption('argument');
 
         if (is_subclass_of($this->callable, Controller::class)) {
             $this->runController();
@@ -113,7 +113,7 @@ final class RunCommand extends Command
 
     private function runController(): void
     {
-        $this->loader->setArguments($this->arguments);
+        $this->loader->setArguments($this->argument);
         $this->loader->setController($this->callable);
         $this->loader->run();
     }
@@ -134,7 +134,7 @@ final class RunCommand extends Command
 
         $this->setLines();
 
-        $this->cli->style()->writeln($this->lines);
+        $this->cli()->style()->writeln($this->lines);
     }
 
     private function validateCallable(): void
@@ -162,7 +162,7 @@ final class RunCommand extends Command
     {
         ob_start();
         $callable = $this->callable;
-        $this->return = $callable(...$this->arguments);
+        $this->return = $callable(...$this->argument);
         $buffer = ob_get_contents();
         if (false !== $buffer) {
             $this->buffer = $buffer;
