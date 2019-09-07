@@ -1,3 +1,0 @@
-Middleware: Pass input/req > Filter input/req > Pass input/req
-Controller: Pass input/req > Handle input/req > Set data > Filter data > Pass to Render
-Render: Print template/json/text
