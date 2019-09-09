@@ -171,15 +171,22 @@ abstract class VarDumpAbstract
     protected function setProperties(): void
     {
         $this->properties = [];
-        foreach (static::PROPERTIES_REFLECTION_MAP as $k => $v) {
+        foreach (static::PROPERTIES_REFLECTION_MAP as $visibility => $filter) {
             /** @scrutinizer ignore-call */
-            $v = $this->reflectionObject->getProperties($v);
-            foreach ($v as $kk => $vv) {
-                if (!isset($this->properties[$vv->getName()])) {
-                    $vv->setAccessible(true);
-                    $this->properties[$vv->getName()] = ['value' => $vv->getValue($this->expression)];
+            $properties = $this->reflectionObject->getProperties($filter);
+            foreach ($properties as $property) {
+                if (!isset($this->properties[$property->getName()])) {
+                    $property->setAccessible(true);
+                    // var_dump($this->reflectionObject->getProperty($property->getName()));
+                    try {
+                        $value = $property->getValue($this->expression);
+                    } catch (Throwable $e) {
+                        // $value = '';
+                    }
+                        
+                    $this->properties[$property->getName()] = ['value' => $value];
                 }
-                $this->properties[$vv->getName()]['visibility'][] = $k;
+                $this->properties[$property->getName()]['visibility'][] = $visibility;
             }
         }
     }

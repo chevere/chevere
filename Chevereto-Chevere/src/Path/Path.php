@@ -17,7 +17,12 @@ use const Chevere\ROOT_PATH;
 
 use Chevere\Message;
 use Chevere\Utility\Str;
+use InvalidArgumentException;
+use LogicException;
 use RuntimeException;
+
+use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
 
 final class Path
 {
@@ -86,6 +91,44 @@ final class Path
             );
         }
         return $path;
+    }
+
+    /**
+     * Recursive remove a path.
+     *
+     * @param string Path to remove.
+     */
+    public static function recursiveRemove(string $path): void
+    {
+        static::removeContents($path);
+        // rmdir($path);
+    }
+
+    /**
+     * Removes the contents from a path, without deleting the path.
+     */
+    public static function removeContents(string $path): void
+    {
+        if (!is_dir($path)) {
+            throw new LogicException(
+                (new Message('Argument %path% is not a directory.'))
+                    ->code('%path%', $path)
+                    ->toString()
+            );
+        }
+        $files = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST
+        );
+        
+        foreach ($files as $fileinfo) {
+            $inode = $fileinfo->getRealPath();
+            if ($fileinfo->isDir()) {
+                rmdir($inode);
+            } else {
+                unlink($inode);
+            }
+        }
     }
 
     /**

@@ -32,15 +32,24 @@ final class Api implements ApiContract
     /** @var array */
     private static $api;
 
-    public function __construct(Maker $maker = null)
+    public function __construct()
     {
-        if (isset($maker)) {
-            self::$api = $maker->api();
-            $maker->setCache();
-        } else {
-            $cache = new Cache('api');
-            self::$api = $cache->get('api')->raw();
-        }
+    }
+
+    public static function fromMaker(Maker $maker): ApiContract
+    {
+        $api = new static();
+        $api::$api = $maker->api();
+        $maker->setCache();
+        return $api;
+    }
+
+    public static function fromCache(): ApiContract
+    {
+        $api = new static();
+        $cache = new Cache('api');
+        $api::$api = $cache->get('api')->raw();
+        return $api;
     }
 
     public function get(): array

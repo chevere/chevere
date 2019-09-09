@@ -19,7 +19,6 @@ use RuntimeException;
 use const Chevere\CLI;
 use const Chevere\DEV_MODE;
 use Chevere\ArrayFile\ArrayFile;
-use Chevere\ArrayFile\ArrayFileCallback;
 use Chevere\Path\PathHandle;
 use Chevere\Api\Api;
 use Chevere\Api\Maker as ApiMaker;
@@ -29,21 +28,17 @@ use Chevere\Http\Response;
 use Chevere\Router\Maker as RouterMaker;
 use Chevere\Runtime\Runtime;
 use Chevere\Contracts\App\AppContract;
-use Chevere\Contracts\Route\RouteContract;
-use Chevere\Controllers\Api\HeadController;
-use Chevere\Controllers\Api\OptionsController;
-use Chevere\Controllers\Api\GetController;
-use Chevere\Http\Method;
-use Chevere\Http\Methods;
-use Chevere\Api\Endpoint;
+use Chevere\App\Exceptions\AlreadyBuiltException;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Render\RenderContract;
 use Chevere\Contracts\Router\RouterContract;
-use Chevere\File;
 use Chevere\Message;
+use Chevere\Path\Path;
 use Chevere\Router\Exception\RouteNotFoundException;
 use Chevere\Router\Router;
-use Chevere\Type;
+
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 final class Loader implements LoaderContract
 {
@@ -88,14 +83,26 @@ final class Loader implements LoaderContract
     /** @var array */
     private $arguments;
 
+    /** @var bool True if the App was built (cache) */
+    private $isBuilt;
+
+    /** @var Checkout */
+    private $checkout;
+
+    /** @var Build */
+    private $build;
+
     public function __construct()
     {
         Console::bind($this);
 
-        if (!DEV_MODE && !Console::isBuilding() && !File::exists(App::BUILD_FILEPATH)) {
+        $this->build = new Build();
+
+        if (!DEV_MODE && !Console::isBuilding() && !$this->build->exists()) {
             throw new RuntimeException(
-                (new Message('The application needs to be built before being able to use %className%.'))
+                (new Message('The application needs to be built. In CLI, run this: %command%'))
                     ->code('%className%', __CLASS__)
+                    ->code('%command%', 'php app/console build')
                     ->toString()
             );
         }
@@ -110,7 +117,7 @@ final class Loader implements LoaderContract
             )
         );
 
-        if (DEV_MODE && !Console::isBuilding()) {
+        if (DEV_MODE) {
             $this->build();
         }
 
@@ -119,18 +126,35 @@ final class Loader implements LoaderContract
 
     public function build(): void
     {
+        if ($this->isBuilt) {
+            throw new AlreadyBuiltException();
+        }
         $this->cacheChecksums = [];
         if (!empty($this->parameters->api())) {
-            $this->createApiMaker(new PathHandle($this->parameters->api()));
-            $this->api = new Api($this->apiMaker);
+            $pathHandle = new PathHandle($this->parameters->api());
+            $this->apiMaker = ApiMaker::create($pathHandle, $this->routerMaker);
+            $this->api = Api::fromMaker($this->apiMaker);
             $this->cacheChecksums = $this->apiMaker->cache()->toArray();
         }
         if (!empty($this->parameters->routes())) {
             $this->routerMaker->addRoutesArrays($this->parameters->routes());
-            $this->router = new Router($this->routerMaker);
+            $this->router = Router::fromMaker($this->routerMaker);
             $this->cacheChecksums = array_merge($this->routerMaker->cache()->toArray(), $this->cacheChecksums);
         }
-        new Checkout();
+        $this->checkout = new Checkout($this->build, $this->cacheChecksums);
+        $this->isBuilt = true;
+    }
+
+    public function destroy(): void
+    {
+        unlink($this->build->pathHandle()->path());
+        $cachePath = Path::fromIdentifier('cache');
+        Path::removeContents($cachePath);
+    }
+
+    public function checkout(): Checkout
+    {
+        return $this->checkout;
     }
 
     /**
@@ -245,11 +269,10 @@ final class Loader implements LoaderContract
     private function applyParameters()
     {
         if (!empty($this->parameters->api()) && !isset($this->api)) {
-            $this->api = new Api();
+            $this->api = Api::fromCache();
         }
-        // $this->app->setApi($this->api);
         if (!empty($this->parameters->routes()) && !isset($this->router)) {
-            $this->router = new Router();
+            $this->router = Router::fromCache();
         }
         $this->app->setRouter($this->router);
     }
@@ -289,16 +312,5 @@ final class Loader implements LoaderContract
             $this->app->response()->prepare($this->app->request());
             $this->app->response()->send();
         }
-    }
-
-    private function createApiMaker(PathHandle $pathHandle): void
-    {
-        $this->apiMaker = new ApiMaker($this->routerMaker);
-        $methods = new Methods(
-            new Method('HEAD', HeadController::class),
-            new Method('OPTIONS', OptionsController::class),
-            new Method('GET', GetController::class)
-        );
-        $this->apiMaker->register($pathHandle, new Endpoint($methods)); // 41ms no cache
     }
 }

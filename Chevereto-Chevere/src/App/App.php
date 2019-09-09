@@ -32,7 +32,6 @@ use Chevere\Http\Request;
  */
 final class App implements AppContract
 {
-    const BUILD_FILEPATH = APP_PATH . 'build';
     const NAMESPACES = ['App', 'Chevere'];
     const APP = 'app';
     const FILEHANDLE_CONFIG = ':config';
@@ -116,14 +115,6 @@ final class App implements AppContract
     {
         return $this->arguments ?? [];
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    // public function getBuildTime(): ?string
-    // {
-    //     return File::exists(self::BUILD_FILEPATH) ? (string) file_get_contents(self::BUILD_FILEPATH) : null;
-    // }
 
     /**
      * {@inheritdoc}

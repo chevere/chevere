@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Console\Commands;
 
+use Chevere\App\Exceptions\AlreadyBuiltException;
 use Chevere\Console\Command;
 use Chevere\Contracts\App\LoaderContract;
 
@@ -30,8 +31,13 @@ final class BuildCommand extends Command
 
     public function callback(LoaderContract $loader): int
     {
-        $loader->build();
-        $this->cli()->style()->block('App built', 'SUCCESS', 'fg=black;bg=green', ' ', true);
+        $title = 'App built';
+        try {
+            $loader->build();
+        } catch (AlreadyBuiltException $e) {
+            $title .= ' (not by this command)';
+        }
+        $this->cli()->style()->block($title, 'SUCCESS', 'fg=black;bg=green', ' ', true);
         $checksums = [];
         foreach ($loader->cacheChecksums() as $name => $keys) {
             foreach ($keys as $key => $array) {
@@ -39,6 +45,10 @@ final class BuildCommand extends Command
             }
         }
         $this->cli()->style()->table(['Cache', 'Key', 'Path', 'Checksum'], $checksums);
+        $this->cli()->style()->writeln([
+            '[Path] '.$loader->checkout()->build()->pathHandle()->path(),
+            '[Checksum] ' . $loader->checkout()->checksum()
+        ]);
         return 0;
     }
 }

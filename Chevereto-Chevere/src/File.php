@@ -40,7 +40,7 @@ final class File
         return stream_resolve_include_path($filename) !== false;
     }
 
-    public static function put(string $filename, $contents)
+    public static function put(string $filename, $contents): void
     {
         if (!static::exists($filename)) {
             $dirname = dirname($filename);

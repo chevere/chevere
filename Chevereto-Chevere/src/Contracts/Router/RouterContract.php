@@ -18,7 +18,7 @@ use Chevere\Contracts\Route\RouteContract;
 
 interface RouterContract
 {
-    public function __construct(Maker $maker = null);
+    public function __construct();
 
     public function arguments(): array;
 

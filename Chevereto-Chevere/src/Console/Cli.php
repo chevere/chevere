@@ -19,6 +19,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Chevere\Console\Commands\BuildCommand;
+use Chevere\Console\Commands\DestroyCommand;
 use Chevere\Console\Commands\RequestCommand;
 use Chevere\Console\Commands\RunCommand;
 use Chevere\Console\Commands\InspectCommand;
@@ -74,6 +75,7 @@ final class Cli implements CliContract
             (new RunCommand($this))->symfony(),
             (new InspectCommand($this))->symfony(),
             (new BuildCommand($this))->symfony(),
+            (new DestroyCommand($this))->symfony(),
         ]);
 
         $command = Console::command();

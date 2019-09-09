@@ -13,23 +13,32 @@ declare(strict_types=1);
 
 namespace Chevere\App;
 
-use RuntimeException;
-use Chevere\Message;
-use Chevere\Contracts\App\CheckoutContract;
+use Chevere\File;
+use Chevere\FileReturn\FileReturn;
+use Chevere\Path\PathHandle;
 
-/**
- * ArrayFile provides a object oriented method to interact with array files (return []).
- */
 final class Checkout
 {
-    public function __construct()
+    /** @var Build */
+    private $build;
+
+    /** @var FileReturn */
+    private $fileReturn;
+
+    public function __construct(Build $build, array $checksums)
     {
-        if (!file_put_contents(App::BUILD_FILEPATH, (string) time())) {
-            throw new RuntimeException(
-                (new Message('Unable to checkout to %file%'))
-                    ->code('%file', App::BUILD_FILEPATH)
-                    ->toString()
-            );
-        }
+        $this->build = $build;
+        $this->fileReturn = new FileReturn($this->build->pathHandle());
+        $this->fileReturn->put($checksums);
+    }
+
+    public function build(): Build
+    {
+        return $this->build;
+    }
+
+    public function checksum(): string
+    {
+        return $this->fileReturn->checksum();
     }
 }

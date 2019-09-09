@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere;
 
-use Chevere\App\App;
 use Chevere\App\Loader;
 use Chevere\Console\Console;
 use Chevere\Runtime\Runtime;
@@ -26,8 +25,9 @@ use Chevere\Runtime\Sets\RuntimeSetLocale;
 use Chevere\Runtime\Sets\RuntimeSetErrorHandler;
 use Chevere\Runtime\Sets\RuntimeSetExceptionHandler;
 
-/** DEV_MODE true rebuild the App on every load */
-define('Chevere\DEV_MODE', false);
+/** DEV_MODE=true to rebuild the App on every load */
+// FIXME: Use a filereturn for this (toggle via CLI)
+define('Chevere\DEV_MODE', true);
 
 /*
  * Assuming that this file has been loaded from /app/bootstrap.php

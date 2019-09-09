@@ -38,19 +38,28 @@ final class Router implements RouterContract
     /** @var array Arguments taken from wildcard matches */
     private $arguments;
 
-    public function __construct(Maker $maker = null)
+    public function __construct()
     {
-        if (isset($maker)) {
-            $this->regex = $maker->regex();
-            $this->routes = $maker->routes();
-            $this->routesIndex = $maker->routesIndex();
-            $maker->setcache();
-        } else {
-            $cache = new Cache('router');
-            $this->regex = $cache->get('regex')->raw();
-            $this->routes = $cache->get('routes')->raw();
-            $this->routesIndex = $cache->get('routesIndex')->raw();
-        }
+    }
+
+    public static function fromMaker(Maker $maker): RouterContract
+    {
+        $router = new static();
+        $router->regex = $maker->regex();
+        $router->routes = $maker->routes();
+        $router->routesIndex = $maker->routesIndex();
+        $maker->setcache();
+        return $router;
+    }
+
+    public static function fromCache(): RouterContract
+    {
+        $router = new static();
+        $cache = new Cache('router');
+        $router->regex = $cache->get('regex')->raw();
+        $router->routes = $cache->get('routes')->raw();
+        $router->routesIndex = $cache->get('routesIndex')->raw();
+        return $router;
     }
 
     public function arguments(): array

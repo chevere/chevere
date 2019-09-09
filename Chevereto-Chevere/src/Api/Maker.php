@@ -31,6 +31,9 @@ use Chevere\Utility\Str;
 use Chevere\Controller\Inspect;
 use Chevere\Api\src\FilterIterator;
 use Chevere\Cache\Cache;
+use Chevere\Controllers\Api\GetController;
+use Chevere\Controllers\Api\HeadController;
+use Chevere\Controllers\Api\OptionsController;
 use Chevere\Router\Maker as RouterMaker;
 
 final class Maker
@@ -68,6 +71,18 @@ final class Maker
     public function __construct(RouterMaker $router)
     {
         $this->routerMaker = $router;
+    }
+
+    public static function create(PathHandle $pathHandle, RouterMaker $routerMaker)
+    {
+        $maker = new static($routerMaker);
+        $methods = new Methods(
+            new Method('HEAD', HeadController::class),
+            new Method('OPTIONS', OptionsController::class),
+            new Method('GET', GetController::class)
+        );
+        $maker->register($pathHandle, new Endpoint($methods));
+        return $maker;
     }
 
     public function register(PathHandle $pathHandle, Endpoint $endpoint): void

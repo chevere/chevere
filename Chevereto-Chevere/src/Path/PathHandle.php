@@ -129,10 +129,11 @@ final class PathHandle
         }
     }
 
-    private function process()
+    private function process(): void
     {
         if (Str::endsWith('.php', $this->identifier) && File::exists($this->identifier)) {
-            return Path::isAbsolute($this->identifier) ? $this->identifier : Path::absolute($this->identifier);
+            $this->path = Path::isAbsolute($this->identifier) ? $this->identifier : Path::absolute($this->identifier);
+            return;
         }
         $this->path = Path::normalize($this->identifier);
         if (Str::contains(':', $this->path)) {
