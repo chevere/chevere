@@ -20,13 +20,12 @@ final class Build
 {
     const FILE_INDETIFIER = ':build';
 
-    /** @var string */
-    private $path;
+    /** @var PathHandle */
+    private $pathHandle;
 
     public function __construct()
     {
         $this->pathHandle =  new PathHandle(static::FILE_INDETIFIER);
-        $this->path = $this->pathHandle->path();
     }
 
     public function pathHandle(): PathHandle
@@ -36,6 +35,6 @@ final class Build
 
     public function exists(): bool
     {
-        return File::exists($this->path);
+        return File::exists($this->pathHandle->path());
     }
 }

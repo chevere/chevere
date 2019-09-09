@@ -39,6 +39,15 @@ final class Response extends SymfonyResponse implements ResponseContract, Symfon
     /** @var ResponseHeaderBag */
     public $headers;
 
+    /** @var string */
+    private $chvBuffer;
+
+    /** @var string */
+    private $chvStatus;
+
+    /** @var string */
+    private $chvHeaders;
+
     /**
      * {@inheritdoc}
      */
