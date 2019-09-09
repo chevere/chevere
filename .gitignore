@@ -9,5 +9,5 @@ var/
 composer.lock
 .vscode/
 .phpunit.result.cache
-app/build
+app/build.php
 /devnotes/
