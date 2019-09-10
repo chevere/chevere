@@ -29,6 +29,8 @@ use Chevere\Router\Maker as RouterMaker;
 use Chevere\Runtime\Runtime;
 use Chevere\Contracts\App\AppContract;
 use Chevere\App\Exceptions\AlreadyBuiltException;
+use Chevere\App\Exceptions\NeedsToBeBuiltException;
+use Chevere\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Render\RenderContract;
 use Chevere\Contracts\Router\RouterContract;
@@ -99,10 +101,10 @@ final class Loader implements LoaderContract
         $this->build = new Build();
 
         if (!DEV_MODE && !Console::isBuilding() && !$this->build->exists()) {
-            throw new RuntimeException(
-                (new Message('The application needs to be built. In CLI, run this: %command%'))
-                    ->code('%className%', __CLASS__)
+            throw new NeedsToBeBuiltException(
+                (new Message('The application needs to be built by CLI %command% or calling %method% method.'))
                     ->code('%command%', 'php app/console build')
+                    ->code('%method%', __CLASS__ . '::' . 'build')
                     ->toString()
             );
         }
@@ -268,11 +270,16 @@ final class Loader implements LoaderContract
 
     private function applyParameters()
     {
-        if (!empty($this->parameters->api()) && !isset($this->api)) {
-            $this->api = Api::fromCache();
-        }
-        if (!empty($this->parameters->routes()) && !isset($this->router)) {
-            $this->router = Router::fromCache();
+        try {
+            if (!empty($this->parameters->api()) && !isset($this->api)) {
+                $this->api = Console::isBuilding() ? new Api() : Api::fromCache();
+            }
+            if (!empty($this->parameters->routes()) && !isset($this->router)) {
+                $this->router = Console::isBuilding() ? new Router() : Router::fromCache();
+            }
+        } catch (CacheNotFoundException $e) {
+            $message = sprintf('The app must be re-build due to missing cache. %s', $e->getMessage());
+            throw new NeedsToBeBuiltException($message, $e->getCode(), $e);
         }
         $this->app->setRouter($this->router);
     }

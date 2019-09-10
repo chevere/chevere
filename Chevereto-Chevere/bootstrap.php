@@ -27,7 +27,7 @@ use Chevere\Runtime\Sets\RuntimeSetExceptionHandler;
 
 /** DEV_MODE=true to rebuild the App on every load */
 // FIXME: Use a filereturn for this (toggle via CLI)
-define('Chevere\DEV_MODE', true);
+define('Chevere\DEV_MODE', false);
 
 /*
  * Assuming that this file has been loaded from /app/bootstrap.php

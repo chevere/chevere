@@ -26,6 +26,7 @@ use Chevere\Console\Commands\InspectCommand;
 use Chevere\Contracts\Console\CliContract;
 use Chevere\Contracts\Console\CommandContract;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
+use TypeError;
 
 /**
  * This class provides Chevere CLI.
@@ -71,18 +72,22 @@ final class Cli implements CliContract
         $this->style = new SymfonyStyle($this->input, $this->output);
 
         $this->client->addCommands([
+            (new BuildCommand($this))->symfony(),
             (new RequestCommand($this))->symfony(),
             (new RunCommand($this))->symfony(),
             (new InspectCommand($this))->symfony(),
-            (new BuildCommand($this))->symfony(),
             (new DestroyCommand($this))->symfony(),
         ]);
 
-        $command = Console::command();
         try {
+            $command = Console::command();
             $this->client->get($command);
+        } catch (TypeError $e) {
+            $this->style->block('No command passed.', 'ERROR', 'error', ' ', true);
+            die(1);
         } catch (CommandNotFoundException $e) {
-            // Shhhh, let Fabien's handle this...
+            $this->style->block(sprintf('Command "%s" is not defined.', $command), 'ERROR', 'error', ' ', true);
+            die(1);
         }
     }
 

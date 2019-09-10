@@ -15,8 +15,10 @@ namespace Chevere\Router;
 
 use Chevere\Message;
 use Chevere\Cache\Cache;
+use Chevere\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
+use Chevere\FileReturn\Exceptions\FileNotFoundException;
 use Chevere\Router\Exception\RouteNotFoundException;
 
 /**s
@@ -39,8 +41,7 @@ final class Router implements RouterContract
     private $arguments;
 
     public function __construct()
-    {
-    }
+    { }
 
     public static function fromMaker(Maker $maker): RouterContract
     {
@@ -56,9 +57,13 @@ final class Router implements RouterContract
     {
         $router = new static();
         $cache = new Cache('router');
-        $router->regex = $cache->get('regex')->raw();
-        $router->routes = $cache->get('routes')->raw();
-        $router->routesIndex = $cache->get('routesIndex')->raw();
+        try {
+            $router->regex = $cache->get('regex')->raw();
+            $router->routes = $cache->get('routes')->raw();
+            $router->routesIndex = $cache->get('routesIndex')->raw();
+        } catch (FileNotFoundException $e) {
+            throw new CacheNotFoundException($e->getMessage(), $e->getCode(), $e);
+        }
         return $router;
     }
 

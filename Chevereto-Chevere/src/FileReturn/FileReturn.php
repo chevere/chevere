@@ -15,6 +15,8 @@ namespace Chevere\FileReturn;
 
 use RuntimeException;
 use Chevere\File;
+use Chevere\FileReturn\Exceptions\FileNotFoundException;
+use Chevere\FileReturn\Exceptions\NotFoundException;
 use Chevere\Message;
 use Chevere\Path\PathHandle;
 
@@ -93,7 +95,7 @@ final class FileReturn
     {
         if (!isset($this->raw)) {
             if (!File::exists($this->path)) {
-                throw new RuntimeException(
+                throw new FileNotFoundException(
                     (new Message("File %filepath% doesn't exists."))
                         ->code('%filepath%', $this->path)
                         ->toString()

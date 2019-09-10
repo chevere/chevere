@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Cache;
 
-use Chevere\Data\Data;
 use InvalidArgumentException;
 use Chevere\Message;
 use Chevere\File;
@@ -29,7 +28,7 @@ use Chevere\Path\PathHandle;
  * cached.php >>> <?php return 'my cached data';
  *
  */
-final class Cache 
+final class Cache
 {
     const ILLEGAL_KEY_CHARACTERS = '\.\/\\\~\:';
 
