@@ -19,6 +19,7 @@ use DateTime;
 use DateTimeZone;
 use Throwable;
 use Chevere\Http\Request;
+use Chevere\Http\ServerRequest;
 use Chevere\App\Loader;
 use Chevere\Data\Data;
 use Chevere\Path\Path;
@@ -34,8 +35,10 @@ use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\FirePHPHandler;
 use Chevere\Contracts\DataContract;
+use Chevere\Contracts\Http\RequestContract;
 use Chevere\Data\Traits\DataAccessTrait;
 use Chevere\Data\Traits\DataKeyTrait;
+use Psr\Http\Message\RequestInterface;
 
 /**
  * The Chevere exception handler.
@@ -95,7 +98,7 @@ final class ExceptionHandler
     /** @var DataContract */
     private $data;
 
-    /** @var Request The detected/forged HTTP request */
+    /** @var RequestContract The detected/forged HTTP request */
     private $request;
 
     /** @var bool */
@@ -132,7 +135,7 @@ final class ExceptionHandler
         try {
             $this->request = Loader::request();
         } catch (Throwable $e) {
-            $this->request = Request::createFromGlobals();
+            $this->request = ServerRequest::fromGlobals();
         }
         $this->runtime = Loader::runtime();
         $this->isDebugEnabled = (bool) $this->runtime->dataKey('debug');
@@ -159,7 +162,7 @@ final class ExceptionHandler
         return $this->isDebugEnabled;
     }
 
-    public function request(): Request
+    public function request(): RequestContract
     {
         return $this->request;
     }

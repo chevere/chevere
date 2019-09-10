@@ -21,6 +21,7 @@ use Chevere\Console\Command;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Message;
 use Chevere\Http\Response;
+use Chevere\Http\ServerRequest;
 use Chevere\Router\Exception\RouteNotFoundException;
 use GuzzleHttp\Psr7\Request as GuzzleHttpRequest;
 
@@ -45,14 +46,21 @@ final class RequestCommand extends Command
 
     const OPTIONS = [
         [
-            'parameters',
-            'p',
+            'get',
+            'g',
             Command::OPTION_OPTIONAL,
-            'Parameters [json]',
+            '$_GET [json]',
             []
         ],
         [
-            'cookies',
+            'post',
+            'p',
+            Command::OPTION_OPTIONAL,
+            '$_POST [json]',
+            []
+        ],
+        [
+            'cookie',
             'c',
             Command::OPTION_OPTIONAL,
             '$_COOKIE [json]',
@@ -66,30 +74,30 @@ final class RequestCommand extends Command
             []
         ],
         [
-            'server',
-            's',
-            Command::OPTION_OPTIONAL,
-            '$_SERVER [json]',
-            []
-        ],
-        [
-            'content',
-            null,
-            Command::OPTION_OPTIONAL,
-            'Raw body data',
-            null
-        ],
-        [
             'headers',
             'H',
-            Command::OPTION_NONE,
-            'Output headers',
+            Command::OPTION_OPTIONAL,
+            'Headers',
+            []
         ],
         [
             'body',
             'B',
+            Command::OPTION_OPTIONAL,
+            'Body',
+            null
+        ],
+        [
+            'response-headers',
+            'rH',
             Command::OPTION_NONE,
-            'Output body',
+            'Print response headers',
+        ],
+        [
+            'response-body',
+            'rB',
+            Command::OPTION_NONE,
+            'Print response body',
         ],
         [
             'noformat',
@@ -106,26 +114,31 @@ final class RequestCommand extends Command
     private $options;
 
     /** @var array */
-    private $jsonOptions;
+    private $ParsedOptions;
 
-    // List of arguments which are passed as JSON
-    const JSON_OPTIONS = ['parameters', 'cookies', 'files', 'server'];
+    // List of arguments passed as JSON
+    const JSON_OPTIONS = ['get', 'post', 'cookie', 'files'];
 
     public function callback(LoaderContract $loader): int
     {
         $this->arguments = $this->cli()->input()->getArguments();
         $this->options = (array) $this->cli()->input()->getOptions();
-        $this->setJsonOptions();
 
-        $passedArguments = array_merge($this->options, $this->jsonOptions, $this->arguments);
-        $requestFnArguments = [];
-        $r = new ReflectionMethod(Request::class, 'create');
-        foreach ($r->getParameters() as $requestArg) {
-            $name = $requestArg->getName();
-            $requestFnArguments[] = $passedArguments[$name] ?? $requestArg->getDefaultValue() ?? null;
-        }
+        $this->setParsedOptions();
 
-        $loader->setRequest(Request::create(...$requestFnArguments));
+        $request = new ServerRequest(
+            $this->getArgument('method'),
+            $this->getArgument('uri'),
+            $this->getOption('headers'),
+            $this->getOption('body'),
+        );
+        $request
+            ->withCookieParams($this->ParsedOptions['cookie'])
+            ->withQueryParams($this->ParsedOptions['get'])
+            ->withParsedBody($this->ParsedOptions['post'])
+            ->withUploadedFiles(ServerRequest::normalizeFiles($this->ParsedOptions['files']));
+
+        $loader->setRequest($request);
 
         try {
             $loader->run();
@@ -164,9 +177,9 @@ final class RequestCommand extends Command
         die(0);
     }
 
-    private function setJsonOptions(): void
+    private function setParsedOptions(): void
     {
-        $this->jsonOptions = [];
+        $this->ParsedOptions = [];
         foreach (static::JSON_OPTIONS as $v) {
             if (is_string($this->options[$v])) {
                 try {
@@ -183,7 +196,7 @@ final class RequestCommand extends Command
             } else {
                 $json = $this->options[$v];
             }
-            $this->jsonOptions[$v] = $json;
+            $this->ParsedOptions[$v] = $json;
         }
     }
 }

@@ -11,13 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Http;
+namespace Chevere\Contracts\Http;
 
-use Chevere\Contracts\Http\RequestContract;
-use Chevere\Http\Traits\RequestTrait;
-use GuzzleHttp\Psr7\Request as GuzzleHttpRequest;
-
-final class Request extends GuzzleHttpRequest implements RequestContract
-{
-  use RequestTrait;
-}
+interface RequestContract
+{ }

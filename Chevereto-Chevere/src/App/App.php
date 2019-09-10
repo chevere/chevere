@@ -16,12 +16,12 @@ namespace Chevere\App;
 use Chevere\Contracts\Api\ApiContract;
 use LogicException;
 
-use const Chevere\APP_PATH;
 use Chevere\Message;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Controller\ArgumentsWrap;
 use Chevere\Http\Response;
 use Chevere\Contracts\Controller\ControllerContract;
+use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
 use Chevere\Handler;
@@ -61,7 +61,7 @@ final class App implements AppContract
         $this->api = $api;
     }
 
-    public function setRequest(Request $request): void
+    public function setRequest(RequestContract $request): void
     {
         $this->request = $request;
     }
@@ -91,7 +91,7 @@ final class App implements AppContract
         return $this->api;
     }
 
-    public function request(): Request
+    public function request(): RequestContract
     {
         return $this->request;
     }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\App;
 
+use Chevere\Contracts\Http\RequestContract;
 use Chevere\Http\Request;
 use Chevere\Runtime\Runtime;
 
@@ -30,10 +31,9 @@ interface LoaderContract
     /**
      * @param array $arguments string arguments to pass to the controller
      */
-    // TODO: $arguments Datastructure
     public function setArguments(array $arguments): LoaderContract;
 
-    public function setRequest(Request $request): void;
+    public function setRequest(RequestContract $request): void;
 
     public static function setDefaultRuntime(Runtime $runtime);
 
@@ -50,7 +50,7 @@ interface LoaderContract
     /**
      * Retrieve the loaded Request.
      */
-    public static function request(): Request;
+    public static function request(): RequestContract;
 
     /**
      * Retrieves the file checksums, available only when building the App.

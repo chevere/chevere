@@ -32,6 +32,7 @@ use Chevere\App\Exceptions\AlreadyBuiltException;
 use Chevere\App\Exceptions\NeedsToBeBuiltException;
 use Chevere\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Contracts\App\LoaderContract;
+use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Render\RenderContract;
 use Chevere\Contracts\Router\RouterContract;
 use Chevere\Message;
@@ -58,7 +59,7 @@ final class Loader implements LoaderContract
     /** @var string */
     private $controller;
 
-    /** @var Request */
+    /** @var RequestContract */
     private $request;
 
     /** @var RouterContract */
@@ -183,11 +184,12 @@ final class Loader implements LoaderContract
     /**
      * {@inheritdoc}
      */
-    public function setRequest(Request $request): void
+    public function setRequest(RequestContract $request): void
     {
         $this->request = $request;
-        $pathinfo = ltrim($this->request->getPathInfo(), '/');
-        $this->request->attributes->set('requestArray', explode('/', $pathinfo));
+        // $pathinfo = ltrim((string) $this->request->getUri(), '/');
+        // $pathinfo = $this->request->getUri()->getPath();
+        // $this->request->attributes->set('requestArray', explode('/', $pathinfo));
         $this->app->setRequest($this->request);
     }
 
@@ -206,7 +208,7 @@ final class Loader implements LoaderContract
         $this->setRan();
 
         if (!isset($this->controller)) {
-            $this->processResolveCallable($this->request->getPathInfo());
+            $this->processResolveCallable($this->request->getUri()->getPath());
         }
 
         if (!isset($this->controller)) {
@@ -256,7 +258,7 @@ final class Loader implements LoaderContract
     /**
      * {@inheritdoc}
      */
-    public static function request(): Request
+    public static function request(): RequestContract
     {
         if (isset(self::$request)) {
             return self::$request;
@@ -316,7 +318,7 @@ final class Loader implements LoaderContract
         } else {
             $jsonApi = $controller->document();
             $this->app->response()->setJsonContent($jsonApi);
-            $this->app->response()->prepare($this->app->request());
+            // $this->app->response()->prepare($this->app->request());
             $this->app->response()->send();
         }
     }
