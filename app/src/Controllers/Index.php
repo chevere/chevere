@@ -15,13 +15,11 @@ namespace App\Controllers;
 
 use Chevere\Controller\Controller;
 use Chevere\JsonApi\Data;
-use Exception;
 
 class Index extends Controller
 {
     public function __invoke()
     {
-        throw new Exception('DIE DIE');
         $api = new Data('info', 'api');
         $api->addAttribute('entry', 'HTTP GET /api');
         $api->addAttribute('description', 'Retrieves the exposed API.');

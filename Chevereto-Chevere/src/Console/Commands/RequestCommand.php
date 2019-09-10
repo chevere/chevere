@@ -22,6 +22,7 @@ use Chevere\Contracts\App\LoaderContract;
 use Chevere\Message;
 use Chevere\Http\Response;
 use Chevere\Router\Exception\RouteNotFoundException;
+use GuzzleHttp\Psr7\Request as GuzzleHttpRequest;
 
 /**
  * The RequestCommand allows to pass a forged request to the App instance.
@@ -123,6 +124,7 @@ final class RequestCommand extends Command
             $name = $requestArg->getName();
             $requestFnArguments[] = $passedArguments[$name] ?? $requestArg->getDefaultValue() ?? null;
         }
+
         $loader->setRequest(Request::create(...$requestFnArguments));
 
         try {
