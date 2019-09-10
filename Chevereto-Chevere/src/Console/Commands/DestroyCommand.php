@@ -34,7 +34,7 @@ final class DestroyCommand extends Command
     {
         $loader->destroy();
         $title = 'App destroyed';
-        $this->cli()->style()->block($title, 'SUCCESS', 'fg=black;bg=green', ' ', true);
+        $this->cli()->style()->success($title);
         return 0;
     }
 }

@@ -39,9 +39,6 @@ use Chevere\Path\Path;
 use Chevere\Router\Exception\RouteNotFoundException;
 use Chevere\Router\Router;
 
-use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
-use Symfony\Component\Filesystem\Filesystem;
-
 final class Loader implements LoaderContract
 {
     const CACHED = false;
@@ -94,6 +91,9 @@ final class Loader implements LoaderContract
     /** @var Build */
     private $build;
 
+    /** @var bool */
+    private $fromCache;
+
     public function __construct()
     {
         Console::bind($this);
@@ -119,8 +119,12 @@ final class Loader implements LoaderContract
             )
         );
 
+
         if (DEV_MODE) {
             $this->build();
+            $this->fromCache = true;
+        } else {
+            $this->fromCache = !Console::isBuilding();
         }
 
         $this->applyParameters();
@@ -271,12 +275,8 @@ final class Loader implements LoaderContract
     private function applyParameters()
     {
         try {
-            if (!empty($this->parameters->api()) && !isset($this->api)) {
-                $this->api = Console::isBuilding() ? new Api() : Api::fromCache();
-            }
-            if (!empty($this->parameters->routes()) && !isset($this->router)) {
-                $this->router = Console::isBuilding() ? new Router() : Router::fromCache();
-            }
+            $this->api = $this->fromCache ? Api::fromCache() : new Api();
+            $this->router = $this->fromCache ? Router::fromCache() : new Router();
         } catch (CacheNotFoundException $e) {
             $message = sprintf('The app must be re-build due to missing cache. %s', $e->getMessage());
             throw new NeedsToBeBuiltException($message, $e->getCode(), $e);

@@ -37,7 +37,7 @@ final class BuildCommand extends Command
         } catch (AlreadyBuiltException $e) {
             $title .= ' (not by this command)';
         }
-        $this->cli()->style()->block($title, 'SUCCESS', 'fg=black;bg=green', ' ', true);
+        $this->cli()->style()->success($title);
         $checksums = [];
         foreach ($loader->cacheChecksums() as $name => $keys) {
             foreach ($keys as $key => $array) {
@@ -46,7 +46,7 @@ final class BuildCommand extends Command
         }
         $this->cli()->style()->table(['Cache', 'Key', 'Path', 'Checksum'], $checksums);
         $this->cli()->style()->writeln([
-            '[Path] '.$loader->checkout()->build()->pathHandle()->path(),
+            '[Path] ' . $loader->checkout()->build()->pathHandle()->path(),
             '[Checksum] ' . $loader->checkout()->checksum()
         ]);
         return 0;

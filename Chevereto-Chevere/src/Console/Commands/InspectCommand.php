@@ -70,7 +70,7 @@ final class InspectCommand extends Command
 
         $this->handleSetMethod();
         $this->handleSetReflector();
-        $this->cli()->style()->block($this->callableInput, 'INSPECTED', 'fg=black;bg=green', ' ', true);
+        $this->cli()->style()->block($this->callableInput, 'INSPECTED', 'OK', ' ', true);
         $this->processParametersArguments();
         $this->handleProcessArguments();
 
