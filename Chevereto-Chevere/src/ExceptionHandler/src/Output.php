@@ -91,6 +91,9 @@ final class Output
             $response->headers->set($k, $v);
         }
         $response->send();
+        if (CLI) {
+            die(1);
+        }
     }
 
     private function parseTemplates(): void
@@ -135,7 +138,7 @@ final class Output
                 unset($log['filename']);
                 break;
             case 1:
-                $response[0] = $this->formatter->dataKey('thrown').' in '.$this->getTemplateTag('file').':'.$this->getTemplateTag('line');
+                $response[0] = $this->formatter->dataKey('thrown') . ' in ' . $this->getTemplateTag('file') . ':' . $this->getTemplateTag('line');
                 $error = [];
                 foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
                     $error[$v] = $this->getTemplateTag($v);

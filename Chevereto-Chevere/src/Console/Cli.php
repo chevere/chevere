@@ -86,8 +86,8 @@ final class Cli implements CliContract
             $this->style->block('No command passed.', 'ERROR', 'error', ' ', true);
             die(1);
         } catch (CommandNotFoundException $e) {
-            $this->style->block(sprintf('Command "%s" is not defined.', $command), 'ERROR', 'error', ' ', true);
-            die(1);
+            $this->style->block(sprintf('Command "%s" not found.', $command), 'ERROR', 'error', ' ', true);
+            die(127);
         }
     }
 
