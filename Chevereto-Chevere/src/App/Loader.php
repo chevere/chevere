@@ -35,10 +35,14 @@ use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Render\RenderContract;
 use Chevere\Contracts\Router\RouterContract;
+use Chevere\Http\Sender;
 use Chevere\Message;
 use Chevere\Path\Path;
 use Chevere\Router\Exception\RouteNotFoundException;
 use Chevere\Router\Router;
+use GuzzleHttp\Psr7\Response as GuzzleHttpResponse;
+
+use function GuzzleHttp\Psr7\stream_for;
 
 final class Loader implements LoaderContract
 {
@@ -317,9 +321,13 @@ final class Loader implements LoaderContract
             $controller->render();
         } else {
             $jsonApi = $controller->document();
-            $this->app->response()->setJsonContent($jsonApi);
-            // $this->app->response()->prepare($this->app->request());
-            $this->app->response()->send();
+            // $sf = stream_for($jsonApi->toString());
+            // $response = $this->app->response()->withBody($sf);
+            $this->app->setResponse(
+                $this->app->response()->withJsonApi($jsonApi)
+            );
+            // new Sender($response);
+            // $response->send();
         }
     }
 }

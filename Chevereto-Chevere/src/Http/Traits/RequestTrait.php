@@ -25,8 +25,13 @@ trait RequestTrait
    *
    * @return bool true if the request is an XMLHttpRequest, false otherwise
    */
-  public function isXmlHttpRequest()
+  public function isXmlHttpRequest(): bool
   {
-    return 'XMLHttpRequest' == $this->getHeader('X-Requested-With');
+    return 'XMLHttpRequest' == $this->getHeaderLine('X-Requested-With');
+  }
+
+  public function protocolString()
+  {
+    return sprintf('HTTP/%s', $this->getProtocolVersion());
   }
 }

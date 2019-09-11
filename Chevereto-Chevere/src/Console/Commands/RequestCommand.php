@@ -15,15 +15,12 @@ namespace Chevere\Console\Commands;
 
 use InvalidArgumentException;
 use JsonException;
-use ReflectionMethod;
-use Chevere\Http\Request;
 use Chevere\Console\Command;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Message;
 use Chevere\Http\Response;
 use Chevere\Http\ServerRequest;
 use Chevere\Router\Exception\RouteNotFoundException;
-use GuzzleHttp\Psr7\Request as GuzzleHttpRequest;
 
 /**
  * The RequestCommand allows to pass a forged request to the App instance.
@@ -161,8 +158,8 @@ final class RequestCommand extends Command
             $isHeaders = true;
             $isBody = true;
         }
-        $status = $response->chvStatus();
-        $headers = $response->chvHeaders();
+        $status = $response->status();
+        $headers = $response->headers();
         if (!$isNoFormat) {
             $status = '<fg=magenta>' . $status . '</>';
             $headers = '<fg=yellow>' . $headers . '</>';
@@ -172,7 +169,7 @@ final class RequestCommand extends Command
             $this->cli()->style()->writeln($headers);
         }
         if ($isBody) {
-            $this->cli()->style()->write($response->chvBuffer() . "\r\n");
+            $this->cli()->style()->write($response->content() . "\r\n");
         }
         die(0);
     }

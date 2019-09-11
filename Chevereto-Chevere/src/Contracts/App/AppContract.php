@@ -15,15 +15,15 @@ namespace Chevere\Contracts\App;
 
 use Chevere\Contracts\Api\ApiContract;
 use Chevere\Contracts\Controller\ControllerContract;
+use Chevere\Contracts\Http\ResponseContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
-use Chevere\Http\Response;
 
 interface AppContract
 {
     public function setApi(ApiContract $api): void;
 
-    public function setResponse(Response $response): void;
+    public function setResponse(ResponseContract $response): void;
 
     public function setRoute(RouteContract $route): void;
 

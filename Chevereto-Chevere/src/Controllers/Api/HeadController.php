@@ -66,7 +66,7 @@ final class HeadController extends Controller
         $this->app->run($controller);
         $this->app->response()->setContent(null);
         if (CLI) {
-            Console::cli()->style()->block($this->app->response()->getStatusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
+            Console::cli()->style()->block($this->app->response()->statusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
         }
     }
 }

@@ -22,6 +22,7 @@ use Chevere\Controller\ArgumentsWrap;
 use Chevere\Http\Response;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Http\RequestContract;
+use Chevere\Contracts\Http\ResponseContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
 use Chevere\Handler;
@@ -66,7 +67,7 @@ final class App implements AppContract
         $this->request = $request;
     }
 
-    public function setResponse(Response $response): void
+    public function setResponse(ResponseContract $response): void
     {
         $this->response = $response;
     }

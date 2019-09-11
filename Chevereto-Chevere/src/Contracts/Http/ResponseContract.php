@@ -20,22 +20,17 @@ interface ResponseContract
   /**
    * Set response content as JSON string with JSON headers
    */
-  public function setJsonContent(JsonApi $jsonApi): void;
+  // public function setJsonContent(JsonApi $jsonApi): void;
 
   /**
    * Get the HTTP status string
    * 
    * @return string The HTTP status string like `HTTP/1.1 200 OK`
    */
-  public function getStatusString(): string;
-
-  /**
-   * Returns the response without body (status + headers)
-   */
-  public function getNoBody(): string;
+  // public function getStatusString(): string;
 
   /**
    * Set JSON response headers 
    */
-  public function setJsonHeaders(): void;
+  // public function setJsonHeaders(): void;
 }

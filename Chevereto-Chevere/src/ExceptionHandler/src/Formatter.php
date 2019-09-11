@@ -168,16 +168,17 @@ final class Formatter
                 'clientUserAgent' => Console::inputString(),
             ]);
         } else {
-            $this->data->merge([
-                'uri' => $this->exceptionHandler->request()->getRequestUri() ?? 'unknown',
-                'clientUserAgent' => $this->exceptionHandler->request()->headers->get('User-Agent'),
+            $wea = [
+                'uri' => $this->exceptionHandler->request()->getUri()->getPath() ?? 'unknown',
+                'clientUserAgent' => $this->exceptionHandler->request()->getHeaderLine('User-Agent'),
                 'requestMethod' => $this->exceptionHandler->request()->getMethod(),
-                'serverHost' => $this->exceptionHandler->request()->getHost(),
-                'serverPort' => (int) $this->exceptionHandler->request()->getPort(),
-                'serverProtocol' => $this->exceptionHandler->request()->getProtocolVersion(),
-                'serverSoftware' => $this->exceptionHandler->request()->headers->get('SERVER_SOFTWARE'),
-                'clientIp' => $this->exceptionHandler->request()->getClientIp(),
-            ]);
+                // 'serverHost' => $this->exceptionHandler->request()->getHost(),
+                // 'serverPort' => (int) $this->exceptionHandler->request()->getPort(),
+                'serverProtocol' => $this->exceptionHandler->request()->protocolString(),
+                // 'serverSoftware' => $this->exceptionHandler->request()->getHeaderLine('SERVER_SOFTWARE'),
+                // 'clientIp' => $this->exceptionHandler->request()->getClientIp(),
+            ];
+            $this->data->merge($wea);
         }
     }
 
