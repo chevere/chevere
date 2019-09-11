@@ -81,12 +81,13 @@ final class Cli implements CliContract
 
         try {
             $command = Console::command();
-            $this->client->get($command);
         } catch (TypeError $e) {
-            $this->style->block('No command passed', 'ERROR', 'error', ' ', true);
-            die(1);
+            $command = 'list';
+        }
+        try {
+            $this->client->get($command);
         } catch (CommandNotFoundException $e) {
-            $this->style->block(sprintf('Command "%s" is not defined', $command), 'ERROR', 'error', ' ', true);
+            $this->style->writeln(sprintf('Command "%s" is not defined', $command));
             die(127);
         }
     }

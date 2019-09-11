@@ -20,6 +20,8 @@ class Index extends Controller
 {
     public function __invoke()
     {
+        // $time = microtime(true) - BOOT_TIMESTAMP;
+        // dd($time * 1000 . 'ms');
         $api = new Data('info', 'api');
         $api->addAttribute('entry', 'HTTP GET /api');
         $api->addAttribute('description', 'Retrieves the exposed API.');

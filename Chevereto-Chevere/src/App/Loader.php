@@ -36,6 +36,7 @@ use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Render\RenderContract;
 use Chevere\Contracts\Router\RouterContract;
 use Chevere\Http\Sender;
+use Chevere\Http\ServerRequest;
 use Chevere\Message;
 use Chevere\Path\Path;
 use Chevere\Router\Exception\RouteNotFoundException;
@@ -232,7 +233,7 @@ final class Loader implements LoaderContract
     private function handleRequest()
     {
         if (!isset($this->request)) {
-            $this->setRequest(Request::createFromGlobals());
+            $this->setRequest(ServerRequest::fromGlobals());
         }
     }
 

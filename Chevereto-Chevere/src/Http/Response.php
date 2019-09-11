@@ -87,7 +87,6 @@ final class Response implements ResponseContract
         $new = $new->withJsonApiHeaders();
         $new->guzzle = $new->guzzle
             ->withBody($body);
-        // dd($new->guzzle->getHeaders());
         return $new;
     }
 

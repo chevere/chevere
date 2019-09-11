@@ -22,6 +22,7 @@ use Chevere\Contracts\Console\ConsoleContract;
 use Chevere\Contracts\Console\CliContract;
 use Chevere\Message;
 use Throwable;
+use TypeError;
 
 /**
  * Provides static access to the Chevere application console.
@@ -76,7 +77,12 @@ final class Console
 
     public static function isBuilding(): bool
     {
-        return self::isAvailable() && 'build' == self::command();
+        try {
+            $command = self::command();
+            return self::isAvailable() && 'build' == $command;
+        } catch (TypeError $e) {
+            return false;
+        }
     }
 
     public static function cli(): CliContract
