@@ -169,7 +169,8 @@ final class RequestCommand extends Command
             $this->cli()->style()->writeln($headers);
         }
         if ($isBody) {
-            $this->cli()->style()->write($response->content() . "\r\n");
+            $response->sendBody();
+            $this->cli()->style()->write("\r\n");
         }
         die(0);
     }

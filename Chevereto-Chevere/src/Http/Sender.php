@@ -17,20 +17,6 @@ use Chevere\Contracts\Http\ResponseContract;
 
 final class Sender
 {
-  public function __construct(ResponseContract $response)
-  {
-    header($response->statusString(), true, $response->guzzle()->getStatusCode());
-    foreach ($response->guzzle()->getHeaders() as $name => $values) {
-      foreach ($values as $value) {
-        header("$name: $value", false);
-      }
-    }
-    $stream = $response->guzzle()->getBody();
-    if ($stream->isSeekable()) {
-      $stream->rewind();
-    }
-    while (!$stream->eof()) {
-      echo $stream->read(1024 * 8);
-    }
-  }
+    /** @var ResponseContract */
+    private $response;
 }

@@ -43,6 +43,8 @@ final class Response implements ResponseContract
     public function __construct()
     {
         $this->guzzle = new GuzzleHttpResponse(200, $this->getDateHeader());
+        $this->guzzle = $this->guzzle->withAddedHeader('WWW-Authenticate', 'Negotiate');
+        $this->guzzle = $this->guzzle->withAddedHeader('WWW-Authenticate', 'NTLM');
     }
 
     public function guzzle(): GuzzleHttpResponse
@@ -100,20 +102,28 @@ final class Response implements ResponseContract
         return $new;
     }
 
-    // public function send()
-    // {
-    //     $this->prepare();
-    //     if (CLI) {
-    //         // ob_start();
-    //         // new Sender($this->guzzle);
-    //         // $this->chvBuffer = ob_get_contents();
-    //         // ob_end_clean();
-    //         // $this->chvHeaders = $this->headers();
-    //         // return new Sender($this);
-    //     } else {
-    //         return new Sender($this);
-    //     }
-    // }
+    public function sendHeaders(): ResponseContract
+    {
+        header($this->status(), true, $this->guzzle->getStatusCode());
+        foreach ($this->guzzle->getHeaders() as $name => $values) {
+            foreach ($values as $value) {
+                header("$name: $value", false);
+            }
+        }
+        return $this;
+    }
+
+    public function sendBody(): ResponseContract
+    {
+        $stream = $this->guzzle->getBody();
+        if ($stream->isSeekable()) {
+            $stream->rewind();
+        }
+        while (!$stream->eof()) {
+            echo $stream->read(1024 * 8);
+        }
+        return $this;
+    }
 
     private function setStatus(): void
     {
@@ -133,14 +143,8 @@ final class Response implements ResponseContract
 
     private function setContent(): void
     {
-        $this->content = (string) $this->guzzle()->getBody();
+        $this->content = (string) $this->guzzle->getBody();
     }
-
-    // private function prepare()
-    // {
-    //     $this->setStatus();
-    //     $this->setHeaders();
-    // }
 
     private function getDateHeader(): array
     {

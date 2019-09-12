@@ -322,13 +322,12 @@ final class Loader implements LoaderContract
             $controller->render();
         } else {
             $jsonApi = $controller->document();
-            // $sf = stream_for($jsonApi->toString());
-            // $response = $this->app->response()->withBody($sf);
             $this->app->setResponse(
                 $this->app->response()->withJsonApi($jsonApi)
             );
-            // new Sender($response);
-            // $response->send();
+            if (!CLI) {
+                $this->app->response()->sendHeaders()->sendBody();
+            }
         }
     }
 }
