@@ -41,6 +41,7 @@ use Chevere\Message;
 use Chevere\Path\Path;
 use Chevere\Router\Exception\RouteNotFoundException;
 use Chevere\Router\Router;
+use Chevere\Stopwatch;
 use GuzzleHttp\Psr7\Response as GuzzleHttpResponse;
 
 use function GuzzleHttp\Psr7\stream_for;
@@ -102,10 +103,12 @@ final class Loader implements LoaderContract
 
     public function __construct()
     {
-        Console::bind($this);
-
+        if (Console::isAvailable()) {
+            Console::bind($this);
+        }
+        
         $this->build = new Build();
-
+        
         if (!DEV_MODE && !Console::isBuilding() && !$this->build->exists()) {
             throw new NeedsToBeBuiltException(
                 (new Message('The application needs to be built by CLI %command% or calling %method% method.'))
@@ -114,7 +117,7 @@ final class Loader implements LoaderContract
                     ->toString()
             );
         }
-
+        
         $this->routerMaker = new RouterMaker();
         $this->app = new App();
         $this->app->setResponse(new Response());
@@ -125,14 +128,13 @@ final class Loader implements LoaderContract
             )
         );
 
-
         if (DEV_MODE) {
             $this->build();
             $this->fromCache = true;
         } else {
             $this->fromCache = !Console::isBuilding();
         }
-
+        
         $this->applyParameters();
     }
 
@@ -211,11 +213,9 @@ final class Loader implements LoaderContract
         $this->handleConsole();
         $this->handleRequest();
         $this->setRan();
-
         if (!isset($this->controller)) {
             $this->processResolveCallable($this->request->getUri()->getPath());
         }
-
         if (!isset($this->controller)) {
             throw new RuntimeException('DESCONTROL');
         }
@@ -323,10 +323,13 @@ final class Loader implements LoaderContract
         } else {
             $jsonApi = $controller->document();
             $this->app->setResponse(
-                $this->app->response()->withJsonApi($jsonApi)
+                $this->app->response()
+                    ->withJsonApi($jsonApi)
             );
             if (!CLI) {
-                $this->app->response()->sendHeaders()->sendBody();
+                $this->app->response()
+                    ->sendHeaders()
+                    ->sendBody();
             }
         }
     }

@@ -101,7 +101,6 @@ final class Path
     public static function recursiveRemove(string $path): void
     {
         static::removeContents($path);
-        // rmdir($path);
     }
 
     /**

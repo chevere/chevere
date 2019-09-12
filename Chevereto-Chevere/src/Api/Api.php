@@ -19,6 +19,7 @@ use LogicException;
 use Chevere\Message;
 use Chevere\Contracts\Api\ApiContract;
 use Chevere\FileReturn\Exceptions\FileNotFoundException;
+use Chevere\Stopwatch;
 
 /**
  * Api provides a static method to read the exposed API inside the app runtime.
@@ -32,7 +33,8 @@ final class Api implements ApiContract
     private static $api;
 
     public function __construct()
-    { }
+    {
+    }
 
     public static function fromMaker(Maker $maker): ApiContract
     {
@@ -44,8 +46,8 @@ final class Api implements ApiContract
 
     public static function fromCache(): ApiContract
     {
-        $api = new static();
         $cache = new Cache('api');
+        $api = new static();
         try {
             $api::$api = $cache->get('api')->raw();
         } catch (FileNotFoundException $e) {

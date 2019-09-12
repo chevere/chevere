@@ -18,7 +18,6 @@ use RuntimeException;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Chevere\Contracts\App\LoaderContract;
-use Chevere\Contracts\Console\ConsoleContract;
 use Chevere\Contracts\Console\CliContract;
 use Chevere\Message;
 use Throwable;

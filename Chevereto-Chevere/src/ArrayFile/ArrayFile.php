@@ -15,9 +15,9 @@ namespace Chevere\ArrayFile;
 
 use ArrayAccess;
 use ArrayIterator;
-use Chevere\FileReturn\FileReturn;
-use LogicException;
 use IteratorAggregate;
+use LogicException;
+use Chevere\FileReturn\FileReturn;
 use Chevere\Message;
 use Chevere\Type;
 use Chevere\Path\PathHandle;

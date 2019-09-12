@@ -18,7 +18,7 @@ use Chevere\Path\PathHandle;
 
 final class Build
 {
-    const FILE_INDETIFIER = ':build';
+    const FILE_INDETIFIER = 'var:build';
 
     /** @var PathHandle */
     private $pathHandle;

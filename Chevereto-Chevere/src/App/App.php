@@ -37,7 +37,6 @@ final class App implements AppContract
     const APP = 'app';
     const FILEHANDLE_CONFIG = ':config';
     const FILEHANDLE_PARAMETERS = ':parameters';
-    const FILEHANDLE_HACKS = ':hacks';
 
     /** @var ApiContract */
     private $api;

@@ -43,10 +43,7 @@ final class Response implements ResponseContract
     public function __construct()
     {
         $this->guzzle = new GuzzleHttpResponse(200, $this->getDateHeader());
-        $this->guzzle = $this->guzzle->withAddedHeader('WWW-Authenticate', 'Negotiate');
-        $this->guzzle = $this->guzzle->withAddedHeader('WWW-Authenticate', 'NTLM');
     }
-
     public function guzzle(): GuzzleHttpResponse
     {
         return $this->guzzle;

@@ -64,7 +64,8 @@ final class Maker
     private $cache;
 
     public function __construct()
-    { }
+    {
+    }
 
     /**
      * {@inheritdoc}
@@ -98,9 +99,9 @@ final class Maker
         $this->routesIndex[$this->route->path()] = $this->routeMap;
     }
 
-    /** 
+    /**
      * Adds routes (ArrayFile) specified by path handle.
-     * 
+     *
      * @param array $paramRoutes ['routes:web', 'routes:dashboard']
      */
     public function addRoutesArrays(array $paramRoutes): void
@@ -137,9 +138,12 @@ final class Maker
     public function setCache()
     {
         $this->cache = new Cache('router');
-        $this->cache->put('regex', $this->regex);
-        $this->cache->put('routes', $this->routes);
-        $this->cache->put('routesIndex', $this->routesIndex);
+        $regex = $this->cache->put('regex', $this->regex);
+        $routes = $this->cache->put('routes', $this->routes);
+        $routesIndex = $this->cache->put('routesIndex', $this->routesIndex);
+        opcache_compile_file($regex->path());
+        opcache_compile_file($routes->path());
+        opcache_compile_file($routesIndex->path());
     }
 
     public function cache(): Cache

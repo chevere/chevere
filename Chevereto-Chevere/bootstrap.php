@@ -25,31 +25,29 @@ use Chevere\Runtime\Sets\RuntimeSetLocale;
 use Chevere\Runtime\Sets\RuntimeSetErrorHandler;
 use Chevere\Runtime\Sets\RuntimeSetExceptionHandler;
 
+define('BOOTSTRAP_TIME', microtime(true));
+
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+define('Chevere\DOCUMENT_ROOT', dirname(__DIR__, basename(__DIR__) == 'Chevereto-Chevere' ? 1 : 3));
+
 /** DEV_MODE=true to rebuild the App on every load */
 // FIXME: Use a filereturn for this (toggle via CLI)
 define('Chevere\DEV_MODE', false);
 
-/*
- * Assuming that this file has been loaded from /app/bootstrap.php
- */
-
-define('Chevere\BOOTSTRAPPER', debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0]['file']);
-
 /* Root path containing /app */
-define('Chevere\ROOT_PATH', rtrim(str_replace('\\', '/', dirname(BOOTSTRAPPER, 2)), '/') . '/');
+define('Chevere\ROOT_PATH', rtrim(str_replace('\\', '/', DOCUMENT_ROOT), '/') . '/');
 
 /*
  * Chevere\PATH
- * Relative path to Core, usually 'vendor/chevereto/chevereto-core'
+ * Relative path to Core, 'vendor/chevereto/chevere'
  */
-define('Chevere\PATH', rtrim(str_replace(ROOT_PATH, null, str_replace('\\', '/', __DIR__)), '/') . '/');
+define('Chevere\PATH', ROOT_PATH . 'vendor/chevereto/chevere/');
 
-/* Relative path to app, usually 'app' */
-define('Chevere\APP_PATH_RELATIVE', basename(dirname(BOOTSTRAPPER)) . '/');
-define('Chevere\APP_PATH', ROOT_PATH . APP_PATH_RELATIVE);
+define('Chevere\APP_PATH', ROOT_PATH . 'app/');
 
 if ('cli' == php_sapi_name()) {
-    Console::init(); //10ms
+    Console::init();
 }
 
 define('Chevere\CLI', Console::isAvailable());
@@ -57,18 +55,16 @@ define('Chevere\CLI', Console::isAvailable());
 // $sw = new Stopwatch();
 Loader::setDefaultRuntime(
     new Runtime(
-        new RuntimeSetDebug('1'), // 0.2ms
-        new RuntimeSetErrorHandler('Chevere\ExceptionHandler\ErrorHandler::error'), // 0.9ms
-        new RuntimeSetExceptionHandler('Chevere\ExceptionHandler\ExceptionHandler::exception'), // 0.5ms
-        new RuntimeSetLocale('en_US.UTF8'), // 0.2ms
-        new RuntimeSetDefaultCharset('utf-8'), // 0.2ms
-        new RuntimeSetPrecision('16'), // 0.2ms
-        new RuntimeSetUriScheme('https'), // 0.2ms
-        new RuntimeSetTimeZone('UTC') // 1.85
+        new RuntimeSetDebug('1'),
+        new RuntimeSetErrorHandler('Chevere\ExceptionHandler\ErrorHandler::error'),
+        new RuntimeSetExceptionHandler('Chevere\ExceptionHandler\ExceptionHandler::exception'),
+        new RuntimeSetLocale('en_US.UTF8'),
+        new RuntimeSetDefaultCharset('utf-8'),
+        new RuntimeSetPrecision('16'),
+        new RuntimeSetUriScheme('https'),
+        new RuntimeSetTimeZone('UTC')
     )
-); // 0.6ms wrapper
+);
 
-// $sw->stop();
-// dd($sw->records(), 'BOOTSTRAP');
-
-    // ->addFile(App::FILEHANDLE_CONFIG)
+require APP_PATH . 'app.php';
+require APP_PATH . 'loader.php';

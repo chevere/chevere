@@ -41,7 +41,8 @@ final class Router implements RouterContract
     private $arguments;
 
     public function __construct()
-    { }
+    {
+    }
 
     public static function fromMaker(Maker $maker): RouterContract
     {

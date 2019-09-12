@@ -18,7 +18,6 @@ use LogicException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Throwable;
-use const Chevere\APP_PATH_RELATIVE;
 use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Http\Method;
@@ -124,7 +123,8 @@ final class Maker
     public function setCache(): void
     {
         $this->cache = new Cache('api');
-        $this->cache->put('api', $this->api);
+        $api = $this->cache->put('api', $this->api);
+        opcache_compile_file($api->path());
     }
 
     public function cache(): Cache
@@ -239,7 +239,7 @@ final class Maker
     {
         $filepathRelative = Path::relative($filepath);
         $filepathNoExt = Str::replaceLast('.php', '', $filepathRelative);
-        $filepathReplaceNS = Str::replaceFirst(APP_PATH_RELATIVE . 'src/', 'App\\', $filepathNoExt);
+        $filepathReplaceNS = Str::replaceFirst('app/src/', 'App\\', $filepathNoExt);
 
         return str_replace('/', '\\', $filepathReplaceNS);
     }
