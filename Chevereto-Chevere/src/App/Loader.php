@@ -38,8 +38,6 @@ use Chevere\Router\Router;
 
 final class Loader implements LoaderContract
 {
-    const CACHED = false;
-
     /** @var Runtime */
     private static $runtime;
 
@@ -70,9 +68,6 @@ final class Loader implements LoaderContract
     /** @var Build */
     private $build;
 
-    /** @var bool */
-    private $fromCache;
-
     public function __construct()
     {
         if (CLI) {
@@ -81,21 +76,21 @@ final class Loader implements LoaderContract
         
         $this->build = new Build($this);
         $this->assert();
+
         $this->app = new App();
         $this->app->setResponse(new Response());
 
         if (DEV) {
-            $container = $this->build->make(
+            $this->build->make(
                 $this->parameters()
             );
-            $this->api = $container->api();
-            $this->router = $container->router();
-            $this->fromCache = true;
         } else {
-            $this->fromCache = !Console::isBuilding();
+            $this->build->apply();
         }
-        
-        $this->applyParameters();
+
+        $this->api = $this->build->container()->api();
+        $this->router = $this->build->container()->router();
+        $this->app->setRouter($this->router);
     }
 
     public function parameters(): Parameters
@@ -221,18 +216,6 @@ final class Loader implements LoaderContract
                     ->toString()
             );
         }
-    }
-
-    private function applyParameters()
-    {
-        try {
-            $this->api = $this->fromCache ? Api::fromCache() : new Api();
-            $this->router = $this->fromCache ? Router::fromCache() : new Router();
-        } catch (CacheNotFoundException $e) {
-            $message = sprintf('The app must be re-build due to missing cache. %s', $e->getMessage());
-            throw new NeedsToBeBuiltException($message, $e->getCode(), $e);
-        }
-        $this->app->setRouter($this->router);
     }
 
     private function processResolveCallable(string $pathInfo): void

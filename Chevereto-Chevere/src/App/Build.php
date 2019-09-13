@@ -17,6 +17,7 @@ use Chevere\Api\Api;
 use Chevere\Api\Maker as ApiMaker;
 use Chevere\Router\Maker as RouterMaker;
 use Chevere\App\Exceptions\AlreadyBuiltException;
+use Chevere\Console\Console;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\File;
 use Chevere\Path\Path;
@@ -27,6 +28,9 @@ final class Build
 {
     const FILE_INDETIFIER = 'var:build';
 
+    /** @var Container */
+    private $container;
+
     /** @var LoaderContract */
     private $loader;
 
@@ -35,6 +39,9 @@ final class Build
 
     /** @var bool True if the App was built (cache) */
     private $isBuilt;
+
+    /** @var bool */
+    private $fromCache;
 
     /** @var Checkout */
     private $checkout;
@@ -50,6 +57,7 @@ final class Build
 
     public function __construct(LoaderContract $loader)
     {
+        $this->container = new Container();
         $this->loader = $loader;
         $this->pathHandle =  new PathHandle(static::FILE_INDETIFIER);
     }
@@ -64,10 +72,33 @@ final class Build
         return File::exists($this->pathHandle->path());
     }
 
-    public function make(Parameters $parameters): Container
+    public function container(): Container
+    {
+        return $this->container;
+    }
+
+    public function apply()
+    {
+        $consoleIsBuilding = Console::isBuilding();
+        try {
+            $this->container->setApi(
+                !$consoleIsBuilding ? Api::fromCache() : new Api()
+            );
+            $this->container->setRouter(
+                !$consoleIsBuilding ? Router::fromCache() : new Router()
+            );
+        } catch (CacheNotFoundException $e) {
+            $message = sprintf('The app must be re-build due to missing cache. %s', $e->getMessage());
+            throw new NeedsToBeBuiltException($message, $e->getCode(), $e);
+        }
+    }
+
+    /**
+     * Makes the application Api and Router, store these in the Build container.
+     */
+    public function make(Parameters $parameters): void
     {
         $this->routerMaker = new RouterMaker();
-        $container = new Container();
         if ($this->isBuilt) {
             throw new AlreadyBuiltException();
         }
@@ -75,22 +106,20 @@ final class Build
         if (!empty($parameters->api())) {
             $pathHandle = new PathHandle($parameters->api());
             $this->apiMaker = ApiMaker::create($pathHandle, $this->routerMaker);
-            $container->setApi(
+            $this->container->setApi(
                 Api::fromMaker($this->apiMaker)
             );
             $this->cacheChecksums = $this->apiMaker->cache()->toArray();
         }
         if (!empty($parameters->routes())) {
             $this->routerMaker->addRoutesArrays($parameters->routes());
-            $container->setRouter(
+            $this->container->setRouter(
                 Router::fromMaker($this->routerMaker)
             );
             $this->cacheChecksums = array_merge($this->routerMaker->cache()->toArray(), $this->cacheChecksums);
         }
         $this->checkout = new Checkout($this);
         $this->isBuilt = true;
-
-        return $container;
     }
 
     /**

@@ -22,7 +22,7 @@ class Index extends Controller
     {
         // die('Hello World!');
         $time = microtime(true) - BOOTSTRAP_TIME;
-        dd(round($time * 1000) . 'ms');
+        die(round($time * 1000) . 'ms');
         $api = new Data('info', 'api');
         $api->addAttribute('entry', 'HTTP GET /api');
         $api->addAttribute('description', 'Retrieves the exposed API.');
