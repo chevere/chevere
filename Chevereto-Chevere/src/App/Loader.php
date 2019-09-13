@@ -21,29 +21,20 @@ use const Chevere\DEV;
 use Chevere\ArrayFile\ArrayFile;
 use Chevere\Path\PathHandle;
 use Chevere\Api\Api;
-
 use Chevere\Console\Console;
-use Chevere\Http\Request;
 use Chevere\Http\Response;
 use Chevere\Runtime\Runtime;
 use Chevere\Contracts\App\AppContract;
-use Chevere\App\Exceptions\AlreadyBuiltException;
 use Chevere\App\Exceptions\NeedsToBeBuiltException;
 use Chevere\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Render\RenderContract;
 use Chevere\Contracts\Router\RouterContract;
-use Chevere\Http\Sender;
 use Chevere\Http\ServerRequest;
 use Chevere\Message;
-use Chevere\Path\Path;
 use Chevere\Router\Exception\RouteNotFoundException;
 use Chevere\Router\Router;
-use Chevere\Stopwatch;
-use GuzzleHttp\Psr7\Response as GuzzleHttpResponse;
-
-use function GuzzleHttp\Psr7\stream_for;
 
 final class Loader implements LoaderContract
 {
@@ -131,13 +122,6 @@ final class Loader implements LoaderContract
         return $this->build;
     }
 
-    public function destroy(): void
-    {
-        unlink($this->build->pathHandle()->path());
-        $cachePath = Path::fromIdentifier('cache');
-        Path::removeContents($cachePath);
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -174,7 +158,14 @@ final class Loader implements LoaderContract
     {
         $this->handleConsole();
         $this->handleRequest();
-        $this->setRan();
+        if (isset($this->ran)) {
+            throw new LogicException(
+                (new Message('The method %s has been already called.'))
+                    ->code('%s', __METHOD__)
+                    ->toString()
+            );
+        }
+        $this->ran = true;
         if (!isset($this->controller)) {
             $this->processResolveCallable($this->request->getUri()->getPath());
         }
@@ -197,18 +188,6 @@ final class Loader implements LoaderContract
         if (!isset($this->request)) {
             $this->setRequest(ServerRequest::fromGlobals());
         }
-    }
-
-    private function setRan()
-    {
-        if (isset($this->ran)) {
-            throw new LogicException(
-                (new Message('The method %s has been already called.'))
-                    ->code('%s', __METHOD__)
-                    ->toString()
-            );
-        }
-        $this->ran = true;
     }
 
     /**

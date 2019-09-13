@@ -32,7 +32,7 @@ final class DestroyCommand extends Command
 
     public function callback(LoaderContract $loader): int
     {
-        $loader->destroy();
+        $loader->build()->destroy();
         $title = 'App destroyed';
         $this->cli()->style()->success($title);
         return 0;
