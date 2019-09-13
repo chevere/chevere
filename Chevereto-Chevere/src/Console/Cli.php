@@ -19,6 +19,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Chevere\Console\Commands\BuildCommand;
+use Chevere\Console\Commands\ClearCommand;
+use Chevere\Console\Commands\ClearLogsCommand;
 use Chevere\Console\Commands\DestroyCommand;
 use Chevere\Console\Commands\RequestCommand;
 use Chevere\Console\Commands\RunCommand;
@@ -73,6 +75,7 @@ final class Cli implements CliContract
 
         $this->client->addCommands([
             (new BuildCommand($this))->symfony(),
+            (new ClearLogsCommand($this))->symfony(),
             (new RequestCommand($this))->symfony(),
             (new RunCommand($this))->symfony(),
             (new InspectCommand($this))->symfony(),

@@ -105,8 +105,10 @@ final class Path
 
     /**
      * Removes the contents from a path, without deleting the path.
+     *
+     * @return array List of deleted contents.
      */
-    public static function removeContents(string $path): void
+    public static function removeContents(string $path): array
     {
         if (!is_dir($path)) {
             throw new LogicException(
@@ -119,6 +121,8 @@ final class Path
             new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS),
             RecursiveIteratorIterator::CHILD_FIRST
         );
+
+        $removed = [];
         
         foreach ($files as $fileinfo) {
             $inode = $fileinfo->getRealPath();
@@ -127,7 +131,9 @@ final class Path
             } else {
                 unlink($inode);
             }
+            $removed[] = $inode;
         }
+        return $removed;
     }
 
     /**

@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\App;
 
-use Chevere\Contracts\Api\ApiContract;
 use LogicException;
 
+use const Chevere\APP_PATH;
+use Chevere\Contracts\Api\ApiContract;
 use Chevere\Message;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Controller\ArgumentsWrap;
@@ -37,6 +38,7 @@ final class App implements AppContract
     const APP = 'app';
     const FILEHANDLE_CONFIG = ':config';
     const FILEHANDLE_PARAMETERS = ':parameters';
+    const PATH_LOGS = APP_PATH . 'var/logs/';
 
     /** @var ApiContract */
     private $api;
