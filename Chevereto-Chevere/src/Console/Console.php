@@ -78,7 +78,7 @@ final class Console
     {
         try {
             $command = self::command();
-            return self::isAvailable() && 'build' == $command;
+            return self::$available && 'build' == $command;
         } catch (TypeError $e) {
             return false;
         }
@@ -91,7 +91,7 @@ final class Console
 
     public static function run()
     {
-        if (!self::isAvailable()) {
+        if (!self::$available) {
             throw new RuntimeException(
                 (new Message('Unable to call %method% when %class% is not available.'))
                     ->code('%method%', __METHOD__)
@@ -121,11 +121,6 @@ final class Console
         }
 
         return '';
-    }
-
-    public static function isAvailable(): bool
-    {
-        return (bool) self::$available;
     }
 
     public static function write(string $message, int $options = Console::OUTPUT_NORMAL): void

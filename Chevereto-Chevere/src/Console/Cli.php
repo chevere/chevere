@@ -25,6 +25,7 @@ use Chevere\Console\Commands\DestroyCommand;
 use Chevere\Console\Commands\RequestCommand;
 use Chevere\Console\Commands\RunCommand;
 use Chevere\Console\Commands\InspectCommand;
+use Chevere\Console\Commands\SetopCommand;
 use Chevere\Contracts\Console\CliContract;
 use Chevere\Contracts\Console\CommandContract;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
@@ -80,6 +81,7 @@ final class Cli implements CliContract
             (new RunCommand($this))->symfony(),
             (new InspectCommand($this))->symfony(),
             (new DestroyCommand($this))->symfony(),
+            // (new SetopCommand($this))->symfony(),
         ]);
 
         try {

@@ -31,10 +31,6 @@ require dirname(__DIR__) . '/vendor/autoload.php';
 
 define('Chevere\DOCUMENT_ROOT', dirname(__DIR__, basename(__DIR__) == 'Chevereto-Chevere' ? 1 : 3));
 
-/** DEV_MODE=true to rebuild the App on every load */
-// FIXME: Use a filereturn for this (toggle via CLI)
-define('Chevere\DEV_MODE', false);
-
 /* Root path containing /app */
 define('Chevere\ROOT_PATH', rtrim(str_replace('\\', '/', DOCUMENT_ROOT), '/') . '/');
 
@@ -42,17 +38,20 @@ define('Chevere\ROOT_PATH', rtrim(str_replace('\\', '/', DOCUMENT_ROOT), '/') . 
  * Chevere\PATH
  * Relative path to Core, 'vendor/chevereto/chevere'
  */
-define('Chevere\PATH', ROOT_PATH . 'vendor/chevereto/chevere/');
+// define('Chevere\PATH', ROOT_PATH . 'vendor/chevereto/chevere/');
 
 define('Chevere\APP_PATH', ROOT_PATH . 'app/');
 
+/** DEV=true to rebuild the App on every load */
+define('Chevere\DEV', (bool) include(APP_PATH . 'options/dev.php'));
+
 if ('cli' == php_sapi_name()) {
     Console::init();
+    define('Chevere\CLI', true);
+} else {
+    define('Chevere\CLI', false);
 }
 
-define('Chevere\CLI', Console::isAvailable());
-
-// $sw = new Stopwatch();
 Loader::setDefaultRuntime(
     new Runtime(
         new RuntimeSetDebug('1'),

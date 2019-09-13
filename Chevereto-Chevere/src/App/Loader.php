@@ -17,7 +17,7 @@ use LogicException;
 use RuntimeException;
 
 use const Chevere\CLI;
-use const Chevere\DEV_MODE;
+use const Chevere\DEV;
 use Chevere\ArrayFile\ArrayFile;
 use Chevere\Path\PathHandle;
 use Chevere\Api\Api;
@@ -103,13 +103,13 @@ final class Loader implements LoaderContract
 
     public function __construct()
     {
-        if (Console::isAvailable()) {
+        if (CLI) {
             Console::bind($this);
         }
         
         $this->build = new Build();
         
-        if (!DEV_MODE && !Console::isBuilding() && !$this->build->exists()) {
+        if (!DEV && !Console::isBuilding() && !$this->build->exists()) {
             throw new NeedsToBeBuiltException(
                 (new Message('The application needs to be built by CLI %command% or calling %method% method.'))
                     ->code('%command%', 'php app/console build')
@@ -128,7 +128,7 @@ final class Loader implements LoaderContract
             )
         );
 
-        if (DEV_MODE) {
+        if (DEV) {
             $this->build();
             $this->fromCache = true;
         } else {
@@ -224,7 +224,7 @@ final class Loader implements LoaderContract
 
     private function handleConsole()
     {
-        if (Console::isAvailable() && !isset($this->consoleLoop)) {
+        if (CLI && !isset($this->consoleLoop)) {
             $this->consoleLoop = true;
             Console::run();
         }
