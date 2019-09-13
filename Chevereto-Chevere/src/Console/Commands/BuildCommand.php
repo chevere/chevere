@@ -33,21 +33,21 @@ final class BuildCommand extends Command
     {
         $title = 'App built';
         try {
-            $loader->build();
+            $loader->build()->make($loader->parameters());
         } catch (AlreadyBuiltException $e) {
             $title .= ' (not by this command)';
         }
-        $this->cli()->style()->success($title);
         $checksums = [];
-        foreach ($loader->cacheChecksums() as $name => $keys) {
+        foreach ($loader->build()->cacheChecksums() as $name => $keys) {
             foreach ($keys as $key => $array) {
                 $checksums[] = [$name, $key, $array['path'], substr($array['checksum'], 0, 8)];
             }
         }
+        $this->cli()->style()->success($title);
         $this->cli()->style()->table(['Cache', 'Key', 'Path', 'Checksum'], $checksums);
         $this->cli()->style()->writeln([
-            '[Path] ' . $loader->checkout()->build()->pathHandle()->path(),
-            '[Checksum] ' . $loader->checkout()->checksum()
+            '[Path] ' . $loader->build()->pathHandle()->path(),
+            '[Checksum] ' . $loader->build()->checkout()->checksum()
         ]);
         return 0;
     }

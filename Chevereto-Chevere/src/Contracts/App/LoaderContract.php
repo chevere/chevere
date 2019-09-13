@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\App;
 
+use Chevere\App\Build;
 use Chevere\Contracts\Http\RequestContract;
-use Chevere\Http\Request;
 use Chevere\Runtime\Runtime;
 
 interface LoaderContract
 {
     public function __construct();
 
-    public function build(): void;
+    public function build(): Build;
 
     /**
      * @param string $controller a fully-qualified controller name
@@ -51,9 +51,4 @@ interface LoaderContract
      * Retrieve the loaded Request.
      */
     public static function request(): RequestContract;
-
-    /**
-     * Retrieves the file checksums, available only when building the App.
-     */
-    public function cacheChecksums(): array;
 }

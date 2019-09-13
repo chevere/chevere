@@ -25,11 +25,11 @@ final class Checkout
     /** @var FileReturn */
     private $fileReturn;
 
-    public function __construct(Build $build, array $checksums)
+    public function __construct(Build $build)
     {
         $this->build = $build;
         $this->fileReturn = new FileReturn($this->build->pathHandle());
-        $this->fileReturn->put($checksums);
+        $this->fileReturn->put($this->build->cacheChecksums());
     }
 
     public function build(): Build

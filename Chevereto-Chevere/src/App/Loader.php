@@ -21,11 +21,10 @@ use const Chevere\DEV;
 use Chevere\ArrayFile\ArrayFile;
 use Chevere\Path\PathHandle;
 use Chevere\Api\Api;
-use Chevere\Api\Maker as ApiMaker;
+
 use Chevere\Console\Console;
 use Chevere\Http\Request;
 use Chevere\Http\Response;
-use Chevere\Router\Maker as RouterMaker;
 use Chevere\Runtime\Runtime;
 use Chevere\Contracts\App\AppContract;
 use Chevere\App\Exceptions\AlreadyBuiltException;
@@ -59,9 +58,6 @@ final class Loader implements LoaderContract
     /** @var Api */
     private $api;
 
-    /** @var ApiMaker */
-    private $apiMaker;
-
     /** @var string */
     private $controller;
 
@@ -71,29 +67,14 @@ final class Loader implements LoaderContract
     /** @var RouterContract */
     private $router;
 
-    /** @var RouterMaker */
-    private $routerMaker;
-
     /** @var bool True if run() has been called */
     private $ran;
-
-    /** @var array An array containing the collection of Cache->toArray() data (checksums) */
-    private $cacheChecksums;
 
     /** @var bool True if the console loop ran */
     private $consoleLoop;
 
-    /** @var Parameters */
-    private $parameters;
-
     /** @var array */
     private $arguments;
-
-    /** @var bool True if the App was built (cache) */
-    private $isBuilt;
-
-    /** @var Checkout */
-    private $checkout;
 
     /** @var Build */
     private $build;
@@ -107,7 +88,7 @@ final class Loader implements LoaderContract
             Console::bind($this);
         }
         
-        $this->build = new Build();
+        $this->build = new Build($this);
         
         if (!DEV && !Console::isBuilding() && !$this->build->exists()) {
             throw new NeedsToBeBuiltException(
@@ -118,18 +99,15 @@ final class Loader implements LoaderContract
             );
         }
         
-        $this->routerMaker = new RouterMaker();
         $this->app = new App();
         $this->app->setResponse(new Response());
 
-        $this->parameters = new Parameters(
-            new ArrayFile(
-                new PathHandle(App::FILEHANDLE_PARAMETERS)
-            )
-        );
-
         if (DEV) {
-            $this->build();
+            $container = $this->build->make(
+                $this->parameters()
+            );
+            $this->api = $container->api();
+            $this->router = $container->router();
             $this->fromCache = true;
         } else {
             $this->fromCache = !Console::isBuilding();
@@ -138,25 +116,19 @@ final class Loader implements LoaderContract
         $this->applyParameters();
     }
 
-    public function build(): void
+    public function parameters(): Parameters
     {
-        if ($this->isBuilt) {
-            throw new AlreadyBuiltException();
+        if (!isset($this->parameters)) {
+            $pathHandle = new PathHandle(App::FILEHANDLE_PARAMETERS);
+            $arrayFile = new ArrayFile($pathHandle);
+            $this->parameters = new Parameters($arrayFile);
         }
-        $this->cacheChecksums = [];
-        if (!empty($this->parameters->api())) {
-            $pathHandle = new PathHandle($this->parameters->api());
-            $this->apiMaker = ApiMaker::create($pathHandle, $this->routerMaker);
-            $this->api = Api::fromMaker($this->apiMaker);
-            $this->cacheChecksums = $this->apiMaker->cache()->toArray();
-        }
-        if (!empty($this->parameters->routes())) {
-            $this->routerMaker->addRoutesArrays($this->parameters->routes());
-            $this->router = Router::fromMaker($this->routerMaker);
-            $this->cacheChecksums = array_merge($this->routerMaker->cache()->toArray(), $this->cacheChecksums);
-        }
-        $this->checkout = new Checkout($this->build, $this->cacheChecksums);
-        $this->isBuilt = true;
+        return $this->parameters;
+    }
+
+    public function build(): Build
+    {
+        return $this->build;
     }
 
     public function destroy(): void
@@ -164,11 +136,6 @@ final class Loader implements LoaderContract
         unlink($this->build->pathHandle()->path());
         $cachePath = Path::fromIdentifier('cache');
         Path::removeContents($cachePath);
-    }
-
-    public function checkout(): Checkout
-    {
-        return $this->checkout;
     }
 
     /**
@@ -198,11 +165,6 @@ final class Loader implements LoaderContract
         // $pathinfo = $this->request->getUri()->getPath();
         // $this->request->attributes->set('requestArray', explode('/', $pathinfo));
         $this->app->setRequest($this->request);
-    }
-
-    public function cacheChecksums(): array
-    {
-        return $this->cacheChecksums;
     }
 
     /**
