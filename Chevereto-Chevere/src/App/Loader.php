@@ -80,16 +80,7 @@ final class Loader implements LoaderContract
         }
         
         $this->build = new Build($this);
-        
-        if (!DEV && !Console::isBuilding() && !$this->build->exists()) {
-            throw new NeedsToBeBuiltException(
-                (new Message('The application needs to be built by CLI %command% or calling %method% method.'))
-                    ->code('%command%', 'php app/console build')
-                    ->code('%method%', __CLASS__ . '::' . 'build')
-                    ->toString()
-            );
-        }
-        
+        $this->assert();
         $this->app = new App();
         $this->app->setResponse(new Response());
 
@@ -218,6 +209,18 @@ final class Loader implements LoaderContract
     public static function setDefaultRuntime(Runtime $runtime)
     {
         self::$runtime = $runtime;
+    }
+
+    private function assert() : void
+    {
+        if (!DEV && !Console::isBuilding() && !$this->build->exists()) {
+            throw new NeedsToBeBuiltException(
+                (new Message('The application needs to be built by CLI %command% or calling %method% method.'))
+                    ->code('%command%', 'php app/console build')
+                    ->code('%method%', __CLASS__ . '::' . 'build')
+                    ->toString()
+            );
+        }
     }
 
     private function applyParameters()
