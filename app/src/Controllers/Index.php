@@ -14,24 +14,28 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Chevere\Controller\Controller;
-use Chevere\JsonApi\Data;
+
+// use Chevere\JsonApi\Data;
+// use Exception;
 
 class Index extends Controller
 {
     public function __invoke()
     {
+        die('Hello world!');
+        // throw new Exception('eee');
         // die('Hello World!');
-        $time = microtime(true) - BOOTSTRAP_TIME;
-        die(round($time * 1000) . 'ms');
-        $api = new Data('info', 'api');
-        $api->addAttribute('entry', 'HTTP GET /api');
-        $api->addAttribute('description', 'Retrieves the exposed API.');
+        // $time = microtime(true) - BOOTSTRAP_TIME;
+        // die(round($time * 1000) . 'ms');
+        // $api = new Data('info', 'api');
+        // $api->addAttribute('entry', 'HTTP GET /api');
+        // $api->addAttribute('description', 'Retrieves the exposed API.');
 
-        $cli = new Data('info', 'cli');
-        $cli->addAttribute('entry', 'php app/console list');
-        $cli->addAttribute('description', 'Retrieves the console command list.');
+        // $cli = new Data('info', 'cli');
+        // $cli->addAttribute('entry', 'php app/console list');
+        // $cli->addAttribute('description', 'Retrieves the console command list.');
 
-        $this->document->appendData($api, $cli);
+        // $this->document->appendData($api, $cli);
         // dd($this->document);
     }
 }

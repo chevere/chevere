@@ -26,7 +26,6 @@ use Chevere\Http\Response;
 use Chevere\Runtime\Runtime;
 use Chevere\Contracts\App\AppContract;
 use Chevere\App\Exceptions\NeedsToBeBuiltException;
-use Chevere\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Render\RenderContract;
@@ -34,12 +33,14 @@ use Chevere\Contracts\Router\RouterContract;
 use Chevere\Http\ServerRequest;
 use Chevere\Message;
 use Chevere\Router\Exception\RouteNotFoundException;
-use Chevere\Router\Router;
 
 final class Loader implements LoaderContract
 {
     /** @var Runtime */
     private static $runtime;
+
+    /** @var RequestContract */
+    private static $request;
 
     /** @var AppContract */
     public $app;
@@ -49,9 +50,6 @@ final class Loader implements LoaderContract
 
     /** @var string */
     private $controller;
-
-    /** @var RequestContract */
-    private $request;
 
     /** @var RouterContract */
     private $router;
@@ -130,11 +128,8 @@ final class Loader implements LoaderContract
      */
     public function setRequest(RequestContract $request): void
     {
-        $this->request = $request;
-        // $pathinfo = ltrim((string) $this->request->getUri(), '/');
-        // $pathinfo = $this->request->getUri()->getPath();
-        // $this->request->attributes->set('requestArray', explode('/', $pathinfo));
-        $this->app->setRequest($this->request);
+        self::$request = $request;
+        $this->app->setRequest($request);
     }
 
     /**
@@ -153,7 +148,7 @@ final class Loader implements LoaderContract
         }
         $this->ran = true;
         if (!isset($this->controller)) {
-            $this->processResolveCallable($this->request->getUri()->getPath());
+            $this->processResolveCallable($this->app->request()->getUri()->getPath());
         }
         if (!isset($this->controller)) {
             throw new RuntimeException('DESCONTROL');
@@ -171,7 +166,7 @@ final class Loader implements LoaderContract
 
     private function handleRequest()
     {
-        if (!isset($this->request)) {
+        if (!$this->app->hasRequest()) {
             $this->setRequest(ServerRequest::fromGlobals());
         }
     }
@@ -233,8 +228,8 @@ final class Loader implements LoaderContract
                 die();
             }
         }
+        $this->controller = $route->getController($this->app->request()->getMethod());
         $this->app->setRoute($route);
-        $this->controller = $this->app->route()->getController($this->request->getMethod());
         $routerArgs = $this->router->arguments();
         if (!isset($this->arguments) && isset($routerArgs)) {
             $this->setArguments($routerArgs);

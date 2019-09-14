@@ -39,6 +39,7 @@ use Chevere\Contracts\Http\RequestContract;
 use Chevere\Data\Traits\DataAccessTrait;
 use Chevere\Data\Traits\DataKeyTrait;
 use Psr\Http\Message\RequestInterface;
+use TypeError;
 
 /**
  * The Chevere exception handler.
@@ -134,7 +135,7 @@ final class ExceptionHandler
         $this->data->setkey('id', uniqid('', true));
         try {
             $this->request = Loader::request();
-        } catch (Throwable $e) {
+        } catch (TypeError $e) {
             $this->request = ServerRequest::fromGlobals();
         }
         $this->runtime = Loader::runtime();
