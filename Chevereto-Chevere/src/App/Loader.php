@@ -33,6 +33,8 @@ use Chevere\Contracts\Router\RouterContract;
 use Chevere\Http\ServerRequest;
 use Chevere\Message;
 use Chevere\Router\Exception\RouteNotFoundException;
+use Exception;
+use TypeError;
 
 final class Loader implements LoaderContract
 {
@@ -167,7 +169,9 @@ final class Loader implements LoaderContract
     private function handleRequest()
     {
         if (!$this->app->hasRequest()) {
-            $this->setRequest(ServerRequest::fromGlobals());
+            $this->setRequest(
+                ServerRequest::fromGlobals()
+            );
         }
     }
 
@@ -179,7 +183,7 @@ final class Loader implements LoaderContract
         if (isset(self::$runtime)) {
             return self::$runtime;
         }
-        throw new RuntimeException('NO RUNTIME INSTANCE EVERYTHING BURNS!');
+        // throw new RuntimeException('NO RUNTIME INSTANCE EVERYTHING BURNS!');
     }
 
     /**
@@ -190,7 +194,7 @@ final class Loader implements LoaderContract
         if (isset(self::$request)) {
             return self::$request;
         }
-        throw new RuntimeException('NO REQUEST INSTANCE EVERYTHING BURNS!');
+        // throw new TypeError('NO REQUEST INSTANCE EVERYTHING BURNS!');
     }
 
     /**
@@ -244,10 +248,12 @@ final class Loader implements LoaderContract
             $controller->render();
         } else {
             $jsonApi = $controller->document();
-            $this->app->setResponse(
-                $this->app->response()
-                    ->withJsonApi($jsonApi)
-            );
+            if ($jsonApi->hasData()) {
+                $this->app->setResponse(
+                    $this->app->response()
+                        ->withJsonApi($jsonApi)
+                );
+            }
             if (!CLI) {
                 $this->app->response()
                     ->sendHeaders()

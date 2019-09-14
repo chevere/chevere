@@ -16,14 +16,13 @@ namespace App\Controllers;
 use Chevere\Controller\Controller;
 
 // use Chevere\JsonApi\Data;
-// use Exception;
+use Exception;
 
 class Index extends Controller
 {
     public function __invoke()
     {
         die('Hello world!');
-        // throw new Exception('eee');
         // die('Hello World!');
         // $time = microtime(true) - BOOTSTRAP_TIME;
         // die(round($time * 1000) . 'ms');

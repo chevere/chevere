@@ -128,7 +128,7 @@ final class RequestCommand extends Command
             $this->getArgument('uri'),
             $this->getOption('headers'),
             $this->getOption('body'),
-        );
+            );
         $request
             ->withCookieParams($this->ParsedOptions['cookie'])
             ->withQueryParams($this->ParsedOptions['get'])

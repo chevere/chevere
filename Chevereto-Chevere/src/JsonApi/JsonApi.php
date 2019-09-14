@@ -59,6 +59,11 @@ final class JsonApi
         }
     }
 
+    public function hasData(): bool
+    {
+        return isset($this->data);
+    }
+
     public function toString(): string
     {
         $this->setString();
@@ -68,12 +73,12 @@ final class JsonApi
     private function setString(): void
     {
         $this->setArray();
-        $this->string = $this->getEncodedString();
+        $this->string = $this->array == null ? '' : $this->getEncodedString();
     }
 
     private function setArray(): void
     {
-        if (isset($this->data)) {
+        if (!isset($this->data)) {
             $this->array['data'] = $this->getArray($this->data);
         }
     }

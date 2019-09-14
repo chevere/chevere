@@ -68,6 +68,11 @@ final class App implements AppContract
         $this->request = $request;
     }
 
+    public function hasRequest(): bool
+    {
+        return isset($this->request);
+    }
+
     public function setResponse(ResponseContract $response): void
     {
         $this->response = $response;
