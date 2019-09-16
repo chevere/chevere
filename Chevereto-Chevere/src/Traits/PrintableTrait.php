@@ -16,23 +16,22 @@ namespace Chevere\Traits;
 /**
  * Printable provides an interface for classes who may use __toString().
  *
- * @see Interfaces\PrintableInterface
- * @see Utility\Benchmark
- * @see JSON
+ * @see Chevere\Contracts\Printable\Printable
+ * @see Chevere\Benchmark\Benchmark
  */
 trait PrintableTrait
 {
     /**
      * The printable string.
      */
-    protected $printable;
+    private $printable;
 
     /**
      * Allows to cast this object as string.
      *
-     * @return string printable
+     * @return string
      */
-    public function __toString(): ?string
+    public function __toString(): string
     {
         if ($this->printable == null) {
             $this->exec();
@@ -44,12 +43,12 @@ trait PrintableTrait
     /**
      * Print object string.
      */
-    public function print()
+    public function print(): void
     {
         if ($this->printable == null) {
             $this->exec();
         }
-        echo (string) $this; // invokes __toString, such trucazo.
+        echo (string) $this;
     }
 
     abstract public function exec(): void;
