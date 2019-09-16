@@ -39,11 +39,11 @@ final class Benchmark
 {
     use PrintableTrait;
 
-    /** @var string Printable string (PrintableTrait) */
-    private $printable;
-
     /** @var int Determines the number of colums used for output. */
     const COLUMNS = 50;
+
+    /** @var string Printable string (PrintableTrait) */
+    private $printable;
 
     /** @var float Microtime construct object */
     private $constructTime;
@@ -72,10 +72,13 @@ final class Benchmark
     /** @var array Arguments that will be passed to callables */
     private $arguments;
 
-    /** @var array */
+    /** @var array [id => $callableName] */
+    private $index;
+
+    /** @var array [id => $callable] */
     private $callables;
 
-    /** @var array The time taken by each callable */
+    /** @var array [id => $timeTaken] The time taken by each callable */
     private $records;
 
     /** @var array The results (readable) for each callable */
@@ -118,6 +121,7 @@ final class Benchmark
         $this->requestTime = $_SERVER['REQUEST_TIME_FLOAT'] ?: 0;
         $this->times = $times;
         $this->callablesCount = 0;
+        $this->timeTaken = 0;
         if (CLI) {
             $this->consoleColor = new ConsoleColor();
         }
@@ -156,21 +160,20 @@ final class Benchmark
     public function add(callable $callable, string $name = null): self
     {
         if (!isset($name)) {
-            if (null == $this->unnammedCallablesCount) {
-                $this->unnammedCallablesCount = 1;
-            }
+            $this->unnammedCallablesCount = $this->unnammedCallablesCount ?? 1;
             $name = 'Unnammed#' . (string) $this->unnammedCallablesCount;
             ++$this->unnammedCallablesCount;
         }
-        if (null != $this->callables && array_key_exists($name, $this->callables)) {
+        if (isset($this->index) && in_array($name, $this->index)) {
             throw new LogicException(
-                (new Message('Duplicate callable declaration %s'))
-                    ->code('%s', $name)
+                (new Message('Duplicate callable declaration %name%'))
+                    ->code('%name%', $name)
                     ->toString()
             );
         }
+        $this->index[] = $name;
+        $this->callables[$this->callablesCount] = $callable;
         ++$this->callablesCount;
-        $this->callables[$name] = $callable;
 
         return $this;
     }
@@ -189,15 +192,13 @@ final class Benchmark
         $this->handleCallables();
         $this->processCallablesStats();
         $title = __CLASS__ . ' results';
-        $border = 1;
-        $lineChar = '-';
-        $this->lineSeparator = str_repeat($lineChar, static::COLUMNS);
+        $this->lineSeparator = str_repeat('-', static::COLUMNS);
         $pipe = '|';
         if (CLI) {
             $this->lineSeparator = $this->consoleColor->apply('blue', $this->lineSeparator);
             $pipe = $this->consoleColor->apply('blue', $pipe);
         }
-        $pad = (int) round((static::COLUMNS - (strlen($title) + $border)) / 2, 0);
+        $pad = (int) round((static::COLUMNS - (strlen($title) + 1)) / 2, 0);
         $head = $pipe . str_repeat(' ', $pad) . $title . str_repeat(' ', floor($pad) == $pad ? ($pad - 1) : $pad) . $pipe;
         $this->lines = [
             $this->lineSeparator,
@@ -211,7 +212,7 @@ final class Benchmark
         ];
         $this->processResults();
         $this->handleAbortedRes();
-        $this->timeTakenReadable = ' Time taken: ' . round($this->timeTaken, 4) . ' s';
+        $this->timeTakenReadable = ' Time taken: ' . $this->microtimeToRead($this->timeTaken);
         $this->lines[] = str_repeat(' ', (int) max(0, static::COLUMNS - strlen($this->timeTakenReadable))) . $this->timeTakenReadable;
         $this->printable = implode("\n", $this->lines);
         if (CLI) {
@@ -243,22 +244,22 @@ final class Benchmark
 
     private function handleCallables(): void
     {
-        foreach ($this->callables as $k => $v) {
+        foreach ($this->index as $id => $name) {
             if ($this->isAborted) {
-                $this->timeTaken = microtime(true) - $this->startupTime;
+                $this->timeTaken = $this->timeTaken ?? (microtime(true) - $this->startupTime);
                 break;
             }
             $timeInit = microtime(true);
             $this->runs = 0;
-            $this->runCallable($v);
+            $this->runCallable($this->callables[$id]);
             $timeFinish = microtime(true);
             $timeTaken = floatval($timeFinish - $timeInit);
-            $this->records[$k] = $timeTaken;
-            $this->results[$k] = [
+            $this->records[$id] = $timeTaken;
+            $this->results[$id] = [
                 'time' => $timeTaken,
                 'runs' => $this->runs,
-                // 'adds' => '',
             ];
+            $this->timeTaken += $timeTaken;
         }
     }
 
@@ -274,22 +275,18 @@ final class Benchmark
             $callable(...($this->arguments ?: []));
             ++$this->runs;
         }
-        ++$i;
-        if ($i == $this->callablesCount) {
-            $this->timeTaken = microtime(true) - $this->startupTime;
-        }
     }
 
     private function processCallablesStats(): void
     {
         asort($this->records);
         if (count($this->records) > 1) {
-            foreach ($this->records as $k => $v) {
-                $timeTaken = $this->results[$k]['time'];
+            foreach ($this->records as $id => $timeTaken) {
+                // $timeTaken = $this->results[$id]['time'];
                 if (!isset($fastestTime)) {
                     $fastestTime = $timeTaken;
                 } else {
-                    $this->results[$k]['adds'] = number_format(100 * (($timeTaken - $fastestTime) / $fastestTime), 2) . '%';
+                    $this->results[$id]['adds'] = number_format(100 * (($timeTaken - $fastestTime) / $fastestTime), 2) . '%';
                 }
             }
         }
@@ -298,10 +295,11 @@ final class Benchmark
     private function processResults(): void
     {
         $i = 0;
-        foreach ($this->records as $name => $time) {
+        foreach ($this->records as $id => $timeTaken) {
             ++$i;
+            $name = $this->index[$id];
             $resultTitle = $name;
-            $result = $this->results[$name];
+            $result = $this->results[$id];
             if (1 == $i) {
                 if (count($this->records) > 1) {
                     $resultTitle .= ' (fastest)';
@@ -350,5 +348,10 @@ final class Benchmark
         }
 
         return true;
+    }
+
+    private function microtimeToRead(float $microtime): string
+    {
+        return number_format($microtime * 1000, 2) . ' ms';
     }
 }

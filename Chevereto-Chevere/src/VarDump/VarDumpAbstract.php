@@ -95,7 +95,7 @@ abstract class VarDumpAbstract
         $this->var = $var;
         // Maybe improve this to support any circular reference?
         if (is_array($this->var)) {
-            $this->expression = array_merge([], $this->var);
+            $this->expression = [] + $this->var;
         } else {
             $this->expression = $this->var;
         }
