@@ -108,9 +108,9 @@ final class Maker
     {
         foreach ($paramRoutes as $fileHandleString) {
             $arrayFile = new ArrayFile(
-                new PathHandle($fileHandleString),
-                new Type(RouteContract::class)
+                new PathHandle($fileHandleString)
             );
+            $arrayFile->setMembersType(new Type(RouteContract::class));
             $arrayFileWrap = new ArrayFileCallback($arrayFile, function ($k, $route) {
                 $route->setId((string) $k);
             });

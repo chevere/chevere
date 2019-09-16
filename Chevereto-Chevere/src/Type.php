@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere;
 
 /**
- * Type provides type hinting and validation toolchain.
+ * Type provides type validation toolchain
  */
 final class Type
 {

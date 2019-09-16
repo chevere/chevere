@@ -22,8 +22,6 @@ use Chevere\Message;
 use Chevere\Type;
 use Chevere\Path\PathHandle;
 
-// FIXME: Make a client for injecting type. Don't pass type in construct pls.
-
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).
  */
@@ -43,30 +41,23 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
 
     /**
      * @param PathHandle $pathHandle Path handle or absolute filepath
-     * @param Type   $type       If set, the array members must match the target type, classname or interface
      */
-    public function __construct(PathHandle $pathHandle, Type $type = null)
+    public function __construct(PathHandle $pathHandle)
     {
         $this->pathHandle = $pathHandle;
         $this->fileReturn = new FileReturn($pathHandle);
         $this->fileReturn->setStrict(false);
+        $this->validateIsArray();
+        $this->array = $this->fileReturn->raw();
+    }
 
-        try {
-            $this->validateIsArray();
-            $this->array = $this->fileReturn->raw();
-            if (null !== $type) {
-                $this->type = $type;
-                $this->validate();
-            }
-        } catch (LogicException $e) {
-            throw new LogicException(
-                (new Message($e->getMessage()))
-                    ->code('%returnType%', $this->fileReturn->type())
-                    ->code('%filepath%', $this->pathHandle->path())
-                    ->code('%members%', $this->type->typeString())
-                    ->toString()
-            );
-        }
+    /**
+     * @param Type $type The array members must match the target type, classname or interface.
+     */
+    public function setMembersType(Type $type): void
+    {
+        $this->type = $type;
+        $this->validate();
     }
 
     public function offsetSet($offset, $value)
@@ -107,12 +98,16 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
     private function validateIsArray(): void
     {
         if ('array' !== $this->fileReturn->type()) {
-            throw new LogicException('Expecting file %filepath% return type array, %returnType% provided.');
+            throw new LogicException(
+                (new Message('Expecting file %filepath% return type array, %returnType% provided.'))
+                    ->code('%filepath%', $this->pathHandle->path())
+                    ->code('%returnType%', $this->fileReturn->type())
+            );
         }
     }
 
     /**
-     * Validates array content type.
+     * Validate array members type.
      */
     private function validate(): void
     {
@@ -137,6 +132,8 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
         }
         throw new LogicException(
             (new Message('Expecting array containing only %members% members, type %type% found at %filepath% (array key %key%).'))
+                ->code('%members%', $this->type->typeString())
+                ->code('%filepath%', $this->pathHandle->path())
                 ->code('%type%', $type)
                 ->code('%key%', $k)
                 ->toString()
