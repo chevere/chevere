@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Chevere\Controller\Controller;
-use Chevere\Utility\Benchmark;
+use Chevere\Stopwatch;
 // use Chevere\JsonApi\Data;
 use Exception;
 
@@ -22,8 +22,6 @@ class Index extends Controller
 {
     public function __invoke()
     {
-
-
         // throw new Exception('test');
         // die('Hello world!');
         // die('Hello World!');

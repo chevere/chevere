@@ -20,7 +20,6 @@ use Chevere\Message;
 use Chevere\Traits\PrintableTrait;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
-
 /**
  * Benchmark provides a simple way to determine which code procedure perform faster.
  */
