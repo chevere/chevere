@@ -134,7 +134,7 @@ final class RunCommand extends Command
 
         $this->setLines();
 
-        $this->cli()->style()->writeln($this->lines);
+        $this->console()->style()->writeln($this->lines);
     }
 
     private function validateCallable(): void

@@ -23,20 +23,6 @@ class Index extends Controller
 {
     public function __invoke()
     {
-        $benchmark = (new Benchmark(10000))
-            ->setArguments(500, 3000)
-            ->add(function (int $a, int $b) {
-                return $a + $b;
-            }, 'Sum')
-            ->add(function (int $a, int $b) {
-                return $a / $b;
-            }, 'Division')
-            ->add(function (int $a, int $b) {
-                return $a * $b;
-            }, 'Multiply');
-        print $benchmark;
-        die();
-
         // throw new Exception('test');
         // die('Hello world!');
         // die('Hello World!');

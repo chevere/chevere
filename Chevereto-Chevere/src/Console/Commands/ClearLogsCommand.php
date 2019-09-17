@@ -31,11 +31,11 @@ final class ClearLogsCommand extends Command
     {
         $delete = Path::removeContents(App::PATH_LOGS);
         $count = count($delete);
-        $this->cli()->style()->success(
+        $this->console()->style()->success(
             $count > 0 ? sprintf('App logs cleared (%s files)', $count) : 'No app logs to remove'
         );
         if ($count) {
-            $this->cli()->style()->listing($delete);
+            $this->console()->style()->listing($delete);
         }
 
         return 0;

@@ -43,9 +43,9 @@ final class BuildCommand extends Command
                 $checksums[] = [$name, $key, $array['path'], substr($array['checksum'], 0, 8)];
             }
         }
-        $this->cli()->style()->success($title);
-        $this->cli()->style()->table(['Cache', 'Key', 'Path', 'Checksum'], $checksums);
-        $this->cli()->style()->writeln([
+        $this->console()->style()->success($title);
+        $this->console()->style()->table(['Cache', 'Key', 'Path', 'Checksum'], $checksums);
+        $this->console()->style()->writeln([
             '[Path] ' . $loader->build()->pathHandle()->path(),
             '[Checksum] ' . $loader->build()->checkout()->checksum()
         ]);

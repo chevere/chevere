@@ -14,22 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Contracts\Console;
 
 use Exception;
-use Monolog\Logger;
-use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Chevere\Console\Console;
 
-interface CliContract
+interface ApplicationContract
 {
-    public function __construct(ArgvInput $input);
-
-    public function input(): ArgvInput;
-
-    public function style(): SymfonyStyle;
-
-    public function output(): ConsoleOutput;
-
-    public function logger(): Logger;
+    public function __construct(Console $console);
 
     public function setCommand(CommandContract $command): void;
 

@@ -46,7 +46,7 @@ define('Chevere\APP_PATH', ROOT_PATH . 'app/');
 define('Chevere\DEV', (bool) include(APP_PATH . 'options/dev.php'));
 
 if ('cli' == php_sapi_name()) {
-    Console::init();
+    new Console();
     define('Chevere\CLI', true);
 } else {
     define('Chevere\CLI', false);
