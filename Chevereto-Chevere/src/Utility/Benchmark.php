@@ -99,6 +99,9 @@ final class Benchmark
     /** @var float Time taken to run the benchmark */
     private $timeTaken;
 
+    /** @var int */
+    private $recordsCount;
+
     /** @var array The benchmark document (lines) */
     private $lines;
 
@@ -280,7 +283,8 @@ final class Benchmark
     private function processCallablesStats(): void
     {
         asort($this->records);
-        if (count($this->records) > 1) {
+        $this->recordsCount = count($this->records);
+        if ($this->recordsCount > 1) {
             foreach ($this->records as $id => $timeTaken) {
                 // $timeTaken = $this->results[$id]['time'];
                 if (!isset($fastestTime)) {
@@ -301,17 +305,14 @@ final class Benchmark
             $resultTitle = $name;
             $result = $this->results[$id];
             if (1 == $i) {
-                if (count($this->records) > 1) {
+                if ($this->recordsCount > 1) {
                     $resultTitle .= ' (fastest)';
-                    if (CLI) {
-                        $resultTitle = $this->consoleColor->apply('green', $resultTitle);
-                    }
                 }
             } else {
                 $resultTitle .= ' (' . $result['adds'] . ' slower)';
-                if (CLI) {
-                    $resultTitle = $this->consoleColor->apply('red', $resultTitle);
-                }
+            }
+            if (CLI) {
+                $resultTitle = $this->consoleColor->apply(1 == $i ? 'green' : 'red', $resultTitle);
             }
             $this->lines[] = $resultTitle;
             $resRuns = Number::abbreviate($result['runs']) . ' runs';
