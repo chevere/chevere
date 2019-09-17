@@ -217,10 +217,7 @@ final class Benchmark
             $this->lineSeparator,
         ];
         $this->processResults();
-        if ($this->isAborted) {
-            $this->lines[] = 'Note: Process aborted (' . ($this->isPHPAborted ? 'PHP' : 'self') . ' time limit)';
-            $this->lines[] = $this->lineSeparator;
-        }
+        $this->handleAborted();
         $this->timeTakenReadable = ' Time taken: ' . Time::nanoToRead($this->timeTaken);
         $this->lines[] = str_repeat(' ', (int) max(0, static::COLUMNS - strlen($this->timeTakenReadable))) . $this->timeTakenReadable;
         $this->printable = implode("\n", $this->lines);
@@ -295,6 +292,14 @@ final class Benchmark
             $this->lines[] = $resRuns;
             $this->lines[] = $this->lineSeparator;
             $this->recordsProcessed++;
+        }
+    }
+
+    private function handleAborted(): void
+    {
+        if ($this->isAborted) {
+            $this->lines[] = 'Note: Process aborted (' . ($this->isPHPAborted ? 'PHP' : 'self') . ' time limit)';
+            $this->lines[] = $this->lineSeparator;
         }
     }
 
