@@ -217,8 +217,11 @@ final class Benchmark
             $this->lineSeparator,
         ];
         $this->processResults();
-        $this->handleAbortedRes();
-        $this->timeTakenReadable = ' Time taken: ' . $this->nanotimeToRead($this->timeTaken);
+        if ($this->isAborted) {
+            $this->lines[] = 'Note: Process aborted (' . ($this->isPHPAborted ? 'PHP' : 'self') . ' time limit)';
+            $this->lines[] = $this->lineSeparator;
+        }
+        $this->timeTakenReadable = ' Time taken: ' . Time::nanoToRead($this->timeTaken);
         $this->lines[] = str_repeat(' ', (int) max(0, static::COLUMNS - strlen($this->timeTakenReadable))) . $this->timeTakenReadable;
         $this->printable = implode("\n", $this->lines);
         if (CLI) {
@@ -285,7 +288,7 @@ final class Benchmark
         foreach ($this->records as $id => $timeTaken) {
             $this->lines[] = $this->getResultTitle($id);
             $resRuns = Number::abbreviate($this->results[$id]['runs']) . ' runs';
-            $resRuns .= ' in ' . $this->nanotimeToRead($this->results[$id]['time']);
+            $resRuns .= ' in ' . Time::nanoToRead($this->results[$id]['time']);
             if ($this->results[$id]['runs'] != $this->times) {
                 $resRuns .= ' ~ missed ' . ($this->times - $this->results[$id]['runs']) . ' runs';
             }
@@ -313,14 +316,6 @@ final class Benchmark
         return $resultTitle;
     }
 
-    private function handleAbortedRes(): void
-    {
-        if ($this->isAborted) {
-            $this->lines[] = 'Note: Process aborted (' . ($this->isPHPAborted ? 'PHP' : 'self') . ' time limit)';
-            $this->lines[] = $this->lineSeparator;
-        }
-    }
-
     private function canSelfKeepGoing(): bool
     {
         if (null != $this->timeLimit && hrtime(true) - $this->constructTime > $this->timeLimit) {
@@ -337,10 +332,5 @@ final class Benchmark
         }
 
         return true;
-    }
-
-    private function nanotimeToRead(float $nanotime): string
-    {
-        return number_format($nanotime / 1e+6, 2) . ' ms';
     }
 }

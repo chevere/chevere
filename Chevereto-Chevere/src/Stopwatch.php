@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere;
 
+use Chevere\Utility\Time;
 use InvalidArgumentException;
 
 /**
@@ -80,7 +81,7 @@ final class Stopwatch
     {
         $this->timeEnd = hrtime(true);
         $this->timeElapsed = $this->timeEnd - $this->timeStart - $this->gap;
-        $this->timeElapsedRead = $this->microtimeToRead($this->timeElapsed);
+        $this->timeElapsedRead = Time::nanoToRead($this->timeElapsed);
         $prevMicrotime = 0;
         $this->index[] = 'stop';
         $this->gaps[] = 0;
@@ -88,7 +89,7 @@ final class Stopwatch
         $this->records = [];
         foreach ($this->marks as $id => $microtime) {
             $time = $microtime - $prevMicrotime;
-            $this->records[$this->index[$id]] = $this->microtimeToRead($time);
+            $this->records[$this->index[$id]] = Time::nanoToRead($time);
             $prevMicrotime = $microtime > 0 ? $microtime : $this->timeStart;
         }
     }
@@ -106,10 +107,5 @@ final class Stopwatch
     public function timeElapsedRead(): string
     {
         return $this->timeElapsedRead;
-    }
-
-    private function microtimeToRead(float $nanotime): string
-    {
-        return number_format($nanotime / 1e+6, 2) . ' ms';
     }
 }
