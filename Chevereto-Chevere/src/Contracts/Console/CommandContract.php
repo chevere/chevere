@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Console;
 
+use Chevere\Console\Console;
 use Chevere\Contracts\App\LoaderContract;
 
 interface CommandContract
 {
-    public function __construct(CliContract $cli);
+    public function __construct(Console $console);
 
-    public function cli(): CliContract;
+    public function console(): Console;
 
     public function symfony(): SymfonyCommandContract;
 

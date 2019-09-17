@@ -16,7 +16,7 @@ namespace Chevere\Console;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Chevere\Contracts\App\LoaderContract;
-use Chevere\Contracts\Console\CliContract;
+use Chevere\Contracts\Console\ApplicationContract;
 use Chevere\Contracts\Console\CommandContract;
 use Chevere\Contracts\Console\SymfonyCommandContract;
 
@@ -41,22 +41,22 @@ abstract class Command implements CommandContract
     const ARGUMENTS = [];
     const OPTIONS = [];
 
-    /** @var CliContract */
-    private $cli;
+    /** @var Console */
+    private $console;
 
     /** @var SymfonyCommandContract */
     private $symfony;
 
-    final public function __construct(CliContract $cli)
+    final public function __construct(Console $console)
     {
-        $this->cli = $cli;
+        $this->console = $console;
         $this->symfony = new SymfonyCommand($this);
         $this->configure();
     }
 
-    final public function cli(): CliContract
+    final public function console(): Console
     {
-        return $this->cli;
+        return $this->console;
     }
 
     final public function symfony(): SymfonyCommandContract
@@ -66,12 +66,12 @@ abstract class Command implements CommandContract
 
     final public function getArgument(string $argument)
     {
-        return $this->cli->input()->getArgument($argument);
+        return $this->console->input()->getArgument($argument);
     }
 
     final public function getOption(string $option)
     {
-        return $this->cli->input()->getOption($option);
+        return $this->console->input()->getOption($option);
     }
 
     abstract public function callback(LoaderContract $loader): int;

@@ -58,7 +58,7 @@ final class InspectCommand extends Command
 
     public function callback(LoaderContract $loader): int
     {
-        $this->callableInput = (string) $this->cli()->input()->getArgument('callable');
+        $this->callableInput = (string) $this->console()->input()->getArgument('callable');
         if (is_subclass_of($this->callableInput, ControllerContract::class)) {
             $this->callable = $this->callableInput;
             $this->method = '__invoke';
@@ -70,7 +70,7 @@ final class InspectCommand extends Command
 
         $this->handleSetMethod();
         $this->handleSetReflector();
-        $this->cli()->style()->block($this->callableInput, 'INSPECTED', 'OK', ' ', true);
+        $this->console()->style()->block($this->callableInput, 'INSPECTED', 'OK', ' ', true);
         $this->processParametersArguments();
         $this->handleProcessArguments();
 
@@ -141,12 +141,12 @@ final class InspectCommand extends Command
 
     private function processArguments(): void
     {
-        $this->cli()->style()->text(['<fg=yellow>Arguments:</>']);
-        $this->cli()->style()->listing($this->arguments);
+        $this->console()->style()->text(['<fg=yellow>Arguments:</>']);
+        $this->console()->style()->listing($this->arguments);
     }
 
     private function processNoArguments(): void
     {
-        $this->cli()->style()->text(['<fg=yellow>No arguments</>', null]);
+        $this->console()->style()->text(['<fg=yellow>No arguments</>', null]);
     }
 }

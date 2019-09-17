@@ -22,12 +22,28 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Console\CliContract;
 use Chevere\Message;
+use Symfony\Component\Console\Application as Symfony;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\StyleInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use Chevere\Console\Commands\BuildCommand;
+use Chevere\Console\Commands\ClearLogsCommand;
+use Chevere\Console\Commands\DestroyCommand;
+use Chevere\Console\Commands\RequestCommand;
+use Chevere\Console\Commands\RunCommand;
+use Chevere\Console\Commands\InspectCommand;
+use Chevere\Contracts\Console\CommandContract;
+use Symfony\Component\Console\Exception\CommandNotFoundException;
 
 /**
  * Provides static access to the Chevere application console.
  */
 final class Console
 {
+    const NAME = __NAMESPACE__;
+    const VERSION = '1.0';
+
     const VERBOSITY_QUIET = ConsoleOutput::VERBOSITY_QUIET;
     const VERBOSITY_NORMAL = ConsoleOutput::VERBOSITY_NORMAL;
     const VERBOSITY_VERBOSE = ConsoleOutput::VERBOSITY_VERBOSE;
@@ -38,49 +54,86 @@ final class Console
     const OUTPUT_RAW = ConsoleOutput::OUTPUT_RAW;
     const OUTPUT_PLAIN = ConsoleOutput::OUTPUT_PLAIN;
 
+    /** @var ArgvInput */
+    private static $input;
+
+    /** @var ConsoleOutput */
+    private static $output;
+
+    /** @var CommandContract */
+    private static $command;
+
+    /** @var string The first argument (command) passed */
+    private static $commandString;
+
+    /** @var Symfony */
+    private static $symfony;
+
+    /** @var SymfonyStyle */
+    private static $style;
+
+    /** @var bool */
+    private static $isAvailable;
+
     /** @var LoaderContract */
     private static $loader;
 
-    /** @var CliContract */
-    private static $cli;
-
-    /** @var bool */
-    private static $available;
-
-    /** @var string The first argument (command) passed */
-    private static $command;
-
     public function __construct()
     {
-        $input = new ArgvInput();
-        self::$command = $input->getFirstArgument();
-        self::$cli = new Cli($input, new ConsoleOutput());
-        self::$available = true;
+        self::$input = new ArgvInput();
+        self::$output = new ConsoleOutput();
+        self::$commandString = self::$input->getFirstArgument();
+        self::$symfony = new Symfony(static::NAME, static::VERSION);
+        self::$symfony->setAutoExit(false);
+        self::$style = new SymfonyStyle(self::$input, self::$output);
+        self::$isAvailable = true;
+        $this->addCommands();
+        // self::$application = new Application($this);
     }
 
-    public static function command(): string
+    public static function input(): InputInterface
+    {
+        return self::$input;
+    }
+
+    public static function output(): OutputInterface
+    {
+        return self::$output;
+    }
+
+    public function setCommand(CommandContract $command): void
+    {
+        self::$command = $command;
+    }
+
+    public static function command(): CommandContract
     {
         return self::$command;
     }
 
-    public static function cli(): CliContract
+    public static function commandString(): string
     {
-        return self::$cli;
+        return self::$commandString;
+    }
+
+    public static function symfony(): Symfony
+    {
+        return self::$symfony;
+    }
+
+    public static function style(): StyleInterface
+    {
+        return self::$style;
     }
 
     public static function inputString(): string
     {
-        return self::$cli->input()->__toString();
+        return self::$input->__toString();
     }
 
     public static function isBuilding(): bool
     {
-        try {
-            $command = self::command();
-            return self::$available && 'build' == $command;
-        } catch (TypeError $e) {
-            return false;
-        }
+        return self::$isAvailable && 'build' == self::$commandString;
     }
 
     public static function bind(Loader $loader): bool
@@ -96,7 +149,7 @@ final class Console
 
     public static function run()
     {
-        if (!self::$available) {
+        if (!self::$isAvailable) {
             throw new RuntimeException(
                 (new Message('Unable to call %method% when %class% is not available.'))
                     ->code('%method%', __METHOD__)
@@ -104,13 +157,11 @@ final class Console
                     ->toString()
             );
         }
-        $exitCode = self::$cli->runner();
+        $exitCode = self::runner();
         if (0 !== $exitCode) {
-            exit(0);
+            exit($exitCode);
         }
-        try {
-            $command = self::$cli->command();
-        } catch (Throwable $e) {
+        if (is_null(self::$command)) {
             exit($exitCode);
         }
         if (self::$loader == null) {
@@ -120,6 +171,34 @@ final class Console
                     ->toString()
             );
         }
-        exit($command->callback(self::$loader));
+        exit(self::$command->callback(self::$loader));
+    }
+
+    private function addCommands(): void
+    {
+        self::$symfony->addCommands([
+            (new BuildCommand($this))->symfony(),
+            (new ClearLogsCommand($this))->symfony(),
+            (new RequestCommand($this))->symfony(),
+            (new RunCommand($this))->symfony(),
+            (new InspectCommand($this))->symfony(),
+            (new DestroyCommand($this))->symfony(),
+            // (new SetopCommand($this))->symfony(),
+        ]);
+        if (!self::$symfony->has(self::$commandString)) {
+            self::$style->writeln(sprintf('Command "%s" is not defined', self::$commandString));
+            die(127);
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    private static function runner(): int
+    {
+        return self::$symfony->run(
+            self::$input,
+            self::$output
+        );
     }
 }

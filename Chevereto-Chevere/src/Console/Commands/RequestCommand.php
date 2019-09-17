@@ -118,8 +118,8 @@ final class RequestCommand extends Command
 
     public function callback(LoaderContract $loader): int
     {
-        $this->arguments = $this->cli()->input()->getArguments();
-        $this->options = (array) $this->cli()->input()->getOptions();
+        $this->arguments = $this->console()->input()->getArguments();
+        $this->options = (array) $this->console()->input()->getOptions();
 
         $this->setParsedOptions();
 
@@ -128,7 +128,7 @@ final class RequestCommand extends Command
             $this->getArgument('uri'),
             $this->getOption('headers'),
             $this->getOption('body'),
-            );
+        );
         $request
             ->withCookieParams($this->ParsedOptions['cookie'])
             ->withQueryParams($this->ParsedOptions['get'])
@@ -164,13 +164,13 @@ final class RequestCommand extends Command
             $status = '<fg=magenta>' . $status . '</>';
             $headers = '<fg=yellow>' . $headers . '</>';
         }
-        $this->cli()->style()->writeln($status);
+        $this->console()->style()->writeln($status);
         if ($isHeaders) {
-            $this->cli()->style()->writeln($headers);
+            $this->console()->style()->writeln($headers);
         }
         if ($isBody) {
             $response->sendBody();
-            $this->cli()->style()->write("\r\n");
+            $this->console()->style()->write("\r\n");
         }
         die(0);
     }
