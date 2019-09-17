@@ -21,7 +21,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 interface CliContract
 {
-    public function __construct(ArgvInput $input);
+    public function __construct(ArgvInput $input, ConsoleOutput $output);
 
     public function input(): ArgvInput;
 

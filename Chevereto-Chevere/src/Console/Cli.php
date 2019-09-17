@@ -63,12 +63,12 @@ final class Cli implements CliContract
     /** @var CommandContract */
     private $command;
 
-    public function __construct(ArgvInput $input)
+    public function __construct(ArgvInput $input, ConsoleOutput $output)
     {
         $this->input = $input;
         $this->name = static::NAME;
         $this->version = static::VERSION;
-        $this->output = new ConsoleOutput();
+        $this->output = $output;
         $this->client = new Application($this->name, $this->version);
         $this->client->setAutoExit(false);
         $this->logger = new Logger($this->name);

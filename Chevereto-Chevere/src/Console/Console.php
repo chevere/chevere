@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Console;
 
-use Chevere\App\Loader;
+use Throwable;
+use TypeError;
 use RuntimeException;
+use Chevere\App\Loader;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Console\CliContract;
 use Chevere\Message;
-use Throwable;
-use TypeError;
 
 /**
  * Provides static access to the Chevere application console.
@@ -50,28 +50,27 @@ final class Console
     /** @var string The first argument (command) passed */
     private static $command;
 
-    public static function bind(Loader $loader): bool
-    {
-        if (php_sapi_name() == 'cli') {
-            self::$loader = $loader;
-
-            return true;
-        }
-
-        return false;
-    }
-
-    public static function init()
+    public function __construct()
     {
         $input = new ArgvInput();
         self::$command = $input->getFirstArgument();
-        self::$cli = new Cli($input);
+        self::$cli = new Cli($input, new ConsoleOutput());
         self::$available = true;
     }
 
     public static function command(): string
     {
         return self::$command;
+    }
+
+    public static function cli(): CliContract
+    {
+        return self::$cli;
+    }
+
+    public static function inputString(): string
+    {
+        return self::$cli->input()->__toString();
     }
 
     public static function isBuilding(): bool
@@ -84,9 +83,15 @@ final class Console
         }
     }
 
-    public static function cli(): CliContract
+    public static function bind(Loader $loader): bool
     {
-        return self::$cli;
+        if (php_sapi_name() == 'cli') {
+            self::$loader = $loader;
+
+            return true;
+        }
+
+        return false;
     }
 
     public static function run()
@@ -101,7 +106,7 @@ final class Console
         }
         $exitCode = self::$cli->runner();
         if (0 !== $exitCode) {
-            die();
+            exit(0);
         }
         try {
             $command = self::$cli->command();
@@ -109,27 +114,12 @@ final class Console
             exit($exitCode);
         }
         if (self::$loader == null) {
-            throw new RuntimeException('No Chevere instance is defined.');
+            throw new RuntimeException(
+                (new Message('No Chevere %className% instance is defined'))
+                    ->code('%className%', LoaderContract::class)
+                    ->toString()
+            );
         }
         exit($command->callback(self::$loader));
-    }
-
-    public static function inputString(): string
-    {
-        if (method_exists(self::$cli->input(), '__toString')) {
-            return self::$cli->input()->__toString();
-        }
-
-        return '';
-    }
-
-    public static function write(string $message, int $options = Console::OUTPUT_NORMAL): void
-    {
-        self::$cli->style()->write($message, false, $options);
-    }
-
-    public static function writeln(string $message, int $options = Console::OUTPUT_NORMAL): void
-    {
-        self::$cli->style()->writeln($message, $options);
     }
 }

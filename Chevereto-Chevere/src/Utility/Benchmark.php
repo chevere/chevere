@@ -45,13 +45,13 @@ final class Benchmark
     /** @var string Printable string (PrintableTrait) */
     private $printable;
 
-    /** @var float Microtime construct object */
+    /** @var float Nanotime construct object */
     private $constructTime;
 
     /** @var float */
     private $maxExecutionTime;
 
-    /** @var float Microtime $_SERVER['REQUEST_TIME_FLOAT'] */
+    /** @var float Nanotime $_SERVER['REQUEST_TIME_FLOAT'] */
     private $requestTime;
 
     /** @var int Number of times to run each callable */
@@ -93,7 +93,7 @@ final class Benchmark
     /** @var bool True if the timeLimit has been reached */
     private $isSelfAborted;
 
-    /** @var float Microtime just before running the callables */
+    /** @var float Nanotime just before running the callables */
     private $startupTime;
 
     /** @var float Time taken to run the benchmark */
@@ -116,7 +116,7 @@ final class Benchmark
      */
     public function __construct(int $times)
     {
-        $this->constructTime = microtime(true);
+        $this->constructTime = hrtime(true);
         $this->maxExecutionTime = (int) ini_get('max_execution_time');
         $this->requestTime = $_SERVER['REQUEST_TIME_FLOAT'] ?: 0;
         $this->times = $times;
@@ -188,7 +188,7 @@ final class Benchmark
         $this->isAborted = false;
         $this->isPHPAborted = false;
         $this->isSelfAborted = false;
-        $this->startupTime = microtime(true);
+        $this->startupTime = hrtime(true);
         $this->handleCallables();
         $this->processCallablesStats();
         $title = __CLASS__ . ' results';
@@ -212,7 +212,7 @@ final class Benchmark
         ];
         $this->processResults();
         $this->handleAbortedRes();
-        $this->timeTakenReadable = ' Time taken: ' . $this->microtimeToRead($this->timeTaken);
+        $this->timeTakenReadable = ' Time taken: ' . $this->nanotimeToRead($this->timeTaken);
         $this->lines[] = str_repeat(' ', (int) max(0, static::COLUMNS - strlen($this->timeTakenReadable))) . $this->timeTakenReadable;
         $this->printable = implode("\n", $this->lines);
         if (CLI) {
@@ -222,37 +222,17 @@ final class Benchmark
         }
     }
 
-    /**
-     * Get bcrypt optimal cost.
-     *
-     * @param float $time seconds to use for this test
-     * @param int   $cost cost to be used as starting value
-     *
-     * @return int optimal BCrypt cost
-     */
-    public static function bcryptCost(float $time = 0.1, int $cost = 9): int
-    {
-        do {
-            ++$cost;
-            $ti = microtime(true);
-            password_hash('test', PASSWORD_BCRYPT, ['cost' => $cost]);
-            $tf = microtime(true);
-        } while (($tf - $ti) < $time);
-
-        return $cost;
-    }
-
     private function handleCallables(): void
     {
         foreach ($this->index as $id => $name) {
             if ($this->isAborted) {
-                $this->timeTaken = $this->timeTaken ?? (microtime(true) - $this->startupTime);
+                $this->timeTaken = $this->timeTaken ?? (hrtime(true) - $this->startupTime);
                 break;
             }
-            $timeInit = microtime(true);
+            $timeInit = hrtime(true);
             $this->runs = 0;
             $this->runCallable($this->callables[$id]);
-            $timeFinish = microtime(true);
+            $timeFinish = hrtime(true);
             $timeTaken = floatval($timeFinish - $timeInit);
             $this->records[$id] = $timeTaken;
             $this->results[$id] = [
@@ -315,7 +295,7 @@ final class Benchmark
             }
             $this->lines[] = $resultTitle;
             $resRuns = Number::abbreviate($result['runs']) . ' runs';
-            $resRuns .= ' in ' . round(1000 * $result['time'], 4) . ' ms';
+            $resRuns .= ' in ' . $this->nanotimeToRead($result['time']);
             if ($result['runs'] != $this->times) {
                 $resRuns .= ' ~ missed ' . ($this->times - $result['runs']) . ' runs';
             }
@@ -334,7 +314,7 @@ final class Benchmark
 
     private function canSelfKeepGoing(): bool
     {
-        if (null != $this->timeLimit && microtime(true) - $this->constructTime > $this->timeLimit) {
+        if (null != $this->timeLimit && hrtime(true) - $this->constructTime > $this->timeLimit) {
             return false;
         }
 
@@ -343,15 +323,15 @@ final class Benchmark
 
     private function canPHPKeepGoing(): bool
     {
-        if (0 != $this->maxExecutionTime && microtime(true) - $this->requestTime > $this->maxExecutionTime) {
+        if (0 != $this->maxExecutionTime && hrtime(true) - $this->requestTime > $this->maxExecutionTime) {
             return false;
         }
 
         return true;
     }
 
-    private function microtimeToRead(float $microtime): string
+    private function nanotimeToRead(float $nanotime): string
     {
-        return number_format($microtime * 1000, 2) . ' ms';
+        return number_format($nanotime / 1e+6, 2) . ' ms';
     }
 }

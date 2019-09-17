@@ -32,7 +32,7 @@ final class Stopwatch
     /** @var float */
     private $timeEnd;
 
-    /** @var float Microtime */
+    /** @var float Nanotime */
     private $timeElapsed;
 
     /** @var string The time elapsed, in miliseconds with tis unit (100 ms) */
@@ -49,12 +49,12 @@ final class Stopwatch
         $this->marks[] = 0;
         $this->index[] = 'start';
         $this->gap = 0;
-        $this->timeStart = microtime(true);
+        $this->timeStart = hrtime(true);
     }
 
     public function record(string $flagName): void
     {
-        $then = microtime(true);
+        $then = hrtime(true);
         if ('stop' == $flagName) {
             throw new InvalidArgumentException(
                 (new Message('Use of reserved flag name %flagName%.'))
@@ -71,14 +71,14 @@ final class Stopwatch
             );
         }
         $this->index[] = $flagName;
-        $now = microtime(true);
+        $now = hrtime(true);
         $this->gap += $now - $then;
         $this->marks[] = $now - $this->gap;
     }
 
     public function stop(): void
     {
-        $this->timeEnd = microtime(true);
+        $this->timeEnd = hrtime(true);
         $this->timeElapsed = $this->timeEnd - $this->timeStart - $this->gap;
         $this->timeElapsedRead = $this->microtimeToRead($this->timeElapsed);
         $prevMicrotime = 0;
@@ -108,8 +108,8 @@ final class Stopwatch
         return $this->timeElapsedRead;
     }
 
-    private function microtimeToRead(float $microtime): string
+    private function microtimeToRead(float $nanotime): string
     {
-        return number_format($microtime * 1000, 2) . ' ms';
+        return number_format($nanotime / 1e+6, 2) . ' ms';
     }
 }
