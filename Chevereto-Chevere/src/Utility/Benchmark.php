@@ -102,6 +102,9 @@ final class Benchmark
     /** @var int */
     private $recordsCount;
 
+    /** @var int */
+    private $recordsProcessed;
+
     /** @var array The benchmark document (lines) */
     private $lines;
 
@@ -241,6 +244,7 @@ final class Benchmark
             $this->results[$id] = [
                 'time' => $timeTaken,
                 'runs' => $this->runs,
+                //'ads' => ,
             ];
             $this->timeTaken += $timeTaken;
         }
@@ -266,7 +270,6 @@ final class Benchmark
         $this->recordsCount = count($this->records);
         if ($this->recordsCount > 1) {
             foreach ($this->records as $id => $timeTaken) {
-                // $timeTaken = $this->results[$id]['time'];
                 if (!isset($fastestTime)) {
                     $fastestTime = $timeTaken;
                 } else {
@@ -278,31 +281,36 @@ final class Benchmark
 
     private function processResults(): void
     {
-        $i = 0;
+        $this->recordsProcessed = 0;
         foreach ($this->records as $id => $timeTaken) {
-            ++$i;
-            $name = $this->index[$id];
-            $resultTitle = $name;
-            $result = $this->results[$id];
-            if (1 == $i) {
-                if ($this->recordsCount > 1) {
-                    $resultTitle .= ' (fastest)';
-                }
-            } else {
-                $resultTitle .= ' (' . $result['adds'] . ' slower)';
-            }
-            if (CLI) {
-                $resultTitle = $this->consoleColor->apply(1 == $i ? 'green' : 'red', $resultTitle);
-            }
-            $this->lines[] = $resultTitle;
-            $resRuns = Number::abbreviate($result['runs']) . ' runs';
-            $resRuns .= ' in ' . $this->nanotimeToRead($result['time']);
-            if ($result['runs'] != $this->times) {
-                $resRuns .= ' ~ missed ' . ($this->times - $result['runs']) . ' runs';
+            $this->lines[] = $this->getResultTitle($id);
+            $resRuns = Number::abbreviate($this->results[$id]['runs']) . ' runs';
+            $resRuns .= ' in ' . $this->nanotimeToRead($this->results[$id]['time']);
+            if ($this->results[$id]['runs'] != $this->times) {
+                $resRuns .= ' ~ missed ' . ($this->times - $this->results[$id]['runs']) . ' runs';
             }
             $this->lines[] = $resRuns;
             $this->lines[] = $this->lineSeparator;
+            $this->recordsProcessed++;
         }
+    }
+
+    private function getResultTitle(int $id): string
+    {
+        $name = $this->index[$id];
+        $resultTitle = $name;
+        if (0 == $this->recordsProcessed) {
+            if ($this->recordsCount > 0) {
+                $resultTitle .= ' (fastest)';
+            }
+        } else {
+            $resultTitle .= ' (' . $this->results[$id]['adds'] . ' slower)';
+        }
+        if (CLI) {
+            $resultTitle = $this->consoleColor->apply(0 == $this->recordsProcessed ? 'green' : 'red', $resultTitle);
+        }
+
+        return $resultTitle;
     }
 
     private function handleAbortedRes(): void
