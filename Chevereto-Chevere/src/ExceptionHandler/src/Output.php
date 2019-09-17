@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Chevere\ExceptionHandler\src;
 
 use const Chevere\CLI;
+
 use DateTime;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Symfony\Component\HttpFoundation\JsonResponse as HttpJsonResponse;
-use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Chevere\Console\Console;
 use Chevere\ExceptionHandler\ExceptionHandler;
 use Chevere\Json;
-use Chevere\Message;
+use Chevere\Message\Message;
 
 /**
  * Provides ExceptionHandler output by passing a Formatter. FIXME: Don't handle responses!

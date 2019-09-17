@@ -11,12 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Utility;
+namespace Chevere\Benchmark;
 
 use const Chevere\CLI;
 
+use Chevere\DateTime\DateTime;
 use LogicException;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Traits\PrintableTrait;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
@@ -210,7 +211,7 @@ final class Benchmark
             $this->lineSeparator,
             $head,
             $this->lineSeparator,
-            'Start: ' . DateTime::getUTC(),
+            'Start: ' . DateTime::getUtcAtom(),
             'Hostname: ' . gethostname(),
             'PHP version: ' . phpversion(),
             'Server: ' . php_uname('s') . ' ' . php_uname('r') . ' ' . php_uname('m'),

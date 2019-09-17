@@ -15,14 +15,12 @@ namespace Chevere\Path;
 
 use const Chevere\ROOT_PATH;
 
-use Chevere\Message;
-use Chevere\Utility\Str;
-use InvalidArgumentException;
 use LogicException;
 use RuntimeException;
-
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
+use Chevere\Message\Message;
+use Chevere\Utility\Str;
 
 final class Path
 {
@@ -123,7 +121,7 @@ final class Path
         );
 
         $removed = [];
-        
+
         foreach ($files as $fileinfo) {
             $inode = $fileinfo->getRealPath();
             if ($fileinfo->isDir()) {

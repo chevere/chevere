@@ -17,7 +17,7 @@ use LogicException;
 
 use const Chevere\APP_PATH;
 use Chevere\Contracts\Api\ApiContract;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Controller\ArgumentsWrap;
 use Chevere\Http\Response;

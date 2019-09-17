@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\JsonApi;
 
+use const Chevere\CLI;
+
 use JsonException;
 use InvalidArgumentException;
-use Chevere\Message;
-use const Chevere\CLI;
+use Chevere\Message\Message;
 
 final class JsonApi
 {

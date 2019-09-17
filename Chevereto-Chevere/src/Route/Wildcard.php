@@ -15,7 +15,7 @@ namespace Chevere\Route;
 
 use LogicException;
 use InvalidArgumentException;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Validate;
 use Chevere\Utility\Str;
 
@@ -62,7 +62,7 @@ final class Wildcard
 
     private function validateRegex()
     {
-        if (!Validate::regex('/'.$this->regex.'/')) {
+        if (!Validate::regex('/' . $this->regex . '/')) {
             throw new InvalidArgumentException(
                 (new Message('Invalid regex pattern %regex%.'))
                     ->code('%regex%', $this->regex)
@@ -73,7 +73,7 @@ final class Wildcard
 
     private function validateRoutePathMatch(): void
     {
-        if (!(Str::contains("{{$this->wildcardName}}", $this->route->path()) || Str::contains('{'."$this->wildcardName?".'}', $this->route->path()))) {
+        if (!(Str::contains("{{$this->wildcardName}}", $this->route->path()) || Str::contains('{' . "$this->wildcardName?" . '}', $this->route->path()))) {
             throw new LogicException(
                 (new Message("Wildcard %wildcard% doesn't exists in %path%."))
                     ->code('%wildcard%', $this->wildcardString)

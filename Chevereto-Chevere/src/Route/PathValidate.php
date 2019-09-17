@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Route;
 
 use InvalidArgumentException;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Utility\Str;
 use Chevere\Contracts\Route\PathValidateContract;
 

@@ -18,7 +18,7 @@ use Chevere\Console\Command;
 use Chevere\VarDump\PlainVarDump;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Controller\Controller;
-use Chevere\Message;
+use Chevere\Message\Message;
 use InvalidArgumentException;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Symfony\Component\Console\Helper\FormatterHelper;

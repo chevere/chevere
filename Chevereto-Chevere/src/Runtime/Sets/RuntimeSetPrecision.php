@@ -15,7 +15,7 @@ namespace Chevere\Runtime\Sets;
 
 use Chevere\Contracts\Runtime\RuntimeSetContract;
 use RuntimeException;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Runtime\Traits\RuntimeSet;
 
 class RuntimeSetPrecision implements RuntimeSetContract

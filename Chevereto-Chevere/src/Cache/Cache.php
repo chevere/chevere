@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Cache;
 
 use InvalidArgumentException;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\File;
 use Chevere\FileReturn\FileReturn;
 use Chevere\Path\Path;

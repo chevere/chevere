@@ -17,8 +17,7 @@ use const Chevere\APP_PATH;
 
 use DateTime;
 use DateTimeZone;
-use Throwable;
-use Chevere\Http\Request;
+use TypeError;
 use Chevere\Http\ServerRequest;
 use Chevere\App\Loader;
 use Chevere\Data\Data;
@@ -38,8 +37,6 @@ use Chevere\Contracts\DataContract;
 use Chevere\Contracts\Http\RequestContract;
 use Chevere\Data\Traits\DataAccessTrait;
 use Chevere\Data\Traits\DataKeyTrait;
-use Psr\Http\Message\RequestInterface;
-use TypeError;
 
 /**
  * The Chevere exception handler.

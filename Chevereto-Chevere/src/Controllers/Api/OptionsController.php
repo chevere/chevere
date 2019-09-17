@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Controllers\Api;
 
 use const Chevere\CLI;
-use Chevere\Console\Console;
-use Chevere\Api\Api;
-use Chevere\Message;
-use Chevere\Controller\Controller;
+
 use InvalidArgumentException;
+use Chevere\Console\Console;
+use Chevere\Message\Message;
+use Chevere\Controller\Controller;
 
 /**
  * Exposes API endpoint options.

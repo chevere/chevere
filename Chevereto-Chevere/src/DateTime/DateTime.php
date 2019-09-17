@@ -11,30 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Utility;
+namespace Chevere\DateTime;
 
-use DateTimeInterface;
+use DateTime as DateTimeBase;
 use InvalidArgumentException;
 
-// $var = new DateTime('2016-5-05');
-// $var = '2017-12-05 01:02:03';
-// $date = '2016-12-4 01:02:03';
-// $dates = [];
-// for($i=0;$i<730;$i++) {
-//     $dates[] = (new DateTime($date))->modify("+$i day")->format(DateTime::SQL);
-// }
-// $dates[] = '2018-05-06 19:54:00';
-// foreach($dates as $k => $v) {
-//     $to = (new DateTime($v))->timeAgo();
-//     dump($v, $to);
-// }
-// $res = (new DateTime('2015-05-05 00:00:00'))->timeBetween('2015-05-05 00:40:30', 's');
-// //
-// $res = (new DateTime($var))->add(new \DateInterval('PT2S'));
-// $res = (new DateTime($var))->modify('-2 years, -2 seconds')->format(DateTime::ATOM);
-// dump($var, $res, $to);
-
-class DateTime extends \DateTime implements DateTimeInterface
+// FIXME: Set the constants in the contract
+final class DateTime extends DateTimeBase
 {
     const UNIT_HOUR = 'h';
     const UNIT_MINUTE = 'i';
@@ -66,17 +49,6 @@ class DateTime extends \DateTime implements DateTimeInterface
 
     const SQL = 'Y-m-d H:i:s';
 
-    // El pueblinski minski está morinski de hambrinski!
-    const MATRIOSHKA = [
-        self::UNIT_YEAR => 1,
-        self::UNIT_MONTH => 1 / 12,
-        self::UNIT_WEEK => 1 / 4,
-        self::UNIT_DAY => 1 / 7,
-        self::UNIT_HOUR => 1 / 24,
-        self::UNIT_MINUTE => 1 / 60,
-        self::UNIT_SECOND => 1 / 60,
-    ];
-
     const MINUTE_SECONDS = 60;
     const HOUR_SECONDS = 3600;
     const DAY_SECONDS = 86400;
@@ -95,31 +67,26 @@ class DateTime extends \DateTime implements DateTimeInterface
     ];
 
     /**
-     * Get datetime UTC ATOM (RFC3339).
+     * Get datetime UTC
      *
      * @param string $format date format to use
      *
-     * @return string datetime UTC
+     * @return string datetime UTC (defined by $format)
      */
-    public static function getUTC(string $format = self::ATOM): string
+    public static function getUtc(string $format): string
     {
         return gmdate($format);
     }
 
     /**
-     * Format datetime as MySQL datetime format.
+     * Get datetime UTC ATOM (RFC3339).
      *
-     * @param string $datetime timestamp
      *
-     * @return string datetime MySQL (YYYY-MM-DD HH:MM:SS)
+     * @return string datetime UTC ATOM RFC3339
      */
-    public static function formatSQL(string $datetime = null): string
+    public static function getUtcAtom(): string
     {
-        if (!isset($datetime)) {
-            return static::getUTC(static::SQL);
-        }
-
-        return (new self($datetime))->format(static::SQL);
+        return gmdate(self::ATOM);
     }
 
     /**

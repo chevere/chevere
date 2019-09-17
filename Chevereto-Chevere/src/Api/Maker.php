@@ -22,7 +22,7 @@ use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Http\Method;
 use Chevere\Http\Methods;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Path\Path;
 use Chevere\Path\PathHandle;
 use Chevere\File;

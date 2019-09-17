@@ -16,10 +16,10 @@ namespace Chevere\Path;
 use const Chevere\APP_PATH;
 
 use InvalidArgumentException;
-use Chevere\File;
-use Chevere\Message;
-use Chevere\Utility\Str;
 use LogicException;
+use Chevere\File;
+use Chevere\Message\Message;
+use Chevere\Utility\Str;
 
 final class PathHandle
 {
@@ -143,7 +143,7 @@ final class PathHandle
         }
         // $this->path is not an absolute path neither a wrapper or anything like that
         if (!Path::isAbsolute($this->path)) {
-            $this->path = $this->context.$this->path;
+            $this->path = $this->context . $this->path;
         }
         // Resolve . and ..
         $this->path = Path::resolve($this->path);

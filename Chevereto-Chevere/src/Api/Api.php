@@ -16,7 +16,7 @@ namespace Chevere\Api;
 use Chevere\Cache\Cache;
 use Chevere\Cache\Exceptions\CacheNotFoundException;
 use LogicException;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Contracts\Api\ApiContract;
 use Chevere\FileReturn\Exceptions\FileNotFoundException;
 use Chevere\Stopwatch;
@@ -33,8 +33,7 @@ final class Api implements ApiContract
     private static $api;
 
     public function __construct()
-    {
-    }
+    { }
 
     public static function fromMaker(Maker $maker): ApiContract
     {

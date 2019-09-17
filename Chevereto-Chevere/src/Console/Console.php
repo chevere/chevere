@@ -13,15 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Console;
 
-use Throwable;
-use TypeError;
 use RuntimeException;
 use Chevere\App\Loader;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Chevere\Contracts\App\LoaderContract;
-use Chevere\Contracts\Console\CliContract;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Symfony\Component\Console\Application as Symfony;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -88,7 +85,6 @@ final class Console
         self::$style = new SymfonyStyle(self::$input, self::$output);
         self::$isAvailable = true;
         $this->addCommands();
-        // self::$application = new Application($this);
     }
 
     public static function input(): InputInterface

@@ -16,8 +16,7 @@ namespace Chevere\FileReturn;
 use RuntimeException;
 use Chevere\File;
 use Chevere\FileReturn\Exceptions\FileNotFoundException;
-use Chevere\FileReturn\Exceptions\NotFoundException;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Path\PathHandle;
 
 /**

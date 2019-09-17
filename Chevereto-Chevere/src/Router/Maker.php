@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Router;
 
+use LogicException;
 use Chevere\ArrayFile\ArrayFile;
 use Chevere\ArrayFile\ArrayFileCallback;
-use LogicException;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Path\PathHandle;
@@ -64,8 +64,7 @@ final class Maker
     private $cache;
 
     public function __construct()
-    {
-    }
+    { }
 
     /**
      * {@inheritdoc}

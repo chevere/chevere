@@ -17,7 +17,7 @@ declare(strict_types=1);
 namespace Chevere\Utility;
 
 use InvalidArgumentException;
-use Chevere\Message;
+use Chevere\Message\Message;
 
 abstract class Color
 {
@@ -36,9 +36,9 @@ abstract class Color
     {
         $hex = str_replace('#', '', $hex);
         if (3 == strlen($hex)) {
-            $r = hexdec(substr($hex, 0, 1).substr($hex, 0, 1));
-            $g = hexdec(substr($hex, 1, 1).substr($hex, 1, 1));
-            $b = hexdec(substr($hex, 2, 1).substr($hex, 2, 1));
+            $r = hexdec(substr($hex, 0, 1) . substr($hex, 0, 1));
+            $g = hexdec(substr($hex, 1, 1) . substr($hex, 1, 1));
+            $b = hexdec(substr($hex, 2, 1) . substr($hex, 2, 1));
         } else {
             $r = hexdec(substr($hex, 0, 2));
             $g = hexdec(substr($hex, 2, 2));
@@ -46,7 +46,7 @@ abstract class Color
         }
         $rgb = [$r, $g, $b];
 
-        return $array ? $rgb : ('rgb('.implode(',', $rgb).')');
+        return $array ? $rgb : ('rgb(' . implode(',', $rgb) . ')');
     }
 
     /**

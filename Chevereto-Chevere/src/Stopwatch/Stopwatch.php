@@ -11,10 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere;
+namespace Chevere\Stopwatch;
 
-use Chevere\Utility\Time;
 use InvalidArgumentException;
+use Chevere\Message\Message;
+use Chevere\Utility\Time;
 
 /**
  * A simple stopwatch, useful for userland execution time measurement.

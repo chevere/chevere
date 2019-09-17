@@ -15,7 +15,7 @@ namespace Chevere\Route;
 
 use LogicException;
 use InvalidArgumentException;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Path\Path;
 use Chevere\Controllers\HeadController;
 use Chevere\Utility\Str;

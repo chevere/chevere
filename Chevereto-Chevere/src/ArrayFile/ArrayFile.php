@@ -18,7 +18,7 @@ use ArrayIterator;
 use IteratorAggregate;
 use LogicException;
 use Chevere\FileReturn\FileReturn;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Type;
 use Chevere\Path\PathHandle;
 

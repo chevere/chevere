@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Router;
 
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Cache\Cache;
 use Chevere\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Contracts\Route\RouteContract;
@@ -41,8 +41,7 @@ final class Router implements RouterContract
     private $arguments;
 
     public function __construct()
-    {
-    }
+    { }
 
     public static function fromMaker(Maker $maker): RouterContract
     {

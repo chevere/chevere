@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionFunctionAbstract;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Contracts\Controller\ControllerContract;
 
 /**
@@ -61,7 +61,7 @@ final class ArgumentsWrap
                 throw new InvalidArgumentException(
                     (new Message('Unmatched argument %argument% in %controller%'))
                         ->code('%argument%', $name)
-                        ->code('%controller%', get_class($this->controller).'::__invoke')
+                        ->code('%controller%', get_class($this->controller) . '::__invoke')
                         ->toString()
                 );
             }

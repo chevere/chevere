@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Router;
 
 use LogicException;
-use Chevere\Message;
+use Throwable;
+use Chevere\Message\Message;
 use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
-use Chevere\Contracts\Router\ResolverContract;
-use Throwable;
 
 final class Resolver
 {

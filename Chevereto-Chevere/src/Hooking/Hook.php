@@ -15,7 +15,7 @@ namespace Chevere\Hooking;
 
 use InvalidArgumentException;
 use Chevere\Path\Path;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Utility\Str;
 
 /**

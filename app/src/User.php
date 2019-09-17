@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App;
 
 use LogicException;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\FromString; // Sets the base string descriptor ($stringDescription, $stringRegex)
 use Chevere\Interfaces\CreateFromString; // Exposes that has ::createFromString
 

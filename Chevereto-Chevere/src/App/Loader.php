@@ -31,7 +31,7 @@ use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Render\RenderContract;
 use Chevere\Contracts\Router\RouterContract;
 use Chevere\Http\ServerRequest;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Router\Exception\RouteNotFoundException;
 use Exception;
 use TypeError;
@@ -73,7 +73,7 @@ final class Loader implements LoaderContract
         if (CLI) {
             Console::bind($this);
         }
-        
+
         $this->build = new Build($this);
         $this->assert();
 
@@ -205,7 +205,7 @@ final class Loader implements LoaderContract
         self::$runtime = $runtime;
     }
 
-    private function assert() : void
+    private function assert(): void
     {
         if (!DEV && !Console::isBuilding() && !$this->build->exists()) {
             throw new NeedsToBeBuiltException(

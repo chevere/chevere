@@ -16,7 +16,7 @@ namespace Chevere\Controller;
 use LogicException;
 use ReflectionClass;
 use Roave\BetterReflection\BetterReflection;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Api\Api;
 use Chevere\Utility\Str;
 use Chevere\Contracts\Controller\ControllerContract;
@@ -124,9 +124,9 @@ final class Inspect implements InspectContract
                     ->code('%reflectionName%', $this->reflection->getName())
                     ->code('%interfaceControllerResource%', static::INTERFACE_CONTROLLER_RESOURCE)
                     ->code('%reflectionFilename%', $this->reflection->getFileName())
-                    ->code('%endpoint%', $this->httpMethod.' api/users')
+                    ->code('%endpoint%', $this->httpMethod . ' api/users')
                     ->code('%className%', $this->className)
-                    ->code('%propResources%', 'const '.static::PROP_RESOURCES)
+                    ->code('%propResources%', 'const ' . static::PROP_RESOURCES)
                     ->code('%filepath%', $this->filepath)
                     ->toString()
             );
@@ -236,14 +236,14 @@ final class Inspect implements InspectContract
         $pathComponent = $this->getPathComponent($this->className);
         $pathComponents = explode('/', $pathComponent);
         if ($this->useResource) {
-            $resourceWildcard = '{'.array_keys($this->resources)[0].'}';
+            $resourceWildcard = '{' . array_keys($this->resources)[0] . '}';
             if ($this->isResource) {
                 // Append the resource wildcard: api/users/{wildcard}
-                $pathComponent .= '/'.$resourceWildcard;
+                $pathComponent .= '/' . $resourceWildcard;
             } elseif ($this->isRelatedResource) {
                 $related = array_pop($pathComponents);
                 // Inject the resource wildcard: api/users/{wildcard}/related
-                $pathComponent = implode('/', $pathComponents).'/'.$resourceWildcard.'/'.$related;
+                $pathComponent = implode('/', $pathComponents) . '/' . $resourceWildcard . '/' . $related;
                 /*
                 * Code below generates api/users/{user}/relationships/friends (relationship URL)
                 * from api/users/{user}/friends (related resource URL).
@@ -264,7 +264,7 @@ final class Inspect implements InspectContract
     private function getPathComponent(string $className): string
     {
         $classShortName = substr($className, strrpos($className, '\\') + 1);
-        $classNamespace = Str::replaceLast('\\'.$classShortName, '', $className);
+        $classNamespace = Str::replaceLast('\\' . $classShortName, '', $className);
         $classNamespaceNoApp = Str::replaceFirst('App\\', '', $classNamespace);
 
         return strtolower(Str::forwardSlashes($classNamespaceNoApp));

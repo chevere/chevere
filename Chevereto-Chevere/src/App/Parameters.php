@@ -15,7 +15,7 @@ namespace Chevere\App;
 
 use LogicException;
 use Chevere\ArrayFile\ArrayFile;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\Data\Traits\DataKeyTrait;
 

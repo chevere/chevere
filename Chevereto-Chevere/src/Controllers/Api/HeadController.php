@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Controllers\Api;
 
 use const Chevere\CLI;
+
+use InvalidArgumentException;
 use Chevere\Console\Console;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Controller\Controller;
 use Chevere\Route\Route;
-use InvalidArgumentException;
 
 /**
  * Identical to GET, but without any message-boby in the response.

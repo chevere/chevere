@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use JsonException;
 use Chevere\Console\Command;
 use Chevere\Contracts\App\LoaderContract;
-use Chevere\Message;
+use Chevere\Message\Message;
 use Chevere\Http\Response;
 use Chevere\Http\ServerRequest;
 use Chevere\Router\Exception\RouteNotFoundException;

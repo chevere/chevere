@@ -16,7 +16,7 @@ namespace Chevere\Traits;
 use LogicException;
 use Chevere\File;
 use Chevere\Path\Path;
-use Chevere\Message;
+use Chevere\Message\Message;
 
 trait CallableTrait
 {
