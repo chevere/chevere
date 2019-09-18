@@ -13,24 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\VarDump;
 
-use const Chevere\CLI;
-
 use Throwable;
 use Reflector;
 use ReflectionProperty;
 use ReflectionObject;
 use Chevere\Path\Path;
 use Chevere\Str\Str;
-use Chevere\VarDump\Formatters\Dumper;
 
 /**
  * Analyze a variable and provide a formated string representation of its type and data.
  */
 final class VarDump
 {
-    // FIXME: Get rid of this concept
-    const RUNTIME = CLI ? ConsoleVarDump::class : HtmlVarDump::class;
-
     const TYPE_STRING = 'string';
     const TYPE_FLOAT = 'float';
     const TYPE_INTEGER = 'integer';
@@ -92,8 +86,15 @@ final class VarDump
     public function __construct($formatter)
     {
         $this->formatter = $formatter;
+        $this->dontDump = [];
     }
 
+    public function setDontDump(array $dontDump): void
+    {
+        $this->dontDump = $dontDump;
+    }
+
+    // FIXME: Think in a better name
     public function dump($var, int $indent = 0, int $depth = 0): void
     {
         ++$depth;
@@ -112,11 +113,6 @@ final class VarDump
         $this->setTemplate();
         $this->handleParentheses();
         $this->setOutput();
-    }
-
-    public function setFormatter($formatter): void
-    {
-        $this->formatter = $formatter;
     }
 
     public function toString(): string
@@ -164,11 +160,16 @@ final class VarDump
     private function processObject(): void
     {
         $this->reflectionObject = new ReflectionObject($this->expression);
-        // if (in_array($this->reflectionObject->getName(), $this->dontDump)) {
-        //     $this->val .= $this->formatter->wrap(static::_OPERATOR, $this->formatter->getEmphasis($this->reflectionObject->getName()));
+        if (in_array($this->reflectionObject->getName(), $this->dontDump)) {
+            $this->val .= $this->formatter->wrap(
+                static::_OPERATOR,
+                $this->formatter->getEmphasis(
+                    $this->reflectionObject->getName()
+                )
+            );
 
-        //     return;
-        // }
+            return;
+        }
         $this->setProperties();
         foreach ($this->properties as $k => $v) {
             $this->processObjectProperty($k, $v);
@@ -213,19 +214,35 @@ final class VarDump
                 $p = $r->getProperty($key);
                 $p->setAccessible(true);
                 if ($aux == $p->getValue($aux)) {
-                    $this->val .= $this->formatter->wrap(static::_OPERATOR, '(' . $this->formatter->getEmphasis('circular object reference') . ')');
+                    $this->val .= $this->formatter->wrap(
+                        static::_OPERATOR,
+                        '(' . $this->formatter->getEmphasis('circular object reference') . ')'
+                    );
                 }
-
                 return;
             } catch (Throwable $e) {
                 return;
             }
         }
         if ($this->depth < 4) {
-            $this->val .= (new self($aux, $this->indent, $this->depth))->toString();
+            $new = $this->respawn();
+            $new->dump($aux, $this->indent, $this->depth);
+            $this->val .= $new->toString();
         } else {
-            $this->val .= $this->formatter->wrap(static::_OPERATOR, '(' . $this->formatter->getEmphasis('max depth reached') . ')');
+            $this->val .= $this->formatter->wrap(
+                static::_OPERATOR,
+                '(' . $this->formatter->getEmphasis('max depth reached') . ')'
+            );
         }
+    }
+
+    private function respawn(): self
+    {
+        $new = new self($this->formatter);
+        if (!empty($this->dontDump)) {
+            $new->setDontDump($this->dontDump);
+        }
+        return $new;
     }
 
     private function processArray(): void
@@ -236,10 +253,14 @@ final class VarDump
             $aux = $v;
             $isCircularRef = is_array($aux) && isset($aux[$k]) && $aux == $aux[$k];
             if ($isCircularRef) {
-                $this->val .= $this->formatter->wrap(static::_OPERATOR, '(' . $this->formatter->getEmphasis('circular array reference') . ')');
+                $this->val .= $this->formatter->wrap(
+                    static::_OPERATOR,
+                    '(' . $this->formatter->getEmphasis('circular array reference') . ')'
+                );
             } else {
-                $this->dump($aux, $this->indent);
-                $this->val .= $this->toString();
+                $new = $this->respawn();
+                $new->dump($aux, $this->indent);
+                $this->val .= $new->toString();
             }
         }
         $this->parentheses = 'size=' . count($this->expression);

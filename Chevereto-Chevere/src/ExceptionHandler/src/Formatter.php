@@ -13,17 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\ExceptionHandler\src;
 
+use const Chevere\CLI;
+
 use Throwable;
 use ErrorException;
 use Symfony\Component\Console\Output\OutputInterface;
-use const Chevere\CLI;
 use Chevere\Console\Console;
 use Chevere\ExceptionHandler\ExceptionHandler;
-use Chevere\VarDump\VarDump;
-use Chevere\VarDump\PlainVarDump;
 use Chevere\Str\Str;
 use Chevere\Contracts\DataContract;
 use Chevere\Data\Traits\DataKeyTrait;
+use Chevere\VarDump\Formatters\DumperFormatter;
+use Chevere\VarDump\Formatters\PlainFormatter;
 
 /**
  * Formats the error exception in HTML (default), console and plain text.
@@ -85,8 +86,6 @@ final class Formatter
 
     public function __construct(ExceptionHandler $exceptionHandler)
     {
-        // FIXME: new VarDump
-        $this->varDump = VarDump::RUNTIME;
         $this->exceptionHandler = $exceptionHandler;
         $this->wrap = $this->exceptionHandler->wrap();
         $this->exception = $this->wrap->exception();
@@ -267,14 +266,12 @@ final class Formatter
             $k = '_' . $v;
             $v = isset($GLOBALS[$k]) ? $GLOBALS[$k] : null;
             if ($v) {
-                // FIXME: new VarDump
-                $wrapped = $this->varDump::out($v);
+                $wrapped = DumperFormatter::out($v);
                 if (!CLI) {
                     $wrapped = '<pre>' . $wrapped . '</pre>';
                 }
                 $this->setRichContentSection($k, ['$' . $k, $this->wrapStringHr($wrapped)]);
-                // FIXME: new VarDump
-                $this->setPlainContentSection($k, ['$' . $k, strip_tags($this->wrapStringHr(PlainVarDump::out($v)))]);
+                $this->setPlainContentSection($k, ['$' . $k, strip_tags($this->wrapStringHr(PlainFormatter::out($v)))]);
             }
         }
     }

@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\VarDump\Formatters;
 
-use Chevere\VarDump\src\Wrapper;
 use Chevere\VarDump\VarDump;
 
 /**
  * Provide plain text VarDump representation.
  */
-final class Plain
+final class PlainFormatter
 {
   public function getPrefix(int $indent): string
   {

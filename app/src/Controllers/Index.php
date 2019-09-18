@@ -24,8 +24,7 @@ class Index extends Controller
     public function __invoke()
     {
         // throw new Exception('test');
-        dd('Hello world!');
-        // die('Hello World!');
+        die('Hello World!');
         // $time = microtime(true) - BOOTSTRAP_TIME;
         // die(round($time * 1000) . 'ms');
         // $api = new Data('info', 'api');

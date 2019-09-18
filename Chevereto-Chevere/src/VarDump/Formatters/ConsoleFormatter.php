@@ -13,33 +13,33 @@ declare(strict_types=1);
 
 namespace Chevere\VarDump\Formatters;
 
-use Chevere\VarDump\src\Template;
 use Chevere\VarDump\src\Wrapper;
 use Chevere\VarDump\VarDump;
 
 /**
- * Provide HTML VarDump representation.
+ * Provide console VarDump representation.
  */
-final class Html
+final class ConsoleFormatter
 {
   public function getPrefix(int $indent): string
   {
-    return str_repeat(Template::HTML_INLINE_PREFIX, $indent);
+    return str_repeat(' ', $indent);
   }
 
   public function getEmphasis(string $string): string
   {
-    return sprintf(Template::HTML_EMPHASIS, $string);
+    return $string;
   }
 
   public function getEncodedChars(string $string): string
   {
-    return htmlspecialchars($string);
+    return $string;
   }
 
   public function wrap(string $key, string $dump): string
   {
     $wrapper = new Wrapper($key, $dump);
+    $wrapper->setUseCli();
 
     return $wrapper->toString();
   }

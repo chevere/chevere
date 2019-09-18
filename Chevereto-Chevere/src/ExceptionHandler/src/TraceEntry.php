@@ -14,10 +14,15 @@ declare(strict_types=1);
 namespace Chevere\ExceptionHandler\src;
 
 use ReflectionMethod;
+
+use const Chevere\CLI;
 use const Chevere\PATH;
 use Chevere\App\App;
 use Chevere\Path\Path;
 use Chevere\Str\Str;
+use Chevere\VarDump\Formatters\ConsoleFormatter;
+use Chevere\VarDump\Formatters\DumperFormatter;
+use Chevere\VarDump\Formatters\PlainFormatter;
 use Chevere\VarDump\VarDump;
 use Chevere\VarDump\PlainVarDump;
 
@@ -38,9 +43,6 @@ final class TraceEntry
     /** @var string Rich representation of the entry arguments (colored) */
     private $richArgs;
 
-    /** @var string */
-    private $varDump;
-
     /** @var array */
     private $rich;
 
@@ -51,8 +53,6 @@ final class TraceEntry
     {
         $this->entry = $entry;
         $this->key = $key;
-        // FIXME: new VarDump
-        $this->varDump = VarDump::RUNTIME;
         $this->handleProcessMissingClassFile();
         $this->handleSetEntryArguments();
         $this->handleProcessAnonClass();
@@ -89,6 +89,7 @@ final class TraceEntry
 
     private function setRich(): void
     {
+        $dumperFormatter = new DumperFormatter();
         $this->rich = $this->plain;
         array_pop($this->rich);
         foreach ([
@@ -99,7 +100,7 @@ final class TraceEntry
             '%t%' => VarDump::_OPERATOR,
             '%m%' => VarDump::_FUNCTION,
         ] as $k => $v) {
-            $wrapper = VarDump::wrap($v, (string) $this->plain[$k]);
+            $wrapper = $dumperFormatter->wrap($v, (string) $this->plain[$k]);
             $this->rich[$k] = isset($this->plain[$k]) ? $wrapper : null;
         }
         $this->rich['%a%'] = $this->richArgs;
@@ -131,12 +132,19 @@ final class TraceEntry
 
     private function setFrameArguments()
     {
+        $plainVarDump = new VarDump(new PlainFormatter());
+        $richVarDump = new VarDump(new DumperFormatter());
+
         $this->plainArgs = "\n";
         $this->richArgs = "\n";
-        foreach ($this->entry['args'] as $k => $v) {
+        foreach ($this->entry['args'] as $k => $expression) {
             $aux = 'Arg#' . ($k + 1) . ' ';
-            $this->plainArgs .= $aux . PlainVarDump::out($v, null, [App::class]) . "\n";
-            $this->richArgs .= $aux . $this->varDump::out($v, null, [App::class]) . "\n";
+            $plainVarDump->setDontDump([App::class]);
+            $richVarDump->setDontDump([App::class]);
+            $plainVarDump->dump($expression, 0);
+            $richVarDump->dump($expression, 0);
+            $this->plainArgs .= $aux . $plainVarDump->toString() . "\n";
+            $this->richArgs .= $aux . $richVarDump->toString() . "\n";
         }
         $this->trimTrailingNl($this->plainArgs);
         $this->trimTrailingNl($this->richArgs);

@@ -21,7 +21,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Chevere\Path\Path;
 use Chevere\Str\Str;
-use Chevere\VarDump\Formatters\Dumper as DumperFormatter;
+use Chevere\VarDump\Formatters\DumperFormatter;
 
 /**
  * Dumps information about one or more variables. CLI/HTML aware.

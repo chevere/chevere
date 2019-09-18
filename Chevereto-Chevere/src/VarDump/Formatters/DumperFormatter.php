@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\VarDump\Formatters;
 
+use const Chevere\CLI;
 use Chevere\VarDump\src\Wrapper;
 use Chevere\VarDump\VarDump;
 
 /**
- * Provide console VarDump representation.
+ * Provide Dumper VarDump representation (automatic).
  */
-final class Console
+final class DumperFormatter
 {
   public function getPrefix(int $indent): string
   {
@@ -39,7 +40,9 @@ final class Console
   public function wrap(string $key, string $dump): string
   {
     $wrapper = new Wrapper($key, $dump);
-    $wrapper->setUseCli();
+    if (CLI) {
+      $wrapper->setUseCli();
+    }
 
     return $wrapper->toString();
   }
