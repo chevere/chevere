@@ -11,9 +11,11 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Interfaces;
+namespace Chevere\Contracts\App;
 
-interface RenderableInterface
+interface MiddlewareHandlerContract
 {
-    public function render(): ?string;
+    // public function handle();
+
+    // public function stop();
 }

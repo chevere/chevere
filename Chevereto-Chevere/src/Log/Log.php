@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere;
+namespace Chevere\Log;
 
 use Monolog\Logger;
 use Chevere\Arr\Arr;

@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace App\Middlewares;
 
-use Chevere\Interfaces\HandlerInterface;
+use Chevere\Contracts\App\MiddlewareHandlerContract;
 use Chevere\Interfaces\MiddlewareInterface;
 use Chevere\Http\Request\RequestException;
 
 class RoleAdmin implements MiddlewareInterface
 {
-    public function __construct(HandlerInterface $handler)
+    public function __construct(MiddlewareHandlerContract $handler)
     {
         $userRole = 'user';
         if ('admin' != $userRole) {

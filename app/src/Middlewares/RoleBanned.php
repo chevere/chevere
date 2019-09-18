@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace App\Middlewares;
 
 use Chevere\Contracts\App\AppContract;
-use Chevere\Interfaces\HandlerInterface;
+use Chevere\Contracts\App\MiddlewareHandlerContract;
 use Chevere\Interfaces\MiddlewareInterface;
 
 class RoleBanned implements MiddlewareInterface
 {
-    public function __invoke(AppContract $app, HandlerInterface $handler)
+    public function __invoke(AppContract $app, MiddlewareHandlerContract $handler)
     {
         \dump(__FILE__);
         // $userRole = 'user';

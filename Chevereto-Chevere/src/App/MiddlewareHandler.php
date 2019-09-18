@@ -15,13 +15,13 @@ namespace Chevere\App;
 
 use Throwable;
 use Chevere\Contracts\App\AppContract;
-use Chevere\Interfaces\HandlerInterface;
+use Chevere\Contracts\App\MiddlewareHandlerContract;
 use Chevere\Interfaces\MiddlewareInterface;
 
 /**
  * TODO: Add stop, redirect and other methods needed to alter the flow.
  */
-final class MiddlewareHandler implements HandlerInterface
+final class MiddlewareHandler implements MiddlewareHandlerContract
 {
     /** @var AppContract */
     private $app;

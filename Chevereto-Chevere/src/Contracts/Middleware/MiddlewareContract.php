@@ -11,11 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Interfaces;
+namespace Chevere\Contracts\Middleware;
 
-interface HandlerInterface
+interface MiddlewareContract
 {
-    // public function handle();
-
-    // public function stop();
+    // public function __invoke(App $app, HandlerInterface $handler);
 }
