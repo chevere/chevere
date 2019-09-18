@@ -63,6 +63,7 @@ final class Dumper
     public function __construct(...$vars)
     {
         $this->formatter = new DumperFormatter();
+        $this->varDump = new VarDump($this->formatter);
         $this->vars = $vars;
         $this->numArgs = func_num_args();
         if (0 == $this->numArgs) {
@@ -203,7 +204,9 @@ final class Dumper
 
     private function appendArg(int $pos, $value): void
     {
-        $this->output .= 'Arg#' . $pos . ' ' . $this->formatter::out($value) . "\n\n";
+        $varDump = $this->varDump->respawn();
+        $varDump->dump($value);
+        $this->output .= 'Arg#' . $pos . ' ' . $varDump->toString() . "\n\n";
     }
 
     private function handleProccessOutput(): void

@@ -120,6 +120,15 @@ final class VarDump
         return $this->output ?? '';
     }
 
+    public function respawn(): self
+    {
+        $new = new self($this->formatter);
+        if (!empty($this->dontDump)) {
+            $new->setDontDump($this->dontDump);
+        }
+        return $new;
+    }
+
     private function setOutput(): void
     {
         $this->output = strtr($this->template, [
@@ -234,15 +243,6 @@ final class VarDump
                 '(' . $this->formatter->getEmphasis('max depth reached') . ')'
             );
         }
-    }
-
-    private function respawn(): self
-    {
-        $new = new self($this->formatter);
-        if (!empty($this->dontDump)) {
-            $new->setDontDump($this->dontDump);
-        }
-        return $new;
     }
 
     private function processArray(): void

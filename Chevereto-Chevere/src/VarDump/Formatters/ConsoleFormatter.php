@@ -43,11 +43,4 @@ final class ConsoleFormatter
 
     return $wrapper->toString();
   }
-
-  public static function out($var, int $indent = 0, int $depth = 0): string
-  {
-    $that = new VarDump(new static());
-    $that->dump($var, $indent, $depth);
-    return $that->toString();
-  }
 }

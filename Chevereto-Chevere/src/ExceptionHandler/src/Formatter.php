@@ -25,6 +25,7 @@ use Chevere\Contracts\DataContract;
 use Chevere\Data\Traits\DataKeyTrait;
 use Chevere\VarDump\Formatters\DumperFormatter;
 use Chevere\VarDump\Formatters\PlainFormatter;
+use Chevere\VarDump\VarDump;
 
 /**
  * Formats the error exception in HTML (default), console and plain text.
@@ -262,16 +263,20 @@ final class Formatter
 
     private function processContentGlobals()
     {
+        $dumperVarDump = new VarDump(new DumperFormatter());
+        $plainVarDump = new VarDump(new PlainFormatter());
         foreach (['GET', 'POST', 'FILES', 'COOKIE', 'SESSION', 'SERVER'] as $v) {
             $k = '_' . $v;
             $v = isset($GLOBALS[$k]) ? $GLOBALS[$k] : null;
             if ($v) {
-                $wrapped = DumperFormatter::out($v);
+                $dumperVarDump->dump($v);
+                $plainVarDump->dump($v);
+                $wrapped = $dumperVarDump->toString();
                 if (!CLI) {
                     $wrapped = '<pre>' . $wrapped . '</pre>';
                 }
                 $this->setRichContentSection($k, ['$' . $k, $this->wrapStringHr($wrapped)]);
-                $this->setPlainContentSection($k, ['$' . $k, strip_tags($this->wrapStringHr(PlainFormatter::out($v)))]);
+                $this->setPlainContentSection($k, ['$' . $k, strip_tags($this->wrapStringHr($plainVarDump->toString()))]);
             }
         }
     }
