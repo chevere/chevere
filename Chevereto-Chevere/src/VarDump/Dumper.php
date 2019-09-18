@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\VarDump;
 
+use const Chevere\CLI;
+
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Chevere\Path\Path;
 use Chevere\Str\Str;
+use Chevere\VarDump\Formatters\Dumper as DumperFormatter;
 
 /**
  * Dumps information about one or more variables. CLI/HTML aware.
@@ -28,6 +31,11 @@ final class Dumper
     const BACKGROUND = '#132537';
     const BACKGROUND_SHADE = '#132537';
     const STYLE = 'font: 14px Consolas, monospace, sans-serif; line-height: 1.2; color: #ecf0f1; padding: 15px; margin: 10px 0; word-break: break-word; white-space: pre-wrap; background: ' . self::BACKGROUND . '; display: block; text-align: left; border: none; border-radius: 4px;';
+
+    const OFFSET = 1;
+
+    /** @var DumperFormatter */
+    private $formatter;
 
     private $vars;
 
@@ -52,15 +60,9 @@ final class Dumper
     /** @var string */
     private $callerFilepath;
 
-    /** @var int */
-    private $offset = 1;
-
-    /** @var string */
-    private $varDump;
-
     public function __construct(...$vars)
     {
-        $this->varDump = VarDump::RUNTIME;
+        $this->formatter = new DumperFormatter();
         $this->vars = $vars;
         $this->numArgs = func_num_args();
         if (0 == $this->numArgs) {
@@ -72,13 +74,13 @@ final class Dumper
         $this->setCallerFilepath($this->debugBacktrace[0]['file']);
         $this->handleSelfCaller();
         $this->output = null;
-        if ($this->varDump == ConsoleVarDump::class) {
+        if (CLI) {
             $this->handleConsoleOutput();
         } else {
             $this->handleHtmlOutput();
         }
         $this->handleClass();
-        $this->appendFunction($this->debugBacktrace[$this->offset]['function']);
+        $this->appendFunction($this->debugBacktrace[static::OFFSET]['function']);
         $this->handleFile();
         $this->output .= "\n\n";
         $this->handleArgs();
@@ -97,7 +99,7 @@ final class Dumper
     public static function dd(...$vars)
     {
         static::dump(...$vars);
-        die(1);
+        die(0);
     }
 
     private function handleDebugBacktrace(): void
@@ -160,22 +162,22 @@ final class Dumper
     private function handleClass(): void
     {
         if (isset($this->debugBacktrace[1]['class'])) {
-            $class = $this->debugBacktrace[$this->offset]['class'];
+            $class = $this->debugBacktrace[static::OFFSET]['class'];
             if (Str::startsWith('class@anonymous', $class)) {
                 $class = explode('0x', $class)[0];
             }
-            $this->appendClass($class, $this->debugBacktrace[$this->offset]['type']);
+            $this->appendClass($class, $this->debugBacktrace[static::OFFSET]['type']);
         }
     }
 
     private function appendClass(string $class, string $type): void
     {
-        $this->output .= $this->varDump::wrap('_class', $class) . $type;
+        $this->output .= $this->formatter->wrap('_class', $class) . $type;
     }
 
     private function appendFunction(string $function): void
     {
-        $this->output .= $this->varDump::wrap('_function', $function . '()');
+        $this->output .= $this->formatter->wrap('_function', $function . '()');
     }
 
     private function handleFile(): void
@@ -187,7 +189,7 @@ final class Dumper
 
     private function appendFilepath(string $file, int $line): void
     {
-        $this->output .= "\n" . $this->varDump::wrap('_file', Path::normalize($file) . ':' . $line);
+        $this->output .= "\n" . $this->formatter->wrap('_file', Path::normalize($file) . ':' . $line);
     }
 
     private function handleArgs(): void
@@ -197,12 +199,11 @@ final class Dumper
             $this->appendArg($pos, $value);
             ++$pos;
         }
-        // $this->output = trim($this->output, '\n');
     }
 
     private function appendArg(int $pos, $value): void
     {
-        $this->output .= 'Arg#' . $pos . ' ' . $this->varDump::out($value, 0) . "\n\n";
+        $this->output .= 'Arg#' . $pos . ' ' . $this->formatter::out($value) . "\n\n";
     }
 
     private function handleProccessOutput(): void

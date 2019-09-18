@@ -51,6 +51,7 @@ final class TraceEntry
     {
         $this->entry = $entry;
         $this->key = $key;
+        // FIXME: new VarDump
         $this->varDump = VarDump::RUNTIME;
         $this->handleProcessMissingClassFile();
         $this->handleSetEntryArguments();

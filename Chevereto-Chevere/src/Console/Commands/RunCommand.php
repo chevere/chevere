@@ -13,15 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Console\Commands;
 
-use Closure;
 use Chevere\Console\Command;
-use Chevere\VarDump\PlainVarDump;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Controller\Controller;
 use Chevere\Message\Message;
 use InvalidArgumentException;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
-use Symfony\Component\Console\Helper\FormatterHelper;
 
 /**
  * The RunCommand allows to run any callable present in the app.

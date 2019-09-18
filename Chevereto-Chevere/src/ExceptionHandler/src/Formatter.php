@@ -85,6 +85,7 @@ final class Formatter
 
     public function __construct(ExceptionHandler $exceptionHandler)
     {
+        // FIXME: new VarDump
         $this->varDump = VarDump::RUNTIME;
         $this->exceptionHandler = $exceptionHandler;
         $this->wrap = $this->exceptionHandler->wrap();
@@ -266,11 +267,13 @@ final class Formatter
             $k = '_' . $v;
             $v = isset($GLOBALS[$k]) ? $GLOBALS[$k] : null;
             if ($v) {
+                // FIXME: new VarDump
                 $wrapped = $this->varDump::out($v);
                 if (!CLI) {
                     $wrapped = '<pre>' . $wrapped . '</pre>';
                 }
                 $this->setRichContentSection($k, ['$' . $k, $this->wrapStringHr($wrapped)]);
+                // FIXME: new VarDump
                 $this->setPlainContentSection($k, ['$' . $k, strip_tags($this->wrapStringHr(PlainVarDump::out($v)))]);
             }
         }

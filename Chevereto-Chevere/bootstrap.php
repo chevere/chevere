@@ -55,8 +55,8 @@ if ('cli' == php_sapi_name()) {
 Loader::setDefaultRuntime(
     new Runtime(
         new RuntimeSetDebug('1'),
-        new RuntimeSetErrorHandler('Chevere\ExceptionHandler\ErrorHandler::error'),
-        new RuntimeSetExceptionHandler('Chevere\ExceptionHandler\ExceptionHandler::exception'),
+        // new RuntimeSetErrorHandler('Chevere\ExceptionHandler\ErrorHandler::error'),
+        // new RuntimeSetExceptionHandler('Chevere\ExceptionHandler\ExceptionHandler::exception'),
         new RuntimeSetLocale('en_US.UTF8'),
         new RuntimeSetDefaultCharset('utf-8'),
         new RuntimeSetPrecision('16'),

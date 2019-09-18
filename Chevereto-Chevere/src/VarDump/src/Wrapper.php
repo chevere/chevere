@@ -18,66 +18,69 @@ use JakubOnderka\PhpConsoleColor\ConsoleColor;
 /**
  * Wraps dump data into colored output for CLI and HTML.
  */
-class Wrapper
+final class Wrapper
 {
     /** @var string */
-    public $key;
+    private $key;
 
     /** @var string */
-    public $dump;
+    private $dump;
 
     /** @var ConsoleColor */
-    public $consoleColor;
+    private $consoleColor;
 
     /** @var bool */
-    protected $isCli = false;
+    private $useCli;
 
     /**
      * @param string $key color palette key
+     * @param string $dump the dump expresion
      */
     public function __construct(string $key, string $dump)
     {
         $this->key = $key;
         $this->dump = $dump;
+        $this->useCli =  false;
     }
 
-    public function useCli()
+    public function setUseCli()
     {
         $this->consoleColor = new ConsoleColor();
-        $this->isCli = true;
+        $this->useCli = true;
     }
 
     /**
-     * @return string color
+     * @return string wrapped colored string
      */
     public function toString(): string
     {
-        return $this->wrap() ?? '';
+        return $this->wrap();
     }
 
-    protected function getCliColor(string $key): ?string
+    private function getCliColor(string $key): ?string
     {
         return Pallete::CONSOLE[$key] ?? null;
     }
 
-    protected function getHtmlColor(string $key): ?string
+    private function getHtmlColor(string $key): ?string
     {
         return Pallete::PALETTE[$key] ?? null;
     }
 
-    protected function wrapCli(): string
+    private function wrapCli(): string
     {
-        if ($color = $this->getCliColor($this->key)) {
+        $color = $this->getCliColor($this->key);
+        if (isset($color)) {
             return $this->consoleColor->apply($color, $this->dump);
         }
 
         return $this->dump;
     }
 
-    protected function wrapHtml()
+    private function wrapHtml()
     {
         if ($color = $this->getHtmlColor($this->key)) {
-            return '<span style="color:'.$color.'">'.$this->dump.'</span>';
+            return '<span style="color:' . $color . '">' . $this->dump . '</span>';
         }
 
         return $this->dump;
@@ -88,8 +91,8 @@ class Wrapper
      *
      * @return string wrapped dump data
      */
-    public function wrap(): string
+    private function wrap(): string
     {
-        return $this->isCli ? $this->wrapCli() : $this->wrapHtml();
+        return $this->useCli ? $this->wrapCli() : $this->wrapHtml();
     }
 }
