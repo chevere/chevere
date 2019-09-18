@@ -143,7 +143,7 @@ final class RequestCommand extends Command
             // $e Shhhh... This is just to capture the CLI output
         }
 
-        $response = $loader->app->response();
+        $response = $loader->app()->response();
         $this->render($response);
 
         return 0;

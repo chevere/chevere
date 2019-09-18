@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\App;
 
-use LogicException;
-
 use const Chevere\APP_PATH;
+
+use LogicException;
 use Chevere\Contracts\Api\ApiContract;
 use Chevere\Message\Message;
 use Chevere\Contracts\App\AppContract;
@@ -26,7 +26,6 @@ use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Http\ResponseContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
-use Chevere\Handler;
 use Chevere\Http\Request;
 
 /**
@@ -43,10 +42,10 @@ final class App implements AppContract
     /** @var ApiContract */
     private $api;
 
-    /** @var Request */
+    /** @var RequestContract */
     private $request;
 
-    /** @var Response */
+    /** @var ResponseContract */
     private $response;
 
     /** @var array String arguments (from request uri, cli) */

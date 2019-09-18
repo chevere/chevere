@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\App;
 
-use LogicException;
-use RuntimeException;
-
 use const Chevere\CLI;
 use const Chevere\DEV;
+
+use LogicException;
+use RuntimeException;
 use Chevere\ArrayFile\ArrayFile;
 use Chevere\Path\PathHandle;
 use Chevere\Api\Api;
@@ -33,8 +33,7 @@ use Chevere\Contracts\Router\RouterContract;
 use Chevere\Http\ServerRequest;
 use Chevere\Message\Message;
 use Chevere\Router\Exception\RouteNotFoundException;
-use Exception;
-use TypeError;
+use Chevere\Contracts\App\ParametersContract;
 
 final class Loader implements LoaderContract
 {
@@ -45,7 +44,10 @@ final class Loader implements LoaderContract
     private static $request;
 
     /** @var AppContract */
-    public $app;
+    private $app;
+
+    /** @var ParametersContract */
+    private $parameters;
 
     /** @var Api */
     private $api;
@@ -91,6 +93,11 @@ final class Loader implements LoaderContract
         $this->api = $this->build->container()->api();
         $this->router = $this->build->container()->router();
         $this->app->setRouter($this->router);
+    }
+
+    public function app(): AppContract
+    {
+        return $this->app;
     }
 
     public function parameters(): Parameters
@@ -180,10 +187,7 @@ final class Loader implements LoaderContract
      */
     public static function runtime(): Runtime
     {
-        if (isset(self::$runtime)) {
-            return self::$runtime;
-        }
-        // throw new RuntimeException('NO RUNTIME INSTANCE EVERYTHING BURNS!');
+        return self::$runtime;
     }
 
     /**
@@ -191,10 +195,7 @@ final class Loader implements LoaderContract
      */
     public static function request(): RequestContract
     {
-        if (isset(self::$request)) {
-            return self::$request;
-        }
-        // throw new TypeError('NO REQUEST INSTANCE EVERYTHING BURNS!');
+        return self::$request;
     }
 
     /**

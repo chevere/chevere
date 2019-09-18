@@ -15,6 +15,7 @@ namespace Chevere\Contracts\App;
 
 use Chevere\Contracts\Api\ApiContract;
 use Chevere\Contracts\Controller\ControllerContract;
+use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Http\ResponseContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
@@ -25,6 +26,10 @@ interface AppContract
 
     public function setResponse(ResponseContract $response): void;
 
+    public function setRequest(RequestContract $request): void;
+
+    public function hasRequest(): bool;
+
     public function setRoute(RouteContract $route): void;
 
     public function setRouter(RouterContract $router): void;
@@ -34,6 +39,8 @@ interface AppContract
     public function api(): ApiContract;
 
     // public function response(): Response;
+
+    public function request(): RequestContract;
 
     public function route(): RouteContract;
 

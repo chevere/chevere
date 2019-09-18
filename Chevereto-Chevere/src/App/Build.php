@@ -17,6 +17,8 @@ use Chevere\Api\Api;
 use Chevere\Api\Maker as ApiMaker;
 use Chevere\Router\Maker as RouterMaker;
 use Chevere\App\Exceptions\AlreadyBuiltException;
+use Chevere\App\Exceptions\NeedsToBeBuiltException;
+use Chevere\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Console\Console;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\File\File;
@@ -39,9 +41,6 @@ final class Build
 
     /** @var bool True if the App was built (cache) */
     private $isBuilt;
-
-    /** @var bool */
-    private $fromCache;
 
     /** @var Checkout */
     private $checkout;
