@@ -18,6 +18,8 @@ use const Chevere\CLI;
 use Chevere\DateTime\DateTime;
 use LogicException;
 use Chevere\Message\Message;
+use Chevere\Number\Number;
+use Chevere\Time\Time;
 use Chevere\Traits\PrintableTrait;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 

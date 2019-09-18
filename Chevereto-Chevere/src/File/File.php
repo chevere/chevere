@@ -11,9 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere;
+namespace Chevere\File;
 
 use RuntimeException;
+use Chevere\Message\Message;
 use Chevere\Path\Path;
 
 final class File
@@ -26,6 +27,7 @@ final class File
      *
      * @return bool TRUE if the $filename exists
      */
+    // FIXME: Don't pass bool
     public static function exists(string $filename, bool $clearCache = true): bool
     {
         if ($clearCache) {

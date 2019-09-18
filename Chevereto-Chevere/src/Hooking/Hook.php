@@ -16,7 +16,7 @@ namespace Chevere\Hooking;
 use InvalidArgumentException;
 use Chevere\Path\Path;
 use Chevere\Message\Message;
-use Chevere\Utility\Str;
+use Chevere\Str\Str;
 
 /**
  * Hooks refers to code that gets injected at determinated sections of the

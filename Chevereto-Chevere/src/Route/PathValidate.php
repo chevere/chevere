@@ -15,7 +15,7 @@ namespace Chevere\Route;
 
 use InvalidArgumentException;
 use Chevere\Message\Message;
-use Chevere\Utility\Str;
+use Chevere\Str\Str;
 use Chevere\Contracts\Route\PathValidateContract;
 
 final class PathValidate implements PathValidateContract

@@ -19,7 +19,7 @@ use IteratorAggregate;
 use LogicException;
 use Chevere\FileReturn\FileReturn;
 use Chevere\Message\Message;
-use Chevere\Type;
+use Chevere\Type\Type;
 use Chevere\Path\PathHandle;
 
 /**

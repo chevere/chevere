@@ -16,8 +16,8 @@ namespace Chevere\Route;
 use LogicException;
 use Chevere\Message\Message;
 use Chevere\Path\Path;
-use Chevere\Utility\Str;
-use Chevere\Utility\Arr;
+use Chevere\Arr\Arr;
+use Chevere\Str\Str;
 
 final class Set
 {

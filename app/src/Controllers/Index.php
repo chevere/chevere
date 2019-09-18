@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Chevere\Controller\Controller;
-use Chevere\Stopwatch;
-use Chevere\Utility\Benchmark;
+use Chevere\Stopwatch\Stopwatch;
+use Chevere\Benchmark\Benchmark;
 // use Chevere\JsonApi\Data;
 use Exception;
 

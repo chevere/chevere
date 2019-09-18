@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Traits;
 
 use LogicException;
-use Chevere\File;
+use Chevere\File\File;
 use Chevere\Path\Path;
 use Chevere\Message\Message;
 

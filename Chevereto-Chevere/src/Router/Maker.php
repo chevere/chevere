@@ -21,7 +21,7 @@ use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Path\PathHandle;
 use Chevere\Cache\Cache;
-use Chevere\Type;
+use Chevere\Type\Type;
 
 /**
  * Maker takes a bunch of Routes and generates a routing table (php array).

@@ -19,7 +19,7 @@ use Chevere\Router\Maker as RouterMaker;
 use Chevere\App\Exceptions\AlreadyBuiltException;
 use Chevere\Console\Console;
 use Chevere\Contracts\App\LoaderContract;
-use Chevere\File;
+use Chevere\File\File;
 use Chevere\Path\Path;
 use Chevere\Path\PathHandle;
 use Chevere\Router\Router;

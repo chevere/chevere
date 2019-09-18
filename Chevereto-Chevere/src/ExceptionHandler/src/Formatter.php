@@ -21,7 +21,7 @@ use Chevere\Console\Console;
 use Chevere\ExceptionHandler\ExceptionHandler;
 use Chevere\VarDump\VarDump;
 use Chevere\VarDump\PlainVarDump;
-use Chevere\Utility\Str;
+use Chevere\Str\Str;
 use Chevere\Contracts\DataContract;
 use Chevere\Data\Traits\DataKeyTrait;
 

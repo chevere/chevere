@@ -17,7 +17,7 @@ use LogicException;
 use InvalidArgumentException;
 use Chevere\Message\Message;
 use Chevere\Validate;
-use Chevere\Utility\Str;
+use Chevere\Str\Str;
 
 final class Wildcard
 {

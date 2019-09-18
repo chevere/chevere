@@ -17,7 +17,7 @@ use ReflectionMethod;
 use const Chevere\PATH;
 use Chevere\App\App;
 use Chevere\Path\Path;
-use Chevere\Utility\Str;
+use Chevere\Str\Str;
 use Chevere\VarDump\VarDump;
 use Chevere\VarDump\PlainVarDump;
 
@@ -78,7 +78,7 @@ final class TraceEntry
             '%i%' => $this->key,
             '%f%' => $this->entry['file'] ?? null,
             '%l%' => $this->entry['line'] ?? null,
-            '%fl%' => isset($this->entry['file']) ? ($this->entry['file'].':'.$this->entry['line']) : null,
+            '%fl%' => isset($this->entry['file']) ? ($this->entry['file'] . ':' . $this->entry['line']) : null,
             '%c%' => $this->entry['class'] ?? null,
             '%t%' => $this->entry['type'] ?? null,
             '%m%' => $this->entry['function'],
@@ -133,9 +133,9 @@ final class TraceEntry
         $this->plainArgs = "\n";
         $this->richArgs = "\n";
         foreach ($this->entry['args'] as $k => $v) {
-            $aux = 'Arg#'.($k + 1).' ';
-            $this->plainArgs .= $aux.PlainVarDump::out($v, null, [App::class])."\n";
-            $this->richArgs .= $aux.$this->varDump::out($v, null, [App::class])."\n";
+            $aux = 'Arg#' . ($k + 1) . ' ';
+            $this->plainArgs .= $aux . PlainVarDump::out($v, null, [App::class]) . "\n";
+            $this->richArgs .= $aux . $this->varDump::out($v, null, [App::class]) . "\n";
         }
         $this->trimTrailingNl($this->plainArgs);
         $this->trimTrailingNl($this->richArgs);
@@ -170,7 +170,7 @@ final class TraceEntry
 
     private function processCoreAutoloader()
     {
-        $this->entry['file'] = $this->entry['file'] ?? (PATH.'autoloader.php');
+        $this->entry['file'] = $this->entry['file'] ?? (PATH . 'autoloader.php');
     }
 
     private function handleProcessNormalizeFile()

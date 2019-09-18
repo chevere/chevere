@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\App;
 
-use Chevere\File;
 use Chevere\FileReturn\FileReturn;
-use Chevere\Path\PathHandle;
 
 final class Checkout
 {

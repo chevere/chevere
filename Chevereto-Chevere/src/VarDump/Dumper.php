@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\VarDump;
 
-use const Chevere\CLI;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Chevere\Path\Path;
-use Chevere\Utility\Str;
+use Chevere\Str\Str;
 
 /**
  * Dumps information about one or more variables. CLI/HTML aware.
@@ -28,7 +27,7 @@ final class Dumper
 {
     const BACKGROUND = '#132537';
     const BACKGROUND_SHADE = '#132537';
-    const STYLE = 'font: 14px Consolas, monospace, sans-serif; line-height: 1.2; color: #ecf0f1; padding: 15px; margin: 10px 0; word-break: break-word; white-space: pre-wrap; background: '.self::BACKGROUND.'; display: block; text-align: left; border: none; border-radius: 4px;';
+    const STYLE = 'font: 14px Consolas, monospace, sans-serif; line-height: 1.2; color: #ecf0f1; padding: 15px; margin: 10px 0; word-break: break-word; white-space: pre-wrap; background: ' . self::BACKGROUND . '; display: block; text-align: left; border: none; border-radius: 4px;';
 
     private $vars;
 
@@ -134,10 +133,10 @@ final class Dumper
         $this->consoleOutput->getFormatter()->setStyle('block', new OutputFormatterStyle('red', 'black'));
         $this->consoleOutput->getFormatter()->setStyle('dumper', new OutputFormatterStyle('blue', null, ['bold']));
         $this->consoleOutput->getFormatter()->setStyle('hr', new OutputFormatterStyle('blue'));
-        $this->outputHr = '<hr>'.str_repeat('-', 60).'</>';
+        $this->outputHr = '<hr>' . str_repeat('-', 60) . '</>';
         $this->consoleOutput->getFormatter()->setStyle('hr', new OutputFormatterStyle('blue', null));
-        $maker = (isset($this->caller['class']) ? $this->caller['class'].$this->caller['type'] : null).$this->caller['function'].'()';
-        $this->consoleOutput->writeln(['', '<dumper>'.$maker.'</>', $this->outputHr]);
+        $maker = (isset($this->caller['class']) ? $this->caller['class'] . $this->caller['type'] : null) . $this->caller['function'] . '()';
+        $this->consoleOutput->writeln(['', '<dumper>' . $maker . '</>', $this->outputHr]);
     }
 
     private function handleHtmlOutput(): void
@@ -150,12 +149,12 @@ final class Dumper
 
     private function appendHtmlOpenBody(): void
     {
-        $this->output .= '<html style="background: '.static::BACKGROUND_SHADE.';"><head></head><body>';
+        $this->output .= '<html style="background: ' . static::BACKGROUND_SHADE . ';"><head></head><body>';
     }
 
     private function appendStyle(): void
     {
-        $this->output .= '<pre style="'.static::STYLE.'">';
+        $this->output .= '<pre style="' . static::STYLE . '">';
     }
 
     private function handleClass(): void
@@ -171,12 +170,12 @@ final class Dumper
 
     private function appendClass(string $class, string $type): void
     {
-        $this->output .= $this->varDump::wrap('_class', $class).$type;
+        $this->output .= $this->varDump::wrap('_class', $class) . $type;
     }
 
     private function appendFunction(string $function): void
     {
-        $this->output .= $this->varDump::wrap('_function', $function.'()');
+        $this->output .= $this->varDump::wrap('_function', $function . '()');
     }
 
     private function handleFile(): void
@@ -188,7 +187,7 @@ final class Dumper
 
     private function appendFilepath(string $file, int $line): void
     {
-        $this->output .= "\n".$this->varDump::wrap('_file', Path::normalize($file).':'.$line);
+        $this->output .= "\n" . $this->varDump::wrap('_file', Path::normalize($file) . ':' . $line);
     }
 
     private function handleArgs(): void
@@ -203,7 +202,7 @@ final class Dumper
 
     private function appendArg(int $pos, $value): void
     {
-        $this->output .= 'Arg#'.$pos.' '.$this->varDump::out($value, 0)."\n\n";
+        $this->output .= 'Arg#' . $pos . ' ' . $this->varDump::out($value, 0) . "\n\n";
     }
 
     private function handleProccessOutput(): void

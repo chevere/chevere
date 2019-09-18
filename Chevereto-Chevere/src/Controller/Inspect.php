@@ -18,7 +18,7 @@ use ReflectionClass;
 use Roave\BetterReflection\BetterReflection;
 use Chevere\Message\Message;
 use Chevere\Api\Api;
-use Chevere\Utility\Str;
+use Chevere\Str\Str;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Controller\InspectContract;
 use Chevere\Interfaces\ControllerResourceInterface;

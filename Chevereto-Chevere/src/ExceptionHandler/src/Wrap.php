@@ -17,7 +17,7 @@ use Throwable;
 use ErrorException;
 use Chevere\Data\Data;
 use Chevere\Path\Path;
-use Chevere\Utility\Str;
+use Chevere\Str\Str;
 use Chevere\Contracts\DataContract;
 use Chevere\Data\Traits\DataAccessTrait;
 use Chevere\Data\Traits\DataKeyTrait;

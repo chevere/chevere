@@ -139,7 +139,7 @@ final class App implements AppContract
 
         $middlewares = $this->route->middlewares();
         if (!empty($middlewares)) {
-            $handler = new Handler($middlewares, $this);
+            $handler = new MiddlewareHandler($middlewares, $this);
             $handler->runner();
             if ($handler->exception) {
                 dd($handler->exception->getMessage(), 'Aborted at ' . __FILE__ . ':' . __LINE__);

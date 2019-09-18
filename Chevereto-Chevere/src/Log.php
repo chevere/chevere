@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Chevere;
 
 use Monolog\Logger;
+use Chevere\Arr\Arr;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
@@ -78,7 +79,7 @@ class Log
         $verbosity = static::$useConsole ? Console::output()->getVerbosity() : OutputInterface::VERBOSITY_NORMAL;
         // Set array levelName => int to handle levels
         static::$verboseSet = static::VERBOSITY_MAP[$verbosity];
-        static::$verboseSet = Utility\Arr::filterArray(static::SEVERITY_LEVELS, static::$verboseSet);
+        static::$verboseSet = Arr::filterArray(static::SEVERITY_LEVELS, static::$verboseSet);
         static::$verboseSet = array_flip(static::$verboseSet);
     }
 

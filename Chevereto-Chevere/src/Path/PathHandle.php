@@ -17,9 +17,9 @@ use const Chevere\APP_PATH;
 
 use InvalidArgumentException;
 use LogicException;
-use Chevere\File;
+use Chevere\File\File;
 use Chevere\Message\Message;
-use Chevere\Utility\Str;
+use Chevere\Str\Str;
 
 final class PathHandle
 {

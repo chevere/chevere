@@ -18,7 +18,7 @@ use InvalidArgumentException;
 use Chevere\Message\Message;
 use Chevere\Path\Path;
 use Chevere\Controllers\HeadController;
-use Chevere\Utility\Str;
+use Chevere\Str\Str;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Http\MethodsContract;
 use Chevere\Contracts\Http\MethodContract;

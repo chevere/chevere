@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Message\Message;
+namespace Chevere\Message;
 
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 

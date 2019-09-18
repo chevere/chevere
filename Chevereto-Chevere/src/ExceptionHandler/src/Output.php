@@ -123,6 +123,7 @@ final class Output
         return $this->templateTags["%$tagName%"];
     }
 
+    // FIXME: JsonApi Document
     private function setJsonOutput(): void
     {
         $json = new Json();

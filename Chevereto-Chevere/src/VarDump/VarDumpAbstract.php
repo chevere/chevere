@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\VarDump;
 
+use const Chevere\CLI;
+
 use Throwable;
 use Reflector;
 use ReflectionProperty;
 use ReflectionObject;
-use const Chevere\CLI;
 use Chevere\Path\Path;
-use Chevere\Utility\Str;
+use Chevere\Str\Str;
 
 /**
  * Analyze a variable and provide an output string representation of its type and data.
@@ -183,7 +184,7 @@ abstract class VarDumpAbstract
                     } catch (Throwable $e) {
                         // $value = '';
                     }
-                        
+
                     $this->properties[$property->getName()] = ['value' => $value];
                 }
                 $this->properties[$property->getName()]['visibility'][] = $visibility;

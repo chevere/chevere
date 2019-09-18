@@ -20,7 +20,7 @@ use RuntimeException;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 use Chevere\Message\Message;
-use Chevere\Utility\Str;
+use Chevere\Str\Str;
 
 final class Path
 {

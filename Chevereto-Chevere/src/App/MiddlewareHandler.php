@@ -11,23 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere;
+namespace Chevere\App;
 
-use App\Middleware\RoleAdmin;
+use Throwable;
 use Chevere\Contracts\App\AppContract;
-use Chevere\Http\Response;
 use Chevere\Interfaces\HandlerInterface;
 use Chevere\Interfaces\MiddlewareInterface;
-use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
-use Throwable;
 
 /**
  * TODO: Add stop, redirect and other methods needed to alter the flow.
  */
-/**
- * Handles middleware.
- */
-final class Handler implements HandlerInterface
+final class MiddlewareHandler implements HandlerInterface
 {
     /** @var AppContract */
     private $app;

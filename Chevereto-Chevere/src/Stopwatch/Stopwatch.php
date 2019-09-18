@@ -15,7 +15,7 @@ namespace Chevere\Stopwatch;
 
 use InvalidArgumentException;
 use Chevere\Message\Message;
-use Chevere\Utility\Time;
+use Chevere\Time\Time;
 
 /**
  * A simple stopwatch, useful for userland execution time measurement.
