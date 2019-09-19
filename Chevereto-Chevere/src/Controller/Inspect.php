@@ -15,7 +15,6 @@ namespace Chevere\Controller;
 
 use LogicException;
 use ReflectionClass;
-use Roave\BetterReflection\BetterReflection;
 use Chevere\Message\Message;
 use Chevere\Api\Api;
 use Chevere\Str\Str;
@@ -215,6 +214,7 @@ final class Inspect implements InspectContract
             $resourcesFromString = [];
             foreach ($this->resources as $propName => $resourceClassName) {
                 // Better reflection is needed due to this: https://bugs.php.net/bug.php?id=69804
+                // FIXME: Don't user BetterReflection as it adds PHPStorm stubs
                 $resourceReflection = (new BetterReflection())
                     ->classReflector()
                     ->reflect($resourceClassName);
