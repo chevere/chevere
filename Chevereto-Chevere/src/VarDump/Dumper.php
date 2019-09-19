@@ -27,7 +27,7 @@ use Chevere\Contracts\VarDump\FormatterContract;
 /**
  * Dumps information about one or more variables. CLI/HTML aware.
  */
-final class Dumper
+class Dumper
 {
     const BACKGROUND = '#132537';
     const BACKGROUND_SHADE = '#132537';
@@ -36,7 +36,7 @@ final class Dumper
     const OFFSET = 1;
 
     /** @var FormatterContract */
-    private $formatter;
+    protected $formatter;
 
     private $vars;
 
@@ -61,9 +61,18 @@ final class Dumper
     /** @var string */
     private $callerFilepath;
 
-    public function __construct(...$vars)
+    final public function __construct()
     {
-        $this->formatter = new DumperFormatter();
+        $this->formatter = $this->getFormatter();
+    }
+
+    protected function getFormatter(): FormatterContract
+    {
+        return new DumperFormatter();
+    }
+
+    final private function dumper(...$vars): void
+    {
         $this->varDump = new VarDump($this->formatter);
         $this->vars = $vars;
         $this->numArgs = func_num_args();
@@ -90,21 +99,22 @@ final class Dumper
         $this->handleProccessOutput();
     }
 
-    public static function dump(...$vars): void
+    final public static function dump(...$vars): void
     {
-        new static(...$vars);
+        $new = new static();
+        $new->dumper(...$vars);
     }
 
     /**
-     * Dumps information about one or more variables and die().
+     * Dumps information about one or more variables and die(0).
      */
-    public static function dd(...$vars)
+    final public static function dd(...$vars)
     {
         static::dump(...$vars);
         die(0);
     }
 
-    private function handleDebugBacktrace(): void
+    final private function handleDebugBacktrace(): void
     {
         while (isset($this->debugBacktrace[0]['file']) && __FILE__ == $this->debugBacktrace[0]['file']) {
             $this->shiftDebugBacktrace();
@@ -112,24 +122,24 @@ final class Dumper
         }
     }
 
-    private function setCallerFilepath(string $filepath): void
+    final private function setCallerFilepath(string $filepath): void
     {
         $this->callerFilepath = Path::normalize($filepath);
     }
 
-    private function handleSelfCaller(): void
+    final private function handleSelfCaller(): void
     {
         if (Str::endsWith('resources/functions/dump.php', $this->callerFilepath) && __CLASS__ == $this->debugBacktrace[0]['class'] && in_array($this->debugBacktrace[0]['function'], ['dump', 'dd'])) {
             $this->shiftDebugBacktrace();
         }
     }
 
-    private function shiftDebugBacktrace(): void
+    final private function shiftDebugBacktrace(): void
     {
         array_shift($this->debugBacktrace);
     }
 
-    private function handleConsoleOutput(): void
+    final private function handleConsoleOutput(): void
     {
         $this->consoleOutput = new ConsoleOutput();
         $outputFormatter = new OutputFormatter(true);
@@ -143,7 +153,7 @@ final class Dumper
         $this->consoleOutput->writeln(['', '<dumper>' . $maker . '</>', $this->outputHr]);
     }
 
-    private function handleHtmlOutput(): void
+    final private function handleHtmlOutput(): void
     {
         if (false === headers_sent()) {
             $this->appendHtmlOpenBody();
@@ -151,17 +161,17 @@ final class Dumper
         $this->appendStyle();
     }
 
-    private function appendHtmlOpenBody(): void
+    final private function appendHtmlOpenBody(): void
     {
         $this->output .= '<html style="background: ' . static::BACKGROUND_SHADE . ';"><head></head><body>';
     }
 
-    private function appendStyle(): void
+    final private function appendStyle(): void
     {
         $this->output .= '<pre style="' . static::STYLE . '">';
     }
 
-    private function handleClass(): void
+    final private function handleClass(): void
     {
         if (isset($this->debugBacktrace[1]['class'])) {
             $class = $this->debugBacktrace[static::OFFSET]['class'];
@@ -172,29 +182,29 @@ final class Dumper
         }
     }
 
-    private function appendClass(string $class, string $type): void
+    final private function appendClass(string $class, string $type): void
     {
         $this->output .= $this->formatter->wrap('_class', $class) . $type;
     }
 
-    private function appendFunction(string $function): void
+    final private function appendFunction(string $function): void
     {
         $this->output .= $this->formatter->wrap('_function', $function . '()');
     }
 
-    private function handleFile(): void
+    final private function handleFile(): void
     {
         if (isset($this->debugBacktrace[0]['file'])) {
             $this->appendFilepath($this->debugBacktrace[0]['file'], $this->debugBacktrace[0]['line']);
         }
     }
 
-    private function appendFilepath(string $file, int $line): void
+    final private function appendFilepath(string $file, int $line): void
     {
         $this->output .= "\n" . $this->formatter->wrap('_file', Path::normalize($file) . ':' . $line);
     }
 
-    private function handleArgs(): void
+    final private function handleArgs(): void
     {
         $pos = 1;
         foreach ($this->vars as $value) {
@@ -203,14 +213,14 @@ final class Dumper
         }
     }
 
-    private function appendArg(int $pos, $value): void
+    final private function appendArg(int $pos, $value): void
     {
         $varDump = $this->varDump->respawn();
         $varDump->dump($value);
         $this->output .= 'Arg#' . $pos . ' ' . $varDump->toString() . "\n\n";
     }
 
-    private function handleProccessOutput(): void
+    final private function handleProccessOutput(): void
     {
         if (isset($this->consoleOutput)) {
             $this->processConsoleOutput();
@@ -219,13 +229,13 @@ final class Dumper
         }
     }
 
-    private function processConsoleOutput(): void
+    final private function processConsoleOutput(): void
     {
         $this->consoleOutput->writeln($this->output, ConsoleOutput::OUTPUT_RAW);
         isset($this->outputHr) ? $this->consoleOutput->writeln($this->outputHr) : null;
     }
 
-    private function processPrintOutput(): void
+    final private function processPrintOutput(): void
     {
         echo $this->output;
     }
