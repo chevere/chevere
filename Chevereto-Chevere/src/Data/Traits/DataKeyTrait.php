@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Data\Traits;
 
-use Chevere\Data\Data;
 use Chevere\Contracts\DataContract;
 
 trait DataKeyTrait

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\VarDump;
 
+use Chevere\Contracts\VarDump\FormatterContract;
 use Throwable;
 use Reflector;
 use ReflectionProperty;
@@ -45,6 +46,12 @@ final class VarDump
         'static' => ReflectionProperty::IS_STATIC,
     ];
 
+    /** @var FormatterContract */
+    private $formatter;
+
+    /** @var array [className,] */
+    private $dontDump;
+
     /** @var string */
     private $output;
 
@@ -75,7 +82,7 @@ final class VarDump
     private $val;
 
     /** @var string */
-    private $prefix;
+    private $indentString;
 
     /** @var string */
     private $type;
@@ -83,7 +90,7 @@ final class VarDump
     /** @var string */
     private $parentheses;
 
-    public function __construct($formatter)
+    public function __construct(FormatterContract $formatter)
     {
         $this->formatter = $formatter;
         $this->dontDump = [];
@@ -94,7 +101,6 @@ final class VarDump
         $this->dontDump = $dontDump;
     }
 
-    // FIXME: Think in a better name
     public function dump($var, int $indent = 0, int $depth = 0): void
     {
         ++$depth;
@@ -107,7 +113,7 @@ final class VarDump
         $this->indent = $indent;
         $this->depth = $depth;
         $this->val = null;
-        $this->prefix = $this->formatter->getPrefix($this->indent);
+        $this->indentString = $this->formatter->getIndent($this->indent);
         $this->setType();
         $this->handleType();
         $this->setTemplate();
@@ -134,7 +140,9 @@ final class VarDump
         $this->output = strtr($this->template, [
             '%type' => $this->formatter->wrap($this->type, $this->type),
             '%val' => $this->val,
-            '%parentheses' => isset($this->parentheses) ? $this->formatter->wrap(static::_OPERATOR, '(' . $this->parentheses . ')') : null,
+            '%parentheses' => isset($this->parentheses)
+                ? $this->formatter->wrap(static::_OPERATOR, '(' . $this->parentheses . ')')
+                : null,
         ]);
     }
 
@@ -215,7 +223,7 @@ final class VarDump
     {
         $visibility = implode(' ', $var['visibility'] ?? $this->properties['visibility']);
         $operator = $this->formatter->wrap(static::_OPERATOR, '->');
-        $this->val .= "\n" . $this->prefix . $this->formatter->getEmphasis($visibility) . ' ' . $this->formatter->getEncodedChars($key) . " $operator ";
+        $this->val .= "\n" . $this->indentString . $this->formatter->getEmphasis($visibility) . ' ' . $this->formatter->getEncodedChars($key) . " $operator ";
         $aux = $var['value'];
         if (is_object($aux) && property_exists($aux, $key)) {
             try {
@@ -249,7 +257,7 @@ final class VarDump
     {
         foreach ($this->expression as $k => $v) {
             $operator = $this->formatter->wrap(static::_OPERATOR, '=>');
-            $this->val .= "\n" . $this->prefix . ' ' . $this->formatter->getEncodedChars((string) $k) . " $operator ";
+            $this->val .= "\n" . $this->indentString . ' ' . $this->formatter->getEncodedChars((string) $k) . " $operator ";
             $aux = $v;
             $isCircularRef = is_array($aux) && isset($aux[$k]) && $aux == $aux[$k];
             if ($isCircularRef) {

@@ -22,6 +22,7 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Chevere\Path\Path;
 use Chevere\Str\Str;
 use Chevere\VarDump\Formatters\DumperFormatter;
+use Chevere\Contracts\VarDump\FormatterContract;
 
 /**
  * Dumps information about one or more variables. CLI/HTML aware.
@@ -34,7 +35,7 @@ final class Dumper
 
     const OFFSET = 1;
 
-    /** @var DumperFormatter */
+    /** @var FormatterContract */
     private $formatter;
 
     private $vars;

@@ -14,28 +14,22 @@ declare(strict_types=1);
 namespace Chevere\VarDump\Formatters;
 
 use const Chevere\CLI;
+
+use Chevere\Contracts\VarDump\FormatterContract;
+use Chevere\VarDump\Formatters\Traits\GetEmphasisTrait;
+use Chevere\VarDump\Formatters\Traits\GetEncodedCharsTrait;
+use Chevere\VarDump\Formatters\Traits\GetIndentTrait;
 use Chevere\VarDump\src\Wrapper;
-use Chevere\VarDump\VarDump;
 
 /**
- * Provide Dumper VarDump representation (automatic).
+ * Provide Dumper VarDump representation (auto detect).
  */
-final class DumperFormatter
+final class DumperFormatter implements FormatterContract
 {
-  public function getPrefix(int $indent): string
-  {
-    return str_repeat(' ', $indent);
-  }
 
-  public function getEmphasis(string $string): string
-  {
-    return $string;
-  }
-
-  public function getEncodedChars(string $string): string
-  {
-    return $string;
-  }
+  use GetIndentTrait;
+  use GetEmphasisTrait;
+  use GetEncodedCharsTrait;
 
   public function wrap(string $key, string $dump): string
   {

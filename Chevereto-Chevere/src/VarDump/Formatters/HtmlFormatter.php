@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\VarDump\Formatters;
 
+use Chevere\Contracts\VarDump\FormatterContract;
 use Chevere\VarDump\src\Template;
 use Chevere\VarDump\src\Wrapper;
-use Chevere\VarDump\VarDump;
 
 /**
  * Provide HTML VarDump representation.
  */
-final class HtmlFormatter
+final class HtmlFormatter implements FormatterContract
 {
-  public function getPrefix(int $indent): string
+  public function getIndent(int $indent): string
   {
     return str_repeat(Template::HTML_INLINE_PREFIX, $indent);
   }

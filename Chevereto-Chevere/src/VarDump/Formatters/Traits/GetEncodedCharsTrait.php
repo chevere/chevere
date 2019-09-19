@@ -11,17 +11,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Data\Traits;
+namespace Chevere\VarDump\Formatters\Traits;
 
-use Chevere\Contracts\DataContract;
-
-trait DataAccessTrait
+trait GetEncodedCharsTrait
 {
-    /** @var DataContract */
-    private $data;
-
-    public function data(): DataContract
-    {
-        return $this->data;
-    }
+  public function getEncodedChars(string $string): string
+  {
+    return $string;
+  }
 }
