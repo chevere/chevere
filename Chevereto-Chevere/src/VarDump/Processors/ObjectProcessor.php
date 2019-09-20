@@ -40,6 +40,8 @@ final class ObjectProcessor implements ProcessorContract
     /** @var string */
     private $className;
 
+    private $aux;
+
     public function __construct(object $expression, VarDump $varDump)
     {
         $this->expression = $expression;
@@ -59,7 +61,7 @@ final class ObjectProcessor implements ProcessorContract
         }
         $this->setProperties();
         foreach ($this->properties as $k => $v) {
-            $this->processObjectProperty($k, $v);
+            $this->processProperty($k, $v);
         }
         $this->className = get_class($expression);
         $this->handleNormalizeClassName();
@@ -87,18 +89,18 @@ final class ObjectProcessor implements ProcessorContract
         }
     }
 
-    private function processObjectProperty($key, $var): void
+    private function processProperty($key, $var): void
     {
         $visibility = implode(' ', $var['visibility'] ?? $this->properties['visibility']);
         $operator = $this->varDump->formatter()->wrap(VarDump::_OPERATOR, '->');
         $this->val .= "\n" . $this->varDump->indentString() . $this->varDump->formatter()->getEmphasis($visibility) . ' ' . $this->varDump->formatter()->getEncodedChars($key) . " $operator ";
-        $aux = $var['value'];
-        if (is_object($aux) && property_exists($aux, $key)) {
+        $this->aux = $var['value'];
+        if (is_object($this->aux) && property_exists($this->aux, $key)) {
             try {
-                $r = new ReflectionObject($aux);
+                $r = new ReflectionObject($this->aux);
                 $p = $r->getProperty($key);
                 $p->setAccessible(true);
-                if ($aux == $p->getValue($aux)) {
+                if ($this->aux == $p->getValue($this->aux)) {
                     $this->val .= $this->varDump->formatter()->wrap(
                         VarDump::_OPERATOR,
                         '(' . $this->varDump->formatter()->getEmphasis('circular object reference') . ')'
@@ -106,12 +108,18 @@ final class ObjectProcessor implements ProcessorContract
                 }
                 return;
             } catch (Throwable $e) {
+                // $e
                 return;
             }
         }
+        $this->handleDeepth();
+    }
+
+    private function handleDeepth(): void
+    {
         if ($this->varDump->depth() < 4) {
             $new = $this->varDump->respawn();
-            $new->dump($aux, $this->varDump->indent(), $this->varDump->depth());
+            $new->dump($this->aux, $this->varDump->indent(), $this->varDump->depth());
             $this->val .= $new->toString();
         } else {
             $this->val .= $this->varDump->formatter()->wrap(
