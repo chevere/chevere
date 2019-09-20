@@ -23,12 +23,12 @@ use Chevere\VarDump\Formatters\Traits\GetIndentTrait;
  */
 final class PlainFormatter implements FormatterContract
 {
-  use GetIndentTrait;
-  use GetEmphasisTrait;
-  use GetEncodedCharsTrait;
+    use GetIndentTrait;
+    use GetEmphasisTrait;
+    use GetEncodedCharsTrait;
 
-  public function wrap(string $key, string $dump): string
-  {
-    return $dump;
-  }
+    public function wrap(string $key, string $dump): string
+    {
+        return $dump;
+    }
 }

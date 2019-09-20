@@ -24,13 +24,13 @@ class Index extends Controller
 {
     public function __invoke()
     {
-        MyDumper::dd('eeee');
         // throw new Exception('test');
         $sw = new Stopwatch();
         $sw->record('mark1');
         $sw->record('mark2');
         $sw->record('mark4');
         $sw->stop();
+        dd($this);
         dd($sw);
         // $time = microtime(true) - BOOTSTRAP_TIME;
         // die(round($time * 1000) . 'ms');
