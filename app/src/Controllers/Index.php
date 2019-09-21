@@ -14,35 +14,36 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Chevere\Controller\Controller;
-use Chevere\Stopwatch\Stopwatch;
-use Chevere\Benchmark\Benchmark;
-use Chevere\VarDump\MyDumper;
-// use Chevere\JsonApi\Data;
-use Exception;
+use Chevere\JsonApi\EncodedDocument;
+use JsonApiPhp\JsonApi\Attribute;
+use JsonApiPhp\JsonApi\DataDocument;
+use JsonApiPhp\JsonApi\JsonApi;
+use JsonApiPhp\JsonApi\Link\SelfLink;
+use JsonApiPhp\JsonApi\ResourceCollection;
+use JsonApiPhp\JsonApi\ResourceObject;
 
 class Index extends Controller
 {
     public function __invoke()
     {
-        // throw new Exception('test');
-        $sw = new Stopwatch();
-        $sw->record('mark1');
-        $sw->record('mark2');
-        $sw->record('mark4');
-        $sw->stop();
-        dd($this);
-        dd($sw);
-        // $time = microtime(true) - BOOTSTRAP_TIME;
-        // die(round($time * 1000) . 'ms');
-        // $api = new Data('info', 'api');
-        // $api->addAttribute('entry', 'HTTP GET /api');
-        // $api->addAttribute('description', 'Retrieves the exposed API.');
-
-        // $cli = new Data('info', 'cli');
-        // $cli->addAttribute('entry', 'php app/console list');
-        // $cli->addAttribute('description', 'Retrieves the console command list.');
-
-        // $this->document->appendData($api, $cli);
-        // dd($this->document);
+        $api = new ResourceObject(
+            'info',
+            'api',
+            new Attribute('entry', 'HTTP GET /api'),
+            new Attribute('description', 'Retrieves the exposed API.'),
+            new SelfLink('/api')
+        );
+        $cli = new ResourceObject(
+            'info',
+            'cli',
+            new Attribute('entry', 'php chevere.php list'),
+            new Attribute('description', 'Retrieves the console command list.'),
+        );
+        $document = new DataDocument(
+            new ResourceCollection($api, $cli),
+            new JsonApi(),
+        );
+        $encodedDocument = new EncodedDocument($document);
+        $this->setContent($encodedDocument->toString());
     }
 }

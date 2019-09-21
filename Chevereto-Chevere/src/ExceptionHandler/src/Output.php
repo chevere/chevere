@@ -15,13 +15,14 @@ namespace Chevere\ExceptionHandler\src;
 
 use const Chevere\CLI;
 
-use DateTime;
-use Symfony\Component\HttpFoundation\Response as HttpResponse;
-use Symfony\Component\HttpFoundation\JsonResponse as HttpJsonResponse;
+use function GuzzleHttp\Psr7\stream_for;
+
 use Chevere\Console\Console;
 use Chevere\ExceptionHandler\ExceptionHandler;
+use Chevere\Http\Response;
 use Chevere\Json;
 use Chevere\Message\Message;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * Provides ExceptionHandler output by passing a Formatter. FIXME: Don't handle responses!
@@ -43,7 +44,7 @@ final class Output
     /** @var Formatter */
     private $formatter;
 
-    /** @var string */
+    /** @var StreamInterface */
     private $output;
 
     /** @var array */
@@ -79,21 +80,23 @@ final class Output
 
     public function out(): void
     {
-        if ($this->exceptionHandler->request()->isXmlHttpRequest()) {
-            $response = new HttpJsonResponse();
-        } else {
-            $response = new HttpResponse();
-        }
-        $response->setContent($this->output);
-        $response->setLastModified(new DateTime());
-        $response->setStatusCode(500);
-        foreach ($this->headers as $k => $v) {
-            $response->headers->set($k, $v);
-        }
-        $response->send();
         if (CLI) {
             die(1);
         }
+
+        $response = new Response();
+        if ($this->exceptionHandler->request()->isXmlHttpRequest()) { } else {
+            // $response = new HttpResponse();
+        }
+        $guzzle = $response->guzzle()
+            ->withBody($this->output)
+            ->withStatus(500);
+        // $response->setLastModified(new DateTime());
+        // foreach ($this->headers as $k => $v) {
+        //     $response->headers->set($k, $v);
+        // }
+        $response->setGuzzle($guzzle);
+        $response->sendBody();
     }
 
     private function parseTemplates(): void
@@ -163,7 +166,7 @@ final class Output
             $bodyTemplate = Template::NO_DEBUG_BODY_HTML;
         }
         $this->addTemplateTag('body', strtr($bodyTemplate, $this->templateTags));
-        $this->output = strtr(Template::HTML_TEMPLATE, $this->templateTags);
+        $this->output = stream_for(strtr(Template::HTML_TEMPLATE, $this->templateTags));
     }
 
     private function setConsoleOutput(): void

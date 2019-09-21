@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Controller;
 
+use JsonSerializable;
 use Chevere\Http\Response;
 use Chevere\Traits\HookableTrait;
 use Chevere\Contracts\App\AppContract;
@@ -43,10 +44,10 @@ class Controller implements ControllerContract
     const OPTIONS = [];
 
     /** @var AppContract */
-    protected $app;
+    private $app;
 
-    /** @var JsonApi */
-    protected $document;
+    /** @var string */
+    private $content;
 
     /** @var string Controller description */
     protected static $description;
@@ -73,12 +74,17 @@ class Controller implements ControllerContract
     final public function __construct(AppContract $app)
     {
         $this->app = $app;
-        $this->document = new JsonApi();
     }
 
-    final public function document(): JsonApi
+    final public function content(): string
     {
-        return $this->document;
+        return $this->content ?? '';
+    }
+
+    // FIXME: An object implementing the document interface
+    final public function setContent(string $content): void
+    {
+        $this->content = $content;
     }
 
     final public function setResponse(Response $response): ControllerContract

@@ -248,13 +248,10 @@ final class Loader implements LoaderContract
         if ($controller instanceof RenderContract) {
             $controller->render();
         } else {
-            $jsonApi = $controller->document();
-            if ($jsonApi->hasData()) {
-                $this->app->setResponse(
-                    $this->app->response()
-                        ->withJsonApi($jsonApi)
-                );
-            }
+            $content = $controller->content();
+            $this->app->setResponse(
+                $this->app->response()->withJsonApi($content)
+            );
             if (!CLI) {
                 $this->app->response()
                     ->sendHeaders()

@@ -13,18 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Http;
 
-use Chevere\Contracts\Http\ResponseContract;
-use Chevere\JsonApi\JsonApi;
-use DateTime;
-use DateTimeZone;
-use Exception;
-use GuzzleHttp\Psr7\Response as GuzzleHttpResponse;
-
 use function GuzzleHttp\Psr7\stream_for;
 
-use const Chevere\CLI;
+use JsonSerializable;
+use DateTime;
+use DateTimeZone;
+use Chevere\Contracts\Http\ResponseContract;
+use GuzzleHttp\Psr7\Response as GuzzleHttpResponse;
 
-// final class Response extends GuzzleHttpResponse implements ResponseContract
+
+
 final class Response implements ResponseContract
 {
 
@@ -44,6 +42,12 @@ final class Response implements ResponseContract
     {
         $this->guzzle = new GuzzleHttpResponse(200, $this->getDateHeader());
     }
+
+    public function setGuzzle(GuzzleHttpResponse $guzzle): void
+    {
+        $this->guzzle = $guzzle;
+    }
+
     public function guzzle(): GuzzleHttpResponse
     {
         return $this->guzzle;
@@ -79,13 +83,12 @@ final class Response implements ResponseContract
     /**
      * {@inheritdoc}
      */
-    public function withJsonApi(JsonApi $jsonApi): ResponseContract
+    public function withJsonApi(string $jsonApi): ResponseContract
     {
-        $body = stream_for($jsonApi->toString());
+        $body = stream_for($jsonApi);
         $new = clone $this;
         $new = $new->withJsonApiHeaders();
-        $new->guzzle = $new->guzzle
-            ->withBody($body);
+        $new->guzzle = $new->guzzle->withBody($body);
         return $new;
     }
 
