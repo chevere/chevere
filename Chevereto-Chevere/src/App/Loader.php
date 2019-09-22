@@ -34,6 +34,7 @@ use Chevere\Http\ServerRequest;
 use Chevere\Message\Message;
 use Chevere\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\ParametersContract;
+use Chevere\Contracts\Controller\JsonApiContract;
 
 use function GuzzleHttp\Psr7\stream_for;
 
@@ -250,13 +251,13 @@ final class Loader implements LoaderContract
         $controller = $this->app->run($controller);
         $contentStream = stream_for($controller->content());
         $response = $this->app->response();
-        if ($controller instanceof RenderContract) {
-            $guzzle = $response->guzzle()->withBody($contentStream);
+        $guzzle = $response->guzzle();
+        if ($controller instanceof JsonApiContract) {
+            $guzzle = $guzzle->withJsonApi($contentStream);
         } else {
-            $guzzle = $response->guzzle()->withJsonApi($contentStream);
+            $guzzle = $guzzle->withBody($contentStream);
         }
         $response->setGuzzle($guzzle);
-        $this->app->setResponse($response);
         if (!CLI) {
             $this->app->response()
                 ->sendHeaders()

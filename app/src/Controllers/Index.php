@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use Chevere\Contracts\Controller\JsonApiContract;
 use Chevere\Controller\Controller;
+use Chevere\Controller\Traits\JsonApiTrait;
 use Chevere\JsonApi\EncodedDocument;
 use JsonApiPhp\JsonApi\Attribute;
 use JsonApiPhp\JsonApi\DataDocument;
@@ -22,12 +24,11 @@ use JsonApiPhp\JsonApi\Link\SelfLink;
 use JsonApiPhp\JsonApi\ResourceCollection;
 use JsonApiPhp\JsonApi\ResourceObject;
 
-class Index extends Controller
+class Index extends Controller implements JsonApiContract
 {
-    /** @var EncodedDocument */
-    private $encodedDocument;
+    use JsonApiTrait;
 
-    public function __invoke()
+    public function __invoke(): void
     {
         $api = new ResourceObject(
             'info',
@@ -42,15 +43,13 @@ class Index extends Controller
             new Attribute('entry', 'php chevere.php list'),
             new Attribute('description', 'Retrieves the console command list.'),
         );
-        $document = new DataDocument(
-            new ResourceCollection($api, $cli),
-            new JsonApi(),
+        $this->setDocument(
+            new EncodedDocument(
+                new DataDocument(
+                    new ResourceCollection($api, $cli),
+                    new JsonApi(),
+                )
+            )
         );
-        $this->encodedDocument = new EncodedDocument($document);
-    }
-
-    public function getContent(): string
-    {
-        return $this->encodedDocument->toString();
     }
 }

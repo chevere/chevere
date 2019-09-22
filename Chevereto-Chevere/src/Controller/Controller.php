@@ -65,6 +65,8 @@ abstract class Controller implements ControllerContract
         return $this->getContent() ?? '';
     }
 
+    abstract public function __invoke(): void;
+    
     abstract public function getContent(): string;
 
     final public function setResponse(Response $response): ControllerContract

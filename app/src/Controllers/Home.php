@@ -13,22 +13,19 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use Chevere\Contracts\Render\RenderContract;
+use Chevere\Contracts\Controller\StringContract;
 use Chevere\Controller\Controller;
+use Chevere\Controller\Traits\StringTrait;
 
-class Home extends Controller implements RenderContract
+class Home extends Controller implements StringContract
 {
+    use StringTrait;
 
-    public function __invoke()
-    { }
+    /** @var string */
+    private $document;
 
-    public function getContent(): string
+    public function __invoke(): void
     {
-        return 'Hello World!';
-    }
-
-    public function render(): void
-    {
-        echo $this->getContent();
+        $this->setDocument('Hello World!');
     }
 }
