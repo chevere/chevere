@@ -15,18 +15,20 @@ namespace App\Controllers;
 
 use Chevere\Contracts\Render\RenderContract;
 use Chevere\Controller\Controller;
-use Chevere\JsonApi\Data;
 
 class Home extends Controller implements RenderContract
 {
+
     public function __invoke()
+    { }
+
+    public function getContent(): string
     {
-        $api = new Data('hello', 'World!');
-        $this->document->appendData($api);
+        return 'Hello World!';
     }
 
-    public function render()
+    public function render(): void
     {
-        echo $this->document->toString();
+        echo $this->getContent();
     }
 }

@@ -11,9 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Contracts\Render;
+namespace Chevere\Contracts\Http;
 
-interface RenderContract
-{
-  public function render(): void;
-}
+interface GuzzleHttpResponseContract
+{ }

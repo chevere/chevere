@@ -13,15 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Http;
 
-use function GuzzleHttp\Psr7\stream_for;
-
-use JsonSerializable;
 use DateTime;
 use DateTimeZone;
 use Chevere\Contracts\Http\ResponseContract;
-use GuzzleHttp\Psr7\Response as GuzzleHttpResponse;
-
-
 
 final class Response implements ResponseContract
 {
@@ -78,28 +72,6 @@ final class Response implements ResponseContract
             $this->setContent();
         }
         return $this->content ?? '';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withJsonApi(string $jsonApi): ResponseContract
-    {
-        $body = stream_for($jsonApi);
-        $new = clone $this;
-        $new = $new->withJsonApiHeaders();
-        $new->guzzle = $new->guzzle->withBody($body);
-        return $new;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withJsonApiHeaders(): ResponseContract
-    {
-        $new = clone $this;
-        $new->guzzle = $new->guzzle->withHeader('Content-Type', 'application/vnd.api+json');
-        return $new;
     }
 
     public function sendHeaders(): ResponseContract

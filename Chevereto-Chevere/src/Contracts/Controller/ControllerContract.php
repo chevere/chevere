@@ -20,6 +20,8 @@ interface ControllerContract
 {
     public function __construct(AppContract $app);
 
+    public function getContent(): string;
+
     public function setResponse(Response $response): ControllerContract;
 
     public static function description(): string;

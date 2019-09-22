@@ -24,6 +24,9 @@ use JsonApiPhp\JsonApi\ResourceObject;
 
 class Index extends Controller
 {
+    /** @var EncodedDocument */
+    private $encodedDocument;
+
     public function __invoke()
     {
         $api = new ResourceObject(
@@ -43,7 +46,11 @@ class Index extends Controller
             new ResourceCollection($api, $cli),
             new JsonApi(),
         );
-        $encodedDocument = new EncodedDocument($document);
-        $this->setContent($encodedDocument->toString());
+        $this->encodedDocument = new EncodedDocument($document);
+    }
+
+    public function getContent(): string
+    {
+        return $this->encodedDocument->toString();
     }
 }

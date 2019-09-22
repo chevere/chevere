@@ -16,21 +16,4 @@ namespace Chevere\Contracts\Http;
 use Chevere\JsonApi\JsonApi;
 
 interface ResponseContract
-{
-  /**
-   * Set response content as JSON string with JSON headers
-   */
-  // public function setJsonContent(JsonApi $jsonApi): void;
-
-  /**
-   * Get the HTTP status string
-   * 
-   * @return string The HTTP status string like `HTTP/1.1 200 OK`
-   */
-  // public function getStatusString(): string;
-
-  /**
-   * Set JSON response headers 
-   */
-  // public function setJsonHeaders(): void;
-}
+{ }

@@ -36,7 +36,7 @@ use Chevere\JsonApi\JsonApi;
 /**
  * Controller is the defacto controller in Chevere.
  */
-class Controller implements ControllerContract
+abstract class Controller implements ControllerContract
 {
     use HookableTrait;
 
@@ -45,9 +45,6 @@ class Controller implements ControllerContract
 
     /** @var AppContract */
     private $app;
-
-    /** @var string */
-    private $content;
 
     /** @var string Controller description */
     protected static $description;
@@ -58,19 +55,6 @@ class Controller implements ControllerContract
     /** @var array Parameters passed via headers */
     protected static $parameters;
 
-    /**
-     * You must provide your own __invoke.
-     */
-    // public function __invoke()
-    // {
-    //     throw new LogicException(
-    //         (new Message('Class %c must implement a %m method.'))
-    //             ->code('%c', get_class($this))
-    //             ->code('%m', 'public __invoke')
-    //             ->toString()
-    //     );
-    // }
-
     final public function __construct(AppContract $app)
     {
         $this->app = $app;
@@ -78,14 +62,10 @@ class Controller implements ControllerContract
 
     final public function content(): string
     {
-        return $this->content ?? '';
+        return $this->getContent() ?? '';
     }
 
-    // FIXME: An object implementing the document interface
-    final public function setContent(string $content): void
-    {
-        $this->content = $content;
-    }
+    abstract public function getContent(): string;
 
     final public function setResponse(Response $response): ControllerContract
     {

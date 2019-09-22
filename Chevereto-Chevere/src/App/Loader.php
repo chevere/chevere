@@ -35,6 +35,8 @@ use Chevere\Message\Message;
 use Chevere\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\ParametersContract;
 
+use function GuzzleHttp\Psr7\stream_for;
+
 final class Loader implements LoaderContract
 {
     /** @var Runtime */
@@ -234,6 +236,7 @@ final class Loader implements LoaderContract
             }
         }
         $this->controller = $route->getController($this->app->request()->getMethod());
+
         $this->app->setRoute($route);
         $routerArgs = $this->router->arguments();
         if (!isset($this->arguments) && isset($routerArgs)) {
@@ -245,18 +248,19 @@ final class Loader implements LoaderContract
     {
         $this->app->setArguments($this->arguments);
         $controller = $this->app->run($controller);
+        $contentStream = stream_for($controller->content());
+        $response = $this->app->response();
         if ($controller instanceof RenderContract) {
-            $controller->render();
+            $guzzle = $response->guzzle()->withBody($contentStream);
         } else {
-            $content = $controller->content();
-            $this->app->setResponse(
-                $this->app->response()->withJsonApi($content)
-            );
-            if (!CLI) {
-                $this->app->response()
-                    ->sendHeaders()
-                    ->sendBody();
-            }
+            $guzzle = $response->guzzle()->withJsonApi($contentStream);
+        }
+        $response->setGuzzle($guzzle);
+        $this->app->setResponse($response);
+        if (!CLI) {
+            $this->app->response()
+                ->sendHeaders()
+                ->sendBody();
         }
     }
 }
