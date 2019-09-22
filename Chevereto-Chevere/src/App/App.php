@@ -101,7 +101,7 @@ final class App implements AppContract
         return $this->request;
     }
 
-    public function response(): Response
+    public function response(): ResponseContract
     {
         return $this->response;
     }
@@ -126,7 +126,6 @@ final class App implements AppContract
      */
     public function run(string $controller): ControllerContract
     {
-        new $controller($this);
         if (!is_subclass_of($controller, ControllerContract::class)) {
             throw new LogicException(
                 (new Message('Controller %controller% must implement the %contract% interface.'))

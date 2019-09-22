@@ -38,7 +38,7 @@ interface AppContract
 
     public function api(): ApiContract;
 
-    // public function response(): Response;
+    public function response(): ResponseContract;
 
     public function request(): RequestContract;
 

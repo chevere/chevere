@@ -167,7 +167,7 @@ final class Loader implements LoaderContract
         $this->runController($this->controller);
     }
 
-    private function handleConsole()
+    private function handleConsole(): void
     {
         if (CLI && !isset($this->consoleLoop)) {
             $this->consoleLoop = true;
@@ -175,7 +175,7 @@ final class Loader implements LoaderContract
         }
     }
 
-    private function handleRequest()
+    private function handleRequest(): void
     {
         if (!$this->app->hasRequest()) {
             $this->setRequest(
