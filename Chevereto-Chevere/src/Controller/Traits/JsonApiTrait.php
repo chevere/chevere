@@ -13,21 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Controller\Traits;
 
-use JsonSerializable;
 use Chevere\JsonApi\EncodedDocument;
 
+/**
+ * Provides JSON API document handling for Controllers
+ */
 trait JsonApiTrait
 {
-    /** @var EncodedDocument */
-    private $document;
-
-    public function setDocument(EncodedDocument $json): void
-    {
-        $this->document = $json;
-    }
-
     public function getContent(): string
     {
-        return $this->document->toString();
+        return $this->getDocument()->toString();
     }
 }

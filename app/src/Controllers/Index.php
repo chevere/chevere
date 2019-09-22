@@ -28,28 +28,36 @@ class Index extends Controller implements JsonApiContract
 {
     use JsonApiTrait;
 
+    /** @var ResourceObject */
+    private $api;
+
+    /** @var ResourceObject */
+    private $cli;
+
     public function __invoke(): void
     {
-        $api = new ResourceObject(
+        $this->api = new ResourceObject(
             'info',
             'api',
             new Attribute('entry', 'HTTP GET /api'),
             new Attribute('description', 'Retrieves the exposed API.'),
             new SelfLink('/api')
         );
-        $cli = new ResourceObject(
+        $this->cli = new ResourceObject(
             'info',
             'cli',
             new Attribute('entry', 'php chevere.php list'),
             new Attribute('description', 'Retrieves the console command list.'),
         );
-        $this->setDocument(
+    }
+    public function getDocument(): EncodedDocument
+    {
+        return
             new EncodedDocument(
                 new DataDocument(
-                    new ResourceCollection($api, $cli),
+                    new ResourceCollection($this->api, $this->cli),
                     new JsonApi(),
                 )
-            )
-        );
+            );
     }
 }

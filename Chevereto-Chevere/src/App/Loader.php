@@ -28,7 +28,6 @@ use Chevere\Contracts\App\AppContract;
 use Chevere\App\Exceptions\NeedsToBeBuiltException;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Http\RequestContract;
-use Chevere\Contracts\Render\RenderContract;
 use Chevere\Contracts\Router\RouterContract;
 use Chevere\Http\ServerRequest;
 use Chevere\Message\Message;
@@ -226,13 +225,14 @@ final class Loader implements LoaderContract
         try {
             $route = $this->router->resolve($pathInfo);
         } catch (RouteNotFoundException $e) {
-            $this->app->response()->setStatusCode(404);
-            $this->app->response()->setContent('404');
-            $this->app->response()->prepare($this->app->request());
-            $this->app->response()->send();
+            $response = $this->app->response();
+            $response->setGuzzle(
+                $response->guzzle()->withStatus(404)->withBody(stream_for('Not found.'))
+            );
             if (CLI) {
                 throw new RouteNotFoundException($e->getMessage());
             } else {
+                $this->app->response()->sendHeaders()->sendBody();
                 die();
             }
         }
@@ -252,12 +252,11 @@ final class Loader implements LoaderContract
         $contentStream = stream_for($controller->content());
         $response = $this->app->response();
         $guzzle = $response->guzzle();
-        if ($controller instanceof JsonApiContract) {
-            $guzzle = $guzzle->withJsonApi($contentStream);
-        } else {
-            $guzzle = $guzzle->withBody($contentStream);
-        }
-        $response->setGuzzle($guzzle);
+        $response->setGuzzle(
+            $controller instanceof JsonApiContract
+                ? $guzzle->withJsonApi($contentStream)
+                : $guzzle->withBody($contentStream)
+        );
         if (!CLI) {
             $this->app->response()
                 ->sendHeaders()

@@ -17,5 +17,5 @@ use Chevere\JsonApi\EncodedDocument;
 
 interface JsonApiContract
 {
-    public function setDocument(EncodedDocument $json): void;
+    public function getDocument(): EncodedDocument;
 }

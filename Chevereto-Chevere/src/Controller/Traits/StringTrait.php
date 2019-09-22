@@ -13,18 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Controller\Traits;
 
+/**
+ * Provides string document handling for Controllers
+ */
 trait StringTrait
 {
-    /** @var string */
-    private $document;
-
-    public function setDocument(string $content): void
-    {
-        $this->document = $content;
-    }
-
     public function getContent(): string
     {
-        return $this->document;
+        return $this->getDocument();
     }
 }

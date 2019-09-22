@@ -66,7 +66,11 @@ abstract class Controller implements ControllerContract
     }
 
     abstract public function __invoke(): void;
-    
+
+    /**
+     * This method is used to retrieve the contents of the "document"
+     * Child classes may implement this manually or using Controller Traits 
+     */
     abstract public function getContent(): string;
 
     final public function setResponse(Response $response): ControllerContract

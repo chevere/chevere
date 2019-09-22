@@ -15,5 +15,5 @@ namespace Chevere\Contracts\Controller;
 
 interface StringContract
 {
-    public function setDocument(string $content): void;
+    public function getDocument(): string;
 }
