@@ -167,23 +167,6 @@ final class Loader implements LoaderContract
         $this->runController($this->controller);
     }
 
-    private function handleConsole(): void
-    {
-        if (CLI && !isset($this->consoleLoop)) {
-            $this->consoleLoop = true;
-            Console::run();
-        }
-    }
-
-    private function handleRequest(): void
-    {
-        if (!$this->app->hasRequest()) {
-            $this->setRequest(
-                ServerRequest::fromGlobals()
-            );
-        }
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -206,6 +189,23 @@ final class Loader implements LoaderContract
     public static function setDefaultRuntime(Runtime $runtime)
     {
         self::$runtime = $runtime;
+    }
+
+    private function handleConsole(): void
+    {
+        if (CLI && !isset($this->consoleLoop)) {
+            $this->consoleLoop = true;
+            Console::run();
+        }
+    }
+
+    private function handleRequest(): void
+    {
+        if (!$this->app->hasRequest()) {
+            $this->setRequest(
+                ServerRequest::fromGlobals()
+            );
+        }
     }
 
     private function assert(): void

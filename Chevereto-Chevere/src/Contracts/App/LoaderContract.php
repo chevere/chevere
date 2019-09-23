@@ -21,6 +21,10 @@ interface LoaderContract
 {
     public function __construct();
 
+    public function app(): AppContract;
+
+    public function parameters(): ParametersContract;
+
     public function build(): Build;
 
     /**
@@ -34,8 +38,6 @@ interface LoaderContract
     public function setArguments(array $arguments): LoaderContract;
 
     public function setRequest(RequestContract $request): void;
-
-    public static function setDefaultRuntime(Runtime $runtime);
 
     /**
      * Run the controller.
@@ -51,4 +53,7 @@ interface LoaderContract
      * Retrieve the loaded Request.
      */
     public static function request(): RequestContract;
+
+
+    public static function setDefaultRuntime(Runtime $runtime);
 }

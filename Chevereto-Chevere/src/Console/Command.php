@@ -19,6 +19,8 @@ use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Console\ApplicationContract;
 use Chevere\Contracts\Console\CommandContract;
 use Chevere\Contracts\Console\SymfonyCommandContract;
+use Chevere\Message\Message;
+use LogicException;
 
 /**
  * This is the base command of all Chevere commands.
@@ -69,14 +71,43 @@ abstract class Command implements CommandContract
         return $this->console->input()->getArgument($argument);
     }
 
+    final public function getArgumentString(string $argument): string
+    {
+        $string = $this->getArgument($argument);
+        $this->assertStringType($argument, $string);
+        return $string;
+    }
+
+    final public function getArgumentArray(string $argument): array
+    {
+        $array = $this->getArgument($argument);
+        $this->assertArrayType($argument, $array);
+        return $array;
+    }
+
+
     final public function getOption(string $option)
     {
         return $this->console->input()->getOption($option);
     }
 
+    final public function getOptionString(string $option): string
+    {
+        $string = $this->getOption($option);
+        $this->assertStringType($option, $string);
+        return $string;
+    }
+
+    final public function getOptionArray(string $option): array
+    {
+        $array = $this->getOption($option);
+        $this->assertArrayType($option, $array);
+        return $array;
+    }
+
     abstract public function callback(LoaderContract $loader): int;
 
-    final protected function configure(): void
+    final private function configure(): void
     {
         $this->symfony
             ->setName(static::NAME)
@@ -88,5 +119,33 @@ abstract class Command implements CommandContract
         foreach (static::OPTIONS as $options) {
             $this->symfony->addOption(...$options);
         }
+    }
+
+    final private function assertStringType(string $for, $var): void
+    {
+        if (!is_string($var)) {
+            throw new LogicException(
+                $this->getWrongTypeMessage('string', gettype($var), $for)
+            );
+        }
+    }
+
+    final private function assertArrayType(string $for, $var): void
+    {
+        if (!is_array($var)) {
+            throw new LogicException(
+                $this->getWrongTypeMessage('array', gettype($var), $for)
+            );
+        }
+    }
+
+    final private function getWrongTypeMessage(string $expectedType, string $getType, string $for): string
+    {
+        $message = new Message('Expecting %expectedType% type, %getType% returned for %for%');
+        return $message
+            ->code('%expectedType%', $expectedType)
+            ->code('%getType%', $getType)
+            ->code('%for%', $for)
+            ->toString();
     }
 }

@@ -124,10 +124,10 @@ final class RequestCommand extends Command
         $this->setParsedOptions();
 
         $request = new ServerRequest(
-            $this->getArgument('method'),
-            $this->getArgument('uri'),
-            $this->getOption('headers'),
-            $this->getOption('body'),
+            $this->getArgumentString('method'),
+            $this->getArgumentString('uri'),
+            $this->getOptionArray('headers'),
+            isset($this->options['body']) ? $this->getOptionString('body') : null,
         );
         $request
             ->withCookieParams($this->ParsedOptions['cookie'])

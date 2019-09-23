@@ -42,23 +42,24 @@ final class InspectCommand extends Command
     ];
 
     /** @var array */
-    protected $arguments = [];
+    private $arguments = [];
 
+    // FIXME: Reflector should be changed by separate ReflectionFunction and ReflectionMethod
     /** @var Reflector */
-    protected $reflector;
+    private $reflector;
 
     /** @var object|string */
-    protected $callable;
+    private $callable;
 
     /** @var string */
-    protected $method;
+    private $method;
 
     /** @var string */
-    protected $callableInput;
+    private $callableInput;
 
     public function callback(LoaderContract $loader): int
     {
-        $this->callableInput = (string) $this->console()->input()->getArgument('callable');
+        $this->callableInput = $this->getArgumentString('callable');
         if (is_subclass_of($this->callableInput, ControllerContract::class)) {
             $this->callable = $this->callableInput;
             $this->method = '__invoke';
@@ -121,10 +122,6 @@ final class InspectCommand extends Command
             if ($parameter->isDefaultValueAvailable()) {
                 $aux .= ' = ' . ($parameter->getDefaultValue() ?? 'null');
             }
-            // $res = $resource[$parameter->getName()] ?? null;
-            // if (isset($res)) {
-            //     $aux .= ' '.VarDump::wrap(VarDump::_OPERATOR, '--description '.$res['description'].' --regex '.$res['regex']);
-            // }
             $this->arguments[] = "#$i $aux";
             ++$i;
         }
