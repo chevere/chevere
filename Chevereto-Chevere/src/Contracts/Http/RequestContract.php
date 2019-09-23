@@ -13,5 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Http;
 
-interface RequestContract
-{ }
+use Psr\Http\Message\RequestInterface;
+
+interface RequestContract extends RequestInterface
+{
+    public function isXmlHttpRequest(): bool;
+
+    public function protocolString(): string;
+}

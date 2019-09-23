@@ -17,7 +17,8 @@ use Chevere\Contracts\Http\RequestContract;
 use Chevere\Http\Traits\RequestTrait;
 use GuzzleHttp\Psr7\Request as GuzzleHttpRequest;
 
+// FIXME: Client?
 final class Request extends GuzzleHttpRequest implements RequestContract
 {
-  use RequestTrait;
+    use RequestTrait;
 }

@@ -13,7 +13,23 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Http;
 
-use Chevere\JsonApi\JsonApi;
+use Chevere\Http\GuzzleResponse;
 
 interface ResponseContract
-{ }
+{
+    public function __construct();
+
+    public function setGuzzle(GuzzleResponse $guzzle): void;
+
+    public function guzzle(): GuzzleResponse;
+
+    public function status(): string;
+
+    public function headers(): string;
+
+    public function content(): string;
+
+    public function sendHeaders(): ResponseContract;
+
+    public function sendBody(): ResponseContract;
+}

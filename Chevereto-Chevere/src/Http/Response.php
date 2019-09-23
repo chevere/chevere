@@ -20,7 +20,7 @@ use Chevere\Contracts\Http\ResponseContract;
 final class Response implements ResponseContract
 {
 
-    /** @var GuzzleHttpResponse */
+    /** @var GuzzleResponse */
     private $guzzle;
 
     /** @var string */
@@ -34,15 +34,15 @@ final class Response implements ResponseContract
 
     public function __construct()
     {
-        $this->guzzle = new GuzzleHttpResponse(200, $this->getDateHeader());
+        $this->guzzle = new GuzzleResponse(200, $this->getDateHeader());
     }
 
-    public function setGuzzle(GuzzleHttpResponse $guzzle): void
+    public function setGuzzle(GuzzleResponse $guzzle): void
     {
         $this->guzzle = $guzzle;
     }
 
-    public function guzzle(): GuzzleHttpResponse
+    public function guzzle(): GuzzleResponse
     {
         return $this->guzzle;
     }

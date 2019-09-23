@@ -13,5 +13,5 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Http;
 
-interface GuzzleHttpResponseContract
+interface GuzzleResponseContract
 { }

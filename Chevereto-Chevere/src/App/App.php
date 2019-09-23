@@ -20,7 +20,6 @@ use Chevere\Contracts\Api\ApiContract;
 use Chevere\Message\Message;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Controller\ArgumentsWrap;
-use Chevere\Http\Response;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Http\ResponseContract;

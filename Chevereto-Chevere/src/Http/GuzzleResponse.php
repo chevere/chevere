@@ -16,7 +16,7 @@ namespace Chevere\Http;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\StreamInterface;
 
-final class GuzzleHttpResponse extends Response
+final class GuzzleResponse extends Response
 {
     /**
      * {@inheritdoc}
