@@ -96,8 +96,8 @@ final class RunCommand extends Command
     public function callback(LoaderContract $loader): int
     {
         $this->loader = $loader;
-        $this->callable = (string) $this->getArgument('callable');
-        $this->argument = $this->getOption('argument');
+        $this->callable = $this->getArgumentString('callable');
+        $this->argument = $this->getOptionArray('argument');
 
         if (is_subclass_of($this->callable, Controller::class)) {
             $this->runController();

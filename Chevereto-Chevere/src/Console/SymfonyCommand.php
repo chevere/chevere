@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Console;
 
 use Symfony\Component\Console\Command\Command as BaseCommand;
-use Chevere\Contracts\Console\CliContract;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Chevere\Contracts\Console\CommandContract;

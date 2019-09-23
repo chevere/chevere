@@ -34,4 +34,10 @@ trait RequestTrait
     {
         return sprintf('HTTP/%s', $this->getProtocolVersion());
     }
+
+    // Taken "as-is" from GuzzleHttp\Psr7\MessageTrait
+    abstract public function getHeaderLine($header);
+
+    // Taken "as-is" from GuzzleHttp\Psr7\MessageTrait
+    abstract public function getProtocolVersion();
 }

@@ -15,16 +15,13 @@ namespace Chevere\ExceptionHandler\src;
 
 use ReflectionMethod;
 
-use const Chevere\CLI;
 use const Chevere\PATH;
 use Chevere\App\App;
 use Chevere\Path\Path;
 use Chevere\Str\Str;
-use Chevere\VarDump\Formatters\ConsoleFormatter;
 use Chevere\VarDump\Formatters\DumperFormatter;
 use Chevere\VarDump\Formatters\PlainFormatter;
 use Chevere\VarDump\VarDump;
-use Chevere\VarDump\PlainVarDump;
 
 /**
  * TraceEntry prepares the exception trace for being used with Stack.

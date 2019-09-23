@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Http;
 
-use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Response as BaseResponse;
 use Psr\Http\Message\StreamInterface;
 
-final class GuzzleResponse extends Response
+final class GuzzleResponse extends BaseResponse
 {
     /**
      * {@inheritdoc}
      */
-    public function withJsonApi(StreamInterface $jsonApi): Response
+    public function withJsonApi(StreamInterface $jsonApi): BaseResponse
     {
         $new = clone $this;
         return $new->withJsonApiHeaders()->withBody($jsonApi);
@@ -30,7 +30,7 @@ final class GuzzleResponse extends Response
     /**
      * {@inheritdoc}
      */
-    public function withJsonApiHeaders(): Response
+    public function withJsonApiHeaders(): BaseResponse
     {
         $new = clone $this;
         return $new->withAddedHeader('Content-Type', 'application/vnd.api+json');

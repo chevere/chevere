@@ -31,7 +31,7 @@ final class ServerRequest extends GuzzleHttpServerRequest implements RequestCont
     public static function fromGlobals(): RequestContract
     {
         $method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : 'GET';
-        $headers = getallheaders();
+        $headers = getallheaders() ?: [];
         $uri = static::getUriFromGlobals();
         $body = new CachingStream(new LazyOpenStream('php://input', 'r+'));
         $protocol = isset($_SERVER['SERVER_PROTOCOL']) ? str_replace('HTTP/', '', $_SERVER['SERVER_PROTOCOL']) : '1.1';
@@ -39,9 +39,9 @@ final class ServerRequest extends GuzzleHttpServerRequest implements RequestCont
         $serverRequest = new static($method, $uri, $headers, $body, $protocol, $_SERVER);
 
         return $serverRequest
-          ->withCookieParams($_COOKIE)
-          ->withQueryParams($_GET)
-          ->withParsedBody($_POST)
-          ->withUploadedFiles(static::normalizeFiles($_FILES));
+            ->withCookieParams($_COOKIE)
+            ->withQueryParams($_GET)
+            ->withParsedBody($_POST)
+            ->withUploadedFiles(static::normalizeFiles($_FILES));
     }
 }

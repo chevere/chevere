@@ -22,4 +22,6 @@ trait StringTrait
     {
         return $this->getDocument();
     }
+
+    abstract public function getDocument(): string;
 }

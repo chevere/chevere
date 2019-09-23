@@ -13,14 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Controller;
 
-use JsonSerializable;
 use Chevere\Http\Response;
 use Chevere\Traits\HookableTrait;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\Controller\ControllerContract;
-use Chevere\Contracts\DataContract;
-use Chevere\Data\Data;
-use Chevere\JsonApi\JsonApi;
 
 // Define a hookable code entry:
 // $this->hook('myHook', function ($that) use ($var) {

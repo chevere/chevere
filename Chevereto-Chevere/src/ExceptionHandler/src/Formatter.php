@@ -73,9 +73,6 @@ final class Formatter
 
     private $consoleSections;
 
-    /** @var string */
-    private $varDump;
-
     /** @var Wrap */
     private $wrap;
 

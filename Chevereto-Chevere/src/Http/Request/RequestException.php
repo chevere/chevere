@@ -31,7 +31,7 @@ final class RequestException extends Exception
                     ->toString()
             );
         }
-        if (null == $message) {
+        if (null === $message) {
             $message = $status;
         }
         parent::__construct($message, $code, $previous);
