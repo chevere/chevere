@@ -35,8 +35,12 @@ class Dumper
 
     const OFFSET = 1;
 
+
     /** @var FormatterContract */
     protected $formatter;
+
+    /** @var VarDump */
+    private $varDump;
 
     private $vars;
 

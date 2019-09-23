@@ -102,7 +102,7 @@ final class Loader implements LoaderContract
         return $this->app;
     }
 
-    public function parameters(): Parameters
+    public function parameters(): ParametersContract
     {
         if (!isset($this->parameters)) {
             $pathHandle = new PathHandle(App::FILEHANDLE_PARAMETERS);

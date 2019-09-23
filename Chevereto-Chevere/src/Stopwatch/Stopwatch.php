@@ -87,7 +87,6 @@ final class Stopwatch
         $this->timeElapsedRead = Time::nanoToRead($this->timeElapsed);
         $prevMicrotime = 0;
         $this->index[] = 'stop';
-        $this->gaps[] = 0;
         $this->marks[] = $this->timeEnd;
         $this->records = [];
         foreach ($this->marks as $id => $microtime) {
