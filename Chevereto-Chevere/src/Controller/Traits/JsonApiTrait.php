@@ -25,5 +25,5 @@ trait JsonApiTrait
         return $this->getDocument()->toString();
     }
 
-    abstract function getDocument(): EncodedDocument;
+    abstract public function getDocument(): EncodedDocument;
 }
