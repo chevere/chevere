@@ -185,7 +185,7 @@ final class VarDump
     {
         switch ($this->type) {
             case static::TYPE_BOOLEAN:
-                $processor = new BooleanProcessor($this->expression, $this);
+                $processor = new BooleanProcessor($this->expression);
                 break;
             case static::TYPE_ARRAY:
                 ++$this->indent;

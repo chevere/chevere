@@ -15,13 +15,12 @@ namespace Chevere\VarDump\Processors;
 
 use Chevere\Contracts\VarDump\ProcessorContract;
 use Chevere\VarDump\Processors\Traits\ProcessorTrait;
-use Chevere\VarDump\VarDump;
 
 final class BooleanProcessor implements ProcessorContract
 {
     use ProcessorTrait;
 
-    public function __construct(bool $expression, VarDump $varDump)
+    public function __construct(bool $expression)
     {
         $this->val = $expression ? 'TRUE' : 'FALSE';
         $this->parentheses = '';
