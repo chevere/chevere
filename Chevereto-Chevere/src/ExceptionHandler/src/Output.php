@@ -21,7 +21,22 @@ use Chevere\Console\Console;
 use Chevere\ExceptionHandler\ExceptionHandler;
 use Chevere\Http\Response;
 use Chevere\Json;
+use Chevere\JsonApi\EncodedDocument;
 use Chevere\Message\Message;
+use JsonApiPhp\JsonApi\Attribute;
+use JsonApiPhp\JsonApi\DataDocument;
+use JsonApiPhp\JsonApi\Error;
+use JsonApiPhp\JsonApi\Error\Code;
+use JsonApiPhp\JsonApi\Error\Detail;
+use JsonApiPhp\JsonApi\Error\Id;
+use JsonApiPhp\JsonApi\Error\Status;
+use JsonApiPhp\JsonApi\Error\Title;
+use JsonApiPhp\JsonApi\ErrorDocument;
+use JsonApiPhp\JsonApi\Meta;
+use JsonApiPhp\JsonApi\ResourceCollection;
+use JsonApiPhp\JsonApi\ResourceIdentifier;
+use JsonApiPhp\JsonApi\ResourceIdentifierCollection;
+use JsonApiPhp\JsonApi\ResourceObject;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -29,14 +44,11 @@ use Psr\Http\Message\StreamInterface;
  */
 final class Output
 {
-    /** @var string The console|html content representation */
-    private $content;
-
     /** @var string The text/plain content representation */
     private $textPlain;
 
     /** @var array */
-    private $templateTags;
+    private $tags;
 
     /** @var ExceptionHandler */
     private $exceptionHandler;
@@ -46,9 +58,6 @@ final class Output
 
     /** @var StreamInterface */
     private $output;
-
-    /** @var array */
-    private $headers = [];
 
     /** @var string The rich template string. Note: Placeholders won't be visible when dumping to console */
     private $richTemplate;
@@ -66,7 +75,9 @@ final class Output
             $this->setJsonOutput();
         } else {
             if (CLI) {
-                $this->setConsoleOutput();
+                $this->setJsonOutput();
+                // $this->setConsoleOutput();
+                // $this->setHtmlOutput();
             } else {
                 $this->setHtmlOutput();
             }
@@ -81,7 +92,7 @@ final class Output
     public function out(): void
     {
         if (CLI) {
-            die(1);
+            // die(1);
         }
 
         $response = new Response();
@@ -91,82 +102,73 @@ final class Output
         $guzzle = $response->guzzle()
             ->withBody($this->output)
             ->withStatus(500);
-        // $response->setLastModified(new DateTime());
-        // foreach ($this->headers as $k => $v) {
-        //     $response->headers->set($k, $v);
-        // }
+
         $response->setGuzzle($guzzle);
         $response->sendBody();
     }
 
     private function parseTemplates(): void
     {
-        $this->templateTags = $this->formatter->getTemplateTags();
-        $this->content = strtr($this->richTemplate, $this->templateTags);
-        $this->addTemplateTag('content', $this->content);
-        $this->textPlain = strtr($this->plainTemplate, $this->templateTags);
-    }
-
-    /**
-     * $table stores the template placeholders and its value.
-     *
-     * @param string $tagName Template tag name
-     * @param mixed  $value   value
-     */
-    private function addTemplateTag(string $tagName, $value): void
-    {
-        $this->templateTags["%$tagName%"] = $value;
-    }
-
-    /**
-     * @param string $tagName Template tag name
-     */
-    private function getTemplateTag(string $tagName): string
-    {
-        return $this->templateTags["%$tagName%"];
+        $this->tags = $this->formatter->getTemplateTags();
+        $this->preparedTags = [];
+        foreach ($this->tags as $k => $v) {
+            $this->preparedTags["%$k%"] = $v;
+        }
+        $content = strtr($this->richTemplate, $this->preparedTags);
+        $this->tags['content'] = $content;
+        $this->preparedTags['%content%'] = $this->tags['content'];
+        $this->textPlain = strtr($this->plainTemplate, $this->preparedTags);
     }
 
     // FIXME: JsonApi Document
     private function setJsonOutput(): void
     {
-        $json = new Json();
-        $this->headers = array_merge($this->headers, Json::CONTENT_TYPE);
-        $response = [Template::NO_DEBUG_TITLE_PLAIN, 500];
         $log = [
-            'id' => $this->getTemplateTag('id'),
+            'id' => $this->tags['id'],
             'level' => $this->formatter->dataKey('loggerLevel'),
-            'filename' => $this->getTemplateTag('logFilename'),
         ];
-        switch ($this->exceptionHandler->isDebugEnabled()) {
-            case 0:
-                unset($log['filename']);
-                break;
-            case 1:
-                $response[0] = $this->formatter->dataKey('thrown') . ' in ' . $this->getTemplateTag('file') . ':' . $this->getTemplateTag('line');
-                $error = [];
-                foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
-                    $error[$v] = $this->getTemplateTag($v);
+        if ($this->exceptionHandler->isDebugEnabled()) {
+            $log['filename'] = $this->tags['logFilename'];
+            $title = $this->formatter->dataKey('thrown') . ' in ' . $this->tags['file'] . ':' . $this->tags['line'];
+            $error = [];
+            foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
+                if (isset($this->tags[$v])) {
+                    $error[$v] = $this->tags[$v];
                 }
-                $json->data->setKey('error', $error);
-                break;
+            }
+        } else {
+            $title = Template::NO_DEBUG_TITLE_PLAIN;
         }
-        $json->data->setKey('log', $log);
-        $json->setResponse(...$response);
-        $this->output = (string) $json;
+
+        $jsonApi = new ErrorDocument(
+            new Error(
+                new Id($this->tags['id']),
+                new Status('500'),
+                new Title($this->formatter->dataKey('thrown')),
+                new Detail($title),
+                new Code((string) $this->tags['code']),
+                new Meta('level', $this->formatter->dataKey('loggerLevel'))
+            )
+        );
+
+        $document = new EncodedDocument($jsonApi);
+        // dd();
+
+        $this->output = stream_for(json_encode($jsonApi));
     }
 
     private function setHtmlOutput(): void
     {
+        $preparedTags = $this->preparedTags;
         if ($this->exceptionHandler->isDebugEnabled()) {
             $bodyTemplate = Template::DEBUG_BODY_HTML;
         } else {
-            $this->content = Template::NO_DEBUG_CONTENT_HTML;
-            $this->addTemplateTag('content', $this->content);
-            $this->addTemplateTag('title', Template::NO_DEBUG_TITLE_PLAIN);
             $bodyTemplate = Template::NO_DEBUG_BODY_HTML;
+            $preparedTags['%content%'] = Template::NO_DEBUG_CONTENT_HTML;
+            $preparedTags['%title%'] = Template::NO_DEBUG_TITLE_PLAIN;
         }
-        $this->addTemplateTag('body', strtr($bodyTemplate, $this->templateTags));
-        $this->output = stream_for(strtr(Template::HTML_TEMPLATE, $this->templateTags));
+        $preparedTags['%body%'] = strtr($bodyTemplate, $preparedTags);
+        $this->output = stream_for(strtr(Template::HTML_TEMPLATE, $preparedTags));
     }
 
     private function setConsoleOutput(): void
@@ -175,10 +177,10 @@ final class Output
             if ('title' == $k) {
                 $tpl = $v[0];
             } else {
-                Console::style()->section(strtr($v[0], $this->templateTags));
+                Console::style()->section(strtr($v[0], $this->preparedTags));
                 $tpl = $v[1];
             }
-            $message = strtr($tpl, $this->templateTags);
+            $message = strtr($tpl, $this->preparedTags);
             if ('title' == $k) {
                 Console::style()->error($message);
             } else {

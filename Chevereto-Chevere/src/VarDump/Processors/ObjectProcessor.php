@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\VarDump\Processors;
 
 use ReflectionObject;
+use Reflector;
 use Throwable;
 use Chevere\Contracts\VarDump\ProcessorContract;
 use Chevere\Path\Path;
