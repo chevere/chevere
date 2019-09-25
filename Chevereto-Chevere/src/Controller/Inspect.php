@@ -21,7 +21,6 @@ use Chevere\Str\Str;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Controller\InspectContract;
 use Chevere\Interfaces\ControllerResourceInterface;
-use Chevere\Interfaces\CreateFromString;
 use Chevere\Interfaces\ControllerRelationshipInterface;
 
 /**
@@ -36,9 +35,6 @@ final class Inspect implements InspectContract
 
     /** @var string The Controller interface */
     const INTERFACE_CONTROLLER_RESOURCE = ControllerResourceInterface::class;
-
-    /** @var string The CreateFromString interface */
-    const INTERFACE_CREATE_FROM_STRING = CreateFromString::class;
 
     /** @var string The description property name */
     const PROP_DESCRIPTION = 'description';
