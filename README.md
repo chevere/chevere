@@ -1,6 +1,6 @@
 [![Scrutinizer Code
-Quality](https://scrutinizer-ci.com/g/rodolfoberrios/chevere/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/rodolfoberrios/chevere/?branch=master)
-[![CodeFactor](https://www.codefactor.io/repository/github/rodolfoberrios/chevere/badge)](https://www.codefactor.io/repository/github/rodolfoberrios/chevere)
+Quality](https://scrutinizer-ci.com/g/Chevereto/chevere/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Chevereto/chevere/?branch=master)
+[![CodeFactor](https://www.codefactor.io/repository/github/Chevereto/chevere/badge)](https://www.codefactor.io/repository/github/Chevereto/chevere)
 
 # About Chevere
 
@@ -21,7 +21,7 @@ After cloning this repo, you will need to install the vendor dependencies using
 
 ```console
 foo@bar:~$ cd ~/chevere
-foo@bar:~$ git clone https://github.com/rodolfoberrios/chevere.git
+foo@bar:~$ git clone https://github.com/Chevereto/chevere.git
 foo@bar:~$ rm -rf "vendor" && composer update chevereto/chevere --prefer-source
 ```
 
