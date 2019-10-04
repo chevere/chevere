@@ -30,16 +30,6 @@ foo@bar:~$ rm -rf "vendor" && composer update chevereto/chevere --prefer-source
 This is an unreleased application, the actual framework package resides in `Chevereto-Chevere` (repository type:
 path).
 
-## Author
-
-I build an image hosting software called [Chevereto](https://chevereto.com/). Maybe you have already used Chevereto as
-most of the image hosting services are built on top of it. You know, I'm talking [about](https://lightpics.net/)
-[these](https://imgbb.com/) [image](https://www.ultraimg.com/) [hosting](https://extraimage.net/)
-[websites](https://gifyu.com/) that looks the same everywhere, with either a black or white topbar plus a logo in the
-center.
-
-Chevere is the framework that I'm building to create Chevereto V4.
-
 ## License
 
 The Chevere Framework is licensed under the MIT license. See [License File](LICENSE) for more information.
