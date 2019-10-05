@@ -22,21 +22,17 @@ use Chevere\Contracts\Router\RouterContract;
 
 interface AppContract
 {
-    public function setApi(ApiContract $api): void;
+    public function withRequest(RequestContract $request): AppContract;
 
-    public function setResponse(ResponseContract $response): void;
+    public function withResponse(ResponseContract $response): AppContract;
 
-    public function setRequest(RequestContract $request): void;
+    public function withRoute(RouteContract $route): AppContract;
+
+    public function withRouter(RouterContract $router): AppContract;
+
+    public function withArguments(array $arguments): AppContract;
 
     public function hasRequest(): bool;
-
-    public function setRoute(RouteContract $route): void;
-
-    public function setRouter(RouterContract $router): void;
-
-    public function setArguments(array $arguments): void;
-
-    public function api(): ApiContract;
 
     public function response(): ResponseContract;
 

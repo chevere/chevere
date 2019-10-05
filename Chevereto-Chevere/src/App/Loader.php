@@ -81,8 +81,7 @@ final class Loader implements LoaderContract
         $this->build = new Build($this);
         $this->assert();
 
-        $this->app = new App();
-        $this->app->setResponse(new Response());
+        $this->app = new App(new Response());
 
         if (DEV) {
             $this->build->make(
@@ -94,7 +93,7 @@ final class Loader implements LoaderContract
 
         $this->api = $this->build->container()->api();
         $this->router = $this->build->container()->router();
-        $this->app->setRouter($this->router);
+        $this->app = $this->app->withRouter($this->router);
     }
 
     public function app(): AppContract
@@ -140,7 +139,7 @@ final class Loader implements LoaderContract
     public function setRequest(RequestContract $request): void
     {
         self::$request = $request;
-        $this->app->setRequest($request);
+        $this->app = $this->app->withRequest($request);
     }
 
     /**
@@ -238,7 +237,7 @@ final class Loader implements LoaderContract
         }
         $this->controller = $route->getController($this->app->request()->getMethod());
 
-        $this->app->setRoute($route);
+        $this->app = $this->app->withRoute($route);
         $routerArgs = $this->router->arguments();
         if (!isset($this->arguments) && isset($routerArgs)) {
             $this->setArguments($routerArgs);
@@ -247,7 +246,7 @@ final class Loader implements LoaderContract
 
     private function runController(string $controller): void
     {
-        $this->app->setArguments($this->arguments);
+        $this->app = $this->app->withArguments($this->arguments);
         $controller = $this->app->run($controller);
         $contentStream = stream_for($controller->content());
         $response = $this->app->response();

@@ -65,14 +65,13 @@ abstract class Controller implements ControllerContract
 
     /**
      * This method is used to retrieve the contents of the "document"
-     * Child classes may implement this manually or using Controller Traits 
+     * Child classes may implement this manually or using Controller Traits
      */
     abstract public function getContent(): string;
 
     final public function setResponse(Response $response): ControllerContract
     {
-        $this->app->setResponse($response);
-
+        $this->app = $this->app->withResponse($response);
         return $this;
     }
 

@@ -16,7 +16,6 @@ namespace Chevere\App;
 use const Chevere\APP_PATH;
 
 use LogicException;
-use Chevere\Contracts\Api\ApiContract;
 use Chevere\Message\Message;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Controller\ArgumentsWrap;
@@ -37,9 +36,6 @@ final class App implements AppContract
     const FILEHANDLE_PARAMETERS = ':parameters';
     const PATH_LOGS = APP_PATH . 'var/logs/';
 
-    /** @var ApiContract */
-    private $api;
-
     /** @var RequestContract */
     private $request;
 
@@ -55,44 +51,49 @@ final class App implements AppContract
     /** @var RouterContract */
     private $router;
 
-    public function setApi(ApiContract $api): void
+    public function __construct(ResponseContract $response)
     {
-        $this->api = $api;
+        $this->response = $response;
     }
 
-    public function setRequest(RequestContract $request): void
+    public function withRequest(RequestContract $request): AppContract
     {
-        $this->request = $request;
+        $new = clone $this;
+        $new->request = $request;
+        return $new;
+    }
+
+    public function withResponse(ResponseContract $response): AppContract
+    {
+        $new = clone $this;
+        $new->response = $response;
+        return $new;
+    }
+
+    public function withRoute(RouteContract $route): AppContract
+    {
+        $new = clone $this;
+        $new->route = $route;
+        return $new;
+    }
+
+    public function withRouter(RouterContract $router): AppContract
+    {
+        $new = clone $this;
+        $new->router = $router;
+        return $new;
+    }
+
+    public function withArguments(array $arguments): AppContract
+    {
+        $new = clone $this;
+        $new->arguments = $arguments;
+        return $new;
     }
 
     public function hasRequest(): bool
     {
         return isset($this->request);
-    }
-
-    public function setResponse(ResponseContract $response): void
-    {
-        $this->response = $response;
-    }
-
-    public function setRoute(RouteContract $route): void
-    {
-        $this->route = $route;
-    }
-
-    public function setRouter(RouterContract $router): void
-    {
-        $this->router = $router;
-    }
-
-    public function setArguments(array $arguments): void
-    {
-        $this->arguments = $arguments;
-    }
-
-    public function api(): ApiContract
-    {
-        return $this->api;
     }
 
     public function request(): RequestContract
@@ -134,12 +135,14 @@ final class App implements AppContract
             );
         }
 
-        $middlewares = $this->route->middlewares();
-        if (!empty($middlewares)) {
-            $handler = new MiddlewareHandler($middlewares, $this);
-            $handler->runner();
-            if ($handler->exception) {
-                dd($handler->exception->getMessage(), 'Aborted at ' . __FILE__ . ':' . __LINE__);
+        if (isset($this->route)) {
+            $middlewares = $this->route->middlewares();
+            if (!empty($middlewares)) {
+                $handler = new MiddlewareHandler($middlewares, $this);
+                $handler->runner();
+                if ($handler->exception) {
+                    dd($handler->exception->getMessage(), 'Aborted at ' . __FILE__ . ':' . __LINE__);
+                }
             }
         }
 
