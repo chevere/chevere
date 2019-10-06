@@ -16,14 +16,14 @@ namespace Chevere;
 use Chevere\App\Loader;
 use Chevere\Console\Console;
 use Chevere\Runtime\Runtime;
-use Chevere\Runtime\Sets\RuntimeSetDebug;
-use Chevere\Runtime\Sets\RuntimeSetDefaultCharset;
-use Chevere\Runtime\Sets\RuntimeSetPrecision;
-use Chevere\Runtime\Sets\RuntimeSetTimeZone;
-use Chevere\Runtime\Sets\RuntimeSetUriScheme;
-use Chevere\Runtime\Sets\RuntimeSetLocale;
-use Chevere\Runtime\Sets\RuntimeSetErrorHandler;
-use Chevere\Runtime\Sets\RuntimeSetExceptionHandler;
+use Chevere\Runtime\Sets\SetDebug;
+use Chevere\Runtime\Sets\SetDefaultCharset;
+use Chevere\Runtime\Sets\SetPrecision;
+use Chevere\Runtime\Sets\SetTimeZone;
+use Chevere\Runtime\Sets\SetUriScheme;
+use Chevere\Runtime\Sets\SetLocale;
+use Chevere\Runtime\Sets\SetErrorHandler;
+use Chevere\Runtime\Sets\SetExceptionHandler;
 
 define('BOOTSTRAP_TIME', microtime(true));
 
@@ -54,14 +54,14 @@ if ('cli' == php_sapi_name()) {
 
 Loader::setDefaultRuntime(
     new Runtime(
-        new RuntimeSetDebug('1'),
-        new RuntimeSetErrorHandler('Chevere\ExceptionHandler\ErrorHandler::error'),
-        new RuntimeSetExceptionHandler('Chevere\ExceptionHandler\ExceptionHandler::exception'),
-        new RuntimeSetLocale('en_US.UTF8'),
-        new RuntimeSetDefaultCharset('utf-8'),
-        new RuntimeSetPrecision('16'),
-        new RuntimeSetUriScheme('https'),
-        new RuntimeSetTimeZone('UTC')
+        new SetDebug('1'),
+        new SetErrorHandler('Chevere\ExceptionHandler\ErrorHandler::error'),
+        new SetExceptionHandler('Chevere\ExceptionHandler\ExceptionHandler::exception'),
+        new SetLocale('en_US.UTF8'),
+        new SetDefaultCharset('utf-8'),
+        new SetPrecision('16'),
+        new SetUriScheme('https'),
+        new SetTimeZone('UTC')
     )
 );
 

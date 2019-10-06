@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Runtime;
 
 use Chevere\Data\Data;
-use Chevere\Contracts\Runtime\RuntimeSetContract;
+use Chevere\Contracts\Runtime\SetContract;
 use Chevere\Contracts\DataContract;
 use Chevere\Data\Traits\DataKeyTrait;
-use ReflectionClass;
 
 /**
  * Runtime applies runtime config and provide data about the App Runtime.
@@ -29,7 +28,7 @@ final class Runtime
     /** @var DataContract */
     private $data;
 
-    public function __construct(RuntimeSetContract ...$runtimeContract)
+    public function __construct(SetContract ...$runtimeContract)
     {
         $this->data = new Data();
         foreach ($runtimeContract as $k => $runtimeSet) {

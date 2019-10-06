@@ -13,22 +13,22 @@ declare(strict_types=1);
 
 namespace Chevere\Runtime\Sets;
 
-use Chevere\Contracts\Runtime\RuntimeSetContract;
 use RuntimeException;
 use Chevere\Message\Message;
+use Chevere\Contracts\Runtime\SetContract;
 use Chevere\Runtime\Traits\RuntimeSet;
 
-class RuntimeSetPrecision implements RuntimeSetContract
+class SetLocale implements SetContract
 {
     use RuntimeSet;
 
     public function set(): void
     {
-        if (!@ini_set('precision', $this->value)) {
+        if (!setlocale(LC_ALL, $this->value)) {
             throw new RuntimeException(
-                (new Message('Unable to set %s %v.'))
-                    ->code('%s', 'default_charset')
-                    ->code('%v', $this->value)
+                (new Message('The locale functionality is not implemented on your platform, the specified locale %locale% does not exist or the category name %category% is invalid.'))
+                    ->code('%category%', 'LC_ALL')
+                    ->code('%locale%', $this->value)
                     ->toString()
             );
         }

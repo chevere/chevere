@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Runtime;
 
-interface RuntimeSetContract
+interface SetContract
 {
     public function __construct(string $value = null);
 

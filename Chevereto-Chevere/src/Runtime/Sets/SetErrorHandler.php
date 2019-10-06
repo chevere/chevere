@@ -15,32 +15,32 @@ namespace Chevere\Runtime\Sets;
 
 use InvalidArgumentException;
 use Chevere\Message\Message;
+use Chevere\Contracts\Runtime\SetContract;
 use Chevere\Runtime\Traits\RuntimeSet;
-use Chevere\Contracts\Runtime\RuntimeSetContract;
 
-class RuntimeSetExceptionHandler implements RuntimeSetContract
+class SetErrorHandler implements SetContract
 {
     use RuntimeSet;
 
     public function set(): void
     {
         if (null == $this->value) {
-            $this->restoreExceptionHandler();
+            $this->restoreErrorHandler();
         } else {
             if (!is_callable($this->value)) {
                 throw new InvalidArgumentException(
                     (new Message('Runtime value must be a valid callable for %subject%'))
-                        ->code('%subject%', 'set_exception_handler')
+                        ->code('%subject%', 'set_error_handler')
                 );
             }
-            set_exception_handler($this->value);
+            set_error_handler($this->value);
         }
     }
 
-    private function restoreExceptionHandler(): void
+    private function restoreErrorHandler(): void
     {
-        restore_exception_handler();
-        $this->value = (string) set_exception_handler(function () { });
-        restore_exception_handler();
+        restore_error_handler();
+        $this->value = (string) set_error_handler(function () { });
+        restore_error_handler();
     }
 }

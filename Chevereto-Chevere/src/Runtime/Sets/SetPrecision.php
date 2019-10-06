@@ -13,23 +13,22 @@ declare(strict_types=1);
 
 namespace Chevere\Runtime\Sets;
 
+use Chevere\Contracts\Runtime\SetContract;
 use RuntimeException;
 use Chevere\Message\Message;
-use Chevere\Contracts\Runtime\RuntimeSetContract;
 use Chevere\Runtime\Traits\RuntimeSet;
 
-class RuntimeSetUriScheme implements RuntimeSetContract
+class SetPrecision implements SetContract
 {
     use RuntimeSet;
 
     public function set(): void
     {
-        $accept = ['http', 'https'];
-        if (!in_array($this->value, $accept)) {
+        if (!@ini_set('precision', $this->value)) {
             throw new RuntimeException(
-                (new Message('Expecting %expecting%, %value% provided.'))
-                    ->code('%expecting%', implode(', ', $accept))
-                    ->code('%value%', $this->value)
+                (new Message('Unable to set %s %v.'))
+                    ->code('%s', 'default_charset')
+                    ->code('%v', $this->value)
                     ->toString()
             );
         }

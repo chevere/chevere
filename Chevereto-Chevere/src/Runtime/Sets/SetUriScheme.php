@@ -15,21 +15,20 @@ namespace Chevere\Runtime\Sets;
 
 use RuntimeException;
 use Chevere\Message\Message;
-use Chevere\Contracts\Runtime\RuntimeSetContract;
+use Chevere\Contracts\Runtime\SetContract;
 use Chevere\Runtime\Traits\RuntimeSet;
 
-class RuntimeSetDebug implements RuntimeSetContract
+class SetUriScheme implements SetContract
 {
     use RuntimeSet;
 
-    const ACCEPT = [0, 1];
-
     public function set(): void
     {
-        if (!in_array($this->value, static::ACCEPT)) {
+        $accept = ['http', 'https'];
+        if (!in_array($this->value, $accept)) {
             throw new RuntimeException(
                 (new Message('Expecting %expecting%, %value% provided.'))
-                    ->code('%expecting%', implode(', ', static::ACCEPT))
+                    ->code('%expecting%', implode(', ', $accept))
                     ->code('%value%', $this->value)
                     ->toString()
             );

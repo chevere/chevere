@@ -16,11 +16,11 @@ namespace Chevere\Runtime\Sets;
 use InvalidArgumentException;
 use RuntimeException;
 use Chevere\Message\Message;
-use Chevere\Contracts\Runtime\RuntimeSetContract;
+use Chevere\Contracts\Runtime\SetContract;
 use Chevere\Runtime\Traits\RuntimeSet;
 use Chevere\Validate;
 
-class RuntimeSetTimeZone implements RuntimeSetContract
+class SetTimeZone implements SetContract
 {
     use RuntimeSet;
 

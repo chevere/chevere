@@ -16,9 +16,9 @@ namespace Chevere\Runtime\Sets;
 use RuntimeException;
 use Chevere\Message\Message;
 use Chevere\Runtime\Traits\RuntimeSet;
-use Chevere\Contracts\Runtime\RuntimeSetContract;
+use Chevere\Contracts\Runtime\SetContract;
 
-class RuntimeSetDefaultCharset implements RuntimeSetContract
+class SetDefaultCharset implements SetContract
 {
     use RuntimeSet;
 

@@ -15,20 +15,22 @@ namespace Chevere\Runtime\Sets;
 
 use RuntimeException;
 use Chevere\Message\Message;
-use Chevere\Contracts\Runtime\RuntimeSetContract;
+use Chevere\Contracts\Runtime\SetContract;
 use Chevere\Runtime\Traits\RuntimeSet;
 
-class RuntimeSetLocale implements RuntimeSetContract
+class SetDebug implements SetContract
 {
     use RuntimeSet;
 
+    const ACCEPT = [0, 1];
+
     public function set(): void
     {
-        if (!setlocale(LC_ALL, $this->value)) {
+        if (!in_array($this->value, static::ACCEPT)) {
             throw new RuntimeException(
-                (new Message('The locale functionality is not implemented on your platform, the specified locale %locale% does not exist or the category name %category% is invalid.'))
-                    ->code('%category%', 'LC_ALL')
-                    ->code('%locale%', $this->value)
+                (new Message('Expecting %expecting%, %value% provided.'))
+                    ->code('%expecting%', implode(', ', static::ACCEPT))
+                    ->code('%value%', $this->value)
                     ->toString()
             );
         }
