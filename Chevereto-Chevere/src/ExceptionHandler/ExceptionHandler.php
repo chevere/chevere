@@ -33,18 +33,15 @@ use Monolog\Logger;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\FirePHPHandler;
-use Chevere\Contracts\DataContract;
 use Chevere\Contracts\Http\RequestContract;
-use Chevere\Data\Traits\DataAccessTrait;
-use Chevere\Data\Traits\DataKeyTrait;
+use Chevere\Data\Traits\DataMethodTrait;
 
 /**
  * The Chevere exception handler.
  */
 final class ExceptionHandler
 {
-    use DataAccessTrait;
-    use DataKeyTrait;
+    use DataMethodTrait;
 
     /** @var string Relative folder where logs will be stored */
     const LOG_DATE_FOLDER_FORMAT = 'Y/m/d/';
@@ -93,9 +90,6 @@ final class ExceptionHandler
         E_USER_DEPRECATED => LogLevel::NOTICE,
     ];
 
-    /** @var DataContract */
-    private $data;
-
     /** @var RequestContract The detected/forged HTTP request */
     private $request;
 
@@ -137,13 +131,13 @@ final class ExceptionHandler
             $this->request = ServerRequest::fromGlobals();
         }
         $this->runtime = Loader::runtime();
-        $this->isDebugEnabled = (bool) $this->runtime->dataKey('debug');
+        $this->isDebugEnabled = (bool) $this->runtime->data()->key('debug');
 
         $this->setloadedConfigFiles();
 
         $this->logDateFolderFormat = static::LOG_DATE_FOLDER_FORMAT;
         $this->wrap = new Wrap($args[0]);
-        $this->loggerLevel = $this->wrap->dataKey('loggerLevel');
+        $this->loggerLevel = $this->wrap->data()->key('loggerLevel');
         $this->setLogFilePathProperties();
         $this->setLogger();
 
@@ -187,9 +181,6 @@ final class ExceptionHandler
                 'timestamp' => strtotime($dateTimeAtom),
             ]);
     }
-
-    private function setloadedConfigFiles(): void
-    { }
 
     private function setLogFilePathProperties(): void
     {

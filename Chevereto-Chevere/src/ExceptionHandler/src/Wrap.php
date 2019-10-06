@@ -19,8 +19,8 @@ use Chevere\Data\Data;
 use Chevere\Path\Path;
 use Chevere\Str\Str;
 use Chevere\Contracts\DataContract;
-use Chevere\Data\Traits\DataAccessTrait;
-use Chevere\Data\Traits\DataKeyTrait;
+use Chevere\Data\Traits\DataMethodTrait;
+use Chevere\Data\Traits\DataPropertyTrait;
 use Chevere\ExceptionHandler\ExceptionHandler;
 
 /**
@@ -28,8 +28,7 @@ use Chevere\ExceptionHandler\ExceptionHandler;
  */
 final class Wrap
 {
-    use DataAccessTrait;
-    use DataKeyTrait;
+    use DataMethodTrait;
 
     /** @var Throwable */
     private $exception;

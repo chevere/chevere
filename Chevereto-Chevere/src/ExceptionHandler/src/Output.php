@@ -23,8 +23,6 @@ use Chevere\Http\Response;
 use Chevere\Json;
 use Chevere\JsonApi\EncodedDocument;
 use Chevere\Message\Message;
-use JsonApiPhp\JsonApi\Attribute;
-use JsonApiPhp\JsonApi\DataDocument;
 use JsonApiPhp\JsonApi\Error;
 use JsonApiPhp\JsonApi\Error\Code;
 use JsonApiPhp\JsonApi\Error\Detail;
@@ -33,10 +31,6 @@ use JsonApiPhp\JsonApi\Error\Status;
 use JsonApiPhp\JsonApi\Error\Title;
 use JsonApiPhp\JsonApi\ErrorDocument;
 use JsonApiPhp\JsonApi\Meta;
-use JsonApiPhp\JsonApi\ResourceCollection;
-use JsonApiPhp\JsonApi\ResourceIdentifier;
-use JsonApiPhp\JsonApi\ResourceIdentifierCollection;
-use JsonApiPhp\JsonApi\ResourceObject;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -127,11 +121,11 @@ final class Output
     {
         $log = [
             'id' => $this->tags['id'],
-            'level' => $this->formatter->dataKey('loggerLevel'),
+            'level' => $this->formatter->data()->key('loggerLevel'),
         ];
         if ($this->exceptionHandler->isDebugEnabled()) {
             $log['filename'] = $this->tags['logFilename'];
-            $title = $this->formatter->dataKey('thrown') . ' in ' . $this->tags['file'] . ':' . $this->tags['line'];
+            $title = $this->formatter->data()->key('thrown') . ' in ' . $this->tags['file'] . ':' . $this->tags['line'];
             $error = [];
             foreach (['file', 'line', 'code', 'message', 'class'] as $v) {
                 if (isset($this->tags[$v])) {
@@ -146,10 +140,10 @@ final class Output
             new Error(
                 new Id($this->tags['id']),
                 new Status('500'),
-                new Title($this->formatter->dataKey('thrown')),
+                new Title($this->formatter->data()->key('thrown')),
                 new Detail($title),
                 new Code((string) $this->tags['code']),
-                new Meta('level', $this->formatter->dataKey('loggerLevel'))
+                new Meta('level', $this->formatter->data()->key('loggerLevel'))
             )
         );
 

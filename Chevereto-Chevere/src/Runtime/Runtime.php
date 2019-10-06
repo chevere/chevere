@@ -16,14 +16,14 @@ namespace Chevere\Runtime;
 use Chevere\Data\Data;
 use Chevere\Contracts\Runtime\SetContract;
 use Chevere\Contracts\DataContract;
-use Chevere\Data\Traits\DataKeyTrait;
+use Chevere\Data\Traits\DataPropertyTrait;
 
 /**
  * Runtime applies runtime config and provide data about the App Runtime.
  */
 final class Runtime
 {
-    use DataKeyTrait;
+    use DataPropertyTrait;
 
     /** @var DataContract */
     private $data;

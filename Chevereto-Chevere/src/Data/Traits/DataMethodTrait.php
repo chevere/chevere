@@ -15,10 +15,9 @@ namespace Chevere\Data\Traits;
 
 use Chevere\Contracts\DataContract;
 
-trait DataAccessTrait
+trait DataMethodTrait
 {
-    /** @var DataContract */
-    private $data;
+    use DataPropertyTrait;
 
     public function data(): DataContract
     {

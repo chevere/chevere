@@ -15,13 +15,8 @@ namespace Chevere\Data\Traits;
 
 use Chevere\Contracts\DataContract;
 
-trait DataKeyTrait
+trait DataPropertyTrait
 {
     /** @var DataContract */
     private $data;
-
-    public function dataKey(string $key)
-    {
-        return $this->data->key($key);
-    }
 }

@@ -17,12 +17,9 @@ use LogicException;
 use Chevere\ArrayFile\ArrayFile;
 use Chevere\Message\Message;
 use Chevere\Contracts\App\ParametersContract;
-use Chevere\Data\Traits\DataKeyTrait;
 
 final class Parameters implements ParametersContract
 {
-    use DataKeyTrait;
-
     const CONFIG_FILES = 'configFiles';
 
     /**

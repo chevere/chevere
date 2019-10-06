@@ -110,7 +110,7 @@ final class Build
         }
         if (!empty($parameters->routes())) {
             $this->routerMaker = $this->routerMaker
-                ->addRoutesArrays($parameters->routes());
+                ->withAddedRouteIdentifiers($parameters->routes());
 
             $this->container = $this->container
                 ->withRouter(

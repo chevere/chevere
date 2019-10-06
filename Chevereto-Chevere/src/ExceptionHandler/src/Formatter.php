@@ -21,8 +21,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Chevere\Console\Console;
 use Chevere\ExceptionHandler\ExceptionHandler;
 use Chevere\Str\Str;
-use Chevere\Contracts\DataContract;
-use Chevere\Data\Traits\DataKeyTrait;
 use Chevere\VarDump\Formatters\DumperFormatter;
 use Chevere\VarDump\Formatters\PlainFormatter;
 use Chevere\VarDump\VarDump;
@@ -32,7 +30,7 @@ use Chevere\VarDump\VarDump;
  */
 final class Formatter
 {
-    use DataKeyTrait;
+    use DataMethodTrait;
 
     /** @var string Number of fixed columns for plaintext display */
     const COLUMNS = 120;
@@ -79,9 +77,6 @@ final class Formatter
     /** @var Throwable */
     private $exception;
 
-    /** @var DataContract */
-    private $data;
-
     public function __construct(ExceptionHandler $exceptionHandler)
     {
         $this->exceptionHandler = $exceptionHandler;
@@ -91,7 +86,7 @@ final class Formatter
         $this->setServerProperties();
         $this->data = $this->data
             ->withMergedArray([
-                'thrown' => $this->wrap->dataKey('className') . ' thrown',
+                'thrown' => $this->wrap->data()->key('className') . ' thrown',
             ]);
         $this->processStack();
         $this->processContentSections();
@@ -138,11 +133,11 @@ final class Formatter
     public function getTemplateTags(): array
     {
         return [
-            'id' => $this->exceptionHandler->dataKey('id'),
-            'datetimeUtc' => $this->exceptionHandler->dataKey('dateTimeAtom'),
-            'timestamp' => $this->exceptionHandler->dataKey('timestamp'),
-            'loadedConfigFilesString' => $this->exceptionHandler->dataKey('loadedConfigFilesString'),
-            'logFilename' => $this->exceptionHandler->dataKey('logFilename'),
+            'id' => $this->exceptionHandler->data()->key('id'),
+            'datetimeUtc' => $this->exceptionHandler->data()->key('dateTimeAtom'),
+            'timestamp' => $this->exceptionHandler->data()->key('timestamp'),
+            'loadedConfigFilesString' => $this->exceptionHandler->data()->key('loadedConfigFilesString'),
+            'logFilename' => $this->exceptionHandler->data()->key('logFilename'),
             'css' => $this->data->key('css'),
             'bodyClass' => $this->data->key('bodyClass'),
             'body' => null,
@@ -195,7 +190,7 @@ final class Formatter
         $trace = $this->wrap->exception()->getTrace();
         if ($this->wrap->exception() instanceof ErrorException) {
             $this->data = $this->data
-                ->withKey('thrown', $this->wrap->dataKey('type'));
+                ->withKey('thrown', $this->wrap->data()->key('type'));
             unset($trace[0]);
         }
         $stack = new Stack($trace);
@@ -211,7 +206,7 @@ final class Formatter
     {
         $sections = [
             static::SECTION_TITLE => ['%title% <span>in&nbsp;%file%:%line%</span>'],
-            static::SECTION_MESSAGE => ['# Message', '%message%' . ($this->wrap->dataKey('code') ? ' [Code #%code%]' : null)],
+            static::SECTION_MESSAGE => ['# Message', '%message%' . ($this->wrap->data()->key('code') ? ' [Code #%code%]' : null)],
             static::SECTION_TIME => ['# Time', '%datetimeUtc% [%timestamp%]'],
             static::SECTION_ID => ['# Incident ID:%id%', 'Logged at %logFilename%'],
             static::SECTION_STACK => ['# Stack trace', '%plainStack%'],

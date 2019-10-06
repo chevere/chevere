@@ -104,12 +104,13 @@ final class Maker
     /**
      * Adds routes (ArrayFile) specified by path handle.
      *
-     * @param array $paramRoutes ['routes:web', 'routes:dashboard']
+     * @param array $routeIdentifiers ['routes:web', 'routes:dashboard']
+     * FIXME: Use ... $pathHandle
      */
-    public function addRoutesArrays(array $paramRoutes): Maker
+    public function withAddedRouteIdentifiers(array $routeIdentifiers): Maker
     {
         $new = clone $this;
-        foreach ($paramRoutes as $fileHandleString) {
+        foreach ($routeIdentifiers as $fileHandleString) {
             $arrayFile = new ArrayFile(
                 new PathHandle($fileHandleString)
             );
