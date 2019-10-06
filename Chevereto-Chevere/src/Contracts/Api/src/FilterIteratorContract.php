@@ -21,7 +21,14 @@ interface FilterIteratorContract
      *
      * @return self
      */
-    public function generateAcceptedFilenames(array $methods, string $methodPrefix): FilterIteratorContract;
+    public function withAcceptFilenames(array $methods, string $methodPrefix): FilterIteratorContract;
+
+    /**
+     * Get accepte filenames
+     * 
+     * @return array
+     */
+    public function acceptFilenames(): array;
 
     /**
      * Overrides default getChildren to support the filter.

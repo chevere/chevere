@@ -11,13 +11,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Contracts\Router;
+namespace Chevere\Contracts\Api;
 
-use Chevere\Contracts\Route\RouteContract;
-
-interface ResolverContract
+interface EndpointContract
 {
-    public function __construct($routeSome);
+    public function __construct(MethodsContract $methods);
 
-    public function get(): RouteContract;
+    public function methods(): MethodsContract;
+
+    public function toArray(): array;
 }

@@ -27,14 +27,20 @@ final class FilterIterator extends RecursiveFilterIterator implements FilterIter
     /**
      * {@inheritdoc}
      */
-    public function generateAcceptedFilenames(array $methods, string $methodPrefix): FilterIteratorContract
+    public function withAcceptFilenames(array $methods, string $methodPrefix): FilterIteratorContract
     {
+        $new = clone $this;
         foreach ($methods as $v) {
-            $this->acceptFilenames[] = $v.'.php';
-            $this->acceptFilenames[] = $methodPrefix.$v.'.php';
+            $new->acceptFilenames[] = $v . '.php';
+            $new->acceptFilenames[] = $methodPrefix . $v . '.php';
         }
 
-        return $this;
+        return $new;
+    }
+
+    public function acceptFilenames(): array
+    {
+        return $this->acceptFilenames;
     }
 
     /**

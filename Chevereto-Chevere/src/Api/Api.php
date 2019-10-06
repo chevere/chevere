@@ -32,9 +32,6 @@ final class Api implements ApiContract
     /** @var array */
     private static $api;
 
-    public function __construct()
-    { }
-
     public static function fromMaker(Maker $maker): ApiContract
     {
         $api = new static();
@@ -76,9 +73,6 @@ final class Api implements ApiContract
         );
     }
 
-    /**
-     * @return string The the endpoint basename for the given URI.
-     */
     public static function endpointKey(string $uri): string
     {
         $endpoint = ltrim($uri, '/');

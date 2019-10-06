@@ -30,12 +30,13 @@ use Chevere\Str\Str;
 use Chevere\Controller\Inspect;
 use Chevere\Api\src\FilterIterator;
 use Chevere\Cache\Cache;
+use Chevere\Contracts\Api\MakerContract;
 use Chevere\Controllers\Api\GetController;
 use Chevere\Controllers\Api\HeadController;
 use Chevere\Controllers\Api\OptionsController;
 use Chevere\Router\Maker as RouterMaker;
 
-final class Maker
+final class Maker implements MakerContract
 {
     /** @var array Route mapping [route => [http_method => Controller]]] */
     private $routesMap;
@@ -72,7 +73,7 @@ final class Maker
         $this->routerMaker = $router;
     }
 
-    public static function create(PathHandle $pathHandle, RouterMaker $routerMaker): Maker
+    public static function create(PathHandle $pathHandle, RouterMaker $routerMaker): MakerContract
     {
         $maker = new static($routerMaker);
         $methods = new Methods(
@@ -80,10 +81,32 @@ final class Maker
             new Method('OPTIONS', OptionsController::class),
             new Method('GET', GetController::class)
         );
-        return $maker->register($pathHandle, new Endpoint($methods));
+        $maker->register($pathHandle, new Endpoint($methods));
+
+        return $maker;
     }
 
-    private function register(PathHandle $pathHandle, Endpoint $endpoint): Maker
+    public function api(): array
+    {
+        return $this->api;
+    }
+
+    public function withCache(): MakerContract
+    {
+        $new = clone $this;
+        $new->cache = new Cache('api');
+        $api = $new->cache->put('api', $new->api);
+        opcache_compile_file($api->path());
+
+        return $new;
+    }
+
+    public function cache(): Cache
+    {
+        return $this->cache;
+    }
+
+    private function register(PathHandle $pathHandle, Endpoint $endpoint): void
     {
         $this->path = $pathHandle->path();
         $this->assertNoDuplicates();
@@ -91,12 +114,11 @@ final class Maker
         $this->basePath = strtolower(basename($this->path));
         $this->routesMap = [];
         $this->resourcesMap = [];
-        // $this->controllersMap = [];
         $this->api = [];
 
         $iterator = new RecursiveDirectoryIterator($this->path, RecursiveDirectoryIterator::SKIP_DOTS);
         $filter = new FilterIterator($iterator);
-        $filter->generateAcceptedFilenames(Method::ACCEPT_METHODS, Api::METHOD_ROOT_PREFIX);
+        $filter = $filter->withAcceptFilenames(Method::ACCEPT_METHODS, Api::METHOD_ROOT_PREFIX);
         $this->recursiveIterator = new RecursiveIteratorIterator($filter);
         $this->assertRecursiveIterator();
         $this->processRecursiveIterator();
@@ -116,28 +138,6 @@ final class Maker
 
         $this->registered[$this->basePath] = true;
         ksort($this->api);
-
-        return $this;
-    }
-
-    public function api(): array
-    {
-        return $this->api;
-    }
-
-    public function withCache(): Maker
-    {
-        $new = clone $this;
-        $new->cache = new Cache('api');
-        $api = $new->cache->put('api', $new->api);
-        opcache_compile_file($api->path());
-
-        return $new;
-    }
-
-    public function cache(): Cache
-    {
-        return $this->cache;
     }
 
     private function assertRecursiveIterator(): void

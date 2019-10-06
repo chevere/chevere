@@ -13,18 +13,19 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Api;
 
+use Chevere\Cache\Cache;
 use Chevere\Path\PathHandle;
-use Chevere\Contracts\Router\RouterContract;
-use Chevere\Http\Methods;
+use Chevere\Router\Maker as RouterMaker;
 
 interface MakerContract
 {
-    public function __construct(RouterContract $router);
+    public function __construct(RouterMaker $router);
 
-    /**
-     * Automatically finds controllers in the given path and generate the API route binding.
-     */
-    public function register(PathHandle $pathHandle, Methods $methods): void;
+    public static function create(PathHandle $pathHandle, RouterMaker $routerMaker): MakerContract;
 
     public function api(): array;
+
+    public function withCache(): MakerContract;
+
+    public function cache(): Cache;
 }
