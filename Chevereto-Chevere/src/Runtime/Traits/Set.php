@@ -16,7 +16,7 @@ namespace Chevere\Runtime\Traits;
 use Chevere\Str\Str;
 use Chevere\Contracts\DataContract;
 
-trait RuntimeSet
+trait Set
 {
     /** @var string */
     private $value;

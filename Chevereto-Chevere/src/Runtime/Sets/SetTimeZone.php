@@ -17,12 +17,12 @@ use InvalidArgumentException;
 use RuntimeException;
 use Chevere\Message\Message;
 use Chevere\Contracts\Runtime\SetContract;
-use Chevere\Runtime\Traits\RuntimeSet;
+use Chevere\Runtime\Traits\Set;
 use Chevere\Validate;
 
 class SetTimeZone implements SetContract
 {
-    use RuntimeSet;
+    use Set;
 
     public function set(): void
     {

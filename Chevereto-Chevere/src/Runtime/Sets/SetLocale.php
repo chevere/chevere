@@ -16,11 +16,11 @@ namespace Chevere\Runtime\Sets;
 use RuntimeException;
 use Chevere\Message\Message;
 use Chevere\Contracts\Runtime\SetContract;
-use Chevere\Runtime\Traits\RuntimeSet;
+use Chevere\Runtime\Traits\Set;
 
 class SetLocale implements SetContract
 {
-    use RuntimeSet;
+    use Set;
 
     public function set(): void
     {

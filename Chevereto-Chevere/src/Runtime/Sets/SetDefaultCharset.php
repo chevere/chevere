@@ -15,12 +15,12 @@ namespace Chevere\Runtime\Sets;
 
 use RuntimeException;
 use Chevere\Message\Message;
-use Chevere\Runtime\Traits\RuntimeSet;
+use Chevere\Runtime\Traits\Set;
 use Chevere\Contracts\Runtime\SetContract;
 
 class SetDefaultCharset implements SetContract
 {
-    use RuntimeSet;
+    use Set;
 
     public function set(): void
     {

@@ -16,11 +16,11 @@ namespace Chevere\Runtime\Sets;
 use InvalidArgumentException;
 use Chevere\Message\Message;
 use Chevere\Contracts\Runtime\SetContract;
-use Chevere\Runtime\Traits\RuntimeSet;
+use Chevere\Runtime\Traits\Set;
 
 class SetErrorHandler implements SetContract
 {
-    use RuntimeSet;
+    use Set;
 
     public function set(): void
     {
