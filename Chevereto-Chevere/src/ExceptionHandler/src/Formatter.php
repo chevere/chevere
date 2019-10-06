@@ -101,14 +101,20 @@ final class Formatter
         ]);
     }
 
-    public function setLineBreak(string $lineBreak)
+    public function withLineBreak(string $lineBreak): Formatter
     {
-        $this->lineBreak = $lineBreak;
+        $new = clone $this;
+        $new->lineBreak = $lineBreak;
+
+        return $new;
     }
 
-    public function setCss(string $css)
+    public function withCss(string $css): Formatter
     {
-        $this->data->setKey('css', $css);
+        $new = clone $this;
+        $new->data->setKey('css', $css);
+
+        return $new;
     }
 
     public function plainContentSections(): array

@@ -45,11 +45,6 @@ final class Endpoint implements EndpointContract
         return $this->array;
     }
 
-    // public function setResource(array $resource): void
-    // {
-    //     $this->array['resource'] = $resource;
-    // }
-
     private function fillEndpointOptions(): void
     {
         foreach ($this->methods as $method) {

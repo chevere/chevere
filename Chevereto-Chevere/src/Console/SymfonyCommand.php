@@ -35,7 +35,10 @@ final class SymfonyCommand extends BaseCommand implements SymfonyCommandContract
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->chevereCommand->console()->setCommand($this->chevereCommand);
+        $this->chevereCommand = $this->chevereCommand
+            ->console()
+            ->withCommand($this->chevereCommand)
+            ->command();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

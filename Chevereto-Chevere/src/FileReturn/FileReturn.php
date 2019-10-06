@@ -55,7 +55,7 @@ final class FileReturn
     /** @var mixed A variable (PHP code) */
     private $var;
 
-    /** @var bool True for strick validation (PHP_RETURN), false for regex validation (return <algo>) */
+    /** @var bool True for strict validation (PHP_RETURN), false for regex validation (return <algo>) */
     private $strict;
 
     public function __construct(PathHandle $pathHandle)
@@ -64,9 +64,12 @@ final class FileReturn
         $this->path = $pathHandle->path();
     }
 
-    public function setStrict(bool $toggle)
+    public function withNoStrict(): FileReturn
     {
-        $this->strict = $toggle;
+        $new = clone $this;
+        $new->strict = false;
+
+        return $new;
     }
 
     public function path(): string

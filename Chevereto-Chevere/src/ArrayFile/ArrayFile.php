@@ -45,8 +45,7 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
     public function __construct(PathHandle $pathHandle)
     {
         $this->pathHandle = $pathHandle;
-        $this->fileReturn = new FileReturn($pathHandle);
-        $this->fileReturn->setStrict(false);
+        $this->fileReturn = (new FileReturn($pathHandle))->withNoStrict();
         $this->validateIsArray();
         $this->array = $this->fileReturn->raw();
     }
@@ -54,10 +53,13 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
     /**
      * @param Type $type The array members must match the target type, classname or interface.
      */
-    public function setMembersType(Type $type): void
+    public function withMembersType(Type $type): ArrayFile
     {
-        $this->type = $type;
-        $this->validate();
+        $new = clone $this;
+        $new->type = $type;
+        $new->validate();
+
+        return $new;
     }
 
     public function offsetSet($offset, $value)

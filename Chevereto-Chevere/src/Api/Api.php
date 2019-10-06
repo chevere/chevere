@@ -39,7 +39,7 @@ final class Api implements ApiContract
     {
         $api = new static();
         $api::$api = $maker->api();
-        $maker->setCache();
+        $maker = $maker->withCache();
         return $api;
     }
 

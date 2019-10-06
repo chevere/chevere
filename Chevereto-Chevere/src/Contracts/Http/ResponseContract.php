@@ -19,7 +19,7 @@ interface ResponseContract
 {
     public function __construct();
 
-    public function setGuzzle(GuzzleResponse $guzzle): void;
+    public function withGuzzle(GuzzleResponse $guzzle): ResponseContract;
 
     public function guzzle(): GuzzleResponse;
 

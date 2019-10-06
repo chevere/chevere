@@ -69,10 +69,13 @@ abstract class Controller implements ControllerContract
      */
     abstract public function getContent(): string;
 
-    final public function setResponse(Response $response): ControllerContract
+    final public function withResponse(Response $response): ControllerContract
     {
-        $this->app = $this->app->withResponse($response);
-        return $this;
+        $new = clone $this;
+        $new->app = $new->app
+            ->withResponse($response);
+
+        return $new;
     }
 
     final public static function description(): string

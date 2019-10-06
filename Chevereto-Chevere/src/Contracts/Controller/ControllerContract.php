@@ -24,7 +24,7 @@ interface ControllerContract
 
     public function content(): string;
 
-    public function setResponse(Response $response): ControllerContract;
+    public function withResponse(Response $response): ControllerContract;
 
     public static function description(): string;
 

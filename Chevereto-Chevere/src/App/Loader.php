@@ -229,9 +229,9 @@ final class Loader implements LoaderContract
             $route = $this->router->resolve($pathInfo);
         } catch (RouteNotFoundException $e) {
             $response = $this->app->response();
-            $response->setGuzzle(
-                $response->guzzle()->withStatus(404)->withBody(stream_for('Not found.'))
-            );
+            $guzzle = $response->guzzle()->withStatus(404)->withBody(stream_for('Not found.'));
+            $response = $response->withGuzzle($guzzle);
+            $this->app = $this->app->withResponse($response);
             if (CLI) {
                 throw new RouteNotFoundException($e->getMessage());
             } else {
@@ -255,11 +255,13 @@ final class Loader implements LoaderContract
         $contentStream = stream_for($controller->content());
         $response = $this->app->response();
         $guzzle = $response->guzzle();
-        $response->setGuzzle(
+        $response = $response->withGuzzle(
             $controller instanceof JsonApiContract
                 ? $guzzle->withJsonApi($contentStream)
                 : $guzzle->withBody($contentStream)
         );
+        $this->app = $this->app
+            ->withResponse($response);
         if (!CLI) {
             $this->app->response()
                 ->sendHeaders()

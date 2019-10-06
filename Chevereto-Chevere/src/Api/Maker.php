@@ -80,11 +80,10 @@ final class Maker
             new Method('OPTIONS', OptionsController::class),
             new Method('GET', GetController::class)
         );
-        $maker = $maker->register($pathHandle, new Endpoint($methods));
-        return $maker;
+        return $maker->register($pathHandle, new Endpoint($methods));
     }
 
-    public function register(PathHandle $pathHandle, Endpoint $endpoint): void
+    private function register(PathHandle $pathHandle, Endpoint $endpoint): Maker
     {
         $this->path = $pathHandle->path();
         $this->assertNoDuplicates();
@@ -117,6 +116,8 @@ final class Maker
 
         $this->registered[$this->basePath] = true;
         ksort($this->api);
+
+        return $this;
     }
 
     public function api(): array
@@ -124,11 +125,14 @@ final class Maker
         return $this->api;
     }
 
-    public function setCache(): void
+    public function withCache(): Maker
     {
-        $this->cache = new Cache('api');
-        $api = $this->cache->put('api', $this->api);
+        $new = clone $this;
+        $new->cache = new Cache('api');
+        $api = $new->cache->put('api', $new->api);
         opcache_compile_file($api->path());
+
+        return $new;
     }
 
     public function cache(): Cache

@@ -103,7 +103,9 @@ final class Output
             ->withBody($this->output)
             ->withStatus(500);
 
-        $response->setGuzzle($guzzle);
+        $response = $response
+            ->withGuzzle($guzzle);
+
         $response->sendBody();
     }
 

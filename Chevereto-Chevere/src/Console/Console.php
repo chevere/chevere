@@ -31,12 +31,13 @@ use Chevere\Console\Commands\RequestCommand;
 use Chevere\Console\Commands\RunCommand;
 use Chevere\Console\Commands\InspectCommand;
 use Chevere\Contracts\Console\CommandContract;
+use Chevere\Contracts\Console\ConsoleContract;
 use Symfony\Component\Console\Exception\CommandNotFoundException;
 
 /**
  * Provides static access to the Chevere application console.
  */
-final class Console
+final class Console implements ConsoleContract
 {
     const NAME = __NAMESPACE__;
     const VERSION = '1.0';
@@ -97,9 +98,12 @@ final class Console
         return self::$output;
     }
 
-    public function setCommand(CommandContract $command): void
+    public function withCommand(CommandContract $command): ConsoleContract
     {
-        self::$command = $command;
+        $new = clone $this;
+        $new::$command = $command;
+
+        return $new;
     }
 
     public static function command(): CommandContract
@@ -132,7 +136,7 @@ final class Console
         return self::$isAvailable && 'build' == self::$commandString;
     }
 
-    public static function bind(Loader $loader): bool
+    public static function bind(LoaderContract $loader): bool
     {
         if (php_sapi_name() == 'cli') {
             self::$loader = $loader;
@@ -179,7 +183,6 @@ final class Console
             (new RunCommand($this))->symfony(),
             (new InspectCommand($this))->symfony(),
             (new DestroyCommand($this))->symfony(),
-            // (new SetopCommand($this))->symfony(),
         ]);
         if (!self::$symfony->has(self::$commandString)) {
             self::$style->writeln(sprintf('Command "%s" is not defined', self::$commandString));
@@ -188,7 +191,11 @@ final class Console
     }
 
     /**
-     * {@inheritdoc}
+     * Runs the current command.
+     *
+     * @return int 0 if everything went fine, or an error code
+     *
+     * @throws Exception When running fails. Bypass this when {@link setCatchExceptions()}.
      */
     private static function runner(): int
     {

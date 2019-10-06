@@ -147,8 +147,9 @@ final class ExceptionHandler
         $this->setLogger();
 
         $formatter = new Formatter($this);
-        $formatter->setLineBreak(Template::BOX_BREAK_HTML);
-        $formatter->setCss(Style::CSS);
+        $formatter = $formatter
+            ->withLineBreak(Template::BOX_BREAK_HTML)
+            ->setCss(Style::CSS);
 
         $this->output = new Output($this, $formatter);
         $this->loggerWrite();

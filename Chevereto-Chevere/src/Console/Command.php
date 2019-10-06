@@ -16,7 +16,6 @@ namespace Chevere\Console;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Chevere\Contracts\App\LoaderContract;
-use Chevere\Contracts\Console\ApplicationContract;
 use Chevere\Contracts\Console\CommandContract;
 use Chevere\Contracts\Console\SymfonyCommandContract;
 use Chevere\Message\Message;

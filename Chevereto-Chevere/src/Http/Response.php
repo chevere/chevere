@@ -37,9 +37,12 @@ final class Response implements ResponseContract
         $this->guzzle = new GuzzleResponse(200, $this->getDateHeader());
     }
 
-    public function setGuzzle(GuzzleResponse $guzzle): void
+    public function withGuzzle(GuzzleResponse $guzzle): ResponseContract
     {
-        $this->guzzle = $guzzle;
+        $new = clone $this;
+        $new->guzzle = $guzzle;
+
+        return $new;
     }
 
     public function guzzle(): GuzzleResponse
