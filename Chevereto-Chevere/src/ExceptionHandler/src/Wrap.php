@@ -56,16 +56,17 @@ final class Wrap
             $code = $exception->getCode();
             $errorType = $phpCode;
         }
-        $this->data->merge([
-            'className' => $className,
-            'code' => $code,
-            'errorType' => $errorType,
-            'type' => ExceptionHandler::ERROR_TABLE[$phpCode],
-            'loggerLevel' => ExceptionHandler::PHP_LOG_LEVEL[$phpCode] ?? 'error',
-            'message' => $exception->getMessage(),
-            'file' => Path::normalize($exception->getFile()),
-            'line' => (int) $exception->getLine(),
-        ]);
+        $this->data = $this->data
+            ->withMergedArray([
+                'className' => $className,
+                'code' => $code,
+                'errorType' => $errorType,
+                'type' => ExceptionHandler::ERROR_TABLE[$phpCode],
+                'loggerLevel' => ExceptionHandler::PHP_LOG_LEVEL[$phpCode] ?? 'error',
+                'message' => $exception->getMessage(),
+                'file' => Path::normalize($exception->getFile()),
+                'line' => (int) $exception->getLine(),
+            ]);
     }
 
     public function exception(): Throwable

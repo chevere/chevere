@@ -142,15 +142,18 @@ final class Maker
         return $this->routesIndex;
     }
 
-    public function setCache()
+    public function withCache(): Maker
     {
-        $this->cache = new Cache('router');
-        $regex = $this->cache->put('regex', $this->regex);
-        $routes = $this->cache->put('routes', $this->routes);
-        $routesIndex = $this->cache->put('routesIndex', $this->routesIndex);
+        $new = clone $this;
+        $new->cache = new Cache('router');
+        $regex = $new->cache->put('regex', $new->regex);
+        $routes = $new->cache->put('routes', $new->routes);
+        $routesIndex = $new->cache->put('routesIndex', $new->routesIndex);
         opcache_compile_file($regex->path());
         opcache_compile_file($routes->path());
         opcache_compile_file($routesIndex->path());
+
+        return $new;
     }
 
     public function cache(): Cache

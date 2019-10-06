@@ -89,16 +89,18 @@ final class Formatter
         $this->exception = $this->wrap->exception();
         $this->data = $this->wrap->data();
         $this->setServerProperties();
-        $this->data->merge([
-            'thrown' => $this->wrap->dataKey('className') . ' thrown',
-        ]);
+        $this->data = $this->data
+            ->withMergedArray([
+                'thrown' => $this->wrap->dataKey('className') . ' thrown',
+            ]);
         $this->processStack();
         $this->processContentSections();
         $this->processContentGlobals();
-        $this->data->merge([
-            'title' => $this->data->getKey('thrown'),
-            'bodyClass' => !headers_sent() ? 'body--flex' : 'body--block',
-        ]);
+        $this->data = $this->data
+            ->withMergedArray([
+                'title' => $this->data->key('thrown'),
+                'bodyClass' => !headers_sent() ? 'body--flex' : 'body--block',
+            ]);
     }
 
     public function withLineBreak(string $lineBreak): Formatter
@@ -112,7 +114,8 @@ final class Formatter
     public function withCss(string $css): Formatter
     {
         $new = clone $this;
-        $new->data->setKey('css', $css);
+        $new->data = $new->data
+            ->withKey('css', $css);
 
         return $new;
     }
@@ -140,27 +143,27 @@ final class Formatter
             'timestamp' => $this->exceptionHandler->dataKey('timestamp'),
             'loadedConfigFilesString' => $this->exceptionHandler->dataKey('loadedConfigFilesString'),
             'logFilename' => $this->exceptionHandler->dataKey('logFilename'),
-            'css' => $this->data->getKey('css'),
-            'bodyClass' => $this->data->getKey('bodyClass'),
+            'css' => $this->data->key('css'),
+            'bodyClass' => $this->data->key('bodyClass'),
             'body' => null,
-            'title' => $this->data->getKey('title'),
+            'title' => $this->data->key('title'),
             'content' => null,
-            'title' => $this->data->getKey('title'),
-            'file' => $this->data->getKey('file'),
-            'line' => $this->data->getKey('line'),
-            'message' => $this->data->getKey('message'),
-            'code' => $this->data->getKey('code'),
-            'plainStack' => $this->data->getKey('plainStack'),
-            'consoleStack' => $this->data->getKey('consoleStack'),
-            'richStack' => $this->data->getKey('richStack'),
-            'clientIp' => $this->data->getKey('clientIp'),
-            'clientUserAgent' => $this->data->getKey('clientUserAgent'),
-            'serverProtocol' => $this->data->getKey('serverProtocol'),
-            'requestMethod' => $this->data->getKey('requestMethod'),
-            'uri' => $this->data->getKey('uri') ?? null,
-            'serverHost' => $this->data->getKey('serverHost'),
-            'serverPort' => $this->data->getKey('serverPort'),
-            'serverSoftware' => $this->data->getKey('serverSoftware'),
+            'title' => $this->data->key('title'),
+            'file' => $this->data->key('file'),
+            'line' => $this->data->key('line'),
+            'message' => $this->data->key('message'),
+            'code' => $this->data->key('code'),
+            'plainStack' => $this->data->key('plainStack'),
+            'consoleStack' => $this->data->key('consoleStack'),
+            'richStack' => $this->data->key('richStack'),
+            'clientIp' => $this->data->key('clientIp'),
+            'clientUserAgent' => $this->data->key('clientUserAgent'),
+            'serverProtocol' => $this->data->key('serverProtocol'),
+            'requestMethod' => $this->data->key('requestMethod'),
+            'uri' => $this->data->key('uri') ?? null,
+            'serverHost' => $this->data->key('serverHost'),
+            'serverPort' => $this->data->key('serverPort'),
+            'serverSoftware' => $this->data->key('serverSoftware'),
         ];
     }
 
@@ -182,7 +185,8 @@ final class Formatter
                 // 'serverSoftware' => $this->exceptionHandler->request()->getHeaderLine('SERVER_SOFTWARE'),
                 // 'clientIp' => $this->exceptionHandler->request()->getClientIp(),
             ];
-            $this->data->merge($wea);
+            $this->data = $this->data
+                ->withMergedArray($wea);
         }
     }
 
@@ -190,15 +194,17 @@ final class Formatter
     {
         $trace = $this->wrap->exception()->getTrace();
         if ($this->wrap->exception() instanceof ErrorException) {
-            $this->data->setKey('thrown', $this->wrap->dataKey('type'));
+            $this->data = $this->data
+                ->withKey('thrown', $this->wrap->dataKey('type'));
             unset($trace[0]);
         }
         $stack = new Stack($trace);
         if (CLI) {
-            $this->data->setKey('consoleStack', $stack->getConsole());
+            $this->data = $this->data->withKey('consoleStack', $stack->getConsole());
         }
-        $this->data->setKey('richStack', $stack->getRich());
-        $this->data->setKey('plainStack', $stack->getPlain());
+        $this->data = $this->data
+            ->withKey('richStack', $stack->getRich())
+            ->withKey('plainStack', $stack->getPlain());
     }
 
     private function processContentSections()

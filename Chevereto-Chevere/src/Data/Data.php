@@ -47,27 +47,31 @@ class Data implements DataContract
         return count($this->data);
     }
 
-    public function set(array $data): DataContract
+    public function withArray(array $data): DataContract
     {
-        $this->data = $data;
+        $new = clone $this;
+        $new->data = $data;
 
-        return $this;
+        return $new;
     }
 
-    public function merge(array $data): DataContract
+    public function withMergedArray(array $data): DataContract
     {
         if (isset($this->data)) {
             $data = array_merge_recursive($this->data, $data);
         }
+        $new = clone $this;
+        $new = $new->withArray($data);
 
-        return $this->set($data);
+        return $new;
     }
 
-    public function append($var): DataContract
+    public function withAppend($var): DataContract
     {
-        $this->data[] = $var;
+        $new = clone $this;
+        $new->data[] = $var;
 
-        return $this;
+        return $new;
     }
 
     public function get(): ?array
@@ -85,14 +89,15 @@ class Data implements DataContract
         return array_key_exists($key, $this->data);
     }
 
-    public function setKey(string $key, $var): DataContract
+    public function withKey(string $key, $var): DataContract
     {
-        $this->data[$key] = $var;
+        $new = clone $this;
+        $new->data[$key] = $var;
 
-        return $this;
+        return $new;
     }
 
-    public function getKey(string $key)
+    public function key(string $key)
     {
         return $this->data[$key] ?? null;
     }

@@ -25,11 +25,11 @@ interface DataContract extends ToArrayContract, IteratorAggregate, Countable
 
     public function count(): int;
 
-    public function set(array $data): DataContract;
+    public function withArray(array $data): DataContract;
 
-    public function merge(array $data): DataContract;
+    public function withMergedArray(array $data): DataContract;
 
-    public function append($var): DataContract;
+    public function withAppend($var): DataContract;
 
     public function get(): ?array;
 
@@ -37,9 +37,9 @@ interface DataContract extends ToArrayContract, IteratorAggregate, Countable
 
     public function hasKey(string $key): bool;
 
-    public function setKey(string $key, $var): DataContract;
+    public function withKey(string $key, $var): DataContract;
 
-    public function getKey(string $key);
+    public function key(string $key);
 
     public function removeKey(string $key): DataContract;
 }

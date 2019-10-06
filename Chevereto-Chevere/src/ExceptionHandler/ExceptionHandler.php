@@ -129,7 +129,8 @@ final class ExceptionHandler
     {
         $this->data = new Data();
         $this->setTimeProperties();
-        $this->data->setkey('id', uniqid('', true));
+        $this->data = $this->data
+            ->withKey('id', uniqid('', true));
         try {
             $this->request = Loader::request();
         } catch (TypeError $e) {
@@ -180,34 +181,32 @@ final class ExceptionHandler
     {
         $dt = new DateTime('now', new DateTimeZone('UTC'));
         $dateTimeAtom = $dt->format(DateTime::ATOM);
-        $this->data->merge([
-            'dateTimeAtom' => $dateTimeAtom,
-            'timestamp' => strtotime($dateTimeAtom),
-        ]);
+        $this->data = $this->data
+            ->withMergedArray([
+                'dateTimeAtom' => $dateTimeAtom,
+                'timestamp' => strtotime($dateTimeAtom),
+            ]);
     }
 
     private function setloadedConfigFiles(): void
-    {
-        //FIXME:
-        // $this->loadedConfigFiles = $this->runtime->getRuntimeConfig()->getLoadedFilepaths();
-        // $this->data->setKey('loadedConfigFilesString', implode(';', $this->loadedConfigFiles));
-    }
+    { }
 
     private function setLogFilePathProperties(): void
     {
         $path = Path::normalize(static::PATH_LOGS);
         $path = rtrim($path, '/') . '/';
-        $date = gmdate($this->logDateFolderFormat, $this->data->getKey('timestamp'));
-        $id = $this->data->getKey('id');
-        $timestamp = $this->data->getKey('timestamp');
+        $date = gmdate($this->logDateFolderFormat, $this->data->key('timestamp'));
+        $id = $this->data->key('id');
+        $timestamp = $this->data->key('timestamp');
         $logFilename = $path . $this->loggerLevel . '/' . $date . $timestamp . '_' . $id . '.log';
-        $this->data->setKey('logFilename', $logFilename);
+        $this->data = $this->data
+            ->withKey('logFilename', $logFilename);
     }
 
     private function setLogger(): void
     {
         $lineFormatter = new LineFormatter(null, null, true, true);
-        $logFilename = $this->data->getKey('logFilename');
+        $logFilename = $this->data->key('logFilename');
         $streamHandler = new StreamHandler($logFilename);
         $streamHandler->setFormatter($lineFormatter);
         $this->logger = new Logger(__NAMESPACE__);

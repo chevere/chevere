@@ -22,6 +22,6 @@ trait DataKeyTrait
 
     public function dataKey(string $key)
     {
-        return $this->data->getKey($key);
+        return $this->data->key($key);
     }
 }

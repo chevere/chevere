@@ -33,9 +33,10 @@ final class Runtime
     {
         $this->data = new Data();
         foreach ($runtimeContract as $k => $runtimeSet) {
-            $this->data->setKey($runtimeSet->name(), $runtimeSet->value());
+            $this->data = $this->data
+                ->withKey($runtimeSet->name(), $runtimeSet->value());
         }
-        $this->data->setKey('errorReportingLevel', error_reporting());
-        // $this->config = $this->data->toArray();
+        $this->data = $this->data
+            ->withKey('errorReportingLevel', error_reporting());
     }
 }
