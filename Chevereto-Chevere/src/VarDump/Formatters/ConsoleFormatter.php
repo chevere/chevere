@@ -25,16 +25,16 @@ use Chevere\VarDump\src\Wrapper;
 final class ConsoleFormatter implements FormatterContract
 {
 
-  use GetIndentTrait;
-  use GetEmphasisTrait;
-  use GetEncodedCharsTrait;
+    use GetIndentTrait;
+    use GetEmphasisTrait;
+    use GetEncodedCharsTrait;
 
-  // Console 
-  public function wrap(string $key, string $dump): string
-  {
-    $wrapper = new Wrapper($key, $dump);
-    $wrapper->setUseCli();
+    // Console 
+    public function wrap(string $key, string $dump): string
+    {
+        $wrapper = new Wrapper($key, $dump);
+        $wrapper = $wrapper->withCli();
 
-    return $wrapper->toString();
-  }
+        return $wrapper->toString();
+    }
 }

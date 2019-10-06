@@ -27,14 +27,14 @@ use JakubOnderka\PhpConsoleColor\ConsoleColor;
  * Benchmark provides a simple way to determine which code procedure perform faster.
  */
 // $benchmark = (new Benchmark(10000))
-//     ->setArguments(500, 3000)
-//     ->add(function (int $a, int $b) {
+//     ->withArguments(500, 3000)
+//     ->withAddedCallable(function (int $a, int $b) {
 //         return $a + $b;
 //     }, 'Sum')
-//     ->add(function (int $a, int $b) {
+//     ->withAddedCallable(function (int $a, int $b) {
 //         return $a / $b;
 //     }, 'Division')
-//     ->add(function (int $a, int $b) {
+//     ->withAddedCallable(function (int $a, int $b) {
 //         return $a * $b;
 //     }, 'Multiply');
 // print $benchmark;
@@ -139,11 +139,12 @@ final class Benchmark
     /**
      * @param int $timeLimit Time limit for the benchmark, in seconds.
      */
-    public function setTimeLimit(int $timeLimit): self
+    public function withTimeLimit(int $timeLimit): Benchmark
     {
-        $this->timeLimit = $timeLimit;
+        $new = clone $this;
+        $new->timeLimit = $timeLimit;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -151,11 +152,11 @@ final class Benchmark
      *
      * @return self
      */
-    public function setArguments(): self
+    public function withArguments(): Benchmark
     {
-        $this->arguments = func_get_args();
-
-        return $this;
+        $new = clone $this;
+        $new->arguments = func_get_args();
+        return $new;
     }
 
     /**
@@ -166,25 +167,26 @@ final class Benchmark
      *
      * @return self
      */
-    public function add(callable $callable, string $name = null): self
+    public function withAddedCallable(callable $callable, string $name = null): Benchmark
     {
+        $new = clone $this;
         if (!isset($name)) {
-            $this->unnammedCallablesCount = $this->unnammedCallablesCount ?? 1;
-            $name = 'Unnammed#' . (string) $this->unnammedCallablesCount;
-            ++$this->unnammedCallablesCount;
+            $new->unnammedCallablesCount = $new->unnammedCallablesCount ?? 1;
+            $name = 'Unnammed#' . (string) $new->unnammedCallablesCount;
+            ++$new->unnammedCallablesCount;
         }
-        if (isset($this->index) && in_array($name, $this->index)) {
+        if (isset($new->index) && in_array($name, $new->index)) {
             throw new LogicException(
                 (new Message('Duplicate callable declaration %name%'))
                     ->code('%name%', $name)
                     ->toString()
             );
         }
-        $this->index[] = $name;
-        $this->callables[$this->callablesCount] = $callable;
-        ++$this->callablesCount;
+        $new->index[] = $name;
+        $new->callables[$new->callablesCount] = $callable;
+        ++$new->callablesCount;
 
-        return $this;
+        return $new;
     }
 
     /**

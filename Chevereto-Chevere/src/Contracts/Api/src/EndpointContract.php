@@ -23,5 +23,5 @@ interface EndpointContract
 
     public function toArray(): array;
 
-    public function setResource(array $resource): void;
+    // public function setResource(array $resource): void;
 }

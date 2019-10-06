@@ -49,7 +49,7 @@ interface RouteContract
     /**
      * @param string $name route name, must be unique
      */
-    public function setName(string $name): RouteContract;
+    public function withName(string $name): RouteContract;
 
     /**
      * Sets where conditionals for the route wildcards.
@@ -57,25 +57,25 @@ interface RouteContract
      * @param string $wildcardName wildcard name
      * @param string $regex        regex pattern
      */
-    public function setWhere(string $wildcardName, string $regex): RouteContract;
+    public function withWhere(string $wildcardName, string $regex): RouteContract;
 
     /**
      * Sets HTTP method to callable binding. Allocates Routes.
      *
      * @param MethodContract $method a HTTP method contract
      */
-    public function setMethod(MethodContract $method): RouteContract;
+    public function withAddedMethod(MethodContract $method): RouteContract;
 
     /**
      * Sets HTTP method to callable binding (multiple version).
      *
      * @param MethodsContract $methods a HTTP methods contract
      */
-    public function setMethods(MethodsContract $methods): RouteContract;
+    public function withMethods(MethodsContract $methods): RouteContract;
 
-    public function setId(string $id): RouteContract;
+    public function withId(string $id): RouteContract;
 
-    public function addMiddleware(string $callable): RouteContract;
+    public function withAddedMiddleware(string $callable): RouteContract;
 
     /**
      * @param string $httpMethod an HTTP method

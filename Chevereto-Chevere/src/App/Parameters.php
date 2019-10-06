@@ -60,7 +60,10 @@ final class Parameters implements ParametersContract
     public function __construct(ArrayFile $arrayFile)
     {
         $this->arrayFile = $arrayFile;
-        $this->validate();
+        foreach ($this->arrayFile as $key => $val) {
+            $this->assertKeyAvailable($key);
+            $this->assertKeyType($key, $val);
+        }
         $array = $this->arrayFile->toArray();
         $this->api = $array[static::API];
         $this->routes = $array[static::ROUTES];
@@ -76,20 +79,12 @@ final class Parameters implements ParametersContract
         return $this->routes ?? [];
     }
 
-    private function validate(): void
-    {
-        foreach ($this->arrayFile as $key => $val) {
-            $this->validateKeyExists($key);
-            $this->validateKeyType($key, $val);
-        }
-    }
-
     /**
      * Throws a LogicException if the key doesn't exists in $parameters.
      *
      * @param string $key The AppParameter key
      */
-    private function validateKeyExists(string $key): void
+    private function assertKeyAvailable(string $key): void
     {
         if (!array_key_exists($key, $this->keys)) {
             throw new LogicException(
@@ -106,7 +101,7 @@ final class Parameters implements ParametersContract
      *
      * @param string $key The AppParameter key
      */
-    private function validateKeyType(string $key, $val): void
+    private function assertKeyType(string $key, $val): void
     {
         $gettype = gettype($val);
         if ($gettype !== $this->keys[$key]) {

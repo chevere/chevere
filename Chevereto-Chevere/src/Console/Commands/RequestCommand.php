@@ -135,7 +135,7 @@ final class RequestCommand extends Command
             ->withParsedBody($this->ParsedOptions['post'])
             ->withUploadedFiles(ServerRequest::normalizeFiles($this->ParsedOptions['files']));
 
-        $loader->setRequest($request);
+        $loader = $loader->withRequest($request);
 
         try {
             $loader->run();

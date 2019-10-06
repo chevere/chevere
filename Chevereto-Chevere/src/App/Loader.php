@@ -119,27 +119,31 @@ final class Loader implements LoaderContract
     /**
      * {@inheritdoc}
      */
-    public function setController(string $controller): void
+    public function withController(string $controller): LoaderContract
     {
-        $this->controller = $controller;
+        $new = clone $this;
+        $new->controller = $controller;
+        return $new;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setArguments(array $arguments): LoaderContract
+    public function withArguments(array $arguments): LoaderContract
     {
-        $this->arguments = $arguments;
-        return $this;
+        $new = clone $this;
+        $new->arguments = $arguments;
+        return $new;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setRequest(RequestContract $request): void
+    public function withRequest(RequestContract $request): LoaderContract
     {
         self::$request = $request;
         $this->app = $this->app->withRequest($request);
+        return $this;
     }
 
     /**
@@ -201,7 +205,7 @@ final class Loader implements LoaderContract
     private function handleRequest(): void
     {
         if (!$this->app->hasRequest()) {
-            $this->setRequest(
+            $this->app = $this->app->withRequest(
                 ServerRequest::fromGlobals()
             );
         }
@@ -236,17 +240,17 @@ final class Loader implements LoaderContract
             }
         }
         $this->controller = $route->getController($this->app->request()->getMethod());
-
         $this->app = $this->app->withRoute($route);
         $routerArgs = $this->router->arguments();
         if (!isset($this->arguments) && isset($routerArgs)) {
-            $this->setArguments($routerArgs);
+            $this->arguments = $routerArgs;
         }
     }
 
     private function runController(string $controller): void
     {
-        $this->app = $this->app->withArguments($this->arguments);
+        $this->app = $this->app
+            ->withArguments($this->arguments);
         $controller = $this->app->run($controller);
         $contentStream = stream_for($controller->content());
         $response = $this->app->response();

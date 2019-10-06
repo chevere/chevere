@@ -69,33 +69,36 @@ final class Maker
     /**
      * {@inheritdoc}
      */
-    public function addRoute(RouteContract $route, string $group): void
+    public function withAddedRoute(RouteContract $route, string $group): Maker
     {
-        $this->route = $route->fill();
-        $this->routeMap = ['group' => $group, 'id' => $this->route->id()];
-        $this->validateUniqueRoutePath();
-        $this->handleRouteName();
-        $this->routes[] = $route;
-        $id = array_key_last($this->routes);
-        $this->baseIndex[$group][] = array_key_last($this->routes);
+        $new = clone $this;
+        $new->route = $route->fill();
+        $new->routeMap = ['group' => $group, 'id' => $new->route->id()];
+        $new->validateUniqueRoutePath();
+        $new->handleRouteName();
+        $new->routes[] = $route;
+        $id = array_key_last($new->routes);
+        $new->baseIndex[$group][] = array_key_last($new->routes);
         $keyPowerSet = $route->keyPowerSet();
         if (!empty($keyPowerSet)) {
             $ix = $id;
             foreach ($keyPowerSet as $set => $index) {
                 ++$ix;
-                $this->routes[] = [$id, (string) $set];
-                $this->regexIndex[$route->getRegex((string) $set)] = $ix;
+                $new->routes[] = [$id, (string) $set];
+                $new->regexIndex[$route->getRegex((string) $set)] = $ix;
             }
         } else {
             // n => .. => regex => route
-            $this->regexIndex[$route->regex()] = $id;
+            $new->regexIndex[$route->regex()] = $id;
             if (Route::TYPE_STATIC == $route->type()) {
-                $this->statics[$route->path()] = $id;
+                $new->statics[$route->path()] = $id;
             }
         }
 
-        $this->regex = $this->getRegex();
-        $this->routesIndex[$this->route->path()] = $this->routeMap;
+        $new->regex = $new->getRegex();
+        $new->routesIndex[$new->route->path()] = $new->routeMap;
+
+        return $new;
     }
 
     /**
@@ -103,8 +106,9 @@ final class Maker
      *
      * @param array $paramRoutes ['routes:web', 'routes:dashboard']
      */
-    public function addRoutesArrays(array $paramRoutes): void
+    public function addRoutesArrays(array $paramRoutes): Maker
     {
+        $new = clone $this;
         foreach ($paramRoutes as $fileHandleString) {
             $arrayFile = new ArrayFile(
                 new PathHandle($fileHandleString)
@@ -114,9 +118,11 @@ final class Maker
                 $route->setId((string) $k);
             });
             foreach ($arrayFileWrap as $route) {
-                $this->addRoute($route, $fileHandleString);
+                $new = $new->withAddedRoute($route, $fileHandleString);
             }
         }
+
+        return $new;
     }
 
     public function regex(): string

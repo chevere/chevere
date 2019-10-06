@@ -30,14 +30,14 @@ interface LoaderContract
     /**
      * @param string $controller a fully-qualified controller name
      */
-    public function setController(string $controller): void;
+    public function withController(string $controller): LoaderContract;
 
     /**
      * @param array $arguments string arguments to pass to the controller
      */
-    public function setArguments(array $arguments): LoaderContract;
+    public function withArguments(array $arguments): LoaderContract;
 
-    public function setRequest(RequestContract $request): void;
+    public function withRequest(RequestContract $request): LoaderContract;
 
     /**
      * Run the controller.

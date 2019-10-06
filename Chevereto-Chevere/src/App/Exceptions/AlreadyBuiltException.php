@@ -16,5 +16,4 @@ namespace Chevere\App\Exceptions;
 use Exception;
 
 final class AlreadyBuiltException extends Exception
-{
-}
+{ }

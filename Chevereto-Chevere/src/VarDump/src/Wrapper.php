@@ -43,10 +43,12 @@ final class Wrapper
         $this->useCli =  false;
     }
 
-    public function setUseCli()
+    public function withCli(): Wrapper
     {
-        $this->consoleColor = new ConsoleColor();
-        $this->useCli = true;
+        $new = clone $this;
+        $new->consoleColor = new ConsoleColor();
+        $new->useCli = true;
+        return $new;
     }
 
     /**

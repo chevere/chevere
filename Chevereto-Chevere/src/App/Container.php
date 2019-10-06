@@ -23,22 +23,25 @@ final class Container
     private $router;
 
     public function __construct()
+    { }
+
+    public function withApi(ApiContract $api): Container
     {
+        $new = clone $this;
+        $new->api = $api;
+        return $new;
     }
 
-    public function setApi(ApiContract $api) : void
+    public function withRouter(RouterContract $router): Container
     {
-        $this->api = $api;
+        $new = clone $this;
+        $new->router = $router;
+        return $new;
     }
 
     public function api(): ApiContract
     {
         return $this->api;
-    }
-
-    public function setRouter(RouterContract $router) : void
-    {
-        $this->router = $router;
     }
 
     public function router(): RouterContract

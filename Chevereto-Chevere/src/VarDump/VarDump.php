@@ -96,29 +96,31 @@ final class VarDump
         return $this->dontDump;
     }
 
-    public function setDontDump(array $dontDump): void
+    public function withDontDump(array $dontDump): self
     {
-        $this->dontDump = $dontDump;
+        $new = clone $this;
+        $new->dontDump = $dontDump;
+
+        return $new;
     }
 
-    public function dump($var, int $indent = 0, int $depth = 0): void
+    public function withDump($var, int $indent = 0, int $depth = 0): self
     {
         ++$depth;
-        $this->var = $var;
-        // if (is_array($this->var)) {
-        //     $this->expression = [] + $this->var;
-        // } else {
-        // }
-        $this->expression = $this->var;
-        $this->indent = $indent;
-        $this->depth = $depth;
-        $this->val = null;
-        $this->indentString = $this->formatter->getIndent($this->indent);
-        $this->setType();
-        $this->handleType();
-        $this->setTemplate();
-        $this->handleParentheses();
-        $this->setOutput();
+        $new = clone $this;
+        $new->var = $var;
+        $new->expression = $new->var;
+        $new->indent = $indent;
+        $new->depth = $depth;
+        $new->val = null;
+        $new->indentString = $new->formatter->getIndent($new->indent);
+        $new->setType();
+        $new->handleType();
+        $new->setTemplate();
+        $new->handleParentheses();
+        $new->setOutput();
+
+        return $new;
     }
 
     public function expression()
@@ -150,7 +152,7 @@ final class VarDump
     {
         $new = new self($this->formatter);
         if (!empty($this->dontDump)) {
-            $new->setDontDump($this->dontDump);
+            $new = $new->withDontDump($this->dontDump);
         }
         return $new;
     }

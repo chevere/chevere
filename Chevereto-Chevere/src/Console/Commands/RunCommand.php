@@ -110,8 +110,11 @@ final class RunCommand extends Command
 
     private function runController(): void
     {
-        $this->loader->setArguments($this->argument);
-        $this->loader->setController($this->callable);
+
+        $this->loader =
+            $this->loader
+            ->withArguments($this->argument)
+            ->setController($this->callable);
         $this->loader->run();
     }
 

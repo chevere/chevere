@@ -95,7 +95,8 @@ final class Route implements RouteContract
         }
         $this->handleType();
         if (isset($controller)) {
-            $this->setMethod(new Method('GET', $controller));
+            $new = clone $this;
+            $new = $new->withAddedMethod(new Method('GET', $controller));
         }
     }
 
@@ -149,7 +150,7 @@ final class Route implements RouteContract
         return $this->regex;
     }
 
-    public function setName(string $name): RouteContract
+    public function withName(string $name): RouteContract
     {
         // Validate $name
         if (!preg_match(static::REGEX_NAME, $name)) {
@@ -160,21 +161,23 @@ final class Route implements RouteContract
                     ->toString()
             );
         }
-        $this->name = $name;
+        $new = clone $this;
+        $new->name = $name;
 
-        return $this;
+        return $new;
     }
 
-    public function setWhere(string $wildcardName, string $regex): RouteContract
+    public function withWhere(string $wildcardName, string $regex): RouteContract
     {
+        $new = clone $this;
         $wildcard = new Wildcard($wildcardName, $regex);
-        $wildcard->bind($this);
-        $this->wheres[$wildcardName] = $regex;
+        $wildcard->bind($new);
+        $new->wheres[$wildcardName] = $regex;
 
-        return $this;
+        return $new;
     }
 
-    public function setMethod(MethodContract $method): RouteContract
+    public function withAddedMethod(MethodContract $method): RouteContract
     {
         if (isset($this->methods[$method->method()])) {
             throw new InvalidArgumentException(
@@ -182,28 +185,31 @@ final class Route implements RouteContract
                     ->code('%s', $method->method())->toString()
             );
         }
-        $this->methods[$method->method()] = $method->controller();
+        $new = clone $this;
+        $new->methods[$method->method()] = $method->controller();
 
-        return $this;
+        return $new;
     }
 
-    public function setMethods(MethodsContract $methods): RouteContract
+    public function withMethods(MethodsContract $methods): RouteContract
     {
+        $new = clone $this;
         foreach ($methods as $method) {
-            $this->setMethod($method);
+            $new = $new->withAddedMethod($method);
         }
 
-        return $this;
+        return $new;
     }
 
-    public function setId(string $id): RouteContract
+    public function withId(string $id): RouteContract
     {
-        $this->id = $id;
+        $new = clone $this;
+        $new->id = $id;
 
-        return $this;
+        return $new;
     }
 
-    public function addMiddleware(string $callable): RouteContract
+    public function withAddedMiddleware(string $callable): RouteContract
     {
         // $this->middlewares[] = $this->getCallableSome($callable);
         $this->middlewares[] = $callable;
@@ -227,19 +233,20 @@ final class Route implements RouteContract
 
     public function fill(): RouteContract
     {
-        if (isset($this->wildcards)) {
-            foreach ($this->wildcards as $k => $v) {
-                if (!isset($this->wheres[$v])) {
-                    $this->wheres[$v] = static::REGEX_WILDCARD_WHERE;
+        $new = clone $this;
+        if (isset($new->wildcards)) {
+            foreach ($new->wildcards as $k => $v) {
+                if (!isset($new->wheres[$v])) {
+                    $new->wheres[$v] = static::REGEX_WILDCARD_WHERE;
                 }
             }
         }
-        if (isset($this->methods['GET']) && !isset($this->methods['HEAD'])) {
-            $this->setMethod(new Method('HEAD', HeadController::class));
+        if (isset($new->methods['GET']) && !isset($new->methods['HEAD'])) {
+            $new = $new->withAddedMethod(new Method('HEAD', HeadController::class));
         }
-        $this->regex = $this->getRegex($this->key ?? $this->path);
+        $new->regex = $new->getRegex($new->key ?? $new->path);
 
-        return $this;
+        return $new;
     }
 
     public function getRegex(string $pattern): string

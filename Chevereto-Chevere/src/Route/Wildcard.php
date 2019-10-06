@@ -38,8 +38,8 @@ final class Wildcard
         $this->wildcardName = $wildcardName;
         $this->wildcardString = "{{$wildcardName}}";
         $this->regex = $regex;
-        $this->validateFormat();
-        $this->validateRegex();
+        $this->assertFormat();
+        $this->assertRegex();
     }
 
     public function bind(Route $route)
@@ -49,7 +49,7 @@ final class Wildcard
         $this->validateRouteUniqueWildcard();
     }
 
-    private function validateFormat(): void
+    private function assertFormat(): void
     {
         if (!(!Str::startsWithNumeric($this->wildcardName) && preg_match('/^[a-z0-9_]+$/i', $this->wildcardName))) {
             throw new InvalidArgumentException(
@@ -60,7 +60,7 @@ final class Wildcard
         }
     }
 
-    private function validateRegex()
+    private function assertRegex(): void
     {
         if (!Validate::regex('/' . $this->regex . '/')) {
             throw new InvalidArgumentException(

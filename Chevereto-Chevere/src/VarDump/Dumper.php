@@ -219,8 +219,9 @@ class Dumper
 
     final private function appendArg(int $pos, $value): void
     {
-        $varDump = $this->varDump->respawn();
-        $varDump->dump($value);
+        $varDump = $this->varDump
+            ->respawn()
+            ->withDump($value);
         $this->output .= 'Arg#' . $pos . ' ' . $varDump->toString() . "\n\n";
     }
 

@@ -119,8 +119,9 @@ final class ObjectProcessor implements ProcessorContract
     private function handleDeepth(): void
     {
         if ($this->varDump->depth() < 4) {
-            $new = $this->varDump->respawn();
-            $new->dump($this->aux, $this->varDump->indent(), $this->varDump->depth());
+            $new = $this->varDump
+                ->respawn()
+                ->withDump($this->aux, $this->varDump->indent(), $this->varDump->depth());
             $this->val .= $new->toString();
         } else {
             $this->val .= $this->varDump->formatter()->wrap(

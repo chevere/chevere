@@ -76,16 +76,14 @@ final class Build
         return $this->container;
     }
 
-    public function apply()
+    public function apply(): void
     {
         $consoleIsBuilding = Console::isBuilding();
         try {
-            $this->container->setApi(
-                !$consoleIsBuilding ? Api::fromCache() : new Api()
-            );
-            $this->container->setRouter(
-                !$consoleIsBuilding ? Router::fromCache() : new Router()
-            );
+            $this->container =
+                $this->container
+                ->withApi(!$consoleIsBuilding ? Api::fromCache() : new Api())
+                ->withRouter(!$consoleIsBuilding ? Router::fromCache() : new Router());
         } catch (CacheNotFoundException $e) {
             $message = sprintf('The app must be re-build due to missing cache. %s', $e->getMessage());
             throw new NeedsToBeBuiltException($message, $e->getCode(), $e);
@@ -105,16 +103,19 @@ final class Build
         if (!empty($parameters->api())) {
             $pathHandle = new PathHandle($parameters->api());
             $this->apiMaker = ApiMaker::create($pathHandle, $this->routerMaker);
-            $this->container->setApi(
+            $this->container = $this->container->withApi(
                 Api::fromMaker($this->apiMaker)
             );
             $this->cacheChecksums = $this->apiMaker->cache()->toArray();
         }
         if (!empty($parameters->routes())) {
-            $this->routerMaker->addRoutesArrays($parameters->routes());
-            $this->container->setRouter(
-                Router::fromMaker($this->routerMaker)
-            );
+            $this->routerMaker = $this->routerMaker
+                ->addRoutesArrays($parameters->routes());
+
+            $this->container = $this->container
+                ->withRouter(
+                    Router::fromMaker($this->routerMaker)
+                );
             $this->cacheChecksums = array_merge($this->routerMaker->cache()->toArray(), $this->cacheChecksums);
         }
         $this->checkout = new Checkout($this);

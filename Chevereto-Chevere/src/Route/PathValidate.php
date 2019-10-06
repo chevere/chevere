@@ -28,10 +28,11 @@ final class PathValidate implements PathValidateContract
 
     public function __construct(string $path)
     {
-        $this->setPath($path);
-        $this->setHasHandlebars();
+        $this->assertPath($path);
+        $this->path = $path;
+        $this->hasHandlebars = $this->getHasHandlebars();
         if ($this->hasHandlebars) {
-            $this->validateReservedWildcards();
+            $this->assertReservedWildcards();
         }
     }
 
@@ -45,7 +46,7 @@ final class PathValidate implements PathValidateContract
         return $this->hasHandlebars;
     }
 
-    private function setPath(string $path): void
+    private function assertPath(string $path): void
     {
         if (!$this->validateFormat($path)) {
             throw new InvalidArgumentException(
@@ -54,7 +55,6 @@ final class PathValidate implements PathValidateContract
                     ->toString()
             );
         }
-        $this->path = $path;
     }
 
     private function validateFormat(string $path): bool
@@ -75,7 +75,7 @@ final class PathValidate implements PathValidateContract
             && !Str::contains('\\', $path);
     }
 
-    private function validateReservedWildcards(): void
+    private function assertReservedWildcards(): void
     {
         if (!(preg_match_all('/{([0-9]+)}/', $this->path) === 0)) {
             throw new InvalidArgumentException(
@@ -86,8 +86,8 @@ final class PathValidate implements PathValidateContract
         }
     }
 
-    private function setHasHandlebars(): void
+    private function getHasHandlebars(): bool
     {
-        $this->hasHandlebars = Str::contains('{', $this->path) || Str::contains('}', $this->path);
+        return Str::contains('{', $this->path) || Str::contains('}', $this->path);
     }
 }

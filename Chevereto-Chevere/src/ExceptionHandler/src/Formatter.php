@@ -266,8 +266,8 @@ final class Formatter
             $k = '_' . $v;
             $v = isset($GLOBALS[$k]) ? $GLOBALS[$k] : null;
             if ($v) {
-                $dumperVarDump->dump($v);
-                $plainVarDump->dump($v);
+                $dumperVarDump = $dumperVarDump->withDump($v);
+                $plainVarDump = $plainVarDump->withDump($v);
                 $wrapped = $dumperVarDump->toString();
                 if (!CLI) {
                     $wrapped = '<pre>' . $wrapped . '</pre>';

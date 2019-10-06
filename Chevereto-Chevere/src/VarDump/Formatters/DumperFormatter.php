@@ -27,17 +27,17 @@ use Chevere\VarDump\src\Wrapper;
 final class DumperFormatter implements FormatterContract
 {
 
-  use GetIndentTrait;
-  use GetEmphasisTrait;
-  use GetEncodedCharsTrait;
+    use GetIndentTrait;
+    use GetEmphasisTrait;
+    use GetEncodedCharsTrait;
 
-  public function wrap(string $key, string $dump): string
-  {
-    $wrapper = new Wrapper($key, $dump);
-    if (CLI) {
-      $wrapper->setUseCli();
+    public function wrap(string $key, string $dump): string
+    {
+        $wrapper = new Wrapper($key, $dump);
+        if (CLI) {
+            $wrapper = $wrapper->withCli();
+        }
+
+        return $wrapper->toString();
     }
-
-    return $wrapper->toString();
-  }
 }

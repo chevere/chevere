@@ -136,10 +136,12 @@ final class TraceEntry
         $this->richArgs = "\n";
         foreach ($this->entry['args'] as $k => $expression) {
             $aux = 'Arg#' . ($k + 1) . ' ';
-            $plainVarDump->setDontDump([App::class]);
-            $richVarDump->setDontDump([App::class]);
-            $plainVarDump->dump($expression, 0);
-            $richVarDump->dump($expression, 0);
+            $plainVarDump = $plainVarDump
+                ->withDontDump([App::class])
+                ->withDump($expression, 0);
+            $richVarDump = $richVarDump
+                ->withDontDump([App::class])
+                ->withDump($expression, 0);
             $this->plainArgs .= $aux . $plainVarDump->toString() . "\n";
             $this->richArgs .= $aux . $richVarDump->toString() . "\n";
         }

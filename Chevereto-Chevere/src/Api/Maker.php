@@ -72,7 +72,7 @@ final class Maker
         $this->routerMaker = $router;
     }
 
-    public static function create(PathHandle $pathHandle, RouterMaker $routerMaker)
+    public static function create(PathHandle $pathHandle, RouterMaker $routerMaker): Maker
     {
         $maker = new static($routerMaker);
         $methods = new Methods(
@@ -80,15 +80,15 @@ final class Maker
             new Method('OPTIONS', OptionsController::class),
             new Method('GET', GetController::class)
         );
-        $maker->register($pathHandle, new Endpoint($methods));
+        $maker = $maker->register($pathHandle, new Endpoint($methods));
         return $maker;
     }
 
     public function register(PathHandle $pathHandle, Endpoint $endpoint): void
     {
         $this->path = $pathHandle->path();
-        $this->validateNoDuplicates();
-        $this->validatePath();
+        $this->assertNoDuplicates();
+        $this->assertPath();
         $this->basePath = strtolower(basename($this->path));
         $this->routesMap = [];
         $this->resourcesMap = [];
@@ -99,7 +99,7 @@ final class Maker
         $filter = new FilterIterator($iterator);
         $filter->generateAcceptedFilenames(Method::ACCEPT_METHODS, Api::METHOD_ROOT_PREFIX);
         $this->recursiveIterator = new RecursiveIteratorIterator($filter);
-        $this->validateRecursiveIterator();
+        $this->assertRecursiveIterator();
         $this->processRecursiveIterator();
 
         $this->processRoutesMap();
@@ -108,8 +108,12 @@ final class Maker
         $this->api[$this->basePath][''] = $endpoint->toArray();
 
         $route = new Route($path);
-        $route->setMethods($endpoint->methods())->setId($this->basePath);
-        $this->routerMaker->addRoute($route, $this->basePath);
+        $route
+            ->withMethods($endpoint->methods())
+            ->withId($this->basePath);
+
+        $this->routerMaker = $this->routerMaker
+            ->withAddedRoute($route, $this->basePath);
 
         $this->registered[$this->basePath] = true;
         ksort($this->api);
@@ -132,7 +136,7 @@ final class Maker
         return $this->cache;
     }
 
-    private function validateRecursiveIterator(): void
+    private function assertRecursiveIterator(): void
     {
         try {
             $count = iterator_count($this->recursiveIterator);
@@ -148,7 +152,7 @@ final class Maker
         }
     }
 
-    private function validateNoDuplicates(): void
+    private function assertNoDuplicates(): void
     {
         if (isset($this->registered[$this->path])) {
             throw new LogicException(
@@ -159,7 +163,7 @@ final class Maker
         }
     }
 
-    private function validatePath(): void
+    private function assertPath(): void
     {
         if (!File::exists($this->path)) {
             throw new LogicException(
@@ -213,16 +217,20 @@ final class Maker
             $endpointRouteKey = Str::ltail($pathComponent, '/');
 
             $this->route = (new Route($endpointRouteKey))
-                ->setId($pathComponent)
-                ->setMethods($methods);
-            $resource = $this->resourcesMap[$pathComponent] ?? null;
-            if (isset($resource)) {
-                foreach ($resource as $wildcardKey => $resourceMeta) {
-                    $this->route->setWhere($wildcardKey, $resourceMeta['regex']);
-                }
-                $endpoint->setResource($resource);
-            }
-            $this->routerMaker->addRoute($this->route, $this->basePath);
+                ->withId($pathComponent)
+                ->withMethods($methods);
+
+            // $resource = $this->resourcesMap[$pathComponent] ?? null;
+            // if (isset($resource)) {
+            //     foreach ($resource as $wildcardKey => $resourceMeta) {
+            //         $this->route->setWhere($wildcardKey, $resourceMeta['regex']);
+            //     }
+            //     $endpoint->setResource($resource);
+            // }
+
+            $this->routerMaker = $this->routerMaker
+                ->withAddedRoute($this->route, $this->basePath);
+
             $this->api[$this->basePath][$pathComponent] = $endpoint->toArray();
         }
         ksort($this->api);
