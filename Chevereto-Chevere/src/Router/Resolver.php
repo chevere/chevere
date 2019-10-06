@@ -37,7 +37,10 @@ final class Resolver
         }
     }
 
-    public function get(): RouteContract
+    /**
+     * {@inheritdoc}
+     */
+    public function route(): RouteContract
     {
         return $this->route;
     }

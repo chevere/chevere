@@ -28,8 +28,6 @@ use Chevere\Interfaces\ControllerRelationshipInterface;
  */
 final class Inspect implements InspectContract
 {
-    const METHOD_ROOT_PREFIX = Api::METHOD_ROOT_PREFIX;
-
     /** @var string The Controller interface */
     const INTERFACE_CONTROLLER = ControllerContract::class;
 
@@ -102,7 +100,7 @@ final class Inspect implements InspectContract
         $this->isResource = $this->reflection->implementsInterface(ControllerResourceInterface::class);
         $this->isRelatedResource = $this->reflection->implementsInterface(ControllerRelationshipInterface::class);
         $this->useResource = $this->isResource || $this->isRelatedResource;
-        $this->httpMethod = Str::replaceFirst(static::METHOD_ROOT_PREFIX, '', $this->classShortName);
+        $this->httpMethod = $this->classShortName;
         $this->description = $className::description();
         $this->handleResources($className);
         $this->parameters = $className::parameters();
@@ -170,7 +168,7 @@ final class Inspect implements InspectContract
 
     private function handleControllerResourceInterface(): void
     {
-        if (!Str::startsWith(static::METHOD_ROOT_PREFIX, $this->classShortName) && $this->useResource && !$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER_RESOURCE)) {
+        if ($this->useResource && !$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER_RESOURCE)) {
             throw new LogicException('Class %reflectionName% must implement the %interfaceControllerResource% interface at %reflectionFilename%.');
         }
     }

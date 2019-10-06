@@ -21,16 +21,14 @@ use Chevere\Route\Route;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Path\PathHandle;
 use Chevere\Cache\Cache;
+use Chevere\Contracts\Router\MakerContract;
 use Chevere\Type\Type;
 
 /**
  * Maker takes a bunch of Routes and generates a routing table (php array).
  */
-final class Maker
+final class Maker implements MakerContract
 {
-    // const ID = 'id';
-    // const SET = 'set';
-
     const REGEX_TEPLATE = '#^(?%s)$#x';
 
     /** @var string Regex representation, used when resolving routing */
@@ -63,13 +61,10 @@ final class Maker
     /** @var Cache */
     private $cache;
 
-    public function __construct()
-    { }
-
     /**
      * {@inheritdoc}
      */
-    public function withAddedRoute(RouteContract $route, string $group): Maker
+    public function withAddedRoute(RouteContract $route, string $group): MakerContract
     {
         $new = clone $this;
         $new->route = $route->fill();
@@ -107,7 +102,7 @@ final class Maker
      * @param array $routeIdentifiers ['routes:web', 'routes:dashboard']
      * FIXME: Use ... $pathHandle
      */
-    public function withAddedRouteIdentifiers(array $routeIdentifiers): Maker
+    public function withAddedRouteIdentifiers(array $routeIdentifiers): MakerContract
     {
         $new = clone $this;
         foreach ($routeIdentifiers as $fileHandleString) {
@@ -128,22 +123,34 @@ final class Maker
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function regex(): string
     {
         return $this->regex;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function routes(): array
     {
         return $this->routes;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function routesIndex(): array
     {
         return $this->routesIndex;
     }
 
-    public function withCache(): Maker
+    /**
+     * {@inheritdoc}
+     */
+    public function withCache(): MakerContract
     {
         $new = clone $this;
         $new->cache = new Cache('router');
@@ -157,14 +164,14 @@ final class Maker
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function cache(): Cache
     {
         return $this->cache;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     private function getRegex(): string
     {
         $regex = [];

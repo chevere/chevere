@@ -40,9 +40,9 @@ final class Router implements RouterContract
     /** @var array Arguments taken from wildcard matches */
     private $arguments;
 
-    public function __construct()
-    { }
-
+    /**
+     * {@inheritdoc}
+     */
     public static function fromMaker(Maker $maker): RouterContract
     {
         $router = new static();
@@ -53,6 +53,9 @@ final class Router implements RouterContract
         return $router;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function fromCache(): RouterContract
     {
         $router = new static();
@@ -67,6 +70,9 @@ final class Router implements RouterContract
         return $router;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function arguments(): array
     {
         return $this->arguments ?? [];
@@ -100,7 +106,7 @@ final class Router implements RouterContract
         }
         if (is_string($route)) {
             $resolver = new Resolver($route);
-            $route = $resolver->get();
+            $route = $resolver->route();
             $this->routes[$id] = $route;
         }
         $this->arguments = [];

@@ -13,22 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Api;
 
+use LogicException;
 use Chevere\Cache\Cache;
 use Chevere\Cache\Exceptions\CacheNotFoundException;
-use LogicException;
 use Chevere\Message\Message;
 use Chevere\Contracts\Api\ApiContract;
 use Chevere\FileReturn\Exceptions\FileNotFoundException;
-use Chevere\Stopwatch;
 
 /**
  * Api provides a static method to read the exposed API inside the app runtime.
  */
 final class Api implements ApiContract
 {
-    /** @var string Prefix used for endpoints without a defined resource (/endpoint) */
-    const METHOD_ROOT_PREFIX = '_';
-
     /** @var array */
     private static $api;
 
@@ -49,6 +45,7 @@ final class Api implements ApiContract
         } catch (FileNotFoundException $e) {
             throw new CacheNotFoundException($e->getMessage(), $e->getCode(), $e);
         }
+
         return $api;
     }
 
@@ -65,7 +62,6 @@ final class Api implements ApiContract
 
             return self::$api[$key][$subKey];
         }
-
         throw new LogicException(
             (new Message('No endpoint defined for the %s URI.'))
                 ->code('%s', $uriKey)
@@ -77,7 +73,6 @@ final class Api implements ApiContract
     {
         $endpoint = ltrim($uri, '/');
         $base = strtok($endpoint, '/');
-
         if (!isset(self::$api[$base])) {
             throw new LogicException(
                 (new Message('No API endpoint key for the %s URI.'))

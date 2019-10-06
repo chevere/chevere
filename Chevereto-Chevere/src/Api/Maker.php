@@ -118,7 +118,7 @@ final class Maker implements MakerContract
 
         $iterator = new RecursiveDirectoryIterator($this->path, RecursiveDirectoryIterator::SKIP_DOTS);
         $filter = new FilterIterator($iterator);
-        $filter = $filter->withAcceptFilenames(Method::ACCEPT_METHODS, Api::METHOD_ROOT_PREFIX);
+        $filter = $filter->withAcceptFilenames(Method::ACCEPT_METHODS);
         $this->recursiveIterator = new RecursiveIteratorIterator($filter);
         $this->assertRecursiveIterator();
         $this->processRecursiveIterator();
