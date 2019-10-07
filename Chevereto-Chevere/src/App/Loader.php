@@ -26,6 +26,7 @@ use Chevere\Http\Response;
 use Chevere\Runtime\Runtime;
 use Chevere\Contracts\App\AppContract;
 use Chevere\App\Exceptions\NeedsToBeBuiltException;
+use Chevere\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Router\RouterContract;
@@ -34,6 +35,7 @@ use Chevere\Message\Message;
 use Chevere\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\Controller\JsonApiContract;
+use Chevere\Router\Router;
 
 use function GuzzleHttp\Psr7\stream_for;
 
@@ -87,10 +89,21 @@ final class Loader implements LoaderContract
             $this->build = $this->build
                 ->withParameters($this->parameters());
         } else {
+            try {
+                $container = $this->build->container()
+                    ->withApi(!Console::isBuilding() ? Api::fromCache() : new Api())
+                    ->withRouter(!Console::isBuilding() ? Router::fromCache() : new Router());
+            } catch (CacheNotFoundException $e) {
+                throw new NeedsToBeBuiltException(
+                    (new Message('The app must be re-build due to missing cache: %message%'))
+                        ->code('%message%', $e->getMessage()),
+                    $e->getCode(),
+                    $e
+                );
+            }
             $this->build = $this->build
-                ->withServices();
+                ->withContainer($container);
         }
-
         $this->api = $this->build->container()->api();
         $this->router = $this->build->container()->router();
         $this->app = $this->app->withRouter($this->router);

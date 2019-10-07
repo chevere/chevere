@@ -159,14 +159,24 @@ final class FileReturn
     /**
      * OPCache the FileReturn file
      */
-    public function compile()
+    public function makeCache()
     {
-        opcache_compile_file($this->path);
+        if (!opcache_compile_file($this->path)) {
+            throw new RuntimeException(
+                (new Message('Opcode cache is disabled'))
+                    ->toString()
+            );
+        }
     }
 
-    public function invalidateCache()
+    public function destroyCache()
     {
-        opcache_invalidate($this->path);
+        if (!opcache_invalidate($this->path)) {
+            throw new RuntimeException(
+                (new Message('Opcode cache is disabled'))
+                    ->toString()
+            );
+        }
     }
 
     private function getHashFile()

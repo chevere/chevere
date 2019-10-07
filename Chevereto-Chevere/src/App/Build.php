@@ -76,18 +76,10 @@ final class Build
         return $this->container;
     }
 
-    public function withServices(): Build
+    public function withContainer(Container $container): Build
     {
         $new = clone $this;
-        $consoleIsBuilding = Console::isBuilding();
-        try {
-            $new->container = $new->container
-                ->withApi(!$consoleIsBuilding ? Api::fromCache() : new Api())
-                ->withRouter(!$consoleIsBuilding ? Router::fromCache() : new Router());
-        } catch (CacheNotFoundException $e) {
-            $message = sprintf('The app must be re-build due to missing cache. %s', $e->getMessage());
-            throw new NeedsToBeBuiltException($message, $e->getCode(), $e);
-        }
+        $new->container = $container;
 
         return $new;
     }
@@ -140,6 +132,9 @@ final class Build
         return $this->checkout;
     }
 
+    /**
+     * Destroy the build signature and any cache generated.
+     */
     public function destroy(): void
     {
         unlink($this->pathHandle->path());

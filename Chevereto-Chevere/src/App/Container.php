@@ -29,6 +29,7 @@ final class Container
     {
         $new = clone $this;
         $new->api = $api;
+
         return $new;
     }
 
@@ -36,6 +37,7 @@ final class Container
     {
         $new = clone $this;
         $new->router = $router;
+
         return $new;
     }
 

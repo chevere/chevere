@@ -153,16 +153,7 @@ final class App implements AppContract
             );
         }
 
-        if (isset($this->route)) {
-            $middlewares = $this->route->middlewares();
-            if (!empty($middlewares)) {
-                $handler = new MiddlewareHandler($middlewares, $this);
-                $handler->runner();
-                if ($handler->exception) {
-                    dd($handler->exception->getMessage(), 'Aborted at ' . __FILE__ . ':' . __LINE__);
-                }
-            }
-        }
+        $this->handleRouteMiddleware();
 
         $controller = new $controller($this);
 
@@ -176,5 +167,19 @@ final class App implements AppContract
         $controller(...$controllerArguments);
 
         return $controller;
+    }
+
+    private function handleRouteMiddleware()
+    {
+        if (isset($this->route)) {
+            $middlewares = $this->route->middlewares();
+            if (!empty($middlewares)) {
+                $handler = new MiddlewareHandler($middlewares, $this);
+                $handler->runner();
+                if ($handler->exception) {
+                    dd($handler->exception->getMessage(), 'Aborted at ' . __FILE__ . ':' . __LINE__);
+                }
+            }
+        }
     }
 }

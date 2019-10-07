@@ -133,8 +133,6 @@ final class ExceptionHandler
         $this->runtime = Loader::runtime();
         $this->isDebugEnabled = (bool) $this->runtime->data()->key('debug');
 
-        $this->setloadedConfigFiles();
-
         $this->logDateFolderFormat = static::LOG_DATE_FOLDER_FORMAT;
         $this->wrap = new Wrap($args[0]);
         $this->loggerLevel = $this->wrap->data()->key('loggerLevel');
@@ -144,7 +142,7 @@ final class ExceptionHandler
         $formatter = new Formatter($this);
         $formatter = $formatter
             ->withLineBreak(Template::BOX_BREAK_HTML)
-            ->setCss(Style::CSS);
+            ->withCss(Style::CSS);
 
         $this->output = new Output($this, $formatter);
         $this->loggerWrite();

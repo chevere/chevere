@@ -19,6 +19,7 @@ use Throwable;
 use ErrorException;
 use Symfony\Component\Console\Output\OutputInterface;
 use Chevere\Console\Console;
+use Chevere\Data\Traits\DataMethodTrait;
 use Chevere\ExceptionHandler\ExceptionHandler;
 use Chevere\Str\Str;
 use Chevere\VarDump\Formatters\DumperFormatter;
@@ -165,10 +166,11 @@ final class Formatter
     private function setServerProperties()
     {
         if (CLI) {
-            $this->data->merge([
-                'clientIp' => $_SERVER['argv'][0],
-                'clientUserAgent' => Console::inputString(),
-            ]);
+            $this->data = $this->data
+                ->withMergedArray([
+                    'clientIp' => $_SERVER['argv'][0],
+                    'clientUserAgent' => Console::inputString(),
+                ]);
         } else {
             $wea = [
                 'uri' => $this->exceptionHandler->request()->getUri()->getPath() ?? 'unknown',

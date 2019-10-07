@@ -18,7 +18,7 @@ use Chevere\Contracts\DataContract;
 
 trait Set
 {
-    /** @var string */
+    /** @var ?string */
     private $value;
 
     /** @var DataContract */
@@ -38,7 +38,8 @@ trait Set
     public function name(): string
     {
         $explode = explode('\\', __CLASS__);
-        $name = Str::replaceFirst('RuntimeSet', '', end($explode));
+        $name = end($explode);
+
         return lcfirst($name);
     }
 
