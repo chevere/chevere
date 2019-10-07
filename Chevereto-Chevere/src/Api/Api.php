@@ -32,7 +32,7 @@ final class Api implements ApiContract
     {
         $api = new static();
         $api::$api = $maker->api();
-        $maker = $maker->withCache();
+
         return $api;
     }
 
