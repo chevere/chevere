@@ -51,11 +51,17 @@ final class App implements AppContract
     /** @var RouterContract */
     private $router;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(ResponseContract $response)
     {
         $this->response = $response;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withRequest(RequestContract $request): AppContract
     {
         $new = clone $this;
@@ -63,6 +69,9 @@ final class App implements AppContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withResponse(ResponseContract $response): AppContract
     {
         $new = clone $this;
@@ -70,6 +79,9 @@ final class App implements AppContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withRoute(RouteContract $route): AppContract
     {
         $new = clone $this;
@@ -77,6 +89,9 @@ final class App implements AppContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withRouter(RouterContract $router): AppContract
     {
         $new = clone $this;
@@ -84,6 +99,9 @@ final class App implements AppContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withArguments(array $arguments): AppContract
     {
         $new = clone $this;

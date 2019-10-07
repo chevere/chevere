@@ -33,7 +33,9 @@ final class BuildCommand extends Command
     {
         $title = 'App built';
         try {
-            $loader->build()->make($loader->parameters());
+            $build = $loader->build()
+                ->withParameters($loader->parameters());
+            $loader = $loader->withBuild($build);
         } catch (AlreadyBuiltException $e) {
             $title .= ' (not by this command)';
         }

@@ -76,50 +76,55 @@ final class Build
         return $this->container;
     }
 
-    public function apply(): void
+    public function withServices(): Build
     {
+        $new = clone $this;
         $consoleIsBuilding = Console::isBuilding();
         try {
-            $this->container =
-                $this->container
+            $new->container = $new->container
                 ->withApi(!$consoleIsBuilding ? Api::fromCache() : new Api())
                 ->withRouter(!$consoleIsBuilding ? Router::fromCache() : new Router());
         } catch (CacheNotFoundException $e) {
             $message = sprintf('The app must be re-build due to missing cache. %s', $e->getMessage());
             throw new NeedsToBeBuiltException($message, $e->getCode(), $e);
         }
+
+        return $new;
     }
 
     /**
      * Makes the application Api and Router, store these in the Build container.
      */
-    public function make(Parameters $parameters): void
+    public function withParameters(Parameters $parameters): Build
     {
-        $this->routerMaker = new RouterMaker();
-        if ($this->isBuilt) {
+        $new = clone $this;
+        $new->routerMaker = new RouterMaker();
+        if ($new->isBuilt) {
             throw new AlreadyBuiltException();
         }
-        $this->cacheChecksums = [];
+        $new->cacheChecksums = [];
         if (!empty($parameters->api())) {
             $pathHandle = new PathHandle($parameters->api());
-            $this->apiMaker = ApiMaker::create($pathHandle, $this->routerMaker);
-            $this->container = $this->container->withApi(
-                Api::fromMaker($this->apiMaker)
+            $new->apiMaker = ApiMaker::create($pathHandle, $new->routerMaker);
+            $new->container = $new->container->withApi(
+                Api::fromMaker($new->apiMaker)
             );
-            $this->cacheChecksums = $this->apiMaker->cache()->toArray();
+            $new->cacheChecksums = $new->apiMaker->cache()->toArray();
         }
         if (!empty($parameters->routes())) {
-            $this->routerMaker = $this->routerMaker
+            $new->routerMaker = $new->routerMaker
                 ->withAddedRouteIdentifiers($parameters->routes());
 
-            $this->container = $this->container
+            $new->container = $new->container
                 ->withRouter(
-                    Router::fromMaker($this->routerMaker)
+                    Router::fromMaker($new->routerMaker)
                 );
-            $this->cacheChecksums = array_merge($this->routerMaker->cache()->toArray(), $this->cacheChecksums);
+            $new->cacheChecksums = array_merge($new->routerMaker->cache()->toArray(), $new->cacheChecksums);
         }
-        $this->checkout = new Checkout($this);
-        $this->isBuilt = true;
+        $new->checkout = new Checkout($new);
+        $new->isBuilt = true;
+
+        return $new;
     }
 
     /**

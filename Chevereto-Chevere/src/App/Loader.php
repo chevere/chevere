@@ -84,11 +84,11 @@ final class Loader implements LoaderContract
         $this->app = new App(new Response());
 
         if (DEV) {
-            $this->build->make(
-                $this->parameters()
-            );
+            $this->build = $this->build
+                ->withParameters($this->parameters());
         } else {
-            $this->build->apply();
+            $this->build = $this->build
+                ->withServices();
         }
 
         $this->api = $this->build->container()->api();
@@ -109,6 +109,14 @@ final class Loader implements LoaderContract
             $this->parameters = new Parameters($arrayFile);
         }
         return $this->parameters;
+    }
+
+    public function withBuild(Build $build): LoaderContract
+    {
+        $new = clone $this;
+        $new->build = $build;
+
+        return $new;
     }
 
     public function build(): Build
