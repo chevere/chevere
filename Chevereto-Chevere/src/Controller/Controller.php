@@ -42,15 +42,6 @@ abstract class Controller implements ControllerContract
     /** @var AppContract */
     private $app;
 
-    /** @var string Controller description */
-    protected static $description;
-
-    /** @var array Controller resources [propName => className] */
-    protected static $resources;
-
-    /** @var array Parameters passed via headers */
-    protected static $parameters;
-
     final public function __construct(AppContract $app)
     {
         $this->app = $app;
@@ -76,20 +67,5 @@ abstract class Controller implements ControllerContract
             ->withResponse($response);
 
         return $new;
-    }
-
-    final public static function description(): string
-    {
-        return static::$description ?? '';
-    }
-
-    final public static function resources(): array
-    {
-        return static::$resources ?? [];
-    }
-
-    final public static function parameters(): array
-    {
-        return static::$parameters ?? [];
     }
 }

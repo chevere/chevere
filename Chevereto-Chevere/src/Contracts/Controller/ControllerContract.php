@@ -25,10 +25,4 @@ interface ControllerContract
     public function content(): string;
 
     public function withResponse(Response $response): ControllerContract;
-
-    public static function description(): string;
-
-    public static function resources(): array;
-
-    public static function parameters(): array;
 }

@@ -36,9 +36,6 @@ final class App implements AppContract
     const FILEHANDLE_PARAMETERS = ':parameters';
     const PATH_LOGS = APP_PATH . 'var/logs/';
 
-    /** @var RequestContract */
-    private $request;
-
     /** @var ResponseContract */
     private $response;
 
@@ -57,16 +54,6 @@ final class App implements AppContract
     public function __construct(ResponseContract $response)
     {
         $this->response = $response;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withRequest(RequestContract $request): AppContract
-    {
-        $new = clone $this;
-        $new->request = $request;
-        return $new;
     }
 
     /**
@@ -107,16 +94,6 @@ final class App implements AppContract
         $new = clone $this;
         $new->arguments = $arguments;
         return $new;
-    }
-
-    public function hasRequest(): bool
-    {
-        return isset($this->request);
-    }
-
-    public function request(): RequestContract
-    {
-        return $this->request;
     }
 
     public function response(): ResponseContract

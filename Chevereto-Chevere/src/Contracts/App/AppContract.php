@@ -27,11 +27,6 @@ interface AppContract
     public function __construct(ResponseContract $response);
 
     /**
-     * Returns an instance with the specific request.
-     */
-    public function withRequest(RequestContract $request): AppContract;
-
-    /**
      * Returns an instance with the specific response.
      */
     public function withResponse(ResponseContract $response): AppContract;
@@ -51,11 +46,7 @@ interface AppContract
      */
     public function withArguments(array $arguments): AppContract;
 
-    public function hasRequest(): bool;
-
     public function response(): ResponseContract;
-
-    public function request(): RequestContract;
 
     public function route(): RouteContract;
 

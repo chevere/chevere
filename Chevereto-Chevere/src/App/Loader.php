@@ -121,6 +121,7 @@ final class Loader implements LoaderContract
             $arrayFile = new ArrayFile($pathHandle);
             $this->parameters = new Parameters($arrayFile);
         }
+
         return $this->parameters;
     }
 
@@ -144,6 +145,7 @@ final class Loader implements LoaderContract
     {
         $new = clone $this;
         $new->controller = $controller;
+
         return $new;
     }
 
@@ -154,6 +156,7 @@ final class Loader implements LoaderContract
     {
         $new = clone $this;
         $new->arguments = $arguments;
+
         return $new;
     }
 
@@ -162,9 +165,10 @@ final class Loader implements LoaderContract
      */
     public function withRequest(RequestContract $request): LoaderContract
     {
-        self::$request = $request;
-        $this->app = $this->app->withRequest($request);
-        return $this;
+        $new = clone $this;
+        $new::$request = $request;
+
+        return $new;
     }
 
     /**
@@ -183,7 +187,7 @@ final class Loader implements LoaderContract
         }
         $this->ran = true;
         if (!isset($this->controller)) {
-            $this->processResolveCallable($this->app->request()->getUri()->getPath());
+            $this->processResolveCallable($this::$request->getUri()->getPath());
         }
         if (!isset($this->controller)) {
             throw new RuntimeException('DESCONTROL');
@@ -225,10 +229,8 @@ final class Loader implements LoaderContract
 
     private function handleRequest(): void
     {
-        if (!$this->app->hasRequest()) {
-            $this->app = $this->app->withRequest(
-                ServerRequest::fromGlobals()
-            );
+        if (!isset($this::$request)) {
+            $this::$request = ServerRequest::fromGlobals();
         }
     }
 
@@ -260,7 +262,7 @@ final class Loader implements LoaderContract
                 die();
             }
         }
-        $this->controller = $route->getController($this->app->request()->getMethod());
+        $this->controller = $route->getController($this::$request->getMethod());
         $this->app = $this->app->withRoute($route);
         $routerArgs = $this->router->arguments();
         if (!isset($this->arguments) && isset($routerArgs)) {
