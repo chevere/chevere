@@ -32,6 +32,9 @@ final class MiddlewareHandler implements MiddlewareHandlerContract
     /** @var bool */
     private $stopped;
 
+    /** @var Throwable */
+    private $exception;
+
     /**
      * @param array $queue an array containing callables or callable strings
      */
@@ -50,6 +53,7 @@ final class MiddlewareHandler implements MiddlewareHandlerContract
         return $this->handle();
     }
 
+    // FIXME: Returns null when condition = false
     public function handle(): MiddlewareInterface
     {
         $middleware = current($this->queue);

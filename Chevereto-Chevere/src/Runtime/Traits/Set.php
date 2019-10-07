@@ -18,7 +18,7 @@ use Chevere\Contracts\DataContract;
 
 trait Set
 {
-    /** @var ?string */
+    /** @var string */
     private $value;
 
     /** @var DataContract */

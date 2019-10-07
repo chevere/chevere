@@ -110,11 +110,9 @@ final class RunCommand extends Command
 
     private function runController(): void
     {
-
-        $this->loader =
-            $this->loader
+        $this->loader = $this->loader
             ->withArguments($this->argument)
-            ->setController($this->callable);
+            ->withController($this->callable);
         $this->loader->run();
     }
 
@@ -155,7 +153,7 @@ final class RunCommand extends Command
 
     /**
      * Run the callable capturing its return and buffer.
-     * 
+     *
      * Sets @var mixed $return @var string $buffer @var string $export
      */
     private function bufferedRunCallable(): void

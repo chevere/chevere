@@ -44,6 +44,8 @@ final class Output
     /** @var array */
     private $tags;
 
+    private $preparedTags;
+
     /** @var ExceptionHandler */
     private $exceptionHandler;
 
@@ -70,7 +72,7 @@ final class Output
         } else {
             if (CLI) {
                 $this->setJsonOutput();
-                // $this->setConsoleOutput();
+            // $this->setConsoleOutput();
                 // $this->setHtmlOutput();
             } else {
                 $this->setHtmlOutput();
@@ -90,7 +92,8 @@ final class Output
         }
 
         $response = new Response();
-        if ($this->exceptionHandler->request()->isXmlHttpRequest()) { } else {
+        if ($this->exceptionHandler->request()->isXmlHttpRequest()) {
+        } else {
             // $response = new HttpResponse();
         }
         $guzzle = $response->guzzle()
@@ -155,16 +158,15 @@ final class Output
 
     private function setHtmlOutput(): void
     {
-        $preparedTags = $this->preparedTags;
         if ($this->exceptionHandler->isDebugEnabled()) {
             $bodyTemplate = Template::DEBUG_BODY_HTML;
         } else {
             $bodyTemplate = Template::NO_DEBUG_BODY_HTML;
-            $preparedTags['%content%'] = Template::NO_DEBUG_CONTENT_HTML;
-            $preparedTags['%title%'] = Template::NO_DEBUG_TITLE_PLAIN;
+            $this->preparedTags['%content%'] = Template::NO_DEBUG_CONTENT_HTML;
+            $this->preparedTags['%title%'] = Template::NO_DEBUG_TITLE_PLAIN;
         }
-        $preparedTags['%body%'] = strtr($bodyTemplate, $preparedTags);
-        $this->output = stream_for(strtr(Template::HTML_TEMPLATE, $preparedTags));
+        $this->preparedTags['%body%'] = strtr($bodyTemplate, $this->preparedTags);
+        $this->output = stream_for(strtr(Template::HTML_TEMPLATE, $this->preparedTags));
     }
 
     private function setConsoleOutput(): void

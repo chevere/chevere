@@ -35,7 +35,8 @@ final class BuildCommand extends Command
         try {
             $build = $loader->build()
                 ->withParameters($loader->parameters());
-            $loader = $loader->withBuild($build);
+            $loader = $loader
+                ->withBuild($build);
         } catch (AlreadyBuiltException $e) {
             $title .= ' (not by this command)';
         }

@@ -51,7 +51,7 @@ final class HeadController extends Controller
         }
 
         if (!isset($route)) {
-            $this->app->response()->setStatusCode(404);
+            // $this->app()->response()->withStatusCode(404);
 
             return;
         }
@@ -64,10 +64,10 @@ final class HeadController extends Controller
     private function process()
     {
         $controller = $this->route->getController('GET');
-        $this->app->run($controller);
-        $this->app->response()->setContent(null);
-        if (CLI) {
-            Console::style()->block($this->app->response()->statusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
-        }
+        $this->app()->run($controller);
+        // $this->app->response()->setContent(null);
+        // if (CLI) {
+        //     Console::style()->block($this->app->response()->statusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
+        // }
     }
 }

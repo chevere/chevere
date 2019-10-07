@@ -47,6 +47,11 @@ abstract class Controller implements ControllerContract
         $this->app = $app;
     }
 
+    final public function app(): AppContract
+    {
+        return $this->app;
+    }
+
     final public function content(): string
     {
         return $this->getContent() ?? '';
