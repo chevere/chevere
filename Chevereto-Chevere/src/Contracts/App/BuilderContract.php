@@ -24,11 +24,11 @@ interface BuilderContract
     public function __construct(AppContract $app);
 
     public function withApp(AppContract $app): BuilderContract;
-    
+
     public function withParameters(ParametersContract $parameters): BuilderContract;
-    
+
     public function withBuild(BuildContract $build): BuilderContract;
-    
+
     public function withRequest(RequestContract $request): BuilderContract;
 
     public function withController(string $controller): BuilderContract;
@@ -40,20 +40,20 @@ interface BuilderContract
     public function hasRequest(): bool;
 
     public function hasControllerString(): bool;
-    
+
     public function hasControllerArguments(): bool;
-    
+
     public function app(): AppContract;
-    
+
     public function parameters(): ParametersContract;
 
     public function build(): BuildContract;
 
     public function run(): void;
 
-    public static function runtime(): Runtime;
+    public static function runtimeInstance(): Runtime;
 
     public static function requestInstance(): RequestContract;
 
-    public static function setRuntime(Runtime $runtime);
+    public static function setRuntimeInstance(Runtime $runtime);
 }

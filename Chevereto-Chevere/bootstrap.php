@@ -52,7 +52,7 @@ if ('cli' == php_sapi_name()) {
     define('Chevere\CLI', false);
 }
 
-Builder::setRuntime(
+Builder::setRuntimeInstance(
     new Runtime(
         new SetDebug('1'),
         new SetErrorHandler('Chevere\ExceptionHandler\ErrorHandler::error'),

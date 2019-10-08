@@ -131,7 +131,7 @@ final class ExceptionHandler
         } catch (TypeError $e) {
             $this->request = ServerRequest::fromGlobals();
         }
-        $this->runtime = Builder::runtime();
+        $this->runtime = Builder::runtimeInstance();
         $this->isDebugEnabled = (bool) $this->runtime->data()->key('debug');
 
         $this->logDateFolderFormat = static::LOG_DATE_FOLDER_FORMAT;

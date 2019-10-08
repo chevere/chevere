@@ -38,7 +38,7 @@ final class Builder implements BuilderContract
 {
     use ParametersAccessTrait;
     use ControllerStringAccessTrait;
-    
+
     /** @var AppContract */
     private $app;
 
@@ -121,7 +121,7 @@ final class Builder implements BuilderContract
     {
         return isset($this::$request);
     }
-    
+
     public function hasControllerArguments(): bool
     {
         return isset($this->controllerArguments);
@@ -161,10 +161,7 @@ final class Builder implements BuilderContract
         $this->runApp($this->controller);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function runtime(): Runtime
+    public static function runtimeInstance(): Runtime
     {
         return self::$runtime;
     }
@@ -180,7 +177,7 @@ final class Builder implements BuilderContract
     /**
      * {@inheritdoc}
      */
-    public static function setRuntime(Runtime $runtime)
+    public static function setRuntimeInstance(Runtime $runtime)
     {
         self::$runtime = $runtime;
     }
