@@ -73,7 +73,7 @@ final class Output
             if (CLI) {
                 // $this->setJsonOutput();
                 $this->setConsoleOutput();
-                // $this->setHtmlOutput();
+            // $this->setHtmlOutput();
             } else {
                 $this->setHtmlOutput();
             }
@@ -88,11 +88,13 @@ final class Output
     public function out(): void
     {
         if (CLI) {
-            // die(1);
+            // Must kill the CLI, to stop the default CLI error printing to console
+            die(1);
         }
 
         $response = new Response();
-        if ($this->exceptionHandler->request()->isXmlHttpRequest()) { } else {
+        if ($this->exceptionHandler->request()->isXmlHttpRequest()) {
+        } else {
             // $response = new HttpResponse();
         }
         $guzzle = $response->guzzle()

@@ -189,7 +189,7 @@ final class Builder
     /**
      * {@inheritdoc}
      */
-    public static function setDefaultRuntime(Runtime $runtime)
+    public static function setRuntime(Runtime $runtime)
     {
         self::$runtime = $runtime;
     }

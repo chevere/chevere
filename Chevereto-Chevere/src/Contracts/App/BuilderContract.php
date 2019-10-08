@@ -47,7 +47,7 @@ interface LoaderContract
 
     public function parameters(): ParametersContract;
 
-    public static function setDefaultRuntime(Runtime $runtime);
+    public static function setRuntime(Runtime $runtime);
 
     public static function runtime(): Runtime;
 }

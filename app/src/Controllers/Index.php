@@ -17,6 +17,7 @@ use Chevere\Contracts\Controller\JsonApiContract;
 use Chevere\Controller\Controller;
 use Chevere\Controller\Traits\JsonApiTrait;
 use Chevere\JsonApi\EncodedDocument;
+use Exception;
 use JsonApiPhp\JsonApi\Attribute;
 use JsonApiPhp\JsonApi\DataDocument;
 use JsonApiPhp\JsonApi\JsonApi;

@@ -20,31 +20,56 @@ use Chevere\Api\Api;
 use Chevere\App\Exceptions\NeedsToBeBuiltException;
 use Chevere\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Console\Console;
+use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Http\Response;
 use Chevere\Message\Message;
 use Chevere\Router\Router;
+use Chevere\Contracts\App\ParametersContract;
 
 final class Loader implements LoaderContract
 {
     /** @var Builder */
     private $builder;
 
+    /** @var ParametersContract */
+    private $parameters;
+
     public function __construct()
     {
         $this->builder = new Builder(new App(new Response()));
         $this->handleConsoleBind();
         $this->assert();
+        $this->handleParameters();
+        $build = $this->getBuild();
+        $this->builder = $this->builder
+                ->withBuild($build);
+        $this->builder = $this->builder
+            ->withApp(
+                $this->builder->app()
+                    ->withRouter($this->builder->build()->container()->router())
+            );
+    }
 
+    public function run(): void
+    {
+        $this->builder->run();
+    }
+
+    private function handleParameters(): void
+    {
         if (DEV || Console::isBuilding()) {
-            $parameters = Parameters::fromFile();
+            $this->parameters = Parameters::fromFile();
             $this->builder = $this->builder
-                ->withParameters($parameters);
+                ->withParameters($this->parameters);
         }
+    }
 
+    private function getBuild(): BuildContract
+    {
         if (DEV) {
-            $build = $this->builder->build()
-                ->withParameters($parameters);
+            return $this->builder->build()
+                ->withParameters($this->parameters);
         } else {
             try {
                 if (Console::isBuilding()) {
@@ -65,22 +90,9 @@ final class Loader implements LoaderContract
                     $e
                 );
             }
-            $build = $this->builder->build()
+            return $this->builder->build()
                 ->withContainer($container);
         }
-
-        $this->builder = $this->builder
-                ->withBuild($build);
-        $this->builder = $this->builder
-            ->withApp(
-                $this->builder->app()
-                    ->withRouter($this->builder->build()->container()->router())
-            );
-    }
-
-    public function run(): void
-    {
-        $this->builder->run();
     }
 
     private function handleConsoleBind(): void

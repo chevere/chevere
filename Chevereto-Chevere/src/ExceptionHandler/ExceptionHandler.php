@@ -20,7 +20,6 @@ use DateTime;
 use DateTimeZone;
 use TypeError;
 use Chevere\Http\ServerRequest;
-use Chevere\App\Loader;
 use Chevere\Data\Data;
 use Chevere\Path\Path;
 use Chevere\Runtime\Runtime;

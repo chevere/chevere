@@ -22,6 +22,6 @@ final class ErrorHandler
 {
     public static function error($severity, $message, $file, $line): void
     {
-        // throw new ErrorException($message, 0, $severity, $file, $line);
+        throw new ErrorException($message, 0, $severity, $file, $line);
     }
 }
