@@ -58,7 +58,7 @@ final class Builder implements BuilderContract
     private $ran;
 
     /** @var bool True if the console loop ran */
-    public $consoleLoop;
+    private $consoleLoop;
 
     /** @var array */
     private $controllerArguments;

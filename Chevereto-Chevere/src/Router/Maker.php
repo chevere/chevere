@@ -111,7 +111,7 @@ final class Maker implements MakerContract
             );
             $arrayFile = $arrayFile
                 ->withMembersType(new Type(RouteContract::class));
-            $arrayFileWrap = new ArrayFileCallback($arrayFile, function ($k, $route) {
+            $arrayFileWrap = new ArrayFileCallback($arrayFile, function ($k, &$route) {
                 $route = $route
                     ->withId((string) $k);
             });

@@ -22,8 +22,6 @@ use Chevere\Time\Time;
  */
 final class Stopwatch
 {
-    private $zzz;
-
     /** @var array */
     private $marks;
 
