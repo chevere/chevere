@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere;
 
 use Chevere\App\Builder;
-use Chevere\App\Loader;
 use Chevere\Console\Console;
 use Chevere\Runtime\Runtime;
 use Chevere\Runtime\Sets\SetDebug;

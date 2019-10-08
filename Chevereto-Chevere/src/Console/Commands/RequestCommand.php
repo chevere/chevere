@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Console\Commands;
 
-use Chevere\App\Builder;
 use InvalidArgumentException;
 use JsonException;
 use Chevere\Console\Command;
+use Chevere\Contracts\App\BuilderContract;
 use Chevere\Http\Method;
 use Chevere\Message\Message;
 use Chevere\Http\Response;
@@ -117,7 +117,7 @@ final class RequestCommand extends Command
     // List of arguments passed as JSON
     const JSON_OPTIONS = ['get', 'post', 'cookie', 'files'];
 
-    public function callback(Builder $builder): int
+    public function callback(BuilderContract $builder): int
     {
         $this->arguments = $this->console()->input()->getArguments();
         $this->options = (array) $this->console()->input()->getOptions();

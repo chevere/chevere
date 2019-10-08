@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Console;
 
-use Chevere\App\Builder;
 use RuntimeException;
-use Chevere\App\Loader;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Chevere\Contracts\App\LoaderContract;
 use Chevere\Message\Message;
 use Symfony\Component\Console\Application as Symfony;
 use Symfony\Component\Console\Input\InputInterface;
@@ -31,9 +28,9 @@ use Chevere\Console\Commands\DestroyCommand;
 use Chevere\Console\Commands\RequestCommand;
 use Chevere\Console\Commands\RunCommand;
 use Chevere\Console\Commands\InspectCommand;
+use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\Console\CommandContract;
 use Chevere\Contracts\Console\ConsoleContract;
-use Symfony\Component\Console\Exception\CommandNotFoundException;
 
 /**
  * Provides static access to the Chevere application console.
@@ -74,7 +71,7 @@ final class Console implements ConsoleContract
     /** @var bool */
     private static $isAvailable;
 
-    /** @var Builder */
+    /** @var BuilderContract */
     private static $builder;
 
     public function __construct()
@@ -137,7 +134,7 @@ final class Console implements ConsoleContract
         return self::$isAvailable && 'build' == self::$commandString;
     }
 
-    public static function bind(Builder $builder): bool
+    public static function bind(BuilderContract $builder): bool
     {
         if (php_sapi_name() == 'cli') {
             self::$builder = $builder;
@@ -168,7 +165,7 @@ final class Console implements ConsoleContract
         if (self::$builder == null) {
             throw new RuntimeException(
                 (new Message('No Chevere %className% instance is defined'))
-                    ->code('%className%', Builder::class)
+                    ->code('%className%', BuilderContract::class)
                     ->toString()
             );
         }

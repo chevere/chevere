@@ -26,10 +26,11 @@ use Chevere\Http\Response;
 use Chevere\Message\Message;
 use Chevere\Router\Router;
 use Chevere\Contracts\App\ParametersContract;
+use Chevere\Contracts\App\BuilderContract;
 
 final class Loader implements LoaderContract
 {
-    /** @var Builder */
+    /** @var BuilderContract */
     private $builder;
 
     /** @var ParametersContract */

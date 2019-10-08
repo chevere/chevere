@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Console\Commands;
 
-use Chevere\App\Builder;
 use Chevere\App\Exceptions\AlreadyBuiltException;
 use Chevere\Console\Command;
+use Chevere\Contracts\App\BuilderContract;
 use Chevere\Message\Message;
 use LogicException;
 
@@ -31,7 +31,7 @@ final class BuildCommand extends Command
     const DESCRIPTION = 'Build the App';
     const HELP = 'This command builds the App';
 
-    public function callback(Builder $builder): int
+    public function callback(BuilderContract $builder): int
     {
         if (!$builder->hasParameters()) {
             throw new LogicException(

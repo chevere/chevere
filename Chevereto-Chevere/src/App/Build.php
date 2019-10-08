@@ -18,6 +18,7 @@ use Chevere\Api\Maker as ApiMaker;
 use Chevere\Router\Maker as RouterMaker;
 use Chevere\App\Exceptions\AlreadyBuiltException;
 use Chevere\Contracts\App\BuildContract;
+use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\CheckoutContract;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\File\File;
@@ -27,7 +28,7 @@ use Chevere\Router\Router;
 
 final class Build implements BuildContract
 {
-    /** @var Builder */
+    /** @var BuilderContract */
     private $builder;
 
     /** @var Container */
@@ -51,7 +52,7 @@ final class Build implements BuildContract
     /** @var RouterMaker */
     private $routerMaker;
 
-    public function __construct(Builder $builder)
+    public function __construct(BuilderContract $builder)
     {
         $this->builder = $builder;
         $this->container = new Container();

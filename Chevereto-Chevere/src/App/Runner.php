@@ -68,9 +68,9 @@ final class Runner implements RunnerContract
             if (!empty($middlewares)) {
                 $handler = new MiddlewareHandler($middlewares, $this->app);
                 $handler->runner();
-                if ($handler->exception) {
-                    dd($handler->exception->getMessage(), 'Aborted at ' . __FILE__ . ':' . __LINE__);
-                }
+                // if ($handler->exception) {
+                //     dd($handler->exception->getMessage(), 'Aborted at ' . __FILE__ . ':' . __LINE__);
+                // }
             }
         }
     }

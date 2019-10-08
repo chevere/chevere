@@ -15,10 +15,11 @@ namespace Chevere\ExceptionHandler;
 
 use const Chevere\APP_PATH;
 
-use Chevere\App\Builder;
+
 use DateTime;
 use DateTimeZone;
 use TypeError;
+use Chevere\App\Builder;
 use Chevere\Http\ServerRequest;
 use Chevere\Data\Data;
 use Chevere\Path\Path;

@@ -17,13 +17,12 @@ declare(strict_types=1);
 
 namespace Chevere\Console\Commands;
 
-use Chevere\App\Builder;
 use Reflector;
 use ReflectionMethod;
 use ReflectionFunction;
-use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Console\Command;
+use Chevere\Contracts\App\BuilderContract;
 use Chevere\Str\Str;
 
 /**
@@ -57,7 +56,7 @@ final class InspectCommand extends Command
     /** @var string */
     private $callableInput;
 
-    public function callback(Builder $builder): int
+    public function callback(BuilderContract $builder): int
     {
         $this->callableInput = $this->getArgumentString('callable');
         if (is_subclass_of($this->callableInput, ControllerContract::class)) {

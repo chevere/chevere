@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Console\Commands;
 
-use Chevere\App\Builder;
 use Chevere\Console\Command;
+use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Controller\Controller;
 use Chevere\Message\Message;
@@ -94,7 +94,7 @@ final class RunCommand extends Command
     /** @var array */
     private $lines;
 
-    public function callback(Builder $builder): int
+    public function callback(BuilderContract $builder): int
     {
         $this->builder = $builder;
         $this->callable = $this->getArgumentString('callable');

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\App;
 
-use Chevere\App\Builder;
 use Chevere\App\Container;
 use Chevere\Path\PathHandle;
 
@@ -21,7 +20,7 @@ interface BuildContract
 {
     const FILE_INDETIFIER = 'var:build';
 
-    public function __construct(Builder $builder);
+    public function __construct(BuilderContract $builder);
 
     public function pathHandle(): PathHandle;
 

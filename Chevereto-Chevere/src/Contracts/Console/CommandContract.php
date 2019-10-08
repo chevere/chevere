@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Console;
 
-use Chevere\App\Builder;
 use Chevere\Console\Console;
-use Chevere\Contracts\App\LoaderContract;
+use Chevere\Contracts\App\BuilderContract;
 
 interface CommandContract
 {
@@ -25,5 +24,5 @@ interface CommandContract
 
     public function symfony(): SymfonyCommandContract;
 
-    public function callback(Builder $builder): int;
+    public function callback(BuilderContract $builder): int;
 }

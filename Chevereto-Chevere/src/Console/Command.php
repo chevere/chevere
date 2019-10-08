@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Console;
 
-use Chevere\App\Builder;
+use Chevere\Contracts\App\BuilderContract;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Chevere\Contracts\Console\CommandContract;
@@ -104,7 +104,7 @@ abstract class Command implements CommandContract
         return $array;
     }
 
-    abstract public function callback(Builder $builder): int;
+    abstract public function callback(BuilderContract $builder): int;
 
     final private function configure(): void
     {

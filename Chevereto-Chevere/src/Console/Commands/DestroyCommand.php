@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Console\Commands;
 
-use Chevere\App\Builder;
 use Chevere\Console\Command;
-use Chevere\Contracts\App\LoaderContract;
+use Chevere\Contracts\App\BuilderContract;
 
 /**
  * The DestroyCommand destroys the App.
@@ -31,7 +30,7 @@ final class DestroyCommand extends Command
     const DESCRIPTION = 'Destroy the App';
     const HELP = 'This command destroys the App';
 
-    public function callback(Builder $builder): int
+    public function callback(BuilderContract $builder): int
     {
         $builder->build()->destroy();
         $title = 'App destroyed';
