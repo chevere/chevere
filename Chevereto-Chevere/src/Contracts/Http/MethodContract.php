@@ -15,13 +15,16 @@ namespace Chevere\Contracts\Http;
 
 interface MethodContract
 {
+    /** Array containing all the known HTTP methods. */
+    const ACCEPT_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'COPY', 'HEAD', 'OPTIONS', 'LINK', 'UNLINK', 'PURGE', 'LOCK', 'UNLOCK', 'PROPFIND', 'VIEW', 'TRACE', 'CONNECT'];
+    
     public function __construct(string $method);
 
     public function method(): string;
 
     public function withController(string $controller): MethodContract;
 
-    public function hasController(): bool;
+    public function hasControllerString(): bool;
 
-    public function controller(): string;
+    public function controllerString(): string;
 }

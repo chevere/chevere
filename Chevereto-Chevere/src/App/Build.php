@@ -33,9 +33,6 @@ final class Build implements BuildContract
     /** @var Container */
     private $container;
 
-    /** @var Parameters */
-    private $parameters;
-
     /** @var PathHandle */
     private $pathHandle;
 
@@ -111,7 +108,8 @@ final class Build implements BuildContract
         }
         $new->checkout = new Checkout($new);
         $new->isBuilt = true;
-        $new->parameters = $parameters;
+        $new->builder = $new->builder
+            ->withParameters($parameters);
 
         return $new;
     }

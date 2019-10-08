@@ -15,6 +15,7 @@ namespace Chevere\App;
 
 use const Chevere\CLI;
 
+use Chevere\App\Traits\ParametersAccessTrait;
 use LogicException;
 use RuntimeException;
 
@@ -22,25 +23,27 @@ use Chevere\Console\Console;
 use Chevere\Runtime\Runtime;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
+use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\Http\RequestContract;
 use Chevere\Http\ServerRequest;
 use Chevere\Message\Message;
 use Chevere\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\Controller\JsonApiContract;
+use Chevere\Controller\Traits\ControllerStringAccessTrait;
 
 use function GuzzleHttp\Psr7\stream_for;
 
-final class Builder
+final class Builder implements BuilderContract
 {
+    use ParametersAccessTrait;
+    use ControllerStringAccessTrait;
+    
     /** @var AppContract */
     private $app;
 
-    /** @var Build */
+    /** @var BuildContract */
     private $build;
-
-    /** @var ParametersContract */
-    private $parameters;
 
     /** @var Runtime */
     private static $runtime;
@@ -66,25 +69,7 @@ final class Builder
         $this->build = new Build($this);
     }
 
-    public function withParameters(ParametersContract $parameters): Builder
-    {
-        $new = clone $this;
-        $new->parameters = $parameters;
-
-        return $new;
-    }
-
-    public function hasParameters(): bool
-    {
-        return isset($this->parameters);
-    }
-
-    public function parameters(): ParametersContract
-    {
-        return $this->parameters;
-    }
-
-    public function withApp(AppContract $app): Builder
+    public function withApp(AppContract $app): BuilderContract
     {
         $new = clone $this;
         $new->app = $app;
@@ -92,12 +77,15 @@ final class Builder
         return $new;
     }
 
-    public function app(): AppContract
+    public function withParameters(ParametersContract $parameters): BuilderContract
     {
-        return $this->app;
+        $new = clone $this;
+        $new->parameters = $parameters;
+
+        return $new;
     }
 
-    public function withBuild(BuildContract $build): Builder
+    public function withBuild(BuildContract $build): BuilderContract
     {
         $new = clone $this;
         $new->build = $build;
@@ -105,45 +93,48 @@ final class Builder
         return $new;
     }
 
-    public function build(): BuildContract
-    {
-        return $this->build;
-    }
-
-    public function withController(string $controller): Builder
-    {
-        $new = clone $this;
-        $new->controller = $controller;
-
-        return $new;
-    }
-    public function hasController(): bool
-    {
-        return isset($this->controller);
-    }
-
-    public function withControllerArguments(array $arguments): Builder
-    {
-        $new = clone $this;
-        $new->arguments = $arguments;
-
-        return $new;
-    }
-    public function hasControllerArguments(): bool
-    {
-        return isset($this->controllerArguments);
-    }
-
-    public function withRequest(RequestContract $request): Builder
+    public function withRequest(RequestContract $request): BuilderContract
     {
         $new = clone $this;
         $new::$request = $request;
 
         return $new;
     }
+
+    public function withController(string $controller): BuilderContract
+    {
+        $new = clone $this;
+        $new->controller = $controller;
+
+        return $new;
+    }
+
+    public function withControllerArguments(array $controllerArguments): BuilderContract
+    {
+        $new = clone $this;
+        $new->controllerArguments = $controllerArguments;
+
+        return $new;
+    }
+
     public function hasRequest(): bool
     {
-        return isset($this->request);
+        return isset($this::$request);
+    }
+    
+    public function hasControllerArguments(): bool
+    {
+        return isset($this->controllerArguments);
+    }
+
+    public function app(): AppContract
+    {
+        return $this->app;
+    }
+
+    public function build(): BuildContract
+    {
+        return $this->build;
     }
 
     /**
@@ -181,7 +172,7 @@ final class Builder
     /**
      * {@inheritdoc}
      */
-    public static function request(): RequestContract
+    public static function requestInstance(): RequestContract
     {
         return self::$request;
     }

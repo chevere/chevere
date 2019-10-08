@@ -126,7 +126,7 @@ final class ExceptionHandler
         $this->data = $this->data
             ->withKey('id', uniqid('', true));
         try {
-            $this->request = Builder::request();
+            $this->request = Builder::requestInstance();
         } catch (TypeError $e) {
             $this->request = ServerRequest::fromGlobals();
         }

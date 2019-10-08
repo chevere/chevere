@@ -17,20 +17,17 @@ use InvalidArgumentException;
 use Chevere\Message\Message;
 use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Controller\ControllerContract;
+use Chevere\Controller\Traits\ControllerStringAccessTrait;
 
 /**
  * Api provides a static method to read the exposed API inside the app runtime.
  */
 final class Method implements MethodContract
 {
-    /** Array containing all the known HTTP methods. */
-    const ACCEPT_METHODS = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'COPY', 'HEAD', 'OPTIONS', 'LINK', 'UNLINK', 'PURGE', 'LOCK', 'UNLOCK', 'PROPFIND', 'VIEW', 'TRACE', 'CONNECT'];
+    use ControllerStringAccessTrait;
 
     /** @param string HTTP request method */
     private $method;
-
-    /** @param string ControllerContract */
-    private $controller;
 
     public function __construct(string $method)
     {
@@ -49,20 +46,10 @@ final class Method implements MethodContract
 
         return $new;
     }
-    
-    public function hasController(): bool
-    {
-        return isset($this->controller);
-    }
-
-    public function controller(): string
-    {
-        return $this->controller;
-    }
 
     private function setMethod(string $method)
     {
-        if (!in_array($method, self::ACCEPT_METHODS)) {
+        if (!in_array($method, MethodContract::ACCEPT_METHODS)) {
             throw new InvalidArgumentException(
                 (new Message('Unknown HTTP method %s.'))
                     ->code('%s', $method)

@@ -37,7 +37,7 @@ class Index extends Controller implements JsonApiContract
 
     public function __invoke(): void
     {
-        die(1000 * (microtime(true) - BOOTSTRAP_TIME));
+        // die(1000 * (microtime(true) - BOOTSTRAP_TIME));
         $this->api = new ResourceObject(
             'info',
             'api',

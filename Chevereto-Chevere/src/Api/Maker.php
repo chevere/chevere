@@ -31,6 +31,7 @@ use Chevere\Controller\Inspect;
 use Chevere\Api\src\FilterIterator;
 use Chevere\Cache\Cache;
 use Chevere\Contracts\Api\MakerContract;
+use Chevere\Contracts\Http\MethodContract;
 use Chevere\Controllers\Api\GetController;
 use Chevere\Controllers\Api\HeadController;
 use Chevere\Controllers\Api\OptionsController;
@@ -122,7 +123,7 @@ final class Maker implements MakerContract
 
         $iterator = new RecursiveDirectoryIterator($this->path, RecursiveDirectoryIterator::SKIP_DOTS);
         $filter = new FilterIterator($iterator);
-        $filter = $filter->withAcceptFilenames(Method::ACCEPT_METHODS);
+        $filter = $filter->withAcceptFilenames(MethodContract::ACCEPT_METHODS);
         $this->recursiveIterator = new RecursiveIteratorIterator($filter);
         $this->assertRecursiveIterator();
         $this->processRecursiveIterator();

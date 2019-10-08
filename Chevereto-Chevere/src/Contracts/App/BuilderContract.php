@@ -16,38 +16,44 @@ namespace Chevere\Contracts\App;
 use Chevere\Contracts\Http\RequestContract;
 use Chevere\Runtime\Runtime;
 
-interface LoaderContract
+interface BuilderContract
 {
-    public function __construct();
-
-    public function withBuild(BuildContract $build): LoaderContract;
-
-    public function withRequest(RequestContract $request): LoaderContract;
-
-    public function withControllerArguments(array $arguments): LoaderContract;
-
     /**
-     * @param string $controller a fully-qualified controller name
+     * A BuilderContract always have app and build properties.
      */
-    public function withController(string $controller): LoaderContract;
+    public function __construct(AppContract $app);
+
+    public function withApp(AppContract $app): BuilderContract;
+    
+    public function withParameters(ParametersContract $parameters): BuilderContract;
+    
+    public function withBuild(BuildContract $build): BuilderContract;
+    
+    public function withRequest(RequestContract $request): BuilderContract;
+
+    public function withController(string $controller): BuilderContract;
+
+    public function withControllerArguments(array $controllerArguments): BuilderContract;
+
+    public function hasParameters(): bool;
 
     public function hasRequest(): bool;
 
+    public function hasControllerString(): bool;
+    
     public function hasControllerArguments(): bool;
-
-    public function hasController(): bool;
-
+    
     public function app(): AppContract;
+    
+    public function parameters(): ParametersContract;
 
     public function build(): BuildContract;
 
-    public static function request(): RequestContract;
-
     public function run(): void;
 
-    public function parameters(): ParametersContract;
+    public static function runtime(): Runtime;
+
+    public static function requestInstance(): RequestContract;
 
     public static function setRuntime(Runtime $runtime);
-
-    public static function runtime(): Runtime;
 }
