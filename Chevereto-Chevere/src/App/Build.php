@@ -95,19 +95,23 @@ final class Build
         if (!empty($parameters->api())) {
             $pathHandle = new PathHandle($parameters->api());
             $new->apiMaker = ApiMaker::create($pathHandle, $new->routerMaker);
-            $new->container = $new->container->withApi(
-                Api::fromMaker($new->apiMaker)
-            );
+            $new->container = $new->container
+                ->withApi(
+                    Api::fromMaker($new->apiMaker)
+                );
+            $new->apiMaker = $new->apiMaker
+                ->withCache();
             $new->cacheChecksums = $new->apiMaker->cache()->toArray();
         }
         if (!empty($parameters->routes())) {
             $new->routerMaker = $new->routerMaker
                 ->withAddedRouteIdentifiers($parameters->routes());
-
             $new->container = $new->container
                 ->withRouter(
                     Router::fromMaker($new->routerMaker)
                 );
+            $new->routerMaker = $new->routerMaker
+                ->withCache();
             $new->cacheChecksums = array_merge($new->routerMaker->cache()->toArray(), $new->cacheChecksums);
         }
         $new->checkout = new Checkout($new);

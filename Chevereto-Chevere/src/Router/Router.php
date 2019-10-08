@@ -49,7 +49,7 @@ final class Router implements RouterContract
         $router->regex = $maker->regex();
         $router->routes = $maker->routes();
         $router->routesIndex = $maker->routesIndex();
-        $maker = $maker->withCache();
+
         return $router;
     }
 

@@ -23,6 +23,8 @@ interface LoaderContract
 
     public function app(): AppContract;
 
+    public function withBuild(Build $build): LoaderContract;
+
     public function parameters(): ParametersContract;
 
     public function build(): Build;

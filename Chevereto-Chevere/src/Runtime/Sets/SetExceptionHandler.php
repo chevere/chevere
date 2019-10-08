@@ -24,7 +24,7 @@ class SetExceptionHandler implements SetContract
 
     public function set(): void
     {
-        if (null == $this->value) {
+        if ('' == $this->value) {
             $this->restoreExceptionHandler();
         } else {
             if (!is_callable($this->value)) {
@@ -40,7 +40,8 @@ class SetExceptionHandler implements SetContract
     private function restoreExceptionHandler(): void
     {
         restore_exception_handler();
-        $this->value = (string) set_exception_handler(function () { });
+        $this->value = (string) set_exception_handler(function () {
+        });
         restore_exception_handler();
     }
 }

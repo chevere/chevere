@@ -44,7 +44,6 @@ final class InspectCommand extends Command
     /** @var array */
     private $arguments = [];
 
-    // FIXME: Reflector should be changed by separate ReflectionFunction and ReflectionMethod
     /** @var Reflector */
     private $reflector;
 
@@ -113,6 +112,7 @@ final class InspectCommand extends Command
     private function processParametersArguments(): void
     {
         $i = 0;
+        // FIXME: Reflector should be changed by separate ReflectionFunction and ReflectionMethod
         foreach ($this->reflector->getParameters() as $parameter) {
             $aux = '';
             if ($parameter->getType()) {
