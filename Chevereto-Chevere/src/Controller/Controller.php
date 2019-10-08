@@ -64,13 +64,4 @@ abstract class Controller implements ControllerContract
      * Child classes may implement this manually or using Controller Traits
      */
     abstract public function getContent(): string;
-
-    final public function withResponse(Response $response): ControllerContract
-    {
-        $new = clone $this;
-        $new->app = $new->app
-            ->withResponse($response);
-
-        return $new;
-    }
 }

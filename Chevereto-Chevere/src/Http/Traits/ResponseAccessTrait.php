@@ -20,6 +20,11 @@ trait ResponseAccessTrait
     /** @var ResponseContract */
     private $response;
 
+    public function hasResponse(): bool
+    {
+        return isset($this->response);
+    }
+
     public function response(): ResponseContract
     {
         return $this->response;

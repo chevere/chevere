@@ -17,12 +17,11 @@ use LogicException;
 use Throwable;
 use Chevere\Message\Message;
 use Chevere\Route\Route;
-use Chevere\Contracts\Route\RouteContract;
+use Chevere\Route\Traits\RouteAccessTrait;
 
 final class Resolver
 {
-    /** @var RouteContract */
-    private $route;
+    use RouteAccessTrait;
 
     public function __construct(string $serialized)
     {
@@ -35,13 +34,5 @@ final class Resolver
                     ->toString()
             );
         }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function route(): RouteContract
-    {
-        return $this->route;
     }
 }

@@ -23,6 +23,4 @@ interface ControllerContract
     public function getContent(): string;
 
     public function content(): string;
-
-    public function withResponse(Response $response): ControllerContract;
 }

@@ -18,6 +18,8 @@ use Chevere\Contracts\Http\ResponseContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
 use Chevere\Http\Traits\ResponseAccessTrait;
+use Chevere\Route\Traits\RouteAccessTrait;
+use Chevere\Router\Traits\RouterAccessTrait;
 
 /**
  * The App container.
@@ -25,15 +27,11 @@ use Chevere\Http\Traits\ResponseAccessTrait;
 final class App implements AppContract
 {
     use ResponseAccessTrait;
+    use RouterAccessTrait;
+    use RouteAccessTrait;
 
     /** @var array String arguments (from request uri, cli) */
     private $arguments;
-
-    /** @var RouteContract */
-    private $route;
-
-    /** @var RouterContract */
-    private $router;
 
     public function __construct(ResponseContract $response)
     {
@@ -72,29 +70,9 @@ final class App implements AppContract
         return $new;
     }
 
-    public function hasRoute(): bool
-    {
-        return isset($this->route);
-    }
-
-    public function hasRouter(): bool
-    {
-        return isset($this->router);
-    }
-
     public function hasArguments(): bool
     {
         return isset($this->arguments);
-    }
-
-    public function route(): RouteContract
-    {
-        return $this->route;
-    }
-
-    public function router(): RouterContract
-    {
-        return $this->router;
     }
 
     public function arguments(): array

@@ -13,23 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\App;
 
+use Chevere\Api\Traits\ApiAccessTrait;
 use Chevere\Contracts\Api\ApiContract;
 use Chevere\Contracts\App\ContainerContract;
 use Chevere\Contracts\Router\RouterContract;
+use Chevere\Router\Traits\RouterAccessTrait;
 
 final class Container implements ContainerContract
 {
-    private $api;
-
-    private $router;
-
-    public function withApi(ApiContract $api): ContainerContract
-    {
-        $new = clone $this;
-        $new->api = $api;
-
-        return $new;
-    }
+    use RouterAccessTrait;
+    use ApiAccessTrait;
 
     public function withRouter(RouterContract $router): ContainerContract
     {
@@ -39,23 +32,11 @@ final class Container implements ContainerContract
         return $new;
     }
 
-    public function hasApi(): bool
+    public function withApi(ApiContract $api): ContainerContract
     {
-        return isset($this->api);
-    }
+        $new = clone $this;
+        $new->api = $api;
 
-    public function hasRouter(): bool
-    {
-        return isset($this->router);
-    }
-
-    public function api(): ApiContract
-    {
-        return $this->api;
-    }
-
-    public function router(): RouterContract
-    {
-        return $this->router;
+        return $new;
     }
 }
