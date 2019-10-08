@@ -17,21 +17,22 @@ use Chevere\Api\Api;
 use Chevere\Api\Maker as ApiMaker;
 use Chevere\Router\Maker as RouterMaker;
 use Chevere\App\Exceptions\AlreadyBuiltException;
+use Chevere\Contracts\App\BuildContract;
+use Chevere\Contracts\App\CheckoutContract;
 use Chevere\Contracts\App\LoaderContract;
+use Chevere\Contracts\App\ParametersContract;
 use Chevere\File\File;
 use Chevere\Path\Path;
 use Chevere\Path\PathHandle;
 use Chevere\Router\Router;
 
-final class Build
+final class Build implements BuildContract
 {
-    const FILE_INDETIFIER = 'var:build';
-
     /** @var Container */
     private $container;
 
-    /** @var LoaderContract */
-    private $loader;
+    /** @var Parameters */
+    private $parameters;
 
     /** @var PathHandle */
     private $pathHandle;
@@ -39,7 +40,7 @@ final class Build
     /** @var bool True if the App was built (cache) */
     private $isBuilt;
 
-    /** @var Checkout */
+    /** @var CheckoutContract */
     private $checkout;
 
     /** @var array An array containing the collection of Cache->toArray() data (checksums) */
@@ -51,10 +52,9 @@ final class Build
     /** @var RouterMaker */
     private $routerMaker;
 
-    public function __construct(LoaderContract $loader)
+    public function __construct()
     {
         $this->container = new Container();
-        $this->loader = $loader;
         $this->pathHandle =  new PathHandle(static::FILE_INDETIFIER);
     }
 
@@ -68,12 +68,7 @@ final class Build
         return File::exists($this->pathHandle->path());
     }
 
-    public function container(): Container
-    {
-        return $this->container;
-    }
-
-    public function withContainer(Container $container): Build
+    public function withContainer(Container $container): BuildContract
     {
         $new = clone $this;
         $new->container = $container;
@@ -81,10 +76,7 @@ final class Build
         return $new;
     }
 
-    /**
-     * Makes the application Api and Router, store these in the Build container.
-     */
-    public function withParameters(Parameters $parameters): Build
+    public function withParameters(ParametersContract $parameters): BuildContract
     {
         $new = clone $this;
         $new->routerMaker = new RouterMaker();
@@ -116,25 +108,47 @@ final class Build
         }
         $new->checkout = new Checkout($new);
         $new->isBuilt = true;
+        $new->parameters = $parameters;
 
         return $new;
     }
 
+    public function hasContainer(): bool
+    {
+        return isset($this->container);
+    }
+
+    public function hasParameters(): bool
+    {
+        return isset($this->container);
+    }
+
+    public function container(): Container
+    {
+        return $this->container;
+    }
+
+    public function parameters(): ParametersContract
+    {
+        return $this->parameters;
+    }
+
+
     /**
-     * Retrieves the file checksums, available only when building the App.
+     * {@inheritdoc}
      */
     public function cacheChecksums(): array
     {
         return $this->cacheChecksums;
     }
 
-    public function checkout(): Checkout
+    public function checkout(): CheckoutContract
     {
         return $this->checkout;
     }
 
     /**
-     * Destroy the build signature and any cache generated.
+     * {@inheritdoc}
      */
     public function destroy(): void
     {

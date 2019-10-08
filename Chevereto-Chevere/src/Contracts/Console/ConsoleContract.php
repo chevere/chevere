@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Console;
 
+use Chevere\App\Builder;
 use Exception;
 use Symfony\Component\Console\Application as Symfony;
 use Symfony\Component\Console\Input\InputInterface;
@@ -43,7 +44,7 @@ interface ConsoleContract
 
     public static function isBuilding(): bool;
 
-    public static function bind(LoaderContract $loader): bool;
+    public static function bind(Builder $builder): bool;
 
     public static function run();
 }

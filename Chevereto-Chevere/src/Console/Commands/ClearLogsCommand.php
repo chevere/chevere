@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Console\Commands;
 
 use Chevere\App\App;
+use Chevere\App\Builder;
 use Chevere\Console\Command;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Path\Path;
@@ -27,7 +28,7 @@ final class ClearLogsCommand extends Command
     const DESCRIPTION = 'Clear app stored logs';
     const HELP = 'This command clears logs stored by the app';
 
-    public function callback(LoaderContract $loader): int
+    public function callback(Builder $builder): int
     {
         $delete = Path::removeContents(App::PATH_LOGS);
         $count = count($delete);

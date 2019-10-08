@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\App;
 
-use const Chevere\APP_PATH;
-
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\Http\ResponseContract;
 use Chevere\Contracts\Route\RouteContract;
@@ -25,12 +23,6 @@ use Chevere\Contracts\Router\RouterContract;
  */
 final class App implements AppContract
 {
-    const NAMESPACES = ['App', 'Chevere'];
-    const APP = 'app';
-    const FILEHANDLE_CONFIG = ':config';
-    const FILEHANDLE_PARAMETERS = ':parameters';
-    const PATH_LOGS = APP_PATH . 'var/logs/';
-
     /** @var ResponseContract */
     private $response;
 
@@ -43,17 +35,11 @@ final class App implements AppContract
     /** @var RouterContract */
     private $router;
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct(ResponseContract $response)
     {
         $this->response = $response;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withResponse(ResponseContract $response): AppContract
     {
         $new = clone $this;
@@ -62,13 +48,26 @@ final class App implements AppContract
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withRoute(RouteContract $route): AppContract
     {
         $new = clone $this;
         $new->route = $route;
+
+        return $new;
+    }
+
+    public function withRouter(RouterContract $router): AppContract
+    {
+        $new = clone $this;
+        $new->router = $router;
+
+        return $new;
+    }
+
+    public function withArguments(array $arguments): AppContract
+    {
+        $new = clone $this;
+        $new->arguments = $arguments;
 
         return $new;
     }
@@ -78,26 +77,9 @@ final class App implements AppContract
         return isset($this->route);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function withRouter(RouterContract $router): AppContract
+    public function hasRouter(): bool
     {
-        $new = clone $this;
-        $new->router = $router;
-
-        return $new;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withArguments(array $arguments): AppContract
-    {
-        $new = clone $this;
-        $new->arguments = $arguments;
-
-        return $new;
+        return isset($this->router);
     }
 
     public function hasArguments(): bool
@@ -110,9 +92,6 @@ final class App implements AppContract
         return $this->response;
     }
 
-    /**
-     * Provides access to the RouteContract object associated with the existent request
-     */
     public function route(): RouteContract
     {
         return $this->route;

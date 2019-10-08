@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Console\Commands;
 
+use Chevere\App\Builder;
 use Chevere\App\Exceptions\AlreadyBuiltException;
 use Chevere\Console\Command;
-use Chevere\Contracts\App\LoaderContract;
+use Chevere\Message\Message;
+use LogicException;
 
 /**
  * The BuildCommand builds the App.
@@ -29,19 +31,26 @@ final class BuildCommand extends Command
     const DESCRIPTION = 'Build the App';
     const HELP = 'This command builds the App';
 
-    public function callback(LoaderContract $loader): int
+    public function callback(Builder $builder): int
     {
+        if (!$builder->hasParameters()) {
+            throw new LogicException(
+                (new Message('Missing %class% parameters'))
+                    ->code('%class%', get_class($builder))
+                    ->toString()
+            );
+        }
         $title = 'App built';
         try {
-            $build = $loader->build()
-                ->withParameters($loader->parameters());
-            $loader = $loader
+            $build = $builder->build()
+                ->withParameters($builder->parameters());
+            $builder = $builder
                 ->withBuild($build);
         } catch (AlreadyBuiltException $e) {
             $title .= ' (not by this command)';
         }
         $checksums = [];
-        foreach ($loader->build()->cacheChecksums() as $name => $keys) {
+        foreach ($builder->build()->cacheChecksums() as $name => $keys) {
             foreach ($keys as $key => $array) {
                 $checksums[] = [$name, $key, $array['path'], substr($array['checksum'], 0, 8)];
             }
@@ -49,8 +58,8 @@ final class BuildCommand extends Command
         $this->console()->style()->success($title);
         $this->console()->style()->table(['Cache', 'Key', 'Path', 'Checksum'], $checksums);
         $this->console()->style()->writeln([
-            '[Path] ' . $loader->build()->pathHandle()->path(),
-            '[Checksum] ' . $loader->build()->checkout()->checksum()
+            '[Path] ' . $builder->build()->pathHandle()->path(),
+            '[Checksum] ' . $builder->build()->checkout()->checksum()
         ]);
         return 0;
     }

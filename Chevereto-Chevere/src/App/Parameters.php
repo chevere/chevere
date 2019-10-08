@@ -15,8 +15,10 @@ namespace Chevere\App;
 
 use LogicException;
 use Chevere\ArrayFile\ArrayFile;
+use Chevere\Contracts\App\AppContract;
 use Chevere\Message\Message;
 use Chevere\Contracts\App\ParametersContract;
+use Chevere\Path\PathHandle;
 
 final class Parameters implements ParametersContract
 {
@@ -64,6 +66,13 @@ final class Parameters implements ParametersContract
         $array = $this->arrayFile->toArray();
         $this->api = $array[static::API];
         $this->routes = $array[static::ROUTES];
+    }
+
+    public static function fromFile(): ParametersContract
+    {
+        return new static(new ArrayFile(
+            new PathHandle(AppContract::FILEHANDLE_PARAMETERS)
+        ));
     }
 
     public function api(): string

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Console;
 
+use Chevere\App\Builder;
 use RuntimeException;
 use Chevere\App\Loader;
 use Symfony\Component\Console\Input\ArgvInput;
@@ -73,8 +74,8 @@ final class Console implements ConsoleContract
     /** @var bool */
     private static $isAvailable;
 
-    /** @var LoaderContract */
-    private static $loader;
+    /** @var Builder */
+    private static $builder;
 
     public function __construct()
     {
@@ -136,10 +137,10 @@ final class Console implements ConsoleContract
         return self::$isAvailable && 'build' == self::$commandString;
     }
 
-    public static function bind(LoaderContract $loader): bool
+    public static function bind(Builder $builder): bool
     {
         if (php_sapi_name() == 'cli') {
-            self::$loader = $loader;
+            self::$builder = $builder;
 
             return true;
         }
@@ -164,14 +165,14 @@ final class Console implements ConsoleContract
         if (is_null(self::$command)) {
             exit($exitCode);
         }
-        if (self::$loader == null) {
+        if (self::$builder == null) {
             throw new RuntimeException(
                 (new Message('No Chevere %className% instance is defined'))
-                    ->code('%className%', LoaderContract::class)
+                    ->code('%className%', Builder::class)
                     ->toString()
             );
         }
-        exit(self::$command->callback(self::$loader));
+        exit(self::$command->callback(self::$builder));
     }
 
     private function addCommands(): void

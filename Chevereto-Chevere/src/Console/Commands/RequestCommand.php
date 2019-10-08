@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Console\Commands;
 
+use Chevere\App\Builder;
 use InvalidArgumentException;
 use JsonException;
 use Chevere\Console\Command;
-use Chevere\Contracts\App\LoaderContract;
 use Chevere\Message\Message;
 use Chevere\Http\Response;
 use Chevere\Http\ServerRequest;
@@ -116,7 +116,7 @@ final class RequestCommand extends Command
     // List of arguments passed as JSON
     const JSON_OPTIONS = ['get', 'post', 'cookie', 'files'];
 
-    public function callback(LoaderContract $loader): int
+    public function callback(Builder $builder): int
     {
         $this->arguments = $this->console()->input()->getArguments();
         $this->options = (array) $this->console()->input()->getOptions();
@@ -135,15 +135,15 @@ final class RequestCommand extends Command
             ->withParsedBody($this->ParsedOptions['post'])
             ->withUploadedFiles(ServerRequest::normalizeFiles($this->ParsedOptions['files']));
 
-        $loader = $loader->withRequest($request);
+        $builder = $builder->withRequest($request);
 
         try {
-            $loader->run();
+            $builder->run();
         } catch (RouteNotFoundException $e) {
             // $e Shhhh... This is just to capture the CLI output
         }
 
-        $response = $loader->app()->response();
+        $response = $builder->app()->response();
         $this->render($response);
 
         return 0;

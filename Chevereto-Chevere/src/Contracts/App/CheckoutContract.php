@@ -15,5 +15,9 @@ namespace Chevere\Contracts\App;
 
 interface CheckoutContract
 {
-    public function __construct(string $filename);
+    public function __construct(BuildContract $build);
+
+    public function build(): BuildContract;
+
+    public function checksum(): string;
 }

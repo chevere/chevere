@@ -13,24 +13,26 @@ declare(strict_types=1);
 
 namespace Chevere\App;
 
+use Chevere\Contracts\App\BuildContract;
+use Chevere\Contracts\App\CheckoutContract;
 use Chevere\FileReturn\FileReturn;
 
-final class Checkout
+final class Checkout implements CheckoutContract
 {
-    /** @var Build */
+    /** @var BuildContract */
     private $build;
 
     /** @var FileReturn */
     private $fileReturn;
 
-    public function __construct(Build $build)
+    public function __construct(BuildContract $build)
     {
         $this->build = $build;
         $this->fileReturn = new FileReturn($this->build->pathHandle());
         $this->fileReturn->put($this->build->cacheChecksums());
     }
 
-    public function build(): Build
+    public function build(): BuildContract
     {
         return $this->build;
     }

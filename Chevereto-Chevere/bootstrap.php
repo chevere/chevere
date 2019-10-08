@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere;
 
+use Chevere\App\Builder;
 use Chevere\App\Loader;
 use Chevere\Console\Console;
 use Chevere\Runtime\Runtime;
@@ -52,7 +53,7 @@ if ('cli' == php_sapi_name()) {
     define('Chevere\CLI', false);
 }
 
-Loader::setDefaultRuntime(
+Builder::setDefaultRuntime(
     new Runtime(
         new SetDebug('1'),
         new SetErrorHandler('Chevere\ExceptionHandler\ErrorHandler::error'),

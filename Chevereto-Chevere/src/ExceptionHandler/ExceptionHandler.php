@@ -15,6 +15,7 @@ namespace Chevere\ExceptionHandler;
 
 use const Chevere\APP_PATH;
 
+use Chevere\App\Builder;
 use DateTime;
 use DateTimeZone;
 use TypeError;
@@ -126,11 +127,11 @@ final class ExceptionHandler
         $this->data = $this->data
             ->withKey('id', uniqid('', true));
         try {
-            $this->request = Loader::request();
+            $this->request = Builder::request();
         } catch (TypeError $e) {
             $this->request = ServerRequest::fromGlobals();
         }
-        $this->runtime = Loader::runtime();
+        $this->runtime = Builder::runtime();
         $this->isDebugEnabled = (bool) $this->runtime->data()->key('debug');
 
         $this->logDateFolderFormat = static::LOG_DATE_FOLDER_FORMAT;

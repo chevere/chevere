@@ -87,8 +87,8 @@ final class Router implements RouterContract
             return $this->resolver($matches);
         }
         throw new RouteNotFoundException(
-            (new Message('No route defined for %s'))
-                ->code('%s', $pathInfo)
+            (new Message('No route defined for %path%'))
+                ->code('%path%', $pathInfo)
                 ->toString()
         );
     }

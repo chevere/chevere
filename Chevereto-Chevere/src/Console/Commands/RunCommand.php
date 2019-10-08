@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Console\Commands;
 
+use Chevere\App\Builder;
 use Chevere\Console\Command;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Controller\Controller;
@@ -64,7 +65,7 @@ final class RunCommand extends Command
     ];
 
     /** @var LoaderContract */
-    private $loader;
+    private $builder;
 
     /** @var string */
     private $callable;
@@ -93,9 +94,9 @@ final class RunCommand extends Command
     /** @var array */
     private $lines;
 
-    public function callback(LoaderContract $loader): int
+    public function callback(Builder $builder): int
     {
-        $this->loader = $loader;
+        $this->builder = $builder;
         $this->callable = $this->getArgumentString('callable');
         $this->argument = $this->getOptionArray('argument');
 
@@ -110,10 +111,10 @@ final class RunCommand extends Command
 
     private function runController(): void
     {
-        $this->loader = $this->loader
+        $this->builder = $this->builder
             ->withArguments($this->argument)
             ->withController($this->callable);
-        $this->loader->run();
+        $this->builder->run();
     }
 
     private function runCallable(): void
