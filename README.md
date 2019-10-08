@@ -4,11 +4,11 @@ Quality](https://scrutinizer-ci.com/g/Chevereto/chevere/badges/quality-score.png
 
 # About Chevere
 
-Chevere is a PHP for building server side applications, like content management systems, websites and APIs.
+Chevere is a PHP framework for building server side applications, like content management systems, websites and APIs.
 
 The main goal is to leverage the work needed to build extensible applications by providing reusable tools like Routing, Hooks, CLI commands, Controllers and automatic API mapping.
 
-In few words, is a layered architecture easy to customize so you users can distribute plugins with more peace of mind.
+Chevere provides a layered architecture, easy to customize so you users can distribute plugins with more peace of mind.
 
 ## Note: This is a work-in-progress
 
@@ -32,4 +32,4 @@ path).
 
 ## License
 
-The Chevere Framework is licensed under the MIT license. See [License File](LICENSE) for more information.
+Chevere is licensed under the MIT license. See [License File](LICENSE) for more information.
