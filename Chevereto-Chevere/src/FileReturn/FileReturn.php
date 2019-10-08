@@ -163,7 +163,8 @@ final class FileReturn
     {
         if (!opcache_compile_file($this->path)) {
             throw new RuntimeException(
-                (new Message('Opcode cache is disabled'))
+                (new Message('Unable to compile cache for file %file% (Opcode cache is disabled)'))
+                    ->code('%file%', $this->path)
                     ->toString()
             );
         }

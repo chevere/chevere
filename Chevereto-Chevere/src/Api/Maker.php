@@ -95,8 +95,8 @@ final class Maker implements MakerContract
     {
         $new = clone $this;
         $new->cache = new Cache('api');
-        $api = $new->cache->put('api', $new->api);
-        opcache_compile_file($api->path());
+        $new->cache->put('api', $new->api)
+            ->makeCache();
 
         return $new;
     }

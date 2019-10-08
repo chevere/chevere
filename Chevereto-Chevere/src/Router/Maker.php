@@ -154,12 +154,12 @@ final class Maker implements MakerContract
     {
         $new = clone $this;
         $new->cache = new Cache('router');
-        $regex = $new->cache->put('regex', $new->regex);
-        $routes = $new->cache->put('routes', $new->routes);
-        $routesIndex = $new->cache->put('routesIndex', $new->routesIndex);
-        opcache_compile_file($regex->path());
-        opcache_compile_file($routes->path());
-        opcache_compile_file($routesIndex->path());
+        $new->cache->put('regex', $new->regex)
+            ->makeCache();
+        $new->cache->put('routes', $new->routes)
+            ->makeCache();
+        $new->cache->put('routesIndex', $new->routesIndex)
+            ->makeCache();
 
         return $new;
     }

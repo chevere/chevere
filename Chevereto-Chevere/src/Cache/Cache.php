@@ -19,6 +19,7 @@ use Chevere\File\File;
 use Chevere\FileReturn\FileReturn;
 use Chevere\Path\Path;
 use Chevere\Path\PathHandle;
+use RuntimeException;
 
 /**
  * A simple PHP based cache system.
