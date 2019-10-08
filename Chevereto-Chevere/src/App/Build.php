@@ -116,11 +116,6 @@ final class Build implements BuildContract
         return $new;
     }
 
-    public function hasContainer(): bool
-    {
-        return isset($this->container);
-    }
-
     public function container(): Container
     {
         return $this->container;

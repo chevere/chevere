@@ -67,15 +67,16 @@ final class Loader implements LoaderContract
             }
             $build = $this->builder->build()
                 ->withContainer($container);
-            $this->builder = $this->builder
-                ->withBuild($build);
         }
-        $app = $this->builder->app()
-            ->withRouter($this->builder->build()->container()->router());
-        $this->builder = $this->builder
-            ->withApp($app);
-    }
 
+        $this->builder = $this->builder
+                ->withBuild($build);
+        $this->builder = $this->builder
+            ->withApp(
+                $this->builder->app()
+                    ->withRouter($this->builder->build()->container()->router())
+            );
+    }
 
     public function run(): void
     {

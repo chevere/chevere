@@ -31,8 +31,6 @@ interface BuildContract
 
     public function withParameters(ParametersContract $parameters): BuildContract;
 
-    public function hasContainer(): bool;
-
     public function container(): Container;
 
     /**
