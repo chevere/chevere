@@ -29,21 +29,6 @@ use Chevere\Http\Method;
 
 final class Route implements RouteContract
 {
-    /** @const string Route without wildcards. */
-    const TYPE_STATIC = 'static';
-
-    /** @const string Route containing wildcards. */
-    const TYPE_DYNAMIC = 'dynamic';
-
-    /** @const string Regex pattern used by default (no explicit where). */
-    const REGEX_WILDCARD_WHERE = '[A-z0-9\_\-\%]+';
-
-    /** @const string Regex pattern used to detect {wildcard} and {wildcard?}. */
-    const REGEX_WILDCARD_SEARCH = '/{([a-z\_][\w_]*\??)}/i';
-
-    /** @const string Regex pattern used to validate route name. */
-    const REGEX_NAME = '/^[\w\-\.]+$/i';
-
     /** @var string Route id relative to the ArrayFile */
     private $id;
 
@@ -80,7 +65,7 @@ final class Route implements RouteContract
     /** @var string */
     private $type;
 
-    public function __construct(string $path, string $controller = null)
+    public function __construct(string $path)
     {
         $pathValidate = new PathValidate($path);
         $this->path = $path;
@@ -94,13 +79,6 @@ final class Route implements RouteContract
             $this->key = $this->path;
         }
         $this->handleType();
-        if (isset($controller)) {
-            $new = clone $this;
-            $new = $new->withAddedMethod(
-                (new Method('GET'))
-                    ->withController($controller)
-            );
-        }
     }
 
     public function id(): string
@@ -156,11 +134,11 @@ final class Route implements RouteContract
     public function withName(string $name): RouteContract
     {
         // Validate $name
-        if (!preg_match(static::REGEX_NAME, $name)) {
+        if (!preg_match(RouteContract::REGEX_NAME, $name)) {
             throw new InvalidArgumentException(
                 (new Message("Expecting at least one alphanumeric, underscore, hypen or dot character. String '%s' provided."))
                     ->code('%s', $name)
-                    ->code('%p', static::REGEX_NAME)
+                    ->code('%p', RouteContract::REGEX_NAME)
                     ->toString()
             );
         }
@@ -239,7 +217,7 @@ final class Route implements RouteContract
         if (isset($new->wildcards)) {
             foreach ($new->wildcards as $k => $v) {
                 if (!isset($new->wheres[$v])) {
-                    $new->wheres[$v] = static::REGEX_WILDCARD_WHERE;
+                    $new->wheres[$v] = RouteContract::REGEX_WILDCARD_WHERE;
                 }
             }
         }

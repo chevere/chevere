@@ -6,9 +6,17 @@ use Chevere\Route\Route;
 use Chevere\Http\Method;
 
 return [
-    (new Route('/home', Controllers\Home::class))
+    (new Route('/home'))
+        ->withAddedMethod(
+            (new Method('GET'))
+                ->withController(Controllers\Home::class)
+        )
         ->withName('homepageHtml'),
-    'index' => (new Route('/', Controllers\Index::class))
+    (new Route('/'))
+        ->withAddedMethod(
+            (new Method('GET'))
+                ->withController(Controllers\Index::class)
+        )
         ->withName('homepage'),
     // ->addMiddleware(Middlewares\RoleAdmin::class)
     // ->addMiddleware(Middlewares\RoleBanned::class),

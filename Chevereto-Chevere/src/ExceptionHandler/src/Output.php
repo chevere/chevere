@@ -151,7 +151,7 @@ final class Output
             )
         );
 
-        $document = new EncodedDocument($jsonApi);
+        // $document = new EncodedDocument($jsonApi);
         // dd();
 
         $this->output = stream_for(json_encode($jsonApi));

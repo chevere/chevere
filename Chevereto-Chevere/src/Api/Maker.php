@@ -134,7 +134,7 @@ final class Maker implements MakerContract
         $this->api[$this->basePath][''] = $endpoint->toArray();
 
         $route = new Route($path);
-        $route
+        $route = $route
             ->withMethods($endpoint->methods())
             ->withId($this->basePath);
 

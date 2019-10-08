@@ -15,7 +15,6 @@ namespace Chevere\Console\Commands;
 
 use Chevere\Console\Command;
 use Chevere\Contracts\App\BuilderContract;
-use Chevere\Contracts\App\LoaderContract;
 use Chevere\Controller\Controller;
 use Chevere\Message\Message;
 use InvalidArgumentException;
@@ -64,7 +63,7 @@ final class RunCommand extends Command
         ],
     ];
 
-    /** @var LoaderContract */
+    /** @var BuilderContract */
     private $builder;
 
     /** @var string */
@@ -112,7 +111,7 @@ final class RunCommand extends Command
     private function runController(): void
     {
         $this->builder = $this->builder
-            ->withArguments($this->argument)
+            ->withControllerArguments($this->argument)
             ->withController($this->callable);
         $this->builder->run();
     }

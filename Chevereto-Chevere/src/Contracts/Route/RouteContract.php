@@ -18,13 +18,27 @@ use Chevere\Contracts\Http\MethodsContract;
 
 interface RouteContract
 {
+    /** @const string Route without wildcards. */
+    const TYPE_STATIC = 'static';
+
+    /** @const string Route containing wildcards. */
+    const TYPE_DYNAMIC = 'dynamic';
+
+    /** @const string Regex pattern used by default (no explicit where). */
+    const REGEX_WILDCARD_WHERE = '[A-z0-9\_\-\%]+';
+
+    /** @const string Regex pattern used to detect {wildcard} and {wildcard?}. */
+    const REGEX_WILDCARD_SEARCH = '/{([a-z\_][\w_]*\??)}/i';
+
+    /** @const string Regex pattern used to validate route name. */
+    const REGEX_NAME = '/^[\w\-\.]+$/i';
+    
     /**
      * Route constructor.
      *
      * @param string $uri        Route uri (key string)
-     * @param string $controller Callable for GET
      */
-    public function __construct(string $uri, string $controller = null);
+    public function __construct(string $uri);
 
     public function id(): string;
 
