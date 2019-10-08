@@ -17,14 +17,14 @@ use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\Http\ResponseContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
+use Chevere\Http\Traits\ResponseAccessTrait;
 
 /**
  * The App container.
  */
 final class App implements AppContract
 {
-    /** @var ResponseContract */
-    private $response;
+    use ResponseAccessTrait;
 
     /** @var array String arguments (from request uri, cli) */
     private $arguments;
@@ -85,11 +85,6 @@ final class App implements AppContract
     public function hasArguments(): bool
     {
         return isset($this->arguments);
-    }
-
-    public function response(): ResponseContract
-    {
-        return $this->response;
     }
 
     public function route(): RouteContract

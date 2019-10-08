@@ -77,9 +77,13 @@ final class Maker implements MakerContract
     {
         $maker = new static($routerMaker);
         $methods = new Methods(
-            new Method('HEAD', HeadController::class),
-            new Method('OPTIONS', OptionsController::class),
-            new Method('GET', GetController::class)
+            (new Method('HEAD'))
+                ->withController(HeadController::class),
+            (new Method('OPTIONS'))
+                ->withController(OptionsController::class),
+            (new Method('GET'))
+                ->withController(GetController::class)
+
         );
         $maker->register($pathHandle, new Endpoint($methods));
 
@@ -213,7 +217,7 @@ final class Maker implements MakerContract
         foreach ($this->routesMap as $pathComponent => $httpMethods) {
             $methodsArray = [];
             foreach ($httpMethods as $httpMethod => $controller) {
-                $methodsArray[] = new Method($httpMethod, $controller);
+                $methodsArray[] = (new Method($httpMethod))->withController($controller);
             }
             $methods = new Methods(...$methodsArray);
             $endpoint = new Endpoint($methods);

@@ -17,6 +17,7 @@ use Chevere\App\Builder;
 use InvalidArgumentException;
 use JsonException;
 use Chevere\Console\Command;
+use Chevere\Http\Method;
 use Chevere\Message\Message;
 use Chevere\Http\Response;
 use Chevere\Http\ServerRequest;
@@ -123,12 +124,15 @@ final class RequestCommand extends Command
 
         $this->setParsedOptions();
 
+        $method = new Method($this->getArgumentString('method'));
+
         $request = new ServerRequest(
-            $this->getArgumentString('method'),
+            $method->method(),
             $this->getArgumentString('uri'),
             $this->getOptionArray('headers'),
             isset($this->options['body']) ? $this->getOptionString('body') : null,
-        );
+            );
+
         $request
             ->withCookieParams($this->ParsedOptions['cookie'])
             ->withQueryParams($this->ParsedOptions['get'])

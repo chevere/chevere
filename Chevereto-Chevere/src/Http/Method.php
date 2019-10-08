@@ -32,15 +32,27 @@ final class Method implements MethodContract
     /** @param string ControllerContract */
     private $controller;
 
-    public function __construct(string $method, string $controller)
+    public function __construct(string $method)
     {
         $this->setMethod($method);
-        $this->setController($controller);
     }
 
     public function method(): string
     {
         return $this->method;
+    }
+
+    public function withController(string $controller): MethodContract
+    {
+        $new = clone $this;
+        $new->setController($controller);
+
+        return $new;
+    }
+    
+    public function hasController(): bool
+    {
+        return isset($this->controller);
     }
 
     public function controller(): string

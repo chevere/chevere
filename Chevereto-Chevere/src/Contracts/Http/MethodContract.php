@@ -15,9 +15,13 @@ namespace Chevere\Contracts\Http;
 
 interface MethodContract
 {
-    public function __construct(string $method, string $controller);
+    public function __construct(string $method);
 
     public function method(): string;
+
+    public function withController(string $controller): MethodContract;
+
+    public function hasController(): bool;
 
     public function controller(): string;
 }

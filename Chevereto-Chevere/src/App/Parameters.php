@@ -15,34 +15,16 @@ namespace Chevere\App;
 
 use LogicException;
 use Chevere\ArrayFile\ArrayFile;
-use Chevere\Contracts\App\AppContract;
 use Chevere\Message\Message;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\Path\PathHandle;
 
 final class Parameters implements ParametersContract
 {
-    const CONFIG_FILES = 'configFiles';
-
-    /**
-     * @var string Used to describe the path where App scans for API HTTP Controllers. Target path must be autoloaded.
-     *
-     * {@example 'api' => 'src/Api'}
-     */
-    const API = 'api';
-
-    /**
-     * @var string Used to describe the array which lists the route files (relative to app).
-     *
-     * {@example 'routes' => ['routes:dashboard', 'routes:web',]}
-     */
-    const ROUTES = 'routes';
-
     /**
      * The keys accepted by this class, with the gettype at right side.
      */
     private $keys = [
-        // self::CONFIG_FILES => 'array',
         self::API => 'string',
         self::ROUTES => 'array',
     ];
@@ -72,7 +54,7 @@ final class Parameters implements ParametersContract
     {
         return new Parameters(
             new ArrayFile(
-                new PathHandle(AppContract::FILEHANDLE_PARAMETERS)
+                new PathHandle(static::FILEHANDLE_PARAMETERS)
             )
         );
     }

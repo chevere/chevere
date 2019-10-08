@@ -96,7 +96,10 @@ final class Route implements RouteContract
         $this->handleType();
         if (isset($controller)) {
             $new = clone $this;
-            $new = $new->withAddedMethod(new Method('GET', $controller));
+            $new = $new->withAddedMethod(
+                (new Method('GET'))
+                    ->withController($controller)
+            );
         }
     }
 
@@ -211,7 +214,6 @@ final class Route implements RouteContract
 
     public function withAddedMiddleware(string $callable): RouteContract
     {
-        // $this->middlewares[] = $this->getCallableSome($callable);
         $this->middlewares[] = $callable;
 
         return $this;
@@ -219,11 +221,11 @@ final class Route implements RouteContract
 
     public function getController(string $httpMethod): string
     {
-        $controller = $this->methods[$httpMethod];
+        $controller = $this->methods[$httpMethod] ?? null;
         if (!isset($controller)) {
             throw new LogicException(
-                (new Message('No controller is associated to HTTP method %s.'))
-                    ->code('%s', $httpMethod)
+                (new Message('No controller is associated to HTTP method %method%'))
+                    ->code('%method%', $httpMethod)
                     ->toString()
             );
         }
@@ -242,7 +244,10 @@ final class Route implements RouteContract
             }
         }
         if (isset($new->methods['GET']) && !isset($new->methods['HEAD'])) {
-            $new = $new->withAddedMethod(new Method('HEAD', HeadController::class));
+            $new = $new->withAddedMethod(
+                (new Method('HEAD'))
+                    ->withController(HeadController::class)
+            );
         }
         $new->regex = $new->getRegex($new->key ?? $new->path);
 

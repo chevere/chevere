@@ -14,7 +14,13 @@ return [
     // ->addMiddleware(Middlewares\RoleBanned::class),
     (new Route('/cache/{llave?}-{cert}-{user?}'))
         ->withWhere('llave', '[0-9]+')
-        ->withAddedMethod(new Method('GET', Controllers\Cache::class))
-        ->withAddedMethod(new Method('POST', Controllers\Cache::class))
+        ->withAddedMethod(
+            (new Method('GET'))
+                ->withController(Controllers\Cache::class)
+        )
+        ->withAddedMethod(
+            (new Method('POST'))
+                ->withController(Controllers\Cache::class)
+        )
         ->withName('cache'),
 ];

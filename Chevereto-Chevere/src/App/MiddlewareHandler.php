@@ -38,14 +38,12 @@ final class MiddlewareHandler implements MiddlewareHandlerContract
     /**
      * @param array $queue an array containing callables or callable strings
      */
-    // FIXME: Move this to another layer
     public function __construct(array $queue, AppContract $app)
     {
         $this->app = $app;
         $this->queue = $queue;
     }
 
-    // FIXME: Move this to another layer
     public function runner()
     {
         reset($this->queue);
