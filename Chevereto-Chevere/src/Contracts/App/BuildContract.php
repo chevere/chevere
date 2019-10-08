@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\App;
 
+use Chevere\App\Builder;
 use Chevere\App\Container;
-use Chevere\Contracts\App\LoaderContract;
 use Chevere\Path\PathHandle;
 
 interface BuildContract
 {
     const FILE_INDETIFIER = 'var:build';
 
-    public function __construct();
+    public function __construct(Builder $builder);
 
     public function pathHandle(): PathHandle;
 
@@ -33,11 +33,7 @@ interface BuildContract
 
     public function hasContainer(): bool;
 
-    public function hasParameters(): bool;
-
     public function container(): Container;
-
-    public function parameters(): ParametersContract;
 
     /**
      * Retrieves the file checksums.

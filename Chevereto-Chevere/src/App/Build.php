@@ -19,7 +19,6 @@ use Chevere\Router\Maker as RouterMaker;
 use Chevere\App\Exceptions\AlreadyBuiltException;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\CheckoutContract;
-use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\File\File;
 use Chevere\Path\Path;
@@ -28,6 +27,9 @@ use Chevere\Router\Router;
 
 final class Build implements BuildContract
 {
+    /** @var Builder */
+    private $builder;
+
     /** @var Container */
     private $container;
 
@@ -52,8 +54,9 @@ final class Build implements BuildContract
     /** @var RouterMaker */
     private $routerMaker;
 
-    public function __construct()
+    public function __construct(Builder $builder)
     {
+        $this->builder = $builder;
         $this->container = new Container();
         $this->pathHandle =  new PathHandle(static::FILE_INDETIFIER);
     }
@@ -118,21 +121,10 @@ final class Build implements BuildContract
         return isset($this->container);
     }
 
-    public function hasParameters(): bool
-    {
-        return isset($this->container);
-    }
-
     public function container(): Container
     {
         return $this->container;
     }
-
-    public function parameters(): ParametersContract
-    {
-        return $this->parameters;
-    }
-
 
     /**
      * {@inheritdoc}

@@ -14,36 +14,33 @@ declare(strict_types=1);
 namespace Chevere\App;
 
 use const Chevere\CLI;
-use const Chevere\DEV;
 
 use LogicException;
 use RuntimeException;
-use Chevere\ArrayFile\ArrayFile;
-use Chevere\Path\PathHandle;
-use Chevere\Api\Api;
+
 use Chevere\Console\Console;
-use Chevere\Http\Response;
 use Chevere\Runtime\Runtime;
 use Chevere\Contracts\App\AppContract;
-use Chevere\App\Exceptions\NeedsToBeBuiltException;
-use Chevere\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Contracts\App\BuildContract;
-use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\Http\RequestContract;
-use Chevere\Contracts\Router\RouterContract;
 use Chevere\Http\ServerRequest;
 use Chevere\Message\Message;
 use Chevere\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\Controller\JsonApiContract;
-use Chevere\Router\Router;
 
 use function GuzzleHttp\Psr7\stream_for;
 
 final class Builder
 {
-    /** @var  LoaderContract */
-    private $load;
+    /** @var AppContract */
+    private $app;
+
+    /** @var Build */
+    private $build;
+
+    /** @var ParametersContract */
+    private $parameters;
 
     /** @var Runtime */
     private static $runtime;
@@ -51,17 +48,8 @@ final class Builder
     /** @var RequestContract */
     private static $request;
 
-    /** @var AppContract */
-    private $app;
-
-    /** @var ParametersContract */
-    private $parameters;
-
     /** @var string */
     private $controller;
-
-    /** @var RouterContract */
-    private $router;
 
     /** @var bool True if run() has been called */
     private $ran;
@@ -72,12 +60,10 @@ final class Builder
     /** @var array */
     private $controllerArguments;
 
-    /** @var Build */
-    private $build;
-
     public function __construct(AppContract $app)
     {
         $this->app = $app;
+        $this->build = new Build($this);
     }
 
     public function withParameters(ParametersContract $parameters): Builder
@@ -87,10 +73,12 @@ final class Builder
 
         return $new;
     }
+
     public function hasParameters(): bool
     {
         return isset($this->parameters);
     }
+
     public function parameters(): ParametersContract
     {
         return $this->parameters;
@@ -116,6 +104,7 @@ final class Builder
 
         return $new;
     }
+
     public function build(): BuildContract
     {
         return $this->build;

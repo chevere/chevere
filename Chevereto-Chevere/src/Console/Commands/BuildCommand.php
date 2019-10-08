@@ -33,13 +33,6 @@ final class BuildCommand extends Command
 
     public function callback(Builder $builder): int
     {
-        if (!$builder->hasParameters()) {
-            throw new LogicException(
-                (new Message('Missing %class% parameters'))
-                    ->code('%class%', get_class($builder))
-                    ->toString()
-            );
-        }
         $title = 'App built';
         try {
             $build = $builder->build()

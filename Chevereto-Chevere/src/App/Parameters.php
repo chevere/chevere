@@ -70,9 +70,11 @@ final class Parameters implements ParametersContract
 
     public static function fromFile(): ParametersContract
     {
-        return new static(new ArrayFile(
-            new PathHandle(AppContract::FILEHANDLE_PARAMETERS)
-        ));
+        return new Parameters(
+            new ArrayFile(
+                new PathHandle(AppContract::FILEHANDLE_PARAMETERS)
+            )
+        );
     }
 
     public function api(): string

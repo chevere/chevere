@@ -25,7 +25,6 @@ class SetErrorHandler implements SetContract
     public function set(): void
     {
         if ('' == $this->value) {
-            dd('ee');
             $this->restoreErrorHandler();
         } else {
             if (!is_callable($this->value)) {
@@ -41,7 +40,8 @@ class SetErrorHandler implements SetContract
     private function restoreErrorHandler(): void
     {
         restore_error_handler();
-        $this->value = (string) set_error_handler(function () { });
+        $this->value = (string) set_error_handler(function () {
+        });
         restore_error_handler();
     }
 }

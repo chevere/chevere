@@ -30,25 +30,20 @@ final class Loader implements LoaderContract
     /** @var Builder */
     private $builder;
 
-    /** @var Build */
-    private $build;
-
     public function __construct()
     {
         $this->builder = new Builder(new App(new Response()));
-
-        if (CLI) {
-            Console::bind($this->builder);
-        }
-
-        $this->build = new Build();
+        $this->handleConsoleBind();
         $this->assert();
 
-        if (DEV) {
+        if (DEV || Console::isBuilding()) {
             $parameters = Parameters::fromFile();
             $this->builder = $this->builder
                 ->withParameters($parameters);
-            $this->build = $this->build
+        }
+
+        if (DEV) {
+            $build = $this->builder->build()
                 ->withParameters($parameters);
         } else {
             try {
@@ -59,7 +54,7 @@ final class Loader implements LoaderContract
                     $api = Api::fromCache();
                     $router = Router::fromCache();
                 }
-                $container = $this->build->container()
+                $container = $this->builder->build()->container()
                     ->withApi($api)
                     ->withRouter($router);
             } catch (CacheNotFoundException $e) {
@@ -70,18 +65,33 @@ final class Loader implements LoaderContract
                     $e
                 );
             }
-            $this->build = $this->build
+            $build = $this->builder->build()
                 ->withContainer($container);
+            $this->builder = $this->builder
+                ->withBuild($build);
         }
         $app = $this->builder->app()
-            ->withRouter($this->build->container()->router());
+            ->withRouter($this->builder->build()->container()->router());
         $this->builder = $this->builder
             ->withApp($app);
     }
 
+
+    public function run(): void
+    {
+        $this->builder->run();
+    }
+
+    private function handleConsoleBind(): void
+    {
+        if (CLI) {
+            Console::bind($this->builder);
+        }
+    }
+
     private function assert(): void
     {
-        if (!DEV && !Console::isBuilding() && !$this->build->exists()) {
+        if (!DEV && !Console::isBuilding() && !$this->builder->build()->exists()) {
             throw new NeedsToBeBuiltException(
                 (new Message('The application needs to be built by CLI %command% or calling %method% method.'))
                     ->code('%command%', 'php app/console build')
@@ -89,10 +99,5 @@ final class Loader implements LoaderContract
                     ->toString()
             );
         }
-    }
-
-    public function run(): void
-    {
-        $this->builder->run();
     }
 }
