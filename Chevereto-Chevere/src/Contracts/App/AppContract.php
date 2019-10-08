@@ -20,29 +20,14 @@ use Chevere\Contracts\Router\RouterContract;
 
 interface AppContract
 {
-    /**
-     * Construct an instance with the specific response.
-     */
     public function __construct(ResponseContract $response);
 
-    /**
-     * Returns an instance with the specific response.
-     */
     public function withResponse(ResponseContract $response): AppContract;
 
-    /**
-     * Returns an instance with the specific route.
-     */
     public function withRoute(RouteContract $route): AppContract;
 
-    /**
-     * Returns an instance with the specific router.
-     */
     public function withRouter(RouterContract $router): AppContract;
 
-    /**
-     * Returns an instance with the specific arguments.
-     */
     public function withArguments(array $arguments): AppContract;
 
     public function response(): ResponseContract;

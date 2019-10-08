@@ -17,9 +17,10 @@ use LogicException;
 use Chevere\Message\Message;
 use Chevere\Controller\ArgumentsWrap;
 use Chevere\Contracts\App\AppContract;
+use Chevere\Contracts\App\RunnerContract;
 use Chevere\Contracts\Controller\ControllerContract;
 
-final class Runner
+final class Runner implements RunnerContract
 {
 
     /** @var AppContract */
@@ -32,11 +33,6 @@ final class Runner
 
     /**
      * {@inheritdoc}
-     */
-    /**
-     * Run a controller on top of the App.
-     *
-     * @param string $controller a ControllerContract controller name
      */
     public function runController(string $controller): ControllerContract
     {
@@ -53,8 +49,8 @@ final class Runner
 
         $controller = new $controller($this->app);
 
-        if ($this->app->arguments()) {
-            $wrap = new ArgumentsWrap($controller, $this->arguments);
+        if ($this->app->hasArguments()) {
+            $wrap = new ArgumentsWrap($controller, $this->app->arguments());
             $controllerArguments = $wrap->typedArguments();
         } else {
             $controllerArguments = [];

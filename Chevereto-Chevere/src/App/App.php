@@ -125,6 +125,6 @@ final class App implements AppContract
 
     public function arguments(): array
     {
-        return $this->arguments ?? [];
+        return $this->arguments;
     }
 }

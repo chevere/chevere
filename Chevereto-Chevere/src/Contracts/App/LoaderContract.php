@@ -25,9 +25,9 @@ interface LoaderContract
 
     public function withBuild(Build $build): LoaderContract;
 
-    public function parameters(): ParametersContract;
-
     public function build(): Build;
+
+    public function parameters(): ParametersContract;
 
     /**
      * @param string $controller a fully-qualified controller name

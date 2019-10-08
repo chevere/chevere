@@ -37,7 +37,7 @@ abstract class Arr
     public static function filterArray(array $array, array $keys, $mode = self::FILTER_EXCLUSION): array
     {
         $return = [];
-        foreach ($keys as $k => $v) {
+        foreach ($keys as $v) {
             switch ($mode) {
                 default:
                 case static::DEFAULT_FILTER:

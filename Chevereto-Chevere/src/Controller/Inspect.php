@@ -20,8 +20,8 @@ use Chevere\Api\Api;
 use Chevere\Str\Str;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Controller\InspectContract;
-use Chevere\Interfaces\ControllerResourceInterface;
-use Chevere\Interfaces\ControllerRelationshipInterface;
+
+// use Chevere\Interfaces\ControllerResourceInterface;
 
 /**
  * Provides information about any Controller implementing ControllerContract interface.
@@ -32,7 +32,7 @@ final class Inspect implements InspectContract
     const INTERFACE_CONTROLLER = ControllerContract::class;
 
     /** @var string The Controller interface */
-    const INTERFACE_CONTROLLER_RESOURCE = ControllerResourceInterface::class;
+    // const INTERFACE_CONTROLLER_RESOURCE = ControllerResourceInterface::class;
 
     /** @var string The description property name */
     const PROP_DESCRIPTION = 'description';
@@ -97,15 +97,15 @@ final class Inspect implements InspectContract
         $this->className = $this->reflection->getName();
         $this->classShortName = $this->reflection->getShortName();
         $this->filepath = $this->reflection->getFileName();
-        $this->isResource = $this->reflection->implementsInterface(ControllerResourceInterface::class);
-        $this->isRelatedResource = $this->reflection->implementsInterface(ControllerRelationshipInterface::class);
+        // $this->isResource = $this->reflection->implementsInterface(ControllerResourceInterface::class);
+        // $this->isRelatedResource = $this->reflection->implementsInterface(ControllerRelationshipInterface::class);
         $this->useResource = $this->isResource || $this->isRelatedResource;
         $this->httpMethod = $this->classShortName;
         $this->description = $className::description();
         $this->handleResources($className);
         $this->parameters = $className::parameters();
         try {
-            $this->handleControllerResourceInterface();
+            // $this->handleControllerResourceInterface();
             $this->handleControllerInterface();
             $this->handleConstResourceNeed();
             $this->handleConstResourceMissed();
@@ -151,7 +151,7 @@ final class Inspect implements InspectContract
                 throw new LogicException(
                     (new Message('Class %s implements %i interface, but it doesnt define any related resource.'))
                         ->code('%s', $className)
-                        ->code('%i', ControllerRelationshipInterface::class)
+                        // ->code('%i', ControllerRelationshipInterface::class)
                         ->toString()
                 );
             }
@@ -166,12 +166,12 @@ final class Inspect implements InspectContract
         }
     }
 
-    private function handleControllerResourceInterface(): void
-    {
-        if ($this->useResource && !$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER_RESOURCE)) {
-            throw new LogicException('Class %reflectionName% must implement the %interfaceControllerResource% interface at %reflectionFilename%.');
-        }
-    }
+    // private function handleControllerResourceInterface(): void
+    // {
+    //     if ($this->useResource && !$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER_RESOURCE)) {
+    //         throw new LogicException('Class %reflectionName% must implement the %interfaceControllerResource% interface at %reflectionFilename%.');
+    //     }
+    // }
 
     private function handleConstResourceNeed(): void
     {
