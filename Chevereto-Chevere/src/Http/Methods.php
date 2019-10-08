@@ -27,15 +27,22 @@ final class Methods implements MethodsContract
 
     public function __construct(MethodContract ...$methods)
     {
-        foreach ($methods as $k => $method) {
-            $this->add($method);
+        $new = clone $this;
+        foreach ($methods as $method) {
+            $new = $new
+                ->withAddedMethod($method);
         }
+
+        return $new;
     }
 
-    public function add(MethodContract $method): void
+    public function withAddedMethod(MethodContract $method): MethodsContract
     {
-        $this->methods[] = $method;
-        $this->index[$method->method()] = array_key_last($this->methods);
+        $new = clone $this;
+        $new->methods[] = $method;
+        $new->index[$method->method()] = array_key_last($new->methods);
+
+        return $new;
     }
 
     public function has(string $method): bool

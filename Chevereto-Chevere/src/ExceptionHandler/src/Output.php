@@ -69,8 +69,8 @@ final class Output
             $this->setJsonOutput();
         } else {
             if (CLI) {
-                $this->setJsonOutput();
-                // $this->setConsoleOutput();
+                // $this->setJsonOutput();
+                $this->setConsoleOutput();
                 // $this->setHtmlOutput();
             } else {
                 $this->setHtmlOutput();

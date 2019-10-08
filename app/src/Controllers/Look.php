@@ -15,11 +15,11 @@ namespace App\Controllers;
 
 use Chevere\Contracts\Controller\StringContract;
 use Chevere\Controller\Controller;
-use Chevere\Controller\Traits\StringTrait;
+use Chevere\Controller\Traits\ResponseStringTrait;
 
 class Look extends Controller implements StringContract
 {
-    use StringTrait;
+    use ResponseStringTrait;
 
     /** @var array */
     private $keys;

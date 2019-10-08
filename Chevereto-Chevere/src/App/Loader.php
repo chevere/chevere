@@ -106,7 +106,8 @@ final class Loader implements LoaderContract
         }
         $this->api = $this->build->container()->api();
         $this->router = $this->build->container()->router();
-        $this->app = $this->app->withRouter($this->router);
+        $this->app = $this->app
+            ->withRouter($this->router);
     }
 
     public function app(): AppContract
@@ -192,7 +193,7 @@ final class Loader implements LoaderContract
         if (!isset($this->controller)) {
             throw new RuntimeException('DESCONTROL');
         }
-        $this->runController($this->controller);
+        $this->runApp($this->controller);
     }
 
     /**
@@ -254,7 +255,8 @@ final class Loader implements LoaderContract
             $response = $this->app->response();
             $guzzle = $response->guzzle()->withStatus(404)->withBody(stream_for('Not found.'));
             $response = $response->withGuzzle($guzzle);
-            $this->app = $this->app->withResponse($response);
+            $this->app = $this->app
+                ->withResponse($response);
             if (CLI) {
                 throw new RouteNotFoundException($e->getMessage());
             } else {
@@ -263,18 +265,20 @@ final class Loader implements LoaderContract
             }
         }
         $this->controller = $route->getController($this::$request->getMethod());
-        $this->app = $this->app->withRoute($route);
+        $this->app = $this->app
+            ->withRoute($route);
         $routerArgs = $this->router->arguments();
         if (!isset($this->arguments) && isset($routerArgs)) {
             $this->arguments = $routerArgs;
         }
     }
 
-    private function runController(string $controller): void
+    private function runApp(string $controller): void
     {
         $this->app = $this->app
             ->withArguments($this->arguments);
-        $controller = $this->app->run($controller);
+        $runner = new Runner($this->app);
+        $controller = $runner->runController($controller);
         $contentStream = stream_for($controller->content());
         $response = $this->app->response();
         $guzzle = $response->guzzle();

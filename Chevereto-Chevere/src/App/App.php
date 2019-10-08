@@ -15,18 +15,13 @@ namespace Chevere\App;
 
 use const Chevere\APP_PATH;
 
-use LogicException;
-use Chevere\Message\Message;
 use Chevere\Contracts\App\AppContract;
-use Chevere\Controller\ArgumentsWrap;
-use Chevere\Contracts\Controller\ControllerContract;
-use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Http\ResponseContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
 
 /**
- * The app container.
+ * The App container.
  */
 final class App implements AppContract
 {
@@ -63,6 +58,7 @@ final class App implements AppContract
     {
         $new = clone $this;
         $new->response = $response;
+
         return $new;
     }
 
@@ -73,7 +69,13 @@ final class App implements AppContract
     {
         $new = clone $this;
         $new->route = $route;
+
         return $new;
+    }
+
+    public function hasRoute(): bool
+    {
+        return isset($this->route);
     }
 
     /**
@@ -83,6 +85,7 @@ final class App implements AppContract
     {
         $new = clone $this;
         $new->router = $router;
+
         return $new;
     }
 
@@ -93,7 +96,13 @@ final class App implements AppContract
     {
         $new = clone $this;
         $new->arguments = $arguments;
+
         return $new;
+    }
+
+    public function hasArguments(): bool
+    {
+        return isset($this->arguments);
     }
 
     public function response(): ResponseContract
@@ -101,6 +110,9 @@ final class App implements AppContract
         return $this->response;
     }
 
+    /**
+     * Provides access to the RouteContract object associated with the existent request
+     */
     public function route(): RouteContract
     {
         return $this->route;
@@ -114,49 +126,5 @@ final class App implements AppContract
     public function arguments(): array
     {
         return $this->arguments ?? [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function run(string $controller): ControllerContract
-    {
-        if (!is_subclass_of($controller, ControllerContract::class)) {
-            throw new LogicException(
-                (new Message('Controller %controller% must implement the %contract% interface.'))
-                    ->code('%controller%', $controller)
-                    ->code('%contract%', ControllerContract::class)
-                    ->toString()
-            );
-        }
-
-        $this->handleRouteMiddleware();
-
-        $controller = new $controller($this);
-
-        if (isset($this->arguments)) {
-            $wrap = new ArgumentsWrap($controller, $this->arguments);
-            $controllerArguments = $wrap->typedArguments();
-        } else {
-            $controllerArguments = [];
-        }
-
-        $controller(...$controllerArguments);
-
-        return $controller;
-    }
-
-    private function handleRouteMiddleware()
-    {
-        if (isset($this->route)) {
-            $middlewares = $this->route->middlewares();
-            if (!empty($middlewares)) {
-                $handler = new MiddlewareHandler($middlewares, $this);
-                $handler->runner();
-                if ($handler->exception) {
-                    dd($handler->exception->getMessage(), 'Aborted at ' . __FILE__ . ':' . __LINE__);
-                }
-            }
-        }
     }
 }

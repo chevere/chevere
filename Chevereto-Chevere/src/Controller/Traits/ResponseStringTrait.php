@@ -16,7 +16,7 @@ namespace Chevere\Controller\Traits;
 /**
  * Provides string document handling for Controllers
  */
-trait StringTrait
+trait ResponseStringTrait
 {
     public function getContent(): string
     {

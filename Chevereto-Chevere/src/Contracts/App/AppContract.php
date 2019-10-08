@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Contracts\App;
 
 use Chevere\Contracts\Controller\ControllerContract;
-use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Http\ResponseContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
@@ -53,11 +52,4 @@ interface AppContract
     public function router(): RouterContract;
 
     public function arguments(): array;
-
-    /**
-     * Run a controller on top of the App.
-     *
-     * @param string $controller a ControllerContract controller name
-     */
-    public function run(string $controller): ControllerContract;
 }

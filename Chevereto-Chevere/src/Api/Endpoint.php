@@ -75,7 +75,8 @@ final class Endpoint implements EndpointContract
             ],
         ] as $k => $v) {
             if (!$this->methods->has($k)) {
-                $this->methods->add(new Method($k, $v[0]));
+                $this->methods = $this->methods
+                    ->withAddedMethod(new Method($k, $v[0]));
                 $this->array['OPTIONS'][$k] = $v[1];
             }
         }

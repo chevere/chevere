@@ -18,7 +18,7 @@ use ArrayIterator;
 
 interface MethodsContract extends IteratorAggregate
 {
-    public function add(MethodContract $method): void;
+    public function withAddedMethod(MethodContract $method): MethodsContract;
 
     public function has(string $method): bool;
 
