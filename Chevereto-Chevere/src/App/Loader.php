@@ -18,6 +18,7 @@ use const Chevere\DEV;
 
 use Chevere\Api\Api;
 use Chevere\App\Exceptions\NeedsToBeBuiltException;
+use Chevere\Cache\Cache;
 use Chevere\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Console\Console;
 use Chevere\Contracts\App\BuildContract;
@@ -44,7 +45,7 @@ final class Loader implements LoaderContract
         $this->handleParameters();
         $build = $this->getBuild();
         $this->builder = $this->builder
-                ->withBuild($build);
+            ->withBuild($build);
         $this->builder = $this->builder
             ->withApp(
                 $this->builder->app()
@@ -72,13 +73,14 @@ final class Loader implements LoaderContract
             return $this->builder->build()
                 ->withParameters($this->parameters);
         } else {
+            $api = new Api();
+            $router = new Router();
             try {
-                if (Console::isBuilding()) {
-                    $api = new Api();
-                    $router = new Router();
-                } else {
-                    $api = Api::fromCache();
-                    $router = Router::fromCache();
+                if (!Console::isBuilding()) {
+                    $api = $api
+                        ->withCache(new Cache('api'));
+                    $router = $router
+                        ->withCache(new Cache('router'));
                 }
                 $container = $this->builder->build()->container()
                     ->withApi($api)

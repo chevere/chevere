@@ -87,10 +87,13 @@ final class Build implements BuildContract
         $new->cacheChecksums = [];
         if (!empty($parameters->api())) {
             $pathHandle = new PathHandle($parameters->api());
-            $new->apiMaker = ApiMaker::create($pathHandle, $new->routerMaker);
+            $new->apiMaker = new ApiMaker($new->routerMaker);
+            $new->apiMaker = $new->apiMaker
+                ->withPathHandle($pathHandle);
             $new->container = $new->container
                 ->withApi(
-                    Api::fromMaker($new->apiMaker)
+                    (new Api())
+                        ->withMaker($new->apiMaker)
                 );
             $new->apiMaker = $new->apiMaker
                 ->withCache();
@@ -101,7 +104,8 @@ final class Build implements BuildContract
                 ->withAddedRouteIdentifiers($parameters->routes());
             $new->container = $new->container
                 ->withRouter(
-                    Router::fromMaker($new->routerMaker)
+                    (new Router())
+                        ->withMaker($new->routerMaker)
                 );
             $new->routerMaker = $new->routerMaker
                 ->withCache();

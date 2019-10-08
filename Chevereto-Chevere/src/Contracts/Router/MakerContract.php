@@ -18,6 +18,8 @@ use Chevere\Contracts\Route\RouteContract;
 
 interface MakerContract
 {
+    const REGEX_TEPLATE = '#^(?%s)$#x';
+
     public function withAddedRoute(RouteContract $route, string $group): MakerContract;
 
     public function withAddedRouteIdentifiers(array $routeIdentifiers): MakerContract;

@@ -50,7 +50,7 @@ class Index extends Controller implements JsonApiContract
             'cli',
             new Attribute('entry', 'php chevere.php list'),
             new Attribute('description', 'Retrieves the console command list.'),
-            );
+        );
     }
     public function getDocument(): EncodedDocument
     {
@@ -59,7 +59,7 @@ class Index extends Controller implements JsonApiContract
                 new DataDocument(
                     new ResourceCollection($this->api, $this->cli),
                     new JsonApi(),
-                    )
+                )
             );
     }
 }

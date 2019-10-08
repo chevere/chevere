@@ -29,8 +29,6 @@ use Chevere\Type\Type;
  */
 final class Maker implements MakerContract
 {
-    const REGEX_TEPLATE = '#^(?%s)$#x';
-
     /** @var string Regex representation, used when resolving routing */
     private $regex;
 
@@ -180,7 +178,7 @@ final class Maker implements MakerContract
             $regex[] = '|' . $matches[1] . " (*:$v)";
         }
 
-        return sprintf(static::REGEX_TEPLATE, implode('', $regex));
+        return sprintf(MakerContract::REGEX_TEPLATE, implode('', $regex));
     }
 
     private function validateUniqueRoutePath(): void

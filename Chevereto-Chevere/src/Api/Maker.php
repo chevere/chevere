@@ -63,20 +63,24 @@ final class Maker implements MakerContract
     /** @var RouteContract */
     private $route;
 
-    /** @var string Target API directory (absolute) */
-    private $path;
+    /** @var PathHandle For target API directory (absolute) */
+    private $pathHandle;
 
     /** @var Cache */
     private $cache;
 
-    public function __construct(RouterMaker $router)
+    public function __construct(RouterMaker $routerMaker)
     {
-        $this->routerMaker = $router;
+        $this->routerMaker = $routerMaker;
     }
 
-    public static function create(PathHandle $pathHandle, RouterMaker $routerMaker): MakerContract
+    public function withPathHandle(PathHandle $pathHandle): MakerContract
     {
-        $maker = new static($routerMaker);
+        $new = clone $this;
+        $new->pathHandle = $pathHandle;
+        $new->assertNoDuplicates();
+        $new->assertPath();
+        $new->basePath = strtolower(basename($new->pathHandle->path()));
         $methods = new Methods(
             (new Method('HEAD'))
                 ->withController(HeadController::class),
@@ -86,14 +90,9 @@ final class Maker implements MakerContract
                 ->withController(GetController::class)
 
         );
-        $maker->register($pathHandle, new Endpoint($methods));
+        $new->register(new Endpoint($methods));
 
-        return $maker;
-    }
-
-    public function api(): array
-    {
-        return $this->api;
+        return $new;
     }
 
     public function withCache(): MakerContract
@@ -106,22 +105,43 @@ final class Maker implements MakerContract
         return $new;
     }
 
+    public function hasApi(): bool
+    {
+        return isset($this->api);
+    }
+
+    public function hasPathHandle(): bool
+    {
+        return isset($this->pathHandle);
+    }
+
+    public function hasCache(): bool
+    {
+        return isset($this->cache);
+    }
+
+    public function api(): array
+    {
+        return $this->api;
+    }
+
+    public function pathHandle(): PathHandle
+    {
+        return $this->pathHandle;
+    }
+
     public function cache(): Cache
     {
         return $this->cache;
     }
 
-    private function register(PathHandle $pathHandle, Endpoint $endpoint): void
+    private function register(Endpoint $endpoint): void
     {
-        $this->path = $pathHandle->path();
-        $this->assertNoDuplicates();
-        $this->assertPath();
-        $this->basePath = strtolower(basename($this->path));
         $this->routesMap = [];
         $this->resourcesMap = [];
         $this->api = [];
 
-        $iterator = new RecursiveDirectoryIterator($this->path, RecursiveDirectoryIterator::SKIP_DOTS);
+        $iterator = new RecursiveDirectoryIterator($this->pathHandle->path(), RecursiveDirectoryIterator::SKIP_DOTS);
         $filter = new FilterIterator($iterator);
         $filter = $filter->withAcceptFilenames(MethodContract::ACCEPT_METHODS);
         $this->recursiveIterator = new RecursiveIteratorIterator($filter);
@@ -154,8 +174,8 @@ final class Maker implements MakerContract
         }
         if ($count == 0) {
             throw new LogicException(
-                (new Message('No API methods found in the %s path.'))
-                    ->code('%s', $this->path)
+                (new Message('No API methods found in the %path% path'))
+                    ->code('%path%', $this->pathHandle->path())
                     ->toString()
             );
         }
@@ -163,10 +183,10 @@ final class Maker implements MakerContract
 
     private function assertNoDuplicates(): void
     {
-        if (isset($this->registered[$this->path])) {
+        if (isset($this->registered[$this->pathHandle->path()])) {
             throw new LogicException(
-                (new Message('Path identified by %s has been already bound.'))
-                    ->code('%s', $this->path)
+                (new Message('Path identified by %path% has been already bound'))
+                    ->code('%path%', $this->pathHandle->path())
                     ->toString()
             );
         }
@@ -174,17 +194,17 @@ final class Maker implements MakerContract
 
     private function assertPath(): void
     {
-        if (!File::exists($this->path)) {
+        if (!File::exists($this->pathHandle->path())) {
             throw new LogicException(
-                (new Message("Directory %s doesn't exists."))
-                    ->code('%s', $this->path)
+                (new Message("Directory %directory% doesn't exists"))
+                    ->code('%directory%', $this->pathHandle->path())
                     ->toString()
             );
         }
-        if (!is_readable($this->path)) {
+        if (!is_readable($this->pathHandle->path())) {
             throw new LogicException(
-                (new Message('Directory %s is not readable.'))
-                    ->code('%s', $this->path)
+                (new Message('Directory %directory% is not readable.'))
+                    ->code('%directory%', $this->pathHandle->path())
                     ->toString()
             );
         }

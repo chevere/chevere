@@ -17,6 +17,7 @@ use Chevere\Message\Message;
 use Chevere\Cache\Cache;
 use Chevere\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Contracts\Route\RouteContract;
+use Chevere\Contracts\Router\MakerContract;
 use Chevere\Contracts\Router\RouterContract;
 use Chevere\FileReturn\Exceptions\FileNotFoundException;
 use Chevere\Router\Exception\RouteNotFoundException;
@@ -26,8 +27,6 @@ use Chevere\Router\Exception\RouteNotFoundException;
  */
 final class Router implements RouterContract
 {
-    const REGEX_TEPLATE = '#^(?%s)$#x';
-
     /** @var string Regex representation, used when resolving routing */
     private $regex;
 
@@ -40,47 +39,62 @@ final class Router implements RouterContract
     /** @var array Arguments taken from wildcard matches */
     private $arguments;
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function fromMaker(Maker $maker): RouterContract
-    {
-        $router = new static();
-        $router->regex = $maker->regex();
-        $router->routes = $maker->routes();
-        $router->routesIndex = $maker->routesIndex();
+    /** @var Cache */
+    private $cache;
 
-        return $router;
+    /** @var MakerContract */
+    private $maker;
+
+    public function withMaker(MakerContract $maker): RouterContract
+    {
+        $new = clone $this;
+        $new->maker = $maker;
+        $new->regex = $new->maker->regex();
+        $new->routes = $new->maker->routes();
+        $new->routesIndex = $new->maker->routesIndex();
+
+        return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function fromCache(): RouterContract
+    public function withCache(Cache $cache): RouterContract
     {
-        $router = new static();
-        $cache = new Cache('router');
+        $new = clone $this;
+        $new->cache = $cache;
         try {
-            $router->regex = $cache->get('regex')->raw();
-            $router->routes = $cache->get('routes')->raw();
-            $router->routesIndex = $cache->get('routesIndex')->raw();
+            $new->regex = $new->cache->get('regex')->raw();
+            $new->routes = $new->cache->get('routes')->raw();
+            $new->routesIndex = $new->cache->get('routesIndex')->raw();
         } catch (FileNotFoundException $e) {
             throw new CacheNotFoundException($e->getMessage(), $e->getCode(), $e);
         }
-        return $router;
+        return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
+    public function hasMaker(): bool
+    {
+        return isset($this->maker);
+    }
+
+    public function hasCache(): bool
+    {
+        return isset($this->cache);
+    }
+
+    public function maker(): MakerContract
+    {
+        return $this->maker;
+    }
+
+    public function cache(): Cache
+    {
+        return $this->cache;
+    }
+
     public function arguments(): array
     {
         return $this->arguments ?? [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolve(string $pathInfo): RouteContract
     {
         if (preg_match($this->regex, $pathInfo, $matches)) {

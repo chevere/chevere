@@ -18,6 +18,7 @@ use Chevere\Cache\Cache;
 use Chevere\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Message\Message;
 use Chevere\Contracts\Api\ApiContract;
+use Chevere\Contracts\Api\MakerContract;
 use Chevere\FileReturn\Exceptions\FileNotFoundException;
 
 /**
@@ -25,42 +26,69 @@ use Chevere\FileReturn\Exceptions\FileNotFoundException;
  */
 final class Api implements ApiContract
 {
-    /** @var array */
-    private static $api;
+    /** @var array The API array */
+    private $array;
 
-    public static function fromMaker(Maker $maker): ApiContract
+    /** @var MakerContract */
+    private $maker;
+
+    /** @var Cache */
+    private $cache;
+
+    public function withMaker(MakerContract $maker): ApiContract
     {
-        $api = new static();
-        $api::$api = $maker->api();
+        $new = clone $this;
+        $new->maker = $maker;
+        $new->array = $new->maker->api();
 
-        return $api;
+        return $new;
     }
 
-    public static function fromCache(): ApiContract
+    public function withCache(Cache $cache): ApiContract
     {
-        $cache = new Cache('api');
-        $api = new static();
+        $new = clone $this;
+        $new->cache = $cache;
         try {
-            $api::$api = $cache->get('api')->raw();
+            $new->array = $new->cache->get('api')->raw();
         } catch (FileNotFoundException $e) {
             throw new CacheNotFoundException($e->getMessage(), $e->getCode(), $e);
         }
 
-        return $api;
+        return $new;
     }
 
-    public function get(): array
+    public function toArray(): array
     {
-        return self::$api;
+        return $this->array;
     }
 
-    public static function endpoint(string $uriKey): array
+    public function hasMaker(): bool
     {
-        $key = self::endpointKey($uriKey);
+        return isset($this->maker);
+    }
+
+    public function hasCache(): bool
+    {
+        return isset($this->cache);
+    }
+
+    public function maker(): MakerContract
+    {
+        return $this->maker;
+    }
+
+    public function cache(): Cache
+    {
+        return $this->cache;
+    }
+
+    public function endpoint(string $uriKey): array
+    {
+        $key = $this->endpointKey($uriKey);
         if ($key) {
             $subKey = ltrim($uriKey, '/') == $key ? '' : $uriKey;
 
-            return self::$api[$key][$subKey];
+            return $this->array[$key][$subKey];
         }
         throw new LogicException(
             (new Message('No endpoint defined for the %s URI.'))
@@ -69,11 +97,11 @@ final class Api implements ApiContract
         );
     }
 
-    public static function endpointKey(string $uri): string
+    public function endpointKey(string $uri): string
     {
         $endpoint = ltrim($uri, '/');
         $base = strtok($endpoint, '/');
-        if (!isset(self::$api[$base])) {
+        if (!isset($this->array[$base])) {
             throw new LogicException(
                 (new Message('No API endpoint key for the %s URI.'))
                     ->code('%s', $uri)

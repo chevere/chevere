@@ -21,11 +21,19 @@ interface MakerContract
 {
     public function __construct(RouterMaker $router);
 
-    public static function create(PathHandle $pathHandle, RouterMaker $routerMaker): MakerContract;
+    public function withPathHandle(PathHandle $pathHandle): MakerContract;
+
+    public function withCache(): MakerContract;
+
+    public function hasApi(): bool;
+
+    public function hasPathHandle(): bool;
+
+    public function hasCache(): bool;
 
     public function api(): array;
 
-    public function withCache(): MakerContract;
+    public function pathHandle(): PathHandle;
 
     public function cache(): Cache;
 }
