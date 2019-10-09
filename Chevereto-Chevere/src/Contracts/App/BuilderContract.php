@@ -39,7 +39,7 @@ interface BuilderContract
 
     public function hasRequest(): bool;
 
-    public function hasControllerString(): bool;
+    public function hasController(): bool;
 
     public function hasControllerArguments(): bool;
 

@@ -30,14 +30,14 @@ use Chevere\Message\Message;
 use Chevere\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\Controller\JsonApiContract;
-use Chevere\Controller\Traits\ControllerStringAccessTrait;
+use Chevere\Controller\Traits\ControllerAccessTrait;
 
 use function GuzzleHttp\Psr7\stream_for;
 
 final class Builder implements BuilderContract
 {
     use ParametersAccessTrait;
-    use ControllerStringAccessTrait;
+    use ControllerAccessTrait;
 
     /** @var AppContract */
     private $app;
@@ -50,9 +50,6 @@ final class Builder implements BuilderContract
 
     /** @var RequestContract */
     private static $request;
-
-    /** @var string */
-    private $controller;
 
     /** @var bool True if run() has been called */
     private $ran;

@@ -30,6 +30,7 @@ use Chevere\Str\Str;
 use Chevere\Controller\Inspect;
 use Chevere\Api\src\FilterIterator;
 use Chevere\Cache\Cache;
+use Chevere\Cache\Traits\CacheAccessTrait;
 use Chevere\Contracts\Api\MakerContract;
 use Chevere\Contracts\Http\MethodContract;
 use Chevere\Controllers\Api\GetController;
@@ -39,6 +40,8 @@ use Chevere\Router\Maker as RouterMaker;
 
 final class Maker implements MakerContract
 {
+    use CacheAccessTrait;
+
     /** @var array Route mapping [route => [http_method => Controller]]] */
     private $routesMap;
 
@@ -115,11 +118,6 @@ final class Maker implements MakerContract
         return isset($this->pathHandle);
     }
 
-    public function hasCache(): bool
-    {
-        return isset($this->cache);
-    }
-
     public function api(): array
     {
         return $this->api;
@@ -128,11 +126,6 @@ final class Maker implements MakerContract
     public function pathHandle(): PathHandle
     {
         return $this->pathHandle;
-    }
-
-    public function cache(): Cache
-    {
-        return $this->cache;
     }
 
     private function register(Endpoint $endpoint): void

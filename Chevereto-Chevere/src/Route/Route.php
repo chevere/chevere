@@ -167,7 +167,7 @@ final class Route implements RouteContract
             );
         }
         $new = clone $this;
-        $new->methods[$method->method()] = $method->controllerString();
+        $new->methods[$method->method()] = $method->controller();
 
         return $new;
     }

@@ -17,14 +17,14 @@ use InvalidArgumentException;
 use Chevere\Message\Message;
 use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Controller\ControllerContract;
-use Chevere\Controller\Traits\ControllerStringAccessTrait;
+use Chevere\Controller\Traits\ControllerAccessTrait;
 
 /**
  * Api provides a static method to read the exposed API inside the app runtime.
  */
 final class Method implements MethodContract
 {
-    use ControllerStringAccessTrait;
+    use ControllerAccessTrait;
 
     /** @param string HTTP request method */
     private $method;
@@ -39,10 +39,18 @@ final class Method implements MethodContract
         return $this->method;
     }
 
-    public function withController(string $controller): MethodContract
+    public function withController(string $controllerName): MethodContract
     {
         $new = clone $this;
-        $new->setController($controller);
+        if (!is_subclass_of($controllerName, ControllerContract::class)) {
+            throw new InvalidArgumentException(
+                (new Message('Controller %s must implement the %i interface.'))
+                    ->code('%s', $controllerName)
+                    ->code('%i', ControllerContract::class)
+                    ->toString()
+            );
+        }
+        $new->controllerName = $controllerName;
 
         return $new;
     }
@@ -57,18 +65,5 @@ final class Method implements MethodContract
             );
         }
         $this->method = $method;
-    }
-
-    private function setController(string $controller)
-    {
-        if (!is_subclass_of($controller, ControllerContract::class)) {
-            throw new InvalidArgumentException(
-                (new Message('Controller %s must implement the %i interface.'))
-                    ->code('%s', $controller)
-                    ->code('%i', ControllerContract::class)
-                    ->toString()
-            );
-        }
-        $this->controller = $controller;
     }
 }
