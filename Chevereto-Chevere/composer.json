@@ -22,7 +22,10 @@
         "phpunit/phpunit": "^8"
     },
     "autoload": {
-        "files": ["utils/phpcheck.php", "resources/functions/dump.php"],
+        "files": [
+            "utils/phpcheck.php",
+            "resources/functions/global/dump.php"
+        ],
         "psr-4": {
             "Chevere\\": "src/"
         }
