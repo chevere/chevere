@@ -151,7 +151,8 @@ final class FileReturn
         }
         $varExport = var_export($var, true);
         $export = FileReturn::PHP_RETURN . $varExport . ';';
-        File::put($this->path, $export);
+        $file = new File($this->path);
+        $file->put($export);
         $this->checksum = $this->getHashFile();
         unset($this->contents);
     }

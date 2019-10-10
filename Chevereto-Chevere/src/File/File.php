@@ -43,18 +43,19 @@ final class File
         return stream_resolve_include_path($this->path) !== false;
     }
 
-    public static function put(string $filename, $contents): void
+    public function put(string $contents): void
     {
-        if (!static::exists($filename)) {
-            $dirname = dirname($filename);
-            if (!static::exists($dirname)) {
+        if (!$this->exists()) {
+            $dirname = dirname($this->path);
+            $new = new static($dirname);
+            if (!$new->exists()) {
                 Path::create($dirname);
             }
         }
-        if (false === @file_put_contents($filename, $contents)) {
+        if (false === @file_put_contents($this->path, $contents)) {
             throw new RuntimeException(
                 (new Message('Unable to write content to file %filepath%'))
-                    ->code('%filepath%', $filename)
+                    ->code('%filepath%', $this->path)
                     ->toString()
             );
         }
