@@ -21,10 +21,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Chevere\Console\Console;
 use Chevere\Data\Traits\DataMethodTrait;
 use Chevere\ExceptionHandler\ExceptionHandler;
-use Chevere\Str\Str;
 use Chevere\VarDump\Formatters\DumperFormatter;
 use Chevere\VarDump\Formatters\PlainFormatter;
 use Chevere\VarDump\VarDump;
+
+use function ChevereFn\stringReplaceFirst;
 
 /**
  * Formats the error exception in HTML (default), console and plain text.
@@ -314,7 +315,7 @@ final class Formatter
      */
     private function setRichContentSection(string $key, array $section): void
     {
-        $section[0] = Str::replaceFirst('# ', '<span class="hide"># </span>', $section[0]);
+        $section[0] = stringReplaceFirst('# ', '<span class="hide"># </span>', $section[0]);
         $this->richContentSections[$key] = $section;
     }
 

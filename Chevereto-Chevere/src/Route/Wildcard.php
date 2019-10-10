@@ -73,7 +73,9 @@ final class Wildcard
 
     private function validateRoutePathMatch(): void
     {
-        if (!(Str::contains("{{$this->wildcardName}}", $this->route->path()) || Str::contains('{' . "$this->wildcardName?" . '}', $this->route->path()))) {
+        $noWildcard = false === strpos($this->route->path(), "{{$this->wildcardName}}");
+        $noOptionalWildcard = false === strpos($this->route->path(), '{' . "$this->wildcardName?" . '}');
+        if ($noWildcard || $noOptionalWildcard) {
             throw new LogicException(
                 (new Message("Wildcard %wildcard% doesn't exists in %path%."))
                     ->code('%wildcard%', $this->wildcardString)

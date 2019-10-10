@@ -24,7 +24,8 @@
     "autoload": {
         "files": [
             "utils/phpcheck.php",
-            "resources/functions/global/dump.php"
+            "resources/functions/dump.php",
+            "resources/functions/ChevereFn/string.php"
         ],
         "psr-4": {
             "Chevere\\": "src/"

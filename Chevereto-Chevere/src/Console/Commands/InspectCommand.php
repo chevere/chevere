@@ -82,7 +82,7 @@ final class InspectCommand extends Command
         if (is_object($this->callable)) {
             $this->method = '__invoke';
         } else {
-            if (Str::contains('::', $this->callable)) {
+            if (false !== strpos($this->callable, '::')) {
                 $callableExplode = explode('::', $this->callable);
                 $this->callable = $callableExplode[0];
                 $this->method = $callableExplode[1];

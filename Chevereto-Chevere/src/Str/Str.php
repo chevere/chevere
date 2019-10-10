@@ -116,69 +116,6 @@ abstract class Str
     ];
 
     /**
-     * Replace the first occurrence of the search string with the replacement
-     * string.
-     *
-     * @param string $search  value being searched for
-     * @param string $replace replacement value that replaces found search
-     *                        values
-     * @param string $subject string being searched and replaced on
-     *
-     * @return string returns a string with the replaced value
-     */
-    public static function replaceFirst(string $search, string $replace, string $subject): string
-    {
-        $pos = strpos($subject, $search);
-        if (false !== $pos) {
-            $subject = substr_replace($subject, $replace, $pos, strlen($search));
-        }
-
-        return $subject ?? '';
-    }
-
-    /**
-     * Replace the last occurrence of the search string with the replacement
-     * string.
-     *
-     * @param string $search  value being searched for
-     * @param string $replace replacement value that replaces found search
-     *                        values
-     * @param string $subject string being searched and replaced on
-     *
-     * @return string returns a string with the replaced value
-     */
-    public static function replaceLast(string $search, string $replace, string $subject): string
-    {
-        $pos = strrpos($subject, $search);
-        if (false !== $pos) {
-            $subject = substr_replace($subject, $replace, $pos, strlen($search));
-        }
-
-        return $subject ?? '';
-    }
-
-    /**
-     * Converts backslash into forward slashes.
-     *
-     * @param string $var path which will get forward slashes
-     */
-    public static function forwardSlashes(string $var): string
-    {
-        return str_replace('\\', '/', $var);
-    }
-
-    /**
-     * Detects if a string contains another sub-string.
-     *
-     * @param string $needle
-     * @param string $haystack
-     */
-    public static function contains(string $needle, string $haystack): bool
-    {
-        return false !== strpos($haystack, $needle);
-    }
-
-    /**
      * Detects if a string begins with the given needle.
      *
      * @param string $needle   value being searched for
@@ -351,35 +288,5 @@ abstract class Str
         }
 
         return $string ?? '';
-    }
-
-    /**
-     * Right-tail a string.
-     *
-     * Appends a string with a tail string, without repeats.
-     *
-     * @param string $string
-     * @param string $tail   string tail
-     *
-     * @return string right-tailed string
-     */
-    public static function rtail(string $string, string $tail): string
-    {
-        return rtrim($string, $tail) . $tail;
-    }
-
-    /**
-     * Left-tail a string.
-     *
-     * Prepends a string with a tail string, without repeats.
-     *
-     * @param string $string
-     * @param string $tail   string tail
-     *
-     * @return string right-tailed string
-     */
-    public static function ltail(string $string, string $tail): string
-    {
-        return $tail . ltrim($string, $tail);
     }
 }

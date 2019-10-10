@@ -23,6 +23,8 @@ use Chevere\Data\Traits\DataMethodTrait;
 use Chevere\Data\Traits\DataPropertyTrait;
 use Chevere\ExceptionHandler\ExceptionHandler;
 
+use function ChevereFn\stringReplaceFirst;
+
 /**
  * Wraps throwable exception.
  */
@@ -43,7 +45,7 @@ final class Wrap
         $this->data = new Data();
         $className = get_class($exception);
         if (Str::startsWith('Chevere\\', $className)) {
-            $className = Str::replaceFirst('Chevere\\', '', $className);
+            $className = stringReplaceFirst('Chevere\\', '', $className);
         }
         if ($exception instanceof ErrorException) {
             /* @scrutinizer ignore-call */

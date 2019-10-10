@@ -25,6 +25,8 @@ use JsonApiPhp\JsonApi\Link\SelfLink;
 use JsonApiPhp\JsonApi\ResourceCollection;
 use JsonApiPhp\JsonApi\ResourceObject;
 
+use function ChevereFn\stringReplaceFirst;
+
 class Index extends Controller implements JsonApiContract
 {
     use JsonApiTrait;
@@ -37,6 +39,7 @@ class Index extends Controller implements JsonApiContract
 
     public function __invoke(): void
     {
+        dd(stringReplaceFirst('e', '@', 'eee'));
         // die(1000 * (microtime(true) - BOOTSTRAP_TIME));
         $this->api = new ResourceObject(
             'info',

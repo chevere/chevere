@@ -22,6 +22,10 @@ use RecursiveDirectoryIterator;
 use Chevere\Message\Message;
 use Chevere\Str\Str;
 
+use function ChevereFn\stringForwardSlashes;
+use function ChevereFn\stringReplaceFirst;
+use function ChevereFn\stringRightTail;
+
 final class Path
 {
     /**
@@ -33,7 +37,7 @@ final class Path
      */
     public static function absolute(string $relativePath): string
     {
-        $relativePath = Str::forwardSlashes($relativePath);
+        $relativePath = stringForwardSlashes($relativePath);
 
         return ROOT_PATH . $relativePath;
     }
@@ -48,13 +52,13 @@ final class Path
      */
     public static function relative(string $absolutePath, string $rootContext = null): ?string
     {
-        $absolutePath = Str::forwardSlashes($absolutePath);
+        $absolutePath = stringForwardSlashes($absolutePath);
         $root = ROOT_PATH;
         if ($rootContext) {
             $root .= $rootContext . '/';
         }
 
-        return Str::replaceFirst($root, '', $absolutePath);
+        return stringReplaceFirst($root, '', $absolutePath);
     }
 
     /**
@@ -212,7 +216,7 @@ final class Path
      */
     public static function isStream(string $path): bool
     {
-        if (!Str::contains('://', $path)) {
+        if (false === strpos($path, '://')) {
             return false;
         }
         $explode = explode('://', $path, 2);
@@ -238,6 +242,6 @@ final class Path
      */
     public static function tailDir(string $dir): string
     {
-        return Str::rtail($dir, '/');
+        return stringRightTail($dir, '/');
     }
 }

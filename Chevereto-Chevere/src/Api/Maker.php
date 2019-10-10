@@ -38,6 +38,11 @@ use Chevere\Controllers\Api\HeadController;
 use Chevere\Controllers\Api\OptionsController;
 use Chevere\Router\Maker as RouterMaker;
 
+use function ChevereFn\stringForwardSlashes;
+use function ChevereFn\stringLeftTail;
+use function ChevereFn\stringReplaceFirst;
+use function ChevereFn\stringReplaceLast;
+
 final class Maker implements MakerContract
 {
     use CacheAccessTrait;
@@ -207,7 +212,7 @@ final class Maker implements MakerContract
     private function processRecursiveIterator(): void
     {
         foreach ($this->recursiveIterator as $filename) {
-            $filepathAbsolute = Str::forwardSlashes((string) $filename);
+            $filepathAbsolute = stringForwardSlashes((string) $filename);
             $className = $this->getClassNameFromFilepath($filepathAbsolute);
             $inspected = new Inspect($className);
             // $this->controllersMap[$className] = $inspected;
@@ -237,7 +242,7 @@ final class Maker implements MakerContract
             $methods = new Methods(...$methodsArray);
             $endpoint = new Endpoint($methods);
             /** @var string Full qualified route key for $pathComponent like /api/users/{user} */
-            $endpointRouteKey = Str::ltail($pathComponent, '/');
+            $endpointRouteKey = stringLeftTail($pathComponent, '/');
 
             $this->route = (new Route($endpointRouteKey))
                 ->withId($pathComponent)
@@ -269,8 +274,8 @@ final class Maker implements MakerContract
     private function getClassNameFromFilepath(string $filepath): string
     {
         $filepathRelative = Path::relative($filepath);
-        $filepathNoExt = Str::replaceLast('.php', '', $filepathRelative);
-        $filepathReplaceNS = Str::replaceFirst('app/src/', 'App\\', $filepathNoExt);
+        $filepathNoExt = stringReplaceLast('.php', '', $filepathRelative);
+        $filepathReplaceNS = stringReplaceFirst('app/src/', 'App\\', $filepathNoExt);
 
         return str_replace('/', '\\', $filepathReplaceNS);
     }

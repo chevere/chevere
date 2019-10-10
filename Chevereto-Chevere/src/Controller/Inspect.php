@@ -21,6 +21,10 @@ use Chevere\Str\Str;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Controller\InspectContract;
 
+use function ChevereFn\stringForwardSlashes;
+use function ChevereFn\stringReplaceFirst;
+use function ChevereFn\stringReplaceLast;
+
 // use Chevere\Interfaces\ControllerResourceInterface;
 
 /**
@@ -258,9 +262,9 @@ final class Inspect implements InspectContract
     private function getPathComponent(string $className): string
     {
         $classShortName = substr($className, strrpos($className, '\\') + 1);
-        $classNamespace = Str::replaceLast('\\' . $classShortName, '', $className);
-        $classNamespaceNoApp = Str::replaceFirst('App\\', '', $classNamespace);
+        $classNamespace = stringReplaceLast('\\' . $classShortName, '', $className);
+        $classNamespaceNoApp = stringReplaceFirst('App\\', '', $classNamespace);
 
-        return strtolower(Str::forwardSlashes($classNamespaceNoApp));
+        return strtolower(stringForwardSlashes($classNamespaceNoApp));
     }
 }

@@ -138,7 +138,7 @@ final class Hook
      */
     private static function parseIdentifier(string $id, int $trace = 3): array
     {
-        if (Str::contains('@', $id)) {
+        if (false !== strpos($id, '@')) {
             $anchored = explode('@', $id);
             $anchor = $anchored[0];
             $pathIdentifier = $anchored[1];

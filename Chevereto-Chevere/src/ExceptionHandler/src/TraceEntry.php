@@ -23,6 +23,8 @@ use Chevere\VarDump\Formatters\DumperFormatter;
 use Chevere\VarDump\Formatters\PlainFormatter;
 use Chevere\VarDump\VarDump;
 
+use function ChevereFn\stringReplaceFirst;
+
 /**
  * TraceEntry prepares the exception trace for being used with Stack.
  */
@@ -163,7 +165,7 @@ final class TraceEntry
 
     private function processAnonClass()
     {
-        $entryFile = Str::replaceFirst(VarDump::ANON_CLASS, '', $this->entry['class']);
+        $entryFile = stringReplaceFirst(VarDump::ANON_CLASS, '', $this->entry['class']);
         $this->entry['file'] = substr($entryFile, 0, strpos($entryFile, '.php') + 4);
         $this->entry['class'] = VarDump::ANON_CLASS;
         $this->entry['line'] = null;
@@ -183,7 +185,7 @@ final class TraceEntry
 
     private function handleProcessNormalizeFile()
     {
-        if (isset($this->entry['file']) && Str::contains('\\', $this->entry['file'])) {
+        if (isset($this->entry['file']) && false !== strpos($this->entry['file'], '\\')) {
             $this->processNormalizeFile();
         }
     }

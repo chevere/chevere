@@ -235,7 +235,8 @@ final class Route implements RouteContract
     public function getRegex(string $pattern): string
     {
         $regex = '^' . $pattern . '$';
-        if (!Str::contains('{', $regex)) {
+
+        if (false === strpos($regex, '{')) {
             return $regex;
         }
         if (isset($this->wildcards)) {

@@ -19,6 +19,9 @@ use Chevere\Path\Path;
 use Chevere\Arreglo\Arreglo;
 use Chevere\Str\Str;
 
+use function ChevereFn\stringReplaceFirst;
+use function ChevereFn\stringReplaceLast;
+
 final class Set
 {
     /** @var string The route path */
@@ -86,11 +89,11 @@ final class Set
         foreach ($this->matches[0] as $k => $v) {
             // Change {wildcard} to {n} (n is the wildcard index)
             if (isset($this->key)) {
-                $this->key = Str::replaceFirst($v, "{{$k}}", $this->key);
+                $this->key = stringReplaceFirst($v, "{{$k}}", $this->key);
             }
             $wildcard = $this->matches[1][$k];
             if (Str::endsWith('?', $wildcard)) {
-                $wildcardTrim = Str::replaceLast('?', '', $wildcard);
+                $wildcardTrim = stringReplaceLast('?', '', $wildcard);
                 $this->optionals[] = $k;
                 $this->optionalsIndex[$k] = $wildcardTrim;
             } else {

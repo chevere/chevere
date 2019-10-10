@@ -70,9 +70,9 @@ final class PathValidate implements PathValidateContract
     private function validateFormatSlashes(string $path): bool
     {
         return !Str::endsWith('/', $path)
-            && !Str::contains('//', $path)
-            && !Str::contains(' ', $path)
-            && !Str::contains('\\', $path);
+            && false === strpos($path, '//')
+            && false === strpos($path, ' ')
+            && false === strpos($path, '\\');
     }
 
     private function assertReservedWildcards(): void
@@ -88,6 +88,6 @@ final class PathValidate implements PathValidateContract
 
     private function getHasHandlebars(): bool
     {
-        return Str::contains('{', $this->path) || Str::contains('}', $this->path);
+        return false !== strpos($this->path, '{') || false !== strpos($this->path, '}');
     }
 }

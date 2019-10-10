@@ -99,7 +99,7 @@ final class PathHandle
 
     private function validateCharIdentifier()
     {
-        if (Str::contains(':', $this->identifier)) {
+        if (false !== strpos($this->identifier, ':')) {
             if (Str::endsWith(':', $this->identifier)) {
                 throw new InvalidArgumentException(
                     (new Message('Wrong string %a format, %v provided (trailing colon).'))
@@ -109,7 +109,7 @@ final class PathHandle
                 );
             }
             $this->filename = $this->filenameFromIdentifier();
-            if (Str::contains('/', $this->filename)) {
+            if (false !== strpos($this->filename, '/')) {
                 throw new InvalidArgumentException(
                     (new Message('Wrong string %a format, %v provided (path separators in filename).'))
                         ->code('%a', '$identifier')
@@ -140,7 +140,7 @@ final class PathHandle
             return;
         }
         $this->path = Path::normalize($this->identifier);
-        if (Str::contains(':', $this->path)) {
+        if (false !== strpos($this->path, ':')) {
             $this->path = $this->processIdentifier();
         } else {
             $this->path = $this->processPath();
