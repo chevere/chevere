@@ -16,7 +16,7 @@ namespace Chevere\Route;
 use LogicException;
 use Chevere\Message\Message;
 use Chevere\Path\Path;
-use Chevere\Arr\Arr;
+use Chevere\Arreglo\Arreglo;
 use Chevere\Str\Str;
 
 final class Set
@@ -114,7 +114,7 @@ final class Set
             $mandatoryDiff = array_diff($this->wildcards ?? [], $this->optionalsIndex);
             $this->mandatoryIndex = $this->getIndex($mandatoryDiff);
             // Generate the optionals power set, keeping its index keys in case of duplicated optionals
-            $powerSet = Arr::powerSet($this->optionals, true);
+            $powerSet = (new Arreglo($this->optionals))->getPowerSetStrict();
             // Build the route set, it will contain all the possible route combinations
             $this->keyPowerSet = $this->processPowerSet($powerSet);
         }
