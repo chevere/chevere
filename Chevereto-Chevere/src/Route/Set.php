@@ -15,10 +15,9 @@ namespace Chevere\Route;
 
 use LogicException;
 use Chevere\Message\Message;
-use Chevere\Path\Path;
 use Chevere\Arreglo\Arreglo;
-use Chevere\Str\Str;
 
+use function ChevereFn\pathNormalize;
 use function ChevereFn\stringEndsWith;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringReplaceLast;
@@ -147,7 +146,7 @@ final class Set
                     $auxWildcards[$search] = null;
                 }
                 $auxSet = str_replace("{{$search}}", $replaceValue ?? '', $auxSet);
-                $auxSet = Path::normalize($auxSet);
+                $auxSet = pathNormalize($auxSet);
             }
             ksort($auxWildcards);
             /*

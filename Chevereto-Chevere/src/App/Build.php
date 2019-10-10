@@ -26,6 +26,8 @@ use Chevere\Path\Path;
 use Chevere\Path\PathHandle;
 use Chevere\Router\Router;
 
+use function ChevereFn\pathRemoveContents;
+
 final class Build implements BuildContract
 {
     /** @var BuilderContract */
@@ -66,7 +68,7 @@ final class Build implements BuildContract
 
     public function exists(): bool
     {
-        return (new File($this->pathHandle->path()))->exists();
+        return $this->pathHandle->file()->exists();
     }
 
     public function withContainer(Container $container): BuildContract
@@ -143,7 +145,6 @@ final class Build implements BuildContract
     public function destroy(): void
     {
         unlink($this->pathHandle->path());
-        $cachePath = Path::fromIdentifier('cache');
-        Path::removeContents($cachePath);
+        pathRemoveContents((new PathHandle('cache'))->path());
     }
 }

@@ -19,9 +19,13 @@ use InvalidArgumentException;
 use LogicException;
 use Chevere\File\File;
 use Chevere\Message\Message;
-use Chevere\Str\Str;
 
+use function ChevereFn\pathIsAbsolute;
+use function ChevereFn\pathNormalize;
+use function ChevereFn\pathResolve;
+use function ChevereFn\pathAbsolute;
 use function ChevereFn\stringEndsWith;
+use function ChevereFn\stringRightTail;
 
 final class PathHandle
 {
@@ -33,6 +37,9 @@ final class PathHandle
 
     /** @var string absolute path like /home/user/app/ or /home/user/app/file.php */
     private $path;
+
+    /** @var File */
+    private $file;
 
     /** @var string */
     private $filename;
@@ -72,7 +79,9 @@ final class PathHandle
     }
 
     public function file(): File
-    { }
+    {
+        return $this->file;
+    }
 
     private function filenameFromIdentifier(): string
     {
@@ -124,7 +133,7 @@ final class PathHandle
 
     private function validateContext()
     {
-        if (!Path::isAbsolute($this->context)) {
+        if (!pathIsAbsolute($this->context)) {
             throw new InvalidArgumentException(
                 (new Message('String %a must be an absolute path, %v provided.'))
                     ->code('%a', '$context')
@@ -138,21 +147,22 @@ final class PathHandle
     {
         $isPHP = stringEndsWith('.php', $this->identifier);
         if ($isPHP && (new File($this->identifier))->exists()) {
-            $this->path = Path::isAbsolute($this->identifier) ? $this->identifier : Path::absolute($this->identifier);
+            $this->path = pathIsAbsolute($this->identifier) ? $this->identifier : pathAbsolute($this->identifier);
             return;
         }
-        $this->path = Path::normalize($this->identifier);
+        $this->path = pathNormalize($this->identifier);
         if (false !== strpos($this->path, ':')) {
             $this->path = $this->processIdentifier();
         } else {
             $this->path = $this->processPath();
         }
         // $this->path is not an absolute path neither a wrapper or anything like that
-        if (!Path::isAbsolute($this->path)) {
+        if (!pathIsAbsolute($this->path)) {
             $this->path = $this->context . $this->path;
         }
         // Resolve . and ..
-        $this->path = Path::resolve($this->path);
+        $this->path = pathResolve($this->path);
+        $this->file = new File($this->path);
     }
 
     private function processIdentifier(): string
@@ -163,7 +173,7 @@ final class PathHandle
         array_pop($this->explode);
         $path = join(':', $this->explode);
         if (strlen($path) > 0) {
-            $path = Path::tailDir($path);
+            $path = stringRightTail($path, '/');
         }
         $path .= $this->filename;
 
@@ -176,7 +186,7 @@ final class PathHandle
         $extension = pathinfo($this->path, PATHINFO_EXTENSION);
         // No extension => add trailing slash to path
         if ($extension == false) {
-            return Path::tailDir($this->path);
+            return stringRightTail($this->path, '/');
         }
 
         return $this->path;

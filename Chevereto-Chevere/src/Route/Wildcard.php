@@ -17,7 +17,6 @@ use LogicException;
 use InvalidArgumentException;
 use Chevere\Message\Message;
 use Chevere\Validate;
-use Chevere\Str\Str;
 
 use function ChevereFn\stringStartsWithNumeric;
 

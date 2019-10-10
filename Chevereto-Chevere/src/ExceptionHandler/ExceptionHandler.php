@@ -37,6 +37,8 @@ use Monolog\Handler\FirePHPHandler;
 use Chevere\Contracts\Http\RequestContract;
 use Chevere\Data\Traits\DataMethodTrait;
 
+use function ChevereFn\pathNormalize;
+
 /**
  * The Chevere exception handler.
  */
@@ -183,7 +185,7 @@ final class ExceptionHandler
 
     private function setLogFilePathProperties(): void
     {
-        $path = Path::normalize(static::PATH_LOGS);
+        $path = pathNormalize(static::PATH_LOGS);
         $path = rtrim($path, '/') . '/';
         $date = gmdate($this->logDateFolderFormat, $this->data->key('timestamp'));
         $id = $this->data->key('id');

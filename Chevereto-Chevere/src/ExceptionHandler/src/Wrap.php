@@ -16,13 +16,11 @@ namespace Chevere\ExceptionHandler\src;
 use Throwable;
 use ErrorException;
 use Chevere\Data\Data;
-use Chevere\Path\Path;
-use Chevere\Str\Str;
 use Chevere\Contracts\DataContract;
 use Chevere\Data\Traits\DataMethodTrait;
-use Chevere\Data\Traits\DataPropertyTrait;
 use Chevere\ExceptionHandler\ExceptionHandler;
 
+use function ChevereFn\pathNormalize;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 
@@ -66,7 +64,7 @@ final class Wrap
                 'type' => ExceptionHandler::ERROR_TABLE[$phpCode],
                 'loggerLevel' => ExceptionHandler::PHP_LOG_LEVEL[$phpCode] ?? 'error',
                 'message' => $exception->getMessage(),
-                'file' => Path::normalize($exception->getFile()),
+                'file' => pathNormalize($exception->getFile()),
                 'line' => (int) $exception->getLine(),
             ]);
     }

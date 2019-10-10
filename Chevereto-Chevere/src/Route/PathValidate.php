@@ -15,7 +15,6 @@ namespace Chevere\Route;
 
 use InvalidArgumentException;
 use Chevere\Message\Message;
-use Chevere\Str\Str;
 use Chevere\Contracts\Route\PathValidateContract;
 
 use function ChevereFn\stringEndsWith;

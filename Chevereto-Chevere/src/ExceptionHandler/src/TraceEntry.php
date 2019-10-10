@@ -18,11 +18,11 @@ use ReflectionMethod;
 use const Chevere\PATH;
 use Chevere\App\App;
 use Chevere\Path\Path;
-use Chevere\Str\Str;
 use Chevere\VarDump\Formatters\DumperFormatter;
 use Chevere\VarDump\Formatters\PlainFormatter;
 use Chevere\VarDump\VarDump;
 
+use function ChevereFn\pathNormalize;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 
@@ -187,12 +187,7 @@ final class TraceEntry
     private function handleProcessNormalizeFile()
     {
         if (isset($this->entry['file']) && false !== strpos($this->entry['file'], '\\')) {
-            $this->processNormalizeFile();
+            $this->entry['file'] = pathNormalize($this->entry['file']);
         }
-    }
-
-    private function processNormalizeFile()
-    {
-        $this->entry['file'] = Path::normalize($this->entry['file']);
     }
 }

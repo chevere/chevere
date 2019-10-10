@@ -64,8 +64,7 @@ final class Cache
 
     public function exists(string $key): bool
     {
-        $path = Path::fromIdentifier($this->getFileIdentifier($key));
-        return (new File($path))->exists();
+        return (new PathHandle($this->getFileIdentifier($key)))->file()->exists();
     }
 
     /**
@@ -89,9 +88,9 @@ final class Cache
 
     public function remove(string $key): void
     {
-        $fileIdentifier = $this->getFileIdentifier($key);
-        $path = Path::fromIdentifier($fileIdentifier);
-        if (!(new File($path))->exists()) {
+        $pathHandle = new PathHandle($this->getFileIdentifier($key));
+        $path = $pathHandle->path();
+        if (!$pathHandle->file()->exists()) {
             return;
         }
         unlink($path);

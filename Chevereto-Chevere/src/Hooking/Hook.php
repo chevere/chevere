@@ -16,7 +16,9 @@ namespace Chevere\Hooking;
 use InvalidArgumentException;
 use Chevere\Path\Path;
 use Chevere\Message\Message;
-use Chevere\Str\Str;
+use Chevere\Path\PathHandle;
+
+use function ChevereFn\pathNormalize;
 
 /**
  * Hooks refers to code that gets injected at determinated sections of the
@@ -148,7 +150,7 @@ final class Hook
 
         return [
             self::ANCHOR => $anchor ?? null,
-            self::FILE => Path::fromIdentifier($pathIdentifier),
+            self::FILE => (new PathHandle($pathIdentifier))->path(),
         ];
     }
 
@@ -243,7 +245,7 @@ final class Hook
     private static function getCallerFile(): ?string
     {
         // 0:Hook, 1:Hookable, 3:Caller
-        return Path::normalize(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2]['file']);
+        return pathNormalize(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2]['file']);
     }
 
     /**

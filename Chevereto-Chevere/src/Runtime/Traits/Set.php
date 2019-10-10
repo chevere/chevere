@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Runtime\Traits;
 
-use Chevere\Str\Str;
 use Chevere\Contracts\DataContract;
 
 trait Set

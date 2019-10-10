@@ -17,6 +17,10 @@ use RuntimeException;
 use Chevere\Message\Message;
 use Chevere\Path\Path;
 
+use function ChevereFn\pathIsAbsolute;
+use function ChevereFn\pathAbsolute;
+use function ChevereFn\pathCreate;
+
 final class File
 {
     /** @var string Absolute filename */
@@ -25,8 +29,8 @@ final class File
     public function __construct(string $path)
     {
         $this->path = $path;
-        if (!Path::isAbsolute($path)) {
-            $this->path = Path::absolute($path);
+        if (!pathIsAbsolute($path)) {
+            $this->path = pathAbsolute($path);
         }
     }
 
@@ -49,7 +53,7 @@ final class File
             $dirname = dirname($this->path);
             $new = new static($dirname);
             if (!$new->exists()) {
-                Path::create($dirname);
+                pathCreate($dirname);
             }
         }
         if (false === @file_put_contents($this->path, $contents)) {

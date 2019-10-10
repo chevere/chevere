@@ -26,7 +26,6 @@ use Chevere\Message\Message;
 use Chevere\Path\Path;
 use Chevere\Path\PathHandle;
 use Chevere\File\File;
-use Chevere\Str\Str;
 use Chevere\Controller\Inspect;
 use Chevere\Api\src\FilterIterator;
 use Chevere\Cache\Cache;
@@ -38,6 +37,7 @@ use Chevere\Controllers\Api\HeadController;
 use Chevere\Controllers\Api\OptionsController;
 use Chevere\Router\Maker as RouterMaker;
 
+use function ChevereFn\pathRelative;
 use function ChevereFn\stringForwardSlashes;
 use function ChevereFn\stringLeftTail;
 use function ChevereFn\stringReplaceFirst;
@@ -192,7 +192,7 @@ final class Maker implements MakerContract
 
     private function assertPath(): void
     {
-        $file = new File($this->pathHandle->path());
+        $file = $this->pathHandle->file();
         if (!$file->exists()) {
             throw new LogicException(
                 (new Message("Directory %directory% doesn't exists"))
@@ -273,7 +273,7 @@ final class Maker implements MakerContract
      */
     private function getClassNameFromFilepath(string $filepath): string
     {
-        $filepathRelative = Path::relative($filepath);
+        $filepathRelative = pathRelative($filepath);
         $filepathNoExt = stringReplaceLast('.php', '', $filepathRelative);
         $filepathReplaceNS = stringReplaceFirst('app/src/', 'App\\', $filepathNoExt);
 

@@ -23,7 +23,6 @@ use ReflectionFunction;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Console\Command;
 use Chevere\Contracts\App\BuilderContract;
-use Chevere\Str\Str;
 
 /**
  * The InspectCommand allows to get callable information using CLI.

@@ -18,6 +18,8 @@ use Chevere\Console\Command;
 use Chevere\Contracts\App\BuilderContract;
 use Chevere\Path\Path;
 
+use function ChevereFn\pathRemoveContents;
+
 /**
  * The ClearLogsCommand removes app stored logs.
  */
@@ -29,7 +31,7 @@ final class ClearLogsCommand extends Command
 
     public function callback(BuilderContract $builder): int
     {
-        $delete = Path::removeContents(App::PATH_LOGS);
+        $delete = pathRemoveContents(App::PATH_LOGS);
         $count = count($delete);
         $this->console()->style()->success(
             $count > 0 ? sprintf('App logs cleared (%s files)', $count) : 'No app logs to remove'

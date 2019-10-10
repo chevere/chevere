@@ -16,8 +16,6 @@ namespace Chevere\Controller;
 use LogicException;
 use ReflectionClass;
 use Chevere\Message\Message;
-use Chevere\Api\Api;
-use Chevere\Str\Str;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Controller\InspectContract;
 
