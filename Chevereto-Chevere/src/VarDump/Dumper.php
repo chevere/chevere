@@ -24,6 +24,9 @@ use Chevere\Str\Str;
 use Chevere\VarDump\Formatters\DumperFormatter;
 use Chevere\Contracts\VarDump\FormatterContract;
 
+use function ChevereFn\stringEndsWith;
+use function ChevereFn\stringStartsWith;
+
 /**
  * Dumps information about one or more variables. CLI/HTML aware.
  */
@@ -133,7 +136,11 @@ class Dumper
 
     final private function handleSelfCaller(): void
     {
-        if (Str::endsWith('resources/functions/dump.php', $this->callerFilepath) && __CLASS__ == $this->debugBacktrace[0]['class'] && in_array($this->debugBacktrace[0]['function'], ['dump', 'dd'])) {
+        if (
+            stringEndsWith('resources/functions/dump.php', $this->callerFilepath)
+            && __CLASS__ == $this->debugBacktrace[0]['class']
+            && in_array($this->debugBacktrace[0]['function'], ['dump', 'dd'])
+        ) {
             $this->shiftDebugBacktrace();
         }
     }
@@ -179,7 +186,7 @@ class Dumper
     {
         if (isset($this->debugBacktrace[1]['class'])) {
             $class = $this->debugBacktrace[static::OFFSET]['class'];
-            if (Str::startsWith('class@anonymous', $class)) {
+            if (stringStartsWith('class@anonymous', $class)) {
                 $class = explode('0x', $class)[0];
             }
             $this->appendClass($class, $this->debugBacktrace[static::OFFSET]['type']);

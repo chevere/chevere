@@ -25,6 +25,7 @@ use Chevere\Str\Str;
 use function ChevereFn\stringForwardSlashes;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringRightTail;
+use function ChevereFn\stringStartsWith;
 
 final class Path
 {
@@ -168,7 +169,7 @@ final class Path
             return '';
         }
         // Chevereto: Get rid of any extra slashes at the begining if needed
-        if (Str::startsWith('/', $path)) {
+        if (stringStartsWith('/', $path)) {
             $path = '/' . ltrim($path, '/');
         }
         // Windows paths should uppercase the drive letter

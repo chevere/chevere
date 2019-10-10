@@ -19,6 +19,8 @@ use Chevere\Message\Message;
 use Chevere\Validate;
 use Chevere\Str\Str;
 
+use function ChevereFn\stringStartsWithNumeric;
+
 final class Wildcard
 {
     /** @var string */
@@ -51,10 +53,17 @@ final class Wildcard
 
     private function assertFormat(): void
     {
-        if (!(!Str::startsWithNumeric($this->wildcardName) && preg_match('/^[a-z0-9_]+$/i', $this->wildcardName))) {
+        if (stringStartsWithNumeric($this->wildcardName)) {
             throw new InvalidArgumentException(
-                (new Message("String %s must contain only alphanumeric and underscore characters and it shouldn't start with a numeric value."))
-                    ->code('%s', $this->wildcardName)
+                (new Message("String %string% shouldn't start with a numeric value"))
+                    ->code('%string%', $this->wildcardName)
+                    ->toString()
+            );
+        }
+        if (!preg_match('/^[a-z0-9_]+$/i', $this->wildcardName)) {
+            throw new InvalidArgumentException(
+                (new Message("String %string% must contain only alphanumeric and underscore characters"))
+                    ->code('%string%', $this->wildcardName)
                     ->toString()
             );
         }

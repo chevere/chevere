@@ -19,6 +19,7 @@ use Chevere\Path\Path;
 use Chevere\Arreglo\Arreglo;
 use Chevere\Str\Str;
 
+use function ChevereFn\stringEndsWith;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringReplaceLast;
 
@@ -92,7 +93,7 @@ final class Set
                 $this->key = stringReplaceFirst($v, "{{$k}}", $this->key);
             }
             $wildcard = $this->matches[1][$k];
-            if (Str::endsWith('?', $wildcard)) {
+            if (stringEndsWith('?', $wildcard)) {
                 $wildcardTrim = stringReplaceLast('?', '', $wildcard);
                 $this->optionals[] = $k;
                 $this->optionalsIndex[$k] = $wildcardTrim;

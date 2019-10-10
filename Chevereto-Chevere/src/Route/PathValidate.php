@@ -18,6 +18,9 @@ use Chevere\Message\Message;
 use Chevere\Str\Str;
 use Chevere\Contracts\Route\PathValidateContract;
 
+use function ChevereFn\stringEndsWith;
+use function ChevereFn\stringStartsWith;
+
 final class PathValidate implements PathValidateContract
 {
     /** @var string */
@@ -63,13 +66,13 @@ final class PathValidate implements PathValidateContract
             return true;
         }
 
-        return strlen($path) > 0 && Str::startsWith('/', $path)
+        return strlen($path) > 0 && stringStartsWith('/', $path)
             && $this->validateFormatSlashes($path);
     }
 
     private function validateFormatSlashes(string $path): bool
     {
-        return !Str::endsWith('/', $path)
+        return !stringEndsWith('/', $path)
             && false === strpos($path, '//')
             && false === strpos($path, ' ')
             && false === strpos($path, '\\');

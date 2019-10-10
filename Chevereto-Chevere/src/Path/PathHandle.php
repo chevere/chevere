@@ -21,6 +21,8 @@ use Chevere\File\File;
 use Chevere\Message\Message;
 use Chevere\Str\Str;
 
+use function ChevereFn\stringEndsWith;
+
 final class PathHandle
 {
     /** @var string */
@@ -100,7 +102,7 @@ final class PathHandle
     private function validateCharIdentifier()
     {
         if (false !== strpos($this->identifier, ':')) {
-            if (Str::endsWith(':', $this->identifier)) {
+            if (stringEndsWith(':', $this->identifier)) {
                 throw new InvalidArgumentException(
                     (new Message('Wrong string %a format, %v provided (trailing colon).'))
                         ->code('%a', '$identifier')
@@ -134,7 +136,7 @@ final class PathHandle
 
     private function process(): void
     {
-        $isPHP = Str::endsWith('.php', $this->identifier);
+        $isPHP = stringEndsWith('.php', $this->identifier);
         if ($isPHP && (new File($this->identifier))->exists()) {
             $this->path = Path::isAbsolute($this->identifier) ? $this->identifier : Path::absolute($this->identifier);
             return;
