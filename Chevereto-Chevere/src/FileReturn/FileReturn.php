@@ -96,7 +96,7 @@ final class FileReturn
     public function raw()
     {
         if (!isset($this->raw)) {
-            if (!File::exists($this->path)) {
+            if (!(new File($this->path))->exists()) {
                 throw new FileNotFoundException(
                     (new Message("File %filepath% doesn't exists."))
                         ->code('%filepath%', $this->path)

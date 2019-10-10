@@ -19,27 +19,28 @@ use Chevere\Path\Path;
 
 final class File
 {
+    /** @var string Absolute filename */
+    private $path;
+
+    public function __construct(string $path)
+    {
+        $this->path = $path;
+        if (!Path::isAbsolute($path)) {
+            $this->path = Path::absolute($path);
+        }
+    }
+
     /**
      * Fast wat to determine if a file or directory exists using stream_resolve_include_path.
      *
-     * @param string $filename   Absolute file path
-     * @param bool   $clearCache TRUE to call clearstatcache
-     *
      * @return bool TRUE if the $filename exists
      */
-    // FIXME: Don't pass bool
-    public static function exists(string $filename, bool $clearCache = true): bool
+    // FIXME: This should be moved to Path
+    public function exists(): bool
     {
-        if ($clearCache) {
-            clearstatcache(true);
-        }
-        // Only tweak relative paths, without wrappers or anything else
-        // Note that stream_resolve_include_path won't work with relative paths if no chdir().
-        if (!Path::isAbsolute($filename)) {
-            $filename = Path::absolute($filename);
-        }
+        $this->clearStatCache();
 
-        return stream_resolve_include_path($filename) !== false;
+        return stream_resolve_include_path($this->path) !== false;
     }
 
     public static function put(string $filename, $contents): void
@@ -57,5 +58,10 @@ final class File
                     ->toString()
             );
         }
+    }
+
+    private function clearStatCache(): void
+    {
+        clearstatcache(true, $this->path);
     }
 }

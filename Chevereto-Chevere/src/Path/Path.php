@@ -220,6 +220,9 @@ final class Path
         return in_array($explode[0], stream_get_wrappers());
     }
 
+    /**
+     * Return the absolute path from its identifier.
+     */
     public static function fromIdentifier(string $identifier): string
     {
         $that = new PathHandle($identifier);

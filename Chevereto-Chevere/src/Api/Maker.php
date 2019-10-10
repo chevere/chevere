@@ -187,7 +187,8 @@ final class Maker implements MakerContract
 
     private function assertPath(): void
     {
-        if (!File::exists($this->pathHandle->path())) {
+        $file = new File($this->pathHandle->path());
+        if (!$file->exists()) {
             throw new LogicException(
                 (new Message("Directory %directory% doesn't exists"))
                     ->code('%directory%', $this->pathHandle->path())

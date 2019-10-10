@@ -56,15 +56,16 @@ final class Cache
      */
     public function get(string $key): FileReturn
     {
+        $identifier = $this->getFileIdentifier($key);
         return new FileReturn(
-            new PathHandle($this->getFileIdentifier($key))
+            new PathHandle($identifier)
         );
     }
 
     public function exists(string $key): bool
     {
         $path = Path::fromIdentifier($this->getFileIdentifier($key));
-        return File::exists($path);
+        return (new File($path))->exists();
     }
 
     /**
@@ -90,7 +91,7 @@ final class Cache
     {
         $fileIdentifier = $this->getFileIdentifier($key);
         $path = Path::fromIdentifier($fileIdentifier);
-        if (!File::exists($path)) {
+        if (!(new File($path))->exists()) {
             return;
         }
         unlink($path);

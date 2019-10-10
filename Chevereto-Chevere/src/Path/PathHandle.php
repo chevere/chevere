@@ -69,6 +69,9 @@ final class PathHandle
         return $this->path;
     }
 
+    public function file(): File
+    { }
+
     private function filenameFromIdentifier(): string
     {
         $this->explode = explode(':', $this->identifier);
@@ -131,7 +134,8 @@ final class PathHandle
 
     private function process(): void
     {
-        if (Str::endsWith('.php', $this->identifier) && File::exists($this->identifier)) {
+        $isPHP = Str::endsWith('.php', $this->identifier);
+        if ($isPHP && (new File($this->identifier))->exists()) {
             $this->path = Path::isAbsolute($this->identifier) ? $this->identifier : Path::absolute($this->identifier);
             return;
         }

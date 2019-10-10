@@ -66,7 +66,7 @@ final class Build implements BuildContract
 
     public function exists(): bool
     {
-        return File::exists($this->pathHandle->path());
+        return (new File($this->pathHandle->path()))->exists();
     }
 
     public function withContainer(Container $container): BuildContract
