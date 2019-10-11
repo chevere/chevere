@@ -15,6 +15,32 @@ namespace Chevere\ExceptionHandler\src;
 
 /**
  * Stores the template strings used by ExceptionHandler.
+ * 
+ * Available tags:
+ *   %className%
+ *   %code%
+ *   %errorType%
+ *   %type%
+ *   %loggerLevel%
+ *   %message%
+ *   %file%
+ *   %line%
+ *   %uri%
+ *   %clientUserAgent%
+ *   %requestMethod%
+ *   %serverProtocol%
+ *   %body%
+ *   %content%
+ *   %thrown%
+ *   %richStack%
+ *   %plainStack%
+ *   %title%
+ *   %bodyClass%
+ *   %dateTimeAtom%
+ *   %timestamp%
+ *   %id%
+ *   %logFilename%
+ *   %css%
  */
 class Template
 {
@@ -53,7 +79,7 @@ class Template
     const HTML_TEMPLATE = '<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="generator" content="Chevere\ExceptionHandler"><style>%css%</style></head><body class="%bodyClass%">%body%</body></html>';
 
     /** @var string HTML body used when debug is disabled (App config) */
-    const NO_DEBUG_BODY_HTML = '<main><div><div class="t t--scream">%title%</div>%content%<p class="fine-print">%datetimeUtc% • %id%</p></div></main>';
+    const NO_DEBUG_BODY_HTML = '<main><div><div class="t t--scream">%title%</div>%content%<p class="fine-print">%dateTimeAtom% • %id%</p></div></main>';
 
     /** @var string HTML body used when debug is enabled (App config) */
     const DEBUG_BODY_HTML = '<main class="main--stack"><div>%content%<div class="c note user-select-none"><b>Note:</b> This message is being displayed because of active debug mode. Remember to turn this off when going production by editing <code>%loadedConfigFilesString%</code></div></div></main>';

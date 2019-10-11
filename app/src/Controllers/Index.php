@@ -40,8 +40,7 @@ class Index extends Controller implements JsonApiContract
 
     public function __invoke(): void
     {
-        dump('eso');
-        // throw new Exception('eee');
+        throw new Exception('eee');
         // $gg = new Globals($GLOBALS);
         // dd($gg->server());
         dd(stringReplaceFirst('e', '@', 'eee'));

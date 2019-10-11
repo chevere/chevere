@@ -31,28 +31,24 @@ final class BuildCommand extends Command
     const DESCRIPTION = 'Build the App';
     const HELP = 'This command builds the App';
 
+    /** @var BuilderContract */
+    private $builder;
+
     public function callback(BuilderContract $builder): int
     {
-        if (!$builder->hasParameters()) {
-            throw new LogicException(
-                (new Message('Missing %class% %parameters%'))
-                    ->code('%class%', get_class($builder))
-                    ->code('%parameters%', 'parameters')
-                    ->toString()
-
-            );
-        }
+        $this->builder = $builder;
+        $this->assertBuilderParams();
         $title = 'App built';
         try {
-            $build = $builder->build()
-                ->withParameters($builder->parameters());
-            $builder = $builder
+            $build = $this->builder->build()
+                ->withParameters($this->builder->parameters());
+            $this->builder = $this->builder
                 ->withBuild($build);
         } catch (AlreadyBuiltException $e) {
             $title .= ' (not by this command)';
         }
         $checksums = [];
-        foreach ($builder->build()->cacheChecksums() as $name => $keys) {
+        foreach ($this->builder->build()->cacheChecksums() as $name => $keys) {
             foreach ($keys as $key => $array) {
                 $checksums[] = [$name, $key, $array['path'], substr($array['checksum'], 0, 8)];
             }
@@ -60,9 +56,22 @@ final class BuildCommand extends Command
         $this->console()->style()->success($title);
         $this->console()->style()->table(['Cache', 'Key', 'Path', 'Checksum'], $checksums);
         $this->console()->style()->writeln([
-            '[Path] ' . $builder->build()->pathHandle()->path(),
-            '[Checksum] ' . $builder->build()->checkout()->checksum()
+            '[Path] ' . $this->builder->build()->pathHandle()->path(),
+            '[Checksum] ' . $this->builder->build()->checkout()->checksum()
         ]);
         return 0;
+    }
+
+    private function assertBuilderParams(): void
+    {
+        if (!$this->builder->hasParameters()) {
+            throw new LogicException(
+                (new Message('Missing %class% %parameters%'))
+                    ->code('%class%', get_class($this->builder))
+                    ->code('%parameters%', 'parameters')
+                    ->toString()
+
+            );
+        }
     }
 }

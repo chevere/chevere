@@ -88,6 +88,8 @@ final class Formatter
         $this->setServerProperties();
         $this->data = $this->data
             ->withMergedArray([
+                'body' => null,
+                'content' => null,
                 'thrown' => $this->wrap->data()->key('className') . ' thrown',
             ]);
         $this->processStack();
@@ -97,7 +99,7 @@ final class Formatter
             ->withMergedArray([
                 'title' => $this->data->key('thrown'),
                 'bodyClass' => !headers_sent() ? 'body--flex' : 'body--block',
-            ]);
+            ] + $this->exceptionHandler->data()->toArray());
     }
 
     public function withLineBreak(string $lineBreak): Formatter
@@ -130,38 +132,6 @@ final class Formatter
     public function consoleSections(): array
     {
         return $this->consoleSections;
-    }
-
-    public function getTemplateTags(): array
-    {
-        return [
-            'id' => $this->exceptionHandler->data()->key('id'),
-            'datetimeUtc' => $this->exceptionHandler->data()->key('dateTimeAtom'),
-            'timestamp' => $this->exceptionHandler->data()->key('timestamp'),
-            'loadedConfigFilesString' => $this->exceptionHandler->data()->key('loadedConfigFilesString'),
-            'logFilename' => $this->exceptionHandler->data()->key('logFilename'),
-            'css' => $this->data->key('css'),
-            'bodyClass' => $this->data->key('bodyClass'),
-            'body' => null,
-            'title' => $this->data->key('title'),
-            'content' => null,
-            'title' => $this->data->key('title'),
-            'file' => $this->data->key('file'),
-            'line' => $this->data->key('line'),
-            'message' => $this->data->key('message'),
-            'code' => $this->data->key('code'),
-            'plainStack' => $this->data->key('plainStack'),
-            'consoleStack' => $this->data->key('consoleStack'),
-            'richStack' => $this->data->key('richStack'),
-            'clientIp' => $this->data->key('clientIp'),
-            'clientUserAgent' => $this->data->key('clientUserAgent'),
-            'serverProtocol' => $this->data->key('serverProtocol'),
-            'requestMethod' => $this->data->key('requestMethod'),
-            'uri' => $this->data->key('uri') ?? null,
-            'serverHost' => $this->data->key('serverHost'),
-            'serverPort' => $this->data->key('serverPort'),
-            'serverSoftware' => $this->data->key('serverSoftware'),
-        ];
     }
 
     private function setServerProperties()
@@ -210,7 +180,7 @@ final class Formatter
         $sections = [
             static::SECTION_TITLE => ['%title% <span>in&nbsp;%file%:%line%</span>'],
             static::SECTION_MESSAGE => ['# Message', '%message%' . ($this->wrap->data()->key('code') ? ' [Code #%code%]' : null)],
-            static::SECTION_TIME => ['# Time', '%datetimeUtc% [%timestamp%]'],
+            static::SECTION_TIME => ['# Time', '%dateTimeAtom% [%timestamp%]'],
             static::SECTION_ID => ['# Incident ID:%id%', 'Logged at %logFilename%'],
             static::SECTION_STACK => ['# Stack trace', '%plainStack%'],
             static::SECTION_CLIENT => ['# Client', '%clientIp% %clientUserAgent%'],

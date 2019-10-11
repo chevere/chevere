@@ -106,7 +106,8 @@ final class Output
 
     private function parseTemplates(): void
     {
-        $this->tags = $this->formatter->getTemplateTags();
+        $this->tags = $this->formatter->data()->toArray();
+
         $this->preparedTags = [];
         foreach ($this->tags as $k => $v) {
             $this->preparedTags["%$k%"] = $v;
@@ -115,6 +116,7 @@ final class Output
         $this->tags['content'] = $content;
         $this->preparedTags['%content%'] = $this->tags['content'];
         $this->textPlain = strtr($this->plainTemplate, $this->preparedTags);
+        dd(var_export(array_keys($this->preparedTags), true));
     }
 
     // FIXME: JsonApi Document
