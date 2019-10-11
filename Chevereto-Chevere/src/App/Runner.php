@@ -22,43 +22,64 @@ use Chevere\Contracts\Controller\ControllerContract;
 
 final class Runner implements RunnerContract
 {
-
     /** @var AppContract */
     private $app;
+
+    /** @var string */
+    private $controllerName;
 
     public function __construct(AppContract $app)
     {
         $this->app = $app;
     }
 
+    public function withControllerName(string $controllerName): RunnerContract
+    {
+        $new = clone $this;
+        $new->controllerName = $controllerName;
+        $new->assertControllerName();
+
+        return $new;
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function runController(string $controller): ControllerContract
+    public function run(): ControllerContract
     {
-        if (!is_subclass_of($controller, ControllerContract::class)) {
+        if (!isset($this->controllerName)) {
+            throw new LogicException(
+                (new Message("Instance of class %class% lacks of a controller"))
+                    ->code('%class%', __CLASS__)
+            );
+        }
+        $this->handleRouteMiddleware();
+        $controller = new $this->controllerName($this->app);
+        $controllerArguments = $this->getControllerArguments($controller);
+        $controller(...$controllerArguments);
+
+        return $controller;
+    }
+
+    private function getControllerArguments($controller): array
+    {
+        if ($this->app->hasArguments()) {
+            $wrap = new ArgumentsWrap($controller, $this->app->arguments());
+            return $wrap->typedArguments();
+        }
+        return [];
+    }
+
+    private function assertControllerName(): void
+    {
+        if (!is_subclass_of($this->controllerName, ControllerContract::class)) {
             throw new LogicException(
                 (new Message('Controller %controller% must implement the %contract% interface'))
-                    ->code('%controller%', $controller)
+                    ->code('%controller%', $this->controllerName)
                     ->code('%contract%', ControllerContract::class)
                     ->toString()
             );
         }
-
-        $this->handleRouteMiddleware();
-
-        $controller = new $controller($this->app);
-
-        if ($this->app->hasArguments()) {
-            $wrap = new ArgumentsWrap($controller, $this->app->arguments());
-            $controllerArguments = $wrap->typedArguments();
-        } else {
-            $controllerArguments = [];
-        }
-
-        $controller(...$controllerArguments);
-
-        return $controller;
     }
 
     private function handleRouteMiddleware()

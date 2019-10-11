@@ -226,7 +226,9 @@ final class Builder implements BuilderContract
         $this->app = $this->app
             ->withArguments($this->controllerArguments);
         $runner = new Runner($this->app);
-        $controller = $runner->runController($controller);
+        $controller = $runner
+            ->withControllerName($controller)
+            ->run();
         $contentStream = stream_for($controller->content());
         $response = $this->app->response();
         $guzzle = $response->guzzle();

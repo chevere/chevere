@@ -62,9 +62,9 @@ final class MiddlewareHandler implements MiddlewareHandlerContract
         }
     }
 
-    public function stop(Throwable $e)
+    public function stop(Throwable $throwable)
     {
         $this->stopped = true;
-        $this->exception = $e;
+        $this->exception = $throwable;
     }
 }
