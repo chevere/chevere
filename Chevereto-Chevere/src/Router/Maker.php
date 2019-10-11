@@ -75,7 +75,7 @@ final class Maker implements MakerContract
         $keyPowerSet = $route->keyPowerSet();
         if (!empty($keyPowerSet)) {
             $ix = $id;
-            foreach ($keyPowerSet as $set => $index) {
+            foreach (array_keys($keyPowerSet) as $set) {
                 ++$ix;
                 $new->routes[] = [$id, (string) $set];
                 $new->regexIndex[$route->getRegex((string) $set)] = $ix;

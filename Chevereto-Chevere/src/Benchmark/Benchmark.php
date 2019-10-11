@@ -235,7 +235,7 @@ final class Benchmark
 
     private function handleCallables(): void
     {
-        foreach ($this->index as $id => $name) {
+        foreach (array_keys($this->index) as $id) {
             if ($this->isAborted) {
                 $this->timeTaken = $this->timeTaken ?? (hrtime(true) - $this->startupTime);
                 break;
@@ -287,7 +287,7 @@ final class Benchmark
     private function processResults(): void
     {
         $this->recordsProcessed = 0;
-        foreach ($this->records as $id => $timeTaken) {
+        foreach (array_keys($this->records) as $id) {
             $this->lines[] = $this->getResultTitle($id);
             $number = new Number($this->results[$id]['runs']);
             $resRuns = $number->toAbbreviate() . ' runs';

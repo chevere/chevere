@@ -34,7 +34,7 @@ final class TemplatedStrings
     private $sectionsLength;
 
     /** @var int */
-    private $i;
+    private $count;
 
     /** @var string */
     private $rich;
@@ -48,7 +48,7 @@ final class TemplatedStrings
         $this->plain = '';
         $this->sectionsLength = count($formatter->plainContentSections());
         $this->titleBreak = str_repeat('=', $formatter::COLUMNS);
-        $this->i = 0;
+        $this->count = 0;
         foreach ($formatter->plainContentSections() as $k => $plainSection) {
             $this->plainSection = $plainSection;
             $this->sectionLength = count($plainSection);
@@ -57,7 +57,7 @@ final class TemplatedStrings
                 $this->richSection = $richSection;
             }
             $this->process();
-            ++$this->i;
+            ++$this->count;
         }
     }
 
@@ -75,7 +75,7 @@ final class TemplatedStrings
     {
         $this->appendSectionWrap();
         $this->appendSectionContents();
-        if ($this->i + 1 < $this->sectionsLength) {
+        if ($this->count + 1 < $this->sectionsLength) {
             $this->appendRichSectionBreak();
             $this->appendPlainSectionBreak();
         }
@@ -83,13 +83,13 @@ final class TemplatedStrings
 
     private function appendSectionContents(): void
     {
-        if ($this->i > 0) {
+        if ($this->count > 0) {
             $j = 1 == $this->sectionLength ? 0 : 1;
             for ($j; $j < $this->sectionLength; ++$j) {
                 if ($this->sectionLength > 1) {
                     $this->appendEOL();
                 }
-                $this->rich .= '<div class="c">'.$this->richSection[$j].'</div>';
+                $this->rich .= '<div class="c">' . $this->richSection[$j] . '</div>';
                 $this->plain .= $this->plainSection[$j];
             }
         }
@@ -97,10 +97,10 @@ final class TemplatedStrings
 
     private function appendSectionWrap(): void
     {
-        if (0 == $this->i || isset($this->plainSection[1])) {
-            $this->rich .= '<div class="t'.(0 == $this->i ? ' t--scream' : null).'">'.$this->richSection[0].'</div>';
+        if (0 == $this->count || isset($this->plainSection[1])) {
+            $this->rich .= '<div class="t' . (0 == $this->count ? ' t--scream' : null) . '">' . $this->richSection[0] . '</div>';
             $this->plain .= html_entity_decode($this->plainSection[0]);
-            if (0 == $this->i) {
+            if (0 == $this->count) {
                 $this->appendRichTitleBreak();
                 $this->appendPlainTitleBreak();
             }
@@ -109,12 +109,12 @@ final class TemplatedStrings
 
     private function appendRichTitleBreak(): void
     {
-        $this->rich .= "\n".'<div class="hide">'.$this->titleBreak.'</div>';
+        $this->rich .= "\n" . '<div class="hide">' . $this->titleBreak . '</div>';
     }
 
     private function appendPlainTitleBreak(): void
     {
-        $this->plain .= "\n".$this->titleBreak;
+        $this->plain .= "\n" . $this->titleBreak;
     }
 
     private function appendEOL(): void
@@ -125,7 +125,7 @@ final class TemplatedStrings
 
     private function appendRichSectionBreak(): void
     {
-        $this->rich .= "\n".'<br>'."\n";
+        $this->rich .= "\n" . '<br>' . "\n";
     }
 
     private function appendPlainSectionBreak(): void

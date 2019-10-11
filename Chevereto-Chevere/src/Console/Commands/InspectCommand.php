@@ -110,7 +110,7 @@ final class InspectCommand extends Command
 
     private function processParametersArguments(): void
     {
-        $i = 0;
+        $argPos = 0;
         // FIXME: Reflector should be changed by separate ReflectionFunction and ReflectionMethod
         foreach ($this->reflector->getParameters() as $parameter) {
             $aux = '';
@@ -121,8 +121,8 @@ final class InspectCommand extends Command
             if ($parameter->isDefaultValueAvailable()) {
                 $aux .= ' = ' . ($parameter->getDefaultValue() ?? 'null');
             }
-            $this->arguments[] = "#$i $aux";
-            ++$i;
+            $this->arguments[] = "#$argPos $aux";
+            ++$argPos;
         }
     }
 

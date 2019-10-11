@@ -192,7 +192,7 @@ final class Inspect implements InspectContract
     private function handleConstResourceValid(): void
     {
         if (is_iterable($this->resources)) {
-            foreach ($this->resources as $propertyName => $className) {
+            foreach ($this->resources as $className) {
                 if (!class_exists($className)) {
                     throw new LogicException(
                         (new Message('Class %s not found for %c Controller at %f.'))

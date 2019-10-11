@@ -126,7 +126,7 @@ final class Set
     private function getIndex(array $diff): array
     {
         $index = [];
-        foreach ($diff as $k => $v) {
+        foreach (array_keys($diff) as $k) {
             $index[$k] = null;
         }
 

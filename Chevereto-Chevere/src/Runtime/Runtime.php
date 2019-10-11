@@ -28,7 +28,7 @@ final class Runtime
     public function __construct(SetContract ...$runtimeContract)
     {
         $this->data = new Data();
-        foreach ($runtimeContract as $k => $runtimeSet) {
+        foreach ($runtimeContract as $runtimeSet) {
             $this->data = $this->data
                 ->withKey($runtimeSet->name(), $runtimeSet->value());
         }

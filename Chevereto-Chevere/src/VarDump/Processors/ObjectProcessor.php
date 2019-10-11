@@ -100,9 +100,9 @@ final class ObjectProcessor implements ProcessorContract
         if (is_object($this->aux) && property_exists($this->aux, $key)) {
             try {
                 $r = new ReflectionObject($this->aux);
-                $p = $r->getProperty($key);
-                $p->setAccessible(true);
-                if ($this->aux == $p->getValue($this->aux)) {
+                $prop = $r->getProperty($key);
+                $prop->setAccessible(true);
+                if ($this->aux == $prop->getValue($this->aux)) {
                     $this->val .= $this->varDump->formatter()->wrap(
                         VarDump::_OPERATOR,
                         '(' . $this->varDump->formatter()->getEmphasis('circular object reference') . ')'

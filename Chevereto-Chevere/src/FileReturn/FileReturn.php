@@ -128,7 +128,7 @@ final class FileReturn
         if (!isset($this->var)) {
             $this->var = $this->raw();
             if (is_iterable($this->var)) {
-                foreach ($this->var as $k => &$v) {
+                foreach ($this->var as &$v) {
                     $this->unseralize($v);
                 }
             } else {
