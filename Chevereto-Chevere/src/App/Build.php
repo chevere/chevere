@@ -22,11 +22,8 @@ use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\CheckoutContract;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\File\File;
-use Chevere\Path\Path;
 use Chevere\Path\PathHandle;
 use Chevere\Router\Router;
-
-use function ChevereFn\pathRemoveContents;
 
 final class Build implements BuildContract
 {
@@ -36,8 +33,8 @@ final class Build implements BuildContract
     /** @var Container */
     private $container;
 
-    /** @var PathHandle */
-    private $pathHandle;
+    /** @var File */
+    private $path;
 
     /** @var bool True if the App was built (cache) */
     private $isBuilt;
@@ -58,17 +55,12 @@ final class Build implements BuildContract
     {
         $this->builder = $builder;
         $this->container = new Container();
-        $this->pathHandle =  new PathHandle(static::FILE_INDETIFIER);
-    }
-
-    public function pathHandle(): PathHandle
-    {
-        return $this->pathHandle;
+        $this->file = (new PathHandle(static::FILE_INDETIFIER))->file();
     }
 
     public function exists(): bool
     {
-        return $this->pathHandle->file()->exists();
+        return $this->file->exists();
     }
 
     public function withContainer(Container $container): BuildContract
@@ -91,7 +83,7 @@ final class Build implements BuildContract
             $pathHandle = new PathHandle($parameters->api());
             $new->apiMaker = new ApiMaker($new->routerMaker);
             $new->apiMaker = $new->apiMaker
-                ->withPathHandle($pathHandle);
+                ->withPath($pathHandle->path());
             $new->container = $new->container
                 ->withApi(
                     (new Api())
@@ -144,7 +136,8 @@ final class Build implements BuildContract
      */
     public function destroy(): void
     {
-        unlink($this->pathHandle->path());
-        pathRemoveContents((new PathHandle('cache'))->path());
+        unlink($this->path->path());
+        $path = (new PathHandle('cache'))->path();
+        $path->removeContents();
     }
 }

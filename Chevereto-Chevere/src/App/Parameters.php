@@ -17,7 +17,6 @@ use LogicException;
 use Chevere\ArrayFile\ArrayFile;
 use Chevere\Message\Message;
 use Chevere\Contracts\App\ParametersContract;
-use Chevere\Path\PathHandle;
 
 final class Parameters implements ParametersContract
 {
@@ -25,8 +24,8 @@ final class Parameters implements ParametersContract
      * The keys accepted by this class, with the gettype at right side.
      */
     private $keys = [
-        self::API => 'string',
-        self::ROUTES => 'array',
+        self::KEY_API => 'string',
+        self::KEY_ROUTES => 'array',
     ];
 
     /** @var ArrayFile The parameters array used to construct the object */
@@ -48,15 +47,6 @@ final class Parameters implements ParametersContract
         $array = $this->arrayFile->toArray();
         $this->api = $array[static::API];
         $this->routes = $array[static::ROUTES];
-    }
-
-    public static function fromFile(): ParametersContract
-    {
-        return new Parameters(
-            new ArrayFile(
-                new PathHandle(static::FILEHANDLE_PARAMETERS)
-            )
-        );
     }
 
     public function api(): string
@@ -100,7 +90,7 @@ final class Parameters implements ParametersContract
                     ->code('%s', $this->keys[$key])
                     ->code('%t', $gettype)
                     ->code('%k', $key)
-                    ->code('%c', $this->arrayFile->pathHandle()->path())
+                    ->code('%c', $this->arrayFile->path()->absolute()
                     ->toString()
             );
         }

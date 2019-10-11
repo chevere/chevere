@@ -31,7 +31,7 @@ final class PathHandle
     /** @var string Root context (absolute) */
     private $context;
 
-    /** @var string absolute path like /home/user/app/ or /home/user/app/file.php */
+    /** @var Path */
     private $path;
 
     /** @var File */
@@ -70,7 +70,7 @@ final class PathHandle
         return $this->identifier;
     }
 
-    public function path(): string
+    public function path(): Path
     {
         return $this->path;
     }
@@ -130,7 +130,8 @@ final class PathHandle
 
     private function validateContext()
     {
-        if (!(new File($this->context))->exists()) {
+        $path = new Path($this->context);
+        if (!$path->isDir()) {
             throw new InvalidArgumentException(
                 (new Message('String %a must be an absolute path, %v provided.'))
                     ->code('%a', '$context')
@@ -144,21 +145,19 @@ final class PathHandle
     {
         //var:build 
         // $isPHP = stringEndsWith('.php', $this->identifier);
-        $this->path = $this->identifier;
-        if (false !== strpos($this->path, ':')) {
-            $this->path = $this->processIdentifier();
+        $path = $this->identifier;
+        if (false !== strpos($path, ':')) {
+            $path = $this->processIdentifier();
         } else {
-            $this->path = $this->processPath();
+            $path = $this->getPath();
         }
         // if ($isPHP && (new File($this->identifier))->exists()) {
         //     $this->path = $path
         //         ->absolute($this->identifier);
         //     return;
         // }
-        $path = (new Path($this->path))
+        $this->path = (new Path($path))
             ->withContext($this->context);
-
-        $this->path = $path->absolute();
         $this->file = new File($this->path);
     }
 
@@ -177,15 +176,14 @@ final class PathHandle
         return $path;
     }
 
-    private function processPath(): string
+    private function getPath(): string
     {
-        // If $this->path does't contains ":", we assume that it is a directory or a explicit filepath
-        $extension = pathinfo($this->path, PATHINFO_EXTENSION);
+        $extension = pathinfo($this->identifier, PATHINFO_EXTENSION);
         // No extension => add trailing slash to path
         if ($extension == false) {
-            return stringRightTail($this->path, '/');
+            return stringRightTail($this->identifier, '/');
         }
 
-        return $this->path;
+        return $this->identifier;
     }
 }

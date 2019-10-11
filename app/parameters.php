@@ -14,9 +14,9 @@ declare(strict_types=1);
 use Chevere\App\Parameters;
 
 return [
-  Parameters::API => 'src/Api/',
-  Parameters::ROUTES => [
-    'routes:dashboard',
-    'routes:web',
-  ],
+    Parameters::KEY_API => 'src/Api/',
+    Parameters::KEY_ROUTES => [
+        'routes:dashboard',
+        'routes:web',
+    ],
 ];

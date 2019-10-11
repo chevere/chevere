@@ -24,7 +24,6 @@ use Chevere\Http\Method;
 use Chevere\Http\Methods;
 use Chevere\Message\Message;
 use Chevere\Path\Path;
-use Chevere\Path\PathHandle;
 use Chevere\File\File;
 use Chevere\Controller\Inspect;
 use Chevere\Api\src\FilterIterator;
@@ -70,8 +69,8 @@ final class Maker implements MakerContract
     /** @var RouteContract */
     private $route;
 
-    /** @var PathHandle For target API directory (absolute) */
-    private $pathHandle;
+    /** @var Path For target API directory */
+    private $path;
 
     /** @var Cache */
     private $cache;
@@ -81,13 +80,13 @@ final class Maker implements MakerContract
         $this->routerMaker = $routerMaker;
     }
 
-    public function withPathHandle(PathHandle $pathHandle): MakerContract
+    public function withPath(Path $path): MakerContract
     {
         $new = clone $this;
-        $new->pathHandle = $pathHandle;
+        $new->path = $path;
         $new->assertNoDuplicates();
         $new->assertPath();
-        $new->basePath = strtolower(basename($new->pathHandle->path()));
+        $new->basePath = strtolower(basename($new->path->absolute()));
         $methods = new Methods(
             (new Method('HEAD'))
                 ->withController(HeadController::class),
@@ -117,9 +116,9 @@ final class Maker implements MakerContract
         return isset($this->api);
     }
 
-    public function hasPathHandle(): bool
+    public function hasPath(): bool
     {
-        return isset($this->pathHandle);
+        return isset($this->path);
     }
 
     public function api(): array
@@ -127,9 +126,9 @@ final class Maker implements MakerContract
         return $this->api;
     }
 
-    public function pathHandle(): PathHandle
+    public function path(): Path
     {
-        return $this->pathHandle;
+        return $this->path;
     }
 
     private function register(Endpoint $endpoint): void
@@ -138,7 +137,7 @@ final class Maker implements MakerContract
         $this->resourcesMap = [];
         $this->api = [];
 
-        $iterator = new RecursiveDirectoryIterator($this->pathHandle->path(), RecursiveDirectoryIterator::SKIP_DOTS);
+        $iterator = new RecursiveDirectoryIterator($this->path->absolute(), RecursiveDirectoryIterator::SKIP_DOTS);
         $filter = new FilterIterator($iterator);
         $filter = $filter->withAcceptFilenames(MethodContract::ACCEPT_METHODS);
         $this->recursiveIterator = new RecursiveIteratorIterator($filter);
@@ -172,7 +171,7 @@ final class Maker implements MakerContract
         if ($count == 0) {
             throw new LogicException(
                 (new Message('No API methods found in the %path% path'))
-                    ->code('%path%', $this->pathHandle->path())
+                    ->code('%path%', $this->path->absolute())
                     ->toString()
             );
         }
@@ -180,10 +179,10 @@ final class Maker implements MakerContract
 
     private function assertNoDuplicates(): void
     {
-        if (isset($this->registered[$this->pathHandle->path()])) {
+        if (isset($this->registered[$this->path->absolute()])) {
             throw new LogicException(
                 (new Message('Path identified by %path% has been already bound'))
-                    ->code('%path%', $this->pathHandle->path())
+                    ->code('%path%', $this->path->absolute())
                     ->toString()
             );
         }
@@ -191,18 +190,18 @@ final class Maker implements MakerContract
 
     private function assertPath(): void
     {
-        $file = $this->pathHandle->file();
+        $file = new File($this->path);
         if (!$file->exists()) {
             throw new LogicException(
                 (new Message("Directory %directory% doesn't exists"))
-                    ->code('%directory%', $this->pathHandle->path())
+                    ->code('%directory%', $this->path->absolute())
                     ->toString()
             );
         }
-        if (!is_readable($this->pathHandle->path())) {
+        if (!is_readable($this->path->absolute())) {
             throw new LogicException(
                 (new Message('Directory %directory% is not readable.'))
-                    ->code('%directory%', $this->pathHandle->path())
+                    ->code('%directory%', $this->path->absolute())
                     ->toString()
             );
         }

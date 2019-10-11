@@ -17,26 +17,21 @@ use RuntimeException;
 use Chevere\Message\Message;
 use Chevere\Path\Path;
 
-use function ChevereFn\pathAbsolute;
-use function ChevereFn\pathCreate;
-
 final class File
 {
-    /** @var Path Absolute filename */
+    /** @var Path */
     private $path;
 
-    // FIXME: Pass Path
-    public function __construct(string $path)
+    public function __construct(Path $path)
     {
-        $this->path = new Path($path);
+        $this->path = $path;
     }
 
     /**
      * Fast wat to determine if a file or directory exists using stream_resolve_include_path.
      *
-     * @return bool TRUE if the $filename exists
+     * @return bool TRUE if the file exists
      */
-    // FIXME: This should be moved to Path
     public function exists(): bool
     {
         $this->clearStatCache();
@@ -44,13 +39,24 @@ final class File
         return stream_resolve_include_path($this->path->absolute()) !== false;
     }
 
+    public function remove(): void
+    {
+        if (!unlink($this->path->absolute())) {
+            throw new RuntimeException(
+                (new Message('Unable to remove file %path%'))
+                    ->code('%path%', $this->path->absolute())
+                    ->toString()
+            );
+        }
+    }
+
     public function put(string $contents): void
     {
         if (!$this->exists()) {
-            $dirname = dirname($this->path);
-            $new = new static($dirname);
-            if (!$new->exists()) {
-                pathCreate($dirname);
+            $dirname = dirname($this->path->absolute());
+            $path = new Path($dirname);
+            if (!$path->isDir()) {
+                $path->create();
             }
         }
         if (false === @file_put_contents($this->path->absolute(), $contents)) {

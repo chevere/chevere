@@ -18,6 +18,7 @@ use const Chevere\DEV;
 
 use Chevere\Api\Api;
 use Chevere\App\Exceptions\NeedsToBeBuiltException;
+use Chevere\ArrayFile\ArrayFile;
 use Chevere\Cache\Cache;
 use Chevere\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Console\Console;
@@ -28,6 +29,7 @@ use Chevere\Message\Message;
 use Chevere\Router\Router;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\App\BuilderContract;
+use Chevere\Path\PathHandle;
 
 final class Loader implements LoaderContract
 {
@@ -61,7 +63,11 @@ final class Loader implements LoaderContract
     private function handleParameters(): void
     {
         if (DEV || Console::isBuilding()) {
-            $this->parameters = Parameters::fromFile();
+            $this->parameters = new Parameters(
+                new ArrayFile(
+                    new PathHandle(App::FILEHANDLE_PARAMETERS)
+                )
+            );
             $this->builder = $this->builder
                 ->withParameters($this->parameters);
         }

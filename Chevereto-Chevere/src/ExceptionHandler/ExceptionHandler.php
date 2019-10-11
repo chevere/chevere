@@ -15,7 +15,6 @@ namespace Chevere\ExceptionHandler;
 
 use const Chevere\APP_PATH;
 
-
 use DateTime;
 use DateTimeZone;
 use TypeError;
@@ -36,7 +35,6 @@ use Monolog\Handler\FirePHPHandler;
 use Chevere\Contracts\Http\RequestContract;
 use Chevere\Data\Traits\DataMethodTrait;
 use Chevere\Path\PathHandle;
-
 
 /**
  * The Chevere exception handler.
@@ -184,12 +182,11 @@ final class ExceptionHandler
 
     private function setLogFilePathProperties(): void
     {
-        $path = (new PathHandle('var/logs'))->path();
-        $path = rtrim($path, '/') . '/';
+        $absolute = (new PathHandle('var/logs'))->path()->absolute();
         $date = gmdate($this->logDateFolderFormat, $this->data->key('timestamp'));
         $id = $this->data->key('id');
         $timestamp = $this->data->key('timestamp');
-        $logFilename = $path . $this->loggerLevel . '/' . $date . $timestamp . '_' . $id . '.log';
+        $logFilename = $absolute . $this->loggerLevel . '/' . $date . $timestamp . '_' . $id . '.log';
         $this->data = $this->data
             ->withKey('logFilename', $logFilename);
     }

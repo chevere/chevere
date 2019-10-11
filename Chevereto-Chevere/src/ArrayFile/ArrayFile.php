@@ -19,8 +19,8 @@ use IteratorAggregate;
 use LogicException;
 use Chevere\FileReturn\FileReturn;
 use Chevere\Message\Message;
+use Chevere\Path\Path;
 use Chevere\Type\Type;
-use Chevere\Path\PathHandle;
 
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).
@@ -30,8 +30,8 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
     /** @var array The array returned by the file */
     private $array;
 
-    /** @var PathHandle */
-    private $pathHandle;
+    /** @var Path */
+    private $path;
 
     /** @var FileReturn */
     private $fileReturn;
@@ -39,13 +39,11 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
     /** @var Type */
     private $type;
 
-    /**
-     * @param PathHandle $pathHandle Path handle or absolute filepath
-     */
-    public function __construct(PathHandle $pathHandle)
+    public function __construct(Path $path)
     {
-        $this->pathHandle = $pathHandle;
-        $this->fileReturn = (new FileReturn($pathHandle))->withNoStrict();
+        $this->path = $path;
+        $this->fileReturn = (new FileReturn($this->path))
+            ->withNoStrict();
         $this->validateIsArray();
         $this->array = $this->fileReturn->raw();
     }
@@ -87,9 +85,9 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
         return new ArrayIterator($this->array);
     }
 
-    public function pathHandle(): PathHandle
+    public function path(): Path
     {
-        return $this->pathHandle;
+        return $this->path;
     }
 
     public function toArray(): array
@@ -102,7 +100,7 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
         if ('array' !== $this->fileReturn->type()) {
             throw new LogicException(
                 (new Message('Expecting file %filepath% return type array, %returnType% provided.'))
-                    ->code('%filepath%', $this->pathHandle->path())
+                    ->code('%filepath%', $this->path->absolute())
                     ->code('%returnType%', $this->fileReturn->type())
             );
         }
@@ -135,7 +133,7 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
         throw new LogicException(
             (new Message('Expecting array containing only %members% members, type %type% found at %filepath% (array key %key%).'))
                 ->code('%members%', $this->type->typeString())
-                ->code('%filepath%', $this->pathHandle->path())
+                ->code('%filepath%', $this->path->absolute())
                 ->code('%type%', $type)
                 ->code('%key%', $k)
                 ->toString()

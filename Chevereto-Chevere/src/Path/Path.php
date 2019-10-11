@@ -15,6 +15,9 @@ namespace Chevere\Path;
 
 use const Chevere\ROOT_PATH;
 
+use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
+
 use function ChevereFn\stringForwardSlashes;
 use function ChevereFn\stringReplaceFirst;
 
@@ -160,16 +163,14 @@ final class Path
      *
      * @return string The created path (absolute)
      */
-    public function pathCreate(string $path): string
+    public function create(): void
     {
-        if (!mkdir($path, 0777, true)) {
+        if (!mkdir($this->absolute, 0777, true)) {
             throw new RuntimeException(
                 (new Message('Unable to create path %path%'))
-                    ->code('%path%', $path)
+                    ->code('%path%', $this->path)
             );
         }
-
-        return $path;
     }
 
     /**
@@ -186,49 +187,43 @@ final class Path
      *
      * @return string normalized path, without trailing slash
      */
-    private function pathNormalize(string $path): string
-    {
-        $wrapper = '';
-        $stream = (new Path($path))->isStream();
-        if ($stream) {
-            [$wrapper, $path] = $stream;
-            $wrapper .= '://';
-        }
-        // Standardise all paths to use /
-        $path = str_replace('\\', '/', $path ?? '');
-        // Replace multiple slashes down to a singular, allowing for network shares having two slashes.
-        $path = preg_replace('|(?<=.)/+|', '/', $path);
-        if ($path == null) {
-            return '';
-        }
-        // Chevereto: Get rid of any extra slashes at the begining if needed
-        if (stringStartsWith('/', $path)) {
-            $path = '/' . ltrim($path, '/');
-        }
-        // Windows paths should uppercase the drive letter
-        if (':' === substr($path, 1, 1)) {
-            $path = ucfirst($path);
-        }
+    // private function pathNormalize(string $path): string
+    // {
+    //     $wrapper = '';
+    //     $stream = (new Path($path))->isStream();
+    //     if ($stream) {
+    //         [$wrapper, $path] = $stream;
+    //         $wrapper .= '://';
+    //     }
+    //     // Standardise all paths to use /
+    //     $path = str_replace('\\', '/', $path ?? '');
+    //     // Replace multiple slashes down to a singular, allowing for network shares having two slashes.
+    //     $path = preg_replace('|(?<=.)/+|', '/', $path);
+    //     if ($path == null) {
+    //         return '';
+    //     }
+    //     // Chevereto: Get rid of any extra slashes at the begining if needed
+    //     if (stringStartsWith('/', $path)) {
+    //         $path = '/' . ltrim($path, '/');
+    //     }
+    //     // Windows paths should uppercase the drive letter
+    //     if (':' === substr($path, 1, 1)) {
+    //         $path = ucfirst($path);
+    //     }
 
-        return rtrim($wrapper . $path, '/');
-    }
+    //     return rtrim($wrapper . $path, '/');
+    // }
 
     /**
      * Removes the contents from a path, without deleting the path.
      *
      * @return array List of deleted contents.
      */
-    public function pathRemoveContents(string $path): array
+    public function removeContents(): array
     {
-        if (!is_dir($path)) {
-            throw new InvalidArgumentException(
-                (new Message('%path% is not a directory'))
-                    ->code('%path%', $path)
-                    ->toString()
-            );
-        }
+        $this->assertDir();
         $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS),
+            new RecursiveDirectoryIterator($this->absolute, RecursiveDirectoryIterator::SKIP_DOTS),
             RecursiveIteratorIterator::CHILD_FIRST
         );
         $removed = [];
@@ -236,12 +231,29 @@ final class Path
             $content = $fileinfo->getRealPath();
             if ($fileinfo->isDir()) {
                 rmdir($content);
-            } else {
-                unlink($content);
+                $removed[] = $content;
+                continue;
             }
+            unlink($content);
             $removed[] = $content;
         }
 
         return $removed;
+    }
+
+    public function isDir(): bool
+    {
+        return is_dir($this->absolute);
+    }
+
+    private function assertDir(): void
+    {
+        if (!$this->isDir()) {
+            throw new InvalidArgumentException(
+                (new Message('%path% is not a directory'))
+                    ->code('%path%', $this->path)
+                    ->toString()
+            );
+        }
     }
 }

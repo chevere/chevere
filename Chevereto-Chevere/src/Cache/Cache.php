@@ -15,11 +15,8 @@ namespace Chevere\Cache;
 
 use InvalidArgumentException;
 use Chevere\Message\Message;
-use Chevere\File\File;
 use Chevere\FileReturn\FileReturn;
-use Chevere\Path\Path;
 use Chevere\Path\PathHandle;
-use RuntimeException;
 
 /**
  * A simple PHP based cache system.
@@ -58,13 +55,15 @@ final class Cache
     {
         $identifier = $this->getFileIdentifier($key);
         return new FileReturn(
-            new PathHandle($identifier)
+            (new PathHandle($identifier))->path()
         );
     }
 
     public function exists(string $key): bool
     {
-        return (new PathHandle($this->getFileIdentifier($key)))->file()->exists();
+        $file = (new PathHandle($this->getFileIdentifier($key)))->file();
+
+        return $file->exists();
     }
 
     /**
@@ -89,11 +88,10 @@ final class Cache
     public function remove(string $key): void
     {
         $pathHandle = new PathHandle($this->getFileIdentifier($key));
-        $path = $pathHandle->path();
         if (!$pathHandle->file()->exists()) {
             return;
         }
-        unlink($path);
+        $pathHandle->file()->remove();
         unset($this->array[$this->name][$key]);
     }
 

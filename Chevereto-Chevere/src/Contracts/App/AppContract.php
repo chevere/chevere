@@ -24,7 +24,9 @@ interface AppContract
     const NAMESPACES = ['App', 'Chevere'];
     const APP = 'app';
     const FILEHANDLE_CONFIG = ':config';
+    const FILEHANDLE_PARAMETERS = ':parameters';
     const PATH_LOGS = APP_PATH . 'var/logs/';
+
 
     public function __construct(ResponseContract $response);
 
