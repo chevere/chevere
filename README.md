@@ -2,6 +2,7 @@
 Quality](https://scrutinizer-ci.com/g/Chevereto/chevere/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Chevereto/chevere/?branch=master)
 [![CodeFactor](https://www.codefactor.io/repository/github/Chevereto/chevere/badge)](https://www.codefactor.io/repository/github/Chevereto/chevere)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/de5d887d9d764665937274cdcfd133d4)](https://www.codacy.com/manual/inbox_5/chevere?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Chevereto/chevere&amp;utm_campaign=Badge_Grade)
+[![Maintainability](https://api.codeclimate.com/v1/badges/a99a88d28ad37a79dbf6/maintainability)](https://codeclimate.com/github/codeclimate/codeclimate/maintainability)
 
 # About Chevere
 
