@@ -85,8 +85,8 @@ final class ArgumentsWrap
             $this->typedArguments[] = $value ?? ($parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);
         } elseif (null === $value && $parameter->allowsNull()) {
             $this->typedArguments[] = null;
-        } else {
-            $this->typedArguments[] = new $type($value);
+            return;
         }
+        $this->typedArguments[] = new $type($value);
     }
 }

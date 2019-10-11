@@ -187,13 +187,13 @@ final class FileReturn
         return hash_file(static::CHECKSUM_ALGO, $this->path->absolute());
     }
 
-    private function validate()
+    private function validate(): void
     {
         if ($this->strict) {
             $this->validateStrict();
-        } else {
-            $this->validateNonStrict();
+            return;
         }
+        $this->validateNonStrict();
     }
 
     private function validateStrict(): void

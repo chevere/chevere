@@ -257,9 +257,7 @@ final class Route implements RouteContract
 
     private function handleType(): void
     {
-        if (!isset($this->key)) {
-            $this->type = Route::TYPE_STATIC;
-        } else {
+        if (isset($this->key)) {
             // Sets (optionals) are like /route/{0}
             $pregReplace = preg_replace('/{[0-9]+}/', '', $this->key);
             if (null != $pregReplace) {
@@ -267,6 +265,8 @@ final class Route implements RouteContract
                 $pregReplace = trim($path->absolute(), '/');
             }
             $this->type = isset($pregReplace) ? Route::TYPE_DYNAMIC : Route::TYPE_STATIC;
+            return;
         }
+        $this->type = Route::TYPE_STATIC;
     }
 }

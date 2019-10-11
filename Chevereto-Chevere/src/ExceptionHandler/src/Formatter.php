@@ -246,10 +246,10 @@ final class Formatter
             }
             $this->handleSetConsoleStackSection($key, $value);
             $this->setConsoleSection($key, $value);
-        } else {
-            $this->handleSetRichStackSection($key, $value);
-            $this->setRichContentSection($key, $value);
+            return true;
         }
+        $this->handleSetRichStackSection($key, $value);
+        $this->setRichContentSection($key, $value);
 
         return true;
     }

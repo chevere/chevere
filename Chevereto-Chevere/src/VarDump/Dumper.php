@@ -231,9 +231,9 @@ class Dumper
     {
         if (isset($this->consoleOutput)) {
             $this->processConsoleOutput();
-        } else {
-            $this->processPrintOutput();
+            return;
         }
+        $this->processPrintOutput();
     }
 
     final private function processConsoleOutput(): void

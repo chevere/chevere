@@ -20,8 +20,6 @@ use function GuzzleHttp\Psr7\stream_for;
 use Chevere\Console\Console;
 use Chevere\ExceptionHandler\ExceptionHandler;
 use Chevere\Http\Response;
-use Chevere\Json;
-use Chevere\JsonApi\EncodedDocument;
 use Chevere\Message\Message;
 use JsonApiPhp\JsonApi\Error;
 use JsonApiPhp\JsonApi\Error\Code;
@@ -73,7 +71,7 @@ final class Output
             if (CLI) {
                 // $this->setJsonOutput();
                 $this->setConsoleOutput();
-            // $this->setHtmlOutput();
+                // $this->setHtmlOutput();
             } else {
                 $this->setHtmlOutput();
             }
@@ -93,8 +91,7 @@ final class Output
         }
 
         $response = new Response();
-        if ($this->exceptionHandler->request()->isXmlHttpRequest()) {
-        } else {
+        if ($this->exceptionHandler->request()->isXmlHttpRequest()) { } else {
             // $response = new HttpResponse();
         }
         $guzzle = $response->guzzle()

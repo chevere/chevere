@@ -124,12 +124,12 @@ final class ObjectProcessor implements ProcessorContract
                 ->respawn()
                 ->withDump($this->aux, $this->varDump->indent(), $this->varDump->depth());
             $this->val .= $new->toString();
-        } else {
-            $this->val .= $this->varDump->formatter()->wrap(
-                VarDump::_OPERATOR,
-                '(' . $this->varDump->formatter()->getEmphasis('max depth reached') . ')'
-            );
+            return;
         }
+        $this->val .= $this->varDump->formatter()->wrap(
+            VarDump::_OPERATOR,
+            '(' . $this->varDump->formatter()->getEmphasis('max depth reached') . ')'
+        );
     }
 
     private function handleNormalizeClassName(): void

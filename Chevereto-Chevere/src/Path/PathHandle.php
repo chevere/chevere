@@ -146,11 +146,9 @@ final class PathHandle
         //var:build 
         // $isPHP = stringEndsWith('.php', $this->identifier);
         $path = $this->identifier;
-        if (false !== strpos($path, ':')) {
-            $path = $this->processIdentifier();
-        } else {
-            $path = $this->getPath();
-        }
+        $path = false !== strpos($path, ':')
+            ? $this->processIdentifier()
+            : $this->getPath();
         // if ($isPHP && (new File($this->identifier))->exists()) {
         //     $this->path = $path
         //         ->absolute($this->identifier);

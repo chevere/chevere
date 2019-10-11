@@ -130,9 +130,9 @@ final class InspectCommand extends Command
     {
         if (null != $this->arguments) {
             $this->processArguments();
-        } else {
-            $this->processNoArguments();
+            return;
         }
+        $this->processNoArguments();
     }
 
     private function processArguments(): void

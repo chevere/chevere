@@ -183,9 +183,9 @@ final class RunCommand extends Command
         if ($this->isBuffer && $this->buffer != '') {
             if ($this->isNoFormat) {
                 $this->lines[] = $this->buffer;
-            } else {
-                $this->lines[] = '<fg=yellow>' . $this->buffer . '</>';
+                return;
             }
+            $this->lines[] = '<fg=yellow>' . $this->buffer . '</>';
         }
     }
 }

@@ -207,10 +207,9 @@ final class Builder implements BuilderContract
                 ->withResponse($response);
             if (CLI) {
                 throw new RouteNotFoundException($e->getMessage());
-            } else {
-                $this->app->response()->sendHeaders()->sendBody();
-                die();
             }
+            $this->app->response()->sendHeaders()->sendBody();
+            die();
         }
         $this->controller = $route->getController($this::$request->getMethod());
         $this->app = $this->app

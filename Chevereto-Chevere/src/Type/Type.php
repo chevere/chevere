@@ -119,12 +119,12 @@ final class Type
     {
         if (isset(static::TYPE_VALIDATORS[$this->typeSome])) {
             $this->primitive = $this->typeSome;
-        } else {
-            $this->handleClassName();
-            $this->handleInterfaceName();
-            if (isset($this->className) || isset($this->interfaceName)) {
-                $this->primitive = 'object';
-            }
+            return;
+        }
+        $this->handleClassName();
+        $this->handleInterfaceName();
+        if (isset($this->className) || isset($this->interfaceName)) {
+            $this->primitive = 'object';
         }
     }
 

@@ -126,9 +126,9 @@ final class Path
             } else {
                 if ($num > 0) {
                     --$num;
-                } else {
-                    $partsReverse[] = $parts[$i];
+                    continue;
                 }
+                $partsReverse[] = $parts[$i];
             }
         }
         $this->absolute = implode('/', array_reverse($partsReverse));
