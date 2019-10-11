@@ -37,7 +37,6 @@ use Chevere\Controllers\Api\HeadController;
 use Chevere\Controllers\Api\OptionsController;
 use Chevere\Router\Maker as RouterMaker;
 
-use function ChevereFn\pathRelative;
 use function ChevereFn\stringForwardSlashes;
 use function ChevereFn\stringLeftTail;
 use function ChevereFn\stringReplaceFirst;
@@ -273,7 +272,7 @@ final class Maker implements MakerContract
      */
     private function getClassNameFromFilepath(string $filepath): string
     {
-        $filepathRelative = pathRelative($filepath);
+        $filepathRelative = (new Path($filepath))->relative();
         $filepathNoExt = stringReplaceLast('.php', '', $filepathRelative);
         $filepathReplaceNS = stringReplaceFirst('app/src/', 'App\\', $filepathNoExt);
 

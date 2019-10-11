@@ -21,7 +21,6 @@ use Chevere\Path\Path;
 use Chevere\VarDump\Processors\Traits\ProcessorTrait;
 use Chevere\VarDump\VarDump;
 
-use function ChevereFn\pathNormalize;
 use function ChevereFn\stringStartsWith;
 
 final class ObjectProcessor implements ProcessorContract
@@ -136,7 +135,7 @@ final class ObjectProcessor implements ProcessorContract
     private function handleNormalizeClassName(): void
     {
         if (stringStartsWith(VarDump::ANON_CLASS, $this->className)) {
-            $this->className = pathNormalize($this->className);
+            $this->className = (new Path($this->className))->absolute();
         }
     }
 }

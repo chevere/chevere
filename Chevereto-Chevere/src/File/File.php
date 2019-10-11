@@ -17,21 +17,18 @@ use RuntimeException;
 use Chevere\Message\Message;
 use Chevere\Path\Path;
 
-use function ChevereFn\pathIsAbsolute;
 use function ChevereFn\pathAbsolute;
 use function ChevereFn\pathCreate;
 
 final class File
 {
-    /** @var string Absolute filename */
+    /** @var Path Absolute filename */
     private $path;
 
+    // FIXME: Pass Path
     public function __construct(string $path)
     {
-        $this->path = $path;
-        if (!pathIsAbsolute($path)) {
-            $this->path = pathAbsolute($path);
-        }
+        $this->path = new Path($path);
     }
 
     /**
@@ -44,7 +41,7 @@ final class File
     {
         $this->clearStatCache();
 
-        return stream_resolve_include_path($this->path) !== false;
+        return stream_resolve_include_path($this->path->absolute()) !== false;
     }
 
     public function put(string $contents): void
@@ -56,10 +53,10 @@ final class File
                 pathCreate($dirname);
             }
         }
-        if (false === @file_put_contents($this->path, $contents)) {
+        if (false === @file_put_contents($this->path->absolute(), $contents)) {
             throw new RuntimeException(
                 (new Message('Unable to write content to file %filepath%'))
-                    ->code('%filepath%', $this->path)
+                    ->code('%filepath%', $this->path->absolute())
                     ->toString()
             );
         }
@@ -67,6 +64,6 @@ final class File
 
     private function clearStatCache(): void
     {
-        clearstatcache(true, $this->path);
+        clearstatcache(true, $this->path->absolute());
     }
 }

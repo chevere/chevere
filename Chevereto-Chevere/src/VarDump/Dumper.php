@@ -21,8 +21,8 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Chevere\VarDump\Formatters\DumperFormatter;
 use Chevere\Contracts\VarDump\FormatterContract;
+use Chevere\Path\Path;
 
-use function ChevereFn\pathNormalize;
 use function ChevereFn\stringEndsWith;
 use function ChevereFn\stringStartsWith;
 
@@ -88,7 +88,7 @@ class Dumper
         $this->debugBacktrace = debug_backtrace();
         $this->caller = $this->debugBacktrace[0];
         $this->handleDebugBacktrace();
-        $this->callerFilepath = pathNormalize($this->debugBacktrace[0]['file']);
+        $this->callerFilepath = (new Path($this->debugBacktrace[0]['file']))->absolute();
         $this->handleSelfCaller();
         $this->output = null;
         if (CLI) {
@@ -206,7 +206,8 @@ class Dumper
 
     final private function appendFilepath(string $file, int $line): void
     {
-        $this->output .= "\n" . $this->formatter->wrap('_file', pathNormalize($file) . ':' . $line);
+        $path = new Path($file);
+        $this->output .= "\n" . $this->formatter->wrap('_file', $path->absolute() . ':' . $line);
     }
 
     final private function handleArgs(): void

@@ -18,8 +18,6 @@ use Chevere\Path\Path;
 use Chevere\Message\Message;
 use Chevere\Path\PathHandle;
 
-use function ChevereFn\pathNormalize;
-
 /**
  * Hooks refers to code that gets injected at determinated sections of the
  * system identified by the hookable id.
@@ -245,7 +243,8 @@ final class Hook
     private static function getCallerFile(): ?string
     {
         // 0:Hook, 1:Hookable, 3:Caller
-        return pathNormalize(debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2]['file']);
+        $file = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2]['file'];
+        return (new Path($file))->absolute();
     }
 
     /**

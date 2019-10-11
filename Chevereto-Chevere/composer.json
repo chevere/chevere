@@ -25,8 +25,7 @@
         "files": [
             "utils/phpcheck.php",
             "resources/functions/dump.php",
-            "resources/functions/ChevereFn/string.php",
-            "resources/functions/ChevereFn/path.php"
+            "resources/functions/ChevereFn/string.php"
         ],
         "psr-4": {
             "Chevere\\": "src/"

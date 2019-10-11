@@ -20,10 +20,6 @@ use LogicException;
 use Chevere\File\File;
 use Chevere\Message\Message;
 
-use function ChevereFn\pathIsAbsolute;
-use function ChevereFn\pathNormalize;
-use function ChevereFn\pathResolve;
-use function ChevereFn\pathAbsolute;
 use function ChevereFn\stringEndsWith;
 use function ChevereFn\stringRightTail;
 
@@ -32,8 +28,8 @@ final class PathHandle
     /** @var string */
     private $identifier;
 
-    /** @var string */
-    private $context = APP_PATH;
+    /** @var string Root context (absolute) */
+    private $context;
 
     /** @var string absolute path like /home/user/app/ or /home/user/app/file.php */
     private $path;
@@ -61,6 +57,7 @@ final class PathHandle
      */
     public function __construct(string $identifier)
     {
+        $this->context = APP_PATH;
         $this->identifier = $identifier;
         $this->validateStringIdentifier();
         $this->validateCharIdentifier();
@@ -133,7 +130,7 @@ final class PathHandle
 
     private function validateContext()
     {
-        if (!pathIsAbsolute($this->context)) {
+        if (!(new File($this->context))->exists()) {
             throw new InvalidArgumentException(
                 (new Message('String %a must be an absolute path, %v provided.'))
                     ->code('%a', '$context')
@@ -145,23 +142,23 @@ final class PathHandle
 
     private function process(): void
     {
-        $isPHP = stringEndsWith('.php', $this->identifier);
-        if ($isPHP && (new File($this->identifier))->exists()) {
-            $this->path = pathIsAbsolute($this->identifier) ? $this->identifier : pathAbsolute($this->identifier);
-            return;
-        }
-        $this->path = pathNormalize($this->identifier);
+        //var:build 
+        // $isPHP = stringEndsWith('.php', $this->identifier);
+        $this->path = $this->identifier;
         if (false !== strpos($this->path, ':')) {
             $this->path = $this->processIdentifier();
         } else {
             $this->path = $this->processPath();
         }
-        // $this->path is not an absolute path neither a wrapper or anything like that
-        if (!pathIsAbsolute($this->path)) {
-            $this->path = $this->context . $this->path;
-        }
-        // Resolve . and ..
-        $this->path = pathResolve($this->path);
+        // if ($isPHP && (new File($this->identifier))->exists()) {
+        //     $this->path = $path
+        //         ->absolute($this->identifier);
+        //     return;
+        // }
+        $path = (new Path($this->path))
+            ->withContext($this->context);
+
+        $this->path = $path->absolute();
         $this->file = new File($this->path);
     }
 

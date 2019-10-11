@@ -22,7 +22,6 @@ use Chevere\VarDump\Formatters\DumperFormatter;
 use Chevere\VarDump\Formatters\PlainFormatter;
 use Chevere\VarDump\VarDump;
 
-use function ChevereFn\pathNormalize;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 
@@ -187,7 +186,7 @@ final class TraceEntry
     private function handleProcessNormalizeFile()
     {
         if (isset($this->entry['file']) && false !== strpos($this->entry['file'], '\\')) {
-            $this->entry['file'] = pathNormalize($this->entry['file']);
+            $this->entry['file'] = (new Path($this->entry['file']))->relative();
         }
     }
 }

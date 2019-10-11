@@ -19,8 +19,8 @@ use Chevere\Data\Data;
 use Chevere\Contracts\DataContract;
 use Chevere\Data\Traits\DataMethodTrait;
 use Chevere\ExceptionHandler\ExceptionHandler;
+use Chevere\Path\Path;
 
-use function ChevereFn\pathNormalize;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 
@@ -64,7 +64,7 @@ final class Wrap
                 'type' => ExceptionHandler::ERROR_TABLE[$phpCode],
                 'loggerLevel' => ExceptionHandler::PHP_LOG_LEVEL[$phpCode] ?? 'error',
                 'message' => $exception->getMessage(),
-                'file' => pathNormalize($exception->getFile()),
+                'file' => (new Path($exception->getFile()))->relative(),
                 'line' => (int) $exception->getLine(),
             ]);
     }

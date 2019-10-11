@@ -16,15 +16,12 @@ namespace Chevere\Route;
 use LogicException;
 use InvalidArgumentException;
 use Chevere\Message\Message;
-use Chevere\Path\Path;
 use Chevere\Controllers\HeadController;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Http\MethodsContract;
 use Chevere\Contracts\Http\MethodContract;
 use Chevere\Http\Method;
-
-use function ChevereFn\pathNormalize;
-use function ChevereFn\pathRelative;
+use Chevere\Path\Path;
 
 // IDEA: L10n support
 // FIXME: Use object properties
@@ -253,7 +250,7 @@ final class Route implements RouteContract
     private function getMakerData(): array
     {
         $maker = debug_backtrace(0, 3)[2];
-        $maker['file'] = pathRelative($maker['file']);
+        $maker['file'] = (new Path($maker['file']))->relative();
 
         return $maker;
     }
@@ -266,7 +263,8 @@ final class Route implements RouteContract
             // Sets (optionals) are like /route/{0}
             $pregReplace = preg_replace('/{[0-9]+}/', '', $this->key);
             if (null != $pregReplace) {
-                $pregReplace = trim(pathNormalize($pregReplace), '/');
+                $path = new Path($pregReplace);
+                $pregReplace = trim($path->absolute(), '/');
             }
             $this->type = isset($pregReplace) ? Route::TYPE_DYNAMIC : Route::TYPE_STATIC;
         }
