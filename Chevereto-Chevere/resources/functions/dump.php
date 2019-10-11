@@ -18,12 +18,15 @@ use Chevere\VarDump\Dumper;
  */
 function dump(...$vars)
 {
-    Dumper::dump(...$vars);
+    $dumper = new Dumper();
+    $dumper->dumper(...$vars);
 }
 /**
  * Dumps information about one or more variables and die().
  */
 function dd(...$vars)
 {
-    Dumper::dd(...$vars);
+    $dumper = new Dumper();
+    $dumper->dumper(...$vars);
+    die(0);
 }

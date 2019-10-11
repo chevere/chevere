@@ -77,7 +77,7 @@ class Dumper
         return new DumperFormatter();
     }
 
-    final private function dumper(...$vars): void
+    final public function dumper(...$vars): void
     {
         $this->varDump = new VarDump($this->formatter);
         $this->vars = $vars;
@@ -105,21 +105,6 @@ class Dumper
         $this->handleProccessOutput();
     }
 
-    final public static function dump(...$vars): void
-    {
-        $new = new static();
-        $new->dumper(...$vars);
-    }
-
-    /**
-     * Dumps information about one or more variables and die(0).
-     */
-    final public static function dd(...$vars)
-    {
-        static::dump(...$vars);
-        die(0);
-    }
-
     final private function handleDebugBacktrace(): void
     {
         while (isset($this->debugBacktrace[0]['file']) && __FILE__ == $this->debugBacktrace[0]['file']) {
@@ -133,7 +118,6 @@ class Dumper
         if (
             stringEndsWith('resources/functions/dump.php', $this->callerFilepath)
             && __CLASS__ == $this->debugBacktrace[0]['class']
-            && in_array($this->debugBacktrace[0]['function'], ['dump', 'dd'])
         ) {
             $this->shiftDebugBacktrace();
         }
