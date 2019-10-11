@@ -54,7 +54,7 @@ final class Benchmark
     /** @var float */
     private $maxExecutionTime;
 
-    /** @var float Nanotime $_SERVER['REQUEST_TIME_FLOAT'] */
+    /** @var float Nanotime */
     private $requestTime;
 
     /** @var int Number of times to run each callable */
@@ -127,7 +127,7 @@ final class Benchmark
     {
         $this->constructTime = hrtime(true);
         $this->maxExecutionTime = (int) ini_get('max_execution_time');
-        $this->requestTime = $_SERVER['REQUEST_TIME_FLOAT'] ?: 0;
+        $this->requestTime = BOOTSTRAP_TIME;
         $this->times = $times;
         $this->callablesCount = 0;
         $this->timeTaken = 0;

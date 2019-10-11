@@ -169,7 +169,7 @@ final class Formatter
         if (CLI) {
             $this->data = $this->data
                 ->withMergedArray([
-                    'clientIp' => $_SERVER['argv'][0],
+                    'clientIp' => $this->exceptionHandler->request()->getGlobals()->argv()[0],
                     'clientUserAgent' => Console::inputString(),
                 ]);
         } else {

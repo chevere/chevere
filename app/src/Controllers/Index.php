@@ -17,6 +17,7 @@ use Chevere\Contracts\Controller\JsonApiContract;
 use Chevere\Controller\Controller;
 use Chevere\Controller\Traits\JsonApiTrait;
 use Chevere\JsonApi\EncodedDocument;
+use Chevere\Globals\Globals;
 use Exception;
 use JsonApiPhp\JsonApi\Attribute;
 use JsonApiPhp\JsonApi\DataDocument;
@@ -39,6 +40,9 @@ class Index extends Controller implements JsonApiContract
 
     public function __invoke(): void
     {
+        throw new Exception('eee');
+        $gg = new Globals($GLOBALS);
+        dd($gg->server());
         dd(stringReplaceFirst('e', '@', 'eee'));
         // die(1000 * (microtime(true) - BOOTSTRAP_TIME));
         $this->api = new ResourceObject(

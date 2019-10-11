@@ -65,7 +65,7 @@ final class Loader implements LoaderContract
         if (DEV || Console::isBuilding()) {
             $this->parameters = new Parameters(
                 new ArrayFile(
-                    new PathHandle(App::FILEHANDLE_PARAMETERS)
+                    (new PathHandle(App::FILEHANDLE_PARAMETERS))->path()
                 )
             );
             $this->builder = $this->builder

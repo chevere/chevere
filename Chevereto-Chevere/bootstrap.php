@@ -61,7 +61,7 @@ Builder::setRuntimeInstance(
         new SetDefaultCharset('utf-8'),
         new SetPrecision('16'),
         new SetUriScheme('https'),
-        new SetTimeZone('UTC')
+        new SetTimeZone('UTC'),
     )
 );
 
