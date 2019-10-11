@@ -13,19 +13,35 @@ declare(strict_types=1);
 
 namespace Chevere\Number;
 
-abstract class Number
+final class Number
 {
+    /** @var int */
+    private $number;
+
+    /** @var int */
+    private $precision;
+
+    public function __construct(int $number)
+    {
+        $this->number = $number;
+        $this->precision = 0;
+    }
+
+    public function withPrecision(int $precision)
+    {
+        $new = clone $this;
+        $new->precision = $precision;
+
+        return $new;
+    }
     /**
      * Abbreviate a number adding its alpha suffix.
      *
-     * @param int $number    number to be abbreviated
-     * @param int $precision round precision
-     *
      * @return string Abbreviated number (ie. 2K or 1M).
      */
-    public static function abbreviate(int $number, int $precision = 0): string
+    public static function toAbbreviate(): string
     {
-        if ($number != 0) {
+        if ($this->number != 0) {
             $abbreviations = [
                 24 => 'Y',
                 21 => 'Z',
@@ -38,16 +54,18 @@ abstract class Number
                 0 => null,
             ];
             foreach ($abbreviations as $exponent => $abbreviation) {
-                if ($number >= pow(10, $exponent)) {
-                    $div = $number / pow(10, $exponent);
+                if ($this->number >= pow(10, $exponent)) {
+                    $div = $this->number / pow(10, $exponent);
                     $float = floatval($div);
-                    $number = null === $abbreviation ? (string) $float : (round($float, $precision) . $abbreviation);
+                    $this->number = null === $abbreviation
+                        ? (string) $float
+                        : (round($float, $this->precision) . $abbreviation);
                     break;
                 }
             }
         }
 
-        return (string) $number;
+        return (string) $this->number;
     }
 
     /**
@@ -55,10 +73,10 @@ abstract class Number
      *
      * @param string $fraction a fraction number (like 1/25)
      */
-    public static function fractionToDecimal($fraction): ?float
-    {
-        [$top, $bottom] = explode('/', $fraction);
+    // public static function fractionToDecimal($fraction): ?float
+    // {
+    //     [$top, $bottom] = explode('/', $fraction);
 
-        return (float) ($bottom == 0 ? $fraction : ($top / $bottom));
-    }
+    //     return (float) ($bottom == 0 ? $fraction : ($top / $bottom));
+    // }
 }

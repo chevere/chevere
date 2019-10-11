@@ -289,7 +289,8 @@ final class Benchmark
         $this->recordsProcessed = 0;
         foreach ($this->records as $id => $timeTaken) {
             $this->lines[] = $this->getResultTitle($id);
-            $resRuns = Number::abbreviate($this->results[$id]['runs']) . ' runs';
+            $number = new Number($this->results[$id]['runs']);
+            $resRuns = $number->toAbbreviate() . ' runs';
             $resRuns .= ' in ' . Time::nanoToRead($this->results[$id]['time']);
             if ($this->results[$id]['runs'] != $this->times) {
                 $resRuns .= ' ~ missed ' . ($this->times - $this->results[$id]['runs']) . ' runs';
