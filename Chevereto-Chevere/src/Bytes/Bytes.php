@@ -60,7 +60,7 @@ final class Bytes
      *
      * @return string formatted size string like 10 MB
      */
-    function toHumanReadable(): string
+    public function toHumanReadable(): string
     {
         if ($this->bytes < 1000) {
             return $this->bytes . ' B';

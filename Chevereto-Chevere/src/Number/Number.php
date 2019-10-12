@@ -41,6 +41,8 @@ final class Number
      */
     public function toAbbreviate(): string
     {
+        /** @var string */
+        $string = (string) $this->number;
         if ($this->number != 0) {
             $abbreviations = [
                 24 => 'Y',
@@ -57,15 +59,15 @@ final class Number
                 if ($this->number >= pow(10, $exponent)) {
                     $div = $this->number / pow(10, $exponent);
                     $float = floatval($div);
-                    $this->number = null === $abbreviation
-                        ? (string) $float
-                        : (round($float, $this->precision) . $abbreviation);
+                    $string = (string) (null === $abbreviation
+                        ? $float
+                        : (round($float, $this->precision) . $abbreviation));
                     break;
                 }
             }
         }
 
-        return (string) $this->number;
+        return $string;
     }
 
     /**

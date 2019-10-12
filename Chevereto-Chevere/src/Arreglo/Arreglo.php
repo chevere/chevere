@@ -90,7 +90,8 @@ final class Arreglo
         $array = $this->array;
         foreach ($array as $key => $value) {
             if (is_array($value)) {
-                $array[$key] = self::toRemoveEmpty($array[$key]);
+                $new = new static($array[$key]);
+                $array[$key] = $new->toRemoveEmpty();
             }
             if (empty($array[$key])) {
                 unset($array[$key]);
