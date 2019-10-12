@@ -130,7 +130,7 @@ final class Build implements BuildContract
      */
     public function destroy(): void
     {
-        $this->pathHandle->file->remove();
+        $this->pathHandle->file()->remove();
         (new PathHandle('cache'))->path()
             ->removeContents();
     }

@@ -24,8 +24,8 @@ final class Parameters implements ParametersContract
      * The keys accepted by this class, with the gettype at right side.
      */
     private $keys = [
-        self::KEY_API => 'string',
-        self::KEY_ROUTES => 'array',
+        static::KEY_API => 'string',
+        static::KEY_ROUTES => 'array',
     ];
 
     /** @var ArrayFile The parameters array used to construct the object */
@@ -45,8 +45,8 @@ final class Parameters implements ParametersContract
             $this->assertKeyType($key, $val);
         }
         $array = $this->arrayFile->toArray();
-        $this->api = $array[static::API];
-        $this->routes = $array[static::ROUTES];
+        $this->api = $array[static::KEY_API];
+        $this->routes = $array[static::KEY_ROUTES];
     }
 
     public function api(): string
