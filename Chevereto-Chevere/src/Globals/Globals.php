@@ -20,6 +20,9 @@ use Chevere\Message\Message;
 /**
  * Provides read-only access for superglobals.
  * 
+ * @method array argc()
+ * @method array argv()
+ * @method array get()
  * @method array server()
  * @method array post()
  * @method array files()

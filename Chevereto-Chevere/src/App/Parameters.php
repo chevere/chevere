@@ -90,7 +90,7 @@ final class Parameters implements ParametersContract
                     ->code('%s', $this->keys[$key])
                     ->code('%t', $gettype)
                     ->code('%k', $key)
-                    ->code('%c', $this->arrayFile->path()->absolute()
+                    ->code('%c', $this->arrayFile->path()->absolute())
                     ->toString()
             );
         }

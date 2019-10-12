@@ -26,8 +26,11 @@ final class Method implements MethodContract
 {
     use ControllerAccessTrait;
 
-    /** @param string HTTP request method */
+    /** @var string HTTP request method */
     private $method;
+
+    /** @var string A ControllerContract name */
+    private $controllerName;
 
     public function __construct(string $method)
     {

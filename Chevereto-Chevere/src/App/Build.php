@@ -62,7 +62,6 @@ final class Build implements BuildContract
         $this->builder = $builder;
         $this->container = new Container();
         $this->pathHandle = (new PathHandle(BuildContract::FILE_INDETIFIER));
-        $this->path = $this->pathHandle->path();
     }
 
     public function withContainer(Container $container): BuildContract
@@ -131,7 +130,7 @@ final class Build implements BuildContract
      */
     public function destroy(): void
     {
-        $this->file->remove();
+        $this->pathHandle->file->remove();
         (new PathHandle('cache'))->path()
             ->removeContents();
     }

@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Bytes;
 
+use Chevere\Message\Message;
+use LogicException;
+use PHPUnit\Framework\Constraint\LogicalOr;
+
 final class Bytes
 {
-
     const BYTES_UNITS = ['KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
 
     /** @var int */
@@ -62,7 +65,7 @@ final class Bytes
         if ($this->bytes < 1000) {
             return $this->bytes . ' B';
         }
-        foreach (BYTES_UNITS as $k => $v) {
+        foreach (static::BYTES_UNITS as $k => $v) {
             $multiplier = pow(1000, $k + 1);
             $threshold = $multiplier * 1000;
             if ($this->bytes < $threshold) {
@@ -71,5 +74,9 @@ final class Bytes
                 return "$size $v";
             }
         }
+        throw new LogicException(
+            (new Message("Out of range, %bytes% bytes can't be converted"))
+                ->code('%bytes%', $this->bytes)
+        );
     }
 }
