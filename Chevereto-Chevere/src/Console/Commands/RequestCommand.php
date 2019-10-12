@@ -112,7 +112,7 @@ final class RequestCommand extends Command
     private $options;
 
     /** @var array */
-    private $ParsedOptions;
+    private $parsedOptions;
 
     // List of arguments passed as JSON
     const JSON_OPTIONS = ['get', 'post', 'cookie', 'files'];
@@ -131,13 +131,13 @@ final class RequestCommand extends Command
             $this->getArgumentString('uri'),
             $this->getOptionArray('headers'),
             isset($this->options['body']) ? $this->getOptionString('body') : null,
-            );
+        );
 
         $request
-            ->withCookieParams($this->ParsedOptions['cookie'])
-            ->withQueryParams($this->ParsedOptions['get'])
-            ->withParsedBody($this->ParsedOptions['post'])
-            ->withUploadedFiles(ServerRequest::normalizeFiles($this->ParsedOptions['files']));
+            ->withCookieParams($this->parsedOptions['cookie'])
+            ->withQueryParams($this->parsedOptions['get'])
+            ->withParsedBody($this->parsedOptions['post'])
+            ->withUploadedFiles(ServerRequest::normalizeFiles($this->parsedOptions['files']));
 
         $builder = $builder->withRequest($request);
 
@@ -181,7 +181,7 @@ final class RequestCommand extends Command
 
     private function setParsedOptions(): void
     {
-        $this->ParsedOptions = [];
+        $this->parsedOptions = [];
         foreach (static::JSON_OPTIONS as $v) {
             if (is_string($this->options[$v])) {
                 try {
@@ -198,7 +198,7 @@ final class RequestCommand extends Command
             } else {
                 $json = $this->options[$v];
             }
-            $this->ParsedOptions[$v] = $json;
+            $this->parsedOptions[$v] = $json;
         }
     }
 }

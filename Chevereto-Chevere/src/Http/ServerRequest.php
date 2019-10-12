@@ -16,16 +16,38 @@ namespace Chevere\Http;
 use Chevere\Contracts\Http\RequestContract;
 use Chevere\Http\Traits\RequestTrait;
 use Chevere\Globals\Globals;
+use Chevere\Http\Traits\GlobalsTrait;
 use GuzzleHttp\Psr7\CachingStream;
 use GuzzleHttp\Psr7\LazyOpenStream;
 use GuzzleHttp\Psr7\ServerRequest as GuzzleHttpServerRequest;
+use Psr\Http\Message\UriInterface;
+use Psr\Http\Message\StreamInterface;
 
 final class ServerRequest extends GuzzleHttpServerRequest implements RequestContract
 {
     use RequestTrait;
+    use GlobalsTrait;
 
-    /** @var Globals */
-    private $globals;
+    /**
+     * @param string                               $method       HTTP method
+     * @param string|UriInterface                  $uri          URI
+     * @param array                                $headers      Request headers
+     * @param string|null|resource|StreamInterface $body         Request body
+     * @param string                               $version      Protocol version
+     * @param array                                $serverParams Typically the $_SERVER superglobal
+     */
+    public function __construct(
+        $method,
+        $uri,
+        array $headers = [],
+        $body = null,
+        $version = '1.1',
+        array $serverParams = []
+    ) {
+        $this->globals = new Globals($GLOBALS);
+
+        parent::__construct($method, $uri, $headers, $body, $version, $serverParams ?? $this->globals->server());
+    }
 
     /**
      * Return a ServerRequest populated with superglobals.
@@ -34,6 +56,7 @@ final class ServerRequest extends GuzzleHttpServerRequest implements RequestCont
      */
     public static function fromGlobals(): RequestContract
     {
+        die('1111');
         $globals = new Globals($GLOBALS);
         $method = isset($globals->server()['REQUEST_METHOD'])
             ? $globals->server()['REQUEST_METHOD']
@@ -46,30 +69,11 @@ final class ServerRequest extends GuzzleHttpServerRequest implements RequestCont
             : '1.1';
 
         $serverRequest = new static($method, $uri, $headers, $body, $protocol, $globals->server());
-
+        $serverRequest->globals = $globals;
         return $serverRequest
-            ->withGlobals($globals)
             ->withCookieParams($globals->cookie())
             ->withQueryParams($globals->get())
             ->withParsedBody($globals->post())
             ->withUploadedFiles(static::normalizeFiles($globals->files()));
-    }
-
-    public function withGlobals(Globals $globals): RequestContract
-    {
-        $new = clone $this;
-        $new->globals = $globals;
-
-        return $new;
-    }
-
-    public function hasGlobals(): bool
-    {
-        return isset($this->globals);
-    }
-
-    public function getGlobals(): Globals
-    {
-        return $this->globals;
     }
 }

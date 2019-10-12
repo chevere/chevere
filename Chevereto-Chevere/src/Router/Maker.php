@@ -41,9 +41,6 @@ final class Maker implements MakerContract
     /** @var array An array containing the named routes [name => [id, fileHandle]] */
     private $named;
 
-    /** @var array [basename => [route id,]]. */
-    private $baseIndex;
-
     /** @var array [regex => Route id]. */
     private $regexIndex;
 
@@ -71,7 +68,6 @@ final class Maker implements MakerContract
         $new->handleRouteName();
         $new->routes[] = $route;
         $id = array_key_last($new->routes);
-        $new->baseIndex[$group][] = array_key_last($new->routes);
         $keyPowerSet = $route->keyPowerSet();
         if (!empty($keyPowerSet)) {
             $ix = $id;

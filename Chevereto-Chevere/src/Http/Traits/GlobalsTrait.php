@@ -11,16 +11,17 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Contracts\Http;
+namespace Chevere\Http\Traits;
 
 use Chevere\Globals\Globals;
-use Psr\Http\Message\RequestInterface;
 
-interface RequestContract extends RequestInterface
+trait GlobalsTrait
 {
-    public function isXmlHttpRequest(): bool;
+    /** @var Globals */
+    private $globals;
 
-    public function protocolString(): string;
-
-    public function getGlobals(): Globals;
+    public function getGlobals(): Globals
+    {
+        return $this->globals;
+    }
 }

@@ -65,8 +65,8 @@ final class OptionsController extends Controller
 
     private function process()
     {
-        $statusCode = 200;
-        $endpoint = $this->app()->api()->endpoint($this->endpoint);
+        // $statusCode = 200;
+        // $endpoint = $this->app()->api()->endpoint($this->endpoint);
         // if ($endpoint['OPTIONS']) {
         //     $this->app()->response()->addData('OPTIONS', $this->path, $endpoint['OPTIONS']);
         // } else {

@@ -137,6 +137,7 @@ final class Formatter
     private function setServerProperties()
     {
         if (CLI) {
+            // dd($this->exceptionHandler->request());
             $this->data = $this->data
                 ->withMergedArray([
                     'clientIp' => $this->exceptionHandler->request()->getGlobals()->argv()[0],

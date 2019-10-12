@@ -112,20 +112,20 @@ final class Hook
      */
     private static function bind(string $id, callable $callable, int $priority = null, string $pos): void
     {
-        $parsed = self::parseIdentifier($id);
-        extract($parsed);
-        $hook = [
-            self::CALLABLE => $callable,
-            self::MAKER => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1],
-        ];
-        $priority = $priority ?? self::DEFAULT_PRIORITY;
-        $f = ${self::FILE};
-        $a = ${self::ANCHOR};
-        $priority_exists = isset(self::$hooks[$f][$a][$pos][$priority]);
-        self::$hooks[$f][$a][$pos][$priority][] = $hook;
-        if (!$priority_exists) {
-            ksort(self::$hooks[$f][$a][$pos]);
-        }
+        // $parsed = self::parseIdentifier($id);
+        // extract($parsed);
+        // $hook = [
+        //     self::CALLABLE => $callable,
+        //     self::MAKER => debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1],
+        // ];
+        // $priority = $priority ?? self::DEFAULT_PRIORITY;
+        // $file = ${self::FILE};
+        // $a = ${self::ANCHOR};
+        // $priority_exists = isset(self::$hooks[$file][$a][$pos][$priority]);
+        // self::$hooks[$file][$a][$pos][$priority][] = $hook;
+        // if (!$priority_exists) {
+        //     ksort(self::$hooks[$file][$a][$pos]);
+        // }
     }
 
     /**

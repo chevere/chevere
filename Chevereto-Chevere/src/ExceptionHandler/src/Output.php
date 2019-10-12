@@ -116,7 +116,7 @@ final class Output
         $this->tags['content'] = $content;
         $this->preparedTags['%content%'] = $this->tags['content'];
         $this->textPlain = strtr($this->plainTemplate, $this->preparedTags);
-        dd(var_export(array_keys($this->preparedTags), true));
+        // dd(var_export(array_keys($this->preparedTags), true));
     }
 
     // FIXME: JsonApi Document

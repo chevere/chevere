@@ -71,27 +71,50 @@ final class Build implements BuildContract
         return $new;
     }
 
+    private function handleApiMaker(): BuildContract
+    {
+        $new = clone $this;
+        $new->apiMaker = new ApiMaker($new->routerMaker);
+        $new->apiMaker = $new->apiMaker
+            ->withPath(
+                (new PathHandle($this->parameters->api()))
+                    ->path()
+            );
+        $new->container = $new->container
+            ->withApi(
+                (new Api())
+                    ->withMaker($new->apiMaker)
+            );
+        $new->apiMaker = $new->apiMaker
+            ->withCache();
+        $new->cacheChecksums = $new->apiMaker->cache()->toArray();
+
+        return $new;
+    }
+
     public function withParameters(ParametersContract $parameters): BuildContract
     {
         $new = clone $this;
-        $new->routerMaker = new RouterMaker();
         if ($new->isBuilt) {
             throw new AlreadyBuiltException();
         }
+        $new->parameters = $parameters;
+        $new->routerMaker = new RouterMaker();
         $new->cacheChecksums = [];
         if (!empty($parameters->api())) {
-            $pathHandle = new PathHandle($parameters->api());
-            $new->apiMaker = new ApiMaker($new->routerMaker);
-            $new->apiMaker = $new->apiMaker
-                ->withPath($pathHandle->path());
-            $new->container = $new->container
-                ->withApi(
-                    (new Api())
-                        ->withMaker($new->apiMaker)
-                );
-            $new->apiMaker = $new->apiMaker
-                ->withCache();
-            $new->cacheChecksums = $new->apiMaker->cache()->toArray();
+            $new->handleApiMaker();
+            // $pathHandle = new PathHandle($parameters->api());
+            // $new->apiMaker = new ApiMaker($new->routerMaker);
+            // $new->apiMaker = $new->apiMaker
+            //     ->withPath($pathHandle->path());
+            // $new->container = $new->container
+            //     ->withApi(
+            //         (new Api())
+            //             ->withMaker($new->apiMaker)
+            //     );
+            // $new->apiMaker = $new->apiMaker
+            //     ->withCache();
+            // $new->cacheChecksums = $new->apiMaker->cache()->toArray();
         }
         if (!empty($parameters->routes())) {
             $new->routerMaker = $new->routerMaker
@@ -112,6 +135,8 @@ final class Build implements BuildContract
 
         return $new;
     }
+
+
 
     public function container(): Container
     {
