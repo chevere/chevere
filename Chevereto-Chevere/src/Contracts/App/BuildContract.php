@@ -46,4 +46,3 @@ interface BuildContract
      */
     public function destroy(): void;
 }
-`
