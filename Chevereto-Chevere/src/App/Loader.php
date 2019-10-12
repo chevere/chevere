@@ -42,7 +42,7 @@ final class Loader implements LoaderContract
     public function __construct()
     {
         $this->builder = new Builder(new App(new Response()));
-        $this->handleConsoleBind();
+        // $this->handleConsoleBind();
         $this->assert();
         $this->handleParameters();
         $build = $this->getBuild();
@@ -62,7 +62,7 @@ final class Loader implements LoaderContract
 
     private function handleParameters(): void
     {
-        if (DEV || Console::isBuilding()) {
+        if (DEV || (CLI && console()->isBuilding())) {
             $this->parameters = new Parameters(
                 new ArrayFile(
                     (new PathHandle(App::FILEHANDLE_PARAMETERS))->path()
@@ -82,7 +82,7 @@ final class Loader implements LoaderContract
         $api = new Api();
         $router = new Router();
         try {
-            if (!Console::isBuilding()) {
+            if (!(CLI && console()->isBuilding())) {
                 $api = $api
                     ->withCache(new Cache('api'));
                 $router = $router
@@ -106,13 +106,16 @@ final class Loader implements LoaderContract
     private function handleConsoleBind(): void
     {
         if (CLI) {
-            Console::bind($this->builder);
+            console()->bind($this->builder);
         }
     }
 
     private function assert(): void
     {
-        if (!DEV && !Console::isBuilding() && !$this->builder->build()->file()->exists()) {
+        if (!DEV
+            && !(CLI && console()->isBuilding())
+            && !$this->builder->build()->file()->exists()
+        ) {
             throw new NeedsToBeBuiltException(
                 (new Message('The application needs to be built by CLI %command% or calling %method% method.'))
                     ->code('%command%', 'php app/console build')

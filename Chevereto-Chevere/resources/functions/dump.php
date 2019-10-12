@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 use Chevere\VarDump\Dumper;
 
+// use Chevere\Console\Console;
+
 /**
  * Dumps information about one or more variables.
  */
@@ -30,3 +32,8 @@ function dd(...$vars)
     $dumper->dumper(...$vars);
     die(0);
 }
+
+// function console(): Console
+// {
+//     return new Console();
+// }

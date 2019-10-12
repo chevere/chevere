@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\App;
 
+use LogicException;
 use Chevere\Api\Api;
 use Chevere\Api\Maker as ApiMaker;
 use Chevere\Router\Maker as RouterMaker;
@@ -26,7 +27,6 @@ use Chevere\Message\Message;
 use Chevere\Path\Path;
 use Chevere\Path\PathHandle;
 use Chevere\Router\Router;
-use LogicException;
 
 final class Build implements BuildContract
 {

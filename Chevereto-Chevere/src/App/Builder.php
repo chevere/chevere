@@ -15,9 +15,13 @@ namespace Chevere\App;
 
 use const Chevere\CLI;
 
-use Chevere\App\Traits\ParametersAccessTrait;
 use LogicException;
 use RuntimeException;
+
+use function GuzzleHttp\Psr7\stream_for;
+
+use Chevere\App\Traits\ParametersAccessTrait;
+use Chevere\Controller\Traits\ControllerAccessTrait;
 
 use Chevere\Console\Console;
 use Chevere\Runtime\Runtime;
@@ -30,9 +34,6 @@ use Chevere\Message\Message;
 use Chevere\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\Controller\JsonApiContract;
-use Chevere\Controller\Traits\ControllerAccessTrait;
-
-use function GuzzleHttp\Psr7\stream_for;
 
 final class Builder implements BuilderContract
 {
@@ -183,8 +184,8 @@ final class Builder implements BuilderContract
     {
         if (CLI && !isset($this->consoleLoop)) {
             $this->consoleLoop = true;
-            Console::bind($this);
-            Console::run();
+            console()->bind($this);
+            console()->run();
         }
     }
 

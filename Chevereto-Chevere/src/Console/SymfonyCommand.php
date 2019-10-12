@@ -17,6 +17,7 @@ use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Chevere\Contracts\Console\CommandContract;
+use Chevere\Contracts\Console\ConsoleContract;
 use Chevere\Contracts\Console\SymfonyCommandContract;
 
 /**
@@ -27,18 +28,19 @@ final class SymfonyCommand extends BaseCommand implements SymfonyCommandContract
     /** @var CommandContract */
     private $chevereCommand;
 
-    public function __construct(CommandContract $command)
+    public function __construct(CommandContract $chevereCommand)
     {
-        $this->chevereCommand = $command;
         parent::__construct();
+        $this->chevereCommand = $chevereCommand;
+    }
+
+    public function getChevereCommand(): CommandContract
+    {
+        return $this->chevereCommand;
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output)
     {
-        $this->chevereCommand = $this->chevereCommand
-            ->console()
-            ->withCommand($this->chevereCommand)
-            ->command();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

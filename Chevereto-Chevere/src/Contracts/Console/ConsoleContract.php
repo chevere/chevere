@@ -15,33 +15,35 @@ namespace Chevere\Contracts\Console;
 
 use Chevere\Contracts\App\BuilderContract;
 use Symfony\Component\Console\Application as Symfony;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\StyleInterface;
 
 interface ConsoleContract
 {
+    const NAME = 'Chevere';
+    const VERSION = '1.0';
+
+    const VERBOSITY_QUIET = ConsoleOutput::VERBOSITY_QUIET;
+    const VERBOSITY_NORMAL = ConsoleOutput::VERBOSITY_NORMAL;
+    const VERBOSITY_VERBOSE = ConsoleOutput::VERBOSITY_VERBOSE;
+    const VERBOSITY_VERY_VERBOSE = ConsoleOutput::VERBOSITY_VERY_VERBOSE;
+    const VERBOSITY_DEBUG = ConsoleOutput::VERBOSITY_DEBUG;
+
+    const OUTPUT_NORMAL = ConsoleOutput::OUTPUT_NORMAL;
+    const OUTPUT_RAW = ConsoleOutput::OUTPUT_RAW;
+    const OUTPUT_PLAIN = ConsoleOutput::OUTPUT_PLAIN;
+
     public function __construct();
-
-    public static function input(): InputInterface;
-
-    public static function output(): OutputInterface;
-
     public function withCommand(CommandContract $command): ConsoleContract;
-
-    public static function command(): CommandContract;
-
-    public static function commandString(): string;
-
-    public static function symfony(): Symfony;
-
-    public static function style(): StyleInterface;
-
-    public static function inputString(): string;
-
-    public static function isBuilding(): bool;
-
-    public static function bind(BuilderContract $builder): bool;
-
-    public static function run();
+    public function hasCommand(): bool;
+    public function input(): InputInterface;
+    public function output(): OutputInterface;
+    public function style(): StyleInterface;
+    public function command(): CommandContract;
+    public function inputString(): string;
+    public function isBuilding(): bool;
+    public function bind(BuilderContract $builder): bool;
+    public function run();
 }

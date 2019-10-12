@@ -71,7 +71,7 @@ final class Output
             if (CLI) {
                 // $this->setJsonOutput();
                 $this->setConsoleOutput();
-                // $this->setHtmlOutput();
+            // $this->setHtmlOutput();
             } else {
                 $this->setHtmlOutput();
             }
@@ -91,7 +91,8 @@ final class Output
         }
 
         $response = new Response();
-        if ($this->exceptionHandler->request()->isXmlHttpRequest()) { } else {
+        if ($this->exceptionHandler->request()->isXmlHttpRequest()) {
+        } else {
             // $response = new HttpResponse();
         }
         $guzzle = $response->guzzle()
@@ -175,18 +176,18 @@ final class Output
             if ('title' == $k) {
                 $tpl = $v[0];
             } else {
-                Console::style()->section(strtr($v[0], $this->preparedTags));
+                console()->style()->section(strtr($v[0], $this->preparedTags));
                 $tpl = $v[1];
             }
             $message = strtr($tpl, $this->preparedTags);
             if ('title' == $k) {
-                Console::style()->error($message);
+                console()->style()->error($message);
             } else {
                 $message = (new Message($message))->toCliString();
-                Console::style()->writeln($message);
+                console()->style()->writeln($message);
             }
         }
-        Console::style()->writeln('');
+        console()->style()->writeln('');
     }
 
     private function generateTemplates(): void

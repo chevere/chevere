@@ -136,26 +136,25 @@ final class Formatter
 
     private function setServerProperties()
     {
+        $request = $this->exceptionHandler->request();
         if (CLI) {
             // dd($this->exceptionHandler->request());
             $this->data = $this->data
                 ->withMergedArray([
-                    'clientIp' => $this->exceptionHandler->request()->getGlobals()->argv()[0],
-                    'clientUserAgent' => Console::inputString(),
+                    'clientIp' => $request->getGlobals()->argv()[0],
+                    'clientUserAgent' => console()->inputString(),
                 ]);
         } else {
-            $wea = [
-                'uri' => $this->exceptionHandler->request()->getUri()->getPath() ?? 'unknown',
-                'clientUserAgent' => $this->exceptionHandler->request()->getHeaderLine('User-Agent'),
-                'requestMethod' => $this->exceptionHandler->request()->getMethod(),
-                // 'serverHost' => $this->exceptionHandler->request()->getHost(),
-                // 'serverPort' => (int) $this->exceptionHandler->request()->getPort(),
-                'serverProtocol' => $this->exceptionHandler->request()->protocolString(),
-                // 'serverSoftware' => $this->exceptionHandler->request()->getHeaderLine('SERVER_SOFTWARE'),
-                // 'clientIp' => $this->exceptionHandler->request()->getClientIp(),
-            ];
             $this->data = $this->data
-                ->withMergedArray($wea);
+                ->withMergedArray([
+                    'uri' => $request->getUri()->getPath() ?? 'unknown',
+                    'clientUserAgent' => $request->getHeaderLine('User-Agent'),
+                    'serverHost' => $request->getHeaderLine('Host'),
+                    'requestMethod' => $request->getMethod(),
+                    'serverProtocol' => $request->protocolString(),
+                    'serverSoftware' => $request->getGlobals()->server()['SERVER_SOFTWARE'],
+                    'clientIp' => $request->getGlobals()->server()['REMOTE_ADDR'],
+                ]);
         }
     }
 
@@ -186,11 +185,11 @@ final class Formatter
             static::SECTION_STACK => ['# Stack trace', '%plainStack%'],
             static::SECTION_CLIENT => ['# Client', '%clientIp% %clientUserAgent%'],
             static::SECTION_REQUEST => ['# Request', '%serverProtocol% %requestMethod% %uri%'],
-            static::SECTION_SERVER => ['# Server', '%serverHost% (port:%serverPort%) %serverSoftware%'],
+            static::SECTION_SERVER => ['# Server', '%serverHost% %serverSoftware%'],
         ];
 
         if (CLI) {
-            $verbosity = Console::output()->getVerbosity();
+            $verbosity = console()->output()->getVerbosity();
         }
         $this->buildContentSections($sections, $verbosity ?? null);
     }
@@ -246,7 +245,7 @@ final class Formatter
         $globals = $this->exceptionHandler->request()->getGlobals()->globals();
         foreach (['_GET', '_POST', '_FILES', '_COOKIE', '_SESSION', '_SERVER'] as $global) {
             $val = $globals[$global] ?? null;
-            if (isset($val)) {
+            if (!empty($val)) {
                 $dumperVarDump = $dumperVarDump->withDump($val);
                 $plainVarDump = $plainVarDump->withDump($val);
                 $wrapped = $dumperVarDump->toString();

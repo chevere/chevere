@@ -15,6 +15,8 @@ namespace Chevere\Runtime\Traits;
 
 use Chevere\Contracts\DataContract;
 
+use function ChevereFn\stringReplaceFirst;
+
 trait Set
 {
     /** @var string */
@@ -37,7 +39,7 @@ trait Set
     public function name(): string
     {
         $explode = explode('\\', __CLASS__);
-        $name = end($explode);
+        $name = stringReplaceFirst('Set', '', end($explode));
 
         return lcfirst($name);
     }

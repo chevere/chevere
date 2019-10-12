@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere;
 
 use Chevere\App\Builder;
-use Chevere\Console\Console;
+use Chevere\Console\Container;
 use Chevere\Runtime\Runtime;
 use Chevere\Runtime\Sets\SetDebug;
 use Chevere\Runtime\Sets\SetDefaultCharset;
@@ -45,11 +45,11 @@ define('Chevere\APP_PATH', ROOT_PATH . 'app/');
 /** DEV=true to rebuild the App on every load */
 define('Chevere\DEV', (bool) include(APP_PATH . 'options/dev.php'));
 
+define('Chevere\CLI', true);
 if ('cli' == php_sapi_name()) {
-    new Console();
-    define('Chevere\CLI', true);
+    new Container();
 } else {
-    define('Chevere\CLI', false);
+    // define('Chevere\CLI', false);
 }
 
 Builder::setRuntimeInstance(
@@ -62,7 +62,7 @@ Builder::setRuntimeInstance(
         new SetPrecision('16'),
         new SetUriScheme('https'),
         new SetTimeZone('UTC'),
-    )
+        )
 );
 
 require APP_PATH . 'app.php';

@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Console;
 
 use Chevere\Contracts\App\BuilderContract;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
+
 use Chevere\Contracts\Console\CommandContract;
 use Chevere\Contracts\Console\SymfonyCommandContract;
 use Chevere\Message\Message;
@@ -26,22 +25,6 @@ use LogicException;
  */
 abstract class Command implements CommandContract
 {
-    const ARGUMENT_REQUIRED = InputArgument::REQUIRED;
-    const ARGUMENT_OPTIONAL = InputArgument::OPTIONAL;
-    const ARGUMENT_IS_ARRAY = InputArgument::IS_ARRAY;
-
-    const OPTION_NONE = InputOption::VALUE_NONE;
-    const OPTION_REQUIRED = InputOption::VALUE_REQUIRED;
-    const OPTION_OPTIONAL = InputOption::VALUE_OPTIONAL;
-    const OPTION_IS_ARRAY = InputOption::VALUE_IS_ARRAY;
-
-    const NAME = '';
-    const DESCRIPTION = '';
-    const HELP = '';
-
-    const ARGUMENTS = [];
-    const OPTIONS = [];
-
     /** @var Console */
     private $console;
 
@@ -51,8 +34,7 @@ abstract class Command implements CommandContract
     final public function __construct(Console $console)
     {
         $this->console = $console;
-        $this->symfony = new SymfonyCommand($this);
-        $this->configure();
+        $this->setSymfony();
     }
 
     final public function console(): Console
@@ -106,9 +88,9 @@ abstract class Command implements CommandContract
 
     abstract public function callback(BuilderContract $builder): int;
 
-    final private function configure(): void
+    final private function setSymfony(): void
     {
-        $this->symfony
+        $this->symfony = (new SymfonyCommand($this))
             ->setName(static::NAME)
             ->setDescription(static::DESCRIPTION)
             ->setHelp(static::HELP);
@@ -118,6 +100,8 @@ abstract class Command implements CommandContract
         foreach (static::OPTIONS as $options) {
             $this->symfony->addOption(...$options);
         }
+        $this->console = $this->console
+            ->withCommand($this);
     }
 
     final private function assertStringType(string $for, $var): void

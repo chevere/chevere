@@ -26,7 +26,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 interface SymfonyCommandContract
 {
-    public function __construct(CommandContract $command);
+    public function __construct(CommandContract $chevereCommand);
+
+    public function getChevereCommand(): CommandContract;
 
     /**
      * @return string|null The default command name or null when no default name is set
