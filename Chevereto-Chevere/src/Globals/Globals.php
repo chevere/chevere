@@ -27,6 +27,7 @@ use Chevere\Message\Message;
  * @method array session()
  * @method array request()
  * @method array env()
+ * @method array globals()
  */
 final class Globals
 {
@@ -41,6 +42,7 @@ final class Globals
         'session',
         'request',
         'env',
+        'globals'
     ];
 
     const KEYS = [
@@ -54,6 +56,7 @@ final class Globals
         '_SESSION',
         '_REQUEST',
         '_ENV',
+        'GLOBALS'
     ];
 
     /** @var array */

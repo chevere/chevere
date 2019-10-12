@@ -113,7 +113,8 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
     {
         $validator = $this->type->validator();
         foreach ($this->array as $k => $object) {
-            if ($validate = $validator($object)) {
+            $validate = $validator($object);
+            if ($validate) {
                 if ($this->type->primitive() == 'object') {
                     $validate = $this->type->validate($object);
                 }

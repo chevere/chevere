@@ -112,11 +112,11 @@ final class Loader implements LoaderContract
 
     private function assert(): void
     {
-        if (!DEV && !Console::isBuilding() && !$this->builder->build()->exists()) {
+        if (!DEV && !Console::isBuilding() && !$this->builder->build()->file()->exists()) {
             throw new NeedsToBeBuiltException(
                 (new Message('The application needs to be built by CLI %command% or calling %method% method.'))
                     ->code('%command%', 'php app/console build')
-                    ->code('%method%', __CLASS__ . '::' . 'build')
+                    ->code('%method%', __CLASS__ . '::build')
                     ->toString()
             );
         }

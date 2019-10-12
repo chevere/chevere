@@ -81,7 +81,8 @@ final class Wrapper
 
     private function wrapHtml()
     {
-        if ($color = $this->getHtmlColor($this->key)) {
+        $color = $this->getHtmlColor($this->key);
+        if ($color) {
             return '<span style="color:' . $color . '">' . $this->dump . '</span>';
         }
 

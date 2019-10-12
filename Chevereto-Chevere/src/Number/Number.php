@@ -39,7 +39,7 @@ final class Number
      *
      * @return string Abbreviated number (ie. 2K or 1M).
      */
-    public static function toAbbreviate(): string
+    public function toAbbreviate(): string
     {
         if ($this->number != 0) {
             $abbreviations = [

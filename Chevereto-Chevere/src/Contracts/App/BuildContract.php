@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Contracts\App;
 
 use Chevere\App\Container;
+use Chevere\File\File;
+use Chevere\Path\Path;
 
 interface BuildContract
 {
@@ -21,11 +23,13 @@ interface BuildContract
 
     public function __construct(BuilderContract $builder);
 
-    public function exists(): bool;
-
     public function withContainer(Container $container): BuildContract;
 
     public function withParameters(ParametersContract $parameters): BuildContract;
+
+    public function file(): File;
+
+    public function path(): Path;
 
     public function container(): Container;
 
@@ -42,3 +46,4 @@ interface BuildContract
      */
     public function destroy(): void;
 }
+`

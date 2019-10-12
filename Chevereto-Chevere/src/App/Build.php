@@ -22,8 +22,11 @@ use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\CheckoutContract;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\File\File;
+use Chevere\Message\Message;
+use Chevere\Path\Path;
 use Chevere\Path\PathHandle;
 use Chevere\Router\Router;
+use LogicException;
 
 final class Build implements BuildContract
 {
@@ -33,8 +36,11 @@ final class Build implements BuildContract
     /** @var Container */
     private $container;
 
-    /** @var File */
-    private $path;
+    /** @var ParametersContract */
+    private $parameters;
+
+    /** @var PathHandle */
+    private $pathHandle;
 
     /** @var bool True if the App was built (cache) */
     private $isBuilt;
@@ -42,7 +48,7 @@ final class Build implements BuildContract
     /** @var CheckoutContract */
     private $checkout;
 
-    /** @var array An array containing the collection of Cache->toArray() data (checksums) */
+    /** @var array Containing the collection of Cache->toArray() data (checksums) */
     private $cacheChecksums;
 
     /** @var ApiMaker */
@@ -55,12 +61,8 @@ final class Build implements BuildContract
     {
         $this->builder = $builder;
         $this->container = new Container();
-        $this->file = (new PathHandle(static::FILE_INDETIFIER))->file();
-    }
-
-    public function exists(): bool
-    {
-        return $this->file->exists();
+        $this->pathHandle = (new PathHandle(BuildContract::FILE_INDETIFIER));
+        $this->path = $this->pathHandle->path();
     }
 
     public function withContainer(Container $container): BuildContract
@@ -71,62 +73,20 @@ final class Build implements BuildContract
         return $new;
     }
 
-    private function handleApiMaker(): BuildContract
-    {
-        $new = clone $this;
-        $new->apiMaker = new ApiMaker($new->routerMaker);
-        $new->apiMaker = $new->apiMaker
-            ->withPath(
-                (new PathHandle($this->parameters->api()))
-                    ->path()
-            );
-        $new->container = $new->container
-            ->withApi(
-                (new Api())
-                    ->withMaker($new->apiMaker)
-            );
-        $new->apiMaker = $new->apiMaker
-            ->withCache();
-        $new->cacheChecksums = $new->apiMaker->cache()->toArray();
-
-        return $new;
-    }
-
     public function withParameters(ParametersContract $parameters): BuildContract
     {
-        $new = clone $this;
-        if ($new->isBuilt) {
+        if ($this->isBuilt) {
             throw new AlreadyBuiltException();
         }
-        $new->parameters = $parameters;
+        $new = clone $this;
         $new->routerMaker = new RouterMaker();
+        $new->parameters = $parameters;
         $new->cacheChecksums = [];
         if (!empty($parameters->api())) {
-            $new->handleApiMaker();
-            // $pathHandle = new PathHandle($parameters->api());
-            // $new->apiMaker = new ApiMaker($new->routerMaker);
-            // $new->apiMaker = $new->apiMaker
-            //     ->withPath($pathHandle->path());
-            // $new->container = $new->container
-            //     ->withApi(
-            //         (new Api())
-            //             ->withMaker($new->apiMaker)
-            //     );
-            // $new->apiMaker = $new->apiMaker
-            //     ->withCache();
-            // $new->cacheChecksums = $new->apiMaker->cache()->toArray();
+            $new->handleApi();
         }
         if (!empty($parameters->routes())) {
-            $new->routerMaker = $new->routerMaker
-                ->withAddedRouteIdentifiers($parameters->routes());
-            $new->container = $new->container
-                ->withRouter(
-                    (new Router())
-                        ->withMaker($new->routerMaker)
-                );
-            $new->routerMaker = $new->routerMaker
-                ->withCache();
-            $new->cacheChecksums = array_merge($new->routerMaker->cache()->toArray(), $new->cacheChecksums);
+            $new->handleRoutes();
         }
         $new->checkout = new Checkout($new);
         $new->isBuilt = true;
@@ -136,7 +96,15 @@ final class Build implements BuildContract
         return $new;
     }
 
+    public function file(): File
+    {
+        return $this->pathHandle->file();
+    }
 
+    public function path(): Path
+    {
+        return $this->pathHandle->path();
+    }
 
     public function container(): Container
     {
@@ -153,6 +121,8 @@ final class Build implements BuildContract
 
     public function checkout(): CheckoutContract
     {
+        $this->assertCheckout();
+
         return $this->checkout;
     }
 
@@ -161,8 +131,53 @@ final class Build implements BuildContract
      */
     public function destroy(): void
     {
-        unlink($this->path->path());
-        $path = (new PathHandle('cache'))->path();
-        $path->removeContents();
+        $this->file->remove();
+        (new PathHandle('cache'))->path()
+            ->removeContents();
+    }
+
+    private function handleApi(): void
+    {
+        $this->apiMaker = new ApiMaker($this->routerMaker);
+        $this->apiMaker = $this->apiMaker
+            ->withPath(
+                (new PathHandle($this->parameters->api()))
+                    ->path()
+            );
+        $this->container = $this->container
+            ->withApi(
+                (new Api())
+                    ->withMaker($this->apiMaker)
+            );
+        $this->apiMaker = $this->apiMaker
+            ->withCache();
+        $this->cacheChecksums = $this->apiMaker->cache()->toArray();
+    }
+
+    private function handleRoutes(): void
+    {
+        $this->routerMaker = $this->routerMaker
+            ->withAddedRouteIdentifiers($this->parameters->routes());
+        $this->container = $this->container
+            ->withRouter(
+                (new Router())
+                    ->withMaker($this->routerMaker)
+            );
+        $this->routerMaker = $this->routerMaker
+            ->withCache();
+        $this->cacheChecksums = array_merge($this->routerMaker->cache()->toArray(), $this->cacheChecksums);
+    }
+
+    private function assertCheckout(): void
+    {
+        if (!isset($this->checkout)) {
+            throw new LogicException(
+                (new Message("Property %type% %property% is not set for object of %class% class"))
+                    ->code('%type%', CheckoutContract::class)
+                    ->code('%property%', 'checkout')
+                    ->code('%class%', __CLASS__)
+                    ->toString()
+            );
+        }
     }
 }

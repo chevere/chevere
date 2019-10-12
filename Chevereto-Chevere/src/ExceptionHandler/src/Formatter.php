@@ -243,18 +243,18 @@ final class Formatter
     {
         $dumperVarDump = new VarDump(new DumperFormatter());
         $plainVarDump = new VarDump(new PlainFormatter());
-        foreach (['GET', 'POST', 'FILES', 'COOKIE', 'SESSION', 'SERVER'] as $v) {
-            $k = '_' . $v;
-            $v = isset($GLOBALS[$k]) ? $GLOBALS[$k] : null;
-            if ($v) {
-                $dumperVarDump = $dumperVarDump->withDump($v);
-                $plainVarDump = $plainVarDump->withDump($v);
+        $globals = $this->exceptionHandler->request()->getGlobals()->globals();
+        foreach (['_GET', '_POST', '_FILES', '_COOKIE', '_SESSION', '_SERVER'] as $global) {
+            $val = $globals[$global] ?? null;
+            if (isset($val)) {
+                $dumperVarDump = $dumperVarDump->withDump($val);
+                $plainVarDump = $plainVarDump->withDump($val);
                 $wrapped = $dumperVarDump->toString();
                 if (!CLI) {
                     $wrapped = '<pre>' . $wrapped . '</pre>';
                 }
-                $this->setRichContentSection($k, ['$' . $k, $this->wrapStringHr($wrapped)]);
-                $this->setPlainContentSection($k, ['$' . $k, strip_tags($this->wrapStringHr($plainVarDump->toString()))]);
+                $this->setRichContentSection($global, ['$' . $global, $this->wrapStringHr($wrapped)]);
+                $this->setPlainContentSection($global, ['$' . $global, strip_tags($this->wrapStringHr($plainVarDump->toString()))]);
             }
         }
     }

@@ -28,7 +28,7 @@ final class Checkout implements CheckoutContract
     public function __construct(BuildContract $build)
     {
         $this->build = $build;
-        $this->fileReturn = new FileReturn($this->build->pathHandle());
+        $this->fileReturn = new FileReturn($this->build->path());
         $this->fileReturn->put($this->build->cacheChecksums());
     }
 

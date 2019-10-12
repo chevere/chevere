@@ -56,7 +56,6 @@ final class ServerRequest extends GuzzleHttpServerRequest implements RequestCont
      */
     public static function fromGlobals(): RequestContract
     {
-        die('1111');
         $globals = new Globals($GLOBALS);
         $method = isset($globals->server()['REQUEST_METHOD'])
             ? $globals->server()['REQUEST_METHOD']
