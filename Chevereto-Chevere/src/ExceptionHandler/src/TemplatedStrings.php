@@ -84,13 +84,13 @@ final class TemplatedStrings
     private function appendSectionContents(): void
     {
         if ($this->count > 0) {
-            $j = 1 == $this->sectionLength ? 0 : 1;
-            for ($j; $j < $this->sectionLength; ++$j) {
+            $key = 1 == $this->sectionLength ? 0 : 1;
+            for ($key; $key < $this->sectionLength; ++$key) {
                 if ($this->sectionLength > 1) {
                     $this->appendEOL();
                 }
-                $this->rich .= '<div class="c">' . $this->richSection[$j] . '</div>';
-                $this->plain .= $this->plainSection[$j];
+                $this->rich .= '<div class="c">' . $this->richSection[$key] . '</div>';
+                $this->plain .= $this->plainSection[$key];
             }
         }
     }

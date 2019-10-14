@@ -13,15 +13,20 @@ declare(strict_types=1);
 
 namespace Chevere\Time;
 
-abstract class Time
+final class TimeHr
 {
+    /** @var int */
+    private $hrTime;
+
+    public function __construct(int $hrTime)
+    {
+        $this->hrTime = $hrTime;
+    }
     /**
-     * @param float $nanotime Nanotime (see hrtime())
-     *
      * @return string Readable time in ms
      */
-    public static function nanoToRead(float $nanotime): string
+    public function toReadMs(): string
     {
-        return number_format($nanotime / 1e+6, 2) . ' ms';
+        return number_format($this->hrTime / 1e+6, 2) . ' ms';
     }
 }
