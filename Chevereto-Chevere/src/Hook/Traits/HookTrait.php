@@ -19,8 +19,8 @@ trait HookTrait
 {
     public function hook(string $anchor): void
     {
-        $hooks = new Hooks();
+        $hooks = new Hooks($this, $anchor);
         // $hooks->withTrace();
-        $hooks->exec($anchor, $this);
+        $hooks->exec();
     }
 }

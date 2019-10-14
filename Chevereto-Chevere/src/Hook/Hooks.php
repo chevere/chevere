@@ -13,50 +13,48 @@ declare(strict_types=1);
 
 namespace Chevere\Hook;
 
-use LogicException;
+use Chevere\Hook\Container;
 
 final class Hooks
 {
-    /** @var array */
-    private $array;
+    /** @var object */
+    private $that;
 
     /** @var array */
     private $trace;
 
-    public function __construct()
+    /** @var array */
+    private $anchor;
+
+    public function __construct(object $that, string $anchor)
     {
+        $this->that = $that;
         $this->trace = null;
-        $this->array = [
-            'App\Controllers\Home' => [
-                'helloWorld' => [
-                    10 => [
-                        [
-                            'callable' => 'Plugins\Local\HelloWorld\Hooks\Controllers\Home\HelloWorld',
-                            'maker' => 'somefile.php'
-                        ]
-                    ]
-                ]
-            ]
-        ];
+        $this->anchor = (new Container())
+            ->getAnchor($that, $anchor) ?? [];
     }
 
-    public function withTrace(): Hooks {
+    /**
+     * Enable Hook trace, which will store all the object versions on exec. Useful to detect how hooks are altering a
+     * HookableContract
+     */
+    public function withTrace(): Hooks
+    {
         $new = clone $this;
         $this->trace = [];
 
         return $new;
     }
 
-    public function exec(string $anchor, object $that): void
+    public function exec(): void
     {
-        $hooks = $this->getAnchor($that, $anchor);
-        if (null == $hooks) {
+        if (null == $this->anchor) {
             return;
         }
-        if(null !== $this->trace) {
-            $this->trace['source'] = $that; 
+        if (null !== $this->trace) {
+            $this->trace['base'] = $this->that;
         }
-        $this->runner($hooks, $that);
+        $this->runner();
     }
 
     public function hasTrace(): bool
@@ -69,19 +67,14 @@ final class Hooks
         return $this->trace;
     }
 
-    private function getAnchor(object $that, string $anchor): ?array
+    private function runner(): void
     {
-        return $this->array[get_class($that)][$anchor] ?? null;
-    }
-
-    private function runner(array $hooks, object $that): void
-    {
-        foreach ($hooks as $entries) {
+        foreach ($this->anchor as $entries) {
             foreach ($entries as $entry) {
                 $hook = new $entry['callable'];
-                $hook($that);
-                if(null !== $this->trace) {
-                    $this->trace[$entry['callable']] = $that;
+                $hook($this->that);
+                if (null !== $this->trace) {
+                    $this->trace[$entry['callable']] = $this->that;
                 }
             }
         }

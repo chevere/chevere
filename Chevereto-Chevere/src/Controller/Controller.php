@@ -15,7 +15,7 @@ namespace Chevere\Controller;
 
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\Controller\ControllerContract;
-use Chevere\Contracts\Hooks\HooksContract;
+use Chevere\Contracts\Hooks\HookableContract;
 use Chevere\Hook\Traits\HookTrait;
 
 // Define a hookable code entry:
@@ -32,7 +32,7 @@ use Chevere\Hook\Traits\HookTrait;
 /**
  * Controller is the defacto controller in Chevere.
  */
-abstract class Controller implements ControllerContract, HooksContract
+abstract class Controller implements ControllerContract, HookableContract
 {
     use HookTrait;
 

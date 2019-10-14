@@ -45,11 +45,11 @@ define('Chevere\APP_PATH', ROOT_PATH . 'app/');
 /** DEV=true to rebuild the App on every load */
 define('Chevere\DEV', (bool) include(APP_PATH . 'options/dev.php'));
 
-define('Chevere\CLI', true);
 if ('cli' == php_sapi_name()) {
     new Container();
+    define('Chevere\CLI', true);
 } else {
-    // define('Chevere\CLI', false);
+    define('Chevere\CLI', false);
 }
 
 Builder::setRuntimeInstance(

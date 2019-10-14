@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Hooks;
 
-interface HooksContract
+interface HookableContract
 {
     /**
      * Register a hookable entry. Hooks (if any) will run in this point.
