@@ -22,6 +22,7 @@ use Chevere\Contracts\VarDump\ProcessorContract;
 use Chevere\Path\Path;
 use Chevere\VarDump\Processors\Traits\ProcessorTrait;
 use Chevere\VarDump\VarDump;
+use ReflectionMethod;
 use ReflectionProperty;
 
 final class ObjectProcessor implements ProcessorContract
@@ -63,9 +64,7 @@ final class ObjectProcessor implements ProcessorContract
             return;
         }
         $this->setProperties();
-        foreach ($this->properties as $k => $v) {
-            $this->processProperty($k, $v);
-        }
+
         $this->className = get_class($expression);
         $this->handleNormalizeClassName();
         $this->parentheses = $this->className;
@@ -83,6 +82,9 @@ final class ObjectProcessor implements ProcessorContract
                 }
                 $this->properties[$property->getName()]['visibility'][] = $visibility;
             }
+        }
+        foreach ($this->properties as $k => $v) {
+            $this->processProperty($k, $v);
         }
     }
 

@@ -20,6 +20,7 @@ trait HookTrait
     public function hook(string $anchor): void
     {
         $hooks = new Hooks();
+        // $hooks->withTrace();
         $hooks->exec($anchor, $this);
     }
 }

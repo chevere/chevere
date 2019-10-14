@@ -38,7 +38,7 @@ final class ArrayProcessor implements ProcessorContract
             } else {
                 $new = $varDump
                     ->respawn()
-                    ->withDump($aux, $varDump->indent());
+                    ->withDump($aux, $varDump->indent() + 1);
                 $this->val .= $new->toString();
             }
         }

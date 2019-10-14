@@ -16,7 +16,6 @@ namespace App\Controllers;
 use Chevere\Contracts\Controller\StringContract;
 use Chevere\Controller\Controller;
 use Chevere\Controller\Traits\ResponseStringTrait;
-use Chevere\Stopwatch\Stopwatch;
 
 class Home extends Controller implements StringContract
 {
