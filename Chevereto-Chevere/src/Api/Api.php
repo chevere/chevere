@@ -22,9 +22,6 @@ use Chevere\Contracts\Api\ApiContract;
 use Chevere\Contracts\Api\MakerContract;
 use Chevere\FileReturn\Exceptions\FileNotFoundException;
 
-/**
- * Api provides a static method to read the exposed API inside the app runtime.
- */
 final class Api implements ApiContract
 {
     use CacheAccessTrait;

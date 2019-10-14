@@ -11,15 +11,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Contracts\Controller;
+namespace Chevere\Hook\Traits;
 
-use Chevere\Contracts\App\AppContract;
+use Chevere\Hook\Hooks;
 
-interface ControllerContract
+trait HookTrait
 {
-    public function __construct(AppContract $app);
-
-    public function getContent(): string;
-
-    public function content(): string;
+    public function hook(string $anchor): void
+    {
+        $hooks = new Hooks();
+        $hooks->exec($anchor, $this);
+    }
 }

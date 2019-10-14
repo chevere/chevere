@@ -16,6 +16,7 @@ namespace App\Controllers;
 use Chevere\Contracts\Controller\StringContract;
 use Chevere\Controller\Controller;
 use Chevere\Controller\Traits\ResponseStringTrait;
+use Chevere\Stopwatch\Stopwatch;
 
 class Home extends Controller implements StringContract
 {
@@ -26,7 +27,14 @@ class Home extends Controller implements StringContract
 
     public function __invoke(): void
     {
-        $this->document = 'Hello World!';
+        $this->document = 'Hello World!'; // Sets Hello World!
+        $this->hook('helloWorld'); // Hooks run...
+        $this->document .= ' zz Hello World!'; // Hooks + zz
+    }
+
+    public function setDocument(string $document): void
+    {
+        $this->document = $document;
     }
 
     public function getDocument(): string

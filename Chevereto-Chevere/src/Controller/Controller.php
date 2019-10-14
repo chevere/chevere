@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Controller;
 
-use Chevere\Http\Response;
-use Chevere\Traits\HookableTrait;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\Controller\ControllerContract;
+use Chevere\Contracts\Hooks\HooksContract;
+use Chevere\Hook\Traits\HookTrait;
 
 // Define a hookable code entry:
 // $this->hook('myHook', function ($that) use ($var) {
@@ -32,9 +32,9 @@ use Chevere\Contracts\Controller\ControllerContract;
 /**
  * Controller is the defacto controller in Chevere.
  */
-abstract class Controller implements ControllerContract
+abstract class Controller implements ControllerContract, HooksContract
 {
-    use HookableTrait;
+    use HookTrait;
 
     const TYPE_DECLARATIONS = ['array', 'callable', 'bool', 'float', 'int', 'string', 'iterable'];
     const OPTIONS = [];
