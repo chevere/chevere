@@ -15,7 +15,6 @@ namespace Chevere\Stopwatch;
 
 use InvalidArgumentException;
 use Chevere\Message\Message;
-use Chevere\Time\Time;
 use Chevere\Time\TimeHr;
 
 /**
@@ -29,13 +28,13 @@ final class Stopwatch
     /** @var array [id => $timeElapsedRead relative to previous record ] */
     private $records;
 
-    /** @var float */
+    /** @var int */
     private $timeStart;
 
-    /** @var float */
+    /** @var int */
     private $timeEnd;
 
-    /** @var float Nanotime */
+    /** @var int Nanotime */
     private $timeElapsed;
 
     /** @var string The time elapsed, in miliseconds with tis unit (100 ms) */
@@ -44,7 +43,7 @@ final class Stopwatch
     /** @var array [id => $flagName] */
     private $index;
 
-    /** @var float Time consumed by record checks */
+    /** @var int Time consumed by record checks */
     private $gap;
 
     public function __construct()

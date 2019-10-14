@@ -25,7 +25,7 @@ use Chevere\Runtime\Sets\SetLocale;
 use Chevere\Runtime\Sets\SetErrorHandler;
 use Chevere\Runtime\Sets\SetExceptionHandler;
 
-define('BOOTSTRAP_TIME', microtime(true));
+define('BOOTSTRAP_TIME', (int) hrtime(true));
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 

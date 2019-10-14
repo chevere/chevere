@@ -52,7 +52,7 @@ final class Benchmark
     /** @var int Nanotime construct object */
     private $constructTime;
 
-    /** @var float */
+    /** @var int Nanotime */
     private $maxExecutionTime;
 
     /** @var float Nanotime */
@@ -127,7 +127,7 @@ final class Benchmark
     public function __construct(int $times)
     {
         $this->constructTime = (int) hrtime(true);
-        $this->maxExecutionTime = (int) ini_get('max_execution_time');
+        $this->maxExecutionTime = 1e9 * (int) ini_get('max_execution_time');
         $this->requestTime = BOOTSTRAP_TIME;
         $this->times = $times;
         $this->callablesCount = 0;
