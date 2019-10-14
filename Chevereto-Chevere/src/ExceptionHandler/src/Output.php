@@ -15,9 +15,9 @@ namespace Chevere\ExceptionHandler\src;
 
 use const Chevere\CLI;
 
+use function console;
 use function GuzzleHttp\Psr7\stream_for;
 
-use Chevere\Console\Console;
 use Chevere\ExceptionHandler\ExceptionHandler;
 use Chevere\Http\Response;
 use Chevere\Message\Message;
@@ -71,7 +71,7 @@ final class Output
             if (CLI) {
                 // $this->setJsonOutput();
                 $this->setConsoleOutput();
-            // $this->setHtmlOutput();
+                // $this->setHtmlOutput();
             } else {
                 $this->setHtmlOutput();
             }
@@ -91,8 +91,7 @@ final class Output
         }
 
         $response = new Response();
-        if ($this->exceptionHandler->request()->isXmlHttpRequest()) {
-        } else {
+        if ($this->exceptionHandler->request()->isXmlHttpRequest()) { } else {
             // $response = new HttpResponse();
         }
         $guzzle = $response->guzzle()

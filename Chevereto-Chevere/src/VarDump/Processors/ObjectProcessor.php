@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\VarDump\Processors;
 
+use function ChevereFn\stringStartsWith;
+
 use ReflectionObject;
 use Reflector;
 use Throwable;
@@ -20,8 +22,7 @@ use Chevere\Contracts\VarDump\ProcessorContract;
 use Chevere\Path\Path;
 use Chevere\VarDump\Processors\Traits\ProcessorTrait;
 use Chevere\VarDump\VarDump;
-
-use function ChevereFn\stringStartsWith;
+use ReflectionProperty;
 
 final class ObjectProcessor implements ProcessorContract
 {
@@ -78,17 +79,22 @@ final class ObjectProcessor implements ProcessorContract
             $properties = $this->reflectionObject->getProperties($filter);
             foreach ($properties as $property) {
                 if (!isset($this->properties[$property->getName()])) {
-                    $property->setAccessible(true);
-                    try {
-                        $value = $property->getValue($this->expression);
-                    } catch (Throwable $e) {
-                        // $e
-                    }
-                    $this->properties[$property->getName()] = ['value' => $value];
+                    $this->setProperty($property);
                 }
                 $this->properties[$property->getName()]['visibility'][] = $visibility;
             }
         }
+    }
+
+    private function setProperty(ReflectionProperty $property): void
+    {
+        $property->setAccessible(true);
+        try {
+            $value = $property->getValue($this->expression);
+        } catch (Throwable $e) {
+            // $e
+        }
+        $this->properties[$property->getName()] = ['value' => $value];
     }
 
     private function processProperty($key, $var): void

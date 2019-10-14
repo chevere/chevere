@@ -15,8 +15,9 @@ namespace Chevere\Controllers\Api;
 
 use const Chevere\CLI;
 
+use function console;
+
 use InvalidArgumentException;
-use Chevere\Console\Console;
 use Chevere\Message\Message;
 use Chevere\Controller\Controller;
 

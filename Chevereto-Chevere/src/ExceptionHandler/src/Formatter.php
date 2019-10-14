@@ -15,17 +15,18 @@ namespace Chevere\ExceptionHandler\src;
 
 use const Chevere\CLI;
 
+use function console;
+use function ChevereFn\stringReplaceFirst;
+
 use Throwable;
 use ErrorException;
 use Symfony\Component\Console\Output\OutputInterface;
-use Chevere\Console\Console;
 use Chevere\Data\Traits\DataMethodTrait;
 use Chevere\ExceptionHandler\ExceptionHandler;
 use Chevere\VarDump\Formatters\DumperFormatter;
 use Chevere\VarDump\Formatters\PlainFormatter;
 use Chevere\VarDump\VarDump;
 
-use function ChevereFn\stringReplaceFirst;
 
 /**
  * Formats the error exception in HTML (default), console and plain text.

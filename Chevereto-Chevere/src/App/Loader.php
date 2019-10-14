@@ -16,6 +16,8 @@ namespace Chevere\App;
 use const Chevere\CLI;
 use const Chevere\DEV;
 
+use function console;
+
 use Chevere\Api\Api;
 use Chevere\App\Exceptions\NeedsToBeBuiltException;
 use Chevere\ArrayFile\ArrayFile;
@@ -92,27 +94,26 @@ final class Loader implements LoaderContract
                 ->withApi($api)
                 ->withRouter($router);
         } catch (CacheNotFoundException $e) {
-            throw new NeedsToBeBuiltException(
-                (new Message('The app must be re-build due to missing cache: %message%'))
-                    ->code('%message%', $e->getMessage()),
-                $e->getCode(),
-                $e
-            );
+            $message = (new Message('The app must be re-build due to missing cache: %message%'))
+                ->code('%message%', $e->getMessage())
+                ->toString();
+            throw new NeedsToBeBuiltException($message, $e->getCode(), $e);
         }
         return $this->builder->build()
             ->withContainer($container);
     }
 
-    private function handleConsoleBind(): void
-    {
-        if (CLI) {
-            console()->bind($this->builder);
-        }
-    }
+    // private function handleConsoleBind(): void
+    // {
+    //     if (CLI) {
+    //         console()->bind($this->builder);
+    //     }
+    // }
 
     private function assert(): void
     {
-        if (!DEV
+        if (
+            !DEV
             && !(CLI && console()->isBuilding())
             && !$this->builder->build()->file()->exists()
         ) {

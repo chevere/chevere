@@ -18,12 +18,11 @@ use const Chevere\CLI;
 use LogicException;
 use RuntimeException;
 
+use function console;
 use function GuzzleHttp\Psr7\stream_for;
 
 use Chevere\App\Traits\ParametersAccessTrait;
 use Chevere\Controller\Traits\ControllerAccessTrait;
-
-use Chevere\Console\Console;
 use Chevere\Runtime\Runtime;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;

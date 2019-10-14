@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Controllers\Api;
 
+use function console;
+
 use const Chevere\CLI;
-use Chevere\Console\Console;
 use Chevere\Message\Message;
 use Chevere\Api\Api;
 use Chevere\Controller\Controller;

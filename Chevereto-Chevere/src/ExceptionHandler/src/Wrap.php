@@ -46,16 +46,14 @@ final class Wrap
         if (stringStartsWith('Chevere\\', $className)) {
             $className = stringReplaceFirst('Chevere\\', '', $className);
         }
+        $phpCode = E_ERROR;
+        $code = $exception->getCode();
         if ($exception instanceof ErrorException) {
             /* @scrutinizer ignore-call */
             $phpCode = $exception->getSeverity();
             $code = $phpCode;
-            $errorType = $phpCode;
-        } else {
-            $phpCode = E_ERROR;
-            $code = $exception->getCode();
-            $errorType = $phpCode;
         }
+        $errorType = $phpCode;
         $this->data = $this->data
             ->withMergedArray([
                 'className' => $className,
@@ -64,7 +62,7 @@ final class Wrap
                 'type' => ExceptionHandler::ERROR_TABLE[$phpCode],
                 'loggerLevel' => ExceptionHandler::PHP_LOG_LEVEL[$phpCode] ?? 'error',
                 'message' => $exception->getMessage(),
-                'file' => (new Path($exception->getFile()))->relative(),
+                'file' => (new Path($exception->getFile()))->absolute(),
                 'line' => (int) $exception->getLine(),
             ]);
     }
