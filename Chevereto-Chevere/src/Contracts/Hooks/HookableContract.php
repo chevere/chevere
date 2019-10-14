@@ -19,7 +19,6 @@ interface HookableContract
      * Register a hookable entry. Hooks (if any) will run in this point.
      *
      * @param string $anchor Named anchor for the hook
-     * @param callable function() {...}
      */
     public function hook(string $anchor): void;
 }

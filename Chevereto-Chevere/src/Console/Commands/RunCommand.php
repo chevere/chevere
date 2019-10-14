@@ -174,11 +174,9 @@ final class RunCommand extends Command
         $this->lines = [];
         $cc = new ConsoleColor();
         if ($this->isReturn) {
-            if ($this->isNoFormat) {
-                $this->lines = [$this->export];
-            } else {
-                $this->lines = ['<fg=magenta>' . $cc->apply('italic', gettype($this->return)) . '</> ' . $this->export];
-            }
+            $this->lines = $this->isNoFormat
+                ? [$this->export]
+                : ['<fg=magenta>' . $cc->apply('italic', gettype($this->return)) . '</> ' . $this->export]
         }
         if ($this->isBuffer && $this->buffer != '') {
             if ($this->isNoFormat) {
