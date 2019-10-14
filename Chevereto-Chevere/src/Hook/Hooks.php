@@ -31,7 +31,7 @@ final class Hooks
         $this->that = $that;
         $this->trace = null;
         $this->anchor = (new Container())
-            ->getAnchor($that, $anchor) ?? [];
+            ->getAnchor($that, $anchor);
     }
 
     /**

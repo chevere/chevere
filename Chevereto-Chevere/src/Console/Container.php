@@ -22,16 +22,16 @@ final class Container
 
     public function __construct()
     {
-        static::$instance = new Console();
+        self::$instance = new Console();
     }
 
     public static function hasInstance(): bool
     {
-        return isset(static::$instance);
+        return isset(self::$instance);
     }
 
     public static function getInstance(): Console
     {
-        return static::$instance;
+        return self::$instance;
     }
 }

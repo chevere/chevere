@@ -37,7 +37,6 @@ class Dumper
 
     const OFFSET = 1;
 
-
     /** @var FormatterContract */
     protected $formatter;
 

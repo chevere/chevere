@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Hook;
 
+use Chevere\Path\PathHandle;
+
 /**
  * A container for the registered hooks.
  */
@@ -23,18 +25,7 @@ final class Container
 
     public function __construct()
     {
-        $this->array = [
-            'App\Controllers\Home' => [
-                'helloWorld' => [
-                    10 => [
-                        [
-                            'callable' => 'Plugins\Local\HelloWorld\Hooks\Controllers\Home\HelloWorld',
-                            'maker' => 'somefile.php'
-                        ]
-                    ]
-                ]
-            ]
-        ];
+        $this->array = include (new PathHandle('var:hooks'))->path()->absolute();
     }
 
     public function getAnchor(object $that, string $anchor): array

@@ -90,7 +90,7 @@ abstract class Command implements CommandContract
 
     final private function setSymfony(): void
     {
-        $this->symfony = (new SymfonyCommand($this))
+        $this->symfony = (new SymfonyCommand(null))
             ->setName(static::NAME)
             ->setDescription(static::DESCRIPTION)
             ->setHelp(static::HELP);

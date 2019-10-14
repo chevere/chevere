@@ -208,19 +208,19 @@ final class Inspect implements InspectContract
     {
         if (is_iterable($this->resources)) {
             $resourcesFromString = [];
-            foreach ($this->resources as $propName => $resourceClassName) {
-                // Better reflection is needed due to this: https://bugs.php.net/bug.php?id=69804
-                // FIXME: Don't user BetterReflection as it adds PHPStorm stubs
-                // $resourceReflection = (new BetterReflection())
-                //     ->classReflector()
-                //     ->reflect($resourceClassName);
-                // if ($resourceReflection->implementsInterface(static::INTERFACE_CREATE_FROM_STRING)) {
-                //     $resourcesFromString[$propName] = [
-                //         'regex' => $resourceReflection->getStaticPropertyValue('stringRegex'),
-                //         'description' => $resourceReflection->getStaticPropertyValue('stringDescription'),
-                //     ];
-                // }
-            }
+            // foreach ($this->resources as $propName => $resourceClassName) {
+            // Better reflection is needed due to this: https://bugs.php.net/bug.php?id=69804
+            // FIXME: Don't user BetterReflection as it adds PHPStorm stubs
+            // $resourceReflection = (new BetterReflection())
+            //     ->classReflector()
+            //     ->reflect($resourceClassName);
+            // if ($resourceReflection->implementsInterface(static::INTERFACE_CREATE_FROM_STRING)) {
+            //     $resourcesFromString[$propName] = [
+            //         'regex' => $resourceReflection->getStaticPropertyValue('stringRegex'),
+            //         'description' => $resourceReflection->getStaticPropertyValue('stringDescription'),
+            //     ];
+            // }
+            // }
             if (!empty($resourcesFromString)) {
                 $this->resourcesFromString = $resourcesFromString;
             }

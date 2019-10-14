@@ -214,7 +214,7 @@ final class Route implements RouteContract
     {
         $new = clone $this;
         if (isset($new->wildcards)) {
-            foreach ($new->wildcards as $k => $v) {
+            foreach ($new->wildcards as $v) {
                 if (!isset($new->wheres[$v])) {
                     $new->wheres[$v] = RouteContract::REGEX_WILDCARD_WHERE;
                 }

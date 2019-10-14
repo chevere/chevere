@@ -26,9 +26,12 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 interface SymfonyCommandContract
 {
-    public function __construct(CommandContract $chevereCommand);
-
-    public function getChevereCommand(): CommandContract;
+    /**
+     * @param string|null $name The name of the command; passing null means it must be set in configure()
+     *
+     * @throws LogicException When the command name is empty
+     */
+    public function __construct(string $name = null);
 
     /**
      * @return string|null The default command name or null when no default name is set
