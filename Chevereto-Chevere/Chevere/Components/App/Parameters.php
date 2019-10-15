@@ -25,8 +25,8 @@ final class Parameters implements ParametersContract
      * The keys accepted by this class, with the gettype at right side.
      */
     private $keys = [
-        static::KEY_API => 'string',
-        static::KEY_ROUTES => 'array',
+        self::KEY_API => 'string',
+        self::KEY_ROUTES => 'array',
     ];
 
     /** @var ArrayFile The parameters array used to construct the object */
