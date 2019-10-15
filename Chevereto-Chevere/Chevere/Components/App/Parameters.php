@@ -45,9 +45,12 @@ final class Parameters implements ParametersContract
             $this->assertKeyAvailable($key);
             $this->assertKeyType($key, $val);
         }
-        $array = $this->arrayFile->toArray();
-        $this->api = $array[static::KEY_API];
-        $this->routes = $array[static::KEY_ROUTES];
+        if (isset($this->arrayFile[static::KEY_API])) {
+            $this->api = $this->arrayFile[static::KEY_API];
+        }
+        if (isset($this->arrayFile[static::KEY_ROUTES])) {
+            $this->routes = $this->arrayFile[static::KEY_ROUTES];
+        }
     }
 
     public function api(): string

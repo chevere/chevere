@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of Chevere.
  *
@@ -11,6 +9,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Chevere;
 
 use Chevere\Components\App\Builder;
@@ -18,12 +18,12 @@ use Chevere\Components\Console\Container;
 use Chevere\Components\Runtime\Runtime;
 use Chevere\Components\Runtime\Sets\SetDebug;
 use Chevere\Components\Runtime\Sets\SetDefaultCharset;
+use Chevere\Components\Runtime\Sets\SetErrorHandler;
+use Chevere\Components\Runtime\Sets\SetExceptionHandler;
+use Chevere\Components\Runtime\Sets\SetLocale;
 use Chevere\Components\Runtime\Sets\SetPrecision;
 use Chevere\Components\Runtime\Sets\SetTimeZone;
 use Chevere\Components\Runtime\Sets\SetUriScheme;
-use Chevere\Components\Runtime\Sets\SetLocale;
-use Chevere\Components\Runtime\Sets\SetErrorHandler;
-use Chevere\Components\Runtime\Sets\SetExceptionHandler;
 
 define('BOOTSTRAP_TIME', (int) hrtime(true));
 

@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of Chevere.
  *
@@ -11,11 +9,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace App\Middlewares;
 
-use Chevere\Contracts\App\MiddlewareHandlerContract;
 use Chevere\Components\Interfaces\MiddlewareInterface;
 use Chevere\Components\Http\Request\RequestException;
+use Chevere\Contracts\App\MiddlewareHandlerContract;
 
 class RoleAdmin implements MiddlewareInterface
 {

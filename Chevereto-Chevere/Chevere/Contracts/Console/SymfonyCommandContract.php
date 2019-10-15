@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of Chevere.
  *
@@ -11,10 +9,13 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Chevere\Contracts\Console;
 
 use InvalidArgumentException;
 use LogicException;
+
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputDefinition;
@@ -22,7 +23,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 /**
- * Except for __construct, all methods here are taken from Symfony\Component\Console\Command\Command
+ * All methods here are taken from Symfony\Component\Console\Command\Command
  */
 interface SymfonyCommandContract
 {

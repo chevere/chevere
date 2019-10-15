@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of Chevere.
  *
@@ -11,24 +9,26 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 namespace Chevere\Contracts\VarDump;
 
 interface FormatterContract
 {
-  /**
-   * @param int $indent Number of spaces to prefix
-   */
-  public function getIndent(int $indent): string;
+    /**
+     * @param int $indent Number of spaces to prefix
+     */
+    public function getIndent(int $indent): string;
 
-  /**
-   * @param string String to emphatize
-   */
-  public function getEmphasis(string $string): string;
+    /**
+     * @param string String to emphatize
+     */
+    public function getEmphasis(string $string): string;
 
-  /**
-   * @param string String to encode its chars
-   */
-  public function getEncodedChars(string $string): string;
+    /**
+     * @param string String to encode its chars
+     */
+    public function getEncodedChars(string $string): string;
 
-  public function wrap(string $key, string $dump): string;
+    public function wrap(string $key, string $dump): string;
 }

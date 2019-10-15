@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Route;
+namespace Chevere\Components\Route;
 
 use LogicException;
 

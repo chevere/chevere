@@ -13,11 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use const Chevere\CLI;
-use const Chevere\DEV;
-
-use function console;
-
 use Chevere\Components\Api\Api;
 use Chevere\Components\App\Exceptions\NeedsToBeBuiltException;
 use Chevere\Components\ArrayFile\ArrayFile;
@@ -26,12 +21,17 @@ use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\Console\Console;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Router\Router;
 use Chevere\Components\Path\PathHandle;
-use Chevere\Contracts\App\ParametersContract;
-use Chevere\Contracts\App\BuilderContract;
+use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\BuildContract;
+use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\LoaderContract;
+use Chevere\Contracts\App\ParametersContract;
+
+use function console;
+
+use const Chevere\CLI;
+use const Chevere\DEV;
 
 final class Loader implements LoaderContract
 {

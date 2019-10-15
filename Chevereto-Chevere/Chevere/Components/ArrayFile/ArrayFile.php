@@ -68,12 +68,12 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
 
     public function offsetExists($offset): bool
     {
-        return isset($this->array[$offset]);
+        return in_array($offset, array_keys($this->array), true);
     }
 
     public function offsetGet($offset)
     {
-        return $this->array[$offset] ?? null;
+        return $this->array[$offset];
     }
 
     public function offsetUnset($offset)

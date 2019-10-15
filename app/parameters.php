@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of Chevere.
  *
@@ -11,10 +9,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+declare(strict_types=1);
+
 use Chevere\Components\App\Parameters;
 
 return [
-    Parameters::KEY_API => 'src/Api/',
+    // Parameters::KEY_API => 'src/Api/',
     Parameters::KEY_ROUTES => [
         'routes:dashboard',
         'routes:web',

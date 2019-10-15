@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 /*
  * This file is part of Chevere.
  *
@@ -11,13 +9,15 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Chevere\Contracts\App;
+declare(strict_types=1);
 
-use const Chevere\APP_PATH;
+namespace Chevere\Contracts\App;
 
 use Chevere\Contracts\Http\ResponseContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
+
+use const Chevere\APP_PATH;
 
 interface AppContract
 {
