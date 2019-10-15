@@ -102,7 +102,7 @@ final class Set
             }
             if (in_array($wildcardTrim, $this->wildcards ?? [])) {
                 throw new LogicException(
-                    (new Message('Must declare one unique wildcard per capturing group, duplicated %s detected in route %r.'))
+                    (new Message('Must declare one unique wildcard per capturing group, duplicated %s detected in route %r'))
                         ->code('%s', $this->matches[0][$k])
                         ->code('%r', $this->path)
                         ->toString()

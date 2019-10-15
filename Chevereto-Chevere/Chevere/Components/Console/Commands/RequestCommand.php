@@ -132,7 +132,7 @@ final class RequestCommand extends Command
             $this->getArgumentString('uri'),
             $this->getOptionArray('headers'),
             isset($this->options['body']) ? $this->getOptionString('body') : null,
-        );
+            );
 
         $request
             ->withCookieParams($this->parsedOptions['cookie'])
@@ -189,7 +189,7 @@ final class RequestCommand extends Command
                     $json = json_decode($this->options[$v], true, 512, JSON_THROW_ON_ERROR);
                 } catch (JsonException $e) {
                     throw new InvalidArgumentException(
-                        (new Message('Unable to parse %o option %s as JSON (%m).'))
+                        (new Message('Unable to parse %o option %s as JSON (%m)'))
                             ->code('%o', $v)
                             ->code('%s', $this->options[$v])
                             ->strtr('%m', $e->getMessage())

@@ -160,14 +160,22 @@ final class Route implements RouteContract
 
     public function withAddedMethod(MethodContract $method): RouteContract
     {
+        if (!$method->hasControllerName()) {
+            throw new InvalidArgumentException(
+                (new Message('Instance of %type% %argument% must include a controller name'))
+                    ->code('%type%', MethodContract::class)
+                    ->code('%argument%', '$method')
+                    ->toString()
+            );
+        }
         if (isset($this->methods[$method->method()])) {
             throw new InvalidArgumentException(
-                (new Message('Method %s has been already registered.'))
-                    ->code('%s', $method->method())->toString()
+                (new Message('Method %method% has been already registered'))
+                    ->code('%method%', $method->method())->toString()
             );
         }
         $new = clone $this;
-        $new->methods[$method->method()] = $method->controller();
+        $new->methods[$method->method()] = $method->controllerName();
 
         return $new;
     }
@@ -224,7 +232,7 @@ final class Route implements RouteContract
         if (isset($new->methods['GET']) && !isset($new->methods['HEAD'])) {
             $new = $new->withAddedMethod(
                 (new Method('HEAD'))
-                    ->withController(HeadController::class)
+                    ->withControllerName(HeadController::class)
             );
         }
         $new->regex = $new->getRegex($new->key ?? $new->path);

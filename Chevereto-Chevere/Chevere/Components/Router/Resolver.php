@@ -30,8 +30,8 @@ final class Resolver
             $this->route = unserialize($serialized, ['allowed_classes' => [Route::class]]);
         } catch (Throwable $e) {
             throw new LogicException(
-                (new Message('Unable to unserialize: %e'))
-                    ->code('%e', $e->getMessage())
+                (new Message('Unable to unserialize: %message%'))
+                    ->code('%message%', $e->getMessage())
                     ->toString()
             );
         }

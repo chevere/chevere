@@ -82,7 +82,7 @@ final class PathValidate implements PathValidateContract
     {
         if (!(preg_match_all('/{([0-9]+)}/', $this->path) === 0)) {
             throw new InvalidArgumentException(
-                (new Message('Wildcards in the form of %s are reserved.'))
+                (new Message('Wildcards in the form of %s are reserved'))
                     ->code('%s', '/{n}')
                     ->toString()
             );

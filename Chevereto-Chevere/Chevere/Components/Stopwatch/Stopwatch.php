@@ -60,14 +60,14 @@ final class Stopwatch
         $then = (int) hrtime(true);
         if ('stop' == $flagName) {
             throw new InvalidArgumentException(
-                (new Message('Use of reserved flag name %flagName%.'))
+                (new Message('Use of reserved flag name %flagName%'))
                     ->code('%flagName%', 'stop')
                     ->toString()
             );
         }
         if (in_array($flagName, $this->index)) {
             throw new InvalidArgumentException(
-                (new Message('Flag name %flagName% has be already registered, you must use an unique flag for each %className% instance.'))
+                (new Message('Flag name %flagName% has be already registered, you must use an unique flag for each %className% instance'))
                     ->code('%flagName%', $flagName)
                     ->code('%className%', __CLASS__)
                     ->toString()

@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller\Traits;
 
-trait ControllerAccessTrait
+trait ControllerNameAccessTrait
 {
     /** @var string A string representing a ControllerContract name */
-    private $controller;
+    private $controllerName;
 
-    public function hasController(): bool
+    public function hasControllerName(): bool
     {
-        return isset($this->controller);
+        return isset($this->controllerName);
     }
 
-    public function controller(): string
+    public function controllerName(): string
     {
-        return $this->controller;
+        return $this->controllerName;
     }
 }

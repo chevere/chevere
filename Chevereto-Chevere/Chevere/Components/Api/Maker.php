@@ -90,11 +90,11 @@ final class Maker implements MakerContract
         $new->basePath = strtolower(basename($new->path->absolute()));
         $methods = new Methods(
             (new Method('HEAD'))
-                ->withController(HeadController::class),
+                ->withControllerName(HeadController::class),
             (new Method('OPTIONS'))
-                ->withController(OptionsController::class),
+                ->withControllerName(OptionsController::class),
             (new Method('GET'))
-                ->withController(GetController::class)
+                ->withControllerName(GetController::class)
 
         );
         $new->register(new Endpoint($methods));
@@ -201,7 +201,7 @@ final class Maker implements MakerContract
         }
         if (!is_readable($this->path->absolute())) {
             throw new LogicException(
-                (new Message('Directory %directory% is not readable.'))
+                (new Message('Directory %directory% is not readable'))
                     ->code('%directory%', $this->path->absolute())
                     ->toString()
             );
@@ -236,7 +236,7 @@ final class Maker implements MakerContract
         foreach ($this->routesMap as $pathComponent => $httpMethods) {
             $methodsArray = [];
             foreach ($httpMethods as $httpMethod => $controller) {
-                $methodsArray[] = (new Method($httpMethod))->withController($controller);
+                $methodsArray[] = (new Method($httpMethod))->withControllerName($controller);
             }
             $methods = new Methods(...$methodsArray);
             $endpoint = new Endpoint($methods);

@@ -79,7 +79,7 @@ final class Api implements ApiContract
             return $this->array[$key][$subKey];
         }
         throw new LogicException(
-            (new Message('No endpoint defined for the %s URI.'))
+            (new Message('No endpoint defined for the %s URI'))
                 ->code('%s', $uriKey)
                 ->toString()
         );
@@ -91,7 +91,7 @@ final class Api implements ApiContract
         $base = strtok($endpoint, '/');
         if (!isset($this->array[$base])) {
             throw new LogicException(
-                (new Message('No API endpoint key for the %s URI.'))
+                (new Message('No API endpoint key for the %s URI'))
                     ->code('%s', $uri)
                     ->toString()
             );

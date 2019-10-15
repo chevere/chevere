@@ -28,7 +28,7 @@ class SetUriScheme implements SetContract
         $accept = ['http', 'https'];
         if (!in_array($this->value, $accept)) {
             throw new RuntimeException(
-                (new Message('Expecting %expecting%, %value% provided.'))
+                (new Message('Expecting %expecting%, %value% provided'))
                     ->code('%expecting%', implode(', ', $accept))
                     ->code('%value%', $this->value)
                     ->toString()

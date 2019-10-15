@@ -73,7 +73,7 @@ final class Wildcard
     {
         if (!Validate::regex('/' . $this->regex . '/')) {
             throw new InvalidArgumentException(
-                (new Message('Invalid regex pattern %regex%.'))
+                (new Message('Invalid regex pattern %regex%'))
                     ->code('%regex%', $this->regex)
                     ->toString()
             );
@@ -86,7 +86,7 @@ final class Wildcard
         $noOptionalWildcard = false === strpos($this->route->path(), '{' . "$this->wildcardName?" . '}');
         if ($noWildcard || $noOptionalWildcard) {
             throw new LogicException(
-                (new Message("Wildcard %wildcard% doesn't exists in %path%."))
+                (new Message("Wildcard %wildcard% doesn't exists in %path%"))
                     ->code('%wildcard%', $this->wildcardString)
                     ->code('%path%', $this->route->path())
                     ->toString()
@@ -98,7 +98,7 @@ final class Wildcard
     {
         if (isset($this->route->wheres()[$this->wildcardName])) {
             throw new LogicException(
-                (new Message('Where clause for %s wildcard has been already declared.'))
+                (new Message('Where clause for %s wildcard has been already declared'))
                     ->code('%s', $this->wildcardString)
                     ->toString()
             );

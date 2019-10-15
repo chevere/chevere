@@ -27,7 +27,7 @@ class SetDefaultCharset implements SetContract
     {
         if (!@ini_set('default_charset', $this->value)) {
             throw new RuntimeException(
-                (new Message('Unable to set %s %v.'))
+                (new Message('Unable to set %s %v'))
                     ->code('%s', 'default_charset')
                     ->code('%v', $this->value)
                     ->toString()

@@ -115,7 +115,7 @@ final class RunCommand extends Command
     {
         $this->builder = $this->builder
             ->withControllerArguments($this->argument)
-            ->withController($this->callable);
+            ->withControllerName($this->callable);
         $this->builder->run();
     }
 
@@ -147,8 +147,8 @@ final class RunCommand extends Command
         }
         if (!$isCallable) {
             throw new InvalidArgumentException(
-                (new Message('No callable found for %s string.'))
-                    ->code('%s', $this->callable)
+                (new Message('No callable found for %callable% string'))
+                    ->code('%callable%', $this->callable)
                     ->toString()
             );
         }

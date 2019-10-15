@@ -27,7 +27,7 @@ class SetLocale implements SetContract
     {
         if (!setlocale(LC_ALL, $this->value)) {
             throw new RuntimeException(
-                (new Message('The locale functionality is not implemented on your platform, the specified locale %locale% does not exist or the category name %category% is invalid.'))
+                (new Message('The locale functionality is not implemented on your platform, the specified locale %locale% does not exist or the category name %category% is invalid'))
                     ->code('%category%', 'LC_ALL')
                     ->code('%locale%', $this->value)
                     ->toString()

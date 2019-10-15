@@ -49,7 +49,7 @@ final class Endpoint implements EndpointContract
     {
         foreach ($this->methods as $method) {
             $httpMethod = $method->method();
-            $controllerClassName = $method->controller();
+            $controllerClassName = $method->controllerName();
             $httpMethodOptions = [];
             $httpMethodOptions['description'] = $controllerClassName::description();
             $controllerParameters = $controllerClassName::parameters();
@@ -78,7 +78,7 @@ final class Endpoint implements EndpointContract
                 $this->methods = $this->methods
                     ->withAddedMethod(
                         (new Method($k))
-                            ->withController($v[0])
+                            ->withControllerName($v[0])
                     );
                 $this->array['OPTIONS'][$k] = $v[1];
             }

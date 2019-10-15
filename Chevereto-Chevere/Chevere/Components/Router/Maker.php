@@ -184,7 +184,7 @@ final class Maker implements MakerContract
         $keyedRoute = $this->routesIndex[$this->route->path()] ?? null;
         if (isset($keyedRoute)) {
             throw new LogicException(
-                (new Message('Route key %s has been already declared by %r.'))
+                (new Message('Route key %s has been already declared by %r'))
                     ->code('%s', $this->route->path())
                     ->code('%r', $keyedRoute['id'] . '@' . $keyedRoute['group'])
                     ->toString()
@@ -201,7 +201,7 @@ final class Maker implements MakerContract
         $namedRoute = $this->named[$name] ?? null;
         if (isset($namedRoute)) {
             throw new LogicException(
-                (new Message('Route name %s has been already taken by %r.'))
+                (new Message('Route name %s has been already taken by %r'))
                     ->code('%s', $name)
                     ->code('%r', $namedRoute[0] . '@' . $namedRoute[1])
                     ->toString()

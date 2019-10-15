@@ -9,11 +9,11 @@ return [
     (new Route('/dashboard/{algo?}'))
         ->withAddedMethod(
             (new Method('GET'))
-                ->withController(Controllers\Dashboard::class)
+                ->withControllerName(Controllers\Dashboard::class)
         ),
     (new Route('/dashboard/{algo}/{sub}'))
         ->withAddedMethod(
             (new Method('GET'))
-                ->withAddedMethod(Controllers\Dashboard::class)
+                ->withControllerName(Controllers\Dashboard::class)
         ),
 ];

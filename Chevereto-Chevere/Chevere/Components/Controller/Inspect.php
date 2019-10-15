@@ -150,8 +150,8 @@ final class Inspect implements InspectContract
             $this->relatedResource = $className::getRelatedResource();
             if (empty($this->relatedResource)) {
                 throw new LogicException(
-                    (new Message('Class %s implements %i interface, but it doesnt define any related resource.'))
-                        ->code('%s', $className)
+                    (new Message('Class %className% implements %i interface, but it doesnt define any related resource'))
+                        ->code('%className%', $className)
                         // ->code('%i', ControllerRelationshipInterface::class)
                         ->toString()
                 );
@@ -163,7 +163,7 @@ final class Inspect implements InspectContract
     private function handleControllerInterface(): void
     {
         if (!$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER)) {
-            throw new LogicException('Class %reflectionName% must implement the %interfaceController% interface at %reflectionFilename%.');
+            throw new LogicException('Class %reflectionName% must implement the %interfaceController% interface at %reflectionFilename%');
         }
     }
 
@@ -177,14 +177,14 @@ final class Inspect implements InspectContract
     private function handleConstResourceNeed(): void
     {
         if (!empty($this->resources) && !$this->useResource) {
-            throw new LogicException('Class %className% defines %propResources% but this Controller class targets a non-resourced endpoint: %endpoint%. Remove the unused %propResources% declaration at %filepath%.');
+            throw new LogicException('Class %className% defines %propResources% but this Controller class targets a non-resourced endpoint: %endpoint%. Remove the unused %propResources% declaration at %filepath%');
         }
     }
 
     private function handleConstResourceMissed(): void
     {
         if (null == $this->resources && $this->isResource) {
-            throw new LogicException('Class %className% must define %propResources% at %filepath%.');
+            throw new LogicException('Class %className% must define %propResources% at %filepath%');
         }
     }
 
@@ -194,7 +194,7 @@ final class Inspect implements InspectContract
             foreach ($this->resources as $className) {
                 if (!class_exists($className)) {
                     throw new LogicException(
-                        (new Message('Class %s not found for %c Controller at %f.'))
+                        (new Message('Class %s not found for %c Controller at %f'))
                             ->code('%s', $className)
                             ->toString()
                     );

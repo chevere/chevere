@@ -32,14 +32,14 @@ class SetTimeZone implements SetContract
         }
         if ('UTC' != $this->value && !Validate::timezone($this->value)) {
             throw new InvalidArgumentException(
-                (new Message('Invalid timezone %timezone%.'))
+                (new Message('Invalid timezone %timezone%'))
                     ->code('%timezone%', $this->value)
                     ->toString()
             );
         }
         if (!@date_default_timezone_set($this->value)) {
             throw new RuntimeException(
-                (new Message('False return on %s(%v).'))
+                (new Message('False return on %s(%v)'))
                     ->code('%s', 'date_default_timezone_set')
                     ->code('%v', $this->value)
                     ->toString()

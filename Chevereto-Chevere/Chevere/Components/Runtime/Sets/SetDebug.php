@@ -29,7 +29,7 @@ class SetDebug implements SetContract
     {
         if (!in_array($this->value, static::ACCEPT)) {
             throw new RuntimeException(
-                (new Message('Expecting %expecting%, %value% provided.'))
+                (new Message('Expecting %expecting%, %value% provided'))
                     ->code('%expecting%', implode(', ', static::ACCEPT))
                     ->code('%value%', $this->value)
                     ->toString()

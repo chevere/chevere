@@ -17,7 +17,7 @@ use LogicException;
 use RuntimeException;
 
 use Chevere\Components\App\Traits\ParametersAccessTrait;
-use Chevere\Components\Controller\Traits\ControllerAccessTrait;
+use Chevere\Components\Controller\Traits\ControllerNameAccessTrait;
 use Chevere\Components\Http\ServerRequest;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
@@ -37,7 +37,7 @@ use const Chevere\CLI;
 final class Builder implements BuilderContract
 {
     use ParametersAccessTrait;
-    use ControllerAccessTrait;
+    use ControllerNameAccessTrait;
 
     /** @var AppContract */
     private $app;
@@ -98,10 +98,10 @@ final class Builder implements BuilderContract
         return $new;
     }
 
-    public function withController(string $controller): BuilderContract
+    public function withControllerName(string $controllerName): BuilderContract
     {
         $new = clone $this;
-        $new->controller = $controller;
+        $new->controllerName = $controllerName;
 
         return $new;
     }
@@ -143,19 +143,19 @@ final class Builder implements BuilderContract
         $this->handleRequest();
         if (isset($this->ran)) {
             throw new LogicException(
-                (new Message('The method %s has been already called.'))
-                    ->code('%s', __METHOD__)
+                (new Message('The method %method% has been already called'))
+                    ->code('%method%', __METHOD__)
                     ->toString()
             );
         }
         $this->ran = true;
-        if (!isset($this->controller)) {
+        if (!isset($this->controllerName)) {
             $this->processResolveCallable($this::$request->getUri()->getPath());
         }
-        if (!isset($this->controller)) {
+        if (!isset($this->controllerName)) {
             throw new RuntimeException('DESCONTROL');
         }
-        $this->runApp($this->controller);
+        $this->runApp($this->controllerName);
     }
 
     public static function runtimeInstance(): Runtime
@@ -211,7 +211,7 @@ final class Builder implements BuilderContract
             $this->app->response()->sendHeaders()->sendBody();
             die();
         }
-        $this->controller = $route->getController($this::$request->getMethod());
+        $this->controllerName = $route->getController($this::$request->getMethod());
         $this->app = $this->app
             ->withRoute($route);
         $routerArgs = $this->app->router()->arguments();

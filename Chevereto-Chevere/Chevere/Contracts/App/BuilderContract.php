@@ -31,7 +31,7 @@ interface BuilderContract
 
     public function withRequest(RequestContract $request): BuilderContract;
 
-    public function withController(string $controller): BuilderContract;
+    public function withControllerName(string $controller): BuilderContract;
 
     public function withControllerArguments(array $controllerArguments): BuilderContract;
 
@@ -39,7 +39,7 @@ interface BuilderContract
 
     public function hasRequest(): bool;
 
-    public function hasController(): bool;
+    public function hasControllerName(): bool;
 
     public function hasControllerArguments(): bool;
 

@@ -100,7 +100,7 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
     {
         if ('array' !== $this->fileReturn->type()) {
             throw new LogicException(
-                (new Message('Expecting file %filepath% return type array, %returnType% provided.'))
+                (new Message('Expecting file %filepath% return type array, %returnType% provided'))
                     ->code('%filepath%', $this->path->absolute())
                     ->code('%returnType%', $this->fileReturn->type())
             );
@@ -133,7 +133,7 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
             $type .= ' ' . get_class($object);
         }
         throw new LogicException(
-            (new Message('Expecting array containing only %members% members, type %type% found at %filepath% (array key %key%).'))
+            (new Message('Expecting array containing only %members% members, type %type% found at %filepath% (array key %key%)'))
                 ->code('%members%', $this->type->typeString())
                 ->code('%filepath%', $this->path->absolute())
                 ->code('%type%', $type)

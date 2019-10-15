@@ -116,8 +116,8 @@ final class Cache
             $matches = array_unique($matches[0]);
             $forbidden = implode(', ', $matches);
             throw new InvalidArgumentException(
-                (new Message('Use of forbidden character %forbidden%.'))
-                    ->code('%forbidden%', $forbidden)
+                (new Message('Use of forbidden character %character%'))
+                    ->code('%character%', $forbidden)
                     ->toString()
             );
         }

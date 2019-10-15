@@ -98,7 +98,7 @@ final class PathHandle
     {
         if (!($this->identifier != '' && !ctype_space($this->identifier))) {
             throw new InvalidArgumentException(
-                (new Message('String %a needed, %v provided.'))
+                (new Message('String %a needed, %v provided'))
                     ->code('%a', '$identifier')
                     ->code('%v', 'empty or null string')
                     ->toString()
@@ -111,7 +111,7 @@ final class PathHandle
         if (false !== strpos($this->identifier, ':')) {
             if (stringEndsWith(':', $this->identifier)) {
                 throw new InvalidArgumentException(
-                    (new Message('Wrong string %a format, %v provided (trailing colon).'))
+                    (new Message('Wrong string %a format, %v provided (trailing colon)'))
                         ->code('%a', '$identifier')
                         ->code('%v', $this->identifier)
                         ->toString()
@@ -120,7 +120,7 @@ final class PathHandle
             $this->filename = $this->filenameFromIdentifier();
             if (false !== strpos($this->filename, '/')) {
                 throw new InvalidArgumentException(
-                    (new Message('Wrong string %a format, %v provided (path separators in filename).'))
+                    (new Message('Wrong string %a format, %v provided (path separators in filename)'))
                         ->code('%a', '$identifier')
                         ->code('%v', $this->identifier)
                         ->toString()
@@ -134,7 +134,7 @@ final class PathHandle
         $path = new Path($this->context);
         if (!$path->isDir()) {
             throw new InvalidArgumentException(
-                (new Message('String %a must be an absolute path, %v provided.'))
+                (new Message('String %a must be an absolute path, %v provided'))
                     ->code('%a', '$context')
                     ->code('%v', $this->context)
                     ->toString()
@@ -144,7 +144,7 @@ final class PathHandle
 
     private function process(): void
     {
-        //var:build 
+        //var:build
         // $isPHP = stringEndsWith('.php', $this->identifier);
         $path = $this->identifier;
         $path = false !== strpos($path, ':')

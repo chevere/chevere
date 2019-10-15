@@ -9,13 +9,13 @@ return [
     (new Route('/home'))
         ->withAddedMethod(
             (new Method('GET'))
-                ->withController(Controllers\Home::class)
+                ->withControllerName(Controllers\Home::class)
         )
         ->withName('homepageHtml'),
     (new Route('/'))
         ->withAddedMethod(
             (new Method('GET'))
-                ->withController(Controllers\Index::class)
+                ->withControllerName(Controllers\Index::class)
         )
         ->withName('homepage'),
     // ->addMiddleware(Middlewares\RoleAdmin::class)
@@ -24,11 +24,11 @@ return [
         ->withWhere('llave', '[0-9]+')
         ->withAddedMethod(
             (new Method('GET'))
-                ->withController(Controllers\Cache::class)
+                ->withControllerName(Controllers\Cache::class)
         )
         ->withAddedMethod(
             (new Method('POST'))
-                ->withController(Controllers\Cache::class)
+                ->withControllerName(Controllers\Cache::class)
         )
         ->withName('cache'),
 ];

@@ -57,7 +57,7 @@ final class EncodedDocument
             return json_encode($this->json, $this->encodingOptions, 1024);
         } catch (JsonException $e) {
             throw new InvalidArgumentException(
-                (new Message('Unable to encode array as JSON (%m).'))
+                (new Message('Unable to encode array as JSON (%m)'))
                     ->strtr('%m', $e->getMessage())
                     ->toString()
             );

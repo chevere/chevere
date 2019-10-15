@@ -22,9 +22,9 @@ interface MethodContract
 
     public function method(): string;
 
-    public function withController(string $controller): MethodContract;
+    public function withControllerName(string $controller): MethodContract;
 
-    public function hasController(): bool;
+    public function hasControllerName(): bool;
 
-    public function controller(): string;
+    public function controllerName(): string;
 }

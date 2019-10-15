@@ -27,7 +27,7 @@ final class RequestException extends Exception
 
         if (!isset($status)) {
             throw new LogicException(
-                (new Message('Unknown HTTP status code %code%.'))
+                (new Message('Unknown HTTP status code %code%'))
                     ->code('%code%', $code)
                     ->toString()
             );

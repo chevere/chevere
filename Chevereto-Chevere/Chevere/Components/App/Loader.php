@@ -118,7 +118,7 @@ final class Loader implements LoaderContract
             && !$this->builder->build()->file()->exists()
         ) {
             throw new NeedsToBeBuiltException(
-                (new Message('The application needs to be built by CLI %command% or calling %method% method.'))
+                (new Message('The application needs to be built by CLI %command% or calling %method% method'))
                     ->code('%command%', 'php app/console build')
                     ->code('%method%', __CLASS__ . '::build')
                     ->toString()

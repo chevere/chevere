@@ -72,9 +72,9 @@ final class Parameters implements ParametersContract
     {
         if (!array_key_exists($key, $this->keys)) {
             throw new LogicException(
-                (new Message('Unrecognized %c key "%s".'))
-                    ->code('%c', __CLASS__)
-                    ->strtr('%s', $key)
+                (new Message('Unrecognized %className% key "%key%"'))
+                    ->code('%className%', __CLASS__)
+                    ->strtr('%key%', $key)
                     ->toString()
             );
         }
@@ -90,11 +90,11 @@ final class Parameters implements ParametersContract
         $gettype = gettype($val);
         if ($gettype !== $this->keys[$key]) {
             throw new LogicException(
-                (new Message('Expecting %s type, %t type provided for key %k in %c.'))
-                    ->code('%s', $this->keys[$key])
-                    ->code('%t', $gettype)
-                    ->code('%k', $key)
-                    ->code('%c', $this->arrayFile->path()->absolute())
+                (new Message('Expecting %type% type, %gettype% type provided for key %key% in %path%'))
+                    ->code('%type%', $this->keys[$key])
+                    ->code('%gettype%', $gettype)
+                    ->code('%key%', $key)
+                    ->code('%path%', $this->arrayFile->path()->absolute())
                     ->toString()
             );
         }
