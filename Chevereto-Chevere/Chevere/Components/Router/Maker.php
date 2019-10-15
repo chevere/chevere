@@ -64,6 +64,7 @@ final class Maker implements MakerContract
     {
         $new = clone $this;
         $new->route = $route->fill();
+        dd($new->route);
         $new->routeMap = ['group' => $group, 'id' => $new->route->id()];
         $new->validateUniqueRoutePath();
         $new->handleRouteName();

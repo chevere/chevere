@@ -67,7 +67,7 @@ final class Route implements RouteContract
 
     public function __construct(string $path)
     {
-        $pathValidate = new PathValidate($path);
+        $pathValidate = new PathUri($path);
         $this->path = $path;
         $this->maker = $this->getMakerData();
         if ($pathValidate->hasHandlebars()) {

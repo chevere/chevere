@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Route;
 
-interface PathValidateContract
+interface PathUriContract
 {
     public function __construct(string $path);
 

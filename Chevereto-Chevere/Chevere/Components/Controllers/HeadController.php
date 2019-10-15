@@ -24,7 +24,7 @@ final class HeadController extends Controller
     /**
      * Head takes the URI and invokes GET.
      */
-    public function __invoke()
+    public function __invoke(): void
     {
         $route = $this->app()->route();
         $controller = $route->getController('GET');
@@ -35,5 +35,10 @@ final class HeadController extends Controller
             //     Console::style()->block($this->app()->response()->statusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
             // }
         }
+    }
+
+    public function getContent(): string
+    {
+        return '';
     }
 }

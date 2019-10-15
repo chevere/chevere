@@ -84,7 +84,7 @@ final class Wildcard
     {
         $noWildcard = false === strpos($this->route->path(), "{{$this->wildcardName}}");
         $noOptionalWildcard = false === strpos($this->route->path(), '{' . "$this->wildcardName?" . '}');
-        if ($noWildcard || $noOptionalWildcard) {
+        if ($noWildcard && $noOptionalWildcard) {
             throw new LogicException(
                 (new Message("Wildcard %wildcard% doesn't exists in %path%"))
                     ->code('%wildcard%', $this->wildcardString)

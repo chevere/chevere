@@ -16,12 +16,12 @@ namespace Chevere\Components\Route;
 use InvalidArgumentException;
 
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\Route\PathValidateContract;
+use Chevere\Contracts\Route\PathUriContract;
 
 use function ChevereFn\stringEndsWith;
 use function ChevereFn\stringStartsWith;
 
-final class PathValidate implements PathValidateContract
+final class PathUri implements PathUriContract
 {
     /** @var string */
     private $path;
@@ -31,8 +31,8 @@ final class PathValidate implements PathValidateContract
 
     public function __construct(string $path)
     {
-        $this->assertPath($path);
         $this->path = $path;
+        $this->assertPath();
         $this->hasHandlebars = $this->getHasHandlebars();
         if ($this->hasHandlebars) {
             $this->assertReservedWildcards();
@@ -49,33 +49,33 @@ final class PathValidate implements PathValidateContract
         return $this->hasHandlebars;
     }
 
-    private function assertPath(string $path): void
+    private function assertPath(): void
     {
-        if (!$this->validateFormat($path)) {
+        if (!$this->validateFormat()) {
             throw new InvalidArgumentException(
                 (new Message("String %s must start with a forward slash, it shouldn't contain neither whitespace, backslashes or extra forward slashes and it should be specified without a trailing slash."))
-                    ->code('%s', $path)
+                    ->code('%s', $this->path)
                     ->toString()
             );
         }
     }
 
-    private function validateFormat(string $path): bool
+    private function validateFormat(): bool
     {
-        if ('/' == $path) {
+        if ('/' == $this->path) {
             return true;
         }
 
-        return strlen($path) > 0 && stringStartsWith('/', $path)
-            && $this->validateFormatSlashes($path);
+        return strlen($this->path) > 0 && stringStartsWith('/', $this->path)
+            && $this->validateFormatSlashes();
     }
 
-    private function validateFormatSlashes(string $path): bool
+    private function validateFormatSlashes(): bool
     {
-        return !stringEndsWith('/', $path)
-            && false === strpos($path, '//')
-            && false === strpos($path, ' ')
-            && false === strpos($path, '\\');
+        return !stringEndsWith('/', $this->path)
+            && false === strpos($this->path, '//')
+            && false === strpos($this->path, ' ')
+            && false === strpos($this->path, '\\');
     }
 
     private function assertReservedWildcards(): void
