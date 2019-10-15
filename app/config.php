@@ -1,7 +1,7 @@
 
 <?php
 
-use Chevere\Runtime\Config;
+use Chevere\Components\Runtime\Config;
 
 return [
     Config::TIMEZONE => 'America/Bogota',

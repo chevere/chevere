@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere;
 
-use Chevere\App\Builder;
-use Chevere\Console\Container;
-use Chevere\Runtime\Runtime;
-use Chevere\Runtime\Sets\SetDebug;
-use Chevere\Runtime\Sets\SetDefaultCharset;
-use Chevere\Runtime\Sets\SetPrecision;
-use Chevere\Runtime\Sets\SetTimeZone;
-use Chevere\Runtime\Sets\SetUriScheme;
-use Chevere\Runtime\Sets\SetLocale;
-use Chevere\Runtime\Sets\SetErrorHandler;
-use Chevere\Runtime\Sets\SetExceptionHandler;
+use Chevere\Components\App\Builder;
+use Chevere\Components\Console\Container;
+use Chevere\Components\Runtime\Runtime;
+use Chevere\Components\Runtime\Sets\SetDebug;
+use Chevere\Components\Runtime\Sets\SetDefaultCharset;
+use Chevere\Components\Runtime\Sets\SetPrecision;
+use Chevere\Components\Runtime\Sets\SetTimeZone;
+use Chevere\Components\Runtime\Sets\SetUriScheme;
+use Chevere\Components\Runtime\Sets\SetLocale;
+use Chevere\Components\Runtime\Sets\SetErrorHandler;
+use Chevere\Components\Runtime\Sets\SetExceptionHandler;
 
 define('BOOTSTRAP_TIME', microtime(true));
 
@@ -55,14 +55,14 @@ if ('cli' == php_sapi_name()) {
 Builder::setRuntimeInstance(
     new Runtime(
         new SetDebug('1'),
-        new SetErrorHandler('Chevere\ExceptionHandler\ErrorHandler::error'),
-        new SetExceptionHandler('Chevere\ExceptionHandler\ExceptionHandler::exception'),
+        new SetErrorHandler('Chevere\Components\ExceptionHandler\ErrorHandler::error'),
+        new SetExceptionHandler('Chevere\Components\ExceptionHandler\ExceptionHandler::exception'),
         new SetLocale('en_US.UTF8'),
         new SetDefaultCharset('utf-8'),
         new SetPrecision('16'),
         new SetUriScheme('https'),
         new SetTimeZone('UTC'),
-        )
+    )
 );
 
 require APP_PATH . 'app.php';

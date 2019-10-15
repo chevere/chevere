@@ -11,6 +11,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Chevere\App\Loader;
+use Chevere\Components\App\Loader;
 
 (new Loader())->run();

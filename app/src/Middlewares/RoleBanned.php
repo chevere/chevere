@@ -15,7 +15,7 @@ namespace App\Middlewares;
 
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\MiddlewareHandlerContract;
-use Chevere\Interfaces\MiddlewareInterface;
+use Chevere\Contracts\MiddlewareInterface;
 
 class RoleBanned implements MiddlewareInterface
 {

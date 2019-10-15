@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Chevere\Console\Console;
-use Chevere\Console\Container;
+use Chevere\Components\Console\Console;
+use Chevere\Components\Console\Container;
 
 /*
  * This file is part of Chevere.
@@ -14,7 +14,7 @@ use Chevere\Console\Container;
  * file that was distributed with this source code.
  */
 
- function console(): Console
- {
-     return Container::getInstance();
- }
+function console(): Console
+{
+    return Container::getInstance();
+}

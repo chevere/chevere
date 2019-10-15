@@ -2,8 +2,8 @@
 
 namespace App;
 
-use Chevere\Route\Route;
-use Chevere\Http\Method;
+use Chevere\Components\Route\Route;
+use Chevere\Components\Http\Method;
 
 return [
     (new Route('/home'))

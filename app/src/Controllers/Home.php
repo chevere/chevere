@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Chevere\Contracts\Controller\StringContract;
-use Chevere\Controller\Controller;
-use Chevere\Controller\Traits\ResponseStringTrait;
+use Chevere\Components\Controller\Controller;
+use Chevere\Components\Controller\Traits\ResponseStringTrait;
 
 class Home extends Controller implements StringContract
 {

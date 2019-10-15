@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Chevere\App\Parameters;
+use Chevere\Components\App\Parameters;
 
 return [
     Parameters::KEY_API => 'src/Api/',

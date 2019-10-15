@@ -29,7 +29,8 @@
             "resources/functions/ChevereFn/string.php"
         ],
         "psr-4": {
-            "Chevere\\": "src/"
+            "Chevere\\Components\\": "Chevere/Components/",
+            "Chevere\\Contracts\\": "Chevere/Contracts/"
         }
     }
 }

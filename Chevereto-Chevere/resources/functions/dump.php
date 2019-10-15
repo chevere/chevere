@@ -11,9 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-use Chevere\VarDump\Dumper;
-
-// use Chevere\Console\Console;
+use Chevere\Components\VarDump\Dumper;
 
 /**
  * Dumps information about one or more variables.

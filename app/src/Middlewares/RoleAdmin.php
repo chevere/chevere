@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace App\Middlewares;
 
 use Chevere\Contracts\App\MiddlewareHandlerContract;
-use Chevere\Interfaces\MiddlewareInterface;
-use Chevere\Http\Request\RequestException;
+use Chevere\Components\Interfaces\MiddlewareInterface;
+use Chevere\Components\Http\Request\RequestException;
 
 class RoleAdmin implements MiddlewareInterface
 {
