@@ -14,13 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Benchmark;
 
 use LogicException;
-
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 use Chevere\Components\DateTime\DateTime;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Number\Number;
-use Chevere\Components\Time\Time;
+use Chevere\Components\Time\TimeHr;
 use Chevere\Components\Traits\PrintableTrait;
 
 use const Chevere\CLI;
@@ -50,10 +49,10 @@ final class Benchmark
     /** @var string Printable string (PrintableTrait) */
     private $printable;
 
-    /** @var float Nanotime construct object */
+    /** @var int Nanotime construct object */
     private $constructTime;
 
-    /** @var float */
+    /** @var int Nanotime */
     private $maxExecutionTime;
 
     /** @var float Nanotime */
@@ -98,10 +97,10 @@ final class Benchmark
     /** @var bool True if the timeLimit has been reached */
     private $isSelfAborted;
 
-    /** @var float Nanotime just before running the callables */
+    /** @var int Nanotime just before running the callables */
     private $startupTime;
 
-    /** @var float Time taken to run the benchmark */
+    /** @var int Time taken to run the benchmark */
     private $timeTaken;
 
     /** @var int */
@@ -127,8 +126,8 @@ final class Benchmark
      */
     public function __construct(int $times)
     {
-        $this->constructTime = hrtime(true);
-        $this->maxExecutionTime = (int) ini_get('max_execution_time');
+        $this->constructTime = (int) hrtime(true);
+        $this->maxExecutionTime = 1e9 * (int) ini_get('max_execution_time');
         $this->requestTime = BOOTSTRAP_TIME;
         $this->times = $times;
         $this->callablesCount = 0;
@@ -201,7 +200,7 @@ final class Benchmark
         $this->isAborted = false;
         $this->isPHPAborted = false;
         $this->isSelfAborted = false;
-        $this->startupTime = hrtime(true);
+        $this->startupTime = (int) hrtime(true);
         $this->handleCallables();
         $this->processCallablesStats();
         $title = __CLASS__ . ' results';
@@ -225,7 +224,7 @@ final class Benchmark
         ];
         $this->processResults();
         $this->handleAborted();
-        $this->timeTakenReadable = ' Time taken: ' . Time::nanoToRead($this->timeTaken);
+        $this->timeTakenReadable = ' Time taken: ' . (new TimeHr($this->timeTaken))->toReadMs();
         $this->lines[] = str_repeat(' ', (int) max(0, static::COLUMNS - strlen($this->timeTakenReadable))) . $this->timeTakenReadable;
         $this->printable = implode("\n", $this->lines);
         if (CLI) {
@@ -239,13 +238,13 @@ final class Benchmark
     {
         foreach (array_keys($this->index) as $id) {
             if ($this->isAborted) {
-                $this->timeTaken = $this->timeTaken ?? (hrtime(true) - $this->startupTime);
+                $this->timeTaken = $this->timeTaken ?? ((int) hrtime(true) - $this->startupTime);
                 break;
             }
-            $timeInit = hrtime(true);
+            $timeInit = (int) hrtime(true);
             $this->runs = 0;
             $this->runCallable($this->callables[$id]);
-            $timeFinish = hrtime(true);
+            $timeFinish = (int) hrtime(true);
             $timeTaken = floatval($timeFinish - $timeInit);
             $this->records[$id] = $timeTaken;
             $this->results[$id] = [
@@ -293,7 +292,7 @@ final class Benchmark
             $this->lines[] = $this->getResultTitle($id);
             $number = new Number($this->results[$id]['runs']);
             $resRuns = $number->toAbbreviate() . ' runs';
-            $resRuns .= ' in ' . Time::nanoToRead($this->results[$id]['time']);
+            $resRuns .= ' in ' . (new TimeHr($this->results[$id]['time']))->toReadMs();
             if ($this->results[$id]['runs'] != $this->times) {
                 $resRuns .= ' ~ missed ' . ($this->times - $this->results[$id]['runs']) . ' runs';
             }
@@ -331,7 +330,7 @@ final class Benchmark
 
     private function canSelfKeepGoing(): bool
     {
-        if (null != $this->timeLimit && hrtime(true) - $this->constructTime > $this->timeLimit) {
+        if (null != $this->timeLimit && (int) hrtime(true) - $this->constructTime > $this->timeLimit) {
             return false;
         }
 
@@ -340,7 +339,7 @@ final class Benchmark
 
     private function canPHPKeepGoing(): bool
     {
-        if (0 != $this->maxExecutionTime && hrtime(true) - $this->requestTime > $this->maxExecutionTime) {
+        if (0 != $this->maxExecutionTime && (int) hrtime(true) - $this->requestTime > $this->maxExecutionTime) {
             return false;
         }
 

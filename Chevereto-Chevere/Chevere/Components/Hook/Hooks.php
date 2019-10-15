@@ -15,29 +15,30 @@ namespace Chevere\Components\Hook;
 
 final class Hooks
 {
-    /** @var array */
-    private $array;
+    /** @var object */
+    private $that;
 
     /** @var array */
     private $trace;
 
-    public function __construct()
+    /** @var array */
+    private $anchor;
+
+    public function __construct(object $that, string $anchor)
     {
+        $this->that = $that;
         $this->trace = null;
-        $this->array = [
-            'App\Controllers\Home' => [
-                'helloWorld' => [
-                    10 => [
-                        [
-                            'callable' => 'Plugins\Local\HelloWorld\Hooks\Controllers\Home\HelloWorld',
-                            'maker' => 'somefile.php'
-                        ]
-                    ]
-                ]
-            ]
-        ];
+        $this->anchor = (new Container())
+            ->getAnchor($that, $anchor);
     }
 
+<<<<<<< HEAD:Chevereto-Chevere/Chevere/Components/Hook/Hooks.php
+=======
+    /**
+     * Enable Hook trace, which will store all the object versions on exec. Useful to detect how hooks are altering a
+     * HookableContract
+     */
+>>>>>>> 2ac7774da4b1d079e69897d9648b58e3e48fad1a:Chevereto-Chevere/src/Hook/Hooks.php
     public function withTrace(): Hooks
     {
         $new = clone $this;
@@ -46,16 +47,19 @@ final class Hooks
         return $new;
     }
 
-    public function exec(string $anchor, object $that): void
+    public function exec(): void
     {
-        $hooks = $this->getAnchor($that, $anchor);
-        if (null == $hooks) {
+        if (null == $this->anchor) {
             return;
         }
         if (null !== $this->trace) {
+<<<<<<< HEAD:Chevereto-Chevere/Chevere/Components/Hook/Hooks.php
             $this->trace['source'] = $that;
+=======
+            $this->trace['base'] = $this->that;
+>>>>>>> 2ac7774da4b1d079e69897d9648b58e3e48fad1a:Chevereto-Chevere/src/Hook/Hooks.php
         }
-        $this->runner($hooks, $that);
+        $this->runner();
     }
 
     public function hasTrace(): bool
@@ -68,19 +72,20 @@ final class Hooks
         return $this->trace;
     }
 
-    private function getAnchor(object $that, string $anchor): ?array
+    private function runner(): void
     {
-        return $this->array[get_class($that)][$anchor] ?? null;
-    }
-
-    private function runner(array $hooks, object $that): void
-    {
-        foreach ($hooks as $entries) {
+        foreach ($this->anchor as $entries) {
             foreach ($entries as $entry) {
                 $hook = new $entry['callable'];
+<<<<<<< HEAD:Chevereto-Chevere/Chevere/Components/Hook/Hooks.php
                 $hook($that);
                 if (null !== $this->trace) {
                     $this->trace[$entry['callable']] = $that;
+=======
+                $hook($this->that);
+                if (null !== $this->trace) {
+                    $this->trace[$entry['callable']] = $this->that;
+>>>>>>> 2ac7774da4b1d079e69897d9648b58e3e48fad1a:Chevereto-Chevere/src/Hook/Hooks.php
                 }
             }
         }

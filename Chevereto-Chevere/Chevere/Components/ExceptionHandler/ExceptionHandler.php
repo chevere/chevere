@@ -166,9 +166,9 @@ final class ExceptionHandler
         return $this->wrap;
     }
 
-    public static function exception($e): void
+    public static function exception($exception): void
     {
-        new static($e);
+        new static($exception);
     }
 
     private function setTimeProperties(): void

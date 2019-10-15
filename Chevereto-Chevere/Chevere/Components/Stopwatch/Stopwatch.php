@@ -16,7 +16,7 @@ namespace Chevere\Components\Stopwatch;
 use InvalidArgumentException;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Time\Time;
+use Chevere\Components\Time\TimeHr;
 
 /**
  * A simple stopwatch, useful for userland execution time measurement.
@@ -29,13 +29,13 @@ final class Stopwatch
     /** @var array [id => $timeElapsedRead relative to previous record ] */
     private $records;
 
-    /** @var float */
+    /** @var int */
     private $timeStart;
 
-    /** @var float */
+    /** @var int */
     private $timeEnd;
 
-    /** @var float Nanotime */
+    /** @var int Nanotime */
     private $timeElapsed;
 
     /** @var string The time elapsed, in miliseconds with tis unit (100 ms) */
@@ -44,7 +44,7 @@ final class Stopwatch
     /** @var array [id => $flagName] */
     private $index;
 
-    /** @var float Time consumed by record checks */
+    /** @var int Time consumed by record checks */
     private $gap;
 
     public function __construct()
@@ -52,12 +52,12 @@ final class Stopwatch
         $this->marks[] = 0;
         $this->index[] = 'start';
         $this->gap = 0;
-        $this->timeStart = hrtime(true);
+        $this->timeStart = (int) hrtime(true);
     }
 
     public function record(string $flagName): void
     {
-        $then = hrtime(true);
+        $then = (int) hrtime(true);
         if ('stop' == $flagName) {
             throw new InvalidArgumentException(
                 (new Message('Use of reserved flag name %flagName%.'))
@@ -74,23 +74,23 @@ final class Stopwatch
             );
         }
         $this->index[] = $flagName;
-        $now = hrtime(true);
+        $now = (int) hrtime(true);
         $this->gap += $now - $then;
         $this->marks[] = $now - $this->gap;
     }
 
     public function stop(): void
     {
-        $this->timeEnd = hrtime(true);
+        $this->timeEnd = (int) hrtime(true);
         $this->timeElapsed = $this->timeEnd - $this->timeStart - $this->gap;
-        $this->timeElapsedRead = Time::nanoToRead($this->timeElapsed);
+        $this->timeElapsedRead = (new TimeHr($this->timeElapsed))->toReadMs();
         $prevMicrotime = 0;
         $this->index[] = 'stop';
         $this->marks[] = $this->timeEnd;
         $this->records = [];
         foreach ($this->marks as $id => $microtime) {
             $time = $microtime - $prevMicrotime;
-            $this->records[$this->index[$id]] = Time::nanoToRead($time);
+            $this->records[$this->index[$id]] = (new TimeHr($time))->toReadMs();
             $prevMicrotime = $microtime > 0 ? $microtime : $this->timeStart;
         }
     }

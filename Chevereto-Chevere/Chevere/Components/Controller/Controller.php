@@ -16,7 +16,7 @@ namespace Chevere\Components\Controller;
 use Chevere\Components\Hook\Traits\HookTrait;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\Controller\ControllerContract;
-use Chevere\Contracts\Hooks\HooksContract;
+use Chevere\Contracts\Hooks\HookableContract;
 
 // Define a hookable code entry:
 // $this->hook('myHook', function ($that) use ($var) {
@@ -32,7 +32,7 @@ use Chevere\Contracts\Hooks\HooksContract;
 /**
  * Controller is the defacto controller in Chevere.
  */
-abstract class Controller implements ControllerContract, HooksContract
+abstract class Controller implements ControllerContract, HookableContract
 {
     use HookTrait;
 

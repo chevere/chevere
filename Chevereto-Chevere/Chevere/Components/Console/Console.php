@@ -153,20 +153,25 @@ final class Console implements ConsoleContract
 
     private function addCommands(): void
     {
-        $this->symfony->addCommands([
-            (new BuildCommand($this))->symfony(),
-            (new ClearLogsCommand($this))->symfony(),
-            (new RequestCommand($this))->symfony(),
-            (new RunCommand($this))->symfony(),
-            (new InspectCommand($this))->symfony(),
-            (new DestroyCommand($this))->symfony(),
-        ]);
-        if (!$this->symfony->has($this->commandString)) {
+        $commands = [
+            (new BuildCommand($this)),
+            (new ClearLogsCommand($this)),
+            (new RequestCommand($this)),
+            (new RunCommand($this)),
+            (new InspectCommand($this)),
+            (new DestroyCommand($this)),
+        ];
+        $commandsIndex = [];
+        foreach ($commands as $key => $command) {
+            $this->symfony->add($command->symfony());
+            $commandsIndex[$command::NAME] = $key;
+        }
+        $commandIndex = $commandsIndex[$this->commandString] ?? null;
+        if (!isset($commandIndex)) {
             $this->style->writeln(sprintf('Command "%s" is not defined', $this->commandString));
             die(127);
         }
-        $this->command = $this->symfony->get($this->commandString)
-            ->getChevereCommand();
+        $this->command = $commands[$commandIndex];
     }
 
     /**

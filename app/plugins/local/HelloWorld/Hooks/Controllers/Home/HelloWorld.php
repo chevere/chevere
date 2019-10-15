@@ -22,7 +22,8 @@ class HelloWorld
 {
     public function __invoke(Home $that)
     {
-        $that->setDocument(__METHOD__);
+        $document = $that->getDocument();
+        $that->setDocument($document . ' >> Hello hook!');
     }
 
     /**

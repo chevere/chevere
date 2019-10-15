@@ -25,7 +25,7 @@ use Chevere\Components\Runtime\Sets\SetLocale;
 use Chevere\Components\Runtime\Sets\SetErrorHandler;
 use Chevere\Components\Runtime\Sets\SetExceptionHandler;
 
-define('BOOTSTRAP_TIME', microtime(true));
+define('BOOTSTRAP_TIME', (int) hrtime(true));
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -45,11 +45,11 @@ define('Chevere\APP_PATH', ROOT_PATH . 'app/');
 /** DEV=true to rebuild the App on every load */
 define('Chevere\DEV', (bool) include(APP_PATH . 'options/dev.php'));
 
-define('Chevere\CLI', true);
 if ('cli' == php_sapi_name()) {
+    define('Chevere\CLI', true);
     new Container();
 } else {
-    // define('Chevere\CLI', false);
+    define('Chevere\CLI', false);
 }
 
 Builder::setRuntimeInstance(

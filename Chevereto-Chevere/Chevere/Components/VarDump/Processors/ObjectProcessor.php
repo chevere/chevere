@@ -107,8 +107,8 @@ final class ObjectProcessor implements ProcessorContract
         $this->aux = $var['value'];
         if (is_object($this->aux) && property_exists($this->aux, $key)) {
             try {
-                $r = new ReflectionObject($this->aux);
-                $prop = $r->getProperty($key);
+                $reflector = new ReflectionObject($this->aux);
+                $prop = $reflector->getProperty($key);
                 $prop->setAccessible(true);
                 if ($this->aux == $prop->getValue($this->aux)) {
                     $this->val .= $this->varDump->formatter()->wrap(

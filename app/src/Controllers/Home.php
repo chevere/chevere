@@ -26,9 +26,11 @@ class Home extends Controller implements StringContract
 
     public function __invoke(): void
     {
+        $sw = new Stopwatch();
         $this->document = 'Hello World!'; // Sets Hello World!
-        $this->hook('helloWorld'); // Hooks run...
-        $this->document .= ' zz Hello World!'; // Hooks + zz
+        $this->hook('helloWorld'); // Hooks run (if any)...
+        $this->document .= ' >> After hook'; // Hooks + zz
+        // die(1000 * (microtime(true) - BOOTSTRAP_TIME));
     }
 
     public function setDocument(string $document): void
