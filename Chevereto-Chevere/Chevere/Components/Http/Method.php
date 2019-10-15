@@ -45,15 +45,22 @@ final class Method implements MethodContract
 
     public function withController(string $controllerName): MethodContract
     {
-        $new = clone $this;
-        if (!is_subclass_of($controllerName, ControllerContract::class)) {
+        if (!class_exists($controllerName)) {
             throw new InvalidArgumentException(
-                (new Message('Controller %s must implement the %i interface.'))
-                    ->code('%s', $controllerName)
-                    ->code('%i', ControllerContract::class)
+                (new Message("Controller %controller% doesn't exists"))
+                    ->code('%controller%', $controllerName)
                     ->toString()
             );
         }
+        if (!is_subclass_of($controllerName, ControllerContract::class)) {
+            throw new InvalidArgumentException(
+                (new Message('Controller %controller% must implement the %contract% interface'))
+                    ->code('%controller%', $controllerName)
+                    ->code('%contract%', ControllerContract::class)
+                    ->toString()
+            );
+        }
+        $new = clone $this;
         $new->controllerName = $controllerName;
 
         return $new;
