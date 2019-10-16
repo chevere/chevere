@@ -35,7 +35,7 @@ final class Maker implements MakerContract
     /** @var array Route members (objects, serialized) [id => Route] */
     private $routes;
 
-    /** @var array Contains ['/path' => [id, 'route/key']] */
+    /** @var array Contains ['path' => [id => routeKey, group => group]] */
     private $routesIndex;
 
     /** @var array An array containing the named routes [name => [id, fileHandle]] */
@@ -50,9 +50,6 @@ final class Maker implements MakerContract
     /** @var RouteContract */
     private $route;
 
-    /** @var array Stores the map for a given route ['group' => group, 'id' => routeId] */
-    private $routeMap;
-
     /** @var Cache */
     private $cache;
 
@@ -64,10 +61,6 @@ final class Maker implements MakerContract
         $new = clone $this;
         $route = $route->withFiller();
         $new->route = $route;
-        $new->routeMap = [
-            'route' => $new->route,
-            'group' => $group,
-        ];
         $new->validateUniqueRoutePath();
         $id = empty($new->routes) ? 0 : (array_key_last($new->routes) + 1);
         if ($new->route->hasName()) {
@@ -81,7 +74,10 @@ final class Maker implements MakerContract
             $new->statics[$new->route->path()] = $id;
         }
         $new->regex = $new->getRegex();
-        $new->routesIndex[$new->route->path()] = $new->routeMap;
+        $new->routesIndex[$new->route->path()] = [
+            'id' => $id,
+            'group' => $group,
+        ];
 
         return $new;
     }

@@ -17,6 +17,7 @@ use Chevere\Contracts\Controller\JsonApiContract;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\Traits\JsonApiTrait;
 use Chevere\Components\JsonApi\EncodedDocument;
+use Chevere\Components\Time\TimeHr;
 use JsonApiPhp\JsonApi\Attribute;
 use JsonApiPhp\JsonApi\DataDocument;
 use JsonApiPhp\JsonApi\JsonApi;
@@ -48,7 +49,7 @@ class Index extends Controller implements JsonApiContract
             'cli',
             new Attribute('entry', 'php chevere.php list'),
             new Attribute('description', 'Retrieves the console command list.'),
-        );
+            );
     }
     public function getDocument(): EncodedDocument
     {
@@ -57,7 +58,7 @@ class Index extends Controller implements JsonApiContract
                 new DataDocument(
                     new ResourceCollection($this->api, $this->cli),
                     new JsonApi(),
-                )
+                    )
             );
     }
 }
