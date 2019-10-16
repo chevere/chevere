@@ -17,7 +17,9 @@ use LogicException;
 
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Path\Path;
 use Chevere\Contracts\App\ParametersContract;
+use InvalidArgumentException;
 
 final class Parameters implements ParametersContract
 {
@@ -51,6 +53,23 @@ final class Parameters implements ParametersContract
         if (isset($this->arrayFile[static::KEY_ROUTES])) {
             $this->routes = $this->arrayFile[static::KEY_ROUTES];
         }
+    }
+
+    public function withAddedRoutePaths(Path ...$paths): ParametersContract
+    {
+        $new = clone $this;
+        foreach ($paths as $path) {
+            if (in_array($path->identifier(), $new->routes)) {
+                throw new InvalidArgumentException(
+                    (new Message('Routes identifier %identifier% was already added'))
+                        ->code('%identifier%', $path->identifier())
+                        ->toString()
+                );
+            }
+            $new->routes[] = $path->identifier();
+        }
+
+        return $new;
     }
 
     public function api(): string

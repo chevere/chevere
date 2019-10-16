@@ -21,6 +21,7 @@ use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\Console\Console;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Path\Path;
 use Chevere\Components\Path\PathHandle;
 use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\BuildContract;
@@ -44,7 +45,6 @@ final class Loader implements LoaderContract
     public function __construct()
     {
         $this->builder = new Builder(new App(new Response()));
-        // $this->handleConsoleBind();
         $this->assert();
         $this->handleParameters();
         $build = $this->getBuild();
@@ -67,9 +67,14 @@ final class Loader implements LoaderContract
         if (DEV || (CLI && console()->isBuilding())) {
             $this->parameters = new Parameters(
                 new ArrayFile(
-                    (new PathHandle(App::FILEHANDLE_PARAMETERS))->path()
+                    (new PathHandle(App::FILEHANDLE_PARAMETERS))
+                        ->path()
                 )
             );
+            $path = new Path('/home/rodolfo/git/chevere/app/plugins/local/HelloWorld/routes/web.php');
+            $pluginRoutes = [$path];
+            $this->parameters = $this->parameters
+                ->withAddedRoutePaths(...$pluginRoutes);
             $this->builder = $this->builder
                 ->withParameters($this->parameters);
         }

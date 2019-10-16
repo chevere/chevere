@@ -20,8 +20,11 @@ use RuntimeException;
 
 use Chevere\Components\Message\Message;
 
+use function ChevereFn\stringEndsWith;
 use function ChevereFn\stringForwardSlashes;
 use function ChevereFn\stringReplaceFirst;
+use function ChevereFn\stringReplaceLast;
+use function ChevereFn\stringStartsWith;
 
 use const Chevere\ROOT_PATH;
 
@@ -33,11 +36,14 @@ final class Path
     /** @var string Absolute path */
     private $absolute;
 
-    /** @var string Relative path */
+    /** @var string Relative path (to project root) */
     private $relative;
 
     /** @var string Context path (absolute) */
     private $context;
+
+    /** @var string File identifier (relative to context) */
+    private $identifier;
 
     public function __construct(string $path)
     {
@@ -45,16 +51,37 @@ final class Path
         // $this->path = pathResolve($this->path);
         $this->context = ROOT_PATH;
         $this->path = $path;
+        $isPHP = stringEndsWith('.php', $this->path);
         if (preg_match('#[\.\/]#', $this->path)) {
             $this->resolve();
         }
-        if ($this->isAbsolute()) {
-            $this->absolute = $path;
-            $this->relative = $this->getRelative();
-        } else {
-            $this->absolute = $this->getAbsolute();
-            $this->relative = $path;
+        $this->setPaths();
+        $this->identifier = $this->relative;
+        if ($isPHP) {
+            $basename = basename($this->relative);
+            if (false === strpos($basename, ':')) {
+                $this->identifier = stringReplaceFirst('app/', '', $this->relative);
+                $this->identifier = stringReplaceLast('.php', '', $this->identifier);
+                $this->identifier = stringReplaceLast('/', ':', $this->identifier);
+            } else {
+                throw new InvalidArgumentException(
+                    (new Message('Path %path% contains a forbidden colon in the filename'))
+                        ->code('%path%', $this->path)
+                        ->toString()
+                );
+            }
         }
+    }
+
+    private function setPaths(): void
+    {
+        if (stringStartsWith('/', $this->path)) {
+            $this->absolute = $this->path;
+            $this->relative = $this->getRelative();
+            return;
+        }
+        $this->absolute = $this->getAbsolute();
+        $this->relative = $this->path;
     }
 
     public function withContext(string $context): Path
@@ -66,6 +93,11 @@ final class Path
         $new->relative = $new->getRelative();
 
         return $new;
+    }
+
+    public function identifier(): string
+    {
+        return $this->identifier;
     }
 
     /**

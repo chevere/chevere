@@ -21,6 +21,7 @@ use Chevere\Components\Message\Message;
 
 use function ChevereFn\stringEndsWith;
 use function ChevereFn\stringRightTail;
+use function ChevereFn\stringStartsWith;
 
 use const Chevere\APP_PATH;
 
@@ -44,6 +45,9 @@ final class PathHandle
     /** @var array */
     private $explode;
 
+    /** @var array */
+    private $errors;
+
     /**
      * Path identifier refers to the standarized way in which files and paths
      * are handled by internal APIs like Hookable or Router.
@@ -54,15 +58,25 @@ final class PathHandle
      * - The dirname is relative to APP_PATH
      * - dirname allows absolute paths
      *
-     * @param string $identifier path identifier relative to app (<dirname>:<file>)
+     * @param string $identifier path identifier relative to app (dirname:file)
      */
     public function __construct(string $identifier)
     {
         $this->context = APP_PATH;
         $this->identifier = $identifier;
-        $this->validateStringIdentifier();
-        $this->validateCharIdentifier();
-        $this->validateContext();
+        $this->assertStringIdentifier();
+        $this->assertSlashes();
+        $this->assertPath();
+        if (isset($this->errors)) {
+            throw new InvalidArgumentException(
+                (new Message('Identifier %identifier% %errors%'))
+                    ->code('%identifier%', $this->identifier)
+                    ->strtr('%errors%', implode(', ', $this->errors))
+                    ->toString()
+            );
+        }
+        $this->assertFileIdentifier();
+        $this->assertContext();
         $this->process();
     }
 
@@ -94,42 +108,63 @@ final class PathHandle
         return $end;
     }
 
-    private function validateStringIdentifier()
+    private function assertStringIdentifier(): void
     {
         if (!($this->identifier != '' && !ctype_space($this->identifier))) {
             throw new InvalidArgumentException(
-                (new Message('String %a needed, %v provided'))
-                    ->code('%a', '$identifier')
-                    ->code('%v', 'empty or null string')
+                (new Message('Argument %argument% is an empty string'))
+                    ->code('%argument%', '$identifier')
                     ->toString()
             );
         }
     }
 
-    private function validateCharIdentifier()
+    private function assertSlashes(): void
+    {
+        if (false !== strpos($this->identifier, '//')) {
+            $this->errors[] = 'must not contain double-slashes';
+        }
+        if ($this->identifier !== '/' && stringEndsWith('/', $this->identifier)) {
+            $this->errors[] = 'must omit the trailing slash';
+        }
+    }
+
+    private function assertPath(): void
+    {
+        if (stringStartsWith('/', $this->identifier)) {
+            $this->errors[] = 'must be relative';
+        }
+        if (stringStartsWith('.', $this->identifier)) {
+            $this->errors[] = 'must omit relative dots';
+        }
+        if (stringEndsWith('.php', $this->identifier)) {
+            $this->errors[] = (new Message('must omit trailing %tail%'))
+                ->code('%tail%', '.php')
+                ->toString();
+        }
+        if (stringEndsWith(':', $this->identifier)) {
+            $this->errors[] = 'must not end with a trailing colon';
+        }
+    }
+
+    /**
+     * At this point the identifier "path" is already valid
+     */
+    private function assertFileIdentifier(): void
     {
         if (false !== strpos($this->identifier, ':')) {
-            if (stringEndsWith(':', $this->identifier)) {
-                throw new InvalidArgumentException(
-                    (new Message('Wrong string %a format, %v provided (trailing colon)'))
-                        ->code('%a', '$identifier')
-                        ->code('%v', $this->identifier)
-                        ->toString()
-                );
-            }
             $this->filename = $this->filenameFromIdentifier();
             if (false !== strpos($this->filename, '/')) {
                 throw new InvalidArgumentException(
-                    (new Message('Wrong string %a format, %v provided (path separators in filename)'))
-                        ->code('%a', '$identifier')
-                        ->code('%v', $this->identifier)
+                    (new Message('Identifier %identifier% contains path separators in filename'))
+                        ->code('%identifier%', $this->identifier)
                         ->toString()
                 );
             }
         }
     }
 
-    private function validateContext()
+    private function assertContext(): void
     {
         $path = new Path($this->context);
         if (!$path->isDir()) {

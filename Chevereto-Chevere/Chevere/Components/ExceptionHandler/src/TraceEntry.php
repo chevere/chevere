@@ -187,7 +187,7 @@ final class TraceEntry
     private function handleProcessNormalizeFile()
     {
         if (isset($this->entry['file']) && false !== strpos($this->entry['file'], '\\')) {
-            $this->entry['file'] = (new Path($this->entry['file']))->relative();
+            $this->entry['file'] = (new Path($this->entry['file']))->absolute();
         }
     }
 }
