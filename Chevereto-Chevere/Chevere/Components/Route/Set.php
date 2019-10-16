@@ -16,13 +16,9 @@ namespace Chevere\Components\Route;
 use InvalidArgumentException;
 use LogicException;
 
-use Chevere\Components\Arreglo\Arreglo;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Path\Path;
 
-use function ChevereFn\stringEndsWith;
 use function ChevereFn\stringReplaceFirst;
-use function ChevereFn\stringReplaceLast;
 
 final class Set
 {
@@ -40,9 +36,6 @@ final class Set
 
     /** @var array string[] */
     private $wildcards;
-
-    /** @var array Mandatory wildcards index */
-    private $mandatoryIndex;
 
     public function __construct(string $path)
     {
@@ -93,15 +86,5 @@ final class Set
             }
             $this->wildcards[] = $wildcard;
         }
-    }
-
-    private function getIndex(array $diff): array
-    {
-        $index = [];
-        foreach (array_keys($diff) as $k) {
-            $index[$k] = null;
-        }
-
-        return $index;
     }
 }

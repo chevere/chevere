@@ -37,6 +37,8 @@ interface RouteContract
      */
     public function __construct(string $uri);
 
+    public function maker(): array;
+
     public function key(): string;
 
     public function path(): string;
