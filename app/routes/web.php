@@ -6,7 +6,7 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Http\Method;
 
 return [
-    (new Route('/home'))
+    (new Route('/home/{wea}/{cosa}'))
         ->withAddedMethod(
             (new Method('GET'))
                 ->withControllerName(Controllers\Home::class)

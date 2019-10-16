@@ -31,9 +31,10 @@ final class PathUri implements PathUriContract
     public function __construct(string $path)
     {
         $this->path = $path;
+        $this->setHasHandlebars();
         $this->assertPath();
-        $this->hasHandlebars = $this->getHasHandlebars();
         if ($this->hasHandlebars) {
+            $this->assertMatchingBraces();
             $this->assertReservedWildcards();
         }
     }
@@ -54,22 +55,7 @@ final class PathUri implements PathUriContract
         if (!stringStartsWith('/', $this->path)) {
             $messages[] = 'must start with a forward slash';
         }
-        $illegal = [
-            '//' => 'extra-slashes',
-            '\\' => 'backslash',
-            '{{' => 'double-braces',
-            '}}' => 'double-braces',
-            ' ' => 'whitespace'
-        ];
-        $illegals = [];
-        foreach ($illegal as $character => $name) {
-            if (false !== strpos($this->path, $character)) {
-                $illegals[] = (new Message('%character% %name%'))
-                    ->code('%character%', $character)
-                    ->strtr('%name%', $name)
-                    ->toString();
-            }
-        }
+        $illegals = $this->getIllegalChars();
         if (!empty($illegals)) {
             $messages[] = 'must not contain illegal characters (' . implode(', ', $illegals) . ')';
         }
@@ -80,6 +66,49 @@ final class PathUri implements PathUriContract
                     ->toString()
             );
         }
+    }
+
+    private function assertMatchingBraces(): void
+    {
+        $countOpen = substr_count($this->path, '{');
+        $countClose = substr_count($this->path, '}');
+        preg_match_all(Set::REGEX_WILDCARD_SEARCH, $this->path, $matches);
+        $countMatches = count($matches[0]);
+        if ($countOpen !== $countClose || $countOpen !== $countMatches) {
+            throw new InvalidArgumentException(
+                (new Message('Route path %path% contains unmatched braces (%countOpen% open, %countClose% close, %countMatches% matches)'))
+                    ->code('%path%', $this->path)
+                    ->strtr('%countOpen%', (string) $countOpen)
+                    ->strtr('%countClose%', (string) $countClose)
+                    ->strtr('%countMatches%', (string) $countMatches)
+                    ->toString()
+            );
+        }
+    }
+
+    /**
+     * @return array [n => '<code>character</code> name]
+     */
+    private function getIllegalChars(): array
+    {
+        $illegalChars = [
+            '//' => 'extra-slashes',
+            '\\' => 'backslash',
+            '{{' => 'double-braces',
+            '}}' => 'double-braces',
+            ' ' => 'whitespace'
+        ];
+        $illegals = [];
+        foreach ($illegalChars as $character => $name) {
+            if (false !== strpos($this->path, $character)) {
+                $illegals[] = (new Message('%character% %name%'))
+                    ->code('%character%', $character)
+                    ->strtr('%name%', $name)
+                    ->toString();
+            }
+        }
+
+        return $illegals;
     }
 
     private function assertReservedWildcards(): void
@@ -93,8 +122,8 @@ final class PathUri implements PathUriContract
         }
     }
 
-    private function getHasHandlebars(): bool
+    private function setHasHandlebars(): void
     {
-        return false !== strpos($this->path, '{') || false !== strpos($this->path, '}');
+        $this->hasHandlebars = false !== strpos($this->path, '{') || false !== strpos($this->path, '}');
     }
 }
