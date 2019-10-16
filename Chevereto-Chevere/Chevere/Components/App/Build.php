@@ -173,10 +173,10 @@ final class Build implements BuildContract
     {
         if (!isset($this->checkout)) {
             throw new LogicException(
-                (new Message("Property %type% %property% is not set for object of %class% class"))
+                (new Message("Property %type% %property% is not set for object of %className% class"))
                     ->code('%type%', CheckoutContract::class)
                     ->code('%property%', 'checkout')
-                    ->code('%class%', __CLASS__)
+                    ->code('%className%', __CLASS__)
                     ->toString()
             );
         }

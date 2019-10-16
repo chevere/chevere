@@ -1,7 +1,7 @@
 {
     "name": "chevereto/chevere",
-    "description": "Chevereto Framework",
-    "homepage": "http://github.com/chevereto/chevere",
+    "description": "Chevere Framework",
+    "homepage": "https://chevere.dev",
     "type": "library",
     "license": "MIT",
     "authors": [{
@@ -10,7 +10,7 @@
         "homepage": "http://rodolfoberrios.com"
     }],
     "require": {
-        "php": ">=7.2",
+        "php": ">=7.3",
         "psr/simple-cache": "~1.0",
         "monolog/monolog": "~2.0",
         "guzzlehttp/psr7": "~1.6",

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use LogicException;
+use InvalidArgumentException;
 
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Cache\Cache;
@@ -32,17 +32,20 @@ final class Maker implements MakerContract
     /** @var string Regex representation, used when resolving routing */
     private $regex;
 
-    /** @var array Route members (objects, serialized) [id => Route] */
-    private $routes;
-
-    /** @var array Contains ['path' => [id => routeKey, group => group]] */
-    private $routesIndex;
-
-    /** @var array An array containing the named routes [name => [id, fileHandle]] */
-    private $named;
-
     /** @var array [regex => Route id]. */
     private $regexIndex;
+
+    /** @var array Route members (objects, serialized) [id => RouteContract] */
+    private $routes;
+
+    /** @var array [/path/{param} => [id => $id, group => group]] */
+    private $routesIndex;
+
+    /** @var array [/path/{0} => $id] */
+    private $routesKeys;
+
+    /** @var array Named routes [routeName => $id] */
+    private $named;
 
     /** @var array Static routes */
     private $statics;
@@ -61,10 +64,11 @@ final class Maker implements MakerContract
         $new = clone $this;
         $route = $route->withFiller();
         $new->route = $route;
-        $new->validateUniqueRoutePath();
+        $new->assertUniqueRoutePath();
+        $new->assertUniqueRouteKey();
         $id = empty($new->routes) ? 0 : (array_key_last($new->routes) + 1);
         if ($new->route->hasName()) {
-            $new->assertNamedRoute();
+            $new->assertUniqueNamedRoute();
             $new->named[$new->route->name()] = $id;
         }
         $new->routes[] = $new->route;
@@ -74,6 +78,7 @@ final class Maker implements MakerContract
             $new->statics[$new->route->path()] = $id;
         }
         $new->regex = $new->getRegex();
+        $new->routesKeys[$new->route->key()] = $id;
         $new->routesIndex[$new->route->path()] = [
             'id' => $id,
             'group' => $group,
@@ -102,33 +107,21 @@ final class Maker implements MakerContract
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function regex(): string
     {
         return $this->regex;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function routes(): array
     {
         return $this->routes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function routesIndex(): array
     {
         return $this->routesIndex;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withCache(): MakerContract
     {
         $new = clone $this;
@@ -143,9 +136,6 @@ final class Maker implements MakerContract
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function cache(): Cache
     {
         return $this->cache;
@@ -162,30 +152,50 @@ final class Maker implements MakerContract
         return sprintf(MakerContract::REGEX_TEPLATE, implode('', $regex));
     }
 
-    private function validateUniqueRoutePath(): void
+    private function assertUniqueRouteKey(): void
     {
-        $keyedRoute = $this->routesIndex[$this->route->path()] ?? null;
-        if (isset($keyedRoute)) {
-            throw new LogicException(
-                (new Message('Route key %s has been already declared by %r'))
-                    ->code('%s', $this->route->path())
-                    ->code('%r', $keyedRoute['id'] . '@' . $keyedRoute['group'])
+        $routeId = $this->routesKeys[$this->route->key()] ?? null;
+        if (isset($routeId)) {
+            $routeIndexed = $this->routes[$routeId];
+            throw new InvalidArgumentException(
+                (new Message('Router conflict detected for %path% at %declare% (self-assigned internal key %key% is already reserved by %register%)'))
+                    ->code('%path%', $this->route->path())
+                    ->code('%declare%', $this->route->maker()['fileLine'])
+                    ->code('%key%', $this->route->key())
+                    ->code('%register%', $routeIndexed->maker()['fileLine'])
                     ->toString()
             );
         }
     }
 
-    private function assertNamedRoute(): void
+    private function assertUniqueRoutePath(): void
+    {
+        $routeIndex = $this->routesIndex[$this->route->path()] ?? null;
+        if (isset($routeIndex)) {
+            $routeIndexed = $this->routes[$routeIndex['id']];
+            throw new InvalidArgumentException(
+                (new Message('Unable to register route path %path% at %declare% (path already registered at %register%)'))
+                    ->code('%path%', $this->route->path())
+                    ->code('%declare%', $this->route->maker()['fileLine'])
+                    ->code('%register%', $routeIndexed->maker()['fileLine'])
+                    ->toString()
+            );
+        }
+    }
+
+    private function assertUniqueNamedRoute(): void
     {
         $namedId = $this->named[$this->route->name()] ?? null;
         if (isset($namedId)) {
             $name = $this->route->name();
             $routeExists = $this->routes[$namedId];
-            throw new LogicException(
-                (new Message('Route name %name% has been already taken by %path% at %fileWithLine%'))
+            throw new InvalidArgumentException(
+                (new Message('Unable to assign route name %name% for path %path% at %declare% (name assigned to %namedRoutePath% at %register%)'))
                     ->code('%name%', $name)
-                    ->code('%path%', $routeExists->path())
-                    ->code('%fileWithLine%', $routeExists->maker()['file'] . ':' . $routeExists->maker()['line'])
+                    ->code('%path%', $this->route->path())
+                    ->code('%declare%', $this->route->maker()['fileLine'])
+                    ->code('%namedRoutePath%', $routeExists->path())
+                    ->code('%register%', $routeExists->maker()['fileLine'])
                     ->toString()
             );
         }

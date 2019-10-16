@@ -244,5 +244,6 @@ final class Route implements RouteContract
         $this->maker = debug_backtrace(0, 2)[1];
         $this->maker['file'] = (new Path($this->maker['file']))
             ->absolute();
+        $this->maker['fileLine'] = $this->maker['file']. ':' . $this->maker['line'];
     }
 }
