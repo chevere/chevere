@@ -29,10 +29,7 @@ use Chevere\Contracts\Route\RouteContract;
 
 final class Route implements RouteContract
 {
-    /** @var string Route id relative to the ArrayFile */
-    private $id;
-
-    /** @var string Route path like /api/users/{user} */
+    /** @var string Route path passed, like /api/users/{user} */
     private $path;
 
     /** @var string Route name (if any, must be unique) */
@@ -50,11 +47,8 @@ final class Route implements RouteContract
     /** @var array */
     private $wildcards;
 
-    /** @var string Route path representation with placeholder wildcards like /api/users/{0} */
+    /** @var string Route path representation, with placeholder wildcards like /api/users/{0} */
     private $key;
-
-    /** @var array Contains all the possible $set combinations when using optional wildcards */
-    private $keyPowerSet;
 
     /** @var array An array containg details about the Route maker */
     private $maker;
@@ -69,11 +63,10 @@ final class Route implements RouteContract
     {
         $pathUri = new PathUri($path);
         $this->path = $pathUri->path();
-        $this->maker = $this->getMakerData();
+        $this->setMaker();
         if ($pathUri->hasHandlebars()) {
             $set = new Set($this->path);
             $this->key = $set->key();
-            dd($this->key);
             $this->wildcards = $set->toArray();
         } else {
             $this->key = $this->path;
@@ -81,9 +74,14 @@ final class Route implements RouteContract
         $this->type = isset($this->wildcards) ? Route::TYPE_DYNAMIC : Route::TYPE_STATIC;
     }
 
-    public function id(): string
+    public function maker(): array
     {
-        return $this->id;
+        return $this->maker;
+    }
+
+    public function key(): string
+    {
+        return $this->key;
     }
 
     public function path(): string
@@ -184,14 +182,6 @@ final class Route implements RouteContract
         return $new;
     }
 
-    public function withId(string $id): RouteContract
-    {
-        $new = clone $this;
-        $new->id = $id;
-
-        return $new;
-    }
-
     public function withAddedMiddleware(string $callable): RouteContract
     {
         $this->middlewares[] = $callable;
@@ -213,7 +203,7 @@ final class Route implements RouteContract
         return $controller;
     }
 
-    public function fill(): RouteContract
+    public function withFiller(): RouteContract
     {
         $new = clone $this;
         if (isset($new->wildcards)) {
@@ -237,7 +227,6 @@ final class Route implements RouteContract
     public function getRegex(string $pattern): string
     {
         $regex = '^' . $pattern . '$';
-
         if (false === strpos($regex, '{')) {
             return $regex;
         }
@@ -250,11 +239,10 @@ final class Route implements RouteContract
         return $regex;
     }
 
-    private function getMakerData(): array
+    private function setMaker(): void
     {
-        $maker = debug_backtrace(0, 3)[2];
-        $maker['file'] = (new Path($maker['file']))->relative();
-
-        return $maker;
+        $this->maker = debug_backtrace(0, 2)[1];
+        $this->maker['file'] = (new Path($this->maker['file']))
+            ->absolute();
     }
 }

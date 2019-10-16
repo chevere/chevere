@@ -16,7 +16,6 @@ namespace Chevere\Components\Router;
 use LogicException;
 
 use Chevere\Components\ArrayFile\ArrayFile;
-use Chevere\Components\ArrayFile\ArrayFileCallback;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\PathHandle;
@@ -63,17 +62,24 @@ final class Maker implements MakerContract
     public function withAddedRoute(RouteContract $route, string $group): MakerContract
     {
         $new = clone $this;
-        $new->route = $route->fill();
-        dd($new->route);
-        $new->routeMap = ['group' => $group, 'id' => $new->route->id()];
+        $route = $route->withFiller();
+        $new->route = $route;
+        $new->routeMap = [
+            'route' => $new->route,
+            'group' => $group,
+        ];
         $new->validateUniqueRoutePath();
-        $new->handleRouteName();
-        $new->routes[] = $route;
-        $id = array_key_last($new->routes);
+        $id = empty($new->routes) ? 0 : (array_key_last($new->routes) + 1);
+        if ($new->route->hasName()) {
+            $new->assertNamedRoute();
+            $new->named[$new->route->name()] = $id;
+        }
+        $new->routes[] = $new->route;
+        // $id = array_key_last($new->routes);
         // n => .. => regex => route
-        $new->regexIndex[$route->regex()] = $id;
+        $new->regexIndex[$new->route->regex()] = $id;
         if (Route::TYPE_STATIC == $route->type()) {
-            $new->statics[$route->path()] = $id;
+            $new->statics[$new->route->path()] = $id;
         }
         $new->regex = $new->getRegex();
         $new->routesIndex[$new->route->path()] = $new->routeMap;
@@ -97,11 +103,7 @@ final class Maker implements MakerContract
             );
             $arrayFile = $arrayFile
                 ->withMembersType(new Type(RouteContract::class));
-            $arrayFileWrap = new ArrayFileCallback($arrayFile, function ($k, &$route) {
-                $route = $route
-                    ->withId((string) $k);
-            });
-            foreach ($arrayFileWrap as $route) {
+            foreach ($arrayFile as $route) {
                 $new = $new->withAddedRoute($route, $fileHandleString);
             }
         }
@@ -182,21 +184,19 @@ final class Maker implements MakerContract
         }
     }
 
-    private function handleRouteName(): void
+    private function assertNamedRoute(): void
     {
-        $name = $this->route->hasName() ? $this->route->name() : null;
-        if (!isset($name)) {
-            return;
-        }
-        $namedRoute = $this->named[$name] ?? null;
-        if (isset($namedRoute)) {
+        $namedId = $this->named[$this->route->name()] ?? null;
+        if (isset($namedId)) {
+            $name = $this->route->name();
+            $routeExists = $this->routes[$namedId];
             throw new LogicException(
-                (new Message('Route name %s has been already taken by %r'))
-                    ->code('%s', $name)
-                    ->code('%r', $namedRoute[0] . '@' . $namedRoute[1])
+                (new Message('Route name %name% has been already taken by %path% at %fileWithLine%'))
+                    ->code('%name%', $name)
+                    ->code('%path%', $routeExists->path())
+                    ->code('%fileWithLine%', $routeExists->maker()['file'] . ':' . $routeExists->maker()['line'])
                     ->toString()
             );
         }
-        $this->named[$name] = $this->routeMap;
     }
 }

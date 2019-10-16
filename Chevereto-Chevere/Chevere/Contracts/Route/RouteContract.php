@@ -37,7 +37,7 @@ interface RouteContract
      */
     public function __construct(string $uri);
 
-    public function id(): string;
+    public function key(): string;
 
     public function path(): string;
 
@@ -82,7 +82,7 @@ interface RouteContract
      */
     public function withMethods(MethodsContract $methods): RouteContract;
 
-    public function withId(string $id): RouteContract;
+    // public function withId(string $id): RouteContract;
 
     public function withAddedMiddleware(string $callable): RouteContract;
 
@@ -94,7 +94,7 @@ interface RouteContract
     /**
      * Fill object missing properties and whatnot.
      */
-    public function fill(): RouteContract;
+    public function withFiller(): RouteContract;
 
     /**
      * Gets route regex.

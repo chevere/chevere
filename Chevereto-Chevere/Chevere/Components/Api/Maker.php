@@ -152,8 +152,8 @@ final class Maker implements MakerContract
 
         $route = new Route($path);
         $route = $route
-            ->withMethods($endpoint->methods())
-            ->withId($this->basePath);
+            ->withMethods($endpoint->methods());
+        // ->withId($this->basePath);
 
         $this->routerMaker = $this->routerMaker
             ->withAddedRoute($route, $this->basePath);
@@ -244,7 +244,7 @@ final class Maker implements MakerContract
             $endpointRouteKey = stringLeftTail($pathComponent, '/');
 
             $this->route = (new Route($endpointRouteKey))
-                ->withId($pathComponent)
+                // ->withId($pathComponent)
                 ->withMethods($methods);
 
             // $resource = $this->resourcesMap[$pathComponent] ?? null;

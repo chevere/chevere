@@ -6,13 +6,13 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Http\Method;
 
 return [
-    (new Route('/home/{wea}/{cosa}'))
+    (new Route('/1home/{wea}/{cosa}'))
         ->withAddedMethod(
             (new Method('GET'))
                 ->withControllerName(Controllers\Home::class)
         )
         ->withName('web.home'),
-    (new Route('/'))
+    (new Route('/2'))
         ->withAddedMethod(
             (new Method('GET'))
                 ->withControllerName(Controllers\Index::class)
