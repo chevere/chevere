@@ -26,7 +26,6 @@ class Home extends Controller implements StringContract
 
     public function __invoke(): void
     {
-        $sw = new Stopwatch();
         $this->document = 'Hello World!'; // Sets Hello World!
         $this->hook('helloWorld'); // Hooks run (if any)...
         $this->document .= ' >> After hook'; // Hooks + zz

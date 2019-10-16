@@ -158,7 +158,7 @@ final class Build implements BuildContract
     private function handleRoutes(): void
     {
         $this->routerMaker = $this->routerMaker
-            ->withAddedRouteIdentifiers($this->parameters->routes());
+            ->withAddedRouteIdentifiers(...$this->parameters->routes());
         $this->container = $this->container
             ->withRouter(
                 (new Router())

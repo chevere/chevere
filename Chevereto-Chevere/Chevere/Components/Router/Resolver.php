@@ -23,7 +23,7 @@ use Chevere\Components\Route\Traits\RouteAccessTrait;
 final class Resolver
 {
     use RouteAccessTrait;
-
+    
     public function __construct(string $serialized)
     {
         try {

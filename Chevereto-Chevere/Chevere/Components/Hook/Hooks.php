@@ -32,13 +32,6 @@ final class Hooks
             ->getAnchor($that, $anchor);
     }
 
-<<<<<<< HEAD:Chevereto-Chevere/Chevere/Components/Hook/Hooks.php
-=======
-    /**
-     * Enable Hook trace, which will store all the object versions on exec. Useful to detect how hooks are altering a
-     * HookableContract
-     */
->>>>>>> 2ac7774da4b1d079e69897d9648b58e3e48fad1a:Chevereto-Chevere/src/Hook/Hooks.php
     public function withTrace(): Hooks
     {
         $new = clone $this;
@@ -53,11 +46,7 @@ final class Hooks
             return;
         }
         if (null !== $this->trace) {
-<<<<<<< HEAD:Chevereto-Chevere/Chevere/Components/Hook/Hooks.php
-            $this->trace['source'] = $that;
-=======
             $this->trace['base'] = $this->that;
->>>>>>> 2ac7774da4b1d079e69897d9648b58e3e48fad1a:Chevereto-Chevere/src/Hook/Hooks.php
         }
         $this->runner();
     }
@@ -77,15 +66,9 @@ final class Hooks
         foreach ($this->anchor as $entries) {
             foreach ($entries as $entry) {
                 $hook = new $entry['callable'];
-<<<<<<< HEAD:Chevereto-Chevere/Chevere/Components/Hook/Hooks.php
-                $hook($that);
-                if (null !== $this->trace) {
-                    $this->trace[$entry['callable']] = $that;
-=======
                 $hook($this->that);
                 if (null !== $this->trace) {
                     $this->trace[$entry['callable']] = $this->that;
->>>>>>> 2ac7774da4b1d079e69897d9648b58e3e48fad1a:Chevereto-Chevere/src/Hook/Hooks.php
                 }
             }
         }

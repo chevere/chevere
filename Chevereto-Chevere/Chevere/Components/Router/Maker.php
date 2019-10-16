@@ -85,18 +85,14 @@ final class Maker implements MakerContract
     /**
      * Adds routes (ArrayFile) specified by path handle.
      *
-     * @param array $routeIdentifiers ['routes:web', 'routes:dashboard']
-     * FIXME: Use ... $pathHandle
+     * @param string $routeIdentifiers 'routes:web', 'routes:dashboard',
      */
-    public function withAddedRouteIdentifiers(array $routeIdentifiers): MakerContract
+    public function withAddedRouteIdentifiers(...$routeIdentifiers): MakerContract
     {
         $new = clone $this;
         foreach ($routeIdentifiers as $fileHandleString) {
-            $arrayFile = new ArrayFile(
-                (new PathHandle($fileHandleString))
-                    ->path()
-            );
-            $arrayFile = $arrayFile
+            $path = (new PathHandle($fileHandleString))->path();
+            $arrayFile = (new ArrayFile($path))
                 ->withMembersType(new Type(RouteContract::class));
             foreach ($arrayFile as $route) {
                 $new = $new->withAddedRoute($route, $fileHandleString);
