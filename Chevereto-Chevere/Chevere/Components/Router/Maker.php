@@ -70,22 +70,11 @@ final class Maker implements MakerContract
         $new->handleRouteName();
         $new->routes[] = $route;
         $id = array_key_last($new->routes);
-        $keyPowerSet = $route->keyPowerSet();
-        if (!empty($keyPowerSet)) {
-            $ix = $id;
-            foreach (array_keys($keyPowerSet) as $set) {
-                ++$ix;
-                $new->routes[] = [$id, (string) $set];
-                $new->regexIndex[$route->getRegex((string) $set)] = $ix;
-            }
-        } else {
-            // n => .. => regex => route
-            $new->regexIndex[$route->regex()] = $id;
-            if (Route::TYPE_STATIC == $route->type()) {
-                $new->statics[$route->path()] = $id;
-            }
+        // n => .. => regex => route
+        $new->regexIndex[$route->regex()] = $id;
+        if (Route::TYPE_STATIC == $route->type()) {
+            $new->statics[$route->path()] = $id;
         }
-
         $new->regex = $new->getRegex();
         $new->routesIndex[$new->route->path()] = $new->routeMap;
 

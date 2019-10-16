@@ -83,8 +83,9 @@ final class Wildcard
     private function validateRoutePathMatch(): void
     {
         $noWildcard = false === strpos($this->route->path(), "{{$this->wildcardName}}");
-        $noOptionalWildcard = false === strpos($this->route->path(), '{' . "$this->wildcardName?" . '}');
-        if ($noWildcard && $noOptionalWildcard) {
+        // $noOptionalWildcard = false === strpos($this->route->path(), '{' . "$this->wildcardName?" . '}');
+        // if ($noWildcard && $noOptionalWildcard) {
+        if ($noWildcard) {
             throw new LogicException(
                 (new Message("Wildcard %wildcard% doesn't exists in %path%"))
                     ->code('%wildcard%', $this->wildcardString)
@@ -98,8 +99,8 @@ final class Wildcard
     {
         if (isset($this->route->wheres()[$this->wildcardName])) {
             throw new LogicException(
-                (new Message('Where clause for %s wildcard has been already declared'))
-                    ->code('%s', $this->wildcardString)
+                (new Message('Where clause for %wildcard% wildcard has been already declared'))
+                    ->code('%wildcard%', $this->wildcardString)
                     ->toString()
             );
         }

@@ -27,9 +27,6 @@ interface RouteContract
     /** @const string Regex pattern used by default (no explicit where). */
     const REGEX_WILDCARD_WHERE = '[A-z0-9\_\-\%]+';
 
-    /** @const string Regex pattern used to detect {wildcard} and {wildcard?}. */
-    const REGEX_WILDCARD_SEARCH = '/{([a-z\_][\w_]*\??)}/i';
-
     /** @const string Regex pattern used to validate route name. */
     const REGEX_NAME = '/^[\w\-\.]+$/i';
 
@@ -53,8 +50,6 @@ interface RouteContract
     public function middlewares(): array;
 
     public function wildcardName(int $key): string;
-
-    public function keyPowerSet(): array;
 
     public function type(): string;
 

@@ -67,18 +67,18 @@ final class Route implements RouteContract
 
     public function __construct(string $path)
     {
-        $pathValidate = new PathUri($path);
-        $this->path = $path;
+        $pathUri = new PathUri($path);
+        $this->path = $pathUri->path();
         $this->maker = $this->getMakerData();
-        if ($pathValidate->hasHandlebars()) {
+        if ($pathUri->hasHandlebars()) {
             $set = new Set($this->path);
             $this->key = $set->key();
-            $this->keyPowerSet = $set->keyPowerSet();
+            dd($this->key);
             $this->wildcards = $set->toArray();
         } else {
             $this->key = $this->path;
         }
-        $this->handleType();
+        $this->type = isset($this->wildcards) ? Route::TYPE_DYNAMIC : Route::TYPE_STATIC;
     }
 
     public function id(): string
@@ -116,11 +116,6 @@ final class Route implements RouteContract
         return $this->wildcards[$key] ?? '';
     }
 
-    public function keyPowerSet(): array
-    {
-        return $this->keyPowerSet ?? [];
-    }
-
     public function type(): string
     {
         return $this->type;
@@ -133,7 +128,6 @@ final class Route implements RouteContract
 
     public function withName(string $name): RouteContract
     {
-        // Validate $name
         if (!preg_match(RouteContract::REGEX_NAME, $name)) {
             throw new InvalidArgumentException(
                 (new Message("Expecting at least one alphanumeric, underscore, hypen or dot character. String '%s' provided."))
@@ -262,20 +256,5 @@ final class Route implements RouteContract
         $maker['file'] = (new Path($maker['file']))->relative();
 
         return $maker;
-    }
-
-    private function handleType(): void
-    {
-        if (isset($this->key)) {
-            // Sets (optionals) are like /route/{0}
-            $pregReplace = preg_replace('/{[0-9]+}/', '', $this->key);
-            if (null != $pregReplace) {
-                $path = new Path($pregReplace);
-                $pregReplace = trim($path->absolute(), '/');
-            }
-            $this->type = isset($pregReplace) ? Route::TYPE_DYNAMIC : Route::TYPE_STATIC;
-            return;
-        }
-        $this->type = Route::TYPE_STATIC;
     }
 }

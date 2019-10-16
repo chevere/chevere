@@ -126,7 +126,8 @@ final class Router implements RouterContract
         $this->arguments = [];
         if (isset($set)) {
             foreach ($matches as $k => $v) {
-                $wildcardId = $route->keyPowerSet()[$set][$k];
+                dd(__LINE__);
+                // $wildcardId = $route->keyPowerSet()[$set][$k];
                 $wildcardName = $route->wildcardName($wildcardId);
                 $this->arguments[$wildcardName] = $v;
             }

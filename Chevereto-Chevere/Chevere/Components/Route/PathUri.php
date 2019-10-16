@@ -18,7 +18,6 @@ use InvalidArgumentException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Route\PathUriContract;
 
-use function ChevereFn\stringEndsWith;
 use function ChevereFn\stringStartsWith;
 
 final class PathUri implements PathUriContract
@@ -51,39 +50,44 @@ final class PathUri implements PathUriContract
 
     private function assertPath(): void
     {
-        if (!$this->validateFormat()) {
+        $messages = [];
+        if (!stringStartsWith('/', $this->path)) {
+            $messages[] = 'must start with a forward slash';
+        }
+        $illegal = [
+            '//' => 'extra-slashes',
+            '\\' => 'backslash',
+            '{{' => 'double-braces',
+            '}}' => 'double-braces',
+            ' ' => 'whitespace'
+        ];
+        $illegals = [];
+        foreach ($illegal as $character => $name) {
+            if (false !== strpos($this->path, $character)) {
+                $illegals[] = (new Message('%character% %name%'))
+                    ->code('%character%', $character)
+                    ->strtr('%name%', $name)
+                    ->toString();
+            }
+        }
+        if (!empty($illegals)) {
+            $messages[] = 'must not contain illegal characters (' . implode(', ', $illegals) . ')';
+        }
+        if (!empty($messages)) {
             throw new InvalidArgumentException(
-                (new Message("String %s must start with a forward slash, it shouldn't contain neither whitespace, backslashes or extra forward slashes and it should be specified without a trailing slash."))
-                    ->code('%s', $this->path)
+                (new Message('Route path %path% ' . implode(' and ', $messages)))
+                    ->code('%path%', $this->path)
                     ->toString()
             );
         }
-    }
-
-    private function validateFormat(): bool
-    {
-        if ('/' == $this->path) {
-            return true;
-        }
-
-        return strlen($this->path) > 0 && stringStartsWith('/', $this->path)
-            && $this->validateFormatSlashes();
-    }
-
-    private function validateFormatSlashes(): bool
-    {
-        return !stringEndsWith('/', $this->path)
-            && false === strpos($this->path, '//')
-            && false === strpos($this->path, ' ')
-            && false === strpos($this->path, '\\');
     }
 
     private function assertReservedWildcards(): void
     {
         if (!(preg_match_all('/{([0-9]+)}/', $this->path) === 0)) {
             throw new InvalidArgumentException(
-                (new Message('Wildcards in the form of %s are reserved'))
-                    ->code('%s', '/{n}')
+                (new Message('Wildcards in the form of %form% are reserved'))
+                    ->code('%form%', '/{n}')
                     ->toString()
             );
         }

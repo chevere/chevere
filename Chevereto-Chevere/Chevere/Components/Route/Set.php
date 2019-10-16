@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
+use InvalidArgumentException;
 use LogicException;
 
 use Chevere\Components\Arreglo\Arreglo;
@@ -25,6 +26,9 @@ use function ChevereFn\stringReplaceLast;
 
 final class Set
 {
+    /** @const string Regex pattern used to catch {wildcard}. */
+    const REGEX_WILDCARD_SEARCH = '/{([a-z\_][\w_]*?)}/i';
+
     /** @var string The route path */
     private $path;
 
@@ -37,32 +41,23 @@ final class Set
     /** @var array string[] */
     private $wildcards;
 
-    /** @var array All the key sets for the route (optionals combo) */
-    private $keyPowerSet;
-
-    /** @var array Optional wildcards */
-    private $optionals;
-
-    /** @var array Optional wildcards index */
-    private $optionalsIndex;
-
     /** @var array Mandatory wildcards index */
     private $mandatoryIndex;
 
     public function __construct(string $path)
     {
         $this->path = $path;
-        // $matches[0] => [{wildcard}, {wildcard?},...]
-        // $matches[1] => [wildcard, wildcard?,...]
-        if (!preg_match_all(Route::REGEX_WILDCARD_SEARCH, $this->path, $matches)) {
-            return;
+        // $matches[0] => [{wildcard1}, {wildcard2},...]
+        // $matches[1] => [wildcard1, wildcard2,...]
+        if (!preg_match_all(static::REGEX_WILDCARD_SEARCH, $this->path, $matches)) {
+            throw new InvalidArgumentException(
+                (new Message('Expression %path% '))
+                    ->toString()
+            );
         }
         $this->matches = $matches;
         $this->key = $path;
-        $this->optionals = [];
-        $this->optionalsIndex = [];
         $this->handleMatches();
-        $this->handleOptionals();
     }
 
     public function key(): string
@@ -80,11 +75,6 @@ final class Set
         return $this->wildcards ?? [];
     }
 
-    public function keyPowerSet(): array
-    {
-        return $this->keyPowerSet ?? [];
-    }
-
     private function handleMatches(): void
     {
         foreach ($this->matches[0] as $k => $v) {
@@ -93,14 +83,7 @@ final class Set
                 $this->key = stringReplaceFirst($v, "{{$k}}", $this->key);
             }
             $wildcard = $this->matches[1][$k];
-            if (stringEndsWith('?', $wildcard)) {
-                $wildcardTrim = stringReplaceLast('?', '', $wildcard);
-                $this->optionals[] = $k;
-                $this->optionalsIndex[$k] = $wildcardTrim;
-            } else {
-                $wildcardTrim = $wildcard;
-            }
-            if (in_array($wildcardTrim, $this->wildcards ?? [])) {
+            if (in_array($wildcard, $this->wildcards ?? [])) {
                 throw new LogicException(
                     (new Message('Must declare one unique wildcard per capturing group, duplicated %s detected in route %r'))
                         ->code('%s', $this->matches[0][$k])
@@ -108,19 +91,7 @@ final class Set
                         ->toString()
                 );
             }
-            $this->wildcards[] = $wildcardTrim;
-        }
-    }
-
-    private function handleOptionals(): void
-    {
-        if (!empty($this->optionals)) {
-            $mandatoryDiff = array_diff($this->wildcards ?? [], $this->optionalsIndex);
-            $this->mandatoryIndex = $this->getIndex($mandatoryDiff);
-            // Generate the optionals power set, keeping its index keys in case of duplicated optionals
-            $powerSet = (new Arreglo($this->optionals))->getPowerSetStrict();
-            // Build the route set, it will contain all the possible route combinations
-            $this->keyPowerSet = $this->processPowerSet($powerSet);
+            $this->wildcards[] = $wildcard;
         }
     }
 
@@ -132,32 +103,5 @@ final class Set
         }
 
         return $index;
-    }
-
-    private function processPowerSet(array $powerSet): array
-    {
-        $routeSet = [];
-        foreach ($powerSet as $set) {
-            $auxSet = $this->key;
-            $auxWildcards = $this->mandatoryIndex;
-            foreach ($set as $replaceKey => $replaceValue) {
-                $search = $this->optionals[$replaceKey];
-                if ($replaceValue !== null) {
-                    $replaceValue = "{{$replaceValue}}";
-                    $auxWildcards[$search] = null;
-                }
-                $auxSet = str_replace("{{$search}}", $replaceValue ?? '', $auxSet);
-                $auxSet = (new Path($auxSet))->absolute();
-            }
-            ksort($auxWildcards);
-            /*
-             * Maps expected regex indexed matches [0,1,2,] to registered wildcard index [index=>n].
-             * For example, a set /test-{0}--{2} will capture 0->0 and 1->2. Storing the expected index allows\
-             * to easily map matches => wildcards => values.
-             */
-            $routeSet[$auxSet] = array_keys($auxWildcards);
-        }
-
-        return $routeSet;
     }
 }
