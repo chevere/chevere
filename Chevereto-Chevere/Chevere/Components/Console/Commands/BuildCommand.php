@@ -18,6 +18,7 @@ use LogicException;
 use Chevere\Components\App\Exceptions\AlreadyBuiltException;
 use Chevere\Components\Console\Command;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Time\TimeHr;
 use Chevere\Contracts\App\BuilderContract;
 
 /**
@@ -37,6 +38,7 @@ final class BuildCommand extends Command
 
     public function callback(BuilderContract $builder): int
     {
+        $timeStart = (int) hrtime(true);
         $this->builder = $builder;
         $this->assertBuilderParams();
         $title = 'App built';
@@ -48,6 +50,9 @@ final class BuildCommand extends Command
         } catch (AlreadyBuiltException $e) {
             $title .= ' (not by this command)';
         }
+        $timeEnd = (int) hrtime(true);
+        $timeRelative = new TimeHr($timeEnd - $timeStart);
+        $timeAbsolute = new TimeHr($timeEnd - BOOTSTRAP_TIME);
         $checksums = [];
         foreach ($this->builder->build()->cacheChecksums() as $name => $keys) {
             foreach ($keys as $key => $array) {
@@ -58,7 +63,11 @@ final class BuildCommand extends Command
         $this->console()->style()->table(['Cache', 'Key', 'Path', 'Checksum'], $checksums);
         $this->console()->style()->writeln([
             '[Path] ' . $this->builder->build()->path()->absolute(),
-            '[Checksum] ' . $this->builder->build()->checkout()->checksum()
+            '[Checksum] ' . $this->builder->build()->checkout()->checksum(),
+            strtr('[Time] %relative% (%absolute%)', [
+                '%relative%' => $timeRelative->toReadMs(),
+                '%absolute%' => $timeAbsolute->toReadMs()
+            ]),
         ]);
         return 0;
     }

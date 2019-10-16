@@ -152,6 +152,7 @@ final class Build implements BuildContract
         $this->apiMaker = $this->apiMaker
             ->withCache();
         $this->cacheChecksums = $this->apiMaker->cache()->toArray();
+        dd($this->cacheChecksums);
     }
 
     private function handleRoutes(): void

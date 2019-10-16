@@ -80,7 +80,7 @@ final class Cache
         $fileReturn = $this->get($key);
         $fileReturn->put($var);
         $this->array[$this->name][$key] = [
-            'path' => $fileReturn->path(),
+            'path' => $fileReturn->path()->absolute(),
             'checksum' => $fileReturn->checksum(),
         ];
         return $fileReturn;

@@ -75,7 +75,6 @@ final class Maker implements MakerContract
             $new->named[$new->route->name()] = $id;
         }
         $new->routes[] = $new->route;
-        // $id = array_key_last($new->routes);
         // n => .. => regex => route
         $new->regexIndex[$new->route->regex()] = $id;
         if (Route::TYPE_STATIC == $route->type()) {

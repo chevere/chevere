@@ -6,7 +6,7 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Http\Method;
 
 return [
-    (new Route('/1home/{wea}/{cosa}'))
+    (new Route('/home/{wea}/{cosa}'))
         ->withAddedMethod(
             (new Method('GET'))
                 ->withControllerName(Controllers\Home::class)
@@ -17,7 +17,7 @@ return [
             (new Method('GET'))
                 ->withControllerName(Controllers\Index::class)
         )
-        ->withName('web.home'),
+        ->withName('web.2'),
     // ->addMiddleware(Middlewares\RoleAdmin::class)
     // ->addMiddleware(Middlewares\RoleBanned::class),
     // (new Route('/cache/{llave?}-{cert}-{user?}'))
