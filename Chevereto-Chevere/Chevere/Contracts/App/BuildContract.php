@@ -19,7 +19,7 @@ use Chevere\Components\Path\Path;
 
 interface BuildContract
 {
-    const FILE_INDETIFIER = 'var:build';
+    const FILE_PATH = 'build/build.php';
 
     public function __construct(BuilderContract $builder);
 

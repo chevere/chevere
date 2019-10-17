@@ -15,9 +15,12 @@ namespace Chevere\Components\Cache;
 
 use InvalidArgumentException;
 
+use Chevere\Components\File\File;
 use Chevere\Components\FileReturn\FileReturn;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Path\PathHandle;
+use Chevere\Components\Path\Path;
+
+use function ChevereFn\stringRightTail;
 
 /**
  * A simple PHP based cache system.
@@ -31,20 +34,31 @@ final class Cache
 {
     const ILLEGAL_KEY_CHARACTERS = '\.\/\\\~\:';
 
-    /** @var string Base key used to generate a file identifier as cache-key system */
-    private $baseKey;
-
-    /** @var string Chache name (user input) */
+    /** @var string Cache name */
     private $name;
+
+    /** @var string Absolute path to working folder (taken from $path) */
+    private $workingFolder;
 
     /** @var array An array [key => [checksum => , path =>]] containing information about the cache instance */
     private $array;
 
-    public function __construct(string $name)
+    /**
+     * @param string $name Named cache entry (folder)
+     * @param Path $path The working path where cache files will be stored/accesed
+     */
+    public function __construct(string $name, Path $path)
     {
-        $this->validateKey($name);
+        $this->assertKeyName($name);
         $this->name = $name;
-        $this->baseKey = 'cache/' . $name . ':';
+        if (!$path->isDir()) {
+            throw new InvalidArgumentException(
+                (new Message("Path %path% is not a directory"))
+                    ->code('%path%', $path->absolute())
+                    ->toString()
+            );
+        }
+        $this->workingFolder = stringRightTail($path->absolute(), '/') . $name . '/';
     }
 
     /**
@@ -54,17 +68,13 @@ final class Cache
      */
     public function get(string $key): FileReturn
     {
-        $identifier = $this->getFileIdentifier($key);
-        return new FileReturn(
-            (new PathHandle($identifier))->path()
-        );
+        return new FileReturn($this->getPath($key));
     }
-
+    
     public function exists(string $key): bool
     {
-        $file = (new PathHandle($this->getFileIdentifier($key)))->file();
-
-        return $file->exists();
+        return (new File($this->getPath($key)))
+            ->exists();
     }
 
     /**
@@ -88,11 +98,11 @@ final class Cache
 
     public function remove(string $key): void
     {
-        $pathHandle = new PathHandle($this->getFileIdentifier($key));
-        if (!$pathHandle->file()->exists()) {
+        $file = new File($this->getPath($key));
+        if (!$file->exists()) {
             return;
         }
-        $pathHandle->file()->remove();
+        $file->remove();
         unset($this->array[$this->name][$key]);
     }
 
@@ -104,19 +114,19 @@ final class Cache
     /**
      * @return string Cache file path identifier for the given $name
      */
-    private function getFileIdentifier(string $name): string
+    private function getPath(string $name): Path
     {
-        $this->validateKey($name);
-        return $this->baseKey . $name;
+        $this->assertKeyName($name);
+        return new Path($this->workingFolder . $name . '.php');
     }
 
-    private function validateKey(string $key): void
+    private function assertKeyName(string $key): void
     {
         if (preg_match_all('#[' . static::ILLEGAL_KEY_CHARACTERS . ']#', $key, $matches)) {
             $matches = array_unique($matches[0]);
             $forbidden = implode(', ', $matches);
             throw new InvalidArgumentException(
-                (new Message('Use of forbidden character %character%'))
+                (new Message('Use of forbidden character(s) %character%'))
                     ->code('%character%', $forbidden)
                     ->toString()
             );

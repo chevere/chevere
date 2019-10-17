@@ -16,7 +16,7 @@ use Chevere\Components\App\Parameters;
 return [
     // Parameters::KEY_API => 'src/Api/',
     Parameters::KEY_ROUTES => [
-        // 'routes:dashboard',
-        'routes:web',
+        // 'routes/dashboard.php',
+        'routes/web.php',
     ],
 ];

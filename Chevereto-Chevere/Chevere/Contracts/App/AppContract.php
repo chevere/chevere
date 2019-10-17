@@ -23,8 +23,7 @@ interface AppContract
 {
     const NAMESPACES = ['App', 'Chevere'];
     const APP = 'app';
-    const FILEHANDLE_CONFIG = ':config';
-    const FILEHANDLE_PARAMETERS = ':parameters';
+    const FILE_PARAMETERS = 'parameters.php';
     const PATH_LOGS = APP_PATH . 'var/logs/';
 
 

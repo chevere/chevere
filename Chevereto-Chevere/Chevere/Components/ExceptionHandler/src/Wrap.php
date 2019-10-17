@@ -63,7 +63,7 @@ final class Wrap
                 'type' => ExceptionHandler::ERROR_TABLE[$phpCode],
                 'loggerLevel' => ExceptionHandler::PHP_LOG_LEVEL[$phpCode] ?? 'error',
                 'message' => $exception->getMessage(),
-                'file' => (new Path($exception->getFile()))->absolute(),
+                'file' => $exception->getFile(),
                 'line' => (int) $exception->getLine(),
             ]);
     }

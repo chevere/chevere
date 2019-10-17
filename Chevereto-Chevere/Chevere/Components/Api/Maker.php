@@ -105,7 +105,7 @@ final class Maker implements MakerContract
     public function withCache(): MakerContract
     {
         $new = clone $this;
-        $new->cache = new Cache('api');
+        $new->cache = new Cache('api', new Path('build'));
         $new->cache->put('api', $new->api)
             ->makeCache();
 

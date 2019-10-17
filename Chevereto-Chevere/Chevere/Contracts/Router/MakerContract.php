@@ -22,7 +22,7 @@ interface MakerContract
 
     public function withAddedRoute(RouteContract $route, string $group): MakerContract;
 
-    public function withAddedRouteIdentifiers(...$routeIdentifiers): MakerContract;
+    public function withAddedRouteFiles(...$routeIdentifiers): MakerContract;
 
     public function regex(): string;
 

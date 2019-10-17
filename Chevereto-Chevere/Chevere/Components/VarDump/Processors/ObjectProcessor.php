@@ -143,7 +143,7 @@ final class ObjectProcessor implements ProcessorContract
     private function handleNormalizeClassName(): void
     {
         if (stringStartsWith(VarDump::ANON_CLASS, $this->className)) {
-            $this->className = (new Path($this->className))->absolute();
+            // $this->className = (new Path($this->className))->absolute();
         }
     }
 }

@@ -32,7 +32,7 @@ use Chevere\Components\ExceptionHandler\src\Style;
 use Chevere\Components\ExceptionHandler\src\Template;
 use Chevere\Components\ExceptionHandler\src\Wrap;
 use Chevere\Components\Http\ServerRequest;
-use Chevere\Components\Path\PathHandle;
+use Chevere\Components\Path\Path;
 use Chevere\Components\Runtime\Runtime;
 use Chevere\Contracts\Http\RequestContract;
 
@@ -51,7 +51,7 @@ final class ExceptionHandler
     /** @var ?bool Null will read app/config.php. Any boolean value will override that */
     const DEBUG = null;
 
-    /** @var string Null will use App\PATH_LOGS ? PATH_LOGS ? traverse */
+    /** @var string */
     const PATH_LOGS = APP_PATH . 'var/logs/';
 
     /** Readable PHP error mapping */
@@ -184,7 +184,7 @@ final class ExceptionHandler
 
     private function setLogFilePathProperties(): void
     {
-        $absolute = (new PathHandle('var/logs'))->path()->absolute();
+        $absolute = (new Path('var/logs/'))->absolute();
         $date = gmdate($this->logDateFolderFormat, $this->data->key('timestamp'));
         $id = $this->data->key('id');
         $timestamp = $this->data->key('timestamp');

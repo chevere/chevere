@@ -22,7 +22,6 @@ use Chevere\Components\Console\Console;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
-use Chevere\Components\Path\PathHandle;
 use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\BuilderContract;
@@ -64,13 +63,12 @@ final class Loader implements LoaderContract
 
     private function handleParameters(): void
     {
+        $this->parameters = new Parameters(
+            new ArrayFile(
+                new Path(App::FILE_PARAMETERS)
+            )
+        );
         if (DEV || (CLI && console()->isBuilding())) {
-            $this->parameters = new Parameters(
-                new ArrayFile(
-                    (new PathHandle(App::FILEHANDLE_PARAMETERS))
-                        ->path()
-                )
-            );
             $path = new Path('/home/rodolfo/git/chevere/app/plugins/local/HelloWorld/routes/web.php');
             $pluginRoutes = [$path];
             $this->parameters = $this->parameters
@@ -90,17 +88,19 @@ final class Loader implements LoaderContract
         $router = new Router();
         try {
             if (!(CLI && console()->isBuilding())) {
-                $api = $api
-                    ->withCache(new Cache('api'));
-                $router = $router
-                    ->withCache(new Cache('router'));
+                $path = new Path('build');
+                if ($this->parameters->api()) {
+                    $api = $api->withCache(new Cache('api', $path));
+                }
+                $router = $router->withCache(new Cache('router', $path));
             }
-            $container = $this->builder->build()->container()
-                ->withApi($api)
-                ->withRouter($router);
+            $container = $this->builder->build()->container()->withRouter($router);
+            if ($this->parameters->api()) {
+                $container = $container->withApi($api);
+            }
         } catch (CacheNotFoundException $e) {
             $message = (new Message('The app must be re-build due to missing cache: %message%'))
-                ->code('%message%', $e->getMessage())
+                ->strtr('%message%', $e->getMessage())
                 ->toString();
             throw new NeedsToBeBuiltException($message, $e->getCode(), $e);
         }

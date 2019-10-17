@@ -59,14 +59,14 @@ final class Parameters implements ParametersContract
     {
         $new = clone $this;
         foreach ($paths as $path) {
-            if (in_array($path->identifier(), $new->routes)) {
+            if (in_array($path->absolute(), $new->routes)) {
                 throw new InvalidArgumentException(
-                    (new Message('Routes identifier %identifier% was already added'))
-                        ->code('%identifier%', $path->identifier())
+                    (new Message('Route path %path% was already added'))
+                        ->code('%path%', $path->identifier())
                         ->toString()
                 );
             }
-            $new->routes[] = $path->identifier();
+            $new->routes[] = $path->absolute();
         }
 
         return $new;

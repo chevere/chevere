@@ -21,13 +21,14 @@ use Chevere\Components\App\Exceptions\AlreadyBuiltException;
 use Chevere\Components\File\File;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
-use Chevere\Components\Path\PathHandle;
 use Chevere\Components\Router\Maker as RouterMaker;
 use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\CheckoutContract;
 use Chevere\Contracts\App\ParametersContract;
+
+// FIXME: Why PATH + FILE?
 
 final class Build implements BuildContract
 {
@@ -40,8 +41,11 @@ final class Build implements BuildContract
     /** @var ParametersContract */
     private $parameters;
 
-    /** @var PathHandle */
-    private $pathHandle;
+    /** @var Path */
+    private $path;
+
+    /** @var File */
+    private $file;
 
     /** @var bool True if the App was built (cache) */
     private $isBuilt;
@@ -62,7 +66,8 @@ final class Build implements BuildContract
     {
         $this->builder = $builder;
         $this->container = new Container();
-        $this->pathHandle = (new PathHandle(BuildContract::FILE_INDETIFIER));
+        $this->path = new Path(BuildContract::FILE_PATH);
+        $this->file = new File($this->path);
     }
 
     public function withContainer(Container $container): BuildContract
@@ -98,12 +103,12 @@ final class Build implements BuildContract
 
     public function file(): File
     {
-        return $this->pathHandle->file();
+        return $this->file;
     }
 
     public function path(): Path
     {
-        return $this->pathHandle->path();
+        return $this->path;
     }
 
     public function container(): Container
@@ -131,9 +136,8 @@ final class Build implements BuildContract
      */
     public function destroy(): void
     {
-        $this->pathHandle->file()->remove();
-        (new PathHandle('cache'))->path()
-            ->removeContents();
+        $this->file->remove();
+        (new Path('cache'))->removeContents();
     }
 
     private function handleApi(): void
@@ -141,8 +145,9 @@ final class Build implements BuildContract
         $this->apiMaker = new ApiMaker($this->routerMaker);
         $this->apiMaker = $this->apiMaker
             ->withPath(
-                (new PathHandle($this->parameters->api()))
-                    ->path()
+                new Path(
+                    $this->parameters->api()
+                )
             );
         $this->container = $this->container
             ->withApi(
@@ -152,13 +157,12 @@ final class Build implements BuildContract
         $this->apiMaker = $this->apiMaker
             ->withCache();
         $this->cacheChecksums = $this->apiMaker->cache()->toArray();
-        dd($this->cacheChecksums);
     }
 
     private function handleRoutes(): void
     {
         $this->routerMaker = $this->routerMaker
-            ->withAddedRouteIdentifiers(...$this->parameters->routes());
+            ->withAddedRouteFiles(...$this->parameters->routes());
         $this->container = $this->container
             ->withRouter(
                 (new Router())

@@ -18,7 +18,7 @@ use InvalidArgumentException;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Path\PathHandle;
+use Chevere\Components\Path\Path;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Type\Type;
 use Chevere\Contracts\Route\RouteContract;
@@ -90,13 +90,13 @@ final class Maker implements MakerContract
     /**
      * Adds routes (ArrayFile) specified by path handle.
      *
-     * @param string $routeIdentifiers 'routes:web', 'routes:dashboard',
+     * @param string $routeFiles Routes relative to app, like 'routes/web.php', 'routes/dashboard.php',
      */
-    public function withAddedRouteIdentifiers(...$routeIdentifiers): MakerContract
+    public function withAddedRouteFiles(...$routeFiles): MakerContract
     {
         $new = clone $this;
-        foreach ($routeIdentifiers as $fileHandleString) {
-            $path = (new PathHandle($fileHandleString))->path();
+        foreach ($routeFiles as $fileHandleString) {
+            $path = new Path($fileHandleString);
             $arrayFile = (new ArrayFile($path))
                 ->withMembersType(new Type(RouteContract::class));
             foreach ($arrayFile as $route) {
@@ -125,7 +125,7 @@ final class Maker implements MakerContract
     public function withCache(): MakerContract
     {
         $new = clone $this;
-        $new->cache = new Cache('router');
+        $new->cache = new Cache('router', new Path('build'));
         $new->cache->put('regex', $new->regex)
             ->makeCache();
         $new->cache->put('routes', $new->routes)

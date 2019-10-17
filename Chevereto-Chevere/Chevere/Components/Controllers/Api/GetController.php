@@ -73,7 +73,7 @@ final class GetController extends Controller
     private function process()
     {
         $endpointData = Api::endpoint($this->endpoint);
-        dd($this->endpoint, $endpointData);
+        // dd($this->endpoint, $endpointData);
         if ($endpointData) {
             $response = $this->app()->response();
             $response->setMeta(['api' => $this->endpoint]);

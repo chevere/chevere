@@ -88,7 +88,7 @@ class Dumper
         $this->debugBacktrace = debug_backtrace();
         $this->caller = $this->debugBacktrace[0];
         $this->handleDebugBacktrace();
-        $this->callerFilepath = (new Path($this->debugBacktrace[0]['file']))->absolute();
+        $this->callerFilepath = $this->debugBacktrace[0]['file'];
         $this->handleSelfCaller();
         $this->output = null;
         if (CLI) {
@@ -190,8 +190,7 @@ class Dumper
 
     final private function appendFilepath(string $file, int $line): void
     {
-        $path = new Path($file);
-        $this->output .= "\n" . $this->formatter->wrap('_file', $path->absolute() . ':' . $line);
+        $this->output .= "\n" . $this->formatter->wrap('_file', $file . ':' . $line);
     }
 
     final private function handleArgs(): void

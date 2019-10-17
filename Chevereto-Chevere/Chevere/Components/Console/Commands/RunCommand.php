@@ -27,7 +27,7 @@ use Chevere\Contracts\App\BuilderContract;
  * The RunCommand allows to run any callable present in the app.
  *
  * Usage:
- * php app/console run <pathHandle>
+ * php app/console run callable
  */
 final class RunCommand extends Command
 {
