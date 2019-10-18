@@ -21,14 +21,16 @@ use RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 
+/**
+ * This class provides interactions for a directory in the application namespace.
+ */
 final class Dir
 {
     /** @var Path */
     private $path;
 
-    public function __construct(string $path)
+    public function __construct(Path $path)
     {
-        $path = new Path($path);
         if ($path->isFile()) {
             throw new InvalidArgumentException(
                 (new Message('Path %path% is a file'))

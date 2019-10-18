@@ -35,6 +35,9 @@ use function console;
 use const Chevere\CLI;
 use const Chevere\DEV;
 
+/**
+ * Loader is responsible of booting up the application.
+ */
 final class Loader implements LoaderContract
 {
     /** @var BuilderContract */
@@ -45,17 +48,24 @@ final class Loader implements LoaderContract
 
     public function __construct()
     {
-        $this->builder = new Builder(new App(new Response()));
-        $this->assert();
+        $app = (new App())
+            ->withResponse(new Response());
+        $this->builder = new Builder($app);
+        $this->assertIsBuilt();
+        $this->parameters = new Parameters(
+            new ArrayFile(
+                new Path(App::FILE_PARAMETERS)
+            )
+        );
         $this->handleParameters();
-        $build = $this->getBuild();
         $this->builder = $this->builder
-            ->withBuild($build);
-        $this->builder = $this->builder
-            ->withApp(
-                $this->builder->app()
-                    ->withRouter($this->builder->build()->container()->router())
+            ->withBuild($this->getBuild());
+        $app = $this->builder->app()
+            ->withRouter(
+                $this->builder->build()->container()->router()
             );
+        $this->builder = $this->builder
+            ->withApp($app);
     }
 
     public function run(): void
@@ -65,12 +75,6 @@ final class Loader implements LoaderContract
 
     private function handleParameters(): void
     {
-        $this->parameters = new Parameters(
-            new ArrayFile(
-                new Path(App::FILE_PARAMETERS)
-            )
-        );
-
         if (DEV || (CLI && console()->isBuilding())) {
             $path = new Path('/home/rodolfo/git/chevere/app/plugins/local/HelloWorld/routes/web.php');
             $pluginRoutes = [$path];
@@ -78,7 +82,10 @@ final class Loader implements LoaderContract
                 ->withAddedRoutePaths(...$pluginRoutes);
             if ($this->parameters->hasParameters()) {
                 $this->builder = $this->builder
-                    ->withParameters($this->parameters);
+                    ->withBuild(
+                        $this->builder->build()
+                            ->withParameters($this->parameters)
+                    );
             }
         }
     }
@@ -87,7 +94,8 @@ final class Loader implements LoaderContract
     {
         if (DEV) {
             return $this->builder->build()
-                ->withParameters($this->parameters);
+                ->withParameters($this->parameters)
+                ->withBuilt();
         }
         return $this->builder->build()
             ->withContainer($this->getContainer());
@@ -119,7 +127,7 @@ final class Loader implements LoaderContract
         }
     }
 
-    private function assert(): void
+    private function assertIsBuilt(): void
     {
         if (
             !DEV

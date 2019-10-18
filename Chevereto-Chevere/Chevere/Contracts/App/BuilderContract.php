@@ -18,14 +18,9 @@ use Chevere\Contracts\Http\RequestContract;
 
 interface BuilderContract
 {
-    /**
-     * A BuilderContract always have app and build properties.
-     */
     public function __construct(AppContract $app);
 
     public function withApp(AppContract $app): BuilderContract;
-
-    public function withParameters(ParametersContract $parameters): BuilderContract;
 
     public function withBuild(BuildContract $build): BuilderContract;
 
@@ -35,8 +30,6 @@ interface BuilderContract
 
     public function withControllerArguments(array $controllerArguments): BuilderContract;
 
-    public function hasParameters(): bool;
-
     public function hasRequest(): bool;
 
     public function hasControllerName(): bool;
@@ -44,8 +37,6 @@ interface BuilderContract
     public function hasControllerArguments(): bool;
 
     public function app(): AppContract;
-
-    public function parameters(): ParametersContract;
 
     public function build(): BuildContract;
 

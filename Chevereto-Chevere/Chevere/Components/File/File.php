@@ -19,6 +19,9 @@ use RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 
+/**
+ * This class provides interactions for a file in the application namespace.
+ */
 final class File
 {
     /** @var Path */
@@ -44,9 +47,9 @@ final class File
     {
         if (!$this->path->exists()) {
             $dirname = dirname($this->path->absolute());
-            $dir = new Dir($dirname);
-            if (!$dir->path()->exists()) {
-                $dir->create();
+            $path = new Path($dirname);
+            if (!$path->exists()) {
+                (new Dir($path))->create();
             }
         }
         if (false === @file_put_contents($this->path->absolute(), $contents)) {

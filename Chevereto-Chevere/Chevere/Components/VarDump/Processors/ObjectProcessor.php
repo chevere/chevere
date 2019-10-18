@@ -96,7 +96,7 @@ final class ObjectProcessor implements ProcessorContract
         } catch (Throwable $e) {
             // $e
         }
-        $this->properties[$property->getName()] = ['value' => $value];
+        $this->properties[$property->getName()] = ['value' => $value ?? ''];
     }
 
     private function processProperty($key, $var): void

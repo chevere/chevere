@@ -16,7 +16,6 @@ namespace Chevere\Components\App;
 use LogicException;
 use RuntimeException;
 
-use Chevere\Components\App\Traits\ParametersAccessTrait;
 use Chevere\Components\Controller\Traits\ControllerNameAccessTrait;
 use Chevere\Components\Http\ServerRequest;
 use Chevere\Components\Message\Message;
@@ -34,9 +33,11 @@ use function GuzzleHttp\Psr7\stream_for;
 
 use const Chevere\CLI;
 
+/**
+ * Builds the application
+ */
 final class Builder implements BuilderContract
 {
-    use ParametersAccessTrait;
     use ControllerNameAccessTrait;
 
     /** @var AppContract */
@@ -70,14 +71,6 @@ final class Builder implements BuilderContract
     {
         $new = clone $this;
         $new->app = $app;
-
-        return $new;
-    }
-
-    public function withParameters(ParametersContract $parameters): BuilderContract
-    {
-        $new = clone $this;
-        $new->parameters = $parameters;
 
         return $new;
     }

@@ -33,11 +33,6 @@ final class App implements AppContract
     /** @var array String arguments (from request uri, cli) */
     private $arguments;
 
-    public function __construct(ResponseContract $response)
-    {
-        $this->response = $response;
-    }
-
     public function withResponse(ResponseContract $response): AppContract
     {
         $new = clone $this;

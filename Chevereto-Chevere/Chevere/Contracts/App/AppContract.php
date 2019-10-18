@@ -26,9 +26,6 @@ interface AppContract
     const FILE_PARAMETERS = 'parameters.php';
     const PATH_LOGS = APP_PATH . 'var/logs/';
 
-
-    public function __construct(ResponseContract $response);
-
     public function withResponse(ResponseContract $response): AppContract;
 
     public function withRoute(RouteContract $route): AppContract;

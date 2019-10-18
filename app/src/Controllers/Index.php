@@ -37,6 +37,8 @@ class Index extends Controller implements JsonApiContract
 
     public function __invoke(): void
     {
+        $took = hrtime(true);
+        dd((new TimeHr($took - BOOTSTRAP_TIME))->toReadMs());
         $this->api = new ResourceObject(
             'info',
             'api',
@@ -49,7 +51,7 @@ class Index extends Controller implements JsonApiContract
             'cli',
             new Attribute('entry', 'php chevere.php list'),
             new Attribute('description', 'Retrieves the console command list.'),
-            );
+        );
     }
     public function getDocument(): EncodedDocument
     {
@@ -58,7 +60,7 @@ class Index extends Controller implements JsonApiContract
                 new DataDocument(
                     new ResourceCollection($this->api, $this->cli),
                     new JsonApi(),
-                    )
+                )
             );
     }
 }

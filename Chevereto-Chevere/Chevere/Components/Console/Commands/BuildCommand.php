@@ -42,13 +42,11 @@ final class BuildCommand extends Command
         $this->builder = $builder;
         $this->assertBuilderParams();
         $title = 'App built';
-        try {
-            $build = $this->builder->build()
-                ->withParameters($this->builder->parameters());
-            $this->builder = $this->builder
-                ->withBuild($build);
-        } catch (AlreadyBuiltException $e) {
+        if ($this->builder->build()->isBuilt()) {
             $title .= ' (not by this command)';
+        } else {
+            $this->builder = $this->builder
+                ->withBuild($this->builder->build()->withBuilt());
         }
         $timeEnd = (int) hrtime(true);
         $timeRelative = new TimeHr($timeEnd - $timeStart);
@@ -74,7 +72,7 @@ final class BuildCommand extends Command
 
     private function assertBuilderParams(): void
     {
-        if (!$this->builder->hasParameters()) {
+        if (!$this->builder->build()->hasParameters()) {
             throw new LogicException(
                 (new Message('Missing %class% parameters'))
                     ->code('%class%', get_class($this->builder))

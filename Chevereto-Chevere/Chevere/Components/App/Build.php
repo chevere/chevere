@@ -29,8 +29,6 @@ use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\CheckoutContract;
 use Chevere\Contracts\App\ParametersContract;
 
-// FIXME: Why PATH + FILE?
-
 final class Build implements BuildContract
 {
     /** @var BuilderContract */
@@ -62,6 +60,7 @@ final class Build implements BuildContract
 
     public function __construct(BuilderContract $builder)
     {
+        $this->isBuilt = false;
         $this->builder = $builder;
         $this->container = new Container();
         $this->path = new Path(BuildContract::FILE_PATH);
@@ -81,21 +80,41 @@ final class Build implements BuildContract
             throw new AlreadyBuiltException();
         }
         $new = clone $this;
-        $new->routerMaker = new RouterMaker();
         $new->parameters = $parameters;
+
+        return $new;
+    }
+
+    public function withBuilt(): BuildContract
+    {
+        $new = clone $this;
+        $new->routerMaker = new RouterMaker();
         $new->cacheChecksums = [];
-        if ($parameters->hasApi()) {
+        if ($new->parameters->hasApi()) {
             $new->handleApi();
         }
-        if ($parameters->hasRoutes()) {
+        if ($new->parameters->hasRoutes()) {
             $new->handleRoutes();
         }
         $new->checkout = new Checkout($new);
         $new->isBuilt = true;
-        $new->builder = $new->builder
-            ->withParameters($parameters);
 
         return $new;
+    }
+
+    public function isBuilt(): bool
+    {
+        return $this->isBuilt;
+    }
+
+    public function hasParameters(): bool
+    {
+        return isset($this->parameters);
+    }
+
+    public function parameters(): ParametersContract
+    {
+        return $this->parameters;
     }
 
     public function path(): Path
@@ -128,8 +147,10 @@ final class Build implements BuildContract
      */
     public function destroy(): void
     {
-        (new File($this->path))->remove();
-        (new Dir('cache'))->removeContents();
+        (new File($this->path))
+            ->remove();
+        (new Dir(new Path('cache')))
+            ->removeContents();
     }
 
     private function handleApi(): void
