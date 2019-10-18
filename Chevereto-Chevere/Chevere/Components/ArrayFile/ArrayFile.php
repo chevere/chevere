@@ -26,7 +26,7 @@ use Chevere\Components\Type\Type;
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).
  */
-final class ArrayFile implements IteratorAggregate
+final class ArrayFile
 {
     /** @var array The array returned by the file */
     private $array;
@@ -59,11 +59,6 @@ final class ArrayFile implements IteratorAggregate
         $new->validate();
 
         return $new;
-    }
-
-    public function getIterator(): ArrayIterator
-    {
-        return new ArrayIterator($this->array);
     }
 
     public function path(): Path

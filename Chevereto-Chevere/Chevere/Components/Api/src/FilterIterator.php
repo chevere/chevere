@@ -49,7 +49,7 @@ final class FilterIterator extends RecursiveFilterIterator implements FilterIter
     /**
      * {@inheritdoc}
      */
-    public function getChildren()
+    public function getChildren(): RecursiveFilterIterator
     {
         $children = parent::getChildren();
         $children->acceptFilenames = $this->acceptFilenames;

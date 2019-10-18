@@ -99,7 +99,7 @@ final class Maker implements MakerContract
             $path = new Path($fileHandleString);
             $arrayFile = (new ArrayFile($path))
                 ->withMembersType(new Type(RouteContract::class));
-            foreach ($arrayFile as $route) {
+            foreach ($arrayFile->toArray() as $route) {
                 $new = $new->withAddedRoute($route, $fileHandleString);
             }
         }

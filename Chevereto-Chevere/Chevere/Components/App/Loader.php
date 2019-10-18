@@ -74,8 +74,8 @@ final class Loader implements LoaderContract
         if (DEV || (CLI && console()->isBuilding())) {
             $path = new Path('/home/rodolfo/git/chevere/app/plugins/local/HelloWorld/routes/web.php');
             $pluginRoutes = [$path];
-            // $this->parameters = $this->parameters
-            //     ->withAddedRoutePaths(...$pluginRoutes);
+            $this->parameters = $this->parameters
+                ->withAddedRoutePaths(...$pluginRoutes);
             if ($this->parameters->hasParameters()) {
                 $this->builder = $this->builder
                     ->withParameters($this->parameters);
