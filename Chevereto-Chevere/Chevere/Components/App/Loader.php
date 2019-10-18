@@ -25,6 +25,7 @@ use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\BuilderContract;
+use Chevere\Contracts\App\ContainerContract;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\App\ParametersContract;
 
@@ -84,6 +85,12 @@ final class Loader implements LoaderContract
             return $this->builder->build()
                 ->withParameters($this->parameters);
         }
+        return $this->builder->build()
+            ->withContainer($this->getContainer());
+    }
+
+    private function getContainer(): ContainerContract
+    {
         $api = new Api();
         $router = new Router();
         try {
@@ -94,26 +101,19 @@ final class Loader implements LoaderContract
                 }
                 $router = $router->withCache(new Cache('router', $path));
             }
-            $container = $this->builder->build()->container()->withRouter($router);
+            $container = $this->builder->build()->container()
+                ->withRouter($router);
             if ($this->parameters->api()) {
                 $container = $container->withApi($api);
             }
+            return $container;
         } catch (CacheNotFoundException $e) {
             $message = (new Message('The app must be re-build due to missing cache: %message%'))
                 ->strtr('%message%', $e->getMessage())
                 ->toString();
             throw new NeedsToBeBuiltException($message, $e->getCode(), $e);
         }
-        return $this->builder->build()
-            ->withContainer($container);
     }
-
-    // private function handleConsoleBind(): void
-    // {
-    //     if (CLI) {
-    //         console()->bind($this->builder);
-    //     }
-    // }
 
     private function assert(): void
     {
