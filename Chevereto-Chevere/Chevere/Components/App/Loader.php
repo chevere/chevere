@@ -120,7 +120,7 @@ final class Loader implements LoaderContract
         if (
             !DEV
             && !(CLI && console()->isBuilding())
-            && !$this->builder->build()->file()->exists()
+            && !$this->builder->build()->path()->exists()
         ) {
             throw new NeedsToBeBuiltException(
                 (new Message('The application needs to be built by CLI %command% or calling %method% method'))

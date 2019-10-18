@@ -18,6 +18,7 @@ use LogicException;
 use Chevere\Components\Api\Api;
 use Chevere\Components\Api\Maker as ApiMaker;
 use Chevere\Components\App\Exceptions\AlreadyBuiltException;
+use Chevere\Components\Dir\Dir;
 use Chevere\Components\File\File;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
@@ -44,9 +45,6 @@ final class Build implements BuildContract
     /** @var Path */
     private $path;
 
-    /** @var File */
-    private $file;
-
     /** @var bool True if the App was built (cache) */
     private $isBuilt;
 
@@ -67,7 +65,6 @@ final class Build implements BuildContract
         $this->builder = $builder;
         $this->container = new Container();
         $this->path = new Path(BuildContract::FILE_PATH);
-        $this->file = new File($this->path);
     }
 
     public function withContainer(Container $container): BuildContract
@@ -101,11 +98,6 @@ final class Build implements BuildContract
         return $new;
     }
 
-    public function file(): File
-    {
-        return $this->file;
-    }
-
     public function path(): Path
     {
         return $this->path;
@@ -136,8 +128,8 @@ final class Build implements BuildContract
      */
     public function destroy(): void
     {
-        $this->file->remove();
-        (new Path('cache'))->removeContents();
+        (new File($this->path))->remove();
+        (new Dir('cache'))->removeContents();
     }
 
     private function handleApi(): void

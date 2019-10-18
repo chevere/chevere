@@ -14,12 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Path;
 
 use InvalidArgumentException;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use RuntimeException;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Stopwatch\Stopwatch;
 
 use function ChevereFn\stringEndsWith;
 use function ChevereFn\stringForwardSlashes;
@@ -29,7 +25,6 @@ use function ChevereFn\stringRightTail;
 use function ChevereFn\stringStartsWith;
 
 use const Chevere\APP_PATH;
-use const Chevere\ROOT_PATH;
 
 /**
  * Handles paths from the project's root location (folder containing app, vendor)
@@ -68,22 +63,10 @@ final class Path
         } else {
             $this->absolute = $this->getAbsolute();
         }
-        $this->setConditions();
-        $this->relative = $this->getRelative();
-    }
-
-    private function setConditions(): void
-    {
-        $this->isDir = false;
-        $this->isFile = false;
         if (is_dir($this->absolute)) {
-            $this->isFile = false;
-            $this->isDir = true;
             $this->absolute = stringRightTail($this->absolute, '/');
-        } elseif (is_file($this->absolute)) {
-            $this->isFile = true;
-            $this->isDir = false;
         }
+        $this->relative = $this->getRelative();
     }
 
     public function identifier(): string
@@ -144,51 +127,21 @@ final class Path
         return stringReplaceFirst($this->root, '', $absolutePath);
     }
 
-    /**
-     * Creates a path
-     *
-     * @return string The created path (absolute)
-     */
-    public function create(): void
+    public function exists(): bool
     {
-        if (!mkdir($this->absolute, 0777, true)) {
-            throw new RuntimeException(
-                (new Message('Unable to create path %path%'))
-                    ->code('%path%', $this->path)
-            );
-        }
-    }
+        $this->clearStatCache();
 
-    /**
-     * Removes the contents from a path, without deleting the path.
-     *
-     * @return array List of deleted contents.
-     */
-    public function removeContents(): array
-    {
-        $this->assertDir();
-        $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($this->absolute, RecursiveDirectoryIterator::SKIP_DOTS),
-            RecursiveIteratorIterator::CHILD_FIRST
-        );
-        $removed = [];
-        foreach ($files as $fileinfo) {
-            $content = $fileinfo->getRealPath();
-            if ($fileinfo->isDir()) {
-                rmdir($content);
-                $removed[] = $content;
-                continue;
-            }
-            unlink($content);
-            $removed[] = $content;
-        }
-
-        return $removed;
+        return stream_resolve_include_path($this->absolute) !== false;
     }
 
     public function isDir(): bool
     {
         return is_dir($this->absolute);
+    }
+
+    public function isFile(): bool
+    {
+        return is_file($this->absolute);
     }
 
     private function assertAbsolutePath(): void
@@ -214,14 +167,8 @@ final class Path
         }
     }
 
-    private function assertDir(): void
+    private function clearStatCache(): void
     {
-        if (!$this->isDir()) {
-            throw new InvalidArgumentException(
-                (new Message('%path% is not a directory'))
-                    ->code('%path%', $this->path)
-                    ->toString()
-            );
-        }
+        clearstatcache(true, $this->absolute);
     }
 }

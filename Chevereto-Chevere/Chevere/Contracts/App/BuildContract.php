@@ -27,8 +27,6 @@ interface BuildContract
 
     public function withParameters(ParametersContract $parameters): BuildContract;
 
-    public function file(): File;
-
     public function path(): Path;
 
     public function container(): Container;

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\File;
 
+use Chevere\Components\Dir\Dir;
 use RuntimeException;
 
 use Chevere\Components\Message\Message;
@@ -28,18 +29,6 @@ final class File
         $this->path = $path;
     }
 
-    /**
-     * Fast wat to determine if a file or directory exists using stream_resolve_include_path.
-     *
-     * @return bool TRUE if the file exists
-     */
-    public function exists(): bool
-    {
-        $this->clearStatCache();
-
-        return stream_resolve_include_path($this->path->absolute()) !== false;
-    }
-
     public function remove(): void
     {
         if (!unlink($this->path->absolute())) {
@@ -53,11 +42,11 @@ final class File
 
     public function put(string $contents): void
     {
-        if (!$this->exists()) {
+        if (!$this->path->exists()) {
             $dirname = dirname($this->path->absolute());
-            $path = new Path($dirname);
-            if (!$path->isDir()) {
-                $path->create();
+            $dir = new Dir($dirname);
+            if (!$dir->path()->exists()) {
+                $dir->create();
             }
         }
         if (false === @file_put_contents($this->path->absolute(), $contents)) {
@@ -67,10 +56,5 @@ final class File
                     ->toString()
             );
         }
-    }
-
-    private function clearStatCache(): void
-    {
-        clearstatcache(true, $this->path->absolute());
     }
 }

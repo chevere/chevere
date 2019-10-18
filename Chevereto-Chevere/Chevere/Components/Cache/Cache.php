@@ -70,11 +70,10 @@ final class Cache
     {
         return new FileReturn($this->getPath($key));
     }
-    
+
     public function exists(string $key): bool
     {
-        return (new File($this->getPath($key)))
-            ->exists();
+        return $this->getPath($key)->exists();
     }
 
     /**
@@ -98,11 +97,11 @@ final class Cache
 
     public function remove(string $key): void
     {
-        $file = new File($this->getPath($key));
-        if (!$file->exists()) {
+        $path = $this->getPath($key);
+        if (!$path->exists()) {
             return;
         }
-        $file->remove();
+        (new File($path))->remove();
         unset($this->array[$this->name][$key]);
     }
 
