@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Dir;
 
+use InvalidArgumentException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
-use InvalidArgumentException;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
@@ -49,10 +49,18 @@ final class Dir
      */
     public function create(): void
     {
+        if ($this->path->exists()) {
+            throw new RuntimeException(
+                (new Message('Directory %directory% already exists'))
+                    ->code('%directory%', $this->path->absolute())
+                    ->toString()
+            );
+        }
         if (!mkdir($this->path->absolute(), 0777, true)) {
             throw new RuntimeException(
-                (new Message('Unable to create path %path%'))
-                    ->code('%path%', $this->path->absolute())
+                (new Message('Unable to create directory %directory%'))
+                    ->code('%directory%', $this->path->absolute())
+                    ->toString()
             );
         }
     }
@@ -62,6 +70,7 @@ final class Dir
      */
     public function remove(): array
     {
+        $this->assertIsDir();
         $array = $this->removeContents();
         if (!rmdir($this->path->absolute())) {
             throw new RuntimeException(
@@ -76,13 +85,13 @@ final class Dir
     }
 
     /**
-     * Removes the contents from a path, without deleting the path.
+     * Removes the contents from a path without deleting the path.
      *
      * @return array List of deleted contents.
      */
     public function removeContents(): array
     {
-        $this->assertDir();
+        $this->assertIsDir();
         $files = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($this->path->absolute(), RecursiveDirectoryIterator::SKIP_DOTS),
             RecursiveIteratorIterator::CHILD_FIRST
@@ -114,7 +123,7 @@ final class Dir
         return $removed;
     }
 
-    private function assertDir(): void
+    private function assertIsDir(): void
     {
         if (!$this->path->isDir()) {
             throw new InvalidArgumentException(
