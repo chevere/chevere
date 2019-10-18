@@ -62,7 +62,7 @@ final class Runner implements RunnerContract
         return $controller;
     }
 
-    private function getControllerArguments($controller): array
+    private function getControllerArguments(ControllerContract $controller): array
     {
         if ($this->app->hasArguments()) {
             $wrap = new ArgumentsWrap($controller, $this->app->arguments());
@@ -83,7 +83,7 @@ final class Runner implements RunnerContract
         }
     }
 
-    private function handleRouteMiddleware()
+    private function handleRouteMiddleware(): void
     {
         if ($this->app->route()) {
             $middlewares = $this->app->route()->middlewares();

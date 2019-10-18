@@ -84,10 +84,10 @@ final class Build implements BuildContract
         $new->routerMaker = new RouterMaker();
         $new->parameters = $parameters;
         $new->cacheChecksums = [];
-        if (!empty($parameters->api())) {
+        if ($parameters->hasApi()) {
             $new->handleApi();
         }
-        if (!empty($parameters->routes())) {
+        if ($parameters->hasRoutes()) {
             $new->handleRoutes();
         }
         $new->checkout = new Checkout($new);

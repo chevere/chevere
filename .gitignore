@@ -4,6 +4,7 @@ vendor/
 docs/
 app/var/
 app/cache/
+app/build/
 Chevereto-Chevere/logs/
 var/
 composer.lock

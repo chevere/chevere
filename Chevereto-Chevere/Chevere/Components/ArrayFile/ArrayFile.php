@@ -26,7 +26,7 @@ use Chevere\Components\Type\Type;
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).
  */
-final class ArrayFile implements IteratorAggregate, ArrayAccess
+final class ArrayFile implements IteratorAggregate
 {
     /** @var array The array returned by the file */
     private $array;
@@ -59,26 +59,6 @@ final class ArrayFile implements IteratorAggregate, ArrayAccess
         $new->validate();
 
         return $new;
-    }
-
-    public function offsetSet($offset, $value)
-    {
-        $this->array[$offset ?? ''] = $value;
-    }
-
-    public function offsetExists($offset): bool
-    {
-        return in_array($offset, array_keys($this->array), true);
-    }
-
-    public function offsetGet($offset)
-    {
-        return $this->array[$offset];
-    }
-
-    public function offsetUnset($offset)
-    {
-        unset($this->array[$offset]);
     }
 
     public function getIterator(): ArrayIterator

@@ -76,9 +76,8 @@ final class BuildCommand extends Command
     {
         if (!$this->builder->hasParameters()) {
             throw new LogicException(
-                (new Message('Missing %class% %parameters%'))
+                (new Message('Missing %class% parameters'))
                     ->code('%class%', get_class($this->builder))
-                    ->code('%parameters%', 'parameters')
                     ->toString()
 
             );

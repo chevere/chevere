@@ -28,6 +28,7 @@ use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\ContainerContract;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\App\ParametersContract;
+use LogicException;
 
 use function console;
 
@@ -69,13 +70,16 @@ final class Loader implements LoaderContract
                 new Path(App::FILE_PARAMETERS)
             )
         );
+
         if (DEV || (CLI && console()->isBuilding())) {
             $path = new Path('/home/rodolfo/git/chevere/app/plugins/local/HelloWorld/routes/web.php');
             $pluginRoutes = [$path];
-            $this->parameters = $this->parameters
-                ->withAddedRoutePaths(...$pluginRoutes);
-            $this->builder = $this->builder
-                ->withParameters($this->parameters);
+            // $this->parameters = $this->parameters
+            //     ->withAddedRoutePaths(...$pluginRoutes);
+            if ($this->parameters->hasParameters()) {
+                $this->builder = $this->builder
+                    ->withParameters($this->parameters);
+            }
         }
     }
 
@@ -96,14 +100,14 @@ final class Loader implements LoaderContract
         try {
             if (!(CLI && console()->isBuilding())) {
                 $path = new Path('build');
-                if ($this->parameters->api()) {
+                if ($this->parameters->hasApi()) {
                     $api = $api->withCache(new Cache('api', $path));
                 }
                 $router = $router->withCache(new Cache('router', $path));
             }
             $container = $this->builder->build()->container()
                 ->withRouter($router);
-            if ($this->parameters->api()) {
+            if ($this->parameters->hasApi()) {
                 $container = $container->withApi($api);
             }
             return $container;

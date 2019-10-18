@@ -26,7 +26,7 @@ final class Parameters implements ParametersContract
     /**
      * The keys accepted by this class, with the gettype at right side.
      */
-    private $keys = [
+    private $types = [
         self::KEY_API => 'string',
         self::KEY_ROUTES => 'array',
     ];
@@ -43,21 +43,22 @@ final class Parameters implements ParametersContract
     public function __construct(ArrayFile $arrayFile)
     {
         $this->arrayFile = $arrayFile;
-        foreach ($this->arrayFile as $key => $val) {
-            $this->assertKeyAvailable($key);
-            $this->assertKeyType($key, $val);
+        $this->assertKeys();
+        $array = $this->arrayFile->toArray();
+        if (isset($array[static::KEY_API])) {
+            $this->api = $array[static::KEY_API];
         }
-        if (isset($this->arrayFile[static::KEY_API])) {
-            $this->api = $this->arrayFile[static::KEY_API];
-        }
-        if (isset($this->arrayFile[static::KEY_ROUTES])) {
-            $this->routes = $this->arrayFile[static::KEY_ROUTES];
+        if (isset($array[static::KEY_ROUTES])) {
+            $this->routes = $array[static::KEY_ROUTES];
         }
     }
 
     public function withAddedRoutePaths(Path ...$paths): ParametersContract
     {
         $new = clone $this;
+        if (!isset($new->routes)) {
+            $new->routes = [];
+        }
         foreach ($paths as $path) {
             if (in_array($path->absolute(), $new->routes)) {
                 throw new InvalidArgumentException(
@@ -72,14 +73,37 @@ final class Parameters implements ParametersContract
         return $new;
     }
 
+    public function hasParameters(): bool
+    {
+        return $this->hasApi() || $this->hasRoutes();
+    }
+
+    public function hasApi(): bool
+    {
+        return isset($this->api);
+    }
+
+    public function hasRoutes(): bool
+    {
+        return isset($this->routes);
+    }
+
     public function api(): string
     {
-        return $this->api ?? '';
+        return $this->api;
     }
 
     public function routes(): array
     {
-        return $this->routes ?? [];
+        return $this->routes;
+    }
+
+    private function assertKeys(): void
+    {
+        foreach ($this->arrayFile as $key => $val) {
+            $this->assertKeyAvailable($key);
+            $this->assertKeyType($key, gettype($val));
+        }
     }
 
     /**
@@ -89,7 +113,7 @@ final class Parameters implements ParametersContract
      */
     private function assertKeyAvailable(string $key): void
     {
-        if (!array_key_exists($key, $this->keys)) {
+        if (!array_key_exists($key, $this->types)) {
             throw new LogicException(
                 (new Message('Unrecognized %className% key "%key%"'))
                     ->code('%className%', __CLASS__)
@@ -103,14 +127,14 @@ final class Parameters implements ParametersContract
      * Throws a LogicException if the key type doesn't meet the type in $keys.
      *
      * @param string $key The AppParameter key
+     * @param string $key The value type
      */
-    private function assertKeyType(string $key, $val): void
+    private function assertKeyType(string $key, string $gettype): void
     {
-        $gettype = gettype($val);
-        if ($gettype !== $this->keys[$key]) {
+        if ($gettype !== $this->types[$key]) {
             throw new LogicException(
                 (new Message('Expecting %type% type, %gettype% type provided for key %key% in %path%'))
-                    ->code('%type%', $this->keys[$key])
+                    ->code('%type%', $this->types[$key])
                     ->code('%gettype%', $gettype)
                     ->code('%key%', $key)
                     ->code('%path%', $this->arrayFile->path()->absolute())

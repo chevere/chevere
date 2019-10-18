@@ -33,6 +33,12 @@ interface ParametersContract
 
     public function __construct(ArrayFile $arrayFile);
 
+    public function hasParameters(): bool;
+
+    public function hasApi(): bool;
+
+    public function hasRoutes(): bool;
+
     /**
      * Get the API string parameter.
      */
