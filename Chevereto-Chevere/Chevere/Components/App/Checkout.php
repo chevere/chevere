@@ -13,32 +13,55 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
+use InvalidArgumentException;
+
 use Chevere\Components\FileReturn\FileReturn;
+use Chevere\Components\Message\Message;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\CheckoutContract;
 
+/**
+ * Checkout the application build
+ */
 final class Checkout implements CheckoutContract
 {
     /** @var BuildContract */
     private $build;
-
+    
     /** @var FileReturn */
     private $fileReturn;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(BuildContract $build)
     {
         $this->build = $build;
+        $this->assertIsBuilt();
         $this->fileReturn = new FileReturn($this->build->path());
         $this->fileReturn->put($this->build->checksums());
     }
 
-    public function build(): BuildContract
-    {
-        return $this->build;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function checksum(): string
     {
         return $this->fileReturn->checksum();
+    }
+
+    /**
+     * The BuildContract must be built to checkout the application.
+     */
+    private function assertIsBuilt(): void
+    {
+        if (!$this->build->isBuilt()) {
+            throw new InvalidArgumentException(
+                (new Message('Instance of %className% %argument% must be built to proceed with application checkout'))
+                    ->code('%className%', BuildContract::class)
+                    ->code('%argument%', '$build')
+                    ->toString()
+            );
+        }
     }
 }

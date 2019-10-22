@@ -15,9 +15,13 @@ namespace Chevere\Contracts\App;
 
 interface CheckoutContract
 {
+    /**
+     * Puts the BuildContract checksums in the build file.
+     */
     public function __construct(BuildContract $build);
 
-    public function build(): BuildContract;
-
+    /**
+     * Get the build file checksum.
+     */
     public function checksum(): string;
 }
