@@ -57,9 +57,10 @@ final class Checkout implements CheckoutContract
     {
         if (!$this->build->isBuilt()) {
             throw new InvalidArgumentException(
-                (new Message('Instance of %className% %argument% must be built to proceed with application checkout'))
-                    ->code('%className%', BuildContract::class)
+                (new Message('Instance of %type% %argument% must be built to construct a %className% instance'))
+                    ->code('%type%', BuildContract::class)
                     ->code('%argument%', '$build')
+                    ->code('%className%', __CLASS__)
                     ->toString()
             );
         }

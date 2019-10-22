@@ -18,15 +18,39 @@ use Chevere\Contracts\Router\RouterContract;
 
 interface ContainerContract
 {
+    /**
+     * Return an instance with the specified ApiContract.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified ApiContract.
+     */
     public function withApi(ApiContract $api): ContainerContract;
 
-    public function withRouter(RouterContract $router): ContainerContract;
-
+    /**
+     * Returns a boolean indicating whether the instance has an ApiContract.
+     */
     public function hasApi(): bool;
 
-    public function hasRouter(): bool;
-
+    /**
+     * Provides access to the ApiContract instance.
+     */
     public function api(): ApiContract;
 
+    /**
+     * Return an instance with the specified RouterContract.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified RouterContract.
+     */
+    public function withRouter(RouterContract $router): ContainerContract;
+
+    /**
+     * Returns a boolean indicating whether the instance has a RouterContract.
+     */
+    public function hasRouter(): bool;
+
+    /**
+     * Provides access to the RouterContract instance.
+     */
     public function router(): RouterContract;
 }

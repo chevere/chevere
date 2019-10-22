@@ -27,18 +27,24 @@ final class Container implements ContainerContract
     use RouterAccessTrait;
     use ApiAccessTrait;
 
-    public function withRouter(RouterContract $router): ContainerContract
-    {
-        $new = clone $this;
-        $new->router = $router;
-
-        return $new;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function withApi(ApiContract $api): ContainerContract
     {
         $new = clone $this;
         $new->api = $api;
+        
+        return $new;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withRouter(RouterContract $router): ContainerContract
+    {
+        $new = clone $this;
+        $new->router = $router;
 
         return $new;
     }

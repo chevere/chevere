@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use LogicException;
-
 use Chevere\Components\Api\Api;
 use Chevere\Components\Api\Maker as ApiMaker;
 use Chevere\Components\App\Exceptions\AlreadyBuiltException;
@@ -29,9 +27,10 @@ use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\CheckoutContract;
 use Chevere\Contracts\App\ParametersContract;
+use Exception;
 
 /**
- * Allows to create the application cache.
+ * Build allows to make and destroy the application build cache.
  */
 final class Build implements BuildContract
 {
@@ -64,6 +63,9 @@ final class Build implements BuildContract
     /** @var RouterMaker */
     private $routerMaker;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct()
     {
         $this->isBuilt = false;
@@ -71,6 +73,9 @@ final class Build implements BuildContract
         $this->path = new Path(BuildContract::FILE_PATH);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withContainer(Container $container): BuildContract
     {
         $new = clone $this;
@@ -79,6 +84,17 @@ final class Build implements BuildContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function container(): Container
+    {
+        return $this->container;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function withParameters(ParametersContract $parameters): BuildContract
     {
         $new = clone $this;
@@ -87,6 +103,9 @@ final class Build implements BuildContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function make(): BuildContract
     {
         if ($this->isBuilt) {
@@ -101,40 +120,10 @@ final class Build implements BuildContract
         if ($new->parameters->hasRoutes()) {
             $new->handleRoutes();
         }
-        $new->checkout = new Checkout($new);
         $new->isBuilt = true;
+        $new->checkout = new Checkout($new);
 
         return $new;
-    }
-
-    public function isBuilt(): bool
-    {
-        return $this->isBuilt;
-    }
-
-    public function path(): Path
-    {
-        return $this->path;
-    }
-
-    public function container(): Container
-    {
-        return $this->container;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function checksums(): array
-    {
-        return $this->checksums;
-    }
-
-    public function checkout(): CheckoutContract
-    {
-        $this->assertHasCheckout();
-
-        return $this->checkout;
     }
 
     /**
@@ -146,6 +135,42 @@ final class Build implements BuildContract
             ->remove();
         (new Dir(new Path('cache')))
             ->removeContents();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isBuilt(): bool
+    {
+        return $this->isBuilt;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function path(): Path
+    {
+        return $this->path;
+    }
+    
+    /**
+     * {@inheritdoc}
+     */
+    public function checksums(): array
+    {
+        $this->assertChecksums();
+
+        return $this->checksums;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function checkout(): CheckoutContract
+    {
+        $this->assertHasCheckout();
+
+        return $this->checkout;
     }
 
     private function handleApi(): void
@@ -181,13 +206,26 @@ final class Build implements BuildContract
         $this->checksums = array_merge($this->routerMaker->cache()->toArray(), $this->checksums);
     }
 
+    private function assertChecksums(): void
+    {
+        if (!isset($this->checksums)) {
+            throw new Exception(
+                (new Message("Property %type% %property% is not set for %className% instance"))
+                    ->code('%type%', CheckoutContract::class)
+                    ->code('%property%', '$checksums')
+                    ->code('%className%', __CLASS__)
+                    ->toString()
+            );
+        }
+    }
+
     private function assertHasCheckout(): void
     {
         if (!isset($this->checkout)) {
-            throw new LogicException(
-                (new Message("Property %type% %property% is not set for object of %className% class"))
+            throw new Exception(
+                (new Message("Property %type% %property% is not set for %className% instance"))
                     ->code('%type%', CheckoutContract::class)
-                    ->code('%property%', 'checkout')
+                    ->code('%property%', '$checkout')
                     ->code('%className%', __CLASS__)
                     ->toString()
             );

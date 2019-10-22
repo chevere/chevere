@@ -36,7 +36,7 @@ use const Chevere\CLI;
 use const Chevere\DEV;
 
 /**
- * Loads the application, which is built by Builder.
+ * Loads the application.
  */
 final class Loader implements LoaderContract
 {
@@ -91,8 +91,8 @@ final class Loader implements LoaderContract
     }
 
     /**
-     * While in DEV mode, it returns a BuildContract (built) as the application is re-built on every request.
-     * On production, it returns a BuildContrar with a container instance (application cache).
+     * While in DEV mode, it calls make() on top of build() so the application is re-built in every request.
+     * On production, it returns a BuildContrar with a Container instance.
      */
     private function getBuild(): BuildContract
     {
@@ -104,10 +104,15 @@ final class Loader implements LoaderContract
             ->withContainer($this->getContainer());
     }
 
+    /**
+     * Return a ContainerContract containing the services required to provide the application.
+     */
     private function getContainer(): ContainerContract
     {
         $api = new Api();
         $router = new Router();
+        $container = $this->builder->build()->container();
+
         try {
             if (!(CLI && console()->isBuilding())) {
                 $path = new Path('build');
@@ -116,12 +121,12 @@ final class Loader implements LoaderContract
                 }
                 $router = $router->withCache(new Cache('router', $path));
             }
-            $container = $this->builder->build()->container()
-                ->withRouter($router);
             if ($this->parameters->hasApi()) {
                 $container = $container->withApi($api);
             }
-            return $container;
+
+            return $container
+                ->withRouter($router);
         } catch (CacheNotFoundException $e) {
             $message = (new Message('The app must be re-build due to missing cache: %message%'))
                 ->strtr('%message%', $e->getMessage())

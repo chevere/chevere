@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use Chevere\Components\Http\Traits\ResponseAccessTrait;
 use Chevere\Components\Route\Traits\RouteAccessTrait;
 use Chevere\Components\Router\Traits\RouterAccessTrait;
 use Chevere\Contracts\App\AppContract;
@@ -23,16 +22,23 @@ use Chevere\Contracts\Router\RouterContract;
 
 /**
  * The application container.
+ *
+ * Provides access to the application, mostly intended for providing access at ControllerContract layer.
  */
 final class App implements AppContract
 {
-    use ResponseAccessTrait;
     use RouterAccessTrait;
     use RouteAccessTrait;
+
+    /** @var ResponseContract */
+    private $response;
 
     /** @var array String arguments (from request, cli) */
     private $arguments;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(ResponseContract $response)
     {
         $this->response = $response;
@@ -47,6 +53,14 @@ final class App implements AppContract
         $new->response = $response;
 
         return $new;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function response(): ResponseContract
+    {
+        return $this->response;
     }
 
     /**
@@ -82,11 +96,17 @@ final class App implements AppContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function hasArguments(): bool
     {
         return isset($this->arguments);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function arguments(): array
     {
         return $this->arguments;
