@@ -17,6 +17,7 @@ use Chevere\Components\App\App;
 use Chevere\Components\Console\Command;
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\Path\Path;
+use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuilderContract;
 
 /**
@@ -30,7 +31,7 @@ final class ClearLogsCommand extends Command
 
     public function callback(BuilderContract $builder): int
     {
-        $delete = (new Dir(new Path(App::PATH_LOGS)))->removeContents();
+        $delete = (new Dir(new Path(AppContract::PATH_LOGS)))->removeContents();
         $count = count($delete);
         $this->console()->style()->success(
             $count > 0 ? sprintf('App logs cleared (%s files)', $count) : 'No app logs to remove'

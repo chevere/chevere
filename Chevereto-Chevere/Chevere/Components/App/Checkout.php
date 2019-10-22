@@ -29,7 +29,7 @@ final class Checkout implements CheckoutContract
     {
         $this->build = $build;
         $this->fileReturn = new FileReturn($this->build->path());
-        $this->fileReturn->put($this->build->cacheChecksums());
+        $this->fileReturn->put($this->build->checksums());
     }
 
     public function build(): BuildContract

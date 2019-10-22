@@ -46,13 +46,13 @@ final class BuildCommand extends Command
             $title .= ' (not by this command)';
         } else {
             $this->builder = $this->builder
-                ->withBuild($this->builder->build()->withBuilt());
+                ->withBuild($this->builder->build()->make());
         }
         $timeEnd = (int) hrtime(true);
         $timeRelative = new TimeHr($timeEnd - $timeStart);
         $timeAbsolute = new TimeHr($timeEnd - BOOTSTRAP_TIME);
         $checksums = [];
-        foreach ($this->builder->build()->cacheChecksums() as $name => $keys) {
+        foreach ($this->builder->build()->checksums() as $name => $keys) {
             foreach ($keys as $key => $array) {
                 $checksums[] = [$name, $key, $array['path'], substr($array['checksum'], 0, 8)];
             }

@@ -21,6 +21,9 @@ use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\RunnerContract;
 use Chevere\Contracts\Controller\ControllerContract;
 
+/**
+ * Application container ControllerContract runner.
+ */
 final class Runner implements RunnerContract
 {
     /** @var AppContract */
@@ -34,35 +37,22 @@ final class Runner implements RunnerContract
         $this->app = $app;
     }
 
-    public function withControllerName(string $controllerName): RunnerContract
-    {
-        $new = clone $this;
-        $new->controllerName = $controllerName;
-        $new->assertControllerName();
-
-        return $new;
-    }
-
     /**
      * {@inheritdoc}
      */
-    public function run(): ControllerContract
+    public function run(string $controllerName): ControllerContract
     {
-        if (!isset($this->controllerName)) {
-            throw new LogicException(
-                (new Message("Instance of class %class% lacks of a controller"))
-                    ->code('%class%', __CLASS__)
-            );
-        }
+        $this->controllerName = $controllerName;
+        $this->assertControllerName();
         $this->handleRouteMiddleware();
-        $controller = new $this->controllerName($this->app);
-        $controllerArguments = $this->getControllerArguments($controller);
+        $controller = new $controllerName($this->app);
+        $controllerArguments = $this->getTypedArguments($controller);
         $controller(...$controllerArguments);
 
         return $controller;
     }
 
-    private function getControllerArguments(ControllerContract $controller): array
+    private function getTypedArguments(ControllerContract $controller): array
     {
         if ($this->app->hasArguments()) {
             $wrap = new ArgumentsWrap($controller, $this->app->arguments());

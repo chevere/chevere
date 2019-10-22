@@ -22,7 +22,7 @@ use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
 
 /**
- * The App container.
+ * The application container.
  */
 final class App implements AppContract
 {
@@ -30,9 +30,17 @@ final class App implements AppContract
     use RouterAccessTrait;
     use RouteAccessTrait;
 
-    /** @var array String arguments (from request uri, cli) */
+    /** @var array String arguments (from request, cli) */
     private $arguments;
 
+    public function __construct(ResponseContract $response)
+    {
+        $this->response = $response;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function withResponse(ResponseContract $response): AppContract
     {
         $new = clone $this;
@@ -41,6 +49,9 @@ final class App implements AppContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withRoute(RouteContract $route): AppContract
     {
         $new = clone $this;
@@ -49,6 +60,9 @@ final class App implements AppContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withRouter(RouterContract $router): AppContract
     {
         $new = clone $this;
@@ -57,6 +71,9 @@ final class App implements AppContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withArguments(array $arguments): AppContract
     {
         $new = clone $this;

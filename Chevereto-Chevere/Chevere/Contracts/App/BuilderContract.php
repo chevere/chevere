@@ -18,7 +18,7 @@ use Chevere\Contracts\Http\RequestContract;
 
 interface BuilderContract
 {
-    public function __construct(AppContract $app);
+    public function __construct(AppContract $app, BuildContract $build);
 
     public function withApp(AppContract $app): BuilderContract;
 

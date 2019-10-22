@@ -18,6 +18,7 @@ use LogicException;
 use Chevere\Components\Api\Api;
 use Chevere\Components\Api\Maker as ApiMaker;
 use Chevere\Components\App\Exceptions\AlreadyBuiltException;
+use Chevere\Components\App\Traits\ParametersAccessTrait;
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\File\File;
 use Chevere\Components\Message\Message;
@@ -29,8 +30,13 @@ use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\CheckoutContract;
 use Chevere\Contracts\App\ParametersContract;
 
+/**
+ * Allows to create the application cache.
+ */
 final class Build implements BuildContract
 {
+    use ParametersAccessTrait;
+
     /** @var BuilderContract */
     private $builder;
 
@@ -50,7 +56,7 @@ final class Build implements BuildContract
     private $checkout;
 
     /** @var array Containing the collection of Cache->toArray() data (checksums) */
-    private $cacheChecksums;
+    private $checksums;
 
     /** @var ApiMaker */
     private $apiMaker;
@@ -58,10 +64,9 @@ final class Build implements BuildContract
     /** @var RouterMaker */
     private $routerMaker;
 
-    public function __construct(BuilderContract $builder)
+    public function __construct()
     {
         $this->isBuilt = false;
-        $this->builder = $builder;
         $this->container = new Container();
         $this->path = new Path(BuildContract::FILE_PATH);
     }
@@ -76,20 +81,20 @@ final class Build implements BuildContract
 
     public function withParameters(ParametersContract $parameters): BuildContract
     {
-        if ($this->isBuilt) {
-            throw new AlreadyBuiltException();
-        }
         $new = clone $this;
         $new->parameters = $parameters;
 
         return $new;
     }
 
-    public function withBuilt(): BuildContract
+    public function make(): BuildContract
     {
+        if ($this->isBuilt) {
+            throw new AlreadyBuiltException();
+        }
         $new = clone $this;
         $new->routerMaker = new RouterMaker();
-        $new->cacheChecksums = [];
+        $new->checksums = [];
         if ($new->parameters->hasApi()) {
             $new->handleApi();
         }
@@ -107,16 +112,6 @@ final class Build implements BuildContract
         return $this->isBuilt;
     }
 
-    public function hasParameters(): bool
-    {
-        return isset($this->parameters);
-    }
-
-    public function parameters(): ParametersContract
-    {
-        return $this->parameters;
-    }
-
     public function path(): Path
     {
         return $this->path;
@@ -130,14 +125,14 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function cacheChecksums(): array
+    public function checksums(): array
     {
-        return $this->cacheChecksums;
+        return $this->checksums;
     }
 
     public function checkout(): CheckoutContract
     {
-        $this->assertCheckout();
+        $this->assertHasCheckout();
 
         return $this->checkout;
     }
@@ -169,7 +164,7 @@ final class Build implements BuildContract
             );
         $this->apiMaker = $this->apiMaker
             ->withCache();
-        $this->cacheChecksums = $this->apiMaker->cache()->toArray();
+        $this->checksums = $this->apiMaker->cache()->toArray();
     }
 
     private function handleRoutes(): void
@@ -183,10 +178,10 @@ final class Build implements BuildContract
             );
         $this->routerMaker = $this->routerMaker
             ->withCache();
-        $this->cacheChecksums = array_merge($this->routerMaker->cache()->toArray(), $this->cacheChecksums);
+        $this->checksums = array_merge($this->routerMaker->cache()->toArray(), $this->checksums);
     }
 
-    private function assertCheckout(): void
+    private function assertHasCheckout(): void
     {
         if (!isset($this->checkout)) {
             throw new LogicException(

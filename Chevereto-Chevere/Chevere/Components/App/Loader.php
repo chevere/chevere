@@ -23,12 +23,12 @@ use Chevere\Components\Http\Response;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Router;
+use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\ContainerContract;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\App\ParametersContract;
-use LogicException;
 
 use function console;
 
@@ -36,7 +36,7 @@ use const Chevere\CLI;
 use const Chevere\DEV;
 
 /**
- * Loader is responsible of booting up the application.
+ * Loads the application, which is built by Builder.
  */
 final class Loader implements LoaderContract
 {
@@ -48,13 +48,13 @@ final class Loader implements LoaderContract
 
     public function __construct()
     {
-        $app = (new App())
-            ->withResponse(new Response());
-        $this->builder = new Builder($app);
-        $this->assertIsBuilt();
+        $app = new App(new Response());
+        $build = new Build();
+        $this->builder = new Builder($app, $build);
+        $this->assertNeedsToBeBuilt();
         $this->parameters = new Parameters(
             new ArrayFile(
-                new Path(App::FILE_PARAMETERS)
+                new Path(AppContract::FILE_PARAMETERS)
             )
         );
         $this->handleParameters();
@@ -90,12 +90,15 @@ final class Loader implements LoaderContract
         }
     }
 
+    /**
+     * While in DEV mode, it returns a BuildContract (built) as the application is re-built on every request.
+     * On production, it returns a BuildContrar with a container instance (application cache).
+     */
     private function getBuild(): BuildContract
     {
         if (DEV) {
             return $this->builder->build()
-                ->withParameters($this->parameters)
-                ->withBuilt();
+                ->make();
         }
         return $this->builder->build()
             ->withContainer($this->getContainer());
@@ -127,7 +130,7 @@ final class Loader implements LoaderContract
         }
     }
 
-    private function assertIsBuilt(): void
+    private function assertNeedsToBeBuilt(): void
     {
         if (
             !DEV

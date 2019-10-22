@@ -19,12 +19,10 @@ interface RunnerContract
 {
     public function __construct(AppContract $app);
 
-    public function withControllerName(string $controllerName): RunnerContract;
-
     /**
-     * Run a controller on top of the App.
+     * Run a controller on top of the application container.
      *
-     * @param string $controller a ControllerContract controller name
+     * @param string $controllerName A ControllerContract name.
      */
-    public function run(): ControllerContract;
+    public function run(string $controllerName): ControllerContract;
 }

@@ -24,7 +24,6 @@ use Chevere\Components\Runtime\Runtime;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\BuilderContract;
-use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\Controller\JsonApiContract;
 use Chevere\Contracts\Http\RequestContract;
 
@@ -61,10 +60,10 @@ final class Builder implements BuilderContract
     /** @var array */
     private $controllerArguments;
 
-    public function __construct(AppContract $app)
+    public function __construct(AppContract $app, BuildContract $build)
     {
         $this->app = $app;
-        $this->build = new Build($this);
+        $this->build = $build;
     }
 
     public function withApp(AppContract $app): BuilderContract
@@ -136,18 +135,16 @@ final class Builder implements BuilderContract
         $this->handleRequest();
         if (isset($this->ran)) {
             throw new LogicException(
-                (new Message('The method %method% has been already called'))
+                (new Message('The method %method% can be called just once'))
                     ->code('%method%', __METHOD__)
                     ->toString()
             );
         }
         $this->ran = true;
         if (!isset($this->controllerName)) {
-            $this->processResolveCallable($this::$request->getUri()->getPath());
+            $this->resolveCallable($this::$request->getUri()->getPath());
         }
-        if (!isset($this->controllerName)) {
-            throw new RuntimeException('DESCONTROL');
-        }
+        $this->assertControllerName();
         $this->runApp($this->controllerName);
     }
 
@@ -188,28 +185,40 @@ final class Builder implements BuilderContract
         }
     }
 
-    private function processResolveCallable(string $pathInfo): void
+    private function resolveCallable(string $pathInfo): void
     {
         try {
             $route = $this->app->router()->resolve($pathInfo);
+            $this->app = $this->app
+                ->withRoute($route);
         } catch (RouteNotFoundException $e) {
             $response = $this->app->response();
-            $guzzle = $response->guzzle()->withStatus(404)->withBody(stream_for('Not found.'));
+            $guzzle = $response->guzzle()
+                ->withStatus(404)
+                ->withBody(stream_for('Not found.'));
             $response = $response->withGuzzle($guzzle);
             $this->app = $this->app
                 ->withResponse($response);
             if (CLI) {
                 throw new RouteNotFoundException($e->getMessage());
             }
-            $this->app->response()->sendHeaders()->sendBody();
+            $this->app->response()
+                ->sendHeaders()
+                ->sendBody();
             die();
         }
-        $this->controllerName = $route->getController($this::$request->getMethod());
-        $this->app = $this->app
-            ->withRoute($route);
-        $routerArgs = $this->app->router()->arguments();
-        if (!isset($this->controllerArguments) && isset($routerArgs)) {
-            $this->controllerArguments = $routerArgs;
+        $this->controllerName = $this->app->route()
+            ->getController($this::$request->getMethod());
+
+        if (!isset($this->controllerArguments)) {
+            $this->controllerArguments = $this->app->router()->arguments();
+        }
+    }
+
+    private function assertControllerName(): void
+    {
+        if (!isset($this->controllerName)) {
+            throw new RuntimeException('DESCONTROL');
         }
     }
 
@@ -217,10 +226,10 @@ final class Builder implements BuilderContract
     {
         $this->app = $this->app
             ->withArguments($this->controllerArguments);
+        
         $runner = new Runner($this->app);
-        $controller = $runner
-            ->withControllerName($controller)
-            ->run();
+        $controller = $runner->run($controller);
+        
         $contentStream = stream_for($controller->content());
         $response = $this->app->response();
         $guzzle = $response->guzzle();
@@ -229,6 +238,7 @@ final class Builder implements BuilderContract
                 ? $guzzle->withJsonApi($contentStream)
                 : $guzzle->withBody($contentStream)
         );
+
         $this->app = $this->app
             ->withResponse($response);
         if (!CLI) {

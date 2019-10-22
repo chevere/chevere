@@ -21,6 +21,9 @@ use Chevere\Components\Path\Path;
 use Chevere\Contracts\App\ParametersContract;
 use InvalidArgumentException;
 
+/**
+ * Application builder parameters
+ */
 final class Parameters implements ParametersContract
 {
     /**

@@ -21,30 +21,56 @@ use const Chevere\APP_PATH;
 
 interface AppContract
 {
-    const NAMESPACES = ['App', 'Chevere'];
-    const APP = 'app';
     const FILE_PARAMETERS = 'parameters.php';
     const PATH_LOGS = APP_PATH . 'var/logs/';
 
+    public function __construct(ResponseContract $response);
+
+    /**
+     * Return an instance with the specified response.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified response.
+     */
     public function withResponse(ResponseContract $response): AppContract;
-
-    public function withRoute(RouteContract $route): AppContract;
-
-    public function withRouter(RouterContract $router): AppContract;
-
-    public function withArguments(array $arguments): AppContract;
-
-    public function hasRoute(): bool;
-
-    public function hasRouter(): bool;
-
-    public function hasArguments(): bool;
+    
+    public function hasResponse(): bool;
 
     public function response(): ResponseContract;
 
+    /**
+     * Return an instance with the specified response.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified route.
+     */
+    public function withRoute(RouteContract $route): AppContract;
+    
+    public function hasRoute(): bool;
+    
     public function route(): RouteContract;
-
+    
+    /**
+     * Return an instance with the specified arguments.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified router.
+     */
+    public function withRouter(RouterContract $router): AppContract;
+    
+    public function hasRouter(): bool;
+    
     public function router(): RouterContract;
 
+    /**
+     * Return an instance with the specified arguments.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified arguments.
+     */
+    public function withArguments(array $arguments): AppContract;
+
+    public function hasArguments(): bool;
+    
     public function arguments(): array;
 }

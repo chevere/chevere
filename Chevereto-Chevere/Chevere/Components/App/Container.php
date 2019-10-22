@@ -19,6 +19,9 @@ use Chevere\Contracts\Api\ApiContract;
 use Chevere\Contracts\App\ContainerContract;
 use Chevere\Contracts\Router\RouterContract;
 
+/**
+ * A container for the application base services (Router & API).
+ */
 final class Container implements ContainerContract
 {
     use RouterAccessTrait;
