@@ -34,8 +34,8 @@ use Chevere\Contracts\App\ParametersContract;
 /**
  * The Build container.
  *
- * Allows to interact with the application build, which refers to the base application service layer
- * which consists in API and Router services.
+ * Allows to interact with the application build, which refers to the base application service layer which consists of
+ * API and Router services.
  */
 final class Build implements BuildContract
 {

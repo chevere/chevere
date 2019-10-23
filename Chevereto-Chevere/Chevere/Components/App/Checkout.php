@@ -21,7 +21,9 @@ use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\CheckoutContract;
 
 /**
- * Checkout the application build
+ * Checkout the application build.
+ *
+ * The checkout consists in the creation of a build file which maps the build checksums.
  */
 final class Checkout implements CheckoutContract
 {
