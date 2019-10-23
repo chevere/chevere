@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
+use Exception;
+
 use Chevere\Components\Api\Api;
 use Chevere\Components\Api\Maker as ApiMaker;
 use Chevere\Components\App\Exceptions\AlreadyBuiltException;
@@ -26,11 +28,14 @@ use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\CheckoutContract;
+use Chevere\Contracts\App\ContainerContract;
 use Chevere\Contracts\App\ParametersContract;
-use Exception;
 
 /**
- * Build allows to make and destroy the application build cache.
+ * The Build container.
+ *
+ * Allows to interact with the application build, which refers to the base application service layer
+ * which consists in API and Router services.
  */
 final class Build implements BuildContract
 {
@@ -39,7 +44,7 @@ final class Build implements BuildContract
     /** @var BuilderContract */
     private $builder;
 
-    /** @var Container */
+    /** @var ContainerContract */
     private $container;
 
     /** @var ParametersContract */
@@ -76,7 +81,7 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function withContainer(Container $container): BuildContract
+    public function withContainer(ContainerContract $container): BuildContract
     {
         $new = clone $this;
         $new->container = $container;
@@ -87,7 +92,7 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function container(): Container
+    public function container(): ContainerContract
     {
         return $this->container;
     }
@@ -115,10 +120,10 @@ final class Build implements BuildContract
         $new->routerMaker = new RouterMaker();
         $new->checksums = [];
         if ($new->parameters->hasApi()) {
-            $new->handleApi();
+            $new->makeApi();
         }
         if ($new->parameters->hasRoutes()) {
-            $new->handleRoutes();
+            $new->makeRouter();
         }
         $new->isBuilt = true;
         $new->checkout = new Checkout($new);
@@ -158,7 +163,7 @@ final class Build implements BuildContract
      */
     public function checksums(): array
     {
-        $this->assertChecksums();
+        $this->assertHasChecksums();
 
         return $this->checksums;
     }
@@ -173,7 +178,7 @@ final class Build implements BuildContract
         return $this->checkout;
     }
 
-    private function handleApi(): void
+    private function makeApi(): void
     {
         $this->apiMaker = new ApiMaker($this->routerMaker);
         $this->apiMaker = $this->apiMaker
@@ -192,7 +197,7 @@ final class Build implements BuildContract
         $this->checksums = $this->apiMaker->cache()->toArray();
     }
 
-    private function handleRoutes(): void
+    private function makeRouter(): void
     {
         $this->routerMaker = $this->routerMaker
             ->withAddedRouteFiles(...$this->parameters->routes());
@@ -206,7 +211,7 @@ final class Build implements BuildContract
         $this->checksums = array_merge($this->routerMaker->cache()->toArray(), $this->checksums);
     }
 
-    private function assertChecksums(): void
+    private function assertHasChecksums(): void
     {
         if (!isset($this->checksums)) {
             throw new Exception(

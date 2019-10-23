@@ -23,10 +23,7 @@ interface BuildContract
     /**
      * Constructs the BuildContract instance.
      *
-     * A BuildContract must always have the following properties:
-     * - isBuilt
-     * - container
-     * - path
+     * A BuildContract is intended to be used as an application
      */
     public function __construct();
 
@@ -36,20 +33,27 @@ interface BuildContract
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified Container.
      *
-     * This method allows to pass a Container (application services)
+     * This method injects a Container instance which represents
      */
-    public function withContainer(Container $container): BuildContract;
+    public function withContainer(ContainerContract $container): BuildContract;
 
-    public function container(): Container;
+    /**
+     * Provides access to the ContainerContract instance.
+     */
+    public function container(): ContainerContract;
 
     public function withParameters(ParametersContract $parameters): BuildContract;
 
     public function hasParameters(): bool;
 
+    /**
+     * Handles the API and route parameters and makes the application build.
+     * Note: Can be only called once.
+     */
     public function make(): BuildContract;
 
     /**
-     * Destroy the build file and any application cache.
+     * Destroy the application build (file plus any application cache).
      */
     public function destroy(): void;
     
@@ -63,21 +67,18 @@ interface BuildContract
      */
     public function path(): Path;
 
-
     /**
-     * Get the build checksums.
-     * Note: This method is available after running BuilderContract::make().
+     * Provides access to the build checksums.
+     * Note: This method is available if the application build has been built.
      *
-     * @see BuilderContract::make()
      * @see BuilderContract::isBuilt()
      */
     public function checksums(): array;
 
     /**
-     * Get the build checkout.
-     * Note: This method is available after running BuilderContract::make().
+     * Provides access to the CheckoutContract instance.
+     * Note: This method is available if the application build has been built.
      *
-     * @see BuilderContract::make()
      * @see BuilderContract::isBuilt()
      */
     public function checkout(): CheckoutContract;
