@@ -110,14 +110,10 @@ final class Cache
         return $this->array;
     }
 
-    /**
-     * @return string Cache file path identifier for the given $name
-     */
     private function getPath(string $name): Path
     {
         $this->assertKeyName($name);
-        $filePath = $this->workingFolder . $name . '.php';
-        return new Path($filePath);
+        return new Path($this->workingFolder . $name . '.php');
     }
 
     private function assertKeyName(string $key): void
