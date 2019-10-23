@@ -18,13 +18,13 @@ use LogicException;
 use Chevere\Components\Controller\ArgumentsWrap;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\App\AppContract;
-use Chevere\Contracts\App\RunnerContract;
+use Chevere\Contracts\App\ControllerRunnerContract;
 use Chevere\Contracts\Controller\ControllerContract;
 
 /**
  * Application container ControllerContract runner.
  */
-final class Runner implements RunnerContract
+final class ControllerRunner implements ControllerRunnerContract
 {
     /** @var AppContract */
     private $app;

@@ -116,6 +116,7 @@ final class RunCommand extends Command
         $this->builder = $this->builder
             ->withControllerArguments($this->argument)
             ->withControllerName($this->callable);
+        // FIXME
         $this->builder->run();
     }
 

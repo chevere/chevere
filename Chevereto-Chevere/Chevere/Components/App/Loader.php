@@ -20,6 +20,7 @@ use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\Console\Console;
 use Chevere\Components\Http\Response;
+use Chevere\Components\Http\ServerRequest;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Router;
@@ -36,7 +37,7 @@ use const Chevere\CLI;
 use const Chevere\DEV;
 
 /**
- * Loads the application.
+ * Loads the application, by handling its builder.
  */
 final class Loader implements LoaderContract
 {
@@ -70,7 +71,9 @@ final class Loader implements LoaderContract
 
     public function run(): void
     {
-        $this->builder->run();
+        // dd($this->builder->runtimeInstance()); // FIXME: dd doesn't print private props
+        $run = new Run($this->builder);
+        $run->run();
     }
 
     private function handleParameters(): void

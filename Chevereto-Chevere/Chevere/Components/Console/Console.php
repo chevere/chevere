@@ -142,7 +142,7 @@ final class Console implements ConsoleContract
 
         if ($this->builder == null) {
             throw new RuntimeException(
-                (new Message('No Chevere %className% instance is defined'))
+                (new Message('No %className% instance is defined'))
                     ->code('%className%', BuilderContract::class)
                     ->toString()
             );

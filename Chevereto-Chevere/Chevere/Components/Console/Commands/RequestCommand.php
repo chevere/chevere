@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Console\Commands;
 
+use Chevere\Components\App\Run;
 use InvalidArgumentException;
 use JsonException;
 
@@ -140,10 +141,12 @@ final class RequestCommand extends Command
             ->withParsedBody($this->parsedOptions['post'])
             ->withUploadedFiles(ServerRequest::normalizeFiles($this->parsedOptions['files']));
 
-        $builder = $builder->withRequest($request);
+        $builder = $builder
+            ->withRequest($request);
 
         try {
-            $builder->run();
+            $run = (new Run($builder))->withConsoleLoop();
+            $run->run();
         } catch (RouteNotFoundException $e) {
             // $e Shhhh... This is just to capture the CLI output
         }

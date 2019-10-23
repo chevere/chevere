@@ -13,27 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use LogicException;
-use RuntimeException;
-
 use Chevere\Components\Controller\Traits\ControllerNameAccessTrait;
-use Chevere\Components\Http\ServerRequest;
-use Chevere\Components\Message\Message;
-use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Components\Runtime\Runtime;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\BuilderContract;
-use Chevere\Contracts\Controller\JsonApiContract;
 use Chevere\Contracts\Http\RequestContract;
 
-use function console;
-use function GuzzleHttp\Psr7\stream_for;
-
-use const Chevere\CLI;
-
 /**
- * Builds the application
+ * Builder is responsible of building the application.
+ *
+ * The resulting build could be built from cache or from scratch.
  */
 final class Builder implements BuilderContract
 {
@@ -126,28 +116,6 @@ final class Builder implements BuilderContract
         return $this->build;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function run(): void
-    {
-        $this->handleConsole();
-        $this->handleRequest();
-        if (isset($this->ran)) {
-            throw new LogicException(
-                (new Message('The method %method% can be called just once'))
-                    ->code('%method%', __METHOD__)
-                    ->toString()
-            );
-        }
-        $this->ran = true;
-        if (!isset($this->controllerName)) {
-            $this->resolveCallable($this::$request->getUri()->getPath());
-        }
-        $this->assertControllerName();
-        $this->runApp($this->controllerName);
-    }
-
     public static function runtimeInstance(): Runtime
     {
         return self::$runtime;
@@ -167,84 +135,5 @@ final class Builder implements BuilderContract
     public static function setRuntimeInstance(Runtime $runtime)
     {
         self::$runtime = $runtime;
-    }
-
-    private function handleConsole(): void
-    {
-        if (CLI && !isset($this->consoleLoop)) {
-            $this->consoleLoop = true;
-            console()->bind($this);
-            console()->run();
-        }
-    }
-
-    private function handleRequest(): void
-    {
-        if (!isset($this::$request)) {
-            $this::$request = ServerRequest::fromGlobals();
-        }
-    }
-
-    private function resolveCallable(string $pathInfo): void
-    {
-        try {
-            $route = $this->app->router()->resolve($pathInfo);
-            $this->app = $this->app
-                ->withRoute($route);
-        } catch (RouteNotFoundException $e) {
-            $response = $this->app->response();
-            $guzzle = $response->guzzle()
-                ->withStatus(404)
-                ->withBody(stream_for('Not found.'));
-            $response = $response->withGuzzle($guzzle);
-            $this->app = $this->app
-                ->withResponse($response);
-            if (CLI) {
-                throw new RouteNotFoundException($e->getMessage());
-            }
-            $this->app->response()
-                ->sendHeaders()
-                ->sendBody();
-            die();
-        }
-        $this->controllerName = $this->app->route()
-            ->getController($this::$request->getMethod());
-
-        if (!isset($this->controllerArguments)) {
-            $this->controllerArguments = $this->app->router()->arguments();
-        }
-    }
-
-    private function assertControllerName(): void
-    {
-        if (!isset($this->controllerName)) {
-            throw new RuntimeException('DESCONTROL');
-        }
-    }
-
-    private function runApp(string $controller): void
-    {
-        $this->app = $this->app
-            ->withArguments($this->controllerArguments);
-        
-        $runner = new Runner($this->app);
-        $controller = $runner->run($controller);
-        
-        $contentStream = stream_for($controller->content());
-        $response = $this->app->response();
-        $guzzle = $response->guzzle();
-        $response = $response->withGuzzle(
-            $controller instanceof JsonApiContract
-                ? $guzzle->withJsonApi($contentStream)
-                : $guzzle->withBody($contentStream)
-        );
-
-        $this->app = $this->app
-            ->withResponse($response);
-        if (!CLI) {
-            $this->app->response()
-                ->sendHeaders()
-                ->sendBody();
-        }
     }
 }

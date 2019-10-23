@@ -40,8 +40,6 @@ interface BuilderContract
 
     public function build(): BuildContract;
 
-    public function run(): void;
-
     public static function runtimeInstance(): Runtime;
 
     public static function requestInstance(): RequestContract;

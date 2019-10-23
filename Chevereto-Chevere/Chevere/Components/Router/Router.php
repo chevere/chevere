@@ -102,7 +102,7 @@ final class Router implements RouterContract
         }
         throw new RouteNotFoundException(
             (new Message('No route defined for %path%'))
-                ->code('%path%', $pathInfo)
+                ->code('%path%', $pathInfo != '' ? $pathInfo : '(empty string)')
                 ->toString()
         );
     }

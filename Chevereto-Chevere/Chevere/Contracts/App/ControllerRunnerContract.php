@@ -15,7 +15,7 @@ namespace Chevere\Contracts\App;
 
 use Chevere\Contracts\Controller\ControllerContract;
 
-interface RunnerContract
+interface ControllerRunnerContract
 {
     public function __construct(AppContract $app);
 
