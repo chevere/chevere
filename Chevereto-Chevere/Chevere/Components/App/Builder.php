@@ -41,12 +41,6 @@ final class Builder implements BuilderContract
     /** @var RequestContract */
     private static $request;
 
-    /** @var bool True if run() has been called */
-    private $ran;
-
-    /** @var bool True if the console loop ran */
-    private $consoleLoop;
-
     /** @var array */
     private $controllerArguments;
 
@@ -104,6 +98,11 @@ final class Builder implements BuilderContract
     public function hasControllerArguments(): bool
     {
         return isset($this->controllerArguments);
+    }
+
+    public function controllerArguments(): array
+    {
+        return $this->controllerArguments;
     }
 
     public function app(): AppContract

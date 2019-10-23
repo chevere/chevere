@@ -35,11 +35,17 @@ final class Run
     /** @var BuilderContract */
     private $builder;
 
-    /** @var bool */
+    /** @var bool A boolean indicating if the run() method was called */
     private $ran;
-    
-    /** @var bool */
+
+    /** @var bool A boolean indicating if the console has looped */
     private $consoleLoop;
+
+    /** @var string A string representing a ControllerContract name */
+    private $controllerName;
+
+    /** @var array */
+    private $controllerArguments;
 
     public function __construct(BuilderContract $builder)
     {
@@ -70,7 +76,12 @@ final class Run
         }
         $this->ran = true;
         $path = $this->builder->requestInstance()->getUri()->getPath();
-        $this->resolveCallable($path);
+        if ($this->builder->hasControllerName()) {
+            $this->controllerName = $this->builder->controllerName();
+            $this->controllerArguments = $this->builder->controllerArguments();
+        } else {
+            $this->resolveCallable($path);
+        }
         $this->assertControllerName();
         $this->runApp();
     }
@@ -122,10 +133,7 @@ final class Run
             ->withApp($app);
         $this->controllerName = $app->route()
             ->getController($request->getMethod());
-
-        if (!isset($this->controllerArguments)) {
-            $this->controllerArguments = $app->router()->arguments();
-        }
+        $this->controllerArguments = $app->router()->arguments();
     }
 
     private function assertControllerName(): void

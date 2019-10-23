@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Contracts\App;
 
 use Chevere\Components\ArrayFile\ArrayFile;
+use Chevere\Components\Path\Path;
 
 interface ParametersContract
 {
@@ -32,6 +33,8 @@ interface ParametersContract
     const KEY_ROUTES = 'routes';
 
     public function __construct(ArrayFile $arrayFile);
+
+    public function withAddedRoutePaths(Path ...$paths): ParametersContract;
 
     public function hasParameters(): bool;
 

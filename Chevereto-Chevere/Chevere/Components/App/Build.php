@@ -26,7 +26,6 @@ use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Maker as RouterMaker;
 use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\BuildContract;
-use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\CheckoutContract;
 use Chevere\Contracts\App\ContainerContract;
 use Chevere\Contracts\App\ParametersContract;
@@ -40,9 +39,6 @@ use Chevere\Contracts\App\ParametersContract;
 final class Build implements BuildContract
 {
     use ParametersAccessTrait;
-
-    /** @var BuilderContract */
-    private $builder;
 
     /** @var ContainerContract */
     private $container;

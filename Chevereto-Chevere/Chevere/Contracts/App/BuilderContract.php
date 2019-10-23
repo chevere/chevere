@@ -34,7 +34,11 @@ interface BuilderContract
 
     public function hasControllerName(): bool;
 
+    public function controllerName(): string;
+
     public function hasControllerArguments(): bool;
+
+    public function controllerArguments(): array;
 
     public function app(): AppContract;
 

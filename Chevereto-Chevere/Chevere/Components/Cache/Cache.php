@@ -116,7 +116,8 @@ final class Cache
     private function getPath(string $name): Path
     {
         $this->assertKeyName($name);
-        return new Path($this->workingFolder . $name . '.php');
+        $filePath = $this->workingFolder . $name . '.php';
+        return new Path($filePath);
     }
 
     private function assertKeyName(string $key): void
