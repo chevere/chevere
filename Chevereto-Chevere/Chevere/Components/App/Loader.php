@@ -62,7 +62,7 @@ final class Loader implements LoaderContract
             ->withBuild($this->getBuild());
         $app = $this->builder->app()
             ->withRouter(
-                $this->builder->build()->container()->router()
+                $this->builder->build()->services()->router()
             );
         $this->builder = $this->builder
             ->withApp($app);
@@ -113,7 +113,7 @@ final class Loader implements LoaderContract
     {
         $api = new Api();
         $router = new Router();
-        $container = $this->builder->build()->container();
+        $services = $this->builder->build()->services();
 
         try {
             if (!(CLI && console()->isBuilding())) {
@@ -124,10 +124,10 @@ final class Loader implements LoaderContract
                 $router = $router->withCache(new Cache('router', $path));
             }
             if ($this->parameters->hasApi()) {
-                $container = $container->withApi($api);
+                $services = $services->withApi($api);
             }
 
-            return $container
+            return $services
                 ->withRouter($router);
         } catch (CacheNotFoundException $e) {
             $message = (new Message('The app must be re-build due to missing cache: %message%'))

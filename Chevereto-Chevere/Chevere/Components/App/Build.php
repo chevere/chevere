@@ -38,7 +38,7 @@ final class Build implements BuildContract
     use ParametersAccessTrait;
 
     /** @var ServicesContract */
-    private $container;
+    private $services;
 
     /** @var ParametersContract */
     private $parameters;
@@ -64,10 +64,10 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function __construct(ServicesContract $container)
+    public function __construct(ServicesContract $services)
     {
         $this->isBuilt = false;
-        $this->container = $container;
+        $this->services = $services;
         $this->path = new Path(BuildContract::FILE_PATH);
     }
 
@@ -77,7 +77,7 @@ final class Build implements BuildContract
     public function withServices(ServicesContract $services): BuildContract
     {
         $new = clone $this;
-        $new->container = $services;
+        $new->services = $services;
 
         return $new;
     }
@@ -85,9 +85,9 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function container(): ServicesContract
+    public function services(): ServicesContract
     {
-        return $this->container;
+        return $this->services;
     }
 
     /**
@@ -180,7 +180,7 @@ final class Build implements BuildContract
                     $this->parameters->api()
                 )
             );
-        $this->container = $this->container
+        $this->services = $this->services
             ->withApi(
                 (new Api())
                     ->withMaker($this->apiMaker)
@@ -194,7 +194,7 @@ final class Build implements BuildContract
     {
         $this->routerMaker = $this->routerMaker
             ->withAddedRouteFiles(...$this->parameters->routes());
-        $this->container = $this->container
+        $this->services = $this->services
             ->withRouter(
                 (new Router())
                     ->withMaker($this->routerMaker)

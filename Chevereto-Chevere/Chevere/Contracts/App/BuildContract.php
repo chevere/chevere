@@ -28,20 +28,29 @@ interface BuildContract
     public function __construct(ServicesContract $services);
 
     /**
-     * Return an instance with the specified Container.
+     * Return an instance with the specified ServicesContract.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified Container.
+     * an instance that contains the specified ServicesContract.
      */
     public function withServices(ServicesContract $services): BuildContract;
 
     /**
      * Provides access to the ServicesContract instance.
      */
-    public function container(): ServicesContract;
+    public function services(): ServicesContract;
 
+    /**
+     * Return an instance with the specified ParametersContract.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified Container.
+     */
     public function withParameters(ParametersContract $parameters): BuildContract;
 
+    /**
+     * Returns a boolean indicating whether the instance has a ParametersContract.
+     */
     public function hasParameters(): bool;
 
     /**
