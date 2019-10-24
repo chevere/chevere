@@ -16,13 +16,13 @@ namespace Chevere\Components\App;
 use Chevere\Components\Api\Traits\ApiAccessTrait;
 use Chevere\Components\Router\Traits\RouterAccessTrait;
 use Chevere\Contracts\Api\ApiContract;
-use Chevere\Contracts\App\ContainerContract;
+use Chevere\Contracts\App\ServicesContract;
 use Chevere\Contracts\Router\RouterContract;
 
 /**
  * A container for the application base services (Router & API).
  */
-final class Container implements ContainerContract
+final class Services implements ServicesContract
 {
     use RouterAccessTrait;
     use ApiAccessTrait;
@@ -30,7 +30,14 @@ final class Container implements ContainerContract
     /**
      * {@inheritdoc}
      */
-    public function withApi(ApiContract $api): ContainerContract
+    public function __construct()
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withApi(ApiContract $api): ServicesContract
     {
         $new = clone $this;
         $new->api = $api;
@@ -41,7 +48,7 @@ final class Container implements ContainerContract
     /**
      * {@inheritdoc}
      */
-    public function withRouter(RouterContract $router): ContainerContract
+    public function withRouter(RouterContract $router): ServicesContract
     {
         $new = clone $this;
         $new->router = $router;

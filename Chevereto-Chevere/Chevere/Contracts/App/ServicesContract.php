@@ -16,15 +16,21 @@ namespace Chevere\Contracts\App;
 use Chevere\Contracts\Api\ApiContract;
 use Chevere\Contracts\Router\RouterContract;
 
-interface ContainerContract
+interface ServicesContract
 {
+
+    /**
+     * Creates a new application base service container.
+     */
+    public function __construct();
+
     /**
      * Return an instance with the specified ApiContract.
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified ApiContract.
      */
-    public function withApi(ApiContract $api): ContainerContract;
+    public function withApi(ApiContract $api): ServicesContract;
 
     /**
      * Returns a boolean indicating whether the instance has an ApiContract.
@@ -42,7 +48,7 @@ interface ContainerContract
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified RouterContract.
      */
-    public function withRouter(RouterContract $router): ContainerContract;
+    public function withRouter(RouterContract $router): ServicesContract;
 
     /**
      * Returns a boolean indicating whether the instance has a RouterContract.

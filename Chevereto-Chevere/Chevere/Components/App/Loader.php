@@ -20,14 +20,13 @@ use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\Console\Console;
 use Chevere\Components\Http\Response;
-use Chevere\Components\Http\ServerRequest;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\BuilderContract;
-use Chevere\Contracts\App\ContainerContract;
+use Chevere\Contracts\App\ServicesContract;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\App\ParametersContract;
 
@@ -50,7 +49,7 @@ final class Loader implements LoaderContract
     public function __construct()
     {
         $app = new App(new Response());
-        $build = new Build();
+        $build = new Build(new Services());
         $this->builder = new Builder($app, $build);
         $this->assertNeedsToBeBuilt();
         $this->parameters = new Parameters(
@@ -108,9 +107,9 @@ final class Loader implements LoaderContract
     }
 
     /**
-     * Return a ContainerContract containing the services required to provide the application.
+     * Return a ServicesContract containing the services required to provide the application.
      */
-    private function getContainer(): ContainerContract
+    private function getContainer(): ServicesContract
     {
         $api = new Api();
         $router = new Router();

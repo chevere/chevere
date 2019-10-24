@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\App;
 
-use Chevere\Components\App\Container;
 use Chevere\Components\Path\Path;
 
 interface BuildContract
@@ -23,24 +22,23 @@ interface BuildContract
     /**
      * Constructs the BuildContract instance.
      *
-     * A BuildContract is intended to be used as an application
+     * A BuildContract instance allows to interact with the application build, which refers to the base
+     * application service layer which consists of API and Router services.
      */
-    public function __construct();
+    public function __construct(ServicesContract $container);
 
     /**
      * Return an instance with the specified Container.
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified Container.
-     *
-     * This method injects a Container instance which represents
      */
-    public function withContainer(ContainerContract $container): BuildContract;
+    public function withContainer(ServicesContract $container): BuildContract;
 
     /**
-     * Provides access to the ContainerContract instance.
+     * Provides access to the ServicesContract instance.
      */
-    public function container(): ContainerContract;
+    public function container(): ServicesContract;
 
     public function withParameters(ParametersContract $parameters): BuildContract;
 

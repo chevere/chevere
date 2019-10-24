@@ -27,20 +27,17 @@ use Chevere\Components\Router\Maker as RouterMaker;
 use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\CheckoutContract;
-use Chevere\Contracts\App\ContainerContract;
+use Chevere\Contracts\App\ServicesContract;
 use Chevere\Contracts\App\ParametersContract;
 
 /**
  * The Build container.
- *
- * Allows to interact with the application build, which refers to the base application service layer which consists of
- * API and Router services.
  */
 final class Build implements BuildContract
 {
     use ParametersAccessTrait;
 
-    /** @var ContainerContract */
+    /** @var ServicesContract */
     private $container;
 
     /** @var ParametersContract */
@@ -67,17 +64,17 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function __construct()
+    public function __construct(ServicesContract $container)
     {
         $this->isBuilt = false;
-        $this->container = new Container();
+        $this->container = $container;
         $this->path = new Path(BuildContract::FILE_PATH);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withContainer(ContainerContract $container): BuildContract
+    public function withContainer(ServicesContract $container): BuildContract
     {
         $new = clone $this;
         $new->container = $container;
@@ -88,7 +85,7 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function container(): ContainerContract
+    public function container(): ServicesContract
     {
         return $this->container;
     }
