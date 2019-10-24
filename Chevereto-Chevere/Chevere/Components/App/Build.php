@@ -74,10 +74,10 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function withContainer(ServicesContract $container): BuildContract
+    public function withServices(ServicesContract $services): BuildContract
     {
         $new = clone $this;
-        $new->container = $container;
+        $new->container = $services;
 
         return $new;
     }

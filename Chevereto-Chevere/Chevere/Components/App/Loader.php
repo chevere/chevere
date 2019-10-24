@@ -103,7 +103,7 @@ final class Loader implements LoaderContract
                 ->make();
         }
         return $this->builder->build()
-            ->withContainer($this->getContainer());
+            ->withServices($this->getContainer());
     }
 
     /**
