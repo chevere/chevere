@@ -20,7 +20,6 @@ use Chevere\Components\Message\Message;
 use function ChevereFn\stringEndsWith;
 use function ChevereFn\stringForwardSlashes;
 use function ChevereFn\stringReplaceFirst;
-use function ChevereFn\stringReplaceLast;
 use function ChevereFn\stringRightTail;
 use function ChevereFn\stringStartsWith;
 
@@ -67,11 +66,6 @@ final class Path
             $this->absolute = stringRightTail($this->absolute, '/');
         }
         $this->relative = $this->getRelative();
-    }
-
-    public function identifier(): string
-    {
-        return $this->identifier;
     }
 
     /**

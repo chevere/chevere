@@ -66,7 +66,7 @@ final class Parameters implements ParametersContract
             if (in_array($path->absolute(), $new->routes)) {
                 throw new InvalidArgumentException(
                     (new Message('Route path %path% was already added'))
-                        ->code('%path%', $path->identifier())
+                        ->code('%path%', $path->absolute())
                         ->toString()
                 );
             }
