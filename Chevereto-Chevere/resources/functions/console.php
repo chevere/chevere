@@ -16,5 +16,5 @@ use Chevere\Contracts\Console\ConsoleContract;
 
 function console(): ConsoleContract
 {
-    return Terminal::getInstance();
+    return Terminal::get();
 }

@@ -23,6 +23,8 @@ use Monolog\Logger;
 use Psr\Log\LogLevel;
 
 use Chevere\Components\App\Builder;
+use Chevere\Components\App\Instances\RequestInstance;
+use Chevere\Components\App\Instances\RuntimeInstance;
 use Chevere\Components\Data\Data;
 use Chevere\Components\Data\Traits\DataMethodTrait;
 use Chevere\Components\ExceptionHandler\src\Formatter;
@@ -30,7 +32,6 @@ use Chevere\Components\ExceptionHandler\src\Output;
 use Chevere\Components\ExceptionHandler\src\Style;
 use Chevere\Components\ExceptionHandler\src\Template;
 use Chevere\Components\ExceptionHandler\src\Wrap;
-use Chevere\Components\Http\RequestContainer;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Runtime\Runtime;
 use Chevere\Contracts\Http\RequestContract;
@@ -126,8 +127,8 @@ final class ExceptionHandler
         $this->setTimeProperties();
         $this->data = $this->data
             ->withKey('id', uniqid('', true));
-        $this->request = RequestContainer::getInstance();
-        $this->runtime = Builder::runtimeInstance();
+        $this->request = RequestInstance::get();
+        $this->runtime = RuntimeInstance::get();
         $this->isDebugEnabled = (bool) $this->runtime->data()->key('debug');
 
         $this->logDateFolderFormat = static::LOG_DATE_FOLDER_FORMAT;

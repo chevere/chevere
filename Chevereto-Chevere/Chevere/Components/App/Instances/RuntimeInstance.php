@@ -11,23 +11,20 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Console;
+namespace Chevere\Components\App\Instances;
 
-use Chevere\Contracts\Console\ConsoleContract;
+use Chevere\Components\Runtime\Runtime;
 
-/**
- * A container for the built-in console.
- */
-final class Terminal
+final class RuntimeInstance
 {
     private static $instance;
 
-    public function __construct(ConsoleContract $console)
+    public function __construct(Runtime $runtime)
     {
-        self::$instance = $console;
+        self::$instance = $runtime;
     }
 
-    public static function get(): ConsoleContract
+    public static function get(): Runtime
     {
         return self::$instance;
     }

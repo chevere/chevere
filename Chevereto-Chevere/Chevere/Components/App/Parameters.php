@@ -22,7 +22,7 @@ use Chevere\Contracts\App\ParametersContract;
 use InvalidArgumentException;
 
 /**
- * Application builder parameters
+ * Application parameters container.
  */
 final class Parameters implements ParametersContract
 {
@@ -30,8 +30,8 @@ final class Parameters implements ParametersContract
      * The keys accepted by this class, with the gettype at right side.
      */
     private $types = [
-        self::KEY_API => 'string',
-        self::KEY_ROUTES => 'array',
+        ParametersContract::KEY_API => 'string',
+        ParametersContract::KEY_ROUTES => 'array',
     ];
 
     /** @var ArrayFile The parameters array used to construct the object */
@@ -43,19 +43,25 @@ final class Parameters implements ParametersContract
     /** @var array */
     private $routes;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(ArrayFile $arrayFile)
     {
         $this->arrayFile = $arrayFile;
         $this->assertKeys();
         $array = $this->arrayFile->toArray();
-        if (isset($array[static::KEY_API])) {
-            $this->api = $array[static::KEY_API];
+        if (isset($array[ParametersContract::KEY_API])) {
+            $this->api = $array[ParametersContract::KEY_API];
         }
-        if (isset($array[static::KEY_ROUTES])) {
-            $this->routes = $array[static::KEY_ROUTES];
+        if (isset($array[ParametersContract::KEY_ROUTES])) {
+            $this->routes = $array[ParametersContract::KEY_ROUTES];
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withAddedRoutePaths(Path ...$paths): ParametersContract
     {
         $new = clone $this;
@@ -76,26 +82,41 @@ final class Parameters implements ParametersContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function hasParameters(): bool
     {
         return $this->hasApi() || $this->hasRoutes();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function hasApi(): bool
     {
         return isset($this->api);
     }
-
-    public function hasRoutes(): bool
-    {
-        return isset($this->routes);
-    }
-
+    
+    /**
+     * {@inheritdoc}
+     */
     public function api(): string
     {
         return $this->api;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function hasRoutes(): bool
+    {
+        return isset($this->routes);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function routes(): array
     {
         return $this->routes;

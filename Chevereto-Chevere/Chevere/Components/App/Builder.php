@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
+use Chevere\Components\App\Instances\RequestInstance;
 use Chevere\Components\Controller\Traits\ControllerNameAccessTrait;
-use Chevere\Components\Http\RequestContainer;
 use Chevere\Components\Runtime\Runtime;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
@@ -43,6 +43,9 @@ final class Builder implements BuilderContract
     /** @var array */
     private $controllerArguments;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(AppContract $app, BuildContract $build)
     {
         $this->app = $app;
@@ -94,21 +97,30 @@ final class Builder implements BuilderContract
     {
         $new = clone $this;
         $new->request = $request;
-        RequestContainer::setInstance($request);
+        RequestInstance::set($request);
 
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function hasRequest(): bool
     {
         return isset($this->request);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function request(): RequestContract
     {
         return $this->request;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withControllerName(string $controllerName): BuilderContract
     {
         $new = clone $this;
@@ -117,6 +129,9 @@ final class Builder implements BuilderContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withControllerArguments(array $controllerArguments): BuilderContract
     {
         $new = clone $this;
@@ -125,26 +140,19 @@ final class Builder implements BuilderContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function hasControllerArguments(): bool
     {
         return isset($this->controllerArguments);
     }
 
-    public function controllerArguments(): array
-    {
-        return $this->controllerArguments;
-    }
-
-    public static function runtimeInstance(): Runtime
-    {
-        return self::$runtime;
-    }
-
     /**
      * {@inheritdoc}
      */
-    public static function setRuntimeInstance(Runtime $runtime)
+    public function controllerArguments(): array
     {
-        self::$runtime = $runtime;
+        return $this->controllerArguments;
     }
 }

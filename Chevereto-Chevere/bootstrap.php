@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere;
 
-use Chevere\Components\App\Builder;
+use Chevere\Components\App\Instances\RequestInstance;
+use Chevere\Components\App\Instances\RuntimeInstance;
 use Chevere\Components\Console\Console;
 use Chevere\Components\Console\Terminal;
-use Chevere\Components\Http\RequestContainer;
 use Chevere\Components\Http\ServerRequest;
 use Chevere\Components\Runtime\Runtime;
 use Chevere\Components\Runtime\Sets\SetDebug;
@@ -48,7 +48,7 @@ define('Chevere\APP_PATH', ROOT_PATH . 'app/');
 /** DEV=true to rebuild the App on every load */
 define('Chevere\DEV', (bool) include(APP_PATH . 'options/dev.php'));
 
-new RequestContainer(
+new RequestInstance(
     ServerRequest::fromGlobals()
 );
 
@@ -59,7 +59,7 @@ if ('cli' == php_sapi_name()) {
     define('Chevere\CLI', false);
 }
 
-Builder::setRuntimeInstance(
+new RuntimeInstance(
     new Runtime(
         new SetDebug('1'),
         new SetErrorHandler('Chevere\Components\ExceptionHandler\ErrorHandler::error'),
@@ -68,7 +68,7 @@ Builder::setRuntimeInstance(
         new SetDefaultCharset('utf-8'),
         new SetPrecision('16'),
         new SetUriScheme('https'),
-        new SetTimeZone('UTC'),
+        new SetTimeZone('UTC')
     )
 );
 

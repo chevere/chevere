@@ -32,6 +32,9 @@ final class ControllerRunner implements ControllerRunnerContract
     /** @var string */
     private $controllerName;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(AppContract $app)
     {
         $this->app = $app;

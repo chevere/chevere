@@ -11,25 +11,25 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Http;
+namespace Chevere\Components\App\Instances;
 
 use Chevere\Contracts\Http\RequestContract;
 
-final class RequestContainer
+final class RequestInstance
 {
     private static $instance;
 
     public function __construct(RequestContract $request)
     {
-        self::setInstance($request);
+        self::set($request);
     }
 
-    public static function setInstance(RequestContract $request): void
+    public static function set(RequestContract $request): void
     {
         self::$instance = $request;
     }
 
-    public static function getInstance(): RequestContract
+    public static function get(): RequestContract
     {
         return self::$instance;
     }

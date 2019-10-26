@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\App;
 
-use Chevere\Components\Runtime\Runtime;
 use Chevere\Contracts\Http\RequestContract;
 
 interface BuilderContract
@@ -49,25 +48,57 @@ interface BuilderContract
      */
     public function build(): BuildContract;
 
+    /**
+     * Return an instance with the specified RequestContract.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified RequestContract.
+     */
     public function withRequest(RequestContract $request): BuilderContract;
 
+    /**
+     * Returns a boolean indicating whether the instance has a RequestContract.
+     */
     public function hasRequest(): bool;
 
+    /**
+     * Provides access to the RequestContract instance.
+     */
     public function request(): RequestContract;
 
+    /**
+     * Return an instance with the specified controller.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified controller.
+     */
     public function withControllerName(string $controller): BuilderContract;
 
+    /**
+     * Returns a boolean indicating whether the instance has a controller name.
+     */
     public function hasControllerName(): bool;
 
+    /**
+     * Provides access to the controller name.
+     */
     public function controllerName(): string;
 
+    /**
+     * Return an instance with the specified controller arguments.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified controller arguments.
+     */
     public function withControllerArguments(array $controllerArguments): BuilderContract;
 
+    /**
+     * Returns a boolean indicating whether the instance has controller arguments.
+     */
     public function hasControllerArguments(): bool;
 
+    /**
+     * Provides access to the controller arguments.
+     */
     public function controllerArguments(): array;
-
-    public static function runtimeInstance(): Runtime;
-
-    public static function setRuntimeInstance(Runtime $runtime);
 }

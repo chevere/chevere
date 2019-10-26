@@ -17,6 +17,9 @@ use Chevere\Contracts\Controller\ControllerContract;
 
 interface ControllerRunnerContract
 {
+    /**
+     * Sets the application on which the controllers will run.
+     */
     public function __construct(AppContract $app);
 
     /**

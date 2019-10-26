@@ -34,19 +34,34 @@ interface ParametersContract
 
     public function __construct(ArrayFile $arrayFile);
 
+    /**
+     * Return an instance with the specified Path instances.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified Path instances.
+     */
     public function withAddedRoutePaths(Path ...$paths): ParametersContract;
 
+    /**
+     * Returns a boolean indicating whether the instance has any parameter.
+     */
     public function hasParameters(): bool;
-
+    
+    /**
+     * Returns a boolean indicating whether the instance has API parameter.
+     */
     public function hasApi(): bool;
 
-    public function hasRoutes(): bool;
-
     /**
-     * Get the API string parameter.
+     * Get the API parameter.
      */
     public function api(): string;
 
+    /**
+     * Returns a boolean indicating whether the instance has route parameters.
+     */
+    public function hasRoutes(): bool;
+    
     /**
      * Get the routes parameter.
      */

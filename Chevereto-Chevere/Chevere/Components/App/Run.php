@@ -20,6 +20,7 @@ use Chevere\Components\Http\ServerRequest;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\BuilderContract;
+use Chevere\Contracts\App\RunContract;
 use Chevere\Contracts\Controller\JsonApiContract;
 
 use function console;
@@ -30,7 +31,7 @@ use const Chevere\CLI;
 /**
  * Application runner.
  */
-final class Run
+final class Run implements RunContract
 {
     /** @var BuilderContract */
     private $builder;
@@ -47,12 +48,18 @@ final class Run
     /** @var array */
     private $controllerArguments;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(BuilderContract $builder)
     {
         $this->builder = $builder;
     }
 
-    public function withConsoleLoop(): Run
+    /**
+     * {@inheritdoc}
+     */
+    public function withConsoleLoop(): RunContract
     {
         $new = clone $this;
         $new->consoleLoop = true;
@@ -61,9 +68,9 @@ final class Run
     }
 
     /**
-     * This method runs the application and when the context is CLI, it injects services from console commands.
+     * {@inheritdoc}
      */
-    public function run()
+    public function run(): void
     {
         $this->handleConsole();
         $this->handleRequest();
