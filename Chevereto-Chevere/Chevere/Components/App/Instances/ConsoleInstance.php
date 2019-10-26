@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Console;
+namespace Chevere\Components\App\Instances;
 
 use Chevere\Contracts\Console\ConsoleContract;
 
 /**
  * A container for the built-in console.
  */
-final class Terminal
+final class ConsoleInstance
 {
     private static $instance;
 

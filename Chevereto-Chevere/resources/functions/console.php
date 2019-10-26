@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-use Chevere\Components\Console\Terminal;
+use Chevere\Components\App\Instances\ConsoleInstance;
 use Chevere\Contracts\Console\ConsoleContract;
 
 function console(): ConsoleContract
 {
-    return Terminal::get();
+    return ConsoleInstance::get();
 }

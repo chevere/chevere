@@ -15,6 +15,9 @@ namespace Chevere\Components\App\Instances;
 
 use Chevere\Contracts\Http\RequestContract;
 
+/**
+ * A container for the global request instance.
+ */
 final class RequestInstance
 {
     private static $instance;

@@ -15,6 +15,9 @@ namespace Chevere\Components\App\Instances;
 
 use Chevere\Components\Runtime\Runtime;
 
+/**
+ * A container for the application Runtime.
+ */
 final class RuntimeInstance
 {
     private static $instance;

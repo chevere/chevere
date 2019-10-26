@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere;
 
+use Chevere\Components\App\Instances\ConsoleInstance;
 use Chevere\Components\App\Instances\RequestInstance;
 use Chevere\Components\App\Instances\RuntimeInstance;
 use Chevere\Components\Console\Console;
-use Chevere\Components\Console\Terminal;
 use Chevere\Components\Http\ServerRequest;
 use Chevere\Components\Runtime\Runtime;
 use Chevere\Components\Runtime\Sets\SetDebug;
@@ -54,7 +54,7 @@ new RequestInstance(
 
 if ('cli' == php_sapi_name()) {
     define('Chevere\CLI', true);
-    new Terminal(new Console());
+    new ConsoleInstance(new Console());
 } else {
     define('Chevere\CLI', false);
 }
