@@ -14,7 +14,10 @@ declare(strict_types=1);
 namespace Chevere;
 
 use Chevere\Components\App\Builder;
-use Chevere\Components\Console\Container;
+use Chevere\Components\Console\Console;
+use Chevere\Components\Console\Terminal;
+use Chevere\Components\Http\RequestContainer;
+use Chevere\Components\Http\ServerRequest;
 use Chevere\Components\Runtime\Runtime;
 use Chevere\Components\Runtime\Sets\SetDebug;
 use Chevere\Components\Runtime\Sets\SetDefaultCharset;
@@ -45,9 +48,13 @@ define('Chevere\APP_PATH', ROOT_PATH . 'app/');
 /** DEV=true to rebuild the App on every load */
 define('Chevere\DEV', (bool) include(APP_PATH . 'options/dev.php'));
 
+new RequestContainer(
+    ServerRequest::fromGlobals()
+);
+
 if ('cli' == php_sapi_name()) {
     define('Chevere\CLI', true);
-    new Container();
+    new Terminal(new Console());
 } else {
     define('Chevere\CLI', false);
 }

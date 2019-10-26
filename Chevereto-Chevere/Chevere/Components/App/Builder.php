@@ -39,10 +39,12 @@ final class Builder implements BuilderContract
     private static $runtime;
 
     /** @var RequestContract */
-    private static $request;
+    private $request;
 
     /** @var array */
     private $controllerArguments;
+
+    private static $instance;
 
     public function __construct(AppContract $app, BuildContract $build)
     {
@@ -69,9 +71,19 @@ final class Builder implements BuilderContract
     public function withRequest(RequestContract $request): BuilderContract
     {
         $new = clone $this;
-        $new::$request = $request;
+        $new->request = $request;
 
         return $new;
+    }
+
+    public function hasRequest(): bool
+    {
+        return isset($this->request);
+    }
+
+    public function request(): RequestContract
+    {
+        return $this->request;
     }
 
     public function withControllerName(string $controllerName): BuilderContract
@@ -88,11 +100,6 @@ final class Builder implements BuilderContract
         $new->controllerArguments = $controllerArguments;
 
         return $new;
-    }
-
-    public function hasRequest(): bool
-    {
-        return isset($this::$request);
     }
 
     public function hasControllerArguments(): bool
@@ -118,14 +125,6 @@ final class Builder implements BuilderContract
     public static function runtimeInstance(): Runtime
     {
         return self::$runtime;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function requestInstance(): RequestContract
-    {
-        return self::$request;
     }
 
     /**

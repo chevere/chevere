@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-use Chevere\Components\Console\Terminal;
-use Chevere\Contracts\Console\ConsoleContract;
+use Chevere\Components\Http\RequestContainer;
+use Chevere\Contracts\Http\RequestContract;
 
-function console(): ConsoleContract
+function request(): RequestContract
 {
-    return Terminal::getInstance();
+    return RequestContainer::getInstance();
 }

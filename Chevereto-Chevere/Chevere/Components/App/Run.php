@@ -75,7 +75,7 @@ final class Run
             );
         }
         $this->ran = true;
-        $path = $this->builder->requestInstance()->getUri()->getPath();
+        $path = $this->builder->request()->getUri()->getPath();
         if ($this->builder->hasControllerName()) {
             $this->controllerName = $this->builder->controllerName();
             $this->controllerArguments = $this->builder->controllerArguments();
@@ -108,7 +108,7 @@ final class Run
     private function resolveCallable(string $pathInfo): void
     {
         $app = $this->builder->app();
-        $request = $this->builder->requestInstance();
+        $request = $this->builder->request();
         try {
             $route = $app->router()->resolve($pathInfo);
             $app = $app
@@ -148,7 +148,7 @@ final class Run
         $app = $this->builder->app();
         $app = $app
             ->withArguments($this->controllerArguments);
-        
+
         $runner = new ControllerRunner($app);
         $controller = $runner->run($this->controllerName);
         $contentStream = stream_for($controller->content());

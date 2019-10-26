@@ -127,11 +127,7 @@ final class ExceptionHandler
         $this->setTimeProperties();
         $this->data = $this->data
             ->withKey('id', uniqid('', true));
-        try {
-            $this->request = Builder::requestInstance();
-        } catch (TypeError $e) {
-            $this->request = ServerRequest::fromGlobals();
-        }
+        $this->request = Builder::requestInstance();
         $this->runtime = Builder::runtimeInstance();
         $this->isDebugEnabled = (bool) $this->runtime->data()->key('debug');
 

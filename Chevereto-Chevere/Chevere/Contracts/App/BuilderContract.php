@@ -22,31 +22,31 @@ interface BuilderContract
 
     public function withApp(AppContract $app): BuilderContract;
 
+    public function app(): AppContract;
+
     public function withBuild(BuildContract $build): BuilderContract;
+
+    public function build(): BuildContract;
 
     public function withRequest(RequestContract $request): BuilderContract;
 
-    public function withControllerName(string $controller): BuilderContract;
-
-    public function withControllerArguments(array $controllerArguments): BuilderContract;
-
     public function hasRequest(): bool;
+
+    public function request(): RequestContract;
+
+    public function withControllerName(string $controller): BuilderContract;
 
     public function hasControllerName(): bool;
 
     public function controllerName(): string;
 
+    public function withControllerArguments(array $controllerArguments): BuilderContract;
+
     public function hasControllerArguments(): bool;
 
     public function controllerArguments(): array;
 
-    public function app(): AppContract;
-
-    public function build(): BuildContract;
-
     public static function runtimeInstance(): Runtime;
-
-    public static function requestInstance(): RequestContract;
 
     public static function setRuntimeInstance(Runtime $runtime);
 }

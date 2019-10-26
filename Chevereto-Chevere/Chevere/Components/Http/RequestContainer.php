@@ -11,26 +11,20 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Console;
+namespace Chevere\Components\Http;
 
-/**
- * A container for the built-in console.
- */
-final class Container
+use Chevere\Contracts\Http\RequestContract;
+
+final class RequestContainer
 {
     private static $instance;
 
-    public function __construct()
+    public function __construct(RequestContract $request)
     {
-        self::$instance = new Console();
+        self::$instance = $request;
     }
 
-    public static function hasInstance(): bool
-    {
-        return isset(self::$instance);
-    }
-
-    public static function getInstance(): Console
+    public static function getInstance(): RequestContract
     {
         return self::$instance;
     }
