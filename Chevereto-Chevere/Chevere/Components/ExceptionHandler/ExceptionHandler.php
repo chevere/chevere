@@ -15,7 +15,6 @@ namespace Chevere\Components\ExceptionHandler;
 
 use DateTime;
 use DateTimeZone;
-use TypeError;
 
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\FirePHPHandler;
@@ -31,7 +30,7 @@ use Chevere\Components\ExceptionHandler\src\Output;
 use Chevere\Components\ExceptionHandler\src\Style;
 use Chevere\Components\ExceptionHandler\src\Template;
 use Chevere\Components\ExceptionHandler\src\Wrap;
-use Chevere\Components\Http\ServerRequest;
+use Chevere\Components\Http\RequestContainer;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Runtime\Runtime;
 use Chevere\Contracts\Http\RequestContract;
@@ -127,7 +126,7 @@ final class ExceptionHandler
         $this->setTimeProperties();
         $this->data = $this->data
             ->withKey('id', uniqid('', true));
-        $this->request = Builder::requestInstance();
+        $this->request = RequestContainer::getInstance();
         $this->runtime = Builder::runtimeInstance();
         $this->isDebugEnabled = (bool) $this->runtime->data()->key('debug');
 

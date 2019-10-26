@@ -18,14 +18,35 @@ use Chevere\Contracts\Http\RequestContract;
 
 interface BuilderContract
 {
+    /**
+     * Creates a new BuilderContact instance.
+     */
     public function __construct(AppContract $app, BuildContract $build);
 
+    /**
+     * Return an instance with the specified AppContract.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified AppContract.
+     */
     public function withApp(AppContract $app): BuilderContract;
-
+    
+    /**
+     * Provides access to the AppContract instance.
+     */
     public function app(): AppContract;
 
+    /**
+     * Return an instance with the specified BuildContract.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified BuildContract.
+     */
     public function withBuild(BuildContract $build): BuilderContract;
 
+    /**
+     * Provides access to the BuildContract instance.
+     */
     public function build(): BuildContract;
 
     public function withRequest(RequestContract $request): BuilderContract;

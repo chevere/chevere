@@ -102,19 +102,22 @@ final class ObjectProcessor implements ProcessorContract
     private function processProperty($key, $var): void
     {
         $visibility = implode(' ', $var['visibility'] ?? $this->properties['visibility']);
-        $operator = $this->varDump->formatter()->wrap(VarDump::_OPERATOR, '->');
-        $this->val .= "\n" . $this->varDump->indentString() . $this->varDump->formatter()->getEmphasis($visibility) . ' ' . $this->varDump->formatter()->getEncodedChars($key) . " $operator ";
+        $operatorWrap = $this->varDump->formatter()->wrap(VarDump::_OPERATOR, '->');
+        $this->val .= "\n" . $this->varDump->indentString() . $this->varDump->formatter()->getEmphasis($visibility) . ' ' . $this->varDump->formatter()->getEncodedChars($key) . " $operatorWrap ";
         $this->aux = $var['value'];
         if (is_object($this->aux) && property_exists($this->aux, $key)) {
             try {
                 $reflector = new ReflectionObject($this->aux);
                 $prop = $reflector->getProperty($key);
                 $prop->setAccessible(true);
-                if ($this->aux == $prop->getValue($this->aux)) {
+                $propValue = $prop->getValue($this->aux);
+                if ($this->aux == $propValue) {
                     $this->val .= $this->varDump->formatter()->wrap(
                         VarDump::_OPERATOR,
                         '(' . $this->varDump->formatter()->getEmphasis('circular object reference') . ')'
                     );
+                } else {
+                    $this->val .= $this->varDump->withDump($propValue, $this->varDump->indent() + 1)->toString();
                 }
                 return;
             } catch (Throwable $e) {

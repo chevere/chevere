@@ -26,7 +26,6 @@
             "utils/phpcheck.php",
             "resources/functions/dump.php",
             "resources/functions/console.php",
-            "resources/functions/request.php",
             "resources/functions/ChevereFn/string.php"
         ],
         "psr-4": {

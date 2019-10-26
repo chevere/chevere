@@ -21,6 +21,11 @@ final class RequestContainer
 
     public function __construct(RequestContract $request)
     {
+        self::setInstance($request);
+    }
+
+    public static function setInstance(RequestContract $request): void
+    {
         self::$instance = $request;
     }
 

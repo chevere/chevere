@@ -78,10 +78,10 @@ final class Loader implements LoaderContract
     private function handleParameters(): void
     {
         if (DEV || (CLI && console()->isBuilding())) {
-            $path = new Path('/home/rodolfo/git/chevere/app/plugins/local/HelloWorld/routes/web.php');
-            $pluginRoutes = [$path];
-            $this->parameters = $this->parameters
-                ->withAddedRoutePaths(...$pluginRoutes);
+            // $path = new Path('/home/rodolfo/git/chevere/app/plugins/local/HelloWorld/routes/web.php');
+            // $pluginRoutes = [$path];
+            // $this->parameters = $this->parameters
+            //     ->withAddedRoutePaths(...$pluginRoutes);
             if ($this->parameters->hasParameters()) {
                 $this->builder = $this->builder
                     ->withBuild(

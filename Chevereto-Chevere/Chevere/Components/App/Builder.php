@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\App;
 
 use Chevere\Components\Controller\Traits\ControllerNameAccessTrait;
+use Chevere\Components\Http\RequestContainer;
 use Chevere\Components\Runtime\Runtime;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
@@ -21,9 +22,7 @@ use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\Http\RequestContract;
 
 /**
- * Builder is responsible of building the application.
- *
- * The resulting build could be built from cache or from scratch.
+ * The application builder container.
  */
 final class Builder implements BuilderContract
 {
@@ -44,14 +43,15 @@ final class Builder implements BuilderContract
     /** @var array */
     private $controllerArguments;
 
-    private static $instance;
-
     public function __construct(AppContract $app, BuildContract $build)
     {
         $this->app = $app;
         $this->build = $build;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withApp(AppContract $app): BuilderContract
     {
         $new = clone $this;
@@ -60,6 +60,17 @@ final class Builder implements BuilderContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function app(): AppContract
+    {
+        return $this->app;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function withBuild(BuildContract $build): BuilderContract
     {
         $new = clone $this;
@@ -68,10 +79,22 @@ final class Builder implements BuilderContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function build(): BuildContract
+    {
+        return $this->build;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function withRequest(RequestContract $request): BuilderContract
     {
         $new = clone $this;
         $new->request = $request;
+        RequestContainer::setInstance($request);
 
         return $new;
     }
@@ -110,16 +133,6 @@ final class Builder implements BuilderContract
     public function controllerArguments(): array
     {
         return $this->controllerArguments;
-    }
-
-    public function app(): AppContract
-    {
-        return $this->app;
-    }
-
-    public function build(): BuildContract
-    {
-        return $this->build;
     }
 
     public static function runtimeInstance(): Runtime
