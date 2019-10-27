@@ -15,9 +15,8 @@ namespace App\Middlewares;
 
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\MiddlewareHandlerContract;
-use Chevere\Contracts\MiddlewareInterface;
 
-class RoleBanned implements MiddlewareInterface
+class RoleBanned implements MiddlewareHandlerContract
 {
     public function __invoke(AppContract $app, MiddlewareHandlerContract $handler)
     {

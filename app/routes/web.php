@@ -17,9 +17,9 @@ return [
             (new Method('GET'))
                 ->withControllerName(Controllers\Index::class)
         )
-        ->withName('web.root'),
-    // ->addMiddleware(Middlewares\RoleAdmin::class)
-    // ->addMiddleware(Middlewares\RoleBanned::class),
+        ->withName('web.root')
+        ->withAddedMiddleware(Middlewares\RoleAdmin::class),
+    // ->withAddedMiddleware(Middlewares\RoleBanned::class),
     // (new Route('/cache/{llave?}-{cert}-{user?}'))
     //     ->withWhere('llave', '[0-9]+')
     //     ->withAddedMethod(

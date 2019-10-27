@@ -133,7 +133,7 @@ final class RequestCommand extends Command
             $this->getArgumentString('uri'),
             $this->getOptionArray('headers'),
             isset($this->options['body']) ? $this->getOptionString('body') : null,
-            );
+        );
 
         $request
             ->withCookieParams($this->parsedOptions['cookie'])
@@ -148,7 +148,7 @@ final class RequestCommand extends Command
             $run = (new Run($builder))->withConsoleLoop();
             $run->run();
         } catch (RouteNotFoundException $e) {
-            // $e Shhhh... This is just to capture the CLI output
+            $builder = $run->builder();
         }
 
         $response = $builder->app()->response();

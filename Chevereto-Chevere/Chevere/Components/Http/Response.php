@@ -98,6 +98,7 @@ final class Response implements ResponseContract
         while (!$stream->eof()) {
             echo $stream->read(1024 * 8);
         }
+
         return $this;
     }
 

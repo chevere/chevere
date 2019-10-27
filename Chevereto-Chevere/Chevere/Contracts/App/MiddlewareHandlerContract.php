@@ -14,8 +14,4 @@ declare(strict_types=1);
 namespace Chevere\Contracts\App;
 
 interface MiddlewareHandlerContract
-{
-    // public function handle();
-
-    // public function stop();
-}
+{ }

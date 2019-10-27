@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
+use Chevere\Components\Http\Request\RequestException;
 use LogicException;
 use RuntimeException;
 
@@ -54,6 +55,11 @@ final class Run implements RunContract
     public function __construct(BuilderContract $builder)
     {
         $this->builder = $builder;
+    }
+
+    public function builder(): BuilderContract
+    {
+        return $this->builder;
     }
 
     /**
@@ -120,27 +126,31 @@ final class Run implements RunContract
             $route = $app->router()->resolve($pathInfo);
             $app = $app
                 ->withRoute($route);
+            $this->controllerName = $app->route()
+                ->getController($request->getMethod());
+            $this->controllerArguments = $app->router()->arguments();
         } catch (RouteNotFoundException $e) {
             $response = $app->response();
             $guzzle = $response->guzzle()
                 ->withStatus(404)
                 ->withBody(stream_for('Not found.'));
-            $response = $response->withGuzzle($guzzle);
+            $response = $response
+                ->withGuzzle($guzzle);
             $app = $app
                 ->withResponse($response);
+        }
+        $this->builder = $this->builder
+            ->withApp($app);
+
+        if (isset($response)) {
             if (CLI) {
-                throw new RouteNotFoundException($e->getMessage());
+                throw new RouteNotFoundException();
             }
-            $app->response()
+            $this->builder->app()->response()
                 ->sendHeaders()
                 ->sendBody();
             die();
         }
-        $this->builder = $this->builder
-            ->withApp($app);
-        $this->controllerName = $app->route()
-            ->getController($request->getMethod());
-        $this->controllerArguments = $app->router()->arguments();
     }
 
     private function assertControllerName(): void
@@ -155,21 +165,36 @@ final class Run implements RunContract
         $app = $this->builder->app();
         $app = $app
             ->withArguments($this->controllerArguments);
-
-        $runner = new ControllerRunner($app);
-        $controller = $runner->run($this->controllerName);
-        $contentStream = stream_for($controller->content());
         $response = $app->response();
         $guzzle = $response->guzzle();
+        try {
+            $runner = new ControllerRunner($app);
+            $controller = $runner->run($this->controllerName);
+            $content = $controller->content();
+        } catch (RequestException $e) {
+            $content = $e->getMessage();
+            $guzzle = $guzzle
+                ->withStatus($e->getCode());
+        }
+        $contentStream = stream_for($content);
         $response = $response->withGuzzle(
-            $controller instanceof JsonApiContract
+            1 > 2
+                // $controller instanceof JsonApiContract
                 ? $guzzle->withJsonApi($contentStream)
                 : $guzzle->withBody($contentStream)
         );
+        $response = $response->withGuzzle(
+            $guzzle
+                ->withBody($contentStream)
+        );
         $app = $app
             ->withResponse($response);
-        if (!CLI) {
-            $app->response()
+        $this->builder = $this->builder
+            ->withApp($app);
+        if (CLI) {
+            throw new RouteNotFoundException();
+        } else {
+            $this->builder->app()->response()
                 ->sendHeaders()
                 ->sendBody();
         }

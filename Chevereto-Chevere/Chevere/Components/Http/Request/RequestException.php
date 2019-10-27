@@ -21,20 +21,20 @@ use Chevere\Components\Message\Message;
 
 final class RequestException extends Exception
 {
-    public function __construct(int $code = 0, string $message = null, Exception $previous = null)
+    public function __construct(int $httpCode = 0, string $message = null, Exception $previous = null)
     {
-        $status = Http::STATUS_CODES[$code];
+        $status = Http::STATUS_CODES[$httpCode];
 
         if (!isset($status)) {
             throw new LogicException(
                 (new Message('Unknown HTTP status code %code%'))
-                    ->code('%code%', $code)
+                    ->code('%code%', $httpCode)
                     ->toString()
             );
         }
         if (null === $message) {
             $message = $status;
         }
-        parent::__construct($message, $code, $previous);
+        parent::__construct($message, $httpCode, $previous);
     }
 }

@@ -16,6 +16,7 @@ namespace Chevere\Components\App;
 use LogicException;
 
 use Chevere\Components\Controller\ArgumentsWrap;
+use Chevere\Components\Http\Request\RequestException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\ControllerRunnerContract;
@@ -83,9 +84,6 @@ final class ControllerRunner implements ControllerRunnerContract
             if (!empty($middlewares)) {
                 $handler = new MiddlewareHandler($middlewares, $this->app);
                 $handler->runner();
-                // if ($handler->exception) {
-                //     dd($handler->exception->getMessage(), 'Aborted at ' . __FILE__ . ':' . __LINE__);
-                // }
             }
         }
     }

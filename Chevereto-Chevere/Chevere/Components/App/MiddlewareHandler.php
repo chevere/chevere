@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
+use Chevere\Components\Http\Request\RequestException;
 use Throwable;
 
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\MiddlewareHandlerContract;
-use Chevere\Contracts\MiddlewareInterface;
 
 /**
- * TODO: Add stop, redirect and other methods needed to alter the flow.
+ * TODO: Add redirect and other methods needed to alter the flow.
  */
 final class MiddlewareHandler implements MiddlewareHandlerContract
 {
@@ -31,13 +31,14 @@ final class MiddlewareHandler implements MiddlewareHandlerContract
     private $queue;
 
     /** @var bool */
-    private $stopped;
+    private $isStopped;
 
     /** @var Throwable */
     private $exception;
 
     /**
-     * @param array $queue an array containing callables or callable strings
+     * @param array $queue an array containing callable Middlewares
+     * @param AppContract $app The application container
      */
     public function __construct(array $queue, AppContract $app)
     {
@@ -45,27 +46,44 @@ final class MiddlewareHandler implements MiddlewareHandlerContract
         $this->queue = $queue;
     }
 
-    public function runner()
+    public function runner(): MiddlewareHandlerContract
     {
         reset($this->queue);
 
         return $this->handle();
     }
 
-    // FIXME: Returns null when condition = false
-    public function handle(): MiddlewareInterface
+    /**
+     * Stops the middleware execution chain.
+     * 
+     * @param RequestException An exception describing what went wrong
+     */
+    public function stop(RequestException $exception): void
+    {
+        $this->isStopped = true;
+        $this->exception = $exception;
+    }
+
+    public function isStopped(): bool
+    {
+        return $this->isStopped;
+    }
+
+    public function exception(): RequestException
+    {
+        return $this->exception;
+    }
+
+    private function handle(): MiddlewareHandlerContract
     {
         $middleware = current($this->queue);
         if ($middleware) {
             next($this->queue);
 
-            return new $middleware($this);
+            return (new $middleware())
+                ->handle($this);
         }
-    }
 
-    public function stop(Throwable $throwable)
-    {
-        $this->stopped = true;
-        $this->exception = $throwable;
+        return $this;
     }
 }
