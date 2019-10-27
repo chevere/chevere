@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\App;
 
 use Chevere\Components\Http\Request\RequestException;
-use Throwable;
-
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\MiddlewareHandlerContract;
 
@@ -33,7 +31,7 @@ final class MiddlewareHandler implements MiddlewareHandlerContract
     /** @var bool */
     private $isStopped;
 
-    /** @var Throwable */
+    /** @var RequestException */
     private $exception;
 
     /**
@@ -56,7 +54,7 @@ final class MiddlewareHandler implements MiddlewareHandlerContract
     /**
      * Stops the middleware execution chain.
      * 
-     * @param RequestException An exception describing what went wrong
+     * @param RequestException $exception An exception describing what went wrong
      */
     public function stop(RequestException $exception): void
     {

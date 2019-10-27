@@ -15,7 +15,6 @@ namespace Chevere\Components\App;
 
 use Chevere\Components\App\Instances\RequestInstance;
 use Chevere\Components\Controller\Traits\ControllerNameAccessTrait;
-use Chevere\Components\Runtime\Runtime;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\BuilderContract;
@@ -33,9 +32,6 @@ final class Builder implements BuilderContract
 
     /** @var BuildContract */
     private $build;
-
-    /** @var Runtime */
-    private static $runtime;
 
     /** @var RequestContract */
     private $request;
