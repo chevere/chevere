@@ -16,11 +16,11 @@ namespace Chevere\Components\App;
 use LogicException;
 
 use Chevere\Components\Controller\ArgumentsWrap;
-use Chevere\Components\Http\Request\RequestException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\ControllerRunnerContract;
 use Chevere\Contracts\Controller\ControllerContract;
+use Chevere\Contracts\App\MiddlewareRunnerContract;
 
 /**
  * Application container ControllerContract runner.
@@ -32,6 +32,9 @@ final class ControllerRunner implements ControllerRunnerContract
 
     /** @var string */
     private $controllerName;
+
+    /** @var MiddlewareRunnerContract */
+    private $middlewareRunner;
 
     /**
      * {@inheritdoc}
@@ -82,8 +85,12 @@ final class ControllerRunner implements ControllerRunnerContract
         if ($this->app->route()) {
             $middlewares = $this->app->route()->middlewares();
             if (!empty($middlewares)) {
-                $handler = new MiddlewareHandler($middlewares, $this->app);
-                $handler->runner();
+                $this->middlewareRunner = new MiddlewareRunner($middlewares, $this->app);
+                dd($this->middlewareRunner->isStopped());
+                if ($this->middlewareRunner->isStopped()) {
+                    dd('It was stopped');
+                }
+                dd('It was not stopped');
             }
         }
     }

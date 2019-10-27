@@ -14,16 +14,18 @@ declare(strict_types=1);
 namespace App\Middlewares;
 
 use Chevere\Components\Http\Request\RequestException;
-use Chevere\Contracts\App\MiddlewareHandlerContract;
+use Chevere\Components\Middleware\Middleware;
+use Chevere\Contracts\App\MiddlewareRunnerContract;
 
-class RoleAdmin implements MiddlewareHandlerContract
+class RoleAdmin extends Middleware
 {
-    public function handle(MiddlewareHandlerContract $handler): MiddlewareHandlerContract
+    public function handle(MiddlewareRunnerContract $runner): MiddlewareRunnerContract
     {
         $userRole = 'user';
         if ('admin' != $userRole) {
             throw new RequestException(401, sprintf('User must have the admin role, %s role found', $userRole));
         }
-        return $handler;
+
+        return $runner;
     }
 };

@@ -13,7 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Middleware;
 
+use Chevere\Contracts\App\MiddlewareRunnerContract;
+
 interface MiddlewareContract
 {
-    // public function __invoke(App $app, HandlerInterface $handler);
+    public function __construct();
+
+    public function handle(MiddlewareRunnerContract $middlewareRunner): MiddlewareRunnerContract;
 }

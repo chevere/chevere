@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace App\Middlewares;
 
 use Chevere\Contracts\App\AppContract;
-use Chevere\Contracts\App\MiddlewareHandlerContract;
+use Chevere\Contracts\App\MiddlewareRunnerContract;
 
-class RoleBanned implements MiddlewareHandlerContract
+class RoleBanned implements MiddlewareRunnerContract
 {
-    public function __invoke(AppContract $app, MiddlewareHandlerContract $handler)
+    public function __invoke(MiddlewareRunnerContract $runner)
     {
         \dump(__FILE__);
         // $userRole = 'user';
         // if ('banned' == $userRole) {
-        //     return $handler->stop($app);
+        //     return $runner->stop($app);
         // }
-        return $handler->process($app);
+        return $runner->process($app);
     }
 };
