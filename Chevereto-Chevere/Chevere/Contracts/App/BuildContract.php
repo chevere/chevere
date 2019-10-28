@@ -17,15 +17,13 @@ use Chevere\Components\Path\Path;
 
 interface BuildContract
 {
-    const FILE_PATH = 'build/build.php';
-
     /**
      * Constructs the BuildContract instance.
      *
      * A BuildContract instance allows to interact with the application build, which refers to the base
      * application service layer which consists of API and Router services.
      */
-    public function __construct(ServicesContract $services);
+    public function __construct(ServicesContract $services, Path $path);
 
     /**
      * Return an instance with the specified ServicesContract.

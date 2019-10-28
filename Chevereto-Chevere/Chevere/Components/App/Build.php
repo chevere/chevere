@@ -64,11 +64,11 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function __construct(ServicesContract $services)
+    public function __construct(ServicesContract $services, Path $path)
     {
         $this->isBuilt = false;
         $this->services = $services;
-        $this->path = new Path(BuildContract::FILE_PATH);
+        $this->path = $path;
     }
 
     /**

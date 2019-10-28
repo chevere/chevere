@@ -13,9 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere;
 
-require 'constants.php';
+use Chevere\Components\Path\Path;
 
+define('BOOTSTRAP_TIME', (int) hrtime(true));
 require dirname(__DIR__) . '/vendor/autoload.php';
+define('Chevere\DOCUMENT_ROOT', rtrim(dirname(__DIR__, basename(__DIR__) == 'Chevereto-Chevere' ? 1 : 3), '/') . '/');
+define('Chevere\ROOT_PATH', str_replace('\\', '/', DOCUMENT_ROOT));
+define('Chevere\APP_PATH', ROOT_PATH . 'app/');
 
 // FIXME: Create a container for runtime booleans
 define('Chevere\CLI', 'cli' == php_sapi_name());
