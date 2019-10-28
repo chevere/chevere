@@ -52,6 +52,11 @@ interface BuildContract
     public function hasParameters(): bool;
 
     /**
+     * Provides access to the ParametersContract instance.
+     */
+    public function parameters(): ParametersContract;
+
+    /**
      * Handles the API and route parameters and makes the application build.
      * Note: Can be only called once.
      */

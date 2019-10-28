@@ -28,6 +28,10 @@ final class AppTest extends TestCase
         $app = new App($response);
 
         $this->assertSame($response, $app->response());
+        $this->assertFalse($app->hasRequest());
+        $this->assertFalse($app->hasRoute());
+        $this->assertFalse($app->hasRouter());
+        $this->assertFalse($app->hasArguments());
     }
 
     public function testWithResponse(): void

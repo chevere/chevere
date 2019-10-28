@@ -15,7 +15,7 @@ namespace Chevere;
 
 define('BOOTSTRAP_TIME', (int) hrtime(true));
 require dirname(__DIR__) . '/vendor/autoload.php';
-define('Chevere\DOCUMENT_ROOT', __DIR__ . '/tests/application/');
+define('Chevere\DOCUMENT_ROOT', __DIR__ . '/tests/');
 define('Chevere\ROOT_PATH', rtrim(str_replace('\\', '/', DOCUMENT_ROOT), '/') . '/');
 define('Chevere\APP_PATH', ROOT_PATH . 'app/');
 

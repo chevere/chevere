@@ -156,8 +156,6 @@ final class Build implements BuildContract
      */
     public function checksums(): array
     {
-        $this->assertHasChecksums();
-
         return $this->checksums;
     }
 
@@ -166,8 +164,6 @@ final class Build implements BuildContract
      */
     public function checkout(): CheckoutContract
     {
-        $this->assertHasCheckout();
-
         return $this->checkout;
     }
 
@@ -204,29 +200,29 @@ final class Build implements BuildContract
         $this->checksums = array_merge($this->routerMaker->cache()->toArray(), $this->checksums);
     }
 
-    private function assertHasChecksums(): void
-    {
-        if (!isset($this->checksums)) {
-            throw new Exception(
-                (new Message("Property %type% %property% is not set for %className% instance"))
-                    ->code('%type%', CheckoutContract::class)
-                    ->code('%property%', '$checksums')
-                    ->code('%className%', __CLASS__)
-                    ->toString()
-            );
-        }
-    }
+    // private function assertHasChecksums(): void
+    // {
+    //     if (!isset($this->checksums)) {
+    //         throw new Exception(
+    //             (new Message("Property %type% %property% is not set for %className% instance"))
+    //                 ->code('%type%', CheckoutContract::class)
+    //                 ->code('%property%', '$checksums')
+    //                 ->code('%className%', __CLASS__)
+    //                 ->toString()
+    //         );
+    //     }
+    // }
 
-    private function assertHasCheckout(): void
-    {
-        if (!isset($this->checkout)) {
-            throw new Exception(
-                (new Message("Property %type% %property% is not set for %className% instance"))
-                    ->code('%type%', CheckoutContract::class)
-                    ->code('%property%', '$checkout')
-                    ->code('%className%', __CLASS__)
-                    ->toString()
-            );
-        }
-    }
+    // private function assertHasCheckout(): void
+    // {
+    //     if (!isset($this->checkout)) {
+    //         throw new Exception(
+    //             (new Message("Property %type% %property% is not set for %className% instance"))
+    //                 ->code('%type%', CheckoutContract::class)
+    //                 ->code('%property%', '$checkout')
+    //                 ->code('%className%', __CLASS__)
+    //                 ->toString()
+    //         );
+    //     }
+    // }
 }
