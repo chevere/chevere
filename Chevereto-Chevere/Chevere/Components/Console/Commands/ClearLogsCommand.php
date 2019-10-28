@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Console\Commands;
 
-use Chevere\Components\App\App;
 use Chevere\Components\Console\Command;
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\Path\Path;

@@ -18,12 +18,10 @@ use Chevere\Contracts\Http\ResponseContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
 
-use const Chevere\APP_PATH;
-
 interface AppContract
 {
     const FILE_PARAMETERS = 'parameters.php';
-    const PATH_LOGS = APP_PATH . 'var/logs/';
+    const PATH_LOGS = 'var/logs/';
 
     /**
      * Construct the application container.
