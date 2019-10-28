@@ -34,6 +34,9 @@ final class App implements AppContract
     /** @var ResponseContract */
     private $response;
 
+    /** @var RequestContract */
+    private $request;
+
     /** @var array String arguments (from request, cli) */
     private $arguments;
 
