@@ -17,7 +17,7 @@ use Chevere\Components\Http\Request\RequestException;
 use LogicException;
 use RuntimeException;
 
-use Chevere\Components\Http\ServerRequest;
+use Chevere\Components\Http\Request;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\BuilderContract;
@@ -114,7 +114,7 @@ final class Run implements RunContract
     {
         if (!$this->builder->hasRequest()) {
             $this->builder =  $this->builder
-                ->withRequest(ServerRequest::fromGlobals());
+                ->withRequest(Request::fromGlobals());
         }
         $this->builder = $this->builder->withApp(
             $this->builder->app()

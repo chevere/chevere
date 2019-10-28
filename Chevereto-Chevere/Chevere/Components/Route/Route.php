@@ -24,6 +24,8 @@ use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodsContract;
 use Chevere\Contracts\Route\RouteContract;
 
+use const Chevere\APP_PATH;
+
 // IDEA: L10n support
 // FIXME: Use object properties
 
@@ -242,8 +244,7 @@ final class Route implements RouteContract
     private function setMaker(): void
     {
         $this->maker = debug_backtrace(0, 2)[1];
-        $this->maker['file'] = (new Path($this->maker['file']))
-            ->absolute();
+        $this->maker['file'] = $this->maker['file'];
         $this->maker['fileLine'] = $this->maker['file']. ':' . $this->maker['line'];
     }
 }

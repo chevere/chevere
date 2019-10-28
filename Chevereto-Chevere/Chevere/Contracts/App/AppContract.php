@@ -30,6 +30,19 @@ interface AppContract
     public function __construct(ResponseContract $response);
 
     /**
+     * Return an instance with the specified ResponseContract.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified ResponseContract.
+     */
+    public function withResponse(ResponseContract $response): AppContract;
+
+    /**
+     * Provides access to the ResponseContract instance.
+     */
+    public function response(): ResponseContract;
+
+    /**
      * Return an instance with the specified RequestContract.
      *
      * This method MUST retain the state of the current instance, and return
@@ -46,20 +59,7 @@ interface AppContract
      * Provides access to the RequestContract instance.
      */
     public function request(): RequestContract;
-
-    /**
-     * Return an instance with the specified ResponseContract.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified ResponseContract.
-     */
-    public function withResponse(ResponseContract $response): AppContract;
-
-    /**
-     * Provides access to the ResponseContract instance.
-     */
-    public function response(): ResponseContract;
-
+    
     /**
      * Return an instance with the specified RouteContract.
      *

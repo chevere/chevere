@@ -20,7 +20,7 @@ use JsonException;
 use Chevere\Components\Console\Command;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Response;
-use Chevere\Components\Http\ServerRequest;
+use Chevere\Components\Http\Request;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\BuilderContract;
@@ -128,18 +128,18 @@ final class RequestCommand extends Command
 
         $method = new Method($this->getArgumentString('method'));
 
-        $request = new ServerRequest(
+        $request = new Request(
             $method->method(),
             $this->getArgumentString('uri'),
             $this->getOptionArray('headers'),
             isset($this->options['body']) ? $this->getOptionString('body') : null,
-        );
+            );
 
         $request
             ->withCookieParams($this->parsedOptions['cookie'])
             ->withQueryParams($this->parsedOptions['get'])
             ->withParsedBody($this->parsedOptions['post'])
-            ->withUploadedFiles(ServerRequest::normalizeFiles($this->parsedOptions['files']));
+            ->withUploadedFiles(Request::normalizeFiles($this->parsedOptions['files']));
 
         $builder = $builder
             ->withRequest($request);

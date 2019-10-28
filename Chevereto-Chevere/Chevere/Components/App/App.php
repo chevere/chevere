@@ -48,24 +48,6 @@ final class App implements AppContract
         $this->response = $response;
     }
 
-    public function withRequest(RequestContract $request): AppContract
-    {
-        $new = clone $this;
-        $new->request = $request;
-
-        return $new;
-    }
-
-    public function hasRequest(): bool
-    {
-        return isset($this->request);
-    }
-
-    public function request(): RequestContract
-    {
-        return $this->request;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -83,6 +65,33 @@ final class App implements AppContract
     public function response(): ResponseContract
     {
         return $this->response;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withRequest(RequestContract $request): AppContract
+    {
+        $new = clone $this;
+        $new->request = $request;
+
+        return $new;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasRequest(): bool
+    {
+        return isset($this->request);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function request(): RequestContract
+    {
+        return $this->request;
     }
 
     /**

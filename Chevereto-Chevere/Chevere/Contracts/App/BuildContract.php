@@ -23,7 +23,7 @@ interface BuildContract
      * A BuildContract instance allows to interact with the application build, which refers to the base
      * application service layer which consists of API and Router services.
      */
-    public function __construct(ServicesContract $services, Path $path);
+    public function __construct(ServicesContract $services);
 
     /**
      * Return an instance with the specified ServicesContract.
