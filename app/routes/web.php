@@ -18,6 +18,7 @@ return [
                 ->withControllerName(Controllers\Index::class)
         )
         ->withName('web.root')
+        ->withAddedMiddleware(Middlewares\RoleBanned::class)
         ->withAddedMiddleware(Middlewares\RoleAdmin::class),
     // ->withAddedMiddleware(Middlewares\RoleBanned::class),
     // (new Route('/cache/{llave?}-{cert}-{user?}'))

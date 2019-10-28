@@ -19,5 +19,5 @@ interface MiddlewareContract
 {
     public function __construct();
 
-    public function handle(MiddlewareRunnerContract $middlewareRunner): MiddlewareRunnerContract;
+    // public function handle(): void;
 }

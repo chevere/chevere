@@ -25,6 +25,9 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
     /** @var array */
     private $queue;
 
+    /** @var bool */
+    private $ran;
+
     /**
      * @param array $queue an array containing callable Middlewares
      * @param AppContract $app The application container
@@ -33,18 +36,24 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
     {
         $this->app = $app;
         $this->queue = $queue;
-        $this->handle();
     }
 
-    private function handle(): MiddlewareRunnerContract
+    public function withRun(): MiddlewareRunnerContract
     {
-        $middleware = current($this->queue);
-        if ($middleware) {
-            next($this->queue);
+        $new = clone $this;
+        $new->run();
+        $new->ran = true;
 
-            return (new $middleware())
-                ->handle($this);
+        return $new;
+    }
+
+    private function run(): void
+    {
+        foreach ($this->queue as $middleware) {
+            (new $middleware())
+                ->handle(
+                    $this->app->request()
+                );
         }
-        dd($this);
     }
 }

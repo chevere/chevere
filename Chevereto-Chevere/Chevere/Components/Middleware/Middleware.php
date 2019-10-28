@@ -21,8 +21,9 @@ abstract class Middleware implements MiddlewareContract
     /**
      * Dummy method to avoid constructors as a new MiddlewareContract is created in MiddlewareRunner.
      */
-    final function __construct()
-    { }
+    final public function __construct()
+    {
+    }
 
-    abstract function handle(MiddlewareRunnerContract $middlewareRunner): MiddlewareRunnerContract;
+    // abstract public function handle(MiddlewareRunnerContract $runner): MiddlewareRunnerContract;
 }

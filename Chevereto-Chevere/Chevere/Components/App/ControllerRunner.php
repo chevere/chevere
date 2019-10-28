@@ -85,12 +85,7 @@ final class ControllerRunner implements ControllerRunnerContract
         if ($this->app->route()) {
             $middlewares = $this->app->route()->middlewares();
             if (!empty($middlewares)) {
-                $this->middlewareRunner = new MiddlewareRunner($middlewares, $this->app);
-                dd($this->middlewareRunner->isStopped());
-                if ($this->middlewareRunner->isStopped()) {
-                    dd('It was stopped');
-                }
-                dd('It was not stopped');
+                $this->middlewareRunner = (new MiddlewareRunner($middlewares, $this->app))->withRun();
             }
         }
     }

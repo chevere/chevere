@@ -116,6 +116,10 @@ final class Run implements RunContract
             $this->builder =  $this->builder
                 ->withRequest(ServerRequest::fromGlobals());
         }
+        $this->builder = $this->builder->withApp(
+            $this->builder->app()
+                ->withRequest($this->builder->request())
+        );
     }
 
     private function resolveCallable(string $pathInfo): void

@@ -16,6 +16,7 @@ namespace Chevere\Components\App;
 use Chevere\Components\Route\Traits\RouteAccessTrait;
 use Chevere\Components\Router\Traits\RouterAccessTrait;
 use Chevere\Contracts\App\AppContract;
+use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Http\ResponseContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
@@ -42,6 +43,24 @@ final class App implements AppContract
     public function __construct(ResponseContract $response)
     {
         $this->response = $response;
+    }
+
+    public function withRequest(RequestContract $request): AppContract
+    {
+        $new = clone $this;
+        $new->request = $request;
+
+        return $new;
+    }
+
+    public function hasRequest(): bool
+    {
+        return isset($this->request);
+    }
+
+    public function request(): RequestContract
+    {
+        return $this->request;
     }
 
     /**
