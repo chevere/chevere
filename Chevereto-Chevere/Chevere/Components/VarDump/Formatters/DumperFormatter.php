@@ -18,6 +18,7 @@ use Chevere\Components\VarDump\Formatters\Traits\GetEncodedCharsTrait;
 use Chevere\Components\VarDump\Formatters\Traits\GetIndentTrait;
 use Chevere\Components\VarDump\src\Wrapper;
 use Chevere\Contracts\VarDump\FormatterContract;
+use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 use const Chevere\CLI;
 
@@ -28,7 +29,6 @@ final class DumperFormatter implements FormatterContract
 {
 
     use GetIndentTrait;
-    use GetEmphasisTrait;
     use GetEncodedCharsTrait;
 
     public function wrap(string $key, string $dump): string
@@ -39,5 +39,15 @@ final class DumperFormatter implements FormatterContract
         }
 
         return $wrapper->toString();
+    }
+
+    public function getEmphasis(string $string): string
+    {
+        if (!CLI) {
+            return 'ssss' . $string;
+        }
+
+        return (new ConsoleFormatter())
+            ->getEmphasis($string);
     }
 }

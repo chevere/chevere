@@ -37,6 +37,8 @@ final class VarDump
     const _CLASS = '_class';
     const _OPERATOR = '_operator';
     const _FUNCTION = '_function';
+    const _PRIVACY = '_privacy';
+    const _VARIABLE = '_variable';
     const ANON_CLASS = 'class@anonymous';
 
     const PROPERTIES_REFLECTION_MAP = [

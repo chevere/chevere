@@ -17,6 +17,6 @@ trait GetEmphasisTrait
 {
     public function getEmphasis(string $string): string
     {
-        return $string;
+        return 'trait' . $string;
     }
 }

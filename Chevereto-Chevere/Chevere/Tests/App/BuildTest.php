@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\App;
 
+use TypeError;
+
 use Chevere\Components\Api\Api;
 use Chevere\Components\App\Build;
 use Chevere\Components\App\Parameters;
@@ -20,9 +22,8 @@ use Chevere\Components\App\Services;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Router;
-use Exception;
+use Chevere\Components\VarDump\Dumper;
 use PHPUnit\Framework\TestCase;
-use TypeError;
 
 final class BuildTest extends TestCase
 {
@@ -43,7 +44,7 @@ final class BuildTest extends TestCase
             ->withRouter(new Router());
         $build = $build
             ->withServices($services);
-        
+
         $this->assertSame($services, $build->services());
     }
 
@@ -57,18 +58,16 @@ final class BuildTest extends TestCase
         );
         $build = $build
             ->withParameters($parameters);
-        
+
         $this->assertTrue($build->hasParameters());
         $this->assertSame($parameters, $build->parameters());
     }
 
-    public function testMake(): void
-    {
-    }
+    // public function testMake(): void
+    // { }
 
-    public function testDestroy(): void
-    {
-    }
+    // public function testDestroy(): void
+    // { }
 
     public function testNotBuiltChecksums(): void
     {

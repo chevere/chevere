@@ -32,22 +32,26 @@ abstract class Pallete
         VarDump::_CLASS => '#3498db', // blue
         VarDump::_OPERATOR => '#7f8c8d', // grey
         VarDump::_FUNCTION => '#9b59b6', // purple
+        VarDump::_PRIVACY => '#9b59b6', // purple
+        VarDump::_VARIABLE => '#e67e22', // orange
     ];
 
     /**
      * Color palette used in CLI.
      */
     const CONSOLE = [
-        VarDump::TYPE_STRING => 'color_136', // yellow
-        VarDump::TYPE_FLOAT => 'color_136', // yellow
-        VarDump::TYPE_INTEGER => 'color_136', // yellow
-        VarDump::TYPE_BOOLEAN => 'color_127', // purple
+        VarDump::TYPE_STRING => 'color_11',
+        VarDump::TYPE_FLOAT => 'color_11',
+        VarDump::TYPE_INTEGER => 'color_11',
+        VarDump::TYPE_BOOLEAN => 'color_163', // purple
         VarDump::TYPE_NULL => 'color_245', // grey
-        VarDump::TYPE_OBJECT => 'color_167', // red
+        VarDump::TYPE_OBJECT => 'color_39',
         VarDump::TYPE_ARRAY => 'color_41', // green
         VarDump::_FILE => null,
         VarDump::_CLASS => 'color_147', // blue
         VarDump::_OPERATOR => 'color_245', // grey
-        VarDump::_FUNCTION => 'color_127', // purple
+        VarDump::_FUNCTION => 'color_39',
+        VarDump::_PRIVACY => 'color_133',
+        VarDump::_VARIABLE => 'color_208',
     ];
 }
