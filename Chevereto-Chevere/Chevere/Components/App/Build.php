@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
+use BadMethodCallException;
 use Exception;
 
 use Chevere\Components\Api\Api;
@@ -29,6 +30,8 @@ use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\CheckoutContract;
 use Chevere\Contracts\App\ServicesContract;
 use Chevere\Contracts\App\ParametersContract;
+use Chevere\Contracts\Router\MakerContract;
+use LogicException;
 
 /**
  * The Build container.
@@ -104,13 +107,28 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
+    public function withRouterMaker(MakerContract $maker): BuildContract
+    {
+        $new = clone $this;
+        $new->routerMaker = $maker;
+
+        return $new;
+    }
+
+    public function hasRouterMaker(): bool
+    {
+        return isset($this->routerMaker);
+    }
+
+    public function routerMaker(): MakerContract
+    {
+        return $this->routerMaker;
+    }
+
     public function make(): BuildContract
     {
-        if ($this->isBuilt) {
-            throw new AlreadyBuiltException();
-        }
+        $this->assertCanMake();
         $new = clone $this;
-        $new->routerMaker = new RouterMaker();
         $new->checksums = [];
         if ($new->parameters->hasApi()) {
             $new->makeApi();
@@ -167,6 +185,30 @@ final class Build implements BuildContract
         return $this->checkout;
     }
 
+    private function assertCanMake(): void
+    {
+        foreach ([
+            'parameters' => ParametersContract::class,
+            'routerMaker' => MakerContract::class
+        ] as $property => $contract) {
+            if (!isset($this->{$property})) {
+                $missing[] = (new Message('%s'))->code('%s', $contract)->toString(0);
+            }
+        }
+        if (isset($missing)) {
+            throw new LogicException(
+                (new Message('Method %method% can be only called when the instance of %className% has %contracts%'))
+                    ->code('%method%', __METHOD__)
+                    ->code('%className%', __CLASS__)
+                    ->strtr('%contracts%', implode(', ', $missing))
+                    ->toString()
+            );
+        }
+        if ($this->isBuilt) {
+            throw new AlreadyBuiltException();
+        }
+    }
+
     private function makeApi(): void
     {
         $this->apiMaker = new ApiMaker($this->routerMaker);
@@ -199,30 +241,4 @@ final class Build implements BuildContract
             ->withCache();
         $this->checksums = array_merge($this->routerMaker->cache()->toArray(), $this->checksums);
     }
-
-    // private function assertHasChecksums(): void
-    // {
-    //     if (!isset($this->checksums)) {
-    //         throw new Exception(
-    //             (new Message("Property %type% %property% is not set for %className% instance"))
-    //                 ->code('%type%', CheckoutContract::class)
-    //                 ->code('%property%', '$checksums')
-    //                 ->code('%className%', __CLASS__)
-    //                 ->toString()
-    //         );
-    //     }
-    // }
-
-    // private function assertHasCheckout(): void
-    // {
-    //     if (!isset($this->checkout)) {
-    //         throw new Exception(
-    //             (new Message("Property %type% %property% is not set for %className% instance"))
-    //                 ->code('%type%', CheckoutContract::class)
-    //                 ->code('%property%', '$checkout')
-    //                 ->code('%className%', __CLASS__)
-    //                 ->toString()
-    //         );
-    //     }
-    // }
 }

@@ -17,13 +17,17 @@ use TypeError;
 
 use Chevere\Components\Api\Api;
 use Chevere\Components\App\Build;
+use Chevere\Components\App\Exceptions\AlreadyBuiltException;
 use Chevere\Components\App\Parameters;
 use Chevere\Components\App\Services;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Path\Path;
+use Chevere\Components\Router\Maker;
 use Chevere\Components\Router\Router;
 use Chevere\Components\VarDump\Dumper;
+use LogicException;
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
 final class BuildTest extends TestCase
 {
@@ -63,8 +67,48 @@ final class BuildTest extends TestCase
         $this->assertSame($parameters, $build->parameters());
     }
 
-    // public function testMake(): void
-    // { }
+    public function testWithRouterMaker(): void
+    {
+        $build = new Build(new Services());
+        $routerMaker = new Maker();
+        $build = $build
+            ->withRouterMaker($routerMaker);
+
+        $this->assertTrue($build->hasRouterMaker());
+        $this->assertSame($routerMaker, $build->routerMaker());
+    }
+
+    public function testMakeWithoutRequirements(): void
+    {
+        $build = new Build(new Services());
+        $this->expectException(LogicException::class);
+        $build->make();
+    }
+
+    public function testMake(): void
+    {
+        $build = new Build(new Services());
+        $parameters = new Parameters(
+            new ArrayFile(
+                new Path('parameters.php')
+            )
+        );
+        $routerMaker = new Maker();
+        $build = $build
+            ->withParameters($parameters)
+            ->withRouterMaker($routerMaker)
+            ->make();
+
+        $this->assertEquals(true, $build->isBuilt());
+        $this->expectException(AlreadyBuiltException::class);
+        $build->make();
+    }
+
+    public function testDestroy(): void
+    {
+        $build = new Build(new Services());
+        $build->destroy();
+    }
 
     // public function testDestroy(): void
     // { }

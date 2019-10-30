@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Contracts\App;
 
 use Chevere\Components\Path\Path;
+use Chevere\Contracts\Router\MakerContract;
 
 interface BuildContract
 {
@@ -60,6 +61,12 @@ interface BuildContract
      * Handles the API and route parameters and makes the application build.
      * Note: Can be only called once.
      */
+    public function withRouterMaker(MakerContract $maker): BuildContract;
+
+    public function hasRouterMaker(): bool;
+
+    public function routerMaker(): MakerContract;
+
     public function make(): BuildContract;
 
     /**

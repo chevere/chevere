@@ -22,6 +22,7 @@ use Chevere\Components\Console\Console;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
+use Chevere\Components\Router\Maker;
 use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
@@ -99,6 +100,7 @@ final class Loader implements LoaderContract
     {
         if (DEV) {
             return $this->builder->build()
+                ->withRouterMaker(new Maker())
                 ->make();
         }
         return $this->builder->build()

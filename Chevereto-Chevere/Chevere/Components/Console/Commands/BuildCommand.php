@@ -18,6 +18,7 @@ use LogicException;
 use Chevere\Components\App\Exceptions\AlreadyBuiltException;
 use Chevere\Components\Console\Command;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Router\Maker;
 use Chevere\Components\Time\TimeHr;
 use Chevere\Contracts\App\BuilderContract;
 
@@ -46,7 +47,11 @@ final class BuildCommand extends Command
             $title .= ' (not by this command)';
         } else {
             $this->builder = $this->builder
-                ->withBuild($this->builder->build()->make());
+                ->withBuild(
+                    $this->builder->build()
+                    ->withRouterMaker(new Maker())
+                    ->make()
+                );
         }
         $timeEnd = (int) hrtime(true);
         $timeRelative = new TimeHr($timeEnd - $timeStart);
