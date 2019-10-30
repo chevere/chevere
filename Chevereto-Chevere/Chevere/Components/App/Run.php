@@ -88,7 +88,7 @@ final class Run implements RunContract
             );
         }
         $this->ran = true;
-        $path = $this->builder->request()->getUri()->getPath();
+        $path = $this->builder->app()->request()->getUri()->getPath();
         if ($this->builder->hasControllerName()) {
             $this->controllerName = $this->builder->controllerName();
             $this->controllerArguments = $this->builder->controllerArguments();
@@ -112,20 +112,19 @@ final class Run implements RunContract
 
     private function handleRequest(): void
     {
-        if (!$this->builder->hasRequest()) {
-            $this->builder =  $this->builder
-                ->withRequest(Request::fromGlobals());
+        if (!$this->builder->app()->hasRequest()) {
+            $this->builder = $this->builder
+                ->withApp(
+                    $this->builder->app()
+                        ->withRequest(Request::fromGlobals())
+                );
         }
-        $this->builder = $this->builder->withApp(
-            $this->builder->app()
-                ->withRequest($this->builder->request())
-        );
     }
 
     private function resolveCallable(string $pathInfo): void
     {
         $app = $this->builder->app();
-        $request = $this->builder->request();
+        $request = $this->builder->app()->request();
         try {
             $route = $app->router()->resolve($pathInfo);
             $app = $app

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
+use Chevere\Components\App\Instances\RequestInstance;
 use Chevere\Components\Route\Traits\RouteAccessTrait;
 use Chevere\Components\Router\Traits\RouterAccessTrait;
 use Chevere\Contracts\App\AppContract;
@@ -74,6 +75,7 @@ final class App implements AppContract
     {
         $new = clone $this;
         $new->request = $request;
+        RequestInstance::set($request);
 
         return $new;
     }

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use Chevere\Components\App\Instances\RequestInstance;
 use Chevere\Components\Controller\Traits\ControllerNameAccessTrait;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
@@ -84,34 +83,6 @@ final class Builder implements BuilderContract
     public function build(): BuildContract
     {
         return $this->build;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withRequest(RequestContract $request): BuilderContract
-    {
-        $new = clone $this;
-        $new->request = $request;
-        RequestInstance::set($request);
-
-        return $new;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasRequest(): bool
-    {
-        return isset($this->request);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function request(): RequestContract
-    {
-        return $this->request;
     }
 
     /**

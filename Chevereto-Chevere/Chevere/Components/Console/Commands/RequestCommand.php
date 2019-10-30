@@ -142,7 +142,10 @@ final class RequestCommand extends Command
             ->withUploadedFiles(Request::normalizeFiles($this->parsedOptions['files']));
 
         $builder = $builder
-            ->withRequest($request);
+            ->withApp(
+                $builder->app()
+                    ->withRequest($request)
+            );
 
         try {
             $run = (new Run($builder))->withConsoleLoop();

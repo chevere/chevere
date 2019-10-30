@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Cache;
 
+use Chevere\Components\Dir\Dir;
 use InvalidArgumentException;
 
 use Chevere\Components\File\File;
@@ -51,6 +52,9 @@ final class Cache
     {
         $this->assertKeyName($name);
         $this->name = $name;
+        if (!$path->isDir()) {
+            (new Dir($path))->create();
+        }
         if (!$path->isDir()) {
             throw new InvalidArgumentException(
                 (new Message("Path %path% is not a directory"))
