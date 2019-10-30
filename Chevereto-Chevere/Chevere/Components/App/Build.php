@@ -50,7 +50,10 @@ final class Build implements BuildContract
     private $parameters;
 
     /** @var Path */
-    private $path;
+    private $checksumsPath;
+    
+    /** @var Path */
+    private $cachePath;
 
     /** @var bool True if the App was built (cache) */
     private $isBuilt;
@@ -74,7 +77,8 @@ final class Build implements BuildContract
     {
         $this->isBuilt = false;
         $this->services = $services;
-        $this->path = new Path('build/build.php');
+        $this->checksumsPath = new Path('build/build.php');
+        $this->cachePath = new Path('build/cache');
     }
 
     /**
@@ -150,16 +154,15 @@ final class Build implements BuildContract
      */
     public function destroy(): void
     {
-        if (!$this->path->isFile()) {
+        if (!$this->checksumsPath->isFile()) {
             throw new NoBuiltFileException();
         }
-        $cachePath = new Path('cache');
-        if (!$cachePath->isDir()) {
+        if (!$this->cachePath->isDir()) {
             throw new NoBuiltCacheException();
         }
-        (new Dir($cachePath))
+        (new Dir($this->cachePath))
             ->removeContents();
-        (new File($this->path))
+        (new File($this->checksumsPath))
             ->remove();
     }
 
@@ -174,9 +177,9 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function path(): Path
+    public function checksumsPath(): Path
     {
-        return $this->path;
+        return $this->checksumsPath;
     }
     
     /**
@@ -235,7 +238,7 @@ final class Build implements BuildContract
             );
         $this->apiMaker = $this->apiMaker
             ->withCache(
-                new Cache('api', new Path('build'))
+                new Cache('api', $this->cachePath)
             );
         $this->checksums = $this->apiMaker->cache()->toArray();
     }
@@ -251,7 +254,7 @@ final class Build implements BuildContract
             );
         $this->routerMaker = $this->routerMaker
             ->withCache(
-                new Cache('router', new Path('build'))
+                new Cache('router', $this->cachePath)
             );
         $this->checksums = array_merge($this->routerMaker->cache()->toArray(), $this->checksums);
     }

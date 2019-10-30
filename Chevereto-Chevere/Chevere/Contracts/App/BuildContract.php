@@ -80,9 +80,9 @@ interface BuildContract
     public function isBuilt(): bool;
 
     /**
-     * Returns a Path instance for the build file.
+     * Returns a Path instance for the build checksums file.
      */
-    public function path(): Path;
+    public function checksumsPath(): Path;
 
     /**
      * Provides access to the build checksums.

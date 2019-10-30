@@ -17,17 +17,15 @@ use TypeError;
 
 use Chevere\Components\Api\Api;
 use Chevere\Components\App\Build;
-use Chevere\Components\App\Exceptions\AlreadyBuiltException;
 use Chevere\Components\App\Parameters;
 use Chevere\Components\App\Services;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Maker;
 use Chevere\Components\Router\Router;
-use Chevere\Components\VarDump\Dumper;
+use Chevere\Contracts\App\CheckoutContract;
 use LogicException;
 use PHPUnit\Framework\TestCase;
-use Throwable;
 
 final class BuildTest extends TestCase
 {
@@ -37,7 +35,7 @@ final class BuildTest extends TestCase
         $build = new Build($services);
         $this->assertSame(false, $build->isBuilt());
         $this->assertSame($services, $build->services());
-        $this->assertInstanceOf(Path::class, $build->path());
+        $this->assertInstanceOf(Path::class, $build->checksumsPath());
     }
 
     public function testWithServices(): void
@@ -85,7 +83,7 @@ final class BuildTest extends TestCase
         $build->make();
     }
 
-    public function testMake(): void
+    public function testMakeAndDestroy(): void
     {
         $build = new Build(new Services());
         $parameters = new Parameters(
@@ -100,15 +98,16 @@ final class BuildTest extends TestCase
             ->make();
 
         $this->assertEquals(true, $build->isBuilt());
-        $this->expectException(AlreadyBuiltException::class);
-        $build->make();
-    }
-
-    public function testDestroy(): void
-    {
-        $build = new Build(new Services());
+        $this->assertIsArray($build->checksums());
+        $this->assertInstanceOf(CheckoutContract::class, $build->checkout());
         $build->destroy();
     }
+
+    // public function testDestroy(): void
+    // {
+    //     $build = new Build(new Services());
+    //     $build->destroy();
+    // }
 
     // public function testDestroy(): void
     // { }

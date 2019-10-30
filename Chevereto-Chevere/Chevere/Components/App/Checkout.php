@@ -38,7 +38,7 @@ final class Checkout implements CheckoutContract
     {
         $this->build = $build;
         $this->assertIsBuilt();
-        $this->fileReturn = new FileReturn($this->build->path());
+        $this->fileReturn = new FileReturn($this->build->checksumsPath());
         $this->fileReturn->put($this->build->checksums());
     }
 
