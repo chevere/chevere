@@ -81,7 +81,7 @@ final class VarDump
     private $type;
 
     /** @var string */
-    private $parentheses;
+    private $info;
 
     public function __construct(FormatterContract $formatter)
     {
@@ -162,15 +162,15 @@ final class VarDump
     private function setOutput(): void
     {
         $template = $this->template;
-        if (!isset($this->parentheses)) {
-            $template = str_replace('%parentheses%', null, $template);
+        if (!isset($this->info)) {
+            $template = str_replace('%info%', null, $template);
             $template = preg_replace('!\s+!', ' ', $template);
             $template = trim($template);
         }
         $this->output = strtr($template, [
             '%type%' => $this->formatter->wrap($this->type, $this->type),
             '%val%' => $this->val,
-            '%parentheses%' => $this->parentheses ?? '',
+            '%info%' => $this->info ?? '',
         ]);
     }
 
@@ -201,16 +201,19 @@ final class VarDump
                 break;
         }
         $this->val .= $processor->val();
-        $parentheses = $processor->info();
-        if ($parentheses !== '') {
-            if (strpos($parentheses, '=')) {
-                $parentheses = $this->formatter->getEmphasis("($parentheses)");
+        $this->info = $processor->info();
+        $this->handleInfo();
+    }
+
+    private function handleInfo(): void
+    {
+        if ($this->info !== '') {
+            if (strpos($this->info, '=')) {
+                $this->info = $this->formatter->getEmphasis("($this->info)");
             } else {
-                $parentheses = $this->formatter->wrap(static::_CLASS, $parentheses);
+                $this->info = $this->formatter->wrap(static::_CLASS, $this->info);
             }
         }
-        
-        $this->parentheses = $parentheses;
     }
 
     private function setTemplate(): void
@@ -218,10 +221,10 @@ final class VarDump
         switch ($this->type) {
             case static::TYPE_ARRAY:
             case static::TYPE_OBJECT:
-                $this->template = '%type% %parentheses% %val%';
+                $this->template = '%type% %info% %val%';
                 break;
             default:
-                $this->template = '%type% %val% %parentheses%';
+                $this->template = '%type% %val% %info%';
                 break;
         }
     }
