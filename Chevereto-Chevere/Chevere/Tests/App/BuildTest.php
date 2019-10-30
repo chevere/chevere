@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\App;
 
+use LogicException;
 use TypeError;
 
 use Chevere\Components\Api\Api;
@@ -24,7 +25,6 @@ use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Maker;
 use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\CheckoutContract;
-use LogicException;
 use PHPUnit\Framework\TestCase;
 
 final class BuildTest extends TestCase
@@ -103,16 +103,7 @@ final class BuildTest extends TestCase
         $build->destroy();
     }
 
-    // public function testDestroy(): void
-    // {
-    //     $build = new Build(new Services());
-    //     $build->destroy();
-    // }
-
-    // public function testDestroy(): void
-    // { }
-
-    public function testNotBuiltChecksums(): void
+    public function testInvalidChecksumsMethodCall(): void
     {
         $services = new Services();
         $build = new Build($services);
@@ -120,7 +111,7 @@ final class BuildTest extends TestCase
         $build->checksums();
     }
 
-    public function testNotBuiltCheckout(): void
+    public function testInvalidCheckoutMethodCall(): void
     {
         $services = new Services();
         $build = new Build($services);

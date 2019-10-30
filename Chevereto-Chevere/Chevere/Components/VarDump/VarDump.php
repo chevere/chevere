@@ -120,7 +120,6 @@ final class VarDump
         $new->setType();
         $new->handleType();
         $new->setTemplate();
-        $new->handleParentheses();
         $new->setOutput();
 
         return $new;
@@ -163,10 +162,7 @@ final class VarDump
     private function setOutput(): void
     {
         $template = $this->template;
-        if (!empty($this->parentheses)) {
-            $parentheses = $this->formatter->wrap(static::_OPERATOR, '(' . $this->parentheses . ')');
-        } else {
-            $parentheses = null;
+        if (!isset($this->parentheses)) {
             $template = str_replace('%parentheses%', null, $template);
             $template = preg_replace('!\s+!', ' ', $template);
             $template = trim($template);
@@ -174,7 +170,7 @@ final class VarDump
         $this->output = strtr($template, [
             '%type%' => $this->formatter->wrap($this->type, $this->type),
             '%val%' => $this->val,
-            '%parentheses%' => $parentheses,
+            '%parentheses%' => $this->parentheses ?? '',
         ]);
     }
 
@@ -205,7 +201,16 @@ final class VarDump
                 break;
         }
         $this->val .= $processor->val();
-        $this->parentheses = $processor->parentheses();
+        $parentheses = $processor->info();
+        if ($parentheses !== '') {
+            if (strpos($parentheses, '=')) {
+                $parentheses = $this->formatter->getEmphasis("($parentheses)");
+            } else {
+                $parentheses = $this->formatter->wrap(static::_CLASS, $parentheses);
+            }
+        }
+        
+        $this->parentheses = $parentheses;
     }
 
     private function setTemplate(): void
@@ -218,13 +223,6 @@ final class VarDump
             default:
                 $this->template = '%type% %val% %parentheses%';
                 break;
-        }
-    }
-
-    private function handleParentheses(): void
-    {
-        if (!empty($this->parentheses) && false !== strpos($this->parentheses, '=')) {
-            $this->parentheses = $this->formatter->getEmphasis($this->parentheses);
         }
     }
 }

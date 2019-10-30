@@ -16,14 +16,14 @@ namespace Chevere\Components\VarDump\Processors\Traits;
 trait ProcessorTrait
 {
     /** @var string */
-    private $parentheses;
+    private $info;
 
     /** @var string */
     private $val;
 
-    public function parentheses(): string
+    public function info(): string
     {
-        return $this->parentheses;
+        return $this->info;
     }
 
     public function val(): string

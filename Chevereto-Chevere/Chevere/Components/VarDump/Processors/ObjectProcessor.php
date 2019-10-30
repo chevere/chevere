@@ -50,7 +50,7 @@ final class ObjectProcessor implements ProcessorContract
         $this->expression = $expression;
         $this->varDump = $varDump;
         $this->val = '';
-        $this->parentheses = '';
+        $this->info = '';
         $this->reflectionObject = new ReflectionObject($expression);
         if (in_array($this->reflectionObject->getName(), $this->varDump->dontDump())) {
             $this->val .= $this->varDump->formatter()->wrap(
@@ -67,7 +67,7 @@ final class ObjectProcessor implements ProcessorContract
         // $this->classFile = $this->reflectionObject->getFileName();
         $this->className = get_class($expression);
         $this->handleNormalizeClassName();
-        $this->parentheses = $this->className;
+        $this->info = $this->className;
     }
 
     private function setProperties(): void

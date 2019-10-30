@@ -24,7 +24,7 @@ final class ArrayProcessor implements ProcessorContract
     public function __construct(array $expression, VarDump $varDump)
     {
         $this->val = '';
-        $this->parentheses = '';
+        $this->info = '';
         foreach ($expression as $k => $v) {
             $operator = $varDump->formatter()->wrap(VarDump::_OPERATOR, '=>');
             $this->val .= "\n" . $varDump->indentString() . ' ' . $varDump->formatter()->getEncodedChars((string) $k) . " $operator ";
@@ -42,6 +42,6 @@ final class ArrayProcessor implements ProcessorContract
                 $this->val .= $new->toString();
             }
         }
-        $this->parentheses = 'size=' . count($expression);
+        $this->info = 'size=' . count($expression);
     }
 }

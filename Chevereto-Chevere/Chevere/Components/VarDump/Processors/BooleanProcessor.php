@@ -23,6 +23,6 @@ final class BooleanProcessor implements ProcessorContract
     public function __construct(bool $expression)
     {
         $this->val = $expression ? 'TRUE' : 'FALSE';
-        $this->parentheses = '';
+        $this->info = '';
     }
 }

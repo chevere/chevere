@@ -27,11 +27,11 @@ final class ScalarProcessor implements ProcessorContract
     public function __construct($expression, VarDump $varDump)
     {
         $this->val = '';
-        $this->parentheses = '';
+        $this->info = '';
         $is_string = is_string($expression);
         $is_numeric = is_numeric($expression);
         if ($is_string || $is_numeric) {
-            $this->parentheses = 'length=' .
+            $this->info = 'length=' .
                 strlen(
                     $is_numeric
                         ? ((string) $expression)

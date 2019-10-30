@@ -15,7 +15,7 @@ namespace Chevere\Contracts\VarDump;
 
 interface ProcessorContract
 {
-    public function parentheses(): string;
+    public function info(): string;
 
     public function val(): string;
 }
