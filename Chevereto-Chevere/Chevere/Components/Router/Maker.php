@@ -122,10 +122,10 @@ final class Maker implements MakerContract
         return $this->routesIndex;
     }
 
-    public function withCache(): MakerContract
+    public function withCache(Cache $cache): MakerContract
     {
         $new = clone $this;
-        $new->cache = new Cache('router', new Path('build'));
+        $new->cache = $cache;
         $new->cache->put('regex', $new->regex)
             ->makeCache();
         $new->cache->put('routes', $new->routes)

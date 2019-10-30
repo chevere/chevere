@@ -21,9 +21,9 @@ interface MakerContract
 {
     public function __construct(RouterMaker $router);
 
-    public function withPath(Path $pat): MakerContract;
+    public function withPath(Path $path): MakerContract;
 
-    public function withCache(): MakerContract;
+    public function withCache(Cache $cache): MakerContract;
 
     public function hasApi(): bool;
 

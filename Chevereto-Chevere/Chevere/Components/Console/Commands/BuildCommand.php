@@ -22,6 +22,8 @@ use Chevere\Components\Router\Maker;
 use Chevere\Components\Time\TimeHr;
 use Chevere\Contracts\App\BuilderContract;
 
+use const Chevere\BOOTSTRAP_TIME;
+
 /**
  * The BuildCommand builds the App.
  *

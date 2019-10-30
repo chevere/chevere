@@ -92,6 +92,7 @@ final class Cache
             'path' => $fileReturn->path()->absolute(),
             'checksum' => $fileReturn->checksum(),
         ];
+
         return $fileReturn;
     }
 
@@ -113,6 +114,7 @@ final class Cache
     private function getPath(string $name): Path
     {
         $this->assertKeyName($name);
+        
         return new Path($this->workingFolder . $name . '.php');
     }
 

@@ -19,7 +19,10 @@ use Exception;
 use Chevere\Components\Api\Api;
 use Chevere\Components\Api\Maker as ApiMaker;
 use Chevere\Components\App\Exceptions\AlreadyBuiltException;
+use Chevere\Components\App\Exceptions\NoBuiltCacheException;
+use Chevere\Components\App\Exceptions\NoBuiltFileException;
 use Chevere\Components\App\Traits\ParametersAccessTrait;
+use Chevere\Components\Cache\Cache;
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\File\File;
 use Chevere\Components\Message\Message;
@@ -147,10 +150,17 @@ final class Build implements BuildContract
      */
     public function destroy(): void
     {
+        if (!$this->path->isFile()) {
+            throw new NoBuiltFileException();
+        }
+        $cachePath = new Path('cache');
+        if (!$cachePath->isDir()) {
+            throw new NoBuiltCacheException();
+        }
+        (new Dir($cachePath))
+            ->removeContents();
         (new File($this->path))
             ->remove();
-        (new Dir(new Path('cache')))
-            ->removeContents();
     }
 
     /**
@@ -224,7 +234,9 @@ final class Build implements BuildContract
                     ->withMaker($this->apiMaker)
             );
         $this->apiMaker = $this->apiMaker
-            ->withCache();
+            ->withCache(
+                new Cache('api', new Path('build'))
+            );
         $this->checksums = $this->apiMaker->cache()->toArray();
     }
 
@@ -238,7 +250,9 @@ final class Build implements BuildContract
                     ->withMaker($this->routerMaker)
             );
         $this->routerMaker = $this->routerMaker
-            ->withCache();
+            ->withCache(
+                new Cache('router', new Path('build'))
+            );
         $this->checksums = array_merge($this->routerMaker->cache()->toArray(), $this->checksums);
     }
 }

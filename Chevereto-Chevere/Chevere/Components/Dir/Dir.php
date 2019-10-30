@@ -95,7 +95,10 @@ final class Dir
     {
         $this->assertIsDir();
         $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($this->path->absolute(), RecursiveDirectoryIterator::SKIP_DOTS),
+            new RecursiveDirectoryIterator(
+                $this->path->absolute(),
+                RecursiveDirectoryIterator::SKIP_DOTS
+            ),
             RecursiveIteratorIterator::CHILD_FIRST
         );
         $removed = [];

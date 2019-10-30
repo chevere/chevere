@@ -26,7 +26,6 @@ use Chevere\Components\Controller\Inspect;
 use Chevere\Components\Controllers\Api\GetController;
 use Chevere\Components\Controllers\Api\HeadController;
 use Chevere\Components\Controllers\Api\OptionsController;
-use Chevere\Components\File\File;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Methods;
 use Chevere\Components\Message\Message;
@@ -102,11 +101,11 @@ final class Maker implements MakerContract
         return $new;
     }
 
-    public function withCache(): MakerContract
+    public function withCache(Cache $cache): MakerContract
     {
         $new = clone $this;
-        $new->cache = new Cache('api', new Path('build'));
-        $new->cache->put('api', $new->api)
+        $new->cache = $cache
+            ->put('api', $new->api)
             ->makeCache();
 
         return $new;

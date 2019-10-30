@@ -30,7 +30,7 @@ interface MakerContract
 
     public function routesIndex(): array;
 
-    public function withCache(): MakerContract;
+    public function withCache(Cache $cache): MakerContract;
 
     public function cache(): Cache;
 }
