@@ -30,7 +30,6 @@ use Chevere\Contracts\Router\RouterContract;
  */
 final class App implements AppContract
 {
-    use ServicesAccessTrait;
     use RouteAccessTrait;
 
     /** @var ResponseContract */
@@ -38,6 +37,9 @@ final class App implements AppContract
 
     /** @var RequestContract */
     private $request;
+
+    /** @var ServicesContract */
+    private $services;
 
     /** @var array String arguments (from request, cli) */
     private $arguments;
@@ -117,6 +119,22 @@ final class App implements AppContract
         $new->services = $services;
 
         return $new;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasServices(): bool
+    {
+        return isset($this->services);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function services(): ServicesContract
+    {
+        return $this->services;
     }
 
     /**
