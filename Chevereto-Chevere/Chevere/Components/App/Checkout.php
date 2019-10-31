@@ -38,7 +38,7 @@ final class Checkout implements CheckoutContract
     {
         $this->build = $build;
         $this->assertIsBuilt();
-        $this->fileReturn = new FileReturn($this->build->checksumsPath());
+        $this->fileReturn = new FileReturn($this->build->file());
         $this->fileReturn->put($this->build->checksums());
     }
 
@@ -55,7 +55,7 @@ final class Checkout implements CheckoutContract
      */
     private function assertIsBuilt(): void
     {
-        if (!$this->build->isBuilt()) {
+        if (!$this->build->isMaked()) {
             throw new InvalidArgumentException(
                 (new Message('Instance of %type% %argument% must be built to construct a %className% instance'))
                     ->code('%type%', BuildContract::class)

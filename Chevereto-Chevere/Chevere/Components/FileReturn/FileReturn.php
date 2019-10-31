@@ -38,8 +38,8 @@ final class FileReturn
     const PHP_RETURN_CHARS = 14;
     const CHECKSUM_ALGO = 'sha256';
 
-    /** @var Path */
-    private $path;
+    /** @var File */
+    private $file;
 
     /** @var string File checksum */
     private $checksum;
@@ -59,10 +59,10 @@ final class FileReturn
     /** @var bool True for strict validation (PHP_RETURN), false for regex validation (return <algo>) */
     private $strict;
 
-    public function __construct(Path $path)
+    public function __construct(File $file)
     {
         $this->strict = true;
-        $this->path = $path;
+        $this->file = $file;
     }
 
     public function withNoStrict(): FileReturn
@@ -73,9 +73,9 @@ final class FileReturn
         return $new;
     }
 
-    public function path(): Path
+    public function file(): File
     {
-        return $this->path;
+        return $this->file;
     }
 
     public function checksum(): string
@@ -89,7 +89,7 @@ final class FileReturn
     public function contents(): string
     {
         if (!isset($this->contents)) {
-            $this->contents = file_get_contents($this->path->absolute());
+            $this->contents = file_get_contents($this->file->path()->absolute());
         }
         return $this->contents;
     }
@@ -97,15 +97,15 @@ final class FileReturn
     public function raw()
     {
         if (!isset($this->raw)) {
-            if (!$this->path->exists()) {
+            if (!$this->file->exists()) {
                 throw new FileNotFoundException(
                     (new Message("File %filepath% doesn't exists."))
-                        ->code('%filepath%', $this->path->absolute())
+                        ->code('%filepath%', $this->file->path()->absolute())
                         ->toString()
                 );
             }
             $this->validate();
-            $this->raw = include $this->path->absolute();
+            $this->raw = include $this->file->path()->absolute();
             $this->type = gettype($this->raw);
         }
         return $this->raw;
@@ -152,8 +152,7 @@ final class FileReturn
         }
         $varExport = var_export($var, true);
         $export = FileReturn::PHP_RETURN . $varExport . ';';
-        $file = new File($this->path);
-        $file->put($export);
+        $this->file->put($export);
         $this->checksum = $this->getHashFile();
         unset($this->contents);
     }
@@ -163,10 +162,10 @@ final class FileReturn
      */
     public function makeCache()
     {
-        if (!opcache_compile_file($this->path->absolute())) {
+        if (!opcache_compile_file($this->file->path()->absolute())) {
             throw new RuntimeException(
                 (new Message('Unable to compile cache for file %file% (Opcode cache is disabled)'))
-                    ->code('%file%', $this->path->absolute())
+                    ->code('%file%', $this->file->path()->absolute())
                     ->toString()
             );
         }
@@ -174,7 +173,7 @@ final class FileReturn
 
     public function destroyCache()
     {
-        if (!opcache_invalidate($this->path->absolute())) {
+        if (!opcache_invalidate($this->file->path()->absolute())) {
             throw new RuntimeException(
                 (new Message('Opcode cache is disabled'))
                     ->toString()
@@ -184,7 +183,7 @@ final class FileReturn
 
     private function getHashFile()
     {
-        return hash_file(static::CHECKSUM_ALGO, $this->path->absolute());
+        return hash_file(static::CHECKSUM_ALGO, $this->file->path()->absolute());
     }
 
     private function validate(): void
@@ -198,12 +197,12 @@ final class FileReturn
 
     private function validateStrict(): void
     {
-        $handle = fopen($this->path->absolute(), 'r');
+        $handle = fopen($this->file->path()->absolute(), 'r');
         if (false === $handle) {
             throw new RuntimeException(
                 (new Message('Unable to %fn% %path% in %mode% mode'))
                     ->code('%fn%', 'fopen')
-                    ->code('%path%', $this->path->absolute())
+                    ->code('%path%', $this->file->path()->absolute())
                     ->code('%mode%', 'r')
                     ->toString()
             );
@@ -213,7 +212,7 @@ final class FileReturn
         if ($contents !== static::PHP_RETURN) {
             throw new RuntimeException(
                 (new Message('Unexpected contents in %path% (strict validation)'))
-                    ->code('%path%', $this->path->absolute())
+                    ->code('%path%', $this->file->path()->absolute())
                     ->toString()
             );
         }
@@ -225,14 +224,14 @@ final class FileReturn
         if (!$this->contents) {
             throw new RuntimeException(
                 (new Message('Unable to get file %path% contents'))
-                    ->code('%path%', $this->path->absolute())
+                    ->code('%path%', $this->file->path()->absolute())
                     ->toString()
             );
         }
         if (!preg_match_all('#<\?php([\S\s]*)\s*return\s*[\S\s]*;#', $this->contents)) {
             throw new RuntimeException(
                 (new Message('Unexpected contents in %path% (non-strict validation)'))
-                    ->code('%path%', $this->path->absolute())
+                    ->code('%path%', $this->file->path()->absolute())
                     ->toString()
             );
         }

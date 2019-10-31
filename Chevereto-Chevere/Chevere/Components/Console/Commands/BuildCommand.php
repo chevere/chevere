@@ -45,7 +45,7 @@ final class BuildCommand extends Command
         $this->builder = $builder;
         $this->assertBuilderParams();
         $title = 'App built';
-        if ($this->builder->build()->isBuilt()) {
+        if ($this->builder->build()->isMaked()) {
             $title .= ' (not by this command)';
         } else {
             $this->builder = $this->builder
@@ -67,7 +67,7 @@ final class BuildCommand extends Command
         $this->console()->style()->success($title);
         $this->console()->style()->table(['Cache', 'Key', 'Path', 'Checksum'], $checksums);
         $this->console()->style()->writeln([
-            '[Path] ' . $this->builder->build()->checksumsPath()->absolute(),
+            '[Path] ' . $this->builder->build()->file()->path()->absolute(),
             '[Checksum] ' . $this->builder->build()->checkout()->checksum(),
             strtr('[Time] %relative% (%absolute%)', [
                 '%relative%' => $timeRelative->toReadMs(),

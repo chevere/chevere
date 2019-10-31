@@ -18,9 +18,12 @@ use TypeError;
 
 use Chevere\Components\Api\Api;
 use Chevere\Components\App\Build;
+use Chevere\Components\App\Exceptions\NoBuiltFileException;
 use Chevere\Components\App\Parameters;
 use Chevere\Components\App\Services;
 use Chevere\Components\ArrayFile\ArrayFile;
+use Chevere\Components\Dir\Dir;
+use Chevere\Components\File\File;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Maker;
 use Chevere\Components\Router\Router;
@@ -33,9 +36,10 @@ final class BuildTest extends TestCase
     {
         $services = new Services();
         $build = new Build($services);
-        $this->assertSame(false, $build->isBuilt());
+        $this->assertSame(false, $build->isMaked());
         $this->assertSame($services, $build->services());
-        $this->assertInstanceOf(Path::class, $build->checksumsPath());
+        $this->assertInstanceOf(File::class, $build->file());
+        $this->assertInstanceOf(Dir::class, $build->cacheDir());
     }
 
     public function testWithServices(): void
@@ -97,9 +101,17 @@ final class BuildTest extends TestCase
             ->withRouterMaker($routerMaker)
             ->make();
 
-        $this->assertEquals(true, $build->isBuilt());
+        $this->assertEquals(true, $build->isMaked());
         $this->assertIsArray($build->checksums());
         $this->assertInstanceOf(CheckoutContract::class, $build->checkout());
+        $build->destroy();
+    }
+
+    public function testInvalidDestroyMethodCall(): void
+    {
+        $services = new Services();
+        $build = new Build($services);
+        $this->expectException(NoBuiltFileException::class);
         $build->destroy();
     }
 

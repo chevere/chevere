@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\App;
 
 use Chevere\Components\App\App;
+use Chevere\Components\App\Services;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Route\Route;
@@ -70,15 +71,15 @@ final class AppTest extends TestCase
         $this->assertSame($route, $app->route());
     }
 
-    // public function testWithRouter(): void
-    // {
-    //     $router = new Router();
-    //     $app = (new App(new Response()))
-    //         ->withRouter($router);
+    public function testWithServices(): void
+    {
+        $services = new Services();
+        $app = (new App(new Response()))
+            ->withServices($services);
 
-    //     $this->assertTrue($app->hasRouter());
-    //     $this->assertSame($router, $app->router());
-    // }
+        $this->assertTrue($app->hasServices());
+        $this->assertSame($services, $app->services());
+    }
 
     public function testWithArguments(): void
     {

@@ -41,22 +41,20 @@ use LogicException;
  */
 final class Build implements BuildContract
 {
-    use ParametersAccessTrait;
-
     /** @var ServicesContract */
     private $services;
 
     /** @var ParametersContract */
     private $parameters;
 
-    /** @var Path */
-    private $checksumsPath;
+    /** @var File */
+    private $file;
     
-    /** @var Path */
-    private $cachePath;
+    /** @var Dir */
+    private $cacheDir;
 
-    /** @var bool True if the App was built (cache) */
-    private $isBuilt;
+    /** @var bool True if the App was just built */
+    private $isMaked;
 
     /** @var CheckoutContract */
     private $checkout;
@@ -75,10 +73,14 @@ final class Build implements BuildContract
      */
     public function __construct(ServicesContract $services)
     {
-        $this->isBuilt = false;
+        $this->isMaked = false;
         $this->services = $services;
-        $this->checksumsPath = new Path('build/build.php');
-        $this->cachePath = new Path('build/cache');
+        $this->file = new File(
+            new Path('build/build.php')
+        );
+        $this->cacheDir = new Dir(
+            new Path('build/cache')
+        );
     }
 
     /**
@@ -114,6 +116,22 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
+    public function hasParameters(): bool
+    {
+        return isset($this->parameters);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function parameters(): ParametersContract
+    {
+        return $this->parameters;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function withRouterMaker(MakerContract $maker): BuildContract
     {
         $new = clone $this;
@@ -143,7 +161,7 @@ final class Build implements BuildContract
         if ($new->parameters->hasRoutes()) {
             $new->makeRouter();
         }
-        $new->isBuilt = true;
+        $new->isMaked = true;
         $new->checkout = new Checkout($new);
 
         return $new;
@@ -152,34 +170,40 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
+    public function isMaked(): bool
+    {
+        return $this->isMaked;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function destroy(): void
     {
-        if (!$this->checksumsPath->isFile()) {
+        if (!$this->file->exists()) {
             throw new NoBuiltFileException();
         }
-        if (!$this->cachePath->isDir()) {
-            throw new NoBuiltCacheException();
+        $this->file->remove();
+        if ($this->cacheDir->exists()) {
+            $this->cacheDir
+                ->removeContents();
         }
-        (new Dir($this->cachePath))
-            ->removeContents();
-        (new File($this->checksumsPath))
-            ->remove();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function isBuilt(): bool
+    public function file(): File
     {
-        return $this->isBuilt;
+        return $this->file;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function checksumsPath(): Path
+    public function cacheDir(): Dir
     {
-        return $this->checksumsPath;
+        return $this->cacheDir;
     }
     
     /**
@@ -217,7 +241,7 @@ final class Build implements BuildContract
                     ->toString()
             );
         }
-        if ($this->isBuilt) {
+        if ($this->isMaked) {
             throw new AlreadyBuiltException();
         }
     }
@@ -238,7 +262,7 @@ final class Build implements BuildContract
             );
         $this->apiMaker = $this->apiMaker
             ->withCache(
-                new Cache('api', $this->cachePath)
+                new Cache('api', $this->cacheDir)
             );
         $this->checksums = $this->apiMaker->cache()->toArray();
     }
@@ -254,7 +278,7 @@ final class Build implements BuildContract
             );
         $this->routerMaker = $this->routerMaker
             ->withCache(
-                new Cache('router', $this->cachePath)
+                new Cache('router', $this->cacheDir)
             );
         $this->checksums = array_merge($this->routerMaker->cache()->toArray(), $this->checksums);
     }

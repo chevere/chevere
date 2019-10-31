@@ -46,23 +46,23 @@ final class Cache
 
     /**
      * @param string $name Named cache entry (folder)
-     * @param Path $path The working path where cache files will be stored/accesed
+     * @param Dir $dir The directory where cache files will be stored/accesed
      */
-    public function __construct(string $name, Path $path)
+    public function __construct(string $name, Dir $dir)
     {
         $this->assertKeyName($name);
         $this->name = $name;
-        if (!$path->isDir()) {
-            (new Dir($path))->create();
+        if (!$dir->path()->exists()) {
+            $dir->create();
         }
-        if (!$path->isDir()) {
+        if (!$dir->path()->exists()) {
             throw new InvalidArgumentException(
                 (new Message("Path %path% is not a directory"))
-                    ->code('%path%', $path->absolute())
+                    ->code('%path%', $dir->path()->absolute())
                     ->toString()
             );
         }
-        $this->workingFolder = stringRightTail($path->absolute(), '/') . $name . '/';
+        $this->workingFolder = stringRightTail($dir->path()->absolute(), '/') . $name . '/';
     }
 
     /**
@@ -72,7 +72,8 @@ final class Cache
      */
     public function get(string $key): FileReturn
     {
-        return new FileReturn($this->getPath($key));
+        $file = new File($this->getPath($key));
+        return new FileReturn($file);
     }
 
     public function exists(string $key): bool
@@ -93,7 +94,7 @@ final class Cache
         $fileReturn = $this->get($key);
         $fileReturn->put($var);
         $this->array[$this->name][$key] = [
-            'path' => $fileReturn->path()->absolute(),
+            'path' => $fileReturn->file()->path()->absolute(),
             'checksum' => $fileReturn->checksum(),
         ];
 

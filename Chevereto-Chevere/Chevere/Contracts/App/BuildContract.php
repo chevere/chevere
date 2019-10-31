@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\App;
 
-use Chevere\Components\Path\Path;
+use Chevere\Components\Dir\Dir;
+use Chevere\Components\File\File;
 use Chevere\Contracts\Router\MakerContract;
 
 interface BuildContract
@@ -67,28 +68,34 @@ interface BuildContract
 
     public function routerMaker(): MakerContract;
 
+    /**
+     * Make the application build.
+     */
     public function make(): BuildContract;
+
+    /**
+     * Returns true if the build has been just maked.
+     */
+    public function isMaked(): bool;
 
     /**
      * Destroy the application build (file plus any application cache).
      */
     public function destroy(): void;
     
-    /**
-     * Returns true if the build has been built.
-     */
-    public function isBuilt(): bool;
 
     /**
      * Returns a Path instance for the build checksums file.
      */
-    public function checksumsPath(): Path;
+    public function file(): File;
+
+    public function cacheDir(): Dir;
 
     /**
      * Provides access to the build checksums.
      * Note: This method is available if the application build has been built.
      *
-     * @see BuilderContract::isBuilt()
+     * @see BuilderContract::isMaked()
      */
     public function checksums(): array;
 
@@ -96,7 +103,7 @@ interface BuildContract
      * Provides access to the CheckoutContract instance.
      * Note: This method is available if the application build has been built.
      *
-     * @see BuilderContract::isBuilt()
+     * @see BuilderContract::isMaked()
      */
     public function checkout(): CheckoutContract;
 }

@@ -19,6 +19,7 @@ use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\Console\Console;
+use Chevere\Components\Dir\Dir;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
@@ -118,11 +119,13 @@ final class Loader implements LoaderContract
 
         try {
             if (!(CLI && console()->isBuilding())) {
-                $path = new Path('build');
+                $dir = new Dir(
+                    new Path('build')
+                );
                 if ($this->parameters->hasApi()) {
-                    $api = $api->withCache(new Cache('api', $path));
+                    $api = $api->withCache(new Cache('api', $dir));
                 }
-                $router = $router->withCache(new Cache('router', $path));
+                $router = $router->withCache(new Cache('router', $dir));
             }
             if ($this->parameters->hasApi()) {
                 $services = $services->withApi($api);
@@ -143,7 +146,7 @@ final class Loader implements LoaderContract
         if (
             !DEV
             && !(CLI && console()->isBuilding())
-            && !$this->builder->build()->checksumsPath()->exists()
+            && !$this->builder->build()->file()->exists()
         ) {
             throw new NeedsToBeBuiltException(
                 (new Message('The application needs to be built by CLI %command% or calling %method% method'))

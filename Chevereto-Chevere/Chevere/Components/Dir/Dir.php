@@ -46,6 +46,11 @@ final class Dir
         return $this->path;
     }
 
+    public function exists(): bool
+    {
+        return $this->path->exists() && $this->path->isDir();
+    }
+
     /**
      * Creates the directory
      */

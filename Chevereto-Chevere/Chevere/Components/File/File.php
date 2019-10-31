@@ -29,7 +29,24 @@ final class File
 
     public function __construct(Path $path)
     {
+        if ($path->isDir()) {
+            throw new InvalidArgumentException(
+                (new Message('Path %path% is a directory'))
+                    ->code('%path%', $path->relative())
+                    ->toString()
+            );
+        }
         $this->path = $path;
+    }
+
+    public function path(): Path
+    {
+        return $this->path;
+    }
+
+    public function exists(): bool
+    {
+        return $this->path->exists() && $this->path->isFile();
     }
 
     public function remove(): void

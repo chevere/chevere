@@ -15,6 +15,7 @@ namespace Chevere\Components\ArrayFile;
 
 use ArrayAccess;
 use ArrayIterator;
+use Chevere\Components\File\File;
 use IteratorAggregate;
 use LogicException;
 
@@ -42,8 +43,9 @@ final class ArrayFile
 
     public function __construct(Path $path)
     {
+        $file = new File($path);
         $this->path = $path;
-        $this->fileReturn = (new FileReturn($this->path))
+        $this->fileReturn = (new FileReturn($file))
             ->withNoStrict();
         $this->validateIsArray();
         $this->array = $this->fileReturn->raw();
