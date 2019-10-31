@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\File;
 
-use Chevere\Components\Dir\Dir;
+use InvalidArgumentException;
 use RuntimeException;
 
+use Chevere\Components\Dir\Dir;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 

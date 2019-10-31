@@ -32,9 +32,6 @@ final class Builder implements BuilderContract
     /** @var BuildContract */
     private $build;
 
-    /** @var RequestContract */
-    private $request;
-
     /** @var array */
     private $controllerArguments;
 

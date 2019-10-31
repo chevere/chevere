@@ -13,21 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use BadMethodCallException;
-use Exception;
-
 use Chevere\Components\Api\Api;
 use Chevere\Components\Api\Maker as ApiMaker;
 use Chevere\Components\App\Exceptions\AlreadyBuiltException;
-use Chevere\Components\App\Exceptions\NoBuiltCacheException;
 use Chevere\Components\App\Exceptions\NoBuiltFileException;
-use Chevere\Components\App\Traits\ParametersAccessTrait;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\File\File;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
-use Chevere\Components\Router\Maker as RouterMaker;
 use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\CheckoutContract;
@@ -65,7 +59,7 @@ final class Build implements BuildContract
     /** @var ApiMaker */
     private $apiMaker;
 
-    /** @var RouterMaker */
+    /** @var MakerContract */
     private $routerMaker;
 
     /**

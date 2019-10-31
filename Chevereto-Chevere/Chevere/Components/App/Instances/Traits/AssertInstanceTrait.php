@@ -33,5 +33,5 @@ trait AssertInstanceTrait
         }
     }
 
-    abstract public static function type();
+    abstract public static function type(): string;
 }

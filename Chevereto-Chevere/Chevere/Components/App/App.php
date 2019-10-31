@@ -15,13 +15,11 @@ namespace Chevere\Components\App;
 
 use Chevere\Components\App\Instances\RequestInstance;
 use Chevere\Components\Route\Traits\RouteAccessTrait;
-use Chevere\Components\Router\Traits\ServicesAccessTrait;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\ServicesContract;
 use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Http\ResponseContract;
 use Chevere\Contracts\Route\RouteContract;
-use Chevere\Contracts\Router\RouterContract;
 
 /**
  * The application container.

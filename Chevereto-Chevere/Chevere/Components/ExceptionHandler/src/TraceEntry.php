@@ -16,15 +16,12 @@ namespace Chevere\Components\ExceptionHandler\src;
 use ReflectionMethod;
 
 use Chevere\Components\App\App;
-use Chevere\Components\Path\Path;
 use Chevere\Components\VarDump\Formatters\DumperFormatter;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
 use Chevere\Components\VarDump\VarDump;
 
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
-
-use const Chevere\PATH;
 
 /**
  * TraceEntry prepares the exception trace for being used with Stack.
@@ -56,7 +53,6 @@ final class TraceEntry
         $this->handleProcessMissingClassFile();
         $this->handleSetEntryArguments();
         $this->handleProcessAnonClass();
-        $this->handleProcessCoreAutoloader();
         $this->handleProcessNormalizeFile();
         $this->setPlain();
         $this->setRich();
@@ -170,18 +166,6 @@ final class TraceEntry
         $this->entry['file'] = substr($entryFile, 0, strpos($entryFile, '.php') + 4);
         $this->entry['class'] = VarDump::ANON_CLASS;
         $this->entry['line'] = null;
-    }
-
-    private function handleProcessCoreAutoloader()
-    {
-        if ($this->entry['function'] == 'Chevere\\autoloader') {
-            $this->processCoreAutoloader();
-        }
-    }
-
-    private function processCoreAutoloader()
-    {
-        $this->entry['file'] = $this->entry['file'] ?? (PATH . 'autoloader.php');
     }
 
     private function handleProcessNormalizeFile()
