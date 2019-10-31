@@ -37,7 +37,7 @@ final class Checkout implements CheckoutContract
     public function __construct(BuildContract $build)
     {
         $this->build = $build;
-        $this->assertIsBuilt();
+        $this->assertIsMaked();
         $this->fileReturn = new FileReturn($this->build->file());
         $this->fileReturn->put($this->build->checksums());
     }
@@ -51,9 +51,9 @@ final class Checkout implements CheckoutContract
     }
 
     /**
-     * The BuildContract must be built to checkout the application.
+     * The BuildContract must be maked to checkout the application.
      */
-    private function assertIsBuilt(): void
+    private function assertIsMaked(): void
     {
         if (!$this->build->isMaked()) {
             throw new InvalidArgumentException(

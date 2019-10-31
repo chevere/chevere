@@ -141,7 +141,7 @@ final class FileReturn
     /**
      * Put $var into the file using var_export return
      */
-    public function put($var)
+    public function put($var): void
     {
         if (is_iterable($var)) {
             foreach ($var as &$v) {
