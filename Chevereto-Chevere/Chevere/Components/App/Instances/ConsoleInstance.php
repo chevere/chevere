@@ -13,13 +13,19 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Instances;
 
+use Chevere\Components\App\Instances\Traits\AssertInstanceTrait;
+use Chevere\Components\Message\Message;
 use Chevere\Contracts\Console\ConsoleContract;
+use LogicException;
 
 /**
  * A container for the built-in console.
  */
 final class ConsoleInstance
 {
+    use AssertInstanceTrait;
+
+    /** @var ConsoleContract */
     private static $instance;
 
     public function __construct(ConsoleContract $console)
@@ -27,8 +33,15 @@ final class ConsoleInstance
         self::$instance = $console;
     }
 
+    public static function type(): string
+    {
+        return ConsoleContract::class;
+    }
+
     public static function get(): ConsoleContract
     {
+        self::assertInstance();
+        
         return self::$instance;
     }
 }

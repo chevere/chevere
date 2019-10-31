@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Instances;
 
+use Chevere\Components\App\Instances\Traits\AssertInstanceTrait;
 use Chevere\Components\Runtime\Runtime;
 
 /**
@@ -20,6 +21,9 @@ use Chevere\Components\Runtime\Runtime;
  */
 final class RuntimeInstance
 {
+    use AssertInstanceTrait;
+
+    /** @var Runtime */
     private static $instance;
 
     public function __construct(Runtime $runtime)
@@ -27,8 +31,15 @@ final class RuntimeInstance
         self::$instance = $runtime;
     }
 
+    public static function type(): string
+    {
+        return Runtime::class;
+    }
+
     public static function get(): Runtime
     {
+        self::assertInstance();
+        
         return self::$instance;
     }
 }
