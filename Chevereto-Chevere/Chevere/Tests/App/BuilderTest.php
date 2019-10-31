@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
 
 final class BuilderTest extends TestCase
 {
-    public function testConstructor(): void
+    public function testConstruct(): void
     {
         $app = new App(new Response());
         $build = new Build(new Services());
