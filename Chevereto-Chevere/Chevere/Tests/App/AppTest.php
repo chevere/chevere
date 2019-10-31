@@ -18,7 +18,6 @@ use Chevere\Components\App\Services;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Route\Route;
-use Chevere\Components\Router\Router;
 use PHPUnit\Framework\TestCase;
 
 final class AppTest extends TestCase
