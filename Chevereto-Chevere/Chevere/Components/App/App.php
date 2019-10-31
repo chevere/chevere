@@ -15,8 +15,9 @@ namespace Chevere\Components\App;
 
 use Chevere\Components\App\Instances\RequestInstance;
 use Chevere\Components\Route\Traits\RouteAccessTrait;
-use Chevere\Components\Router\Traits\RouterAccessTrait;
+use Chevere\Components\Router\Traits\ServicesAccessTrait;
 use Chevere\Contracts\App\AppContract;
+use Chevere\Contracts\App\ServicesContract;
 use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Http\ResponseContract;
 use Chevere\Contracts\Route\RouteContract;
@@ -29,7 +30,7 @@ use Chevere\Contracts\Router\RouterContract;
  */
 final class App implements AppContract
 {
-    use RouterAccessTrait;
+    use ServicesAccessTrait;
     use RouteAccessTrait;
 
     /** @var ResponseContract */
@@ -110,10 +111,10 @@ final class App implements AppContract
     /**
      * {@inheritdoc}
      */
-    public function withRouter(RouterContract $router): AppContract
+    public function withServices(ServicesContract $services): AppContract
     {
         $new = clone $this;
-        $new->router = $router;
+        $new->services = $services;
 
         return $new;
     }

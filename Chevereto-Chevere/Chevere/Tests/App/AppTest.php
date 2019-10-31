@@ -30,7 +30,7 @@ final class AppTest extends TestCase
         $this->assertSame($response, $app->response());
         $this->assertFalse($app->hasRequest());
         $this->assertFalse($app->hasRoute());
-        $this->assertFalse($app->hasRouter());
+        $this->assertFalse($app->hasServices());
         $this->assertFalse($app->hasArguments());
     }
 
@@ -45,7 +45,7 @@ final class AppTest extends TestCase
             );
         $app = $app
             ->withResponse($response);
-        
+
         $this->assertSame($response, $app->response());
     }
 
@@ -55,7 +55,7 @@ final class AppTest extends TestCase
         $request = new Request('GET', '/');
         $app = $app
             ->withRequest($request);
-        
+
         $this->assertTrue($app->hasRequest());
         $this->assertSame($request, $app->request());
     }
@@ -65,27 +65,27 @@ final class AppTest extends TestCase
         $route = new Route('/home');
         $app = (new App(new Response()))
             ->withRoute($route);
-        
+
         $this->assertTrue($app->hasRoute());
         $this->assertSame($route, $app->route());
     }
 
-    public function testWithRouter(): void
-    {
-        $router = new Router();
-        $app = (new App(new Response()))
-            ->withRouter($router);
-        
-        $this->assertTrue($app->hasRouter());
-        $this->assertSame($router, $app->router());
-    }
+    // public function testWithRouter(): void
+    // {
+    //     $router = new Router();
+    //     $app = (new App(new Response()))
+    //         ->withRouter($router);
+
+    //     $this->assertTrue($app->hasRouter());
+    //     $this->assertSame($router, $app->router());
+    // }
 
     public function testWithArguments(): void
     {
         $arguments = ['a', 'b', 'c'];
         $app = (new App(new Response()))
             ->withArguments($arguments);
-        
+
         $this->assertTrue($app->hasArguments());
         $this->assertSame($arguments, $app->arguments());
     }

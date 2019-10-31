@@ -41,7 +41,7 @@ final class GetController extends Controller
     public function __invoke(?string $endpoint = null)
     {
         if (isset($endpoint)) {
-            $route = $this->app()->router()->resolve($endpoint);
+            $route = $this->app()->services()->router()->resolve($endpoint);
         } else {
             $route = $this->app()->route();
             if (isset($route)) {

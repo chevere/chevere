@@ -59,7 +59,7 @@ interface AppContract
      * Provides access to the RequestContract instance.
      */
     public function request(): RequestContract;
-    
+
     /**
      * Return an instance with the specified RouteContract.
      *
@@ -67,34 +67,34 @@ interface AppContract
      * an instance that contains the specified RouteContract.
      */
     public function withRoute(RouteContract $route): AppContract;
-    
+
     /**
      * Returns a boolean indicating whether the instance has a RouteContract.
      */
     public function hasRoute(): bool;
-    
+
     /**
      * Provides access to the RouteContract instance.
      */
     public function route(): RouteContract;
-    
+
     /**
-     * Return an instance with the specified RouterContract.
+     * Return an instance with the specified ServicesContract.
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified RouterContract.
      */
-    public function withRouter(RouterContract $router): AppContract;
-    
+    public function withServices(ServicesContract $services): AppContract;
+
     /**
-     * Returns a boolean indicating whether the instance has a RouterContract.
+     * Returns a boolean indicating whether the instance has a ServicesContract.
      */
-    public function hasRouter(): bool;
-    
+    public function hasServices(): bool;
+
     /**
-     * Provides access to the RouterContract instance.
+     * Provides access to the ServicesContract instance.
      */
-    public function router(): RouterContract;
+    public function services(): ServicesContract;
 
     /**
      * Return an instance with the specified arguments.
@@ -108,7 +108,7 @@ interface AppContract
      * Returns a boolean indicating whether the instance has arguments.
      */
     public function hasArguments(): bool;
-    
+
     /**
      * Provides access to the application arguments.
      */

@@ -62,8 +62,8 @@ final class Loader implements LoaderContract
         $this->builder = $this->builder
             ->withBuild($this->getBuild());
         $app = $this->builder->app()
-            ->withRouter(
-                $this->builder->build()->services()->router()
+            ->withServices(
+                $this->builder->build()->services()
             );
         $this->builder = $this->builder
             ->withApp($app);

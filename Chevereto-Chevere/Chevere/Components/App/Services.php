@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use Chevere\Components\Api\Traits\ApiAccessTrait;
-use Chevere\Components\Router\Traits\RouterAccessTrait;
 use Chevere\Contracts\Api\ApiContract;
 use Chevere\Contracts\App\ServicesContract;
 use Chevere\Contracts\Router\RouterContract;
@@ -24,15 +22,17 @@ use Chevere\Contracts\Router\RouterContract;
  */
 final class Services implements ServicesContract
 {
-    use RouterAccessTrait;
-    use ApiAccessTrait;
+    /** @var ApiContract */
+    private $api;
+
+    /** @var RouterContract */
+    private $router;
 
     /**
      * {@inheritdoc}
      */
     public function __construct()
-    {
-    }
+    { }
 
     /**
      * {@inheritdoc}
@@ -41,8 +41,18 @@ final class Services implements ServicesContract
     {
         $new = clone $this;
         $new->api = $api;
-        
+
         return $new;
+    }
+
+    public function hasApi(): bool
+    {
+        return isset($this->api);
+    }
+
+    public function api(): ApiContract
+    {
+        return $this->api;
     }
 
     /**
@@ -54,5 +64,15 @@ final class Services implements ServicesContract
         $new->router = $router;
 
         return $new;
+    }
+
+    public function hasRouter(): bool
+    {
+        return isset($this->router);
+    }
+
+    public function router(): RouterContract
+    {
+        return $this->router;
     }
 }

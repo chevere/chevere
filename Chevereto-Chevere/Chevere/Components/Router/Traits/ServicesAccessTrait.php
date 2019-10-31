@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Traits;
 
-use Chevere\Contracts\Router\RouterContract;
+use Chevere\Contracts\App\ServicesContract;
 
-trait RouterAccessTrait
+trait ServicesAccessTrait
 {
-    /** @var RouterContract */
-    private $router;
+    /** @var ServicesContract */
+    private $services;
 
-    public function hasRouter(): bool
+    public function hasServices(): bool
     {
-        return isset($this->router);
+        return isset($this->services);
     }
 
-    public function router(): RouterContract
+    public function services(): ServicesContract
     {
-        return $this->router;
+        return $this->services;
     }
 }

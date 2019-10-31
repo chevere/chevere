@@ -124,14 +124,13 @@ final class Run implements RunContract
     private function resolveCallable(string $pathInfo): void
     {
         $app = $this->builder->app();
-        $request = $this->builder->app()->request();
         try {
-            $route = $app->router()->resolve($pathInfo);
+            $route = $app->services()->router()->resolve($pathInfo);
             $app = $app
                 ->withRoute($route);
             $this->controllerName = $app->route()
-                ->getController($request->getMethod());
-            $this->controllerArguments = $app->router()->arguments();
+                ->getController($app->request()->getMethod());
+            $this->controllerArguments = $app->services()->router()->arguments();
         } catch (RouteNotFoundException $e) {
             $response = $app->response();
             $guzzle = $response->guzzle()
