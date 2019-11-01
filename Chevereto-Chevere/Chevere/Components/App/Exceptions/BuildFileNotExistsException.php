@@ -15,5 +15,5 @@ namespace Chevere\Components\App\Exceptions;
 
 use Exception;
 
-final class NeedsToBeBuiltException extends Exception
+final class BuildFileNotExistsException extends Exception
 { }

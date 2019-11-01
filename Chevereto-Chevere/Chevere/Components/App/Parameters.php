@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
+use InvalidArgumentException;
 use LogicException;
 
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Contracts\App\ParametersContract;
-use InvalidArgumentException;
 
 /**
  * Application parameters container.
@@ -97,7 +97,7 @@ final class Parameters implements ParametersContract
     {
         return isset($this->api);
     }
-    
+
     /**
      * {@inheritdoc}
      */

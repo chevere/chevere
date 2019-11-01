@@ -15,6 +15,5 @@ namespace Chevere\Components\App\Exceptions;
 
 use Exception;
 
-final class NoBuiltCacheException extends Exception
-{
-}
+final class BuildAlreadyMakedException extends Exception
+{ }

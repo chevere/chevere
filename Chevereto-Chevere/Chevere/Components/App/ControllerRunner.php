@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use Chevere\Components\App\Exceptions\BadControllerNameException as ControllerContractNameException;
 use Chevere\Components\App\Exceptions\ControllerContractException;
 use Chevere\Components\App\Exceptions\ControllerNotExistsException;
-use LogicException;
-
 use Chevere\Components\Controller\ArgumentsWrap;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\App\AppContract;

@@ -15,5 +15,5 @@ namespace Chevere\Components\App\Exceptions;
 
 use Exception;
 
-final class AlreadyBuiltException extends Exception
+final class BuildNeededException extends Exception
 { }

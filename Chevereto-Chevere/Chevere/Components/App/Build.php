@@ -15,8 +15,8 @@ namespace Chevere\Components\App;
 
 use Chevere\Components\Api\Api;
 use Chevere\Components\Api\Maker as ApiMaker;
-use Chevere\Components\App\Exceptions\AlreadyBuiltException;
-use Chevere\Components\App\Exceptions\NoBuiltFileException;
+use Chevere\Components\App\Exceptions\BuildAlreadyMakedException;
+use Chevere\Components\App\Exceptions\BuildFileNotExistsException;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\File\File;
@@ -43,7 +43,7 @@ final class Build implements BuildContract
 
     /** @var File */
     private $file;
-    
+
     /** @var Dir */
     private $cacheDir;
 
@@ -175,7 +175,7 @@ final class Build implements BuildContract
     public function destroy(): void
     {
         if (!$this->file->exists()) {
-            throw new NoBuiltFileException();
+            throw new BuildFileNotExistsException();
         }
         $this->file->remove();
         if ($this->cacheDir->exists()) {
@@ -199,7 +199,7 @@ final class Build implements BuildContract
     {
         return $this->cacheDir;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -236,7 +236,7 @@ final class Build implements BuildContract
             );
         }
         if ($this->isMaked) {
-            throw new AlreadyBuiltException();
+            throw new BuildAlreadyMakedException();
         }
     }
 

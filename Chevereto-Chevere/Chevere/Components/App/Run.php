@@ -22,7 +22,6 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\RunContract;
-use Chevere\Contracts\Controller\JsonApiContract;
 
 use function console;
 use function GuzzleHttp\Psr7\stream_for;

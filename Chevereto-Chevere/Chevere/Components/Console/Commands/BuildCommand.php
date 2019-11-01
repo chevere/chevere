@@ -15,7 +15,6 @@ namespace Chevere\Components\Console\Commands;
 
 use LogicException;
 
-use Chevere\Components\App\Exceptions\AlreadyBuiltException;
 use Chevere\Components\Console\Command;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Maker;
@@ -51,8 +50,8 @@ final class BuildCommand extends Command
             $this->builder = $this->builder
                 ->withBuild(
                     $this->builder->build()
-                    ->withRouterMaker(new Maker())
-                    ->make()
+                        ->withRouterMaker(new Maker())
+                        ->make()
                 );
         }
         $timeEnd = (int) hrtime(true);

@@ -18,7 +18,7 @@ use TypeError;
 
 use Chevere\Components\Api\Api;
 use Chevere\Components\App\Build;
-use Chevere\Components\App\Exceptions\NoBuiltFileException;
+use Chevere\Components\App\Exceptions\BuildFileNotExistsException;
 use Chevere\Components\App\Parameters;
 use Chevere\Components\App\Services;
 use Chevere\Components\ArrayFile\ArrayFile;
@@ -111,7 +111,7 @@ final class BuildTest extends TestCase
     {
         $services = new Services();
         $build = new Build($services);
-        $this->expectException(NoBuiltFileException::class);
+        $this->expectException(BuildFileNotExistsException::class);
         $build->destroy();
     }
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\App;
 
 use Chevere\Components\Api\Api;
-use Chevere\Components\App\Exceptions\NeedsToBeBuiltException;
+use Chevere\Components\App\Exceptions\BuildNeededException;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
@@ -137,7 +137,7 @@ final class Loader implements LoaderContract
             $message = (new Message('The app must be re-build due to missing cache: %message%'))
                 ->strtr('%message%', $e->getMessage())
                 ->toString();
-            throw new NeedsToBeBuiltException($message, $e->getCode(), $e);
+            throw new BuildNeededException($message, $e->getCode(), $e);
         }
     }
 
@@ -148,7 +148,7 @@ final class Loader implements LoaderContract
             && !(CLI && console()->isBuilding())
             && !$this->builder->build()->file()->exists()
         ) {
-            throw new NeedsToBeBuiltException(
+            throw new BuildNeededException(
                 (new Message('The application needs to be built by CLI %command% or calling %method% method'))
                     ->code('%command%', 'php app/console build')
                     ->code('%method%', __CLASS__ . '::build')

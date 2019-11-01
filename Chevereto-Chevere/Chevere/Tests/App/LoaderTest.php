@@ -11,10 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\App\Exceptions;
+namespace Chevere\Tests\App;
 
-use Exception;
+use PHPUnit\Framework\TestCase;
 
-final class NoBuiltFileException extends Exception
-{
-}
+final class LoaderTest extends TestCase
+{ }
