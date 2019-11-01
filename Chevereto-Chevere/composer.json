@@ -32,5 +32,10 @@
             "Chevere\\Components\\": "Chevere/Components/",
             "Chevere\\Contracts\\": "Chevere/Contracts/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Chevere\\TestApp\\App\\": "Chevere/TestApp/app/src/"
+        }
     }
 }

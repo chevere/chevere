@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
+use Chevere\Components\App\Exceptions\BadControllerNameException as ControllerContractNameException;
+use Chevere\Components\App\Exceptions\ControllerContractException;
+use Chevere\Components\App\Exceptions\ControllerNotExistsException;
 use LogicException;
 
 use Chevere\Components\Controller\ArgumentsWrap;
@@ -50,6 +53,7 @@ final class ControllerRunner implements ControllerRunnerContract
     public function run(string $controllerName): ControllerContract
     {
         $this->controllerName = $controllerName;
+        $this->assertControllerExists();
         $this->assertControllerName();
         $this->handleRouteMiddleware();
         $controller = new $controllerName($this->app);
@@ -68,10 +72,21 @@ final class ControllerRunner implements ControllerRunnerContract
         return [];
     }
 
+    private function assertControllerExists(): void
+    {
+        if (!class_exists($this->controllerName)) {
+            throw new ControllerNotExistsException(
+                (new Message("Controller %controller% doesn't exists"))
+                    ->code('%controller%', $this->controllerName)
+                    ->toString()
+            );
+        }
+    }
+
     private function assertControllerName(): void
     {
         if (!is_subclass_of($this->controllerName, ControllerContract::class)) {
-            throw new LogicException(
+            throw new ControllerContractException(
                 (new Message('Controller %controller% must implement the %contract% interface'))
                     ->code('%controller%', $this->controllerName)
                     ->code('%contract%', ControllerContract::class)
@@ -82,7 +97,7 @@ final class ControllerRunner implements ControllerRunnerContract
 
     private function handleRouteMiddleware(): void
     {
-        if ($this->app->route()) {
+        if ($this->app->hasRoute()) {
             $middlewares = $this->app->route()->middlewares();
             if (!empty($middlewares)) {
                 $this->middlewareRunner = (new MiddlewareRunner($middlewares, $this->app))->withRun();
