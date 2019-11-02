@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ArrayFile;
 
-use ArrayAccess;
-use ArrayIterator;
-use Chevere\Components\File\File;
-use IteratorAggregate;
 use LogicException;
 
+use Chevere\Components\File\File;
 use Chevere\Components\FileReturn\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;

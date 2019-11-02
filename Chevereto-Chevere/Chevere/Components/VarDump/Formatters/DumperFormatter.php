@@ -27,7 +27,6 @@ use const Chevere\CLI;
  */
 final class DumperFormatter implements FormatterContract
 {
-
     use GetIndentTrait;
     use GetEncodedCharsTrait;
 
@@ -44,7 +43,7 @@ final class DumperFormatter implements FormatterContract
     public function getEmphasis(string $string): string
     {
         if (!CLI) {
-            return 'ssss' . $string;
+            return $string;
         }
 
         return (new ConsoleFormatter())

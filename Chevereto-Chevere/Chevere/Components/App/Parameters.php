@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
+use Chevere\Components\App\Exceptions\ParametersDuplicatedException;
 use InvalidArgumentException;
-use LogicException;
 
+use Chevere\Components\App\Exceptions\ParametersWrongKeyException;
+use Chevere\Components\App\Exceptions\ParametersWrongTypeException;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
@@ -70,7 +72,7 @@ final class Parameters implements ParametersContract
         }
         foreach ($paths as $path) {
             if (in_array($path->absolute(), $new->routes)) {
-                throw new InvalidArgumentException(
+                throw new ParametersDuplicatedException(
                     (new Message('Route path %path% was already added'))
                         ->code('%path%', $path->absolute())
                         ->toString()
@@ -124,21 +126,19 @@ final class Parameters implements ParametersContract
 
     private function assertKeys(): void
     {
-        foreach ($this->arrayFile as $key => $val) {
-            $this->assertKeyAvailable($key);
+        foreach ($this->arrayFile->toArray() as $key => $val) {
+            $this->assertValidKeys($key);
             $this->assertKeyType($key, gettype($val));
         }
     }
 
     /**
-     * Throws a LogicException if the key doesn't exists in $parameters.
-     *
      * @param string $key The AppParameter key
      */
-    private function assertKeyAvailable(string $key): void
+    private function assertValidKeys(string $key): void
     {
         if (!array_key_exists($key, $this->types)) {
-            throw new LogicException(
+            throw new ParametersWrongKeyException(
                 (new Message('Unrecognized %className% key "%key%"'))
                     ->code('%className%', __CLASS__)
                     ->strtr('%key%', $key)
@@ -156,7 +156,7 @@ final class Parameters implements ParametersContract
     private function assertKeyType(string $key, string $gettype): void
     {
         if ($gettype !== $this->types[$key]) {
-            throw new LogicException(
+            throw new ParametersWrongTypeException(
                 (new Message('Expecting %type% type, %gettype% type provided for key %key% in %path%'))
                     ->code('%type%', $this->types[$key])
                     ->code('%gettype%', $gettype)
