@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Route;
 
-use Chevere\Components\Route\Middlewares;
+use Chevere\Components\Route\MiddlewareNames;
 use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodsContract;
 
@@ -50,7 +50,7 @@ interface RouteContract
 
     public function wheres(): array;
 
-    public function middlewares(): Middlewares;
+    public function middlewareNames(): MiddlewareNames;
 
     public function wildcardName(int $key): string;
 
@@ -87,7 +87,7 @@ interface RouteContract
 
     // public function withId(string $id): RouteContract;
 
-    public function withAddedMiddleware(string $callable): RouteContract;
+    public function withAddedMiddlewareName(string $middlewareName): RouteContract;
 
     /**
      * @param string $httpMethod an HTTP method

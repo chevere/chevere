@@ -119,9 +119,7 @@ final class Loader implements LoaderContract
 
         try {
             if (!(CLI && console()->isBuilding())) {
-                $dir = new Dir(
-                    new Path('build')
-                );
+                $dir = $this->builder->build()->cacheDir();
                 if ($this->parameters->hasApi()) {
                     $api = $api->withCache(new Cache('api', $dir));
                 }

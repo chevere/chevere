@@ -17,6 +17,7 @@ use LogicException;
 use Throwable;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Route\MiddlewareNames;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\Traits\RouteAccessTrait;
 
@@ -27,7 +28,7 @@ final class Resolver
     public function __construct(string $serialized)
     {
         try {
-            $this->route = unserialize($serialized, ['allowed_classes' => [Route::class]]);
+            $this->route = unserialize($serialized);
         } catch (Throwable $e) {
             throw new LogicException(
                 (new Message('Unable to unserialize: %message%'))

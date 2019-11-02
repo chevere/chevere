@@ -16,6 +16,7 @@ namespace Chevere\Components\App;
 use Chevere\Components\App\Exceptions\AppWithoutRequestException;
 use Chevere\Components\App\Exceptions\MiddlewareContractException;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Route\MiddlewareNames;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\MiddlewareRunnerContract;
 use Chevere\Contracts\Http\RequestContract;
@@ -26,8 +27,8 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
     /** @var AppContract */
     private $app;
 
-    /** @var array */
-    private $queue;
+    /** @var MiddlewareNames */
+    private $middlewareNames;
 
     /** @var bool */
     private $ran;
@@ -36,11 +37,11 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
      * @param array $queue an array containing callable Middlewares
      * @param AppContract $app The application container
      */
-    public function __construct(array $queue, AppContract $app)
+    public function __construct(MiddlewareNames $middlewareNames, AppContract $app)
     {
         $this->app = $app;
         $this->assertAppWithRequest();
-        $this->queue = $queue;
+        $this->middlewareNames = $middlewareNames;
     }
 
     public function withRun(): MiddlewareRunnerContract
@@ -54,15 +55,7 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
 
     private function run(): void
     {
-        foreach ($this->queue as $middleware) {
-            if (!is_subclass_of($middleware, MiddlewareContract::class)) {
-                throw new MiddlewareContractException(
-                    (new Message('Middleware %middleware% must implement the %contract% contract'))
-                        ->code('%middleware%', $middleware)
-                        ->code('%contract%', MiddlewareContract::class)
-                        ->toString()
-                );
-            }
+        foreach ($this->middlewareNames->toArray() as $middleware) {
             (new $middleware())
                 ->handle(
                     $this->app->request()

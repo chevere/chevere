@@ -18,9 +18,9 @@ return [
                 ->withControllerName(Controllers\Index::class)
         )
         ->withName('web.root')
-        ->withAddedMiddleware(Middlewares\RoleBanned::class)
-        ->withAddedMiddleware(Middlewares\RoleAdmin::class),
-    // ->withAddedMiddleware(Middlewares\RoleBanned::class),
+        ->withAddedMiddlewareName(Middlewares\RoleBanned::class)
+        ->withAddedMiddlewareName(Middlewares\RoleAdmin::class),
+    // ->withAddedMiddlewareName(Middlewares\RoleBanned::class),
     // (new Route('/cache/{llave?}-{cert}-{user?}'))
     //     ->withWhere('llave', '[0-9]+')
     //     ->withAddedMethod(

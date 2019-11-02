@@ -23,9 +23,7 @@ use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodsContract;
 use Chevere\Contracts\Route\RouteContract;
 
-
 // IDEA: L10n support
-// FIXME: Use object properties
 
 final class Route implements RouteContract
 {
@@ -41,8 +39,8 @@ final class Route implements RouteContract
     /** @var array ['method' => 'controller',] */
     private $methods;
 
-    /** @var Middlewares */
-    private $middlewares;
+    /** @var MiddlewareNames */
+    private $middlewareNames;
 
     /** @var array */
     private $wildcards;
@@ -72,7 +70,7 @@ final class Route implements RouteContract
             $this->key = $this->path;
         }
         $this->type = isset($this->wildcards) ? Route::TYPE_DYNAMIC : Route::TYPE_STATIC;
-        $this->middlewares = new Middlewares();
+        $this->middlewareNames = new MiddlewareNames();
     }
 
     public function maker(): array
@@ -115,9 +113,9 @@ final class Route implements RouteContract
         return $this->type;
     }
 
-    public function middlewares(): Middlewares
+    public function middlewareNames(): MiddlewareNames
     {
-        return $this->middlewares;
+        return $this->middlewareNames;
     }
 
     public function regex(): string
@@ -183,11 +181,11 @@ final class Route implements RouteContract
         return $new;
     }
 
-    public function withAddedMiddleware(string $callable): RouteContract
+    public function withAddedMiddlewareName(string $middlewareName): RouteContract
     {
         $new = clone $this;
-        $new->middlewares = $new->middlewares
-            ->withAddedMiddlewareName($callable);
+        $new->middlewareNames = $new->middlewareNames
+            ->withAddedMiddlewareName($middlewareName);
 
         return $new;
     }

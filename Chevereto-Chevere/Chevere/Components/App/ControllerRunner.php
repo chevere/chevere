@@ -96,9 +96,9 @@ final class ControllerRunner implements ControllerRunnerContract
 
     private function handleRouteMiddleware(): void
     {
-        $middlewares = $this->app->route()->middlewares();
-        if (!empty($middlewares)) {
-            $this->middlewareRunner = (new MiddlewareRunner($middlewares, $this->app))
+        $middlewareNames = $this->app->route()->middlewareNames();
+        if (!empty($middlewareNames)) {
+            $this->middlewareRunner = (new MiddlewareRunner($middlewareNames, $this->app))
                 ->withRun();
         }
     }

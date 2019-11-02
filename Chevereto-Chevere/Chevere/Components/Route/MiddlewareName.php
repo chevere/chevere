@@ -17,40 +17,28 @@ use Chevere\Components\App\Exceptions\MiddlewareContractException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Middleware\MiddlewareContract;
 
-final class Middlewares
+final class MiddlewareName
 {
-    /** @var array */
-    private $array;
-
     /** @var string */
-    private $middleware;
+    private $middlewareName;
 
-    public function __construct()
+    public function __construct(string $middlewareName)
     {
-        $this->array = [];
-    }
-
-    public function withAddedMiddlewareName(string $middleware): Middlewares
-    {
-        $this->middleware = $middleware;
+        $this->middlewareName = $middlewareName;
         $this->assertMiddlewareContract();
-        $new = clone $this;
-        $new->array[] = $middleware;
-
-        return $new;
     }
 
-    public function get(): array
+    public function toString(): string
     {
-        return $this->array;
+        return $this->middlewareName;
     }
 
     private function assertMiddlewareContract(): void
     {
-        if (is_subclass_of(MiddlewareContract::class, $this->middleware)) {
+        if (is_subclass_of(MiddlewareContract::class, $this->middlewareName)) {
             throw new MiddlewareContractException(
                 (new Message('Middleware %middleware% must implement the %contract% contract'))
-                    ->code('%middleware%', $this->middleware)
+                    ->code('%middleware%', $this->middlewareName)
                     ->code('%contract%', MiddlewareContract::class)
                     ->toString()
             );

@@ -247,5 +247,6 @@ final class FileReturn
     private function unseralize(&$var)
     {
         $var = unserialize($var);
+        dd($var);
     }
 }
