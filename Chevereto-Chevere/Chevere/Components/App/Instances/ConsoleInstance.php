@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\App\Instances;
 
 use Chevere\Components\App\Instances\Traits\AssertInstanceTrait;
-use Chevere\Components\Message\Message;
 use Chevere\Contracts\Console\ConsoleContract;
 use LogicException;
 

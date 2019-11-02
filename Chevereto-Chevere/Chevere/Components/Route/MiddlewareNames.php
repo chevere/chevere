@@ -32,6 +32,11 @@ final class MiddlewareNames
         return $new;
     }
 
+    public function hasAny(): bool
+    {
+        return !empty($this->array);
+    }
+
     public function toArray(): array
     {
         return $this->array;
