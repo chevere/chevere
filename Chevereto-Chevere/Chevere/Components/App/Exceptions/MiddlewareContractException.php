@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\App;
+namespace Chevere\Components\App\Exceptions;
 
-use PHPUnit\Framework\TestCase;
+use Exception;
 
-final class LoaderTest extends TestCase
+final class MiddlewareContractException extends Exception
 { }

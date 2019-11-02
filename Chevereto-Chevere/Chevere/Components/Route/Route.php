@@ -19,12 +19,10 @@ use InvalidArgumentException;
 use Chevere\Components\Controllers\HeadController;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Path\Path;
 use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodsContract;
 use Chevere\Contracts\Route\RouteContract;
 
-use const Chevere\APP_PATH;
 
 // IDEA: L10n support
 // FIXME: Use object properties
@@ -43,7 +41,7 @@ final class Route implements RouteContract
     /** @var array ['method' => 'controller',] */
     private $methods;
 
-    /** @var array [MiddlewareContract,] */
+    /** @var Middlewares */
     private $middlewares;
 
     /** @var array */
@@ -74,6 +72,7 @@ final class Route implements RouteContract
             $this->key = $this->path;
         }
         $this->type = isset($this->wildcards) ? Route::TYPE_DYNAMIC : Route::TYPE_STATIC;
+        $this->middlewares = new Middlewares();
     }
 
     public function maker(): array
@@ -106,11 +105,6 @@ final class Route implements RouteContract
         return $this->wheres ?? [];
     }
 
-    public function middlewares(): array
-    {
-        return $this->middlewares ?? [];
-    }
-
     public function wildcardName(int $key): string
     {
         return $this->wildcards[$key] ?? '';
@@ -119,6 +113,11 @@ final class Route implements RouteContract
     public function type(): string
     {
         return $this->type;
+    }
+
+    public function middlewares(): Middlewares
+    {
+        return $this->middlewares;
     }
 
     public function regex(): string
@@ -186,9 +185,11 @@ final class Route implements RouteContract
 
     public function withAddedMiddleware(string $callable): RouteContract
     {
-        $this->middlewares[] = $callable;
+        $new = clone $this;
+        $new->middlewares = $new->middlewares
+            ->withAddedMiddlewareName($callable);
 
-        return $this;
+        return $new;
     }
 
     public function getController(string $httpMethod): string
@@ -245,6 +246,6 @@ final class Route implements RouteContract
     {
         $this->maker = debug_backtrace(0, 2)[1];
         $this->maker['file'] = $this->maker['file'];
-        $this->maker['fileLine'] = $this->maker['file']. ':' . $this->maker['line'];
+        $this->maker['fileLine'] = $this->maker['file'] . ':' . $this->maker['line'];
     }
 }

@@ -13,9 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use Chevere\Components\Http\Request\RequestException;
+use Chevere\Components\App\Exceptions\AppWithoutRequestException;
+use Chevere\Components\App\Exceptions\MiddlewareContractException;
+use Chevere\Components\Message\Message;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\MiddlewareRunnerContract;
+use Chevere\Contracts\Http\RequestContract;
+use Chevere\Contracts\Middleware\MiddlewareContract;
 
 final class MiddlewareRunner implements MiddlewareRunnerContract
 {
@@ -35,6 +39,7 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
     public function __construct(array $queue, AppContract $app)
     {
         $this->app = $app;
+        $this->assertAppWithRequest();
         $this->queue = $queue;
     }
 
@@ -50,10 +55,30 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
     private function run(): void
     {
         foreach ($this->queue as $middleware) {
+            if (!is_subclass_of($middleware, MiddlewareContract::class)) {
+                throw new MiddlewareContractException(
+                    (new Message('Middleware %middleware% must implement the %contract% contract'))
+                        ->code('%middleware%', $middleware)
+                        ->code('%contract%', MiddlewareContract::class)
+                        ->toString()
+                );
+            }
             (new $middleware())
                 ->handle(
                     $this->app->request()
                 );
+        }
+    }
+
+    private function assertAppWithRequest(): void
+    {
+        if (!$this->app->hasRequest()) {
+            throw new AppWithoutRequestException(
+                (new Message('Instance of %type% must contain a %contract% contract'))
+                    ->code('%type%', AppContract::class)
+                    ->code('%contract%', RequestContract::class)
+                    ->toString()
+            );
         }
     }
 }
