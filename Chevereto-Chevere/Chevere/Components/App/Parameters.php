@@ -57,7 +57,11 @@ final class Parameters implements ParametersContract
             $this->api = $array[ParametersContract::KEY_API];
         }
         if (isset($array[ParametersContract::KEY_ROUTES])) {
-            $this->routes = $array[ParametersContract::KEY_ROUTES];
+            $routes = $array[ParametersContract::KEY_ROUTES];
+            $this->routes = [];
+            foreach ($routes as $route) {
+                $this->routes[] = (new Path($route))->relative();
+            }
         }
     }
 
@@ -71,14 +75,14 @@ final class Parameters implements ParametersContract
             $new->routes = [];
         }
         foreach ($paths as $path) {
-            if (in_array($path->absolute(), $new->routes)) {
+            if (in_array($path->relative(), $new->routes)) {
                 throw new ParametersDuplicatedException(
                     (new Message('Route path %path% was already added'))
                         ->code('%path%', $path->absolute())
                         ->toString()
                 );
             }
-            $new->routes[] = $path->absolute();
+            $new->routes[] = $path->relative();
         }
 
         return $new;

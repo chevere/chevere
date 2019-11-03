@@ -45,9 +45,29 @@ final class App implements AppContract
     /**
      * {@inheritdoc}
      */
-    public function __construct(ResponseContract $response)
+    public function __construct(ServicesContract $services, ResponseContract $response)
     {
+        $this->services = $services;
         $this->response = $response;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withServices(ServicesContract $services): AppContract
+    {
+        $new = clone $this;
+        $new->services = $services;
+
+        return $new;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function services(): ServicesContract
+    {
+        return $this->services;
     }
 
     /**
@@ -108,32 +128,7 @@ final class App implements AppContract
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function withServices(ServicesContract $services): AppContract
-    {
-        $new = clone $this;
-        $new->services = $services;
-
-        return $new;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasServices(): bool
-    {
-        return isset($this->services);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function services(): ServicesContract
-    {
-        return $this->services;
-    }
+    
 
     /**
      * {@inheritdoc}

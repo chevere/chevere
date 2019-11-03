@@ -25,31 +25,34 @@ final class BuilderTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $app = new App(new Response());
-        $build = new Build(new Services());
-        $builder = new Builder($app, $build);
+        $app = new App(new Services(), new Response());
+        $build = new Build($app);
+        $builder = new Builder($build);
         
-        $this->assertSame($app, $builder->app());
+        $this->assertSame($app, $builder->build()->app());
         $this->assertSame($build, $builder->build());
     }
 
     public function testWithApp(): void
     {
-        $app = new App(new Response());
-        $build = new Build(new Services());
+        $app = new App(new Services(), new Response());
+        $build = new Build($app);
         $appAlt = $app->withArguments([1,2,3]);
-        $builder = (new Builder($app, $build))
-          ->withApp($appAlt);
+        $builder = new Builder($build);
+        $builder = $builder
+          ->withBuild(
+              $build->withApp($appAlt)
+          );
         
-        $this->assertSame($appAlt, $builder->app());
+        $this->assertSame($appAlt, $builder->build()->app());
     }
 
     public function testWithBuild(): void
     {
-        $app = new App(new Response());
-        $build = new Build(new Services());
+        $app = new App(new Services(), new Response());
+        $build = new Build($app);
         $buildAlt = $build->withRouterMaker(new Maker());
-        $builder = (new Builder($app, $build))
+        $builder = (new Builder($build))
           ->withBuild($buildAlt);
         
         $this->assertSame($buildAlt, $builder->build());
@@ -57,10 +60,10 @@ final class BuilderTest extends TestCase
 
     public function testWithControllerName(): void
     {
-        $app = new App(new Response());
-        $build = new Build(new Services());
+        $app = new App(new Services(), new Response());
+        $build = new Build($app);
         $controllerName = 'ControllerName';
-        $builder = (new Builder($app, $build))
+        $builder = (new Builder($build))
           ->withControllerName($controllerName);
         
         $this->assertTrue($builder->hasControllerName());
@@ -69,10 +72,10 @@ final class BuilderTest extends TestCase
 
     public function testWithControllerArguments(): void
     {
-        $app = new App(new Response());
-        $build = new Build(new Services());
+        $app = new App(new Services(), new Response());
+        $build = new Build($app);
         $controllerArguments = [1,2,3];
-        $builder = (new Builder($app, $build))
+        $builder = (new Builder($build))
           ->withControllerArguments($controllerArguments);
         
         $this->assertTrue($builder->hasControllerArguments());

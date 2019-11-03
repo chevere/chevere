@@ -23,9 +23,9 @@ use Chevere\Components\File\File;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Router;
+use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\CheckoutContract;
-use Chevere\Contracts\App\ServicesContract;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\Router\MakerContract;
 use LogicException;
@@ -35,8 +35,8 @@ use LogicException;
  */
 final class Build implements BuildContract
 {
-    /** @var ServicesContract */
-    private $services;
+    /** @var AppContract */
+    private $app;
 
     /** @var ParametersContract */
     private $parameters;
@@ -65,10 +65,10 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function __construct(ServicesContract $services)
+    public function __construct(AppContract $app)
     {
         $this->isMaked = false;
-        $this->services = $services;
+        $this->app = $app;
         $this->file = new File(
             new Path('build/build.php')
         );
@@ -80,10 +80,10 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function withServices(ServicesContract $services): BuildContract
+    public function withApp(AppContract $app): BuildContract
     {
         $new = clone $this;
-        $new->services = $services;
+        $new->app = $app;
 
         return $new;
     }
@@ -91,9 +91,9 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function services(): ServicesContract
+    public function app(): AppContract
     {
-        return $this->services;
+        return $this->app;
     }
 
     /**
@@ -249,11 +249,14 @@ final class Build implements BuildContract
                     $this->parameters->api()
                 )
             );
-        $this->services = $this->services
+        
+        $services = $this->app->services()
             ->withApi(
                 (new Api())
                     ->withMaker($this->apiMaker)
             );
+        $this->app = $this->app
+            ->withServices($services);
         $this->apiMaker = $this->apiMaker
             ->withCache(
                 new Cache('api', $this->cacheDir)
@@ -265,11 +268,13 @@ final class Build implements BuildContract
     {
         $this->routerMaker = $this->routerMaker
             ->withAddedRouteFiles(...$this->parameters->routes());
-        $this->services = $this->services
+        $services = $this->app->services()
             ->withRouter(
                 (new Router())
                     ->withMaker($this->routerMaker)
             );
+        $this->app = $this->app
+            ->withServices($services);
         $this->routerMaker = $this->routerMaker
             ->withCache(
                 new Cache('router', $this->cacheDir)

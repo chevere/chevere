@@ -18,6 +18,7 @@ use Chevere\Components\App\Exceptions\AppWithoutRequestException;
 use Chevere\Components\App\Exceptions\MiddlewareNamesEmptyException;
 use Chevere\Components\App\Instances\RequestInstance;
 use Chevere\Components\App\MiddlewareRunner;
+use Chevere\Components\App\Services;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Route\MiddlewareNames;
@@ -28,14 +29,14 @@ final class MiddlewareRunnerTest extends TestCase
 {
     public function testConstructorAppWithoutRequest(): void
     {
-        $app = new App(new Response());
+        $app = new App(new Services(), new Response());
         $this->expectException(AppWithoutRequestException::class);
         new MiddlewareRunner(new MiddlewareNames(), $app);
     }
 
     public function testConstructorMiddlewareNamesEmpty(): void
     {
-        $app = (new App(new Response()))
+        $app = (new App(new Services(), new Response()))
             ->withRequest(new Request('GET', '/'));
         $this->expectException(MiddlewareNamesEmptyException::class);
         new MiddlewareRunner(new MiddlewareNames(), $app);
@@ -44,7 +45,7 @@ final class MiddlewareRunnerTest extends TestCase
     public function testConstructor(): void
     {
         $this->expectNotToPerformAssertions();
-        $app = (new App(new Response()))
+        $app = (new App(new Services(), new Response()))
             ->withRequest(new Request('GET', '/'));
         $middlewareNames = (new MiddlewareNames())
             ->withAddedMiddlewareName(TestVoid::class);
@@ -53,7 +54,7 @@ final class MiddlewareRunnerTest extends TestCase
 
     public function testWithRun(): void
     {
-        $app = (new App(new Response()))
+        $app = (new App(new Services(), new Response()))
             ->withRequest(new Request('GET', '/'));
         $middlewareNames = (new MiddlewareNames())
             ->withAddedMiddlewareName(TestVoid::class);

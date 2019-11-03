@@ -50,9 +50,9 @@ final class Loader implements LoaderContract
 
     public function __construct()
     {
-        $app = new App(new Response());
-        $build = new Build(new Services());
-        $this->builder = new Builder($app, $build);
+        $app = new App(new Services(), new Response());
+        $build = new Build($app);
+        $this->builder = new Builder($build);
         $this->assertNeedsToBeBuilt();
         $this->parameters = new Parameters(
             new ArrayFile(
@@ -62,12 +62,15 @@ final class Loader implements LoaderContract
         $this->handleParameters();
         $this->builder = $this->builder
             ->withBuild($this->getBuild());
-        $app = $this->builder->app()
+        $app = $this->builder->build()->app()
             ->withServices(
-                $this->builder->build()->services()
+                $this->builder->build()->app()->services()
             );
         $this->builder = $this->builder
-            ->withApp($app);
+            ->withBuild(
+                $this->builder->build()
+                    ->withApp($app)
+            );
     }
 
     public function run(): void
@@ -104,8 +107,13 @@ final class Loader implements LoaderContract
                 ->withRouterMaker(new Maker())
                 ->make();
         }
-        return $this->builder->build()
+        $build = $this->builder->build();
+        $app = $build->app()
             ->withServices($this->getContainer());
+        $build = $build
+            ->withApp($app);
+        
+        return $build;
     }
 
     /**
@@ -115,7 +123,7 @@ final class Loader implements LoaderContract
     {
         $api = new Api();
         $router = new Router();
-        $services = $this->builder->build()->services();
+        $services = $this->builder->build()->app()->services();
 
         try {
             if (!(CLI && console()->isBuilding())) {

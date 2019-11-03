@@ -26,9 +26,6 @@ final class Builder implements BuilderContract
 {
     use ControllerNameAccessTrait;
 
-    /** @var AppContract */
-    private $app;
-
     /** @var BuildContract */
     private $build;
 
@@ -38,29 +35,9 @@ final class Builder implements BuilderContract
     /**
      * {@inheritdoc}
      */
-    public function __construct(AppContract $app, BuildContract $build)
+    public function __construct(BuildContract $build)
     {
-        $this->app = $app;
         $this->build = $build;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withApp(AppContract $app): BuilderContract
-    {
-        $new = clone $this;
-        $new->app = $app;
-
-        return $new;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function app(): AppContract
-    {
-        return $this->app;
     }
 
     /**

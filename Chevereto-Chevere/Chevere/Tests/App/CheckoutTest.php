@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\App;
 
+use Chevere\Components\App\App;
 use Chevere\Components\App\Build;
 use Chevere\Components\App\Checkout;
 use Chevere\Components\App\Services;
+use Chevere\Components\Http\Response;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +25,9 @@ final class CheckoutTest extends TestCase
 {
     public function testConstructWithNotMakedBuild(): void
     {
-        $build = new Build(new Services());
+        $services = new Services();
+        $response = new Response();
+        $build = new Build(new App($services, $response));
         $this->assertFalse($build->isMaked());
         $this->expectException(InvalidArgumentException::class);
         new Checkout($build);

@@ -17,6 +17,7 @@ use Chevere\Components\App\App;
 use Chevere\Components\App\ControllerRunner;
 use Chevere\Components\App\Exceptions\ControllerContractException;
 use Chevere\Components\App\Exceptions\ControllerNotExistsException;
+use Chevere\Components\App\Services;
 use Chevere\Components\Http\Response;
 use Chevere\Contracts\App\ControllerRunnerContract;
 use Chevere\TestApp\App\Controllers\Test;
@@ -29,7 +30,7 @@ final class ControllerRunnerTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->instance = new ControllerRunner(new App(new Response()));
+        $this->instance = new ControllerRunner(new App(new Services(), new Response()));
     }
 
     public function testRunnerWithNonexistentControllerName(): void

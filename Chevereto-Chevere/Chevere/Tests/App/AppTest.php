@@ -24,19 +24,20 @@ final class AppTest extends TestCase
 {
     public function testConstructor(): void
     {
+        $services = new Services();
         $response = new Response();
-        $app = new App($response);
+        $app = new App($services, $response);
 
         $this->assertSame($response, $app->response());
+        $this->assertSame($services, $app->services());
         $this->assertFalse($app->hasRequest());
         $this->assertFalse($app->hasRoute());
-        $this->assertFalse($app->hasServices());
         $this->assertFalse($app->hasArguments());
     }
 
     public function testWithResponse(): void
     {
-        $app = new App(new Response());
+        $app = new App(new Services(), new Response());
         $response = new Response();
         $response = $response
             ->withGuzzle(
@@ -51,7 +52,7 @@ final class AppTest extends TestCase
 
     public function testWithRequest(): void
     {
-        $app = new App(new Response());
+        $app = new App(new Services(), new Response());
         $request = new Request('GET', '/');
         $app = $app
             ->withRequest($request);
@@ -63,7 +64,7 @@ final class AppTest extends TestCase
     public function testWithRoute(): void
     {
         $route = new Route('/home');
-        $app = (new App(new Response()))
+        $app = (new App(new Services(), new Response()))
             ->withRoute($route);
 
         $this->assertTrue($app->hasRoute());
@@ -73,17 +74,16 @@ final class AppTest extends TestCase
     public function testWithServices(): void
     {
         $services = new Services();
-        $app = (new App(new Response()))
+        $app = (new App(new Services(), new Response()))
             ->withServices($services);
 
-        $this->assertTrue($app->hasServices());
         $this->assertSame($services, $app->services());
     }
 
     public function testWithArguments(): void
     {
         $arguments = ['a', 'b', 'c'];
-        $app = (new App(new Response()))
+        $app = (new App(new Services(), new Response()))
             ->withArguments($arguments);
 
         $this->assertTrue($app->hasArguments());

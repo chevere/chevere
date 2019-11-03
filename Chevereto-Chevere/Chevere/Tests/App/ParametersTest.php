@@ -20,7 +20,6 @@ use Chevere\Components\App\Parameters;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Path\Path;
 use Chevere\Contracts\App\ParametersContract;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class ParametersTest extends TestCase
@@ -72,6 +71,4 @@ final class ParametersTest extends TestCase
         $parameters = new Parameters($arrayFile);
         $parameters = $parameters->withAddedRoutePaths(new Path('routes/test.php'));
     }
-
-    public function test
 }

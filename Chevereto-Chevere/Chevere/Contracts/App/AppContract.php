@@ -27,7 +27,20 @@ interface AppContract
      * Construct the application container.
      * An application container always have a ResponseContract attached.
      */
-    public function __construct(ResponseContract $response);
+    public function __construct(ServicesContract $services, ResponseContract $response);
+
+    /**
+     * Return an instance with the specified ServicesContract.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified RouterContract.
+     */
+    public function withServices(ServicesContract $services): AppContract;
+
+    /**
+     * Provides access to the ServicesContract instance.
+     */
+    public function services(): ServicesContract;
 
     /**
      * Return an instance with the specified ResponseContract.
@@ -77,24 +90,6 @@ interface AppContract
      * Provides access to the RouteContract instance.
      */
     public function route(): RouteContract;
-
-    /**
-     * Return an instance with the specified ServicesContract.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified RouterContract.
-     */
-    public function withServices(ServicesContract $services): AppContract;
-
-    /**
-     * Returns a boolean indicating whether the instance has a ServicesContract.
-     */
-    public function hasServices(): bool;
-
-    /**
-     * Provides access to the ServicesContract instance.
-     */
-    public function services(): ServicesContract;
 
     /**
      * Return an instance with the specified arguments.

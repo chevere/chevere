@@ -142,9 +142,12 @@ final class RequestCommand extends Command
             ->withUploadedFiles(Request::normalizeFiles($this->parsedOptions['files']));
 
         $builder = $builder
-            ->withApp(
-                $builder->app()
-                    ->withRequest($request)
+            ->withBuild(
+                $builder->build()
+                    ->withApp(
+                        $builder->build()->app()
+                            ->withRequest($request)
+                    )
             );
 
         try {
@@ -154,7 +157,7 @@ final class RequestCommand extends Command
             $builder = $run->builder();
         }
 
-        $response = $builder->app()->response();
+        $response = $builder->build()->app()->response();
         $this->render($response);
 
         return 0;

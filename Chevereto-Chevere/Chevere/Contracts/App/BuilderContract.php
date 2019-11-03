@@ -18,20 +18,7 @@ interface BuilderContract
     /**
      * Creates a new BuilderContact instance.
      */
-    public function __construct(AppContract $app, BuildContract $build);
-
-    /**
-     * Return an instance with the specified AppContract.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified AppContract.
-     */
-    public function withApp(AppContract $app): BuilderContract;
-    
-    /**
-     * Provides access to the AppContract instance.
-     */
-    public function app(): AppContract;
+    public function __construct(BuildContract $build);
 
     /**
      * Return an instance with the specified BuildContract.

@@ -30,6 +30,8 @@ interface RunContract
      */
     public function withConsoleLoop(): RunContract;
 
+    public function hasConsoleLoop(): bool;
+
     /**
      * This method runs the application, CLI aware.
      */

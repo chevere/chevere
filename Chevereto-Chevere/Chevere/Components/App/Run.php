@@ -22,6 +22,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\RunContract;
+use Chevere\Contracts\Http\RequestContract;
 
 use function console;
 use function GuzzleHttp\Psr7\stream_for;
@@ -72,6 +73,11 @@ final class Run implements RunContract
         return $new;
     }
 
+    public function hasConsoleLoop(): bool
+    {
+        return isset($this->consoleLoop);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -87,7 +93,7 @@ final class Run implements RunContract
             );
         }
         $this->ran = true;
-        $path = $this->builder->app()->request()->getUri()->getPath();
+        $path = $this->builder->build()->app()->request()->getUri()->getPath();
         if ($this->builder->hasControllerName()) {
             $this->controllerName = $this->builder->controllerName();
             $this->controllerArguments = $this->builder->controllerArguments();
@@ -96,6 +102,18 @@ final class Run implements RunContract
         }
         $this->assertControllerName();
         $this->runApp();
+    }
+
+    private function assertBuilderAppServicesRouter(): void
+    {
+        if (!$this->builder->build()->app()->services()->hasRouter()) {
+            throw new LogicException(
+                (new Message('Instance of class %className% must contain a %contract% contract'))
+                    ->code('%className%', get_class($this->builder->build()->app()))
+                    ->code('%contract%', RequestContract::class)
+                    ->toString()
+            );
+        }
     }
 
     /**
@@ -111,18 +129,22 @@ final class Run implements RunContract
 
     private function handleRequest(): void
     {
-        if (!$this->builder->app()->hasRequest()) {
+        if (!$this->builder->build()->app()->hasRequest()) {
             $this->builder = $this->builder
-                ->withApp(
-                    $this->builder->app()
-                        ->withRequest(Request::fromGlobals())
+                ->withBuild(
+                    $this->builder->build()
+                        ->withApp(
+                            $this->builder->build()->app()
+                                ->withRequest(Request::fromGlobals())
+                        )
                 );
         }
     }
 
     private function resolveCallable(string $pathInfo): void
     {
-        $app = $this->builder->app();
+        $this->assertBuilderAppServicesRouter();
+        $app = $this->builder->build()->app();
         try {
             $route = $app->services()->router()->resolve($pathInfo);
             $app = $app
@@ -141,13 +163,16 @@ final class Run implements RunContract
                 ->withResponse($response);
         }
         $this->builder = $this->builder
-            ->withApp($app);
+            ->withBuild(
+                $this->builder->build()
+                    ->withApp($app)
+            );
 
         if (isset($response)) {
             if (CLI) {
                 throw new RouteNotFoundException();
             }
-            $this->builder->app()->response()
+            $this->builder->build()->app()->response()
                 ->sendHeaders()
                 ->sendBody();
             die();
@@ -163,7 +188,7 @@ final class Run implements RunContract
 
     private function runApp(): void
     {
-        $app = $this->builder->app();
+        $app = $this->builder->build()->app();
         $app = $app
             ->withArguments($this->controllerArguments);
         $response = $app->response();
@@ -191,11 +216,14 @@ final class Run implements RunContract
         $app = $app
             ->withResponse($response);
         $this->builder = $this->builder
-            ->withApp($app);
+            ->withBuild(
+                $this->builder->build()
+                    ->withApp($app)
+            );
         if (CLI) {
             throw new RouteNotFoundException();
         } else {
-            $this->builder->app()->response()
+            $this->builder->build()->app()->response()
                 ->sendHeaders()
                 ->sendBody();
         }
