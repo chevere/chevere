@@ -16,7 +16,6 @@ namespace Chevere\Tests\App;
 use LogicException;
 use TypeError;
 
-use Chevere\Components\Api\Api;
 use Chevere\Components\App\App;
 use Chevere\Components\App\Build;
 use Chevere\Components\App\Exceptions\BuildFileNotExistsException;
@@ -28,7 +27,6 @@ use Chevere\Components\File\File;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Maker;
-use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\CheckoutContract;
 use PHPUnit\Framework\TestCase;
 

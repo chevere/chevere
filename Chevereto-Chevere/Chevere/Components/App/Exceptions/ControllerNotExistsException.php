@@ -15,5 +15,8 @@ namespace Chevere\Components\App\Exceptions;
 
 use Exception;
 
+/**
+ * Exception thrown when a given controller doesn't exists.
+ */
 final class ControllerNotExistsException extends Exception
 { }

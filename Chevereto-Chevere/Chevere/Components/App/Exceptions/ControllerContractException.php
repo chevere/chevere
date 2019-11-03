@@ -15,5 +15,8 @@ namespace Chevere\Components\App\Exceptions;
 
 use Exception;
 
+/**
+ * Exception thrown when a ControllerContract is not implemented.
+ */
 final class ControllerContractException extends Exception
 { }

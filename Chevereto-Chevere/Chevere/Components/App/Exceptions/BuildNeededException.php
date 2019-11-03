@@ -15,5 +15,8 @@ namespace Chevere\Components\App\Exceptions;
 
 use Exception;
 
+/**
+ * Exception thrown when the application needs to be build.
+ */
 final class BuildNeededException extends Exception
 { }

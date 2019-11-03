@@ -20,7 +20,6 @@ use Chevere\Components\App\Parameters;
 use Chevere\Components\App\Run;
 use Chevere\Components\App\Services;
 use Chevere\Components\ArrayFile\ArrayFile;
-use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Maker;
@@ -57,35 +56,38 @@ final class RunTest extends TestCase
         $response = new Response();
         $app = new App($services, $response);
         $build = new Build($app);
-        $parameters = new Parameters(
-            new ArrayFile(
-                new Path('parameters.php')
-            )
-        );
-        $routerMaker = new Maker();
-        $build = $build
-            ->withParameters($parameters)
-            ->withRouterMaker($routerMaker)
-            ->make();
-        
-        $app = new App(new Services(), new Response());
+        // $parameters = new Parameters(
+        //     new ArrayFile(
+        //         new Path('parameters.php')
+        //     )
+        // );
+        // $routerMaker = new Maker();
+        // $build = $build
+        //     ->withParameters($parameters)
+        //     ->withRouterMaker($routerMaker)
+        //     ->make();
+
+        // $app = new App(new Services(), new Response());
 
         $builder = new Builder($build);
 
-        $app = $builder->build()->app()
-            ->withServices(
-                $builder->build()->app()->services()
-            );
-        
-        $builder = $builder
-            ->withBuild(
-                $builder->build()->withApp($app)
-            );
+        // $app = $builder->build()->app()
+        //     ->withServices(
+        //         $builder->build()->app()->services()
+        //     );
 
+        // $builder = $builder
+        //     ->withBuild(
+        //         $builder->build()->withApp($app)
+        //     );
+
+        // ob_start();
         $run = new Run($builder);
-
-        // dump($run->run());
+        $run->run();
+        // $output = ob_get_clean();
 
         $build->destroy();
+
+        // die($output);
     }
 }

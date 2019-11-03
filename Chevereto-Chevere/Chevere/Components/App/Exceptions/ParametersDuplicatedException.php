@@ -15,6 +15,8 @@ namespace Chevere\Components\App\Exceptions;
 
 use Exception;
 
+/**
+ * Exception thrown when passing a parameter twice.
+ */
 final class ParametersDuplicatedException extends Exception
-{
-}
+{ }

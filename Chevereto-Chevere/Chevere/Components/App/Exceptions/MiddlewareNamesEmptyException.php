@@ -15,6 +15,8 @@ namespace Chevere\Components\App\Exceptions;
 
 use Exception;
 
+/**
+ * Exception thrown when MiddlewareNames are empty.
+ */
 final class MiddlewareNamesEmptyException extends Exception
-{
-}
+{ }

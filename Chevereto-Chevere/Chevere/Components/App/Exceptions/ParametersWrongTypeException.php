@@ -15,6 +15,8 @@ namespace Chevere\Components\App\Exceptions;
 
 use Exception;
 
+/**
+ * Exception thrown when passing an invalid parameter type.
+ */
 final class ParametersWrongTypeException extends Exception
-{
-}
+{ }

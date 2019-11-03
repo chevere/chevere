@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
+use Chevere\Components\App\Exceptions\RequestContractRequiredException;
 use Chevere\Components\Http\Request\RequestException;
 use LogicException;
 use RuntimeException;
@@ -107,7 +108,7 @@ final class Run implements RunContract
     private function assertBuilderAppServicesRouter(): void
     {
         if (!$this->builder->build()->app()->services()->hasRouter()) {
-            throw new LogicException(
+            throw new RequestContractRequiredException(
                 (new Message('Instance of class %className% must contain a %contract% contract'))
                     ->code('%className%', get_class($this->builder->build()->app()))
                     ->code('%contract%', RequestContract::class)
@@ -172,8 +173,12 @@ final class Run implements RunContract
             if (CLI) {
                 throw new RouteNotFoundException();
             }
-            $this->builder->build()->app()->response()
-                ->sendHeaders()
+            $response = $this->builder->build()->app()->response();
+            if (!headers_sent()) {
+                $response
+                    ->sendHeaders();
+            }
+            $response
                 ->sendBody();
             die();
         }

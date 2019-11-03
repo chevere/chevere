@@ -218,6 +218,9 @@ final class Build implements BuildContract
 
     private function assertCanMake(): void
     {
+        if ($this->isMaked) {
+            throw new BuildAlreadyMakedException();
+        }
         foreach ([
             'parameters' => ParametersContract::class,
             'routerMaker' => MakerContract::class
@@ -235,9 +238,6 @@ final class Build implements BuildContract
                     ->toString()
             );
         }
-        if ($this->isMaked) {
-            throw new BuildAlreadyMakedException();
-        }
     }
 
     private function makeApi(): void
@@ -249,7 +249,7 @@ final class Build implements BuildContract
                     $this->parameters->api()
                 )
             );
-        
+
         $services = $this->app->services()
             ->withApi(
                 (new Api())

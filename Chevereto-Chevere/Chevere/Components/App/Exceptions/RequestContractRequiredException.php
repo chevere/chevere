@@ -16,7 +16,7 @@ namespace Chevere\Components\App\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when a MiddlewareContract is not implemented.
+ * Exception thrown when a RequestContract is not present.
  */
-final class MiddlewareContractException extends Exception
+final class RequestContractRequiredException extends Exception
 { }

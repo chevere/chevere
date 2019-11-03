@@ -15,5 +15,8 @@ namespace Chevere\Components\App\Exceptions;
 
 use Exception;
 
+/**
+ * Exception thrown if the application attempts to be maked more than once.
+ */
 final class BuildAlreadyMakedException extends Exception
 { }
