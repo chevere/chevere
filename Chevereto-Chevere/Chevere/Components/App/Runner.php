@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\App;
 
 use LogicException;
-use RuntimeException;
 
 use Chevere\Components\Http\Request\RequestException;
 use Chevere\Components\Http\Request;
@@ -47,9 +46,6 @@ final class Runner implements RunContract
 
     /** @var array */
     private $controllerArguments;
-
-    /** @var bool */
-    private $routeNotFound;
 
     /**
      * {@inheritdoc}
@@ -161,12 +157,6 @@ final class Runner implements RunContract
                         ->withApp($app)
                 );
             throw new RouteNotFoundException();
-            // dd('not found', $this->builder()->build()->app()->response()->content());
-            // $response = $app->response();
-            // if (!headers_sent()) {
-            //     $response->sendHeaders();
-            // }
-            // $response->sendBody();
         }
     }
 

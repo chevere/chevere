@@ -17,10 +17,12 @@ use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\FileReturn\Exceptions\FileNotFoundException;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Router\Exception\RegexPropertyRequiredException;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\MakerContract;
 use Chevere\Contracts\Router\RouterContract;
+use LogicException;
 
 /**s
  * Routes takes a bunch of Routes and generates a routing table (php array).
@@ -95,8 +97,22 @@ final class Router implements RouterContract
         return $this->arguments ?? [];
     }
 
+    public function canResolve(): bool
+    {
+        return isset($this->regex);
+    }
+
     public function resolve(string $pathInfo): RouteContract
     {
+        if (!$this->canResolve()) {
+            throw new RegexPropertyRequiredException(
+                (new Message('Instance of %className% requires a %property% property when calling %method%'))
+                    ->code('%className%', __CLASS__)
+                    ->code('%property%', 'regex')
+                    ->code('%method%', __METHOD__)
+                    ->toString()
+            );
+        }
         if (preg_match($this->regex, $pathInfo, $matches)) {
             return $this->resolver($matches);
         }

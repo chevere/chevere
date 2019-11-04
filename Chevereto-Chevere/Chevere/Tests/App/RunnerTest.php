@@ -16,6 +16,7 @@ namespace Chevere\Tests\App;
 use Chevere\Components\App\App;
 use Chevere\Components\App\Build;
 use Chevere\Components\App\Builder;
+use Chevere\Components\App\Exceptions\RouterCantResolveException;
 use Chevere\Components\App\Exceptions\RouterContractRequiredException;
 use Chevere\Components\App\Parameters;
 use Chevere\Components\App\Run;
@@ -25,9 +26,10 @@ use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Maker;
+use Chevere\Components\Router\Router;
 use PHPUnit\Framework\TestCase;
 
-final class RunTest extends TestCase
+final class RunnerTest extends TestCase
 {
     public function testConstructor(): void
     {
@@ -63,6 +65,20 @@ final class RunTest extends TestCase
         $this->expectException(RouterContractRequiredException::class);
         $runner = $runner->withRun();
     }
+    public function testRunWithRouterUnableToResolve(): void
+    {
+        $router = new Router();
+        $services = (new Services())
+            ->withRouter($router);
+        $response = new Response();
+        $app = new App($services, $response);
+        $build = new Build($app);
+        $builder = new Builder($build);
+        $runner = new Runner($builder);
+        $this->expectException(RouterCantResolveException::class);
+        $runner = $runner->withRun();
+    }
+
     // public function testRun(): void
     // {
     //     $services = new Services();

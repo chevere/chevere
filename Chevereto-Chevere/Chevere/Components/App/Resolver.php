@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
+use Chevere\Components\App\Exceptions\RouterCantResolveException;
 use Chevere\Components\App\Exceptions\RouterContractRequiredException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\BuilderContract;
+use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
 
 use function GuzzleHttp\Psr7\stream_for;
@@ -34,7 +36,8 @@ final class Resolver
     public function __construct(BuilderContract $builder)
     {
         $this->builder = $builder;
-        $this->assertBuilderAppServicesRouter();
+        $this->assertHasRouter();
+        $this->assertRouterCanResolve();
         $this->resolveController();
     }
 
@@ -43,13 +46,26 @@ final class Resolver
         return $this->builder;
     }
 
-    private function assertBuilderAppServicesRouter(): void
+    private function assertHasRouter(): void
     {
         if (!$this->builder->build()->app()->services()->hasRouter()) {
             throw new RouterContractRequiredException(
                 (new Message('Instance of class %className% must contain a %contract% contract'))
                     ->code('%className%', get_class($this->builder->build()->app()))
                     ->code('%contract%', RouterContract::class)
+                    ->toString()
+            );
+        }
+    }
+
+    private function assertRouterCanResolve(): void
+    {
+        $router = $this->builder->build()->app()->services()->router();
+        if (!$router->canResolve()) {
+            throw new RouterCantResolveException(
+                (new Message("Instance of %className% can't resolve a %contract% contract"))
+                    ->code('%className%', get_class($router))
+                    ->code('%contract%', RouteContract::class)
                     ->toString()
             );
         }

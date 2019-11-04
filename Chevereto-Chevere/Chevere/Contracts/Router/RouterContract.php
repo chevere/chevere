@@ -32,5 +32,7 @@ interface RouterContract
 
     public function arguments(): array;
 
+    public function canResolve(): bool;
+
     public function resolve(string $pathInfo): RouteContract;
 }
