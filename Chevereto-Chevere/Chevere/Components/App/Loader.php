@@ -77,6 +77,18 @@ final class Loader implements LoaderContract
     {
         $runner = new Runner($this->builder);
         $runner = $runner->withRun();
+        $this->builder = $runner->builder();
+        $this->handleResponse();
+    }
+
+    private function handleResponse(): void
+    {
+        if (!headers_sent()) {
+            $this->builder->build()->app()->response()
+                ->sendHeaders();
+        }
+        $this->builder->build()->app()->response()
+            ->sendBody();
     }
 
     private function handleParameters(): void

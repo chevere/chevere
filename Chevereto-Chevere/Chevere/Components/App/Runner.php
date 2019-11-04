@@ -76,6 +76,11 @@ final class Runner implements RunContract
         return isset($this->consoleLoop);
     }
 
+    public function hasRouteNotFound(): bool
+    {
+        return isset($this->routeNotFound);
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -90,14 +95,15 @@ final class Runner implements RunContract
             try {
                 $new->handleResolver();
             } catch (RouteNotFoundException $e) {
+                $new->routeNotFound = true;
+
                 return $new;
             }
         }
-        $new->controllerName = $new->builder->scontrollerName();
+        $new->controllerName = $new->builder->controllerName();
         $new->controllerArguments = $new->builder->controllerArguments();
-        $new->runApp();
 
-        return $new;
+        return $new->runApp();
     }
 
     /**
@@ -160,7 +166,7 @@ final class Runner implements RunContract
         }
     }
 
-    private function runApp(): void
+    private function runApp(): Runner
     {
         $app = $this->builder->build()->app();
         $app = $app
@@ -194,12 +200,7 @@ final class Runner implements RunContract
                 $this->builder->build()
                     ->withApp($app)
             );
-        if (CLI) {
-            throw new RouteNotFoundException();
-        } else {
-            $this->builder->build()->app()->response()
-                ->sendHeaders()
-                ->sendBody();
-        }
+
+        return $this;
     }
 }

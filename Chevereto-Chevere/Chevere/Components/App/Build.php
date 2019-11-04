@@ -144,6 +144,9 @@ final class Build implements BuildContract
         return $this->routerMaker;
     }
 
+    /**
+     * Make the build, provide AppContract services
+     */
     public function make(): BuildContract
     {
         $this->assertCanMake();

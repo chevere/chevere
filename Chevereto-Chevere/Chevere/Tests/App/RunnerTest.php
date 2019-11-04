@@ -23,6 +23,7 @@ use Chevere\Components\App\Run;
 use Chevere\Components\App\Runner;
 use Chevere\Components\App\Services;
 use Chevere\Components\ArrayFile\ArrayFile;
+use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Maker;
@@ -54,7 +55,7 @@ final class RunnerTest extends TestCase
         $this->assertTrue($runner->hasConsoleLoop());
     }
 
-    public function testRunWithoutRouter(): void
+    public function testWithRunnerWithoutRouter(): void
     {
         $services = new Services();
         $response = new Response();
@@ -65,7 +66,7 @@ final class RunnerTest extends TestCase
         $this->expectException(RouterContractRequiredException::class);
         $runner = $runner->withRun();
     }
-    public function testRunWithRouterUnableToResolve(): void
+    public function testWithRunWithRouterUnableToResolve(): void
     {
         $router = new Router();
         $services = (new Services())
@@ -79,44 +80,40 @@ final class RunnerTest extends TestCase
         $runner = $runner->withRun();
     }
 
-    // public function testRun(): void
-    // {
-    //     $services = new Services();
-    //     $response = new Response();
-    //     $app = new App($services, $response);
-    //     $build = new Build($app);
-    //     // $parameters = new Parameters(
-    //     //     new ArrayFile(
-    //     //         new Path('parameters.php')
-    //     //     )
-    //     // );
-    //     // $routerMaker = new Maker();
-    //     // $build = $build
-    //     //     ->withParameters($parameters)
-    //     //     ->withRouterMaker($routerMaker)
-    //     //     ->make();
+    public function testRunnerNotFoundWithMakeBuild(): void
+    {
+        $services = new Services();
+        $response = new Response();
+        $app = new App($services, $response);
+        $build = new Build($app);
+        $parameters = new Parameters(
+            new ArrayFile(
+                new Path('parameters.php')
+            )
+        );
+        $build = $build
+            ->withParameters($parameters)
+            ->withRouterMaker(new Maker())
+            ->make();
 
-    //     // $app = new App(new Services(), new Response());
+        $builder = new Builder($build);
+        $app = $builder->build()->app()
+            ->withRequest(new Request('GET', '/404'))
+            ->withServices(
+                $builder->build()->app()->services()
+            );
+        $builder = $builder
+            ->withBuild(
+                $builder->build()->withApp($app)
+            );
 
-    //     $builder = new Builder($build);
+        ob_start();
+        $runner = new Runner($builder);
+        $runner = $runner->withRun();
+        $output = ob_get_clean();
 
-    //     // $app = $builder->build()->app()
-    //     //     ->withServices(
-    //     //         $builder->build()->app()->services()
-    //     //     );
+        $build->destroy();
 
-    //     // $builder = $builder
-    //     //     ->withBuild(
-    //     //         $builder->build()->withApp($app)
-    //     //     );
-
-    //     // ob_start();
-    //     $runner = new Runner($builder);
-    //     $runner->run();
-    //     // $output = ob_get_clean();
-
-    //     $build->destroy();
-
-    //     // die($output);
-    // }
+        dd($output, $runner->hasRouteNotFound());
+    }
 }

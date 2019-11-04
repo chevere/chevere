@@ -32,6 +32,8 @@ interface RunContract
 
     public function hasConsoleLoop(): bool;
 
+    public function hasRouteNotFound(): bool;
+
     /**
      * This method runs the application, CLI aware.
      */
