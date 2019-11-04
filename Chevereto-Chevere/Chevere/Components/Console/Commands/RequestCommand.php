@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Console\Commands;
 
-use Chevere\Components\App\Run;
+use Chevere\Components\App\Runner;
 use InvalidArgumentException;
 use JsonException;
 
@@ -133,7 +133,7 @@ final class RequestCommand extends Command
             $this->getArgumentString('uri'),
             $this->getOptionArray('headers'),
             isset($this->options['body']) ? $this->getOptionString('body') : null,
-            );
+        );
 
         $request
             ->withCookieParams($this->parsedOptions['cookie'])
@@ -150,13 +150,11 @@ final class RequestCommand extends Command
                     )
             );
 
-        try {
-            $run = (new Run($builder))->withConsoleLoop();
-            $run->run();
-        } catch (RouteNotFoundException $e) {
-            $builder = $run->builder();
-        }
+        $runner = (new Runner($builder))
+            ->withConsoleLoop()
+            ->withRun();
 
+        $builder = $runner->builder();
         $response = $builder->build()->app()->response();
         $this->render($response);
 

@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\App;
 
 use Chevere\Components\Controller\Traits\ControllerNameAccessTrait;
-use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\BuilderContract;
-use Chevere\Contracts\Http\RequestContract;
 
 /**
  * The application builder container.

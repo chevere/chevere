@@ -75,8 +75,8 @@ final class Loader implements LoaderContract
 
     public function run(): void
     {
-        $run = new Run($this->builder);
-        $run->run();
+        $runner = new Runner($this->builder);
+        $runner = $runner->withRun();
     }
 
     private function handleParameters(): void
@@ -112,7 +112,7 @@ final class Loader implements LoaderContract
             ->withServices($this->getContainer());
         $build = $build
             ->withApp($app);
-        
+
         return $build;
     }
 

@@ -16,8 +16,10 @@ namespace Chevere\Tests\App;
 use Chevere\Components\App\App;
 use Chevere\Components\App\Build;
 use Chevere\Components\App\Builder;
+use Chevere\Components\App\Exceptions\RouterContractRequiredException;
 use Chevere\Components\App\Parameters;
 use Chevere\Components\App\Run;
+use Chevere\Components\App\Runner;
 use Chevere\Components\App\Services;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Http\Response;
@@ -34,8 +36,8 @@ final class RunTest extends TestCase
         $app = new App($services, $response);
         $build = new Build($app);
         $builder = new Builder($build);
-        $run = new Run($builder);
-        $this->assertSame($builder, $run->builder());
+        $runner = new Runner($builder);
+        $this->assertSame($builder, $runner->builder());
     }
 
     public function testWithConsoleLoop(): void
@@ -45,49 +47,60 @@ final class RunTest extends TestCase
         $app = new App($services, $response);
         $build = new Build($app);
         $builder = new Builder($build);
-        $run = (new Run($builder))
+        $runner = (new Runner($builder))
             ->withConsoleLoop();
-        $this->assertTrue($run->hasConsoleLoop());
+        $this->assertTrue($runner->hasConsoleLoop());
     }
 
-    public function testRun(): void
+    public function testRunWithoutRouter(): void
     {
         $services = new Services();
         $response = new Response();
         $app = new App($services, $response);
         $build = new Build($app);
-        // $parameters = new Parameters(
-        //     new ArrayFile(
-        //         new Path('parameters.php')
-        //     )
-        // );
-        // $routerMaker = new Maker();
-        // $build = $build
-        //     ->withParameters($parameters)
-        //     ->withRouterMaker($routerMaker)
-        //     ->make();
-
-        // $app = new App(new Services(), new Response());
-
         $builder = new Builder($build);
-
-        // $app = $builder->build()->app()
-        //     ->withServices(
-        //         $builder->build()->app()->services()
-        //     );
-
-        // $builder = $builder
-        //     ->withBuild(
-        //         $builder->build()->withApp($app)
-        //     );
-
-        // ob_start();
-        $run = new Run($builder);
-        $run->run();
-        // $output = ob_get_clean();
-
-        $build->destroy();
-
-        // die($output);
+        $runner = new Runner($builder);
+        $this->expectException(RouterContractRequiredException::class);
+        $runner = $runner->withRun();
     }
+    // public function testRun(): void
+    // {
+    //     $services = new Services();
+    //     $response = new Response();
+    //     $app = new App($services, $response);
+    //     $build = new Build($app);
+    //     // $parameters = new Parameters(
+    //     //     new ArrayFile(
+    //     //         new Path('parameters.php')
+    //     //     )
+    //     // );
+    //     // $routerMaker = new Maker();
+    //     // $build = $build
+    //     //     ->withParameters($parameters)
+    //     //     ->withRouterMaker($routerMaker)
+    //     //     ->make();
+
+    //     // $app = new App(new Services(), new Response());
+
+    //     $builder = new Builder($build);
+
+    //     // $app = $builder->build()->app()
+    //     //     ->withServices(
+    //     //         $builder->build()->app()->services()
+    //     //     );
+
+    //     // $builder = $builder
+    //     //     ->withBuild(
+    //     //         $builder->build()->withApp($app)
+    //     //     );
+
+    //     // ob_start();
+    //     $runner = new Runner($builder);
+    //     $runner->run();
+    //     // $output = ob_get_clean();
+
+    //     $build->destroy();
+
+    //     // die($output);
+    // }
 }

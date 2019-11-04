@@ -35,5 +35,5 @@ interface RunContract
     /**
      * This method runs the application, CLI aware.
      */
-    public function run(): void;
+    public function withRun(): RunContract;
 }

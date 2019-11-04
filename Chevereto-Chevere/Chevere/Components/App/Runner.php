@@ -13,17 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use Chevere\Components\App\Exceptions\RequestContractRequiredException;
-use Chevere\Components\Http\Request\RequestException;
 use LogicException;
 use RuntimeException;
 
+use Chevere\Components\Http\Request\RequestException;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\RunContract;
-use Chevere\Contracts\Http\RequestContract;
 
 use function console;
 use function GuzzleHttp\Psr7\stream_for;
@@ -33,7 +31,7 @@ use const Chevere\CLI;
 /**
  * Application runner.
  */
-final class Run implements RunContract
+final class Runner implements RunContract
 {
     /** @var BuilderContract */
     private $builder;
@@ -49,6 +47,9 @@ final class Run implements RunContract
 
     /** @var array */
     private $controllerArguments;
+
+    /** @var bool */
+    private $routeNotFound;
 
     /**
      * {@inheritdoc}
@@ -82,39 +83,25 @@ final class Run implements RunContract
     /**
      * {@inheritdoc}
      */
-    public function run(): void
+    public function withRun(): RunContract
     {
         $this->handleConsole();
         $this->handleRequest();
-        if (isset($this->ran)) {
-            throw new LogicException(
-                (new Message('The method %method% can be called just once'))
-                    ->code('%method%', __METHOD__)
-                    ->toString()
-            );
+        $this->handeRan();
+        $new = clone $this;
+        $new->ran = true;
+        if (!$new->builder->hasControllerName()) {
+            try {
+                $new->handleResolver();
+            } catch (RouteNotFoundException $e) {
+                return $new;
+            }
         }
-        $this->ran = true;
-        $path = $this->builder->build()->app()->request()->getUri()->getPath();
-        if ($this->builder->hasControllerName()) {
-            $this->controllerName = $this->builder->controllerName();
-            $this->controllerArguments = $this->builder->controllerArguments();
-        } else {
-            $this->resolveCallable($path);
-        }
-        $this->assertControllerName();
-        $this->runApp();
-    }
+        $new->controllerName = $new->builder->scontrollerName();
+        $new->controllerArguments = $new->builder->controllerArguments();
+        $new->runApp();
 
-    private function assertBuilderAppServicesRouter(): void
-    {
-        if (!$this->builder->build()->app()->services()->hasRouter()) {
-            throw new RequestContractRequiredException(
-                (new Message('Instance of class %className% must contain a %contract% contract'))
-                    ->code('%className%', get_class($this->builder->build()->app()))
-                    ->code('%contract%', RequestContract::class)
-                    ->toString()
-            );
-        }
+        return $new;
     }
 
     /**
@@ -142,18 +129,24 @@ final class Run implements RunContract
         }
     }
 
-    private function resolveCallable(string $pathInfo): void
+    private function handeRan(): void
     {
-        $this->assertBuilderAppServicesRouter();
-        $app = $this->builder->build()->app();
+        if (isset($this->ran)) {
+            throw new LogicException(
+                (new Message('The method %method% can be called just once'))
+                    ->code('%method%', 'run')
+                    ->toString()
+            );
+        }
+    }
+
+    private function handleResolver(): void
+    {
         try {
-            $route = $app->services()->router()->resolve($pathInfo);
-            $app = $app
-                ->withRoute($route);
-            $this->controllerName = $app->route()
-                ->getController($app->request()->getMethod());
-            $this->controllerArguments = $app->services()->router()->arguments();
+            $this->builder = (new Resolver($this->builder))
+                ->builder();
         } catch (RouteNotFoundException $e) {
+            $app = $this->builder->build()->app();
             $response = $app->response();
             $guzzle = $response->guzzle()
                 ->withStatus(404)
@@ -162,32 +155,18 @@ final class Run implements RunContract
                 ->withGuzzle($guzzle);
             $app = $app
                 ->withResponse($response);
-        }
-        $this->builder = $this->builder
-            ->withBuild(
-                $this->builder->build()
-                    ->withApp($app)
-            );
-
-        if (isset($response)) {
-            if (CLI) {
-                throw new RouteNotFoundException();
-            }
-            $response = $this->builder->build()->app()->response();
-            if (!headers_sent()) {
-                $response
-                    ->sendHeaders();
-            }
-            $response
-                ->sendBody();
-            die();
-        }
-    }
-
-    private function assertControllerName(): void
-    {
-        if (!isset($this->controllerName)) {
-            throw new RuntimeException('DESCONTROL');
+            $this->builder = $this->builder
+                ->withBuild(
+                    $this->builder->build()
+                        ->withApp($app)
+                );
+            throw new RouteNotFoundException();
+            // dd('not found', $this->builder()->build()->app()->response()->content());
+            // $response = $app->response();
+            // if (!headers_sent()) {
+            //     $response->sendHeaders();
+            // }
+            // $response->sendBody();
         }
     }
 

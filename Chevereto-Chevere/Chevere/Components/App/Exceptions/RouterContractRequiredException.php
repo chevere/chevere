@@ -18,5 +18,5 @@ use Exception;
 /**
  * Exception thrown when a RequestContract is not present.
  */
-final class RequestContractRequiredException extends Exception
+final class RouterContractRequiredException extends Exception
 { }
