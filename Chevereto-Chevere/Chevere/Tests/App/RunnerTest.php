@@ -19,7 +19,6 @@ use Chevere\Components\App\Builder;
 use Chevere\Components\App\Exceptions\RouterCantResolveException;
 use Chevere\Components\App\Exceptions\RouterContractRequiredException;
 use Chevere\Components\App\Parameters;
-use Chevere\Components\App\Run;
 use Chevere\Components\App\Runner;
 use Chevere\Components\App\Services;
 use Chevere\Components\ArrayFile\ArrayFile;
@@ -28,6 +27,7 @@ use Chevere\Components\Http\Response;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Maker;
 use Chevere\Components\Router\Router;
+use Chevere\Contracts\App\BuildContract;
 use PHPUnit\Framework\TestCase;
 
 final class RunnerTest extends TestCase
@@ -80,7 +80,7 @@ final class RunnerTest extends TestCase
         $runner->withRun();
     }
 
-    public function testRunnerNotFoundWithMakeBuild(): void
+    public function getTestBuild(): BuildContract
     {
         $services = new Services();
         $response = new Response();
@@ -91,25 +91,40 @@ final class RunnerTest extends TestCase
                 new Path('parameters.php')
             )
         );
-        $build = $build
+        return $build
             ->withParameters($parameters)
-            ->withRouterMaker(new Maker())
-            ->make();
+            ->withRouterMaker(new Maker());
+    }
 
-        $builder = new Builder($build);
+    public function testRunnerNotFound(): void
+    {
+        $build = $this->getTestBuild();
+        $builder = new Builder($build->make());
         $app = $builder->build()->app()
-            ->withRequest(new Request('GET', '/404'))
-            ->withServices(
-                $builder->build()->app()->services()
-            );
+            ->withRequest(new Request('GET', '/404'));
         $builder = $builder
             ->withBuild(
                 $builder->build()->withApp($app)
             );
-
         $runner = new Runner($builder);
         $ranBuilder = $runner->withRun()->builder();
         $build->destroy();
         $this->assertSame(404, $ranBuilder->build()->app()->response()->guzzle()->getStatusCode());
+    }
+
+    public function testRunnerFound(): void
+    {
+        $build = $this->getTestBuild();
+        $builder = new Builder($build->make());
+        $app = $builder->build()->app()
+            ->withRequest(new Request('GET', '/test'));
+        $builder = $builder
+            ->withBuild(
+                $builder->build()->withApp($app)
+            );
+        $runner = new Runner($builder);
+        $ranBuilder = $runner->withRun()->builder();
+        $build->destroy();
+        $this->assertSame(200, $ranBuilder->build()->app()->response()->guzzle()->getStatusCode());
     }
 }

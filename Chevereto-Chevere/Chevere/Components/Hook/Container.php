@@ -25,7 +25,7 @@ final class Container
 
     public function __construct()
     {
-        $this->array = include (new Path('var/hooks/registered.php'))->absolute();
+        $this->array = [] ?? include (new Path('var/hooks/registered.php'))->absolute();
     }
 
     public function getAnchor(object $that, string $anchor): array
