@@ -124,7 +124,7 @@ final class Maker implements MakerContract
 
     public function withCache(Cache $cache): MakerContract
     {
-        $cache
+        $cache = $cache
             ->withPut('regex', $this->regex)
             ->withPut('routes', $this->routes)
             ->withPut('routesIndex', $this->routesIndex);
