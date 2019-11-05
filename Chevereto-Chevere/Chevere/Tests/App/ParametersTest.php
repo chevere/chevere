@@ -68,7 +68,7 @@ final class ParametersTest extends TestCase
             new Path('parameters/routes.php')
         );
         $this->expectException(ParametersDuplicatedException::class);
-        $parameters = new Parameters($arrayFile);
-        $parameters = $parameters->withAddedRoutePaths(new Path('routes/test.php'));
+        (new Parameters($arrayFile))
+            ->withAddedRoutePaths(new Path('routes/test.php'));
     }
 }

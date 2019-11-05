@@ -64,7 +64,7 @@ final class RunnerTest extends TestCase
         $builder = new Builder($build);
         $runner = new Runner($builder);
         $this->expectException(RouterContractRequiredException::class);
-        $runner = $runner->withRun();
+        $runner->withRun();
     }
     public function testWithRunWithRouterUnableToResolve(): void
     {
@@ -77,7 +77,7 @@ final class RunnerTest extends TestCase
         $builder = new Builder($build);
         $runner = new Runner($builder);
         $this->expectException(RouterCantResolveException::class);
-        $runner = $runner->withRun();
+        $runner->withRun();
     }
 
     public function testRunnerNotFoundWithMakeBuild(): void
