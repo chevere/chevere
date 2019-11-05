@@ -125,9 +125,9 @@ final class Maker implements MakerContract
     public function withCache(Cache $cache): MakerContract
     {
         $cache = $cache
-            ->withPut('regex', $this->regex)
-            ->withPut('routes', $this->routes)
-            ->withPut('routesIndex', $this->routesIndex);
+            ->withPut(CacheKeys::REGEX, $this->regex)
+            ->withPut(CacheKeys::ROUTES, $this->routes)
+            ->withPut(CacheKeys::ROUTES_INDEX, $this->routesIndex);
 
         $new = clone $this;
         $new->cache = $cache;
