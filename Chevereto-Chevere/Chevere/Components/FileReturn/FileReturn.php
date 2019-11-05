@@ -18,7 +18,6 @@ use RuntimeException;
 use Chevere\Components\FileReturn\Exceptions\FileNotFoundException;
 use Chevere\Components\File\File;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Path\Path;
 
 /**
  * FileReturn provides an abstraction for interacting with PHP files that return a variable.

@@ -19,7 +19,6 @@ use Throwable;
 use Chevere\Components\Data\Data;
 use Chevere\Components\Data\Traits\DataMethodTrait;
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
-use Chevere\Components\Path\Path;
 use Chevere\Contracts\DataContract;
 
 use function ChevereFn\stringReplaceFirst;

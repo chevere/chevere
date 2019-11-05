@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\App;
 
 use Chevere\Components\App\Exceptions\ParametersDuplicatedException;
-use InvalidArgumentException;
 
 use Chevere\Components\App\Exceptions\ParametersWrongKeyException;
 use Chevere\Components\App\Exceptions\ParametersWrongTypeException;
@@ -22,6 +21,7 @@ use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Contracts\App\ParametersContract;
+use Chevere\Contracts\Path\PathContract;
 
 /**
  * Application parameters container.
@@ -68,7 +68,7 @@ final class Parameters implements ParametersContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedRoutePaths(Path ...$paths): ParametersContract
+    public function withAddedRoutePaths(PathContract ...$paths): ParametersContract
     {
         $new = clone $this;
         if (!isset($new->routes)) {

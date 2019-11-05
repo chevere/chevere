@@ -20,6 +20,7 @@ use Chevere\Components\File\File;
 use Chevere\Components\FileReturn\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
+use Chevere\Contracts\Path\PathContract;
 
 use function ChevereFn\stringRightTail;
 
@@ -120,7 +121,7 @@ final class Cache
         return $this->array;
     }
 
-    private function getPath(string $name): Path
+    private function getPath(string $name): PathContract
     {
         $this->assertKeyName($name);
         

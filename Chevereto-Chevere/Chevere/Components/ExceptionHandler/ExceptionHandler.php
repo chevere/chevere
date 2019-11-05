@@ -22,7 +22,6 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Log\LogLevel;
 
-use Chevere\Components\App\Builder;
 use Chevere\Components\App\Instances\RequestInstance;
 use Chevere\Components\App\Instances\RuntimeInstance;
 use Chevere\Components\Data\Data;

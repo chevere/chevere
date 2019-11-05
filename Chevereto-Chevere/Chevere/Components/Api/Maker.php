@@ -34,6 +34,7 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Maker as RouterMaker;
 use Chevere\Contracts\Api\MakerContract;
 use Chevere\Contracts\Http\MethodContract;
+use Chevere\Contracts\Path\PathContract;
 use Chevere\Contracts\Route\RouteContract;
 
 use function ChevereFn\stringForwardSlashes;
@@ -69,7 +70,7 @@ final class Maker implements MakerContract
     /** @var RouteContract */
     private $route;
 
-    /** @var Path For target API directory */
+    /** @var PathContract For target API directory */
     private $path;
 
     /** @var Cache */
@@ -80,7 +81,7 @@ final class Maker implements MakerContract
         $this->routerMaker = $routerMaker;
     }
 
-    public function withPath(Path $path): MakerContract
+    public function withPath(PathContract $path): MakerContract
     {
         $new = clone $this;
         $new->path = $path;
@@ -125,7 +126,7 @@ final class Maker implements MakerContract
         return $this->api;
     }
 
-    public function path(): Path
+    public function path(): PathContract
     {
         return $this->path;
     }

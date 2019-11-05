@@ -19,7 +19,6 @@ use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\Console\Console;
-use Chevere\Components\Dir\Dir;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;

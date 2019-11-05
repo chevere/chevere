@@ -20,7 +20,7 @@ use RuntimeException;
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
-use LogicException;
+use Chevere\Contracts\Path\PathContract;
 
 use function ChevereFn\stringEndsWith;
 
@@ -29,10 +29,10 @@ use function ChevereFn\stringEndsWith;
  */
 final class File
 {
-    /** @var Path */
+    /** @var PathContract */
     private $path;
 
-    public function __construct(Path $path)
+    public function __construct(PathContract $path)
     {
         if ($path->isDir()) {
             throw new InvalidArgumentException(
@@ -44,7 +44,7 @@ final class File
         $this->path = $path;
     }
 
-    public function path(): Path
+    public function path(): PathContract
     {
         return $this->path;
     }

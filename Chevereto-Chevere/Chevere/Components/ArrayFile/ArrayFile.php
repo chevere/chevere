@@ -20,6 +20,7 @@ use Chevere\Components\FileReturn\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Type\Type;
+use Chevere\Contracts\Path\PathContract;
 
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).
@@ -29,7 +30,7 @@ final class ArrayFile
     /** @var array The array returned by the file */
     private $array;
 
-    /** @var Path */
+    /** @var PathContract */
     private $path;
 
     /** @var FileReturn */
@@ -38,7 +39,7 @@ final class ArrayFile
     /** @var Type */
     private $type;
 
-    public function __construct(Path $path)
+    public function __construct(PathContract $path)
     {
         $file = new File($path);
         $this->path = $path;
@@ -60,7 +61,7 @@ final class ArrayFile
         return $new;
     }
 
-    public function path(): Path
+    public function path(): PathContract
     {
         return $this->path;
     }

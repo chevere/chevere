@@ -18,7 +18,6 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
-use Chevere\Components\Path\Path;
 use Chevere\Components\VarDump\Formatters\DumperFormatter;
 use Chevere\Contracts\VarDump\FormatterContract;
 

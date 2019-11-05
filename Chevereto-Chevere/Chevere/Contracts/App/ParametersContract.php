@@ -15,6 +15,7 @@ namespace Chevere\Contracts\App;
 
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Path\Path;
+use Chevere\Contracts\Path\PathContract;
 
 interface ParametersContract
 {
@@ -40,7 +41,7 @@ interface ParametersContract
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified Path instances.
      */
-    public function withAddedRoutePaths(Path ...$paths): ParametersContract;
+    public function withAddedRoutePaths(PathContract ...$paths): ParametersContract;
 
     /**
      * Returns a boolean indicating whether the instance has any parameter.
