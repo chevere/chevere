@@ -157,20 +157,6 @@ final class FileReturn
         unset($this->contents);
     }
 
-    /**
-     * OPCache the FileReturn file
-     */
-    public function makeCache()
-    {
-        if (!opcache_compile_file($this->file->path()->absolute())) {
-            throw new RuntimeException(
-                (new Message('Unable to compile cache for file %file% (Opcode cache is disabled)'))
-                    ->code('%file%', $this->file->path()->absolute())
-                    ->toString()
-            );
-        }
-    }
-
     public function destroyCache()
     {
         if (!opcache_invalidate($this->file->path()->absolute())) {

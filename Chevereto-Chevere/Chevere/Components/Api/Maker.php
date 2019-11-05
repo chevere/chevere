@@ -105,8 +105,7 @@ final class Maker implements MakerContract
     {
         $new = clone $this;
         $new->cache = $cache
-            ->put('api', $new->api)
-            ->makeCache();
+            ->withPut('api', $new->api);
 
         return $new;
     }

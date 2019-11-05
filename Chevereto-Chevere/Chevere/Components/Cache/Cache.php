@@ -62,6 +62,7 @@ final class Cache
                     ->toString()
             );
         }
+        $this->array = [];
         $this->workingFolder = stringRightTail($dir->path()->absolute(), '/') . $name . '/';
     }
 
@@ -73,12 +74,14 @@ final class Cache
     public function get(string $key): FileReturn
     {
         $file = new File($this->getPath($key));
+
         return new FileReturn($file);
     }
 
     public function exists(string $key): bool
     {
-        return $this->getPath($key)->exists();
+        return $this->getPath($key)
+            ->exists();
     }
 
     /**
@@ -86,30 +89,31 @@ final class Cache
      *
      * @param string $key Cache key
      * @param mixed $var Anything, but keep it restricted to one-dimension iterables at most.
-     *
-     * @return FileReturn A FileReturn instance for the cached file.
      */
-    public function put(string $key, $var): FileReturn
+    public function withPut(string $key, $var): Cache
     {
         $fileReturn = $this->get($key);
         $fileReturn->put($var);
-        $this->array[$this->name][$key] = [
-            'path' => $fileReturn->file()->path()->absolute(),
+        $fileReturn->file()->compile();
+        $new = clone $this;
+        $new->array[$new->name][$key] = [
+            'path' => $fileReturn->file()->path()
+                ->absolute(),
             'checksum' => $fileReturn->checksum(),
         ];
 
-        return $fileReturn;
+        return $new;
     }
 
-    public function remove(string $key): void
-    {
-        $path = $this->getPath($key);
-        if (!$path->exists()) {
-            return;
-        }
-        (new File($path))->remove();
-        unset($this->array[$this->name][$key]);
-    }
+    // public function remove(string $key): void
+    // {
+    //     $path = $this->getPath($key);
+    //     if (!$path->exists()) {
+    //         return;
+    //     }
+    //     (new File($path))->remove();
+    //     unset($this->array[$this->name][$key]);
+    // }
 
     public function toArray(): array
     {

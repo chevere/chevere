@@ -13,12 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Components\File;
 
+use BadMethodCallException;
 use InvalidArgumentException;
 use RuntimeException;
 
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
+use LogicException;
+
+use function ChevereFn\stringEndsWith;
 
 /**
  * This class provides interactions for a file in the application namespace.
@@ -74,6 +78,32 @@ final class File
             throw new RuntimeException(
                 (new Message('Unable to write content to file %filepath%'))
                     ->code('%filepath%', $this->path->absolute())
+                    ->toString()
+            );
+        }
+    }
+
+    /**
+     * Applies OPCache to the file (only if the file is a PHP script)
+     */
+    public function compile(): void
+    {
+        $this->assertPhpScript();
+        if (!opcache_compile_file($this->path->absolute())) {
+            throw new RuntimeException(
+                (new Message('Unable to compile cache for file %file% (Opcode cache is disabled)'))
+                    ->code('%file%', $this->path->absolute())
+                    ->toString()
+            );
+        }
+    }
+
+    private function assertPhpScript(): void
+    {
+        if (!stringEndsWith('.php', $this->path->absolute())) {
+            throw new BadMethodCallException(
+                (new Message("The file at %path% is not a PHP script"))
+                    ->code('%path%', $this->path->absolute())
                     ->toString()
             );
         }
