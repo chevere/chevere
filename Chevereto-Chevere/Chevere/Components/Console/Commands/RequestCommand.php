@@ -133,7 +133,7 @@ final class RequestCommand extends Command
             $this->getArgumentString('uri'),
             $this->getOptionArray('headers'),
             isset($this->options['body']) ? $this->getOptionString('body') : null,
-        );
+            );
 
         $request
             ->withCookieParams($this->parsedOptions['cookie'])
@@ -170,15 +170,15 @@ final class RequestCommand extends Command
             $isHeaders = true;
             $isBody = true;
         }
-        $status = $response->status();
-        $headers = $response->headers();
+        $statusLine = $response->statusLine();
+        $headersString = $response->headersString();
         if (!$isNoFormat) {
-            $status = '<fg=magenta>' . $status . '</>';
-            $headers = '<fg=yellow>' . $headers . '</>';
+            $statusLine = '<fg=magenta>' . $statusLine . '</>';
+            $headersString = '<fg=yellow>' . $headersString . '</>';
         }
-        $this->console()->style()->writeln($status);
+        $this->console()->style()->writeln($statusLine);
         if ($isHeaders) {
-            $this->console()->style()->writeln($headers);
+            $this->console()->style()->writeln($headersString);
         }
         if ($isBody) {
             $response->sendBody();

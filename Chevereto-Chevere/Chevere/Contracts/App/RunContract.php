@@ -20,6 +20,8 @@ interface RunContract
      */
     public function __construct(BuilderContract $builder);
 
+    public function builder(): BuilderContract;
+
     /**
      * Return an instance with a console loop.
      *

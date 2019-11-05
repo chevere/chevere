@@ -28,7 +28,7 @@ use function GuzzleHttp\Psr7\stream_for;
 use const Chevere\CLI;
 
 /**
- * Application runner.
+ * Application builder runner.
  */
 final class Runner implements RunContract
 {
@@ -89,10 +89,10 @@ final class Runner implements RunContract
      */
     public function withRun(): RunContract
     {
-        $this->handleConsole();
-        $this->handleRequest();
-        $this->handeRan();
         $new = clone $this;
+        $new->handleConsole();
+        $new->handleRequest();
+        $new->handeRan();
         $new->ran = true;
         if (!$new->builder->hasControllerName()) {
             try {

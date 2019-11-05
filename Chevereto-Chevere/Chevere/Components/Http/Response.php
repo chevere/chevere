@@ -20,24 +20,20 @@ use Chevere\Contracts\Http\ResponseContract;
 
 final class Response implements ResponseContract
 {
-
     /** @var GuzzleResponse */
     private $guzzle;
 
-    /** @var string */
-    private $status;
-
-    /** @var string */
-    private $headers;
-
-    /** @var string */
-    private $content;
-
+    /**
+     * {@inheritdoc}
+     */
     public function __construct()
     {
         $this->guzzle = new GuzzleResponse(200, $this->getDateHeader());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withGuzzle(GuzzleResponse $guzzle): ResponseContract
     {
         $new = clone $this;
@@ -46,6 +42,9 @@ final class Response implements ResponseContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function guzzle(): GuzzleResponse
     {
         return $this->guzzle;
@@ -54,41 +53,51 @@ final class Response implements ResponseContract
     /**
      * {@inheritdoc}
      */
-    public function status(): string
+    public function statusLine(): string
     {
-        if (!isset($this->status)) {
-            $this->setStatus();
-        }
-        return $this->status ?? '';
+        return sprintf('HTTP/%s %s %s', $this->guzzle->getProtocolVersion(), $this->guzzle->getStatusCode(), $this->guzzle->getReasonPhrase());
     }
 
-    public function headers(): string
+    /**
+     * {@inheritdoc}
+     */
+    public function headersString(): string
     {
-        if (!isset($this->headers)) {
-            $this->setHeaders();
+        $headers = [];
+        foreach ($this->guzzle->getHeaders() as $name => $values) {
+            foreach ($values as $value) {
+                $headers[] = "$name: $value";
+            }
         }
-        return $this->headers ?? '';
+        return implode("\n", $headers);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function content(): string
     {
-        if (!isset($this->content)) {
-            $this->setContent();
-        }
-        return $this->content ?? '';
+        return (string) $this->guzzle->getBody();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function sendHeaders(): ResponseContract
     {
-        header($this->status(), true, $this->guzzle->getStatusCode());
+        header($this->statusLine(), true, $this->guzzle->getStatusCode());
         foreach ($this->guzzle->getHeaders() as $name => $values) {
             foreach ($values as $value) {
                 header("$name: $value", false);
             }
         }
+
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function sendBody(): ResponseContract
     {
         $stream = $this->guzzle->getBody();
@@ -100,27 +109,6 @@ final class Response implements ResponseContract
         }
 
         return $this;
-    }
-
-    private function setStatus(): void
-    {
-        $this->status = sprintf('HTTP/%s %s %s', $this->guzzle->getProtocolVersion(), $this->guzzle->getStatusCode(), $this->guzzle->getReasonPhrase());
-    }
-
-    private function setHeaders(): void
-    {
-        $headers = [];
-        foreach ($this->guzzle->getHeaders() as $name => $values) {
-            foreach ($values as $value) {
-                $headers[] = "$name: $value";
-            }
-        }
-        $this->headers = implode("\n", $headers);
-    }
-
-    private function setContent(): void
-    {
-        $this->content = (string) $this->guzzle->getBody();
     }
 
     private function getDateHeader(): array

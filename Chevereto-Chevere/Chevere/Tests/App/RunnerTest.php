@@ -107,13 +107,9 @@ final class RunnerTest extends TestCase
                 $builder->build()->withApp($app)
             );
 
-        ob_start();
         $runner = new Runner($builder);
-        $runner = $runner->withRun();
-        $output = ob_get_clean();
-
+        $ranBuilder = $runner->withRun()->builder();
         $build->destroy();
-
-        dd($output, $runner->hasRouteNotFound());
+        $this->assertSame(404, $ranBuilder->build()->app()->response()->guzzle()->getStatusCode());
     }
 }

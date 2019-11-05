@@ -16,7 +16,6 @@ namespace Chevere\Contracts\App;
 use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Http\ResponseContract;
 use Chevere\Contracts\Route\RouteContract;
-use Chevere\Contracts\Router\RouterContract;
 
 interface AppContract
 {

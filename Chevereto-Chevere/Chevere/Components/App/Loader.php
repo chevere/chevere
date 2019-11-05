@@ -76,8 +76,7 @@ final class Loader implements LoaderContract
     public function run(): void
     {
         $runner = new Runner($this->builder);
-        $runner = $runner->withRun();
-        $this->builder = $runner->builder();
+        $this->builder = $runner->withRun()->builder();
         $this->handleResponse();
     }
 
