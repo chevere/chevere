@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Path;
 
+use BadMethodCallException;
 use InvalidArgumentException;
 
 use Chevere\Components\Message\Message;
@@ -113,6 +114,24 @@ final class Path implements PathContract
         $this->clearStatCache();
         
         return is_file($this->absolute);
+    }
+
+    /**
+     *
+     */
+    public function getChild(string $path): PathContract
+    {
+        // if (!$this->isDir()) {
+        //     throw new BadMethodCallException(
+        //         (new Message("Instance of %className% is representing a file so it doesn't allow children"))
+        //             ->code('%className%', __CLASS__)
+        //             ->toString()
+        //     );
+        // }
+        $parent = $this->absolute();
+        $childrenPath = rtrim($parent, '/') ;
+
+        return new Path($childrenPath. '/' . $path);
     }
 
     private function assertPathFormat(): void

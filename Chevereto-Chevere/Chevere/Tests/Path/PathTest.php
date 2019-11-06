@@ -87,7 +87,7 @@ final class PathTest extends TestCase
 
     public function testWithNonExistentPath(): void
     {
-        $path = new Path('fake_' . uniqid());
+        $path = new Path('var/fake_' . uniqid());
         $this->assertFalse($path->exists());
         $this->assertFalse($path->isDir());
         $this->assertFalse($path->isFile());
@@ -95,7 +95,7 @@ final class PathTest extends TestCase
 
     public function testWithExistentDirPath(): void
     {
-        $path = new Path('src');
+        $path = new Path('var');
         $this->assertTrue($path->exists());
         $this->assertTrue($path->isDir());
         $this->assertFalse($path->isFile());
@@ -111,7 +111,7 @@ final class PathTest extends TestCase
 
     public function testWithExistentDirPathRemoved(): void
     {
-        $path = new Path('var/PathTest_path_' . uniqid());
+        $path = new Path('var/PathTest_dir_' . uniqid());
         $this->assertFalse($path->exists());
         if (!mkdir($path->absolute(), 0777, true)) {
             throw new RuntimeException('Unable to create dir ' . $path->absolute());
