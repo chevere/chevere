@@ -30,12 +30,20 @@ interface FileContract
     public function path(): PathContract;
 
     /**
+     * Returns a boolean indicating whether the file represents a PHP file.
+     */
+    public function isPhp(): bool;
+
+    /**
      * Returns a boolean indicating whether the file exists.
      */
     public function exists(): bool;
 
     /**
      * Remove the file.
+     *
+     * @throws FileNotFoundException If the file doesn't exists.
+     * @throws FileUnableToRemoveException If unable to remove the file.
      */
     public function remove(): void;
 
@@ -49,7 +57,8 @@ interface FileContract
     /**
      * Applies OPCache to the file (only if the file is a PHP script)
      *
-     * @throws BadMethodCallException If attempt to compile a non-PHP file.
+     * @throws FileNotPhpException If attempt to compile a non-PHP file.
+     * @throws FileNotFoundException If attempt to compile a file that doesn't exists.
      */
     public function compile(): void;
 }

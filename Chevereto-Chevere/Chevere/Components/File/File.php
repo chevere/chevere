@@ -18,6 +18,10 @@ use InvalidArgumentException;
 use RuntimeException;
 
 use Chevere\Components\Dir\Dir;
+use Chevere\Components\File\Exceptions\FileUnableToPutException;
+use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
+use Chevere\Components\File\Exceptions\FileNotFoundException;
+use Chevere\Components\File\Exceptions\FileNotPhpException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Contracts\File\FileContract;
@@ -33,19 +37,17 @@ final class File implements FileContract
     /** @var PathContract */
     private $path;
 
+    /** @var bool */
+    private $isPhp;
+
     /**
      * {@inheritdoc}
      */
     public function __construct(PathContract $path)
     {
-        if ($path->isDir()) {
-            throw new InvalidArgumentException(
-                (new Message('Path %path% is a directory'))
-                    ->code('%path%', $path->relative())
-                    ->toString()
-            );
-        }
         $this->path = $path;
+        $this->isPhp = stringEndsWith('.php', $this->path->absolute());
+        $this->assertIsNotDir();
     }
 
     /**
@@ -54,6 +56,14 @@ final class File implements FileContract
     public function path(): PathContract
     {
         return $this->path;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isPhp(): bool
+    {
+        return $this->isPhp;
     }
 
     /**
@@ -69,8 +79,15 @@ final class File implements FileContract
      */
     public function remove(): void
     {
-        if (!unlink($this->path->absolute())) {
-            throw new RuntimeException(
+        if (!$this->exists()) {
+            throw new FileNotFoundException(
+                (new Message("The file %path% doesn't exists"))
+                    ->code('%path%', $this->path->absolute())
+                    ->toString()
+            );
+        }
+        if (!@unlink($this->path->absolute())) {
+            throw new FileUnableToRemoveException(
                 (new Message('Unable to remove file %path%'))
                     ->code('%path%', $this->path->absolute())
                     ->toString()
@@ -91,7 +108,7 @@ final class File implements FileContract
             }
         }
         if (false === file_put_contents($this->path->absolute(), $contents)) {
-            throw new RuntimeException(
+            throw new FileUnableToPutException(
                 (new Message('Unable to write content to file %filepath%'))
                     ->code('%filepath%', $this->path->absolute())
                     ->toString()
@@ -105,6 +122,7 @@ final class File implements FileContract
     public function compile(): void
     {
         $this->assertPhpScript();
+        $this->assertExists();
         if (!opcache_compile_file($this->path->absolute())) {
             throw new RuntimeException(
                 (new Message('Unable to compile cache for file %file% (Opcode cache is disabled)'))
@@ -114,11 +132,33 @@ final class File implements FileContract
         }
     }
 
+    private function assertIsNotDir(): void
+    {
+        if ($this->path->isDir()) {
+            throw new InvalidArgumentException(
+                (new Message('Path %path% is a directory'))
+                    ->code('%path%', $this->path->relative())
+                    ->toString()
+            );
+        }
+    }
+
     private function assertPhpScript(): void
     {
-        if (!stringEndsWith('.php', $this->path->absolute())) {
-            throw new BadMethodCallException(
+        if (!$this->isPhp) {
+            throw new FileNotPhpException(
                 (new Message("The file at %path% is not a PHP script"))
+                    ->code('%path%', $this->path->absolute())
+                    ->toString()
+            );
+        }
+    }
+
+    private function assertExists(): void
+    {
+        if (!$this->exists()) {
+            throw new FileNotFoundException(
+                (new Message("Can't compile file %path% because it doesn't exists"))
                     ->code('%path%', $this->path->absolute())
                     ->toString()
             );

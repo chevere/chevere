@@ -13,15 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Path;
 
-use BadMethodCallException;
-use InvalidArgumentException;
-
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathInvalidException;
 use Chevere\Components\Path\Exceptions\PathNotAllowedException;
 use Chevere\Contracts\Path\PathContract;
 
-use function ChevereFn\stringEndsWith;
 use function ChevereFn\stringForwardSlashes;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;

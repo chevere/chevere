@@ -71,9 +71,9 @@ final class PathTest extends TestCase
 
     public function testWithAbsolutePath(): void
     {
-        $absolute = PathContract::ROOT . 'dir/';
+        $absolute = PathContract::ROOT . 'dir';
         $path = new Path($absolute);
-        $this->assertSame('dir/', $path->relative());
+        $this->assertSame('dir', $path->relative());
         $this->assertSame($absolute, $path->absolute());
     }
 
