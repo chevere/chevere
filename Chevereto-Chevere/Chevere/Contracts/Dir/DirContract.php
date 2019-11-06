@@ -20,7 +20,7 @@ interface DirContract
     /**
      * Creates a new instance.
      *
-     * @throws InvalidArgumentException If the PathContract represents a file.
+     * @throws PathIsDirectoryException If the PathContract represents a file.
      */
     public function __construct(PathContract $path);
 

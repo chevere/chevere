@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Dir;
 
+use Chevere\Components\Dir\Exceptions\PathIsFileException;
+use Chevere\Components\Dir\Exceptions\PathIsNotDirectoryException;
 use InvalidArgumentException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
@@ -35,14 +37,8 @@ final class Dir implements DirContract
      */
     public function __construct(PathContract $path)
     {
-        if ($path->isFile()) {
-            throw new InvalidArgumentException(
-                (new Message('Path %path% is a file'))
-                    ->code('%path%', $path->relative())
-                    ->toString()
-            );
-        }
         $this->path = $path;
+        $this->assertIsNotFile();
     }
 
     /**
@@ -142,10 +138,21 @@ final class Dir implements DirContract
         return $removed;
     }
 
+    private function assertIsNotFile(): void
+    {
+        if ($this->path->isFile()) {
+            throw new PathIsFileException(
+                (new Message('Path %path% is a file'))
+                    ->code('%path%', $this->path->relative())
+                    ->toString()
+            );
+        }
+    }
+
     private function assertIsDir(): void
     {
         if (!$this->path->isDir()) {
-            throw new InvalidArgumentException(
+            throw new PathIsNotDirectoryException(
                 (new Message('Path %path% is not a directory'))
                     ->code('%path%', $this->path->absolute())
                     ->toString()

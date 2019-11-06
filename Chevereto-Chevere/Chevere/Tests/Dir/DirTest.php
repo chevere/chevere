@@ -14,15 +14,24 @@ declare(strict_types=1);
 namespace Chevere\Tests\Path;
 
 use Chevere\Components\Dir\Dir;
+use Chevere\Components\Dir\Exceptions\PathIsFileException;
+use Chevere\Components\Dir\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Path\Path;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 
 final class DirTest extends TestCase
 {
+    public function testWithFilePath(): void
+    {
+        $path = new Path('parameters.php');
+        $this->expectException(PathIsFileException::class);
+        new Dir($path);
+    }
+
     public function testWithNonExistentPath(): void
     {
-        $dir = new Dir(new Path('var/DirTest_dir_' . uniqid()));
+        $dir = new Dir(new Path('var/DirTest_' . uniqid()));
         $this->assertFalse($dir->exists());
     }
       
@@ -34,7 +43,7 @@ final class DirTest extends TestCase
       
     public function testCreate(): void
     {
-        $dir = new Dir(new Path('var/DirTest_dir_' . uniqid()));
+        $dir = new Dir(new Path('var/DirTest_' . uniqid()));
         $dir->create();
         $this->assertTrue($dir->exists());
         if (!rmdir($dir->path()->absolute())) {
@@ -42,9 +51,17 @@ final class DirTest extends TestCase
         }
     }
 
+    public function testRemoveNonExistentPath(): void
+    {
+        $path = new Path('var/DirTest_' . uniqid());
+        $dir = new Dir($path);
+        $this->expectException(PathIsNotDirectoryException::class);
+        $dir->remove();
+    }
+
     public function testRemove(): void
     {
-        $dir = new Dir(new Path('var/DirTest_dir_' . uniqid()));
+        $dir = new Dir(new Path('var/DirTest_' . uniqid()));
         $dir->create();
         $removed = $dir->remove();
         $this->assertContainsEquals($dir->path()->absolute(), $removed);
@@ -53,7 +70,7 @@ final class DirTest extends TestCase
 
     public function testRemoveWithContents(): void
     {
-        $dirPath = new Path('var/DirTest_dir_' . uniqid());
+        $dirPath = new Path('var/DirTest_' . uniqid());
         $filePath = $dirPath->getChild('file');
         $dir = new Dir($dirPath);
         $dir->create();
@@ -67,7 +84,7 @@ final class DirTest extends TestCase
 
     public function testRemoveContents(): void
     {
-        $dirPath = new Path('var/DirTest_dir_' . uniqid());
+        $dirPath = new Path('var/DirTest_' . uniqid());
         $filePath = $dirPath->getChild('file');
         $dir = new Dir($dirPath);
         $dir->create();
