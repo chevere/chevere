@@ -20,6 +20,7 @@ use RuntimeException;
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
+use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\Path\PathContract;
 
 use function ChevereFn\stringEndsWith;
@@ -27,11 +28,14 @@ use function ChevereFn\stringEndsWith;
 /**
  * This class provides interactions for a file in the application namespace.
  */
-final class File
+final class File implements FileContract
 {
     /** @var PathContract */
     private $path;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(PathContract $path)
     {
         if ($path->isDir()) {
@@ -44,16 +48,25 @@ final class File
         $this->path = $path;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function path(): PathContract
     {
         return $this->path;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function exists(): bool
     {
         return $this->path->exists() && $this->path->isFile();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function remove(): void
     {
         if (!unlink($this->path->absolute())) {
@@ -65,6 +78,9 @@ final class File
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function put(string $contents): void
     {
         if (!$this->path->exists()) {
@@ -84,7 +100,7 @@ final class File
     }
 
     /**
-     * Applies OPCache to the file (only if the file is a PHP script)
+     * {@inheritdoc}
      */
     public function compile(): void
     {

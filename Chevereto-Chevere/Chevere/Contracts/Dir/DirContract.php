@@ -17,10 +17,15 @@ use Chevere\Contracts\Path\PathContract;
 
 interface DirContract
 {
+    /**
+     * Creates a new instance.
+     *
+     * @throws InvalidArgumentException If the PathContract represents a file.
+     */
     public function __construct(PathContract $path);
 
     /**
-     * Provides access to the ServicesContract instance.
+     * Provides access to the PathContract instance.
      */
     public function path(): PathContract;
 
@@ -36,7 +41,7 @@ interface DirContract
 
     /**
      * Removes the directory.
-     * 
+     *
      * @return array An array with all the elements removed
      */
     public function remove(): array;
