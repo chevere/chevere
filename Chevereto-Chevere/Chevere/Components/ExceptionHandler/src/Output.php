@@ -72,7 +72,7 @@ final class Output
             if (CLI) {
                 // $this->setJsonOutput();
                 $this->setConsoleOutput();
-                // $this->setHtmlOutput();
+            // $this->setHtmlOutput();
             } else {
                 $this->setHtmlOutput();
             }
@@ -92,7 +92,8 @@ final class Output
         }
 
         $response = new Response();
-        if ($this->exceptionHandler->request()->isXmlHttpRequest()) { } else {
+        if ($this->exceptionHandler->request()->isXmlHttpRequest()) {
+        } else {
             // $response = new HttpResponse();
         }
         $guzzle = $response->guzzle()
@@ -183,7 +184,7 @@ final class Output
             if ('title' == $k) {
                 console()->style()->error($message);
             } else {
-                $message = (new Message($message))->toCliString();
+                $message = (new Message($message))->toString();
                 console()->style()->writeln($message);
             }
         }

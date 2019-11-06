@@ -21,7 +21,7 @@ use Chevere\Components\Message\Message;
 
 use function console;
 
-use const Chevere\CLI;
+use const Chevere\CONSOLE;
 
 // TODO: Use json:api immutable
 
@@ -49,7 +49,7 @@ final class GetController extends Controller
             } else {
                 $msg = 'Must provide the %s argument when running this callable without route context.';
                 $message = (new Message($msg))->code('%s', '$endpoint')->toString();
-                if (CLI) {
+                if (CONSOLE) {
                     console()->style()->error($message);
 
                     return;

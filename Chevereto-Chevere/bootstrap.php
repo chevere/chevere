@@ -21,6 +21,7 @@ define('Chevere\APP_PATH', ROOT_PATH . 'app/');
 
 // FIXME: Create a container for runtime booleans
 define('Chevere\CLI', 'cli' == php_sapi_name());
+define('Chevere\CONSOLE', CLI);
 define('Chevere\DEV', (bool) include(APP_PATH . 'options/dev.php')); // DEV=true to rebuild the App on every load
 
 require 'runtime.php';

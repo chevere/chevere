@@ -46,16 +46,19 @@ final class Stack
         }
     }
 
+    // FIXME:
     public function getConsole(): ?string
     {
         return strip_tags($this->wrapStringHr($this->glueString($this->console)));
     }
 
+    // FIXME:
     public function getRich(): ?string
     {
         return $this->wrapStringHr($this->glueString($this->rich));
     }
 
+    // FIXME:
     public function getPlain(): ?string
     {
         return $this->wrapStringHr($this->glueString($this->plain));

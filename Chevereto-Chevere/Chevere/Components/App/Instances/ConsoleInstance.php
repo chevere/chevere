@@ -15,7 +15,6 @@ namespace Chevere\Components\App\Instances;
 
 use Chevere\Components\App\Instances\Traits\AssertInstanceTrait;
 use Chevere\Contracts\Console\ConsoleContract;
-use LogicException;
 
 /**
  * A container for the built-in console.

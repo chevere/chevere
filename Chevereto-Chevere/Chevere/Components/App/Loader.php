@@ -33,7 +33,7 @@ use Chevere\Contracts\App\ParametersContract;
 
 use function console;
 
-use const Chevere\CLI;
+use const Chevere\CONSOLE;
 use const Chevere\DEV;
 
 /**
@@ -91,7 +91,7 @@ final class Loader implements LoaderContract
 
     private function handleParameters(): void
     {
-        if (DEV || (CLI && console()->isBuilding())) {
+        if (DEV || (CONSOLE && console()->isBuilding())) {
             $path = new Path('plugins/local/HelloWorld/routes/web.php');
             $pluginRoutes = [$path];
             $this->parameters = $this->parameters
@@ -136,7 +136,7 @@ final class Loader implements LoaderContract
         $services = $this->builder->build()->app()->services();
 
         try {
-            if (!(CLI && console()->isBuilding())) {
+            if (!(CONSOLE && console()->isBuilding())) {
                 $dir = $this->builder->build()->cacheDir();
                 if ($this->parameters->hasApi()) {
                     $api = $api->withCache(new Cache('api', $dir));
@@ -161,11 +161,12 @@ final class Loader implements LoaderContract
     {
         if (
             !DEV
-            && !(CLI && console()->isBuilding())
+            && !(CONSOLE && console()->isBuilding())
             && !$this->builder->build()->file()->exists()
         ) {
+            // FIXME: Get the entrypoint
             throw new BuildNeededException(
-                (new Message('The application needs to be built by CLI %command% or calling %method% method'))
+                (new Message('The application needs to be built by running %command% or calling %method% method'))
                     ->code('%command%', 'php app/console build')
                     ->code('%method%', __CLASS__ . '::build')
                     ->toString()

@@ -16,16 +16,17 @@ namespace Chevere\Components\Path;
 use InvalidArgumentException;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Path\Exceptions\PathInvalidException;
+use Chevere\Components\Path\Exceptions\PathNotAllowedException;
 use Chevere\Contracts\Path\PathContract;
 
 use function ChevereFn\stringEndsWith;
 use function ChevereFn\stringForwardSlashes;
 use function ChevereFn\stringReplaceFirst;
-use function ChevereFn\stringRightTail;
 use function ChevereFn\stringStartsWith;
 
 /**
- * Handles paths from the project's root location (folder containing app, vendor)
+ * Tool to handle filesystem paths (folder containing app, vendor)
  */
 final class Path implements PathContract
 {
@@ -34,10 +35,7 @@ final class Path implements PathContract
 
     /** @var string Root context path (absolute) */
     private $root;
-
-    /** @var bool TRUE if the path ends with .php */
-    private $isPhp;
-
+    
     /** @var string Absolute path */
     private $absolute;
 
@@ -50,7 +48,6 @@ final class Path implements PathContract
     public function __construct(string $path)
     {
         $this->root = PathContract::ROOT;
-        $this->isPhp = stringEndsWith('.php', $path);
         $this->path = $path;
         $this->assertPathFormat();
         $this->handlePaths();
@@ -75,24 +72,24 @@ final class Path implements PathContract
     /**
      * {@inheritdoc}
      */
-    public function isStream(): bool
-    {
-        if (false === strpos($this->absolute, '://')) {
-            return false;
-        }
-        $explode = explode('://', $this->absolute, 2);
+    // public function isStream(): bool
+    // {
+    //     if (false === strpos($this->absolute, '://')) {
+    //         return false;
+    //     }
+    //     $explode = explode('://', $this->absolute, 2);
 
-        return in_array($explode[0], stream_get_wrappers());
-    }
+    //     return in_array($explode[0], stream_get_wrappers());
+    // }
 
     /**
      * {@inheritdoc}
      */
     public function exists(): bool
     {
-        if ($this->isStream()) {
-            return true;
-        }
+        // if ($this->isStream()) {
+        //     return true;
+        // }
         $this->clearStatCache();
 
         return stream_resolve_include_path($this->absolute) !== false;
@@ -118,11 +115,23 @@ final class Path implements PathContract
         return is_file($this->absolute);
     }
 
-    private function getRelative(): string
+    private function assertPathFormat(): void
     {
-        $absolutePath = stringForwardSlashes($this->absolute);
-
-        return stringReplaceFirst($this->root, '', $absolutePath);
+        if (false !== strpos($this->path, '../')) {
+            throw new PathInvalidException(
+                (new Message('Must omit %chars% for the path %path%'))
+                    ->code('%chars%', '../')
+                    ->code('%path%', $this->path)
+                    ->toString()
+            );
+        }
+        if (false !== strpos($this->path, '//')) {
+            throw new PathInvalidException(
+                (new Message('Path %path% contains extra-slashes'))
+                    ->code('%path%', $this->path)
+                    ->toString()
+            );
+        }
     }
 
     private function handlePaths(): void
@@ -131,11 +140,12 @@ final class Path implements PathContract
             $this->assertAbsolutePath();
             $this->absolute = $this->path;
         } else {
+            $this->assertRelativePath();
             $this->absolute = $this->getAbsolute();
         }
-        if (is_dir($this->absolute)) {
-            $this->absolute = stringRightTail($this->absolute, '/');
-        }
+        // if (is_dir($this->absolute)) {
+        //     $this->absolute = stringRightTail($this->absolute, '/');
+        // }
         $this->relative = $this->getRelative();
     }
 
@@ -144,23 +154,31 @@ final class Path implements PathContract
         return $this->root . stringForwardSlashes($this->path);
     }
 
-    private function assertAbsolutePath(): void
+    private function getRelative(): string
     {
-        if (!stringStartsWith($this->root, $this->path)) {
-            throw new InvalidArgumentException(
-                (new Message('Only absolute paths in the app path %root% are allowed, path %path% provided'))
-                    ->code('%root%', $this->root)
+        $absolutePath = stringForwardSlashes($this->absolute);
+
+        return stringReplaceFirst($this->root, '', $absolutePath);
+    }
+
+    private function assertRelativePath(): void
+    {
+        if (stringStartsWith('./', $this->path)) {
+            throw new PathInvalidException(
+                (new Message('Must omit %chars% for the path %path%'))
+                    ->code('%chars%', './')
                     ->code('%path%', $this->path)
                     ->toString()
             );
         }
     }
 
-    private function assertPathFormat(): void
+    private function assertAbsolutePath(): void
     {
-        if (false !== strpos($this->path, '//')) {
-            throw new InvalidArgumentException(
-                (new Message('Path %path% contains extra-slashes'))
+        if (!stringStartsWith($this->root, $this->path)) {
+            throw new PathNotAllowedException(
+                (new Message('Only absolute paths in the app path %root% are allowed, path %path% provided'))
+                    ->code('%root%', $this->root)
                     ->code('%path%', $this->path)
                     ->toString()
             );

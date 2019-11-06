@@ -74,7 +74,7 @@ final class File
                 (new Dir($path))->create();
             }
         }
-        if (false === @file_put_contents($this->path->absolute(), $contents)) {
+        if (false === file_put_contents($this->path->absolute(), $contents)) {
             throw new RuntimeException(
                 (new Message('Unable to write content to file %filepath%'))
                     ->code('%filepath%', $this->path->absolute())

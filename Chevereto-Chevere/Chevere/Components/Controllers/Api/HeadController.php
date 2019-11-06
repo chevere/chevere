@@ -22,7 +22,7 @@ use Chevere\Components\Route\Route;
 
 use function console;
 
-use const Chevere\CLI;
+use const Chevere\CONSOLE;
 
 /**
  * Identical to GET, but without any message-boby in the response.
@@ -43,7 +43,7 @@ final class HeadController extends Controller
             if (!isset($route)) {
                 $msg = 'Must provide the %s argument when running this callable without route context.';
                 $message = (new Message($msg))->code('%s', '$endpoint')->toString();
-                if (CLI) {
+                if (CONSOLE) {
                     console()->style()->error($message);
 
                     return;

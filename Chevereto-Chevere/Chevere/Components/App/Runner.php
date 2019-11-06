@@ -25,7 +25,7 @@ use Chevere\Contracts\App\RunContract;
 use function console;
 use function GuzzleHttp\Psr7\stream_for;
 
-use const Chevere\CLI;
+use const Chevere\CONSOLE;
 
 /**
  * Application builder runner.
@@ -114,7 +114,7 @@ final class Runner implements RunContract
      */
     private function handleConsole(): void
     {
-        if (CLI && !isset($this->consoleLoop)) {
+        if (CONSOLE && !isset($this->consoleLoop)) {
             console()->bind($this->builder);
             console()->run();
         }

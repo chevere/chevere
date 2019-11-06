@@ -22,7 +22,8 @@ define('Chevere\DOCUMENT_ROOT', __DIR__ . '/Chevere/TestApp/');
 define('Chevere\ROOT_PATH', rtrim(str_replace('\\', '/', DOCUMENT_ROOT), '/') . '/');
 define('Chevere\APP_PATH', ROOT_PATH . 'app/');
 
-define('Chevere\CLI', false);
+define('Chevere\CLI', true);
+define('Chevere\CONSOLE', false);
 define('Chevere\DEV', false);
 
 spl_autoload_register(function ($className) {

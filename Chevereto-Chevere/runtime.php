@@ -32,7 +32,7 @@ new RequestInstance(
     Request::fromGlobals()
 );
 
-if (CLI) {
+if (CONSOLE) {
     new ConsoleInstance(new Console());
 }
 

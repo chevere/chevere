@@ -28,6 +28,7 @@ use function console;
 use function ChevereFn\stringReplaceFirst;
 
 use const Chevere\CLI;
+use const Chevere\CONSOLE;
 
 /**
  * Formats the error exception in HTML (default), console and plain text.
@@ -139,7 +140,7 @@ final class Formatter
     private function setServerProperties()
     {
         $request = $this->exceptionHandler->request();
-        if (CLI) {
+        if (CONSOLE) {
             // dd($this->exceptionHandler->request());
             $this->data = $this->data
                 ->withMergedArray([
@@ -190,7 +191,7 @@ final class Formatter
             static::SECTION_SERVER => ['# Server', '%serverHost% %serverSoftware%'],
         ];
 
-        if (CLI) {
+        if (CONSOLE) {
             $verbosity = console()->output()->getVerbosity();
         }
         $this->buildContentSections($sections, $verbosity ?? null);

@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Formatters;
 
-use Chevere\Components\VarDump\Formatters\Traits\GetEmphasisTrait;
 use Chevere\Components\VarDump\Formatters\Traits\GetEncodedCharsTrait;
 use Chevere\Components\VarDump\Formatters\Traits\GetIndentTrait;
 use Chevere\Components\VarDump\src\Wrapper;
 use Chevere\Contracts\VarDump\FormatterContract;
-use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 use const Chevere\CLI;
 

@@ -25,19 +25,19 @@ interface PathContract
     public function __construct(string $path);
 
     /**
-     * Return the path (absolute)
+     * Return absolute path
      */
     public function absolute(): string;
 
     /**
-     * Return the path (relative)
+     * Return relative path
      */
     public function relative(): string;
 
-    /**
-     * Returns a boolean indicating whether the path is a stream.
-     */
-    public function isStream(): bool;
+    // /**
+    //  * Returns a boolean indicating whether the path is a stream.
+    //  */
+    // public function isStream(): bool;
 
     /**
      * Returns a boolean indicating whether the path exists.

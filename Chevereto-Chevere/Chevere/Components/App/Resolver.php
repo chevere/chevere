@@ -16,14 +16,9 @@ namespace Chevere\Components\App;
 use Chevere\Components\App\Exceptions\RouterCantResolveException;
 use Chevere\Components\App\Exceptions\RouterContractRequiredException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
-
-use function GuzzleHttp\Psr7\stream_for;
-
-use const Chevere\CLI;
 
 /**
  * Application resolver
