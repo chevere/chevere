@@ -19,17 +19,20 @@ use RecursiveIteratorIterator;
 use RuntimeException;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Path\Path;
+use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\Path\PathContract;
 
 /**
  * This class provides interactions for a directory in the application namespace.
  */
-final class Dir
+final class Dir implements DirContract
 {
     /** @var PathContract */
     private $path;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(PathContract $path)
     {
         if ($path->isFile()) {
@@ -42,18 +45,25 @@ final class Dir
         $this->path = $path;
     }
 
-    public function path(): Path
+    /**
+     * {@inheritdoc}
+     */
+    public function path(): PathContract
     {
         return $this->path;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function exists(): bool
     {
         return $this->path->exists() && $this->path->isDir();
     }
 
+
     /**
-     * Creates the directory
+     * {@inheritdoc}
      */
     public function create(): void
     {
@@ -74,7 +84,7 @@ final class Dir
     }
 
     /**
-     * Removes the directory
+     * {@inheritdoc}
      */
     public function remove(): array
     {
@@ -93,9 +103,7 @@ final class Dir
     }
 
     /**
-     * Removes the contents from a path without deleting the path.
-     *
-     * @return array List of deleted contents.
+     * {@inheritdoc}
      */
     public function removeContents(): array
     {
