@@ -13,17 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Path;
 
-use Chevere\Components\Dir\Dir;
-use Chevere\Components\File\File;
-use Chevere\Components\Message\Message;
+use RuntimeException;
+
 use Chevere\Components\Path\Exceptions\PathInvalidException;
 use Chevere\Components\Path\Exceptions\PathNotAllowedException;
 use Chevere\Components\Path\Path;
 use Chevere\Contracts\Path\PathContract;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
-
-use function GuzzleHttp\Psr7\stream_for;
 
 final class PathTest extends TestCase
 {
