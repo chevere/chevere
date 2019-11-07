@@ -22,12 +22,12 @@ use Chevere\Components\App\Exceptions\BuildFileNotExistsException;
 use Chevere\Components\App\Parameters;
 use Chevere\Components\App\Services;
 use Chevere\Components\ArrayFile\ArrayFile;
-use Chevere\Components\Dir\Dir;
-use Chevere\Components\File\File;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Maker;
 use Chevere\Contracts\App\CheckoutContract;
+use Chevere\Contracts\Dir\DirContract;
+use Chevere\Contracts\File\FileContract;
 use PHPUnit\Framework\TestCase;
 
 final class BuildTest extends TestCase
@@ -40,8 +40,8 @@ final class BuildTest extends TestCase
         $build = new Build($app);
         $this->assertSame(false, $build->isMaked());
         $this->assertSame($services, $build->app()->services());
-        $this->assertInstanceOf(File::class, $build->file());
-        $this->assertInstanceOf(Dir::class, $build->cacheDir());
+        $this->assertInstanceOf(FileContract::class, $build->file());
+        $this->assertInstanceOf(DirContract::class, $build->cacheDir());
     }
 
     public function testWithParameters(): void

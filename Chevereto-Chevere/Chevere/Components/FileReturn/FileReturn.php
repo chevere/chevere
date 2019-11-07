@@ -16,20 +16,13 @@ namespace Chevere\Components\FileReturn;
 use RuntimeException;
 
 use Chevere\Components\FileReturn\Exceptions\FileNotFoundException;
-use Chevere\Components\File\File;
 use Chevere\Components\Message\Message;
+use Chevere\Contracts\File\FileContract;
 
 /**
  * FileReturn provides an abstraction for interacting with PHP files that return a variable.
  *
  * <?php return 'Hello World!';
- *
- * Which is used like this:
- *
- * $var = include 'file.php';
- *
- * This class provides extra object support using serialization.
- *
  */
 final class FileReturn
 {
@@ -37,7 +30,7 @@ final class FileReturn
     const PHP_RETURN_CHARS = 14;
     const CHECKSUM_ALGO = 'sha256';
 
-    /** @var File */
+    /** @var FileContract */
     private $file;
 
     /** @var string File checksum */
@@ -58,7 +51,7 @@ final class FileReturn
     /** @var bool True for strict validation (PHP_RETURN), false for regex validation (return <algo>) */
     private $strict;
 
-    public function __construct(File $file)
+    public function __construct(FileContract $file)
     {
         $this->strict = true;
         $this->file = $file;
@@ -72,7 +65,7 @@ final class FileReturn
         return $new;
     }
 
-    public function file(): File
+    public function file(): FileContract
     {
         return $this->file;
     }
@@ -82,6 +75,7 @@ final class FileReturn
         if (!isset($this->checksum)) {
             $this->checksum = $this->getHashFile();
         }
+
         return $this->checksum;
     }
 
@@ -90,6 +84,7 @@ final class FileReturn
         if (!isset($this->contents)) {
             $this->contents = file_get_contents($this->file->path()->absolute());
         }
+
         return $this->contents;
     }
 
@@ -107,6 +102,7 @@ final class FileReturn
             $this->raw = include $this->file->path()->absolute();
             $this->type = gettype($this->raw);
         }
+
         return $this->raw;
     }
 
@@ -115,6 +111,7 @@ final class FileReturn
         if (!isset($this->type)) {
             $this->type = gettype($this->raw());
         }
+
         return $this->type;
     }
 
@@ -128,12 +125,13 @@ final class FileReturn
             $this->var = $this->raw();
             if (is_iterable($this->var)) {
                 foreach ($this->var as &$v) {
-                    $this->unseralize($v);
+                    $v = unserialize($v);
                 }
             } else {
-                $this->unseralize($this->var);
+                $this->var = unserialize($v);
             }
         }
+
         return $this->var;
     }
 
@@ -175,6 +173,7 @@ final class FileReturn
     {
         if ($this->strict) {
             $this->validateStrict();
+
             return;
         }
         $this->validateNonStrict();
@@ -227,11 +226,5 @@ final class FileReturn
         if (is_object($var)) {
             $var = serialize($var);
         }
-    }
-
-    private function unseralize(&$var)
-    {
-        $var = unserialize($var);
-        dd($var);
     }
 }

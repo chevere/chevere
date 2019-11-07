@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Contracts\App;
 
 use Chevere\Components\Dir\Dir;
-use Chevere\Components\File\File;
+use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\Router\MakerContract;
 
 interface BuildContract
@@ -87,7 +87,7 @@ interface BuildContract
     /**
      * Returns a Path instance for the build checksums file.
      */
-    public function file(): File;
+    public function file(): FileContract;
 
     public function cacheDir(): Dir;
 

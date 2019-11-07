@@ -18,7 +18,6 @@ use LogicException;
 use Chevere\Components\File\File;
 use Chevere\Components\FileReturn\FileReturn;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Path\Path;
 use Chevere\Components\Type\Type;
 use Chevere\Contracts\Path\PathContract;
 
