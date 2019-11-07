@@ -16,7 +16,7 @@ namespace Chevere\Contracts;
 interface ToArrayContract
 {
     /**
-     * Returns an array representing the object exposed data as array.
+     * Returns an array representing the object data as array.
      */
     public function toArray(): array;
 }

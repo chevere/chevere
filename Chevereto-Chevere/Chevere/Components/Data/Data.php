@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Data;
 
-use ArrayIterator;
-
 use Chevere\Contracts\DataContract;
 
 /**
@@ -25,29 +23,17 @@ class Data implements DataContract
     /** @var array */
     private $data;
 
-    public function __construct()
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(array $data)
     {
-        $this->data = [];
+        $this->data = $data;
     }
 
-    public static function fromArray(array $data): DataContract
-    {
-        $that = new self();
-        $that->data = $data;
-
-        return $that;
-    }
-
-    public function getIterator(): ArrayIterator
-    {
-        return new ArrayIterator($this->data);
-    }
-
-    public function count(): int
-    {
-        return count($this->data);
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function withArray(array $data): DataContract
     {
         $new = clone $this;
@@ -56,6 +42,9 @@ class Data implements DataContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withMergedArray(array $data): DataContract
     {
         if (isset($this->data)) {
@@ -67,6 +56,9 @@ class Data implements DataContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withAppend($var): DataContract
     {
         $new = clone $this;
@@ -75,22 +67,10 @@ class Data implements DataContract
         return $new;
     }
 
-    public function get(): ?array
-    {
-        return $this->data;
-    }
-
-    public function toArray(): array
-    {
-        return $this->data ?? [];
-    }
-
-    public function hasKey(string $key): bool
-    {
-        return array_key_exists($key, $this->data);
-    }
-
-    public function withKey(string $key, $var): DataContract
+    /**
+     * {@inheritdoc}
+     */
+    public function withAddedKey(string $key, $var): DataContract
     {
         $new = clone $this;
         $new->data[$key] = $var;
@@ -98,15 +78,54 @@ class Data implements DataContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function withRemovedKey(string $key): DataContract
+    {
+        $new = clone $this;
+        unset($new->data[$key]);
+
+        return $new;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isEmpty(): bool
+    {
+        return empty($this->data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function count(): int
+    {
+        return count($this->data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray(): array
+    {
+        return $this->data;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasKey(string $key): bool
+    {
+        return array_key_exists($key, $this->data);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function key(string $key)
     {
         return $this->data[$key] ?? null;
-    }
-
-    public function removeKey(string $key): DataContract
-    {
-        unset($this->data[$key]);
-
-        return $this;
     }
 }

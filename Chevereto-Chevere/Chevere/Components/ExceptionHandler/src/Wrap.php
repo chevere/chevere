@@ -41,7 +41,7 @@ final class Wrap
     public function __construct(Throwable $exception)
     {
         $this->exception = $exception;
-        $this->data = new Data();
+        $this->data = new Data([]);
         $className = get_class($exception);
         if (stringStartsWith('Chevere\\', $className)) {
             $className = stringReplaceFirst('Chevere\\', '', $className);

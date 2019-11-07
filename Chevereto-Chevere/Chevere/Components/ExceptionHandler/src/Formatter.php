@@ -117,7 +117,7 @@ final class Formatter
     {
         $new = clone $this;
         $new->data = $new->data
-            ->withKey('css', $css);
+            ->withAddedKey('css', $css);
 
         return $new;
     }
@@ -166,16 +166,16 @@ final class Formatter
         $trace = $this->wrap->exception()->getTrace();
         if ($this->wrap->exception() instanceof ErrorException) {
             $this->data = $this->data
-                ->withKey('thrown', $this->wrap->data()->key('type'));
+                ->withAddedKey('thrown', $this->wrap->data()->key('type'));
             unset($trace[0]);
         }
         $stack = new Stack($trace);
         if (CLI) {
-            $this->data = $this->data->withKey('consoleStack', $stack->getConsole());
+            $this->data = $this->data->withAddedKey('consoleStack', $stack->getConsole());
         }
         $this->data = $this->data
-            ->withKey('richStack', $stack->getRich())
-            ->withKey('plainStack', $stack->getPlain());
+            ->withAddedKey('richStack', $stack->getRich())
+            ->withAddedKey('plainStack', $stack->getPlain());
     }
 
     private function processContentSections()

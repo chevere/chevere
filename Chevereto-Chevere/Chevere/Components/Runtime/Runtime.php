@@ -26,12 +26,12 @@ final class Runtime
 
     public function __construct(SetContract ...$runtimeContract)
     {
-        $this->data = new Data();
+        $this->data = new Data([]);
         foreach ($runtimeContract as $runtimeSet) {
             $this->data = $this->data
-                ->withKey($runtimeSet->name(), $runtimeSet->value());
+                ->withAddedKey($runtimeSet->name(), $runtimeSet->value());
         }
         $this->data = $this->data
-            ->withKey('errorReportingLevel', error_reporting());
+            ->withAddedKey('errorReportingLevel', error_reporting());
     }
 }

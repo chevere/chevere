@@ -122,10 +122,10 @@ final class ExceptionHandler
      */
     public function __construct(...$args)
     {
-        $this->data = new Data();
+        $this->data = new Data([]);
         $this->setTimeProperties();
         $this->data = $this->data
-            ->withKey('id', uniqid('', true));
+            ->withAddedKey('id', uniqid('', true));
         $this->request = RequestInstance::get();
         $this->runtime = RuntimeInstance::get();
         $this->isDebugEnabled = (bool) $this->runtime->data()->key('debug');
@@ -185,7 +185,7 @@ final class ExceptionHandler
         $timestamp = $this->data->key('timestamp');
         $logFilename = $absolute . $this->loggerLevel . '/' . $date . $timestamp . '_' . $id . '.log';
         $this->data = $this->data
-            ->withKey('logFilename', $logFilename);
+            ->withAddedKey('logFilename', $logFilename);
     }
 
     private function setLogger(): void
