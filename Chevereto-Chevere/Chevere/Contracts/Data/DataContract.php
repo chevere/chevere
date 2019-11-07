@@ -11,7 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts;
+namespace Chevere\Contracts\Data;
+
+use Chevere\Contracts\ToArrayContract;
 
 interface DataContract extends ToArrayContract
 {
