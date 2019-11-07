@@ -80,6 +80,14 @@ final class FileTest extends TestCase
         $this->assertFalse($file->exists());
     }
 
+    public function testCreate(): void
+    {
+    }
+
+    public function testPut(): void
+    {
+    }
+
     public function testCompileNoPhp(): void
     {
         $this->expectNotToPerformAssertions();

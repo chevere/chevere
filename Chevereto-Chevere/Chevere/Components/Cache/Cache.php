@@ -17,10 +17,12 @@ use Chevere\Components\Dir\Dir;
 use InvalidArgumentException;
 
 use Chevere\Components\File\File;
-use Chevere\Components\FileReturn\FileReturn;
+use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
+use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\Path\PathContract;
+use LogicException;
 
 use function ChevereFn\stringRightTail;
 
@@ -39,12 +41,12 @@ final class Cache
     /** @var string Cache name */
     private $name;
 
-    /** @var string Absolute path to working folder (taken from $path) */
-    private $workingFolder;
+    /** @var DirContract */
+    private $dir;
 
     /** @var array An array [key => [checksum => , path =>]] containing information about the cache instance */
     private $array;
-
+    
     /**
      * @param string $name Named cache entry (folder)
      * @param Dir $dir The directory where cache files will be stored/accesed
@@ -53,18 +55,18 @@ final class Cache
     {
         $this->assertKeyName($name);
         $this->name = $name;
-        if (!$dir->path()->exists()) {
-            $dir->create();
+        $this->dir = $dir;
+        if (!$this->dir->path()->exists()) {
+            $this->dir->create();
         }
-        if (!$dir->path()->exists()) {
+        if (!$this->dir->path()->exists()) {
             throw new InvalidArgumentException(
                 (new Message("Path %path% is not a directory"))
-                    ->code('%path%', $dir->path()->absolute())
+                    ->code('%path%', $this->dir->path()->absolute())
                     ->toString()
             );
         }
         $this->array = [];
-        $this->workingFolder = stringRightTail($dir->path()->absolute(), '/') . $name . '/';
     }
 
     /**
@@ -74,9 +76,14 @@ final class Cache
      */
     public function get(string $key): FileReturn
     {
-        $file = new File($this->getPath($key));
+        $path = $this->getPath($key);
+        if (!$path->exists()) {
+            throw new LogicException('No cache for key ' . $key);
+        }
 
-        return new FileReturn($file);
+        return new FileReturn(
+            new File($path)
+        );
     }
 
     public function exists(string $key): bool
@@ -93,7 +100,12 @@ final class Cache
      */
     public function withPut(string $key, $var): Cache
     {
-        $fileReturn = $this->get($key);
+        $path = $this->getPath($key);
+        $file = new File($path);
+        if (!$file->exists()) {
+            $file->put('');
+        }
+        $fileReturn = new FileReturn($file);
         $fileReturn->put($var);
         $fileReturn->file()->compile();
         $new = clone $this;
@@ -125,7 +137,8 @@ final class Cache
     {
         $this->assertKeyName($name);
         
-        return new Path($this->workingFolder . $name . '.php');
+        return $this->dir->path()
+            ->getChild($name . '.php');
     }
 
     private function assertKeyName(string $key): void

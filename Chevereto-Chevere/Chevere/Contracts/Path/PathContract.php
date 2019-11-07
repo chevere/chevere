@@ -53,4 +53,6 @@ interface PathContract
      * Returns a boolean indicating whether the path is a file and exists.
      */
     public function isFile(): bool;
+
+    public function getChild(string $path): PathContract;
 }

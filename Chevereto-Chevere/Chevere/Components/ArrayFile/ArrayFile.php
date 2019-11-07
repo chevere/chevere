@@ -16,7 +16,7 @@ namespace Chevere\Components\ArrayFile;
 use LogicException;
 
 use Chevere\Components\File\File;
-use Chevere\Components\FileReturn\FileReturn;
+use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
 use Chevere\Contracts\Path\PathContract;

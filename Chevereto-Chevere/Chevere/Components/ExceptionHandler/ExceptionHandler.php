@@ -129,7 +129,6 @@ final class ExceptionHandler
         $this->request = RequestInstance::get();
         $this->runtime = RuntimeInstance::get();
         $this->isDebugEnabled = (bool) $this->runtime->data()->key('debug');
-
         $this->logDateFolderFormat = static::LOG_DATE_FOLDER_FORMAT;
         $this->wrap = new Wrap($args[0]);
         $this->loggerLevel = $this->wrap->data()->key('loggerLevel');

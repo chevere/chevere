@@ -11,12 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Data\Traits;
+namespace Chevere\Components\File\Exceptions;
 
-use Chevere\Contracts\Data\DataContract;
+use Exception;
 
-trait DataPropertyTrait
+/**
+ * Exception thrown when unable to create a file.
+ */
+final class FileUnableToCreateException extends Exception
 {
-    /** @var DataContract */
-    private $data;
 }

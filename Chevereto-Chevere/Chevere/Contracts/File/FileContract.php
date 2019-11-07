@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\File;
 
+use InvalidArgumentException;
+use RuntimeException;
+use Chevere\Components\File\Exceptions\FileNotFoundException;
+use Chevere\Components\File\Exceptions\FileNotPhpException;
+use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
 use Chevere\Contracts\Path\PathContract;
 
 interface FileContract
@@ -46,6 +51,14 @@ interface FileContract
      * @throws FileUnableToRemoveException If unable to remove the file.
      */
     public function remove(): void;
+
+    /**
+     * Create the file.
+     *
+     * @throws FileNotFoundException If the file doesn't exists.
+     * @throws FileUnableToRemoveException If unable to remove the file.
+     */
+    public function create(): void;
 
     /**
      * Put contents to the file. If the file doesn't exists it will be created.

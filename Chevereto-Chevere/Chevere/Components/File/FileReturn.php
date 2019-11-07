@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\FileReturn;
+namespace Chevere\Components\File;
 
 use RuntimeException;
 
-use Chevere\Components\FileReturn\Exceptions\FileNotFoundException;
+use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\File\FileContract;
 
@@ -55,6 +55,7 @@ final class FileReturn
     {
         $this->strict = true;
         $this->file = $file;
+        $this->assertFileExists();
     }
 
     public function withNoStrict(): FileReturn
@@ -117,7 +118,6 @@ final class FileReturn
 
     /**
      * Gets the content of the file appling unserialize.
-     * TODO: Rename to something with more context
      */
     public function get()
     {
@@ -160,6 +160,18 @@ final class FileReturn
             throw new RuntimeException(
                 (new Message('Opcode cache is disabled'))
                     ->toString()
+            );
+        }
+    }
+
+    private function assertFileExists(): void
+    {
+        if (!$this->file->exists()) {
+            throw new FileNotFoundException(
+                (new Message('Instance of %className% must represent an existent file'))
+                    ->code('%className%', get_class($this->file))
+                    ->toString()
+
             );
         }
     }

@@ -17,10 +17,12 @@ use InvalidArgumentException;
 use RuntimeException;
 
 use Chevere\Components\Dir\Dir;
+use Chevere\Components\File\Exceptions\FileAlreadyExistsException;
 use Chevere\Components\File\Exceptions\FileUnableToPutException;
 use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\File\Exceptions\FileNotPhpException;
+use Chevere\Components\File\Exceptions\FileUnableToCreateException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Contracts\File\FileContract;
@@ -97,14 +99,32 @@ final class File implements FileContract
     /**
      * {@inheritdoc}
      */
+    public function create(): void
+    {
+        if ($this->path->exists()) {
+            throw new FileAlreadyExistsException(
+                (new Message('Unable to create file %path% (file already exists)'))
+                    ->code('%path%', $this->path->absolute())
+                    ->toString()
+            );
+        }
+        $this->createPath();
+        if (false === file_put_contents($this->path->absolute(), null)) {
+            throw new FileUnableToCreateException(
+                (new Message('Unable to create file %path% (file system error)'))
+                    ->code('%path%', $this->path->absolute())
+                    ->toString()
+            );
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function put(string $contents): void
     {
         if (!$this->path->exists()) {
-            $dirname = dirname($this->path->absolute());
-            $path = new Path($dirname);
-            if (!$path->exists()) {
-                (new Dir($path))->create();
-            }
+            $this->createPath();
         }
         if (false === file_put_contents($this->path->absolute(), $contents)) {
             throw new FileUnableToPutException(
@@ -128,6 +148,15 @@ final class File implements FileContract
                     ->code('%file%', $this->path->absolute())
                     ->toString()
             );
+        }
+    }
+
+    private function createPath(): void
+    {
+        $dirname = dirname($this->path->absolute());
+        $path = new Path($dirname);
+        if (!$path->exists()) {
+            (new Dir($path))->create();
         }
     }
 

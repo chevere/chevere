@@ -11,9 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\FileReturn\Exceptions;
+namespace Chevere\Components\File\Exceptions;
 
 use Exception;
 
-final class FileNotFoundException extends Exception
-{ }
+/**
+ * Exception thrown when the file already exists.
+ */
+final class FileAlreadyExistsException extends Exception
+{
+}

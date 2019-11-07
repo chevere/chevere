@@ -15,7 +15,7 @@ namespace Chevere\Components\App;
 
 use InvalidArgumentException;
 
-use Chevere\Components\FileReturn\FileReturn;
+use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\CheckoutContract;
@@ -38,6 +38,7 @@ final class Checkout implements CheckoutContract
     {
         $this->build = $build;
         $this->assertIsMaked();
+        $this->build->file()->put('');
         $this->fileReturn = new FileReturn($this->build->file());
         $this->fileReturn->put($this->build->checksums());
     }
