@@ -41,7 +41,7 @@ interface DataContract extends ToArrayContract
     public function withMergedArray(array $data): DataContract;
 
     /**
-     * Return an instance with the specified append variable.
+     * Return an instance with the specified variable appended.
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the append variable.
