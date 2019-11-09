@@ -135,22 +135,6 @@ final class File implements FileContract
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function compile(): void
-    {
-        $this->assertPhpScript();
-        $this->assertExists();
-        if (!opcache_compile_file($this->path->absolute())) {
-            throw new RuntimeException(
-                (new Message('Unable to compile cache for file %file% (Opcode cache is disabled)'))
-                    ->code('%file%', $this->path->absolute())
-                    ->toString()
-            );
-        }
-    }
-
     private function createPath(): void
     {
         $dirname = dirname($this->path->absolute());
@@ -166,28 +150,6 @@ final class File implements FileContract
             throw new InvalidArgumentException(
                 (new Message('Path %path% is a directory'))
                     ->code('%path%', $this->path->relative())
-                    ->toString()
-            );
-        }
-    }
-
-    private function assertPhpScript(): void
-    {
-        if (!$this->isPhp) {
-            throw new FileNotPhpException(
-                (new Message("The file at %path% is not a PHP script"))
-                    ->code('%path%', $this->path->absolute())
-                    ->toString()
-            );
-        }
-    }
-
-    private function assertExists(): void
-    {
-        if (!$this->exists()) {
-            throw new FileNotFoundException(
-                (new Message("Can't compile file %path% because it doesn't exists"))
-                    ->code('%path%', $this->path->absolute())
                     ->toString()
             );
         }

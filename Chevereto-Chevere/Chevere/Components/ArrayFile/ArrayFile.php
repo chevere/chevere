@@ -44,8 +44,8 @@ final class ArrayFile
         $this->path = $path;
         $this->fileReturn = (new FileReturn($file))
             ->withNoStrict();
+        $this->array = $this->fileReturn->return();
         $this->validateIsArray();
-        $this->array = $this->fileReturn->raw();
     }
 
     /**
@@ -72,11 +72,12 @@ final class ArrayFile
 
     private function validateIsArray(): void
     {
-        if ('array' !== $this->fileReturn->type()) {
+        $type = gettype($this->array);
+        if ('array' !== $type) {
             throw new LogicException(
                 (new Message('Expecting file %filepath% return type array, %returnType% provided'))
                     ->code('%filepath%', $this->path->absolute())
-                    ->code('%returnType%', $this->fileReturn->type())
+                    ->code('%returnType%', $type)
             );
         }
     }

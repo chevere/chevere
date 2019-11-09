@@ -16,13 +16,16 @@ namespace Chevere\Components\File;
 use RuntimeException;
 
 use Chevere\Components\File\Exceptions\FileNotFoundException;
+use Chevere\Components\File\Exceptions\FileNotPhpException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\File\FileContract;
 
 /**
- * FileReturn provides an abstraction for interacting with PHP files that return a variable.
+ * FileReturn interacts with PHP files that return something.
  *
  * <?php return 'Hello World!';
+ * 
+ * This class allows to  
  */
 final class FileReturn
 {
@@ -33,21 +36,6 @@ final class FileReturn
     /** @var FileContract */
     private $file;
 
-    /** @var string File checksum */
-    private $checksum;
-
-    /** @var string The file contents */
-    private $contents;
-
-    /** @var mixed Raw return statement var */
-    private $raw;
-
-    /** @var string The raw return type (gettype) */
-    private $type;
-
-    /** @var mixed A variable (PHP code) */
-    private $var;
-
     /** @var bool True for strict validation (PHP_RETURN), false for regex validation (return <algo>) */
     private $strict;
 
@@ -56,6 +44,7 @@ final class FileReturn
         $this->strict = true;
         $this->file = $file;
         $this->assertFileExists();
+        $this->assertFilePhp();
     }
 
     public function withNoStrict(): FileReturn
@@ -73,47 +62,20 @@ final class FileReturn
 
     public function checksum(): string
     {
-        if (!isset($this->checksum)) {
-            $this->checksum = $this->getHashFile();
-        }
-
-        return $this->checksum;
+        return hash_file(static::CHECKSUM_ALGO, $this->file->path()->absolute());
     }
 
     public function contents(): string
     {
-        if (!isset($this->contents)) {
-            $this->contents = file_get_contents($this->file->path()->absolute());
-        }
-
-        return $this->contents;
+        return file_get_contents($this->file->path()->absolute());
     }
 
-    public function raw()
+    public function return()
     {
-        if (!isset($this->raw)) {
-            if (!$this->file->exists()) {
-                throw new FileNotFoundException(
-                    (new Message("File %filepath% doesn't exists."))
-                        ->code('%filepath%', $this->file->path()->absolute())
-                        ->toString()
-                );
-            }
-            $this->validate();
-            $this->raw = include $this->file->path()->absolute();
-            $this->type = gettype($this->raw);
-        }
+        $this->assertFileExists();
+        $this->validate();
 
-        return $this->raw;
-    }
-
-    public function type(): string
-    {
-        if (!isset($this->type)) {
-            $this->type = gettype($this->raw());
-        }
-
-        return $this->type;
+        return include $this->file->path()->absolute();
     }
 
     /**
@@ -121,18 +83,16 @@ final class FileReturn
      */
     public function get()
     {
-        if (!isset($this->var)) {
-            $this->var = $this->raw();
-            if (is_iterable($this->var)) {
-                foreach ($this->var as &$v) {
-                    $v = unserialize($v);
-                }
-            } else {
-                $this->var = unserialize($v);
+        $var = $this->return();
+        if (is_iterable($var)) {
+            foreach ($var as &$v) {
+                $v = unserialize($v);
             }
+        } else {
+            $var = unserialize($v);
         }
 
-        return $this->var;
+        return $var;
     }
 
     /**
@@ -148,10 +108,9 @@ final class FileReturn
             $this->switchVar($var);
         }
         $varExport = var_export($var, true);
-        $export = FileReturn::PHP_RETURN . $varExport . ';';
-        $this->file->put($export);
-        $this->checksum = $this->getHashFile();
-        unset($this->contents);
+        $this->file->put(
+            FileReturn::PHP_RETURN . $varExport . ';'
+        );
     }
 
     public function destroyCache()
@@ -168,17 +127,26 @@ final class FileReturn
     {
         if (!$this->file->exists()) {
             throw new FileNotFoundException(
-                (new Message('Instance of %className% must represent an existent file'))
+                (new Message('Instance of %className% must represents a file in the path %path%'))
                     ->code('%className%', get_class($this->file))
+                    ->code('%path%', $this->file->path())
                     ->toString()
 
             );
         }
     }
 
-    private function getHashFile()
+    private function assertFilePhp(): void
     {
-        return hash_file(static::CHECKSUM_ALGO, $this->file->path()->absolute());
+        if (!$this->file->isPhp()) {
+            throw new FileNotPhpException(
+                (new Message('Instance of %className% must represents a PHP script in the path %path%'))
+                    ->code('%className%', get_class($this->file))
+                    ->code('%path%', $this->file->path())
+                    ->toString()
+            );
+        }
+        return;
     }
 
     private function validate(): void
@@ -216,15 +184,15 @@ final class FileReturn
 
     private function validateNonStrict(): void
     {
-        $this->contents = $this->contents();
-        if (!$this->contents) {
+        $contents = $this->contents();
+        if (!$contents) {
             throw new RuntimeException(
                 (new Message('Unable to get file %path% contents'))
                     ->code('%path%', $this->file->path()->absolute())
                     ->toString()
             );
         }
-        if (!preg_match_all('#<\?php([\S\s]*)\s*return\s*[\S\s]*;#', $this->contents)) {
+        if (!preg_match_all('#<\?php([\S\s]*)\s*return\s*[\S\s]*;#', $contents)) {
             throw new RuntimeException(
                 (new Message('Unexpected contents in %path% (non-strict validation)'))
                     ->code('%path%', $this->file->path()->absolute())

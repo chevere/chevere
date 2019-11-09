@@ -24,7 +24,7 @@ use PHPUnit\Framework\TestCase;
 
 final class FileTest extends TestCase
 {
-    public function getFile(string $filename): FileContract
+    public function getRealFile(string $filename): FileContract
     {
         $path = new Path('var/FileTest_' . uniqid() . $filename);
         if (false === file_put_contents($path->absolute(), 'una mona pilucha')) {
@@ -51,7 +51,7 @@ final class FileTest extends TestCase
 
     public function testWithExistentPath(): void
     {
-        $file = $this->getFile('.test');
+        $file = $this->getRealFile('.test');
         $this->assertTrue($file->exists());
         if (!unlink($file->path()->absolute())) {
             throw new RuntimeException('Unable to remove file ' . $file->path()->absolute());
@@ -71,39 +71,31 @@ final class FileTest extends TestCase
         $file = new File($path);
         $this->expectException(FileNotFoundException::class);
         $file->remove();
+        $this->assertFalse($file->remove());
     }
 
     public function testRemoveExistentPath(): void
     {
-        $file = $this->getFile('.test');
+        $file = $this->getRealFile('.test');
         $file->remove();
         $this->assertFalse($file->exists());
     }
 
     public function testCreate(): void
     {
+        $file = new File(new Path('var/FileTest_create'));
+        $this->assertFalse($file->exists());
+        $file->create();
+        $this->assertTrue($file->exists());
+        $file->remove();
     }
 
     public function testPut(): void
     {
-    }
-
-    public function testCompileNoPhp(): void
-    {
-        $this->expectNotToPerformAssertions();
-        $file = $this->getFile('.test');
-        try {
-            $file->compile();
-        } catch (FileNotPhpException $e) {
-        }
-        $file->remove();
-    }
-
-    public function testCompilePhp(): void
-    {
-        $this->expectNotToPerformAssertions();
-        $file = $this->getFile('.php');
-        $file->compile();
+        $file = $this->getRealFile('put');
+        $id = uniqid();
+        $file->put($id);
+        $this->assertSame($id, file_get_contents($file->path()->absolute()));
         $file->remove();
     }
 }

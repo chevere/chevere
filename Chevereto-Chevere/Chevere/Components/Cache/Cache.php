@@ -17,14 +17,13 @@ use Chevere\Components\Dir\Dir;
 use InvalidArgumentException;
 
 use Chevere\Components\File\File;
+use Chevere\Components\File\FileCompile;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Path\Path;
 use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\Path\PathContract;
 use LogicException;
 
-use function ChevereFn\stringRightTail;
 
 /**
  * A simple PHP based cache system.
@@ -46,7 +45,7 @@ final class Cache
 
     /** @var array An array [key => [checksum => , path =>]] containing information about the cache instance */
     private $array;
-    
+
     /**
      * @param string $name Named cache entry (folder)
      * @param Dir $dir The directory where cache files will be stored/accesed
@@ -103,11 +102,11 @@ final class Cache
         $path = $this->getPath($key);
         $file = new File($path);
         if (!$file->exists()) {
-            $file->put('');
+            $file->create();
         }
         $fileReturn = new FileReturn($file);
         $fileReturn->put($var);
-        $fileReturn->file()->compile();
+        new FileCompile($fileReturn->file());
         $new = clone $this;
         $new->array[$new->name][$key] = [
             'path' => $fileReturn->file()->path()
@@ -136,7 +135,7 @@ final class Cache
     private function getPath(string $name): PathContract
     {
         $this->assertKeyName($name);
-        
+
         return $this->dir->path()
             ->getChild($name . '.php');
     }

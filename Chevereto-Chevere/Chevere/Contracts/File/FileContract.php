@@ -66,12 +66,4 @@ interface FileContract
      * @throws RuntimeException If unable to put the file content.
      */
     public function put(string $contents): void;
-
-    /**
-     * Applies OPCache to the file (only if the file is a PHP script)
-     *
-     * @throws FileNotPhpException If attempt to compile a non-PHP file.
-     * @throws FileNotFoundException If attempt to compile a file that doesn't exists.
-     */
-    public function compile(): void;
 }
