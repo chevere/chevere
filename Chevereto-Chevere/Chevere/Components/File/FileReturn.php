@@ -19,26 +19,25 @@ use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\File\Exceptions\FileNotPhpException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\File\FileContract;
+use Chevere\Contracts\File\FileReturnContract;
 
 /**
  * FileReturn interacts with PHP files that return something.
  *
  * <?php return 'Hello World!';
  * 
- * This class allows to  
  */
-final class FileReturn
+final class FileReturn implements FileReturnContract
 {
-    const PHP_RETURN = "<?php\n\nreturn ";
-    const PHP_RETURN_CHARS = 14;
-    const CHECKSUM_ALGO = 'sha256';
-
     /** @var FileContract */
     private $file;
 
     /** @var bool True for strict validation (PHP_RETURN), false for regex validation (return <algo>) */
     private $strict;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(FileContract $file)
     {
         $this->strict = true;
@@ -47,7 +46,10 @@ final class FileReturn
         $this->assertFilePhp();
     }
 
-    public function withNoStrict(): FileReturn
+    /**
+     * {@inheritdoc}
+     */
+    public function withNoStrict(): FileReturnContract
     {
         $new = clone $this;
         $new->strict = false;
@@ -55,21 +57,33 @@ final class FileReturn
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function file(): FileContract
     {
         return $this->file;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function checksum(): string
     {
-        return hash_file(static::CHECKSUM_ALGO, $this->file->path()->absolute());
+        return hash_file(FileReturnContract::CHECKSUM_ALGO, $this->file->path()->absolute());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function contents(): string
     {
         return file_get_contents($this->file->path()->absolute());
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function return()
     {
         $this->assertFileExists();
@@ -79,7 +93,7 @@ final class FileReturn
     }
 
     /**
-     * Gets the content of the file appling unserialize.
+     * {@inheritdoc}
      */
     public function get()
     {
@@ -96,7 +110,7 @@ final class FileReturn
     }
 
     /**
-     * Put $var into the file using var_export return
+     * {@inheritdoc}
      */
     public function put($var): void
     {
@@ -109,18 +123,8 @@ final class FileReturn
         }
         $varExport = var_export($var, true);
         $this->file->put(
-            FileReturn::PHP_RETURN . $varExport . ';'
+            FileReturnContract::PHP_RETURN . $varExport . ';'
         );
-    }
-
-    public function destroyCache()
-    {
-        if (!opcache_invalidate($this->file->path()->absolute())) {
-            throw new RuntimeException(
-                (new Message('Opcode cache is disabled'))
-                    ->toString()
-            );
-        }
     }
 
     private function assertFileExists(): void
@@ -171,9 +175,9 @@ final class FileReturn
                     ->toString()
             );
         }
-        $contents = fread($handle, static::PHP_RETURN_CHARS);
+        $contents = fread($handle, FileReturnContract::PHP_RETURN_CHARS);
         fclose($handle);
-        if ($contents !== static::PHP_RETURN) {
+        if ($contents !== FileReturnContract::PHP_RETURN) {
             throw new RuntimeException(
                 (new Message('Unexpected contents in %path% (strict validation)'))
                     ->code('%path%', $this->file->path()->absolute())

@@ -17,28 +17,52 @@ use RuntimeException;
 
 use Chevere\Components\File\Exceptions\FileNotPhpException;
 use Chevere\Components\Message\Message;
+use Chevere\Contracts\File\FileCompileContract;
 use Chevere\Contracts\File\FileContract;
 
 /**
  * OPCache compiler
  */
-final class FileCompile
+final class FileCompile implements FileCompileContract
 {
     /** @var FileContract */
     private $file;
 
     /**
-     * Applies OPCache to the PHP file
-     *
-     * @throws FileNotPhpException If attempt to compile a non-PHP file.
-     * @throws FileNotFoundException If attempt to compile a file that doesn't exists.
+     * {@inheritdoc}
      */
     public function __construct(FileContract $file)
     {
         $this->file = $file;
         $this->assertPhpScript();
         $this->assertExists();
-        $this->assertCompile();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function compile(): void
+    {
+        if (!opcache_compile_file($this->file->path()->absolute())) {
+            throw new RuntimeException(
+                (new Message('Unable to compile cache for file %file% (Opcache is disabled)'))
+                    ->code('%file%', $this->file->path()->absolute())
+                    ->toString()
+            );
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function destroy(): void
+    {
+        if (!opcache_invalidate($this->file->path()->absolute())) {
+            throw new RuntimeException(
+                (new Message('Opcode cache is disabled'))
+                    ->toString()
+            );
+        }
     }
 
     private function assertPhpScript(): void
@@ -60,17 +84,6 @@ final class FileCompile
                 (new Message("Instance of %className% doesn't represent a existent file in the path %path%"))
                     ->code('%className%', get_class($this->file))
                     ->code('%path%', $this->file->path()->absolute())
-                    ->toString()
-            );
-        }
-    }
-
-    private function assertCompile(): void
-    {
-        if (!opcache_compile_file($this->file->path()->absolute())) {
-            throw new RuntimeException(
-                (new Message('Unable to compile cache for file %file% (Opcode cache is disabled)'))
-                    ->code('%file%', $this->file->path()->absolute())
                     ->toString()
             );
         }

@@ -14,15 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\File;
 
 use InvalidArgumentException;
-use RuntimeException;
 
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\File\Exceptions\FileAlreadyExistsException;
+use Chevere\Components\File\Exceptions\FileNotFoundException;
+use Chevere\Components\File\Exceptions\FileUnableToCreateException;
 use Chevere\Components\File\Exceptions\FileUnableToPutException;
 use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
-use Chevere\Components\File\Exceptions\FileNotFoundException;
-use Chevere\Components\File\Exceptions\FileNotPhpException;
-use Chevere\Components\File\Exceptions\FileUnableToCreateException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Contracts\File\FileContract;
