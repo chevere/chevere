@@ -14,38 +14,46 @@ declare(strict_types=1);
 namespace Chevere\Tests\File;
 
 use Chevere\Components\File\Exceptions\FileNotFoundException;
-use Chevere\Components\File\Exceptions\FileNotPhpException;
 use Chevere\Components\File\File;
 use Chevere\Components\File\FileCompile;
+use Chevere\Components\File\FilePhp;
 use Chevere\Components\Path\Path;
 use PHPUnit\Framework\TestCase;
 
 final class FileCompileTest extends TestCase
 {
-    public function testFileNotPhp(): void
+    public function testConstruct(): void
     {
-        $path = new Path('var/FileCompileTest_' . uniqid());
-        $file = new File($path);
-        $this->expectException(FileNotPhpException::class);
-        new FileCompile($file);
+        $file = new File(
+            new Path('var/FileCompileTest_' . uniqid() . '.php')
+        );
+        $filePhp = new FilePhp($file);
+        $fileCompile = new FileCompile($filePhp);
+        $this->assertSame($file, $fileCompile->file());
     }
 
-    public function testFileNotExists(): void
+    public function testCompileFileNotExists(): void
     {
-        $path = new Path('var/FileCompileTest_' . uniqid() . '.php');
-        $file = new File($path);
+        $file = new File(
+            new Path('var/FileCompileTest_' . uniqid() . '.php')
+        );
+        $filePhp = new FilePhp($file);
+        $fileCompile = new FileCompile($filePhp);
         $this->expectException(FileNotFoundException::class);
-        new FileCompile($file);
+        $fileCompile->compile();
     }
 
     public function testCompileDestroy(): void
     {
         $this->expectNotToPerformAssertions();
-        $path = new Path('var/FileCompileTest_' . uniqid() . '.php');
-        $file = new File($path);
+        $file = new File(
+            new Path('var/FileCompileTest_' . uniqid() . '.php')
+        );
         $file->create();
-        $compile = new FileCompile($file);
-        $compile->compile();
-        $compile->destroy();
+        $filePhp = new FilePhp($file);
+        $fileCompile = new FileCompile($filePhp);
+        $fileCompile->compile();
+        $fileCompile->destroy();
+        $file->remove();
     }
 }

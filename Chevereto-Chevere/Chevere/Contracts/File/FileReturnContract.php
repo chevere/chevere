@@ -39,7 +39,7 @@ interface FileReturnContract
     public function withNoStrict(): FileReturnContract;
 
     /**
-     * Provides access to the FileContract instance.
+     * Provides access to the FileContract instance container in the FilePhpContract.
      */
     public function file(): FileContract;
 

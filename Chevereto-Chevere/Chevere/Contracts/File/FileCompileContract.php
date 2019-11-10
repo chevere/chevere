@@ -15,6 +15,9 @@ namespace Chevere\Contracts\File;
 
 use RuntimeException;
 
+use Chevere\Components\File\Exceptions\FileNotPhpException;
+use Chevere\Components\File\Exceptions\FileNotFoundException;
+
 interface FileCompileContract
 {
     /**
@@ -28,6 +31,7 @@ interface FileCompileContract
     /**
      * Compile the file.
      * 
+     * @throws FileNotFoundException If the file doesn't exists.
      * @throws RuntimeException If unable to compile.
      */
     public function compile(): void;

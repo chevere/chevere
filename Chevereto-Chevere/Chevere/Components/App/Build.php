@@ -29,6 +29,7 @@ use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\CheckoutContract;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\Dir\DirContract;
+use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
 use Chevere\Contracts\Router\MakerContract;
 use LogicException;
@@ -195,9 +196,9 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function filePhp(): FilePhpContract
+    public function file(): FileContract
     {
-        return $this->filePhp;
+        return $this->filePhp->file();
     }
 
     /**

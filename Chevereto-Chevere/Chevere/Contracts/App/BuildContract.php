@@ -87,9 +87,9 @@ interface BuildContract
 
 
     /**
-     * Provides access to the FilePhpContract instance.
+     * Provides access to the FileContract contained in the FilePhpContract instance.
      */
-    public function filePhp(): FilePhpContract;
+    public function file(): FileContract;
 
     /**
      * Provides access to the DirContract instance.

@@ -15,6 +15,7 @@ namespace Chevere\Components\File;
 
 use RuntimeException;
 
+use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\File\FileCompileContract;
 use Chevere\Contracts\File\FileContract;
@@ -49,10 +50,17 @@ final class FileCompile implements FileCompileContract
      */
     public function compile(): void
     {
+        if (!$this->filePhp->file()->exists()) {
+            throw new FileNotFoundException(
+                (new Message("Unable to compile cache for file %path% (file doesn't exists)"))
+                    ->code('%path%', $this->file()->path()->absolute())
+                    ->toString()
+            );
+        }
         if (!opcache_compile_file($this->file()->path()->absolute())) {
             throw new RuntimeException(
-                (new Message('Unable to compile cache for file %file% (Opcache is disabled)'))
-                    ->code('%file%', $this->file()->path()->absolute())
+                (new Message('Unable to compile cache for file %path% (Opcache is disabled)'))
+                    ->code('%path%', $this->file()->path()->absolute())
                     ->toString()
             );
         }

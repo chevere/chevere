@@ -47,7 +47,7 @@ final class FilePhp implements FilePhpContract
             throw new FileNotPhpException(
                 (new Message('Instance of %className% must represents a PHP script in the path %path%'))
                     ->code('%className%', get_class($this->file))
-                    ->code('%path%', $this->file->path())
+                    ->code('%path%', $this->file->path()->absolute())
                     ->toString()
             );
         }

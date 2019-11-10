@@ -28,7 +28,6 @@ use Chevere\Components\Router\Maker;
 use Chevere\Contracts\App\CheckoutContract;
 use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\File\FileContract;
-use Chevere\Contracts\File\FilePhpContract;
 use PHPUnit\Framework\TestCase;
 
 final class BuildTest extends TestCase
@@ -41,7 +40,7 @@ final class BuildTest extends TestCase
         $build = new Build($app);
         $this->assertSame(false, $build->isMaked());
         $this->assertSame($services, $build->app()->services());
-        $this->assertInstanceOf(FilePhpContract::class, $build->filePhp());
+        $this->assertInstanceOf(FileContract::class, $build->file());
         $this->assertInstanceOf(DirContract::class, $build->cacheDir());
     }
 

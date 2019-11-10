@@ -162,7 +162,7 @@ final class Loader implements LoaderContract
         if (
             !DEV
             && !(CONSOLE && console()->isBuilding())
-            && !$this->builder->build()->filePhp()->file()->exists()
+            && !$this->builder->build()->file()->exists()
         ) {
             // FIXME: Get the entrypoint
             throw new BuildNeededException(

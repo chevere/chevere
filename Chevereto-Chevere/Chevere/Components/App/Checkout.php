@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
+use Chevere\Components\File\FilePhp;
 use InvalidArgumentException;
 
 use Chevere\Components\File\FileReturn;
@@ -39,9 +40,14 @@ final class Checkout implements CheckoutContract
     {
         $this->build = $build;
         $this->assertIsMaked();
-        $this->build->filePhp()->file()
-            ->create();
-        $this->fileReturn = new FileReturn($this->build->filePhp());
+        $file = $this->build->file();
+        if ($file->exists()) {
+            $file->remove();
+        }
+        $file->create();
+        $this->fileReturn = new FileReturn(
+            new FilePhp($file)
+        );
         $this->fileReturn->put($this->build->checksums());
     }
 
