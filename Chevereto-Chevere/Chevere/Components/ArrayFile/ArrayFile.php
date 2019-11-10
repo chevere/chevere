@@ -16,6 +16,7 @@ namespace Chevere\Components\ArrayFile;
 use LogicException;
 
 use Chevere\Components\File\File;
+use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
@@ -40,9 +41,11 @@ final class ArrayFile
 
     public function __construct(PathContract $path)
     {
-        $file = new File($path);
+        $filePhp = new FilePhp(
+            new File($path)
+        );
         $this->path = $path;
-        $this->fileReturn = (new FileReturn($file))
+        $this->fileReturn = (new FileReturn($filePhp))
             ->withNoStrict();
         $this->array = $this->fileReturn->return();
         $this->validateIsArray();

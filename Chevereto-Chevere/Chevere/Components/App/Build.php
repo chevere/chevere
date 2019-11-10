@@ -20,6 +20,7 @@ use Chevere\Components\App\Exceptions\BuildFileNotExistsException;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\File\File;
+use Chevere\Components\File\FilePhp;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Router;
@@ -27,7 +28,8 @@ use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\CheckoutContract;
 use Chevere\Contracts\App\ParametersContract;
-use Chevere\Contracts\File\FileContract;
+use Chevere\Contracts\Dir\DirContract;
+use Chevere\Contracts\File\FilePhpContract;
 use Chevere\Contracts\Router\MakerContract;
 use LogicException;
 
@@ -42,10 +44,10 @@ final class Build implements BuildContract
     /** @var ParametersContract */
     private $parameters;
 
-    /** @var FileContract */
-    private $file;
+    /** @var FilePhpContract */
+    private $filePhp;
 
-    /** @var Dir */
+    /** @var DirContract */
     private $cacheDir;
 
     /** @var bool True if the App was just built */
@@ -70,8 +72,10 @@ final class Build implements BuildContract
     {
         $this->isMaked = false;
         $this->app = $app;
-        $this->file = new File(
-            new Path('build/build.php')
+        $this->filePhp = new FilePhp(
+            new File(
+                new Path('build/build.php')
+            )
         );
         $this->cacheDir = new Dir(
             new Path('build/cache')
@@ -178,10 +182,10 @@ final class Build implements BuildContract
      */
     public function destroy(): void
     {
-        if (!$this->file->exists()) {
+        if (!$this->filePhp->file()->exists()) {
             throw new BuildFileNotExistsException();
         }
-        $this->file->remove();
+        $this->filePhp->file()->remove();
         if ($this->cacheDir->exists()) {
             $this->cacheDir
                 ->removeContents();
@@ -191,15 +195,15 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function file(): FileContract
+    public function filePhp(): FilePhpContract
     {
-        return $this->file;
+        return $this->filePhp;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function cacheDir(): Dir
+    public function cacheDir(): DirContract
     {
         return $this->cacheDir;
     }

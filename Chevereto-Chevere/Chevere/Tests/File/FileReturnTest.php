@@ -18,14 +18,14 @@ use Chevere\Components\File\FileReturn;
 use Chevere\Components\Path\Path;
 use PHPUnit\Framework\TestCase;
 
-// final class FileReturnTest extends TestCase
-// {
-//     public function testConstructor(): void
-//     {
-//         new FileReturn(
-//             new File(
-//               new Path(uniqid())
-//           )
-//       );
-//     }
-// }
+final class FileReturnTest extends TestCase
+{
+    public function testConstructor(): void
+    {
+        new FileReturn(
+            new File(
+                new Path(uniqid())
+            )
+        );
+    }
+}

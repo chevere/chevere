@@ -28,7 +28,7 @@ interface FileReturnContract
      * @throws FileNotFoundException If the file doesn't exists.
      * @throws FileNotPhpException If the file is not PHP.
      */
-    public function __construct(FileContract $file);
+    public function __construct(FilePhpContract $file);
 
     /**
      * Return an instance with no-strict flag.

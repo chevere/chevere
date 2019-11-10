@@ -19,6 +19,7 @@ use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\CheckoutContract;
+use Chevere\Contracts\File\FileReturnContract;
 
 /**
  * Checkout the application build.
@@ -27,8 +28,8 @@ final class Checkout implements CheckoutContract
 {
     /** @var BuildContract */
     private $build;
-    
-    /** @var FileReturn */
+
+    /** @var FileReturnContract */
     private $fileReturn;
 
     /**
@@ -38,9 +39,15 @@ final class Checkout implements CheckoutContract
     {
         $this->build = $build;
         $this->assertIsMaked();
-        $this->build->file()->put('');
-        $this->fileReturn = new FileReturn($this->build->file());
+        $this->build->filePhp()->file()
+            ->create();
+        $this->fileReturn = new FileReturn($this->build->filePhp());
         $this->fileReturn->put($this->build->checksums());
+    }
+
+    public function fileReturn(): FileReturnContract
+    {
+        return $this->fileReturn;
     }
 
     /**

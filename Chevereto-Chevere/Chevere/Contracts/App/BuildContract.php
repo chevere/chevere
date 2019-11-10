@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Contracts\App;
 
 use Chevere\Components\Dir\Dir;
+use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\File\FileContract;
+use Chevere\Contracts\File\FilePhpContract;
 use Chevere\Contracts\Router\MakerContract;
 
 interface BuildContract
@@ -82,14 +84,17 @@ interface BuildContract
      * Destroy the application build (file plus any application cache).
      */
     public function destroy(): void;
-    
+
 
     /**
-     * Returns a Path instance for the build checksums file.
+     * Provides access to the FilePhpContract instance.
      */
-    public function file(): FileContract;
+    public function filePhp(): FilePhpContract;
 
-    public function cacheDir(): Dir;
+    /**
+     * Provides access to the DirContract instance.
+     */
+    public function cacheDir(): DirContract;
 
     /**
      * Provides access to the build checksums.

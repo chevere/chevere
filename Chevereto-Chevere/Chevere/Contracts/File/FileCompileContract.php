@@ -23,7 +23,7 @@ interface FileCompileContract
      * @throws FileNotPhpException If $file is not a PHP file.
      * @throws FileNotFoundException If $file doesn't exists.
      */
-    public function __construct(FileContract $file);
+    public function __construct(FilePhpContract $file);
 
     /**
      * Compile the file.

@@ -18,6 +18,7 @@ use InvalidArgumentException;
 
 use Chevere\Components\File\File;
 use Chevere\Components\File\FileCompile;
+use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Dir\DirContract;
@@ -81,7 +82,9 @@ final class Cache
         }
 
         return new FileReturn(
-            new File($path)
+            new FilePhp(
+                new File($path)
+            )
         );
     }
 
@@ -104,9 +107,10 @@ final class Cache
         if (!$file->exists()) {
             $file->create();
         }
-        $fileReturn = new FileReturn($file);
+        $filePhp = new FilePhp($file);
+        $fileReturn = new FileReturn($filePhp);
         $fileReturn->put($var);
-        new FileCompile($fileReturn->file());
+        new FileCompile($filePhp);
         $new = clone $this;
         $new->array[$new->name][$key] = [
             'path' => $fileReturn->file()->path()
