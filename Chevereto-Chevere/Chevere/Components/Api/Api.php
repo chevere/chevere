@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\Api;
 
 use LogicException;
-
-use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\Cache\Traits\CacheAccessTrait;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Api\ApiContract;
 use Chevere\Contracts\Api\MakerContract;
+use Chevere\Contracts\Cache\CacheContract;
 
 final class Api implements ApiContract
 {
@@ -42,7 +41,7 @@ final class Api implements ApiContract
         return $new;
     }
 
-    public function withCache(Cache $cache): ApiContract
+    public function withCache(CacheContract $cache): ApiContract
     {
         $new = clone $this;
         $new->cache = $cache;

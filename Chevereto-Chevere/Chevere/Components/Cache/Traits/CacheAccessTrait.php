@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Cache\Traits;
 
-use Chevere\Components\Cache\Cache;
+use Chevere\Contracts\Cache\CacheContract;
 
 trait CacheAccessTrait
 {
-    /** @var Cache */
+    /** @var CacheContract */
     private $cache;
 
     public function hasCache(): bool
@@ -25,7 +25,7 @@ trait CacheAccessTrait
         return isset($this->cache);
     }
 
-    public function cache(): Cache
+    public function cache(): CacheContract
     {
         return $this->cache;
     }

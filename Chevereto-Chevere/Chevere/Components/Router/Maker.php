@@ -14,13 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use InvalidArgumentException;
-
 use Chevere\Components\ArrayFile\ArrayFile;
-use Chevere\Components\Cache\Cache;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Type\Type;
+use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\MakerContract;
 
@@ -53,7 +52,7 @@ final class Maker implements MakerContract
     /** @var RouteContract */
     private $route;
 
-    /** @var Cache */
+    /** @var CacheContract */
     private $cache;
 
     /**
@@ -122,7 +121,7 @@ final class Maker implements MakerContract
         return $this->routesIndex;
     }
 
-    public function withCache(Cache $cache): MakerContract
+    public function withCache(CacheContract $cache): MakerContract
     {
         $cache = $cache
             ->withPut(CacheKeys::REGEX, $this->regex)
@@ -135,7 +134,7 @@ final class Maker implements MakerContract
         return $new;
     }
 
-    public function cache(): Cache
+    public function cache(): CacheContract
     {
         return $this->cache;
     }

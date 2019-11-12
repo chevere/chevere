@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RegexPropertyRequiredException;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
+use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\MakerContract;
 use Chevere\Contracts\Router\RouterContract;
@@ -40,7 +40,7 @@ final class Router implements RouterContract
     /** @var array Arguments taken from wildcard matches */
     private $arguments;
 
-    /** @var Cache */
+    /** @var CacheContract */
     private $cache;
 
     /** @var MakerContract */
@@ -57,7 +57,7 @@ final class Router implements RouterContract
         return $new;
     }
 
-    public function withCache(Cache $cache): RouterContract
+    public function withCache(CacheContract $cache): RouterContract
     {
         $new = clone $this;
         $new->cache = $cache;
@@ -68,6 +68,7 @@ final class Router implements RouterContract
         } catch (FileNotFoundException $e) {
             throw new CacheNotFoundException($e->getMessage(), $e->getCode(), $e);
         }
+
         return $new;
     }
 
@@ -86,7 +87,7 @@ final class Router implements RouterContract
         return $this->maker;
     }
 
-    public function cache(): Cache
+    public function cache(): CacheContract
     {
         return $this->cache;
     }
@@ -117,7 +118,7 @@ final class Router implements RouterContract
         }
         throw new RouteNotFoundException(
             (new Message('No route defined for %path%'))
-                ->code('%path%', $pathInfo != '' ? $pathInfo : '(empty string)')
+                ->code('%path%', '' != $pathInfo ? $pathInfo : '(empty string)')
                 ->toString()
         );
     }

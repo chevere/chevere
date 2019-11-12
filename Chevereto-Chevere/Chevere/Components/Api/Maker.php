@@ -18,9 +18,7 @@ use OuterIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Throwable;
-
 use Chevere\Components\Api\src\FilterIterator;
-use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\Traits\CacheAccessTrait;
 use Chevere\Components\Controller\Inspect;
 use Chevere\Components\Controllers\Api\GetController;
@@ -33,10 +31,10 @@ use Chevere\Components\Path\Path;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Maker as RouterMaker;
 use Chevere\Contracts\Api\MakerContract;
+use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Path\PathContract;
 use Chevere\Contracts\Route\RouteContract;
-
 use function ChevereFn\stringForwardSlashes;
 use function ChevereFn\stringLeftTail;
 use function ChevereFn\stringReplaceFirst;
@@ -73,7 +71,7 @@ final class Maker implements MakerContract
     /** @var PathContract For target API directory */
     private $path;
 
-    /** @var Cache */
+    /** @var CacheContract */
     private $cache;
 
     public function __construct(RouterMaker $routerMaker)
@@ -95,14 +93,13 @@ final class Maker implements MakerContract
                 ->withControllerName(OptionsController::class),
             (new Method('GET'))
                 ->withControllerName(GetController::class)
-
         );
         $new->register(new Endpoint($methods));
 
         return $new;
     }
 
-    public function withCache(Cache $cache): MakerContract
+    public function withCache(CacheContract $cache): MakerContract
     {
         $new = clone $this;
         $new->cache = $cache
@@ -168,7 +165,7 @@ final class Maker implements MakerContract
         } catch (Throwable $e) {
             throw new LogicException($e->getMessage());
         }
-        if ($count == 0) {
+        if (0 == $count) {
             throw new LogicException(
                 (new Message('No API methods found in the %path% path'))
                     ->code('%path%', $this->path->absolute())

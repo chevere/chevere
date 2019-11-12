@@ -13,18 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Cache;
 
-use Chevere\Components\Dir\Dir;
 use InvalidArgumentException;
-
+use LogicException;
+use Chevere\Components\Dir\Dir;
 use Chevere\Components\File\File;
 use Chevere\Components\File\FileCompile;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
+use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\Path\PathContract;
-use LogicException;
-
 
 /**
  * A simple PHP based cache system.
@@ -32,12 +31,9 @@ use LogicException;
  * Using FileReturn, it provides cache by using php files that return a single variable.
  *
  * cached.php >>> <?php return 'my cached data';
- *
  */
-final class Cache
+final class Cache implements CacheContract
 {
-    const ILLEGAL_KEY_CHARACTERS = '\.\/\\\~\:';
-
     /** @var string Cache name */
     private $name;
 
@@ -49,7 +45,7 @@ final class Cache
 
     /**
      * @param string $name Named cache entry (folder)
-     * @param Dir $dir The directory where cache files will be stored/accesed
+     * @param Dir    $dir  The directory where cache files will be stored/accesed
      */
     public function __construct(string $name, Dir $dir)
     {
@@ -61,7 +57,7 @@ final class Cache
         }
         if (!$this->dir->path()->exists()) {
             throw new InvalidArgumentException(
-                (new Message("Path %path% is not a directory"))
+                (new Message('Path %path% is not a directory'))
                     ->code('%path%', $this->dir->path()->absolute())
                     ->toString()
             );
@@ -70,9 +66,9 @@ final class Cache
     }
 
     /**
-     * Get cache as a FileReturn object
+     * Get cache as a FileReturn object.
      *
-     * @return FileReturn A FileReturn instance for the cache file.
+     * @return FileReturn a FileReturn instance for the cache file
      */
     public function get(string $key): FileReturn
     {
@@ -95,12 +91,12 @@ final class Cache
     }
 
     /**
-     * Put cache
+     * Put cache.
      *
      * @param string $key Cache key
-     * @param mixed $var Anything, but keep it restricted to one-dimension iterables at most.
+     * @param mixed  $var anything, but keep it restricted to one-dimension iterables at most
      */
-    public function withPut(string $key, $var): Cache
+    public function withPut(string $key, $var): CacheContract
     {
         $path = $this->getPath($key);
         $file = new File($path);
@@ -146,7 +142,7 @@ final class Cache
 
     private function assertKeyName(string $key): void
     {
-        if (preg_match_all('#[' . static::ILLEGAL_KEY_CHARACTERS . ']#', $key, $matches)) {
+        if (preg_match_all('#[' . CacheContract::ILLEGAL_KEY_CHARACTERS . ']#', $key, $matches)) {
             $matches = array_unique($matches[0]);
             $forbidden = implode(', ', $matches);
             throw new InvalidArgumentException(

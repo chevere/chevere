@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Router;
 
-use Chevere\Components\Cache\Cache;
+use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Route\RouteContract;
 
 interface MakerContract
@@ -30,7 +30,7 @@ interface MakerContract
 
     public function routesIndex(): array;
 
-    public function withCache(Cache $cache): MakerContract;
+    public function withCache(CacheContract $cache): MakerContract;
 
-    public function cache(): Cache;
+    public function cache(): CacheContract;
 }

@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Api;
 
-use Chevere\Components\Cache\Cache;
+use Chevere\Contracts\Cache\CacheContract;
 
 interface ApiContract
 {
     public function withMaker(MakerContract $maker): ApiContract;
 
-    public function withCache(Cache $cache): ApiContract;
+    public function withCache(CacheContract $cache): ApiContract;
 
     public function toArray(): array;
 
@@ -29,12 +29,12 @@ interface ApiContract
 
     public function maker(): MakerContract;
 
-    public function cache(): Cache;
+    public function cache(): CacheContract;
 
     public function endpoint(string $uriKey): array;
 
     /**
-     * @return string The the endpoint basename for the given URI.
+     * @return string the the endpoint basename for the given URI
      */
     public function endpointKey(string $uri): string;
 }
