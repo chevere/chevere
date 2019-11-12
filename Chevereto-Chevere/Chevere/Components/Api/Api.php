@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Api;
 
+use Chevere\Components\Cache\CacheKey;
 use LogicException;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\Cache\Traits\CacheAccessTrait;
@@ -46,7 +47,7 @@ final class Api implements ApiContract
         $new = clone $this;
         $new->cache = $cache;
         try {
-            $new->array = $new->cache->get(CacheKeys::API)->return();
+            $new->array = $new->cache->get(new CacheKey(CacheKeys::API))->return();
         } catch (FileNotFoundException $e) {
             throw new CacheNotFoundException($e->getMessage(), $e->getCode(), $e);
         }

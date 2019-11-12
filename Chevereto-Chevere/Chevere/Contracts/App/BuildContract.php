@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\App;
 
-use Chevere\Components\Dir\Dir;
 use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\File\FileContract;
-use Chevere\Contracts\File\FilePhpContract;
 use Chevere\Contracts\Router\MakerContract;
 
 interface BuildContract
@@ -84,7 +82,6 @@ interface BuildContract
      * Destroy the application build (file plus any application cache).
      */
     public function destroy(): void;
-
 
     /**
      * Provides access to the FileContract contained in the FilePhpContract instance.

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\Path;
 
 use Chevere\Components\Dir\Dir;
-use Chevere\Components\Dir\Exceptions\PathIsFileException;
-use Chevere\Components\Dir\Exceptions\PathIsNotDirectoryException;
+use Chevere\Components\Path\Exceptions\PathIsFileException;
+use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Path\Path;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
@@ -34,13 +34,13 @@ final class DirTest extends TestCase
         $dir = new Dir(new Path('var/DirTest_' . uniqid()));
         $this->assertFalse($dir->exists());
     }
-      
+
     public function testWithExistentPath(): void
     {
         $dir = new Dir(new Path('var'));
         $this->assertTrue($dir->exists());
     }
-      
+
     public function testCreate(): void
     {
         $dir = new Dir(new Path('var/DirTest_' . uniqid()));

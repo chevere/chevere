@@ -15,6 +15,7 @@ namespace Chevere\Components\Router;
 
 use InvalidArgumentException;
 use Chevere\Components\ArrayFile\ArrayFile;
+use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Route\Route;
@@ -124,9 +125,9 @@ final class Maker implements MakerContract
     public function withCache(CacheContract $cache): MakerContract
     {
         $cache = $cache
-            ->withPut(CacheKeys::REGEX, $this->regex)
-            ->withPut(CacheKeys::ROUTES, $this->routes)
-            ->withPut(CacheKeys::ROUTES_INDEX, $this->routesIndex);
+            ->withPut(new CacheKey(CacheKeys::REGEX), $this->regex)
+            ->withPut(new CacheKey(CacheKeys::ROUTES), $this->routes)
+            ->withPut(new CacheKey(CacheKeys::ROUTES_INDEX), $this->routesIndex);
 
         $new = clone $this;
         $new->cache = $cache;

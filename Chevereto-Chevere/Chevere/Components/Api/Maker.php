@@ -19,6 +19,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Throwable;
 use Chevere\Components\Api\src\FilterIterator;
+use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Cache\Traits\CacheAccessTrait;
 use Chevere\Components\Controller\Inspect;
 use Chevere\Components\Controllers\Api\GetController;
@@ -103,7 +104,7 @@ final class Maker implements MakerContract
     {
         $new = clone $this;
         $new->cache = $cache
-            ->withPut(CacheKeys::API, $new->api);
+            ->withPut(new CacheKey(CacheKeys::API), $new->api);
 
         return $new;
     }

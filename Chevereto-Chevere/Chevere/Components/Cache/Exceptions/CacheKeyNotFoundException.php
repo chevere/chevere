@@ -11,13 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Dir\Exceptions;
+namespace Chevere\Components\Cache\Exceptions;
 
 use Exception;
 
-/**
- * Exception thrown when the PathContract represents a file.
- */
-final class PathIsFileException extends Exception
+final class CacheKeyNotFoundException extends Exception
 {
 }

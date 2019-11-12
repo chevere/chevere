@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Cache;
 
-use InvalidArgumentException;
-use LogicException;
-use Chevere\Components\Dir\Dir;
+use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
 use Chevere\Components\File\File;
 use Chevere\Components\File\FileCompile;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Cache\CacheContract;
+use Chevere\Contracts\Cache\CacheKeyContract;
 use Chevere\Contracts\Dir\DirContract;
+use Chevere\Contracts\File\FileReturnContract;
 use Chevere\Contracts\Path\PathContract;
 
 /**
@@ -44,61 +44,27 @@ final class Cache implements CacheContract
     private $array;
 
     /**
-     * @param string $name Named cache entry (folder)
-     * @param Dir    $dir  The directory where cache files will be stored/accesed
+     * {@inheritdoc}
      */
-    public function __construct(string $name, Dir $dir)
+    public function __construct(CacheKeyContract $cacheKey, DirContract $dir)
     {
-        $this->assertKeyName($name);
-        $this->name = $name;
+        $this->name = $cacheKey->get();
         $this->dir = $dir;
         if (!$this->dir->path()->exists()) {
             $this->dir->create();
         }
-        if (!$this->dir->path()->exists()) {
-            throw new InvalidArgumentException(
-                (new Message('Path %path% is not a directory'))
-                    ->code('%path%', $this->dir->path()->absolute())
-                    ->toString()
-            );
-        }
+        $this->assertIsDirectory();
         $this->array = [];
     }
 
     /**
-     * Get cache as a FileReturn object.
-     *
-     * @return FileReturn a FileReturn instance for the cache file
+     * {@inheritdoc}
      */
-    public function get(string $key): FileReturn
+    public function withPut(CacheKeyContract $cacheKey, $var): CacheContract
     {
-        $path = $this->getPath($key);
-        if (!$path->exists()) {
-            throw new LogicException('No cache for key ' . $key);
-        }
-
-        return new FileReturn(
-            new FilePhp(
-                new File($path)
-            )
+        $path = $this->getPath(
+            $cacheKey->get()
         );
-    }
-
-    public function exists(string $key): bool
-    {
-        return $this->getPath($key)
-            ->exists();
-    }
-
-    /**
-     * Put cache.
-     *
-     * @param string $key Cache key
-     * @param mixed  $var anything, but keep it restricted to one-dimension iterables at most
-     */
-    public function withPut(string $key, $var): CacheContract
-    {
-        $path = $this->getPath($key);
         $file = new File($path);
         if (!$file->exists()) {
             $file->create();
@@ -108,13 +74,39 @@ final class Cache implements CacheContract
         $fileReturn->put($var);
         new FileCompile($filePhp);
         $new = clone $this;
-        $new->array[$new->name][$key] = [
+        $new->array[$new->name][$cacheKey->get()] = [
             'path' => $fileReturn->file()->path()
                 ->absolute(),
             'checksum' => $fileReturn->checksum(),
         ];
 
         return $new;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function exists(CacheKeyContract $cacheKey): bool
+    {
+        return $this->getPath($cacheKey->get())
+            ->exists();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function get(CacheKeyContract $cacheKey): FileReturnContract
+    {
+        $path = $this->getPath($cacheKey->get());
+        if (!$path->exists()) {
+            throw new CacheKeyNotFoundException('No cache for key ' . $key);
+        }
+
+        return new FileReturn(
+            new FilePhp(
+                new File($path)
+            )
+        );
     }
 
     // public function remove(string $key): void
@@ -127,6 +119,9 @@ final class Cache implements CacheContract
     //     unset($this->array[$this->name][$key]);
     // }
 
+    /**
+     * {@inheritdoc}
+     */
     public function toArray(): array
     {
         return $this->array;
@@ -134,20 +129,16 @@ final class Cache implements CacheContract
 
     private function getPath(string $name): PathContract
     {
-        $this->assertKeyName($name);
-
         return $this->dir->path()
             ->getChild($name . '.php');
     }
 
-    private function assertKeyName(string $key): void
+    private function assertIsDirectory(): void
     {
-        if (preg_match_all('#[' . CacheContract::ILLEGAL_KEY_CHARACTERS . ']#', $key, $matches)) {
-            $matches = array_unique($matches[0]);
-            $forbidden = implode(', ', $matches);
-            throw new InvalidArgumentException(
-                (new Message('Use of forbidden character(s) %character%'))
-                    ->code('%character%', $forbidden)
+        if (!$this->dir->path()->exists()) {
+            throw new PathIsNotDirectoryException(
+                (new Message('Path %path% is not a directory'))
+                    ->code('%path%', $this->dir->path()->absolute())
                     ->toString()
             );
         }

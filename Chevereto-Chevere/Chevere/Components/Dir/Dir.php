@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Dir;
 
-use Chevere\Components\Dir\Exceptions\PathIsFileException;
-use Chevere\Components\Dir\Exceptions\PathIsNotDirectoryException;
-use InvalidArgumentException;
+use Chevere\Components\Path\Exceptions\PathIsFileException;
+use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use RuntimeException;
-
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\Path\PathContract;
@@ -56,7 +54,6 @@ final class Dir implements DirContract
     {
         return $this->path->exists() && $this->path->isDir();
     }
-
 
     /**
      * {@inheritdoc}

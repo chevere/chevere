@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
+use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\Message\Message;
@@ -62,9 +63,9 @@ final class Router implements RouterContract
         $new = clone $this;
         $new->cache = $cache;
         try {
-            $new->regex = $new->cache->get(CacheKeys::REGEX)->return();
-            $new->routes = $new->cache->get(CacheKeys::ROUTES)->return();
-            $new->routesIndex = $new->cache->get(CacheKeys::ROUTES_INDEX)->return();
+            $new->regex = $new->cache->get(new CacheKey(CacheKeys::REGEX))->return();
+            $new->routes = $new->cache->get(new CacheKey(CacheKeys::ROUTES))->return();
+            $new->routesIndex = $new->cache->get(new CacheKey(CacheKeys::ROUTES_INDEX))->return();
         } catch (FileNotFoundException $e) {
             throw new CacheNotFoundException($e->getMessage(), $e->getCode(), $e);
         }

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Dir\Exceptions;
+namespace Chevere\Components\Path\Exceptions;
 
 use Exception;
 

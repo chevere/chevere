@@ -22,6 +22,7 @@ use Chevere\Components\Dir\Dir;
 use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\AppContract;
@@ -151,7 +152,7 @@ final class Build implements BuildContract
     }
 
     /**
-     * Make the build, provide AppContract services
+     * Make the build, provide AppContract services.
      */
     public function make(): BuildContract
     {
@@ -232,7 +233,7 @@ final class Build implements BuildContract
         }
         foreach ([
             'parameters' => ParametersContract::class,
-            'routerMaker' => MakerContract::class
+            'routerMaker' => MakerContract::class,
         ] as $property => $contract) {
             if (!isset($this->{$property})) {
                 $missing[] = (new Message('%s'))->code('%s', $contract)->toString(0);
@@ -268,7 +269,7 @@ final class Build implements BuildContract
             ->withServices($services);
         $this->apiMaker = $this->apiMaker
             ->withCache(
-                new Cache('api', $this->cacheDir)
+                new Cache(new CacheKey('api'), $this->cacheDir)
             );
         $this->checksums = $this->apiMaker->cache()->toArray();
     }
@@ -286,7 +287,7 @@ final class Build implements BuildContract
             ->withServices($services);
         $this->routerMaker = $this->routerMaker
             ->withCache(
-                new Cache('router', $this->cacheDir)
+                new Cache(new CacheKey('router'), $this->cacheDir)
             );
         $this->checksums = array_merge($this->routerMaker->cache()->toArray(), $this->checksums);
     }
