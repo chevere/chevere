@@ -16,7 +16,6 @@ namespace Chevere\Tests\File;
 use InvalidArgumentException;
 use RuntimeException;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
-use Chevere\Components\File\Exceptions\FileNotPhpException;
 use Chevere\Components\File\File;
 use Chevere\Components\Path\Path;
 use Chevere\Contracts\File\FileContract;

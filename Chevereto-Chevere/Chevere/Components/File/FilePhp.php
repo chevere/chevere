@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\File;
 
-use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\File\Exceptions\FileNotPhpException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\File\FileContract;

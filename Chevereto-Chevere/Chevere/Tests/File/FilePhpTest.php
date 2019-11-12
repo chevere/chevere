@@ -13,22 +13,29 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\File;
 
+use Chevere\Components\File\Exceptions\FileNotPhpException;
 use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
-use Chevere\Components\File\FileReturn;
 use Chevere\Components\Path\Path;
 use PHPUnit\Framework\TestCase;
 
-final class FileReturnTest extends TestCase
+final class FilePhpTest extends TestCase
 {
+    public function testNotPhpFile(): void
+    {
+        $file = new File(
+            new Path('var/FileReturnTest_' . uniqid())
+        );
+        $this->expectException(FileNotPhpException::class);
+        new FilePhp($file);
+    }
+
     public function testConstructor(): void
     {
         $file = new File(
             new Path('var/FileReturnTest_' . uniqid() . '.php')
         );
-        $fileReturn = new FileReturn(
-            new FilePhp($file)
-        );
-        $this->assertSame($file, $fileReturn->file());
+        $filePhp = new FilePhp($file);
+        $this->assertSame($file, $filePhp->file());
     }
 }
