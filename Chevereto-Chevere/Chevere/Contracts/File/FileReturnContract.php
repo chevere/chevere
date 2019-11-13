@@ -24,9 +24,9 @@ interface FileReturnContract
 
     /**
      * Creates a new instance.
-     * 
-     * @throws FileNotFoundException If the file doesn't exists.
-     * @throws FileNotPhpException If the file is not PHP.
+     *
+     * @throws FileNotFoundException if the file doesn't exists
+     * @throws FileNotPhpException   if the file is not PHP
      */
     public function __construct(FilePhpContract $file);
 
@@ -44,27 +44,27 @@ interface FileReturnContract
     public function file(): FileContract;
 
     /**
-     * Retrieves the file checksum using the CHECKSUM_ALGO algorithm. 
+     * Retrieves the file checksum using the CHECKSUM_ALGO algorithm.
      */
     public function checksum(): string;
 
     /**
-     * Retrieves the file contents. 
+     * Retrieves the file contents.
      */
     public function contents(): string;
 
     /**
-     * Retrieves the file return. 
+     * Retrieves the file return (as-is).
      */
     public function return();
 
     /**
-     * Retrieves the content of the file appling unserialize.
+     * Retrieves the usable variable after appling unserialize to all objects (if any).
      */
-    public function get();
+    public function var();
 
     /**
-     * Put $var into the file using var_export return
+     * Put $var into the file using var_export return.
      */
     public function put($var): void;
 }

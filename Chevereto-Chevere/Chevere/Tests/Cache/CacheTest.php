@@ -28,9 +28,8 @@ final class CacheTest extends TestCase
     {
         $path = new Path('build');
         $dir = new Dir($path);
-        $cacheKey = new CacheKey('keyTest');
 
-        return new Cache($cacheKey, $dir);
+        return new Cache($dir);
     }
 
     public function testInvalidDirContract(): void
@@ -39,7 +38,7 @@ final class CacheTest extends TestCase
         $dir = new Dir($path);
         $cacheKey = new CacheKey('keyTest');
         $this->expectException(PathIsNotDirectoryException::class);
-        new Cache($cacheKey, $dir);
+        new Cache($dir);
     }
 
     public function testConstructor(): void
@@ -67,10 +66,14 @@ final class CacheTest extends TestCase
     {
         $key = uniqid();
         $var = time();
+        $var = [false, 'test', new Path('test')];
         $cacheKey = new CacheKey($key);
         $cache = $this->getTestCache()
             ->withPut($cacheKey, $var);
-        $this->assertContainsEquals()
-        dd($cache);
+        $this->assertArrayHasKey($key, $cache->toArray());
+        $this->assertTrue($cache->exists($cacheKey));
+        $fileReturn = $cache->get($cacheKey);
+        $this->assertEquals($var, $fileReturn->var());
+        $fileReturn->file()->remove();
     }
 }

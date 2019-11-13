@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\File;
 
 use RuntimeException;
-
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
@@ -24,7 +23,6 @@ use Chevere\Contracts\File\FileReturnContract;
  * FileReturn interacts with PHP files that return something.
  *
  * <?php return 'Hello World!';
- * 
  */
 final class FileReturn implements FileReturnContract
 {
@@ -100,15 +98,28 @@ final class FileReturn implements FileReturnContract
     /**
      * {@inheritdoc}
      */
-    public function get()
+    public function var()
     {
         $var = $this->return();
+
         if (is_iterable($var)) {
             foreach ($var as &$v) {
-                $v = unserialize($v);
+                $v = $this->getReturnVar($v);
             }
         } else {
-            $var = unserialize($v);
+            $var = $this->getReturnVar($var);
+        }
+
+        return $var;
+    }
+
+    private function getReturnVar($var)
+    {
+        if (is_string($var)) {
+            $aux = @unserialize($var);
+            if (false !== $aux) {
+                $var = $aux;
+            }
         }
 
         return $var;
@@ -121,10 +132,10 @@ final class FileReturn implements FileReturnContract
     {
         if (is_iterable($var)) {
             foreach ($var as &$v) {
-                $this->switchVar($v);
+                $v = $this->getFileReturnVar($v);
             }
         } else {
-            $this->switchVar($var);
+            $var = $this->getFileReturnVar($var);
         }
         $varExport = var_export($var, true);
         $this->file()->put(
@@ -156,7 +167,7 @@ final class FileReturn implements FileReturnContract
         }
         $contents = fread($handle, FileReturnContract::PHP_RETURN_CHARS);
         fclose($handle);
-        if ($contents !== FileReturnContract::PHP_RETURN) {
+        if (FileReturnContract::PHP_RETURN !== $contents) {
             throw new RuntimeException(
                 (new Message('Unexpected contents in %path% (strict validation)'))
                     ->code('%path%', $this->file()->path()->absolute())
@@ -184,10 +195,12 @@ final class FileReturn implements FileReturnContract
         }
     }
 
-    private function switchVar(&$var)
+    private function getFileReturnVar($var)
     {
         if (is_object($var)) {
-            $var = serialize($var);
+            return serialize($var);
         }
+
+        return $var;
     }
 }
