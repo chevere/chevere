@@ -48,11 +48,11 @@ final class Cache implements CacheContract
      */
     public function __construct(CacheKeyContract $cacheKey, DirContract $dir)
     {
-        $this->name = $cacheKey->get();
+        $this->name = $cacheKey->key();
         $this->dir = $dir;
-        if (!$this->dir->path()->exists()) {
-            $this->dir->create();
-        }
+        // if (!$this->dir->path()->exists()) {
+        //     $this->dir->create();
+        // }
         $this->assertIsDirectory();
         $this->array = [];
     }
@@ -63,7 +63,7 @@ final class Cache implements CacheContract
     public function withPut(CacheKeyContract $cacheKey, $var): CacheContract
     {
         $path = $this->getPath(
-            $cacheKey->get()
+            $cacheKey->key()
         );
         $file = new File($path);
         if (!$file->exists()) {
@@ -74,7 +74,7 @@ final class Cache implements CacheContract
         $fileReturn->put($var);
         new FileCompile($filePhp);
         $new = clone $this;
-        $new->array[$new->name][$cacheKey->get()] = [
+        $new->array[$new->name][$cacheKey->key()] = [
             'path' => $fileReturn->file()->path()
                 ->absolute(),
             'checksum' => $fileReturn->checksum(),
@@ -88,7 +88,7 @@ final class Cache implements CacheContract
      */
     public function exists(CacheKeyContract $cacheKey): bool
     {
-        return $this->getPath($cacheKey->get())
+        return $this->getPath($cacheKey->key())
             ->exists();
     }
 
@@ -97,7 +97,7 @@ final class Cache implements CacheContract
      */
     public function get(CacheKeyContract $cacheKey): FileReturnContract
     {
-        $path = $this->getPath($cacheKey->get());
+        $path = $this->getPath($cacheKey->key());
         if (!$path->exists()) {
             throw new CacheKeyNotFoundException('No cache for key ' . $key);
         }

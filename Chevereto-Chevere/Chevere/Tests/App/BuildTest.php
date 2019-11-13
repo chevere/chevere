@@ -15,7 +15,6 @@ namespace Chevere\Tests\App;
 
 use LogicException;
 use TypeError;
-
 use Chevere\Components\App\App;
 use Chevere\Components\App\Build;
 use Chevere\Components\App\Exceptions\BuildFileNotExistsException;
@@ -25,6 +24,7 @@ use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Maker;
+use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\CheckoutContract;
 use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\File\FileContract;
@@ -32,24 +32,25 @@ use PHPUnit\Framework\TestCase;
 
 final class BuildTest extends TestCase
 {
+    public function getBuild(): BuildContract
+    {
+        $app = new App(new Services(), new Response());
+
+        return new Build($app, new Path('build'));
+    }
+
     public function testConstructor(): void
     {
-        $services = new Services();
-        $response = new Response();
-        $app = new App($services, $response);
-        $build = new Build($app);
+        $build = $this->getBuild();
         $this->assertSame(false, $build->isMaked());
-        $this->assertSame($services, $build->app()->services());
+        $this->assertSame($build->app()->services(), $build->app()->services());
         $this->assertInstanceOf(FileContract::class, $build->file());
         $this->assertInstanceOf(DirContract::class, $build->cacheDir());
     }
 
     public function testWithParameters(): void
     {
-        $services = new Services();
-        $response = new Response();
-        $app = new App($services, $response);
-        $build = new Build($app);
+        $build = $this->getBuild();
         $parameters = new Parameters(
             new ArrayFile(
                 new Path('parameters.php')
@@ -64,10 +65,7 @@ final class BuildTest extends TestCase
 
     public function testWithRouterMaker(): void
     {
-        $services = new Services();
-        $response = new Response();
-        $app = new App($services, $response);
-        $build = new Build($app);
+        $build = $this->getBuild();
         $routerMaker = new Maker();
         $build = $build
             ->withRouterMaker($routerMaker);
@@ -78,20 +76,14 @@ final class BuildTest extends TestCase
 
     public function testMakeWithoutRequirements(): void
     {
-        $services = new Services();
-        $response = new Response();
-        $app = new App($services, $response);
-        $build = new Build($app);
+        $build = $this->getBuild();
         $this->expectException(LogicException::class);
         $build->make();
     }
 
     public function testMakeAndDestroy(): void
     {
-        $services = new Services();
-        $response = new Response();
-        $app = new App($services, $response);
-        $build = new Build($app);
+        $build = $this->getBuild();
         $parameters = new Parameters(
             new ArrayFile(
                 new Path('parameters.php')
@@ -111,30 +103,21 @@ final class BuildTest extends TestCase
 
     public function testInvalidDestroyMethodCall(): void
     {
-        $services = new Services();
-        $response = new Response();
-        $app = new App($services, $response);
-        $build = new Build($app);
+        $build = $this->getBuild();
         $this->expectException(BuildFileNotExistsException::class);
         $build->destroy();
     }
 
     public function testInvalidChecksumsMethodCall(): void
     {
-        $services = new Services();
-        $response = new Response();
-        $app = new App($services, $response);
-        $build = new Build($app);
+        $build = $this->getBuild();
         $this->expectException(TypeError::class);
         $build->checksums();
     }
 
     public function testInvalidCheckoutMethodCall(): void
     {
-        $services = new Services();
-        $response = new Response();
-        $app = new App($services, $response);
-        $build = new Build($app);
+        $build = $this->getBuild();
         $this->expectException(TypeError::class);
         $build->checkout();
     }

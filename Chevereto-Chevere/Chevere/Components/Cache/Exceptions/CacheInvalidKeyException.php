@@ -15,6 +15,9 @@ namespace Chevere\Components\Cache\Exceptions;
 
 use Exception;
 
+/**
+ * Exception thrown if the cache key contains illegal characters.
+ */
 final class CacheInvalidKeyException extends Exception
 {
 }

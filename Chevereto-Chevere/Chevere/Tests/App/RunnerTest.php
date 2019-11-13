@@ -32,12 +32,33 @@ use PHPUnit\Framework\TestCase;
 
 final class RunnerTest extends TestCase
 {
-    public function testConstructor(): void
+    private function getTestBuild(): BuildContract
+    {
+        $build = $this->getDummyBuild();
+        $parameters = new Parameters(
+            new ArrayFile(
+                new Path('parameters.php')
+            )
+        );
+
+        return $build
+            ->withParameters($parameters)
+            ->withRouterMaker(new Maker());
+    }
+
+    private function getDummyBuild(): BuildContract
     {
         $services = new Services();
         $response = new Response();
         $app = new App($services, $response);
-        $build = new Build($app);
+        $path = new Path('build');
+
+        return new Build($app, $path);
+    }
+
+    public function testConstructor(): void
+    {
+        $build = $this->getDummyBuild();
         $builder = new Builder($build);
         $runner = new Runner($builder);
         $this->assertSame($builder, $runner->builder());
@@ -45,10 +66,7 @@ final class RunnerTest extends TestCase
 
     public function testWithConsoleLoop(): void
     {
-        $services = new Services();
-        $response = new Response();
-        $app = new App($services, $response);
-        $build = new Build($app);
+        $build = $this->getDummyBuild();
         $builder = new Builder($build);
         $runner = (new Runner($builder))
             ->withConsoleLoop();
@@ -57,15 +75,13 @@ final class RunnerTest extends TestCase
 
     public function testWithRunnerWithoutRouter(): void
     {
-        $services = new Services();
-        $response = new Response();
-        $app = new App($services, $response);
-        $build = new Build($app);
+        $build = $this->getDummyBuild();
         $builder = new Builder($build);
         $runner = new Runner($builder);
         $this->expectException(RouterContractRequiredException::class);
         $runner->withRun();
     }
+
     public function testWithRunWithRouterUnableToResolve(): void
     {
         $router = new Router();
@@ -73,27 +89,12 @@ final class RunnerTest extends TestCase
             ->withRouter($router);
         $response = new Response();
         $app = new App($services, $response);
-        $build = new Build($app);
+        $path = new Path('build');
+        $build = new Build($app, $path);
         $builder = new Builder($build);
         $runner = new Runner($builder);
         $this->expectException(RouterCantResolveException::class);
         $runner->withRun();
-    }
-
-    public function getTestBuild(): BuildContract
-    {
-        $services = new Services();
-        $response = new Response();
-        $app = new App($services, $response);
-        $build = new Build($app);
-        $parameters = new Parameters(
-            new ArrayFile(
-                new Path('parameters.php')
-            )
-        );
-        return $build
-            ->withParameters($parameters)
-            ->withRouterMaker(new Maker());
     }
 
     public function testRunnerNotFound(): void

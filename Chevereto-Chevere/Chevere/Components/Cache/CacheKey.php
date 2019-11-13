@@ -34,7 +34,7 @@ final class CacheKey implements CacheKeyContract
     /**
      * {@inheritdoc}
      */
-    public function get(): string
+    public function key(): string
     {
         return $this->key;
     }
@@ -43,7 +43,7 @@ final class CacheKey implements CacheKeyContract
     {
         if (preg_match_all('#[' . CacheKeyContract::ILLEGAL_KEY_CHARACTERS . ']#', $this->key, $matches)) {
             $matches = array_unique($matches[0]);
-            $forbidden = implode(', ', $matches);
+            $forbidden = implode(' ', $matches);
             throw new CacheInvalidKeyException(
                 (new Message('Use of forbidden character(s) %character%'))
                     ->code('%character%', $forbidden)

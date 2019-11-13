@@ -14,16 +14,28 @@ declare(strict_types=1);
 namespace Chevere\Tests\Cache;
 
 use Chevere\Components\Cache\Cache;
+use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\Path\Path;
 use PHPUnit\Framework\TestCase;
 
 final class CacheTest extends TestCase
 {
-    public function testConstructor(): void
+    public function testInvalidDirContract(): void
     {
         $path = new Path('test');
         $dir = new Dir($path);
-        // $cache = new Cache('test', $dir);
+        $cacheKey = new CacheKey('keyTest');
+        $cache = new Cache($cacheKey, $dir);
+        // dd($cache);
     }
+
+    // public function testConstructor(): void
+    // {
+    //     $path = new Path('test');
+    //     $dir = new Dir($path);
+    //     $cacheKey = new CacheKey('keyTest');
+    //     $cache = new Cache($cacheKey, $dir);
+    //     dd($cache);
+    // }
 }

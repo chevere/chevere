@@ -15,7 +15,9 @@ namespace Chevere\Contracts\App;
 
 use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\File\FileContract;
+use Chevere\Contracts\Path\PathContract;
 use Chevere\Contracts\Router\MakerContract;
+use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 
 interface BuildContract
 {
@@ -24,8 +26,13 @@ interface BuildContract
      *
      * A BuildContract instance allows to interact with the application build, which refers to the base
      * application service layer which consists of API and Router services.
+     *
+     * @param AppContract  $app  The application container
+     * @param PathContract $path An instance representing the target build path, it will be created if needed
+     *
+     * @throws PathIsNotDirectoryException if the $path doesn't exists and unable to create
      */
-    public function __construct(AppContract $app);
+    public function __construct(AppContract $app, PathContract $path);
 
     /**
      * Return an instance with the specified ServicesContract.

@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Tests\App;
 
 use InvalidArgumentException;
-
 use Chevere\Components\App\App;
 use Chevere\Components\App\Build;
 use Chevere\Components\App\Checkout;
 use Chevere\Components\App\Services;
 use Chevere\Components\Http\Response;
+use Chevere\Components\Path\Path;
 use PHPUnit\Framework\TestCase;
 
 final class CheckoutTest extends TestCase
@@ -28,7 +28,9 @@ final class CheckoutTest extends TestCase
     {
         $services = new Services();
         $response = new Response();
-        $build = new Build(new App($services, $response));
+        $app = new App($services, $response);
+        $path = new Path('build');
+        $build = new Build($app, $path);
         $this->assertFalse($build->isMaked());
         $this->expectException(InvalidArgumentException::class);
         new Checkout($build);

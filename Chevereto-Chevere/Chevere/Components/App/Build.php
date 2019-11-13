@@ -23,6 +23,7 @@ use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Cache\CacheKey;
+use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\AppContract;
@@ -32,6 +33,7 @@ use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
+use Chevere\Contracts\Path\PathContract;
 use Chevere\Contracts\Router\MakerContract;
 use LogicException;
 
@@ -70,18 +72,24 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function __construct(AppContract $app)
+    public function __construct(AppContract $app, PathContract $path)
     {
         $this->isMaked = false;
         $this->app = $app;
         $this->filePhp = new FilePhp(
             new File(
-                new Path('build/build.php')
+                $path->getChild('build.php')
             )
         );
         $this->cacheDir = new Dir(
-            new Path('build/cache')
+            $path->getChild('cache')
         );
+
+        if (!$this->cacheDir->exists()) {
+            $this->cacheDir->create();
+        }
+
+        $this->assertCacheDir();
     }
 
     /**
@@ -224,6 +232,17 @@ final class Build implements BuildContract
     public function checkout(): CheckoutContract
     {
         return $this->checkout;
+    }
+
+    private function assertCacheDir(): void
+    {
+        if (!$this->cacheDir->exists()) {
+            throw new PathIsNotDirectoryException(
+                (new Message('The application needs a cache directory at %path%'))
+                    ->code('%path%', $this->cacheDir->path()->absolute())
+                    ->toString()
+            );
+        }
     }
 
     private function assertCanMake(): void

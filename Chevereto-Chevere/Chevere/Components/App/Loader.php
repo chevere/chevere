@@ -49,7 +49,7 @@ final class Loader implements LoaderContract
     public function __construct()
     {
         $app = new App(new Services(), new Response());
-        $build = new Build($app);
+        $build = new Build($app, new Path('build'));
         $this->builder = new Builder($build);
         $this->assertNeedsToBeBuilt();
         $this->parameters = new Parameters(
