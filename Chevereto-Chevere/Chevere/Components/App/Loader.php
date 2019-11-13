@@ -13,17 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use Chevere\Components\Api\Api;
 use Chevere\Components\App\Exceptions\BuildNeededException;
 use Chevere\Components\ArrayFile\ArrayFile;
-use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\Console\Console;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Maker;
-use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\BuilderContract;
@@ -117,7 +114,7 @@ final class Loader implements LoaderContract
         }
         $build = $this->builder->build();
         $app = $build->app()
-            ->withServices($this->getContainer());
+            ->withServices($this->getServices());
         $build = $build
             ->withApp($app);
 
@@ -127,29 +124,11 @@ final class Loader implements LoaderContract
     /**
      * Return a ServicesContract containing the services required to provide the application.
      */
-    private function getContainer(): ServicesContract
+    private function getServices(): ServicesContract
     {
-        $api = new Api();
-        $router = new Router();
-        $services = $this->builder->build()->app()->services();
-
         try {
-            if (!(CONSOLE && console()->isBuilding())) {
-                $dir = $this->builder->build()->cacheDir();
-                $cache = new Cache($dir);
-                if ($this->parameters->hasApi()) {
-                    $api = $api
-                        ->withCache($cache);
-                }
-                $router = $router
-                    ->withCache($cache);
-            }
-            if ($this->parameters->hasApi()) {
-                $services = $services->withApi($api);
-            }
-
-            return $services
-                ->withRouter($router);
+            return (new ServicesBuilder($this->builder->build(), $this->parameters))
+                ->services();
         } catch (CacheNotFoundException $e) {
             $message = (new Message('The app must be re-build due to missing cache: %message%'))
                 ->strtr('%message%', $e->getMessage())
