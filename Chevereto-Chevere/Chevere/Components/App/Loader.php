@@ -21,7 +21,6 @@ use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\Console\Console;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Maker;
 use Chevere\Components\Router\Router;
@@ -137,14 +136,13 @@ final class Loader implements LoaderContract
         try {
             if (!(CONSOLE && console()->isBuilding())) {
                 $dir = $this->builder->build()->cacheDir();
+                $cache = new Cache($dir);
                 if ($this->parameters->hasApi()) {
-                    $api = $api->withCache(
-                        new Cache(new CacheKey('api'), $dir)
-                    );
+                    $api = $api
+                        ->withCache($cache);
                 }
-                $router = $router->withCache(
-                    new Cache(new CacheKey('router'), $dir)
-                );
+                $router = $router
+                    ->withCache($cache);
             }
             if ($this->parameters->hasApi()) {
                 $services = $services->withApi($api);

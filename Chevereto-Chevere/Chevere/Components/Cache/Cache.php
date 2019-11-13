@@ -19,6 +19,7 @@ use Chevere\Components\File\FileCompile;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Cache\CacheKeyContract;
 use Chevere\Contracts\Dir\DirContract;
@@ -34,9 +35,6 @@ use Chevere\Contracts\Path\PathContract;
  */
 final class Cache implements CacheContract
 {
-    /** @var string Cache name */
-    private $name;
-
     /** @var DirContract */
     private $dir;
 
@@ -46,9 +44,8 @@ final class Cache implements CacheContract
     /**
      * {@inheritdoc}
      */
-    public function __construct(CacheKeyContract $cacheKey, DirContract $dir)
+    public function __construct(DirContract $dir)
     {
-        $this->name = $cacheKey->key();
         $this->dir = $dir;
         // if (!$this->dir->path()->exists()) {
         //     $this->dir->create();
@@ -74,7 +71,7 @@ final class Cache implements CacheContract
         $fileReturn->put($var);
         new FileCompile($filePhp);
         $new = clone $this;
-        $new->array[$new->name][$cacheKey->key()] = [
+        $new->array[$cacheKey->key()] = [
             'path' => $fileReturn->file()->path()
                 ->absolute(),
             'checksum' => $fileReturn->checksum(),
@@ -99,7 +96,7 @@ final class Cache implements CacheContract
     {
         $path = $this->getPath($cacheKey->key());
         if (!$path->exists()) {
-            throw new CacheKeyNotFoundException('No cache for key ' . $key);
+            throw new CacheKeyNotFoundException('No cache for key ' . $cacheKey->key());
         }
 
         return new FileReturn(
@@ -116,7 +113,7 @@ final class Cache implements CacheContract
     //         return;
     //     }
     //     (new File($path))->remove();
-    //     unset($this->array[$this->name][$key]);
+    //     unset($this->array[$key]);
     // }
 
     /**

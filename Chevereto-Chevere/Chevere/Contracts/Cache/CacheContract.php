@@ -15,7 +15,6 @@ namespace Chevere\Contracts\Cache;
 
 use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\File\FileReturnContract;
-use Chevere\Components\Cache\Exceptions\CacheInvalidKeyException;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
 
@@ -26,27 +25,22 @@ interface CacheContract
     /**
      * Creates a new instance.
      *
-     * @param string      $name Named cache entry (folder)
-     * @param DirContract $dir  the directory where cache files will be stored/accesed (must exists)
+     * @param DirContract $dir the directory where cache files will be stored/accesed (must exists)
      *
      * @throws PathIsNotDirectoryException if the DirContract doesn't represent an existing directory
      */
-    public function __construct(CacheKeyContract $cacheKey, DirContract $dir);
+    public function __construct(DirContract $dir);
 
     /**
      * Put cache.
      *
      * @param string $key Cache key
      * @param mixed  $var anything, but keep it restricted to one-dimension iterables at most
-     *
-     * @throws CacheInvalidKeyException if $key contains illegal characters
      */
     public function withPut(CacheKeyContract $cacheKey, $var): CacheContract;
 
     /**
-     * Returns a boolean indicating whether the cache key exists.
-     *
-     * @throws CacheInvalidKeyException if $key contains illegal characters
+     * Returns a boolean indicating whether the key exists in the cache.
      */
     public function exists(CacheKeyContract $cacheKey): bool;
 
@@ -55,7 +49,6 @@ interface CacheContract
      *
      * @return FileReturnContract for the cache file
      *
-     * @throws CacheInvalidKeyException  if $key contains illegal characters
      * @throws CacheKeyNotFoundException If the cache key doesn't exists
      */
     public function get(CacheKeyContract $cacheKey): FileReturnContract;

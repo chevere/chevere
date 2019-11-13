@@ -15,27 +15,62 @@ namespace Chevere\Tests\Cache;
 
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\CacheKey;
+use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
 use Chevere\Components\Dir\Dir;
+use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Path\Path;
+use Chevere\Contracts\Cache\CacheContract;
 use PHPUnit\Framework\TestCase;
 
 final class CacheTest extends TestCase
 {
-    public function testInvalidDirContract(): void
+    private function getTestCache(): CacheContract
     {
-        $path = new Path('test');
+        $path = new Path('build');
         $dir = new Dir($path);
         $cacheKey = new CacheKey('keyTest');
-        $cache = new Cache($cacheKey, $dir);
-        // dd($cache);
+
+        return new Cache($cacheKey, $dir);
     }
 
-    // public function testConstructor(): void
-    // {
-    //     $path = new Path('test');
-    //     $dir = new Dir($path);
-    //     $cacheKey = new CacheKey('keyTest');
-    //     $cache = new Cache($cacheKey, $dir);
-    //     dd($cache);
-    // }
+    public function testInvalidDirContract(): void
+    {
+        $path = new Path('var/CacheTest_' . uniqid());
+        $dir = new Dir($path);
+        $cacheKey = new CacheKey('keyTest');
+        $this->expectException(PathIsNotDirectoryException::class);
+        new Cache($cacheKey, $dir);
+    }
+
+    public function testConstructor(): void
+    {
+        $this->expectNotToPerformAssertions();
+        $this->getTestCache();
+    }
+
+    public function testKeyNotExists(): void
+    {
+        $cache = $this->getTestCache();
+        $cacheKey = new CacheKey(uniqid());
+        $this->assertFalse($cache->exists($cacheKey));
+    }
+
+    public function testGetNotExists(): void
+    {
+        $cacheKey = new CacheKey(uniqid());
+        $this->expectException(CacheKeyNotFoundException::class);
+        $this->getTestCache()
+            ->get($cacheKey);
+    }
+
+    public function testWithPut(): void
+    {
+        $key = uniqid();
+        $var = time();
+        $cacheKey = new CacheKey($key);
+        $cache = $this->getTestCache()
+            ->withPut($cacheKey, $var);
+        $this->assertContainsEquals()
+        dd($cache);
+    }
 }

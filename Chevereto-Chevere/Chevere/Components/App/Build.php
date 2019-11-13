@@ -22,7 +22,6 @@ use Chevere\Components\Dir\Dir;
 use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Router;
@@ -288,9 +287,9 @@ final class Build implements BuildContract
             ->withServices($services);
         $this->apiMaker = $this->apiMaker
             ->withCache(
-                new Cache(new CacheKey('api'), $this->cacheDir)
+                new Cache($this->cacheDir)
             );
-        $this->checksums = $this->apiMaker->cache()->toArray();
+        $this->checksums['api'] = $this->apiMaker->cache()->toArray();
     }
 
     private function makeRouter(): void
@@ -306,8 +305,8 @@ final class Build implements BuildContract
             ->withServices($services);
         $this->routerMaker = $this->routerMaker
             ->withCache(
-                new Cache(new CacheKey('router'), $this->cacheDir)
+                new Cache($this->cacheDir)
             );
-        $this->checksums = array_merge($this->routerMaker->cache()->toArray(), $this->checksums);
+        $this->checksums['router'] = $this->routerMaker->cache()->toArray();
     }
 }
