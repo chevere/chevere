@@ -12,3 +12,4 @@ composer.lock
 .phpunit.result.cache
 app/build.php
 /devnotes/
+Chevereto-Chevere/TestApp/app/build/
