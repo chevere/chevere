@@ -109,7 +109,7 @@ final class ArrayFile implements ArrayFileContract
             $validate = $validator($object);
             if ($validate) {
                 if ('object' == $this->type->primitive()) {
-                    $validate = $this->type->validate($object);
+                    $validate = $this->type->validateObject($object);
                 }
             }
             if (!$validate) {
@@ -125,8 +125,8 @@ final class ArrayFile implements ArrayFileContract
             $type .= ' ' . get_class($object);
         }
         throw new ArrayFileTypeException(
-            (new Message('Expecting array containing only %members% members, type %type% found at %filepath% (key %key%)'))
-                ->code('%members%', $this->type->typeString())
+            (new Message('Expecting array containing only %membersType% members, type %type% found at %filepath% (key %key%)'))
+                ->code('%membersType%', $this->type->typeHinting())
                 ->code('%filepath%', $this->filePhp->file()->path()->absolute())
                 ->code('%type%', $type)
                 ->code('%key%', $k)

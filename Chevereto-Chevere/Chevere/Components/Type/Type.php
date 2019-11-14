@@ -13,34 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Type;
 
-/**
- * Type provides type validation toolchain
- */
-final class Type
-{
-    /** @const array Type validators [primitive => validator], taken from https://www.php.net/manual/en/ref.var.php */
-    const TYPE_VALIDATORS = [
-        'array' => 'is_array',
-        'bool' => 'is_bool',
-        'callable' => 'is_callable',
-        'countable' => 'is_countable',
-        'double' => 'is_double',
-        'float' => 'is_float',
-        'int' => 'is_int',
-        'integer' => 'is_integer',
-        'iterable' => 'is_iterable',
-        'long' => 'is_long',
-        'null' => 'is_null',
-        'numeric' => 'is_numeric',
-        'object' => 'is_object',
-        'real' => 'is_real',
-        'resource' => 'is_resource',
-        'scalar' => 'is_scalar',
-        'string' => 'is_string',
-    ];
+use Chevere\Components\Message\Message;
+use Chevere\Components\Type\Exceptions\TypeNotObjectException;
+use Chevere\Contracts\Type\TypeContract;
 
+/**
+ * Type provides type validation toolchain. Usefull to set dynamic types as parameters.
+ */
+final class Type implements TypeContract
+{
     /** @var string The passed argument in construct */
-    private $typeSome;
+    private $type;
 
     /** @var string The dectected primitive type */
     private $primitive;
@@ -52,36 +35,43 @@ final class Type
     private $interfaceName;
 
     /**
-     * @var string a primitive type, class name or interface
+     * {@inheritdoc}
      */
-    public function __construct(string $typeSome)
+    public function __construct(string $type)
     {
-        $this->typeSome = $typeSome;
+        $this->type = $type;
         $this->setPrimitive();
     }
 
-    public function typeString(): string
-    {
-        return $this->className ?? $this->interfaceName ?? $this->primitive;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function primitive(): string
     {
         return $this->primitive;
     }
 
-    public function className(): string
+    /**
+     * {@inheritdoc}
+     */
+    public function typeHinting(): string
     {
-        return $this->className;
+        return $this->className ?? $this->interfaceName ?? $this->primitive;
     }
 
-    public function interfaceName(): string
+    /**
+     * {@inheritdoc}
+     */
+    public function validateObject(object $object): bool
     {
-        return $this->interfaceName;
-    }
-
-    public function validate(object $object): bool
-    {
+        if ('object' !== $this->primitive) {
+            throw new TypeNotObjectException(
+                (new Message('Type must be a class to be able to call %method%, %type% provided'))
+                    ->code('%method%', __METHOD__)
+                    ->code('%type%', $this->primitive)
+                    ->toString()
+            );
+        }
         $objectClass = get_class($object);
         switch (true) {
             case isset($this->className, $this->interfaceName):
@@ -95,14 +85,20 @@ final class Type
         return false;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function validatePrimitive($var): bool
     {
         return gettype($var) == $this->primitive;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function validator(): callable
     {
-        return static::TYPE_VALIDATORS[$this->primitive];
+        return TypeContract::TYPE_VALIDATORS[$this->primitive];
     }
 
     private function isClassName(string $objectClass): bool
@@ -117,8 +113,9 @@ final class Type
 
     private function setPrimitive(): void
     {
-        if (isset(static::TYPE_VALIDATORS[$this->typeSome])) {
-            $this->primitive = $this->typeSome;
+        if (isset(TypeContract::TYPE_VALIDATORS[$this->type])) {
+            $this->primitive = $this->type;
+
             return;
         }
         $this->handleClassName();
@@ -130,15 +127,15 @@ final class Type
 
     private function handleClassName(): void
     {
-        if (class_exists($this->typeSome)) {
-            $this->className = $this->typeSome;
+        if (class_exists($this->type)) {
+            $this->className = $this->type;
         }
     }
 
     private function handleInterfaceName(): void
     {
-        if (interface_exists($this->typeSome)) {
-            $this->interfaceName = $this->typeSome;
+        if (interface_exists($this->type)) {
+            $this->interfaceName = $this->type;
         }
     }
 }
