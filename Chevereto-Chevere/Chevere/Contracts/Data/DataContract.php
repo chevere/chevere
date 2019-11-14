@@ -72,7 +72,7 @@ interface DataContract extends ToArrayContract
      * @param string $var The key to remove.
      */
     public function withRemovedKey(string $key): DataContract;
-    
+
     /**
      * Returns a boolean indicating whether the data is empty.
      */
@@ -91,7 +91,7 @@ interface DataContract extends ToArrayContract
     /**
      * Get the alleged key.
      *
-     * @param string The key to retrive.
+     * @param string $key The key to retrive.
      * @return mixed The value corresponding to $key.
      */
     public function key(string $key);

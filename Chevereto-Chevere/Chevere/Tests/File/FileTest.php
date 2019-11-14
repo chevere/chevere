@@ -70,7 +70,7 @@ final class FileTest extends TestCase
         $file = new File($path);
         $this->expectException(FileNotFoundException::class);
         $file->remove();
-        $this->assertFalse($file->remove());
+        $this->assertFalse($file->exists());
     }
 
     public function testRemoveExistentPath(): void
