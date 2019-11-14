@@ -27,22 +27,20 @@ final class ServicesBuilder implements ServicesBuilderContract
     private $services;
 
     /**
-     * Creates a new instance.
-     * 
-     * @param BuildContract $build The build containg AppContract services (if any)
-     * @param ParametersContract $parameters The application parameters which alter this services builder
+     * {@inheritdoc}
      */
     public function __construct(BuildContract $build, ParametersContract $parameters)
     {
         $this->services = $build->app()->services();
         $this->prepareServices();
-        $dir = $build->cacheDir();
-        $cache = new Cache($dir);
-        $this->services = $this->services
+        $cache = new Cache($build->cacheDir());
+        if ($parameters->hasRoutes()) {
+            $this->services = $this->services
             ->withRouter(
                 $this->services()->router()
                     ->withCache($cache)
             );
+        }
         if ($parameters->hasApi()) {
             $this->services = $this->services
                 ->withApi(
@@ -53,7 +51,7 @@ final class ServicesBuilder implements ServicesBuilderContract
     }
 
     /**
-     * Provides access to the ServicesContract instance.
+     * {@inheritdoc}
      */
     public function services(): ServicesContract
     {

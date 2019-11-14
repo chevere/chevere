@@ -128,8 +128,6 @@ final class App implements AppContract
         return $new;
     }
 
-    
-
     /**
      * {@inheritdoc}
      */

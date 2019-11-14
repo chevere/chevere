@@ -17,6 +17,9 @@ interface ServicesBuilderContract
 {
     /**
      * Creates a new instance.
+     *
+     * @param BuildContract      $build      The build containg AppContract services (if any)
+     * @param ParametersContract $parameters The application parameters which alter this services builder
      */
     public function __construct(BuildContract $build, ParametersContract $parameters);
 
