@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\App;
 
 use Chevere\Components\App\Exceptions\ParametersDuplicatedException;
-
 use Chevere\Components\App\Exceptions\ParametersWrongKeyException;
 use Chevere\Components\App\Exceptions\ParametersWrongTypeException;
 use Chevere\Components\ArrayFile\ArrayFile;
@@ -52,7 +51,7 @@ final class Parameters implements ParametersContract
     {
         $this->arrayFile = $arrayFile;
         $this->assertKeys();
-        $array = $this->arrayFile->toArray();
+        $array = $this->arrayFile->array();
         if (isset($array[ParametersContract::KEY_API])) {
             $this->api = $array[ParametersContract::KEY_API];
         }
@@ -130,7 +129,7 @@ final class Parameters implements ParametersContract
 
     private function assertKeys(): void
     {
-        foreach ($this->arrayFile->toArray() as $key => $val) {
+        foreach ($this->arrayFile->array() as $key => $val) {
             $this->assertValidKeys($key);
             $this->assertKeyType($key, gettype($val));
         }
@@ -165,7 +164,7 @@ final class Parameters implements ParametersContract
                     ->code('%type%', $this->types[$key])
                     ->code('%gettype%', $gettype)
                     ->code('%key%', $key)
-                    ->code('%path%', $this->arrayFile->path()->absolute())
+                    ->code('%path%', $this->arrayFile->file()->path()->absolute())
                     ->toString()
             );
         }

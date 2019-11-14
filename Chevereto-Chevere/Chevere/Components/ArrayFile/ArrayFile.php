@@ -14,47 +14,43 @@ declare(strict_types=1);
 namespace Chevere\Components\ArrayFile;
 
 use LogicException;
-
-use Chevere\Components\File\File;
-use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
-use Chevere\Contracts\Path\PathContract;
+use Chevere\Contracts\ArrayFile\ArrayFileContract;
+use Chevere\Contracts\File\FileContract;
+use Chevere\Contracts\File\FilePhpContract;
 
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).
  */
-final class ArrayFile
+final class ArrayFile implements ArrayFileContract
 {
     /** @var array The array returned by the file */
     private $array;
 
-    /** @var PathContract */
-    private $path;
-
-    /** @var FileReturn */
-    private $fileReturn;
+    /** @var FilePhpContract */
+    private $filePhp;
 
     /** @var Type */
     private $type;
 
-    public function __construct(PathContract $path)
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(FilePhpContract $filePhp)
     {
-        $filePhp = new FilePhp(
-            new File($path)
-        );
-        $this->path = $path;
-        $this->fileReturn = (new FileReturn($filePhp))
+        $this->filePhp = $filePhp;
+        $fileReturn = (new FileReturn($this->filePhp))
             ->withNoStrict();
-        $this->array = $this->fileReturn->return();
+        $this->array = $fileReturn->return();
         $this->validateIsArray();
     }
 
     /**
-     * @param Type $type The array members must match the target type, classname or interface.
+     * {@inheritdoc}
      */
-    public function withMembersType(Type $type): ArrayFile
+    public function withMembersType(Type $type): ArrayFileContract
     {
         $new = clone $this;
         $new->type = $type;
@@ -63,14 +59,20 @@ final class ArrayFile
         return $new;
     }
 
-    public function path(): PathContract
+    /**
+     * {@inheritdoc}
+     */
+    public function file(): FileContract
     {
-        return $this->path;
+        return $this->filePhp->file();
     }
 
-    public function toArray(): array
+    /**
+     * {@inheritdoc}
+     */
+    public function array(): array
     {
-        return $this->array ?? [];
+        return $this->array;
     }
 
     private function validateIsArray(): void
@@ -78,8 +80,8 @@ final class ArrayFile
         $type = gettype($this->array);
         if ('array' !== $type) {
             throw new LogicException(
-                (new Message('Expecting file %filepath% return type array, %returnType% provided'))
-                    ->code('%filepath%', $this->path->absolute())
+                (new Message('Expecting file %path% return type array, %returnType% provided'))
+                    ->code('%path%', $this->filePhp->file()->path()->absolute())
                     ->code('%returnType%', $type)
             );
         }
@@ -94,7 +96,7 @@ final class ArrayFile
         foreach ($this->array as $k => $object) {
             $validate = $validator($object);
             if ($validate) {
-                if ($this->type->primitive() == 'object') {
+                if ('object' == $this->type->primitive()) {
                     $validate = $this->type->validate($object);
                 }
             }
@@ -107,13 +109,13 @@ final class ArrayFile
     private function handleInvalidation($k, $object): void
     {
         $type = gettype($object);
-        if ($type == 'object') {
+        if ('object' == $type) {
             $type .= ' ' . get_class($object);
         }
         throw new LogicException(
             (new Message('Expecting array containing only %members% members, type %type% found at %filepath% (array key %key%)'))
                 ->code('%members%', $this->type->typeString())
-                ->code('%filepath%', $this->path->absolute())
+                ->code('%filepath%', $this->filePhp->file()->path()->absolute())
                 ->code('%type%', $type)
                 ->code('%key%', $k)
                 ->toString()

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\File;
 
-use InvalidArgumentException;
-
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\File\Exceptions\FileAlreadyExistsException;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
@@ -22,10 +20,10 @@ use Chevere\Components\File\Exceptions\FileUnableToCreateException;
 use Chevere\Components\File\Exceptions\FileUnableToPutException;
 use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Path\Exceptions\PathIsDirException;
 use Chevere\Components\Path\Path;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\Path\PathContract;
-
 use function ChevereFn\stringEndsWith;
 
 /**
@@ -145,7 +143,7 @@ final class File implements FileContract
     private function assertIsNotDir(): void
     {
         if ($this->path->isDir()) {
-            throw new InvalidArgumentException(
+            throw new PathIsDirException(
                 (new Message('Path %path% is a directory'))
                     ->code('%path%', $this->path->relative())
                     ->toString()

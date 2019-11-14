@@ -21,11 +21,14 @@ use Chevere\Components\App\Exceptions\BuildFileNotExistsException;
 use Chevere\Components\App\Parameters;
 use Chevere\Components\App\Services;
 use Chevere\Components\ArrayFile\ArrayFile;
+use Chevere\Components\File\File;
+use Chevere\Components\File\FilePhp;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Maker;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\CheckoutContract;
+use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\File\FileContract;
 use PHPUnit\Framework\TestCase;
@@ -37,6 +40,20 @@ final class BuildTest extends TestCase
         $app = new App(new Services(), new Response());
 
         return new Build($app, new Path('build'));
+    }
+
+    public function getParameters(): ParametersContract
+    {
+        return
+            new Parameters(
+                new ArrayFile(
+                    new FilePhp(
+                        new File(
+                            new Path('parameters.php')
+                        )
+                    )
+                )
+            );
     }
 
     public function testConstructor(): void
@@ -51,11 +68,7 @@ final class BuildTest extends TestCase
     public function testWithParameters(): void
     {
         $build = $this->getBuild();
-        $parameters = new Parameters(
-            new ArrayFile(
-                new Path('parameters.php')
-            )
-        );
+        $parameters = $this->getParameters();
         $build = $build
             ->withParameters($parameters);
 
@@ -84,11 +97,7 @@ final class BuildTest extends TestCase
     public function testMakeAndDestroy(): void
     {
         $build = $this->getBuild();
-        $parameters = new Parameters(
-            new ArrayFile(
-                new Path('parameters.php')
-            )
-        );
+        $parameters = $this->getParameters();
         $routerMaker = new Maker();
         $build = $build
             ->withParameters($parameters)

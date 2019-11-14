@@ -16,6 +16,8 @@ namespace Chevere\Components\Router;
 use InvalidArgumentException;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Cache\CacheKey;
+use Chevere\Components\File\File;
+use Chevere\Components\File\FilePhp;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Route\Route;
@@ -96,10 +98,16 @@ final class Maker implements MakerContract
     {
         $new = clone $this;
         foreach ($routeFiles as $fileHandleString) {
-            $path = new Path($fileHandleString);
-            $arrayFile = (new ArrayFile($path))
-                ->withMembersType(new Type(RouteContract::class));
-            foreach ($arrayFile->toArray() as $route) {
+            $arrayFile =
+                (new ArrayFile(
+                    new FilePhp(
+                        new File(
+                            new Path($fileHandleString)
+                        )
+                    )
+                ))
+                    ->withMembersType(new Type(RouteContract::class));
+            foreach ($arrayFile->array() as $route) {
                 $new = $new->withAddedRoute($route, $fileHandleString);
             }
         }

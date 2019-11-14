@@ -36,7 +36,6 @@ final class CacheTest extends TestCase
     {
         $path = new Path('var/CacheTest_' . uniqid());
         $dir = new Dir($path);
-        $cacheKey = new CacheKey('keyTest');
         $this->expectException(PathIsNotDirectoryException::class);
         new Cache($dir);
     }
@@ -65,8 +64,7 @@ final class CacheTest extends TestCase
     public function testWithPut(): void
     {
         $key = uniqid();
-        $var = time();
-        $var = [false, 'test', new Path('test')];
+        $var = [time(), false, 'test', new Path('test'), 13.13];
         $cacheKey = new CacheKey($key);
         $cache = $this->getTestCache()
             ->withPut($cacheKey, $var);
