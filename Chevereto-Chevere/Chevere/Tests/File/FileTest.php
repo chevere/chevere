@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\File;
 
-use InvalidArgumentException;
 use RuntimeException;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\File\File;
+use Chevere\Components\Path\Exceptions\PathIsDirException;
 use Chevere\Components\Path\Path;
 use Chevere\Contracts\File\FileContract;
 use PHPUnit\Framework\TestCase;
@@ -29,13 +29,14 @@ final class FileTest extends TestCase
         if (false === file_put_contents($path->absolute(), 'una mona pilucha')) {
             throw new RuntimeException('Unable to create file ' . $path->absolute());
         }
+
         return new File($path);
     }
 
     public function testWithDirPath(): void
     {
         $path = new Path('var');
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(PathIsDirException::class);
         new File($path);
     }
 

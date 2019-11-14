@@ -145,7 +145,7 @@ final class File implements FileContract
         if ($this->path->isDir()) {
             throw new PathIsDirException(
                 (new Message('Path %path% is a directory'))
-                    ->code('%path%', $this->path->relative())
+                    ->code('%path%', $this->path->absolute())
                     ->toString()
             );
         }
