@@ -14,16 +14,17 @@ declare(strict_types=1);
 namespace Chevere\Contracts\ArrayFile;
 
 use Chevere\Components\Type\Type;
-use Chevere\Components\Path\Exceptions\PathIsDirException;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
+use Chevere\Components\File\Exceptions\FileNotFoundException;
 
 interface ArrayFileContract
 {
     /**
      * Creates a new instance.
      *
-     * @throws PathIsDirException if $path represents a directory
+     * @throws FileNotFoundException          if the $filePhp doesn't exists
+     * @throws FileReturnInvalidTypeException if the actual file return isn't type array
      */
     public function __construct(FilePhpContract $filePhp);
 
@@ -34,6 +35,8 @@ interface ArrayFileContract
      * an instance that contains the specified RouterContract.
      *
      * @param Type $type a Type that all array top level members must satisfy
+     *
+     * @throws ArrayFileTypeException if one of the members doesn't match the specified $type
      */
     public function withMembersType(Type $type): ArrayFileContract;
 

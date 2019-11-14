@@ -31,4 +31,12 @@ final class FileReturnTest extends TestCase
         );
         $this->assertSame($file, $fileReturn->file());
     }
+
+    public function testEmptyFile(): void
+    {
+    }
+
+    public function testWithStrict(): void
+    {
+    }
 }

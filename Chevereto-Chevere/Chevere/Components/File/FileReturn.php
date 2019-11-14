@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\File;
 
+use Chevere\Components\File\Exceptions\FileWithoutContentsException;
 use RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\File\FileContract;
@@ -180,7 +181,7 @@ final class FileReturn implements FileReturnContract
     {
         $contents = $this->contents();
         if (!$contents) {
-            throw new RuntimeException(
+            throw new FileWithoutContentsException(
                 (new Message('Unable to get file %path% contents'))
                     ->code('%path%', $this->file()->path()->absolute())
                     ->toString()

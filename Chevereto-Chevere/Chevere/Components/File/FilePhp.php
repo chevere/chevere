@@ -18,6 +18,9 @@ use Chevere\Components\Message\Message;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
 
+/**
+ * A wrapper for FileContract to implement PHP files.
+ */
 final class FilePhp implements FilePhpContract
 {
     /** @var FileContract */
@@ -28,7 +31,7 @@ final class FilePhp implements FilePhpContract
      */
     public function __construct(FileContract $file)
     {
-        $this->file =  $file;
+        $this->file = $file;
         $this->assertFilePhp();
     }
 

@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ArrayFile;
 
-use LogicException;
+use Chevere\Components\ArrayFile\Exceptions\ArrayFileTypeException;
+use Chevere\Components\File\Exceptions\FileNotFoundException;
+use Chevere\Components\File\Exceptions\FileReturnInvalidTypeException;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
@@ -41,10 +43,11 @@ final class ArrayFile implements ArrayFileContract
     public function __construct(FilePhpContract $filePhp)
     {
         $this->filePhp = $filePhp;
+        $this->assertIsFile();
         $fileReturn = (new FileReturn($this->filePhp))
             ->withNoStrict();
         $this->array = $fileReturn->return();
-        $this->validateIsArray();
+        $this->validateReturnIsArray();
     }
 
     /**
@@ -54,7 +57,7 @@ final class ArrayFile implements ArrayFileContract
     {
         $new = clone $this;
         $new->type = $type;
-        $new->validate();
+        $new->validateMembers();
 
         return $new;
     }
@@ -75,22 +78,31 @@ final class ArrayFile implements ArrayFileContract
         return $this->array;
     }
 
-    private function validateIsArray(): void
+    private function assertIsFile(): void
     {
-        $type = gettype($this->array);
-        if ('array' !== $type) {
-            throw new LogicException(
-                (new Message('Expecting file %path% return type array, %returnType% provided'))
+        if (!$this->filePhp->file()->exists()) {
+            throw new FileNotFoundException(
+                (new Message('File %path% not found'))
                     ->code('%path%', $this->filePhp->file()->path()->absolute())
-                    ->code('%returnType%', $type)
+                    ->toString()
             );
         }
     }
 
-    /**
-     * Validate array members type.
-     */
-    private function validate(): void
+    private function validateReturnIsArray(): void
+    {
+        $type = gettype($this->array);
+        if ('array' !== $type) {
+            throw new FileReturnInvalidTypeException(
+                (new Message('Expecting file %path% return type array, %returnType% provided'))
+                    ->code('%path%', $this->filePhp->file()->path()->absolute())
+                    ->code('%returnType%', $type)
+                    ->toString()
+            );
+        }
+    }
+
+    private function validateMembers(): void
     {
         $validator = $this->type->validator();
         foreach ($this->array as $k => $object) {
@@ -112,8 +124,8 @@ final class ArrayFile implements ArrayFileContract
         if ('object' == $type) {
             $type .= ' ' . get_class($object);
         }
-        throw new LogicException(
-            (new Message('Expecting array containing only %members% members, type %type% found at %filepath% (array key %key%)'))
+        throw new ArrayFileTypeException(
+            (new Message('Expecting array containing only %members% members, type %type% found at %filepath% (key %key%)'))
                 ->code('%members%', $this->type->typeString())
                 ->code('%filepath%', $this->filePhp->file()->path()->absolute())
                 ->code('%type%', $type)
