@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
+use Chevere\Components\Api\Api;
 use Chevere\Components\App\Exceptions\BuildNeededException;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
@@ -21,6 +22,7 @@ use Chevere\Components\Http\Response;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Maker;
+use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\BuilderContract;
@@ -126,6 +128,11 @@ final class Loader implements LoaderContract
      */
     private function getServices(): ServicesContract
     {
+        if (CONSOLE && console()->isBuilding()) {
+            return (new Services())
+                ->withApi(new Api())
+                ->withRouter(new Router());
+        }
         try {
             return (new ServicesBuilder($this->builder->build(), $this->parameters))
                 ->services();

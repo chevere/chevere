@@ -20,36 +20,55 @@ use Chevere\Components\Api\Api;
 use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\ServicesBuilderContract;
-use function console;
-use const Chevere\CONSOLE;
 
 final class ServicesBuilder implements ServicesBuilderContract
 {
+    /** @var ServicesContract */
+    private $services;
+
+    /**
+     * Creates a new instance.
+     * 
+     * @param BuildContract $build The build containg AppContract services (if any)
+     * @param ParametersContract $parameters The application parameters which alter this services builder
+     */
     public function __construct(BuildContract $build, ParametersContract $parameters)
     {
-        $api = new Api();
-        $router = new Router();
-        $services = $build->app()->services();
-        if (!(CONSOLE && console()->isBuilding())) {
-            $dir = $build->cacheDir();
-            $cache = new Cache($dir);
-            if ($parameters->hasApi()) {
-                $api = $api
-                  ->withCache($cache);
-            }
-            $router = $router
-              ->withCache($cache);
-        }
+        $this->services = $build->app()->services();
+        $this->prepareServices();
+        $dir = $build->cacheDir();
+        $cache = new Cache($dir);
+        $this->services = $this->services
+            ->withRouter(
+                $this->services()->router()
+                    ->withCache($cache)
+            );
         if ($parameters->hasApi()) {
-            $services = $services->withApi($api);
+            $this->services = $this->services
+                ->withApi(
+                    $this->services->api()
+                        ->withCache($cache)
+                );
         }
-
-        $this->services = $services
-          ->withRouter($router);
     }
 
+    /**
+     * Provides access to the ServicesContract instance.
+     */
     public function services(): ServicesContract
     {
         return $this->services;
+    }
+
+    private function prepareServices(): void
+    {
+        if (!$this->services->hasRouter()) {
+            $this->services = $this->services
+                ->withRouter(new Router());
+        }
+        if (!$this->services->hasApi()) {
+            $this->services = $this->services
+                ->withApi(new Api());
+        }
     }
 }
