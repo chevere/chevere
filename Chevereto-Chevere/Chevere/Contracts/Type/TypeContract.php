@@ -13,41 +13,60 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Type;
 
+use Chevere\Components\Type\Exceptions\TypeNotFoundException;
+
 interface TypeContract
 {
+    /** Scalar */
+    const BOOLEAN = 'bool';
+    const INTEGER = 'integer';
+    const FLOAT = 'float';
+    const STRING = 'string';
+
+    /** Compound */
+    const ARRAY = 'array';
+    const OBJECT = 'object';
+    const CALLABLE = 'callable';
+    const ITERABLE = 'iterable';
+
+    /** Special */
+    const RESOURCE = 'resource';
+    const NULL = 'null';
+
+    /** Pseudo-types */
+    const CLASS_NAME = 'className';
+    const INTERFACE_NAME = 'interfaceName';
+
     /**
      * Type validators [primitive => validator callable]
      * taken from https://www.php.net/manual/en/ref.var.php.
      */
     const TYPE_VALIDATORS = [
-        'array' => 'is_array',
-        'bool' => 'is_bool',
-        'callable' => 'is_callable',
-        'countable' => 'is_countable',
-        'double' => 'is_double',
-        'float' => 'is_float',
-        'int' => 'is_int',
-        'integer' => 'is_integer',
-        'iterable' => 'is_iterable',
-        'long' => 'is_long',
-        'null' => 'is_null',
-        'numeric' => 'is_numeric',
-        'object' => 'is_object',
-        'real' => 'is_real',
-        'resource' => 'is_resource',
-        'scalar' => 'is_scalar',
-        'string' => 'is_string',
+        self::ARRAY => 'is_array',
+        self::BOOLEAN => 'is_bool',
+        self::CALLABLE => 'is_callable',
+        self::FLOAT => 'is_float',
+        self::INTEGER => 'is_integer',
+        self::ITERABLE => 'is_iterable',
+        self::NULL => 'is_null',
+        self::OBJECT => 'is_object',
+        self::RESOURCE => 'is_resource',
+        self::STRING => 'is_string',
+        self::CLASS_NAME => 'is_object',
+        self::INTERFACE_NAME => 'is_object',
     ];
 
     /**
      * Creates a new instance.
      *
      * @var string a primitive type, class name or interface
+     *
+     * @throws TypeNotFoundException if the type doesn't exists
      */
     public function __construct(string $type);
 
     /**
-     * Returns the type primitive (array, bool, object, etc.).
+     * Returns the type primitive (array, bool, object, ..., clasName, interfaceName).
      */
     public function primitive(): string;
 
@@ -59,18 +78,9 @@ interface TypeContract
     public function typeHinting(): string;
 
     /**
-     * Validate an object against the instance class and interface (if any).
-     *
-     * @param object $object The object to validate
+     * Returns a boolean indicating if $var validates agains the type.
      */
-    public function validateObject(object $object): bool;
-
-    /**
-     * Validate a variable against the instance primitive.
-     *
-     * @param mixed $var The variable to validate
-     */
-    public function validatePrimitive($var): bool;
+    public function validate($var): bool;
 
     /**
      * Returns the type validator callable.

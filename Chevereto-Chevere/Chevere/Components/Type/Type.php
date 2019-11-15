@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Type;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Type\Exceptions\TypeNotObjectException;
+use Chevere\Components\Type\Exceptions\TypeNotFoundException;
 use Chevere\Contracts\Type\TypeContract;
 
 /**
@@ -41,6 +41,7 @@ final class Type implements TypeContract
     {
         $this->type = $type;
         $this->setPrimitive();
+        $this->assertPrimitive();
     }
 
     /**
@@ -62,16 +63,30 @@ final class Type implements TypeContract
     /**
      * {@inheritdoc}
      */
-    public function validateObject(object $object): bool
+    public function validate($var): bool
     {
-        if ('object' !== $this->primitive) {
-            throw new TypeNotObjectException(
-                (new Message('Type must be a class to be able to call %method%, %type% provided'))
-                    ->code('%method%', __METHOD__)
-                    ->code('%type%', $this->primitive)
-                    ->toString()
-            );
+        if ($this->isAbleToValidateObjects()) {
+            return $this->validateObject($var);
         }
+
+        return $this->validatePrimitive($var);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function validator(): callable
+    {
+        return TypeContract::TYPE_VALIDATORS[$this->primitive];
+    }
+
+    private function isAbleToValidateObjects(): bool
+    {
+        return in_array($this->primitive, [TypeContract::CLASS_NAME, TypeContract::INTERFACE_NAME]);
+    }
+
+    private function validateObject(object $object): bool
+    {
         $objectClass = get_class($object);
         switch (true) {
             case isset($this->className, $this->interfaceName):
@@ -85,20 +100,9 @@ final class Type implements TypeContract
         return false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function validatePrimitive($var): bool
+    private function validatePrimitive($var): bool
     {
         return gettype($var) == $this->primitive;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function validator(): callable
-    {
-        return TypeContract::TYPE_VALIDATORS[$this->primitive];
     }
 
     private function isClassName(string $objectClass): bool
@@ -120,9 +124,8 @@ final class Type implements TypeContract
         }
         $this->handleClassName();
         $this->handleInterfaceName();
-        if (isset($this->className) || isset($this->interfaceName)) {
-            $this->primitive = 'object';
-        }
+        $this->handlePrimitiveClassName();
+        $this->handlePrimitiveInterfaceName();
     }
 
     private function handleClassName(): void
@@ -136,6 +139,31 @@ final class Type implements TypeContract
     {
         if (interface_exists($this->type)) {
             $this->interfaceName = $this->type;
+        }
+    }
+
+    private function handlePrimitiveClassName(): void
+    {
+        if (isset($this->className)) {
+            $this->primitive = 'className';
+        }
+    }
+
+    private function handlePrimitiveInterfaceName(): void
+    {
+        if (isset($this->interfaceName)) {
+            $this->primitive = 'interfaceName';
+        }
+    }
+
+    private function assertPrimitive(): void
+    {
+        if (null === $this->primitive) {
+            throw new TypeNotFoundException(
+                (new Message('Type %type% not found'))
+                    ->code('%type%', $this->type)
+                    ->toString()
+            );
         }
     }
 }

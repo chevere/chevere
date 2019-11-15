@@ -16,8 +16,8 @@ namespace Chevere\Components\Type\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when the type isn't an object.
+ * Exception thrown when the type doesn't exists.
  */
-final class TypeNotObjectException extends Exception
+final class TypeNotFoundException extends Exception
 {
 }

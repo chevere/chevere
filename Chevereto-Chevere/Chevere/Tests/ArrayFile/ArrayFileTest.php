@@ -100,7 +100,7 @@ final class ArrayFileTest extends TestCase
         $filePhp = new FilePhp($this->file);
         $this->expectNotToPerformAssertions();
         (new ArrayFile($filePhp))
-          ->withMembersType(new Type('int'));
+          ->withMembersType(new Type('integer'));
     }
 
     public function testWithMembersTypeObject(): void

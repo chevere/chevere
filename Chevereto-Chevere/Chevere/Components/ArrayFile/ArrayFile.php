@@ -105,24 +105,22 @@ final class ArrayFile implements ArrayFileContract
     private function validateMembers(): void
     {
         $validator = $this->type->validator();
-        foreach ($this->array as $k => $object) {
-            $validate = $validator($object);
+        foreach ($this->array as $k => $val) {
+            $validate = $validator($val);
             if ($validate) {
-                if ('object' == $this->type->primitive()) {
-                    $validate = $this->type->validateObject($object);
-                }
+                $validate = $this->type->validate($val);
             }
             if (!$validate) {
-                $this->handleInvalidation($k, $object);
+                $this->handleInvalidation($k, $val);
             }
         }
     }
 
-    private function handleInvalidation($k, $object): void
+    private function handleInvalidation($k, $val): void
     {
-        $type = gettype($object);
+        $type = gettype($val);
         if ('object' == $type) {
-            $type .= ' ' . get_class($object);
+            $type .= ' ' . get_class($val);
         }
         throw new ArrayFileTypeException(
             (new Message('Expecting array containing only %membersType% members, type %type% found at %filepath% (key %key%)'))
