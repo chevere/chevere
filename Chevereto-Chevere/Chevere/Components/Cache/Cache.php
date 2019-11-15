@@ -72,9 +72,8 @@ final class Cache implements CacheContract
         new FileCompile($filePhp);
         $new = clone $this;
         $new->array[$cacheKey->key()] = [
-            'path' => $fileReturn->file()->path()
-                ->absolute(),
-            'checksum' => $fileReturn->checksum(),
+            'path' => $fileReturn->file()->path()->absolute(),
+            'checksum' => $fileReturn->file()->checksum(),
         ];
 
         return $new;

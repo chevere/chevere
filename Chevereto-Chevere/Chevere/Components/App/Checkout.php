@@ -15,7 +15,6 @@ namespace Chevere\Components\App;
 
 use Chevere\Components\File\FilePhp;
 use InvalidArgumentException;
-
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\App\BuildContract;
@@ -61,7 +60,7 @@ final class Checkout implements CheckoutContract
      */
     public function checksum(): string
     {
-        return $this->fileReturn->checksum();
+        return $this->fileReturn->file()->checksum();
     }
 
     /**

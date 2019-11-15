@@ -83,13 +83,23 @@ final class TypeTest extends TestCase
         $this->assertTrue($type->validate([0, 1, 2, 3]));
     }
 
-    // public function testResource(): void
-    // {
-    // }
+    public function testResource(): void
+    {
+        $type = new Type(TypeContract::RESOURCE);
+        $resource = fopen(__FILE__, 'r');
+        $this->assertSame(TypeContract::RESOURCE, $type->primitive());
+        $this->assertSame(TypeContract::RESOURCE, $type->typeHinting());
+        $this->assertTrue($type->validate($resource));
+        fclose($resource);
+    }
 
-    // public function testNull(): void
-    // {
-    // }
+    public function testNull(): void
+    {
+        $type = new Type(TypeContract::NULL);
+        $this->assertSame(TypeContract::NULL, $type->primitive());
+        $this->assertSame(TypeContract::NULL, $type->typeHinting());
+        $this->assertTrue($type->validate(null));
+    }
 
     public function testClassName(): void
     {

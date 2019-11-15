@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Components\File;
 
 use Chevere\Components\Dir\Dir;
-use Chevere\Components\File\Exceptions\FileAlreadyExistsException;
+use Chevere\Components\File\Exceptions\FileExistsException;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\File\Exceptions\FileUnableToCreateException;
+use Chevere\Components\File\Exceptions\FileUnableToGetException;
 use Chevere\Components\File\Exceptions\FileUnableToPutException;
 use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
 use Chevere\Components\Message\Message;
@@ -74,15 +75,51 @@ final class File implements FileContract
     /**
      * {@inheritdoc}
      */
-    public function remove(): void
+    public function assertExists(): void
     {
         if (!$this->exists()) {
             throw new FileNotFoundException(
-                (new Message("The file %path% doesn't exists"))
+                (new Message("File %path% doesn't exists"))
                     ->code('%path%', $this->path->absolute())
                     ->toString()
             );
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function checksum(): string
+    {
+        $this->assertExists();
+
+        return hash_file(FileContract::CHECKSUM_ALGO, $this->path->absolute());
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function contents(): string
+    {
+        $this->assertExists();
+        $contents = file_get_contents($this->path->absolute());
+        if (false === $contents) {
+            throw new FileUnableToGetException(
+                (new Message('Unable to read the contents of the file at %path%'))
+                    ->code('%path%', $this->path->absolute())
+                    ->toString()
+            );
+        }
+
+        return $contents;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function remove(): void
+    {
+        $this->assertExists();
         if (!@unlink($this->path->absolute())) {
             throw new FileUnableToRemoveException(
                 (new Message('Unable to remove file %path%'))
@@ -98,7 +135,7 @@ final class File implements FileContract
     public function create(): void
     {
         if ($this->path->exists()) {
-            throw new FileAlreadyExistsException(
+            throw new FileExistsException(
                 (new Message('Unable to create file %path% (file already exists)'))
                     ->code('%path%', $this->path->absolute())
                     ->toString()
@@ -119,9 +156,7 @@ final class File implements FileContract
      */
     public function put(string $contents): void
     {
-        if (!$this->path->exists()) {
-            $this->createPath();
-        }
+        $this->assertExists();
         if (false === file_put_contents($this->path->absolute(), $contents)) {
             throw new FileUnableToPutException(
                 (new Message('Unable to write content to file %filepath%'))

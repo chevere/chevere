@@ -14,13 +14,16 @@ declare(strict_types=1);
 namespace Chevere\Contracts\Dir;
 
 use Chevere\Contracts\Path\PathContract;
+use Chevere\Components\Dir\Exceptions\DirUnableToRemoveException;
+use Chevere\Components\Dir\Exceptions\DirUnableToCreateException;
+use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
 
 interface DirContract
 {
     /**
      * Creates a new instance.
      *
-     * @throws PathIsDirectoryException If the PathContract represents a file.
+     * @throws PathIsDirectoryException if the PathContract represents a file
      */
     public function __construct(PathContract $path);
 
@@ -36,6 +39,9 @@ interface DirContract
 
     /**
      * Creates the directory.
+     *
+     * @throws DirExistsException         if the directory already exists
+     * @throws DirUnableToCreateException if unable to create the directoy
      */
     public function create(): void;
 
@@ -43,13 +49,18 @@ interface DirContract
      * Removes the directory.
      *
      * @return array An array with all the elements removed
+     *
+     * @throws DirUnableToRemoveException if unable to remove the directory
      */
     public function remove(): array;
 
     /**
      * Removes the contents from a path without deleting the path.
      *
-     * @return array An array with all the dir contents removed.
+     * @return array an array with all the dir contents removed
+     *
+     * @throws DirUnableToRemoveException  if unable to remove the directory
+     * @throws FileUnableToRemoveException if unable to remove a file in the directory
      */
     public function removeContents(): array;
 }

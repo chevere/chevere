@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\ArrayFile;
 
 use Chevere\Components\ArrayFile\Exceptions\ArrayFileTypeException;
-use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\File\Exceptions\FileReturnInvalidTypeException;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
@@ -43,7 +42,7 @@ final class ArrayFile implements ArrayFileContract
     public function __construct(FilePhpContract $filePhp)
     {
         $this->filePhp = $filePhp;
-        $this->assertIsFile();
+        $this->filePhp->file()->assertExists();
         $fileReturn = (new FileReturn($this->filePhp))
             ->withNoStrict();
         $this->array = $fileReturn->return();
@@ -76,17 +75,6 @@ final class ArrayFile implements ArrayFileContract
     public function array(): array
     {
         return $this->array;
-    }
-
-    private function assertIsFile(): void
-    {
-        if (!$this->filePhp->file()->exists()) {
-            throw new FileNotFoundException(
-                (new Message('File %path% not found'))
-                    ->code('%path%', $this->filePhp->file()->path()->absolute())
-                    ->toString()
-            );
-        }
     }
 
     private function validateReturnIsArray(): void

@@ -13,14 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Dir;
 
+use Chevere\Components\Dir\Exceptions\DirUnableToCreateException;
+use Chevere\Components\Dir\Exceptions\DirUnableToRemoveException;
+use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
+use Chevere\Components\Folder\Exceptions\DirExistsException;
+use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathIsFileException;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use RuntimeException;
-use Chevere\Components\Message\Message;
 use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\Path\PathContract;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 
 /**
  * This class provides interactions for a directory in the application namespace.
@@ -61,16 +64,16 @@ final class Dir implements DirContract
     public function create(): void
     {
         if ($this->path->exists()) {
-            throw new RuntimeException(
-                (new Message('Directory %directory% already exists'))
-                    ->code('%directory%', $this->path->absolute())
+            throw new DirExistsException(
+                (new Message('Directory %path% already exists'))
+                    ->code('%path%', $this->path->absolute())
                     ->toString()
             );
         }
         if (!mkdir($this->path->absolute(), 0777, true)) {
-            throw new RuntimeException(
-                (new Message('Unable to create directory %directory%'))
-                    ->code('%directory%', $this->path->absolute())
+            throw new DirUnableToCreateException(
+                (new Message('Unable to create directory %path%'))
+                    ->code('%path%', $this->path->absolute())
                     ->toString()
             );
         }
@@ -84,9 +87,9 @@ final class Dir implements DirContract
         $this->assertIsDir();
         $array = $this->removeContents();
         if (!rmdir($this->path->absolute())) {
-            throw new RuntimeException(
-                (new Message('Unable to remove directory %directory%'))
-                    ->code('%directory%', $this->path->absolute())
+            throw new DirUnableToRemoveException(
+                (new Message('Unable to remove directory %path%'))
+                    ->code('%path%', $this->path->absolute())
                     ->toString()
             );
         }
@@ -113,9 +116,9 @@ final class Dir implements DirContract
             $content = $fileinfo->getRealPath();
             if ($fileinfo->isDir()) {
                 if (!rmdir($content)) {
-                    throw new RuntimeException(
-                        (new Message('Unable to remove directory %directory%'))
-                            ->code('%directory%', $this->path->absolute())
+                    throw new DirUnableToRemoveException(
+                        (new Message('Unable to remove directory %path%'))
+                            ->code('%path%', $this->path->absolute())
                             ->toString()
                     );
                 }
@@ -123,9 +126,9 @@ final class Dir implements DirContract
                 continue;
             }
             if (!unlink($content)) {
-                throw new RuntimeException(
-                    (new Message('Unable to remove file %file%'))
-                        ->code('%file%', $this->path->absolute())
+                throw new FileUnableToRemoveException(
+                    (new Message('Unable to remove file %path%'))
+                        ->code('%path%', $this->path->absolute())
                         ->toString()
                 );
             }

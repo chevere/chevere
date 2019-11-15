@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\File;
 
+use Chevere\Components\File\Exceptions\FileHandleException;
+use Chevere\Components\File\Exceptions\FileInvalidContentsException;
 use Chevere\Components\File\Exceptions\FileWithoutContentsException;
-use RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
@@ -40,6 +41,7 @@ final class FileReturn implements FileReturnContract
     {
         $this->strict = true;
         $this->filePhp = $filePhp;
+        $this->file()->assertExists();
     }
 
     /**
@@ -59,31 +61,6 @@ final class FileReturn implements FileReturnContract
     public function file(): FileContract
     {
         return $this->filePhp->file();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function checksum(): string
-    {
-        return hash_file(FileReturnContract::CHECKSUM_ALGO, $this->file()->path()->absolute());
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function contents(): string
-    {
-        $contents = file_get_contents($this->file()->path()->absolute());
-        if (false === $contents) {
-            throw new RuntimeException(
-                (new Message('Unable to read the contents of the file at %path%'))
-                    ->code('%path%', $this->file()->path()->absolute())
-                    ->toString()
-            );
-        }
-
-        return $contents;
     }
 
     /**
@@ -114,18 +91,6 @@ final class FileReturn implements FileReturnContract
         return $var;
     }
 
-    private function getReturnVar($var)
-    {
-        if (is_string($var)) {
-            $aux = @unserialize($var);
-            if (false !== $aux) {
-                $var = $aux;
-            }
-        }
-
-        return $var;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -144,6 +109,18 @@ final class FileReturn implements FileReturnContract
         );
     }
 
+    private function getReturnVar($var)
+    {
+        if (is_string($var)) {
+            $aux = @unserialize($var);
+            if (false !== $aux) {
+                $var = $aux;
+            }
+        }
+
+        return $var;
+    }
+
     private function validate(): void
     {
         if ($this->strict) {
@@ -156,9 +133,10 @@ final class FileReturn implements FileReturnContract
 
     private function validateStrict(): void
     {
+        $this->file()->assertExists();
         $handle = fopen($this->file()->path()->absolute(), 'r');
         if (false === $handle) {
-            throw new RuntimeException(
+            throw new FileHandleException(
                 (new Message('Unable to %fn% %path% in %mode% mode'))
                     ->code('%fn%', 'fopen')
                     ->code('%path%', $this->file()->path()->absolute())
@@ -168,8 +146,15 @@ final class FileReturn implements FileReturnContract
         }
         $contents = fread($handle, FileReturnContract::PHP_RETURN_CHARS);
         fclose($handle);
+        if ('' == $contents) {
+            throw new FileWithoutContentsException(
+                (new Message("The file %path% doesn't have any contents"))
+                    ->code('%path%', $this->file()->path()->absolute())
+                    ->toString()
+            );
+        }
         if (FileReturnContract::PHP_RETURN !== $contents) {
-            throw new RuntimeException(
+            throw new FileInvalidContentsException(
                 (new Message('Unexpected contents in %path% (strict validation)'))
                     ->code('%path%', $this->file()->path()->absolute())
                     ->toString()
@@ -179,7 +164,7 @@ final class FileReturn implements FileReturnContract
 
     private function validateNonStrict(): void
     {
-        $contents = $this->contents();
+        $contents = $this->file()->contents();
         if (!$contents) {
             throw new FileWithoutContentsException(
                 (new Message('Unable to get file %path% contents'))
@@ -188,7 +173,7 @@ final class FileReturn implements FileReturnContract
             );
         }
         if (!preg_match_all('#<\?php([\S\s]*)\s*return\s*[\S\s]*;#', $contents)) {
-            throw new RuntimeException(
+            throw new FileInvalidContentsException(
                 (new Message('Unexpected contents in %path% (non-strict validation)'))
                     ->code('%path%', $this->file()->path()->absolute())
                     ->toString()

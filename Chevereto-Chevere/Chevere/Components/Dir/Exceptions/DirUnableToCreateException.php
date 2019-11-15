@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\File\Exceptions;
+namespace Chevere\Components\Dir\Exceptions;
 
 use Exception;
 
 /**
- * Exception thrown when the file already exists.
+ * Exception thrown when unable to create a directory.
  */
-final class FileAlreadyExistsException extends Exception
+final class DirUnableToCreateException extends Exception
 {
 }
