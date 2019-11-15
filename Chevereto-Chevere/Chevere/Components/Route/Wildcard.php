@@ -15,10 +15,7 @@ namespace Chevere\Components\Route;
 
 use InvalidArgumentException;
 use LogicException;
-
 use Chevere\Components\Message\Message;
-use Chevere\Components\Validate;
-
 use function ChevereFn\stringStartsWithNumeric;
 
 final class Wildcard
@@ -62,7 +59,7 @@ final class Wildcard
         }
         if (!preg_match('/^[a-z0-9_]+$/i', $this->wildcardName)) {
             throw new InvalidArgumentException(
-                (new Message("String %string% must contain only alphanumeric and underscore characters"))
+                (new Message('String %string% must contain only alphanumeric and underscore characters'))
                     ->code('%string%', $this->wildcardName)
                     ->toString()
             );
@@ -71,13 +68,22 @@ final class Wildcard
 
     private function assertRegex(): void
     {
-        if (!Validate::regex('/' . $this->regex . '/')) {
+        if (!$this->validateRegex('/' . $this->regex . '/')) {
             throw new InvalidArgumentException(
                 (new Message('Invalid regex pattern %regex%'))
                     ->code('%regex%', $this->regex)
                     ->toString()
             );
         }
+    }
+
+    private function validateRegex(string $regex): bool
+    {
+        set_error_handler(function () { }, E_WARNING);
+        $return = false !== preg_match($regex, '');
+        restore_error_handler();
+
+        return $return;
     }
 
     private function validateRoutePathMatch(): void

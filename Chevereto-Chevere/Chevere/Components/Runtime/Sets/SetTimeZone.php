@@ -15,10 +15,8 @@ namespace Chevere\Components\Runtime\Sets;
 
 use InvalidArgumentException;
 use RuntimeException;
-
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\Set;
-use Chevere\Components\Validate;
 use Chevere\Contracts\Runtime\SetContract;
 
 class SetTimeZone implements SetContract
@@ -30,7 +28,7 @@ class SetTimeZone implements SetContract
         if (date_default_timezone_get() == $this->value) {
             return;
         }
-        if ('UTC' != $this->value && !Validate::timezone($this->value)) {
+        if ('UTC' != $this->value && !$this->validateTimezone()) {
             throw new InvalidArgumentException(
                 (new Message('Invalid timezone %timezone%'))
                     ->code('%timezone%', $this->value)
@@ -45,5 +43,22 @@ class SetTimeZone implements SetContract
                     ->toString()
             );
         }
+    }
+
+    private function validateTimezone(): bool
+    {
+        $return = false;
+        $list = timezone_abbreviations_list();
+        foreach ($list as $zone) {
+            foreach ($zone as $item) {
+                $tz = $item['timezone_id'] ?? null;
+                if (isset($tz) && $this->value == $tz) {
+                    $return = true;
+                    break 2;
+                }
+            }
+        }
+
+        return $return;
     }
 }
