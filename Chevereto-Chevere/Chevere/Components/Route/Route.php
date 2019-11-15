@@ -15,7 +15,6 @@ namespace Chevere\Components\Route;
 
 use LogicException;
 use InvalidArgumentException;
-
 use Chevere\Components\Controllers\HeadController;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Message\Message;
@@ -143,7 +142,9 @@ final class Route implements RouteContract
     {
         $new = clone $this;
         $wildcard = new Wildcard($wildcardName, $regex);
-        $wildcard->bind($new);
+        $wildcard->assertPath(
+            new PathUri($new->path())
+        );
         $new->wheres[$wildcardName] = $regex;
 
         return $new;

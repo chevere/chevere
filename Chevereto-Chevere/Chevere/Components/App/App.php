@@ -42,6 +42,9 @@ final class App implements AppContract
     /** @var array String arguments (from request, cli) */
     private $arguments;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(ServicesContract $services, ResponseContract $response)
     {
         $this->services = $services;

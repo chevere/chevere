@@ -13,12 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use InvalidArgumentException;
-use LogicException;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Route\Exceptions\WildcardInvalidCharsException;
+use Chevere\Components\Route\Exceptions\WildcardInvalidFirstCharException;
+use Chevere\Components\Route\Exceptions\WildcardInvalidRegexException;
+use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
+use Chevere\Contracts\Route\WildcardContract;
 use function ChevereFn\stringStartsWithNumeric;
 
-final class Wildcard
+final class Wildcard implements WildcardContract
 {
     /** @var string */
     private $wildcardName;
@@ -29,9 +32,12 @@ final class Wildcard
     /** @var string */
     private $regex;
 
-    /** @var Route */
-    private $route;
+    /** @var string */
+    private $path;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(string $wildcardName, string $regex)
     {
         $this->wildcardName = $wildcardName;
@@ -41,24 +47,26 @@ final class Wildcard
         $this->assertRegex();
     }
 
-    public function bind(Route $route)
+    /**
+     * {@inheritdoc}
+     */
+    public function assertPath(PathUri $pathUri): void
     {
-        $this->route = $route;
-        $this->validateRoutePathMatch();
-        $this->validateRouteUniqueWildcard();
+        $this->path = $pathUri->path();
+        $this->assertRoutePathMatch();
     }
 
     private function assertFormat(): void
     {
         if (stringStartsWithNumeric($this->wildcardName)) {
-            throw new InvalidArgumentException(
+            throw new WildcardInvalidFirstCharException(
                 (new Message("String %string% shouldn't start with a numeric value"))
                     ->code('%string%', $this->wildcardName)
                     ->toString()
             );
         }
-        if (!preg_match('/^[a-z0-9_]+$/i', $this->wildcardName)) {
-            throw new InvalidArgumentException(
+        if (!preg_match(WildcardContract::ACCEPTED_CHARS_REGEX, $this->wildcardName)) {
+            throw new WildcardInvalidCharsException(
                 (new Message('String %string% must contain only alphanumeric and underscore characters'))
                     ->code('%string%', $this->wildcardName)
                     ->toString()
@@ -69,7 +77,7 @@ final class Wildcard
     private function assertRegex(): void
     {
         if (!$this->validateRegex('/' . $this->regex . '/')) {
-            throw new InvalidArgumentException(
+            throw new WildcardInvalidRegexException(
                 (new Message('Invalid regex pattern %regex%'))
                     ->code('%regex%', $this->regex)
                     ->toString()
@@ -86,27 +94,14 @@ final class Wildcard
         return $return;
     }
 
-    private function validateRoutePathMatch(): void
+    private function assertRoutePathMatch(): void
     {
-        $noWildcard = false === strpos($this->route->path(), "{{$this->wildcardName}}");
-        // $noOptionalWildcard = false === strpos($this->route->path(), '{' . "$this->wildcardName?" . '}');
-        // if ($noWildcard && $noOptionalWildcard) {
+        $noWildcard = false === strpos($this->path, "{{$this->wildcardName}}");
         if ($noWildcard) {
-            throw new LogicException(
-                (new Message("Wildcard %wildcard% doesn't exists in %path%"))
+            throw new WildcardNotFoundException(
+                (new Message("Wildcard %wildcard% doesn't exists in route %path%"))
                     ->code('%wildcard%', $this->wildcardString)
-                    ->code('%path%', $this->route->path())
-                    ->toString()
-            );
-        }
-    }
-
-    private function validateRouteUniqueWildcard(): void
-    {
-        if (isset($this->route->wheres()[$this->wildcardName])) {
-            throw new LogicException(
-                (new Message('Where clause for %wildcard% wildcard has been already declared'))
-                    ->code('%wildcard%', $this->wildcardString)
+                    ->code('%path%', $this->path)
                     ->toString()
             );
         }
