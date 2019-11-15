@@ -69,7 +69,7 @@ final class Type implements TypeContract
             return $this->validateObject($var);
         }
 
-        return $this->validatePrimitive($var);
+        return $this->validator()($var);
     }
 
     /**
@@ -98,11 +98,6 @@ final class Type implements TypeContract
         }
 
         return false;
-    }
-
-    private function validatePrimitive($var): bool
-    {
-        return gettype($var) == $this->primitive;
     }
 
     private function isClassName(string $objectClass): bool

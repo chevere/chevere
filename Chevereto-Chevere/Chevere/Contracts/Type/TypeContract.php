@@ -18,7 +18,7 @@ use Chevere\Components\Type\Exceptions\TypeNotFoundException;
 interface TypeContract
 {
     /** Scalar */
-    const BOOLEAN = 'bool';
+    const BOOLEAN = 'boolean';
     const INTEGER = 'integer';
     const FLOAT = 'float';
     const STRING = 'string';
