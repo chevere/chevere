@@ -19,68 +19,24 @@ use PHPUnit\Framework\TestCase;
 
 final class TypeTest extends TestCase
 {
-    public function testBoolean(): void
+    public function testTypes(): void
     {
-        $type = new Type(TypeContract::BOOLEAN);
-        $this->assertSame(TypeContract::BOOLEAN, $type->primitive());
-        $this->assertSame(TypeContract::BOOLEAN, $type->typeHinting());
-        $this->assertTrue($type->validate(true));
-    }
-
-    public function testInteger(): void
-    {
-        $type = new Type(TypeContract::INTEGER);
-        $this->assertSame(TypeContract::INTEGER, $type->primitive());
-        $this->assertSame(TypeContract::INTEGER, $type->typeHinting());
-        $this->assertTrue($type->validate(1));
-    }
-
-    public function testFloat(): void
-    {
-        $type = new Type(TypeContract::FLOAT);
-        $this->assertSame(TypeContract::FLOAT, $type->primitive());
-        $this->assertSame(TypeContract::FLOAT, $type->typeHinting());
-        $this->assertTrue($type->validate(13.13));
-    }
-
-    public function testString(): void
-    {
-        $type = new Type(TypeContract::STRING);
-        $this->assertSame(TypeContract::STRING, $type->primitive());
-        $this->assertSame(TypeContract::STRING, $type->typeHinting());
-        $this->assertTrue($type->validate('test'));
-    }
-
-    public function testArray(): void
-    {
-        $type = new Type(TypeContract::ARRAY);
-        $this->assertSame(TypeContract::ARRAY, $type->primitive());
-        $this->assertSame(TypeContract::ARRAY, $type->typeHinting());
-        $this->assertTrue($type->validate(['test']));
-    }
-
-    public function testObject(): void
-    {
-        $type = new Type(TypeContract::OBJECT);
-        $this->assertSame(TypeContract::OBJECT, $type->primitive());
-        $this->assertSame(TypeContract::OBJECT, $type->typeHinting());
-        $this->assertTrue($type->validate(new self()));
-    }
-
-    public function testCallable(): void
-    {
-        $type = new Type(TypeContract::CALLABLE);
-        $this->assertSame(TypeContract::CALLABLE, $type->primitive());
-        $this->assertSame(TypeContract::CALLABLE, $type->typeHinting());
-        $this->assertTrue($type->validate('phpinfo'));
-    }
-
-    public function testIterable(): void
-    {
-        $type = new Type(TypeContract::ITERABLE);
-        $this->assertSame(TypeContract::ITERABLE, $type->primitive());
-        $this->assertSame(TypeContract::ITERABLE, $type->typeHinting());
-        $this->assertTrue($type->validate([0, 1, 2, 3]));
+        foreach ([
+            TypeContract::BOOLEAN => true,
+            TypeContract::INTEGER => 1,
+            TypeContract::FLOAT => 13.13,
+            TypeContract::STRING => 'test',
+            TypeContract::ARRAY => ['test'],
+            TypeContract::OBJECT => new self(),
+            TypeContract::CALLABLE => 'phpinfo',
+            TypeContract::ITERABLE => [4, 2, 1, 3],
+            TypeContract::NULL => null,
+        ] as $key => $val) {
+            $type = new Type($key);
+            $this->assertSame($key, $type->primitive());
+            $this->assertSame($key, $type->typeHinting());
+            $this->assertTrue($type->validate($val));
+        }
     }
 
     public function testResource(): void
@@ -91,14 +47,6 @@ final class TypeTest extends TestCase
         $this->assertSame(TypeContract::RESOURCE, $type->typeHinting());
         $this->assertTrue($type->validate($resource));
         fclose($resource);
-    }
-
-    public function testNull(): void
-    {
-        $type = new Type(TypeContract::NULL);
-        $this->assertSame(TypeContract::NULL, $type->primitive());
-        $this->assertSame(TypeContract::NULL, $type->typeHinting());
-        $this->assertTrue($type->validate(null));
     }
 
     public function testClassName(): void
