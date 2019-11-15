@@ -38,7 +38,7 @@ interface WildcardContract
     /**
      * Asserts that $path contains $wildcardName.
      *
-     * @param string A path including the wildcard, like `/{wildcard}`
+     * @param string $pathUri A path including the wildcard, like `/{wildcard}`
      *
      * @throws WildcardNotFoundException if the wildcard doesn't exists in the path
      */

@@ -46,7 +46,9 @@ final class TypeTest extends TestCase
         $this->assertSame(TypeContract::RESOURCE, $type->primitive());
         $this->assertSame(TypeContract::RESOURCE, $type->typeHinting());
         $this->assertTrue($type->validate($resource));
-        fclose($resource);
+        if (false !== $resource) {
+            fclose($resource);
+        }
     }
 
     public function testClassName(): void
