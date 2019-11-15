@@ -84,9 +84,15 @@ final class FileReturnTest extends TestCase
 
     public function testReturnInvalidContents(): void
     {
-        $this->file->put('test');
+        $this->file->put('<?php return "test";');
         $this->expectException(FileInvalidContentsException::class);
         $this->fileReturn->return();
+    }
+
+    public function testReturnContents(): void
+    {
+        $this->file->put(FileReturnContract::PHP_RETURN . '"test";');
+        $this->assertSame('test', $this->fileReturn->return());
     }
 
     public function testVarFileNotFound(): void
@@ -108,6 +114,12 @@ final class FileReturnTest extends TestCase
         $this->file->put('test');
         $this->expectException(FileInvalidContentsException::class);
         $this->fileReturn->var();
+    }
+
+    public function testVarContents(): void
+    {
+        $this->file->put(FileReturnContract::PHP_RETURN . '["test", 1];');
+        $this->assertSame(['test', 1], $this->fileReturn->var());
     }
 
     public function testPutFileNotFound(): void
@@ -139,5 +151,21 @@ final class FileReturnTest extends TestCase
             $this->fileReturn->put($val);
             $this->assertEquals($val, $this->fileReturn->var());
         }
+    }
+
+    public function testWithNoStrict(): void
+    {
+        $this->file->put("<?php return 'test';");
+        $this->fileReturn = $this->fileReturn
+            ->withNoStrict();
+
+        $string = 'test';
+        $this->assertSame($string, $this->fileReturn->return());
+        $this->assertSame($string, $this->fileReturn->var());
+
+        $array = [1, 1.1, 'test'];
+        $this->file->put("<?php return [1, 1.1, 'test'];");
+        $this->assertSame($array, $this->fileReturn->return());
+        $this->assertSame($array, $this->fileReturn->var());
     }
 }

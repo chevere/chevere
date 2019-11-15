@@ -38,4 +38,16 @@ final class PathUriTest extends TestCase
         $this->expectException(PathUriUnmatchedBracesException::class);
         new PathUri('/test/{test/}/test');
     }
+
+    public function testConstruct(): void
+    {
+        $pathUri = new PathUri('/test');
+        $this->assertFalse($pathUri->hasHandlebars());
+    }
+
+    public function testConstructWithHandlebars(): void
+    {
+        $pathUri = new PathUri('/test/{handlebars}/test');
+        $this->assertTrue($pathUri->hasHandlebars());
+    }
 }

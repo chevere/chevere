@@ -36,6 +36,9 @@ interface FileReturnContract
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified no-strict flag.
+     *
+     * By default, a FileReturn must match the PHP_RETURN. The no-strict flag will allow to work with any PHP file
+     * long as it returns something.
      */
     public function withNoStrict(): FileReturnContract;
 
