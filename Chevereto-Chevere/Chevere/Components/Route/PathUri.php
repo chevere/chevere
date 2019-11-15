@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
+use Chevere\Components\Route\Exceptions\PathUriUnmatchedBracesException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Exceptions\PathUriInvalidFormatException;
+use Chevere\Components\Route\Exceptions\PathUriForwardSlashException;
+use Chevere\Components\Route\Exceptions\PathUriInvalidCharsException;
 use Chevere\Components\Route\Exceptions\WildcardReservedException;
 use Chevere\Contracts\Route\PathUriContract;
 use function ChevereFn\stringStartsWith;
@@ -28,8 +30,7 @@ final class PathUri implements PathUriContract
     private $hasHandlebars;
 
     /**
-     * @throws PathUriInvalidFormatException if $path format is invalid
-     * @throws WildcardReservedException     if $path contains reserved wildcards
+     * {@inheritdoc}
      */
     public function __construct(string $path)
     {
@@ -42,11 +43,17 @@ final class PathUri implements PathUriContract
         }
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function path(): string
     {
         return $this->path;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function hasHandlebars(): bool
     {
         return $this->hasHandlebars;
@@ -54,17 +61,17 @@ final class PathUri implements PathUriContract
 
     private function assertFormat(): void
     {
-        $messages = [];
         if (!stringStartsWith('/', $this->path)) {
-            $messages[] = 'must start with a forward slash';
+            throw new PathUriForwardSlashException(
+                (new Message('Route path %path% must start with a forward slash'))
+                    ->code('%path%', $this->path)
+                    ->toString()
+            );
         }
         $illegals = $this->getIllegalChars();
         if (!empty($illegals)) {
-            $messages[] = 'must not contain illegal characters (' . implode(', ', $illegals) . ')';
-        }
-        if (!empty($messages)) {
-            throw new PathUriInvalidFormatException(
-                (new Message('Route path %path% ' . implode(' and ', $messages)))
+            throw new PathUriInvalidCharsException(
+                (new Message('Route path %path% must not contain illegal characters (' . implode(' ', $illegals) . ')'))
                     ->code('%path%', $this->path)
                     ->toString()
             );
@@ -78,7 +85,7 @@ final class PathUri implements PathUriContract
         preg_match_all(Set::REGEX_WILDCARD_SEARCH, $this->path, $matches);
         $countMatches = count($matches[0]);
         if ($countOpen !== $countClose || $countOpen !== $countMatches) {
-            throw new PathUriInvalidFormatException(
+            throw new PathUriUnmatchedBracesException(
                 (new Message('Route path %path% contains unmatched braces (%countOpen% open, %countClose% close, %countMatches% matches)'))
                     ->code('%path%', $this->path)
                     ->strtr('%countOpen%', (string) $countOpen)

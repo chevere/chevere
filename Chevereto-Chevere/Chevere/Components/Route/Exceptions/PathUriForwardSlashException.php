@@ -16,8 +16,8 @@ namespace Chevere\Components\Route\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when the wildcard contains invalid chars.
+ * Exception thrown when the path uri doesn't start with a forward slash.
  */
-final class WildcardInvalidCharsException extends Exception
+final class PathUriForwardSlashException extends Exception
 {
 }

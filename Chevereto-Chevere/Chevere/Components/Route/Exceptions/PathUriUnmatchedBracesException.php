@@ -16,8 +16,8 @@ namespace Chevere\Components\Route\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when a wildcard starts with a forbidden character.
+ * Exception thrown when the path uri braces doesn't match.
  */
-final class WildcardInvalidFirstCharException extends Exception
+final class PathUriUnmatchedBracesException extends Exception
 {
 }

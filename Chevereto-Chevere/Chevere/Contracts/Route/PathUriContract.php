@@ -15,9 +15,24 @@ namespace Chevere\Contracts\Route;
 
 interface PathUriContract
 {
+    /**
+     * Creates a new instance.
+     *
+     * @param string $path a path uri like `/path/{wildcard}`
+     *
+     * @throws PathUriInvalidFormatException   if $path format is invalid or if it doesn't start with forward slash
+     * @throws PathUriUnmatchedBracesException if $path contains unmatched braces
+     * @throws WildcardReservedException       if $path contains reserved wildcards
+     */
     public function __construct(string $path);
 
+    /**
+     * Provides access to the path.
+     */
     public function path(): string;
 
+    /**
+     * Returns a boolean indicating whether the instance has handlebars `{}`.
+     */
     public function hasHandlebars(): bool;
 }

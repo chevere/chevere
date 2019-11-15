@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Tests\Route;
 
 use Chevere\Components\Route\Exceptions\WildcardInvalidCharsException;
-use Chevere\Components\Route\Exceptions\WildcardInvalidFirstCharException;
 use Chevere\Components\Route\Exceptions\WildcardInvalidRegexException;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
+use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Wildcard;
 use Chevere\Contracts\Route\WildcardContract;
@@ -31,7 +31,7 @@ final class WildcardTest extends TestCase
 
     public function testConstructWildcardStartsWithInvalidChar(): void
     {
-        $this->expectException(WildcardInvalidFirstCharException::class);
+        $this->expectException(WildcardStartWithNumberException::class);
         new Wildcard('0test', '');
     }
 

@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Contracts\Route;
 
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
-use Chevere\Components\Route\Exceptions\WildcardInvalidFirstCharException;
-use Chevere\Components\Route\Exceptions\WildcardInvalidCharsException;
 use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
+use Chevere\Components\Route\Exceptions\WildcardInvalidCharsException;
+use Chevere\Components\Route\Exceptions\WildcardInvalidRegexException;
 
 interface WildcardContract
 {
@@ -28,9 +29,9 @@ interface WildcardContract
      * @param string $wildcardName The wildcard name
      * @param string $regex        The regex patter, without delimeters
      *
-     * @throws WildcardInvalidFirstCharException if $wildcardName starts with a number
-     * @throws WildcardInvalidCharsException     if $wildcardName contains invalid chars
-     * @throws WildcardInvalidRegexException     if $regex is invalid
+     * @throws WildcardStartWithNumberException if $wildcardName starts with a number
+     * @throws WildcardInvalidCharsException    if $wildcardName contains invalid chars
+     * @throws WildcardInvalidRegexException    if $regex is invalid
      */
     public function __construct(string $wildcardName, string $regex);
 
