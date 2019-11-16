@@ -8,7 +8,6 @@ app/build/
 Chevereto-Chevere/logs/
 var/
 composer.lock
-.vscode/
 .phpunit.result.cache
 app/build.php
 /devnotes/

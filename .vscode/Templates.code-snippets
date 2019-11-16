@@ -1,0 +1,68 @@
+{
+	"contract": {
+		"description": "inserts a new contract",
+		"prefix": "contract",
+		"body": [
+			"<?php",
+			"namespace Chevere\\Contracts\\Folder;",
+			"",
+			"interface NameContract",
+			"{",
+			"}"
+		]
+	},
+	"test": {
+		"description": "inserts a new test",
+		"prefix": "test",
+		"body": [
+			"<?php",
+			"namespace Chevere\\Tests\\Folder;",
+			"",
+			"use PHPUnit\\Framework\\TestCase;",
+			"",
+			"final class NameTest extends TestCase",
+			"{",
+			"}"
+		]
+	},
+	"class": {
+		"description": "inserts a new class",
+		"prefix": "class",
+		"body": [
+			"<?php",
+			"namespace Chevere\\Components\\Folder;",
+			"",
+			"final class Name",
+			"{",
+			"}"
+		]
+	},
+	"constructor": {
+		"description": "inserts a constructor",
+		"prefix": "constructor",
+		"body": [
+			"\tpublic function __construct()",
+			"\t{",
+			"\t",
+			"\t}"
+		]
+	},
+	"exception": {
+		"description": "inserts a exception",
+		"prefix": "exception",
+		"body": [
+			"<?php",
+			"namespace Chevere\\Components\\Folder\\Exceptions;",
+			"",
+			"use Exception;",
+			"",
+			"/**",
+			" * Exception thrown when _____.",
+			" */",
+			"final class NameException extends Exception",
+			"{",
+			"}"
+		]
+	},
+
+}
