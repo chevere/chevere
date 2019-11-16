@@ -22,13 +22,15 @@ use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodsContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Components\Middleware\MiddlewareNames;
+use Chevere\Contracts\Middleware\MiddlewareNamesContract;
+use Chevere\Contracts\Route\PathUriContract;
 
 // IDEA: L10n support
 
 final class Route implements RouteContract
 {
-    /** @var string Route path passed, like /api/users/{user} */
-    private $path;
+    /** @var PathUriContract */
+    private $pathUri;
 
     /** @var string Route name (if any, must be unique) */
     private $name;
@@ -39,7 +41,7 @@ final class Route implements RouteContract
     /** @var array ['method' => 'controller',] */
     private $methods;
 
-    /** @var MiddlewareNames */
+    /** @var MiddlewareNamesContract */
     private $middlewareNames;
 
     /** @var array */
@@ -57,72 +59,27 @@ final class Route implements RouteContract
     /** @var string */
     private $type;
 
-    public function __construct(string $path)
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(PathUriContract $pathUri)
     {
-        $pathUri = new PathUri($path);
-        $this->path = $pathUri->path();
+        $this->pathUri = $pathUri;
         $this->setMaker();
         if ($pathUri->hasWildcards()) {
             $pathUriWildcards = new PathUriWildcards($pathUri);
             $this->key = $pathUriWildcards->key();
             $this->wildcards = $pathUriWildcards->wildcards();
         } else {
-            $this->key = $this->path;
+            $this->key = $this->pathUri->path();
         }
         $this->type = isset($this->wildcards) ? Route::TYPE_DYNAMIC : Route::TYPE_STATIC;
         $this->middlewareNames = new MiddlewareNames();
     }
 
-    public function maker(): array
-    {
-        return $this->maker;
-    }
-
-    public function key(): string
-    {
-        return $this->key;
-    }
-
-    public function path(): string
-    {
-        return $this->path;
-    }
-
-    public function name(): string
-    {
-        return $this->name;
-    }
-
-    public function hasName(): bool
-    {
-        return isset($this->name);
-    }
-
-    public function wheres(): array
-    {
-        return $this->wheres ?? [];
-    }
-
-    public function wildcardName(int $key): string
-    {
-        return $this->wildcards[$key] ?? '';
-    }
-
-    public function type(): string
-    {
-        return $this->type;
-    }
-
-    public function middlewareNames(): MiddlewareNames
-    {
-        return $this->middlewareNames;
-    }
-
-    public function regex(): string
-    {
-        return $this->regex;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function withName(string $name): RouteContract
     {
         if (!preg_match(RouteContract::REGEX_NAME, $name)) {
@@ -139,18 +96,24 @@ final class Route implements RouteContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withWhere(string $wildcardName, string $regex): RouteContract
     {
         $new = clone $this;
         $wildcard = new Wildcard($wildcardName, $regex);
         $wildcard->assertPathUri(
-            new PathUri($new->path())
+            $new->pathUri()
         );
         $new->wheres[$wildcardName] = $regex;
 
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withAddedMethod(MethodContract $method): RouteContract
     {
         if (!$method->hasControllerName()) {
@@ -173,6 +136,9 @@ final class Route implements RouteContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withMethods(MethodsContract $methods): RouteContract
     {
         $new = clone $this;
@@ -183,6 +149,9 @@ final class Route implements RouteContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withAddedMiddlewareName(string $middlewareName): RouteContract
     {
         $new = clone $this;
@@ -192,20 +161,9 @@ final class Route implements RouteContract
         return $new;
     }
 
-    public function getController(string $httpMethod): string
-    {
-        $controller = $this->methods[$httpMethod] ?? null;
-        if (!isset($controller)) {
-            throw new LogicException(
-                (new Message('No controller is associated to HTTP method %method%'))
-                    ->code('%method%', $httpMethod)
-                    ->toString()
-            );
-        }
-
-        return $controller;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function withFiller(): RouteContract
     {
         $new = clone $this;
@@ -222,11 +180,111 @@ final class Route implements RouteContract
                     ->withControllerName(HeadController::class)
             );
         }
-        $new->regex = $new->getRegex($new->key ?? $new->path);
+        $new->regex = $new->getRegex($new->key ?? $new->pathUri->path());
 
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function maker(): array
+    {
+        return $this->maker;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function key(): string
+    {
+        return $this->key;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function pathUri(): PathUriContract
+    {
+        return $this->pathUri;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasName(): bool
+    {
+        return isset($this->name);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function wheres(): array
+    {
+        return $this->wheres ?? [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function wildcardName(int $key): string
+    {
+        return $this->wildcards[$key] ?? '';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function type(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function middlewareNames(): MiddlewareNamesContract
+    {
+        return $this->middlewareNames;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function regex(): string
+    {
+        return $this->regex;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function controller(string $httpMethod): string
+    {
+        $controller = $this->methods[$httpMethod] ?? null;
+        if (!isset($controller)) {
+            throw new LogicException(
+                (new Message('No controller is associated to HTTP method %method%'))
+                    ->code('%method%', $httpMethod)
+                    ->toString()
+            );
+        }
+
+        return $controller;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRegex(string $pattern): string
     {
         $regex = '^' . $pattern . '$';

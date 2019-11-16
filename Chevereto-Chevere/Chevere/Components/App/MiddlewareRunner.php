@@ -16,18 +16,18 @@ namespace Chevere\Components\App;
 use Chevere\Components\App\Exceptions\AppWithoutRequestException;
 use Chevere\Components\Middleware\Exceptions\MiddlewareNamesEmptyException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Middleware\MiddlewareName;
-use Chevere\Components\Middleware\MiddlewareNames;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\MiddlewareRunnerContract;
 use Chevere\Contracts\Http\RequestContract;
+use Chevere\Contracts\Middleware\MiddlewareNamesContract;
+use Chevere\Contracts\Route\MiddlewareNameContract;
 
 final class MiddlewareRunner implements MiddlewareRunnerContract
 {
     /** @var AppContract */
     private $app;
 
-    /** @var MiddlewareNames */
+    /** @var MiddlewareNamesContract */
     private $middlewareNames;
 
     /** @var bool */
@@ -36,11 +36,7 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
     /** @var array An array containg the middlewares that have ran */
     private $record;
 
-    /**
-     * @param MiddlewareNames $middlewareNames An instance containing at least one middleware
-     * @param AppContract     $app             an application container with a RequestContract
-     */
-    public function __construct(MiddlewareNames $middlewareNames, AppContract $app)
+    public function __construct(MiddlewareNamesContract $middlewareNames, AppContract $app)
     {
         $this->app = $app;
         $this->assertAppWithRequest();
@@ -49,6 +45,9 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
         $this->hasRun = false;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withRun(): MiddlewareRunnerContract
     {
         $new = clone $this;
@@ -58,11 +57,17 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function hasRun(): bool
     {
         return $this->hasRun;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function record(): array
     {
         return $this->record;
@@ -83,9 +88,9 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
     {
         if (!$this->middlewareNames->hasAny()) {
             throw new MiddlewareNamesEmptyException(
-                (new Message("Instance of class %className% doesn't contain any %contract% contract"))
-                    ->code('%className%', MiddlewareNames::class)
-                    ->code('%contract%', MiddlewareName::class)
+                (new Message("Instance of %className% doesn't contain any %contract% contract"))
+                    ->code('%className%', MiddlewareNamesContract::class)
+                    ->code('%contract%', MiddlewareNameContract::class)
                     ->toString()
             );
         }

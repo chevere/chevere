@@ -27,7 +27,7 @@ final class HeadController extends Controller
     public function __invoke(): void
     {
         $route = $this->app()->route();
-        $controller = $route->getController('GET');
+        $controller = $route->controller('GET');
         if ($controller) {
             $this->invoke($controller);
             // $this->app()->response()->setContent(null);

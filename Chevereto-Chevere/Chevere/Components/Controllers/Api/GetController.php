@@ -14,13 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Components\Controllers\Api;
 
 use InvalidArgumentException;
-
 use Chevere\Components\Api\Api;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Message\Message;
-
 use function console;
-
 use const Chevere\CONSOLE;
 
 // TODO: Use json:api immutable
@@ -45,7 +42,7 @@ final class GetController extends Controller
         } else {
             $route = $this->app()->route();
             if (isset($route)) {
-                $endpoint = $route->path();
+                $endpoint = $route->pathUri()->path();
             } else {
                 $msg = 'Must provide the %s argument when running this callable without route context.';
                 $message = (new Message($msg))->code('%s', '$endpoint')->toString();

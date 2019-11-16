@@ -66,7 +66,7 @@ final class HeadController extends Controller
 
     private function process()
     {
-        $controller = $this->route->getController('GET');
+        $controller = $this->route->controller('GET');
         $this->app()->run($controller);
         // $this->app()->response()->setContent(null);
         // if (CLI) {

@@ -64,5 +64,14 @@
 			"}"
 		]
 	},
+	"docblock": {
+		"description": "inserts a docblock",
+		"prefix": "docblock",
+		"body": [
+			"/**",
+			" * {@inheritdoc}",
+			" */",
+		]
+	},
 
 }

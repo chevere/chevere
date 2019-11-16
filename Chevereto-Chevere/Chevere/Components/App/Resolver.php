@@ -21,7 +21,7 @@ use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
 
 /**
- * Application resolver
+ * Application resolver.
  */
 final class Resolver
 {
@@ -76,7 +76,7 @@ final class Resolver
         $this->builder = $this->builder
             ->withControllerName(
                 $app->route()
-                    ->getController($app->request()->getMethod())
+                    ->controller($app->request()->getMethod())
             )
             ->withControllerArguments(
                 $app->services()->router()->arguments()

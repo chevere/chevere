@@ -77,11 +77,11 @@ final class Maker implements MakerContract
         // n => .. => regex => route
         $new->regexIndex[$new->route->regex()] = $id;
         if (Route::TYPE_STATIC == $route->type()) {
-            $new->statics[$new->route->path()] = $id;
+            $new->statics[$new->route->pathUri()->path()] = $id;
         }
         $new->regex = $new->getRegex();
         $new->routesKeys[$new->route->key()] = $id;
-        $new->routesIndex[$new->route->path()] = [
+        $new->routesIndex[$new->route->pathUri()->path()] = [
             'id' => $id,
             'group' => $group,
         ];
@@ -166,7 +166,7 @@ final class Maker implements MakerContract
             $routeIndexed = $this->routes[$routeId];
             throw new InvalidArgumentException(
                 (new Message('Router conflict detected for %path% at %declare% (self-assigned internal key %key% is already reserved by %register%)'))
-                    ->code('%path%', $this->route->path())
+                    ->code('%path%', $this->route->pathUri()->path())
                     ->code('%declare%', $this->route->maker()['fileLine'])
                     ->code('%key%', $this->route->key())
                     ->code('%register%', $routeIndexed->maker()['fileLine'])
@@ -177,12 +177,12 @@ final class Maker implements MakerContract
 
     private function assertUniqueRoutePath(): void
     {
-        $routeIndex = $this->routesIndex[$this->route->path()] ?? null;
+        $routeIndex = $this->routesIndex[$this->route->pathUri()->path()] ?? null;
         if (isset($routeIndex)) {
             $routeIndexed = $this->routes[$routeIndex['id']];
             throw new InvalidArgumentException(
                 (new Message('Unable to register route path %path% at %declare% (path already registered at %register%)'))
-                    ->code('%path%', $this->route->path())
+                    ->code('%path%', $this->route->pathUri()->path())
                     ->code('%declare%', $this->route->maker()['fileLine'])
                     ->code('%register%', $routeIndexed->maker()['fileLine'])
                     ->toString()
@@ -199,9 +199,9 @@ final class Maker implements MakerContract
             throw new InvalidArgumentException(
                 (new Message('Unable to assign route name %name% for path %path% at %declare% (name assigned to %namedRoutePath% at %register%)'))
                     ->code('%name%', $name)
-                    ->code('%path%', $this->route->path())
+                    ->code('%path%', $this->route->pathUri()->path())
                     ->code('%declare%', $this->route->maker()['fileLine'])
-                    ->code('%namedRoutePath%', $routeExists->path())
+                    ->code('%namedRoutePath%', $routeExists->pathUri()->path())
                     ->code('%register%', $routeExists->maker()['fileLine'])
                     ->toString()
             );

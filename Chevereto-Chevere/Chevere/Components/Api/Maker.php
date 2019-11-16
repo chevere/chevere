@@ -29,6 +29,7 @@ use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Methods;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
+use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Maker as RouterMaker;
 use Chevere\Contracts\Api\MakerContract;
@@ -147,7 +148,7 @@ final class Maker implements MakerContract
         $path = '/' . $this->basePath;
         $this->api[$this->basePath][''] = $endpoint->toArray();
 
-        $route = new Route($path);
+        $route = new Route(new PathUri($path));
         $route = $route
             ->withMethods($endpoint->methods());
         // ->withId($this->basePath);
@@ -239,7 +240,7 @@ final class Maker implements MakerContract
             /** @var string Full qualified route key for $pathComponent like /api/users/{user} */
             $endpointRouteKey = stringLeftTail($pathComponent, '/');
 
-            $this->route = (new Route($endpointRouteKey))
+            $this->route = (new Route(new PathUri($endpointRouteKey)))
                 // ->withId($pathComponent)
                 ->withMethods($methods);
 

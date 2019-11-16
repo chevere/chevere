@@ -13,36 +13,34 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Route;
 
-use Chevere\Components\Middleware\MiddlewareNames;
 use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodsContract;
+use Chevere\Contracts\Middleware\MiddlewareNamesContract;
 
 interface RouteContract
 {
-    /** @const string Route without wildcards. */
+    /** Route type without wildcards. */
     const TYPE_STATIC = 'static';
 
-    /** @const string Route containing wildcards. */
+    /** Route type containing wildcards. */
     const TYPE_DYNAMIC = 'dynamic';
 
-    /** @const string Regex pattern used by default (no explicit where). */
+    /** Regex pattern used by default (no explicit where). */
     const REGEX_WILDCARD_WHERE = '[A-z0-9\_\-\%]+';
 
-    /** @const string Regex pattern used to validate route name. */
+    /** Regex pattern used to validate route name. */
     const REGEX_NAME = '/^[\w\-\.]+$/i';
 
     /**
-     * Route constructor.
-     *
-     * @param string $uri Route uri (key string)
+     * Creates a new instance.
      */
-    public function __construct(string $uri);
+    public function __construct(PathUriContract $pathUri);
 
     public function maker(): array;
 
     public function key(): string;
 
-    public function path(): string;
+    public function pathUri(): PathUriContract;
 
     public function name(): string;
 
@@ -50,7 +48,7 @@ interface RouteContract
 
     public function wheres(): array;
 
-    public function middlewareNames(): MiddlewareNames;
+    public function middlewareNames(): MiddlewareNamesContract;
 
     public function wildcardName(int $key): string;
 
@@ -92,7 +90,7 @@ interface RouteContract
     /**
      * @param string $httpMethod an HTTP method
      */
-    public function getController(string $httpMethod): string;
+    public function controller(string $httpMethod): string;
 
     /**
      * Fill object missing properties and whatnot.

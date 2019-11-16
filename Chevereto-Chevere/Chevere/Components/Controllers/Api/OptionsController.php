@@ -14,12 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Controllers\Api;
 
 use InvalidArgumentException;
-
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Message\Message;
-
 use function console;
-
 use const Chevere\CONSOLE;
 
 /**
@@ -39,7 +36,7 @@ final class OptionsController extends Controller
     {
         $route = $this->app()->route();
         if (isset($route)) {
-            $path = $route->path();
+            $path = $route->pathUri()->path();
         }
         if (!isset($path)) {
             $this->handleError();

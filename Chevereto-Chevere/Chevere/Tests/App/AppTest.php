@@ -17,6 +17,7 @@ use Chevere\Components\App\App;
 use Chevere\Components\App\Services;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
+use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
 use PHPUnit\Framework\TestCase;
 
@@ -63,7 +64,7 @@ final class AppTest extends TestCase
 
     public function testWithRoute(): void
     {
-        $route = new Route('/home');
+        $route = new Route(new PathUri('/home'));
         $app = (new App(new Services(), new Response()))
             ->withRoute($route);
 
