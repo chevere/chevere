@@ -16,8 +16,8 @@ namespace Chevere\Components\Route\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when the wildcard is declared.
+ * Exception thrown when the wildcard is duplicated.
  */
-final class WildcardDeclaredException extends Exception
+final class WildcardDuplicatedException extends Exception
 {
 }

@@ -13,20 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use InvalidArgumentException;
-use LogicException;
-
+use Chevere\Components\Folder\Exceptions\WildcardDuplicatedException;
 use Chevere\Components\Message\Message;
-
+use Chevere\Components\Route\Exceptions\PathUriInvalidException;
+use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
+use Chevere\Contracts\Route\PathUriContract;
+use Chevere\Contracts\Route\SetContract;
 use function ChevereFn\stringReplaceFirst;
 
-final class Set
+final class Set implements SetContract
 {
-    /** @const string Regex pattern used to catch {wildcard}. */
-    const REGEX_WILDCARD_SEARCH = '/{([a-z\_][\w_]*?)}/i';
-
-    /** @var string The route path */
-    private $path;
+    /** @var PathUriContract The route path */
+    private $pathUri;
 
     /** @var string Path key set representation ({wildcards} replaced by {n}) */
     private $key;
@@ -37,50 +35,75 @@ final class Set
     /** @var array string[] */
     private $wildcards;
 
-    public function __construct(string $path)
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(PathUriContract $pathUri)
     {
-        $this->path = $path;
+        $this->pathUri = $pathUri;
+        $this->assertHasHandlebars();
         // $matches[0] => [{wildcard1}, {wildcard2},...]
         // $matches[1] => [wildcard1, wildcard2,...]
-        if (!preg_match_all(static::REGEX_WILDCARD_SEARCH, $this->path, $matches)) {
-            throw new InvalidArgumentException(
-                (new Message('Expression %path% '))
+        if (!preg_match_all(SetContract::REGEX_WILDCARD_SEARCH, $this->pathUri->path(), $matches)) {
+            throw new WildcardNotFoundException(
+                (new Message("Path uri %path% doesn't contain any wildcard"))
+                    ->code('%path%', $this->pathUri->path())
                     ->toString()
             );
         }
         $this->matches = $matches;
-        $this->key = $path;
-        $this->handleMatches();
+        $this->handleSetKey();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function key(): string
     {
         return $this->key;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function matches(): array
     {
         return $this->matches ?? [];
     }
 
-    public function toArray(): array
+    /**
+     * {@inheritdoc}
+     */
+    public function wildcards(): array
     {
-        return $this->wildcards ?? [];
+        return $this->wildcards;
     }
 
-    private function handleMatches(): void
+    private function assertHasHandlebars(): void
     {
-        foreach ($this->matches[0] as $k => $v) {
+        if (!$this->pathUri->hasHandlebars()) {
+            throw new PathUriInvalidException(
+                (new Message("Path uri %path% doesn't contain any wildcard"))
+                    ->code('%path%', $this->pathUri->path())
+                    ->toString()
+            );
+        }
+    }
+
+    private function handleSetKey(): void
+    {
+        $this->key = $this->pathUri->path();
+        foreach ($this->matches[0] as $key => $val) {
             // Change {wildcard} to {n} (n is the wildcard index)
             if (isset($this->key)) {
-                $this->key = stringReplaceFirst($v, "{{$k}}", $this->key);
+                $this->key = stringReplaceFirst($val, "{{$key}}", $this->key);
             }
-            $wildcard = $this->matches[1][$k];
+            $wildcard = $this->matches[1][$key];
             if (in_array($wildcard, $this->wildcards ?? [])) {
-                throw new LogicException(
-                    (new Message('Must declare one unique wildcard per capturing group, duplicated %s detected in route %r'))
-                        ->code('%s', $this->matches[0][$k])
-                        ->code('%r', $this->path)
+                throw new WildcardDuplicatedException(
+                    (new Message('Duplicated wildcard %wildcard% in path uri %path%'))
+                        ->code('%wildcard%', $this->matches[0][$key])
+                        ->code('%path%', $this->path)
                         ->toString()
                 );
             }

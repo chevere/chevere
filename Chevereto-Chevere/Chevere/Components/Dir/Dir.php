@@ -16,7 +16,7 @@ namespace Chevere\Components\Dir;
 use Chevere\Components\Dir\Exceptions\DirUnableToCreateException;
 use Chevere\Components\Dir\Exceptions\DirUnableToRemoveException;
 use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
-use Chevere\Components\Folder\Exceptions\DirExistsException;
+use Chevere\Components\Dir\Exceptions\DirExistsException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathIsFileException;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;

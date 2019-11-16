@@ -62,9 +62,9 @@ final class Route implements RouteContract
         $this->path = $pathUri->path();
         $this->setMaker();
         if ($pathUri->hasHandlebars()) {
-            $set = new Set($this->path);
+            $set = new Set($pathUri);
             $this->key = $set->key();
-            $this->wildcards = $set->toArray();
+            $this->wildcards = $set->wildcards();
         } else {
             $this->key = $this->path;
         }

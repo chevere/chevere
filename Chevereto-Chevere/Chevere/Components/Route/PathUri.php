@@ -19,6 +19,7 @@ use Chevere\Components\Route\Exceptions\PathUriForwardSlashException;
 use Chevere\Components\Route\Exceptions\PathUriInvalidCharsException;
 use Chevere\Components\Route\Exceptions\WildcardReservedException;
 use Chevere\Contracts\Route\PathUriContract;
+use Chevere\Contracts\Route\SetContract;
 use function ChevereFn\stringStartsWith;
 
 final class PathUri implements PathUriContract
@@ -82,7 +83,7 @@ final class PathUri implements PathUriContract
     {
         $countOpen = substr_count($this->path, '{');
         $countClose = substr_count($this->path, '}');
-        preg_match_all(Set::REGEX_WILDCARD_SEARCH, $this->path, $matches);
+        preg_match_all(SetContract::REGEX_WILDCARD_SEARCH, $this->path, $matches);
         $countMatches = count($matches[0]);
         if ($countOpen !== $countClose || $countOpen !== $countMatches) {
             throw new PathUriUnmatchedBracesException(
