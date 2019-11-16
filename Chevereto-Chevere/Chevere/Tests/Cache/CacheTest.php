@@ -74,4 +74,7 @@ final class CacheTest extends TestCase
         $this->assertEquals($var, $fileReturn->var());
         $fileReturn->file()->remove();
     }
+
+    public function testRemove(): void
+    { }
 }

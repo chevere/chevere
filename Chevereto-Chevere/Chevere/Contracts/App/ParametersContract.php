@@ -15,6 +15,7 @@ namespace Chevere\Contracts\App;
 
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Path\Path;
+use Chevere\Contracts\ArrayFile\ArrayFileContract;
 use Chevere\Contracts\Path\PathContract;
 
 interface ParametersContract
@@ -33,7 +34,7 @@ interface ParametersContract
      */
     const KEY_ROUTES = 'routes';
 
-    public function __construct(ArrayFile $arrayFile);
+    public function __construct(ArrayFileContract $arrayFile);
 
     /**
      * Return an instance with the specified Path instances.
@@ -47,7 +48,7 @@ interface ParametersContract
      * Returns a boolean indicating whether the instance has any parameter.
      */
     public function hasParameters(): bool;
-    
+
     /**
      * Returns a boolean indicating whether the instance has API parameter.
      */
@@ -62,7 +63,7 @@ interface ParametersContract
      * Returns a boolean indicating whether the instance has route parameters.
      */
     public function hasRoutes(): bool;
-    
+
     /**
      * Get the routes parameter.
      */

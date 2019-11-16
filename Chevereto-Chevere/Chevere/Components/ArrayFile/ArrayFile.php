@@ -17,10 +17,10 @@ use Chevere\Components\ArrayFile\Exceptions\ArrayFileTypeException;
 use Chevere\Components\File\Exceptions\FileReturnInvalidTypeException;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Type\Type;
 use Chevere\Contracts\ArrayFile\ArrayFileContract;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
+use Chevere\Contracts\Type\TypeContract;
 
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).
@@ -33,7 +33,7 @@ final class ArrayFile implements ArrayFileContract
     /** @var FilePhpContract */
     private $filePhp;
 
-    /** @var Type */
+    /** @var TypeContract */
     private $type;
 
     /**
@@ -52,7 +52,7 @@ final class ArrayFile implements ArrayFileContract
     /**
      * {@inheritdoc}
      */
-    public function withMembersType(Type $type): ArrayFileContract
+    public function withMembersType(TypeContract $type): ArrayFileContract
     {
         $new = clone $this;
         $new->type = $type;

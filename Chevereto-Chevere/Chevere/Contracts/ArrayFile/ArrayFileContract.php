@@ -17,6 +17,7 @@ use Chevere\Components\Type\Type;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
+use Chevere\Contracts\Type\TypeContract;
 
 interface ArrayFileContract
 {
@@ -34,11 +35,11 @@ interface ArrayFileContract
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified RouterContract.
      *
-     * @param Type $type a Type that all array top level members must satisfy
+     * @param TypeContract $type a Type that all array top level members must satisfy
      *
      * @throws ArrayFileTypeException if one of the members doesn't match the specified $type
      */
-    public function withMembersType(Type $type): ArrayFileContract;
+    public function withMembersType(TypeContract $type): ArrayFileContract;
 
     /**
      * Provides access to the FileContract instance in FilePhpContract.

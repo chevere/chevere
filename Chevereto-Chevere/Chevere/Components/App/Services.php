@@ -45,11 +45,17 @@ final class Services implements ServicesContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function hasApi(): bool
     {
         return isset($this->api);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function api(): ApiContract
     {
         return $this->api;
@@ -66,11 +72,17 @@ final class Services implements ServicesContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function hasRouter(): bool
     {
         return isset($this->router);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function router(): RouterContract
     {
         return $this->router;

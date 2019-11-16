@@ -20,7 +20,7 @@ use Chevere\Components\Http\Request;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\BuilderContract;
-use Chevere\Contracts\App\RunContract;
+use Chevere\Contracts\App\RunnerContract;
 
 use function console;
 use function GuzzleHttp\Psr7\stream_for;
@@ -30,7 +30,7 @@ use const Chevere\CONSOLE;
 /**
  * Application builder runner.
  */
-final class Runner implements RunContract
+final class Runner implements RunnerContract
 {
     /** @var BuilderContract */
     private $builder;
@@ -58,6 +58,9 @@ final class Runner implements RunContract
         $this->builder = $builder;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function builder(): BuilderContract
     {
         return $this->builder;
@@ -66,7 +69,7 @@ final class Runner implements RunContract
     /**
      * {@inheritdoc}
      */
-    public function withConsoleLoop(): RunContract
+    public function withConsoleLoop(): RunnerContract
     {
         $new = clone $this;
         $new->consoleLoop = true;
@@ -74,11 +77,17 @@ final class Runner implements RunContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function hasConsoleLoop(): bool
     {
         return isset($this->consoleLoop);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function hasRouteNotFound(): bool
     {
         return isset($this->routeNotFound);
@@ -87,7 +96,7 @@ final class Runner implements RunContract
     /**
      * {@inheritdoc}
      */
-    public function withRun(): RunContract
+    public function withRun(): RunnerContract
     {
         $new = clone $this;
         $new->handleConsole();

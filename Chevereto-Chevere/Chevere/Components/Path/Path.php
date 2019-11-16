@@ -32,7 +32,7 @@ final class Path implements PathContract
 
     /** @var string Root context path (absolute) */
     private $root;
-    
+
     /** @var string Absolute path */
     private $absolute;
 
@@ -65,7 +65,7 @@ final class Path implements PathContract
     {
         return $this->relative;
     }
-    
+
     /**
      * {@inheritdoc}
      */
@@ -108,7 +108,7 @@ final class Path implements PathContract
     public function isFile(): bool
     {
         $this->clearStatCache();
-        
+
         return is_file($this->absolute);
     }
 
@@ -117,17 +117,10 @@ final class Path implements PathContract
      */
     public function getChild(string $path): PathContract
     {
-        // if (!$this->isDir()) {
-        //     throw new BadMethodCallException(
-        //         (new Message("Instance of %className% is representing a file so it doesn't allow children"))
-        //             ->code('%className%', __CLASS__)
-        //             ->toString()
-        //     );
-        // }
         $parent = $this->absolute();
-        $childrenPath = rtrim($parent, '/') ;
+        $childrenPath = rtrim($parent, '/');
 
-        return new Path($childrenPath. '/' . $path);
+        return new Path($childrenPath . '/' . $path);
     }
 
     private function assertPathFormat(): void
@@ -158,9 +151,6 @@ final class Path implements PathContract
             $this->assertRelativePath();
             $this->absolute = $this->getAbsolute();
         }
-        // if (is_dir($this->absolute)) {
-        //     $this->absolute = stringRightTail($this->absolute, '/');
-        // }
         $this->relative = $this->getRelative();
     }
 

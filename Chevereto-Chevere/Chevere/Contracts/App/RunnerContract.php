@@ -13,13 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\App;
 
-interface RunContract
+interface RunnerContract
 {
     /**
-     * Creates a new RunContract instance by passing the builder to run.
+     * Creates a new RunnerContract instance by passing the builder to run.
      */
     public function __construct(BuilderContract $builder);
 
+    /**
+     * Provides access to the BuilderContract instance.
+     */
     public function builder(): BuilderContract;
 
     /**
@@ -30,14 +33,20 @@ interface RunContract
      *
      * The console loop is needed to stop an endless loop when doing CLI instructions.
      */
-    public function withConsoleLoop(): RunContract;
+    public function withConsoleLoop(): RunnerContract;
 
+    /**
+     * Returns a boolean indicating whether the instance has a console loop.
+     */
     public function hasConsoleLoop(): bool;
 
+    /**
+     * Returns a boolean indicating whether the instance has route not found.
+     */
     public function hasRouteNotFound(): bool;
 
     /**
      * This method runs the application, CLI aware.
      */
-    public function withRun(): RunContract;
+    public function withRun(): RunnerContract;
 }

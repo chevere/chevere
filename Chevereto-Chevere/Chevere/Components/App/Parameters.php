@@ -20,6 +20,7 @@ use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Contracts\App\ParametersContract;
+use Chevere\Contracts\ArrayFile\ArrayFileContract;
 use Chevere\Contracts\Path\PathContract;
 
 /**
@@ -35,7 +36,7 @@ final class Parameters implements ParametersContract
         ParametersContract::KEY_ROUTES => 'array',
     ];
 
-    /** @var ArrayFile The parameters array used to construct the object */
+    /** @var ArrayFileContract The parameters array used to construct the object */
     private $arrayFile;
 
     /** @var string */
@@ -47,7 +48,7 @@ final class Parameters implements ParametersContract
     /**
      * {@inheritdoc}
      */
-    public function __construct(ArrayFile $arrayFile)
+    public function __construct(ArrayFileContract $arrayFile)
     {
         $this->arrayFile = $arrayFile;
         $this->assertKeys();
