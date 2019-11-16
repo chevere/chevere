@@ -17,6 +17,7 @@ use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\File\FileReturnContract;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
+use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
 
 interface CacheContract
 {
@@ -34,8 +35,8 @@ interface CacheContract
     /**
      * Put cache.
      *
-     * @param string $key Cache key
-     * @param mixed  $var anything, but keep it restricted to one-dimension iterables at most
+     * @param CacheKeyContract $cacheKey Cache key
+     * @param mixed            $var      anything, but keep it restricted to one-dimension iterables at most
      */
     public function withPut(CacheKeyContract $cacheKey, $var): CacheContract;
 
@@ -51,7 +52,14 @@ interface CacheContract
      *
      * @throws CacheKeyNotFoundException If the cache key doesn't exists
      */
-    public function get(CacheKeyContract $cacheKey): FileReturnContract;
+    public function fileReturn(CacheKeyContract $cacheKey): FileReturnContract;
+
+    /**
+     * Remove the cache key.
+     *
+     * @throws FileUnableToRemoveException if unable to remove the cache file
+     */
+    public function remove(CacheKeyContract $cacheKey): void;
 
     /**
      * Gets a resume of the cached entries.

@@ -58,10 +58,10 @@ final class CacheTest extends TestCase
         $cacheKey = new CacheKey(uniqid());
         $this->expectException(CacheKeyNotFoundException::class);
         $this->getTestCache()
-            ->get($cacheKey);
+            ->fileReturn($cacheKey);
     }
 
-    public function testWithPut(): void
+    public function testWithPutRemove(): void
     {
         $key = uniqid();
         $var = [time(), false, 'test', new Path('test'), 13.13];
@@ -70,11 +70,20 @@ final class CacheTest extends TestCase
             ->withPut($cacheKey, $var);
         $this->assertArrayHasKey($key, $cache->toArray());
         $this->assertTrue($cache->exists($cacheKey));
-        $fileReturn = $cache->get($cacheKey);
+        $fileReturn = $cache->fileReturn($cacheKey);
         $this->assertEquals($var, $fileReturn->var());
         $fileReturn->file()->remove();
     }
 
     public function testRemove(): void
-    { }
+    {
+        $key = uniqid();
+        $var = [time(), false, 'test', new Path('test'), 13.13];
+        $cacheKey = new CacheKey($key);
+        $cache = $this->getTestCache()
+            ->withPut($cacheKey, $var);
+        $this->assertTrue($cache->exists($cacheKey));
+        $cache->remove($cacheKey);
+        $this->assertFalse($cache->exists($cacheKey));
+    }
 }

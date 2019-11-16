@@ -63,9 +63,9 @@ final class Router implements RouterContract
         $new = clone $this;
         $new->cache = $cache;
         try {
-            $new->regex = $new->cache->get(new CacheKey(CacheKeys::REGEX))->return();
-            $new->routes = $new->cache->get(new CacheKey(CacheKeys::ROUTES))->return();
-            $new->routesIndex = $new->cache->get(new CacheKey(CacheKeys::ROUTES_INDEX))->return();
+            $new->regex = $new->cache->fileReturn(new CacheKey(CacheKeys::REGEX))->return();
+            $new->routes = $new->cache->fileReturn(new CacheKey(CacheKeys::ROUTES))->return();
+            $new->routesIndex = $new->cache->fileReturn(new CacheKey(CacheKeys::ROUTES_INDEX))->return();
         } catch (FileNotFoundException $e) {
             throw new CacheNotFoundException($e->getMessage(), $e->getCode(), $e);
         }

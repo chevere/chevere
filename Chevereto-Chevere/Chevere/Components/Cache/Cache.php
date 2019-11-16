@@ -25,8 +25,6 @@ use Chevere\Contracts\Cache\CacheKeyContract;
 use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\File\FileReturnContract;
 use Chevere\Contracts\Path\PathContract;
-use Chevere\Components\File\Exceptions\FileNotFoundException;
-use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
 
 /**
  * A simple PHP based cache system.
@@ -90,7 +88,7 @@ final class Cache implements CacheContract
     /**
      * {@inheritdoc}
      */
-    public function get(CacheKeyContract $cacheKey): FileReturnContract
+    public function fileReturn(CacheKeyContract $cacheKey): FileReturnContract
     {
         $path = $this->getPath($cacheKey->key());
         if (!$path->exists()) {
@@ -105,19 +103,17 @@ final class Cache implements CacheContract
     }
 
     /**
-     * Remove the cache key.
-     *
-     * @throws FileUnableToRemoveException if unable to remove the file
+     * {@inheritdoc}
      */
-    public function remove(string $key): void
+    public function remove(CacheKeyContract $cacheKey): void
     {
-        $path = $this->getPath($key);
+        $path = $this->getPath($cacheKey->key());
         if (!$path->exists()) {
             return;
         }
         opcache_invalidate($path->absolute());
         (new File($path))->remove();
-        unset($this->array[$key]);
+        unset($this->array[$cacheKey->key()]);
     }
 
     /**
