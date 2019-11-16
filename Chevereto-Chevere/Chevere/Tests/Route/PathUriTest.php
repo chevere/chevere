@@ -16,6 +16,7 @@ namespace Chevere\Tests\Route;
 use Chevere\Components\Route\Exceptions\PathUriUnmatchedBracesException;
 use Chevere\Components\Route\Exceptions\PathUriForwardSlashException;
 use Chevere\Components\Route\Exceptions\PathUriInvalidCharsException;
+use Chevere\Components\Route\Exceptions\PathUriUnmatchedWildcardsException;
 use Chevere\Components\Route\PathUri;
 use PHPUnit\Framework\TestCase;
 
@@ -36,18 +37,24 @@ final class PathUriTest extends TestCase
     public function testConstructNotMatchingBraces(): void
     {
         $this->expectException(PathUriUnmatchedBracesException::class);
-        new PathUri('/test/{test/}/test');
+        new PathUri('/test/{test/}/}/test');
     }
 
     public function testConstruct(): void
     {
         $pathUri = new PathUri('/test');
-        $this->assertFalse($pathUri->hasHandlebars());
+        $this->assertFalse($pathUri->hasWildcards());
     }
 
-    public function testConstructWithHandlebars(): void
+    public function testConstructWithInvalidWildcard(): void
     {
-        $pathUri = new PathUri('/test/{handlebars}/test');
-        $this->assertTrue($pathUri->hasHandlebars());
+        $this->expectException(PathUriUnmatchedWildcardsException::class);
+        new PathUri('/{wild-card}');
+    }
+
+    public function testConstructWithWildcard(): void
+    {
+        $pathUri = new PathUri('/test/{wildcard}/test');
+        $this->assertTrue($pathUri->hasWildcards());
     }
 }

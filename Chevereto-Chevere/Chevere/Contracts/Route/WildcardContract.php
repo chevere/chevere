@@ -21,7 +21,9 @@ use Chevere\Components\Route\Exceptions\WildcardInvalidRegexException;
 
 interface WildcardContract
 {
-    const ACCEPTED_CHARS_REGEX = '/^[a-z0-9_]+$/i';
+    const ACCEPT_CHARS = '([a-z\_][\w_]*?)';
+    const ACCEPTED_CHARS_REGEX = '/^' . self::ACCEPT_CHARS . '+$/i';
+    // const ACCEPTED_CHARS_REGEX = '/^[a-z0-9_]+$/i';
 
     /**
      * Creates a new instance.

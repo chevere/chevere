@@ -19,12 +19,12 @@ use Chevere\Components\Route\Exceptions\WildcardDuplicatedException;
 interface SetContract
 {
     /** string Regex pattern used to catch {wildcard} */
-    const REGEX_WILDCARD_SEARCH = '/{([a-z\_][\w_]*?)}/i';
+    const REGEX_WILDCARD_SEARCH = '/{' . WildcardContract::ACCEPT_CHARS . '}/i';
 
     /**
      * Creates a new instance.
      *
-     * @throws WildcardNotFoundException   if $pathUri doesn't represent any wildcard
+     * @throws WildcardNotFoundException   if $pathUri doesn't contain any wildcard
      * @throws WildcardDuplicatedException if $pathUri contains a duplicated wildcard
      */
     public function __construct(PathUriContract $pathUri);
@@ -35,12 +35,7 @@ interface SetContract
     public function key(): string;
 
     /**
-     * Provides access to the regex matches.
-     */
-    public function matches(): array;
-
-    /**
      * Provides access to the wildcards.
      */
-    public function wildcard(): array;
+    public function wildcards(): array;
 }

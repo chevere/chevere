@@ -34,5 +34,12 @@ interface PathUriContract
     /**
      * Returns a boolean indicating whether the instance has handlebars `{}`.
      */
-    public function hasHandlebars(): bool;
+    public function hasWildcards(): bool;
+
+    /**
+     * Returns an array containing the wildcard match (if any).
+     *
+     * @return array 0 => [{wildcard1}, {wildcard2},...], 1 => [wildcard1, wildcard2,...]
+     */
+    public function wildcardsMatch(): array;
 }

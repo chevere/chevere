@@ -61,7 +61,7 @@ final class Route implements RouteContract
         $pathUri = new PathUri($path);
         $this->path = $pathUri->path();
         $this->setMaker();
-        if ($pathUri->hasHandlebars()) {
+        if ($pathUri->hasWildcards()) {
             $set = new Set($pathUri);
             $this->key = $set->key();
             $this->wildcards = $set->wildcards();

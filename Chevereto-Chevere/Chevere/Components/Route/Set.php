@@ -15,12 +15,14 @@ namespace Chevere\Components\Route;
 
 use Chevere\Components\Folder\Exceptions\WildcardDuplicatedException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Exceptions\PathUriInvalidException;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Contracts\Route\PathUriContract;
 use Chevere\Contracts\Route\SetContract;
 use function ChevereFn\stringReplaceFirst;
 
+/**
+ * Detect the wildcards present in a PathUriContract and provide access to it.
+ */
 final class Set implements SetContract
 {
     /** @var PathUriContract The route path */
@@ -41,17 +43,8 @@ final class Set implements SetContract
     public function __construct(PathUriContract $pathUri)
     {
         $this->pathUri = $pathUri;
-        $this->assertHasHandlebars();
-        // $matches[0] => [{wildcard1}, {wildcard2},...]
-        // $matches[1] => [wildcard1, wildcard2,...]
-        if (!preg_match_all(SetContract::REGEX_WILDCARD_SEARCH, $this->pathUri->path(), $matches)) {
-            throw new WildcardNotFoundException(
-                (new Message("Path uri %path% doesn't contain any wildcard"))
-                    ->code('%path%', $this->pathUri->path())
-                    ->toString()
-            );
-        }
-        $this->matches = $matches;
+        $this->assertHasWildcards();
+        $this->matches = $this->pathUri->wildcardsMatch();
         $this->handleSetKey();
     }
 
@@ -66,25 +59,18 @@ final class Set implements SetContract
     /**
      * {@inheritdoc}
      */
-    public function matches(): array
-    {
-        return $this->matches ?? [];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function wildcards(): array
     {
         return $this->wildcards;
     }
 
-    private function assertHasHandlebars(): void
+    private function assertHasWildcards(): void
     {
-        if (!$this->pathUri->hasHandlebars()) {
-            throw new PathUriInvalidException(
-                (new Message("Path uri %path% doesn't contain any wildcard"))
+        if (!$this->pathUri->hasWildcards()) {
+            throw new WildcardNotFoundException(
+                (new Message("Path uri %path% doesn't contain any wildcard delimiter (braced %wildcard%)"))
                     ->code('%path%', $this->pathUri->path())
+                    ->code('%wildcard%', '{wildcard}')
                     ->toString()
             );
         }

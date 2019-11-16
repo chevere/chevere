@@ -17,6 +17,7 @@ use Chevere\Components\Route\Exceptions\PathUriUnmatchedBracesException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Exceptions\PathUriForwardSlashException;
 use Chevere\Components\Route\Exceptions\PathUriInvalidCharsException;
+use Chevere\Components\Route\Exceptions\PathUriUnmatchedWildcardsException;
 use Chevere\Components\Route\Exceptions\WildcardReservedException;
 use Chevere\Contracts\Route\PathUriContract;
 use Chevere\Contracts\Route\SetContract;
@@ -28,7 +29,13 @@ final class PathUri implements PathUriContract
     private $path;
 
     /** @var bool */
-    private $hasHandlebars;
+    private $hasWildcards;
+
+    /** @var int */
+    private $wildcardsCount;
+
+    /** @var array */
+    private $wildcardsMatch;
 
     /**
      * {@inheritdoc}
@@ -36,10 +43,13 @@ final class PathUri implements PathUriContract
     public function __construct(string $path)
     {
         $this->path = $path;
-        $this->setHasHandlebars();
+        $this->wildcardsCount = 0;
+        $this->wildcardsMatch = [];
+        $this->setHasWildcards();
         $this->assertFormat();
-        if ($this->hasHandlebars) {
+        if ($this->hasWildcards) {
             $this->assertMatchingBraces();
+            $this->assertMatchingWildcards();
             $this->assertReservedWildcards();
         }
     }
@@ -55,9 +65,17 @@ final class PathUri implements PathUriContract
     /**
      * {@inheritdoc}
      */
-    public function hasHandlebars(): bool
+    public function hasWildcards(): bool
     {
-        return $this->hasHandlebars;
+        return $this->hasWildcards;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function wildcardsMatch(): array
+    {
+        return $this->wildcardsMatch;
     }
 
     private function assertFormat(): void
@@ -83,15 +101,29 @@ final class PathUri implements PathUriContract
     {
         $countOpen = substr_count($this->path, '{');
         $countClose = substr_count($this->path, '}');
-        preg_match_all(SetContract::REGEX_WILDCARD_SEARCH, $this->path, $matches);
-        $countMatches = count($matches[0]);
-        if ($countOpen !== $countClose || $countOpen !== $countMatches) {
+        if ($countOpen !== $countClose) {
             throw new PathUriUnmatchedBracesException(
-                (new Message('Route path %path% contains unmatched braces (%countOpen% open, %countClose% close, %countMatches% matches)'))
+                (new Message('Route path %path% contains unmatched wildcard braces (%countOpen% open, %countClose% close)'))
                     ->code('%path%', $this->path)
                     ->strtr('%countOpen%', (string) $countOpen)
                     ->strtr('%countClose%', (string) $countClose)
+                    ->toString()
+            );
+        }
+        $this->wildcardsCount = $countOpen;
+    }
+
+    private function assertMatchingWildcards(): void
+    {
+        preg_match_all(SetContract::REGEX_WILDCARD_SEARCH, $this->path, $this->wildcardsMatch);
+        $countMatches = count($this->wildcardsMatch[0]);
+        if ($this->wildcardsCount !== $countMatches) {
+            throw new PathUriUnmatchedWildcardsException(
+                (new Message('Route path %path% contains invalid wildcard declarations (pattern %pattern% matches %countMatches%)'))
+                    ->code('%path%', $this->path)
+                    ->strtr('%wildcardsCount%', (string) $this->wildcardsCount)
                     ->strtr('%countMatches%', (string) $countMatches)
+                    ->code('%pattern%', SetContract::REGEX_WILDCARD_SEARCH)
                     ->toString()
             );
         }
@@ -133,8 +165,8 @@ final class PathUri implements PathUriContract
         }
     }
 
-    private function setHasHandlebars(): void
+    private function setHasWildcards(): void
     {
-        $this->hasHandlebars = false !== strpos($this->path, '{') || false !== strpos($this->path, '}');
+        $this->hasWildcards = false !== strpos($this->path, '{') || false !== strpos($this->path, '}');
     }
 }
