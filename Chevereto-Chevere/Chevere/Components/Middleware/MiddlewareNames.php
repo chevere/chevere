@@ -11,32 +11,49 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Route;
+namespace Chevere\Components\Middleware;
 
-final class MiddlewareNames
+use Chevere\Contracts\Middleware\MiddlewareNamesContract;
+
+/**
+ * A collection of MiddlewareContract names.
+ */
+final class MiddlewareNames implements MiddlewareNamesContract
 {
     /** @var array */
     private $array;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct()
     {
         $this->array = [];
     }
 
-    public function withAddedMiddlewareName(string $middlewareName): MiddlewareNames
+    /**
+     * {@inheritdoc}
+     */
+    public function withAddedMiddlewareName(string $name): MiddlewareNamesContract
     {
-        $middlewareName = new MiddlewareName($middlewareName);
+        $middlewareName = new MiddlewareName($name);
         $new = clone $this;
         $new->array[] = $middlewareName->name();
 
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function hasAny(): bool
     {
         return !empty($this->array);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function toArray(): array
     {
         return $this->array;

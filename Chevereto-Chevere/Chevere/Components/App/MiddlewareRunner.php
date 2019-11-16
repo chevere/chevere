@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Components\App;
 
 use Chevere\Components\App\Exceptions\AppWithoutRequestException;
-use Chevere\Components\App\Exceptions\MiddlewareNamesEmptyException;
+use Chevere\Components\Middleware\Exceptions\MiddlewareNamesEmptyException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\MiddlewareName;
-use Chevere\Components\Route\MiddlewareNames;
+use Chevere\Components\Middleware\MiddlewareName;
+use Chevere\Components\Middleware\MiddlewareNames;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\MiddlewareRunnerContract;
 use Chevere\Contracts\Http\RequestContract;
@@ -38,7 +38,7 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
 
     /**
      * @param MiddlewareNames $middlewareNames An instance containing at least one middleware
-     * @param AppContract $app An application container with a RequestContract.
+     * @param AppContract     $app             an application container with a RequestContract
      */
     public function __construct(MiddlewareNames $middlewareNames, AppContract $app)
     {

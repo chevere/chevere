@@ -21,6 +21,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodsContract;
 use Chevere\Contracts\Route\RouteContract;
+use Chevere\Components\Middleware\MiddlewareNames;
 
 // IDEA: L10n support
 

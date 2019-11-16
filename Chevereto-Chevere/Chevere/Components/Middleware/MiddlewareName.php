@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Route;
+namespace Chevere\Components\Middleware;
 
-use Chevere\Components\App\Exceptions\MiddlewareContractException;
+use Chevere\Components\Middleware\Exceptions\MiddlewareContractException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Middleware\MiddlewareContract;
-use Chevere\Contracts\Route\MiddlewareNameContract;
+use Chevere\Contracts\Middleware\MiddlewareNameContract;
 
 final class MiddlewareName implements MiddlewareNameContract
 {

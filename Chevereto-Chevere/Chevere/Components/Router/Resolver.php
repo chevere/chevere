@@ -15,16 +15,13 @@ namespace Chevere\Components\Router;
 
 use LogicException;
 use Throwable;
-
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\MiddlewareNames;
-use Chevere\Components\Route\Route;
 use Chevere\Components\Route\Traits\RouteAccessTrait;
 
 final class Resolver
 {
     use RouteAccessTrait;
-    
+
     public function __construct(string $serialized)
     {
         try {

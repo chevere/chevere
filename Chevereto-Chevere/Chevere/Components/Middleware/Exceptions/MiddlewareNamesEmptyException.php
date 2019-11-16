@@ -11,12 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\App\Exceptions;
+namespace Chevere\Components\Middleware\Exceptions;
 
 use Exception;
 
 /**
- * Exception thrown when a MiddlewareContract is not implemented.
+ * Exception thrown when MiddlewareNames are empty.
  */
-final class MiddlewareContractException extends Exception
-{ }
+final class MiddlewareNamesEmptyException extends Exception
+{
+}

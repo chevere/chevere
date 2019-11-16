@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Route;
 
-use Chevere\Components\Route\MiddlewareNames;
+use Chevere\Components\Middleware\MiddlewareNames;
 use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodsContract;
 
@@ -34,7 +34,7 @@ interface RouteContract
     /**
      * Route constructor.
      *
-     * @param string $uri        Route uri (key string)
+     * @param string $uri Route uri (key string)
      */
     public function __construct(string $uri);
 
