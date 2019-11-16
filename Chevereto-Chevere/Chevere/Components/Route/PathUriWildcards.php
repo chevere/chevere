@@ -17,22 +17,19 @@ use Chevere\Components\Folder\Exceptions\WildcardDuplicatedException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Contracts\Route\PathUriContract;
-use Chevere\Contracts\Route\SetContract;
+use Chevere\Contracts\Route\PathUriWildcardsContract;
 use function ChevereFn\stringReplaceFirst;
 
 /**
  * Detect the wildcards present in a PathUriContract and provide access to it.
  */
-final class Set implements SetContract
+final class PathUriWildcards implements PathUriWildcardsContract
 {
     /** @var PathUriContract The route path */
     private $pathUri;
 
     /** @var string Path key set representation ({wildcards} replaced by {n}) */
     private $key;
-
-    /** @var array */
-    private $matches;
 
     /** @var array string[] */
     private $wildcards;
@@ -44,7 +41,6 @@ final class Set implements SetContract
     {
         $this->pathUri = $pathUri;
         $this->assertHasWildcards();
-        $this->matches = $this->pathUri->wildcardsMatch();
         $this->handleSetKey();
     }
 
@@ -79,16 +75,16 @@ final class Set implements SetContract
     private function handleSetKey(): void
     {
         $this->key = $this->pathUri->path();
-        foreach ($this->matches[0] as $key => $val) {
+        foreach ($this->pathUri->wildcardsMatch()[0] as $key => $val) {
             // Change {wildcard} to {n} (n is the wildcard index)
             if (isset($this->key)) {
                 $this->key = stringReplaceFirst($val, "{{$key}}", $this->key);
             }
-            $wildcard = $this->matches[1][$key];
+            $wildcard = $this->pathUri->wildcardsMatch()[1][$key];
             if (in_array($wildcard, $this->wildcards ?? [])) {
                 throw new WildcardDuplicatedException(
                     (new Message('Duplicated wildcard %wildcard% in path uri %path%'))
-                        ->code('%wildcard%', $this->matches[0][$key])
+                        ->code('%wildcard%', $this->pathUri->wildcardsMatch()[0][$key])
                         ->code('%path%', $this->path)
                         ->toString()
                 );

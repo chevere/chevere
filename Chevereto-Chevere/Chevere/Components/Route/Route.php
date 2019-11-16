@@ -62,9 +62,9 @@ final class Route implements RouteContract
         $this->path = $pathUri->path();
         $this->setMaker();
         if ($pathUri->hasWildcards()) {
-            $set = new Set($pathUri);
-            $this->key = $set->key();
-            $this->wildcards = $set->wildcards();
+            $pathUriWildcards = new PathUriWildcards($pathUri);
+            $this->key = $pathUriWildcards->key();
+            $this->wildcards = $pathUriWildcards->wildcards();
         } else {
             $this->key = $this->path;
         }

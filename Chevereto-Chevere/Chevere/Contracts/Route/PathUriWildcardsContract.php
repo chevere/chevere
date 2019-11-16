@@ -16,7 +16,7 @@ namespace Chevere\Contracts\Route;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardDuplicatedException;
 
-interface SetContract
+interface PathUriWildcardsContract
 {
     /** string Regex pattern used to catch {wildcard} */
     const REGEX_WILDCARD_SEARCH = '/{' . WildcardContract::ACCEPT_CHARS . '}/i';
@@ -35,7 +35,7 @@ interface SetContract
     public function key(): string;
 
     /**
-     * Provides access to the wildcards.
+     * Provides access to the wildcards array.
      */
     public function wildcards(): array;
 }

@@ -15,22 +15,22 @@ namespace Chevere\Tests\Route;
 
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\PathUri;
-use Chevere\Components\Route\Set;
+use Chevere\Components\Route\PathUriWildcards;
 use PHPUnit\Framework\TestCase;
 
-final class SetTest extends TestCase
+final class WildcardsTest extends TestCase
 {
     public function testConstructPathUriWithoutWildcard(): void
     {
         $pathUri = new PathUri('/test');
         $this->expectException(WildcardNotFoundException::class);
-        new Set($pathUri);
+        new PathUriWildcards($pathUri);
     }
 
     public function testConstruct(): void
     {
         $this->expectNotToPerformAssertions();
         $pathUri = new PathUri('/{wildcard}');
-        $set = new Set($pathUri);
+        $set = new PathUriWildcards($pathUri);
     }
 }

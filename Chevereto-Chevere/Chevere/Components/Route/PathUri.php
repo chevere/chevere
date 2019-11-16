@@ -20,7 +20,7 @@ use Chevere\Components\Route\Exceptions\PathUriInvalidCharsException;
 use Chevere\Components\Route\Exceptions\PathUriUnmatchedWildcardsException;
 use Chevere\Components\Route\Exceptions\WildcardReservedException;
 use Chevere\Contracts\Route\PathUriContract;
-use Chevere\Contracts\Route\SetContract;
+use Chevere\Contracts\Route\PathUriWildcardsContract;
 use function ChevereFn\stringStartsWith;
 
 final class PathUri implements PathUriContract
@@ -115,7 +115,7 @@ final class PathUri implements PathUriContract
 
     private function assertMatchingWildcards(): void
     {
-        preg_match_all(SetContract::REGEX_WILDCARD_SEARCH, $this->path, $this->wildcardsMatch);
+        preg_match_all(PathUriWildcardsContract::REGEX_WILDCARD_SEARCH, $this->path, $this->wildcardsMatch);
         $countMatches = count($this->wildcardsMatch[0]);
         if ($this->wildcardsCount !== $countMatches) {
             throw new PathUriUnmatchedWildcardsException(
@@ -123,7 +123,7 @@ final class PathUri implements PathUriContract
                     ->code('%path%', $this->path)
                     ->strtr('%wildcardsCount%', (string) $this->wildcardsCount)
                     ->strtr('%countMatches%', (string) $countMatches)
-                    ->code('%pattern%', SetContract::REGEX_WILDCARD_SEARCH)
+                    ->code('%pattern%', PathUriWildcardsContract::REGEX_WILDCARD_SEARCH)
                     ->toString()
             );
         }
