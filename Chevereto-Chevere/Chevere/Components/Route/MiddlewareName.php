@@ -16,29 +16,36 @@ namespace Chevere\Components\Route;
 use Chevere\Components\App\Exceptions\MiddlewareContractException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Middleware\MiddlewareContract;
+use Chevere\Contracts\Route\MiddlewareNameContract;
 
-final class MiddlewareName
+final class MiddlewareName implements MiddlewareNameContract
 {
     /** @var string */
-    private $middlewareName;
+    private $name;
 
-    public function __construct(string $middlewareName)
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(string $name)
     {
-        $this->middlewareName = $middlewareName;
+        $this->name = $name;
         $this->assertMiddlewareContract();
     }
 
-    public function toString(): string
+    /**
+     * {@inheritdoc}
+     */
+    public function name(): string
     {
-        return $this->middlewareName;
+        return $this->name;
     }
 
     private function assertMiddlewareContract(): void
     {
-        if (is_subclass_of(MiddlewareContract::class, $this->middlewareName)) {
+        if (is_subclass_of(MiddlewareContract::class, $this->name)) {
             throw new MiddlewareContractException(
                 (new Message('Middleware %middleware% must implement the %contract% contract'))
-                    ->code('%middleware%', $this->middlewareName)
+                    ->code('%middleware%', $this->name)
                     ->code('%contract%', MiddlewareContract::class)
                     ->toString()
             );

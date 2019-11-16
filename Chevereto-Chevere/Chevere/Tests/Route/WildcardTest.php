@@ -51,7 +51,7 @@ final class WildcardTest extends TestCase
     {
         $this->expectException(WildcardNotFoundException::class);
         $this->getWildcard()
-            ->assertPath(
+            ->assertPathUri(
                 new PathUri('/')
             );
     }
@@ -60,7 +60,7 @@ final class WildcardTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
         $this->getWildcard()
-            ->assertPath(
+            ->assertPathUri(
                 new PathUri('/{test}')
             );
     }

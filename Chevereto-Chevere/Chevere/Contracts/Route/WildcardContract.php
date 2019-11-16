@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Contracts\Route;
 
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
-use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
 use Chevere\Components\Route\Exceptions\WildcardInvalidCharsException;
 use Chevere\Components\Route\Exceptions\WildcardInvalidRegexException;
@@ -44,5 +43,5 @@ interface WildcardContract
      *
      * @throws WildcardNotFoundException if the wildcard doesn't exists in the path
      */
-    public function assertPath(PathUri $pathUri): void;
+    public function assertPathUri(PathUriContract $pathUri): void;
 }

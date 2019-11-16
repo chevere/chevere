@@ -142,7 +142,7 @@ final class Route implements RouteContract
     {
         $new = clone $this;
         $wildcard = new Wildcard($wildcardName, $regex);
-        $wildcard->assertPath(
+        $wildcard->assertPathUri(
             new PathUri($new->path())
         );
         $new->wheres[$wildcardName] = $regex;

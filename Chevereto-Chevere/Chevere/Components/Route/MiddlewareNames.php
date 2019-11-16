@@ -27,7 +27,7 @@ final class MiddlewareNames
     {
         $middlewareName = new MiddlewareName($middlewareName);
         $new = clone $this;
-        $new->array[] = $middlewareName->toString();
+        $new->array[] = $middlewareName->name();
 
         return $new;
     }

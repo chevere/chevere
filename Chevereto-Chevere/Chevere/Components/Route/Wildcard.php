@@ -18,6 +18,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Exceptions\WildcardInvalidRegexException;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
+use Chevere\Contracts\Route\PathUriContract;
 use Chevere\Contracts\Route\WildcardContract;
 use function ChevereFn\stringStartsWithNumeric;
 
@@ -31,9 +32,6 @@ final class Wildcard implements WildcardContract
 
     /** @var string */
     private $regex;
-
-    /** @var string */
-    private $path;
 
     /**
      * {@inheritdoc}
@@ -50,10 +48,17 @@ final class Wildcard implements WildcardContract
     /**
      * {@inheritdoc}
      */
-    public function assertPath(PathUri $pathUri): void
+    public function assertPathUri(PathUriContract $pathUri): void
     {
-        $this->path = $pathUri->path();
-        $this->assertRoutePathMatch();
+        $noWildcard = false === strpos($pathUri->path(), "{{$this->wildcardName}}");
+        if ($noWildcard) {
+            throw new WildcardNotFoundException(
+                (new Message("Wildcard %wildcard% doesn't exists in route %path%"))
+                    ->code('%wildcard%', $this->wildcardString)
+                    ->code('%path%', $pathUri->path())
+                    ->toString()
+            );
+        }
     }
 
     private function assertFormat(): void
@@ -92,18 +97,5 @@ final class Wildcard implements WildcardContract
         restore_error_handler();
 
         return $return;
-    }
-
-    private function assertRoutePathMatch(): void
-    {
-        $noWildcard = false === strpos($this->path, "{{$this->wildcardName}}");
-        if ($noWildcard) {
-            throw new WildcardNotFoundException(
-                (new Message("Wildcard %wildcard% doesn't exists in route %path%"))
-                    ->code('%wildcard%', $this->wildcardString)
-                    ->code('%path%', $this->path)
-                    ->toString()
-            );
-        }
     }
 }

@@ -18,7 +18,7 @@ use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\PathUriWildcards;
 use PHPUnit\Framework\TestCase;
 
-final class WildcardsTest extends TestCase
+final class PatUriWildcardsTest extends TestCase
 {
     public function testConstructPathUriWithoutWildcard(): void
     {
