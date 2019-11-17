@@ -36,7 +36,7 @@ final class Method implements MethodContract
     /**
      * {@inheritdoc}
      */
-    public function name(): string
+    public function toString(): string
     {
         return $this->name;
     }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Controllers;
 
 use Chevere\Components\Controller\Controller;
+use Chevere\Components\Http\Method;
 
 final class HeadController extends Controller
 {
@@ -27,7 +28,7 @@ final class HeadController extends Controller
     public function __invoke(): void
     {
         $route = $this->app()->route();
-        $controller = $route->controller('GET');
+        $controller = $route->controllerName(new Method('GET'));
         if ($controller) {
             $this->invoke($controller);
             // $this->app()->response()->setContent(null);

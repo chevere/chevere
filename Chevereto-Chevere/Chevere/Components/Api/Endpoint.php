@@ -84,7 +84,7 @@ final class Endpoint implements EndpointContract
                 ],
             ],
         ] as $k => $v) {
-            if (!$this->methodControllerCollection->has($k)) {
+            if (!$this->methodControllerCollection->has(new Method($k))) {
                 $this->methodControllerCollection = $this->methodControllerCollection
                     ->withAddedMethodController(
                         new MethodController(new Method($k), $v[0])

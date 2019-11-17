@@ -20,5 +20,5 @@ interface MethodContract
 
     public function __construct(string $name);
 
-    public function name(): string;
+    public function toString(): string;
 }

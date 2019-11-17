@@ -15,6 +15,7 @@ namespace Chevere\Components\App;
 
 use Chevere\Components\App\Exceptions\RouterCantResolveException;
 use Chevere\Components\App\Exceptions\RouterContractRequiredException;
+use Chevere\Components\Http\Method;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\Route\RouteContract;
@@ -76,7 +77,9 @@ final class Resolver
         $this->builder = $this->builder
             ->withControllerName(
                 $app->route()
-                    ->controller($app->request()->getMethod())
+                    ->controllerName(
+                        new Method($app->request()->getMethod())
+                    )
             )
             ->withControllerArguments(
                 $app->services()->router()->arguments()

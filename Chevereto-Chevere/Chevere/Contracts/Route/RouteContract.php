@@ -16,6 +16,7 @@ namespace Chevere\Contracts\Route;
 use Chevere\Contracts\Middleware\MiddlewareNamesContract;
 use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
+use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodControllerContract;
 
 interface RouteContract
@@ -44,12 +45,12 @@ interface RouteContract
     public function key(): string;
 
     /**
-     * Returns a boolean indicating whether the instance is a dynamic route path.
+     * Returns a boolean indicating whether the instance has wildcards.
      */
-    public function isDynamic(): bool;
+    public function hasWildcards(): bool;
 
     /**
-     * Provides access to the wildcards (if isDynamic).
+     * Provides access to the wildcards (if hasWildcards).
      */
     public function wildcards(): array;
 
@@ -99,19 +100,7 @@ interface RouteContract
     public function withAddedMiddlewareName(string $middlewareName): RouteContract;
 
     /**
-     * @param string $httpMethod an HTTP method
+     * @param MethodContract $method an HTTP MethodContract
      */
-    public function controller(string $httpMethod): string;
-
-    /**
-     * Fill object missing properties and whatnot.
-     */
-    public function withFiller(): RouteContract;
-
-    /**
-     * Gets route regex.
-     *
-     * @param string $pattern route path pattern (set)
-     */
-    public function getRegex(string $pattern): string;
+    public function controllerName(MethodContract $method): string;
 }

@@ -127,7 +127,7 @@ final class RequestCommand extends Command
         $method = new Method($this->getArgumentString('method'));
 
         $request = new Request(
-            $method->name(),
+            $method->toString(),
             $this->getArgumentString('uri'),
             $this->getOptionArray('headers'),
             isset($this->options['body']) ? $this->getOptionString('body') : null,

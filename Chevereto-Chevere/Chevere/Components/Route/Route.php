@@ -18,14 +18,17 @@ use InvalidArgumentException;
 use Chevere\Components\Controllers\HeadController;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodController;
+use Chevere\Components\Http\MethodControllerCollection;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Components\Middleware\MiddlewareNames;
 use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
+use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodControllerContract;
 use Chevere\Contracts\Middleware\MiddlewareNamesContract;
 use Chevere\Contracts\Route\PathUriContract;
 use Chevere\Contracts\Route\WildcardContract;
+use Chevere\Contracts\Http\MethodControllerCollectionContract;
 
 // IDEA: L10n support
 
@@ -46,6 +49,9 @@ final class Route implements RouteContract
     /** @var MiddlewareNamesContract */
     private $middlewareNames;
 
+    /** @var MethodControllerCollectionContract */
+    private $methodControllerCollection;
+
     /** @var array */
     private $wildcards;
 
@@ -59,7 +65,7 @@ final class Route implements RouteContract
     private $regex;
 
     /** @var bool */
-    private $isDynamic;
+    private $hasWildcards;
 
     /**
      * {@inheritdoc}
@@ -75,8 +81,10 @@ final class Route implements RouteContract
         } else {
             $this->key = $this->pathUri->path();
         }
-        $this->isDynamic = isset($this->wildcards);
+        $this->handleSetRegex();
+        $this->hasWildcards = isset($this->wildcards);
         $this->middlewareNames = new MiddlewareNames();
+        $this->methodControllerCollection = new MethodControllerCollection();
     }
 
     /**
@@ -106,17 +114,9 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function isDynamic(): bool
+    public function regex(): string
     {
-        return $this->isDynamic;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function wildcards(): array
-    {
-        return $this->wildcards;
+        return $this->regex;
     }
 
     /**
@@ -126,9 +126,9 @@ final class Route implements RouteContract
     {
         if (!preg_match(RouteContract::REGEX_NAME, $name)) {
             throw new RouteInvalidNameException(
-                (new Message("Expecting at least one alphanumeric, underscore, hypen or dot character. String '%s' provided."))
-                    ->code('%s', $name)
-                    ->code('%p', RouteContract::REGEX_NAME)
+                (new Message('Expecting at least one alphanumeric, underscore, hypen or dot character, string %string% provided (regex %regex%)'))
+                    ->code('%string%', $name)
+                    ->code('%regex%', RouteContract::REGEX_NAME)
                     ->toString()
             );
         }
@@ -171,17 +171,52 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
+    public function hasWildcards(): bool
+    {
+        return $this->hasWildcards;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function wildcards(): array
+    {
+        return $this->wildcards;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function wheres(): array
+    {
+        return $this->wheres;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function withAddedMethodController(MethodControllerContract $methodController): RouteContract
     {
-        $new = clone $this;
-        if (isset($this->methods[$methodController->method()->name()])) {
+        if ($this->methodControllerCollection->has($methodController->method())) {
             throw new InvalidArgumentException(
                 (new Message('Method %method% has been already registered'))
                     ->code('%method%', $methodController->method())->toString()
             );
         }
         $new = clone $this;
-        $new->methods[$methodController->method()->name()] = $methodController->controllerName();
+        $new->methodControllerCollection = $new->methodControllerCollection
+            ->withAddedMethodController($methodController);
+
+        if (
+            'GET' == $methodController->method()->toString()
+            && $new->methodControllerCollection->has(new Method('HEAD'))) {
+            $new = $new->withAddedMethodController(
+                new MethodController(
+                    new Method('HEAD'),
+                    HeadController::class
+                )
+            );
+        }
 
         return $new;
     }
@@ -201,40 +236,6 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function withFiller(): RouteContract
-    {
-        $new = clone $this;
-        if (isset($new->wildcards)) {
-            foreach ($new->wildcards as $v) {
-                if (!isset($new->wheres[$v])) {
-                    $new->wheres[$v] = WildcardContract::REGEX_MATCH_DEFAULT;
-                }
-            }
-        }
-        if (isset($new->methods['GET']) && !isset($new->methods['HEAD'])) {
-            $new = $new->withAddedMethodController(
-                new MethodController(
-                    new Method('HEAD'),
-                    HeadController::class
-                )
-            );
-        }
-        $new->regex = $new->getRegex($new->key ?? $new->pathUri->path());
-
-        return $new;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function wheres(): array
-    {
-        return $this->wheres;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function middlewareNames(): MiddlewareNamesContract
     {
         return $this->middlewareNames;
@@ -243,52 +244,46 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function regex(): string
-    {
-        return $this->regex;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function wildcardName(int $key): string
     {
-        return $this->wildcards[$key] ?? '';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function controller(string $httpMethod): string
-    {
-        $controller = $this->methods[$httpMethod] ?? null;
-        if (!isset($controller)) {
+        $name = $this->wildcards[$key] ?? null;
+        if (null == $name) {
             throw new LogicException(
-                (new Message('No controller is associated to HTTP method %method%'))
-                    ->code('%method%', $httpMethod)
+                (new Message('Undefined key %key%'))
+                    ->code('%key%', $key)
                     ->toString()
             );
         }
 
-        return $controller;
+        return $name;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getRegex(string $pattern): string
+    public function controllerName(MethodContract $method): string
     {
-        $regex = '^' . $pattern . '$';
-        if (false === strpos($regex, '{')) {
-            return $regex;
+        if (!$this->methodControllerCollection->has($method)) {
+            throw new LogicException(
+                (new Message('No controller is associated to HTTP method %method%'))
+                    ->code('%method%', $method->toString())
+                    ->toString()
+            );
         }
+
+        return $this->methodControllerCollection->get($method)
+            ->controllerName();
+    }
+
+    private function handleSetRegex(): void
+    {
+        $regex = '^' . $this->key . '$';
         if (isset($this->wildcards)) {
             foreach ($this->wildcards as $k => $v) {
                 $regex = str_replace("{{$k}}", '(' . $this->wheres[$v] . ')', $regex);
             }
         }
-
-        return $regex;
+        $this->regex = $regex;
     }
 
     private function setMaker(): void

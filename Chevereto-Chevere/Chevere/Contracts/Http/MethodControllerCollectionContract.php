@@ -22,9 +22,9 @@ interface MethodControllerCollectionContract extends IteratorAggregate
 
     public function withAddedMethodController(MethodControllerContract $methodController): MethodControllerCollectionContract;
 
-    public function has(string $method): bool;
+    public function has(MethodContract $method): bool;
 
-    public function get(string $method): string;
+    public function get(MethodContract $method): MethodControllerContract;
 
     public function getIterator(): ArrayIterator;
 }

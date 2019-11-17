@@ -14,14 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Controllers\Api;
 
 use InvalidArgumentException;
-
 use Chevere\Components\Console\Console;
 use Chevere\Components\Controller\Controller;
+use Chevere\Components\Http\Method;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Route;
-
 use function console;
-
 use const Chevere\CONSOLE;
 
 /**
@@ -66,7 +64,7 @@ final class HeadController extends Controller
 
     private function process()
     {
-        $controller = $this->route->controller('GET');
+        $controller = $this->route->controllerName(new Method('GET'));
         $this->app()->run($controller);
         // $this->app()->response()->setContent(null);
         // if (CLI) {

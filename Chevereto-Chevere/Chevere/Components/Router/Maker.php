@@ -64,7 +64,6 @@ final class Maker implements MakerContract
     public function withAddedRoute(RouteContract $route, string $group): MakerContract
     {
         $new = clone $this;
-        $route = $route->withFiller();
         $new->route = $route;
         $new->assertUniqueRoutePath();
         $new->assertUniqueRouteKey();
@@ -76,7 +75,7 @@ final class Maker implements MakerContract
         $new->routes[] = $new->route;
         // n => .. => regex => route
         $new->regexIndex[$new->route->regex()] = $id;
-        if (!$route->isDynamic()) {
+        if (!$route->hasWildcards()) {
             $new->statics[$new->route->pathUri()->path()] = $id;
         }
         $new->regex = $new->getRegex();

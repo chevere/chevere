@@ -14,17 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Components\App;
 
 use LogicException;
-
 use Chevere\Components\Http\Request\RequestException;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\RunnerContract;
-
 use function console;
 use function GuzzleHttp\Psr7\stream_for;
-
 use const Chevere\CONSOLE;
 
 /**
