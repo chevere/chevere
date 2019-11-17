@@ -19,7 +19,6 @@ use Chevere\Components\Controllers\HeadController;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodController;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\Http\MethodsContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Components\Middleware\MiddlewareNames;
 use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
@@ -183,19 +182,6 @@ final class Route implements RouteContract
         }
         $new = clone $this;
         $new->methods[$methodController->method()->name()] = $methodController->controllerName();
-
-        return $new;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withMethods(MethodsContract $methods): RouteContract
-    {
-        $new = clone $this;
-        foreach ($methods as $method) {
-            $new = $new->withAddedMethod($method);
-        }
 
         return $new;
     }

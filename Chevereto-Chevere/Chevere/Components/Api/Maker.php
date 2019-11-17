@@ -26,7 +26,8 @@ use Chevere\Components\Controllers\Api\GetController;
 use Chevere\Components\Controllers\Api\HeadController;
 use Chevere\Components\Controllers\Api\OptionsController;
 use Chevere\Components\Http\Method;
-use Chevere\Components\Http\Methods;
+use Chevere\Components\Http\MethodController;
+use Chevere\Components\Http\MethodControllerCollection;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Route\PathUri;
@@ -88,15 +89,12 @@ final class Maker implements MakerContract
         $new->assertNoDuplicates();
         $new->assertPath();
         $new->basePath = strtolower(basename($new->path->absolute()));
-        $methods = new Methods(
-            (new Method('HEAD'))
-                ->withControllerName(HeadController::class),
-            (new Method('OPTIONS'))
-                ->withControllerName(OptionsController::class),
-            (new Method('GET'))
-                ->withControllerName(GetController::class)
+        $methodControllerCollection = new MethodControllerCollection(
+            new MethodController(new Method('HEAD'), HeadController::class),
+            new MethodController(new Method('OPTIONS'), OptionsController::class),
+            new MethodController(new Method('GET'), GetController::class)
         );
-        $new->register(new Endpoint($methods));
+        $new->register(new Endpoint($methodControllerCollection));
 
         return $new;
     }
@@ -149,8 +147,9 @@ final class Maker implements MakerContract
         $this->api[$this->basePath][''] = $endpoint->toArray();
 
         $route = new Route(new PathUri($path));
-        $route = $route
-            ->withMethods($endpoint->methods());
+        foreach ($endpoint->methodControllerCollection() as $method) {
+            $route = $route->withAddedMethodController($method);
+        }
 
         $this->routerMaker = $this->routerMaker
             ->withAddedRoute($route, $this->basePath);
@@ -230,29 +229,18 @@ final class Maker implements MakerContract
     private function processRoutesMap(): void
     {
         foreach ($this->routesMap as $pathComponent => $httpMethods) {
-            $methodsArray = [];
+            $methodControllerArray = [];
             foreach ($httpMethods as $httpMethod => $controller) {
-                $methodsArray[] = (new Method($httpMethod))->withControllerName($controller);
+                $methodControllerArray[] = new MethodController(new Method($httpMethod), $controller);
             }
-            $methods = new Methods(...$methodsArray);
+            $methods = new MethodControllerCollection(...$methodControllerArray);
             $endpoint = new Endpoint($methods);
             /** @var string Full qualified route key for $pathComponent like /api/users/{user} */
             $endpointRouteKey = stringLeftTail($pathComponent, '/');
-
             $this->route = (new Route(new PathUri($endpointRouteKey)))
                 ->withMethods($methods);
-
-            // $resource = $this->resourcesMap[$pathComponent] ?? null;
-            // if (isset($resource)) {
-            //     foreach ($resource as $wildcardKey => $resourceMeta) {
-            //         $this->route->setWhere($wildcardKey, $resourceMeta['regex']);
-            //     }
-            //     $endpoint->setResource($resource);
-            // }
-
             $this->routerMaker = $this->routerMaker
                 ->withAddedRoute($this->route, $this->basePath);
-
             $this->api[$this->basePath][$pathComponent] = $endpoint->toArray();
         }
         ksort($this->api);

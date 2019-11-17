@@ -16,30 +16,40 @@ namespace Chevere\Components\Api;
 use Chevere\Components\Controllers\Api\HeadController;
 use Chevere\Components\Controllers\Api\OptionsController;
 use Chevere\Components\Http\Method;
+use Chevere\Components\Http\MethodController;
 use Chevere\Contracts\Api\src\EndpointContract;
-use Chevere\Contracts\Http\MethodsContract;
+use Chevere\Contracts\Http\MethodControllerCollectionContract;
 
 final class Endpoint implements EndpointContract
 {
     /** @var array */
     private $array;
 
-    /** @var MethodsContract */
-    private $methods;
+    /** @var MethodControllerCollectionContract */
+    private $methodControllerCollection;
 
-    public function __construct(MethodsContract $methods)
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(MethodControllerCollectionContract $collection)
     {
         $this->array = [];
-        $this->methods = $methods;
+        $this->methodControllerCollection = $collection;
         $this->fillEndpointOptions();
         $this->autofillMissingOptionsHead();
     }
 
-    public function methods(): MethodsContract
+    /**
+     * {@inheritdoc}
+     */
+    public function methodControllerCollection(): MethodControllerCollectionContract
     {
-        return $this->methods;
+        return $this->methodControllerCollection;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function toArray(): array
     {
         return $this->array;
@@ -47,7 +57,7 @@ final class Endpoint implements EndpointContract
 
     private function fillEndpointOptions(): void
     {
-        foreach ($this->methods as $method) {
+        foreach ($this->methodControllerCollection as $method) {
             $httpMethod = $method->method();
             $controllerClassName = $method->controllerName();
             $httpMethodOptions = [];
@@ -74,11 +84,10 @@ final class Endpoint implements EndpointContract
                 ],
             ],
         ] as $k => $v) {
-            if (!$this->methods->has($k)) {
-                $this->methods = $this->methods
-                    ->withAddedMethod(
-                        (new Method($k))
-                            ->withControllerName($v[0])
+            if (!$this->methodControllerCollection->has($k)) {
+                $this->methodControllerCollection = $this->methodControllerCollection
+                    ->withAddedMethodController(
+                        new MethodController(new Method($k), $v[0])
                     );
                 $this->array['OPTIONS'][$k] = $v[1];
             }

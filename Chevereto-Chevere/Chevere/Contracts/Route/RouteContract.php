@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Route;
 
-use Chevere\Contracts\Http\MethodsContract;
 use Chevere\Contracts\Middleware\MiddlewareNamesContract;
 use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
@@ -96,13 +95,6 @@ interface RouteContract
      * @param MethodControllerContract $methodController a HTTP method contract
      */
     public function withAddedMethodController(MethodControllerContract $methodController): RouteContract;
-
-    /**
-     * Sets HTTP method to callable binding (multiple version).
-     *
-     * @param MethodsContract $methods a HTTP methods contract
-     */
-    public function withMethods(MethodsContract $methods): RouteContract;
 
     public function withAddedMiddlewareName(string $middlewareName): RouteContract;
 

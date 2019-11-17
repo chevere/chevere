@@ -16,9 +16,11 @@ namespace Chevere\Contracts\Http;
 use ArrayIterator;
 use IteratorAggregate;
 
-interface MethodsContract extends IteratorAggregate
+interface MethodControllerCollectionContract extends IteratorAggregate
 {
-    public function withAddedMethod(MethodContract $method): MethodsContract;
+    public function __construct(MethodControllerContract ...$methodController);
+
+    public function withAddedMethodController(MethodControllerContract $methodController): MethodControllerCollectionContract;
 
     public function has(string $method): bool;
 
