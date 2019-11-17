@@ -18,7 +18,7 @@ use Chevere\Components\Http\Method;
 use Chevere\Components\Route\PathUri;
 
 return [
-    (new Route(new PathUri('/home')))
+    (new Route(new PathUri('/home/{wildcard}')))
         ->withAddedMethod(
             (new Method('GET'))
                 ->withControllerName(Controllers\Home::class)

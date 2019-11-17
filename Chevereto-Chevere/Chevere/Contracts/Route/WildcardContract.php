@@ -20,24 +20,49 @@ use Chevere\Components\Route\Exceptions\WildcardInvalidRegexException;
 
 interface WildcardContract
 {
+    /** Regex pattern used by default (no explicit where). */
+    const REGEX_MATCH_DEFAULT = '[A-z0-9\_\-\%]+';
+
     const ACCEPT_CHARS = '([a-z\_][\w_]*?)';
-    const ACCEPTED_CHARS_REGEX = '/^' . self::ACCEPT_CHARS . '+$/i';
+    const ACCEPT_CHARS_REGEX = '/^' . self::ACCEPT_CHARS . '+$/i';
     // const ACCEPTED_CHARS_REGEX = '/^[a-z0-9_]+$/i';
 
     /**
      * Creates a new instance.
      *
-     * @param string $wildcardName The wildcard name
-     * @param string $regex        The regex patter, without delimeters
+     * @param string $name  The wildcard name
+     * @param string $regex The regex patter, without delimeters
      *
-     * @throws WildcardStartWithNumberException if $wildcardName starts with a number
-     * @throws WildcardInvalidCharsException    if $wildcardName contains invalid chars
+     * @throws WildcardStartWithNumberException if $name starts with a number
+     * @throws WildcardInvalidCharsException    if $name contains invalid chars
      * @throws WildcardInvalidRegexException    if $regex is invalid
      */
-    public function __construct(string $wildcardName, string $regex);
+    public function __construct(string $name);
 
     /**
-     * Asserts that $path contains $wildcardName.
+     * Return an instance with the specified regex.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified regex.
+     *
+     * @param string $regex a regular expresion, without delimiters
+     *
+     * @throws WildcardInvalidRegexException if $regex is invalid regex
+     */
+    public function withRegex(string $regex): WildcardContract;
+
+    /**
+     * Provides access to the name.
+     */
+    public function name(): string;
+
+    /**
+     * Provides access to the regex.
+     */
+    public function regex(): string;
+
+    /**
+     * Asserts that a given PathUriContract contains the wildcard.
      *
      * @param string $pathUri A path including the wildcard, like `/{wildcard}`
      *

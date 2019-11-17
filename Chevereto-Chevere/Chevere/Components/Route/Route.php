@@ -22,8 +22,10 @@ use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodsContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Components\Middleware\MiddlewareNames;
+use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
 use Chevere\Contracts\Middleware\MiddlewareNamesContract;
 use Chevere\Contracts\Route\PathUriContract;
+use Chevere\Contracts\Route\WildcardContract;
 
 // IDEA: L10n support
 
@@ -56,9 +58,6 @@ final class Route implements RouteContract
     /** @var string */
     private $regex;
 
-    /** @var string */
-    private $type;
-
     /** @var bool */
     private $isDynamic;
 
@@ -83,10 +82,50 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
+    public function pathUri(): PathUriContract
+    {
+        return $this->pathUri;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function maker(): array
+    {
+        return $this->maker;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function key(): string
+    {
+        return $this->key;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isDynamic(): bool
+    {
+        return $this->isDynamic;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function wildcards(): array
+    {
+        return $this->wildcards;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function withName(string $name): RouteContract
     {
         if (!preg_match(RouteContract::REGEX_NAME, $name)) {
-            throw new InvalidArgumentException(
+            throw new RouteInvalidNameException(
                 (new Message("Expecting at least one alphanumeric, underscore, hypen or dot character. String '%s' provided."))
                     ->code('%s', $name)
                     ->code('%p', RouteContract::REGEX_NAME)
@@ -102,14 +141,29 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function withWhere(string $wildcardName, string $regex): RouteContract
+    public function hasName(): bool
+    {
+        return isset($this->name);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withAddedWildcard(WildcardContract $wildcard): RouteContract
     {
         $new = clone $this;
-        $wildcard = new Wildcard($wildcardName, $regex);
         $wildcard->assertPathUri(
             $new->pathUri()
         );
-        $new->wheres[$wildcardName] = $regex;
+        $new->wheres[$wildcard->name()] = $wildcard->regex();
 
         return $new;
     }
@@ -173,7 +227,7 @@ final class Route implements RouteContract
         if (isset($new->wildcards)) {
             foreach ($new->wildcards as $v) {
                 if (!isset($new->wheres[$v])) {
-                    $new->wheres[$v] = RouteContract::REGEX_WILDCARD_WHERE;
+                    $new->wheres[$v] = RouteContract::REGEX_WILDCARD_DEFAULT;
                 }
             }
         }
@@ -191,57 +245,9 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function maker(): array
-    {
-        return $this->maker;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function key(): string
-    {
-        return $this->key;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function pathUri(): PathUriContract
-    {
-        return $this->pathUri;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasName(): bool
-    {
-        return isset($this->name);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function name(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function wheres(): array
     {
         return $this->wheres;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isDynamic(): bool
-    {
-        return $this->isDynamic;
     }
 
     /**

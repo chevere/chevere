@@ -25,7 +25,7 @@ use function ChevereFn\stringStartsWithNumeric;
 final class Wildcard implements WildcardContract
 {
     /** @var string */
-    private $wildcardName;
+    private $name;
 
     /** @var string */
     private $wildcardString;
@@ -36,13 +36,41 @@ final class Wildcard implements WildcardContract
     /**
      * {@inheritdoc}
      */
-    public function __construct(string $wildcardName, string $regex)
+    public function __construct(string $name)
     {
-        $this->wildcardName = $wildcardName;
-        $this->wildcardString = "{{$wildcardName}}";
-        $this->regex = $regex;
-        $this->assertFormat();
+        $this->name = $name;
+        $this->assertName();
+        $this->regex = WildcardContract::REGEX_MATCH_DEFAULT;
         $this->assertRegex();
+        $this->wildcardString = "{{$name}}";
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withRegex(string $regex): WildcardContract
+    {
+        $new = clone $this;
+        $new->regex = $regex;
+        $new->assertRegex();
+
+        return $new;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function regex(): string
+    {
+        return $this->regex;
     }
 
     /**
@@ -50,7 +78,7 @@ final class Wildcard implements WildcardContract
      */
     public function assertPathUri(PathUriContract $pathUri): void
     {
-        $noWildcard = false === strpos($pathUri->path(), "{{$this->wildcardName}}");
+        $noWildcard = false === strpos($pathUri->path(), "{{$this->name}}");
         if ($noWildcard) {
             throw new WildcardNotFoundException(
                 (new Message("Wildcard %wildcard% doesn't exists in route %path%"))
@@ -61,19 +89,19 @@ final class Wildcard implements WildcardContract
         }
     }
 
-    private function assertFormat(): void
+    private function assertName(): void
     {
-        if (stringStartsWithNumeric($this->wildcardName)) {
+        if (stringStartsWithNumeric($this->name)) {
             throw new WildcardStartWithNumberException(
                 (new Message("String %string% shouldn't start with a numeric value"))
-                    ->code('%string%', $this->wildcardName)
+                    ->code('%string%', $this->name)
                     ->toString()
             );
         }
-        if (!preg_match(WildcardContract::ACCEPTED_CHARS_REGEX, $this->wildcardName)) {
+        if (!preg_match(WildcardContract::ACCEPT_CHARS_REGEX, $this->name)) {
             throw new WildcardInvalidCharsException(
                 (new Message('String %string% must contain only alphanumeric and underscore characters'))
-                    ->code('%string%', $this->wildcardName)
+                    ->code('%string%', $this->name)
                     ->toString()
             );
         }

@@ -64,12 +64,42 @@
 			"}"
 		]
 	},
-	"docblock": {
-		"description": "inserts a docblock",
-		"prefix": "docblock",
+	"docblock-inherith": {
+		"description": "inserts a docblock @inherith",
+		"prefix": "docblock-inherith",
 		"body": [
 			"/**",
 			" * {@inheritdoc}",
+			" */",
+		]
+	},
+	"docblock-instance": {
+		"description": "inserts a docblock instance",
+		"prefix": "docblock-instance",
+		"body": [
+			"/**",
+			" * Provides access to the _ instance.",
+			" */",
+		]
+	},
+	"docblock-inmutable": {
+		"description": "inserts a docblock inmutable",
+		"prefix": "docblock-inmutable",
+		"body": [
+			"/**",
+			" * Return an instance with the specified X.",
+			" *",
+			" * This method MUST retain the state of the current instance, and return",
+			" * an instance that contains the specified X.",
+			" */",
+		]
+	},
+	"docblock-boolean": {
+		"description": "inserts a docblock boolean",
+		"prefix": "docblock-boolean",
+		"body": [
+			"/**",
+			" * Returns a boolean indicating whether the instance has a X.",
 			" */",
 		]
 	},

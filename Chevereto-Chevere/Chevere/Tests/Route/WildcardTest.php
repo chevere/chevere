@@ -26,25 +26,33 @@ final class WildcardTest extends TestCase
 {
     private function getWildcard(): WildcardContract
     {
-        return new Wildcard('test', '[a-z]+');
+        return new Wildcard('test');
     }
 
     public function testConstructWildcardStartsWithInvalidChar(): void
     {
         $this->expectException(WildcardStartWithNumberException::class);
-        new Wildcard('0test', '');
+        new Wildcard('0test');
     }
 
     public function testConstructWildcardInvalidChars(): void
     {
         $this->expectException(WildcardInvalidCharsException::class);
-        new Wildcard('t{e/s}t', '');
+        new Wildcard('t{e/s}t');
     }
 
-    public function testConstructInvalidRegex(): void
+    public function testWithInvalidRegex(): void
     {
         $this->expectException(WildcardInvalidRegexException::class);
-        new Wildcard('test', '$?');
+        (new Wildcard('test'))
+            ->withRegex('$?');
+    }
+
+    public function testWithRegex(): void
+    {
+        $this->expectNotToPerformAssertions();
+        (new Wildcard('test'))
+            ->withRegex('[a-z]+');
     }
 
     public function testAssertPathWildcardNotExists(): void

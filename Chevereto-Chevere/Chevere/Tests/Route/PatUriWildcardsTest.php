@@ -29,7 +29,6 @@ final class PatUriWildcardsTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->expectNotToPerformAssertions();
         $pathUri = new PathUri('/{wildcard}');
         $pathUriWildcards = new PathUriWildcards($pathUri);
         $this->assertSame($pathUri, $pathUriWildcards->pathUri());
