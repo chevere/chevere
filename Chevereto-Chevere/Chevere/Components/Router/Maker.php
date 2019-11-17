@@ -76,7 +76,7 @@ final class Maker implements MakerContract
         $new->routes[] = $new->route;
         // n => .. => regex => route
         $new->regexIndex[$new->route->regex()] = $id;
-        if (Route::TYPE_STATIC == $route->type()) {
+        if (!$route->isDynamic()) {
             $new->statics[$new->route->pathUri()->path()] = $id;
         }
         $new->regex = $new->getRegex();

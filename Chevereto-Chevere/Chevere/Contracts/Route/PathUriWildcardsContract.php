@@ -30,6 +30,11 @@ interface PathUriWildcardsContract
     public function __construct(PathUriContract $pathUri);
 
     /**
+     * Provides access to the PathUriContract.
+     */
+    public function pathUri(): PathUriContract;
+
+    /**
      * Provides access to path key set representation ({wildcards} replaced by {n}).
      */
     public function key(): string;

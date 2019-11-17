@@ -40,8 +40,16 @@ final class PathUriWildcards implements PathUriWildcardsContract
     public function __construct(PathUriContract $pathUri)
     {
         $this->pathUri = $pathUri;
-        $this->assertHasWildcards();
+        $this->assertPathUriHasWildcards();
         $this->handleSetKey();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function pathUri(): PathUriContract
+    {
+        return $this->pathUri;
     }
 
     /**
@@ -60,7 +68,7 @@ final class PathUriWildcards implements PathUriWildcardsContract
         return $this->wildcards;
     }
 
-    private function assertHasWildcards(): void
+    private function assertPathUriHasWildcards(): void
     {
         if (!$this->pathUri->hasWildcards()) {
             throw new WildcardNotFoundException(

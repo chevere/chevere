@@ -52,8 +52,6 @@ interface RouteContract
 
     public function wildcardName(int $key): string;
 
-    public function type(): string;
-
     public function regex(): string;
 
     /**
@@ -103,4 +101,6 @@ interface RouteContract
      * @param string $pattern route path pattern (set)
      */
     public function getRegex(string $pattern): string;
+
+    public function isDynamic(): bool;
 }

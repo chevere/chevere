@@ -59,6 +59,9 @@ final class Route implements RouteContract
     /** @var string */
     private $type;
 
+    /** @var bool */
+    private $isDynamic;
+
     /**
      * {@inheritdoc}
      */
@@ -73,7 +76,7 @@ final class Route implements RouteContract
         } else {
             $this->key = $this->pathUri->path();
         }
-        $this->type = isset($this->wildcards) ? Route::TYPE_DYNAMIC : Route::TYPE_STATIC;
+        $this->isDynamic = isset($this->wildcards);
         $this->middlewareNames = new MiddlewareNames();
     }
 
@@ -212,14 +215,6 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function name(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function hasName(): bool
     {
         return isset($this->name);
@@ -228,25 +223,25 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function wheres(): array
     {
-        return $this->wheres ?? [];
+        return $this->wheres;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function wildcardName(int $key): string
+    public function isDynamic(): bool
     {
-        return $this->wildcards[$key] ?? '';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function type(): string
-    {
-        return $this->type;
+        return $this->isDynamic;
     }
 
     /**
@@ -263,6 +258,14 @@ final class Route implements RouteContract
     public function regex(): string
     {
         return $this->regex;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function wildcardName(int $key): string
+    {
+        return $this->wildcards[$key] ?? '';
     }
 
     /**

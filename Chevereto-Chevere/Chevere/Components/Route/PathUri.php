@@ -45,7 +45,7 @@ final class PathUri implements PathUriContract
         $this->path = $path;
         $this->wildcardsCount = 0;
         $this->wildcardsMatch = [];
-        $this->setHasWildcards();
+        $this->handleSetHasWildcards();
         $this->assertFormat();
         if ($this->hasWildcards) {
             $this->assertMatchingBraces();
@@ -165,7 +165,7 @@ final class PathUri implements PathUriContract
         }
     }
 
-    private function setHasWildcards(): void
+    private function handleSetHasWildcards(): void
     {
         $this->hasWildcards = false !== strpos($this->path, '{') || false !== strpos($this->path, '}');
     }
