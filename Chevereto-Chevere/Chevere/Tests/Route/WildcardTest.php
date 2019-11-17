@@ -24,11 +24,6 @@ use PHPUnit\Framework\TestCase;
 
 final class WildcardTest extends TestCase
 {
-    private function getWildcard(): WildcardContract
-    {
-        return new Wildcard('test');
-    }
-
     public function testConstructWildcardStartsWithInvalidChar(): void
     {
         $this->expectException(WildcardStartWithNumberException::class);
@@ -41,6 +36,14 @@ final class WildcardTest extends TestCase
         new Wildcard('t{e/s}t');
     }
 
+    public function testConstruct(): void
+    {
+        $name = 'test';
+        $wildcard = new Wildcard($name);
+        $this->assertSame($name, $wildcard->name());
+        $this->assertSame(WildcardContract::REGEX_MATCH_DEFAULT, $wildcard->regex());
+    }
+
     public function testWithInvalidRegex(): void
     {
         $this->expectException(WildcardInvalidRegexException::class);
@@ -50,15 +53,18 @@ final class WildcardTest extends TestCase
 
     public function testWithRegex(): void
     {
-        $this->expectNotToPerformAssertions();
-        (new Wildcard('test'))
-            ->withRegex('[a-z]+');
+        $name = 'test';
+        $regex = '[a-z]+';
+        $wildcard = (new Wildcard($name))
+            ->withRegex($regex);
+        $this->assertSame($name, $wildcard->name());
+        $this->assertSame($regex, $wildcard->regex());
     }
 
     public function testAssertPathWildcardNotExists(): void
     {
         $this->expectException(WildcardNotFoundException::class);
-        $this->getWildcard()
+        (new Wildcard('test'))
             ->assertPathUri(
                 new PathUri('/')
             );
@@ -67,7 +73,7 @@ final class WildcardTest extends TestCase
     public function testAssertPath(): void
     {
         $this->expectNotToPerformAssertions();
-        $this->getWildcard()
+        (new Wildcard('test'))
             ->assertPathUri(
                 new PathUri('/{test}')
             );
