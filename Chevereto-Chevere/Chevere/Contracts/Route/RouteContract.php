@@ -35,7 +35,7 @@ interface RouteContract
     public function pathUri(): PathUriContract;
 
     /**
-     * Provides access to the maker array.
+     * Provides access to the file maker array.
      */
     public function maker(): array;
 
@@ -45,14 +45,9 @@ interface RouteContract
     public function key(): string;
 
     /**
-     * Returns a boolean indicating whether the instance has wildcards.
+     * Provides access to the regex string.
      */
-    public function hasWildcards(): bool;
-
-    /**
-     * Provides access to the wildcards (if hasWildcards).
-     */
-    public function wildcards(): array;
+    public function regex(): string;
 
     /**
      * Return an instance with the specified name.
@@ -84,13 +79,17 @@ interface RouteContract
      */
     public function withAddedWildcard(WildcardContract $wildcard): RouteContract;
 
-    public function wheres(): array;
+    /**
+     * Returns a boolean indicating whether the instance a WildcardCollectionContract.
+     */
+    public function hasWildcardCollection(): bool;
 
-    public function middlewareNames(): MiddlewareNamesContract;
+    /**
+     * Provides access to the WildcardCollectionContract instance.
+     */
+    public function wildcardCollection(): WildcardCollectionContract;
 
-    public function wildcardName(int $key): string;
-
-    public function regex(): string;
+    // public function wildcardName(int $key): string;
 
     /**
      * @param MethodControllerContract $methodController a HTTP method contract
@@ -98,6 +97,8 @@ interface RouteContract
     public function withAddedMethodController(MethodControllerContract $methodController): RouteContract;
 
     public function withAddedMiddlewareName(string $middlewareName): RouteContract;
+
+    public function middlewareNames(): MiddlewareNamesContract;
 
     /**
      * @param MethodContract $method an HTTP MethodContract

@@ -75,7 +75,7 @@ final class Maker implements MakerContract
         $new->routes[] = $new->route;
         // n => .. => regex => route
         $new->regexIndex[$new->route->regex()] = $id;
-        if (!$route->hasWildcards()) {
+        if (!$route->hasWildcardCollection()) {
             $new->statics[$new->route->pathUri()->path()] = $id;
         }
         $new->regex = $new->getRegex();

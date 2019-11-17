@@ -42,7 +42,6 @@ final class Wildcard implements WildcardContract
         $this->assertName();
         $this->regex = WildcardContract::REGEX_MATCH_DEFAULT;
         $this->assertRegex();
-        $this->wildcardString = "{{$name}}";
     }
 
     /**
@@ -78,11 +77,12 @@ final class Wildcard implements WildcardContract
      */
     public function assertPathUri(PathUriContract $pathUri): void
     {
-        $noWildcard = false === strpos($pathUri->path(), "{{$this->name}}");
+        $wildcardString = "{{$this->name}}";
+        $noWildcard = false === strpos($pathUri->path(), $wildcardString);
         if ($noWildcard) {
             throw new WildcardNotFoundException(
                 (new Message("Wildcard %wildcard% doesn't exists in route %path%"))
-                    ->code('%wildcard%', $this->wildcardString)
+                    ->code('%wildcard%', $wildcardString)
                     ->code('%path%', $pathUri->path())
                     ->toString()
             );

@@ -29,6 +29,7 @@ use Chevere\Contracts\Middleware\MiddlewareNamesContract;
 use Chevere\Contracts\Route\PathUriContract;
 use Chevere\Contracts\Route\WildcardContract;
 use Chevere\Contracts\Http\MethodControllerCollectionContract;
+use Chevere\Contracts\Route\WildcardCollectionContract;
 
 // IDEA: L10n support
 
@@ -43,11 +44,11 @@ final class Route implements RouteContract
     /** @var array Where clauses based on wildcards */
     private $wheres;
 
-    /** @var array ['method' => 'controller',] */
-    private $methods;
-
     /** @var MiddlewareNamesContract */
     private $middlewareNames;
+
+    /** @var WildcardCollectionContract */
+    private $wildcardCollection;
 
     /** @var MethodControllerCollectionContract */
     private $methodControllerCollection;
@@ -64,25 +65,18 @@ final class Route implements RouteContract
     /** @var string */
     private $regex;
 
-    /** @var bool */
-    private $hasWildcards;
-
     /**
      * {@inheritdoc}
      */
     public function __construct(PathUriContract $pathUri)
     {
         $this->pathUri = $pathUri;
+        $this->key = $this->pathUri->path();
         $this->setMaker();
-        if ($pathUri->hasWildcards()) {
-            $pathUriWildcards = new PathUriWildcards($pathUri);
-            $this->key = $pathUriWildcards->key();
-            $this->wildcards = $pathUriWildcards->wildcards();
-        } else {
-            $this->key = $this->pathUri->path();
+        if ($this->pathUri->hasWildcards()) {
+            $this->handleSetWildcardCollection();
         }
         $this->handleSetRegex();
-        $this->hasWildcards = isset($this->wildcards);
         $this->middlewareNames = new MiddlewareNames();
         $this->methodControllerCollection = new MethodControllerCollection();
     }
@@ -163,7 +157,9 @@ final class Route implements RouteContract
         $wildcard->assertPathUri(
             $new->pathUri()
         );
-        $new->wheres[$wildcard->name()] = $wildcard->regex();
+        $new->wildcardCollection = $new->wildcardCollection
+            ->withAddedWildcard($wildcard);
+        $new->handleSetRegex();
 
         return $new;
     }
@@ -171,25 +167,17 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function hasWildcards(): bool
+    public function hasWildcardCollection(): bool
     {
-        return $this->hasWildcards;
+        return isset($this->wildcardCollection);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function wildcards(): array
+    public function wildcardCollection(): WildcardCollectionContract
     {
-        return $this->wildcards;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function wheres(): array
-    {
-        return $this->wheres;
+        return $this->wildcardCollection;
     }
 
     /**
@@ -244,19 +232,19 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function wildcardName(int $key): string
-    {
-        $name = $this->wildcards[$key] ?? null;
-        if (null == $name) {
-            throw new LogicException(
-                (new Message('Undefined key %key%'))
-                    ->code('%key%', $key)
-                    ->toString()
-            );
-        }
+    // public function wildcardName(int $key): string
+    // {
+    //     $name = $this->wildcards[$key] ?? null;
+    //     if (null == $name) {
+    //         throw new LogicException(
+    //             (new Message('Undefined key %key%'))
+    //                 ->code('%key%', $key)
+    //                 ->toString()
+    //         );
+    //     }
 
-        return $name;
-    }
+    //     return $name;
+    // }
 
     /**
      * {@inheritdoc}
@@ -275,12 +263,23 @@ final class Route implements RouteContract
             ->controllerName();
     }
 
+    private function handleSetWildcardCollection(): void
+    {
+        $pathUriWildcards = new PathUriWildcards($this->pathUri);
+        $this->key = $pathUriWildcards->key();
+        $this->wildcardCollection = new WildcardCollection();
+        foreach ($pathUriWildcards->wildcards() as $wildcardName) {
+            $this->wildcardCollection = $this->wildcardCollection
+                ->withAddedWildcard(new Wildcard($wildcardName));
+        }
+    }
+
     private function handleSetRegex(): void
     {
         $regex = '^' . $this->key . '$';
-        if (isset($this->wildcards)) {
-            foreach ($this->wildcards as $k => $v) {
-                $regex = str_replace("{{$k}}", '(' . $this->wheres[$v] . ')', $regex);
+        if (isset($this->wildcardCollection)) {
+            foreach ($this->wildcardCollection as $key => $wildcard) {
+                $regex = str_replace("{{$key}}", '(' . $wildcard->regex() . ')', $regex);
             }
         }
         $this->regex = $regex;

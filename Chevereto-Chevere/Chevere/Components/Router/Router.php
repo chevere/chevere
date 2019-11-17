@@ -130,23 +130,17 @@ final class Router implements RouterContract
         unset($matches['MARK']);
         array_shift($matches);
         $route = $this->routes[$id];
-        // Array when the route is a powerSet [id, set]
-        if (is_array($route)) {
-            $set = $route[1];
-            $route = $this->routes[$route[0]];
-        }
+        /* String when the route is cached */
         if (is_string($route)) {
             $resolver = new Resolver($route);
             $route = $resolver->route();
             $this->routes[$id] = $route;
         }
         $this->arguments = [];
-        if (isset($set)) {
-            foreach ($matches as $k => $v) {
-                dd(__LINE__);
-                // $wildcardId = $route->keyPowerSet()[$set][$k];
-                $wildcardName = $route->wildcardName($wildcardId);
-                $this->arguments[$wildcardName] = $v;
+        if ($route->hasWildcardCollection()) {
+            foreach ($matches as $pos => $val) {
+                $wildcard = $route->wildcardCollection()->getPos($pos);
+                $this->arguments[$wildcard->name()] = $val;
             }
         }
 
