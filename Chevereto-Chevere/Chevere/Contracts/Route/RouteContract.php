@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Route;
 
-use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodsContract;
 use Chevere\Contracts\Middleware\MiddlewareNamesContract;
 use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
+use Chevere\Contracts\Http\MethodControllerContract;
 
 interface RouteContract
 {
@@ -93,11 +93,9 @@ interface RouteContract
     public function regex(): string;
 
     /**
-     * Sets HTTP method to callable binding. Allocates Routes.
-     *
-     * @param MethodContract $method a HTTP method contract
+     * @param MethodControllerContract $methodController a HTTP method contract
      */
-    public function withAddedMethod(MethodContract $method): RouteContract;
+    public function withAddedMethodController(MethodControllerContract $methodController): RouteContract;
 
     /**
      * Sets HTTP method to callable binding (multiple version).

@@ -15,33 +15,20 @@ namespace App;
 
 use Chevere\Components\Route\Route;
 use Chevere\Components\Http\Method;
+use Chevere\Components\Http\MethodController;
 use Chevere\Components\Route\PathUri;
 
 return [
     (new Route(new PathUri('/home/{wildcard}')))
-        ->withAddedMethod(
-            (new Method('GET'))
-                ->withControllerName(Controllers\Home::class)
+        ->withAddedMethodController(
+            new MethodController(new Method('GET'), Controllers\Home::class)
         )
         ->withName('web.home'),
     (new Route(new PathUri('/')))
-        ->withAddedMethod(
-            (new Method('GET'))
-                ->withControllerName(Controllers\Index::class)
+        ->withAddedMethodController(
+            new MethodController(new Method('GET'), Controllers\Index::class)
         )
         ->withName('web.root')
         ->withAddedMiddlewareName(Middlewares\RoleBanned::class)
         ->withAddedMiddlewareName(Middlewares\RoleAdmin::class),
-    // ->withAddedMiddlewareName(Middlewares\RoleBanned::class),
-    // (new Route('/cache/{llave?}-{cert}-{user?}'))
-    //     ->withWhere('llave', '[0-9]+')
-    //     ->withAddedMethod(
-    //         (new Method('GET'))
-    //             ->withControllerName(Controllers\Cache::class)
-    //     )
-    //     ->withAddedMethod(
-    //         (new Method('POST'))
-    //             ->withControllerName(Controllers\Cache::class)
-    //     )
-    //     ->withName('cache'),
 ];

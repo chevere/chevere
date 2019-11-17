@@ -16,13 +16,11 @@ namespace Chevere\Components\Console\Commands;
 use Chevere\Components\App\Runner;
 use InvalidArgumentException;
 use JsonException;
-
 use Chevere\Components\Console\Command;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\BuilderContract;
 
 /**
@@ -50,42 +48,42 @@ final class RequestCommand extends Command
             'g',
             Command::OPTION_OPTIONAL,
             '$_GET [json]',
-            []
+            [],
         ],
         [
             'post',
             'p',
             Command::OPTION_OPTIONAL,
             '$_POST [json]',
-            []
+            [],
         ],
         [
             'cookie',
             'c',
             Command::OPTION_OPTIONAL,
             '$_COOKIE [json]',
-            []
+            [],
         ],
         [
             'files',
             'f',
             Command::OPTION_OPTIONAL,
             '$_FILES [json]',
-            []
+            [],
         ],
         [
             'headers',
             'H',
             Command::OPTION_OPTIONAL,
             'Headers',
-            []
+            [],
         ],
         [
             'body',
             'B',
             Command::OPTION_OPTIONAL,
             'Body',
-            null
+            null,
         ],
         [
             'response-headers',
@@ -129,7 +127,7 @@ final class RequestCommand extends Command
         $method = new Method($this->getArgumentString('method'));
 
         $request = new Request(
-            $method->method(),
+            $method->name(),
             $this->getArgumentString('uri'),
             $this->getOptionArray('headers'),
             isset($this->options['body']) ? $this->getOptionString('body') : null,

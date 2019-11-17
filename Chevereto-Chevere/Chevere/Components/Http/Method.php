@@ -13,68 +13,40 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Http;
 
-use InvalidArgumentException;
-
 use Chevere\Components\Controller\Traits\ControllerNameAccessTrait;
-use Chevere\Components\Message\Message;
-use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Http\MethodContract;
+use InvalidArgumentException;
 
 final class Method implements MethodContract
 {
     use ControllerNameAccessTrait;
 
     /** @var string HTTP request method */
-    private $method;
+    private $name;
 
-    /** @var string A ControllerContract name */
-    private $controllerName;
-
-    public function __construct(string $method)
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(string $name)
     {
-        $this->setMethod($method);
+        $this->name = $name;
+        $this->assertMethod();
     }
 
-    public function method(): string
+    /**
+     * {@inheritdoc}
+     */
+    public function name(): string
     {
-        return $this->method;
+        return $this->name;
     }
 
-    public function withControllerName(string $controllerName): MethodContract
+    private function assertMethod(): void
     {
-        $new = clone $this;
-        $new->controllerName = $controllerName;
-        $new->assertControllerName();
-
-        return $new;
-    }
-
-    private function setMethod(string $method)
-    {
-        if (!in_array($method, MethodContract::ACCEPT_METHODS)) {
+        if (!in_array($this->name, MethodContract::ACCEPT_METHOD_NAMES)) {
             throw new InvalidArgumentException(
                 (new Message('Unknown HTTP method %method%'))
-                    ->code('%method%', $method)
-                    ->toString()
-            );
-        }
-        $this->method = $method;
-    }
-
-    private function assertControllerName(): void
-    {
-        if (!class_exists($this->controllerName)) {
-            throw new InvalidArgumentException(
-                (new Message("Controller %controller% doesn't exists"))
-                    ->code('%controller%', $this->controllerName)
-                    ->toString()
-            );
-        }
-        if (!is_subclass_of($this->controllerName, ControllerContract::class)) {
-            throw new InvalidArgumentException(
-                (new Message('Controller %controller% must implement the %contract% interface'))
-                    ->code('%controller%', $this->controllerName)
-                    ->code('%contract%', ControllerContract::class)
+                    ->code('%method%', $this->name)
                     ->toString()
             );
         }

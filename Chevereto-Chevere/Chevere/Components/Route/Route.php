@@ -17,12 +17,13 @@ use LogicException;
 use InvalidArgumentException;
 use Chevere\Components\Controllers\HeadController;
 use Chevere\Components\Http\Method;
+use Chevere\Components\Http\MethodController;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodsContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Components\Middleware\MiddlewareNames;
 use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
+use Chevere\Contracts\Http\MethodControllerContract;
 use Chevere\Contracts\Middleware\MiddlewareNamesContract;
 use Chevere\Contracts\Route\PathUriContract;
 use Chevere\Contracts\Route\WildcardContract;
@@ -171,24 +172,17 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedMethod(MethodContract $method): RouteContract
+    public function withAddedMethodController(MethodControllerContract $methodController): RouteContract
     {
-        if (!$method->hasControllerName()) {
-            throw new InvalidArgumentException(
-                (new Message('Instance of %type% %argument% must include a controller name'))
-                    ->code('%type%', MethodContract::class)
-                    ->code('%argument%', '$method')
-                    ->toString()
-            );
-        }
-        if (isset($this->methods[$method->method()])) {
+        $new = clone $this;
+        if (isset($this->methods[$methodController->method()->name()])) {
             throw new InvalidArgumentException(
                 (new Message('Method %method% has been already registered'))
-                    ->code('%method%', $method->method())->toString()
+                    ->code('%method%', $methodController->method())->toString()
             );
         }
         $new = clone $this;
-        $new->methods[$method->method()] = $method->controllerName();
+        $new->methods[$methodController->method()->name()] = $methodController->controllerName();
 
         return $new;
     }
@@ -227,14 +221,16 @@ final class Route implements RouteContract
         if (isset($new->wildcards)) {
             foreach ($new->wildcards as $v) {
                 if (!isset($new->wheres[$v])) {
-                    $new->wheres[$v] = RouteContract::REGEX_WILDCARD_DEFAULT;
+                    $new->wheres[$v] = WildcardContract::REGEX_MATCH_DEFAULT;
                 }
             }
         }
         if (isset($new->methods['GET']) && !isset($new->methods['HEAD'])) {
-            $new = $new->withAddedMethod(
-                (new Method('HEAD'))
-                    ->withControllerName(HeadController::class)
+            $new = $new->withAddedMethodController(
+                new MethodController(
+                    new Method('HEAD'),
+                    HeadController::class
+                )
             );
         }
         $new->regex = $new->getRegex($new->key ?? $new->pathUri->path());

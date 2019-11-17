@@ -15,20 +15,19 @@ namespace App;
 
 use Chevere\Components\Route\Route;
 use Chevere\Components\Http\Method;
+use Chevere\Components\Http\MethodController;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Wildcard;
 
 return [
     (new Route(new PathUri('/test')))
-        ->withAddedMethod(
-            (new Method('GET'))
-                ->withControllerName(Controllers\Home::class)
+        ->withAddedMethodController(
+            new MethodController(new Method('GET'), Controllers\Home::class)
         )
         ->withName('test'),
     (new Route(new PathUri('/test/{wildcard}')))
-        ->withAddedMethod(
-            (new Method('GET'))
-                ->withControllerName(Controllers\Home::class)
+        ->withAddedMethodController(
+            new MethodController(new Method('GET'), Controllers\Home::class)
         )
         ->withAddedWildcard(new Wildcard('wildcard')),
 ];

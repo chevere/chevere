@@ -138,7 +138,7 @@ final class Maker implements MakerContract
 
         $iterator = new RecursiveDirectoryIterator($this->path->absolute(), RecursiveDirectoryIterator::SKIP_DOTS);
         $filter = new FilterIterator($iterator);
-        $filter = $filter->withAcceptFilenames(MethodContract::ACCEPT_METHODS);
+        $filter = $filter->withAcceptFilenames(MethodContract::ACCEPT_METHOD_NAMES);
         $this->recursiveIterator = new RecursiveIteratorIterator($filter);
         $this->assertRecursiveIterator();
         $this->processRecursiveIterator();
@@ -151,7 +151,6 @@ final class Maker implements MakerContract
         $route = new Route(new PathUri($path));
         $route = $route
             ->withMethods($endpoint->methods());
-        // ->withId($this->basePath);
 
         $this->routerMaker = $this->routerMaker
             ->withAddedRoute($route, $this->basePath);
@@ -241,7 +240,6 @@ final class Maker implements MakerContract
             $endpointRouteKey = stringLeftTail($pathComponent, '/');
 
             $this->route = (new Route(new PathUri($endpointRouteKey)))
-                // ->withId($pathComponent)
                 ->withMethods($methods);
 
             // $resource = $this->resourcesMap[$pathComponent] ?? null;

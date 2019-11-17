@@ -14,13 +14,13 @@ declare(strict_types=1);
 use App\Controllers\Home;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Http\Method;
+use Chevere\Components\Http\MethodController;
 use Chevere\Components\Route\PathUri;
 
 return [
     (new Route(new PathUri('/hello-world')))
-        ->withAddedMethod(
-            (new Method('GET'))
-                ->withControllerName(Home::class)
+        ->withAddedMethodController(
+            new MethodController(new Method('GET'), Home::class)
         )
         ->withName('plugin.helloWorld'),
 ];

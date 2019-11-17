@@ -41,7 +41,7 @@ final class Methods implements MethodsContract
     {
         $new = clone $this;
         $new->methods[] = $method;
-        $new->index[$method->method()] = array_key_last($new->methods);
+        $new->index[$method->name()] = array_key_last($new->methods);
 
         return $new;
     }
