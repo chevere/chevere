@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Http;
 
 use ArrayIterator;
+use Chevere\Components\Http\Exceptions\MethodNotFoundException;
+use Chevere\Components\Message\Message;
 use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodControllerNameContract;
 use Chevere\Contracts\Http\MethodControllerNameCollectionContract;
@@ -63,6 +65,13 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
     public function get(MethodContract $method): MethodControllerNameContract
     {
         $pos = array_search($method->toString(), $this->index);
+        if (false === $pos) {
+            throw new MethodNotFoundException(
+                (new Message('Method %method% not found'))
+                    ->code('%method%', $method->toString())
+                    ->toString()
+            );
+        }
 
         return $this->array[$pos];
     }

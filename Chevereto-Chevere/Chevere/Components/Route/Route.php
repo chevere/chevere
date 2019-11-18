@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use Chevere\Components\Controller\ControllerName;
-use LogicException;
 use Chevere\Components\Controllers\HeadController;
+use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Http\MethodControllerNameCollection;
@@ -211,9 +211,10 @@ final class Route implements RouteContract
     public function controllerName(MethodContract $method): ControllerNameContract
     {
         if (!$this->methodControllerNameCollection->has($method)) {
-            throw new LogicException(
-                (new Message('No controller is associated to HTTP method %method%'))
+            throw new MethodNotFoundException(
+                (new Message('No %method% %className% is defined for this instance'))
                     ->code('%method%', $method->toString())
+                    ->code('%className%', get_class($method))
                     ->toString()
             );
         }

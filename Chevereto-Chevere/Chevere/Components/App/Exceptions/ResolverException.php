@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Router\Exception;
+namespace Chevere\Components\App\Exceptions;
 
 use Exception;
 
 /**
- * Exception thrown when the RouterContract can't find a route.
+ * Exception thrown when unable to resolve.
  */
-class RouteNotFoundException extends Exception
+final class ResolverException extends Exception
 {
 }

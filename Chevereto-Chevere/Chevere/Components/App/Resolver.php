@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
+use Chevere\Components\App\Exceptions\ResolverException;
 use Chevere\Components\App\Exceptions\RouterCantResolveException;
 use Chevere\Components\App\Exceptions\RouterContractRequiredException;
+use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
@@ -71,17 +74,26 @@ final class Resolver
     {
         $pathInfo = $this->builder->build()->app()->request()->getUri()->getPath();
         $app = $this->builder->build()->app();
-        $route = $app->services()->router()->resolve($pathInfo);
+        try {
+            $route = $app->services()->router()->resolve($pathInfo);
+        } catch (RouteNotFoundException $e) {
+            // HTTP 404: Not found
+            throw new ResolverException($e->getMessage(), 404, $e);
+        }
         $app = $app
             ->withRoute($route);
+        $collection = $app->route()->methodControllerNameCollection();
+        $requestMethod = new Method($app->request()->getMethod());
+        if (!$collection->has($requestMethod)) {
+        }
+        try {
+            $controllerName = $collection->get($requestMethod)->controllerName()->toString();
+        } catch (MethodNotFoundException $e) {
+            // HTTP 405: Method Not Allowed
+            throw new ResolverException($e->getMessage(), 405, $e);
+        }
         $this->builder = $this->builder
-            ->withControllerName(
-                $app->route()
-                    ->controllerName(
-                        new Method($app->request()->getMethod())
-                    )
-                    ->toString()
-            )
+            ->withControllerName($controllerName)
             ->withControllerArguments(
                 $app->services()->router()->arguments()
             )

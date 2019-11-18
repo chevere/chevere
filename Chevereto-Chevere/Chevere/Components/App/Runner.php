@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
+use Chevere\Components\App\Exceptions\ResolverException;
 use LogicException;
 use Chevere\Components\Http\Request\RequestException;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\RunnerContract;
 use function console;
@@ -85,14 +85,6 @@ final class Runner implements RunnerContract
     /**
      * {@inheritdoc}
      */
-    public function hasRouteNotFound(): bool
-    {
-        return isset($this->routeNotFound);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function withRun(): RunnerContract
     {
         $new = clone $this;
@@ -103,9 +95,7 @@ final class Runner implements RunnerContract
         if (!$new->builder->hasControllerName()) {
             try {
                 $new->handleResolver();
-            } catch (RouteNotFoundException $e) {
-                $new->routeNotFound = true;
-
+            } catch (ResolverException $e) {
                 return $new;
             }
         }
@@ -156,12 +146,14 @@ final class Runner implements RunnerContract
         try {
             $this->builder = (new Resolver($this->builder))
                 ->builder();
-        } catch (RouteNotFoundException $e) {
+        } catch (ResolverException $e) {
             $app = $this->builder->build()->app();
             $response = $app->response();
+
             $guzzle = $response->guzzle()
-                ->withStatus(404)
-                ->withBody(stream_for('Not found.'));
+                ->withStatus($e->getCode());
+            // ->withBody(stream_for('Not found.'));
+
             $response = $response
                 ->withGuzzle($guzzle);
             $app = $app
@@ -171,7 +163,7 @@ final class Runner implements RunnerContract
                     $this->builder->build()
                         ->withApp($app)
                 );
-            throw new RouteNotFoundException();
+            throw new ResolverException();
         }
     }
 

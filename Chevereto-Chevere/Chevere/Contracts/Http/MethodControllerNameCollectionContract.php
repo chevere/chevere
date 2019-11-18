@@ -20,10 +20,13 @@ interface MethodControllerNameCollectionContract extends IteratorAggregate
 {
     public function __construct(MethodControllerNameContract ...$methodControllerName);
 
-    public function withAddedMethodControllerName(MethodControllerNameContract $methodController): MethodControllerNameCollectionContract;
+    public function withAddedMethodControllerName(MethodControllerNameContract $methodControllerName): MethodControllerNameCollectionContract;
 
     public function has(MethodContract $method): bool;
 
+    /**
+     * @throws MethodNotFoundException
+     */
     public function get(MethodContract $method): MethodControllerNameContract;
 
     public function getIterator(): ArrayIterator;

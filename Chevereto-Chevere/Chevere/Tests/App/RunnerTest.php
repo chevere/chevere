@@ -119,6 +119,22 @@ final class RunnerTest extends TestCase
         $this->assertSame(404, $ranBuilder->build()->app()->response()->guzzle()->getStatusCode());
     }
 
+    public function testRunnerFoundBadMethod(): void
+    {
+        $build = $this->getTestBuild();
+        $builder = new Builder($build->make());
+        $app = $builder->build()->app()
+            ->withRequest(new Request('POST', '/test'));
+        $builder = $builder
+            ->withBuild(
+                $builder->build()->withApp($app)
+            );
+        $runner = new Runner($builder);
+        $ranBuilder = $runner->withRun()->builder();
+        $build->destroy();
+        $this->assertSame(405, $ranBuilder->build()->app()->response()->guzzle()->getStatusCode());
+    }
+
     public function testRunnerFound(): void
     {
         $build = $this->getTestBuild();

@@ -98,7 +98,7 @@ interface RouteContract
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified added MethodControllerNameContract.
      */
-    public function withAddedMethodControllerName(MethodControllerNameContract $methodController): RouteContract;
+    public function withAddedMethodControllerName(MethodControllerNameContract $methodControllerName): RouteContract;
 
     /**
      * Provides access to the MethodControllerNameCollectionContract instance.
@@ -107,6 +107,8 @@ interface RouteContract
 
     /**
      * Get the controller name for the given MethodContract.
+     *
+     * @throws MethodNotFoundException if $method doesn't exists in the MethodControllerNameCollectionContract
      */
     public function controllerName(MethodContract $method): ControllerNameContract;
 

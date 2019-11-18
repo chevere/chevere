@@ -41,11 +41,6 @@ interface RunnerContract
     public function hasConsoleLoop(): bool;
 
     /**
-     * Returns a boolean indicating whether the instance has route not found.
-     */
-    public function hasRouteNotFound(): bool;
-
-    /**
      * This method runs the application, CLI aware.
      */
     public function withRun(): RunnerContract;
