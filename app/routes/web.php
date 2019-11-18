@@ -19,6 +19,7 @@ use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Middleware\MiddlewareName;
 use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RouteName;
 
 return [
     (new Route(new PathUri('/home/{wildcard}')))
@@ -28,7 +29,9 @@ return [
                 new ControllerName(Controllers\Home::class)
             )
         )
-        ->withName('web.home'),
+        ->withName(
+            new RouteName('web.home')
+        ),
     (new Route(new PathUri('/')))
         ->withAddedMethodControllerName(
             new MethodControllerName(
@@ -36,7 +39,9 @@ return [
                 new ControllerName(Controllers\Index::class)
             )
         )
-        ->withName('web.root')
+        ->withName(
+            new RouteName('web.root')
+        )
         ->withAddedMiddlewareName(
             new MiddlewareName(Middlewares\RoleBanned::class)
         )

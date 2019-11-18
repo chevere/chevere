@@ -22,6 +22,8 @@ interface MethodControllerNameCollectionContract extends IteratorAggregate
 
     public function withAddedMethodControllerName(MethodControllerNameContract $methodControllerName): MethodControllerNameCollectionContract;
 
+    public function hasAny(): bool;
+
     public function has(MethodContract $method): bool;
 
     /**

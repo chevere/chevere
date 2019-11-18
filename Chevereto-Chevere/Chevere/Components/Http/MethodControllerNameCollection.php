@@ -54,6 +54,14 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
     /**
      * {@inheritdoc}
      */
+    public function hasAny(): bool
+    {
+        return !empty($this->array);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function has(MethodContract $method): bool
     {
         return in_array($method->toString(), $this->index);

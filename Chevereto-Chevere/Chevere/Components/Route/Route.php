@@ -22,7 +22,6 @@ use Chevere\Components\Http\MethodControllerNameCollection;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
-use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
 use Chevere\Contracts\Controller\ControllerNameContract;
 use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodControllerNameContract;
@@ -31,6 +30,7 @@ use Chevere\Contracts\Route\PathUriContract;
 use Chevere\Contracts\Route\WildcardContract;
 use Chevere\Contracts\Http\MethodControllerNameCollectionContract;
 use Chevere\Contracts\Middleware\MiddlewareNameContract;
+use Chevere\Contracts\Route\RouteNameContract;
 use Chevere\Contracts\Route\WildcardCollectionContract;
 
 final class Route implements RouteContract
@@ -53,7 +53,7 @@ final class Route implements RouteContract
     /** @var MethodControllerNameCollectionContract */
     private $methodControllerNameCollection;
 
-    /** @var string Route name (if any) */
+    /** @var RouteNameContract Route name (if any) */
     private $name;
 
     /** @var string */
@@ -94,14 +94,6 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function key(): string
-    {
-        return $this->key;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function regex(): string
     {
         return $this->regex;
@@ -110,16 +102,8 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function withName(string $name): RouteContract
+    public function withName(RouteNameContract $name): RouteContract
     {
-        if (!preg_match(RouteContract::REGEX_NAME, $name)) {
-            throw new RouteInvalidNameException(
-                (new Message('Expecting at least one alphanumeric, underscore, hypen or dot character, string %string% provided (regex %regex%)'))
-                    ->code('%string%', $name)
-                    ->code('%regex%', RouteContract::REGEX_NAME)
-                    ->toString()
-            );
-        }
         $new = clone $this;
         $new->name = $name;
 
@@ -137,7 +121,7 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function name(): string
+    public function name(): RouteNameContract
     {
         return $this->name;
     }
@@ -245,7 +229,6 @@ final class Route implements RouteContract
 
     private function handleSetWildcardCollection(): void
     {
-        $this->key = $this->pathUri->key();
         $this->wildcardCollection = new WildcardCollection();
         foreach ($this->pathUri->wildcards() as $wildcardName) {
             $this->wildcardCollection = $this->wildcardCollection
@@ -255,7 +238,7 @@ final class Route implements RouteContract
 
     private function handleSetRegex(): void
     {
-        $regex = '^' . $this->key . '$';
+        $regex = '^' . $this->pathUri->key() . '$';
         if (isset($this->wildcardCollection)) {
             foreach ($this->wildcardCollection as $key => $wildcard) {
                 $regex = str_replace("{{$key}}", '(' . $wildcard->regex() . ')', $regex);

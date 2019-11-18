@@ -25,9 +25,6 @@ use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 
 interface RouteContract
 {
-    /** Regex pattern used to validate route name. */
-    const REGEX_NAME = '/^[\w\-\.]+$/i';
-
     /**
      * Creates a new instance.
      */
@@ -44,11 +41,6 @@ interface RouteContract
     public function maker(): array;
 
     /**
-     * Provides access to the route path representation, with placeholder wildcards like `/api/users/{0}`.
-     */
-    public function key(): string;
-
-    /**
      * Provides access to the regex string.
      */
     public function regex(): string;
@@ -61,7 +53,7 @@ interface RouteContract
      *
      * @throws RouteInvalidNameException if $name doesn't match REGEX_NAME
      */
-    public function withName(string $name): RouteContract;
+    public function withName(RouteNameContract $name): RouteContract;
 
     /**
      * Returns a boolean indicating whether the instance has a name.
@@ -71,7 +63,7 @@ interface RouteContract
     /**
      * Provides access to the route name (if any).
      */
-    public function name(): string;
+    public function name(): RouteNameContract;
 
     /**
      * Return an instance with the specified added WildcardContract.

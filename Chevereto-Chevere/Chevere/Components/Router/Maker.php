@@ -20,7 +20,6 @@ use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
-use Chevere\Components\Route\Route;
 use Chevere\Components\Type\Type;
 use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Route\RouteContract;
@@ -65,12 +64,13 @@ final class Maker implements MakerContract
     {
         $new = clone $this;
         $new->route = $route;
-        $new->assertUniqueRoutePath();
-        $new->assertUniqueRouteKey();
+        $new->assertRouteMethodControllerNameCollection();
+        $new->assertRouteUniquePath();
+        $new->assertRouteUniqueKey();
         $id = empty($new->routes) ? 0 : (array_key_last($new->routes) + 1);
         if ($new->route->hasName()) {
             $new->assertUniqueNamedRoute();
-            $new->named[$new->route->name()] = $id;
+            $new->named[$new->route->name()->toString()] = $id;
         }
         $new->routes[] = $new->route;
         // n => .. => regex => route
@@ -79,7 +79,7 @@ final class Maker implements MakerContract
             $new->statics[$new->route->pathUri()->path()] = $id;
         }
         $new->regex = $new->getRegex();
-        $new->routesKeys[$new->route->key()] = $id;
+        $new->routesKeys[$new->route->pathUri()->key()] = $id;
         $new->routesIndex[$new->route->pathUri()->path()] = [
             'id' => $id,
             'group' => $group,
@@ -158,23 +158,34 @@ final class Maker implements MakerContract
         return sprintf(MakerContract::REGEX_TEPLATE, implode('', $regex));
     }
 
-    private function assertUniqueRouteKey(): void
+    private function assertRouteUniqueKey(): void
     {
-        $routeId = $this->routesKeys[$this->route->key()] ?? null;
+        $routeId = $this->routesKeys[$this->route->pathUri()->key()] ?? null;
         if (isset($routeId)) {
             $routeIndexed = $this->routes[$routeId];
             throw new InvalidArgumentException(
                 (new Message('Router conflict detected for %path% at %declare% (self-assigned internal key %key% is already reserved by %register%)'))
                     ->code('%path%', $this->route->pathUri()->path())
                     ->code('%declare%', $this->route->maker()['fileLine'])
-                    ->code('%key%', $this->route->key())
+                    ->code('%key%', $this->route->pathUri()->key())
                     ->code('%register%', $routeIndexed->maker()['fileLine'])
                     ->toString()
             );
         }
     }
 
-    private function assertUniqueRoutePath(): void
+    private function assertRouteMethodControllerNameCollection(): void
+    {
+        if (!$this->route->methodControllerNameCollection()->hasAny()) {
+            throw new InvalidArgumentException(
+                (new Message("Instance of %className% doesn't contain any method controller"))
+                    ->code('%className%', RouteContract::class)
+                    ->toString()
+            );
+        }
+    }
+
+    private function assertRouteUniquePath(): void
     {
         $routeIndex = $this->routesIndex[$this->route->pathUri()->path()] ?? null;
         if (isset($routeIndex)) {
@@ -191,9 +202,9 @@ final class Maker implements MakerContract
 
     private function assertUniqueNamedRoute(): void
     {
-        $namedId = $this->named[$this->route->name()] ?? null;
+        $namedId = $this->named[$this->route->name()->toString()] ?? null;
         if (isset($namedId)) {
-            $name = $this->route->name();
+            $name = $this->route->name()->toString();
             $routeExists = $this->routes[$namedId];
             throw new InvalidArgumentException(
                 (new Message('Unable to assign route name %name% for path %path% at %declare% (name assigned to %namedRoutePath% at %register%)'))

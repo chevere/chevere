@@ -18,6 +18,7 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\Wildcard;
 
 return [
@@ -28,7 +29,7 @@ return [
                 new ControllerName(Controllers\Home::class)
             )
         )
-        ->withName('test'),
+        ->withName(new RouteName('test')),
     (new Route(new PathUri('/test/{wildcard}')))
         ->withAddedMethodControllerName(
             new MethodControllerName(

@@ -17,6 +17,7 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RouteName;
 
 return [
     (new Route(new PathUri('/hello-world')))
@@ -26,5 +27,7 @@ return [
                 new ControllerName(Home::class)
             )
         )
-        ->withName('plugin.helloWorld'),
+        ->withName(
+            new RouteName('plugin.helloWorld')
+        ),
 ];
