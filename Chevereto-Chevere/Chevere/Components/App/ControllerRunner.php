@@ -66,8 +66,10 @@ final class ControllerRunner implements ControllerRunnerContract
     {
         if ($this->app->hasArguments()) {
             $wrap = new ArgumentsWrap($controller, $this->app->arguments());
+
             return $wrap->typedArguments();
         }
+
         return [];
     }
 
@@ -96,7 +98,7 @@ final class ControllerRunner implements ControllerRunnerContract
 
     private function handleRouteMiddleware(): void
     {
-        $middlewareNames = $this->app->route()->middlewareNames();
+        $middlewareNames = $this->app->route()->middlewareNameCollection();
         if ($middlewareNames->hasAny()) {
             $this->middlewareRunner = (new MiddlewareRunner($middlewareNames, $this->app))
                 ->withRun();

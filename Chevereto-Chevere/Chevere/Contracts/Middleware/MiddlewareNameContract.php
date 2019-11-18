@@ -29,5 +29,5 @@ interface MiddlewareNameContract
     /**
      * Provides access to the middlewere name.
      */
-    public function name(): string;
+    public function toString(): string;
 }

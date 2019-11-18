@@ -97,7 +97,7 @@ interface RouteContract
 
     public function withAddedMiddlewareName(MiddlewareNameContract $middlewareName): RouteContract;
 
-    public function middlewareNames(): MiddlewareNameCollectionContract;
+    public function middlewareNameCollection(): MiddlewareNameCollectionContract;
 
     /**
      * @param MethodContract $method an HTTP MethodContract

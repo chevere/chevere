@@ -35,7 +35,7 @@ final class MiddlewareName implements MiddlewareNameContract
     /**
      * {@inheritdoc}
      */
-    public function name(): string
+    public function toString(): string
     {
         return $this->name;
     }

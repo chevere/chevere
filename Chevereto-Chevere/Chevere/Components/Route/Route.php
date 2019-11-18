@@ -219,7 +219,7 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function middlewareNames(): MiddlewareNameCollectionContract
+    public function middlewareNameCollection(): MiddlewareNameCollectionContract
     {
         return $this->middlewareNameCollection;
     }

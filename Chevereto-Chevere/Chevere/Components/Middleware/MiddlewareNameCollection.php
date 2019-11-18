@@ -38,7 +38,7 @@ final class MiddlewareNameCollection implements MiddlewareNameCollectionContract
     public function withAddedMiddlewareName(MiddlewareNameContract $middlewareName): MiddlewareNameCollectionContract
     {
         $new = clone $this;
-        $new->array[] = $middlewareName->name();
+        $new->array[] = $middlewareName->toString();
 
         return $new;
     }
