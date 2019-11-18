@@ -13,6 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Route;
 
+use Chevere\Components\Route\Exceptions\PathUriForwardSlashException;
+use Chevere\Components\Route\Exceptions\PathUriInvalidCharsException;
+use Chevere\Components\Route\Exceptions\PathUriUnmatchedBracesException;
+use Chevere\Components\Route\Exceptions\PathUriUnmatchedWildcardsException;
+use Chevere\Components\Route\Exceptions\WildcardReservedException;
+use Chevere\Components\Route\Exceptions\WildcardRepeatException;
+
 interface PathUriContract
 {
     /** string Regex pattern used to catch {wildcard} */
@@ -23,7 +30,8 @@ interface PathUriContract
      *
      * @param string $path a path uri like `/path/{wildcard}`
      *
-     * @throws PathUriInvalidFormatException      if $path format is invalid or if it doesn't start with forward slash
+     * @throws PathUriForwardSlashException       if $path doesn't start with forward slash
+     * @throws PathUriInvalidCharsException       if $path contains invalid chars
      * @throws PathUriUnmatchedBracesException    if $path contains unmatched braces (must be paired)
      * @throws PathUriUnmatchedWildcardsException if $path contains wildcards that don't match the number of braces
      * @throws WildcardReservedException          if $path contains reserved wildcards

@@ -167,10 +167,11 @@ final class PathUri implements PathUriContract
 
     private function assertReservedWildcards(): void
     {
-        if (!(0 === preg_match_all('/{([0-9]+)}/', $this->path))) {
+        if (!(0 === preg_match_all('/{([0-9]+)}/', $this->path, $matches))) {
             throw new WildcardReservedException(
-                (new Message('Wildcards in the form of %form% are reserved'))
-                    ->code('%form%', '/{n}')
+                (new Message('Path %path% contain system reserved wildcards %list%'))
+                    ->code('%path%', $this->path)
+                    ->code('%list%', implode(' ', $matches[0]))
                     ->toString()
             );
         }
@@ -209,7 +210,7 @@ final class PathUri implements PathUriContract
     private function assertWildcards(): void
     {
         $this->assertMatchingBraces();
-        $this->assertMatchingWildcards();
         $this->assertReservedWildcards();
+        $this->assertMatchingWildcards();
     }
 }

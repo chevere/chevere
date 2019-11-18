@@ -18,6 +18,7 @@ use Chevere\Components\Route\Exceptions\PathUriForwardSlashException;
 use Chevere\Components\Route\Exceptions\PathUriInvalidCharsException;
 use Chevere\Components\Route\Exceptions\PathUriUnmatchedWildcardsException;
 use Chevere\Components\Route\Exceptions\WildcardRepeatException;
+use Chevere\Components\Route\Exceptions\WildcardReservedException;
 use Chevere\Components\Route\PathUri;
 use PHPUnit\Framework\TestCase;
 
@@ -57,6 +58,12 @@ final class PathUriTest extends TestCase
     {
         $pathUri = new PathUri('/test/{wildcard}/test');
         $this->assertTrue($pathUri->hasWildcards());
+    }
+
+    public function testConstructWithWildcardReserved(): void
+    {
+        $this->expectException(WildcardReservedException::class);
+        new PathUri('/{0}');
     }
 
     public function testConstructWithWildcardTwiceSame(): void
