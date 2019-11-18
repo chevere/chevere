@@ -13,18 +13,25 @@ declare(strict_types=1);
 
 namespace App;
 
+use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Http\Method;
-use Chevere\Components\Http\MethodController;
+use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
 
 return [
     (new Route(new PathUri('/dashboard/{algo}')))
         ->withAddedMethodController(
-            new MethodController(new Method('GET'), Controllers\Dashboard::class)
+            new MethodControllerName(
+                new Method('GET'),
+                new ControllerName(Controllers\Dashboard::class)
+            )
         ),
     (new Route(new PathUri('/dashboard/{algo}/{sub}')))
         ->withAddedMethodController(
-            new MethodController(new Method('GET'), Controllers\Dashboard::class)
+            new MethodControllerName(
+                new Method('GET'),
+                new ControllerName(Controllers\Dashboard::class)
+            )
         ),
 ];

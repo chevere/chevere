@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Http;
 
-interface MethodControllerContract
+use Chevere\Contracts\Controller\ControllerNameContract;
+
+interface MethodControllerNameContract
 {
     /**
      * Creates a new instance.
      */
-    public function __construct(MethodContract $method, string $controllerName);
+    public function __construct(MethodContract $method, ControllerNameContract $controllerName);
 
     /**
      * Provides access to the MethodContract instance.
@@ -28,5 +30,5 @@ interface MethodControllerContract
     /**
      * Provides access to the controller name.
      */
-    public function controllerName(): string;
+    public function controllerName(): ControllerNameContract;
 }

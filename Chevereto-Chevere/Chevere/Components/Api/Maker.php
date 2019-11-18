@@ -21,13 +21,14 @@ use Throwable;
 use Chevere\Components\Api\src\FilterIterator;
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Cache\Traits\CacheAccessTrait;
+use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controller\Inspect;
 use Chevere\Components\Controllers\Api\GetController;
 use Chevere\Components\Controllers\Api\HeadController;
 use Chevere\Components\Controllers\Api\OptionsController;
 use Chevere\Components\Http\Method;
-use Chevere\Components\Http\MethodController;
-use Chevere\Components\Http\MethodControllerCollection;
+use Chevere\Components\Http\MethodControllerName;
+use Chevere\Components\Http\MethodControllerNameCollection;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Route\PathUri;
@@ -89,10 +90,19 @@ final class Maker implements MakerContract
         $new->assertNoDuplicates();
         $new->assertPath();
         $new->basePath = strtolower(basename($new->path->absolute()));
-        $methodControllerCollection = new MethodControllerCollection(
-            new MethodController(new Method('HEAD'), HeadController::class),
-            new MethodController(new Method('OPTIONS'), OptionsController::class),
-            new MethodController(new Method('GET'), GetController::class)
+        $methodControllerCollection = new MethodControllerNameCollection(
+            new MethodControllerName(
+                new Method('HEAD'),
+                new ControllerName(HeadController::class)
+            ),
+            new MethodControllerName(
+                new Method('OPTIONS'),
+                new ControllerName(OptionsController::class)
+            ),
+            new MethodControllerName(
+                new Method('GET'),
+                new ControllerName(GetController::class)
+            )
         );
         $new->register(new Endpoint($methodControllerCollection));
 
@@ -147,7 +157,7 @@ final class Maker implements MakerContract
         $this->api[$this->basePath][''] = $endpoint->toArray();
 
         $route = new Route(new PathUri($path));
-        foreach ($endpoint->methodControllerCollection() as $method) {
+        foreach ($endpoint->MethodControllerNameCollection() as $method) {
             $route = $route->withAddedMethodController($method);
         }
 
@@ -231,9 +241,12 @@ final class Maker implements MakerContract
         foreach ($this->routesMap as $pathComponent => $httpMethods) {
             $methodControllerArray = [];
             foreach ($httpMethods as $httpMethod => $controller) {
-                $methodControllerArray[] = new MethodController(new Method($httpMethod), $controller);
+                $methodControllerArray[] = new MethodControllerName(
+                    new Method($httpMethod),
+                    new ControllerName($controller)
+            );
             }
-            $methods = new MethodControllerCollection(...$methodControllerArray);
+            $methods = new MethodControllerNameCollection(...$methodControllerArray);
             $endpoint = new Endpoint($methods);
             /** @var string Full qualified route key for $pathComponent like /api/users/{user} */
             $endpointRouteKey = stringLeftTail($pathComponent, '/');

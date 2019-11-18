@@ -11,61 +11,50 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Http;
+namespace Chevere\Components\Controller;
 
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Controller\ControllerContract;
-use Chevere\Contracts\Http\MethodContract;
-use Chevere\Contracts\Http\MethodControllerContract;
+use Chevere\Contracts\Controller\ControllerNameContract;
 use InvalidArgumentException;
 
-final class MethodController implements MethodControllerContract
+final class ControllerName implements ControllerNameContract
 {
-    /** @var MethodContract */
-    private $method;
-
     /** @var string */
-    private $controllerName;
+    private $name;
 
     /**
      * {@inheritdoc}
+     *
+     * @throws InvalidArgumentException if $name doesn't exists or if it doesn't implement a ControllerContract
      */
-    public function __construct(MethodContract $method, string $controllerName)
+    public function __construct(string $name)
     {
-        $this->method = $method;
-        $this->controllerName = $controllerName;
+        $this->name = $name;
         $this->assertControllerName();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function method(): MethodContract
+    public function toString(): string
     {
-        return $this->method;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function controllerName(): string
-    {
-        return $this->controllerName;
+        return $this->name;
     }
 
     private function assertControllerName(): void
     {
-        if (!class_exists($this->controllerName)) {
+        if (!class_exists($this->name)) {
             throw new InvalidArgumentException(
                 (new Message("Controller %controller% doesn't exists"))
-                    ->code('%controller%', $this->controllerName)
+                    ->code('%controller%', $this->name)
                     ->toString()
             );
         }
-        if (!is_subclass_of($this->controllerName, ControllerContract::class)) {
+        if (!is_subclass_of($this->name, ControllerContract::class)) {
             throw new InvalidArgumentException(
                 (new Message('Controller %controller% must implement the %contract% interface'))
-                    ->code('%controller%', $this->controllerName)
+                    ->code('%controller%', $this->name)
                     ->code('%contract%', ControllerContract::class)
                     ->toString()
             );

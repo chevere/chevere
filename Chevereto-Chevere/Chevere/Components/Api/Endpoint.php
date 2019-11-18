@@ -13,28 +13,29 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Api;
 
+use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controllers\Api\HeadController;
 use Chevere\Components\Controllers\Api\OptionsController;
 use Chevere\Components\Http\Method;
-use Chevere\Components\Http\MethodController;
+use Chevere\Components\Http\MethodControllerName;
 use Chevere\Contracts\Api\src\EndpointContract;
-use Chevere\Contracts\Http\MethodControllerCollectionContract;
+use Chevere\Contracts\Http\MethodControllerNameCollectionContract;
 
 final class Endpoint implements EndpointContract
 {
     /** @var array */
     private $array;
 
-    /** @var MethodControllerCollectionContract */
-    private $methodControllerCollection;
+    /** @var MethodControllerNameCollectionContract */
+    private $methodControllerNameCollection;
 
     /**
      * {@inheritdoc}
      */
-    public function __construct(MethodControllerCollectionContract $collection)
+    public function __construct(MethodControllerNameCollectionContract $collection)
     {
         $this->array = [];
-        $this->methodControllerCollection = $collection;
+        $this->methodControllerNameCollection = $collection;
         $this->fillEndpointOptions();
         $this->autofillMissingOptionsHead();
     }
@@ -42,9 +43,9 @@ final class Endpoint implements EndpointContract
     /**
      * {@inheritdoc}
      */
-    public function methodControllerCollection(): MethodControllerCollectionContract
+    public function methodControllerNameCollection(): MethodControllerNameCollectionContract
     {
-        return $this->methodControllerCollection;
+        return $this->methodControllerNameCollection;
     }
 
     /**
@@ -57,7 +58,7 @@ final class Endpoint implements EndpointContract
 
     private function fillEndpointOptions(): void
     {
-        foreach ($this->methodControllerCollection as $method) {
+        foreach ($this->methodControllerNameCollection as $method) {
             $httpMethod = $method->method();
             $controllerClassName = $method->controllerName();
             $httpMethodOptions = [];
@@ -84,10 +85,13 @@ final class Endpoint implements EndpointContract
                 ],
             ],
         ] as $k => $v) {
-            if (!$this->methodControllerCollection->has(new Method($k))) {
-                $this->methodControllerCollection = $this->methodControllerCollection
-                    ->withAddedMethodController(
-                        new MethodController(new Method($k), $v[0])
+            if (!$this->methodControllerNameCollection->has(new Method($k))) {
+                $this->methodControllerNameCollection = $this->methodControllerNameCollection
+                    ->withAddedMethodControllerName(
+                        new MethodControllerName(
+                            new Method($k),
+                            new ControllerName($v[0])
+                        )
                     );
                 $this->array['OPTIONS'][$k] = $v[1];
             }

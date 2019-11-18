@@ -13,22 +13,23 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
+use Chevere\Components\Controller\ControllerName;
 use LogicException;
 use InvalidArgumentException;
 use Chevere\Components\Controllers\HeadController;
 use Chevere\Components\Http\Method;
-use Chevere\Components\Http\MethodController;
-use Chevere\Components\Http\MethodControllerCollection;
+use Chevere\Components\Http\MethodControllerName;
+use Chevere\Components\Http\MethodControllerNameCollection;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
 use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
 use Chevere\Contracts\Http\MethodContract;
-use Chevere\Contracts\Http\MethodControllerContract;
+use Chevere\Contracts\Http\MethodControllerNameContract;
 use Chevere\Contracts\Middleware\MiddlewareNameCollectionContract;
 use Chevere\Contracts\Route\PathUriContract;
 use Chevere\Contracts\Route\WildcardContract;
-use Chevere\Contracts\Http\MethodControllerCollectionContract;
+use Chevere\Contracts\Http\MethodControllerNameCollectionContract;
 use Chevere\Contracts\Middleware\MiddlewareNameContract;
 use Chevere\Contracts\Route\WildcardCollectionContract;
 
@@ -48,8 +49,8 @@ final class Route implements RouteContract
     /** @var WildcardCollectionContract */
     private $wildcardCollection;
 
-    /** @var MethodControllerCollectionContract */
-    private $methodControllerCollection;
+    /** @var MethodControllerNameCollectionContract */
+    private $methodControllerNameCollection;
 
     /** @var string Route path representation, with placeholder wildcards like /api/users/{0} */
     private $key;
@@ -73,7 +74,7 @@ final class Route implements RouteContract
         }
         $this->handleSetRegex();
         $this->middlewareNameCollection = new MiddlewareNameCollection();
-        $this->methodControllerCollection = new MethodControllerCollection();
+        $this->methodControllerNameCollection = new MethodControllerNameCollection();
     }
 
     /**
@@ -178,25 +179,25 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedMethodController(MethodControllerContract $methodController): RouteContract
+    public function withAddedMethodController(MethodControllerNameContract $methodController): RouteContract
     {
-        if ($this->methodControllerCollection->has($methodController->method())) {
+        if ($this->methodControllerNameCollection->has($methodController->method())) {
             throw new InvalidArgumentException(
                 (new Message('Method %method% has been already registered'))
                     ->code('%method%', $methodController->method())->toString()
             );
         }
         $new = clone $this;
-        $new->methodControllerCollection = $new->methodControllerCollection
-            ->withAddedMethodController($methodController);
+        $new->methodControllerNameCollection = $new->methodControllerNameCollection
+            ->withAddedMethodControllerName($methodController);
 
         if (
             'GET' == $methodController->method()->toString()
-            && $new->methodControllerCollection->has(new Method('HEAD'))) {
+            && $new->methodControllerNameCollection->has(new Method('HEAD'))) {
             $new = $new->withAddedMethodController(
-                new MethodController(
+                new MethodControllerName(
                     new Method('HEAD'),
-                    HeadController::class
+                    new ControllerName(HeadController::class)
                 )
             );
         }
@@ -229,7 +230,7 @@ final class Route implements RouteContract
      */
     public function controllerName(MethodContract $method): string
     {
-        if (!$this->methodControllerCollection->has($method)) {
+        if (!$this->methodControllerNameCollection->has($method)) {
             throw new LogicException(
                 (new Message('No controller is associated to HTTP method %method%'))
                     ->code('%method%', $method->toString())
@@ -237,8 +238,8 @@ final class Route implements RouteContract
             );
         }
 
-        return $this->methodControllerCollection->get($method)
-            ->controllerName();
+        return $this->methodControllerNameCollection->get($method)
+            ->controllerName()->toString();
     }
 
     private function handleSetWildcardCollection(): void
