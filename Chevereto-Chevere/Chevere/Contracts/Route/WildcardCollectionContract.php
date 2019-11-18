@@ -55,4 +55,9 @@ interface WildcardCollectionContract extends IteratorAggregate
      * Provides object as array access.
      */
     public function getIterator(): ArrayIterator;
+
+    /**
+     * Provides access to the collection array.
+     */
+    public function toArray(): array;
 }

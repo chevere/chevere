@@ -30,13 +30,9 @@ final class WildcardCollection implements WildcardCollectionContract
      */
     public function __construct(WildcardContract ...$wildcards)
     {
-        $new = clone $this;
         foreach ($wildcards as $wildcard) {
-            $new = $new
-                ->withAddedWildcard($wildcard);
+            $this->addWildcard($wildcard);
         }
-
-        return $new;
     }
 
     /**
@@ -45,8 +41,7 @@ final class WildcardCollection implements WildcardCollectionContract
     public function withAddedWildcard(WildcardContract $wildcard): WildcardCollectionContract
     {
         $new = clone $this;
-        $new->array[] = $wildcard;
-        $new->index[] = $wildcard->name();
+        $new->addWildcard($wildcard);
 
         return $new;
     }
@@ -91,5 +86,19 @@ final class WildcardCollection implements WildcardCollectionContract
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->array);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray(): array
+    {
+        return $this->array;
+    }
+
+    private function addWildcard(WildcardContract $wildcard)
+    {
+        $this->array[] = $wildcard;
+        $this->index[] = $wildcard->name();
     }
 }
