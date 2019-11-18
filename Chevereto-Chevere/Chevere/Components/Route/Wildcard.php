@@ -28,7 +28,7 @@ final class Wildcard implements WildcardContract
     private $name;
 
     /** @var string */
-    private $wildcardString;
+    private $wildcard;
 
     /** @var string */
     private $regex;
@@ -39,6 +39,7 @@ final class Wildcard implements WildcardContract
     public function __construct(string $name)
     {
         $this->name = $name;
+        $this->wildcard = "{{$this->name}}";
         $this->assertName();
         $this->regex = WildcardContract::REGEX_MATCH_DEFAULT;
         $this->assertRegex();
@@ -67,6 +68,14 @@ final class Wildcard implements WildcardContract
     /**
      * {@inheritdoc}
      */
+    public function toString(): string
+    {
+        return $this->wildcard;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function regex(): string
     {
         return $this->regex;
@@ -77,12 +86,11 @@ final class Wildcard implements WildcardContract
      */
     public function assertPathUri(PathUriContract $pathUri): void
     {
-        $wildcardString = "{{$this->name}}";
-        $noWildcard = false === strpos($pathUri->path(), $wildcardString);
+        $noWildcard = false === strpos($pathUri->path(), $this->wildcard);
         if ($noWildcard) {
             throw new WildcardNotFoundException(
                 (new Message("Wildcard %wildcard% doesn't exists in route %path%"))
-                    ->code('%wildcard%', $wildcardString)
+                    ->code('%wildcard%', $this->wildcard)
                     ->code('%path%', $pathUri->path())
                     ->toString()
             );

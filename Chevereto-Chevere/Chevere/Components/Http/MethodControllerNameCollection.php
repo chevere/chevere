@@ -31,13 +31,11 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
      */
     public function __construct(MethodControllerNameContract ...$methodControllerName)
     {
-        $new = clone $this;
+        $this->array = [];
+        $this->index = [];
         foreach ($methodControllerName as $method) {
-            $new = $new
-                ->withAddedMethodControllerName($method);
+            $this->addMethodControllerName($method);
         }
-
-        return $new;
     }
 
     /**
@@ -46,8 +44,7 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
     public function withAddedMethodControllerName(MethodControllerNameContract $methodControllerName): MethodControllerNameCollectionContract
     {
         $new = clone $this;
-        $new->array[] = $methodControllerName;
-        $new->index[$methodControllerName->method()->toString()] = array_key_last($new->array);
+        $new->addMethodControllerName($methodControllerName);
 
         return $new;
     }
@@ -57,7 +54,7 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
      */
     public function has(MethodContract $method): bool
     {
-        return isset($this->index[$method->toString()]);
+        return in_array($method->toString(), $this->index);
     }
 
     /**
@@ -65,7 +62,9 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
      */
     public function get(MethodContract $method): MethodControllerNameContract
     {
-        return $this->array[$this->index[$method->toString()]];
+        $pos = array_search($method->toString(), $this->index);
+
+        return $this->array[$pos];
     }
 
     /**
@@ -74,5 +73,28 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
     public function getIterator(): ArrayIterator
     {
         return new ArrayIterator($this->array);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function toArray(): array
+    {
+        return $this->array;
+    }
+
+    private function addMethodControllerName(MethodControllerNameContract $methodControllerName): void
+    {
+        $name = $methodControllerName->method()->toString();
+        $pos = array_search($name, $this->index);
+        if (false !== $pos) {
+            $this->array[$pos] = $methodControllerName;
+            $this->index[$pos] = $name;
+
+            return;
+        }
+
+        $this->array[] = $methodControllerName;
+        $this->index[] = $name;
     }
 }

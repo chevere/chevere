@@ -41,6 +41,7 @@ final class WildcardTest extends TestCase
         $name = 'test';
         $wildcard = new Wildcard($name);
         $this->assertSame($name, $wildcard->name());
+        $this->assertSame("{{$name}}", $wildcard->toString());
         $this->assertSame(WildcardContract::REGEX_MATCH_DEFAULT, $wildcard->regex());
     }
 

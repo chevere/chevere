@@ -15,7 +15,6 @@ namespace Chevere\Components\Route;
 
 use Chevere\Components\Controller\ControllerName;
 use LogicException;
-use InvalidArgumentException;
 use Chevere\Components\Controllers\HeadController;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodControllerName;
@@ -180,12 +179,6 @@ final class Route implements RouteContract
      */
     public function withAddedMethodControllerName(MethodControllerNameContract $methodControllerName): RouteContract
     {
-        // if ($this->methodControllerNameCollection->has($methodControllerName->method())) {
-        //     throw new InvalidArgumentException(
-        //         (new Message('Method %method% has been already registered'))
-        //             ->code('%method%', $methodControllerName->method())->toString()
-        //     );
-        // }
         $new = clone $this;
         $new->methodControllerNameCollection = $new->methodControllerNameCollection
             ->withAddedMethodControllerName($methodControllerName);
