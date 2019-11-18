@@ -58,7 +58,7 @@ final class Endpoint implements EndpointContract
 
     private function fillEndpointOptions(): void
     {
-        foreach ($this->methodControllerNameCollection as $method) {
+        foreach ($this->methodControllerNameCollection->toArray() as $method) {
             $httpMethod = $method->method();
             $controllerClassName = $method->controllerName();
             $httpMethodOptions = [];

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Http;
 
-use ArrayIterator;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Http\MethodContract;
@@ -56,7 +55,7 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
      */
     public function hasAny(): bool
     {
-        return !empty($this->array);
+        return !empty($this->index);
     }
 
     /**
@@ -82,14 +81,6 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
         }
 
         return $this->array[$pos];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIterator(): ArrayIterator
-    {
-        return new ArrayIterator($this->array);
     }
 
     /**

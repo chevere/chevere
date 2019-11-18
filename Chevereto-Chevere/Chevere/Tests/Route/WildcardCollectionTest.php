@@ -38,16 +38,17 @@ final class WildcardCollectionTest extends TestCase
 
     public function testWithAddedWildcard(): void
     {
-        $wildcard1 = new Wildcard('test1');
-        $wildcard2 = new Wildcard('test2');
-        $wilcardCollection = (new WildcardCollection($wildcard1))
-          ->withAddedWildcard($wildcard2);
-        $this->assertTrue($wilcardCollection->hasPos(0));
-        $this->assertTrue($wilcardCollection->hasPos(1));
-        $this->assertTrue($wilcardCollection->has($wildcard1));
-        $this->assertTrue($wilcardCollection->has($wildcard2));
-        $this->assertSame($wildcard1, $wilcardCollection->get($wildcard1));
-        $this->assertSame($wildcard2, $wilcardCollection->get($wildcard2));
-        $this->assertSame([$wildcard1, $wildcard2], $wilcardCollection->toArray());
+        $wildcards = [new Wildcard('test1'), new Wildcard('test2')];
+        $wilcardCollection = new WildcardCollection();
+        foreach ($wildcards as $wildcard) {
+            $wilcardCollection = $wilcardCollection
+                ->withAddedWildcard($wildcard);
+        }
+        foreach ($wildcards as $pos => $wildcard) {
+            $this->assertTrue($wilcardCollection->hasPos($pos));
+            $this->assertTrue($wilcardCollection->has($wildcard));
+            $this->assertSame($wildcard, $wilcardCollection->get($wildcard));
+        }
+        $this->assertSame($wildcards, $wilcardCollection->toArray());
     }
 }

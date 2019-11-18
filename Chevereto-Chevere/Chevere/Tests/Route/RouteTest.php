@@ -17,23 +17,34 @@ use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodControllerName;
+use Chevere\Components\Middleware\MiddlewareName;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\Wildcard;
+use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Route\WildcardContract;
 use Chevere\TestApp\App\Controllers\Test;
+use Chevere\TestApp\App\Middlewares\TestMiddlewareVoid;
 use PHPUnit\Framework\TestCase;
 
 final class RouteTest extends TestCase
 {
+    private function getRoute(string $path): RouteContract
+    {
+        return new Route(
+            new PathUri($path)
+        );
+    }
+
     public function testConstruct(): void
     {
         $pathUri = new PathUri('/');
         $route = new Route($pathUri);
         $this->assertSame($pathUri, $route->pathUri());
         $this->assertSame(__FILE__, $route->maker()['file']);
+        $this->assertFalse($route->hasMiddlewareNameCollection());
         $this->assertFalse($route->hasWildcardCollection());
         $this->assertFalse($route->hasName());
         $this->expectException(MethodNotFoundException::class);
@@ -43,8 +54,7 @@ final class RouteTest extends TestCase
     public function testConstructWithWildcard(): void
     {
         $wildcard = new Wildcard('test');
-        $pathUri = new PathUri('/' . $wildcard->toString());
-        $route = new Route($pathUri);
+        $route = $this->getRoute('/' . $wildcard->toString());
         $this->assertTrue($route->hasWildcardCollection());
         $this->assertTrue($route->wildcardCollection()->has($wildcard));
         $this->assertEquals($wildcard, $route->wildcardCollection()->get($wildcard));
@@ -54,7 +64,7 @@ final class RouteTest extends TestCase
     public function testWithName(): void
     {
         $name = new RouteName('name-test');
-        $route = (new Route(new PathUri('/test')))
+        $route = $this->getRoute('/test')
           ->withName($name);
         $this->assertTrue($route->hasName());
         $this->assertSame($name, $route->name());
@@ -63,7 +73,7 @@ final class RouteTest extends TestCase
     public function testWithNoApplicableWildcard(): void
     {
         $this->expectException(WildcardNotFoundException::class);
-        (new Route(new PathUri('/test')))
+        $this->getRoute('/test')
             ->withAddedWildcard(new Wildcard('test'));
     }
 
@@ -78,7 +88,7 @@ final class RouteTest extends TestCase
         foreach ($wildcards as $wildcard) {
             $path .= $wildcard->toString();
         }
-        $route = new Route(new PathUri($path));
+        $route = $this->getRoute($path);
         foreach ($wildcards as $wildcard) {
             $route = $route
                 ->withAddedWildcard($wildcard);
@@ -93,9 +103,8 @@ final class RouteTest extends TestCase
 
     public function testWithAddedMethodControllerName(): void
     {
-        $route = new Route(new PathUri('/test'));
         $method = new Method('GET');
-        $route = $route
+        $route = $this->getRoute('/test')
             ->withAddedMethodControllerName(
                 new MethodControllerName(
                     $method,
@@ -109,5 +118,9 @@ final class RouteTest extends TestCase
 
     public function testWithAddedMiddleware(): void
     {
+        $middlewareName = new MiddlewareName(TestMiddlewareVoid::class);
+        $route = $this->getRoute('/test')
+            ->withAddedMiddlewareName($middlewareName);
+        $this->assertTrue($route->middlewareNameCollection()->hasAny());
     }
 }

@@ -13,15 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Route;
 
-use ArrayIterator;
-use IteratorAggregate;
-
-interface WildcardCollectionContract extends IteratorAggregate
+interface WildcardCollectionContract
 {
     /**
      * Creates a new instance.
      */
-    public function __construct(WildcardContract ...$wildcard);
+    public function __construct(WildcardContract ...$wildcards);
 
     /**
      * Return an instance with the specified WildcardContract.
@@ -30,6 +27,11 @@ interface WildcardCollectionContract extends IteratorAggregate
      * an instance that contains the specified WildcardContract.
      */
     public function withAddedWildcard(WildcardContract $wildcard): WildcardCollectionContract;
+
+    /**
+     * Returns a boolean indicating whether the instance has any WildcardContract.
+     */
+    public function hasAny(): bool;
 
     /**
      * Returns a boolean indicating whether the instance has a given WildcardContract.
@@ -50,11 +52,6 @@ interface WildcardCollectionContract extends IteratorAggregate
      * Provides access to the target WildcardContract instance in the given pos.
      */
     public function getPos(int $pos): WildcardContract;
-
-    /**
-     * Provides object as array access.
-     */
-    public function getIterator(): ArrayIterator;
 
     /**
      * Provides access to the collection array.

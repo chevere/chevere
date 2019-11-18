@@ -84,8 +84,6 @@ final class Resolver
             ->withRoute($route);
         $collection = $app->route()->methodControllerNameCollection();
         $requestMethod = new Method($app->request()->getMethod());
-        if (!$collection->has($requestMethod)) {
-        }
         try {
             $controllerName = $collection->get($requestMethod)->controllerName()->toString();
         } catch (MethodNotFoundException $e) {

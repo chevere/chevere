@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\TestApp\App\Middlewares;
 
-use Chevere\Components\Http\Request\RequestException;
 use Chevere\Components\Middleware\Middleware;
 use Chevere\Contracts\Http\RequestContract;
 
-class TestVoid extends Middleware
+class TestMiddlewareVoid extends Middleware
 {
     public function handle(RequestContract $request): void
     {
@@ -26,4 +25,4 @@ class TestVoid extends Middleware
         //     throw new RequestException(401, 'User is banned');
         // }
     }
-};
+}

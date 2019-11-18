@@ -22,7 +22,7 @@ use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Middleware\MiddlewareName;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
-use Chevere\TestApp\App\Middlewares\TestVoid;
+use Chevere\TestApp\App\Middlewares\TestMiddlewareVoid;
 use PHPUnit\Framework\TestCase;
 
 final class MiddlewareRunnerTest extends TestCase
@@ -49,7 +49,7 @@ final class MiddlewareRunnerTest extends TestCase
             ->withRequest(new Request('GET', '/'));
         $middlewareNameCollection = (new MiddlewareNameCollection())
             ->withAddedMiddlewareName(
-                new MiddlewareName(TestVoid::class)
+                new MiddlewareName(TestMiddlewareVoid::class)
             );
         new MiddlewareRunner($middlewareNameCollection, $app);
     }
@@ -58,12 +58,12 @@ final class MiddlewareRunnerTest extends TestCase
     {
         $app = (new App(new Services(), new Response()))
             ->withRequest(new Request('GET', '/'));
-        $middlewareNameCollection = (new MiddlewareNameCollection())
-            ->withAddedMiddlewareName(
-                new MiddlewareName(TestVoid::class)
-            );
-        $middlewareRunner = (new MiddlewareRunner($middlewareNameCollection, $app))
+        $middlewareNameCollection = new MiddlewareNameCollection(
+            new MiddlewareName(TestMiddlewareVoid::class)
+        );
+        $middlewareRunner = new MiddlewareRunner($middlewareNameCollection, $app);
+        $middlewareRunner = $middlewareRunner
             ->withRun();
-        $this->assertContainsEquals(TestVoid::class, $middlewareRunner->record());
+        $this->assertContainsEquals(TestMiddlewareVoid::class, $middlewareRunner->record());
     }
 }

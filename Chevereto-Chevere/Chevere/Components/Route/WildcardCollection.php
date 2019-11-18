@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use ArrayIterator;
 use Chevere\Contracts\Route\WildcardCollectionContract;
 use Chevere\Contracts\Route\WildcardContract;
 
@@ -51,6 +50,14 @@ final class WildcardCollection implements WildcardCollectionContract
     /**
      * {@inheritdoc}
      */
+    public function hasAny(): bool
+    {
+        return !empty($this->index);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function has(WildcardContract $wildcard): bool
     {
         return in_array($wildcard->name(), $this->index);
@@ -80,14 +87,6 @@ final class WildcardCollection implements WildcardCollectionContract
     public function getPos(int $pos): WildcardContract
     {
         return $this->array[$pos];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getIterator(): ArrayIterator
-    {
-        return new ArrayIterator($this->array);
     }
 
     /**

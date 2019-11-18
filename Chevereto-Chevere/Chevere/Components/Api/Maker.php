@@ -157,7 +157,7 @@ final class Maker implements MakerContract
         $this->api[$this->basePath][''] = $endpoint->toArray();
 
         $route = new Route(new PathUri($path));
-        foreach ($endpoint->MethodControllerNameCollection() as $method) {
+        foreach ($endpoint->MethodControllerNameCollection()->toArray() as $method) {
             $route = $route->withAddedMethodControllerName($method);
         }
 

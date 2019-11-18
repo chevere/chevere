@@ -75,7 +75,8 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
 
     private function doRun(): void
     {
-        foreach ($this->middlewareNameCollection->toArray() as $middleware) {
+        foreach ($this->middlewareNameCollection->toArray() as $middlewareName) {
+            $middleware = $middlewareName->toString();
             (new $middleware())
                 ->handle(
                     $this->app->request()

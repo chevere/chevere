@@ -94,6 +94,11 @@ interface RouteContract
     public function withAddedMethodControllerName(MethodControllerNameContract $methodControllerName): RouteContract;
 
     /**
+     * Returns a boolean indicating whether the instance a MethodControllerNameCollectionContract.
+     */
+    public function hasMethodControllerNameCollection(): bool;
+
+    /**
      * Provides access to the MethodControllerNameCollectionContract instance.
      */
     public function methodControllerNameCollection(): MethodControllerNameCollectionContract;
@@ -112,6 +117,11 @@ interface RouteContract
      * an instance that contains the specified added MiddlewareNameContract.
      */
     public function withAddedMiddlewareName(MiddlewareNameContract $middlewareName): RouteContract;
+
+    /**
+     * Returns a boolean indicating whether the instance a MiddlewareNameCollectionContract.
+     */
+    public function hasMiddlewareNameCollection(): bool;
 
     /**
      * Provides access to the MiddlewareNameCollectionContract instance.

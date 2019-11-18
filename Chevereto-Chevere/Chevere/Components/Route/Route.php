@@ -71,8 +71,6 @@ final class Route implements RouteContract
             $this->handleSetWildcardCollection();
         }
         $this->handleSetRegex();
-        $this->middlewareNameCollection = new MiddlewareNameCollection();
-        $this->methodControllerNameCollection = new MethodControllerNameCollection();
     }
 
     /**
@@ -164,6 +162,9 @@ final class Route implements RouteContract
     public function withAddedMethodControllerName(MethodControllerNameContract $methodControllerName): RouteContract
     {
         $new = clone $this;
+        if (!isset($new->methodControllerNameCollection)) {
+            $new->methodControllerNameCollection = new MethodControllerNameCollection();
+        }
         $new->methodControllerNameCollection = $new->methodControllerNameCollection
             ->withAddedMethodControllerName($methodControllerName);
 
@@ -184,6 +185,14 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
+    public function hasMethodControllerNameCollection(): bool
+    {
+        return isset($this->methodControllerNameCollection);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function methodControllerNameCollection(): MethodControllerNameCollectionContract
     {
         return $this->methodControllerNameCollection;
@@ -194,11 +203,19 @@ final class Route implements RouteContract
      */
     public function controllerName(MethodContract $method): ControllerNameContract
     {
+        if (!$this->hasMethodControllerNameCollection()) {
+            throw new MethodNotFoundException(
+                (new Message('Instance of %className% lacks of any %contract%'))
+                    ->code('%className%', __CLASS__)
+                    ->code('%contract%', MethodControllerNameCollectionContract::class)
+                    ->toString()
+            );
+        }
         if (!$this->methodControllerNameCollection->has($method)) {
             throw new MethodNotFoundException(
-                (new Message('No %method% %className% is defined for this instance'))
+                (new Message("Instance of %className% doesn't define a controller for HTTP method %method%"))
+                    ->code('%className%', MethodControllerNameCollectionContract::class)
                     ->code('%method%', $method->toString())
-                    ->code('%className%', get_class($method))
                     ->toString()
             );
         }
@@ -213,10 +230,21 @@ final class Route implements RouteContract
     public function withAddedMiddlewareName(MiddlewareNameContract $middlewareName): RouteContract
     {
         $new = clone $this;
+        if (!isset($new->middlewareNameCollection)) {
+            $new->middlewareNameCollection = new MiddlewareNameCollection();
+        }
         $new->middlewareNameCollection = $new->middlewareNameCollection
             ->withAddedMiddlewareName($middlewareName);
 
         return $new;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasMiddlewareNameCollection(): bool
+    {
+        return isset($this->middlewareNameCollection);
     }
 
     /**
@@ -240,7 +268,7 @@ final class Route implements RouteContract
     {
         $regex = '^' . $this->pathUri->key() . '$';
         if (isset($this->wildcardCollection)) {
-            foreach ($this->wildcardCollection as $key => $wildcard) {
+            foreach ($this->wildcardCollection->toArray() as $key => $wildcard) {
                 $regex = str_replace("{{$key}}", '(' . $wildcard->regex() . ')', $regex);
             }
         }

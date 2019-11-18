@@ -18,7 +18,7 @@ interface MiddlewareNameCollectionContract
     /**
      * Creates a new instance.
      */
-    public function __construct();
+    public function __construct(MiddlewareNameContract ...$middlewareNames);
 
     /**
      * Return an instance with the specified middleware name.
@@ -36,7 +36,14 @@ interface MiddlewareNameCollectionContract
     public function hasAny(): bool;
 
     /**
+     * Returns a boolean indicating whether the instance has the given MiddlewareNameContract.
+     */
+    public function has(MiddlewareNameContract $middlewareName): bool;
+
+    /**
      * Returns an array containing the collection of MiddlewareContract names.
+     *
+     * @return array MiddlewareNameContract[]
      */
     public function toArray(): array;
 }

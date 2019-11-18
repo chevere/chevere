@@ -13,17 +13,20 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Http;
 
-use ArrayIterator;
-use IteratorAggregate;
-
-interface MethodControllerNameCollectionContract extends IteratorAggregate
+interface MethodControllerNameCollectionContract
 {
     public function __construct(MethodControllerNameContract ...$methodControllerName);
 
     public function withAddedMethodControllerName(MethodControllerNameContract $methodControllerName): MethodControllerNameCollectionContract;
 
+    /**
+     * Returns a boolean indicating whether the instance has any MethodContract.
+     */
     public function hasAny(): bool;
 
+    /**
+     * Returns a boolean indicating whether the instance has the given MethodContract.
+     */
     public function has(MethodContract $method): bool;
 
     /**
@@ -31,5 +34,5 @@ interface MethodControllerNameCollectionContract extends IteratorAggregate
      */
     public function get(MethodContract $method): MethodControllerNameContract;
 
-    public function getIterator(): ArrayIterator;
+    public function toArray(): array;
 }

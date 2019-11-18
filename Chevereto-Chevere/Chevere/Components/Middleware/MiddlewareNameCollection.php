@@ -27,9 +27,13 @@ final class MiddlewareNameCollection implements MiddlewareNameCollectionContract
     /**
      * {@inheritdoc}
      */
-    public function __construct()
+    public function __construct(MiddlewareNameContract ...$middlewareNames)
     {
         $this->array = [];
+        $this->index = [];
+        foreach ($middlewareNames as $middlewareName) {
+            $this->addMiddlewareName($middlewareName);
+        }
     }
 
     /**
@@ -38,7 +42,7 @@ final class MiddlewareNameCollection implements MiddlewareNameCollectionContract
     public function withAddedMiddlewareName(MiddlewareNameContract $middlewareName): MiddlewareNameCollectionContract
     {
         $new = clone $this;
-        $new->array[] = $middlewareName->toString();
+        $new->addMiddlewareName($middlewareName);
 
         return $new;
     }
@@ -48,7 +52,15 @@ final class MiddlewareNameCollection implements MiddlewareNameCollectionContract
      */
     public function hasAny(): bool
     {
-        return !empty($this->array);
+        return !empty($this->index);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function has(MiddlewareNameContract $middlewareName): bool
+    {
+        return in_array($middlewareName->toString(), $this->index);
     }
 
     /**
@@ -57,5 +69,20 @@ final class MiddlewareNameCollection implements MiddlewareNameCollectionContract
     public function toArray(): array
     {
         return $this->array;
+    }
+
+    private function addMiddlewareName(MiddlewareNameContract $middlewareName): void
+    {
+        $name = $middlewareName->toString();
+        $pos = array_search($name, $this->index);
+        if (false !== $pos) {
+            $this->array[$pos] = $middlewareName;
+            $this->index[$pos] = $name;
+
+            return;
+        }
+
+        $this->array[] = $middlewareName;
+        $this->index[] = $name;
     }
 }
