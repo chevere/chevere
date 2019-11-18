@@ -180,12 +180,12 @@ final class Route implements RouteContract
      */
     public function withAddedMethodControllerName(MethodControllerNameContract $methodControllerName): RouteContract
     {
-        if ($this->methodControllerNameCollection->has($methodControllerName->method())) {
-            throw new InvalidArgumentException(
-                (new Message('Method %method% has been already registered'))
-                    ->code('%method%', $methodControllerName->method())->toString()
-            );
-        }
+        // if ($this->methodControllerNameCollection->has($methodControllerName->method())) {
+        //     throw new InvalidArgumentException(
+        //         (new Message('Method %method% has been already registered'))
+        //             ->code('%method%', $methodControllerName->method())->toString()
+        //     );
+        // }
         $new = clone $this;
         $new->methodControllerNameCollection = $new->methodControllerNameCollection
             ->withAddedMethodControllerName($methodControllerName);
@@ -207,21 +207,9 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedMiddlewareName(MiddlewareNameContract $middlewareName): RouteContract
+    public function methodControllerNameCollection(): MethodControllerNameCollectionContract
     {
-        $new = clone $this;
-        $new->middlewareNameCollection = $new->middlewareNameCollection
-            ->withAddedMiddlewareName($middlewareName);
-
-        return $new;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function middlewareNameCollection(): MiddlewareNameCollectionContract
-    {
-        return $this->middlewareNameCollection;
+        return $this->methodControllerNameCollection;
     }
 
     /**
@@ -239,6 +227,26 @@ final class Route implements RouteContract
 
         return $this->methodControllerNameCollection->get($method)
             ->controllerName();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withAddedMiddlewareName(MiddlewareNameContract $middlewareName): RouteContract
+    {
+        $new = clone $this;
+        $new->middlewareNameCollection = $new->middlewareNameCollection
+            ->withAddedMiddlewareName($middlewareName);
+
+        return $new;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function middlewareNameCollection(): MiddlewareNameCollectionContract
+    {
+        return $this->middlewareNameCollection;
     }
 
     private function handleSetWildcardCollection(): void
