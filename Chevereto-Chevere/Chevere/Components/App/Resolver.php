@@ -80,6 +80,7 @@ final class Resolver
                     ->controllerName(
                         new Method($app->request()->getMethod())
                     )
+                    ->toString()
             )
             ->withControllerArguments(
                 $app->services()->router()->arguments()

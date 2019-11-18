@@ -20,7 +20,7 @@ use Chevere\Components\Route\PathUri;
 
 return [
     (new Route(new PathUri('/hello-world')))
-        ->withAddedMethodController(
+        ->withAddedMethodControllerName(
             new MethodControllerName(
                 new Method('GET'),
                 new ControllerName(Home::class)

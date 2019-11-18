@@ -21,14 +21,14 @@ use Chevere\Components\Route\Route;
 
 return [
     (new Route(new PathUri('/dashboard/{algo}')))
-        ->withAddedMethodController(
+        ->withAddedMethodControllerName(
             new MethodControllerName(
                 new Method('GET'),
                 new ControllerName(Controllers\Dashboard::class)
             )
         ),
     (new Route(new PathUri('/dashboard/{algo}/{sub}')))
-        ->withAddedMethodController(
+        ->withAddedMethodControllerName(
             new MethodControllerName(
                 new Method('GET'),
                 new ControllerName(Controllers\Dashboard::class)

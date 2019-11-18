@@ -22,7 +22,7 @@ use Chevere\Components\Route\Wildcard;
 
 return [
     (new Route(new PathUri('/test')))
-        ->withAddedMethodController(
+        ->withAddedMethodControllerName(
             new MethodControllerName(
                 new Method('GET'),
                 new ControllerName(Controllers\Home::class)
@@ -30,7 +30,7 @@ return [
         )
         ->withName('test'),
     (new Route(new PathUri('/test/{wildcard}')))
-        ->withAddedMethodController(
+        ->withAddedMethodControllerName(
             new MethodControllerName(
                 new Method('GET'),
                 new ControllerName(Controllers\Home::class)

@@ -24,6 +24,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
 use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
+use Chevere\Contracts\Controller\ControllerNameContract;
 use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodControllerNameContract;
 use Chevere\Contracts\Middleware\MiddlewareNameCollectionContract;
@@ -33,15 +34,16 @@ use Chevere\Contracts\Http\MethodControllerNameCollectionContract;
 use Chevere\Contracts\Middleware\MiddlewareNameContract;
 use Chevere\Contracts\Route\WildcardCollectionContract;
 
-// IDEA: L10n support
-
 final class Route implements RouteContract
 {
     /** @var PathUriContract */
     private $pathUri;
 
-    /** @var string Route name (if any, must be unique) */
-    private $name;
+    /** @var string Route path representation, with placeholder wildcards like /api/users/{0} */
+    private $key;
+
+    /** @var array An array containg details about the Route maker */
+    private $maker;
 
     /** @var MiddlewareNameCollectionContract */
     private $middlewareNameCollection;
@@ -52,11 +54,8 @@ final class Route implements RouteContract
     /** @var MethodControllerNameCollectionContract */
     private $methodControllerNameCollection;
 
-    /** @var string Route path representation, with placeholder wildcards like /api/users/{0} */
-    private $key;
-
-    /** @var array An array containg details about the Route maker */
-    private $maker;
+    /** @var string Route name (if any) */
+    private $name;
 
     /** @var string */
     private $regex;
@@ -179,22 +178,22 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedMethodController(MethodControllerNameContract $methodController): RouteContract
+    public function withAddedMethodControllerName(MethodControllerNameContract $methodControllerName): RouteContract
     {
-        if ($this->methodControllerNameCollection->has($methodController->method())) {
+        if ($this->methodControllerNameCollection->has($methodControllerName->method())) {
             throw new InvalidArgumentException(
                 (new Message('Method %method% has been already registered'))
-                    ->code('%method%', $methodController->method())->toString()
+                    ->code('%method%', $methodControllerName->method())->toString()
             );
         }
         $new = clone $this;
         $new->methodControllerNameCollection = $new->methodControllerNameCollection
-            ->withAddedMethodControllerName($methodController);
+            ->withAddedMethodControllerName($methodControllerName);
 
         if (
-            'GET' == $methodController->method()->toString()
+            'GET' == $methodControllerName->method()->toString()
             && $new->methodControllerNameCollection->has(new Method('HEAD'))) {
-            $new = $new->withAddedMethodController(
+            $new = $new->withAddedMethodControllerName(
                 new MethodControllerName(
                     new Method('HEAD'),
                     new ControllerName(HeadController::class)
@@ -228,7 +227,7 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function controllerName(MethodContract $method): string
+    public function controllerName(MethodContract $method): ControllerNameContract
     {
         if (!$this->methodControllerNameCollection->has($method)) {
             throw new LogicException(
@@ -239,7 +238,7 @@ final class Route implements RouteContract
         }
 
         return $this->methodControllerNameCollection->get($method)
-            ->controllerName()->toString();
+            ->controllerName();
     }
 
     private function handleSetWildcardCollection(): void

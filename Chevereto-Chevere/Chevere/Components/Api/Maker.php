@@ -158,7 +158,7 @@ final class Maker implements MakerContract
 
         $route = new Route(new PathUri($path));
         foreach ($endpoint->MethodControllerNameCollection() as $method) {
-            $route = $route->withAddedMethodController($method);
+            $route = $route->withAddedMethodControllerName($method);
         }
 
         $this->routerMaker = $this->routerMaker
