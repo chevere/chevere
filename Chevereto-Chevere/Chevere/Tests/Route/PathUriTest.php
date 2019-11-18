@@ -42,22 +42,10 @@ final class PathUriTest extends TestCase
         new PathUri('/test/{test/}/}/test');
     }
 
-    public function testConstruct(): void
-    {
-        $pathUri = new PathUri('/test');
-        $this->assertFalse($pathUri->hasWildcards());
-    }
-
     public function testConstructWithInvalidWildcard(): void
     {
         $this->expectException(PathUriUnmatchedWildcardsException::class);
         new PathUri('/{wild-card}');
-    }
-
-    public function testConstructWithWildcard(): void
-    {
-        $pathUri = new PathUri('/test/{wildcard}/test');
-        $this->assertTrue($pathUri->hasWildcards());
     }
 
     public function testConstructWithWildcardReserved(): void
@@ -70,5 +58,36 @@ final class PathUriTest extends TestCase
     {
         $this->expectException(WildcardRepeatException::class);
         new PathUri('/test/{wildcard}/{wildcard}');
+    }
+
+    public function testConstruct(): void
+    {
+        $path = '/test';
+        $pathUri = new PathUri($path);
+        $this->assertSame($path, $pathUri->path());
+        $this->assertSame($path, $pathUri->key());
+        $this->assertFalse($pathUri->hasWildcards());
+    }
+
+    public function testConstructWithWildcard(): void
+    {
+        $path = '/test/{wildcard}/test';
+        $key = '/test/{0}/test';
+        $pathUri = new PathUri($path);
+        $this->assertSame($path, $pathUri->path());
+        $this->assertSame($key, $pathUri->key());
+        $this->assertTrue($pathUri->hasWildcards());
+        $this->assertSame(['wildcard'], $pathUri->wildcards());
+    }
+
+    public function testConstructWithWildcards(): void
+    {
+        $path = '/test/{wildcard1}/test/{wildcard2}';
+        $key = '/test/{0}/test/{1}';
+        $pathUri = new PathUri($path);
+        $this->assertSame($path, $pathUri->path());
+        $this->assertSame($key, $pathUri->key());
+        $this->assertTrue($pathUri->hasWildcards());
+        $this->assertSame(['wildcard1', 'wildcard2'], $pathUri->wildcards());
     }
 }

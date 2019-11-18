@@ -21,6 +21,7 @@ use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodControllerNameCollectionContract;
 use Chevere\Contracts\Http\MethodControllerNameContract;
 use Chevere\Contracts\Middleware\MiddlewareNameContract;
+use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 
 interface RouteContract
 {
