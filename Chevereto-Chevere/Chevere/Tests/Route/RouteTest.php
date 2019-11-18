@@ -122,5 +122,6 @@ final class RouteTest extends TestCase
         $route = $this->getRoute('/test')
             ->withAddedMiddlewareName($middlewareName);
         $this->assertTrue($route->middlewareNameCollection()->hasAny());
+        $this->assertTrue($route->middlewareNameCollection()->has($middlewareName));
     }
 }
