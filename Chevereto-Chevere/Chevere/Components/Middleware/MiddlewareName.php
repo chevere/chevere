@@ -17,6 +17,7 @@ use Chevere\Components\Middleware\Exceptions\MiddlewareContractException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Middleware\MiddlewareContract;
 use Chevere\Contracts\Middleware\MiddlewareNameContract;
+use InvalidArgumentException;
 
 final class MiddlewareName implements MiddlewareNameContract
 {
@@ -42,7 +43,15 @@ final class MiddlewareName implements MiddlewareNameContract
 
     private function assertMiddlewareContract(): void
     {
-        if (is_subclass_of(MiddlewareContract::class, $this->name)) {
+        if (!class_exists($this->name)) {
+            throw new InvalidArgumentException(
+                (new Message("Middleware %middleware% doesn't exists"))
+                    ->code('%middleware%', $this->name)
+                    ->toString()
+            );
+        }
+        $interfaces = class_implements($this->name);
+        if (false === $interfaces || !in_array(MiddlewareContract::class, $interfaces)) {
             throw new MiddlewareContractException(
                 (new Message('Middleware %middleware% must implement the %contract% contract'))
                     ->code('%middleware%', $this->name)
