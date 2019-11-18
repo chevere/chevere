@@ -38,9 +38,6 @@ final class Runner implements RunnerContract
     /** @var bool A boolean indicating if the console has looped */
     private $consoleLoop;
 
-    /** @var bool A boolean indicating if no route was found */
-    private $routeNotFound;
-
     /** @var string A string representing a ControllerContract name */
     private $controllerName;
 

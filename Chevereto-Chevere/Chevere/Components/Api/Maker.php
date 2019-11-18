@@ -239,19 +239,19 @@ final class Maker implements MakerContract
     private function processRoutesMap(): void
     {
         foreach ($this->routesMap as $pathComponent => $httpMethods) {
-            $methodControllerArray = [];
-            foreach ($httpMethods as $httpMethod => $controller) {
-                $methodControllerArray[] = new MethodControllerName(
-                    new Method($httpMethod),
-                    new ControllerName($controller)
-            );
-            }
-            $methods = new MethodControllerNameCollection(...$methodControllerArray);
-            $endpoint = new Endpoint($methods);
             /** @var string Full qualified route key for $pathComponent like /api/users/{user} */
             $endpointRouteKey = stringLeftTail($pathComponent, '/');
-            $this->route = (new Route(new PathUri($endpointRouteKey)))
-                ->withMethods($methods);
+            $this->route = new Route(new PathUri($endpointRouteKey));
+            foreach ($httpMethods as $httpMethod => $controller) {
+                $this->route = $this->route
+                    ->withAddedMethodControllerName(
+                        new MethodControllerName(
+                            new Method($httpMethod),
+                            new ControllerName($controller)
+                        )
+                    );
+            }
+            $endpoint = new Endpoint($this->route->methodControllerNameCollection());
             $this->routerMaker = $this->routerMaker
                 ->withAddedRoute($this->route, $this->basePath);
             $this->api[$this->basePath][$pathComponent] = $endpoint->toArray();

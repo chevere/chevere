@@ -24,6 +24,9 @@ final class MiddlewareNameCollection implements MiddlewareNameCollectionContract
     /** @var array */
     private $array;
 
+    /** @var array */
+    private $index;
+
     /**
      * {@inheritdoc}
      */

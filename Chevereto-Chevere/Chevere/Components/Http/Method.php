@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Http;
 
 use Chevere\Components\Controller\Traits\ControllerNameAccessTrait;
+use Chevere\Components\Message\Message;
 use Chevere\Contracts\Http\MethodContract;
 use InvalidArgumentException;
 
