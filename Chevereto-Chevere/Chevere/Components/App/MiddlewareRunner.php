@@ -19,16 +19,16 @@ use Chevere\Components\Message\Message;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\MiddlewareRunnerContract;
 use Chevere\Contracts\Http\RequestContract;
-use Chevere\Contracts\Middleware\MiddlewareNamesContract;
-use Chevere\Contracts\Route\MiddlewareNameContract;
+use Chevere\Contracts\Middleware\MiddlewareNameCollectionContract;
+use Chevere\Contracts\Middleware\MiddlewareNameContract;
 
 final class MiddlewareRunner implements MiddlewareRunnerContract
 {
     /** @var AppContract */
     private $app;
 
-    /** @var MiddlewareNamesContract */
-    private $middlewareNames;
+    /** @var MiddlewareNameCollectionContract */
+    private $middlewareNameCollection;
 
     /** @var bool */
     private $hasRun;
@@ -36,11 +36,11 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
     /** @var array An array containg the middlewares that have ran */
     private $record;
 
-    public function __construct(MiddlewareNamesContract $middlewareNames, AppContract $app)
+    public function __construct(MiddlewareNameCollectionContract $middlewareNameCollection, AppContract $app)
     {
         $this->app = $app;
         $this->assertAppWithRequest();
-        $this->middlewareNames = $middlewareNames;
+        $this->middlewareNameCollection = $middlewareNameCollection;
         $this->assertMiddlewareNamesNotEmpty();
         $this->hasRun = false;
     }
@@ -75,7 +75,7 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
 
     private function doRun(): void
     {
-        foreach ($this->middlewareNames->toArray() as $middleware) {
+        foreach ($this->middlewareNameCollection->toArray() as $middleware) {
             (new $middleware())
                 ->handle(
                     $this->app->request()
@@ -86,10 +86,10 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
 
     private function assertMiddlewareNamesNotEmpty(): void
     {
-        if (!$this->middlewareNames->hasAny()) {
+        if (!$this->middlewareNameCollection->hasAny()) {
             throw new MiddlewareNamesEmptyException(
                 (new Message("Instance of %className% doesn't contain any %contract% contract"))
-                    ->code('%className%', MiddlewareNamesContract::class)
+                    ->code('%className%', MiddlewareNameCollectionContract::class)
                     ->code('%contract%', MiddlewareNameContract::class)
                     ->toString()
             );

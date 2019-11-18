@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\App;
 
-use Chevere\Contracts\Middleware\MiddlewareNamesContract;
+use Chevere\Contracts\Middleware\MiddlewareNameCollectionContract;
 use Chevere\Components\App\Exceptions\AppWithoutRequestException;
 use Chevere\Components\Middleware\Exceptions\MiddlewareNamesEmptyException;
 
@@ -22,13 +22,13 @@ interface MiddlewareRunnerContract
     /**
      * Creates a new instance.
      *
-     * @param MiddlewareNamesContract $middlewareNames An instance containing at least one middleware
-     * @param AppContract             $app             an application container with a RequestContract
+     * @param MiddlewareNameCollectionContract $middlewareNameCollection An instance containing at least one middleware
+     * @param AppContract                      $app                      an application container with a RequestContract
      *
      * @throws AppWithoutRequestException    if the $app doesn't contain a RequestContract
      * @throws MiddlewareNamesEmptyException if the $middlewareNames are empty
      */
-    public function __construct(MiddlewareNamesContract $middlewareNames, AppContract $app);
+    public function __construct(MiddlewareNameCollectionContract $middlewareNameCollection, AppContract $app);
 
     /**
      * Return an instance with the run property.

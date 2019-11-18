@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Middleware;
 
-interface MiddlewareNamesContract
+interface MiddlewareNameCollectionContract
 {
     /**
      * Creates a new instance.
@@ -28,7 +28,7 @@ interface MiddlewareNamesContract
      *
      * @throws MiddlewareContractException if $name doesn't represent a class implementing the MiddlewareContract
      */
-    public function withAddedMiddlewareName(string $name): MiddlewareNamesContract;
+    public function withAddedMiddlewareName(MiddlewareNameContract $middlewareName): MiddlewareNameCollectionContract;
 
     /**
      * Returns a boolean indicating whether the instance has any MiddlewareContract.

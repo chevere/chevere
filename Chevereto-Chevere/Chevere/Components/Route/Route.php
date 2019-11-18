@@ -21,14 +21,15 @@ use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\MethodControllerCollection;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Route\RouteContract;
-use Chevere\Components\Middleware\MiddlewareNames;
+use Chevere\Components\Middleware\MiddlewareNameCollection;
 use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
 use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodControllerContract;
-use Chevere\Contracts\Middleware\MiddlewareNamesContract;
+use Chevere\Contracts\Middleware\MiddlewareNameCollectionContract;
 use Chevere\Contracts\Route\PathUriContract;
 use Chevere\Contracts\Route\WildcardContract;
 use Chevere\Contracts\Http\MethodControllerCollectionContract;
+use Chevere\Contracts\Middleware\MiddlewareNameContract;
 use Chevere\Contracts\Route\WildcardCollectionContract;
 
 // IDEA: L10n support
@@ -41,20 +42,14 @@ final class Route implements RouteContract
     /** @var string Route name (if any, must be unique) */
     private $name;
 
-    /** @var array Where clauses based on wildcards */
-    private $wheres;
-
-    /** @var MiddlewareNamesContract */
-    private $middlewareNames;
+    /** @var MiddlewareNameCollectionContract */
+    private $middlewareNameCollection;
 
     /** @var WildcardCollectionContract */
     private $wildcardCollection;
 
     /** @var MethodControllerCollectionContract */
     private $methodControllerCollection;
-
-    /** @var array */
-    private $wildcards;
 
     /** @var string Route path representation, with placeholder wildcards like /api/users/{0} */
     private $key;
@@ -77,7 +72,7 @@ final class Route implements RouteContract
             $this->handleSetWildcardCollection();
         }
         $this->handleSetRegex();
-        $this->middlewareNames = new MiddlewareNames();
+        $this->middlewareNameCollection = new MiddlewareNameCollection();
         $this->methodControllerCollection = new MethodControllerCollection();
     }
 
@@ -212,10 +207,10 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedMiddlewareName(string $middlewareName): RouteContract
+    public function withAddedMiddlewareName(MiddlewareNameContract $middlewareName): RouteContract
     {
         $new = clone $this;
-        $new->middlewareNames = $new->middlewareNames
+        $new->middlewareNameCollection = $new->middlewareNameCollection
             ->withAddedMiddlewareName($middlewareName);
 
         return $new;
@@ -224,27 +219,10 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function middlewareNames(): MiddlewareNamesContract
+    public function middlewareNames(): MiddlewareNameCollectionContract
     {
-        return $this->middlewareNames;
+        return $this->middlewareNameCollection;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    // public function wildcardName(int $key): string
-    // {
-    //     $name = $this->wildcards[$key] ?? null;
-    //     if (null == $name) {
-    //         throw new LogicException(
-    //             (new Message('Undefined key %key%'))
-    //                 ->code('%key%', $key)
-    //                 ->toString()
-    //         );
-    //     }
-
-    //     return $name;
-    // }
 
     /**
      * {@inheritdoc}

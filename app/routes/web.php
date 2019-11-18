@@ -16,6 +16,7 @@ namespace App;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodController;
+use Chevere\Components\Middleware\MiddlewareName;
 use Chevere\Components\Route\PathUri;
 
 return [
@@ -29,6 +30,10 @@ return [
             new MethodController(new Method('GET'), Controllers\Index::class)
         )
         ->withName('web.root')
-        ->withAddedMiddlewareName(Middlewares\RoleBanned::class)
-        ->withAddedMiddlewareName(Middlewares\RoleAdmin::class),
+        ->withAddedMiddlewareName(
+            new MiddlewareName(Middlewares\RoleBanned::class)
+        )
+        ->withAddedMiddlewareName(
+            new MiddlewareName(Middlewares\RoleAdmin::class)
+        ),
 ];

@@ -20,7 +20,8 @@ use Chevere\Components\App\MiddlewareRunner;
 use Chevere\Components\App\Services;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
-use Chevere\Components\Middleware\MiddlewareNames;
+use Chevere\Components\Middleware\MiddlewareName;
+use Chevere\Components\Middleware\MiddlewareNameCollection;
 use Chevere\TestApp\App\Middlewares\TestVoid;
 use PHPUnit\Framework\TestCase;
 
@@ -30,7 +31,7 @@ final class MiddlewareRunnerTest extends TestCase
     {
         $app = new App(new Services(), new Response());
         $this->expectException(AppWithoutRequestException::class);
-        new MiddlewareRunner(new MiddlewareNames(), $app);
+        new MiddlewareRunner(new MiddlewareNameCollection(), $app);
     }
 
     public function testConstructorMiddlewareNamesEmpty(): void
@@ -38,7 +39,7 @@ final class MiddlewareRunnerTest extends TestCase
         $app = (new App(new Services(), new Response()))
             ->withRequest(new Request('GET', '/'));
         $this->expectException(MiddlewareNamesEmptyException::class);
-        new MiddlewareRunner(new MiddlewareNames(), $app);
+        new MiddlewareRunner(new MiddlewareNameCollection(), $app);
     }
 
     public function testConstructor(): void
@@ -46,18 +47,22 @@ final class MiddlewareRunnerTest extends TestCase
         $this->expectNotToPerformAssertions();
         $app = (new App(new Services(), new Response()))
             ->withRequest(new Request('GET', '/'));
-        $middlewareNames = (new MiddlewareNames())
-            ->withAddedMiddlewareName(TestVoid::class);
-        new MiddlewareRunner($middlewareNames, $app);
+        $middlewareNameCollection = (new MiddlewareNameCollection())
+            ->withAddedMiddlewareName(
+                new MiddlewareName(TestVoid::class)
+            );
+        new MiddlewareRunner($middlewareNameCollection, $app);
     }
 
     public function testWithRun(): void
     {
         $app = (new App(new Services(), new Response()))
             ->withRequest(new Request('GET', '/'));
-        $middlewareNames = (new MiddlewareNames())
-            ->withAddedMiddlewareName(TestVoid::class);
-        $middlewareRunner = (new MiddlewareRunner($middlewareNames, $app))
+        $middlewareNameCollection = (new MiddlewareNameCollection())
+            ->withAddedMiddlewareName(
+                new MiddlewareName(TestVoid::class)
+            );
+        $middlewareRunner = (new MiddlewareRunner($middlewareNameCollection, $app))
             ->withRun();
         $this->assertContainsEquals(TestVoid::class, $middlewareRunner->record());
     }

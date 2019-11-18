@@ -69,6 +69,9 @@ final class WildcardCollection implements WildcardCollectionContract
         return $this->array[$id];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function hasPos(int $pos): bool
     {
         return isset($this->array[$pos]);

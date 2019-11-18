@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Middleware;
 
-use Chevere\Contracts\Middleware\MiddlewareNamesContract;
+use Chevere\Contracts\Middleware\MiddlewareNameCollectionContract;
+use Chevere\Contracts\Middleware\MiddlewareNameContract;
 
 /**
  * A collection of MiddlewareContract names.
  */
-final class MiddlewareNames implements MiddlewareNamesContract
+final class MiddlewareNameCollection implements MiddlewareNameCollectionContract
 {
     /** @var array */
     private $array;
@@ -34,9 +35,8 @@ final class MiddlewareNames implements MiddlewareNamesContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedMiddlewareName(string $name): MiddlewareNamesContract
+    public function withAddedMiddlewareName(MiddlewareNameContract $middlewareName): MiddlewareNameCollectionContract
     {
-        $middlewareName = new MiddlewareName($name);
         $new = clone $this;
         $new->array[] = $middlewareName->name();
 
