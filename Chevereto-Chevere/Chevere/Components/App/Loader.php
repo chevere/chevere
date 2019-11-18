@@ -64,15 +64,15 @@ final class Loader implements LoaderContract
         $this->handleParameters();
         $this->builder = $this->builder
             ->withBuild($this->getBuild());
-        $app = $this->builder->build()->app()
-            ->withServices(
-                $this->builder->build()->app()->services()
-            );
-        $this->builder = $this->builder
-            ->withBuild(
-                $this->builder->build()
-                    ->withApp($app)
-            );
+        // $app = $this->builder->build()->app()
+        //     ->withServices(
+        //         $this->builder->build()->app()->services()
+        //     );
+        // $this->builder = $this->builder
+        //     ->withBuild(
+        //         $this->builder->build()
+        //             ->withApp($app)
+        //     );
     }
 
     public function run(): void
@@ -157,7 +157,7 @@ final class Loader implements LoaderContract
             && !(CONSOLE && console()->isBuilding())
             && !$this->builder->build()->file()->exists()
         ) {
-            // FIXME: Get the entrypoint
+            // FIXME: Detect the entrypoint
             throw new BuildNeededException(
                 (new Message('The application needs to be built by running %command% or calling %method% method'))
                     ->code('%command%', 'php app/console build')
