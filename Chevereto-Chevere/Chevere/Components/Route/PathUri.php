@@ -18,9 +18,10 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Exceptions\PathUriForwardSlashException;
 use Chevere\Components\Route\Exceptions\PathUriInvalidCharsException;
 use Chevere\Components\Route\Exceptions\PathUriUnmatchedWildcardsException;
+use Chevere\Components\Route\Exceptions\WildcardRepeatException;
 use Chevere\Components\Route\Exceptions\WildcardReservedException;
 use Chevere\Contracts\Route\PathUriContract;
-use Chevere\Contracts\Route\PathUriWildcardsContract;
+use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 
 final class PathUri implements PathUriContract
@@ -28,14 +29,17 @@ final class PathUri implements PathUriContract
     /** @var string */
     private $path;
 
-    /** @var bool */
-    private $hasWildcards;
-
     /** @var int */
-    private $wildcardsCount;
+    private $wildcardBracesCount;
 
     /** @var array */
     private $wildcardsMatch;
+
+    /** @var string Path key set representation ({wildcards} replaced by {n}) */
+    private $key;
+
+    /** @var array string[] */
+    private $wildcards;
 
     /**
      * {@inheritdoc}
@@ -43,14 +47,13 @@ final class PathUri implements PathUriContract
     public function __construct(string $path)
     {
         $this->path = $path;
-        $this->wildcardsCount = 0;
-        $this->wildcardsMatch = [];
-        $this->handleSetHasWildcards();
         $this->assertFormat();
-        if ($this->hasWildcards) {
-            $this->assertMatchingBraces();
-            $this->assertMatchingWildcards();
-            $this->assertReservedWildcards();
+        $this->key = $this->path;
+        if ($this->hasHandlebars()) {
+            $this->wildcardBracesCount = 0;
+            $this->wildcardsMatch = [];
+            $this->assertWildcards();
+            $this->handleWildcards();
         }
     }
 
@@ -65,17 +68,25 @@ final class PathUri implements PathUriContract
     /**
      * {@inheritdoc}
      */
-    public function hasWildcards(): bool
+    public function key(): string
     {
-        return $this->hasWildcards;
+        return $this->key;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function wildcardsMatch(): array
+    public function hasWildcards(): bool
     {
-        return $this->wildcardsMatch;
+        return isset($this->wildcards);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function wildcards(): array
+    {
+        return $this->wildcards;
     }
 
     private function assertFormat(): void
@@ -110,20 +121,20 @@ final class PathUri implements PathUriContract
                     ->toString()
             );
         }
-        $this->wildcardsCount = $countOpen;
+        $this->wildcardBracesCount = $countOpen;
     }
 
     private function assertMatchingWildcards(): void
     {
-        preg_match_all(PathUriWildcardsContract::REGEX_WILDCARD_SEARCH, $this->path, $this->wildcardsMatch);
+        preg_match_all(PathUriContract::REGEX_WILDCARD_SEARCH, $this->path, $this->wildcardsMatch);
         $countMatches = count($this->wildcardsMatch[0]);
-        if ($this->wildcardsCount !== $countMatches) {
+        if ($this->wildcardBracesCount !== $countMatches) {
             throw new PathUriUnmatchedWildcardsException(
                 (new Message('Route path %path% contains invalid wildcard declarations (pattern %pattern% matches %countMatches%)'))
                     ->code('%path%', $this->path)
-                    ->strtr('%wildcardsCount%', (string) $this->wildcardsCount)
+                    ->strtr('%wildcardsCount%', (string) $this->wildcardBracesCount)
                     ->strtr('%countMatches%', (string) $countMatches)
-                    ->code('%pattern%', PathUriWildcardsContract::REGEX_WILDCARD_SEARCH)
+                    ->code('%pattern%', PathUriContract::REGEX_WILDCARD_SEARCH)
                     ->toString()
             );
         }
@@ -165,8 +176,40 @@ final class PathUri implements PathUriContract
         }
     }
 
-    private function handleSetHasWildcards(): void
+    private function handleWildcards(): void
     {
-        $this->hasWildcards = false !== strpos($this->path, '{') || false !== strpos($this->path, '}');
+        foreach ($this->wildcardsMatch[0] as $key => $val) {
+            // Change {wildcard} to {n} (n is the wildcard index)
+            if (isset($this->key)) {
+                $this->key = stringReplaceFirst($val, "{{$key}}", $this->key);
+            }
+            $wildcard = $this->wildcardsMatch[1][$key];
+            if (in_array($wildcard, $this->wildcards ?? [])) {
+                throw new WildcardRepeatException(
+                    (new Message('Duplicated wildcard %wildcard% in path uri %path%'))
+                        ->code('%wildcard%', $this->wildcardsMatch[0][$key])
+                        ->code('%path%', $this->path)
+                        ->toString()
+                );
+            }
+            $this->wildcards[] = $wildcard;
+        }
+    }
+
+    private function hasHandlebars(): bool
+    {
+        return false !== strpos($this->path, '{') || false !== strpos($this->path, '}');
+    }
+
+    /**
+     * @throws PathUriUnmatchedBracesException
+     * @throws PathUriUnmatchedWildcardsException
+     * @throws WildcardReservedException
+     */
+    private function assertWildcards(): void
+    {
+        $this->assertMatchingBraces();
+        $this->assertMatchingWildcards();
+        $this->assertReservedWildcards();
     }
 }

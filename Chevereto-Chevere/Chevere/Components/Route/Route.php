@@ -251,10 +251,9 @@ final class Route implements RouteContract
 
     private function handleSetWildcardCollection(): void
     {
-        $pathUriWildcards = new PathUriWildcards($this->pathUri);
-        $this->key = $pathUriWildcards->key();
+        $this->key = $this->pathUri->key();
         $this->wildcardCollection = new WildcardCollection();
-        foreach ($pathUriWildcards->wildcards() as $wildcardName) {
+        foreach ($this->pathUri->wildcards() as $wildcardName) {
             $this->wildcardCollection = $this->wildcardCollection
                 ->withAddedWildcard(new Wildcard($wildcardName));
         }

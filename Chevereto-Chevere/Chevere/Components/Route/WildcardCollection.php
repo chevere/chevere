@@ -30,6 +30,8 @@ final class WildcardCollection implements WildcardCollectionContract
      */
     public function __construct(WildcardContract ...$wildcards)
     {
+        $this->array = [];
+        $this->index = [];
         foreach ($wildcards as $wildcard) {
             $this->addWildcard($wildcard);
         }
@@ -59,9 +61,9 @@ final class WildcardCollection implements WildcardCollectionContract
      */
     public function get(WildcardContract $wildcard): WildcardContract
     {
-        $id = array_search($wildcard->name(), $this->index);
+        $pos = array_search($wildcard->name(), $this->index);
 
-        return $this->array[$id];
+        return $this->array[$pos];
     }
 
     /**
@@ -98,6 +100,11 @@ final class WildcardCollection implements WildcardCollectionContract
 
     private function addWildcard(WildcardContract $wildcard)
     {
+        $pos = array_search($wildcard->name(), $this->index);
+        if (false !== $pos) {
+            $this->array[$pos] = $wildcard;
+            $this->index[$pos] = $wildcard->name();
+        }
         $this->array[] = $wildcard;
         $this->index[] = $wildcard->name();
     }

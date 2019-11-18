@@ -15,14 +15,19 @@ namespace Chevere\Contracts\Route;
 
 interface PathUriContract
 {
+    /** string Regex pattern used to catch {wildcard} */
+    const REGEX_WILDCARD_SEARCH = '/{' . WildcardContract::ACCEPT_CHARS . '}/i';
+
     /**
      * Creates a new instance.
      *
      * @param string $path a path uri like `/path/{wildcard}`
      *
-     * @throws PathUriInvalidFormatException   if $path format is invalid or if it doesn't start with forward slash
-     * @throws PathUriUnmatchedBracesException if $path contains unmatched braces
-     * @throws WildcardReservedException       if $path contains reserved wildcards
+     * @throws PathUriInvalidFormatException      if $path format is invalid or if it doesn't start with forward slash
+     * @throws PathUriUnmatchedBracesException    if $path contains unmatched braces (must be paired)
+     * @throws PathUriUnmatchedWildcardsException if $path contains wildcards that don't match the number of braces
+     * @throws WildcardReservedException          if $path contains reserved wildcards
+     * @throws WildcardRepeatException            if $path contains repeated wildcards
      */
     public function __construct(string $path);
 
@@ -32,14 +37,17 @@ interface PathUriContract
     public function path(): string;
 
     /**
+     * Provides access to the key string.
+     */
+    public function key(): string;
+
+    /**
      * Returns a boolean indicating whether the instance has handlebars `{}`.
      */
     public function hasWildcards(): bool;
 
     /**
-     * Returns an array containing the wildcard match (if any).
-     *
-     * @return array 0 => [{wildcard1}, {wildcard2},...], 1 => [wildcard1, wildcard2,...]
+     * Provides acess to the wildcards array.
      */
-    public function wildcardsMatch(): array;
+    public function wildcards(): array;
 }
