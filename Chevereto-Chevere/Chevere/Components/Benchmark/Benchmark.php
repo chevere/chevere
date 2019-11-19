@@ -15,13 +15,11 @@ namespace Chevere\Components\Benchmark;
 
 use LogicException;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
-
 use Chevere\Components\DateTime\DateTime;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Number\Number;
 use Chevere\Components\Time\TimeHr;
 use Chevere\Components\Traits\PrintableTrait;
-
 use const Chevere\BOOTSTRAP_TIME;
 use const Chevere\CLI;
 
@@ -53,10 +51,10 @@ final class Benchmark
     /** @var int Nanotime construct object */
     private $constructTime;
 
-    /** @var int Nanotime */
+    /** @var int time */
     private $maxExecutionTime;
 
-    /** @var float Nanotime */
+    /** @var float time */
     private $requestTime;
 
     /** @var int Number of times to run each callable */
@@ -128,7 +126,7 @@ final class Benchmark
     public function __construct(int $times)
     {
         $this->constructTime = (int) hrtime(true);
-        $this->maxExecutionTime = 1e9 * (int) ini_get('max_execution_time');
+        $this->maxExecutionTime = (int) ini_get('max_execution_time');
         $this->requestTime = BOOTSTRAP_TIME;
         $this->times = $times;
         $this->callablesCount = 0;
@@ -139,7 +137,7 @@ final class Benchmark
     }
 
     /**
-     * @param int $timeLimit Time limit for the benchmark, in seconds.
+     * @param int $timeLimit time limit for the benchmark, in seconds
      */
     public function withTimeLimit(int $timeLimit): Benchmark
     {
@@ -158,6 +156,7 @@ final class Benchmark
     {
         $new = clone $this;
         $new->arguments = func_get_args();
+
         return $new;
     }
 
@@ -299,7 +298,7 @@ final class Benchmark
             }
             $this->lines[] = $resRuns;
             $this->lines[] = $this->lineSeparator;
-            $this->recordsProcessed++;
+            ++$this->recordsProcessed;
         }
     }
 
@@ -340,7 +339,7 @@ final class Benchmark
 
     private function canPHPKeepGoing(): bool
     {
-        if (0 != $this->maxExecutionTime && (int) hrtime(true) - $this->requestTime > $this->maxExecutionTime) {
+        if (0 != $this->maxExecutionTime && time() - $this->requestTime > $this->maxExecutionTime) {
             return false;
         }
 

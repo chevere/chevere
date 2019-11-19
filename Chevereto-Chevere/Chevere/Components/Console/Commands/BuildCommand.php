@@ -1,27 +1,25 @@
 <?php
 
 /*
-* This file is part of Chevere.
-*
-* (c) Rodolfo Berrios <rodolfo@chevereto.com>
-*
-* For the full copyright and license information, please view the LICENSE
-* file that was distributed with this source code.
-*/
+ * This file is part of Chevere.
+ *
+ * (c) Rodolfo Berrios <rodolfo@chevereto.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 
 declare(strict_types=1);
 
 namespace Chevere\Components\Console\Commands;
 
 use LogicException;
-
 use Chevere\Components\Console\Command;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Maker;
 use Chevere\Components\Time\TimeHr;
 use Chevere\Contracts\App\BuilderContract;
-
-use const Chevere\BOOTSTRAP_TIME;
+use const Chevere\BOOTSTRAP_HRTIME;
 
 /**
  * The BuildCommand builds the App.
@@ -56,7 +54,7 @@ final class BuildCommand extends Command
         }
         $timeEnd = (int) hrtime(true);
         $timeRelative = new TimeHr($timeEnd - $timeStart);
-        $timeAbsolute = new TimeHr($timeEnd - BOOTSTRAP_TIME);
+        $timeAbsolute = new TimeHr($timeEnd - BOOTSTRAP_HRTIME);
         $checksums = [];
         foreach ($this->builder->build()->checksums() as $name => $keys) {
             foreach ($keys as $key => $array) {
@@ -70,9 +68,10 @@ final class BuildCommand extends Command
             '[Checksum] ' . $this->builder->build()->checkout()->checksum(),
             strtr('[Time] %relative% (%absolute%)', [
                 '%relative%' => $timeRelative->toReadMs(),
-                '%absolute%' => $timeAbsolute->toReadMs()
+                '%absolute%' => $timeAbsolute->toReadMs(),
             ]),
         ]);
+
         return 0;
     }
 
@@ -83,7 +82,6 @@ final class BuildCommand extends Command
                 (new Message('Missing %class% parameters'))
                     ->code('%class%', get_class($this->builder))
                     ->toString()
-
             );
         }
     }

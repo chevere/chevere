@@ -18,6 +18,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Contracts\File\FileCompileContract;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
+use const Chevere\BOOTSTRAP_TIME;
 
 /**
  * OPCache compiler.
@@ -49,10 +50,14 @@ final class FileCompile implements FileCompileContract
     public function compile(): void
     {
         $this->file()->assertExists();
-        if (!opcache_compile_file($this->file()->path()->absolute())) {
+        $path = $this->file()->path()->absolute();
+        $past = BOOTSTRAP_TIME - 10;
+        touch($path, $past);
+        @opcache_invalidate($path, true);
+        if (!opcache_compile_file($path)) {
             throw new RuntimeException(
                 (new Message('Unable to compile cache for file %path% (Opcache is disabled)'))
-                    ->code('%path%', $this->file()->path()->absolute())
+                    ->code('%path%', $path)
                     ->toString()
             );
         }

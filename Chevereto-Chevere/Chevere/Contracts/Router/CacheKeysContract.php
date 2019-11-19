@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Router;
+namespace Chevere\Contracts\Router;
 
-abstract class CacheKeys
+interface CacheKeysContract
 {
     const REGEX = 'regex';
     const ROUTES = 'routes';
-    const ROUTES_INDEX = 'routesIndex';
+    const INDEX = 'index';
 }

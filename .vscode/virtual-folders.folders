@@ -1,0 +1,14 @@
+"virtual-folders.folders":[
+    {
+        "name": "PHP",
+        "files": [
+            "**/*.php"
+        ]
+    },
+    {
+        "name": "Source",
+        "files": [
+            "**/*.cpp"
+        ]
+    }
+]

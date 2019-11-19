@@ -13,25 +13,55 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use LogicException;
-use Throwable;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Traits\RouteAccessTrait;
+use Chevere\Contracts\Route\RouteContract;
+use InvalidArgumentException;
+use TypeError;
 
 final class Resolver
 {
-    use RouteAccessTrait;
+    /** @var object */
+    private $object;
 
+    /**
+     * Creates a new instance.
+     *
+     * @throws InvalidArgumentException if $serialized can't be unserialized
+     * @throws TypeError                if $serialized is not a RouteContract serialize
+     */
     public function __construct(string $serialized)
     {
-        try {
-            $this->route = unserialize($serialized);
-        } catch (Throwable $e) {
-            throw new LogicException(
-                (new Message('Unable to unserialize: %message%'))
-                    ->code('%message%', $e->getMessage())
+        $object = unserialize($serialized);
+        if (false === $object) {
+            throw new InvalidArgumentException(
+                (new Message('String provided is unable to unserialize'))
                     ->toString()
             );
         }
+        if (!is_object($object)) {
+            throw new TypeError(
+                (new Message('Expecting type %expected%, type %provided% provided'))
+                    ->code('%expected%', 'object')
+                    ->code('%provided%', gettype($object))
+                    ->toString()
+            );
+        }
+        if (!($object instanceof RouteContract)) {
+            throw new TypeError(
+                (new Message("Instance of %className% doesn't implement %contract%"))
+                    ->code('%className%', get_class($object))
+                    ->code('%contract%', RouteContract::class)
+                    ->toString()
+            );
+        }
+        $this->object = $object;
+    }
+
+    /**
+     * Provides access to the RouteContract instance.
+     */
+    public function route(): RouteContract
+    {
+        return $this->route;
     }
 }

@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere;
 
-define('Chevere\BOOTSTRAP_TIME', (int) hrtime(true));
+define('Chevere\BOOTSTRAP_TIME', time());
+define('Chevere\BOOTSTRAP_HRTIME', hrtime(true));
 require dirname(__DIR__) . '/vendor/autoload.php';
-define('Chevere\DOCUMENT_ROOT', rtrim(dirname(__DIR__, basename(__DIR__) == 'Chevereto-Chevere' ? 1 : 3), '/') . '/');
+define('Chevere\DOCUMENT_ROOT', rtrim(dirname(__DIR__, 'Chevereto-Chevere' == basename(__DIR__) ? 1 : 3), '/') . '/');
 define('Chevere\ROOT_PATH', str_replace('\\', '/', DOCUMENT_ROOT));
 define('Chevere\APP_PATH', ROOT_PATH . 'app/');
 

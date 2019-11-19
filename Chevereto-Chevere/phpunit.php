@@ -16,7 +16,8 @@ namespace Chevere;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 
-define('Chevere\BOOTSTRAP_TIME', (int) hrtime(true));
+define('Chevere\BOOTSTRAP_TIME', time());
+define('Chevere\BOOTSTRAP_HRTIME', hrtime(true));
 require dirname(__DIR__) . '/vendor/autoload.php';
 define('Chevere\DOCUMENT_ROOT', __DIR__ . '/Chevere/TestApp/');
 define('Chevere\ROOT_PATH', rtrim(str_replace('\\', '/', DOCUMENT_ROOT), '/') . '/');

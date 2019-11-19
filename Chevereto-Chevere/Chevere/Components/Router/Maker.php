@@ -23,6 +23,7 @@ use Chevere\Components\Path\Path;
 use Chevere\Components\Type\Type;
 use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Route\RouteContract;
+use Chevere\Contracts\Router\CacheKeysContract;
 use Chevere\Contracts\Router\MakerContract;
 
 /**
@@ -132,9 +133,18 @@ final class Maker implements MakerContract
     public function withCache(CacheContract $cache): MakerContract
     {
         $cache = $cache
-            ->withPut(new CacheKey(CacheKeys::REGEX), $this->regex)
-            ->withPut(new CacheKey(CacheKeys::ROUTES), $this->routes)
-            ->withPut(new CacheKey(CacheKeys::ROUTES_INDEX), $this->routesIndex);
+            ->withPut(
+                new CacheKey(CacheKeysContract::REGEX),
+                $this->regex
+            )
+            ->withPut(
+                new CacheKey(CacheKeysContract::ROUTES),
+                $this->routes
+            )
+            ->withPut(
+                new CacheKey(CacheKeysContract::INDEX),
+                $this->routesIndex
+            );
 
         $new = clone $this;
         $new->cache = $cache;

@@ -21,6 +21,7 @@ use Chevere\Components\Router\Exception\RegexPropertyRequiredException;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Route\RouteContract;
+use Chevere\Contracts\Router\CacheKeysContract;
 use Chevere\Contracts\Router\MakerContract;
 use Chevere\Contracts\Router\RouterContract;
 
@@ -63,9 +64,12 @@ final class Router implements RouterContract
         $new = clone $this;
         $new->cache = $cache;
         try {
-            $new->regex = $new->cache->fileReturn(new CacheKey(CacheKeys::REGEX))->return();
-            $new->routes = $new->cache->fileReturn(new CacheKey(CacheKeys::ROUTES))->return();
-            $new->routesIndex = $new->cache->fileReturn(new CacheKey(CacheKeys::ROUTES_INDEX))->return();
+            $new->regex = $new->cache->fileReturn(new CacheKey(CacheKeysContract::REGEX))
+                ->return();
+            $new->routes = $new->cache->fileReturn(new CacheKey(CacheKeysContract::ROUTES))
+                ->return();
+            $new->routesIndex = $new->cache->fileReturn(new CacheKey(CacheKeysContract::INDEX))
+            ->return();
         } catch (FileNotFoundException $e) {
             throw new CacheNotFoundException($e->getMessage(), $e->getCode(), $e);
         }
@@ -130,7 +134,7 @@ final class Router implements RouterContract
         unset($matches['MARK']);
         array_shift($matches);
         $route = $this->routes[$id];
-        /* String when the route is cached */
+        // is string when the route is cached
         if (is_string($route)) {
             $resolver = new Resolver($route);
             $route = $resolver->route();

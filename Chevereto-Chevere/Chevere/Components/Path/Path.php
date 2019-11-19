@@ -17,13 +17,12 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathInvalidException;
 use Chevere\Components\Path\Exceptions\PathNotAllowedException;
 use Chevere\Contracts\Path\PathContract;
-
 use function ChevereFn\stringForwardSlashes;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 
 /**
- * Tool to handle filesystem paths (folder containing app, vendor)
+ * Tool to handle filesystem paths (folder containing app, vendor).
  */
 final class Path implements PathContract
 {
@@ -89,7 +88,7 @@ final class Path implements PathContract
         // }
         $this->clearStatCache();
 
-        return stream_resolve_include_path($this->absolute) !== false;
+        return false !== stream_resolve_include_path($this->absolute);
     }
 
     /**
@@ -112,9 +111,6 @@ final class Path implements PathContract
         return is_file($this->absolute);
     }
 
-    /**
-     *
-     */
     public function getChild(string $path): PathContract
     {
         $parent = $this->absolute();

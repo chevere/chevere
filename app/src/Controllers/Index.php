@@ -18,15 +18,12 @@ use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\Traits\JsonApiTrait;
 use Chevere\Components\JsonApi\EncodedDocument;
 use Chevere\Components\Time\TimeHr;
-use Exception;
 use JsonApiPhp\JsonApi\Attribute;
 use JsonApiPhp\JsonApi\DataDocument;
 use JsonApiPhp\JsonApi\JsonApi;
 use JsonApiPhp\JsonApi\Link\SelfLink;
 use JsonApiPhp\JsonApi\ResourceCollection;
 use JsonApiPhp\JsonApi\ResourceObject;
-
-use const Chevere\BOOTSTRAP_TIME;
 
 class Index extends Controller implements JsonApiContract
 {
@@ -41,7 +38,7 @@ class Index extends Controller implements JsonApiContract
     public function __invoke(): void
     {
         $took = hrtime(true);
-        $arr = ['aaa', $this, (new TimeHr($took - BOOTSTRAP_TIME))->toReadMs()];
+        $arr = ['aaa', $this, (new TimeHr($took - BOOTSTRAP_HRTIME))->toReadMs()];
         dd($arr);
         $this->api = new ResourceObject(
             'info',
@@ -57,6 +54,7 @@ class Index extends Controller implements JsonApiContract
             new Attribute('description', 'Retrieves the console command list.'),
             );
     }
+
     public function getDocument(): EncodedDocument
     {
         return

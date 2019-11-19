@@ -29,10 +29,10 @@ final class Type implements TypeContract
     private $primitive;
 
     /** @var string The detected class name (if any) */
-    private $className;
+    // private $className;
 
     /** @var string The detected interface name (if any) */
-    private $interfaceName;
+    // private $interfaceName;
 
     /**
      * {@inheritdoc}
@@ -57,7 +57,11 @@ final class Type implements TypeContract
      */
     public function typeHinting(): string
     {
-        return $this->className ?? $this->interfaceName ?? $this->primitive;
+        if (in_array($this->primitive, [TypeContract::CLASS_NAME, TypeContract::INTERFACE_NAME])) {
+            return $this->type;
+        }
+
+        return $this->primitive;
     }
 
     /**
@@ -88,13 +92,11 @@ final class Type implements TypeContract
     private function validateObject(object $object): bool
     {
         $objectClass = get_class($object);
-        switch (true) {
-            case isset($this->className, $this->interfaceName):
-                return $this->isClassName($objectClass) || $this->isInterfaceInstance($object);
-            case isset($this->className):
+        switch ($this->primitive) {
+            case TypeContract::CLASS_NAME:
                 return $this->isClassName($objectClass);
-            case isset($this->interfaceName):
-                return $this->isInterfaceInstance($object);
+            case TypeContract::INTERFACE_NAME:
+                return $this->isInterfaceImplemented($object);
         }
 
         return false;
@@ -102,12 +104,12 @@ final class Type implements TypeContract
 
     private function isClassName(string $objectClass): bool
     {
-        return $objectClass == $this->className;
+        return $objectClass == $this->type;
     }
 
-    private function isInterfaceInstance(object $object): bool
+    private function isInterfaceImplemented(object $object): bool
     {
-        return $object instanceof $this->interfaceName;
+        return $object instanceof $this->type;
     }
 
     private function setPrimitive(): void
@@ -117,36 +119,10 @@ final class Type implements TypeContract
 
             return;
         }
-        $this->handleClassName();
-        $this->handleInterfaceName();
-        $this->handlePrimitiveClassName();
-        $this->handlePrimitiveInterfaceName();
-    }
 
-    private function handleClassName(): void
-    {
         if (class_exists($this->type)) {
-            $this->className = $this->type;
-        }
-    }
-
-    private function handleInterfaceName(): void
-    {
-        if (interface_exists($this->type)) {
-            $this->interfaceName = $this->type;
-        }
-    }
-
-    private function handlePrimitiveClassName(): void
-    {
-        if (isset($this->className)) {
             $this->primitive = 'className';
-        }
-    }
-
-    private function handlePrimitiveInterfaceName(): void
-    {
-        if (isset($this->interfaceName)) {
+        } elseif (interface_exists($this->type)) {
             $this->primitive = 'interfaceName';
         }
     }
