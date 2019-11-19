@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump;
 
 use ReflectionProperty;
-
 use Chevere\Components\VarDump\Processors\ArrayProcessor;
 use Chevere\Components\VarDump\Processors\BooleanProcessor;
 use Chevere\Components\VarDump\Processors\ObjectProcessor;
 use Chevere\Components\VarDump\Processors\ScalarProcessor;
 use Chevere\Contracts\VarDump\FormatterContract;
+use function ChevereFn\varType;
 
 /**
  * Analyze a variable and provide a formated string representation of its type and data.
@@ -156,6 +156,7 @@ final class VarDump
         if (!empty($this->dontDump)) {
             $new = $new->withDontDump($this->dontDump);
         }
+
         return $new;
     }
 
@@ -176,10 +177,7 @@ final class VarDump
 
     private function setType(): void
     {
-        $this->type = gettype($this->expression);
-        if ('double' == $this->type) {
-            $this->type = static::TYPE_FLOAT;
-        }
+        $this->type = varType($this->expression);
     }
 
     private function handleType(): void
@@ -207,7 +205,7 @@ final class VarDump
 
     private function handleInfo(): void
     {
-        if ($this->info !== '') {
+        if ('' !== $this->info) {
             if (strpos($this->info, '=')) {
                 $this->info = $this->formatter->getEmphasis("($this->info)");
             } else {

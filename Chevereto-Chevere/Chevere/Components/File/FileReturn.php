@@ -103,10 +103,15 @@ final class FileReturn implements FileReturnContract
         } else {
             $var = $this->getFileReturnVar($var);
         }
+
         $varExport = var_export($var, true);
         $this->file()->put(
             FileReturnContract::PHP_RETURN . $varExport . ';'
         );
+    }
+
+    private function assertExportable($var): void
+    {
     }
 
     private function getReturnVar($var)

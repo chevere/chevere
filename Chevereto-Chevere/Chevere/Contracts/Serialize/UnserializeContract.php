@@ -33,7 +33,7 @@ interface UnserializeContract
     public function var();
 
     /**
-     * Provides access to the TypeContract instance.
+     * Provides access to the TypeContract instance for the unserialized variable.
      */
     public function type(): TypeContract;
 }

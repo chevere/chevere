@@ -13,16 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Serialize;
 
-use InvalidArgumentException;
+use Chevere\Contracts\Variable\VariableExportableContract;
 
 interface SerializeContract
 {
     /**
      * Creates a new instance.
-     *
-     * @throws InvalidArgumentException if $var can't be serialized
      */
-    public function __construct($var);
+    public function __construct(VariableExportableContract $variable);
 
     /**
      * Provides access to the serialized string.

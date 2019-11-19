@@ -24,6 +24,7 @@ use JsonApiPhp\JsonApi\JsonApi;
 use JsonApiPhp\JsonApi\Link\SelfLink;
 use JsonApiPhp\JsonApi\ResourceCollection;
 use JsonApiPhp\JsonApi\ResourceObject;
+use const Chevere\BOOTSTRAP_HRTIME;
 
 class Index extends Controller implements JsonApiContract
 {

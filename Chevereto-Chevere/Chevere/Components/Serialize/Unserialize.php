@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Serialize;
 
+use Chevere\Components\Folder\Exceptions\UnserializeException;
 use Chevere\Components\Type\Type;
 use Chevere\Contracts\Serialize\UnserializeContract;
 use Chevere\Contracts\Type\TypeContract;
 use TypeError;
+use function ChevereFn\varType;
 
 final class Unserialize implements UnserializeContract
 {
@@ -34,13 +36,13 @@ final class Unserialize implements UnserializeContract
         try {
             $this->var = unserialize($serialized);
         } catch (TypeError $e) {
-            throw new InvalidArgumentException(
+            throw new UnserializeException(
               (new Message('String provided is unable to unserialize: %message%'))
                   ->code('%message%', $e->getMessage())
                   ->toString()
             );
         }
-        $type = is_object($this->var) ? get_class($this->var) : gettype($this->var);
+        $type = is_object($this->var) ? get_class($this->var) : varType($this->var);
         $this->type = new Type($type);
     }
 

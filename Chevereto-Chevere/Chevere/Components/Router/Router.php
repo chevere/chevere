@@ -19,11 +19,13 @@ use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RegexPropertyRequiredException;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
+use Chevere\Components\Serialize\Unserialize;
 use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\CacheKeysContract;
 use Chevere\Contracts\Router\MakerContract;
 use Chevere\Contracts\Router\RouterContract;
+use TypeError;
 
 /**s
  * Routes takes a bunch of Routes and generates a routing table (php array).
@@ -136,8 +138,16 @@ final class Router implements RouterContract
         $route = $this->routes[$id];
         // is string when the route is cached
         if (is_string($route)) {
-            $resolver = new Resolver($route);
-            $route = $resolver->route();
+            $unserialize = new Unserialize($route);
+            $route = $unserialize->var();
+            if (!($route instanceof RouteContract)) {
+                throw new TypeError(
+                    (new Message("Serialized variable doesn't implements %contract%, type %provided% provided"))
+                        ->code('%contract%', RouteContract::class)
+                        ->code('%provided%', $unserialize->type()->typeHinting())
+                        ->toString()
+                );
+            }
             $this->routes[$id] = $route;
         }
         $this->arguments = [];
