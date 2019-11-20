@@ -18,7 +18,7 @@ use Chevere\Contracts\Variable\VariableExportableContract;
 use ReflectionObject;
 
 /**
- * Allows to interact with variables.
+ * Allows to interact with exportable variables.
  */
 final class VariableExportable implements VariableExportableContract
 {

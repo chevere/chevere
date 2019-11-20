@@ -18,6 +18,7 @@ use Chevere\Components\File\Exceptions\FileHandleException;
 use Chevere\Components\File\Exceptions\FileWithoutContentsException;
 use Chevere\Components\File\Exceptions\FileInvalidContentsException;
 use Chevere\Components\File\Exceptions\FileUnableToPutException;
+use Chevere\Contracts\Variable\VariableExportableContract;
 
 interface FileReturnContract
 {
@@ -73,5 +74,5 @@ interface FileReturnContract
      * @throws FileNotFoundException    if the file doesn't exists
      * @throws FileUnableToPutException if unable to put the contents in the file
      */
-    public function put($var): void;
+    public function put(VariableExportableContract $variableExportable): void;
 }

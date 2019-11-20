@@ -17,6 +17,7 @@ use Chevere\Components\File\FilePhp;
 use InvalidArgumentException;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Variable\VariableExportable;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\CheckoutContract;
 use Chevere\Contracts\File\FileReturnContract;
@@ -47,7 +48,9 @@ final class Checkout implements CheckoutContract
         $this->fileReturn = new FileReturn(
             new FilePhp($file)
         );
-        $this->fileReturn->put($this->build->checksums());
+        $this->fileReturn->put(
+            new VariableExportable($this->build->checksums())
+        );
     }
 
     public function fileReturn(): FileReturnContract

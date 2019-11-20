@@ -20,6 +20,7 @@ use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Path\Path;
+use Chevere\Components\Variable\VariableExportable;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FileReturnContract;
 use PHPUnit\Framework\TestCase;
@@ -126,7 +127,7 @@ final class FileReturnTest extends TestCase
     {
         $this->file->remove();
         $this->expectException(FileNotFoundException::class);
-        $this->fileReturn->put('test');
+        $this->fileReturn->put(new VariableExportable('test'));
     }
 
     public function testPut(): void
@@ -140,7 +141,9 @@ final class FileReturnTest extends TestCase
             [1, 1.1, true, 'test'],
             [1, 1.1, true, 'test', [1, 2, 3]],
         ] as $val) {
-            $this->fileReturn->put($val);
+            $this->fileReturn->put(
+                new VariableExportable($val)
+            );
             $this->assertSame($val, $this->fileReturn->var());
         }
 
@@ -148,7 +151,9 @@ final class FileReturnTest extends TestCase
             new Path('test'),
             ['test', 1, new Path('test')],
         ] as $val) {
-            $this->fileReturn->put($val);
+            $this->fileReturn->put(
+                new VariableExportable($val)
+            );
             $this->assertEquals($val, $this->fileReturn->var());
         }
     }

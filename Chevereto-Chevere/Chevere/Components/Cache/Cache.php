@@ -20,6 +20,7 @@ use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
+use Chevere\Components\Variable\VariableExportable;
 use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Cache\CacheKeyContract;
 use Chevere\Contracts\Dir\DirContract;
@@ -65,7 +66,9 @@ final class Cache implements CacheContract
         }
         $filePhp = new FilePhp($file);
         $fileReturn = new FileReturn($filePhp);
-        $fileReturn->put($var);
+        $fileReturn->put(
+            new VariableExportable($var)
+        );
         new FileCompile($filePhp);
         $new = clone $this;
         $new->array[$cacheKey->key()] = [

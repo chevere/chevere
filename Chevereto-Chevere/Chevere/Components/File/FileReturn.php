@@ -20,6 +20,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
 use Chevere\Contracts\File\FileReturnContract;
+use Chevere\Contracts\Variable\VariableExportableContract;
 
 /**
  * FileReturn interacts with PHP files that return something.
@@ -94,24 +95,20 @@ final class FileReturn implements FileReturnContract
     /**
      * {@inheritdoc}
      */
-    public function put($var): void
+    public function put(VariableExportableContract $variableExportable): void
     {
-        if (is_iterable($var)) {
+        $var = $variableExportable->var();
+        if (is_array($var)) {
             foreach ($var as &$v) {
                 $v = $this->getFileReturnVar($v);
             }
         } else {
             $var = $this->getFileReturnVar($var);
         }
-
         $varExport = var_export($var, true);
         $this->file()->put(
             FileReturnContract::PHP_RETURN . $varExport . ';'
         );
-    }
-
-    private function assertExportable($var): void
-    {
     }
 
     private function getReturnVar($var)
