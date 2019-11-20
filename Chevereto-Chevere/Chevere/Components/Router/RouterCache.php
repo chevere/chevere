@@ -17,7 +17,6 @@ use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Router\RouterCacheContract;
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Variable\VariableExport;
-use Chevere\Contracts\Router\CacheKeysContract;
 use Chevere\Contracts\Router\RouterMakerContract;
 
 final class RouterCache implements RouterCacheContract
@@ -49,19 +48,19 @@ final class RouterCache implements RouterCacheContract
         $new = clone $this;
         $new->cache = $new->cache
             ->withPut(
-                new CacheKey(CacheKeysContract::REGEX),
+                new CacheKey(RouterCacheContract::KEY_REGEX),
                 new VariableExport(
                     $routerMaker->regex()
                 )
             )
             ->withPut(
-                new CacheKey(CacheKeysContract::ROUTES),
+                new CacheKey(RouterCacheContract::KEY_ROUTES),
                 new VariableExport(
                     $routerMaker->routes()
                 )
             )
             ->withPut(
-                new CacheKey(CacheKeysContract::INDEX),
+                new CacheKey(RouterCacheContract::KEY_INDEX),
                 new VariableExport(
                     $routerMaker->index()
                 )

@@ -19,7 +19,7 @@ use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterMakerContract;
 
 /**
- * Maker takes a bunch of Routes and generates a routing table (php array).
+ * RouterMaker takes a bunch of routes and generates a cache-ready routing table.
  */
 final class RouterMaker implements RouterMakerContract
 {
@@ -61,12 +61,12 @@ final class RouterMaker implements RouterMakerContract
     {
         $new = clone $this;
         $new->route = $route;
-        $new->assertRouteMethodControllerNameCollection();
-        $new->assertRouteUniquePath();
-        $new->assertRouteUniqueKey();
+        $new->assertMethodControllerNameCollection();
+        $new->assertUniquePath();
+        $new->assertUniqueKey();
         $id = empty($new->routes) ? 0 : (array_key_last($new->routes) + 1);
         if ($new->route->hasName()) {
-            $new->assertUniqueNamedRoute();
+            $new->assertUniqueNamed();
             $new->named[$new->route->name()->toString()] = $id;
         }
         $new->routes[] = $new->route;
@@ -85,16 +85,25 @@ final class RouterMaker implements RouterMakerContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function regex(): string
     {
         return $this->regex;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function routes(): array
     {
         return $this->routes;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function index(): array
     {
         return $this->index;
@@ -111,7 +120,7 @@ final class RouterMaker implements RouterMakerContract
         return sprintf(RouterMakerContract::REGEX_TEPLATE, implode('', $regex));
     }
 
-    private function assertRouteUniqueKey(): void
+    private function assertUniqueKey(): void
     {
         $routeId = $this->routesKeys[$this->route->pathUri()->key()] ?? null;
         if (isset($routeId)) {
@@ -127,7 +136,7 @@ final class RouterMaker implements RouterMakerContract
         }
     }
 
-    private function assertRouteMethodControllerNameCollection(): void
+    private function assertMethodControllerNameCollection(): void
     {
         if (!$this->route->methodControllerNameCollection()->hasAny()) {
             throw new InvalidArgumentException(
@@ -138,7 +147,7 @@ final class RouterMaker implements RouterMakerContract
         }
     }
 
-    private function assertRouteUniquePath(): void
+    private function assertUniquePath(): void
     {
         $routeIndex = $this->index[$this->route->pathUri()->path()] ?? null;
         if (isset($routeIndex)) {
@@ -153,7 +162,7 @@ final class RouterMaker implements RouterMakerContract
         }
     }
 
-    private function assertUniqueNamedRoute(): void
+    private function assertUniqueNamed(): void
     {
         $namedId = $this->named[$this->route->name()->toString()] ?? null;
         if (isset($namedId)) {

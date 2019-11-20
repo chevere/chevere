@@ -17,8 +17,18 @@ use Chevere\Contracts\Cache\CacheContract;
 
 interface RouterCacheContract
 {
+    const KEY_REGEX = 'regex';
+    const KEY_ROUTES = 'routes';
+    const KEY_INDEX = 'index';
+
+    /**
+     * Creates a new instance.
+     */
     public function __construct(CacheContract $cache);
 
+    /**
+     * Provides access to the CacheContract instance.
+     */
     public function cache(): CacheContract;
 
     /**
@@ -30,6 +40,4 @@ interface RouterCacheContract
      * an instance that contains the specified CacheContract.
      */
     public function withPut(RouterMakerContract $routerMaker): RouterCacheContract;
-
-    // public function get(): CacheItemContract;
 }

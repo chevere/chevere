@@ -22,7 +22,7 @@ use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Route\RouteContract;
-use Chevere\Contracts\Router\CacheKeysContract;
+use Chevere\Contracts\Router\RouterCacheContract;
 use Chevere\Contracts\Router\RouterMakerContract;
 use Chevere\Contracts\Router\RouterContract;
 use TypeError;
@@ -70,13 +70,13 @@ final class Router implements RouterContract
         $new->cache = $cache;
         try {
             $new->regex = $new->cache
-                ->get(new CacheKey(CacheKeysContract::REGEX))
+                ->get(new CacheKey(RouterCacheContract::KEY_REGEX))
                 ->raw();
             $new->routes = $new->cache
-                ->get(new CacheKey(CacheKeysContract::ROUTES))
+                ->get(new CacheKey(RouterCacheContract::KEY_ROUTES))
                 ->raw();
             $new->index = $new->cache
-                ->get(new CacheKey(CacheKeysContract::INDEX))
+                ->get(new CacheKey(RouterCacheContract::KEY_INDEX))
                 ->raw();
         } catch (FileNotFoundException $e) {
             throw new CacheNotFoundException($e->getMessage(), $e->getCode(), $e);
