@@ -14,17 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use InvalidArgumentException;
-use Chevere\Components\ArrayFile\ArrayFile;
-use Chevere\Components\Cache\CacheKey;
-use Chevere\Components\File\File;
-use Chevere\Components\File\FilePhp;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Path\Path;
-use Chevere\Components\Type\Type;
-use Chevere\Components\Variable\VariableExport;
-use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Route\RouteContract;
-use Chevere\Contracts\Router\CacheKeysContract;
 use Chevere\Contracts\Router\RouterMakerContract;
 
 /**
@@ -35,14 +26,14 @@ final class RouterMaker implements RouterMakerContract
     /** @var string Regex representation, used when resolving routing */
     private $regex;
 
-    /** @var array [regex => Route id]. */
-    private $regexIndex;
-
     /** @var array Route members (objects, serialized) [id => RouteContract] */
     private $routes;
 
     /** @var array [/path/{param} => [id => $id, group => group]] */
-    private $routesIndex;
+    private $index;
+
+    /** @var array [regex => Route id]. */
+    private $regexIndex;
 
     /** @var array [/path/{0} => $id] */
     private $routesKeys;
@@ -51,16 +42,16 @@ final class RouterMaker implements RouterMakerContract
     private $named;
 
     /** @var array Static routes */
-    private $statics;
+    // private $statics;
 
     /** @var RouteContract */
     private $route;
 
-    /** @var CacheContract */
-    private $cache;
-
     public function __construct()
     {
+        $this->regex = '';
+        $this->routes = [];
+        $this->index = [];
     }
 
     /**
@@ -81,41 +72,15 @@ final class RouterMaker implements RouterMakerContract
         $new->routes[] = $new->route;
         // n => .. => regex => route
         $new->regexIndex[$new->route->regex()] = $id;
-        if (!$route->hasWildcardCollection()) {
-            $new->statics[$new->route->pathUri()->path()] = $id;
-        }
+        // if (!$route->hasWildcardCollection()) {
+        //     $new->statics[$new->route->pathUri()->path()] = $id;
+        // }
         $new->regex = $new->getRegex();
         $new->routesKeys[$new->route->pathUri()->key()] = $id;
-        $new->routesIndex[$new->route->pathUri()->path()] = [
+        $new->index[$new->route->pathUri()->path()] = [
             'id' => $id,
             'group' => $group,
         ];
-
-        return $new;
-    }
-
-    /**
-     * Adds routes (ArrayFile) specified by path handle.
-     *
-     * @param string $routeFiles Routes relative to app, like 'routes/web.php', 'routes/dashboard.php',
-     */
-    public function withAddedRouteFiles(...$routeFiles): RouterMakerContract
-    {
-        $new = clone $this;
-        foreach ($routeFiles as $fileHandleString) {
-            $arrayFile =
-                (new ArrayFile(
-                    new FilePhp(
-                        new File(
-                            new Path($fileHandleString)
-                        )
-                    )
-                ))
-                    ->withMembersType(new Type(RouteContract::class));
-            foreach ($arrayFile->array() as $route) {
-                $new = $new->withAddedRoute($route, $fileHandleString);
-            }
-        }
 
         return $new;
     }
@@ -132,34 +97,7 @@ final class RouterMaker implements RouterMakerContract
 
     public function index(): array
     {
-        return $this->routesIndex;
-    }
-
-    public function withCache(CacheContract $cache): RouterMakerContract
-    {
-        $cache = $cache
-            ->withPut(
-                new CacheKey(CacheKeysContract::REGEX),
-                new VariableExport($this->regex)
-            )
-            ->withPut(
-                new CacheKey(CacheKeysContract::ROUTES),
-                new VariableExport($this->routes)
-            )
-            ->withPut(
-                new CacheKey(CacheKeysContract::INDEX),
-                new VariableExport($this->routesIndex)
-            );
-
-        $new = clone $this;
-        $new->cache = $cache;
-
-        return $new;
-    }
-
-    public function cache(): CacheContract
-    {
-        return $this->cache;
+        return $this->index;
     }
 
     private function getRegex(): string
@@ -202,7 +140,7 @@ final class RouterMaker implements RouterMakerContract
 
     private function assertRouteUniquePath(): void
     {
-        $routeIndex = $this->routesIndex[$this->route->pathUri()->path()] ?? null;
+        $routeIndex = $this->index[$this->route->pathUri()->path()] ?? null;
         if (isset($routeIndex)) {
             $routeIndexed = $this->routes[$routeIndex['id']];
             throw new InvalidArgumentException(

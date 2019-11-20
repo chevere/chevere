@@ -17,6 +17,7 @@ use Chevere\Components\Api\Api;
 use Chevere\Components\Api\ApiMaker;
 use Chevere\Components\App\Exceptions\BuildAlreadyMakedException;
 use Chevere\Components\App\Exceptions\BuildFileNotExistsException;
+use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\File\File;
@@ -25,6 +26,8 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Router;
+use Chevere\Components\Router\RouterCache;
+use Chevere\Components\Type\Type;
 use Chevere\Contracts\Api\ApiContract;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
@@ -34,6 +37,7 @@ use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
 use Chevere\Contracts\Path\PathContract;
+use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterMakerContract;
 use Chevere\Contracts\Router\RouterContract;
 use LogicException;
@@ -294,8 +298,21 @@ final class Build implements BuildContract
 
     private function makeRouter(): void
     {
-        $this->routerMaker = $this->routerMaker
-            ->withAddedRouteFiles(...$this->parameters->routes());
+        foreach ($this->parameters->routes() as $fileHandleString) {
+            $arrayFile =
+                (new ArrayFile(
+                    new FilePhp(
+                        new File(
+                            new Path($fileHandleString)
+                        )
+                    )
+                ))
+                    ->withMembersType(new Type(RouteContract::class));
+            foreach ($arrayFile->array() as $route) {
+                $this->routerMaker = $this->routerMaker
+                    ->withAddedRoute($route, $fileHandleString);
+            }
+        }
         $services = $this->app->services()
             ->withRouter(
                 (new Router())
@@ -303,10 +320,15 @@ final class Build implements BuildContract
             );
         $this->app = $this->app
             ->withServices($services);
-        $this->routerMaker = $this->routerMaker
-            ->withCache(
-                new Cache($this->cacheDir->getChild(RouterContract::CACHE_ID))
-            );
-        $this->checksums[RouterContract::CACHE_ID] = $this->routerMaker->cache()->toArray();
+        $routerCache =
+            (new RouterCache(
+                new Cache(
+                    $this->cacheDir
+                        ->getChild(RouterContract::CACHE_ID)
+                )
+            ))
+            ->withPut($this->routerMaker);
+        $this->checksums[RouterContract::CACHE_ID] = $routerCache->cache()
+            ->toArray();
     }
 }

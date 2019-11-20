@@ -22,13 +22,13 @@ interface RouterContract
 
     public function withRouterMaker(RouterMakerContract $maker): RouterContract;
 
-    public function withCache(CacheContract $cache): RouterContract;
-
     public function hasMaker(): bool;
 
-    public function hasCache(): bool;
-
     public function routerMaker(): RouterMakerContract;
+
+    public function withCache(CacheContract $cache): RouterContract;
+
+    public function hasCache(): bool;
 
     public function cache(): CacheContract;
 

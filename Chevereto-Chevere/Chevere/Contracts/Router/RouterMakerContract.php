@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Router;
 
-use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Route\RouteContract;
 
 interface RouterMakerContract
@@ -34,20 +33,17 @@ interface RouterMakerContract
     public function withAddedRoute(RouteContract $route, string $group): RouterMakerContract;
 
     /**
-     * Return an instance with the specified added route files.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified X.
+     * Provides access to the regex string.
      */
-    public function withAddedRouteFiles(...$routeIdentifiers): RouterMakerContract;
-
     public function regex(): string;
 
+    /**
+     * Provides access to the routes array.
+     */
     public function routes(): array;
 
+    /**
+     * Provides access to the index array.
+     */
     public function index(): array;
-
-    public function withCache(CacheContract $cache): RouterMakerContract;
-
-    public function cache(): CacheContract;
 }

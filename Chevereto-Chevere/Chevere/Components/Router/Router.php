@@ -39,7 +39,7 @@ final class Router implements RouterContract
     private $routes;
 
     /** @var array Contains ['/path' => [id, 'route/key']] */
-    private $routesIndex;
+    private $index;
 
     /** @var array Arguments taken from wildcard matches */
     private $arguments;
@@ -56,11 +56,14 @@ final class Router implements RouterContract
         $new->routerMaker = $routerMaker;
         $new->regex = $new->routerMaker->regex();
         $new->routes = $new->routerMaker->routes();
-        $new->routesIndex = $new->routerMaker->index();
+        $new->index = $new->routerMaker->index();
 
         return $new;
     }
 
+    /**
+     * Fills object properties from cache.
+     */
     public function withCache(CacheContract $cache): RouterContract
     {
         $new = clone $this;
@@ -72,7 +75,7 @@ final class Router implements RouterContract
             $new->routes = $new->cache
                 ->get(new CacheKey(CacheKeysContract::ROUTES))
                 ->raw();
-            $new->routesIndex = $new->cache
+            $new->index = $new->cache
                 ->get(new CacheKey(CacheKeysContract::INDEX))
                 ->raw();
         } catch (FileNotFoundException $e) {
