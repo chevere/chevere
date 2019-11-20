@@ -25,22 +25,17 @@ interface RouterMakerContract
     public function __construct();
 
     /**
+     * Provides access to the RouterPropertiesContract instance.
+     */
+    public function properties(): RouterPropertiesContract;
+
+    /**
      * Return an instance with the specified added RouteContract.
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified added RouteContract.
      */
     public function withAddedRoute(RouteContract $route, string $group): RouterMakerContract;
-
-    /**
-     * Provides access to the regex string.
-     */
-    public function regex(): string;
-
-    /**
-     * Provides access to the routes array.
-     */
-    public function routes(): array;
 
     /**
      * Provides access to the index array.

@@ -32,12 +32,12 @@ interface RouterCacheContract
     public function cache(): CacheContract;
 
     /**
-     * Return an instance with the specified CacheContract.
+     * Return an instance with the cache put values of RouterMakerContract.
      *
      * Cacheable properties of this instance will be cached On the target CacheContract (put).
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified CacheContract.
+     * an instance that contains the put cache for the values of RouterMakerContract.
      */
     public function withPut(RouterMakerContract $routerMaker): RouterCacheContract;
 }

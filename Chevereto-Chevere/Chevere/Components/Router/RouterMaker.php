@@ -17,20 +17,15 @@ use InvalidArgumentException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterMakerContract;
+use Chevere\Contracts\Router\RouterPropertiesContract;
 
 /**
  * RouterMaker takes a bunch of routes and generates a cache-ready routing table.
  */
 final class RouterMaker implements RouterMakerContract
 {
-    /** @var string Regex representation, used when resolving routing */
-    private $regex;
-
-    /** @var array Route members (objects, serialized) [id => RouteContract] */
-    private $routes;
-
-    /** @var array [/path/{param} => [id => $id, group => group]] */
-    private $index;
+    /** @var RouterPropertiesContract */
+    private $properties;
 
     /** @var array [regex => Route id]. */
     private $regexIndex;
@@ -47,11 +42,21 @@ final class RouterMaker implements RouterMakerContract
     /** @var RouteContract */
     private $route;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct()
     {
-        $this->regex = '';
-        $this->routes = [];
+        $this->properties = new RouterProperties();
         $this->index = [];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function properties(): RouterPropertiesContract
+    {
+        return $this->properties;
     }
 
     /**
@@ -64,18 +69,22 @@ final class RouterMaker implements RouterMakerContract
         $new->assertMethodControllerNameCollection();
         $new->assertUniquePath();
         $new->assertUniqueKey();
-        $id = empty($new->routes) ? 0 : (array_key_last($new->routes) + 1);
+        $routes = $new->properties->routes();
+        $id = empty($routes) ? 0 : (array_key_last($routes) + 1);
         if ($new->route->hasName()) {
             $new->assertUniqueNamed();
             $new->named[$new->route->name()->toString()] = $id;
         }
-        $new->routes[] = $new->route;
+        $routes[] = $new->route;
+        $new->properties = $new->properties
+            ->withRoutes($routes);
         // n => .. => regex => route
         $new->regexIndex[$new->route->regex()] = $id;
         // if (!$route->hasWildcardCollection()) {
         //     $new->statics[$new->route->pathUri()->path()] = $id;
         // }
-        $new->regex = $new->getRegex();
+        $new->properties = $new->properties
+            ->withRegex($new->getRegex());
         $new->routesKeys[$new->route->pathUri()->key()] = $id;
         $new->index[$new->route->pathUri()->path()] = [
             'id' => $id,
@@ -83,22 +92,6 @@ final class RouterMaker implements RouterMakerContract
         ];
 
         return $new;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function regex(): string
-    {
-        return $this->regex;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function routes(): array
-    {
-        return $this->routes;
     }
 
     /**
@@ -124,7 +117,7 @@ final class RouterMaker implements RouterMakerContract
     {
         $routeId = $this->routesKeys[$this->route->pathUri()->key()] ?? null;
         if (isset($routeId)) {
-            $routeIndexed = $this->routes[$routeId];
+            $routeIndexed = $this->properties->routes()[$routeId];
             throw new InvalidArgumentException(
                 (new Message('Router conflict detected for %path% at %declare% (self-assigned internal key %key% is already reserved by %register%)'))
                     ->code('%path%', $this->route->pathUri()->path())
@@ -151,7 +144,7 @@ final class RouterMaker implements RouterMakerContract
     {
         $routeIndex = $this->index[$this->route->pathUri()->path()] ?? null;
         if (isset($routeIndex)) {
-            $routeIndexed = $this->routes[$routeIndex['id']];
+            $routeIndexed = $this->properties->routes()[$routeIndex['id']];
             throw new InvalidArgumentException(
                 (new Message('Unable to register route path %path% at %declare% (path already registered at %register%)'))
                     ->code('%path%', $this->route->pathUri()->path())
@@ -167,7 +160,7 @@ final class RouterMaker implements RouterMakerContract
         $namedId = $this->named[$this->route->name()->toString()] ?? null;
         if (isset($namedId)) {
             $name = $this->route->name()->toString();
-            $routeExists = $this->routes[$namedId];
+            $routeExists = $this->properties->routes()[$namedId];
             throw new InvalidArgumentException(
                 (new Message('Unable to assign route name %name% for path %path% at %declare% (name assigned to %namedRoutePath% at %register%)'))
                     ->code('%name%', $name)

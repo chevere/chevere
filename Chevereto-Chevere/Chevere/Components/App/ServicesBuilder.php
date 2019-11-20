@@ -18,6 +18,7 @@ use Chevere\Contracts\App\ServicesContract;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Api\Api;
 use Chevere\Components\Router\Router;
+use Chevere\Components\Router\RouterCache;
 use Chevere\Contracts\Api\ApiContract;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\ServicesBuilderContract;
@@ -36,14 +37,15 @@ final class ServicesBuilder implements ServicesBuilderContract
         $this->services = $build->app()->services();
         $this->prepareServices();
         if ($parameters->hasRoutes()) {
+            $routerCache = new RouterCache(
+                new Cache(
+                    $build->cacheDir()->getChild(RouterContract::CACHE_ID)
+                )
+            );
             $this->services = $this->services
                 ->withRouter(
                     $this->services()->router()
-                        ->withCache(
-                            new Cache(
-                                $build->cacheDir()->getChild(RouterContract::CACHE_ID)
-                            )
-                        )
+                        ->withProperties($routerCache->getProperties())
                 );
         }
         if ($parameters->hasApi()) {

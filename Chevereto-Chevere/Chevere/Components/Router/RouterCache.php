@@ -16,8 +16,11 @@ namespace Chevere\Components\Router;
 use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Router\RouterCacheContract;
 use Chevere\Components\Cache\CacheKey;
+use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
+use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\Variable\VariableExport;
 use Chevere\Contracts\Router\RouterMakerContract;
+use Chevere\Contracts\Router\RouterPropertiesContract;
 
 final class RouterCache implements RouterCacheContract
 {
@@ -50,22 +53,49 @@ final class RouterCache implements RouterCacheContract
             ->withPut(
                 new CacheKey(RouterCacheContract::KEY_REGEX),
                 new VariableExport(
-                    $routerMaker->regex()
+                    $routerMaker->properties()->regex()
                 )
             )
             ->withPut(
                 new CacheKey(RouterCacheContract::KEY_ROUTES),
                 new VariableExport(
-                    $routerMaker->routes()
+                    $routerMaker->properties()->routes()
                 )
             )
             ->withPut(
                 new CacheKey(RouterCacheContract::KEY_INDEX),
                 new VariableExport(
-                    $routerMaker->index()
+                    $routerMaker->properties()->index()
                 )
             );
 
         return $new;
+    }
+
+    public function getProperties(): RouterPropertiesContract
+    {
+        $properties = new RouterProperties();
+        try {
+            $properties = $properties
+                ->withRegex(
+                    $this->cache
+                        ->get(new CacheKey(RouterCacheContract::KEY_REGEX))
+                        ->raw()
+                )
+                ->withRoutes(
+                    $this->cache
+                        ->get(new CacheKey(RouterCacheContract::KEY_ROUTES))
+                        ->raw()
+                )
+                ->withIndex(
+                    $this->cache
+                        ->get(new CacheKey(RouterCacheContract::KEY_INDEX))
+                        ->raw()
+                );
+        } catch (FileNotFoundException $e) {
+            throw new CacheNotFoundException($e->getMessage(), $e->getCode(), $e);
+        }
+
+        return $properties;
     }
 }

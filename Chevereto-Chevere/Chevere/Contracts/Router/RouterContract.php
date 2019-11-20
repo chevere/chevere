@@ -13,24 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Router;
 
-use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Route\RouteContract;
 
 interface RouterContract
 {
     const CACHE_ID = 'router';
 
-    public function withRouterMaker(RouterMakerContract $maker): RouterContract;
-
-    public function hasMaker(): bool;
-
-    public function routerMaker(): RouterMakerContract;
-
-    public function withCache(CacheContract $cache): RouterContract;
-
-    public function hasCache(): bool;
-
-    public function cache(): CacheContract;
+    public function withProperties(RouterPropertiesContract $properties): RouterContract;
 
     public function arguments(): array;
 

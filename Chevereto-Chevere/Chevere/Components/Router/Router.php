@@ -13,106 +13,52 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Components\Cache\CacheKey;
-use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
-use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RegexPropertyRequiredException;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Components\Serialize\Unserialize;
-use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Route\RouteContract;
-use Chevere\Contracts\Router\RouterCacheContract;
-use Chevere\Contracts\Router\RouterMakerContract;
 use Chevere\Contracts\Router\RouterContract;
+use Chevere\Contracts\Router\RouterPropertiesContract;
 use TypeError;
 
-/**s
- * Routes takes a bunch of Routes and generates a routing table (php array).
+/**
+ * Router does routing.
  */
 final class Router implements RouterContract
 {
-    /** @var string Regex representation, used when resolving routing */
-    private $regex;
-
-    /** @var array Route members (objects, serialized) [id => Route] */
-    private $routes;
-
-    /** @var array Contains ['/path' => [id, 'route/key']] */
-    private $index;
-
     /** @var array Arguments taken from wildcard matches */
     private $arguments;
 
-    /** @var CacheContract */
-    private $cache;
+    /** @var RouterPropertiesContract */
+    private $properties;
 
-    /** @var RouterMakerContract */
-    private $routerMaker;
+    public function __construct()
+    {
+        $this->arguments = [];
+    }
 
-    public function withRouterMaker(RouterMakerContract $routerMaker): RouterContract
+    public function withProperties(RouterPropertiesContract $properties): RouterContract
     {
         $new = clone $this;
-        $new->routerMaker = $routerMaker;
-        $new->regex = $new->routerMaker->regex();
-        $new->routes = $new->routerMaker->routes();
-        $new->index = $new->routerMaker->index();
+        $new->properties = $properties;
 
         return $new;
     }
 
-    /**
-     * Fills object properties from cache.
-     */
-    public function withCache(CacheContract $cache): RouterContract
+    public function hasProperties(): bool
     {
-        $new = clone $this;
-        $new->cache = $cache;
-        try {
-            $new->regex = $new->cache
-                ->get(new CacheKey(RouterCacheContract::KEY_REGEX))
-                ->raw();
-            $new->routes = $new->cache
-                ->get(new CacheKey(RouterCacheContract::KEY_ROUTES))
-                ->raw();
-            $new->index = $new->cache
-                ->get(new CacheKey(RouterCacheContract::KEY_INDEX))
-                ->raw();
-        } catch (FileNotFoundException $e) {
-            throw new CacheNotFoundException($e->getMessage(), $e->getCode(), $e);
-        }
-
-        return $new;
-    }
-
-    public function hasMaker(): bool
-    {
-        return isset($this->routerMaker);
-    }
-
-    public function hasCache(): bool
-    {
-        return isset($this->cache);
-    }
-
-    public function routerMaker(): RouterMakerContract
-    {
-        return $this->routerMaker;
-    }
-
-    public function cache(): CacheContract
-    {
-        return $this->cache;
+        return isset($this->properties);
     }
 
     public function arguments(): array
     {
-        return $this->arguments ?? [];
+        return $this->arguments;
     }
 
     public function canResolve(): bool
     {
-        return isset($this->regex);
+        return !empty($this->properties->regex());
     }
 
     public function resolve(string $pathInfo): RouteContract
@@ -126,7 +72,7 @@ final class Router implements RouterContract
                     ->toString()
             );
         }
-        if (preg_match($this->regex, $pathInfo, $matches)) {
+        if (preg_match($this->properties->regex(), $pathInfo, $matches)) {
             return $this->resolver($matches);
         }
         throw new RouteNotFoundException(
@@ -141,7 +87,7 @@ final class Router implements RouterContract
         $id = $matches['MARK'];
         unset($matches['MARK']);
         array_shift($matches);
-        $route = $this->routes[$id];
+        $route = $this->properties->routes()[$id];
         // is string when the route is cached
         if (is_string($route)) {
             $unserialize = new Unserialize($route);
@@ -154,7 +100,7 @@ final class Router implements RouterContract
                         ->toString()
                 );
             }
-            $this->routes[$id] = $route;
+            $this->properties->routes()[$id] = $route;
         }
         $this->arguments = [];
         if ($route->hasWildcardCollection()) {
