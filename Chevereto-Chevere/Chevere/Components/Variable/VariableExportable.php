@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Variable;
 
+use Chevere\Components\Variable\Exceptions\VariableExportableException;
 use Chevere\Components\Variable\Exceptions\VariableIsResourceException;
 use Chevere\Contracts\Variable\VariableExportableContract;
 use ReflectionObject;
+use Throwable;
 
 /**
  * Allows to interact with exportable variables.
@@ -25,10 +27,10 @@ final class VariableExportable implements VariableExportableContract
     /** @var mixed */
     private $var;
 
-    /** @var array Used to map the location of a invalid resource */
+    /** @var array Used to map the location of the validation */
     private $locator;
 
-    /** @var array Contains the checked locator entries */
+    /** @var array Contains the checked (ok) locator entries */
     private $check;
 
     /**
@@ -39,7 +41,11 @@ final class VariableExportable implements VariableExportableContract
         $this->var = $var;
         $this->locator = [];
         $this->check = [];
-        $this->assertExportable($this->var);
+        try {
+            $this->assertExportable($this->var);
+        } catch (Throwable $e) {
+            throw new VariableExportableException($e->getMessage(), $e->getCode(), $e);
+        }
     }
 
     /**
@@ -53,7 +59,7 @@ final class VariableExportable implements VariableExportableContract
     /**
      * {@inheritdoc}
      */
-    public function toExport()
+    public function toExport(): string
     {
         return var_export($this->var, true);
     }
@@ -99,12 +105,12 @@ final class VariableExportable implements VariableExportableContract
     {
         if (is_resource($var)) {
             if (empty($this->locator)) {
-                $message = new Message("Argument is a resource which can't be serialized");
+                $message = new Message("Argument is a resource which can't be exported");
             } else {
                 foreach ($this->check as $remove) {
                     unset($this->locator[$remove]);
                 }
-                $message = (new Message("Passed argument contains a resource which can't be serialized at %locator%"))
+                $message = (new Message("Passed argument contains a resource which can't be exported at %locator%"))
                     ->code('%locator%', '[' . implode('][', $this->locator) . ']');
             }
             throw new VariableIsResourceException(

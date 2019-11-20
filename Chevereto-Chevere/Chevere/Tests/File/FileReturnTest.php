@@ -139,7 +139,7 @@ final class FileReturnTest extends TestCase
             'test',
             [1, 2, 3],
             [1, 1.1, true, 'test'],
-            [1, 1.1, true, 'test', [1, 2, 3]],
+            [[1, 1.1, true, 'test']],
         ] as $val) {
             $this->fileReturn->put(
                 new VariableExportable($val)
@@ -149,7 +149,7 @@ final class FileReturnTest extends TestCase
 
         foreach ([
             new Path('test'),
-            ['test', 1, new Path('test')],
+            ['test', [1, false], new Path('test')],
         ] as $val) {
             $this->fileReturn->put(
                 new VariableExportable($val)
