@@ -23,7 +23,7 @@ use Chevere\Components\File\FilePhp;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
-use Chevere\Components\Router\Maker;
+use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
@@ -52,27 +52,19 @@ final class Loader implements LoaderContract
         $build = new Build($app, new Path('build'));
         $this->builder = new Builder($build);
         $this->assertNeedsToBeBuilt();
-        $this->parameters = new Parameters(
-            new ArrayFile(
-                new FilePhp(
-                    new File(
-                        new Path(AppContract::FILE_PARAMETERS)
+        $this->parameters =
+            new Parameters(
+                new ArrayFile(
+                    new FilePhp(
+                        new File(
+                            new Path(AppContract::FILE_PARAMETERS)
+                        )
                     )
                 )
-            )
-        );
+            );
         $this->handleParameters();
         $this->builder = $this->builder
             ->withBuild($this->getBuild());
-        // $app = $this->builder->build()->app()
-        //     ->withServices(
-        //         $this->builder->build()->app()->services()
-        //     );
-        // $this->builder = $this->builder
-        //     ->withBuild(
-        //         $this->builder->build()
-        //             ->withApp($app)
-        //     );
     }
 
     public function run(): void
@@ -117,7 +109,7 @@ final class Loader implements LoaderContract
     {
         if (DEV) {
             return $this->builder->build()
-                ->withRouterMaker(new Maker())
+                ->withRouterMaker(new RouterMaker())
                 ->make();
         }
         $build = $this->builder->build();

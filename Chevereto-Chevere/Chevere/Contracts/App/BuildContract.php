@@ -16,7 +16,7 @@ namespace Chevere\Contracts\App;
 use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\Path\PathContract;
-use Chevere\Contracts\Router\MakerContract;
+use Chevere\Contracts\Router\RouterMakerContract;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 
 interface BuildContract
@@ -69,11 +69,11 @@ interface BuildContract
      * Handles the API and route parameters and makes the application build.
      * Note: Can be only called once.
      */
-    public function withRouterMaker(MakerContract $maker): BuildContract;
+    public function withRouterMaker(RouterMakerContract $roterMaker): BuildContract;
 
     public function hasRouterMaker(): bool;
 
-    public function routerMaker(): MakerContract;
+    public function routerMaker(): RouterMakerContract;
 
     /**
      * Make the application build.

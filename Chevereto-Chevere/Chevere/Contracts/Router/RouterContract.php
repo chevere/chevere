@@ -20,7 +20,7 @@ interface RouterContract
 {
     const CACHE_ID = 'router';
 
-    public function withMaker(MakerContract $maker): RouterContract;
+    public function withRouterMaker(RouterMakerContract $maker): RouterContract;
 
     public function withCache(CacheContract $cache): RouterContract;
 
@@ -28,7 +28,7 @@ interface RouterContract
 
     public function hasCache(): bool;
 
-    public function maker(): MakerContract;
+    public function routerMaker(): RouterMakerContract;
 
     public function cache(): CacheContract;
 

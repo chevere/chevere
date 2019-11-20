@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Api;
 
-use Chevere\Components\Router\Maker as RouterMaker;
+use Chevere\Components\Router\RouterMaker;
 use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Path\PathContract;
 
-interface MakerContract
+interface ApiMakerContract
 {
     public function __construct(RouterMaker $router);
 
-    public function withPath(PathContract $path): MakerContract;
+    public function withPath(PathContract $path): ApiMakerContract;
 
-    public function withCache(CacheContract $cache): MakerContract;
+    public function withCache(CacheContract $cache): ApiMakerContract;
 
     public function hasApi(): bool;
 

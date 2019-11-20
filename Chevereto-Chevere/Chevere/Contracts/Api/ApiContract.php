@@ -19,7 +19,7 @@ interface ApiContract
 {
     const CACHE_ID = 'api';
 
-    public function withMaker(MakerContract $maker): ApiContract;
+    public function withApiMaker(ApiMakerContract $maker): ApiContract;
 
     public function withCache(CacheContract $cache): ApiContract;
 
@@ -29,7 +29,7 @@ interface ApiContract
 
     public function hasCache(): bool;
 
-    public function maker(): MakerContract;
+    public function apiMaker(): ApiMakerContract;
 
     public function cache(): CacheContract;
 

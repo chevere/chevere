@@ -16,7 +16,7 @@ namespace Chevere\Components\Console\Commands;
 use LogicException;
 use Chevere\Components\Console\Command;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Router\Maker;
+use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Time\TimeHr;
 use Chevere\Contracts\App\BuilderContract;
 use const Chevere\BOOTSTRAP_HRTIME;
@@ -48,7 +48,7 @@ final class BuildCommand extends Command
             $this->builder = $this->builder
                 ->withBuild(
                     $this->builder->build()
-                        ->withRouterMaker(new Maker())
+                        ->withRouterMaker(new RouterMaker())
                         ->make()
                 );
         }

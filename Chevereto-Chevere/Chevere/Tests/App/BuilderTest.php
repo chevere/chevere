@@ -19,7 +19,7 @@ use Chevere\Components\App\Builder;
 use Chevere\Components\App\Services;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Path\Path;
-use Chevere\Components\Router\Maker;
+use Chevere\Components\Router\RouterMaker;
 use Chevere\Contracts\App\BuildContract;
 use PHPUnit\Framework\TestCase;
 
@@ -57,7 +57,7 @@ final class BuilderTest extends TestCase
     public function testWithBuild(): void
     {
         $build = $this->getBuild();
-        $buildAlt = $build->withRouterMaker(new Maker());
+        $buildAlt = $build->withRouterMaker(new RouterMaker());
         $builder = (new Builder($build))
           ->withBuild($buildAlt);
 

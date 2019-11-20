@@ -13,11 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Api;
 
-use LogicException;
-use OuterIterator;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
-use Throwable;
 use Chevere\Components\Api\src\FilterIterator;
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Cache\Traits\CacheAccessTrait;
@@ -33,19 +28,24 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
-use Chevere\Components\Router\Maker as RouterMaker;
+use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Variable\VariableExport;
-use Chevere\Contracts\Api\MakerContract;
+use Chevere\Contracts\Api\ApiMakerContract;
 use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Path\PathContract;
 use Chevere\Contracts\Route\RouteContract;
+use LogicException;
+use OuterIterator;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use Throwable;
 use function ChevereFn\stringForwardSlashes;
 use function ChevereFn\stringLeftTail;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringReplaceLast;
 
-final class Maker implements MakerContract
+final class ApiMaker implements ApiMakerContract
 {
     use CacheAccessTrait;
 
@@ -84,7 +84,7 @@ final class Maker implements MakerContract
         $this->routerMaker = $routerMaker;
     }
 
-    public function withPath(PathContract $path): MakerContract
+    public function withPath(PathContract $path): ApiMakerContract
     {
         $new = clone $this;
         $new->path = $path;
@@ -110,7 +110,7 @@ final class Maker implements MakerContract
         return $new;
     }
 
-    public function withCache(CacheContract $cache): MakerContract
+    public function withCache(CacheContract $cache): ApiMakerContract
     {
         $new = clone $this;
         $new->cache = $cache

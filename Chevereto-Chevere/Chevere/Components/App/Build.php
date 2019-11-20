@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\App;
 
 use Chevere\Components\Api\Api;
-use Chevere\Components\Api\Maker as ApiMaker;
+use Chevere\Components\Api\ApiMaker;
 use Chevere\Components\App\Exceptions\BuildAlreadyMakedException;
 use Chevere\Components\App\Exceptions\BuildFileNotExistsException;
 use Chevere\Components\Cache\Cache;
@@ -34,7 +34,7 @@ use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
 use Chevere\Contracts\Path\PathContract;
-use Chevere\Contracts\Router\MakerContract;
+use Chevere\Contracts\Router\RouterMakerContract;
 use Chevere\Contracts\Router\RouterContract;
 use LogicException;
 
@@ -67,7 +67,7 @@ final class Build implements BuildContract
     /** @var ApiMaker */
     private $apiMaker;
 
-    /** @var MakerContract */
+    /** @var RouterMakerContract */
     private $routerMaker;
 
     /**
@@ -140,10 +140,10 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function withRouterMaker(MakerContract $maker): BuildContract
+    public function withRouterMaker(RouterMakerContract $routerMaker): BuildContract
     {
         $new = clone $this;
-        $new->routerMaker = $maker;
+        $new->routerMaker = $routerMaker;
 
         return $new;
     }
@@ -153,7 +153,7 @@ final class Build implements BuildContract
         return isset($this->routerMaker);
     }
 
-    public function routerMaker(): MakerContract
+    public function routerMaker(): RouterMakerContract
     {
         return $this->routerMaker;
     }
@@ -251,7 +251,7 @@ final class Build implements BuildContract
         }
         foreach ([
             'parameters' => ParametersContract::class,
-            'routerMaker' => MakerContract::class,
+            'routerMaker' => RouterMakerContract::class,
         ] as $property => $contract) {
             if (!isset($this->{$property})) {
                 $missing[] = (new Message('%s'))->code('%s', $contract)->toString(0);
@@ -281,7 +281,7 @@ final class Build implements BuildContract
         $services = $this->app->services()
             ->withApi(
                 (new Api())
-                    ->withMaker($this->apiMaker)
+                    ->withApiMaker($this->apiMaker)
             );
         $this->app = $this->app
             ->withServices($services);
@@ -299,7 +299,7 @@ final class Build implements BuildContract
         $services = $this->app->services()
             ->withRouter(
                 (new Router())
-                    ->withMaker($this->routerMaker)
+                    ->withRouterMaker($this->routerMaker)
             );
         $this->app = $this->app
             ->withServices($services);

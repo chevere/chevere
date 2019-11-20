@@ -25,7 +25,7 @@ use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Path\Path;
-use Chevere\Components\Router\Maker;
+use Chevere\Components\Router\RouterMaker;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\CheckoutContract;
 use Chevere\Contracts\App\ParametersContract;
@@ -79,7 +79,7 @@ final class BuildTest extends TestCase
     public function testWithRouterMaker(): void
     {
         $build = $this->getBuild();
-        $routerMaker = new Maker();
+        $routerMaker = new RouterMaker();
         $build = $build
             ->withRouterMaker($routerMaker);
 
@@ -98,7 +98,7 @@ final class BuildTest extends TestCase
     {
         $build = $this->getBuild();
         $parameters = $this->getParameters();
-        $routerMaker = new Maker();
+        $routerMaker = new RouterMaker();
         $build = $build
             ->withParameters($parameters)
             ->withRouterMaker($routerMaker)

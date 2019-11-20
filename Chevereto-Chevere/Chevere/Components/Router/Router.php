@@ -23,7 +23,7 @@ use Chevere\Components\Serialize\Unserialize;
 use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\CacheKeysContract;
-use Chevere\Contracts\Router\MakerContract;
+use Chevere\Contracts\Router\RouterMakerContract;
 use Chevere\Contracts\Router\RouterContract;
 use TypeError;
 
@@ -47,16 +47,16 @@ final class Router implements RouterContract
     /** @var CacheContract */
     private $cache;
 
-    /** @var MakerContract */
-    private $maker;
+    /** @var RouterMakerContract */
+    private $routerMaker;
 
-    public function withMaker(MakerContract $maker): RouterContract
+    public function withRouterMaker(RouterMakerContract $routerMaker): RouterContract
     {
         $new = clone $this;
-        $new->maker = $maker;
-        $new->regex = $new->maker->regex();
-        $new->routes = $new->maker->routes();
-        $new->routesIndex = $new->maker->routesIndex();
+        $new->routerMaker = $routerMaker;
+        $new->regex = $new->routerMaker->regex();
+        $new->routes = $new->routerMaker->routes();
+        $new->routesIndex = $new->routerMaker->index();
 
         return $new;
     }
@@ -84,7 +84,7 @@ final class Router implements RouterContract
 
     public function hasMaker(): bool
     {
-        return isset($this->maker);
+        return isset($this->routerMaker);
     }
 
     public function hasCache(): bool
@@ -92,9 +92,9 @@ final class Router implements RouterContract
         return isset($this->cache);
     }
 
-    public function maker(): MakerContract
+    public function routerMaker(): RouterMakerContract
     {
-        return $this->maker;
+        return $this->routerMaker;
     }
 
     public function cache(): CacheContract

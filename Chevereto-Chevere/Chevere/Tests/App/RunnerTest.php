@@ -27,7 +27,7 @@ use Chevere\Components\File\FilePhp;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Path\Path;
-use Chevere\Components\Router\Maker;
+use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Router\Router;
 use Chevere\Contracts\App\BuildContract;
 use PHPUnit\Framework\TestCase;
@@ -49,7 +49,7 @@ final class RunnerTest extends TestCase
 
         return $build
             ->withParameters($parameters)
-            ->withRouterMaker(new Maker());
+            ->withRouterMaker(new RouterMaker());
     }
 
     private function getDummyBuild(): BuildContract

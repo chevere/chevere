@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Components\Api;
 
 use Chevere\Components\Cache\CacheKey;
-use LogicException;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\Cache\Traits\CacheAccessTrait;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Api\ApiContract;
-use Chevere\Contracts\Api\MakerContract;
+use Chevere\Contracts\Api\ApiMakerContract;
 use Chevere\Contracts\Cache\CacheContract;
+use LogicException;
 
 final class Api implements ApiContract
 {
@@ -30,10 +30,10 @@ final class Api implements ApiContract
     /** @var array The API array */
     private $array;
 
-    /** @var MakerContract */
+    /** @var ApiMakerContract */
     private $maker;
 
-    public function withMaker(MakerContract $maker): ApiContract
+    public function withApiMaker(ApiMakerContract $maker): ApiContract
     {
         $new = clone $this;
         $new->maker = $maker;
@@ -65,7 +65,7 @@ final class Api implements ApiContract
         return isset($this->maker);
     }
 
-    public function maker(): MakerContract
+    public function apiMaker(): ApiMakerContract
     {
         return $this->maker;
     }

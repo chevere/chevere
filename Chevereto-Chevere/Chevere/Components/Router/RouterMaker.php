@@ -25,12 +25,12 @@ use Chevere\Components\Variable\VariableExport;
 use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\CacheKeysContract;
-use Chevere\Contracts\Router\MakerContract;
+use Chevere\Contracts\Router\RouterMakerContract;
 
 /**
  * Maker takes a bunch of Routes and generates a routing table (php array).
  */
-final class Maker implements MakerContract
+final class RouterMaker implements RouterMakerContract
 {
     /** @var string Regex representation, used when resolving routing */
     private $regex;
@@ -59,10 +59,14 @@ final class Maker implements MakerContract
     /** @var CacheContract */
     private $cache;
 
+    public function __construct()
+    {
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function withAddedRoute(RouteContract $route, string $group): MakerContract
+    public function withAddedRoute(RouteContract $route, string $group): RouterMakerContract
     {
         $new = clone $this;
         $new->route = $route;
@@ -95,7 +99,7 @@ final class Maker implements MakerContract
      *
      * @param string $routeFiles Routes relative to app, like 'routes/web.php', 'routes/dashboard.php',
      */
-    public function withAddedRouteFiles(...$routeFiles): MakerContract
+    public function withAddedRouteFiles(...$routeFiles): RouterMakerContract
     {
         $new = clone $this;
         foreach ($routeFiles as $fileHandleString) {
@@ -126,12 +130,12 @@ final class Maker implements MakerContract
         return $this->routes;
     }
 
-    public function routesIndex(): array
+    public function index(): array
     {
         return $this->routesIndex;
     }
 
-    public function withCache(CacheContract $cache): MakerContract
+    public function withCache(CacheContract $cache): RouterMakerContract
     {
         $cache = $cache
             ->withPut(
@@ -166,7 +170,7 @@ final class Maker implements MakerContract
             $regex[] = '|' . $matches[1] . " (*:$v)";
         }
 
-        return sprintf(MakerContract::REGEX_TEPLATE, implode('', $regex));
+        return sprintf(RouterMakerContract::REGEX_TEPLATE, implode('', $regex));
     }
 
     private function assertRouteUniqueKey(): void
