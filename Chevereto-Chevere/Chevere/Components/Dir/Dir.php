@@ -39,7 +39,7 @@ final class Dir implements DirContract
     public function __construct(PathContract $path)
     {
         $this->path = $path;
-        $this->assertIsNotFile();
+        $this->assertDirectory();
     }
 
     /**
@@ -138,7 +138,17 @@ final class Dir implements DirContract
         return $removed;
     }
 
-    private function assertIsNotFile(): void
+    /**
+     * {@inheritdoc}
+     */
+    public function getChild(string $path): DirContract
+    {
+        return new Dir(
+            $this->path->getChild($path)
+        );
+    }
+
+    private function assertDirectory(): void
     {
         if ($this->path->isFile()) {
             throw new PathIsFileException(

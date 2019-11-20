@@ -17,7 +17,6 @@ use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
 use Chevere\Components\Dir\Dir;
-use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Variable\VariableExport;
 use Chevere\Contracts\Cache\CacheContract;
@@ -28,18 +27,12 @@ final class CacheTest extends TestCase
 {
     private function getTestCache(): CacheContract
     {
-        $path = new Path('build');
-        $dir = new Dir($path);
-
-        return new Cache($dir);
-    }
-
-    public function testInvalidDirContract(): void
-    {
-        $path = new Path('var/CacheTest_' . uniqid());
-        $dir = new Dir($path);
-        $this->expectException(PathIsNotDirectoryException::class);
-        new Cache($dir);
+        return
+            new Cache(
+                new Dir(
+                    new Path('build')
+                )
+            );
     }
 
     public function testConstructor(): void

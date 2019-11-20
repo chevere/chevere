@@ -18,8 +18,6 @@ use Chevere\Components\File\File;
 use Chevere\Components\File\FileCompile;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
-use Chevere\Components\Message\Message;
-use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Cache\CacheItemContract;
 use Chevere\Contracts\Cache\CacheKeyContract;
@@ -48,7 +46,9 @@ final class Cache implements CacheContract
     public function __construct(DirContract $dir)
     {
         $this->dir = $dir;
-        $this->assertDirectory();
+        if (!$this->dir->exists()) {
+            $this->dir->create();
+        }
         $this->array = [];
     }
 
@@ -140,16 +140,5 @@ final class Cache implements CacheContract
     {
         return $this->dir->path()
             ->getChild($name . '.php');
-    }
-
-    private function assertDirectory(): void
-    {
-        if (!$this->dir->path()->exists()) {
-            throw new PathIsNotDirectoryException(
-                (new Message('Path %path% is not a directory'))
-                    ->code('%path%', $this->dir->path()->absolute())
-                    ->toString()
-            );
-        }
     }
 }

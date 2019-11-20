@@ -17,13 +17,14 @@ use Chevere\Contracts\Path\PathContract;
 use Chevere\Components\Dir\Exceptions\DirUnableToRemoveException;
 use Chevere\Components\Dir\Exceptions\DirUnableToCreateException;
 use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
+use Chevere\Components\Path\Exceptions\PathIsFileException;
 
 interface DirContract
 {
     /**
      * Creates a new instance.
      *
-     * @throws PathIsDirectoryException if the PathContract represents a file
+     * @throws PathIsFileException if the PathContract represents a file
      */
     public function __construct(PathContract $path);
 
@@ -63,4 +64,9 @@ interface DirContract
      * @throws FileUnableToRemoveException if unable to remove a file in the directory
      */
     public function removeContents(): array;
+
+    /**
+     * Gets a child DirContract for the added path.
+     */
+    public function getChild(string $path): DirContract;
 }

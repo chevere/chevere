@@ -17,6 +17,8 @@ use Chevere\Contracts\Cache\CacheContract;
 
 interface ApiContract
 {
+    const CACHE_ID = 'api';
+
     public function withMaker(MakerContract $maker): ApiContract;
 
     public function withCache(CacheContract $cache): ApiContract;

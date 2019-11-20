@@ -25,6 +25,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Router;
+use Chevere\Contracts\Api\ApiContract;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\CheckoutContract;
@@ -34,6 +35,7 @@ use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
 use Chevere\Contracts\Path\PathContract;
 use Chevere\Contracts\Router\MakerContract;
+use Chevere\Contracts\Router\RouterContract;
 use LogicException;
 
 /**
@@ -80,9 +82,7 @@ final class Build implements BuildContract
                 $path->getChild('build.php')
             )
         );
-        $this->cacheDir = new Dir(
-            $path->getChild('cache')
-        );
+        $this->cacheDir = new Dir($path);
 
         if (!$this->cacheDir->exists()) {
             $this->cacheDir->create();
@@ -287,9 +287,9 @@ final class Build implements BuildContract
             ->withServices($services);
         $this->apiMaker = $this->apiMaker
             ->withCache(
-                new Cache($this->cacheDir)
+                new Cache($this->cacheDir->getChild(ApiContract::CACHE_ID))
             );
-        $this->checksums['api'] = $this->apiMaker->cache()->toArray();
+        $this->checksums[ApiContract::CACHE_ID] = $this->apiMaker->cache()->toArray();
     }
 
     private function makeRouter(): void
@@ -305,8 +305,8 @@ final class Build implements BuildContract
             ->withServices($services);
         $this->routerMaker = $this->routerMaker
             ->withCache(
-                new Cache($this->cacheDir)
+                new Cache($this->cacheDir->getChild(RouterContract::CACHE_ID))
             );
-        $this->checksums['router'] = $this->routerMaker->cache()->toArray();
+        $this->checksums[RouterContract::CACHE_ID] = $this->routerMaker->cache()->toArray();
     }
 }

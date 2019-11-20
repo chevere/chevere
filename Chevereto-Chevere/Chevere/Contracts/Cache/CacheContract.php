@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Contracts\Cache;
 
 use Chevere\Contracts\Dir\DirContract;
-use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
 use Chevere\Contracts\Variable\VariableExportContract;
 use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
@@ -28,7 +27,7 @@ interface CacheContract
      *
      * @param DirContract $dir the directory where cache files will be stored/accesed (must exists)
      *
-     * @throws PathIsNotDirectoryException if the DirContract doesn't represent an existing directory
+     * @throws DirUnableToCreateException if $dir doesn't exists and unable to create
      */
     public function __construct(DirContract $dir);
 

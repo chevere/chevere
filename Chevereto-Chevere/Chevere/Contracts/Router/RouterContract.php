@@ -18,6 +18,8 @@ use Chevere\Contracts\Route\RouteContract;
 
 interface RouterContract
 {
+    const CACHE_ID = 'router';
+
     public function withMaker(MakerContract $maker): RouterContract;
 
     public function withCache(CacheContract $cache): RouterContract;
