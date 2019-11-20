@@ -34,6 +34,7 @@ use Chevere\Components\Path\Path;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Maker as RouterMaker;
+use Chevere\Components\Variable\VariableExport;
 use Chevere\Contracts\Api\MakerContract;
 use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Http\MethodContract;
@@ -113,7 +114,10 @@ final class Maker implements MakerContract
     {
         $new = clone $this;
         $new->cache = $cache
-            ->withPut(new CacheKey(CacheKeys::API), $new->api);
+            ->withPut(
+                new CacheKey(CacheKeys::API),
+                new VariableExport($new->api)
+            );
 
         return $new;
     }

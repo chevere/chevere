@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Contracts\Cache;
 
 use Chevere\Contracts\Dir\DirContract;
-use Chevere\Contracts\File\FileReturnContract;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
+use Chevere\Contracts\Variable\VariableExportContract;
 use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
 
 interface CacheContract
@@ -33,33 +33,43 @@ interface CacheContract
     public function __construct(DirContract $dir);
 
     /**
-     * Put cache.
+     * Put item in cache.
      *
-     * @param CacheKeyContract $cacheKey Cache key
-     * @param mixed            $var      anything, but keep it restricted to one-dimension iterables at most
+     * Return an instance with the specified CacheKeyContract put.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified CacheKeyContract VariableExportContract.
+     *
+     * @param CacheKeyContract       $cacheKey       Cache key
+     * @param VariableExportContract $variableExport an export variable
      */
-    public function withPut(CacheKeyContract $cacheKey, $var): CacheContract;
+    public function withPut(CacheKeyContract $cacheKey, VariableExportContract $variableExport): CacheContract;
 
     /**
-     * Returns a boolean indicating whether the key exists in the cache.
+     * Remove item from cache.
+     *
+     * Return an instance with the specified CacheKeyContract removed.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified CacheKeyContract removed.
+     *
+     * @param CacheKeyContract $cacheKey Cache key
+     *
+     * @throws FileUnableToRemoveException if unable to remove the cache file
+     */
+    public function withRemove(CacheKeyContract $cacheKey): CacheContract;
+
+    /**
+     * Returns a boolean indicating whether the alleged key exists in the cache.
      */
     public function exists(CacheKeyContract $cacheKey): bool;
 
     /**
-     * Get cache as a FileReturn object.
-     *
-     * @return FileReturnContract for the cache file
+     * Get a cache item.
      *
      * @throws CacheKeyNotFoundException If the cache key doesn't exists
      */
-    public function fileReturn(CacheKeyContract $cacheKey): FileReturnContract;
-
-    /**
-     * Remove the cache key.
-     *
-     * @throws FileUnableToRemoveException if unable to remove the cache file
-     */
-    public function remove(CacheKeyContract $cacheKey): void;
+    public function get(CacheKeyContract $cacheKey): CacheItemContract;
 
     /**
      * Gets a resume of the cached entries.

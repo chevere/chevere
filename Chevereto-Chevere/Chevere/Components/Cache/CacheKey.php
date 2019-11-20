@@ -34,7 +34,7 @@ final class CacheKey implements CacheKeyContract
     /**
      * {@inheritdoc}
      */
-    public function key(): string
+    public function toString(): string
     {
         return $this->key;
     }

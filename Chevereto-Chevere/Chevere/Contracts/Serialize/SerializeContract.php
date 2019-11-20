@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Serialize;
 
-use Chevere\Contracts\Variable\VariableExportableContract;
+use Chevere\Contracts\Variable\VariableExportContract;
 
 interface SerializeContract
 {
     /**
      * Creates a new instance.
      */
-    public function __construct(VariableExportableContract $variable);
+    public function __construct(VariableExportContract $variableExport);
 
     /**
      * Provides access to the serialized string.

@@ -20,12 +20,12 @@ use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
-use Chevere\Components\Variable\VariableExportable;
 use Chevere\Contracts\Cache\CacheContract;
+use Chevere\Contracts\Cache\CacheItemContract;
 use Chevere\Contracts\Cache\CacheKeyContract;
 use Chevere\Contracts\Dir\DirContract;
-use Chevere\Contracts\File\FileReturnContract;
 use Chevere\Contracts\Path\PathContract;
+use Chevere\Contracts\Variable\VariableExportContract;
 
 /**
  * A simple PHP based cache system.
@@ -39,7 +39,7 @@ final class Cache implements CacheContract
     /** @var DirContract */
     private $dir;
 
-    /** @var array An array [key => [checksum => , path =>]] containing information about the cache instance */
+    /** @var array An array [key => [checksum => , path =>]] containing information about the cache items */
     private $array;
 
     /**
@@ -48,33 +48,53 @@ final class Cache implements CacheContract
     public function __construct(DirContract $dir)
     {
         $this->dir = $dir;
-        $this->assertIsDirectory();
+        $this->assertDirectory();
         $this->array = [];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withPut(CacheKeyContract $cacheKey, $var): CacheContract
+    public function withPut(CacheKeyContract $cacheKey, VariableExportContract $variableExport): CacheContract
     {
-        $path = $this->getPath(
-            $cacheKey->key()
-        );
+        $path = $this->getPath($cacheKey->toString());
         $file = new File($path);
         if (!$file->exists()) {
             $file->create();
         }
         $filePhp = new FilePhp($file);
         $fileReturn = new FileReturn($filePhp);
-        $fileReturn->put(
-            new VariableExportable($var)
-        );
+        $fileReturn->put($variableExport);
         new FileCompile($filePhp);
         $new = clone $this;
-        $new->array[$cacheKey->key()] = [
-            'path' => $fileReturn->file()->path()->absolute(),
-            'checksum' => $fileReturn->file()->checksum(),
+        $new->array[$cacheKey->toString()] = [
+            'path' => $fileReturn->filePhp()->file()->path()->absolute(),
+            'checksum' => $fileReturn->filePhp()->file()->checksum(),
         ];
+
+        return $new;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withRemove(CacheKeyContract $cacheKey): CacheContract
+    {
+        $new = clone $this;
+        $path = $this->getPath($cacheKey->toString());
+        if (!$path->exists()) {
+            return $new;
+        }
+        $fileCompile =
+            new FileCompile(
+                new FilePhp(
+                    new File($path)
+                )
+            );
+        $fileCompile->destroy();
+        $fileCompile->filePhp()->file()->remove();
+
+        unset($new->array[$cacheKey->toString()]);
 
         return $new;
     }
@@ -84,39 +104,28 @@ final class Cache implements CacheContract
      */
     public function exists(CacheKeyContract $cacheKey): bool
     {
-        return $this->getPath($cacheKey->key())
+        return $this->getPath($cacheKey->toString())
             ->exists();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function fileReturn(CacheKeyContract $cacheKey): FileReturnContract
+    public function get(CacheKeyContract $cacheKey): CacheItemContract
     {
-        $path = $this->getPath($cacheKey->key());
+        $path = $this->getPath($cacheKey->toString());
         if (!$path->exists()) {
-            throw new CacheKeyNotFoundException('No cache for key ' . $cacheKey->key());
+            throw new CacheKeyNotFoundException('No cache for key ' . $cacheKey->toString());
         }
 
-        return new FileReturn(
-            new FilePhp(
-                new File($path)
-            )
-        );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function remove(CacheKeyContract $cacheKey): void
-    {
-        $path = $this->getPath($cacheKey->key());
-        if (!$path->exists()) {
-            return;
-        }
-        opcache_invalidate($path->absolute());
-        (new File($path))->remove();
-        unset($this->array[$cacheKey->key()]);
+        return
+            new CacheItem(
+                new FileReturn(
+                    new FilePhp(
+                        new File($path)
+                    )
+                )
+            );
     }
 
     /**
@@ -133,7 +142,7 @@ final class Cache implements CacheContract
             ->getChild($name . '.php');
     }
 
-    private function assertIsDirectory(): void
+    private function assertDirectory(): void
     {
         if (!$this->dir->path()->exists()) {
             throw new PathIsNotDirectoryException(

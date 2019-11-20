@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Variable;
 
-use Chevere\Components\Variable\Exceptions\VariableExportableException;
+use Chevere\Components\Variable\Exceptions\VariableExportException;
 use Chevere\Components\Variable\Exceptions\VariableIsResourceException;
-use Chevere\Contracts\Variable\VariableExportableContract;
+use Chevere\Contracts\Variable\VariableExportContract;
 use ReflectionObject;
 use Throwable;
 
 /**
  * Allows to interact with exportable variables.
  */
-final class VariableExportable implements VariableExportableContract
+final class VariableExport implements VariableExportContract
 {
     /** @var mixed */
     private $var;
@@ -44,7 +44,7 @@ final class VariableExportable implements VariableExportableContract
         try {
             $this->assertExportable($this->var);
         } catch (Throwable $e) {
-            throw new VariableExportableException($e->getMessage(), $e->getCode(), $e);
+            throw new VariableExportException($e->getMessage(), $e->getCode(), $e);
         }
     }
 

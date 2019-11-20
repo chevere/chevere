@@ -18,7 +18,7 @@ use Chevere\Components\File\Exceptions\FileHandleException;
 use Chevere\Components\File\Exceptions\FileWithoutContentsException;
 use Chevere\Components\File\Exceptions\FileInvalidContentsException;
 use Chevere\Components\File\Exceptions\FileUnableToPutException;
-use Chevere\Contracts\Variable\VariableExportableContract;
+use Chevere\Contracts\Variable\VariableExportContract;
 
 interface FileReturnContract
 {
@@ -44,9 +44,9 @@ interface FileReturnContract
     public function withNoStrict(): FileReturnContract;
 
     /**
-     * Provides access to the FileContract instance container in the FilePhpContract.
+     * Provides access to the FilePhpContract instance.
      */
-    public function file(): FileContract;
+    public function filePhp(): FilePhpContract;
 
     /**
      * Retrieves the file return (as-is).
@@ -56,7 +56,7 @@ interface FileReturnContract
      * @throws FileWithoutContentsException if the file doesn't contain anything
      * @throws FileInvalidContentsException if the file content is invalid
      */
-    public function return();
+    public function raw();
 
     /**
      * Retrieves the usable variable after appling unserialize to all objects (if any).
@@ -74,5 +74,5 @@ interface FileReturnContract
      * @throws FileNotFoundException    if the file doesn't exists
      * @throws FileUnableToPutException if unable to put the contents in the file
      */
-    public function put(VariableExportableContract $variableExportable): void;
+    public function put(VariableExportContract $variableExport): void;
 }

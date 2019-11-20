@@ -16,7 +16,6 @@ namespace Chevere\Components\File;
 use RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\File\FileCompileContract;
-use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
 use const Chevere\BOOTSTRAP_TIME;
 
@@ -39,9 +38,9 @@ final class FileCompile implements FileCompileContract
     /**
      * {@inheritdoc}
      */
-    public function file(): FileContract
+    public function filePhp(): FilePhpContract
     {
-        return $this->filePhp->file();
+        return $this->filePhp;
     }
 
     /**
@@ -49,8 +48,8 @@ final class FileCompile implements FileCompileContract
      */
     public function compile(): void
     {
-        $this->file()->assertExists();
-        $path = $this->file()->path()->absolute();
+        $this->filePhp->file()->assertExists();
+        $path = $this->filePhp->file()->path()->absolute();
         $past = BOOTSTRAP_TIME - 10;
         touch($path, $past);
         @opcache_invalidate($path, true);
@@ -68,7 +67,7 @@ final class FileCompile implements FileCompileContract
      */
     public function destroy(): void
     {
-        if (!opcache_invalidate($this->file()->path()->absolute())) {
+        if (!opcache_invalidate($this->filePhp->file()->path()->absolute())) {
             throw new RuntimeException(
                 (new Message('Opcode cache is disabled'))
                     ->toString()

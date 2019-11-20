@@ -20,7 +20,7 @@ use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Path\Path;
-use Chevere\Components\Variable\VariableExportable;
+use Chevere\Components\Variable\VariableExport;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FileReturnContract;
 use PHPUnit\Framework\TestCase;
@@ -47,7 +47,7 @@ final class FileReturnTest extends TestCase
         $this->fileReturn = new FileReturn(
             new FilePhp($this->file)
         );
-        $this->assertSame($this->file, $this->fileReturn->file());
+        $this->assertSame($this->file, $this->fileReturn->filePhp()->file());
     }
 
     public function tearDown(): void
@@ -73,27 +73,27 @@ final class FileReturnTest extends TestCase
     {
         $this->file->remove();
         $this->expectException(FileNotFoundException::class);
-        $this->fileReturn->return();
+        $this->fileReturn->raw();
     }
 
     public function testReturnEmptyFile(): void
     {
         $this->expectException(FileWithoutContentsException::class);
         $this->fileReturn
-            ->return();
+            ->raw();
     }
 
     public function testReturnInvalidContents(): void
     {
         $this->file->put('<?php return "test";');
         $this->expectException(FileInvalidContentsException::class);
-        $this->fileReturn->return();
+        $this->fileReturn->raw();
     }
 
     public function testReturnContents(): void
     {
         $this->file->put(FileReturnContract::PHP_RETURN . '"test";');
-        $this->assertSame('test', $this->fileReturn->return());
+        $this->assertSame('test', $this->fileReturn->raw());
     }
 
     public function testVarFileNotFound(): void
@@ -127,7 +127,7 @@ final class FileReturnTest extends TestCase
     {
         $this->file->remove();
         $this->expectException(FileNotFoundException::class);
-        $this->fileReturn->put(new VariableExportable('test'));
+        $this->fileReturn->put(new VariableExport('test'));
     }
 
     public function testPut(): void
@@ -142,7 +142,7 @@ final class FileReturnTest extends TestCase
             [[1, 1.1, true, 'test']],
         ] as $val) {
             $this->fileReturn->put(
-                new VariableExportable($val)
+                new VariableExport($val)
             );
             $this->assertSame($val, $this->fileReturn->var());
         }
@@ -152,7 +152,7 @@ final class FileReturnTest extends TestCase
             ['test', [1, false], new Path('test')],
         ] as $val) {
             $this->fileReturn->put(
-                new VariableExportable($val)
+                new VariableExport($val)
             );
             $this->assertEquals($val, $this->fileReturn->var());
         }
@@ -165,12 +165,12 @@ final class FileReturnTest extends TestCase
             ->withNoStrict();
 
         $string = 'test';
-        $this->assertSame($string, $this->fileReturn->return());
+        $this->assertSame($string, $this->fileReturn->raw());
         $this->assertSame($string, $this->fileReturn->var());
 
         $array = [1, 1.1, 'test'];
         $this->file->put("<?php return [1, 1.1, 'test'];");
-        $this->assertSame($array, $this->fileReturn->return());
+        $this->assertSame($array, $this->fileReturn->raw());
         $this->assertSame($array, $this->fileReturn->var());
     }
 }

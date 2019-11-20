@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Serialize;
 
 use Chevere\Contracts\Serialize\SerializeContract;
-use Chevere\Contracts\Variable\VariableExportableContract;
+use Chevere\Contracts\Variable\VariableExportContract;
 
 final class Serialize implements SerializeContract
 {
@@ -24,9 +24,9 @@ final class Serialize implements SerializeContract
     /**
      * {@inheritdoc}
      */
-    public function __construct(VariableExportableContract $variable)
+    public function __construct(VariableExportContract $variableExport)
     {
-        $this->serialized = $variable->toSerialize();
+        $this->serialized = $variableExport->toSerialize();
     }
 
     /**

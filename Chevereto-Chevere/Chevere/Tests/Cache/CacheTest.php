@@ -19,7 +19,9 @@ use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Path\Path;
+use Chevere\Components\Variable\VariableExport;
 use Chevere\Contracts\Cache\CacheContract;
+use Chevere\Contracts\Cache\CacheItemContract;
 use PHPUnit\Framework\TestCase;
 
 final class CacheTest extends TestCase
@@ -58,32 +60,35 @@ final class CacheTest extends TestCase
         $cacheKey = new CacheKey(uniqid());
         $this->expectException(CacheKeyNotFoundException::class);
         $this->getTestCache()
-            ->fileReturn($cacheKey);
+            ->get($cacheKey);
     }
 
     public function testWithPutRemove(): void
     {
         $key = uniqid();
         $var = [time(), false, 'test', new Path('test'), 13.13];
+        $variableExport = new VariableExport($var);
         $cacheKey = new CacheKey($key);
         $cache = $this->getTestCache()
-            ->withPut($cacheKey, $var);
+            ->withPut($cacheKey, $variableExport);
         $this->assertArrayHasKey($key, $cache->toArray());
         $this->assertTrue($cache->exists($cacheKey));
-        $fileReturn = $cache->fileReturn($cacheKey);
-        $this->assertEquals($var, $fileReturn->var());
-        $fileReturn->file()->remove();
+        $this->assertInstanceOf(CacheItemContract::class, $cache->get($cacheKey));
+        $cache = $cache->withRemove($cacheKey);
     }
 
-    public function testRemove(): void
+    public function testWithRemove(): void
     {
         $key = uniqid();
         $var = [time(), false, 'test', new Path('test'), 13.13];
+        $variableExport = new VariableExport($var);
         $cacheKey = new CacheKey($key);
         $cache = $this->getTestCache()
-            ->withPut($cacheKey, $var);
+            ->withPut($cacheKey, $variableExport);
         $this->assertTrue($cache->exists($cacheKey));
-        $cache->remove($cacheKey);
+        $this->assertArrayHasKey($key, $cache->toArray());
+        $cache = $cache->withRemove($cacheKey);
+        $this->assertArrayNotHasKey($key, $cache->toArray());
         $this->assertFalse($cache->exists($cacheKey));
     }
 }

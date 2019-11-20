@@ -29,7 +29,7 @@ final class FileCompileTest extends TestCase
         );
         $filePhp = new FilePhp($file);
         $fileCompile = new FileCompile($filePhp);
-        $this->assertSame($file, $fileCompile->file());
+        $this->assertSame($file, $fileCompile->filePhp()->file());
     }
 
     public function testCompileFileNotExists(): void

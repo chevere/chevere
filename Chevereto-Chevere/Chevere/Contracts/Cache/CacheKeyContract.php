@@ -29,5 +29,5 @@ interface CacheKeyContract
     /**
      * Get the cache key string.
      */
-    public function key(): string;
+    public function toString(): string;
 }

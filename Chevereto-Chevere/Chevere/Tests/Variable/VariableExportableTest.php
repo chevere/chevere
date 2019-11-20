@@ -13,25 +13,25 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Variable;
 
-use Chevere\Components\Variable\Exceptions\VariableExportableException;
-use Chevere\Components\Variable\VariableExportable;
+use Chevere\Components\Variable\Exceptions\VariableExportException;
+use Chevere\Components\Variable\VariableExport;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-final class VariableExportableTest extends TestCase
+final class VariableExportTest extends TestCase
 {
     public function testCreateNotExportable(): void
     {
-        $this->expectException(VariableExportableException::class);
-        new VariableExportable(fopen(__FILE__, 'r'));
+        $this->expectException(VariableExportException::class);
+        new VariableExport(fopen(__FILE__, 'r'));
     }
 
     public function testCreateContainsNotExportable(): void
     {
         $object = new stdClass();
         $object->array = [1, 2, 3, fopen(__FILE__, 'r')];
-        $this->expectException(VariableExportableException::class);
-        new VariableExportable($object);
+        $this->expectException(VariableExportException::class);
+        new VariableExport($object);
     }
 
     public function testConstruct(): void
@@ -47,8 +47,8 @@ final class VariableExportableTest extends TestCase
             new stdClass(),
             ['test', [1, false], new stdClass()],
         ] as $val) {
-            $variableExportable = new VariableExportable($val);
-            $this->assertSame($val, $variableExportable->var());
+            $variableExport = new VariableExport($val);
+            $this->assertSame($val, $variableExport->var());
         }
     }
 }

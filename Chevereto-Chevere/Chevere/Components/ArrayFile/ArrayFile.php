@@ -45,7 +45,7 @@ final class ArrayFile implements ArrayFileContract
         $this->filePhp->file()->assertExists();
         $fileReturn = (new FileReturn($this->filePhp))
             ->withNoStrict();
-        $this->array = $fileReturn->return();
+        $this->array = $fileReturn->raw();
         $this->validateReturnIsArray();
     }
 

@@ -29,6 +29,6 @@ final class CacheKeyTest extends TestCase
     {
         $key = 'test';
         $cacheKey = new CacheKey($key);
-        $this->assertSame($key, $cacheKey->key());
+        $this->assertSame($key, $cacheKey->toString());
     }
 }

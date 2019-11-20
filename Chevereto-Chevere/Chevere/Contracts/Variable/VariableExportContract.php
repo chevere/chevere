@@ -15,7 +15,7 @@ namespace Chevere\Contracts\Variable;
 
 use Chevere\Components\Variable\Exceptions\VariableIsResourceException;
 
-interface VariableExportableContract
+interface VariableExportContract
 {
     /**
      * Creates a new instance.

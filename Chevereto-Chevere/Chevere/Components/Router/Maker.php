@@ -21,6 +21,7 @@ use Chevere\Components\File\FilePhp;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Type\Type;
+use Chevere\Components\Variable\VariableExport;
 use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\CacheKeysContract;
@@ -135,15 +136,15 @@ final class Maker implements MakerContract
         $cache = $cache
             ->withPut(
                 new CacheKey(CacheKeysContract::REGEX),
-                $this->regex
+                new VariableExport($this->regex)
             )
             ->withPut(
                 new CacheKey(CacheKeysContract::ROUTES),
-                $this->routes
+                new VariableExport($this->routes)
             )
             ->withPut(
                 new CacheKey(CacheKeysContract::INDEX),
-                $this->routesIndex
+                new VariableExport($this->routesIndex)
             );
 
         $new = clone $this;

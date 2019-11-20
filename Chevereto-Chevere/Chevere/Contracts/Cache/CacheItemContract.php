@@ -11,13 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Variable\Exceptions;
+namespace Chevere\Contracts\Cache;
 
-use Exception;
+use Chevere\Contracts\File\FileReturnContract;
 
-/**
- * Exception thrown by VariableExportableContract.
- */
-final class VariableExportableException extends Exception
+interface CacheItemContract
 {
+    public function __construct(FileReturnContract $fileReturn);
+
+    public function raw();
+
+    public function var();
 }

@@ -15,7 +15,7 @@ namespace Chevere\Tests\Serialize;
 
 use Chevere\Components\Serialize\Serialize;
 use Chevere\Components\Serialize\Unserialize;
-use Chevere\Components\Variable\VariableExportable;
+use Chevere\Components\Variable\VariableExport;
 use Chevere\Contracts\Type\TypeContract;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -36,7 +36,7 @@ final class SerializeTest extends TestCase
             TypeContract::NULL => null,
         ] as $k => $v) {
             $serialize = new Serialize(
-                new VariableExportable($v)
+                new VariableExport($v)
             );
             $unserialize = new Unserialize($serialize->toString());
             if (TypeContract::OBJECT == $k) {

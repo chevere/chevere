@@ -16,11 +16,12 @@ namespace Chevere\Components\File;
 use Chevere\Components\File\Exceptions\FileHandleException;
 use Chevere\Components\File\Exceptions\FileInvalidContentsException;
 use Chevere\Components\File\Exceptions\FileWithoutContentsException;
+use Chevere\Components\Folder\Exceptions\UnserializeException;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\File\FileContract;
+use Chevere\Components\Serialize\Unserialize;
 use Chevere\Contracts\File\FilePhpContract;
 use Chevere\Contracts\File\FileReturnContract;
-use Chevere\Contracts\Variable\VariableExportableContract;
+use Chevere\Contracts\Variable\VariableExportContract;
 
 /**
  * FileReturn interacts with PHP files that return something.
@@ -42,7 +43,7 @@ final class FileReturn implements FileReturnContract
     {
         $this->strict = true;
         $this->filePhp = $filePhp;
-        $this->file()->assertExists();
+        $this->filePhp()->file()->assertExists();
     }
 
     /**
@@ -59,19 +60,19 @@ final class FileReturn implements FileReturnContract
     /**
      * {@inheritdoc}
      */
-    public function file(): FileContract
+    public function filePhp(): FilePhpContract
     {
-        return $this->filePhp->file();
+        return $this->filePhp;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function return()
+    public function raw()
     {
         $this->validate();
 
-        return include $this->file()->path()->absolute();
+        return include $this->filePhp()->file()->path()->absolute();
     }
 
     /**
@@ -79,9 +80,9 @@ final class FileReturn implements FileReturnContract
      */
     public function var()
     {
-        $var = $this->return();
+        $var = $this->raw();
 
-        if (is_iterable($var)) {
+        if (is_array($var)) {
             foreach ($var as &$v) {
                 $v = $this->getReturnVar($v);
             }
@@ -95,9 +96,9 @@ final class FileReturn implements FileReturnContract
     /**
      * {@inheritdoc}
      */
-    public function put(VariableExportableContract $variableExportable): void
+    public function put(VariableExportContract $variableExport): void
     {
-        $var = $variableExportable->var();
+        $var = $variableExport->var();
         if (is_array($var)) {
             foreach ($var as &$v) {
                 $v = $this->getFileReturnVar($v);
@@ -106,7 +107,7 @@ final class FileReturn implements FileReturnContract
             $var = $this->getFileReturnVar($var);
         }
         $varExport = var_export($var, true);
-        $this->file()->put(
+        $this->filePhp()->file()->put(
             FileReturnContract::PHP_RETURN . $varExport . ';'
         );
     }
@@ -114,9 +115,11 @@ final class FileReturn implements FileReturnContract
     private function getReturnVar($var)
     {
         if (is_string($var)) {
-            $aux = @unserialize($var);
-            if (false !== $aux) {
-                $var = $aux;
+            try {
+                $unserialize = new Unserialize($var);
+                $var = $unserialize->var();
+            } catch (UnserializeException $e) {
+                // $e control
             }
         }
 
@@ -135,13 +138,13 @@ final class FileReturn implements FileReturnContract
 
     private function validateStrict(): void
     {
-        $this->file()->assertExists();
-        $handle = fopen($this->file()->path()->absolute(), 'r');
+        $this->filePhp()->file()->assertExists();
+        $handle = fopen($this->filePhp()->file()->path()->absolute(), 'r');
         if (false === $handle) {
             throw new FileHandleException(
                 (new Message('Unable to %fn% %path% in %mode% mode'))
                     ->code('%fn%', 'fopen')
-                    ->code('%path%', $this->file()->path()->absolute())
+                    ->code('%path%', $this->filePhp()->file()->path()->absolute())
                     ->code('%mode%', 'r')
                     ->toString()
             );
@@ -151,14 +154,14 @@ final class FileReturn implements FileReturnContract
         if ('' == $contents) {
             throw new FileWithoutContentsException(
                 (new Message("The file %path% doesn't have any contents"))
-                    ->code('%path%', $this->file()->path()->absolute())
+                    ->code('%path%', $this->filePhp()->file()->path()->absolute())
                     ->toString()
             );
         }
         if (FileReturnContract::PHP_RETURN !== $contents) {
             throw new FileInvalidContentsException(
                 (new Message('Unexpected contents in %path% (strict validation)'))
-                    ->code('%path%', $this->file()->path()->absolute())
+                    ->code('%path%', $this->filePhp()->file()->path()->absolute())
                     ->toString()
             );
         }
@@ -166,18 +169,18 @@ final class FileReturn implements FileReturnContract
 
     private function validateNonStrict(): void
     {
-        $contents = $this->file()->contents();
+        $contents = $this->filePhp()->file()->contents();
         if (!$contents) {
             throw new FileWithoutContentsException(
                 (new Message('Unable to get file %path% contents'))
-                    ->code('%path%', $this->file()->path()->absolute())
+                    ->code('%path%', $this->filePhp()->file()->path()->absolute())
                     ->toString()
             );
         }
         if (!preg_match_all('#<\?php([\S\s]*)\s*return\s*[\S\s]*;#', $contents)) {
             throw new FileInvalidContentsException(
                 (new Message('Unexpected contents in %path% (non-strict validation)'))
-                    ->code('%path%', $this->file()->path()->absolute())
+                    ->code('%path%', $this->filePhp()->file()->path()->absolute())
                     ->toString()
             );
         }
