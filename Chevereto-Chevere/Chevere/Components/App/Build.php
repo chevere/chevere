@@ -27,7 +27,6 @@ use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;
-use Chevere\Components\Router\RouterProperties;
 use Chevere\Components\Type\Type;
 use Chevere\Contracts\Api\ApiContract;
 use Chevere\Contracts\App\AppContract;
@@ -314,14 +313,6 @@ final class Build implements BuildContract
                     ->withAddedRoute($route, $fileHandleString);
             }
         }
-        $routerProperties = new RouterProperties();
-        $services = $this->app->services()
-            ->withRouter(
-                (new Router())
-                    ->withProperties($routerProperties)
-            );
-        $this->app = $this->app
-            ->withServices($services);
         $routerCache =
             (new RouterCache(
                 new Cache(
@@ -330,6 +321,15 @@ final class Build implements BuildContract
                 )
             ))
             ->withPut($this->routerMaker);
+
+        $services = $this->app->services()
+            ->withRouter(
+                (new Router())
+                    ->withProperties($this->routerMaker->properties())
+            );
+        $this->app = $this->app
+            ->withServices($services);
+
         $this->checksums[RouterContract::CACHE_ID] = $routerCache->cache()
             ->toArray();
     }

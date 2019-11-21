@@ -40,4 +40,6 @@ interface RouterCacheContract
      * an instance that contains the put cache for the values of RouterMakerContract.
      */
     public function withPut(RouterMakerContract $routerMaker): RouterCacheContract;
+
+    public function getProperties(): RouterPropertiesContract;
 }

@@ -65,7 +65,8 @@ final class Resolver
                 (new Message("Instance of %className% can't resolve a %contract% contract"))
                     ->code('%className%', get_class($router))
                     ->code('%contract%', RouteContract::class)
-                    ->toString()
+                    ->toString(),
+                500
             );
         }
     }

@@ -115,8 +115,8 @@ final class RunnerTest extends TestCase
             );
         $runner = new Runner($builder);
         $ranBuilder = $runner->withRun()->builder();
-        $build->destroy();
         $this->assertSame(404, $ranBuilder->build()->app()->response()->guzzle()->getStatusCode());
+        $build->destroy();
     }
 
     public function testRunnerFoundBadMethod(): void

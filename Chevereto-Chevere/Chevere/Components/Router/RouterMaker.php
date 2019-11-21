@@ -48,7 +48,6 @@ final class RouterMaker implements RouterMakerContract
     public function __construct()
     {
         $this->properties = new RouterProperties();
-        $this->index = [];
     }
 
     /**
@@ -86,20 +85,15 @@ final class RouterMaker implements RouterMakerContract
         $new->properties = $new->properties
             ->withRegex($new->getRegex());
         $new->routesKeys[$new->route->pathUri()->key()] = $id;
-        $new->index[$new->route->pathUri()->path()] = [
+        $index = $new->properties->index();
+        $index[$new->route->pathUri()->path()] = [
             'id' => $id,
             'group' => $group,
         ];
+        $new->properties = $new->properties
+            ->withIndex($index);
 
         return $new;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function index(): array
-    {
-        return $this->index;
     }
 
     private function getRegex(): string
@@ -142,12 +136,13 @@ final class RouterMaker implements RouterMakerContract
 
     private function assertUniquePath(): void
     {
-        $routeIndex = $this->index[$this->route->pathUri()->path()] ?? null;
+        $path = $this->route->pathUri()->path();
+        $routeIndex = $this->properties->index()[$path] ?? null;
         if (isset($routeIndex)) {
             $routeIndexed = $this->properties->routes()[$routeIndex['id']];
             throw new InvalidArgumentException(
                 (new Message('Unable to register route path %path% at %declare% (path already registered at %register%)'))
-                    ->code('%path%', $this->route->pathUri()->path())
+                    ->code('%path%', $path)
                     ->code('%declare%', $this->route->maker()['fileLine'])
                     ->code('%register%', $routeIndexed->maker()['fileLine'])
                     ->toString()

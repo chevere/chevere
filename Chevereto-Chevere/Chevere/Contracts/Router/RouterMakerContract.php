@@ -36,9 +36,4 @@ interface RouterMakerContract
      * an instance that contains the specified added RouteContract.
      */
     public function withAddedRoute(RouteContract $route, string $group): RouterMakerContract;
-
-    /**
-     * Provides access to the index array.
-     */
-    public function index(): array;
 }

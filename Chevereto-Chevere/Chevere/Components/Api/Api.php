@@ -47,7 +47,11 @@ final class Api implements ApiContract
         $new = clone $this;
         $new->cache = $cache;
         try {
-            $new->array = $new->cache->fileReturn(new CacheKey(CacheKeys::API))->return();
+            $new->array = $new->cache
+                ->get(
+                    new CacheKey(CacheKeys::API)
+                )
+                ->raw();
         } catch (FileNotFoundException $e) {
             throw new CacheNotFoundException($e->getMessage(), $e->getCode(), $e);
         }

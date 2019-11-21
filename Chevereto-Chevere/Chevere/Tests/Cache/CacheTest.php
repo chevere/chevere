@@ -56,7 +56,7 @@ final class CacheTest extends TestCase
             ->get($cacheKey);
     }
 
-    public function testWithPutRemove(): void
+    public function testWithPutWithRemove(): void
     {
         $key = uniqid();
         $var = [time(), false, 'test', new Path('test'), 13.13];
@@ -67,19 +67,6 @@ final class CacheTest extends TestCase
         $this->assertArrayHasKey($key, $cache->toArray());
         $this->assertTrue($cache->exists($cacheKey));
         $this->assertInstanceOf(CacheItemContract::class, $cache->get($cacheKey));
-        $cache = $cache->withRemove($cacheKey);
-    }
-
-    public function testWithRemove(): void
-    {
-        $key = uniqid();
-        $var = [time(), false, 'test', new Path('test'), 13.13];
-        $variableExport = new VariableExport($var);
-        $cacheKey = new CacheKey($key);
-        $cache = $this->getTestCache()
-            ->withPut($cacheKey, $variableExport);
-        $this->assertTrue($cache->exists($cacheKey));
-        $this->assertArrayHasKey($key, $cache->toArray());
         $cache = $cache->withRemove($cacheKey);
         $this->assertArrayNotHasKey($key, $cache->toArray());
         $this->assertFalse($cache->exists($cacheKey));

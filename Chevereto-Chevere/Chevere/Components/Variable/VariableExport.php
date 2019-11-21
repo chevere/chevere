@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Variable;
 
+use Chevere\Components\Message\Message;
 use Chevere\Components\Variable\Exceptions\VariableExportException;
 use Chevere\Components\Variable\Exceptions\VariableIsResourceException;
 use Chevere\Contracts\Variable\VariableExportContract;
@@ -78,10 +79,10 @@ final class VariableExport implements VariableExportContract
         if (is_iterable($var)) {
             $this->locator[] = '(iterable)';
             $iterableKey = array_key_last($this->locator);
-            foreach ($var as $key => $var) {
+            foreach ($var as $key => $val) {
                 $this->locator[] = 'key:' . $key;
                 $memberKey = array_key_last($this->locator);
-                $this->assertExportable($var);
+                $this->assertExportable($val);
                 $this->check[] = $memberKey;
             }
             $this->check[] = $iterableKey;

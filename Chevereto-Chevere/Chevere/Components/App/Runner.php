@@ -146,11 +146,9 @@ final class Runner implements RunnerContract
         } catch (ResolverException $e) {
             $app = $this->builder->build()->app();
             $response = $app->response();
-
             $guzzle = $response->guzzle()
                 ->withStatus($e->getCode());
             // ->withBody(stream_for('Not found.'));
-
             $response = $response
                 ->withGuzzle($guzzle);
             $app = $app
@@ -160,7 +158,7 @@ final class Runner implements RunnerContract
                     $this->builder->build()
                         ->withApp($app)
                 );
-            throw new ResolverException();
+            throw new ResolverException($e->getMessage(), $e->getCode());
         }
     }
 

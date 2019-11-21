@@ -58,20 +58,20 @@ final class Router implements RouterContract
 
     public function canResolve(): bool
     {
-        return !empty($this->properties->regex());
+        return $this->hasProperties() && '' != $this->properties->regex();
     }
 
     public function resolve(string $pathInfo): RouteContract
     {
-        if (!$this->canResolve()) {
-            throw new RegexPropertyRequiredException(
-                (new Message('Instance of %className% requires a %property% property when calling %method%'))
-                    ->code('%className%', __CLASS__)
-                    ->code('%property%', 'regex')
-                    ->code('%method%', __METHOD__)
-                    ->toString()
-            );
-        }
+        // if (!$this->canResolve()) {
+        //     throw new RegexPropertyRequiredException(
+        //         (new Message('Instance of %className% requires a %property% property when calling %method%'))
+        //             ->code('%className%', __CLASS__)
+        //             ->code('%property%', 'regex')
+        //             ->code('%method%', __METHOD__)
+        //             ->toString()
+        //     );
+        // }
         if (preg_match($this->properties->regex(), $pathInfo, $matches)) {
             return $this->resolver($matches);
         }
