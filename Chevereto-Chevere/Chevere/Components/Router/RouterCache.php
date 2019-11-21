@@ -72,6 +72,9 @@ final class RouterCache implements RouterCacheContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getProperties(): RouterPropertiesContract
     {
         $properties = new RouterProperties();

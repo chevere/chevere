@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Router\Exception\RegexPropertyRequiredException;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
 use Chevere\Contracts\Router\RouterPropertiesContract;
+use Psr\Http\Message\UriInterface;
 use TypeError;
 
 /**
@@ -33,11 +33,17 @@ final class Router implements RouterContract
     /** @var RouterPropertiesContract */
     private $properties;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct()
     {
         $this->arguments = [];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withProperties(RouterPropertiesContract $properties): RouterContract
     {
         $new = clone $this;
@@ -46,38 +52,41 @@ final class Router implements RouterContract
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function hasProperties(): bool
     {
         return isset($this->properties);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function arguments(): array
     {
         return $this->arguments;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function canResolve(): bool
     {
         return $this->hasProperties() && '' != $this->properties->regex();
     }
 
-    public function resolve(string $pathInfo): RouteContract
+    /**
+     * {@inheritdoc}
+     */
+    public function resolve(UriInterface $uri): RouteContract
     {
-        // if (!$this->canResolve()) {
-        //     throw new RegexPropertyRequiredException(
-        //         (new Message('Instance of %className% requires a %property% property when calling %method%'))
-        //             ->code('%className%', __CLASS__)
-        //             ->code('%property%', 'regex')
-        //             ->code('%method%', __METHOD__)
-        //             ->toString()
-        //     );
-        // }
-        if (preg_match($this->properties->regex(), $pathInfo, $matches)) {
+        if (preg_match($this->properties->regex(), $uri->getPath(), $matches)) {
             return $this->resolver($matches);
         }
         throw new RouteNotFoundException(
             (new Message('No route defined for %path%'))
-                ->code('%path%', '' != $pathInfo ? $pathInfo : '(empty string)')
+                ->code('%path%', $uri->getPath())
                 ->toString()
         );
     }
@@ -88,7 +97,7 @@ final class Router implements RouterContract
         unset($matches['MARK']);
         array_shift($matches);
         $route = $this->properties->routes()[$id];
-        // is string when the route is cached
+        // is string when the route is serialized (cached)
         if (is_string($route)) {
             $unserialize = new Unserialize($route);
             $route = $unserialize->var();
@@ -100,13 +109,15 @@ final class Router implements RouterContract
                         ->toString()
                 );
             }
-            $this->properties->routes()[$id] = $route;
+            $routes = $this->properties->routes();
+            $routes[$id] = $route;
+            $this->properties = $this->properties
+                ->withRoutes($routes);
         }
         $this->arguments = [];
         if ($route->hasWildcardCollection()) {
             foreach ($matches as $pos => $val) {
-                $wildcard = $route->wildcardCollection()->getPos($pos);
-                $this->arguments[$wildcard->name()] = $val;
+                $this->arguments[$route->wildcardCollection()->getPos($pos)->name()] = $val;
             }
         }
 

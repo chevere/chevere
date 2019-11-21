@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Contracts\Router;
 
 use Chevere\Contracts\Cache\CacheContract;
+use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 
 interface RouterCacheContract
 {
@@ -41,5 +42,10 @@ interface RouterCacheContract
      */
     public function withPut(RouterMakerContract $routerMaker): RouterCacheContract;
 
+    /**
+     * Gets router properties from cache.
+     *
+     * @throws CacheNotFoundException if unable to locate the cache
+     */
     public function getProperties(): RouterPropertiesContract;
 }

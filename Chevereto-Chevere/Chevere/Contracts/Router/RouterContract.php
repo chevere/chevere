@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Contracts\Router;
 
 use Chevere\Contracts\Route\RouteContract;
+use Psr\Http\Message\UriInterface;
 
 interface RouterContract
 {
@@ -25,5 +26,5 @@ interface RouterContract
 
     public function canResolve(): bool;
 
-    public function resolve(string $pathInfo): RouteContract;
+    public function resolve(UriInterface $uri): RouteContract;
 }

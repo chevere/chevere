@@ -38,7 +38,7 @@ final class Cache implements CacheContract
     private $dir;
 
     /** @var array An array [key => [checksum => , path =>]] containing information about the cache items */
-    private $array;
+    private $puts;
 
     /**
      * {@inheritdoc}
@@ -49,7 +49,7 @@ final class Cache implements CacheContract
         if (!$this->dir->exists()) {
             $this->dir->create();
         }
-        $this->array = [];
+        $this->puts = [];
     }
 
     /**
@@ -67,7 +67,7 @@ final class Cache implements CacheContract
         $fileReturn->put($variableExport);
         new FileCompile($filePhp);
         $new = clone $this;
-        $new->array[$cacheKey->toString()] = [
+        $new->puts[$cacheKey->toString()] = [
             'path' => $fileReturn->filePhp()->file()->path()->absolute(),
             'checksum' => $fileReturn->filePhp()->file()->checksum(),
         ];
@@ -94,7 +94,7 @@ final class Cache implements CacheContract
         $fileCompile->destroy();
         $fileCompile->filePhp()->file()->remove();
 
-        unset($new->array[$cacheKey->toString()]);
+        unset($new->puts[$cacheKey->toString()]);
 
         return $new;
     }
@@ -133,7 +133,7 @@ final class Cache implements CacheContract
      */
     public function toArray(): array
     {
-        return $this->array;
+        return $this->puts;
     }
 
     private function getPath(string $name): PathContract

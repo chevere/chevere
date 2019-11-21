@@ -37,11 +37,12 @@ final class ServicesBuilder implements ServicesBuilderContract
         $this->services = $build->app()->services();
         $this->prepareServices();
         if ($parameters->hasRoutes()) {
-            $routerCache = new RouterCache(
-                new Cache(
-                    $build->cacheDir()->getChild(RouterContract::CACHE_ID)
-                )
-            );
+            $routerCache =
+                new RouterCache(
+                    new Cache(
+                        $build->cacheDir()->getChild(RouterContract::CACHE_ID)
+                    )
+                );
             $this->services = $this->services
                 ->withRouter(
                     $this->services()->router()

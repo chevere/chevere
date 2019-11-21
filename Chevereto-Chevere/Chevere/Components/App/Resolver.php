@@ -73,10 +73,11 @@ final class Resolver
 
     private function resolveController(): void
     {
-        $pathInfo = $this->builder->build()->app()->request()->getUri()->getPath();
         $app = $this->builder->build()->app();
         try {
-            $route = $app->services()->router()->resolve($pathInfo);
+            $route = $app->services()->router()->resolve(
+                $this->builder->build()->app()->request()->getUri()
+            );
         } catch (RouteNotFoundException $e) {
             // HTTP 404: Not found
             throw new ResolverException($e->getMessage(), 404, $e);
