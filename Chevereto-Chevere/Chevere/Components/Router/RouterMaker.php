@@ -36,9 +36,6 @@ final class RouterMaker implements RouterMakerContract
     /** @var array Named routes [routeName => $id] */
     private $named;
 
-    /** @var array Static routes */
-    // private $statics;
-
     /** @var RouteContract */
     private $route;
 
@@ -68,30 +65,40 @@ final class RouterMaker implements RouterMakerContract
         $new->assertMethodControllerNameCollection();
         $new->assertUniquePath();
         $new->assertUniqueKey();
+
         $routes = $new->properties->routes();
-        $id = empty($routes) ? 0 : (array_key_last($routes) + 1);
-        if ($new->route->hasName()) {
-            $new->assertUniqueNamed();
-            $new->named[$new->route->name()->toString()] = $id;
-        }
         $routes[] = $new->route;
-        $new->properties = $new->properties
-            ->withRoutes($routes);
-        // n => .. => regex => route
-        $new->regexIndex[$new->route->regex()] = $id;
-        // if (!$route->hasWildcardCollection()) {
-        //     $new->statics[$new->route->pathUri()->path()] = $id;
-        // }
-        $new->properties = $new->properties
-            ->withRegex($new->getRegex());
+
+        $id = empty($routes) ? 0 : (array_key_last($routes) + 1);
+
+        $groups = $new->properties()->groups();
+        $groups[$group][] = $id;
+
         $new->routesKeys[$new->route->pathUri()->key()] = $id;
-        $index = $new->properties->index();
-        $index[$new->route->pathUri()->path()] = [
+        $routeDetails = [
             'id' => $id,
             'group' => $group,
         ];
+
+        if ($new->route->hasName()) {
+            $new->assertUniqueNamed();
+            $routeName = $new->route->name()->toString();
+            $routeDetails['name'] = $routeName;
+            $new->named[$routeName] = $id;
+        }
+
+        // n => .. => regex => route
+        $new->regexIndex[$new->route->regex()] = $id;
+
+        $index = $new->properties->index();
+        $index[$new->route->pathUri()->path()] = $routeDetails;
+
         $new->properties = $new->properties
-            ->withIndex($index);
+            ->withRegex($new->getRegex())
+            ->withRoutes($routes)
+            ->withIndex($index)
+            ->withGroups($groups)
+            ->withNamed($new->named);
 
         return $new;
     }
@@ -105,22 +112,6 @@ final class RouterMaker implements RouterMakerContract
         }
 
         return sprintf(RouterMakerContract::REGEX_TEPLATE, implode('', $regex));
-    }
-
-    private function assertUniqueKey(): void
-    {
-        $routeId = $this->routesKeys[$this->route->pathUri()->key()] ?? null;
-        if (isset($routeId)) {
-            $routeIndexed = $this->properties->routes()[$routeId];
-            throw new InvalidArgumentException(
-                (new Message('Router conflict detected for %path% at %declare% (self-assigned internal key %key% is already reserved by %register%)'))
-                    ->code('%path%', $this->route->pathUri()->path())
-                    ->code('%declare%', $this->route->maker()['fileLine'])
-                    ->code('%key%', $this->route->pathUri()->key())
-                    ->code('%register%', $routeIndexed->maker()['fileLine'])
-                    ->toString()
-            );
-        }
     }
 
     private function assertMethodControllerNameCollection(): void
@@ -144,6 +135,22 @@ final class RouterMaker implements RouterMakerContract
                 (new Message('Unable to register route path %path% at %declare% (path already registered at %register%)'))
                     ->code('%path%', $path)
                     ->code('%declare%', $this->route->maker()['fileLine'])
+                    ->code('%register%', $routeIndexed->maker()['fileLine'])
+                    ->toString()
+            );
+        }
+    }
+
+    private function assertUniqueKey(): void
+    {
+        $routeId = $this->routesKeys[$this->route->pathUri()->key()] ?? null;
+        if (isset($routeId)) {
+            $routeIndexed = $this->properties->routes()[$routeId];
+            throw new InvalidArgumentException(
+                (new Message('Router conflict detected for %path% at %declare% (self-assigned internal key %key% is already reserved by %register%)'))
+                    ->code('%path%', $this->route->pathUri()->path())
+                    ->code('%declare%', $this->route->maker()['fileLine'])
+                    ->code('%key%', $this->route->pathUri()->key())
                     ->code('%register%', $routeIndexed->maker()['fileLine'])
                     ->toString()
             );

@@ -49,25 +49,13 @@ final class RouterCache implements RouterCacheContract
     public function withPut(RouterMakerContract $routerMaker): RouterCacheContract
     {
         $new = clone $this;
-        $new->cache = $new->cache
-            ->withPut(
-                new CacheKey(RouterCacheContract::KEY_REGEX),
-                new VariableExport(
-                    $routerMaker->properties()->regex()
-                )
-            )
-            ->withPut(
-                new CacheKey(RouterCacheContract::KEY_ROUTES),
-                new VariableExport(
-                    $routerMaker->properties()->routes()
-                )
-            )
-            ->withPut(
-                new CacheKey(RouterCacheContract::KEY_INDEX),
-                new VariableExport(
-                    $routerMaker->properties()->index()
-                )
-            );
+        foreach ($routerMaker->properties()->toArray() as $name => $value) {
+            $new->cache = $new->cache
+                ->withPut(
+                    new CacheKey($name),
+                    new VariableExport($value)
+                );
+        }
 
         return $new;
     }
@@ -79,22 +67,15 @@ final class RouterCache implements RouterCacheContract
     {
         $properties = new RouterProperties();
         try {
-            $properties = $properties
-                ->withRegex(
-                    $this->cache
-                        ->get(new CacheKey(RouterCacheContract::KEY_REGEX))
-                        ->raw()
-                )
-                ->withRoutes(
-                    $this->cache
-                        ->get(new CacheKey(RouterCacheContract::KEY_ROUTES))
-                        ->raw()
-                )
-                ->withIndex(
-                    $this->cache
-                        ->get(new CacheKey(RouterCacheContract::KEY_INDEX))
-                        ->raw()
-                );
+            foreach ($properties->toArray() as $name => $value) {
+                $method = 'with' . ucfirst($name);
+                $properties = $properties
+                    ->$method(
+                        $this->cache
+                            ->get(new CacheKey($name))
+                            ->raw()
+                    );
+            }
         } catch (FileNotFoundException $e) {
             throw new CacheNotFoundException($e->getMessage(), $e->getCode(), $e);
         }

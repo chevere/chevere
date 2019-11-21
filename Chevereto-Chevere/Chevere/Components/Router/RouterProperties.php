@@ -17,14 +17,20 @@ use Chevere\Contracts\Router\RouterPropertiesContract;
 
 final class RouterProperties implements RouterPropertiesContract
 {
-    /** @var string Regex representation, used when resolving routing */
+    /** @var string Regex representation used when resolving routing */
     private $regex;
 
-    /** @var array Route members (objects, serialized) [id => Route] */
+    /** @var array RouteContract members (objects serialized) [id => RouteContract] */
     private $routes;
 
-    /** @var array Contains ['/path' => [id, 'route/key']] */
+    /** @var array Index route uri ['/path' => [id, 'route/key']] */
     private $index;
+
+    /** @var array Group routes ['group' => [id,]] */
+    private $groups;
+
+    /** @var array Named routes ['name' => id] */
+    private $named;
 
     /**
      * {@inheritdoc}
@@ -34,6 +40,8 @@ final class RouterProperties implements RouterPropertiesContract
         $this->regex = '';
         $this->routes = [];
         $this->index = [];
+        $this->groups = [];
+        $this->named = [];
     }
 
     /**
@@ -91,5 +99,48 @@ final class RouterProperties implements RouterPropertiesContract
     public function index(): array
     {
         return $this->index;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withGroups(array $groups): RouterPropertiesContract
+    {
+        $new = clone $this;
+        $new->groups = $groups;
+
+        return $new;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function groups(): array
+    {
+        return $this->groups;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withNamed(array $named): RouterPropertiesContract
+    {
+        $new = clone $this;
+        $new->named = $named;
+
+        return $new;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function named(): array
+    {
+        return $this->named;
+    }
+
+    public function toArray(): array
+    {
+        return get_object_vars($this);
     }
 }

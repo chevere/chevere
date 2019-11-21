@@ -19,7 +19,13 @@ interface CacheItemContract
 {
     public function __construct(FileReturnContract $fileReturn);
 
+    /**
+     * @return mixed
+     */
     public function raw();
 
+    /**
+     * @return mixed
+     */
     public function var();
 }
