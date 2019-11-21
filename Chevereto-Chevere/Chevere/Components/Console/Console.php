@@ -15,7 +15,6 @@ namespace Chevere\Components\Console;
 
 use Exception;
 use RuntimeException;
-
 use Symfony\Component\Console\Application as Symfony;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
@@ -23,7 +22,6 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-
 use Chevere\Components\Console\Commands\BuildCommand;
 use Chevere\Components\Console\Commands\ClearLogsCommand;
 use Chevere\Components\Console\Commands\DestroyCommand;
@@ -49,8 +47,11 @@ final class Console implements ConsoleContract
     /** @var CommandContract */
     private $command;
 
-    /** @var string The first argument (command) passed */
-    private $commandString;
+    /** @var string The first argument (command name) passed */
+    private $commandName;
+
+    /** @var true */
+    private $isBuiltIn;
 
     /** @var Symfony */
     private $symfony;
@@ -61,14 +62,32 @@ final class Console implements ConsoleContract
     /** @var BuilderContract */
     private $builder;
 
+    private $commandNames = [
+        BuildCommand::class,
+        ClearLogsCommand::class,
+        RequestCommand::class,
+        RunCommand::class,
+        InspectCommand::class,
+        DestroyCommand::class,
+    ];
+
     public function __construct()
     {
         $this->input = new ArgvInput();
         $this->output = new ConsoleOutput();
-        $this->commandString = $this->input->getFirstArgument();
+        $this->commandName = $this->input->getFirstArgument();
+        $this->isBuiltIn = in_array($this->commandName, ['list', 'help']);
         $this->symfony = new Symfony(static::NAME, static::VERSION);
         $this->symfony->setAutoExit(false);
         $this->style = new SymfonyStyle($this->input, $this->output);
+        if ('' == $this->commandName) {
+            $this->style->block(
+                (new Message('Command argument required'))
+                    ->toString(),
+                'COMMAND REQUIRED'
+            );
+            die(1);
+        }
         $this->addCommands();
     }
 
@@ -112,12 +131,12 @@ final class Console implements ConsoleContract
 
     public function isBuilding(): bool
     {
-        return 'build' == $this->commandString;
+        return 'build' == $this->commandName;
     }
 
     public function bind(BuilderContract $builder): bool
     {
-        if (php_sapi_name() == 'cli') {
+        if ('cli' == php_sapi_name()) {
             $this->builder = $builder;
 
             return true;
@@ -132,6 +151,9 @@ final class Console implements ConsoleContract
         if (0 !== $exitCode) {
             exit($exitCode);
         }
+        if ($this->isBuiltIn) {
+            exit(0);
+        }
         if (!isset($this->command)) {
             throw new RuntimeException(
                 (new Message('No %className% command is defined'))
@@ -140,7 +162,7 @@ final class Console implements ConsoleContract
             );
         }
 
-        if ($this->builder == null) {
+        if (null == $this->builder) {
             throw new RuntimeException(
                 (new Message('No %className% instance is defined'))
                     ->code('%className%', BuilderContract::class)
@@ -153,25 +175,28 @@ final class Console implements ConsoleContract
 
     private function addCommands(): void
     {
-        $commands = [
-            (new BuildCommand($this)),
-            (new ClearLogsCommand($this)),
-            (new RequestCommand($this)),
-            (new RunCommand($this)),
-            (new InspectCommand($this)),
-            (new DestroyCommand($this)),
-        ];
-        $commandsIndex = [];
-        foreach ($commands as $key => $command) {
+        $commands = [];
+        $index = [];
+        foreach ($this->commandNames as $commandName) {
+            $command = new $commandName($this);
             $this->symfony->add($command->symfony());
-            $commandsIndex[$command::NAME] = $key;
+            $commands[] = $command;
+            $index[] = $command::NAME;
         }
-        $commandIndex = $commandsIndex[$this->commandString] ?? null;
-        if (!isset($commandIndex)) {
-            $this->style->writeln(sprintf('Command "%s" is not defined', $this->commandString));
-            die(127);
+        $pos = array_search($this->commandName, $index);
+        if (false === $pos) {
+            if (!$this->isBuiltIn) {
+                $this->style->block(
+                    (new Message('Command %command% is not defined'))
+                        ->code('%command%', $this->commandName)
+                        ->toString(),
+                    'NOT FOUND'
+                );
+                die(127);
+            }
+        } else {
+            $this->command = $commands[$pos];
         }
-        $this->command = $commands[$commandIndex];
     }
 
     /**

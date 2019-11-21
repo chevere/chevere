@@ -149,13 +149,15 @@ final class Loader implements LoaderContract
             && !(CONSOLE && console()->isBuilding())
             && !$this->builder->build()->file()->exists()
         ) {
-            // FIXME: Detect the entrypoint
-            throw new BuildNeededException(
-                (new Message('The application needs to be built by running %command% or calling %method% method'))
-                    ->code('%command%', 'php app/console build')
-                    ->code('%method%', __CLASS__ . '::build')
-                    ->toString()
-            );
+            $command = 'php ' . $_SERVER['SCRIPT_FILENAME'] . ' build';
+            $message = (new Message('The application needs to be built by running %command%'))
+                ->code('%command%', $command)
+                ->toString();
+            if (CONSOLE) {
+                console()->style()->block($message, 'CANNOT EXECUTE');
+                die(126);
+            }
+            throw new BuildNeededException($message);
         }
     }
 }
