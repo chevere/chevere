@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use InvalidArgumentException;
+use Chevere\Components\Router\Exceptions\RoutePathExistsException;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
+use Chevere\Components\Router\Exceptions\RouteNameConflictException;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouteableContract;
 use Chevere\Contracts\Router\RouterMakerContract;
@@ -65,34 +67,26 @@ final class RouterMaker implements RouterMakerContract
         $new->route = $routeable->route();
         $new->assertUniquePath();
         $new->assertUniqueKey();
-
         $routes = $new->properties->routes();
         $routes[] = $new->route;
-
         $id = empty($routes) ? 0 : (array_key_last($routes) + 1);
-
         $groups = $new->properties()->groups();
         $groups[$group][] = $id;
-
         $new->routesKeys[$new->route->pathUri()->key()] = $id;
         $routeDetails = [
             'id' => $id,
             'group' => $group,
         ];
-
         if ($new->route->hasName()) {
             $new->assertUniqueNamed();
             $routeName = $new->route->name()->toString();
             $routeDetails['name'] = $routeName;
             $new->named[$routeName] = $id;
         }
-
         // n => .. => regex => route
         $new->regexIndex[$new->route->regex()] = $id;
-
         $index = $new->properties->index();
         $index[$new->route->pathUri()->path()] = $routeDetails;
-
         $new->properties = $new->properties
             ->withRegex($new->getRegex())
             ->withRoutes($routes)
@@ -120,7 +114,7 @@ final class RouterMaker implements RouterMakerContract
         $routeIndex = $this->properties->index()[$path] ?? null;
         if (isset($routeIndex)) {
             $routeIndexed = $this->properties->routes()[$routeIndex['id']];
-            throw new InvalidArgumentException(
+            throw new RoutePathExistsException(
                 (new Message('Unable to register route path %path% at %declare% (path already registered at %register%)'))
                     ->code('%path%', $path)
                     ->code('%declare%', $this->route->maker()['fileLine'])
@@ -135,7 +129,7 @@ final class RouterMaker implements RouterMakerContract
         $routeId = $this->routesKeys[$this->route->pathUri()->key()] ?? null;
         if (isset($routeId)) {
             $routeIndexed = $this->properties->routes()[$routeId];
-            throw new InvalidArgumentException(
+            throw new RouteKeyConflictException(
                 (new Message('Router conflict detected for %path% at %declare% (self-assigned internal key %key% is already reserved by %register%)'))
                     ->code('%path%', $this->route->pathUri()->path())
                     ->code('%declare%', $this->route->maker()['fileLine'])
@@ -152,7 +146,7 @@ final class RouterMaker implements RouterMakerContract
         if (isset($namedId)) {
             $name = $this->route->name()->toString();
             $routeExists = $this->properties->routes()[$namedId];
-            throw new InvalidArgumentException(
+            throw new RouteNameConflictException(
                 (new Message('Unable to assign route name %name% for path %path% at %declare% (name assigned to %namedRoutePath% at %register%)'))
                     ->code('%name%', $name)
                     ->code('%path%', $this->route->pathUri()->path())

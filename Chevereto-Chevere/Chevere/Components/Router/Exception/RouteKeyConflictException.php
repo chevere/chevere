@@ -11,9 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Router\Exception;
+namespace Chevere\Components\Router\Exceptions;
 
-use Exception;
+use InvalidArgumentException;
 
-class RegexPropertyRequiredException extends Exception
-{ }
+/**
+ * Exception thrown when a RouteContract path conflicts with others.
+ */
+final class RouteKeyConflictException extends InvalidArgumentException
+{
+}

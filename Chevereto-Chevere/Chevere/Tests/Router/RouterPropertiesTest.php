@@ -28,7 +28,7 @@ final class RouterPropertiesTest extends TestCase
         $this->assertSame([], $properties->named());
     }
 
-    public function testRegex(): void
-    {
-    }
+    // public function testRegex(): void
+    // {
+    // }
 }
