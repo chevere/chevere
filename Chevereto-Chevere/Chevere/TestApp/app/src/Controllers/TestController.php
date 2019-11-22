@@ -17,7 +17,7 @@ use Chevere\Contracts\Controller\StringContract;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\Traits\ResponseStringTrait;
 
-class Test extends Controller implements StringContract
+class TestController extends Controller implements StringContract
 {
     use ResponseStringTrait;
 

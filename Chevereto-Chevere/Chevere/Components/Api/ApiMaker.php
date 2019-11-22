@@ -162,8 +162,8 @@ final class ApiMaker implements ApiMakerContract
         $this->api[$this->basePath][''] = $endpoint->toArray();
 
         $route = new Route(new PathUri($path));
-        foreach ($endpoint->MethodControllerNameCollection()->toArray() as $method) {
-            $route = $route->withAddedMethodControllerName($method);
+        foreach ($endpoint->methodControllerNameCollection()->toArray() as $method) {
+            $route = $route->withAddedMethod($method->method(), $method->controllerName());
         }
 
         $this->routerMaker = $this->routerMaker
@@ -252,11 +252,9 @@ final class ApiMaker implements ApiMakerContract
             $this->route = new Route(new PathUri($endpointRouteKey));
             foreach ($httpMethods as $httpMethod => $controller) {
                 $this->route = $this->route
-                    ->withAddedMethodControllerName(
-                        new MethodControllerName(
-                            new Method($httpMethod),
-                            new ControllerName($controller)
-                        )
+                    ->withAddedMethod(
+                        new Method($httpMethod),
+                        new ControllerName($controller)
                     );
             }
             $endpoint = new Endpoint($this->route->methodControllerNameCollection());

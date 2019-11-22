@@ -16,7 +16,6 @@ namespace Chevere\Tests\Route;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\Method;
-use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Middleware\MiddlewareName;
 use Chevere\Components\Regex\RegexMatch;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
@@ -26,7 +25,7 @@ use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\Wildcard;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Route\WildcardContract;
-use Chevere\TestApp\App\Controllers\Test;
+use Chevere\TestApp\App\Controllers\TestController;
 use Chevere\TestApp\App\Middlewares\TestMiddlewareVoid;
 use PHPUnit\Framework\TestCase;
 
@@ -108,17 +107,15 @@ final class RouteTest extends TestCase
         }
     }
 
-    public function testWithAddedMethodControllerName(): void
+    public function testWithAddedMethod(): void
     {
         $method = new Method('GET');
         $route = $this->getRoute('/test')
-            ->withAddedMethodControllerName(
-                new MethodControllerName(
-                    $method,
-                    new ControllerName(Test::class)
-                )
-        );
-        $this->assertSame(Test::class, $route->controllerName($method)->toString());
+            ->withAddedMethod(
+                $method,
+                new ControllerName(TestController::class)
+            );
+        $this->assertSame(TestController::class, $route->controllerName($method)->toString());
         $this->expectException(MethodNotFoundException::class);
         $route->controllerName(new Method('POST'));
     }

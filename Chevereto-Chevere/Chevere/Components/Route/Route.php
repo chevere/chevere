@@ -24,7 +24,6 @@ use Chevere\Contracts\Route\RouteContract;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
 use Chevere\Contracts\Controller\ControllerNameContract;
 use Chevere\Contracts\Http\MethodContract;
-use Chevere\Contracts\Http\MethodControllerNameContract;
 use Chevere\Contracts\Middleware\MiddlewareNameCollectionContract;
 use Chevere\Contracts\Route\PathUriContract;
 use Chevere\Contracts\Route\WildcardContract;
@@ -159,24 +158,24 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedMethodControllerName(MethodControllerNameContract $methodControllerName): RouteContract
+    public function withAddedMethod(MethodContract $method, ControllerNameContract $controllerName): RouteContract
     {
         $new = clone $this;
         if (!isset($new->methodControllerNameCollection)) {
             $new->methodControllerNameCollection = new MethodControllerNameCollection();
         }
+        $methodControllerName = new MethodControllerName($method, $controllerName);
         $new->methodControllerNameCollection = $new->methodControllerNameCollection
             ->withAddedMethodControllerName($methodControllerName);
-
-        if (
-            'GET' == $methodControllerName->method()->toString()
-            && $new->methodControllerNameCollection->has(new Method('HEAD'))) {
-            $new = $new->withAddedMethodControllerName(
-                new MethodControllerName(
-                    new Method('HEAD'),
-                    new ControllerName(HeadController::class)
-                )
-            );
+        $methodString = $methodControllerName->method()->toString();
+        if ('GET' == $methodString) {
+            $new->methodControllerNameCollection = $new->methodControllerNameCollection
+                    ->withAddedMethodControllerName(
+                        new MethodControllerName(
+                            new Method('HEAD'),
+                            new ControllerName(HeadController::class)
+                        )
+                    );
         }
 
         return $new;

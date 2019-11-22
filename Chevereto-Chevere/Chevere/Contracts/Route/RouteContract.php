@@ -19,7 +19,6 @@ use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Contracts\Controller\ControllerNameContract;
 use Chevere\Contracts\Http\MethodContract;
 use Chevere\Contracts\Http\MethodControllerNameCollectionContract;
-use Chevere\Contracts\Http\MethodControllerNameContract;
 use Chevere\Contracts\Middleware\MiddlewareNameContract;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 
@@ -86,12 +85,12 @@ interface RouteContract
     public function wildcardCollection(): WildcardCollectionContract;
 
     /**
-     * Return an instance with the specified added MethodControllerNameContract.
+     * Return an instance with the specified added MethodContract ControllerNameContract.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified added MethodControllerNameContract.
+     * an instance that contains the specified added MethodContract ControllerNameContract.
      */
-    public function withAddedMethodControllerName(MethodControllerNameContract $methodControllerName): RouteContract;
+    public function withAddedMethod(MethodContract $method, ControllerNameContract $controllerName): RouteContract;
 
     /**
      * Returns a boolean indicating whether the instance a MethodControllerNameCollectionContract.

@@ -20,7 +20,7 @@ use Chevere\Components\App\Exceptions\ControllerNotExistsException;
 use Chevere\Components\App\Services;
 use Chevere\Components\Http\Response;
 use Chevere\Contracts\App\ControllerRunnerContract;
-use Chevere\TestApp\App\Controllers\Test;
+use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerRunnerTest extends TestCase
@@ -47,7 +47,7 @@ final class ControllerRunnerTest extends TestCase
 
     public function testRunner(): void
     {
-        $controller = $this->instance->run(Test::class);
+        $controller = $this->instance->run(TestController::class);
         $this->assertSame('Test', $controller->content());
     }
 }

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
+use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouteableException;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouteableContract;
@@ -41,7 +42,7 @@ final class Routeable implements RouteableContract
 
     private function assertMethodControllerNames(): void
     {
-        if (!$this->route->methodControllerNameCollection()->hasAny()) {
+        if (!$this->route->hasMethodControllerNameCollection()) {
             throw new RouteableException(
                 (new Message("Instance of %className% doesn't contain any method controller"))
                     ->code('%className%', RouteContract::class)
