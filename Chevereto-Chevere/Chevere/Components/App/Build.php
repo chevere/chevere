@@ -311,7 +311,7 @@ final class Build implements BuildContract
                     ->withMembersType(new Type(RouteContract::class));
             foreach ($arrayFile->array() as $route) {
                 $this->routerMaker = $this->routerMaker
-                    ->withAddedRoute(
+                    ->withAddedRouteable(
                         new Routeable($route),
                         $fileHandleString
                     );

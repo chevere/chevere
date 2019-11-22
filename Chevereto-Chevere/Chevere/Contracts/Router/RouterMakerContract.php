@@ -41,5 +41,5 @@ interface RouterMakerContract
      * @throws RouteKeyConflictException  if $routeable conflicts with other RouteableContract
      * @throws RouteNameConflictException if $routeable name conflicts with other RouteableContract
      */
-    public function withAddedRoute(RouteableContract $routeable, string $group): RouterMakerContract;
+    public function withAddedRouteable(RouteableContract $routeable, string $group): RouterMakerContract;
 }
