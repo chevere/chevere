@@ -16,6 +16,7 @@ namespace Chevere\Components\Router;
 use InvalidArgumentException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Route\RouteContract;
+use Chevere\Contracts\Router\RouteableContract;
 use Chevere\Contracts\Router\RouterMakerContract;
 use Chevere\Contracts\Router\RouterPropertiesContract;
 
@@ -58,11 +59,10 @@ final class RouterMaker implements RouterMakerContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedRoute(RouteContract $route, string $group): RouterMakerContract
+    public function withAddedRoute(RouteableContract $routeable, string $group): RouterMakerContract
     {
         $new = clone $this;
-        $new->route = $route;
-        $new->assertMethodControllerNameCollection();
+        $new->route = $routeable->route();
         $new->assertUniquePath();
         $new->assertUniqueKey();
 
@@ -112,17 +112,6 @@ final class RouterMaker implements RouterMakerContract
         }
 
         return sprintf(RouterMakerContract::REGEX_TEPLATE, implode('', $regex));
-    }
-
-    private function assertMethodControllerNameCollection(): void
-    {
-        if (!$this->route->methodControllerNameCollection()->hasAny()) {
-            throw new InvalidArgumentException(
-                (new Message("Instance of %className% doesn't contain any method controller"))
-                    ->code('%className%', RouteContract::class)
-                    ->toString()
-            );
-        }
     }
 
     private function assertUniquePath(): void

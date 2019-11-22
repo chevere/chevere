@@ -25,6 +25,7 @@ use Chevere\Components\File\FilePhp;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Path\Path;
+use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Type\Type;
@@ -310,7 +311,10 @@ final class Build implements BuildContract
                     ->withMembersType(new Type(RouteContract::class));
             foreach ($arrayFile->array() as $route) {
                 $this->routerMaker = $this->routerMaker
-                    ->withAddedRoute($route, $fileHandleString);
+                    ->withAddedRoute(
+                        new Routeable($route),
+                        $fileHandleString
+                    );
             }
         }
         $routerCache =

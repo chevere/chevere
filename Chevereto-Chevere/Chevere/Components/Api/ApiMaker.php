@@ -28,6 +28,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
+use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Variable\VariableExport;
 use Chevere\Contracts\Api\ApiMakerContract;
@@ -166,7 +167,10 @@ final class ApiMaker implements ApiMakerContract
         }
 
         $this->routerMaker = $this->routerMaker
-            ->withAddedRoute($route, $this->basePath);
+            ->withAddedRoute(
+                new Routeable($route),
+                $this->basePath
+            );
 
         $this->registered[$this->basePath] = true;
         ksort($this->api);
@@ -257,7 +261,10 @@ final class ApiMaker implements ApiMakerContract
             }
             $endpoint = new Endpoint($this->route->methodControllerNameCollection());
             $this->routerMaker = $this->routerMaker
-                ->withAddedRoute($this->route, $this->basePath);
+                ->withAddedRoute(
+                    new Routeable($this->route),
+                    $this->basePath
+                );
             $this->api[$this->basePath][$pathComponent] = $endpoint->toArray();
         }
         ksort($this->api);

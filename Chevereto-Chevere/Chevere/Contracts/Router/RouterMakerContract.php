@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Router;
 
-use Chevere\Contracts\Route\RouteContract;
-
 interface RouterMakerContract
 {
     const REGEX_TEPLATE = '#^(?%s)$#x';
@@ -30,10 +28,10 @@ interface RouterMakerContract
     public function properties(): RouterPropertiesContract;
 
     /**
-     * Return an instance with the specified added RouteContract.
+     * Return an instance with the specified added RouteableContract.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified added RouteContract.
+     * an instance that contains the specified added RouteableContract.
      */
-    public function withAddedRoute(RouteContract $route, string $group): RouterMakerContract;
+    public function withAddedRoute(RouteableContract $routeable, string $group): RouterMakerContract;
 }
