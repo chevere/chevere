@@ -17,15 +17,15 @@ use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
 use Chevere\Components\Route\Exceptions\WildcardInvalidCharsException;
 use Chevere\Components\Route\Exceptions\WildcardInvalidRegexException;
+use Chevere\Contracts\Regex\RegexMatchContract;
 
 interface WildcardContract
 {
     /** Regex pattern used by default (no explicit where). */
-    const REGEX_MATCH_DEFAULT = '[A-z0-9\_\-\%]+';
+    const REGEX_MATCH_DEFAULT = '[A-z0-9\\_\\-\\%]+';
 
     const ACCEPT_CHARS = '([a-z\_][\w_]*?)';
     const ACCEPT_CHARS_REGEX = '/^' . self::ACCEPT_CHARS . '+$/i';
-    // const ACCEPTED_CHARS_REGEX = '/^[a-z0-9_]+$/i';
 
     /**
      * Creates a new instance.
@@ -35,21 +35,20 @@ interface WildcardContract
      *
      * @throws WildcardStartWithNumberException if $name starts with a number
      * @throws WildcardInvalidCharsException    if $name contains invalid chars
-     * @throws WildcardInvalidRegexException    if $regex is invalid
      */
     public function __construct(string $name);
 
     /**
-     * Return an instance with the specified regex.
+     * Return an instance with the specified RegexMatchContract.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified regex.
+     * an instance that contains the specified RegexMatchContract.
      *
-     * @param string $regex a regular expresion, without delimiters
+     * @param string $match a regular expresion matcher (not a regular expresion boundary)
      *
-     * @throws WildcardInvalidRegexException if $regex is invalid regex
+     * @throws WildcardInvalidRegexException if $match is an invalid regex match
      */
-    public function withRegex(string $regex): WildcardContract;
+    public function withRegexMatch(RegexMatchContract $regexMatch): WildcardContract;
 
     /**
      * Provides access to the name.
@@ -57,9 +56,9 @@ interface WildcardContract
     public function name(): string;
 
     /**
-     * Provides access to the regex.
+     * Provides access to the RegexMatchContract instance.
      */
-    public function regex(): string;
+    public function regexMatch(): RegexMatchContract;
 
     /**
      * Asserts that a given PathUriContract contains the wildcard.

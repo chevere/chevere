@@ -269,7 +269,7 @@ final class Route implements RouteContract
         $regex = '^' . $this->pathUri->key() . '$';
         if (isset($this->wildcardCollection)) {
             foreach ($this->wildcardCollection->toArray() as $key => $wildcard) {
-                $regex = str_replace("{{$key}}", '(' . $wildcard->regex() . ')', $regex);
+                $regex = str_replace("{{$key}}", '(' . $wildcard->regexMatch()->toString() . ')', $regex);
             }
         }
         $this->regex = $regex;

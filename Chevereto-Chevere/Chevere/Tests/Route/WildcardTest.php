@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Route;
 
+use Chevere\Components\Regex\RegexMatch;
 use Chevere\Components\Route\Exceptions\WildcardInvalidCharsException;
-use Chevere\Components\Route\Exceptions\WildcardInvalidRegexException;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
 use Chevere\Components\Route\PathUri;
@@ -40,26 +40,20 @@ final class WildcardTest extends TestCase
     {
         $name = 'test';
         $wildcard = new Wildcard($name);
+        $regexMatchDefault = new RegexMatch(WildcardContract::REGEX_MATCH_DEFAULT);
         $this->assertSame($name, $wildcard->name());
         $this->assertSame("{{$name}}", $wildcard->toString());
-        $this->assertSame(WildcardContract::REGEX_MATCH_DEFAULT, $wildcard->regex());
-    }
-
-    public function testWithInvalidRegex(): void
-    {
-        $this->expectException(WildcardInvalidRegexException::class);
-        (new Wildcard('test'))
-            ->withRegex('$?');
+        $this->assertSame($regexMatchDefault->toString(), $wildcard->regexMatch()->toString());
     }
 
     public function testWithRegex(): void
     {
-        $name = 'test';
-        $regex = '[a-z]+';
-        $wildcard = (new Wildcard($name))
-            ->withRegex($regex);
-        $this->assertSame($name, $wildcard->name());
-        $this->assertSame($regex, $wildcard->regex());
+        // $name = 'test';
+        // $regex = '[a-z]+';
+        // $wildcard = (new Wildcard($name))
+        //     ->withRegexMatch($regex);
+        // $this->assertSame($name, $wildcard->name());
+        // $this->assertSame($regex, $wildcard->regex());
     }
 
     public function testAssertPathWildcardNotExists(): void

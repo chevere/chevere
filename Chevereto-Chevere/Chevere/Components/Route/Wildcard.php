@@ -15,9 +15,10 @@ namespace Chevere\Components\Route;
 
 use Chevere\Components\Route\Exceptions\WildcardInvalidCharsException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Exceptions\WildcardInvalidRegexException;
+use Chevere\Components\Regex\RegexMatch;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
+use Chevere\Contracts\Regex\RegexMatchContract;
 use Chevere\Contracts\Route\PathUriContract;
 use Chevere\Contracts\Route\WildcardContract;
 use function ChevereFn\stringStartsWithNumeric;
@@ -30,8 +31,8 @@ final class Wildcard implements WildcardContract
     /** @var string */
     private $wildcard;
 
-    /** @var string */
-    private $regex;
+    /** @var RegexMatchContract */
+    private $regexMatch;
 
     /**
      * {@inheritdoc}
@@ -41,18 +42,16 @@ final class Wildcard implements WildcardContract
         $this->name = $name;
         $this->wildcard = "{{$this->name}}";
         $this->assertName();
-        $this->regex = WildcardContract::REGEX_MATCH_DEFAULT;
-        $this->assertRegex();
+        $this->regexMatch = new RegexMatch(WildcardContract::REGEX_MATCH_DEFAULT);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withRegex(string $regex): WildcardContract
+    public function withRegexMatch(RegexMatchContract $regexMatch): WildcardContract
     {
         $new = clone $this;
-        $new->regex = $regex;
-        $new->assertRegex();
+        $new->regexMatch = $regexMatch;
 
         return $new;
     }
@@ -76,9 +75,9 @@ final class Wildcard implements WildcardContract
     /**
      * {@inheritdoc}
      */
-    public function regex(): string
+    public function regexMatch(): RegexMatchContract
     {
-        return $this->regex;
+        return $this->regexMatch;
     }
 
     /**
@@ -113,25 +112,5 @@ final class Wildcard implements WildcardContract
                     ->toString()
             );
         }
-    }
-
-    private function assertRegex(): void
-    {
-        if (!$this->validateRegex('/' . $this->regex . '/')) {
-            throw new WildcardInvalidRegexException(
-                (new Message('Invalid regex pattern %regex%'))
-                    ->code('%regex%', $this->regex)
-                    ->toString()
-            );
-        }
-    }
-
-    private function validateRegex(string $regex): bool
-    {
-        set_error_handler(function () { }, E_WARNING);
-        $return = false !== preg_match($regex, '');
-        restore_error_handler();
-
-        return $return;
     }
 }
