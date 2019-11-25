@@ -25,11 +25,11 @@ use PHPUnit\Framework\TestCase;
 
 final class RouterMakerTest extends TestCase
 {
-    // public function testConstruct(): void
-    // {
-    //     $routerMaker = new RouterMaker();
-    //     $this->assertSame((new RouterProperties())->toArray(), $routerMaker->properties()->toArray());
-    // }
+    public function testConstruct(): void
+    {
+        $routerMaker = new RouterMaker();
+        $this->assertSame((new RouterProperties())->toArray(), $routerMaker->properties()->toArray());
+    }
 
     public function testWithAddedRouteable(): void
     {

@@ -34,22 +34,22 @@ final class HeadController extends Controller
 
     public function __invoke(?string $endpoint = null)
     {
-        if (isset($endpoint)) {
-            $route = $this->app()->services()->router()->resolve($endpoint);
-        } else {
-            $route = $this->app()->route();
-            if (!isset($route)) {
-                $msg = 'Must provide the %s argument when running this callable without route context.';
-                $message = (new Message($msg))->code('%s', '$endpoint')->toString();
-                if (CONSOLE) {
-                    console()->style()->error($message);
+        // if (isset($endpoint)) {
+        //     $route = $this->app()->services()->router()->resolve($endpoint);
+        // } else {
+        //     $route = $this->app()->route();
+        //     if (!isset($route)) {
+        //         $msg = 'Must provide the %s argument when running this callable without route context.';
+        //         $message = (new Message($msg))->code('%s', '$endpoint')->toString();
+        //         if (CONSOLE) {
+        //             console()->style()->error($message);
 
-                    return;
-                } else {
-                    throw new InvalidArgumentException($message);
-                }
-            }
-        }
+        //             return;
+        //         } else {
+        //             throw new InvalidArgumentException($message);
+        //         }
+        //     }
+        // }
 
         if (!isset($route)) {
             // $this->app()->response()->withStatusCode(404);

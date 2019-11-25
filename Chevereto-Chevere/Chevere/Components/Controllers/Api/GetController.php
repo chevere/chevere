@@ -37,23 +37,23 @@ final class GetController extends Controller
      */
     public function __invoke(?string $endpoint = null)
     {
-        if (isset($endpoint)) {
-            $route = $this->app()->services()->router()->resolve($endpoint);
-        } else {
-            $route = $this->app()->route();
-            if (isset($route)) {
-                $endpoint = $route->pathUri()->path();
-            } else {
-                $msg = 'Must provide the %s argument when running this callable without route context.';
-                $message = (new Message($msg))->code('%s', '$endpoint')->toString();
-                if (CONSOLE) {
-                    console()->style()->error($message);
+        // if (isset($endpoint)) {
+        //     $route = $this->app()->services()->router()->resolve($endpoint);
+        // } else {
+        //     $route = $this->app()->route();
+        //     if (isset($route)) {
+        //         $endpoint = $route->pathUri()->path();
+        //     } else {
+        //         $msg = 'Must provide the %s argument when running this callable without route context.';
+        //         $message = (new Message($msg))->code('%s', '$endpoint')->toString();
+        //         if (CONSOLE) {
+        //             console()->style()->error($message);
 
-                    return;
-                }
-                throw new InvalidArgumentException($message);
-            }
-        }
+        //             return;
+        //         }
+        //         throw new InvalidArgumentException($message);
+        //     }
+        // }
 
         if (!isset($route)) {
             $response = $this->app()->response();

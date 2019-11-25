@@ -75,15 +75,16 @@ final class Resolver
     {
         $app = $this->builder->build()->app();
         try {
-            $route = $app->services()->router()->resolve(
+            $routed = $app->services()->router()->resolve(
                 $this->builder->build()->app()->request()->getUri()
             );
         } catch (RouteNotFoundException $e) {
             // HTTP 404: Not found
             throw new ResolverException($e->getMessage(), 404, $e);
         }
+        // TODO: app "withRouted"
         $app = $app
-            ->withRoute($route);
+            ->withRoute($routed->route());
         $collection = $app->route()->methodControllerNameCollection();
         $requestMethod = new Method($app->request()->getMethod());
         try {
@@ -95,7 +96,7 @@ final class Resolver
         $this->builder = $this->builder
             ->withControllerName($controllerName)
             ->withControllerArguments(
-                $app->services()->router()->arguments()
+                $routed->wildcards()
             )
             ->withBuild(
                 $this->builder->build()

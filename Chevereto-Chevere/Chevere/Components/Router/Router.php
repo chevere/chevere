@@ -17,6 +17,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Contracts\Route\RouteContract;
+use Chevere\Contracts\Router\RoutedContract;
 use Chevere\Contracts\Router\RouterContract;
 use Chevere\Contracts\Router\RouterPropertiesContract;
 use Psr\Http\Message\UriInterface;
@@ -27,9 +28,6 @@ use TypeError;
  */
 final class Router implements RouterContract
 {
-    /** @var array Arguments taken from wildcard matches */
-    private $arguments;
-
     /** @var RouterPropertiesContract */
     private $properties;
 
@@ -38,7 +36,7 @@ final class Router implements RouterContract
      */
     public function __construct()
     {
-        $this->arguments = [];
+        // $this->arguments = [];
     }
 
     /**
@@ -63,10 +61,10 @@ final class Router implements RouterContract
     /**
      * {@inheritdoc}
      */
-    public function arguments(): array
-    {
-        return $this->arguments;
-    }
+    // public function arguments(): array
+    // {
+    //     return $this->arguments;
+    // }
 
     /**
      * {@inheritdoc}
@@ -79,7 +77,7 @@ final class Router implements RouterContract
     /**
      * {@inheritdoc}
      */
-    public function resolve(UriInterface $uri): RouteContract
+    public function resolve(UriInterface $uri): RoutedContract
     {
         if (preg_match($this->properties->regex()->toString(), $uri->getPath(), $matches)) {
             return $this->resolver($matches);
@@ -91,7 +89,11 @@ final class Router implements RouterContract
         );
     }
 
-    private function resolver(array $matches): RouteContract
+    /**
+     * @throws UnserializeException if the route string object can't be unserialized
+     * @throws TypeError            if the found route doesn't implement the RouteContract
+     */
+    private function resolver(array $matches): RoutedContract
     {
         $id = $matches['MARK'];
         unset($matches['MARK']);
@@ -114,13 +116,13 @@ final class Router implements RouterContract
             $this->properties = $this->properties
                 ->withRoutes($routes);
         }
-        $this->arguments = [];
+        $wildcards = [];
         if ($route->hasWildcardCollection()) {
             foreach ($matches as $pos => $val) {
-                $this->arguments[$route->wildcardCollection()->getPos($pos)->name()] = $val;
+                $wildcards[$route->wildcardCollection()->getPos($pos)->name()] = $val;
             }
         }
 
-        return $route;
+        return new Routed($route, $wildcards);
     }
 }
