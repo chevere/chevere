@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router;
 
+use Chevere\Components\Regex\Regex;
 use Chevere\Components\Router\RouterProperties;
 use PHPUnit\Framework\TestCase;
 
@@ -21,14 +22,41 @@ final class RouterPropertiesTest extends TestCase
     public function testConstruct(): void
     {
         $properties = new RouterProperties();
-        $this->assertSame('', $properties->regex());
+        $this->assertFalse($properties->hasRegex());
         $this->assertSame([], $properties->routes());
         $this->assertSame([], $properties->index());
         $this->assertSame([], $properties->groups());
         $this->assertSame([], $properties->named());
+        $this->assertEquals([
+            'regex' => null,
+            'routes' => [],
+            'index' => [],
+            'groups' => [],
+            'named' => [],
+        ], $properties->toArray());
     }
 
-    // public function testRegex(): void
-    // {
-    // }
+    public function testWithRegex(): void
+    {
+        $regex = new Regex('/[a-z]+/');
+        $properties = (new RouterProperties())
+            ->withRegex($regex);
+        $this->assertTrue($properties->hasRegex());
+        $this->assertSame($regex, $properties->regex());
+    }
+
+    public function testWithOthers(): void
+    {
+        foreach ([
+            'routes' => 'withRoutes',
+            'index' => 'withIndex',
+            'groups' => 'withGroups',
+            'named' => 'withNamed',
+        ] as $property => $method) {
+            $array = [$property];
+            $properties = (new RouterProperties())
+                ->$method($array);
+            $this->assertSame($array, $properties->$property());
+        }
+    }
 }

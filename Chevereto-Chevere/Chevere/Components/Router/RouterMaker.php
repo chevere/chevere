@@ -15,8 +15,12 @@ namespace Chevere\Components\Router;
 
 use Chevere\Components\Router\Exceptions\RoutePathExistsException;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Regex\Exceptions\RegexException;
+use Chevere\Components\Regex\Regex;
 use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
 use Chevere\Components\Router\Exceptions\RouteNameConflictException;
+use Chevere\Components\Router\Exceptions\RouterMakerException;
+use Chevere\Contracts\Regex\RegexContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouteableContract;
 use Chevere\Contracts\Router\RouterMakerContract;
@@ -94,15 +98,27 @@ final class RouterMaker implements RouterMakerContract
         return $new;
     }
 
-    private function getRegex(): string
+    /**
+     * @throws RouterMakerException if the regex pattern created is invalid
+     */
+    private function getRegex(): RegexContract
     {
         $regex = [];
         foreach ($this->regex as $k => $v) {
             preg_match('#\^(.*)\$#', $k, $matches);
             $regex[] = '|' . $matches[1] . " (*:$v)";
         }
-
-        return sprintf(RouterMakerContract::REGEX_TEPLATE, implode('', $regex));
+        try {
+            return new Regex(
+                sprintf(RouterMakerContract::REGEX_TEPLATE, implode('', $regex))
+            );
+        } catch (RegexException $e) {
+            throw new RouterMakerException(
+                $e->getMessage(),
+                $e->getCode(),
+                $e->getPrevious()
+            );
+        }
     }
 
     private function assertUniquePath(RouteContract $route): void

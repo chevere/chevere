@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Router;
 
+use Chevere\Contracts\Regex\RegexContract;
+
 interface RouterPropertiesContract
 {
     /**
@@ -21,17 +23,22 @@ interface RouterPropertiesContract
     public function __construct();
 
     /**
-     * Return an instance with the specified regex string.
+     * Return an instance with the specified RegexContract.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified regex string.
+     * an instance that contains the specified RegexContract.
      */
-    public function withRegex(string $regex): RouterPropertiesContract;
+    public function withRegex(RegexContract $regex): RouterPropertiesContract;
 
     /**
-     * Provides access to the regex string.
+     * Returns a boolean indicating whether the instance has a RegexContract.
      */
-    public function regex(): string;
+    public function hasRegex(): bool;
+
+    /**
+     * Provides access to the RegexContract.
+     */
+    public function regex(): RegexContract;
 
     /**
      * Return an instance with the specified routes array.
