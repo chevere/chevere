@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\Regex\Regex;
-use Chevere\Contracts\Regex\RegexContract;
 use Chevere\Contracts\Router\RouterPropertiesContract;
 
 final class RouterProperties implements RouterPropertiesContract
 {
-    /** @var RegexContract Regex representation used when resolving routing */
+    /** @var string Regex representation used when resolving routing */
     private $regex;
 
     /** @var array RouteContract members (objects serialized) [id => RouteContract] */
@@ -39,6 +38,7 @@ final class RouterProperties implements RouterPropertiesContract
      */
     public function __construct()
     {
+        $this->regex = '';
         $this->routes = [];
         $this->index = [];
         $this->groups = [];
@@ -48,8 +48,10 @@ final class RouterProperties implements RouterPropertiesContract
     /**
      * {@inheritdoc}
      */
-    public function withRegex(RegexContract $regex): RouterPropertiesContract
+    public function withRegex(string $regex): RouterPropertiesContract
     {
+        new Regex($regex);
+
         $new = clone $this;
         $new->regex = $regex;
 
@@ -64,7 +66,7 @@ final class RouterProperties implements RouterPropertiesContract
     /**
      * {@inheritdoc}
      */
-    public function regex(): RegexContract
+    public function regex(): string
     {
         return $this->regex;
     }

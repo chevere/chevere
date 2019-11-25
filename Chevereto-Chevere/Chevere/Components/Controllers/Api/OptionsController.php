@@ -34,18 +34,18 @@ final class OptionsController extends Controller
 
     public function __invoke()
     {
-        $route = $this->app()->route();
-        if (isset($route)) {
-            $path = $route->pathUri()->path();
-        }
-        if (!isset($path)) {
-            $this->handleError();
+        // $route = $this->app()->routed()->route();
+        // if (isset($route)) {
+        //     $path = $route->pathUri()->path();
+        // }
+        // if (!isset($path)) {
+        //     $this->handleError();
 
-            return;
-        }
-        $this->path = $path;
-        $this->endpoint = ltrim($this->path, '/');
-        $this->process();
+        //     return;
+        // }
+        // $this->path = $path;
+        // $this->endpoint = ltrim($this->path, '/');
+        // $this->process();
     }
 
     private function handleError()

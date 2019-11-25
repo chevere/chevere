@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router;
 
-use Chevere\Components\Regex\Regex;
 use Chevere\Components\Router\RouterProperties;
 use PHPUnit\Framework\TestCase;
 
@@ -38,7 +37,7 @@ final class RouterPropertiesTest extends TestCase
 
     public function testWithRegex(): void
     {
-        $regex = new Regex('/[a-z]+/');
+        $regex = '/[a-z]+/';
         $properties = (new RouterProperties())
             ->withRegex($regex);
         $this->assertTrue($properties->hasRegex());

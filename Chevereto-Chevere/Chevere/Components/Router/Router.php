@@ -61,14 +61,6 @@ final class Router implements RouterContract
     /**
      * {@inheritdoc}
      */
-    // public function arguments(): array
-    // {
-    //     return $this->arguments;
-    // }
-
-    /**
-     * {@inheritdoc}
-     */
     public function canResolve(): bool
     {
         return $this->hasProperties() && $this->properties->hasRegex();
@@ -79,7 +71,7 @@ final class Router implements RouterContract
      */
     public function resolve(UriInterface $uri): RoutedContract
     {
-        if (preg_match($this->properties->regex()->toString(), $uri->getPath(), $matches)) {
+        if (preg_match($this->properties->regex(), $uri->getPath(), $matches)) {
             return $this->resolver($matches);
         }
         throw new RouteNotFoundException(

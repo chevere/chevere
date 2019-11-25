@@ -82,10 +82,9 @@ final class Resolver
             // HTTP 404: Not found
             throw new ResolverException($e->getMessage(), 404, $e);
         }
-        // TODO: app "withRouted"
         $app = $app
-            ->withRoute($routed->route());
-        $collection = $app->route()->methodControllerNameCollection();
+            ->withRouted($routed);
+        $collection = $routed->route()->methodControllerNameCollection();
         $requestMethod = new Method($app->request()->getMethod());
         try {
             $controllerName = $collection->get($requestMethod)->controllerName()->toString();

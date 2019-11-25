@@ -45,7 +45,7 @@ final class RouterMakerTest extends TestCase
             new Routeable($route),
             'test'
           );
-        $this->assertTrue((bool) preg_match($routerMaker->properties()->regex()->toString(), $pathUri));
+        $this->assertTrue((bool) preg_match($routerMaker->properties()->regex(), $pathUri));
         $this->assertSame($route, $routerMaker->properties()->routes()[0]);
         $this->assertSame([0], $routerMaker->properties()->groups()['test']);
     }
