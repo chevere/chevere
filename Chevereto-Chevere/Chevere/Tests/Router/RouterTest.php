@@ -46,13 +46,13 @@ final class RouterTest extends TestCase
         $this->assertFalse($router->canResolve());
     }
 
-    public function testResolveNotFound(): void
-    {
-        $properties = (new RouterProperties())
-            ->withRegex('/./')
-            ->withIndex(['index']);
-        $router = (new Router())
-            ->withProperties($properties);
-        $router->resolve(new Uri('/'));
-    }
+    // public function testResolveNotFound(): void
+    // {
+    //     $properties = (new RouterProperties())
+    //         ->withRegex('/./')
+    //         ->withIndex(['index']);
+    //     $router = (new Router())
+    //         ->withProperties($properties);
+    //     $router->resolve(new Uri('/'));
+    // }
 }

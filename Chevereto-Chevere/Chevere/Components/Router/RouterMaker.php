@@ -90,6 +90,8 @@ final class RouterMaker implements RouterMakerContract
             ->withGroups($groups)
             ->withNamed($named);
 
+        $new->properties->assert();
+
         return $new;
     }
 

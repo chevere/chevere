@@ -13,7 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Components\Regex\Regex;
+use Chevere\Components\Router\Properties\GroupsProperty;
+use Chevere\Components\Router\Properties\IndexProperty;
+use Chevere\Components\Router\Properties\NamedProperty;
+use Chevere\Components\Router\Properties\RegexProperty;
+use Chevere\Components\Router\Properties\RoutesProperty;
 use Chevere\Contracts\Router\RouterPropertiesContract;
 
 final class RouterProperties implements RouterPropertiesContract
@@ -50,8 +54,6 @@ final class RouterProperties implements RouterPropertiesContract
      */
     public function withRegex(string $regex): RouterPropertiesContract
     {
-        new Regex($regex);
-
         $new = clone $this;
         $new->regex = $regex;
 
@@ -60,7 +62,7 @@ final class RouterProperties implements RouterPropertiesContract
 
     public function hasRegex(): bool
     {
-        return isset($this->regex);
+        return '' != $this->regex;
     }
 
     /**
@@ -147,6 +149,21 @@ final class RouterProperties implements RouterPropertiesContract
         return $this->named;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function assert(): void
+    {
+        new RegexProperty($this->regex);
+        new RoutesProperty($this->routes);
+        new IndexProperty($this->index);
+        new GroupsProperty($this->groups);
+        new NamedProperty($this->named);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function toArray(): array
     {
         return get_object_vars($this);

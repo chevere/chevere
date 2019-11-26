@@ -27,8 +27,6 @@ interface RouterPropertiesContract
      * an instance that contains the specified regex string.
      *
      * @param string $regex a regular expresion
-     *
-     * @throws RegexException if $regex is an invalid regular expresion
      */
     public function withRegex(string $regex): RouterPropertiesContract;
 
@@ -111,6 +109,13 @@ interface RouterPropertiesContract
      * @return array Named routes [(string) $name => (int) $id]
      */
     public function named(): array;
+
+    /**
+     * Checks that all properties are valid (format, not just type).
+     *
+     * @throws RouterPropertyException if there are errors in the properties
+     */
+    public function assert(): void;
 
     /**
      * Returns the properties as an array [name => value].

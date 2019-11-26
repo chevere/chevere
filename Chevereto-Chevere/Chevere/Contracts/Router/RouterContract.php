@@ -42,7 +42,7 @@ interface RouterContract
     public function properties(): RouterPropertiesContract;
 
     /**
-     * Returns a boolean indicating whether the instance can resolve routing.
+     * Returns a boolean indicating whether the instance can try to resolve routing.
      */
     public function canResolve(): bool;
 
