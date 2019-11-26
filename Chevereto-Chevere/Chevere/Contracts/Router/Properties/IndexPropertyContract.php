@@ -14,11 +14,16 @@ declare(strict_types=1);
 namespace Chevere\Contracts\Router\Properties;
 
 use Chevere\Contracts\ToArrayContract;
+use Chevere\Components\Router\Exceptions\RouterPropertyException;
 
 interface IndexPropertyContract extends ToArrayContract
 {
     /**
      * Creates a new instance.
+     *
+     * @param array $index [(string)$key => ['id' => (int)$id, 'group' => (string)$group, 'name' => (string)$name]][]
+     *
+     * @throws RouterPropertyException if the value doesn't match the property format
      */
     public function __construct(array $index);
 }

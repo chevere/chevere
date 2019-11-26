@@ -33,7 +33,8 @@ final class RegexPropertyTest extends TestCase
 
     public function testConstructor(): void
     {
-        $this->expectNotToPerformAssertions();
-        new RegexProperty('#^(?|/home/([A-z0-9\\_\\-\\%]+) (*:0)|/ (*:1)|/hello-world (*:2))$#x');
+        $string = '#^(?|/home/([A-z0-9\\_\\-\\%]+) (*:0)|/ (*:1)|/hello-world (*:2))$#x';
+        $property = new RegexProperty($string);
+        $this->assertSame($string, $property->toString());
     }
 }

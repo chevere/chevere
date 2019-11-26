@@ -22,19 +22,19 @@ use Chevere\Contracts\Router\RouterPropertiesContract;
 
 final class RouterProperties implements RouterPropertiesContract
 {
-    /** @var string Regex representation used when resolving routing */
+    /** @var string */
     private $regex;
 
-    /** @var array RouteContract members (objects serialized) [id => RouteContract] */
+    /** @var array */
     private $routes;
 
-    /** @var array Index route uri ['/path' => [id, 'route/key']] */
+    /** @var array */
     private $index;
 
-    /** @var array Group routes ['group' => [id,]] */
+    /** @var array */
     private $groups;
 
-    /** @var array Named routes ['name' => id] */
+    /** @var array */
     private $named;
 
     /**

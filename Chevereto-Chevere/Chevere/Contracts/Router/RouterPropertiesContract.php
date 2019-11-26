@@ -26,7 +26,7 @@ interface RouterPropertiesContract
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified regex string.
      *
-     * @param string $regex a regular expresion
+     * @param string $regex see RegexPropertyContract
      */
     public function withRegex(string $regex): RouterPropertiesContract;
 
@@ -46,14 +46,12 @@ interface RouterPropertiesContract
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified routes array.
      *
-     * @param array RouteContract members RouteContract[]
+     * @param array $routes see RoutesPropertyContract
      */
     public function withRoutes(array $routes): RouterPropertiesContract;
 
     /**
      * Provides access to the routes array.
-     *
-     * @return array RouteContract members (objects serialized) RouteContract[]
      */
     public function routes(): array;
 
@@ -63,16 +61,12 @@ interface RouterPropertiesContract
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified index array.
      *
-     * @param array Index route uris
-     *               [(string) $key => ['id' => (int) $id, 'group' => (string) $group, 'name' => (string) $name]][]
+     * @param array $index see IndexPropertyContract
      */
     public function withIndex(array $index): RouterPropertiesContract;
 
     /**
      * Provides access to the index array.
-     *
-     * @return array Index route uris
-     *               [(string) $key => ['id' => (int) $id, 'group' => (string) $group, 'name' => (string) $name]][]
      */
     public function index(): array;
 
@@ -82,14 +76,12 @@ interface RouterPropertiesContract
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified groups array.
      *
-     * @param array Group routes [(string) $group => (int) $id[]]
+     * @param array $groups see GroupsPropertyContract
      */
     public function withGroups(array $groups): RouterPropertiesContract;
 
     /**
      * Provides access to the groups array.
-     *
-     * @return array Group routes [(string) $group => (int) $id[]]
      */
     public function groups(): array;
 
@@ -99,14 +91,12 @@ interface RouterPropertiesContract
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified named array.
      *
-     * @param array Named routes [(string) $name => (int) $id]
+     * @param array $named see NamedPropertyContract
      */
     public function withNamed(array $named): RouterPropertiesContract;
 
     /**
      * Provides access to the named array.
-     *
-     * @return array Named routes [(string) $name => (int) $id]
      */
     public function named(): array;
 
