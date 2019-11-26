@@ -69,7 +69,6 @@ final class RouterCache implements RouterCacheContract
         try {
             foreach ($properties->toArray() as $name => $value) {
                 $method = 'with' . ucfirst($name);
-                $getCache =
                 $properties = $properties
                     ->$method(
                         $this->cache

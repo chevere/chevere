@@ -15,12 +15,14 @@ namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
+use Chevere\Components\Router\Exceptions\RouterException;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RoutedContract;
 use Chevere\Contracts\Router\RouterContract;
 use Chevere\Contracts\Router\RouterPropertiesContract;
 use Psr\Http\Message\UriInterface;
+use Throwable;
 use TypeError;
 
 /**
@@ -36,7 +38,6 @@ final class Router implements RouterContract
      */
     public function __construct()
     {
-        // $this->arguments = [];
     }
 
     /**
@@ -61,6 +62,14 @@ final class Router implements RouterContract
     /**
      * {@inheritdoc}
      */
+    public function properties(): RouterPropertiesContract
+    {
+        return $this->properties;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function canResolve(): bool
     {
         return $this->hasProperties() && $this->properties->hasRegex();
@@ -71,7 +80,20 @@ final class Router implements RouterContract
      */
     public function resolve(UriInterface $uri): RoutedContract
     {
-        if (preg_match($this->properties->regex(), $uri->getPath(), $matches)) {
+        try {
+            $pregMatch = preg_match($this->properties->regex(), $uri->getPath(), $matches);
+        } catch (Throwable $e) {
+            throw new RouterException($e->getMessage());
+        }
+        if ($pregMatch) {
+            if (!isset($matches['MARK'])) {
+                throw new RouterException(
+                    (new Message('Invalid regex pattern, missing %mark% member'))
+                        ->code('%mark%', 'MARK')
+                        ->toString()
+                );
+            }
+
             return $this->resolver($matches);
         }
         throw new RouteNotFoundException(

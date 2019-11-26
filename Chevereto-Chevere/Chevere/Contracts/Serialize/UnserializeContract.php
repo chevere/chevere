@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Contracts\Serialize;
 
 use Chevere\Contracts\Type\TypeContract;
-use Chevere\Components\Folder\Exceptions\UnserializeException;
+use Chevere\Components\Serialize\Exceptions\UnserializeException;
 
 interface UnserializeContract
 {

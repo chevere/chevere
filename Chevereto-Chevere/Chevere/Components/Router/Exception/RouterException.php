@@ -16,8 +16,8 @@ namespace Chevere\Components\Router\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when a RouteContract name conflict with other.
+ * Exception thrown by the RouterContract.
  */
-final class RouteNameConflictException extends Exception
+final class RouterException extends Exception
 {
 }

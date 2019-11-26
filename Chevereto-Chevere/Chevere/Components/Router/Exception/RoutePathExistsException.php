@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Exceptions;
 
-use InvalidArgumentException;
+use Exception;
 
 /**
  * Exception thrown when the route path is already declared.
  */
-final class RoutePathExistsException extends InvalidArgumentException
+final class RoutePathExistsException extends Exception
 {
 }

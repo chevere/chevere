@@ -38,9 +38,6 @@ final class RouterMaker implements RouterMakerContract
     /** @var array [RouteContract key => $id] */
     private $keys;
 
-    /** @var array Named routes [RouteContract name => $id] */
-    private $named;
-
     /**
      * {@inheritdoc}
      */

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Router;
 
-use Chevere\Components\Folder\Exceptions\UnserializeException;
+use Chevere\Components\Serialize\Exceptions\UnserializeException;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
-use Chevere\Contracts\Route\RouteContract;
+use Chevere\Components\Router\Exceptions\RouterException;
 use Psr\Http\Message\UriInterface;
 use TypeError;
 
@@ -32,6 +32,16 @@ interface RouterContract
     public function withProperties(RouterPropertiesContract $properties): RouterContract;
 
     /**
+     * Returns a boolean indicating whether the instance has a RouterPropertiesContract.
+     */
+    public function hasProperties(): bool;
+
+    /**
+     * Provides access to the RouterPropertiesContract instance.
+     */
+    public function properties(): RouterPropertiesContract;
+
+    /**
      * Returns a boolean indicating whether the instance can resolve routing.
      */
     public function canResolve(): bool;
@@ -39,6 +49,7 @@ interface RouterContract
     /**
      * Returns a RoutedContract for the given UriInterface.
      *
+     * @throws RouterException        if the router encounters any fatal error
      * @throws UnserializeException   if the route string object can't be unserialized
      * @throws TypeError              if the found route doesn't implement the RouteContract
      * @throws RouteNotFoundException if no route resolves the given UriInterface

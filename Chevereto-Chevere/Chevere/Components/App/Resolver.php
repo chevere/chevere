@@ -92,7 +92,6 @@ final class Resolver
             // HTTP 405: Method Not Allowed
             throw new ResolverException($e->getMessage(), 405, $e);
         }
-        // TODO: controller arguments pass around app+builder
         $this->builder = $this->builder
             ->withControllerName($controllerName)
             ->withControllerArguments(
