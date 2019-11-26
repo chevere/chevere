@@ -28,7 +28,9 @@ interface RoutedContract
     public function route(): RouteContract;
 
     /**
-     * Provides access to the matches array.
+     * Provides access to the wildcard matches array.
+     *
+     * @return array [wildcardName => matchedValue]
      */
     public function wildcards(): array;
 }
