@@ -20,16 +20,11 @@ final class RoutesProperty implements RoutesPropertyContract
 {
     use ToArrayTrait;
 
-    public function __construct(array $routes)
-    {
-        $this->value = $routes;
-    }
-
     /**
      * @throws RouterPropertyException if the value doesn't match the property format
      */
-    public function assert(): void
+    public function __construct(array $routes)
     {
-        dd($this->value);
+        $this->value = $routes;
     }
 }

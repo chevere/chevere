@@ -20,6 +20,7 @@ use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
 use Chevere\Components\Router\Exceptions\RouteNameConflictException;
 use Chevere\Components\Router\Exceptions\RouterMakerException;
 use Chevere\Contracts\Route\RouteContract;
+use Chevere\Contracts\Router\Properties\RegexPropertyContract;
 use Chevere\Contracts\Router\RouteableContract;
 use Chevere\Contracts\Router\RouterMakerContract;
 use Chevere\Contracts\Router\RouterPropertiesContract;
@@ -33,7 +34,7 @@ final class RouterMaker implements RouterMakerContract
     private $properties;
 
     /** @var array [RouteContract regex => $id]. */
-    private $regex;
+    private $regexes;
 
     /** @var array [RouteContract key => $id] */
     private $keys;
@@ -69,7 +70,7 @@ final class RouterMaker implements RouterMakerContract
         $named = $new->properties->named();
         $id = empty($routes) ? 0 : (array_key_last($routes) + 1);
         $routes[$id] = $route;
-        $new->regex[$route->regex()] = $id;
+        $new->regexes[$route->regex()] = $id;
         $groups[$group][] = $id;
         $new->keys[$route->pathUri()->key()] = $id;
         $routeDetails = [
@@ -101,12 +102,12 @@ final class RouterMaker implements RouterMakerContract
     private function getRegex(): string
     {
         $regex = [];
-        foreach ($this->regex as $k => $v) {
-            preg_match('#\^(.*)\$#', $k, $matches);
-            $regex[] = '|' . $matches[1] . " (*:$v)";
+        foreach ($this->regexes as $key => $id) {
+            preg_match('#\^(.*)\$#', $key, $matches);
+            $regex[] = sprintf(RegexPropertyContract::REGEX_ENTRY_TEMPLATE, $matches[1], $id);
         }
 
-        return sprintf(RouterMakerContract::REGEX_TEPLATE, implode('', $regex));
+        return sprintf(RegexPropertyContract::REGEX_TEPLATE, implode('', $regex));
     }
 
     private function assertUniquePath(RouteContract $route): void

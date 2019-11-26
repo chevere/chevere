@@ -11,14 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Router\Properties;
+namespace Chevere\Tests\Router\Properties;
 
-use Chevere\Contracts\ToArrayContract;
+use PHPUnit\Framework\TestCase;
 
-interface IndexPropertyContract extends ToArrayContract
-{
-    /**
-     * Creates a new instance.
-     */
-    public function __construct(array $index);
-}
+// final class IndexPropertyTest extends TestCase
+// {
+// }

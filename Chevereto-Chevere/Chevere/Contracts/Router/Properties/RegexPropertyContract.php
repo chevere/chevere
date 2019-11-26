@@ -13,13 +13,24 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Router\Properties;
 
-use Chevere\Contracts\Router\RouterPropertyContract;
 use Chevere\Contracts\ToStringContract;
+use Chevere\Components\Router\Exceptions\RouterPropertyException;
 
-interface RegexPropertyContract extends RouterPropertyContract, ToStringContract
+interface RegexPropertyContract extends ToStringContract
 {
+    /** @var string template pattern used for the regex property, %s gets replaced */
+    const REGEX_TEPLATE = '#^(?%s)$#x';
+
+    /** @var string regex pattern used to detect and capture routing elements */
+    const REGEX_MATCHER = '~\#\^\(\?((\|(\S+) \(\*\:\d+\))+)\)\$\#x~';
+
+    /** @var string %1 route, %2 id */
+    const REGEX_ENTRY_TEMPLATE = '|%s (*:%s)';
+
     /**
      * Creates a new instance.
+     *
+     * @throws RouterPropertyException if the value doesn't match the property format
      */
     public function __construct(string $regex);
 }

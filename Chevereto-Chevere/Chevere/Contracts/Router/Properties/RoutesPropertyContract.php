@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Router\Properties;
 
-use Chevere\Contracts\Router\RouterPropertyContract;
 use Chevere\Contracts\ToArrayContract;
 
-interface RoutesPropertyContract extends RouterPropertyContract, ToArrayContract
+interface RoutesPropertyContract extends ToArrayContract
 {
     /**
      * Creates a new instance.

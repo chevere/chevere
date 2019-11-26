@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Properties;
 
+use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Exceptions\RegexException;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Router\Exceptions\RouterPropertyException;
@@ -23,15 +24,17 @@ final class RegexProperty implements RegexPropertyContract
 {
     use ToStringTrait;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(string $regex)
     {
         $this->value = $regex;
+        $this->assertRegex();
+        $this->assertFormat();
     }
 
-    /**
-     * @throws RouterPropertyException if the value doesn't match the property format
-     */
-    public function assert(): void
+    private function assertRegex(): void
     {
         try {
             new Regex($this->value);
@@ -42,6 +45,16 @@ final class RegexProperty implements RegexPropertyContract
                 $e->getPrevious()
             );
         }
-        dd($this->value);
+    }
+
+    private function assertFormat(): void
+    {
+        if (!preg_match(RegexPropertyContract::REGEX_MATCHER, $this->value)) {
+            throw new RouterPropertyException(
+                (new Message('Invalid regex pattern: %regex%'))
+                    ->code('%regex%', $this->value)
+                    ->toString()
+            );
+        }
     }
 }

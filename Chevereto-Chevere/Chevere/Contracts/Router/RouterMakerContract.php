@@ -20,8 +20,6 @@ use Chevere\Components\Router\Exceptions\RouterMakerException;
 
 interface RouterMakerContract
 {
-    const REGEX_TEPLATE = '#^(?%s)$#x';
-
     /**
      * Creates a new instance.
      */
