@@ -24,6 +24,9 @@ final class GroupsProperty implements GroupsPropertyContract
     use ToArrayTrait;
     use AssertArrayTrait;
 
+    /** @var Message */
+    private $message;
+
     /**
      * {@inheritdoc}
      */
@@ -36,37 +39,46 @@ final class GroupsProperty implements GroupsPropertyContract
 
     private function assert(): void
     {
+        $this->message = (new Message('Expected type %expected%, type %found% found for %at%'));
         foreach ($this->value as $group => $ids) {
-            $gettype = gettype($group);
-            $message = (new Message('Expected type %expected%, type %found% found for %at%'));
-            if (!is_string($group)) {
+            $this->assertGroupKey($group);
+            $this->assertIds($group, $ids);
+        }
+    }
+
+    private function assertGroupKey($val): void
+    {
+        if (!is_string($val)) {
+            throw new RouterPropertyException(
+                $this->message
+                    ->code('%expected%', 'string')
+                    ->code('%found%', gettype($val))
+                    ->code('%at%', '(key)')
+                    ->toString()
+            );
+        }
+    }
+
+    private function assertIds(string $group, $val): void
+    {
+        if (!is_array($val)) {
+            throw new RouterPropertyException(
+                $this->message
+                    ->code('%expected%', 'array')
+                    ->code('%found%', gettype($val))
+                    ->code('%at%', 'key:' . $group)
+                    ->toString()
+            );
+        }
+        foreach ($val as $key => $id) {
+            if (!is_int($id)) {
                 throw new RouterPropertyException(
-                    $message
-                        ->code('%expected%', 'string')
-                        ->code('%found%', $gettype)
-                        ->code('%at%', '(key)')
+                    $this->message
+                        ->code('%expected%', 'int')
+                        ->code('%found%', gettype($id))
+                        ->code('%at%', "($group:" . (string) $key . ')')
                         ->toString()
                 );
-            }
-            if (!is_array($ids)) {
-                throw new RouterPropertyException(
-                    $message
-                        ->code('%expected%', 'array')
-                        ->code('%found%', $gettype)
-                        ->code('%at%', 'key:' . $group)
-                        ->toString()
-                );
-            }
-            foreach ($ids as $key => $id) {
-                if (!is_int($id)) {
-                    throw new RouterPropertyException(
-                        $message
-                            ->code('%expected%', 'int')
-                            ->code('%found%', gettype($id))
-                            ->code('%at%', "($group:" . (string) $key . ')')
-                            ->toString()
-                    );
-                }
             }
         }
     }
