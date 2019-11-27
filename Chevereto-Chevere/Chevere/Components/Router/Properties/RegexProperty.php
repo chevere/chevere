@@ -40,7 +40,7 @@ final class RegexProperty implements RegexPropertyContract
             new Regex($this->value);
         } catch (RegexException $e) {
             throw new RouterPropertyException(
-                $e->getMessage(),
+                $e->getMessage() . ' ' . $this->value,
                 $e->getCode(),
                 $e->getPrevious()
             );

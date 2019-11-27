@@ -18,22 +18,17 @@ use Chevere\Components\Router\Properties\IndexProperty;
 use Chevere\Components\Router\Properties\NamedProperty;
 use Chevere\Components\Router\Properties\RegexProperty;
 use Chevere\Components\Router\Properties\RoutesProperty;
-use Chevere\Contracts\Router\Properties\GroupsPropertyContract;
-use Chevere\Contracts\Router\Properties\IndexPropertyContract;
-use Chevere\Contracts\Router\Properties\NamedPropertyContract;
-use Chevere\Contracts\Router\Properties\RegexPropertyContract;
-use Chevere\Contracts\Router\Properties\RoutesPropertyContract;
 use Chevere\Contracts\Router\RouterPropertiesContract;
 
 final class RouterProperties implements RouterPropertiesContract
 {
-    /** @var array [propertyName => className,] */
+    /** @var array RegexPropertyContract::class[] */
     private $classMap = [
-        RegexPropertyContract::NAME => RegexProperty::class,
-        RoutesPropertyContract::NAME => RoutesProperty::class,
-        IndexPropertyContract::NAME => IndexProperty::class,
-        GroupsPropertyContract::NAME => GroupsProperty::class,
-        NamedPropertyContract::NAME => NamedProperty::class,
+        RegexProperty::class,
+        RoutesProperty::class,
+        IndexProperty::class,
+        GroupsProperty::class,
+        NamedProperty::class,
     ];
 
     /** @var string */
@@ -168,8 +163,9 @@ final class RouterProperties implements RouterPropertiesContract
      */
     public function assert(): void
     {
-        foreach ($this->classMap as $propertyName => $className) {
-            new $className($this->$propertyName);
+        foreach ($this->classMap as $className) {
+            $prop = $className::NAME;
+            new $className($this->{$prop});
         }
     }
 
@@ -179,8 +175,9 @@ final class RouterProperties implements RouterPropertiesContract
     public function toArray(): array
     {
         $array = [];
-        foreach ($this->classMap as $propertyName => $className) {
-            $array[$propertyName] = $this->$propertyName;
+        foreach ($this->classMap as $className) {
+            $prop = $className::NAME;
+            $array[$prop] = $this->{$prop};
         }
 
         return $array;

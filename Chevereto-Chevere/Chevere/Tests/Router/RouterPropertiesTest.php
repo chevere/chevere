@@ -26,8 +26,8 @@ final class RouterPropertiesTest extends TestCase
         $this->assertSame([], $properties->index());
         $this->assertSame([], $properties->groups());
         $this->assertSame([], $properties->named());
-        $this->assertEquals([
-            'regex' => null,
+        $this->assertSame([
+            'regex' => '',
             'routes' => [],
             'index' => [],
             'groups' => [],
