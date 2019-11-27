@@ -17,11 +17,14 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Exceptions\RegexException;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Router\Exceptions\RouterPropertyException;
+use Chevere\Components\Router\Properties\Traits\AssertsTrait;
 use Chevere\Components\Router\Properties\Traits\ToStringTrait;
 use Chevere\Contracts\Router\Properties\RegexPropertyContract;
+use TypeError;
 
 final class RegexProperty implements RegexPropertyContract
 {
+    use AssertsTrait;
     use ToStringTrait;
 
     /**
@@ -29,9 +32,18 @@ final class RegexProperty implements RegexPropertyContract
      */
     public function __construct(string $regex)
     {
-        $this->value = $regex;
-        $this->assertRegex();
-        $this->assertFormat();
+        try {
+            $this->assertStringNotEmpty($regex);
+            $this->value = $regex;
+            $this->assertRegex();
+            $this->assertFormat();
+        } catch (TypeError $e) {
+            throw new RouterPropertyException(
+                $e->getMessage(),
+                $e->getCode(),
+                $e->getPrevious()
+            );
+        }
     }
 
     private function assertRegex(): void
@@ -39,8 +51,8 @@ final class RegexProperty implements RegexPropertyContract
         try {
             new Regex($this->value);
         } catch (RegexException $e) {
-            throw new RouterPropertyException(
-                $e->getMessage() . ' ' . $this->value,
+            throw new TypeError(
+                $e->getMessage(),
                 $e->getCode(),
                 $e->getPrevious()
             );
@@ -50,7 +62,7 @@ final class RegexProperty implements RegexPropertyContract
     private function assertFormat(): void
     {
         if (!preg_match(RegexPropertyContract::REGEX_MATCHER, $this->value)) {
-            throw new RouterPropertyException(
+            throw new TypeError(
                 (new Message('Invalid regex pattern: %regex%'))
                     ->code('%regex%', $this->value)
                     ->toString()

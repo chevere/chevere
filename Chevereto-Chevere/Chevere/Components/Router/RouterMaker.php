@@ -75,6 +75,7 @@ final class RouterMaker implements RouterMakerContract
         $routeDetails = [
             'id' => $id,
             'group' => $group,
+            'name' => null,
         ];
         if ($route->hasName()) {
             $new->assertUniqueName($route);

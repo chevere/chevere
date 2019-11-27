@@ -28,10 +28,10 @@ final class VariableExport implements VariableExportContract
     /** @var mixed */
     private $var;
 
-    /** @var array Used to map the location of the validation */
+    /** @var array [(int)$id => 'entry'] */
     private $locator;
 
-    /** @var array Contains the checked (ok) locator entries */
+    /** @var array (int)$id[] Checked entries */
     private $check;
 
     /**
@@ -105,14 +105,15 @@ final class VariableExport implements VariableExportContract
     private function assertIsNotResource($var): void
     {
         if (is_resource($var)) {
+            $at = $this->locator;
             if (empty($this->locator)) {
                 $message = new Message("Argument is a resource which can't be exported");
             } else {
                 foreach ($this->check as $remove) {
-                    unset($this->locator[$remove]);
+                    unset($at[$remove]);
                 }
-                $message = (new Message("Passed argument contains a resource which can't be exported at %locator%"))
-                    ->code('%locator%', '[' . implode('][', $this->locator) . ']');
+                $message = (new Message("Passed argument contains a resource which can't be exported at %at%"))
+                    ->code('%at%', '[' . implode('][', $at) . ']');
             }
             throw new VariableIsResourceException(
                 $message->toString()

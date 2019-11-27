@@ -15,14 +15,15 @@ namespace Chevere\Components\Router\Properties;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouterPropertyException;
-use Chevere\Components\Router\Properties\Traits\AssertArrayTrait;
+use Chevere\Components\Router\Properties\Traits\AssertsTrait;
 use Chevere\Components\Router\Properties\Traits\ToArrayTrait;
 use Chevere\Contracts\Router\Properties\GroupsPropertyContract;
+use TypeError;
 
 final class GroupsProperty implements GroupsPropertyContract
 {
     use ToArrayTrait;
-    use AssertArrayTrait;
+    use AssertsTrait;
 
     /** @var Message */
     private $message;
@@ -32,51 +33,39 @@ final class GroupsProperty implements GroupsPropertyContract
      */
     public function __construct(array $groups)
     {
-        $this->value = $groups;
-        $this->assertArray();
-        $this->assert();
-    }
-
-    private function assert(): void
-    {
-        $this->message = (new Message('Expected type %expected%, type %found% found for %at%'));
-        foreach ($this->value as $group => $ids) {
-            $this->assertGroupKey($group);
-            $this->assertIds($group, $ids);
-        }
-    }
-
-    private function assertGroupKey($val): void
-    {
-        if (!is_string($val)) {
+        try {
+            $this->assertArrayNotEmpty($groups);
+            $this->value = $groups;
+            $this->asserts();
+        } catch (TypeError $e) {
             throw new RouterPropertyException(
-                $this->message
-                    ->code('%expected%', 'string')
-                    ->code('%found%', gettype($val))
-                    ->code('%at%', '(key)')
-                    ->toString()
-            );
-        }
-    }
-
-    private function assertIds(string $group, $val): void
-    {
-        if (!is_array($val)) {
-            throw new RouterPropertyException(
-                $this->message
+                (new Message('Expected type %expected%, type %found% found for %at%'))
                     ->code('%expected%', 'array')
-                    ->code('%found%', gettype($val))
-                    ->code('%at%', 'key:' . $group)
+                    // ->code('%found%', gettype($ids))
+                    // ->code('%at%', 'group:' . $group)
                     ->toString()
             );
         }
-        foreach ($val as $key => $id) {
+    }
+
+    private function asserts(): void
+    {
+        foreach ($this->value as $group => $ids) {
+            $this->assertString($group);
+            $this->assertArrayNotEmpty($ids);
+            $this->assertIds($ids);
+        }
+    }
+
+    private function assertIds($ids): void
+    {
+        foreach ($ids as $key => $id) {
             if (!is_int($id)) {
-                throw new RouterPropertyException(
+                throw new TypeError(
                     $this->message
                         ->code('%expected%', 'int')
                         ->code('%found%', gettype($id))
-                        ->code('%at%', "($group:" . (string) $key . ')')
+                        // ->code('%at%', "($group:" . (string) $key . ')')
                         ->toString()
                 );
             }
