@@ -17,8 +17,12 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouterPropertyException;
 use Chevere\Components\Router\Properties\Traits\AssertsTrait;
 use Chevere\Components\Router\Properties\Traits\ToArrayTrait;
+use Chevere\Components\Type\Type;
 use Chevere\Contracts\Router\Properties\IndexPropertyContract;
+use Chevere\Contracts\Type\TypeContract;
+use Exception;
 use Throwable;
+use TypeError;
 
 final class IndexProperty implements IndexPropertyContract
 {
@@ -63,13 +67,49 @@ final class IndexProperty implements IndexPropertyContract
         $this->locator[] = 'array';
         foreach ($this->value as $pathUri => $meta) {
             $this->locator[] = (string) $pathUri;
+            $arrayKey = array_key_last($this->locator);
             $this->assertString($pathUri);
-            // $this->assertMeta($meta);
-            $this->check[] = array_key_last($this->locator);
+            $this->locator[] = 'meta';
+            $metakey = array_key_last($this->locator);
+            $this->assertArrayNotEmpty($meta);
+            $this->assertMeta($meta);
+            $this->check[] = $metakey;
+            $this->check[] = $arrayKey;
         }
     }
 
-    private function assertMeta(): void
+    private function assertMeta(array $meta): void
     {
+        foreach ([
+            'id' => [TypeContract::INTEGER],
+            'group' => [TypeContract::STRING],
+            'name' => [TypeContract::NULL, TypeContract::STRING],
+        ] as $key => $acceptTypes) {
+            if (!array_key_exists($key, $meta)) {
+                throw new Exception(
+                    (new Message('Missing array key %key% (type %type%)'))
+                        ->code('%key%', $key)
+                        ->code('%type%', gettype($key))
+                        ->toString()
+                );
+            }
+            $this->locator[] = $key;
+            $errors = [];
+            $hit = 0;
+            foreach ($acceptTypes as $type) {
+                if (!(new Type($type))->validate($meta[$key])) {
+                    $errors[] = (new Message('Expected type %type%, type %provided% provided'))
+                        ->code('%type%', $type)
+                        ->code('%provided%', gettype($meta[$key]))
+                        ->toString();
+                } else {
+                    ++$hit;
+                }
+            }
+            if (0 == $hit) {
+                throw new TypeError($errors[0]);
+            }
+            $this->check[] = array_key_last($this->locator);
+        }
     }
 }
