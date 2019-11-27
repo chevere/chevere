@@ -18,6 +18,9 @@ use Chevere\Components\Router\Exceptions\RouterPropertyException;
 
 interface GroupsPropertyContract extends ToArrayContract
 {
+    /** @var string property name */
+    const NAME = 'groups';
+
     /**
      * Creates a new instance.
      *

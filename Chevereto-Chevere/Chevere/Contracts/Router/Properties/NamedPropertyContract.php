@@ -18,6 +18,9 @@ use Chevere\Components\Router\Exceptions\RouterPropertyException;
 
 interface NamedPropertyContract extends ToArrayContract
 {
+    /** @var string property name */
+    const NAME = 'named';
+
     /**
      * Creates a new instance.
      *

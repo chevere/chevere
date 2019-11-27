@@ -18,6 +18,9 @@ use Chevere\Components\Router\Exceptions\RouterPropertyException;
 
 interface RegexPropertyContract extends ToStringContract
 {
+    /** @var string property name */
+    const NAME = 'regex';
+
     /** @var string template pattern used for the regex property, %s gets replaced */
     const REGEX_TEPLATE = '#^(?%s)$#x';
 

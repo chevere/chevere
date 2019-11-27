@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Router;
 
+use Chevere\Contracts\Router\Properties\RegexPropertyContract;
+
 interface RouterPropertiesContract
 {
     /**

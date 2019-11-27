@@ -15,7 +15,6 @@ namespace Chevere\Components\Router;
 
 use Chevere\Components\Router\Exceptions\RoutePathExistsException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Regex\Regex;
 use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
 use Chevere\Components\Router\Exceptions\RouteNameConflictException;
 use Chevere\Components\Router\Exceptions\RouterMakerException;
