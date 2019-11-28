@@ -65,14 +65,7 @@ final class IndexProperty extends PropertyBase implements IndexPropertyContract
             'group' => [TypeContract::STRING],
             'name' => [TypeContract::NULL, TypeContract::STRING],
         ] as $key => $acceptTypes) {
-            if (!array_key_exists($key, $meta)) {
-                throw new Exception(
-                    (new Message('Missing array key %key% (type %type%)'))
-                        ->code('%key%', $key)
-                        ->code('%type%', gettype($key))
-                        ->toString()
-                );
-            }
+            $this->assertMetaKey($key, $meta);
             $this->breadcrum = $this->breadcrum
                 ->withAddedItem((string) $key);
             $pos = $this->breadcrum->pos();
@@ -94,6 +87,18 @@ final class IndexProperty extends PropertyBase implements IndexPropertyContract
             }
             $this->breadcrum = $this->breadcrum
                 ->withRemovedItem($pos);
+        }
+    }
+
+    private function assertMetaKey(string $key, array $meta): void
+    {
+        if (!array_key_exists($key, $meta)) {
+            throw new Exception(
+                (new Message('Missing array key %key% (type %type%)'))
+                    ->code('%key%', $key)
+                    ->code('%type%', gettype($key))
+                    ->toString()
+            );
         }
     }
 }
