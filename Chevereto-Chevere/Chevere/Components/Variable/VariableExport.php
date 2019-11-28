@@ -13,12 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Variable;
 
+use Chevere\Components\Breadcrum\Breadcrum;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Variable\Exceptions\VariableExportException;
 use Chevere\Components\Variable\Exceptions\VariableIsResourceException;
 use Chevere\Contracts\Variable\VariableExportContract;
 use ReflectionObject;
 use Throwable;
+use Chevere\Contracts\Breadcrum\BreadcrumContract;
 
 /**
  * Allows to interact with exportable variables.
@@ -28,11 +30,8 @@ final class VariableExport implements VariableExportContract
     /** @var mixed */
     private $var;
 
-    /** @var array [(int)$id => 'entry'] */
-    private $locator;
-
-    /** @var array (int)$id[] Checked entries */
-    private $check;
+    /** @var BreadcrumContract */
+    private $breadcrum;
 
     /**
      * {@inheritdoc}
@@ -40,8 +39,7 @@ final class VariableExport implements VariableExportContract
     public function __construct($var)
     {
         $this->var = $var;
-        $this->locator = [];
-        $this->check = [];
+        $this->breadcrum = new Breadcrum();
         try {
             $this->assertExportable($this->var);
         } catch (Throwable $e) {
@@ -77,43 +75,47 @@ final class VariableExport implements VariableExportContract
     {
         $this->assertIsNotResource($var);
         if (is_iterable($var)) {
-            $this->locator[] = '(iterable)';
-            $iterableKey = array_key_last($this->locator);
+            $this->breadcrum = $this->breadcrum
+                ->withAddedItem('(iterable)');
+            $iterableKey = $this->breadcrum->pos();
             foreach ($var as $key => $val) {
-                $this->locator[] = 'key:' . $key;
-                $memberKey = array_key_last($this->locator);
+                $this->breadcrum = $this->breadcrum
+                ->withAddedItem('key:' . $key);
+                $memberKey = $this->breadcrum->pos();
                 $this->assertExportable($val);
-                $this->check[] = $memberKey;
+                $this->breadcrum = $this->breadcrum
+                    ->withRemovedItem($memberKey);
             }
-            $this->check[] = $iterableKey;
+            $this->breadcrum = $this->breadcrum
+                ->withRemovedItem($iterableKey);
         } elseif (is_object($var)) {
-            $this->locator[] = 'object:' . get_class($var);
-            $objectKey = array_key_last($this->locator);
+            $this->breadcrum = $this->breadcrum
+                ->withAddedItem('object:' . get_class($var));
+            $objectKey = $this->breadcrum->pos();
             $reflection = new ReflectionObject($var);
             $properties = $reflection->getProperties();
             foreach ($properties as $property) {
                 $property->setAccessible(true);
-                $this->locator[] = 'property:$' . $property->getName();
-                $propertyKey = array_key_last($this->locator);
+                $this->breadcrum = $this->breadcrum
+                    ->withAddedItem('property:$' . $property->getName());
+                $propertyKey = $this->breadcrum->pos();
                 $this->assertExportable($property->getValue($var));
-                $this->check[] = $propertyKey;
+                $this->breadcrum = $this->breadcrum
+                    ->withRemovedItem($propertyKey);
             }
-            $this->check[] = $objectKey;
+            $this->breadcrum = $this->breadcrum
+                    ->withRemovedItem($objectKey);
         }
     }
 
     private function assertIsNotResource($var): void
     {
         if (is_resource($var)) {
-            $at = $this->locator;
-            if (empty($this->locator)) {
-                $message = new Message("Argument is a resource which can't be exported");
-            } else {
-                foreach ($this->check as $remove) {
-                    unset($at[$remove]);
-                }
+            if ($this->breadcrum->hasAny()) {
                 $message = (new Message("Passed argument contains a resource which can't be exported at %at%"))
-                    ->code('%at%', '[' . implode('][', $at) . ']');
+                    ->code('%at%', $this->breadcrum->toString());
+            } else {
+                $message = new Message("Argument is a resource which can't be exported");
             }
             throw new VariableIsResourceException(
                 $message->toString()

@@ -17,14 +17,12 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Exceptions\RegexException;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Router\Exceptions\RouterPropertyException;
-use Chevere\Components\Router\Properties\Traits\AssertsTrait;
 use Chevere\Components\Router\Properties\Traits\ToStringTrait;
 use Chevere\Contracts\Router\Properties\RegexPropertyContract;
 use TypeError;
 
 final class RegexProperty implements RegexPropertyContract
 {
-    use AssertsTrait;
     use ToStringTrait;
 
     /**

@@ -35,9 +35,10 @@ final class GroupsPropertyTest extends TestCase
     {
         $array = [
             'key1' => [
-                0 => 0,
+                0 => 1,
                 1 => 1,
             ],
+
             'key2' => [
                 0 => 2,
             ],
