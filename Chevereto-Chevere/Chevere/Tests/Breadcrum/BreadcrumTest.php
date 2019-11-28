@@ -33,6 +33,8 @@ final class BreadcrumTest extends TestCase
         $breadcrum = new Breadcrum();
         $this->assertEmpty($breadcrum->toArray());
         $this->assertEmpty($breadcrum->toString());
+        $this->assertFalse($breadcrum->hasAny());
+        $this->assertFalse($breadcrum->has(0));
         $this->expectException(BreadcrumException::class);
         $breadcrum->pos(0);
     }
@@ -44,6 +46,7 @@ final class BreadcrumTest extends TestCase
         foreach ($items as $pos => $item) {
             $breadcrum = $breadcrum
                 ->withAddedItem($item);
+            $this->assertTrue($breadcrum->has($pos));
             $this->assertSame($pos, $breadcrum->pos());
             $this->assertContains($item, $breadcrum->toArray());
             $this->assertStringContainsString($item, $breadcrum->toString());
@@ -63,9 +66,11 @@ final class BreadcrumTest extends TestCase
             $breadcrum = $breadcrum
                 ->withAddedItem($item)
                 ->withRemovedItem($pos);
+            $this->assertFalse($breadcrum->has($pos));
             $this->assertNotContains($item, $breadcrum->toArray());
             $this->assertStringNotContainsString($item, $breadcrum->toString());
         }
+        $this->assertFalse($breadcrum->hasAny());
         $this->assertEmpty($breadcrum->toArray());
         $this->assertEmpty($breadcrum->toString());
     }

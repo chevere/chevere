@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Properties;
 
+use Chevere\Components\Breadcrum\Breadcrum;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouterPropertyException;
 use Chevere\Components\Router\Properties\Traits\AssertsTrait;
@@ -23,17 +24,15 @@ use Chevere\Contracts\Type\TypeContract;
 use Exception;
 use Throwable;
 use TypeError;
+use Chevere\Contracts\Breadcrum\BreadcrumContract;
 
 final class IndexProperty implements IndexPropertyContract
 {
     use ToArrayTrait;
     use AssertsTrait;
 
-    /** @var array [(int)$id => 'entry'] */
-    private $locator;
-
-    /** @var array (int)$id[] Checked entries */
-    private $check;
+    /** @var BreadcrumContract */
+    private $breadcrum;
 
     /**
      * {@inheritdoc}
@@ -41,20 +40,16 @@ final class IndexProperty implements IndexPropertyContract
     public function __construct(array $index)
     {
         try {
-            $this->locator = [];
-            $this->check = [];
+            $this->breadcrum = new Breadcrum();
             $this->assertArrayNotEmpty($index);
             $this->value = $index;
             $this->asserts();
         } catch (Throwable $e) {
             $message = new Message($e->getMessage());
-            if (!empty($this->locator)) {
-                foreach ($this->check as $remove) {
-                    unset($this->locator[$remove]);
-                }
+            if ($this->breadcrum->hasAny()) {
                 $message = (new Message('%exception% at %at%'))
                     ->strtr('%exception%', $e->getMessage())
-                    ->code('%at%', '[' . implode('][', $this->locator) . ']');
+                    ->code('%at%', $this->breadcrum->toString());
             }
             throw new RouterPropertyException(
                 $message->toString()
@@ -64,17 +59,21 @@ final class IndexProperty implements IndexPropertyContract
 
     private function asserts(): void
     {
-        $this->locator[] = 'array';
+        $this->breadcrum = $this->breadcrum
+            ->withAddedItem('array');
         foreach ($this->value as $pathUri => $meta) {
-            $this->locator[] = (string) $pathUri;
-            $arrayKey = array_key_last($this->locator);
+            $this->breadcrum = $this->breadcrum
+                ->withAddedItem((string) $pathUri);
+            $arrayKey = $this->breadcrum->pos();
             $this->assertString($pathUri);
-            $this->locator[] = 'meta';
-            $metakey = array_key_last($this->locator);
+            $this->breadcrum = $this->breadcrum
+                ->withAddedItem('meta');
+            $metakey = $this->breadcrum->pos();
             $this->assertArrayNotEmpty($meta);
             $this->assertMeta($meta);
-            $this->check[] = $metakey;
-            $this->check[] = $arrayKey;
+            $this->breadcrum = $this->breadcrum
+                ->withRemovedItem($metakey)
+                ->withRemovedItem($arrayKey);
         }
     }
 
@@ -93,7 +92,9 @@ final class IndexProperty implements IndexPropertyContract
                         ->toString()
                 );
             }
-            $this->locator[] = (string) $key;
+            $this->breadcrum = $this->breadcrum
+                ->withAddedItem((string) $key);
+            $pos = $this->breadcrum->pos();
             $errors = [];
             $hit = 0;
             foreach ($acceptTypes as $type) {
@@ -109,7 +110,8 @@ final class IndexProperty implements IndexPropertyContract
             if (0 == $hit) {
                 throw new TypeError($errors[0]);
             }
-            $this->check[] = array_key_last($this->locator);
+            $this->breadcrum = $this->breadcrum
+                ->withRemovedItem($pos);
         }
     }
 }

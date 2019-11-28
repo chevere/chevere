@@ -25,6 +25,16 @@ interface BreadcrumContract extends ToArrayContract, ToStringContract
     public function __construct();
 
     /**
+     * Returns a boolean indicating whether the instance has the given position.
+     */
+    public function has(int $pos): bool;
+
+    /**
+     * Returns a boolean indicating whether the instance has any items.
+     */
+    public function hasAny(): bool;
+
+    /**
      * Returns the current breadcrum position.
      *
      * @throws BreadcrumException if there's no item

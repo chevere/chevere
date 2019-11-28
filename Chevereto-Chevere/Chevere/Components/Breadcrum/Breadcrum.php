@@ -40,6 +40,22 @@ final class Breadcrum implements BreadcrumContract
     /**
      * {@inheritdoc}
      */
+    public function has(int $pos): bool
+    {
+        return array_key_exists($pos, $this->items);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasAny(): bool
+    {
+        return !empty($this->items);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function pos(): int
     {
         if (!isset($this->pos)) {
