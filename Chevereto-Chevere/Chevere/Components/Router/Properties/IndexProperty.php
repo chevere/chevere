@@ -93,7 +93,7 @@ final class IndexProperty implements IndexPropertyContract
                         ->toString()
                 );
             }
-            $this->locator[] = $key;
+            $this->locator[] = (string) $key;
             $errors = [];
             $hit = 0;
             foreach ($acceptTypes as $type) {

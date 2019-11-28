@@ -16,7 +16,7 @@ namespace Chevere\Contracts;
 interface ToStringContract
 {
     /**
-     * Returns an array representing the object data as string.
+     * Returns a string, representing the object itself or some of its data/properties.
      */
     public function toString(): string;
 }

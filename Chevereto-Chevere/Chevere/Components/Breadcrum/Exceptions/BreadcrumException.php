@@ -11,12 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts;
+namespace Chevere\Components\Breadcrum\Exceptions;
 
-interface ToArrayContract
+use Exception;
+
+/**
+ * Exception thrown by the BreadcrumContract.
+ */
+final class BreadcrumException extends Exception
 {
-    /**
-     * Returns an array, representing the object itself or some of its data/properties.
-     */
-    public function toArray(): array;
 }
