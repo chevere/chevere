@@ -69,21 +69,21 @@ final class IndexProperty extends PropertyBase implements IndexPropertyContract
             $this->breadcrum = $this->breadcrum
                 ->withAddedItem((string) $key);
             $pos = $this->breadcrum->pos();
-            $errors = [];
+            $error = '';
             $hit = 0;
             foreach ($acceptTypes as $type) {
                 if (!(new Type($type))->validate($meta[$key])) {
-                    $errors[] = $this->getBadTypeMessage()
+                    $error = $this->getBadTypeMessage()
                         ->code('%for%', $key)
-                        ->code('%expected%', $type)
+                        ->code('%expected%', implode(' | ', $acceptTypes))
                         ->code('%provided%', gettype($meta[$key]))
                         ->toString();
-                } else {
-                    ++$hit;
+                    continue;
                 }
+                ++$hit;
             }
             if (0 == $hit) {
-                throw new TypeError($errors[0]);
+                throw new TypeError($error);
             }
             $this->breadcrum = $this->breadcrum
                 ->withRemovedItem($pos);

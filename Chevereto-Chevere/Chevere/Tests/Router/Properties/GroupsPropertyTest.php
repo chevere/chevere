@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 
 final class GroupsPropertyTest extends TestCase
 {
-    public function testInvalidConstructor(): void
+    public function testConstructorWithEmpty(): void
     {
         $this->expectException(RouterPropertyException::class);
         new GroupsProperty([]);
