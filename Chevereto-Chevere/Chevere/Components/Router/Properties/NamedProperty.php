@@ -39,12 +39,8 @@ final class NamedProperty extends PropertyBase implements NamedPropertyContract
                 ->withAddedItem((string) $name);
             $pos = $this->breadcrum->pos();
             $this->assertString($name);
-            $this->breadcrum = $this->breadcrum
-                ->withAddedItem((string) $id);
-            $posId = $this->breadcrum->pos();
             $this->assertInt($id);
             $this->breadcrum = $this->breadcrum
-                ->withRemovedItem($posId)
                 ->withRemovedItem($pos);
         }
     }

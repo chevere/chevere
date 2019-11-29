@@ -14,14 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Router\Properties;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Regex\Exceptions\RegexException;
 use Chevere\Components\Regex\Regex;
-use Chevere\Components\Router\Exceptions\RouterPropertyException;
 use Chevere\Components\Router\Properties\Traits\ToStringTrait;
 use Chevere\Contracts\Router\Properties\RegexPropertyContract;
-use TypeError;
+use InvalidArgumentException;
 
-final class RegexProperty implements RegexPropertyContract
+final class RegexProperty extends PropertyBase implements RegexPropertyContract
 {
     use ToStringTrait;
 
@@ -30,37 +28,26 @@ final class RegexProperty implements RegexPropertyContract
      */
     public function __construct(string $regex)
     {
-        try {
-            $this->assertStringNotEmpty($regex);
-            $this->value = $regex;
-            $this->assertRegex();
-            $this->assertFormat();
-        } catch (TypeError $e) {
-            throw new RouterPropertyException(
-                $e->getMessage(),
-                $e->getCode(),
-                $e->getPrevious()
-            );
-        }
+        $this->value = $regex;
+        $this->tryAsserts();
+    }
+
+    protected function asserts(): void
+    {
+        $this->assertStringNotEmpty($this->value);
+        $this->assertRegex();
+        $this->assertFormat();
     }
 
     private function assertRegex(): void
     {
-        try {
-            new Regex($this->value);
-        } catch (RegexException $e) {
-            throw new TypeError(
-                $e->getMessage(),
-                $e->getCode(),
-                $e->getPrevious()
-            );
-        }
+        new Regex($this->value);
     }
 
     private function assertFormat(): void
     {
         if (!preg_match(RegexPropertyContract::REGEX_MATCHER, $this->value)) {
-            throw new TypeError(
+            throw new InvalidArgumentException(
                 (new Message('Invalid regex pattern: %regex%'))
                     ->code('%regex%', $this->value)
                     ->toString()
