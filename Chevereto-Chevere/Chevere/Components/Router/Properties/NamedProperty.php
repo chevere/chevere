@@ -16,20 +16,36 @@ namespace Chevere\Components\Router\Properties;
 use Chevere\Components\Router\Properties\Traits\ToArrayTrait;
 use Chevere\Contracts\Router\Properties\NamedPropertyContract;
 
-final class NamedProperty implements NamedPropertyContract
+final class NamedProperty extends PropertyBase implements NamedPropertyContract
 {
     use ToArrayTrait;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(array $named)
     {
         $this->value = $named;
+        $this->tryAsserts();
     }
 
     /**
-     * @throws RouterPropertyException if the value doesn't match the property format
+     * {@inheritdoc}
      */
-    public function assert(): void
+    protected function asserts(): void
     {
-        dd($this->value);
+        foreach ($this->value as $name => $id) {
+            $this->breadcrum = $this->breadcrum
+                ->withAddedItem((string) $name);
+            $pos = $this->breadcrum->pos();
+            $this->assertString($name);
+            $this->breadcrum = $this->breadcrum
+                ->withAddedItem((string) $id);
+            $posId = $this->breadcrum->pos();
+            $this->assertInt($id);
+            $this->breadcrum = $this->breadcrum
+                ->withRemovedItem($posId)
+                ->withRemovedItem($pos);
+        }
     }
 }
