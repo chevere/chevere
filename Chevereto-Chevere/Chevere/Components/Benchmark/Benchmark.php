@@ -46,79 +46,78 @@ final class Benchmark
     const COLUMNS = 50;
 
     /** @var string Printable string (PrintableTrait) */
-    private $printable;
+    private string $printable;
 
     /** @var int Nanotime construct object */
-    private $constructTime;
+    private int $constructTime;
 
     /** @var int time */
-    private $maxExecutionTime;
+    private int $maxExecutionTime;
 
     /** @var float time */
-    private $requestTime;
+    private float $requestTime;
 
     /** @var int Number of times to run each callable */
-    private $times;
+    private int $times;
 
     /** @var int Count of callables passed */
-    private $callablesCount;
+    private int $callablesCount;
 
-    /** @var ConsoleColor */
-    private $consoleColor;
+    private ConsoleColor $consoleColor;
 
     /** @var int Count of unnamed callables passed */
-    private $unnammedCallablesCount;
+    private int $unnammedCallablesCount;
 
     /** @var int Maximum time allowed for the benchmark, in seconds */
-    private $timeLimit;
+    private int $timeLimit;
 
     /** @var array Arguments that will be passed to callables */
-    private $arguments;
+    private array $arguments;
 
     /** @var array [id => $callableName] */
-    private $index;
+    private array $index;
 
     /** @var array [id => $callable] */
-    private $callables;
+    private array $callables;
 
     /** @var array [id => $timeTaken] The time taken by each callable */
-    private $records;
+    private array $records;
 
     /** @var array The results (readable) for each callable */
-    private $results;
+    private array $results;
 
     /** @var bool True if isPHPAborted || isSelfAborted */
-    private $isAborted;
+    private bool $isAborted;
 
     /** @var bool True if PHP execution time is about to run out */
-    private $isPHPAborted;
+    private bool $isPHPAborted;
 
     /** @var bool True if the timeLimit has been reached */
-    private $isSelfAborted;
+    private bool $isSelfAborted;
 
     /** @var int Nanotime just before running the callables */
-    private $startupTime;
+    private int $startupTime;
 
     /** @var int Time taken to run the benchmark */
-    private $timeTaken;
+    private int $timeTaken;
 
     /** @var int */
-    private $recordsCount;
+    private int $recordsCount;
 
     /** @var int */
-    private $recordsProcessed;
+    private int $recordsProcessed;
 
     /** @var array The benchmark document (lines) */
-    private $lines;
+    private array $lines;
 
     /** @var int Auxiliar variable used to store the number of times each callable runs */
-    private $runs;
+    private int $runs;
 
     /** @var string Line separator fixed to column width */
-    private $lineSeparator;
+    private string $lineSeparator;
 
     /** @var string The readable string, like `Time taken: 10s` */
-    private $timeTakenReadable;
+    private string $timeTakenReadable;
 
     /**
      * @param int $times Number of times to run each callable

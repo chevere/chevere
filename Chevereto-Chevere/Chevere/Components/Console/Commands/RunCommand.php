@@ -63,35 +63,34 @@ final class RunCommand extends Command
         ],
     ];
 
-    /** @var BuilderContract */
-    private $builder;
+    private BuilderContract $builder;
 
     /** @var string */
-    private $callable;
+    private string $callable;
 
     /** @var array */
-    protected $argument;
+    protected array $argument;
 
     /** @var mixed */
     private $return;
 
     /** @var string */
-    private $export;
+    private string $export;
 
     /** @var string */
-    private $buffer;
+    private string $buffer;
 
     /** @var bool */
-    private $isNoFormat;
+    private bool $isNoFormat;
 
     /** @var bool */
-    private $isReturn;
+    private bool $isReturn;
 
     /** @var bool */
-    private $isBuffer;
+    private bool $isBuffer;
 
     /** @var array */
-    private $lines;
+    private array $lines;
 
     public function callback(BuilderContract $builder): int
     {

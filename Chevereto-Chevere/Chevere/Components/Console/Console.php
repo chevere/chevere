@@ -32,37 +32,32 @@ use Chevere\Components\Message\Message;
 use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\Console\CommandContract;
 use Chevere\Contracts\Console\ConsoleContract;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
 /**
  * The built-in Chevere application console.
  */
 final class Console implements ConsoleContract
 {
-    /** @var ArgvInput */
-    private $input;
+    private ArgvInput $input;
 
-    /** @var ConsoleOutput */
-    private $output;
+    private ConsoleOutputInterface $output;
 
-    /** @var CommandContract */
-    private $command;
+    private CommandContract $command;
 
     /** @var string The first argument (command name) passed */
-    private $commandName;
+    private ?string $commandName;
 
     /** @var true */
-    private $isBuiltIn;
+    private bool $isBuiltIn;
 
-    /** @var Symfony */
-    private $symfony;
+    private Symfony $symfony;
 
-    /** @var SymfonyStyle */
-    private $style;
+    private SymfonyStyle $style;
 
-    /** @var BuilderContract */
-    private $builder;
+    private BuilderContract $builder;
 
-    private $commandNames = [
+    private array $commandNames = [
         BuildCommand::class,
         ClearLogsCommand::class,
         RequestCommand::class,

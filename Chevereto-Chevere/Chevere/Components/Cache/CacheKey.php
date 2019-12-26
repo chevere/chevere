@@ -20,7 +20,7 @@ use Chevere\Contracts\Cache\CacheKeyContract;
 final class CacheKey implements CacheKeyContract
 {
     /** @var string */
-    private $key;
+    private string $key;
 
     /**
      * {@inheritdoc}

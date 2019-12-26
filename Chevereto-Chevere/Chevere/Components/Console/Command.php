@@ -25,11 +25,9 @@ use Chevere\Contracts\Console\SymfonyCommandContract;
  */
 abstract class Command implements CommandContract
 {
-    /** @var Console */
-    private $console;
+    private Console $console;
 
-    /** @var SymfonyCommandContract */
-    private $symfony;
+    private SymfonyCommandContract $symfony;
 
     final public function __construct(Console $console)
     {

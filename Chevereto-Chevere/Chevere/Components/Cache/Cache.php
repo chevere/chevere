@@ -35,10 +35,10 @@ use Chevere\Contracts\Variable\VariableExportContract;
 final class Cache implements CacheContract
 {
     /** @var DirContract */
-    private $dir;
+    private DirContract $dir;
 
     /** @var array An array [key => [checksum => , path =>]] containing information about the cache items */
-    private $puts;
+    private array $puts;
 
     /**
      * {@inheritdoc}

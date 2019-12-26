@@ -106,13 +106,13 @@ final class RequestCommand extends Command
     ];
 
     /** @var array */
-    private $arguments;
+    private array $arguments;
 
     /** @var array */
-    private $options;
+    private array $options;
 
     /** @var array */
-    private $parsedOptions;
+    private array $parsedOptions;
 
     // List of arguments passed as JSON
     const JSON_OPTIONS = ['get', 'post', 'cookie', 'files'];

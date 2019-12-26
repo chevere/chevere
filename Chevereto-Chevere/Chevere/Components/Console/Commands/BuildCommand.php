@@ -33,8 +33,7 @@ final class BuildCommand extends Command
     const DESCRIPTION = 'Build the App';
     const HELP = 'This command builds the App';
 
-    /** @var BuilderContract */
-    private $builder;
+    private BuilderContract $builder;
 
     public function callback(BuilderContract $builder): int
     {

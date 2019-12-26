@@ -18,8 +18,7 @@ use Chevere\Contracts\File\FileReturnContract;
 
 final class CacheItem implements CacheItemContract
 {
-    /** @var FileReturnContract */
-    private $fileReturn;
+    private FileReturnContract $fileReturn;
 
     public function __construct(FileReturnContract $fileReturn)
     {

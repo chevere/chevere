@@ -41,20 +41,16 @@ final class InspectCommand extends Command
         ['callable', Command::ARGUMENT_REQUIRED, 'A fully-qualified callable name'],
     ];
 
-    /** @var array */
-    private $arguments = [];
+    private array $arguments = [];
 
-    /** @var Reflector */
-    private $reflector;
+    private Reflector $reflector;
 
     /** @var object|string */
     private $callable;
 
-    /** @var string */
-    private $method;
+    private string $method;
 
-    /** @var string */
-    private $callableInput;
+    private string $callableInput;
 
     public function callback(BuilderContract $builder): int
     {

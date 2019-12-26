@@ -19,14 +19,11 @@ use Chevere\Contracts\Breadcrum\BreadcrumContract;
 
 final class Breadcrum implements BreadcrumContract
 {
-    /** @var array */
-    private $items;
+    private array $items;
 
-    /** @var int */
-    private $pos;
+    private int $pos;
 
-    /** @var int */
-    private $id;
+    private int $id;
 
     /**
      * {@inheritdoc}
