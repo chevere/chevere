@@ -18,29 +18,21 @@ namespace Chevere\Components\ExceptionHandler\src;
  */
 final class TemplatedStrings
 {
-    /** @var string */
-    private $titleBreak;
+    private string $titleBreak;
 
-    /** @var array */
-    private $richSection;
+    private array $richSection;
 
-    /** @var array */
-    private $plainSection;
+    private array $plainSection;
 
-    /** @var int */
-    private $sectionLength;
+    private int $sectionLength;
 
-    /** @var int */
-    private $sectionsLength;
+    private int $sectionsLength;
 
-    /** @var int */
-    private $count;
+    private int $count;
 
-    /** @var string */
-    private $rich;
+    private string $rich;
 
-    /** @var string */
-    private $plain;
+    private string $plain;
 
     public function __construct(Formatter $formatter)
     {

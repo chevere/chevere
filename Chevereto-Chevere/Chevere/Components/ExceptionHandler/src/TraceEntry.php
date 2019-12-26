@@ -29,22 +29,20 @@ use function ChevereFn\stringStartsWith;
 final class TraceEntry
 {
     /** @var array Exception trace entry */
-    private $entry;
+    private array $entry;
 
     /** @var int Key for the passed trace entry */
-    private $key;
+    private int $key;
 
     /** @var string Plain representation of the entry arguments */
-    private $plainArgs;
+    private string $plainArgs;
 
     /** @var string Rich representation of the entry arguments (colored) */
-    private $richArgs;
+    private string $richArgs;
 
-    /** @var array */
-    private $rich;
+    private array $rich;
 
-    /** @var array */
-    private $plain;
+    private array $plain;
 
     public function __construct(array $entry, int $key)
     {

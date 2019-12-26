@@ -38,27 +38,23 @@ use const Chevere\CLI;
 final class Output
 {
     /** @var string The text/plain content representation */
-    private $textPlain;
+    private string $textPlain;
 
-    /** @var array */
-    private $tags;
+    private array $tags;
 
-    private $preparedTags;
+    private array $preparedTags;
 
-    /** @var ExceptionHandler */
-    private $exceptionHandler;
+    private ExceptionHandler $exceptionHandler;
 
-    /** @var Formatter */
-    private $formatter;
+    private Formatter $formatter;
 
-    /** @var StreamInterface */
-    private $output;
+    private StreamInterface $output;
 
     /** @var string The rich template string. Note: Placeholders won't be visible when dumping to console */
-    private $richTemplate;
+    private string $richTemplate;
 
     /** @var string The plain template string. */
-    private $plainTemplate;
+    private string $plainTemplate;
 
     public function __construct(ExceptionHandler $exceptionHandler, Formatter $formatter)
     {
@@ -72,7 +68,7 @@ final class Output
             if (CLI) {
                 // $this->setJsonOutput();
                 $this->setConsoleOutput();
-            // $this->setHtmlOutput();
+                // $this->setHtmlOutput();
             } else {
                 $this->setHtmlOutput();
             }

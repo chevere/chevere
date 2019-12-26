@@ -21,15 +21,15 @@ use const Chevere\CLI;
 final class Stack
 {
     /** @var array */
-    private $rich;
+    private array $rich;
 
     /** @var array */
-    private $plain;
+    private array $plain;
 
     /** @var array */
-    private $console;
+    private array $console;
 
-    private $hr = Template::BOX_BREAK_HTML;
+    private string $hr = Template::BOX_BREAK_HTML;
 
     /**
      * @param array $trace An Exception trace

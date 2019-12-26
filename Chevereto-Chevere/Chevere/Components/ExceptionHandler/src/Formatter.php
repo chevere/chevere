@@ -62,25 +62,19 @@ final class Formatter
         self::SECTION_SERVER => false,
     ];
 
-    /** @var ExceptionHandler */
-    private $exceptionHandler;
+    private ExceptionHandler $exceptionHandler;
 
-    /** @var string */
-    private $lineBreak;
+    private string $lineBreak;
 
-    /** @var array */
-    private $plainContentSections;
+    private array $plainContentSections;
 
-    /** @var array */
-    private $richContentSections;
+    private array $richContentSections;
 
-    private $consoleSections;
+    private array $consoleSections;
 
-    /** @var Wrap */
-    private $wrap;
+    private Wrap $wrap;
 
-    /** @var Throwable */
-    private $exception;
+    private Throwable $exception;
 
     public function __construct(ExceptionHandler $exceptionHandler)
     {
@@ -276,9 +270,7 @@ final class Formatter
      */
     private function setConsoleSection(string $key, array $section): void
     {
-        $section = array_map(function (string $value) {
-            return strip_tags(html_entity_decode($value));
-        }, $section);
+        $section = array_map(fn (string $value) => strip_tags(html_entity_decode($value)), $section);
         $this->consoleSections[$key] = $section;
     }
 

@@ -91,31 +91,25 @@ final class ExceptionHandler
         E_USER_DEPRECATED => LogLevel::NOTICE,
     ];
 
-    /** @var RequestContract The detected/forged HTTP request */
-    private $request;
+    private RequestContract $request;
 
-    /** @var bool */
-    private $isDebugEnabled;
+    private bool $isDebugEnabled;
 
-    /** @var string */
-    private $loggerLevel;
+    private string $loggerLevel;
 
-    /** @var Wrap */
-    private $wrap;
+    private Wrap $wrap;
 
     /** @var string */
-    private $logDateFolderFormat;
+    private string $logDateFolderFormat;
 
-    private $logger;
+    private Logger $logger;
 
-    /** @var Runtime */
-    private $runtime;
+    private Runtime $runtime;
 
     /** @var array Contains all the loaded configuration files (App) */
     // private $loadedConfigFiles;
 
-    /** @var Output */
-    private $output;
+    private Output $output;
 
     /**
      * @param mixed $args Arguments passed to the error exception (severity, message, file, line; Exception)

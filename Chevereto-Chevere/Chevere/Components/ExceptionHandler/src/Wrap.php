@@ -31,11 +31,9 @@ final class Wrap
 {
     use DataMethodTrait;
 
-    /** @var Throwable */
-    private $exception;
+    private Throwable $exception;
 
-    /** @var DataContract */
-    private $data;
+    private DataContract $data;
 
     /** @var Throwable $exception */
     public function __construct(Throwable $exception)
