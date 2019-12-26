@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use Chevere\Components\File\FilePhp;
 use InvalidArgumentException;
+use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Variable\VariableExport;
@@ -27,11 +27,9 @@ use Chevere\Contracts\File\FileReturnContract;
  */
 final class Checkout implements CheckoutContract
 {
-    /** @var BuildContract */
-    private $build;
+    private BuildContract $build;
 
-    /** @var FileReturnContract */
-    private $fileReturn;
+    private FileReturnContract $fileReturn;
 
     /**
      * {@inheritdoc}
@@ -76,7 +74,7 @@ final class Checkout implements CheckoutContract
                 (new Message('Instance of %type% %argument% must be built to construct a %className% instance'))
                     ->code('%type%', BuildContract::class)
                     ->code('%argument%', '$build')
-                    ->code('%className%', __CLASS__)
+                    ->code('%className%', self::class)
                     ->toString()
             );
         }

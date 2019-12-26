@@ -16,7 +16,6 @@ namespace Chevere\Components\App;
 use Chevere\Components\App\Exceptions\ParametersDuplicatedException;
 use Chevere\Components\App\Exceptions\ParametersWrongKeyException;
 use Chevere\Components\App\Exceptions\ParametersWrongTypeException;
-use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Path;
 use Chevere\Contracts\App\ParametersContract;
@@ -31,19 +30,18 @@ final class Parameters implements ParametersContract
     /**
      * The keys accepted by this class, with the gettype at right side.
      */
-    private $types = [
+    private array $types = [
         ParametersContract::KEY_API => 'string',
         ParametersContract::KEY_ROUTES => 'array',
     ];
 
-    /** @var ArrayFileContract The parameters array used to construct the object */
-    private $arrayFile;
+    private ArrayFileContract $arrayFile;
 
     /** @var string */
-    private $api;
+    private string $api;
 
     /** @var array */
-    private $routes;
+    private array $routes;
 
     /**
      * {@inheritdoc}
@@ -144,7 +142,7 @@ final class Parameters implements ParametersContract
         if (!array_key_exists($key, $this->types)) {
             throw new ParametersWrongKeyException(
                 (new Message('Unrecognized %className% key "%key%"'))
-                    ->code('%className%', __CLASS__)
+                    ->code('%className%', self::class)
                     ->strtr('%key%', $key)
                     ->toString()
             );

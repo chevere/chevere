@@ -30,17 +30,14 @@ final class App implements AppContract
 {
     use RouteAccessTrait;
 
-    /** @var ResponseContract */
-    private $response;
+    private ResponseContract $response;
 
-    /** @var RequestContract */
-    private $request;
+    private RequestContract $request;
 
-    /** @var ServicesContract */
-    private $services;
+    private ServicesContract $services;
 
     /** @var array String arguments (from request, cli) */
-    private $arguments;
+    private array $arguments;
 
     /**
      * {@inheritdoc}

@@ -48,32 +48,25 @@ use LogicException;
  */
 final class Build implements BuildContract
 {
-    /** @var AppContract */
-    private $app;
+    private AppContract $app;
 
-    /** @var ParametersContract */
-    private $parameters;
+    private ParametersContract $parameters;
 
-    /** @var FilePhpContract */
-    private $filePhp;
+    private FilePhpContract $filePhp;
 
-    /** @var DirContract */
-    private $cacheDir;
+    private DirContract $cacheDir;
 
     /** @var bool True if the App was just built */
-    private $isMaked;
+    private bool $isMaked;
 
-    /** @var CheckoutContract */
-    private $checkout;
+    private CheckoutContract $checkout;
 
     /** @var array Containing the collection of Cache->toArray() data (checksums) */
-    private $checksums;
+    private array $checksums;
 
-    /** @var ApiMaker */
-    private $apiMaker;
+    private ApiMaker $apiMaker;
 
-    /** @var RouterMakerContract */
-    private $routerMaker;
+    private RouterMakerContract $routerMaker;
 
     /**
      * {@inheritdoc}
@@ -266,7 +259,7 @@ final class Build implements BuildContract
             throw new LogicException(
                 (new Message('Method %method% can be only called when the instance of %className% has %contracts%'))
                     ->code('%method%', __METHOD__)
-                    ->code('%className%', __CLASS__)
+                    ->code('%className%', self::class)
                     ->strtr('%contracts%', implode(', ', $missing))
                     ->toString()
             );
@@ -308,7 +301,7 @@ final class Build implements BuildContract
                         )
                     )
                 ))
-                    ->withMembersType(new Type(RouteContract::class));
+                ->withMembersType(new Type(RouteContract::class));
             foreach ($arrayFile->array() as $route) {
                 $this->routerMaker = $this->routerMaker
                     ->withAddedRoute(

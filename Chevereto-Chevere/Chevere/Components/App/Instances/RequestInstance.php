@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Instances;
 
-use Chevere\Components\App\Instances\Traits\AssertInstanceTrait;
 use Chevere\Contracts\Http\RequestContract;
 
 /**
@@ -21,10 +20,7 @@ use Chevere\Contracts\Http\RequestContract;
  */
 final class RequestInstance
 {
-    use AssertInstanceTrait;
-
-    /** @var RequestContract */
-    private static $instance;
+    private static RequestContract $instance;
 
     public function __construct(RequestContract $request)
     {
@@ -43,8 +39,8 @@ final class RequestInstance
 
     public static function get(): RequestContract
     {
-        self::assertInstance();
-        
+        // self::assertInstance();
+
         return self::$instance;
     }
 }

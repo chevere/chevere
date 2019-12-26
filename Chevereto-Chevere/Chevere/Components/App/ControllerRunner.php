@@ -27,14 +27,12 @@ use Chevere\Contracts\App\MiddlewareRunnerContract;
  */
 final class ControllerRunner implements ControllerRunnerContract
 {
-    /** @var AppContract */
-    private $app;
+    private AppContract $app;
 
     /** @var string */
-    private $controllerName;
+    private string $controllerName;
 
-    /** @var MiddlewareRunnerContract */
-    private $middlewareRunner;
+    private MiddlewareRunnerContract $middlewareRunner;
 
     /**
      * {@inheritdoc}

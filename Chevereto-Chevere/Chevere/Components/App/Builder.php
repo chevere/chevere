@@ -24,11 +24,10 @@ final class Builder implements BuilderContract
 {
     use ControllerNameAccessTrait;
 
-    /** @var BuildContract */
-    private $build;
+    private BuildContract $build;
 
     /** @var array */
-    private $controllerArguments;
+    private array $controllerArguments;
 
     /**
      * {@inheritdoc}

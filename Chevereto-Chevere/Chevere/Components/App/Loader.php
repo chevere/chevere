@@ -17,7 +17,6 @@ use Chevere\Components\Api\Api;
 use Chevere\Components\App\Exceptions\BuildNeededException;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
-use Chevere\Components\Console\Console;
 use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\Http\Response;
@@ -40,11 +39,9 @@ use const Chevere\DEV;
  */
 final class Loader implements LoaderContract
 {
-    /** @var BuilderContract */
-    private $builder;
+    private BuilderContract $builder;
 
-    /** @var ParametersContract */
-    private $parameters;
+    private ParametersContract $parameters;
 
     public function __construct()
     {

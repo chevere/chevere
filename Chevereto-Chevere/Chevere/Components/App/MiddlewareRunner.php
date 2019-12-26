@@ -24,17 +24,15 @@ use Chevere\Contracts\Middleware\MiddlewareNameContract;
 
 final class MiddlewareRunner implements MiddlewareRunnerContract
 {
-    /** @var AppContract */
-    private $app;
+    private AppContract $app;
 
-    /** @var MiddlewareNameCollectionContract */
-    private $middlewareNameCollection;
+    private MiddlewareNameCollectionContract $middlewareNameCollection;
 
     /** @var bool */
-    private $hasRun;
+    private bool $hasRun;
 
     /** @var array An array containg the middlewares that have ran */
-    private $record;
+    private array $record;
 
     public function __construct(MiddlewareNameCollectionContract $middlewareNameCollection, AppContract $app)
     {

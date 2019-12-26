@@ -29,8 +29,7 @@ use Chevere\Contracts\Router\RouterContract;
  */
 final class Resolver
 {
-    /** @var BuilderContract */
-    private $builder;
+    private BuilderContract $builder;
 
     public function __construct(BuilderContract $builder)
     {

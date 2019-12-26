@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Instances;
 
-use Chevere\Components\App\Instances\Traits\AssertInstanceTrait;
 use Chevere\Contracts\Console\ConsoleContract;
 
 /**
@@ -21,10 +20,7 @@ use Chevere\Contracts\Console\ConsoleContract;
  */
 final class ConsoleInstance
 {
-    use AssertInstanceTrait;
-
-    /** @var ConsoleContract */
-    private static $instance;
+    private static ConsoleContract $instance;
 
     public function __construct(ConsoleContract $console)
     {
@@ -38,8 +34,8 @@ final class ConsoleInstance
 
     public static function get(): ConsoleContract
     {
-        self::assertInstance();
-        
+        // self::assertInstance();
+
         return self::$instance;
     }
 }

@@ -29,20 +29,19 @@ use const Chevere\CONSOLE;
  */
 final class Runner implements RunnerContract
 {
-    /** @var BuilderContract */
-    private $builder;
+    private BuilderContract $builder;
 
     /** @var bool A boolean indicating if the run() method was called */
-    private $ran;
+    private bool $ran;
 
     /** @var bool A boolean indicating if the console has looped */
-    private $consoleLoop;
+    private bool $consoleLoop;
 
     /** @var string A string representing a ControllerContract name */
-    private $controllerName;
+    private string $controllerName;
 
     /** @var array */
-    private $controllerArguments;
+    private array $controllerArguments;
 
     /**
      * {@inheritdoc}

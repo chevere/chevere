@@ -26,8 +26,7 @@ use Chevere\Contracts\Router\RouterContract;
 
 final class ServicesBuilder implements ServicesBuilderContract
 {
-    /** @var ServicesContract */
-    private $services;
+    private ServicesContract $services;
 
     /**
      * {@inheritdoc}
