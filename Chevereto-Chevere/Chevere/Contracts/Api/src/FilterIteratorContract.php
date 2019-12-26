@@ -21,7 +21,7 @@ interface FilterIteratorContract
      *
      * @return self
      */
-    public function withAcceptFilenames(array $methods, string $methodPrefix): FilterIteratorContract;
+    public function withAcceptFilenames(array $methods): FilterIteratorContract;
 
     /**
      * Get accepte filenames

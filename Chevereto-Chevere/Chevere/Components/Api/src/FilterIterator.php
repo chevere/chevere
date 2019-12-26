@@ -23,7 +23,7 @@ use Chevere\Contracts\Api\src\FilterIteratorContract;
 final class FilterIterator extends RecursiveFilterIterator implements FilterIteratorContract
 {
     /** @var array Accepted files array [GET.php, _GET.php, POST.php, ...] */
-    private $acceptFilenames;
+    private array $acceptFilenames;
 
     /**
      * {@inheritdoc}

@@ -27,11 +27,9 @@ final class Api implements ApiContract
 {
     use CacheAccessTrait;
 
-    /** @var array The API array */
-    private $array;
+    private array $array;
 
-    /** @var ApiMakerContract */
-    private $maker;
+    private ApiMakerContract $maker;
 
     public function withApiMaker(ApiMakerContract $maker): ApiContract
     {

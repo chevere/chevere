@@ -27,8 +27,7 @@ use Chevere\Contracts\Router\RoutedContract;
  */
 final class App implements AppContract
 {
-    /** @var RoutedContract */
-    private $routed;
+    private RoutedContract $routed;
 
     private ResponseContract $response;
 
