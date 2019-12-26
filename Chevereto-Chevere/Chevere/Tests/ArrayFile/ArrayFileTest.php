@@ -25,6 +25,7 @@ use Chevere\Components\Type\Type;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\Path\PathContract;
 use PHPUnit\Framework\TestCase;
+use TypeError;
 
 final class ArrayFileTest extends TestCase
 {
@@ -34,7 +35,7 @@ final class ArrayFileTest extends TestCase
     public function setUp(): void
     {
         $this->file = new File(
-          new Path('var/ArrayFileTest_' . uniqid() . '.php')
+            new Path('var/ArrayFileTest_' . uniqid() . '.php')
         );
     }
 
@@ -89,7 +90,7 @@ final class ArrayFileTest extends TestCase
         $filePhp = new FilePhp($this->file);
         $this->expectException(ArrayFileTypeException::class);
         (new ArrayFile($filePhp))
-          ->withMembersType(new Type('string'));
+            ->withMembersType(new Type('string'));
     }
 
     public function testWithMembersType(): void
@@ -100,7 +101,7 @@ final class ArrayFileTest extends TestCase
         $filePhp = new FilePhp($this->file);
         $this->expectNotToPerformAssertions();
         (new ArrayFile($filePhp))
-          ->withMembersType(new Type('integer'));
+            ->withMembersType(new Type('integer'));
     }
 
     public function testWithMembersTypeObject(): void
@@ -110,6 +111,6 @@ final class ArrayFileTest extends TestCase
         $filePhp = new FilePhp($this->file);
         $this->expectNotToPerformAssertions();
         (new ArrayFile($filePhp))
-          ->withMembersType(new Type(PathContract::class));
+            ->withMembersType(new Type(PathContract::class));
     }
 }

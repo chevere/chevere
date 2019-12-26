@@ -21,6 +21,7 @@ use Chevere\Contracts\ArrayFile\ArrayFileContract;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
 use Chevere\Contracts\Type\TypeContract;
+use TypeError;
 
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).
@@ -28,13 +29,11 @@ use Chevere\Contracts\Type\TypeContract;
 final class ArrayFile implements ArrayFileContract
 {
     /** @var array The array returned by the file */
-    private $array;
+    private array $array;
 
-    /** @var FilePhpContract */
-    private $filePhp;
+    private FilePhpContract $filePhp;
 
-    /** @var TypeContract */
-    private $type;
+    private TypeContract $type;
 
     /**
      * {@inheritdoc}
@@ -45,8 +44,17 @@ final class ArrayFile implements ArrayFileContract
         $this->filePhp->file()->assertExists();
         $fileReturn = (new FileReturn($this->filePhp))
             ->withNoStrict();
-        $this->array = $fileReturn->raw();
-        $this->validateReturnIsArray();
+        try {
+            $raw = $fileReturn->raw();
+            $this->array = $fileReturn->raw();
+        } catch (TypeError $e) {
+            throw new FileReturnInvalidTypeException(
+                (new Message('Return value of file %path% must be type array, %returnType% provided'))
+                    ->code('%path%', $this->filePhp->file()->path()->absolute())
+                    ->code('%returnType%', gettype($raw))
+                    ->toString()
+            );
+        }
     }
 
     /**
@@ -75,19 +83,6 @@ final class ArrayFile implements ArrayFileContract
     public function array(): array
     {
         return $this->array;
-    }
-
-    private function validateReturnIsArray(): void
-    {
-        $type = gettype($this->array);
-        if ('array' !== $type) {
-            throw new FileReturnInvalidTypeException(
-                (new Message('Expecting file %path% return type array, %returnType% provided'))
-                    ->code('%path%', $this->filePhp->file()->path()->absolute())
-                    ->code('%returnType%', $type)
-                    ->toString()
-            );
-        }
     }
 
     private function validateMembers(): void
