@@ -16,7 +16,7 @@ namespace Chevere\Components\File;
 use Chevere\Components\File\Exceptions\FileHandleException;
 use Chevere\Components\File\Exceptions\FileInvalidContentsException;
 use Chevere\Components\File\Exceptions\FileWithoutContentsException;
-use Chevere\Components\Folder\Exceptions\UnserializeException;
+use Chevere\Components\Serialize\Exceptions\UnserializeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Contracts\File\FilePhpContract;

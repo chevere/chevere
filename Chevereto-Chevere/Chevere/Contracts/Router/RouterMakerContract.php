@@ -16,11 +16,10 @@ namespace Chevere\Contracts\Router;
 use Chevere\Components\Router\Exceptions\RoutePathExistsException;
 use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
 use Chevere\Components\Router\Exceptions\RouteNameConflictException;
+use Chevere\Components\Router\Exceptions\RouterMakerException;
 
 interface RouterMakerContract
 {
-    const REGEX_TEPLATE = '#^(?%s)$#x';
-
     /**
      * Creates a new instance.
      */
@@ -37,9 +36,10 @@ interface RouterMakerContract
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified added RouteableContract.
      *
+     * @throws RouterMakerException       if unable to process routing
      * @throws RoutePathExistsException   if $routeable has been already routed
      * @throws RouteKeyConflictException  if $routeable conflicts with other RouteableContract
      * @throws RouteNameConflictException if $routeable name conflicts with other RouteableContract
      */
-    public function withAddedRoute(RouteableContract $routeable, string $group): RouterMakerContract;
+    public function withAddedRouteable(RouteableContract $routeable, string $group): RouterMakerContract;
 }

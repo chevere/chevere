@@ -16,6 +16,7 @@ namespace Chevere\Contracts\App;
 use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Http\ResponseContract;
 use Chevere\Contracts\Route\RouteContract;
+use Chevere\Contracts\Router\RoutedContract;
 
 interface AppContract
 {
@@ -73,25 +74,25 @@ interface AppContract
     public function request(): RequestContract;
 
     /**
-     * Return an instance with the specified RouteContract.
+     * Return an instance with the specified RoutedContract.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified RouteContract.
+     * an instance that contains the specified RoutedContract.
      */
-    public function withRoute(RouteContract $route): AppContract;
+    public function withRouted(RoutedContract $routed): AppContract;
 
     /**
-     * Returns a boolean indicating whether the instance has a RouteContract.
+     * Returns a boolean indicating whether the instance has a RoutedContract.
      */
-    public function hasRoute(): bool;
+    public function hasRouted(): bool;
 
     /**
      * Provides access to the RouteContract instance.
      */
-    public function route(): RouteContract;
+    public function routed(): RoutedContract;
 
     /**
-     * Return an instance with the specified arguments.
+     * Return an instance with the specified arguments (from controller).
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified arguments.

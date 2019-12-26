@@ -56,8 +56,10 @@ interface BuilderContract
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified controller arguments.
+     *
+     * @param array arguments mapping [name => value]
      */
-    public function withControllerArguments(array $controllerArguments): BuilderContract;
+    public function withControllerArguments(array $arguments): BuilderContract;
 
     /**
      * Returns a boolean indicating whether the instance has controller arguments.

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Router;
 
+use Chevere\Contracts\Router\Properties\RegexPropertyContract;
+
 interface RouterPropertiesContract
 {
     /**
@@ -25,11 +27,18 @@ interface RouterPropertiesContract
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified regex string.
+     *
+     * @param string $regex see RegexPropertyContract
      */
     public function withRegex(string $regex): RouterPropertiesContract;
 
     /**
-     * Provides access to the regex string.
+     * Returns a boolean indicating whether the instance has a regex string.
+     */
+    public function hasRegex(): bool;
+
+    /**
+     * Provides access to the regex string. The representation used when resolving routing.
      */
     public function regex(): string;
 
@@ -38,6 +47,8 @@ interface RouterPropertiesContract
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified routes array.
+     *
+     * @param array $routes see RoutesPropertyContract
      */
     public function withRoutes(array $routes): RouterPropertiesContract;
 
@@ -51,6 +62,8 @@ interface RouterPropertiesContract
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified index array.
+     *
+     * @param array $index see IndexPropertyContract
      */
     public function withIndex(array $index): RouterPropertiesContract;
 
@@ -64,6 +77,8 @@ interface RouterPropertiesContract
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified groups array.
+     *
+     * @param array $groups see GroupsPropertyContract
      */
     public function withGroups(array $groups): RouterPropertiesContract;
 
@@ -77,6 +92,8 @@ interface RouterPropertiesContract
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified named array.
+     *
+     * @param array $named see NamedPropertyContract
      */
     public function withNamed(array $named): RouterPropertiesContract;
 
@@ -84,6 +101,13 @@ interface RouterPropertiesContract
      * Provides access to the named array.
      */
     public function named(): array;
+
+    /**
+     * Checks that all properties are valid (format, not just type).
+     *
+     * @throws RouterPropertyException if there are errors in the properties
+     */
+    public function assert(): void;
 
     /**
      * Returns the properties as an array [name => value].

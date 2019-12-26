@@ -14,13 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Components\Console\Commands;
 
 use InvalidArgumentException;
-
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
-
 use Chevere\Components\Console\Command;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Message\Message;
-
 use Chevere\Contracts\App\BuilderContract;
 
 /**
@@ -116,7 +113,6 @@ final class RunCommand extends Command
         $this->builder = $this->builder
             ->withControllerArguments($this->argument)
             ->withControllerName($this->callable);
-        // FIXME
         $this->builder->run();
     }
 
@@ -182,9 +178,10 @@ final class RunCommand extends Command
                 ? [$this->export]
                 : ['<fg=magenta>' . $cc->apply('italic', gettype($this->return)) . '</> ' . $this->export];
         }
-        if ($this->isBuffer && $this->buffer != '') {
+        if ($this->isBuffer && '' != $this->buffer) {
             if ($this->isNoFormat) {
                 $this->lines[] = $this->buffer;
+
                 return;
             }
             $this->lines[] = '<fg=yellow>' . $this->buffer . '</>';

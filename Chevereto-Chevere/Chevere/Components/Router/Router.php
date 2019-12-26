@@ -15,11 +15,14 @@ namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
+use Chevere\Components\Router\Exceptions\RouterException;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Contracts\Route\RouteContract;
+use Chevere\Contracts\Router\RoutedContract;
 use Chevere\Contracts\Router\RouterContract;
 use Chevere\Contracts\Router\RouterPropertiesContract;
 use Psr\Http\Message\UriInterface;
+use Throwable;
 use TypeError;
 
 /**
@@ -27,9 +30,6 @@ use TypeError;
  */
 final class Router implements RouterContract
 {
-    /** @var array Arguments taken from wildcard matches */
-    private $arguments;
-
     /** @var RouterPropertiesContract */
     private $properties;
 
@@ -38,7 +38,6 @@ final class Router implements RouterContract
      */
     public function __construct()
     {
-        $this->arguments = [];
     }
 
     /**
@@ -63,9 +62,9 @@ final class Router implements RouterContract
     /**
      * {@inheritdoc}
      */
-    public function arguments(): array
+    public function properties(): RouterPropertiesContract
     {
-        return $this->arguments;
+        return $this->properties;
     }
 
     /**
@@ -73,15 +72,28 @@ final class Router implements RouterContract
      */
     public function canResolve(): bool
     {
-        return $this->hasProperties() && '' != $this->properties->regex();
+        return $this->hasProperties() && $this->properties->hasRegex();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function resolve(UriInterface $uri): RouteContract
+    public function resolve(UriInterface $uri): RoutedContract
     {
-        if (preg_match($this->properties->regex(), $uri->getPath(), $matches)) {
+        try {
+            $pregMatch = preg_match($this->properties->regex(), $uri->getPath(), $matches);
+        } catch (Throwable $e) {
+            throw new RouterException($e->getMessage());
+        }
+        if ($pregMatch) {
+            if (!isset($matches['MARK'])) {
+                throw new RouterException(
+                    (new Message('Invalid regex pattern, missing %mark% member'))
+                        ->code('%mark%', 'MARK')
+                        ->toString()
+                );
+            }
+
             return $this->resolver($matches);
         }
         throw new RouteNotFoundException(
@@ -91,7 +103,11 @@ final class Router implements RouterContract
         );
     }
 
-    private function resolver(array $matches): RouteContract
+    /**
+     * @throws UnserializeException if the route string object can't be unserialized
+     * @throws TypeError            if the found route doesn't implement the RouteContract
+     */
+    private function resolver(array $matches): RoutedContract
     {
         $id = $matches['MARK'];
         unset($matches['MARK']);
@@ -114,13 +130,13 @@ final class Router implements RouterContract
             $this->properties = $this->properties
                 ->withRoutes($routes);
         }
-        $this->arguments = [];
+        $wildcards = [];
         if ($route->hasWildcardCollection()) {
             foreach ($matches as $pos => $val) {
-                $this->arguments[$route->wildcardCollection()->getPos($pos)->name()] = $val;
+                $wildcards[$route->wildcardCollection()->getPos($pos)->name()] = $val;
             }
         }
 
-        return $route;
+        return new Routed($route, $wildcards);
     }
 }

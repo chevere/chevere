@@ -13,17 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Serialize;
 
-use InvalidArgumentException;
-use TypeError;
 use Chevere\Contracts\Type\TypeContract;
+use Chevere\Components\Serialize\Exceptions\UnserializeException;
 
 interface UnserializeContract
 {
     /**
      * Creates a new instance.
      *
-     * @throws InvalidArgumentException if $serialized can't be unserialized
-     * @throws TypeError                if $serialized is not a RouteContract serialize
+     * @throws UnserializeException if $serialized can't be unserialized
      */
     public function __construct(string $serialized);
 

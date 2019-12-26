@@ -74,7 +74,7 @@ final class Resolver
     {
         $app = $this->builder->build()->app();
         try {
-            $route = $app->services()->router()->resolve(
+            $routed = $app->services()->router()->resolve(
                 $this->builder->build()->app()->request()->getUri()
             );
         } catch (RouteNotFoundException $e) {
@@ -82,8 +82,8 @@ final class Resolver
             throw new ResolverException($e->getMessage(), 404, $e);
         }
         $app = $app
-            ->withRoute($route);
-        $collection = $app->route()->methodControllerNameCollection();
+            ->withRouted($routed);
+        $collection = $routed->route()->methodControllerNameCollection();
         $requestMethod = new Method($app->request()->getMethod());
         try {
             $controllerName = $collection->get($requestMethod)->controllerName()->toString();
@@ -94,7 +94,7 @@ final class Resolver
         $this->builder = $this->builder
             ->withControllerName($controllerName)
             ->withControllerArguments(
-                $app->services()->router()->arguments()
+                $routed->wildcards()
             )
             ->withBuild(
                 $this->builder->build()

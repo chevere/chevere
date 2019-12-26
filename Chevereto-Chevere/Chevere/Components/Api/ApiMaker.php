@@ -167,7 +167,7 @@ final class ApiMaker implements ApiMakerContract
         }
 
         $this->routerMaker = $this->routerMaker
-            ->withAddedRoute(
+            ->withAddedRouteable(
                 new Routeable($route),
                 $this->basePath
             );
@@ -259,7 +259,7 @@ final class ApiMaker implements ApiMakerContract
             }
             $endpoint = new Endpoint($this->route->methodControllerNameCollection());
             $this->routerMaker = $this->routerMaker
-                ->withAddedRoute(
+                ->withAddedRouteable(
                     new Routeable($this->route),
                     $this->basePath
                 );

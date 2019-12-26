@@ -19,6 +19,7 @@ use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
+use Chevere\Components\Router\Routed;
 use PHPUnit\Framework\TestCase;
 
 final class AppTest extends TestCase
@@ -32,7 +33,7 @@ final class AppTest extends TestCase
         $this->assertSame($response, $app->response());
         $this->assertSame($services, $app->services());
         $this->assertFalse($app->hasRequest());
-        $this->assertFalse($app->hasRoute());
+        $this->assertFalse($app->hasRouted());
         $this->assertFalse($app->hasArguments());
     }
 
@@ -62,14 +63,15 @@ final class AppTest extends TestCase
         $this->assertSame($request, $app->request());
     }
 
-    public function testWithRoute(): void
+    public function testWithRouted(): void
     {
         $route = new Route(new PathUri('/home'));
+        $routed = new Routed($route, []);
         $app = (new App(new Services(), new Response()))
-            ->withRoute($route);
+            ->withRouted($routed);
 
-        $this->assertTrue($app->hasRoute());
-        $this->assertSame($route, $app->route());
+        $this->assertTrue($app->hasRouted());
+        $this->assertSame($routed, $app->routed());
     }
 
     public function testWithServices(): void

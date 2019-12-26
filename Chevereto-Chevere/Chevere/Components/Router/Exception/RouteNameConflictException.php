@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Exceptions;
 
-use InvalidArgumentException;
+use Exception;
 
 /**
  * Exception thrown when a RouteContract name conflict with other.
  */
-final class RouteNameConflictException extends InvalidArgumentException
+final class RouteNameConflictException extends Exception
 {
 }

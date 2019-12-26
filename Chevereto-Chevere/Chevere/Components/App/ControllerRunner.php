@@ -50,7 +50,7 @@ final class ControllerRunner implements ControllerRunnerContract
         $this->controllerName = $controllerName;
         $this->assertControllerExists();
         $this->assertControllerName();
-        if ($this->app->hasRoute() && $this->app->hasRequest()) {
+        if ($this->app->hasRouted() && $this->app->hasRequest()) {
             $this->handleRouteMiddleware();
         }
         $controller = new $controllerName($this->app);
@@ -96,10 +96,11 @@ final class ControllerRunner implements ControllerRunnerContract
 
     private function handleRouteMiddleware(): void
     {
-        if (!$this->app->route()->hasMiddlewareNameCollection()) {
+        $route = $this->app->routed()->route();
+        if (!$route->hasMiddlewareNameCollection()) {
             return;
         }
-        $middlewareRunner = new MiddlewareRunner($this->app->route()->middlewareNameCollection(), $this->app);
+        $middlewareRunner = new MiddlewareRunner($route->middlewareNameCollection(), $this->app);
         $this->middlewareRunner = $middlewareRunner
             ->withRun();
     }

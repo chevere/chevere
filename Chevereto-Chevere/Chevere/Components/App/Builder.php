@@ -70,10 +70,10 @@ final class Builder implements BuilderContract
     /**
      * {@inheritdoc}
      */
-    public function withControllerArguments(array $controllerArguments): BuilderContract
+    public function withControllerArguments(array $arguments): BuilderContract
     {
         $new = clone $this;
-        $new->controllerArguments = $controllerArguments;
+        $new->controllerArguments = $arguments;
 
         return $new;
     }

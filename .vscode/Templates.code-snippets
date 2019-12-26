@@ -64,6 +64,18 @@
 			"}"
 		]
 	},
+	"trait": {
+		"description": "inserts a trait",
+		"prefix": "trait",
+		"body": [
+			"<?php",
+			"namespace Chevere\\Components\\Folder\\Traits;",
+			"",
+			"trait NameTrait",
+			"{",
+			"}"
+		]
+	},
 	"docblock-construct": {
 		"description": "inserts a docblock construct",
 		"prefix": "docblock-construct",

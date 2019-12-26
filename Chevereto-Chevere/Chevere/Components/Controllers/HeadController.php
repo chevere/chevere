@@ -27,15 +27,15 @@ final class HeadController extends Controller
      */
     public function __invoke(): void
     {
-        $route = $this->app()->route();
-        $controller = $route->controllerName(new Method('GET'))->toString();
-        if ($controller) {
-            $this->invoke($controller);
-            // $this->app()->response()->setContent(null);
-            // if (CLI) {
-            //     Console::style()->block($this->app()->response()->statusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
-            // }
-        }
+        // $route = $this->app()->route();
+        // $controller = $route->controllerName(new Method('GET'))->toString();
+        // if ($controller) {
+        //     $this->invoke($controller);
+        //     // $this->app()->response()->setContent(null);
+        //     // if (CLI) {
+        //     //     Console::style()->block($this->app()->response()->statusString(), 'STATUS', 'fg=black;bg=green', ' ', true);
+        //     // }
+        // }
     }
 
     public function getContent(): string

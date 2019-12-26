@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\App;
 
 use Chevere\Components\App\Instances\RequestInstance;
-use Chevere\Components\Route\Traits\RouteAccessTrait;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\ServicesContract;
 use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Http\ResponseContract;
-use Chevere\Contracts\Route\RouteContract;
+use Chevere\Contracts\Router\RoutedContract;
 
 /**
  * The application container.
@@ -28,7 +27,8 @@ use Chevere\Contracts\Route\RouteContract;
  */
 final class App implements AppContract
 {
-    use RouteAccessTrait;
+    /** @var RoutedContract */
+    private $routed;
 
     private ResponseContract $response;
 
@@ -117,12 +117,22 @@ final class App implements AppContract
     /**
      * {@inheritdoc}
      */
-    public function withRoute(RouteContract $route): AppContract
+    public function withRouted(RoutedContract $routed): AppContract
     {
         $new = clone $this;
-        $new->route = $route;
+        $new->routed = $routed;
 
         return $new;
+    }
+
+    public function hasRouted(): bool
+    {
+        return isset($this->routed);
+    }
+
+    public function routed(): RoutedContract
+    {
+        return $this->routed;
     }
 
     /**
