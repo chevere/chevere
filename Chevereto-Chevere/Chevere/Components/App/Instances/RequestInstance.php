@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\App\Instances;
 
 use Chevere\Contracts\Http\RequestContract;
+use LogicException;
 
 /**
  * A container for the global request instance.
@@ -39,7 +40,9 @@ final class RequestInstance
 
     public static function get(): RequestContract
     {
-        // self::assertInstance();
+        if (!isset(self::$instance)) {
+            throw new LogicException('No request instance present');
+        }
 
         return self::$instance;
     }

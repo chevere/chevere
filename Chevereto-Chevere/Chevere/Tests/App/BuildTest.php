@@ -31,6 +31,7 @@ use Chevere\Contracts\App\CheckoutContract;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\File\FileContract;
+use Error;
 use PHPUnit\Framework\TestCase;
 
 final class BuildTest extends TestCase
@@ -120,14 +121,14 @@ final class BuildTest extends TestCase
     public function testInvalidChecksumsMethodCall(): void
     {
         $build = $this->getBuild();
-        $this->expectException(TypeError::class);
+        $this->expectException(Error::class);
         $build->checksums();
     }
 
     public function testInvalidCheckoutMethodCall(): void
     {
         $build = $this->getBuild();
-        $this->expectException(TypeError::class);
+        $this->expectException(Error::class);
         $build->checkout();
     }
 }

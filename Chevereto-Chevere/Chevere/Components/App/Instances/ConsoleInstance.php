@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\App\Instances;
 
 use Chevere\Contracts\Console\ConsoleContract;
+use LogicException;
 
 /**
  * A container for the built-in console.
@@ -34,7 +35,9 @@ final class ConsoleInstance
 
     public static function get(): ConsoleContract
     {
-        // self::assertInstance();
+        if (!isset(self::$instance)) {
+            throw new LogicException('No console instance present');
+        }
 
         return self::$instance;
     }

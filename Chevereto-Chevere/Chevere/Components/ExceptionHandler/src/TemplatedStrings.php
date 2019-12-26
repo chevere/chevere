@@ -51,6 +51,7 @@ final class TemplatedStrings
         $this->count = 0;
         foreach ($formatter->plainContentSections() as $k => $plainSection) {
             $this->plainSection = $plainSection;
+            $this->richSection = $plainSection;
             $this->sectionLength = count($plainSection);
             $richSection = $formatter->richContentSections()[$k] ?? null;
             if ($richSection) {

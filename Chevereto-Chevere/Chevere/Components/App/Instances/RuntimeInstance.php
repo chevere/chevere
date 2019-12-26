@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\App\Instances;
 
 use Chevere\Components\Runtime\Runtime;
+use LogicException;
 
 /**
  * A container for the application Runtime.
@@ -34,6 +35,9 @@ final class RuntimeInstance
 
     public static function get(): Runtime
     {
+        if (!isset(self::$instance)) {
+            throw new LogicException('No runtime instance present');
+        }
         return self::$instance;
     }
 }

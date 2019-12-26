@@ -57,12 +57,12 @@ final class Build implements BuildContract
     private DirContract $cacheDir;
 
     /** @var bool True if the App was just built */
-    private bool $isMaked;
+    private bool $isMaked = false;
 
     private CheckoutContract $checkout;
 
     /** @var array Containing the collection of Cache->toArray() data (checksums) */
-    private array $checksums;
+    private array $checksums = [];
 
     private ApiMaker $apiMaker;
 
