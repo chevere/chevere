@@ -23,29 +23,26 @@ use Chevere\Components\Time\TimeHr;
  */
 final class Stopwatch
 {
-    /** @var array */
-    private $marks;
+    private array $marks;
 
     /** @var array [id => $timeElapsedRead relative to previous record ] */
-    private $records;
+    private array $records;
 
-    /** @var int */
-    private $timeStart;
+    private int $timeStart;
 
-    /** @var int */
-    private $timeEnd;
+    private int $timeEnd;
 
     /** @var int Nanotime */
-    private $timeElapsed;
+    private float $timeElapsed;
 
     /** @var string The time elapsed, in miliseconds with tis unit (100 ms) */
-    private $timeElapsedRead;
+    private string $timeElapsedRead;
 
     /** @var array [id => $flagName] */
-    private $index;
+    private array $index;
 
     /** @var int Time consumed by record checks */
-    private $gap;
+    private int $gap;
 
     public function __construct()
     {

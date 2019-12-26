@@ -20,8 +20,7 @@ use Chevere\Contracts\Http\ResponseContract;
 
 final class Response implements ResponseContract
 {
-    /** @var GuzzleResponse */
-    private $guzzle;
+    private GuzzleResponse $guzzle;
 
     /**
      * {@inheritdoc}

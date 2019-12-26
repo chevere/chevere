@@ -48,40 +48,32 @@ final class VarDump
         'static' => ReflectionProperty::IS_STATIC,
     ];
 
-    /** @var FormatterContract */
-    private $formatter;
+    private FormatterContract $formatter;
 
     /** @var array [className,] */
-    private $dontDump;
+    private array $dontDump;
 
-    /** @var string */
-    private $output;
+    private string $output;
 
-    /** @var string */
-    private $template;
+    private string $template;
 
     private $var;
 
     /** @var mixed */
     private $expression;
 
-    /** @var int */
-    private $indent;
+    private int $indent;
 
-    /** @var int */
-    private $depth;
+    private int $depth;
 
     /** @var mixed */
     private $val;
 
-    /** @var string */
-    private $indentString;
+    private string $indentString;
 
-    /** @var string */
-    private $type;
+    private string $type;
 
-    /** @var string */
-    private $info;
+    private string $info;
 
     public function __construct(FormatterContract $formatter)
     {

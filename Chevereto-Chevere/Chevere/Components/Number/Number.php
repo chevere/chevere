@@ -16,10 +16,10 @@ namespace Chevere\Components\Number;
 final class Number
 {
     /** @var int */
-    private $number;
+    private int $number;
 
     /** @var int */
-    private $precision;
+    private int $precision;
 
     public function __construct(int $number)
     {

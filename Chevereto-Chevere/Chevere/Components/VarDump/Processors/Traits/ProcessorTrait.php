@@ -16,10 +16,10 @@ namespace Chevere\Components\VarDump\Processors\Traits;
 trait ProcessorTrait
 {
     /** @var string */
-    private $info;
+    private string $info;
 
     /** @var string */
-    private $val;
+    private string $val;
 
     public function info(): string
     {

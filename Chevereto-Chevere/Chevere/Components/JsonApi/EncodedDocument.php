@@ -26,11 +26,10 @@ final class EncodedDocument
     // Encode <, >, ', &, and " characters in the JSON, making it also safe to be embedded into HTML.
     const DEFAULT_ENCODING_OPTIONS = JSON_THROW_ON_ERROR | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT;
 
-    /** @var JsonSerializable */
-    private $json;
+    private JsonSerializable $json;
 
     /** @var int Bitmask */
-    private $encodingOptions;
+    private int $encodingOptions;
 
     public function __construct(JsonSerializable $json)
     {

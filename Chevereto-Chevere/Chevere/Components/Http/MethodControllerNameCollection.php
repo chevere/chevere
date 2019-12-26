@@ -22,10 +22,10 @@ use Chevere\Contracts\Http\MethodControllerNameCollectionContract;
 final class MethodControllerNameCollection implements MethodControllerNameCollectionContract
 {
     /** @param array MethodControllerNameContract[] */
-    private $array;
+    private array $array;
 
     /** @param array ['METHOD' => key,]*/
-    private $index;
+    private array $index;
 
     /**
      * {@inheritdoc}

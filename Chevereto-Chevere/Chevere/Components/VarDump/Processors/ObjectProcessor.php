@@ -15,7 +15,6 @@ namespace Chevere\Components\VarDump\Processors;
 
 use ReflectionObject;
 use ReflectionProperty;
-use Reflector;
 use Throwable;
 
 use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
@@ -28,20 +27,16 @@ final class ObjectProcessor implements ProcessorContract
 {
     use ProcessorTrait;
 
-    /** @var object */
-    private $expression;
+    private object $expression;
 
     /** @var VarDump */
-    private $varDump;
+    private VarDump $varDump;
 
-    /** @var Reflector */
-    private $reflectionObject;
+    private ReflectionObject $reflectionObject;
 
-    /** @var array */
-    private $properties;
+    private array $properties;
 
-    /** @var string */
-    private $className;
+    private string $className;
 
     private $aux;
 

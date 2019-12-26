@@ -20,17 +20,13 @@ use JakubOnderka\PhpConsoleColor\ConsoleColor;
  */
 final class Wrapper
 {
-    /** @var string */
-    private $key;
+    private string $key;
 
-    /** @var string */
-    private $dump;
+    private string $dump;
 
-    /** @var ConsoleColor */
-    private $consoleColor;
+    private ConsoleColor $consoleColor;
 
-    /** @var bool */
-    private $useCli;
+    private bool $useCli;
 
     /**
      * @param string $key color palette key

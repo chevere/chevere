@@ -17,8 +17,7 @@ use Chevere\Components\Globals\Globals;
 
 trait GlobalsTrait
 {
-    /** @var Globals */
-    private $globals;
+    private Globals $globals;
 
     public function getGlobals(): Globals
     {

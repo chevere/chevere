@@ -16,7 +16,7 @@ namespace Chevere\Components\Time;
 final class TimeHr
 {
     /** @var int */
-    private $hrTime;
+    private int $hrTime;
 
     public function __construct(int $hrTime)
     {

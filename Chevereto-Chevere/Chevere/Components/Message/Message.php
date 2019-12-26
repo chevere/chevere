@@ -33,11 +33,10 @@ use const Chevere\CLI;
  */
 final class Message
 {
-    /** @var string */
-    private $message;
+    private string $message;
 
     /** @var array Translation table [search => replace] */
-    private $trTable = [];
+    private array $trTable = [];
 
     /**
      * Creates a new Message instance.
@@ -87,7 +86,7 @@ final class Message
             $message = strtr($this->message, $this->trTable);
             return preg_replace_callback('#<code>(.*?)<\/code>#', function ($matches) {
                 $consoleColor = new ConsoleColor();
-    
+
                 return $consoleColor->apply(['light_blue'], $matches[1]);
             }, $message);
         }

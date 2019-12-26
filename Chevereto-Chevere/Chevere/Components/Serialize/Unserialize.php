@@ -26,8 +26,7 @@ final class Unserialize implements UnserializeContract
     /** @var mixed */
     private $var;
 
-    /** @var TypeContract */
-    private $type;
+    private TypeContract $type;
 
     /**
      * {@inheritdoc}
@@ -38,9 +37,9 @@ final class Unserialize implements UnserializeContract
             $this->var = unserialize($serialized);
         } catch (Throwable $e) {
             throw new UnserializeException(
-              (new Message('String provided is unable to unserialize: %message%'))
-                  ->code('%message%', $e->getMessage())
-                  ->toString()
+                (new Message('String provided is unable to unserialize: %message%'))
+                    ->code('%message%', $e->getMessage())
+                    ->toString()
             );
         }
         $type = is_object($this->var) ? get_class($this->var) : varType($this->var);

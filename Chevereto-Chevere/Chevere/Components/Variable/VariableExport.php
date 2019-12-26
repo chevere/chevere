@@ -30,8 +30,7 @@ final class VariableExport implements VariableExportContract
     /** @var mixed */
     private $var;
 
-    /** @var BreadcrumContract */
-    private $breadcrum;
+    private BreadcrumContract $breadcrum;
 
     /**
      * {@inheritdoc}
@@ -80,7 +79,7 @@ final class VariableExport implements VariableExportContract
             $iterableKey = $this->breadcrum->pos();
             foreach ($var as $key => $val) {
                 $this->breadcrum = $this->breadcrum
-                ->withAddedItem('key:' . $key);
+                    ->withAddedItem('key:' . $key);
                 $memberKey = $this->breadcrum->pos();
                 $this->assertExportable($val);
                 $this->breadcrum = $this->breadcrum
@@ -104,7 +103,7 @@ final class VariableExport implements VariableExportContract
                     ->withRemovedItem($propertyKey);
             }
             $this->breadcrum = $this->breadcrum
-                    ->withRemovedItem($objectKey);
+                ->withRemovedItem($objectKey);
         }
     }
 

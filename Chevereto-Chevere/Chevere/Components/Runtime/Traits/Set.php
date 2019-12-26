@@ -19,11 +19,9 @@ use function ChevereFn\stringReplaceFirst;
 
 trait Set
 {
-    /** @var string */
-    private $value;
+    private ?string $value;
 
-    /** @var DataContract */
-    private $data;
+    private DataContract $data;
 
     public function __construct(string $value = null)
     {

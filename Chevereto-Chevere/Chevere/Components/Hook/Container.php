@@ -21,7 +21,7 @@ use Chevere\Components\Path\Path;
 final class Container
 {
     /** @var array */
-    private $array;
+    private array $array;
 
     public function __construct()
     {

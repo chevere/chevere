@@ -19,11 +19,9 @@ use Chevere\Contracts\Http\MethodControllerNameContract;
 
 final class MethodControllerName implements MethodControllerNameContract
 {
-    /** @var MethodContract */
-    private $method;
+    private MethodContract $method;
 
-    /** @var ControllerNameContract */
-    private $controllerName;
+    private ControllerNameContract $controllerName;
 
     /**
      * {@inheritdoc}

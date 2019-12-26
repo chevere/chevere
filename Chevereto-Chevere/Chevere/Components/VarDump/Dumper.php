@@ -37,34 +37,25 @@ class Dumper
 
     const OFFSET = 1;
 
-    /** @var FormatterContract */
-    protected $formatter;
+    protected FormatterContract $formatter;
 
-    /** @var VarDump */
-    private $varDump;
+    private VarDump $varDump;
 
-    private $vars;
+    private array $vars;
 
-    /** @var int */
-    private $numArgs;
+    private int $numArgs;
 
-    /** @var ConsoleOutputInterface */
-    private $consoleOutput;
+    private ConsoleOutputInterface $consoleOutput;
 
-    /** @var string */
-    private $output;
+    private ?string $output;
 
-    /** @var string */
-    private $outputHr;
+    private string $outputHr;
 
-    /** @var array */
-    private $debugBacktrace;
+    private array $debugBacktrace;
 
-    /** @var string */
-    private $caller;
+    private array $caller;
 
-    /** @var string */
-    private $callerFilepath;
+    private string $callerFilepath;
 
     final public function __construct()
     {

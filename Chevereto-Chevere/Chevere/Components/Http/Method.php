@@ -23,7 +23,7 @@ final class Method implements MethodContract
     use ControllerNameAccessTrait;
 
     /** @var string HTTP request method */
-    private $name;
+    private string $name;
 
     /**
      * {@inheritdoc}

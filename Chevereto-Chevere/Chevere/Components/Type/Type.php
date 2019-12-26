@@ -23,10 +23,10 @@ use Chevere\Contracts\Type\TypeContract;
 final class Type implements TypeContract
 {
     /** @var string The passed argument in construct */
-    private $type;
+    private string $type;
 
     /** @var string The dectected primitive type */
-    private $primitive;
+    private string $primitive;
 
     /** @var string The detected class name (if any) */
     // private $className;

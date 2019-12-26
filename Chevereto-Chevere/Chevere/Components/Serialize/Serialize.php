@@ -19,7 +19,7 @@ use Chevere\Contracts\Variable\VariableExportContract;
 final class Serialize implements SerializeContract
 {
     /** @var string */
-    private $serialized;
+    private string $serialized;
 
     /**
      * {@inheritdoc}

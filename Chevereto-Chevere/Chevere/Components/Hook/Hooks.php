@@ -15,14 +15,11 @@ namespace Chevere\Components\Hook;
 
 final class Hooks
 {
-    /** @var object */
-    private $that;
+    private object $that;
 
-    /** @var array */
-    private $trace;
+    private array $trace;
 
-    /** @var array */
-    private $anchor;
+    private array $anchor;
 
     public function __construct(object $that, string $anchor)
     {
