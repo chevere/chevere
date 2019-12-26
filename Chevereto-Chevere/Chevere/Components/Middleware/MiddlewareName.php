@@ -21,8 +21,7 @@ use InvalidArgumentException;
 
 final class MiddlewareName implements MiddlewareNameContract
 {
-    /** @var string */
-    private $name;
+    private string $name;
 
     /**
      * {@inheritdoc}

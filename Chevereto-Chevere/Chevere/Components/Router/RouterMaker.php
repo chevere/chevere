@@ -29,14 +29,13 @@ use Chevere\Contracts\Router\RouterPropertiesContract;
  */
 final class RouterMaker implements RouterMakerContract
 {
-    /** @var RouterPropertiesContract */
-    private $properties;
+    private RouterPropertiesContract $properties;
 
     /** @var array [RouteContract regex => $id]. */
-    private $regexes;
+    private array $regexes;
 
     /** @var array [RouteContract key => $id] */
-    private $keys;
+    private array $keys;
 
     /**
      * {@inheritdoc}

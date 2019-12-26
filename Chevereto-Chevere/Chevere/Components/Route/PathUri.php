@@ -27,19 +27,19 @@ use function ChevereFn\stringStartsWith;
 final class PathUri implements PathUriContract
 {
     /** @var string */
-    private $path;
+    private string $path;
 
     /** @var int */
-    private $wildcardBracesCount;
+    private int $wildcardBracesCount;
 
     /** @var array */
-    private $wildcardsMatch;
+    private array $wildcardsMatch;
 
     /** @var string Path key set representation ({wildcards} replaced by {n}) */
-    private $key;
+    private string $key;
 
     /** @var array string[] */
-    private $wildcards;
+    private array $wildcards;
 
     /**
      * {@inheritdoc}

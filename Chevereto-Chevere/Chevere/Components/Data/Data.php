@@ -21,7 +21,7 @@ use Chevere\Contracts\Data\DataContract;
 class Data implements DataContract
 {
     /** @var array */
-    private $data;
+    private array $data;
 
     /**
      * {@inheritdoc}

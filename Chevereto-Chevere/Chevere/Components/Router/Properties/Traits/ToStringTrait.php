@@ -16,7 +16,7 @@ namespace Chevere\Components\Router\Properties\Traits;
 trait ToStringTrait
 {
     /** @var string */
-    private $value;
+    private string $value;
 
     public function toString(): string
     {

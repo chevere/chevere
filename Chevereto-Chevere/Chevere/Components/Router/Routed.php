@@ -21,11 +21,9 @@ use Chevere\Contracts\Router\RoutedContract;
  */
 final class Routed implements RoutedContract
 {
-    /** @var RouteContract */
-    private $route;
+    private RouteContract $route;
 
-    /** @var array */
-    private $wildcards;
+    private array $wildcards;
 
     /**
      * {@inheritdoc}

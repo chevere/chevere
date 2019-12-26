@@ -24,8 +24,7 @@ use Chevere\Contracts\Router\RouterPropertiesContract;
 
 final class RouterCache implements RouterCacheContract
 {
-    /** @var CacheContract */
-    private $cache;
+    private CacheContract $cache;
 
     /**
      * {@inheritdoc}

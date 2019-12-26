@@ -20,8 +20,7 @@ use Chevere\Contracts\Router\RouteableContract;
 
 final class Routeable implements RouteableContract
 {
-    /** @var RouteContract */
-    private $route;
+    private RouteContract $route;
 
     /**
      * {@inheritdoc}

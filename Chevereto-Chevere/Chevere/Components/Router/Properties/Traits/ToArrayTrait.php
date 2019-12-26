@@ -16,7 +16,7 @@ namespace Chevere\Components\Router\Properties\Traits;
 trait ToArrayTrait
 {
     /** @var array */
-    private $value;
+    private array $value;
 
     public function toArray(): array
     {

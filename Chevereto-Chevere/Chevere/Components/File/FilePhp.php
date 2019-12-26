@@ -23,8 +23,7 @@ use Chevere\Contracts\File\FilePhpContract;
  */
 final class FilePhp implements FilePhpContract
 {
-    /** @var FileContract */
-    private $file;
+    private FileContract $file;
 
     /**
      * {@inheritdoc}

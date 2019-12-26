@@ -24,8 +24,7 @@ use const Chevere\BOOTSTRAP_TIME;
  */
 final class FileCompile implements FileCompileContract
 {
-    /** @var FilePhpContract */
-    private $filePhp;
+    private FilePhpContract $filePhp;
 
     /**
      * {@inheritdoc}

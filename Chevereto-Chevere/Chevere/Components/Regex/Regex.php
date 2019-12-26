@@ -21,7 +21,7 @@ use Throwable;
 final class Regex implements RegexContract
 {
     /** @var string */
-    private $regex;
+    private string $regex;
 
     /**
      * {@inheritdoc}

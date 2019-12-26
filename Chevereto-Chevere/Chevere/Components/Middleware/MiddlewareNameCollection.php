@@ -21,11 +21,9 @@ use Chevere\Contracts\Middleware\MiddlewareNameContract;
  */
 final class MiddlewareNameCollection implements MiddlewareNameCollectionContract
 {
-    /** @var array */
-    private $array;
+    private array $array;
 
-    /** @var array */
-    private $index;
+    private array $index;
 
     /**
      * {@inheritdoc}

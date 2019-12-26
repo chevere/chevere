@@ -30,8 +30,7 @@ use RecursiveIteratorIterator;
  */
 final class Dir implements DirContract
 {
-    /** @var PathContract */
-    private $path;
+    private PathContract $path;
 
     /**
      * {@inheritdoc}

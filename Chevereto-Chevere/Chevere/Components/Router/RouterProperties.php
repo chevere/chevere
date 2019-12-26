@@ -23,7 +23,7 @@ use Chevere\Contracts\Router\RouterPropertiesContract;
 final class RouterProperties implements RouterPropertiesContract
 {
     /** @var array RegexPropertyContract::class[] */
-    private $classMap = [
+    private array $classMap = [
         RegexProperty::class,
         RoutesProperty::class,
         IndexProperty::class,
@@ -32,19 +32,19 @@ final class RouterProperties implements RouterPropertiesContract
     ];
 
     /** @var string */
-    private $regex;
+    private string $regex;
 
     /** @var array */
-    private $routes;
+    private array $routes;
 
     /** @var array */
-    private $index;
+    private array $index;
 
     /** @var array */
-    private $groups;
+    private array $groups;
 
     /** @var array */
-    private $named;
+    private array $named;
 
     /**
      * {@inheritdoc}

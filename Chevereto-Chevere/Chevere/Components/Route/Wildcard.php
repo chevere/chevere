@@ -26,13 +26,12 @@ use function ChevereFn\stringStartsWithNumeric;
 final class Wildcard implements WildcardContract
 {
     /** @var string */
-    private $name;
+    private string $name;
 
     /** @var string */
-    private $wildcard;
+    private string $wildcard;
 
-    /** @var RegexMatchContract */
-    private $regexMatch;
+    private RegexMatchContract $regexMatch;
 
     /**
      * {@inheritdoc}

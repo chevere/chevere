@@ -30,11 +30,10 @@ use Chevere\Contracts\Variable\VariableExportContract;
  */
 final class FileReturn implements FileReturnContract
 {
-    /** @var FilePhpContract */
-    private $filePhp;
+    private FilePhpContract $filePhp;
 
     /** @var bool True for strict validation (PHP_RETURN), false for regex validation (return <algo>) */
-    private $strict;
+    private bool $strict;
 
     /**
      * {@inheritdoc}

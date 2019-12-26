@@ -22,8 +22,7 @@ use TypeError;
 
 abstract class PropertyBase
 {
-    /** @var BreadcrumContract */
-    protected $breadcrum;
+    protected BreadcrumContract $breadcrum;
 
     protected function assertString($var): void
     {
@@ -90,8 +89,8 @@ abstract class PropertyBase
         $message = new Message($e->getMessage());
         if ($this->breadcrum->hasAny()) {
             $message = (new Message('%exception% at %at%'))
-                    ->strtr('%exception%', $e->getMessage())
-                    ->code('%at%', $this->breadcrum->toString());
+                ->strtr('%exception%', $e->getMessage())
+                ->code('%at%', $this->breadcrum->toString());
         }
 
         return $message;

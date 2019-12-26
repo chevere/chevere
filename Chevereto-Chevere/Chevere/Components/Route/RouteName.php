@@ -20,7 +20,7 @@ use Chevere\Contracts\Route\RouteNameContract;
 final class RouteName implements RouteNameContract
 {
     /** @var string */
-    private $name;
+    private string $name;
 
     /**
      * {@inheritdoc}

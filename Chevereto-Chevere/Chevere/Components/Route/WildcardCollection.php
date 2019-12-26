@@ -19,10 +19,10 @@ use Chevere\Contracts\Route\WildcardContract;
 final class WildcardCollection implements WildcardCollectionContract
 {
     /** @param array WildcardContract[] */
-    private $array;
+    private array $array;
 
     /** @param array ['METHOD' => key,]*/
-    private $index;
+    private array $index;
 
     /**
      * {@inheritdoc}

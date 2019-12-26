@@ -32,11 +32,9 @@ use function ChevereFn\stringEndsWith;
  */
 final class File implements FileContract
 {
-    /** @var PathContract */
-    private $path;
+    private PathContract $path;
 
-    /** @var bool */
-    private $isPhp;
+    private bool $isPhp;
 
     /**
      * {@inheritdoc}

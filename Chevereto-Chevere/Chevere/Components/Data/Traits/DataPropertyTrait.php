@@ -17,6 +17,5 @@ use Chevere\Contracts\Data\DataContract;
 
 trait DataPropertyTrait
 {
-    /** @var DataContract */
-    private $data;
+    private DataContract $data;
 }

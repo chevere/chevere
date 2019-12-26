@@ -34,29 +34,24 @@ use Chevere\Contracts\Route\WildcardCollectionContract;
 
 final class Route implements RouteContract
 {
-    /** @var PathUriContract */
-    private $pathUri;
+    private PathUriContract $pathUri;
 
     /** @var string Route path representation, with placeholder wildcards like /api/users/{0} */
-    private $key;
+    private string $key;
 
     /** @var array An array containg details about the Route maker */
-    private $maker;
+    private array $maker;
 
-    /** @var MiddlewareNameCollectionContract */
-    private $middlewareNameCollection;
+    private MiddlewareNameCollectionContract $middlewareNameCollection;
 
-    /** @var WildcardCollectionContract */
-    private $wildcardCollection;
+    private WildcardCollectionContract $wildcardCollection;
 
-    /** @var MethodControllerNameCollectionContract */
-    private $methodControllerNameCollection;
+    private MethodControllerNameCollectionContract $methodControllerNameCollection;
 
-    /** @var RouteNameContract Route name (if any) */
-    private $name;
+    private RouteNameContract $name;
 
     /** @var string */
-    private $regex;
+    private string $regex;
 
     /**
      * {@inheritdoc}
@@ -170,12 +165,12 @@ final class Route implements RouteContract
         $methodString = $methodControllerName->method()->toString();
         if ('GET' == $methodString) {
             $new->methodControllerNameCollection = $new->methodControllerNameCollection
-                    ->withAddedMethodControllerName(
-                        new MethodControllerName(
-                            new Method('HEAD'),
-                            new ControllerName(HeadController::class)
-                        )
-                    );
+                ->withAddedMethodControllerName(
+                    new MethodControllerName(
+                        new Method('HEAD'),
+                        new ControllerName(HeadController::class)
+                    )
+                );
         }
 
         return $new;

@@ -21,7 +21,7 @@ use Chevere\Contracts\Regex\RegexMatchContract;
 final class RegexMatch implements RegexMatchContract
 {
     /** @var string a regular expresion match statement */
-    private $match;
+    private string $match;
 
     /**
      * {@inheritdoc}

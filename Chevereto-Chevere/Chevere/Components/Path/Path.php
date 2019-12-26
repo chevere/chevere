@@ -27,16 +27,16 @@ use function ChevereFn\stringStartsWith;
 final class Path implements PathContract
 {
     /** @var string The passed path */
-    private $path;
+    private string $path;
 
     /** @var string Root context path (absolute) */
-    private $root;
+    private string $root;
 
     /** @var string Absolute path */
-    private $absolute;
+    private string $absolute;
 
     /** @var string Relative path (to project root) */
-    private $relative;
+    private string $relative;
 
     /**
      * {@inheritdoc}
