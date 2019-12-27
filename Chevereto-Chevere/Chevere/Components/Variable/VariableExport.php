@@ -39,8 +39,8 @@ final class VariableExport implements VariableExportContract
     {
         $this->var = $var;
         $this->breadcrum = new Breadcrum();
+        $this->assertExportable($this->var);
         try {
-            $this->assertExportable($this->var);
         } catch (Throwable $e) {
             throw new VariableExportException($e->getMessage(), $e->getCode(), $e);
         }
@@ -98,7 +98,9 @@ final class VariableExport implements VariableExportContract
                 $this->breadcrum = $this->breadcrum
                     ->withAddedItem('property:$' . $property->getName());
                 $propertyKey = $this->breadcrum->pos();
-                $this->assertExportable($property->getValue($var));
+                if ($property->isInitialized($var)) {
+                    $this->assertExportable($property->getValue($var));
+                }
                 $this->breadcrum = $this->breadcrum
                     ->withRemovedItem($propertyKey);
             }
