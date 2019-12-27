@@ -20,6 +20,10 @@ use Chevere\Components\Variable\VariableExport;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouteableContract;
 
+/**
+ * Determines if a RouteContract is able to be routed.
+ * @package Chevere\Components\Router
+ */
 final class Routeable implements RouteableContract
 {
     private RouteContract $route;
