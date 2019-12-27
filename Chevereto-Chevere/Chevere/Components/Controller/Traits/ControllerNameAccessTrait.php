@@ -16,7 +16,7 @@ namespace Chevere\Components\Controller\Traits;
 trait ControllerNameAccessTrait
 {
     /** @var string A string representing a ControllerContract name */
-    private $controllerName;
+    private ?string $controllerName;
 
     public function hasControllerName(): bool
     {

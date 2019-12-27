@@ -43,12 +43,6 @@ final class Console implements ConsoleContract
 
     private ConsoleOutputInterface $output;
 
-    private CommandContract $command;
-
-    /** @var string The first argument (command name) passed */
-    private ?string $commandName;
-
-    /** @var true */
     private bool $isBuiltIn;
 
     private Symfony $symfony;
@@ -65,6 +59,11 @@ final class Console implements ConsoleContract
         InspectCommand::class,
         DestroyCommand::class,
     ];
+
+    private ?CommandContract $command;
+
+    /** @var string The first argument (command name) passed */
+    private ?string $commandName;
 
     public function __construct()
     {

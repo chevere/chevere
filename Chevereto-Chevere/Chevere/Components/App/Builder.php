@@ -26,8 +26,7 @@ final class Builder implements BuilderContract
 
     private BuildContract $build;
 
-    /** @var array */
-    private array $controllerArguments;
+    private ?array $controllerArguments;
 
     /**
      * {@inheritdoc}

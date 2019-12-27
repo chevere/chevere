@@ -42,16 +42,15 @@ final class Route implements RouteContract
     /** @var array An array containg details about the Route maker */
     private array $maker;
 
-    private MiddlewareNameCollectionContract $middlewareNameCollection;
-
-    private WildcardCollectionContract $wildcardCollection;
-
-    private MethodControllerNameCollectionContract $methodControllerNameCollection;
-
-    private RouteNameContract $name;
-
-    /** @var string */
     private string $regex;
+
+    private ?WildcardCollectionContract $wildcardCollection;
+
+    private ?RouteNameContract $name;
+
+    private ?MiddlewareNameCollectionContract $middlewareNameCollection;
+
+    private ?MethodControllerNameCollectionContract $methodControllerNameCollection;
 
     /**
      * {@inheritdoc}

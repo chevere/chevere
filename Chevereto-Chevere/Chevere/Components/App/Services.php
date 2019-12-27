@@ -22,9 +22,9 @@ use Chevere\Contracts\Router\RouterContract;
  */
 final class Services implements ServicesContract
 {
-    private ApiContract $api;
+    private ?ApiContract $api;
 
-    private RouterContract $router;
+    private ?RouterContract $router;
 
     /**
      * {@inheritdoc}

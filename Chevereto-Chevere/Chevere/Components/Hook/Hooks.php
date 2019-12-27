@@ -17,9 +17,9 @@ final class Hooks
 {
     private object $that;
 
-    private array $trace;
-
     private array $anchor;
+
+    private ?array $trace;
 
     public function __construct(object $that, string $anchor)
     {

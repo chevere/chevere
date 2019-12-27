@@ -20,33 +20,34 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Router\RouterProperties;
+use Chevere\Components\Variable\VariableExport;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
 final class RouterMakerTest extends TestCase
 {
-    public function testConstruct(): void
-    {
-        $routerMaker = new RouterMaker();
-        $this->assertSame((new RouterProperties())->toArray(), $routerMaker->properties()->toArray());
-    }
+  public function testConstruct(): void
+  {
+    $routerMaker = new RouterMaker();
+    $this->assertSame((new RouterProperties())->toArray(), $routerMaker->properties()->toArray());
+  }
 
-    public function testWithAddedRouteable(): void
-    {
-        $pathUri = '/test';
-        $route = (new Route(new PathUri($pathUri)))
-          ->withAddedMethod(
-            new Method('POST'),
-            new ControllerName(TestController::class)
-          );
+  public function testWithAddedRouteable(): void
+  {
+    $pathUri = '/test';
+    $route = (new Route(new PathUri($pathUri)))
+      ->withAddedMethod(
+        new Method('POST'),
+        new ControllerName(TestController::class)
+      );
 
-        $routerMaker = (new RouterMaker())
-          ->withAddedRouteable(
-            new Routeable($route),
-            'test'
-          );
-        $this->assertTrue((bool) preg_match($routerMaker->properties()->regex(), $pathUri));
-        $this->assertSame($route, $routerMaker->properties()->routes()[0]);
-        $this->assertSame([0], $routerMaker->properties()->groups()['test']);
-    }
+    $routerMaker = (new RouterMaker())
+      ->withAddedRouteable(
+        new Routeable($route),
+        'test'
+      );
+    $this->assertTrue((bool) preg_match($routerMaker->properties()->regex(), $pathUri));
+    $this->assertSame((new VariableExport($route))->toSerialize(), $routerMaker->properties()->routes()[0]);
+    $this->assertSame([0], $routerMaker->properties()->groups()['test']);
+  }
 }

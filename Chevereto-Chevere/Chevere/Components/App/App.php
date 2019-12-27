@@ -27,13 +27,13 @@ use Chevere\Contracts\Router\RoutedContract;
  */
 final class App implements AppContract
 {
-    private RoutedContract $routed;
+    private ServicesContract $services;
 
     private ResponseContract $response;
 
-    private RequestContract $request;
+    private ?RoutedContract $routed;
 
-    private ServicesContract $services;
+    private ?RequestContract $request;
 
     /** @var array String arguments (from request, cli) */
     private array $arguments;

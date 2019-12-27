@@ -50,8 +50,6 @@ final class Build implements BuildContract
 {
     private AppContract $app;
 
-    private ParametersContract $parameters;
-
     private FilePhpContract $filePhp;
 
     private DirContract $cacheDir;
@@ -66,7 +64,9 @@ final class Build implements BuildContract
 
     private ApiMaker $apiMaker;
 
-    private RouterMakerContract $routerMaker;
+    private ?ParametersContract $parameters;
+
+    private ?RouterMakerContract $routerMaker;
 
     /**
      * {@inheritdoc}

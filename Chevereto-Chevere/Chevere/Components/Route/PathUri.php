@@ -29,17 +29,17 @@ final class PathUri implements PathUriContract
     /** @var string */
     private string $path;
 
-    /** @var int */
-    private int $wildcardBracesCount;
-
-    /** @var array */
-    private array $wildcardsMatch = [];
-
     /** @var string Path key set representation ({wildcards} replaced by {n}) */
     private string $key;
 
+    /** @var int */
+    private ?int $wildcardBracesCount;
+
+    /** @var array */
+    private ?array $wildcardsMatch;
+
     /** @var array string[] */
-    private array $wildcards = [];
+    private ?array $wildcards;
 
     /**
      * {@inheritdoc}
@@ -49,9 +49,9 @@ final class PathUri implements PathUriContract
         $this->path = $path;
         $this->assertFormat();
         $this->key = $this->path;
-        $this->wildcardBracesCount = 0;
-        $this->wildcardsMatch = [];
         if ($this->hasHandlebars()) {
+            $this->wildcardsMatch = [];
+            $this->wildcardBracesCount = 0;
             $this->assertWildcards();
             $this->handleWildcards();
         }

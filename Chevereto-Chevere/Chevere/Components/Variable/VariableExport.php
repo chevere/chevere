@@ -39,8 +39,8 @@ final class VariableExport implements VariableExportContract
     {
         $this->var = $var;
         $this->breadcrum = new Breadcrum();
-        $this->assertExportable($this->var);
         try {
+            $this->assertExportable($this->var);
         } catch (Throwable $e) {
             throw new VariableExportException($e->getMessage(), $e->getCode(), $e);
         }

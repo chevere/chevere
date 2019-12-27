@@ -37,11 +37,9 @@ final class Parameters implements ParametersContract
 
     private ArrayFileContract $arrayFile;
 
-    /** @var string */
-    private string $api;
+    private ?string $api;
 
-    /** @var array */
-    private array $routes;
+    private ?array $routes;
 
     /**
      * {@inheritdoc}

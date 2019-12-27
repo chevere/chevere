@@ -17,7 +17,7 @@ use Chevere\Contracts\Cache\CacheContract;
 
 trait CacheAccessTrait
 {
-    private CacheContract $cache;
+    private ?CacheContract $cache;
 
     public function hasCache(): bool
     {

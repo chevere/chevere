@@ -15,6 +15,8 @@ namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouteableException;
+use Chevere\Components\Variable\Exceptions\VariableExportException;
+use Chevere\Components\Variable\VariableExport;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouteableContract;
 
@@ -28,6 +30,7 @@ final class Routeable implements RouteableContract
     public function __construct(RouteContract $route)
     {
         $this->route = $route;
+        $this->assertExportable();
         $this->assertMethodControllerNames();
     }
 
@@ -37,6 +40,20 @@ final class Routeable implements RouteableContract
     public function route(): RouteContract
     {
         return $this->route;
+    }
+
+    private function assertExportable(): void
+    {
+        try {
+            new VariableExport($this->route);
+        } catch (VariableExportException $e) {
+            throw new RouteableException(
+                (new Message("Instance of %className% is not exportable: %message%"))
+                    ->code('%className%', RouteContract::class)
+                    ->code('%message%', $e->getMessage())
+                    ->toString()
+            );
+        }
     }
 
     private function assertMethodControllerNames(): void

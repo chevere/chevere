@@ -17,7 +17,7 @@ use Chevere\Contracts\Route\RouteContract;
 
 trait RouteAccessTrait
 {
-    private RouteContract $route;
+    private ?RouteContract $route;
 
     public function hasRoute(): bool
     {

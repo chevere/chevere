@@ -18,6 +18,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
 use Chevere\Components\Router\Exceptions\RouteNameConflictException;
 use Chevere\Components\Router\Exceptions\RouterMakerException;
+use Chevere\Components\Variable\VariableExport;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\Properties\RegexPropertyContract;
 use Chevere\Contracts\Router\RouteableContract;
@@ -67,7 +68,7 @@ final class RouterMaker implements RouterMakerContract
         $groups = $new->properties->groups();
         $named = $new->properties->named();
         $id = empty($routes) ? 0 : (array_key_last($routes) + 1);
-        $routes[$id] = $route;
+        $routes[$id] = serialize($route);
         $new->regexes[$route->regex()] = $id;
         $groups[$group][] = $id;
         $new->keys[$route->pathUri()->key()] = $id;

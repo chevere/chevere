@@ -34,14 +34,12 @@ final class Runner implements RunnerContract
     /** @var bool A boolean indicating if the run() method was called */
     private bool $ran;
 
-    /** @var bool A boolean indicating if the console has looped */
-    private bool $consoleLoop;
-
     /** @var string A string representing a ControllerContract name */
     private string $controllerName;
 
-    /** @var array */
     private array $controllerArguments;
+
+    private ?bool $consoleLoop;
 
     /**
      * {@inheritdoc}
