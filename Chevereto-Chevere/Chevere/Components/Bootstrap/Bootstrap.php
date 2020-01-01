@@ -2,7 +2,11 @@
 
 namespace Chevere\Components\Bootstrap;
 
+use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Contracts\Bootstrap\BootstrapContract;
+
+use function ChevereFn\stringReplaceFirst;
+use function ChevereFn\stringStartsWith;
 
 final class Bootstrap implements BootstrapContract
 {
@@ -100,5 +104,22 @@ final class Bootstrap implements BootstrapContract
   public function dev(): bool
   {
     return $this->dev;
+  }
+
+  public function withAppAutoloader(string $namespace): BootstrapContract
+  {
+    $new = clone $this;
+    $ns = trim($namespace, '\\') . '\\';
+    $nsPath = str_replace('\\', '/', $ns);
+    spl_autoload_register(function ($className) use ($ns, $nsPath) {
+      $matches = stringStartsWith($ns, $className);
+      if ($matches) {
+        $name = str_replace('\\', '/', $className);
+        $path = stringReplaceFirst($nsPath, '', $name) . '.php';
+        require $this->documentRoot . 'app/src/' . $path;
+      }
+    });
+
+    return $new;
   }
 }

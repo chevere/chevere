@@ -33,5 +33,5 @@ new BootstrapInstance($bootstrap);
 // define('Chevere\ROOT_PATH', str_replace('\\', '/', DOCUMENT_ROOT));
 
 require 'runtime.php';
-require BootstrapInstance::get()->appPath() . 'app.php';
-require BootstrapInstance::get()->appPath() . 'loader.php';
+require $bootstrap->appPath() . 'app.php';
+require $bootstrap->appPath() . 'loader.php';

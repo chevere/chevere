@@ -27,4 +27,6 @@ interface BootstrapContract
   public function withDev(bool $bool): BootstrapContract;
 
   public function dev(): bool;
+
+  public function withAppAutoloader(string $namespace): BootstrapContract;
 }
