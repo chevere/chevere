@@ -59,8 +59,8 @@ final class Build implements BuildContract
 
     private CheckoutContract $checkout;
 
-    /** @var array Containing the collection of Cache->toArray() data (checksums) */
-    private array $checksums = [];
+    /** @var array Containing the collection of Cache->toArray() data checksums (if any)*/
+    private array $checksums;
 
     private ApiMaker $apiMaker;
 
@@ -74,6 +74,7 @@ final class Build implements BuildContract
     public function __construct(AppContract $app, PathContract $path)
     {
         $this->isMaked = false;
+        $this->checksums = [];
         $this->app = $app;
         $this->filePhp = new FilePhp(
             new File(
@@ -163,7 +164,6 @@ final class Build implements BuildContract
     {
         $this->assertCanMake();
         $new = clone $this;
-        $new->checksums = [];
         if ($new->parameters->hasApi()) {
             $new->makeApi();
         }

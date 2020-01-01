@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler\src;
 
-use const Chevere\CLI;
+use Chevere\Components\App\Instances\BootstrapInstance;
 
 /**
  * Handles the ExceptionHandler exception stack trace.
@@ -38,7 +38,7 @@ final class Stack
     {
         foreach ($trace as $k => $entry) {
             $traceEntry = new TraceEntry($entry, $k);
-            if (CLI) {
+            if (BootstrapInstance::get()->cli()) {
                 $this->console[] = strtr(Template::STACK_ITEM_CONSOLE, $traceEntry->rich());
             }
             $this->plain[] = strtr(Template::STACK_ITEM_HTML, $traceEntry->plain());

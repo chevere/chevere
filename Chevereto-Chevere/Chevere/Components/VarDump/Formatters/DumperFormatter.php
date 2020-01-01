@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Formatters;
 
+use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\VarDump\Formatters\Traits\GetEncodedCharsTrait;
 use Chevere\Components\VarDump\Formatters\Traits\GetIndentTrait;
 use Chevere\Components\VarDump\src\Wrapper;
 use Chevere\Contracts\VarDump\FormatterContract;
-
-use const Chevere\CLI;
 
 /**
  * Provide Dumper VarDump representation (auto detect).
@@ -31,7 +30,7 @@ final class DumperFormatter implements FormatterContract
     public function wrap(string $key, string $dump): string
     {
         $wrapper = new Wrapper($key, $dump);
-        if (CLI) {
+        if (BootstrapInstance::get()->cli()) {
             $wrapper = $wrapper->withCli();
         }
 
@@ -40,7 +39,7 @@ final class DumperFormatter implements FormatterContract
 
     public function getEmphasis(string $string): string
     {
-        if (!CLI) {
+        if (!BootstrapInstance::get()->cli()) {
             return $string;
         }
 

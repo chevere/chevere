@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Contracts\Controller\StringContract;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\Traits\ResponseStringTrait;
@@ -29,7 +30,7 @@ class Home extends Controller implements StringContract
         $this->document = 'Hello World!'; // Sets Hello World!
         $this->hook('helloWorld'); // Hooks run (if any)...
         $this->document .= ' >> After hook'; // Hooks + zz
-        // die(1000 * (microtime(true) - BOOTSTRAP_TIME));
+        // die(1000 * (microtime(true) - BootstrapInstance::get()->time()));
     }
 
     public function setDocument(string $document): void

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Path;
 
+use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathInvalidException;
 use Chevere\Components\Path\Exceptions\PathNotAllowedException;
@@ -22,15 +23,16 @@ use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 
 /**
- * Tool to handle filesystem paths (folder containing app, vendor).
+ * Tool to handle filesystem paths (folder containing app).
+ * TODO: Use it for /* or  just /app/* ??
  */
 final class Path implements PathContract
 {
+    /** @var string Root context path (<project>/app) */
+    private string $root;
+
     /** @var string The passed path */
     private string $path;
-
-    /** @var string Root context path (absolute) */
-    private string $root;
 
     /** @var string Absolute path */
     private string $absolute;
@@ -43,7 +45,7 @@ final class Path implements PathContract
      */
     public function __construct(string $path)
     {
-        $this->root = PathContract::ROOT;
+        $this->root = BootstrapInstance::get()->appPath();
         $this->path = $path;
         $this->assertPathFormat();
         $this->handlePaths();

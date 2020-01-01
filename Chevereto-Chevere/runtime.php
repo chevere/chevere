@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere;
 
+use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\App\Instances\ConsoleInstance;
 use Chevere\Components\App\Instances\RequestInstance;
 use Chevere\Components\App\Instances\RuntimeInstance;
@@ -32,7 +33,7 @@ new RequestInstance(
     Request::fromGlobals()
 );
 
-if (CONSOLE) {
+if (BootstrapInstance::get()->console()) {
     new ConsoleInstance(new Console());
 }
 

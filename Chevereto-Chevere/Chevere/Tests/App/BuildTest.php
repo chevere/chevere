@@ -121,7 +121,7 @@ final class BuildTest extends TestCase
     public function testInvalidChecksumsMethodCall(): void
     {
         $build = $this->getBuild();
-        $this->expectException(Error::class);
+        $this->assertSame([], $build->checksums());
         $build->checksums();
     }
 

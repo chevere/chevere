@@ -13,12 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Path;
 
-use const Chevere\APP_PATH;
-
 interface PathContract
 {
-    const ROOT = APP_PATH;
-
     /**
      * Construct a new instance.
      */

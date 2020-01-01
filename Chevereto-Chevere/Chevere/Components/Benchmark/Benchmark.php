@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Benchmark;
 
+use Chevere\Components\App\Instances\BootstrapInstance;
 use LogicException;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Chevere\Components\DateTime\DateTime;
@@ -20,8 +21,6 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Number\Number;
 use Chevere\Components\Time\TimeHr;
 use Chevere\Components\Traits\PrintableTrait;
-use const Chevere\BOOTSTRAP_TIME;
-use const Chevere\CLI;
 
 /**
  * Benchmark provides a simple way to determine which code procedure perform faster.
@@ -126,11 +125,11 @@ final class Benchmark
     {
         $this->constructTime = (int) hrtime(true);
         $this->maxExecutionTime = (int) ini_get('max_execution_time');
-        $this->requestTime = BOOTSTRAP_TIME;
+        $this->requestTime = BootstrapInstance::get()->time();
         $this->times = $times;
         $this->callablesCount = 0;
         $this->timeTaken = 0;
-        if (CLI) {
+        if (BootstrapInstance::get()->cli()) {
             $this->consoleColor = new ConsoleColor();
         }
     }
@@ -205,7 +204,7 @@ final class Benchmark
         $title = __CLASS__ . ' results';
         $this->lineSeparator = str_repeat('-', static::COLUMNS);
         $pipe = '|';
-        if (CLI) {
+        if (isset($this->consoleColor)) {
             $this->lineSeparator = $this->consoleColor->apply('blue', $this->lineSeparator);
             $pipe = $this->consoleColor->apply('blue', $pipe);
         }
@@ -226,7 +225,7 @@ final class Benchmark
         $this->timeTakenReadable = ' Time taken: ' . (new TimeHr($this->timeTaken))->toReadMs();
         $this->lines[] = str_repeat(' ', (int) max(0, static::COLUMNS - strlen($this->timeTakenReadable))) . $this->timeTakenReadable;
         $this->printable = implode("\n", $this->lines);
-        if (CLI) {
+        if (isset($this->consoleColor)) {
             $this->printable .= "\r\n";
         } else {
             $this->printable = '<pre>' . $this->printable . '</pre>' . "\t\n";
@@ -320,7 +319,7 @@ final class Benchmark
         } else {
             $resultTitle .= ' (' . $this->results[$id]['adds'] . ' slower)';
         }
-        if (CLI) {
+        if (isset($this->consoleColor)) {
             $resultTitle = $this->consoleColor->apply(0 == $this->recordsProcessed ? 'green' : 'red', $resultTitle);
         }
 

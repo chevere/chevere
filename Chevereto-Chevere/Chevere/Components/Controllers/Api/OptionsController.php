@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controllers\Api;
 
+use Chevere\Components\App\Instances\BootstrapInstance;
 use InvalidArgumentException;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Message\Message;
 use function console;
-use const Chevere\CONSOLE;
 
 /**
  * Exposes API endpoint options.
@@ -53,7 +53,7 @@ final class OptionsController extends Controller
         // $this->app()->response()->setStatusCode(400);
         $msg = 'Must provide a %s argument when running this callable without route context.';
         $message = (new Message($msg))->code('%s', '$path')->toString();
-        if (CONSOLE) {
+        if (BootstrapInstance::get()->console()) {
             console()->style()->error($message);
 
             return;

@@ -13,18 +13,25 @@ declare(strict_types=1);
 
 namespace Chevere;
 
-define('Chevere\BOOTSTRAP_TIME', time());
-define('Chevere\BOOTSTRAP_HRTIME', hrtime(true));
-require dirname(__DIR__) . '/vendor/autoload.php';
-define('Chevere\DOCUMENT_ROOT', rtrim(dirname(__DIR__, 'Chevereto-Chevere' == basename(__DIR__) ? 1 : 3), '/') . '/');
-define('Chevere\ROOT_PATH', str_replace('\\', '/', DOCUMENT_ROOT));
-define('Chevere\APP_PATH', ROOT_PATH . 'app/');
+use Chevere\Components\App\Instances\BootstrapInstance;
+use Chevere\Components\Bootstrap\Bootstrap;
 
-// FIXME: Create a container for runtime booleans
-define('Chevere\CLI', 'cli' == php_sapi_name());
-define('Chevere\CONSOLE', CLI);
-define('Chevere\DEV', (bool) include(APP_PATH . 'options/dev.php')); // DEV=true to rebuild the App on every load
+require dirname(__DIR__) . '/vendor/autoload.php';
+
+$documentRoot = rtrim(dirname(__DIR__, 'Chevereto-Chevere' == basename(__DIR__) ? 1 : 3), '/') . '/';
+$isCli = 'cli' == php_sapi_name();
+
+$bootstrap = (new Bootstrap($documentRoot))
+  ->withCli($isCli);
+$bootstrap = $bootstrap
+  ->withConsole($bootstrap->cli())
+  ->withDev((bool) include($bootstrap->appPath() . 'options/dev.php'));
+
+new BootstrapInstance($bootstrap);
+
+// define('Chevere\DOCUMENT_ROOT', rtrim(dirname(__DIR__, 'Chevereto-Chevere' == basename(__DIR__) ? 1 : 3), '/') . '/');
+// define('Chevere\ROOT_PATH', str_replace('\\', '/', DOCUMENT_ROOT));
 
 require 'runtime.php';
-require APP_PATH . 'app.php';
-require APP_PATH . 'loader.php';
+require BootstrapInstance::get()->appPath() . 'app.php';
+require BootstrapInstance::get()->appPath() . 'loader.php';

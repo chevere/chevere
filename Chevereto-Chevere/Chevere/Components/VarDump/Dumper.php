@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump;
 
+use Chevere\Components\App\Instances\BootstrapInstance;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -23,8 +24,6 @@ use Chevere\Contracts\VarDump\FormatterContract;
 
 use function ChevereFn\stringEndsWith;
 use function ChevereFn\stringStartsWith;
-
-use const Chevere\CLI;
 
 /**
  * Dumps information about one or more variables. CLI/HTML aware.
@@ -81,7 +80,7 @@ class Dumper
         $this->callerFilepath = $this->debugBacktrace[0]['file'];
         $this->handleSelfCaller();
         $this->output = null;
-        if (CLI) {
+        if (BootstrapInstance::get()->cli()) {
             $this->handleConsoleOutput();
         } else {
             $this->handleHtmlOutput();

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
+use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Contracts\Controller\JsonApiContract;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\Traits\JsonApiTrait;
@@ -24,7 +25,6 @@ use JsonApiPhp\JsonApi\JsonApi;
 use JsonApiPhp\JsonApi\Link\SelfLink;
 use JsonApiPhp\JsonApi\ResourceCollection;
 use JsonApiPhp\JsonApi\ResourceObject;
-use const Chevere\BOOTSTRAP_HRTIME;
 
 class Index extends Controller implements JsonApiContract
 {
@@ -39,7 +39,7 @@ class Index extends Controller implements JsonApiContract
     public function __invoke(): void
     {
         $took = hrtime(true);
-        $arr = ['aaa', $this, (new TimeHr($took - BOOTSTRAP_HRTIME))->toReadMs()];
+        $arr = ['aaa', $this, (new TimeHr($took - BootstrapInstance::get()->hrTime()))->toReadMs()];
         dd($arr);
         $this->api = new ResourceObject(
             'info',
@@ -53,7 +53,7 @@ class Index extends Controller implements JsonApiContract
             'cli',
             new Attribute('entry', 'php chevere.php list'),
             new Attribute('description', 'Retrieves the console command list.'),
-            );
+        );
     }
 
     public function getDocument(): EncodedDocument
@@ -63,7 +63,7 @@ class Index extends Controller implements JsonApiContract
                 new DataDocument(
                     new ResourceCollection($this->api, $this->cli),
                     new JsonApi(),
-                    )
+                )
             );
     }
 }

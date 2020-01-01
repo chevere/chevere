@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\App;
 
 use Chevere\Components\App\Exceptions\ResolverException;
+use Chevere\Components\App\Instances\BootstrapInstance;
 use LogicException;
 use Chevere\Components\Http\Request\RequestException;
 use Chevere\Components\Http\Request;
@@ -22,7 +23,6 @@ use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\RunnerContract;
 use function console;
 use function GuzzleHttp\Psr7\stream_for;
-use const Chevere\CONSOLE;
 
 /**
  * Application builder runner.
@@ -104,7 +104,7 @@ final class Runner implements RunnerContract
      */
     private function handleConsole(): void
     {
-        if (CONSOLE && !isset($this->consoleLoop)) {
+        if (BootstrapInstance::get()->console() && !isset($this->consoleLoop)) {
             console()->bind($this->builder);
             console()->run();
         }

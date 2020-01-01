@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler\src;
 
+use Chevere\Components\App\Instances\BootstrapInstance;
 use JsonApiPhp\JsonApi\Error;
 use JsonApiPhp\JsonApi\ErrorDocument;
 use JsonApiPhp\JsonApi\Error\Code;
@@ -29,8 +30,6 @@ use Chevere\Components\Message\Message;
 
 use function console;
 use function GuzzleHttp\Psr7\stream_for;
-
-use const Chevere\CLI;
 
 /**
  * Provides ExceptionHandler output by passing a Formatter. FIXME: Don't handle responses!
@@ -65,7 +64,7 @@ final class Output
         if ($exceptionHandler->request()->isXmlHttpRequest()) {
             $this->setJsonOutput();
         } else {
-            if (CLI) {
+            if (BootstrapInstance::get()->cli()) {
                 // $this->setJsonOutput();
                 $this->setConsoleOutput();
                 // $this->setHtmlOutput();
@@ -82,7 +81,7 @@ final class Output
 
     public function out(): void
     {
-        if (CLI) {
+        if (BootstrapInstance::get()->cli()) {
             // Must kill the CLI, to stop the default CLI error printing to console
             die(1);
         }

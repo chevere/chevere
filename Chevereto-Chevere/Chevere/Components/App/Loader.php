@@ -15,6 +15,7 @@ namespace Chevere\Components\App;
 
 use Chevere\Components\Api\Api;
 use Chevere\Components\App\Exceptions\BuildNeededException;
+use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\File\File;
@@ -31,8 +32,6 @@ use Chevere\Contracts\App\ServicesContract;
 use Chevere\Contracts\App\LoaderContract;
 use Chevere\Contracts\App\ParametersContract;
 use function console;
-use const Chevere\CONSOLE;
-use const Chevere\DEV;
 
 /**
  * Loads the application, by handling its builder.
@@ -83,7 +82,10 @@ final class Loader implements LoaderContract
 
     private function handleParameters(): void
     {
-        if (DEV || (CONSOLE && console()->isBuilding())) {
+        if (
+            BootstrapInstance::get()->dev() ||
+            (BootstrapInstance::get()->console() && console()->isBuilding())
+        ) {
             $path = new Path('plugins/local/HelloWorld/routes/web.php');
             $pluginRoutes = [$path];
             $this->parameters = $this->parameters
@@ -99,12 +101,12 @@ final class Loader implements LoaderContract
     }
 
     /**
-     * While in DEV mode, it calls make() on top of build() so the application is re-built in every request.
+     * While in dev mode, call make() on top of build() so the application is re-built in every request.
      * On production, it returns a BuildContrar with a Container instance.
      */
     private function getBuild(): BuildContract
     {
-        if (DEV) {
+        if (BootstrapInstance::get()->dev()) {
             return $this->builder->build()
                 ->withRouterMaker(new RouterMaker())
                 ->make();
@@ -123,7 +125,7 @@ final class Loader implements LoaderContract
      */
     private function getServices(): ServicesContract
     {
-        if (CONSOLE && console()->isBuilding()) {
+        if (BootstrapInstance::get()->console() && console()->isBuilding()) {
             return (new Services())
                 ->withApi(new Api())
                 ->withRouter(new Router());
@@ -142,15 +144,15 @@ final class Loader implements LoaderContract
     private function assertNeedsToBeBuilt(): void
     {
         if (
-            !DEV
-            && !(CONSOLE && console()->isBuilding())
+            !BootstrapInstance::get()->dev()
+            && !(BootstrapInstance::get()->console() && console()->isBuilding())
             && !$this->builder->build()->file()->exists()
         ) {
             $command = 'php ' . $_SERVER['SCRIPT_FILENAME'] . ' build';
             $message = (new Message('The application needs to be built by running %command%'))
                 ->code('%command%', $command)
                 ->toString();
-            if (CONSOLE) {
+            if (BootstrapInstance::get()->console()) {
                 console()->style()->block($message, 'CANNOT EXECUTE');
                 die(126);
             }

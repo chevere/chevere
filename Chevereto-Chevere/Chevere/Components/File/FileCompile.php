@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\File;
 
+use Chevere\Components\App\Instances\BootstrapInstance;
 use RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\File\FileCompileContract;
 use Chevere\Contracts\File\FilePhpContract;
-use const Chevere\BOOTSTRAP_TIME;
 
 /**
  * OPCache compiler.
@@ -49,7 +49,7 @@ final class FileCompile implements FileCompileContract
     {
         $this->filePhp->file()->assertExists();
         $path = $this->filePhp->file()->path()->absolute();
-        $past = BOOTSTRAP_TIME - 10;
+        $past = BootstrapInstance::get()->time() - 10;
         touch($path, $past);
         @opcache_invalidate($path, true);
         if (!opcache_compile_file($path)) {

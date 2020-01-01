@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Message;
 
+use Chevere\Components\App\Instances\BootstrapInstance;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 use const Chevere\CLI;
@@ -82,7 +83,7 @@ final class Message
      */
     public function toString(): string
     {
-        if (CLI) {
+        if (BootstrapInstance::get()->cli()) {
             $message = strtr($this->message, $this->trTable);
             return preg_replace_callback('#<code>(.*?)<\/code>#', function ($matches) {
                 $consoleColor = new ConsoleColor();

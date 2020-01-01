@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Console\Commands;
 
+use Chevere\Components\App\Instances\BootstrapInstance;
 use LogicException;
 use Chevere\Components\Console\Command;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Time\TimeHr;
 use Chevere\Contracts\App\BuilderContract;
-use const Chevere\BOOTSTRAP_HRTIME;
 
 /**
  * The BuildCommand builds the App.
@@ -53,7 +53,7 @@ final class BuildCommand extends Command
         }
         $timeEnd = (int) hrtime(true);
         $timeRelative = new TimeHr($timeEnd - $timeStart);
-        $timeAbsolute = new TimeHr($timeEnd - BOOTSTRAP_HRTIME);
+        $timeAbsolute = new TimeHr($timeEnd - BootstrapInstance::get()->hrTime());
         $checksums = [];
         foreach ($this->builder->build()->checksums() as $name => $keys) {
             foreach ($keys as $key => $array) {

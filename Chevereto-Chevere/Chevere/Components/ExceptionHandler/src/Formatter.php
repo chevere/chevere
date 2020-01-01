@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler\src;
 
+use Chevere\Components\App\Instances\BootstrapInstance;
 use ErrorException;
 use Throwable;
 
@@ -26,9 +27,6 @@ use Chevere\Components\VarDump\VarDump;
 
 use function console;
 use function ChevereFn\stringReplaceFirst;
-
-use const Chevere\CLI;
-use const Chevere\CONSOLE;
 
 /**
  * Formats the error exception in HTML (default), console and plain text.
@@ -134,7 +132,7 @@ final class Formatter
     private function setServerProperties()
     {
         $request = $this->exceptionHandler->request();
-        if (CONSOLE) {
+        if (BootstrapInstance::get()->console()) {
             // dd($this->exceptionHandler->request());
             $this->data = $this->data
                 ->withMergedArray([
@@ -164,7 +162,7 @@ final class Formatter
             unset($trace[0]);
         }
         $stack = new Stack($trace);
-        if (CLI) {
+        if (BootstrapInstance::get()->cli()) {
             $this->data = $this->data->withAddedKey('consoleStack', $stack->getConsole());
         }
         $this->data = $this->data
@@ -185,7 +183,7 @@ final class Formatter
             static::SECTION_SERVER => ['# Server', '%serverHost% %serverSoftware%'],
         ];
 
-        if (CONSOLE) {
+        if (BootstrapInstance::get()->console()) {
             $verbosity = console()->output()->getVerbosity();
         }
         $this->buildContentSections($sections, $verbosity ?? null);
@@ -194,7 +192,7 @@ final class Formatter
     private function buildContentSections(array $sections, ?int $verbosity)
     {
         foreach ($sections as $k => $v) {
-            if (CLI && false == static::CONSOLE_TABLE[$k]) {
+            if (BootstrapInstance::get()->cli() && false == static::CONSOLE_TABLE[$k]) {
                 continue;
             }
             if (false === $this->processContentSectionsArray((string) $k, $v, $verbosity)) {
@@ -246,7 +244,7 @@ final class Formatter
                 $dumperVarDump = $dumperVarDump->withDump($val);
                 $plainVarDump = $plainVarDump->withDump($val);
                 $wrapped = $dumperVarDump->toString();
-                if (!CLI) {
+                if (!BootstrapInstance::get()->cli()) {
                     $wrapped = '<pre>' . $wrapped . '</pre>';
                 }
                 $this->setRichContentSection($global, ['$' . $global, $this->wrapStringHr($wrapped)]);

@@ -13,25 +13,30 @@ declare(strict_types=1);
 
 namespace Chevere;
 
+use Chevere\Components\App\Instances\BootstrapInstance;
+use Chevere\Components\Bootstrap\Bootstrap;
+
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 
-define('Chevere\BOOTSTRAP_TIME', time());
-define('Chevere\BOOTSTRAP_HRTIME', hrtime(true));
 require dirname(__DIR__) . '/vendor/autoload.php';
-define('Chevere\DOCUMENT_ROOT', __DIR__ . '/Chevere/TestApp/');
-define('Chevere\ROOT_PATH', rtrim(str_replace('\\', '/', DOCUMENT_ROOT), '/') . '/');
-define('Chevere\APP_PATH', ROOT_PATH . 'app/');
 
-define('Chevere\CLI', true);
-define('Chevere\CONSOLE', false);
-define('Chevere\DEV', false);
+new BootstrapInstance(
+    (new Bootstrap(__DIR__ . '/Chevere/TestApp/'))
+        ->withCli(true)
+        ->withConsole(false)
+        ->withDev(false)
+    // ->autoload('Chevere\\TestApp\\App')
+);
+
+// define('Chevere\DOCUMENT_ROOT', __DIR__ . '/Chevere/TestApp/');
+// define('Chevere\ROOT_PATH', rtrim(str_replace('\\', '/', DOCUMENT_ROOT), '/') . '/');
 
 spl_autoload_register(function ($className) {
     $isTestApp = stringStartsWith('Chevere\\TestApp\\App\\', $className);
     if ($isTestApp) {
         $name = str_replace('\\', '/', $className);
         $path = stringReplaceFirst('Chevere/TestApp/App/', '', $name) . '.php';
-        require DOCUMENT_ROOT . 'app/src/' . $path;
+        require BootstrapInstance::get()->documentRoot() . 'app/src/' . $path;
     }
 });

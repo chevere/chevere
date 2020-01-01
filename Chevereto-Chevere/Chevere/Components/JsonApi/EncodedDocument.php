@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\JsonApi;
 
+use Chevere\Components\App\Instances\BootstrapInstance;
 use InvalidArgumentException;
 use JsonException;
 use JsonSerializable;
 
 use Chevere\Components\Message\Message;
-
-use const Chevere\CLI;
 
 final class EncodedDocument
 {
@@ -45,7 +44,7 @@ final class EncodedDocument
     private function setEncodingOptions(): void
     {
         $this->encodingOptions = static::DEFAULT_ENCODING_OPTIONS;
-        if (CLI) {
+        if (BootstrapInstance::get()->cli()) {
             $this->encodingOptions = $this->encodingOptions | JSON_PRETTY_PRINT;
         }
     }
