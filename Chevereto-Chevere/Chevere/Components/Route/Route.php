@@ -44,13 +44,13 @@ final class Route implements RouteContract
 
     private string $regex;
 
-    private ?WildcardCollectionContract $wildcardCollection;
+    private WildcardCollectionContract $wildcardCollection;
 
-    private ?RouteNameContract $name;
+    private RouteNameContract $name;
 
-    private ?MiddlewareNameCollectionContract $middlewareNameCollection;
+    private MiddlewareNameCollectionContract $middlewareNameCollection;
 
-    private ?MethodControllerNameCollectionContract $methodControllerNameCollection;
+    private MethodControllerNameCollectionContract $methodControllerNameCollection;
 
     /**
      * {@inheritdoc}

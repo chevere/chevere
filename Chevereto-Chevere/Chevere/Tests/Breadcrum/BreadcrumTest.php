@@ -36,7 +36,7 @@ final class BreadcrumTest extends TestCase
         $this->assertFalse($breadcrum->hasAny());
         $this->assertFalse($breadcrum->has(0));
         $this->expectException(BreadcrumException::class);
-        $breadcrum->pos(0);
+        $breadcrum->pos();
     }
 
     public function testWithAddedItems(): void

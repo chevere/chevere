@@ -33,13 +33,13 @@ final class PathUri implements PathUriContract
     private string $key;
 
     /** @var int */
-    private ?int $wildcardBracesCount;
+    private int $wildcardBracesCount;
 
     /** @var array */
-    private ?array $wildcardsMatch;
+    private array $wildcardsMatch;
 
     /** @var array string[] */
-    private ?array $wildcards;
+    private array $wildcards;
 
     /**
      * {@inheritdoc}

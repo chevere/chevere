@@ -27,8 +27,8 @@ use JakubOnderka\PhpConsoleColor\ConsoleColor;
  */
 
 /**
- * @method string code(string $search, string $replace)
- * @method string b(string $search, string $replace)
+ * @method Message code(string $search, string $replace)
+ * @method Message b(string $search, string $replace)
  */
 final class Message
 {

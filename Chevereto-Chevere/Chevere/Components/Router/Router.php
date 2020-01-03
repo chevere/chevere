@@ -30,7 +30,7 @@ use TypeError;
  */
 final class Router implements RouterContract
 {
-    private ?RouterPropertiesContract $properties;
+    private RouterPropertiesContract $properties;
 
     /**
      * {@inheritdoc}
