@@ -60,10 +60,10 @@ final class Console implements ConsoleContract
         DestroyCommand::class,
     ];
 
-    private ?CommandContract $command;
+    private CommandContract $command;
 
     /** @var string The first argument (command name) passed */
-    private ?string $commandName;
+    private string $commandName;
 
     public function __construct()
     {

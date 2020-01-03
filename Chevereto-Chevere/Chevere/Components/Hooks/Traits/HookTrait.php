@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hook\Traits;
+namespace Chevere\Components\Hooks\Traits;
 
-use Chevere\Components\Hook\Hooks;
+use Chevere\Components\Hooks\Hooks;
 
 trait HookTrait
 {

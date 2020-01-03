@@ -64,9 +64,9 @@ final class Build implements BuildContract
 
     private ApiMaker $apiMaker;
 
-    private ?ParametersContract $parameters;
+    private ParametersContract $parameters;
 
-    private ?RouterMakerContract $routerMaker;
+    private RouterMakerContract $routerMaker;
 
     /**
      * {@inheritdoc}

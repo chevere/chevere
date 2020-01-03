@@ -31,9 +31,9 @@ final class App implements AppContract
 
     private ResponseContract $response;
 
-    private ?RoutedContract $routed;
+    private RoutedContract $routed;
 
-    private ?RequestContract $request;
+    private RequestContract $request;
 
     /** @var array String arguments (from request, cli) */
     private array $arguments;

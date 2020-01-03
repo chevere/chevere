@@ -35,8 +35,6 @@ use Chevere\Components\Path\Path;
 use Chevere\Components\Runtime\Runtime;
 use Chevere\Contracts\Http\RequestContract;
 
-use const Chevere\APP_PATH;
-
 /**
  * The Chevere exception handler.
  */
@@ -51,7 +49,8 @@ final class ExceptionHandler
     const DEBUG = null;
 
     /** @var string */
-    const PATH_LOGS = APP_PATH . 'var/logs/';
+    // FIXME:
+    const PATH_LOGS = 'var/logs/';
 
     /** Readable PHP error mapping */
     const ERROR_TABLE = [

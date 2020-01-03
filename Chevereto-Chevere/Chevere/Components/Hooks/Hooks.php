@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hook;
+namespace Chevere\Components\Hooks;
 
 final class Hooks
 {
@@ -19,12 +19,12 @@ final class Hooks
 
     private array $anchor;
 
-    private ?array $trace;
+    private array $trace;
 
     public function __construct(object $that, string $anchor)
     {
         $this->that = $that;
-        $this->trace = null;
+        $this->trace = [];
         $this->anchor = (new Container())
             ->getAnchor($that, $anchor);
     }

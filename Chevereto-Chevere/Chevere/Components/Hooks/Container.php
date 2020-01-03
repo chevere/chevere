@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hook;
+namespace Chevere\Components\Hooks;
 
 use Chevere\Components\Path\Path;
 

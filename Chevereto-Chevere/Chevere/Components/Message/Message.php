@@ -16,8 +16,6 @@ namespace Chevere\Components\Message;
 use Chevere\Components\App\Instances\BootstrapInstance;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
-use const Chevere\CLI;
-
 /*
  * This class provide a common interface for creating messages.
  *

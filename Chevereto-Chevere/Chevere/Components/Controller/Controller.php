@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
-use Chevere\Components\Hook\Traits\HookTrait;
+use Chevere\Components\Hooks\Traits\HookTrait;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\Controller\ControllerContract;
 use Chevere\Contracts\Hooks\HookableContract;
