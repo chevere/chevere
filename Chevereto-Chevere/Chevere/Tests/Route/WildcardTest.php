@@ -48,12 +48,12 @@ final class WildcardTest extends TestCase
 
     public function testWithRegex(): void
     {
-        // $name = 'test';
-        // $regex = '[a-z]+';
-        // $wildcard = (new Wildcard($name))
-        //     ->withRegexMatch($regex);
-        // $this->assertSame($name, $wildcard->name());
-        // $this->assertSame($regex, $wildcard->regex());
+        $name = 'test';
+        $regexMatch = new RegexMatch('[a-z]+');
+        $wildcard = (new Wildcard($name))
+            ->withRegexMatch($regexMatch);
+        $this->assertSame($name, $wildcard->name());
+        $this->assertSame($regexMatch, $wildcard->regexMatch());
     }
 
     public function testAssertPathWildcardNotExists(): void

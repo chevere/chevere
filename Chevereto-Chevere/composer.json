@@ -11,6 +11,7 @@
     }],
     "require": {
         "php": ">=7.4",
+        "ext-zend-opcache": "*",
         "psr/simple-cache": "~1.0",
         "monolog/monolog": "~2.0",
         "guzzlehttp/psr7": "~1.6",

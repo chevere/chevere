@@ -44,8 +44,6 @@ interface WildcardContract
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified RegexMatchContract.
      *
-     * @param string $match a regular expresion matcher (not a regular expresion boundary)
-     *
      * @throws WildcardInvalidRegexException if $match is an invalid regex match
      */
     public function withRegexMatch(RegexMatchContract $regexMatch): WildcardContract;

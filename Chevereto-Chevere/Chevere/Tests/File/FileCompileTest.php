@@ -43,6 +43,9 @@ final class FileCompileTest extends TestCase
         $fileCompile->compile();
     }
 
+    /**
+     * @requires extension zend-opcache
+     */
     public function testCompileDestroy(): void
     {
         $this->expectNotToPerformAssertions();
