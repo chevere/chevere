@@ -20,7 +20,7 @@ final class BootstrapInstance
   public static function get(): BootstrapContract
   {
     if (!isset(self::$instance)) {
-      throw new LogicException('No runtime instance present');
+      throw new LogicException('No bootstrap instance present');
     }
 
     return self::$instance;

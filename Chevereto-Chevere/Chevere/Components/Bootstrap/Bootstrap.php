@@ -2,7 +2,7 @@
 
 namespace Chevere\Components\Bootstrap;
 
-use Chevere\Components\App\Instances\BootstrapInstance;
+use Chevere\Components\Bootstrap\Exceptions\BootstrapException;
 use Chevere\Contracts\Bootstrap\BootstrapContract;
 
 use function ChevereFn\stringReplaceFirst;
@@ -35,6 +35,7 @@ final class Bootstrap implements BootstrapContract
     $this->time = time();
     $this->hrTime = hrtime(true);
     $this->documentRoot = $documentRoot;
+    $this->assertDocumentRoot();
     $this->rootPath = rtrim(str_replace('\\', '/', $this->documentRoot), '/') . '/';
     $this->appPath = $this->rootPath . 'app/';
     $this->cli = false;
@@ -121,5 +122,12 @@ final class Bootstrap implements BootstrapContract
     });
 
     return $new;
+  }
+
+  private function assertDocumentRoot(): void
+  {
+    if (false === stream_resolve_include_path($this->documentRoot)) {
+      throw new BootstrapException(sprintf("Specified path for document root %s doesn't exists.", $this->documentRoot));
+    }
   }
 }
