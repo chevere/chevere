@@ -51,7 +51,7 @@ final class FileCompile implements FileCompileContract
         $path = $this->filePhp->file()->path()->absolute();
         $past = BootstrapInstance::get()->time() - 10;
         touch($path, $past);
-        @opcache_invalidate($path, true);
+        /** @scrutinizer ignore-unhandled */ @opcache_invalidate($path, true);
         if (!opcache_compile_file($path)) {
             throw new RuntimeException(
                 (new Message('Unable to compile cache for file %path% (Opcache is disabled)'))

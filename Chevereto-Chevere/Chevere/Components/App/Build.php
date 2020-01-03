@@ -252,7 +252,7 @@ final class Build implements BuildContract
             'routerMaker' => RouterMakerContract::class,
         ] as $property => $contract) {
             if (!isset($this->{$property})) {
-                $missing[] = (new Message('%s'))->code('%s', $contract)->toString(0);
+                $missing[] = (new Message('%s'))->code('%s', $contract)->toString();
             }
         }
         if (isset($missing)) {

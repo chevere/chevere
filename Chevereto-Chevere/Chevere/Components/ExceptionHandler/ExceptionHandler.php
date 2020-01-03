@@ -105,9 +105,6 @@ final class ExceptionHandler
 
     private Runtime $runtime;
 
-    /** @var array Contains all the loaded configuration files (App) */
-    // private $loadedConfigFiles;
-
     private Output $output;
 
     /**

@@ -33,6 +33,7 @@ class SetExceptionHandler implements SetContract
             throw new InvalidArgumentException(
                 (new Message('Runtime value must be a valid callable for %subject%'))
                     ->code('%subject%', 'set_exception_handler')
+                    ->toString()
             );
         }
         set_exception_handler($this->value);
@@ -41,7 +42,8 @@ class SetExceptionHandler implements SetContract
     private function restoreExceptionHandler(): void
     {
         restore_exception_handler();
-        $this->value = (string) set_exception_handler(function () { });
+        $this->value = (string) set_exception_handler(function () {
+        });
         restore_exception_handler();
     }
 }

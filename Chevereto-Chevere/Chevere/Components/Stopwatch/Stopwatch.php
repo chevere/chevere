@@ -79,7 +79,7 @@ final class Stopwatch
     public function stop(): void
     {
         $this->timeEnd = (int) hrtime(true);
-        $this->timeElapsed = $this->timeEnd - $this->timeStart - $this->gap;
+        $this->timeElapsed = intval($this->timeEnd - $this->timeStart - $this->gap);
         $this->timeElapsedRead = (new TimeHr($this->timeElapsed))->toReadMs();
         $prevMicrotime = 0;
         $this->index[] = 'stop';

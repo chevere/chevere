@@ -25,7 +25,7 @@ interface RoutesPropertyContract extends ToArrayContract
     /**
      * Creates a new instance.
      *
-     * @param array [(int)$id => RouteContract]
+     * @param array $routes [(int)$id => RouteContract]
      *
      * @throws RouterPropertyException if the value doesn't match the property format
      */
