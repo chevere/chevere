@@ -19,6 +19,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\StyleInterface;
 
 use Chevere\Contracts\App\BuilderContract;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 interface ConsoleContract
 {
@@ -40,7 +41,7 @@ interface ConsoleContract
     public function hasCommand(): bool;
     public function input(): InputInterface;
     public function output(): OutputInterface;
-    public function style(): StyleInterface;
+    public function style(): SymfonyStyle;
     public function command(): CommandContract;
     public function inputString(): string;
     public function isBuilding(): bool;

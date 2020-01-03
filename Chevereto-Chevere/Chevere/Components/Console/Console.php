@@ -108,7 +108,7 @@ final class Console implements ConsoleContract
         return $this->output;
     }
 
-    public function style(): StyleInterface
+    public function style(): SymfonyStyle
     {
         return $this->style;
     }
