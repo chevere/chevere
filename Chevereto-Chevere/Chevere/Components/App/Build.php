@@ -37,7 +37,6 @@ use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
-use Chevere\Contracts\Path\PathContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterMakerContract;
 use Chevere\Contracts\Router\RouterContract;
@@ -52,7 +51,7 @@ final class Build implements BuildContract
 
     private FilePhpContract $filePhp;
 
-    private DirContract $cacheDir;
+    private DirContract $dir;
 
     /** @var bool True if the App was just built */
     private bool $isMaked = false;
@@ -71,8 +70,9 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function __construct(AppContract $app, PathContract $path)
+    public function __construct(AppContract $app)
     {
+        $path = new Path('build');
         $this->isMaked = false;
         $this->checksums = [];
         $this->app = $app;
@@ -81,10 +81,10 @@ final class Build implements BuildContract
                 $path->getChild('build.php')
             )
         );
-        $this->cacheDir = new Dir($path);
+        $this->dir = new Dir($path);
 
-        if (!$this->cacheDir->exists()) {
-            $this->cacheDir->create();
+        if (!$this->dir->exists()) {
+            $this->dir->create();
         }
 
         $this->assertCacheDir();
@@ -193,8 +193,8 @@ final class Build implements BuildContract
             throw new BuildFileNotExistsException();
         }
         $this->filePhp->file()->remove();
-        if ($this->cacheDir->exists()) {
-            $this->cacheDir
+        if ($this->dir->exists()) {
+            $this->dir
                 ->removeContents();
         }
     }
@@ -210,9 +210,9 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function cacheDir(): DirContract
+    public function dir(): DirContract
     {
-        return $this->cacheDir;
+        return $this->dir;
     }
 
     /**
@@ -233,10 +233,10 @@ final class Build implements BuildContract
 
     private function assertCacheDir(): void
     {
-        if (!$this->cacheDir->exists()) {
+        if (!$this->dir->exists()) {
             throw new PathIsNotDirectoryException(
                 (new Message('The application needs a cache directory at %path%'))
-                    ->code('%path%', $this->cacheDir->path()->absolute())
+                    ->code('%path%', $this->dir->path()->absolute())
                     ->toString()
             );
         }
@@ -285,7 +285,7 @@ final class Build implements BuildContract
             ->withServices($services);
         $this->apiMaker = $this->apiMaker
             ->withCache(
-                new Cache($this->cacheDir->getChild(ApiContract::CACHE_ID))
+                new Cache($this->dir->getChild(ApiContract::CACHE_ID))
             );
         $this->checksums[ApiContract::CACHE_ID] = $this->apiMaker->cache()->toArray();
     }
@@ -313,7 +313,7 @@ final class Build implements BuildContract
         $routerCache =
             (new RouterCache(
                 new Cache(
-                    $this->cacheDir
+                    $this->dir
                         ->getChild(RouterContract::CACHE_ID)
                 )
             ))

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\App;
 
 use LogicException;
-use TypeError;
 use Chevere\Components\App\App;
 use Chevere\Components\App\Build;
 use Chevere\Components\App\Exceptions\BuildFileNotExistsException;
@@ -40,7 +39,7 @@ final class BuildTest extends TestCase
     {
         $app = new App(new Services(), new Response());
 
-        return new Build($app, new Path('build'));
+        return new Build($app);
     }
 
     public function getParameters(): ParametersContract
@@ -63,7 +62,7 @@ final class BuildTest extends TestCase
         $this->assertSame(false, $build->isMaked());
         $this->assertSame($build->app()->services(), $build->app()->services());
         $this->assertInstanceOf(FileContract::class, $build->file());
-        $this->assertInstanceOf(DirContract::class, $build->cacheDir());
+        $this->assertInstanceOf(DirContract::class, $build->dir());
     }
 
     public function testWithParameters(): void

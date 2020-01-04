@@ -57,9 +57,8 @@ final class RunnerTest extends TestCase
         $services = new Services();
         $response = new Response();
         $app = new App($services, $response);
-        $path = new Path('build');
 
-        return new Build($app, $path);
+        return new Build($app);
     }
 
     public function testConstructor(): void
@@ -95,8 +94,7 @@ final class RunnerTest extends TestCase
             ->withRouter($router);
         $response = new Response();
         $app = new App($services, $response);
-        $path = new Path('build');
-        $build = new Build($app, $path);
+        $build = new Build($app);
         $builder = new Builder($build);
         $runner = new Runner($builder);
         $this->expectException(RouterCantResolveException::class);

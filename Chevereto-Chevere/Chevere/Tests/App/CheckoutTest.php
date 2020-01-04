@@ -29,8 +29,7 @@ final class CheckoutTest extends TestCase
         $services = new Services();
         $response = new Response();
         $app = new App($services, $response);
-        $path = new Path('build');
-        $build = new Build($app, $path);
+        $build = new Build($app);
         $this->assertFalse($build->isMaked());
         $this->expectException(InvalidArgumentException::class);
         new Checkout($build);

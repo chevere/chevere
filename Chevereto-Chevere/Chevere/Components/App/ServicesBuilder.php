@@ -39,7 +39,7 @@ final class ServicesBuilder implements ServicesBuilderContract
             $routerCache =
                 new RouterCache(
                     new Cache(
-                        $build->cacheDir()->getChild(RouterContract::CACHE_ID)
+                        $build->dir()->getChild(RouterContract::CACHE_ID)
                     )
                 );
             $this->services = $this->services
@@ -54,7 +54,7 @@ final class ServicesBuilder implements ServicesBuilderContract
                     $this->services->api()
                         ->withCache(
                             new Cache(
-                                $build->cacheDir()->getChild(ApiContract::CACHE_ID)
+                                $build->dir()->getChild(ApiContract::CACHE_ID)
                             )
                         )
                 );

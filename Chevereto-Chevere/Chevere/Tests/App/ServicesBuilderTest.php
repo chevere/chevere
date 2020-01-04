@@ -28,22 +28,21 @@ use PHPUnit\Framework\TestCase;
 
 final class ServicesBuilderTest extends TestCase
 {
-    public function testConstruct(): void
-    {
-        $response = new Response();
-        $services = new Services();
-        $app = new App($services, $response);
-        $path = new Path('build');
-        $build = new Build($app, $path);
-        $arrayFile = new ArrayFile(
-          new FilePhp(
-            new File(
-              new Path('parameters/empty.php')
-            )
-          )
-        );
-        $parameters = new Parameters($arrayFile);
-        $servicesBuilder = new ServicesBuilder($build, $parameters);
-        $this->assertInstanceOf(ServicesContract::class, $servicesBuilder->services());
-    }
+  public function testConstruct(): void
+  {
+    $response = new Response();
+    $services = new Services();
+    $app = new App($services, $response);
+    $build = new Build($app);
+    $arrayFile = new ArrayFile(
+      new FilePhp(
+        new File(
+          new Path('parameters/empty.php')
+        )
+      )
+    );
+    $parameters = new Parameters($arrayFile);
+    $servicesBuilder = new ServicesBuilder($build, $parameters);
+    $this->assertInstanceOf(ServicesContract::class, $servicesBuilder->services());
+  }
 }
