@@ -87,7 +87,7 @@ final class Build implements BuildContract
             $this->dir->create();
         }
 
-        $this->assertCacheDir();
+        $this->assertDir();
     }
 
     /**
@@ -231,7 +231,7 @@ final class Build implements BuildContract
         return $this->checkout;
     }
 
-    private function assertCacheDir(): void
+    private function assertDir(): void
     {
         if (!$this->dir->exists()) {
             throw new PathIsNotDirectoryException(

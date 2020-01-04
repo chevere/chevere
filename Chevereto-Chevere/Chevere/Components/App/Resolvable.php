@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
+use Chevere\Components\App\Exceptions\RequestRequiredException;
 use Chevere\Components\App\Exceptions\RouterCantResolveException;
 use Chevere\Components\App\Exceptions\RouterRequiredException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\ResolvableContract;
+use Chevere\Contracts\Http\RequestContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
 
@@ -34,8 +36,9 @@ final class Resolvable implements ResolvableContract
     public function __construct(BuilderContract $builder)
     {
         $this->builder = $builder;
-        $this->assertBuilderHasRouter();
-        $this->assertBuilderRouterCanResolve();
+        $this->assertHasRequest();
+        $this->assertHasRouter();
+        $this->assertCanResolve();
     }
 
     /**
@@ -46,19 +49,25 @@ final class Resolvable implements ResolvableContract
         return $this->builder;
     }
 
-    private function assertBuilderHasRouter(): void
+    private function assertHasRequest(): void
     {
-        if (!$this->builder->build()->app()->services()->hasRouter()) {
-            throw new RouterRequiredException(
-                (new Message('Instance of class %className% must contain a %contract% contract'))
-                    ->code('%className%', get_class($this->builder->build()->app()))
-                    ->code('%contract%', RouterContract::class)
-                    ->toString()
+        if (!$this->builder->build()->app()->hasRequest()) {
+            throw new RequestRequiredException(
+                $this->getMissingContractMessage(RequestContract::class)
             );
         }
     }
 
-    private function assertBuilderRouterCanResolve(): void
+    private function assertHasRouter(): void
+    {
+        if (!$this->builder->build()->app()->services()->hasRouter()) {
+            throw new RouterRequiredException(
+                $this->getMissingContractMessage(RouterContract::class)
+            );
+        }
+    }
+
+    private function assertCanResolve(): void
     {
         $router = $this->builder->build()->app()->services()->router();
         if (!$router->canResolve()) {
@@ -70,5 +79,13 @@ final class Resolvable implements ResolvableContract
                 500
             );
         }
+    }
+
+    private function getMissingContractMessage(string $contractName): string
+    {
+        return (new Message('Instance of class %className% must contain a %contract% contract'))
+            ->code('%className%', get_class($this->builder->build()->app()))
+            ->code('%contract%', $contractName)
+            ->toString();
     }
 }

@@ -51,7 +51,7 @@ final class ResolvableTest extends TestCase
     public function testConstructor(): void
     {
         $properties = (new RouterProperties())
-            ->withRegex('regex');
+            ->withRegex('*');
         $router = (new Router())
             ->withProperties($properties);
         $services = (new Services())

@@ -10,6 +10,9 @@ use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\ResolvableContract;
 
+/**
+ * Resolves a builder against routing
+ */
 final class Resolver implements ResolverContract
 {
     /**
