@@ -16,7 +16,8 @@ namespace Chevere\Components\App\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when a RequestContract is not present.
+ * Exception thrown when a RouterContract is not present.
  */
-final class RouterContractRequiredException extends Exception
-{ }
+final class RouterRequiredException extends Exception
+{
+}

@@ -17,7 +17,7 @@ use Chevere\Components\App\App;
 use Chevere\Components\App\Build;
 use Chevere\Components\App\Builder;
 use Chevere\Components\App\Exceptions\RouterCantResolveException;
-use Chevere\Components\App\Exceptions\RouterContractRequiredException;
+use Chevere\Components\App\Exceptions\RouterRequiredException;
 use Chevere\Components\App\Parameters;
 use Chevere\Components\App\Runner;
 use Chevere\Components\App\Services;
@@ -83,7 +83,7 @@ final class RunnerTest extends TestCase
         $build = $this->getDummyBuild();
         $builder = new Builder($build);
         $runner = new Runner($builder);
-        $this->expectException(RouterContractRequiredException::class);
+        $this->expectException(RouterRequiredException::class);
         $runner->withRun();
     }
 

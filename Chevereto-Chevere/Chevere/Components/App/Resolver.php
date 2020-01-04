@@ -15,7 +15,7 @@ namespace Chevere\Components\App;
 
 use Chevere\Components\App\Exceptions\ResolverException;
 use Chevere\Components\App\Exceptions\RouterCantResolveException;
-use Chevere\Components\App\Exceptions\RouterContractRequiredException;
+use Chevere\Components\App\Exceptions\RouterRequiredException;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Message\Message;
@@ -37,8 +37,8 @@ final class Resolver
     public function __construct(BuilderContract $builder)
     {
         $this->builder = $builder;
-        $this->assertHasRouter();
-        $this->assertRouterCanResolve();
+        $this->assertBuilderHasRouter();
+        $this->assertBuilderRouterCanResolve();
         $this->resolveController();
     }
 
@@ -50,10 +50,10 @@ final class Resolver
         return $this->builder;
     }
 
-    private function assertHasRouter(): void
+    private function assertBuilderHasRouter(): void
     {
         if (!$this->builder->build()->app()->services()->hasRouter()) {
-            throw new RouterContractRequiredException(
+            throw new RouterRequiredException(
                 (new Message('Instance of class %className% must contain a %contract% contract'))
                     ->code('%className%', get_class($this->builder->build()->app()))
                     ->code('%contract%', RouterContract::class)
@@ -62,7 +62,7 @@ final class Resolver
         }
     }
 
-    private function assertRouterCanResolve(): void
+    private function assertBuilderRouterCanResolve(): void
     {
         $router = $this->builder->build()->app()->services()->router();
         if (!$router->canResolve()) {
