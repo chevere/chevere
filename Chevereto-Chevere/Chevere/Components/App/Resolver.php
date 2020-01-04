@@ -1,87 +1,27 @@
 <?php
 
-/*
- * This file is part of Chevere.
- *
- * (c) Rodolfo Berrios <rodolfo@chevereto.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-declare(strict_types=1);
-
 namespace Chevere\Components\App;
 
+use Chevere\Contracts\App\ResolverContract;
 use Chevere\Components\App\Exceptions\ResolverException;
-use Chevere\Components\App\Exceptions\RouterCantResolveException;
-use Chevere\Components\App\Exceptions\RouterRequiredException;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\Method;
-use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Contracts\App\BuilderContract;
-use Chevere\Contracts\Route\RouteContract;
-use Chevere\Contracts\Router\RouterContract;
+use Chevere\Contracts\App\ResolvableContract;
 
-/**
- * Application resolver.
- */
-final class Resolver
+final class Resolver implements ResolverContract
 {
-    private BuilderContract $builder;
-
     /**
      * {@inheritdoc}
      */
-    public function __construct(BuilderContract $builder)
+    public function __construct(ResolvableContract $resolvable)
     {
-        $this->builder = $builder;
-        $this->assertBuilderHasRouter();
-        $this->assertBuilderRouterCanResolve();
-        $this->resolveController();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function builder(): BuilderContract
-    {
-        return $this->builder;
-    }
-
-    private function assertBuilderHasRouter(): void
-    {
-        if (!$this->builder->build()->app()->services()->hasRouter()) {
-            throw new RouterRequiredException(
-                (new Message('Instance of class %className% must contain a %contract% contract'))
-                    ->code('%className%', get_class($this->builder->build()->app()))
-                    ->code('%contract%', RouterContract::class)
-                    ->toString()
-            );
-        }
-    }
-
-    private function assertBuilderRouterCanResolve(): void
-    {
-        $router = $this->builder->build()->app()->services()->router();
-        if (!$router->canResolve()) {
-            throw new RouterCantResolveException(
-                (new Message("Instance of %className% can't resolve a %contract% contract"))
-                    ->code('%className%', get_class($router))
-                    ->code('%contract%', RouteContract::class)
-                    ->toString(),
-                500
-            );
-        }
-    }
-
-    private function resolveController(): void
-    {
+        $this->builder = $resolvable->builder();
         $app = $this->builder->build()->app();
         try {
             $routed = $app->services()->router()->resolve(
-                $this->builder->build()->app()->request()->getUri()
+                $app->request()->getUri()
             );
         } catch (RouteNotFoundException $e) {
             // HTTP 404: Not found
@@ -106,5 +46,13 @@ final class Resolver
                 $this->builder->build()
                     ->withApp($app)
             );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function builder(): BuilderContract
+    {
+        return $this->builder;
     }
 }

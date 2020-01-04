@@ -138,7 +138,8 @@ final class Runner implements RunnerContract
     private function handleResolver(): void
     {
         try {
-            $this->builder = (new Resolver($this->builder))
+            $resolvable = new Resolvable($this->builder);
+            $this->builder = (new Resolver($resolvable))
                 ->builder();
         } catch (ResolverException $e) {
             $build = $this->builder->build();
