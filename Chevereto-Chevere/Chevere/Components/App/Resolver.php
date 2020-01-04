@@ -31,6 +31,9 @@ final class Resolver
 {
     private BuilderContract $builder;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(BuilderContract $builder)
     {
         $this->builder = $builder;
@@ -39,6 +42,9 @@ final class Resolver
         $this->resolveController();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function builder(): BuilderContract
     {
         return $this->builder;
