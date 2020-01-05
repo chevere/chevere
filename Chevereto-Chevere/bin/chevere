@@ -1,8 +1,6 @@
 #!/usr/bin/env php
 <?php
 
-namespace Chevere;
-
 /*
  * This file is part of Chevere.
  *
@@ -12,7 +10,9 @@ namespace Chevere;
  * file that was distributed with this source code.
  */
 
+namespace Chevere;
+
 /**
  * Framework application CLI entry point
  */
-require_once(dirname(__DIR__) . '/bootstrap.php');
+require_once dirname(__DIR__) . '/bootstrap.php';

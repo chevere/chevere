@@ -80,20 +80,19 @@ final class Router implements RouterContract
     public function resolve(UriInterface $uri): RoutedContract
     {
         try {
-            $pregMatch = preg_match($this->properties->regex(), $uri->getPath(), $matches);
+            if (preg_match($this->properties->regex(), $uri->getPath(), $matches)) {
+                if (!isset($matches['MARK'])) {
+                    throw new Throwable(
+                        (new Message('Invalid regex pattern, missing %mark% member'))
+                            ->code('%mark%', 'MARK')
+                            ->toString()
+                    );
+                }
+
+                return $this->resolver($matches);
+            }
         } catch (Throwable $e) {
             throw new RouterException($e->getMessage());
-        }
-        if ($pregMatch) {
-            if (!isset($matches['MARK'])) {
-                throw new RouterException(
-                    (new Message('Invalid regex pattern, missing %mark% member'))
-                        ->code('%mark%', 'MARK')
-                        ->toString()
-                );
-            }
-
-            return $this->resolver($matches);
         }
         throw new RouteNotFoundException(
             (new Message('No route defined for %path%'))

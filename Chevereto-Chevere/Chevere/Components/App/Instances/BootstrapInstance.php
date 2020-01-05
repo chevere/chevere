@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of Chevere.
+ *
+ * (c) Rodolfo Berrios <rodolfo@chevereto.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace Chevere\Components\App\Instances;
 
 use Chevere\Contracts\Bootstrap\BootstrapContract;
@@ -10,19 +21,19 @@ use LogicException;
  */
 final class BootstrapInstance
 {
-  private static BootstrapContract $instance;
+    private static BootstrapContract $instance;
 
-  public function __construct(BootstrapContract $bootstrap)
-  {
-    self::$instance = $bootstrap;
-  }
-
-  public static function get(): BootstrapContract
-  {
-    if (!isset(self::$instance)) {
-      throw new LogicException('No bootstrap instance present');
+    public function __construct(BootstrapContract $bootstrap)
+    {
+        self::$instance = $bootstrap;
     }
 
-    return self::$instance;
-  }
+    public static function get(): BootstrapContract
+    {
+        if (!isset(self::$instance)) {
+            throw new LogicException('No bootstrap instance present');
+        }
+
+        return self::$instance;
+    }
 }
