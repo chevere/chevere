@@ -29,10 +29,8 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterMaker;
-use Chevere\Components\Router\RouterProperties;
 use Chevere\Contracts\App\ResolvableContract;
 use Chevere\Contracts\Http\RequestContract;
-use Chevere\Contracts\Route\PathUriContract;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 

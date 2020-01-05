@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\App;
 
+use Error;
 use LogicException;
 use Chevere\Components\App\App;
 use Chevere\Components\App\Build;
@@ -30,7 +31,6 @@ use Chevere\Contracts\App\CheckoutContract;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\File\FileContract;
-use Error;
 use PHPUnit\Framework\TestCase;
 
 final class BuildTest extends TestCase
