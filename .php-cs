@@ -9,7 +9,6 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 EOF;
 
-// Provisional PSR-12 https://github.com/FriendsOfPHP/PHP-CS-Fixer/issues/4502#issuecomment-570408101
 return PhpCsFixer\Config::create()
     ->setRules(array(
         '@PSR2' => true,
@@ -62,5 +61,4 @@ return PhpCsFixer\Config::create()
         'header_comment' => ['header' => $header,'location' => 'after_open'],
         'declare_strict_types' => true,
     ))
-    ->setLineEnding("\n")
-;
+    ->setLineEnding("\n");

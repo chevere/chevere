@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ArrayFile;
 
+use TypeError;
 use Chevere\Components\ArrayFile\Exceptions\ArrayFileTypeException;
 use Chevere\Components\File\Exceptions\FileReturnInvalidTypeException;
 use Chevere\Components\File\FileReturn;
@@ -21,7 +22,6 @@ use Chevere\Contracts\ArrayFile\ArrayFileContract;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
 use Chevere\Contracts\Type\TypeContract;
-use TypeError;
 
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).

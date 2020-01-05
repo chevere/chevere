@@ -13,38 +13,32 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Benchmark;
 
-use Chevere\Components\App\Instances\BootstrapInstance;
+use ArgumentCountError;
 use LogicException;
+use Chevere\Components\App\Instances\BootstrapInstance;
+use Chevere\Components\Benchmark\Exceptions\ArgumentCountException;
+use Chevere\Components\Benchmark\Exceptions\ArgumentTypeException;
+use Chevere\Components\Benchmark\Exceptions\NoCallablesException;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Chevere\Components\DateTime\DateTime;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Number\Number;
 use Chevere\Components\Time\TimeHr;
 use Chevere\Components\Traits\PrintableTrait;
+use Chevere\Contracts\Benchmark\BenchmarkContract;
+use Throwable;
+use TypeError;
+use function ChevereFn\stringReplaceFirst;
 
 /**
- * Benchmark provides a simple way to determine which code procedure perform faster.
+ * Benchmark provides a way to profile callables execution.
  */
-// $benchmark = (new Benchmark(10000))
-//     ->withArguments(500, 3000)
-//     ->withAddedCallable(function (int $a, int $b) {
-//         return $a + $b;
-//     }, 'Sum')
-//     ->withAddedCallable(function (int $a, int $b) {
-//         return $a / $b;
-//     }, 'Division')
-//     ->withAddedCallable(function (int $a, int $b) {
-//         return $a * $b;
-//     }, 'Multiply');
-// print $benchmark;
-final class Benchmark
+final class Benchmark implements BenchmarkContract
 {
-    use PrintableTrait;
-
     /** @var int Determines the number of colums used for output. */
     const COLUMNS = 50;
 
-    /** @var string Printable string (PrintableTrait) */
+    /** @var string Printable string */
     private string $printable;
 
     /** @var int Nanotime construct object */
@@ -59,13 +53,7 @@ final class Benchmark
     /** @var int Number of times to run each callable */
     private int $times;
 
-    /** @var int Count of callables passed */
-    private int $callablesCount;
-
     private ConsoleColor $consoleColor;
-
-    /** @var int Count of unnamed callables passed */
-    private int $unnammedCallablesCount;
 
     /** @var int Maximum time allowed for the benchmark, in seconds */
     private int $timeLimit;
@@ -119,7 +107,7 @@ final class Benchmark
     private string $timeTakenReadable;
 
     /**
-     * @param int $times Number of times to run each callable
+     * {@inheritdoc}
      */
     public function __construct(int $times)
     {
@@ -127,17 +115,21 @@ final class Benchmark
         $this->maxExecutionTime = (int) ini_get('max_execution_time');
         $this->requestTime = BootstrapInstance::get()->time();
         $this->times = $times;
-        $this->callablesCount = 0;
-        $this->timeTaken = 0;
         if (BootstrapInstance::get()->cli()) {
             $this->consoleColor = new ConsoleColor();
         }
+        $this->timeLimit = $this->maxExecutionTime;
+        $this->arguments = [];
+        $this->index = [];
+        $this->callables = [];
+        $this->timeTaken = 0;
+        $this->printable = '';
     }
 
     /**
-     * @param int $timeLimit time limit for the benchmark, in seconds
+     * {@inheritdoc}
      */
-    public function withTimeLimit(int $timeLimit): Benchmark
+    public function withTimeLimit(int $timeLimit): BenchmarkContract
     {
         $new = clone $this;
         $new->timeLimit = $timeLimit;
@@ -146,34 +138,38 @@ final class Benchmark
     }
 
     /**
-     * Set the callable arguments.
-     *
-     * @return self
+     * {@inheritdoc}
      */
-    public function withArguments(): Benchmark
+    public function timeLimit(): int
+    {
+        return $this->timeLimit;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withArguments(...$arguments): BenchmarkContract
     {
         $new = clone $this;
-        $new->arguments = func_get_args();
+        $new->arguments = $arguments;
 
         return $new;
     }
 
     /**
-     * Add a callable to the benchmark queue.
-     *
-     * @param callable $callable callable
-     * @param string   $name     callable name, or alias for your own reference
-     *
-     * @return self
+     * {@inheritdoc}
      */
-    public function withAddedCallable(callable $callable, string $name = null): Benchmark
+    public function arguments(): array
+    {
+        return $this->arguments;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withAddedCallable(callable $callable, string $name): BenchmarkContract
     {
         $new = clone $this;
-        if (!isset($name)) {
-            $new->unnammedCallablesCount = $new->unnammedCallablesCount ?? 1;
-            $name = 'Unnammed#' . (string) $new->unnammedCallablesCount;
-            ++$new->unnammedCallablesCount;
-        }
         if (isset($new->index) && in_array($name, $new->index)) {
             throw new LogicException(
                 (new Message('Duplicate callable declaration %name%'))
@@ -182,17 +178,39 @@ final class Benchmark
             );
         }
         $new->index[] = $name;
-        $new->callables[$new->callablesCount] = $callable;
-        ++$new->callablesCount;
+        $new->callables[] = $callable;
 
         return $new;
     }
 
     /**
-     * Run the benchmark.
+     * {@inheritdoc}
      */
-    public function exec(): void
+    public function callables(): array
     {
+        return $this->callables;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function index(): array
+    {
+        return $this->index;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function exec(): BenchmarkContract
+    {
+        if (empty($this->index)) {
+            throw new NoCallablesException(
+                (new Message('No callables to benchmark, declare callables using the %method% method'))
+                    ->code('%method%', __CLASS__ . '::withAddedCallable')
+                    ->toString()
+            );
+        }
         $this->records = [];
         $this->results = [];
         $this->isAborted = false;
@@ -230,6 +248,13 @@ final class Benchmark
         } else {
             $this->printable = '<pre>' . $this->printable . '</pre>' . "\t\n";
         }
+
+        return $this;
+    }
+
+    public function toString(): string
+    {
+        return $this->printable;
     }
 
     private function handleCallables(): void
@@ -243,7 +268,7 @@ final class Benchmark
             $this->runs = 0;
             $this->runCallable($this->callables[$id]);
             $timeFinish = (int) hrtime(true);
-            $timeTaken = floatval($timeFinish - $timeInit);
+            $timeTaken = intval($timeFinish - $timeInit);
             $this->records[$id] = $timeTaken;
             $this->results[$id] = [
                 'time' => $timeTaken,
@@ -256,6 +281,8 @@ final class Benchmark
 
     private function runCallable(callable $callable): void
     {
+        $key = array_search($callable, $this->callables);
+        $name = $this->index[$key];
         for ($i = 0; $i < $this->times; ++$i) {
             $this->isPHPAborted = !$this->canPHPKeepGoing();
             $this->isSelfAborted = !$this->canSelfKeepGoing();
@@ -263,9 +290,53 @@ final class Benchmark
                 $this->isAborted = true;
                 break;
             }
-            $callable(...($this->arguments ?: []));
+            try {
+                $callable(...$this->arguments);
+            } catch (ArgumentCountError $e) {
+                throw new ArgumentCountException(
+                    $this->getArgumentCountMessage($name, $e->getMessage())
+                );
+            } catch (TypeError $e) {
+                throw new ArgumentTypeException(
+                    $this->getTypeErrorMessage($name, $e->getMessage())
+                );
+            }
             ++$this->runs;
         }
+    }
+
+    private function getArgumentCountMessage(string $name, string $message): string
+    {
+        $pattern = '#^(.+\(\)) (.*)$#';
+        preg_match($pattern, $message, $matches);
+        $callable = $matches[1];
+        $message = preg_replace($pattern, 'Callable %callable% named %name% $2', $message);
+
+        return
+            (new Message($message))
+                ->code('%callable%', $callable)
+                ->code('%name%', $name)
+                ->toString();
+    }
+
+    private function getTypeErrorMessage(string $name, string $message): string
+    {
+        $pattern = '#^(Argument )(\d+)( passed to )(.*)( must .* type )(.*)(, )(.*)( given.*)$#';
+        preg_match($pattern, $message, $matches);
+        $argumentId = $matches[2];
+        $callable = $matches[4];
+        $typeExpected = $matches[6];
+        $typeProvided = $matches[8];
+        $message = preg_replace($pattern, '$1%argumentId%$3%callable% named %name%$5%typeExpected%$7%typeProvided%$9', $message);
+
+        return
+            (new Message($message))
+                ->code('%argumentId%', $argumentId)
+                ->code('%callable%', $callable)
+                ->code('%name%', $name)
+                ->code('%typeExpected%', $typeExpected)
+                ->code('%typeProvided%', $typeProvided)
+                ->toString();
     }
 
     private function processCallablesStats(): void
