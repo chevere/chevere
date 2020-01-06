@@ -201,13 +201,7 @@ final class Benchmark implements BenchmarkContract
      */
     public function exec(): BenchmarkContract
     {
-        if (empty($this->index)) {
-            throw new NoCallablesException(
-                (new Message('No callables to benchmark, declare callables using the %method% method'))
-                    ->code('%method%', __CLASS__ . '::withAddedCallable')
-                    ->toString()
-            );
-        }
+        $this->assertIndex();
         $this->records = [];
         $this->results = [];
         $this->isAborted = false;
@@ -252,6 +246,17 @@ final class Benchmark implements BenchmarkContract
     public function toString(): string
     {
         return $this->printable;
+    }
+
+    private function assertIndex(): void
+    {
+        if (empty($this->index)) {
+            throw new NoCallablesException(
+                (new Message('No callables to benchmark, declare callables using the %method% method'))
+                    ->code('%method%', __CLASS__ . '::withAddedCallable')
+                    ->toString()
+            );
+        }
     }
 
     private function handleCallables(): void
