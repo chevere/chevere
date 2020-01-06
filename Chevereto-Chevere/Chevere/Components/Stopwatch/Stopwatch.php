@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Stopwatch;
 
 use InvalidArgumentException;
-
 use Chevere\Components\Message\Message;
 use Chevere\Components\Time\TimeHr;
 
@@ -33,7 +32,7 @@ final class Stopwatch
     private int $timeEnd;
 
     /** @var int Nanotime */
-    private float $timeElapsed;
+    private int $timeElapsed;
 
     /** @var string The time elapsed, in miliseconds with tis unit (100 ms) */
     private string $timeElapsedRead;

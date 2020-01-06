@@ -15,20 +15,17 @@ namespace Chevere\Components\Benchmark;
 
 use ArgumentCountError;
 use LogicException;
+use TypeError;
+use DateTime;
 use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Benchmark\Exceptions\ArgumentCountException;
 use Chevere\Components\Benchmark\Exceptions\ArgumentTypeException;
 use Chevere\Components\Benchmark\Exceptions\NoCallablesException;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
-use Chevere\Components\DateTime\DateTime;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Number\Number;
 use Chevere\Components\Time\TimeHr;
-use Chevere\Components\Traits\PrintableTrait;
 use Chevere\Contracts\Benchmark\BenchmarkContract;
-use Throwable;
-use TypeError;
-use function ChevereFn\stringReplaceFirst;
 
 /**
  * Benchmark provides a way to profile callables execution.
@@ -232,7 +229,7 @@ final class Benchmark implements BenchmarkContract
             $this->lineSeparator,
             $head,
             $this->lineSeparator,
-            'Start: ' . DateTime::getUtcAtom(),
+            'Start: ' . gmdate(DateTime::ATOM),
             'Hostname: ' . gethostname(),
             'PHP version: ' . phpversion(),
             'Server: ' . php_uname('s') . ' ' . php_uname('r') . ' ' . php_uname('m'),
