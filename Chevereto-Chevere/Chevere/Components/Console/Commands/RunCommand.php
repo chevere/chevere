@@ -120,9 +120,9 @@ final class RunCommand extends Command
         $this->validateCallable();
         $this->bufferedRunCallable();
 
-        $this->isNoFormat = (bool) $this->getOption('noformat');
-        $this->isReturn = (bool) $this->getOption('return');
-        $this->isBuffer = (bool) $this->getOption('buffer');
+        $this->isNoFormat = (bool) $this->console->input()->getOption('noformat');
+        $this->isReturn = (bool) $this->console->input()->getOption('return');
+        $this->isBuffer = (bool) $this->console->input()->getOption('buffer');
 
         if (!$this->isReturn && !$this->isBuffer) {
             $this->isReturn = true;

@@ -33,8 +33,9 @@ final class SetopCommand extends Command
 
     public function callback(BuilderContract $builder): int
     {
-        $option = $this->getArgument('option');
+        $option = $this->console->input()->getArgument('option');
         dd($option);
+
         return 0;
     }
 }

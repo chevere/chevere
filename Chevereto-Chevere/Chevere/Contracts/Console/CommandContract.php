@@ -15,7 +15,6 @@ namespace Chevere\Contracts\Console;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-
 use Chevere\Components\Console\Console;
 use Chevere\Contracts\App\BuilderContract;
 
@@ -42,6 +41,14 @@ interface CommandContract
     public function console(): Console;
 
     public function symfony(): SymfonyCommandContract;
+
+    public function getArgumentString(string $argument): string;
+
+    public function getArgumentArray(string $argument): array;
+
+    public function getOptionString(string $option): string;
+
+    public function getOptionArray(string $option): array;
 
     public function callback(BuilderContract $builder): int;
 }

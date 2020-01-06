@@ -21,19 +21,6 @@ use PHPUnit\Framework\TestCase;
 
 final class BenchmarkTest extends TestCase
 {
-    // $benchmark = (new Benchmark(10000))
-    //     ->withArguments(500, 3000)
-    //     ->withAddedCallable(function (int $a, int $b) {
-    //         return $a + $b;
-    //     }, 'Add')
-    //     ->withAddedCallable(function (int $a, int $b) {
-    //         return $a / $b;
-    //     }, 'Divide')
-    //     ->withAddedCallable(function (int $a, int $b) {
-    //         return $a * $b;
-    //     }, 'Multiply')
-    //     ->exec();
-
     public function testConstruct(): void
     {
         $this->expectNotToPerformAssertions();
@@ -102,7 +89,20 @@ final class BenchmarkTest extends TestCase
             ->exec();
     }
 
-    // public function testExecBadParameters(): void
-    // {
-    // }
+    public function testExec(): void
+    {
+        $this->expectNotToPerformAssertions();
+        (new Benchmark(100))
+            ->withArguments(500, 3000)
+            ->withAddedCallable(function (int $a, int $b) {
+                return $a + $b;
+            }, 'Add')
+            ->withAddedCallable(function (int $a, int $b) {
+                return $a / $b;
+            }, 'Divide')
+            ->withAddedCallable(function (int $a, int $b) {
+                return $a * $b;
+            }, 'Multiply')
+            ->exec();
+    }
 }

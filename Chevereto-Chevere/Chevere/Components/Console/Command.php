@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Console;
 
 use LogicException;
-
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\Console\CommandContract;
@@ -29,61 +28,78 @@ abstract class Command implements CommandContract
 
     private SymfonyCommandContract $symfony;
 
+    /**
+     * {@inheritdoc}
+     */
     final public function __construct(Console $console)
     {
         $this->console = $console;
         $this->setSymfony();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     final public function console(): Console
     {
         return $this->console;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     final public function symfony(): SymfonyCommandContract
     {
         return $this->symfony;
     }
 
-    final public function getArgument(string $argument)
-    {
-        return $this->console->input()->getArgument($argument);
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     final public function getArgumentString(string $argument): string
     {
-        $string = $this->getArgument($argument);
+        $string = $this->console->input()->getArgument($argument);
         $this->assertStringType($argument, $string);
+
         return $string;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     final public function getArgumentArray(string $argument): array
     {
-        $array = $this->getArgument($argument);
+        $array = $this->console->input()->getArgument($argument);
         $this->assertArrayType($argument, $array);
+
         return $array;
     }
 
-
-    final public function getOption(string $option)
-    {
-        return $this->console->input()->getOption($option);
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     final public function getOptionString(string $option): string
     {
-        $string = $this->getOption($option);
+        $string = $this->console->input()->getOption($option);
         $this->assertStringType($option, $string);
+
         return $string;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     final public function getOptionArray(string $option): array
     {
-        $array = $this->getOption($option);
+        $array = $this->console->input()->getOption($option);
         $this->assertArrayType($option, $array);
+
         return $array;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     abstract public function callback(BuilderContract $builder): int;
 
     final private function setSymfony(): void
@@ -123,6 +139,7 @@ abstract class Command implements CommandContract
     final private function getWrongTypeMessage(string $expectedType, string $getType, string $for): string
     {
         $message = new Message('Expecting %expectedType% type, %getType% returned for %for%');
+
         return $message
             ->code('%expectedType%', $expectedType)
             ->code('%getType%', $getType)

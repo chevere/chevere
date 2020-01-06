@@ -131,7 +131,7 @@ final class RequestCommand extends Command
             $this->getArgumentString('uri'),
             $this->getOptionArray('headers'),
             isset($this->options['body']) ? $this->getOptionString('body') : null,
-            );
+        );
 
         $request
             ->withCookieParams($this->parsedOptions['cookie'])
@@ -161,9 +161,9 @@ final class RequestCommand extends Command
 
     public function render(Response $response)
     {
-        $isNoFormat = (bool) $this->getOption('noformat');
-        $isHeaders = (bool) $this->getOption('headers');
-        $isBody = (bool) $this->getOption('body');
+        $isNoFormat = (bool) $this->console->input()->getOption('noformat');
+        $isHeaders = (bool) $this->console->input()->getOption('headers');
+        $isBody = (bool) $this->console->input()->getOption('body');
         if (!$isHeaders && !$isBody) {
             $isHeaders = true;
             $isBody = true;
