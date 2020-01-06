@@ -14,26 +14,24 @@ declare(strict_types=1);
 namespace Chevere\Components\Benchmark;
 
 use ArgumentCountError;
-use Chevere\Components\App\Instances\BootstrapInstance;
 use TypeError;
 use DateTime;
+use Chevere\Components\App\Instances\BootstrapInstance;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Chevere\Contracts\Benchmark\RunContract;
 use Chevere\Components\Benchmark\Exceptions\ArgumentCountException;
 use Chevere\Components\Benchmark\Exceptions\ArgumentTypeException;
-use Chevere\Components\Benchmark\Exceptions\NoCallablesException;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\Benchmark\BenchmarkContract;
 use Chevere\Components\Number\Number;
 use Chevere\Components\Time\TimeHr;
-use function ChevereFn\stringStartsWith;
+use Chevere\Contracts\Benchmark\RunableContract;
 
 /**
  * Runs a prepared Benchmark
  */
 final class Run implements RunContract
 {
-    private BenchmarkContract $benchmark;
+    private RunableContract $runable;
 
     /** @var int Maximum time allowed for the benchmark, in seconds */
     private int $timeLimit;
@@ -97,10 +95,9 @@ final class Run implements RunContract
     /**
      * {@inheritdoc}
      */
-    public function __construct(BenchmarkContract $benchmark)
+    public function __construct(RunableContract $runable)
     {
-        $this->benchmark = $benchmark;
-        $this->assertIndex();
+        $this->runable = $runable;
         $this->maxExecutionTime = (int) ini_get('max_execution_time');
         $this->timeLimit = $this->maxExecutionTime;
         $this->constructTime = (int) hrtime(true);
@@ -202,29 +199,16 @@ final class Run implements RunContract
         return $this->printable;
     }
 
-    private function assertIndex(): void
-    {
-        if (empty($this->benchmark->index())) {
-            $className = get_class($this->benchmark);
-            throw new NoCallablesException(
-                (new Message('No callables defined for object of class %className%, declare callables using the %method% method'))
-                    ->code('%className%', $className)
-                    ->code('%method%', $className . '::withAddedCallable')
-                    ->toString()
-            );
-        }
-    }
-
     private function handleCallables(): void
     {
-        foreach (array_keys($this->benchmark->index()) as $id) {
+        foreach (array_keys($this->runable->benchmark()->index()) as $id) {
             if ($this->isAborted) {
                 $this->timeTaken = $this->timeTaken ?? ((int) hrtime(true) - $this->startupTime);
                 break;
             }
             $timeInit = (int) hrtime(true);
             $this->runs = 0;
-            $this->runCallable($this->benchmark->callables()[$id]);
+            $this->runCallable($this->runable->benchmark()->callables()[$id]);
             $timeFinish = (int) hrtime(true);
             $timeTaken = intval($timeFinish - $timeInit);
             $this->records[$id] = $timeTaken;
@@ -239,8 +223,8 @@ final class Run implements RunContract
 
     private function runCallable(callable $callable): void
     {
-        $key = array_search($callable, $this->benchmark->callables());
-        $name = $this->benchmark->index()[$key];
+        $key = array_search($callable, $this->runable->benchmark()->callables());
+        $name = $this->runable->benchmark()->index()[$key];
         for ($i = 0; $i < $this->times; ++$i) {
             $this->isPHPAborted = !$this->canPHPKeepGoing();
             $this->isSelfAborted = !$this->canSelfKeepGoing();
@@ -249,7 +233,7 @@ final class Run implements RunContract
                 break;
             }
             try {
-                $callable(...$this->benchmark->arguments());
+                $callable(...$this->runable->benchmark()->arguments());
             } catch (ArgumentCountError $e) {
                 throw new ArgumentCountException(
                     $this->getErrorMessage($name, $e->getMessage())
@@ -314,7 +298,7 @@ final class Run implements RunContract
 
     private function getResultTitle(int $id): string
     {
-        $name = $this->benchmark->index()[$id];
+        $name = $this->runable->benchmark()->index()[$id];
         $resultTitle = $name;
         if (0 == $this->recordsProcessed) {
             if ($this->recordsCount > 0) {

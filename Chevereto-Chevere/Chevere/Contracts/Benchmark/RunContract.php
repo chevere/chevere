@@ -19,10 +19,9 @@ interface RunContract
     const COLUMNS = 50;
 
     /**
-     * @throws NoCallablesException if there are no callables defined
      * @throws ArgumentCountError if the argument count doesn't match the callable parameters
      */
-    public function __construct(BenchmarkContract $benchmark);
+    public function __construct(RunableContract $runable);
 
     /**
      * @param int $times Number of times this benchmark should run

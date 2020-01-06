@@ -16,14 +16,9 @@ namespace Chevere\Contracts\Benchmark;
 interface BenchmarkContract
 {
     /**
-     * @param int $times Number of times to run each callable
+     * @param array $arguments Arguments to pass to all callables.
      */
-    public function __construct();
-
-    /**
-     * Set the callable arguments.
-     */
-    public function withArguments(...$arguments): BenchmarkContract;
+    public function __construct(...$arguments);
 
     public function arguments(): array;
 
@@ -32,6 +27,8 @@ interface BenchmarkContract
      *
      * @param callable $callable callable
      * @param string   $name     callable name, or alias for your own reference
+     *
+     * @throws ArgumentCountException If the callable defines unmatched parameters for the construct arguments
      */
     public function withAddedCallable(callable $callable, string $name): BenchmarkContract;
 
