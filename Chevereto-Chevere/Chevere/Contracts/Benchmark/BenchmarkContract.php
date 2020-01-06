@@ -18,14 +18,7 @@ interface BenchmarkContract
     /**
      * @param int $times Number of times to run each callable
      */
-    public function __construct(int $times);
-
-    /**
-     * @param int $timeLimit time limit for the benchmark, in seconds
-     */
-    public function withTimeLimit(int $timeLimit): BenchmarkContract;
-
-    public function timeLimit(): int;
+    public function __construct();
 
     /**
      * Set the callable arguments.
@@ -45,11 +38,4 @@ interface BenchmarkContract
     public function callables(): array;
 
     public function index(): array;
-
-    /**
-     * @throws ArgumentCountError if the argument count doesn't match the callable parameters
-     */
-    public function exec(): BenchmarkContract;
-
-    public function toString(): string;
 }

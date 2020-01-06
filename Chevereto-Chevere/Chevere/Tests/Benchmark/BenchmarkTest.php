@@ -14,25 +14,17 @@ declare(strict_types=1);
 namespace Chevere\Tests\Benchmark;
 
 use Chevere\Components\Benchmark\Benchmark;
-use Chevere\Components\Benchmark\Exceptions\ArgumentCountException;
-use Chevere\Components\Benchmark\Exceptions\ArgumentTypeException;
-use Chevere\Components\Benchmark\Exceptions\NoCallablesException;
+use Chevere\Components\Benchmark\Exceptions\DuplicatedCallableException;
 use PHPUnit\Framework\TestCase;
 
 final class BenchmarkTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $this->expectNotToPerformAssertions();
-        new Benchmark(1);
-    }
-
-    public function testWithTimeLimit(): void
-    {
-        $timeLimit = 101;
-        $benchmark = (new Benchmark(1))->withTimeLimit($timeLimit);
-
-        $this->assertSame($timeLimit, $benchmark->timeLimit());
+        $benchmark = new Benchmark();
+        $this->assertSame([], $benchmark->arguments());
+        $this->assertSame([], $benchmark->index());
+        $this->assertSame([], $benchmark->callables());
     }
 
     public function testWithArguments(): void
@@ -48,7 +40,7 @@ final class BenchmarkTest extends TestCase
             'is_int' => 'is int',
             'is_string' => 'is string',
         ];
-        $benchmark = new Benchmark(1);
+        $benchmark = new Benchmark();
         foreach ($callables as $callable => $name) {
             $benchmark = $benchmark->withAddedCallable($callable, $name);
             $this->assertContains($callable, $benchmark->callables());
@@ -58,51 +50,12 @@ final class BenchmarkTest extends TestCase
         $this->assertSame(array_values($callables), $benchmark->index());
     }
 
-    public function testExecNoCallables(): void
+    public function testWithDuplicatedCallable(): void
     {
-        $this->expectException(NoCallablesException::class);
-        (new Benchmark(10000))->exec();
-    }
-
-    public function testExecBadArgumentCount(): void
-    {
-        $arguments = [1, 2];
-        $this->expectException(ArgumentCountException::class);
-        (new Benchmark(1))
-            ->withAddedCallable('is_bool', 'is bool')
-            ->withArguments(...$arguments)
-            ->exec();
-    }
-
-    public function testExecBadArgumentType(): void
-    {
-        $argument = 'string';
-        $this->expectException(ArgumentTypeException::class);
-        (new Benchmark(1))
-            ->withAddedCallable(
-                function (int $int) {
-                    return $int;
-                },
-                'is int'
-            )
-            ->withArguments($argument)
-            ->exec();
-    }
-
-    public function testExec(): void
-    {
-        $this->expectNotToPerformAssertions();
-        (new Benchmark(100))
-            ->withArguments(500, 3000)
-            ->withAddedCallable(function (int $a, int $b) {
-                return $a + $b;
-            }, 'Add')
-            ->withAddedCallable(function (int $a, int $b) {
-                return $a / $b;
-            }, 'Divide')
-            ->withAddedCallable(function (int $a, int $b) {
-                return $a * $b;
-            }, 'Multiply')
-            ->exec();
+        $callableName = 'int?';
+        $this->expectException(DuplicatedCallableException::class);
+        (new Benchmark())
+            ->withAddedCallable('is_int', $callableName)
+            ->withAddedCallable('is_bool', $callableName);
     }
 }
