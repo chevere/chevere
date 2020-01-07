@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Http;
 
-interface HttpContract
+interface HttpStatusContract
 {
-    const STATUS_CODES = [
+    const STATUSES = [
         100 => 'Continue',
         101 => 'Switching Protocols',
         102 => 'Processing',
