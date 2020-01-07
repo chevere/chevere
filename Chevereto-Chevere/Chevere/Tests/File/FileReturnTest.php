@@ -19,7 +19,7 @@ use Chevere\Components\File\Exceptions\FileWithoutContentsException;
 use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
-use Chevere\Components\Path\Path;
+use Chevere\Components\Path\PathApp;
 use Chevere\Components\Variable\VariableExport;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FileReturnContract;
@@ -41,7 +41,7 @@ final class FileReturnTest extends TestCase
     public function setUp(): void
     {
         $this->file = new File(
-            new Path($this->getFileName())
+            new PathApp($this->getFileName())
         );
         $this->file->create();
         $this->fileReturn = new FileReturn(
@@ -63,7 +63,7 @@ final class FileReturnTest extends TestCase
         new FileReturn(
             new FilePhp(
                 new File(
-                    new Path($this->getFileName())
+                    new PathApp($this->getFileName())
                 )
             )
         );
@@ -85,7 +85,7 @@ final class FileReturnTest extends TestCase
 
     public function testReturnInvalidContents(): void
     {
-        $this->file->put('<?php return "test";');
+        $this->file->put('<?php\n\nreturn "test";');
         $this->expectException(FileInvalidContentsException::class);
         $this->fileReturn->raw();
     }
@@ -148,8 +148,8 @@ final class FileReturnTest extends TestCase
         }
 
         foreach ([
-            new Path('test'),
-            ['test', [1, false], new Path('test')],
+            new PathApp('test'),
+            ['test', [1, false], new PathApp('test')],
         ] as $val) {
             $this->fileReturn->put(
                 new VariableExport($val)
@@ -160,7 +160,7 @@ final class FileReturnTest extends TestCase
 
     public function testWithNoStrict(): void
     {
-        $this->file->put("<?php return 'test';");
+        $this->file->put("<?php /* comment */ return 'test';");
         $this->fileReturn = $this->fileReturn
             ->withNoStrict();
 

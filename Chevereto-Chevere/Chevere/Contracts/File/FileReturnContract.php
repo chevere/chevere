@@ -22,8 +22,8 @@ use Chevere\Contracts\Variable\VariableExportContract;
 
 interface FileReturnContract
 {
-    const PHP_RETURN = "<?php\n\nreturn ";
-    const PHP_RETURN_CHARS = 14;
+    const PHP_RETURN = '<?php return ';
+    const PHP_RETURN_CHARS = 13;
 
     /**
      * Creates a new instance.

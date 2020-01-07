@@ -24,7 +24,7 @@ use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
-use Chevere\Components\Path\Path;
+use Chevere\Components\Path\PathApp;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;
@@ -72,7 +72,7 @@ final class Build implements BuildContract
      */
     public function __construct(AppContract $app)
     {
-        $path = new Path('build');
+        $path = new PathApp('build');
         $this->isMaked = false;
         $this->checksums = [];
         $this->app = $app;
@@ -271,7 +271,7 @@ final class Build implements BuildContract
         $this->apiMaker = new ApiMaker($this->routerMaker);
         $this->apiMaker = $this->apiMaker
             ->withPath(
-                new Path(
+                new PathApp(
                     $this->parameters->api()
                 )
             );
@@ -297,7 +297,7 @@ final class Build implements BuildContract
                 (new ArrayFile(
                     new FilePhp(
                         new File(
-                            new Path($fileHandleString)
+                            new PathApp($fileHandleString)
                         )
                     )
                 ))

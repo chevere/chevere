@@ -13,42 +13,27 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Path;
 
-use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathInvalidException;
-use Chevere\Components\Path\Exceptions\PathNotAllowedException;
 use Chevere\Contracts\Path\PathContract;
-use function ChevereFn\stringForwardSlashes;
-use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 
 /**
- * Tool to handle filesystem paths (folder containing app).
- * TODO: Use it for /* or  just /app/* ??
+ * Handles paths with context.
  */
-final class Path implements PathContract
+class Path implements PathContract
 {
-    /** @var string Root context path (<project>/app) */
-    private string $root;
-
-    /** @var string The passed path */
-    private string $path;
-
     /** @var string Absolute path */
     private string $absolute;
-
-    /** @var string Relative path (to project root) */
-    private string $relative;
 
     /**
      * {@inheritdoc}
      */
-    public function __construct(string $path)
+    public function __construct(string $absolute)
     {
-        $this->root = BootstrapInstance::get()->appPath();
-        $this->path = $path;
-        $this->assertPathFormat();
-        $this->handlePaths();
+        new CheckFormat($absolute);
+        $this->absolute = $absolute;
+        $this->assertAbsolutePath();
     }
 
     /**
@@ -57,14 +42,6 @@ final class Path implements PathContract
     public function absolute(): string
     {
         return $this->absolute;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function relative(): string
-    {
-        return $this->relative;
     }
 
     /**
@@ -113,6 +90,9 @@ final class Path implements PathContract
         return is_file($this->absolute);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getChild(string $path): PathContract
     {
         $parent = $this->absolute();
@@ -121,68 +101,12 @@ final class Path implements PathContract
         return new Path($childrenPath . '/' . $path);
     }
 
-    private function assertPathFormat(): void
+    public function assertAbsolutePath(): void
     {
-        if (false !== strpos($this->path, '../')) {
+        if (!stringStartsWith('/', $this->absolute)) {
             throw new PathInvalidException(
-                (new Message('Must omit %chars% for the path %path%'))
-                    ->code('%chars%', '../')
-                    ->code('%path%', $this->path)
-                    ->toString()
-            );
-        }
-        if (false !== strpos($this->path, '//')) {
-            throw new PathInvalidException(
-                (new Message('Path %path% contains extra-slashes'))
-                    ->code('%path%', $this->path)
-                    ->toString()
-            );
-        }
-    }
-
-    private function handlePaths(): void
-    {
-        if (stringStartsWith('/', $this->path)) {
-            $this->assertAbsolutePath();
-            $this->absolute = $this->path;
-        } else {
-            $this->assertRelativePath();
-            $this->absolute = $this->getAbsolute();
-        }
-        $this->relative = $this->getRelative();
-    }
-
-    private function getAbsolute(): string
-    {
-        return $this->root . stringForwardSlashes($this->path);
-    }
-
-    private function getRelative(): string
-    {
-        $absolutePath = stringForwardSlashes($this->absolute);
-
-        return stringReplaceFirst($this->root, '', $absolutePath);
-    }
-
-    private function assertRelativePath(): void
-    {
-        if (stringStartsWith('./', $this->path)) {
-            throw new PathInvalidException(
-                (new Message('Must omit %chars% for the path %path%'))
-                    ->code('%chars%', './')
-                    ->code('%path%', $this->path)
-                    ->toString()
-            );
-        }
-    }
-
-    private function assertAbsolutePath(): void
-    {
-        if (!stringStartsWith($this->root, $this->path)) {
-            throw new PathNotAllowedException(
-                (new Message('Only absolute paths in the app path %root% are allowed, path %path% provided'))
-                    ->code('%root%', $this->root)
-                    ->code('%path%', $this->path)
+                (new Message('Only absolute paths can be used to construct a %className% instance'))
+                    ->code('%className%', __CLASS__)
                     ->toString()
             );
         }

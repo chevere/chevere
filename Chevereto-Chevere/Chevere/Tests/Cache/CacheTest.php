@@ -17,7 +17,7 @@ use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
 use Chevere\Components\Dir\Dir;
-use Chevere\Components\Path\Path;
+use Chevere\Components\Path\PathApp;
 use Chevere\Components\Variable\VariableExport;
 use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Contracts\Cache\CacheItemContract;
@@ -30,7 +30,7 @@ final class CacheTest extends TestCase
         return
             new Cache(
                 new Dir(
-                    new Path('build')
+                    new PathApp('build')
                 )
             );
     }
@@ -62,7 +62,7 @@ final class CacheTest extends TestCase
     public function testWithPutWithRemove(): void
     {
         $key = uniqid();
-        $var = [time(), false, 'test', new Path('test'), 13.13];
+        $var = [time(), false, 'test', new PathApp('test'), 13.13];
         $variableExport = new VariableExport($var);
         $cacheKey = new CacheKey($key);
         $cache = $this->getTestCache()

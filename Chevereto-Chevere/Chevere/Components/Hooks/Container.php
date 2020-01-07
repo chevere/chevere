@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks;
 
-use Chevere\Components\Path\Path;
+use Chevere\Components\Path\PathApp;
 
 /**
  * A container for the registered hooks.
@@ -25,7 +25,7 @@ final class Container
 
     public function __construct()
     {
-        $this->array = [] ?? include (new Path('var/hooks/registered.php'))->absolute();
+        $this->array = [] ?? include (new PathApp('var/hooks/registered.php'))->absolute();
     }
 
     public function getAnchor(object $that, string $anchor): array

@@ -15,13 +15,11 @@ namespace Chevere\Components\ExceptionHandler;
 
 use DateTime;
 use DateTimeZone;
-
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\FirePHPHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Psr\Log\LogLevel;
-
 use Chevere\Components\App\Instances\RequestInstance;
 use Chevere\Components\App\Instances\RuntimeInstance;
 use Chevere\Components\Data\Data;
@@ -31,7 +29,7 @@ use Chevere\Components\ExceptionHandler\src\Output;
 use Chevere\Components\ExceptionHandler\src\Style;
 use Chevere\Components\ExceptionHandler\src\Template;
 use Chevere\Components\ExceptionHandler\src\Wrap;
-use Chevere\Components\Path\Path;
+use Chevere\Components\Path\PathApp;
 use Chevere\Components\Runtime\Runtime;
 use Chevere\Contracts\Http\RequestContract;
 
@@ -168,7 +166,7 @@ final class ExceptionHandler
 
     private function setLogFilePathProperties(): void
     {
-        $absolute = (new Path('var/logs/'))->absolute();
+        $absolute = (new PathApp('var/logs/'))->absolute();
         $date = gmdate($this->logDateFolderFormat, $this->data->key('timestamp'));
         $id = $this->data->key('id');
         $timestamp = $this->data->key('timestamp');

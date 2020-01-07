@@ -19,7 +19,7 @@ use Chevere\Components\App\Build;
 use Chevere\Components\App\Checkout;
 use Chevere\Components\App\Services;
 use Chevere\Components\Http\Response;
-use Chevere\Components\Path\Path;
+use Chevere\Components\Path\PathApp;
 use PHPUnit\Framework\TestCase;
 
 final class CheckoutTest extends TestCase

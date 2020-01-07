@@ -24,7 +24,7 @@ use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\Http\Response;
-use Chevere\Components\Path\Path;
+use Chevere\Components\Path\PathApp;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\CheckoutContract;
@@ -49,7 +49,7 @@ final class BuildTest extends TestCase
                 new ArrayFile(
                     new FilePhp(
                         new File(
-                            new Path('parameters.php')
+                            new PathApp('parameters.php')
                         )
                     )
                 )

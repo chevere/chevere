@@ -20,7 +20,7 @@ use Chevere\Components\File\Exceptions\FileReturnInvalidTypeException;
 use Chevere\Components\File\Exceptions\FileWithoutContentsException;
 use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
-use Chevere\Components\Path\Path;
+use Chevere\Components\Path\PathApp;
 use Chevere\Components\Type\Type;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\Path\PathContract;
@@ -35,7 +35,7 @@ final class ArrayFileTest extends TestCase
     public function setUp(): void
     {
         $this->file = new File(
-            new Path('var/ArrayFileTest_' . uniqid() . '.php')
+            new PathApp('var/ArrayFileTest_' . uniqid() . '.php')
         );
     }
 
@@ -107,7 +107,7 @@ final class ArrayFileTest extends TestCase
     public function testWithMembersTypeObject(): void
     {
         $this->file->create();
-        $this->file->put('<?php use Chevere\Components\Path\Path; return [new Path("test"), new path("test-alt")];');
+        $this->file->put('<?php use Chevere\Components\Path\PathApp; return [new PathApp("test"), new PathApp("test-alt")];');
         $filePhp = new FilePhp($this->file);
         $this->expectNotToPerformAssertions();
         (new ArrayFile($filePhp))

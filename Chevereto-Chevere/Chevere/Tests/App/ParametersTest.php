@@ -20,7 +20,7 @@ use Chevere\Components\App\Parameters;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
-use Chevere\Components\Path\Path;
+use Chevere\Components\Path\PathApp;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\ArrayFile\ArrayFileContract;
 use Chevere\Contracts\Path\PathContract;
@@ -41,7 +41,7 @@ final class ParametersTest extends TestCase
     public function testConstructorWrongKey(): void
     {
         $arrayFile = $this->getArrayFile(
-            new Path('parameters/wrongKey.php')
+            new PathApp('parameters/wrongKey.php')
         );
         $this->expectException(ParametersWrongKeyException::class);
         new Parameters($arrayFile);
@@ -50,7 +50,7 @@ final class ParametersTest extends TestCase
     public function testConstructorWrongRoutesType(): void
     {
         $arrayFile = $this->getArrayFile(
-            new Path('parameters/wrongRoutesType.php')
+            new PathApp('parameters/wrongRoutesType.php')
         );
         $this->expectException(ParametersWrongTypeException::class);
         new Parameters($arrayFile);
@@ -59,7 +59,7 @@ final class ParametersTest extends TestCase
     public function testConstructorWrongApiType(): void
     {
         $arrayFile = $this->getArrayFile(
-            new Path('parameters/wrongApiType.php')
+            new PathApp('parameters/wrongApiType.php')
         );
         $this->expectException(ParametersWrongTypeException::class);
         new Parameters($arrayFile);
@@ -68,7 +68,7 @@ final class ParametersTest extends TestCase
     public function testConstructorWithRoutes(): void
     {
         $arrayFile = $this->getArrayFile(
-            new Path('parameters/routes.php')
+            new PathApp('parameters/routes.php')
         );
         $parameters = new Parameters($arrayFile);
         $this->assertSame(true, $parameters->hasParameters());
@@ -79,10 +79,10 @@ final class ParametersTest extends TestCase
     public function testWithDuplicatedAddedRoutePaths(): void
     {
         $arrayFile = $this->getArrayFile(
-            new Path('parameters/routes.php')
+            new PathApp('parameters/routes.php')
         );
         $this->expectException(ParametersDuplicatedException::class);
         (new Parameters($arrayFile))
-            ->withAddedRoutePaths(new Path('routes/test.php'));
+            ->withAddedRoutePaths(new PathApp('routes/test.php'));
     }
 }

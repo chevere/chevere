@@ -11,13 +11,4 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Router;
-
-use PHPUnit\Framework\TestCase;
-
-// final class RouterCacheTest extends TestCase
-// {
-//     // public function testConstructor(): void
-//     // {
-//     // }
-// }
+return 'string';

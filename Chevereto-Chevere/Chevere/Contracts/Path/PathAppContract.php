@@ -11,13 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Router;
+namespace Chevere\Contracts\Path;
 
-use PHPUnit\Framework\TestCase;
-
-// final class RouterCacheTest extends TestCase
-// {
-//     // public function testConstructor(): void
-//     // {
-//     // }
-// }
+interface PathAppContract extends RelativePathContract
+{
+    /**
+     * Construct a new instance.
+     */
+    public function __construct(string $path);
+}

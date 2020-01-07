@@ -22,7 +22,7 @@ use Chevere\Components\File\Exceptions\FileUnableToPutException;
 use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathIsDirException;
-use Chevere\Components\Path\Path;
+use Chevere\Components\Path\PathApp;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\Path\PathContract;
 use function ChevereFn\stringEndsWith;
@@ -167,7 +167,7 @@ final class File implements FileContract
     private function createPath(): void
     {
         $dirname = dirname($this->path->absolute());
-        $path = new Path($dirname);
+        $path = new PathApp($dirname);
         if (!$path->exists()) {
             (new Dir($path))->create();
         }

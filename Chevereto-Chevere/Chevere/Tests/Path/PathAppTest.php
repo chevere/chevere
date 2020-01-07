@@ -13,38 +13,85 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Path;
 
-use Chevere\Components\App\Instances\BootstrapInstance;
 use RuntimeException;
+use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Path\Exceptions\PathInvalidException;
-use Chevere\Components\Path\Path;
-use Chevere\Contracts\Path\PathContract;
+use Chevere\Components\Path\Exceptions\PathNotAllowedException;
+use Chevere\Components\Path\PathApp;
 use PHPUnit\Framework\TestCase;
 
-final class PathTest extends TestCase
+final class PathAppTest extends TestCase
 {
-    public function getPath(string $child): PathContract
+    private function getAppPath(): string
     {
-        $root = BootstrapInstance::get()->appPath();
+        return BootstrapInstance::get()->appPath();
+    }
 
-        return
-            new Path($root . $child);
+    public function testWithInvalidSuperiorPath(): void
+    {
+        $root = $this->getAppPath();
+        $uber = dirname($root);
+        if ($uber == $root) {
+            $this->expectNotToPerformAssertions();
+        } else {
+            $this->expectException(PathNotAllowedException::class);
+        }
+        new PathApp($uber);
     }
 
     public function testWithExtraSlashesPath(): void
     {
         $this->expectException(PathInvalidException::class);
-        new Path('/some//dir');
+        new PathApp('some//dir');
     }
 
     public function testWithDotsPath(): void
     {
         $this->expectException(PathInvalidException::class);
-        new Path('/some/../dir');
+        new PathApp('some/../dir');
     }
+
+    public function testWithStrictRelativePath(): void
+    {
+        $this->expectException(PathInvalidException::class);
+        new PathApp('./dir');
+    }
+
+    public function testWithRelativePath(): void
+    {
+        $absolute = $this->getAppPath() . 'dir';
+        $path = new PathApp('dir');
+        $this->assertSame('dir', $path->relative());
+        $this->assertSame($absolute, $path->absolute());
+    }
+
+    public function testWithRelativePathTrailing(): void
+    {
+        $absolute = $this->getAppPath() . 'dir/';
+        $path = new PathApp('dir/');
+        $this->assertSame('dir/', $path->relative());
+        $this->assertSame($absolute, $path->absolute());
+    }
+
+    public function testWithAbsolutePath(): void
+    {
+        $absolute = $this->getAppPath() . 'dir';
+        $path = new PathApp($absolute);
+        $this->assertSame('dir', $path->relative());
+        $this->assertSame($absolute, $path->absolute());
+    }
+
+    // public function testWithAbsolutePathTrailing(): void
+    // {
+    //     $absolute = $this->getAppPath() . 'dir/';
+    //     $path = new PathApp($absolute);
+    //     $this->assertSame('dir/', $path->relative());
+    //     $this->assertSame($absolute, $path->absolute());
+    // }
 
     public function testWithNonExistentPath(): void
     {
-        $path = new Path('/var/fake_' . uniqid());
+        $path = new PathApp('var/fake_' . uniqid());
         $this->assertFalse($path->exists());
         $this->assertFalse($path->isDir());
         $this->assertFalse($path->isFile());
@@ -52,7 +99,7 @@ final class PathTest extends TestCase
 
     public function testWithExistentDirPath(): void
     {
-        $path = new Path(__DIR__);
+        $path = new PathApp('var');
         $this->assertTrue($path->exists());
         $this->assertTrue($path->isDir());
         $this->assertFalse($path->isFile());
@@ -60,7 +107,7 @@ final class PathTest extends TestCase
 
     public function testWithExistentFilePath(): void
     {
-        $path = new Path(__FILE__);
+        $path = new PathApp('parameters.php');
         $this->assertTrue($path->exists());
         $this->assertTrue($path->isFile());
         $this->assertFalse($path->isDir());
@@ -68,7 +115,7 @@ final class PathTest extends TestCase
 
     public function testWithExistentDirPathRemoved(): void
     {
-        $path = $this->getPath('var/PathTest_dir_' . uniqid());
+        $path = new PathApp('var/PathTest_dir_' . uniqid());
         $this->assertFalse($path->exists());
         if (!mkdir($path->absolute(), 0777, true)) {
             throw new RuntimeException('Unable to create dir ' . $path->absolute());
@@ -84,7 +131,7 @@ final class PathTest extends TestCase
 
     public function testWithExistentFilePathRemoved(): void
     {
-        $path = $this->getPath('var/PathTest_file_' . uniqid() . '.jpg');
+        $path = new PathApp('var/PathTest_file_' . uniqid() . '.jpg');
         $this->assertFalse($path->exists());
         if (false === file_put_contents($path->absolute(), 'una mona pilucha')) {
             throw new RuntimeException('Unable to create file ' . $path->absolute());

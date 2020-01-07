@@ -138,12 +138,13 @@ final class FileReturn implements FileReturnContract
     private function validateStrict(): void
     {
         $this->filePhp()->file()->assertExists();
-        $handle = fopen($this->filePhp()->file()->path()->absolute(), 'r');
+        $filename = $this->filePhp()->file()->path()->absolute();
+        $handle = fopen($filename, 'r');
         if (false === $handle) {
             throw new FileHandleException(
                 (new Message('Unable to %fn% %path% in %mode% mode'))
                     ->code('%fn%', 'fopen')
-                    ->code('%path%', $this->filePhp()->file()->path()->absolute())
+                    ->code('%path%', $filename)
                     ->code('%mode%', 'r')
                     ->toString()
             );
@@ -153,14 +154,15 @@ final class FileReturn implements FileReturnContract
         if ('' == $contents) {
             throw new FileWithoutContentsException(
                 (new Message("The file %path% doesn't have any contents"))
-                    ->code('%path%', $this->filePhp()->file()->path()->absolute())
+                    ->code('%path%', $filename)
                     ->toString()
             );
         }
         if (FileReturnContract::PHP_RETURN !== $contents) {
             throw new FileInvalidContentsException(
-                (new Message('Unexpected contents in %path% (strict validation)'))
-                    ->code('%path%', $this->filePhp()->file()->path()->absolute())
+                (new Message('Unexpected contents in %path%, strict validation requires a file return in the form of %expected%'))
+                    ->code('%path%', $filename)
+                    ->code('%expected%', FileReturnContract::PHP_RETURN . '$theVar;')
                     ->toString()
             );
         }

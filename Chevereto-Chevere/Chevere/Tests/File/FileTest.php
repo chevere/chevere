@@ -17,7 +17,7 @@ use RuntimeException;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\File\File;
 use Chevere\Components\Path\Exceptions\PathIsDirException;
-use Chevere\Components\Path\Path;
+use Chevere\Components\Path\PathApp;
 use Chevere\Contracts\File\FileContract;
 use PHPUnit\Framework\TestCase;
 
@@ -25,7 +25,7 @@ final class FileTest extends TestCase
 {
     public function getRealFile(string $filename): FileContract
     {
-        $path = new Path('var/FileTest_' . uniqid() . $filename);
+        $path = new PathApp('var/FileTest_' . uniqid() . $filename);
         if (false === file_put_contents($path->absolute(), 'una mona pilucha')) {
             throw new RuntimeException('Unable to create file ' . $path->absolute());
         }
@@ -35,14 +35,14 @@ final class FileTest extends TestCase
 
     public function testWithDirPath(): void
     {
-        $path = new Path('var');
+        $path = new PathApp('var');
         $this->expectException(PathIsDirException::class);
         new File($path);
     }
 
     public function testWithNonExistentPath(): void
     {
-        $path = new Path('var/FileTest_' . uniqid());
+        $path = new PathApp('var/FileTest_' . uniqid());
         $file = new File($path);
         $this->assertSame($path, $file->path());
         $this->assertFalse($file->exists());
@@ -60,14 +60,14 @@ final class FileTest extends TestCase
 
     public function testWithPhpPath(): void
     {
-        $path = new Path('var/FileTest_' . uniqid() . '.php');
+        $path = new PathApp('var/FileTest_' . uniqid() . '.php');
         $file = new File($path);
         $this->assertTrue($file->isPhp());
     }
 
     public function testRemoveNonExistentPath(): void
     {
-        $path = new Path('var/FileTest_' . uniqid());
+        $path = new PathApp('var/FileTest_' . uniqid());
         $file = new File($path);
         $this->expectException(FileNotFoundException::class);
         $file->remove();
@@ -83,7 +83,7 @@ final class FileTest extends TestCase
 
     public function testCreate(): void
     {
-        $file = new File(new Path('var/FileTest_create'));
+        $file = new File(new PathApp('var/FileTest_create'));
         $this->assertFalse($file->exists());
         $file->create();
         $this->assertTrue($file->exists());

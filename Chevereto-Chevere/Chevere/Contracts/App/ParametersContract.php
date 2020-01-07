@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Contracts\App;
 
 use Chevere\Components\ArrayFile\ArrayFile;
-use Chevere\Components\Path\Path;
+use Chevere\Components\Path\PathApp;
 use Chevere\Contracts\ArrayFile\ArrayFileContract;
 use Chevere\Contracts\Path\PathContract;
 

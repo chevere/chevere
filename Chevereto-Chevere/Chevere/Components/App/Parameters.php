@@ -17,7 +17,7 @@ use Chevere\Components\App\Exceptions\ParametersDuplicatedException;
 use Chevere\Components\App\Exceptions\ParametersWrongKeyException;
 use Chevere\Components\App\Exceptions\ParametersWrongTypeException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Path\Path;
+use Chevere\Components\Path\PathApp;
 use Chevere\Contracts\App\ParametersContract;
 use Chevere\Contracts\ArrayFile\ArrayFileContract;
 use Chevere\Contracts\Path\PathContract;
@@ -56,7 +56,7 @@ final class Parameters implements ParametersContract
             $routes = $array[ParametersContract::KEY_ROUTES];
             $this->routes = [];
             foreach ($routes as $route) {
-                $this->routes[] = (new Path($route))->relative();
+                $this->routes[] = (new PathApp($route))->relative();
             }
         }
     }

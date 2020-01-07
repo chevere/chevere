@@ -152,7 +152,7 @@ final class Dir implements DirContract
         if ($this->path->isFile()) {
             throw new PathIsFileException(
                 (new Message('Path %path% is a file'))
-                    ->code('%path%', $this->path->relative())
+                    ->code('%path%', $this->path->absolute())
                     ->toString()
             );
         }

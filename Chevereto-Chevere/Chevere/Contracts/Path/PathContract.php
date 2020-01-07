@@ -16,19 +16,9 @@ namespace Chevere\Contracts\Path;
 interface PathContract
 {
     /**
-     * Construct a new instance.
-     */
-    public function __construct(string $path);
-
-    /**
      * Return absolute path
      */
     public function absolute(): string;
-
-    /**
-     * Return relative path
-     */
-    public function relative(): string;
 
     // /**
     //  * Returns a boolean indicating whether the path is a stream.
@@ -50,5 +40,8 @@ interface PathContract
      */
     public function isFile(): bool;
 
+    /**
+     * Get a child path as a PathContract
+     */
     public function getChild(string $path): PathContract;
 }

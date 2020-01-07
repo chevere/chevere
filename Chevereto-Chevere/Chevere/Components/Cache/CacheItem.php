@@ -20,16 +20,25 @@ final class CacheItem implements CacheItemContract
 {
     private FileReturnContract $fileReturn;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(FileReturnContract $fileReturn)
     {
         $this->fileReturn = $fileReturn;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function raw()
     {
         return $this->fileReturn->raw();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function var()
     {
         return $this->fileReturn->var();

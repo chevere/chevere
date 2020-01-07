@@ -20,11 +20,13 @@ interface CacheItemContract
     public function __construct(FileReturnContract $fileReturn);
 
     /**
+     * Provides raw access to the FileReturnContract "as-is"
      * @return mixed
      */
     public function raw();
 
     /**
+     * Provides access to the FileReturnContract file return variable
      * @return mixed
      */
     public function var();
