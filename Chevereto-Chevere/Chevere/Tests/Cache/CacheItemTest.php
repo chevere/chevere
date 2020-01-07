@@ -18,14 +18,16 @@ use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Path\Path;
+use Chevere\Components\Variable\VariableExport;
+use Chevere\Contracts\Cache\CacheItemContract;
+use Chevere\Contracts\Path\PathContract;
 use PHPUnit\Framework\TestCase;
 
 final class CacheItemTest extends TestCase
 {
-    public function testConstruct(): void
+    private function getCacheItem(PathContract $path): CacheItemContract
     {
-        $path = new Path(__DIR__ . '/resources/return.php');
-        $cacheItem =
+        return
             new CacheItem(
                 new FileReturn(
                     new FilePhp(
@@ -33,6 +35,36 @@ final class CacheItemTest extends TestCase
                     )
                 )
             );
-        $this->assertSame(include $path->absolute(), $cacheItem->raw());
+    }
+
+    // private function writeSerialized(PathContract $path): void
+    // {
+    //     $fileReturn =
+    //         new FileReturn(
+    //             new FilePhp(
+    //                 new File($path)
+    //             )
+    //         );
+    //     $fileReturn->put(
+    //         new VariableExport($path)
+    //     );
+    // }
+
+    public function testNotSerialized(): void
+    {
+        $path = new Path(__DIR__ . '/resources/return.php');
+        $cacheItem = $this->getCacheItem($path);
+        $var = include $path->absolute();
+        $this->assertSame($var, $cacheItem->raw());
+        $this->assertSame($var, $cacheItem->var());
+    }
+
+    public function testSerialized(): void
+    {
+        $path = new Path(__DIR__ . '/resources/return-serialized.php');
+        $cacheItem = $this->getCacheItem($path);
+        $var = include $path->absolute();
+        $this->assertSame($var, $cacheItem->raw());
+        $this->assertEquals(unserialize($var), $cacheItem->var());
     }
 }
