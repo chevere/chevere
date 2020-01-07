@@ -249,11 +249,10 @@ final class Run implements RunContract
 
     private function getErrorMessage(string $name, string $message): string
     {
-        return
-            (new Message('[Callable named %name%] %message%'))
-                ->code('%name%', $name)
-                ->strtr('%message%', $message)
-                ->toString();
+        return (new Message('[Callable named %name%] %message%'))
+            ->code('%name%', $name)
+            ->strtr('%message%', $message)
+            ->toString();
     }
 
     private function processCallablesStats(): void

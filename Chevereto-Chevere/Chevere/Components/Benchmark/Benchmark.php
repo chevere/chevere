@@ -35,6 +35,13 @@ final class Benchmark implements BenchmarkContract
     /** @var array [id => $callable] */
     private array $callables;
 
+    /** @var callable */
+    private $callable;
+
+    private string $callableName;
+
+    private ReflectionFunction $reflection;
+
     /**
      * {@inheritdoc}
      */
@@ -57,29 +64,15 @@ final class Benchmark implements BenchmarkContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedCallable(callable $callable, string $name): BenchmarkContract
+    public function withAddedCallable(callable $callable, string $callableName): BenchmarkContract
     {
-        $reflection = new ReflectionFunction($callable);
-        $parametersCount = $reflection->getNumberOfParameters();
-        if ($this->argumentsCount !== $parametersCount) {
-            throw new ArgumentCountException(
-                (new Message('Instance of %className% was constructed to handle callables with %argumentsCount% arguments, %parametersCount% parameters declared for callable named %name%'))
-                    ->code('%className%', __CLASS__)
-                    ->code('%argumentsCount%', $this->argumentsCount)
-                    ->code('%parametersCount%', $parametersCount)
-                    ->code('%name%', $name)
-                    ->toString()
-            );
-        }
+        $this->callable = $callable;
+        $this->callableName = $callableName;
+        $this->assertUniqueCallableName();
+        $this->reflection = new ReflectionFunction($this->callable);
+        $this->assertCallableArgumentsCount();
         $new = clone $this;
-        if (isset($new->index) && in_array($name, $new->index)) {
-            throw new DuplicatedCallableException(
-                (new Message('Duplicate callable declaration %name%'))
-                    ->code('%name%', $name)
-                    ->toString()
-            );
-        }
-        $new->index[] = $name;
+        $new->index[] = $new->callableName;
         $new->callables[] = $callable;
 
         return $new;
@@ -99,5 +92,31 @@ final class Benchmark implements BenchmarkContract
     public function index(): array
     {
         return $this->index;
+    }
+
+    private function assertUniqueCallableName(): void
+    {
+        if (isset($this->index) && in_array($this->callableName, $this->index)) {
+            throw new DuplicatedCallableException(
+                (new Message('Duplicate callable declaration %name%'))
+                    ->code('%name%', $this->callableName)
+                    ->toString()
+            );
+        }
+    }
+
+    private function assertCallableArgumentsCount(): void
+    {
+        $parametersCount = $this->reflection->getNumberOfParameters();
+        if ($this->argumentsCount !== $parametersCount) {
+            throw new ArgumentCountException(
+                (new Message('Instance of %className% was constructed to handle callables with %argumentsCount% arguments, %parametersCount% parameters declared for callable named %callableName%'))
+                    ->code('%className%', __CLASS__)
+                    ->code('%argumentsCount%', $this->argumentsCount)
+                    ->code('%parametersCount%', $parametersCount)
+                    ->code('%callableName%', $this->callableName)
+                    ->toString()
+            );
+        }
     }
 }
