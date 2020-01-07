@@ -13,13 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Benchmark;
 
+use Chevere\Components\Benchmark\Exceptions\ArgumentCountException;
+
 interface RunContract
 {
     /** @var int Determines the number of colums used for output. */
     const COLUMNS = 50;
 
     /**
-     * @throws ArgumentCountError if the argument count doesn't match the callable parameters
+     * @throws ArgumentCountException if the argument count doesn't match the callable parameters
+     * @throws ArgumentTypeException if the argument types doesn't match
      */
     public function __construct(RunableContract $runable);
 

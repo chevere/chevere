@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Benchmark;
 
+use Chevere\Components\Benchmark\Exceptions\DuplicatedCallableException;
+use Chevere\Components\Benchmark\Exceptions\ArgumentCountException;
+
 interface BenchmarkContract
 {
     /**
@@ -28,9 +31,10 @@ interface BenchmarkContract
      * @param callable $callable callable
      * @param string   $name     callable name, or alias for your own reference
      *
+     * @throws DuplicatedCallableException If the $callableName has been already taken
      * @throws ArgumentCountException If the callable defines unmatched parameters for the construct arguments
      */
-    public function withAddedCallable(callable $callable, string $name): BenchmarkContract;
+    public function withAddedCallable(callable $callable, string $callableName): BenchmarkContract;
 
     public function callables(): array;
 
