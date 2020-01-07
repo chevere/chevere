@@ -16,6 +16,7 @@ namespace Chevere\Tests\Path;
 use RuntimeException;
 use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Path\Exceptions\PathInvalidException;
+use Chevere\Components\Path\Exceptions\PathOmitRelativeException;
 use Chevere\Components\Path\Exceptions\PathNotAllowedException;
 use Chevere\Components\Path\PathApp;
 use PHPUnit\Framework\TestCase;
@@ -39,21 +40,9 @@ final class PathAppTest extends TestCase
         new PathApp($uber);
     }
 
-    public function testWithExtraSlashesPath(): void
-    {
-        $this->expectException(PathInvalidException::class);
-        new PathApp('some//dir');
-    }
-
-    public function testWithDotsPath(): void
-    {
-        $this->expectException(PathInvalidException::class);
-        new PathApp('some/../dir');
-    }
-
     public function testWithStrictRelativePath(): void
     {
-        $this->expectException(PathInvalidException::class);
+        $this->expectException(PathOmitRelativeException::class);
         new PathApp('./dir');
     }
 
@@ -81,13 +70,13 @@ final class PathAppTest extends TestCase
         $this->assertSame($absolute, $path->absolute());
     }
 
-    // public function testWithAbsolutePathTrailing(): void
-    // {
-    //     $absolute = $this->getAppPath() . 'dir/';
-    //     $path = new PathApp($absolute);
-    //     $this->assertSame('dir/', $path->relative());
-    //     $this->assertSame($absolute, $path->absolute());
-    // }
+    public function testWithAbsolutePathTrailing(): void
+    {
+        $absolute = $this->getAppPath() . 'dir/';
+        $path = new PathApp($absolute);
+        $this->assertSame('dir/', $path->relative());
+        $this->assertSame($absolute, $path->absolute());
+    }
 
     public function testWithNonExistentPath(): void
     {

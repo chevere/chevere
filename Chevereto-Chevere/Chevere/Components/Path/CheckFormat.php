@@ -14,12 +14,20 @@ declare(strict_types=1);
 namespace Chevere\Components\Path;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Path\Exceptions\PathDoubleDotsException;
+use Chevere\Components\Path\Exceptions\PathExtraSlashesException;
 use Chevere\Components\Path\Exceptions\PathInvalidException;
+use Chevere\Components\Path\Exceptions\PathOmitRelativeException;
+use Chevere\Contracts\Path\CheckFormatContract;
+use function ChevereFn\stringStartsWith;
 
-final class CheckFormat
+final class CheckFormat implements CheckFormatContract
 {
     private string $path;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(string $path)
     {
         $this->path = $path;
@@ -27,10 +35,25 @@ final class CheckFormat
         $this->assertNoExtraSlashes();
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function assertNotRelativePath(): void
+    {
+        if (stringStartsWith('./', $this->path)) {
+            throw new PathOmitRelativeException(
+                (new Message('Must omit %chars% for the path %path%'))
+                    ->code('%chars%', './')
+                    ->code('%path%', $this->path)
+                    ->toString()
+            );
+        }
+    }
+
     private function assertNoDoubleDots(): void
     {
-        if (false !== strpos($this->path, '../')) {
-            throw new PathInvalidException(
+        if (false !== strpos($this->path, '../') || false !== strpos($this->path, '/..')) {
+            throw new PathDoubleDotsException(
                 (new Message('Must omit %chars% for path %path%'))
                     ->code('%chars%', '../')
                     ->code('%path%', $this->path)
@@ -42,7 +65,7 @@ final class CheckFormat
     private function assertNoExtraSlashes(): void
     {
         if (false !== strpos($this->path, '//')) {
-            throw new PathInvalidException(
+            throw new PathExtraSlashesException(
                 (new Message('Path %path% contains extra-slashes'))
                     ->code('%path%', $this->path)
                     ->toString()

@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Path;
 
-use Chevere\Components\App\Instances\BootstrapInstance;
 use RuntimeException;
-use Chevere\Components\Path\Exceptions\PathInvalidException;
+use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Path\Path;
 use Chevere\Contracts\Path\PathContract;
 use PHPUnit\Framework\TestCase;
@@ -28,18 +27,6 @@ final class PathTest extends TestCase
 
         return
             new Path($root . $child);
-    }
-
-    public function testWithExtraSlashesPath(): void
-    {
-        $this->expectException(PathInvalidException::class);
-        new Path('/some//dir');
-    }
-
-    public function testWithDotsPath(): void
-    {
-        $this->expectException(PathInvalidException::class);
-        new Path('/some/../dir');
     }
 
     public function testWithNonExistentPath(): void

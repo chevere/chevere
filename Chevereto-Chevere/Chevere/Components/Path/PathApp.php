@@ -17,6 +17,7 @@ use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathInvalidException;
 use Chevere\Components\Path\Exceptions\PathNotAllowedException;
+use Chevere\Contracts\Path\CheckFormatContract;
 use Chevere\Contracts\Path\PathAppContract;
 use Chevere\Contracts\Path\PathContract;
 use function ChevereFn\stringForwardSlashes;
@@ -28,6 +29,8 @@ use function ChevereFn\stringStartsWith;
  */
 class PathApp implements PathContract, PathAppContract
 {
+    private CheckFormatContract $checkFormat;
+
     /** @var string Relative path passed on instance construct */
     private string $path;
 
@@ -47,7 +50,7 @@ class PathApp implements PathContract, PathAppContract
      */
     public function __construct(string $path)
     {
-        new CheckFormat($path);
+        $this->checkFormat = new CheckFormat($path);
         $this->path = $path;
         $this->root = BootstrapInstance::get()->appPath();
         $this->handlePaths();
@@ -109,7 +112,7 @@ class PathApp implements PathContract, PathAppContract
             $this->assertAbsolutePath();
             $this->absolute = $this->path;
         } else {
-            $this->assertRelativePath();
+            $this->checkFormat->assertNotRelativePath();
             $this->absolute = $this->getAbsolute();
         }
         $this->relative = $this->getRelative();
@@ -125,18 +128,6 @@ class PathApp implements PathContract, PathAppContract
         $absolutePath = stringForwardSlashes($this->absolute);
 
         return stringReplaceFirst($this->root, '', $absolutePath);
-    }
-
-    private function assertRelativePath(): void
-    {
-        if (stringStartsWith('./', $this->path)) {
-            throw new PathInvalidException(
-                (new Message('Must omit %chars% for the path %path%'))
-                    ->code('%chars%', './')
-                    ->code('%path%', $this->path)
-                    ->toString()
-            );
-        }
     }
 
     private function assertAbsolutePath(): void
