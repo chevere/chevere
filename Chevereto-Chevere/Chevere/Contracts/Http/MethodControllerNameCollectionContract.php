@@ -13,10 +13,21 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Http;
 
+use Chevere\Components\Http\Exceptions\MethodNotFoundException;
+
 interface MethodControllerNameCollectionContract
 {
+    /**
+     * Creates a new instance.
+     */
     public function __construct(MethodControllerNameContract ...$methodControllerName);
 
+    /**
+     * Return an instance with the specified MethodControllerNameContract.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified MethodControllerNameContract.
+     */
     public function withAddedMethodControllerName(MethodControllerNameContract $methodControllerName): MethodControllerNameCollectionContract;
 
     /**
@@ -34,5 +45,8 @@ interface MethodControllerNameCollectionContract
      */
     public function get(MethodContract $method): MethodControllerNameContract;
 
+    /**
+     * Returns the collection array.
+     */
     public function toArray(): array;
 }
