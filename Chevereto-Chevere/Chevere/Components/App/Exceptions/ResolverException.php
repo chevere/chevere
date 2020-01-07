@@ -13,19 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Exceptions;
 
-use Chevere\Components\Http\Http;
-use Chevere\Components\Message\Message;
 use Exception;
 use InvalidArgumentException;
-use LogicException;
 use Throwable;
+use Chevere\Components\Message\Message;
+use Chevere\Contracts\Http\HttpContract;
 
 /**
  * Exception thrown when unable to resolve.
  */
 final class ResolverException extends Exception
 {
-    private $statuses = Http::STATUS_CODES;
+    private $statuses = HttpContract::STATUS_CODES;
 
     /**
      * Throws a new ResolverException exception.

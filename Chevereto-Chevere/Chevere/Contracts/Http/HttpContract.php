@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Http;
+namespace Chevere\Contracts\Http;
 
-abstract class Http
+interface HttpContract
 {
     const STATUS_CODES = [
         100 => 'Continue',

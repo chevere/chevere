@@ -15,15 +15,14 @@ namespace Chevere\Components\Http\Request;
 
 use Exception;
 use LogicException;
-
-use Chevere\Components\Http\Http;
 use Chevere\Components\Message\Message;
+use Chevere\Contracts\Http\HttpContract;
 
 final class RequestException extends Exception
 {
     public function __construct(int $httpCode = 0, string $message = null, Exception $previous = null)
     {
-        $status = Http::STATUS_CODES[$httpCode];
+        $status = HttpContract::STATUS_CODES[$httpCode];
 
         if (!isset($status)) {
             throw new LogicException(
