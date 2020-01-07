@@ -13,16 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Http;
 
-use Chevere\Components\Controller\Traits\ControllerNameAccessTrait;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Http\MethodContract;
 use InvalidArgumentException;
 
 final class Method implements MethodContract
 {
-    use ControllerNameAccessTrait;
-
-    /** @var string HTTP request method */
+    /** @var string HTTP request method name */
     private string $name;
 
     /**
