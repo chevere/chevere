@@ -23,11 +23,9 @@ use JsonApiPhp\JsonApi\Error\Status;
 use JsonApiPhp\JsonApi\Error\Title;
 use JsonApiPhp\JsonApi\Meta;
 use Psr\Http\Message\StreamInterface;
-
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Message\Message;
-
 use function console;
 use function GuzzleHttp\Psr7\stream_for;
 
@@ -67,7 +65,7 @@ final class Output
             if (BootstrapInstance::get()->cli()) {
                 // $this->setJsonOutput();
                 $this->setConsoleOutput();
-                // $this->setHtmlOutput();
+            // $this->setHtmlOutput();
             } else {
                 $this->setHtmlOutput();
             }
@@ -113,7 +111,7 @@ final class Output
         $this->tags['content'] = $content;
         $this->preparedTags['%content%'] = $this->tags['content'];
         $this->textPlain = strtr($this->plainTemplate, $this->preparedTags);
-        // dd(var_export(array_keys($this->preparedTags), true));
+        // xdd(var_export(array_keys($this->preparedTags), true));
     }
 
     // FIXME: JsonApi Document
@@ -148,7 +146,7 @@ final class Output
         );
 
         // $document = new EncodedDocument($jsonApi);
-        // dd();
+        // xdd();
 
         $this->output = stream_for(json_encode($jsonApi));
     }

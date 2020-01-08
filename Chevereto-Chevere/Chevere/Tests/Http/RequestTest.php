@@ -23,7 +23,10 @@ final class RequestTest extends TestCase
     public function testBasicConstruct(): void
     {
         $this->expectNotToPerformAssertions();
-        new Request(new Method('GET'), new PathUri('/'));
+        new Request(
+            new Method('GET'),
+            new PathUri('/')
+        );
     }
 
     public function testFromGlobals(): void

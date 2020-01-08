@@ -13,15 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Console\Commands;
 
-use Chevere\Components\App\Runner;
 use InvalidArgumentException;
 use JsonException;
+use Chevere\Components\App\Runner;
 use Chevere\Components\Console\Command;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Message\Message;
 use Chevere\Components\App\Contracts\BuilderContract;
+use Chevere\Components\Route\PathUri;
 
 /**
  * The RequestCommand allows to pass a forged request to the App instance.
@@ -125,10 +126,11 @@ final class RequestCommand extends Command
         $this->setParsedOptions();
 
         $method = new Method($this->getArgumentString('method'));
+        $pathUri = new PathUri($this->getArgumentString('uri'));
 
         $request = new Request(
-            $method->toString(),
-            $this->getArgumentString('uri'),
+            $method,
+            $pathUri,
             $this->getOptionArray('headers'),
             isset($this->options['body']) ? $this->getOptionString('body') : null,
         );

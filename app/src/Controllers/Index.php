@@ -40,7 +40,7 @@ class Index extends Controller implements JsonApiContract
     {
         $took = hrtime(true);
         $arr = ['aaa', $this, (new TimeHr($took - BootstrapInstance::get()->hrTime()))->toReadMs()];
-        dd($arr);
+        xdd($arr);
         $this->api = new ResourceObject(
             'info',
             'api',

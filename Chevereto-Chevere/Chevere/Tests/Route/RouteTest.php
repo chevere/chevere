@@ -55,7 +55,7 @@ final class RouteTest extends TestCase
     {
         $wildcard = new Wildcard('test');
         $route = $this->getRoute('/' . $wildcard->toString());
-        // dd($route);
+        // xdd($route);
         $this->assertTrue($route->hasWildcardCollection());
         $this->assertTrue($route->wildcardCollection()->has($wildcard));
         $this->assertEquals($wildcard, $route->wildcardCollection()->get($wildcard));

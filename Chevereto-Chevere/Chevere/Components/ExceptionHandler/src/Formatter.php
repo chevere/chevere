@@ -16,15 +16,12 @@ namespace Chevere\Components\ExceptionHandler\src;
 use Chevere\Components\App\Instances\BootstrapInstance;
 use ErrorException;
 use Throwable;
-
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Chevere\Components\Data\Traits\DataMethodTrait;
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
 use Chevere\Components\VarDump\Formatters\DumperFormatter;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
 use Chevere\Components\VarDump\VarDump;
-
 use function console;
 use function ChevereFn\stringReplaceFirst;
 
@@ -77,6 +74,9 @@ final class Formatter
     public function __construct(ExceptionHandler $exceptionHandler)
     {
         $this->exceptionHandler = $exceptionHandler;
+        $this->lineBreak = '';
+        $this->plainContentSections = [];
+        $this->richContentSections = [];
         $this->wrap = $this->exceptionHandler->wrap();
         $this->exception = $this->wrap->exception();
         $this->data = $this->wrap->data();
@@ -135,7 +135,7 @@ final class Formatter
         if (BootstrapInstance::get()->console()) {
             $this->data = $this->data
                 ->withMergedArray([
-                    'clientIp' => $request->globals()->argv()[0],
+                    'clientIp' => $request->globals()->argv()[0] ?? 'localhost',
                     'clientUserAgent' => console()->inputString(),
                 ]);
         } else {
@@ -146,8 +146,8 @@ final class Formatter
                     'serverHost' => $request->getHeaderLine('Host'),
                     'requestMethod' => $request->getMethod(),
                     'serverProtocol' => $request->protocolString(),
-                    'serverSoftware' => $request->getGlobals()->server()['SERVER_SOFTWARE'],
-                    'clientIp' => $request->getGlobals()->server()['REMOTE_ADDR'],
+                    'serverSoftware' => $request->globals()->server()['SERVER_SOFTWARE'],
+                    'clientIp' => $request->globals()->server()['REMOTE_ADDR'],
                 ]);
         }
     }
@@ -210,6 +210,7 @@ final class Formatter
             }
             $this->handleSetConsoleStackSection($key, $value);
             $this->setConsoleSection($key, $value);
+
             return true;
         }
         $this->handleSetRichStackSection($key, $value);
@@ -236,7 +237,7 @@ final class Formatter
     {
         $dumperVarDump = new VarDump(new DumperFormatter());
         $plainVarDump = new VarDump(new PlainFormatter());
-        $globals = $this->exceptionHandler->request()->getGlobals()->globals();
+        $globals = $this->exceptionHandler->request()->globals()->globals();
         foreach (['_GET', '_POST', '_FILES', '_COOKIE', '_SESSION', '_SERVER'] as $global) {
             $val = $globals[$global] ?? null;
             if (!empty($val)) {

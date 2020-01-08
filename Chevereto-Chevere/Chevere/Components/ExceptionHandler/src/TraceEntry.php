@@ -14,12 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Components\ExceptionHandler\src;
 
 use ReflectionMethod;
-
 use Chevere\Components\App\App;
 use Chevere\Components\VarDump\Formatters\DumperFormatter;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
 use Chevere\Components\VarDump\VarDump;
-
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 
@@ -48,6 +46,8 @@ final class TraceEntry
     {
         $this->entry = $entry;
         $this->key = $key;
+        $this->plainArgs = '';
+        $this->richArgs = '';
         $this->handleProcessMissingClassFile();
         $this->handleSetEntryArguments();
         $this->handleProcessAnonClass();
@@ -128,7 +128,6 @@ final class TraceEntry
     {
         $plainVarDump = new VarDump(new PlainFormatter());
         $richVarDump = new VarDump(new DumperFormatter());
-
         $this->plainArgs = "\n";
         $this->richArgs = "\n";
         foreach ($this->entry['args'] as $k => $expression) {
