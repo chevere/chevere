@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Runtime\Sets;
 
 use RuntimeException;
-
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\Set;
-use Chevere\Components\Router\Contracts\SetContract;
+use Chevere\Components\Runtime\Contracts\SetContract;
 
 class SetUriScheme implements SetContract
 {

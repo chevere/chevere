@@ -49,7 +49,6 @@ final class AppTest extends TestCase
             );
         $app = $app
             ->withResponse($response);
-
         $this->assertSame($response, $app->response());
     }
 
@@ -63,7 +62,6 @@ final class AppTest extends TestCase
             );
         $app = $app
             ->withRequest($request);
-
         $this->assertTrue($app->hasRequest());
         $this->assertSame($request, $app->request());
     }
@@ -84,7 +82,6 @@ final class AppTest extends TestCase
         $services = new Services();
         $app = (new App(new Services(), new Response()))
             ->withServices($services);
-
         $this->assertSame($services, $app->services());
     }
 
@@ -93,7 +90,6 @@ final class AppTest extends TestCase
         $arguments = ['a', 'b', 'c'];
         $app = (new App(new Services(), new Response()))
             ->withArguments($arguments);
-
         $this->assertTrue($app->hasArguments());
         $this->assertSame($arguments, $app->arguments());
     }

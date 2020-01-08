@@ -17,7 +17,7 @@ use InvalidArgumentException;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\Set;
-use Chevere\Components\Router\Contracts\SetContract;
+use Chevere\Components\Runtime\Contracts\SetContract;
 
 class SetExceptionHandler implements SetContract
 {

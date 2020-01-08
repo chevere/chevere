@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Component\Console\Contracts;
+namespace Chevere\Components\Console\Contracts;
 
 use InvalidArgumentException;
 use LogicException;
