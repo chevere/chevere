@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Benchmark;
+namespace Chevere\Components\Benchmark\Contracts;
 
 use Chevere\Components\Benchmark\Exceptions\NoCallablesException;
 

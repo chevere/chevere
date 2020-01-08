@@ -18,13 +18,13 @@ use TypeError;
 use DateTime;
 use Chevere\Components\App\Instances\BootstrapInstance;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
-use Chevere\Contracts\Benchmark\RunContract;
+use Chevere\Components\Benchmark\Contracts\RunContract;
+use Chevere\Components\Benchmark\Contracts\RunableContract;
 use Chevere\Components\Benchmark\Exceptions\ArgumentCountException;
 use Chevere\Components\Benchmark\Exceptions\ArgumentTypeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Number\Number;
 use Chevere\Components\Time\TimeHr;
-use Chevere\Contracts\Benchmark\RunableContract;
 
 /**
  * Runs a prepared Benchmark

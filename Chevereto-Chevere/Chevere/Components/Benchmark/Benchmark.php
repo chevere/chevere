@@ -16,7 +16,7 @@ namespace Chevere\Components\Benchmark;
 use Chevere\Components\Benchmark\Exceptions\ArgumentCountException;
 use Chevere\Components\Benchmark\Exceptions\DuplicatedCallableException;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\Benchmark\BenchmarkContract;
+use Chevere\Components\Benchmark\Contracts\BenchmarkContract;
 use ReflectionFunction;
 
 /**

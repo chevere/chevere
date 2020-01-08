@@ -15,8 +15,8 @@ namespace Chevere\Components\Benchmark;
 
 use Chevere\Components\Benchmark\Exceptions\NoCallablesException;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\Benchmark\BenchmarkContract;
-use Chevere\Contracts\Benchmark\RunableContract;
+use Chevere\Components\Benchmark\Contracts\BenchmarkContract;
+use Chevere\Components\Benchmark\Contracts\RunableContract;
 
 /**
  * Determine if a BenchmarkContract can run

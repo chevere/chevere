@@ -17,7 +17,7 @@ use Chevere\Components\Benchmark\Benchmark;
 use Chevere\Components\Benchmark\Exceptions\ArgumentTypeException;
 use Chevere\Components\Benchmark\Run;
 use Chevere\Components\Benchmark\Runable;
-use Chevere\Contracts\Benchmark\RunableContract;
+use Chevere\Components\Benchmark\Contracts\RunableContract;
 use PHPUnit\Framework\TestCase;
 
 final class RunTest extends TestCase
