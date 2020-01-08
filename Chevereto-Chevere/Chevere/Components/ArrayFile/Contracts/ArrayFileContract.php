@@ -11,9 +11,8 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\ArrayFile;
+namespace Chevere\Components\ArrayFile\Contracts;
 
-use Chevere\Components\Type\Type;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
