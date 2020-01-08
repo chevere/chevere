@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Variable;
 
+use ReflectionObject;
+use Throwable;
 use Chevere\Components\Breadcrum\Breadcrum;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Variable\Exceptions\VariableExportException;
 use Chevere\Components\Variable\Exceptions\VariableIsResourceException;
 use Chevere\Contracts\Variable\VariableExportContract;
-use ReflectionObject;
-use Throwable;
-use Chevere\Contracts\Breadcrum\BreadcrumContract;
+use Chevere\Components\Breadcrum\Contracts\BreadcrumContract;
 
 /**
  * Allows to interact with exportable variables.

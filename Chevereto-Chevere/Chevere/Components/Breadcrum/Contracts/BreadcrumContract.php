@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Breadcrum;
+namespace Chevere\Components\Breadcrum\Contracts;
 
 use Chevere\Contracts\ToArrayContract;
 use Chevere\Contracts\ToStringContract;

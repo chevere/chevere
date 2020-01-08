@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Properties;
 
+use Throwable;
+use TypeError;
 use Chevere\Components\Breadcrum\Breadcrum;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouterPropertyException;
-use Chevere\Contracts\Breadcrum\BreadcrumContract;
-use Throwable;
-use TypeError;
+use Chevere\Components\Breadcrum\Contracts\BreadcrumContract;
 
 abstract class PropertyBase
 {

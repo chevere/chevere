@@ -15,7 +15,7 @@ namespace Chevere\Components\Breadcrum;
 
 use Chevere\Components\Breadcrum\Exceptions\BreadcrumException;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\Breadcrum\BreadcrumContract;
+use Chevere\Components\Breadcrum\Contracts\BreadcrumContract;
 
 final class Breadcrum implements BreadcrumContract
 {
