@@ -23,7 +23,7 @@ use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathIsDirException;
 use Chevere\Components\Path\PathApp;
-use Chevere\Contracts\File\FileContract;
+use Chevere\Components\File\Contracts\FileContract;
 use Chevere\Contracts\Path\PathContract;
 use function ChevereFn\stringEndsWith;
 

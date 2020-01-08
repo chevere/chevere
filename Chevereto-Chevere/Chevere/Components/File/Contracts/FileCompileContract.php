@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\File;
+namespace Chevere\Components\File\Contracts;
 
 use RuntimeException;
 use Chevere\Components\File\Exceptions\FileNotPhpException;

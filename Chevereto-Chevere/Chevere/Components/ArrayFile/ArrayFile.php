@@ -19,8 +19,8 @@ use Chevere\Components\File\Exceptions\FileReturnInvalidTypeException;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\ArrayFile\Contracts\ArrayFileContract;
-use Chevere\Contracts\File\FileContract;
-use Chevere\Contracts\File\FilePhpContract;
+use Chevere\Components\File\Contracts\FileContract;
+use Chevere\Components\File\Contracts\FilePhpContract;
 use Chevere\Contracts\Type\TypeContract;
 
 /**

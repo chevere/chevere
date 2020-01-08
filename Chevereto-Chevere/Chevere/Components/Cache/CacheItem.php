@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Cache;
 
 use Chevere\Components\Cache\Contracts\CacheItemContract;
-use Chevere\Contracts\File\FileReturnContract;
+use Chevere\Components\File\Contracts\FileReturnContract;
 
 final class CacheItem implements CacheItemContract
 {

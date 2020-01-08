@@ -18,7 +18,7 @@ use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\File\File;
 use Chevere\Components\Path\Exceptions\PathIsDirException;
 use Chevere\Components\Path\PathApp;
-use Chevere\Contracts\File\FileContract;
+use Chevere\Components\File\Contracts\FileContract;
 use PHPUnit\Framework\TestCase;
 
 final class FileTest extends TestCase

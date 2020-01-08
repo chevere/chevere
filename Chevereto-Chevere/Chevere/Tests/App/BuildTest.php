@@ -30,7 +30,7 @@ use Chevere\Components\App\Contracts\BuildContract;
 use Chevere\Components\App\Contracts\CheckoutContract;
 use Chevere\Components\App\Contracts\ParametersContract;
 use Chevere\Components\Dir\Contracts\DirContract;
-use Chevere\Contracts\File\FileContract;
+use Chevere\Components\File\Contracts\FileContract;
 use PHPUnit\Framework\TestCase;
 
 final class BuildTest extends TestCase

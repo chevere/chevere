@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ArrayFile\Contracts;
 
-use Chevere\Contracts\File\FileContract;
-use Chevere\Contracts\File\FilePhpContract;
+use Chevere\Components\File\Contracts\FileContract;
+use Chevere\Components\File\Contracts\FilePhpContract;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Contracts\Type\TypeContract;
 

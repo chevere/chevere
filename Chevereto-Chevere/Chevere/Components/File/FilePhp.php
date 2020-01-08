@@ -15,8 +15,8 @@ namespace Chevere\Components\File;
 
 use Chevere\Components\File\Exceptions\FileNotPhpException;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\File\FileContract;
-use Chevere\Contracts\File\FilePhpContract;
+use Chevere\Components\File\Contracts\FileContract;
+use Chevere\Components\File\Contracts\FilePhpContract;
 
 /**
  * A wrapper for FileContract to implement PHP files.

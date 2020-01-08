@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\App\Contracts;
 
 use Chevere\Components\Dir\Contracts\DirContract;
-use Chevere\Contracts\File\FileContract;
+use Chevere\Components\File\Contracts\FileContract;
 use Chevere\Contracts\Path\PathContract;
 use Chevere\Contracts\Router\RouterMakerContract;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;

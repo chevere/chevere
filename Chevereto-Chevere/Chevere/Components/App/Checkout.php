@@ -20,7 +20,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Variable\VariableExport;
 use Chevere\Components\App\Contracts\BuildContract;
 use Chevere\Components\App\Contracts\CheckoutContract;
-use Chevere\Contracts\File\FileReturnContract;
+use Chevere\Components\File\Contracts\FileReturnContract;
 
 /**
  * Checkout the application build.

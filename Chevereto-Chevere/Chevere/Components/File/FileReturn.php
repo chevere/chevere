@@ -19,8 +19,8 @@ use Chevere\Components\File\Exceptions\FileWithoutContentsException;
 use Chevere\Components\Serialize\Exceptions\UnserializeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Serialize\Unserialize;
-use Chevere\Contracts\File\FilePhpContract;
-use Chevere\Contracts\File\FileReturnContract;
+use Chevere\Components\File\Contracts\FilePhpContract;
+use Chevere\Components\File\Contracts\FileReturnContract;
 use Chevere\Contracts\Variable\VariableExportContract;
 
 /**

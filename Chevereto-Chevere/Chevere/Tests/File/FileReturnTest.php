@@ -21,8 +21,8 @@ use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\Variable\VariableExport;
-use Chevere\Contracts\File\FileContract;
-use Chevere\Contracts\File\FileReturnContract;
+use Chevere\Components\File\Contracts\FileContract;
+use Chevere\Components\File\Contracts\FileReturnContract;
 use PHPUnit\Framework\TestCase;
 
 final class FileReturnTest extends TestCase

@@ -16,8 +16,8 @@ namespace Chevere\Components\File;
 use Chevere\Components\App\Instances\BootstrapInstance;
 use RuntimeException;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\File\FileCompileContract;
-use Chevere\Contracts\File\FilePhpContract;
+use Chevere\Components\File\Contracts\FileCompileContract;
+use Chevere\Components\File\Contracts\FilePhpContract;
 
 /**
  * OPCache compiler.
