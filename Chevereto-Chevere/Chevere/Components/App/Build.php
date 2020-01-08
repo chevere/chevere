@@ -34,7 +34,7 @@ use Chevere\Components\App\Contracts\AppContract;
 use Chevere\Components\App\Contracts\BuildContract;
 use Chevere\Components\App\Contracts\CheckoutContract;
 use Chevere\Components\App\Contracts\ParametersContract;
-use Chevere\Contracts\Dir\DirContract;
+use Chevere\Components\Dir\Contracts\DirContract;
 use Chevere\Contracts\File\FileContract;
 use Chevere\Contracts\File\FilePhpContract;
 use Chevere\Contracts\Route\RouteContract;

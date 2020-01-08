@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Cache\Contracts;
 
-use Chevere\Contracts\Dir\DirContract;
+use Chevere\Components\Dir\Contracts\DirContract;
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
 use Chevere\Contracts\Variable\VariableExportContract;
 use Chevere\Components\File\Exceptions\FileUnableToRemoveException;

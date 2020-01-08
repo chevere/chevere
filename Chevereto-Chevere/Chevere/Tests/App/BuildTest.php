@@ -29,7 +29,7 @@ use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\App\Contracts\BuildContract;
 use Chevere\Components\App\Contracts\CheckoutContract;
 use Chevere\Components\App\Contracts\ParametersContract;
-use Chevere\Contracts\Dir\DirContract;
+use Chevere\Components\Dir\Contracts\DirContract;
 use Chevere\Contracts\File\FileContract;
 use PHPUnit\Framework\TestCase;
 

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Dir;
+namespace Chevere\Components\Dir\Contracts;
 
 use Chevere\Contracts\Path\PathContract;
 use Chevere\Components\Dir\Exceptions\DirUnableToRemoveException;

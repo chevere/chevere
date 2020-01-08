@@ -21,7 +21,7 @@ use Chevere\Components\File\FileReturn;
 use Chevere\Components\Cache\Contracts\CacheContract;
 use Chevere\Components\Cache\Contracts\CacheItemContract;
 use Chevere\Components\Cache\Contracts\CacheKeyContract;
-use Chevere\Contracts\Dir\DirContract;
+use Chevere\Components\Dir\Contracts\DirContract;
 use Chevere\Contracts\Path\PathContract;
 use Chevere\Contracts\Variable\VariableExportContract;
 

@@ -20,7 +20,7 @@ use Chevere\Components\Dir\Exceptions\DirExistsException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathIsFileException;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
-use Chevere\Contracts\Dir\DirContract;
+use Chevere\Components\Dir\Contracts\DirContract;
 use Chevere\Contracts\Path\PathContract;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
