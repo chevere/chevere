@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Instances;
 
-use Chevere\Contracts\Bootstrap\BootstrapContract;
+use Chevere\Components\Bootstrap\Contracts\BootstrapContract;
 use LogicException;
 
 /**

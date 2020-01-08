@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Bootstrap;
+namespace Chevere\Components\Bootstrap\Contracts;
 
 interface BootstrapContract
 {

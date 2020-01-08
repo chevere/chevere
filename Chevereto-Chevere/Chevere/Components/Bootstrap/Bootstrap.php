@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Bootstrap;
 
 use Chevere\Components\Bootstrap\Exceptions\BootstrapException;
-use Chevere\Contracts\Bootstrap\BootstrapContract;
+use Chevere\Components\Bootstrap\Contracts\BootstrapContract;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 
