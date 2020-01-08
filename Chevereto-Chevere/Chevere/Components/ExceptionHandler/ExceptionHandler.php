@@ -31,7 +31,7 @@ use Chevere\Components\ExceptionHandler\src\Template;
 use Chevere\Components\ExceptionHandler\src\Wrap;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\Runtime\Runtime;
-use Chevere\Contracts\Http\RequestContract;
+use Chevere\Components\Http\Contracts\RequestContract;
 
 /**
  * The Chevere exception handler.

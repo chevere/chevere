@@ -11,10 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Http;
+namespace Chevere\Components\Http\Contracts;
 
 use Psr\Http\Message\RequestInterface;
-
 use Chevere\Components\Globals\Globals;
 
 interface RequestContract extends RequestInterface

@@ -19,7 +19,7 @@ use Chevere\Components\Controllers\Api\OptionsController;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodControllerName;
 use Chevere\Contracts\Api\src\EndpointContract;
-use Chevere\Contracts\Http\MethodControllerNameCollectionContract;
+use Chevere\Components\Http\Contracts\MethodControllerNameCollectionContract;
 
 final class Endpoint implements EndpointContract
 {

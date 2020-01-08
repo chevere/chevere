@@ -16,8 +16,8 @@ namespace Chevere\Components\App;
 use Chevere\Components\App\Instances\RequestInstance;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\ServicesContract;
-use Chevere\Contracts\Http\RequestContract;
-use Chevere\Contracts\Http\ResponseContract;
+use Chevere\Components\Http\Contracts\RequestContract;
+use Chevere\Components\Http\Contracts\ResponseContract;
 use Chevere\Contracts\Router\RoutedContract;
 
 /**

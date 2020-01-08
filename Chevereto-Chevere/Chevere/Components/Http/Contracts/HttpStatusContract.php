@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Http;
+namespace Chevere\Components\Http\Contracts;
 
 interface HttpStatusContract
 {

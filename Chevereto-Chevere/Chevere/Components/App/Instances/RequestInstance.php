@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Instances;
 
-use Chevere\Contracts\Http\RequestContract;
 use LogicException;
+use Chevere\Components\Http\Contracts\RequestContract;
 
 /**
  * A container for the global request instance.

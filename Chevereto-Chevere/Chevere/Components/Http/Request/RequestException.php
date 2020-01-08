@@ -16,7 +16,7 @@ namespace Chevere\Components\Http\Request;
 use Exception;
 use LogicException;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\Http\HttpStatusContract;
+use Chevere\Components\Http\Contracts\HttpStatusContract;
 
 final class RequestException extends Exception
 {

@@ -15,7 +15,7 @@ namespace Chevere\Tests\Http;
 
 use InvalidArgumentException;
 use Chevere\Components\Http\Method;
-use Chevere\Contracts\Http\MethodContract;
+use Chevere\Components\Http\Contracts\MethodContract;
 use PHPUnit\Framework\TestCase;
 
 final class MethodTest extends TestCase

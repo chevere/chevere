@@ -17,7 +17,7 @@ use Exception;
 use InvalidArgumentException;
 use Throwable;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\Http\HttpStatusContract;
+use Chevere\Components\Http\Contracts\HttpStatusContract;
 
 /**
  * Exception thrown when unable to resolve.

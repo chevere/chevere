@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Middleware;
 
-use Chevere\Contracts\Http\RequestContract;
+use Chevere\Components\Http\Contracts\RequestContract;
 use Chevere\Contracts\Middleware\MiddlewareContract;
 
 abstract class Middleware implements MiddlewareContract
@@ -22,7 +22,8 @@ abstract class Middleware implements MiddlewareContract
      * Dummy method to avoid constructors as a new MiddlewareContract is created in MiddlewareRunner.
      */
     final public function __construct()
-    { }
+    {
+    }
 
     abstract public function handle(RequestContract $request): void;
 }

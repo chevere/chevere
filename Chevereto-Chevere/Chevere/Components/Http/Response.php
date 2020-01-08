@@ -15,8 +15,7 @@ namespace Chevere\Components\Http;
 
 use DateTime;
 use DateTimeZone;
-
-use Chevere\Contracts\Http\ResponseContract;
+use Chevere\Components\Http\Contracts\ResponseContract;
 
 final class Response implements ResponseContract
 {
@@ -68,6 +67,7 @@ final class Response implements ResponseContract
                 $headers[] = "$name: $value";
             }
         }
+
         return implode("\n", $headers);
     }
 
@@ -113,6 +113,7 @@ final class Response implements ResponseContract
     private function getDateHeader(): array
     {
         $date = new DateTime('now', new DateTimeZone('UTC'));
+
         return ['Date' => $date->format('D, d M Y H:i:s') . ' GMT'];
     }
 }

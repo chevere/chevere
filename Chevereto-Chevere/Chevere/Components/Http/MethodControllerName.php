@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Http;
 
 use Chevere\Contracts\Controller\ControllerNameContract;
-use Chevere\Contracts\Http\MethodContract;
-use Chevere\Contracts\Http\MethodControllerNameContract;
+use Chevere\Components\Http\Contracts\MethodContract;
+use Chevere\Components\Http\Contracts\MethodControllerNameContract;
 
 final class MethodControllerName implements MethodControllerNameContract
 {

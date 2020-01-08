@@ -30,7 +30,7 @@ use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Contracts\App\ResolvableContract;
-use Chevere\Contracts\Http\RequestContract;
+use Chevere\Components\Http\Contracts\RequestContract;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
@@ -56,6 +56,7 @@ final class ResolverTest extends TestCase
             ->withRouter($router);
         $app = new App($services, new Response());
         $app = $app->withRequest($request);
+
         return
             new Resolvable(
                 new Builder(

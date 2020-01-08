@@ -15,9 +15,9 @@ namespace Chevere\Components\Http;
 
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\Http\MethodContract;
-use Chevere\Contracts\Http\MethodControllerNameContract;
-use Chevere\Contracts\Http\MethodControllerNameCollectionContract;
+use Chevere\Components\Http\Contracts\MethodContract;
+use Chevere\Components\Http\Contracts\MethodControllerNameContract;
+use Chevere\Components\Http\Contracts\MethodControllerNameCollectionContract;
 
 final class MethodControllerNameCollection implements MethodControllerNameCollectionContract
 {

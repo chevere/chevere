@@ -11,14 +11,32 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Http;
+namespace Chevere\Components\Http\Contracts;
 
 use InvalidArgumentException;
 
 interface MethodContract
 {
     /** Array containing all the known HTTP methods. */
-    const ACCEPT_METHOD_NAMES = ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'COPY', 'HEAD', 'OPTIONS', 'LINK', 'UNLINK', 'PURGE', 'LOCK', 'UNLOCK', 'PROPFIND', 'VIEW', 'TRACE', 'CONNECT'];
+    const ACCEPT_METHOD_NAMES = [
+        'GET',
+        'POST',
+        'PUT',
+        'PATCH',
+        'DELETE',
+        'COPY',
+        'HEAD',
+        'OPTIONS',
+        'LINK',
+        'UNLINK',
+        'PURGE',
+        'LOCK',
+        'UNLOCK',
+        'PROPFIND',
+        'VIEW',
+        'TRACE',
+        'CONNECT'
+    ];
 
     /**
      * Creates a new instance.

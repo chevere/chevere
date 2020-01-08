@@ -18,8 +18,8 @@ use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Http\MethodControllerNameCollection;
-use Chevere\Contracts\Http\MethodContract;
-use Chevere\Contracts\Http\MethodControllerNameContract;
+use Chevere\Components\Http\Contracts\MethodContract;
+use Chevere\Components\Http\Contracts\MethodControllerNameContract;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 

@@ -18,7 +18,7 @@ use Chevere\Components\Middleware\Exceptions\MiddlewareNamesEmptyException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\MiddlewareRunnerContract;
-use Chevere\Contracts\Http\RequestContract;
+use Chevere\Components\Http\Contracts\RequestContract;
 use Chevere\Contracts\Middleware\MiddlewareNameCollectionContract;
 use Chevere\Contracts\Middleware\MiddlewareNameContract;
 

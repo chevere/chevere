@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Http;
 
-use Chevere\Components\Message\Message;
-use Chevere\Contracts\Http\MethodContract;
 use InvalidArgumentException;
+use Chevere\Components\Message\Message;
+use Chevere\Components\Http\Contracts\MethodContract;
 
 final class Method implements MethodContract
 {

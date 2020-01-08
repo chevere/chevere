@@ -19,7 +19,7 @@ use Chevere\Components\App\Exceptions\RouterRequiredException;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\App\BuilderContract;
 use Chevere\Contracts\App\ResolvableContract;
-use Chevere\Contracts\Http\RequestContract;
+use Chevere\Components\Http\Contracts\RequestContract;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
 
