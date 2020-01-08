@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use Chevere\Contracts\Api\ApiContract;
+use Chevere\Components\Api\Contracts\ApiContract;
 use Chevere\Contracts\App\ServicesContract;
 use Chevere\Contracts\Router\RouterContract;
 

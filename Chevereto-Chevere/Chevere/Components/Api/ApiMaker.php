@@ -31,7 +31,7 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Variable\VariableExport;
-use Chevere\Contracts\Api\ApiMakerContract;
+use Chevere\Components\Api\Contracts\ApiMakerContract;
 use Chevere\Contracts\Cache\CacheContract;
 use Chevere\Components\Http\Contracts\MethodContract;
 use Chevere\Contracts\Path\PathContract;

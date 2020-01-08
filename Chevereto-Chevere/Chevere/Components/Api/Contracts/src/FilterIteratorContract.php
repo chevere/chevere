@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Api\src;
+namespace Chevere\Components\Api\Contracts\src;
 
 interface FilterIteratorContract
 {
@@ -25,7 +25,7 @@ interface FilterIteratorContract
 
     /**
      * Get accepte filenames
-     * 
+     *
      * @return array
      */
     public function acceptFilenames(): array;

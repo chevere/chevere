@@ -18,8 +18,8 @@ use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\Cache\Traits\CacheAccessTrait;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\Api\ApiContract;
-use Chevere\Contracts\Api\ApiMakerContract;
+use Chevere\Components\Api\Contracts\ApiContract;
+use Chevere\Components\Api\Contracts\ApiMakerContract;
 use Chevere\Contracts\Cache\CacheContract;
 use LogicException;
 

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Api;
+namespace Chevere\Components\Api\Contracts;
 
 use Chevere\Contracts\Cache\CacheContract;
 

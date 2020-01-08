@@ -11,90 +11,51 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Api;
+namespace Chevere\Contracts\App;
 
-use Chevere\Components\Controller\ControllerName;
-use Chevere\Components\Controllers\Api\HeadController;
-use Chevere\Components\Controllers\Api\OptionsController;
-use Chevere\Components\Http\Method;
-use Chevere\Components\Http\MethodControllerName;
-use Chevere\Contracts\Api\src\EndpointContract;
-use Chevere\Components\Http\Contracts\MethodControllerNameCollectionContract;
+use Chevere\Components\Api\Contracts\ApiContract;
+use Chevere\Contracts\Router\RouterContract;
 
-final class Endpoint implements EndpointContract
+interface ServicesContract
 {
-    /** @var array */
-    private $array;
-
-    /** @var MethodControllerNameCollectionContract */
-    private $methodControllerNameCollection;
+    /**
+     * Creates a new application base service container.
+     */
+    public function __construct();
 
     /**
-     * {@inheritdoc}
+     * Return an instance with the specified ApiContract.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified ApiContract.
      */
-    public function __construct(MethodControllerNameCollectionContract $collection)
-    {
-        $this->array = [];
-        $this->methodControllerNameCollection = $collection;
-        $this->fillEndpointOptions();
-        $this->autofillMissingOptionsHead();
-    }
+    public function withApi(ApiContract $api): ServicesContract;
 
     /**
-     * {@inheritdoc}
+     * Returns a boolean indicating whether the instance has an ApiContract.
      */
-    public function methodControllerNameCollection(): MethodControllerNameCollectionContract
-    {
-        return $this->methodControllerNameCollection;
-    }
+    public function hasApi(): bool;
 
     /**
-     * {@inheritdoc}
+     * Provides access to the ApiContract instance.
      */
-    public function toArray(): array
-    {
-        return $this->array;
-    }
+    public function api(): ApiContract;
 
-    private function fillEndpointOptions(): void
-    {
-        foreach ($this->methodControllerNameCollection->toArray() as $method) {
-            $httpMethod = $method->method();
-            $controllerClassName = $method->controllerName();
-            $httpMethodOptions = [];
-            $httpMethodOptions['description'] = $controllerClassName::description();
-            $controllerParameters = $controllerClassName::parameters();
-            if (isset($controllerParameters)) {
-                $httpMethodOptions['parameters'] = $controllerParameters;
-            }
-            $this->array['OPTIONS'][$httpMethod] = $httpMethodOptions;
-        }
-    }
+    /**
+     * Return an instance with the specified RouterContract.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified RouterContract.
+     */
+    public function withRouter(RouterContract $router): ServicesContract;
 
-    private function autofillMissingOptionsHead(): void
-    {
-        foreach ([
-            'OPTIONS' => [
-                OptionsController::class, [
-                    'description' => OptionsController::description(),
-                ],
-            ],
-            'HEAD' => [
-                HeadController::class, [
-                    'description' => HeadController::description(),
-                ],
-            ],
-        ] as $k => $v) {
-            if (!$this->methodControllerNameCollection->has(new Method($k))) {
-                $this->methodControllerNameCollection = $this->methodControllerNameCollection
-                    ->withAddedMethodControllerName(
-                        new MethodControllerName(
-                            new Method($k),
-                            new ControllerName($v[0])
-                        )
-                    );
-                $this->array['OPTIONS'][$k] = $v[1];
-            }
-        }
-    }
+    /**
+     * Returns a boolean indicating whether the instance has a RouterContract.
+     */
+    public function hasRouter(): bool;
+
+    /**
+     * Provides access to the RouterContract instance.
+     */
+    public function router(): RouterContract;
 }

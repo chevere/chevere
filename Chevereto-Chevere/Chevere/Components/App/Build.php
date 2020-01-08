@@ -29,7 +29,7 @@ use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Type\Type;
-use Chevere\Contracts\Api\ApiContract;
+use Chevere\Components\Api\Contracts\ApiContract;
 use Chevere\Contracts\App\AppContract;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\CheckoutContract;

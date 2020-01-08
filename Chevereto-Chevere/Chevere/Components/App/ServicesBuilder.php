@@ -19,7 +19,7 @@ use Chevere\Components\Cache\Cache;
 use Chevere\Components\Api\Api;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;
-use Chevere\Contracts\Api\ApiContract;
+use Chevere\Components\Api\Contracts\ApiContract;
 use Chevere\Contracts\App\BuildContract;
 use Chevere\Contracts\App\ServicesBuilderContract;
 use Chevere\Contracts\Router\RouterContract;
