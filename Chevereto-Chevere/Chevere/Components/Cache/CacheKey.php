@@ -15,7 +15,7 @@ namespace Chevere\Components\Cache;
 
 use Chevere\Components\Cache\Exceptions\CacheInvalidKeyException;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\Cache\CacheKeyContract;
+use Chevere\Components\Cache\Contracts\CacheKeyContract;
 
 final class CacheKey implements CacheKeyContract
 {

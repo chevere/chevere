@@ -18,8 +18,7 @@ use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Path\Path;
-use Chevere\Components\Variable\VariableExport;
-use Chevere\Contracts\Cache\CacheItemContract;
+use Chevere\Components\Cache\Contracts\CacheItemContract;
 use Chevere\Contracts\Path\PathContract;
 use PHPUnit\Framework\TestCase;
 

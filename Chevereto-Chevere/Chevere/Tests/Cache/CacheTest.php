@@ -19,8 +19,8 @@ use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\Variable\VariableExport;
-use Chevere\Contracts\Cache\CacheContract;
-use Chevere\Contracts\Cache\CacheItemContract;
+use Chevere\Components\Cache\Contracts\CacheContract;
+use Chevere\Components\Cache\Contracts\CacheItemContract;
 use PHPUnit\Framework\TestCase;
 
 final class CacheTest extends TestCase

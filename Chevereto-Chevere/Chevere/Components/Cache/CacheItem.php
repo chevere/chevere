@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Cache;
 
-use Chevere\Contracts\Cache\CacheItemContract;
+use Chevere\Components\Cache\Contracts\CacheItemContract;
 use Chevere\Contracts\File\FileReturnContract;
 
 final class CacheItem implements CacheItemContract

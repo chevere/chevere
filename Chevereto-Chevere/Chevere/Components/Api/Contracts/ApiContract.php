@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Api\Contracts;
 
-use Chevere\Contracts\Cache\CacheContract;
+use Chevere\Components\Cache\Contracts\CacheContract;
 
 interface ApiContract
 {

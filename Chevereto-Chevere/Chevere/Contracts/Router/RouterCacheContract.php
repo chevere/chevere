@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Router;
 
-use Chevere\Contracts\Cache\CacheContract;
+use Chevere\Components\Cache\Contracts\CacheContract;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 
 interface RouterCacheContract
