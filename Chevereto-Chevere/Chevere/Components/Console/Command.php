@@ -16,8 +16,8 @@ namespace Chevere\Components\Console;
 use LogicException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\App\Contracts\BuilderContract;
-use Chevere\Contracts\Console\CommandContract;
-use Chevere\Contracts\Console\SymfonyCommandContract;
+use Chevere\Component\Console\Contracts\CommandContract;
+use Chevere\Component\Console\Contracts\SymfonyCommandContract;
 
 /**
  * This is the base command of all Chevere commands.

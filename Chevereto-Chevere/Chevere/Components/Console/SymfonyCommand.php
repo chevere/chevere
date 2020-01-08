@@ -16,8 +16,7 @@ namespace Chevere\Components\Console;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use Chevere\Contracts\Console\SymfonyCommandContract;
+use Chevere\Component\Console\Contracts\SymfonyCommandContract;
 
 /**
  * Wrapper for Symfony\Component\Console\Command\Command

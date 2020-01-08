@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Instances;
 
-use Chevere\Contracts\Console\ConsoleContract;
 use LogicException;
+use Chevere\Component\Console\Contracts\ConsoleContract;
 
 /**
  * A container for the built-in console.

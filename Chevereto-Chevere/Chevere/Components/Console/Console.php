@@ -20,7 +20,6 @@ use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Chevere\Components\Console\Commands\BuildCommand;
 use Chevere\Components\Console\Commands\ClearLogsCommand;
@@ -30,8 +29,8 @@ use Chevere\Components\Console\Commands\RequestCommand;
 use Chevere\Components\Console\Commands\RunCommand;
 use Chevere\Components\Message\Message;
 use Chevere\Components\App\Contracts\BuilderContract;
-use Chevere\Contracts\Console\CommandContract;
-use Chevere\Contracts\Console\ConsoleContract;
+use Chevere\Component\Console\Contracts\CommandContract;
+use Chevere\Component\Console\Contracts\ConsoleContract;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
 /**

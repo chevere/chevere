@@ -12,7 +12,7 @@
 declare(strict_types=1);
 
 use Chevere\Components\App\Instances\ConsoleInstance;
-use Chevere\Contracts\Console\ConsoleContract;
+use Chevere\Component\Console\Contracts\ConsoleContract;
 
 function console(): ConsoleContract
 {

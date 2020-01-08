@@ -11,11 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Console;
+namespace Chevere\Component\Console\Contracts;
 
 use InvalidArgumentException;
 use LogicException;
-
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputDefinition;
