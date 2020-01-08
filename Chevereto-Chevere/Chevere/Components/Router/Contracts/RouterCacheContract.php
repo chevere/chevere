@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Router;
+namespace Chevere\Components\Router\Contracts;
 
 use Chevere\Components\Cache\Contracts\CacheContract;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;

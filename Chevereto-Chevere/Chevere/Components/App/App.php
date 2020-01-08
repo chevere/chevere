@@ -18,7 +18,7 @@ use Chevere\Components\App\Contracts\AppContract;
 use Chevere\Components\App\Contracts\ServicesContract;
 use Chevere\Components\Http\Contracts\RequestContract;
 use Chevere\Components\Http\Contracts\ResponseContract;
-use Chevere\Contracts\Router\RoutedContract;
+use Chevere\Components\Router\Contracts\RoutedContract;
 
 /**
  * The application container.

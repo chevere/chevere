@@ -15,7 +15,7 @@ namespace Chevere\Components\App;
 
 use Chevere\Components\Api\Contracts\ApiContract;
 use Chevere\Components\App\Contracts\ServicesContract;
-use Chevere\Contracts\Router\RouterContract;
+use Chevere\Components\Router\Contracts\RouterContract;
 
 /**
  * A container for the application base services (Router & API).

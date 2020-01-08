@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Router\Properties;
+namespace Chevere\Components\Router\Contracts\Properties;
 
 use Chevere\Contracts\ToStringContract;
 use Chevere\Components\Router\Exceptions\RouterPropertyException;

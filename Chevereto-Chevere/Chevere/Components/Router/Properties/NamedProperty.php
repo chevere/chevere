@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Router\Properties;
 
 use Chevere\Components\Router\Properties\Traits\ToArrayTrait;
-use Chevere\Contracts\Router\Properties\NamedPropertyContract;
+use Chevere\Components\Router\Contracts\Properties\NamedPropertyContract;
 
 final class NamedProperty extends PropertyBase implements NamedPropertyContract
 {

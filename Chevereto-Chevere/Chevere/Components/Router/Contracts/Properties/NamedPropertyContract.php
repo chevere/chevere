@@ -11,22 +11,22 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Router\Properties;
+namespace Chevere\Components\Router\Contracts\Properties;
 
 use Chevere\Contracts\ToArrayContract;
 use Chevere\Components\Router\Exceptions\RouterPropertyException;
 
-interface IndexPropertyContract extends ToArrayContract
+interface NamedPropertyContract extends ToArrayContract
 {
     /** @var string property name */
-    const NAME = 'index';
+    const NAME = 'named';
 
     /**
      * Creates a new instance.
      *
-     * @param array $index [(string)$key => ['id' => (int)$id, 'group' => (string)$group, 'name' => (string)$name]][]
+     * @param array $named Named routes [(string)$name => (int)$id]
      *
      * @throws RouterPropertyException if the value doesn't match the property format
      */
-    public function __construct(array $index);
+    public function __construct(array $named);
 }

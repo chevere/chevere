@@ -22,7 +22,7 @@ use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Api\Contracts\ApiContract;
 use Chevere\Components\App\Contracts\BuildContract;
 use Chevere\Components\App\Contracts\ServicesBuilderContract;
-use Chevere\Contracts\Router\RouterContract;
+use Chevere\Components\Router\Contracts\RouterContract;
 
 final class ServicesBuilder implements ServicesBuilderContract
 {

@@ -21,7 +21,7 @@ use Chevere\Components\App\Contracts\BuilderContract;
 use Chevere\Components\App\Contracts\ResolvableContract;
 use Chevere\Components\Http\Contracts\RequestContract;
 use Chevere\Components\Route\Contracts\RouteContract;
-use Chevere\Contracts\Router\RouterContract;
+use Chevere\Components\Router\Contracts\RouterContract;
 
 /**
  * Determines if the builder can resolve the build request

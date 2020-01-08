@@ -17,7 +17,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Properties\Traits\ToArrayTrait;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Route\Contracts\RouteContract;
-use Chevere\Contracts\Router\Properties\RoutesPropertyContract;
+use Chevere\Components\Router\Contracts\Properties\RoutesPropertyContract;
 use LogicException;
 
 final class RoutesProperty extends PropertyBase implements RoutesPropertyContract

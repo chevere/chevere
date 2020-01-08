@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Router\Properties;
 
 use Chevere\Components\Router\Properties\Traits\ToArrayTrait;
-use Chevere\Contracts\Router\Properties\GroupsPropertyContract;
+use Chevere\Components\Router\Contracts\Properties\GroupsPropertyContract;
 use TypeError;
 
 final class GroupsProperty extends PropertyBase implements GroupsPropertyContract

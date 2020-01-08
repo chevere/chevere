@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\App\Contracts;
 
 use Chevere\Components\Api\Contracts\ApiContract;
-use Chevere\Contracts\Router\RouterContract;
+use Chevere\Components\Router\Contracts\RouterContract;
 
 interface ServicesContract
 {

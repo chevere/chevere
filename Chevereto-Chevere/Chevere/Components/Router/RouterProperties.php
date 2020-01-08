@@ -18,7 +18,7 @@ use Chevere\Components\Router\Properties\IndexProperty;
 use Chevere\Components\Router\Properties\NamedProperty;
 use Chevere\Components\Router\Properties\RegexProperty;
 use Chevere\Components\Router\Properties\RoutesProperty;
-use Chevere\Contracts\Router\RouterPropertiesContract;
+use Chevere\Components\Router\Contracts\RouterPropertiesContract;
 
 final class RouterProperties implements RouterPropertiesContract
 {

@@ -16,7 +16,7 @@ namespace Chevere\Components\Router\Properties;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Router\Properties\Traits\ToStringTrait;
-use Chevere\Contracts\Router\Properties\RegexPropertyContract;
+use Chevere\Components\Router\Contracts\Properties\RegexPropertyContract;
 use InvalidArgumentException;
 
 final class RegexProperty extends PropertyBase implements RegexPropertyContract

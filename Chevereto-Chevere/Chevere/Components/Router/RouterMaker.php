@@ -20,10 +20,10 @@ use Chevere\Components\Router\Exceptions\RouteNameConflictException;
 use Chevere\Components\Router\Exceptions\RouterMakerException;
 use Chevere\Components\Variable\VariableExport;
 use Chevere\Components\Route\Contracts\RouteContract;
-use Chevere\Contracts\Router\Properties\RegexPropertyContract;
-use Chevere\Contracts\Router\RouteableContract;
-use Chevere\Contracts\Router\RouterMakerContract;
-use Chevere\Contracts\Router\RouterPropertiesContract;
+use Chevere\Components\Router\Contracts\Properties\RegexPropertyContract;
+use Chevere\Components\Router\Contracts\RouteableContract;
+use Chevere\Components\Router\Contracts\RouterMakerContract;
+use Chevere\Components\Router\Contracts\RouterPropertiesContract;
 
 /**
  * RouterMaker takes a bunch of routes and generates a cache-ready routing table.

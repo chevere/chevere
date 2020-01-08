@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\Route\Contracts\RouteContract;
-use Chevere\Contracts\Router\RoutedContract;
+use Chevere\Components\Router\Contracts\RoutedContract;
 
 /**
  * An instance for routed RouteContracts routed by RouterContract.
