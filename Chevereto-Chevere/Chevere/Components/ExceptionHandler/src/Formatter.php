@@ -133,10 +133,9 @@ final class Formatter
     {
         $request = $this->exceptionHandler->request();
         if (BootstrapInstance::get()->console()) {
-            // dd($this->exceptionHandler->request());
             $this->data = $this->data
                 ->withMergedArray([
-                    'clientIp' => $request->getGlobals()->argv()[0],
+                    'clientIp' => $request->globals()->argv()[0],
                     'clientUserAgent' => console()->inputString(),
                 ]);
         } else {
