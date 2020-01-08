@@ -89,7 +89,7 @@ abstract class PropertyBase
         $message = new Message($e->getMessage());
         if ($this->breadcrum->hasAny()) {
             $message = (new Message('%exception% at %at%'))
-                ->strtr('%exception%', $e->getMessage())
+                ->translate('%exception%', $e->getMessage())
                 ->code('%at%', $this->breadcrum->toString());
         }
 

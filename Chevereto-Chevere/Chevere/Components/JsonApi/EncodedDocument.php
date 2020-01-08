@@ -17,7 +17,6 @@ use Chevere\Components\App\Instances\BootstrapInstance;
 use InvalidArgumentException;
 use JsonException;
 use JsonSerializable;
-
 use Chevere\Components\Message\Message;
 
 final class EncodedDocument
@@ -38,6 +37,7 @@ final class EncodedDocument
     public function toString(): string
     {
         $this->setEncodingOptions();
+
         return $this->getEncodedString();
     }
 
@@ -56,7 +56,7 @@ final class EncodedDocument
         } catch (JsonException $e) {
             throw new InvalidArgumentException(
                 (new Message('Unable to encode array as JSON (%m)'))
-                    ->strtr('%m', $e->getMessage())
+                    ->translate('%m', $e->getMessage())
                     ->toString()
             );
         }
