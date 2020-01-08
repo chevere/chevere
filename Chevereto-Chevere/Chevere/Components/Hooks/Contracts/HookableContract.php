@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Hooks;
+namespace Chevere\Components\Hooks\Contracts;
 
 interface HookableContract
 {
