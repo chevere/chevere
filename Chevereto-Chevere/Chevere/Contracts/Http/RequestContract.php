@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Contracts\Http;
 
 use Psr\Http\Message\RequestInterface;
-
-use Chevere\Components\Globals\Globals;
+use Chevere\Contracts\Globals\GlobalsContract;
 
 interface RequestContract extends RequestInterface
 {
@@ -23,5 +22,5 @@ interface RequestContract extends RequestInterface
 
     public function protocolString(): string;
 
-    public function getGlobals(): Globals;
+    public function globals(): GlobalsContract;
 }

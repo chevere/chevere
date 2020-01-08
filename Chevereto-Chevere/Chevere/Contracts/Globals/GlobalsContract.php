@@ -15,7 +15,7 @@ namespace Chevere\Contracts\Globals;
 
 interface GlobalsContract
 {
-    const METHODS = [
+    const PROPERTIES = [
         'argc',
         'argv',
         'server',
@@ -24,8 +24,6 @@ interface GlobalsContract
         'files',
         'cookie',
         'session',
-        'request',
-        'env',
     ];
 
     const KEYS = [
@@ -37,53 +35,39 @@ interface GlobalsContract
         '_FILES',
         '_COOKIE',
         '_SESSION',
-        '_REQUEST',
-        '_ENV',
     ];
 
-    public function __construct(array $globals);
+    const DEFAULTS = [
+        0,
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+    ];
 
-    public function withArgc(int $argc): GlobalsContract;
+    /**
+     * Creates a new instance.
+     */
+    public function __construct(array $globals);
 
     public function argc(): int;
 
-    public function withArgv(array $argv): GlobalsContract;
-
     public function argv(): array;
-
-    public function withServer(array $server): GlobalsContract;
 
     public function server(): array;
 
-    public function withGet(array $get): GlobalsContract;
-
     public function get(): array;
-
-    public function withPost(array $post): GlobalsContract;
 
     public function post(): array;
 
-    public function withFiles(array $files): GlobalsContract;
-
     public function files(): array;
-
-    public function withCookie(array $cookie): GlobalsContract;
 
     public function cookie(): array;
 
-    public function withSession(array $session): GlobalsContract;
-
     public function session(): array;
-
-    public function withRequest(string $request): GlobalsContract;
-
-    public function request(): string;
-
-    public function withEnv(array $env): GlobalsContract;
-
-    public function env(): array;
-
-    public function withGlobals(array $globals): GlobalsContract;
 
     public function globals(): array;
 }

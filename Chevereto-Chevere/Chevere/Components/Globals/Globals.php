@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Globals;
 
-use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Globals\Exceptions\GlobalsKeyException;
 use Chevere\Components\Globals\Exceptions\GlobalsTypeException;
 use Chevere\Components\Message\Message;
@@ -41,25 +40,27 @@ final class Globals implements GlobalsContract
 
     private array $session;
 
-    private string $request;
-
-    private array $env;
-
     private array $globals;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(array $globals)
     {
-        $this->globals = $globals;
-        $this->assertValidKeys();
-        for ($i = 0; $i < count(static::KEYS); $i++) {
-            $property = static::METHODS[$i];
-            $name = static::KEYS[$i];
+        $this->globals = [];
+        for ($i = 0; $i < count(GlobalsContract::KEYS); $i++) {
+            $key = GlobalsContract::KEYS[$i];
+            $this->globals[$key] = GlobalsContract::DEFAULTS[$i];
+            if (array_key_exists($key, $globals)) {
+                $this->globals[$key] = $globals[$key];
+            }
+            $property = GlobalsContract::PROPERTIES[$i];
             try {
-                $this->$property = $globals[$name];
+                $this->$property = $this->globals[$key];
             } catch (TypeError $e) {
                 throw new GlobalsTypeException(
-                    (new Message('Global key %name% TypeError: %message%'))
-                        ->code('%name%', $name)
+                    (new Message('Global key %key% TypeError: %message%'))
+                        ->code('%key%', $key)
                         ->strtr('%message%', $e->getMessage())
                         ->toString()
                 );
@@ -67,172 +68,82 @@ final class Globals implements GlobalsContract
         }
     }
 
-    public function withArgc(int $argc): GlobalsContract
-    {
-        $new = clone $this;
-        $new->argc = $argc;
-
-        return $new;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function argc(): int
     {
         return $this->argc;
     }
 
-    public function withArgv(array $argv): GlobalsContract
-    {
-        $new = clone $this;
-        $new->argv = $argv;
-
-        return $new;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function argv(): array
     {
         return $this->argv;
     }
 
-    public function withServer(array $server): GlobalsContract
-    {
-        $new = clone $this;
-        $new->server = $server;
-
-        return $new;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function server(): array
     {
         return $this->server;
     }
 
-    public function withGet(array $get): GlobalsContract
-    {
-        $new = clone $this;
-        $new->get = $get;
-
-        return $new;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function get(): array
     {
         return $this->get;
     }
 
-    public function withPost(array $post): GlobalsContract
-    {
-        $new = clone $this;
-        $new->post = $post;
-
-        return $new;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function post(): array
     {
         return $this->post;
     }
 
-    public function withFiles(array $files): GlobalsContract
-    {
-        $new = clone $this;
-        $new->files = $files;
-
-        return $new;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function files(): array
     {
         return $this->files;
     }
 
-    public function withCookie(array $cookie): GlobalsContract
-    {
-        $new = clone $this;
-        $new->cookie = $cookie;
-
-        return $new;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function cookie(): array
     {
         return $this->cookie;
     }
 
-    public function withSession(array $session): GlobalsContract
-    {
-        $new = clone $this;
-        $new->session = $session;
-
-        return $new;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function session(): array
     {
         return $this->session;
     }
 
-    public function withRequest(string $request): GlobalsContract
-    {
-        $new = clone $this;
-        $new->request = $request;
-
-        return $new;
-    }
-
-    public function request(): string
-    {
-        return $this->request;
-    }
-
-    public function withEnv(array $env): GlobalsContract
-    {
-        $new = clone $this;
-        $new->env = $env;
-
-        return $new;
-    }
-
-    public function env(): array
-    {
-        return $this->env;
-    }
-
-    public function withGlobals(array $globals): GlobalsContract
-    {
-        $new = clone $this;
-        $new->globals = $globals;
-
-        return $new;
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function globals(): array
     {
+        if (!isset($this->globals)) {
+            foreach (GlobalsContract::KEYS as $pos => $key) {
+                $property = GlobalsContract::PROPERTIES[$pos];
+                $this->globals[$key] = $this->$property;
+            }
+        }
+
         return $this->globals;
-    }
-
-    private function fillMissing(): void
-    {
-        if (!isset($this->globals['_SESSION']) && BootstrapInstance::get()->cli()) {
-            $this->globals['_SESSION'] = [];
-        }
-        if (!isset($this->request)) {
-            $this->globals['_REQUEST'] = '';
-        }
-    }
-
-    private function assertValidKeys(): void
-    {
-        $this->fillMissing();
-        $keys = array_keys($this->globals);
-        $diff = array_diff(static::KEYS, $keys);
-        if (!empty($diff)) {
-            throw new GlobalsKeyException(
-                (new Message('Invalid %globals% array passed, missing (%keysCount%) keys: %keys%'))
-                    ->code('%globals%', '$GLOBALS')
-                    ->code('%keysCount%', count($diff))
-                    ->code('%keys%', implode(', ', $diff))
-                    ->toString()
-            );
-        }
     }
 }

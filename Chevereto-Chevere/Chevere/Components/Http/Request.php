@@ -18,16 +18,14 @@ use GuzzleHttp\Psr7\LazyOpenStream;
 use GuzzleHttp\Psr7\ServerRequest as GuzzleHttpServerRequest;
 use Psr\Http\Message\StreamInterface;
 use Psr\Http\Message\UriInterface;
-
 use Chevere\Components\Globals\Globals;
-use Chevere\Components\Http\Traits\GlobalsTrait;
 use Chevere\Components\Http\Traits\RequestTrait;
+use Chevere\Contracts\Globals\GlobalsContract;
 use Chevere\Contracts\Http\RequestContract;
 
 final class Request extends GuzzleHttpServerRequest implements RequestContract
 {
     use RequestTrait;
-    use GlobalsTrait;
 
     /**
      * @param string                               $method       HTTP method
@@ -46,8 +44,12 @@ final class Request extends GuzzleHttpServerRequest implements RequestContract
         array $serverParams = []
     ) {
         $this->globals = new Globals($GLOBALS);
-
         parent::__construct($method, $uri, $headers, $body, $version, $serverParams ?? $this->globals->server());
+    }
+
+    public function globals(): GlobalsContract
+    {
+        return $this->globals;
     }
 
     /**
