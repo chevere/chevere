@@ -17,7 +17,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouteableException;
 use Chevere\Components\Variable\Exceptions\VariableExportException;
 use Chevere\Components\Variable\VariableExport;
-use Chevere\Contracts\Route\RouteContract;
+use Chevere\Components\Route\Contracts\RouteContract;
 use Chevere\Contracts\Router\RouteableContract;
 
 /**

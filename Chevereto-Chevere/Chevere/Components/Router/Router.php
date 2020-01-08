@@ -17,7 +17,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
 use Chevere\Components\Serialize\Unserialize;
-use Chevere\Contracts\Route\RouteContract;
+use Chevere\Components\Route\Contracts\RouteContract;
 use Chevere\Contracts\Router\RoutedContract;
 use Chevere\Contracts\Router\RouterContract;
 use Chevere\Contracts\Router\RouterPropertiesContract;

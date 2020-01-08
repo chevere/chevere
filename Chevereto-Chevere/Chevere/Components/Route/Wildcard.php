@@ -19,8 +19,8 @@ use Chevere\Components\Regex\RegexMatch;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
 use Chevere\Components\Regex\Contracts\RegexMatchContract;
-use Chevere\Contracts\Route\PathUriContract;
-use Chevere\Contracts\Route\WildcardContract;
+use Chevere\Components\Route\Contracts\PathUriContract;
+use Chevere\Components\Route\Contracts\WildcardContract;
 use function ChevereFn\stringStartsWithNumeric;
 
 final class Wildcard implements WildcardContract

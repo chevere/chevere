@@ -16,7 +16,7 @@ namespace Chevere\Components\Router\Properties;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Properties\Traits\ToArrayTrait;
 use Chevere\Components\Serialize\Unserialize;
-use Chevere\Contracts\Route\RouteContract;
+use Chevere\Components\Route\Contracts\RouteContract;
 use Chevere\Contracts\Router\Properties\RoutesPropertyContract;
 use LogicException;
 

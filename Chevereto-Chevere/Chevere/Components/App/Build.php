@@ -37,7 +37,7 @@ use Chevere\Components\App\Contracts\ParametersContract;
 use Chevere\Components\Dir\Contracts\DirContract;
 use Chevere\Components\File\Contracts\FileContract;
 use Chevere\Components\File\Contracts\FilePhpContract;
-use Chevere\Contracts\Route\RouteContract;
+use Chevere\Components\Route\Contracts\RouteContract;
 use Chevere\Contracts\Router\RouterMakerContract;
 use Chevere\Contracts\Router\RouterContract;
 use LogicException;

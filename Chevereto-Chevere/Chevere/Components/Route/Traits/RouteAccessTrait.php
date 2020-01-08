@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route\Traits;
 
-use Chevere\Contracts\Route\RouteContract;
+use Chevere\Components\Route\Contracts\RouteContract;
 
 trait RouteAccessTrait
 {

@@ -35,7 +35,7 @@ use Chevere\Components\Api\Contracts\ApiMakerContract;
 use Chevere\Components\Cache\Contracts\CacheContract;
 use Chevere\Components\Http\Contracts\MethodContract;
 use Chevere\Components\Path\Contracts\PathContract;
-use Chevere\Contracts\Route\RouteContract;
+use Chevere\Components\Route\Contracts\RouteContract;
 use LogicException;
 use OuterIterator;
 use RecursiveDirectoryIterator;

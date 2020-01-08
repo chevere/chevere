@@ -15,7 +15,7 @@ namespace Chevere\Components\Route;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
-use Chevere\Contracts\Route\RouteNameContract;
+use Chevere\Components\Route\Contracts\RouteNameContract;
 
 final class RouteName implements RouteNameContract
 {
@@ -43,11 +43,11 @@ final class RouteName implements RouteNameContract
     {
         if (!preg_match(RouteNameContract::REGEX, $this->name)) {
             throw new RouteInvalidNameException(
-              (new Message('Expecting at least one alphanumeric, underscore, hypen or dot character, string %string% provided (regex %regex%)'))
+                (new Message('Expecting at least one alphanumeric, underscore, hypen or dot character, string %string% provided (regex %regex%)'))
                 ->code('%string%', $this->name)
                 ->code('%regex%', RouteNameContract::REGEX)
                 ->toString()
-        );
+            );
         }
     }
 }

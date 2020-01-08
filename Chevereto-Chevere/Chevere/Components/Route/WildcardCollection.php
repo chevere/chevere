@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use Chevere\Contracts\Route\WildcardCollectionContract;
-use Chevere\Contracts\Route\WildcardContract;
+use Chevere\Components\Route\Contracts\WildcardCollectionContract;
+use Chevere\Components\Route\Contracts\WildcardContract;
 
 final class WildcardCollection implements WildcardCollectionContract
 {

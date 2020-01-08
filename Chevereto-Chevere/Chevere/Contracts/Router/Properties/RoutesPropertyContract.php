@@ -15,7 +15,7 @@ namespace Chevere\Contracts\Router\Properties;
 
 use Chevere\Contracts\ToArrayContract;
 use Chevere\Components\Router\Exceptions\RouterPropertyException;
-use Chevere\Contracts\Route\RouteContract;
+use Chevere\Components\Route\Contracts\RouteContract;
 
 interface RoutesPropertyContract extends ToArrayContract
 {

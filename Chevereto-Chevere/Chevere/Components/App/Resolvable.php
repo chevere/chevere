@@ -20,7 +20,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\App\Contracts\BuilderContract;
 use Chevere\Components\App\Contracts\ResolvableContract;
 use Chevere\Components\Http\Contracts\RequestContract;
-use Chevere\Contracts\Route\RouteContract;
+use Chevere\Components\Route\Contracts\RouteContract;
 use Chevere\Contracts\Router\RouterContract;
 
 /**

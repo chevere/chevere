@@ -20,7 +20,7 @@ use Chevere\Components\Route\Exceptions\PathUriInvalidCharsException;
 use Chevere\Components\Route\Exceptions\PathUriUnmatchedWildcardsException;
 use Chevere\Components\Route\Exceptions\WildcardRepeatException;
 use Chevere\Components\Route\Exceptions\WildcardReservedException;
-use Chevere\Contracts\Route\PathUriContract;
+use Chevere\Components\Route\Contracts\PathUriContract;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 

@@ -19,7 +19,7 @@ use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Wildcard;
-use Chevere\Contracts\Route\WildcardContract;
+use Chevere\Components\Route\Contracts\WildcardContract;
 use PHPUnit\Framework\TestCase;
 
 final class WildcardTest extends TestCase

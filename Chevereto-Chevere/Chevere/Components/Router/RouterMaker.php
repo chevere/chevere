@@ -19,7 +19,7 @@ use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
 use Chevere\Components\Router\Exceptions\RouteNameConflictException;
 use Chevere\Components\Router\Exceptions\RouterMakerException;
 use Chevere\Components\Variable\VariableExport;
-use Chevere\Contracts\Route\RouteContract;
+use Chevere\Components\Route\Contracts\RouteContract;
 use Chevere\Contracts\Router\Properties\RegexPropertyContract;
 use Chevere\Contracts\Router\RouteableContract;
 use Chevere\Contracts\Router\RouterMakerContract;

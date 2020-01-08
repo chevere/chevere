@@ -20,17 +20,17 @@ use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Http\MethodControllerNameCollection;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\Route\RouteContract;
+use Chevere\Components\Route\Contracts\RouteContract;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
 use Chevere\Components\Controller\Contracts\ControllerNameContract;
 use Chevere\Components\Http\Contracts\MethodContract;
 use Chevere\Components\Middleware\Contracts\MiddlewareNameCollectionContract;
-use Chevere\Contracts\Route\PathUriContract;
-use Chevere\Contracts\Route\WildcardContract;
+use Chevere\Components\Route\Contracts\PathUriContract;
+use Chevere\Components\Route\Contracts\WildcardContract;
 use Chevere\Components\Http\Contracts\MethodControllerNameCollectionContract;
 use Chevere\Components\Middleware\Contracts\MiddlewareNameContract;
-use Chevere\Contracts\Route\RouteNameContract;
-use Chevere\Contracts\Route\WildcardCollectionContract;
+use Chevere\Components\Route\Contracts\RouteNameContract;
+use Chevere\Components\Route\Contracts\WildcardCollectionContract;
 
 final class Route implements RouteContract
 {

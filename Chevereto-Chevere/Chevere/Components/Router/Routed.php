@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Contracts\Route\RouteContract;
+use Chevere\Components\Route\Contracts\RouteContract;
 use Chevere\Contracts\Router\RoutedContract;
 
 /**
