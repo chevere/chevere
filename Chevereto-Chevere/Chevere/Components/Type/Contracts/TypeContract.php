@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Type;
+namespace Chevere\Components\Type\Contracts;
 
 use Chevere\Components\Type\Exceptions\TypeNotFoundException;
 

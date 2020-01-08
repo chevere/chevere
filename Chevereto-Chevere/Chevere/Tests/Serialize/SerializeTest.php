@@ -16,7 +16,7 @@ namespace Chevere\Tests\Serialize;
 use Chevere\Components\Serialize\Serialize;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Variable\VariableExport;
-use Chevere\Contracts\Type\TypeContract;
+use Chevere\Components\Type\Contracts\TypeContract;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

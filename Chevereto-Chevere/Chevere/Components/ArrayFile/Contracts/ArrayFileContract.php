@@ -16,7 +16,7 @@ namespace Chevere\Components\ArrayFile\Contracts;
 use Chevere\Components\File\Contracts\FileContract;
 use Chevere\Components\File\Contracts\FilePhpContract;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
-use Chevere\Contracts\Type\TypeContract;
+use Chevere\Components\Type\Contracts\TypeContract;
 
 interface ArrayFileContract
 {

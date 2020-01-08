@@ -21,7 +21,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\ArrayFile\Contracts\ArrayFileContract;
 use Chevere\Components\File\Contracts\FileContract;
 use Chevere\Components\File\Contracts\FilePhpContract;
-use Chevere\Contracts\Type\TypeContract;
+use Chevere\Components\Type\Contracts\TypeContract;
 
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).

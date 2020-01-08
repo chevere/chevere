@@ -15,7 +15,7 @@ namespace Chevere\Components\Type;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Exceptions\TypeNotFoundException;
-use Chevere\Contracts\Type\TypeContract;
+use Chevere\Components\Type\Contracts\TypeContract;
 
 /**
  * Type provides type validation toolchain. Usefull to set dynamic types as parameters.

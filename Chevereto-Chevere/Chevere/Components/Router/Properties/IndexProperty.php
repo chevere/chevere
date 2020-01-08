@@ -17,7 +17,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Properties\Traits\ToArrayTrait;
 use Chevere\Components\Type\Type;
 use Chevere\Components\Router\Contracts\Properties\IndexPropertyContract;
-use Chevere\Contracts\Type\TypeContract;
+use Chevere\Components\Type\Contracts\TypeContract;
 use Exception;
 use TypeError;
 

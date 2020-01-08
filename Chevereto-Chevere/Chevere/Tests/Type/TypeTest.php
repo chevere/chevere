@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Type;
 
 use Chevere\Components\Type\Type;
-use Chevere\Contracts\Type\TypeContract;
+use Chevere\Components\Type\Contracts\TypeContract;
 use PHPUnit\Framework\TestCase;
 
 final class TypeTest extends TestCase
