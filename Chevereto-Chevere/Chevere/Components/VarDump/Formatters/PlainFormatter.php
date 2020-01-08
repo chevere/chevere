@@ -16,7 +16,7 @@ namespace Chevere\Components\VarDump\Formatters;
 use Chevere\Components\VarDump\Formatters\Traits\GetEmphasisTrait;
 use Chevere\Components\VarDump\Formatters\Traits\GetEncodedCharsTrait;
 use Chevere\Components\VarDump\Formatters\Traits\GetIndentTrait;
-use Chevere\Contracts\VarDump\FormatterContract;
+use Chevere\Components\VarDump\Contracts\FormatterContract;
 
 /**
  * Provide plain text VarDump representation.

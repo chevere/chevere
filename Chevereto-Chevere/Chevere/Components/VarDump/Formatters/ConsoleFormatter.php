@@ -16,7 +16,7 @@ namespace Chevere\Components\VarDump\Formatters;
 use Chevere\Components\VarDump\Formatters\Traits\GetEncodedCharsTrait;
 use Chevere\Components\VarDump\Formatters\Traits\GetIndentTrait;
 use Chevere\Components\VarDump\src\Wrapper;
-use Chevere\Contracts\VarDump\FormatterContract;
+use Chevere\Components\VarDump\Contracts\FormatterContract;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 /**

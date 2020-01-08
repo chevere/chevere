@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\VarDump;
+namespace Chevere\Components\VarDump\Contracts;
 
 interface FormatterContract
 {

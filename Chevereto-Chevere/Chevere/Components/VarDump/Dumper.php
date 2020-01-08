@@ -18,10 +18,8 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
-
 use Chevere\Components\VarDump\Formatters\DumperFormatter;
-use Chevere\Contracts\VarDump\FormatterContract;
-
+use Chevere\Components\VarDump\Contracts\FormatterContract;
 use function ChevereFn\stringEndsWith;
 use function ChevereFn\stringStartsWith;
 
@@ -203,6 +201,7 @@ class Dumper
     {
         if (isset($this->consoleOutput)) {
             $this->processConsoleOutput();
+
             return;
         }
         $this->processPrintOutput();

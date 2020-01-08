@@ -15,7 +15,7 @@ namespace Chevere\Components\VarDump\Formatters;
 
 use Chevere\Components\VarDump\src\Template;
 use Chevere\Components\VarDump\src\Wrapper;
-use Chevere\Contracts\VarDump\FormatterContract;
+use Chevere\Components\VarDump\Contracts\FormatterContract;
 
 /**
  * Provide HTML VarDump representation.

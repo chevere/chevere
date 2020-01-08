@@ -19,7 +19,7 @@ use Throwable;
 
 use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 use Chevere\Components\VarDump\VarDump;
-use Chevere\Contracts\VarDump\ProcessorContract;
+use Chevere\Components\VarDump\Contracts\ProcessorContract;
 
 use function ChevereFn\stringStartsWith;
 

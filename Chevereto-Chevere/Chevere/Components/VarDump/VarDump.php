@@ -18,7 +18,7 @@ use Chevere\Components\VarDump\Processors\ArrayProcessor;
 use Chevere\Components\VarDump\Processors\BooleanProcessor;
 use Chevere\Components\VarDump\Processors\ObjectProcessor;
 use Chevere\Components\VarDump\Processors\ScalarProcessor;
-use Chevere\Contracts\VarDump\FormatterContract;
+use Chevere\Components\VarDump\Contracts\FormatterContract;
 use function ChevereFn\varType;
 
 /**

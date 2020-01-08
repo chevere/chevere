@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Processors;
 
 use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
-use Chevere\Contracts\VarDump\ProcessorContract;
+use Chevere\Components\VarDump\Contracts\ProcessorContract;
 
 final class BooleanProcessor implements ProcessorContract
 {

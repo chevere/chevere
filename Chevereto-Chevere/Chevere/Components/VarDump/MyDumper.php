@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump;
 
 use Chevere\Components\VarDump\Formatters\HtmlFormatter as DumperFormatter;
-use Chevere\Contracts\VarDump\FormatterContract;
+use Chevere\Components\VarDump\Contracts\FormatterContract;
 
 /**
  * A simple example in how you can extend Dumper and use your own FormatterContracr

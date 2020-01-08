@@ -15,7 +15,7 @@ namespace Chevere\Components\VarDump\Processors;
 
 use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 use Chevere\Components\VarDump\VarDump;
-use Chevere\Contracts\VarDump\ProcessorContract;
+use Chevere\Components\VarDump\Contracts\ProcessorContract;
 
 /**
  * Handles integer, float (double), string
