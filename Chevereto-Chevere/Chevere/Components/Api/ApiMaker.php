@@ -34,7 +34,7 @@ use Chevere\Components\Variable\VariableExport;
 use Chevere\Components\Api\Contracts\ApiMakerContract;
 use Chevere\Components\Cache\Contracts\CacheContract;
 use Chevere\Components\Http\Contracts\MethodContract;
-use Chevere\Contracts\Path\PathContract;
+use Chevere\Components\Path\Contracts\PathContract;
 use Chevere\Contracts\Route\RouteContract;
 use LogicException;
 use OuterIterator;

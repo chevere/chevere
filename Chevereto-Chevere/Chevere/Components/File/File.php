@@ -24,7 +24,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathIsDirException;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\File\Contracts\FileContract;
-use Chevere\Contracts\Path\PathContract;
+use Chevere\Components\Path\Contracts\PathContract;
 use function ChevereFn\stringEndsWith;
 
 /**

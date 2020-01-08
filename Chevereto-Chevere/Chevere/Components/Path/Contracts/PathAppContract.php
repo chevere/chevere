@@ -11,19 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Path;
+namespace Chevere\Components\Path\Contracts;
 
-use Chevere\Components\Path\Exceptions\PathInvalidException;
-
-interface CheckFormatContract
+interface PathAppContract extends RelativePathContract
 {
     /**
-     * @throws PathInvalidException if the $path format is invalid
+     * Construct a new instance.
      */
     public function __construct(string $path);
-
-    /**
-     * @throws PathInvalidException if the $path is relative
-     */
-    public function assertNotRelativePath(): void;
 }

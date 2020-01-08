@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\App\Contracts;
 
 use Chevere\Components\ArrayFile\Contracts\ArrayFileContract;
-use Chevere\Contracts\Path\PathContract;
+use Chevere\Components\Path\Contracts\PathContract;
 
 interface ParametersContract
 {

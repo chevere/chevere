@@ -22,7 +22,7 @@ use Chevere\Components\Cache\Contracts\CacheContract;
 use Chevere\Components\Cache\Contracts\CacheItemContract;
 use Chevere\Components\Cache\Contracts\CacheKeyContract;
 use Chevere\Components\Dir\Contracts\DirContract;
-use Chevere\Contracts\Path\PathContract;
+use Chevere\Components\Path\Contracts\PathContract;
 use Chevere\Contracts\Variable\VariableExportContract;
 
 /**

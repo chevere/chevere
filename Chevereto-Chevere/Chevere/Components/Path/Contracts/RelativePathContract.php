@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Path;
+namespace Chevere\Components\Path\Contracts;
 
-interface PathAppContract extends RelativePathContract
+interface RelativePathContract
 {
     /**
-     * Construct a new instance.
+     * Return relative path
      */
-    public function __construct(string $path);
+    public function relative(): string;
 }

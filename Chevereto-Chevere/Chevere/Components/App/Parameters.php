@@ -20,7 +20,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\App\Contracts\ParametersContract;
 use Chevere\Components\ArrayFile\Contracts\ArrayFileContract;
-use Chevere\Contracts\Path\PathContract;
+use Chevere\Components\Path\Contracts\PathContract;
 
 /**
  * Application parameters container.

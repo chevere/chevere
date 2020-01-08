@@ -17,7 +17,7 @@ use Chevere\Components\File\Exceptions\FileExistsException;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\File\Exceptions\FileUnableToCreateException;
 use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
-use Chevere\Contracts\Path\PathContract;
+use Chevere\Components\Path\Contracts\PathContract;
 use Chevere\Components\File\Exceptions\FileUnableToPutException;
 use Chevere\Components\File\Exceptions\FileUnableToGetException;
 use Chevere\Components\Path\Exceptions\PathIsDirException;

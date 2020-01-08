@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Path;
+namespace Chevere\Components\Path\Contracts;
 
 interface PathContract
 {

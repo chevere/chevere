@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Dir\Contracts;
 
-use Chevere\Contracts\Path\PathContract;
+use Chevere\Components\Path\Contracts\PathContract;
 use Chevere\Components\Dir\Exceptions\DirUnableToRemoveException;
 use Chevere\Components\Dir\Exceptions\DirUnableToCreateException;
 use Chevere\Components\File\Exceptions\FileUnableToRemoveException;

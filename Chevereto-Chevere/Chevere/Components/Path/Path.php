@@ -15,7 +15,7 @@ namespace Chevere\Components\Path;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathInvalidException;
-use Chevere\Contracts\Path\PathContract;
+use Chevere\Components\Path\Contracts\PathContract;
 use function ChevereFn\stringStartsWith;
 
 /**

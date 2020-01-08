@@ -16,7 +16,7 @@ namespace Chevere\Tests\Path;
 use RuntimeException;
 use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Path\Path;
-use Chevere\Contracts\Path\PathContract;
+use Chevere\Components\Path\Contracts\PathContract;
 use PHPUnit\Framework\TestCase;
 
 final class PathTest extends TestCase

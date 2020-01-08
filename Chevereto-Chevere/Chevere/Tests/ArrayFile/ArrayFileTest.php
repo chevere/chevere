@@ -23,7 +23,7 @@ use Chevere\Components\File\FilePhp;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\Type\Type;
 use Chevere\Components\File\Contracts\FileContract;
-use Chevere\Contracts\Path\PathContract;
+use Chevere\Components\Path\Contracts\PathContract;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 

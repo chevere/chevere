@@ -23,7 +23,7 @@ use Chevere\Components\File\FilePhp;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\App\Contracts\ParametersContract;
 use Chevere\Components\ArrayFile\Contracts\ArrayFileContract;
-use Chevere\Contracts\Path\PathContract;
+use Chevere\Components\Path\Contracts\PathContract;
 use PHPUnit\Framework\TestCase;
 
 final class ParametersTest extends TestCase

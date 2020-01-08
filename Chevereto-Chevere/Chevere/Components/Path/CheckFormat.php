@@ -16,9 +16,8 @@ namespace Chevere\Components\Path;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathDoubleDotsException;
 use Chevere\Components\Path\Exceptions\PathExtraSlashesException;
-use Chevere\Components\Path\Exceptions\PathInvalidException;
 use Chevere\Components\Path\Exceptions\PathOmitRelativeException;
-use Chevere\Contracts\Path\CheckFormatContract;
+use Chevere\Components\Path\Contracts\CheckFormatContract;
 use function ChevereFn\stringStartsWith;
 
 final class CheckFormat implements CheckFormatContract

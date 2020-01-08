@@ -21,7 +21,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathIsFileException;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Dir\Contracts\DirContract;
-use Chevere\Contracts\Path\PathContract;
+use Chevere\Components\Path\Contracts\PathContract;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 

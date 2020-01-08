@@ -15,7 +15,7 @@ namespace Chevere\Components\Api\Contracts;
 
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Cache\Contracts\CacheContract;
-use Chevere\Contracts\Path\PathContract;
+use Chevere\Components\Path\Contracts\PathContract;
 
 interface ApiMakerContract
 {
