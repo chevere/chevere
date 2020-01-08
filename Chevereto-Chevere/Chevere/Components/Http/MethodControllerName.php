@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Http;
 
-use Chevere\Contracts\Controller\ControllerNameContract;
+use Chevere\Components\Controller\Contracts\ControllerNameContract;
 use Chevere\Components\Http\Contracts\MethodContract;
 use Chevere\Components\Http\Contracts\MethodControllerNameContract;
 

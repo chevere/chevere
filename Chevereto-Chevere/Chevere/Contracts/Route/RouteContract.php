@@ -16,7 +16,7 @@ namespace Chevere\Contracts\Route;
 use Chevere\Contracts\Middleware\MiddlewareNameCollectionContract;
 use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
-use Chevere\Contracts\Controller\ControllerNameContract;
+use Chevere\Components\Controller\Contracts\ControllerNameContract;
 use Chevere\Components\Http\Contracts\MethodContract;
 use Chevere\Components\Http\Contracts\MethodControllerNameCollectionContract;
 use Chevere\Contracts\Middleware\MiddlewareNameContract;

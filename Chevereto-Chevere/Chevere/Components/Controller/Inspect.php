@@ -15,11 +15,9 @@ namespace Chevere\Components\Controller;
 
 use LogicException;
 use ReflectionClass;
-
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\Controller\ControllerContract;
-use Chevere\Contracts\Controller\InspectContract;
-
+use Chevere\Components\Controller\Contracts\ControllerContract;
+use Chevere\Components\Controller\Contracts\InspectContract;
 use function ChevereFn\stringForwardSlashes;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringReplaceLast;

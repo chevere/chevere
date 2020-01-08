@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Controller;
 
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\Controller\ControllerContract;
-use Chevere\Contracts\Controller\ControllerNameContract;
+use Chevere\Components\Controller\Contracts\ControllerContract;
+use Chevere\Components\Controller\Contracts\ControllerNameContract;
 use InvalidArgumentException;
 
 final class ControllerName implements ControllerNameContract

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Controller;
+namespace Chevere\Components\Controller\Contracts;
 
 interface ArgumentsWrapContract
 {

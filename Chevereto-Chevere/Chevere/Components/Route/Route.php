@@ -22,7 +22,7 @@ use Chevere\Components\Http\MethodControllerNameCollection;
 use Chevere\Components\Message\Message;
 use Chevere\Contracts\Route\RouteContract;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
-use Chevere\Contracts\Controller\ControllerNameContract;
+use Chevere\Components\Controller\Contracts\ControllerNameContract;
 use Chevere\Components\Http\Contracts\MethodContract;
 use Chevere\Contracts\Middleware\MiddlewareNameCollectionContract;
 use Chevere\Contracts\Route\PathUriContract;

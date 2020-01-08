@@ -11,14 +11,17 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Controller;
+namespace Chevere\Components\Controller\Contracts;
 
-use Chevere\Contracts\ToArrayContract;
-
-interface InspectContract extends ToArrayContract
+interface ControllerNameContract
 {
     /**
-     * @param string $className A class name implementing the ControllerContract
+     * Creates a new instance.
      */
-    public function __construct(string $className);
+    public function __construct(string $name);
+
+    /**
+     * Returns the controller name as string.
+     */
+    public function toString(): string;
 }

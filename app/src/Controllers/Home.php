@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use Chevere\Components\App\Instances\BootstrapInstance;
-use Chevere\Contracts\Controller\StringContract;
+use Chevere\Components\Controller\Contracts\StringContract;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\Traits\ResponseStringTrait;
 

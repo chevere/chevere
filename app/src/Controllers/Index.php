@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace App\Controllers;
 
 use Chevere\Components\App\Instances\BootstrapInstance;
-use Chevere\Contracts\Controller\JsonApiContract;
+use Chevere\Components\Controller\Contracts\JsonApiContract;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\Traits\JsonApiTrait;
 use Chevere\Components\JsonApi\EncodedDocument;

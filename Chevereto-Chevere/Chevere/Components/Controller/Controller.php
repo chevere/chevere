@@ -15,7 +15,7 @@ namespace Chevere\Components\Controller;
 
 use Chevere\Components\Hooks\Traits\HookTrait;
 use Chevere\Components\App\Contracts\AppContract;
-use Chevere\Contracts\Controller\ControllerContract;
+use Chevere\Components\Controller\Contracts\ControllerContract;
 use Chevere\Contracts\Hooks\HookableContract;
 
 // Define a hookable code entry:

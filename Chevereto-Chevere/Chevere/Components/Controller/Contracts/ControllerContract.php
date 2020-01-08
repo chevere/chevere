@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Controller;
+namespace Chevere\Components\Controller\Contracts;
 
 use Chevere\Components\App\Contracts\AppContract;
 

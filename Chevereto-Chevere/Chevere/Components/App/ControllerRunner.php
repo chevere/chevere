@@ -20,7 +20,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\App\Contracts\AppContract;
 use Chevere\Components\App\Contracts\ControllerRunnerContract;
 use Chevere\Components\App\Contracts\MiddlewareRunnerContract;
-use Chevere\Contracts\Controller\ControllerContract;
+use Chevere\Components\Controller\Contracts\ControllerContract;
 
 /**
  * Application container ControllerContract runner.

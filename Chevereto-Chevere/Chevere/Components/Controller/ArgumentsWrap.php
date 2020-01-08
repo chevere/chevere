@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of Chevereto\Core.
+ * This file is part of Chevere.
  *
  * (c) Rodolfo Berrios <rodolfo@chevereto.com>
  *
@@ -17,9 +17,8 @@ use InvalidArgumentException;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
-
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\Controller\ControllerContract;
+use Chevere\Components\Controller\Contracts\ControllerContract;
 
 /**
  * ArgumentsWrap provides a object oriented way to retrieve typehinted arguments for the controller.
@@ -86,6 +85,7 @@ final class ArgumentsWrap
             $this->typedArguments[] = $value ?? ($parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null);
         } elseif (null === $value && $parameter->allowsNull()) {
             $this->typedArguments[] = null;
+
             return;
         }
         $this->typedArguments[] = new $type($value);
