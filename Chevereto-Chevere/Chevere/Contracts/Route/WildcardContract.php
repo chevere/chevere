@@ -17,7 +17,7 @@ use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
 use Chevere\Components\Route\Exceptions\WildcardInvalidCharsException;
 use Chevere\Components\Route\Exceptions\WildcardInvalidRegexException;
-use Chevere\Contracts\Regex\RegexMatchContract;
+use Chevere\Components\Regex\Contracts\RegexMatchContract;
 
 interface WildcardContract
 {

@@ -11,21 +11,21 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Regex;
+namespace Chevere\Components\Regex\Contracts;
 
 use Chevere\Components\Regex\Exceptions\RegexException;
 
-interface RegexMatchContract
+interface RegexContract
 {
     /**
      * Creates a new instance.
      *
-     * @throws RegexException if $match is an invalid regex matcher
+     * @throws RegexException if $regex is not a valid regular expresion
      */
-    public function __construct(string $match);
+    public function __construct(string $regex);
 
     /**
-     * Provides access to the match string.
+     * Provides access to the regex string.
      */
     public function toString(): string;
 }

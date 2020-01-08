@@ -16,7 +16,7 @@ namespace Chevere\Components\Regex;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Exceptions\RegexException;
 use Chevere\Components\Regex\Exceptions\RegexMatchException;
-use Chevere\Contracts\Regex\RegexMatchContract;
+use Chevere\Components\Regex\Contracts\RegexMatchContract;
 
 final class RegexMatch implements RegexMatchContract
 {

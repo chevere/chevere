@@ -18,7 +18,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\RegexMatch;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
-use Chevere\Contracts\Regex\RegexMatchContract;
+use Chevere\Components\Regex\Contracts\RegexMatchContract;
 use Chevere\Contracts\Route\PathUriContract;
 use Chevere\Contracts\Route\WildcardContract;
 use function ChevereFn\stringStartsWithNumeric;
