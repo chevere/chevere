@@ -19,7 +19,7 @@ use Throwable;
 use Chevere\Components\Data\Data;
 use Chevere\Components\Data\Traits\DataMethodTrait;
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
-use Chevere\Contracts\Data\DataContract;
+use Chevere\Components\Data\Contracts\DataContract;
 
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;

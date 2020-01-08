@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Data;
 
-use Chevere\Contracts\Data\DataContract;
+use Chevere\Components\Data\Contracts\DataContract;
 
 /**
  * Data wrapper.
