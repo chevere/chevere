@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\Set;
-use Chevere\Contracts\Runtime\SetContract;
+use Chevere\Components\Router\Contracts\SetContract;
 
 class SetTimeZone implements SetContract
 {

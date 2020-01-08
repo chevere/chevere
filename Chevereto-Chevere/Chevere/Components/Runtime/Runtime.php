@@ -15,7 +15,7 @@ namespace Chevere\Components\Runtime;
 
 use Chevere\Components\Data\Data;
 use Chevere\Components\Data\Traits\DataMethodTrait;
-use Chevere\Contracts\Runtime\SetContract;
+use Chevere\Components\Router\Contracts\SetContract;
 
 /**
  * Runtime applies runtime config and provide data about the App Runtime.

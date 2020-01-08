@@ -17,7 +17,7 @@ use InvalidArgumentException;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\Set;
-use Chevere\Contracts\Runtime\SetContract;
+use Chevere\Components\Router\Contracts\SetContract;
 
 class SetErrorHandler implements SetContract
 {
@@ -42,7 +42,8 @@ class SetErrorHandler implements SetContract
     private function restoreErrorHandler(): void
     {
         restore_error_handler();
-        $this->value = (string) set_error_handler(function () { });
+        $this->value = (string) set_error_handler(function () {
+        });
         restore_error_handler();
     }
 }

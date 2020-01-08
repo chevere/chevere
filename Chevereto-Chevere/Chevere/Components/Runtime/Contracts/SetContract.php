@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Runtime;
+namespace Chevere\Components\Runtime\Contracts;
 
 interface SetContract
 {
