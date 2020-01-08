@@ -31,8 +31,7 @@
             "resources/functions/ChevereFn/var.php"
         ],
         "psr-4": {
-            "Chevere\\Components\\": "Chevere/Components/",
-            "Chevere\\Contracts\\": "Chevere/Contracts/"
+            "Chevere\\Components\\": "Chevere/Components/"
         }
     },
     "autoload-dev": {

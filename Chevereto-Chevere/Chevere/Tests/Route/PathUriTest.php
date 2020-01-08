@@ -64,7 +64,7 @@ final class PathUriTest extends TestCase
     {
         $path = '/test';
         $pathUri = new PathUri($path);
-        $this->assertSame($path, $pathUri->path());
+        $this->assertSame($path, $pathUri->toString());
         $this->assertSame($path, $pathUri->key());
         $this->assertFalse($pathUri->hasWildcards());
     }
@@ -74,7 +74,7 @@ final class PathUriTest extends TestCase
         $path = '/test/{wildcard}/test';
         $key = '/test/{0}/test';
         $pathUri = new PathUri($path);
-        $this->assertSame($path, $pathUri->path());
+        $this->assertSame($path, $pathUri->toString());
         $this->assertSame($key, $pathUri->key());
         $this->assertTrue($pathUri->hasWildcards());
         $this->assertSame(['wildcard'], $pathUri->wildcards());
@@ -85,7 +85,7 @@ final class PathUriTest extends TestCase
         $path = '/test/{wildcard1}/test/{wildcard2}';
         $key = '/test/{0}/test/{1}';
         $pathUri = new PathUri($path);
-        $this->assertSame($path, $pathUri->path());
+        $this->assertSame($path, $pathUri->toString());
         $this->assertSame($key, $pathUri->key());
         $this->assertTrue($pathUri->hasWildcards());
         $this->assertSame(['wildcard1', 'wildcard2'], $pathUri->wildcards());

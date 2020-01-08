@@ -18,15 +18,27 @@ use Chevere\Components\App\Exceptions\AppWithoutRequestException;
 use Chevere\Components\Middleware\Exceptions\MiddlewareNamesEmptyException;
 use Chevere\Components\App\MiddlewareRunner;
 use Chevere\Components\App\Services;
+use Chevere\Components\Http\Contracts\RequestContract;
+use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Middleware\MiddlewareName;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
+use Chevere\Components\Route\PathUri;
 use Chevere\TestApp\App\Middlewares\TestMiddlewareVoid;
 use PHPUnit\Framework\TestCase;
 
 final class MiddlewareRunnerTest extends TestCase
 {
+    private function getRequest(): RequestContract
+    {
+        return
+            new Request(
+                new Method('GET'),
+                new PathUri('/')
+            );
+    }
+
     public function testConstructorAppWithoutRequest(): void
     {
         $app = new App(new Services(), new Response());
@@ -37,7 +49,9 @@ final class MiddlewareRunnerTest extends TestCase
     public function testConstructorMiddlewareNamesEmpty(): void
     {
         $app = (new App(new Services(), new Response()))
-            ->withRequest(new Request('GET', '/'));
+            ->withRequest(
+                $this->getRequest()
+            );
         $this->expectException(MiddlewareNamesEmptyException::class);
         new MiddlewareRunner(new MiddlewareNameCollection(), $app);
     }
@@ -46,7 +60,9 @@ final class MiddlewareRunnerTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
         $app = (new App(new Services(), new Response()))
-            ->withRequest(new Request('GET', '/'));
+            ->withRequest(
+                $this->getRequest()
+            );
         $middlewareNameCollection = (new MiddlewareNameCollection())
             ->withAddedMiddlewareName(
                 new MiddlewareName(TestMiddlewareVoid::class)
@@ -57,7 +73,9 @@ final class MiddlewareRunnerTest extends TestCase
     public function testWithRun(): void
     {
         $app = (new App(new Services(), new Response()))
-            ->withRequest(new Request('GET', '/'));
+            ->withRequest(
+                $this->getRequest()
+            );
         $middlewareNameCollection = new MiddlewareNameCollection(
             new MiddlewareName(TestMiddlewareVoid::class)
         );

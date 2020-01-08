@@ -60,7 +60,7 @@ final class PathUri implements PathUriContract
     /**
      * {@inheritdoc}
      */
-    public function path(): string
+    public function toString(): string
     {
         return $this->path;
     }

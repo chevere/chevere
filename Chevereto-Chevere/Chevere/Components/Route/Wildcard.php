@@ -84,12 +84,12 @@ final class Wildcard implements WildcardContract
      */
     public function assertPathUri(PathUriContract $pathUri): void
     {
-        $noWildcard = false === strpos($pathUri->path(), $this->wildcard);
+        $noWildcard = false === strpos($pathUri->toString(), $this->wildcard);
         if ($noWildcard) {
             throw new WildcardNotFoundException(
-                (new Message("Wildcard %wildcard% doesn't exists in route %path%"))
+                (new Message("Wildcard %wildcard% doesn't exists in route %toString%"))
                     ->code('%wildcard%', $this->wildcard)
-                    ->code('%path%', $pathUri->path())
+                    ->code('%path%', $pathUri->toString())
                     ->toString()
             );
         }

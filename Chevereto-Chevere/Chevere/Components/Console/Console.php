@@ -29,8 +29,8 @@ use Chevere\Components\Console\Commands\RequestCommand;
 use Chevere\Components\Console\Commands\RunCommand;
 use Chevere\Components\Message\Message;
 use Chevere\Components\App\Contracts\BuilderContract;
-use Chevere\Component\Console\Contracts\CommandContract;
-use Chevere\Component\Console\Contracts\ConsoleContract;
+use Chevere\Components\Console\Contracts\CommandContract;
+use Chevere\Components\Console\Contracts\ConsoleContract;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
 /**

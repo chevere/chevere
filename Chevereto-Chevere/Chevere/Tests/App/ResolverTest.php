@@ -68,7 +68,10 @@ final class ResolverTest extends TestCase
     public function testRouteNotFound(): void
     {
         $resolvable = $this->getResolvable(
-            new Request('GET', '/not-found')
+            new Request(
+                new Method('GET'),
+                new PathUri('/not-found')
+            )
         );
         $this->expectExceptionCode(404);
         $this->expectException(ResolverException::class);
@@ -78,7 +81,10 @@ final class ResolverTest extends TestCase
     public function testMethodNotFound(): void
     {
         $resolvable = $this->getResolvable(
-            new Request('POST', '/resolver')
+            new Request(
+                new Method('POST'),
+                new PathUri('/resolver')
+            )
         );
         $this->expectExceptionCode(405);
         $this->expectException(ResolverException::class);

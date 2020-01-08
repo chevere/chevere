@@ -22,6 +22,8 @@ use Chevere\Components\Globals\Globals;
 use Chevere\Components\Http\Traits\RequestTrait;
 use Chevere\Components\Http\Contracts\RequestContract;
 use Chevere\Components\Globals\Contracts\GlobalsContract;
+use Chevere\Components\Http\Contracts\MethodContract;
+use Chevere\Components\Route\PathUri;
 
 final class Request extends GuzzleHttpServerRequest implements RequestContract
 {
@@ -36,17 +38,38 @@ final class Request extends GuzzleHttpServerRequest implements RequestContract
      * @param array                                $serverParams Typically the $_SERVER superglobal
      */
     public function __construct(
-        $method,
-        $uri,
+        MethodContract $method,
+        PathUri $uri,
         array $headers = [],
         $body = null,
         $version = '1.1',
         array $serverParams = []
     ) {
-        $this->globals = new Globals($GLOBALS);
-        parent::__construct($method, $uri, $headers, $body, $version, $serverParams ?? $this->globals->server());
+        parent::__construct(
+            $method->toString(),
+            $uri->toString(),
+            $headers,
+            $body,
+            $version,
+            $serverParams
+        );
+        $globals =
+            [
+                'server' => $this->serverParams ?? [],
+                'get' => $this->queryParams ?? [],
+                'post' => $this->parsedBody ?? [], // null,array,object
+                'files' => $this->uploadedFiles ?? [],
+                'cookie' => $this->cookieParams ?? [],
+                'session' => $_SESSION ?? [],
+            ];
+        $globals['argc'] = $globals['server']['argc'] ?? 0;
+        $globals['argv'] = $globals['server']['argv'] ?? [];
+        $this->globals = new Globals($globals);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function globals(): GlobalsContract
     {
         return $this->globals;
@@ -54,8 +77,6 @@ final class Request extends GuzzleHttpServerRequest implements RequestContract
 
     /**
      * Return a ServerRequest populated with superglobals.
-     *
-     * @return RequestContract
      */
     public static function fromGlobals(): RequestContract
     {
@@ -63,15 +84,20 @@ final class Request extends GuzzleHttpServerRequest implements RequestContract
         $method = isset($globals->server()['REQUEST_METHOD'])
             ? $globals->server()['REQUEST_METHOD']
             : 'GET';
-        $headers = getallheaders() ?: [];
         $uri = static::getUriFromGlobals();
+        $path = '/' . ltrim($uri->getPath(), '/');
         $body = new CachingStream(new LazyOpenStream('php://input', 'r+'));
         $protocol = isset($globals->server()['SERVER_PROTOCOL'])
             ? str_replace('HTTP/', '', $globals->server()['SERVER_PROTOCOL'])
             : '1.1';
-
-        $serverRequest = new static($method, $uri, $headers, $body, $protocol, $globals->server());
-        $serverRequest->globals = $globals;
+        $serverRequest = new self(
+            new Method($method),
+            new PathUri($path),
+            getallheaders() ?: [],
+            $body,
+            $protocol,
+            $globals->server()
+        );
 
         return $serverRequest
             ->withCookieParams($globals->cookie())

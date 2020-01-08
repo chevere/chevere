@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route\Contracts;
 
+use Chevere\Components\Common\Contracts\ToStringContract;
 use Chevere\Components\Route\Exceptions\PathUriForwardSlashException;
 use Chevere\Components\Route\Exceptions\PathUriInvalidCharsException;
 use Chevere\Components\Route\Exceptions\PathUriUnmatchedBracesException;
@@ -20,7 +21,7 @@ use Chevere\Components\Route\Exceptions\PathUriUnmatchedWildcardsException;
 use Chevere\Components\Route\Exceptions\WildcardReservedException;
 use Chevere\Components\Route\Exceptions\WildcardRepeatException;
 
-interface PathUriContract
+interface PathUriContract extends ToStringContract
 {
     /** string Regex pattern used to catch {wildcard} */
     const REGEX_WILDCARD_SEARCH = '/{' . WildcardContract::ACCEPT_CHARS . '}/i';
@@ -40,9 +41,9 @@ interface PathUriContract
     public function __construct(string $path);
 
     /**
-     * Provides access to the path.
+     * @return string Uri path.
      */
-    public function path(): string;
+    public function toString(): string;
 
     /**
      * Provides access to the key string.

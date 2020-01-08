@@ -13,6 +13,24 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Http\Contracts;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
+
 interface GuzzleResponseContract
 {
+    /**
+     * Return an instance with the specified StreamInterface.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified StreamInterface.
+     */
+    public function withJsonApi(StreamInterface $jsonApi): ResponseInterface;
+
+    /**
+     * Return an instance with Json Api headers.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains Json Api headers.
+     */
+    public function withJsonApiHeaders(): ResponseInterface;
 }

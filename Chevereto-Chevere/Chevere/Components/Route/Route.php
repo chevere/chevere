@@ -58,7 +58,7 @@ final class Route implements RouteContract
     public function __construct(PathUriContract $pathUri)
     {
         $this->pathUri = $pathUri;
-        $this->key = $this->pathUri->path();
+        $this->key = $this->pathUri->toString();
         $this->setMaker();
         if ($this->pathUri->hasWildcards()) {
             $this->handleSetWildcardCollection();

@@ -26,6 +26,8 @@ use Chevere\Components\Http\Response;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterProperties;
 use Chevere\Components\App\Contracts\AppContract;
+use Chevere\Components\Http\Method;
+use Chevere\Components\Route\PathUri;
 use PHPUnit\Framework\TestCase;
 
 final class ResolvableTest extends TestCase
@@ -44,7 +46,10 @@ final class ResolvableTest extends TestCase
         return
             $this->getApp()
                 ->withRequest(
-                    new Request('GET', '/resolvable')
+                    new Request(
+                        new Method('GET'),
+                        new PathUri('/resolvable')
+                    )
                 );
     }
 

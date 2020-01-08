@@ -30,6 +30,8 @@ use Chevere\Components\Path\PathApp;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Router\Router;
 use Chevere\Components\App\Contracts\BuildContract;
+use Chevere\Components\Http\Method;
+use Chevere\Components\Route\PathUri;
 use PHPUnit\Framework\TestCase;
 
 final class RunnerTest extends TestCase
@@ -106,7 +108,12 @@ final class RunnerTest extends TestCase
         $build = $this->getTestBuild();
         $builder = new Builder($build->make());
         $app = $builder->build()->app()
-            ->withRequest(new Request('GET', '/404'));
+            ->withRequest(
+                new Request(
+                    new Method('GET'),
+                    new PathUri('/404')
+                )
+            );
         $builder = $builder
             ->withBuild(
                 $builder->build()->withApp($app)
@@ -122,7 +129,12 @@ final class RunnerTest extends TestCase
         $build = $this->getTestBuild();
         $builder = new Builder($build->make());
         $app = $builder->build()->app()
-            ->withRequest(new Request('POST', '/test'));
+            ->withRequest(
+                new Request(
+                    new Method('POST'),
+                    new PathUri('/test')
+                )
+            );
         $builder = $builder
             ->withBuild(
                 $builder->build()->withApp($app)
@@ -138,7 +150,12 @@ final class RunnerTest extends TestCase
         $build = $this->getTestBuild();
         $builder = new Builder($build->make());
         $app = $builder->build()->app()
-            ->withRequest(new Request('GET', '/test'));
+            ->withRequest(
+                new Request(
+                    new Method('GET'),
+                    new PathUri('/test')
+                )
+            );
         $builder = $builder
             ->withBuild(
                 $builder->build()->withApp($app)
