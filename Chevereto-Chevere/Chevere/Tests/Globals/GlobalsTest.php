@@ -16,7 +16,7 @@ namespace Chevere\Tests\Globals;
 use Chevere\Components\Globals\Exceptions\GlobalsKeyException;
 use Chevere\Components\Globals\Exceptions\GlobalsTypeException;
 use Chevere\Components\Globals\Globals;
-use Chevere\Contracts\Globals\GlobalsContract;
+use Chevere\Components\Globals\Contracts\GlobalsContract;
 use PHPUnit\Framework\TestCase;
 
 final class GlobalsTest extends TestCase

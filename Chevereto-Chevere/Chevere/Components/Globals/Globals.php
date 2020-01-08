@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Globals;
 
-use Chevere\Components\Globals\Exceptions\GlobalsKeyException;
+use TypeError;
 use Chevere\Components\Globals\Exceptions\GlobalsTypeException;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\Globals\GlobalsContract;
-use TypeError;
+use Chevere\Components\Globals\Contracts\GlobalsContract;
 
 /**
  * Provides read-only access for superglobals.

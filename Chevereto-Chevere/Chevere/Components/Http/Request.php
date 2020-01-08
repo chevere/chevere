@@ -21,7 +21,7 @@ use Psr\Http\Message\UriInterface;
 use Chevere\Components\Globals\Globals;
 use Chevere\Components\Http\Traits\RequestTrait;
 use Chevere\Components\Http\Contracts\RequestContract;
-use Chevere\Contracts\Globals\GlobalsContract;
+use Chevere\Components\Globals\Contracts\GlobalsContract;
 
 final class Request extends GuzzleHttpServerRequest implements RequestContract
 {

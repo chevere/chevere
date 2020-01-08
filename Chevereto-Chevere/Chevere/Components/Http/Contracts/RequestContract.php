@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Http\Contracts;
 
 use Psr\Http\Message\RequestInterface;
-use Chevere\Contracts\Globals\GlobalsContract;
+use Chevere\Components\Globals\Contracts\GlobalsContract;
 
 interface RequestContract extends RequestInterface
 {

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Globals;
+namespace Chevere\Components\Globals\Contracts;
 
 interface GlobalsContract
 {
