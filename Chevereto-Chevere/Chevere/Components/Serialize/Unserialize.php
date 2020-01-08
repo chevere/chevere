@@ -16,7 +16,7 @@ namespace Chevere\Components\Serialize;
 use Chevere\Components\Serialize\Exceptions\UnserializeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
-use Chevere\Contracts\Serialize\UnserializeContract;
+use Chevere\Components\Serialize\Contracts\UnserializeContract;
 use Chevere\Contracts\Type\TypeContract;
 use Throwable;
 use function ChevereFn\varType;

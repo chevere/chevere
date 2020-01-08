@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Serialize;
 
-use Chevere\Contracts\Serialize\SerializeContract;
+use Chevere\Components\Serialize\Contracts\SerializeContract;
 use Chevere\Contracts\Variable\VariableExportContract;
 
 final class Serialize implements SerializeContract

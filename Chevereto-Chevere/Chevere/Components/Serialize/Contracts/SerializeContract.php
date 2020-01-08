@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Serialize;
+namespace Chevere\Components\Serialize\Contracts;
 
 use Chevere\Contracts\Variable\VariableExportContract;
 
