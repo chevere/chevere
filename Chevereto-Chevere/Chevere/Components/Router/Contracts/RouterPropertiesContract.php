@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Contracts;
 
-use Chevere\Components\Router\Contracts\Properties\RegexPropertyContract;
+use Chevere\Components\Common\Contracts\ToArrayContract;
 
-interface RouterPropertiesContract
+interface RouterPropertiesContract extends ToArrayContract
 {
     /**
      * Creates a new instance.
@@ -110,7 +110,8 @@ interface RouterPropertiesContract
     public function assert(): void;
 
     /**
-     * Returns the properties as an array [name => value].
+     *
+     * @return array [name => value]
      */
     public function toArray(): array;
 }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Contracts\Properties;
 
-use Chevere\Contracts\ToArrayContract;
+use Chevere\Components\Common\Contracts\ToArrayContract;
 use Chevere\Components\Router\Exceptions\RouterPropertyException;
 
 interface IndexPropertyContract extends ToArrayContract

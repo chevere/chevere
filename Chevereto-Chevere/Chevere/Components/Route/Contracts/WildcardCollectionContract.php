@@ -13,7 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route\Contracts;
 
-interface WildcardCollectionContract
+use Chevere\Components\Common\Contracts\ToArrayContract;
+
+/**
+ * @method public array toArray() Provides access to the collection array.
+ */
+interface WildcardCollectionContract extends ToArrayContract
 {
     /**
      * Creates a new instance.
@@ -52,9 +57,4 @@ interface WildcardCollectionContract
      * Provides access to the target WildcardContract instance in the given pos.
      */
     public function getPos(int $pos): WildcardContract;
-
-    /**
-     * Provides access to the collection array.
-     */
-    public function toArray(): array;
 }

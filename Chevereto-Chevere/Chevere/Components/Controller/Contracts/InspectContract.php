@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller\Contracts;
 
-use Chevere\Contracts\ToArrayContract;
+use Chevere\Components\Common\Contracts\ToArrayContract;
 
 interface InspectContract extends ToArrayContract
 {

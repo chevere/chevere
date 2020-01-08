@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Http\Contracts;
 
+use Chevere\Components\Common\Contracts\ToArrayContract;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 
-interface MethodControllerNameCollectionContract
+interface MethodControllerNameCollectionContract extends ToArrayContract
 {
     /**
      * Creates a new instance.
@@ -46,7 +47,7 @@ interface MethodControllerNameCollectionContract
     public function get(MethodContract $method): MethodControllerNameContract;
 
     /**
-     * Returns the collection array.
+     * @return array MethodControllerNameContract[]
      */
     public function toArray(): array;
 }

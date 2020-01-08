@@ -15,10 +15,11 @@ namespace Chevere\Components\Cache\Contracts;
 
 use Chevere\Components\Dir\Contracts\DirContract;
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
+use Chevere\Components\Common\Contracts\ToArrayContract;
 use Chevere\Components\Variable\Contracts\VariableExportContract;
 use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
 
-interface CacheContract
+interface CacheContract extends ToArrayContract
 {
     const ILLEGAL_KEY_CHARACTERS = '\.\/\\\~\:';
 
@@ -71,7 +72,7 @@ interface CacheContract
     public function get(CacheKeyContract $cacheKey): CacheItemContract;
 
     /**
-     * Gets a resume of the cached entries.
+     * @return array [key => [checksum => , path =>]]
      */
     public function toArray(): array;
 }

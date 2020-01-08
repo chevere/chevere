@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts;
+namespace Chevere\Components\Common\Contracts;
 
-interface ToArrayContract
+interface ToStringContract
 {
     /**
-     * Returns an array, representing the object itself or some of its data/properties.
+     * Returns a string, representing the object itself or some of its data/properties.
      */
-    public function toArray(): array;
+    public function toString(): string;
 }

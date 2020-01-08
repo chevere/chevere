@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Benchmark\Contracts;
 
 use Chevere\Components\Benchmark\Exceptions\ArgumentCountException;
+use Chevere\Components\Common\Contracts\ToStringContract;
 
-interface RunContract
+interface RunContract extends ToStringContract
 {
     /** @var int Determines the number of colums used for output. */
     const COLUMNS = 50;
@@ -45,7 +46,7 @@ interface RunContract
     public function timeLimit(): int;
 
     /**
-     * Provides access to a formated result summary
+     * @return string Formated result summary
      */
     public function toString(): string;
 }

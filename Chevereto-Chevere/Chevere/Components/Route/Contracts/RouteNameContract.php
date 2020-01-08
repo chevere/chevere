@@ -28,7 +28,7 @@ interface RouteNameContract
     public function __construct(string $name);
 
     /**
-     * Provides access to the route name string.
+     * @return string Route name.
      */
     public function toString(): string;
 }

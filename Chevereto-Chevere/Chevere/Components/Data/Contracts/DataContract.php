@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Data\Contracts;
 
-use Chevere\Contracts\ToArrayContract;
+use Chevere\Components\Common\Contracts\ToArrayContract;
 
 interface DataContract extends ToArrayContract
 {

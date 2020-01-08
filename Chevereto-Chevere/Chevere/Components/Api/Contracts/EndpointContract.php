@@ -13,13 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Api\Contracts;
 
+use Chevere\Components\Common\Contracts\ToArrayContract;
 use Chevere\Components\Http\Contracts\MethodControllerNameCollectionContract;
 
-interface EndpointContract
+interface EndpointContract extends ToArrayContract
 {
     public function __construct(MethodControllerNameCollectionContract $collection);
 
     public function methodControllerNameCollection(): MethodControllerNameCollectionContract;
-
-    public function toArray(): array;
 }

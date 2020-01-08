@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Breadcrum\Contracts;
 
-use Chevere\Contracts\ToArrayContract;
-use Chevere\Contracts\ToStringContract;
+use Chevere\Components\Common\Contracts\ToArrayContract;
+use Chevere\Components\Common\Contracts\ToStringContract;
 use Chevere\Components\Breadcrum\Exceptions\BreadcrumException;
 
 interface BreadcrumContract extends ToArrayContract, ToStringContract

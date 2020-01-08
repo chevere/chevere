@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace  Chevere\Components\Middleware\Contracts;
 
-interface MiddlewareNameCollectionContract
+use Chevere\Components\Common\Contracts\ToArrayContract;
+
+interface MiddlewareNameCollectionContract extends ToArrayContract
 {
     /**
      * Creates a new instance.
@@ -41,8 +43,6 @@ interface MiddlewareNameCollectionContract
     public function has(MiddlewareNameContract $middlewareName): bool;
 
     /**
-     * Returns an array containing the collection of MiddlewareContract names.
-     *
      * @return array MiddlewareNameContract[]
      */
     public function toArray(): array;

@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace  Chevere\Components\Middleware\Contracts;
 
 use InvalidArgumentException;
+use Chevere\Components\Common\Contracts\ToStringContract;
 use Chevere\Components\Middleware\Exceptions\MiddlewareContractException;
 
-interface MiddlewareNameContract
+interface MiddlewareNameContract extends ToStringContract
 {
     /**
      * Creates a new instance.
@@ -29,7 +30,7 @@ interface MiddlewareNameContract
     public function __construct(string $name);
 
     /**
-     * Provides access to the middleware name.
+     * @return string Middleware name.
      */
     public function toString(): string;
 }

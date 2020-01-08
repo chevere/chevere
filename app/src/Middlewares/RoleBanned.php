@@ -15,8 +15,7 @@ namespace App\Middlewares;
 
 use Chevere\Components\Http\Request\RequestException;
 use Chevere\Components\Middleware\Middleware;
-use Chevere\Contracts\App\MiddlewareRunnerContract;
-use Chevere\Contracts\Http\RequestContract;
+use Chevere\Components\Http\Contracts\RequestContract;
 
 class Rolebanned extends Middleware
 {
@@ -27,4 +26,4 @@ class Rolebanned extends Middleware
             throw new RequestException(401, 'User is banned');
         }
     }
-};
+}

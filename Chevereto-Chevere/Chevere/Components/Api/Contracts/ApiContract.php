@@ -14,16 +14,15 @@ declare(strict_types=1);
 namespace Chevere\Components\Api\Contracts;
 
 use Chevere\Components\Cache\Contracts\CacheContract;
+use Chevere\Components\Common\Contracts\ToArrayContract;
 
-interface ApiContract
+interface ApiContract extends ToArrayContract
 {
     const CACHE_ID = 'api';
 
     public function withApiMaker(ApiMakerContract $maker): ApiContract;
 
     public function withCache(CacheContract $cache): ApiContract;
-
-    public function toArray(): array;
 
     public function hasMaker(): bool;
 

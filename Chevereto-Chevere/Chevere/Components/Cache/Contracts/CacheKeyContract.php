@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Cache\Contracts;
 
 use Chevere\Components\Cache\Exceptions\CacheInvalidKeyException;
+use Chevere\Components\Common\Contracts\ToStringContract;
 
-interface CacheKeyContract
+interface CacheKeyContract extends ToStringContract
 {
     const ILLEGAL_KEY_CHARACTERS = '\.\/\\\~\:';
 
@@ -27,7 +28,7 @@ interface CacheKeyContract
     public function __construct(string $key);
 
     /**
-     * Get the cache key string.
+     * @return string cache key string.
      */
     public function toString(): string;
 }

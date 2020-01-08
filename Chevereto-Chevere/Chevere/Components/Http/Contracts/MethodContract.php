@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Http\Contracts;
 
 use InvalidArgumentException;
+use Chevere\Components\Common\Contracts\ToStringContract;
 
-interface MethodContract
+interface MethodContract extends ToStringContract
 {
     /** Array containing all the known HTTP methods. */
     const ACCEPT_METHOD_NAMES = [
@@ -46,7 +47,7 @@ interface MethodContract
     public function __construct(string $name);
 
     /**
-     * Returns the method name.
+     * @return string Method name.
      */
     public function toString(): string;
 }

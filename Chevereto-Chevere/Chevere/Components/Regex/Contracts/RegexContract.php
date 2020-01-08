@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Regex\Contracts;
 
+use Chevere\Components\Common\Contracts\ToStringContract;
 use Chevere\Components\Regex\Exceptions\RegexException;
 
-interface RegexContract
+interface RegexContract extends ToStringContract
 {
     /**
      * Creates a new instance.
@@ -25,7 +26,7 @@ interface RegexContract
     public function __construct(string $regex);
 
     /**
-     * Provides access to the regex string.
+     * @return string Regex
      */
     public function toString(): string;
 }

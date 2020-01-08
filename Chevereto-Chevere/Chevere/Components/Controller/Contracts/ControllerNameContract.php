@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller\Contracts;
 
-interface ControllerNameContract
+use Chevere\Components\Common\Contracts\ToStringContract;
+
+interface ControllerNameContract extends ToStringContract
 {
     /**
      * Creates a new instance.
@@ -21,7 +23,7 @@ interface ControllerNameContract
     public function __construct(string $name);
 
     /**
-     * Returns the controller name as string.
+     * @return string Controller name.
      */
     public function toString(): string;
 }
