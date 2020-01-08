@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Route;
 
-use Chevere\Contracts\Middleware\MiddlewareNameCollectionContract;
+use Chevere\Components\Middleware\Contracts\MiddlewareNameCollectionContract;
 use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Controller\Contracts\ControllerNameContract;
 use Chevere\Components\Http\Contracts\MethodContract;
 use Chevere\Components\Http\Contracts\MethodControllerNameCollectionContract;
-use Chevere\Contracts\Middleware\MiddlewareNameContract;
+use Chevere\Components\Middleware\Contracts\MiddlewareNameContract;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 
 interface RouteContract

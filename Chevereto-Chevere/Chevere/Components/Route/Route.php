@@ -24,11 +24,11 @@ use Chevere\Contracts\Route\RouteContract;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
 use Chevere\Components\Controller\Contracts\ControllerNameContract;
 use Chevere\Components\Http\Contracts\MethodContract;
-use Chevere\Contracts\Middleware\MiddlewareNameCollectionContract;
+use Chevere\Components\Middleware\Contracts\MiddlewareNameCollectionContract;
 use Chevere\Contracts\Route\PathUriContract;
 use Chevere\Contracts\Route\WildcardContract;
 use Chevere\Components\Http\Contracts\MethodControllerNameCollectionContract;
-use Chevere\Contracts\Middleware\MiddlewareNameContract;
+use Chevere\Components\Middleware\Contracts\MiddlewareNameContract;
 use Chevere\Contracts\Route\RouteNameContract;
 use Chevere\Contracts\Route\WildcardCollectionContract;
 

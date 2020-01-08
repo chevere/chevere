@@ -19,8 +19,8 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\App\Contracts\AppContract;
 use Chevere\Components\App\Contracts\MiddlewareRunnerContract;
 use Chevere\Components\Http\Contracts\RequestContract;
-use Chevere\Contracts\Middleware\MiddlewareNameCollectionContract;
-use Chevere\Contracts\Middleware\MiddlewareNameContract;
+use Chevere\Components\Middleware\Contracts\MiddlewareNameCollectionContract;
+use Chevere\Components\Middleware\Contracts\MiddlewareNameContract;
 
 final class MiddlewareRunner implements MiddlewareRunnerContract
 {

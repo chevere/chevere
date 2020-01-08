@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Middleware;
+namespace  Chevere\Components\Middleware\Contracts;
 
 use InvalidArgumentException;
 use Chevere\Components\Middleware\Exceptions\MiddlewareContractException;

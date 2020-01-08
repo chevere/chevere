@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Contracts;
 
-use Chevere\Contracts\Middleware\MiddlewareNameCollectionContract;
+use Chevere\Components\Middleware\Contracts\MiddlewareNameCollectionContract;
 use Chevere\Components\App\Exceptions\AppWithoutRequestException;
 use Chevere\Components\Middleware\Exceptions\MiddlewareNamesEmptyException;
 

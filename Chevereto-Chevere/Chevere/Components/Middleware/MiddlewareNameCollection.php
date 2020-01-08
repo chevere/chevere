@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Middleware;
 
-use Chevere\Contracts\Middleware\MiddlewareNameCollectionContract;
-use Chevere\Contracts\Middleware\MiddlewareNameContract;
+use Chevere\Components\Middleware\Contracts\MiddlewareNameCollectionContract;
+use Chevere\Components\Middleware\Contracts\MiddlewareNameContract;
 
 /**
  * A collection of MiddlewareContract names.

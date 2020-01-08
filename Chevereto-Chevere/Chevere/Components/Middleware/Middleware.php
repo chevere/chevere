@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Middleware;
 
 use Chevere\Components\Http\Contracts\RequestContract;
-use Chevere\Contracts\Middleware\MiddlewareContract;
+use Chevere\Components\Middleware\Contracts\MiddlewareContract;
 
 abstract class Middleware implements MiddlewareContract
 {
