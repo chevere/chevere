@@ -23,7 +23,7 @@ use Chevere\Components\Cache\Contracts\CacheItemContract;
 use Chevere\Components\Cache\Contracts\CacheKeyContract;
 use Chevere\Components\Dir\Contracts\DirContract;
 use Chevere\Components\Path\Contracts\PathContract;
-use Chevere\Contracts\Variable\VariableExportContract;
+use Chevere\Components\Variable\Contracts\VariableExportContract;
 
 /**
  * A simple PHP based cache system.

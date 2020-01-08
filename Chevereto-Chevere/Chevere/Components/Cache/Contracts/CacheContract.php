@@ -15,7 +15,7 @@ namespace Chevere\Components\Cache\Contracts;
 
 use Chevere\Components\Dir\Contracts\DirContract;
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
-use Chevere\Contracts\Variable\VariableExportContract;
+use Chevere\Components\Variable\Contracts\VariableExportContract;
 use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
 
 interface CacheContract

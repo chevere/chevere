@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\Variable;
+namespace Chevere\Components\Variable\Contracts;
 
 use Chevere\Components\Variable\Exceptions\VariableIsResourceException;
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Serialize\Contracts;
 
-use Chevere\Contracts\Variable\VariableExportContract;
+use Chevere\Components\Variable\Contracts\VariableExportContract;
 
 interface SerializeContract
 {

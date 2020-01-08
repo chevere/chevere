@@ -18,7 +18,7 @@ use Chevere\Components\File\Exceptions\FileHandleException;
 use Chevere\Components\File\Exceptions\FileWithoutContentsException;
 use Chevere\Components\File\Exceptions\FileInvalidContentsException;
 use Chevere\Components\File\Exceptions\FileUnableToPutException;
-use Chevere\Contracts\Variable\VariableExportContract;
+use Chevere\Components\Variable\Contracts\VariableExportContract;
 
 interface FileReturnContract
 {

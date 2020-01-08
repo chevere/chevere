@@ -19,7 +19,7 @@ use Chevere\Components\Breadcrum\Breadcrum;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Variable\Exceptions\VariableExportException;
 use Chevere\Components\Variable\Exceptions\VariableIsResourceException;
-use Chevere\Contracts\Variable\VariableExportContract;
+use Chevere\Components\Variable\Contracts\VariableExportContract;
 use Chevere\Components\Breadcrum\Contracts\BreadcrumContract;
 
 /**

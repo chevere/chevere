@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Serialize;
 
 use Chevere\Components\Serialize\Contracts\SerializeContract;
-use Chevere\Contracts\Variable\VariableExportContract;
+use Chevere\Components\Variable\Contracts\VariableExportContract;
 
 final class Serialize implements SerializeContract
 {

@@ -21,7 +21,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\File\Contracts\FilePhpContract;
 use Chevere\Components\File\Contracts\FileReturnContract;
-use Chevere\Contracts\Variable\VariableExportContract;
+use Chevere\Components\Variable\Contracts\VariableExportContract;
 
 /**
  * FileReturn interacts with PHP files that return something.
