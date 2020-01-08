@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Http;
 
+use Chevere\Components\Globals\Globals;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Route\PathUri;
@@ -20,13 +21,39 @@ use PHPUnit\Framework\TestCase;
 
 final class RequestTest extends TestCase
 {
-    public function testBasicConstruct(): void
+    public function testConstruct(): void
     {
-        $this->expectNotToPerformAssertions();
-        new Request(
-            new Method('GET'),
-            new PathUri('/')
-        );
+        $request =
+            new Request(
+                new Method('GET'),
+                new PathUri('/')
+            );
+        $globals = new Globals([]);
+        $this->assertSame($globals->globals(), $request->globals()->globals());
+    }
+
+    public function testConstructAllArguments(): void
+    {
+        $globs = [
+            'server' => ['server'],
+            'get' => ['get'],
+            'post' => ['post'],
+            'files' => ['files'],
+            'cookie' => ['cookie'],
+            'session' => ['session'],
+        ];
+        $request =
+            new Request(
+                new Method('GET'),
+                new PathUri('/'),
+                ['headers'],
+                'body request',
+                '1.1',
+                $globs['server']
+            );
+        $globals = $request->globals();
+        xdd($globals);
+        // $this->assertSame();
     }
 
     public function testFromGlobals(): void
