@@ -29,7 +29,7 @@ use Chevere\Components\Http\Response;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Router\Router;
-use Chevere\Contracts\App\BuildContract;
+use Chevere\Components\App\Contracts\BuildContract;
 use PHPUnit\Framework\TestCase;
 
 final class RunnerTest extends TestCase

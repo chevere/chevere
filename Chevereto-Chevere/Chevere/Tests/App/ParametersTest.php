@@ -21,7 +21,7 @@ use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\Path\PathApp;
-use Chevere\Contracts\App\ParametersContract;
+use Chevere\Components\App\Contracts\ParametersContract;
 use Chevere\Contracts\ArrayFile\ArrayFileContract;
 use Chevere\Contracts\Path\PathContract;
 use PHPUnit\Framework\TestCase;

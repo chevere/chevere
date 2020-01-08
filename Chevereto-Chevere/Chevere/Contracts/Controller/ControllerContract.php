@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Controller;
 
-use Chevere\Contracts\App\AppContract;
+use Chevere\Components\App\Contracts\AppContract;
 
 interface ControllerContract
 {

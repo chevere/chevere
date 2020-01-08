@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Console\Commands;
 
 use Chevere\Components\Console\Command;
-use Chevere\Contracts\App\BuilderContract;
+use Chevere\Components\App\Contracts\BuilderContract;
 
 /**
  * The SetopCommand sets the option value.

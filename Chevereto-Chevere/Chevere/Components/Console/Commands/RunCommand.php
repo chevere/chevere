@@ -18,7 +18,7 @@ use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Chevere\Components\Console\Command;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\App\BuilderContract;
+use Chevere\Components\App\Contracts\BuilderContract;
 
 /**
  * The RunCommand allows to run any callable present in the app.

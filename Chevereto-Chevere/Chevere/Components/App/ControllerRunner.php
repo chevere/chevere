@@ -17,10 +17,10 @@ use Chevere\Components\App\Exceptions\ControllerContractException;
 use Chevere\Components\App\Exceptions\ControllerNotExistsException;
 use Chevere\Components\Controller\ArgumentsWrap;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\App\AppContract;
-use Chevere\Contracts\App\ControllerRunnerContract;
+use Chevere\Components\App\Contracts\AppContract;
+use Chevere\Components\App\Contracts\ControllerRunnerContract;
+use Chevere\Components\App\Contracts\MiddlewareRunnerContract;
 use Chevere\Contracts\Controller\ControllerContract;
-use Chevere\Contracts\App\MiddlewareRunnerContract;
 
 /**
  * Application container ControllerContract runner.

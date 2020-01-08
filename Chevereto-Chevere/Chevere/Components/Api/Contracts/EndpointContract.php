@@ -13,27 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Api\Contracts;
 
-use Chevere\Components\Router\RouterMaker;
-use Chevere\Contracts\Cache\CacheContract;
-use Chevere\Contracts\Path\PathContract;
+use Chevere\Components\Http\Contracts\MethodControllerNameCollectionContract;
 
-interface ApiMakerContract
+interface EndpointContract
 {
-    public function __construct(RouterMaker $router);
+    public function __construct(MethodControllerNameCollectionContract $collection);
 
-    public function withPath(PathContract $path): ApiMakerContract;
+    public function methodControllerNameCollection(): MethodControllerNameCollectionContract;
 
-    public function withCache(CacheContract $cache): ApiMakerContract;
-
-    public function hasApi(): bool;
-
-    public function hasPath(): bool;
-
-    public function hasCache(): bool;
-
-    public function api(): array;
-
-    public function path(): PathContract;
-
-    public function cache(): CacheContract;
+    public function toArray(): array;
 }

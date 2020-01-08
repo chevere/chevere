@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Contracts\Middleware;
 
-use Chevere\Contracts\App\MiddlewareRunnerContract;
+use Chevere\Components\App\Contracts\MiddlewareRunnerContract;
 
 interface MiddlewareContract
 {

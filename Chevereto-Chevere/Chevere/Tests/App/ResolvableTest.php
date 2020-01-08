@@ -25,7 +25,7 @@ use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterProperties;
-use Chevere\Contracts\App\AppContract;
+use Chevere\Components\App\Contracts\AppContract;
 use PHPUnit\Framework\TestCase;
 
 final class ResolvableTest extends TestCase

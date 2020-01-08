@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use Chevere\Contracts\App\ParametersContract;
-use Chevere\Contracts\App\ServicesContract;
+use Chevere\Components\App\Contracts\ParametersContract;
+use Chevere\Components\App\Contracts\ServicesContract;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Api\Api;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Api\Contracts\ApiContract;
-use Chevere\Contracts\App\BuildContract;
-use Chevere\Contracts\App\ServicesBuilderContract;
+use Chevere\Components\App\Contracts\BuildContract;
+use Chevere\Components\App\Contracts\ServicesBuilderContract;
 use Chevere\Contracts\Router\RouterContract;
 
 final class ServicesBuilder implements ServicesBuilderContract

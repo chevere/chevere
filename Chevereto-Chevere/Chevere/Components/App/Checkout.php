@@ -18,8 +18,8 @@ use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Variable\VariableExport;
-use Chevere\Contracts\App\BuildContract;
-use Chevere\Contracts\App\CheckoutContract;
+use Chevere\Components\App\Contracts\BuildContract;
+use Chevere\Components\App\Contracts\CheckoutContract;
 use Chevere\Contracts\File\FileReturnContract;
 
 /**

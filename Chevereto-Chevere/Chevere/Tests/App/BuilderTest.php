@@ -20,7 +20,7 @@ use Chevere\Components\App\Services;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\Router\RouterMaker;
-use Chevere\Contracts\App\BuildContract;
+use Chevere\Components\App\Contracts\BuildContract;
 use PHPUnit\Framework\TestCase;
 
 final class BuilderTest extends TestCase

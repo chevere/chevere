@@ -18,7 +18,7 @@ use Chevere\Components\App\Exceptions\ParametersWrongKeyException;
 use Chevere\Components\App\Exceptions\ParametersWrongTypeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\PathApp;
-use Chevere\Contracts\App\ParametersContract;
+use Chevere\Components\App\Contracts\ParametersContract;
 use Chevere\Contracts\ArrayFile\ArrayFileContract;
 use Chevere\Contracts\Path\PathContract;
 

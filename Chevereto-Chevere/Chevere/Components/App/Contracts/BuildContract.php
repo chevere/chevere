@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\App;
+namespace Chevere\Components\App\Contracts;
 
 use Chevere\Contracts\Dir\DirContract;
 use Chevere\Contracts\File\FileContract;

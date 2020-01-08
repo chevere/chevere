@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Console\Commands;
 
 use Chevere\Components\Console\Command;
-use Chevere\Contracts\App\BuilderContract;
+use Chevere\Components\App\Contracts\BuilderContract;
 
 /**
  * The DestroyCommand destroys the App.
@@ -35,6 +35,7 @@ final class DestroyCommand extends Command
         $builder->build()->destroy();
         $title = 'App destroyed';
         $this->console()->style()->success($title);
+
         return 0;
     }
 }

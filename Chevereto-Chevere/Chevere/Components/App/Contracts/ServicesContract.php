@@ -11,14 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\App;
+namespace Chevere\Components\App\Contracts;
 
 use Chevere\Components\Api\Contracts\ApiContract;
 use Chevere\Contracts\Router\RouterContract;
 
 interface ServicesContract
 {
-
     /**
      * Creates a new application base service container.
      */

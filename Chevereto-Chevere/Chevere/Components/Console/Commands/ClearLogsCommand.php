@@ -16,8 +16,8 @@ namespace Chevere\Components\Console\Commands;
 use Chevere\Components\Console\Command;
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\Path\PathApp;
-use Chevere\Contracts\App\AppContract;
-use Chevere\Contracts\App\BuilderContract;
+use Chevere\Components\App\Contracts\AppContract;
+use Chevere\Components\App\Contracts\BuilderContract;
 
 /**
  * The ClearLogsCommand removes app stored logs.

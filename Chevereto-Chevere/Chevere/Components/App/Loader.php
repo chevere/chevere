@@ -25,12 +25,12 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Router\Router;
-use Chevere\Contracts\App\AppContract;
-use Chevere\Contracts\App\BuildContract;
-use Chevere\Contracts\App\BuilderContract;
-use Chevere\Contracts\App\ServicesContract;
-use Chevere\Contracts\App\LoaderContract;
-use Chevere\Contracts\App\ParametersContract;
+use Chevere\Components\App\Contracts\AppContract;
+use Chevere\Components\App\Contracts\BuildContract;
+use Chevere\Components\App\Contracts\BuilderContract;
+use Chevere\Components\App\Contracts\ServicesContract;
+use Chevere\Components\App\Contracts\LoaderContract;
+use Chevere\Components\App\Contracts\ParametersContract;
 use function console;
 
 /**

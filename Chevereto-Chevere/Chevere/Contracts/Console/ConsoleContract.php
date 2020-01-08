@@ -16,9 +16,7 @@ namespace Chevere\Contracts\Console;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Style\StyleInterface;
-
-use Chevere\Contracts\App\BuilderContract;
+use Chevere\Components\App\Contracts\BuilderContract;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 interface ConsoleContract
@@ -37,14 +35,24 @@ interface ConsoleContract
     const OUTPUT_PLAIN = ConsoleOutput::OUTPUT_PLAIN;
 
     public function __construct();
+
     public function withCommand(CommandContract $command): ConsoleContract;
+
     public function hasCommand(): bool;
+
     public function input(): InputInterface;
+
     public function output(): OutputInterface;
+
     public function style(): SymfonyStyle;
+
     public function command(): CommandContract;
+
     public function inputString(): string;
+
     public function isBuilding(): bool;
+
     public function bind(BuilderContract $builder): bool;
+
     public function run();
 }

@@ -19,8 +19,8 @@ use LogicException;
 use Chevere\Components\Http\Request\RequestException;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\App\BuilderContract;
-use Chevere\Contracts\App\RunnerContract;
+use Chevere\Components\App\Contracts\BuilderContract;
+use Chevere\Components\App\Contracts\RunnerContract;
 use function console;
 use function GuzzleHttp\Psr7\stream_for;
 

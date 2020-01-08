@@ -29,7 +29,7 @@ use Chevere\Components\Console\Commands\InspectCommand;
 use Chevere\Components\Console\Commands\RequestCommand;
 use Chevere\Components\Console\Commands\RunCommand;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\App\BuilderContract;
+use Chevere\Components\App\Contracts\BuilderContract;
 use Chevere\Contracts\Console\CommandContract;
 use Chevere\Contracts\Console\ConsoleContract;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;

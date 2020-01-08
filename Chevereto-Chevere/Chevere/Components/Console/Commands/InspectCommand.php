@@ -20,9 +20,8 @@ namespace Chevere\Components\Console\Commands;
 use ReflectionFunction;
 use ReflectionMethod;
 use Reflector;
-
 use Chevere\Components\Console\Command;
-use Chevere\Contracts\App\BuilderContract;
+use Chevere\Components\App\Contracts\BuilderContract;
 use Chevere\Contracts\Controller\ControllerContract;
 
 /**
@@ -127,6 +126,7 @@ final class InspectCommand extends Command
     {
         if (null != $this->arguments) {
             $this->processArguments();
+
             return;
         }
         $this->processNoArguments();

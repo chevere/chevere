@@ -21,7 +21,7 @@ use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Message\Message;
-use Chevere\Contracts\App\BuilderContract;
+use Chevere\Components\App\Contracts\BuilderContract;
 
 /**
  * The RequestCommand allows to pass a forged request to the App instance.

@@ -11,51 +11,90 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Contracts\App;
+namespace Chevere\Components\Api;
 
-use Chevere\Components\Api\Contracts\ApiContract;
-use Chevere\Contracts\Router\RouterContract;
+use Chevere\Components\Controller\ControllerName;
+use Chevere\Components\Controllers\Api\HeadController;
+use Chevere\Components\Controllers\Api\OptionsController;
+use Chevere\Components\Http\Method;
+use Chevere\Components\Http\MethodControllerName;
+use Chevere\Components\Api\Contracts\EndpointContract;
+use Chevere\Components\Http\Contracts\MethodControllerNameCollectionContract;
 
-interface ServicesContract
+final class Endpoint implements EndpointContract
 {
-    /**
-     * Creates a new application base service container.
-     */
-    public function __construct();
+    /** @var array */
+    private $array;
+
+    /** @var MethodControllerNameCollectionContract */
+    private $methodControllerNameCollection;
 
     /**
-     * Return an instance with the specified ApiContract.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified ApiContract.
+     * {@inheritdoc}
      */
-    public function withApi(ApiContract $api): ServicesContract;
+    public function __construct(MethodControllerNameCollectionContract $collection)
+    {
+        $this->array = [];
+        $this->methodControllerNameCollection = $collection;
+        $this->fillEndpointOptions();
+        $this->autofillMissingOptionsHead();
+    }
 
     /**
-     * Returns a boolean indicating whether the instance has an ApiContract.
+     * {@inheritdoc}
      */
-    public function hasApi(): bool;
+    public function methodControllerNameCollection(): MethodControllerNameCollectionContract
+    {
+        return $this->methodControllerNameCollection;
+    }
 
     /**
-     * Provides access to the ApiContract instance.
+     * {@inheritdoc}
      */
-    public function api(): ApiContract;
+    public function toArray(): array
+    {
+        return $this->array;
+    }
 
-    /**
-     * Return an instance with the specified RouterContract.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified RouterContract.
-     */
-    public function withRouter(RouterContract $router): ServicesContract;
+    private function fillEndpointOptions(): void
+    {
+        foreach ($this->methodControllerNameCollection->toArray() as $method) {
+            $httpMethod = $method->method();
+            $controllerClassName = $method->controllerName();
+            $httpMethodOptions = [];
+            $httpMethodOptions['description'] = $controllerClassName::description();
+            $controllerParameters = $controllerClassName::parameters();
+            if (isset($controllerParameters)) {
+                $httpMethodOptions['parameters'] = $controllerParameters;
+            }
+            $this->array['OPTIONS'][$httpMethod] = $httpMethodOptions;
+        }
+    }
 
-    /**
-     * Returns a boolean indicating whether the instance has a RouterContract.
-     */
-    public function hasRouter(): bool;
-
-    /**
-     * Provides access to the RouterContract instance.
-     */
-    public function router(): RouterContract;
+    private function autofillMissingOptionsHead(): void
+    {
+        foreach ([
+            'OPTIONS' => [
+                OptionsController::class, [
+                    'description' => OptionsController::description(),
+                ],
+            ],
+            'HEAD' => [
+                HeadController::class, [
+                    'description' => HeadController::description(),
+                ],
+            ],
+        ] as $k => $v) {
+            if (!$this->methodControllerNameCollection->has(new Method($k))) {
+                $this->methodControllerNameCollection = $this->methodControllerNameCollection
+                    ->withAddedMethodControllerName(
+                        new MethodControllerName(
+                            new Method($k),
+                            new ControllerName($v[0])
+                        )
+                    );
+                $this->array['OPTIONS'][$k] = $v[1];
+            }
+        }
+    }
 }

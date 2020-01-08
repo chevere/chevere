@@ -19,7 +19,7 @@ use Chevere\Components\App\Exceptions\ControllerContractException;
 use Chevere\Components\App\Exceptions\ControllerNotExistsException;
 use Chevere\Components\App\Services;
 use Chevere\Components\Http\Response;
-use Chevere\Contracts\App\ControllerRunnerContract;
+use Chevere\Components\App\Contracts\ControllerRunnerContract;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 

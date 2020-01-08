@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use Chevere\Contracts\App\ResolverContract;
+use Chevere\Components\App\Contracts\ResolverContract;
 use Chevere\Components\App\Exceptions\ResolverException;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
-use Chevere\Contracts\App\BuilderContract;
-use Chevere\Contracts\App\ResolvableContract;
+use Chevere\Components\App\Contracts\BuilderContract;
+use Chevere\Components\App\Contracts\ResolvableContract;
 
 /**
  * Resolves a builder against routing
