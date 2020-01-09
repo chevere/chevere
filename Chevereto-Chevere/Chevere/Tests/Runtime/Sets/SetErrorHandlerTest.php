@@ -39,7 +39,7 @@ final class SetErrorHandlerTest extends TestCase
     public function testConstructInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new SetErrorHandler('100');
+        new SetErrorHandler('invalid argument');
     }
 
     public function testConstruct(): void

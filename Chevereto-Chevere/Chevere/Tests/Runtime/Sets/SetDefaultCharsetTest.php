@@ -25,15 +25,15 @@ final class SetDefaultCharsetTest extends TestCase
     public function testConstructInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new SetDefaultCharset('fakeCharset');
+        new SetDefaultCharset('invalid argument');
     }
 
     public function testConstruct(): void
     {
         foreach (['UTF-8', 'ISO-8859-1'] as $pos => $val) {
-            $debug = new SetDefaultCharset($val);
-            $this->assertSame('defaultCharset', $debug->name());
-            $this->assertSame($val, $debug->value());
+            $set = new SetDefaultCharset($val);
+            $this->assertSame('defaultCharset', $set->name());
+            $this->assertSame($val, $set->value());
         }
     }
 }

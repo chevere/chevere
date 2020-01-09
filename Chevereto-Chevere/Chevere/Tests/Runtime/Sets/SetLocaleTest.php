@@ -22,7 +22,7 @@ final class SetLocaleTest extends TestCase
     public function testConstructInvalidArgument(): void
     {
         $this->expectException(RuntimeException::class);
-        new SetLocale('fakeLocale');
+        new SetLocale('invalid argument');
     }
 
     public function testConstruct(): void

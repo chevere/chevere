@@ -22,15 +22,15 @@ final class SetDebugTest extends TestCase
     public function testConstructInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new SetDebug('');
+        new SetDebug('invalid argument');
     }
 
     public function testConstruct(): void
     {
         foreach (['0', '1'] as $val) {
-            $debug = new SetDebug($val);
-            $this->assertSame('debug', $debug->name());
-            $this->assertSame($val, $debug->value());
+            $set = new SetDebug($val);
+            $this->assertSame('debug', $set->name());
+            $this->assertSame($val, $set->value());
         }
     }
 }

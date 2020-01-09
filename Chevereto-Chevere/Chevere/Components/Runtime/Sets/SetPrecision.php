@@ -13,22 +13,42 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Sets;
 
-use RuntimeException;
+use Chevere\Components\Runtime\Exceptions\RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Contracts\SetContract;
+use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
 
 class SetPrecision implements SetContract
 {
     use SetTrait;
 
-    public function set(): void
+    /**
+     * Creates a new instance.
+     *
+     * @param string $value the precision value to pass to `ini_set`
+     * @throws RuntimeException If unable to set the value
+     */
+    public function __construct(string $value)
     {
+        $this->value = $value;
+        $this->assertArgument();
         if (!@ini_set('precision', $this->value)) {
             throw new RuntimeException(
-                (new Message('Unable to set %s %v'))
-                    ->code('%s', 'default_charset')
-                    ->code('%v', $this->value)
+                (new Message('Unable to set ini property %property% value %value%'))
+                    ->code('%property%', 'default_charset')
+                    ->code('%value%', $this->value)
+                    ->toString()
+            );
+        }
+    }
+
+    private function assertArgument(): void
+    {
+        if (!filter_var($this->value, FILTER_VALIDATE_INT)) {
+            throw new InvalidArgumentException(
+                (new Message('Value must be a string integer, value %value% provided'))
+                    ->code('%value%', $this->value)
                     ->toString()
             );
         }
