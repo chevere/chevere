@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\Runtime\Sets;
 
 use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
-use Chevere\Components\Runtime\Exceptions\RuntimeException;
 use Chevere\Components\Runtime\Sets\SetDebug;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Helper\DebugFormatterHelper;
 
 final class SetDebugTest extends TestCase
 {

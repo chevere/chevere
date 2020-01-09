@@ -13,20 +13,41 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Sets;
 
-use RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Contracts\SetContract;
+use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
+use Chevere\Components\Runtime\Exceptions\RuntimeException;
 
 class SetDefaultCharset implements SetContract
 {
     use SetTrait;
 
-    public function set(): void
+    /**
+     * Sets the default charset (ini_set)
+     *
+     * @param string $value Charset.
+     * @throws RuntimeException If ini_set for default_charset fails.
+     */
+    public function __construct(string $value)
     {
+        $this->handle($value);
+    }
+
+    private function assert(): void
+    {
+        $accepted = mb_list_encodings();
+        if (!in_array($this->value, $accepted)) {
+            throw new InvalidArgumentException(
+                (new Message('Invalid value %value% provided, expecting one of the accepted encodings: %accepted%'))
+                    ->code('%value%', $this->value)
+                    ->code('%accepted%', implode(', ', $accepted))
+                    ->toString()
+            );
+        }
         if (!@ini_set('default_charset', $this->value)) {
             throw new RuntimeException(
-                (new Message('Unable to set %s %v'))
+                (new Message('Unable to set %s=%v'))
                     ->code('%s', 'default_charset')
                     ->code('%v', $this->value)
                     ->toString()
