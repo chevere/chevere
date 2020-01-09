@@ -13,11 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Exceptions;
 
-use RuntimeException as BaseRuntimeException;
-
 /**
- * Exception thrown by RuntimeContract.
+ * Exception thrown by a RuntimeContract.
  */
-final class RuntimeException extends BaseRuntimeException
+final class RuntimeException extends \RuntimeException
 {
 }

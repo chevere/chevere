@@ -15,7 +15,7 @@ namespace Chevere\Components\Runtime\Contracts;
 
 interface SetContract
 {
-    // public function __construct(string $value);
+    public function __construct(string $value);
 
     /**
      * @return string The value passed in construct.

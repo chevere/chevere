@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Runtime\Contracts\Sets;
+namespace Chevere\Components\Runtime\Exceptions;
 
-use Chevere\Components\Runtime\Contracts\SetContract;
-
-interface SetDebugContract extends SetContract
+/**
+ * Exception thrown by a RuntimeContract.
+ */
+final class InvalidArgumentException extends \InvalidArgumentException
 {
-    public function eeee(string $value);
 }

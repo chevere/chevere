@@ -13,23 +13,23 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Sets;
 
-use RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Contracts\SetContract;
 use Chevere\Components\Runtime\Traits\SetTrait;
-use Chevere\Components\Runtime\Contracts\Sets\SetDebugContract;
+use Chevere\Components\Runtime\Exceptions\RuntimeException;
+use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
 
-class SetDebug implements SetDebugContract
+class SetDebug implements SetContract
 {
-    // use SetTrait;
+    use SetTrait;
 
-    private array $accept = [0, 1];
+    private array $accept = ['0', '1'];
 
     /**
      * Sets the debug mode
      *
      * @param string $value 1/0 enable/disable debug.
-     * @throws RuntimeException If the value passed isn't acceptable.
+     * @throws InvalidArgumentException If the value passed isn't acceptable.
      */
     public function __construct(string $value)
     {
@@ -39,7 +39,7 @@ class SetDebug implements SetDebugContract
     private function assert(): void
     {
         if (!in_array($this->value, $this->accept)) {
-            throw new RuntimeException(
+            throw new InvalidArgumentException(
                 (new Message('Expecting %expecting%, %value% provided'))
                     ->code('%expecting%', implode(', ', $this->accept))
                     ->code('%value%', $this->value)
