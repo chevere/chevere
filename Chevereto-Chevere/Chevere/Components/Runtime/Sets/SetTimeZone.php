@@ -19,11 +19,16 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Contracts\SetContract;
 
+/**
+ * Sets the default timezone
+ */
 class SetTimeZone implements SetContract
 {
     use SetTrait;
 
     /**
+     * Creates a new instance
+     *
      * @param string $value A timezone identifier to pass to `date_default_timezone_set`
      * @throws InvalidArgumentException If the $value is not a valid timezone identifier
      * @throws RuntimeException If unable to set the value

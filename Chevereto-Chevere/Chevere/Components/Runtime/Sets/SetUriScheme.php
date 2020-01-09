@@ -13,22 +13,38 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Sets;
 
-use RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Contracts\SetContract;
+use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
 
+/**
+ * Set the HTTP scheme
+ */
 class SetUriScheme implements SetContract
 {
     use SetTrait;
 
-    public function set(): void
+    private array $accept = ['http', 'https'];
+
+    /**
+     * Creates a new instance.
+     *
+     * @param string $value Http scheme, either http or https.
+     * @throws InvalidArgumentException If the value passed is not a Http scheme
+     */
+    public function __construct(string $value)
     {
-        $accept = ['http', 'https'];
-        if (!in_array($this->value, $accept)) {
-            throw new RuntimeException(
+        $this->value = $value;
+        $this->assertArgument();
+    }
+
+    private function assertArgument(): void
+    {
+        if (!in_array($this->value, $this->accept)) {
+            throw new InvalidArgumentException(
                 (new Message('Expecting %expecting%, %value% provided'))
-                    ->code('%expecting%', implode(', ', $accept))
+                    ->code('%expecting%', implode(', ', $this->accept))
                     ->code('%value%', $this->value)
                     ->toString()
             );

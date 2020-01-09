@@ -13,13 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Sets;
 
+use TypeError;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Contracts\Sets\SetErrorHandlerContract;
 use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
 use Chevere\Components\Runtime\Traits\HandlerTrait;
-use TypeError;
 
+/**
+ * Sets the exception handler using `set_error_handler`
+ */
 class SetErrorHandler implements SetErrorHandlerContract
 {
     use SetTrait;

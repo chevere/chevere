@@ -19,6 +19,9 @@ use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Contracts\SetContract;
 use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
 
+/**
+ * Sets the `precision` ini property
+ */
 class SetPrecision implements SetContract
 {
     use SetTrait;

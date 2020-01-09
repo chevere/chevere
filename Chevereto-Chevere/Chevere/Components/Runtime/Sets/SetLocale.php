@@ -18,6 +18,9 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Contracts\SetContract;
 
+/**
+ * Sets the locale using `setlocale`
+ */
 class SetLocale implements SetContract
 {
     use SetTrait;

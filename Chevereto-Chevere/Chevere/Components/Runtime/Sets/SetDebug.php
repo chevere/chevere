@@ -27,7 +27,7 @@ class SetDebug implements SetContract
     /**
      * Sets the debug mode
      *
-     * @param string $value 1/0 enable/disable debug.
+     * @param string $value 1 to enable debug, 0 to disable debug.
      * @throws InvalidArgumentException If the value passed isn't acceptable.
      */
     public function __construct(string $value)

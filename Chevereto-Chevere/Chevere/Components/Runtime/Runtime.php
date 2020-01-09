@@ -40,7 +40,7 @@ final class Runtime implements RuntimeContract
                     $set->value()
                 );
         }
-        $this->data = $this->data
-            ->withAddedKey('errorReportingLevel', error_reporting());
+        // $this->data = $this->data
+        //     ->withAddedKey('errorReportingLevel', error_reporting());
     }
 }

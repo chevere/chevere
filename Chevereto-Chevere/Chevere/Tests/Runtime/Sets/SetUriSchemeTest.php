@@ -13,8 +13,24 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Runtime\Sets;
 
+use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
+use Chevere\Components\Runtime\Sets\SetUriScheme;
 use PHPUnit\Framework\TestCase;
 
 final class SetUriSchemeTest extends TestCase
 {
+    public function testConstructInvalidArgument(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new SetUriScheme('invalid argument');
+    }
+
+    public function testConstruct(): void
+    {
+        foreach (['http', 'https'] as $val) {
+            $set = new SetUriScheme($val);
+            $this->assertSame('uriScheme', $set->name());
+            $this->assertSame($val, $set->value());
+        }
+    }
 }

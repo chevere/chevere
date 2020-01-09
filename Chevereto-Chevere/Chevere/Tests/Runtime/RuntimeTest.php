@@ -28,18 +28,21 @@ final class RuntimeTest extends TestCase
 {
     public function testConstruct(): void
     {
-        // $this->expectNotToPerformAssertions();
-        $runtime =
-            new Runtime(
-                new SetDebug('1'),
-                new SetErrorHandler('Chevere\Components\ExceptionHandler\ErrorHandler::error'),
-                new SetExceptionHandler('Chevere\Components\ExceptionHandler\ExceptionHandler::exception'),
-                new SetLocale('en_US.UTF8'),
-                new SetDefaultCharset('utf-8'),
-                new SetPrecision('16'),
-                new SetUriScheme('https'),
-                new SetTimeZone('UTC')
-            );
-        xdd($runtime->data());
+        $sets = [
+            new SetDebug('1'),
+            new SetErrorHandler('Chevere\Components\ExceptionHandler\ErrorHandler::error'),
+            new SetExceptionHandler('Chevere\Components\ExceptionHandler\ExceptionHandler::exception'),
+            new SetLocale('en_US.UTF8'),
+            new SetDefaultCharset('UTF-8'),
+            new SetPrecision('16'),
+            new SetUriScheme('https'),
+            new SetTimeZone('UTC')
+        ];
+        $data = [];
+        foreach ($sets as $set) {
+            $data[$set->name()] = $set->value();
+        }
+        $runtime = new Runtime(...$sets);
+        $this->assertSame($data, $runtime->data()->toArray());
     }
 }

@@ -19,6 +19,9 @@ use Chevere\Components\Runtime\Contracts\SetContract;
 use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
 use Chevere\Components\Runtime\Exceptions\RuntimeException;
 
+/**
+ * Sets the `default_charset` ini propery
+ */
 class SetDefaultCharset implements SetContract
 {
     use SetTrait;
