@@ -27,7 +27,7 @@ final class RouterCache implements RouterCacheContract
     private CacheContract $cache;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
      */
     public function __construct(CacheContract $cache)
     {
