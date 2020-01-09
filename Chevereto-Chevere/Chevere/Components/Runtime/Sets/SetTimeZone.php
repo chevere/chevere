@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Sets;
 
-use InvalidArgumentException;
-use RuntimeException;
+use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
+use Chevere\Components\Runtime\Exceptions\RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Contracts\SetContract;
@@ -23,18 +23,34 @@ class SetTimeZone implements SetContract
 {
     use SetTrait;
 
-    public function set(): void
+    /**
+     * @param string $value A timezone identifier to pass to `date_default_timezone_set`
+     * @throws InvalidArgumentException If the $value is not a valid timezone identifier
+     * @throws RuntimeException If unable to set the value
+     */
+    public function __construct(string $value)
     {
+        $this->value = $value;
         if (date_default_timezone_get() == $this->value) {
             return;
         }
+        $this->assertArgument();
+        $this->assertSetTimeZone();
+    }
+
+    private function assertArgument(): void
+    {
         if ('UTC' != $this->value && !$this->validateTimezone()) {
             throw new InvalidArgumentException(
-                (new Message('Invalid timezone %timezone%'))
+                (new Message('Invalid timezone value %timezone%'))
                     ->code('%timezone%', $this->value)
                     ->toString()
             );
         }
+    }
+
+    private function assertSetTimeZone(): void
+    {
         if (!@date_default_timezone_set($this->value)) {
             throw new RuntimeException(
                 (new Message('False return on %s(%v)'))

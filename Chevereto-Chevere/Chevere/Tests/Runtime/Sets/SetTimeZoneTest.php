@@ -13,8 +13,24 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Runtime\Sets;
 
+use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
+use Chevere\Components\Runtime\Sets\SetTimeZone;
 use PHPUnit\Framework\TestCase;
 
 final class SetTimeZoneTest extends TestCase
 {
+    public function testConstructInvalidArgument(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new SetTimeZone('invalid argument');
+    }
+
+    public function testConstruct(): void
+    {
+        foreach (['UTC', 'America/Santiago', 'Asia/Tokyo'] as $val) {
+            $set = new SetTimeZone($val);
+            $this->assertSame('timeZone', $set->name());
+            $this->assertSame($val, $set->value());
+        }
+    }
 }
