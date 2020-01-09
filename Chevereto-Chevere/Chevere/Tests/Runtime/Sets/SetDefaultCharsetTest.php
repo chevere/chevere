@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Tests\Runtime\Sets;
 
 use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
-use Chevere\Components\Runtime\Exceptions\RuntimeException;
 use Chevere\Components\Runtime\Sets\SetDefaultCharset;
-use Chevere\Components\Stopwatch\Stopwatch;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @requires extension mbstring
+ */
 final class SetDefaultCharsetTest extends TestCase
 {
     public function testConstructInvalidArgument(): void
