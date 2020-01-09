@@ -27,7 +27,7 @@ final class SetDebugTest extends TestCase
 
     public function testConstruct(): void
     {
-        foreach (['0', '1'] as $pos => $val) {
+        foreach (['0', '1'] as $val) {
             $debug = new SetDebug($val);
             $this->assertSame('debug', $debug->name());
             $this->assertSame($val, $debug->value());

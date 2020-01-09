@@ -20,14 +20,6 @@ trait SetTrait
 {
     private string $value;
 
-    private DataContract $data;
-
-    private function handle(string $value)
-    {
-        $this->value = $value;
-        $this->assert();
-    }
-
     /**
      * {@inheritdoc}
      */

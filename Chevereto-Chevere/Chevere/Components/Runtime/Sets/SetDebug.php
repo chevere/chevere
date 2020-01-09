@@ -16,7 +16,6 @@ namespace Chevere\Components\Runtime\Sets;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Contracts\SetContract;
 use Chevere\Components\Runtime\Traits\SetTrait;
-use Chevere\Components\Runtime\Exceptions\RuntimeException;
 use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
 
 class SetDebug implements SetContract
@@ -33,10 +32,11 @@ class SetDebug implements SetContract
      */
     public function __construct(string $value)
     {
-        $this->handle($value);
+        $this->value = $value;
+        $this->assertArgument();
     }
 
-    private function assert(): void
+    private function assertArgument(): void
     {
         if (!in_array($this->value, $this->accept)) {
             throw new InvalidArgumentException(

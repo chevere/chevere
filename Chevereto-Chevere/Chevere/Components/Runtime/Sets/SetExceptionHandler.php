@@ -13,22 +13,38 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Sets;
 
-use InvalidArgumentException;
+use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Contracts\SetContract;
+use Chevere\Components\Runtime\Traits\HandlerTrait;
+use TypeError;
 
 class SetExceptionHandler implements SetContract
 {
     use SetTrait;
+    use HandlerTrait;
 
-    public function set(): void
+    /**
+     * Sets the exception handler function
+     *
+     * @param string $value A full-qualified callable name or empty string for restore handler.
+     * @throws InvalidArgumentException If the value passed isn't acceptable.
+     */
+    public function __construct(string $value)
     {
+        $this->value = $value;
         if ('' == $this->value) {
             $this->restoreExceptionHandler();
 
             return;
         }
+        $this->assertArgument();
+        set_exception_handler($this->value);
+    }
+
+    private function assertArgument(): void
+    {
         if (!is_callable($this->value)) {
             throw new InvalidArgumentException(
                 (new Message('Runtime value must be a valid callable for %subject%'))
@@ -36,14 +52,17 @@ class SetExceptionHandler implements SetContract
                     ->toString()
             );
         }
-        set_exception_handler($this->value);
     }
 
     private function restoreExceptionHandler(): void
     {
         restore_exception_handler();
-        $this->value = (string) set_exception_handler(function () {
-        });
+        $this->handler = set_exception_handler(function () {});
+        try {
+            $this->value = $this->handler ?? '';
+        } catch (TypeError $e) {
+            $this->value = '@';
+        }
         restore_exception_handler();
     }
 }

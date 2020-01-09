@@ -31,10 +31,12 @@ class SetDefaultCharset implements SetContract
      */
     public function __construct(string $value)
     {
-        $this->handle($value);
+        $this->value = $value;
+        $this->assertArgument();
+        $this->assertIniSet();
     }
 
-    private function assert(): void
+    private function assertArgument(): void
     {
         $accepted = mb_list_encodings();
         if (!in_array($this->value, $accepted)) {
@@ -45,6 +47,10 @@ class SetDefaultCharset implements SetContract
                     ->toString()
             );
         }
+    }
+
+    private function assertIniSet(): void
+    {
         if (!@ini_set('default_charset', $this->value)) {
             throw new RuntimeException(
                 (new Message('Unable to set %s=%v'))
