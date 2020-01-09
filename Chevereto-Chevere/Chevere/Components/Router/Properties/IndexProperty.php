@@ -26,7 +26,11 @@ final class IndexProperty extends PropertyBase implements IndexPropertyContract
     use ToArrayTrait;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @param array $index [(string)$key => ['id' => (int)$id, 'group' => (string)$group, 'name' => (string)$name]][]
+     *
+     * @throws RouterPropertyException if the value doesn't match the property format
      */
     public function __construct(array $index)
     {

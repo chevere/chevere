@@ -19,12 +19,6 @@ use Chevere\Components\File\Exceptions\FileNotFoundException;
 
 interface FileCompileContract
 {
-    /**
-     * Applies OPCache to the PHP file.
-     *
-     * @throws FileNotPhpException   if $file is not a PHP file
-     * @throws FileNotFoundException if $file doesn't exists
-     */
     public function __construct(FilePhpContract $filePhp);
 
     /**

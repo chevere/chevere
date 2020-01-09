@@ -27,7 +27,7 @@ use Chevere\Components\App\Contracts\ResolvableContract;
 final class Resolver implements ResolverContract
 {
     /**
-     * {@inheritdoc}
+     * @throws ResolverException if the request can't be routed
      */
     public function __construct(ResolvableContract $resolvable)
     {

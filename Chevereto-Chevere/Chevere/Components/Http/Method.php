@@ -23,7 +23,9 @@ final class Method implements MethodContract
     private string $name;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @throws InvalidArgumentException if the $name isn't included in ACCEPT_METHOD_NAMES
      */
     public function __construct(string $name)
     {

@@ -15,6 +15,8 @@ namespace Chevere\Components\Path\Contracts;
 
 interface PathContract
 {
+    public function __construct(string $absolute);
+
     /**
      * Return absolute path
      */

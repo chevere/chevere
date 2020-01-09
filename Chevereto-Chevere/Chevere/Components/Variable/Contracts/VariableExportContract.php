@@ -17,11 +17,6 @@ use Chevere\Components\Variable\Exceptions\VariableIsResourceException;
 
 interface VariableExportContract
 {
-    /**
-     * Creates a new instance.
-     *
-     * @throws VariableIsResourceException if $var contains resource
-     */
     public function __construct($var);
 
     /**

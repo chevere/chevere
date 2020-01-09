@@ -24,7 +24,9 @@ final class RegexMatch implements RegexMatchContract
     private string $match;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @throws RegexException if $match is an invalid regex matcher
      */
     public function __construct(string $match)
     {

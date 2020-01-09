@@ -32,9 +32,6 @@ final class Router implements RouterContract
 {
     private RouterPropertiesContract $properties;
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct()
     {
     }

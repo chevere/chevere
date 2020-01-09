@@ -25,7 +25,7 @@ final class WildcardCollection implements WildcardCollectionContract
     private array $index;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
      */
     public function __construct(WildcardContract ...$wildcards)
     {

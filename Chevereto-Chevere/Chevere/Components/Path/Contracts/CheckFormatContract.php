@@ -17,9 +17,6 @@ use Chevere\Components\Path\Exceptions\PathInvalidException;
 
 interface CheckFormatContract
 {
-    /**
-     * @throws PathInvalidException if the $path format is invalid
-     */
     public function __construct(string $path);
 
     /**

@@ -22,7 +22,11 @@ final class GroupsProperty extends PropertyBase implements GroupsPropertyContrac
     use ToArrayTrait;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @param array $groups Group routes [(string)$group => (int)$id[]]
+     *
+     * @throws RouterPropertyException if the value doesn't match the property format
      */
     public function __construct(array $groups)
     {

@@ -19,6 +19,9 @@ trait DataMethodTrait
 {
     use DataPropertyTrait;
 
+    /**
+     * Provides access to the DataContract instance.
+     */
     public function data(): DataContract
     {
         return $this->data;

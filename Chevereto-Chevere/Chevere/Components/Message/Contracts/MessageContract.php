@@ -17,11 +17,6 @@ use Chevere\Components\Common\Contracts\ToStringContract;
 
 interface MessageContract extends ToStringContract
 {
-    /**
-     * Creates a new Message instance.
-     *
-     * @param string $message The message string
-     */
     public function __construct(string $message);
 
     /**

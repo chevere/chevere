@@ -22,7 +22,7 @@ final class Response implements ResponseContract
     private GuzzleResponse $guzzle;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance with a default GuzzleResponse object.
      */
     public function __construct()
     {

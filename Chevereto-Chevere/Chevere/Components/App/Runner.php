@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
+use LogicException;
 use Chevere\Components\App\Exceptions\ResolverException;
 use Chevere\Components\App\Instances\BootstrapInstance;
-use LogicException;
 use Chevere\Components\Http\Request\RequestException;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Message\Message;
@@ -42,7 +42,9 @@ final class Runner implements RunnerContract
     private ?bool $consoleLoop;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @param BuilderContract $builder The builder to run.
      */
     public function __construct(BuilderContract $builder)
     {

@@ -42,9 +42,6 @@ final class Loader implements LoaderContract
 
     private ParametersContract $parameters;
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct()
     {
         $app = new App(new Services(), new Response());

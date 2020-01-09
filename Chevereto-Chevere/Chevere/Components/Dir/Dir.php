@@ -33,7 +33,9 @@ final class Dir implements DirContract
     private PathContract $path;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @throws PathIsFileException if the PathContract represents a file
      */
     public function __construct(PathContract $path)
     {

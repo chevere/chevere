@@ -21,11 +21,6 @@ use Chevere\Components\Path\Exceptions\PathIsFileException;
 
 interface DirContract
 {
-    /**
-     * Creates a new instance.
-     *
-     * @throws PathIsFileException if the PathContract represents a file
-     */
     public function __construct(PathContract $path);
 
     /**

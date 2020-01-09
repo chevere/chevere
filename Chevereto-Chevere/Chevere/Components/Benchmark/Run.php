@@ -93,7 +93,10 @@ final class Run implements RunContract
     private string $printable;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @throws ArgumentCountException if the argument count doesn't match the callable parameters
+     * @throws ArgumentTypeException if the argument types doesn't match
      */
     public function __construct(RunableContract $runable)
     {

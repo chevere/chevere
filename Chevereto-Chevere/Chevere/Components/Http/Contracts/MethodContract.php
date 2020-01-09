@@ -39,11 +39,6 @@ interface MethodContract extends ToStringContract
         'CONNECT'
     ];
 
-    /**
-     * Creates a new instance.
-     *
-     * @throws InvalidArgumentException if the $name isn't included in ACCEPT_METHOD_NAMES
-     */
     public function __construct(string $name);
 
     /**

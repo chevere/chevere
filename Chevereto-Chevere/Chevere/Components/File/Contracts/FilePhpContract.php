@@ -17,11 +17,6 @@ use Chevere\Components\File\Exceptions\FileNotPhpException;
 
 interface FilePhpContract
 {
-    /**
-     * Creates a new instance.
-     *
-     * @throws FileNotPhpException If $file is not a PHP file.
-     */
     public function __construct(FileContract $file);
 
     /**

@@ -15,21 +15,30 @@ namespace Chevere\Components\Runtime;
 
 use Chevere\Components\Data\Data;
 use Chevere\Components\Data\Traits\DataMethodTrait;
+use Chevere\Components\Runtime\Contracts\RuntimeContract;
 use Chevere\Components\Runtime\Contracts\SetContract;
 
 /**
  * Runtime applies runtime config and provide data about the App Runtime.
  */
-final class Runtime
+final class Runtime implements RuntimeContract
 {
     use DataMethodTrait;
 
-    public function __construct(SetContract ...$runtimeContract)
+    /**
+     * Creates a new instance.
+     *
+     * @param SetContract $runtimeContract
+     */
+    public function __construct(SetContract ...$setContract)
     {
         $this->data = new Data([]);
-        foreach ($runtimeContract as $runtimeSet) {
+        foreach ($setContract as $set) {
             $this->data = $this->data
-                ->withAddedKey($runtimeSet->name(), $runtimeSet->value());
+                ->withAddedKey(
+                    $set->name(),
+                    $set->value()
+                );
         }
         $this->data = $this->data
             ->withAddedKey('errorReportingLevel', error_reporting());

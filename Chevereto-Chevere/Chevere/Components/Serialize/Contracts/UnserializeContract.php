@@ -18,11 +18,6 @@ use Chevere\Components\Serialize\Exceptions\UnserializeException;
 
 interface UnserializeContract
 {
-    /**
-     * Creates a new instance.
-     *
-     * @throws UnserializeException if $serialized can't be unserialized
-     */
     public function __construct(string $serialized);
 
     /**

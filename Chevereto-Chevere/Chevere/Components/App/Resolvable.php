@@ -31,7 +31,9 @@ final class Resolvable implements ResolvableContract
     private BuilderContract $builder;
 
     /**
-     * {@inheritdoc}
+     * @throws RequestRequiredException if $builder lacks of a request
+     * @throws RouterRequiredException if $builder lacks of a RouterContract
+     * @throws RouterCantResolveException if $builder RouterContract lacks of routing
      */
     public function __construct(BuilderContract $builder)
     {

@@ -35,7 +35,11 @@ final class Type implements TypeContract
     // private $interfaceName;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @var string a primitive type, class name or interface
+     *
+     * @throws TypeNotFoundException if the type doesn't exists
      */
     public function __construct(string $type)
     {

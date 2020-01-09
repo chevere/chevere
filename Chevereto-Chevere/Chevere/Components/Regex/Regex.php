@@ -24,7 +24,9 @@ final class Regex implements RegexContract
     private string $regex;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @throws RegexException if $regex is not a valid regular expresion
      */
     public function __construct(string $regex)
     {

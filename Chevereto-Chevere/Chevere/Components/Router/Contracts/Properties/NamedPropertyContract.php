@@ -21,12 +21,5 @@ interface NamedPropertyContract extends ToArrayContract
     /** @var string property name */
     const NAME = 'named';
 
-    /**
-     * Creates a new instance.
-     *
-     * @param array $named Named routes [(string)$name => (int)$id]
-     *
-     * @throws RouterPropertyException if the value doesn't match the property format
-     */
     public function __construct(array $named);
 }

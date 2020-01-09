@@ -33,7 +33,9 @@ final class VariableExport implements VariableExportContract
     private BreadcrumContract $breadcrum;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @throws VariableIsResourceException if $var contains resource
      */
     public function __construct($var)
     {

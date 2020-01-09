@@ -53,7 +53,7 @@ final class Route implements RouteContract
     private MethodControllerNameCollectionContract $methodControllerNameCollection;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
      */
     public function __construct(PathUriContract $pathUri)
     {

@@ -24,7 +24,7 @@ final class MethodControllerName implements MethodControllerNameContract
     private ControllerNameContract $controllerName;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
      */
     public function __construct(MethodContract $method, ControllerNameContract $controllerName)
     {

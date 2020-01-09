@@ -24,6 +24,7 @@ use Chevere\Components\File\Contracts\FileReturnContract;
 
 /**
  * Checkout the application build.
+ * The checkout consists in the creation of a build file which maps the build checksums.
  */
 final class Checkout implements CheckoutContract
 {
@@ -32,7 +33,7 @@ final class Checkout implements CheckoutContract
     private FileReturnContract $fileReturn;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
      */
     public function __construct(BuildContract $build)
     {

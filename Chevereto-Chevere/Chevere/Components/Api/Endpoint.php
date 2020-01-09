@@ -30,7 +30,7 @@ final class Endpoint implements EndpointContract
     private $methodControllerNameCollection;
 
     /**
-     * {@inheritdoc}
+     *
      */
     public function __construct(MethodControllerNameCollectionContract $collection)
     {

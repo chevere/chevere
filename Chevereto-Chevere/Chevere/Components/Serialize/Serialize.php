@@ -22,7 +22,7 @@ final class Serialize implements SerializeContract
     private string $serialized;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
      */
     public function __construct(VariableExportContract $variableExport)
     {

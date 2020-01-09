@@ -17,9 +17,6 @@ use Chevere\Components\Variable\Contracts\VariableExportContract;
 
 interface SerializeContract
 {
-    /**
-     * Creates a new instance.
-     */
     public function __construct(VariableExportContract $variableExport);
 
     /**

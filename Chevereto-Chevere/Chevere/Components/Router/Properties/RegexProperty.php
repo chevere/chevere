@@ -24,7 +24,11 @@ final class RegexProperty extends PropertyBase implements RegexPropertyContract
     use ToStringTrait;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @param string $regex Regex pattern used when resolving routing
+     *
+     * @throws RouterPropertyException if the value doesn't match the property format
      */
     public function __construct(string $regex)
     {

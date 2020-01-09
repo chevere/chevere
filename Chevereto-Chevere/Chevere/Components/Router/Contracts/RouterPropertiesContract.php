@@ -18,11 +18,6 @@ use Chevere\Components\Common\Contracts\ToArrayContract;
 interface RouterPropertiesContract extends ToArrayContract
 {
     /**
-     * Creates a new instance.
-     */
-    public function __construct();
-
-    /**
      * Return an instance with the specified regex string.
      *
      * This method MUST retain the state of the current instance, and return

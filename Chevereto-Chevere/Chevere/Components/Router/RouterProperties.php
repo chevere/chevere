@@ -47,7 +47,7 @@ final class RouterProperties implements RouterPropertiesContract
     private array $named;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
      */
     public function __construct()
     {

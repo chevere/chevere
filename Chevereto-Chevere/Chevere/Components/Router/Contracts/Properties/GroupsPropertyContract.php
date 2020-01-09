@@ -21,12 +21,5 @@ interface GroupsPropertyContract extends ToArrayContract
     /** @var string property name */
     const NAME = 'groups';
 
-    /**
-     * Creates a new instance.
-     *
-     * @param array $groups Group routes [(string)$group => (int)$id[]]
-     *
-     * @throws RouterPropertyException if the value doesn't match the property format
-     */
     public function __construct(array $groups);
 }

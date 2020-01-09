@@ -18,9 +18,6 @@ use Chevere\Components\Router\Contracts\RouterContract;
 
 interface ServicesContract
 {
-    /**
-     * Creates a new application base service container.
-     */
     public function __construct();
 
     /**

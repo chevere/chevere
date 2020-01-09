@@ -18,11 +18,6 @@ use Chevere\Components\Regex\Exceptions\RegexException;
 
 interface RegexMatchContract extends ToStringContract
 {
-    /**
-     * Creates a new instance.
-     *
-     * @throws RegexException if $match is an invalid regex matcher
-     */
     public function __construct(string $match);
 
     /**

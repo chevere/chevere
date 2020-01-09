@@ -15,9 +15,6 @@ namespace Chevere\Components\App\Contracts;
 
 interface BuilderContract
 {
-    /**
-     * Creates a new BuilderContact instance.
-     */
     public function __construct(BuildContract $build);
 
     /**

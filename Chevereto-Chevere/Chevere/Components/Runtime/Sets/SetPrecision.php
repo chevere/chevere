@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\Runtime\Sets;
 
 use RuntimeException;
-
 use Chevere\Components\Message\Message;
-use Chevere\Components\Runtime\Traits\Set;
+use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Contracts\SetContract;
 
 class SetPrecision implements SetContract
 {
-    use Set;
+    use SetTrait;
 
     public function set(): void
     {

@@ -27,7 +27,7 @@ class Path implements PathContract
     private string $absolute;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
      */
     public function __construct(string $absolute)
     {

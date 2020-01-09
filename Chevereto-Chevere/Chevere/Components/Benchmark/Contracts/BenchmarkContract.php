@@ -18,9 +18,6 @@ use Chevere\Components\Benchmark\Exceptions\ArgumentCountException;
 
 interface BenchmarkContract
 {
-    /**
-     * @param array $arguments Arguments to pass to all callables.
-     */
     public function __construct(...$arguments);
 
     public function arguments(): array;

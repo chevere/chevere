@@ -24,7 +24,7 @@ class Data implements DataContract
     private array $data;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
      */
     public function __construct(array $data)
     {

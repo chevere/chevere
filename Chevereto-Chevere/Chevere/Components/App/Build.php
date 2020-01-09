@@ -68,7 +68,14 @@ final class Build implements BuildContract
     private RouterMakerContract $routerMaker;
 
     /**
-     * {@inheritdoc}
+     * Constructs the Build instance.
+     *
+     * A BuildContract instance allows to interact with the application build, which refers to the base
+     * application service layer which consists of API and Router services.
+     *
+     * @param AppContract  $app  The application container
+     *
+     * @throws PathIsNotDirectoryException if the $path doesn't exists and unable to create
      */
     public function __construct(AppContract $app)
     {

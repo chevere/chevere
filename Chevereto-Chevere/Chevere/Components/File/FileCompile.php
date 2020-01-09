@@ -27,7 +27,10 @@ final class FileCompile implements FileCompileContract
     private FilePhpContract $filePhp;
 
     /**
-     * {@inheritdoc}
+     * Applies OPCache to the PHP file.
+     *
+     * @throws FileNotPhpException   if $file is not a PHP file
+     * @throws FileNotFoundException if $file doesn't exists
      */
     public function __construct(FilePhpContract $filePhp)
     {

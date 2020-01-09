@@ -19,9 +19,6 @@ use Chevere\Components\Breadcrum\Exceptions\BreadcrumException;
 
 interface BreadcrumContract extends ToArrayContract, ToStringContract
 {
-    /**
-     * Creates a new instance.
-     */
     public function __construct();
 
     /**

@@ -36,7 +36,9 @@ final class FileReturn implements FileReturnContract
     private bool $strict;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @throws FileNotFoundException if the file doesn't exists
      */
     public function __construct(FilePhpContract $filePhp)
     {

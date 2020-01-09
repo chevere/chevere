@@ -42,7 +42,7 @@ final class Globals implements GlobalsContract
     private array $globals;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
      */
     public function __construct(array $globals)
     {

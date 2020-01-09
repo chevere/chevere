@@ -21,11 +21,6 @@ use Chevere\Components\Router\Exceptions\RouterMakerException;
 interface RouterMakerContract
 {
     /**
-     * Creates a new instance.
-     */
-    public function __construct();
-
-    /**
      * Provides access to the RouterPropertiesContract instance.
      */
     public function properties(): RouterPropertiesContract;

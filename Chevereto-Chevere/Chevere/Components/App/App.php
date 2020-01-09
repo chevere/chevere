@@ -39,7 +39,7 @@ final class App implements AppContract
     private array $arguments;
 
     /**
-     * {@inheritdoc}
+     * Constructs the application container.
      */
     public function __construct(ServicesContract $services, ResponseContract $response)
     {

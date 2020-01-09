@@ -17,9 +17,6 @@ use Chevere\Components\App\Exceptions\ResolverException;
 
 interface ResolverContract
 {
-    /**
-     * @throws ResolverException if the request can't be routed
-     */
     public function __construct(ResolvableContract $resolvable);
 
     /**

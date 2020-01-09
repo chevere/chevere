@@ -22,10 +22,6 @@ interface AppContract
     const FILE_PARAMETERS = 'parameters.php';
     const PATH_LOGS = 'var/logs/';
 
-    /**
-     * Construct the application container.
-     * An application container always have a ResponseContract attached.
-     */
     public function __construct(ServicesContract $services, ResponseContract $response);
 
     /**

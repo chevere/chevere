@@ -18,11 +18,6 @@ use Chevere\Components\Http\GuzzleResponse;
 interface ResponseContract
 {
     /**
-     * Creates a new instance with a default GuzzleResponse object.
-     */
-    public function __construct();
-
-    /**
      * Return an instance with the specified GuzzleResponse.
      *
      * This method MUST retain the state of the current instance, and return

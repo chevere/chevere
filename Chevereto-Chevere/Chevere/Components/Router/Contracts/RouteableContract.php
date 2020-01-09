@@ -18,11 +18,6 @@ use Chevere\Components\Router\Exceptions\RouteableException;
 
 interface RouteableContract
 {
-    /**
-     * Creates a new instance.
-     *
-     * @throws RouteableException if $route is not routeable
-     */
     public function __construct(RouteContract $route);
 
     /**

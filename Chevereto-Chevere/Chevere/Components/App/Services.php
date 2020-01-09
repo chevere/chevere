@@ -27,7 +27,7 @@ final class Services implements ServicesContract
     private RouterContract $router;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
      */
     public function __construct()
     {

@@ -26,7 +26,7 @@ final class Routed implements RoutedContract
     private array $wildcards;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
      */
     public function __construct(RouteContract $route, array $wildcards)
     {

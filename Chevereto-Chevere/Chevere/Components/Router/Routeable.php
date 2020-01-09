@@ -29,7 +29,9 @@ final class Routeable implements RouteableContract
     private RouteContract $route;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @throws RouteableException if $route is not routeable
      */
     public function __construct(RouteContract $route)
     {
@@ -52,7 +54,7 @@ final class Routeable implements RouteableContract
             new VariableExport($this->route);
         } catch (VariableExportException $e) {
             throw new RouteableException(
-                (new Message("Instance of %className% is not exportable: %message%"))
+                (new Message('Instance of %className% is not exportable: %message%'))
                     ->code('%className%', RouteContract::class)
                     ->code('%message%', $e->getMessage())
                     ->toString()

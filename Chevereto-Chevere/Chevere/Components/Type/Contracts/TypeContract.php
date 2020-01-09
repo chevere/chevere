@@ -56,13 +56,6 @@ interface TypeContract
         self::INTERFACE_NAME => 'is_object',
     ];
 
-    /**
-     * Creates a new instance.
-     *
-     * @var string a primitive type, class name or interface
-     *
-     * @throws TypeNotFoundException if the type doesn't exists
-     */
     public function __construct(string $type);
 
     /**

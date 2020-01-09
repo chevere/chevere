@@ -43,7 +43,9 @@ final class Benchmark implements BenchmarkContract
     private ReflectionFunction $reflection;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @param array $arguments Arguments to pass to all callables.
      */
     public function __construct(...$arguments)
     {

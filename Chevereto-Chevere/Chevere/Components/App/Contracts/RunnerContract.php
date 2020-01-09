@@ -15,9 +15,6 @@ namespace Chevere\Components\App\Contracts;
 
 interface RunnerContract
 {
-    /**
-     * Creates a new RunnerContract instance by passing the builder to run.
-     */
     public function __construct(BuilderContract $builder);
 
     /**

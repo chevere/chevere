@@ -17,9 +17,6 @@ use Chevere\Components\Controller\Contracts\ControllerNameContract;
 
 interface MethodControllerNameContract
 {
-    /**
-     * Creates a new instance.
-     */
     public function __construct(MethodContract $method, ControllerNameContract $controllerName);
 
     /**

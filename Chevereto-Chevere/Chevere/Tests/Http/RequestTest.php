@@ -52,7 +52,7 @@ final class RequestTest extends TestCase
                 $globs['server']
             );
         $globals = $request->globals();
-        xdd($globals);
+        // xdd($globals);
         // $this->assertSame();
     }
 

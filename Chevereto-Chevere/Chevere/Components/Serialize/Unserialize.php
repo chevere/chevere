@@ -29,7 +29,9 @@ final class Unserialize implements UnserializeContract
     private TypeContract $type;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @throws UnserializeException if $serialized can't be unserialized
      */
     public function __construct(string $serialized)
     {

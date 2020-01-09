@@ -17,9 +17,6 @@ use Chevere\Components\Common\Contracts\ToArrayContract;
 
 interface MiddlewareNameCollectionContract extends ToArrayContract
 {
-    /**
-     * Creates a new instance.
-     */
     public function __construct(MiddlewareNameContract ...$middlewareNames);
 
     /**

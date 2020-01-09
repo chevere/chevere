@@ -17,8 +17,5 @@ use Chevere\Components\Common\Contracts\ToArrayContract;
 
 interface InspectContract extends ToArrayContract
 {
-    /**
-     * @param string $className A class name implementing the ControllerContract
-     */
     public function __construct(string $className);
 }

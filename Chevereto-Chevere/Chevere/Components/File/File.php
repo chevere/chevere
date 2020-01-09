@@ -37,7 +37,9 @@ final class File implements FileContract
     private bool $isPhp;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @throws PathIsDirException if the PathContract represents a directory
      */
     public function __construct(PathContract $path)
     {

@@ -20,11 +20,6 @@ interface RouteNameContract
     /** Regex pattern used to validate route name. */
     const REGEX = '/^[\w\-\.]+$/i';
 
-    /**
-     * Creates a new instance.
-     *
-     * @throws RouteInvalidNameException if $name doesn't match REGEX
-     */
     public function __construct(string $name);
 
     /**

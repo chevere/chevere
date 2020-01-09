@@ -25,11 +25,6 @@ interface FileReturnContract
     const PHP_RETURN = '<?php return ';
     const PHP_RETURN_CHARS = 13;
 
-    /**
-     * Creates a new instance.
-     *
-     * @throws FileNotFoundException if the file doesn't exists
-     */
     public function __construct(FilePhpContract $file);
 
     /**

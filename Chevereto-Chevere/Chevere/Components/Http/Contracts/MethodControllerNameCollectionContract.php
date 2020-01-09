@@ -18,9 +18,6 @@ use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 
 interface MethodControllerNameCollectionContract extends ToArrayContract
 {
-    /**
-     * Creates a new instance.
-     */
     public function __construct(MethodControllerNameContract ...$methodControllerName);
 
     /**

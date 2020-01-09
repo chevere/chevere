@@ -20,9 +20,6 @@ use Chevere\Components\Common\Contracts\ToArrayContract;
  */
 interface WildcardCollectionContract extends ToArrayContract
 {
-    /**
-     * Creates a new instance.
-     */
     public function __construct(WildcardContract ...$wildcards);
 
     /**

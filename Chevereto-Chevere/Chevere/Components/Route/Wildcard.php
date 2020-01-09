@@ -34,7 +34,13 @@ final class Wildcard implements WildcardContract
     private RegexMatchContract $regexMatch;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @param string $name  The wildcard name
+     * @param string $regex The regex patter, without delimeters
+     *
+     * @throws WildcardStartWithNumberException if $name starts with a number
+     * @throws WildcardInvalidCharsException    if $name contains invalid chars
      */
     public function __construct(string $name)
     {

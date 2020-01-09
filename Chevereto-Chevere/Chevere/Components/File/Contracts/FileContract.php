@@ -26,11 +26,6 @@ interface FileContract
 {
     const CHECKSUM_ALGO = 'sha256';
 
-    /**
-     * Creates a new instance.
-     *
-     * @throws PathIsDirException if the PathContract represents a directory
-     */
     public function __construct(PathContract $path);
 
     /**

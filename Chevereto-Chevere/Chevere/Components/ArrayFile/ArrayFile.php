@@ -36,7 +36,10 @@ final class ArrayFile implements ArrayFileContract
     private TypeContract $type;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @throws FileNotFoundException          if the $filePhp doesn't exists
+     * @throws FileReturnInvalidTypeException if the actual file return isn't type array
      */
     public function __construct(FilePhpContract $filePhp)
     {

@@ -25,7 +25,7 @@ final class CheckFormat implements CheckFormatContract
     private string $path;
 
     /**
-     * {@inheritdoc}
+     * @throws PathInvalidException if the $path format is invalid
      */
     public function __construct(string $path)
     {

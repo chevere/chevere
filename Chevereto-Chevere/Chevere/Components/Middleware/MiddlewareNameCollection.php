@@ -26,7 +26,7 @@ final class MiddlewareNameCollection implements MiddlewareNameCollectionContract
     private array $index;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
      */
     public function __construct(MiddlewareNameContract ...$middlewareNames)
     {

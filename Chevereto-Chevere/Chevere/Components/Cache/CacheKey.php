@@ -23,7 +23,9 @@ final class CacheKey implements CacheKeyContract
     private string $key;
 
     /**
-     * {@inheritdoc}
+     * @param string $key Cache key entry
+     *
+     * @throws CacheInvalidKeyException if $name contains illegal characters
      */
     public function __construct(string $key)
     {

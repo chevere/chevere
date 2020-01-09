@@ -24,7 +24,12 @@ final class MiddlewareName implements MiddlewareNameContract
     private string $name;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @param string $name A middleware name implementing the MiddlewareContract
+     *
+     * @throws InvalidArgumentException    if $name represents non existent class
+     * @throws MiddlewareContractException if the $name doesn't represent a class implementing the MiddlewareContract
      */
     public function __construct(string $name)
     {

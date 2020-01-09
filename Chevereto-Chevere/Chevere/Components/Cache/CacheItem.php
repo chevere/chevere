@@ -21,7 +21,7 @@ final class CacheItem implements CacheItemContract
     private FileReturnContract $fileReturn;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
      */
     public function __construct(FileReturnContract $fileReturn)
     {

@@ -17,9 +17,6 @@ use Chevere\Components\Common\Contracts\ToArrayContract;
 
 interface DataContract extends ToArrayContract
 {
-    /**
-     * Creates a new instance.
-     */
     public function __construct(array $data);
 
     /**

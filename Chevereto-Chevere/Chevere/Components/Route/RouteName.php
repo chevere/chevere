@@ -23,7 +23,9 @@ final class RouteName implements RouteNameContract
     private string $name;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @throws RouteInvalidNameException if $name doesn't match REGEX
      */
     public function __construct(string $name)
     {

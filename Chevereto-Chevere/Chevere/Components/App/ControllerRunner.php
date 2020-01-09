@@ -35,7 +35,7 @@ final class ControllerRunner implements ControllerRunnerContract
     private MiddlewareRunnerContract $middlewareRunner;
 
     /**
-     * {@inheritdoc}
+     * Sets the application on which the controllers will run.
      */
     public function __construct(AppContract $app)
     {

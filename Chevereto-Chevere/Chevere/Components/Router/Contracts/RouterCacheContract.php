@@ -22,9 +22,6 @@ interface RouterCacheContract
     const KEY_ROUTES = 'routes';
     const KEY_INDEX = 'index';
 
-    /**
-     * Creates a new instance.
-     */
     public function __construct(CacheContract $cache);
 
     /**

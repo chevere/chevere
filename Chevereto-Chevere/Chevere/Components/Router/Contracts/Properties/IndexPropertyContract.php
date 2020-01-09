@@ -21,12 +21,5 @@ interface IndexPropertyContract extends ToArrayContract
     /** @var string property name */
     const NAME = 'index';
 
-    /**
-     * Creates a new instance.
-     *
-     * @param array $index [(string)$key => ['id' => (int)$id, 'group' => (string)$group, 'name' => (string)$name]][]
-     *
-     * @throws RouterPropertyException if the value doesn't match the property format
-     */
     public function __construct(array $index);
 }

@@ -15,7 +15,6 @@ namespace Chevere\Components\Path;
 
 use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Path\Exceptions\PathInvalidException;
 use Chevere\Components\Path\Exceptions\PathNotAllowedException;
 use Chevere\Components\Path\Contracts\CheckFormatContract;
 use Chevere\Components\Path\Contracts\PathAppContract;
@@ -27,7 +26,7 @@ use function ChevereFn\stringStartsWith;
 /**
  * A proxy class to handle paths in the application context.
  */
-class PathApp implements PathContract, PathAppContract
+class PathApp implements PathAppContract
 {
     private CheckFormatContract $checkFormat;
 
@@ -46,7 +45,7 @@ class PathApp implements PathContract, PathAppContract
     private string $relative;
 
     /**
-     * {@inheritdoc}
+     * Construct a new instance.
      */
     public function __construct(string $path)
     {

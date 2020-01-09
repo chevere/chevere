@@ -14,19 +14,19 @@ declare(strict_types=1);
 namespace Chevere\Components\Runtime\Sets;
 
 use InvalidArgumentException;
-
 use Chevere\Components\Message\Message;
-use Chevere\Components\Runtime\Traits\Set;
+use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Contracts\SetContract;
 
 class SetErrorHandler implements SetContract
 {
-    use Set;
+    use SetTrait;
 
     public function set(): void
     {
         if ('' == $this->value) {
             $this->restoreErrorHandler();
+
             return;
         }
         if (!is_callable($this->value)) {

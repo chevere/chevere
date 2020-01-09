@@ -48,9 +48,6 @@ interface GlobalsContract
         [],
     ];
 
-    /**
-     * Creates a new instance.
-     */
     public function __construct(array $globals);
 
     public function argc(): int;

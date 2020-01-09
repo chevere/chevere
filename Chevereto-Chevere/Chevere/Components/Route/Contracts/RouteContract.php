@@ -24,9 +24,6 @@ use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 
 interface RouteContract
 {
-    /**
-     * Creates a new instance.
-     */
     public function __construct(PathUriContract $pathUri);
 
     /**

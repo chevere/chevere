@@ -15,9 +15,6 @@ namespace Chevere\Components\App\Contracts;
 
 interface CheckoutContract
 {
-    /**
-     * The checkout consists in the creation of a build file which maps the build checksums.
-     */
     public function __construct(BuildContract $build);
 
     /**

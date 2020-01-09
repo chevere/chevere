@@ -42,7 +42,7 @@ final class Parameters implements ParametersContract
     private array $routes;
 
     /**
-     * {@inheritdoc}
+     *
      */
     public function __construct(ArrayFileContract $arrayFile)
     {

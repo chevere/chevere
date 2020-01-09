@@ -41,7 +41,11 @@ final class Cache implements CacheContract
     private array $puts;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @param DirContract $dir the directory where cache files will be stored/accesed (must exists)
+     *
+     * @throws DirUnableToCreateException if $dir doesn't exists and unable to create
      */
     public function __construct(DirContract $dir)
     {

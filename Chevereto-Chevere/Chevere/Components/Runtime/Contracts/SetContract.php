@@ -15,11 +15,16 @@ namespace Chevere\Components\Runtime\Contracts;
 
 interface SetContract
 {
-    public function __construct(string $value = null);
+    // public function __construct(string $value);
 
-    public function set(): void;
+    /**
+     * @return string The value passed in construct.
+     */
+    public function value(): string;
 
-    public function value(): ?string;
-
+    /**
+     *
+     * @return string The name of the set, i.e: "debug" or "locale".
+     */
     public function name(): string;
 }

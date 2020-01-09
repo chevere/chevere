@@ -20,11 +20,6 @@ interface CacheKeyContract extends ToStringContract
 {
     const ILLEGAL_KEY_CHARACTERS = '\.\/\\\~\:';
 
-    /**
-     * @param string $key Cache key entry
-     *
-     * @throws CacheInvalidKeyException if $name contains illegal characters
-     */
     public function __construct(string $key);
 
     /**

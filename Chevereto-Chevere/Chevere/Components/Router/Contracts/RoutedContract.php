@@ -17,9 +17,6 @@ use Chevere\Components\Route\Contracts\RouteContract;
 
 interface RoutedContract
 {
-    /**
-     * Creates a new instance.
-     */
     public function __construct(RouteContract $route, array $matches);
 
     /**

@@ -26,7 +26,7 @@ final class Breadcrum implements BreadcrumContract
     private int $id;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
      */
     public function __construct()
     {

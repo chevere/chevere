@@ -29,7 +29,7 @@ final class Builder implements BuilderContract
     private array $controllerArguments;
 
     /**
-     * {@inheritdoc}
+     * Creates a new Builder instance.
      */
     public function __construct(BuildContract $build)
     {

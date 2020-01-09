@@ -28,7 +28,12 @@ final class Request extends GuzzleHttpServerRequest implements RequestContract
     use RequestTrait;
 
     /**
-     * {@inheritdoc}
+     * @param MethodContract                       $method       HTTP method
+     * @param PathUri                              $uri          URI
+     * @param array                                $headers      Request headers
+     * @param string|null|resource|StreamInterface $body         Request body
+     * @param string                               $version      Protocol version
+     * @param array                                $serverParams Typically the $_SERVER superglobal
      */
     public function __construct(
         MethodContract $method,

@@ -88,7 +88,9 @@ final class Inspect implements InspectContract
     public $isRelatedResource;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @param string $className A class name implementing the ControllerContract
      */
     public function __construct(string $className)
     {

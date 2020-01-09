@@ -28,7 +28,7 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
     private array $index;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
      */
     public function __construct(MethodControllerNameContract ...$methodControllerName)
     {

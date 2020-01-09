@@ -14,26 +14,31 @@ declare(strict_types=1);
 namespace Chevere\Components\Runtime\Traits;
 
 use Chevere\Components\Data\Contracts\DataContract;
-
 use function ChevereFn\stringReplaceFirst;
 
-trait Set
+trait SetTrait
 {
-    private ?string $value;
+    private string $value;
 
     private DataContract $data;
 
-    public function __construct(string $value = null)
+    private function handle(string $value)
     {
         $this->value = $value;
-        $this->set();
+        $this->assert();
     }
 
-    public function value(): ?string
+    /**
+     * {@inheritdoc}
+     */
+    public function value(): string
     {
         return $this->value;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function name(): string
     {
         $explode = explode('\\', __CLASS__);
@@ -41,6 +46,4 @@ trait Set
 
         return lcfirst($name);
     }
-
-    abstract public function set(): void;
 }

@@ -27,15 +27,6 @@ interface WildcardContract
     const ACCEPT_CHARS = '([a-z\_][\w_]*?)';
     const ACCEPT_CHARS_REGEX = '/^' . self::ACCEPT_CHARS . '+$/i';
 
-    /**
-     * Creates a new instance.
-     *
-     * @param string $name  The wildcard name
-     * @param string $regex The regex patter, without delimeters
-     *
-     * @throws WildcardStartWithNumberException if $name starts with a number
-     * @throws WildcardInvalidCharsException    if $name contains invalid chars
-     */
     public function __construct(string $name);
 
     /**

@@ -39,7 +39,7 @@ final class RouterMaker implements RouterMakerContract
     private array $keys;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
      */
     public function __construct()
     {

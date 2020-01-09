@@ -22,7 +22,6 @@ use JakubOnderka\PhpConsoleColor\ConsoleColor;
  *
  * It works by setting a message string and then using chaineable methods it
  * defines a translation string that will be used by toString().
- *
  */
 
 /**
@@ -38,7 +37,9 @@ final class Message implements MessageContract
     private array $trTable = [];
 
     /**
-     * {@inheritdoc}
+     * Creates a new Message instance.
+     *
+     * @param string $message The message string
      */
     public function __construct(string $message)
     {

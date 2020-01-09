@@ -30,12 +30,5 @@ interface RegexPropertyContract extends ToStringContract
     /** @var string %1 route, %2 id */
     const REGEX_ENTRY_TEMPLATE = '|%s (*:%s)';
 
-    /**
-     * Creates a new instance.
-     *
-     * @param string $regex Regex pattern used when resolving routing
-     *
-     * @throws RouterPropertyException if the value doesn't match the property format
-     */
     public function __construct(string $regex);
 }

@@ -21,7 +21,11 @@ final class NamedProperty extends PropertyBase implements NamedPropertyContract
     use ToArrayTrait;
 
     /**
-     * {@inheritdoc}
+     * Creates a new instance.
+     *
+     * @param array $named Named routes [(string)$name => (int)$id]
+     *
+     * @throws RouterPropertyException if the value doesn't match the property format
      */
     public function __construct(array $named)
     {
