@@ -57,16 +57,17 @@ final class StopwatchTest extends TestCase
     public function testStopwatch(): void
     {
         $sw = new Stopwatch();
-        // 100000 = 0.1 ms
-        time_nanosleep(0, 100000);
-        $sw->mark('uno');
-        time_nanosleep(0, 100000);
-        $sw->mark('dos');
+        $nanoTime = 100000; // 100000 = 0.1 ms
+        $marks = 2;
+        for ($i = 0; $i < $marks; $i++) {
+            time_nanosleep(0, 100000);
+            $sw->mark((string) $i);
+        }
         time_nanosleep(0, 100000);
         $sw->stop();
         $recordsSum = array_sum(array_values($sw->records()));
         $this->assertSame($recordsSum, $sw->timeElapsed());
-        $this->assertTrue($recordsSum > 300000);
+        $this->assertTrue($recordsSum > $nanoTime * ($marks + 2));
         $this->assertTrue(stringEndsWith(' ms', $sw->timeElapsedRead()));
     }
 }

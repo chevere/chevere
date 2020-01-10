@@ -17,6 +17,9 @@ use Chevere\Components\Breadcrum\Exceptions\BreadcrumException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Breadcrum\Contracts\BreadcrumContract;
 
+/**
+ * A general purpose iterator companion.
+ */
 final class Breadcrum implements BreadcrumContract
 {
     private array $items;

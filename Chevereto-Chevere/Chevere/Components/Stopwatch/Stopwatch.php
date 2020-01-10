@@ -75,9 +75,8 @@ final class Stopwatch implements StopwatchContract
         }
         if (in_array($name, $this->index)) {
             throw new InvalidArgumentException(
-                (new Message('Flag name %flagName% has be already registered, you must use an unique flag for each %className% instance'))
+                (new Message('Flag name %flagName% has be already registered, you must use an unique flag for each mark'))
                     ->code('%flagName%', $name)
-                    ->code('%className%', __CLASS__)
                     ->toString()
             );
         }
