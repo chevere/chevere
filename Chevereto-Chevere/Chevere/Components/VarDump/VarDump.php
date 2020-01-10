@@ -13,85 +13,64 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump;
 
-use ReflectionProperty;
 use Chevere\Components\VarDump\Processors\ArrayProcessor;
 use Chevere\Components\VarDump\Processors\BooleanProcessor;
 use Chevere\Components\VarDump\Processors\ObjectProcessor;
 use Chevere\Components\VarDump\Processors\ScalarProcessor;
 use Chevere\Components\VarDump\Contracts\FormatterContract;
+use Chevere\Components\VarDump\Contracts\VarDumpContract;
 use function ChevereFn\varType;
 
 /**
  * Analyze a variable and provide a formated string representation of its type and data.
  */
-final class VarDump
+final class VarDump implements VarDumpContract
 {
-    const TYPE_STRING = 'string';
-    const TYPE_FLOAT = 'float';
-    const TYPE_INTEGER = 'integer';
-    const TYPE_BOOLEAN = 'boolean';
-    const TYPE_NULL = 'NULL';
-    const TYPE_OBJECT = 'object';
-    const TYPE_ARRAY = 'array';
-    const _FILE = '_file';
-    const _CLASS = '_class';
-    const _OPERATOR = '_operator';
-    const _FUNCTION = '_function';
-    const _PRIVACY = '_privacy';
-    const _VARIABLE = '_variable';
-    const ANON_CLASS = 'class@anonymous';
-
-    const PROPERTIES_REFLECTION_MAP = [
-        'public' => ReflectionProperty::IS_PUBLIC,
-        'protected' => ReflectionProperty::IS_PROTECTED,
-        'private' => ReflectionProperty::IS_PRIVATE,
-        'static' => ReflectionProperty::IS_STATIC,
-    ];
-
     private FormatterContract $formatter;
 
     /** @var array [className,] */
-    private array $dontDump;
+    private array $dontDump = [];
 
-    private string $output;
+    private string $output = '';
 
-    private string $template;
+    private int $indent = 0;
+
+    private string $indentString = '';
+
+    private int $depth = 0;
 
     private $var;
 
-    /** @var mixed */
-    private $expression;
-
-    private int $indent;
-
-    private int $depth;
-
-    /** @var mixed */
     private $val;
-
-    private string $indentString;
 
     private string $type;
 
     private string $info;
 
+    private string $template;
+
+    /**
+     * Creates a new instance.
+     *
+     * @param FormatterContract $formatter A VarDump formatter
+     */
     public function __construct(FormatterContract $formatter)
     {
         $this->formatter = $formatter;
-        $this->dontDump = [];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function formatter(): FormatterContract
     {
         return $this->formatter;
     }
 
-    public function dontDump(): array
-    {
-        return $this->dontDump;
-    }
-
-    public function withDontDump(array $dontDump): self
+    /**
+     * {@inheritdoc}
+     */
+    public function withDontDump(string ...$dontDump): VarDumpContract
     {
         $new = clone $this;
         $new->dontDump = $dontDump;
@@ -99,95 +78,119 @@ final class VarDump
         return $new;
     }
 
-    public function withDump($var, int $indent = 0, int $depth = 0): self
+    /**
+     * {@inheritdoc}
+     */
+    public function dontDump(): array
     {
-        ++$depth;
+        return $this->dontDump;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function withVar($var): VarDumpContract
+    {
         $new = clone $this;
+        ++$new->depth;
         $new->var = $var;
-        $new->expression = $new->var;
-        $new->indent = $indent;
-        $new->depth = $depth;
-        $new->val = null;
-        $new->indentString = $new->formatter->getIndent($new->indent);
-        $new->setType();
-        $new->handleType();
-        $new->setTemplate();
-        $new->setOutput();
 
         return $new;
     }
 
-    public function expression()
+    /**
+     * {@inheritdoc}
+     */
+    public function var()
     {
-        return $this->expression;
+        return $this->var;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function withIndent(int $indent): VarDumpContract
+    {
+        $new = clone $this;
+        $new->indent = $indent;
+
+        return $new;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function indent(): int
     {
         return $this->indent;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function withDepth(int $depth): VarDumpContract
+    {
+        $new = clone $this;
+        $new->depth = $depth;
+
+        return $new;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function depth(): int
     {
         return $this->depth;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function process(): VarDumpContract
+    {
+        $this->val = null;
+        $this->type = varType($this->var);
+        $this->indentString = $this->formatter->getIndent($this->indent);
+        $this->handleType();
+        $this->setTemplate();
+        $this->setOutput();
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function indentString(): string
     {
         return $this->indentString;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function toString(): string
     {
-        return $this->output ?? '';
-    }
-
-    public function respawn(): self
-    {
-        $new = new self($this->formatter);
-        if (!empty($this->dontDump)) {
-            $new = $new->withDontDump($this->dontDump);
-        }
-
-        return $new;
-    }
-
-    private function setOutput(): void
-    {
-        $template = $this->template;
-        if (!isset($this->info)) {
-            $template = str_replace('%info%', null, $template);
-            $template = preg_replace('!\s+!', ' ', $template);
-            $template = trim($template);
-        }
-        $this->output = strtr($template, [
-            '%type%' => $this->formatter->wrap($this->type, $this->type),
-            '%val%' => $this->val,
-            '%info%' => $this->info ?? '',
-        ]);
-    }
-
-    private function setType(): void
-    {
-        $this->type = varType($this->expression);
+        return $this->output;
     }
 
     private function handleType(): void
     {
         switch ($this->type) {
             case static::TYPE_BOOLEAN:
-                $processor = new BooleanProcessor($this->expression);
+                $processor = new BooleanProcessor($this->var);
                 break;
             case static::TYPE_ARRAY:
                 ++$this->indent;
-                $processor = new ArrayProcessor($this->expression, $this);
+                $processor = new ArrayProcessor($this->var, $this);
                 break;
             case static::TYPE_OBJECT:
                 ++$this->indent;
-                $processor = new ObjectProcessor($this->expression, $this);
+                $processor = new ObjectProcessor($this->var, $this);
                 break;
             default:
-                $processor = new ScalarProcessor($this->expression, $this);
+                $processor = new ScalarProcessor($this->var, $this);
                 break;
         }
         $this->val .= $processor->val();
@@ -217,5 +220,22 @@ final class VarDump
                 $this->template = '%type% %val% %info%';
                 break;
         }
+    }
+
+    private function setOutput(): void
+    {
+        $message = $this->template;
+        foreach (['info', 'val'] as $property) {
+            if ('' == $this->$property) {
+                $message = str_replace('%' . $property . '%', null, $message);
+                $message = preg_replace('!\s+!', ' ', $message);
+                $message = trim($message);
+            }
+        }
+        $this->output = strtr($message, [
+            '%type%' => $this->formatter->wrap($this->type, $this->type),
+            '%val%' => $this->val,
+            '%info%' => $this->info,
+        ]);
     }
 }

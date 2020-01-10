@@ -126,18 +126,20 @@ final class TraceEntry
 
     private function setFrameArguments()
     {
-        $plainVarDump = new VarDump(new PlainFormatter());
-        $richVarDump = new VarDump(new DumperFormatter());
+        $plainVarDump = (new VarDump(new PlainFormatter()))
+            ->withDontDump(App::class);
+        $richVarDump = (new VarDump(new DumperFormatter()))
+            ->withDontDump(App::class);
         $this->plainArgs = "\n";
         $this->richArgs = "\n";
         foreach ($this->entry['args'] as $k => $expression) {
             $aux = 'Arg#' . ($k + 1) . ' ';
             $plainVarDump = $plainVarDump
-                ->withDontDump([App::class])
-                ->withDump($expression, 0);
+                ->withVar($expression)
+                ->process();
             $richVarDump = $richVarDump
-                ->withDontDump([App::class])
-                ->withDump($expression, 0);
+                ->withVar($expression)
+                ->process();
             $this->plainArgs .= $aux . $plainVarDump->toString() . "\n";
             $this->richArgs .= $aux . $richVarDump->toString() . "\n";
         }

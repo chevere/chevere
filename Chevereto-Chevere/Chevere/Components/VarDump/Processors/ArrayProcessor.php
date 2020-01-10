@@ -36,9 +36,11 @@ final class ArrayProcessor implements ProcessorContract
                     '(' . $varDump->formatter()->getEmphasis('circular array reference') . ')'
                 );
             } else {
-                $new = $varDump
-                    ->respawn()
-                    ->withDump($aux, $varDump->indent() + 1);
+                $new = (new VarDump($varDump->formatter()))
+                    ->withDontDump(...$varDump->dontDump())
+                    ->withVar($aux)
+                    ->withIndent($varDump->indent() + 1)
+                    ->process();
                 $this->val .= $new->toString();
             }
         }

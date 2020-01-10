@@ -16,11 +16,9 @@ namespace Chevere\Components\VarDump\Processors;
 use ReflectionObject;
 use ReflectionProperty;
 use Throwable;
-
 use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 use Chevere\Components\VarDump\VarDump;
 use Chevere\Components\VarDump\Contracts\ProcessorContract;
-
 use function ChevereFn\stringStartsWith;
 
 final class ObjectProcessor implements ProcessorContract
@@ -100,7 +98,7 @@ final class ObjectProcessor implements ProcessorContract
         $wrappedVisibility = $this->varDump->formatter()->wrap(VarDump::_PRIVACY, $visibility);
         $property = '$' . $this->varDump->formatter()->getEncodedChars($key);
         $wrappedProperty = $this->varDump->formatter()->wrap(VarDump::_VARIABLE, $property);
-        $this->val .= "\n" . $this->varDump->indentString() . $wrappedVisibility . ' ' . $wrappedProperty . " ";
+        $this->val .= "\n" . $this->varDump->indentString() . $wrappedVisibility . ' ' . $wrappedProperty . ' ';
         $this->aux = $var['value'];
         if (is_object($this->aux) && property_exists($this->aux, $key)) {
             try {
@@ -113,6 +111,7 @@ final class ObjectProcessor implements ProcessorContract
                         VarDump::_OPERATOR,
                         '(' . $this->varDump->formatter()->getEmphasis('circular object reference') . ')'
                     );
+
                     return;
                 }
             } catch (Throwable $e) {
@@ -126,9 +125,12 @@ final class ObjectProcessor implements ProcessorContract
     private function handleDeepth(): void
     {
         if ($this->varDump->depth() < 4) {
-            $new = $this->varDump
-                ->respawn()
-                ->withDump($this->aux, $this->varDump->indent(), $this->varDump->depth());
+            $new = (new VarDump($this->varDump->formatter()))
+                ->withDontDump(...$this->varDump->dontDump())
+                ->withVar($this->aux)
+                ->withIndent($this->varDump->indent())
+                ->withDepth($this->varDump->depth())
+                ->process();
             $this->val .= $new->toString();
 
             return;

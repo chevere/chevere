@@ -241,8 +241,8 @@ final class Formatter
         foreach (['_GET', '_POST', '_FILES', '_COOKIE', '_SESSION', '_SERVER'] as $global) {
             $val = $globals[$global] ?? null;
             if (!empty($val)) {
-                $dumperVarDump = $dumperVarDump->withDump($val);
-                $plainVarDump = $plainVarDump->withDump($val);
+                $dumperVarDump = $dumperVarDump->withVar($val)->process();
+                $plainVarDump = $plainVarDump->withVar($val)->process();
                 $wrapped = $dumperVarDump->toString();
                 if (!BootstrapInstance::get()->cli()) {
                     $wrapped = '<pre>' . $wrapped . '</pre>';

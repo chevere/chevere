@@ -11,12 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Formatters\Traits;
+namespace Chevere\Tests\VarDump;
 
-trait GetEmphasisTrait
+use PHPUnit\Framework\TestCase;
+
+final class DumperTest extends TestCase
 {
-    public function getEmphasis(string $string): string
-    {
-        return $string;
-    }
 }
