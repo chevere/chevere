@@ -37,7 +37,7 @@ final class HtmlFormatter implements FormatterContract
         return htmlspecialchars($string);
     }
 
-    public function wrap(string $key, string $dump): string
+    public function getWrap(string $key, string $dump): string
     {
         $wrapper = new Wrapper($key, $dump);
 

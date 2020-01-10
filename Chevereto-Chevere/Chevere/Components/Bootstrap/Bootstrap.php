@@ -34,11 +34,11 @@ final class Bootstrap implements BootstrapContract
     /** @var string Path to the application $rootPath/app/ */
     private string $appPath;
 
-    private bool $cli;
+    private bool $isCli;
 
-    private bool $console;
+    private bool $isConsole;
 
-    private bool $dev;
+    private bool $isDev;
 
     public function __construct(string $documentRoot)
     {
@@ -48,9 +48,9 @@ final class Bootstrap implements BootstrapContract
         $this->assertDocumentRoot();
         $this->rootPath = rtrim(str_replace('\\', '/', $this->documentRoot), '/') . '/';
         $this->appPath = $this->rootPath . 'app/';
-        $this->cli = false;
-        $this->console = false;
-        $this->dev = false;
+        $this->isCli = false;
+        $this->isConsole = false;
+        $this->isDev = false;
     }
 
     public function time(): int
@@ -81,40 +81,40 @@ final class Bootstrap implements BootstrapContract
     public function withCli(bool $bool): BootstrapContract
     {
         $new = clone $this;
-        $new->cli = $bool;
+        $new->isCli = $bool;
 
         return $new;
     }
 
-    public function cli(): bool
+    public function isCli(): bool
     {
-        return $this->cli;
+        return $this->isCli;
     }
 
     public function withConsole(bool $bool): BootstrapContract
     {
         $new = clone $this;
-        $new->console = $bool;
+        $new->isConsole = $bool;
 
         return $new;
     }
 
-    public function console(): bool
+    public function isConsole(): bool
     {
-        return $this->console;
+        return $this->isConsole;
     }
 
     public function withDev(bool $bool): BootstrapContract
     {
         $new = clone $this;
-        $new->dev = $bool;
+        $new->isDev = $bool;
 
         return $new;
     }
 
-    public function dev(): bool
+    public function isDev(): bool
     {
-        return $this->dev;
+        return $this->isDev;
     }
 
     public function withAppAutoloader(string $namespace): BootstrapContract

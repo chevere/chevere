@@ -27,7 +27,7 @@ final class PlainFormatter implements FormatterContract
     use GetEmphasisTrait;
     use GetEncodedCharsTrait;
 
-    public function wrap(string $key, string $dump): string
+    public function getWrap(string $key, string $dump): string
     {
         return $dump;
     }

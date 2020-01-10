@@ -106,7 +106,7 @@ final class Run implements RunContract
         $this->constructTime = (int) hrtime(true);
         $this->times = 1;
         $this->timeTaken = 0;
-        if (BootstrapInstance::get()->cli()) {
+        if (BootstrapInstance::get()->isCli()) {
             $this->consoleColor = new ConsoleColor();
         }
         $this->requestTime = BootstrapInstance::get()->time();

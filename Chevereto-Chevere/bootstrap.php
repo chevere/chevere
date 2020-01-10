@@ -24,7 +24,7 @@ $isCli = 'cli' == php_sapi_name();
 $bootstrap = (new Bootstrap($documentRoot))
   ->withCli($isCli);
 $bootstrap = $bootstrap
-  ->withConsole($bootstrap->cli())
+  ->withConsole($bootstrap->isCli())
   ->withDev((bool) include($bootstrap->appPath() . 'options/dev.php'));
 
 new BootstrapInstance($bootstrap);

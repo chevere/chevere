@@ -27,7 +27,7 @@ final class ConsoleFormatter implements FormatterContract
     use GetIndentTrait;
     use GetEncodedCharsTrait;
 
-    public function wrap(string $key, string $dump): string
+    public function getWrap(string $key, string $dump): string
     {
         $wrapper = new Wrapper($key, $dump);
         $wrapper = $wrapper->withCli();

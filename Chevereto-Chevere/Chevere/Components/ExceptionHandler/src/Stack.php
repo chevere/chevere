@@ -38,7 +38,7 @@ final class Stack
     {
         foreach ($trace as $k => $entry) {
             $traceEntry = new TraceEntry($entry, $k);
-            if (BootstrapInstance::get()->cli()) {
+            if (BootstrapInstance::get()->isCli()) {
                 $this->console[] = strtr(Template::STACK_ITEM_CONSOLE, $traceEntry->rich());
             }
             $this->plain[] = strtr(Template::STACK_ITEM_HTML, $traceEntry->plain());

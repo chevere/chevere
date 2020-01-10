@@ -30,5 +30,5 @@ interface FormatterContract
      */
     public function getEncodedChars(string $string): string;
 
-    public function wrap(string $key, string $dump): string;
+    public function getWrap(string $key, string $dump): string;
 }

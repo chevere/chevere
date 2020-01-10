@@ -106,7 +106,7 @@ final class Runner implements RunnerContract
      */
     private function handleConsole(): void
     {
-        if (BootstrapInstance::get()->console() && !isset($this->consoleLoop)) {
+        if (BootstrapInstance::get()->isConsole() && !isset($this->consoleLoop)) {
             console()->bind($this->builder);
             console()->run();
         }

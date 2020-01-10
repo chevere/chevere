@@ -132,7 +132,7 @@ final class Formatter
     private function setServerProperties()
     {
         $request = $this->exceptionHandler->request();
-        if (BootstrapInstance::get()->console()) {
+        if (BootstrapInstance::get()->isConsole()) {
             $this->data = $this->data
                 ->withMergedArray([
                     'clientIp' => $request->globals()->argv()[0] ?? 'localhost',
@@ -161,7 +161,7 @@ final class Formatter
             unset($trace[0]);
         }
         $stack = new Stack($trace);
-        if (BootstrapInstance::get()->cli()) {
+        if (BootstrapInstance::get()->isCli()) {
             $this->data = $this->data->withAddedKey('consoleStack', $stack->getConsole());
         }
         $this->data = $this->data
@@ -182,7 +182,7 @@ final class Formatter
             static::SECTION_SERVER => ['# Server', '%serverHost% %serverSoftware%'],
         ];
 
-        if (BootstrapInstance::get()->console()) {
+        if (BootstrapInstance::get()->isConsole()) {
             $verbosity = console()->output()->getVerbosity();
         }
         $this->buildContentSections($sections, $verbosity ?? null);
@@ -191,7 +191,7 @@ final class Formatter
     private function buildContentSections(array $sections, ?int $verbosity)
     {
         foreach ($sections as $k => $v) {
-            if (BootstrapInstance::get()->cli() && false == static::CONSOLE_TABLE[$k]) {
+            if (BootstrapInstance::get()->isCli() && false == static::CONSOLE_TABLE[$k]) {
                 continue;
             }
             if (false === $this->processContentSectionsArray((string) $k, $v, $verbosity)) {
@@ -244,7 +244,7 @@ final class Formatter
                 $dumperVarDump = $dumperVarDump->withVar($val)->process();
                 $plainVarDump = $plainVarDump->withVar($val)->process();
                 $wrapped = $dumperVarDump->toString();
-                if (!BootstrapInstance::get()->cli()) {
+                if (!BootstrapInstance::get()->isCli()) {
                     $wrapped = '<pre>' . $wrapped . '</pre>';
                 }
                 $this->setRichContentSection($global, ['$' . $global, $this->wrapStringHr($wrapped)]);

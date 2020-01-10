@@ -53,7 +53,7 @@ final class OptionsController extends Controller
         // $this->app()->response()->setStatusCode(400);
         $msg = 'Must provide a %s argument when running this callable without route context.';
         $message = (new Message($msg))->code('%s', '$path')->toString();
-        if (BootstrapInstance::get()->console()) {
+        if (BootstrapInstance::get()->isConsole()) {
             console()->style()->error($message);
 
             return;

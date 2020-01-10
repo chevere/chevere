@@ -27,10 +27,10 @@ final class DumperFormatter implements FormatterContract
     use GetIndentTrait;
     use GetEncodedCharsTrait;
 
-    public function wrap(string $key, string $dump): string
+    public function getWrap(string $key, string $dump): string
     {
         $wrapper = new Wrapper($key, $dump);
-        if (BootstrapInstance::get()->cli()) {
+        if (BootstrapInstance::get()->isCli()) {
             $wrapper = $wrapper->withCli();
         }
 
@@ -39,7 +39,7 @@ final class DumperFormatter implements FormatterContract
 
     public function getEmphasis(string $string): string
     {
-        if (!BootstrapInstance::get()->cli()) {
+        if (!BootstrapInstance::get()->isCli()) {
             return $string;
         }
 

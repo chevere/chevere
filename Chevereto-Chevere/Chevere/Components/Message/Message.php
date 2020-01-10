@@ -89,7 +89,7 @@ final class Message implements MessageContract
      */
     public function toString(): string
     {
-        if (BootstrapInstance::get()->cli()) {
+        if (BootstrapInstance::get()->isCli()) {
             return preg_replace_callback('#<code>(.*?)<\/code>#', function ($matches) {
                 $consoleColor = new ConsoleColor();
 

@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump;
 
+use Chevere\Components\Route\PathUri;
 use Chevere\Components\VarDump\Contracts\VarDumpContract;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
+use Chevere\Components\VarDump\HtmlDumper;
 use Chevere\Components\VarDump\VarDump;
 use PHPUnit\Framework\TestCase;
 use stdClass;

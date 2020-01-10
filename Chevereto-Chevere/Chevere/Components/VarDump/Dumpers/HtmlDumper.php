@@ -11,18 +11,20 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump;
+namespace Chevere\Components\VarDump\Dumpers;
 
-use Chevere\Components\VarDump\Formatters\HtmlFormatter as DumperFormatter;
 use Chevere\Components\VarDump\Contracts\FormatterContract;
+use Chevere\Components\VarDump\Formatters\HtmlFormatter;
 
-/**
- * A simple example in how you can extend Dumper and use your own FormatterContracr
- */
-class MyDumper extends Dumper
+final class HtmlDumper extends Dumper
 {
-    protected function getFormatter(): FormatterContract
+    public function getFormatter(): FormatterContract
     {
-        return new DumperFormatter();
+        return new HtmlFormatter();
+    }
+
+    public function handleOutput(): void
+    {
+        return;
     }
 }

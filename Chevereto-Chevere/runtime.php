@@ -33,7 +33,7 @@ new RequestInstance(
     Request::fromGlobals()
 );
 
-if (BootstrapInstance::get()->console()) {
+if (BootstrapInstance::get()->isConsole()) {
     new ConsoleInstance(new Console());
 }
 

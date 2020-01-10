@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\VarDump;
+namespace Chevere\Components\VarDump\Outputters;
 
-use PHPUnit\Framework\TestCase;
+use Chevere\Components\VarDump\Outputter;
 
-final class MyDumperTest extends TestCase
+final class PlainOutputter extends Outputter
 {
 }

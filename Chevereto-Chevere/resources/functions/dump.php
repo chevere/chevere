@@ -11,6 +11,7 @@
 
 declare(strict_types=1);
 
+use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\VarDump\Dumper;
 
 if (!function_exists('xdump')) {
@@ -19,8 +20,9 @@ if (!function_exists('xdump')) {
      */
     function xdump(...$vars)
     {
-        $dumper = new Dumper();
-        $dumper->dumper(...$vars);
+        (new Dumper())
+            ->withCli(BootstrapInstance::get()->isCli())
+            ->dump(...$vars);
     }
 }
 
@@ -30,8 +32,9 @@ if (!function_exists('xdd')) {
      */
     function xdd(...$vars)
     {
-        $dumper = new Dumper();
-        $dumper->dumper(...$vars);
+        (new Dumper())
+            ->withCli(BootstrapInstance::get()->isCli())
+            ->dump(...$vars);
         die(0);
     }
 }

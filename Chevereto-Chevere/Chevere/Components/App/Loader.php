@@ -86,8 +86,8 @@ final class Loader implements LoaderContract
     private function handleParameters(): void
     {
         if (
-            BootstrapInstance::get()->dev() ||
-            (BootstrapInstance::get()->console() && console()->isBuilding())
+            BootstrapInstance::get()->isDev() ||
+            (BootstrapInstance::get()->isConsole() && console()->isBuilding())
         ) {
             $path = new PathApp('plugins/local/HelloWorld/routes/web.php');
             $pluginRoutes = [$path];
@@ -109,7 +109,7 @@ final class Loader implements LoaderContract
      */
     private function getBuild(): BuildContract
     {
-        if (BootstrapInstance::get()->dev()) {
+        if (BootstrapInstance::get()->isDev()) {
             return $this->builder->build()
                 ->withRouterMaker(new RouterMaker())
                 ->make();
@@ -128,7 +128,7 @@ final class Loader implements LoaderContract
      */
     private function getServices(): ServicesContract
     {
-        if (BootstrapInstance::get()->console() && console()->isBuilding()) {
+        if (BootstrapInstance::get()->isConsole() && console()->isBuilding()) {
             return (new Services())
                 ->withApi(new Api())
                 ->withRouter(new Router());
@@ -147,15 +147,15 @@ final class Loader implements LoaderContract
     private function assertNeedsToBeBuilt(): void
     {
         if (
-            !BootstrapInstance::get()->dev()
-            && !(BootstrapInstance::get()->console() && console()->isBuilding())
+            !BootstrapInstance::get()->isDev()
+            && !(BootstrapInstance::get()->isConsole() && console()->isBuilding())
             && !$this->builder->build()->file()->exists()
         ) {
             $command = 'php ' . $_SERVER['SCRIPT_FILENAME'] . ' build';
             $message = (new Message('The application needs to be built by running %command%'))
                 ->code('%command%', $command)
                 ->toString();
-            if (BootstrapInstance::get()->console()) {
+            if (BootstrapInstance::get()->isConsole()) {
                 console()->style()->block($message, 'CANNOT EXECUTE');
                 die(126);
             }

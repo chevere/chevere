@@ -29,15 +29,15 @@ interface BootstrapContract
 
     public function withCli(bool $bool): BootstrapContract;
 
-    public function cli(): bool;
+    public function isCli(): bool;
 
     public function withConsole(bool $bool): BootstrapContract;
 
-    public function console(): bool;
+    public function isConsole(): bool;
 
     public function withDev(bool $bool): BootstrapContract;
 
-    public function dev(): bool;
+    public function isDev(): bool;
 
     public function withAppAutoloader(string $namespace): BootstrapContract;
 }

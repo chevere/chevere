@@ -62,7 +62,7 @@ final class Output
         if ($exceptionHandler->request()->isXmlHttpRequest()) {
             $this->setJsonOutput();
         } else {
-            if (BootstrapInstance::get()->cli()) {
+            if (BootstrapInstance::get()->isCli()) {
                 // $this->setJsonOutput();
                 $this->setConsoleOutput();
             // $this->setHtmlOutput();
@@ -79,7 +79,7 @@ final class Output
 
     public function out(): void
     {
-        if (BootstrapInstance::get()->cli()) {
+        if (BootstrapInstance::get()->isCli()) {
             // Must kill the CLI, to stop the default CLI error printing to console
             die(1);
         }
