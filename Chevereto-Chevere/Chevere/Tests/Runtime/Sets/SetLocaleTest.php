@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Runtime\Sets;
 
-use Chevere\Components\Runtime\Exceptions\RuntimeException;
+use RuntimeException;
 use Chevere\Components\Runtime\Sets\SetLocale;
 use PHPUnit\Framework\TestCase;
 

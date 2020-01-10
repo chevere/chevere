@@ -16,8 +16,8 @@ namespace Chevere\Components\Runtime\Sets;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Contracts\SetContract;
-use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
-use Chevere\Components\Runtime\Exceptions\RuntimeException;
+use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * Sets the `default_charset` ini propery

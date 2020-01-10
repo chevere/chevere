@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Sets;
 
-use Chevere\Components\Runtime\Exceptions\RuntimeException;
+use RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Contracts\SetContract;
-use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 
 /**
  * Sets the `precision` ini property

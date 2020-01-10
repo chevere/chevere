@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Runtime\Sets;
 
 use Chevere\Components\Runtime\Sets\SetPrecision;
-use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class SetPrecisionTest extends TestCase

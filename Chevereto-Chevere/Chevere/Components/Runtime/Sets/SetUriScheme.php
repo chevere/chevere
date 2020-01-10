@@ -16,7 +16,7 @@ namespace Chevere\Components\Runtime\Sets;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Contracts\SetContract;
-use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 
 /**
  * Set the HTTP scheme

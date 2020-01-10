@@ -17,7 +17,7 @@ use TypeError;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Contracts\Sets\SetErrorHandlerContract;
-use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 use Chevere\Components\Runtime\Traits\HandlerTrait;
 
 /**
@@ -65,7 +65,8 @@ class SetErrorHandler implements SetErrorHandlerContract
     private function restoreErrorHandler(): void
     {
         restore_error_handler();
-        $this->handler = set_error_handler(function () {});
+        $this->handler = set_error_handler(function () {
+        });
         try {
             $this->value = $this->handler ?? '';
         } catch (TypeError $e) {

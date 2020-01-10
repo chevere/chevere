@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Runtime\Sets;
 
-use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 use Chevere\Components\Runtime\Sets\SetDebug;
 use PHPUnit\Framework\TestCase;
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Runtime\Sets;
 
 use TypeError;
-use Chevere\Components\Runtime\Exceptions\InvalidArgumentException;
+use InvalidArgumentException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Contracts\SetContract;
@@ -60,7 +60,8 @@ class SetExceptionHandler implements SetContract
     private function restoreExceptionHandler(): void
     {
         restore_exception_handler();
-        $this->handler = set_exception_handler(function () {});
+        $this->handler = set_exception_handler(function () {
+        });
         try {
             $this->value = $this->handler ?? '';
         } catch (TypeError $e) {
