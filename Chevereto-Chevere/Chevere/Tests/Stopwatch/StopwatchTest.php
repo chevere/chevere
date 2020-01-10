@@ -68,6 +68,5 @@ final class StopwatchTest extends TestCase
         $this->assertSame($recordsSum, $sw->timeElapsed());
         $this->assertTrue($recordsSum > 300000);
         $this->assertTrue(stringEndsWith(' ms', $sw->timeElapsedRead()));
-        xdd($sw);
     }
 }
