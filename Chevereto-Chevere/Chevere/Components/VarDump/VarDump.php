@@ -113,6 +113,8 @@ final class VarDump implements VarDumpContract
     {
         $new = clone $this;
         $new->indent = $indent;
+        $new->indentString = $new->formatter
+            ->getIndent($indent);
 
         return $new;
     }
@@ -151,7 +153,6 @@ final class VarDump implements VarDumpContract
     {
         $this->val = null;
         $this->type = varType($this->var);
-        $this->indentString = $this->formatter->getIndent($this->indent);
         $this->handleType();
         $this->setTemplate();
         $this->setOutput();

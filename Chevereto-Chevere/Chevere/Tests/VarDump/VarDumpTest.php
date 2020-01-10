@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump;
 
+use Chevere\Components\VarDump\Contracts\VarDumpContract;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
 use Chevere\Components\VarDump\VarDump;
 use PHPUnit\Framework\TestCase;
@@ -20,6 +21,12 @@ use stdClass;
 
 final class VarDumpTest extends TestCase
 {
+    public function getVarDump(): VarDumpContract
+    {
+        return
+            new VarDump(new PlainFormatter());
+    }
+
     public function testConstruct(): void
     {
         $formatter = new PlainFormatter();
@@ -35,7 +42,40 @@ final class VarDumpTest extends TestCase
         $this->assertSame('null', $varDump->toString());
     }
 
-    public function testSimpleTypes(): void
+    public function testWithDontDump(): void
+    {
+        $dontDump = ['ClassName1', 'ClassName2'];
+        $varDump = $this->getVarDump()
+            ->withDontDump(...$dontDump);
+        $this->assertSame($dontDump, $varDump->dontDump());
+    }
+
+    public function testWithVar(): void
+    {
+        $var = 'some var';
+        $varDump = $this->getVarDump()
+            ->withVar($var);
+        $this->assertSame($var, $varDump->var());
+    }
+
+    public function testWithIndent(): void
+    {
+        $indent = 10001;
+        $varDump = $this->getVarDump()
+            ->withIndent($indent);
+        $this->assertSame($indent, $varDump->indent());
+        $this->assertTrue($indent <= strlen($varDump->indentString()));
+    }
+
+    public function testWithDepth(): void
+    {
+        $depth = 4;
+        $varDump = $this->getVarDump()
+            ->withDepth($depth);
+        $this->assertSame($depth, $varDump->depth());
+    }
+
+    public function testProcessSimpleTypes(): void
     {
         $types = [
             [null, 'null'],
@@ -46,8 +86,7 @@ final class VarDumpTest extends TestCase
             [new stdClass, 'object stdClass']
         ];
         foreach ($types as $values) {
-            $varDump = new VarDump(new PlainFormatter());
-            $varDump = $varDump
+            $varDump = $this->getVarDump()
                 ->withVar($values[0])
                 ->process();
             $this->assertSame($values[1], $varDump->toString());
