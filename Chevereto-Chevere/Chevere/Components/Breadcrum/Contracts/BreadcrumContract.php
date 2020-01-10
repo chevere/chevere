@@ -19,8 +19,6 @@ use Chevere\Components\Breadcrum\Exceptions\BreadcrumException;
 
 interface BreadcrumContract extends ToArrayContract, ToStringContract
 {
-    public function __construct();
-
     /**
      * Returns a boolean indicating whether the instance has the given position.
      */

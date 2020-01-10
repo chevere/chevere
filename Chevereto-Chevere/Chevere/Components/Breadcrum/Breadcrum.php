@@ -22,20 +22,21 @@ use Chevere\Components\Breadcrum\Contracts\BreadcrumContract;
  */
 final class Breadcrum implements BreadcrumContract
 {
-    private array $items;
+    /** @vvar arrau [pos => $item] */
+    private array $items = [];
 
-    private int $pos;
+    private int $pos = -1;
 
-    private int $id;
+    private int $id = -1;
 
-    /**
-     * Creates a new instance.
-     */
-    public function __construct()
-    {
-        $this->items = [];
-        $this->id = -1;
-    }
+    // /**
+    //  * Creates a new instance.
+    //  */
+    // public function __construct()
+    // {
+    //     $this->items = [];
+    //     $this->id = -1;
+    // }
 
     /**
      * {@inheritdoc}
@@ -58,13 +59,6 @@ final class Breadcrum implements BreadcrumContract
      */
     public function pos(): int
     {
-        if (!isset($this->pos)) {
-            throw new BreadcrumException(
-                (new Message('There are no added items to this instance'))
-                    ->toString()
-            );
-        }
-
         return $this->pos;
     }
 
