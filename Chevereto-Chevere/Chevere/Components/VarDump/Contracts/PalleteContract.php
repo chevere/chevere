@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\src;
+namespace Chevere\Components\VarDump\Contracts;
 
 use Chevere\Components\VarDump\VarDump;
 
-abstract class Pallete
+interface PalleteContract
 {
     /**
      * Color palette used in HTML.

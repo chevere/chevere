@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Outputters;
 
 use Chevere\Components\VarDump\Contracts\OutputterContract;
-use Chevere\Components\VarDump\Outputter;
+use Chevere\Components\VarDump\Outputters\AbstractOutputter;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
-final class ConsoleOutputter extends Outputter
+final class ConsoleOutputter extends AbstractOutputter
 {
     private ConsoleOutputInterface $consoleOutput;
 

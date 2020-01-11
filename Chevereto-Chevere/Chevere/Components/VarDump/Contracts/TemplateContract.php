@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\src;
+namespace Chevere\Components\VarDump\Contracts;
 
 /**
  * The template strings used by VarDump*.
  */
-abstract class Template
+interface TemplateContract
 {
     const HTML_INLINE_PREFIX = ' <span style="border-left: 1px solid rgba(236,240,241,.1);"></span>  ';
     const HTML_EMPHASIS = '<em>%s</em>';

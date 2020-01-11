@@ -16,15 +16,10 @@ namespace Chevere\Components\VarDump\Outputters;
 use Chevere\Components\VarDump\Contracts\OutputterContract;
 use Chevere\Components\VarDump\Outputters\AbstractOutputter;
 
-final class HtmlOutputter extends AbstractOutputter
+final class PlainOutputter extends AbstractOutputter
 {
     public function prepare(): OutputterContract
     {
-        if (false === headers_sent()) {
-            $this->output .= '<html style="background: ' . $this->dumper::BACKGROUND_SHADE . ';"><head></head><body>';
-        }
-        $this->output .= '<pre style="' . $this->dumper::STYLE . '">';
-
         return $this;
     }
 }

@@ -11,13 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump;
+namespace Chevere\Components\VarDump\Outputters;
 
 use Chevere\Components\VarDump\Contracts\DumperContract;
 use Chevere\Components\VarDump\Contracts\OutputterContract;
+use Chevere\Components\VarDump\VarDump;
 use function ChevereFn\stringStartsWith;
 
-class Outputter implements OutputterContract
+abstract class AbstractOutputter implements OutputterContract
 {
     protected string $output = '';
 

@@ -16,8 +16,8 @@ namespace Chevere\Components\VarDump\Formatters;
 use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\VarDump\Formatters\Traits\GetEncodedCharsTrait;
 use Chevere\Components\VarDump\Formatters\Traits\GetIndentTrait;
-use Chevere\Components\VarDump\src\Wrapper;
 use Chevere\Components\VarDump\Contracts\FormatterContract;
+use Chevere\Components\VarDump\Wrapper;
 
 /**
  * Provide Dumper VarDump representation (auto detect).

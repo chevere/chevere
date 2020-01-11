@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Formatters;
 
-use Chevere\Components\VarDump\src\Template;
-use Chevere\Components\VarDump\src\Wrapper;
 use Chevere\Components\VarDump\Contracts\FormatterContract;
+use Chevere\Components\VarDump\Contracts\TemplateContract;
+use Chevere\Components\VarDump\Wrapper;
 
 /**
  * Provide HTML VarDump representation.
@@ -24,12 +24,12 @@ final class HtmlFormatter implements FormatterContract
 {
     public function getIndent(int $indent): string
     {
-        return str_repeat(Template::HTML_INLINE_PREFIX, $indent);
+        return str_repeat(TemplateContract::HTML_INLINE_PREFIX, $indent);
     }
 
     public function getEmphasis(string $string): string
     {
-        return sprintf(Template::HTML_EMPHASIS, $string);
+        return sprintf(TemplateContract::HTML_EMPHASIS, $string);
     }
 
     public function getEncodedChars(string $string): string

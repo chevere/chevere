@@ -11,8 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\src;
+namespace Chevere\Components\VarDump;
 
+use Chevere\Components\VarDump\Contracts\PalleteContract;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 /**
@@ -36,7 +37,7 @@ final class Wrapper
     {
         $this->key = $key;
         $this->dump = $dump;
-        $this->useCli =  false;
+        $this->useCli = false;
     }
 
     public function withCli(): Wrapper
@@ -44,6 +45,7 @@ final class Wrapper
         $new = clone $this;
         $new->consoleColor = new ConsoleColor();
         $new->useCli = true;
+
         return $new;
     }
 
@@ -57,12 +59,12 @@ final class Wrapper
 
     private function getCliColor(string $key): ?string
     {
-        return Pallete::CONSOLE[$key] ?? null;
+        return PalleteContract::CONSOLE[$key] ?? null;
     }
 
     private function getHtmlColor(string $key): ?string
     {
-        return Pallete::PALETTE[$key] ?? null;
+        return PalleteContract::PALETTE[$key] ?? null;
     }
 
     private function wrapCli(): string

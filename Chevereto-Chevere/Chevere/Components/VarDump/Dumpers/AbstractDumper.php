@@ -14,14 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Dumpers;
 
 use BadMethodCallException;
-use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Message\Message;
 use Chevere\Components\VarDump\Contracts\DumperContract;
-use Chevere\Components\VarDump\Formatters\DumperFormatter;
 use Chevere\Components\VarDump\Contracts\FormatterContract;
 use Chevere\Components\VarDump\Contracts\OutputterContract;
 use Chevere\Components\VarDump\Contracts\VarDumpContract;
-use Chevere\Components\VarDump\Outputters\DumperOutputter;
 use Chevere\Components\VarDump\VarDump;
 use function ChevereFn\stringEndsWith;
 
@@ -87,22 +84,6 @@ abstract class AbstractDumper implements DumperContract
     /**
      * {@inheritdoc}
      */
-    public function getFormatter(): FormatterContract
-    {
-        return new DumperFormatter();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getOutputter(): OutputterContract
-    {
-        return new DumperOutputter();
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     final public function dump(...$vars): void
     {
         $this->vars = $vars;
@@ -140,6 +121,7 @@ abstract class AbstractDumper implements DumperContract
         array_shift($this->debugBacktrace);
         $this->debugBacktrace[0]['class'] = static::class;
         if (
+            isset($this->debugBacktrace[1]['file']) &&
             stringEndsWith('resources/functions/dump.php', $this->debugBacktrace[1]['file'])
         ) {
             array_shift($this->debugBacktrace);
