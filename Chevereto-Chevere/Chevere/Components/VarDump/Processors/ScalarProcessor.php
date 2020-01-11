@@ -13,31 +13,27 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
-use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
-use Chevere\Components\VarDump\VarDump;
-use Chevere\Components\VarDump\Contracts\ProcessorContract;
+use Chevere\Components\VarDump\Contracts\VarDumpContract;
 
 /**
  * Handles integer, float (double), string
  */
-final class ScalarProcessor implements ProcessorContract
+final class ScalarProcessor extends AbstractProcessor
 {
-    use ProcessorTrait;
-
-    public function __construct($expression, VarDump $varDump)
+    public function __construct(VarDumpContract $varDump)
     {
         $this->val = '';
         $this->info = '';
-        $is_string = is_string($expression);
-        $is_numeric = is_numeric($expression);
+        $is_string = is_string($varDump->var());
+        $is_numeric = is_numeric($varDump->var());
         if ($is_string || $is_numeric) {
             $this->info = 'length=' .
                 strlen(
                     $is_numeric
-                        ? ((string) $expression)
-                        : $expression
+                        ? ((string) $varDump->var())
+                        : $varDump->var()
                 );
-            $this->val = $varDump->formatter()->filterEncodedChars(strval($expression));
+            $this->val = $varDump->formatter()->filterEncodedChars(strval($varDump->var()));
         }
     }
 }

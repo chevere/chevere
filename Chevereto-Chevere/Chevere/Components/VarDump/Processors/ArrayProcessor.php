@@ -13,28 +13,29 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
-use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 use Chevere\Components\VarDump\VarDump;
-use Chevere\Components\VarDump\Contracts\ProcessorContract;
+use Chevere\Components\VarDump\Contracts\VarDumpContract;
 
-final class ArrayProcessor implements ProcessorContract
+final class ArrayProcessor extends AbstractProcessor
 {
-    use ProcessorTrait;
+    private array $var;
 
-    public function __construct(array $expression, VarDump $varDump)
+    public function __construct(VarDumpContract $varDump)
     {
+        $this->var = $varDump->var();
         $this->val = '';
-        $this->info = '';
-        foreach ($expression as $k => $v) {
-            $operator = $varDump->formatter()->applyWrap(VarDump::_OPERATOR, '=>');
+        $this->info = 'size=' . count($this->var);
+        foreach ($this->var as $k => $v) {
+            $operator = $varDump->formatter()->applyWrap($varDump::_OPERATOR, '=>');
             $this->val .= "\n" . $varDump->indentString() . ' ' . $varDump->formatter()->filterEncodedChars((string) $k) . " $operator ";
             $aux = $v;
             $isCircularRef = is_array($aux) && isset($aux[$k]) && $aux == $aux[$k];
             if ($isCircularRef) {
-                $this->val .= $varDump->formatter()->applyWrap(
-                    VarDump::_OPERATOR,
-                    '(' . $varDump->formatter()->applyEmphasis('circular array reference') . ')'
-                );
+                $this->val .= $varDump->formatter()
+                    ->applyWrap(
+                        VarDump::_OPERATOR,
+                        '(' . $varDump->formatter()->applyEmphasis('circular array reference') . ')'
+                    );
             } else {
                 $new = (new VarDump($varDump->formatter()))
                     ->withDontDump(...$varDump->dontDump())
@@ -44,6 +45,5 @@ final class ArrayProcessor implements ProcessorContract
                 $this->val .= $new->toString();
             }
         }
-        $this->info = 'size=' . count($expression);
     }
 }

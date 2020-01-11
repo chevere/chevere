@@ -31,7 +31,7 @@ final class DumperTest extends TestCase
             new PlainDumper(),
             new HtmlDumper(),
         ];
-        foreach ($dumpers as $pos => $dumper) {
+        foreach ($dumpers as $dumper) {
             $vars = $this->getVars();
             ob_start();
             $dumper->dump(...$vars);
@@ -42,4 +42,9 @@ final class DumperTest extends TestCase
         }
         // Note: Console dumper can't be tested here
     }
+
+    // public function testXdd(): void
+    // {
+    //     xdd(...$this->getVars());
+    // }
 }

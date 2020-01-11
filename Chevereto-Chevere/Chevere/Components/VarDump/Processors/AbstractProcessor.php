@@ -11,22 +11,22 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Processors\Traits;
+namespace Chevere\Components\VarDump\Processors;
 
-trait ProcessorTrait
+abstract class AbstractProcessor
 {
     /** @var string */
-    private string $info;
+    protected string $info;
 
     /** @var string */
-    private string $val;
+    protected string $val;
 
-    public function info(): string
+    final public function info(): string
     {
         return $this->info;
     }
 
-    public function val(): string
+    final public function val(): string
     {
         return $this->val;
     }

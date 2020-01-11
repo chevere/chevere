@@ -15,6 +15,7 @@ namespace Chevere\Components\VarDump\Formatters;
 
 use Chevere\Components\VarDump\Contracts\FormatterContract;
 use Chevere\Components\VarDump\Contracts\TemplateContract;
+use Chevere\Components\VarDump\Contracts\VarDumpContract;
 use Chevere\Components\VarDump\Wrappers\HtmlWrapper;
 
 /**
@@ -31,7 +32,7 @@ final class HtmlFormatter implements FormatterContract
     {
         return sprintf(
             TemplateContract::HTML_EMPHASIS,
-            (new HtmlWrapper('emphasis'))
+            (new HtmlWrapper(VarDumpContract::_EMPHASIS))
                 ->wrap($string)
         );
     }

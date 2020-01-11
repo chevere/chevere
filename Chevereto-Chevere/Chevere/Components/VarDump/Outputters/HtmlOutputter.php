@@ -17,6 +17,9 @@ use Chevere\Components\VarDump\Contracts\OutputterContract;
 
 final class HtmlOutputter extends AbstractOutputter
 {
+    /**
+     * {@inheritdoc}
+     */
     public function prepare(): OutputterContract
     {
         if (false === headers_sent()) {
@@ -25,5 +28,13 @@ final class HtmlOutputter extends AbstractOutputter
         $this->output .= '<pre style="' . $this->dumper::STYLE . '">';
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function printOutput(): void
+    {
+        echo $this->output;
     }
 }

@@ -27,18 +27,12 @@ abstract class AbstractOutputter implements OutputterContract
     /**
      * {@inheritdoc}
      */
-    public function prepare(): OutputterContract
-    {
-        return $this;
-    }
+    abstract public function prepare(): OutputterContract;
 
     /**
      * {@inheritdoc}
      */
-    public function printOutput(): void
-    {
-        echo $this->output;
-    }
+    abstract public function printOutput(): void;
 
     /**
      * {@inheritdoc}

@@ -16,16 +16,13 @@ namespace Chevere\Components\VarDump\Processors;
 use ReflectionObject;
 use ReflectionProperty;
 use Throwable;
-use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 use Chevere\Components\VarDump\VarDump;
-use Chevere\Components\VarDump\Contracts\ProcessorContract;
+use Chevere\Components\VarDump\Contracts\VarDumpContract;
 use function ChevereFn\stringStartsWith;
 
-final class ObjectProcessor implements ProcessorContract
+final class ObjectProcessor extends AbstractProcessor
 {
-    use ProcessorTrait;
-
-    private object $expression;
+    private object $var;
 
     /** @var VarDump */
     private VarDump $varDump;
@@ -38,16 +35,16 @@ final class ObjectProcessor implements ProcessorContract
 
     private $aux;
 
-    public function __construct(object $expression, VarDump $varDump)
+    public function __construct(VarDumpContract $varDump)
     {
-        $this->expression = $expression;
+        $this->var = $varDump->var();
         $this->varDump = $varDump;
         $this->val = '';
         $this->info = '';
-        $this->reflectionObject = new ReflectionObject($expression);
+        $this->reflectionObject = new ReflectionObject($this->var);
         if (in_array($this->reflectionObject->getName(), $this->varDump->dontDump())) {
             $this->val .= $this->varDump->formatter()->applyWrap(
-                VarDump::_OPERATOR,
+                $this->varDump::_OPERATOR,
                 $this->varDump->formatter()->applyEmphasis(
                     $this->reflectionObject->getName()
                 )
@@ -58,7 +55,7 @@ final class ObjectProcessor implements ProcessorContract
         $this->setProperties();
 
         // $this->classFile = $this->reflectionObject->getFileName();
-        $this->className = get_class($expression);
+        $this->className = get_class($this->var);
         $this->handleNormalizeClassName();
         $this->info = $this->className;
     }
@@ -66,7 +63,7 @@ final class ObjectProcessor implements ProcessorContract
     private function setProperties(): void
     {
         $this->properties = [];
-        foreach (VarDump::PROPERTIES_REFLECTION_MAP as $visibility => $filter) {
+        foreach ($this->varDump::PROPERTIES_REFLECTION_MAP as $visibility => $filter) {
             /** @scrutinizer ignore-call */
             $properties = $this->reflectionObject->getProperties($filter);
             foreach ($properties as $property) {
@@ -85,7 +82,7 @@ final class ObjectProcessor implements ProcessorContract
     {
         $property->setAccessible(true);
         try {
-            $value = $property->getValue($this->expression);
+            $value = $property->getValue($this->var);
         } catch (Throwable $e) {
             // $e
         }
@@ -95,9 +92,9 @@ final class ObjectProcessor implements ProcessorContract
     private function processProperty($key, $var): void
     {
         $visibility = implode(' ', $var['visibility'] ?? $this->properties['visibility']);
-        $wrappedVisibility = $this->varDump->formatter()->applyWrap(VarDump::_PRIVACY, $visibility);
+        $wrappedVisibility = $this->varDump->formatter()->applyWrap($this->varDump::_PRIVACY, $visibility);
         $property = '$' . $this->varDump->formatter()->filterEncodedChars($key);
-        $wrappedProperty = $this->varDump->formatter()->applyWrap(VarDump::_VARIABLE, $property);
+        $wrappedProperty = $this->varDump->formatter()->applyWrap($this->varDump::_VARIABLE, $property);
         $this->val .= "\n" . $this->varDump->indentString() . $wrappedVisibility . ' ' . $wrappedProperty . ' ';
         $this->aux = $var['value'];
         if (is_object($this->aux) && property_exists($this->aux, $key)) {
@@ -108,7 +105,7 @@ final class ObjectProcessor implements ProcessorContract
                 $propValue = $prop->getValue($this->aux);
                 if ($this->aux == $propValue) {
                     $this->val .= $this->varDump->formatter()->applyWrap(
-                        VarDump::_OPERATOR,
+                        $this->varDump::_OPERATOR,
                         '(' . $this->varDump->formatter()->applyEmphasis('circular object reference') . ')'
                     );
 
@@ -136,14 +133,14 @@ final class ObjectProcessor implements ProcessorContract
             return;
         }
         $this->val .= $this->varDump->formatter()->applyWrap(
-            VarDump::_OPERATOR,
+            $this->varDump::_OPERATOR,
             '(' . $this->varDump->formatter()->applyEmphasis('max depth reached') . ')'
         );
     }
 
     private function handleNormalizeClassName(): void
     {
-        if (stringStartsWith(VarDump::TYPE_CLASS_ANON, $this->className)) {
+        if (stringStartsWith($this->varDump::TYPE_CLASS_ANON, $this->className)) {
             // $this->className = (new Path($this->className))->absolute();
         }
     }

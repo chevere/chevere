@@ -15,6 +15,8 @@ namespace Chevere\Components\VarDump\Contracts;
 
 interface ProcessorContract
 {
+    public function __construct(VarDumpContract $varDump);
+
     public function info(): string;
 
     public function val(): string;

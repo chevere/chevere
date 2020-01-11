@@ -16,6 +16,7 @@ namespace Chevere\Components\VarDump\Formatters;
 use Chevere\Components\VarDump\Formatters\Traits\FilterEncodedCharsTrait;
 use Chevere\Components\VarDump\Formatters\Traits\GetIndentTrait;
 use Chevere\Components\VarDump\Contracts\FormatterContract;
+use Chevere\Components\VarDump\Contracts\VarDumpContract;
 use Chevere\Components\VarDump\Wrappers\ConsoleWrapper;
 
 /**
@@ -36,7 +37,7 @@ final class ConsoleFormatter implements FormatterContract
     public function applyEmphasis(string $string): string
     {
         return
-            (new ConsoleWrapper('emphasis'))
+            (new ConsoleWrapper(VarDumpContract::_EMPHASIS))
                 ->wrap($string);
     }
 }

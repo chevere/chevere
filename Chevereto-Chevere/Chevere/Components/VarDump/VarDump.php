@@ -180,20 +180,21 @@ final class VarDump implements VarDumpContract
     {
         switch ($this->type) {
             case static::TYPE_BOOLEAN:
-                $processor = new BooleanProcessor($this->var);
+                $processor = new BooleanProcessor($this);
                 break;
             case static::TYPE_ARRAY:
                 ++$this->indent;
-                $processor = new ArrayProcessor($this->var, $this);
+                $processor = new ArrayProcessor($this);
                 break;
             case static::TYPE_OBJECT:
                 ++$this->indent;
-                $processor = new ObjectProcessor($this->var, $this);
+                $processor = new ObjectProcessor($this);
                 break;
             default:
-                $processor = new ScalarProcessor($this->var, $this);
+                $processor = new ScalarProcessor($this);
                 break;
         }
+
         $this->val .= $processor->val();
         $this->info = $processor->info();
         $this->handleInfo();
