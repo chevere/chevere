@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Wrappers;
 
 use Chevere\Components\VarDump\Contracts\PalleteContract;
-use Chevere\Components\VarDump\Contracts\WrapperContract;
-use Chevere\Components\VarDump\Wrappers\Traits\WrapperTrait;
 
 final class HtmlWrapper extends AbstractWrapper
 {

@@ -21,7 +21,7 @@ interface VarDumpContract
     const TYPE_FLOAT = 'float';
     const TYPE_INTEGER = 'integer';
     const TYPE_BOOLEAN = 'boolean';
-    const TYPE_NULL = 'NULL';
+    const TYPE_NULL = 'null';
     const TYPE_OBJECT = 'object';
     const TYPE_ARRAY = 'array';
     const _FILE = '_file';
