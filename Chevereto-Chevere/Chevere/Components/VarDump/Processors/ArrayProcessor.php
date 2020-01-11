@@ -26,14 +26,14 @@ final class ArrayProcessor implements ProcessorContract
         $this->val = '';
         $this->info = '';
         foreach ($expression as $k => $v) {
-            $operator = $varDump->formatter()->getWrap(VarDump::_OPERATOR, '=>');
-            $this->val .= "\n" . $varDump->indentString() . ' ' . $varDump->formatter()->getEncodedChars((string) $k) . " $operator ";
+            $operator = $varDump->formatter()->applyWrap(VarDump::_OPERATOR, '=>');
+            $this->val .= "\n" . $varDump->indentString() . ' ' . $varDump->formatter()->filterEncodedChars((string) $k) . " $operator ";
             $aux = $v;
             $isCircularRef = is_array($aux) && isset($aux[$k]) && $aux == $aux[$k];
             if ($isCircularRef) {
-                $this->val .= $varDump->formatter()->getWrap(
+                $this->val .= $varDump->formatter()->applyWrap(
                     VarDump::_OPERATOR,
-                    '(' . $varDump->formatter()->getEmphasis('circular array reference') . ')'
+                    '(' . $varDump->formatter()->applyEmphasis('circular array reference') . ')'
                 );
             } else {
                 $new = (new VarDump($varDump->formatter()))

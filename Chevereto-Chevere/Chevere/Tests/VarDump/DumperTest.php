@@ -29,6 +29,6 @@ final class DumperTest extends TestCase
         // ob_end_clean();
         // $echo = '^' . $buffered . '$';
         // echo $echo;
-        xdd('Daniel Stringo');
+        // xdd('Daniel Stringo');
     }
 }

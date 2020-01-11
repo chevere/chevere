@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Formatters\Traits;
 
-trait GetEmphasisTrait
+trait FilterEncodedCharsTrait
 {
-    public function getEmphasis(string $string): string
+    public function filterEncodedChars(string $string): string
     {
         return $string;
     }

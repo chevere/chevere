@@ -28,12 +28,13 @@ interface PalleteContract
         VarDump::TYPE_NULL => '#7f8c8d', // grey
         VarDump::TYPE_OBJECT => '#e74c3c', // red
         VarDump::TYPE_ARRAY => '#2ecc71', // green
-        VarDump::_FILE => null,
+        VarDump::_FILE => 'inherith',
         VarDump::_CLASS => '#3498db', // blue
         VarDump::_OPERATOR => '#7f8c8d', // grey
         VarDump::_FUNCTION => '#9b59b6', // purple
         VarDump::_PRIVACY => '#9b59b6', // purple
         VarDump::_VARIABLE => '#e67e22', // orange
+        'emphasis' => '#7f8c8d',
     ];
 
     /**
@@ -47,11 +48,12 @@ interface PalleteContract
         VarDump::TYPE_NULL => 'color_245', // grey
         VarDump::TYPE_OBJECT => 'color_39',
         VarDump::TYPE_ARRAY => 'color_41', // green
-        VarDump::_FILE => null,
+        VarDump::_FILE => 'default',
         VarDump::_CLASS => 'color_147', // blue
         VarDump::_OPERATOR => 'color_245', // grey
         VarDump::_FUNCTION => 'color_39',
         VarDump::_PRIVACY => 'color_133',
         VarDump::_VARIABLE => 'color_208',
+        'emphasis' => ['color_245', 'italic']
     ];
 }

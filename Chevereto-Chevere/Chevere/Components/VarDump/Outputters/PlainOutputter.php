@@ -15,11 +15,9 @@ namespace Chevere\Components\VarDump\Outputters;
 
 use Chevere\Components\VarDump\Contracts\OutputterContract;
 use Chevere\Components\VarDump\Outputters\AbstractOutputter;
+use Chevere\Components\VarDump\Outputters\Traits\OutputterTrait;
 
-final class PlainOutputter extends AbstractOutputter
+final class PlainOutputter implements OutputterContract
 {
-    public function prepare(): OutputterContract
-    {
-        return $this;
-    }
+    use OutputterTrait;
 }

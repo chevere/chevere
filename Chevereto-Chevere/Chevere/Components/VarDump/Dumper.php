@@ -24,8 +24,7 @@ final class Dumper
 {
     public function __construct(...$vars)
     {
-        $isCli = BootstrapInstance::get()->isCli();
-        $dumper = $isCli ? new ConsoleDumper() : new HtmlDumper();
-        $dumper->dump(...$vars);
+        (BootstrapInstance::get()->isCli() ? new ConsoleDumper() : new HtmlDumper())
+            ->dump(...$vars);
     }
 }

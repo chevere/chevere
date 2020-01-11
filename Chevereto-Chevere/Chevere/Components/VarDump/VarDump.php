@@ -203,9 +203,9 @@ final class VarDump implements VarDumpContract
     {
         if ('' !== $this->info) {
             if (strpos($this->info, '=')) {
-                $this->info = $this->formatter->getEmphasis("($this->info)");
+                $this->info = $this->formatter->applyEmphasis("($this->info)");
             } else {
-                $this->info = $this->formatter->getWrap(static::_CLASS, $this->info);
+                $this->info = $this->formatter->applyWrap(static::_CLASS, $this->info);
             }
         }
     }
@@ -234,7 +234,7 @@ final class VarDump implements VarDumpContract
             }
         }
         $this->output = strtr($message, [
-            '%type%' => $this->formatter->getWrap($this->type, $this->type),
+            '%type%' => $this->formatter->applyWrap($this->type, $this->type),
             '%val%' => $this->val,
             '%info%' => $this->info,
         ]);

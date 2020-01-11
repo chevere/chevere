@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Formatters;
 
-use Chevere\Components\VarDump\Formatters\Traits\GetEmphasisTrait;
-use Chevere\Components\VarDump\Formatters\Traits\GetEncodedCharsTrait;
+use Chevere\Components\VarDump\Formatters\Traits\FilterEncodedCharsTrait;
 use Chevere\Components\VarDump\Formatters\Traits\GetIndentTrait;
 use Chevere\Components\VarDump\Contracts\FormatterContract;
 
@@ -24,11 +23,15 @@ use Chevere\Components\VarDump\Contracts\FormatterContract;
 final class PlainFormatter implements FormatterContract
 {
     use GetIndentTrait;
-    use GetEmphasisTrait;
-    use GetEncodedCharsTrait;
+    use FilterEncodedCharsTrait;
 
-    public function getWrap(string $key, string $dump): string
+    public function applyWrap(string $key, string $dump): string
     {
         return $dump;
+    }
+
+    public function applyEmphasis(string $string): string
+    {
+        return $string;
     }
 }

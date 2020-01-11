@@ -11,21 +11,20 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Dumpers;
+namespace Chevere\Components\VarDump\Dumpers\Traits;
 
 use BadMethodCallException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\VarDump\Contracts\DumperContract;
 use Chevere\Components\VarDump\Contracts\FormatterContract;
 use Chevere\Components\VarDump\Contracts\OutputterContract;
 use Chevere\Components\VarDump\Contracts\VarDumpContract;
+use Chevere\Components\VarDump\Dumper;
 use Chevere\Components\VarDump\VarDump;
-use function ChevereFn\stringEndsWith;
 
 /**
  * Dumps information about one or more variables. CLI/HTML aware.
  */
-abstract class AbstractDumper implements DumperContract
+trait DumperTrait
 {
     private FormatterContract $formatter;
 
@@ -50,35 +49,22 @@ abstract class AbstractDumper implements DumperContract
     /**
      * {@inheritdoc}
      */
-    public function varDump(): VarDumpContract
-    {
-        return $this->varDump;
-    }
-
-    public function withFormatter(FormatterContract $formatter): DumperContract
-    {
-        $new = clone $this;
-        $new->formatter = $formatter;
-
-        return $new;
-    }
-
     public function formatter(): FormatterContract
     {
         return $this->formatter;
     }
 
-    public function withOutputter(OutputterContract $outputter): DumperContract
-    {
-        $new = clone $this;
-        $new->outputter = $outputter;
-
-        return $new;
-    }
-
     public function outputter(): OutputterContract
     {
         return $this->outputter;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function varDump(): VarDumpContract
+    {
+        return $this->varDump;
     }
 
     /**
@@ -96,11 +82,17 @@ abstract class AbstractDumper implements DumperContract
             ->process();
     }
 
-    public function vars(): array
+    /**
+     * {@inheritdoc}
+     */
+    final public function vars(): array
     {
         return $this->vars;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function debugBacktrace(): array
     {
         if (!isset($this->debugBacktrace)) {
@@ -119,13 +111,16 @@ abstract class AbstractDumper implements DumperContract
     {
         $this->debugBacktrace = debug_backtrace();
         array_shift($this->debugBacktrace);
-        $this->debugBacktrace[0]['class'] = static::class;
         if (
-            isset($this->debugBacktrace[1]['file']) &&
-            stringEndsWith('resources/functions/dump.php', $this->debugBacktrace[1]['file'])
+            isset($this->debugBacktrace[1]['class'])
+            && Dumper::class == $this->debugBacktrace[1]['class']
         ) {
             array_shift($this->debugBacktrace);
             array_shift($this->debugBacktrace);
         }
+        // foreach ($this->debugBacktrace as $pos => $item) {
+        //     echo 'POS ' . $pos . ' ' . $item['file'] . ' -C ' . ($item['class'] ?? 'null') . ' -F ' . ($item['function'] ?? 'null') . "\n";
+        // }
+        // die();
     }
 }

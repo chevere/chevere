@@ -11,12 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Formatters\Traits;
+namespace Chevere\Components\VarDump\Contracts;
 
-trait GetEncodedCharsTrait
+use Chevere\Components\Common\Contracts\ToStringContract;
+
+interface WrapperContract
 {
-    public function getEncodedChars(string $string): string
-    {
-        return $string;
-    }
+    public function __construct(string $key);
+
+    public function wrap(string $dump): string;
 }

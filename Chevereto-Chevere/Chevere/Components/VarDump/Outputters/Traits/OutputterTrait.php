@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Outputters;
+namespace Chevere\Components\VarDump\Outputters\Traits;
 
 use Chevere\Components\VarDump\Contracts\DumperContract;
 use Chevere\Components\VarDump\Contracts\OutputterContract;
 use Chevere\Components\VarDump\VarDump;
 use function ChevereFn\stringStartsWith;
 
-abstract class AbstractOutputter implements OutputterContract
+trait OutputterTrait
 {
     protected string $output = '';
 
@@ -67,7 +67,7 @@ abstract class AbstractOutputter implements OutputterContract
         $this->prepare();
         $this->handleClass();
         $this->output .= $this->dumper->varDump()->formatter()
-            ->getWrap('_function', $this->dumper->debugBacktrace()[$this->dumper::OFFSET]['function'] . '()');
+            ->applyWrap('_function', $this->dumper->debugBacktrace()[$this->dumper::OFFSET]['function'] . '()');
         $this->handleFile();
         $this->output .= "\n\n";
         $this->handleArgs();
@@ -93,7 +93,7 @@ abstract class AbstractOutputter implements OutputterContract
                 $class = explode('0x', $class)[0];
             }
             $this->output .= $this->dumper->varDump()->formatter()
-                ->getWrap('_class', $class) . $this->dumper->debugBacktrace()[$this->dumper::OFFSET]['type'];
+                ->applyWrap('_class', $class) . $this->dumper->debugBacktrace()[$this->dumper::OFFSET]['type'];
         }
     }
 
@@ -101,7 +101,7 @@ abstract class AbstractOutputter implements OutputterContract
     {
         if (isset($this->dumper->debugBacktrace()[0]['file'])) {
             $this->output .= "\n" . $this->dumper->varDump()->formatter()
-                ->getWrap('_file', $this->dumper->debugBacktrace()[0]['file'] . ':' . $this->dumper->debugBacktrace()[0]['line']);
+                ->applyWrap('_file', $this->dumper->debugBacktrace()[0]['file'] . ':' . $this->dumper->debugBacktrace()[0]['line']);
         }
     }
 

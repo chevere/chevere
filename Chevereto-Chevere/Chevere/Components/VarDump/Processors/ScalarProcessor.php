@@ -37,7 +37,7 @@ final class ScalarProcessor implements ProcessorContract
                         ? ((string) $expression)
                         : $expression
                 );
-            $this->val = $varDump->formatter()->getEncodedChars(strval($expression));
+            $this->val = $varDump->formatter()->filterEncodedChars(strval($expression));
         }
     }
 }

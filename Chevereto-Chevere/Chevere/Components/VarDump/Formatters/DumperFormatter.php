@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Formatters;
 
 use Chevere\Components\App\Instances\BootstrapInstance;
-use Chevere\Components\VarDump\Formatters\Traits\GetEncodedCharsTrait;
+use Chevere\Components\VarDump\Formatters\Traits\FilterEncodedCharsTrait;
 use Chevere\Components\VarDump\Formatters\Traits\GetIndentTrait;
 use Chevere\Components\VarDump\Contracts\FormatterContract;
-use Chevere\Components\VarDump\Wrapper;
 
 /**
  * Provide Dumper VarDump representation (auto detect).
@@ -25,25 +24,22 @@ use Chevere\Components\VarDump\Wrapper;
 final class DumperFormatter implements FormatterContract
 {
     use GetIndentTrait;
-    use GetEncodedCharsTrait;
+    use FilterEncodedCharsTrait;
 
-    public function getWrap(string $key, string $dump): string
+    private FormatterContract $formatter;
+
+    public function __construct()
     {
-        $wrapper = new Wrapper($key, $dump);
-        if (BootstrapInstance::get()->isCli()) {
-            $wrapper = $wrapper->withCli();
-        }
-
-        return $wrapper->toString();
+        $this->formatter = BootstrapInstance::get()->isCli() ? new ConsoleFormatter() : new PlainFormatter();
     }
 
-    public function getEmphasis(string $string): string
+    public function applyWrap(string $key, string $dump): string
     {
-        if (!BootstrapInstance::get()->isCli()) {
-            return $string;
-        }
+        return $this->formatter->applyWrap(...func_get_args());
+    }
 
-        return (new ConsoleFormatter())
-            ->getEmphasis($string);
+    public function applyEmphasis(string $string): string
+    {
+        return $this->formatter->applyEmphasis(...func_get_args());
     }
 }

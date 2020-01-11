@@ -15,7 +15,7 @@ namespace Chevere\Components\VarDump\Formatters;
 
 use Chevere\Components\VarDump\Contracts\FormatterContract;
 use Chevere\Components\VarDump\Contracts\TemplateContract;
-use Chevere\Components\VarDump\Wrapper;
+use Chevere\Components\VarDump\Wrappers\HtmlWrapper;
 
 /**
  * Provide HTML VarDump representation.
@@ -27,20 +27,24 @@ final class HtmlFormatter implements FormatterContract
         return str_repeat(TemplateContract::HTML_INLINE_PREFIX, $indent);
     }
 
-    public function getEmphasis(string $string): string
+    public function applyEmphasis(string $string): string
     {
-        return sprintf(TemplateContract::HTML_EMPHASIS, $string);
+        return sprintf(
+            TemplateContract::HTML_EMPHASIS,
+            (new HtmlWrapper('emphasis'))
+                ->wrap($string)
+        );
     }
 
-    public function getEncodedChars(string $string): string
+    public function filterEncodedChars(string $string): string
     {
         return htmlspecialchars($string);
     }
 
-    public function getWrap(string $key, string $dump): string
+    public function applyWrap(string $key, string $string): string
     {
-        $wrapper = new Wrapper($key, $dump);
-
-        return $wrapper->toString();
+        return
+            (new HtmlWrapper($key))
+                ->wrap($string);
     }
 }

@@ -23,12 +23,12 @@ interface FormatterContract
     /**
      * @param string String to emphatize
      */
-    public function getEmphasis(string $string): string;
+    public function applyEmphasis(string $string): string;
 
     /**
      * @param string String to encode its chars
      */
-    public function getEncodedChars(string $string): string;
+    public function filterEncodedChars(string $string): string;
 
-    public function getWrap(string $key, string $dump): string;
+    public function applyWrap(string $key, string $dump): string;
 }

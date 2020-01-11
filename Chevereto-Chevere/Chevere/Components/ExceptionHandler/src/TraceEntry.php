@@ -94,7 +94,7 @@ final class TraceEntry
             '%t%' => VarDump::_OPERATOR,
             '%m%' => VarDump::_FUNCTION,
         ] as $k => $v) {
-            $wrapper = $dumperFormatter->getWrap($v, (string) $this->plain[$k]);
+            $wrapper = $dumperFormatter->applyWrap($v, (string) $this->plain[$k]);
             $this->rich[$k] = isset($this->plain[$k]) ? $wrapper : null;
         }
         $this->rich['%a%'] = $this->richArgs;

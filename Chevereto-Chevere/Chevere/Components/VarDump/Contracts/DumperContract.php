@@ -23,13 +23,9 @@ interface DumperContract
 
     const OFFSET = 1;
 
-    public function withFormatter(FormatterContract $formatter): DumperContract;
-
     public function formatter(): FormatterContract;
 
     public function getFormatter(): FormatterContract;
-
-    public function withOutputter(OutputterContract $outputter): DumperContract;
 
     public function outputter(): OutputterContract;
 

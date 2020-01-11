@@ -46,9 +46,9 @@ final class ObjectProcessor implements ProcessorContract
         $this->info = '';
         $this->reflectionObject = new ReflectionObject($expression);
         if (in_array($this->reflectionObject->getName(), $this->varDump->dontDump())) {
-            $this->val .= $this->varDump->formatter()->getWrap(
+            $this->val .= $this->varDump->formatter()->applyWrap(
                 VarDump::_OPERATOR,
-                $this->varDump->formatter()->getEmphasis(
+                $this->varDump->formatter()->applyEmphasis(
                     $this->reflectionObject->getName()
                 )
             );
@@ -95,9 +95,9 @@ final class ObjectProcessor implements ProcessorContract
     private function processProperty($key, $var): void
     {
         $visibility = implode(' ', $var['visibility'] ?? $this->properties['visibility']);
-        $wrappedVisibility = $this->varDump->formatter()->getWrap(VarDump::_PRIVACY, $visibility);
-        $property = '$' . $this->varDump->formatter()->getEncodedChars($key);
-        $wrappedProperty = $this->varDump->formatter()->getWrap(VarDump::_VARIABLE, $property);
+        $wrappedVisibility = $this->varDump->formatter()->applyWrap(VarDump::_PRIVACY, $visibility);
+        $property = '$' . $this->varDump->formatter()->filterEncodedChars($key);
+        $wrappedProperty = $this->varDump->formatter()->applyWrap(VarDump::_VARIABLE, $property);
         $this->val .= "\n" . $this->varDump->indentString() . $wrappedVisibility . ' ' . $wrappedProperty . ' ';
         $this->aux = $var['value'];
         if (is_object($this->aux) && property_exists($this->aux, $key)) {
@@ -107,9 +107,9 @@ final class ObjectProcessor implements ProcessorContract
                 $prop->setAccessible(true);
                 $propValue = $prop->getValue($this->aux);
                 if ($this->aux == $propValue) {
-                    $this->val .= $this->varDump->formatter()->getWrap(
+                    $this->val .= $this->varDump->formatter()->applyWrap(
                         VarDump::_OPERATOR,
-                        '(' . $this->varDump->formatter()->getEmphasis('circular object reference') . ')'
+                        '(' . $this->varDump->formatter()->applyEmphasis('circular object reference') . ')'
                     );
 
                     return;
@@ -135,9 +135,9 @@ final class ObjectProcessor implements ProcessorContract
 
             return;
         }
-        $this->val .= $this->varDump->formatter()->getWrap(
+        $this->val .= $this->varDump->formatter()->applyWrap(
             VarDump::_OPERATOR,
-            '(' . $this->varDump->formatter()->getEmphasis('max depth reached') . ')'
+            '(' . $this->varDump->formatter()->applyEmphasis('max depth reached') . ')'
         );
     }
 

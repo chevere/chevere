@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Formatters;
 
-use Chevere\Components\VarDump\Formatters\Traits\GetEncodedCharsTrait;
+use Chevere\Components\VarDump\Formatters\Traits\FilterEncodedCharsTrait;
 use Chevere\Components\VarDump\Formatters\Traits\GetIndentTrait;
 use Chevere\Components\VarDump\Contracts\FormatterContract;
-use Chevere\Components\VarDump\Wrapper;
-use JakubOnderka\PhpConsoleColor\ConsoleColor;
+use Chevere\Components\VarDump\Wrappers\ConsoleWrapper;
 
 /**
  * Provide console VarDump representation.
@@ -25,20 +24,19 @@ use JakubOnderka\PhpConsoleColor\ConsoleColor;
 final class ConsoleFormatter implements FormatterContract
 {
     use GetIndentTrait;
-    use GetEncodedCharsTrait;
+    use FilterEncodedCharsTrait;
 
-    public function getWrap(string $key, string $dump): string
+    public function applyWrap(string $key, string $string): string
     {
-        $wrapper = new Wrapper($key, $dump);
-        $wrapper = $wrapper->withCli();
-
-        return $wrapper->toString();
+        return
+            (new ConsoleWrapper($key))
+                ->wrap($string);
     }
 
-    public function getEmphasis(string $string): string
+    public function applyEmphasis(string $string): string
     {
-        $consoleColor = new ConsoleColor();
-
-        return $consoleColor->apply(['color_245', 'italic'], $string);
+        return
+            (new ConsoleWrapper('emphasis'))
+                ->wrap($string);
     }
 }
