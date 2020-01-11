@@ -23,6 +23,7 @@ interface VarDumpContract
     const TYPE_BOOLEAN = 'boolean';
     const TYPE_NULL = 'null';
     const TYPE_OBJECT = 'object';
+    const TYPE_CLASS_ANON = 'class@anonymous';
     const TYPE_ARRAY = 'array';
     const _FILE = '_file';
     const _CLASS = '_class';
@@ -30,7 +31,7 @@ interface VarDumpContract
     const _FUNCTION = '_function';
     const _PRIVACY = '_privacy';
     const _VARIABLE = '_variable';
-    const ANON_CLASS = 'class@anonymous';
+    const _EMPHASIS = '_emphasis';
 
     const PROPERTIES_REFLECTION_MAP = [
         'public' => ReflectionProperty::IS_PUBLIC,

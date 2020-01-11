@@ -154,16 +154,16 @@ final class TraceEntry
 
     private function handleProcessAnonClass()
     {
-        if (isset($this->entry['class']) && stringStartsWith(VarDump::ANON_CLASS, $this->entry['class'])) {
+        if (isset($this->entry['class']) && stringStartsWith(VarDump::TYPE_CLASS_ANON, $this->entry['class'])) {
             $this->processAnonClass();
         }
     }
 
     private function processAnonClass()
     {
-        $entryFile = stringReplaceFirst(VarDump::ANON_CLASS, '', $this->entry['class']);
+        $entryFile = stringReplaceFirst(VarDump::TYPE_CLASS_ANON, '', $this->entry['class']);
         $this->entry['file'] = substr($entryFile, 0, strpos($entryFile, '.php') + 4);
-        $this->entry['class'] = VarDump::ANON_CLASS;
+        $this->entry['class'] = VarDump::TYPE_CLASS_ANON;
         $this->entry['line'] = null;
     }
 

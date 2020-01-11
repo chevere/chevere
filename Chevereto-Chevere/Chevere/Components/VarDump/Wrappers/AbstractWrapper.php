@@ -21,6 +21,8 @@ abstract class AbstractWrapper implements WrapperContract
 {
     protected string $key;
 
+    protected array $pallete;
+
     protected function assertKey(): void
     {
         if (!array_key_exists($this->key, $this->pallete())) {
@@ -33,5 +35,8 @@ abstract class AbstractWrapper implements WrapperContract
         }
     }
 
-    abstract public function pallete(): array;
+    public function pallete(): array
+    {
+        return $this->pallete;
+    }
 }

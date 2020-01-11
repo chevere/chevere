@@ -22,17 +22,13 @@ final class HtmlWrapper extends AbstractWrapper
     public function __construct(string $key)
     {
         $this->key = $key;
+        $this->pallete = PalleteContract::HTML;
         $this->assertKey();
-        $this->color = $this->pallete()[$this->key];
+        $this->color = $this->pallete[$this->key];
     }
 
     public function wrap(string $dump): string
     {
         return '<span style="color:' . $this->color . '">' . $dump . '</span>';
-    }
-
-    public function pallete(): array
-    {
-        return PalleteContract::PALETTE;
     }
 }

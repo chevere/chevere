@@ -26,9 +26,10 @@ final class ConsoleWrapper extends AbstractWrapper
     public function __construct(string $key)
     {
         $this->key = $key;
+        $this->pallete = PalleteContract::CONSOLE;
         $this->assertKey();
         $this->consoleColor = new ConsoleColor();
-        $this->color = $this->pallete()[$this->key];
+        $this->color = $this->pallete[$this->key];
         $this->assertColor();
     }
 
@@ -36,11 +37,6 @@ final class ConsoleWrapper extends AbstractWrapper
     {
         return $this->consoleColor
             ->apply($this->color, $dump);
-    }
-
-    public function pallete(): array
-    {
-        return PalleteContract::CONSOLE;
     }
 
     private function assertColor(): void
