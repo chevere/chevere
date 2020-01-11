@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
+use Chevere\Components\VarDump\Contracts\ProcessorContract;
 use Chevere\Components\VarDump\VarDump;
 use Chevere\Components\VarDump\Contracts\VarDumpContract;
 
@@ -20,30 +21,32 @@ final class ArrayProcessor extends AbstractProcessor
 {
     private array $var;
 
-    public function __construct(VarDumpContract $varDump)
+    public function withProcess(): ProcessorContract
     {
-        $this->var = $varDump->var();
-        $this->val = '';
-        $this->info = 'size=' . count($this->var);
-        foreach ($this->var as $k => $v) {
-            $operator = $varDump->formatter()->applyWrap($varDump::_OPERATOR, '=>');
-            $this->val .= "\n" . $varDump->indentString() . ' ' . $varDump->formatter()->filterEncodedChars((string) $k) . " $operator ";
+        $new = clone $this;
+        $new->var = $this->varDump->var();
+        $new->info = 'size=' . count($new->var);
+        foreach ($new->var as $k => $v) {
+            $operator = $this->varDump->formatter()->applyWrap(VarDumpContract::_OPERATOR, '=>');
+            $new->val .= "\n" . $this->varDump->indentString() . ' ' . $this->varDump->formatter()->filterEncodedChars((string) $k) . " $operator ";
             $aux = $v;
             $isCircularRef = is_array($aux) && isset($aux[$k]) && $aux == $aux[$k];
             if ($isCircularRef) {
-                $this->val .= $varDump->formatter()
+                $new->val .= $this->varDump->formatter()
                     ->applyWrap(
-                        VarDump::_OPERATOR,
-                        '(' . $varDump->formatter()->applyEmphasis('circular array reference') . ')'
+                        VarDumpContract::_OPERATOR,
+                        '(' . $this->varDump->formatter()->applyEmphasis('circular array reference') . ')'
                     );
             } else {
-                $new = (new VarDump($varDump->formatter()))
-                    ->withDontDump(...$varDump->dontDump())
+                $newVarDump = (new VarDump($this->varDump->formatter()))
+                    ->withDontDump(...$this->varDump->dontDump())
                     ->withVar($aux)
-                    ->withIndent($varDump->indent() + 1)
+                    ->withIndent($this->varDump->indent() + 1)
                     ->process();
-                $this->val .= $new->toString();
+                $new->val .= $newVarDump->toString();
             }
         }
+
+        return $new;
     }
 }

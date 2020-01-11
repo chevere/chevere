@@ -16,6 +16,7 @@ namespace Chevere\Components\VarDump\Processors;
 use ReflectionObject;
 use ReflectionProperty;
 use Throwable;
+use Chevere\Components\VarDump\Contracts\ProcessorContract;
 use Chevere\Components\VarDump\VarDump;
 use Chevere\Components\VarDump\Contracts\VarDumpContract;
 use function ChevereFn\stringStartsWith;
@@ -23,9 +24,6 @@ use function ChevereFn\stringStartsWith;
 final class ObjectProcessor extends AbstractProcessor
 {
     private object $var;
-
-    /** @var VarDump */
-    private VarDump $varDump;
 
     private ReflectionObject $reflectionObject;
 
@@ -35,35 +33,35 @@ final class ObjectProcessor extends AbstractProcessor
 
     private $aux;
 
-    public function __construct(VarDumpContract $varDump)
+    public function withProcess(): ProcessorContract
     {
-        $this->var = $varDump->var();
-        $this->varDump = $varDump;
-        $this->val = '';
-        $this->info = '';
-        $this->reflectionObject = new ReflectionObject($this->var);
-        if (in_array($this->reflectionObject->getName(), $this->varDump->dontDump())) {
-            $this->val .= $this->varDump->formatter()->applyWrap(
-                $this->varDump::_OPERATOR,
-                $this->varDump->formatter()->applyEmphasis(
-                    $this->reflectionObject->getName()
+        $new = clone $this;
+        $new->var = $new->varDump->var();
+        $new->reflectionObject = new ReflectionObject($new->var);
+        if (in_array($new->reflectionObject->getName(), $new->varDump->dontDump())) {
+            $new->val .= $new->varDump->formatter()->applyWrap(
+                VarDumpContract::_OPERATOR,
+                $new->varDump->formatter()->applyEmphasis(
+                    $new->reflectionObject->getName()
                 )
             );
 
-            return;
+            return $new;
         }
-        $this->setProperties();
+        $new->setProperties();
 
-        // $this->classFile = $this->reflectionObject->getFileName();
-        $this->className = get_class($this->var);
-        $this->handleNormalizeClassName();
-        $this->info = $this->className;
+        // $new->classFile = $new->reflectionObject->getFileName();
+        $new->className = get_class($new->var);
+        $new->handleNormalizeClassName();
+        $new->info = $new->className;
+
+        return $new;
     }
 
     private function setProperties(): void
     {
         $this->properties = [];
-        foreach ($this->varDump::PROPERTIES_REFLECTION_MAP as $visibility => $filter) {
+        foreach (VarDumpContract::PROPERTIES_REFLECTION_MAP as $visibility => $filter) {
             /** @scrutinizer ignore-call */
             $properties = $this->reflectionObject->getProperties($filter);
             foreach ($properties as $property) {
@@ -92,9 +90,9 @@ final class ObjectProcessor extends AbstractProcessor
     private function processProperty($key, $var): void
     {
         $visibility = implode(' ', $var['visibility'] ?? $this->properties['visibility']);
-        $wrappedVisibility = $this->varDump->formatter()->applyWrap($this->varDump::_PRIVACY, $visibility);
+        $wrappedVisibility = $this->varDump->formatter()->applyWrap(VarDumpContract::_PRIVACY, $visibility);
         $property = '$' . $this->varDump->formatter()->filterEncodedChars($key);
-        $wrappedProperty = $this->varDump->formatter()->applyWrap($this->varDump::_VARIABLE, $property);
+        $wrappedProperty = $this->varDump->formatter()->applyWrap(VarDumpContract::_VARIABLE, $property);
         $this->val .= "\n" . $this->varDump->indentString() . $wrappedVisibility . ' ' . $wrappedProperty . ' ';
         $this->aux = $var['value'];
         if (is_object($this->aux) && property_exists($this->aux, $key)) {
@@ -105,7 +103,7 @@ final class ObjectProcessor extends AbstractProcessor
                 $propValue = $prop->getValue($this->aux);
                 if ($this->aux == $propValue) {
                     $this->val .= $this->varDump->formatter()->applyWrap(
-                        $this->varDump::_OPERATOR,
+                        VarDumpContract::_OPERATOR,
                         '(' . $this->varDump->formatter()->applyEmphasis('circular object reference') . ')'
                     );
 
@@ -133,14 +131,14 @@ final class ObjectProcessor extends AbstractProcessor
             return;
         }
         $this->val .= $this->varDump->formatter()->applyWrap(
-            $this->varDump::_OPERATOR,
+            VarDumpContract::_OPERATOR,
             '(' . $this->varDump->formatter()->applyEmphasis('max depth reached') . ')'
         );
     }
 
     private function handleNormalizeClassName(): void
     {
-        if (stringStartsWith($this->varDump::TYPE_CLASS_ANON, $this->className)) {
+        if (stringStartsWith(VarDumpContract::TYPE_CLASS_ANON, $this->className)) {
             // $this->className = (new Path($this->className))->absolute();
         }
     }

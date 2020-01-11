@@ -20,4 +20,6 @@ interface ProcessorContract
     public function info(): string;
 
     public function val(): string;
+
+    public function withProcess(): ProcessorContract;
 }

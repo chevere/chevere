@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump;
 
+use BadMethodCallException;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\VarDump\Contracts\VarDumpContract;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
@@ -34,14 +35,15 @@ final class VarDumpTest extends TestCase
         $formatter = new PlainFormatter();
         $varDump = new VarDump($formatter);
         $this->assertSame($formatter, $varDump->formatter());
+        $this->assertFalse($varDump->hasVar());
         $this->assertSame(null, $varDump->var());
         $this->assertSame([], $varDump->dontDump());
         $this->assertSame(0, $varDump->indent());
         $this->assertSame(0, $varDump->depth());
         $this->assertSame('', $varDump->indentString());
         $this->assertSame('', $varDump->toString());
+        $this->expectException(BadMethodCallException::class);
         $varDump->process();
-        $this->assertSame('null', $varDump->toString());
     }
 
     public function testWithDontDump(): void
@@ -81,7 +83,7 @@ final class VarDumpTest extends TestCase
     {
         $types = [
             [null, 'null'],
-            [true, 'boolean TRUE'],
+            [true, 'boolean true'],
             [1, 'integer 1 (length=1)'],
             ['', 'string (length=0)'],
             [[], 'array (size=0)'],

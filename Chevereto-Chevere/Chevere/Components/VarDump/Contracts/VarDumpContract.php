@@ -71,7 +71,12 @@ interface VarDumpContract
     public function withVar($var): VarDumpContract;
 
     /**
-     * Provides access to the instance $var.
+     * Returns a boolean indicating whether the instance has a var.
+     */
+    public function hasVar(): bool;
+
+    /**
+     * Provides access to the instance $var.s
      */
     public function var();
 

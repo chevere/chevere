@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump;
 
+use BadMethodCallException;
 use Chevere\Components\VarDump\Processors\ArrayProcessor;
 use Chevere\Components\VarDump\Processors\BooleanProcessor;
 use Chevere\Components\VarDump\Processors\ObjectProcessor;
@@ -41,7 +42,9 @@ final class VarDump implements VarDumpContract
 
     private $var;
 
-    private $val;
+    private bool $hasVar = false;
+
+    private string $val = '';
 
     private string $type;
 
@@ -94,8 +97,17 @@ final class VarDump implements VarDumpContract
         $new = clone $this;
         ++$new->depth;
         $new->var = $var;
+        $new->hasVar = true;
 
         return $new;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function hasVar(): bool
+    {
+        return $this->hasVar;
     }
 
     /**
@@ -151,7 +163,9 @@ final class VarDump implements VarDumpContract
      */
     public function process(): VarDumpContract
     {
-        $this->val = null;
+        if (!$this->hasVar) {
+            throw new BadMethodCallException('This method cannot be called without a $var');
+        }
         $this->type = varType($this->var);
         $this->handleType();
         $this->setTemplate();
@@ -194,6 +208,9 @@ final class VarDump implements VarDumpContract
                 $processor = new ScalarProcessor($this);
                 break;
         }
+
+        $processor = $processor
+            ->withProcess();
 
         $this->val .= $processor->val();
         $this->info = $processor->info();
