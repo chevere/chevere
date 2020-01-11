@@ -13,28 +13,24 @@ declare(strict_types=1);
 
 use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\VarDump\Dumper;
+use Chevere\Components\VarDump\Dumpers\ConsoleDumper;
+use Chevere\Components\VarDump\Dumpers\HtmlDumper;
 
-if (!function_exists('xdump')) {
+if (!function_exists('xdump') && !function_exists('xdd')) {
     /**
      * Dumps information about one or more variables.
      */
     function xdump(...$vars)
     {
-        (new Dumper())
-            ->withCli(BootstrapInstance::get()->isCli())
-            ->dump(...$vars);
+        new Dumper(...$vars);
     }
-}
 
-if (!function_exists('xdd')) {
     /**
      * Dumps information about one or more variables and die().
      */
     function xdd(...$vars)
     {
-        (new Dumper())
-            ->withCli(BootstrapInstance::get()->isCli())
-            ->dump(...$vars);
+        new Dumper(...$vars);
         die(0);
     }
 }

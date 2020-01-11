@@ -14,17 +14,19 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Dumpers;
 
 use Chevere\Components\VarDump\Contracts\FormatterContract;
+use Chevere\Components\VarDump\Contracts\OutputterContract;
 use Chevere\Components\VarDump\Formatters\HtmlFormatter;
+use Chevere\Components\VarDump\Outputters\HtmlOutputter;
 
-final class HtmlDumper extends Dumper
+final class HtmlDumper extends AbstractDumper
 {
     public function getFormatter(): FormatterContract
     {
         return new HtmlFormatter();
     }
 
-    public function handleOutput(): void
+    public function getOutputter(): OutputterContract
     {
-        return;
+        return new HtmlOutputter();
     }
 }

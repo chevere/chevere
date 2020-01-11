@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump;
 
+use Chevere\Components\VarDump\Dumpers\ConsoleDumper;
+use Chevere\Components\VarDump\Dumpers\HtmlDumper;
 use Chevere\Components\VarDump\Dumpers\PlainDumper;
 use PHPUnit\Framework\TestCase;
 
@@ -20,12 +22,12 @@ final class DumperTest extends TestCase
 {
     public function testWea(): void
     {
-        $dumper = new PlainDumper();
-        ob_start();
+        $dumper = new ConsoleDumper();
         $dumper->dump('Daniel Stringo');
-        $buffered = ob_get_contents();
-        ob_end_clean();
-        $echo = '`' . $buffered . '`';
+        // ob_start();
+        // $buffered = ob_get_contents();
+        // ob_end_clean();
+        // $echo = '^' . $buffered . '$';
         // echo $echo;
         xdd('Daniel Stringo');
     }

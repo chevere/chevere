@@ -13,31 +13,48 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputters;
 
-use Chevere\Components\VarDump\Contracts\DumperContract;
 use Chevere\Components\VarDump\Contracts\OutputterContract;
+use Chevere\Components\VarDump\Outputter;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
-final class ConsoleOutputter implements OutputterContract
+final class ConsoleOutputter extends Outputter
 {
-    public function toString(DumperContract $dumper): string
+    private ConsoleOutputInterface $consoleOutput;
+
+    private string $outputHr = '';
+
+    public function __construct()
     {
+        $this->outputHr = '<hr>' . str_repeat('-', 60) . '</>';
         $this->consoleOutput = new ConsoleOutput();
-        $outputFormatter = new OutputFormatter(true);
-        $this->consoleOutput->setFormatter($outputFormatter);
+        $this->consoleOutput
+            ->setFormatter(new OutputFormatter(true));
+    }
+
+    public function prepare(): OutputterContract
+    {
         $this->consoleOutput->getFormatter()->setStyle('block', new OutputFormatterStyle('red', 'black'));
         $this->consoleOutput->getFormatter()->setStyle('dumper', new OutputFormatterStyle('blue', null, ['bold']));
-        $this->consoleOutput->getFormatter()->setStyle('hr', new OutputFormatterStyle('blue'));
-        $this->outputHr = '<hr>' . str_repeat('-', 60) . '</>';
         $this->consoleOutput->getFormatter()->setStyle('hr', new OutputFormatterStyle('blue', null));
+        $aux = 0;
         $maker =
             (
-                isset($this->dumper->debugBacktrace()[0]['class'])
-                ? $this->dumper->debugBacktrace()[0]['class'] . $this->dumper->debugBacktrace()[0]['type']
+                isset($this->dumper->debugBacktrace()[$aux]['class'])
+                ? $this->dumper->debugBacktrace()[$aux]['class'] . $this->dumper->debugBacktrace()[$aux]['type']
                 : null
             )
-            . $this->dumper->debugBacktrace()[0]['function'] . '()';
+            . $this->dumper->debugBacktrace()[$aux]['function'] . '()';
         $this->consoleOutput->writeln(['', '<dumper>' . $maker . '</>', $this->outputHr]);
+
+        return $this;
+    }
+
+    public function printOutput(): void
+    {
+        $this->consoleOutput->writeln($this->output, ConsoleOutput::OUTPUT_RAW);
+        $this->consoleOutput->writeln($this->outputHr);
     }
 }

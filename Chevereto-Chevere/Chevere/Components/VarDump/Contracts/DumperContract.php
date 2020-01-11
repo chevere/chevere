@@ -23,24 +23,19 @@ interface DumperContract
 
     const OFFSET = 1;
 
+    public function withFormatter(FormatterContract $formatter): DumperContract;
+
+    public function formatter(): FormatterContract;
+
     public function getFormatter(): FormatterContract;
+
+    public function withOutputter(OutputterContract $outputter): DumperContract;
+
+    public function outputter(): OutputterContract;
 
     public function getOutputter(): OutputterContract;
 
     public function varDump(): VarDumpContract;
-
-    /**
-     * Return an instance with cli fag.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains cli fag.
-     */
-    public function withCli(): DumperContract;
-
-    /**
-     * Provides access to the instance $isCli.
-     */
-    public function isCli(): bool;
 
     /**
      * Dumps information of one or more variables.

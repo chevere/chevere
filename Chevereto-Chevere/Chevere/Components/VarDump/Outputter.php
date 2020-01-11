@@ -26,7 +26,23 @@ class Outputter implements OutputterContract
     /**
      * {@inheritdoc}
      */
-    public function withDumper(DumperContract $dumper): OutputterContract
+    public function prepare(): OutputterContract
+    {
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function printOutput(): void
+    {
+        echo $this->output;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    final public function withDumper(DumperContract $dumper): OutputterContract
     {
         $new = clone $this;
         $new->dumper = $dumper;
@@ -37,7 +53,7 @@ class Outputter implements OutputterContract
     /**
      * {@inheritdoc}
      */
-    public function dumper(): DumperContract
+    final public function dumper(): DumperContract
     {
         return $this->dumper;
     }
@@ -45,15 +61,7 @@ class Outputter implements OutputterContract
     /**
      * {@inheritdoc}
      */
-    public function prepare(): OutputterContract
-    {
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function process(): OutputterContract
+    final public function process(): OutputterContract
     {
         $this->prepare();
         $this->handleClass();
@@ -71,17 +79,9 @@ class Outputter implements OutputterContract
     /**
      * {@inheritdoc}
      */
-    public function toString(): string
+    final public function toString(): string
     {
         return $this->output;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function printOutput(): void
-    {
-        echo $this->output;
     }
 
     final private function handleClass(): void

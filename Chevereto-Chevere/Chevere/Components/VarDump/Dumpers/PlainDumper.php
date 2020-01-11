@@ -17,9 +17,9 @@ use Chevere\Components\VarDump\Contracts\FormatterContract;
 use Chevere\Components\VarDump\Contracts\OutputterContract;
 use Chevere\Components\VarDump\Dumper;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
-use Chevere\Components\VarDump\Outputters\PlainOutputter;
+use Chevere\Components\VarDump\Outputter;
 
-final class PlainDumper extends Dumper
+final class PlainDumper extends AbstractDumper
 {
     public function getFormatter(): FormatterContract
     {
@@ -28,6 +28,6 @@ final class PlainDumper extends Dumper
 
     public function getOutputter(): OutputterContract
     {
-        return new PlainOutputter();
+        return new Outputter();
     }
 }
