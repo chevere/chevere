@@ -15,17 +15,11 @@ namespace Chevere\Components\VarDump\Wrappers;
 
 use InvalidArgumentException;
 use Chevere\Components\VarDump\Contracts\PalleteContract;
-use Chevere\Components\VarDump\Contracts\WrapperContract;
-use Chevere\Components\VarDump\Wrappers\Traits\AssertKeyTrait;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
-final class ConsoleWrapper implements WrapperContract
+final class ConsoleWrapper extends AbstractWrapper
 {
-    use AssertKeyTrait;
-
     private ConsoleColor $consoleColor;
-
-    private string $key;
 
     private $color;
 

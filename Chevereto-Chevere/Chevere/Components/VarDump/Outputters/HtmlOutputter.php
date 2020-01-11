@@ -14,12 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Outputters;
 
 use Chevere\Components\VarDump\Contracts\OutputterContract;
-use Chevere\Components\VarDump\Outputters\Traits\OutputterTrait;
 
-final class HtmlOutputter implements OutputterContract
+final class HtmlOutputter extends AbstractOutputter
 {
-    use OutputterTrait;
-
     public function prepare(): OutputterContract
     {
         if (false === headers_sent()) {

@@ -11,16 +11,17 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Wrappers\Traits;
+namespace Chevere\Components\VarDump\Wrappers;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\VarDump\Contracts\WrapperContract;
 use InvalidArgumentException;
 
-trait AssertKeyTrait
+abstract class AbstractWrapper implements WrapperContract
 {
-    private string $key;
+    protected string $key;
 
-    private function assertKey(): void
+    protected function assertKey(): void
     {
         if (!array_key_exists($this->key, $this->pallete())) {
             throw new InvalidArgumentException(
@@ -31,4 +32,6 @@ trait AssertKeyTrait
             );
         }
     }
+
+    abstract public function pallete(): array;
 }

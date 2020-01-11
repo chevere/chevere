@@ -15,15 +15,11 @@ namespace Chevere\Components\VarDump\Wrappers;
 
 use Chevere\Components\VarDump\Contracts\PalleteContract;
 use Chevere\Components\VarDump\Contracts\WrapperContract;
-use Chevere\Components\VarDump\Wrappers\Traits\AssertKeyTrait;
+use Chevere\Components\VarDump\Wrappers\Traits\WrapperTrait;
 
-final class HtmlWrapper implements WrapperContract
+final class HtmlWrapper extends AbstractWrapper
 {
-    use AssertKeyTrait;
-
     private string $color;
-
-    private string $key;
 
     public function __construct(string $key)
     {

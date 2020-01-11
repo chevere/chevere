@@ -11,10 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Dumpers\Traits;
+namespace Chevere\Components\VarDump\Dumpers;
 
 use BadMethodCallException;
 use Chevere\Components\Message\Message;
+use Chevere\Components\VarDump\Contracts\DumperContract;
 use Chevere\Components\VarDump\Contracts\FormatterContract;
 use Chevere\Components\VarDump\Contracts\OutputterContract;
 use Chevere\Components\VarDump\Contracts\VarDumpContract;
@@ -24,17 +25,17 @@ use Chevere\Components\VarDump\VarDump;
 /**
  * Dumps information about one or more variables. CLI/HTML aware.
  */
-trait DumperTrait
+abstract class AbstractDumper implements DumperContract
 {
-    private FormatterContract $formatter;
+    protected FormatterContract $formatter;
 
-    private OutputterContract $outputter;
+    protected OutputterContract $outputter;
 
-    private VarDumpContract $varDump;
+    protected VarDumpContract $varDump;
 
-    private array $vars = [];
+    protected array $vars = [];
 
-    private array $debugBacktrace;
+    protected array $debugBacktrace;
 
     /**
      * Creates a new instance.
@@ -45,6 +46,10 @@ trait DumperTrait
         $this->outputter = $this->getOutputter();
         $this->varDump = new VarDump($this->formatter);
     }
+
+    abstract public function getFormatter(): FormatterContract;
+
+    abstract public function getOutputter(): OutputterContract;
 
     /**
      * {@inheritdoc}
