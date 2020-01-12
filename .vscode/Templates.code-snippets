@@ -1,128 +1,110 @@
 {
-    "contract": {
-        "description": "inserts a new contract",
-        "prefix": "contract",
-        "body": [
-            "<?php",
-            "namespace Chevere\\Components\\X\\Contracts;",
-            "",
-            "interface NameContract",
-            "{",
-            "}"
-        ]
-    },
-    "test": {
-        "description": "inserts a new test",
-        "prefix": "test",
-        "body": [
-            "<?php",
-            "namespace Chevere\\Tests\\Folder;",
-            "",
-            "use PHPUnit\\Framework\\TestCase;",
-            "",
-            "final class NameTest extends TestCase",
-            "{",
-            "}"
-        ]
-    },
-    "class": {
-        "description": "inserts a new class",
-        "prefix": "class",
-        "body": [
-            "<?php",
-            "namespace Chevere\\Components\\X;",
-            "",
-            "final class Name",
-            "{",
-            "}"
-        ]
-    },
-    "constructor": {
-        "description": "inserts a constructor",
-        "prefix": "constructor",
-        "body": [
-            "\tpublic function __construct()",
-            "\t{",
-            "\t",
-            "\t}"
-        ]
-    },
-    "exception": {
-        "description": "inserts a exception",
-        "prefix": "exception",
-        "body": [
-            "<?php",
-            "namespace Chevere\\Components\\X\\Exceptions;",
-            "",
-            "use Exception;",
-            "",
-            "/**",
-            " * Exception thrown when _____.",
-            " */",
-            "final class NameException extends Exception",
-            "{",
-            "}"
-        ]
-    },
-    "trait": {
-        "description": "inserts a trait",
-        "prefix": "trait",
-        "body": [
-            "<?php",
-            "namespace Chevere\\Components\\X\\Traits;",
-            "",
-            "trait NameTrait",
-            "{",
-            "}"
-        ]
-    },
-    "docblock-construct": {
-        "description": "inserts a docblock construct",
-        "prefix": "docblock-construct",
-        "body": [
-            "/**",
-            " * Creates a new instance.",
-            " */",
-        ]
-    },
-    "docblock-inherith": {
-        "description": "inserts a docblock @inherith",
-        "prefix": "docblock-inherith",
-        "body": [
-            "/**",
-            " * {@inheritdoc}",
-            " */",
-        ]
-    },
-    "docblock-instance": {
-        "description": "inserts a docblock instance",
-        "prefix": "docblock-instance",
-        "body": [
-            "/**",
-            " * Provides access to the X instance.",
-            " */",
-        ]
-    },
-    "docblock-inmutable": {
-        "description": "inserts a docblock inmutable",
-        "prefix": "docblock-inmutable",
-        "body": [
-            "/**",
-            " * Return an instance with the specified X.",
-            " *",
-            " * This method MUST retain the state of the current instance, and return",
-            " * an instance that contains the specified X.",
-            " */",
-        ]
-    },
-    "docblock-boolean": {
-        "description": "inserts a docblock boolean",
-        "prefix": "docblock-boolean",
-        "body": [
-            "/**",
-            " * Returns a boolean indicating whether the instance has a X.",
-            " */",
-        ]
-    },
-
+  "interface": {
+    "description": "inserts a new interface",
+    "prefix": "interface",
+    "body": [
+      "<?php",
+      "namespace Chevere\\Components\\X\\Interfaces;",
+      "",
+      "interface NameInterface",
+      "{",
+      "}"
+    ]
+  },
+  "test": {
+    "description": "inserts a new test",
+    "prefix": "test",
+    "body": [
+      "<?php",
+      "namespace Chevere\\Components\\X\\Tests;",
+      "",
+      "use PHPUnit\\Framework\\TestCase;",
+      "",
+      "final class NameTest extends TestCase",
+      "{",
+      "}"
+    ]
+  },
+  "class": {
+    "description": "inserts a new class",
+    "prefix": "class",
+    "body": [
+      "<?php",
+      "namespace Chevere\\Components\\X;",
+      "",
+      "final class Name",
+      "{",
+      "}"
+    ]
+  },
+  "constructor": {
+    "description": "inserts a constructor",
+    "prefix": "constructor",
+    "body": ["\tpublic function __construct()", "\t{", "\t", "\t}"]
+  },
+  "exception": {
+    "description": "inserts a exception",
+    "prefix": "exception",
+    "body": [
+      "<?php",
+      "namespace Chevere\\Components\\X\\Exceptions;",
+      "",
+      "use Exception;",
+      "",
+      "/**",
+      " * Exception thrown when _____.",
+      " */",
+      "final class NameException extends Exception",
+      "{",
+      "}"
+    ]
+  },
+  "trait": {
+    "description": "inserts a trait",
+    "prefix": "trait",
+    "body": [
+      "<?php",
+      "namespace Chevere\\Components\\X\\Traits;",
+      "",
+      "trait NameTrait",
+      "{",
+      "}"
+    ]
+  },
+  "docblock-construct": {
+    "description": "inserts a docblock construct",
+    "prefix": "docblock-construct",
+    "body": ["/**", " * Creates a new instance.", " */"]
+  },
+  "docblock-inherith": {
+    "description": "inserts a docblock @inherith",
+    "prefix": "docblock-inherith",
+    "body": ["/**", " * {@inheritdoc}", " */"]
+  },
+  "docblock-instance": {
+    "description": "inserts a docblock instance",
+    "prefix": "docblock-instance",
+    "body": ["/**", " * Provides access to the X instance.", " */"]
+  },
+  "docblock-inmutable": {
+    "description": "inserts a docblock inmutable",
+    "prefix": "docblock-inmutable",
+    "body": [
+      "/**",
+      " * Return an instance with the specified X.",
+      " *",
+      " * This method MUST retain the state of the current instance, and return",
+      " * an instance that contains the specified X.",
+      " */"
+    ]
+  },
+  "docblock-boolean": {
+    "description": "inserts a docblock boolean",
+    "prefix": "docblock-boolean",
+    "body": [
+      "/**",
+      " * Returns a boolean indicating whether the instance has a X.",
+      " */"
+    ]
+  }
 }
