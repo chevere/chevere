@@ -20,7 +20,7 @@ final class TimeHr implements TimeHrContract
     /** @var int High-resolution time */
     private int $hrTime;
 
-    /** @var int Readable time, in ms with its unit like `100 ms` */
+    /** @var string Readable time, in ms with its unit like `100 ms` */
     private string $hrTimeRead;
 
     /**

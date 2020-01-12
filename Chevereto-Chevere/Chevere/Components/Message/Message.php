@@ -59,7 +59,7 @@ final class Message implements MessageContract
         $tagged = '' != $replace ? "<$tag>$replace</$tag>" : '';
         $new = clone $this;
         $new = $new
-            ->translate($search, $tagged);
+            ->strtr($search, $tagged);
 
         return $new;
     }
@@ -67,7 +67,7 @@ final class Message implements MessageContract
     /**
      * {@inheritdoc}
      */
-    public function translate(string $search, string $replace): MessageContract
+    public function strtr(string $search, string $replace): MessageContract
     {
         $new = clone $this;
         $new->trTable[$search] = $replace;

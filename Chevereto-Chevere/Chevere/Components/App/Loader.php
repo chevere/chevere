@@ -138,7 +138,7 @@ final class Loader implements LoaderContract
                 ->services();
         } catch (CacheNotFoundException $e) {
             $message = (new Message('The app must be re-build due to missing cache: %message%'))
-                ->translate('%message%', $e->getMessage())
+                ->strtr('%message%', $e->getMessage())
                 ->toString();
             throw new BuildNeededException($message, $e->getCode(), $e);
         }

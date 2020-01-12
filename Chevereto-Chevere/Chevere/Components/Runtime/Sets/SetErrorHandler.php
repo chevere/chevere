@@ -68,7 +68,7 @@ class SetErrorHandler implements SetErrorHandlerContract
         $this->handler = set_error_handler(function () {
         });
         try {
-            $this->value = $this->handler ?? '';
+            $this->value = $this->handler;
         } catch (TypeError $e) {
             $this->value = '@';
         }

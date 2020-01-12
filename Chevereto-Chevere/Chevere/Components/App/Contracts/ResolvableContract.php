@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Contracts;
 
+use Chevere\Components\App\Contracts\BuilderContract;
+
 interface ResolvableContract
 {
     public function __construct(BuilderContract $builder);

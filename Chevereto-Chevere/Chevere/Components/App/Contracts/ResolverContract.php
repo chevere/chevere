@@ -13,15 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Contracts;
 
-use Chevere\Components\App\Exceptions\ResolverException;
+use Chevere\Components\App\Contracts\BuilderContract;
 
 interface ResolverContract
 {
     public function __construct(ResolvableContract $resolvable);
 
-    /**
-     *
-     * @return Chevere\Contracts\App\BuilderContract A resolved builder contract
-     */
     public function builder(): BuilderContract;
 }

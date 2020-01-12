@@ -22,6 +22,7 @@ use Chevere\Components\Http\Contracts\RequestContract;
 use Chevere\Components\Globals\Contracts\GlobalsContract;
 use Chevere\Components\Http\Contracts\MethodContract;
 use Chevere\Components\Route\PathUri;
+use Psr\Http\Message\StreamInterface;
 
 final class Request extends GuzzleHttpServerRequest implements RequestContract
 {

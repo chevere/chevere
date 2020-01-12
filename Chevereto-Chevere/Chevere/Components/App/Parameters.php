@@ -20,6 +20,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\App\Contracts\ParametersContract;
 use Chevere\Components\ArrayFile\Contracts\ArrayFileContract;
+use Chevere\Components\Path\Contracts\PathAppContract;
 use Chevere\Components\Path\Contracts\PathContract;
 
 /**
@@ -64,7 +65,7 @@ final class Parameters implements ParametersContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedRoutePaths(PathContract ...$paths): ParametersContract
+    public function withAddedRoutePaths(PathAppContract ...$paths): ParametersContract
     {
         $new = clone $this;
         if (!isset($new->routes)) {

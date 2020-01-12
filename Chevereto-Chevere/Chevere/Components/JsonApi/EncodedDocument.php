@@ -56,7 +56,7 @@ final class EncodedDocument
         } catch (JsonException $e) {
             throw new InvalidArgumentException(
                 (new Message('Unable to encode array as JSON (%m)'))
-                    ->translate('%m', $e->getMessage())
+                    ->strtr('%m', $e->getMessage())
                     ->toString()
             );
         }

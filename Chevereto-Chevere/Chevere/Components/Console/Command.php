@@ -24,9 +24,9 @@ use Chevere\Components\Console\Contracts\SymfonyCommandContract;
  */
 abstract class Command implements CommandContract
 {
-    private Console $console;
+    protected Console $console;
 
-    private SymfonyCommandContract $symfony;
+    protected SymfonyCommandContract $symfony;
 
     /**
      * {@inheritdoc}

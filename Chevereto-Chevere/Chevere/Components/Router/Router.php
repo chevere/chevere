@@ -21,6 +21,7 @@ use Chevere\Components\Route\Contracts\RouteContract;
 use Chevere\Components\Router\Contracts\RoutedContract;
 use Chevere\Components\Router\Contracts\RouterContract;
 use Chevere\Components\Router\Contracts\RouterPropertiesContract;
+use LogicException;
 use Psr\Http\Message\UriInterface;
 use Throwable;
 use TypeError;
@@ -79,7 +80,7 @@ final class Router implements RouterContract
         try {
             if (preg_match($this->properties->regex(), $uri->getPath(), $matches)) {
                 if (!isset($matches['MARK'])) {
-                    throw new Throwable(
+                    throw new LogicException(
                         (new Message('Invalid regex pattern, missing %mark% member'))
                             ->code('%mark%', 'MARK')
                             ->toString()

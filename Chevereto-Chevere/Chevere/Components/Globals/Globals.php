@@ -47,7 +47,8 @@ final class Globals implements GlobalsContract
     public function __construct(array $globals)
     {
         $this->globals = [];
-        for ($i = 0; $i < count(GlobalsContract::KEYS); $i++) {
+        $countKeys = count(GlobalsContract::KEYS);
+        for ($i = 0; $i < $countKeys; $i++) {
             $key = GlobalsContract::KEYS[$i];
             $this->globals[$key] = GlobalsContract::DEFAULTS[$i];
             if (array_key_exists($key, $globals)) {

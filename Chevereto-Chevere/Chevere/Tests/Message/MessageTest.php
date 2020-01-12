@@ -31,7 +31,7 @@ final class MessageTest extends TestCase
         $var = 'lorem %translate%';
         $args = ['%translate%', '1'];
         $message = (new Message($var))
-            ->translate(...$args);
+            ->strtr(...$args);
         $varTr = strtr($var, [$args[0] => $args[1]]);
         $this->assertSame($varTr, $message->toPlainString());
         $this->assertSame($varTr, $message->toString());
