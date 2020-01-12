@@ -23,7 +23,7 @@ interface OutputterContract
 
     public function process(): OutputterContract;
 
-    public function toString(): string;
-
     public function printOutput(): void;
+
+    public function toString(): string;
 }

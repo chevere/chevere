@@ -30,9 +30,6 @@ final class HtmlOutputter extends AbstractOutputter
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function printOutput(): void
     {
         echo $this->output;

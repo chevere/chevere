@@ -29,9 +29,6 @@ abstract class AbstractOutputter implements OutputterContract
      */
     abstract public function prepare(): OutputterContract;
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function printOutput(): void;
 
     /**
@@ -66,7 +63,6 @@ abstract class AbstractOutputter implements OutputterContract
         $this->output .= "\n\n";
         $this->handleArgs();
         $this->output = trim($this->output);
-        $this->printOutput();
 
         return $this;
     }

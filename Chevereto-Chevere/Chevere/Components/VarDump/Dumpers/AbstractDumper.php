@@ -81,10 +81,11 @@ abstract class AbstractDumper implements DumperContract
         if (0 == count($this->vars)) {
             return;
         }
-        $this->handleSetDebugBacktrace();
+        $this->setDebugBacktrace();
         $this->outputter
             ->withDumper($this)
-            ->process();
+            ->process()
+            ->printOutput();
     }
 
     /**
@@ -112,7 +113,7 @@ abstract class AbstractDumper implements DumperContract
         return $this->debugBacktrace;
     }
 
-    final private function handleSetDebugBacktrace(): void
+    final private function setDebugBacktrace(): void
     {
         $this->debugBacktrace = debug_backtrace();
         array_shift($this->debugBacktrace);

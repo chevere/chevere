@@ -29,15 +29,14 @@ final class ConsoleOutputter extends AbstractOutputter
     {
         $this->outputHr = '<hr>' . str_repeat('-', 60) . '</>';
         $this->consoleOutput = new ConsoleOutput();
-        $this->consoleOutput
-            ->setFormatter(new OutputFormatter(true));
+        $this->consoleOutput->setFormatter(new OutputFormatter(true));
+        $this->consoleOutput->getFormatter()->setStyle('block', new OutputFormatterStyle('red', 'black'));
+        $this->consoleOutput->getFormatter()->setStyle('dumper', new OutputFormatterStyle('blue', null, ['bold']));
+        $this->consoleOutput->getFormatter()->setStyle('hr', new OutputFormatterStyle('blue', null));
     }
 
     public function prepare(): OutputterContract
     {
-        $this->consoleOutput->getFormatter()->setStyle('block', new OutputFormatterStyle('red', 'black'));
-        $this->consoleOutput->getFormatter()->setStyle('dumper', new OutputFormatterStyle('blue', null, ['bold']));
-        $this->consoleOutput->getFormatter()->setStyle('hr', new OutputFormatterStyle('blue', null));
         $aux = 0;
         $maker =
             (

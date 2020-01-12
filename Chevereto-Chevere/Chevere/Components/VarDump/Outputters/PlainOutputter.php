@@ -25,9 +25,6 @@ final class PlainOutputter extends AbstractOutputter
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function printOutput(): void
     {
         echo $this->output;
