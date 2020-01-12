@@ -30,7 +30,7 @@ final class HtmlOutputter extends AbstractOutputter
         return $this;
     }
 
-    public function printOutput(): void
+    public function print(): void
     {
         echo $this->output;
     }

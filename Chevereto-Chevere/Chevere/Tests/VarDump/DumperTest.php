@@ -34,11 +34,13 @@ final class DumperTest extends TestCase
         foreach ($dumpers as $dumper) {
             $vars = $this->getVars();
             ob_start();
-            $dumper->dump(...$vars);
+            $dumper = $dumper->withVars(...$vars);
+            $dumper->outputter()->print();
             $buffer = ob_get_contents();
             ob_end_clean();
             $this->assertTrue(strlen($buffer) > 0);
             $this->assertSame($vars, $dumper->vars());
+            // xdd($dumper->outputter()->toString());
         }
         // Note: Console dumper can't be tested here
     }

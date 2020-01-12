@@ -31,12 +31,13 @@ interface DumperContract
 
     public function getOutputter(): OutputterContract;
 
-    public function varDump(): VarDumpContract;
-
     /**
-     * Dumps information of one or more variables.
+     * Return an instance with the specified vars.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified vars.
      */
-    public function dump(...$vars): void;
+    public function withVars(...$vars): DumperContract;
 
     /**
      * Provides access to the vars. Can be called only after calling dump.

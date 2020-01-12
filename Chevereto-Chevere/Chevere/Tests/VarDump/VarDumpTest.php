@@ -14,13 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Tests\VarDump;
 
 use BadMethodCallException;
-use Chevere\Components\Route\PathUri;
+use stdClass;
 use Chevere\Components\VarDump\Contracts\VarDumpContract;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
-use Chevere\Components\VarDump\HtmlDumper;
 use Chevere\Components\VarDump\VarDump;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 
 final class VarDumpTest extends TestCase
 {

@@ -29,7 +29,7 @@ abstract class AbstractOutputter implements OutputterContract
      */
     abstract public function prepare(): OutputterContract;
 
-    abstract public function printOutput(): void;
+    abstract public function print(): void;
 
     /**
      * {@inheritdoc}
@@ -57,7 +57,7 @@ abstract class AbstractOutputter implements OutputterContract
     {
         $this->prepare();
         $this->handleClass();
-        $this->output .= $this->dumper->varDump()->formatter()
+        $this->output .= $this->dumper->formatter()
             ->applyWrap('_function', $this->dumper->debugBacktrace()[$this->dumper::OFFSET]['function'] . '()');
         $this->handleFile();
         $this->output .= "\n\n";
@@ -82,7 +82,7 @@ abstract class AbstractOutputter implements OutputterContract
             if (stringStartsWith('class@anonymous', $class)) {
                 $class = explode('0x', $class)[0];
             }
-            $this->output .= $this->dumper->varDump()->formatter()
+            $this->output .= $this->dumper->formatter()
                 ->applyWrap('_class', $class) . $this->dumper->debugBacktrace()[$this->dumper::OFFSET]['type'];
         }
     }
@@ -90,7 +90,7 @@ abstract class AbstractOutputter implements OutputterContract
     final private function handleFile(): void
     {
         if (isset($this->dumper->debugBacktrace()[0]['file'])) {
-            $this->output .= "\n" . $this->dumper->varDump()->formatter()
+            $this->output .= "\n" . $this->dumper->formatter()
                 ->applyWrap('_file', $this->dumper->debugBacktrace()[0]['file'] . ':' . $this->dumper->debugBacktrace()[0]['line']);
         }
     }
@@ -106,8 +106,8 @@ abstract class AbstractOutputter implements OutputterContract
 
     final private function appendArg(int $pos, $value): void
     {
-        $varDump = (new VarDump($this->dumper->varDump()->formatter()))
-            ->withDontDump(...$this->dumper->varDump()->dontDump())
+        $varDump = (new VarDump($this->dumper->formatter()))
+            // ->withDontDump(...$this->dumper->varDump()->dontDump())
             ->withVar($value)
             ->process();
         $this->output .= 'Arg#' . $pos . ' ' . $varDump->toString() . "\n\n";

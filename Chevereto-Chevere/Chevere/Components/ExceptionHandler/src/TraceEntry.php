@@ -132,13 +132,13 @@ final class TraceEntry
             ->withDontDump(App::class);
         $this->plainArgs = "\n";
         $this->richArgs = "\n";
-        foreach ($this->entry['args'] as $k => $expression) {
-            $aux = 'Arg#' . ($k + 1) . ' ';
+        foreach ($this->entry['args'] as $pos => $var) {
+            $aux = 'Arg#' . ($pos + 1) . ' ';
             $plainVarDump = $plainVarDump
-                ->withVar($expression)
+                ->withVar($var)
                 ->process();
             $richVarDump = $richVarDump
-                ->withVar($expression)
+                ->withVar($var)
                 ->process();
             $this->plainArgs .= $aux . $plainVarDump->toString() . "\n";
             $this->richArgs .= $aux . $richVarDump->toString() . "\n";

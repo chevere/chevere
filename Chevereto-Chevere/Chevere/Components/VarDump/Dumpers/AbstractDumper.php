@@ -18,9 +18,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\VarDump\Contracts\DumperContract;
 use Chevere\Components\VarDump\Contracts\FormatterContract;
 use Chevere\Components\VarDump\Contracts\OutputterContract;
-use Chevere\Components\VarDump\Contracts\VarDumpContract;
 use Chevere\Components\VarDump\Dumper;
-use Chevere\Components\VarDump\VarDump;
 
 /**
  * Dumps information about one or more variables. CLI/HTML aware.
@@ -30,8 +28,6 @@ abstract class AbstractDumper implements DumperContract
     protected FormatterContract $formatter;
 
     protected OutputterContract $outputter;
-
-    protected VarDumpContract $varDump;
 
     protected array $vars = [];
 
@@ -44,11 +40,16 @@ abstract class AbstractDumper implements DumperContract
     {
         $this->formatter = $this->getFormatter();
         $this->outputter = $this->getOutputter();
-        $this->varDump = new VarDump($this->formatter);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     abstract public function getFormatter(): FormatterContract;
 
+    /**
+     * {@inheritdoc}
+     */
     abstract public function getOutputter(): OutputterContract;
 
     /**
@@ -59,6 +60,9 @@ abstract class AbstractDumper implements DumperContract
         return $this->formatter;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function outputter(): OutputterContract
     {
         return $this->outputter;
@@ -67,25 +71,19 @@ abstract class AbstractDumper implements DumperContract
     /**
      * {@inheritdoc}
      */
-    public function varDump(): VarDumpContract
+    final public function withVars(...$vars): DumperContract
     {
-        return $this->varDump;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    final public function dump(...$vars): void
-    {
-        $this->vars = $vars;
-        if (0 == count($this->vars)) {
-            return;
+        $new = clone $this;
+        $new->vars = $vars;
+        if (0 == count($new->vars)) {
+            return $new;
         }
-        $this->setDebugBacktrace();
-        $this->outputter
-            ->withDumper($this)
-            ->process()
-            ->printOutput();
+        $new->setDebugBacktrace();
+        $new->outputter = $new->outputter
+            ->withDumper($new)
+            ->process();
+
+        return $new;
     }
 
     /**
