@@ -2,7 +2,7 @@
 <phpunit bootstrap="./phpunit.php">
   <testsuites>
         <testsuite name="Unit">
-            <directory suffix="Test.php">./Chevere/Tests</directory>
+            <directory suffix="Test.php">./Chevere/Components/*/Tests/</directory>
         </testsuite>
     </testsuites>
 </phpunit>
