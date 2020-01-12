@@ -31,11 +31,11 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Variable\VariableExport;
-use Chevere\Components\Api\Contracts\ApiMakerContract;
-use Chevere\Components\Cache\Contracts\CacheContract;
-use Chevere\Components\Http\Contracts\MethodContract;
-use Chevere\Components\Path\Contracts\PathContract;
-use Chevere\Components\Route\Contracts\RouteContract;
+use Chevere\Components\Api\Interfaces\ApiMakerInterface;
+use Chevere\Components\Cache\Interfaces\CacheInterface;
+use Chevere\Components\Http\Interfaces\MethodInterface;
+use Chevere\Components\Path\Interfaces\PathInterface;
+use Chevere\Components\Route\Interfaces\RouteInterface;
 use LogicException;
 use OuterIterator;
 use RecursiveDirectoryIterator;
@@ -46,7 +46,7 @@ use function ChevereFn\stringLeftTail;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringReplaceLast;
 
-final class ApiMaker implements ApiMakerContract
+final class ApiMaker implements ApiMakerInterface
 {
     use CacheAccessTrait;
 
@@ -71,13 +71,13 @@ final class ApiMaker implements ApiMakerContract
     /** @var string The API basepath, like 'api' */
     private $basePath;
 
-    /** @var RouteContract */
+    /** @var RouteInterface */
     private $route;
 
-    /** @var PathContract For target API directory */
+    /** @var PathInterface For target API directory */
     private $path;
 
-    /** @var CacheContract */
+    /** @var CacheInterface */
     private $cache;
 
     public function __construct(RouterMaker $routerMaker)
@@ -85,7 +85,7 @@ final class ApiMaker implements ApiMakerContract
         $this->routerMaker = $routerMaker;
     }
 
-    public function withPath(PathContract $path): ApiMakerContract
+    public function withPath(PathInterface $path): ApiMakerInterface
     {
         $new = clone $this;
         $new->path = $path;
@@ -111,7 +111,7 @@ final class ApiMaker implements ApiMakerContract
         return $new;
     }
 
-    public function withCache(CacheContract $cache): ApiMakerContract
+    public function withCache(CacheInterface $cache): ApiMakerInterface
     {
         $new = clone $this;
         $new->cache = $cache
@@ -138,7 +138,7 @@ final class ApiMaker implements ApiMakerContract
         return $this->api;
     }
 
-    public function path(): PathContract
+    public function path(): PathInterface
     {
         return $this->path;
     }
@@ -151,7 +151,7 @@ final class ApiMaker implements ApiMakerContract
 
         $iterator = new RecursiveDirectoryIterator($this->path->absolute(), RecursiveDirectoryIterator::SKIP_DOTS);
         $filter = new FilterIterator($iterator);
-        $filter = $filter->withAcceptFilenames(MethodContract::ACCEPT_METHOD_NAMES);
+        $filter = $filter->withAcceptFilenames(MethodInterface::ACCEPT_METHOD_NAMES);
         $this->recursiveIterator = new RecursiveIteratorIterator($filter);
         $this->assertRecursiveIterator();
         $this->processRecursiveIterator();

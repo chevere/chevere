@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Dumpers;
 
-use Chevere\Components\VarDump\Contracts\FormatterContract;
-use Chevere\Components\VarDump\Contracts\OutputterContract;
+use Chevere\Components\VarDump\Interfaces\FormatterInterface;
+use Chevere\Components\VarDump\Interfaces\OutputterInterface;
 use Chevere\Components\VarDump\Formatters\ConsoleFormatter;
 use Chevere\Components\VarDump\Outputters\ConsoleOutputter;
 
 final class ConsoleDumper extends AbstractDumper
 {
-    public function getFormatter(): FormatterContract
+    public function getFormatter(): FormatterInterface
     {
         return new ConsoleFormatter();
     }
 
-    public function getOutputter(): OutputterContract
+    public function getOutputter(): OutputterInterface
     {
         return new ConsoleOutputter();
     }

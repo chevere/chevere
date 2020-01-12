@@ -18,24 +18,24 @@ use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Variable\VariableExport;
-use Chevere\Components\App\Contracts\BuildContract;
-use Chevere\Components\App\Contracts\CheckoutContract;
-use Chevere\Components\File\Contracts\FileReturnContract;
+use Chevere\Components\App\Interfaces\BuildInterface;
+use Chevere\Components\App\Interfaces\CheckoutInterface;
+use Chevere\Components\File\Interfaces\FileReturnInterface;
 
 /**
  * Checkout the application build.
  * The checkout consists in the creation of a build file which maps the build checksums.
  */
-final class Checkout implements CheckoutContract
+final class Checkout implements CheckoutInterface
 {
-    private BuildContract $build;
+    private BuildInterface $build;
 
-    private FileReturnContract $fileReturn;
+    private FileReturnInterface $fileReturn;
 
     /**
      * Creates a new instance.
      */
-    public function __construct(BuildContract $build)
+    public function __construct(BuildInterface $build)
     {
         $this->build = $build;
         $this->assertIsMaked();
@@ -52,7 +52,7 @@ final class Checkout implements CheckoutContract
         );
     }
 
-    public function fileReturn(): FileReturnContract
+    public function fileReturn(): FileReturnInterface
     {
         return $this->fileReturn;
     }
@@ -73,7 +73,7 @@ final class Checkout implements CheckoutContract
         if (!$this->build->isMaked()) {
             throw new InvalidArgumentException(
                 (new Message('Instance of %type% %argument% must be built to construct a %className% instance'))
-                    ->code('%type%', BuildContract::class)
+                    ->code('%type%', BuildInterface::class)
                     ->code('%argument%', '$build')
                     ->code('%className%', self::class)
                     ->toString()

@@ -16,13 +16,13 @@ namespace Chevere\Components\Stopwatch;
 use BadMethodCallException;
 use InvalidArgumentException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Stopwatch\Contracts\StopwatchContract;
+use Chevere\Components\Stopwatch\Interfaces\StopwatchInterface;
 use Chevere\Components\Time\TimeHr;
 
 /**
  * A simple stopwatch, useful for userland execution time measurement.
  */
-final class Stopwatch implements StopwatchContract
+final class Stopwatch implements StopwatchInterface
 {
     private array $marks;
 

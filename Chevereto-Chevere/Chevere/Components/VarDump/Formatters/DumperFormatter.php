@@ -16,17 +16,17 @@ namespace Chevere\Components\VarDump\Formatters;
 use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\VarDump\Formatters\Traits\FilterEncodedCharsTrait;
 use Chevere\Components\VarDump\Formatters\Traits\GetIndentTrait;
-use Chevere\Components\VarDump\Contracts\FormatterContract;
+use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 
 /**
  * Provide Dumper VarDump representation (auto detect).
  */
-final class DumperFormatter implements FormatterContract
+final class DumperFormatter implements FormatterInterface
 {
     use GetIndentTrait;
     use FilterEncodedCharsTrait;
 
-    private FormatterContract $formatter;
+    private FormatterInterface $formatter;
 
     public function __construct()
     {

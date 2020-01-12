@@ -19,18 +19,18 @@ use Chevere\Components\Breadcrum\Breadcrum;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Variable\Exceptions\VariableExportException;
 use Chevere\Components\Variable\Exceptions\VariableIsResourceException;
-use Chevere\Components\Variable\Contracts\VariableExportContract;
-use Chevere\Components\Breadcrum\Contracts\BreadcrumContract;
+use Chevere\Components\Variable\Interfaces\VariableExportInterface;
+use Chevere\Components\Breadcrum\Interfaces\BreadcrumInterface;
 
 /**
  * Allows to interact with exportable variables.
  */
-final class VariableExport implements VariableExportContract
+final class VariableExport implements VariableExportInterface
 {
     /** @var mixed */
     private $var;
 
-    private BreadcrumContract $breadcrum;
+    private BreadcrumInterface $breadcrum;
 
     /**
      * Creates a new instance.

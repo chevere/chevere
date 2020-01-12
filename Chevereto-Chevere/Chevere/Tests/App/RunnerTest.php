@@ -29,14 +29,14 @@ use Chevere\Components\Http\Response;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Router\Router;
-use Chevere\Components\App\Contracts\BuildContract;
+use Chevere\Components\App\Interfaces\BuildInterface;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Route\PathUri;
 use PHPUnit\Framework\TestCase;
 
 final class RunnerTest extends TestCase
 {
-    private function getTestBuild(): BuildContract
+    private function getTestBuild(): BuildInterface
     {
         $build = $this->getDummyBuild();
         $parameters = new Parameters(
@@ -54,7 +54,7 @@ final class RunnerTest extends TestCase
             ->withRouterMaker(new RouterMaker());
     }
 
-    private function getDummyBuild(): BuildContract
+    private function getDummyBuild(): BuildInterface
     {
         $services = new Services();
         $response = new Response();

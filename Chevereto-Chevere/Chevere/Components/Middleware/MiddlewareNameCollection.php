@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Middleware;
 
-use Chevere\Components\Middleware\Contracts\MiddlewareNameCollectionContract;
-use Chevere\Components\Middleware\Contracts\MiddlewareNameContract;
+use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
+use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
 
 /**
  * A collection of MiddlewareContract names.
  */
-final class MiddlewareNameCollection implements MiddlewareNameCollectionContract
+final class MiddlewareNameCollection implements MiddlewareNameCollectionInterface
 {
     private array $array;
 
@@ -28,7 +28,7 @@ final class MiddlewareNameCollection implements MiddlewareNameCollectionContract
     /**
      * Creates a new instance.
      */
-    public function __construct(MiddlewareNameContract ...$middlewareNames)
+    public function __construct(MiddlewareNameInterface ...$middlewareNames)
     {
         $this->array = [];
         $this->index = [];
@@ -40,7 +40,7 @@ final class MiddlewareNameCollection implements MiddlewareNameCollectionContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedMiddlewareName(MiddlewareNameContract $middlewareName): MiddlewareNameCollectionContract
+    public function withAddedMiddlewareName(MiddlewareNameInterface $middlewareName): MiddlewareNameCollectionInterface
     {
         $new = clone $this;
         $new->addMiddlewareName($middlewareName);
@@ -59,7 +59,7 @@ final class MiddlewareNameCollection implements MiddlewareNameCollectionContract
     /**
      * {@inheritdoc}
      */
-    public function has(MiddlewareNameContract $middlewareName): bool
+    public function has(MiddlewareNameInterface $middlewareName): bool
     {
         return in_array($middlewareName->toString(), $this->index);
     }
@@ -72,7 +72,7 @@ final class MiddlewareNameCollection implements MiddlewareNameCollectionContract
         return $this->array;
     }
 
-    private function addMiddlewareName(MiddlewareNameContract $middlewareName): void
+    private function addMiddlewareName(MiddlewareNameInterface $middlewareName): void
     {
         $name = $middlewareName->toString();
         $pos = array_search($name, $this->index);

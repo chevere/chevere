@@ -18,12 +18,12 @@ use Chevere\Components\File\File;
 use Chevere\Components\File\FileCompile;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
-use Chevere\Components\Cache\Contracts\CacheContract;
-use Chevere\Components\Cache\Contracts\CacheItemContract;
-use Chevere\Components\Cache\Contracts\CacheKeyContract;
-use Chevere\Components\Dir\Contracts\DirContract;
-use Chevere\Components\Path\Contracts\PathContract;
-use Chevere\Components\Variable\Contracts\VariableExportContract;
+use Chevere\Components\Cache\Interfaces\CacheInterface;
+use Chevere\Components\Cache\Interfaces\CacheItemInterface;
+use Chevere\Components\Cache\Interfaces\CacheKeyInterface;
+use Chevere\Components\Dir\Interfaces\DirInterface;
+use Chevere\Components\Path\Interfaces\PathInterface;
+use Chevere\Components\Variable\Interfaces\VariableExportInterface;
 
 /**
  * A simple PHP based cache system.
@@ -32,10 +32,10 @@ use Chevere\Components\Variable\Contracts\VariableExportContract;
  *
  * cached.php >>> <?php return 'my cached data';
  */
-final class Cache implements CacheContract
+final class Cache implements CacheInterface
 {
-    /** @var DirContract */
-    private DirContract $dir;
+    /** @var DirInterface */
+    private DirInterface $dir;
 
     /** @var array An array [key => [checksum => , path =>]] containing information about the cache items */
     private array $puts;
@@ -43,11 +43,11 @@ final class Cache implements CacheContract
     /**
      * Creates a new instance.
      *
-     * @param DirContract $dir the directory where cache files will be stored/accesed (must exists)
+     * @param DirInterface $dir the directory where cache files will be stored/accesed (must exists)
      *
      * @throws DirUnableToCreateException if $dir doesn't exists and unable to create
      */
-    public function __construct(DirContract $dir)
+    public function __construct(DirInterface $dir)
     {
         $this->dir = $dir;
         if (!$this->dir->exists()) {
@@ -59,7 +59,7 @@ final class Cache implements CacheContract
     /**
      * {@inheritdoc}
      */
-    public function withPut(CacheKeyContract $cacheKey, VariableExportContract $variableExport): CacheContract
+    public function withPut(CacheKeyInterface $cacheKey, VariableExportInterface $variableExport): CacheInterface
     {
         $path = $this->getPath($cacheKey->toString());
         $file = new File($path);
@@ -82,7 +82,7 @@ final class Cache implements CacheContract
     /**
      * {@inheritdoc}
      */
-    public function withRemove(CacheKeyContract $cacheKey): CacheContract
+    public function withRemove(CacheKeyInterface $cacheKey): CacheInterface
     {
         $new = clone $this;
         $path = $this->getPath($cacheKey->toString());
@@ -106,7 +106,7 @@ final class Cache implements CacheContract
     /**
      * {@inheritdoc}
      */
-    public function exists(CacheKeyContract $cacheKey): bool
+    public function exists(CacheKeyInterface $cacheKey): bool
     {
         return $this->getPath($cacheKey->toString())
             ->exists();
@@ -115,7 +115,7 @@ final class Cache implements CacheContract
     /**
      * {@inheritdoc}
      */
-    public function get(CacheKeyContract $cacheKey): CacheItemContract
+    public function get(CacheKeyInterface $cacheKey): CacheItemInterface
     {
         $path = $this->getPath($cacheKey->toString());
         if (!$path->exists()) {
@@ -140,7 +140,7 @@ final class Cache implements CacheContract
         return $this->puts;
     }
 
-    private function getPath(string $name): PathContract
+    private function getPath(string $name): PathInterface
     {
         return $this->dir->path()
             ->getChild($name . '.php');

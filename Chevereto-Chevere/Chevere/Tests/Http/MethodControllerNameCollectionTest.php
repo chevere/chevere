@@ -18,14 +18,14 @@ use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Http\MethodControllerNameCollection;
-use Chevere\Components\Http\Contracts\MethodContract;
-use Chevere\Components\Http\Contracts\MethodControllerNameContract;
+use Chevere\Components\Http\Interfaces\MethodInterface;
+use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
 final class MethodControllerNameCollectionTest extends TestCase
 {
-    private function getMethodControllerName(MethodContract $method): MethodControllerNameContract
+    private function getMethodControllerName(MethodInterface $method): MethodControllerNameInterface
     {
         return
             new MethodControllerName(
@@ -51,7 +51,7 @@ final class MethodControllerNameCollectionTest extends TestCase
     {
         $collection = new MethodControllerNameCollection();
         $aux = [];
-        foreach (MethodContract::ACCEPT_METHOD_NAMES as $methodName) {
+        foreach (MethodInterface::ACCEPT_METHOD_NAMES as $methodName) {
             $method = new Method($methodName);
             $methodControllerName = $this->getMethodControllerName($method);
             $collection = $collection

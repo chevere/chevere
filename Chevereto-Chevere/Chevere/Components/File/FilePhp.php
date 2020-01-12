@@ -15,22 +15,22 @@ namespace Chevere\Components\File;
 
 use Chevere\Components\File\Exceptions\FileNotPhpException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\File\Contracts\FileContract;
-use Chevere\Components\File\Contracts\FilePhpContract;
+use Chevere\Components\File\Interfaces\FileInterface;
+use Chevere\Components\File\Interfaces\FilePhpInterface;
 
 /**
  * A wrapper for FileContract to implement PHP files.
  */
-final class FilePhp implements FilePhpContract
+final class FilePhp implements FilePhpInterface
 {
-    private FileContract $file;
+    private FileInterface $file;
 
     /**
      * Creates a new instance.
      *
      * @throws FileNotPhpException If $file is not a PHP file.
      */
-    public function __construct(FileContract $file)
+    public function __construct(FileInterface $file)
     {
         $this->file = $file;
         $this->assertFilePhp();
@@ -39,7 +39,7 @@ final class FilePhp implements FilePhpContract
     /**
      * {@inheritdoc}
      */
-    public function file(): FileContract
+    public function file(): FileInterface
     {
         return $this->file;
     }

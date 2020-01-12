@@ -21,16 +21,16 @@ use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\Variable\VariableExport;
-use Chevere\Components\File\Contracts\FileContract;
-use Chevere\Components\File\Contracts\FileReturnContract;
+use Chevere\Components\File\Interfaces\FileInterface;
+use Chevere\Components\File\Interfaces\FileReturnInterface;
 use PHPUnit\Framework\TestCase;
 
 final class FileReturnTest extends TestCase
 {
-    /** @var FileContract */
+    /** @var FileInterface */
     private $file;
 
-    /** @var FileReturnContract */
+    /** @var FileReturnInterface */
     private $fileReturn;
 
     private function getFileName(): string
@@ -92,7 +92,7 @@ final class FileReturnTest extends TestCase
 
     public function testReturnContents(): void
     {
-        $this->file->put(FileReturnContract::PHP_RETURN . '"test";');
+        $this->file->put(FileReturnInterface::PHP_RETURN . '"test";');
         $this->assertSame('test', $this->fileReturn->raw());
     }
 
@@ -119,7 +119,7 @@ final class FileReturnTest extends TestCase
 
     public function testVarContents(): void
     {
-        $this->file->put(FileReturnContract::PHP_RETURN . '["test", 1];');
+        $this->file->put(FileReturnInterface::PHP_RETURN . '["test", 1];');
         $this->assertSame(['test', 1], $this->fileReturn->var());
     }
 

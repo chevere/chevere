@@ -17,14 +17,14 @@ use Exception;
 use InvalidArgumentException;
 use Throwable;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Http\Contracts\HttpStatusContract;
+use Chevere\Components\Http\Interfaces\HttpStatusInterface;
 
 /**
  * Exception thrown when unable to resolve.
  */
 final class ResolverException extends Exception
 {
-    private $statuses = HttpStatusContract::STATUSES;
+    private $statuses = HttpStatusInterface::STATUSES;
 
     /**
      * Throws a new ResolverException exception.

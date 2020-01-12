@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
-use Chevere\Components\VarDump\Contracts\ProcessorContract;
+use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 
 /**
  * Handles integer, float (double), string
  */
 final class ScalarProcessor extends AbstractProcessor
 {
-    public function withProcess(): ProcessorContract
+    public function withProcess(): ProcessorInterface
     {
         $new = clone $this;
         $new->val = '';

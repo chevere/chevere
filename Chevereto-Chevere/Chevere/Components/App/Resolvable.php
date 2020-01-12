@@ -17,16 +17,16 @@ use Chevere\Components\App\Exceptions\RequestRequiredException;
 use Chevere\Components\App\Exceptions\RouterCantResolveException;
 use Chevere\Components\App\Exceptions\RouterRequiredException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\App\Contracts\BuilderContract;
-use Chevere\Components\App\Contracts\ResolvableContract;
-use Chevere\Components\Http\Contracts\RequestContract;
-use Chevere\Components\Route\Contracts\RouteContract;
-use Chevere\Components\Router\Contracts\RouterContract;
+use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\ResolvableInterface;
+use Chevere\Components\Http\Interfaces\RequestInterface;
+use Chevere\Components\Route\Interfaces\RouteInterface;
+use Chevere\Components\Router\Interfaces\RouterInterface;
 
 /**
  * Determines if the builder can resolve the build request
  */
-final class Resolvable implements ResolvableContract
+final class Resolvable implements ResolvableInterface
 {
     private BuilderContract $builder;
 
@@ -55,7 +55,7 @@ final class Resolvable implements ResolvableContract
     {
         if (!$this->builder->build()->app()->hasRequest()) {
             throw new RequestRequiredException(
-                $this->getMissingContractMessage(RequestContract::class)
+                $this->getMissingContractMessage(RequestInterface::class)
             );
         }
     }
@@ -64,7 +64,7 @@ final class Resolvable implements ResolvableContract
     {
         if (!$this->builder->build()->app()->services()->hasRouter()) {
             throw new RouterRequiredException(
-                $this->getMissingContractMessage(RouterContract::class)
+                $this->getMissingContractMessage(RouterInterface::class)
             );
         }
     }
@@ -76,7 +76,7 @@ final class Resolvable implements ResolvableContract
             throw new RouterCantResolveException(
                 (new Message("Instance of %className% can't resolve a %contract% contract"))
                     ->code('%className%', get_class($router))
-                    ->code('%contract%', RouteContract::class)
+                    ->code('%contract%', RouteInterface::class)
                     ->toString(),
                 500
             );

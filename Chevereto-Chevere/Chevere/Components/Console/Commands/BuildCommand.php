@@ -19,7 +19,7 @@ use Chevere\Components\Console\Command;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Time\TimeHr;
-use Chevere\Components\App\Contracts\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderContract;
 
 /**
  * The BuildCommand builds the App.

@@ -29,43 +29,43 @@ use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Type\Type;
-use Chevere\Components\Api\Contracts\ApiContract;
-use Chevere\Components\App\Contracts\AppContract;
-use Chevere\Components\App\Contracts\BuildContract;
-use Chevere\Components\App\Contracts\CheckoutContract;
-use Chevere\Components\App\Contracts\ParametersContract;
-use Chevere\Components\Dir\Contracts\DirContract;
-use Chevere\Components\File\Contracts\FileContract;
-use Chevere\Components\File\Contracts\FilePhpContract;
-use Chevere\Components\Route\Contracts\RouteContract;
-use Chevere\Components\Router\Contracts\RouterMakerContract;
-use Chevere\Components\Router\Contracts\RouterContract;
+use Chevere\Components\Api\Interfaces\ApiInterface;
+use Chevere\Components\App\Interfaces\AppInterface;
+use Chevere\Components\App\Interfaces\BuildInterface;
+use Chevere\Components\App\Interfaces\CheckoutInterface;
+use Chevere\Components\App\Interfaces\ParametersInterface;
+use Chevere\Components\Dir\Interfaces\DirInterface;
+use Chevere\Components\File\Interfaces\FileInterface;
+use Chevere\Components\File\Interfaces\FilePhpInterface;
+use Chevere\Components\Route\Interfaces\RouteInterface;
+use Chevere\Components\Router\Interfaces\RouterMakerInterface;
+use Chevere\Components\Router\Interfaces\RouterInterface;
 use LogicException;
 
 /**
  * The Build container.
  */
-final class Build implements BuildContract
+final class Build implements BuildInterface
 {
-    private AppContract $app;
+    private AppInterface $app;
 
-    private FilePhpContract $filePhp;
+    private FilePhpInterface $filePhp;
 
-    private DirContract $dir;
+    private DirInterface $dir;
 
     /** @var bool True if the App was just built */
     private bool $isMaked = false;
 
-    private CheckoutContract $checkout;
+    private CheckoutInterface $checkout;
 
     /** @var array Containing the collection of Cache->toArray() data checksums (if any)*/
     private array $checksums;
 
     private ApiMaker $apiMaker;
 
-    private ParametersContract $parameters;
+    private ParametersInterface $parameters;
 
-    private RouterMakerContract $routerMaker;
+    private RouterMakerInterface $routerMaker;
 
     /**
      * Constructs the Build instance.
@@ -73,11 +73,11 @@ final class Build implements BuildContract
      * A BuildContract instance allows to interact with the application build, which refers to the base
      * application service layer which consists of API and Router services.
      *
-     * @param AppContract  $app  The application container
+     * @param AppInterface  $app  The application container
      *
      * @throws PathIsNotDirectoryException if the $path doesn't exists and unable to create
      */
-    public function __construct(AppContract $app)
+    public function __construct(AppInterface $app)
     {
         $path = new PathApp('build');
         $this->isMaked = false;
@@ -100,7 +100,7 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function withApp(AppContract $app): BuildContract
+    public function withApp(AppInterface $app): BuildInterface
     {
         $new = clone $this;
         $new->app = $app;
@@ -111,7 +111,7 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function app(): AppContract
+    public function app(): AppInterface
     {
         return $this->app;
     }
@@ -119,7 +119,7 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function withParameters(ParametersContract $parameters): BuildContract
+    public function withParameters(ParametersInterface $parameters): BuildInterface
     {
         $new = clone $this;
         $new->parameters = $parameters;
@@ -138,7 +138,7 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function parameters(): ParametersContract
+    public function parameters(): ParametersInterface
     {
         return $this->parameters;
     }
@@ -146,7 +146,7 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function withRouterMaker(RouterMakerContract $routerMaker): BuildContract
+    public function withRouterMaker(RouterMakerInterface $routerMaker): BuildInterface
     {
         $new = clone $this;
         $new->routerMaker = $routerMaker;
@@ -159,7 +159,7 @@ final class Build implements BuildContract
         return isset($this->routerMaker);
     }
 
-    public function routerMaker(): RouterMakerContract
+    public function routerMaker(): RouterMakerInterface
     {
         return $this->routerMaker;
     }
@@ -167,7 +167,7 @@ final class Build implements BuildContract
     /**
      * Make the build, provide AppContract services.
      */
-    public function make(): BuildContract
+    public function make(): BuildInterface
     {
         $this->assertCanMake();
         $new = clone $this;
@@ -209,7 +209,7 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function file(): FileContract
+    public function file(): FileInterface
     {
         return $this->filePhp->file();
     }
@@ -217,7 +217,7 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function dir(): DirContract
+    public function dir(): DirInterface
     {
         return $this->dir;
     }
@@ -233,7 +233,7 @@ final class Build implements BuildContract
     /**
      * {@inheritdoc}
      */
-    public function checkout(): CheckoutContract
+    public function checkout(): CheckoutInterface
     {
         return $this->checkout;
     }
@@ -255,8 +255,8 @@ final class Build implements BuildContract
             throw new BuildAlreadyMakedException();
         }
         foreach ([
-            'parameters' => ParametersContract::class,
-            'routerMaker' => RouterMakerContract::class,
+            'parameters' => ParametersInterface::class,
+            'routerMaker' => RouterMakerInterface::class,
         ] as $property => $contract) {
             if (!isset($this->{$property})) {
                 $missing[] = (new Message('%s'))->code('%s', $contract)->toString();
@@ -292,9 +292,9 @@ final class Build implements BuildContract
             ->withServices($services);
         $this->apiMaker = $this->apiMaker
             ->withCache(
-                new Cache($this->dir->getChild(ApiContract::CACHE_ID))
+                new Cache($this->dir->getChild(ApiInterface::CACHE_ID))
             );
-        $this->checksums[ApiContract::CACHE_ID] = $this->apiMaker->cache()->toArray();
+        $this->checksums[ApiInterface::CACHE_ID] = $this->apiMaker->cache()->toArray();
     }
 
     private function makeRouter(): void
@@ -308,7 +308,7 @@ final class Build implements BuildContract
                         )
                     )
                 ))
-                ->withMembersType(new Type(RouteContract::class));
+                ->withMembersType(new Type(RouteInterface::class));
             foreach ($arrayFile->array() as $route) {
                 $this->routerMaker = $this->routerMaker
                     ->withAddedRouteable(
@@ -321,7 +321,7 @@ final class Build implements BuildContract
             (new RouterCache(
                 new Cache(
                     $this->dir
-                        ->getChild(RouterContract::CACHE_ID)
+                        ->getChild(RouterInterface::CACHE_ID)
                 )
             ))
             ->withPut($this->routerMaker);
@@ -334,7 +334,7 @@ final class Build implements BuildContract
         $this->app = $this->app
             ->withServices($services);
 
-        $this->checksums[RouterContract::CACHE_ID] = $routerCache->cache()
+        $this->checksums[RouterInterface::CACHE_ID] = $routerCache->cache()
             ->toArray();
     }
 }

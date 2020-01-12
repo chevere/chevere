@@ -16,14 +16,14 @@ namespace Chevere\Components\Runtime\Sets;
 use TypeError;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
-use Chevere\Components\Runtime\Contracts\Sets\SetErrorHandlerContract;
+use Chevere\Components\Runtime\Interfaces\Sets\SetErrorHandlerInterface;
 use InvalidArgumentException;
 use Chevere\Components\Runtime\Traits\HandlerTrait;
 
 /**
  * Sets the exception handler using `set_error_handler`
  */
-class SetErrorHandler implements SetErrorHandlerContract
+class SetErrorHandler implements SetErrorHandlerInterface
 {
     use SetTrait;
     use HandlerTrait;

@@ -23,7 +23,7 @@ use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Path\PathApp;
-use Chevere\Components\App\Contracts\ServicesContract;
+use Chevere\Components\App\Interfaces\ServicesInterface;
 use PHPUnit\Framework\TestCase;
 
 final class ServicesBuilderTest extends TestCase
@@ -36,13 +36,13 @@ final class ServicesBuilderTest extends TestCase
         $build = new Build($app);
         $arrayFile = new ArrayFile(
             new FilePhp(
-            new File(
-              new PathApp('parameters/empty.php')
-          )
-        )
+                new File(
+                    new PathApp('parameters/empty.php')
+                )
+            )
         );
         $parameters = new Parameters($arrayFile);
         $servicesBuilder = new ServicesBuilder($build, $parameters);
-        $this->assertInstanceOf(ServicesContract::class, $servicesBuilder->services());
+        $this->assertInstanceOf(ServicesInterface::class, $servicesBuilder->services());
     }
 }

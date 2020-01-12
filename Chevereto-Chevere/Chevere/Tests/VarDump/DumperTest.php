@@ -45,8 +45,8 @@ final class DumperTest extends TestCase
         // Note: Console dumper can't be tested here
     }
 
-    public function testXdd(): void
-    {
-        xdd(...$this->getVars());
-    }
+    // public function testXdd(): void
+    // {
+    //     xdd(...$this->getVars());
+    // }
 }

@@ -15,7 +15,7 @@ namespace Chevere\Components\Http;
 
 use DateTime;
 use DateTimeZone;
-use Chevere\Components\Http\Contracts\ResponseContract;
+use Chevere\Components\Http\Interfaces\ResponseContract;
 
 final class Response implements ResponseContract
 {

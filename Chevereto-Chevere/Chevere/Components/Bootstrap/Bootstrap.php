@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\Bootstrap;
 
 use Chevere\Components\Bootstrap\Exceptions\BootstrapException;
-use Chevere\Components\Bootstrap\Contracts\BootstrapContract;
+use Chevere\Components\Bootstrap\Interfaces\BootstrapInterface;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 
-final class Bootstrap implements BootstrapContract
+final class Bootstrap implements BootstrapInterface
 {
     private int $time;
 
@@ -78,7 +78,7 @@ final class Bootstrap implements BootstrapContract
         return $this->appPath;
     }
 
-    public function withCli(bool $bool): BootstrapContract
+    public function withCli(bool $bool): BootstrapInterface
     {
         $new = clone $this;
         $new->isCli = $bool;
@@ -91,7 +91,7 @@ final class Bootstrap implements BootstrapContract
         return $this->isCli;
     }
 
-    public function withConsole(bool $bool): BootstrapContract
+    public function withConsole(bool $bool): BootstrapInterface
     {
         $new = clone $this;
         $new->isConsole = $bool;
@@ -104,7 +104,7 @@ final class Bootstrap implements BootstrapContract
         return $this->isConsole;
     }
 
-    public function withDev(bool $bool): BootstrapContract
+    public function withDev(bool $bool): BootstrapInterface
     {
         $new = clone $this;
         $new->isDev = $bool;
@@ -117,7 +117,7 @@ final class Bootstrap implements BootstrapContract
         return $this->isDev;
     }
 
-    public function withAppAutoloader(string $namespace): BootstrapContract
+    public function withAppAutoloader(string $namespace): BootstrapInterface
     {
         $new = clone $this;
         $ns = trim($namespace, '\\') . '\\';

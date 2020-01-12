@@ -12,9 +12,9 @@
 declare(strict_types=1);
 
 use Chevere\Components\App\Instances\ConsoleInstance;
-use Chevere\Components\Console\Contracts\ConsoleContract;
+use Chevere\Components\Console\Interfaces\ConsoleInterface;
 
-function console(): ConsoleContract
+function console(): ConsoleInterface
 {
     return ConsoleInstance::get();
 }

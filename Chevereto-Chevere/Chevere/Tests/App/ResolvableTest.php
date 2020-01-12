@@ -25,14 +25,14 @@ use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterProperties;
-use Chevere\Components\App\Contracts\AppContract;
+use Chevere\Components\App\Interfaces\AppInterface;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Route\PathUri;
 use PHPUnit\Framework\TestCase;
 
 final class ResolvableTest extends TestCase
 {
-    private function getApp(): AppContract
+    private function getApp(): AppInterface
     {
         return
             new App(
@@ -41,7 +41,7 @@ final class ResolvableTest extends TestCase
             );
     }
 
-    private function getAppWithRequest(): AppContract
+    private function getAppWithRequest(): AppInterface
     {
         return
             $this->getApp()

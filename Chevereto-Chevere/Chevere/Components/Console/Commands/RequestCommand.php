@@ -21,7 +21,7 @@ use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Message\Message;
-use Chevere\Components\App\Contracts\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderContract;
 use Chevere\Components\Route\PathUri;
 
 /**

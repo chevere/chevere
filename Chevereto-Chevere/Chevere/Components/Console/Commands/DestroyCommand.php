@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Console\Commands;
 
 use Chevere\Components\Console\Command;
-use Chevere\Components\App\Contracts\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderContract;
 
 /**
  * The DestroyCommand destroys the App.

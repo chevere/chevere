@@ -14,31 +14,31 @@ declare(strict_types=1);
 namespace Chevere\Components\App\Instances;
 
 use LogicException;
-use Chevere\Components\Http\Contracts\RequestContract;
+use Chevere\Components\Http\Interfaces\RequestInterface;
 
 /**
  * A container for the global request instance.
  */
 final class RequestInstance
 {
-    private static RequestContract $instance;
+    private static RequestInterface $instance;
 
-    public function __construct(RequestContract $request)
+    public function __construct(RequestInterface $request)
     {
         self::set($request);
     }
 
-    public static function set(RequestContract $request): void
+    public static function set(RequestInterface $request): void
     {
         self::$instance = $request;
     }
 
     public static function type(): string
     {
-        return RequestContract::class;
+        return RequestInterface::class;
     }
 
-    public static function get(): RequestContract
+    public static function get(): RequestInterface
     {
         if (!isset(self::$instance)) {
             throw new LogicException('No request instance present');

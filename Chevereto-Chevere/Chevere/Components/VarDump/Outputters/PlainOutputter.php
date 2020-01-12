@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputters;
 
-use Chevere\Components\VarDump\Contracts\OutputterContract;
+use Chevere\Components\VarDump\Interfaces\OutputterInterface;
 
 final class PlainOutputter extends AbstractOutputter
 {
     /**
      * {@inheritdoc}
      */
-    public function prepare(): OutputterContract
+    public function prepare(): OutputterInterface
     {
         return $this;
     }

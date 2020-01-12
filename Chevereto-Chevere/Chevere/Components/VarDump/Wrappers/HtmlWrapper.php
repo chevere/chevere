@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Wrappers;
 
-use Chevere\Components\VarDump\Contracts\PalleteContract;
+use Chevere\Components\VarDump\Interfaces\PalleteInterface;
 
 final class HtmlWrapper extends AbstractWrapper
 {
@@ -22,7 +22,7 @@ final class HtmlWrapper extends AbstractWrapper
     public function __construct(string $key)
     {
         $this->key = $key;
-        $this->pallete = PalleteContract::HTML;
+        $this->pallete = PalleteInterface::HTML;
         $this->assertKey();
         $this->color = $this->pallete[$this->key];
     }

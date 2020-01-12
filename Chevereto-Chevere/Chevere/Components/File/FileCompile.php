@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Components\File;
 
-use Chevere\Components\App\Instances\BootstrapInstance;
 use RuntimeException;
+use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Message\Message;
-use Chevere\Components\File\Contracts\FileCompileContract;
-use Chevere\Components\File\Contracts\FilePhpContract;
+use Chevere\Components\File\Interfaces\FileCompileInterface;
+use Chevere\Components\File\Interfaces\FilePhpInterface;
 
 /**
  * OPCache compiler.
  */
-final class FileCompile implements FileCompileContract
+final class FileCompile implements FileCompileInterface
 {
-    private FilePhpContract $filePhp;
+    private FilePhpInterface $filePhp;
 
     /**
      * Applies OPCache to the PHP file.
@@ -32,7 +32,7 @@ final class FileCompile implements FileCompileContract
      * @throws FileNotPhpException   if $file is not a PHP file
      * @throws FileNotFoundException if $file doesn't exists
      */
-    public function __construct(FilePhpContract $filePhp)
+    public function __construct(FilePhpInterface $filePhp)
     {
         $this->filePhp = $filePhp;
     }
@@ -40,7 +40,7 @@ final class FileCompile implements FileCompileContract
     /**
      * {@inheritdoc}
      */
-    public function filePhp(): FilePhpContract
+    public function filePhp(): FilePhpInterface
     {
         return $this->filePhp;
     }

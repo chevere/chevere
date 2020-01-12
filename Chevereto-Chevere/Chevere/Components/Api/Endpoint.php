@@ -18,21 +18,21 @@ use Chevere\Components\Controllers\Api\HeadController;
 use Chevere\Components\Controllers\Api\OptionsController;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodControllerName;
-use Chevere\Components\Api\Contracts\EndpointContract;
-use Chevere\Components\Http\Contracts\MethodControllerNameCollectionContract;
+use Chevere\Components\Api\Interfaces\EndpointInterface;
+use Chevere\Components\Http\Interfaces\MethodControllerNameCollectionInterface;
 
-final class Endpoint implements EndpointContract
+final class Endpoint implements EndpointInterface
 {
     /** @var array */
     private $array;
 
-    /** @var MethodControllerNameCollectionContract */
+    /** @var MethodControllerNameCollectionInterface */
     private $methodControllerNameCollection;
 
     /**
      *
      */
-    public function __construct(MethodControllerNameCollectionContract $collection)
+    public function __construct(MethodControllerNameCollectionInterface $collection)
     {
         $this->array = [];
         $this->methodControllerNameCollection = $collection;
@@ -43,7 +43,7 @@ final class Endpoint implements EndpointContract
     /**
      * {@inheritdoc}
      */
-    public function methodControllerNameCollection(): MethodControllerNameCollectionContract
+    public function methodControllerNameCollection(): MethodControllerNameCollectionInterface
     {
         return $this->methodControllerNameCollection;
     }

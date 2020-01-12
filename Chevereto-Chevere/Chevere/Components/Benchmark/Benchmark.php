@@ -16,13 +16,13 @@ namespace Chevere\Components\Benchmark;
 use Chevere\Components\Benchmark\Exceptions\ArgumentCountException;
 use Chevere\Components\Benchmark\Exceptions\DuplicatedCallableException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Benchmark\Contracts\BenchmarkContract;
+use Chevere\Components\Benchmark\Interfaces\BenchmarkInterface;
 use ReflectionFunction;
 
 /**
  * Benchmark provides a prepared object for RunContract.
  */
-final class Benchmark implements BenchmarkContract
+final class Benchmark implements BenchmarkInterface
 {
     /** @var array Arguments that will be passed to callables */
     private array $arguments;
@@ -66,7 +66,7 @@ final class Benchmark implements BenchmarkContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedCallable(callable $callable, string $callableName): BenchmarkContract
+    public function withAddedCallable(callable $callable, string $callableName): BenchmarkInterface
     {
         $this->callable = $callable;
         $this->callableName = $callableName;

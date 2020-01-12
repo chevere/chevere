@@ -15,19 +15,19 @@ namespace Chevere\Components\VarDump\Dumpers;
 
 use BadMethodCallException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\VarDump\Contracts\DumperContract;
-use Chevere\Components\VarDump\Contracts\FormatterContract;
-use Chevere\Components\VarDump\Contracts\OutputterContract;
+use Chevere\Components\VarDump\Interfaces\DumperInterface;
+use Chevere\Components\VarDump\Interfaces\FormatterInterface;
+use Chevere\Components\VarDump\Interfaces\OutputterInterface;
 use Chevere\Components\VarDump\Dumper;
 
 /**
  * Dumps information about one or more variables. CLI/HTML aware.
  */
-abstract class AbstractDumper implements DumperContract
+abstract class AbstractDumper implements DumperInterface
 {
-    protected FormatterContract $formatter;
+    protected FormatterInterface $formatter;
 
-    protected OutputterContract $outputter;
+    protected OutputterInterface $outputter;
 
     protected array $vars = [];
 
@@ -45,17 +45,17 @@ abstract class AbstractDumper implements DumperContract
     /**
      * {@inheritdoc}
      */
-    abstract public function getFormatter(): FormatterContract;
+    abstract public function getFormatter(): FormatterInterface;
 
     /**
      * {@inheritdoc}
      */
-    abstract public function getOutputter(): OutputterContract;
+    abstract public function getOutputter(): OutputterInterface;
 
     /**
      * {@inheritdoc}
      */
-    public function formatter(): FormatterContract
+    public function formatter(): FormatterInterface
     {
         return $this->formatter;
     }
@@ -63,7 +63,7 @@ abstract class AbstractDumper implements DumperContract
     /**
      * {@inheritdoc}
      */
-    public function outputter(): OutputterContract
+    public function outputter(): OutputterInterface
     {
         return $this->outputter;
     }
@@ -71,7 +71,7 @@ abstract class AbstractDumper implements DumperContract
     /**
      * {@inheritdoc}
      */
-    final public function withVars(...$vars): DumperContract
+    final public function withVars(...$vars): DumperInterface
     {
         $new = clone $this;
         $new->vars = $vars;

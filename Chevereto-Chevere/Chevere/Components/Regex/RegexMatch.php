@@ -16,9 +16,9 @@ namespace Chevere\Components\Regex;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Exceptions\RegexException;
 use Chevere\Components\Regex\Exceptions\RegexMatchException;
-use Chevere\Components\Regex\Contracts\RegexMatchContract;
+use Chevere\Components\Regex\Interfaces\RegexMatchInterface;
 
-final class RegexMatch implements RegexMatchContract
+final class RegexMatch implements RegexMatchInterface
 {
     /** @var string a regular expresion match statement */
     private string $match;

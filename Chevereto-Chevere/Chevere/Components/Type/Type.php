@@ -15,12 +15,12 @@ namespace Chevere\Components\Type;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Exceptions\TypeNotFoundException;
-use Chevere\Components\Type\Contracts\TypeContract;
+use Chevere\Components\Type\Interfaces\TypeInterface;
 
 /**
  * Type provides type validation toolchain. Usefull to set dynamic types as parameters.
  */
-final class Type implements TypeContract
+final class Type implements TypeInterface
 {
     /** @var string The passed argument in construct */
     private string $type;
@@ -61,7 +61,7 @@ final class Type implements TypeContract
      */
     public function typeHinting(): string
     {
-        if (in_array($this->primitive, [TypeContract::CLASS_NAME, TypeContract::INTERFACE_NAME])) {
+        if (in_array($this->primitive, [TypeInterface::CLASS_NAME, TypeInterface::INTERFACE_NAME])) {
             return $this->type;
         }
 
@@ -85,21 +85,21 @@ final class Type implements TypeContract
      */
     public function validator(): callable
     {
-        return TypeContract::TYPE_VALIDATORS[$this->primitive];
+        return TypeInterface::TYPE_VALIDATORS[$this->primitive];
     }
 
     private function isAbleToValidateObjects(): bool
     {
-        return in_array($this->primitive, [TypeContract::CLASS_NAME, TypeContract::INTERFACE_NAME]);
+        return in_array($this->primitive, [TypeInterface::CLASS_NAME, TypeInterface::INTERFACE_NAME]);
     }
 
     private function validateObject(object $object): bool
     {
         $objectClass = get_class($object);
         switch ($this->primitive) {
-            case TypeContract::CLASS_NAME:
+            case TypeInterface::CLASS_NAME:
                 return $this->isClassName($objectClass);
-            case TypeContract::INTERFACE_NAME:
+            case TypeInterface::INTERFACE_NAME:
                 return $this->isInterfaceImplemented($object);
         }
 
@@ -118,7 +118,7 @@ final class Type implements TypeContract
 
     private function setPrimitive(): void
     {
-        if (isset(TypeContract::TYPE_VALIDATORS[$this->type])) {
+        if (isset(TypeInterface::TYPE_VALIDATORS[$this->type])) {
             $this->primitive = $this->type;
 
             return;

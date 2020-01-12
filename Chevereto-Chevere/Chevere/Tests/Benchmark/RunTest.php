@@ -17,12 +17,12 @@ use Chevere\Components\Benchmark\Benchmark;
 use Chevere\Components\Benchmark\Exceptions\ArgumentTypeException;
 use Chevere\Components\Benchmark\Run;
 use Chevere\Components\Benchmark\Runable;
-use Chevere\Components\Benchmark\Contracts\RunableContract;
+use Chevere\Components\Benchmark\Interfaces\RunableInterface;
 use PHPUnit\Framework\TestCase;
 
 final class RunTest extends TestCase
 {
-    public function getRunable(): RunableContract
+    public function getRunable(): RunableInterface
     {
         return
             new Runable(

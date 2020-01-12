@@ -18,13 +18,13 @@ use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Path\Path;
-use Chevere\Components\Cache\Contracts\CacheItemContract;
-use Chevere\Components\Path\Contracts\PathContract;
+use Chevere\Components\Cache\Interfaces\CacheItemInterface;
+use Chevere\Components\Path\Interfaces\PathInterface;
 use PHPUnit\Framework\TestCase;
 
 final class CacheItemTest extends TestCase
 {
-    private function getCacheItem(PathContract $path): CacheItemContract
+    private function getCacheItem(PathInterface $path): CacheItemInterface
     {
         return
             new CacheItem(

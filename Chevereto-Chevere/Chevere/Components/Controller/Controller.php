@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Controller;
 
 use Chevere\Components\Hooks\Traits\HookTrait;
-use Chevere\Components\App\Contracts\AppContract;
-use Chevere\Components\Controller\Contracts\ControllerContract;
-use Chevere\Components\Hooks\Contracts\HookableContract;
+use Chevere\Components\App\Interfaces\AppInterface;
+use Chevere\Components\Controller\Interfaces\ControllerInterface;
+use Chevere\Components\Hooks\Interfaces\HookableInterface;
 
 // Define a hookable code entry:
 // $this->hook('myHook', function ($that) use ($var) {
@@ -32,22 +32,22 @@ use Chevere\Components\Hooks\Contracts\HookableContract;
 /**
  * Controller is the defacto controller in Chevere.
  */
-abstract class Controller implements ControllerContract, HookableContract
+abstract class Controller implements ControllerInterface, HookableInterface
 {
     use HookTrait;
 
     const TYPE_DECLARATIONS = ['array', 'callable', 'bool', 'float', 'int', 'string', 'iterable'];
     const OPTIONS = [];
 
-    /** @var AppContract */
+    /** @var AppInterface */
     private $app;
 
-    final public function __construct(AppContract $app)
+    final public function __construct(AppInterface $app)
     {
         $this->app = $app;
     }
 
-    final public function app(): AppContract
+    final public function app(): AppInterface
     {
         return $this->app;
     }

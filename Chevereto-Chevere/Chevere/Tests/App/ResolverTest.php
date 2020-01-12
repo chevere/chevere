@@ -29,14 +29,14 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterMaker;
-use Chevere\Components\App\Contracts\ResolvableContract;
-use Chevere\Components\Http\Contracts\RequestContract;
+use Chevere\Components\App\Interfaces\ResolvableInterface;
+use Chevere\Components\Http\Interfaces\RequestInterface;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
 final class ResolverTest extends TestCase
 {
-    private function getResolvable(RequestContract $request): ResolvableContract
+    private function getResolvable(RequestInterface $request): ResolvableInterface
     {
         $route = (new Route(new PathUri('/resolver')))
             ->withAddedMethod(

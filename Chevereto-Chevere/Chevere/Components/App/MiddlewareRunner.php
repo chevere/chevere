@@ -16,17 +16,17 @@ namespace Chevere\Components\App;
 use Chevere\Components\App\Exceptions\AppWithoutRequestException;
 use Chevere\Components\Middleware\Exceptions\MiddlewareNamesEmptyException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\App\Contracts\AppContract;
-use Chevere\Components\App\Contracts\MiddlewareRunnerContract;
-use Chevere\Components\Http\Contracts\RequestContract;
-use Chevere\Components\Middleware\Contracts\MiddlewareNameCollectionContract;
-use Chevere\Components\Middleware\Contracts\MiddlewareNameContract;
+use Chevere\Components\App\Interfaces\AppInterface;
+use Chevere\Components\App\Interfaces\MiddlewareRunnerInterface;
+use Chevere\Components\Http\Interfaces\RequestInterface;
+use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
+use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
 
-final class MiddlewareRunner implements MiddlewareRunnerContract
+final class MiddlewareRunner implements MiddlewareRunnerInterface
 {
-    private AppContract $app;
+    private AppInterface $app;
 
-    private MiddlewareNameCollectionContract $middlewareNameCollection;
+    private MiddlewareNameCollectionInterface $middlewareNameCollection;
 
     /** @var bool */
     private bool $hasRun;
@@ -34,7 +34,7 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
     /** @var array An array containg the middlewares that have ran */
     private array $record;
 
-    public function __construct(MiddlewareNameCollectionContract $middlewareNameCollection, AppContract $app)
+    public function __construct(MiddlewareNameCollectionInterface $middlewareNameCollection, AppInterface $app)
     {
         $this->app = $app;
         $this->assertAppWithRequest();
@@ -46,7 +46,7 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
     /**
      * {@inheritdoc}
      */
-    public function withRun(): MiddlewareRunnerContract
+    public function withRun(): MiddlewareRunnerInterface
     {
         $new = clone $this;
         $new->doRun();
@@ -88,8 +88,8 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
         if (!$this->middlewareNameCollection->hasAny()) {
             throw new MiddlewareNamesEmptyException(
                 (new Message("Instance of %className% doesn't contain any %contract% contract"))
-                    ->code('%className%', MiddlewareNameCollectionContract::class)
-                    ->code('%contract%', MiddlewareNameContract::class)
+                    ->code('%className%', MiddlewareNameCollectionInterface::class)
+                    ->code('%contract%', MiddlewareNameInterface::class)
                     ->toString()
             );
         }
@@ -100,8 +100,8 @@ final class MiddlewareRunner implements MiddlewareRunnerContract
         if (!$this->app->hasRequest()) {
             throw new AppWithoutRequestException(
                 (new Message('Instance of %type% must contain a %contract% contract'))
-                    ->code('%type%', AppContract::class)
-                    ->code('%contract%', RequestContract::class)
+                    ->code('%type%', AppInterface::class)
+                    ->code('%contract%', RequestInterface::class)
                     ->toString()
             );
         }

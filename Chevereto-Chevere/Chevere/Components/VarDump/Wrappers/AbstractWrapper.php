@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Wrappers;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\VarDump\Contracts\WrapperContract;
+use Chevere\Components\VarDump\Interfaces\WrapperInterface;
 use InvalidArgumentException;
 
-abstract class AbstractWrapper implements WrapperContract
+abstract class AbstractWrapper implements WrapperInterface
 {
     protected string $key;
 

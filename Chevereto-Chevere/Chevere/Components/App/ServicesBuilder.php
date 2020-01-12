@@ -13,28 +13,28 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use Chevere\Components\App\Contracts\ParametersContract;
-use Chevere\Components\App\Contracts\ServicesContract;
+use Chevere\Components\App\Interfaces\ParametersInterface;
+use Chevere\Components\App\Interfaces\ServicesInterface;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Api\Api;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;
-use Chevere\Components\Api\Contracts\ApiContract;
-use Chevere\Components\App\Contracts\BuildContract;
-use Chevere\Components\App\Contracts\ServicesBuilderContract;
-use Chevere\Components\Router\Contracts\RouterContract;
+use Chevere\Components\Api\Interfaces\ApiInterface;
+use Chevere\Components\App\Interfaces\BuildInterface;
+use Chevere\Components\App\Interfaces\ServicesBuilderInterface;
+use Chevere\Components\Router\Interfaces\RouterInterface;
 
-final class ServicesBuilder implements ServicesBuilderContract
+final class ServicesBuilder implements ServicesBuilderInterface
 {
-    private ServicesContract $services;
+    private ServicesInterface $services;
 
     /**
      * Creates a new instance.
      *
-     * @param BuildContract      $build      The build containg AppContract services (if any)
-     * @param ParametersContract $parameters The application parameters which alter this services builder
+     * @param BuildInterface      $build      The build containg AppContract services (if any)
+     * @param ParametersInterface $parameters The application parameters which alter this services builder
      */
-    public function __construct(BuildContract $build, ParametersContract $parameters)
+    public function __construct(BuildInterface $build, ParametersInterface $parameters)
     {
         $this->services = $build->app()->services();
         $this->prepareServices();
@@ -42,7 +42,7 @@ final class ServicesBuilder implements ServicesBuilderContract
             $routerCache =
                 new RouterCache(
                     new Cache(
-                        $build->dir()->getChild(RouterContract::CACHE_ID)
+                        $build->dir()->getChild(RouterInterface::CACHE_ID)
                     )
                 );
             $this->services = $this->services
@@ -57,7 +57,7 @@ final class ServicesBuilder implements ServicesBuilderContract
                     $this->services->api()
                         ->withCache(
                             new Cache(
-                                $build->dir()->getChild(ApiContract::CACHE_ID)
+                                $build->dir()->getChild(ApiInterface::CACHE_ID)
                             )
                         )
                 );
@@ -67,7 +67,7 @@ final class ServicesBuilder implements ServicesBuilderContract
     /**
      * {@inheritdoc}
      */
-    public function services(): ServicesContract
+    public function services(): ServicesInterface
     {
         return $this->services;
     }

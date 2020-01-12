@@ -17,12 +17,12 @@ use InvalidArgumentException;
 use RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
-use Chevere\Components\Runtime\Contracts\SetContract;
+use Chevere\Components\Runtime\Interfaces\SetInterface;
 
 /**
  * Sets the default timezone
  */
-class SetTimeZone implements SetContract
+class SetTimeZone implements SetInterface
 {
     use SetTrait;
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Message;
 
 use Chevere\Components\App\Instances\BootstrapInstance;
-use Chevere\Components\Message\Contracts\MessageContract;
+use Chevere\Components\Message\Interfaces\MessageInterface;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 /*
@@ -29,7 +29,7 @@ use JakubOnderka\PhpConsoleColor\ConsoleColor;
  * @method Message MessageContact b(string $search, string $replace) Wraps found $replace in a `b` tag
  * @method Message MessageContact *any*(string $search, string $replace) Wraps found $replace in a `any` tag
  */
-final class Message implements MessageContract
+final class Message implements MessageInterface
 {
     private string $message;
 
@@ -52,7 +52,7 @@ final class Message implements MessageContract
      * @param string $tag  Tag name
      * @param array  $args the arguments, being $args[0] (from) and $args[1] (to)
      */
-    public function __call(string $tag, array $args): MessageContract
+    public function __call(string $tag, array $args): MessageInterface
     {
         $search = (string) $args[0]; // $search String to replace for
         $replace = (string) $args[1]; // $replace String to replace with
@@ -67,7 +67,7 @@ final class Message implements MessageContract
     /**
      * {@inheritdoc}
      */
-    public function strtr(string $search, string $replace): MessageContract
+    public function strtr(string $search, string $replace): MessageInterface
     {
         $new = clone $this;
         $new->trTable[$search] = $replace;

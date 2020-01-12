@@ -16,12 +16,12 @@ namespace Chevere\Components\Console;
 use Symfony\Component\Console\Command\Command as BaseCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Chevere\Components\Console\Contracts\SymfonyCommandContract;
+use Chevere\Components\Console\Interfaces\SymfonyCommandInterface;
 
 /**
  * Wrapper for Symfony\Component\Console\Command\Command
  */
-final class SymfonyCommand extends BaseCommand implements SymfonyCommandContract
+final class SymfonyCommand extends BaseCommand implements SymfonyCommandInterface
 {
     protected function execute(InputInterface $input, OutputInterface $output)
     {

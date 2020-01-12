@@ -13,28 +13,28 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
-use Chevere\Components\VarDump\Contracts\ProcessorContract;
+use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 use Chevere\Components\VarDump\VarDump;
-use Chevere\Components\VarDump\Contracts\VarDumpContract;
+use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
 
 final class ArrayProcessor extends AbstractProcessor
 {
     private array $var;
 
-    public function withProcess(): ProcessorContract
+    public function withProcess(): ProcessorInterface
     {
         $new = clone $this;
         $new->var = $this->varDump->var();
         $new->info = 'size=' . count($new->var);
         foreach ($new->var as $k => $v) {
-            $operator = $this->varDump->formatter()->applyWrap(VarDumpContract::_OPERATOR, '=>');
+            $operator = $this->varDump->formatter()->applyWrap(VarDumpInterface::_OPERATOR, '=>');
             $new->val .= "\n" . $this->varDump->indentString() . ' ' . $this->varDump->formatter()->filterEncodedChars((string) $k) . " $operator ";
             $aux = $v;
             $isCircularRef = is_array($aux) && isset($aux[$k]) && $aux == $aux[$k];
             if ($isCircularRef) {
                 $new->val .= $this->varDump->formatter()
                     ->applyWrap(
-                        VarDumpContract::_OPERATOR,
+                        VarDumpInterface::_OPERATOR,
                         '(' . $this->varDump->formatter()->applyEmphasis('circular array reference') . ')'
                     );
             } else {

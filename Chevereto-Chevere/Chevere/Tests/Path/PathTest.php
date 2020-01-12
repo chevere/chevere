@@ -16,12 +16,12 @@ namespace Chevere\Tests\Path;
 use RuntimeException;
 use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Path\Path;
-use Chevere\Components\Path\Contracts\PathContract;
+use Chevere\Components\Path\Interfaces\PathInterface;
 use PHPUnit\Framework\TestCase;
 
 final class PathTest extends TestCase
 {
-    public function getPath(string $child): PathContract
+    public function getPath(string $child): PathInterface
     {
         $root = BootstrapInstance::get()->appPath();
 

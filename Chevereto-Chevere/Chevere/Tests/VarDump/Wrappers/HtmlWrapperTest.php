@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\Wrappers;
 
-use Chevere\Components\VarDump\Contracts\PalleteContract;
+use Chevere\Components\VarDump\Interfaces\PalleteInterface;
 use Chevere\Components\VarDump\Wrappers\ConsoleWrapper;
 use Chevere\Components\VarDump\Wrappers\HtmlWrapper;
 use InvalidArgumentException;
@@ -30,7 +30,7 @@ final class HtmlWrapperTest extends TestCase
     public function testConstruct(): void
     {
         $dump = 'string';
-        $keys = array_keys(PalleteContract::HTML);
+        $keys = array_keys(PalleteInterface::HTML);
         foreach ($keys as $key) {
             $wrapper = new HtmlWrapper($key);
             $wrapped = $wrapper->wrap($dump);

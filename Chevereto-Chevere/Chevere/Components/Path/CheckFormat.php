@@ -17,10 +17,10 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathDoubleDotsException;
 use Chevere\Components\Path\Exceptions\PathExtraSlashesException;
 use Chevere\Components\Path\Exceptions\PathOmitRelativeException;
-use Chevere\Components\Path\Contracts\CheckFormatContract;
+use Chevere\Components\Path\Interfaces\CheckFormatInterface;
 use function ChevereFn\stringStartsWith;
 
-final class CheckFormat implements CheckFormatContract
+final class CheckFormat implements CheckFormatInterface
 {
     private string $path;
 

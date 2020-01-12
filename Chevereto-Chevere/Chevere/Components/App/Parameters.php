@@ -18,25 +18,25 @@ use Chevere\Components\App\Exceptions\ParametersWrongKeyException;
 use Chevere\Components\App\Exceptions\ParametersWrongTypeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\PathApp;
-use Chevere\Components\App\Contracts\ParametersContract;
-use Chevere\Components\ArrayFile\Contracts\ArrayFileContract;
-use Chevere\Components\Path\Contracts\PathAppContract;
-use Chevere\Components\Path\Contracts\PathContract;
+use Chevere\Components\App\Interfaces\ParametersInterface;
+use Chevere\Components\ArrayFile\Interfaces\ArrayFileInterface;
+use Chevere\Components\Path\Interfaces\PathAppInterface;
+use Chevere\Components\Path\Interfaces\PathInterface;
 
 /**
  * Application parameters container.
  */
-final class Parameters implements ParametersContract
+final class Parameters implements ParametersInterface
 {
     /**
      * The keys accepted by this class, with the gettype at right side.
      */
     private array $types = [
-        ParametersContract::KEY_API => 'string',
-        ParametersContract::KEY_ROUTES => 'array',
+        ParametersInterface::KEY_API => 'string',
+        ParametersInterface::KEY_ROUTES => 'array',
     ];
 
-    private ArrayFileContract $arrayFile;
+    private ArrayFileInterface $arrayFile;
 
     private string $api;
 
@@ -45,16 +45,16 @@ final class Parameters implements ParametersContract
     /**
      *
      */
-    public function __construct(ArrayFileContract $arrayFile)
+    public function __construct(ArrayFileInterface $arrayFile)
     {
         $this->arrayFile = $arrayFile;
         $this->assertKeys();
         $array = $this->arrayFile->array();
-        if (isset($array[ParametersContract::KEY_API])) {
-            $this->api = $array[ParametersContract::KEY_API];
+        if (isset($array[ParametersInterface::KEY_API])) {
+            $this->api = $array[ParametersInterface::KEY_API];
         }
-        if (isset($array[ParametersContract::KEY_ROUTES])) {
-            $routes = $array[ParametersContract::KEY_ROUTES];
+        if (isset($array[ParametersInterface::KEY_ROUTES])) {
+            $routes = $array[ParametersInterface::KEY_ROUTES];
             $this->routes = [];
             foreach ($routes as $route) {
                 $this->routes[] = (new PathApp($route))->relative();
@@ -65,7 +65,7 @@ final class Parameters implements ParametersContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedRoutePaths(PathAppContract ...$paths): ParametersContract
+    public function withAddedRoutePaths(PathAppInterface ...$paths): ParametersInterface
     {
         $new = clone $this;
         if (!isset($new->routes)) {

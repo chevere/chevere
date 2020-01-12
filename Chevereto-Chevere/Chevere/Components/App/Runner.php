@@ -19,15 +19,15 @@ use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Http\Request\RequestException;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Message\Message;
-use Chevere\Components\App\Contracts\BuilderContract;
-use Chevere\Components\App\Contracts\RunnerContract;
+use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\RunnerInterface;
 use function console;
 use function GuzzleHttp\Psr7\stream_for;
 
 /**
  * Application builder runner.
  */
-final class Runner implements RunnerContract
+final class Runner implements RunnerInterface
 {
     private BuilderContract $builder;
 
@@ -62,7 +62,7 @@ final class Runner implements RunnerContract
     /**
      * {@inheritdoc}
      */
-    public function withConsoleLoop(): RunnerContract
+    public function withConsoleLoop(): RunnerInterface
     {
         $new = clone $this;
         $new->consoleLoop = true;
@@ -81,7 +81,7 @@ final class Runner implements RunnerContract
     /**
      * {@inheritdoc}
      */
-    public function withRun(): RunnerContract
+    public function withRun(): RunnerInterface
     {
         $new = clone $this;
         $new->handleConsole();
@@ -102,7 +102,7 @@ final class Runner implements RunnerContract
     }
 
     /**
-     * Must run before handleRequest(), otherwise CLI won't be capable of injecting the RequestContract instance.
+     * Must run before handleRequest(), otherwise CLI won't be capable of injecting the RequestInterface instance.
      */
     private function handleConsole(): void
     {

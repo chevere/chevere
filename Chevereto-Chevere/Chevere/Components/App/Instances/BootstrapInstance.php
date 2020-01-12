@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Instances;
 
-use Chevere\Components\Bootstrap\Contracts\BootstrapContract;
+use Chevere\Components\Bootstrap\Interfaces\BootstrapInterface;
 use LogicException;
 
 /**
@@ -21,14 +21,14 @@ use LogicException;
  */
 final class BootstrapInstance
 {
-    private static BootstrapContract $instance;
+    private static BootstrapInterface $instance;
 
-    public function __construct(BootstrapContract $bootstrap)
+    public function __construct(BootstrapInterface $bootstrap)
     {
         self::$instance = $bootstrap;
     }
 
-    public static function get(): BootstrapContract
+    public static function get(): BootstrapInterface
     {
         if (!isset(self::$instance)) {
             throw new LogicException('No bootstrap instance present');

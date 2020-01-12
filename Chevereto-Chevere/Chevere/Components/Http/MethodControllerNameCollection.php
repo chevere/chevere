@@ -15,11 +15,11 @@ namespace Chevere\Components\Http;
 
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Http\Contracts\MethodContract;
-use Chevere\Components\Http\Contracts\MethodControllerNameContract;
-use Chevere\Components\Http\Contracts\MethodControllerNameCollectionContract;
+use Chevere\Components\Http\Interfaces\MethodInterface;
+use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
+use Chevere\Components\Http\Interfaces\MethodControllerNameCollectionInterface;
 
-final class MethodControllerNameCollection implements MethodControllerNameCollectionContract
+final class MethodControllerNameCollection implements MethodControllerNameCollectionInterface
 {
     /** @param array MethodControllerNameContract[] */
     private array $array;
@@ -30,7 +30,7 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
     /**
      * Creates a new instance.
      */
-    public function __construct(MethodControllerNameContract ...$methodControllerName)
+    public function __construct(MethodControllerNameInterface ...$methodControllerName)
     {
         $this->array = [];
         $this->index = [];
@@ -42,7 +42,7 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
     /**
      * {@inheritdoc}
      */
-    public function withAddedMethodControllerName(MethodControllerNameContract $methodControllerName): MethodControllerNameCollectionContract
+    public function withAddedMethodControllerName(MethodControllerNameInterface $methodControllerName): MethodControllerNameCollectionInterface
     {
         $new = clone $this;
         $new->addMethodControllerName($methodControllerName);
@@ -61,7 +61,7 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
     /**
      * {@inheritdoc}
      */
-    public function has(MethodContract $method): bool
+    public function has(MethodInterface $method): bool
     {
         return in_array($method->toString(), $this->index);
     }
@@ -69,7 +69,7 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
     /**
      * {@inheritdoc}
      */
-    public function get(MethodContract $method): MethodControllerNameContract
+    public function get(MethodInterface $method): MethodControllerNameInterface
     {
         $pos = array_search($method->toString(), $this->index);
         if (false === $pos) {
@@ -91,7 +91,7 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
         return $this->array;
     }
 
-    private function addMethodControllerName(MethodControllerNameContract $methodControllerName): void
+    private function addMethodControllerName(MethodControllerNameInterface $methodControllerName): void
     {
         $name = $methodControllerName->method()->toString();
         $pos = array_search($name, $this->index);

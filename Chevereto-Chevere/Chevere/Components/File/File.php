@@ -23,16 +23,16 @@ use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathIsDirException;
 use Chevere\Components\Path\PathApp;
-use Chevere\Components\File\Contracts\FileContract;
-use Chevere\Components\Path\Contracts\PathContract;
+use Chevere\Components\File\Interfaces\FileInterface;
+use Chevere\Components\Path\Interfaces\PathInterface;
 use function ChevereFn\stringEndsWith;
 
 /**
  * This class provides interactions for a file in the application namespace.
  */
-final class File implements FileContract
+final class File implements FileInterface
 {
-    private PathContract $path;
+    private PathInterface $path;
 
     private bool $isPhp;
 
@@ -41,7 +41,7 @@ final class File implements FileContract
      *
      * @throws PathIsDirException if the PathContract represents a directory
      */
-    public function __construct(PathContract $path)
+    public function __construct(PathInterface $path)
     {
         $this->path = $path;
         $this->isPhp = stringEndsWith('.php', $this->path->absolute());
@@ -51,7 +51,7 @@ final class File implements FileContract
     /**
      * {@inheritdoc}
      */
-    public function path(): PathContract
+    public function path(): PathInterface
     {
         return $this->path;
     }
@@ -93,7 +93,7 @@ final class File implements FileContract
     {
         $this->assertExists();
 
-        return hash_file(FileContract::CHECKSUM_ALGO, $this->path->absolute());
+        return hash_file(FileInterface::CHECKSUM_ALGO, $this->path->absolute());
     }
 
     /**

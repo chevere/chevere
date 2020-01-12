@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route\Traits;
 
-use Chevere\Components\Route\Contracts\RouteContract;
+use Chevere\Components\Route\Interfaces\RouteInterface;
 
 trait RouteAccessTrait
 {
-    private RouteContract $route;
+    private RouteInterface $route;
 
     public function hasRoute(): bool
     {
         return isset($this->route);
     }
 
-    public function route(): RouteContract
+    public function route(): RouteInterface
     {
         return $this->route;
     }

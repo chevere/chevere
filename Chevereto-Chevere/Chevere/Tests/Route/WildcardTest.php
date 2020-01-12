@@ -19,7 +19,7 @@ use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Wildcard;
-use Chevere\Components\Route\Contracts\WildcardContract;
+use Chevere\Components\Route\Interfaces\WildcardInterface;
 use PHPUnit\Framework\TestCase;
 
 final class WildcardTest extends TestCase
@@ -40,7 +40,7 @@ final class WildcardTest extends TestCase
     {
         $name = 'test';
         $wildcard = new Wildcard($name);
-        $regexMatchDefault = new RegexMatch(WildcardContract::REGEX_MATCH_DEFAULT);
+        $regexMatchDefault = new RegexMatch(WildcardInterface::REGEX_MATCH_DEFAULT);
         $this->assertSame($name, $wildcard->name());
         $this->assertSame("{{$name}}", $wildcard->toString());
         $this->assertSame($regexMatchDefault->toString(), $wildcard->regexMatch()->toString());

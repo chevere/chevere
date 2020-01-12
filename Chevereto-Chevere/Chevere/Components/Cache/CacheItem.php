@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Cache;
 
-use Chevere\Components\Cache\Contracts\CacheItemContract;
-use Chevere\Components\File\Contracts\FileReturnContract;
+use Chevere\Components\Cache\Interfaces\CacheItemInterface;
+use Chevere\Components\File\Interfaces\FileReturnInterface;
 
-final class CacheItem implements CacheItemContract
+final class CacheItem implements CacheItemInterface
 {
-    private FileReturnContract $fileReturn;
+    private FileReturnInterface $fileReturn;
 
     /**
      * Creates a new instance.
      */
-    public function __construct(FileReturnContract $fileReturn)
+    public function __construct(FileReturnInterface $fileReturn)
     {
         $this->fileReturn = $fileReturn;
     }

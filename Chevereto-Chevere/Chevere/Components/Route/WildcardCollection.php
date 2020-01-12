@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use Chevere\Components\Route\Contracts\WildcardCollectionContract;
-use Chevere\Components\Route\Contracts\WildcardContract;
+use Chevere\Components\Route\Interfaces\WildcardCollectionInterface;
+use Chevere\Components\Route\Interfaces\WildcardInterface;
 
-final class WildcardCollection implements WildcardCollectionContract
+final class WildcardCollection implements WildcardCollectionInterface
 {
     /** @param array WildcardContract[] */
     private array $array;
@@ -27,7 +27,7 @@ final class WildcardCollection implements WildcardCollectionContract
     /**
      * Creates a new instance.
      */
-    public function __construct(WildcardContract ...$wildcards)
+    public function __construct(WildcardInterface ...$wildcards)
     {
         $this->array = [];
         $this->index = [];
@@ -39,7 +39,7 @@ final class WildcardCollection implements WildcardCollectionContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedWildcard(WildcardContract $wildcard): WildcardCollectionContract
+    public function withAddedWildcard(WildcardInterface $wildcard): WildcardCollectionInterface
     {
         $new = clone $this;
         $new->addWildcard($wildcard);
@@ -58,7 +58,7 @@ final class WildcardCollection implements WildcardCollectionContract
     /**
      * {@inheritdoc}
      */
-    public function has(WildcardContract $wildcard): bool
+    public function has(WildcardInterface $wildcard): bool
     {
         return in_array($wildcard->name(), $this->index);
     }
@@ -66,7 +66,7 @@ final class WildcardCollection implements WildcardCollectionContract
     /**
      * {@inheritdoc}
      */
-    public function get(WildcardContract $wildcard): WildcardContract
+    public function get(WildcardInterface $wildcard): WildcardInterface
     {
         $pos = array_search($wildcard->name(), $this->index);
 
@@ -84,7 +84,7 @@ final class WildcardCollection implements WildcardCollectionContract
     /**
      * {@inheritdoc}
      */
-    public function getPos(int $pos): WildcardContract
+    public function getPos(int $pos): WildcardInterface
     {
         return $this->array[$pos];
     }
@@ -97,7 +97,7 @@ final class WildcardCollection implements WildcardCollectionContract
         return $this->array;
     }
 
-    private function addWildcard(WildcardContract $wildcard)
+    private function addWildcard(WildcardInterface $wildcard)
     {
         $name = $wildcard->name();
         $pos = array_search($name, $this->index);

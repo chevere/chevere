@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Properties;
 
+use Exception;
+use TypeError;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Properties\Traits\ToArrayTrait;
 use Chevere\Components\Type\Type;
-use Chevere\Components\Router\Contracts\Properties\IndexPropertyContract;
-use Chevere\Components\Type\Contracts\TypeContract;
-use Exception;
-use TypeError;
+use Chevere\Components\Router\Interfaces\Properties\IndexPropertyInterface;
+use Chevere\Components\Type\Interfaces\TypeInterface;
 
-final class IndexProperty extends PropertyBase implements IndexPropertyContract
+final class IndexProperty extends PropertyBase implements IndexPropertyInterface
 {
     use ToArrayTrait;
 
@@ -65,9 +65,9 @@ final class IndexProperty extends PropertyBase implements IndexPropertyContract
     private function assertMeta(array $meta): void
     {
         foreach ([
-            'id' => [TypeContract::INTEGER],
-            'group' => [TypeContract::STRING],
-            'name' => [TypeContract::NULL, TypeContract::STRING],
+            'id' => [TypeInterface::INTEGER],
+            'group' => [TypeInterface::STRING],
+            'name' => [TypeInterface::NULL, TypeInterface::STRING],
         ] as $key => $acceptTypes) {
             $this->assertMetaKey($key, $meta);
             $this->breadcrum = $this->breadcrum

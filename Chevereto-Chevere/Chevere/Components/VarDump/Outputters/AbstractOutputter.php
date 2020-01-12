@@ -13,28 +13,28 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputters;
 
-use Chevere\Components\VarDump\Contracts\DumperContract;
-use Chevere\Components\VarDump\Contracts\OutputterContract;
+use Chevere\Components\VarDump\Interfaces\DumperInterface;
+use Chevere\Components\VarDump\Interfaces\OutputterInterface;
 use Chevere\Components\VarDump\VarDump;
 use function ChevereFn\stringStartsWith;
 
-abstract class AbstractOutputter implements OutputterContract
+abstract class AbstractOutputter implements OutputterInterface
 {
     protected string $output = '';
 
-    protected DumperContract $dumper;
+    protected DumperInterface $dumper;
 
     /**
      * {@inheritdoc}
      */
-    abstract public function prepare(): OutputterContract;
+    abstract public function prepare(): OutputterInterface;
 
     abstract public function print(): void;
 
     /**
      * {@inheritdoc}
      */
-    final public function withDumper(DumperContract $dumper): OutputterContract
+    final public function withDumper(DumperInterface $dumper): OutputterInterface
     {
         $new = clone $this;
         $new->dumper = $dumper;
@@ -45,7 +45,7 @@ abstract class AbstractOutputter implements OutputterContract
     /**
      * {@inheritdoc}
      */
-    final public function dumper(): DumperContract
+    final public function dumper(): DumperInterface
     {
         return $this->dumper;
     }
@@ -53,7 +53,7 @@ abstract class AbstractOutputter implements OutputterContract
     /**
      * {@inheritdoc}
      */
-    final public function process(): OutputterContract
+    final public function process(): OutputterInterface
     {
         $this->prepare();
         $this->handleClass();

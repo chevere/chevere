@@ -14,26 +14,26 @@ declare(strict_types=1);
 namespace Chevere\Components\App\Instances;
 
 use LogicException;
-use Chevere\Components\Console\Contracts\ConsoleContract;
+use Chevere\Components\Console\Interfaces\ConsoleInterface;
 
 /**
  * A container for the built-in console.
  */
 final class ConsoleInstance
 {
-    private static ConsoleContract $instance;
+    private static ConsoleInterface $instance;
 
-    public function __construct(ConsoleContract $console)
+    public function __construct(ConsoleInterface $console)
     {
         self::$instance = $console;
     }
 
     public static function type(): string
     {
-        return ConsoleContract::class;
+        return ConsoleInterface::class;
     }
 
-    public static function get(): ConsoleContract
+    public static function get(): ConsoleInterface
     {
         if (!isset(self::$instance)) {
             throw new LogicException('No console instance present');

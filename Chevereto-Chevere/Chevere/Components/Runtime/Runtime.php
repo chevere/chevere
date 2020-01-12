@@ -15,22 +15,22 @@ namespace Chevere\Components\Runtime;
 
 use Chevere\Components\Data\Data;
 use Chevere\Components\Data\Traits\DataMethodTrait;
-use Chevere\Components\Runtime\Contracts\RuntimeContract;
-use Chevere\Components\Runtime\Contracts\SetContract;
+use Chevere\Components\Runtime\Interfaces\RuntimeInterface;
+use Chevere\Components\Runtime\Interfaces\SetInterface;
 
 /**
  * Runtime applies runtime config and provide data about the App Runtime.
  */
-final class Runtime implements RuntimeContract
+final class Runtime implements RuntimeInterface
 {
     use DataMethodTrait;
 
     /**
      * Creates a new instance.
      *
-     * @param SetContract $runtimeContract
+     * @param SetInterface $runtimeContract
      */
-    public function __construct(SetContract ...$setContract)
+    public function __construct(SetInterface ...$setContract)
     {
         $this->data = new Data([]);
         foreach ($setContract as $set) {

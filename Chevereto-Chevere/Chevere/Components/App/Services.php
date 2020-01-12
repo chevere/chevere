@@ -13,18 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use Chevere\Components\Api\Contracts\ApiContract;
-use Chevere\Components\App\Contracts\ServicesContract;
-use Chevere\Components\Router\Contracts\RouterContract;
+use Chevere\Components\Api\Interfaces\ApiInterface;
+use Chevere\Components\App\Interfaces\ServicesInterface;
+use Chevere\Components\Router\Interfaces\RouterInterface;
 
 /**
  * A container for the application base services (Router & API).
  */
-final class Services implements ServicesContract
+final class Services implements ServicesInterface
 {
-    private ApiContract $api;
+    private ApiInterface $api;
 
-    private RouterContract $router;
+    private RouterInterface $router;
 
     /**
      * Creates a new instance.
@@ -36,7 +36,7 @@ final class Services implements ServicesContract
     /**
      * {@inheritdoc}
      */
-    public function withApi(ApiContract $api): ServicesContract
+    public function withApi(ApiInterface $api): ServicesInterface
     {
         $new = clone $this;
         $new->api = $api;
@@ -55,7 +55,7 @@ final class Services implements ServicesContract
     /**
      * {@inheritdoc}
      */
-    public function api(): ApiContract
+    public function api(): ApiInterface
     {
         return $this->api;
     }
@@ -63,7 +63,7 @@ final class Services implements ServicesContract
     /**
      * {@inheritdoc}
      */
-    public function withRouter(RouterContract $router): ServicesContract
+    public function withRouter(RouterInterface $router): ServicesInterface
     {
         $new = clone $this;
         $new->router = $router;
@@ -82,7 +82,7 @@ final class Services implements ServicesContract
     /**
      * {@inheritdoc}
      */
-    public function router(): RouterContract
+    public function router(): RouterInterface
     {
         return $this->router;
     }

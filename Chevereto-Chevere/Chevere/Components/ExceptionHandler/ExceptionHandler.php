@@ -31,7 +31,7 @@ use Chevere\Components\ExceptionHandler\src\Template;
 use Chevere\Components\ExceptionHandler\src\Wrap;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\Runtime\Runtime;
-use Chevere\Components\Http\Contracts\RequestContract;
+use Chevere\Components\Http\Interfaces\RequestInterface;
 
 /**
  * The Chevere exception handler.
@@ -88,7 +88,7 @@ final class ExceptionHandler
         E_USER_DEPRECATED => LogLevel::NOTICE,
     ];
 
-    private RequestContract $request;
+    private RequestInterface $request;
 
     private bool $isDebugEnabled;
 
@@ -138,7 +138,7 @@ final class ExceptionHandler
         return $this->isDebugEnabled;
     }
 
-    public function request(): RequestContract
+    public function request(): RequestInterface
     {
         return $this->request;
     }

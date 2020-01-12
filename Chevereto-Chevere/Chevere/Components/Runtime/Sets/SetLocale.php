@@ -16,12 +16,12 @@ namespace Chevere\Components\Runtime\Sets;
 use RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
-use Chevere\Components\Runtime\Contracts\SetContract;
+use Chevere\Components\Runtime\Interfaces\SetInterface;
 
 /**
  * Sets the locale using `setlocale`
  */
-class SetLocale implements SetContract
+class SetLocale implements SetInterface
 {
     use SetTrait;
 

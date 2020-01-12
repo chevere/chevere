@@ -15,12 +15,10 @@ namespace Chevere\Components\ExceptionHandler\src;
 
 use ErrorException;
 use Throwable;
-
 use Chevere\Components\Data\Data;
 use Chevere\Components\Data\Traits\DataMethodTrait;
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
-use Chevere\Components\Data\Contracts\DataContract;
-
+use Chevere\Components\Data\Interfaces\DataContract;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 

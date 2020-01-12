@@ -20,24 +20,24 @@ use Chevere\Components\Dir\Exceptions\DirExistsException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathIsFileException;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
-use Chevere\Components\Dir\Contracts\DirContract;
-use Chevere\Components\Path\Contracts\PathContract;
+use Chevere\Components\Dir\Interfaces\DirInterface;
+use Chevere\Components\Path\Interfaces\PathInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
 /**
  * This class provides interactions for a directory in the application namespace.
  */
-final class Dir implements DirContract
+final class Dir implements DirInterface
 {
-    private PathContract $path;
+    private PathInterface $path;
 
     /**
      * Creates a new instance.
      *
      * @throws PathIsFileException if the PathContract represents a file
      */
-    public function __construct(PathContract $path)
+    public function __construct(PathInterface $path)
     {
         $this->path = $path;
         $this->assertDirectory();
@@ -46,7 +46,7 @@ final class Dir implements DirContract
     /**
      * {@inheritdoc}
      */
-    public function path(): PathContract
+    public function path(): PathInterface
     {
         return $this->path;
     }
@@ -142,7 +142,7 @@ final class Dir implements DirContract
     /**
      * {@inheritdoc}
      */
-    public function getChild(string $path): DirContract
+    public function getChild(string $path): DirInterface
     {
         return new Dir(
             $this->path->getChild($path)

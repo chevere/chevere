@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace App\Controllers;
 
-use Chevere\Components\Controller\Contracts\StringContract;
+use Chevere\Components\Controller\Interfaces\StringInterface;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\Traits\ResponseStringTrait;
 
-class Home extends Controller implements StringContract
+class Home extends Controller implements StringInterface
 {
     use ResponseStringTrait;
 

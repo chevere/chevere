@@ -19,13 +19,13 @@ use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\Variable\VariableExport;
-use Chevere\Components\Cache\Contracts\CacheContract;
-use Chevere\Components\Cache\Contracts\CacheItemContract;
+use Chevere\Components\Cache\Interfaces\CacheInterface;
+use Chevere\Components\Cache\Interfaces\CacheItemInterface;
 use PHPUnit\Framework\TestCase;
 
 final class CacheTest extends TestCase
 {
-    private function getTestCache(): CacheContract
+    private function getTestCache(): CacheInterface
     {
         return
             new Cache(
@@ -69,7 +69,7 @@ final class CacheTest extends TestCase
             ->withPut($cacheKey, $variableExport);
         $this->assertArrayHasKey($key, $cache->toArray());
         $this->assertTrue($cache->exists($cacheKey));
-        $this->assertInstanceOf(CacheItemContract::class, $cache->get($cacheKey));
+        $this->assertInstanceOf(CacheItemInterface::class, $cache->get($cacheKey));
         $cache = $cache->withRemove($cacheKey);
         $this->assertArrayNotHasKey($key, $cache->toArray());
         $this->assertFalse($cache->exists($cacheKey));

@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Properties;
 
+use InvalidArgumentException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Router\Properties\Traits\ToStringTrait;
-use Chevere\Components\Router\Contracts\Properties\RegexPropertyContract;
-use InvalidArgumentException;
+use Chevere\Components\Router\Interfaces\Properties\RegexPropertyInterface;
 
-final class RegexProperty extends PropertyBase implements RegexPropertyContract
+final class RegexProperty extends PropertyBase implements RegexPropertyInterface
 {
     use ToStringTrait;
 
@@ -50,7 +50,7 @@ final class RegexProperty extends PropertyBase implements RegexPropertyContract
 
     private function assertFormat(): void
     {
-        if (!preg_match(RegexPropertyContract::REGEX_MATCHER, $this->value)) {
+        if (!preg_match(RegexPropertyInterface::REGEX_MATCHER, $this->value)) {
             throw new InvalidArgumentException(
                 (new Message('Invalid regex pattern: %regex%'))
                     ->code('%regex%', $this->value)

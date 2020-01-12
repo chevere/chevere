@@ -15,9 +15,9 @@ namespace Chevere\Components\Http;
 
 use InvalidArgumentException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Http\Contracts\MethodContract;
+use Chevere\Components\Http\Interfaces\MethodInterface;
 
-final class Method implements MethodContract
+final class Method implements MethodInterface
 {
     /** @var string HTTP request method name */
     private string $name;
@@ -43,7 +43,7 @@ final class Method implements MethodContract
 
     private function assertMethod(): void
     {
-        if (!in_array($this->name, MethodContract::ACCEPT_METHOD_NAMES)) {
+        if (!in_array($this->name, MethodInterface::ACCEPT_METHOD_NAMES)) {
             throw new InvalidArgumentException(
                 (new Message('Unknown HTTP method %method%'))
                     ->code('%method%', $this->name)

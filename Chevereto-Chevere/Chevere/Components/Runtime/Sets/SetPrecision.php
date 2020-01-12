@@ -16,13 +16,13 @@ namespace Chevere\Components\Runtime\Sets;
 use RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
-use Chevere\Components\Runtime\Contracts\SetContract;
+use Chevere\Components\Runtime\Interfaces\SetInterface;
 use InvalidArgumentException;
 
 /**
  * Sets the `precision` ini property
  */
-class SetPrecision implements SetContract
+class SetPrecision implements SetInterface
 {
     use SetTrait;
 

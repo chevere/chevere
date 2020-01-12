@@ -23,15 +23,15 @@ use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\Wildcard;
-use Chevere\Components\Route\Contracts\RouteContract;
-use Chevere\Components\Route\Contracts\WildcardContract;
+use Chevere\Components\Route\Interfaces\RouteInterface;
+use Chevere\Components\Route\Interfaces\WildcardInterface;
 use Chevere\TestApp\App\Controllers\TestController;
 use Chevere\TestApp\App\Middlewares\TestMiddlewareVoid;
 use PHPUnit\Framework\TestCase;
 
 final class RouteTest extends TestCase
 {
-    private function getRoute(string $path): RouteContract
+    private function getRoute(string $path): RouteInterface
     {
         return new Route(
             new PathUri($path)
@@ -59,7 +59,7 @@ final class RouteTest extends TestCase
         $this->assertTrue($route->hasWildcardCollection());
         $this->assertTrue($route->wildcardCollection()->has($wildcard));
         $this->assertEquals($wildcard, $route->wildcardCollection()->get($wildcard));
-        $this->assertStringContainsString(WildcardContract::REGEX_MATCH_DEFAULT, $route->regex());
+        $this->assertStringContainsString(WildcardInterface::REGEX_MATCH_DEFAULT, $route->regex());
     }
 
     public function testWithName(): void

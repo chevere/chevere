@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
-use Chevere\Components\VarDump\Contracts\ProcessorContract;
-use Chevere\Components\VarDump\Contracts\VarDumpContract;
+use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
 use LogicException;
 
-abstract class AbstractProcessor implements ProcessorContract
+abstract class AbstractProcessor implements ProcessorInterface
 {
-    protected VarDumpContract $varDump;
+    protected VarDumpInterface $varDump;
 
     /** @var string */
     protected string $info = '';
@@ -27,7 +27,7 @@ abstract class AbstractProcessor implements ProcessorContract
     /** @var string */
     protected string $val = '';
 
-    final public function __construct(VarDumpContract $varDump)
+    final public function __construct(VarDumpInterface $varDump)
     {
         $this->varDump = $varDump;
         $this->assertVarDump();
@@ -46,7 +46,7 @@ abstract class AbstractProcessor implements ProcessorContract
     /**
      * @throws TypeError If the return of varDump->var() doesn't match the concrete property type.
      */
-    abstract public function withProcess(): ProcessorContract;
+    abstract public function withProcess(): ProcessorInterface;
 
     final private function assertVarDump(): void
     {

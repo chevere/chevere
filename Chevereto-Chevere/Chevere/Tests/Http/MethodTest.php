@@ -15,7 +15,7 @@ namespace Chevere\Tests\Http;
 
 use InvalidArgumentException;
 use Chevere\Components\Http\Method;
-use Chevere\Components\Http\Contracts\MethodContract;
+use Chevere\Components\Http\Interfaces\MethodInterface;
 use PHPUnit\Framework\TestCase;
 
 final class MethodTest extends TestCase
@@ -28,7 +28,7 @@ final class MethodTest extends TestCase
 
     public function testConstruct(): void
     {
-        foreach (MethodContract::ACCEPT_METHOD_NAMES as $methodName) {
+        foreach (MethodInterface::ACCEPT_METHOD_NAMES as $methodName) {
             $method = new Method($methodName);
             $this->assertSame($methodName, $method->toString());
         }

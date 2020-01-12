@@ -20,12 +20,12 @@ use Chevere\Components\App\Services;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\Router\RouterMaker;
-use Chevere\Components\App\Contracts\BuildContract;
+use Chevere\Components\App\Interfaces\BuildInterface;
 use PHPUnit\Framework\TestCase;
 
 final class BuilderTest extends TestCase
 {
-    private function getBuild(): BuildContract
+    private function getBuild(): BuildInterface
     {
         $app = new App(new Services(), new Response());
 

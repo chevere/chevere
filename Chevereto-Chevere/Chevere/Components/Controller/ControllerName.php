@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\Controller;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Controller\Contracts\ControllerContract;
-use Chevere\Components\Controller\Contracts\ControllerNameContract;
+use Chevere\Components\Controller\Interfaces\ControllerInterface;
+use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
 use InvalidArgumentException;
 
-final class ControllerName implements ControllerNameContract
+final class ControllerName implements ControllerNameInterface
 {
     /** @var string */
     private $name;
@@ -51,11 +51,11 @@ final class ControllerName implements ControllerNameContract
                     ->toString()
             );
         }
-        if (!is_subclass_of($this->name, ControllerContract::class)) {
+        if (!is_subclass_of($this->name, ControllerInterface::class)) {
             throw new InvalidArgumentException(
                 (new Message('Controller %controller% must implement the %contract% interface'))
                     ->code('%controller%', $this->name)
-                    ->code('%contract%', ControllerContract::class)
+                    ->code('%contract%', ControllerInterface::class)
                     ->toString()
             );
         }

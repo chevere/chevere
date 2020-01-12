@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Api\src;
 
 use RecursiveFilterIterator;
-use Chevere\Components\Api\Contracts\src\FilterIteratorContract;
+use Chevere\Components\Api\Interfaces\src\FilterIteratorContract;
 
 /**
  * Provides filtering for the Api register process (directory scan).

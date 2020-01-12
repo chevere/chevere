@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputters;
 
-use Chevere\Components\VarDump\Contracts\OutputterContract;
+use Chevere\Components\VarDump\Interfaces\OutputterInterface;
 use Symfony\Component\Console\Formatter\OutputFormatter;
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -31,7 +31,7 @@ final class ConsoleOutputter extends AbstractOutputter
         $this->consoleOutput = new ConsoleOutput();
     }
 
-    public function prepare(): OutputterContract
+    public function prepare(): OutputterInterface
     {
         $this->consoleOutput->setFormatter(new OutputFormatter(true));
         $this->consoleOutput->getFormatter()->setStyle('block', new OutputFormatterStyle('red', 'black'));

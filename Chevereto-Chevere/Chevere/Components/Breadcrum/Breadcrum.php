@@ -15,12 +15,12 @@ namespace Chevere\Components\Breadcrum;
 
 use Chevere\Components\Breadcrum\Exceptions\BreadcrumException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Breadcrum\Contracts\BreadcrumContract;
+use Chevere\Components\Breadcrum\Interfaces\BreadcrumInterface;
 
 /**
  * A general purpose iterator companion.
  */
-final class Breadcrum implements BreadcrumContract
+final class Breadcrum implements BreadcrumInterface
 {
     /** @vvar arrau [pos => $item] */
     private array $items = [];
@@ -65,7 +65,7 @@ final class Breadcrum implements BreadcrumContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedItem(string $item): BreadcrumContract
+    public function withAddedItem(string $item): BreadcrumInterface
     {
         $new = clone $this;
         ++$new->id;
@@ -78,7 +78,7 @@ final class Breadcrum implements BreadcrumContract
     /**
      * {@inheritdoc}
      */
-    public function withRemovedItem(int $pos): BreadcrumContract
+    public function withRemovedItem(int $pos): BreadcrumInterface
     {
         if (!array_key_exists($pos, $this->items)) {
             throw new BreadcrumException(

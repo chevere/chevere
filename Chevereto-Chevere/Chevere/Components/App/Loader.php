@@ -25,22 +25,22 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Router\Router;
-use Chevere\Components\App\Contracts\AppContract;
-use Chevere\Components\App\Contracts\BuildContract;
-use Chevere\Components\App\Contracts\BuilderContract;
-use Chevere\Components\App\Contracts\ServicesContract;
-use Chevere\Components\App\Contracts\LoaderContract;
-use Chevere\Components\App\Contracts\ParametersContract;
+use Chevere\Components\App\Interfaces\AppInterface;
+use Chevere\Components\App\Interfaces\BuildInterface;
+use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\ServicesInterface;
+use Chevere\Components\App\Interfaces\LoaderInterface;
+use Chevere\Components\App\Interfaces\ParametersInterface;
 use function console;
 
 /**
  * Loads the application, by handling its builder.
  */
-final class Loader implements LoaderContract
+final class Loader implements LoaderInterface
 {
     private BuilderContract $builder;
 
-    private ParametersContract $parameters;
+    private ParametersInterface $parameters;
 
     public function __construct()
     {
@@ -53,7 +53,7 @@ final class Loader implements LoaderContract
                 new ArrayFile(
                     new FilePhp(
                         new File(
-                            new PathApp(AppContract::FILE_PARAMETERS)
+                            new PathApp(AppInterface::FILE_PARAMETERS)
                         )
                     )
                 )
@@ -107,7 +107,7 @@ final class Loader implements LoaderContract
      * While in dev mode, call make() on top of build() so the application is re-built in every request.
      * On production, it returns a BuildContrar with a Container instance.
      */
-    private function getBuild(): BuildContract
+    private function getBuild(): BuildInterface
     {
         if (BootstrapInstance::get()->isDev()) {
             return $this->builder->build()
@@ -126,7 +126,7 @@ final class Loader implements LoaderContract
     /**
      * Return a ServicesContract containing the services required to provide the application.
      */
-    private function getServices(): ServicesContract
+    private function getServices(): ServicesInterface
     {
         if (BootstrapInstance::get()->isConsole() && console()->isBuilding()) {
             return (new Services())

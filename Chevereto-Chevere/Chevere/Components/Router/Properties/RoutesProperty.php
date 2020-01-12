@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Properties;
 
+use LogicException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Properties\Traits\ToArrayTrait;
 use Chevere\Components\Serialize\Unserialize;
-use Chevere\Components\Route\Contracts\RouteContract;
-use Chevere\Components\Router\Contracts\Properties\RoutesPropertyContract;
-use LogicException;
+use Chevere\Components\Route\Interfaces\RouteInterface;
+use Chevere\Components\Router\Interfaces\Properties\RoutesPropertyInterface;
 
-final class RoutesProperty extends PropertyBase implements RoutesPropertyContract
+final class RoutesProperty extends PropertyBase implements RoutesPropertyInterface
 {
     use ToArrayTrait;
 
@@ -55,10 +55,10 @@ final class RoutesProperty extends PropertyBase implements RoutesPropertyContrac
     private function assertSerialized(string $serialized): void
     {
         $serialize = new Unserialize($serialized);
-        if (!($serialize->var() instanceof RouteContract)) {
+        if (!($serialize->var() instanceof RouteInterface)) {
             throw new LogicException(
                 (new Message('Value must be a serialized object implementing the %contract%'))
-                    ->code('%contract%', RouteContract::class)
+                    ->code('%contract%', RouteInterface::class)
                     ->toString()
             );
         }

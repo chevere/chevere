@@ -28,15 +28,15 @@ use Chevere\Components\Console\Commands\InspectCommand;
 use Chevere\Components\Console\Commands\RequestCommand;
 use Chevere\Components\Console\Commands\RunCommand;
 use Chevere\Components\Message\Message;
-use Chevere\Components\App\Contracts\BuilderContract;
-use Chevere\Components\Console\Contracts\CommandContract;
-use Chevere\Components\Console\Contracts\ConsoleContract;
+use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\Console\Interfaces\CommandInterface;
+use Chevere\Components\Console\Interfaces\ConsoleInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
 /**
  * The built-in Chevere application console.
  */
-final class Console implements ConsoleContract
+final class Console implements ConsoleInterface
 {
     private ArgvInput $input;
 
@@ -59,7 +59,7 @@ final class Console implements ConsoleContract
         DestroyCommand::class,
     ];
 
-    private CommandContract $command;
+    private CommandInterface $command;
 
     /** @var string The first argument (command name) passed */
     private string $commandName;
@@ -84,7 +84,7 @@ final class Console implements ConsoleContract
         $this->addCommands();
     }
 
-    public function withCommand(CommandContract $command): ConsoleContract
+    public function withCommand(CommandInterface $command): ConsoleInterface
     {
         $new = clone $this;
         $new->command = $command;
@@ -112,7 +112,7 @@ final class Console implements ConsoleContract
         return $this->style;
     }
 
-    public function command(): CommandContract
+    public function command(): CommandInterface
     {
         return $this->command;
     }
@@ -150,7 +150,7 @@ final class Console implements ConsoleContract
         if (!isset($this->command)) {
             throw new RuntimeException(
                 (new Message('No %className% command is defined'))
-                    ->code('%className%', CommandContract::class)
+                    ->code('%className%', CommandInterface::class)
                     ->toString()
             );
         }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Wrappers;
 
 use InvalidArgumentException;
-use Chevere\Components\VarDump\Contracts\PalleteContract;
+use Chevere\Components\VarDump\Interfaces\PalleteInterface;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 final class ConsoleWrapper extends AbstractWrapper
@@ -26,7 +26,7 @@ final class ConsoleWrapper extends AbstractWrapper
     public function __construct(string $key)
     {
         $this->key = $key;
-        $this->pallete = PalleteContract::CONSOLE;
+        $this->pallete = PalleteInterface::CONSOLE;
         $this->assertKey();
         $this->consoleColor = new ConsoleColor();
         $this->color = $this->pallete[$this->key];

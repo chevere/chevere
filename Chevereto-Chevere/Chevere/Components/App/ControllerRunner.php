@@ -17,27 +17,27 @@ use Chevere\Components\App\Exceptions\ControllerContractException;
 use Chevere\Components\App\Exceptions\ControllerNotExistsException;
 use Chevere\Components\Controller\ArgumentsWrap;
 use Chevere\Components\Message\Message;
-use Chevere\Components\App\Contracts\AppContract;
-use Chevere\Components\App\Contracts\ControllerRunnerContract;
-use Chevere\Components\App\Contracts\MiddlewareRunnerContract;
-use Chevere\Components\Controller\Contracts\ControllerContract;
+use Chevere\Components\App\Interfaces\AppInterface;
+use Chevere\Components\App\Interfaces\ControllerRunnerInterface;
+use Chevere\Components\App\Interfaces\MiddlewareRunnerInterface;
+use Chevere\Components\Controller\Interfaces\ControllerInterface;
 
 /**
  * Application container ControllerContract runner.
  */
-final class ControllerRunner implements ControllerRunnerContract
+final class ControllerRunner implements ControllerRunnerInterface
 {
-    private AppContract $app;
+    private AppInterface $app;
 
     /** @var string */
     private string $controllerName;
 
-    private MiddlewareRunnerContract $middlewareRunner;
+    private MiddlewareRunnerInterface $middlewareRunner;
 
     /**
      * Sets the application on which the controllers will run.
      */
-    public function __construct(AppContract $app)
+    public function __construct(AppInterface $app)
     {
         $this->app = $app;
     }
@@ -45,7 +45,7 @@ final class ControllerRunner implements ControllerRunnerContract
     /**
      * {@inheritdoc}
      */
-    public function run(string $controllerName): ControllerContract
+    public function run(string $controllerName): ControllerInterface
     {
         $this->controllerName = $controllerName;
         $this->assertControllerExists();
@@ -60,7 +60,7 @@ final class ControllerRunner implements ControllerRunnerContract
         return $controller;
     }
 
-    private function getTypedArguments(ControllerContract $controller): array
+    private function getTypedArguments(ControllerInterface $controller): array
     {
         if ($this->app->hasArguments()) {
             $wrap = new ArgumentsWrap($controller, $this->app->arguments());
@@ -84,11 +84,11 @@ final class ControllerRunner implements ControllerRunnerContract
 
     private function assertControllerName(): void
     {
-        if (!is_subclass_of($this->controllerName, ControllerContract::class)) {
+        if (!is_subclass_of($this->controllerName, ControllerInterface::class)) {
             throw new ControllerContractException(
                 (new Message('Controller %controller% must implement the %contract% interface'))
                     ->code('%controller%', $this->controllerName)
-                    ->code('%contract%', ControllerContract::class)
+                    ->code('%contract%', ControllerInterface::class)
                     ->toString()
             );
         }

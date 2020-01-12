@@ -17,10 +17,10 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
 use Chevere\Components\Serialize\Unserialize;
-use Chevere\Components\Route\Contracts\RouteContract;
-use Chevere\Components\Router\Contracts\RoutedContract;
-use Chevere\Components\Router\Contracts\RouterContract;
-use Chevere\Components\Router\Contracts\RouterPropertiesContract;
+use Chevere\Components\Route\Interfaces\RouteInterface;
+use Chevere\Components\Router\Interfaces\RoutedInterface;
+use Chevere\Components\Router\Interfaces\RouterInterface;
+use Chevere\Components\Router\Interfaces\RouterPropertiesInterface;
 use LogicException;
 use Psr\Http\Message\UriInterface;
 use Throwable;
@@ -29,9 +29,9 @@ use TypeError;
 /**
  * Router does routing.
  */
-final class Router implements RouterContract
+final class Router implements RouterInterface
 {
-    private RouterPropertiesContract $properties;
+    private RouterPropertiesInterface $properties;
 
     public function __construct()
     {
@@ -40,7 +40,7 @@ final class Router implements RouterContract
     /**
      * {@inheritdoc}
      */
-    public function withProperties(RouterPropertiesContract $properties): RouterContract
+    public function withProperties(RouterPropertiesInterface $properties): RouterInterface
     {
         $new = clone $this;
         $new->properties = $properties;
@@ -59,7 +59,7 @@ final class Router implements RouterContract
     /**
      * {@inheritdoc}
      */
-    public function properties(): RouterPropertiesContract
+    public function properties(): RouterPropertiesInterface
     {
         return $this->properties;
     }
@@ -75,7 +75,7 @@ final class Router implements RouterContract
     /**
      * {@inheritdoc}
      */
-    public function resolve(UriInterface $uri): RoutedContract
+    public function resolve(UriInterface $uri): RoutedInterface
     {
         try {
             if (preg_match($this->properties->regex(), $uri->getPath(), $matches)) {
@@ -103,7 +103,7 @@ final class Router implements RouterContract
      * @throws UnserializeException if the route string object can't be unserialized
      * @throws TypeError            if the found route doesn't implement the RouteContract
      */
-    private function resolver(array $matches): RoutedContract
+    private function resolver(array $matches): RoutedInterface
     {
         $id = $matches['MARK'];
         unset($matches['MARK']);
@@ -113,10 +113,10 @@ final class Router implements RouterContract
         if (is_string($route)) {
             $unserialize = new Unserialize($route);
             $route = $unserialize->var();
-            if (!($route instanceof RouteContract)) {
+            if (!($route instanceof RouteInterface)) {
                 throw new TypeError(
                     (new Message("Serialized variable doesn't implements %contract%, type %provided% provided"))
-                        ->code('%contract%', RouteContract::class)
+                        ->code('%contract%', RouteInterface::class)
                         ->code('%provided%', $unserialize->type()->typeHinting())
                         ->toString()
                 );

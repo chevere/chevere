@@ -22,14 +22,14 @@ use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\Type\Type;
-use Chevere\Components\File\Contracts\FileContract;
-use Chevere\Components\Path\Contracts\PathContract;
+use Chevere\Components\File\Interfaces\FileInterface;
+use Chevere\Components\Path\Interfaces\PathInterface;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
 final class ArrayFileTest extends TestCase
 {
-    /** @var FileContract */
+    /** @var FileInterface */
     private $file;
 
     public function setUp(): void
@@ -111,6 +111,6 @@ final class ArrayFileTest extends TestCase
         $filePhp = new FilePhp($this->file);
         $this->expectNotToPerformAssertions();
         (new ArrayFile($filePhp))
-            ->withMembersType(new Type(PathContract::class));
+            ->withMembersType(new Type(PathInterface::class));
     }
 }

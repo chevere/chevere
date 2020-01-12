@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Http;
 
-use Chevere\Components\Http\Contracts\GuzzleResponseContract;
+use Chevere\Components\Http\Interfaces\GuzzleResponseInterface;
 use GuzzleHttp\Psr7\Response as BaseResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 
-final class GuzzleResponse extends BaseResponse implements GuzzleResponseContract
+final class GuzzleResponse extends BaseResponse implements GuzzleResponseInterface
 {
     /**
      * {@inheritdoc}

@@ -15,9 +15,9 @@ namespace Chevere\Components\Cache;
 
 use Chevere\Components\Cache\Exceptions\CacheInvalidKeyException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Cache\Contracts\CacheKeyContract;
+use Chevere\Components\Cache\Interfaces\CacheKeyInterface;
 
-final class CacheKey implements CacheKeyContract
+final class CacheKey implements CacheKeyInterface
 {
     /** @var string */
     private string $key;
@@ -43,7 +43,7 @@ final class CacheKey implements CacheKeyContract
 
     private function assertKeyName(): void
     {
-        if (preg_match_all('#[' . CacheKeyContract::ILLEGAL_KEY_CHARACTERS . ']#', $this->key, $matches)) {
+        if (preg_match_all('#[' . CacheKeyInterface::ILLEGAL_KEY_CHARACTERS . ']#', $this->key, $matches)) {
             $matches = array_unique($matches[0]);
             $forbidden = implode(' ', $matches);
             throw new CacheInvalidKeyException(

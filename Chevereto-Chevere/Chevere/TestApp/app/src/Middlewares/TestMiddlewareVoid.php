@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\TestApp\App\Middlewares;
 
 use Chevere\Components\Middleware\Middleware;
-use Chevere\Components\Http\Contracts\RequestContract;
+use Chevere\Components\Http\Interfaces\RequestInterface;
 
 class TestMiddlewareVoid extends Middleware
 {
-    public function handle(RequestContract $request): void
+    public function handle(RequestInterface $request): void
     {
         // $userRole = 'user';
         // if ('banned' == $userRole) {

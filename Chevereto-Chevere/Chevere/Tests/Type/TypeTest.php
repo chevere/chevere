@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Type;
 
 use Chevere\Components\Type\Type;
-use Chevere\Components\Type\Contracts\TypeContract;
+use Chevere\Components\Type\Interfaces\TypeInterface;
 use PHPUnit\Framework\TestCase;
 
 final class TypeTest extends TestCase
@@ -22,15 +22,15 @@ final class TypeTest extends TestCase
     public function testTypes(): void
     {
         foreach ([
-            TypeContract::BOOLEAN => true,
-            TypeContract::INTEGER => 1,
-            TypeContract::FLOAT => 13.13,
-            TypeContract::STRING => 'test',
-            TypeContract::ARRAY => ['test'],
-            TypeContract::OBJECT => new self(),
-            TypeContract::CALLABLE => 'phpinfo',
-            TypeContract::ITERABLE => [4, 2, 1, 3],
-            TypeContract::NULL => null,
+            TypeInterface::BOOLEAN => true,
+            TypeInterface::INTEGER => 1,
+            TypeInterface::FLOAT => 13.13,
+            TypeInterface::STRING => 'test',
+            TypeInterface::ARRAY => ['test'],
+            TypeInterface::OBJECT => new self(),
+            TypeInterface::CALLABLE => 'phpinfo',
+            TypeInterface::ITERABLE => [4, 2, 1, 3],
+            TypeInterface::NULL => null,
         ] as $key => $val) {
             $type = new Type($key);
             $this->assertSame($key, $type->primitive());
@@ -41,10 +41,10 @@ final class TypeTest extends TestCase
 
     public function testResource(): void
     {
-        $type = new Type(TypeContract::RESOURCE);
+        $type = new Type(TypeInterface::RESOURCE);
         $resource = fopen(__FILE__, 'r');
-        $this->assertSame(TypeContract::RESOURCE, $type->primitive());
-        $this->assertSame(TypeContract::RESOURCE, $type->typeHinting());
+        $this->assertSame(TypeInterface::RESOURCE, $type->primitive());
+        $this->assertSame(TypeInterface::RESOURCE, $type->typeHinting());
         $this->assertTrue($type->validate($resource));
         if (false !== $resource) {
             fclose($resource);
@@ -54,16 +54,16 @@ final class TypeTest extends TestCase
     public function testClassName(): void
     {
         $type = new Type(__CLASS__);
-        $this->assertSame(TypeContract::CLASS_NAME, $type->primitive());
+        $this->assertSame(TypeInterface::CLASS_NAME, $type->primitive());
         $this->assertSame(__CLASS__, $type->typeHinting());
         $this->assertTrue($type->validate(new self()));
     }
 
     public function testInterfaceName(): void
     {
-        $type = new Type(TypeContract::class);
-        $this->assertSame(TypeContract::INTERFACE_NAME, $type->primitive());
-        $this->assertSame(TypeContract::class, $type->typeHinting());
-        $this->assertTrue($type->validate(new Type(TypeContract::STRING)));
+        $type = new Type(TypeInterface::class);
+        $this->assertSame(TypeInterface::INTERFACE_NAME, $type->primitive());
+        $this->assertSame(TypeInterface::class, $type->typeHinting());
+        $this->assertTrue($type->validate(new Type(TypeInterface::STRING)));
     }
 }

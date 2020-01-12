@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Http;
 
-use Chevere\Components\Controller\Contracts\ControllerNameContract;
-use Chevere\Components\Http\Contracts\MethodContract;
-use Chevere\Components\Http\Contracts\MethodControllerNameContract;
+use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
+use Chevere\Components\Http\Interfaces\MethodInterface;
+use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
 
-final class MethodControllerName implements MethodControllerNameContract
+final class MethodControllerName implements MethodControllerNameInterface
 {
-    private MethodContract $method;
+    private MethodInterface $method;
 
-    private ControllerNameContract $controllerName;
+    private ControllerNameInterface $controllerName;
 
     /**
      * Creates a new instance.
      */
-    public function __construct(MethodContract $method, ControllerNameContract $controllerName)
+    public function __construct(MethodInterface $method, ControllerNameInterface $controllerName)
     {
         $this->method = $method;
         $this->controllerName = $controllerName;
@@ -35,7 +35,7 @@ final class MethodControllerName implements MethodControllerNameContract
     /**
      * {@inheritdoc}
      */
-    public function method(): MethodContract
+    public function method(): MethodInterface
     {
         return $this->method;
     }
@@ -43,7 +43,7 @@ final class MethodControllerName implements MethodControllerNameContract
     /**
      * {@inheritdoc}
      */
-    public function controllerName(): ControllerNameContract
+    public function controllerName(): ControllerNameInterface
     {
         return $this->controllerName;
     }

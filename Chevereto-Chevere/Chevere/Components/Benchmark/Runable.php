@@ -15,26 +15,26 @@ namespace Chevere\Components\Benchmark;
 
 use Chevere\Components\Benchmark\Exceptions\NoCallablesException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Benchmark\Contracts\BenchmarkContract;
-use Chevere\Components\Benchmark\Contracts\RunableContract;
+use Chevere\Components\Benchmark\Interfaces\BenchmarkInterface;
+use Chevere\Components\Benchmark\Interfaces\RunableInterface;
 
 /**
  * Determine if a BenchmarkContract can run
  */
-final class Runable implements RunableContract
+final class Runable implements RunableInterface
 {
-    private BenchmarkContract $benchmark;
+    private BenchmarkInterface $benchmark;
 
-    public function __construct(BenchmarkContract $benchmark)
+    public function __construct(BenchmarkInterface $benchmark)
     {
         $this->benchmark = $benchmark;
         $this->assertIndex();
     }
 
     /**
-     * @return BenchmarkContract A runable BenchmarkContract
+     * @return BenchmarkInterface A runable BenchmarkContract
      */
-    public function benchmark(): BenchmarkContract
+    public function benchmark(): BenchmarkInterface
     {
         return $this->benchmark;
     }

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Data\Traits;
 
-use Chevere\Components\Data\Contracts\DataContract;
+use Chevere\Components\Data\Interfaces\DataContract;
 
 trait DataMethodTrait
 {

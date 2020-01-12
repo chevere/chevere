@@ -15,14 +15,14 @@ namespace Chevere\Tests\VarDump;
 
 use BadMethodCallException;
 use stdClass;
-use Chevere\Components\VarDump\Contracts\VarDumpContract;
+use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
 use Chevere\Components\VarDump\VarDump;
 use PHPUnit\Framework\TestCase;
 
 final class VarDumpTest extends TestCase
 {
-    public function getVarDump(): VarDumpContract
+    public function getVarDump(): VarDumpInterface
     {
         return
             new VarDump(new PlainFormatter());

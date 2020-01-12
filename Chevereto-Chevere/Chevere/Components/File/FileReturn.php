@@ -19,18 +19,18 @@ use Chevere\Components\File\Exceptions\FileWithoutContentsException;
 use Chevere\Components\Serialize\Exceptions\UnserializeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Serialize\Unserialize;
-use Chevere\Components\File\Contracts\FilePhpContract;
-use Chevere\Components\File\Contracts\FileReturnContract;
-use Chevere\Components\Variable\Contracts\VariableExportContract;
+use Chevere\Components\File\Interfaces\FilePhpInterface;
+use Chevere\Components\File\Interfaces\FileReturnInterface;
+use Chevere\Components\Variable\Interfaces\VariableExportInterface;
 
 /**
  * FileReturn interacts with PHP files that return something.
  *
  * <?php return 'Hello World!';
  */
-final class FileReturn implements FileReturnContract
+final class FileReturn implements FileReturnInterface
 {
-    private FilePhpContract $filePhp;
+    private FilePhpInterface $filePhp;
 
     /** @var bool True for strict validation (PHP_RETURN), false for regex validation (return <algo>) */
     private bool $strict;
@@ -40,7 +40,7 @@ final class FileReturn implements FileReturnContract
      *
      * @throws FileNotFoundException if the file doesn't exists
      */
-    public function __construct(FilePhpContract $filePhp)
+    public function __construct(FilePhpInterface $filePhp)
     {
         $this->strict = true;
         $this->filePhp = $filePhp;
@@ -50,7 +50,7 @@ final class FileReturn implements FileReturnContract
     /**
      * {@inheritdoc}
      */
-    public function withNoStrict(): FileReturnContract
+    public function withNoStrict(): FileReturnInterface
     {
         $new = clone $this;
         $new->strict = false;
@@ -61,7 +61,7 @@ final class FileReturn implements FileReturnContract
     /**
      * {@inheritdoc}
      */
-    public function filePhp(): FilePhpContract
+    public function filePhp(): FilePhpInterface
     {
         return $this->filePhp;
     }
@@ -97,7 +97,7 @@ final class FileReturn implements FileReturnContract
     /**
      * {@inheritdoc}
      */
-    public function put(VariableExportContract $variableExport): void
+    public function put(VariableExportInterface $variableExport): void
     {
         $var = $variableExport->var();
         if (is_array($var)) {
@@ -109,7 +109,7 @@ final class FileReturn implements FileReturnContract
         }
         $varExport = var_export($var, true);
         $this->filePhp()->file()->put(
-            FileReturnContract::PHP_RETURN . $varExport . ';'
+            FileReturnInterface::PHP_RETURN . $varExport . ';'
         );
     }
 
@@ -151,7 +151,7 @@ final class FileReturn implements FileReturnContract
                     ->toString()
             );
         }
-        $contents = fread($handle, FileReturnContract::PHP_RETURN_CHARS);
+        $contents = fread($handle, FileReturnInterface::PHP_RETURN_CHARS);
         fclose($handle);
         if ('' == $contents) {
             throw new FileWithoutContentsException(
@@ -160,11 +160,11 @@ final class FileReturn implements FileReturnContract
                     ->toString()
             );
         }
-        if (FileReturnContract::PHP_RETURN !== $contents) {
+        if (FileReturnInterface::PHP_RETURN !== $contents) {
             throw new FileInvalidContentsException(
                 (new Message('Unexpected contents in %path%, strict validation requires a file return in the form of %expected%'))
                     ->code('%path%', $filename)
-                    ->code('%expected%', FileReturnContract::PHP_RETURN . '$theVar;')
+                    ->code('%expected%', FileReturnInterface::PHP_RETURN . '$theVar;')
                     ->toString()
             );
         }

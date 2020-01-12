@@ -14,26 +14,26 @@ declare(strict_types=1);
 namespace Chevere\Components\App;
 
 use Chevere\Components\App\Instances\RequestInstance;
-use Chevere\Components\App\Contracts\AppContract;
-use Chevere\Components\App\Contracts\ServicesContract;
-use Chevere\Components\Http\Contracts\RequestContract;
-use Chevere\Components\Http\Contracts\ResponseContract;
-use Chevere\Components\Router\Contracts\RoutedContract;
+use Chevere\Components\App\Interfaces\AppInterface;
+use Chevere\Components\App\Interfaces\ServicesInterface;
+use Chevere\Components\Http\Interfaces\RequestInterface;
+use Chevere\Components\Http\Interfaces\ResponseContract;
+use Chevere\Components\Router\Interfaces\RoutedInterface;
 
 /**
  * The application container.
  *
  * Provides access to the application, mostly intended for providing access at ControllerContract layer.
  */
-final class App implements AppContract
+final class App implements AppInterface
 {
-    private ServicesContract $services;
+    private ServicesInterface $services;
 
     private ResponseContract $response;
 
-    private RoutedContract $routed;
+    private RoutedInterface $routed;
 
-    private RequestContract $request;
+    private RequestInterface $request;
 
     /** @var array String arguments (from request, cli) */
     private array $arguments;
@@ -41,7 +41,7 @@ final class App implements AppContract
     /**
      * Constructs the application container.
      */
-    public function __construct(ServicesContract $services, ResponseContract $response)
+    public function __construct(ServicesInterface $services, ResponseContract $response)
     {
         $this->services = $services;
         $this->response = $response;
@@ -50,7 +50,7 @@ final class App implements AppContract
     /**
      * {@inheritdoc}
      */
-    public function withServices(ServicesContract $services): AppContract
+    public function withServices(ServicesInterface $services): AppInterface
     {
         $new = clone $this;
         $new->services = $services;
@@ -61,7 +61,7 @@ final class App implements AppContract
     /**
      * {@inheritdoc}
      */
-    public function services(): ServicesContract
+    public function services(): ServicesInterface
     {
         return $this->services;
     }
@@ -69,7 +69,7 @@ final class App implements AppContract
     /**
      * {@inheritdoc}
      */
-    public function withResponse(ResponseContract $response): AppContract
+    public function withResponse(ResponseContract $response): AppInterface
     {
         $new = clone $this;
         $new->response = $response;
@@ -88,7 +88,7 @@ final class App implements AppContract
     /**
      * {@inheritdoc}
      */
-    public function withRequest(RequestContract $request): AppContract
+    public function withRequest(RequestInterface $request): AppInterface
     {
         $new = clone $this;
         $new->request = $request;
@@ -108,7 +108,7 @@ final class App implements AppContract
     /**
      * {@inheritdoc}
      */
-    public function request(): RequestContract
+    public function request(): RequestInterface
     {
         return $this->request;
     }
@@ -116,7 +116,7 @@ final class App implements AppContract
     /**
      * {@inheritdoc}
      */
-    public function withRouted(RoutedContract $routed): AppContract
+    public function withRouted(RoutedInterface $routed): AppInterface
     {
         $new = clone $this;
         $new->routed = $routed;
@@ -129,7 +129,7 @@ final class App implements AppContract
         return isset($this->routed);
     }
 
-    public function routed(): RoutedContract
+    public function routed(): RoutedInterface
     {
         return $this->routed;
     }
@@ -137,7 +137,7 @@ final class App implements AppContract
     /**
      * {@inheritdoc}
      */
-    public function withArguments(array $arguments): AppContract
+    public function withArguments(array $arguments): AppInterface
     {
         $new = clone $this;
         $new->arguments = $arguments;

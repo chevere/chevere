@@ -18,14 +18,14 @@ use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use ReflectionParameter;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Controller\Contracts\ControllerContract;
+use Chevere\Components\Controller\Interfaces\ControllerInterface;
 
 /**
  * ArgumentsWrap provides a object oriented way to retrieve typehinted arguments for the controller.
  */
 final class ArgumentsWrap
 {
-    /** @var ControllerContract */
+    /** @var ControllerInterface */
     private $controller;
 
     /** @var array Passed callable arguments */
@@ -37,7 +37,7 @@ final class ArgumentsWrap
     /** @var array Typehinted arguments ready to use */
     private $typedArguments;
 
-    public function __construct(ControllerContract $controller, array $arguments)
+    public function __construct(ControllerInterface $controller, array $arguments)
     {
         $this->controller = $controller;
         $this->arguments = $arguments;

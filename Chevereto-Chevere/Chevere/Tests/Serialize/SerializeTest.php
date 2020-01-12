@@ -16,7 +16,7 @@ namespace Chevere\Tests\Serialize;
 use Chevere\Components\Serialize\Serialize;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Variable\VariableExport;
-use Chevere\Components\Type\Contracts\TypeContract;
+use Chevere\Components\Type\Interfaces\TypeInterface;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -25,21 +25,21 @@ final class SerializeTest extends TestCase
     public function testConstruct(): void
     {
         foreach ([
-            TypeContract::BOOLEAN => true,
-            TypeContract::INTEGER => 1,
-            TypeContract::FLOAT => 13.13,
-            TypeContract::STRING => 'test',
-            TypeContract::ARRAY => ['test'],
-            TypeContract::OBJECT => new stdClass(),
-            TypeContract::CALLABLE => 'phpinfo',
-            TypeContract::ITERABLE => [4, 2, 1, 3],
-            TypeContract::NULL => null,
+            TypeInterface::BOOLEAN => true,
+            TypeInterface::INTEGER => 1,
+            TypeInterface::FLOAT => 13.13,
+            TypeInterface::STRING => 'test',
+            TypeInterface::ARRAY => ['test'],
+            TypeInterface::OBJECT => new stdClass(),
+            TypeInterface::CALLABLE => 'phpinfo',
+            TypeInterface::ITERABLE => [4, 2, 1, 3],
+            TypeInterface::NULL => null,
         ] as $k => $v) {
             $serialize = new Serialize(
                 new VariableExport($v)
             );
             $unserialize = new Unserialize($serialize->toString());
-            if (TypeContract::OBJECT == $k) {
+            if (TypeInterface::OBJECT == $k) {
                 $this->assertEquals($v, $unserialize->var());
             } else {
                 $this->assertSame($v, $unserialize->var());

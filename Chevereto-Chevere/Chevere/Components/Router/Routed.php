@@ -13,22 +13,22 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Components\Route\Contracts\RouteContract;
-use Chevere\Components\Router\Contracts\RoutedContract;
+use Chevere\Components\Route\Interfaces\RouteInterface;
+use Chevere\Components\Router\Interfaces\RoutedInterface;
 
 /**
  * An instance for routed RouteContracts routed by RouterContract.
  */
-final class Routed implements RoutedContract
+final class Routed implements RoutedInterface
 {
-    private RouteContract $route;
+    private RouteInterface $route;
 
     private array $wildcards;
 
     /**
      * Creates a new instance.
      */
-    public function __construct(RouteContract $route, array $wildcards)
+    public function __construct(RouteInterface $route, array $wildcards)
     {
         $this->route = $route;
         $this->wildcards = $wildcards;
@@ -37,7 +37,7 @@ final class Routed implements RoutedContract
     /**
      * {@inheritdoc}
      */
-    public function route(): RouteContract
+    public function route(): RouteInterface
     {
         return $this->route;
     }

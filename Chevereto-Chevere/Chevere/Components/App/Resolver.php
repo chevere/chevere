@@ -13,25 +13,25 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use Chevere\Components\App\Contracts\ResolverContract;
+use Chevere\Components\App\Interfaces\ResolverInterface;
 use Chevere\Components\App\Exceptions\ResolverException;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
-use Chevere\Components\App\Contracts\BuilderContract;
-use Chevere\Components\App\Contracts\ResolvableContract;
+use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\ResolvableInterface;
 
 /**
  * Resolves a builder against routing
  */
-final class Resolver implements ResolverContract
+final class Resolver implements ResolverInterface
 {
     private BuilderContract $builder;
 
     /**
      * @throws ResolverException if the request can't be routed
      */
-    public function __construct(ResolvableContract $resolvable)
+    public function __construct(ResolvableInterface $resolvable)
     {
         $this->builder = $resolvable->builder();
         $app = $this->builder->build()->app();

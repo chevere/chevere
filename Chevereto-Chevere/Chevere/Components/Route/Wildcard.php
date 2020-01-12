@@ -18,12 +18,12 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\RegexMatch;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
-use Chevere\Components\Regex\Contracts\RegexMatchContract;
-use Chevere\Components\Route\Contracts\PathUriContract;
-use Chevere\Components\Route\Contracts\WildcardContract;
+use Chevere\Components\Regex\Interfaces\RegexMatchInterface;
+use Chevere\Components\Route\Interfaces\PathUriInterface;
+use Chevere\Components\Route\Interfaces\WildcardInterface;
 use function ChevereFn\stringStartsWithNumeric;
 
-final class Wildcard implements WildcardContract
+final class Wildcard implements WildcardInterface
 {
     /** @var string */
     private string $name;
@@ -31,7 +31,7 @@ final class Wildcard implements WildcardContract
     /** @var string */
     private string $wildcard;
 
-    private RegexMatchContract $regexMatch;
+    private RegexMatchInterface $regexMatch;
 
     /**
      * Creates a new instance.
@@ -47,13 +47,13 @@ final class Wildcard implements WildcardContract
         $this->name = $name;
         $this->wildcard = "{{$this->name}}";
         $this->assertName();
-        $this->regexMatch = new RegexMatch(WildcardContract::REGEX_MATCH_DEFAULT);
+        $this->regexMatch = new RegexMatch(WildcardInterface::REGEX_MATCH_DEFAULT);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withRegexMatch(RegexMatchContract $regexMatch): WildcardContract
+    public function withRegexMatch(RegexMatchInterface $regexMatch): WildcardInterface
     {
         $new = clone $this;
         $new->regexMatch = $regexMatch;
@@ -80,7 +80,7 @@ final class Wildcard implements WildcardContract
     /**
      * {@inheritdoc}
      */
-    public function regexMatch(): RegexMatchContract
+    public function regexMatch(): RegexMatchInterface
     {
         return $this->regexMatch;
     }
@@ -88,7 +88,7 @@ final class Wildcard implements WildcardContract
     /**
      * {@inheritdoc}
      */
-    public function assertPathUri(PathUriContract $pathUri): void
+    public function assertPathUri(PathUriInterface $pathUri): void
     {
         $noWildcard = false === strpos($pathUri->toString(), $this->wildcard);
         if ($noWildcard) {
@@ -110,7 +110,7 @@ final class Wildcard implements WildcardContract
                     ->toString()
             );
         }
-        if (!preg_match(WildcardContract::ACCEPT_CHARS_REGEX, $this->name)) {
+        if (!preg_match(WildcardInterface::ACCEPT_CHARS_REGEX, $this->name)) {
             throw new WildcardInvalidCharsException(
                 (new Message('String %string% must contain only alphanumeric and underscore characters'))
                     ->code('%string%', $this->name)

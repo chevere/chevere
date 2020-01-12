@@ -18,19 +18,18 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
 use Chevere\Components\Router\Exceptions\RouteNameConflictException;
 use Chevere\Components\Router\Exceptions\RouterMakerException;
-use Chevere\Components\Variable\VariableExport;
-use Chevere\Components\Route\Contracts\RouteContract;
-use Chevere\Components\Router\Contracts\Properties\RegexPropertyContract;
-use Chevere\Components\Router\Contracts\RouteableContract;
-use Chevere\Components\Router\Contracts\RouterMakerContract;
-use Chevere\Components\Router\Contracts\RouterPropertiesContract;
+use Chevere\Components\Route\Interfaces\RouteInterface;
+use Chevere\Components\Router\Interfaces\Properties\RegexPropertyInterface;
+use Chevere\Components\Router\Interfaces\RouteableInterface;
+use Chevere\Components\Router\Interfaces\RouterMakerInterface;
+use Chevere\Components\Router\Interfaces\RouterPropertiesInterface;
 
 /**
  * RouterMaker takes a bunch of routes and generates a cache-ready routing table.
  */
-final class RouterMaker implements RouterMakerContract
+final class RouterMaker implements RouterMakerInterface
 {
-    private RouterPropertiesContract $properties;
+    private RouterPropertiesInterface $properties;
 
     /** @var array [RouteContract regex => $id]. */
     private array $regexes;
@@ -49,7 +48,7 @@ final class RouterMaker implements RouterMakerContract
     /**
      * {@inheritdoc}
      */
-    public function properties(): RouterPropertiesContract
+    public function properties(): RouterPropertiesInterface
     {
         return $this->properties;
     }
@@ -57,7 +56,7 @@ final class RouterMaker implements RouterMakerContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedRouteable(RouteableContract $routeable, string $group): RouterMakerContract
+    public function withAddedRouteable(RouteableInterface $routeable, string $group): RouterMakerInterface
     {
         $new = clone $this;
         $route = $routeable->route();
@@ -104,13 +103,13 @@ final class RouterMaker implements RouterMakerContract
         $regex = [];
         foreach ($this->regexes as $key => $id) {
             preg_match('#\^(.*)\$#', $key, $matches);
-            $regex[] = sprintf(RegexPropertyContract::REGEX_ENTRY_TEMPLATE, $matches[1], $id);
+            $regex[] = sprintf(RegexPropertyInterface::REGEX_ENTRY_TEMPLATE, $matches[1], $id);
         }
 
-        return sprintf(RegexPropertyContract::REGEX_TEPLATE, implode('', $regex));
+        return sprintf(RegexPropertyInterface::REGEX_TEPLATE, implode('', $regex));
     }
 
-    private function assertUniquePath(RouteContract $route): void
+    private function assertUniquePath(RouteInterface $route): void
     {
         $path = $route->pathUri()->toString();
         $routeIndex = $this->properties->index()[$path] ?? null;
@@ -126,7 +125,7 @@ final class RouterMaker implements RouterMakerContract
         }
     }
 
-    private function assertUniqueKey(RouteContract $route): void
+    private function assertUniqueKey(RouteInterface $route): void
     {
         $routeId = $this->keys[$route->pathUri()->key()] ?? null;
         if (isset($routeId)) {
@@ -142,7 +141,7 @@ final class RouterMaker implements RouterMakerContract
         }
     }
 
-    private function assertUniqueName(RouteContract $route): void
+    private function assertUniqueName(RouteInterface $route): void
     {
         $namedId = $this->properties()->named()[$route->name()->toString()] ?? null;
         if (isset($namedId)) {

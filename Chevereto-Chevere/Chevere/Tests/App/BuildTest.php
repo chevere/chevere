@@ -26,23 +26,23 @@ use Chevere\Components\File\FilePhp;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\Router\RouterMaker;
-use Chevere\Components\App\Contracts\BuildContract;
-use Chevere\Components\App\Contracts\CheckoutContract;
-use Chevere\Components\App\Contracts\ParametersContract;
-use Chevere\Components\Dir\Contracts\DirContract;
-use Chevere\Components\File\Contracts\FileContract;
+use Chevere\Components\App\Interfaces\BuildInterface;
+use Chevere\Components\App\Interfaces\CheckoutInterface;
+use Chevere\Components\App\Interfaces\ParametersInterface;
+use Chevere\Components\Dir\Interfaces\DirInterface;
+use Chevere\Components\File\Interfaces\FileInterface;
 use PHPUnit\Framework\TestCase;
 
 final class BuildTest extends TestCase
 {
-    public function getBuild(): BuildContract
+    public function getBuild(): BuildInterface
     {
         $app = new App(new Services(), new Response());
 
         return new Build($app);
     }
 
-    public function getParameters(): ParametersContract
+    public function getParameters(): ParametersInterface
     {
         return
             new Parameters(
@@ -61,8 +61,8 @@ final class BuildTest extends TestCase
         $build = $this->getBuild();
         $this->assertSame(false, $build->isMaked());
         $this->assertSame($build->app()->services(), $build->app()->services());
-        $this->assertInstanceOf(FileContract::class, $build->file());
-        $this->assertInstanceOf(DirContract::class, $build->dir());
+        $this->assertInstanceOf(FileInterface::class, $build->file());
+        $this->assertInstanceOf(DirInterface::class, $build->dir());
     }
 
     public function testWithParameters(): void
@@ -106,7 +106,7 @@ final class BuildTest extends TestCase
 
         $this->assertEquals(true, $build->isMaked());
         $this->assertIsArray($build->checksums());
-        $this->assertInstanceOf(CheckoutContract::class, $build->checkout());
+        $this->assertInstanceOf(CheckoutInterface::class, $build->checkout());
         $build->destroy();
     }
 

@@ -20,21 +20,21 @@ use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Http\MethodControllerNameCollection;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Contracts\RouteContract;
+use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
-use Chevere\Components\Controller\Contracts\ControllerNameContract;
-use Chevere\Components\Http\Contracts\MethodContract;
-use Chevere\Components\Middleware\Contracts\MiddlewareNameCollectionContract;
-use Chevere\Components\Route\Contracts\PathUriContract;
-use Chevere\Components\Route\Contracts\WildcardContract;
-use Chevere\Components\Http\Contracts\MethodControllerNameCollectionContract;
-use Chevere\Components\Middleware\Contracts\MiddlewareNameContract;
-use Chevere\Components\Route\Contracts\RouteNameContract;
-use Chevere\Components\Route\Contracts\WildcardCollectionContract;
+use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
+use Chevere\Components\Http\Interfaces\MethodInterface;
+use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
+use Chevere\Components\Route\Interfaces\PathUriInterface;
+use Chevere\Components\Route\Interfaces\WildcardInterface;
+use Chevere\Components\Http\Interfaces\MethodControllerNameCollectionInterface;
+use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
+use Chevere\Components\Route\Interfaces\RouteNameInterface;
+use Chevere\Components\Route\Interfaces\WildcardCollectionInterface;
 
-final class Route implements RouteContract
+final class Route implements RouteInterface
 {
-    private PathUriContract $pathUri;
+    private PathUriInterface $pathUri;
 
     /** @var string Route path representation, with placeholder wildcards like /api/users/{0} */
     private string $key;
@@ -44,18 +44,18 @@ final class Route implements RouteContract
 
     private string $regex;
 
-    private WildcardCollectionContract $wildcardCollection;
+    private WildcardCollectionInterface $wildcardCollection;
 
-    private RouteNameContract $name;
+    private RouteNameInterface $name;
 
-    private MiddlewareNameCollectionContract $middlewareNameCollection;
+    private MiddlewareNameCollectionInterface $middlewareNameCollection;
 
-    private MethodControllerNameCollectionContract $methodControllerNameCollection;
+    private MethodControllerNameCollectionInterface $methodControllerNameCollection;
 
     /**
      * Creates a new instance.
      */
-    public function __construct(PathUriContract $pathUri)
+    public function __construct(PathUriInterface $pathUri)
     {
         $this->pathUri = $pathUri;
         $this->key = $this->pathUri->toString();
@@ -69,7 +69,7 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function pathUri(): PathUriContract
+    public function pathUri(): PathUriInterface
     {
         return $this->pathUri;
     }
@@ -93,7 +93,7 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function withName(RouteNameContract $name): RouteContract
+    public function withName(RouteNameInterface $name): RouteInterface
     {
         $new = clone $this;
         $new->name = $name;
@@ -112,7 +112,7 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function name(): RouteNameContract
+    public function name(): RouteNameInterface
     {
         return $this->name;
     }
@@ -120,7 +120,7 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedWildcard(WildcardContract $wildcard): RouteContract
+    public function withAddedWildcard(WildcardInterface $wildcard): RouteInterface
     {
         $new = clone $this;
         $wildcard->assertPathUri(
@@ -144,7 +144,7 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function wildcardCollection(): WildcardCollectionContract
+    public function wildcardCollection(): WildcardCollectionInterface
     {
         return $this->wildcardCollection;
     }
@@ -152,7 +152,7 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedMethod(MethodContract $method, ControllerNameContract $controllerName): RouteContract
+    public function withAddedMethod(MethodInterface $method, ControllerNameInterface $controllerName): RouteInterface
     {
         $new = clone $this;
         if (!isset($new->methodControllerNameCollection)) {
@@ -186,7 +186,7 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function methodControllerNameCollection(): MethodControllerNameCollectionContract
+    public function methodControllerNameCollection(): MethodControllerNameCollectionInterface
     {
         return $this->methodControllerNameCollection;
     }
@@ -194,20 +194,20 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function controllerName(MethodContract $method): ControllerNameContract
+    public function controllerName(MethodInterface $method): ControllerNameInterface
     {
         if (!$this->hasMethodControllerNameCollection()) {
             throw new MethodNotFoundException(
                 (new Message('Instance of %className% lacks of any %contract%'))
                     ->code('%className%', __CLASS__)
-                    ->code('%contract%', MethodControllerNameCollectionContract::class)
+                    ->code('%contract%', MethodControllerNameCollectionInterface::class)
                     ->toString()
             );
         }
         if (!$this->methodControllerNameCollection->has($method)) {
             throw new MethodNotFoundException(
                 (new Message("Instance of %className% doesn't define a controller for HTTP method %method%"))
-                    ->code('%className%', MethodControllerNameCollectionContract::class)
+                    ->code('%className%', MethodControllerNameCollectionInterface::class)
                     ->code('%method%', $method->toString())
                     ->toString()
             );
@@ -220,7 +220,7 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedMiddlewareName(MiddlewareNameContract $middlewareName): RouteContract
+    public function withAddedMiddlewareName(MiddlewareNameInterface $middlewareName): RouteInterface
     {
         $new = clone $this;
         if (!isset($new->middlewareNameCollection)) {
@@ -243,7 +243,7 @@ final class Route implements RouteContract
     /**
      * {@inheritdoc}
      */
-    public function middlewareNameCollection(): MiddlewareNameCollectionContract
+    public function middlewareNameCollection(): MiddlewareNameCollectionInterface
     {
         return $this->middlewareNameCollection;
     }

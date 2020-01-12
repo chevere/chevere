@@ -13,23 +13,23 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Components\Cache\Contracts\CacheContract;
-use Chevere\Components\Router\Contracts\RouterCacheContract;
+use Chevere\Components\Cache\Interfaces\CacheInterface;
+use Chevere\Components\Router\Interfaces\RouterCacheInterface;
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\Variable\VariableExport;
-use Chevere\Components\Router\Contracts\RouterMakerContract;
-use Chevere\Components\Router\Contracts\RouterPropertiesContract;
+use Chevere\Components\Router\Interfaces\RouterMakerInterface;
+use Chevere\Components\Router\Interfaces\RouterPropertiesInterface;
 
-final class RouterCache implements RouterCacheContract
+final class RouterCache implements RouterCacheInterface
 {
-    private CacheContract $cache;
+    private CacheInterface $cache;
 
     /**
      * Creates a new instance.
      */
-    public function __construct(CacheContract $cache)
+    public function __construct(CacheInterface $cache)
     {
         $this->cache = $cache;
     }
@@ -37,7 +37,7 @@ final class RouterCache implements RouterCacheContract
     /**
      * {@inheritdoc}
      */
-    public function cache(): CacheContract
+    public function cache(): CacheInterface
     {
         return $this->cache;
     }
@@ -45,7 +45,7 @@ final class RouterCache implements RouterCacheContract
     /**
      * {@inheritdoc}
      */
-    public function withPut(RouterMakerContract $routerMaker): RouterCacheContract
+    public function withPut(RouterMakerInterface $routerMaker): RouterCacheInterface
     {
         $new = clone $this;
         foreach ($routerMaker->properties()->toArray() as $name => $value) {
@@ -62,7 +62,7 @@ final class RouterCache implements RouterCacheContract
     /**
      * {@inheritdoc}
      */
-    public function getProperties(): RouterPropertiesContract
+    public function getProperties(): RouterPropertiesInterface
     {
         $properties = new RouterProperties();
         try {

@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
-use Chevere\Components\VarDump\Contracts\ProcessorContract;
-use Chevere\Components\VarDump\Contracts\VarDumpContract;
+use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
 
 final class BooleanProcessor extends AbstractProcessor
 {
     private bool $var;
 
-    public function withProcess(): ProcessorContract
+    public function withProcess(): ProcessorInterface
     {
         $new = clone $this;
         $new->var = $new->varDump->var();

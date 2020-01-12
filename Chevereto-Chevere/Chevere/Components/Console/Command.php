@@ -15,18 +15,18 @@ namespace Chevere\Components\Console;
 
 use LogicException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\App\Contracts\BuilderContract;
-use Chevere\Components\Console\Contracts\CommandContract;
-use Chevere\Components\Console\Contracts\SymfonyCommandContract;
+use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\Console\Interfaces\CommandInterface;
+use Chevere\Components\Console\Interfaces\SymfonyCommandInterface;
 
 /**
  * This is the base command of all Chevere commands.
  */
-abstract class Command implements CommandContract
+abstract class Command implements CommandInterface
 {
     protected Console $console;
 
-    protected SymfonyCommandContract $symfony;
+    protected SymfonyCommandInterface $symfony;
 
     /**
      * {@inheritdoc}
@@ -48,7 +48,7 @@ abstract class Command implements CommandContract
     /**
      * {@inheritdoc}
      */
-    final public function symfony(): SymfonyCommandContract
+    final public function symfony(): SymfonyCommandInterface
     {
         return $this->symfony;
     }

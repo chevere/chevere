@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Traits;
 
-use Chevere\Components\Data\Contracts\DataContract;
+use Chevere\Components\Data\Interfaces\DataContract;
 use function ChevereFn\stringReplaceFirst;
 
 trait SetTrait

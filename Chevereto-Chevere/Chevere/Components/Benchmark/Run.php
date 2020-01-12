@@ -18,8 +18,8 @@ use TypeError;
 use DateTime;
 use Chevere\Components\App\Instances\BootstrapInstance;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
-use Chevere\Components\Benchmark\Contracts\RunContract;
-use Chevere\Components\Benchmark\Contracts\RunableContract;
+use Chevere\Components\Benchmark\Interfaces\RunInterface;
+use Chevere\Components\Benchmark\Interfaces\RunableInterface;
 use Chevere\Components\Benchmark\Exceptions\ArgumentCountException;
 use Chevere\Components\Benchmark\Exceptions\ArgumentTypeException;
 use Chevere\Components\Message\Message;
@@ -29,9 +29,9 @@ use Chevere\Components\Time\TimeHr;
 /**
  * Runs a prepared Benchmark
  */
-final class Run implements RunContract
+final class Run implements RunInterface
 {
-    private RunableContract $runable;
+    private RunableInterface $runable;
 
     /** @var int Maximum time allowed for the benchmark, in seconds */
     private int $timeLimit;
@@ -98,7 +98,7 @@ final class Run implements RunContract
      * @throws ArgumentCountException if the argument count doesn't match the callable parameters
      * @throws ArgumentTypeException if the argument types doesn't match
      */
-    public function __construct(RunableContract $runable)
+    public function __construct(RunableInterface $runable)
     {
         $this->runable = $runable;
         $this->maxExecutionTime = (int) ini_get('max_execution_time');
@@ -116,7 +116,7 @@ final class Run implements RunContract
     /**
      * {@inheritdoc}
      */
-    public function withTimes(int $times): RunContract
+    public function withTimes(int $times): RunInterface
     {
         $new = clone $this;
         $new->times = $times;
@@ -135,7 +135,7 @@ final class Run implements RunContract
     /**
      * {@inheritdoc}
      */
-    public function withTimeLimit(int $timeLimit): RunContract
+    public function withTimeLimit(int $timeLimit): RunInterface
     {
         $new = clone $this;
         $new->timeLimit = $timeLimit;

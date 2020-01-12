@@ -17,13 +17,13 @@ use TypeError;
 use InvalidArgumentException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
-use Chevere\Components\Runtime\Contracts\SetContract;
+use Chevere\Components\Runtime\Interfaces\SetInterface;
 use Chevere\Components\Runtime\Traits\HandlerTrait;
 
 /**
  * Sets the exception handler using `set_exception_handler`
  */
-class SetExceptionHandler implements SetContract
+class SetExceptionHandler implements SetInterface
 {
     use SetTrait;
     use HandlerTrait;

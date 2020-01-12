@@ -15,13 +15,13 @@ namespace Chevere\Components\Runtime\Sets;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
-use Chevere\Components\Runtime\Contracts\SetContract;
+use Chevere\Components\Runtime\Interfaces\SetInterface;
 use InvalidArgumentException;
 
 /**
  * Set the HTTP scheme
  */
-class SetUriScheme implements SetContract
+class SetUriScheme implements SetInterface
 {
     use SetTrait;
 

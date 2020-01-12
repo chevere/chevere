@@ -15,9 +15,9 @@ namespace Chevere\Components\Route;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
-use Chevere\Components\Route\Contracts\RouteNameContract;
+use Chevere\Components\Route\Interfaces\RouteNameInterface;
 
-final class RouteName implements RouteNameContract
+final class RouteName implements RouteNameInterface
 {
     /** @var string */
     private string $name;
@@ -43,11 +43,11 @@ final class RouteName implements RouteNameContract
 
     public function assertFormat(): void
     {
-        if (!preg_match(RouteNameContract::REGEX, $this->name)) {
+        if (!preg_match(RouteNameInterface::REGEX, $this->name)) {
             throw new RouteInvalidNameException(
                 (new Message('Expecting at least one alphanumeric, underscore, hypen or dot character, string %string% provided (regex %regex%)'))
                 ->code('%string%', $this->name)
-                ->code('%regex%', RouteNameContract::REGEX)
+                ->code('%regex%', RouteNameInterface::REGEX)
                 ->toString()
             );
         }

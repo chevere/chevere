@@ -21,8 +21,8 @@ use ReflectionFunction;
 use ReflectionMethod;
 use Reflector;
 use Chevere\Components\Console\Command;
-use Chevere\Components\App\Contracts\BuilderContract;
-use Chevere\Components\Controller\Contracts\ControllerContract;
+use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\Controller\Interfaces\ControllerInterface;
 
 /**
  * The InspectCommand allows to get callable information using CLI.
@@ -54,7 +54,7 @@ final class InspectCommand extends Command
     public function callback(BuilderContract $builder): int
     {
         $this->callableInput = $this->getArgumentString('callable');
-        if (is_subclass_of($this->callableInput, ControllerContract::class)) {
+        if (is_subclass_of($this->callableInput, ControllerInterface::class)) {
             $this->callable = $this->callableInput;
             $this->method = '__invoke';
         } else {

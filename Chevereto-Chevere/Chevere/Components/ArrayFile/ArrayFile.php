@@ -18,22 +18,22 @@ use Chevere\Components\ArrayFile\Exceptions\ArrayFileTypeException;
 use Chevere\Components\File\Exceptions\FileReturnInvalidTypeException;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Message\Message;
-use Chevere\Components\ArrayFile\Contracts\ArrayFileContract;
-use Chevere\Components\File\Contracts\FileContract;
-use Chevere\Components\File\Contracts\FilePhpContract;
-use Chevere\Components\Type\Contracts\TypeContract;
+use Chevere\Components\ArrayFile\Interfaces\ArrayFileInterface;
+use Chevere\Components\File\Interfaces\FileInterface;
+use Chevere\Components\File\Interfaces\FilePhpInterface;
+use Chevere\Components\Type\Interfaces\TypeInterface;
 
 /**
  * ArrayFile provides a object oriented method to interact with array files (return []).
  */
-final class ArrayFile implements ArrayFileContract
+final class ArrayFile implements ArrayFileInterface
 {
     /** @var array The array returned by the file */
     private array $array;
 
-    private FilePhpContract $filePhp;
+    private FilePhpInterface $filePhp;
 
-    private TypeContract $type;
+    private TypeInterface $type;
 
     /**
      * Creates a new instance.
@@ -41,7 +41,7 @@ final class ArrayFile implements ArrayFileContract
      * @throws FileNotFoundException          if the $filePhp doesn't exists
      * @throws FileReturnInvalidTypeException if the actual file return isn't type array
      */
-    public function __construct(FilePhpContract $filePhp)
+    public function __construct(FilePhpInterface $filePhp)
     {
         $this->filePhp = $filePhp;
         $this->filePhp->file()->assertExists();
@@ -63,7 +63,7 @@ final class ArrayFile implements ArrayFileContract
     /**
      * {@inheritdoc}
      */
-    public function withMembersType(TypeContract $type): ArrayFileContract
+    public function withMembersType(TypeInterface $type): ArrayFileInterface
     {
         $new = clone $this;
         $new->type = $type;
@@ -75,7 +75,7 @@ final class ArrayFile implements ArrayFileContract
     /**
      * {@inheritdoc}
      */
-    public function file(): FileContract
+    public function file(): FileInterface
     {
         return $this->filePhp->file();
     }

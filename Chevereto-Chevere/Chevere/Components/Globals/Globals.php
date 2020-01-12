@@ -16,12 +16,12 @@ namespace Chevere\Components\Globals;
 use TypeError;
 use Chevere\Components\Globals\Exceptions\GlobalsTypeException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Globals\Contracts\GlobalsContract;
+use Chevere\Components\Globals\Interfaces\GlobalsInterface;
 
 /**
  * Provides read-only access for superglobals.
  */
-final class Globals implements GlobalsContract
+final class Globals implements GlobalsInterface
 {
     private int $argc;
 
@@ -47,14 +47,14 @@ final class Globals implements GlobalsContract
     public function __construct(array $globals)
     {
         $this->globals = [];
-        $countKeys = count(GlobalsContract::KEYS);
+        $countKeys = count(GlobalsInterface::KEYS);
         for ($i = 0; $i < $countKeys; $i++) {
-            $key = GlobalsContract::KEYS[$i];
-            $this->globals[$key] = GlobalsContract::DEFAULTS[$i];
+            $key = GlobalsInterface::KEYS[$i];
+            $this->globals[$key] = GlobalsInterface::DEFAULTS[$i];
             if (array_key_exists($key, $globals)) {
                 $this->globals[$key] = $globals[$key];
             }
-            $property = GlobalsContract::PROPERTIES[$i];
+            $property = GlobalsInterface::PROPERTIES[$i];
             try {
                 $this->$property = $this->globals[$key];
             } catch (TypeError $e) {
@@ -138,8 +138,8 @@ final class Globals implements GlobalsContract
     public function globals(): array
     {
         if (!isset($this->globals)) {
-            foreach (GlobalsContract::KEYS as $pos => $key) {
-                $property = GlobalsContract::PROPERTIES[$pos];
+            foreach (GlobalsInterface::KEYS as $pos => $key) {
+                $property = GlobalsInterface::PROPERTIES[$pos];
                 $this->globals[$key] = $this->$property;
             }
         }

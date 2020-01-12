@@ -18,18 +18,18 @@ use GuzzleHttp\Psr7\LazyOpenStream;
 use GuzzleHttp\Psr7\ServerRequest as GuzzleHttpServerRequest;
 use Chevere\Components\Globals\Globals;
 use Chevere\Components\Http\Traits\RequestTrait;
-use Chevere\Components\Http\Contracts\RequestContract;
-use Chevere\Components\Globals\Contracts\GlobalsContract;
-use Chevere\Components\Http\Contracts\MethodContract;
+use Chevere\Components\Http\Interfaces\RequestInterface;
+use Chevere\Components\Globals\Interfaces\GlobalsInterface;
+use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Route\PathUri;
 use Psr\Http\Message\StreamInterface;
 
-final class Request extends GuzzleHttpServerRequest implements RequestContract
+final class Request extends GuzzleHttpServerRequest implements RequestInterface
 {
     use RequestTrait;
 
     /**
-     * @param MethodContract                       $method       HTTP method
+     * @param MethodInterface                       $method       HTTP method
      * @param PathUri                              $uri          URI
      * @param array                                $headers      Request headers
      * @param string|null|resource|StreamInterface $body         Request body
@@ -37,7 +37,7 @@ final class Request extends GuzzleHttpServerRequest implements RequestContract
      * @param array                                $serverParams Typically the $_SERVER superglobal
      */
     public function __construct(
-        MethodContract $method,
+        MethodInterface $method,
         PathUri $uri,
         array $headers = [],
         $body = null,
@@ -69,7 +69,7 @@ final class Request extends GuzzleHttpServerRequest implements RequestContract
     /**
      * {@inheritdoc}
      */
-    public function globals(): GlobalsContract
+    public function globals(): GlobalsInterface
     {
         return $this->globals;
     }
@@ -77,7 +77,7 @@ final class Request extends GuzzleHttpServerRequest implements RequestContract
     /**
      * Return a ServerRequest populated with superglobals.
      */
-    public static function fromGlobals(): RequestContract
+    public static function fromGlobals(): RequestInterface
     {
         $globals = new Globals($GLOBALS);
         $method = isset($globals->server()['REQUEST_METHOD'])

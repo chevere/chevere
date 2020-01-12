@@ -15,13 +15,13 @@ namespace Chevere\Components\Path;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathInvalidException;
-use Chevere\Components\Path\Contracts\PathContract;
+use Chevere\Components\Path\Interfaces\PathInterface;
 use function ChevereFn\stringStartsWith;
 
 /**
  * Handles paths with context.
  */
-class Path implements PathContract
+class Path implements PathInterface
 {
     /** @var string Absolute path */
     private string $absolute;
@@ -93,7 +93,7 @@ class Path implements PathContract
     /**
      * {@inheritdoc}
      */
-    public function getChild(string $path): PathContract
+    public function getChild(string $path): PathInterface
     {
         $parent = $this->absolute();
         $childrenPath = rtrim($parent, '/');

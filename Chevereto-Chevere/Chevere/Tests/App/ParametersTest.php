@@ -21,14 +21,14 @@ use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\File\File;
 use Chevere\Components\File\FilePhp;
 use Chevere\Components\Path\PathApp;
-use Chevere\Components\App\Contracts\ParametersContract;
-use Chevere\Components\ArrayFile\Contracts\ArrayFileContract;
-use Chevere\Components\Path\Contracts\PathContract;
+use Chevere\Components\App\Interfaces\ParametersInterface;
+use Chevere\Components\ArrayFile\Interfaces\ArrayFileInterface;
+use Chevere\Components\Path\Interfaces\PathInterface;
 use PHPUnit\Framework\TestCase;
 
 final class ParametersTest extends TestCase
 {
-    public function getArrayFile(PathContract $path): ArrayFileContract
+    public function getArrayFile(PathInterface $path): ArrayFileInterface
     {
         return
             new ArrayFile(
@@ -73,7 +73,7 @@ final class ParametersTest extends TestCase
         $parameters = new Parameters($arrayFile);
         $this->assertSame(true, $parameters->hasParameters());
         $this->assertSame(true, $parameters->hasRoutes());
-        $this->assertSame($arrayFile->array()[ParametersContract::KEY_ROUTES], $parameters->routes());
+        $this->assertSame($arrayFile->array()[ParametersInterface::KEY_ROUTES], $parameters->routes());
     }
 
     public function testWithDuplicatedAddedRoutePaths(): void

@@ -16,8 +16,8 @@ namespace Chevere\Components\Controller;
 use LogicException;
 use ReflectionClass;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Controller\Contracts\ControllerContract;
-use Chevere\Components\Controller\Contracts\InspectContract;
+use Chevere\Components\Controller\Interfaces\ControllerInterface;
+use Chevere\Components\Controller\Interfaces\InspectInterface;
 use function ChevereFn\stringForwardSlashes;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringReplaceLast;
@@ -25,10 +25,10 @@ use function ChevereFn\stringReplaceLast;
 /**
  * Provides information about any Controller implementing ControllerContract interface.
  */
-final class Inspect implements InspectContract
+final class Inspect implements InspectInterface
 {
     /** @var string The Controller interface */
-    const INTERFACE_CONTROLLER = ControllerContract::class;
+    const INTERFACE_CONTROLLER = ControllerInterface::class;
 
     /** @var string The Controller interface */
     // const INTERFACE_CONTROLLER_RESOURCE = ControllerResourceInterface::class;

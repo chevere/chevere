@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Regex;
 
+use Throwable;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Exceptions\RegexException;
-use Chevere\Components\Regex\Contracts\RegexContract;
-use Throwable;
+use Chevere\Components\Regex\Interfaces\RegexInterface;
 
-final class Regex implements RegexContract
+final class Regex implements RegexInterface
 {
     /** @var string */
     private string $regex;

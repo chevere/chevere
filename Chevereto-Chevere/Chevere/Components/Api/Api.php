@@ -19,19 +19,19 @@ use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\Cache\Traits\CacheAccessTrait;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Api\Contracts\ApiContract;
-use Chevere\Components\Api\Contracts\ApiMakerContract;
-use Chevere\Components\Cache\Contracts\CacheContract;
+use Chevere\Components\Api\Interfaces\ApiInterface;
+use Chevere\Components\Api\Interfaces\ApiMakerInterface;
+use Chevere\Components\Cache\Interfaces\CacheInterface;
 
-final class Api implements ApiContract
+final class Api implements ApiInterface
 {
     use CacheAccessTrait;
 
     private array $array;
 
-    private ApiMakerContract $maker;
+    private ApiMakerInterface $maker;
 
-    public function withApiMaker(ApiMakerContract $maker): ApiContract
+    public function withApiMaker(ApiMakerInterface $maker): ApiInterface
     {
         $new = clone $this;
         $new->maker = $maker;
@@ -40,7 +40,7 @@ final class Api implements ApiContract
         return $new;
     }
 
-    public function withCache(CacheContract $cache): ApiContract
+    public function withCache(CacheInterface $cache): ApiInterface
     {
         $new = clone $this;
         $new->cache = $cache;
@@ -67,7 +67,7 @@ final class Api implements ApiContract
         return isset($this->maker);
     }
 
-    public function apiMaker(): ApiMakerContract
+    public function apiMaker(): ApiMakerInterface
     {
         return $this->maker;
     }

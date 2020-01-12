@@ -18,12 +18,12 @@ use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\File\File;
 use Chevere\Components\Path\Exceptions\PathIsDirException;
 use Chevere\Components\Path\PathApp;
-use Chevere\Components\File\Contracts\FileContract;
+use Chevere\Components\File\Interfaces\FileInterface;
 use PHPUnit\Framework\TestCase;
 
 final class FileTest extends TestCase
 {
-    public function getRealFile(string $filename): FileContract
+    public function getRealFile(string $filename): FileInterface
     {
         $path = new PathApp('var/FileTest_' . uniqid() . $filename);
         if (false === file_put_contents($path->absolute(), 'una mona pilucha')) {

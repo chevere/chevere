@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Serialize;
 
-use Chevere\Components\Serialize\Contracts\SerializeContract;
-use Chevere\Components\Variable\Contracts\VariableExportContract;
+use Chevere\Components\Serialize\Interfaces\SerializeInterface;
+use Chevere\Components\Variable\Interfaces\VariableExportInterface;
 
-final class Serialize implements SerializeContract
+final class Serialize implements SerializeInterface
 {
     /** @var string */
     private string $serialized;
@@ -24,7 +24,7 @@ final class Serialize implements SerializeContract
     /**
      * Creates a new instance.
      */
-    public function __construct(VariableExportContract $variableExport)
+    public function __construct(VariableExportInterface $variableExport)
     {
         $this->serialized = $variableExport->toSerialize();
     }

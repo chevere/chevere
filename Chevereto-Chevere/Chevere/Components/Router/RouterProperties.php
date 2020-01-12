@@ -18,9 +18,9 @@ use Chevere\Components\Router\Properties\IndexProperty;
 use Chevere\Components\Router\Properties\NamedProperty;
 use Chevere\Components\Router\Properties\RegexProperty;
 use Chevere\Components\Router\Properties\RoutesProperty;
-use Chevere\Components\Router\Contracts\RouterPropertiesContract;
+use Chevere\Components\Router\Interfaces\RouterPropertiesInterface;
 
-final class RouterProperties implements RouterPropertiesContract
+final class RouterProperties implements RouterPropertiesInterface
 {
     /** @var array RegexPropertyContract::class[] */
     private array $classMap = [
@@ -61,7 +61,7 @@ final class RouterProperties implements RouterPropertiesContract
     /**
      * {@inheritdoc}
      */
-    public function withRegex(string $regex): RouterPropertiesContract
+    public function withRegex(string $regex): RouterPropertiesInterface
     {
         $new = clone $this;
         $new->regex = $regex;
@@ -85,7 +85,7 @@ final class RouterProperties implements RouterPropertiesContract
     /**
      * {@inheritdoc}
      */
-    public function withRoutes(array $routes): RouterPropertiesContract
+    public function withRoutes(array $routes): RouterPropertiesInterface
     {
         $new = clone $this;
         $new->routes = $routes;
@@ -104,7 +104,7 @@ final class RouterProperties implements RouterPropertiesContract
     /**
      * {@inheritdoc}
      */
-    public function withIndex(array $index): RouterPropertiesContract
+    public function withIndex(array $index): RouterPropertiesInterface
     {
         $new = clone $this;
         $new->index = $index;
@@ -123,7 +123,7 @@ final class RouterProperties implements RouterPropertiesContract
     /**
      * {@inheritdoc}
      */
-    public function withGroups(array $groups): RouterPropertiesContract
+    public function withGroups(array $groups): RouterPropertiesInterface
     {
         $new = clone $this;
         $new->groups = $groups;
@@ -142,7 +142,7 @@ final class RouterProperties implements RouterPropertiesContract
     /**
      * {@inheritdoc}
      */
-    public function withNamed(array $named): RouterPropertiesContract
+    public function withNamed(array $named): RouterPropertiesInterface
     {
         $new = clone $this;
         $new->named = $named;

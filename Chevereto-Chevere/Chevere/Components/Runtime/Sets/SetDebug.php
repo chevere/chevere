@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\Runtime\Sets;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Runtime\Contracts\SetContract;
+use Chevere\Components\Runtime\Interfaces\SetInterface;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use InvalidArgumentException;
 
-class SetDebug implements SetContract
+class SetDebug implements SetInterface
 {
     use SetTrait;
 

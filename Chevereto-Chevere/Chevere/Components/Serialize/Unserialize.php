@@ -17,16 +17,16 @@ use Throwable;
 use Chevere\Components\Serialize\Exceptions\UnserializeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
-use Chevere\Components\Serialize\Contracts\UnserializeContract;
-use Chevere\Components\Type\Contracts\TypeContract;
+use Chevere\Components\Serialize\Interfaces\UnserializeInterface;
+use Chevere\Components\Type\Interfaces\TypeInterface;
 use function ChevereFn\varType;
 
-final class Unserialize implements UnserializeContract
+final class Unserialize implements UnserializeInterface
 {
     /** @var mixed */
     private $var;
 
-    private TypeContract $type;
+    private TypeInterface $type;
 
     /**
      * Creates a new instance.
@@ -59,7 +59,7 @@ final class Unserialize implements UnserializeContract
     /**
      * {@inheritdoc}
      */
-    public function type(): TypeContract
+    public function type(): TypeInterface
     {
         return $this->type;
     }

@@ -18,11 +18,11 @@ use TypeError;
 use Chevere\Components\Breadcrum\Breadcrum;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouterPropertyException;
-use Chevere\Components\Breadcrum\Contracts\BreadcrumContract;
+use Chevere\Components\Breadcrum\Interfaces\BreadcrumInterface;
 
 abstract class PropertyBase
 {
-    protected BreadcrumContract $breadcrum;
+    protected BreadcrumInterface $breadcrum;
 
     protected function assertString($var): void
     {

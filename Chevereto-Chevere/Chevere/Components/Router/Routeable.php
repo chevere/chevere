@@ -17,23 +17,23 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouteableException;
 use Chevere\Components\Variable\Exceptions\VariableExportException;
 use Chevere\Components\Variable\VariableExport;
-use Chevere\Components\Route\Contracts\RouteContract;
-use Chevere\Components\Router\Contracts\RouteableContract;
+use Chevere\Components\Route\Interfaces\RouteInterface;
+use Chevere\Components\Router\Interfaces\RouteableInterface;
 
 /**
  * Determines if a RouteContract is able to be routed.
  * @package Chevere\Components\Router
  */
-final class Routeable implements RouteableContract
+final class Routeable implements RouteableInterface
 {
-    private RouteContract $route;
+    private RouteInterface $route;
 
     /**
      * Creates a new instance.
      *
      * @throws RouteableException if $route is not routeable
      */
-    public function __construct(RouteContract $route)
+    public function __construct(RouteInterface $route)
     {
         $this->route = $route;
         $this->assertExportable();
@@ -43,7 +43,7 @@ final class Routeable implements RouteableContract
     /**
      * {@inheritdoc}
      */
-    public function route(): RouteContract
+    public function route(): RouteInterface
     {
         return $this->route;
     }
@@ -55,7 +55,7 @@ final class Routeable implements RouteableContract
         } catch (VariableExportException $e) {
             throw new RouteableException(
                 (new Message('Instance of %className% is not exportable: %message%'))
-                    ->code('%className%', RouteContract::class)
+                    ->code('%className%', RouteInterface::class)
                     ->code('%message%', $e->getMessage())
                     ->toString()
             );
@@ -67,7 +67,7 @@ final class Routeable implements RouteableContract
         if (!$this->route->hasMethodControllerNameCollection()) {
             throw new RouteableException(
                 (new Message("Instance of %className% doesn't contain any method controller"))
-                    ->code('%className%', RouteContract::class)
+                    ->code('%className%', RouteInterface::class)
                     ->toString()
             );
         }

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Time;
 
-use Chevere\Components\TimeHr\Contracts\TimeHrContract;
+use Chevere\Components\Time\Interfaces\TimeHrInterface;
 
-final class TimeHr implements TimeHrContract
+final class TimeHr implements TimeHrInterface
 {
     /** @var int High-resolution time */
     private int $hrTime;

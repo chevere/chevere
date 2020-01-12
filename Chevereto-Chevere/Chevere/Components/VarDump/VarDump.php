@@ -18,16 +18,16 @@ use Chevere\Components\VarDump\Processors\ArrayProcessor;
 use Chevere\Components\VarDump\Processors\BooleanProcessor;
 use Chevere\Components\VarDump\Processors\ObjectProcessor;
 use Chevere\Components\VarDump\Processors\ScalarProcessor;
-use Chevere\Components\VarDump\Contracts\FormatterContract;
-use Chevere\Components\VarDump\Contracts\VarDumpContract;
+use Chevere\Components\VarDump\Interfaces\FormatterInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
 use function ChevereFn\varType;
 
 /**
  * Analyze a variable and provide a formated string representation of its type and data.
  */
-final class VarDump implements VarDumpContract
+final class VarDump implements VarDumpInterface
 {
-    private FormatterContract $formatter;
+    private FormatterInterface $formatter;
 
     /** @var array [className,] */
     private array $dontDump = [];
@@ -55,9 +55,9 @@ final class VarDump implements VarDumpContract
     /**
      * Creates a new instance.
      *
-     * @param FormatterContract $formatter A VarDump formatter
+     * @param FormatterInterface $formatter A VarDump formatter
      */
-    public function __construct(FormatterContract $formatter)
+    public function __construct(FormatterInterface $formatter)
     {
         $this->formatter = $formatter;
     }
@@ -65,7 +65,7 @@ final class VarDump implements VarDumpContract
     /**
      * {@inheritdoc}
      */
-    public function formatter(): FormatterContract
+    public function formatter(): FormatterInterface
     {
         return $this->formatter;
     }
@@ -73,7 +73,7 @@ final class VarDump implements VarDumpContract
     /**
      * {@inheritdoc}
      */
-    public function withDontDump(string ...$dontDump): VarDumpContract
+    public function withDontDump(string ...$dontDump): VarDumpInterface
     {
         $new = clone $this;
         $new->dontDump = $dontDump;
@@ -92,7 +92,7 @@ final class VarDump implements VarDumpContract
     /**
      * {@inheritdoc}
      */
-    public function withVar($var): VarDumpContract
+    public function withVar($var): VarDumpInterface
     {
         $new = clone $this;
         ++$new->depth;
@@ -121,7 +121,7 @@ final class VarDump implements VarDumpContract
     /**
      * {@inheritdoc}
      */
-    public function withIndent(int $indent): VarDumpContract
+    public function withIndent(int $indent): VarDumpInterface
     {
         $new = clone $this;
         $new->indent = $indent;
@@ -142,7 +142,7 @@ final class VarDump implements VarDumpContract
     /**
      * {@inheritdoc}
      */
-    public function withDepth(int $depth): VarDumpContract
+    public function withDepth(int $depth): VarDumpInterface
     {
         $new = clone $this;
         $new->depth = $depth;
@@ -161,7 +161,7 @@ final class VarDump implements VarDumpContract
     /**
      * {@inheritdoc}
      */
-    public function process(): VarDumpContract
+    public function process(): VarDumpInterface
     {
         if (!$this->hasVar) {
             throw new BadMethodCallException('This method cannot be called without a $var');

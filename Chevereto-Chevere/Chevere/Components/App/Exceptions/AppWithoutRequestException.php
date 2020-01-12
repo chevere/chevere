@@ -16,7 +16,8 @@ namespace Chevere\Components\App\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when an AppContract lacks of a RequestContract.
+ * Exception thrown when an AppContract lacks of a RequestInterface.
  */
 final class AppWithoutRequestException extends Exception
-{ }
+{
+}
