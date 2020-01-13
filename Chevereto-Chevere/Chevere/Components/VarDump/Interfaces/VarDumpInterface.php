@@ -24,6 +24,7 @@ interface VarDumpInterface
     const TYPE_BOOLEAN = 'boolean';
     const TYPE_NULL = 'null';
     const TYPE_OBJECT = 'object';
+    const TYPE_RESOURCE = 'resource';
     const _FILE = '_file';
     const _CLASS = '_class';
     const _CLASS_ANON = 'class@anonymous';

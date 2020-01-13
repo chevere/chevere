@@ -24,6 +24,7 @@ use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
 use Chevere\Components\VarDump\Processors\FloatProcessor;
 use Chevere\Components\VarDump\Processors\IntegerProcessor;
 use Chevere\Components\VarDump\Processors\NullProcessor;
+use Chevere\Components\VarDump\Processors\ResourceProcessor;
 use Chevere\Components\VarDump\Processors\StringProcessor;
 use LogicException;
 use function ChevereFn\varType;
@@ -181,40 +182,31 @@ final class VarDump implements VarDumpInterface
 
     private function handleType(): void
     {
-        switch ($this->type) {
-            case static::TYPE_BOOLEAN:
-                $processor = new BooleanProcessor($this);
-                break;
-            case static::TYPE_ARRAY:
-                ++$this->indent;
-                $processor = new ArrayProcessor($this);
-                break;
-            case static::TYPE_OBJECT:
-                ++$this->indent;
-                $processor = new ObjectProcessor($this);
-                break;
-            case static::TYPE_INTEGER:
-                $processor = new IntegerProcessor($this);
-                break;
-            case static::TYPE_STRING:
-                $processor = new StringProcessor($this);
-                break;
-            case static::TYPE_FLOAT:
-                $processor = new FloatProcessor($this);
-                break;
-            case static::TYPE_NULL:
-                $processor = new NullProcessor($this);
-                break;
-        }
+        $processors = [
+            static::TYPE_BOOLEAN => BooleanProcessor::class,
+            static::TYPE_ARRAY => ArrayProcessor::class,
+            static::TYPE_OBJECT => ObjectProcessor::class,
+            static::TYPE_INTEGER => IntegerProcessor::class,
+            static::TYPE_STRING => StringProcessor::class,
+            static::TYPE_FLOAT => FloatProcessor::class,
+            static::TYPE_NULL => NullProcessor::class,
+            static::TYPE_RESOURCE => ResourceProcessor::class,
+        ];
 
+        $processor = $processors[$this->type] ?? null;
         if (!isset($processor)) {
+            var_dump($this->var);
+            die();
             throw new LogicException(
                 (new Message('No processor for type %type%'))
                     ->code('%type%', $this->type)
                     ->toString()
             );
         }
-
+        if (in_array($this->type, [static::TYPE_ARRAY, static::TYPE_OBJECT])) {
+            ++$this->indent;
+        }
+        $processor = new $processor($this);
         $this->val .= $processor->val();
         $this->info = $processor->info();
         $this->handleInfo();

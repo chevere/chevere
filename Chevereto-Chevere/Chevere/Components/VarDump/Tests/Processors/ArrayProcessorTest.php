@@ -21,6 +21,7 @@ use Chevere\Components\VarDump\Processors\FloatProcessor;
 use Chevere\Components\VarDump\Processors\IntegerProcessor;
 use Chevere\Components\VarDump\Processors\NullProcessor;
 use Chevere\Components\VarDump\Processors\ObjectProcessor;
+use Chevere\Components\VarDump\Processors\ResourceProcessor;
 use Chevere\Components\VarDump\Processors\StringProcessor;
 use Chevere\Components\VarDump\VarDump;
 use InvalidArgumentException;
@@ -116,5 +117,13 @@ final class ArrayProcessorTest extends TestCase
         $processor = new NullProcessor($this->getVarDump($var));
         $this->assertSame('', $processor->info());
         $this->assertSame('', $processor->val());
+    }
+
+    public function testResource(): void
+    {
+        $var = fopen(__FILE__, 'r');
+        $processor = new ResourceProcessor($this->getVarDump($var));
+        $this->assertSame('type=stream', $processor->info());
+        $this->assertStringStartsWith('Resource id #', $processor->val());
     }
 }
