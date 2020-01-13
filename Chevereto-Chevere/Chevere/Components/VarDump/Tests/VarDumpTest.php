@@ -22,18 +22,17 @@ use PHPUnit\Framework\TestCase;
 
 final class VarDumpTest extends TestCase
 {
-    public function getVarDump(): VarDumpInterface
+    public function getVarDump($var): VarDumpInterface
     {
         return
-            new VarDump(new PlainFormatter());
+            new VarDump($var, new PlainFormatter());
     }
 
     public function testConstruct(): void
     {
         $formatter = new PlainFormatter();
-        $varDump = new VarDump($formatter);
+        $varDump = new VarDump(null, $formatter);
         $this->assertSame($formatter, $varDump->formatter());
-        $this->assertFalse($varDump->hasVar());
         $this->assertSame(null, $varDump->var());
         $this->assertSame([], $varDump->dontDump());
         $this->assertSame(0, $varDump->indent());

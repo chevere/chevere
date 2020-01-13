@@ -106,9 +106,7 @@ abstract class AbstractOutputter implements OutputterInterface
 
     final private function appendArg(int $pos, $value): void
     {
-        $varDump = (new VarDump($this->dumper->formatter()))
-            // ->withDontDump(...$this->dumper->varDump()->dontDump())
-            ->withVar($value)
+        $varDump = (new VarDump($value, $this->dumper->formatter()))
             ->process();
         $this->output .= 'Arg#' . $pos . ' ' . $varDump->toString() . "\n\n";
     }

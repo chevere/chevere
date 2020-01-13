@@ -18,4 +18,6 @@ interface ProcessorInterface
     public function info(): string;
 
     public function val(): string;
+
+    public function type(): string;
 }

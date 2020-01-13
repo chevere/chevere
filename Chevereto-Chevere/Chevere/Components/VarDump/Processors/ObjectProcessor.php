@@ -25,8 +25,6 @@ final class ObjectProcessor extends AbstractProcessor
 {
     private object $var;
 
-    private VarDumpInterface $varDump;
-
     private ReflectionObject $reflectionObject;
 
     private array $properties;
@@ -35,35 +33,31 @@ final class ObjectProcessor extends AbstractProcessor
 
     private $aux;
 
-    public function __construct(VarDumpInterface $varDump)
-    {
-        $this->var = $varDump->var();
-        $this->varDump = $varDump;
+    public function type(): string {
+
+        return VarDumpInterface::TYPE_OBJECT;
     }
 
-    public function withProcess(): ProcessorInterface
+    protected function process(): void
     {
-        $new = clone $this;
-        $new->var = $new->varDump->var();
-        $new->reflectionObject = new ReflectionObject($new->var);
-        if (in_array($new->reflectionObject->getName(), $new->varDump->dontDump())) {
-            $new->val .= $new->varDump->formatter()->applyWrap(
+        $this->var = $this->varDump->var();
+        $this->reflectionObject = new ReflectionObject($this->var);
+        if (in_array($this->reflectionObject->getName(), $this->varDump->dontDump())) {
+            $this->val .= $this->varDump->formatter()->applyWrap(
                 VarDumpInterface::_OPERATOR,
-                $new->varDump->formatter()->applyEmphasis(
-                    $new->reflectionObject->getName()
+                $this->varDump->formatter()->applyEmphasis(
+                    $this->reflectionObject->getName()
                 )
             );
 
-            return $new;
+            return;
         }
-        $new->setProperties();
+        $this->setProperties();
 
-        // $new->classFile = $new->reflectionObject->getFileName();
-        $new->className = get_class($new->var);
-        $new->handleNormalizeClassName();
-        $new->info = $new->className;
-
-        return $new;
+        // $this->classFile = $this->reflectionObject->getFileName();
+        $this->className = get_class($this->var);
+        $this->handleNormalizeClassName();
+        $this->info = $this->className;
     }
 
     private function setProperties(): void
@@ -128,9 +122,8 @@ final class ObjectProcessor extends AbstractProcessor
     private function handleDeepth(): void
     {
         if ($this->varDump->depth() < 4) {
-            $new = (new VarDump($this->varDump->formatter()))
+            $new = (new VarDump($this->aux, $this->varDump->formatter()))
                 ->withDontDump(...$this->varDump->dontDump())
-                ->withVar($this->aux)
                 ->withIndent($this->varDump->indent())
                 ->withDepth($this->varDump->depth())
                 ->process();
@@ -146,7 +139,7 @@ final class ObjectProcessor extends AbstractProcessor
 
     private function handleNormalizeClassName(): void
     {
-        if (stringStartsWith(VarDumpInterface::TYPE_CLASS_ANON, $this->className)) {
+        if (stringStartsWith(VarDumpInterface::_CLASS_ANON, $this->className)) {
             // $this->className = (new Path($this->className))->absolute();
         }
     }

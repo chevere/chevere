@@ -14,12 +14,18 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump;
 
 use BadMethodCallException;
+use Chevere\Components\Message\Message;
 use Chevere\Components\VarDump\Processors\ArrayProcessor;
 use Chevere\Components\VarDump\Processors\BooleanProcessor;
 use Chevere\Components\VarDump\Processors\ObjectProcessor;
 use Chevere\Components\VarDump\Processors\ScalarProcessor;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
+use Chevere\Components\VarDump\Processors\FloatProcessor;
+use Chevere\Components\VarDump\Processors\IntegerProcessor;
+use Chevere\Components\VarDump\Processors\NullProcessor;
+use Chevere\Components\VarDump\Processors\StringProcessor;
+use LogicException;
 use function ChevereFn\varType;
 
 /**
@@ -57,9 +63,12 @@ final class VarDump implements VarDumpInterface
      *
      * @param FormatterInterface $formatter A VarDump formatter
      */
-    public function __construct(FormatterInterface $formatter)
+    public function __construct($var, FormatterInterface $formatter)
     {
+        $this->var = $var;
+        $this->type = varType($this->var);
         $this->formatter = $formatter;
+        ++$this->depth;
     }
 
     /**
@@ -92,30 +101,14 @@ final class VarDump implements VarDumpInterface
     /**
      * {@inheritdoc}
      */
-    public function withVar($var): VarDumpInterface
-    {
-        $new = clone $this;
-        ++$new->depth;
-        $new->var = $var;
-        $new->hasVar = true;
-
-        return $new;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function hasVar(): bool
-    {
-        return $this->hasVar;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function var()
     {
         return $this->var;
+    }
+
+    public function type(): string
+    {
+        return $this->type;
     }
 
     /**
@@ -163,10 +156,6 @@ final class VarDump implements VarDumpInterface
      */
     public function process(): VarDumpInterface
     {
-        if (!$this->hasVar) {
-            throw new BadMethodCallException('This method cannot be called without a $var');
-        }
-        $this->type = varType($this->var);
         $this->handleType();
         $this->setTemplate();
         $this->setOutput();
@@ -204,9 +193,26 @@ final class VarDump implements VarDumpInterface
                 ++$this->indent;
                 $processor = new ObjectProcessor($this);
                 break;
-            default:
-                $processor = new ScalarProcessor($this);
+            case static::TYPE_INTEGER:
+                $processor = new IntegerProcessor($this);
                 break;
+            case static::TYPE_STRING:
+                $processor = new StringProcessor($this);
+                break;
+            case static::TYPE_FLOAT:
+                $processor = new FloatProcessor($this);
+                break;
+            case static::TYPE_NULL:
+                $processor = new NullProcessor($this);
+                break;
+        }
+
+        if (!isset($processor)) {
+            throw new LogicException(
+                (new Message('No processor for type %type%'))
+                    ->code('%type%', $this->type)
+                    ->toString()
+            );
         }
 
         $this->val .= $processor->val();

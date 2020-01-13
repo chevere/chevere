@@ -20,13 +20,13 @@ interface VarDumpInterface
     const TYPE_STRING = 'string';
     const TYPE_FLOAT = 'float';
     const TYPE_INTEGER = 'integer';
+    const TYPE_ARRAY = 'array';
     const TYPE_BOOLEAN = 'boolean';
     const TYPE_NULL = 'null';
     const TYPE_OBJECT = 'object';
-    const TYPE_CLASS_ANON = 'class@anonymous';
-    const TYPE_ARRAY = 'array';
     const _FILE = '_file';
     const _CLASS = '_class';
+    const _CLASS_ANON = 'class@anonymous';
     const _OPERATOR = '_operator';
     const _FUNCTION = '_function';
     const _PRIVACY = '_privacy';
@@ -40,7 +40,7 @@ interface VarDumpInterface
         'static' => ReflectionProperty::IS_STATIC,
     ];
 
-    public function __construct(FormatterInterface $formatter);
+    public function __construct($var, FormatterInterface $formatter);
 
     /**
      * Provides access to the FormatterContract instance.
@@ -68,17 +68,19 @@ interface VarDumpInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified $var.
      */
-    public function withVar($var): VarDumpInterface;
+    // public function withVar($var): VarDumpInterface;
 
     /**
      * Returns a boolean indicating whether the instance has a var.
      */
-    public function hasVar(): bool;
+    // public function hasVar(): bool;
 
     /**
      * Provides access to the instance $var.s
      */
     public function var();
+
+    public function type(): string;
 
     /**
      * Return an instance with the specified $indent.

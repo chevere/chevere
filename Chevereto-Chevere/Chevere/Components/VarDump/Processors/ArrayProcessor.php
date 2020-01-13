@@ -18,39 +18,31 @@ use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
 
 final class ArrayProcessor extends AbstractProcessor
 {
-    private array $var;
-
-    private VarDumpInterface $varDump;
-
-    public function __construct(VarDumpInterface $varDump)
+    public function type(): string
     {
-        $this->var = $varDump->var();
-        $this->info = 'size=' . count($this->var);
-        $this->varDump = $varDump;
-        $this->process();
+        return VarDumpInterface::TYPE_ARRAY;
     }
 
-    private function process(): void
+    protected function process(): void
     {
-        $new = clone $this;
-        foreach ($new->var as $k => $v) {
+        $this->info = 'size=' . count($this->varDump->var());
+        foreach ($this->varDump->var() as $k => $v) {
             $operator = $this->varDump->formatter()->applyWrap(VarDumpInterface::_OPERATOR, '=>');
-            $new->val .= "\n" . $this->varDump->indentString() . ' ' . $this->varDump->formatter()->filterEncodedChars((string) $k) . " $operator ";
+            $this->val .= "\n" . $this->varDump->indentString() . ' ' . $this->varDump->formatter()->filterEncodedChars((string) $k) . " $operator ";
             $aux = $v;
             $isCircularRef = is_array($aux) && isset($aux[$k]) && $aux == $aux[$k];
             if ($isCircularRef) {
-                $new->val .= $this->varDump->formatter()
+                $this->val .= $this->varDump->formatter()
                     ->applyWrap(
                         VarDumpInterface::_OPERATOR,
                         '(' . $this->varDump->formatter()->applyEmphasis('circular array reference') . ')'
                     );
             } else {
-                $newVarDump = (new VarDump($this->varDump->formatter()))
+                $newVarDump = (new VarDump($aux, $this->varDump->formatter()))
                     ->withDontDump(...$this->varDump->dontDump())
-                    ->withVar($aux)
                     ->withIndent($this->varDump->indent() + 1)
                     ->process();
-                $new->val .= $newVarDump->toString();
+                $this->val .= $newVarDump->toString();
             }
         }
     }
