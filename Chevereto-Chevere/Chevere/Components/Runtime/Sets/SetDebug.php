@@ -18,7 +18,7 @@ use Chevere\Components\Runtime\Interfaces\SetInterface;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use InvalidArgumentException;
 
-class SetDebug implements SetInterface
+final class SetDebug implements SetInterface
 {
     use SetTrait;
 

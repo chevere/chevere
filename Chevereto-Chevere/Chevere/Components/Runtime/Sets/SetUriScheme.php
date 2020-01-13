@@ -21,7 +21,7 @@ use InvalidArgumentException;
 /**
  * Set the HTTP scheme
  */
-class SetUriScheme implements SetInterface
+final class SetUriScheme implements SetInterface
 {
     use SetTrait;
 

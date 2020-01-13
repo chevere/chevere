@@ -13,65 +13,20 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Sets;
 
-use TypeError;
-use Chevere\Components\Message\Message;
-use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Interfaces\Sets\SetErrorHandlerInterface;
-use InvalidArgumentException;
-use Chevere\Components\Runtime\Traits\HandlerTrait;
 
 /**
- * Sets the exception handler using `set_error_handler`
+ * Sets and restores the error handler using `set_error_handler` and `restore_error_handler`
  */
-class SetErrorHandler implements SetErrorHandlerInterface
+final class SetErrorHandler extends SetAbstractHandler implements SetErrorHandlerInterface
 {
-    use SetTrait;
-    use HandlerTrait;
-
-    /** @var mixed Value returned from PHP */
-    private $handler;
-
-    /**
-     * Sets the error handler function
-     *
-     * @param string $value A full-qualified callable name or empty string for restore handler.
-     * @throws InvalidArgumentException If the value passed isn't acceptable.
-     */
-    public function __construct(string $value)
+    public function getSetHandler(): callable
     {
-        $this->value = $value;
-        if ('' == $this->value) {
-            $this->restoreErrorHandler();
-
-            return;
-        }
-        $this->assertArgument();
-        set_error_handler($this->value);
+        return 'set_error_handler';
     }
 
-    private function assertArgument(): void
+    public function getRestoreHandler(): callable
     {
-        if (!is_callable($this->value)) {
-            throw new InvalidArgumentException(
-                (new Message('Value must be a valid %type% for %subject%, value %value% passed'))
-                    ->code('%type%', 'callable')
-                    ->code('%subject%', 'set_error_handler()')
-                    ->code('%value%', $this->value)
-                    ->toString()
-            );
-        }
-    }
-
-    private function restoreErrorHandler(): void
-    {
-        restore_error_handler();
-        $this->handler = set_error_handler(function () {
-        });
-        try {
-            $this->value = $this->handler;
-        } catch (TypeError $e) {
-            $this->value = '@';
-        }
-        restore_error_handler();
+        return 'restore_error_handler';
     }
 }

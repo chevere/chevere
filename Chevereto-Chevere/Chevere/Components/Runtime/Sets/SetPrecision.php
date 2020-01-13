@@ -22,7 +22,7 @@ use InvalidArgumentException;
 /**
  * Sets the `precision` ini property
  */
-class SetPrecision implements SetInterface
+final class SetPrecision implements SetInterface
 {
     use SetTrait;
 

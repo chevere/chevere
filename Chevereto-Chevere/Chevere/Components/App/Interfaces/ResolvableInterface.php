@@ -20,8 +20,7 @@ interface ResolvableInterface
     public function __construct(BuilderInterface $builder);
 
     /**
-     *
-     * @return Chevere\Interfaces\App\BuilderInterface A resolvable BuilderInterface
+     * @return BuilderInterface A resolvable BuilderInterface
      */
     public function builder(): BuilderInterface;
 }

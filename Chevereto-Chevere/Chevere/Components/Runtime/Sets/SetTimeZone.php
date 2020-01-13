@@ -22,7 +22,7 @@ use Chevere\Components\Runtime\Interfaces\SetInterface;
 /**
  * Sets the default timezone
  */
-class SetTimeZone implements SetInterface
+final class SetTimeZone implements SetInterface
 {
     use SetTrait;
 

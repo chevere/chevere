@@ -18,7 +18,7 @@ use Chevere\Components\Runtime\Interfaces\SetInterface;
 interface SetExceptionHandlerInterface extends SetInterface
 {
     /**
-     * @return mixed The handler value as returned by set_exception_handler()
+     * @return mixed The handler value as returned by `set_exception_handler`
      */
     public function handler();
 }

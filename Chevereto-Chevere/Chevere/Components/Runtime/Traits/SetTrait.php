@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Traits;
 
-use Chevere\Components\Data\Interfaces\DataInterface;
 use function ChevereFn\stringReplaceFirst;
 
 trait SetTrait
 {
-    private string $value;
+    protected string $value;
 
     /**
      * {@inheritdoc}
@@ -33,7 +32,7 @@ trait SetTrait
      */
     public function name(): string
     {
-        $explode = explode('\\', __CLASS__);
+        $explode = explode('\\', get_class($this));
         $name = stringReplaceFirst('Set', '', end($explode));
 
         return lcfirst($name);

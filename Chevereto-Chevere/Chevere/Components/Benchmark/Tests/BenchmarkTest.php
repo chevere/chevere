@@ -39,7 +39,7 @@ final class BenchmarkTest extends TestCase
     {
         $benchmark = new Benchmark(1, 2, 3);
         $this->expectException(ArgumentCountException::class);
-        $benchmark = $benchmark->withAddedCallable(
+        $benchmark->withAddedCallable(
             function (int $one) {
                 return $one;
             },

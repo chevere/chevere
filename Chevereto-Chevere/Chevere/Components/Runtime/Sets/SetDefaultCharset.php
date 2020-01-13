@@ -22,7 +22,7 @@ use RuntimeException;
 /**
  * Sets the `default_charset` ini propery
  */
-class SetDefaultCharset implements SetInterface
+final class SetDefaultCharset implements SetInterface
 {
     use SetTrait;
 

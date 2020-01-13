@@ -18,7 +18,12 @@ use Chevere\Components\Runtime\Interfaces\SetInterface;
 interface SetErrorHandlerInterface extends SetInterface
 {
     /**
-     * @return mixed The handler value as returned by set_error_handler()
+     * Uhh no!
+     */
+    public function __construct(string $value);
+
+    /**
+     * @return mixed The handler value as returned by `set_error_handler`
      */
     public function handler();
 }

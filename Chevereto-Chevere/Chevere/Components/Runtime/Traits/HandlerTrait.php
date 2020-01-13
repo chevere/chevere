@@ -18,8 +18,4 @@ trait HandlerTrait
     /**
      * {@inheritdoc}
      */
-    public function handler()
-    {
-        return $this->handler;
-    }
 }

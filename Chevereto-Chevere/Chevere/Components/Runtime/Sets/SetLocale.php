@@ -21,7 +21,7 @@ use Chevere\Components\Runtime\Interfaces\SetInterface;
 /**
  * Sets the locale using `setlocale`
  */
-class SetLocale implements SetInterface
+final class SetLocale implements SetInterface
 {
     use SetTrait;
 
