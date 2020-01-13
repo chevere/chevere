@@ -21,7 +21,6 @@ use Chevere\Components\VarDump\Processors\NullProcessor;
 use Chevere\Components\VarDump\Processors\ObjectProcessor;
 use Chevere\Components\VarDump\Processors\ResourceProcessor;
 use Chevere\Components\VarDump\Processors\StringProcessor;
-use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 use ReflectionProperty;
 
 interface VarDumpInterface

@@ -13,72 +13,92 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Number;
 
-final class Number
+use Chevere\Components\Message\Message;
+use Chevere\Components\Number\Interfaces\NumberInterface;
+use InvalidArgumentException;
+use function ChevereFn\varType;
+
+final class Number implements NumberInterface
 {
-    /** @var int */
-    private int $number;
+    /** @var */
+    private $number;
 
     /** @var int */
-    private int $precision;
+    private int $precision = 0;
 
-    public function __construct(int $number)
+    /**
+     * Creates a new instance.
+     */
+    public function __construct($number)
     {
         $this->number = $number;
-        $this->precision = 0;
+        $this->assertNumber();
     }
 
-    public function withPrecision(int $precision)
+    /**
+     * {@inheritdoc}
+     */
+    public function withPrecision(int $precision): NumberInterface
     {
         $new = clone $this;
         $new->precision = $precision;
 
         return $new;
     }
+
     /**
-     * Abbreviate a number adding its alpha suffix.
-     *
-     * @return string Abbreviated number (ie. 2K or 1M).
+     * {@inheritdoc}
+     */
+    public function precision(): int
+    {
+        return $this->precision;
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function toAbbreviate(): string
     {
         /** @var string */
         $string = (string) $this->number;
-        if ($this->number != 0) {
-            $abbreviations = [
-                24 => 'Y',
-                21 => 'Z',
-                18 => 'E',
-                15 => 'P',
-                12 => 'T',
-                9 => 'B',
-                6 => 'M',
-                3 => 'K',
-                0 => null,
-            ];
-            foreach ($abbreviations as $exponent => $abbreviation) {
-                if ($this->number >= pow(10, $exponent)) {
-                    $div = $this->number / pow(10, $exponent);
-                    $float = floatval($div);
-                    $string = (string) (null === $abbreviation
-                        ? $float
-                        : (round($float, $this->precision) . $abbreviation));
-                    break;
-                }
+        if (0 == $this->number) {
+            return $string;
+        }
+        $abbreviations = [
+            24 => 'Y',
+            21 => 'Z',
+            18 => 'E',
+            15 => 'P',
+            12 => 'T',
+            9 => 'B',
+            6 => 'M',
+            3 => 'K',
+            0 => null,
+        ];
+        foreach ($abbreviations as $exponent => $abbreviation) {
+            if ($this->number >= pow(10, $exponent)) {
+                $div = $this->number / pow(10, $exponent);
+                $float = floatval($div);
+                $string = (string) (null === $abbreviation
+                    ? $float
+                    : (round($float, $this->precision) . $abbreviation));
+                break;
             }
         }
 
         return $string;
     }
 
-    /**
-     * Converts a fraction into a decimal (float).
-     *
-     * @param string $fraction a fraction number (like 1/25)
-     */
-    // public static function fractionToDecimal($fraction): ?float
-    // {
-    //     [$top, $bottom] = explode('/', $fraction);
-
-    //     return (float) ($bottom == 0 ? $fraction : ($top / $bottom));
-    // }
+    private function assertNumber(): void
+    {
+        if (!is_int($this->number) && !is_float($this->number)) {
+            throw new InvalidArgumentException(
+                (new Message('Argument passed to %methodName% construct expects types %expected%, type %provided% provided'))
+                    ->code('%methodName%', __CLASS__ . '::__construct')
+                    ->code('%expected%', implode(', ', ['integer', 'float']))
+                    ->code('%provided%', varType($this->number))
+                    ->toString()
+            );
+        }
+    }
 }
