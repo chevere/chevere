@@ -21,13 +21,13 @@ final class SetExceptionHandlerTest extends TestCase
 {
     private function getCurrentHandler()
     {
-        $current = set_exception_handler($this->getDummyHandler());
+        $current = set_exception_handler($this->getNamedDummyHandler());
         restore_exception_handler();
 
         return $current;
     }
 
-    private function getDummyHandler(): string
+    private function getNamedDummyHandler(): string
     {
         return __CLASS__ . '::dummyHandler';
     }
@@ -44,7 +44,7 @@ final class SetExceptionHandlerTest extends TestCase
 
     public function testConstruct(): void
     {
-        $handler = $this->getDummyHandler();
+        $handler = $this->getNamedDummyHandler();
         $set = new SetExceptionHandler($handler);
         $this->assertSame('exceptionHandler', $set->name());
         $this->assertSame($handler, $set->value());
@@ -54,7 +54,7 @@ final class SetExceptionHandlerTest extends TestCase
     public function testConstructRestoreHandler(): void
     {
         $contextHandler = $this->getCurrentHandler();
-        $change = new SetExceptionHandler($this->getDummyHandler());
+        $change = new SetExceptionHandler($this->getNamedDummyHandler());
         $changedHandler = $this->getCurrentHandler();
         $this->assertSame($changedHandler, $change->value());
         $restore = new SetExceptionHandler('');
