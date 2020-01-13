@@ -42,30 +42,30 @@ final class DumperTest extends TestCase
         ];
     }
 
-    private function createResources(): void
-    {
-        $dumpers = $this->getDumpers();
-        foreach ($dumpers as $shortName => $dumper) {
-            $file = new File(
-                new Path(
-                    __DIR__ . '/' .
-                    sprintf('resources/%s-dumped.php', $shortName)
-                )
-            );
-            try {
-                $file->remove();
-            } catch (FileNotFoundException | FileUnableToRemoveException $e) {
-                // $e silence
-            }
-            $file->create();
-            $fr =
-                new FileReturn(
-                    new FilePhp($file)
-                );
-            $dumper = $dumper->withVars(...$this->getVars());
-            $fr->put(new VariableExport($dumper->outputter()->toString()));
-        }
-    }
+    // private function createResources(): void
+    // {
+    //     $dumpers = $this->getDumpers();
+    //     foreach ($dumpers as $shortName => $dumper) {
+    //         $file = new File(
+    //             new Path(
+    //                 __DIR__ . '/' .
+    //                 sprintf('resources/%s-dumped.php', $shortName)
+    //             )
+    //         );
+    //         try {
+    //             $file->remove();
+    //         } catch (FileNotFoundException | FileUnableToRemoveException $e) {
+    //             // $e silence
+    //         }
+    //         $file->create();
+    //         $fr =
+    //             new FileReturn(
+    //                 new FilePhp($file)
+    //             );
+    //         $dumper = $dumper->withVars(...$this->getVars());
+    //         $fr->put(new VariableExport($dumper->outputter()->toString()));
+    //     }
+    // }
 
     public function testDumpers(): void
     {

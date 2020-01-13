@@ -16,8 +16,10 @@ namespace Chevere\Components\Runtime\Sets;
 use TypeError;
 use InvalidArgumentException;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Path\Path;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Interfaces\SetInterface;
+use Error;
 
 /**
  * Sets the abstract handler using `getSetHandler`
@@ -74,8 +76,8 @@ abstract class SetAbstractHandler implements SetInterface
         $restoreFn();
         $this->handler = $setFn(fn () => '');
         try {
-            $this->value = $this->handler ?? '';
-        } catch (TypeError $e) {
+            $this->value = (string) $this->handler;
+        } catch (Error $e) {
             $this->value = '@';
         }
         $restoreFn();
