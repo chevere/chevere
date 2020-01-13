@@ -25,6 +25,7 @@ use Chevere\Components\Path\Exceptions\PathIsDirException;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\File\Interfaces\FileInterface;
 use Chevere\Components\Path\Interfaces\PathInterface;
+use Chevere\Components\Path\Path;
 use function ChevereFn\stringEndsWith;
 
 /**
@@ -169,7 +170,7 @@ final class File implements FileInterface
     private function createPath(): void
     {
         $dirname = dirname($this->path->absolute());
-        $path = new PathApp($dirname);
+        $path = new Path($dirname);
         if (!$path->exists()) {
             (new Dir($path))->create();
         }

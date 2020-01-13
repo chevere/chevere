@@ -13,8 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Tests;
 
+use Chevere\Components\File\Exceptions\FileNotFoundException;
+use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
+use Chevere\Components\File\File;
+use Chevere\Components\File\FilePhp;
+use Chevere\Components\File\FileReturn;
+use Chevere\Components\Path\Path;
+use Chevere\Components\VarDump\Dumpers\ConsoleDumper;
 use Chevere\Components\VarDump\Dumpers\HtmlDumper;
 use Chevere\Components\VarDump\Dumpers\PlainDumper;
+use Chevere\Components\Variable\VariableExport;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -25,28 +33,58 @@ final class DumperTest extends TestCase
         return [null, true, 1, '', [], new stdClass];
     }
 
+    private function getDumpers(): array
+    {
+        return [
+            'PlainDumper' => new PlainDumper(),
+            'ConsoleDumper' => new ConsoleDumper(),
+            'HtmlDumper' => new HtmlDumper(),
+        ];
+    }
+
+    private function createResources(): void
+    {
+        $dumpers = $this->getDumpers();
+        foreach ($dumpers as $shortName => $dumper) {
+            $file = new File(
+                new Path(
+                    __DIR__ . '/' .
+                    sprintf('resources/%s-dumped.php', $shortName)
+                )
+            );
+            try {
+                $file->remove();
+            } catch (FileNotFoundException | FileUnableToRemoveException $e) {
+                // $e silence
+            }
+            $file->create();
+            $fr =
+                new FileReturn(
+                    new FilePhp($file)
+                );
+            $dumper = $dumper->withVars(...$this->getVars());
+            $fr->put(new VariableExport($dumper->outputter()->toString()));
+        }
+    }
+
     public function testDumpers(): void
     {
-        $dumpers = [
-            new PlainDumper(),
-            new HtmlDumper(),
-        ];
-        foreach ($dumpers as $dumper) {
+        // $this->createResources();
+        $dumpers = $this->getDumpers();
+        foreach ($dumpers as $shortName => $dumper) {
             $vars = $this->getVars();
-            ob_start();
             $dumper = $dumper->withVars(...$vars);
-            $dumper->outputter()->print();
-            $buffer = ob_get_contents();
-            ob_end_clean();
-            $this->assertTrue(strlen($buffer) > 0);
             $this->assertSame($vars, $dumper->vars());
-            // xdd($dumper->outputter()->toString());
+            $disk = include sprintf('resources/%s-dumped.php', $shortName);
+            $line = $dumper->debugBacktrace()[0]['line'];
+            $fixed = str_replace('%fileLine%', __FILE__ . ':' . $line, $disk);
+            $this->assertSame($fixed, $dumper->outputter()->toString());
         }
         // Note: Console dumper can't be tested here
     }
 
-    // public function testXdd(): void
-    // {
-    //     xdd(...$this->getVars());
-    // }
+    public function testXdd(): void
+    {
+        xdd(...$this->getVars());
+    }
 }
