@@ -13,20 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
-use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
 
 final class BooleanProcessor extends AbstractProcessor
 {
     private bool $var;
 
-    public function withProcess(): ProcessorInterface
+    public function __construct(VarDumpInterface $varDump)
     {
-        $new = clone $this;
-        $new->var = $new->varDump->var();
-        $new->val = $new->var ? 'true' : 'false';
-        $new->info = '';
-
-        return $new;
+        $this->var = $varDump->var();
+        $this->varDump = $varDump;
+        $this->val = $this->var ? 'true' : 'false';
+        $this->info = '';
     }
 }

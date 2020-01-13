@@ -25,6 +25,8 @@ final class ObjectProcessor extends AbstractProcessor
 {
     private object $var;
 
+    private VarDumpInterface $varDump;
+
     private ReflectionObject $reflectionObject;
 
     private array $properties;
@@ -32,6 +34,12 @@ final class ObjectProcessor extends AbstractProcessor
     private string $className;
 
     private $aux;
+
+    public function __construct(VarDumpInterface $varDump)
+    {
+        $this->var = $varDump->var();
+        $this->varDump = $varDump;
+    }
 
     public function withProcess(): ProcessorInterface
     {

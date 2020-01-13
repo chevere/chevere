@@ -11,11 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Interfaces;
+namespace Chevere\Components\VarDump\Exceptions;
 
-interface ProcessorInterface
+use Exception;
+
+final class TypeException extends Exception
 {
-    public function info(): string;
-
-    public function val(): string;
 }

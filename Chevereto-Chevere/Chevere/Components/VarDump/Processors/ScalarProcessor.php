@@ -20,21 +20,26 @@ use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
  */
 final class ScalarProcessor extends AbstractProcessor
 {
+    private $var;
+
+    public function __construct($var)
+    {
+        $this->var = $var;
+    }
+
     public function withProcess(): ProcessorInterface
     {
         $new = clone $this;
-        $new->val = '';
-        $new->info = '';
-        $is_string = is_string($this->varDump->var());
-        $is_numeric = is_numeric($this->varDump->var());
+        $is_string = is_string($this->var);
+        $is_numeric = is_numeric($this->var);
         if ($is_string || $is_numeric) {
             $new->info = 'length=' .
                 strlen(
                     $is_numeric
-                        ? ((string) $this->varDump->var())
-                        : $this->varDump->var()
+                        ? ((string) $this->var)
+                        : $this->var
                 );
-            $new->val = $this->varDump->formatter()->filterEncodedChars(strval($this->varDump->var()));
+            $new->val = $this->formatter->filterEncodedChars(strval($this->var));
         }
 
         return $new;

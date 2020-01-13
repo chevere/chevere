@@ -209,9 +209,6 @@ final class VarDump implements VarDumpInterface
                 break;
         }
 
-        $processor = $processor
-            ->withProcess();
-
         $this->val .= $processor->val();
         $this->info = $processor->info();
         $this->handleInfo();
