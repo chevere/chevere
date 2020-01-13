@@ -28,7 +28,7 @@ use Chevere\Components\Console\Commands\InspectCommand;
 use Chevere\Components\Console\Commands\RequestCommand;
 use Chevere\Components\Console\Commands\RunCommand;
 use Chevere\Components\Message\Message;
-use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderInterface;
 use Chevere\Components\Console\Interfaces\CommandInterface;
 use Chevere\Components\Console\Interfaces\ConsoleInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
@@ -48,7 +48,7 @@ final class Console implements ConsoleInterface
 
     private SymfonyStyle $style;
 
-    private BuilderContract $builder;
+    private BuilderInterface $builder;
 
     private array $commandNames = [
         BuildCommand::class,
@@ -127,7 +127,7 @@ final class Console implements ConsoleInterface
         return 'build' == $this->commandName;
     }
 
-    public function bind(BuilderContract $builder): bool
+    public function bind(BuilderInterface $builder): bool
     {
         if ('cli' == php_sapi_name()) {
             $this->builder = $builder;
@@ -158,7 +158,7 @@ final class Console implements ConsoleInterface
         if (null == $this->builder) {
             throw new RuntimeException(
                 (new Message('No %className% instance is defined'))
-                    ->code('%className%', BuilderContract::class)
+                    ->code('%className%', BuilderInterface::class)
                     ->toString()
             );
         }

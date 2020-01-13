@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\App\Interfaces;
 
 use Chevere\Components\Http\Interfaces\RequestInterface;
-use Chevere\Components\Http\Interfaces\ResponseContract;
+use Chevere\Components\Http\Interfaces\ResponseInterface;
 use Chevere\Components\Router\Interfaces\RoutedInterface;
 
 interface AppInterface
@@ -22,33 +22,33 @@ interface AppInterface
     const FILE_PARAMETERS = 'parameters.php';
     const PATH_LOGS = 'var/logs/';
 
-    public function __construct(ServicesInterface $services, ResponseContract $response);
+    public function __construct(ServicesInterface $services, ResponseInterface $response);
 
     /**
-     * Return an instance with the specified ServicesContract.
+     * Return an instance with the specified ServicesInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified RouterContract.
+     * an instance that contains the specified RouterInterface.
      */
     public function withServices(ServicesInterface $services): AppInterface;
 
     /**
-     * Provides access to the ServicesContract instance.
+     * Provides access to the ServicesInterface instance.
      */
     public function services(): ServicesInterface;
 
     /**
-     * Return an instance with the specified ResponseContract.
+     * Return an instance with the specified ResponseInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified ResponseContract.
+     * an instance that contains the specified ResponseInterface.
      */
-    public function withResponse(ResponseContract $response): AppInterface;
+    public function withResponse(ResponseInterface $response): AppInterface;
 
     /**
-     * Provides access to the ResponseContract instance.
+     * Provides access to the ResponseInterface instance.
      */
-    public function response(): ResponseContract;
+    public function response(): ResponseInterface;
 
     /**
      * Return an instance with the specified RequestInterface.
@@ -69,20 +69,20 @@ interface AppInterface
     public function request(): RequestInterface;
 
     /**
-     * Return an instance with the specified RoutedContract.
+     * Return an instance with the specified RoutedInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified RoutedContract.
+     * an instance that contains the specified RoutedInterface.
      */
     public function withRouted(RoutedInterface $routed): AppInterface;
 
     /**
-     * Returns a boolean indicating whether the instance has a RoutedContract.
+     * Returns a boolean indicating whether the instance has a RoutedInterface.
      */
     public function hasRouted(): bool;
 
     /**
-     * Provides access to the RouteContract instance.
+     * Provides access to the RouteInterface instance.
      */
     public function routed(): RoutedInterface;
 

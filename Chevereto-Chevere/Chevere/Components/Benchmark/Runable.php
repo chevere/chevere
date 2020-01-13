@@ -19,7 +19,7 @@ use Chevere\Components\Benchmark\Interfaces\BenchmarkInterface;
 use Chevere\Components\Benchmark\Interfaces\RunableInterface;
 
 /**
- * Determine if a BenchmarkContract can run
+ * Determine if a BenchmarkInterface can run
  */
 final class Runable implements RunableInterface
 {
@@ -32,7 +32,7 @@ final class Runable implements RunableInterface
     }
 
     /**
-     * @return BenchmarkInterface A runable BenchmarkContract
+     * @return BenchmarkInterface A runable BenchmarkInterface
      */
     public function benchmark(): BenchmarkInterface
     {

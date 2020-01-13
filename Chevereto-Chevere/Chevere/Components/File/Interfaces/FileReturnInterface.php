@@ -39,7 +39,7 @@ interface FileReturnInterface
     public function withNoStrict(): FileReturnInterface;
 
     /**
-     * Provides access to the FilePhpContract instance.
+     * Provides access to the FilePhpInterface instance.
      */
     public function filePhp(): FilePhpInterface;
 

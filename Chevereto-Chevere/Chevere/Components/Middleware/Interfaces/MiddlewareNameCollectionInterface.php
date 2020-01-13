@@ -25,22 +25,22 @@ interface MiddlewareNameCollectionInterface extends ToArrayInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified middleware name.
      *
-     * @throws MiddlewareContractException if $name doesn't represent a class implementing the MiddlewareContract
+     * @throws MiddlewareInterfaceException if $name doesn't represent a class implementing the MiddlewareInterface
      */
     public function withAddedMiddlewareName(MiddlewareNameInterface $middlewareName): MiddlewareNameCollectionInterface;
 
     /**
-     * Returns a boolean indicating whether the instance has any MiddlewareContract.
+     * Returns a boolean indicating whether the instance has any MiddlewareInterface.
      */
     public function hasAny(): bool;
 
     /**
-     * Returns a boolean indicating whether the instance has the given MiddlewareNameContract.
+     * Returns a boolean indicating whether the instance has the given MiddlewareNameInterface.
      */
     public function has(MiddlewareNameInterface $middlewareName): bool;
 
     /**
-     * @return array MiddlewareNameContract[]
+     * @return array MiddlewareNameInterface[]
      */
     public function toArray(): array;
 }

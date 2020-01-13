@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Console\Commands;
 
 use Chevere\Components\Console\Command;
-use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderInterface;
 
 /**
  * The SetopCommand sets the option value.
@@ -31,7 +31,7 @@ final class SetopCommand extends Command
         ['option', Command::ARGUMENT_REQUIRED, 'Option'],
     ];
 
-    public function callback(BuilderContract $builder): int
+    public function callback(BuilderInterface $builder): int
     {
         $option = $this->console->input()->getArgument('option');
         xdd($option);

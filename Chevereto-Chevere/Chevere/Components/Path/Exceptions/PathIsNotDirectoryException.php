@@ -16,7 +16,7 @@ namespace Chevere\Components\Path\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when the PathContract is not a directory.
+ * Exception thrown when the PathInterface is not a directory.
  */
 final class PathIsNotDirectoryException extends Exception
 {

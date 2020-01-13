@@ -27,7 +27,7 @@ use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Router\Router;
 use Chevere\Components\App\Interfaces\AppInterface;
 use Chevere\Components\App\Interfaces\BuildInterface;
-use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderInterface;
 use Chevere\Components\App\Interfaces\ServicesInterface;
 use Chevere\Components\App\Interfaces\LoaderInterface;
 use Chevere\Components\App\Interfaces\ParametersInterface;
@@ -38,7 +38,7 @@ use function console;
  */
 final class Loader implements LoaderInterface
 {
-    private BuilderContract $builder;
+    private BuilderInterface $builder;
 
     private ParametersInterface $parameters;
 
@@ -124,7 +124,7 @@ final class Loader implements LoaderInterface
     }
 
     /**
-     * Return a ServicesContract containing the services required to provide the application.
+     * Return a ServicesInterface containing the services required to provide the application.
      */
     private function getServices(): ServicesInterface
     {

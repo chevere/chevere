@@ -21,7 +21,7 @@ use Chevere\Components\Http\Interfaces\MethodControllerNameCollectionInterface;
 
 final class MethodControllerNameCollection implements MethodControllerNameCollectionInterface
 {
-    /** @param array MethodControllerNameContract[] */
+    /** @param array MethodControllerNameInterface[] */
     private array $array;
 
     /** @param array ['METHOD' => key,]*/

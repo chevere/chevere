@@ -40,7 +40,7 @@ final class File implements FileInterface
     /**
      * Creates a new instance.
      *
-     * @throws PathIsDirException if the PathContract represents a directory
+     * @throws PathIsDirException if the PathInterface represents a directory
      */
     public function __construct(PathInterface $path)
     {

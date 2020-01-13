@@ -31,7 +31,7 @@ final class ServicesBuilder implements ServicesBuilderInterface
     /**
      * Creates a new instance.
      *
-     * @param BuildInterface      $build      The build containg AppContract services (if any)
+     * @param BuildInterface      $build      The build containg AppInterface services (if any)
      * @param ParametersInterface $parameters The application parameters which alter this services builder
      */
     public function __construct(BuildInterface $build, ParametersInterface $parameters)

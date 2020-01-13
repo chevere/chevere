@@ -36,7 +36,7 @@ final class CacheItemTest extends TestCase
             );
     }
 
-    // private function writeSerialized(PathContract $path): void
+    // private function writeSerialized(PathInterface $path): void
     // {
     //     $fileReturn =
     //         new FileReturn(

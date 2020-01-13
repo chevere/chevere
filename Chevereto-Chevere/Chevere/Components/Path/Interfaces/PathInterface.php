@@ -43,7 +43,7 @@ interface PathInterface
     public function isFile(): bool;
 
     /**
-     * Get a child path as a PathContract
+     * Get a child path as a PathInterface
      */
     public function getChild(string $path): PathInterface;
 }

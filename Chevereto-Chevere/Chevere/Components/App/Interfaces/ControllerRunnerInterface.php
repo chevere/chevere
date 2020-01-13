@@ -22,7 +22,7 @@ interface ControllerRunnerInterface
     /**
      * Run a controller on top of the application container.
      *
-     * @param string $controllerName A ControllerContract name.
+     * @param string $controllerName A ControllerInterface name.
      */
     public function run(string $controllerName): ControllerInterface;
 }

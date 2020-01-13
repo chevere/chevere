@@ -16,7 +16,7 @@ namespace Chevere\Components\Variable\Exceptions;
 use Exception;
 
 /**
- * Exception thrown by VariableExportContract.
+ * Exception thrown by VariableExportInterface.
  */
 final class VariableExportException extends Exception
 {

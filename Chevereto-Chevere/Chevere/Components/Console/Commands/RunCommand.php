@@ -18,7 +18,7 @@ use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Chevere\Components\Console\Command;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Message\Message;
-use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderInterface;
 
 /**
  * The RunCommand allows to run any callable present in the app.
@@ -63,7 +63,7 @@ final class RunCommand extends Command
         ],
     ];
 
-    private BuilderContract $builder;
+    private BuilderInterface $builder;
 
     /** @var string */
     private string $callable;
@@ -92,7 +92,7 @@ final class RunCommand extends Command
     /** @var array */
     private array $lines;
 
-    public function callback(BuilderContract $builder): int
+    public function callback(BuilderInterface $builder): int
     {
         $this->builder = $builder;
         $this->callable = $this->getArgumentString('callable');

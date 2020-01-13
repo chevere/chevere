@@ -16,7 +16,7 @@ namespace Chevere\Components\Console\Interfaces;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 interface ConsoleInterface
@@ -52,7 +52,7 @@ interface ConsoleInterface
 
     public function isBuilding(): bool;
 
-    public function bind(BuilderContract $builder): bool;
+    public function bind(BuilderInterface $builder): bool;
 
     public function run();
 }

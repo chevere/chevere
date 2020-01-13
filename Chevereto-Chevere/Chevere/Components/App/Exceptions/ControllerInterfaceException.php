@@ -18,5 +18,6 @@ use Exception;
 /**
  * Exception thrown when a ControllerContract is not implemented.
  */
-final class ControllerContractException extends Exception
-{ }
+final class ControllerInterfaceException extends Exception
+{
+}

@@ -16,7 +16,8 @@ namespace Chevere\Components\App\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when a RouterContract is unable to resolve.
+ * Exception thrown when a RouterInterface is unable to resolve.
  */
 final class RouterCantResolveException extends Exception
-{ }
+{
+}

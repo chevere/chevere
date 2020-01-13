@@ -31,10 +31,10 @@ final class RouterMaker implements RouterMakerInterface
 {
     private RouterPropertiesInterface $properties;
 
-    /** @var array [RouteContract regex => $id]. */
+    /** @var array [RouteInterface regex => $id]. */
     private array $regexes;
 
-    /** @var array [RouteContract key => $id] */
+    /** @var array [RouteInterface key => $id] */
     private array $keys;
 
     /**

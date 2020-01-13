@@ -21,38 +21,38 @@ interface ServicesInterface
     public function __construct();
 
     /**
-     * Return an instance with the specified ApiContract.
+     * Return an instance with the specified ApiInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified ApiContract.
+     * an instance that contains the specified ApiInterface.
      */
     public function withApi(ApiInterface $api): ServicesInterface;
 
     /**
-     * Returns a boolean indicating whether the instance has an ApiContract.
+     * Returns a boolean indicating whether the instance has an ApiInterface.
      */
     public function hasApi(): bool;
 
     /**
-     * Provides access to the ApiContract instance.
+     * Provides access to the ApiInterface instance.
      */
     public function api(): ApiInterface;
 
     /**
-     * Return an instance with the specified RouterContract.
+     * Return an instance with the specified RouterInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified RouterContract.
+     * an instance that contains the specified RouterInterface.
      */
     public function withRouter(RouterInterface $router): ServicesInterface;
 
     /**
-     * Returns a boolean indicating whether the instance has a RouterContract.
+     * Returns a boolean indicating whether the instance has a RouterInterface.
      */
     public function hasRouter(): bool;
 
     /**
-     * Provides access to the RouterContract instance.
+     * Provides access to the RouterInterface instance.
      */
     public function router(): RouterInterface;
 }

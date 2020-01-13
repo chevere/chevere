@@ -16,7 +16,7 @@ namespace Chevere\Components\Bootstrap\Exceptions;
 use Exception;
 
 /**
- * Exception thrown by BootstrapContract
+ * Exception thrown by BootstrapInterface
  */
 final class BootstrapException extends Exception
 {

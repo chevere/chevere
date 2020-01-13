@@ -66,7 +66,7 @@ final class Checkout implements CheckoutInterface
     }
 
     /**
-     * The BuildContract must be maked to checkout the application.
+     * The BuildInterface must be maked to checkout the application.
      */
     private function assertIsMaked(): void
     {

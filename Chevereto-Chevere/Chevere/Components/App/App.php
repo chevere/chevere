@@ -17,19 +17,19 @@ use Chevere\Components\App\Instances\RequestInstance;
 use Chevere\Components\App\Interfaces\AppInterface;
 use Chevere\Components\App\Interfaces\ServicesInterface;
 use Chevere\Components\Http\Interfaces\RequestInterface;
-use Chevere\Components\Http\Interfaces\ResponseContract;
+use Chevere\Components\Http\Interfaces\ResponseInterface;
 use Chevere\Components\Router\Interfaces\RoutedInterface;
 
 /**
  * The application container.
  *
- * Provides access to the application, mostly intended for providing access at ControllerContract layer.
+ * Provides access to the application, mostly intended for providing access at ControllerInterface layer.
  */
 final class App implements AppInterface
 {
     private ServicesInterface $services;
 
-    private ResponseContract $response;
+    private ResponseInterface $response;
 
     private RoutedInterface $routed;
 
@@ -41,7 +41,7 @@ final class App implements AppInterface
     /**
      * Constructs the application container.
      */
-    public function __construct(ServicesInterface $services, ResponseContract $response)
+    public function __construct(ServicesInterface $services, ResponseInterface $response)
     {
         $this->services = $services;
         $this->response = $response;
@@ -69,7 +69,7 @@ final class App implements AppInterface
     /**
      * {@inheritdoc}
      */
-    public function withResponse(ResponseContract $response): AppInterface
+    public function withResponse(ResponseInterface $response): AppInterface
     {
         $new = clone $this;
         $new->response = $response;
@@ -80,7 +80,7 @@ final class App implements AppInterface
     /**
      * {@inheritdoc}
      */
-    public function response(): ResponseContract
+    public function response(): ResponseInterface
     {
         return $this->response;
     }

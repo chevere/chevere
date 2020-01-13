@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Interfaces;
 
-use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderInterface;
 
 interface ResolverInterface
 {
     public function __construct(ResolvableInterface $resolvable);
 
-    public function builder(): BuilderContract;
+    public function builder(): BuilderInterface;
 }

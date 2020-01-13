@@ -16,7 +16,7 @@ namespace Chevere\Components\Serialize\Exceptions;
 use Exception;
 
 /**
- * Exception thrown by UnserializeContract.
+ * Exception thrown by UnserializeInterface.
  */
 final class UnserializeException extends Exception
 {

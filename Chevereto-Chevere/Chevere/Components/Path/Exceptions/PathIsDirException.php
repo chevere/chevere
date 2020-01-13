@@ -16,7 +16,7 @@ namespace Chevere\Components\Path\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when the PathContract represents a directory.
+ * Exception thrown when the PathInterface represents a directory.
  */
 final class PathIsDirException extends Exception
 {

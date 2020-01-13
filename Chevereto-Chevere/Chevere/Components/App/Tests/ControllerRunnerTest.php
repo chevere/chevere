@@ -15,7 +15,7 @@ namespace Chevere\Components\App\Tests;
 
 use Chevere\Components\App\App;
 use Chevere\Components\App\ControllerRunner;
-use Chevere\Components\App\Exceptions\ControllerContractException;
+use Chevere\Components\App\Exceptions\ControllerInterfaceException;
 use Chevere\Components\App\Exceptions\ControllerNotExistsException;
 use Chevere\Components\App\Services;
 use Chevere\Components\Http\Response;
@@ -39,9 +39,9 @@ final class ControllerRunnerTest extends TestCase
         $this->instance->run('/');
     }
 
-    public function testRunnerWithInvalidControllerContract(): void
+    public function testRunnerWithInvalidControllerInterface(): void
     {
-        $this->expectException(ControllerContractException::class);
+        $this->expectException(ControllerInterfaceException::class);
         $this->instance->run(ControllerRunner::class);
     }
 

@@ -15,12 +15,12 @@ namespace Chevere\Components\App\Interfaces;
 
 interface RunnerInterface
 {
-    public function __construct(BuilderContract $builder);
+    public function __construct(BuilderInterface $builder);
 
     /**
-     * Provides access to the BuilderContract instance.
+     * Provides access to the BuilderInterface instance.
      */
-    public function builder(): BuilderContract;
+    public function builder(): BuilderInterface;
 
     /**
      * Return an instance with a console loop.

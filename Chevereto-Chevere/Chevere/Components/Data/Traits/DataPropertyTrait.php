@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Data\Traits;
 
-use Chevere\Components\Data\Interfaces\DataContract;
+use Chevere\Components\Data\Interfaces\DataInterface;
 
 trait DataPropertyTrait
 {
-    private DataContract $data;
+    private DataInterface $data;
 }

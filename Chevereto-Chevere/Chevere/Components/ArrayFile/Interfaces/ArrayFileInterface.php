@@ -22,10 +22,10 @@ interface ArrayFileInterface
     public function __construct(FilePhpInterface $filePhp);
 
     /**
-     * Return an instance with the specified ServicesContract.
+     * Return an instance with the specified ServicesInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified RouterContract.
+     * an instance that contains the specified RouterInterface.
      *
      * @param TypeInterface $type a Type that all array top level members must satisfy
      *
@@ -34,7 +34,7 @@ interface ArrayFileInterface
     public function withMembersType(TypeInterface $type): ArrayFileInterface;
 
     /**
-     * Provides access to the FileContract instance in FilePhpContract.
+     * Provides access to the FileInterface instance in FilePhpInterface.
      */
     public function file(): FileInterface;
 

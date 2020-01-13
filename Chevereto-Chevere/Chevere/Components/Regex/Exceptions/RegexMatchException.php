@@ -16,7 +16,7 @@ namespace Chevere\Components\Regex\Exceptions;
 use Exception;
 
 /**
- * Exception thrown by the RegexMatchContract.
+ * Exception thrown by the RegexMatchInterface.
  */
 final class RegexMatchException extends Exception
 {

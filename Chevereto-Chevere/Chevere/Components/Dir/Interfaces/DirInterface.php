@@ -23,7 +23,7 @@ interface DirInterface
     public function __construct(PathInterface $path);
 
     /**
-     * Provides access to the PathContract instance.
+     * Provides access to the PathInterface instance.
      */
     public function path(): PathInterface;
 
@@ -60,7 +60,7 @@ interface DirInterface
     public function removeContents(): array;
 
     /**
-     * Gets a child DirContract for the added path.
+     * Gets a child DirInterface for the added path.
      */
     public function getChild(string $path): DirInterface;
 }

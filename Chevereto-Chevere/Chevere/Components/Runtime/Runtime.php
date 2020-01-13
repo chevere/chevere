@@ -28,12 +28,12 @@ final class Runtime implements RuntimeInterface
     /**
      * Creates a new instance.
      *
-     * @param SetInterface $runtimeContract
+     * @param SetInterface $sets
      */
-    public function __construct(SetInterface ...$setContract)
+    public function __construct(SetInterface ...$sets)
     {
         $this->data = new Data([]);
-        foreach ($setContract as $set) {
+        foreach ($sets as $set) {
             $this->data = $this->data
                 ->withAddedKey(
                     $set->name(),

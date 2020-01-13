@@ -15,7 +15,7 @@ namespace Chevere\Components\Data\Interfaces;
 
 use Chevere\Components\Common\Interfaces\ToArrayInterface;
 
-interface DataContract extends ToArrayInterface
+interface DataInterface extends ToArrayInterface
 {
     public function __construct(array $data);
 
@@ -27,7 +27,7 @@ interface DataContract extends ToArrayInterface
      *
      * @param array $data An array which will replace the existing one.
      */
-    public function withArray(array $data): DataContract;
+    public function withArray(array $data): DataInterface;
 
     /**
      * Return an instance with the specified array (merged with existent).
@@ -37,7 +37,7 @@ interface DataContract extends ToArrayInterface
      *
      * @param array $data An array which will merged with the existing one.
      */
-    public function withMergedArray(array $data): DataContract;
+    public function withMergedArray(array $data): DataInterface;
 
     /**
      * Return an instance with the specified variable appended.
@@ -47,7 +47,7 @@ interface DataContract extends ToArrayInterface
      *
      * @param mixed $var The variable to append.
      */
-    public function withAppend($var): DataContract;
+    public function withAppend($var): DataInterface;
 
     /**
      * Return an instance with the specified key-var.
@@ -58,7 +58,7 @@ interface DataContract extends ToArrayInterface
      * @param string $var The key to add.
      * @param mixed $var The variable to add.
      */
-    public function withAddedKey(string $key, $var): DataContract;
+    public function withAddedKey(string $key, $var): DataInterface;
 
     /**
      * Return an instance with the specified key removed.
@@ -68,7 +68,7 @@ interface DataContract extends ToArrayInterface
      *
      * @param string $var The key to remove.
      */
-    public function withRemovedKey(string $key): DataContract;
+    public function withRemovedKey(string $key): DataInterface;
 
     /**
      * Returns a boolean indicating whether the data is empty.

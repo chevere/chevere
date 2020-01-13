@@ -19,7 +19,7 @@ use Chevere\Components\Console\Command;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Time\TimeHr;
-use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderInterface;
 
 /**
  * The BuildCommand builds the App.
@@ -33,9 +33,9 @@ final class BuildCommand extends Command
     const DESCRIPTION = 'Build the App';
     const HELP = 'This command builds the App';
 
-    private BuilderContract $builder;
+    private BuilderInterface $builder;
 
-    public function callback(BuilderContract $builder): int
+    public function callback(BuilderInterface $builder): int
     {
         $timeStart = (int) hrtime(true);
         $this->builder = $builder;

@@ -17,7 +17,7 @@ use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
 
 /**
- * A collection of MiddlewareContract names.
+ * A collection of MiddlewareInterface names.
  */
 final class MiddlewareNameCollection implements MiddlewareNameCollectionInterface
 {

@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Api\src;
 
 use RecursiveFilterIterator;
-use Chevere\Components\Api\Interfaces\src\FilterIteratorContract;
+use Chevere\Components\Api\Interfaces\src\FilterIteratorInterface;
 
 /**
  * Provides filtering for the Api register process (directory scan).
  */
-final class FilterIterator extends RecursiveFilterIterator implements FilterIteratorContract
+final class FilterIterator extends RecursiveFilterIterator implements FilterIteratorInterface
 {
     /** @var array Accepted files array [GET.php, _GET.php, POST.php, ...] */
     private array $acceptFilenames;
@@ -27,7 +27,7 @@ final class FilterIterator extends RecursiveFilterIterator implements FilterIter
     /**
      * {@inheritdoc}
      */
-    public function withAcceptFilenames(array $methods): FilterIteratorContract
+    public function withAcceptFilenames(array $methods): FilterIteratorInterface
     {
         $new = clone $this;
         foreach ($methods as $v) {

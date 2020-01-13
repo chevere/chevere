@@ -27,7 +27,7 @@ interface RouteInterface
     public function __construct(PathUriInterface $pathUri);
 
     /**
-     * Provides access to the PathUriContract instance.
+     * Provides access to the PathUriInterface instance.
      */
     public function pathUri(): PathUriInterface;
 
@@ -62,65 +62,65 @@ interface RouteInterface
     public function name(): RouteNameInterface;
 
     /**
-     * Return an instance with the specified added WildcardContract.
+     * Return an instance with the specified added WildcardInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified added WildcardContract.
+     * an instance that contains the specified added WildcardInterface.
      *
      * @throws WildcardNotFoundException if the wildcard doesn't exists in the instance
      */
     public function withAddedWildcard(WildcardInterface $wildcard): RouteInterface;
 
     /**
-     * Returns a boolean indicating whether the instance a WildcardCollectionContract.
+     * Returns a boolean indicating whether the instance a WildcardCollectionInterface.
      */
     public function hasWildcardCollection(): bool;
 
     /**
-     * Provides access to the WildcardCollectionContract instance.
+     * Provides access to the WildcardCollectionInterface instance.
      */
     public function wildcardCollection(): WildcardCollectionInterface;
 
     /**
-     * Return an instance with the specified added MethodInterface ControllerNameContract.
+     * Return an instance with the specified added MethodInterface ControllerNameInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified added MethodInterface ControllerNameContract.
+     * an instance that contains the specified added MethodInterface ControllerNameInterface.
      */
     public function withAddedMethod(MethodInterface $method, ControllerNameInterface $controllerName): RouteInterface;
 
     /**
-     * Returns a boolean indicating whether the instance a MethodControllerNameCollectionContract.
+     * Returns a boolean indicating whether the instance a MethodControllerNameCollectionInterface.
      */
     public function hasMethodControllerNameCollection(): bool;
 
     /**
-     * Provides access to the MethodControllerNameCollectionContract instance.
+     * Provides access to the MethodControllerNameCollectionInterface instance.
      */
     public function methodControllerNameCollection(): MethodControllerNameCollectionInterface;
 
     /**
      * Get the controller name for the given MethodInterface.
      *
-     * @throws MethodNotFoundException if $method doesn't exists in the MethodControllerNameCollectionContract
+     * @throws MethodNotFoundException if $method doesn't exists in the MethodControllerNameCollectionInterface
      */
     public function controllerName(MethodInterface $method): ControllerNameInterface;
 
     /**
-     * Return an instance with the specified added MiddlewareNameContract.
+     * Return an instance with the specified added MiddlewareNameInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified added MiddlewareNameContract.
+     * an instance that contains the specified added MiddlewareNameInterface.
      */
     public function withAddedMiddlewareName(MiddlewareNameInterface $middlewareName): RouteInterface;
 
     /**
-     * Returns a boolean indicating whether the instance a MiddlewareNameCollectionContract.
+     * Returns a boolean indicating whether the instance a MiddlewareNameCollectionInterface.
      */
     public function hasMiddlewareNameCollection(): bool;
 
     /**
-     * Provides access to the MiddlewareNameCollectionContract instance.
+     * Provides access to the MiddlewareNameCollectionInterface instance.
      */
     public function middlewareNameCollection(): MiddlewareNameCollectionInterface;
 }

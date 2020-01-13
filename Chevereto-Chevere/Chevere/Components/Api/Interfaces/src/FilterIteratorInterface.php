@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Api\Interfaces\src;
 
-interface FilterIteratorContract
+interface FilterIteratorInterface
 {
     /**
      * @param array  $methods      Accepted HTTP methods [GET,POST,etc.]
@@ -21,7 +21,7 @@ interface FilterIteratorContract
      *
      * @return self
      */
-    public function withAcceptFilenames(array $methods): FilterIteratorContract;
+    public function withAcceptFilenames(array $methods): FilterIteratorInterface;
 
     /**
      * Get accepte filenames

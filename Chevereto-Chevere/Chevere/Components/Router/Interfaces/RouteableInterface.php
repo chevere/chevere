@@ -20,7 +20,7 @@ interface RouteableInterface
     public function __construct(RouteInterface $route);
 
     /**
-     * Provides access to the RouteContract instance.
+     * Provides access to the RouteInterface instance.
      */
     public function route(): RouteInterface;
 }

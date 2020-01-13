@@ -22,7 +22,7 @@ use Chevere\Components\Router\Interfaces\RouterPropertiesInterface;
 
 final class RouterProperties implements RouterPropertiesInterface
 {
-    /** @var array RegexPropertyContract::class[] */
+    /** @var array RegexPropertyInterface::class[] */
     private array $classMap = [
         RegexProperty::class,
         RoutesProperty::class,

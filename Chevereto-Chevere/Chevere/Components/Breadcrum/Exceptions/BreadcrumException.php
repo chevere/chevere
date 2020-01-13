@@ -16,7 +16,7 @@ namespace Chevere\Components\Breadcrum\Exceptions;
 use Exception;
 
 /**
- * Exception thrown by the BreadcrumContract.
+ * Exception thrown by the BreadcrumInterface.
  */
 final class BreadcrumException extends Exception
 {

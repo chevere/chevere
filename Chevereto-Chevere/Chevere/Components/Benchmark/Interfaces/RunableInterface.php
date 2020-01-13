@@ -23,7 +23,7 @@ interface RunableInterface
     public function __construct(BenchmarkInterface $benchmark);
 
     /**
-     * @return BenchmarkInterface A runable BenchmarkContract
+     * @return BenchmarkInterface A runable BenchmarkInterface
      */
     public function benchmark(): BenchmarkInterface;
 }

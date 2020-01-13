@@ -35,7 +35,7 @@ final class Dir implements DirInterface
     /**
      * Creates a new instance.
      *
-     * @throws PathIsFileException if the PathContract represents a file
+     * @throws PathIsFileException if the PathInterface represents a file
      */
     public function __construct(PathInterface $path)
     {

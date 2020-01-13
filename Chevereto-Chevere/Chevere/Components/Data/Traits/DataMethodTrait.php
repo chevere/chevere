@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Data\Traits;
 
-use Chevere\Components\Data\Interfaces\DataContract;
+use Chevere\Components\Data\Interfaces\DataInterface;
 
 trait DataMethodTrait
 {
     use DataPropertyTrait;
 
     /**
-     * Provides access to the DataContract instance.
+     * Provides access to the DataInterface instance.
      */
-    public function data(): DataContract
+    public function data(): DataInterface
     {
         return $this->data;
     }

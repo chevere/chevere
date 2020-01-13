@@ -16,7 +16,7 @@ namespace Chevere\Components\Router\Exceptions;
 use Exception;
 
 /**
- * Exception thrown by the RouterMakerContract.
+ * Exception thrown by the RouterMakerInterface.
  */
 final class RouterMakerException extends Exception
 {

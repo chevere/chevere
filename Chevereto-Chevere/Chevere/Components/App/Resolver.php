@@ -18,7 +18,7 @@ use Chevere\Components\App\Exceptions\ResolverException;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Router\Exception\RouteNotFoundException;
-use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderInterface;
 use Chevere\Components\App\Interfaces\ResolvableInterface;
 
 /**
@@ -26,7 +26,7 @@ use Chevere\Components\App\Interfaces\ResolvableInterface;
  */
 final class Resolver implements ResolverInterface
 {
-    private BuilderContract $builder;
+    private BuilderInterface $builder;
 
     /**
      * @throws ResolverException if the request can't be routed
@@ -67,7 +67,7 @@ final class Resolver implements ResolverInterface
     /**
      * {@inheritdoc}
      */
-    public function builder(): BuilderContract
+    public function builder(): BuilderInterface
     {
         return $this->builder;
     }

@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Interfaces;
 
-interface BuilderContract
+interface BuilderInterface
 {
     public function __construct(BuildInterface $build);
 
     /**
-     * Return an instance with the specified BuildContract.
+     * Return an instance with the specified BuildInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified BuildContract.
+     * an instance that contains the specified BuildInterface.
      */
-    public function withBuild(BuildInterface $build): BuilderContract;
+    public function withBuild(BuildInterface $build): BuilderInterface;
 
     /**
-     * Provides access to the BuildContract instance.
+     * Provides access to the BuildInterface instance.
      */
     public function build(): BuildInterface;
 
@@ -36,7 +36,7 @@ interface BuilderContract
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified controller.
      */
-    public function withControllerName(string $controller): BuilderContract;
+    public function withControllerName(string $controller): BuilderInterface;
 
     /**
      * Returns a boolean indicating whether the instance has a controller name.
@@ -56,7 +56,7 @@ interface BuilderContract
      *
      * @param array $arguments mapping [name => value]
      */
-    public function withControllerArguments(array $arguments): BuilderContract;
+    public function withControllerArguments(array $arguments): BuilderInterface;
 
     /**
      * Returns a boolean indicating whether the instance has controller arguments.

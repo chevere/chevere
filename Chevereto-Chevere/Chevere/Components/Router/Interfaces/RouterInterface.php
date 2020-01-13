@@ -24,20 +24,20 @@ interface RouterInterface
     const CACHE_ID = 'router';
 
     /**
-     * Return an instance with the specified RouterPropertiesContract.
+     * Return an instance with the specified RouterPropertiesInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified RouterPropertiesContract.
+     * an instance that contains the specified RouterPropertiesInterface.
      */
     public function withProperties(RouterPropertiesInterface $properties): RouterInterface;
 
     /**
-     * Returns a boolean indicating whether the instance has a RouterPropertiesContract.
+     * Returns a boolean indicating whether the instance has a RouterPropertiesInterface.
      */
     public function hasProperties(): bool;
 
     /**
-     * Provides access to the RouterPropertiesContract instance.
+     * Provides access to the RouterPropertiesInterface instance.
      */
     public function properties(): RouterPropertiesInterface;
 
@@ -47,11 +47,11 @@ interface RouterInterface
     public function canResolve(): bool;
 
     /**
-     * Returns a RoutedContract for the given UriInterface.
+     * Returns a RoutedInterface for the given UriInterface.
      *
      * @throws RouterException        if the router encounters any fatal error
      * @throws UnserializeException   if the route string object can't be unserialized
-     * @throws TypeError              if the found route doesn't implement the RouteContract
+     * @throws TypeError              if the found route doesn't implement the RouteInterface
      * @throws RouteNotFoundException if no route resolves the given UriInterface
      */
     public function resolve(UriInterface $uri): RoutedInterface;

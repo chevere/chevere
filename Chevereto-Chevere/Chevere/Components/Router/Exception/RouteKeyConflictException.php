@@ -16,7 +16,7 @@ namespace Chevere\Components\Router\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when a RouteContract path conflicts with others.
+ * Exception thrown when a RouteInterface path conflicts with others.
  */
 final class RouteKeyConflictException extends Exception
 {

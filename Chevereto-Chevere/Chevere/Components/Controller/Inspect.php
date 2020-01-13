@@ -23,7 +23,7 @@ use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringReplaceLast;
 
 /**
- * Provides information about any Controller implementing ControllerContract interface.
+ * Provides information about any Controller implementing ControllerInterface interface.
  */
 final class Inspect implements InspectInterface
 {
@@ -90,7 +90,7 @@ final class Inspect implements InspectInterface
     /**
      * Creates a new instance.
      *
-     * @param string $className A class name implementing the ControllerContract
+     * @param string $className A class name implementing the ControllerInterface
      */
     public function __construct(string $className)
     {

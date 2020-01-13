@@ -16,7 +16,7 @@ namespace Chevere\Components\Console\Interfaces;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Chevere\Components\Console\Console;
-use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderInterface;
 
 interface CommandInterface
 {
@@ -50,5 +50,5 @@ interface CommandInterface
 
     public function getOptionArray(string $option): array;
 
-    public function callback(BuilderContract $builder): int;
+    public function callback(BuilderInterface $builder): int;
 }

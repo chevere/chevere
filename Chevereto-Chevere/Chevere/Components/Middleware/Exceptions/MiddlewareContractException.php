@@ -16,8 +16,8 @@ namespace Chevere\Components\Middleware\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when a MiddlewareContract is not implemented.
+ * Exception thrown when a MiddlewareInterface is not implemented.
  */
-final class MiddlewareContractException extends Exception
+final class MiddlewareInterfaceException extends Exception
 {
 }

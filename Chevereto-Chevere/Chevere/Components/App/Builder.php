@@ -15,12 +15,12 @@ namespace Chevere\Components\App;
 
 use Chevere\Components\Controller\Traits\ControllerNameAccessTrait;
 use Chevere\Components\App\Interfaces\BuildInterface;
-use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderInterface;
 
 /**
  * The application builder container.
  */
-final class Builder implements BuilderContract
+final class Builder implements BuilderInterface
 {
     use ControllerNameAccessTrait;
 
@@ -39,7 +39,7 @@ final class Builder implements BuilderContract
     /**
      * {@inheritdoc}
      */
-    public function withBuild(BuildInterface $build): BuilderContract
+    public function withBuild(BuildInterface $build): BuilderInterface
     {
         $new = clone $this;
         $new->build = $build;
@@ -58,7 +58,7 @@ final class Builder implements BuilderContract
     /**
      * {@inheritdoc}
      */
-    public function withControllerName(string $controllerName): BuilderContract
+    public function withControllerName(string $controllerName): BuilderInterface
     {
         $new = clone $this;
         $new->controllerName = $controllerName;
@@ -69,7 +69,7 @@ final class Builder implements BuilderContract
     /**
      * {@inheritdoc}
      */
-    public function withControllerArguments(array $arguments): BuilderContract
+    public function withControllerArguments(array $arguments): BuilderInterface
     {
         $new = clone $this;
         $new->controllerArguments = $arguments;

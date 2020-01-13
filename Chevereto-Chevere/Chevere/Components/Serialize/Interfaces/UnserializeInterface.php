@@ -25,7 +25,7 @@ interface UnserializeInterface
     public function var();
 
     /**
-     * Provides access to the TypeContract instance for the unserialized variable.
+     * Provides access to the TypeInterface instance for the unserialized variable.
      */
     public function type(): TypeInterface;
 }

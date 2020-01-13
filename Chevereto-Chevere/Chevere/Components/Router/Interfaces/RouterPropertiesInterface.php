@@ -23,7 +23,7 @@ interface RouterPropertiesInterface extends ToArrayInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified regex string.
      *
-     * @param string $regex see RegexPropertyContract
+     * @param string $regex see RegexPropertyInterface
      */
     public function withRegex(string $regex): RouterPropertiesInterface;
 
@@ -43,7 +43,7 @@ interface RouterPropertiesInterface extends ToArrayInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified routes array.
      *
-     * @param array $routes see RoutesPropertyContract
+     * @param array $routes see RoutesPropertyInterface
      */
     public function withRoutes(array $routes): RouterPropertiesInterface;
 
@@ -58,7 +58,7 @@ interface RouterPropertiesInterface extends ToArrayInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified index array.
      *
-     * @param array $index see IndexPropertyContract
+     * @param array $index see IndexPropertyInterface
      */
     public function withIndex(array $index): RouterPropertiesInterface;
 
@@ -73,7 +73,7 @@ interface RouterPropertiesInterface extends ToArrayInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified groups array.
      *
-     * @param array $groups see GroupsPropertyContract
+     * @param array $groups see GroupsPropertyInterface
      */
     public function withGroups(array $groups): RouterPropertiesInterface;
 
@@ -88,7 +88,7 @@ interface RouterPropertiesInterface extends ToArrayInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified named array.
      *
-     * @param array $named see NamedPropertyContract
+     * @param array $named see NamedPropertyInterface
      */
     public function withNamed(array $named): RouterPropertiesInterface;
 

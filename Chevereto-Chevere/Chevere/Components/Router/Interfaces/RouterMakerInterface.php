@@ -21,20 +21,20 @@ use Chevere\Components\Router\Exceptions\RouterMakerException;
 interface RouterMakerInterface
 {
     /**
-     * Provides access to the RouterPropertiesContract instance.
+     * Provides access to the RouterPropertiesInterface instance.
      */
     public function properties(): RouterPropertiesInterface;
 
     /**
-     * Return an instance with the specified added RouteableContract.
+     * Return an instance with the specified added RouteableInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified added RouteableContract.
+     * an instance that contains the specified added RouteableInterface.
      *
      * @throws RouterMakerException       if unable to process routing
      * @throws RoutePathExistsException   if $routeable has been already routed
-     * @throws RouteKeyConflictException  if $routeable conflicts with other RouteableContract
-     * @throws RouteNameConflictException if $routeable name conflicts with other RouteableContract
+     * @throws RouteKeyConflictException  if $routeable conflicts with other RouteableInterface
+     * @throws RouteNameConflictException if $routeable name conflicts with other RouteableInterface
      */
     public function withAddedRouteable(RouteableInterface $routeable, string $group): RouterMakerInterface;
 }

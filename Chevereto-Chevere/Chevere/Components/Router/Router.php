@@ -101,7 +101,7 @@ final class Router implements RouterInterface
 
     /**
      * @throws UnserializeException if the route string object can't be unserialized
-     * @throws TypeError            if the found route doesn't implement the RouteContract
+     * @throws TypeError            if the found route doesn't implement the RouteInterface
      */
     private function resolver(array $matches): RoutedInterface
     {

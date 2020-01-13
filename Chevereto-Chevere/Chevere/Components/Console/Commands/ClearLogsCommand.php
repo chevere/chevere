@@ -17,7 +17,7 @@ use Chevere\Components\Console\Command;
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\App\Interfaces\AppInterface;
-use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderInterface;
 
 /**
  * The ClearLogsCommand removes app stored logs.
@@ -28,7 +28,7 @@ final class ClearLogsCommand extends Command
     const DESCRIPTION = 'Clear app stored logs';
     const HELP = 'This command clears logs stored by the app';
 
-    public function callback(BuilderContract $builder): int
+    public function callback(BuilderInterface $builder): int
     {
         $delete = (new Dir(new PathApp(AppInterface::PATH_LOGS)))->removeContents();
         $count = count($delete);

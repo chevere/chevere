@@ -21,7 +21,7 @@ use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
 
 /**
- * Determines if a RouteContract is able to be routed.
+ * Determines if a RouteInterface is able to be routed.
  * @package Chevere\Components\Router
  */
 final class Routeable implements RouteableInterface

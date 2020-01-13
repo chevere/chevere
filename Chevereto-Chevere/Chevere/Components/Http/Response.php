@@ -15,9 +15,9 @@ namespace Chevere\Components\Http;
 
 use DateTime;
 use DateTimeZone;
-use Chevere\Components\Http\Interfaces\ResponseContract;
+use Chevere\Components\Http\Interfaces\ResponseInterface;
 
-final class Response implements ResponseContract
+final class Response implements ResponseInterface
 {
     private GuzzleResponse $guzzle;
 
@@ -32,7 +32,7 @@ final class Response implements ResponseContract
     /**
      * {@inheritdoc}
      */
-    public function withGuzzle(GuzzleResponse $guzzle): ResponseContract
+    public function withGuzzle(GuzzleResponse $guzzle): ResponseInterface
     {
         $new = clone $this;
         $new->guzzle = $guzzle;
@@ -82,7 +82,7 @@ final class Response implements ResponseContract
     /**
      * {@inheritdoc}
      */
-    public function sendHeaders(): ResponseContract
+    public function sendHeaders(): ResponseInterface
     {
         header($this->statusLine(), true, $this->guzzle->getStatusCode());
         foreach ($this->guzzle->getHeaders() as $name => $values) {
@@ -97,7 +97,7 @@ final class Response implements ResponseContract
     /**
      * {@inheritdoc}
      */
-    public function sendBody(): ResponseContract
+    public function sendBody(): ResponseInterface
     {
         $stream = $this->guzzle->getBody();
         if ($stream->isSeekable()) {

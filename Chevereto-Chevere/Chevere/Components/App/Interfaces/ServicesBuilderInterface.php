@@ -18,7 +18,7 @@ interface ServicesBuilderInterface
     public function __construct(BuildInterface $build, ParametersInterface $parameters);
 
     /**
-     * Provides access to the ServicesContract instance generated.
+     * Provides access to the ServicesInterface instance generated.
      */
     public function services(): ServicesInterface;
 }

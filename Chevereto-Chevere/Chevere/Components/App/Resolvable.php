@@ -17,7 +17,7 @@ use Chevere\Components\App\Exceptions\RequestRequiredException;
 use Chevere\Components\App\Exceptions\RouterCantResolveException;
 use Chevere\Components\App\Exceptions\RouterRequiredException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderInterface;
 use Chevere\Components\App\Interfaces\ResolvableInterface;
 use Chevere\Components\Http\Interfaces\RequestInterface;
 use Chevere\Components\Route\Interfaces\RouteInterface;
@@ -28,14 +28,14 @@ use Chevere\Components\Router\Interfaces\RouterInterface;
  */
 final class Resolvable implements ResolvableInterface
 {
-    private BuilderContract $builder;
+    private BuilderInterface $builder;
 
     /**
      * @throws RequestRequiredException if $builder lacks of a request
-     * @throws RouterRequiredException if $builder lacks of a RouterContract
-     * @throws RouterCantResolveException if $builder RouterContract lacks of routing
+     * @throws RouterRequiredException if $builder lacks of a RouterInterface
+     * @throws RouterCantResolveException if $builder RouterInterface lacks of routing
      */
-    public function __construct(BuilderContract $builder)
+    public function __construct(BuilderInterface $builder)
     {
         $this->builder = $builder;
         $this->assertHasRequest();
@@ -46,7 +46,7 @@ final class Resolvable implements ResolvableInterface
     /**
      * {@inheritdoc}
      */
-    public function builder(): BuilderContract
+    public function builder(): BuilderInterface
     {
         return $this->builder;
     }
@@ -55,7 +55,7 @@ final class Resolvable implements ResolvableInterface
     {
         if (!$this->builder->build()->app()->hasRequest()) {
             throw new RequestRequiredException(
-                $this->getMissingContractMessage(RequestInterface::class)
+                $this->getMissingInterfaceMessage(RequestInterface::class)
             );
         }
     }
@@ -64,7 +64,7 @@ final class Resolvable implements ResolvableInterface
     {
         if (!$this->builder->build()->app()->services()->hasRouter()) {
             throw new RouterRequiredException(
-                $this->getMissingContractMessage(RouterInterface::class)
+                $this->getMissingInterfaceMessage(RouterInterface::class)
             );
         }
     }
@@ -83,7 +83,7 @@ final class Resolvable implements ResolvableInterface
         }
     }
 
-    private function getMissingContractMessage(string $contractName): string
+    private function getMissingInterfaceMessage(string $contractName): string
     {
         return (new Message('Instance of class %className% must contain a %contract% contract'))
             ->code('%className%', get_class($this->builder->build()->app()))

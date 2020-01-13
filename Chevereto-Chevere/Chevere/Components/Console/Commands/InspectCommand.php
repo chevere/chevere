@@ -21,7 +21,7 @@ use ReflectionFunction;
 use ReflectionMethod;
 use Reflector;
 use Chevere\Components\Console\Command;
-use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderInterface;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 
 /**
@@ -51,7 +51,7 @@ final class InspectCommand extends Command
 
     private string $callableInput;
 
-    public function callback(BuilderContract $builder): int
+    public function callback(BuilderInterface $builder): int
     {
         $this->callableInput = $this->getArgumentString('callable');
         if (is_subclass_of($this->callableInput, ControllerInterface::class)) {

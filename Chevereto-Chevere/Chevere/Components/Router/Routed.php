@@ -17,7 +17,7 @@ use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Interfaces\RoutedInterface;
 
 /**
- * An instance for routed RouteContracts routed by RouterContract.
+ * An instance for routed RouteInterfaces routed by RouterInterface.
  */
 final class Routed implements RoutedInterface
 {

@@ -16,7 +16,7 @@ namespace Chevere\Components\Router\Exception;
 use Exception;
 
 /**
- * Exception thrown when the RouterContract can't find a route.
+ * Exception thrown when the RouterInterface can't find a route.
  */
 class RouteNotFoundException extends Exception
 {

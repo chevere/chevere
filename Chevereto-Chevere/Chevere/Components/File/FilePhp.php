@@ -19,7 +19,7 @@ use Chevere\Components\File\Interfaces\FileInterface;
 use Chevere\Components\File\Interfaces\FilePhpInterface;
 
 /**
- * A wrapper for FileContract to implement PHP files.
+ * A wrapper for FileInterface to implement PHP files.
  */
 final class FilePhp implements FilePhpInterface
 {

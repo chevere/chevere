@@ -16,7 +16,7 @@ namespace Chevere\Components\Path\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when the PathContract represents a file.
+ * Exception thrown when the PathInterface represents a file.
  */
 final class PathIsFileException extends Exception
 {

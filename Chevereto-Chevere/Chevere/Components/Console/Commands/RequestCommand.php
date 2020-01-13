@@ -21,7 +21,7 @@ use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Message\Message;
-use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderInterface;
 use Chevere\Components\Route\PathUri;
 
 /**
@@ -118,7 +118,7 @@ final class RequestCommand extends Command
     // List of arguments passed as JSON
     const JSON_OPTIONS = ['get', 'post', 'cookie', 'files'];
 
-    public function callback(BuilderContract $builder): int
+    public function callback(BuilderInterface $builder): int
     {
         $this->arguments = $this->console()->input()->getArguments();
         $this->options = (array) $this->console()->input()->getOptions();

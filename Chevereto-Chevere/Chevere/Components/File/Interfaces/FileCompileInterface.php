@@ -21,7 +21,7 @@ interface FileCompileInterface
     public function __construct(FilePhpInterface $filePhp);
 
     /**
-     * Provides access to the FilePhpContract instance.
+     * Provides access to the FilePhpInterface instance.
      */
     public function filePhp(): FilePhpInterface;
 

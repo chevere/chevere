@@ -28,10 +28,10 @@ interface WildcardInterface
     public function __construct(string $name);
 
     /**
-     * Return an instance with the specified RegexMatchContract.
+     * Return an instance with the specified RegexMatchInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified RegexMatchContract.
+     * an instance that contains the specified RegexMatchInterface.
      *
      * @throws WildcardInvalidRegexException if $match is an invalid regex match
      */
@@ -43,12 +43,12 @@ interface WildcardInterface
     public function name(): string;
 
     /**
-     * Provides access to the RegexMatchContract instance.
+     * Provides access to the RegexMatchInterface instance.
      */
     public function regexMatch(): RegexMatchInterface;
 
     /**
-     * Asserts that a given PathUriContract contains the wildcard.
+     * Asserts that a given PathUriInterface contains the wildcard.
      *
      * @param string $pathUri A path including the wildcard, like `/{wildcard}`
      *

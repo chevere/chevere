@@ -15,7 +15,7 @@ namespace Chevere\Components\Console;
 
 use LogicException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderInterface;
 use Chevere\Components\Console\Interfaces\CommandInterface;
 use Chevere\Components\Console\Interfaces\SymfonyCommandInterface;
 
@@ -100,7 +100,7 @@ abstract class Command implements CommandInterface
     /**
      * {@inheritdoc}
      */
-    abstract public function callback(BuilderContract $builder): int;
+    abstract public function callback(BuilderInterface $builder): int;
 
     final private function setSymfony(): void
     {

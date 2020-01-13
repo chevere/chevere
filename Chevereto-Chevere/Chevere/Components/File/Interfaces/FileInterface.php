@@ -28,7 +28,7 @@ interface FileInterface
     public function __construct(PathInterface $path);
 
     /**
-     * Provides access to the PathContract instance.
+     * Provides access to the PathInterface instance.
      */
     public function path(): PathInterface;
 

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Middleware;
 
 use InvalidArgumentException;
-use Chevere\Components\Middleware\Exceptions\MiddlewareContractException;
+use Chevere\Components\Middleware\Exceptions\MiddlewareInterfaceException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Middleware\Interfaces\MiddlewareInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
@@ -26,15 +26,15 @@ final class MiddlewareName implements MiddlewareNameInterface
     /**
      * Creates a new instance.
      *
-     * @param string $name A middleware name implementing the MiddlewareContract
+     * @param string $name A middleware name implementing the MiddlewareInterface
      *
      * @throws InvalidArgumentException    if $name represents non existent class
-     * @throws MiddlewareContractException if the $name doesn't represent a class implementing the MiddlewareContract
+     * @throws MiddlewareInterfaceException if the $name doesn't represent a class implementing the MiddlewareInterface
      */
     public function __construct(string $name)
     {
         $this->name = $name;
-        $this->assertMiddlewareContract();
+        $this->assertMiddlewareInterface();
     }
 
     /**
@@ -45,7 +45,7 @@ final class MiddlewareName implements MiddlewareNameInterface
         return $this->name;
     }
 
-    private function assertMiddlewareContract(): void
+    private function assertMiddlewareInterface(): void
     {
         if (!class_exists($this->name)) {
             throw new InvalidArgumentException(
@@ -56,7 +56,7 @@ final class MiddlewareName implements MiddlewareNameInterface
         }
         $interfaces = class_implements($this->name);
         if (false === $interfaces || !in_array(MiddlewareInterface::class, $interfaces)) {
-            throw new MiddlewareContractException(
+            throw new MiddlewareInterfaceException(
                 (new Message('Middleware %middleware% must implement the %contract% contract'))
                     ->code('%middleware%', $this->name)
                     ->code('%contract%', MiddlewareInterface::class)

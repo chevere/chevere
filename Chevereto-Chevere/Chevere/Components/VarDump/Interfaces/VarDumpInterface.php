@@ -65,7 +65,7 @@ interface VarDumpInterface
     public function __construct($var, FormatterInterface $formatter);
 
     /**
-     * Provides access to the FormatterContract instance.
+     * Provides access to the FormatterInterface instance.
      */
     public function formatter(): FormatterInterface;
 

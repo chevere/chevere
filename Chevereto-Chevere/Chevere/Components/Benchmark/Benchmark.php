@@ -20,7 +20,7 @@ use Chevere\Components\Benchmark\Interfaces\BenchmarkInterface;
 use ReflectionFunction;
 
 /**
- * Benchmark provides a prepared object for RunContract.
+ * Benchmark provides a prepared object for RunInterface.
  */
 final class Benchmark implements BenchmarkInterface
 {

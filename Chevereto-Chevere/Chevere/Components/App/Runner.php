@@ -19,7 +19,7 @@ use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Http\Request\RequestException;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Message\Message;
-use Chevere\Components\App\Interfaces\BuilderContract;
+use Chevere\Components\App\Interfaces\BuilderInterface;
 use Chevere\Components\App\Interfaces\RunnerInterface;
 use function console;
 use function GuzzleHttp\Psr7\stream_for;
@@ -29,12 +29,12 @@ use function GuzzleHttp\Psr7\stream_for;
  */
 final class Runner implements RunnerInterface
 {
-    private BuilderContract $builder;
+    private BuilderInterface $builder;
 
     /** @var bool A boolean indicating if the run() method was called */
     private bool $ran;
 
-    /** @var string A string representing a ControllerContract name */
+    /** @var string A string representing a ControllerInterface name */
     private string $controllerName;
 
     private array $controllerArguments;
@@ -44,9 +44,9 @@ final class Runner implements RunnerInterface
     /**
      * Creates a new instance.
      *
-     * @param BuilderContract $builder The builder to run.
+     * @param BuilderInterface $builder The builder to run.
      */
-    public function __construct(BuilderContract $builder)
+    public function __construct(BuilderInterface $builder)
     {
         $this->builder = $builder;
     }
@@ -54,7 +54,7 @@ final class Runner implements RunnerInterface
     /**
      * {@inheritdoc}
      */
-    public function builder(): BuilderContract
+    public function builder(): BuilderInterface
     {
         return $this->builder;
     }
@@ -180,7 +180,7 @@ final class Runner implements RunnerInterface
         $contentStream = stream_for($content);
         $response = $response->withGuzzle(
             1 > 2
-                // $controller instanceof JsonApiContract
+                // $controller instanceof JsonApiInterface
                 ? $guzzle->withJsonApi($contentStream)
                 : $guzzle->withBody($contentStream)
         );

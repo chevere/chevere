@@ -19,7 +19,7 @@ use Chevere\Components\Middleware\Interfaces\MiddlewareInterface;
 abstract class Middleware implements MiddlewareInterface
 {
     /**
-     * Dummy method to avoid constructors as a new MiddlewareContract is created in MiddlewareRunner.
+     * Dummy method to avoid constructors as a new MiddlewareInterface is created in MiddlewareRunner.
      */
     final public function __construct()
     {

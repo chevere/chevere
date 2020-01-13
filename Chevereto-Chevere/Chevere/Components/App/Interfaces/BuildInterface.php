@@ -22,20 +22,20 @@ interface BuildInterface
     public function __construct(AppInterface $app);
 
     /**
-     * Return an instance with the specified ServicesContract.
+     * Return an instance with the specified ServicesInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified ServicesContract.
+     * an instance that contains the specified ServicesInterface.
      */
     public function withApp(AppInterface $services): BuildInterface;
 
     /**
-     * Provides access to the ServicesContract instance.
+     * Provides access to the ServicesInterface instance.
      */
     public function app(): AppInterface;
 
     /**
-     * Return an instance with the specified ParametersContract.
+     * Return an instance with the specified ParametersInterface.
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified Container.
@@ -43,12 +43,12 @@ interface BuildInterface
     public function withParameters(ParametersInterface $parameters): BuildInterface;
 
     /**
-     * Returns a boolean indicating whether the instance has a ParametersContract.
+     * Returns a boolean indicating whether the instance has a ParametersInterface.
      */
     public function hasParameters(): bool;
 
     /**
-     * Provides access to the ParametersContract instance.
+     * Provides access to the ParametersInterface instance.
      */
     public function parameters(): ParametersInterface;
 
@@ -78,12 +78,12 @@ interface BuildInterface
     public function destroy(): void;
 
     /**
-     * Provides access to the FileContract contained in the FilePhpContract instance.
+     * Provides access to the FileInterface contained in the FilePhpInterface instance.
      */
     public function file(): FileInterface;
 
     /**
-     * Provides access to the DirContract instance.
+     * Provides access to the DirInterface instance.
      */
     public function dir(): DirInterface;
 
@@ -91,15 +91,15 @@ interface BuildInterface
      * Provides access to the build checksums.
      * Note: This method is available if the application build has been built.
      *
-     * @see BuilderContract::isMaked()
+     * @see BuilderInterface::isMaked()
      */
     public function checksums(): array;
 
     /**
-     * Provides access to the CheckoutContract instance.
+     * Provides access to the CheckoutInterface instance.
      * Note: This method is available if the application build has been built.
      *
-     * @see BuilderContract::isMaked()
+     * @see BuilderInterface::isMaked()
      */
     public function checkout(): CheckoutInterface;
 }

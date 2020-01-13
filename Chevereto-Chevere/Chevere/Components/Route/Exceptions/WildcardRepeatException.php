@@ -16,7 +16,7 @@ namespace Chevere\Components\Route\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when a wildcard is repeated like in a WildcardCollectionContract or in a PathUriWildcardsContract.
+ * Exception thrown when a wildcard is repeated like in a WildcardCollectionInterface or in a PathUriWildcardsInterface.
  */
 final class WildcardRepeatException extends Exception
 {

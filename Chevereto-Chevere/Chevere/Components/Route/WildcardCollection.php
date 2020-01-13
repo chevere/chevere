@@ -18,7 +18,7 @@ use Chevere\Components\Route\Interfaces\WildcardInterface;
 
 final class WildcardCollection implements WildcardCollectionInterface
 {
-    /** @param array WildcardContract[] */
+    /** @param array WildcardInterface[] */
     private array $array;
 
     /** @param array ['METHOD' => key,]*/

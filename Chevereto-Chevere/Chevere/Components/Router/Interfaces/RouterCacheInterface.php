@@ -25,17 +25,17 @@ interface RouterCacheInterface
     public function __construct(CacheInterface $cache);
 
     /**
-     * Provides access to the CacheContract instance.
+     * Provides access to the CacheInterface instance.
      */
     public function cache(): CacheInterface;
 
     /**
-     * Return an instance with the cache put values of RouterMakerContract.
+     * Return an instance with the cache put values of RouterMakerInterface.
      *
-     * Cacheable properties of this instance will be cached On the target CacheContract (put).
+     * Cacheable properties of this instance will be cached On the target CacheInterface (put).
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the put cache for the values of RouterMakerContract.
+     * an instance that contains the put cache for the values of RouterMakerInterface.
      */
     public function withPut(RouterMakerInterface $routerMaker): RouterCacheInterface;
 

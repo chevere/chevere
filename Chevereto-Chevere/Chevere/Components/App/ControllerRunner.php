@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use Chevere\Components\App\Exceptions\ControllerContractException;
+use Chevere\Components\App\Exceptions\ControllerInterfaceException;
 use Chevere\Components\App\Exceptions\ControllerNotExistsException;
 use Chevere\Components\Controller\ArgumentsWrap;
 use Chevere\Components\Message\Message;
@@ -23,7 +23,7 @@ use Chevere\Components\App\Interfaces\MiddlewareRunnerInterface;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 
 /**
- * Application container ControllerContract runner.
+ * Application container ControllerInterface runner.
  */
 final class ControllerRunner implements ControllerRunnerInterface
 {
@@ -85,7 +85,7 @@ final class ControllerRunner implements ControllerRunnerInterface
     private function assertControllerName(): void
     {
         if (!is_subclass_of($this->controllerName, ControllerInterface::class)) {
-            throw new ControllerContractException(
+            throw new ControllerInterfaceException(
                 (new Message('Controller %controller% must implement the %contract% interface'))
                     ->code('%controller%', $this->controllerName)
                     ->code('%contract%', ControllerInterface::class)

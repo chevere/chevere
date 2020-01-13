@@ -70,7 +70,7 @@ final class Build implements BuildInterface
     /**
      * Constructs the Build instance.
      *
-     * A BuildContract instance allows to interact with the application build, which refers to the base
+     * A Build instance allows to interact with the application build, which refers to the base
      * application service layer which consists of API and Router services.
      *
      * @param AppInterface  $app  The application container
@@ -165,7 +165,7 @@ final class Build implements BuildInterface
     }
 
     /**
-     * Make the build, provide AppContract services.
+     * Make the build, provide AppInterface services.
      */
     public function make(): BuildInterface
     {

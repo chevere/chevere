@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Data;
 
-use Chevere\Components\Data\Interfaces\DataContract;
+use Chevere\Components\Data\Interfaces\DataInterface;
 
 /**
  * Data wrapper.
  */
-class Data implements DataContract
+class Data implements DataInterface
 {
     /** @var array */
     private array $data;
@@ -34,7 +34,7 @@ class Data implements DataContract
     /**
      * {@inheritdoc}
      */
-    public function withArray(array $data): DataContract
+    public function withArray(array $data): DataInterface
     {
         $new = clone $this;
         $new->data = $data;
@@ -45,7 +45,7 @@ class Data implements DataContract
     /**
      * {@inheritdoc}
      */
-    public function withMergedArray(array $data): DataContract
+    public function withMergedArray(array $data): DataInterface
     {
         if (isset($this->data)) {
             $data = array_merge_recursive($this->data, $data);
@@ -59,7 +59,7 @@ class Data implements DataContract
     /**
      * {@inheritdoc}
      */
-    public function withAppend($var): DataContract
+    public function withAppend($var): DataInterface
     {
         $new = clone $this;
         $new->data[] = $var;
@@ -70,7 +70,7 @@ class Data implements DataContract
     /**
      * {@inheritdoc}
      */
-    public function withAddedKey(string $key, $var): DataContract
+    public function withAddedKey(string $key, $var): DataInterface
     {
         $new = clone $this;
         $new->data[$key] = $var;
@@ -81,7 +81,7 @@ class Data implements DataContract
     /**
      * {@inheritdoc}
      */
-    public function withRemovedKey(string $key): DataContract
+    public function withRemovedKey(string $key): DataInterface
     {
         $new = clone $this;
         unset($new->data[$key]);

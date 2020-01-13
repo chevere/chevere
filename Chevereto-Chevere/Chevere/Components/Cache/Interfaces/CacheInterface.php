@@ -28,10 +28,10 @@ interface CacheInterface extends ToArrayInterface
     /**
      * Put item in cache.
      *
-     * Return an instance with the specified CacheKeyContract put.
+     * Return an instance with the specified CacheKeyInterface put.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified CacheKeyContract VariableExportContract.
+     * an instance that contains the specified CacheKeyInterface VariableExportInterface.
      *
      * @param CacheKeyInterface       $cacheKey       Cache key
      * @param VariableExportInterface $variableExport an export variable
@@ -41,10 +41,10 @@ interface CacheInterface extends ToArrayInterface
     /**
      * Remove item from cache.
      *
-     * Return an instance with the specified CacheKeyContract removed.
+     * Return an instance with the specified CacheKeyInterface removed.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified CacheKeyContract removed.
+     * an instance that contains the specified CacheKeyInterface removed.
      *
      * @param CacheKeyInterface $cacheKey Cache key
      *

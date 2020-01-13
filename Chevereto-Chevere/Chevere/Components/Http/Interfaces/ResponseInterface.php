@@ -15,7 +15,7 @@ namespace Chevere\Components\Http\Interfaces;
 
 use Chevere\Components\Http\GuzzleResponse;
 
-interface ResponseContract
+interface ResponseInterface
 {
     /**
      * Return an instance with the specified GuzzleResponse.
@@ -23,7 +23,7 @@ interface ResponseContract
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified GuzzleResponse.
      */
-    public function withGuzzle(GuzzleResponse $guzzle): ResponseContract;
+    public function withGuzzle(GuzzleResponse $guzzle): ResponseInterface;
 
     /**
      * Provides access to the GuzzleResponse instance.
@@ -50,10 +50,10 @@ interface ResponseContract
     /**
      * Send the HTTP response headers.
      */
-    public function sendHeaders(): ResponseContract;
+    public function sendHeaders(): ResponseInterface;
 
     /**
      * Send the HTTP response body.
      */
-    public function sendBody(): ResponseContract;
+    public function sendBody(): ResponseInterface;
 }
