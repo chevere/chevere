@@ -13,6 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Interfaces;
 
+use Chevere\Components\VarDump\Processors\ArrayProcessor;
+use Chevere\Components\VarDump\Processors\BooleanProcessor;
+use Chevere\Components\VarDump\Processors\FloatProcessor;
+use Chevere\Components\VarDump\Processors\IntegerProcessor;
+use Chevere\Components\VarDump\Processors\NullProcessor;
+use Chevere\Components\VarDump\Processors\ObjectProcessor;
+use Chevere\Components\VarDump\Processors\ResourceProcessor;
+use Chevere\Components\VarDump\Processors\StringProcessor;
+use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 use ReflectionProperty;
 
 interface VarDumpInterface
@@ -39,6 +48,18 @@ interface VarDumpInterface
         'protected' => ReflectionProperty::IS_PROTECTED,
         'private' => ReflectionProperty::IS_PRIVATE,
         'static' => ReflectionProperty::IS_STATIC,
+    ];
+
+    /** @var array [ProcessorInterface $processor,] */
+    const PROCESSORS = [
+        self::TYPE_BOOLEAN => BooleanProcessor::class,
+        self::TYPE_ARRAY => ArrayProcessor::class,
+        self::TYPE_OBJECT => ObjectProcessor::class,
+        self::TYPE_INTEGER => IntegerProcessor::class,
+        self::TYPE_STRING => StringProcessor::class,
+        self::TYPE_FLOAT => FloatProcessor::class,
+        self::TYPE_NULL => NullProcessor::class,
+        self::TYPE_RESOURCE => ResourceProcessor::class,
     ];
 
     public function __construct($var, FormatterInterface $formatter);

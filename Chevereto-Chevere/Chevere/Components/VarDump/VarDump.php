@@ -13,20 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump;
 
-use BadMethodCallException;
+use LogicException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\VarDump\Processors\ArrayProcessor;
-use Chevere\Components\VarDump\Processors\BooleanProcessor;
-use Chevere\Components\VarDump\Processors\ObjectProcessor;
-use Chevere\Components\VarDump\Processors\ScalarProcessor;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
-use Chevere\Components\VarDump\Processors\FloatProcessor;
-use Chevere\Components\VarDump\Processors\IntegerProcessor;
-use Chevere\Components\VarDump\Processors\NullProcessor;
-use Chevere\Components\VarDump\Processors\ResourceProcessor;
-use Chevere\Components\VarDump\Processors\StringProcessor;
-use LogicException;
 use function ChevereFn\varType;
 
 /**
@@ -182,21 +172,8 @@ final class VarDump implements VarDumpInterface
 
     private function handleType(): void
     {
-        $processors = [
-            static::TYPE_BOOLEAN => BooleanProcessor::class,
-            static::TYPE_ARRAY => ArrayProcessor::class,
-            static::TYPE_OBJECT => ObjectProcessor::class,
-            static::TYPE_INTEGER => IntegerProcessor::class,
-            static::TYPE_STRING => StringProcessor::class,
-            static::TYPE_FLOAT => FloatProcessor::class,
-            static::TYPE_NULL => NullProcessor::class,
-            static::TYPE_RESOURCE => ResourceProcessor::class,
-        ];
-
-        $processor = $processors[$this->type] ?? null;
+        $processor = static::PROCESSORS[$this->type] ?? null;
         if (!isset($processor)) {
-            var_dump($this->var);
-            die();
             throw new LogicException(
                 (new Message('No processor for type %type%'))
                     ->code('%type%', $this->type)
