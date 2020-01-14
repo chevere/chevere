@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Number\Tests;
 
-use Chevere\Components\Number\Number;
 use InvalidArgumentException;
+use Chevere\Components\Number\Number;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -95,7 +95,9 @@ final class NumberTest extends TestCase
     public function testConstructResourceArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new Number(fopen(__FILE__, 'r'));
+        $resource = fopen(__FILE__, 'r');
+        new Number($resource);
+        fclose($resource);
     }
 
     public function testConstruct(): void

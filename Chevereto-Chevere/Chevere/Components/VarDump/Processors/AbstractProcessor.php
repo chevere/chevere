@@ -14,10 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Processors;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Type\Interfaces\TypeInterface;
+use Chevere\Components\Type\Type;
 use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
 use InvalidArgumentException;
 use TypeError;
+use function ChevereFn\varType;
 
 abstract class AbstractProcessor implements ProcessorInterface
 {
@@ -41,15 +44,18 @@ abstract class AbstractProcessor implements ProcessorInterface
      */
     abstract protected function process(): void;
 
+    abstract public function type(): string;
+
     final private function assertType(): void
     {
-        if ($this->type() !== $this->varDump->type()) {
+        $type = new Type($this->type());
+        if (!$type->validate($this->varDump->var())) {
             throw new InvalidArgumentException(
                 (new Message('Instance of %className% expects a type %expected% for the return value of %method%, type %provided% returned'))
                     ->code('%className%', static::class)
                     ->code('%expected%', $this->type())
                     ->code('%method%', get_class($this->varDump) . '::var()')
-                    ->code('%provided%', $this->varDump->type())
+                    ->code('%provided%', varType($this->varDump->var()))
                     ->toString()
             );
         }

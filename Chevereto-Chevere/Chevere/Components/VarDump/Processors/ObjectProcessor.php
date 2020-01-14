@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
-use Chevere\Components\Type\Interfaces\TypeInterface;
 use ReflectionObject;
 use ReflectionProperty;
 use Throwable;
-use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
+use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarDump\VarDump;
 use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
 use function ChevereFn\stringStartsWith;

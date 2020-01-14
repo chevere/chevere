@@ -16,39 +16,31 @@ namespace Chevere\Components\Type\Tests;
 use Chevere\Components\Type\Type;
 use Chevere\Components\Type\Interfaces\TypeInterface;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 final class TypeTest extends TestCase
 {
     public function testTypes(): void
     {
+        $resource = fopen(__FILE__, 'r');
         foreach ([
             TypeInterface::BOOLEAN => true,
             TypeInterface::INTEGER => 1,
             TypeInterface::FLOAT => 13.13,
             TypeInterface::STRING => 'test',
             TypeInterface::ARRAY => ['test'],
-            TypeInterface::OBJECT => new self(),
+            TypeInterface::OBJECT => new stdClass,
             TypeInterface::CALLABLE => 'phpinfo',
             TypeInterface::ITERABLE => [4, 2, 1, 3],
             TypeInterface::NULL => null,
+            TypeInterface::RESOURCE => $resource,
         ] as $key => $val) {
             $type = new Type($key);
             $this->assertSame($key, $type->primitive());
             $this->assertSame($key, $type->typeHinting());
             $this->assertTrue($type->validate($val));
         }
-    }
-
-    public function testResource(): void
-    {
-        $type = new Type(TypeInterface::RESOURCE);
-        $resource = fopen(__FILE__, 'r');
-        $this->assertSame(TypeInterface::RESOURCE, $type->primitive());
-        $this->assertSame(TypeInterface::RESOURCE, $type->typeHinting());
-        $this->assertTrue($type->validate($resource));
-        if (false !== $resource) {
-            fclose($resource);
-        }
+        fclose($resource);
     }
 
     public function testClassName(): void

@@ -32,6 +32,7 @@ final class ResourceProcessorTest extends AbstractProcessorTest
     {
         $var = fopen(__FILE__, 'r');
         $processor = new ResourceProcessor($this->getVarDump($var));
+        fclose($var);
         $this->assertSame('type=stream', $processor->info());
         $this->assertStringStartsWith('Resource id #', $processor->val());
     }

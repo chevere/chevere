@@ -82,11 +82,6 @@ interface VarDumpInterface
     public function var();
 
     /**
-     * Provides access to the instance var type.
-     */
-    public function type(): string;
-
-    /**
      * Return an instance with the specified $indent.
      *
      * This method MUST retain the state of the current instance, and return

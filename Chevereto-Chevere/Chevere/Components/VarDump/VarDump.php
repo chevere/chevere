@@ -96,11 +96,6 @@ final class VarDump implements VarDumpInterface
         return $this->var;
     }
 
-    public function type(): string
-    {
-        return $this->type;
-    }
-
     /**
      * {@inheritdoc}
      */
