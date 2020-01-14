@@ -13,19 +13,21 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Interfaces;
 
+use Chevere\Components\Type\Interfaces\TypeInterface;
+
 interface PalleteInterface
 {
     /**
      * Color palette used in HTML.
      */
     const HTML = [
-        VarDumpInterface::TYPE_STRING => '#e67e22', // orange
-        VarDumpInterface::TYPE_FLOAT => '#f1c40f', // yellow
-        VarDumpInterface::TYPE_INTEGER => '#f1c40f', // yellow
-        VarDumpInterface::TYPE_BOOLEAN => '#9b59b6', // purple
-        VarDumpInterface::TYPE_NULL => '#7f8c8d', // grey
-        VarDumpInterface::TYPE_OBJECT => '#e74c3c', // red
-        VarDumpInterface::TYPE_ARRAY => '#2ecc71', // green
+        TypeInterface::STRING => '#e67e22', // orange
+        TypeInterface::FLOAT => '#f1c40f', // yellow
+        TypeInterface::INTEGER => '#f1c40f', // yellow
+        TypeInterface::BOOLEAN => '#9b59b6', // purple
+        TypeInterface::NULL => '#7f8c8d', // grey
+        TypeInterface::OBJECT => '#e74c3c', // red
+        TypeInterface::ARRAY => '#2ecc71', // green
         VarDumpInterface::_FILE => 'inherith',
         VarDumpInterface::_CLASS => '#3498db', // blue
         VarDumpInterface::_OPERATOR => '#7f8c8d', // grey
@@ -39,13 +41,13 @@ interface PalleteInterface
      * Color palette used in CLI.
      */
     const CONSOLE = [
-        VarDumpInterface::TYPE_STRING => 'color_11',
-        VarDumpInterface::TYPE_FLOAT => 'color_11',
-        VarDumpInterface::TYPE_INTEGER => 'color_11',
-        VarDumpInterface::TYPE_BOOLEAN => 'color_163', // purple
-        VarDumpInterface::TYPE_NULL => 'color_245', // grey
-        VarDumpInterface::TYPE_OBJECT => 'color_39',
-        VarDumpInterface::TYPE_ARRAY => 'color_41', // green
+        TypeInterface::STRING => 'color_11',
+        TypeInterface::FLOAT => 'color_11',
+        TypeInterface::INTEGER => 'color_11',
+        TypeInterface::BOOLEAN => 'color_163', // purple
+        TypeInterface::NULL => 'color_245', // grey
+        TypeInterface::OBJECT => 'color_39',
+        TypeInterface::ARRAY => 'color_41', // green
         VarDumpInterface::_FILE => 'default',
         VarDumpInterface::_CLASS => 'color_147', // blue
         VarDumpInterface::_OPERATOR => 'color_245', // grey

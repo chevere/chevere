@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Interfaces;
 
+use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarDump\Processors\ArrayProcessor;
 use Chevere\Components\VarDump\Processors\BooleanProcessor;
 use Chevere\Components\VarDump\Processors\FloatProcessor;
@@ -25,14 +26,6 @@ use ReflectionProperty;
 
 interface VarDumpInterface
 {
-    const TYPE_STRING = 'string';
-    const TYPE_FLOAT = 'float';
-    const TYPE_INTEGER = 'integer';
-    const TYPE_ARRAY = 'array';
-    const TYPE_BOOLEAN = 'boolean';
-    const TYPE_NULL = 'null';
-    const TYPE_OBJECT = 'object';
-    const TYPE_RESOURCE = 'resource';
     const _FILE = '_file';
     const _CLASS = '_class';
     const _CLASS_ANON = 'class@anonymous';
@@ -51,14 +44,14 @@ interface VarDumpInterface
 
     /** @var array [ProcessorInterface $processor,] */
     const PROCESSORS = [
-        self::TYPE_BOOLEAN => BooleanProcessor::class,
-        self::TYPE_ARRAY => ArrayProcessor::class,
-        self::TYPE_OBJECT => ObjectProcessor::class,
-        self::TYPE_INTEGER => IntegerProcessor::class,
-        self::TYPE_STRING => StringProcessor::class,
-        self::TYPE_FLOAT => FloatProcessor::class,
-        self::TYPE_NULL => NullProcessor::class,
-        self::TYPE_RESOURCE => ResourceProcessor::class,
+        TypeInterface::BOOLEAN => BooleanProcessor::class,
+        TypeInterface::ARRAY => ArrayProcessor::class,
+        TypeInterface::OBJECT => ObjectProcessor::class,
+        TypeInterface::INTEGER => IntegerProcessor::class,
+        TypeInterface::STRING => StringProcessor::class,
+        TypeInterface::FLOAT => FloatProcessor::class,
+        TypeInterface::NULL => NullProcessor::class,
+        TypeInterface::RESOURCE => ResourceProcessor::class,
     ];
 
     public function __construct($var, FormatterInterface $formatter);
@@ -84,23 +77,13 @@ interface VarDumpInterface
     public function dontDump(): array;
 
     /**
-     * Return an instance with the specified $var.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified $var.
-     */
-    // public function withVar($var): VarDumpInterface;
-
-    /**
-     * Returns a boolean indicating whether the instance has a var.
-     */
-    // public function hasVar(): bool;
-
-    /**
-     * Provides access to the instance $var.s
+     * Provides access to the instance var.
      */
     public function var();
 
+    /**
+     * Provides access to the instance var type.
+     */
     public function type(): string;
 
     /**

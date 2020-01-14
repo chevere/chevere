@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
-use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
+use Chevere\Components\Type\Interfaces\TypeInterface;
 
 final class StringProcessor extends AbstractProcessor
 {
@@ -21,7 +21,7 @@ final class StringProcessor extends AbstractProcessor
 
     public function type(): string
     {
-        return VarDumpInterface::TYPE_STRING;
+        return TypeInterface::STRING;
     }
 
     protected function process(): void

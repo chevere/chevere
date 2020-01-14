@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
+use Chevere\Components\Type\Interfaces\TypeInterface;
 use ReflectionObject;
 use ReflectionProperty;
 use Throwable;
@@ -33,9 +34,9 @@ final class ObjectProcessor extends AbstractProcessor
 
     private $aux;
 
-    public function type(): string {
-
-        return VarDumpInterface::TYPE_OBJECT;
+    public function type(): string
+    {
+        return TypeInterface::OBJECT;
     }
 
     protected function process(): void

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
-use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
+use Chevere\Components\Type\Interfaces\TypeInterface;
 
 final class BooleanProcessor extends AbstractProcessor
 {
@@ -21,7 +21,7 @@ final class BooleanProcessor extends AbstractProcessor
 
     public function type(): string
     {
-        return VarDumpInterface::TYPE_BOOLEAN;
+        return TypeInterface::BOOLEAN;
     }
 
     protected function process(): void

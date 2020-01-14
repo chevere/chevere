@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
+use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarDump\VarDump;
 use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
 
@@ -20,7 +21,7 @@ final class ArrayProcessor extends AbstractProcessor
 {
     public function type(): string
     {
-        return VarDumpInterface::TYPE_ARRAY;
+        return TypeInterface::ARRAY;
     }
 
     protected function process(): void

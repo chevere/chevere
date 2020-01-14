@@ -15,6 +15,7 @@ namespace Chevere\Components\VarDump;
 
 use LogicException;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
 use function ChevereFn\varType;
@@ -38,8 +39,6 @@ final class VarDump implements VarDumpInterface
     private int $depth = 0;
 
     private $var;
-
-    private bool $hasVar = false;
 
     private string $val = '';
 
@@ -180,7 +179,7 @@ final class VarDump implements VarDumpInterface
                     ->toString()
             );
         }
-        if (in_array($this->type, [static::TYPE_ARRAY, static::TYPE_OBJECT])) {
+        if (in_array($this->type, [TypeInterface::ARRAY, TypeInterface::OBJECT])) {
             ++$this->indent;
         }
         $processor = new $processor($this);
@@ -203,8 +202,8 @@ final class VarDump implements VarDumpInterface
     private function setTemplate(): void
     {
         switch ($this->type) {
-            case static::TYPE_ARRAY:
-            case static::TYPE_OBJECT:
+            case TypeInterface::ARRAY:
+            case TypeInterface::OBJECT:
                 $this->template = '%type% %info% %val%';
                 break;
             default:

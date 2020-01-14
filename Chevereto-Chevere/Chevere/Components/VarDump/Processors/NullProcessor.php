@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
-use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
+use Chevere\Components\Type\Interfaces\TypeInterface;
 
 final class NullProcessor extends AbstractProcessor
 {
     public function type(): string
     {
-        return VarDumpInterface::TYPE_NULL;
+        return TypeInterface::NULL;
     }
 
     protected function process(): void

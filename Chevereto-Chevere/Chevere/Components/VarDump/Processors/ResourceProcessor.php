@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
-use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
-use function ChevereFn\stringReplaceFirst;
+use Chevere\Components\Type\Interfaces\TypeInterface;
 
 final class ResourceProcessor extends AbstractProcessor
 {
     public function type(): string
     {
-        return VarDumpInterface::TYPE_RESOURCE;
+        return TypeInterface::RESOURCE;
     }
 
     protected function process(): void
