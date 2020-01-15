@@ -25,6 +25,3 @@ new BootstrapInstance(
         ->withDev(false)
         ->withAppAutoloader('Chevere\\TestApp\\App')
 );
-
-// define('Chevere\DOCUMENT_ROOT', __DIR__ . '/Chevere/TestApp/');
-// define('Chevere\ROOT_PATH', rtrim(str_replace('\\', '/', DOCUMENT_ROOT), '/') . '/');

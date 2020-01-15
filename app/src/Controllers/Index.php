@@ -19,12 +19,14 @@ use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\Traits\JsonApiTrait;
 use Chevere\Components\JsonApi\EncodedDocument;
 use Chevere\Components\Time\TimeHr;
+use Exception;
 use JsonApiPhp\JsonApi\Attribute;
 use JsonApiPhp\JsonApi\DataDocument;
 use JsonApiPhp\JsonApi\JsonApi;
 use JsonApiPhp\JsonApi\Link\SelfLink;
 use JsonApiPhp\JsonApi\ResourceCollection;
 use JsonApiPhp\JsonApi\ResourceObject;
+use LogicException;
 
 class Index extends Controller implements JsonApiInterface
 {
@@ -38,6 +40,7 @@ class Index extends Controller implements JsonApiInterface
 
     public function __invoke(): void
     {
+        throw new LogicException('deeeeznuts');
         $took = hrtime(true);
         $arr = ['aaa', $this, (new TimeHr($took - BootstrapInstance::get()->hrTime()))->toReadMs()];
         xdd($arr);

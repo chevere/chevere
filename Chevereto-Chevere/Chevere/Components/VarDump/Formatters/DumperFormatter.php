@@ -30,7 +30,7 @@ final class DumperFormatter implements FormatterInterface
 
     public function __construct()
     {
-        $this->formatter = BootstrapInstance::get()->isCli() ? new ConsoleFormatter() : new PlainFormatter();
+        $this->formatter = BootstrapInstance::get()->isCli() ? new ConsoleFormatter() : new HtmlFormatter();
     }
 
     public function applyWrap(string $key, string $dump): string

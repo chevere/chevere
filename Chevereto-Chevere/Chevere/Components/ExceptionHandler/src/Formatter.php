@@ -19,6 +19,7 @@ use Throwable;
 use Symfony\Component\Console\Output\OutputInterface;
 use Chevere\Components\Data\Traits\DataMethodTrait;
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
+use Chevere\Components\VarDump\Dumpers\PlainDumper;
 use Chevere\Components\VarDump\Formatters\DumperFormatter;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
 use Chevere\Components\VarDump\VarDump;
@@ -146,8 +147,8 @@ final class Formatter
                     'serverHost' => $request->getHeaderLine('Host'),
                     'requestMethod' => $request->getMethod(),
                     'serverProtocol' => $request->protocolString(),
-                    'serverSoftware' => $request->globals()->server()['SERVER_SOFTWARE'],
-                    'clientIp' => $request->globals()->server()['REMOTE_ADDR'],
+                    // 'serverSoftware' => $request->globals()->server()['SERVER_SOFTWARE'],
+                    // 'clientIp' => $request->globals()->server()['REMOTE_ADDR'],
                 ]);
         }
     }
@@ -235,14 +236,13 @@ final class Formatter
 
     private function processContentGlobals()
     {
-        $dumperVarDump = new VarDump(new DumperFormatter());
-        $plainVarDump = new VarDump(new PlainFormatter());
-        $globals = $this->exceptionHandler->request()->globals()->globals();
+        // $globals = $this->exceptionHandler->request()->globals()->globals();
+        $globals = $GLOBALS;
         foreach (['_GET', '_POST', '_FILES', '_COOKIE', '_SESSION', '_SERVER'] as $global) {
             $val = $globals[$global] ?? null;
             if (!empty($val)) {
-                $dumperVarDump = $dumperVarDump->withVar($val)->process();
-                $plainVarDump = $plainVarDump->withVar($val)->process();
+                $dumperVarDump = (new VarDump($val, new DumperFormatter()))->process();
+                $plainVarDump = (new VarDump($val, new PlainFormatter()))->process();
                 $wrapped = $dumperVarDump->toString();
                 if (!BootstrapInstance::get()->isCli()) {
                     $wrapped = '<pre>' . $wrapped . '</pre>';

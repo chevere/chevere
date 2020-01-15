@@ -44,9 +44,10 @@ final class SetDefaultCharset implements SetInterface
         $accepted = mb_list_encodings();
         if (!in_array($this->value, $accepted)) {
             throw new InvalidArgumentException(
-                (new Message('Invalid value %value% provided, expecting one of the accepted encodings: %accepted%'))
+                (new Message('Invalid value %value% provided for %className%, expecting one of the accepted encodings: %accepted%'))
+                    ->code('%className%', __CLASS__)
                     ->code('%value%', $this->value)
-                    ->code('%accepted%', implode(', ', $accepted))
+                    ->strtr('%accepted%', '[' . implode(', ', $accepted) . ']')
                     ->toString()
             );
         }
