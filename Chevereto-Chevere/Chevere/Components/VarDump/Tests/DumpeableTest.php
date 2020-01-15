@@ -13,16 +13,54 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Tests;
 
+use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarDump\Dumpeable;
+use Chevere\Components\VarDump\Processors\ArrayProcessor;
+use Chevere\Components\VarDump\Processors\BooleanProcessor;
+use Chevere\Components\VarDump\Processors\FloatProcessor;
+use Chevere\Components\VarDump\Processors\IntegerProcessor;
+use Chevere\Components\VarDump\Processors\NullProcessor;
+use Chevere\Components\VarDump\Processors\ObjectProcessor;
+use Chevere\Components\VarDump\Processors\ResourceProcessor;
+use Chevere\Components\VarDump\Processors\StringProcessor;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 final class DumpeableTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $this->expectNotToPerformAssertions();
-        $variableDump = new Dumpeable('');
-        // var_dump($variableDump);
-        // xdd($variableDump);
+        $variables = [
+            TypeInterface::ARRAY => [
+                [], ArrayProcessor::class
+            ],
+            TypeInterface::BOOLEAN => [
+                true, BooleanProcessor::class
+            ],
+            TypeInterface::FLOAT => [
+                1.1, FloatProcessor::class
+            ],
+            TypeInterface::INTEGER => [
+                1, IntegerProcessor::class
+            ],
+            TypeInterface::NULL => [
+                null, NullProcessor::class
+            ],
+            TypeInterface::OBJECT => [
+                new stdClass, ObjectProcessor::class
+            ],
+            TypeInterface::RESOURCE => [fopen(__FILE__, 'r'), ResourceProcessor::class],
+            TypeInterface::STRING => ['', StringProcessor::class],
+        ];
+        foreach ($variables as $type => $var) {
+            $variableDump = new Dumpeable($var[0]);
+            $this->assertSame($var[0], $variableDump->var());
+            $this->assertSame($type, $variableDump->type());
+            $this->assertSame($var[1], $variableDump->processorName());
+            $template = in_array($type, [TypeInterface::ARRAY, TypeInterface::OBJECT])
+                ? '%type% %info% %val%'
+                : '%type% %val% %info%';
+            $this->assertSame($template, $variableDump->template());
+        }
     }
 }

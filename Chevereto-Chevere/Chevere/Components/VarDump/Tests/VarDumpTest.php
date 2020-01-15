@@ -36,7 +36,6 @@ final class VarDumpTest extends TestCase
         $formatter = new PlainFormatter();
         $varDump = new VarDump(new Dumpeable(null), $formatter);
         $this->assertSame($formatter, $varDump->formatter());
-        // $this->assertSame(null, $varDump->var());
         $this->assertSame([], $varDump->dontDump());
         $this->assertSame(0, $varDump->indent());
         $this->assertSame(1, $varDump->depth());
@@ -53,13 +52,6 @@ final class VarDumpTest extends TestCase
             ->withDontDump(...$dontDump);
         $this->assertSame($dontDump, $varDump->dontDump());
     }
-
-    // public function testWithVar(): void
-    // {
-    //     $var = 'some var';
-    //     $varDump = $this->getVarDump($var);
-    //     $this->assertSame($var, $varDump->var());
-    // }
 
     public function testWithIndent(): void
     {
