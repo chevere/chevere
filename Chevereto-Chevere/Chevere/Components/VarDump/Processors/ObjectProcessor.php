@@ -17,6 +17,7 @@ use ReflectionObject;
 use ReflectionProperty;
 use Throwable;
 use Chevere\Components\Type\Interfaces\TypeInterface;
+use Chevere\Components\VarDump\Dumpeable;
 use Chevere\Components\VarDump\VarDump;
 use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
 use function ChevereFn\stringStartsWith;
@@ -40,7 +41,7 @@ final class ObjectProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $this->var = $this->varDump->var();
+        $this->var = $this->varDump->dumpeable()->var();
         $this->reflectionObject = new ReflectionObject($this->var);
         if (in_array($this->reflectionObject->getName(), $this->varDump->dontDump())) {
             $this->val .= $this->varDump->formatter()->applyWrap(
@@ -122,11 +123,11 @@ final class ObjectProcessor extends AbstractProcessor
     private function handleDeepth(): void
     {
         if ($this->varDump->depth() < 4) {
-            $new = (new VarDump($this->aux, $this->varDump->formatter()))
+            $new = (new VarDump(new Dumpeable($this->aux), $this->varDump->formatter()))
                 ->withDontDump(...$this->varDump->dontDump())
                 ->withIndent($this->varDump->indent())
                 ->withDepth($this->varDump->depth())
-                ->process();
+                ->withProcess();
             $this->val .= $new->toString();
 
             return;

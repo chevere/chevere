@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputters;
 
+use Chevere\Components\VarDump\Dumpeable;
 use Chevere\Components\VarDump\Interfaces\DumperInterface;
 use Chevere\Components\VarDump\Interfaces\OutputterInterface;
 use Chevere\Components\VarDump\VarDump;
@@ -106,8 +107,8 @@ abstract class AbstractOutputter implements OutputterInterface
 
     final private function appendArg(int $pos, $value): void
     {
-        $varDump = (new VarDump($value, $this->dumper->formatter()))
-            ->process();
+        $varDump = (new VarDump(new Dumpeable($value), $this->dumper->formatter()))
+            ->withProcess();
         $this->output .= 'Arg#' . $pos . ' ' . $varDump->toString() . "\n\n";
     }
 }

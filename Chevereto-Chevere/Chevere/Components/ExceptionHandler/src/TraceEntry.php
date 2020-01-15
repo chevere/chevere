@@ -15,6 +15,7 @@ namespace Chevere\Components\ExceptionHandler\src;
 
 use ReflectionMethod;
 use Chevere\Components\App\App;
+use Chevere\Components\VarDump\Dumpeable;
 use Chevere\Components\VarDump\Formatters\DumperFormatter;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
 use Chevere\Components\VarDump\VarDump;
@@ -130,12 +131,12 @@ final class TraceEntry
         $this->richArgs = "\n";
         foreach ($this->entry['args'] as $pos => $var) {
             $aux = 'Arg#' . ($pos + 1) . ' ';
-            $plainVarDump = (new VarDump($var, new PlainFormatter()))
+            $plainVarDump = (new VarDump(new Dumpeable($var), new PlainFormatter()))
                 ->withDontDump(App::class)
-                ->process();
-            $richVarDump = (new VarDump($var, new DumperFormatter()))
+                ->withProcess();
+            $richVarDump = (new VarDump(new Dumpeable($var), new DumperFormatter()))
                 ->withDontDump(App::class)
-                ->process();
+                ->withProcess();
             $this->plainArgs .= $aux . $plainVarDump->toString() . "\n";
             $this->richArgs .= $aux . $richVarDump->toString() . "\n";
         }

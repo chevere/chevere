@@ -13,19 +13,22 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump;
 
-use LogicException;
-use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Interfaces\TypeInterface;
+use Chevere\Components\VarDump\Interfaces\DumpeableInterface;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
+use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
-use function ChevereFn\varType;
 
 /**
  * Analyze a variable and provide a formated string representation of its type and data.
  */
 final class VarDump implements VarDumpInterface
 {
+    private DumpeableInterface $dumpeable;
+
     private FormatterInterface $formatter;
+
+    private ProcessorInterface $processor;
 
     /** @var array [className,] */
     private array $dontDump = [];
@@ -38,27 +41,28 @@ final class VarDump implements VarDumpInterface
 
     private int $depth = 0;
 
-    private $var;
-
     private string $val = '';
 
-    private string $type;
-
     private string $info;
-
-    private string $template;
 
     /**
      * Creates a new instance.
      *
      * @param FormatterInterface $formatter A VarDump formatter
      */
-    public function __construct($var, FormatterInterface $formatter)
+    public function __construct(DumpeableInterface $dumpeable, FormatterInterface $formatter)
     {
-        $this->var = $var;
-        $this->type = varType($this->var);
+        $this->dumpeable = $dumpeable;
         $this->formatter = $formatter;
         ++$this->depth;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function dumpeable(): DumpeableInterface
+    {
+        return $this->dumpeable;
     }
 
     /**
@@ -86,14 +90,6 @@ final class VarDump implements VarDumpInterface
     public function dontDump(): array
     {
         return $this->dontDump;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function var()
-    {
-        return $this->var;
     }
 
     /**
@@ -139,13 +135,16 @@ final class VarDump implements VarDumpInterface
     /**
      * {@inheritdoc}
      */
-    public function process(): VarDumpInterface
+    public function withProcess(): VarDumpInterface
     {
-        $this->handleType();
-        $this->setTemplate();
-        $this->setOutput();
+        $new = clone $this;
 
-        return $this;
+        $new->setProcessor();
+        $new->val .= $new->processor->val();
+        $new->setInfo();
+        $new->setOutput();
+
+        return $new;
     }
 
     /**
@@ -164,52 +163,30 @@ final class VarDump implements VarDumpInterface
         return $this->output;
     }
 
-    private function handleType(): void
+    private function setProcessor(): void
     {
-        $processor = static::PROCESSORS[$this->type] ?? null;
-        if (!isset($processor)) {
-            throw new LogicException(
-                (new Message('No processor for type %type%'))
-                    ->code('%type%', $this->type)
-                    ->toString()
-            );
-        }
-        if (in_array($this->type, [TypeInterface::ARRAY, TypeInterface::OBJECT])) {
+        if (in_array($this->dumpeable()->type(), [TypeInterface::ARRAY, TypeInterface::OBJECT])) {
             ++$this->indent;
         }
-        $processor = new $processor($this);
-        $this->val .= $processor->val();
-        $this->info = $processor->info();
-        $this->handleInfo();
+        $processorName = $this->dumpeable()->processorName();
+        $this->processor = new $processorName($this);
     }
 
-    private function handleInfo(): void
+    private function setInfo(): void
     {
+        $this->info = $this->processor->info();
         if ('' !== $this->info) {
             if (strpos($this->info, '=')) {
                 $this->info = $this->formatter->applyEmphasis("($this->info)");
             } else {
-                $this->info = $this->formatter->applyWrap(static::_CLASS, $this->info);
+                $this->info = $this->formatter->applyWrap(VarDumpInterface::_CLASS, $this->info);
             }
-        }
-    }
-
-    private function setTemplate(): void
-    {
-        switch ($this->type) {
-            case TypeInterface::ARRAY:
-            case TypeInterface::OBJECT:
-                $this->template = '%type% %info% %val%';
-                break;
-            default:
-                $this->template = '%type% %val% %info%';
-                break;
         }
     }
 
     private function setOutput(): void
     {
-        $message = $this->template;
+        $message = $this->dumpeable()->template();
         foreach (['info', 'val'] as $property) {
             if ('' == $this->$property) {
                 $message = str_replace('%' . $property . '%', null, $message);
@@ -218,7 +195,7 @@ final class VarDump implements VarDumpInterface
             }
         }
         $this->output = strtr($message, [
-            '%type%' => $this->formatter->applyWrap($this->type, $this->type),
+            '%type%' => $this->formatter->applyWrap($this->dumpeable()->type(), $this->dumpeable()->type()),
             '%val%' => $this->val,
             '%info%' => $this->info,
         ]);

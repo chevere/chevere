@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Tests;
 
+use Chevere\Components\VarDump\Dumpeable;
 use stdClass;
 use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
@@ -24,21 +25,24 @@ final class VarDumpTest extends TestCase
     public function getVarDump($var): VarDumpInterface
     {
         return
-            new VarDump($var, new PlainFormatter());
+            new VarDump(
+                new Dumpeable($var),
+                new PlainFormatter()
+            );
     }
 
     public function testConstructNull(): void
     {
         $formatter = new PlainFormatter();
-        $varDump = new VarDump(null, $formatter);
+        $varDump = new VarDump(new Dumpeable(null), $formatter);
         $this->assertSame($formatter, $varDump->formatter());
-        $this->assertSame(null, $varDump->var());
+        // $this->assertSame(null, $varDump->var());
         $this->assertSame([], $varDump->dontDump());
         $this->assertSame(0, $varDump->indent());
         $this->assertSame(1, $varDump->depth());
         $this->assertSame('', $varDump->indentString());
         $this->assertSame('', $varDump->toString());
-        $varDump->process();
+        $varDump = $varDump->withProcess();
         $this->assertSame('null', $varDump->toString());
     }
 
@@ -50,12 +54,12 @@ final class VarDumpTest extends TestCase
         $this->assertSame($dontDump, $varDump->dontDump());
     }
 
-    public function testWithVar(): void
-    {
-        $var = 'some var';
-        $varDump = $this->getVarDump($var);
-        $this->assertSame($var, $varDump->var());
-    }
+    // public function testWithVar(): void
+    // {
+    //     $var = 'some var';
+    //     $varDump = $this->getVarDump($var);
+    //     $this->assertSame($var, $varDump->var());
+    // }
 
     public function testWithIndent(): void
     {
@@ -86,7 +90,7 @@ final class VarDumpTest extends TestCase
         ];
         foreach ($types as $values) {
             $varDump = $this->getVarDump($values[0])
-                ->process();
+                ->withProcess();
             $this->assertSame($values[1], $varDump->toString());
         }
     }

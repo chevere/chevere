@@ -73,7 +73,7 @@ final class Type implements TypeInterface
      */
     public function validate($var): bool
     {
-        if ($this->isAbleToValidateObjects()) {
+        if (is_object($var) && $this->isAbleToValidateObjects()) {
             return $this->validateObject($var);
         }
 

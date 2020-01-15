@@ -26,7 +26,7 @@ final class StringProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $this->var = $this->varDump->var();
+        $this->var = $this->varDump->dumpeable()->var();
         $this->info = 'length=' . strlen($this->var);
         $this->val = $this->varDump->formatter()->filterEncodedChars($this->var);
     }

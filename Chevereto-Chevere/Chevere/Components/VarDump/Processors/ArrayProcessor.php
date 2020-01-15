@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Processors;
 
 use Chevere\Components\Type\Interfaces\TypeInterface;
+use Chevere\Components\VarDump\Dumpeable;
 use Chevere\Components\VarDump\VarDump;
 use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
 
@@ -26,8 +27,8 @@ final class ArrayProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $this->info = 'size=' . count($this->varDump->var());
-        foreach ($this->varDump->var() as $k => $v) {
+        $this->info = 'size=' . count($this->varDump->dumpeable()->var());
+        foreach ($this->varDump->dumpeable()->var() as $k => $v) {
             $operator = $this->varDump->formatter()->applyWrap(VarDumpInterface::_OPERATOR, '=>');
             $this->val .= "\n" . $this->varDump->indentString() . ' ' . $this->varDump->formatter()->filterEncodedChars((string) $k) . " $operator ";
             $aux = $v;
@@ -39,10 +40,10 @@ final class ArrayProcessor extends AbstractProcessor
                         '(' . $this->varDump->formatter()->applyEmphasis('circular array reference') . ')'
                     );
             } else {
-                $newVarDump = (new VarDump($aux, $this->varDump->formatter()))
+                $newVarDump = (new VarDump(new Dumpeable($aux), $this->varDump->formatter()))
                     ->withDontDump(...$this->varDump->dontDump())
                     ->withIndent($this->varDump->indent() + 1)
-                    ->process();
+                    ->withProcess();
                 $this->val .= $newVarDump->toString();
             }
         }

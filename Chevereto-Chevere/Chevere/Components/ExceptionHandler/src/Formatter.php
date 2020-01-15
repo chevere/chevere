@@ -19,6 +19,7 @@ use Throwable;
 use Symfony\Component\Console\Output\OutputInterface;
 use Chevere\Components\Data\Traits\DataMethodTrait;
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
+use Chevere\Components\VarDump\Dumpeable;
 use Chevere\Components\VarDump\Dumpers\PlainDumper;
 use Chevere\Components\VarDump\Formatters\DumperFormatter;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
@@ -241,8 +242,8 @@ final class Formatter
         foreach (['_GET', '_POST', '_FILES', '_COOKIE', '_SESSION', '_SERVER'] as $global) {
             $val = $globals[$global] ?? null;
             if (!empty($val)) {
-                $dumperVarDump = (new VarDump($val, new DumperFormatter()))->process();
-                $plainVarDump = (new VarDump($val, new PlainFormatter()))->process();
+                $dumperVarDump = (new VarDump(new Dumpeable($val), new DumperFormatter()))->withProcess();
+                $plainVarDump = (new VarDump(new Dumpeable($val), new PlainFormatter()))->withProcess();
                 $wrapped = $dumperVarDump->toString();
                 if (!BootstrapInstance::get()->isCli()) {
                     $wrapped = '<pre>' . $wrapped . '</pre>';

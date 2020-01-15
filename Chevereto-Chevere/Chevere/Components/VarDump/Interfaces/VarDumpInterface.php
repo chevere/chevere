@@ -22,6 +22,7 @@ use Chevere\Components\VarDump\Processors\NullProcessor;
 use Chevere\Components\VarDump\Processors\ObjectProcessor;
 use Chevere\Components\VarDump\Processors\ResourceProcessor;
 use Chevere\Components\VarDump\Processors\StringProcessor;
+use Chevere\Components\VarDump\Dumpeable;
 use ReflectionProperty;
 
 interface VarDumpInterface
@@ -54,7 +55,9 @@ interface VarDumpInterface
         TypeInterface::RESOURCE => ResourceProcessor::class,
     ];
 
-    public function __construct($var, FormatterInterface $formatter);
+    public function __construct(DumpeableInterface $dumpeable, FormatterInterface $formatter);
+
+    public function dumpeable(): DumpeableInterface;
 
     /**
      * Provides access to the FormatterInterface instance.
@@ -75,11 +78,6 @@ interface VarDumpInterface
      * @return array [className,]
      */
     public function dontDump(): array;
-
-    /**
-     * Provides access to the instance var.
-     */
-    public function var();
 
     /**
      * Return an instance with the specified $indent.
@@ -115,7 +113,7 @@ interface VarDumpInterface
     /**
      * Process the var dump operation.
      */
-    public function process(): VarDumpInterface;
+    public function withProcess(): VarDumpInterface;
 
     /**
      * Provides access to the instance $output.

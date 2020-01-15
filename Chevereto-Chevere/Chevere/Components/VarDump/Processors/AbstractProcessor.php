@@ -49,13 +49,13 @@ abstract class AbstractProcessor implements ProcessorInterface
     final private function assertType(): void
     {
         $type = new Type($this->type());
-        if (!$type->validate($this->varDump->var())) {
+        if (!$type->validate($this->varDump->dumpeable()->var())) {
             throw new InvalidArgumentException(
                 (new Message('Instance of %className% expects a type %expected% for the return value of %method%, type %provided% returned'))
                     ->code('%className%', static::class)
                     ->code('%expected%', $this->type())
                     ->code('%method%', get_class($this->varDump) . '::var()')
-                    ->code('%provided%', varType($this->varDump->var()))
+                    ->code('%provided%', varType($this->varDump->dumpeable()->var()))
                     ->toString()
             );
         }

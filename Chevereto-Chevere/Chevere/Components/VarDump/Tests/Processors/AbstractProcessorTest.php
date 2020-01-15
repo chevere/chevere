@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\X\Tests;
 
+use Chevere\Components\VarDump\Dumpeable;
 use InvalidArgumentException;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
 use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
@@ -25,7 +26,7 @@ abstract class AbstractProcessorTest extends TestCase
     {
         return
             new VarDump(
-                $var,
+                new Dumpeable($var),
                 new PlainFormatter()
             );
     }
