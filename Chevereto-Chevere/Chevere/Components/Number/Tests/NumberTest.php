@@ -108,9 +108,11 @@ final class NumberTest extends TestCase
             2 => [1.1, '1.1'],
             3 => [1.10, '1.1'],
             4 => [1.101, '1.101'],
+            4 => [-1500, '-1.5K'],
+            4 => [2000, '2K'],
         ] as $array) {
             $number = new Number($array[0]);
-            $this->assertSame($array[1], $number->toAbbreviate());
+            $this->assertSame($array[1], $number->withPrecision(1)->toAbbreviate());
         }
     }
 
