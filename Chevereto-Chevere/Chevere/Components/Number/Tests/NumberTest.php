@@ -62,37 +62,37 @@ final class NumberTest extends TestCase
         ];
     }
 
-    public function testConstructObjectArgument(): void
+    public function testConstructWithObject(): void
     {
         $this->expectException(InvalidArgumentException::class);
         new Number(new stdClass);
     }
 
-    public function testConstructStringArgument(): void
+    public function testConstructWithString(): void
     {
         $this->expectException(InvalidArgumentException::class);
         new Number('1.1');
     }
 
-    public function testConstructArrayArgument(): void
+    public function testConstructWithArray(): void
     {
         $this->expectException(InvalidArgumentException::class);
         new Number([]);
     }
 
-    public function testConstructNullArgument(): void
+    public function testConstructWithNull(): void
     {
         $this->expectException(InvalidArgumentException::class);
         new Number(null);
     }
 
-    public function testConstructBooleanArgument(): void
+    public function testConstructWithBoolean(): void
     {
         $this->expectException(InvalidArgumentException::class);
         new Number(false);
     }
 
-    public function testConstructResourceArgument(): void
+    public function testConstructWithResource(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $resource = fopen(__FILE__, 'r');
@@ -103,27 +103,36 @@ final class NumberTest extends TestCase
     public function testConstruct(): void
     {
         foreach ([
-            0 => [0, '0'],
+            0 => [0.9, '0.9'],
             1 => [1, '1'],
-            2 => [1.1, '1.1']
+            2 => [1.1, '1.1'],
+            3 => [1.10, '1.1'],
+            4 => [1.101, '1.101'],
         ] as $array) {
             $number = new Number($array[0]);
             $this->assertSame($array[1], $number->toAbbreviate());
         }
     }
 
-    public function testPrecision(): void
+    public function testWithPrecision(): void
     {
-        $var = 1652.5;
+        $var = 12345.12345;
         $number = new Number($var);
-        foreach ([
-            0 => '2K',
-            1 => '1.7K',
-            2 => '1.65K',
-            3 => '1.653K',
-            4 => '1.6525K',
-        ] as $pos => $string) {
-            $this->assertSame($string, $number->withPrecision($pos)->toAbbreviate());
+        $map = [
+            0 => '12K',
+            1 => '12.3K',
+            2 => '12.35K',
+            3 => '12.345K',
+            4 => '12.3451K',
+            5 => '12.34512K',
+            6 => '12.345123K',
+            7 => '12.3451235K',
+            8 => '12.34512345K',
+        ];
+        foreach ($map as $pos => $string) {
+            $number = $number->withPrecision($pos);
+            $this->assertSame($pos, $number->precision());
+            $this->assertSame($string, $number->toAbbreviate());
         }
     }
 

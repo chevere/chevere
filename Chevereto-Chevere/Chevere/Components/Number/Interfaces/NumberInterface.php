@@ -18,20 +18,22 @@ interface NumberInterface
     public function __construct($number);
 
     /**
-     * Return an instance with the specified precision.
+     * Return an instance with the specified decimal precision.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified precision.
+     * an instance that contains the specified decimal precision.
      */
     public function withPrecision(int $precision): NumberInterface;
 
     /**
-     * Provides access to the instance precision.
+     * Provides access to the instance decimal precision.
      */
     public function precision(): int;
 
     /**
-     * Abbreviate a integer adding its alpha suffix.
+     * Abbreviate a number adding its alpha suffix.
+     *
+     * Note: It removes unnecesary zeroes (100.00M -> 100M) when using precision.
      *
      * @return string Abbreviated number (ie. 2K or 1M).
      */
