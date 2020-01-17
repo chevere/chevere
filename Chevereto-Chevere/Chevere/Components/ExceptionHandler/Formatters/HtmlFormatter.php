@@ -14,18 +14,23 @@ declare(strict_types=1);
 namespace Chevere\Components\ExceptionHandler\Formatters;
 
 use Chevere\Components\ExceptionHandler\Interfaces\FormatterInterface;
+use Chevere\Components\ExceptionHandler\Interfaces\TraceInterface;
+use Chevere\Components\VarDump\Interfaces\FormatterInterface as VarDumpFormatterInterface;
 use Chevere\Components\VarDump\Formatters\HtmlFormatter as VarDumpFormatter;
 
 final class HtmlFormatter implements FormatterInterface
 {
-    public function getVarDumpFormatter(): VarDumpFormatter
+    public function getVarDumpFormatter(): VarDumpFormatterInterface
     {
         return new VarDumpFormatter;
     }
 
     public function getTraceEntryTemplate(): string
     {
-        return "<pre class=\"%cssEvenClass%\">#%i% %fileLine%\n%class%%type%%function%()%arguments%</pre>";
+        return '<pre class="' . TraceInterface::TAG_ENTRY_CSS_EVEN_CLASS . '">#' . TraceInterface::TAG_ENTRY_POS . ' '
+            . TraceInterface::TAG_ENTRY_FILE_LINE . "\n" . TraceInterface::TAG_ENTRY_CLASS
+            . TraceInterface::TAG_ENTRY_TYPE . TraceInterface::TAG_ENTRY_FUNCTION . '()'
+            . TraceInterface::TAG_ENTRY_ARGUMENTS . '</pre>';
     }
 
     public function getHr(): string

@@ -17,20 +17,20 @@ use Chevere\Components\VarDump\Interfaces\FormatterInterface as VarDumpFormatter
 
 interface FormatterInterface
 {
+    /**
+     * Provides access to the VarDumpFormatterInterface instance.
+     */
+    public function varDumpFormatter(): VarDumpFormatterInterface;
+
+    /**
+     * Get a new object implementing the VarDumpFormatterInterface.
+     */
     public function getVarDumpFormatter(): VarDumpFormatterInterface;
 
     /**
-     * Returns the template used for each trace entry.
+     * Get the template used for each trace entry.
      *
-     * - %cssEvenClass% Css even-class (pre--even)
-     * - %i% Stack number
-     * - %file% File
-     * - %line% Line
-     * - %fileLine% File + Line
-     * - %class% class
-     * - %type% type (::, ->)
-     * - %function% function
-     * - %arguments% Arguments
+     * @see TraceInterface for tag reference
      */
     public function getTraceEntryTemplate(): string;
 

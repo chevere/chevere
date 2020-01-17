@@ -19,15 +19,12 @@ use Chevere\Components\ExceptionHandler\Interfaces\FormatterInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\TraceEntryInterface;
 use Chevere\Components\VarDump\Dumpeable;
 use Chevere\Components\VarDump\VarDump;
-use Chevere\Components\VarDump\Interfaces\FormatterInterface as VarDumpFormatterInterface;
 
 final class Trace implements TraceInterface
 {
     private array $trace;
 
     private FormatterInterface $formatter;
-
-    private VarDumpFormatterInterface $varDumpFormatter;
 
     private array $array = [];
 
@@ -40,7 +37,6 @@ final class Trace implements TraceInterface
     {
         $this->trace = $trace;
         $this->formatter = $formatter;
-        $this->varDumpFormatter = $formatter->getVarDumpFormatter();
         foreach ($this->trace as $pos => $entry) {
             $this->array[] = strtr(
                 $this->formatter->getTraceEntryTemplate(),
@@ -52,6 +48,8 @@ final class Trace implements TraceInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return array Containing the formatter trace entries
      */
     public function toArray(): array
     {
@@ -60,6 +58,8 @@ final class Trace implements TraceInterface
 
     /**
      * {@inheritdoc}
+     *
+     * @return string Containing the formatter trace entries as string ready to screen.
      */
     public function toString(): string
     {
@@ -69,24 +69,24 @@ final class Trace implements TraceInterface
     private function getTrTable(int $pos, TraceEntryInterface $entry): array
     {
         $trValues = [
-            '%cssEvenClass%' => ($pos & 1) ? 'pre--even' : '',
-            '%i%' => $pos,
-            '%file%' => $entry->file(),
-            '%line%' => $entry->line(),
-            '%fileLine%' => $entry->fileLine(),
-            '%class%' => $entry->class(),
-            '%type%' => $entry->type(),
-            '%function%' => $entry->function(),
+            TraceInterface::TAG_ENTRY_CSS_EVEN_CLASS => ($pos & 1) ? 'entry--even' : '',
+            TraceInterface::TAG_ENTRY_POS => $pos,
+            TraceInterface::TAG_ENTRY_FILE => $entry->file(),
+            TraceInterface::TAG_ENTRY_LINE => $entry->line(),
+            TraceInterface::TAG_ENTRY_FILE_LINE => $entry->fileLine(),
+            TraceInterface::TAG_ENTRY_CLASS => $entry->class(),
+            TraceInterface::TAG_ENTRY_TYPE => $entry->type(),
+            TraceInterface::TAG_ENTRY_FUNCTION => $entry->function(),
         ];
         $array = $trValues;
-        foreach (static::HIGHLIGHT_TAGS as $tag => $key) {
+        foreach (TraceInterface::HIGHLIGHT_TAGS as $tag => $key) {
             $val = $trValues[$tag];
             if (empty($val)) {
                 continue;
             }
-            $array[$tag] = $this->varDumpFormatter->applyWrap($key, (string) $trValues[$tag]);
+            $array[$tag] = $this->formatter->varDumpFormatter()->applyWrap($key, (string) $trValues[$tag]);
         }
-        $array['%arguments%'] = $this->getEntryArguments($entry);
+        $array[TraceInterface::TAG_ENTRY_ARGUMENTS] = $this->getEntryArguments($entry);
 
         return $array;
     }
@@ -97,7 +97,7 @@ final class Trace implements TraceInterface
         foreach ($entry->args() as $pos => $var) {
             $string .= "\n";
             $aux = 'Arg#' . ($pos + 1) . ' ';
-            $varDump = (new VarDump(new Dumpeable($var), $this->varDumpFormatter))
+            $varDump = (new VarDump(new Dumpeable($var), $this->formatter->varDumpFormatter()))
                 ->withDontDump(App::class)
                 ->withProcess();
             $string .= $aux . $varDump->toString() . "\n";

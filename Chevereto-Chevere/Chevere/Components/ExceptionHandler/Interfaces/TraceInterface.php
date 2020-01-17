@@ -19,12 +19,24 @@ use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
 
 interface TraceInterface extends ToArrayInterface, ToStringInterface
 {
+    const TAG_ENTRY_FILE = '%file%';
+    const TAG_ENTRY_LINE = '%line%';
+    const TAG_ENTRY_FILE_LINE = '%fileLine%';
+    const TAG_ENTRY_CLASS = '%class%';
+    const TAG_ENTRY_TYPE = '%type%';
+    const TAG_ENTRY_FUNCTION = '%function%';
+    const TAG_ENTRY_CSS_EVEN_CLASS = '%cssEvenClass%';
+    const TAG_ENTRY_POS = '%pos%';
+    const TAG_ENTRY_ARGUMENTS = '%arguments%';
+
     const HIGHLIGHT_TAGS = [
-        '%file%' => VarDumpInterface::_FILE,
-        '%line%' => VarDumpInterface::_FILE,
-        '%fileLine%' => VarDumpInterface::_FILE,
-        '%class%' => VarDumpInterface::_CLASS,
-        '%type%' => VarDumpInterface::_OPERATOR,
-        '%function%' => VarDumpInterface::_FUNCTION,
+        self::TAG_ENTRY_FILE => VarDumpInterface::_FILE,
+        self::TAG_ENTRY_LINE => VarDumpInterface::_FILE,
+        self::TAG_ENTRY_FILE_LINE => VarDumpInterface::_FILE,
+        self::TAG_ENTRY_CLASS => VarDumpInterface::_CLASS,
+        self::TAG_ENTRY_TYPE => VarDumpInterface::_OPERATOR,
+        self::TAG_ENTRY_FUNCTION => VarDumpInterface::_FUNCTION,
     ];
+
+    public function __construct(array $trace, FormatterInterface $formatter);
 }

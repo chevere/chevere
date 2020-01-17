@@ -13,23 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler\Formatters;
 
-use Chevere\Components\ExceptionHandler\Interfaces\FormatterInterface;
 use Chevere\Components\VarDump\Formatters\ConsoleFormatter as VarDumpFormatter;
+use Chevere\Components\VarDump\Interfaces\FormatterInterface as VarDumpFormatterInterface;
 
-final class ConsoleFormatter implements FormatterInterface
+final class ConsoleFormatter extends AbstractFormatter
 {
-    public function getVarDumpFormatter(): VarDumpFormatter
+    public function getVarDumpFormatter(): VarDumpFormatterInterface
     {
         return new VarDumpFormatter;
-    }
-
-    public function getTraceEntryTemplate(): string
-    {
-        return "#%i% %fileLine%\n%class%%type%%function%()%arguments%";
-    }
-
-    public function getHr(): string
-    {
-        return '------------------------------------------------------------';
     }
 }

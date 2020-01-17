@@ -25,7 +25,7 @@ final class TraceTest extends TestCase
     public function testConstruct(): void
     {
         $e = new Exception('Message', 100);
-        $trace = new Trace($e->getTrace(), new PlainFormatter);
+        $trace = new Trace($e->getTrace(), new ConsoleFormatter);
         echo $trace->toString();
         die();
     }
