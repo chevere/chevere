@@ -40,8 +40,8 @@ if (BootstrapInstance::get()->isConsole()) {
 new RuntimeInstance(
     new Runtime(
         new SetDebug('1'),
-        new SetErrorHandler('Chevere\Components\ExceptionHandler\ErrorHandler::error'),
-        new SetExceptionHandler('Chevere\Components\ExceptionHandler\ExceptionHandler::exception'),
+        // new SetErrorHandler('Chevere\Components\ExceptionHandler\ErrorHandler::error'),
+        // new SetExceptionHandler('Chevere\Components\ExceptionHandler\ExceptionHandler::exception'),
         new SetLocale('en_US.UTF8'),
         new SetDefaultCharset('UTF-8'),
         new SetPrecision('16'),
