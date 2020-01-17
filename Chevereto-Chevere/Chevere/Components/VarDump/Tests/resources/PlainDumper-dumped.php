@@ -3,7 +3,7 @@
 /*
  * This file is part of Chevere.
  *
- * (c) Rodolfo Berrios <rodolfo@chevereto.com>
+ * (c) Rodolfo Berrios <rodolfo@chevere.org>
  *
  * For the full copyright and license informawtion, please view the LICENSE
  * file that was distributed with this source code.
