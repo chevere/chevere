@@ -3,7 +3,7 @@
 /*
  * This file is part of Chevere.
  *
- * (c) Rodolfo Berrios <rodolfo@chevereto.com>
+ * (c) Rodolfo Berrios <rodolfo@chevere.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -40,6 +40,14 @@ final class Number implements NumberInterface
      */
     public function withPrecision(int $precision): NumberInterface
     {
+        if ($precision < 0) {
+            throw new InvalidArgumentException(
+                (new Message('Method %methodName% accepts only positive intergers and zero (0), integer %numberProvided% provided'))
+                    ->code('%methodName%', __METHOD__)
+                    ->code('%numberProvided%', $precision)
+                    ->toString()
+            );
+        }
         $new = clone $this;
         $new->precision = $precision;
 
@@ -73,16 +81,17 @@ final class Number implements NumberInterface
             9 => 'B',
             6 => 'M',
             3 => 'K',
-            0 => null,
+            // 0 => '',
         ];
-        foreach ($abbreviations as $exponent => $abbreviation) {
-            if ($this->number >= pow(10, $exponent)) {
-                $div = $this->number / pow(10, $exponent);
-                $float = floatval($div);
-                $string = (string) (null === $abbreviation
-                    ? $float
-                    : (round($float, $this->precision) . $abbreviation));
-                break;
+        foreach ($abbreviations as $exponent => $suffix) {
+            $pow = pow(10, $exponent);
+            if (abs($this->number) >= $pow) {
+                $numberFormat = number_format($this->number / $pow, $this->precision);
+                if ($this->precision > 0) {
+                    $numberFormat = preg_replace('/\.0+$/', '', $numberFormat);
+                }
+
+                return $numberFormat . $suffix;
             }
         }
 

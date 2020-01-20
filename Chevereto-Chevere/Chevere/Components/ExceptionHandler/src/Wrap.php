@@ -3,7 +3,7 @@
 /*
  * This file is part of Chevere.
  *
- * (c) Rodolfo Berrios <rodolfo@chevereto.com>
+ * (c) Rodolfo Berrios <rodolfo@chevere.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -39,9 +39,9 @@ final class Wrap
         $this->exception = $exception;
         $this->data = new Data([]);
         $className = get_class($exception);
-        if (stringStartsWith('Chevere\\', $className)) {
-            $className = stringReplaceFirst('Chevere\\', '', $className);
-        }
+        // if (stringStartsWith('Chevere\\', $className)) {
+        //     $className = stringReplaceFirst('Chevere\\', '', $className);
+        // }
         $phpCode = E_ERROR;
         $code = $exception->getCode();
         if ($exception instanceof ErrorException) {

@@ -3,7 +3,7 @@
 /*
  * This file is part of Chevere.
  *
- * (c) Rodolfo Berrios <rodolfo@chevereto.com>
+ * (c) Rodolfo Berrios <rodolfo@chevere.org>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\ExceptionHandler\src;
+namespace Chevere\Components\ExceptionHandler\Interfaces;
 
 /**
  * Stores the template strings used by ExceptionHandler.
- * 
+ *
  * Available tags:
  *   %className%
  *   %code%
@@ -42,7 +42,7 @@ namespace Chevere\Components\ExceptionHandler\src;
  *   %logFilename%
  *   %css%
  */
-class Template
+class TemplateInterface
 {
     /** @var string Title used when debug is disabled (App config) */
     const NO_DEBUG_TITLE_PLAIN = 'Something went wrong';
