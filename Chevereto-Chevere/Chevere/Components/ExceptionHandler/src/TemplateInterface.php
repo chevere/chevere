@@ -63,11 +63,11 @@ class TemplateInterface
      * - %a% Arguments.
      */
 
-    /** @var string HTML template used for each stack entry */
-    const STACK_ITEM_HTML = "<pre class=\"%x%\">#%i% %fl%\n%c%%t%%m%()%a%</pre>";
+    // /** @var string HTML template used for each stack entry */
+    // const STACK_ITEM_HTML = "<pre class=\"%x%\">#%i% %fl%\n%c%%t%%m%()%a%</pre>";
 
-    /** @var string Console template used for each stack entry */
-    const STACK_ITEM_CONSOLE = "#%i% %fl%\n%c%%t%%m%()%a%";
+    // /** @var string Console template used for each stack entry */
+    // const STACK_ITEM_CONSOLE = "#%i% %fl%\n%c%%t%%m%()%a%";
 
     /**
      * HTML placeholders (HTML_TEMPLATE, NO_DEBUG_BODY_HTML, DEBUG_BODY_HTML, BOX_BREAK_HTML).
