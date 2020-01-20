@@ -49,8 +49,14 @@ final class DumpeableTest extends TestCase
             TypeInterface::OBJECT => [
                 new stdClass, ObjectProcessor::class
             ],
-            TypeInterface::RESOURCE => [fopen(__FILE__, 'r'), ResourceProcessor::class],
-            TypeInterface::STRING => ['', StringProcessor::class],
+            TypeInterface::RESOURCE => [
+                fopen(__FILE__, 'r'),
+                ResourceProcessor::class
+            ],
+            TypeInterface::STRING => [
+                '',
+                StringProcessor::class
+            ],
         ];
         foreach ($variables as $type => $var) {
             $variableDump = new Dumpeable($var[0]);
