@@ -69,8 +69,6 @@ final class Formatter
 
     private array $consoleSections;
 
-    private Wrap $wrap;
-
     private Throwable $exception;
 
     public function __construct(ExceptionHandler $exceptionHandler)
@@ -79,7 +77,6 @@ final class Formatter
         $this->lineBreak = '';
         $this->plainContentSections = [];
         $this->richContentSections = [];
-        $this->wrap = $this->exceptionHandler->wrap();
         $this->exception = $this->wrap->exception();
         $this->data = $this->wrap->data();
         $this->setServerProperties();

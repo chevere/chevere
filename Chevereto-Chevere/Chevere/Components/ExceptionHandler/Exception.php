@@ -19,9 +19,9 @@ use Chevere\Components\ExceptionHandler\Interfaces\ExceptionInterface;
 use Chevere\Components\Message\Message;
 
 /**
- * Provides throwable information
+ * Class used to make Exceptions readable (normalized).
  */
-final class Throwable implements ExceptionInterface
+final class Exception implements ExceptionInterface
 {
     private string $className;
 
@@ -46,12 +46,12 @@ final class Throwable implements ExceptionInterface
      *
      * @throws LogicException if the exception severity is unknown.
      */
-    public function __construct(\Throwable $throwable)
+    public function __construct(\Exception $exception)
     {
-        $this->className = get_class($throwable);
-        $this->code = $throwable->getCode();
-        if ($throwable instanceof ErrorException) {
-            $this->severity = $throwable->getSeverity();
+        $this->className = get_class($exception);
+        $this->code = $exception->getCode();
+        if ($exception instanceof ErrorException) {
+            $this->severity = $exception->getSeverity();
             if (0 == $this->code) {
                 $this->code = $this->severity;
             }
@@ -61,10 +61,10 @@ final class Throwable implements ExceptionInterface
         $this->assertSeverity();
         $this->loggerLevel = ExceptionInterface::ERROR_LEVELS[$this->severity];
         $this->type = ExceptionInterface::ERROR_TYPES[$this->severity];
-        $this->message = $throwable->getMessage();
-        $this->file = $throwable->getFile();
-        $this->line = (int) $throwable->getLine();
-        $this->trace = $throwable->getTrace();
+        $this->message = $exception->getMessage();
+        $this->file = $exception->getFile();
+        $this->line = $exception->getLine();
+        $this->trace = $exception->getTrace();
     }
 
     /**

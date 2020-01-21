@@ -20,6 +20,8 @@ use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
 
 /**
+ * The Chevere VarDump.
+ *
  * Analyze a variable and provide a formated string representation of its type and data.
  */
 final class VarDump implements VarDumpInterface

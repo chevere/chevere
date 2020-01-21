@@ -112,7 +112,7 @@ final class Stopwatch implements StopwatchInterface
      */
     public function records(): array
     {
-        $this->assertMethodCall(__METHOD__);
+        $this->assertResultCall(__METHOD__);
 
         return $this->records;
     }
@@ -122,7 +122,7 @@ final class Stopwatch implements StopwatchInterface
      */
     public function recordsRead(): array
     {
-        $this->assertMethodCall(__METHOD__);
+        $this->assertResultCall(__METHOD__);
 
         return $this->recordsRead;
     }
@@ -132,7 +132,7 @@ final class Stopwatch implements StopwatchInterface
      */
     public function timeElapsed(): int
     {
-        $this->assertMethodCall(__METHOD__);
+        $this->assertResultCall(__METHOD__);
 
         return $this->timeElapsed;
     }
@@ -142,12 +142,12 @@ final class Stopwatch implements StopwatchInterface
      */
     public function timeElapsedRead(): string
     {
-        $this->assertMethodCall(__METHOD__);
+        $this->assertResultCall(__METHOD__);
 
         return $this->timeElapsedRead;
     }
 
-    private function assertMethodCall(string $method): void
+    private function assertResultCall(string $method): void
     {
         if (!isset($this->records)) {
             throw new BadMethodCallException(

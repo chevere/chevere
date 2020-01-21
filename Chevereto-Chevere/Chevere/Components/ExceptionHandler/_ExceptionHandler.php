@@ -50,44 +50,6 @@ final class ExceptionHandler
     // FIXME:
     const PATH_LOGS = 'var/logs/';
 
-    /** Readable PHP error mapping */
-    const ERROR_TABLE = [
-        E_ERROR => 'Fatal error',
-        E_WARNING => 'Warning',
-        E_PARSE => 'Parse error',
-        E_NOTICE => 'Notice',
-        E_CORE_ERROR => 'Core error',
-        E_CORE_WARNING => 'Core warning',
-        E_COMPILE_ERROR => 'Compile error',
-        E_COMPILE_WARNING => 'Compile warning',
-        E_USER_ERROR => 'Fatal error',
-        E_USER_WARNING => 'Warning',
-        E_USER_NOTICE => 'Notice',
-        E_STRICT => 'Strict standars',
-        E_RECOVERABLE_ERROR => 'Recoverable error',
-        E_DEPRECATED => 'Deprecated',
-        E_USER_DEPRECATED => 'Deprecated',
-    ];
-
-    /** PHP error code LogLevel table. Taken from Monolog\ErrorHandler (defaultErrorLevelMap). */
-    const PHP_LOG_LEVEL = [
-        E_ERROR => LogLevel::CRITICAL,
-        E_WARNING => LogLevel::WARNING,
-        E_PARSE => LogLevel::ALERT,
-        E_NOTICE => LogLevel::NOTICE,
-        E_CORE_ERROR => LogLevel::CRITICAL,
-        E_CORE_WARNING => LogLevel::WARNING,
-        E_COMPILE_ERROR => LogLevel::ALERT,
-        E_COMPILE_WARNING => LogLevel::WARNING,
-        E_USER_ERROR => LogLevel::ERROR,
-        E_USER_WARNING => LogLevel::WARNING,
-        E_USER_NOTICE => LogLevel::NOTICE,
-        E_STRICT => LogLevel::NOTICE,
-        E_RECOVERABLE_ERROR => LogLevel::ERROR,
-        E_DEPRECATED => LogLevel::NOTICE,
-        E_USER_DEPRECATED => LogLevel::NOTICE,
-    ];
-
     private RequestInterface $request;
 
     private bool $isDebugEnabled;
@@ -138,30 +100,9 @@ final class ExceptionHandler
         return $this->isDebugEnabled;
     }
 
-    public function request(): RequestInterface
-    {
-        return $this->request;
-    }
-
-    public function wrap(): Wrap
-    {
-        return $this->wrap;
-    }
-
     public static function exception($exception): void
     {
         new static($exception);
-    }
-
-    private function setTimeProperties(): void
-    {
-        $dt = new DateTime('now', new DateTimeZone('UTC'));
-        $dateTimeAtom = $dt->format(DateTime::ATOM);
-        $this->data = $this->data
-            ->withMergedArray([
-                'dateTimeAtom' => $dateTimeAtom,
-                'timestamp' => strtotime($dateTimeAtom),
-            ]);
     }
 
     private function setLogFilePathProperties(): void

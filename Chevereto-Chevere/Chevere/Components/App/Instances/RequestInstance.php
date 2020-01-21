@@ -17,7 +17,7 @@ use LogicException;
 use Chevere\Components\Http\Interfaces\RequestInterface;
 
 /**
- * A container for the global request instance.
+ * A container for the request instance.
  */
 final class RequestInstance
 {

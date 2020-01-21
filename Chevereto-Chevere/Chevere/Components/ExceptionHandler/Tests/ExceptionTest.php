@@ -16,10 +16,10 @@ namespace Chevere\Components\ExceptionHandler\Tests;
 use LogicException;
 use Chevere\Components\ExceptionHandler\Interfaces\ExceptionInterface;
 use Chevere\Components\ExceptionHandler\Tests\resources\TestErrorException;
-use Chevere\Components\ExceptionHandler\Throwable;
+use Chevere\Components\ExceptionHandler\Exception;
 use PHPUnit\Framework\TestCase;
 
-final class ThrowableTest extends TestCase
+final class ExceptionTest extends TestCase
 {
     public function testConstructWithException(): void
     {
@@ -28,12 +28,12 @@ final class ThrowableTest extends TestCase
         $exceptionName = LogicException::class;
         $exception = new $exceptionName($message, $code); // LINE
         $line = __LINE__ - 1;
-        $throwable = new Throwable($exception);
-        $this->assertSame($exceptionName, $throwable->className());
-        $this->assertSame($message, $throwable->message());
-        $this->assertSame($code, $throwable->code());
-        $this->assertSame(__FILE__, $throwable->file());
-        $this->assertSame($line, $throwable->line());
+        $normalized = new Exception($exception);
+        $this->assertSame($exceptionName, $normalized->className());
+        $this->assertSame($message, $normalized->message());
+        $this->assertSame($code, $normalized->code());
+        $this->assertSame(__FILE__, $normalized->file());
+        $this->assertSame($line, $normalized->line());
     }
 
     public function testConstructWithErrorDefaultCode(): void
@@ -41,8 +41,8 @@ final class ThrowableTest extends TestCase
         $code = ExceptionInterface::DEFAULT_ERROR_TYPE;
         $exceptionName = TestErrorException::class;
         $exception = new $exceptionName('test');
-        $throwable = new Throwable($exception);
-        $this->assertSame($code, $throwable->code());
+        $normalized = new Exception($exception);
+        $this->assertSame($code, $normalized->code());
     }
 
     public function testConstructWithErrorInvalidSeverity(): void
@@ -51,6 +51,6 @@ final class ThrowableTest extends TestCase
         $exception = new $exceptionName('test');
         $exception->setSeverity(12346664321);
         $this->expectException(LogicException::class);
-        new Throwable($exception);
+        new Exception($exception);
     }
 }

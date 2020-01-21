@@ -20,13 +20,11 @@ use Chevere\Components\ExceptionHandler\Trace;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
-final class TraceTest extends TestCase
-{
-    public function testConstruct(): void
-    {
-        $e = new Exception('Message', 100);
-        $trace = new Trace($e->getTrace(), new ConsoleFormatter);
-        echo $trace->toString();
-        die();
-    }
-}
+// final class TraceTest extends TestCase
+// {
+//     public function testConstruct(): void
+//     {
+//         $e = new Exception('Message', 100);
+//         $trace = new Trace($e->getTrace(), new ConsoleFormatter);
+//     }
+// }
