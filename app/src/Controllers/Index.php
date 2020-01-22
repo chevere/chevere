@@ -17,9 +17,12 @@ use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Controller\Interfaces\JsonApiInterface;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\Traits\JsonApiTrait;
+use Chevere\Components\ExceptionHandler\Documents\HtmlDocument;
+use Chevere\Components\ExceptionHandler\Exception;
+use Chevere\Components\ExceptionHandler\ExceptionHandler;
 use Chevere\Components\JsonApi\EncodedDocument;
+use Chevere\Components\Message\Message;
 use Chevere\Components\Time\TimeHr;
-use Exception;
 use JsonApiPhp\JsonApi\Attribute;
 use JsonApiPhp\JsonApi\DataDocument;
 use JsonApiPhp\JsonApi\JsonApi;
@@ -40,10 +43,17 @@ class Index extends Controller implements JsonApiInterface
 
     public function __invoke(): void
     {
-        throw new LogicException('deeeeznuts');
+        // xdd($this);
+        $doc = new HtmlDocument(new ExceptionHandler(new LogicException(
+            (new Message('Deeeez %nuts% at %fileName%'))
+                ->code('%nuts%', 'nuuuuts')
+                ->code('%fileName%', 'chapa la pachala')
+                ->toString()
+        )));
+        echo $doc->toString();
+        die();
         $took = hrtime(true);
         $arr = ['aaa', $this, (new TimeHr($took - BootstrapInstance::get()->hrTime()))->toReadMs()];
-        xdd($arr);
         $this->api = new ResourceObject(
             'info',
             'api',

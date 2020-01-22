@@ -125,14 +125,11 @@ final class TraceEntry implements TraceEntryInterface
 
     private function assertEntry(): void
     {
-        $entry = $this->entry;
         $missing = [];
-        foreach (TraceEntryInterface::KEYS as $key) {
-            if (!array_key_exists($key, $entry)) {
+        foreach (static::MUST_HAVE_KEYS as $key) {
+            if (!array_key_exists($key, $this->entry)) {
                 $missing[] = $key;
-                continue;
             }
-            unset($entry[$key]);
         }
         if (!empty($missing)) {
             throw new InvalidArgumentException(

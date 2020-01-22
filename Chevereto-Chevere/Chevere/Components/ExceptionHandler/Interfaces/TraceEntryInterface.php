@@ -17,6 +17,8 @@ interface TraceEntryInterface
 {
     const KEYS = ['file', 'line', 'function', 'class', 'type'];
 
+    const MUST_HAVE_KEYS = ['file', 'line', 'function'];
+
     public function file(): string;
 
     public function line(): int;

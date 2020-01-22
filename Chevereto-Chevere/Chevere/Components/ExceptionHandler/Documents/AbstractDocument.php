@@ -80,10 +80,10 @@ abstract class AbstractDocument implements DocumentInterface
         foreach ($this->sections as $pos => $sectionName) {
             $templated[] = $this->sectionsTemplate[$sectionName];
         }
-        $preDocument = implode("\n\n", $templated);
+        $preDocument = implode($this->getGlue(), $templated);
         $document = strtr($preDocument, $tags);
 
-        return $document;
+        return $this->wrap($document);
     }
 
     /**
@@ -94,12 +94,10 @@ abstract class AbstractDocument implements DocumentInterface
         return $this->sections;
     }
 
-    abstract public function getFormatter(): FormatterInterface;
-
     /**
      * @return string[]
      */
-    public function getSections(): array
+    final public function getSections(): array
     {
         return [
             0 => static::SECTION_TITLE,
@@ -113,17 +111,17 @@ abstract class AbstractDocument implements DocumentInterface
         ];
     }
 
-    public function getSectionsTemplate(): array
+    protected function wrap(string $value): string
     {
-        return [
-            static::SECTION_TITLE => '%title% in %fileLine%',
-            static::SECTION_MESSAGE => '# Message' . "\n" . '%message% %codeWrap%',
-            static::SECTION_TIME => '# Time' . "\n" . '%dateTimeUtcAtom% [%timestamp%]',
-            static::SECTION_ID => '# Incident ID:%id%' . "\n" . 'Logged at %logFilename%',
-            static::SECTION_STACK => '# Stack trace' . "\n" . '%stack%',
-            static::SECTION_CLIENT => '# Client' . "\n" . '%clientIp% %clientUserAgent%',
-            static::SECTION_REQUEST => '# Request' . "\n" . '%serverProtocol% %requestMethod% %uri%',
-            static::SECTION_SERVER => '# Server' . "\n" . '%serverHost% %serverSoftware%',
-        ];
+        return $value;
     }
+
+    protected function getGlue(): string
+    {
+        return "\n\n";
+    }
+
+    abstract public function getSectionsTemplate(): array;
+
+    abstract public function getFormatter(): FormatterInterface;
 }

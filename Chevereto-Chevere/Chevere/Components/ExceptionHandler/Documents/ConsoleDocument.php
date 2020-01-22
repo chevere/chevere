@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\ExceptionHandler\Documents;
 
 use Chevere\Components\ExceptionHandler\Formatters\ConsoleFormatter;
-use Chevere\Components\ExceptionHandler\Interfaces\DocumentInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\FormatterInterface;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -47,7 +46,7 @@ final class ConsoleDocument extends AbstractDocument
             static::SECTION_STACK => $sectionColor('# Stack trace') . "\n" . '%stack%',
             static::SECTION_CLIENT => $sectionColor('# Client') . "\n" . '%clientIp% %clientUserAgent%',
             static::SECTION_REQUEST => $sectionColor('# Request') . "\n" . '%serverProtocol% %requestMethod% %uri%',
-            static::SECTION_SERVER => $sectionColor('# Server') . "\n" . '%phpUname%',
+            static::SECTION_SERVER => $sectionColor('# Server') . "\n" . '%phpUname% %serverSoftware%',
         ];
     }
 

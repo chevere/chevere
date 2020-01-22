@@ -25,4 +25,18 @@ final class PlainDocument extends AbstractDocument
     {
         return new PlainFormatter;
     }
+
+    public function getSectionsTemplate(): array
+    {
+        return [
+            static::SECTION_TITLE => '%title% in %fileLine%',
+            static::SECTION_MESSAGE => '# Message' . "\n" . '%message% %codeWrap%',
+            static::SECTION_TIME => '# Time' . "\n" . '%dateTimeUtcAtom% [%timestamp%]',
+            static::SECTION_ID => '# Incident ID:%id%' . "\n" . 'Logged at %logFilename%',
+            static::SECTION_STACK => '# Stack trace' . "\n" . '%stack%',
+            static::SECTION_CLIENT => '# Client' . "\n" . '%clientIp% %clientUserAgent%',
+            static::SECTION_REQUEST => '# Request' . "\n" . '%serverProtocol% %requestMethod% %uri%',
+            static::SECTION_SERVER => '# Server' . "\n" . '%phpUname% %serverSoftware%',
+        ];
+    }
 }

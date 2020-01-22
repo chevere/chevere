@@ -64,5 +64,4 @@ class TemplateInterface
 
     /** @var string HTML body used when debug is enabled (App config) */
     const DEBUG_BODY_HTML = '<main class="main--stack"><div>%content%<div class="c note user-select-none"><b>Note:</b> This message is being displayed because of active debug mode. Remember to turn this off when going production by editing <code>%loadedConfigFilesString%</code></div></div></main>';
-    const BOX_BREAK_HTML = '<div class="hr"><span>------------------------------------------------------------</span></div>';
 }

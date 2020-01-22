@@ -36,7 +36,7 @@ use Chevere\Components\Http\Interfaces\RequestInterface;
 /**
  * The Chevere exception handler.
  */
-final class ExceptionHandler
+final class _ExceptionHandler
 {
     use DataMethodTrait;
 
