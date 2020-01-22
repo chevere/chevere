@@ -80,6 +80,7 @@ abstract class AbstractDocument implements DocumentInterface
         foreach ($this->sections as $pos => $sectionName) {
             $templated[] = $this->sectionsTemplate[$sectionName];
         }
+        $templated = array_filter($templated);
         $preDocument = implode($this->getGlue(), $templated);
         $document = strtr($preDocument, $tags);
 

@@ -28,10 +28,10 @@ final class HtmlDocument extends AbstractDocument
     const HTML_TEMPLATE = '<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style>%css%</style></head><body class="%bodyClass%">%body%</body></html>';
 
     /** @var string HTML body used when debug=0 */
-    const NO_DEBUG_BODY_HTML = '<main><div><div class="t t--scream">%title%</div>%content%<p class="fine-print">%dateTimeAtom% • %id%</p></div></main>';
+    const BODY_NO_DEBUG_HTML = '<main><div>%content%</div></main>';
 
     /** @var string HTML body used when debug=1 */
-    const DEBUG_BODY_HTML = '<main class="main--stack"><div>%content%<div class="c note user-select-none"><b>Note:</b> This message is being displayed because of active debug mode. Remember to turn this off when going production by editing <code>%loadedConfigFilesString%</code></div></div></main>';
+    const BODY_HTML = '<main class="main--stack"><div>%content%<div class="c note user-select-none"><b>Note:</b> This message is being displayed because of active debug mode. Remember to turn this off when going production by editing <code>%loadedConfigFilesString%</code></div></div></main>';
 
     /**
      * {@inheritdoc}
@@ -43,16 +43,22 @@ final class HtmlDocument extends AbstractDocument
 
     public function getSectionsTemplate(): array
     {
-        return [
-            static::SECTION_TITLE => $this->wrapTitle('%title% <span>in&nbsp;%fileLine%</span>'),
-            static::SECTION_MESSAGE => $this->wrapSectionTitle('# Message') . "\n" . $this->wrapContent('%message% %codeWrap%'),
-            static::SECTION_TIME => $this->wrapSectionTitle('# Time') . "\n" . $this->wrapContent('%dateTimeUtcAtom% [%timestamp%]'),
-            static::SECTION_ID => $this->wrapSectionTitle('# Incident ID:%id%') . "\n" . $this->wrapContent('Logged at %logFilename%'),
-            static::SECTION_STACK => $this->wrapSectionTitle('# Stack trace') . "\n" . $this->wrapContent('%stack%'),
-            static::SECTION_CLIENT => $this->wrapSectionTitle('# Client') . "\n" . $this->wrapContent('%clientIp% %clientUserAgent%'),
-            static::SECTION_REQUEST => $this->wrapSectionTitle('# Request') . "\n" . $this->wrapContent('%serverProtocol% %requestMethod% %uri%'),
-            static::SECTION_SERVER => $this->wrapSectionTitle('# Server') . "\n" . $this->wrapContent('%phpUname% %serverSoftware%'),
-        ];
+        if ($this->exceptionHandler->isDebug()) {
+            return [
+                static::SECTION_TITLE => $this->wrapTitle('%title% <span>in&nbsp;%fileLine%</span>'),
+                static::SECTION_MESSAGE => $this->wrapSectionTitle('# Message') . "\n" . $this->wrapContent('%message% %codeWrap%'),
+                static::SECTION_TIME => $this->wrapSectionTitle('# Time') . "\n" . $this->wrapContent('%dateTimeUtcAtom% [%timestamp%]'),
+                static::SECTION_ID => $this->wrapSectionTitle('# Incident ID:%id%') . "\n" . $this->wrapContent('Logged at %logFilename%'),
+                static::SECTION_STACK => $this->wrapSectionTitle('# Stack trace') . "\n" . $this->wrapContent('%stack%'),
+                static::SECTION_CLIENT => $this->wrapSectionTitle('# Client') . "\n" . $this->wrapContent('%clientIp% %clientUserAgent%'),
+                static::SECTION_REQUEST => $this->wrapSectionTitle('# Request') . "\n" . $this->wrapContent('%serverProtocol% %requestMethod% %uri%'),
+                static::SECTION_SERVER => $this->wrapSectionTitle('# Server') . "\n" . $this->wrapContent('%phpUname% %serverSoftware%'),
+            ];
+        } else {
+            return [
+                static::SECTION_TITLE => $this->wrapTitle(static::NO_DEBUG_TITLE_PLAIN) . static::NO_DEBUG_CONTENT_HTML . '<p class="fine-print">%dateTimeAtom% • %id%</p>',
+            ];
+        }
     }
 
     protected function getGlue(): string
@@ -65,7 +71,7 @@ final class HtmlDocument extends AbstractDocument
         $preDocument = strtr(static::HTML_TEMPLATE, [
             '%bodyClass%' => !headers_sent() ? 'body--flex' : 'body--block',
             '%css%' => file_get_contents(dirname(__DIR__) . '/src/template.css'),
-            '%body%' => static::DEBUG_BODY_HTML,
+            '%body%' => $this->exceptionHandler->isDebug() ? static::BODY_HTML : static::BODY_NO_DEBUG_HTML,
         ]);
 
         return
