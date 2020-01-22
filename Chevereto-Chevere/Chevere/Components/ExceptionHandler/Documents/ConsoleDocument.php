@@ -30,7 +30,7 @@ final class ConsoleDocument extends AbstractDocument
         return new ConsoleFormatter;
     }
 
-    public function getSectionsTemplate(): array
+    public function getTemplate(): array
     {
         $consoleColor = new ConsoleColor;
         $title = $consoleColor->apply(['red', 'bold'], static::TAG_TITLE . ' in ');
@@ -76,7 +76,7 @@ final class ConsoleDocument extends AbstractDocument
         $new = clone $this;
         $new->verbosity = $verbosity;
         $new->sections = static::SECTIONS;
-        $new->sectionsTemplate = $new->getSectionsTemplate();
+        $new->template = $new->getTemplate();
         $new->handleVerbositySections();
 
         return $new;

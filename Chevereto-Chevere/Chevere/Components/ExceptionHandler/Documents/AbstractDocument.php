@@ -27,7 +27,7 @@ abstract class AbstractDocument implements DocumentInterface
 
     protected array $sections = self::SECTIONS;
 
-    protected array $sectionsTemplate;
+    protected array $template;
 
     private array $tags;
 
@@ -35,7 +35,7 @@ abstract class AbstractDocument implements DocumentInterface
     {
         $this->exceptionHandler = $exceptionHandler;
         $this->formatter = $this->getFormatter();
-        $this->sectionsTemplate = $this->getSectionsTemplate();
+        $this->template = $this->getTemplate();
     }
 
     /**
@@ -51,12 +51,12 @@ abstract class AbstractDocument implements DocumentInterface
         return $value;
     }
 
-    protected function getGlue(): string
+    protected function getLineBreak(): string
     {
         return "\n\n";
     }
 
-    abstract public function getSectionsTemplate(): array;
+    abstract public function getTemplate(): array;
 
     abstract public function getFormatter(): FormatterInterface;
 
@@ -67,7 +67,7 @@ abstract class AbstractDocument implements DocumentInterface
         $this->tags = [
             static::TAG_TITLE => $exeption->className() . ' thrown',
             static::TAG_MESSAGE => $exeption->message(),
-            static::TAG_CODE_WRAP => $this->getCodeWrap(),
+            static::TAG_CODE_WRAP => $this->getExceptionCode(),
             static::TAG_FILE_LINE => $exeption->file() . ':' . $exeption->line(),
             static::TAG_ID => $this->exceptionHandler->id(),
             static::TAG_DATE_TIME_UTC_ATOM => $dateTimeUtc->format(DateTimeInterface::ATOM),
@@ -79,16 +79,18 @@ abstract class AbstractDocument implements DocumentInterface
         $this->handleRequestTags();
         $templated = [];
         foreach ($this->sections as $sectionName) {
-            $templated[] = $this->sectionsTemplate[$sectionName] ?? null;
+            $templated[] = $this->template[$sectionName] ?? null;
         }
-        $templated = array_filter($templated);
-        $preDocument = implode($this->getGlue(), $templated);
-        $document = strtr($preDocument, $this->tags);
 
-        return $this->prepare($document);
+        return $this->prepare(
+            strtr(
+                implode($this->getLineBreak(), array_filter($templated)),
+                $this->tags
+            )
+        );
     }
 
-    private function getCodeWrap(): string
+    private function getExceptionCode(): string
     {
         return
             $this->exceptionHandler->exception()->code() > 0
@@ -98,7 +100,10 @@ abstract class AbstractDocument implements DocumentInterface
 
     private function getLogFilename(): string
     {
-        return $this->exceptionHandler->hasLogger() ? '__LOGGER_FILENAME__' : '/dev/null';
+        return
+            $this->exceptionHandler->hasLogger()
+            ? '__LOGGER_FILENAME__'
+            : '/dev/null';
     }
 
     private function getStack(): string
@@ -127,3 +132,22 @@ abstract class AbstractDocument implements DocumentInterface
         }
     }
 }
+
+//     private function processContentGlobals()
+//     {
+//         // $globals = $this->exceptionHandler->request()->globals()->globals();
+//         $globals = $GLOBALS;
+//         foreach (['_GET', '_POST', '_FILES', '_COOKIE', '_SESSION', '_SERVER'] as $global) {
+//             $val = $globals[$global] ?? null;
+//             if (!empty($val)) {
+//                 $dumperVarDump = (new VarDump(new Dumpeable($val), new DumperFormatter()))->withProcess();
+//                 $plainVarDump = (new VarDump(new Dumpeable($val), new PlainFormatter()))->withProcess();
+//                 $wrapped = $dumperVarDump->toString();
+//                 if (!BootstrapInstance::get()->isCli()) {
+//                     $wrapped = '<pre>' . $wrapped . '</pre>';
+//                 }
+//                 $this->setRichContentSection($global, ['$' . $global, $this->wrapStringHr($wrapped)]);
+//                 $this->setPlainContentSection($global, ['$' . $global, strip_tags($this->wrapStringHr($plainVarDump->toString()))]);
+//             }
+//         }
+//     }

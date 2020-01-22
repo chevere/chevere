@@ -41,7 +41,7 @@ final class HtmlDocument extends AbstractDocument
         return new HtmlFormatter;
     }
 
-    public function getSectionsTemplate(): array
+    public function getTemplate(): array
     {
         if ($this->exceptionHandler->isDebug()) {
             return [
@@ -61,7 +61,7 @@ final class HtmlDocument extends AbstractDocument
         }
     }
 
-    protected function getGlue(): string
+    protected function getLineBreak(): string
     {
         return "\n<br>\n";
     }

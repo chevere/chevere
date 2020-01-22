@@ -150,3 +150,33 @@ final class ExceptionHandler implements ExceptionHandlerInterface
         }
     }
 }
+
+// private function setLogFilePathProperties(): void
+// {
+//     $absolute = (new PathApp('var/logs/'))->absolute();
+//     $date = gmdate($this->logDateFolderFormat, $this->data->key('timestamp'));
+//     $id = $this->data->key('id');
+//     $timestamp = $this->data->key('timestamp');
+//     $logFilename = $absolute . $this->loggerLevel . '/' . $date . $timestamp . '_' . $id . '.log';
+//     $this->data = $this->data
+//         ->withAddedKey('logFilename', $logFilename);
+// }
+
+// private function setLogger(): void
+// {
+//     $lineFormatter = new LineFormatter(null, null, true, true);
+//     $logFilename = $this->data->key('logFilename');
+//     $streamHandler = new StreamHandler($logFilename);
+//     $streamHandler->setFormatter($lineFormatter);
+//     $this->logger = new Logger(__NAMESPACE__);
+//     $this->logger->setTimezone(new DateTimeZone('UTC'));
+//     $this->logger->pushHandler($streamHandler);
+//     $this->logger->pushHandler(new FirePHPHandler());
+// }
+
+// private function loggerWrite(): void
+// {
+//     $log = strip_tags($this->output->textPlain());
+//     $log .= "\n\n" . str_repeat('=', Formatter::COLUMNS);
+//     $this->logger->log($this->loggerLevel, $log);
+// }

@@ -26,7 +26,7 @@ final class PlainDocument extends AbstractDocument
         return new PlainFormatter;
     }
 
-    public function getSectionsTemplate(): array
+    public function getTemplate(): array
     {
         return [
             static::SECTION_TITLE => static::TAG_TITLE . ' in ' . static::TAG_FILE_LINE,
