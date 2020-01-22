@@ -45,14 +45,14 @@ final class HtmlDocument extends AbstractDocument
     {
         if ($this->exceptionHandler->isDebug()) {
             return [
-                static::SECTION_TITLE => $this->wrapTitle('%title% <span>in&nbsp;%fileLine%</span>'),
-                static::SECTION_MESSAGE => $this->wrapSectionTitle('# Message') . "\n" . $this->wrapContent('%message% %codeWrap%'),
-                static::SECTION_TIME => $this->wrapSectionTitle('# Time') . "\n" . $this->wrapContent('%dateTimeUtcAtom% [%timestamp%]'),
-                static::SECTION_ID => $this->wrapSectionTitle('# Incident ID:%id%') . "\n" . $this->wrapContent('Logged at %logFilename%'),
-                static::SECTION_STACK => $this->wrapSectionTitle('# Stack trace') . "\n" . $this->wrapContent('%stack%'),
-                static::SECTION_CLIENT => $this->wrapSectionTitle('# Client') . "\n" . $this->wrapContent('%clientIp% %clientUserAgent%'),
-                static::SECTION_REQUEST => $this->wrapSectionTitle('# Request') . "\n" . $this->wrapContent('%serverProtocol% %requestMethod% %uri%'),
-                static::SECTION_SERVER => $this->wrapSectionTitle('# Server') . "\n" . $this->wrapContent('%phpUname% %serverSoftware%'),
+                static::SECTION_TITLE => $this->wrapTitle(static::TAG_TITLE . ' <span>in&nbsp;' . static::TAG_FILE_LINE . '</span>'),
+                static::SECTION_MESSAGE => $this->wrapSectionTitle('# Message ' . static::TAG_CODE_WRAP) . "\n" . $this->wrapContent(static::TAG_MESSAGE),
+                static::SECTION_TIME => $this->wrapSectionTitle('# Time') . "\n" . $this->wrapContent(static::TAG_DATE_TIME_UTC_ATOM . ' [' . static::TAG_TIMESTAMP . ']'),
+                static::SECTION_ID => $this->wrapSectionTitle('# Incident ID:' . static::TAG_ID) . "\n" . $this->wrapContent('Logged at ' . static::TAG_LOG_FILENAME),
+                static::SECTION_STACK => $this->wrapSectionTitle('# Stack trace') . "\n" . $this->wrapContent(static::TAG_STACK),
+                static::SECTION_CLIENT => $this->wrapSectionTitle('# Client') . "\n" . $this->wrapContent(static::TAG_CLIENT_IP . ' ' . static::TAG_CLIENT_USER_AGENT),
+                static::SECTION_REQUEST => $this->wrapSectionTitle('# Request') . "\n" . $this->wrapContent(static::TAG_SERVER_PROTOCOL . ' ' . static::TAG_REQUEST_METHOD . ' ' . static::TAG_URI),
+                static::SECTION_SERVER => $this->wrapSectionTitle('# Server') . "\n" . $this->wrapContent(static::TAG_PHP_UNAME . ' ' . static::TAG_SERVER_SOFTWARE),
             ];
         } else {
             return [
@@ -66,7 +66,7 @@ final class HtmlDocument extends AbstractDocument
         return "\n<br>\n";
     }
 
-    protected function wrap(string $value): string
+    protected function prepare(string $value): string
     {
         $preDocument = strtr(static::HTML_TEMPLATE, [
             '%bodyClass%' => !headers_sent() ? 'body--flex' : 'body--block',
@@ -74,10 +74,7 @@ final class HtmlDocument extends AbstractDocument
             '%body%' => $this->exceptionHandler->isDebug() ? static::BODY_DEBUG_1_HTML : static::BODY_DEBUG_0_HTML,
         ]);
 
-        return
-            strtr($preDocument, [
-                '%content%' => $value,
-            ]);
+        return str_replace('%content%', $value, $preDocument);
     }
 
     private function wrapTitle(string $value): string

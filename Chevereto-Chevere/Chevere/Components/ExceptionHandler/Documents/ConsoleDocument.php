@@ -33,20 +33,18 @@ final class ConsoleDocument extends AbstractDocument
     public function getSectionsTemplate(): array
     {
         $consoleColor = new ConsoleColor;
-        $linkColor = fn (string $message) => $consoleColor->apply(['underline', 'blue'], $message);
-        $sectionColor = fn (string $message) => $consoleColor->apply('green', $message);
-        $title = $consoleColor->apply(['red', 'bold'], '%title% in ');
-        $title .= $linkColor('%fileLine%');
+        $title = $consoleColor->apply(['red', 'bold'], static::TAG_TITLE . ' in ');
+        $title .= $this->colorApplyLink(static::TAG_FILE_LINE);
 
         return [
             static::SECTION_TITLE => $title,
-            static::SECTION_MESSAGE => $sectionColor('# Message') . "\n" . '%message% %codeWrap%',
-            static::SECTION_ID => $sectionColor('# Incident ID:%id%') . "\n" . 'Logged at ' . $linkColor('%logFilename%'),
-            static::SECTION_TIME => $sectionColor('# Time') . "\n" . '%dateTimeUtcAtom% [%timestamp%]',
-            static::SECTION_STACK => $sectionColor('# Stack trace') . "\n" . '%stack%',
-            static::SECTION_CLIENT => $sectionColor('# Client') . "\n" . '%clientIp% %clientUserAgent%',
-            static::SECTION_REQUEST => $sectionColor('# Request') . "\n" . '%serverProtocol% %requestMethod% %uri%',
-            static::SECTION_SERVER => $sectionColor('# Server') . "\n" . '%phpUname% %serverSoftware%',
+            static::SECTION_MESSAGE => $this->colorApplySection('# Message ' . static::TAG_CODE_WRAP) . "\n" . static::TAG_MESSAGE,
+            static::SECTION_ID => $this->colorApplySection('# Incident ID:' . static::TAG_ID) . "\n" . 'Logged at ' . $this->colorApplyLink(static::TAG_LOG_FILENAME),
+            static::SECTION_TIME => $this->colorApplySection('# Time') . "\n" . static::TAG_DATE_TIME_UTC_ATOM . ' [' . static::TAG_TIMESTAMP . ']',
+            static::SECTION_STACK => $this->colorApplySection('# Stack trace') . "\n" . static::TAG_STACK,
+            static::SECTION_CLIENT => $this->colorApplySection('# Client') . "\n" . static::TAG_CLIENT_IP . ' ' . static::TAG_CLIENT_USER_AGENT,
+            static::SECTION_REQUEST => $this->colorApplySection('# Request') . "\n" . static::TAG_SERVER_PROTOCOL . ' ' . static::TAG_REQUEST_METHOD . ' ' . static::TAG_URI,
+            static::SECTION_SERVER => $this->colorApplySection('# Server') . "\n" . static::TAG_PHP_UNAME . ' ' . static::TAG_SERVER_SOFTWARE,
         ];
     }
 
@@ -56,12 +54,12 @@ final class ConsoleDocument extends AbstractDocument
     public function getSectionsVerbosity(): array
     {
         return [
-            0 => OutputInterface::VERBOSITY_QUIET,
-            1 => OutputInterface::VERBOSITY_QUIET,
-            2 => OutputInterface::VERBOSITY_QUIET,
-            3 => OutputInterface::VERBOSITY_VERBOSE,
-            4 => OutputInterface::VERBOSITY_VERY_VERBOSE,
-            5 => OutputInterface::VERBOSITY_VERBOSE,
+            static::SECTION_TITLE => OutputInterface::VERBOSITY_QUIET,
+            static::SECTION_MESSAGE => OutputInterface::VERBOSITY_QUIET,
+            static::SECTION_ID => OutputInterface::VERBOSITY_QUIET,
+            static::SECTION_TIME => OutputInterface::VERBOSITY_VERBOSE,
+            static::SECTION_STACK => OutputInterface::VERBOSITY_VERY_VERBOSE,
+            static::SECTION_SERVER => OutputInterface::VERBOSITY_VERBOSE,
         ];
     }
 
@@ -77,7 +75,7 @@ final class ConsoleDocument extends AbstractDocument
     {
         $new = clone $this;
         $new->verbosity = $verbosity;
-        $new->sections = $new->getSections();
+        $new->sections = static::SECTIONS;
         $new->sectionsTemplate = $new->getSectionsTemplate();
         $new->handleVerbositySections();
 
@@ -95,12 +93,22 @@ final class ConsoleDocument extends AbstractDocument
     private function handleVerbositySections(): void
     {
         $sectionsVerbosity = $this->getSectionsVerbosity();
-        foreach ($this->sections as $pos => $sectionName) {
-            $verbosityLevel = $sectionsVerbosity[$pos] ?? 0;
+        foreach ($this->sections as $sectionName) {
+            $verbosityLevel = $sectionsVerbosity[$sectionName] ?? 0;
             if ($this->verbosity < $verbosityLevel) {
                 $key = array_search($sectionName, $this->sections);
                 unset($this->sections[$key]);
             }
         }
+    }
+
+    private function colorApplyLink(string $value): string
+    {
+        return (new ConsoleColor)->apply(['underline', 'blue'], $value);
+    }
+
+    private function colorApplySection(string $value): string
+    {
+        return (new ConsoleColor)->apply('green', $value);
     }
 }

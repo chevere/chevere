@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler\Interfaces;
 
-use Symfony\Component\Console\Output\OutputInterface;
-
 interface DocumentInterface
 {
     const SECTION_TITLE = 'title';
@@ -42,8 +40,9 @@ interface DocumentInterface
     const TAG_URI = '%uri%';
     const TAG_PHP_UNAME = '%phpUname%';
     const TAG_SERVER_HOST = '%serverHost%';
+    const TAG_SERVER_SOFTWARE = '%serverSoftware%';
 
-    const ALL_SECTIONS = [
+    const SECTIONS = [
         0 => self::SECTION_TITLE,
         1 => self::SECTION_MESSAGE,
         2 => self::SECTION_ID,
@@ -52,11 +51,6 @@ interface DocumentInterface
         5 => self::SECTION_CLIENT,
         6 => self::SECTION_REQUEST,
         7 => self::SECTION_SERVER,
-    ];
-
-    const SILENT_SECTIONS = [
-        0 => self::SECTION_TITLE,
-        1 => self::SECTION_MESSAGE,
     ];
 
     public function __construct(ExceptionHandlerInterface $exceptionHandler);
