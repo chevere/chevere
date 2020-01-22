@@ -32,12 +32,6 @@ interface ExceptionHandlerInterface
 
     public function isDebug(): bool;
 
-    public function withRuntime(RuntimeInterface $runtime): ExceptionHandlerInterface;
-
-    public function hasRuntime(): bool;
-
-    public function runtime(): RuntimeInterface;
-
     public function withRequest(RequestInterface $request): ExceptionHandlerInterface;
 
     public function hasRequest(): bool;

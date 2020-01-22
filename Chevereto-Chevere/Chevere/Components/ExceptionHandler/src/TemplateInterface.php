@@ -51,25 +51,6 @@ class TemplateInterface
     const NO_DEBUG_CONTENT_HTML = '<p>The system has failed and the server wasn\'t able to fulfil your request. This incident has been logged.</p><p>Please try again later and if the problem persist don\'t hesitate to contact your system administrator.</p>';
 
     /**
-     * Stack placeholders (STACK_ITEM_HTML, STACK_ITEM_CONSOLE)
-     * - %x% Applies even class (pre--even)
-     * - %i% Stack number
-     * - %f% File
-     * - %l% Line
-     * - %fl% File + Line
-     * - %c% class
-     * - %t% type (::, ->)
-     * - %m% Method (function)
-     * - %a% Arguments.
-     */
-
-    // /** @var string HTML template used for each stack entry */
-    // const STACK_ITEM_HTML = "<pre class=\"%x%\">#%i% %fl%\n%c%%t%%m%()%a%</pre>";
-
-    // /** @var string Console template used for each stack entry */
-    // const STACK_ITEM_CONSOLE = "#%i% %fl%\n%c%%t%%m%()%a%";
-
-    /**
      * HTML placeholders (HTML_TEMPLATE, NO_DEBUG_BODY_HTML, DEBUG_BODY_HTML, BOX_BREAK_HTML).
      *
      * @see Formatter::parseTemplate

@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Chevere;
 
 use Chevere\Components\App\Instances\BootstrapInstance;
+use Chevere\Components\App\Instances\ConsoleInstance;
 use Chevere\Components\Bootstrap\Bootstrap;
+use Chevere\Components\Console\Console;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 

@@ -18,11 +18,14 @@ use DateTime;
 use DateTimeZone;
 use DateTimeInterface;
 use Chevere\Components\App\Instances\RuntimeInstance;
+use Chevere\Components\ExceptionHandler\Documents\ConsoleDocument;
+use Chevere\Components\ExceptionHandler\Formatters\ConsoleFormatter;
 use Chevere\Components\ExceptionHandler\Interfaces\ExceptionHandlerInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\ExceptionInterface;
 use Chevere\Components\Http\Interfaces\RequestInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Interfaces\RuntimeInterface;
+use DateTimeImmutable;
 use Monolog\Logger;
 
 /**
@@ -36,11 +39,13 @@ final class ExceptionHandler implements ExceptionHandlerInterface
 
     private string $id;
 
-    private RuntimeInterface $runtime;
+    // private RuntimeInterface $runtime;
 
     private RequestInterface $request;
 
     private Logger $logger;
+
+    private string $loggerFilename;
 
     private bool $isDebug = false;
 
@@ -49,14 +54,13 @@ final class ExceptionHandler implements ExceptionHandlerInterface
      */
     public function __construct(\Exception $exception)
     {
-        $this->dateTimeUtc = new DateTime('now', new DateTimeZone('UTC'));
+        $this->dateTimeUtc = new DateTimeImmutable('now', new DateTimeZone('UTC'));
         $this->exception = new Exception($exception);
         $this->id = uniqid('', true);
     }
 
     public static function function($exception): void
     {
-        new static($exception);
     }
 
     public function dateTimeUtc(): DateTimeInterface
@@ -85,33 +89,6 @@ final class ExceptionHandler implements ExceptionHandlerInterface
     public function isDebug(): bool
     {
         return $this->isDebug;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withRuntime(RuntimeInterface $runtime): ExceptionHandlerInterface
-    {
-        $new = clone $this;
-        $new->runtime = $runtime;
-        $new->isDebug = (bool) $runtime->data()->key('debug');
-
-        return $new;
-    }
-
-    public function hasRuntime(): bool
-    {
-        return isset($this->runtime);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function runtime(): RuntimeInterface
-    {
-        $this->assertPropertyMethod();
-
-        return $this->runtime;
     }
 
     /**
@@ -172,11 +149,4 @@ final class ExceptionHandler implements ExceptionHandlerInterface
             );
         }
     }
-
-    // private function setTimeProperties(): void
-    // {
-    //     $dt = new DateTime('now', new DateTimeZone('UTC'));
-    //     $this->dateTimeAtom = $dt->format(DateTime::ATOM);
-    //     $this->timestamp = $dt->getTimestamp();
-    // }
 }
