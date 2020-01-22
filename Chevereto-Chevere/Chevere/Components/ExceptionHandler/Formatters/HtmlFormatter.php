@@ -36,4 +36,9 @@ final class HtmlFormatter extends AbstractFormatter
     {
         return '<div class="hr"><span>------------------------------------------------------------</span></div>';
     }
+
+    public function getLineBreak(): string
+    {
+        return "\n<br>\n";
+    }
 }

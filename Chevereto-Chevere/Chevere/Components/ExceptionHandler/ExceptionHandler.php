@@ -14,19 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\ExceptionHandler;
 
 use BadMethodCallException;
-use DateTime;
 use DateTimeZone;
 use DateTimeInterface;
-use Chevere\Components\App\Instances\RuntimeInstance;
-use Chevere\Components\ExceptionHandler\Documents\ConsoleDocument;
-use Chevere\Components\ExceptionHandler\Formatters\ConsoleFormatter;
+use DateTimeImmutable;
 use Chevere\Components\ExceptionHandler\Interfaces\ExceptionHandlerInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\ExceptionInterface;
 use Chevere\Components\Http\Interfaces\RequestInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Runtime\Interfaces\RuntimeInterface;
-use DateTimeImmutable;
-use Monolog\Logger;
 
 /**
  * The Chevere exception handler.
@@ -39,17 +33,15 @@ final class ExceptionHandler implements ExceptionHandlerInterface
 
     private string $id;
 
-    // private RuntimeInterface $runtime;
-
     private RequestInterface $request;
-
-    private Logger $logger;
-
-    private string $loggerFilename;
 
     private bool $isDebug = false;
 
+    private string $logDestination = '/dev/null';
+
     /**
+     * Creates a new instance.
+     *
      * @param mixed $args Arguments passed to the error exception (severity, message, file, line; Exception)
      */
     public function __construct(\Exception $exception)
@@ -59,25 +51,33 @@ final class ExceptionHandler implements ExceptionHandlerInterface
         $this->id = uniqid('', true);
     }
 
-    public static function function($exception): void
-    {
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function dateTimeUtc(): DateTimeInterface
     {
         return $this->dateTimeUtc;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function exception(): ExceptionInterface
     {
         return $this->exception;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function id(): string
     {
         return $this->id;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function withIsDebug(bool $isDebug): ExceptionHandlerInterface
     {
         $new = clone $this;
@@ -86,6 +86,9 @@ final class ExceptionHandler implements ExceptionHandlerInterface
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function isDebug(): bool
     {
         return $this->isDebug;
@@ -102,6 +105,9 @@ final class ExceptionHandler implements ExceptionHandlerInterface
         return $new;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function hasRequest(): bool
     {
         return isset($this->request);
@@ -117,24 +123,17 @@ final class ExceptionHandler implements ExceptionHandlerInterface
         return $this->request;
     }
 
-    public function withLogger(Logger $logger): ExceptionHandlerInterface
+    public function withLogDestination(string $logDestination): ExceptionHandlerInterface
     {
         $new = clone $this;
-        $new->logger = $logger;
+        $new->logDestination = $logDestination;
 
         return $new;
     }
 
-    public function hasLogger(): bool
+    public function logDestination(): string
     {
-        return isset($this->logger);
-    }
-
-    public function logger(): Logger
-    {
-        $this->assertPropertyMethod();
-
-        return $this->logger;
+        return $this->logDestination;
     }
 
     private function assertPropertyMethod(): void

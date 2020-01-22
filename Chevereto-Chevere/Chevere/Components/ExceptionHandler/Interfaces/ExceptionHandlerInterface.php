@@ -13,34 +13,67 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler\Interfaces;
 
-use Chevere\Components\Http\Interfaces\RequestInterface;
-use Chevere\Components\Runtime\Interfaces\RuntimeInterface;
 use DateTimeInterface;
-use Monolog\Logger;
+use Chevere\Components\Http\Interfaces\RequestInterface;
 
 interface ExceptionHandlerInterface
 {
-    public function __construct(\Exception $exception);
-
+    /**
+     * Provides access to the instance DateTime UTC.
+     */
     public function dateTimeUtc(): DateTimeInterface;
 
+    /**
+     * Provides access to the instance exception.
+     */
     public function exception(): ExceptionInterface;
 
+    /**
+     * Provides access to the instance id.
+     */
     public function id(): string;
 
+    /**
+     * Return an instance with the specified debug flag.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified debug flag.
+     */
     public function withIsDebug(bool $isDebug): ExceptionHandlerInterface;
 
+    /**
+     * Provides access to the instance debug flag.
+     */
     public function isDebug(): bool;
 
+    /**
+     * Return an instance with the specified RequestInterface.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified RequestInterface.
+     */
     public function withRequest(RequestInterface $request): ExceptionHandlerInterface;
 
+    /**
+     * Returns a boolean indicating whether the instance has a RequestInterface.
+     */
     public function hasRequest(): bool;
 
+    /**
+     * Provides access to the RequestInterface instance.
+     */
     public function request(): RequestInterface;
 
-    public function withLogger(Logger $logger): ExceptionHandlerInterface;
+    /**
+     * Return an instance with the specified log destination.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified log destination.
+     */
+    public function withLogDestination(string $logDestination): ExceptionHandlerInterface;
 
-    public function hasLogger(): bool;
-
-    public function logger(): Logger;
+    /**
+     * Provides access to the instance log destination.
+     */
+    public function logDestination(): string;
 }

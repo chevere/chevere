@@ -57,21 +57,43 @@ interface ExceptionInterface
         E_USER_DEPRECATED => LogLevel::NOTICE,
     ];
 
+    /**
+     * Provides access to the exception class name.
+     */
     public function className(): string;
 
+    /**
+     * Provides access to the exception code.
+     */
     public function code(): int;
 
+    /**
+     * Provides access to the exception severity.
+     */
     public function severity(): int;
 
+    /**
+     * Provides access to the exception type.
+     */
     public function type(): string;
 
-    public function loggerLevel(): string;
-
+    /**
+     * Provides access to the exception message.
+     */
     public function message(): string;
 
+    /**
+     * Provides access to the exception file.
+     */
     public function file(): string;
 
+    /**
+     * Provides access to the exception line.
+     */
     public function line(): int;
 
+    /**
+     * Provides access to the exception trace.
+     */
     public function trace(): array;
 }

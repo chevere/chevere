@@ -31,8 +31,6 @@ final class Exception implements ExceptionInterface
 
     private string $type;
 
-    private string $loggerLevel;
-
     private string $message;
 
     private string $file;
@@ -59,7 +57,7 @@ final class Exception implements ExceptionInterface
             $this->severity = ExceptionInterface::DEFAULT_ERROR_TYPE;
         }
         $this->assertSeverity();
-        $this->loggerLevel = ExceptionInterface::ERROR_LEVELS[$this->severity];
+        // $this->loggerLevel = ExceptionInterface::ERROR_LEVELS[$this->severity];
         $this->type = ExceptionInterface::ERROR_TYPES[$this->severity];
         $this->message = $exception->getMessage();
         $this->file = $exception->getFile();
@@ -97,14 +95,6 @@ final class Exception implements ExceptionInterface
     public function type(): string
     {
         return $this->type;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function loggerLevel(): string
-    {
-        return $this->loggerLevel;
     }
 
     /**

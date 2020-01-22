@@ -35,4 +35,6 @@ interface FormatterInterface
     public function getTraceEntryTemplate(): string;
 
     public function getHr(): string;
+
+    public function getLineBreak(): string;
 }

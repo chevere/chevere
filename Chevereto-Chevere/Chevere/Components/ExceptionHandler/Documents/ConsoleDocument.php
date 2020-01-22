@@ -39,7 +39,7 @@ final class ConsoleDocument extends AbstractDocument
         return [
             static::SECTION_TITLE => $title,
             static::SECTION_MESSAGE => $this->colorApplySection('# Message ' . static::TAG_CODE_WRAP) . "\n" . static::TAG_MESSAGE,
-            static::SECTION_ID => $this->colorApplySection('# Incident ID:' . static::TAG_ID) . "\n" . 'Logged at ' . $this->colorApplyLink(static::TAG_LOG_FILENAME),
+            static::SECTION_ID => $this->colorApplySection('# Incident ID:' . static::TAG_ID) . "\n" . 'Logged at ' . $this->colorApplyLink(static::TAG_LOG_DESTINATION),
             static::SECTION_TIME => $this->colorApplySection('# Time') . "\n" . static::TAG_DATE_TIME_UTC_ATOM . ' [' . static::TAG_TIMESTAMP . ']',
             static::SECTION_STACK => $this->colorApplySection('# Stack trace') . "\n" . static::TAG_STACK,
             static::SECTION_CLIENT => $this->colorApplySection('# Client') . "\n" . static::TAG_CLIENT_IP . ' ' . static::TAG_CLIENT_USER_AGENT,

@@ -59,4 +59,12 @@ abstract class AbstractFormatter implements FormatterInterface
     {
         return '------------------------------------------------------------';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLineBreak(): string
+    {
+        return "\n\n";
+    }
 }

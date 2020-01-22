@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler\Documents;
 
+use DateTimeInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\DocumentInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\ExceptionHandlerInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\FormatterInterface;
 use Chevere\Components\ExceptionHandler\Trace;
-use DateTimeInterface;
 
 abstract class AbstractDocument implements DocumentInterface
 {
@@ -38,9 +38,6 @@ abstract class AbstractDocument implements DocumentInterface
         $this->template = $this->getTemplate();
     }
 
-    /**
-     * @return string[]
-     */
     final public function sections(): array
     {
         return $this->sections;
@@ -49,11 +46,6 @@ abstract class AbstractDocument implements DocumentInterface
     protected function prepare(string $value): string
     {
         return $value;
-    }
-
-    protected function getLineBreak(): string
-    {
-        return "\n\n";
     }
 
     abstract public function getTemplate(): array;
@@ -72,7 +64,7 @@ abstract class AbstractDocument implements DocumentInterface
             static::TAG_ID => $this->exceptionHandler->id(),
             static::TAG_DATE_TIME_UTC_ATOM => $dateTimeUtc->format(DateTimeInterface::ATOM),
             static::TAG_TIMESTAMP => $dateTimeUtc->getTimestamp(),
-            static::TAG_LOG_FILENAME => $this->getLogFilename(),
+            static::TAG_LOG_DESTINATION => $this->exceptionHandler->logDestination(),
             static::TAG_STACK => $this->getStack(),
             static::TAG_PHP_UNAME => php_uname(),
         ];
@@ -84,7 +76,7 @@ abstract class AbstractDocument implements DocumentInterface
 
         return $this->prepare(
             strtr(
-                implode($this->getLineBreak(), array_filter($templated)),
+                implode($this->formatter->getLineBreak(), array_filter($templated)),
                 $this->tags
             )
         );
@@ -96,14 +88,6 @@ abstract class AbstractDocument implements DocumentInterface
             $this->exceptionHandler->exception()->code() > 0
             ? '[Code #' . $this->exceptionHandler->exception()->code() . ']'
             : '';
-    }
-
-    private function getLogFilename(): string
-    {
-        return
-            $this->exceptionHandler->hasLogger()
-            ? '__LOGGER_FILENAME__'
-            : '/dev/null';
     }
 
     private function getStack(): string
