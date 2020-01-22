@@ -24,14 +24,14 @@ final class HtmlDocument extends AbstractDocument
     /** @var string HTML content used when debug=0 */
     const NO_DEBUG_CONTENT_HTML = '<p>The system has failed and the server wasn\'t able to fulfil your request. This incident has been logged.</p><p>Please try again later and if the problem persist don\'t hesitate to contact your system administrator.</p>';
 
-    /** @var string HTML template (whole document) */
+    /** @var string HTML document template */
     const HTML_TEMPLATE = '<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><style>%css%</style></head><body class="%bodyClass%">%body%</body></html>';
 
     /** @var string HTML body used when debug=0 */
-    const BODY_NO_DEBUG_HTML = '<main><div>%content%</div></main>';
+    const BODY_DEBUG_0_HTML = '<main><div>%content%</div></main>';
 
     /** @var string HTML body used when debug=1 */
-    const BODY_HTML = '<main class="main--stack"><div>%content%<div class="c note user-select-none"><b>Note:</b> This message is being displayed because of active debug mode. Remember to turn this off when going production by editing <code>%loadedConfigFilesString%</code></div></div></main>';
+    const BODY_DEBUG_1_HTML = '<main class="main--stack"><div>%content%</div></main>';
 
     /**
      * {@inheritdoc}
@@ -56,7 +56,7 @@ final class HtmlDocument extends AbstractDocument
             ];
         } else {
             return [
-                static::SECTION_TITLE => $this->wrapTitle(static::NO_DEBUG_TITLE_PLAIN) . static::NO_DEBUG_CONTENT_HTML . '<p class="fine-print">%dateTimeAtom% • %id%</p>',
+                static::SECTION_TITLE => $this->wrapTitle(static::NO_DEBUG_TITLE_PLAIN) . static::NO_DEBUG_CONTENT_HTML . '<p class="fine-print">%dateTimeUtcAtom% • %id%</p>',
             ];
         }
     }
@@ -71,7 +71,7 @@ final class HtmlDocument extends AbstractDocument
         $preDocument = strtr(static::HTML_TEMPLATE, [
             '%bodyClass%' => !headers_sent() ? 'body--flex' : 'body--block',
             '%css%' => file_get_contents(dirname(__DIR__) . '/src/template.css'),
-            '%body%' => $this->exceptionHandler->isDebug() ? static::BODY_HTML : static::BODY_NO_DEBUG_HTML,
+            '%body%' => $this->exceptionHandler->isDebug() ? static::BODY_DEBUG_1_HTML : static::BODY_DEBUG_0_HTML,
         ]);
 
         return
@@ -82,14 +82,14 @@ final class HtmlDocument extends AbstractDocument
 
     private function wrapTitle(string $value): string
     {
-        return '<div class="t t--scream">' . $value . '</div>';
+        return '<div class="title title--scream">' . $value . '</div>';
     }
 
     private function wrapSectionTitle(string $value): string
     {
         $value = str_replace('# ', $this->wrapHidden('#&nbsp;'), $value);
 
-        return '<div class="t">' . $value . '</div>';
+        return '<div class="title">' . $value . '</div>';
     }
 
     private function wrapHidden(string $value): string
@@ -99,6 +99,6 @@ final class HtmlDocument extends AbstractDocument
 
     private function wrapContent(string $value): string
     {
-        return '<div class="c">' . $value . '</div>';
+        return '<div class="content">' . $value . '</div>';
     }
 }

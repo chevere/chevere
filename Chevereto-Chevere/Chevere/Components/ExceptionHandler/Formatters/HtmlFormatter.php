@@ -26,7 +26,7 @@ final class HtmlFormatter extends AbstractFormatter
 
     public function getTraceEntryTemplate(): string
     {
-        return '<div class="pre ' . TraceInterface::TAG_ENTRY_CSS_EVEN_CLASS . '">#' . TraceInterface::TAG_ENTRY_POS . ' '
+        return '<div class="pre pre--stack-entry ' . TraceInterface::TAG_ENTRY_CSS_EVEN_CLASS . '">#' . TraceInterface::TAG_ENTRY_POS . ' '
             . TraceInterface::TAG_ENTRY_FILE_LINE . "\n" . TraceInterface::TAG_ENTRY_CLASS
             . TraceInterface::TAG_ENTRY_TYPE . TraceInterface::TAG_ENTRY_FUNCTION . '()'
             . TraceInterface::TAG_ENTRY_ARGUMENTS . '</div>';

@@ -44,12 +44,14 @@ class Index extends Controller implements JsonApiInterface
     public function __invoke(): void
     {
         // xdd($this);
-        $doc = new HtmlDocument(new ExceptionHandler(new LogicException(
+        $exception = new LogicException(
             (new Message('Deeeez %nuts% at %fileName%'))
                 ->code('%nuts%', 'nuuuuts')
                 ->code('%fileName%', 'chapa la pachala')
                 ->toString()
-        )));
+        );
+        $handler = new ExceptionHandler($exception);
+        $doc = new HtmlDocument($handler->withIsDebug(true));
         echo $doc->toString();
         die();
         $took = hrtime(true);
