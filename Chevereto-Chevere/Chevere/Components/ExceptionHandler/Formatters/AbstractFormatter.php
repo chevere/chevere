@@ -16,6 +16,7 @@ namespace Chevere\Components\ExceptionHandler\Formatters;
 use Chevere\Components\ExceptionHandler\Interfaces\FormatterInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\TraceInterface;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface as VarDumpFormatterInterface;
+use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 abstract class AbstractFormatter implements FormatterInterface
 {
@@ -66,5 +67,25 @@ abstract class AbstractFormatter implements FormatterInterface
     public function getLineBreak(): string
     {
         return "\n\n";
+    }
+
+    public function wrapLink(string $value): string
+    {
+        return $value;
+    }
+
+    public function wrapSectionTitle(string $value): string
+    {
+        return $value;
+    }
+
+    public function wrapTitle(string $value): string
+    {
+        return $value;
+    }
+
+    public function wrapContent(string $value): string
+    {
+        return $value;
     }
 }

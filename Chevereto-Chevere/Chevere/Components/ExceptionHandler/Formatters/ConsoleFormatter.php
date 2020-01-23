@@ -27,7 +27,7 @@ final class ConsoleFormatter extends AbstractFormatter
 
     public function getTraceEntryTemplate(): string
     {
-        return (new ConsoleColor)->apply('green', '#' . TraceInterface::TAG_ENTRY_POS) . ' ' . TraceInterface::TAG_ENTRY_FILE_LINE . "\n"
+        return $this->wrapSectionTitle('#' . TraceInterface::TAG_ENTRY_POS) . ' ' . TraceInterface::TAG_ENTRY_FILE_LINE . "\n"
             . TraceInterface::TAG_ENTRY_CLASS . TraceInterface::TAG_ENTRY_TYPE . TraceInterface::TAG_ENTRY_FUNCTION
             . '()' . TraceInterface::TAG_ENTRY_ARGUMENTS;
     }
@@ -35,5 +35,15 @@ final class ConsoleFormatter extends AbstractFormatter
     public function getHr(): string
     {
         return (new ConsoleColor)->apply('blue', '------------------------------------------------------------');
+    }
+
+    public function wrapLink(string $value): string
+    {
+        return (new ConsoleColor)->apply(['underline', 'blue'], $value);
+    }
+
+    public function wrapSectionTitle(string $value): string
+    {
+        return (new ConsoleColor)->apply('green', $value);
     }
 }

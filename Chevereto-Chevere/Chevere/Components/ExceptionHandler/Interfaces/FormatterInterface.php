@@ -37,4 +37,12 @@ interface FormatterInterface
     public function getHr(): string;
 
     public function getLineBreak(): string;
+
+    public function wrapLink(string $value): string;
+
+    public function wrapSectionTitle(string $value): string;
+
+    public function wrapTitle(string $value): string;
+
+    public function wrapContent(string $value): string;
 }

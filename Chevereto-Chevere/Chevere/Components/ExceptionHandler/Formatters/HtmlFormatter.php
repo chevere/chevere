@@ -41,4 +41,24 @@ final class HtmlFormatter extends AbstractFormatter
     {
         return "\n<br>\n";
     }
+
+    public function wrapSectionTitle(string $value): string
+    {
+        return '<div class="title">' . str_replace('# ', $this->wrapHidden('#&nbsp;'), $value) . '</div>';
+    }
+
+    public function wrapHidden(string $value): string
+    {
+        return '<span class="hide">' . $value . '</span>';
+    }
+
+    public function wrapTitle(string $value): string
+    {
+        return '<div class="title title--scream">' . $value . '</div>';
+    }
+
+    public function wrapContent(string $value): string
+    {
+        return '<div class="content">' . $value . '</div>';
+    }
 }

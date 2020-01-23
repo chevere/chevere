@@ -36,6 +36,11 @@ abstract class AbstractDocument implements DocumentInterface
     private int $verbosity = 0;
 
     /**
+     * {@inheritdoc}
+     */
+    abstract public function getFormatter(): FormatterInterface;
+
+    /**
      * Creates a new instance.
      */
     final public function __construct(ExceptionHandlerInterface $exceptionHandler)
@@ -88,7 +93,7 @@ abstract class AbstractDocument implements DocumentInterface
             static::TAG_DATE_TIME_UTC_ATOM => $dateTimeUtc->format(DateTimeInterface::ATOM),
             static::TAG_TIMESTAMP => $dateTimeUtc->getTimestamp(),
             static::TAG_LOG_DESTINATION => $this->exceptionHandler->logDestination(),
-            static::TAG_STACK => $this->getStack(),
+            static::TAG_STACK => $this->getStackTrace(),
             static::TAG_PHP_UNAME => php_uname(),
         ];
         $this->handleRequestTags();
@@ -108,15 +113,69 @@ abstract class AbstractDocument implements DocumentInterface
     /**
      * {@inheritdoc}
      */
-    abstract public function getTemplate(): array;
+    public function getTemplate(): array
+    {
+        return [
+            static::SECTION_TITLE => $this->getTitle(),
+            static::SECTION_MESSAGE => $this->getMessage(),
+            static::SECTION_ID => $this->getId(),
+            static::SECTION_TIME => $this->getTime(),
+            static::SECTION_STACK => $this->getStack(),
+            static::SECTION_CLIENT => $this->getClient(),
+            static::SECTION_REQUEST => $this->getRequest(),
+            static::SECTION_SERVER => $this->getServer(),
+        ];
+    }
 
-    /**
-     * {@inheritdoc}
-     */
-    abstract public function getFormatter(): FormatterInterface;
+    public function getTitle(): string
+    {
+        return $this->formatter->wrapTitle(static::TAG_TITLE . ' in ' . static::TAG_FILE_LINE);
+    }
+
+    public function getMessage(): string
+    {
+        return $this->formatter->wrapSectionTitle('# Message ' . static::TAG_CODE_WRAP) . "\n" . static::TAG_MESSAGE;
+    }
+
+    public function getId(): string
+    {
+        return $this->formatter->wrapSectionTitle('# Incident ID:' . static::TAG_ID)
+            . "\n" . 'Logged at ' . $this->formatter->wrapLink(static::TAG_LOG_DESTINATION);
+    }
+
+    public function getTime(): string
+    {
+        return $this->formatter->wrapSectionTitle('# Time') . "\n" . static::TAG_DATE_TIME_UTC_ATOM
+            . ' [' . static::TAG_TIMESTAMP . ']';
+    }
+
+    public function getStack(): string
+    {
+        return $this->formatter->wrapSectionTitle('# Stack trace') . "\n" . static::TAG_STACK;
+    }
+
+    public function getClient(): string
+    {
+        return $this->formatter->wrapSectionTitle('# Client') . "\n" . static::TAG_CLIENT_IP . ' '
+            . static::TAG_CLIENT_USER_AGENT;
+    }
+
+    public function getRequest(): string
+    {
+        return $this->formatter->wrapSectionTitle('# Request') . "\n" . static::TAG_SERVER_PROTOCOL . ' '
+            . static::TAG_REQUEST_METHOD . ' ' . static::TAG_URI;
+    }
+
+    public function getServer(): string
+    {
+        return $this->formatter->wrapSectionTitle('# Server') . "\n" . static::TAG_PHP_UNAME . ' '
+            . static::TAG_SERVER_SOFTWARE;
+    }
 
     /**
      * Prepare the document, useful to wrap headers, scripts, etc.
+     *
+     * @param string $document The document generated (so far)
      */
     protected function prepare(string $document): string
     {
@@ -131,7 +190,7 @@ abstract class AbstractDocument implements DocumentInterface
             : '';
     }
 
-    private function getStack(): string
+    private function getStackTrace(): string
     {
         return
             (new Trace($this->exceptionHandler->exception()->trace(), $this->formatter))

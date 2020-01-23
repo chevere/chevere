@@ -46,22 +46,24 @@ final class HtmlDocument extends AbstractDocument
      */
     public function getTemplate(): array
     {
-        if ($this->exceptionHandler->isDebug()) {
-            return [
-                static::SECTION_TITLE => $this->wrapTitle(static::TAG_TITLE . ' <span>in&nbsp;' . static::TAG_FILE_LINE . '</span>'),
-                static::SECTION_MESSAGE => $this->wrapSectionTitle('# Message ' . static::TAG_CODE_WRAP) . "\n" . $this->wrapContent(static::TAG_MESSAGE),
-                static::SECTION_TIME => $this->wrapSectionTitle('# Time') . "\n" . $this->wrapContent(static::TAG_DATE_TIME_UTC_ATOM . ' [' . static::TAG_TIMESTAMP . ']'),
-                static::SECTION_ID => $this->wrapSectionTitle('# Incident ID:' . static::TAG_ID) . "\n" . $this->wrapContent('Logged at ' . static::TAG_LOG_DESTINATION),
-                static::SECTION_STACK => $this->wrapSectionTitle('# Stack trace') . "\n" . $this->wrapContent(static::TAG_STACK),
-                static::SECTION_CLIENT => $this->wrapSectionTitle('# Client') . "\n" . $this->wrapContent(static::TAG_CLIENT_IP . ' ' . static::TAG_CLIENT_USER_AGENT),
-                static::SECTION_REQUEST => $this->wrapSectionTitle('# Request') . "\n" . $this->wrapContent(static::TAG_SERVER_PROTOCOL . ' ' . static::TAG_REQUEST_METHOD . ' ' . static::TAG_URI),
-                static::SECTION_SERVER => $this->wrapSectionTitle('# Server') . "\n" . $this->wrapContent(static::TAG_PHP_UNAME . ' ' . static::TAG_SERVER_SOFTWARE),
-            ];
-        } else {
-            return [
-                static::SECTION_TITLE => $this->wrapTitle(static::NO_DEBUG_TITLE_PLAIN) . static::NO_DEBUG_CONTENT_HTML . '<p class="fine-print">%dateTimeUtcAtom% • %id%</p>',
+        $template = parent::getTemplate();
+        if (!$this->exceptionHandler->isDebug()) {
+            $template = [
+                static::SECTION_TITLE => $template[static::SECTION_TITLE],
             ];
         }
+
+        return $template;
+    }
+
+    public function getTitle(): string
+    {
+        if (!$this->exceptionHandler->isDebug()) {
+            return $this->formatter->wrapTitle(static::NO_DEBUG_TITLE_PLAIN) . static::NO_DEBUG_CONTENT_HTML
+                . '<p class="fine-print">' . static::TAG_DATE_TIME_UTC_ATOM . ' • ' . static::TAG_ID . '</p>';
+        }
+
+        return $this->formatter->wrapTitle(static::TAG_TITLE . ' <span>in&nbsp;' . static::TAG_FILE_LINE . '</span>');
     }
 
     /**
@@ -76,25 +78,5 @@ final class HtmlDocument extends AbstractDocument
         ]);
 
         return str_replace('%content%', $document, $preDocument);
-    }
-
-    private function wrapTitle(string $value): string
-    {
-        return '<div class="title title--scream">' . $value . '</div>';
-    }
-
-    private function wrapSectionTitle(string $value): string
-    {
-        return '<div class="title">' . str_replace('# ', $this->wrapHidden('#&nbsp;'), $value) . '</div>';
-    }
-
-    private function wrapHidden(string $value): string
-    {
-        return '<span class="hide">' . $value . '</span>';
-    }
-
-    private function wrapContent(string $value): string
-    {
-        return '<div class="content">' . $value . '</div>';
     }
 }
