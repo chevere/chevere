@@ -69,24 +69,24 @@ final class Trace implements TraceInterface
     private function getTrTable(int $pos, TraceEntryInterface $entry): array
     {
         $trValues = [
-            TraceInterface::TAG_ENTRY_CSS_EVEN_CLASS => ($pos & 1) ? 'entry--even' : '',
-            TraceInterface::TAG_ENTRY_POS => $pos,
-            TraceInterface::TAG_ENTRY_FILE => $entry->file(),
-            TraceInterface::TAG_ENTRY_LINE => $entry->line(),
-            TraceInterface::TAG_ENTRY_FILE_LINE => $entry->fileLine(),
-            TraceInterface::TAG_ENTRY_CLASS => $entry->class(),
-            TraceInterface::TAG_ENTRY_TYPE => $entry->type(),
-            TraceInterface::TAG_ENTRY_FUNCTION => $entry->function(),
+            static::TAG_ENTRY_CSS_EVEN_CLASS => ($pos & 1) ? 'entry--even' : '',
+            static::TAG_ENTRY_POS => $pos,
+            static::TAG_ENTRY_FILE => $entry->file(),
+            static::TAG_ENTRY_LINE => $entry->line(),
+            static::TAG_ENTRY_FILE_LINE => $entry->fileLine(),
+            static::TAG_ENTRY_CLASS => $entry->class(),
+            static::TAG_ENTRY_TYPE => $entry->type(),
+            static::TAG_ENTRY_FUNCTION => $entry->function(),
         ];
         $array = $trValues;
-        foreach (TraceInterface::HIGHLIGHT_TAGS as $tag => $key) {
+        foreach (static::HIGHLIGHT_TAGS as $tag => $key) {
             $val = $trValues[$tag];
             if (empty($val)) {
                 continue;
             }
             $array[$tag] = $this->formatter->varDumpFormatter()->applyWrap($key, (string) $trValues[$tag]);
         }
-        $array[TraceInterface::TAG_ENTRY_ARGUMENTS] = $this->getEntryArguments($entry);
+        $array[static::TAG_ENTRY_ARGUMENTS] = $this->getEntryArguments($entry);
 
         return $array;
     }

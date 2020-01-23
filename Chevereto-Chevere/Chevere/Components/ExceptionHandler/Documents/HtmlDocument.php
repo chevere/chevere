@@ -41,6 +41,9 @@ final class HtmlDocument extends AbstractDocument
         return new HtmlFormatter;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getTemplate(): array
     {
         if ($this->exceptionHandler->isDebug()) {
@@ -61,7 +64,10 @@ final class HtmlDocument extends AbstractDocument
         }
     }
 
-    protected function prepare(string $value): string
+    /**
+     * {@inheritdoc}
+     */
+    protected function prepare(string $document): string
     {
         $preDocument = strtr(static::HTML_TEMPLATE, [
             '%bodyClass%' => !headers_sent() ? 'body--flex' : 'body--block',
@@ -69,7 +75,7 @@ final class HtmlDocument extends AbstractDocument
             '%body%' => $this->exceptionHandler->isDebug() ? static::BODY_DEBUG_1_HTML : static::BODY_DEBUG_0_HTML,
         ]);
 
-        return str_replace('%content%', $value, $preDocument);
+        return str_replace('%content%', $document, $preDocument);
     }
 
     private function wrapTitle(string $value): string

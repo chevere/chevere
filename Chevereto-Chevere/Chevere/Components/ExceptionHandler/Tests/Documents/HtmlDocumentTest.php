@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\ExceptionHandler\Tests;
 
 use Chevere\Components\ExceptionHandler\Documents\HtmlDocument;
+use Chevere\Components\ExceptionHandler\Exception;
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
 use PHPUnit\Framework\TestCase;
 use LogicException;
@@ -24,7 +25,11 @@ final class HtmlDocumentTest extends TestCase
     {
         $document =
             (new HtmlDocument(
-                new ExceptionHandler(new LogicException('Ups', 100))
+                new ExceptionHandler(
+                    new Exception(
+                        new LogicException('Ups', 100)
+                    )
+                )
             ))
             ->toString();
 

@@ -43,15 +43,23 @@ interface DocumentInterface
     const TAG_SERVER_SOFTWARE = '%serverSoftware%';
 
     const SECTIONS = [
-        0 => self::SECTION_TITLE,
-        1 => self::SECTION_MESSAGE,
-        2 => self::SECTION_ID,
-        3 => self::SECTION_TIME,
-        4 => self::SECTION_STACK,
-        5 => self::SECTION_CLIENT,
-        6 => self::SECTION_REQUEST,
-        7 => self::SECTION_SERVER,
+        self::SECTION_TITLE,
+        self::SECTION_MESSAGE,
+        self::SECTION_ID,
+        self::SECTION_TIME,
+        self::SECTION_STACK,
+        self::SECTION_CLIENT,
+        self::SECTION_REQUEST,
+        self::SECTION_SERVER,
     ];
 
     public function __construct(ExceptionHandlerInterface $exceptionHandler);
+
+    public function sections(): array;
+
+    public function toString(): string;
+
+    public function getTemplate(): array;
+
+    public function getFormatter(): FormatterInterface;
 }

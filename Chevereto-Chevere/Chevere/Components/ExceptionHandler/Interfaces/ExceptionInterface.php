@@ -73,6 +73,11 @@ interface ExceptionInterface
     public function severity(): int;
 
     /**
+     * Provides access to the exception logger level.
+     */
+    public function loggerLevel(): string;
+
+    /**
      * Provides access to the exception type.
      */
     public function type(): string;

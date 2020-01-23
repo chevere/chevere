@@ -44,10 +44,10 @@ final class ExceptionHandler implements ExceptionHandlerInterface
      *
      * @param mixed $args Arguments passed to the error exception (severity, message, file, line; Exception)
      */
-    public function __construct(\Exception $exception)
+    public function __construct(ExceptionInterface $exception)
     {
         $this->dateTimeUtc = new DateTimeImmutable('now', new DateTimeZone('UTC'));
-        $this->exception = new Exception($exception);
+        $this->exception = $exception;
         $this->id = uniqid('', true);
     }
 

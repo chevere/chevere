@@ -17,6 +17,7 @@ use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Controller\Interfaces\JsonApiInterface;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\Traits\JsonApiTrait;
+use Chevere\Components\ExceptionHandler\Documents\ConsoleDocument;
 use Chevere\Components\ExceptionHandler\Documents\HtmlDocument;
 use Chevere\Components\ExceptionHandler\Exception;
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
@@ -50,8 +51,8 @@ class Index extends Controller implements JsonApiInterface
                 ->code('%fileName%', 'chapa la pachala')
                 ->toString()
         );
-        $handler = new ExceptionHandler($exception);
-        $doc = new HtmlDocument($handler->withIsDebug(true));
+        $handler = new ExceptionHandler(new Exception($exception));
+        $doc = new ConsoleDocument($handler->withIsDebug(true));
         echo $doc->toString();
         die();
         $took = hrtime(true);

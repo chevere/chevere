@@ -27,10 +27,15 @@ abstract class AbstractDocument implements DocumentInterface
 
     protected array $sections = self::SECTIONS;
 
+    /** @var array [$sectionName => $value, ] */
     protected array $template;
 
+    /** @var array [$tag => $value, ] */
     private array $tags;
 
+    /**
+     * Creates a new instance.
+     */
     final public function __construct(ExceptionHandlerInterface $exceptionHandler)
     {
         $this->exceptionHandler = $exceptionHandler;
@@ -38,20 +43,17 @@ abstract class AbstractDocument implements DocumentInterface
         $this->template = $this->getTemplate();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     final public function sections(): array
     {
         return $this->sections;
     }
 
-    protected function prepare(string $value): string
-    {
-        return $value;
-    }
-
-    abstract public function getTemplate(): array;
-
-    abstract public function getFormatter(): FormatterInterface;
-
+    /**
+     * {@inheritdoc}
+     */
     final public function toString(): string
     {
         $exeption = $this->exceptionHandler->exception();
@@ -80,6 +82,24 @@ abstract class AbstractDocument implements DocumentInterface
                 $this->tags
             )
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    abstract public function getTemplate(): array;
+
+    /**
+     * {@inheritdoc}
+     */
+    abstract public function getFormatter(): FormatterInterface;
+
+    /**
+     * Prepare the document, useful to wrap headers, scripts, etc.
+     */
+    protected function prepare(string $document): string
+    {
+        return $document;
     }
 
     private function getExceptionCode(): string

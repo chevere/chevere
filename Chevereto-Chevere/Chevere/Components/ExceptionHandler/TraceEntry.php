@@ -142,12 +142,7 @@ final class TraceEntry implements TraceEntryInterface
 
     private function processEntry(): void
     {
-        foreach ([
-            'file',
-            'function',
-            'class',
-            'type',
-        ] as $propName) {
+        foreach (static::KEYS as $propName) {
             $this->$propName = $this->entry[$propName] ?? '';
         }
         $this->line = $this->entry['line'] ?? 0;

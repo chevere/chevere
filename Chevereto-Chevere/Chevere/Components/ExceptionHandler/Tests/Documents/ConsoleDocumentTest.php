@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\ExceptionHandler\Tests;
 
 use Chevere\Components\ExceptionHandler\Documents\ConsoleDocument;
+use Chevere\Components\ExceptionHandler\Exception;
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
 use LogicException;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +26,11 @@ final class ConsoleDocumentTest extends TestCase
     {
         $document =
             (new ConsoleDocument(
-                new ExceptionHandler(new LogicException('Ups', 100))
+                new ExceptionHandler(
+                    new Exception(
+                        new LogicException('Ups', 100)
+                    )
+                )
             ))
             ->withVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE)
             ->toString();
