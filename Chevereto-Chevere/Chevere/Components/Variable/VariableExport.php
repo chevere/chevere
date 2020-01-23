@@ -76,38 +76,9 @@ final class VariableExport implements VariableExportInterface
     {
         $this->assertIsNotResource($var);
         if (is_iterable($var)) {
-            $this->breadcrum = $this->breadcrum
-                ->withAddedItem('(iterable)');
-            $iterableKey = $this->breadcrum->pos();
-            foreach ($var as $key => $val) {
-                $this->breadcrum = $this->breadcrum
-                    ->withAddedItem('key:' . $key);
-                $memberKey = $this->breadcrum->pos();
-                $this->assertExportable($val);
-                $this->breadcrum = $this->breadcrum
-                    ->withRemovedItem($memberKey);
-            }
-            $this->breadcrum = $this->breadcrum
-                ->withRemovedItem($iterableKey);
+            $this->breadcrumIterable($var);
         } elseif (is_object($var)) {
-            $this->breadcrum = $this->breadcrum
-                ->withAddedItem('object:' . get_class($var));
-            $objectKey = $this->breadcrum->pos();
-            $reflection = new ReflectionObject($var);
-            $properties = $reflection->getProperties();
-            foreach ($properties as $property) {
-                $property->setAccessible(true);
-                $this->breadcrum = $this->breadcrum
-                    ->withAddedItem('property:$' . $property->getName());
-                $propertyKey = $this->breadcrum->pos();
-                if ($property->isInitialized($var)) {
-                    $this->assertExportable($property->getValue($var));
-                }
-                $this->breadcrum = $this->breadcrum
-                    ->withRemovedItem($propertyKey);
-            }
-            $this->breadcrum = $this->breadcrum
-                ->withRemovedItem($objectKey);
+            $this->breadcrumObject($var);
         }
     }
 
@@ -124,5 +95,44 @@ final class VariableExport implements VariableExportInterface
                 $message->toString()
             );
         }
+    }
+
+    private function breadcrumIterable($var): void
+    {
+        $this->breadcrum = $this->breadcrum
+            ->withAddedItem('(iterable)');
+        $iterableKey = $this->breadcrum->pos();
+        foreach ($var as $key => $val) {
+            $this->breadcrum = $this->breadcrum
+                ->withAddedItem('key:' . $key);
+            $memberKey = $this->breadcrum->pos();
+            $this->assertExportable($val);
+            $this->breadcrum = $this->breadcrum
+                ->withRemovedItem($memberKey);
+        }
+        $this->breadcrum = $this->breadcrum
+            ->withRemovedItem($iterableKey);
+    }
+
+    private function breadcrumObject(object $var): void
+    {
+        $this->breadcrum = $this->breadcrum
+            ->withAddedItem('object:' . get_class($var));
+        $objectKey = $this->breadcrum->pos();
+        $reflection = new ReflectionObject($var);
+        $properties = $reflection->getProperties();
+        foreach ($properties as $property) {
+            $property->setAccessible(true);
+            $this->breadcrum = $this->breadcrum
+                ->withAddedItem('property:$' . $property->getName());
+            $propertyKey = $this->breadcrum->pos();
+            if ($property->isInitialized($var)) {
+                $this->assertExportable($property->getValue($var));
+            }
+            $this->breadcrum = $this->breadcrum
+                ->withRemovedItem($propertyKey);
+        }
+        $this->breadcrum = $this->breadcrum
+            ->withRemovedItem($objectKey);
     }
 }
