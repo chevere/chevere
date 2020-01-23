@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputters;
 
+use Chevere\Components\VarDump\Interfaces\DumperInterface;
+
 final class HtmlOutputter extends AbstractOutputter
 {
     /**
@@ -21,9 +23,9 @@ final class HtmlOutputter extends AbstractOutputter
     public function prepare(string $output): string
     {
         if (false === headers_sent()) {
-            $output .= '<html style="background: ' . $this->dumper::BACKGROUND_SHADE . ';"><head></head><body>';
+            $output .= '<html style="background: ' . DumperInterface::BACKGROUND_SHADE . ';"><head></head><body>';
         }
-        $output .= '<pre style="' . $this->dumper::STYLE . '">';
+        $output .= '<pre style="' . DumperInterface::STYLE . '">';
 
         return $output;
     }

@@ -13,21 +13,37 @@ declare(strict_types=1);
 
 use Chevere\Components\VarDump\Dumper;
 
-if (!function_exists('xdump') && !function_exists('xdd')) {
+if (!function_exists('varInfo')) {
     /**
-     * Dumps information about one or more variables.
+     * Returns dump information about one or more variables.
+     */
+    function varInfo(...$vars)
+    {
+        return
+            (new Dumper(...$vars))
+                ->tostring();
+    }
+}
+
+if (!function_exists('xdump')) {
+    /**
+     * Dumps information about one or more variables to the screen.
      */
     function xdump(...$vars)
     {
-        new Dumper(...$vars);
+        (new Dumper(...$vars))
+            ->toScreen();
     }
+}
 
+if (!function_exists('xdd')) {
     /**
-     * Dumps information about one or more variables and die().
+     * Dumps information about one or more variables to the screen and die().
      */
     function xdd(...$vars)
     {
-        new Dumper(...$vars);
+        (new Dumper(...$vars))
+            ->toScreen();
         die(0);
     }
 }

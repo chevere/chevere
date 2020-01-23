@@ -79,9 +79,9 @@ abstract class AbstractDumper implements DumperInterface
             return $new;
         }
         $new->setDebugBacktrace();
-        $new->outputter = $new->outputter
+        $new->output = $new->outputter
             ->withDumper($new)
-            ->process();
+            ->toString();
 
         return $new;
     }
@@ -92,6 +92,14 @@ abstract class AbstractDumper implements DumperInterface
     final public function vars(): array
     {
         return $this->vars;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    final public function toString(): string
+    {
+        return $this->output;
     }
 
     /**
@@ -122,9 +130,5 @@ abstract class AbstractDumper implements DumperInterface
             array_shift($this->debugBacktrace);
             array_shift($this->debugBacktrace);
         }
-        // foreach ($this->debugBacktrace as $pos => $item) {
-        //     echo 'POS ' . $pos . ' ' . $item['file'] . ' -C ' . ($item['class'] ?? 'null') . ' -F ' . ($item['function'] ?? 'null') . "\n";
-        // }
-        // die();
     }
 }

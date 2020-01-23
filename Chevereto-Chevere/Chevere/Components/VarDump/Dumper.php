@@ -14,22 +14,32 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump;
 
 use Chevere\Components\App\Instances\BootstrapInstance;
+use Chevere\Components\Common\Interfaces\ToStringInterface;
 use Chevere\Components\VarDump\Dumpers\ConsoleDumper;
 use Chevere\Components\VarDump\Dumpers\HtmlDumper;
 
 /**
  * Context-aware dumper.
  */
-final class Dumper
+final class Dumper implements ToStringInterface
 {
+    private string $dumped;
+
     public function __construct(...$vars)
     {
-        $dumped =
-            (BootstrapInstance::get()->isCli() ? new ConsoleDumper() : new HtmlDumper())
-                ->withVars(...$vars)
-                ->outputter()
-                ->toString();
+        $dumper = BootstrapInstance::get()->isCli() ? new ConsoleDumper() : new HtmlDumper();
+        $this->dumped = $dumper
+            ->withVars(...$vars)
+            ->toString();
+    }
 
-        screen()->runtime()->attachNl($dumped)->display();
+    public function toString(): string
+    {
+        return $this->dumped;
+    }
+
+    public function toScreen(): void
+    {
+        screen()->runtime()->attachNl($this->dumped)->display();
     }
 }

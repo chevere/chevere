@@ -48,6 +48,8 @@ interface DumperInterface
      */
     public function vars(): array;
 
+    public function toString(): string;
+
     /**
      * Provides access to the debug backtrace. Can be called only after calling dump.
      *

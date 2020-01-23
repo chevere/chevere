@@ -21,7 +21,5 @@ interface OutputterInterface
 
     public function prepare(string $output): string;
 
-    public function process(): OutputterInterface;
-
     public function toString(): string;
 }

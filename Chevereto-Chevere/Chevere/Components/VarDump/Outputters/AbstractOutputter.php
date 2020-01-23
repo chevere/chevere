@@ -63,39 +63,30 @@ abstract class AbstractOutputter implements OutputterInterface
     /**
      * {@inheritdoc}
      */
-    final public function process(): OutputterInterface
+    final public function toString(): string
     {
         $this->output = $this->prepare($this->output);
         $this->handleClass();
         $this->output .= $this->dumper->formatter()
-            ->applyWrap('_function', $this->dumper->debugBacktrace()[$this->dumper::OFFSET]['function'] . '()');
+            ->applyWrap('_function', $this->dumper->debugBacktrace()[DumperInterface::OFFSET]['function'] . '()');
 
         $this->handleFile();
         $this->output .= "\n\n";
         $this->handleArgs();
         $this->output = trim($this->output);
-        $this->output = $this->callback($this->output);
 
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    final public function toString(): string
-    {
-        return $this->output;
+        return $this->callback($this->output);
     }
 
     final private function handleClass(): void
     {
-        if (isset($this->dumper->debugBacktrace()[$this->dumper::OFFSET]['class'])) {
-            $class = $this->dumper->debugBacktrace()[$this->dumper::OFFSET]['class'];
+        if (isset($this->dumper->debugBacktrace()[DumperInterface::OFFSET]['class'])) {
+            $class = $this->dumper->debugBacktrace()[DumperInterface::OFFSET]['class'];
             if (stringStartsWith('class@anonymous', $class)) {
                 $class = explode('0x', $class)[0];
             }
             $this->output .= $this->dumper->formatter()
-                    ->applyWrap('_class', $class) . $this->dumper->debugBacktrace()[$this->dumper::OFFSET]['type'];
+                    ->applyWrap('_class', $class) . $this->dumper->debugBacktrace()[DumperInterface::OFFSET]['type'];
         }
     }
 
