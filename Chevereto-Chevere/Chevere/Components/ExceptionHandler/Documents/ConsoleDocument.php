@@ -16,12 +16,9 @@ namespace Chevere\Components\ExceptionHandler\Documents;
 use Chevere\Components\ExceptionHandler\Formatters\ConsoleFormatter;
 use Chevere\Components\ExceptionHandler\Interfaces\FormatterInterface;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
-use Symfony\Component\Console\Output\OutputInterface;
 
 final class ConsoleDocument extends AbstractDocument
 {
-    private int $verbosity = 0;
-
     /**
      * {@inheritdoc}
      */
@@ -46,60 +43,6 @@ final class ConsoleDocument extends AbstractDocument
             static::SECTION_REQUEST => $this->colorApplySection('# Request') . "\n" . static::TAG_SERVER_PROTOCOL . ' ' . static::TAG_REQUEST_METHOD . ' ' . static::TAG_URI,
             static::SECTION_SERVER => $this->colorApplySection('# Server') . "\n" . static::TAG_PHP_UNAME . ' ' . static::TAG_SERVER_SOFTWARE,
         ];
-    }
-
-    /**
-     * @return array string[]
-     */
-    public function getSectionsVerbosity(): array
-    {
-        return [
-            static::SECTION_TITLE => OutputInterface::VERBOSITY_QUIET,
-            static::SECTION_MESSAGE => OutputInterface::VERBOSITY_QUIET,
-            static::SECTION_ID => OutputInterface::VERBOSITY_QUIET,
-            static::SECTION_TIME => OutputInterface::VERBOSITY_VERBOSE,
-            static::SECTION_STACK => OutputInterface::VERBOSITY_VERY_VERBOSE,
-            static::SECTION_SERVER => OutputInterface::VERBOSITY_VERBOSE,
-        ];
-    }
-
-    /**
-     * Return an instance with the specified verbosity.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified verbosity.
-     *
-     * Calling this method will reset the document sections to fit the target verbosity.
-     */
-    public function withVerbosity(int $verbosity): ConsoleDocument
-    {
-        $new = clone $this;
-        $new->verbosity = $verbosity;
-        $new->sections = static::SECTIONS;
-        $new->template = $new->getTemplate();
-        $new->handleVerbositySections();
-
-        return $new;
-    }
-
-    /**
-     * Provides access to the instance verbosity.
-     */
-    public function verbosity(): int
-    {
-        return $this->verbosity;
-    }
-
-    private function handleVerbositySections(): void
-    {
-        $sectionsVerbosity = $this->getSectionsVerbosity();
-        foreach ($this->sections as $sectionName) {
-            $verbosityLevel = $sectionsVerbosity[$sectionName] ?? 0;
-            if ($this->verbosity < $verbosityLevel) {
-                $key = array_search($sectionName, $this->sections);
-                unset($this->sections[$key]);
-            }
-        }
     }
 
     private function colorApplyLink(string $value): string

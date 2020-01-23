@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler\Interfaces;
 
+use Symfony\Component\Console\Output\OutputInterface;
+
 interface DocumentInterface
 {
     const SECTION_TITLE = 'title';
@@ -53,9 +55,35 @@ interface DocumentInterface
         self::SECTION_SERVER,
     ];
 
+    const SECTIONS_VERBOSITY = [
+        self::SECTION_TITLE => OutputInterface::VERBOSITY_QUIET,
+        self::SECTION_MESSAGE => OutputInterface::VERBOSITY_QUIET,
+        self::SECTION_ID => OutputInterface::VERBOSITY_QUIET,
+        self::SECTION_TIME => OutputInterface::VERBOSITY_VERBOSE,
+        self::SECTION_STACK => OutputInterface::VERBOSITY_VERY_VERBOSE,
+        self::SECTION_CLIENT => OutputInterface::VERBOSITY_VERBOSE,
+        self::SECTION_REQUEST => OutputInterface::VERBOSITY_VERBOSE,
+        self::SECTION_SERVER => OutputInterface::VERBOSITY_VERBOSE,
+    ];
+
     public function __construct(ExceptionHandlerInterface $exceptionHandler);
 
     public function sections(): array;
+
+    /**
+     * Return an instance with the specified verbosity.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified verbosity.
+     *
+     * Calling this method will reset the document sections to fit the target verbosity.
+     */
+    public function withVerbosity(int $verbosity): DocumentInterface;
+
+    /**
+     * Provides access to the instance verbosity.
+     */
+    public function verbosity(): int;
 
     public function toString(): string;
 

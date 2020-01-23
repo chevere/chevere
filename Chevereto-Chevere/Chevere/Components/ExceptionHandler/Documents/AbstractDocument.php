@@ -33,6 +33,8 @@ abstract class AbstractDocument implements DocumentInterface
     /** @var array [$tag => $value, ] */
     private array $tags;
 
+    private int $verbosity = 0;
+
     /**
      * Creates a new instance.
      */
@@ -54,8 +56,27 @@ abstract class AbstractDocument implements DocumentInterface
     /**
      * {@inheritdoc}
      */
+    final public function withVerbosity(int $verbosity): DocumentInterface
+    {
+        $new = clone $this;
+        $new->verbosity = $verbosity;
+
+        return $new;
+    }
+
+    final public function verbosity(): int
+    {
+        return $this->verbosity;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     final public function toString(): string
     {
+        if ($this->verbosity > 0) {
+            $this->handleVerbositySections();
+        }
         $exeption = $this->exceptionHandler->exception();
         $dateTimeUtc = $this->exceptionHandler->dateTimeUtc();
         $this->tags = [
@@ -133,6 +154,18 @@ abstract class AbstractDocument implements DocumentInterface
             $keyRequest = array_search(static::SECTION_REQUEST, $this->sections);
             $keyClient = array_search(static::SECTION_CLIENT, $this->sections);
             unset($this->sections[$keyRequest], $this->sections[$keyClient]);
+        }
+    }
+
+    private function handleVerbositySections(): void
+    {
+        $sectionsVerbosity = static::SECTIONS_VERBOSITY;
+        foreach ($this->sections as $sectionName) {
+            $verbosityLevel = $sectionsVerbosity[$sectionName] ?? 0;
+            if ($this->verbosity < $verbosityLevel) {
+                $key = array_search($sectionName, $this->sections);
+                unset($this->sections[$key]);
+            }
         }
     }
 }
