@@ -20,8 +20,9 @@ final class ScreenTest extends TestCase
 {
     public function testConstruct(): void
     {
-        xdd($this);
+        // xdump($this);
         screen()->debug()->attachNl('Fatal error at: ' . __FILE__)->display();
+        screen()->runtime()->attachNl(varInfo($this))->display();
         screen()->runtime()->attachNl('Everything is OK! Keep going...')->display();
 
         // $screen = new Screen;
