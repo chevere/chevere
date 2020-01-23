@@ -40,7 +40,9 @@ final class TypeTest extends TestCase
             $this->assertSame($key, $type->typeHinting());
             $this->assertTrue($type->validate($val));
         }
-        fclose($resource);
+        if (is_resource($resource)) {
+            fclose($resource);
+        }
     }
 
     public function testClassName(): void

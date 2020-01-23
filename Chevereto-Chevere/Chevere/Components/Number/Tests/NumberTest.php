@@ -97,7 +97,9 @@ final class NumberTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $resource = fopen(__FILE__, 'r');
         new Number($resource);
-        fclose($resource);
+        if (is_resource($resource)) {
+            fclose($resource);
+        }
     }
 
     public function testConstruct(): void

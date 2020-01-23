@@ -23,9 +23,11 @@ final class VariableExportTest extends TestCase
     public function testCreateNotExportable(): void
     {
         $this->expectException(VariableExportException::class);
-        $var = fopen(__FILE__, 'r');
-        new VariableExport($var);
-        fclose($var);
+        $resource = fopen(__FILE__, 'r');
+        new VariableExport($resource);
+        if (is_resource($resource)) {
+            fclose($resource);
+        }
     }
 
     public function testCreateContainsNotExportable(): void
@@ -35,7 +37,9 @@ final class VariableExportTest extends TestCase
         $object->array = [1, 2, 3, $resource];
         $this->expectException(VariableExportException::class);
         new VariableExport($object);
-        fclose($resource);
+        if (is_resource($resource)) {
+            fclose($resource);
+        }
     }
 
     public function testConstruct(): void

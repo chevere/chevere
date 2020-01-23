@@ -20,18 +20,18 @@ use Chevere\Components\Http\Interfaces\RequestInterface;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Route\PathUri;
-use Chevere\Components\Runtime\Interfaces\RuntimeInterface;
-use Chevere\Components\Runtime\Runtime;
 use DateTimeInterface;
 use LogicException;
-use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 
 final class ExceptionHandlerTest extends TestCase
 {
     private function getExceptionHandler(): ExceptionHandlerInterface
     {
-        return new ExceptionHandler(new LogicException('Ups', 100));
+        return
+            new ExceptionHandler(
+                new Exception(new LogicException('Ups', 100))
+            );
     }
 
     public function testConstruct(): void
@@ -40,9 +40,8 @@ final class ExceptionHandlerTest extends TestCase
         $this->assertInstanceOf(DateTimeInterface::class, $handler->dateTimeUtc());
         $this->assertInstanceOf(Exception::class, $handler->exception());
         $this->assertIsString($handler->id());
-        // $this->assertFalse($handler->hasRuntime());
+        $this->assertSame('/dev/null', $handler->logDestination());
         $this->assertFalse($handler->hasRequest());
-        $this->assertFalse($handler->hasLogger());
         $this->assertFalse($handler->isDebug());
     }
 
@@ -69,11 +68,11 @@ final class ExceptionHandlerTest extends TestCase
         $this->assertInstanceOf(RequestInterface::class, $handler->request());
     }
 
-    public function testWithLoger(): void
+    public function testWithLogDestination(): void
     {
+        $destination = 'A logger destination string';
         $handler = $this->getExceptionHandler()
-            ->withLogger(new Logger(__METHOD__));
-        $this->assertTrue($handler->hasLogger());
-        $this->assertInstanceOf(Logger::class, $handler->logger());
+            ->withLogDestination($destination);
+        $this->assertSame($destination, $handler->logDestination());
     }
 }
