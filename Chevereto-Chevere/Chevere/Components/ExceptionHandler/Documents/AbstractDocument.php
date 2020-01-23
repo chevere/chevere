@@ -116,57 +116,57 @@ abstract class AbstractDocument implements DocumentInterface
     public function getTemplate(): array
     {
         return [
-            static::SECTION_TITLE => $this->getTitle(),
-            static::SECTION_MESSAGE => $this->getMessage(),
-            static::SECTION_ID => $this->getId(),
-            static::SECTION_TIME => $this->getTime(),
-            static::SECTION_STACK => $this->getStack(),
-            static::SECTION_CLIENT => $this->getClient(),
-            static::SECTION_REQUEST => $this->getRequest(),
-            static::SECTION_SERVER => $this->getServer(),
+            static::SECTION_TITLE => $this->getSectionTitle(),
+            static::SECTION_MESSAGE => $this->getSectionMessage(),
+            static::SECTION_ID => $this->getSectionId(),
+            static::SECTION_TIME => $this->getSectionTime(),
+            static::SECTION_STACK => $this->getSectionStack(),
+            static::SECTION_CLIENT => $this->getSectionClient(),
+            static::SECTION_REQUEST => $this->getSectionRequest(),
+            static::SECTION_SERVER => $this->getSectionServer(),
         ];
     }
 
-    public function getTitle(): string
+    public function getSectionTitle(): string
     {
         return $this->formatter->wrapTitle(static::TAG_TITLE . ' in ' . static::TAG_FILE_LINE);
     }
 
-    public function getMessage(): string
+    public function getSectionMessage(): string
     {
         return $this->formatter->wrapSectionTitle('# Message ' . static::TAG_CODE_WRAP) . "\n" . static::TAG_MESSAGE;
     }
 
-    public function getId(): string
+    public function getSectionId(): string
     {
         return $this->formatter->wrapSectionTitle('# Incident ID:' . static::TAG_ID)
             . "\n" . 'Logged at ' . $this->formatter->wrapLink(static::TAG_LOG_DESTINATION);
     }
 
-    public function getTime(): string
+    public function getSectionTime(): string
     {
         return $this->formatter->wrapSectionTitle('# Time') . "\n" . static::TAG_DATE_TIME_UTC_ATOM
             . ' [' . static::TAG_TIMESTAMP . ']';
     }
 
-    public function getStack(): string
+    public function getSectionStack(): string
     {
         return $this->formatter->wrapSectionTitle('# Stack trace') . "\n" . static::TAG_STACK;
     }
 
-    public function getClient(): string
+    public function getSectionClient(): string
     {
         return $this->formatter->wrapSectionTitle('# Client') . "\n" . static::TAG_CLIENT_IP . ' '
             . static::TAG_CLIENT_USER_AGENT;
     }
 
-    public function getRequest(): string
+    public function getSectionRequest(): string
     {
         return $this->formatter->wrapSectionTitle('# Request') . "\n" . static::TAG_SERVER_PROTOCOL . ' '
             . static::TAG_REQUEST_METHOD . ' ' . static::TAG_URI;
     }
 
-    public function getServer(): string
+    public function getSectionServer(): string
     {
         return $this->formatter->wrapSectionTitle('# Server') . "\n" . static::TAG_PHP_UNAME . ' '
             . static::TAG_SERVER_SOFTWARE;

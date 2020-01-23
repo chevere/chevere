@@ -27,7 +27,7 @@ final class ConsoleDocument extends AbstractDocument
         return new ConsoleFormatter;
     }
 
-    public function getTitle(): string
+    public function getSectionTitle(): string
     {
         return (new ConsoleColor)->apply(['red', 'bold'], static::TAG_TITLE . ' in ')
             . $this->formatter->wrapLink(static::TAG_FILE_LINE);

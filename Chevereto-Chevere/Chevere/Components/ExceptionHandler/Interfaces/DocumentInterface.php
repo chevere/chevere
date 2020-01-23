@@ -85,6 +85,46 @@ interface DocumentInterface
      */
     public function verbosity(): int;
 
+    /**
+     * Returns the document title section.
+     */
+    public function getSectionTitle(): string;
+
+    /**
+     * Returns the document message section.
+     */
+    public function getSectionMessage(): string;
+
+    /**
+     * Returns the document id section.
+     */
+    public function getSectionId(): string;
+
+    /**
+     * Returns the document time section.
+     */
+    public function getSectionTime(): string;
+
+    /**
+     * Returns the document stack section.
+     */
+    public function getSectionStack(): string;
+
+    /**
+     * Returns the document client section.
+     */
+    public function getSectionClient(): string;
+
+    /**
+     * Returns the document request section.
+     */
+    public function getSectionRequest(): string;
+
+    /**
+     * Returns the document server section.
+     */
+    public function getSectionServer(): string;
+
     public function toString(): string;
 
     public function getTemplate(): array;

@@ -56,7 +56,7 @@ final class HtmlDocument extends AbstractDocument
         return $template;
     }
 
-    public function getTitle(): string
+    public function getSectionTitle(): string
     {
         if (!$this->exceptionHandler->isDebug()) {
             return $this->formatter->wrapTitle(static::NO_DEBUG_TITLE_PLAIN) . static::NO_DEBUG_CONTENT_HTML
