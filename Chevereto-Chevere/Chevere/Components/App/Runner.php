@@ -21,7 +21,6 @@ use Chevere\Components\Http\Request;
 use Chevere\Components\Message\Message;
 use Chevere\Components\App\Interfaces\BuilderInterface;
 use Chevere\Components\App\Interfaces\RunnerInterface;
-use function console;
 use function GuzzleHttp\Psr7\stream_for;
 
 /**
@@ -106,9 +105,9 @@ final class Runner implements RunnerInterface
      */
     private function handleConsole(): void
     {
-        if (BootstrapInstance::get()->isConsole() && !isset($this->consoleLoop)) {
-            console()->bind($this->builder);
-            console()->run();
+        if (BootstrapInstance::get()->hasConsole() && !isset($this->consoleLoop)) {
+            BootstrapInstance::get()->console()->bind($this->builder);
+            BootstrapInstance::get()->console()->run();
         }
     }
 

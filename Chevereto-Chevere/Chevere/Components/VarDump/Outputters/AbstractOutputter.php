@@ -28,9 +28,18 @@ abstract class AbstractOutputter implements OutputterInterface
     /**
      * {@inheritdoc}
      */
-    abstract public function prepare(): OutputterInterface;
+    public function prepare(string $output): string
+    {
+        return $output;
+    }
 
-    abstract public function print(): void;
+    /**
+     * {@inheritdoc}
+     */
+    public function callback(string $output): string
+    {
+        return $output;
+    }
 
     /**
      * {@inheritdoc}
@@ -56,14 +65,16 @@ abstract class AbstractOutputter implements OutputterInterface
      */
     final public function process(): OutputterInterface
     {
-        $this->prepare();
+        $this->output = $this->prepare($this->output);
         $this->handleClass();
         $this->output .= $this->dumper->formatter()
             ->applyWrap('_function', $this->dumper->debugBacktrace()[$this->dumper::OFFSET]['function'] . '()');
+
         $this->handleFile();
         $this->output .= "\n\n";
         $this->handleArgs();
         $this->output = trim($this->output);
+        $this->output = $this->callback($this->output);
 
         return $this;
     }
@@ -78,13 +89,13 @@ abstract class AbstractOutputter implements OutputterInterface
 
     final private function handleClass(): void
     {
-        if (isset($this->dumper->debugBacktrace()[1]['class'])) {
+        if (isset($this->dumper->debugBacktrace()[$this->dumper::OFFSET]['class'])) {
             $class = $this->dumper->debugBacktrace()[$this->dumper::OFFSET]['class'];
             if (stringStartsWith('class@anonymous', $class)) {
                 $class = explode('0x', $class)[0];
             }
             $this->output .= $this->dumper->formatter()
-                ->applyWrap('_class', $class) . $this->dumper->debugBacktrace()[$this->dumper::OFFSET]['type'];
+                    ->applyWrap('_class', $class) . $this->dumper->debugBacktrace()[$this->dumper::OFFSET]['type'];
         }
     }
 
@@ -92,7 +103,7 @@ abstract class AbstractOutputter implements OutputterInterface
     {
         if (isset($this->dumper->debugBacktrace()[0]['file'])) {
             $this->output .= "\n" . $this->dumper->formatter()
-                ->applyWrap('_file', $this->dumper->debugBacktrace()[0]['file'] . ':' . $this->dumper->debugBacktrace()[0]['line']);
+                    ->applyWrap('_file', $this->dumper->debugBacktrace()[0]['file'] . ':' . $this->dumper->debugBacktrace()[0]['line']);
         }
     }
 

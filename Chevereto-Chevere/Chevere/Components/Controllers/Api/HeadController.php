@@ -13,14 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controllers\Api;
 
-use InvalidArgumentException;
-use Chevere\Components\Console\Console;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Http\Method;
-use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Route;
-use function console;
-use const Chevere\CONSOLE;
 
 /**
  * Identical to GET, but without any message-boby in the response.

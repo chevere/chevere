@@ -11,8 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Outputters;
+namespace Chevere\Components\Screen\Interfaces;
 
-final class PlainOutputter extends AbstractOutputter
+interface ContainerInterface
 {
+    public function __construct(ScreenInterface $runtime, ScreenInterface $debug);
+
+    public function runtime(): ScreenInterface;
+
+    public function debug(): ScreenInterface;
 }

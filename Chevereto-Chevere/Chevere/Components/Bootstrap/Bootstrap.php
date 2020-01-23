@@ -15,6 +15,7 @@ namespace Chevere\Components\Bootstrap;
 
 use Chevere\Components\Bootstrap\Exceptions\BootstrapException;
 use Chevere\Components\Bootstrap\Interfaces\BootstrapInterface;
+use Chevere\Components\Console\Interfaces\ConsoleInterface;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 
@@ -36,7 +37,7 @@ final class Bootstrap implements BootstrapInterface
 
     private bool $isCli;
 
-    private bool $isConsole;
+    private ConsoleInterface $console;
 
     private bool $isDev;
 
@@ -91,17 +92,22 @@ final class Bootstrap implements BootstrapInterface
         return $this->isCli;
     }
 
-    public function withConsole(bool $bool): BootstrapInterface
+    public function withConsole(ConsoleInterface $console): BootstrapInterface
     {
         $new = clone $this;
-        $new->isConsole = $bool;
+        $new->console = $console;
 
         return $new;
     }
 
-    public function isConsole(): bool
+    public function hasConsole(): bool
     {
-        return $this->isConsole;
+        return isset($this->console);
+    }
+
+    public function console(): ConsoleInterface
+    {
+        return $this->console;
     }
 
     public function withDev(bool $bool): BootstrapInterface

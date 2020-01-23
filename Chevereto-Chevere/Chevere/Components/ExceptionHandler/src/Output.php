@@ -26,7 +26,6 @@ use Psr\Http\Message\StreamInterface;
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Message\Message;
-use function console;
 use function GuzzleHttp\Psr7\stream_for;
 
 /**
@@ -170,18 +169,18 @@ final class Output
             if ('title' == $k) {
                 $tpl = $v[0];
             } else {
-                console()->style()->section(strtr($v[0], $this->preparedTags));
+                BootstrapInstance::get()->console()->style()->section(strtr($v[0], $this->preparedTags));
                 $tpl = $v[1];
             }
             $message = strtr($tpl, $this->preparedTags);
             if ('title' == $k) {
-                console()->style()->error($message);
+                BootstrapInstance::get()->console()->style()->error($message);
             } else {
                 $message = (new Message($message))->toString();
-                console()->style()->writeln($message);
+                BootstrapInstance::get()->console()->style()->writeln($message);
             }
         }
-        console()->style()->writeln('');
+        BootstrapInstance::get()->console()->style()->writeln('');
     }
 
     private function generateTemplates(): void

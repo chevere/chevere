@@ -17,6 +17,7 @@ use LogicException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\App\Interfaces\BuilderInterface;
 use Chevere\Components\Console\Interfaces\CommandInterface;
+use Chevere\Components\Console\Interfaces\ConsoleInterface;
 use Chevere\Components\Console\Interfaces\SymfonyCommandInterface;
 
 /**
@@ -31,7 +32,7 @@ abstract class Command implements CommandInterface
     /**
      * {@inheritdoc}
      */
-    final public function __construct(Console $console)
+    final public function __construct(ConsoleInterface $console)
     {
         $this->console = $console;
         $this->setSymfony();
@@ -40,7 +41,7 @@ abstract class Command implements CommandInterface
     /**
      * {@inheritdoc}
      */
-    final public function console(): Console
+    final public function console(): ConsoleInterface
     {
         return $this->console;
     }

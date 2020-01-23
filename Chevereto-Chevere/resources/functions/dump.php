@@ -11,10 +11,7 @@
 
 declare(strict_types=1);
 
-use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\VarDump\Dumper;
-use Chevere\Components\VarDump\Dumpers\ConsoleDumper;
-use Chevere\Components\VarDump\Dumpers\HtmlDumper;
 
 if (!function_exists('xdump') && !function_exists('xdd')) {
     /**

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Bootstrap\Interfaces;
 
+use Chevere\Components\Console\Interfaces\ConsoleInterface;
+
 interface BootstrapInterface
 {
     public function __construct(string $documentRoot);
@@ -31,9 +33,11 @@ interface BootstrapInterface
 
     public function isCli(): bool;
 
-    public function withConsole(bool $bool): BootstrapInterface;
+    public function withConsole(ConsoleInterface $console): BootstrapInterface;
 
-    public function isConsole(): bool;
+    public function hasConsole(): bool;
+
+    public function console(): ConsoleInterface;
 
     public function withDev(bool $bool): BootstrapInterface;
 

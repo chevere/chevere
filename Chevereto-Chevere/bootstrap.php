@@ -15,6 +15,7 @@ namespace Chevere;
 
 use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Bootstrap\Bootstrap;
+use Chevere\Components\Console\Console;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
@@ -22,10 +23,13 @@ $documentRoot = rtrim(dirname(__DIR__, 'Chevereto-Chevere' == basename(__DIR__) 
 $isCli = 'cli' == php_sapi_name();
 
 $bootstrap = (new Bootstrap($documentRoot))
-  ->withCli($isCli);
-$bootstrap = $bootstrap
-  ->withConsole($bootstrap->isCli())
+  ->withCli($isCli)
   ->withDev((bool) include($bootstrap->appPath() . 'options/dev.php'));
+
+if ($isCli) {
+    $bootstrap = $bootstrap
+      ->withConsole(new Console);
+}
 
 new BootstrapInstance($bootstrap);
 

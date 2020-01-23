@@ -24,8 +24,12 @@ final class Dumper
 {
     public function __construct(...$vars)
     {
-        (BootstrapInstance::get()->isCli() ? new ConsoleDumper() : new HtmlDumper())
-            ->withVars(...$vars)
-            ->outputter()->print();
+        $dumped =
+            (BootstrapInstance::get()->isCli() ? new ConsoleDumper() : new HtmlDumper())
+                ->withVars(...$vars)
+                ->outputter()
+                ->toString();
+
+        screen()->runtime()->attachNl($dumped)->display();
     }
 }

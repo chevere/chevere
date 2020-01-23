@@ -14,16 +14,24 @@ declare(strict_types=1);
 namespace Chevere;
 
 use Chevere\Components\App\Instances\BootstrapInstance;
-use Chevere\Components\App\Instances\ConsoleInstance;
+use Chevere\Components\App\Instances\ScreenContainerInstance;
 use Chevere\Components\Bootstrap\Bootstrap;
-use Chevere\Components\Console\Console;
+use Chevere\Components\Screen\Container;
+use Chevere\Components\Screen\Screen;
+use Chevere\Components\Screen\SilentScreen;
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 
 new BootstrapInstance(
     (new Bootstrap(__DIR__ . '/Chevere/TestApp/'))
         ->withCli(true)
-        ->withConsole(false)
         ->withDev(false)
         ->withAppAutoloader('Chevere\\TestApp\\App')
+);
+
+new ScreenContainerInstance(
+    new Container(
+        new Screen,
+        new SilentScreen
+    )
 );

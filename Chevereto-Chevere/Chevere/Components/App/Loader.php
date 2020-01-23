@@ -31,7 +31,6 @@ use Chevere\Components\App\Interfaces\BuilderInterface;
 use Chevere\Components\App\Interfaces\ServicesInterface;
 use Chevere\Components\App\Interfaces\LoaderInterface;
 use Chevere\Components\App\Interfaces\ParametersInterface;
-use function console;
 
 /**
  * Loads the application, by handling its builder.
@@ -87,7 +86,7 @@ final class Loader implements LoaderInterface
     {
         if (
             BootstrapInstance::get()->isDev() ||
-            (BootstrapInstance::get()->isConsole() && console()->isBuilding())
+            (BootstrapInstance::get()->hasConsole() && BootstrapInstance::get()->console()->isBuilding())
         ) {
             $path = new PathApp('plugins/local/HelloWorld/routes/web.php');
             $pluginRoutes = [$path];
@@ -128,7 +127,7 @@ final class Loader implements LoaderInterface
      */
     private function getServices(): ServicesInterface
     {
-        if (BootstrapInstance::get()->isConsole() && console()->isBuilding()) {
+        if (BootstrapInstance::get()->hasConsole() && BootstrapInstance::get()->console()->isBuilding()) {
             return (new Services())
                 ->withApi(new Api())
                 ->withRouter(new Router());
@@ -148,15 +147,15 @@ final class Loader implements LoaderInterface
     {
         if (
             !BootstrapInstance::get()->isDev()
-            && !(BootstrapInstance::get()->isConsole() && console()->isBuilding())
+            && !(BootstrapInstance::get()->hasConsole() && BootstrapInstance::get()->console()->isBuilding())
             && !$this->builder->build()->file()->exists()
         ) {
             $command = 'php ' . $_SERVER['SCRIPT_FILENAME'] . ' build';
             $message = (new Message('The application needs to be built by running %command%'))
                 ->code('%command%', $command)
                 ->toString();
-            if (BootstrapInstance::get()->isConsole()) {
-                console()->style()->block($message, 'CANNOT EXECUTE');
+            if (BootstrapInstance::get()->hasConsole()) {
+                BootstrapInstance::get()->console()->style()->block($message, 'CANNOT EXECUTE');
                 die(126);
             }
             throw new BuildNeededException($message);

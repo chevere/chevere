@@ -13,35 +13,22 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputters;
 
-use Chevere\Components\VarDump\Interfaces\OutputterInterface;
-use Symfony\Component\Console\Formatter\OutputFormatter;
-use Symfony\Component\Console\Formatter\OutputFormatterStyle;
+use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
 final class ConsoleOutputter extends AbstractOutputter
 {
-    private ConsoleOutputInterface $consoleOutput;
+    const OUTPUT_HR = '------------------------------------------------------------';
 
-    private string $outputHr = '';
+    private string $outputHr;
 
     public function __construct()
     {
-        $this->outputHr = '<hr>' . str_repeat('-', 60) . '</>';
         $this->consoleOutput = new ConsoleOutput();
+        $this->outputHr = (new ConsoleColor)->apply('blue', static::OUTPUT_HR);
     }
 
-    public function prepare(): OutputterInterface
-    {
-        $this->consoleOutput->setFormatter(new OutputFormatter(true));
-        $this->consoleOutput->getFormatter()->setStyle('block', new OutputFormatterStyle('red', 'black'));
-        $this->consoleOutput->getFormatter()->setStyle('dumper', new OutputFormatterStyle('blue', null, ['bold']));
-        $this->consoleOutput->getFormatter()->setStyle('hr', new OutputFormatterStyle('blue', null));
-
-        return $this;
-    }
-
-    public function print(): void
+    public function prepare(string $output): string
     {
         $aux = 0;
         $maker =
@@ -51,8 +38,13 @@ final class ConsoleOutputter extends AbstractOutputter
                 : null
             )
             . $this->dumper->debugBacktrace()[$aux]['function'] . '()';
-        $this->consoleOutput->writeln(['', '<dumper>' . $maker . '</>', $this->outputHr]);
-        $this->consoleOutput->writeln($this->output, ConsoleOutput::OUTPUT_RAW);
-        $this->consoleOutput->writeln($this->outputHr);
+        $output .= "\n" . (new ConsoleColor)->apply(['bold', 'red'], $maker) . "\n" . $this->outputHr . "\n";
+
+        return $output;
+    }
+
+    public function callback(string $output): string
+    {
+        return $output . "\n" . $this->outputHr;
     }
 }

@@ -36,9 +36,9 @@ interface CommandInterface
     const ARGUMENTS = [];
     const OPTIONS = [];
 
-    public function __construct(Console $console);
+    public function __construct(ConsoleInterface $console);
 
-    public function console(): Console;
+    public function console(): ConsoleInterface;
 
     public function symfony(): SymfonyCommandInterface;
 

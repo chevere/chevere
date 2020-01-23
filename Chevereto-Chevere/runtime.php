@@ -13,11 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere;
 
-use Chevere\Components\App\Instances\BootstrapInstance;
-use Chevere\Components\App\Instances\ConsoleInstance;
 use Chevere\Components\App\Instances\RequestInstance;
 use Chevere\Components\App\Instances\RuntimeInstance;
-use Chevere\Components\Console\Console;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Runtime\Runtime;
 use Chevere\Components\Runtime\Sets\SetDebug;
@@ -32,10 +29,6 @@ use Chevere\Components\Runtime\Sets\SetUriScheme;
 new RequestInstance(
     Request::fromGlobals()
 );
-
-if (BootstrapInstance::get()->isConsole()) {
-    new ConsoleInstance(new Console());
-}
 
 new RuntimeInstance(
     new Runtime(

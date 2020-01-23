@@ -19,11 +19,9 @@ interface OutputterInterface
 
     public function dumper(): DumperInterface;
 
-    public function prepare(): OutputterInterface;
+    public function prepare(string $output): string;
 
     public function process(): OutputterInterface;
-
-    public function print(): void;
 
     public function toString(): string;
 }

@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-use Chevere\Components\App\Instances\ConsoleInstance;
-use Chevere\Components\Console\Interfaces\ConsoleInterface;
+use Chevere\Components\App\Instances\ScreenContainerInstance;
+use Chevere\Components\Screen\Interfaces\ContainerInterface;
 
-function console(): ConsoleInterface
+function screen(): ContainerInterface
 {
-    return ConsoleInstance::get();
+    return ScreenContainerInstance::get();
 }
