@@ -27,23 +27,27 @@ if (!function_exists('varInfo')) {
 
 if (!function_exists('xdump')) {
     /**
-     * Dumps information about one or more variables to the screen.
+     * Dumps information about one or more variables to the runtime screen.
      */
     function xdump(...$vars)
     {
         (new Dumper(...$vars))
-            ->toScreen();
+            ->toScreen(
+                screens()->runtime()
+            );
     }
 }
 
 if (!function_exists('xdd')) {
     /**
-     * Dumps information about one or more variables to the screen and die().
+     * Dumps information about one or more variables to the runtime screen and die().
      */
     function xdd(...$vars)
     {
         (new Dumper(...$vars))
-            ->toScreen();
+            ->toScreen(
+                screens()->runtime()
+            );
         die(0);
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Screen\Tests;
 
 use PHPUnit\Framework\TestCase;
+use function GuzzleHttp\Psr7\stream_for;
 
 final class ScreenTest extends TestCase
 {
@@ -21,12 +22,11 @@ final class ScreenTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
         // xdump($this);
-        // xdd(screen()->debug()->attach('Fatal error at: ' . __FILE__));
-        screens()->console()->attach('Fatal error at: ' . __FILE__)->show();
+        // xdump(screens()->debug()->attach('Fatal error at: ' . __FILE__));
         // xdd(screens()->debug()->trace());
-        // screens()->console()->attach('Fatal error at: ' . __FILE__)->show();
-        // screen()->runtime()->attachNl(varInfo($this))->display();
-        // screen()->runtime()->attachNl('Everything is OK! Keep going...')->display();
+        screens()->console()->attach('Fatal error at: ' . __FILE__)->emit();
+        screens()->runtime()->attachNl(varInfo(screens()->console()))->emit();
+        // screens()->runtime()->attachNl('Everything is OK! Keep going...')->emit();
 
         // $screen = new Screen;
         // $screen

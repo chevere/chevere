@@ -20,13 +20,13 @@ use Chevere\Components\VarDump\Outputters\PlainOutputter;
 
 final class PlainDumper extends AbstractDumper
 {
-    public function getFormatter(): FormatterInterface
+    public function formatter(): FormatterInterface
     {
-        return new PlainFormatter();
+        return $this->formatter ??= new PlainFormatter;
     }
 
-    public function getOutputter(): OutputterInterface
+    public function outputter(): OutputterInterface
     {
-        return new PlainOutputter();
+        return $this->outputter ??= new PlainOutputter;
     }
 }

@@ -57,7 +57,7 @@ final class SilentScreen implements ScreenInterface
         return [];
     }
 
-    public function show(): ScreenInterface
+    public function emit(): ScreenInterface
     {
         return $this;
     }

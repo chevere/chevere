@@ -41,7 +41,7 @@ interface ScreenInterface
     public function queue(): array;
 
     /**
-     * Show the screen queue contents.
+     * Emit the screen queue contents.
      */
-    public function show(): ScreenInterface;
+    public function emit(): ScreenInterface;
 }

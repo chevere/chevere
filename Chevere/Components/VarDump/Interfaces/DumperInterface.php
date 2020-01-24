@@ -27,11 +27,7 @@ interface DumperInterface
 
     public function formatter(): FormatterInterface;
 
-    public function getFormatter(): FormatterInterface;
-
     public function outputter(): OutputterInterface;
-
-    public function getOutputter(): OutputterInterface;
 
     /**
      * Return an instance with the specified vars.

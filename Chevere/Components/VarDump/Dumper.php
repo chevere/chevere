@@ -15,6 +15,7 @@ namespace Chevere\Components\VarDump;
 
 use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Common\Interfaces\ToStringInterface;
+use Chevere\Components\Screen\Interfaces\ScreenInterface;
 use Chevere\Components\VarDump\Dumpers\ConsoleDumper;
 use Chevere\Components\VarDump\Dumpers\HtmlDumper;
 
@@ -38,8 +39,8 @@ final class Dumper implements ToStringInterface
         return $this->dumped;
     }
 
-    public function toScreen(): void
+    public function toScreen(ScreenInterface $screen): void
     {
-        screens()->runtime()->attachNl($this->dumped)->show();
+        $screen->attachNl($this->dumped)->emit();
     }
 }

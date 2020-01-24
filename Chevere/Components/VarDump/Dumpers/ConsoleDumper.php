@@ -20,13 +20,13 @@ use Chevere\Components\VarDump\Outputters\ConsoleOutputter;
 
 final class ConsoleDumper extends AbstractDumper
 {
-    public function getFormatter(): FormatterInterface
+    public function formatter(): FormatterInterface
     {
-        return new ConsoleFormatter();
+        return $this->formatter ??= new ConsoleFormatter;
     }
 
-    public function getOutputter(): OutputterInterface
+    public function outputter(): OutputterInterface
     {
-        return new ConsoleOutputter();
+        return $this->outputter ??= new ConsoleOutputter;
     }
 }

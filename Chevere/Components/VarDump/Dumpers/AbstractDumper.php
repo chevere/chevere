@@ -38,35 +38,35 @@ abstract class AbstractDumper implements DumperInterface
      */
     final public function __construct()
     {
-        $this->formatter = $this->getFormatter();
-        $this->outputter = $this->getOutputter();
+        $this->formatter = $this->formatter();
+        $this->outputter = $this->outputter();
     }
 
     /**
      * {@inheritdoc}
      */
-    abstract public function getFormatter(): FormatterInterface;
+    abstract public function formatter(): FormatterInterface;
 
     /**
      * {@inheritdoc}
      */
-    abstract public function getOutputter(): OutputterInterface;
+    abstract public function outputter(): OutputterInterface;
 
     /**
      * {@inheritdoc}
      */
-    public function formatter(): FormatterInterface
-    {
-        return $this->formatter;
-    }
+    // public function formatter(): FormatterInterface
+    // {
+    //     return $this->formatter;
+    // }
 
     /**
      * {@inheritdoc}
      */
-    public function outputter(): OutputterInterface
-    {
-        return $this->outputter;
-    }
+    // public function outputter(): OutputterInterface
+    // {
+    //     return $this->outputter;
+    // }
 
     /**
      * {@inheritdoc}
@@ -79,9 +79,6 @@ abstract class AbstractDumper implements DumperInterface
             return $new;
         }
         $new->setDebugBacktrace();
-        $new->output = $new->outputter
-            ->withDumper($new)
-            ->toString();
 
         return $new;
     }
@@ -99,7 +96,9 @@ abstract class AbstractDumper implements DumperInterface
      */
     final public function toString(): string
     {
-        return $this->output;
+        return $this->outputter
+            ->withDumper($this)
+            ->toString();
     }
 
     /**

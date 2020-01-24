@@ -15,6 +15,8 @@ namespace Chevere\Components\Screen;
 
 use Chevere\Components\Screen\Interfaces\FormatterInterface;
 use Chevere\Components\Screen\Interfaces\ScreenInterface;
+use Generator;
+use GuzzleHttp\Psr7\AppendStream;
 use Psr\Http\Message\StreamInterface;
 use function GuzzleHttp\Psr7\stream_for;
 
@@ -70,18 +72,17 @@ final class Screen implements ScreenInterface
         return $this->queue;
     }
 
-    public function show(): ScreenInterface
+    public function emit(): ScreenInterface
     {
         $this->handleTrace();
-        // TODO YIELD HERE
         foreach ($this->queue as $stream) {
-            // if ($stream->isSeekable()) {
-            //     $stream->rewind();
-            // }
-            // while (!$stream->eof()) {
-            //     echo $stream->read(1024 * 8);
-            // }
-            echo $stream;
+            if ($stream->isSeekable()) {
+                $stream->rewind();
+            }
+            while (!$stream->eof()) {
+                echo $stream->read(1024 * 8);
+            }
+            $stream->detach();
         }
         $this->queue = [];
 
@@ -91,7 +92,7 @@ final class Screen implements ScreenInterface
     private function handleTrace(): void
     {
         if (!$this->traceability) {
-            // return;
+            return;
         }
         $bt = debug_backtrace(0, 2);
         $caller = $bt[1];

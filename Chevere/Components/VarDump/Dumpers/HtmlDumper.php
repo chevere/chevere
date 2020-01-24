@@ -20,13 +20,13 @@ use Chevere\Components\VarDump\Outputters\HtmlOutputter;
 
 final class HtmlDumper extends AbstractDumper
 {
-    public function getFormatter(): FormatterInterface
+    public function formatter(): FormatterInterface
     {
-        return new HtmlFormatter();
+        return $this->formatter ??= new HtmlFormatter;
     }
 
-    public function getOutputter(): OutputterInterface
+    public function outputter(): OutputterInterface
     {
-        return new HtmlOutputter();
+        return $this->outputter ??= new HtmlOutputter;
     }
 }
