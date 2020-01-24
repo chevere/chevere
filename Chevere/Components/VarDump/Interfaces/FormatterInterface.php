@@ -18,17 +18,17 @@ interface FormatterInterface
     /**
      * @param int $indent Number of spaces to prefix
      */
-    public function getIndent(int $indent): string;
+    public function indent(int $indent): string;
 
     /**
      * @param string String to emphatize
      */
-    public function applyEmphasis(string $string): string;
+    public function emphasis(string $string): string;
 
     /**
      * @param string String to encode its chars
      */
     public function filterEncodedChars(string $string): string;
 
-    public function applyWrap(string $key, string $dump): string;
+    public function highlight(string $key, string $dump): string;
 }

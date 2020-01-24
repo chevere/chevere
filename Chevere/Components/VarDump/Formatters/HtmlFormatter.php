@@ -16,36 +16,48 @@ namespace Chevere\Components\VarDump\Formatters;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 use Chevere\Components\VarDump\Interfaces\TemplateInterface;
 use Chevere\Components\VarDump\Interfaces\VarInfoInterface;
-use Chevere\Components\VarDump\Wrappers\HtmlWrapper;
+use Chevere\Components\VarDump\Wrappers\HtmlHighlight;
 
 /**
  * Provide HTML VarDump representation.
  */
 final class HtmlFormatter implements FormatterInterface
 {
-    public function getIndent(int $indent): string
+    /**
+     * {@inheritdoc}
+     */
+    public function indent(int $indent): string
     {
         return str_repeat(TemplateInterface::HTML_INLINE_PREFIX, $indent);
     }
 
-    public function applyEmphasis(string $string): string
+    /**
+     * {@inheritdoc}
+     */
+    public function emphasis(string $string): string
     {
         return sprintf(
             TemplateInterface::HTML_EMPHASIS,
-            (new HtmlWrapper(VarInfoInterface::_EMPHASIS))
+            (new HtmlHighlight(VarInfoInterface::_EMPHASIS))
                 ->wrap($string)
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function filterEncodedChars(string $string): string
     {
         return htmlspecialchars($string);
     }
 
-    public function applyWrap(string $key, string $string): string
+    /**
+     * {@inheritdoc}
+     */
+    public function highlight(string $key, string $string): string
     {
         return
-            (new HtmlWrapper($key))
+            (new HtmlHighlight($key))
                 ->wrap($string);
     }
 }

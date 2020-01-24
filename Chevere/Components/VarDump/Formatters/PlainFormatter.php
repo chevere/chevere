@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Formatters;
 
 use Chevere\Components\VarDump\Formatters\Traits\FilterEncodedCharsTrait;
-use Chevere\Components\VarDump\Formatters\Traits\GetIndentTrait;
+use Chevere\Components\VarDump\Formatters\Traits\IndentTrait;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 
 /**
@@ -22,15 +22,15 @@ use Chevere\Components\VarDump\Interfaces\FormatterInterface;
  */
 final class PlainFormatter implements FormatterInterface
 {
-    use GetIndentTrait;
+    use IndentTrait;
     use FilterEncodedCharsTrait;
 
-    public function applyWrap(string $key, string $dump): string
+    public function highlight(string $key, string $dump): string
     {
         return $dump;
     }
 
-    public function applyEmphasis(string $string): string
+    public function emphasis(string $string): string
     {
         return $string;
     }

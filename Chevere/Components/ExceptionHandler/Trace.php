@@ -84,7 +84,7 @@ final class Trace implements TraceInterface
             if (empty($val)) {
                 continue;
             }
-            $array[$tag] = $this->formatter->varDumpFormatter()->applyWrap($key, (string) $trValues[$tag]);
+            $array[$tag] = $this->formatter->varDumpFormatter()->highlight($key, (string) $trValues[$tag]);
         }
         $array[static::TAG_ENTRY_ARGUMENTS] = $this->getEntryArguments($entry);
 

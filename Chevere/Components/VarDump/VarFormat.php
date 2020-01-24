@@ -102,7 +102,7 @@ final class VarFormat implements VarInfoInterface
         $new = clone $this;
         $new->indent = $indent;
         $new->indentString = $new->formatter
-            ->getIndent($indent);
+            ->indent($indent);
 
         return $new;
     }
@@ -179,9 +179,9 @@ final class VarFormat implements VarInfoInterface
         $this->info = $this->processor->info();
         if ('' !== $this->info) {
             if (strpos($this->info, '=')) {
-                $this->info = $this->formatter->applyEmphasis("($this->info)");
+                $this->info = $this->formatter->emphasis("($this->info)");
             } else {
-                $this->info = $this->formatter->applyWrap(VarInfoInterface::_CLASS, $this->info);
+                $this->info = $this->formatter->highlight(VarInfoInterface::_CLASS, $this->info);
             }
         }
     }
@@ -197,7 +197,7 @@ final class VarFormat implements VarInfoInterface
             }
         }
         $this->output = strtr($message, [
-            '%type%' => $this->formatter->applyWrap($this->dumpeable()->type(), $this->dumpeable()->type()),
+            '%type%' => $this->formatter->highlight($this->dumpeable()->type(), $this->dumpeable()->type()),
             '%val%' => $this->val,
             '%info%' => $this->info,
         ]);

@@ -14,30 +14,30 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Formatters;
 
 use Chevere\Components\VarDump\Formatters\Traits\FilterEncodedCharsTrait;
-use Chevere\Components\VarDump\Formatters\Traits\GetIndentTrait;
+use Chevere\Components\VarDump\Formatters\Traits\IndentTrait;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 use Chevere\Components\VarDump\Interfaces\VarInfoInterface;
-use Chevere\Components\VarDump\Wrappers\ConsoleWrapper;
+use Chevere\Components\VarDump\Wrappers\ConsoleHighlight;
 
 /**
  * Provide console VarDump representation.
  */
 final class ConsoleFormatter implements FormatterInterface
 {
-    use GetIndentTrait;
+    use IndentTrait;
     use FilterEncodedCharsTrait;
 
-    public function applyWrap(string $key, string $string): string
+    public function highlight(string $key, string $string): string
     {
         return
-            (new ConsoleWrapper($key))
+            (new ConsoleHighlight($key))
                 ->wrap($string);
     }
 
-    public function applyEmphasis(string $string): string
+    public function emphasis(string $string): string
     {
         return
-            (new ConsoleWrapper(VarInfoInterface::_EMPHASIS))
+            (new ConsoleHighlight(VarInfoInterface::_EMPHASIS))
                 ->wrap($string);
     }
 }

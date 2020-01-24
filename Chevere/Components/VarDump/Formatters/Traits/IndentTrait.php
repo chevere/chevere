@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Formatters\Traits;
 
-trait GetIndentTrait
+trait IndentTrait
 {
-    public function getIndent(int $indent): string
+    public function indent(int $indent): string
     {
         return str_repeat(' ', $indent);
     }

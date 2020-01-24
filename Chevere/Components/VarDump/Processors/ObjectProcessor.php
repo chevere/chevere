@@ -44,9 +44,9 @@ final class ObjectProcessor extends AbstractProcessor
         $this->var = $this->varDump->dumpeable()->var();
         $this->reflectionObject = new ReflectionObject($this->var);
         if (in_array($this->reflectionObject->getName(), $this->varDump->dontDump())) {
-            $this->val .= $this->varDump->formatter()->applyWrap(
+            $this->val .= $this->varDump->formatter()->highlight(
                 VarInfoInterface::_OPERATOR,
-                $this->varDump->formatter()->applyEmphasis(
+                $this->varDump->formatter()->emphasis(
                     $this->reflectionObject->getName()
                 )
             );
@@ -93,9 +93,9 @@ final class ObjectProcessor extends AbstractProcessor
     private function processProperty($key, $var): void
     {
         $visibility = implode(' ', $var['visibility'] ?? $this->properties['visibility']);
-        $wrappedVisibility = $this->varDump->formatter()->applyWrap(VarInfoInterface::_PRIVACY, $visibility);
+        $wrappedVisibility = $this->varDump->formatter()->highlight(VarInfoInterface::_PRIVACY, $visibility);
         $property = '$' . $this->varDump->formatter()->filterEncodedChars($key);
-        $wrappedProperty = $this->varDump->formatter()->applyWrap(VarInfoInterface::_VARIABLE, $property);
+        $wrappedProperty = $this->varDump->formatter()->highlight(VarInfoInterface::_VARIABLE, $property);
         $this->val .= "\n" . $this->varDump->indentString() . $wrappedVisibility . ' ' . $wrappedProperty . ' ';
         $this->aux = $var['value'];
         if (is_object($this->aux) && property_exists($this->aux, $key)) {
@@ -105,9 +105,9 @@ final class ObjectProcessor extends AbstractProcessor
                 $prop->setAccessible(true);
                 $propValue = $prop->getValue($this->aux);
                 if ($this->aux == $propValue) {
-                    $this->val .= $this->varDump->formatter()->applyWrap(
+                    $this->val .= $this->varDump->formatter()->highlight(
                         VarInfoInterface::_OPERATOR,
-                        '(' . $this->varDump->formatter()->applyEmphasis('circular object reference') . ')'
+                        '(' . $this->varDump->formatter()->emphasis('circular object reference') . ')'
                     );
 
                     return;
@@ -132,9 +132,9 @@ final class ObjectProcessor extends AbstractProcessor
 
             return;
         }
-        $this->val .= $this->varDump->formatter()->applyWrap(
+        $this->val .= $this->varDump->formatter()->highlight(
             VarInfoInterface::_OPERATOR,
-            '(' . $this->varDump->formatter()->applyEmphasis('max depth reached') . ')'
+            '(' . $this->varDump->formatter()->emphasis('max depth reached') . ')'
         );
     }
 

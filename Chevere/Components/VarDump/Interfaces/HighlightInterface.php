@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Interfaces;
 
-interface WrapperInterface
+interface HighlightInterface
 {
     public function __construct(string $key);
 

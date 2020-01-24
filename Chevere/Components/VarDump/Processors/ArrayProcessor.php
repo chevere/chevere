@@ -29,15 +29,15 @@ final class ArrayProcessor extends AbstractProcessor
     {
         $this->info = 'size=' . count($this->varDump->dumpeable()->var());
         foreach ($this->varDump->dumpeable()->var() as $k => $v) {
-            $operator = $this->varDump->formatter()->applyWrap(VarInfoInterface::_OPERATOR, '=>');
+            $operator = $this->varDump->formatter()->highlight(VarInfoInterface::_OPERATOR, '=>');
             $this->val .= "\n" . $this->varDump->indentString() . ' ' . $this->varDump->formatter()->filterEncodedChars((string) $k) . " $operator ";
             $aux = $v;
             $isCircularRef = is_array($aux) && isset($aux[$k]) && $aux == $aux[$k];
             if ($isCircularRef) {
                 $this->val .= $this->varDump->formatter()
-                    ->applyWrap(
+                    ->highlight(
                         VarInfoInterface::_OPERATOR,
-                        '(' . $this->varDump->formatter()->applyEmphasis('circular array reference') . ')'
+                        '(' . $this->varDump->formatter()->emphasis('circular array reference') . ')'
                     );
             } else {
                 $newVarDump = (new VarFormat(new VarDumpeable($aux), $this->varDump->formatter()))

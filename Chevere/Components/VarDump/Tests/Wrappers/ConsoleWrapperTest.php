@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\VarDump\Wrappers;
 
 use Chevere\Components\VarDump\Interfaces\PalleteInterface;
-use Chevere\Components\VarDump\Wrappers\ConsoleWrapper;
+use Chevere\Components\VarDump\Wrappers\ConsoleHighlight;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +23,7 @@ final class ConsoleWrapperTest extends TestCase
     public function testInvalidArgumentConstruct(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new ConsoleWrapper('invalid-argument');
+        new ConsoleHighlight('invalid-argument');
     }
 
     public function testConstruct(): void
@@ -31,7 +31,7 @@ final class ConsoleWrapperTest extends TestCase
         $dump = 'string';
         $keys = array_keys(PalleteInterface::CONSOLE);
         foreach ($keys as $key) {
-            $wrapper = new ConsoleWrapper($key);
+            $wrapper = new ConsoleHighlight($key);
             $wrapped = $wrapper->wrap($dump);
             $this->assertTrue(strlen($wrapped) > strlen($dump));
         }

@@ -15,10 +15,10 @@ namespace Chevere\Components\VarDump\Wrappers;
 
 use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarDump\Interfaces\VarInfoInterface;
-use Chevere\Components\VarDump\Interfaces\WrapperInterface;
+use Chevere\Components\VarDump\Interfaces\HighlightInterface;
 use Chevere\Components\VarDump\Wrappers\Traits\AssertKeyTrait;
 
-final class HtmlWrapper implements WrapperInterface
+final class HtmlHighlight implements HighlightInterface
 {
     use AssertKeyTrait;
 
@@ -26,9 +26,14 @@ final class HtmlWrapper implements WrapperInterface
 
     public function __construct(string $key)
     {
+        $this->assertKey($key);
         $this->key = $key;
-        $this->assertKey();
-        $this->color = $this->pallete()[$this->key];
+        $this->color = $this->pallete[$this->key] ?? 'inherith';
+    }
+
+    public function wrap(string $dump): string
+    {
+        return '<span style="color:' . $this->color . '">' . $dump . '</span>';
     }
 
     public function pallete(): array
@@ -50,10 +55,5 @@ final class HtmlWrapper implements WrapperInterface
             VarInfoInterface::_VARIABLE => '#e67e22', // orange
             VarInfoInterface::_EMPHASIS => '#7f8c8d',
         ];
-    }
-
-    public function wrap(string $dump): string
-    {
-        return '<span style="color:' . $this->color . '">' . $dump . '</span>';
     }
 }

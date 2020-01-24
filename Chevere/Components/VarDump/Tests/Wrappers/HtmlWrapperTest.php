@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\VarDump\Wrappers;
 
 use Chevere\Components\VarDump\Interfaces\PalleteInterface;
-use Chevere\Components\VarDump\Wrappers\ConsoleWrapper;
-use Chevere\Components\VarDump\Wrappers\HtmlWrapper;
+use Chevere\Components\VarDump\Wrappers\ConsoleHighlight;
+use Chevere\Components\VarDump\Wrappers\HtmlHighlight;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -24,7 +24,7 @@ final class HtmlWrapperTest extends TestCase
     public function testInvalidArgumentConstruct(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new HtmlWrapper('invalid-argument');
+        new HtmlHighlight('invalid-argument');
     }
 
     public function testConstruct(): void
@@ -32,7 +32,7 @@ final class HtmlWrapperTest extends TestCase
         $dump = 'string';
         $keys = array_keys(PalleteInterface::HTML);
         foreach ($keys as $key) {
-            $wrapper = new HtmlWrapper($key);
+            $wrapper = new HtmlHighlight($key);
             $wrapped = $wrapper->wrap($dump);
             $this->assertTrue(strlen($wrapped) > strlen($dump));
         }

@@ -18,14 +18,12 @@ use InvalidArgumentException;
 
 trait AssertKeyTrait
 {
-    private string $key;
-
-    protected function assertKey(): void
+    protected function assertKey(string $key): void
     {
-        if (!array_key_exists($this->key, $this->pallete())) {
+        if (!array_key_exists($key, $this->pallete())) {
             throw new InvalidArgumentException(
-                (new Message('Invalid key %keyName%, expecting one of the following keys: %keys%'))
-                    ->code('%keyName%', $this->key)
+                (new Message('Invalid key %keyName%, expecting one of the following pallete keys: %keys%'))
+                    ->code('%keyName%', $key)
                     ->code('%keys%', implode(', ', array_keys($this->pallete())))
                     ->toString()
             );

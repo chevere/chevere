@@ -16,11 +16,11 @@ namespace Chevere\Components\VarDump\Wrappers;
 use Chevere\Components\Type\Interfaces\TypeInterface;
 use InvalidArgumentException;
 use Chevere\Components\VarDump\Interfaces\VarInfoInterface;
-use Chevere\Components\VarDump\Interfaces\WrapperInterface;
+use Chevere\Components\VarDump\Interfaces\HighlightInterface;
 use Chevere\Components\VarDump\Wrappers\Traits\AssertKeyTrait;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
-final class ConsoleWrapper implements WrapperInterface
+final class ConsoleHighlight implements HighlightInterface
 {
     use AssertKeyTrait;
 
@@ -30,11 +30,18 @@ final class ConsoleWrapper implements WrapperInterface
 
     public function __construct(string $key)
     {
+        $this->assertKey($key);
         $this->key = $key;
-        $this->assertKey();
         $this->consoleColor = new ConsoleColor();
-        $this->color = $this->pallete()[$this->key];
-        $this->assertColor();
+        $color = $this->pallete()[$this->key] ?? 'default';
+        $this->assertColor($color);
+        $this->color = $color;
+    }
+
+    public function wrap(string $dump): string
+    {
+        return $this->consoleColor
+            ->apply($this->color, $dump);
     }
 
     public function pallete(): array
@@ -58,18 +65,12 @@ final class ConsoleWrapper implements WrapperInterface
         ];
     }
 
-    public function wrap(string $dump): string
+    private function assertColor($color): void
     {
-        return $this->consoleColor
-            ->apply($this->color, $dump);
-    }
-
-    private function assertColor(): void
-    {
-        if (is_string($this->color)) {
-            $this->color = [$this->color];
+        if (is_string($color)) {
+            $color = [$color];
         }
-        if (!is_array($this->color)) {
+        if (!is_array($color)) {
             throw new InvalidArgumentException('Style must be string or array.');
         }
     }

@@ -68,7 +68,7 @@ abstract class AbstractOutputter implements OutputterInterface
         $this->output = $this->prepare($this->output);
         $this->handleClass();
         $this->output .= $this->dumper->formatter()
-            ->applyWrap('_function', $this->dumper->debugBacktrace()[DumperInterface::OFFSET]['function'] . '()');
+            ->highlight('_function', $this->dumper->debugBacktrace()[DumperInterface::OFFSET]['function'] . '()');
 
         $this->handleFile();
         $this->output .= "\n\n";
@@ -86,7 +86,7 @@ abstract class AbstractOutputter implements OutputterInterface
                 $class = explode('0x', $class)[0];
             }
             $this->output .= $this->dumper->formatter()
-                    ->applyWrap('_class', $class) . $this->dumper->debugBacktrace()[DumperInterface::OFFSET]['type'];
+                    ->highlight('_class', $class) . $this->dumper->debugBacktrace()[DumperInterface::OFFSET]['type'];
         }
     }
 
@@ -94,7 +94,7 @@ abstract class AbstractOutputter implements OutputterInterface
     {
         if (isset($this->dumper->debugBacktrace()[0]['file'])) {
             $this->output .= "\n" . $this->dumper->formatter()
-                    ->applyWrap('_file', $this->dumper->debugBacktrace()[0]['file'] . ':' . $this->dumper->debugBacktrace()[0]['line']);
+                    ->highlight('_file', $this->dumper->debugBacktrace()[0]['file'] . ':' . $this->dumper->debugBacktrace()[0]['line']);
         }
     }
 
