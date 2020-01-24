@@ -14,13 +14,22 @@ declare(strict_types=1);
 namespace Chevere\Components\Screen;
 
 use Chevere\Components\Screen\Interfaces\ScreenInterface;
-use Psr\Http\Message\StreamInterface;
 
 /**
  * A completely silent screen.
  */
 final class SilentScreen implements ScreenInterface
 {
+    public function traceability(): bool
+    {
+        return false;
+    }
+
+    public function trace(): array
+    {
+        return [];
+    }
+
     public function attach(string $display): ScreenInterface
     {
         return $this;
@@ -36,7 +45,7 @@ final class SilentScreen implements ScreenInterface
         return [];
     }
 
-    public function display(): ScreenInterface
+    public function show(): ScreenInterface
     {
         return $this;
     }

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Screen;
 
-final class DebugScreen extends AbstractScreen
+final class RuntimeScreen extends AbstractScreen
 {
     protected function wrap(string $display): string
     {
-        return '🐞 ▶' . $display . '🔚 ';
+        return $display;
     }
 }

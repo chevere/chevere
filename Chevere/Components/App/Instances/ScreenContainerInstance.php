@@ -15,20 +15,22 @@ namespace Chevere\Components\App\Instances;
 
 use LogicException;
 use Chevere\Components\Screen\Container;
+use Chevere\Components\Screen\Interfaces\ScreenContainerInterface;
+use Chevere\Components\Screen\ScreenContainer;
 
 /**
- * A container for the application Runtime.
+ * A container for the application screens.
  */
 final class ScreenContainerInstance
 {
-    private static Container $instance;
+    private static ScreenContainerInterface $instance;
 
-    public function __construct(Container $screens)
+    public function __construct(ScreenContainerInterface $screens)
     {
         self::$instance = $screens;
     }
 
-    public static function get(): Container
+    public static function get(): ScreenContainerInterface
     {
         if (!isset(self::$instance)) {
             throw new LogicException('No screen container instance present');

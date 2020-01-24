@@ -21,7 +21,10 @@ final class ScreenTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
         // xdump($this);
-        // screen()->debug()->attachNl('Fatal error at: ' . __FILE__)->display();
+        // xdd(screen()->debug()->attach('Fatal error at: ' . __FILE__));
+        screens()->debug()->attach('Fatal error at: ' . __FILE__)->show();
+        // xdd(screens()->debug()->trace());
+        // screens()->console()->attach('Fatal error at: ' . __FILE__)->show();
         // screen()->runtime()->attachNl(varInfo($this))->display();
         // screen()->runtime()->attachNl('Everything is OK! Keep going...')->display();
 

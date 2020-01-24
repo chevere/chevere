@@ -17,6 +17,10 @@ use Psr\Http\Message\StreamInterface;
 
 interface ScreenInterface
 {
+    public function traceability(): bool;
+
+    public function trace(): array;
+
     /**
      * Attach the display to the screen queue.
      */
@@ -35,7 +39,7 @@ interface ScreenInterface
     public function queue(): array;
 
     /**
-     * Display the screen queue contents.
+     * Show the screen queue contents.
      */
-    public function display(): ScreenInterface;
+    public function show(): ScreenInterface;
 }

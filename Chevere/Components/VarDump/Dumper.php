@@ -40,6 +40,6 @@ final class Dumper implements ToStringInterface
 
     public function toScreen(): void
     {
-        screen()->runtime()->attachNl($this->dumped)->display();
+        screens()->runtime()->attachNl($this->dumped)->show();
     }
 }

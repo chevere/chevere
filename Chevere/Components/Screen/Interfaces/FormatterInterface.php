@@ -11,12 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Screen;
+namespace Chevere\Components\Screen\Interfaces;
 
-final class DebugScreen extends AbstractScreen
+interface FormatterInterface
 {
-    protected function wrap(string $display): string
-    {
-        return '🐞 ▶' . $display . '🔚 ';
-    }
+    public function before(string $display): string;
+
+    public function after(string $display): string;
 }

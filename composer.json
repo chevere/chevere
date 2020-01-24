@@ -26,7 +26,7 @@
         "files": [
             "utils/phpcheck.php",
             "resources/functions/dump.php",
-            "resources/functions/screen.php",
+            "resources/functions/screens.php",
             "resources/functions/ChevereFn/string.php",
             "resources/functions/ChevereFn/var.php"
         ],

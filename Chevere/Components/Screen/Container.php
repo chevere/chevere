@@ -18,23 +18,40 @@ use Chevere\Components\Screen\Interfaces\ScreenInterface;
 
 final class Container implements ContainerInterface
 {
-    private ScreenInterface $runtime;
+    private array $screens = [];
 
-    private ScreenInterface $debug;
-
-    public function __construct(ScreenInterface $runtime, ScreenInterface $debug)
+    public function __construct(ScreenInterface $runtime)
     {
-        $this->runtime = $runtime;
-        $this->debug = $debug;
+        $this->screens = [
+            static::RUNTIME => $runtime,
+            static::DEBUG => new SilentScreen,
+            static::CONSOLE => new SilentScreen,
+        ];
     }
 
-    public function runtime(): ScreenInterface
+    public function withAddedScreen(string $name, ScreenInterface $screen): ContainerInterface
     {
-        return $this->runtime;
+        $new = clone $this;
+        $new->screens[$name] = $screen;
+
+        return $new;
     }
 
-    public function debug(): ScreenInterface
+    public function has(string $name): bool
     {
-        return $this->debug;
+        return isset($this->screens[$name]);
+    }
+
+    public function get(string $name): ScreenInterface
+    {
+        return $this->screens[$name];
+    }
+
+    /**
+     * @return array ScreenInterface[]
+     */
+    public function getAll(): array
+    {
+        return $this->screens;
     }
 }

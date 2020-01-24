@@ -15,9 +15,17 @@ namespace Chevere\Components\Screen\Interfaces;
 
 interface ContainerInterface
 {
-    public function __construct(ScreenInterface $runtime, ScreenInterface $debug);
+    const RUNTIME = 'runtime';
+    const DEBUG = 'debug';
+    const CONSOLE = 'console';
 
-    public function runtime(): ScreenInterface;
+    public function __construct(ScreenInterface $runtime);
 
-    public function debug(): ScreenInterface;
+    public function withAddedScreen(string $name, ScreenInterface $screen): ContainerInterface;
+
+    public function has(string $name): bool;
+
+    public function get(string $name): ScreenInterface;
+
+    public function getAll(): array;
 }

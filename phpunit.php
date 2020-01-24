@@ -16,9 +16,15 @@ namespace Chevere;
 use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\App\Instances\ScreenContainerInstance;
 use Chevere\Components\Bootstrap\Bootstrap;
+use Chevere\Components\Screen\ConsoleScreen;
 use Chevere\Components\Screen\Container;
+use Chevere\Components\Screen\DebugScreen;
+use Chevere\Components\Screen\Interfaces\ContainerInterface;
+use Chevere\Components\Screen\RuntimeScreen;
 use Chevere\Components\Screen\Screen;
+use Chevere\Components\Screen\ScreenContainer;
 use Chevere\Components\Screen\SilentScreen;
+use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 require 'vendor/autoload.php';
 
@@ -30,8 +36,21 @@ new BootstrapInstance(
 );
 
 new ScreenContainerInstance(
-    new Container(
-        new Screen,
-        new SilentScreen
+    new ScreenContainer(
+        (new Container(new RuntimeScreen(true)))
+            ->withAddedScreen(
+                ContainerInterface::DEBUG,
+                new DebugScreen(true),
+            )
+            ->withAddedScreen(
+                ContainerInterface::CONSOLE,
+                new ConsoleScreen(true),
+            )
     )
 );
+
+register_shutdown_function(function () {
+    foreach (ScreenContainerInstance::get()->getAll() as $screen) {
+        xdump($screen->trace());
+    }
+});

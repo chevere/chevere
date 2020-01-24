@@ -13,10 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Screen;
 
-final class DebugScreen extends AbstractScreen
+use JakubOnderka\PhpConsoleColor\ConsoleColor;
+
+final class ConsoleScreen extends AbstractScreen
 {
     protected function wrap(string $display): string
     {
-        return '🐞 ▶' . $display . '🔚 ';
+        $char = (new ConsoleColor)->apply('reverse', '%');
+
+        return $char . $display . $char;
     }
 }

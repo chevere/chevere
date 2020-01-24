@@ -11,12 +11,8 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Screen;
+namespace Chevere\Components\Sc\Traits;
 
-final class DebugScreen extends AbstractScreen
+trait ScreenTrait
 {
-    protected function wrap(string $display): string
-    {
-        return '🐞 ▶' . $display . '🔚 ';
-    }
 }
