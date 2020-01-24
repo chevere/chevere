@@ -36,9 +36,9 @@ final class DumperTest extends TestCase
     private function getDumpers(): array
     {
         return [
-            // 'PlainDumper' => new PlainDumper(),
+            'PlainDumper' => new PlainDumper(),
             'ConsoleDumper' => new ConsoleDumper(),
-            // 'HtmlDumper' => new HtmlDumper(),
+            'HtmlDumper' => new HtmlDumper(),
         ];
     }
 

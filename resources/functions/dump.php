@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-use Chevere\Components\VarDump\Dumper;
+use Chevere\Components\VarDump\VarDump;
 
 if (!function_exists('varInfo')) {
     /**
@@ -20,7 +20,7 @@ if (!function_exists('varInfo')) {
     function varInfo(...$vars)
     {
         return
-            (new Dumper(...$vars))
+            (new VarDump(...$vars))
                 ->tostring();
     }
 }
@@ -31,7 +31,7 @@ if (!function_exists('xdump')) {
      */
     function xdump(...$vars)
     {
-        (new Dumper(...$vars))
+        (new VarDump(...$vars))
             ->toScreen(
                 screens()->runtime()
             );
@@ -44,7 +44,7 @@ if (!function_exists('xdd')) {
      */
     function xdd(...$vars)
     {
-        (new Dumper(...$vars))
+        (new VarDump(...$vars))
             ->toScreen(
                 screens()->runtime()
             );

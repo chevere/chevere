@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Tests;
 
 use Chevere\Components\Type\Interfaces\TypeInterface;
-use Chevere\Components\VarDump\Dumpeable;
+use Chevere\Components\VarDump\VarDumpeable;
 use Chevere\Components\VarDump\Processors\ArrayProcessor;
 use Chevere\Components\VarDump\Processors\BooleanProcessor;
 use Chevere\Components\VarDump\Processors\FloatProcessor;
@@ -59,7 +59,7 @@ final class DumpeableTest extends TestCase
             ],
         ];
         foreach ($variables as $type => $var) {
-            $variableDump = new Dumpeable($var[0]);
+            $variableDump = new VarDumpeable($var[0]);
             $this->assertSame($var[0], $variableDump->var());
             $this->assertSame($type, $variableDump->type());
             $this->assertSame($var[1], $variableDump->processorName());

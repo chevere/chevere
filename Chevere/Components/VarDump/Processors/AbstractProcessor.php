@@ -17,14 +17,14 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\Type\Type;
 use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
-use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
+use Chevere\Components\VarDump\Interfaces\VarInfoInterface;
 use InvalidArgumentException;
 use TypeError;
 use function ChevereFn\varType;
 
 abstract class AbstractProcessor implements ProcessorInterface
 {
-    protected VarDumpInterface $varDump;
+    protected VarInfoInterface $varDump;
 
     /** @var string */
     protected string $info = '';
@@ -32,7 +32,7 @@ abstract class AbstractProcessor implements ProcessorInterface
     /** @var string */
     protected string $val = '';
 
-    final public function __construct(VarDumpInterface $varDump)
+    final public function __construct(VarInfoInterface $varDump)
     {
         $this->varDump = $varDump;
         $this->assertType();

@@ -15,7 +15,7 @@ namespace Chevere\Components\VarDump\Formatters;
 
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 use Chevere\Components\VarDump\Interfaces\TemplateInterface;
-use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
+use Chevere\Components\VarDump\Interfaces\VarInfoInterface;
 use Chevere\Components\VarDump\Wrappers\HtmlWrapper;
 
 /**
@@ -32,7 +32,7 @@ final class HtmlFormatter implements FormatterInterface
     {
         return sprintf(
             TemplateInterface::HTML_EMPHASIS,
-            (new HtmlWrapper(VarDumpInterface::_EMPHASIS))
+            (new HtmlWrapper(VarInfoInterface::_EMPHASIS))
                 ->wrap($string)
         );
     }

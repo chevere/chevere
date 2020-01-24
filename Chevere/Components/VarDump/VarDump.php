@@ -13,193 +13,48 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump;
 
-use Chevere\Components\Type\Interfaces\TypeInterface;
-use Chevere\Components\VarDump\Interfaces\DumpeableInterface;
-use Chevere\Components\VarDump\Interfaces\FormatterInterface;
-use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
-use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
+use Chevere\Components\App\Instances\BootstrapInstance;
+use Chevere\Components\Common\Interfaces\ToStringInterface;
+use Chevere\Components\VarDump\Formatters\ConsoleFormatter;
+use Chevere\Components\VarDump\Formatters\HtmlFormatter;
+use Chevere\Components\Screen\Interfaces\ScreenInterface;
+use Chevere\Components\VarDump\Outputters\ConsoleOutputter;
+use Chevere\Components\VarDump\Outputters\HtmlOutputter;
 
 /**
  * The Chevere VarDump.
- *
- * Analyze a variable and provide a formated string representation of its type and data.
+ * A context-aware VarDumper.
  */
-final class VarDump implements VarDumpInterface
+final class VarDump implements ToStringInterface
 {
-    private DumpeableInterface $dumpeable;
+    private string $dump;
 
-    private FormatterInterface $formatter;
-
-    private ProcessorInterface $processor;
-
-    /** @var array [className,] */
-    private array $dontDump = [];
-
-    private string $output = '';
-
-    private int $indent = 0;
-
-    private string $indentString = '';
-
-    private int $depth = 0;
-
-    private string $val = '';
-
-    private string $info;
-
-    /**
-     * Creates a new instance.
-     *
-     * @param FormatterInterface $formatter A VarDump formatter
-     */
-    public function __construct(DumpeableInterface $dumpeable, FormatterInterface $formatter)
+    public function __construct(...$vars)
     {
-        $this->dumpeable = $dumpeable;
-        $this->formatter = $formatter;
-        ++$this->depth;
+        if (BootstrapInstance::get()->isCli()) {
+            $args = [
+                new ConsoleFormatter,
+                new ConsoleOutputter
+            ];
+        } else {
+            $args = [
+                new HtmlFormatter,
+                new HtmlOutputter
+            ];
+        }
+        $dumper = new VarDumper(...$args);
+        $this->dump = $dumper
+            ->withVars(...$vars)
+            ->toString();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function dumpeable(): DumpeableInterface
-    {
-        return $this->dumpeable;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function formatter(): FormatterInterface
-    {
-        return $this->formatter;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withDontDump(string ...$dontDump): VarDumpInterface
-    {
-        $new = clone $this;
-        $new->dontDump = $dontDump;
-
-        return $new;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function dontDump(): array
-    {
-        return $this->dontDump;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withIndent(int $indent): VarDumpInterface
-    {
-        $new = clone $this;
-        $new->indent = $indent;
-        $new->indentString = $new->formatter
-            ->getIndent($indent);
-
-        return $new;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function indent(): int
-    {
-        return $this->indent;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withDepth(int $depth): VarDumpInterface
-    {
-        $new = clone $this;
-        $new->depth = $depth;
-
-        return $new;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function depth(): int
-    {
-        return $this->depth;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function withProcess(): VarDumpInterface
-    {
-        $new = clone $this;
-
-        $new->setProcessor();
-        $new->val .= $new->processor->val();
-        $new->setInfo();
-        $new->setOutput();
-
-        return $new;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function indentString(): string
-    {
-        return $this->indentString;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function toString(): string
     {
-        return $this->output;
+        return $this->dump;
     }
 
-    private function setProcessor(): void
+    public function toScreen(ScreenInterface $screen): void
     {
-        if (in_array($this->dumpeable()->type(), [TypeInterface::ARRAY, TypeInterface::OBJECT])) {
-            ++$this->indent;
-        }
-        $processorName = $this->dumpeable()->processorName();
-        $this->processor = new $processorName($this);
-    }
-
-    private function setInfo(): void
-    {
-        $this->info = $this->processor->info();
-        if ('' !== $this->info) {
-            if (strpos($this->info, '=')) {
-                $this->info = $this->formatter->applyEmphasis("($this->info)");
-            } else {
-                $this->info = $this->formatter->applyWrap(VarDumpInterface::_CLASS, $this->info);
-            }
-        }
-    }
-
-    private function setOutput(): void
-    {
-        $message = $this->dumpeable()->template();
-        foreach (['info', 'val'] as $property) {
-            if ('' == $this->$property) {
-                $message = str_replace('%' . $property . '%', null, $message);
-                $message = preg_replace('!\s+!', ' ', $message);
-                $message = trim($message);
-            }
-        }
-        $this->output = strtr($message, [
-            '%type%' => $this->formatter->applyWrap($this->dumpeable()->type(), $this->dumpeable()->type()),
-            '%val%' => $this->val,
-            '%info%' => $this->info,
-        ]);
+        $screen->attachNl($this->dump)->emit();
     }
 }

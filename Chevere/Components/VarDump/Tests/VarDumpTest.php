@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Tests;
 
-use Chevere\Components\VarDump\Dumpeable;
+use Chevere\Components\VarDump\VarDumpeable;
 use stdClass;
-use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
+use Chevere\Components\VarDump\Interfaces\VarInfoInterface;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
-use Chevere\Components\VarDump\VarDump;
+use Chevere\Components\VarDump\VarFormat;
 use PHPUnit\Framework\TestCase;
 
 final class VarDumpTest extends TestCase
 {
-    public function getVarDump($var): VarDumpInterface
+    public function getVarDump($var): VarInfoInterface
     {
         return
-            new VarDump(
-                new Dumpeable($var),
+            new VarFormat(
+                new VarDumpeable($var),
                 new PlainFormatter()
             );
     }
@@ -34,7 +34,7 @@ final class VarDumpTest extends TestCase
     public function testConstructNull(): void
     {
         $formatter = new PlainFormatter();
-        $varDump = new VarDump(new Dumpeable(null), $formatter);
+        $varDump = new VarFormat(new VarDumpeable(null), $formatter);
         $this->assertSame($formatter, $varDump->formatter());
         $this->assertSame([], $varDump->dontDump());
         $this->assertSame(0, $varDump->indent());

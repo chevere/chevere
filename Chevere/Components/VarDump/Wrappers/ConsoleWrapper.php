@@ -15,7 +15,7 @@ namespace Chevere\Components\VarDump\Wrappers;
 
 use Chevere\Components\Type\Interfaces\TypeInterface;
 use InvalidArgumentException;
-use Chevere\Components\VarDump\Interfaces\VarDumpInterface;
+use Chevere\Components\VarDump\Interfaces\VarInfoInterface;
 use Chevere\Components\VarDump\Interfaces\WrapperInterface;
 use Chevere\Components\VarDump\Wrappers\Traits\AssertKeyTrait;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
@@ -48,13 +48,13 @@ final class ConsoleWrapper implements WrapperInterface
             TypeInterface::OBJECT => 'color_39',
             TypeInterface::ARRAY => 'color_41', // green
             TypeInterface::RESOURCE => 'color_147', // blue
-            VarDumpInterface::_FILE => 'default',
-            VarDumpInterface::_CLASS => 'color_147', // blue
-            VarDumpInterface::_OPERATOR => 'color_245', // grey
-            VarDumpInterface::_FUNCTION => 'color_39',
-            VarDumpInterface::_PRIVACY => 'color_133',
-            VarDumpInterface::_VARIABLE => 'color_208',
-            VarDumpInterface::_EMPHASIS => ['color_245', 'italic']
+            VarInfoInterface::_FILE => 'default',
+            VarInfoInterface::_CLASS => 'color_147', // blue
+            VarInfoInterface::_OPERATOR => 'color_245', // grey
+            VarInfoInterface::_FUNCTION => 'color_39',
+            VarInfoInterface::_PRIVACY => 'color_133',
+            VarInfoInterface::_VARIABLE => 'color_208',
+            VarInfoInterface::_EMPHASIS => ['color_245', 'italic']
         ];
     }
 

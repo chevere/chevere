@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputters;
 
-use Chevere\Components\VarDump\Dumpeable;
+use Chevere\Components\VarDump\VarDumpeable;
 use Chevere\Components\VarDump\Interfaces\DumperInterface;
 use Chevere\Components\VarDump\Interfaces\OutputterInterface;
-use Chevere\Components\VarDump\VarDump;
+use Chevere\Components\VarDump\VarFormat;
 use function ChevereFn\stringStartsWith;
 
 abstract class AbstractOutputter implements OutputterInterface
@@ -109,7 +109,7 @@ abstract class AbstractOutputter implements OutputterInterface
 
     final private function appendArg(int $pos, $value): void
     {
-        $varDump = (new VarDump(new Dumpeable($value), $this->dumper->formatter()))
+        $varDump = (new VarFormat(new VarDumpeable($value), $this->dumper->formatter()))
             ->withProcess();
         $this->output .= 'Arg#' . $pos . ' ' . $varDump->toString() . "\n\n";
     }

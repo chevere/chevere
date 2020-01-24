@@ -11,19 +11,20 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Dumpers;
+namespace Chevere\Components\VarDump;
 
 use BadMethodCallException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\VarDump\Interfaces\DumperInterface;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 use Chevere\Components\VarDump\Interfaces\OutputterInterface;
-use Chevere\Components\VarDump\Dumper;
+use Chevere\Components\VarDump\VarDump;
 
 /**
- * Dumps information about one or more variables. CLI/HTML aware.
+ * The Chevere VarDumper.
+ * Provides the actual functionality to VarDump.
  */
-abstract class AbstractDumper implements DumperInterface
+class VarDumper implements DumperInterface
 {
     protected FormatterInterface $formatter;
 
@@ -36,37 +37,27 @@ abstract class AbstractDumper implements DumperInterface
     /**
      * Creates a new instance.
      */
-    final public function __construct()
+    final public function __construct(FormatterInterface $formatter, OutputterInterface $outputter)
     {
-        $this->formatter = $this->formatter();
-        $this->outputter = $this->outputter();
+        $this->formatter = $formatter;
+        $this->outputter = $outputter;
     }
 
     /**
      * {@inheritdoc}
      */
-    abstract public function formatter(): FormatterInterface;
+    public function formatter(): FormatterInterface
+    {
+        return $this->formatter;
+    }
 
     /**
      * {@inheritdoc}
      */
-    abstract public function outputter(): OutputterInterface;
-
-    /**
-     * {@inheritdoc}
-     */
-    // public function formatter(): FormatterInterface
-    // {
-    //     return $this->formatter;
-    // }
-
-    /**
-     * {@inheritdoc}
-     */
-    // public function outputter(): OutputterInterface
-    // {
-    //     return $this->outputter;
-    // }
+    public function outputter(): OutputterInterface
+    {
+        return $this->outputter;
+    }
 
     /**
      * {@inheritdoc}
@@ -124,7 +115,7 @@ abstract class AbstractDumper implements DumperInterface
         array_shift($this->debugBacktrace);
         if (
             isset($this->debugBacktrace[1]['class'])
-            && Dumper::class == $this->debugBacktrace[1]['class']
+            && VarDump::class == $this->debugBacktrace[1]['class']
         ) {
             array_shift($this->debugBacktrace);
             array_shift($this->debugBacktrace);
