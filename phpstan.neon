@@ -1,0 +1,8 @@
+parameters:
+    ignoreErrors:
+        - '#Constant MIN_PHP_VERSION not found#'
+        - '#Call to method .* on an unknown class Chevereto\\Core\\Utils\\Message#'
+        - '#Constant Chevereto\\Core\\App\\.* not found#'
+        - '#Parameter * of class ReflectionFunction constructor expects Closure|string, callable given#'
+        - '#Access to an undefined property DateInterval::\$w#'
+    
