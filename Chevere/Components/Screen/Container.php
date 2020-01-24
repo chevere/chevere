@@ -29,6 +29,20 @@ final class Container implements ContainerInterface
         ];
     }
 
+    public function withDebugScreen(ScreenInterface $screen)
+    {
+        $new = clone $this;
+
+        return $new->withAddedScreen(static::DEBUG, $screen);
+    }
+
+    public function withConsoleScreen(ScreenInterface $screen)
+    {
+        $new = clone $this;
+
+        return $new->withAddedScreen(static::CONSOLE, $screen);
+    }
+
     public function withAddedScreen(string $name, ScreenInterface $screen): ContainerInterface
     {
         $new = clone $this;

@@ -13,22 +13,26 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Screen;
 
+use Chevere\Components\Screen\Interfaces\FormatterInterface;
 use Chevere\Components\Screen\Interfaces\ScreenInterface;
 use Psr\Http\Message\StreamInterface;
 use function GuzzleHttp\Psr7\stream_for;
 
-abstract class AbstractScreen implements ScreenInterface
+final class Screen implements ScreenInterface
 {
     private bool $traceability;
+
+    private FormatterInterface $formatter;
 
     private array $trace = [];
 
     /** @var StreamInterface[] */
     private array $queue = [];
 
-    public function __construct(bool $traceability)
+    public function __construct(bool $traceability, FormatterInterface $formatter)
     {
         $this->traceability = $traceability;
+        $this->formatter = $formatter;
     }
 
     public function traceability(): bool
@@ -36,32 +40,37 @@ abstract class AbstractScreen implements ScreenInterface
         return $this->traceability;
     }
 
+    public function formatter(): FormatterInterface
+    {
+        return $this->formatter;
+    }
+
     public function trace(): array
     {
         return $this->trace;
     }
 
-    final public function attach(string $display): ScreenInterface
+    public function attach(string $display): ScreenInterface
     {
         $this->handleTrace();
-        $this->queue[] = stream_for($this->wrap($display));
+        $this->queue[] = stream_for($this->formatter->wrap($display));
 
         return $this;
     }
 
-    final public function attachNl(string $display): ScreenInterface
+    public function attachNl(string $display): ScreenInterface
     {
         $this->handleTrace();
 
         return $this->attach($display . "\n");
     }
 
-    final public function queue(): array
+    public function queue(): array
     {
         return $this->queue;
     }
 
-    final public function show(): ScreenInterface
+    public function show(): ScreenInterface
     {
         $this->handleTrace();
         // TODO YIELD HERE
@@ -93,6 +102,4 @@ abstract class AbstractScreen implements ScreenInterface
             'arguments' => $caller['args'],
         ];
     }
-
-    abstract protected function wrap(string $display): string;
 }

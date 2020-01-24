@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Screen;
 
+use Chevere\Components\Screen\Formatters\SilentFormatter;
+use Chevere\Components\Screen\Interfaces\FormatterInterface;
 use Chevere\Components\Screen\Interfaces\ScreenInterface;
 
 /**
@@ -20,9 +22,19 @@ use Chevere\Components\Screen\Interfaces\ScreenInterface;
  */
 final class SilentScreen implements ScreenInterface
 {
+    public function __construct()
+    {
+        $this->formatter = new SilentFormatter;
+    }
+
     public function traceability(): bool
     {
         return false;
+    }
+
+    public function formatter(): FormatterInterface
+    {
+        return $this->formatter;
     }
 
     public function trace(): array

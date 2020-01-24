@@ -16,15 +16,14 @@ namespace Chevere;
 use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\App\Instances\ScreenContainerInstance;
 use Chevere\Components\Bootstrap\Bootstrap;
-use Chevere\Components\Screen\ConsoleScreen;
 use Chevere\Components\Screen\Container;
-use Chevere\Components\Screen\DebugScreen;
+use Chevere\Components\Screen\Formatters\ConsoleFormatter;
+use Chevere\Components\Screen\Formatters\DebugFormatter;
+use Chevere\Components\Screen\Formatters\RuntimeFormatter;
 use Chevere\Components\Screen\Interfaces\ContainerInterface;
 use Chevere\Components\Screen\RuntimeScreen;
 use Chevere\Components\Screen\Screen;
 use Chevere\Components\Screen\ScreenContainer;
-use Chevere\Components\Screen\SilentScreen;
-use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 require 'vendor/autoload.php';
 
@@ -37,20 +36,24 @@ new BootstrapInstance(
 
 new ScreenContainerInstance(
     new ScreenContainer(
-        (new Container(new RuntimeScreen(true)))
-            ->withAddedScreen(
-                ContainerInterface::DEBUG,
-                new DebugScreen(true),
+        (new Container(
+            new Screen(false, new RuntimeFormatter)
+        ))
+            ->withDebugScreen(
+                new Screen(false, new DebugFormatter)
+            )
+            ->withConsoleScreen(
+                new Screen(false, new DebugFormatter)
             )
             ->withAddedScreen(
-                ContainerInterface::CONSOLE,
-                new ConsoleScreen(true),
+                'rodo',
+                new Screen(false, new RuntimeFormatter)
             )
     )
 );
 
-register_shutdown_function(function () {
-    foreach (ScreenContainerInstance::get()->getAll() as $screen) {
-        xdump($screen->trace());
-    }
-});
+// register_shutdown_function(function () {
+//     foreach (ScreenContainerInstance::get()->getAll() as $screen) {
+//         xdump($screen->trace());
+//     }
+// });

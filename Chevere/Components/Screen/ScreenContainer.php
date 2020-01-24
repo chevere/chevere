@@ -44,6 +44,11 @@ final class ScreenContainer implements ScreenContainerInterface
         return $this->container->get($this->container::CONSOLE);
     }
 
+    public function get(string $name): ScreenInterface
+    {
+        return $this->container->get($name);
+    }
+
     public function getAll(): array
     {
         return $this->container->getAll();

@@ -21,6 +21,10 @@ interface ContainerInterface
 
     public function __construct(ScreenInterface $runtime);
 
+    public function withDebugScreen(ScreenInterface $screen);
+
+    public function withConsoleScreen(ScreenInterface $screen);
+
     public function withAddedScreen(string $name, ScreenInterface $screen): ContainerInterface;
 
     public function has(string $name): bool;

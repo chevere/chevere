@@ -19,6 +19,8 @@ interface ScreenInterface
 {
     public function traceability(): bool;
 
+    public function formatter(): FormatterInterface;
+
     public function trace(): array;
 
     /**

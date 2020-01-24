@@ -11,9 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Screen\Interfaces;
+namespace Chevere\Components\Screen\Formatters;
 
-interface FormatterInterface
+use Chevere\Components\Screen\Interfaces\FormatterInterface;
+
+final class SilentFormatter implements FormatterInterface
 {
-    public function wrap(string $display): string;
+    public function wrap(string $display): string
+    {
+        return '';
+    }
 }
