@@ -1,33 +1,42 @@
 {
-  "name": "chevereto/app",
-  "description": "Chevereto app",
-  "type": "library",
-  "license": "MIT",
-  "authors": [{
-    "name": "Rodolfo Berrios",
-    "email": "inbox@rodolfoberrios.com"
-  }],
-  "repositories": [{
-    "type": "path",
-    "url": "./Chevereto-Chevere",
-    "options": {
-      "symlink": true
+    "name": "chevereto/chevere",
+    "description": "Chevere Framework",
+    "homepage": "https://chevere.dev",
+    "type": "library",
+    "license": "MIT",
+    "authors": [{
+        "name": "Rodolfo Berrios",
+        "email": "inbox@rodolfoberrios.com",
+        "homepage": "http://rodolfoberrios.com"
+    }],
+    "require": {
+        "php": ">=7.4",
+        "ext-zend-opcache": "*",
+        "psr/simple-cache": "~1.0",
+        "monolog/monolog": "~2.0",
+        "guzzlehttp/psr7": "~1.6",
+        "symfony/console": "~5.0",
+        "json-api-php/json-api": "~2.1",
+        "jakub-onderka/php-console-color": "~0.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8"
+    },
+    "autoload": {
+        "files": [
+            "utils/phpcheck.php",
+            "resources/functions/dump.php",
+            "resources/functions/screen.php",
+            "resources/functions/ChevereFn/string.php",
+            "resources/functions/ChevereFn/var.php"
+        ],
+        "psr-4": {
+            "Chevere\\Components\\": "Chevere/Components/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Chevere\\TestApp\\App\\": "Chevere/TestApp/app/src/"
+        }
     }
-  }],
-  "autoload": {
-    "psr-4": {
-      "App\\": "app/src/",
-      "Plugins\\Local\\": "app/plugins/local/",
-      "Plugins\\Vendor\\": "app/plugins/vendor/"
-    }
-  },
-  "require": {
-    "chevereto/chevere": "@dev"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^8"
-  },
-  "config": {
-    "optimize-autoloader": true
-  }
 }

@@ -20,7 +20,7 @@ use Chevere\Components\Screen\Container;
 use Chevere\Components\Screen\Screen;
 use Chevere\Components\Screen\SilentScreen;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require 'vendor/autoload.php';
 
 new BootstrapInstance(
     (new Bootstrap(__DIR__ . '/Chevere/TestApp/'))

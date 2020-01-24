@@ -17,7 +17,7 @@ use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Bootstrap\Bootstrap;
 use Chevere\Components\Console\Console;
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require 'vendor/autoload.php';
 
 $documentRoot = rtrim(dirname(__DIR__, 'Chevereto-Chevere' == basename(__DIR__) ? 1 : 3), '/') . '/';
 $isCli = 'cli' == php_sapi_name();

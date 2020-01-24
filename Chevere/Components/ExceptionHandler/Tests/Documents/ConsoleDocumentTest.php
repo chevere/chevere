@@ -35,6 +35,6 @@ final class ConsoleDocumentTest extends TestCase
             ->withVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE)
             ->toString();
 
-        echo $document . "\n";
+        // echo $document . "\n";
     }
 }
