@@ -4,3 +4,4 @@ composer.lock
 .phpunit.result.cache
 build
 Chevere/TestApp/app/
+clover.xml

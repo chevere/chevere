@@ -1,0 +1,21 @@
+build:
+  environment:
+    php:
+      version: 7.4
+  # dependencies:
+  #     before:
+  #         - composer require phpunit/phpunit:^8 --dev
+  nodes:
+    analysis:
+      tests:
+        override:
+          - php-scrutinizer-run
+    coverage:
+      tests:
+        override:
+          - command: vendor/bin/phpunit --coverage-clover=clover.xml
+            coverage:
+              file: clover.xml
+              format: clover
+checks:
+  php: true
