@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="./phpunit.php"
+    <phpunit bootstrap="./phpunit.php"
          backupGlobals="false"
          backupStaticAttributes="false"
          colors="true"
@@ -10,14 +10,17 @@
          processIsolation="false"
          stopOnFailure="false"
          stopOnError="false">
-  <testsuites>
+    <testsuites>
         <testsuite name="Chevere Framework Test suite">
             <directory suffix="Test.php">./Chevere/Components/*/Tests/</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
-            <directory>./Chevere/Components/</directory>
+            <directory suffix=".php">./Chevere/Components/</directory>
+            <exclude>
+                <directory>./Chevere/Components/*/Tests/</directory>
+            </exclude>
         </whitelist>
     </filter>
 </phpunit>
