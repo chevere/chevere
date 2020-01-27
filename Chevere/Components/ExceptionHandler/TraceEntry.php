@@ -18,6 +18,7 @@ use ReflectionMethod;
 use Chevere\Components\ExceptionHandler\Interfaces\TraceEntryInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\VarDump\Interfaces\VarInfoInterface;
+use TypeError;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 
@@ -142,11 +143,14 @@ final class TraceEntry implements TraceEntryInterface
 
     private function processEntry(): void
     {
-        foreach (static::KEYS as $propName) {
-            $this->$propName = $this->entry[$propName] ?? '';
-        }
         $this->line = $this->entry['line'] ?? 0;
         $this->args = $this->entry['args'] ?? [];
+        foreach (static::KEYS as $propName) {
+            if (in_array($propName, ['line', 'args'])) {
+                continue;
+            }
+            $this->$propName = $this->entry[$propName] ?? '';
+        }
     }
 
     private function processMissingClassFile()

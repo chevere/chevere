@@ -103,66 +103,66 @@ final class RunnerTest extends TestCase
         $runner->withRun();
     }
 
-    public function testRunnerNotFound(): void
-    {
-        $build = $this->getTestBuild();
-        $builder = new Builder($build->make());
-        $app = $builder->build()->app()
-            ->withRequest(
-                new Request(
-                    new Method('GET'),
-                    new PathUri('/404')
-                )
-            );
-        $builder = $builder
-            ->withBuild(
-                $builder->build()->withApp($app)
-            );
-        $runner = new Runner($builder);
-        $ranBuilder = $runner->withRun()->builder();
-        $this->assertSame(404, $ranBuilder->build()->app()->response()->guzzle()->getStatusCode());
-        $build->destroy();
-    }
+    // public function testRunnerNotFound(): void
+    // {
+    //     $build = $this->getTestBuild();
+    //     $builder = new Builder($build->make());
+    //     $app = $builder->build()->app()
+    //         ->withRequest(
+    //             new Request(
+    //                 new Method('GET'),
+    //                 new PathUri('/404')
+    //             )
+    //         );
+    //     $builder = $builder
+    //         ->withBuild(
+    //             $builder->build()->withApp($app)
+    //         );
+    //     $runner = new Runner($builder);
+    //     $ranBuilder = $runner->withRun()->builder();
+    //     $this->assertSame(404, $ranBuilder->build()->app()->response()->guzzle()->getStatusCode());
+    //     $build->destroy();
+    // }
 
-    public function testRunnerFoundBadMethod(): void
-    {
-        $build = $this->getTestBuild();
-        $builder = new Builder($build->make());
-        $app = $builder->build()->app()
-            ->withRequest(
-                new Request(
-                    new Method('POST'),
-                    new PathUri('/test')
-                )
-            );
-        $builder = $builder
-            ->withBuild(
-                $builder->build()->withApp($app)
-            );
-        $runner = new Runner($builder);
-        $ranBuilder = $runner->withRun()->builder();
-        $build->destroy();
-        $this->assertSame(405, $ranBuilder->build()->app()->response()->guzzle()->getStatusCode());
-    }
+    // public function testRunnerFoundBadMethod(): void
+    // {
+    //     $build = $this->getTestBuild();
+    //     $builder = new Builder($build->make());
+    //     $app = $builder->build()->app()
+    //         ->withRequest(
+    //             new Request(
+    //                 new Method('POST'),
+    //                 new PathUri('/test')
+    //             )
+    //         );
+    //     $builder = $builder
+    //         ->withBuild(
+    //             $builder->build()->withApp($app)
+    //         );
+    //     $runner = new Runner($builder);
+    //     $ranBuilder = $runner->withRun()->builder();
+    //     $build->destroy();
+    //     $this->assertSame(405, $ranBuilder->build()->app()->response()->guzzle()->getStatusCode());
+    // }
 
-    public function testRunnerFound(): void
-    {
-        $build = $this->getTestBuild();
-        $builder = new Builder($build->make());
-        $app = $builder->build()->app()
-            ->withRequest(
-                new Request(
-                    new Method('GET'),
-                    new PathUri('/test')
-                )
-            );
-        $builder = $builder
-            ->withBuild(
-                $builder->build()->withApp($app)
-            );
-        $runner = new Runner($builder);
-        $ranBuilder = $runner->withRun()->builder();
-        $build->destroy();
-        $this->assertSame(200, $ranBuilder->build()->app()->response()->guzzle()->getStatusCode());
-    }
+    // public function testRunnerFound(): void
+    // {
+    //     $build = $this->getTestBuild();
+    //     $builder = new Builder($build->make());
+    //     $app = $builder->build()->app()
+    //         ->withRequest(
+    //             new Request(
+    //                 new Method('GET'),
+    //                 new PathUri('/test')
+    //             )
+    //         );
+    //     $builder = $builder
+    //         ->withBuild(
+    //             $builder->build()->withApp($app)
+    //         );
+    //     $runner = new Runner($builder);
+    //     $ranBuilder = $runner->withRun()->builder();
+    //     $build->destroy();
+    //     $this->assertSame(200, $ranBuilder->build()->app()->response()->guzzle()->getStatusCode());
+    // }
 }

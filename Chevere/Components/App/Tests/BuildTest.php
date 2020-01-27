@@ -94,21 +94,21 @@ final class BuildTest extends TestCase
         $build->make();
     }
 
-    public function testMakeAndDestroy(): void
-    {
-        $build = $this->getBuild();
-        $parameters = $this->getParameters();
-        $routerMaker = new RouterMaker();
-        $build = $build
-            ->withParameters($parameters)
-            ->withRouterMaker($routerMaker)
-            ->make();
+    // public function testMakeAndDestroy(): void
+    // {
+    //     $build = $this->getBuild();
+    //     $parameters = $this->getParameters();
+    //     $routerMaker = new RouterMaker();
+    //     $build = $build
+    //         ->withParameters($parameters)
+    //         ->withRouterMaker($routerMaker)
+    //         ->make();
 
-        $this->assertEquals(true, $build->isMaked());
-        $this->assertIsArray($build->checksums());
-        $this->assertInstanceOf(CheckoutInterface::class, $build->checkout());
-        $build->destroy();
-    }
+    //     $this->assertEquals(true, $build->isMaked());
+    //     $this->assertIsArray($build->checksums());
+    //     $this->assertInstanceOf(CheckoutInterface::class, $build->checkout());
+    //     $build->destroy();
+    // }
 
     public function testInvalidDestroyMethodCall(): void
     {

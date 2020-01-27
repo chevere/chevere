@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\Wrappers;
 
+use Chevere\Components\VarDump\Interfaces\HighlightInterface;
 use Chevere\Components\VarDump\Interfaces\PalleteInterface;
 use Chevere\Components\VarDump\Wrappers\ConsoleHighlight;
 use InvalidArgumentException;
@@ -29,8 +30,7 @@ final class ConsoleWrapperTest extends TestCase
     public function testConstruct(): void
     {
         $dump = 'string';
-        $keys = array_keys(PalleteInterface::CONSOLE);
-        foreach ($keys as $key) {
+        foreach (HighlightInterface::KEYS as $key) {
             $wrapper = new ConsoleHighlight($key);
             $wrapped = $wrapper->wrap($dump);
             $this->assertTrue(strlen($wrapped) > strlen($dump));
