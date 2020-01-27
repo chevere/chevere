@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Router\Exception\RouteNotFoundException;
+use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Route\Interfaces\RouteInterface;

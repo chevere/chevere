@@ -15,7 +15,7 @@ namespace Chevere\Components\Router\Interfaces;
 
 use TypeError;
 use Chevere\Components\Serialize\Exceptions\UnserializeException;
-use Chevere\Components\Router\Exception\RouteNotFoundException;
+use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
 use Psr\Http\Message\UriInterface;
 
