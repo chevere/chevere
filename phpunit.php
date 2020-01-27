@@ -45,15 +45,5 @@ new ScreenContainerInstance(
             ->withConsoleScreen(
                 new Screen(false, new DebugFormatter)
             )
-            ->withAddedScreen(
-                'rodo',
-                new Screen(false, new RuntimeFormatter)
-            )
     )
 );
-
-// register_shutdown_function(function () {
-//     foreach (ScreenContainerInstance::get()->getAll() as $screen) {
-//         xdump($screen->trace());
-//     }
-// });
