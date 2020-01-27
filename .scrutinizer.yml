@@ -2,9 +2,6 @@ build:
   environment:
     php:
       version: 7.4
-  # dependencies:
-  #     before:
-  #         - composer require phpunit/phpunit:^8 --dev
   nodes:
     analysis:
       tests:
@@ -17,5 +14,11 @@ build:
             coverage:
               file: clover.xml
               format: clover
+
 checks:
   php: true
+
+tools:
+  external_code_coverage:
+    timeout: 600
+    runs: 3
