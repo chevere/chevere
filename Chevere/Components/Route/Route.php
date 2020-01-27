@@ -162,15 +162,15 @@ final class Route implements RouteInterface
         $new->methodControllerNameCollection = $new->methodControllerNameCollection
             ->withAddedMethodControllerName($methodControllerName);
         $methodString = $methodControllerName->method()->toString();
-        if ('GET' == $methodString) {
-            $new->methodControllerNameCollection = $new->methodControllerNameCollection
-                ->withAddedMethodControllerName(
-                    new MethodControllerName(
-                        new Method('HEAD'),
-                        new ControllerName(HeadController::class)
-                    )
-                );
-        }
+        // if ('GET' == $methodString) {
+        //     $new->methodControllerNameCollection = $new->methodControllerNameCollection
+        //         ->withAddedMethodControllerName(
+        //             new MethodControllerName(
+        //                 new Method('HEAD'),
+        //                 new ControllerName(HeadController::class)
+        //             )
+        //         );
+        // }
 
         return $new;
     }

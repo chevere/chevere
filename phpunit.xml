@@ -20,6 +20,7 @@
             <directory suffix=".php">./Chevere/Components/</directory>
             <exclude>
                 <directory>./Chevere/Components/*/Tests/</directory>
+                <directory>./Chevere/TestApp/</directory>
             </exclude>
         </whitelist>
     </filter>
