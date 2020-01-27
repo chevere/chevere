@@ -16,6 +16,7 @@ namespace Chevere\Components\Screen;
 use Chevere\Components\Screen\Formatters\SilentFormatter;
 use Chevere\Components\Screen\Interfaces\FormatterInterface;
 use Chevere\Components\Screen\Interfaces\ScreenInterface;
+use Psr\Http\Message\StreamInterface;
 
 /**
  * A completely silent screen.
@@ -42,22 +43,36 @@ final class SilentScreen implements ScreenInterface
         return [];
     }
 
-    public function attach(string $display): ScreenInterface
+    public function add(string $display): ScreenInterface
     {
         return $this;
     }
 
-    public function attachNl(string $display): ScreenInterface
+    public function addNl(string $display): ScreenInterface
     {
         return $this;
     }
 
-    public function queue(): array
+    public function addStream(StreamInterface $stream): ScreenInterface
+    {
+        return $this;
+    }
+
+    public function stream(): array
     {
         return [];
     }
 
     public function emit(): ScreenInterface
+    {
+        return $this;
+    }
+
+    /**
+     *
+     * @return array StreamInterface[]
+     */
+    public function queue(): array
     {
         return $this;
     }

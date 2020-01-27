@@ -13,35 +13,53 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Screen\Interfaces;
 
+use InvalidArgumentException;
 use Psr\Http\Message\StreamInterface;
 
 interface ScreenInterface
 {
+    /**
+     * Provides access to the instance traceability.
+     */
     public function traceability(): bool;
 
+    /**
+     * Provides access to the Formatter instance.
+     */
     public function formatter(): FormatterInterface;
 
+    /**
+     * Provides access to the instance trace.
+     */
     public function trace(): array;
 
     /**
-     * Attach the display to the screen queue.
+     * Add the display to the screen queue.
      */
-    public function attach(string $display): ScreenInterface;
+    public function add(string $display): ScreenInterface;
 
     /**
-     * Attach the display + new line to the screen queue.
+     * Add the display + new line to the screen queue.
      */
-    public function attachNl(string $display): ScreenInterface;
+    public function addNl(string $display): ScreenInterface;
 
     /**
-     * Provides access to the screen queue.
+     * Add a stream to the AppendStream
      *
-     * @return StreamInterface[]
+     * @param StreamInterface $stream Stream to append. Must be readable.
+     *
+     * @throws InvalidArgumentException if the stream is not readable
      */
-    public function queue(): array;
+    public function addStream(StreamInterface $stream);
 
     /**
      * Emit the screen queue contents.
      */
     public function emit(): ScreenInterface;
+
+    /**
+     *
+     * @return array StreamInterface[]
+     */
+    public function queue(): array;
 }

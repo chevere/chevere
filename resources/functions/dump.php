@@ -31,10 +31,10 @@ if (!function_exists('xdump')) {
      */
     function xdump(...$vars)
     {
-        (new VarDump(...$vars))
-            ->toScreen(
-                screens()->runtime()
-            );
+        screens()->runtime()->addNl(
+            (new VarDump(...$vars))
+                ->toString()
+        )->emit();
     }
 }
 
@@ -44,10 +44,10 @@ if (!function_exists('xdd')) {
      */
     function xdd(...$vars)
     {
-        (new VarDump(...$vars))
-            ->toScreen(
-                screens()->runtime()
-            );
+        screens()->runtime()->addNl(
+            (new VarDump(...$vars))
+                ->toString()
+        )->emit();
         die(0);
     }
 }

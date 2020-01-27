@@ -52,9 +52,4 @@ final class VarDump implements ToStringInterface
     {
         return $this->dump;
     }
-
-    public function toScreen(ScreenInterface $screen): void
-    {
-        $screen->attachNl($this->dump)->emit();
-    }
 }

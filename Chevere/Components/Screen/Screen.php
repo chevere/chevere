@@ -15,8 +15,7 @@ namespace Chevere\Components\Screen;
 
 use Chevere\Components\Screen\Interfaces\FormatterInterface;
 use Chevere\Components\Screen\Interfaces\ScreenInterface;
-use Generator;
-use GuzzleHttp\Psr7\AppendStream;
+use InvalidArgumentException;
 use Psr\Http\Message\StreamInterface;
 use function GuzzleHttp\Psr7\stream_for;
 
@@ -31,51 +30,92 @@ final class Screen implements ScreenInterface
     /** @var StreamInterface[] */
     private array $queue = [];
 
+    private int $pos = -1;
+
+    /**
+     * Creates a new instance.
+     */
     public function __construct(bool $traceability, FormatterInterface $formatter)
     {
         $this->traceability = $traceability;
         $this->formatter = $formatter;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function traceability(): bool
     {
         return $this->traceability;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function formatter(): FormatterInterface
     {
         return $this->formatter;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function trace(): array
     {
         return $this->trace;
     }
 
-    public function attach(string $display): ScreenInterface
+    /**
+     * {@inheritdoc}
+     */
+    public function add(string $display): ScreenInterface
     {
         $this->handleTrace();
-        $this->queue[] = stream_for($this->formatter->wrap($display));
+
+        return $this->stringAdder($display);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addNl(string $display): ScreenInterface
+    {
+        $this->handleTrace();
+
+        return $this->stringAdder($display . "\n");
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addStream(StreamInterface $stream): ScreenInterface
+    {
+        if (!$stream->isReadable()) {
+            throw new InvalidArgumentException('Stream must be readable');
+        }
+        $this->handleTrace();
+        ++$this->pos;
+        $this->queue[$this->pos] = $stream;
 
         return $this;
     }
 
-    public function attachNl(string $display): ScreenInterface
-    {
-        $this->handleTrace();
-
-        return $this->attach($display . "\n");
-    }
-
+    /**
+     * {@inheritdoc}
+     */
     public function queue(): array
     {
         return $this->queue;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function emit(): ScreenInterface
     {
         $this->handleTrace();
-        foreach ($this->queue as $stream) {
+        for ($i = 0; $i <= $this->pos; $i++) {
+            $stream = $this->queue[$i];
             if ($stream->isSeekable()) {
                 $stream->rewind();
             }
@@ -84,7 +124,17 @@ final class Screen implements ScreenInterface
             }
             $stream->detach();
         }
+        foreach ($this->queue as $stream) {
+        }
         $this->queue = [];
+
+        return $this;
+    }
+
+    private function stringAdder(string $display): ScreenInterface
+    {
+        ++$this->pos;
+        $this->queue[$this->pos] = stream_for($this->formatter->wrap($display));
 
         return $this;
     }
