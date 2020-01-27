@@ -24,8 +24,8 @@ final class ScreenTest extends TestCase
         // xdump($this);
         // xdump(screens()->debug()->attach('Fatal error at: ' . __FILE__));
         // xdd(screens()->debug()->trace());
-        screens()->console()->add('Fatal error at: ' . __FILE__)->emit();
-        screens()->runtime()->addNl(varInfo(screens()->console()))->emit();
+        // screens()->console()->add('Fatal error at: ' . __FILE__)->emit();
+        // screens()->runtime()->addNl(varInfo(screens()->console()))->emit();
         // screens()->runtime()->attachNl('Everything is OK! Keep going...')->emit();
 
         // $screen = new Screen;

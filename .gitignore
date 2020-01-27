@@ -1,14 +1,6 @@
-_trash/
-_reports/
 vendor/
 docs/
-app/var/
-app/cache/
-app/build/
-Chevereto-Chevere/logs/
-var/
 composer.lock
 .phpunit.result.cache
-app/build.php
-/devnotes/
-Chevereto-Chevere/Chevere/TestApp/app/build/
+build
+Chevere/TestApp/app/
