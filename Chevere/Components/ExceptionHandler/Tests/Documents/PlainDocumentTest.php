@@ -42,6 +42,6 @@ final class PlainDocumentTest extends TestCase
             ))
             ->toString();
 
-        echo $document . "\n";
+        // echo $document . "\n";
     }
 }

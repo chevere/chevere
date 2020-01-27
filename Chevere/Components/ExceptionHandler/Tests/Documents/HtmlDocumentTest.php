@@ -33,6 +33,6 @@ final class HtmlDocumentTest extends TestCase
             ))
             ->toString();
 
-        echo $document . "\n";
+        // echo $document . "\n";
     }
 }
