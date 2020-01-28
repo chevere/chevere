@@ -28,12 +28,6 @@ final class Type implements TypeInterface
     /** @var string The dectected primitive type */
     private string $primitive;
 
-    /** @var string The detected class name (if any) */
-    // private $className;
-
-    /** @var string The detected interface name (if any) */
-    // private $interfaceName;
-
     /**
      * Creates a new instance.
      *
@@ -45,7 +39,7 @@ final class Type implements TypeInterface
     {
         $this->type = $type;
         $this->setPrimitive();
-        $this->assertPrimitive();
+        $this->assertHasPrimitive();
     }
 
     /**
@@ -100,10 +94,9 @@ final class Type implements TypeInterface
             case TypeInterface::CLASS_NAME:
                 return $this->isClassName($objectClass);
             case TypeInterface::INTERFACE_NAME:
+            default:
                 return $this->isInterfaceImplemented($object);
         }
-
-        return false;
     }
 
     private function isClassName(string $objectClass): bool
@@ -131,9 +124,9 @@ final class Type implements TypeInterface
         }
     }
 
-    private function assertPrimitive(): void
+    private function assertHasPrimitive(): void
     {
-        if (null === $this->primitive) {
+        if (!isset($this->primitive)) {
             throw new TypeNotFoundException(
                 (new Message('Type %type% not found'))
                     ->code('%type%', $this->type)

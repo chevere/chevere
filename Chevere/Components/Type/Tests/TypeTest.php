@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Type\Tests;
 
+use Chevere\Components\Type\Exceptions\TypeNotFoundException;
 use Chevere\Components\Type\Type;
 use Chevere\Components\Type\Interfaces\TypeInterface;
 use PHPUnit\Framework\TestCase;
@@ -20,6 +21,12 @@ use stdClass;
 
 final class TypeTest extends TestCase
 {
+    public function testInvalidArgument(): void
+    {
+        $this->expectException(TypeNotFoundException::class);
+        new Type('Tipo');
+    }
+
     public function testTypes(): void
     {
         $resource = fopen(__FILE__, 'r');
