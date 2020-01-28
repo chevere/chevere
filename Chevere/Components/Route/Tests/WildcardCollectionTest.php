@@ -21,14 +21,16 @@ final class WildcardCollectionTest extends TestCase
 {
     public function testConstructEmpty(): void
     {
-        $this->expectNotToPerformAssertions();
-        new WildcardCollection();
+        $wildcardCollection = new WildcardCollection();
+        $this->assertFalse($wildcardCollection->hasAny());
+        $this->assertSame([], $wildcardCollection->toArray());
     }
 
     public function testConstruct(): void
     {
         $wildcard = new Wildcard('test');
         $wilcardCollection = new WildcardCollection($wildcard);
+        $this->assertTrue($wilcardCollection->hasAny());
         $this->assertTrue($wilcardCollection->hasPos(0));
         $this->assertSame($wildcard, $wilcardCollection->getPos(0));
         $this->assertTrue($wilcardCollection->has($wildcard));
@@ -44,6 +46,7 @@ final class WildcardCollectionTest extends TestCase
             $wilcardCollection = $wilcardCollection
                 ->withAddedWildcard($wildcard);
         }
+        $this->assertTrue($wilcardCollection->hasAny());
         foreach ($wildcards as $pos => $wildcard) {
             $this->assertTrue($wilcardCollection->hasPos($pos));
             $this->assertTrue($wilcardCollection->has($wildcard));

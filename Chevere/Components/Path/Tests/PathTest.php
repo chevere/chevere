@@ -17,6 +17,8 @@ use RuntimeException;
 use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Path\Interfaces\PathInterface;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamFile;
 use PHPUnit\Framework\TestCase;
 
 final class PathTest extends TestCase
@@ -29,7 +31,13 @@ final class PathTest extends TestCase
             new Path($root . $child);
     }
 
-    public function testWithNonExistentPath(): void
+    public function testFilesystemPath(): void
+    {
+        $this->expectNotToPerformAssertions();
+        new Path('/var/fake_' . uniqid());
+    }
+
+    public function testNonExistentPath(): void
     {
         $path = new Path('/var/fake_' . uniqid());
         $this->assertFalse($path->exists());
@@ -37,7 +45,7 @@ final class PathTest extends TestCase
         $this->assertFalse($path->isFile());
     }
 
-    public function testWithExistentDirPath(): void
+    public function testExistentDirPath(): void
     {
         $path = new Path(__DIR__);
         $this->assertTrue($path->exists());
@@ -45,7 +53,7 @@ final class PathTest extends TestCase
         $this->assertFalse($path->isFile());
     }
 
-    public function testWithExistentFilePath(): void
+    public function testExistentFilePath(): void
     {
         $path = new Path(__FILE__);
         $this->assertTrue($path->exists());
@@ -53,7 +61,7 @@ final class PathTest extends TestCase
         $this->assertFalse($path->isDir());
     }
 
-    public function testWithExistentDirPathRemoved(): void
+    public function testExistentDirPathRemoved(): void
     {
         $path = $this->getPath('var/PathTest_dir_' . uniqid());
         $this->assertFalse($path->exists());
@@ -69,7 +77,7 @@ final class PathTest extends TestCase
         $this->assertFalse($path->isDir());
     }
 
-    public function testWithExistentFilePathRemoved(): void
+    public function testExistentFilePathRemoved(): void
     {
         $path = $this->getPath('var/PathTest_file_' . uniqid() . '.jpg');
         $this->assertFalse($path->exists());

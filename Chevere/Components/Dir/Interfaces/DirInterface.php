@@ -35,10 +35,11 @@ interface DirInterface
     /**
      * Creates the directory.
      *
-     * @throws DirExistsException         if the directory already exists
+     * @param int $mode Octal mask
+     *
      * @throws DirUnableToCreateException if unable to create the directoy
      */
-    public function create(): void;
+    public function create(int $mode = 0777): void;
 
     /**
      * Removes the directory.
@@ -48,6 +49,13 @@ interface DirInterface
      * @throws DirUnableToRemoveException if unable to remove the directory
      */
     public function remove(): array;
+
+    /**
+     * Wrapper for \rmdir.
+     *
+     * @throws DirUnableToRemoveException if rmdir failure
+     */
+    public function rmdir(): void;
 
     /**
      * Removes the contents from a path without deleting the path.

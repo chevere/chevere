@@ -20,7 +20,7 @@ use stdClass;
 
 final class VariableExportTest extends TestCase
 {
-    public function testCreateNotExportable(): void
+    public function testNotExportable(): void
     {
         $this->expectException(VariableExportException::class);
         $resource = fopen(__FILE__, 'r');
@@ -30,7 +30,7 @@ final class VariableExportTest extends TestCase
         }
     }
 
-    public function testCreateContainsNotExportable(): void
+    public function testContainsNotExportable(): void
     {
         $object = new stdClass();
         $resource = fopen(__FILE__, 'r');
@@ -57,6 +57,8 @@ final class VariableExportTest extends TestCase
         ] as $val) {
             $variableExport = new VariableExport($val);
             $this->assertSame($val, $variableExport->var());
+            $this->assertSame(serialize($val), $variableExport->toSerialize());
+            $this->assertSame(var_export($val, true), $variableExport->toExport());
         }
     }
 }

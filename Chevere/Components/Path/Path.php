@@ -28,6 +28,8 @@ class Path implements PathInterface
 
     /**
      * Creates a new instance.
+     *
+     * @param string $absolute An absolute filesystem path
      */
     public function __construct(string $absolute)
     {
@@ -62,9 +64,6 @@ class Path implements PathInterface
      */
     public function exists(): bool
     {
-        // if ($this->isStream()) {
-        //     return true;
-        // }
         $this->clearStatCache();
 
         return false !== stream_resolve_include_path($this->absolute);

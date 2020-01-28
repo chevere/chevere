@@ -14,86 +14,98 @@ declare(strict_types=1);
 namespace Chevere\Components\Dir\Tests;
 
 use Chevere\Components\Dir\Dir;
+use Chevere\Components\Dir\Exceptions\DirExistsException;
+use Chevere\Components\Dir\Exceptions\DirUnableToCreateException;
+use Chevere\Components\Dir\Exceptions\DirUnableToRemoveException;
+use Chevere\Components\Dir\Interfaces\DirInterface;
+use Chevere\Components\File\File;
 use Chevere\Components\Path\Exceptions\PathIsFileException;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
-use Chevere\Components\Path\PathApp;
+use Chevere\Components\Path\Interfaces\PathInterface;
+use Chevere\Components\Path\Path;
+use org\bovigo\vfs\vfsStream;
+use org\bovigo\vfs\vfsStreamDirectory;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use RuntimeException;
+use Throwable;
 
 final class DirTest extends TestCase
 {
+    private DirInterface $dir;
+
+    protected function setUp(): void
+    {
+        $bt = debug_backtrace(0, 1)[0]['line'];
+
+        $this->dir = new Dir(new Path(__DIR__ . '/DirTest_' . uniqid() . '_' . $bt));
+    }
+
+    protected function tearDown(): void
+    {
+        try {
+            $this->dir->remove();
+        } catch (Throwable $e) {
+            // $e
+        }
+    }
+
     public function testWithFilePath(): void
     {
-        $path = new PathApp('parameters.php');
+        $path = new Path(__FILE__);
         $this->expectException(PathIsFileException::class);
         new Dir($path);
     }
 
     public function testWithNonExistentPath(): void
     {
-        $dir = new Dir(new PathApp('var/DirTest_' . uniqid()));
-        $this->assertFalse($dir->exists());
-    }
-
-    public function testWithExistentPath(): void
-    {
-        $dir = new Dir(new PathApp('var'));
-        $this->assertTrue($dir->exists());
+        $this->assertFalse($this->dir->exists());
     }
 
     public function testCreate(): void
     {
-        $dir = new Dir(new PathApp('var/DirTest_' . uniqid()));
-        $dir->create();
-        $this->assertTrue($dir->exists());
-        if (!rmdir($dir->path()->absolute())) {
-            throw new RuntimeException('Unable to remove dir ' . $dir->path()->absolute());
-        }
+        $this->dir->create();
+        $this->assertTrue($this->dir->exists());
+    }
+
+    public function testCreateCreateUnable(): void
+    {
+        $this->expectException(DirUnableToCreateException::class);
+        (new Dir(new Path(__DIR__)))
+            ->create();
     }
 
     public function testRemoveNonExistentPath(): void
     {
-        $path = new PathApp('var/DirTest_' . uniqid());
-        $dir = new Dir($path);
         $this->expectException(PathIsNotDirectoryException::class);
-        $dir->remove();
+        $this->dir->remove();
     }
 
     public function testRemove(): void
     {
-        $dir = new Dir(new PathApp('var/DirTest_' . uniqid()));
-        $dir->create();
-        $removed = $dir->remove();
-        $this->assertContainsEquals($dir->path()->absolute(), $removed);
-        $this->assertFalse($dir->exists());
-    }
-
-    public function testRemoveWithContents(): void
-    {
-        $dirPath = new PathApp('var/DirTest_' . uniqid());
-        $filePath = $dirPath->getChild('file');
-        $dir = new Dir($dirPath);
-        $dir->create();
-        if (false === file_put_contents($filePath->absolute(), 'una mona pilucha')) {
-            throw new RuntimeException('Unable to create file ' . $filePath->absolute());
-        }
-        $removed = $dir->remove();
-        $this->assertContainsEquals($dirPath->absolute(), $removed);
-        $this->assertContainsEquals($filePath->absolute(), $removed);
+        $this->dir->create();
+        $removed = $this->dir->remove();
+        $this->assertContainsEquals($this->dir->path()->absolute(), $removed);
+        $this->assertFalse($this->dir->exists());
     }
 
     public function testRemoveContents(): void
     {
-        $dirPath = new PathApp('var/DirTest_' . uniqid());
-        $filePath = $dirPath->getChild('file');
-        $dir = new Dir($dirPath);
-        $dir->create();
-        if (false === file_put_contents($filePath->absolute(), 'una mona pilucha')) {
-            throw new RuntimeException('Unable to create file ' . $filePath->absolute());
-        }
-        $removed = $dir->removeContents();
-        $this->assertNotContainsEquals($dirPath->absolute(), $removed);
-        $this->assertContainsEquals($filePath->absolute(), $removed);
-        $dir->remove();
+        $this->dir->create();
+        $childPath = $this->dir->path()->getChild('file');
+        $childFile = new File($childPath);
+        $childFile->create();
+        $removed = $this->dir->removeContents();
+        $this->assertNotContainsEquals($this->dir->path()->absolute(), $removed);
+        $this->assertContainsEquals($childFile->path()->absolute(), $removed);
+    }
+
+    public function testRmdirNotEmpty(): void
+    {
+        $this->dir->create();
+        $child = $this->dir->getChild('child');
+        $child->create();
+        $this->expectException(DirUnableToRemoveException::class);
+        $this->dir->rmdir();
     }
 }
