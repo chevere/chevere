@@ -1,8 +1,9 @@
 [![Scrutinizer Code
 Quality](https://scrutinizer-ci.com/g/Chevereto/chevere/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Chevereto/chevere/?branch=master)
 [![CodeFactor](https://www.codefactor.io/repository/github/Chevereto/chevere/badge)](https://www.codefactor.io/repository/github/Chevereto/chevere)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/de5d887d9d764665937274cdcfd133d4)](https://www.codacy.com/manual/inbox_5/chevere?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Chevereto/chevere&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/de5d887d9d764665937274cdcfd133d4)](https://www.codacy.com/manual/inbox_5/chevere?utm_source=github.com&utm_medium=referral&utm_content=Chevereto/chevere&utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/731248da89d50d1f3385/maintainability)](https://codeclimate.com/github/Chevereto/chevere/maintainability)
+[![Coverage Status](https://coveralls.io/repos/github/Chevereto/chevere/badge.svg?branch=master)](https://coveralls.io/github/Chevereto/chevere?branch=master)
 
 # About Chevere
 

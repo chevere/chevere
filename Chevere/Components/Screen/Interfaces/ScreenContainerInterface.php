@@ -15,8 +15,16 @@ namespace Chevere\Components\Screen\Interfaces;
 
 interface ScreenContainerInterface
 {
+    /**
+     * Provides access to the runtime ScreenInterface instance.
+     * This screen should be always "turned-on".
+     */
     public function runtime(): ScreenInterface;
 
+    /**
+     * Provides access to the debug ScreenInterface instance.
+     * This screen could be "turned-off" if debug is disabled. In that case, it returns a SilentScreen.
+     */
     public function debug(): ScreenInterface;
 
     public function console(): ScreenInterface;
