@@ -25,7 +25,7 @@ After cloning this repo, you will need to install the vendor dependencies using
 ```console
 foo@bar:~$ cd ~/chevere
 foo@bar:~$ git clone https://github.com/Chevereto/chevere.git
-foo@bar:~$ rm -rf "vendor" && composer update chevereto/chevere --prefer-source
+foo@bar:~$ rm -rf "vendor" && composer update
 ```
 
 ^This will rebuild the `vendor` dir with all the Chevere dependencies.

@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\VarDump\Wrappers;
 
 use Chevere\Components\VarDump\Interfaces\HighlightInterface;
-use Chevere\Components\VarDump\Interfaces\PalleteInterface;
 use Chevere\Components\VarDump\Wrappers\ConsoleHighlight;
 use Chevere\Components\VarDump\Wrappers\HtmlHighlight;
 use InvalidArgumentException;
