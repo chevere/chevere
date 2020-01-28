@@ -17,8 +17,10 @@ install:
   - composer install --prefer-dist --ignore-platform-reqs
 
 script:
-  - vendor/bin/phpunit --coverage-clover=coverage-clover.xml
+  - vendor/bin/phpunit --coverage-clover=build/coverage/clover.xml
 
 after_script:
   - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover coverage-clover.xml
+  - php ocular.phar code-coverage:upload --format=php-clover build/coverage/clover.xml
+  - composer require cedx/coveralls
+  - vendor/bin/coveralls build/coverage/clover.xml
