@@ -14,36 +14,42 @@ declare(strict_types=1);
 namespace Chevere\Components\Path\Tests;
 
 use Chevere\Components\Path\CheckFormat;
-use Chevere\Components\Path\Exceptions\PathDoubleDotsException;
+use Chevere\Components\Path\Exceptions\PathDotSlashException;
+use Chevere\Components\Path\Exceptions\PathDoubleDotsDashException;
 use Chevere\Components\Path\Exceptions\PathExtraSlashesException;
-use Chevere\Components\Path\Exceptions\PathOmitRelativeException;
+use Chevere\Components\Path\Exceptions\PathInvalidException;
+use Chevere\Components\Path\Exceptions\PathNotAbsoluteException;
 use PHPUnit\Framework\TestCase;
 
 final class CheckFormatTest extends TestCase
 {
+    public function testNoAbsolutePath(): void
+    {
+        $this->expectException(PathNotAbsoluteException::class);
+        (new CheckFormat('path'));
+    }
+
     public function testExtraSlashesPath(): void
     {
         $this->expectException(PathExtraSlashesException::class);
-        new CheckFormat('some//dir');
+        new CheckFormat('/some//dir');
     }
 
-    public function testDotsPath(): void
+    public function testDotSlashPath(): void
     {
-        $this->expectException(PathDoubleDotsException::class);
-        new CheckFormat('some/../dir');
+        $this->expectException(PathDotSlashException::class);
+        new CheckFormat('/some/./dir');
     }
 
-    public function testNoRelativePath(): void
+    public function testDotsSlashPath(): void
     {
-        $this->expectException(PathOmitRelativeException::class);
-        (new CheckFormat('./relative'))
-            ->assertNotRelativePath();
+        $this->expectException(PathDoubleDotsDashException::class);
+        new CheckFormat('/some/../dir');
     }
 
     public function testConstruct(): void
     {
         $this->expectNotToPerformAssertions();
-        (new CheckFormat('path'))
-            ->assertNotRelativePath();
+        (new CheckFormat('/path'));
     }
 }

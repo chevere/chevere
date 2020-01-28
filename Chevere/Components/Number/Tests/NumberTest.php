@@ -102,6 +102,11 @@ final class NumberTest extends TestCase
         }
     }
 
+    public function testZero(): void
+    {
+        $this->assertSame('0', (new Number(0))->toAbbreviate());
+    }
+
     public function testConstruct(): void
     {
         foreach ([
@@ -116,6 +121,12 @@ final class NumberTest extends TestCase
             $number = new Number($array[0]);
             $this->assertSame($array[1], $number->withPrecision(1)->toAbbreviate());
         }
+    }
+
+    public function testWithNegativePrecision(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        (new Number(1))->withPrecision(-10);
     }
 
     public function testWithPrecision(): void

@@ -15,7 +15,7 @@ namespace Chevere\Components\Route\Interfaces;
 
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardInvalidRegexException;
-use Chevere\Components\Regex\Interfaces\RegexMatchInterface;
+use Chevere\Components\Route\Interfaces\WildcardMatchInterface;
 
 interface WildcardInterface
 {
@@ -35,7 +35,7 @@ interface WildcardInterface
      *
      * @throws WildcardInvalidRegexException if $match is an invalid regex match
      */
-    public function withRegexMatch(RegexMatchInterface $regexMatch): WildcardInterface;
+    public function withMatch(WildcardMatchInterface $regexMatch): WildcardInterface;
 
     /**
      * Provides access to the name.
@@ -43,9 +43,9 @@ interface WildcardInterface
     public function name(): string;
 
     /**
-     * Provides access to the RegexMatchInterface instance.
+     * Provides access to the WildcardMatchInterface instance.
      */
-    public function regexMatch(): RegexMatchInterface;
+    public function match(): WildcardMatchInterface;
 
     /**
      * Asserts that a given PathUriInterface contains the wildcard.

@@ -15,6 +15,7 @@ namespace Chevere\Components\Stopwatch\Tests;
 
 use BadMethodCallException;
 use Chevere\Components\Stopwatch\Stopwatch;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function ChevereFn\stringEndsWith;
 
@@ -54,20 +55,39 @@ final class StopwatchTest extends TestCase
             ->timeElapsedRead();
     }
 
+    public function testMarkReserved(): void
+    {
+        $sw = new Stopwatch();
+        $this->expectException(InvalidArgumentException::class);
+        $sw->mark('stop');
+    }
+
+    public function testMarkDupe(): void
+    {
+        $sw = new Stopwatch();
+        $sw->mark('mark');
+        $this->expectException(InvalidArgumentException::class);
+        $sw->mark('mark');
+    }
+
     public function testStopwatch(): void
     {
         $sw = new Stopwatch();
         $nanoTime = 100000; // 100000 = 0.1 ms
         $marks = 2;
+        $keys = ['start'];
         for ($i = 0; $i < $marks; $i++) {
             time_nanosleep(0, 100000);
             $sw->mark((string) $i);
+            $keys[] = $i;
         }
         time_nanosleep(0, 100000);
         $sw->stop();
+        $keys[] = 'stop';
         $recordsSum = array_sum(array_values($sw->records()));
         $this->assertSame($recordsSum, $sw->timeElapsed());
         $this->assertTrue($recordsSum > $nanoTime * ($marks + 2));
         $this->assertTrue(stringEndsWith(' ms', $sw->timeElapsedRead()));
+        $this->assertSame($keys, array_keys($sw->recordsRead()));
     }
 }

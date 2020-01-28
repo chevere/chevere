@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Breadcrum\Tests;
 
 use Chevere\Components\Breadcrum\Breadcrum;
+use Chevere\Components\Breadcrum\Exceptions\BreadcrumException;
 use PHPUnit\Framework\TestCase;
 
 final class BreadcrumTest extends TestCase
@@ -71,5 +72,7 @@ final class BreadcrumTest extends TestCase
         $this->assertFalse($breadcrum->hasAny());
         $this->assertEmpty($breadcrum->toArray());
         $this->assertEmpty($breadcrum->toString());
+        $this->expectException(BreadcrumException::class);
+        $breadcrum->withRemovedItem($pos);
     }
 }

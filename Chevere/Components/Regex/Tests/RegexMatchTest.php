@@ -13,28 +13,28 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Regex\Tests;
 
-use Chevere\Components\Regex\Exceptions\RegexMatchException;
-use Chevere\Components\Regex\RegexMatch;
+use Chevere\Components\Regex\Exceptions\RegexException;
+use Chevere\Components\Route\WildcardMatch;
 use PHPUnit\Framework\TestCase;
 
 final class RegexMatchTest extends TestCase
 {
     public function testConstructInvalidArgument(): void
     {
-        $this->expectException(RegexMatchException::class);
-        new RegexMatch('(test)');
+        $this->expectException(RegexException::class);
+        new WildcardMatch('#');
     }
 
     public function testConstructInvalidArgument2(): void
     {
-        $this->expectException(RegexMatchException::class);
-        new RegexMatch('te(s)t');
+        $this->expectException(RegexException::class);
+        new WildcardMatch('te(s)t');
     }
 
     public function testConstruct(): void
     {
         $regexMatchString = '[a-z]+';
-        $regexMath = new RegexMatch($regexMatchString);
+        $regexMath = new WildcardMatch($regexMatchString);
         $this->assertSame($regexMatchString, $regexMath->toString());
     }
 }

@@ -22,7 +22,7 @@ final class RegexTest extends TestCase
     public function testConstructInvalidArgument(): void
     {
         $this->expectException(RegexException::class);
-        new Regex('$');
+        new Regex('#');
     }
 
     public function testConstruct(): void

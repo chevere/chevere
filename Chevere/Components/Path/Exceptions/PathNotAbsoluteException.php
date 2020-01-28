@@ -16,8 +16,8 @@ namespace Chevere\Components\Path\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when the path pass '..'
+ * Exception thrown when the path is not absolute.
  */
-final class PathDoubleDotsException extends Exception
+final class PathNotAbsoluteException extends Exception
 {
 }

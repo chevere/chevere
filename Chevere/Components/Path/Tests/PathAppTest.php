@@ -15,6 +15,7 @@ namespace Chevere\Components\Path\Tests;
 
 use RuntimeException;
 use Chevere\Components\App\Instances\BootstrapInstance;
+use Chevere\Components\Path\Exceptions\PathDotSlashException;
 use Chevere\Components\Path\Exceptions\PathInvalidException;
 use Chevere\Components\Path\Exceptions\PathOmitRelativeException;
 use Chevere\Components\Path\Exceptions\PathNotAllowedException;
@@ -40,10 +41,10 @@ final class PathAppTest extends TestCase
         new PathApp($uber);
     }
 
-    public function testWithStrictRelativePath(): void
+    public function testDotSlashPath(): void
     {
-        $this->expectException(PathOmitRelativeException::class);
-        new PathApp('./dir');
+        $this->expectException(PathDotSlashException::class);
+        $path = new PathApp('./dir');
     }
 
     public function testWithRelativePath(): void

@@ -262,7 +262,7 @@ final class Route implements RouteInterface
         $regex = '^' . $this->pathUri->key() . '$';
         if (isset($this->wildcardCollection)) {
             foreach ($this->wildcardCollection->toArray() as $key => $wildcard) {
-                $regex = str_replace("{{$key}}", '(' . $wildcard->regexMatch()->toString() . ')', $regex);
+                $regex = str_replace("{{$key}}", '(' . $wildcard->match()->toString() . ')', $regex);
             }
         }
         $this->regex = $regex;

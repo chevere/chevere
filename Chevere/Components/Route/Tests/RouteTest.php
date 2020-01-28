@@ -17,7 +17,7 @@ use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Middleware\MiddlewareName;
-use Chevere\Components\Regex\RegexMatch;
+use Chevere\Components\Route\WildcardMatch;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
@@ -81,14 +81,14 @@ final class RouteTest extends TestCase
     public function testWithAddedWildcards(): void
     {
         $wildcards = [
-            (new Wildcard('test1'))->withRegexMatch(
-                new RegexMatch('[0-9]+')
+            (new Wildcard('test1'))->withMatch(
+                new WildcardMatch('[0-9]+')
             ),
-            (new Wildcard('test2'))->withRegexMatch(
-                new RegexMatch('[A-Z]*')
+            (new Wildcard('test2'))->withMatch(
+                new WildcardMatch('[A-Z]*')
             ),
-            (new Wildcard('test3'))->withRegexMatch(
-                new RegexMatch('.*')
+            (new Wildcard('test3'))->withMatch(
+                new WildcardMatch('.*')
             ),
         ];
         $path = '/test/';
@@ -104,7 +104,7 @@ final class RouteTest extends TestCase
         foreach ($wildcards as $wildcard) {
             $this->assertTrue($route->wildcardCollection()->has($wildcard));
             $this->assertSame($wildcard, $route->wildcardCollection()->get($wildcard));
-            // $this->assertStringContainsString($wildcard->regexMatch(), $route->regex());
+            // $this->assertStringContainsString($wildcard->match(), $route->regex());
         }
     }
 

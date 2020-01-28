@@ -11,11 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Path\Interfaces;
+namespace Chevere\Components\Path\Exceptions;
 
-use Chevere\Components\Path\Exceptions\PathInvalidException;
+use Exception;
 
-interface CheckFormatInterface
+/**
+ * Exception thrown when the path contains '..'
+ */
+final class PathDoubleDotsDashException extends Exception
 {
-    public function __construct(string $path);
 }

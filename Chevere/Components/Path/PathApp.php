@@ -28,7 +28,7 @@ use function ChevereFn\stringStartsWith;
  */
 class PathApp implements PathAppInterface
 {
-    private CheckFormatInterface $checkFormat;
+    // private CheckFormatInterface $checkFormat;
 
     /** @var string Relative path passed on instance construct */
     private string $path;
@@ -49,7 +49,6 @@ class PathApp implements PathAppInterface
      */
     public function __construct(string $path)
     {
-        $this->checkFormat = new CheckFormat($path);
         $this->path = $path;
         $this->root = BootstrapInstance::get()->appPath();
         $this->handlePaths();
@@ -111,7 +110,6 @@ class PathApp implements PathAppInterface
             $this->assertAbsolutePath();
             $this->absolute = $this->path;
         } else {
-            $this->checkFormat->assertNotRelativePath();
             $this->absolute = $this->getAbsolute();
         }
         $this->relative = $this->getRelative();

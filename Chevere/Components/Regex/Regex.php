@@ -34,6 +34,18 @@ final class Regex implements RegexInterface
         $this->assertRegex();
     }
 
+    public function assertNoCapture(): void
+    {
+        $regex = str_replace(['\(', '\)'], null, $this->regex);
+        if (false !== strpos($regex, '(') || false !== strpos($regex, ')')) {
+            throw new RegexException(
+                (new Message('Provided expresion %match% contains capture groups (remove any capture group)'))
+                    ->code('%match%', $this->regex)
+                    ->toString()
+            );
+        }
+    }
+
     /**
      * {@inheritdoc}
      */

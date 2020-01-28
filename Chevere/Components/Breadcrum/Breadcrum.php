@@ -29,15 +29,6 @@ final class Breadcrum implements BreadcrumInterface
 
     private int $id = -1;
 
-    // /**
-    //  * Creates a new instance.
-    //  */
-    // public function __construct()
-    // {
-    //     $this->items = [];
-    //     $this->id = -1;
-    // }
-
     /**
      * {@inheritdoc}
      */

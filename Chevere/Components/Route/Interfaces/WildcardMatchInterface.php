@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Regex\Interfaces;
+namespace Chevere\Components\Route\Interfaces;
 
 use Chevere\Components\Common\Interfaces\ToStringInterface;
 
-interface RegexMatchInterface extends ToStringInterface
+interface WildcardMatchInterface extends ToStringInterface
 {
     public function __construct(string $match);
 

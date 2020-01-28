@@ -15,10 +15,10 @@ namespace Chevere\Components\Route;
 
 use Chevere\Components\Route\Exceptions\WildcardInvalidCharsException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Regex\RegexMatch;
+use Chevere\Components\Route\WildcardMatch;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
-use Chevere\Components\Regex\Interfaces\RegexMatchInterface;
+use Chevere\Components\Route\Interfaces\WildcardMatchInterface;
 use Chevere\Components\Route\Interfaces\PathUriInterface;
 use Chevere\Components\Route\Interfaces\WildcardInterface;
 use function ChevereFn\stringStartsWithNumeric;
@@ -31,7 +31,7 @@ final class Wildcard implements WildcardInterface
     /** @var string */
     private string $wildcard;
 
-    private RegexMatchInterface $regexMatch;
+    private WildcardMatchInterface $match;
 
     /**
      * Creates a new instance.
@@ -47,16 +47,16 @@ final class Wildcard implements WildcardInterface
         $this->name = $name;
         $this->wildcard = "{{$this->name}}";
         $this->assertName();
-        $this->regexMatch = new RegexMatch(WildcardInterface::REGEX_MATCH_DEFAULT);
+        $this->match = new WildcardMatch(WildcardInterface::REGEX_MATCH_DEFAULT);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function withRegexMatch(RegexMatchInterface $regexMatch): WildcardInterface
+    public function withMatch(WildcardMatchInterface $regexMatch): WildcardInterface
     {
         $new = clone $this;
-        $new->regexMatch = $regexMatch;
+        $new->match = $regexMatch;
 
         return $new;
     }
@@ -80,9 +80,9 @@ final class Wildcard implements WildcardInterface
     /**
      * {@inheritdoc}
      */
-    public function regexMatch(): RegexMatchInterface
+    public function match(): WildcardMatchInterface
     {
-        return $this->regexMatch;
+        return $this->match;
     }
 
     /**

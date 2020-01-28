@@ -35,7 +35,6 @@ class Path implements PathInterface
     {
         new CheckFormat($absolute);
         $this->absolute = $absolute;
-        $this->assertAbsolutePath();
     }
 
     /**
@@ -45,19 +44,6 @@ class Path implements PathInterface
     {
         return $this->absolute;
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    // public function isStream(): bool
-    // {
-    //     if (false === strpos($this->absolute, '://')) {
-    //         return false;
-    //     }
-    //     $explode = explode('://', $this->absolute, 2);
-
-    //     return in_array($explode[0], stream_get_wrappers());
-    // }
 
     /**
      * {@inheritdoc}
@@ -98,17 +84,6 @@ class Path implements PathInterface
         $childrenPath = rtrim($parent, '/');
 
         return new Path($childrenPath . '/' . $path);
-    }
-
-    public function assertAbsolutePath(): void
-    {
-        if (!stringStartsWith('/', $this->absolute)) {
-            throw new PathInvalidException(
-                (new Message('Only absolute paths can be used to construct a %className% instance'))
-                    ->code('%className%', __CLASS__)
-                    ->toString()
-            );
-        }
     }
 
     private function clearStatCache(): void
