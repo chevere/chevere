@@ -36,7 +36,7 @@ final class SetDefaultCharset implements SetInterface
     {
         $this->value = $value;
         $this->assertArgument();
-        $this->assertIniSet();
+        $this->assertSetDefaultCharset();
     }
 
     private function assertArgument(): void
@@ -53,15 +53,17 @@ final class SetDefaultCharset implements SetInterface
         }
     }
 
-    private function assertIniSet(): void
+    private function assertSetDefaultCharset(): void
     {
         if (!@ini_set('default_charset', $this->value)) {
+            // @codeCoverageIgnoreStart
             throw new RuntimeException(
                 (new Message('Unable to set ini property %property% value %value%'))
                     ->code('%property%', 'default_charset')
                     ->code('%value%', $this->value)
                     ->toString()
             );
+            // @codeCoverageIgnoreEnd
         }
     }
 }

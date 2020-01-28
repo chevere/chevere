@@ -54,18 +54,6 @@ final class SetTimeZone implements SetInterface
         }
     }
 
-    private function assertSetTimeZone(): void
-    {
-        if (!@date_default_timezone_set($this->value)) {
-            throw new RuntimeException(
-                (new Message('False return on %s(%v)'))
-                    ->code('%s', 'date_default_timezone_set')
-                    ->code('%v', $this->value)
-                    ->toString()
-            );
-        }
-    }
-
     private function validateTimezone(): bool
     {
         $return = false;
@@ -81,5 +69,19 @@ final class SetTimeZone implements SetInterface
         }
 
         return $return;
+    }
+
+    private function assertSetTimeZone(): void
+    {
+        if (!@date_default_timezone_set($this->value)) {
+            // @codeCoverageIgnoreStart
+            throw new RuntimeException(
+                (new Message('False return on %s(%v)'))
+                    ->code('%s', 'date_default_timezone_set')
+                    ->code('%v', $this->value)
+                    ->toString()
+            );
+            // @codeCoverageIgnoreEnd
+        }
     }
 }

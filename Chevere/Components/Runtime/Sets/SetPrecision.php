@@ -36,14 +36,7 @@ final class SetPrecision implements SetInterface
     {
         $this->value = $value;
         $this->assertArgument();
-        if (!@ini_set('precision', $this->value)) {
-            throw new RuntimeException(
-                (new Message('Unable to set ini property %property% value %value%'))
-                    ->code('%property%', 'default_charset')
-                    ->code('%value%', $this->value)
-                    ->toString()
-            );
-        }
+        $this->assertSetPrecision();
     }
 
     private function assertArgument(): void
@@ -54,6 +47,20 @@ final class SetPrecision implements SetInterface
                     ->code('%value%', $this->value)
                     ->toString()
             );
+        }
+    }
+
+    private function assertSetPrecision(): void
+    {
+        if (!@ini_set('precision', $this->value)) {
+            // @codeCoverageIgnoreStart
+            throw new RuntimeException(
+                (new Message('Unable to set ini property %property% value %value%'))
+                    ->code('%property%', 'default_charset')
+                    ->code('%value%', $this->value)
+                    ->toString()
+            );
+            // @codeCoverageIgnoreEnd
         }
     }
 }
