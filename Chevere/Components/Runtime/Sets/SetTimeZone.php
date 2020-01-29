@@ -75,9 +75,7 @@ final class SetTimeZone implements SetInterface
 
     private function assertSetTimeZone(): void
     {
-        try {
-            date_default_timezone_set($this->value);
-        } catch (Throwable $e) {
+        if (!@date_default_timezone_set($this->value)) {
             // @codeCoverageIgnoreStart
             throw new RuntimeException(
                 (new Message('False return on %s(%v) %thrown%'))
