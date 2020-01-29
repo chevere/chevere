@@ -37,8 +37,7 @@ final class FileTest extends TestCase
     protected function tearDown(): void
     {
         try {
-            xdump('REMOVE -R:' . $this->dir->path()->absolute());
-            // $this->dir->remove();
+            $this->dir->remove();
         } catch (Throwable $e) {
             //$e
         }
