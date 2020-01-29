@@ -59,25 +59,16 @@ final class VarFormat implements VarInfoInterface
         ++$this->depth;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function dumpeable(): DumpeableInterface
     {
         return $this->dumpeable;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function formatter(): FormatterInterface
     {
         return $this->formatter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withDontDump(string ...$dontDump): VarInfoInterface
     {
         $new = clone $this;
@@ -86,17 +77,11 @@ final class VarFormat implements VarInfoInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function dontDump(): array
     {
         return $this->dontDump;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withIndent(int $indent): VarInfoInterface
     {
         $new = clone $this;
@@ -107,17 +92,11 @@ final class VarFormat implements VarInfoInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function indent(): int
     {
         return $this->indent;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withDepth(int $depth): VarInfoInterface
     {
         $new = clone $this;
@@ -126,17 +105,11 @@ final class VarFormat implements VarInfoInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function depth(): int
     {
         return $this->depth;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withProcess(): VarInfoInterface
     {
         $new = clone $this;
@@ -149,17 +122,11 @@ final class VarFormat implements VarInfoInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function indentString(): string
     {
         return $this->indentString;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toString(): string
     {
         return $this->output;

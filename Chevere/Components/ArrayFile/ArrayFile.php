@@ -60,10 +60,6 @@ final class ArrayFile implements ArrayFileInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     * @covered
-     */
     public function withMembersType(TypeInterface $type): ArrayFileInterface
     {
         $new = clone $this;
@@ -82,17 +78,11 @@ final class ArrayFile implements ArrayFileInterface
         return $new; // @codeCoverageIgnore
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function file(): FileInterface
     {
         return $this->filePhp->file();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function array(): array
     {
         return $this->array;

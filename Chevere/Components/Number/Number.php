@@ -35,9 +35,6 @@ final class Number implements NumberInterface
         $this->assertNumber();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withPrecision(int $precision): NumberInterface
     {
         if ($precision < 0) {
@@ -54,20 +51,13 @@ final class Number implements NumberInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function precision(): int
     {
         return $this->precision;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toAbbreviate(): string
     {
-        /** @var string */
         $string = (string) $this->number;
         if (0 == $this->number) {
             return $string;

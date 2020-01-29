@@ -33,9 +33,6 @@ final class Services implements ServicesInterface
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withApi(ApiInterface $api): ServicesInterface
     {
         $new = clone $this;
@@ -44,25 +41,16 @@ final class Services implements ServicesInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasApi(): bool
     {
         return isset($this->api);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function api(): ApiInterface
     {
         return $this->api;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withRouter(RouterInterface $router): ServicesInterface
     {
         $new = clone $this;
@@ -71,17 +59,11 @@ final class Services implements ServicesInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasRouter(): bool
     {
         return isset($this->router);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function router(): RouterInterface
     {
         return $this->router;

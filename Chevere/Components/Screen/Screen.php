@@ -41,33 +41,21 @@ final class Screen implements ScreenInterface
         $this->formatter = $formatter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function traceability(): bool
     {
         return $this->traceability;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function formatter(): FormatterInterface
     {
         return $this->formatter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function trace(): array
     {
         return $this->trace;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function add(string $display): ScreenInterface
     {
         $this->handleTrace();
@@ -75,9 +63,6 @@ final class Screen implements ScreenInterface
         return $this->stringAdder($display);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addNl(string $display): ScreenInterface
     {
         $this->handleTrace();
@@ -85,9 +70,6 @@ final class Screen implements ScreenInterface
         return $this->stringAdder($display . "\n");
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addStream(StreamInterface $stream): ScreenInterface
     {
         if (!$stream->isReadable()) {
@@ -100,17 +82,11 @@ final class Screen implements ScreenInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function queue(): array
     {
         return $this->queue;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function emit(): ScreenInterface
     {
         $this->handleTrace();

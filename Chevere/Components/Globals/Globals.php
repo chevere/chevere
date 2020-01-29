@@ -68,73 +68,46 @@ final class Globals implements GlobalsInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function argc(): int
     {
         return $this->argc;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function argv(): array
     {
         return $this->argv;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function server(): array
     {
         return $this->server;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(): array
     {
         return $this->get;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function post(): array
     {
         return $this->post;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function files(): array
     {
         return $this->files;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function cookie(): array
     {
         return $this->cookie;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function session(): array
     {
         return $this->session;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function globals(): array
     {
         return $this->globals;

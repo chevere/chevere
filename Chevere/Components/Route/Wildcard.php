@@ -15,7 +15,6 @@ namespace Chevere\Components\Route;
 
 use Chevere\Components\Route\Exceptions\WildcardInvalidCharsException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\WildcardMatch;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
 use Chevere\Components\Route\Interfaces\WildcardMatchInterface;
@@ -50,9 +49,6 @@ final class Wildcard implements WildcardInterface
         $this->match = new WildcardMatch(WildcardInterface::REGEX_MATCH_DEFAULT);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withMatch(WildcardMatchInterface $regexMatch): WildcardInterface
     {
         $new = clone $this;
@@ -61,33 +57,21 @@ final class Wildcard implements WildcardInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function name(): string
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toString(): string
     {
         return $this->wildcard;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function match(): WildcardMatchInterface
     {
         return $this->match;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function assertPathUri(PathUriInterface $pathUri): void
     {
         $noWildcard = false === strpos($pathUri->toString(), $this->wildcard);

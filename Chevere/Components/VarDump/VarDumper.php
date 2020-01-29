@@ -18,7 +18,6 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\VarDump\Interfaces\DumperInterface;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 use Chevere\Components\VarDump\Interfaces\OutputterInterface;
-use Chevere\Components\VarDump\VarDump;
 
 /**
  * The Chevere VarDumper.
@@ -43,25 +42,16 @@ class VarDumper implements DumperInterface
         $this->outputter = $outputter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function formatter(): FormatterInterface
     {
         return $this->formatter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function outputter(): OutputterInterface
     {
         return $this->outputter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function withVars(...$vars): DumperInterface
     {
         $new = clone $this;
@@ -74,17 +64,11 @@ class VarDumper implements DumperInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function vars(): array
     {
         return $this->vars;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function toString(): string
     {
         return $this->outputter
@@ -92,9 +76,6 @@ class VarDumper implements DumperInterface
             ->toString();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function debugBacktrace(): array
     {
         if (!isset($this->debugBacktrace)) {

@@ -19,9 +19,7 @@ if (!function_exists('varInfo')) {
      */
     function varInfo(...$vars)
     {
-        return
-            (new VarDump(...$vars))
-                ->tostring();
+        return (new VarDump(...$vars))->tostring();
     }
 }
 

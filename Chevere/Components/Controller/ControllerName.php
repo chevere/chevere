@@ -34,9 +34,7 @@ final class ControllerName implements ControllerNameInterface
         $this->assertControllerName();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function toString(): string
     {
         return $this->name;

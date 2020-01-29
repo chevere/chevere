@@ -45,17 +45,11 @@ final class RouterMaker implements RouterMakerInterface
         $this->properties = new RouterProperties();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function properties(): RouterPropertiesInterface
     {
         return $this->properties;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withAddedRouteable(RouteableInterface $routeable, string $group): RouterMakerInterface
     {
         $new = clone $this;

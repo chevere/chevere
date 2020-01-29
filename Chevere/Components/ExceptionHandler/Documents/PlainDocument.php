@@ -18,9 +18,6 @@ use Chevere\Components\ExceptionHandler\Interfaces\FormatterInterface;
 
 final class PlainDocument extends AbstractDocument
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getFormatter(): FormatterInterface
     {
         return new PlainFormatter;

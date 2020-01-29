@@ -28,17 +28,11 @@ final class CacheItem implements CacheItemInterface
         $this->fileReturn = $fileReturn;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function raw()
     {
         return $this->fileReturn->raw();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function var()
     {
         return $this->fileReturn->var();

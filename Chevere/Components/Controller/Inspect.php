@@ -27,7 +27,7 @@ use function ChevereFn\stringReplaceLast;
  */
 final class Inspect implements InspectInterface
 {
-    /** @var string The Controller interface */
+    /** The Controller interface */
     const INTERFACE_CONTROLLER = ControllerInterface::class;
 
     /** @var string The Controller interface */
@@ -114,13 +114,13 @@ final class Inspect implements InspectInterface
         } catch (LogicException $e) {
             throw new LogicException(
                 (new Message($e->getMessage()))
-                    ->code('%interfaceController%', static::INTERFACE_CONTROLLER)
+                    ->code('%interfaceController%', self::INTERFACE_CONTROLLER)
                     ->code('%reflectionName%', $this->reflection->getName())
-                    ->code('%interfaceControllerResource%', static::INTERFACE_CONTROLLER_RESOURCE)
+                    ->code('%interfaceControllerResource%', self::INTERFACE_CONTROLLER_RESOURCE)
                     ->code('%reflectionFilename%', $this->reflection->getFileName())
                     ->code('%endpoint%', $this->httpMethod . ' api/users')
                     ->code('%className%', $this->className)
-                    ->code('%propResources%', 'const ' . static::PROP_RESOURCES)
+                    ->code('%propResources%', 'const ' . self::PROP_RESOURCES)
                     ->code('%filepath%', $this->filepath)
                     ->toString()
             );
@@ -162,14 +162,14 @@ final class Inspect implements InspectInterface
 
     private function handleControllerInterface(): void
     {
-        if (!$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER)) {
+        if (!$this->reflection->implementsInterface(self::INTERFACE_CONTROLLER)) {
             throw new LogicException('Class %reflectionName% must implement the %interfaceController% interface at %reflectionFilename%');
         }
     }
 
     // private function handleControllerResourceInterface(): void
     // {
-    //     if ($this->useResource && !$this->reflection->implementsInterface(static::INTERFACE_CONTROLLER_RESOURCE)) {
+    //     if ($this->useResource && !$this->reflection->implementsInterface(self::INTERFACE_CONTROLLER_RESOURCE)) {
     //         throw new LogicException('Class %reflectionName% must implement the %interfaceControllerResource% interface at %reflectionFilename%.');
     //     }
     // }
@@ -213,7 +213,7 @@ final class Inspect implements InspectInterface
             // $resourceReflection = (new BetterReflection())
             //     ->classReflector()
             //     ->reflect($resourceClassName);
-            // if ($resourceReflection->implementsInterface(static::INTERFACE_CREATE_FROM_STRING)) {
+            // if ($resourceReflection->implementsInterface(self::INTERFACE_CREATE_FROM_STRING)) {
             //     $resourcesFromString[$propName] = [
             //         'regex' => $resourceReflection->getStaticPropertyValue('stringRegex'),
             //         'description' => $resourceReflection->getStaticPropertyValue('stringDescription'),

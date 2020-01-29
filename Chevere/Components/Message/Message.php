@@ -58,15 +58,11 @@ final class Message implements MessageInterface
         $replace = (string) $args[1]; // $replace String to replace with
         $tagged = '' != $replace ? "<$tag>$replace</$tag>" : '';
         $new = clone $this;
-        $new = $new
-            ->strtr($search, $tagged);
 
-        return $new;
+        return $new
+            ->strtr($search, $tagged);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function strtr(string $search, string $replace): MessageInterface
     {
         $new = clone $this;
@@ -76,17 +72,11 @@ final class Message implements MessageInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toPlainString(): string
     {
         return $this->message;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toString(): string
     {
         if (BootstrapInstance::get()->isCli()) {

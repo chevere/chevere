@@ -37,17 +37,11 @@ class Path implements PathInterface
         $this->absolute = $absolute;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function absolute(): string
     {
         return $this->absolute;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function exists(): bool
     {
         $this->clearStatCache();
@@ -55,9 +49,6 @@ class Path implements PathInterface
         return false !== stream_resolve_include_path($this->absolute);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDir(): bool
     {
         $this->clearStatCache();
@@ -65,9 +56,6 @@ class Path implements PathInterface
         return is_dir($this->absolute);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isFile(): bool
     {
         $this->clearStatCache();
@@ -75,9 +63,6 @@ class Path implements PathInterface
         return is_file($this->absolute);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getChild(string $path): PathInterface
     {
         $parent = $this->absolute();

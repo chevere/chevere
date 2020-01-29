@@ -30,22 +30,13 @@ abstract class AbstractFormatter implements FormatterInterface
         $this->varDumpFormatter = $this->getVarDumpFormatter();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function varDumpFormatter(): VarDumpFormatterInterface
     {
         return $this->varDumpFormatter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function getVarDumpFormatter(): VarDumpFormatterInterface;
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTraceEntryTemplate(): string
     {
         return '#' . TraceInterface::TAG_ENTRY_POS . ' ' . TraceInterface::TAG_ENTRY_FILE_LINE . "\n"
@@ -53,17 +44,11 @@ abstract class AbstractFormatter implements FormatterInterface
             . '()' . TraceInterface::TAG_ENTRY_ARGUMENTS;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getHr(): string
     {
         return '------------------------------------------------------------';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getLineBreak(): string
     {
         return "\n\n";

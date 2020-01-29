@@ -32,7 +32,7 @@ final class ResolverException extends Exception
      * @param int $httpStatusCode An HTTP status code.
      * @param Throwable $previous
      */
-    public function __construct(string $message = '', int $httpStatusCode, Throwable $previous = null)
+    public function __construct(string $message, int $httpStatusCode, Throwable $previous = null)
     {
         if (!isset($this->statuses[$httpStatusCode])) {
             throw new InvalidArgumentException(

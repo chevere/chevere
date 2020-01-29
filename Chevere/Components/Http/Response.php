@@ -29,9 +29,6 @@ final class Response implements ResponseInterface
         $this->guzzle = new GuzzleResponse(200, $this->getDateHeader());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withGuzzle(GuzzleResponse $guzzle): ResponseInterface
     {
         $new = clone $this;
@@ -40,63 +37,45 @@ final class Response implements ResponseInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function guzzle(): GuzzleResponse
     {
         return $this->guzzle;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function statusLine(): string
     {
         return sprintf('HTTP/%s %s %s', $this->guzzle->getProtocolVersion(), $this->guzzle->getStatusCode(), $this->guzzle->getReasonPhrase());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function headersString(): string
     {
         $headers = [];
         foreach ($this->guzzle->getHeaders() as $name => $values) {
             foreach ($values as $value) {
-                $headers[] = "$name: $value";
+                $headers[] = "${name}: ${value}";
             }
         }
 
         return implode("\n", $headers);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function content(): string
     {
         return (string) $this->guzzle->getBody();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sendHeaders(): ResponseInterface
     {
         header($this->statusLine(), true, $this->guzzle->getStatusCode());
         foreach ($this->guzzle->getHeaders() as $name => $values) {
             foreach ($values as $value) {
-                header("$name: $value", false);
+                header("${name}: ${value}", false);
             }
         }
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sendBody(): ResponseInterface
     {
         $stream = $this->guzzle->getBody();

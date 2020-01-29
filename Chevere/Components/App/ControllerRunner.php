@@ -42,9 +42,6 @@ final class ControllerRunner implements ControllerRunnerInterface
         $this->app = $app;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function run(string $controllerName): ControllerInterface
     {
         $this->controllerName = $controllerName;

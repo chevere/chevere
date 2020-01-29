@@ -15,7 +15,4 @@ namespace Chevere\Components\Runtime\Traits;
 
 trait HandlerTrait
 {
-    /**
-     * {@inheritdoc}
-     */
 }

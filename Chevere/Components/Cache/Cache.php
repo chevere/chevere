@@ -56,9 +56,6 @@ final class Cache implements CacheInterface
         $this->puts = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withPut(CacheKeyInterface $cacheKey, VariableExportInterface $variableExport): CacheInterface
     {
         $path = $this->getPath($cacheKey->toString());
@@ -79,9 +76,6 @@ final class Cache implements CacheInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withRemove(CacheKeyInterface $cacheKey): CacheInterface
     {
         $new = clone $this;
@@ -103,18 +97,12 @@ final class Cache implements CacheInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function exists(CacheKeyInterface $cacheKey): bool
     {
         return $this->getPath($cacheKey->toString())
             ->exists();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(CacheKeyInterface $cacheKey): CacheItemInterface
     {
         $path = $this->getPath($cacheKey->toString());
@@ -122,19 +110,15 @@ final class Cache implements CacheInterface
             throw new CacheKeyNotFoundException('No cache for key ' . $cacheKey->toString());
         }
 
-        return
-            new CacheItem(
-                new FileReturn(
-                    new FilePhp(
-                        new File($path)
-                    )
+        return new CacheItem(
+            new FileReturn(
+                new FilePhp(
+                    new File($path)
                 )
-            );
+            )
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toArray(): array
     {
         return $this->puts;

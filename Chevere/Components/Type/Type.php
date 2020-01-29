@@ -42,17 +42,11 @@ final class Type implements TypeInterface
         $this->assertHasPrimitive();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function primitive(): string
     {
         return $this->primitive;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function typeHinting(): string
     {
         if (in_array($this->primitive, [TypeInterface::CLASS_NAME, TypeInterface::INTERFACE_NAME])) {
@@ -62,9 +56,6 @@ final class Type implements TypeInterface
         return $this->primitive;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validate($var): bool
     {
         if (is_object($var) && $this->isAbleToValidateObjects()) {
@@ -74,9 +65,6 @@ final class Type implements TypeInterface
         return $this->validator()($var);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function validator(): callable
     {
         return TypeInterface::TYPE_VALIDATORS[$this->primitive];

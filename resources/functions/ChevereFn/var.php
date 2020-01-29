@@ -16,7 +16,7 @@ namespace ChevereFn;
 function varType($var): string
 {
     $type = strtolower(gettype($var));
-    if ('double' == $type) {
+    if ($type === 'double') {
         return 'float';
     }
 

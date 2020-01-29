@@ -29,33 +29,21 @@ final class Breadcrum implements BreadcrumInterface
 
     private int $id = -1;
 
-    /**
-     * {@inheritdoc}
-     */
     public function has(int $pos): bool
     {
         return array_key_exists($pos, $this->items);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasAny(): bool
     {
         return !empty($this->items);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function pos(): int
     {
         return $this->pos;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withAddedItem(string $item): BreadcrumInterface
     {
         $new = clone $this;
@@ -66,9 +54,6 @@ final class Breadcrum implements BreadcrumInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withRemovedItem(int $pos): BreadcrumInterface
     {
         if (!array_key_exists($pos, $this->items)) {

@@ -48,17 +48,11 @@ final class Unserialize implements UnserializeInterface
         $this->type = new Type($type);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function var()
     {
         return $this->var;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function type(): TypeInterface
     {
         return $this->type;

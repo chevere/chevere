@@ -34,17 +34,11 @@ final class Routed implements RoutedInterface
         $this->wildcards = $wildcards;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function route(): RouteInterface
     {
         return $this->route;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function wildcards(): array
     {
         return $this->wildcards;

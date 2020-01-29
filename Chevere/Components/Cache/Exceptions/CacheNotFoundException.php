@@ -16,4 +16,5 @@ namespace Chevere\Components\Cache\Exceptions;
 use Exception;
 
 final class CacheNotFoundException extends Exception
-{ }
+{
+}

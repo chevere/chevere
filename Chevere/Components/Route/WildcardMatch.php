@@ -34,9 +34,6 @@ final class WildcardMatch implements WildcardMatchInterface
             ->assertNoCapture();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toString(): string
     {
         return $this->match;

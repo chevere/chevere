@@ -37,9 +37,6 @@ final class MiddlewareNameCollection implements MiddlewareNameCollectionInterfac
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withAddedMiddlewareName(MiddlewareNameInterface $middlewareName): MiddlewareNameCollectionInterface
     {
         $new = clone $this;
@@ -48,25 +45,16 @@ final class MiddlewareNameCollection implements MiddlewareNameCollectionInterfac
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasAny(): bool
     {
-        return !empty($this->index);
+        return $this->index !== [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has(MiddlewareNameInterface $middlewareName): bool
     {
         return in_array($middlewareName->toString(), $this->index);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toArray(): array
     {
         return $this->array;

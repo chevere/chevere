@@ -33,23 +33,17 @@ final class HtmlDocument extends AbstractDocument
     /** @var string HTML body used when debug=1 */
     const BODY_DEBUG_1_HTML = '<main class="main--stack"><div>%content%</div></main>';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getFormatter(): FormatterInterface
     {
         return new HtmlFormatter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTemplate(): array
     {
         $template = parent::getTemplate();
         if (!$this->exceptionHandler->isDebug()) {
             $template = [
-                static::SECTION_TITLE => $template[static::SECTION_TITLE],
+                self::SECTION_TITLE => $template[self::SECTION_TITLE],
             ];
         }
 
@@ -59,22 +53,19 @@ final class HtmlDocument extends AbstractDocument
     public function getSectionTitle(): string
     {
         if (!$this->exceptionHandler->isDebug()) {
-            return $this->formatter->wrapTitle(static::NO_DEBUG_TITLE_PLAIN) . static::NO_DEBUG_CONTENT_HTML
-                . '<p class="fine-print">' . static::TAG_DATE_TIME_UTC_ATOM . ' • ' . static::TAG_ID . '</p>';
+            return $this->formatter->wrapTitle(self::NO_DEBUG_TITLE_PLAIN) . self::NO_DEBUG_CONTENT_HTML
+                . '<p class="fine-print">' . self::TAG_DATE_TIME_UTC_ATOM . ' • ' . self::TAG_ID . '</p>';
         }
 
-        return $this->formatter->wrapTitle(static::TAG_TITLE . ' <span>in&nbsp;' . static::TAG_FILE_LINE . '</span>');
+        return $this->formatter->wrapTitle(self::TAG_TITLE . ' <span>in&nbsp;' . self::TAG_FILE_LINE . '</span>');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function prepare(string $document): string
     {
-        $preDocument = strtr(static::HTML_TEMPLATE, [
+        $preDocument = strtr(self::HTML_TEMPLATE, [
             '%bodyClass%' => !headers_sent() ? 'body--flex' : 'body--block',
             '%css%' => file_get_contents(dirname(__DIR__) . '/src/template.css'),
-            '%body%' => $this->exceptionHandler->isDebug() ? static::BODY_DEBUG_1_HTML : static::BODY_DEBUG_0_HTML,
+            '%body%' => $this->exceptionHandler->isDebug() ? self::BODY_DEBUG_1_HTML : self::BODY_DEBUG_0_HTML,
         ]);
 
         return str_replace('%content%', $document, $preDocument);

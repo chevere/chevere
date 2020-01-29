@@ -67,73 +67,46 @@ final class Exception implements ExceptionInterface
         $this->trace = $exception->getTrace();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function className(): string
     {
         return $this->className;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function code(): int
     {
         return $this->code;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function severity(): int
     {
         return $this->severity;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function loggerLevel(): string
     {
         return $this->loggerLevel;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function type(): string
     {
         return $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function message(): string
     {
         return $this->message;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function file(): string
     {
         return $this->file;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function line(): int
     {
         return $this->line;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function trace(): array
     {
         return $this->trace;

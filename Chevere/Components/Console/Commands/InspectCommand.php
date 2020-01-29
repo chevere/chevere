@@ -117,7 +117,7 @@ final class InspectCommand extends Command
             if ($parameter->isDefaultValueAvailable()) {
                 $aux .= ' = ' . ($parameter->getDefaultValue() ?? 'null');
             }
-            $this->arguments[] = "#$argPos $aux";
+            $this->arguments[] = "#${argPos} ${aux}";
             ++$argPos;
         }
     }

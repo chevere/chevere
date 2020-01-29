@@ -25,25 +25,16 @@ abstract class AbstractOutputter implements OutputterInterface
 
     protected DumperInterface $dumper;
 
-    /**
-     * {@inheritdoc}
-     */
     public function prepare(string $output): string
     {
         return $output;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function callback(string $output): string
     {
         return $output;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function withDumper(DumperInterface $dumper): OutputterInterface
     {
         $new = clone $this;
@@ -52,17 +43,11 @@ abstract class AbstractOutputter implements OutputterInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function dumper(): DumperInterface
     {
         return $this->dumper;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function toString(): string
     {
         $this->output = $this->prepare($this->output);

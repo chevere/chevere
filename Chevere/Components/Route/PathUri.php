@@ -66,33 +66,21 @@ final class PathUri implements PathUriInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toString(): string
     {
         return $this->path;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function key(): string
     {
         return $this->key;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasWildcards(): bool
     {
         return isset($this->wildcards);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function wildcards(): array
     {
         return $this->wildcards;
@@ -108,7 +96,7 @@ final class PathUri implements PathUriInterface
             );
         }
         $illegals = $this->getIllegalChars();
-        if (!empty($illegals)) {
+        if ($illegals) {
             throw new PathUriInvalidCharsException(
                 (new Message('Route path %path% must not contain illegal characters (' . implode(' ', $illegals) . ')'))
                     ->code('%path%', $this->path)

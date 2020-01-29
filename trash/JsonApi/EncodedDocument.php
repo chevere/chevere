@@ -43,9 +43,9 @@ final class EncodedDocument
 
     private function setEncodingOptions(): void
     {
-        $this->encodingOptions = static::DEFAULT_ENCODING_OPTIONS;
+        $this->encodingOptions = self::DEFAULT_ENCODING_OPTIONS;
         if (BootstrapInstance::get()->isCli()) {
-            $this->encodingOptions = $this->encodingOptions | JSON_PRETTY_PRINT;
+            $this->encodingOptions |= JSON_PRETTY_PRINT;
         }
     }
 

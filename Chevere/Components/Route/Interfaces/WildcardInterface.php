@@ -15,7 +15,6 @@ namespace Chevere\Components\Route\Interfaces;
 
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardInvalidRegexException;
-use Chevere\Components\Route\Interfaces\WildcardMatchInterface;
 
 interface WildcardInterface
 {

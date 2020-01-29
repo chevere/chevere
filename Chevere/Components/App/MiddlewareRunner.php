@@ -43,9 +43,6 @@ final class MiddlewareRunner implements MiddlewareRunnerInterface
         $this->hasRun = false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withRun(): MiddlewareRunnerInterface
     {
         $new = clone $this;
@@ -55,17 +52,11 @@ final class MiddlewareRunner implements MiddlewareRunnerInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasRun(): bool
     {
         return $this->hasRun;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function record(): array
     {
         return $this->record;

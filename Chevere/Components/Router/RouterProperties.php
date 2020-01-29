@@ -58,9 +58,6 @@ final class RouterProperties implements RouterPropertiesInterface
         $this->named = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withRegex(string $regex): RouterPropertiesInterface
     {
         $new = clone $this;
@@ -74,17 +71,11 @@ final class RouterProperties implements RouterPropertiesInterface
         return '' != $this->regex;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function regex(): string
     {
         return $this->regex;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withRoutes(array $routes): RouterPropertiesInterface
     {
         $new = clone $this;
@@ -93,17 +84,11 @@ final class RouterProperties implements RouterPropertiesInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function routes(): array
     {
         return $this->routes;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withIndex(array $index): RouterPropertiesInterface
     {
         $new = clone $this;
@@ -112,17 +97,11 @@ final class RouterProperties implements RouterPropertiesInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function index(): array
     {
         return $this->index;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withGroups(array $groups): RouterPropertiesInterface
     {
         $new = clone $this;
@@ -131,17 +110,11 @@ final class RouterProperties implements RouterPropertiesInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function groups(): array
     {
         return $this->groups;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withNamed(array $named): RouterPropertiesInterface
     {
         $new = clone $this;
@@ -150,17 +123,11 @@ final class RouterProperties implements RouterPropertiesInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function named(): array
     {
         return $this->named;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function assert(): void
     {
         foreach ($this->classMap as $className) {
@@ -169,9 +136,6 @@ final class RouterProperties implements RouterPropertiesInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toArray(): array
     {
         $array = [];

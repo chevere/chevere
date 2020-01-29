@@ -23,17 +23,11 @@ use Chevere\Components\VarDump\Wrappers\HtmlHighlight;
  */
 final class HtmlFormatter implements FormatterInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function indent(int $indent): string
     {
         return str_repeat(TemplateInterface::HTML_INLINE_PREFIX, $indent);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function emphasis(string $string): string
     {
         return sprintf(
@@ -43,17 +37,11 @@ final class HtmlFormatter implements FormatterInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function filterEncodedChars(string $string): string
     {
         return htmlspecialchars($string);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function highlight(string $key, string $string): string
     {
         return

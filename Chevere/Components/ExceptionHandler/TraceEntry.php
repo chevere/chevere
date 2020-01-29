@@ -68,57 +68,36 @@ final class TraceEntry implements TraceEntryInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function file(): string
     {
         return $this->file;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function line(): int
     {
         return $this->line;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function fileLine(): string
     {
         return $this->fileLine;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function function(): string
     {
         return $this->function;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function class(): string
     {
         return $this->class;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function type(): string
     {
         return $this->type;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function args(): array
     {
         return $this->args;
@@ -127,7 +106,7 @@ final class TraceEntry implements TraceEntryInterface
     private function assertEntry(): void
     {
         $missing = [];
-        foreach (static::MUST_HAVE_KEYS as $key) {
+        foreach (self::MUST_HAVE_KEYS as $key) {
             if (!array_key_exists($key, $this->entry)) {
                 $missing[] = $key;
             }
@@ -145,7 +124,7 @@ final class TraceEntry implements TraceEntryInterface
     {
         $this->line = $this->entry['line'] ?? 0;
         $this->args = $this->entry['args'] ?? [];
-        foreach (static::KEYS as $propName) {
+        foreach (self::KEYS as $propName) {
             if (in_array($propName, ['line', 'args'])) {
                 continue;
             }

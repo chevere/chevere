@@ -47,9 +47,6 @@ final class App implements AppInterface
         $this->response = $response;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withServices(ServicesInterface $services): AppInterface
     {
         $new = clone $this;
@@ -58,17 +55,11 @@ final class App implements AppInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function services(): ServicesInterface
     {
         return $this->services;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withResponse(ResponseInterface $response): AppInterface
     {
         $new = clone $this;
@@ -77,17 +68,11 @@ final class App implements AppInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function response(): ResponseInterface
     {
         return $this->response;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withRequest(RequestInterface $request): AppInterface
     {
         $new = clone $this;
@@ -97,25 +82,16 @@ final class App implements AppInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasRequest(): bool
     {
         return isset($this->request);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function request(): RequestInterface
     {
         return $this->request;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withRouted(RoutedInterface $routed): AppInterface
     {
         $new = clone $this;
@@ -134,9 +110,6 @@ final class App implements AppInterface
         return $this->routed;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withArguments(array $arguments): AppInterface
     {
         $new = clone $this;
@@ -145,17 +118,11 @@ final class App implements AppInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasArguments(): bool
     {
         return isset($this->arguments);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function arguments(): array
     {
         return $this->arguments;

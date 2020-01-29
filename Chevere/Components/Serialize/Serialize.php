@@ -29,9 +29,6 @@ final class Serialize implements SerializeInterface
         $this->serialized = $variableExport->toSerialize();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toString(): string
     {
         return $this->serialized;

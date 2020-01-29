@@ -50,17 +50,11 @@ final class Runner implements RunnerInterface
         $this->builder = $builder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function builder(): BuilderInterface
     {
         return $this->builder;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withConsoleLoop(): RunnerInterface
     {
         $new = clone $this;
@@ -69,17 +63,11 @@ final class Runner implements RunnerInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasConsoleLoop(): bool
     {
         return isset($this->consoleLoop);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withRun(): RunnerInterface
     {
         $new = clone $this;

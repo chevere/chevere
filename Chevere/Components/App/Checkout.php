@@ -57,9 +57,6 @@ final class Checkout implements CheckoutInterface
         return $this->fileReturn;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function checksum(): string
     {
         return $this->fileReturn->filePhp()->file()->checksum();

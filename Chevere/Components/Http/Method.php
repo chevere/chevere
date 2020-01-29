@@ -33,9 +33,6 @@ final class Method implements MethodInterface
         $this->assertMethod();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toString(): string
     {
         return $this->name;

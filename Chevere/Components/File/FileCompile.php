@@ -37,17 +37,11 @@ final class FileCompile implements FileCompileInterface
         $this->filePhp = $filePhp;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function filePhp(): FilePhpInterface
     {
         return $this->filePhp;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function compile(): void
     {
         $this->filePhp->file()->assertExists();
@@ -64,9 +58,6 @@ final class FileCompile implements FileCompileInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function destroy(): void
     {
         if (!opcache_invalidate($this->filePhp->file()->path()->absolute())) {

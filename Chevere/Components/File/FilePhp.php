@@ -36,9 +36,7 @@ final class FilePhp implements FilePhpInterface
         $this->assertFilePhp();
     }
 
-    /**
-     * {@inheritdoc}
-     */
+
     public function file(): FileInterface
     {
         return $this->file;

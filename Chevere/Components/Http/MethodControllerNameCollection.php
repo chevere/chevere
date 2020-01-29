@@ -39,9 +39,6 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withAddedMethodControllerName(MethodControllerNameInterface $methodControllerName): MethodControllerNameCollectionInterface
     {
         $new = clone $this;
@@ -50,25 +47,16 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasAny(): bool
     {
-        return !empty($this->index);
+        return $this->index !== [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has(MethodInterface $method): bool
     {
         return in_array($method->toString(), $this->index);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(MethodInterface $method): MethodControllerNameInterface
     {
         $pos = array_search($method->toString(), $this->index);
@@ -83,9 +71,6 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
         return $this->array[$pos];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toArray(): array
     {
         return $this->array;

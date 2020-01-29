@@ -40,17 +40,11 @@ final class Endpoint implements EndpointInterface
         $this->autofillMissingOptionsHead();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function methodControllerNameCollection(): MethodControllerNameCollectionInterface
     {
         return $this->methodControllerNameCollection;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toArray(): array
     {
         return $this->array;

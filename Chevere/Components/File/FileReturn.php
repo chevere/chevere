@@ -47,9 +47,6 @@ final class FileReturn implements FileReturnInterface
         $this->filePhp()->file()->assertExists();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withNoStrict(): FileReturnInterface
     {
         $new = clone $this;
@@ -58,17 +55,11 @@ final class FileReturn implements FileReturnInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function filePhp(): FilePhpInterface
     {
         return $this->filePhp;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function raw()
     {
         $this->validate();
@@ -76,9 +67,6 @@ final class FileReturn implements FileReturnInterface
         return include $this->filePhp()->file()->path()->absolute();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function var()
     {
         $var = $this->raw();
@@ -94,9 +82,6 @@ final class FileReturn implements FileReturnInterface
         return $var;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function put(VariableExportInterface $variableExport): void
     {
         $var = $variableExport->var();
@@ -120,7 +105,7 @@ final class FileReturn implements FileReturnInterface
                 $unserialize = new Unserialize($var);
                 $var = $unserialize->var();
             } catch (UnserializeException $e) {
-                // $e control
+                // $e
             }
         }
 

@@ -40,9 +40,6 @@ final class Routeable implements RouteableInterface
         $this->assertMethodControllerNames();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function route(): RouteInterface
     {
         return $this->route;

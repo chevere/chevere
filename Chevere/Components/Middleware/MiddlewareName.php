@@ -37,9 +37,6 @@ final class MiddlewareName implements MiddlewareNameInterface
         $this->assertMiddlewareInterface();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toString(): string
     {
         return $this->name;

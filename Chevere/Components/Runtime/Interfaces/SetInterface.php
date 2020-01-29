@@ -23,7 +23,6 @@ interface SetInterface
     public function value(): string;
 
     /**
-     *
      * @return string The name of the set, i.e: "debug" or "locale".
      */
     public function name(): string;

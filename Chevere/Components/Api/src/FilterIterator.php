@@ -24,9 +24,6 @@ final class FilterIterator extends RecursiveFilterIterator implements FilterIter
     /** @var array Accepted files array [GET.php, _GET.php, POST.php, ...] */
     private array $acceptFilenames;
 
-    /**
-     * {@inheritdoc}
-     */
     public function withAcceptFilenames(array $methods): FilterIteratorInterface
     {
         $new = clone $this;
@@ -37,17 +34,11 @@ final class FilterIterator extends RecursiveFilterIterator implements FilterIter
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function acceptFilenames(): array
     {
         return $this->acceptFilenames;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getChildren(): RecursiveFilterIterator
     {
         $children = parent::getChildren();
@@ -56,9 +47,6 @@ final class FilterIterator extends RecursiveFilterIterator implements FilterIter
         return $children;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function accept(): bool
     {
         return $this->hasChildren() || in_array($this->current()->getFilename(), $this->acceptFilenames);

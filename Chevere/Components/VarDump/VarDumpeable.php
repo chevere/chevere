@@ -49,17 +49,11 @@ final class VarDumpeable implements DumpeableInterface
         $this->setTemplate();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function var()
     {
         return $this->var;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function type(): string
     {
         return $this->type;
@@ -70,9 +64,6 @@ final class VarDumpeable implements DumpeableInterface
         return $this->template;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function processorName(): string
     {
         return $this->processorName;

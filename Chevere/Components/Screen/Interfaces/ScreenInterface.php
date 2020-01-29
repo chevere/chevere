@@ -58,7 +58,6 @@ interface ScreenInterface
     public function emit(): ScreenInterface;
 
     /**
-     *
      * @return array StreamInterface[]
      */
     public function queue(): array;

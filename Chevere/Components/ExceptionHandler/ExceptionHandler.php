@@ -51,33 +51,21 @@ final class ExceptionHandler implements ExceptionHandlerInterface
         $this->id = uniqid('', true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function dateTimeUtc(): DateTimeInterface
     {
         return $this->dateTimeUtc;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function exception(): ExceptionInterface
     {
         return $this->exception;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function id(): string
     {
         return $this->id;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withIsDebug(bool $isDebug): ExceptionHandlerInterface
     {
         $new = clone $this;
@@ -86,17 +74,11 @@ final class ExceptionHandler implements ExceptionHandlerInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDebug(): bool
     {
         return $this->isDebug;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withRequest(RequestInterface $request): ExceptionHandlerInterface
     {
         $new = clone $this;
@@ -105,17 +87,11 @@ final class ExceptionHandler implements ExceptionHandlerInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasRequest(): bool
     {
         return isset($this->request);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function request(): RequestInterface
     {
         $this->assertPropertyMethod();

@@ -62,9 +62,6 @@ final class Parameters implements ParametersInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withAddedRoutePaths(PathAppInterface ...$paths): ParametersInterface
     {
         $new = clone $this;
@@ -85,41 +82,26 @@ final class Parameters implements ParametersInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasParameters(): bool
     {
         return $this->hasApi() || $this->hasRoutes();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasApi(): bool
     {
         return isset($this->api);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function api(): string
     {
         return $this->api;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasRoutes(): bool
     {
         return isset($this->routes);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function routes(): array
     {
         return $this->routes;

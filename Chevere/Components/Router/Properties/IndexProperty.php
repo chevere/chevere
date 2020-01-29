@@ -38,9 +38,6 @@ final class IndexProperty extends PropertyBase implements IndexPropertyInterface
         $this->tryAsserts();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function asserts(): void
     {
         $this->assertArrayNotEmpty($this->value);

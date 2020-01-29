@@ -25,7 +25,7 @@ final class ConsoleOutputter extends AbstractOutputter
     public function __construct()
     {
         $this->consoleOutput = new ConsoleOutput();
-        $this->outputHr = (new ConsoleColor)->apply('blue', static::OUTPUT_HR);
+        $this->outputHr = (new ConsoleColor)->apply('blue', self::OUTPUT_HR);
     }
 
     public function prepare(string $output): string
@@ -38,9 +38,8 @@ final class ConsoleOutputter extends AbstractOutputter
                 : null
             )
             . $this->dumper->debugBacktrace()[$aux]['function'] . '()';
-        $output .= "\n" . (new ConsoleColor)->apply(['bold', 'red'], $maker) . "\n" . $this->outputHr . "\n";
 
-        return $output;
+        return $output .= "\n" . (new ConsoleColor)->apply(['bold', 'red'], $maker) . "\n" . $this->outputHr . "\n";
     }
 
     public function callback(string $output): string

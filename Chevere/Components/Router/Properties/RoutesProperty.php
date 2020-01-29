@@ -33,9 +33,6 @@ final class RoutesProperty extends PropertyBase implements RoutesPropertyInterfa
         $this->tryAsserts();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function asserts(): void
     {
         $this->assertArrayNotEmpty($this->value);

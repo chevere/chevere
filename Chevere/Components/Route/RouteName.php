@@ -33,9 +33,6 @@ final class RouteName implements RouteNameInterface
         $this->assertFormat();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toString(): string
     {
         return $this->name;
@@ -46,9 +43,9 @@ final class RouteName implements RouteNameInterface
         if (!preg_match(RouteNameInterface::REGEX, $this->name)) {
             throw new RouteInvalidNameException(
                 (new Message('Expecting at least one alphanumeric, underscore, hypen or dot character, string %string% provided (regex %regex%)'))
-                ->code('%string%', $this->name)
-                ->code('%regex%', RouteNameInterface::REGEX)
-                ->toString()
+                    ->code('%string%', $this->name)
+                    ->code('%regex%', RouteNameInterface::REGEX)
+                    ->toString()
             );
         }
     }

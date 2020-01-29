@@ -64,9 +64,6 @@ final class ServicesBuilder implements ServicesBuilderInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function services(): ServicesInterface
     {
         return $this->services;

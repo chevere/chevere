@@ -11,7 +11,6 @@
 
 declare(strict_types=1);
 
-
 namespace ChevereFn;
 
 /**
@@ -42,7 +41,6 @@ namespace ChevereFn;
 
 //     return (int) ($value * pow(1000, $powFactor));
 // }
-
 
 /**
  * Get bytes from the php.ini values.

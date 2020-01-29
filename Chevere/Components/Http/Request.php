@@ -32,7 +32,7 @@ final class Request extends GuzzleHttpServerRequest implements RequestInterface
      * @param MethodInterface                       $method       HTTP method
      * @param PathUri                              $uri          URI
      * @param array                                $headers      Request headers
-     * @param string|null|resource|StreamInterface $body         Request body
+     * @param string|resource|StreamInterface\null $body         Request body
      * @param string                               $version      Protocol version
      * @param array                                $serverParams Typically the $_SERVER superglobal
      */
@@ -66,9 +66,6 @@ final class Request extends GuzzleHttpServerRequest implements RequestInterface
         $this->globals = new Globals($globals);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function globals(): GlobalsInterface
     {
         return $this->globals;
@@ -83,7 +80,7 @@ final class Request extends GuzzleHttpServerRequest implements RequestInterface
         $method = isset($globals->server()['REQUEST_METHOD'])
             ? $globals->server()['REQUEST_METHOD']
             : 'GET';
-        $uri = static::getUriFromGlobals();
+        $uri = self::getUriFromGlobals();
         $path = '/' . ltrim($uri->getPath(), '/');
         $body = new CachingStream(new LazyOpenStream('php://input', 'r+'));
         $protocol = isset($globals->server()['SERVER_PROTOCOL'])
@@ -102,6 +99,6 @@ final class Request extends GuzzleHttpServerRequest implements RequestInterface
             ->withCookieParams($globals->cookie())
             ->withQueryParams($globals->get())
             ->withParsedBody($globals->post())
-            ->withUploadedFiles(static::normalizeFiles($globals->files()));
+            ->withUploadedFiles(self::normalizeFiles($globals->files()));
     }
 }

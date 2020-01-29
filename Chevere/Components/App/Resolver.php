@@ -64,9 +64,6 @@ final class Resolver implements ResolverInterface
             );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function builder(): BuilderInterface
     {
         return $this->builder;

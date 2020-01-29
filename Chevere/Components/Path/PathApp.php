@@ -56,49 +56,31 @@ class PathApp implements PathAppInterface
         $this->setRelativePath();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function absolute(): string
     {
         return $this->pathContext->absolute();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function relative(): string
     {
         return $this->relative;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function exists(): bool
     {
         return $this->pathContext->exists();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isDir(): bool
     {
         return $this->pathContext->isDir();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isFile(): bool
     {
         return $this->pathContext->isFile();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getChild(string $path): PathInterface
     {
         return $this->pathContext->getChild($path);

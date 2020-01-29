@@ -36,9 +36,6 @@ final class Builder implements BuilderInterface
         $this->build = $build;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withBuild(BuildInterface $build): BuilderInterface
     {
         $new = clone $this;
@@ -47,17 +44,11 @@ final class Builder implements BuilderInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function build(): BuildInterface
     {
         return $this->build;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withControllerName(string $controllerName): BuilderInterface
     {
         $new = clone $this;
@@ -66,9 +57,6 @@ final class Builder implements BuilderInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withControllerArguments(array $arguments): BuilderInterface
     {
         $new = clone $this;
@@ -77,17 +65,11 @@ final class Builder implements BuilderInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasControllerArguments(): bool
     {
         return isset($this->controllerArguments);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function controllerArguments(): array
     {
         return $this->controllerArguments;

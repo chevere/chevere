@@ -23,9 +23,9 @@ final class Container implements ContainerInterface
     public function __construct(ScreenInterface $runtime)
     {
         $this->screens = [
-            static::RUNTIME => $runtime,
-            static::DEBUG => new SilentScreen,
-            static::CONSOLE => new SilentScreen,
+            self::RUNTIME => $runtime,
+            self::DEBUG => new SilentScreen,
+            self::CONSOLE => new SilentScreen,
         ];
     }
 
@@ -33,14 +33,14 @@ final class Container implements ContainerInterface
     {
         $new = clone $this;
 
-        return $new->withAddedScreen(static::DEBUG, $screen);
+        return $new->withAddedScreen(self::DEBUG, $screen);
     }
 
     public function withConsoleScreen(ScreenInterface $screen)
     {
         $new = clone $this;
 
-        return $new->withAddedScreen(static::CONSOLE, $screen);
+        return $new->withAddedScreen(self::CONSOLE, $screen);
     }
 
     public function withAddedScreen(string $name, ScreenInterface $screen): ContainerInterface

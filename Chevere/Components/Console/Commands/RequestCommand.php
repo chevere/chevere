@@ -190,7 +190,7 @@ final class RequestCommand extends Command
     private function setParsedOptions(): void
     {
         $this->parsedOptions = [];
-        foreach (static::JSON_OPTIONS as $v) {
+        foreach (self::JSON_OPTIONS as $v) {
             if (is_string($this->options[$v])) {
                 try {
                     $json = json_decode($this->options[$v], true, 512, JSON_THROW_ON_ERROR);

@@ -34,17 +34,11 @@ final class RouterCache implements RouterCacheInterface
         $this->cache = $cache;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function cache(): CacheInterface
     {
         return $this->cache;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withPut(RouterMakerInterface $routerMaker): RouterCacheInterface
     {
         $new = clone $this;
@@ -59,9 +53,6 @@ final class RouterCache implements RouterCacheInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getProperties(): RouterPropertiesInterface
     {
         $properties = new RouterProperties();

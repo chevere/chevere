@@ -247,7 +247,7 @@ final class ApiMaker implements ApiMakerInterface
     private function processRoutesMap(): void
     {
         foreach ($this->routesMap as $pathComponent => $httpMethods) {
-            /** @var string Full qualified route key for $pathComponent like /api/users/{user} */
+            /** Full qualified route key for $pathComponent like /api/users/{user} */
             $endpointRouteKey = stringLeftTail($pathComponent, '/');
             $this->route = new Route(new PathUri($endpointRouteKey));
             foreach ($httpMethods as $httpMethod => $controller) {

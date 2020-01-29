@@ -262,7 +262,7 @@ function stringCompare(string $safe, string $user): bool
         $result |= (ord($safe[$i % $safeLen]) ^ ord($user[$i]));
     }
     // They are only identical strings if $result is exactly 0...
-    return 0 === $result;
+    return $result === 0;
 }
 
 /**
@@ -352,8 +352,8 @@ function stringStripExtraWhitespace(string $string): string
 function stringUnaccent(string $string): string
 {
     $string = (string) $string;
-    $encoding = mb_detect_encoding($string) ?: false;
-    $utf8 = 'utf-8' == $encoding;
+    $encoding = mb_detect_encoding($string) ? true : false;
+    $utf8 = $encoding === 'utf-8';
     if (!$utf8) {
         $string = utf8_encode($string);
     }
@@ -361,10 +361,10 @@ function stringUnaccent(string $string): string
     $string = str_replace(array_keys(STRING_TRANSLITERATION), array_values(STRING_TRANSLITERATION), $string);
     // Missing something?
     $string = htmlentities($string, ENT_QUOTES, 'UTF-8');
-    if (false !== strpos($string, '&')) {
+    if (strpos($string, '&') !== false) {
         $replaced = preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|tilde|uml);~i', '$1', $string);
 
-        return null == $replaced ? '' : html_entity_decode($replaced, ENT_QUOTES, 'UTF-8');
+        return $replaced === null ? '' : html_entity_decode($replaced, ENT_QUOTES, 'UTF-8');
     }
 
     return $string ?? '';

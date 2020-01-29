@@ -66,33 +66,21 @@ final class Route implements RouteInterface
         $this->handleSetRegex();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function pathUri(): PathUriInterface
     {
         return $this->pathUri;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function maker(): array
     {
         return $this->maker;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function regex(): string
     {
         return $this->regex;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withName(RouteNameInterface $name): RouteInterface
     {
         $new = clone $this;
@@ -101,25 +89,16 @@ final class Route implements RouteInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasName(): bool
     {
         return isset($this->name);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function name(): RouteNameInterface
     {
         return $this->name;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withAddedWildcard(WildcardInterface $wildcard): RouteInterface
     {
         $new = clone $this;
@@ -133,25 +112,16 @@ final class Route implements RouteInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasWildcardCollection(): bool
     {
         return isset($this->wildcardCollection);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function wildcardCollection(): WildcardCollectionInterface
     {
         return $this->wildcardCollection;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withAddedMethod(MethodInterface $method, ControllerNameInterface $controllerName): RouteInterface
     {
         $new = clone $this;
@@ -161,7 +131,7 @@ final class Route implements RouteInterface
         $methodControllerName = new MethodControllerName($method, $controllerName);
         $new->methodControllerNameCollection = $new->methodControllerNameCollection
             ->withAddedMethodControllerName($methodControllerName);
-        $methodString = $methodControllerName->method()->toString();
+        // $methodString = $methodControllerName->method()->toString();
         // if ('GET' == $methodString) {
         //     $new->methodControllerNameCollection = $new->methodControllerNameCollection
         //         ->withAddedMethodControllerName(
@@ -175,31 +145,22 @@ final class Route implements RouteInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasMethodControllerNameCollection(): bool
     {
         return isset($this->methodControllerNameCollection);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function methodControllerNameCollection(): MethodControllerNameCollectionInterface
     {
         return $this->methodControllerNameCollection;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function controllerName(MethodInterface $method): ControllerNameInterface
     {
         if (!$this->hasMethodControllerNameCollection()) {
             throw new MethodNotFoundException(
                 (new Message('Instance of %className% lacks of any %contract%'))
-                    ->code('%className%', __CLASS__)
+                    ->code('%className%', self::class)
                     ->code('%contract%', MethodControllerNameCollectionInterface::class)
                     ->toString()
             );
@@ -217,9 +178,6 @@ final class Route implements RouteInterface
             ->controllerName();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withAddedMiddlewareName(MiddlewareNameInterface $middlewareName): RouteInterface
     {
         $new = clone $this;
@@ -232,17 +190,11 @@ final class Route implements RouteInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasMiddlewareNameCollection(): bool
     {
         return isset($this->middlewareNameCollection);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function middlewareNameCollection(): MiddlewareNameCollectionInterface
     {
         return $this->middlewareNameCollection;

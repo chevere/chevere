@@ -35,9 +35,6 @@ abstract class AbstractDocument implements DocumentInterface
 
     private int $verbosity = 0;
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function getFormatter(): FormatterInterface;
 
     /**
@@ -50,17 +47,11 @@ abstract class AbstractDocument implements DocumentInterface
         $this->template = $this->getTemplate();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function sections(): array
     {
         return $this->sections;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function withVerbosity(int $verbosity): DocumentInterface
     {
         $new = clone $this;
@@ -74,9 +65,6 @@ abstract class AbstractDocument implements DocumentInterface
         return $this->verbosity;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function toString(): string
     {
         if ($this->verbosity > 0) {
@@ -110,9 +98,6 @@ abstract class AbstractDocument implements DocumentInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTemplate(): array
     {
         return [
@@ -184,17 +169,17 @@ abstract class AbstractDocument implements DocumentInterface
 
     private function getExceptionCode(): string
     {
-        return
-            $this->exceptionHandler->exception()->code() > 0
+        return $this->exceptionHandler->exception()->code() > 0
             ? '[Code #' . $this->exceptionHandler->exception()->code() . ']'
             : '';
     }
 
     private function getStackTrace(): string
     {
-        return
-            (new Trace($this->exceptionHandler->exception()->trace(), $this->formatter))
-                ->toString();
+        return (new Trace(
+            $this->exceptionHandler->exception()->trace(),
+            $this->formatter
+        ))->toString();
     }
 
     private function handleRequestTags(): void

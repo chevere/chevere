@@ -55,17 +55,11 @@ final class Benchmark implements BenchmarkInterface
         $this->callables = [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function arguments(): array
     {
         return $this->arguments;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withAddedCallable(callable $callable, string $callableName): BenchmarkInterface
     {
         $this->callable = $callable;
@@ -80,17 +74,11 @@ final class Benchmark implements BenchmarkInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function callables(): array
     {
         return $this->callables;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function index(): array
     {
         return $this->index;

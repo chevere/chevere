@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Interfaces;
 
-use Chevere\Components\App\Interfaces\BuilderInterface;
-
 interface ResolvableInterface
 {
     public function __construct(BuilderInterface $builder);

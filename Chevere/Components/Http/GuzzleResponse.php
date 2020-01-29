@@ -20,9 +20,6 @@ use Psr\Http\Message\StreamInterface;
 
 final class GuzzleResponse extends BaseResponse implements GuzzleResponseInterface
 {
-    /**
-     * {@inheritdoc}
-     */
     public function withJsonApi(StreamInterface $jsonApi): ResponseInterface
     {
         $new = clone $this;
@@ -30,9 +27,6 @@ final class GuzzleResponse extends BaseResponse implements GuzzleResponseInterfa
         return $new->withJsonApiHeaders()->withBody($jsonApi);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withJsonApiHeaders(): ResponseInterface
     {
         $new = clone $this;

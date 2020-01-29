@@ -19,9 +19,6 @@ use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 final class ConsoleDocument extends AbstractDocument
 {
-    /**
-     * {@inheritdoc}
-     */
     public function getFormatter(): FormatterInterface
     {
         return new ConsoleFormatter;
@@ -29,7 +26,7 @@ final class ConsoleDocument extends AbstractDocument
 
     public function getSectionTitle(): string
     {
-        return (new ConsoleColor)->apply(['red', 'bold'], static::TAG_TITLE . ' in ')
-            . $this->formatter->wrapLink(static::TAG_FILE_LINE);
+        return (new ConsoleColor)->apply(['red', 'bold'], self::TAG_TITLE . ' in ')
+            . $this->formatter->wrapLink(self::TAG_FILE_LINE);
     }
 }

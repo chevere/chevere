@@ -43,9 +43,6 @@ final class Resolvable implements ResolvableInterface
         $this->assertCanResolve();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function builder(): BuilderInterface
     {
         return $this->builder;

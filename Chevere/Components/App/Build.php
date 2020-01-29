@@ -97,9 +97,6 @@ final class Build implements BuildInterface
         $this->assertDir();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withApp(AppInterface $app): BuildInterface
     {
         $new = clone $this;
@@ -108,17 +105,11 @@ final class Build implements BuildInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function app(): AppInterface
     {
         return $this->app;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withParameters(ParametersInterface $parameters): BuildInterface
     {
         $new = clone $this;
@@ -127,25 +118,16 @@ final class Build implements BuildInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasParameters(): bool
     {
         return isset($this->parameters);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function parameters(): ParametersInterface
     {
         return $this->parameters;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withRouterMaker(RouterMakerInterface $routerMaker): BuildInterface
     {
         $new = clone $this;
@@ -183,17 +165,11 @@ final class Build implements BuildInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isMaked(): bool
     {
         return $this->isMaked;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function destroy(): void
     {
         if (!$this->filePhp->file()->exists()) {
@@ -206,33 +182,21 @@ final class Build implements BuildInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function file(): FileInterface
     {
         return $this->filePhp->file();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function dir(): DirInterface
     {
         return $this->dir;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function checksums(): array
     {
         return $this->checksums;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function checkout(): CheckoutInterface
     {
         return $this->checkout;
@@ -254,6 +218,7 @@ final class Build implements BuildInterface
         if ($this->isMaked) {
             throw new BuildAlreadyMakedException();
         }
+        $missing = [];
         foreach ([
             'parameters' => ParametersInterface::class,
             'routerMaker' => RouterMakerInterface::class,
@@ -262,7 +227,7 @@ final class Build implements BuildInterface
                 $missing[] = (new Message('%s'))->code('%s', $contract)->toString();
             }
         }
-        if (isset($missing)) {
+        if ($missing) {
             throw new LogicException(
                 (new Message('Method %method% can be only called when the instance of %className% has %contracts%'))
                     ->code('%method%', __METHOD__)
@@ -334,7 +299,8 @@ final class Build implements BuildInterface
         $this->app = $this->app
             ->withServices($services);
 
-        $this->checksums[RouterInterface::CACHE_ID] = $routerCache->cache()
-            ->toArray();
+        $this->checksums = [
+            RouterInterface::CACHE_ID => $routerCache->cache()->toArray()
+        ];
     }
 }

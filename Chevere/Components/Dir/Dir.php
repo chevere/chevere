@@ -45,25 +45,16 @@ final class Dir implements DirInterface
         $this->assertIsNotFile();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function path(): PathInterface
     {
         return $this->path;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function exists(): bool
     {
         return $this->path->exists() && $this->path->isDir();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(int $mode = 0777): void
     {
         try {
@@ -78,9 +69,6 @@ final class Dir implements DirInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function remove(): array
     {
         $this->assertIsDir();
@@ -91,9 +79,6 @@ final class Dir implements DirInterface
         return $array;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function rmdir(): void
     {
         try {
@@ -108,9 +93,6 @@ final class Dir implements DirInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function removeContents(): array
     {
         $this->assertIsDir();
@@ -136,9 +118,6 @@ final class Dir implements DirInterface
         return $removed;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getChild(string $path): DirInterface
     {
         return new Dir(

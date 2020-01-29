@@ -31,9 +31,6 @@ class Data implements DataInterface
         $this->data = $data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withArray(array $data): DataInterface
     {
         $new = clone $this;
@@ -42,23 +39,16 @@ class Data implements DataInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withMergedArray(array $data): DataInterface
     {
         if (isset($this->data)) {
             $data = array_merge_recursive($this->data, $data);
         }
         $new = clone $this;
-        $new = $new->withArray($data);
 
-        return $new;
+        return $new->withArray($data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withAppend($var): DataInterface
     {
         $new = clone $this;
@@ -67,9 +57,6 @@ class Data implements DataInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withAddedKey(string $key, $var): DataInterface
     {
         $new = clone $this;
@@ -78,9 +65,6 @@ class Data implements DataInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withRemovedKey(string $key): DataInterface
     {
         $new = clone $this;
@@ -89,41 +73,26 @@ class Data implements DataInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isEmpty(): bool
     {
-        return empty($this->data);
+        return $this->data === [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function count(): int
     {
         return count($this->data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toArray(): array
     {
         return $this->data;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasKey(string $key): bool
     {
         return array_key_exists($key, $this->data);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function key(string $key)
     {
         return $this->data[$key] ?? null;

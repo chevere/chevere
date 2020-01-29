@@ -29,34 +29,22 @@ abstract class Command implements CommandInterface
 
     protected SymfonyCommandInterface $symfony;
 
-    /**
-     * {@inheritdoc}
-     */
     final public function __construct(ConsoleInterface $console)
     {
         $this->console = $console;
         $this->setSymfony();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function console(): ConsoleInterface
     {
         return $this->console;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function symfony(): SymfonyCommandInterface
     {
         return $this->symfony;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function getArgumentString(string $argument): string
     {
         $string = $this->console->input()->getArgument($argument);
@@ -65,9 +53,6 @@ abstract class Command implements CommandInterface
         return $string;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function getArgumentArray(string $argument): array
     {
         $array = $this->console->input()->getArgument($argument);
@@ -76,9 +61,6 @@ abstract class Command implements CommandInterface
         return $array;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function getOptionString(string $option): string
     {
         $string = $this->console->input()->getOption($option);
@@ -87,9 +69,6 @@ abstract class Command implements CommandInterface
         return $string;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     final public function getOptionArray(string $option): array
     {
         $array = $this->console->input()->getOption($option);
@@ -98,9 +77,6 @@ abstract class Command implements CommandInterface
         return $array;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     abstract public function callback(BuilderInterface $builder): int;
 
     final private function setSymfony(): void

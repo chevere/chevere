@@ -69,11 +69,10 @@ final class SilentScreen implements ScreenInterface
     }
 
     /**
-     *
      * @return array StreamInterface[]
      */
     public function queue(): array
     {
-        return $this;
+        return [];
     }
 }

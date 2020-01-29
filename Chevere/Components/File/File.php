@@ -49,33 +49,21 @@ final class File implements FileInterface
         $this->assertIsNotDir();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function path(): PathInterface
     {
         return $this->path;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isPhp(): bool
     {
         return $this->isPhp;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function exists(): bool
     {
         return $this->path->exists() && $this->path->isFile();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function assertExists(): void
     {
         if (!$this->exists()) {
@@ -87,9 +75,6 @@ final class File implements FileInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function checksum(): string
     {
         $this->assertExists();
@@ -97,9 +82,6 @@ final class File implements FileInterface
         return hash_file(FileInterface::CHECKSUM_ALGO, $this->path->absolute());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function contents(): string
     {
         $this->assertExists();
@@ -117,9 +99,6 @@ final class File implements FileInterface
         return $contents;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function remove(): void
     {
         $this->assertExists();
@@ -136,9 +115,6 @@ final class File implements FileInterface
         // @codeCoverageIgnoreEnd
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function create(): void
     {
         $this->assertIsNotDir();
@@ -161,9 +137,6 @@ final class File implements FileInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function put(string $contents): void
     {
         $this->assertExists();

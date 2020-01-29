@@ -17,9 +17,7 @@ use Chevere\Components\VarDump\Interfaces\DumperInterface;
 
 final class HtmlOutputter extends AbstractOutputter
 {
-    /**
-     * {@inheritdoc}
-     */
+
     public function prepare(string $output): string
     {
         if (false === headers_sent()) {

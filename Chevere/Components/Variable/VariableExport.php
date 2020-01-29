@@ -48,25 +48,16 @@ final class VariableExport implements VariableExportInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function var()
     {
         return $this->var;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toExport(): string
     {
         return var_export($this->var, true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toSerialize(): string
     {
         return serialize($this->var);

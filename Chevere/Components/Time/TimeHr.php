@@ -34,9 +34,6 @@ final class TimeHr implements TimeHrInterface
         $this->hrTimeRead = number_format($this->hrTime / 1e+6, 2) . ' ms';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toReadMs(): string
     {
         return $this->hrTimeRead;

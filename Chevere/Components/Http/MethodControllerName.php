@@ -32,17 +32,11 @@ final class MethodControllerName implements MethodControllerNameInterface
         $this->controllerName = $controllerName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function method(): MethodInterface
     {
         return $this->method;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function controllerName(): ControllerNameInterface
     {
         return $this->controllerName;

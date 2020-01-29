@@ -113,9 +113,6 @@ final class Run implements RunInterface
         $this->printable = '';
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withTimes(int $times): RunInterface
     {
         $new = clone $this;
@@ -124,17 +121,11 @@ final class Run implements RunInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function times(): int
     {
         return $this->times;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withTimeLimit(int $timeLimit): RunInterface
     {
         $new = clone $this;
@@ -143,17 +134,11 @@ final class Run implements RunInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function timeLimit(): int
     {
         return $this->timeLimit;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function exec()
     {
         $this->records = [];
@@ -165,13 +150,13 @@ final class Run implements RunInterface
         $this->handleCallables();
         $this->processCallablesStats();
         $title = __CLASS__ . ' results';
-        $this->lineSeparator = str_repeat('-', static::COLUMNS);
+        $this->lineSeparator = str_repeat('-', self::COLUMNS);
         $pipe = '|';
         if (isset($this->consoleColor)) {
             $this->lineSeparator = $this->consoleColor->apply('blue', $this->lineSeparator);
             $pipe = $this->consoleColor->apply('blue', $pipe);
         }
-        $pad = (int) round((static::COLUMNS - (strlen($title) + 1)) / 2, 0);
+        $pad = (int) round((self::COLUMNS - (strlen($title) + 1)) / 2, 0);
         $head = $pipe . str_repeat(' ', $pad) . $title . str_repeat(' ', floor($pad) == $pad ? ($pad - 1) : $pad) . $pipe;
         $this->lines = [
             $this->lineSeparator,
@@ -186,7 +171,7 @@ final class Run implements RunInterface
         $this->processResults();
         $this->handleAborted();
         $this->timeTakenReadable = ' Time taken: ' . (new TimeHr($this->timeTaken))->toReadMs();
-        $this->lines[] = str_repeat(' ', (int) max(0, static::COLUMNS - strlen($this->timeTakenReadable))) . $this->timeTakenReadable;
+        $this->lines[] = str_repeat(' ', (int) max(0, self::COLUMNS - strlen($this->timeTakenReadable))) . $this->timeTakenReadable;
         $this->printable = implode("\n", $this->lines);
         if (isset($this->consoleColor)) {
             $this->printable .= "\r\n";

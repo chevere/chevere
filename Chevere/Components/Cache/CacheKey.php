@@ -33,9 +33,6 @@ final class CacheKey implements CacheKeyInterface
         $this->assertKeyName();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toString(): string
     {
         return $this->key;

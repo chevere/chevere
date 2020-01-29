@@ -18,6 +18,8 @@ use RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Interfaces\SetInterface;
+use Exception;
+use Throwable;
 
 /**
  * Sets the default timezone
@@ -73,12 +75,15 @@ final class SetTimeZone implements SetInterface
 
     private function assertSetTimeZone(): void
     {
-        if (!@date_default_timezone_set($this->value)) {
+        try {
+            date_default_timezone_set($this->value);
+        } catch (Throwable $e) {
             // @codeCoverageIgnoreStart
             throw new RuntimeException(
-                (new Message('False return on %s(%v)'))
+                (new Message('False return on %s(%v) %thrown%'))
                     ->code('%s', 'date_default_timezone_set')
                     ->code('%v', $this->value)
+                    ->code('%thrown%', $e->getMessage())
                     ->toString()
             );
             // @codeCoverageIgnoreEnd

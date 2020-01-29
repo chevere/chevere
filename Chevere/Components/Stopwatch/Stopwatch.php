@@ -60,9 +60,6 @@ final class Stopwatch implements StopwatchInterface
         $this->marks = [$this->timeStart];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function mark(string $name): void
     {
         $then = (int) hrtime(true);
@@ -86,9 +83,6 @@ final class Stopwatch implements StopwatchInterface
         $this->marks[] = $now - $this->gap;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function stop(): void
     {
         $this->timeEnd = (int) hrtime(true);
@@ -107,9 +101,6 @@ final class Stopwatch implements StopwatchInterface
         $this->timeElapsedRead = (new TimeHr($this->timeElapsed))->toReadMs();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function records(): array
     {
         $this->assertResultCall(__METHOD__);
@@ -117,9 +108,6 @@ final class Stopwatch implements StopwatchInterface
         return $this->records;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function recordsRead(): array
     {
         $this->assertResultCall(__METHOD__);
@@ -127,9 +115,6 @@ final class Stopwatch implements StopwatchInterface
         return $this->recordsRead;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function timeElapsed(): int
     {
         $this->assertResultCall(__METHOD__);
@@ -137,9 +122,6 @@ final class Stopwatch implements StopwatchInterface
         return $this->timeElapsed;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function timeElapsedRead(): string
     {
         $this->assertResultCall(__METHOD__);
@@ -153,7 +135,7 @@ final class Stopwatch implements StopwatchInterface
             throw new BadMethodCallException(
                 (new Message('The method %method% must be called after calling the %stop% method'))
                     ->code('%method%', $method)
-                    ->code('%before%', __CLASS__ . '::stop')
+                    ->code('%before%', self::class . '::stop')
                     ->toString()
             );
         }

@@ -70,7 +70,7 @@ final class Console implements ConsoleInterface
         $this->output = new ConsoleOutput();
         $this->commandName = $this->input->getFirstArgument();
         $this->isBuiltIn = in_array($this->commandName, ['list', 'help']);
-        $this->symfony = new Symfony(static::NAME, static::VERSION);
+        $this->symfony = new Symfony(self::NAME, self::VERSION);
         $this->symfony->setAutoExit(false);
         $this->style = new SymfonyStyle($this->input, $this->output);
         if ('' == $this->commandName) {

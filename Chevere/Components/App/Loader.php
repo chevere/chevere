@@ -62,9 +62,6 @@ final class Loader implements LoaderInterface
             ->withBuild($this->getBuild());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function run(): void
     {
         $runner = new Runner($this->builder);
@@ -116,10 +113,9 @@ final class Loader implements LoaderInterface
         $build = $this->builder->build();
         $app = $build->app()
             ->withServices($this->getServices());
-        $build = $build
-            ->withApp($app);
 
-        return $build;
+        return $build
+            ->withApp($app);
     }
 
     /**

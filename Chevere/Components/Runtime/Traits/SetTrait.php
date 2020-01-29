@@ -19,20 +19,14 @@ trait SetTrait
 {
     protected string $value;
 
-    /**
-     * {@inheritdoc}
-     */
     public function value(): string
     {
         return $this->value;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function name(): string
     {
-        $explode = explode('\\', get_class($this));
+        $explode = explode('\\', static::class);
         $name = stringReplaceFirst('Set', '', end($explode));
 
         return lcfirst($name);

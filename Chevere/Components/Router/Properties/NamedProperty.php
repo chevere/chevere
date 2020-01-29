@@ -33,9 +33,6 @@ final class NamedProperty extends PropertyBase implements NamedPropertyInterface
         $this->tryAsserts();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function asserts(): void
     {
         foreach ($this->value as $name => $id) {

@@ -37,9 +37,6 @@ final class Router implements RouterInterface
     {
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withProperties(RouterPropertiesInterface $properties): RouterInterface
     {
         $new = clone $this;
@@ -48,33 +45,21 @@ final class Router implements RouterInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasProperties(): bool
     {
         return isset($this->properties);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function properties(): RouterPropertiesInterface
     {
         return $this->properties;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function canResolve(): bool
     {
         return $this->hasProperties() && $this->properties->hasRegex();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function resolve(UriInterface $uri): RoutedInterface
     {
         try {

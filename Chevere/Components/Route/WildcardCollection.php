@@ -36,9 +36,6 @@ final class WildcardCollection implements WildcardCollectionInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function withAddedWildcard(WildcardInterface $wildcard): WildcardCollectionInterface
     {
         $new = clone $this;
@@ -47,25 +44,16 @@ final class WildcardCollection implements WildcardCollectionInterface
         return $new;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasAny(): bool
     {
-        return !empty($this->index);
+        return $this->index !== [];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function has(WildcardInterface $wildcard): bool
     {
         return in_array($wildcard->name(), $this->index);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(WildcardInterface $wildcard): WildcardInterface
     {
         $pos = array_search($wildcard->name(), $this->index);
@@ -73,31 +61,22 @@ final class WildcardCollection implements WildcardCollectionInterface
         return $this->array[$pos];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasPos(int $pos): bool
     {
         return isset($this->array[$pos]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPos(int $pos): WildcardInterface
     {
         return $this->array[$pos];
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toArray(): array
     {
         return $this->array;
     }
 
-    private function addWildcard(WildcardInterface $wildcard)
+    private function addWildcard(WildcardInterface $wildcard): void
     {
         $name = $wildcard->name();
         $pos = array_search($name, $this->index);

@@ -20,15 +20,15 @@ use Chevere\Components\Console\Console;
 require 'vendor/autoload.php';
 
 $documentRoot = rtrim(dirname(__DIR__, 'Chevereto-Chevere' == basename(__DIR__) ? 1 : 3), '/') . '/';
-$isCli = 'cli' == php_sapi_name();
+$isCli = php_sapi_name() === 'cli';
 
 $bootstrap = (new Bootstrap($documentRoot))
-  ->withCli($isCli)
-  ->withDev((bool) include($bootstrap->appPath() . 'options/dev.php'));
+    ->withCli($isCli)
+    ->withDev((bool) include($bootstrap->appPath() . 'options/dev.php'));
 
 if ($isCli) {
     $bootstrap = $bootstrap
-      ->withConsole(new Console);
+        ->withConsole(new Console);
 }
 
 new BootstrapInstance($bootstrap);
