@@ -16,7 +16,7 @@ namespace Chevere\Components\File\Tests;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\File\File;
 use Chevere\Components\File\FileCompile;
-use Chevere\Components\File\FilePhp;
+use Chevere\Components\File\PhpFile;
 use Chevere\Components\Path\PathApp;
 use PHPUnit\Framework\TestCase;
 
@@ -27,7 +27,7 @@ final class FileCompileTest extends TestCase
         $file = new File(
             new PathApp('var/FileCompileTest_' . uniqid() . '.php')
         );
-        $filePhp = new FilePhp($file);
+        $filePhp = new PhpFile($file);
         $fileCompile = new FileCompile($filePhp);
         $this->assertSame($file, $fileCompile->filePhp()->file());
     }
@@ -37,7 +37,7 @@ final class FileCompileTest extends TestCase
         $file = new File(
             new PathApp('var/FileCompileTest_' . uniqid() . '.php')
         );
-        $filePhp = new FilePhp($file);
+        $filePhp = new PhpFile($file);
         $fileCompile = new FileCompile($filePhp);
         $this->expectException(FileNotFoundException::class);
         $fileCompile->compile();
@@ -53,7 +53,7 @@ final class FileCompileTest extends TestCase
             new PathApp('var/FileCompileTest_' . uniqid() . '.php')
         );
         $file->create();
-        $filePhp = new FilePhp($file);
+        $filePhp = new PhpFile($file);
         $fileCompile = new FileCompile($filePhp);
         $fileCompile->compile();
         $fileCompile->destroy();

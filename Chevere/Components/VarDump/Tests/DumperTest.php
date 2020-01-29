@@ -16,7 +16,7 @@ namespace Chevere\Components\VarDump\Tests;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
 use Chevere\Components\File\File;
-use Chevere\Components\File\FilePhp;
+use Chevere\Components\File\PhpFile;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Path\Path;
 use Chevere\Components\VarDump\Dumpers\ConsoleDumper;

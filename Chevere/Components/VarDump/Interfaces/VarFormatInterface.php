@@ -65,21 +65,6 @@ interface VarFormatInterface
     public function formatter(): FormatterInterface;
 
     /**
-     * Return an instance with the specified don't dump class names.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified don't dump class names.
-     */
-    // public function withDontDump(string ...$dontDump): VarInfoInterface;
-
-    /**
-     * Provides access to the dont't dump array.
-     *
-     * @return array [className,]
-     */
-    // public function dontDump(): array;
-
-    /**
      * Return an instance with the specified $indent.
      *
      * This method MUST retain the state of the current instance, and return

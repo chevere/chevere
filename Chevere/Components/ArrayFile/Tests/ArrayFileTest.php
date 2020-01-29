@@ -19,7 +19,7 @@ use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\File\Exceptions\FileReturnInvalidTypeException;
 use Chevere\Components\File\Exceptions\FileWithoutContentsException;
 use Chevere\Components\File\File;
-use Chevere\Components\File\FilePhp;
+use Chevere\Components\File\PhpFile;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\Type\Type;
 use Chevere\Components\File\Interfaces\FileInterface;
@@ -49,7 +49,7 @@ final class ArrayFileTest extends TestCase
 
     public function testConstructWithNotFoundFilePhp(): void
     {
-        $filePhp = new FilePhp($this->file);
+        $filePhp = new PhpFile($this->file);
         $this->expectException(FileNotFoundException::class);
         new ArrayFile($filePhp);
     }
@@ -57,7 +57,7 @@ final class ArrayFileTest extends TestCase
     public function testConstructWithEmptyFilePhp(): void
     {
         $this->file->create();
-        $filePhp = new FilePhp($this->file);
+        $filePhp = new PhpFile($this->file);
         $this->expectException(FileWithoutContentsException::class);
         new ArrayFile($filePhp);
     }
@@ -66,7 +66,7 @@ final class ArrayFileTest extends TestCase
     {
         $this->file->create();
         $this->file->put("<?php return 'test'; ");
-        $filePhp = new FilePhp($this->file);
+        $filePhp = new PhpFile($this->file);
         $this->expectException(FileReturnInvalidTypeException::class);
         new ArrayFile($filePhp);
     }
@@ -76,7 +76,7 @@ final class ArrayFileTest extends TestCase
         $this->file->create();
         $array = ['test'];
         $this->file->put('<?php return ' . var_export($array, true) . ';');
-        $filePhp = new FilePhp($this->file);
+        $filePhp = new PhpFile($this->file);
         $arrayFile = new ArrayFile($filePhp);
         $this->file->remove();
         $this->assertSame($array, $arrayFile->array());
@@ -88,7 +88,7 @@ final class ArrayFileTest extends TestCase
         $this->file->create();
         $array = ['string', new stdClass, 1.1];
         $this->file->put('<?php return ' . var_export($array, true) . ';');
-        $filePhp = new FilePhp($this->file);
+        $filePhp = new PhpFile($this->file);
         $this->expectException(ArrayFileTypeException::class);
         (new ArrayFile($filePhp))
             ->withMembersType(new Type('string'));
@@ -99,7 +99,7 @@ final class ArrayFileTest extends TestCase
         $this->file->create();
         $array = [0, 1, 2, 3];
         $this->file->put('<?php return ' . var_export($array, true) . ';');
-        $filePhp = new FilePhp($this->file);
+        $filePhp = new PhpFile($this->file);
         $this->expectNotToPerformAssertions();
         (new ArrayFile($filePhp))
             ->withMembersType(new Type('integer'));
@@ -109,7 +109,7 @@ final class ArrayFileTest extends TestCase
     {
         $this->file->create();
         $this->file->put('<?php use Chevere\Components\Path\PathApp; return [new PathApp("test"), new PathApp("test-alt")];');
-        $filePhp = new FilePhp($this->file);
+        $filePhp = new PhpFile($this->file);
         $this->expectNotToPerformAssertions();
         (new ArrayFile($filePhp))
             ->withMembersType(new Type(PathInterface::class));

@@ -17,7 +17,7 @@ use Chevere\Components\File\Exceptions\FileInvalidContentsException;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\File\Exceptions\FileWithoutContentsException;
 use Chevere\Components\File\File;
-use Chevere\Components\File\FilePhp;
+use Chevere\Components\File\PhpFile;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\Variable\VariableExport;
@@ -45,7 +45,7 @@ final class FileReturnTest extends TestCase
         );
         $this->file->create();
         $this->fileReturn = new FileReturn(
-            new FilePhp($this->file)
+            new PhpFile($this->file)
         );
         $this->assertSame($this->file, $this->fileReturn->filePhp()->file());
     }
@@ -61,7 +61,7 @@ final class FileReturnTest extends TestCase
     {
         $this->expectException(FileNotFoundException::class);
         new FileReturn(
-            new FilePhp(
+            new PhpFile(
                 new File(
                     new PathApp($this->getFileName())
                 )

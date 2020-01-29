@@ -15,7 +15,7 @@ namespace Chevere\Components\VarDump\Interfaces;
 
 use BadMethodCallException;
 
-interface DumperInterface
+interface VarDumperInterface
 {
     const BACKGROUND = '#132537';
     const BACKGROUND_SHADE = '#132537';
@@ -25,17 +25,11 @@ interface DumperInterface
 
     const OFFSET = 1;
 
+    public function __construct(FormatterInterface $formatter, ...$vars);
+
     public function formatter(): FormatterInterface;
 
-    public function outputter(): OutputterInterface;
-
-    /**
-     * Return an instance with the specified vars.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified vars.
-     */
-    public function withVars(...$vars): DumperInterface;
+    // public function outputter(): OutputterInterface;
 
     /**
      * Provides access to the vars. Can be called only after calling dump.
@@ -43,8 +37,6 @@ interface DumperInterface
      * @throws BadMethodCallException if called before calling dump.
      */
     public function vars(): array;
-
-    public function toString(): string;
 
     /**
      * Provides access to the debug backtrace. Can be called only after calling dump.

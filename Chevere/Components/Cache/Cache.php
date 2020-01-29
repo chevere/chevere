@@ -16,7 +16,7 @@ namespace Chevere\Components\Cache;
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
 use Chevere\Components\File\File;
 use Chevere\Components\File\FileCompile;
-use Chevere\Components\File\FilePhp;
+use Chevere\Components\File\PhpFile;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Cache\Interfaces\CacheItemInterface;
@@ -63,7 +63,7 @@ final class Cache implements CacheInterface
         if (!$file->exists()) {
             $file->create();
         }
-        $filePhp = new FilePhp($file);
+        $filePhp = new PhpFile($file);
         $fileReturn = new FileReturn($filePhp);
         $fileReturn->put($variableExport);
         new FileCompile($filePhp);
@@ -85,7 +85,7 @@ final class Cache implements CacheInterface
         }
         $fileCompile =
             new FileCompile(
-                new FilePhp(
+                new PhpFile(
                     new File($path)
                 )
             );
@@ -112,7 +112,7 @@ final class Cache implements CacheInterface
 
         return new CacheItem(
             new FileReturn(
-                new FilePhp(
+                new PhpFile(
                     new File($path)
                 )
             )

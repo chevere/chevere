@@ -21,7 +21,7 @@ use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\File\File;
-use Chevere\Components\File\FilePhp;
+use Chevere\Components\File\PhpFile;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Path\PathApp;
@@ -83,7 +83,7 @@ final class Build implements BuildInterface
         $this->isMaked = false;
         $this->checksums = [];
         $this->app = $app;
-        $this->filePhp = new FilePhp(
+        $this->filePhp = new PhpFile(
             new File(
                 $path->getChild('build.php')
             )
@@ -267,7 +267,7 @@ final class Build implements BuildInterface
         foreach ($this->parameters->routes() as $fileHandleString) {
             $arrayFile =
                 (new ArrayFile(
-                    new FilePhp(
+                    new PhpFile(
                         new File(
                             new PathApp($fileHandleString)
                         )

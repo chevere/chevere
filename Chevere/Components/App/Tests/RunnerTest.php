@@ -23,7 +23,7 @@ use Chevere\Components\App\Runner;
 use Chevere\Components\App\Services;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\File\File;
-use Chevere\Components\File\FilePhp;
+use Chevere\Components\File\PhpFile;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Path\PathApp;
@@ -41,7 +41,7 @@ final class RunnerTest extends TestCase
         $build = $this->getDummyBuild();
         $parameters = new Parameters(
             new ArrayFile(
-                new FilePhp(
+                new PhpFile(
                     new File(
                         new PathApp('parameters.php')
                     )

@@ -15,9 +15,9 @@ namespace Chevere\Components\VarDump\Interfaces;
 
 interface OutputterInterface
 {
-    public function withDumper(DumperInterface $dumper): OutputterInterface;
+    public function __construct(VarDumperInterface $dumper);
 
-    public function dumper(): DumperInterface;
+    public function varDumper(): VarDumperInterface;
 
     public function prepare(string $output): string;
 

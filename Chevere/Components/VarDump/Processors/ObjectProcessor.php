@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
+use Chevere\Components\Path\Path;
 use ReflectionObject;
 use ReflectionProperty;
 use Throwable;
@@ -136,7 +137,7 @@ final class ObjectProcessor extends AbstractProcessor
     private function handleNormalizeClassName(): void
     {
         if (stringStartsWith(VarFormatInterface::_CLASS_ANON, $this->className)) {
-            // $this->className = (new Path($this->className))->absolute();
+            $this->className = preg_replace('/[[:^print:]]/', '', $this->className);
         }
     }
 }

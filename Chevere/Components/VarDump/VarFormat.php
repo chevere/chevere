@@ -32,9 +32,6 @@ final class VarFormat implements VarFormatInterface
 
     private ProcessorInterface $processor;
 
-    /** @var array [className,] */
-    // private array $dontDump = [];
-
     private string $output = '';
 
     private int $indent = 0;
@@ -68,19 +65,6 @@ final class VarFormat implements VarFormatInterface
     {
         return $this->formatter;
     }
-
-    // public function withDontDump(string ...$dontDump): VarInfoInterface
-    // {
-    //     $new = clone $this;
-    //     $new->dontDump = $dontDump;
-
-    //     return $new;
-    // }
-
-    // public function dontDump(): array
-    // {
-    //     return $this->dontDump;
-    // }
 
     public function withIndent(int $indent): VarFormatInterface
     {

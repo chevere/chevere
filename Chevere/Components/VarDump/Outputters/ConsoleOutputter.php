@@ -22,22 +22,19 @@ final class ConsoleOutputter extends PlainOutputter
 
     private string $outputHr;
 
-    public function __construct()
+    public function prepare(string $output): string
     {
         $this->consoleOutput = new ConsoleOutput();
         $this->outputHr = (new ConsoleColor)->apply('blue', self::OUTPUT_HR);
-    }
-
-    public function prepare(string $output): string
-    {
         $aux = 0;
-        $maker =
-            (
-                isset($this->dumper->debugBacktrace()[$aux]['class'])
-                ? $this->dumper->debugBacktrace()[$aux]['class'] . $this->dumper->debugBacktrace()[$aux]['type']
-                : null
-            )
-            . $this->dumper->debugBacktrace()[$aux]['function'] . '()';
+        $bt = $this->varDumper->debugBacktrace()[$aux];
+        $maker = '';
+        if ($bt['class']) {
+            $maker .= $bt['class'] . $bt['type'];
+        }
+        if ($bt['function']) {
+            $maker .= $bt['function'] . '()';
+        }
 
         return $output .= "\n" . (new ConsoleColor)->apply(['bold', 'red'], $maker) . "\n" . $this->outputHr . "\n";
     }

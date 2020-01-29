@@ -15,19 +15,16 @@ namespace Chevere\Components\VarDump;
 
 use BadMethodCallException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\VarDump\Interfaces\DumperInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
-use Chevere\Components\VarDump\Interfaces\OutputterInterface;
 
 /**
  * The Chevere VarDumper.
  * Provides the actual functionality to VarDump.
  */
-class VarDumper implements DumperInterface
+final class VarDumper implements VarDumperInterface
 {
     protected FormatterInterface $formatter;
-
-    protected OutputterInterface $outputter;
 
     protected array $vars = [];
 
@@ -36,10 +33,11 @@ class VarDumper implements DumperInterface
     /**
      * Creates a new instance.
      */
-    final public function __construct(FormatterInterface $formatter, OutputterInterface $outputter)
+    public function __construct(FormatterInterface $formatter, ...$vars)
     {
+        $this->vars = $vars;
         $this->formatter = $formatter;
-        $this->outputter = $outputter;
+        $this->setDebugBacktrace();
     }
 
     public function formatter(): FormatterInterface
@@ -47,46 +45,13 @@ class VarDumper implements DumperInterface
         return $this->formatter;
     }
 
-    public function outputter(): OutputterInterface
-    {
-        return $this->outputter;
-    }
-
-    final public function withVars(...$vars): DumperInterface
-    {
-        $new = clone $this;
-        $new->vars = $vars;
-        if (0 == count($new->vars)) {
-            return $new;
-        }
-        $new->setDebugBacktrace();
-
-        return $new;
-    }
-
-    final public function vars(): array
+    public function vars(): array
     {
         return $this->vars;
     }
 
-    final public function toString(): string
-    {
-        return $this->outputter
-            ->withDumper($this)
-            ->toString();
-    }
-
     public function debugBacktrace(): array
     {
-        if (!isset($this->debugBacktrace)) {
-            throw new BadMethodCallException(
-                (new Message('Method %callMethodName% must not be called before calling the %methodName%'))
-                    ->code('%callMethodName%', __METHOD__)
-                    ->code('%methodName%', __CLASS__ . '::dump')
-                    ->toString()
-            );
-        }
-
         return $this->debugBacktrace;
     }
 

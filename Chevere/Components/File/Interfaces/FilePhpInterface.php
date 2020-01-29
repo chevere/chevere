@@ -15,6 +15,9 @@ namespace Chevere\Components\File\Interfaces;
 
 interface FilePhpInterface
 {
+    /**
+     * @throws FileNotPhpException if $file doesn't represent a PHP filepath.
+     */
     public function __construct(FileInterface $file);
 
     /**

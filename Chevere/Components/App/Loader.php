@@ -19,7 +19,7 @@ use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\File\File;
-use Chevere\Components\File\FilePhp;
+use Chevere\Components\File\PhpFile;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Path\PathApp;
@@ -50,7 +50,7 @@ final class Loader implements LoaderInterface
         $this->parameters =
             new Parameters(
                 new ArrayFile(
-                    new FilePhp(
+                    new PhpFile(
                         new File(
                             new PathApp(AppInterface::FILE_PARAMETERS)
                         )

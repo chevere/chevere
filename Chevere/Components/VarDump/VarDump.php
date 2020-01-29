@@ -32,20 +32,14 @@ final class VarDump implements ToStringInterface
     public function __construct(...$vars)
     {
         if (BootstrapInstance::get()->isCli()) {
-            $args = [
-                new ConsoleFormatter,
-                new ConsoleOutputter
-            ];
+            $formatter = ConsoleFormatter::class;
+            $outputter = ConsoleOutputter::class;
         } else {
-            $args = [
-                new HtmlFormatter,
-                new HtmlOutputter
-            ];
+            $formatter = HtmlOutputter::class;
+            $outputter = HtmlFormatter::class;
         }
-        $dumper = new VarDumper(...$args);
-        $this->dump = $dumper
-            ->withVars(...$vars)
-            ->toString();
+        $dumper = new VarDumper(new $formatter, ...$vars);
+        $this->dump = (new $outputter($dumper))->toString();
     }
 
     public function toString(): string

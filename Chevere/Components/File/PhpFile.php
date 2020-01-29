@@ -21,21 +21,15 @@ use Chevere\Components\File\Interfaces\FilePhpInterface;
 /**
  * A wrapper for FileInterface to implement PHP files.
  */
-final class FilePhp implements FilePhpInterface
+final class PhpFile implements FilePhpInterface
 {
     private FileInterface $file;
 
-    /**
-     * Creates a new instance.
-     *
-     * @throws FileNotPhpException If $file is not a PHP file.
-     */
     public function __construct(FileInterface $file)
     {
         $this->file = $file;
         $this->assertFilePhp();
     }
-
 
     public function file(): FileInterface
     {

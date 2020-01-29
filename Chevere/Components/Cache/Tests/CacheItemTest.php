@@ -15,7 +15,7 @@ namespace Chevere\Components\Cache\Tests;
 
 use Chevere\Components\Cache\CacheItem;
 use Chevere\Components\File\File;
-use Chevere\Components\File\FilePhp;
+use Chevere\Components\File\PhpFile;
 use Chevere\Components\File\FileReturn;
 use Chevere\Components\Path\Path;
 use Chevere\Components\Cache\Interfaces\CacheItemInterface;
@@ -29,7 +29,7 @@ final class CacheItemTest extends TestCase
         return
             new CacheItem(
                 new FileReturn(
-                    new FilePhp(
+                    new PhpFile(
                         new File($path)
                     )
                 )

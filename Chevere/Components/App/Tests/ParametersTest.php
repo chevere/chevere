@@ -19,7 +19,7 @@ use Chevere\Components\App\Exceptions\ParametersWrongTypeException;
 use Chevere\Components\App\Parameters;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\File\File;
-use Chevere\Components\File\FilePhp;
+use Chevere\Components\File\PhpFile;
 use Chevere\Components\Path\PathApp;
 use Chevere\Components\App\Interfaces\ParametersInterface;
 use Chevere\Components\ArrayFile\Interfaces\ArrayFileInterface;
@@ -32,7 +32,7 @@ final class ParametersTest extends TestCase
     {
         return
             new ArrayFile(
-                new FilePhp(
+                new PhpFile(
                     new File($path)
                 )
             );
