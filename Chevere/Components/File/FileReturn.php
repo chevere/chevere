@@ -143,6 +143,7 @@ final class FileReturn implements FileReturnInterface
         $filename = $this->filePhp()->file()->path()->absolute();
         $handle = fopen($filename, 'r');
         if (false === $handle) {
+            // @codeCoverageIgnoreStart
             throw new FileHandleException(
                 (new Message('Unable to %fn% %path% in %mode% mode'))
                     ->code('%fn%', 'fopen')
@@ -150,6 +151,7 @@ final class FileReturn implements FileReturnInterface
                     ->code('%mode%', 'r')
                     ->toString()
             );
+            // @codeCoverageIgnoreEnd
         }
         $contents = fread($handle, FileReturnInterface::PHP_RETURN_CHARS);
         fclose($handle);

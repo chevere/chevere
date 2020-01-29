@@ -13,36 +13,54 @@ declare(strict_types=1);
 
 namespace Chevere\Components\File\Tests;
 
+use Chevere\Components\Dir\Dir;
+use Chevere\Components\Dir\Interfaces\DirInterface;
 use RuntimeException;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\File\File;
 use Chevere\Components\Path\Exceptions\PathIsDirException;
-use Chevere\Components\Path\PathApp;
+use Chevere\Components\Path\Path;
 use Chevere\Components\File\Interfaces\FileInterface;
+use Chevere\Components\Path\Interfaces\PathInterface;
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
 final class FileTest extends TestCase
 {
-    public function getRealFile(string $filename): FileInterface
-    {
-        $path = new PathApp('var/FileTest_' . uniqid() . $filename);
-        if (false === file_put_contents($path->absolute(), 'una mona pilucha')) {
-            throw new RuntimeException('Unable to create file ' . $path->absolute());
-        }
+    private DirInterface $dir;
 
-        return new File($path);
+    protected function setUp(): void
+    {
+        $this->dir = new Dir(new Path(__DIR__ . '/FileTest_' . uniqid()));
+    }
+
+    protected function tearDown(): void
+    {
+        try {
+            xdump('REMOVE -R:' . $this->dir->path()->absolute());
+            // $this->dir->remove();
+        } catch (Throwable $e) {
+            //$e
+        }
+    }
+
+    public function getChildFile(string $filename): FileInterface
+    {
+        $child = $this->dir->path()->getChild($filename);
+
+        return new File($child);
     }
 
     public function testWithDirPath(): void
     {
-        $path = new PathApp('var');
+        $path = new Path(__DIR__);
         $this->expectException(PathIsDirException::class);
         new File($path);
     }
 
     public function testWithNonExistentPath(): void
     {
-        $path = new PathApp('var/FileTest_' . uniqid());
+        $path = $this->dir->path();
         $file = new File($path);
         $this->assertSame($path, $file->path());
         $this->assertFalse($file->exists());
@@ -51,48 +69,44 @@ final class FileTest extends TestCase
 
     public function testWithExistentPath(): void
     {
-        $file = $this->getRealFile('.test');
+        $file = $this->getChildFile('.test');
+        $file->create();
         $this->assertTrue($file->exists());
-        if (!unlink($file->path()->absolute())) {
-            throw new RuntimeException('Unable to remove file ' . $file->path()->absolute());
-        }
     }
 
     public function testWithPhpPath(): void
     {
-        $path = new PathApp('var/FileTest_' . uniqid() . '.php');
-        $file = new File($path);
+        $file = $this->getChildFile('.php');
         $this->assertTrue($file->isPhp());
     }
 
     public function testRemoveNonExistentPath(): void
     {
-        $path = new PathApp('var/FileTest_' . uniqid());
-        $file = new File($path);
+        $file = $this->getChildFile('.php');
         $this->expectException(FileNotFoundException::class);
         $file->remove();
-        $this->assertFalse($file->exists());
     }
 
     public function testRemoveExistentPath(): void
     {
-        $file = $this->getRealFile('.test');
+        $file = $this->getChildFile('.test');
+        $file->create();
         $file->remove();
         $this->assertFalse($file->exists());
     }
 
     public function testCreate(): void
     {
-        $file = new File(new PathApp('var/FileTest_create'));
+        $file = $this->getChildFile('.create');
         $this->assertFalse($file->exists());
         $file->create();
         $this->assertTrue($file->exists());
-        $file->remove();
     }
 
     public function testPut(): void
     {
-        $file = $this->getRealFile('put');
+        $file = $this->getChildFile('put');
+        $file->create();
         $id = uniqid();
         $file->put($id);
         $this->assertSame($id, file_get_contents($file->path()->absolute()));

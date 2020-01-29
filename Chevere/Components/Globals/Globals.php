@@ -137,13 +137,6 @@ final class Globals implements GlobalsInterface
      */
     public function globals(): array
     {
-        if (!isset($this->globals)) {
-            foreach (GlobalsInterface::KEYS as $pos => $key) {
-                $property = GlobalsInterface::PROPERTIES[$pos];
-                $this->globals[$key] = $this->$property;
-            }
-        }
-
         return $this->globals;
     }
 }

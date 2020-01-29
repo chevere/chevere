@@ -62,14 +62,24 @@ final class ArrayFile implements ArrayFileInterface
 
     /**
      * {@inheritdoc}
+     * @covered
      */
     public function withMembersType(TypeInterface $type): ArrayFileInterface
     {
         $new = clone $this;
         $new->type = $type;
-        $new->validateMembers();
+        foreach ($new->array as $pos => $val) {
+            $validate = (bool) $new->type->validator()($val);
+            if ($validate) {
+                $validate = $new->type->validate($val);
+            }
+            if (!$validate) {
+                $new->handleValidation($pos, $val);
+            }
+        }
 
-        return $new;
+        // *false+ @ php 7.4.2 xDebug 2.9.1 phpUnit 8.5.2*
+        return $new; // @codeCoverageIgnore
     }
 
     /**
@@ -88,32 +98,18 @@ final class ArrayFile implements ArrayFileInterface
         return $this->array;
     }
 
-    private function validateMembers(): void
-    {
-        $validator = $this->type->validator();
-        foreach ($this->array as $k => $val) {
-            $validate = $validator($val);
-            if ($validate) {
-                $validate = $this->type->validate($val);
-            }
-            if (!$validate) {
-                $this->handleInvalidation($k, $val);
-            }
-        }
-    }
-
-    private function handleInvalidation($k, $val): void
+    private function handleValidation($pos, $val): void
     {
         $type = gettype($val);
         if ('object' == $type) {
             $type .= ' ' . get_class($val);
         }
         throw new ArrayFileTypeException(
-            (new Message('Expecting array containing only %membersType% members, type %type% found at %filepath% (key %key%)'))
+            (new Message('Expecting array containing only %membersType% members, type %type% found at %filepath% (pos %pos%)'))
                 ->code('%membersType%', $this->type->typeHinting())
                 ->code('%filepath%', $this->filePhp->file()->path()->absolute())
                 ->code('%type%', $type)
-                ->code('%key%', $k)
+                ->code('%pos%', $pos)
                 ->toString()
         );
     }

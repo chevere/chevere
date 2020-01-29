@@ -25,6 +25,8 @@ use Chevere\Components\Type\Type;
 use Chevere\Components\File\Interfaces\FileInterface;
 use Chevere\Components\Path\Interfaces\PathInterface;
 use PHPUnit\Framework\TestCase;
+use stdClass;
+use Throwable;
 
 final class ArrayFileTest extends TestCase
 {
@@ -84,7 +86,7 @@ final class ArrayFileTest extends TestCase
     public function testWithMembersTypeFail(): void
     {
         $this->file->create();
-        $array = ['string', 1, 1.1];
+        $array = ['string', new stdClass, 1.1];
         $this->file->put('<?php return ' . var_export($array, true) . ';');
         $filePhp = new FilePhp($this->file);
         $this->expectException(ArrayFileTypeException::class);
