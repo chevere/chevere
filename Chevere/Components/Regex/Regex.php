@@ -46,9 +46,6 @@ final class Regex implements RegexInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function toString(): string
     {
         return $this->regex;
