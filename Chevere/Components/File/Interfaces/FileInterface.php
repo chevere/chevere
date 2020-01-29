@@ -24,6 +24,7 @@ use Chevere\Components\File\Exceptions\FileUnableToGetException;
 interface FileInterface
 {
     const CHECKSUM_ALGO = 'sha256';
+    const CHECKSUM_LENGTH = 64;
 
     public function __construct(PathInterface $path);
 

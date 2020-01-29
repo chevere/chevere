@@ -15,6 +15,7 @@ namespace Chevere\Components\File\Tests;
 
 use Chevere\Components\Dir\Dir;
 use Chevere\Components\Dir\Interfaces\DirInterface;
+use Chevere\Components\File\Exceptions\FileExistsException;
 use RuntimeException;
 use Chevere\Components\File\Exceptions\FileNotFoundException;
 use Chevere\Components\File\File;
@@ -70,7 +71,10 @@ final class FileTest extends TestCase
     {
         $file = $this->getChildFile('.test');
         $file->create();
+        $this->assertSame(FileInterface::CHECKSUM_LENGTH, strlen($file->checksum()));
         $this->assertTrue($file->exists());
+        $this->expectException(FileExistsException::class);
+        $file->create();
     }
 
     public function testWithPhpPath(): void
