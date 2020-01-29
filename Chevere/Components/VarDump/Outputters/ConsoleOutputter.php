@@ -16,7 +16,7 @@ namespace Chevere\Components\VarDump\Outputters;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
-final class ConsoleOutputter extends AbstractOutputter
+final class ConsoleOutputter extends PlainOutputter
 {
     const OUTPUT_HR = '------------------------------------------------------------';
 

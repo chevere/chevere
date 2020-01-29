@@ -30,19 +30,28 @@ final class ArrayProcessorTest extends AbstractProcessorTest
 
     public function testConstructEmpty(): void
     {
-        $processor = new ArrayProcessor($this->getVarDump([]));
+        $processor = new ArrayProcessor($this->getVarFormat([]));
         $this->assertSame('size=0', $processor->info());
-        $this->assertSame('', $processor->val());
+        $this->assertSame('', $processor->value());
     }
 
     public function testConstruct(): void
     {
         $var = [0, 1, 2, 3];
         $containTpl = '%s => integer %s (length=1)';
-        $processor = new ArrayProcessor($this->getVarDump($var));
+        $processor = new ArrayProcessor($this->getVarFormat($var));
         $this->assertSame('size=' . count($var), $processor->info());
         foreach ($var as $int) {
-            $this->assertStringContainsString(str_replace('%s', $int, $containTpl), $processor->val());
+            $this->assertStringContainsString(str_replace('%s', $int, $containTpl), $processor->value());
         }
+    }
+
+    public function testCircularReference(): void
+    {
+        $var = [];
+        $var[] = &$var;
+        $processor = new ArrayProcessor($this->getVarFormat($var));
+        $this->assertSame('size=' . count($var), $processor->info());
+        $this->assertStringContainsString('0 => (circular array reference)', $processor->value());
     }
 }

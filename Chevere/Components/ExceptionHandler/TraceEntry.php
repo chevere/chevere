@@ -17,7 +17,7 @@ use InvalidArgumentException;
 use ReflectionMethod;
 use Chevere\Components\ExceptionHandler\Interfaces\TraceEntryInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\VarDump\Interfaces\VarInfoInterface;
+use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
 use TypeError;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
@@ -57,7 +57,7 @@ final class TraceEntry implements TraceEntryInterface
         if ('' == $this->file && '' != $this->class) {
             $this->processMissingClassFile();
         }
-        if (stringStartsWith(VarInfoInterface::_CLASS_ANON, $this->class)) {
+        if (stringStartsWith(VarFormatInterface::_CLASS_ANON, $this->class)) {
             $this->processAnonClass();
         }
         if ('' == $this->file) {
@@ -144,9 +144,9 @@ final class TraceEntry implements TraceEntryInterface
 
     private function processAnonClass()
     {
-        $entryFile = stringReplaceFirst(VarInfoInterface::_CLASS_ANON, '', $this->class);
+        $entryFile = stringReplaceFirst(VarFormatInterface::_CLASS_ANON, '', $this->class);
         $this->file = substr($entryFile, 0, 4 + strpos($entryFile, '.php'));
-        $this->class = VarInfoInterface::_CLASS_ANON;
+        $this->class = VarFormatInterface::_CLASS_ANON;
         $this->line = 0;
     }
 }

@@ -31,8 +31,8 @@ final class NullProcessorTest extends AbstractProcessorTest
     public function testConstruct(): void
     {
         $var = null;
-        $processor = new NullProcessor($this->getVarDump($var));
+        $processor = new NullProcessor($this->getVarFormat($var));
         $this->assertSame('', $processor->info());
-        $this->assertSame('', $processor->val());
+        $this->assertSame('', $processor->value());
     }
 }

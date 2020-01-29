@@ -18,7 +18,7 @@ use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\Type\Type;
 use Chevere\Components\VarDump\Interfaces\DumpeableInterface;
 use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
-use Chevere\Components\VarDump\Interfaces\VarInfoInterface;
+use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
 use LogicException;
 use function ChevereFn\varType;
 
@@ -71,7 +71,7 @@ final class VarDumpeable implements DumpeableInterface
 
     private function assertSetProcessorName(): void
     {
-        $processorName = VarInfoInterface::PROCESSORS[$this->type] ?? null;
+        $processorName = VarFormatInterface::PROCESSORS[$this->type] ?? null;
         if (!isset($processorName)) {
             throw new LogicException(
                 (new Message('No processor for variable of type %type%'))

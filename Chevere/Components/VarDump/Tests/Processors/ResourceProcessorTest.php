@@ -31,11 +31,11 @@ final class ResourceProcessorTest extends AbstractProcessorTest
     public function testConstruct(): void
     {
         $resource = fopen(__FILE__, 'r');
-        $processor = new ResourceProcessor($this->getVarDump($resource));
+        $processor = new ResourceProcessor($this->getVarFormat($resource));
         if (is_resource($resource)) {
             fclose($resource);
         }
         $this->assertSame('type=stream', $processor->info());
-        $this->assertStringStartsWith('Resource id #', $processor->val());
+        $this->assertStringStartsWith('Resource id #', $processor->value());
     }
 }

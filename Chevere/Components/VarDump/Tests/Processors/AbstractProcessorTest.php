@@ -16,13 +16,13 @@ namespace Chevere\Components\X\Tests;
 use Chevere\Components\VarDump\VarDumpeable;
 use InvalidArgumentException;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
-use Chevere\Components\VarDump\Interfaces\VarInfoInterface;
+use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
 use Chevere\Components\VarDump\VarFormat;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractProcessorTest extends TestCase
 {
-    final protected function getVarDump($var): VarInfoInterface
+    final protected function getVarFormat($var): VarFormatInterface
     {
         return
             new VarFormat(
@@ -36,7 +36,7 @@ abstract class AbstractProcessorTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $processorName = $this->getProcessorName();
         new $processorName(
-            $this->getVarDump(
+            $this->getVarFormat(
                 $this->getInvalidConstructArgument()
             )
         );

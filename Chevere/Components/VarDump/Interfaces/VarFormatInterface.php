@@ -25,7 +25,7 @@ use Chevere\Components\VarDump\Processors\StringProcessor;
 use Chevere\Components\VarDump\VarDumpeable;
 use ReflectionProperty;
 
-interface VarInfoInterface
+interface VarFormatInterface
 {
     const _FILE = '_file';
     const _CLASS = '_class';
@@ -70,14 +70,14 @@ interface VarInfoInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified don't dump class names.
      */
-    public function withDontDump(string ...$dontDump): VarInfoInterface;
+    // public function withDontDump(string ...$dontDump): VarInfoInterface;
 
     /**
      * Provides access to the dont't dump array.
      *
      * @return array [className,]
      */
-    public function dontDump(): array;
+    // public function dontDump(): array;
 
     /**
      * Return an instance with the specified $indent.
@@ -85,7 +85,7 @@ interface VarInfoInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified $indent.
      */
-    public function withIndent(int $indent): VarInfoInterface;
+    public function withIndent(int $indent): VarFormatInterface;
 
     /**
      * Provides access to the instance $indent.
@@ -103,7 +103,7 @@ interface VarInfoInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified $depth.
      */
-    public function withDepth(int $depth): VarInfoInterface;
+    public function withDepth(int $depth): VarFormatInterface;
 
     /**
      * Provides access to the instance $depth.
@@ -113,7 +113,7 @@ interface VarInfoInterface
     /**
      * Process the var dump operation.
      */
-    public function withProcess(): VarInfoInterface;
+    public function withProcess(): VarFormatInterface;
 
     /**
      * Provides access to the instance $output.

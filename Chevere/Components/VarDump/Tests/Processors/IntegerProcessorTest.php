@@ -32,9 +32,9 @@ final class IntegerProcessorTest extends AbstractProcessorTest
     {
         foreach ([0, 1, 100, 200, 110011] as $var) {
             $stringVar = (string) $var;
-            $processor = new IntegerProcessor($this->getVarDump($var));
+            $processor = new IntegerProcessor($this->getVarFormat($var));
             $this->assertSame('length=' . strlen($stringVar), $processor->info());
-            $this->assertSame($stringVar, $processor->val());
+            $this->assertSame($stringVar, $processor->value());
         }
     }
 }

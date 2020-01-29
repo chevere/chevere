@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Tests\VarDump\Wrappers;
 
 use Chevere\Components\VarDump\Interfaces\HighlightInterface;
-use Chevere\Components\VarDump\Wrappers\ConsoleHighlight;
-use Chevere\Components\VarDump\Wrappers\HtmlHighlight;
+use Chevere\Components\VarDump\Highlighters\HtmlHighlight;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
-final class HtmlWrapperTest extends TestCase
+final class HtmlHighlightTest extends TestCase
 {
     public function testInvalidArgumentConstruct(): void
     {

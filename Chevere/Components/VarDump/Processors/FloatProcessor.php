@@ -26,8 +26,8 @@ final class FloatProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $this->var = $this->varDump->dumpeable()->var();
+        $this->var = $this->varInfo->dumpeable()->var();
         $this->info = 'length=' . strlen((string) $this->var);
-        $this->val = $this->varDump->formatter()->filterEncodedChars(strval($this->var));
+        $this->val = $this->varInfo->formatter()->filterEncodedChars(strval($this->var));
     }
 }

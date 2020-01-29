@@ -35,9 +35,9 @@ final class BooleanProcessorTest extends AbstractProcessorTest
             'true' => true,
             'false' => false
         ] as $val => $var) {
-            $processor = new BooleanProcessor($this->getVarDump($var));
+            $processor = new BooleanProcessor($this->getVarFormat($var));
             $this->assertSame('', $processor->info());
-            $this->assertSame($val, $processor->val());
+            $this->assertSame($val, $processor->value());
         }
     }
 }

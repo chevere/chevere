@@ -21,14 +21,18 @@ interface FormatterInterface
     public function indent(int $indent): string;
 
     /**
-     * @param string String to emphatize
+     * @param string $string String to emphatize
      */
     public function emphasis(string $string): string;
 
     /**
-     * @param string String to encode its chars
+     * @param string $string String to encode its chars
      */
     public function filterEncodedChars(string $string): string;
 
-    public function highlight(string $key, string $dump): string;
+    /**
+     * @param string $key A highlight key, from HighlightInterface::KEYS
+     * @param string $string String to highlight
+     */
+    public function highlight(string $key, string $string): string;
 }

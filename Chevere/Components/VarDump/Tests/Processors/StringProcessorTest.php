@@ -31,9 +31,9 @@ final class StringProcessorTest extends AbstractProcessorTest
     public function testConstruct(): void
     {
         foreach (['', 'string', 'another string', '100', 'false'] as $var) {
-            $processor = new StringProcessor($this->getVarDump($var));
+            $processor = new StringProcessor($this->getVarFormat($var));
             $this->assertSame('length=' . strlen($var), $processor->info());
-            $this->assertSame($var, $processor->val());
+            $this->assertSame($var, $processor->value());
         }
     }
 }

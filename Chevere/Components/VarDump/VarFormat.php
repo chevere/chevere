@@ -17,14 +17,14 @@ use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarDump\Interfaces\DumpeableInterface;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
-use Chevere\Components\VarDump\Interfaces\VarInfoInterface;
+use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
 
 /**
  * The Chevere VarFormat.
  *
  * Analyze a Dumpeable and provide a formated string representation of its type and data.
  */
-final class VarFormat implements VarInfoInterface
+final class VarFormat implements VarFormatInterface
 {
     private DumpeableInterface $dumpeable;
 
@@ -33,7 +33,7 @@ final class VarFormat implements VarInfoInterface
     private ProcessorInterface $processor;
 
     /** @var array [className,] */
-    private array $dontDump = [];
+    // private array $dontDump = [];
 
     private string $output = '';
 
@@ -41,7 +41,7 @@ final class VarFormat implements VarInfoInterface
 
     private string $indentString = '';
 
-    private int $depth = 0;
+    private int $depth = -1;
 
     private string $val = '';
 
@@ -69,20 +69,20 @@ final class VarFormat implements VarInfoInterface
         return $this->formatter;
     }
 
-    public function withDontDump(string ...$dontDump): VarInfoInterface
-    {
-        $new = clone $this;
-        $new->dontDump = $dontDump;
+    // public function withDontDump(string ...$dontDump): VarInfoInterface
+    // {
+    //     $new = clone $this;
+    //     $new->dontDump = $dontDump;
 
-        return $new;
-    }
+    //     return $new;
+    // }
 
-    public function dontDump(): array
-    {
-        return $this->dontDump;
-    }
+    // public function dontDump(): array
+    // {
+    //     return $this->dontDump;
+    // }
 
-    public function withIndent(int $indent): VarInfoInterface
+    public function withIndent(int $indent): VarFormatInterface
     {
         $new = clone $this;
         $new->indent = $indent;
@@ -97,7 +97,7 @@ final class VarFormat implements VarInfoInterface
         return $this->indent;
     }
 
-    public function withDepth(int $depth): VarInfoInterface
+    public function withDepth(int $depth): VarFormatInterface
     {
         $new = clone $this;
         $new->depth = $depth;
@@ -110,12 +110,12 @@ final class VarFormat implements VarInfoInterface
         return $this->depth;
     }
 
-    public function withProcess(): VarInfoInterface
+    public function withProcess(): VarFormatInterface
     {
         $new = clone $this;
 
         $new->setProcessor();
-        $new->val .= $new->processor->val();
+        $new->val .= $new->processor->value();
         $new->setInfo();
         $new->setOutput();
 
@@ -148,7 +148,7 @@ final class VarFormat implements VarInfoInterface
             if (strpos($this->info, '=')) {
                 $this->info = $this->formatter->emphasis("($this->info)");
             } else {
-                $this->info = $this->formatter->highlight(VarInfoInterface::_CLASS, $this->info);
+                $this->info = $this->formatter->highlight(VarFormatInterface::_CLASS, $this->info);
             }
         }
     }

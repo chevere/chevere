@@ -32,9 +32,9 @@ final class FloatProcessorTest extends AbstractProcessorTest
     {
         foreach ([0.1, 1.1, 10.0, 2.00, 110.011] as $var) {
             $stringVar = (string) $var;
-            $processor = new FloatProcessor($this->getVarDump($var));
+            $processor = new FloatProcessor($this->getVarFormat($var));
             $this->assertSame('length=' . strlen($stringVar), $processor->info());
-            $this->assertSame($stringVar, $processor->val());
+            $this->assertSame($stringVar, $processor->value());
         }
     }
 }

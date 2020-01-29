@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Wrappers\Traits;
+namespace Chevere\Components\VarDump\Highlighters\Traits;
 
 use Chevere\Components\Message\Message;
 use InvalidArgumentException;

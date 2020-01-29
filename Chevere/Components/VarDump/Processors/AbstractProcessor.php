@@ -14,17 +14,16 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Processors;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\Type\Type;
 use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
-use Chevere\Components\VarDump\Interfaces\VarInfoInterface;
+use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
 use InvalidArgumentException;
 use TypeError;
 use function ChevereFn\varType;
 
 abstract class AbstractProcessor implements ProcessorInterface
 {
-    protected VarInfoInterface $varDump;
+    protected VarFormatInterface $varInfo;
 
     /** @var string */
     protected string $info = '';
@@ -32,9 +31,9 @@ abstract class AbstractProcessor implements ProcessorInterface
     /** @var string */
     protected string $val = '';
 
-    final public function __construct(VarInfoInterface $varDump)
+    final public function __construct(VarFormatInterface $varInfo)
     {
-        $this->varDump = $varDump;
+        $this->varInfo = $varInfo;
         $this->assertType();
         $this->process();
     }
@@ -49,13 +48,13 @@ abstract class AbstractProcessor implements ProcessorInterface
     final private function assertType(): void
     {
         $type = new Type($this->type());
-        if (!$type->validate($this->varDump->dumpeable()->var())) {
+        if (!$type->validate($this->varInfo->dumpeable()->var())) {
             throw new InvalidArgumentException(
                 (new Message('Instance of %className% expects a type %expected% for the return value of %method%, type %provided% returned'))
                     ->code('%className%', static::class)
                     ->code('%expected%', $this->type())
-                    ->code('%method%', get_class($this->varDump) . '::var()')
-                    ->code('%provided%', varType($this->varDump->dumpeable()->var()))
+                    ->code('%method%', get_class($this->varInfo) . '::var()')
+                    ->code('%provided%', varType($this->varInfo->dumpeable()->var()))
                     ->toString()
             );
         }
@@ -66,7 +65,7 @@ abstract class AbstractProcessor implements ProcessorInterface
         return $this->info;
     }
 
-    final public function val(): string
+    final public function value(): string
     {
         return $this->val;
     }
