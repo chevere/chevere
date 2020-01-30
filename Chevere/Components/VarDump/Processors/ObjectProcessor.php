@@ -57,10 +57,8 @@ final class ObjectProcessor extends AbstractProcessor
             );
 
             return;
-        } else {
-            $this->known[] = $objectId;
         }
-        if ($this->depth >= 4) {
+        if ($this->depth > self::MAX_DEPTH) {
             $this->val .= $this->varFormat->formatter()->highlight(
                 VarFormatInterface::_OPERATOR,
                 '*max depth reached*'
@@ -68,6 +66,8 @@ final class ObjectProcessor extends AbstractProcessor
 
             return;
         }
+        $this->known[] = $objectId;
+
         $this->reflectionObject = new ReflectionObject($this->var);
         $this->setProperties();
         $this->handleNormalizeClassName();
@@ -118,9 +118,10 @@ final class ObjectProcessor extends AbstractProcessor
 
     private function handleDeepth(): bool
     {
+        $deep = is_object($this->aux) || is_iterable($this->aux) ? $this->depth : $this->depth - 1;
         $new = (new VarFormat(new VarDumpeable($this->aux), $this->varFormat->formatter()))
                 ->withIndent($this->varFormat->indent() + 1)
-                ->withDepth($this->depth)
+                ->withDepth($deep)
                 ->withKnown($this->known)
                 ->withProcess();
         $this->val .= $new->toString();

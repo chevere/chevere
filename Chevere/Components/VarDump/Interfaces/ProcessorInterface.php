@@ -15,6 +15,8 @@ namespace Chevere\Components\VarDump\Interfaces;
 
 interface ProcessorInterface
 {
+    const MAX_DEPTH = 5;
+
     /**
      * Provides access to the instance info.
      * The information about the variable like `size=1` or `length=6`

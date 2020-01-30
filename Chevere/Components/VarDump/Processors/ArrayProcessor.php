@@ -36,19 +36,18 @@ final class ArrayProcessor extends AbstractProcessor
     protected function process(): void
     {
         $this->var = $this->varFormat->dumpeable()->var();
-        $this->known = $this->varFormat->known();
         $this->depth = $this->varFormat->depth() + 1;
-        if ($this->isCircularRef($this->var)) {
-            $this->val .= $this->varFormat->formatter()->highlight(
-                VarFormatInterface::_OPERATOR,
-                '*circular array reference*'
-            );
+        // if ($this->isCircularRef($this->var)) {
+        //     $this->val .= $this->varFormat->formatter()->highlight(
+        //         VarFormatInterface::_OPERATOR,
+        //         '*circular array reference*'
+        //     );
 
-            return;
-        }
+        //     return;
+        // }
         $count = count($this->var);
         $this->info = 'size=' . $count;
-        if ($this->depth > 4) {
+        if ($this->depth > self::MAX_DEPTH) {
             if ($count > 0) {
                 $this->val .= $this->varFormat->formatter()->highlight(
                     VarFormatInterface::_OPERATOR,
@@ -67,26 +66,27 @@ final class ArrayProcessor extends AbstractProcessor
         }
     }
 
-    private function isCircularRef(array $array): bool
-    {
-        foreach ($array as $var) {
-            if ($array === $var) {
-                return true;
-            }
-            if (is_array($var)) {
-                return $this->isCircularRef($var);
-            }
-        }
+    // private function isCircularRef(array $array): bool
+    // {
+    //     foreach ($array as $var) {
+    //         if ($array === $var) {
+    //             return true;
+    //         }
+    //         if (is_array($var)) {
+    //             return $this->isCircularRef($var);
+    //         }
+    //     }
 
-        return false;
-    }
+    //     return false;
+    // }
 
     private function handleDeepth($var): bool
     {
+        $deep = is_object($var) || is_iterable($var) ? $this->depth : $this->depth - 1;
         $newVarDump = (new VarFormat(new VarDumpeable($var), $this->varFormat->formatter()))
                     ->withIndent($this->varFormat->indent() + 1)
-                    ->withDepth($this->depth)
-                    ->withKnown($this->known)
+                    ->withDepth($deep)
+                    ->withKnown($this->varFormat->known())
                     ->withProcess();
         $this->val .= $newVarDump->toString();
 
