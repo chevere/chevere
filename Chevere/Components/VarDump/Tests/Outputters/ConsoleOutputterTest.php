@@ -30,7 +30,6 @@ final class ConsoleOutputterTest extends TestCase
         $varDumper = new VarDumper(new ConsoleFormatter);
         $outputter = new ConsoleOutputter($varDumper);
         $line = __LINE__ - 2;
-        $this->assertSame($varDumper, $outputter->varDumper());
         // $fileReturn = new FileReturn(
         //     new PhpFile(new File(
         //         new Path(__DIR__ . '/resources/output-console.php')
