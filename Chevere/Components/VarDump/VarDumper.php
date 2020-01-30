@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump;
 
-use BadMethodCallException;
-use Chevere\Components\Message\Message;
 use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 
@@ -57,14 +55,16 @@ final class VarDumper implements VarDumperInterface
 
     final private function setDebugBacktrace(): void
     {
-        $this->debugBacktrace = debug_backtrace();
+        $this->debugBacktrace = debug_backtrace(0);
         array_shift($this->debugBacktrace);
         if (
             isset($this->debugBacktrace[1]['class'])
             && VarDump::class == $this->debugBacktrace[1]['class']
         ) {
+            // @codeCoverageIgnoreStart
             array_shift($this->debugBacktrace);
             array_shift($this->debugBacktrace);
+            // @codeCoverageIgnoreEnd
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Chevere\Components\VarDump;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\Type\Type;
-use Chevere\Components\VarDump\Interfaces\DumpeableInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpeableInterface;
 use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
 use LogicException;
@@ -25,7 +25,7 @@ use function ChevereFn\varType;
 /**
  * Allows to interact with dumpeable variables.
  */
-final class VarDumpeable implements DumpeableInterface
+final class VarDumpeable implements VarDumpeableInterface
 {
     /** @var mixed */
     private $var;
@@ -73,19 +73,23 @@ final class VarDumpeable implements DumpeableInterface
     {
         $processorName = VarFormatInterface::PROCESSORS[$this->type] ?? null;
         if (!isset($processorName)) {
+            // @codeCoverageIgnoreStart
             throw new LogicException(
                 (new Message('No processor for variable of type %type%'))
-                    ->code('%type%', $this->type)
-                    ->toString()
+                ->code('%type%', $this->type)
+                ->toString()
             );
+            // @codeCoverageIgnoreEnd
         }
         if (!is_subclass_of($processorName, ProcessorInterface::class, true)) {
+            // @codeCoverageIgnoreStart
             throw new LogicException(
                 (new Message('Processor %processorName% must implement the %interfaceName% interface'))
-                    ->code('%processorName%', $processorName)
-                    ->code('%interfaceName%', ProcessorInterface::class)
-                    ->toString()
+                ->code('%processorName%', $processorName)
+                ->code('%interfaceName%', ProcessorInterface::class)
+                ->toString()
             );
+            // @codeCoverageIgnoreEnd
         }
         $this->processorName = $processorName;
     }

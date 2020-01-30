@@ -17,13 +17,14 @@ use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Common\Interfaces\ToStringInterface;
 use Chevere\Components\VarDump\Formatters\ConsoleFormatter;
 use Chevere\Components\VarDump\Formatters\HtmlFormatter;
-use Chevere\Components\Screen\Interfaces\ScreenInterface;
 use Chevere\Components\VarDump\Outputters\ConsoleOutputter;
 use Chevere\Components\VarDump\Outputters\HtmlOutputter;
 
 /**
  * The Chevere VarDump.
  * A context-aware VarDumper.
+ *
+ * @codeCoverageIgnore
  */
 final class VarDump implements ToStringInterface
 {

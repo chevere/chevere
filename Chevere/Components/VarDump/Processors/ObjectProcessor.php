@@ -35,6 +35,8 @@ final class ObjectProcessor extends AbstractProcessor
 
     private $aux;
 
+    private array $known = [];
+
     public function type(): string
     {
         return TypeInterface::OBJECT;
@@ -42,24 +44,33 @@ final class ObjectProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $this->var = $this->varInfo->dumpeable()->var();
-        $this->reflectionObject = new ReflectionObject($this->var);
-        // if (in_array($this->reflectionObject->getName(), $this->varDump->dontDump())) {
-        //     $this->val .= $this->varDump->formatter()->highlight(
-        //         VarInfoInterface::_OPERATOR,
-        //         $this->varDump->formatter()->emphasis(
-        //             $this->reflectionObject->getName()
-        //         )
-        //     );
-
-        //     return;
-        // }
-        $this->setProperties();
-
-        // $this->classFile = $this->reflectionObject->getFileName();
+        $this->var = $this->varFormat->dumpeable()->var();
+        $this->known = $this->varFormat->known();
+        $this->depth = $this->varFormat->depth() + 1;
         $this->className = get_class($this->var);
-        $this->handleNormalizeClassName();
         $this->info = $this->className;
+        $objectId = spl_object_id($this->var);
+        if (in_array($objectId, $this->known)) {
+            $this->val .= $this->varFormat->formatter()->highlight(
+                VarFormatInterface::_OPERATOR,
+                '*circular object reference*'
+            );
+
+            return;
+        } else {
+            $this->known[] = $objectId;
+        }
+        if ($this->depth >= 4) {
+            $this->val .= $this->varFormat->formatter()->highlight(
+                VarFormatInterface::_OPERATOR,
+                '*max depth reached*'
+            );
+
+            return;
+        }
+        $this->reflectionObject = new ReflectionObject($this->var);
+        $this->setProperties();
+        $this->handleNormalizeClassName();
     }
 
     private function setProperties(): void
@@ -76,7 +87,9 @@ final class ObjectProcessor extends AbstractProcessor
             }
         }
         foreach ($this->properties as $name => $value) {
-            $this->processProperty($name, $value);
+            if (!$this->processProperty($name, $value)) {
+                break;
+            }
         }
     }
 
@@ -91,47 +104,28 @@ final class ObjectProcessor extends AbstractProcessor
         $this->properties[$property->getName()] = ['value' => $value ?? null];
     }
 
-    private function processProperty($name, $value): void
+    private function processProperty($name, $value): bool
     {
         $visibility = implode(' ', $value['visibility'] ?? $this->properties['visibility']);
-        $wrappedVisibility = $this->varInfo->formatter()->highlight(VarFormatInterface::_PRIVACY, $visibility);
-        $property = '$' . $this->varInfo->formatter()->filterEncodedChars($name);
-        $wrappedProperty = $this->varInfo->formatter()->highlight(VarFormatInterface::_VARIABLE, $property);
-        $this->val .= "\n" . $this->varInfo->indentString() . $wrappedVisibility . ' ' . $wrappedProperty . ' ';
+        $wrappedVisibility = $this->varFormat->formatter()->highlight(VarFormatInterface::_PRIVACY, $visibility);
+        $property = '$' . $this->varFormat->formatter()->filterEncodedChars($name);
+        $wrappedProperty = $this->varFormat->formatter()->highlight(VarFormatInterface::_VARIABLE, $property);
+        $this->val .= "\n" . $this->varFormat->indentString() . $wrappedVisibility . ' ' . $wrappedProperty . ' ';
         $this->aux = $value['value'];
-        if (is_object($this->aux) && property_exists($this->aux, $name)) {
-            $reflector = new ReflectionObject($this->aux);
-            $prop = $reflector->getProperty($name);
-            $prop->setAccessible(true);
-            $propValue = $prop->getValue($this->aux);
-            if ($this->aux == $propValue) {
-                $this->val .= $this->varInfo->formatter()->highlight(
-                    VarFormatInterface::_OPERATOR,
-                    '(' . $this->varInfo->formatter()->emphasis('circular object reference') . ')'
-                );
 
-                return;
-            }
-        }
-        $this->handleDeepth();
+        return $this->handleDeepth($this->aux);
     }
 
-    private function handleDeepth(): void
+    private function handleDeepth(): bool
     {
-        if ($this->varInfo->depth() < 4) {
-            $new = (new VarFormat(new VarDumpeable($this->aux), $this->varInfo->formatter()))
-                // ->withDontDump(...$this->varDump->dontDump())
-                ->withIndent($this->varInfo->indent())
-                ->withDepth($this->varInfo->depth())
+        $new = (new VarFormat(new VarDumpeable($this->aux), $this->varFormat->formatter()))
+                ->withIndent($this->varFormat->indent() + 1)
+                ->withDepth($this->depth)
+                ->withKnown($this->known)
                 ->withProcess();
-            $this->val .= $new->toString();
+        $this->val .= $new->toString();
 
-            return;
-        }
-        $this->val .= $this->varInfo->formatter()->highlight(
-            VarFormatInterface::_OPERATOR,
-            '(' . $this->varInfo->formatter()->emphasis('max depth reached') . ')'
-        );
+        return true;
     }
 
     private function handleNormalizeClassName(): void

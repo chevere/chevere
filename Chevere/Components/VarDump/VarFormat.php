@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump;
 
 use Chevere\Components\Type\Interfaces\TypeInterface;
-use Chevere\Components\VarDump\Interfaces\DumpeableInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpeableInterface;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
@@ -26,7 +26,7 @@ use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
  */
 final class VarFormat implements VarFormatInterface
 {
-    private DumpeableInterface $dumpeable;
+    private VarDumpeableInterface $dumpeable;
 
     private FormatterInterface $formatter;
 
@@ -44,19 +44,21 @@ final class VarFormat implements VarFormatInterface
 
     private string $info;
 
+    public array $known = [];
+
     /**
      * Creates a new instance.
      *
      * @param FormatterInterface $formatter A VarDump formatter
      */
-    public function __construct(DumpeableInterface $dumpeable, FormatterInterface $formatter)
+    public function __construct(VarDumpeableInterface $dumpeable, FormatterInterface $formatter)
     {
         $this->dumpeable = $dumpeable;
         $this->formatter = $formatter;
         ++$this->depth;
     }
 
-    public function dumpeable(): DumpeableInterface
+    public function dumpeable(): VarDumpeableInterface
     {
         return $this->dumpeable;
     }
@@ -94,6 +96,19 @@ final class VarFormat implements VarFormatInterface
         return $this->depth;
     }
 
+    public function withKnown(array $known): VarFormatInterface
+    {
+        $new = clone $this;
+        $new->known = $known;
+
+        return $new;
+    }
+
+    public function known(): array
+    {
+        return $this->known;
+    }
+
     public function withProcess(): VarFormatInterface
     {
         $new = clone $this;
@@ -118,10 +133,10 @@ final class VarFormat implements VarFormatInterface
 
     private function setProcessor(): void
     {
+        $processorName = $this->dumpeable()->processorName();
         if (in_array($this->dumpeable()->type(), [TypeInterface::ARRAY, TypeInterface::OBJECT])) {
             ++$this->indent;
         }
-        $processorName = $this->dumpeable()->processorName();
         $this->processor = new $processorName($this);
     }
 

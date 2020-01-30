@@ -26,7 +26,7 @@ use Chevere\Components\VarDump\Processors\StringProcessor;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-final class DumpeableTest extends TestCase
+final class VarDumpeableTest extends TestCase
 {
     public function testConstruct(): void
     {

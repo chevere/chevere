@@ -23,7 +23,7 @@ use function ChevereFn\varType;
 
 abstract class AbstractProcessor implements ProcessorInterface
 {
-    protected VarFormatInterface $varInfo;
+    protected VarFormatInterface $varFormat;
 
     /** @var string */
     protected string $info = '';
@@ -31,9 +31,9 @@ abstract class AbstractProcessor implements ProcessorInterface
     /** @var string */
     protected string $val = '';
 
-    final public function __construct(VarFormatInterface $varInfo)
+    final public function __construct(VarFormatInterface $varFormat)
     {
-        $this->varInfo = $varInfo;
+        $this->varFormat = $varFormat;
         $this->assertType();
         $this->process();
     }
@@ -48,13 +48,13 @@ abstract class AbstractProcessor implements ProcessorInterface
     final private function assertType(): void
     {
         $type = new Type($this->type());
-        if (!$type->validate($this->varInfo->dumpeable()->var())) {
+        if (!$type->validate($this->varFormat->dumpeable()->var())) {
             throw new InvalidArgumentException(
                 (new Message('Instance of %className% expects a type %expected% for the return value of %method%, type %provided% returned'))
                     ->code('%className%', static::class)
                     ->code('%expected%', $this->type())
-                    ->code('%method%', get_class($this->varInfo) . '::var()')
-                    ->code('%provided%', varType($this->varInfo->dumpeable()->var()))
+                    ->code('%method%', get_class($this->varFormat) . '::var()')
+                    ->code('%provided%', varType($this->varFormat->dumpeable()->var()))
                     ->toString()
             );
         }

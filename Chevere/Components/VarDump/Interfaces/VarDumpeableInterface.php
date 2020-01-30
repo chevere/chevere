@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Interfaces;
 
-interface DumpeableInterface
+interface VarDumpeableInterface
 {
     public function __construct($var);
 

@@ -55,9 +55,9 @@ interface VarFormatInterface
         TypeInterface::RESOURCE => ResourceProcessor::class,
     ];
 
-    public function __construct(DumpeableInterface $dumpeable, FormatterInterface $formatter);
+    public function __construct(VarDumpeableInterface $dumpeable, FormatterInterface $formatter);
 
-    public function dumpeable(): DumpeableInterface;
+    public function dumpeable(): VarDumpeableInterface;
 
     /**
      * Provides access to the FormatterInterface instance.
@@ -94,6 +94,10 @@ interface VarFormatInterface
      * Provides access to the instance $depth.
      */
     public function depth(): int;
+
+    public function withKnown(array $known): VarFormatInterface;
+
+    public function known(): array;
 
     /**
      * Process the var dump operation.

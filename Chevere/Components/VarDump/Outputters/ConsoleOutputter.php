@@ -29,10 +29,10 @@ final class ConsoleOutputter extends PlainOutputter
         $aux = 0;
         $bt = $this->varDumper->debugBacktrace()[$aux];
         $maker = '';
-        if ($bt['class']) {
+        if ($bt['class'] ?? null) {
             $maker .= $bt['class'] . $bt['type'];
         }
-        if ($bt['function']) {
+        if ($bt['function'] ?? null) {
             $maker .= $bt['function'] . '()';
         }
 

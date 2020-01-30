@@ -56,14 +56,14 @@ final class ObjectProcessorTest extends AbstractProcessorTest
     {
         $object = (new DummyClass)->withCircularReference();
         $processor = new ObjectProcessor($this->getVarFormat($object));
-        $this->assertStringContainsString('private $circularReference (circular object reference)', $processor->value());
+        $this->assertStringContainsString('private $circularReference object ' . DummyClass::class . ' *circular object reference*', $processor->value());
     }
 
     public function testDeep(): void
     {
-        $object = (new DummyClass)->withProtected();
-        $processor = new ObjectProcessor($this->getVarFormat($object)->withDepth(4));
-        $this->assertStringContainsString('protected $protected (max depth reached)', $processor->value());
+        $object = (new DummyClass)->withDeep();
+        $processor = new ObjectProcessor($this->getVarFormat($object));
+        $this->assertStringContainsString('public $deep object stdClass *max depth reached*', $processor->value());
     }
 }
 
@@ -76,6 +76,8 @@ final class DummyClass
     public object $public;
 
     private object $circularReference;
+
+    private object $deep;
 
     public function withPrivate(): self
     {
@@ -105,6 +107,18 @@ final class DummyClass
     {
         $new = clone $this;
         $new->circularReference = $new;
+
+        return $new;
+    }
+
+    public function withDeep(): self
+    {
+        $new = clone $this;
+        $new->deep = new stdClass;
+        $new->deep->deep = new stdClass;
+        $new->deep->deep->deep = new stdClass;
+        $new->deep->deep->deep->deep = new stdClass;
+        $new->deep->deep->deep->deep->deep = new stdClass;
 
         return $new;
     }

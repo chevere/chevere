@@ -22,11 +22,13 @@ use Chevere\Components\Path\Path;
 use Chevere\Components\VarDump\Dumpers\ConsoleDumper;
 use Chevere\Components\VarDump\Dumpers\HtmlDumper;
 use Chevere\Components\VarDump\Dumpers\PlainDumper;
+use Chevere\Components\VarDump\Formatters\PlainFormatter;
+use Chevere\Components\VarDump\VarDumper;
 use Chevere\Components\Variable\VariableExport;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-final class DumperTest extends TestCase
+final class VarDumperTest extends TestCase
 {
     private function getVars(): array
     {
@@ -63,20 +65,13 @@ final class DumperTest extends TestCase
     //     }
     // }
 
-    public function testDumpers(): void
+    public function testConstruct(): void
     {
-        // $this->createResources();
-        $dumpers = $this->getDumpers();
-        foreach ($dumpers as $shortName => $dumper) {
-            $vars = $this->getVars();
-            $dumper = $dumper->withVars(...$vars);
-            $this->assertSame($vars, $dumper->vars());
-            $disk = include sprintf('resources/%s-dumped.php', $shortName);
-            $line = $dumper->debugBacktrace()[0]['line'];
-            $fixed = str_replace('%fileLine%', __FILE__ . ':' . $line, $disk);
-            $this->assertSame($fixed, $dumper->toString());
-        }
-        // Note: Console dumper can't be tested here
+        $formatter = new PlainFormatter;
+        $varDumper = new VarDumper($formatter);
+        $this->assertSame($formatter, $varDumper->formatter());
+        $this->assertSame([], $varDumper->vars());
+        // xdd($varDumper->debugBacktrace());
     }
 
     // public function testXdd(): void

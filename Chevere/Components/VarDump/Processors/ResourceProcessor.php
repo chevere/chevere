@@ -24,9 +24,9 @@ final class ResourceProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $resourceString = (string) $this->varInfo->dumpeable()->var();
+        $resourceString = (string) $this->varFormat->dumpeable()->var();
         $this->val = $resourceString;
-        $resource = get_resource_type($this->varInfo->dumpeable()->var());
+        $resource = get_resource_type($this->varFormat->dumpeable()->var());
         $this->info = 'type=' . $resource;
     }
 }
