@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Tests\Processors;
 
 use Chevere\Components\VarDump\Processors\ObjectProcessor;
-use Chevere\Components\X\Tests\AbstractProcessorTest;
+use Chevere\Components\VarDump\Tests\AbstractProcessorTest;
 use stdClass;
 
 final class ObjectProcessorTest extends AbstractProcessorTest
@@ -56,14 +56,14 @@ final class ObjectProcessorTest extends AbstractProcessorTest
     {
         $object = (new DummyClass)->withCircularReference();
         $processor = new ObjectProcessor($this->getVarFormat($object));
-        $this->assertStringContainsString('private $circularReference object ' . DummyClass::class . ' *circular object reference*', $processor->value());
+        $this->assertStringContainsString('private $circularReference object ' . DummyClass::class . ' ' . $processor->circularReference(), $processor->value());
     }
 
     public function testDeep(): void
     {
         $object = (new DummyClass)->withDeep();
         $processor = new ObjectProcessor($this->getVarFormat($object));
-        $this->assertStringContainsString('public $deep object stdClass *max depth reached*', $processor->value());
+        $this->assertStringContainsString('public $deep object stdClass ' . $processor->maxDepthReached(), $processor->value());
     }
 }
 

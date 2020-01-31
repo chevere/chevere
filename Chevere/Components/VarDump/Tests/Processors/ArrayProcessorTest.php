@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Tests\Processors;
 
 use Chevere\Components\VarDump\Processors\ArrayProcessor;
-use Chevere\Components\X\Tests\AbstractProcessorTest;
+use Chevere\Components\VarDump\Tests\AbstractProcessorTest;
 
 final class ArrayProcessorTest extends AbstractProcessorTest
 {
@@ -52,7 +52,7 @@ final class ArrayProcessorTest extends AbstractProcessorTest
         $var[] = &$var;
         $processor = new ArrayProcessor($this->getVarFormat($var));
         $this->assertSame('size=' . count($var), $processor->info());
-        $this->assertStringContainsString('*circular array reference*', $processor->value());
+        $this->assertStringContainsString($processor->circularReference(), $processor->value());
     }
 
     public function testMaxDepth(): void
@@ -60,6 +60,6 @@ final class ArrayProcessorTest extends AbstractProcessorTest
         $var = [[]];
         $var[] = &$var;
         $processor = new ArrayProcessor($this->getVarFormat($var));
-        $this->assertStringContainsString('*max depth *wink* reached*', $processor->value());
+        $this->assertStringContainsString($processor->maxDepthReached(), $processor->value());
     }
 }

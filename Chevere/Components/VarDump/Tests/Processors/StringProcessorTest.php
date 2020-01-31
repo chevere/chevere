@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Tests\Processors;
 
 use Chevere\Components\VarDump\Processors\StringProcessor;
-use Chevere\Components\X\Tests\AbstractProcessorTest;
+use Chevere\Components\VarDump\Tests\AbstractProcessorTest;
 
 final class StringProcessorTest extends AbstractProcessorTest
 {

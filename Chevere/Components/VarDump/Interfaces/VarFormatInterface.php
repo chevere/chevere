@@ -95,7 +95,13 @@ interface VarFormatInterface
      */
     public function depth(): int;
 
-    public function withKnown(array $known): VarFormatInterface;
+    /**
+     * Return an instance with the specified known object IDs.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified known object IDs.
+     */
+    public function withKnownObjects(array $known): VarFormatInterface;
 
     public function known(): array;
 

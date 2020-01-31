@@ -60,6 +60,25 @@ abstract class AbstractProcessor implements ProcessorInterface
         }
     }
 
+    final public function highlightOperator(string $string): string
+    {
+        return $this->varFormat->formatter()
+                ->highlight(
+                    VarFormatInterface::_OPERATOR,
+                    $string
+                );
+    }
+
+    final public function circularReference(): string
+    {
+        return '*circular reference*';
+    }
+
+    final public function maxDepthReached(): string
+    {
+        return '*max depth reached*';
+    }
+
     final public function info(): string
     {
         return $this->info;

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\X\Tests;
+namespace Chevere\Components\VarDump\Tests;
 
 use Chevere\Components\VarDump\VarDumpeable;
 use InvalidArgumentException;

@@ -22,10 +22,6 @@ final class ArrayProcessor extends AbstractProcessor
 {
     private array $var;
 
-    private array $known = [];
-
-    private $aux;
-
     private int $depth = 0;
 
     public function type(): string
@@ -39,36 +35,19 @@ final class ArrayProcessor extends AbstractProcessor
         $this->depth = $this->varFormat->depth() + 1;
         $count = count($this->var);
         $this->info = 'size=' . $count;
-        $operator = $this->varFormat->formatter()->highlight(VarFormatInterface::_OPERATOR, '=>');
         if ($this->isCircularRef($this->var)) {
-            // $this->value .= $this->varFormat->formatter()->highlight(
-            //     VarFormatInterface::_OPERATOR,
-            //     '*circular array reference*'
-            // );
+            $this->value .= $this->highlightOperator($this->circularReference());
 
             return;
         }
         if ($this->depth > self::MAX_DEPTH) {
             if ($count > 0) {
-                // $this->value .= $this->varFormat->formatter()->highlight(
-                //     VarFormatInterface::_OPERATOR,
-                //     '*max depth reached*'
-                // );
+                $this->value .= $this->highlightOperator($this->maxDepthReached());
             }
 
             return;
         }
-
-        /**
-         * Appends indent name operator
-         * `    key => `
-         */
-        foreach ($this->var as $key => $var) {
-            $this->value .= "\n" . $this->varFormat->indentString() . ' ' . $this->varFormat->formatter()->filterEncodedChars((string) $key) . " $operator ";
-            if (!$this->handleDeepth($var)) {
-                break;
-            }
-        }
+        $this->processMembers();
     }
 
     private function isCircularRef(array $array): bool
@@ -85,16 +64,28 @@ final class ArrayProcessor extends AbstractProcessor
         return false;
     }
 
-    private function handleDeepth($var): bool
+    private function processMembers(): void
     {
-        $deep = is_object($var) || is_iterable($var) ? $this->depth : $this->depth - 1;
-        $varFormat = (new VarFormat(new VarDumpeable($var), $this->varFormat->formatter()))
-                    ->withIndent($this->varFormat->indent() + 1)
-                    ->withDepth($deep)
-                    ->withKnown($this->varFormat->known())
-                    ->withProcess();
-        $this->value .= $varFormat->toString();
+        $operator = $this->highlightOperator('=>');
+        foreach ($this->var as $key => $var) {
+            // Appends indent+name+operator `   key => `
+            $this->value .= "\n" . $this->varFormat->indentString() . ' ' . $this->varFormat->formatter()->filterEncodedChars((string) $key) . " $operator ";
+            // Process the underlying array member value
+            $this->handleDepth($var);
+        }
+    }
 
-        return true;
+    private function handleDepth($var): void
+    {
+        $deep = $this->depth;
+        if (is_scalar($var)) {
+            $deep -= 1;
+        }
+        $varFormat = (new VarFormat(new VarDumpeable($var), $this->varFormat->formatter()))
+            ->withDepth($deep)
+            ->withIndent($this->varFormat->indent() + 1)
+            ->withKnownObjects($this->varFormat->known())
+            ->withProcess();
+        $this->value .= $varFormat->toString();
     }
 }

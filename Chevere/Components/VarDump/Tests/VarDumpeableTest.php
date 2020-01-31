@@ -64,8 +64,8 @@ final class VarDumpeableTest extends TestCase
             $this->assertSame($type, $variableDump->type());
             $this->assertSame($var[1], $variableDump->processorName());
             $template = in_array($type, [TypeInterface::ARRAY, TypeInterface::OBJECT])
-                ? '%type% %info% %val%'
-                : '%type% %val% %info%';
+                ? ['%type%', '%info%', '%val%']
+                : ['%type%', '%val%', '%info%'];
             $this->assertSame($template, $variableDump->template());
         }
     }

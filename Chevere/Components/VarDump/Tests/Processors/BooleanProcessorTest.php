@@ -15,7 +15,7 @@ namespace Chevere\Components\VarDump\Tests\Processors;
 
 use stdClass;
 use Chevere\Components\VarDump\Processors\BooleanProcessor;
-use Chevere\Components\X\Tests\AbstractProcessorTest;
+use Chevere\Components\VarDump\Tests\AbstractProcessorTest;
 
 final class BooleanProcessorTest extends AbstractProcessorTest
 {

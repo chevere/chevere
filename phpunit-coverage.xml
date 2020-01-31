@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <phpunit bootstrap="./phpunit.php"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         verbose="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         stopOnError="false">
+    <testsuites>
+        <testsuite name="Chevere Framework Test suite">
+            <directory suffix="Test.php">./Chevere/Components/*/Tests/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./Chevere/Components/</directory>
+            <exclude>
+                <directory>./Chevere/Components/*/Tests/</directory>
+                <directory>./Chevere/TestApp/</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html" target="build/coverage/html"/>
+        <log type="coverage-clover" target="build/coverage/clover.xml"/>
+    </logging>
+</phpunit>

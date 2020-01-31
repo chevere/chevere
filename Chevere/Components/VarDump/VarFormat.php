@@ -97,7 +97,7 @@ final class VarFormat implements VarFormatInterface
         return $this->depth;
     }
 
-    public function withKnown(array $known): VarFormatInterface
+    public function withKnownObjects(array $known): VarFormatInterface
     {
         $new = clone $this;
         $new->known = $known;

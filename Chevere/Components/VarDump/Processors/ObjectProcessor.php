@@ -33,9 +33,8 @@ final class ObjectProcessor extends AbstractProcessor
 
     private string $className;
 
-    private $aux;
-
-    private array $known = [];
+    /** @var string[] An array containing object ids */
+    private array $knownObjects = [];
 
     public function type(): string
     {
@@ -45,32 +44,25 @@ final class ObjectProcessor extends AbstractProcessor
     protected function process(): void
     {
         $this->var = $this->varFormat->dumpeable()->var();
-        $this->known = $this->varFormat->known();
+        $this->knownObjects = $this->varFormat->known();
         $this->depth = $this->varFormat->depth() + 1;
         $this->className = get_class($this->var);
+        $this->handleNormalizeClassName();
         $this->info = $this->className;
         $objectId = spl_object_id($this->var);
-        if (in_array($objectId, $this->known)) {
-            $this->value .= $this->varFormat->formatter()->highlight(
-                VarFormatInterface::_OPERATOR,
-                '*circular object reference*'
-            );
+        if (in_array($objectId, $this->knownObjects)) {
+            $this->value .= $this->highlightOperator($this->circularReference() . ' #' . $objectId);
 
             return;
         }
         if ($this->depth > self::MAX_DEPTH) {
-            $this->value .= $this->varFormat->formatter()->highlight(
-                VarFormatInterface::_OPERATOR,
-                '*max depth reached*'
-            );
+            $this->value .= $this->highlightOperator($this->maxDepthReached());
 
             return;
         }
-        $this->known[] = $objectId;
-
+        $this->knownObjects[] = $objectId;
         $this->reflectionObject = new ReflectionObject($this->var);
         $this->setProperties();
-        $this->handleNormalizeClassName();
     }
 
     private function setProperties(): void
@@ -87,9 +79,7 @@ final class ObjectProcessor extends AbstractProcessor
             }
         }
         foreach ($this->properties as $name => $value) {
-            if (!$this->processProperty($name, $value)) {
-                break;
-            }
+            $this->processProperty($name, $value);
         }
     }
 
@@ -104,29 +94,29 @@ final class ObjectProcessor extends AbstractProcessor
         $this->properties[$property->getName()] = ['value' => $value ?? null];
     }
 
-    private function processProperty($name, $value): bool
+    private function processProperty($name, $value): void
     {
         $visibility = implode(' ', $value['visibility'] ?? $this->properties['visibility']);
         $wrappedVisibility = $this->varFormat->formatter()->highlight(VarFormatInterface::_PRIVACY, $visibility);
         $property = '$' . $this->varFormat->formatter()->filterEncodedChars($name);
         $wrappedProperty = $this->varFormat->formatter()->highlight(VarFormatInterface::_VARIABLE, $property);
         $this->value .= "\n" . $this->varFormat->indentString() . $wrappedVisibility . ' ' . $wrappedProperty . ' ';
-        $this->aux = $value['value'];
-
-        return $this->handleDeepth($this->aux);
+        $this->handleDepth($value['value']);
     }
 
-    private function handleDeepth(): bool
+    private function handleDepth($var): void
     {
-        $deep = is_object($this->aux) || is_iterable($this->aux) ? $this->depth : $this->depth - 1;
-        $new = (new VarFormat(new VarDumpeable($this->aux), $this->varFormat->formatter()))
-                ->withIndent($this->varFormat->indent() + 1)
-                ->withDepth($deep)
-                ->withKnown($this->known)
-                ->withProcess();
-        $this->value .= $new->toString();
-
-        return true;
+        $deep = $this->depth;
+        if (is_scalar($var)) {
+            $deep -= 1;
+        }
+        // $deep = is_object($var) || is_iterable($var) ? $this->depth : $this->depth - 1;
+        $varFormat = (new VarFormat(new VarDumpeable($var), $this->varFormat->formatter()))
+            ->withDepth($deep)
+            ->withIndent($this->varFormat->indent() + 1)
+            ->withKnownObjects($this->knownObjects)
+            ->withProcess();
+        $this->value .= $varFormat->toString();
     }
 
     private function handleNormalizeClassName(): void
