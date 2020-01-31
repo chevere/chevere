@@ -25,7 +25,7 @@ use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Http\MethodControllerNameCollection;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Path\PathApp;
+use Chevere\Components\Filesystem\Path\AppPath;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Routeable;
@@ -34,7 +34,7 @@ use Chevere\Components\Variable\VariableExport;
 use Chevere\Components\Api\Interfaces\ApiMakerInterface;
 use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
-use Chevere\Components\Path\Interfaces\PathInterface;
+use Chevere\Components\Filesystem\Path\Interfaces\PathInterface;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use LogicException;
 use OuterIterator;
@@ -277,7 +277,7 @@ final class ApiMaker implements ApiMakerInterface
      */
     private function getClassNameFromFilepath(string $filepath): string
     {
-        $filepathRelative = (new PathApp($filepath))->relative();
+        $filepathRelative = (new AppPath($filepath))->relative();
         $filepathNoExt = stringReplaceLast('.php', '', $filepathRelative);
         $filepathReplaceNS = stringReplaceFirst('app/src/', 'App\\', $filepathNoExt);
 

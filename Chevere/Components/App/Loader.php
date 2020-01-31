@@ -18,11 +18,11 @@ use Chevere\Components\App\Exceptions\BuildNeededException;
 use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
-use Chevere\Components\File\File;
-use Chevere\Components\File\PhpFile;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\PhpFile;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Path\PathApp;
+use Chevere\Components\Filesystem\Path\AppPath;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Router\Router;
 use Chevere\Components\App\Interfaces\AppInterface;
@@ -52,7 +52,7 @@ final class Loader implements LoaderInterface
                 new ArrayFile(
                     new PhpFile(
                         new File(
-                            new PathApp(AppInterface::FILE_PARAMETERS)
+                            new AppPath(AppInterface::FILE_PARAMETERS)
                         )
                     )
                 )
@@ -85,7 +85,7 @@ final class Loader implements LoaderInterface
             BootstrapInstance::get()->isDev() ||
             (BootstrapInstance::get()->hasConsole() && BootstrapInstance::get()->console()->isBuilding())
         ) {
-            $path = new PathApp('plugins/local/HelloWorld/routes/web.php');
+            $path = new AppPath('plugins/local/HelloWorld/routes/web.php');
             $pluginRoutes = [$path];
             $this->parameters = $this->parameters
                 ->withAddedRoutePaths(...$pluginRoutes);

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Tests;
 
-use Chevere\Components\File\File;
-use Chevere\Components\File\FileReturn;
-use Chevere\Components\File\PhpFile;
-use Chevere\Components\Path\Path;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\FileReturn;
+use Chevere\Components\Filesystem\PhpFile;
+use Chevere\Components\Filesystem\Path\Path;
 use Chevere\Components\VarDump\Formatters\HtmlFormatter;
 use Chevere\Components\VarDump\Outputters\HtmlOutputter;
 use Chevere\Components\VarDump\VarDumper;

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Console\Commands;
 
 use Chevere\Components\Console\Command;
-use Chevere\Components\Dir\Dir;
-use Chevere\Components\Path\PathApp;
+use Chevere\Components\Filesystem\Dir\Dir;
+use Chevere\Components\Filesystem\Path\AppPath;
 use Chevere\Components\App\Interfaces\AppInterface;
 use Chevere\Components\App\Interfaces\BuilderInterface;
 
@@ -30,7 +30,7 @@ final class ClearLogsCommand extends Command
 
     public function callback(BuilderInterface $builder): int
     {
-        $delete = (new Dir(new PathApp(AppInterface::PATH_LOGS)))->removeContents();
+        $delete = (new Dir(new AppPath(AppInterface::PATH_LOGS)))->removeContents();
         $count = count($delete);
         $this->console()->style()->success(
             $count > 0 ? sprintf('App logs cleared (%s files)', $count) : 'No app logs to remove'

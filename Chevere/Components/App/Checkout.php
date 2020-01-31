@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\App;
 
 use InvalidArgumentException;
-use Chevere\Components\File\PhpFile;
-use Chevere\Components\File\FileReturn;
+use Chevere\Components\Filesystem\PhpFile;
+use Chevere\Components\Filesystem\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Variable\VariableExport;
 use Chevere\Components\App\Interfaces\BuildInterface;
 use Chevere\Components\App\Interfaces\CheckoutInterface;
-use Chevere\Components\File\Interfaces\FileReturnInterface;
+use Chevere\Components\Filesystem\Interfaces\FileReturnInterface;
 
 /**
  * Checkout the application build.

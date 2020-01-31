@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\Cache\Tests;
 
 use Chevere\Components\Cache\CacheItem;
-use Chevere\Components\File\File;
-use Chevere\Components\File\PhpFile;
-use Chevere\Components\File\FileReturn;
-use Chevere\Components\Path\Path;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\PhpFile;
+use Chevere\Components\Filesystem\FileReturn;
+use Chevere\Components\Filesystem\Path\Path;
 use Chevere\Components\Cache\Interfaces\CacheItemInterface;
-use Chevere\Components\Path\Interfaces\PathInterface;
+use Chevere\Components\Filesystem\Path\Interfaces\PathInterface;
+use Chevere\Components\Variable\VariableExport;
 use PHPUnit\Framework\TestCase;
 
 final class CacheItemTest extends TestCase
@@ -36,18 +37,18 @@ final class CacheItemTest extends TestCase
             );
     }
 
-    // private function writeSerialized(PathInterface $path): void
-    // {
-    //     $fileReturn =
-    //         new FileReturn(
-    //             new FilePhp(
-    //                 new File($path)
-    //             )
-    //         );
-    //     $fileReturn->put(
-    //         new VariableExport($path)
-    //     );
-    // }
+    private function writeSerialized(PathInterface $path): void
+    {
+        $fileReturn =
+            new FileReturn(
+                new PhpFile(
+                    new File($path)
+                )
+            );
+        $fileReturn->put(
+            new VariableExport($path)
+        );
+    }
 
     public function testNotSerialized(): void
     {
@@ -60,9 +61,12 @@ final class CacheItemTest extends TestCase
 
     public function testSerialized(): void
     {
+        // TODO: Pass a path for storing on-the-fly stuff
         $path = new Path(__DIR__ . '/resources/return-serialized.php');
+        $this->writeSerialized($path);
         $cacheItem = $this->getCacheItem($path);
         $var = include $path->absolute();
+        // xdd($cacheItem);
         $this->assertSame($var, $cacheItem->raw());
         $this->assertEquals(unserialize($var), $cacheItem->var());
     }

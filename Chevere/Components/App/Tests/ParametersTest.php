@@ -18,12 +18,12 @@ use Chevere\Components\App\Exceptions\ParametersWrongKeyException;
 use Chevere\Components\App\Exceptions\ParametersWrongTypeException;
 use Chevere\Components\App\Parameters;
 use Chevere\Components\ArrayFile\ArrayFile;
-use Chevere\Components\File\File;
-use Chevere\Components\File\PhpFile;
-use Chevere\Components\Path\PathApp;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\PhpFile;
+use Chevere\Components\Filesystem\Path\AppPath;
 use Chevere\Components\App\Interfaces\ParametersInterface;
 use Chevere\Components\ArrayFile\Interfaces\ArrayFileInterface;
-use Chevere\Components\Path\Interfaces\PathInterface;
+use Chevere\Components\Filesystem\Path\Interfaces\PathInterface;
 use PHPUnit\Framework\TestCase;
 
 final class ParametersTest extends TestCase
@@ -41,7 +41,7 @@ final class ParametersTest extends TestCase
     public function testConstructorWrongKey(): void
     {
         $arrayFile = $this->getArrayFile(
-            new PathApp('parameters/wrongKey.php')
+            new AppPath('parameters/wrongKey.php')
         );
         $this->expectException(ParametersWrongKeyException::class);
         new Parameters($arrayFile);
@@ -50,7 +50,7 @@ final class ParametersTest extends TestCase
     public function testConstructorWrongRoutesType(): void
     {
         $arrayFile = $this->getArrayFile(
-            new PathApp('parameters/wrongRoutesType.php')
+            new AppPath('parameters/wrongRoutesType.php')
         );
         $this->expectException(ParametersWrongTypeException::class);
         new Parameters($arrayFile);
@@ -59,7 +59,7 @@ final class ParametersTest extends TestCase
     public function testConstructorWrongApiType(): void
     {
         $arrayFile = $this->getArrayFile(
-            new PathApp('parameters/wrongApiType.php')
+            new AppPath('parameters/wrongApiType.php')
         );
         $this->expectException(ParametersWrongTypeException::class);
         new Parameters($arrayFile);
@@ -68,7 +68,7 @@ final class ParametersTest extends TestCase
     public function testConstructorWithRoutes(): void
     {
         $arrayFile = $this->getArrayFile(
-            new PathApp('parameters/routes.php')
+            new AppPath('parameters/routes.php')
         );
         $parameters = new Parameters($arrayFile);
         $this->assertSame(true, $parameters->hasParameters());
@@ -79,10 +79,10 @@ final class ParametersTest extends TestCase
     public function testWithDuplicatedAddedRoutePaths(): void
     {
         $arrayFile = $this->getArrayFile(
-            new PathApp('parameters/routes.php')
+            new AppPath('parameters/routes.php')
         );
         $this->expectException(ParametersDuplicatedException::class);
         (new Parameters($arrayFile))
-            ->withAddedRoutePaths(new PathApp('routes/test.php'));
+            ->withAddedRoutePaths(new AppPath('routes/test.php'));
     }
 }

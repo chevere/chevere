@@ -19,10 +19,10 @@ use Chevere\Components\App\Parameters;
 use Chevere\Components\App\Services;
 use Chevere\Components\App\ServicesBuilder;
 use Chevere\Components\ArrayFile\ArrayFile;
-use Chevere\Components\File\File;
-use Chevere\Components\File\PhpFile;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\PhpFile;
 use Chevere\Components\Http\Response;
-use Chevere\Components\Path\PathApp;
+use Chevere\Components\Filesystem\Path\AppPath;
 use Chevere\Components\App\Interfaces\ServicesInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -37,7 +37,7 @@ final class ServicesBuilderTest extends TestCase
         $arrayFile = new ArrayFile(
             new PhpFile(
                 new File(
-                    new PathApp('parameters/empty.php')
+                    new AppPath('parameters/empty.php')
                 )
             )
         );

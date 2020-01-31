@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
-use Chevere\Components\Path\Path;
+use Chevere\Components\Filesystem\Path\Path;
 use ReflectionObject;
 use ReflectionProperty;
 use Throwable;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Cache\Interfaces;
 
-use Chevere\Components\File\Interfaces\FileReturnInterface;
+use Chevere\Components\Filesystem\Interfaces\FileReturnInterface;
 
 interface CacheItemInterface
 {

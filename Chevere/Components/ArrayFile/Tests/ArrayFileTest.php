@@ -15,15 +15,15 @@ namespace Chevere\Components\ArrayFile\Tests;
 
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\ArrayFile\Exceptions\ArrayFileTypeException;
-use Chevere\Components\File\Exceptions\FileNotFoundException;
-use Chevere\Components\File\Exceptions\FileReturnInvalidTypeException;
-use Chevere\Components\File\Exceptions\FileWithoutContentsException;
-use Chevere\Components\File\File;
-use Chevere\Components\File\PhpFile;
-use Chevere\Components\Path\PathApp;
+use Chevere\Components\Filesystem\File\Exceptions\FileNotFoundException;
+use Chevere\Components\Filesystem\File\Exceptions\FileReturnInvalidTypeException;
+use Chevere\Components\Filesystem\File\Exceptions\FileWithoutContentsException;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\PhpFile;
+use Chevere\Components\Filesystem\Path\AppPath;
 use Chevere\Components\Type\Type;
-use Chevere\Components\File\Interfaces\FileInterface;
-use Chevere\Components\Path\Interfaces\PathInterface;
+use Chevere\Components\Filesystem\Interfaces\FileInterface;
+use Chevere\Components\Filesystem\Path\Interfaces\PathInterface;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 use Throwable;
@@ -36,7 +36,7 @@ final class ArrayFileTest extends TestCase
     public function setUp(): void
     {
         $this->file = new File(
-            new PathApp('var/ArrayFileTest_' . uniqid() . '.php')
+            new AppPath('var/ArrayFileTest_' . uniqid() . '.php')
         );
     }
 
@@ -108,7 +108,8 @@ final class ArrayFileTest extends TestCase
     public function testWithMembersTypeObject(): void
     {
         $this->file->create();
-        $this->file->put('<?php use Chevere\Components\Path\PathApp; return [new PathApp("test"), new PathApp("test-alt")];');
+        $className = AppPath::class;
+        $this->file->put('<?php use ' . $className . '; return [new AppPath("test"), new AppPath("test-alt")];');
         $filePhp = new PhpFile($this->file);
         $this->expectNotToPerformAssertions();
         (new ArrayFile($filePhp))

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Cache;
 
 use Chevere\Components\Cache\Interfaces\CacheItemInterface;
-use Chevere\Components\File\Interfaces\FileReturnInterface;
+use Chevere\Components\Filesystem\Interfaces\FileReturnInterface;
 
 final class CacheItem implements CacheItemInterface
 {

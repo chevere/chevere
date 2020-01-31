@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Chevere\Components\Cache;
 
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
-use Chevere\Components\File\File;
-use Chevere\Components\File\FileCompile;
-use Chevere\Components\File\PhpFile;
-use Chevere\Components\File\FileReturn;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\FileCompile;
+use Chevere\Components\Filesystem\PhpFile;
+use Chevere\Components\Filesystem\FileReturn;
 use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Cache\Interfaces\CacheItemInterface;
 use Chevere\Components\Cache\Interfaces\CacheKeyInterface;
-use Chevere\Components\Dir\Interfaces\DirInterface;
-use Chevere\Components\Path\Interfaces\PathInterface;
+use Chevere\Components\Filesystem\Dir\Interfaces\DirInterface;
+use Chevere\Components\Filesystem\Path\Interfaces\PathInterface;
 use Chevere\Components\Variable\Interfaces\VariableExportInterface;
 
 /**

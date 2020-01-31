@@ -19,12 +19,12 @@ use Chevere\Components\App\Exceptions\BuildAlreadyMakedException;
 use Chevere\Components\App\Exceptions\BuildFileNotExistsException;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Cache\Cache;
-use Chevere\Components\Dir\Dir;
-use Chevere\Components\File\File;
-use Chevere\Components\File\PhpFile;
+use Chevere\Components\Filesystem\Dir\Dir;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\PhpFile;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Path\Exceptions\PathIsNotDirectoryException;
-use Chevere\Components\Path\PathApp;
+use Chevere\Components\Filesystem\Path\Exceptions\PathIsNotDirectoryException;
+use Chevere\Components\Filesystem\Path\AppPath;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;
@@ -34,9 +34,9 @@ use Chevere\Components\App\Interfaces\AppInterface;
 use Chevere\Components\App\Interfaces\BuildInterface;
 use Chevere\Components\App\Interfaces\CheckoutInterface;
 use Chevere\Components\App\Interfaces\ParametersInterface;
-use Chevere\Components\Dir\Interfaces\DirInterface;
-use Chevere\Components\File\Interfaces\FileInterface;
-use Chevere\Components\File\Interfaces\FilePhpInterface;
+use Chevere\Components\Filesystem\Dir\Interfaces\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\FileInterface;
+use Chevere\Components\Filesystem\Interfaces\FilePhpInterface;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
@@ -79,7 +79,7 @@ final class Build implements BuildInterface
      */
     public function __construct(AppInterface $app)
     {
-        $path = new PathApp('build');
+        $path = new AppPath('build');
         $this->isMaked = false;
         $this->checksums = [];
         $this->app = $app;
@@ -243,7 +243,7 @@ final class Build implements BuildInterface
         $this->apiMaker = new ApiMaker($this->routerMaker);
         $this->apiMaker = $this->apiMaker
             ->withPath(
-                new PathApp(
+                new AppPath(
                     $this->parameters->api()
                 )
             );
@@ -269,7 +269,7 @@ final class Build implements BuildInterface
                 (new ArrayFile(
                     new PhpFile(
                         new File(
-                            new PathApp($fileHandleString)
+                            new AppPath($fileHandleString)
                         )
                     )
                 ))

@@ -21,16 +21,16 @@ use Chevere\Components\App\Exceptions\BuildFileNotExistsException;
 use Chevere\Components\App\Parameters;
 use Chevere\Components\App\Services;
 use Chevere\Components\ArrayFile\ArrayFile;
-use Chevere\Components\File\File;
-use Chevere\Components\File\PhpFile;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\PhpFile;
 use Chevere\Components\Http\Response;
-use Chevere\Components\Path\PathApp;
+use Chevere\Components\Filesystem\Path\AppPath;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\App\Interfaces\BuildInterface;
 use Chevere\Components\App\Interfaces\CheckoutInterface;
 use Chevere\Components\App\Interfaces\ParametersInterface;
-use Chevere\Components\Dir\Interfaces\DirInterface;
-use Chevere\Components\File\Interfaces\FileInterface;
+use Chevere\Components\Filesystem\Dir\Interfaces\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\FileInterface;
 use PHPUnit\Framework\TestCase;
 
 final class BuildTest extends TestCase
@@ -49,7 +49,7 @@ final class BuildTest extends TestCase
                 new ArrayFile(
                     new PhpFile(
                         new File(
-                            new PathApp('parameters.php')
+                            new AppPath('parameters.php')
                         )
                     )
                 )

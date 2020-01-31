@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Cache\Interfaces;
 
-use Chevere\Components\Dir\Interfaces\DirInterface;
+use Chevere\Components\Filesystem\Dir\Interfaces\DirInterface;
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
 use Chevere\Components\Common\Interfaces\ToArrayInterface;
 use Chevere\Components\Variable\Interfaces\VariableExportInterface;
-use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
+use Chevere\Components\Filesystem\File\Exceptions\FileUnableToRemoveException;
 
 interface CacheInterface extends ToArrayInterface
 {

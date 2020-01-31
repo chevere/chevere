@@ -16,8 +16,8 @@ namespace Chevere\Components\Cache\Tests;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
-use Chevere\Components\Dir\Dir;
-use Chevere\Components\Path\PathApp;
+use Chevere\Components\Filesystem\Dir\Dir;
+use Chevere\Components\Filesystem\Path\AppPath;
 use Chevere\Components\Variable\VariableExport;
 use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Cache\Interfaces\CacheItemInterface;
@@ -30,7 +30,7 @@ final class CacheTest extends TestCase
         return
             new Cache(
                 new Dir(
-                    new PathApp('build')
+                    new AppPath('build')
                 )
             );
     }
@@ -56,13 +56,13 @@ final class CacheTest extends TestCase
             ->get($cacheKey);
     }
 
-    /**
-     * @requires extension zend-opcache
-     */
+    // /**
+    //  * @requires extension zend-opcache
+    //  */
     public function testWithPutWithRemove(): void
     {
         $key = uniqid();
-        $var = [time(), false, 'test', new PathApp('test'), 13.13];
+        $var = [time(), false, 'test', new AppPath('test'), 13.13];
         $variableExport = new VariableExport($var);
         $cacheKey = new CacheKey($key);
         $cache = $this->getTestCache()

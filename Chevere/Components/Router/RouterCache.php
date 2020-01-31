@@ -17,7 +17,7 @@ use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Router\Interfaces\RouterCacheInterface;
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
-use Chevere\Components\File\Exceptions\FileNotFoundException;
+use Chevere\Components\Filesystem\File\Exceptions\FileNotFoundException;
 use Chevere\Components\Variable\VariableExport;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
 use Chevere\Components\Router\Interfaces\RouterPropertiesInterface;

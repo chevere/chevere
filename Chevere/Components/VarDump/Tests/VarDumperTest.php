@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Tests;
 
-use Chevere\Components\File\Exceptions\FileNotFoundException;
-use Chevere\Components\File\Exceptions\FileUnableToRemoveException;
-use Chevere\Components\File\File;
-use Chevere\Components\File\PhpFile;
-use Chevere\Components\File\FileReturn;
-use Chevere\Components\Path\Path;
+use Chevere\Components\Filesystem\File\Exceptions\FileNotFoundException;
+use Chevere\Components\Filesystem\File\Exceptions\FileUnableToRemoveException;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\PhpFile;
+use Chevere\Components\Filesystem\FileReturn;
+use Chevere\Components\Filesystem\Path\Path;
 use Chevere\Components\VarDump\Dumpers\ConsoleDumper;
 use Chevere\Components\VarDump\Dumpers\HtmlDumper;
 use Chevere\Components\VarDump\Dumpers\PlainDumper;

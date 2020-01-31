@@ -18,7 +18,7 @@ use Chevere\Components\App\Build;
 use Chevere\Components\App\Builder;
 use Chevere\Components\App\Services;
 use Chevere\Components\Http\Response;
-use Chevere\Components\Path\PathApp;
+use Chevere\Components\Filesystem\Path\AppPath;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\App\Interfaces\BuildInterface;
 use PHPUnit\Framework\TestCase;

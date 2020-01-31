@@ -17,11 +17,11 @@ use Chevere\Components\App\Exceptions\ParametersDuplicatedException;
 use Chevere\Components\App\Exceptions\ParametersWrongKeyException;
 use Chevere\Components\App\Exceptions\ParametersWrongTypeException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Path\PathApp;
+use Chevere\Components\Filesystem\Path\AppPath;
 use Chevere\Components\App\Interfaces\ParametersInterface;
 use Chevere\Components\ArrayFile\Interfaces\ArrayFileInterface;
-use Chevere\Components\Path\Interfaces\PathAppInterface;
-use Chevere\Components\Path\Interfaces\PathInterface;
+use Chevere\Components\Filesystem\Path\Interfaces\PathAppInterface;
+use Chevere\Components\Filesystem\Path\Interfaces\PathInterface;
 
 /**
  * Application parameters container.
@@ -57,7 +57,7 @@ final class Parameters implements ParametersInterface
             $routes = $array[ParametersInterface::KEY_ROUTES];
             $this->routes = [];
             foreach ($routes as $route) {
-                $this->routes[] = (new PathApp($route))->relative();
+                $this->routes[] = (new AppPath($route))->relative();
             }
         }
     }

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Interfaces;
 
-use Chevere\Components\Dir\Interfaces\DirInterface;
-use Chevere\Components\File\Interfaces\FileInterface;
+use Chevere\Components\Filesystem\Dir\Interfaces\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\FileInterface;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
 
 interface BuildInterface
