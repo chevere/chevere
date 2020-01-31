@@ -13,6 +13,7 @@
   ],
   "require": {
     "php": ">=7.4",
+    "ext-zend-opcache": "*",
     "guzzlehttp/psr7": "~1.6",
     "jakub-onderka/php-console-color": "~0.2",
     "json-api-php/json-api": "~2.1",
