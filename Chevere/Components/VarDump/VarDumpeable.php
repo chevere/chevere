@@ -34,7 +34,7 @@ final class VarDumpeable implements VarDumpeableInterface
 
     private string $processorName;
 
-    private string $template;
+    private array $template;
 
     /**
      * Creates a new instance.
@@ -59,7 +59,7 @@ final class VarDumpeable implements VarDumpeableInterface
         return $this->type;
     }
 
-    public function template(): string
+    public function template(): array
     {
         return $this->template;
     }
@@ -99,10 +99,10 @@ final class VarDumpeable implements VarDumpeableInterface
         switch ($this->type) {
             case TypeInterface::ARRAY:
             case TypeInterface::OBJECT:
-                $this->template = '%type% %info% %val%';
+                $this->template = ['%type%', '%info%', '%val%'];
                 break;
             default:
-                $this->template = '%type% %val% %info%';
+                $this->template = ['%type%', '%val%', '%info%'];
                 break;
         }
     }

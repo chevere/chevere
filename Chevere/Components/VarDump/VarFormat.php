@@ -18,6 +18,7 @@ use Chevere\Components\VarDump\Interfaces\VarDumpeableInterface;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
+use function ChevereFn\stringStartsWith;
 
 /**
  * The Chevere VarFormat.
@@ -42,7 +43,7 @@ final class VarFormat implements VarFormatInterface
 
     private string $val = '';
 
-    private string $info;
+    private string $info = '';
 
     public array $known = [];
 
@@ -154,18 +155,26 @@ final class VarFormat implements VarFormatInterface
 
     private function setOutput(): void
     {
-        $message = $this->dumpeable()->template();
-        foreach (['info', 'val'] as $property) {
-            if ('' == $this->$property) {
-                $message = str_replace('%' . $property . '%', null, $message);
-                $message = preg_replace('!\s+!', ' ', $message);
-                $message = trim($message);
-            }
-        }
-        $this->output = strtr($message, [
+        $table = [
             '%type%' => $this->formatter->highlight($this->dumpeable()->type(), $this->dumpeable()->type()),
             '%val%' => $this->val,
             '%info%' => $this->info,
-        ]);
+        ];
+
+        $template = $this->dumpeable()->template();
+        $aux = [];
+        foreach ($template as $tagName) {
+            $value = $table[$tagName];
+            if ('' == $value) {
+                continue;
+            }
+            $aux[] = $tagName;
+        }
+        $message = implode(' ', $aux);
+        if (stringStartsWith("\n", $this->val)) {
+            $message = str_replace(' %val%', '%val%', $message);
+        }
+        $this->output = $message;
+        $this->output = strtr($message, $table);
     }
 }

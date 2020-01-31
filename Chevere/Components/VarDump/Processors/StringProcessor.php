@@ -28,6 +28,6 @@ final class StringProcessor extends AbstractProcessor
     {
         $this->var = $this->varFormat->dumpeable()->var();
         $this->info = 'length=' . strlen($this->var);
-        $this->val = $this->varFormat->formatter()->filterEncodedChars($this->var);
+        $this->value = $this->varFormat->formatter()->filterEncodedChars($this->var);
     }
 }

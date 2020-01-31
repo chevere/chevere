@@ -29,7 +29,7 @@ abstract class AbstractProcessor implements ProcessorInterface
     protected string $info = '';
 
     /** @var string */
-    protected string $val = '';
+    protected string $value = '';
 
     final public function __construct(VarFormatInterface $varFormat)
     {
@@ -67,6 +67,6 @@ abstract class AbstractProcessor implements ProcessorInterface
 
     final public function value(): string
     {
-        return $this->val;
+        return $this->value;
     }
 }

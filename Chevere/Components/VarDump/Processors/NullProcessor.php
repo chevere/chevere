@@ -24,7 +24,7 @@ final class NullProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $this->val = '';
+        $this->value = '';
         $this->info = '';
     }
 }

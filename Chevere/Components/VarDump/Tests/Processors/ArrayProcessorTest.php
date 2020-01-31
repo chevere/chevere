@@ -52,6 +52,14 @@ final class ArrayProcessorTest extends AbstractProcessorTest
         $var[] = &$var;
         $processor = new ArrayProcessor($this->getVarFormat($var));
         $this->assertSame('size=' . count($var), $processor->info());
-        $this->assertStringContainsString('0 => (circular array reference)', $processor->value());
+        $this->assertStringContainsString('*circular array reference*', $processor->value());
+    }
+
+    public function testMaxDepth(): void
+    {
+        $var = [[]];
+        $var[] = &$var;
+        $processor = new ArrayProcessor($this->getVarFormat($var));
+        $this->assertStringContainsString('*max depth *wink* reached*', $processor->value());
     }
 }

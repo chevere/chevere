@@ -87,6 +87,11 @@ final class Screen implements ScreenInterface
         return $this->queue;
     }
 
+    public function streaming(string $display)
+    {
+        echo $display;
+    }
+
     public function emit(): ScreenInterface
     {
         $this->handleTrace();

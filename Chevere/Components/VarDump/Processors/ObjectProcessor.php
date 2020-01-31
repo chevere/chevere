@@ -51,7 +51,7 @@ final class ObjectProcessor extends AbstractProcessor
         $this->info = $this->className;
         $objectId = spl_object_id($this->var);
         if (in_array($objectId, $this->known)) {
-            $this->val .= $this->varFormat->formatter()->highlight(
+            $this->value .= $this->varFormat->formatter()->highlight(
                 VarFormatInterface::_OPERATOR,
                 '*circular object reference*'
             );
@@ -59,7 +59,7 @@ final class ObjectProcessor extends AbstractProcessor
             return;
         }
         if ($this->depth > self::MAX_DEPTH) {
-            $this->val .= $this->varFormat->formatter()->highlight(
+            $this->value .= $this->varFormat->formatter()->highlight(
                 VarFormatInterface::_OPERATOR,
                 '*max depth reached*'
             );
@@ -110,7 +110,7 @@ final class ObjectProcessor extends AbstractProcessor
         $wrappedVisibility = $this->varFormat->formatter()->highlight(VarFormatInterface::_PRIVACY, $visibility);
         $property = '$' . $this->varFormat->formatter()->filterEncodedChars($name);
         $wrappedProperty = $this->varFormat->formatter()->highlight(VarFormatInterface::_VARIABLE, $property);
-        $this->val .= "\n" . $this->varFormat->indentString() . $wrappedVisibility . ' ' . $wrappedProperty . ' ';
+        $this->value .= "\n" . $this->varFormat->indentString() . $wrappedVisibility . ' ' . $wrappedProperty . ' ';
         $this->aux = $value['value'];
 
         return $this->handleDeepth($this->aux);
@@ -124,7 +124,7 @@ final class ObjectProcessor extends AbstractProcessor
                 ->withDepth($deep)
                 ->withKnown($this->known)
                 ->withProcess();
-        $this->val .= $new->toString();
+        $this->value .= $new->toString();
 
         return true;
     }

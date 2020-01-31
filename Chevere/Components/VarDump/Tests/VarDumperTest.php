@@ -71,7 +71,7 @@ final class VarDumperTest extends TestCase
         $varDumper = new VarDumper($formatter);
         $this->assertSame($formatter, $varDumper->formatter());
         $this->assertSame([], $varDumper->vars());
-        xdd($varDumper->debugBacktrace());
+        // xdd($varDumper->debugBacktrace());
     }
 
     // public function testXdd(): void

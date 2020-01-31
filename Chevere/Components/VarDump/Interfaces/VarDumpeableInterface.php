@@ -21,7 +21,7 @@ interface VarDumpeableInterface
 
     public function type(): string;
 
-    public function template(): string;
+    public function template(): array;
 
     public function processorName(): string;
 }

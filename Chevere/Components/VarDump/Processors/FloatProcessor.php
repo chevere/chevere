@@ -28,6 +28,6 @@ final class FloatProcessor extends AbstractProcessor
     {
         $this->var = $this->varFormat->dumpeable()->var();
         $this->info = 'length=' . strlen((string) $this->var);
-        $this->val = $this->varFormat->formatter()->filterEncodedChars(strval($this->var));
+        $this->value = $this->varFormat->formatter()->filterEncodedChars(strval($this->var));
     }
 }

@@ -37,58 +37,63 @@ final class ArrayProcessor extends AbstractProcessor
     {
         $this->var = $this->varFormat->dumpeable()->var();
         $this->depth = $this->varFormat->depth() + 1;
-        // if ($this->isCircularRef($this->var)) {
-        //     $this->val .= $this->varFormat->formatter()->highlight(
-        //         VarFormatInterface::_OPERATOR,
-        //         '*circular array reference*'
-        //     );
-
-        //     return;
-        // }
         $count = count($this->var);
         $this->info = 'size=' . $count;
+        $operator = $this->varFormat->formatter()->highlight(VarFormatInterface::_OPERATOR, '=>');
+        if ($this->isCircularRef($this->var)) {
+            // $this->value .= $this->varFormat->formatter()->highlight(
+            //     VarFormatInterface::_OPERATOR,
+            //     '*circular array reference*'
+            // );
+
+            return;
+        }
         if ($this->depth > self::MAX_DEPTH) {
             if ($count > 0) {
-                $this->val .= $this->varFormat->formatter()->highlight(
-                    VarFormatInterface::_OPERATOR,
-                    '*max depth reached*'
-                );
+                // $this->value .= $this->varFormat->formatter()->highlight(
+                //     VarFormatInterface::_OPERATOR,
+                //     '*max depth reached*'
+                // );
             }
 
             return;
         }
-        foreach ($this->var as $k => $var) {
-            $operator = $this->varFormat->formatter()->highlight(VarFormatInterface::_OPERATOR, '=>');
-            $this->val .= "\n" . $this->varFormat->indentString() . ' ' . $this->varFormat->formatter()->filterEncodedChars((string) $k) . " $operator ";
+
+        /**
+         * Appends indent name operator
+         * `    key => `
+         */
+        foreach ($this->var as $key => $var) {
+            $this->value .= "\n" . $this->varFormat->indentString() . ' ' . $this->varFormat->formatter()->filterEncodedChars((string) $key) . " $operator ";
             if (!$this->handleDeepth($var)) {
                 break;
             }
         }
     }
 
-    // private function isCircularRef(array $array): bool
-    // {
-    //     foreach ($array as $var) {
-    //         if ($array === $var) {
-    //             return true;
-    //         }
-    //         if (is_array($var)) {
-    //             return $this->isCircularRef($var);
-    //         }
-    //     }
+    private function isCircularRef(array $array): bool
+    {
+        foreach ($array as $var) {
+            if ($array === $var) {
+                return true;
+            }
+            if (is_array($var)) {
+                return $this->isCircularRef($var);
+            }
+        }
 
-    //     return false;
-    // }
+        return false;
+    }
 
     private function handleDeepth($var): bool
     {
         $deep = is_object($var) || is_iterable($var) ? $this->depth : $this->depth - 1;
-        $newVarDump = (new VarFormat(new VarDumpeable($var), $this->varFormat->formatter()))
+        $varFormat = (new VarFormat(new VarDumpeable($var), $this->varFormat->formatter()))
                     ->withIndent($this->varFormat->indent() + 1)
                     ->withDepth($deep)
                     ->withKnown($this->varFormat->known())
                     ->withProcess();
-        $this->val .= $newVarDump->toString();
+        $this->value .= $varFormat->toString();
 
         return true;
     }
