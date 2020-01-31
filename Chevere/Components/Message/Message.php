@@ -22,19 +22,30 @@ use JakubOnderka\PhpConsoleColor\ConsoleColor;
  *
  * It works by setting a message string and then using chaineable methods it
  * defines a translation string that will be used by toString().
+ *
+ *
  */
 
 /**
  * @method Message MessageContact code(string $search, string $replace) Wraps found $replace in a `code` tag
- * @method Message MessageContact b(string $search, string $replace) Wraps found $replace in a `b` tag
+ * @method Message MessageContact strong(string $search, string $replace) Wraps found $replace in a `strong` tag
  * @method Message MessageContact *any*(string $search, string $replace) Wraps found $replace in a `any` tag
  */
 final class Message implements MessageInterface
 {
     private string $message;
 
+    private ConsoleColor $consoleColor;
+
+    private string $string;
+
     /** @var array Translation table [search => replace] */
     private array $trTable = [];
+
+    private array $consolePallete = [
+        'code' => ['light_red'],
+        'strong' => ['bold', 'default'],
+    ];
 
     /**
      * Creates a new Message instance.
@@ -44,6 +55,7 @@ final class Message implements MessageInterface
     public function __construct(string $message)
     {
         $this->message = $message;
+        $this->consoleColor = new ConsoleColor;
     }
 
     /**
@@ -59,8 +71,7 @@ final class Message implements MessageInterface
         $tagged = '' != $replace ? "<$tag>$replace</$tag>" : '';
         $new = clone $this;
 
-        return $new
-            ->strtr($search, $tagged);
+        return $new->strtr($search, $tagged);
     }
 
     public function strtr(string $search, string $replace): MessageInterface
@@ -72,21 +83,22 @@ final class Message implements MessageInterface
         return $new;
     }
 
-    public function toPlainString(): string
-    {
-        return $this->message;
-    }
-
     public function toString(): string
     {
-        if (BootstrapInstance::get()->isCli()) {
-            return preg_replace_callback('#<code>(.*?)<\/code>#', function ($matches) {
-                $consoleColor = new ConsoleColor();
+        return $this->string ??= $this->cliAware();
+    }
 
-                return $consoleColor->apply(['light_red'], $matches[1]);
-            }, $this->message);
+    private function cliAware(): string
+    {
+        $message = $this->message;
+        if (BootstrapInstance::get()->isCli()) {
+            foreach ($this->consolePallete as $tag => $color) {
+                $message = preg_replace_callback('#<' . $tag . '>(.*?)<\/' . $tag . '>#', function ($matches) use ($color) {
+                    return $this->consoleColor->apply($color, $matches[1]);
+                }, $message);
+            }
         }
 
-        return $this->message;
+        return $message;
     }
 }

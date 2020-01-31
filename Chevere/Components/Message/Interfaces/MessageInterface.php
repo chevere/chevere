@@ -26,12 +26,7 @@ interface MessageInterface extends ToStringInterface
     public function strtr(string $search, string $replace): MessageInterface;
 
     /**
-     * @return string The rich message after the translation table, non-cli aware.
-     */
-    public function toPlainString(): string;
-
-    /**
-     * @return string The rich message after the translation table, cli aware.
+     * @return string The message after the translation table, cli aware.
      */
     public function toString(): string;
 }

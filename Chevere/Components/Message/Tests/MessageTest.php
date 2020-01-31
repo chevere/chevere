@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Message\Tests;
 
+use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Message\Message;
 use PHPUnit\Framework\TestCase;
 
@@ -22,7 +23,6 @@ final class MessageTest extends TestCase
     {
         $var = 'message';
         $message = new Message($var);
-        $this->assertSame($var, $message->toPlainString());
         $this->assertSame($var, $message->toString());
     }
 
@@ -30,18 +30,16 @@ final class MessageTest extends TestCase
     {
         $var = 'lorem %translate%';
         $args = ['%translate%', '1'];
-        $message = (new Message($var))
-            ->strtr(...$args);
+        $message = (new Message($var))->strtr(...$args);
         $varTr = strtr($var, [$args[0] => $args[1]]);
-        $this->assertSame($varTr, $message->toPlainString());
         $this->assertSame($varTr, $message->toString());
     }
 
     public function testWithDeclaredTags(): void
     {
-        $var = 'lorem %strong% %message%';
+        $var = 'lorem %bold% %message%';
         $tags = [
-            'b' => ['%strong%', 'Bold,Emphasis'],
+            'strong' => ['%bold%', 'Bold,Emphasis'],
             'code' => ['%message%', '100']
         ];
         $message = new Message($var);
@@ -49,10 +47,23 @@ final class MessageTest extends TestCase
         foreach ($tags as $tag => $value) {
             $message = $message->$tag(...$value);
             $tr[$value[0]] = "<$tag>" . $value[1] . "</$tag>";
-            $this->assertSame(
-                strtr($var, $tr),
-                $message->toPlainString()
-            );
         }
+        $bootstrap = BootstrapInstance::get();
+        new BootstrapInstance($bootstrap->withCli(false));
+        $this->assertSame(strtr($var, $tr), $message->toString());
+        new BootstrapInstance($bootstrap);
+    }
+
+    public function testWithCli(): void
+    {
+        $bootstrap = BootstrapInstance::get();
+        $search = '%message%';
+        $replace = 'word';
+        $string = "A $search for CLI awareness";
+        $plain = str_replace($search, $replace, $string);
+        $message = (new Message($string))->code($search, $replace);
+        new BootstrapInstance($bootstrap->withCli(true));
+        $this->assertTrue(strlen($plain) < strlen($message->toString()));
+        new BootstrapInstance($bootstrap);
     }
 }

@@ -34,7 +34,6 @@ final class ControllerName implements ControllerNameInterface
         $this->assertControllerName();
     }
 
-
     public function toString(): string
     {
         return $this->name;
