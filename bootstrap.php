@@ -16,13 +16,15 @@ namespace Chevere;
 use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Bootstrap\Bootstrap;
 use Chevere\Components\Console\Console;
+use Chevere\Components\Filesystem\Dir\Dir;
+use Chevere\Components\Filesystem\Path\Path;
 
 require 'vendor/autoload.php';
 
-$documentRoot = rtrim(dirname(__DIR__, 'Chevereto-Chevere' == basename(__DIR__) ? 1 : 3), '/') . '/';
+$rootDir = new Dir(new Path(__DIR__));
 $isCli = php_sapi_name() === 'cli';
 
-$bootstrap = (new Bootstrap($documentRoot))
+$bootstrap = (new Bootstrap($rootDir, $rootDir->getChild('app')))
     ->withCli($isCli)
     ->withDev((bool) include($bootstrap->appPath() . 'options/dev.php'));
 
@@ -37,5 +39,5 @@ new BootstrapInstance($bootstrap);
 // define('Chevere\ROOT_PATH', str_replace('\\', '/', DOCUMENT_ROOT));
 
 require 'runtime.php';
-require $bootstrap->appPath() . 'app.php';
-require $bootstrap->appPath() . 'loader.php';
+require $bootstrap->appDir() . 'app.php';
+require $bootstrap->appDir() . 'loader.php';

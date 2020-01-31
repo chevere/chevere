@@ -16,6 +16,8 @@ namespace Chevere;
 use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\App\Instances\ScreenContainerInstance;
 use Chevere\Components\Bootstrap\Bootstrap;
+use Chevere\Components\Filesystem\Dir\Dir;
+use Chevere\Components\Filesystem\Path\Path;
 use Chevere\Components\Screen\Container;
 use Chevere\Components\Screen\Formatters\ConsoleFormatter;
 use Chevere\Components\Screen\Formatters\DebugFormatter;
@@ -27,8 +29,10 @@ use Chevere\Components\Screen\ScreenContainer;
 
 require 'vendor/autoload.php';
 
+$rootDir = new Dir(new Path(__DIR__ . '/Chevere/TestApp'));
+
 new BootstrapInstance(
-    (new Bootstrap(__DIR__ . '/Chevere/TestApp/'))
+    (new Bootstrap($rootDir, $rootDir->getChild('app')))
         ->withCli(true)
         ->withDev(false)
         ->withAppAutoloader('Chevere\\TestApp\\App')

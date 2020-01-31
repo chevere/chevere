@@ -26,7 +26,7 @@ final class PathAppTest extends TestCase
 {
     private function getAppPath(): string
     {
-        return BootstrapInstance::get()->appPath();
+        return BootstrapInstance::get()->appDir();
     }
 
     public function testWithInvalidSuperiorPath(): void

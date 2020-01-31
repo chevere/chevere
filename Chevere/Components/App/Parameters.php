@@ -20,7 +20,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Filesystem\Path\AppPath;
 use Chevere\Components\App\Interfaces\ParametersInterface;
 use Chevere\Components\ArrayFile\Interfaces\ArrayFileInterface;
-use Chevere\Components\Filesystem\Path\Interfaces\PathAppInterface;
+use Chevere\Components\Filesystem\Path\Interfaces\AppPathInterface;
 use Chevere\Components\Filesystem\Path\Interfaces\PathInterface;
 
 /**
@@ -62,7 +62,7 @@ final class Parameters implements ParametersInterface
         }
     }
 
-    public function withAddedRoutePaths(PathAppInterface ...$paths): ParametersInterface
+    public function withAddedRoutePaths(AppPathInterface ...$paths): ParametersInterface
     {
         $new = clone $this;
         if (!isset($new->routes)) {

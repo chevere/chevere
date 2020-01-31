@@ -136,6 +136,9 @@ final class Dir implements DirInterface
         }
     }
 
+    /**
+     * @throws PathIsNotDirectoryException if the directory doesn't exists
+     */
     private function assertIsDir(): void
     {
         if (!$this->path->isDir()) {

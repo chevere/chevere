@@ -51,13 +51,6 @@ interface DirInterface
     public function remove(): array;
 
     /**
-     * Wrapper for \rmdir.
-     *
-     * @throws DirUnableToRemoveException if rmdir failure
-     */
-    public function rmdir(): void;
-
-    /**
      * Removes the contents from a path without deleting the path.
      *
      * @return array an array with all the dir contents removed
@@ -66,6 +59,13 @@ interface DirInterface
      * @throws FileUnableToRemoveException if unable to remove a file in the directory
      */
     public function removeContents(): array;
+
+    /**
+     * Wrapper for \rmdir.
+     *
+     * @throws DirUnableToRemoveException if rmdir failure
+     */
+    public function rmdir(): void;
 
     /**
      * Gets a child DirInterface for the added path.

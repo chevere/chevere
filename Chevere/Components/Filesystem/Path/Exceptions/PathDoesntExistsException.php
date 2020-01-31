@@ -11,9 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Filesystem\Path\Interfaces;
+namespace Chevere\Components\Filesystem\Path\Exceptions;
 
-interface PathAppInterface extends PathInterface, RelativePathInterface
+use Exception;
+
+/**
+ * Exception thrown when a path doesn't exists.
+ */
+final class PathDoesntExistsException extends Exception
 {
-    public function __construct(string $path);
 }

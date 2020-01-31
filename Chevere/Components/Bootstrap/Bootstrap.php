@@ -16,6 +16,11 @@ namespace Chevere\Components\Bootstrap;
 use Chevere\Components\Bootstrap\Exceptions\BootstrapException;
 use Chevere\Components\Bootstrap\Interfaces\BootstrapInterface;
 use Chevere\Components\Console\Interfaces\ConsoleInterface;
+use Chevere\Components\Filesystem\Dir\Interfaces\DirInterface;
+use Chevere\Components\Filesystem\Path\Interfaces\PathInterface;
+use Chevere\Components\Filesystem\Path\Path;
+use Chevere\Components\Message\Message;
+use Throwable;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 
@@ -26,29 +31,28 @@ final class Bootstrap implements BootstrapInterface
     /** @var int High-resolution time (nanoseconds) */
     private int $hrTime;
 
-    /** @var string Path to the document root (html) */
-    private string $documentRoot;
+    /** @var DirInterface Path to the document root (html) */
+    private DirInterface $rootDir;
 
-    /** @var string Path to the project root */
-    private string $rootPath;
-
-    /** @var string Path to the application $rootPath/app/ */
-    private string $appPath;
-
-    private bool $isCli;
+    /** @var DirInterface Path to the application */
+    private DirInterface $appDir;
 
     private ConsoleInterface $console;
 
-    private bool $isDev;
+    private bool $isCli = false;
 
-    public function __construct(string $documentRoot)
+    private bool $isConsole = false;
+
+    private bool $isDev = false;
+
+    public function __construct(DirInterface $rootDir, DirInterface $app)
     {
         $this->time = time();
         $this->hrTime = hrtime(true);
-        $this->documentRoot = $documentRoot;
-        $this->assertDocumentRoot();
-        $this->rootPath = rtrim(str_replace('\\', '/', $this->documentRoot), '/') . '/';
-        $this->appPath = $this->rootPath . 'app/';
+        $this->rootDir = $rootDir;
+        $this->appDir = $app;
+        $this->assertDirExists($rootDir, '$rootDir');
+        $this->assertDirExists($app, '$app');
         $this->isCli = false;
         $this->isConsole = false;
         $this->isDev = false;
@@ -64,19 +68,14 @@ final class Bootstrap implements BootstrapInterface
         return $this->hrTime;
     }
 
-    public function documentRoot(): string
+    public function rootDir(): DirInterface
     {
-        return $this->documentRoot;
+        return $this->rootDir;
     }
 
-    public function rootPath(): string
+    public function appDir(): DirInterface
     {
-        return $this->rootPath;
-    }
-
-    public function appPath(): string
-    {
-        return $this->appPath;
+        return $this->appDir;
     }
 
     public function withCli(bool $bool): BootstrapInterface
@@ -133,17 +132,36 @@ final class Bootstrap implements BootstrapInterface
             if ($matches) {
                 $name = str_replace('\\', '/', $className);
                 $path = stringReplaceFirst($nsPath, '', $name) . '.php';
-                require $this->documentRoot . 'app/src/' . $path;
+                require $this->rootDir . 'app/src/' . $path;
             }
         });
 
         return $new;
     }
 
-    private function assertDocumentRoot(): void
+    private function handleDirectory(DirInterface $dir): void
     {
-        if (false === stream_resolve_include_path($this->documentRoot)) {
-            throw new BootstrapException(sprintf("Specified path for document root %s doesn't exists.", $this->documentRoot));
+        try {
+            if ($dir->exists() === false) {
+                $dir->create();
+            }
+            if (!$dir->path()->isWriteable()) {
+                $dir->path()->chmod(0777);
+            }
+        } catch (Throwable $e) {
+            throw new BootstrapException($e->getMessage());
+        }
+    }
+
+    private function assertDirExists(DirInterface $dir, string $argumentName): void
+    {
+        if ($dir->exists() === false) {
+            throw new BootstrapException(
+                (new Message("Directory %directory% (%argumentName% argument) doesn't exists"))
+                    ->code('%directory%', $dir->path()->absolute())
+                    ->strong('%argumentName%', $argumentName)
+                    ->toString()
+            );
         }
     }
 }

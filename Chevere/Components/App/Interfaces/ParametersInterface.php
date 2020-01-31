@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\App\Interfaces;
 
 use Chevere\Components\ArrayFile\Interfaces\ArrayFileInterface;
-use Chevere\Components\Filesystem\Path\Interfaces\PathAppInterface;
+use Chevere\Components\Filesystem\Path\Interfaces\AppPathInterface;
 
 interface ParametersInterface
 {
@@ -40,7 +40,7 @@ interface ParametersInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified Path instances.
      */
-    public function withAddedRoutePaths(PathAppInterface ...$paths): ParametersInterface;
+    public function withAddedRoutePaths(AppPathInterface ...$paths): ParametersInterface;
 
     /**
      * Returns a boolean indicating whether the instance has any parameter.

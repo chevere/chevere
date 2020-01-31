@@ -14,20 +14,19 @@ declare(strict_types=1);
 namespace Chevere\Components\Bootstrap\Interfaces;
 
 use Chevere\Components\Console\Interfaces\ConsoleInterface;
+use Chevere\Components\Filesystem\Dir\Interfaces\DirInterface;
 
 interface BootstrapInterface
 {
-    public function __construct(string $documentRoot);
+    public function __construct(DirInterface $rootDir, DirInterface $app);
 
     public function time(): int;
 
     public function hrTime(): int;
 
-    public function documentRoot(): string;
+    public function rootDir(): DirInterface;
 
-    public function rootPath(): string;
-
-    public function appPath(): string;
+    public function appDir(): DirInterface;
 
     public function withCli(bool $bool): BootstrapInterface;
 

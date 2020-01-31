@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem\Path;
 
+use Chevere\Components\Filesystem\Dir\Exceptions\PathUnableToChmodException;
+use Chevere\Components\Filesystem\Path\Exceptions\PathDoesntExistsException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Filesystem\Path\Exceptions\PathInvalidException;
 use Chevere\Components\Filesystem\Path\Interfaces\PathInterface;
@@ -26,11 +28,6 @@ class Path implements PathInterface
     /** @var string Absolute path */
     private string $absolute;
 
-    /**
-     * Creates a new instance.
-     *
-     * @param string $absolute An absolute filesystem path
-     */
     public function __construct(string $absolute)
     {
         new PathFormat($absolute);
@@ -63,12 +60,50 @@ class Path implements PathInterface
         return is_file($this->absolute);
     }
 
+    public function chmod(int $mode): void
+    {
+        $this->assertExists();
+        if (chmod($this->absolute, $mode) === false) {
+            throw new PathUnableToChmodException(
+                (new Message('Unable to chmod %mode% %path%'))
+                    ->strong('%mode%', $mode)
+                    ->code('%path%', $this->absolute)
+                    ->toString()
+            );
+        }
+    }
+
+    public function isWriteable(): bool
+    {
+        $this->assertExists();
+
+        return is_writable($this->absolute);
+    }
+
+    public function isReadable(): bool
+    {
+        $this->assertExists();
+
+        return is_readable($this->absolute);
+    }
+
     public function getChild(string $path): PathInterface
     {
-        $parent = $this->absolute();
+        $parent = $this->absolute;
         $childrenPath = rtrim($parent, '/');
 
         return new Path($childrenPath . '/' . $path);
+    }
+
+    private function assertExists(): void
+    {
+        if (!$this->exists()) {
+            throw new PathDoesntExistsException(
+                (new Message("Path %path% doesn't exists"))
+                    ->code('%pat%', $this->absolute)
+                    ->toString()
+            );
+        }
     }
 
     private function clearStatCache(): void
