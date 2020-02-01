@@ -21,7 +21,7 @@ use Chevere\Components\Filesystem\Path\Path;
 
 require 'vendor/autoload.php';
 
-$rootDir = new Dir(new Path(__DIR__));
+$rootDir = new Dir(new Path(__DIR__ . '/build'));
 $isCli = php_sapi_name() === 'cli';
 
 $bootstrap = (new Bootstrap($rootDir, $rootDir->getChild('app')))
@@ -29,14 +29,10 @@ $bootstrap = (new Bootstrap($rootDir, $rootDir->getChild('app')))
     ->withDev((bool) include($bootstrap->appPath() . 'options/dev.php'));
 
 if ($isCli) {
-    $bootstrap = $bootstrap
-        ->withConsole(new Console);
+    $bootstrap = $bootstrap->withConsole(new Console);
 }
 
 new BootstrapInstance($bootstrap);
-
-// define('Chevere\DOCUMENT_ROOT', rtrim(dirname(__DIR__, 'Chevereto-Chevere' == basename(__DIR__) ? 1 : 3), '/') . '/');
-// define('Chevere\ROOT_PATH', str_replace('\\', '/', DOCUMENT_ROOT));
 
 require 'runtime.php';
 require $bootstrap->appDir() . 'app.php';

@@ -106,7 +106,7 @@ class AppPath implements AppPathInterface
     {
         if (stringStartsWith('/', $this->path)) {
             $this->assertAbsolutePath();
-            $this->relative = stringReplaceFirst($this->rootDir->path()->absolute(), '', $this->path);
+            $this->relative = ltrim(stringReplaceFirst($this->rootDir->path()->absolute(), '', $this->path), '/');
         }
     }
 
@@ -115,7 +115,7 @@ class AppPath implements AppPathInterface
         if (!stringStartsWith($this->rootDir->path()->absolute(), $this->path)) {
             throw new PathNotAllowedException(
                 (new Message('Only absolute paths in the app path %root% are allowed, path %path% provided'))
-                    ->code('%root%', $this->rootDir)
+                    ->code('%root%', $this->rootDir->path()->absolute())
                     ->code('%path%', $this->path)
                     ->toString()
             );

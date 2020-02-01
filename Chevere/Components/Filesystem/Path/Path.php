@@ -100,7 +100,7 @@ class Path implements PathInterface
         if (!$this->exists()) {
             throw new PathDoesntExistsException(
                 (new Message("Path %path% doesn't exists"))
-                    ->code('%pat%', $this->absolute)
+                    ->code('%path%', $this->absolute)
                     ->toString()
             );
         }

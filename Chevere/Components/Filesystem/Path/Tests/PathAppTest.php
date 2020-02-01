@@ -15,6 +15,7 @@ namespace Chevere\Components\Filesystem\Path\Tests;
 
 use RuntimeException;
 use Chevere\Components\App\Instances\BootstrapInstance;
+use Chevere\Components\Filesystem\Dir\Interfaces\DirInterface;
 use Chevere\Components\Filesystem\Path\Exceptions\PathDotSlashException;
 use Chevere\Components\Filesystem\Path\Exceptions\PathInvalidException;
 use Chevere\Components\Filesystem\Path\Exceptions\PathOmitRelativeException;
@@ -24,15 +25,15 @@ use PHPUnit\Framework\TestCase;
 
 final class PathAppTest extends TestCase
 {
-    private function getAppPath(): string
+    private function getAppDir(): DirInterface
     {
         return BootstrapInstance::get()->appDir();
     }
 
     public function testWithInvalidSuperiorPath(): void
     {
-        $root = $this->getAppPath();
-        $uber = dirname($root);
+        $root = $this->getAppDir();
+        $uber = dirname($root->path()->absolute());
         if ($uber == $root) {
             $this->expectNotToPerformAssertions();
         } else {
@@ -49,31 +50,31 @@ final class PathAppTest extends TestCase
 
     public function testWithRelativePath(): void
     {
-        $absolute = $this->getAppPath() . 'dir';
+        $child = $this->getAppDir()->getChild('dir');
         $path = new AppPath('dir');
+        $this->assertSame('dir', $path->relative());
+        $this->assertSame($child->path()->absolute(), $path->absolute());
+    }
+
+    public function testWithAbsolutePath(): void
+    {
+        $absolute = $this->getAppDir()->path()->absolute() . '/dir';
+        $path = new AppPath($absolute);
         $this->assertSame('dir', $path->relative());
         $this->assertSame($absolute, $path->absolute());
     }
 
     public function testWithRelativePathTrailing(): void
     {
-        $absolute = $this->getAppPath() . 'dir/';
+        $absolute = $this->getAppDir()->path()->absolute() . '/dir/';
         $path = new AppPath('dir/');
         $this->assertSame('dir/', $path->relative());
         $this->assertSame($absolute, $path->absolute());
     }
 
-    public function testWithAbsolutePath(): void
-    {
-        $absolute = $this->getAppPath() . 'dir';
-        $path = new AppPath($absolute);
-        $this->assertSame('dir', $path->relative());
-        $this->assertSame($absolute, $path->absolute());
-    }
-
     public function testWithAbsolutePathTrailing(): void
     {
-        $absolute = $this->getAppPath() . 'dir/';
+        $absolute = $this->getAppDir()->path()->absolute() . '/dir/';
         $path = new AppPath($absolute);
         $this->assertSame('dir/', $path->relative());
         $this->assertSame($absolute, $path->absolute());

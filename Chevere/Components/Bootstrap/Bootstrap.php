@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Bootstrap;
 
+use Chevere\Components\Bootstrap\Exceptions\BootstrapDirException;
 use Chevere\Components\Bootstrap\Exceptions\BootstrapException;
 use Chevere\Components\Bootstrap\Interfaces\BootstrapInterface;
 use Chevere\Components\Console\Interfaces\ConsoleInterface;
@@ -20,6 +21,7 @@ use Chevere\Components\Filesystem\Dir\Interfaces\DirInterface;
 use Chevere\Components\Filesystem\Path\Interfaces\PathInterface;
 use Chevere\Components\Filesystem\Path\Path;
 use Chevere\Components\Message\Message;
+use Exception;
 use Throwable;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
@@ -49,13 +51,10 @@ final class Bootstrap implements BootstrapInterface
     {
         $this->time = time();
         $this->hrTime = hrtime(true);
+        $this->handleDirectory($rootDir, '$rootDir');
+        $this->handleDirectory($app, '$app');
         $this->rootDir = $rootDir;
         $this->appDir = $app;
-        $this->assertDirExists($rootDir, '$rootDir');
-        $this->assertDirExists($app, '$app');
-        $this->isCli = false;
-        $this->isConsole = false;
-        $this->isDev = false;
     }
 
     public function time(): int
@@ -122,46 +121,22 @@ final class Bootstrap implements BootstrapInterface
         return $this->isDev;
     }
 
-    public function withAppAutoloader(string $namespace): BootstrapInterface
-    {
-        $new = clone $this;
-        $ns = trim($namespace, '\\') . '\\';
-        $nsPath = str_replace('\\', '/', $ns);
-        spl_autoload_register(function ($className) use ($ns, $nsPath) {
-            $matches = stringStartsWith($ns, $className);
-            if ($matches) {
-                $name = str_replace('\\', '/', $className);
-                $path = stringReplaceFirst($nsPath, '', $name) . '.php';
-                require $this->rootDir . 'app/src/' . $path;
-            }
-        });
-
-        return $new;
-    }
-
-    private function handleDirectory(DirInterface $dir): void
+    private function handleDirectory(DirInterface $dir, string $argumentName): void
     {
         try {
             if ($dir->exists() === false) {
-                $dir->create();
+                throw new Exception(
+                    (new Message("Directory %directory% (%argumentName% argument) doesn't exists"))
+                        ->code('%directory%', $dir->path()->absolute())
+                        ->strong('%argumentName%', $argumentName)
+                        ->toString()
+                );
             }
-            if (!$dir->path()->isWriteable()) {
-                $dir->path()->chmod(0777);
+            if ($dir->path()->isWriteable() === false) {
+                $dir->path()->chmod(0777); // @codeCoverageIgnore
             }
         } catch (Throwable $e) {
-            throw new BootstrapException($e->getMessage());
-        }
-    }
-
-    private function assertDirExists(DirInterface $dir, string $argumentName): void
-    {
-        if ($dir->exists() === false) {
-            throw new BootstrapException(
-                (new Message("Directory %directory% (%argumentName% argument) doesn't exists"))
-                    ->code('%directory%', $dir->path()->absolute())
-                    ->strong('%argumentName%', $argumentName)
-                    ->toString()
-            );
+            throw new BootstrapDirException($e->getMessage());
         }
     }
 }

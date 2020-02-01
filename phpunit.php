@@ -35,7 +35,6 @@ new BootstrapInstance(
     (new Bootstrap($rootDir, $rootDir->getChild('app')))
         ->withCli(true)
         ->withDev(false)
-        ->withAppAutoloader('Chevere\\TestApp\\App')
 );
 
 new ScreenContainerInstance(

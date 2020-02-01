@@ -17,18 +17,13 @@ use RuntimeException;
 use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Filesystem\Path\Path;
 use Chevere\Components\Filesystem\Path\Interfaces\PathInterface;
-use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamFile;
 use PHPUnit\Framework\TestCase;
 
 final class PathTest extends TestCase
 {
     public function getPath(string $child): PathInterface
     {
-        $root = BootstrapInstance::get()->appDir();
-
-        return
-            new Path($root . $child);
+        return BootstrapInstance::get()->appDir()->path()->getChild($child);
     }
 
     public function testFilesystemPath(): void

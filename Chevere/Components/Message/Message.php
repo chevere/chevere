@@ -91,13 +91,14 @@ final class Message implements MessageInterface
     private function cliAware(): string
     {
         $message = $this->message;
-        if (BootstrapInstance::get()->isCli()) {
-            foreach ($this->consolePallete as $tag => $color) {
-                $message = preg_replace_callback('#<' . $tag . '>(.*?)<\/' . $tag . '>#', function ($matches) use ($color) {
-                    return $this->consoleColor->apply($color, $matches[1]);
-                }, $message);
-            }
-        }
+        // $hasBoo
+        // if (BootstrapInstance::get()->isCli()) {
+        //     foreach ($this->consolePallete as $tag => $color) {
+        //         $message = preg_replace_callback('#<' . $tag . '>(.*?)<\/' . $tag . '>#', function ($matches) use ($color) {
+        //             return $this->consoleColor->apply($color, $matches[1]);
+        //         }, $message);
+        //     }
+        // }
 
         return $message;
     }
