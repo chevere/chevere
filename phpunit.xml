@@ -9,7 +9,8 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         stopOnError="false">
+         stopOnError="false"
+         testdox="true">
     <testsuites>
         <testsuite name="Chevere Framework Test suite">
             <directory suffix="Test.php">Chevere/Components/*/Tests/</directory>

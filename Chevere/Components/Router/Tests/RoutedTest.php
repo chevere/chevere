@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Variable\Exceptions;
+namespace Chevere\Components\Router\Tests;
 
-use Exception;
+use PHPUnit\Framework\TestCase;
 
-/**
- * Exception thrown by VariableExportInterface.
- */
-final class VariableExportException extends Exception
+final class RoutedTest extends TestCase
 {
+    public function testConstruct(): void
+    {
+    }
 }

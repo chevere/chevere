@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Variable\Tests;
 
-use Chevere\Components\Variable\Exceptions\VariableExportException;
+use Chevere\Components\Variable\Exceptions\VariableNotExportableException;
 use Chevere\Components\Variable\VariableExport;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -22,7 +22,7 @@ final class VariableExportTest extends TestCase
 {
     public function testNotExportable(): void
     {
-        $this->expectException(VariableExportException::class);
+        $this->expectException(VariableNotExportableException::class);
         $resource = fopen(__FILE__, 'r');
         new VariableExport($resource);
         if (is_resource($resource)) {
@@ -35,7 +35,7 @@ final class VariableExportTest extends TestCase
         $object = new stdClass();
         $resource = fopen(__FILE__, 'r');
         $object->array = [1, 2, 3, $resource];
-        $this->expectException(VariableExportException::class);
+        $this->expectException(VariableNotExportableException::class);
         new VariableExport($object);
         if (is_resource($resource)) {
             fclose($resource);

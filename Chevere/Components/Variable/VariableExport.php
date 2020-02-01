@@ -17,7 +17,7 @@ use ReflectionObject;
 use Throwable;
 use Chevere\Components\Breadcrum\Breadcrum;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Variable\Exceptions\VariableExportException;
+use Chevere\Components\Variable\Exceptions\VariableNotExportableException;
 use Chevere\Components\Variable\Exceptions\VariableIsResourceException;
 use Chevere\Components\Variable\Interfaces\VariableExportInterface;
 use Chevere\Components\Breadcrum\Interfaces\BreadcrumInterface;
@@ -44,7 +44,7 @@ final class VariableExport implements VariableExportInterface
         try {
             $this->assertExportable($this->var);
         } catch (Throwable $e) {
-            throw new VariableExportException($e->getMessage(), $e->getCode(), $e);
+            throw new VariableNotExportableException($e->getMessage(), $e->getCode(), $e);
         }
     }
 

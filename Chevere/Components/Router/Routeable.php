@@ -18,7 +18,9 @@ use Chevere\Components\Router\Exceptions\RouteableException;
 use Chevere\Components\Variable\Exceptions\VariableExportException;
 use Chevere\Components\Variable\VariableExport;
 use Chevere\Components\Route\Interfaces\RouteInterface;
+use Chevere\Components\Router\Exceptions\RouteNotRouteableException;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
+use Throwable;
 
 /**
  * Determines if a RouteInterface is able to be routed.
@@ -45,16 +47,17 @@ final class Routeable implements RouteableInterface
         return $this->route;
     }
 
+    /**
+     * @throws VariableExportException
+     */
     private function assertExportable(): void
     {
         try {
             new VariableExport($this->route);
-        } catch (VariableExportException $e) {
-            throw new RouteableException(
-                (new Message('Instance of %className% is not exportable: %message%'))
-                    ->code('%className%', RouteInterface::class)
-                    ->code('%message%', $e->getMessage())
-                    ->toString()
+        } catch (Throwable $e) {
+            throw new RouteNotRouteableException(
+                $e->getMessage(),
+                $e->getCode(),
             );
         }
     }
