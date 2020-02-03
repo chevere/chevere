@@ -26,9 +26,6 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Throwable;
 
-/**
- * This class provides interactions for a directory in the application namespace.
- */
 final class Dir implements DirInterface
 {
     private PathInterface $path;

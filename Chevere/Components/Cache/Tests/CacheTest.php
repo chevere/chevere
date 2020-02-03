@@ -56,9 +56,9 @@ final class CacheTest extends TestCase
             ->get($cacheKey);
     }
 
-    // /**
-    //  * @requires extension zend-opcache
-    //  */
+    /**
+     * @requires extension zend-opcache
+     */
     public function testWithPutWithRemove(): void
     {
         $key = uniqid();
