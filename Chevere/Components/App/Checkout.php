@@ -20,7 +20,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Variable\VariableExport;
 use Chevere\Components\App\Interfaces\BuildInterface;
 use Chevere\Components\App\Interfaces\CheckoutInterface;
-use Chevere\Components\Filesystem\Interfaces\FileReturnInterface;
+use Chevere\Components\Filesystem\Interfaces\File\FileReturnInterface;
 
 /**
  * Checkout the application build.

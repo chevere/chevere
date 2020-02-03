@@ -15,7 +15,7 @@ namespace Chevere\Components\Api\Interfaces;
 
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Cache\Interfaces\CacheInterface;
-use Chevere\Components\Filesystem\Path\Interfaces\PathInterface;
+use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
 
 interface ApiMakerInterface
 {

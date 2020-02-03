@@ -20,10 +20,10 @@ use Chevere\Components\App\Parameters;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\PhpFile;
-use Chevere\Components\Filesystem\Path\AppPath;
+use Chevere\Components\Filesystem\AppPath;
 use Chevere\Components\App\Interfaces\ParametersInterface;
 use Chevere\Components\ArrayFile\Interfaces\ArrayFileInterface;
-use Chevere\Components\Filesystem\Path\Interfaces\PathInterface;
+use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
 use PHPUnit\Framework\TestCase;
 
 final class ParametersTest extends TestCase

@@ -24,13 +24,13 @@ use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\PhpFile;
 use Chevere\Components\Http\Response;
-use Chevere\Components\Filesystem\Path\AppPath;
+use Chevere\Components\Filesystem\AppPath;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\App\Interfaces\BuildInterface;
 use Chevere\Components\App\Interfaces\CheckoutInterface;
 use Chevere\Components\App\Interfaces\ParametersInterface;
-use Chevere\Components\Filesystem\Dir\Interfaces\DirInterface;
-use Chevere\Components\Filesystem\Interfaces\FileInterface;
+use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
 use PHPUnit\Framework\TestCase;
 
 final class BuildTest extends TestCase

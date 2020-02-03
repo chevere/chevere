@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ArrayFile\Interfaces;
 
-use Chevere\Components\Filesystem\Interfaces\FileInterface;
-use Chevere\Components\Filesystem\Interfaces\FilePhpInterface;
+use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
+use Chevere\Components\Filesystem\Interfaces\File\FilePhpInterface;
 use Chevere\Components\Type\Interfaces\TypeInterface;
 
 interface ArrayFileInterface

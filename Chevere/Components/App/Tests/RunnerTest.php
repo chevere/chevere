@@ -26,7 +26,7 @@ use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\PhpFile;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
-use Chevere\Components\Filesystem\Path\AppPath;
+use Chevere\Components\Filesystem\AppPath;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Router\Router;
 use Chevere\Components\App\Interfaces\BuildInterface;

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Console\Commands;
 
 use Chevere\Components\Console\Command;
-use Chevere\Components\Filesystem\Dir\Dir;
-use Chevere\Components\Filesystem\Path\AppPath;
+use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\AppPath;
 use Chevere\Components\App\Interfaces\AppInterface;
 use Chevere\Components\App\Interfaces\BuilderInterface;
 

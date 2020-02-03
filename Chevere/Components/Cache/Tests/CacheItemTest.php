@@ -17,9 +17,9 @@ use Chevere\Components\Cache\CacheItem;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\PhpFile;
 use Chevere\Components\Filesystem\FileReturn;
-use Chevere\Components\Filesystem\Path\Path;
+use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Cache\Interfaces\CacheItemInterface;
-use Chevere\Components\Filesystem\Path\Interfaces\PathInterface;
+use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
 use Chevere\Components\Variable\VariableExport;
 use PHPUnit\Framework\TestCase;
 

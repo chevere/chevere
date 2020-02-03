@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks;
 
-use Chevere\Components\Filesystem\Path\AppPath;
+use Chevere\Components\Filesystem\AppPath;
 
 /**
  * A container for the registered hooks.

@@ -21,8 +21,8 @@ use Chevere\Components\Filesystem\FileReturn;
 use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Cache\Interfaces\CacheItemInterface;
 use Chevere\Components\Cache\Interfaces\CacheKeyInterface;
-use Chevere\Components\Filesystem\Dir\Interfaces\DirInterface;
-use Chevere\Components\Filesystem\Path\Interfaces\PathInterface;
+use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
 use Chevere\Components\Variable\Interfaces\VariableExportInterface;
 
 /**

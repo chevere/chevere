@@ -22,7 +22,7 @@ use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\PhpFile;
 use Chevere\Components\Http\Response;
-use Chevere\Components\Filesystem\Path\AppPath;
+use Chevere\Components\Filesystem\AppPath;
 use Chevere\Components\App\Interfaces\ServicesInterface;
 use PHPUnit\Framework\TestCase;
 

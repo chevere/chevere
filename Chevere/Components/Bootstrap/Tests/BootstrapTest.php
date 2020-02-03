@@ -13,15 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Bootstrap\Tests;
 
-use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Bootstrap\Bootstrap;
 use Chevere\Components\Bootstrap\Exceptions\BootstrapDirException;
 use Chevere\Components\Bootstrap\Interfaces\BootstrapInterface;
-use Chevere\Components\Console\Console;
-use Chevere\Components\Console\Interfaces\ConsoleInterface;
-use Chevere\Components\Filesystem\Dir\Dir;
-use Chevere\Components\Filesystem\Dir\Interfaces\DirInterface;
-use Chevere\Components\Filesystem\Path\Path;
+use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Filesystem\Path;
 use PHPUnit\Framework\TestCase;
 
 final class BootstrapTest extends TestCase

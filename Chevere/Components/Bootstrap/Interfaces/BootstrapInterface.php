@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Bootstrap\Interfaces;
 
 use Chevere\Components\Console\Interfaces\ConsoleInterface;
-use Chevere\Components\Filesystem\Dir\Interfaces\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 
 interface BootstrapInterface
 {

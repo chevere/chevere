@@ -15,12 +15,12 @@ namespace Chevere\Components\ArrayFile;
 
 use TypeError;
 use Chevere\Components\ArrayFile\Exceptions\ArrayFileTypeException;
-use Chevere\Components\Filesystem\File\Exceptions\FileReturnInvalidTypeException;
+use Chevere\Components\Filesystem\Exceptions\File\FileReturnInvalidTypeException;
 use Chevere\Components\Filesystem\FileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\ArrayFile\Interfaces\ArrayFileInterface;
-use Chevere\Components\Filesystem\Interfaces\FileInterface;
-use Chevere\Components\Filesystem\Interfaces\FilePhpInterface;
+use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
+use Chevere\Components\Filesystem\Interfaces\File\FilePhpInterface;
 use Chevere\Components\Type\Interfaces\TypeInterface;
 
 /**

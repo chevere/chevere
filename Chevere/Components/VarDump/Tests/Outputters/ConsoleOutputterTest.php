@@ -16,7 +16,7 @@ namespace Chevere\Components\VarDump\Tests;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\PhpFile;
 use Chevere\Components\Filesystem\FileReturn;
-use Chevere\Components\Filesystem\Path\Path;
+use Chevere\Components\Filesystem\Path;
 use Chevere\Components\VarDump\Formatters\ConsoleFormatter;
 use Chevere\Components\VarDump\Outputters\ConsoleOutputter;
 use Chevere\Components\VarDump\VarDumper;
