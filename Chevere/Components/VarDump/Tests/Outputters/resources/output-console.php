@@ -11,8 +11,8 @@
 
 declare(strict_types=1);
 
-return '[1;31mChevere\\Components\\VarDump\\VarDumper->__construct()[0m
+return '[1;31m%varDumperClassName%->__construct()[0m
 [34m------------------------------------------------------------[0m
-[38;5;147m%className%[0m->[38;5;39m%functionName%()[0m
-[39m%fileLine%[0m
+%className%->%functionName%()
+%fileLine%
 [34m------------------------------------------------------------[0m';

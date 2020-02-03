@@ -51,7 +51,6 @@ class PlainOutputter implements OutputterInterface
         $new->handleClass();
         $new->output .= $new->varDumper->formatter()
             ->highlight('_function', $new->varDumper->debugBacktrace()[VarDumperInterface::OFFSET]['function'] . '()');
-
         $new->handleFile();
         $new->output .= "\n\n";
         $new->handleArgs();
