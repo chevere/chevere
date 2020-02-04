@@ -33,10 +33,6 @@ final class Router implements RouterInterface
 {
     private RouterPropertiesInterface $properties;
 
-    public function __construct()
-    {
-    }
-
     public function withProperties(RouterPropertiesInterface $properties): RouterInterface
     {
         $new = clone $this;
@@ -75,7 +71,7 @@ final class Router implements RouterInterface
                 return $this->resolver($matches);
             }
         } catch (Throwable $e) {
-            throw new RouterException($e->getMessage());
+            throw new RouterException($e->getMessage(), $e->getCode(), $e);
         }
         throw new RouteNotFoundException(
             (new Message('No route defined for %path%'))
@@ -93,7 +89,7 @@ final class Router implements RouterInterface
         $id = $matches['MARK'];
         unset($matches['MARK']);
         array_shift($matches);
-        $route = $this->properties->routes()[$id];
+        // $route = $this->properties->routes()[$id];
         // is string when the route is serialized (cached)
         if (is_string($route)) {
             $unserialize = new Unserialize($route);
@@ -106,10 +102,10 @@ final class Router implements RouterInterface
                         ->toString()
                 );
             }
-            $routes = $this->properties->routes();
-            $routes[$id] = $route;
-            $this->properties = $this->properties
-                ->withRoutes($routes);
+            // $routes = $this->properties->routes();
+            // $routes[$id] = $route;
+            // $this->properties = $this->properties
+            //     ->withRoutes($routes);
         }
         $wildcards = [];
         if ($route->hasWildcardCollection()) {

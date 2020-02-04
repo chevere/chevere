@@ -16,7 +16,7 @@ namespace Chevere\Components\Router\Properties;
 use Chevere\Components\Router\Properties\Traits\ToArrayTrait;
 use Chevere\Components\Router\Interfaces\Properties\NamedPropertyInterface;
 
-final class NamedProperty extends PropertyBase implements NamedPropertyInterface
+final class NamedProperty extends AbstractProperty implements NamedPropertyInterface
 {
     use ToArrayTrait;
 

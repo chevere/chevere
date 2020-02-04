@@ -37,20 +37,20 @@ interface RouterPropertiesInterface extends ToArrayInterface
      */
     public function regex(): string;
 
-    /**
-     * Return an instance with the specified routes array.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified routes array.
-     *
-     * @param array $routes see RoutesPropertyInterface
-     */
-    public function withRoutes(array $routes): RouterPropertiesInterface;
+    // /**
+    //  * Return an instance with the specified routes array.
+    //  *
+    //  * This method MUST retain the state of the current instance, and return
+    //  * an instance that contains the specified routes array.
+    //  *
+    //  * @param array $routes see RoutesPropertyInterface
+    //  */
+    // public function withRoutes(array $routes): RouterPropertiesInterface;
 
-    /**
-     * Provides access to the routes array.
-     */
-    public function routes(): array;
+    // /**
+    //  * Provides access to the routes array.
+    //  */
+    // public function routes(): array;
 
     /**
      * Return an instance with the specified index array.

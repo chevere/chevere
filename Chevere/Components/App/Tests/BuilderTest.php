@@ -21,6 +21,7 @@ use Chevere\Components\Http\Response;
 use Chevere\Components\Filesystem\AppPath;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\App\Interfaces\BuildInterface;
+use Chevere\Components\Router\RouterProperties;
 use PHPUnit\Framework\TestCase;
 
 final class BuilderTest extends TestCase
@@ -57,10 +58,9 @@ final class BuilderTest extends TestCase
     public function testWithBuild(): void
     {
         $build = $this->getBuild();
-        $buildAlt = $build->withRouterMaker(new RouterMaker());
+        $buildAlt = $build->withRouterMaker(new RouterMaker(new RouterProperties()));
         $builder = (new Builder($build))
-      ->withBuild($buildAlt);
-
+            ->withBuild($buildAlt);
         $this->assertSame($buildAlt, $builder->build());
     }
 

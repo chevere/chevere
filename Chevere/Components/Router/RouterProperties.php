@@ -25,7 +25,7 @@ final class RouterProperties implements RouterPropertiesInterface
     /** @var array RegexPropertyInterface::class[] */
     private array $classMap = [
         RegexProperty::class,
-        RoutesProperty::class,
+        // RoutesProperty::class,
         IndexProperty::class,
         GroupsProperty::class,
         NamedProperty::class,
@@ -35,7 +35,7 @@ final class RouterProperties implements RouterPropertiesInterface
     private string $regex;
 
     /** @var array */
-    private array $routes;
+    // private array $routes;
 
     /** @var array */
     private array $index;
@@ -52,7 +52,7 @@ final class RouterProperties implements RouterPropertiesInterface
     public function __construct()
     {
         $this->regex = '';
-        $this->routes = [];
+        // $this->routes = [];
         $this->index = [];
         $this->groups = [];
         $this->named = [];
@@ -76,18 +76,18 @@ final class RouterProperties implements RouterPropertiesInterface
         return $this->regex;
     }
 
-    public function withRoutes(array $routes): RouterPropertiesInterface
-    {
-        $new = clone $this;
-        $new->routes = $routes;
+    // public function withRoutes(array $routes): RouterPropertiesInterface
+    // {
+    //     $new = clone $this;
+    //     $new->routes = $routes;
 
-        return $new;
-    }
+    //     return $new;
+    // }
 
-    public function routes(): array
-    {
-        return $this->routes;
-    }
+    // public function routes(): array
+    // {
+    //     return $this->routes;
+    // }
 
     public function withIndex(array $index): RouterPropertiesInterface
     {

@@ -20,7 +20,7 @@ use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Interfaces\Properties\RoutesPropertyInterface;
 
-final class RoutesProperty extends PropertyBase implements RoutesPropertyInterface
+final class RoutesProperty extends AbstractProperty implements RoutesPropertyInterface
 {
     use ToArrayTrait;
 

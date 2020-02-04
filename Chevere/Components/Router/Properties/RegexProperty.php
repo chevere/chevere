@@ -19,7 +19,7 @@ use Chevere\Components\Regex\Regex;
 use Chevere\Components\Router\Properties\Traits\ToStringTrait;
 use Chevere\Components\Router\Interfaces\Properties\RegexPropertyInterface;
 
-final class RegexProperty extends PropertyBase implements RegexPropertyInterface
+final class RegexProperty extends AbstractProperty implements RegexPropertyInterface
 {
     use ToStringTrait;
 

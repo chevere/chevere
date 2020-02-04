@@ -17,7 +17,7 @@ use TypeError;
 use Chevere\Components\Router\Properties\Traits\ToArrayTrait;
 use Chevere\Components\Router\Interfaces\Properties\GroupsPropertyInterface;
 
-final class GroupsProperty extends PropertyBase implements GroupsPropertyInterface
+final class GroupsProperty extends AbstractProperty implements GroupsPropertyInterface
 {
     use ToArrayTrait;
 

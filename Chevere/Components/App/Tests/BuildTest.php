@@ -31,6 +31,7 @@ use Chevere\Components\App\Interfaces\CheckoutInterface;
 use Chevere\Components\App\Interfaces\ParametersInterface;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
+use Chevere\Components\Router\RouterProperties;
 use PHPUnit\Framework\TestCase;
 
 final class BuildTest extends TestCase
@@ -79,7 +80,7 @@ final class BuildTest extends TestCase
     public function testWithRouterMaker(): void
     {
         $build = $this->getBuild();
-        $routerMaker = new RouterMaker();
+        $routerMaker = new RouterMaker(new RouterProperties());
         $build = $build
             ->withRouterMaker($routerMaker);
 
@@ -98,7 +99,7 @@ final class BuildTest extends TestCase
     // {
     //     $build = $this->getBuild();
     //     $parameters = $this->getParameters();
-    //     $routerMaker = new RouterMaker();
+    //     $routerMaker = new RouterMaker(new RouterProperties());
     //     $build = $build
     //         ->withParameters($parameters)
     //         ->withRouterMaker($routerMaker)

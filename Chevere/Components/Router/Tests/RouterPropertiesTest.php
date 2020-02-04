@@ -22,13 +22,12 @@ final class RouterPropertiesTest extends TestCase
     {
         $properties = new RouterProperties();
         $this->assertFalse($properties->hasRegex());
-        $this->assertSame([], $properties->routes());
+        // $this->assertSame([], $properties->routes());
         $this->assertSame([], $properties->index());
         $this->assertSame([], $properties->groups());
         $this->assertSame([], $properties->named());
         $this->assertSame([
             'regex' => '',
-            'routes' => [],
             'index' => [],
             'groups' => [],
             'named' => [],
@@ -47,7 +46,7 @@ final class RouterPropertiesTest extends TestCase
     public function testWithOthers(): void
     {
         foreach ([
-            'routes' => 'withRoutes',
+            // 'routes' => 'withRoutes',
             'index' => 'withIndex',
             'groups' => 'withGroups',
             'named' => 'withNamed',

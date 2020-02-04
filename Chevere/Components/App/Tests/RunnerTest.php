@@ -32,6 +32,7 @@ use Chevere\Components\Router\Router;
 use Chevere\Components\App\Interfaces\BuildInterface;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Route\PathUri;
+use Chevere\Components\Router\RouterProperties;
 use PHPUnit\Framework\TestCase;
 
 final class RunnerTest extends TestCase
@@ -51,7 +52,7 @@ final class RunnerTest extends TestCase
 
         return $build
             ->withParameters($parameters)
-            ->withRouterMaker(new RouterMaker());
+            ->withRouterMaker(new RouterMaker(new RouterProperties()));
     }
 
     private function getDummyBuild(): BuildInterface

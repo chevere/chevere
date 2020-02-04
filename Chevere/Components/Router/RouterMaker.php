@@ -40,9 +40,9 @@ final class RouterMaker implements RouterMakerInterface
     /**
      * Creates a new instance.
      */
-    public function __construct()
+    public function __construct(RouterPropertiesInterface $properties)
     {
-        $this->properties = new RouterProperties();
+        $this->properties = $properties;
     }
 
     public function properties(): RouterPropertiesInterface
@@ -56,7 +56,7 @@ final class RouterMaker implements RouterMakerInterface
         $route = $routeable->route();
         $new->assertUniquePath($route);
         $new->assertUniqueKey($route);
-        $routes = $new->properties->routes();
+        // $routes = $new->properties->routes();
         $index = $new->properties->index();
         $groups = $new->properties->groups();
         $named = $new->properties->named();
@@ -79,7 +79,7 @@ final class RouterMaker implements RouterMakerInterface
         $index[$route->pathUri()->toString()] = $routeDetails;
         $new->properties = $new->properties
             ->withRegex($new->getRegex())
-            ->withRoutes($routes)
+            // ->withRoutes($routes)
             ->withIndex($index)
             ->withGroups($groups)
             ->withNamed($named);
@@ -108,7 +108,7 @@ final class RouterMaker implements RouterMakerInterface
         $path = $route->pathUri()->toString();
         $routeIndex = $this->properties->index()[$path] ?? null;
         if (isset($routeIndex)) {
-            $routeIndexed = $this->properties->routes()[$routeIndex['id']];
+            // $routeIndexed = $this->properties->routes()[$routeIndex['id']];
             throw new RoutePathExistsException(
                 (new Message('Unable to register route path %path% at %declare% (path already registered at %register%)'))
                     ->code('%path%', $path)
@@ -123,7 +123,7 @@ final class RouterMaker implements RouterMakerInterface
     {
         $routeId = $this->keys[$route->pathUri()->key()] ?? null;
         if (isset($routeId)) {
-            $routeIndexed = $this->properties->routes()[$routeId];
+            // $routeIndexed = $this->properties->routes()[$routeId];
             throw new RouteKeyConflictException(
                 (new Message('Router conflict detected for %path% at %declare% (self-assigned internal key %key% is already reserved by %register%)'))
                     ->code('%path%', $route->pathUri()->toString())
@@ -140,7 +140,7 @@ final class RouterMaker implements RouterMakerInterface
         $namedId = $this->properties()->named()[$route->name()->toString()] ?? null;
         if (isset($namedId)) {
             $name = $route->name()->toString();
-            $routeExists = $this->properties->routes()[$namedId];
+            // $routeExists = $this->properties->routes()[$namedId];
             throw new RouteNameConflictException(
                 (new Message('Unable to assign route name %name% for path %path% at %declare% (name assigned to %namedRoutePath% at %register%)'))
                     ->code('%name%', $name)

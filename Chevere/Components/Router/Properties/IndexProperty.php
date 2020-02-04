@@ -21,7 +21,7 @@ use Chevere\Components\Type\Type;
 use Chevere\Components\Router\Interfaces\Properties\IndexPropertyInterface;
 use Chevere\Components\Type\Interfaces\TypeInterface;
 
-final class IndexProperty extends PropertyBase implements IndexPropertyInterface
+final class IndexProperty extends AbstractProperty implements IndexPropertyInterface
 {
     use ToArrayTrait;
 

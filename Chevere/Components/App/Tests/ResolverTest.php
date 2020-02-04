@@ -31,6 +31,7 @@ use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\App\Interfaces\ResolvableInterface;
 use Chevere\Components\Http\Interfaces\RequestInterface;
+use Chevere\Components\Router\RouterProperties;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
@@ -44,7 +45,7 @@ final class ResolverTest extends TestCase
                 new ControllerName(TestController::class)
             );
 
-        $routerMaker = (new RouterMaker())
+        $routerMaker = (new RouterMaker(new RouterProperties()))
             ->withAddedRouteable(
                 new Routeable($route),
                 'test'

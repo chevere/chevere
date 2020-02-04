@@ -20,7 +20,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouterPropertyException;
 use Chevere\Components\Breadcrum\Interfaces\BreadcrumInterface;
 
-abstract class PropertyBase
+abstract class AbstractProperty
 {
     protected BreadcrumInterface $breadcrum;
 
