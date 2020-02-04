@@ -101,7 +101,11 @@ final class ResolvableTest extends TestCase
         $properties = (new RouterProperties())
             ->withRegex('*');
         $router = (new Router())
-            ->withProperties($properties);
+            ->withProperties($properties)
+            ->withRegex()
+            ->withIndex()
+            ->withNamed()
+            ->withGroups();
         $services = (new Services())
             ->withRouter($router);
         $this->expectNotToPerformAssertions();

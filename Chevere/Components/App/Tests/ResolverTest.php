@@ -52,7 +52,11 @@ final class ResolverTest extends TestCase
             );
         $properties = $routerMaker->properties();
         $router = (new Router())
-            ->withProperties($properties);
+            ->withProperties($properties)
+            ->withRegex()
+            ->withIndex()
+            ->withNamed()
+            ->withGroups();
         $services = (new Services())
             ->withRouter($router);
         $app = new App($services, new Response());

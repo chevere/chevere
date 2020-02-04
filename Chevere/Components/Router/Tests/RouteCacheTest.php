@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of Chevere.
+ *
+ * (c) Rodolfo Berrios <rodolfo@chevere.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
 namespace Chevere\Components\Router\Tests;
 
 use Chevere\Components\Cache\Cache;
@@ -12,6 +23,7 @@ use Chevere\Components\Http\Method;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
+use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
 use Chevere\Components\Router\Exceptions\RouteCacheTypeException;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
 use Chevere\Components\Router\Routeable;
@@ -21,17 +33,26 @@ use PHPUnit\Framework\TestCase;
 
 final class RouteCacheTest extends TestCase
 {
+    private CacheHelper $helper;
+
+    public function setUp(): void
+    {
+        $this->helper = new CacheHelper(__DIR__);
+    }
+
     public function testEmptyCache(): void
     {
-        $routeableCache = new RouteCache($this->getEmptyCache());
+        $routeableCache = new RouteCache($this->helper->getEmptyCache());
         $this->assertEmpty($routeableCache->puts());
         $this->assertFalse($routeableCache->has(0));
+        $this->expectException(RouteCacheNotFoundException::class);
+        $this->assertFalse($routeableCache->get(0));
     }
 
     public function testWorkingCache(): void
     {
         $routeable = $this->getRouteable();
-        $routeableCache = new RouteCache($this->getWorkingCache());
+        $routeableCache = new RouteCache($this->helper->getWorkingCache());
         $id = rand();
         $routeableCache->put($id, $routeable);
         $this->assertTrue($routeableCache->has($id));
@@ -44,7 +65,7 @@ final class RouteCacheTest extends TestCase
     public function testCachedCache(): void
     {
         $id = 0;
-        $routeableCache = new RouteCache($this->getCachedCache());
+        $routeableCache = new RouteCache($this->helper->getCachedCache());
         $this->assertTrue($routeableCache->has($id));
         $this->assertInstanceOf(RouteInterface::class, $routeableCache->get($id));
     }
@@ -52,37 +73,10 @@ final class RouteCacheTest extends TestCase
     public function testCachedCacheTypeError(): void
     {
         $id = 1;
-        $routeableCache = new RouteCache($this->getCachedCache());
+        $routeableCache = new RouteCache($this->helper->getCachedCache());
         $this->assertTrue($routeableCache->has($id));
         $this->expectException(RouteCacheTypeException::class);
         $routeableCache->get($id);
-    }
-
-    private function getResourcesChildDir(string $child): DirInterface
-    {
-        return new Dir(
-            (new Path(__DIR__))->getChild('_resources')->getChild($child)
-        );
-    }
-    private function getEmptyCache(): CacheInterface
-    {
-        return new Cache(
-            $this->getResourcesChildDir('empty')
-        );
-    }
-
-    private function getWorkingCache(): CacheInterface
-    {
-        return new Cache(
-            $this->getResourcesChildDir('working')
-        );
-    }
-
-    private function getCachedCache(): CacheInterface
-    {
-        return new Cache(
-            $this->getResourcesChildDir('cached')
-        );
     }
 
     private function getRouteable(): RouteableInterface

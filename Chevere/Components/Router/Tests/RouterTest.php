@@ -13,9 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
+use Chevere\Components\Regex\Regex;
 use Chevere\Components\Router\Exceptions\RouterException;
 use Chevere\Components\Router\Router;
-use Chevere\Components\Router\RouterProperties;
+use Chevere\Components\Router\RouterGroups;
+use Chevere\Components\Router\RouterIndex;
+use Chevere\Components\Router\RouterNamed;
+use Chevere\Components\Router\RouterRegex;
 use GuzzleHttp\Psr7\Uri;
 use PHPUnit\Framework\TestCase;
 
@@ -24,35 +28,52 @@ final class RouterTest extends TestCase
     public function testConstructor(): void
     {
         $router = new Router();
+        $this->assertFalse($router->hasRegex());
+        $this->assertFalse($router->hasIndex());
+        $this->assertFalse($router->hasNamed());
+        $this->assertFalse($router->hasGroups());
         $this->assertFalse($router->canResolve());
-        $this->assertFalse($router->hasProperties());
     }
 
-    public function testResolveException(): void
+    public function testUnableToResolveException(): void
     {
         $router = new Router();
         $this->expectException(RouterException::class);
         $router->resolve(new Uri('/'));
     }
 
-    public function testWithProperties(): void
+    public function testRegex(): void
     {
-        $properties = (new RouterProperties())
-            ->withIndex(['index']);
-        $router = (new Router())
-            ->withProperties($properties);
-        $this->assertTrue($router->hasProperties());
-        $this->assertSame($properties, $router->properties());
-        $this->assertFalse($router->canResolve());
+        $regex = new RouterRegex(
+            new Regex('#^(?|/home/([A-z0-9\\_\\-\\%]+) (*:0)|/ (*:1)|/hello-world (*:2))$#x')
+        );
+        $router = (new Router())->withRegex($regex);
+        $this->assertTrue($router->hasRegex());
+        $this->assertSame($regex, $router->regex());
+        $this->assertTrue($router->canResolve());
     }
 
-    // public function testResolveNotFound(): void
-    // {
-    //     $properties = (new RouterProperties())
-    //         ->withRegex('/./')
-    //         ->withIndex(['index']);
-    //     $router = (new Router())
-    //         ->withProperties($properties);
-    //     $router->resolve(new Uri('/'));
-    // }
+    public function testIndex(): void
+    {
+        $index = (new RouterIndex)->withAdded('/test', 0, '', '');
+        $router = (new Router)->withIndex($index);
+        $this->assertTrue($router->hasIndex());
+        $this->assertSame($index, $router->index());
+    }
+
+    public function testNamed(): void
+    {
+        $named = (new RouterNamed)->withAdded('test_name', 1);
+        $router = (new Router)->withNamed($named);
+        $this->assertTrue($router->hasNamed());
+        $this->assertSame($named, $router->named());
+    }
+
+    public function testGroups(): void
+    {
+        $groups = (new RouterGroups)->withAdded('test_group', 2);
+        $router = (new Router)->withGroups($groups);
+        $this->assertTrue($router->hasGroups());
+        $this->assertSame($groups, $router->groups());
+    }
 }

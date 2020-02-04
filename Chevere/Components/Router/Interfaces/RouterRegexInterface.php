@@ -11,23 +11,20 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Router\Interfaces\Properties;
+namespace Chevere\Components\Router\Interfaces;
 
-use Chevere\Components\Common\Interfaces\ToStringInterface;
+use Chevere\Components\Regex\Interfaces\RegexInterface;
 
-interface RegexPropertyInterface extends ToStringInterface
+interface RouterRegexInterface
 {
-    /** @var string property name */
-    const NAME = 'regex';
-
     /** @var string template pattern used for the regex property, %s gets replaced */
-    const REGEX_TEPLATE = '#^(?%s)$#x';
+    const TEMPLATE = '#^(?%s)$#x';
 
     /** @var string regex pattern used to detect and capture routing elements */
-    const REGEX_MATCHER = '~\#\^\(\?((\|(\S+) \(\*\:\d+\))+)\)\$\#x~';
+    const MATCHER = '~\#\^\(\?((\|(\S+) \(\*\:\d+\))+)\)\$\#x~';
 
     /** @var string %1 route, %2 id */
-    const REGEX_ENTRY_TEMPLATE = '|%s (*:%s)';
+    const TEMPLATE_ENTRY = '|%s (*:%s)';
 
-    public function __construct(string $regex);
+    public function regex(): RegexInterface;
 }

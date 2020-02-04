@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Interfaces;
 
+use Chevere\Components\Regex\Interfaces\RegexInterface;
 use TypeError;
 use Chevere\Components\Serialize\Exceptions\UnserializeException;
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
@@ -24,22 +25,64 @@ interface RouterInterface
     const CACHE_ID = 'router';
 
     /**
-     * Return an instance with the specified RouterPropertiesInterface.
+     * Return an instance with the specified RegexInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified RouterPropertiesInterface.
+     * an instance that contains the specified RegexInterface.
      */
-    public function withProperties(RouterPropertiesInterface $properties): RouterInterface;
+    public function withRegex(RouterRegexInterface $regex): RouterInterface;
+
+    public function hasRegex(): bool;
 
     /**
-     * Returns a boolean indicating whether the instance has a RouterPropertiesInterface.
+     * Provides access to the instance regex.
      */
-    public function hasProperties(): bool;
+    public function regex(): RouterRegexInterface;
 
     /**
-     * Provides access to the RouterPropertiesInterface instance.
+     * Return an instance with the specified index.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified index.
      */
-    public function properties(): RouterPropertiesInterface;
+    public function withIndex(RouterIndexInterface $index): RouterInterface;
+
+    public function hasIndex(): bool;
+
+    /**
+     * Provides access to the instance index.
+     */
+    public function index(): RouterIndexInterface;
+
+    /**
+     * Return an instance with the specified named.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified named.
+     */
+    public function withNamed(RouterNamedInterface $name): RouterInterface;
+
+    public function hasnamed(): bool;
+
+    /**
+     * Provides access to the instance index.
+     */
+    public function named(): RouterNamedInterface;
+
+    /**
+     * Return an instance with the specified group.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified group.
+     */
+    public function withGroups(RouterGroupsInterface $groups): RouterInterface;
+
+    public function hasGroups(): bool;
+
+    /**
+     * Provides access to the instance group.
+     */
+    public function groups(): RouterGroupsInterface;
 
     /**
      * Returns a boolean indicating whether the instance can try to resolve routing.

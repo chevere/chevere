@@ -291,10 +291,14 @@ final class Build implements BuildInterface
             ))
             ->withPut($this->routerMaker);
 
+        // $this->routerMaker->properties()
         $services = $this->app->services()
             ->withRouter(
                 (new Router())
-                    ->withProperties($this->routerMaker->properties())
+                    ->withRegex()
+                    ->withIndex()
+                    ->withNamed()
+                    ->withGroups()
             );
         $this->app = $this->app
             ->withServices($services);

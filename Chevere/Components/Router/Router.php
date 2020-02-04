@@ -19,41 +19,104 @@ use Chevere\Components\Router\Exceptions\RouterException;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Interfaces\RoutedInterface;
+use Chevere\Components\Router\Interfaces\RouterGroupsInterface;
+use Chevere\Components\Router\Interfaces\RouterIndexInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
-use Chevere\Components\Router\Interfaces\RouterPropertiesInterface;
+use Chevere\Components\Router\Interfaces\RouterNamedInterface;
+use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 use LogicException;
 use Psr\Http\Message\UriInterface;
 use Throwable;
 use TypeError;
 
 /**
- * Router does routing.
+ * The Chevere Router
  */
 final class Router implements RouterInterface
 {
-    private RouterPropertiesInterface $properties;
+    private RouterRegexInterface $regex;
 
-    public function withProperties(RouterPropertiesInterface $properties): RouterInterface
+    private RouterIndexInterface $index;
+
+    private RouterNamedInterface $named;
+
+    private RouterGroupsInterface $groups;
+
+    public function withRegex(RouterRegexInterface $regex): RouterInterface
     {
         $new = clone $this;
-        $new->properties = $properties;
+        $new->regex = $regex;
 
         return $new;
     }
 
-    public function hasProperties(): bool
+    public function hasRegex(): bool
     {
-        return isset($this->properties);
+        return isset($this->regex);
     }
 
-    public function properties(): RouterPropertiesInterface
+    public function regex(): RouterRegexInterface
     {
-        return $this->properties;
+        return $this->regex;
+    }
+
+    public function withIndex(RouterIndexInterface $index): RouterInterface
+    {
+        $new = clone $this;
+        $new->index = $index;
+
+        return $new;
+    }
+
+    public function hasIndex(): bool
+    {
+        return isset($this->index);
+    }
+
+    public function index(): RouterIndexInterface
+    {
+        return $this->index;
+    }
+
+    public function withNamed(RouterNamedInterface $name): RouterInterface
+    {
+        $new = clone $this;
+        $new->named = $name;
+
+        return $new;
+    }
+
+    public function hasNamed(): bool
+    {
+        return isset($this->named);
+    }
+
+    public function named(): RouterNamedInterface
+    {
+        return $this->named;
+    }
+
+    public function withGroups(RouterGroupsInterface $groups): RouterInterface
+    {
+        $new = clone $this;
+        $new->groups = $groups;
+
+        return $new;
+    }
+
+    public function hasGroups(): bool
+    {
+        return isset($this->groups);
+    }
+
+    public function groups(): RouterGroupsInterface
+    {
+        return $this->groups;
     }
 
     public function canResolve(): bool
     {
-        return $this->hasProperties() && $this->properties->hasRegex();
+        return isset($this->regex);
     }
 
     public function resolve(UriInterface $uri): RoutedInterface

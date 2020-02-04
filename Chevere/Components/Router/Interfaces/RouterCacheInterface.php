@@ -13,36 +13,35 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Interfaces;
 
-use Chevere\Components\Cache\Interfaces\CacheInterface;
-use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
+use Chevere\Components\Regex\Interfaces\RegexInterface;
 
 interface RouterCacheInterface
 {
     const KEY_REGEX = 'regex';
-    const KEY_ROUTES = 'routes';
+
     const KEY_INDEX = 'index';
 
-    public function __construct(CacheInterface $cache);
+    const KEY_NAMED = 'named';
 
-    /**
-     * Provides access to the CacheInterface instance.
-     */
-    public function cache(): CacheInterface;
+    const KEY_GROUPS = 'groups';
 
-    /**
-     * Return an instance with the cache put values of RouterMakerInterface.
-     *
-     * Cacheable properties of this instance will be cached On the target CacheInterface (put).
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the put cache for the values of RouterMakerInterface.
-     */
-    public function withPut(RouterMakerInterface $routerMaker): RouterCacheInterface;
+    public function hasRegex(): bool;
 
-    /**
-     * Gets router properties from cache.
-     *
-     * @throws CacheNotFoundException if unable to locate the cache
-     */
-    public function getProperties(): RouterPropertiesInterface;
+    public function hasIndex(): bool;
+
+    public function hasNamed(): bool;
+
+    public function hasGroups(): bool;
+
+    public function getRegex(): RegexInterface;
+
+    public function getIndex(): array;
+
+    public function getNamed(): array;
+
+    public function getGroups(): array;
+
+    public function put(RouterInterface $router): RouterCacheInterface;
+
+    public function puts(): array;
 }

@@ -49,6 +49,10 @@ final class ServicesBuilder implements ServicesBuilderInterface
                 ->withRouter(
                     $this->services()->router()
                         ->withProperties($routerCache->getProperties())
+                        ->withRegex()
+                        ->withIndex()
+                        ->withNamed()
+                        ->withGroups()
                 );
         }
         if ($parameters->hasApi()) {
