@@ -259,7 +259,7 @@ final class Build implements BuildInterface
             ->withCache(
                 new Cache($this->dir->getChild(ApiInterface::CACHE_ID))
             );
-        $this->checksums[ApiInterface::CACHE_ID] = $this->apiMaker->cache()->toArray();
+        $this->checksums[ApiInterface::CACHE_ID] = $this->apiMaker->cache()->puts();
     }
 
     private function makeRouter(): void
@@ -300,7 +300,7 @@ final class Build implements BuildInterface
             ->withServices($services);
 
         $this->checksums = [
-            RouterInterface::CACHE_ID => $routerCache->cache()->toArray()
+            RouterInterface::CACHE_ID => $routerCache->cache()->puts()
         ];
     }
 }

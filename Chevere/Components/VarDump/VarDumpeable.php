@@ -76,8 +76,8 @@ final class VarDumpeable implements VarDumpeableInterface
             // @codeCoverageIgnoreStart
             throw new LogicException(
                 (new Message('No processor for variable of type %type%'))
-                ->code('%type%', $this->type)
-                ->toString()
+                    ->code('%type%', $this->type)
+                    ->toString()
             );
             // @codeCoverageIgnoreEnd
         }
@@ -85,9 +85,9 @@ final class VarDumpeable implements VarDumpeableInterface
             // @codeCoverageIgnoreStart
             throw new LogicException(
                 (new Message('Processor %processorName% must implement the %interfaceName% interface'))
-                ->code('%processorName%', $processorName)
-                ->code('%interfaceName%', ProcessorInterface::class)
-                ->toString()
+                    ->code('%processorName%', $processorName)
+                    ->code('%interfaceName%', ProcessorInterface::class)
+                    ->toString()
             );
             // @codeCoverageIgnoreEnd
         }

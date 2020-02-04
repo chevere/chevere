@@ -52,7 +52,6 @@ final class RouterProperties implements RouterPropertiesInterface
     public function __construct()
     {
         $this->regex = '';
-        // $this->routes = [];
         $this->index = [];
         $this->groups = [];
         $this->named = [];

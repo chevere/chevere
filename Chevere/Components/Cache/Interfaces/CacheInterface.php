@@ -19,7 +19,7 @@ use Chevere\Components\Common\Interfaces\ToArrayInterface;
 use Chevere\Components\Variable\Interfaces\VariableExportInterface;
 use Chevere\Components\Filesystem\Exceptions\File\FileUnableToRemoveException;
 
-interface CacheInterface extends ToArrayInterface
+interface CacheInterface
 {
     const ILLEGAL_KEY_CHARACTERS = '\.\/\\\~\:';
 
@@ -53,7 +53,7 @@ interface CacheInterface extends ToArrayInterface
     public function withRemove(CacheKeyInterface $cacheKey): CacheInterface;
 
     /**
-     * Returns a boolean indicating whether the alleged key exists in the cache.
+     * Returns a boolean indicating whether the cache exists for the given key.
      */
     public function exists(CacheKeyInterface $cacheKey): bool;
 
@@ -67,5 +67,5 @@ interface CacheInterface extends ToArrayInterface
     /**
      * @return array [key => [checksum => , path =>]]
      */
-    public function toArray(): array;
+    public function puts(): array;
 }

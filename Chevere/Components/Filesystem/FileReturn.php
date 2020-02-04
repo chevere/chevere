@@ -100,7 +100,7 @@ final class FileReturn implements FileReturnInterface
 
     private function getReturnVar($var)
     {
-        if (is_string($var)) {
+        if (is_string($var) && !ctype_space($var)) {
             try {
                 $unserialize = new Unserialize($var);
                 $var = $unserialize->var();

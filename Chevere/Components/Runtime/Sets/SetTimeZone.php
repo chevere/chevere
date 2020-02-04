@@ -81,7 +81,7 @@ final class SetTimeZone implements SetInterface
                 (new Message('False return on %s(%v) %thrown%'))
                     ->code('%s', 'date_default_timezone_set')
                     ->code('%v', $this->value)
-                    ->code('%thrown%', $e->getMessage())
+                    // ->code('%thrown%', $e->getMessage())
                     ->toString()
             );
             // @codeCoverageIgnoreEnd

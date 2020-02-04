@@ -17,8 +17,8 @@ declare(strict_types=1);
 
 namespace Chevere;
 
-const MIN_PHP_VERSION = '7.3.0';
+const MIN_PHP_VERSION = '7.4.0';
+
 if (version_compare(PHP_VERSION, MIN_PHP_VERSION, '<')) {
-    http_response_code(500);
-    trigger_error('This is running PHP ' . PHP_VERSION . ' and ' . __NAMESPACE__ . ' requires at least PHP ' . MIN_PHP_VERSION, E_USER_ERROR);
+    trigger_error('Running PHP ' . PHP_VERSION . ', but ' . __NAMESPACE__ . ' requires at least PHP ' . MIN_PHP_VERSION, E_USER_ERROR);
 }

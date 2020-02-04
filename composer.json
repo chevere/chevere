@@ -21,9 +21,10 @@
     "symfony/console": "~4.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^8",
     "nunomaduro/phpinsights": "^1",
-    "symfony/var-dumper": "^5.0"
+    "phpunit/phpunit": "^8",
+    "symfony/var-dumper": "^5.0",
+    "vimeo/psalm": "^3.8"
   },
   "autoload": {
     "files": [

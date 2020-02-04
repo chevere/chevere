@@ -26,7 +26,7 @@ final class Type implements TypeInterface
     private string $type;
 
     /** @var string The dectected primitive type */
-    private string $primitive;
+    private string $primitive = '';
 
     /**
      * Creates a new instance.
@@ -114,7 +114,7 @@ final class Type implements TypeInterface
 
     private function assertHasPrimitive(): void
     {
-        if (!isset($this->primitive)) {
+        if ('' === $this->primitive) {
             throw new TypeNotFoundException(
                 (new Message('Type %type% not found'))
                     ->code('%type%', $this->type)

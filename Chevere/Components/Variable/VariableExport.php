@@ -35,6 +35,7 @@ final class VariableExport implements VariableExportInterface
     /**
      * Creates a new instance.
      *
+     * @psalm-suppress PossiblyInvalidArgument
      * @throws VariableIsResourceException if $var contains resource
      */
     public function __construct($var)
@@ -63,6 +64,9 @@ final class VariableExport implements VariableExportInterface
         return serialize($this->var);
     }
 
+    /**
+     * @throws VariableIsResourceException 
+     */
     private function assertExportable($var): void
     {
         $this->assertIsNotResource($var);
@@ -73,6 +77,9 @@ final class VariableExport implements VariableExportInterface
         }
     }
 
+    /**
+     * @throws VariableIsResourceException 
+     */
     private function assertIsNotResource($var): void
     {
         if (is_resource($var)) {
@@ -88,12 +95,16 @@ final class VariableExport implements VariableExportInterface
         }
     }
 
+    /**
+     * @throws VariableIsResourceException 
+     */
     private function breadcrumIterable($var): void
     {
         $this->breadcrum = $this->breadcrum
             ->withAddedItem('(iterable)');
         $iterableKey = $this->breadcrum->pos();
         foreach ($var as $key => $val) {
+            $key = (string) $key;
             $this->breadcrum = $this->breadcrum
                 ->withAddedItem('key:' . $key);
             $memberKey = $this->breadcrum->pos();

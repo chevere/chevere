@@ -24,9 +24,10 @@ use Chevere\Components\Time\TimeHr;
  */
 final class Stopwatch implements StopwatchInterface
 {
+    /** @var array<int> */
     private array $marks;
 
-    /** @var array [pos => $name] */
+    /** @var string[] [pos => $name] */
     private array $index;
 
     /** @var int High-resolution time consumed by record checks */

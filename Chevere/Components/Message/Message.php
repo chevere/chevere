@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Message;
 
-use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Message\Interfaces\MessageInterface;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
@@ -27,17 +26,14 @@ use JakubOnderka\PhpConsoleColor\ConsoleColor;
  */
 
 /**
- * @method Message MessageContact code(string $search, string $replace) Wraps found $replace in a `code` tag
- * @method Message MessageContact strong(string $search, string $replace) Wraps found $replace in a `strong` tag
- * @method Message MessageContact *any*(string $search, string $replace) Wraps found $replace in a `any` tag
+ * @method Message MessageInterface code(string $search, string $replace) Wraps found $replace in a `code` tag
+ * @method Message MessageInterface strong(string $search, string $replace) Wraps found $replace in a `strong` tag
  */
 final class Message implements MessageInterface
 {
     private string $message;
 
     private ConsoleColor $consoleColor;
-
-    private string $string;
 
     /** @var array Translation table [search => replace] */
     private array $trTable = [];
@@ -58,22 +54,6 @@ final class Message implements MessageInterface
         $this->consoleColor = new ConsoleColor;
     }
 
-    /**
-     * Magic call method for wrap tags.
-     *
-     * @param string $tag  Tag name
-     * @param array  $args the arguments, being $args[0] (from) and $args[1] (to)
-     */
-    public function __call(string $tag, array $args): MessageInterface
-    {
-        $search = (string) $args[0]; // $search String to replace for
-        $replace = (string) $args[1]; // $replace String to replace with
-        $tagged = '' != $replace ? "<$tag>$replace</$tag>" : '';
-        $new = clone $this;
-
-        return $new->strtr($search, $tagged);
-    }
-
     public function strtr(string $search, string $replace): MessageInterface
     {
         $new = clone $this;
@@ -83,15 +63,24 @@ final class Message implements MessageInterface
         return $new;
     }
 
-    public function toString(): string
+    public function code(string $search, string $replace): MessageInterface
     {
-        return $this->string ??= $this->cliAware();
+        $new = clone $this;
+
+        return $new->wrap($search, $replace);
     }
 
-    private function cliAware(): string
+    public function strong(string $search, string $replace): MessageInterface
+    {
+        $new = clone $this;
+
+        return $new->wrap($search, $replace);
+    }
+
+
+    public function toString(): string
     {
         $message = $this->message;
-        // $hasBoo
         // if (BootstrapInstance::get()->isCli()) {
         //     foreach ($this->consolePallete as $tag => $color) {
         //         $message = preg_replace_callback('#<' . $tag . '>(.*?)<\/' . $tag . '>#', function ($matches) use ($color) {
@@ -101,5 +90,18 @@ final class Message implements MessageInterface
         // }
 
         return $message;
+    }
+
+    private function wrap(string $search, string $replace): MessageInterface
+    {
+        $tagged = $replace;
+        $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+        if ($bt[1]['function'] && is_string($bt[1]['function'])) {
+            $tag = $bt[1]['function'];
+            $tagged = "<$tag>$replace</$tag>";
+        }
+        $new = clone $this;
+
+        return $new->strtr($search, $tagged);
     }
 }

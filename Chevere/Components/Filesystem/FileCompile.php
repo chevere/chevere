@@ -18,6 +18,7 @@ use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Filesystem\Interfaces\File\FileCompileInterface;
 use Chevere\Components\Filesystem\Interfaces\File\FilePhpInterface;
+use Throwable;
 
 /**
  * OPCache compiler.
@@ -29,11 +30,30 @@ final class FileCompile implements FileCompileInterface
     /**
      * Applies OPCache to the PHP file.
      *
+     * @throws RuntimeException If Zend OPcache is not available
      * @throws FileNotPhpException   if $file is not a PHP file
      * @throws FileNotFoundException if $file doesn't exists
      */
     public function __construct(FilePhpInterface $filePhp)
     {
+        if (!extension_loaded('Zend OPcache')) {
+            throw new RuntimeException(
+                (new Message('Extension %extension% is not loaded'))
+                    ->code('%extension%', 'Zend OPcache')
+                    ->toString()
+            );
+        }
+
+        if (ini_get('opcache.enable') === '0' || ini_get('opcache.enable_cli') === '0') {
+            throw new RuntimeException(
+                (new Message('Extension %extension% must be enabled with %enable% and %enableCli% in a parsed configuration file (%iniFile%)'))
+                    ->code('%extension%', 'Zend OPcache')
+                    ->code('%enable%', 'opcache.enable = 1')
+                    ->code('%enableCli%', 'opcache.enable_cli = 1')
+                    ->code('%iniFile%', '.ini')
+                    ->toString()
+            );
+        }
         $this->filePhp = $filePhp;
     }
 
@@ -48,11 +68,18 @@ final class FileCompile implements FileCompileInterface
         $path = $this->filePhp->file()->path()->absolute();
         $past = BootstrapInstance::get()->time() - 10;
         touch($path, $past);
-        /** @scrutinizer ignore-unhandled */ @opcache_invalidate($path, true);
-        if (!opcache_compile_file($path)) {
+        try {
+            if (!opcache_compile_file($path)) {
+                throw new RuntimeException(
+                    (new Message('Zend OPcache is disabled'))
+                        ->toString()
+                );
+            }
+        } catch (Throwable $e) {
             throw new RuntimeException(
-                (new Message('Unable to compile cache for file %path% (Opcache is disabled)'))
+                (new Message('Unable to compile cache for file %path%'))
                     ->code('%path%', $path)
+                    ->code('%thrown%', $e->getMessage())
                     ->toString()
             );
         }
@@ -60,6 +87,10 @@ final class FileCompile implements FileCompileInterface
 
     public function destroy(): void
     {
+        if (!opcache_is_script_cached($this->filePhp->file()->path()->absolute())) {
+
+            return;
+        }
         if (!opcache_invalidate($this->filePhp->file()->path()->absolute())) {
             throw new RuntimeException(
                 (new Message('Opcode cache is disabled'))

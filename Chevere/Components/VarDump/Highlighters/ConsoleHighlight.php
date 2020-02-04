@@ -30,9 +30,8 @@ final class ConsoleHighlight implements HighlightInterface
     public function __construct(string $key)
     {
         $this->assertKey($key);
-        $this->key = $key;
         $this->consoleColor = new ConsoleColor();
-        $color = $this->pallete()[$this->key] ?? 'default';
+        $color = $this->pallete()[$key] ?? 'default';
         $this->color = is_string($color) ? [$color] : $color;
     }
 

@@ -26,6 +26,18 @@ interface MessageInterface extends ToStringInterface
     public function strtr(string $search, string $replace): MessageInterface;
 
     /**
+     * @param string $search  the value being searched for, otherwise known as the needle
+     * @param string $replace the replacement value that replaces found search value
+     */
+    public function code(string $search, string $replace): MessageInterface;
+
+    /**
+     * @param string $search  the value being searched for, otherwise known as the needle
+     * @param string $replace the replacement value that replaces found search value
+     */
+    public function strong(string $search, string $replace): MessageInterface;
+
+    /**
      * @return string The message after the translation table, cli aware.
      */
     public function toString(): string;

@@ -54,7 +54,7 @@ final class DataTest extends TestCase
         $array = $this->getBasicArray();
         $mixed = $this->getMixedArray();
         $data = (new Data($array))
-          ->withArray($mixed);
+            ->withArray($mixed);
         $this->assertSame($mixed, $data->toArray());
     }
 
@@ -64,7 +64,7 @@ final class DataTest extends TestCase
         $mixed = $this->getMixedArray();
         $merge = array_merge_recursive($mixed, $array);
         $data = (new Data($mixed))
-          ->withMergedArray($array);
+            ->withMergedArray($array);
         $this->assertSame($merge, $data->toArray());
     }
 
@@ -72,7 +72,7 @@ final class DataTest extends TestCase
     {
         $array = $this->getBasicArray();
         $data = (new Data($array))
-          ->withAppend('var');
+            ->withAppend('var');
         $expected = $array;
         $expected[] = 'var';
         $this->assertSame($expected, $data->toArray());
@@ -84,7 +84,7 @@ final class DataTest extends TestCase
         $value = ['value', 1];
         $array = $this->getMixedArray();
         $data = (new Data($array))
-          ->withAddedKey('test', $value);
+            ->withAddedKey('test', $value);
         $this->assertTrue($data->hasKey('test'));
         $this->assertSame($value, $data->key('test'));
     }
@@ -95,7 +95,7 @@ final class DataTest extends TestCase
         $data = new Data($array);
         $this->assertTrue($data->hasKey('key'));
         $data = $data
-          ->withRemovedKey('key');
+            ->withRemovedKey('key');
         $this->assertFalse($data->hasKey('key'));
     }
 }

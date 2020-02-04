@@ -56,9 +56,9 @@ final class Cache implements CacheInterface
         $this->puts = [];
     }
 
-    public function withPut(CacheKeyInterface $cacheKey, VariableExportInterface $variableExport): CacheInterface
+    public function withPut(CacheKeyInterface $key, VariableExportInterface $variableExport): CacheInterface
     {
-        $path = $this->getPath($cacheKey->toString());
+        $path = $this->getPath($key->toString());
         $file = new File($path);
         if (!$file->exists()) {
             $file->create();
@@ -66,9 +66,9 @@ final class Cache implements CacheInterface
         $filePhp = new PhpFile($file);
         $fileReturn = new FileReturn($filePhp);
         $fileReturn->put($variableExport);
-        new FileCompile($filePhp);
+        (new FileCompile($filePhp))->compile();
         $new = clone $this;
-        $new->puts[$cacheKey->toString()] = [
+        $new->puts[$key->toString()] = [
             'path' => $fileReturn->filePhp()->file()->path()->absolute(),
             'checksum' => $fileReturn->filePhp()->file()->checksum(),
         ];
@@ -119,7 +119,7 @@ final class Cache implements CacheInterface
         );
     }
 
-    public function toArray(): array
+    public function puts(): array
     {
         return $this->puts;
     }
