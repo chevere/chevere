@@ -32,6 +32,7 @@ use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
 final class RouterMakerTest extends TestCase
 {
@@ -51,7 +52,9 @@ final class RouterMakerTest extends TestCase
     public function tearDown(): void
     {
         $this->routerCache->remove();
-        $this->routerCache->routeCache()->remove(0);
+        foreach (array_keys($this->routerCache->routeCache()->puts()) as $pos) {
+            $this->routerCache->routeCache()->remove($pos);
+        }
     }
 
     public function testConstruct(): void
@@ -90,12 +93,14 @@ final class RouterMakerTest extends TestCase
 
     public function testWithAlreadyAddedName(): void
     {
-        $routeable1 = $this->getRouteable('/path1', 'SameName');
-        $routeable2 = $this->getRouteable('/path2', 'SameName');
+        $routeable1 = $this->getRouteable('/path1', 'SomeName');
+        $routeable2 = $this->getRouteable('/path2', 'SomeName');
+        $routeable3 = $this->getRouteable('/path3', 'SameName');
         $this->expectException(RouteNameConflictException::class);
         (new RouterMaker($this->routerCache))
-            ->withAddedRouteable($routeable1, 'group')
-            ->withAddedRouteable($routeable2, 'another-group');
+            ->withAddedRouteable($routeable1, 'group1')
+            ->withAddedRouteable($routeable2, 'group2')
+            ->withAddedRouteable($routeable3, 'group3');
     }
 
     private function getRouteable(string $path, string $name = null): RouteableInterface

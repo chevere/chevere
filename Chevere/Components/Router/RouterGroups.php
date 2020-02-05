@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
+use BadMethodCallException;
+use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Interfaces\RouterGroupsInterface;
 
 final class RouterGroups implements RouterGroupsInterface
@@ -22,13 +24,41 @@ final class RouterGroups implements RouterGroupsInterface
     public function withAdded(string $group, int $id): RouterGroupsInterface
     {
         $new = clone $this;
-        if (array_key_exists($group, $this->array)) {
-            $new->array[$group] = [$id];
-        } else {
-            $new->array[$group][] = $id;
+        if (!array_key_exists($group, $new->array)) {
+            $new->array[$group] = [];
         }
+        $new->array[$group][] = $id;
 
         return $new;
+    }
+
+    public function has(string $group): bool
+    {
+        return array_key_exists($group, $this->array);
+    }
+
+    public function get(string $group): array
+    {
+        $get = $this->array[$group] ?? null;
+        if ($get === null) {
+            throw new BadMethodCallException(
+                (new Message("Group %group% doesn't exists"))
+                    ->code('%group%', $group)
+                    ->toString()
+            );
+        }
+        return $this->array[$group];
+    }
+
+    public function getForId(int $id): string
+    {
+        foreach ($this->array as $group => $routesId) {
+            if (in_array($id, $routesId)) {
+                return $group;
+            }
+        }
+
+        return '';
     }
 
     public function toArray(): array

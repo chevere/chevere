@@ -71,7 +71,6 @@ final class RouterMaker implements RouterMakerInterface
         ++$new->id;
         $new->assertUniquePath($routeable->route());
         $new->assertUniqueKey($routeable->route());
-        // $id = empty($this->paths) ? 0 : (array_key_last($this->paths) + 1);
         $name = '';
         $path = $routeable->route()->pathUri()->toString();
         $key = $routeable->route()->pathUri()->key();
@@ -133,15 +132,16 @@ final class RouterMaker implements RouterMakerInterface
         }
         $path = $route->pathUri()->toString();
         $knownId = $this->paths[$path] ?? null;
-        if ($knownId !== null) {
-            throw new RoutePathExistsException(
-                (new Message('Unable to register route path %path% at %declare% (path already registered at %register%)'))
-                    ->code('%path%', $path)
-                    ->code('%declare%', $route->maker()['fileLine'])
-                    ->code('%register%', $this->routes[$knownId]->maker()['fileLine'])
-                    ->toString()
-            );
+        if ($knownId === null) {
+            return;
         }
+        throw new RoutePathExistsException(
+            (new Message('Unable to register route path %path% at %declare% (path already registered at %register%)'))
+                ->code('%path%', $path)
+                ->code('%declare%', $route->maker()['fileLine'])
+                ->code('%register%', $this->routes[$knownId]->maker()['fileLine'])
+                ->toString()
+        );
     }
 
     private function assertUniqueKey(RouteInterface $route): void
@@ -150,16 +150,17 @@ final class RouterMaker implements RouterMakerInterface
             return;
         }
         $knownId = $this->keys[$route->pathUri()->key()] ?? null;
-        if ($knownId !== null) {
-            throw new RouteKeyConflictException(
-                (new Message('Router conflict detected for %path% at %declare% (self-assigned internal key %key% is already reserved by %register%)'))
-                    ->code('%path%', $route->pathUri()->toString())
-                    ->code('%declare%', $route->maker()['fileLine'])
-                    ->code('%key%', $route->pathUri()->key())
-                    ->code('%register%', $this->routes[$knownId]->maker()['fileLine'])
-                    ->toString()
-            );
+        if ($knownId === null) {
+            return;
         }
+        throw new RouteKeyConflictException(
+            (new Message('Router conflict detected for %path% at %declare% (self-assigned internal key %key% is already reserved by %register%)'))
+                ->code('%path%', $route->pathUri()->toString())
+                ->code('%declare%', $route->maker()['fileLine'])
+                ->code('%key%', $route->pathUri()->key())
+                ->code('%register%', $this->routes[$knownId]->maker()['fileLine'])
+                ->toString()
+        );
     }
 
     private function assertUniqueName(RouteInterface $route): void
@@ -168,16 +169,17 @@ final class RouterMaker implements RouterMakerInterface
             return;
         }
         $knownId = $this->named[$route->name()->toString()] ?? null;
-        if ($knownId !== null) {
-            throw new RouteNameConflictException(
-                (new Message('Unable to assign route name %name% for path %path% at %declare% (name assigned to %namedRoutePath% at %register%)'))
-                    ->code('%name%', $route->name()->toString())
-                    ->code('%path%', $route->pathUri()->toString())
-                    ->code('%declare%', $route->maker()['fileLine'])
-                    ->code('%namedRoutePath%', $this->routes[$knownId]->pathUri()->toString())
-                    ->code('%register%', $this->routes[$knownId]->maker()['fileLine'])
-                    ->toString()
-            );
+        if ($knownId === null) {
+            return;
         }
+        throw new RouteNameConflictException(
+            (new Message('Unable to assign route name %name% for path %path% at %declare% (name assigned to %namedRoutePath% at %register%)'))
+                ->code('%name%', $route->name()->toString())
+                ->code('%path%', $route->pathUri()->toString())
+                ->code('%declare%', $route->maker()['fileLine'])
+                ->code('%namedRoutePath%', $this->routes[$knownId]->pathUri()->toString())
+                ->code('%register%', $this->routes[$knownId]->maker()['fileLine'])
+                ->toString()
+        );
     }
 }

@@ -17,5 +17,11 @@ interface RouterGroupsInterface
 {
     public function withAdded(string $group, int $id): RouterGroupsInterface;
 
+    public function has(string $group): bool;
+
+    public function get(string $group): array;
+
+    public function getForId(int $id): string;
+
     public function toArray(): array;
 }
