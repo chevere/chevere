@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Router\Exceptions\RoutePathExistsException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
@@ -21,15 +20,11 @@ use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
 use Chevere\Components\Router\Exceptions\RouteNameConflictException;
 use Chevere\Components\Router\Exceptions\RouterMakerException;
 use Chevere\Components\Route\Interfaces\RouteInterface;
-use Chevere\Components\Router\Exceptions\RouterException;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
 use Chevere\Components\Router\Interfaces\RouteCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterCacheInterface;
-use Chevere\Components\Router\Interfaces\RouterGroupsInterface;
-use Chevere\Components\Router\Interfaces\RouterIndexInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
-use Chevere\Components\Router\Interfaces\RouterNamedInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 
 /**
@@ -52,25 +47,31 @@ final class RouterMaker implements RouterMakerInterface
     /** @var array [(string) $name => (int) $id] */
     private array $named;
 
-    /** @var array [(int) $id => $routerRegexInterface,] */
+    /** @var array [(int) $id => (string) $regex,] */
     private array $regexes;
 
     /** @var array [(int) $id => $routeInterface] */
     private array $routes;
 
+    private int $id = -1;
+
     public function __construct(RouterCacheInterface $routerCache)
     {
         $this->routerCache = $routerCache;
         $this->routeCache = $this->routerCache->routeCache();
-        $this->router = new Router($this->routeCache);
+        $this->router = (new Router($this->routeCache))
+            ->withIndex(new RouterIndex())
+            ->withGroups(new RouterGroups())
+            ->withNamed(new RouterNamed());
     }
 
     public function withAddedRouteable(RouteableInterface $routeable, string $group): RouterMakerInterface
     {
         $new = clone $this;
+        ++$new->id;
         $new->assertUniquePath($routeable->route());
         $new->assertUniqueKey($routeable->route());
-        $id = empty($this->paths) ? 0 : (array_key_last($this->paths) + 1);
+        // $id = empty($this->paths) ? 0 : (array_key_last($this->paths) + 1);
         $name = '';
         $path = $routeable->route()->pathUri()->toString();
         $key = $routeable->route()->pathUri()->key();
@@ -78,24 +79,36 @@ final class RouterMaker implements RouterMakerInterface
         if ($routeable->route()->hasName()) {
             $new->assertUniqueName($routeable->route());
             $name = $routeable->route()->name()->toString();
-            $new->named[$name] = $id;
+            $new->named[$name] = $new->id;
         }
-        $new->regexes[$id] = $regex;
-        $new->paths[$path] = $id;
-        $new->keys[$key] = $id;
+        $new->regexes[$new->id] = $regex;
+        $new->paths[$path] = $new->id;
+        $new->keys[$key] = $new->id;
         $new->router = $new->router
             ->withRegex($new->getRouterRegex())
             ->withIndex(
-                $this->router()->index()->withAdded($key, $id, $group, $name)
+                $new->router()->index()->withAdded(
+                    $routeable->route()->pathUri(),
+                    $new->id,
+                    $group,
+                    $name
+                )
             )
             ->withGroups(
-                $this->router()->groups()->withAdded($group, $id)
+                $new->router()->groups()->withAdded($group, $new->id)
             )
             ->withNamed(
-                $this->router()->named()->withAdded($name, $id)
+                $new->router()->named()->withAdded($name, $new->id)
             );
+        $new->routeCache->put($new->id, $routeable);
+        $new->routes[$new->id] = $routeable->route();
 
         return $new;
+    }
+
+    public function router(): RouterInterface
+    {
+        return $this->router;
     }
 
     /**
@@ -103,19 +116,21 @@ final class RouterMaker implements RouterMakerInterface
      */
     private function getRouterRegex(): RouterRegexInterface
     {
-        $regex = [];
+        $array = [];
         foreach ($this->regexes as $id => $string) {
-            preg_match('#\^(.*)\$#', $id, $matches);
-            $regex[] = sprintf(RouterRegexInterface::TEMPLATE_ENTRY, $matches[1], $string);
+            preg_match('#\^(.*)\$#', $string, $matches);
+            $array[] = sprintf(RouterRegexInterface::TEMPLATE_ENTRY, $matches[1], $id);
         }
+        $regex = new Regex(sprintf(RouterRegexInterface::TEMPLATE, implode('', $array)));
 
-        return (new RouterRegex(
-            new Regex(sprintf(RouterRegexInterface::TEMPLATE, implode('', $regex)))
-        ));
+        return new RouterRegex($regex);
     }
 
     private function assertUniquePath(RouteInterface $route): void
     {
+        if (!isset($this->routes)) {
+            return;
+        }
         $path = $route->pathUri()->toString();
         $knownId = $this->paths[$path] ?? null;
         if ($knownId !== null) {
@@ -131,6 +146,9 @@ final class RouterMaker implements RouterMakerInterface
 
     private function assertUniqueKey(RouteInterface $route): void
     {
+        if (!isset($this->routes)) {
+            return;
+        }
         $knownId = $this->keys[$route->pathUri()->key()] ?? null;
         if ($knownId !== null) {
             throw new RouteKeyConflictException(
@@ -146,6 +164,9 @@ final class RouterMaker implements RouterMakerInterface
 
     private function assertUniqueName(RouteInterface $route): void
     {
+        if (!isset($this->routes)) {
+            return;
+        }
         $knownId = $this->named[$route->name()->toString()] ?? null;
         if ($knownId !== null) {
             throw new RouteNameConflictException(

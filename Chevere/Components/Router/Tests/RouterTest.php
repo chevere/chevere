@@ -15,6 +15,7 @@ namespace Chevere\Components\Router\Tests;
 
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
 use Chevere\Components\Router\Interfaces\RouteCacheInterface;
@@ -82,7 +83,7 @@ final class RouterTest extends TestCase
 
     public function testIndex(): void
     {
-        $index = (new RouterIndex)->withAdded('/test', 0, '', '');
+        $index = (new RouterIndex)->withAdded(new PathUri('/test'), 0, '', '');
         $router = (new Router($this->getEmptyRouteCache()))->withIndex($index);
         $this->assertTrue($router->hasIndex());
         $this->assertSame($index, $router->index());

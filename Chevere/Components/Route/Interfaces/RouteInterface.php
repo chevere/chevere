@@ -21,6 +21,7 @@ use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Http\Interfaces\MethodControllerNameCollectionInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
+use Chevere\Components\Regex\Interfaces\RegexInterface;
 
 interface RouteInterface
 {
@@ -37,7 +38,7 @@ interface RouteInterface
     public function maker(): array;
 
     /**
-     * Provides access to the regex string.
+     * Provides access to the regex compontent string.
      */
     public function regex(): string;
 

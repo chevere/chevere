@@ -15,7 +15,7 @@ namespace Chevere\Components\Router\Interfaces;
 
 interface RouterGroupsInterface
 {
-    public function withAdded(string $name, int $id): RouterGroupsInterface;
+    public function withAdded(string $group, int $id): RouterGroupsInterface;
 
     public function toArray(): array;
 }

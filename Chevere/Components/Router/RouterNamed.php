@@ -22,6 +22,9 @@ final class RouterNamed implements RouterNamedInterface
     public function withAdded(string $name, int $id): RouterNamedInterface
     {
         $new = clone $this;
+        if ($name === '' || ctype_space($name)) {
+            return $new;
+        }
         $new->array[$name] = $id;
 
         return $new;

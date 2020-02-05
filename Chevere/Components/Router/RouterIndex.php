@@ -13,32 +13,35 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
+use Chevere\Components\Route\Interfaces\PathUriInterface;
+use Chevere\Components\Route\Interfaces\RouteNameInterface;
+use Chevere\Components\Route\PathUri;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
 
 final class RouterIndex implements RouterIndexInterface
 {
     private array $array = [];
 
-    public function withAdded(string $key, int $id, string $group, string $name): RouterIndexInterface
+    public function withAdded(PathUriInterface $pathUri, int $id, string $group, string $name): RouterIndexInterface
     {
         $new = clone $this;
-        $array = [
+        $new->array[$pathUri->key()] = [
             'id' => $id,
             'group' => $group,
             'name' => $name,
         ];
-        if (array_key_exists($key, $this->array)) {
-            $new->array[$key] = [$array];
-        } else {
-            $new->array[$key][] = $array;
-        }
 
         return $new;
     }
 
-    public function has(string $path): bool
+    public function has(PathUri $pathUri): bool
     {
-        return array_key_exists($path, $this->array);
+        return array_key_exists($pathUri->key(), $this->array);
+    }
+
+    public function get(PathUri $pathUri): array
+    {
+        return $this->array[$pathUri->key()];
     }
 
     public function toArray(): array

@@ -13,11 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Interfaces;
 
+use Chevere\Components\Route\Interfaces\PathUriInterface;
+use Chevere\Components\Route\PathUri;
+
 interface RouterIndexInterface
 {
-    public function has(string $key): bool;
+    public function withAdded(PathUriInterface $pathUri, int $id, string $group, string $name): RouterIndexInterface;
 
-    public function withAdded(string $key, int $id, string $group, string $name): RouterIndexInterface;
+    public function has(PathUri $pathUri): bool;
+
+    public function get(PathUri $pathUri): array;
 
     public function toArray(): array;
 }
