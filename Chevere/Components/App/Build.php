@@ -34,12 +34,15 @@ use Chevere\Components\App\Interfaces\AppInterface;
 use Chevere\Components\App\Interfaces\BuildInterface;
 use Chevere\Components\App\Interfaces\CheckoutInterface;
 use Chevere\Components\App\Interfaces\ParametersInterface;
+use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
 use Chevere\Components\Filesystem\Interfaces\File\FilePhpInterface;
 use Chevere\Components\Route\Interfaces\RouteInterface;
+use Chevere\Components\Router\Interfaces\RouterCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
+use Chevere\Components\Router\RouterMaker;
 use LogicException;
 
 /**
@@ -67,6 +70,8 @@ final class Build implements BuildInterface
 
     private RouterMakerInterface $routerMaker;
 
+    private RouterCacheInterface $routerCache;
+
     /**
      * Constructs the Build instance.
      *
@@ -93,8 +98,15 @@ final class Build implements BuildInterface
         if (!$this->dir->exists()) {
             $this->dir->create();
         }
-
         $this->assertDir();
+        $routerCacheDir = $this->dir->getChild(RouterInterface::CACHE_ID);
+        $this->routerCache = new RouterCache(new Cache($routerCacheDir));
+        // $this->apiCache = new Cache($this->dir->getChild(RouterInterface::CACHE_ID));
+    }
+
+    public function routerCache(): RouterCacheInterface
+    {
+        return $this->routerCache;
     }
 
     public function withApp(AppInterface $app): BuildInterface
@@ -128,19 +140,6 @@ final class Build implements BuildInterface
         return $this->parameters;
     }
 
-    public function withRouterMaker(RouterMakerInterface $routerMaker): BuildInterface
-    {
-        $new = clone $this;
-        $new->routerMaker = $routerMaker;
-
-        return $new;
-    }
-
-    public function hasRouterMaker(): bool
-    {
-        return isset($this->routerMaker);
-    }
-
     public function routerMaker(): RouterMakerInterface
     {
         return $this->routerMaker;
@@ -151,6 +150,7 @@ final class Build implements BuildInterface
      */
     public function make(): BuildInterface
     {
+        $this->routerMaker = new RouterMaker($this->routerCache);
         $this->assertCanMake();
         $new = clone $this;
         if ($new->parameters->hasApi()) {
@@ -282,29 +282,13 @@ final class Build implements BuildInterface
                     );
             }
         }
-        $routerCache =
-            (new RouterCache(
-                new Cache(
-                    $this->dir
-                        ->getChild(RouterInterface::CACHE_ID)
-                )
-            ))
-            ->withPut($this->routerMaker);
-
-        // $this->routerMaker->properties()
+        $routerCache->put($this->routerMaker->router());
         $services = $this->app->services()
-            ->withRouter(
-                (new Router())
-                    ->withRegex()
-                    ->withIndex()
-                    ->withNamed()
-                    ->withGroups()
-            );
+            ->withRouter($this->routerMaker->router());
         $this->app = $this->app
             ->withServices($services);
-
         $this->checksums = [
-            RouterInterface::CACHE_ID => $routerCache->cache()->puts()
+            RouterInterface::CACHE_ID => $this->routerCache->cache()->puts()
         ];
     }
 }

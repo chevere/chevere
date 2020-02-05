@@ -31,7 +31,7 @@ use Chevere\Components\App\Interfaces\BuilderInterface;
 use Chevere\Components\App\Interfaces\ServicesInterface;
 use Chevere\Components\App\Interfaces\LoaderInterface;
 use Chevere\Components\App\Interfaces\ParametersInterface;
-use Chevere\Components\Router\RouterProperties;
+use Chevere\Components\Router\RouterCache;
 
 /**
  * Loads the application, by handling its builder.
@@ -108,7 +108,6 @@ final class Loader implements LoaderInterface
     {
         if (BootstrapInstance::get()->isDev()) {
             return $this->builder->build()
-                ->withRouterMaker(new RouterMaker(new RouterProperties()))
                 ->make();
         }
         $build = $this->builder->build();

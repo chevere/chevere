@@ -24,7 +24,6 @@ use Chevere\Components\App\Services;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Router\Router;
-use Chevere\Components\Router\RouterProperties;
 use Chevere\Components\App\Interfaces\AppInterface;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Route\PathUri;
@@ -77,46 +76,46 @@ final class ResolvableTest extends TestCase
         );
     }
 
-    public function testConstructRouterCantResolve(): void
-    {
-        $this->expectException(RouterCantResolveException::class);
-        new Resolvable(
-            new Builder(
-                new Build(
-                    $this
-                        ->getAppWithRequest()
-                        ->withServices(
-                            (new Services())
-                                ->withRouter(
-                                    new Router()
-                                )
-                        )
-                )
-            )
-        );
-    }
+    // public function testConstructRouterCantResolve(): void
+    // {
+    //     $this->expectException(RouterCantResolveException::class);
+    //     new Resolvable(
+    //         new Builder(
+    //             new Build(
+    //                 $this
+    //                     ->getAppWithRequest()
+    //                     ->withServices(
+    //                         (new Services())
+    //                             ->withRouter(
+    //                                 new Router()
+    //                             )
+    //                     )
+    //             )
+    //         )
+    //     );
+    // }
 
-    public function testConstructor(): void
-    {
-        $properties = (new RouterProperties())
-            ->withRegex('*');
-        $router = (new Router())
-            ->withProperties($properties)
-            ->withRegex()
-            ->withIndex()
-            ->withNamed()
-            ->withGroups();
-        $services = (new Services())
-            ->withRouter($router);
-        $this->expectNotToPerformAssertions();
-        new Resolvable(
-            new Builder(
-                new Build(
-                    $this
-                        ->getAppWithRequest()
-                        ->withServices($services)
-                )
-            )
-        );
-    }
+    // public function testConstructor(): void
+    // {
+    //     $properties = (new RouterProperties())
+    //         ->withRegex('*');
+    //     $router = (new Router())
+    //         ->withProperties($properties)
+    //         ->withRegex()
+    //         ->withIndex()
+    //         ->withNamed()
+    //         ->withGroups();
+    //     $services = (new Services())
+    //         ->withRouter($router);
+    //     $this->expectNotToPerformAssertions();
+    //     new Resolvable(
+    //         new Builder(
+    //             new Build(
+    //                 $this
+    //                     ->getAppWithRequest()
+    //                     ->withServices($services)
+    //             )
+    //         )
+    //     );
+    // }
 }

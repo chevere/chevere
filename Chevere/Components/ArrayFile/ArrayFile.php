@@ -99,7 +99,7 @@ final class ArrayFile implements ArrayFileInterface
                 ->code('%membersType%', $this->type->typeHinting())
                 ->code('%filepath%', $this->filePhp->file()->path()->absolute())
                 ->code('%type%', $type)
-                ->code('%pos%', $pos)
+                ->code('%pos%', (string) $pos)
                 ->toString()
         );
     }

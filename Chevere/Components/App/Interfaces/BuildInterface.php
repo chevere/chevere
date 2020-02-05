@@ -15,11 +15,14 @@ namespace Chevere\Components\App\Interfaces;
 
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
+use Chevere\Components\Router\Interfaces\RouterCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
 
 interface BuildInterface
 {
     public function __construct(AppInterface $app);
+
+    public function routerCache(): RouterCacheInterface;
 
     /**
      * Return an instance with the specified ServicesInterface.
@@ -51,14 +54,6 @@ interface BuildInterface
      * Provides access to the ParametersInterface instance.
      */
     public function parameters(): ParametersInterface;
-
-    /**
-     * Handles the API and route parameters and makes the application build.
-     * Note: Can be only called once.
-     */
-    public function withRouterMaker(RouterMakerInterface $roterMaker): BuildInterface;
-
-    public function hasRouterMaker(): bool;
 
     public function routerMaker(): RouterMakerInterface;
 

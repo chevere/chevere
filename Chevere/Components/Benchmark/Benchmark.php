@@ -102,8 +102,8 @@ final class Benchmark implements BenchmarkInterface
             throw new ArgumentCountException(
                 (new Message('Instance of %className% was constructed to handle callables with %argumentsCount% arguments, %parametersCount% parameters declared for callable named %callableName%'))
                     ->code('%className%', __CLASS__)
-                    ->code('%argumentsCount%', $this->argumentsCount)
-                    ->code('%parametersCount%', $parametersCount)
+                    ->code('%argumentsCount%', (string) $this->argumentsCount)
+                    ->code('%parametersCount%', (string) $parametersCount)
                     ->code('%callableName%', $this->callableName)
                     ->toString()
             );

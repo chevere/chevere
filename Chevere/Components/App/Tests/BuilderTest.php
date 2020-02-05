@@ -18,10 +18,7 @@ use Chevere\Components\App\Build;
 use Chevere\Components\App\Builder;
 use Chevere\Components\App\Services;
 use Chevere\Components\Http\Response;
-use Chevere\Components\Filesystem\AppPath;
-use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\App\Interfaces\BuildInterface;
-use Chevere\Components\Router\RouterProperties;
 use PHPUnit\Framework\TestCase;
 
 final class BuilderTest extends TestCase
@@ -48,9 +45,9 @@ final class BuilderTest extends TestCase
         $appAlt = $app->withArguments([1, 2, 3]);
         $builder = new Builder($build);
         $builder = $builder
-      ->withBuild(
-          $build->withApp($appAlt)
-      );
+            ->withBuild(
+                $build->withApp($appAlt)
+            );
 
         $this->assertSame($appAlt, $builder->build()->app());
     }
@@ -58,9 +55,8 @@ final class BuilderTest extends TestCase
     public function testWithBuild(): void
     {
         $build = $this->getBuild();
-        $buildAlt = $build->withRouterMaker(new RouterMaker(new RouterProperties()));
-        $builder = (new Builder($build))
-            ->withBuild($buildAlt);
+        $buildAlt = $this->getBuild();
+        $builder = (new Builder($build))->withBuild($buildAlt);
         $this->assertSame($buildAlt, $builder->build());
     }
 
@@ -68,9 +64,7 @@ final class BuilderTest extends TestCase
     {
         $build = $this->getBuild();
         $controllerName = 'ControllerName';
-        $builder = (new Builder($build))
-      ->withControllerName($controllerName);
-
+        $builder = (new Builder($build))->withControllerName($controllerName);
         $this->assertTrue($builder->hasControllerName());
         $this->assertSame($controllerName, $builder->controllerName());
     }
@@ -79,9 +73,7 @@ final class BuilderTest extends TestCase
     {
         $build = $this->getBuild();
         $controllerArguments = [1, 2, 3];
-        $builder = (new Builder($build))
-      ->withControllerArguments($controllerArguments);
-
+        $builder = (new Builder($build))->withControllerArguments($controllerArguments);
         $this->assertTrue($builder->hasControllerArguments());
         $this->assertSame($controllerArguments, $builder->controllerArguments());
     }

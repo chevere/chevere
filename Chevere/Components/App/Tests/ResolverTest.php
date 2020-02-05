@@ -30,8 +30,11 @@ use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\App\Interfaces\ResolvableInterface;
+use Chevere\Components\Cache\Cache;
+use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Http\Interfaces\RequestInterface;
-use Chevere\Components\Router\RouterProperties;
+use Chevere\Components\Router\RouterCache;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
@@ -44,19 +47,13 @@ final class ResolverTest extends TestCase
                 new Method('GET'),
                 new ControllerName(TestController::class)
             );
-
-        $routerMaker = (new RouterMaker())
+        $routerCache = new RouterCache(new Cache(new Dir(new Path(__DIR__))));
+        $routerMaker = (new RouterMaker($routerCache))
             ->withAddedRouteable(
                 new Routeable($route),
                 'test'
             );
-        // $properties = $routerMaker->properties();
-        $router = (new Router())
-            ->withProperties($properties)
-            ->withRegex()
-            ->withIndex()
-            ->withNamed()
-            ->withGroups();
+        $router = $routerMaker->router();
         $services = (new Services())
             ->withRouter($router);
         $app = new App($services, new Response());

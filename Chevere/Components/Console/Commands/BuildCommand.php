@@ -20,7 +20,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Time\TimeHr;
 use Chevere\Components\App\Interfaces\BuilderInterface;
-use Chevere\Components\Router\RouterProperties;
+use Chevere\Components\Router\RouterCache;
 
 /**
  * The BuildCommand builds the App.
@@ -48,7 +48,7 @@ final class BuildCommand extends Command
             $this->builder = $this->builder
                 ->withBuild(
                     $this->builder->build()
-                        ->withRouterMaker(new RouterMaker(new RouterProperties()))
+                        ->withRouterMaker(new RouterMaker(new RouterCache()))
                         ->make()
                 );
         }

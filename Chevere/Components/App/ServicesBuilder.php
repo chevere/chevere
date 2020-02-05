@@ -23,6 +23,7 @@ use Chevere\Components\Api\Interfaces\ApiInterface;
 use Chevere\Components\App\Interfaces\BuildInterface;
 use Chevere\Components\App\Interfaces\ServicesBuilderInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
+use Chevere\Components\Router\RouterMaker;
 
 final class ServicesBuilder implements ServicesBuilderInterface
 {
@@ -37,22 +38,15 @@ final class ServicesBuilder implements ServicesBuilderInterface
     public function __construct(BuildInterface $build, ParametersInterface $parameters)
     {
         $this->services = $build->app()->services();
-        $this->prepareServices();
+        $this->prepareServices($build);
         if ($parameters->hasRoutes()) {
-            $routerCache =
-                new RouterCache(
-                    new Cache(
-                        $build->dir()->getChild(RouterInterface::CACHE_ID)
-                    )
-                );
             $this->services = $this->services
                 ->withRouter(
                     $this->services()->router()
-                        ->withProperties($routerCache->getProperties())
-                        ->withRegex()
-                        ->withIndex()
-                        ->withNamed()
-                        ->withGroups()
+                        ->withRegex($build->routerCache()->getRegex())
+                        // ->withIndex($build->routerCache()->getIndex())
+                        // ->withNamed($build->routerCache()->getNamed())
+                        // ->withGroups($build->routerCache()->getGroups())
                 );
         }
         if ($parameters->hasApi()) {
@@ -73,11 +67,11 @@ final class ServicesBuilder implements ServicesBuilderInterface
         return $this->services;
     }
 
-    private function prepareServices(): void
+    private function prepareServices(BuildInterface $build): void
     {
         if (!$this->services->hasRouter()) {
             $this->services = $this->services
-                ->withRouter(new Router());
+                ->withRouter((new RouterMaker($build->routerCache()))->router());
         }
         if (!$this->services->hasApi()) {
             $this->services = $this->services

@@ -119,7 +119,7 @@ final class Exception implements ExceptionInterface
                 $accepted = array_keys($array);
                 throw new LogicException(
                     (new Message('Unknown severity value of %severity%, accepted values are: %accepted%'))
-                        ->code('%severity%', $this->severity)
+                        ->code('%severity%', (string) $this->severity)
                         ->code('%accepted%', implode(', ', $accepted))
                         ->toString()
                 );

@@ -15,6 +15,10 @@ namespace Chevere\Components\App\Tests;
 
 use Chevere\Components\Api\Api;
 use Chevere\Components\App\Services;
+use Chevere\Components\Cache\Cache;
+use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Router\RouteCache;
 use Chevere\Components\Router\Router;
 use PHPUnit\Framework\TestCase;
 
@@ -31,17 +35,17 @@ final class ServicesTest extends TestCase
         $api = new Api();
         $services = (new Services())
           ->withApi($api);
-        
+
         $this->assertTrue($services->hasApi());
         $this->assertSame($api, $services->api());
     }
 
     public function testWithRouter(): void
     {
-        $router = new Router();
+        $router = new Router(new RouteCache(new Cache(new Dir(new Path(__DIR__)))));
         $services = (new Services())
           ->withRouter($router);
-        
+
         $this->assertTrue($services->hasRouter());
         $this->assertSame($router, $services->router());
     }

@@ -41,7 +41,7 @@ final class Number implements NumberInterface
             throw new InvalidArgumentException(
                 (new Message('Method %methodName% accepts only positive intergers and zero (0), integer %numberProvided% provided'))
                     ->code('%methodName%', __METHOD__)
-                    ->code('%numberProvided%', $precision)
+                    ->code('%numberProvided%', (string) $precision)
                     ->toString()
             );
         }

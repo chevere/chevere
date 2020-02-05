@@ -30,9 +30,13 @@ use Chevere\Components\Filesystem\AppPath;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Router\Router;
 use Chevere\Components\App\Interfaces\BuildInterface;
+use Chevere\Components\Cache\Cache;
+use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Route\PathUri;
-use Chevere\Components\Router\RouterProperties;
+use Chevere\Components\Router\RouteCache;
+use Chevere\Components\Router\RouterCache;
 use PHPUnit\Framework\TestCase;
 
 final class RunnerTest extends TestCase
@@ -51,8 +55,7 @@ final class RunnerTest extends TestCase
         );
 
         return $build
-            ->withParameters($parameters)
-            ->withRouterMaker(new RouterMaker(new RouterProperties()));
+            ->withParameters($parameters);
     }
 
     private function getDummyBuild(): BuildInterface
@@ -92,7 +95,8 @@ final class RunnerTest extends TestCase
 
     public function testWithRunWithRouterUnableToResolve(): void
     {
-        $router = new Router();
+        $routeCache = new RouteCache(new Cache(new Dir(new Path(__DIR__))));
+        $router = new Router($routeCache);
         $services = (new Services())
             ->withRouter($router);
         $response = new Response();
