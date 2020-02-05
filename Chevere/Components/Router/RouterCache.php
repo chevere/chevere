@@ -18,13 +18,13 @@ use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Cache\Interfaces\CacheItemInterface;
 use Chevere\Components\Cache\Interfaces\CacheKeyInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Regex\Interfaces\RegexInterface;
 use Chevere\Components\Router\Exceptions\RouterCacheNotFoundException;
-use Chevere\Components\Router\Exceptions\RouterCacheTypeException;
 use Chevere\Components\Router\Interfaces\RouterCacheInterface;
+use Chevere\Components\Router\Interfaces\RouterGroupsInterface;
+use Chevere\Components\Router\Interfaces\RouterIndexInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
-use Chevere\Components\Type\Interfaces\TypeInterface;
-use Chevere\Components\Type\Type;
+use Chevere\Components\Router\Interfaces\RouterNamedInterface;
+use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 use Chevere\Components\Variable\VariableExport;
 use Throwable;
 
@@ -72,44 +72,32 @@ final class RouterCache implements RouterCacheInterface
         return $this->cache->exists($this->keyGroups);
     }
 
-    public function getRegex(): RegexInterface
+    public function getRegex(): RouterRegexInterface
     {
         $item = $this->assertGetItem($this->keyRegex);
-        if ((new Type(RegexInterface::class))->validate($item->var()) === false) {
-            throw new RouterCacheTypeException(
-                (new Message('Expecting object implementing %expected%, %provided% provided for %key%'))
-                    ->code('%expected%', RegexInterface::class)
-                    ->code('%provided%', gettype($item->raw()))
-                    ->strong('%key%', $this->keyRegex->toString())
-                    ->toString()
-            );
-        }
 
         return $item->var();
     }
 
-    public function getIndex(): array
+    public function getIndex(): RouterIndexInterface
     {
         $item = $this->assertGetItem($this->keyIndex);
-        $this->assertItemIsArray($item);
 
-        return $item->raw();
+        return $item->var();
     }
 
-    public function getNamed(): array
+    public function getNamed(): RouterNamedInterface
     {
         $item = $this->assertGetItem($this->keyNamed);
-        $this->assertItemIsArray($item);
 
-        return $item->raw();
+        return $item->var();
     }
 
-    public function getGroups(): array
+    public function getGroups(): RouterGroupsInterface
     {
         $item = $this->assertGetItem($this->keyGroups);
-        $this->assertItemIsArray($item);
 
-        return $item->raw();
+        return $item->var();
     }
 
     public function put(RouterInterface $router): RouterCacheInterface
@@ -127,6 +115,17 @@ final class RouterCache implements RouterCacheInterface
         return $this;
     }
 
+    public function remove(): RouterCacheInterface
+    {
+        $this->cache = $this->cache
+            ->withRemove($this->keyRegex)
+            ->withRemove($this->keyIndex)
+            ->withRemove($this->keyNamed)
+            ->withRemove($this->keyGroups);
+
+        return $this;
+    }
+
     public function puts(): array
     {
         return $this->cache->puts();
@@ -135,23 +134,11 @@ final class RouterCache implements RouterCacheInterface
     private function assertGetItem(CacheKeyInterface $cacheKey): CacheItemInterface
     {
         try {
-            return $this->cache->get($this->keyRegex);
+            return $this->cache->get($cacheKey);
         } catch (Throwable $e) {
             throw new RouterCacheNotFoundException(
                 (new Message('Cache not found for router %key%'))
                     ->strong('%key%', $cacheKey->toString())
-                    ->toString()
-            );
-        }
-    }
-
-    private function assertItemIsArray(CacheItemInterface $item): void
-    {
-        if ((new Type(TypeInterface::ARRAY))->validate($item->raw()) === false) {
-            throw new RouterCacheTypeException(
-                (new Message('Expecting type %expected%, type %provided% provided'))
-                    ->code('%expected%', 'array')
-                    ->code('%provided%', gettype($item->raw()))
                     ->toString()
             );
         }

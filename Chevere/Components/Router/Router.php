@@ -16,24 +16,24 @@ namespace Chevere\Components\Router;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
-use Chevere\Components\Serialize\Unserialize;
-use Chevere\Components\Route\Interfaces\RouteInterface;
+use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
+use Chevere\Components\Router\Interfaces\RouteCacheInterface;
 use Chevere\Components\Router\Interfaces\RoutedInterface;
 use Chevere\Components\Router\Interfaces\RouterGroupsInterface;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Interfaces\RouterNamedInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
-use LogicException;
 use Psr\Http\Message\UriInterface;
 use Throwable;
-use TypeError;
 
 /**
  * The Chevere Router
  */
 final class Router implements RouterInterface
 {
+    private RouteCacheInterface $cache;
+
     private RouterRegexInterface $regex;
 
     private RouterIndexInterface $index;
@@ -41,6 +41,11 @@ final class Router implements RouterInterface
     private RouterNamedInterface $named;
 
     private RouterGroupsInterface $groups;
+
+    public function __construct(RouteCacheInterface $cache)
+    {
+        $this->cache = $cache;
+    }
 
     public function withRegex(RouterRegexInterface $regex): RouterInterface
     {
@@ -119,18 +124,14 @@ final class Router implements RouterInterface
         return isset($this->regex);
     }
 
+    /**
+     * @throws RouterException
+     * @throws RouteNotFoundException
+     */
     public function resolve(UriInterface $uri): RoutedInterface
     {
         try {
-            if (preg_match($this->properties->regex(), $uri->getPath(), $matches)) {
-                if (!isset($matches['MARK'])) {
-                    throw new LogicException(
-                        (new Message('Invalid regex pattern, missing %mark% member'))
-                            ->code('%mark%', 'MARK')
-                            ->toString()
-                    );
-                }
-
+            if (preg_match($this->regex->regex()->toString(), $uri->getPath(), $matches)) {
                 return $this->resolver($matches);
             }
         } catch (Throwable $e) {
@@ -144,32 +145,14 @@ final class Router implements RouterInterface
     }
 
     /**
-     * @throws UnserializeException if the route string object can't be unserialized
-     * @throws TypeError            if the found route doesn't implement the RouteInterface
+     * @throws RouteCacheNotFoundException
      */
     private function resolver(array $matches): RoutedInterface
     {
-        $id = $matches['MARK'];
+        $id = (int) $matches['MARK'];
         unset($matches['MARK']);
         array_shift($matches);
-        // $route = $this->properties->routes()[$id];
-        // is string when the route is serialized (cached)
-        if (is_string($route)) {
-            $unserialize = new Unserialize($route);
-            $route = $unserialize->var();
-            if (!($route instanceof RouteInterface)) {
-                throw new TypeError(
-                    (new Message("Serialized variable doesn't implements %contract%, type %provided% provided"))
-                        ->code('%contract%', RouteInterface::class)
-                        ->code('%provided%', $unserialize->type()->typeHinting())
-                        ->toString()
-                );
-            }
-            // $routes = $this->properties->routes();
-            // $routes[$id] = $route;
-            // $this->properties = $this->properties
-            //     ->withRoutes($routes);
-        }
+        $route = $this->cache->get($id);
         $wildcards = [];
         if ($route->hasWildcardCollection()) {
             foreach ($matches as $pos => $val) {

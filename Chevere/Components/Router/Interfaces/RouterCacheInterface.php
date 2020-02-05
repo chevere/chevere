@@ -33,15 +33,17 @@ interface RouterCacheInterface
 
     public function hasGroups(): bool;
 
-    public function getRegex(): RegexInterface;
+    public function getRegex(): RouterRegexInterface;
 
-    public function getIndex(): array;
+    public function getIndex(): RouterIndexInterface;
 
-    public function getNamed(): array;
+    public function getNamed(): RouterNamedInterface;
 
-    public function getGroups(): array;
+    public function getGroups(): RouterGroupsInterface;
 
     public function put(RouterInterface $router): RouterCacheInterface;
+
+    public function remove(): RouterCacheInterface;
 
     public function puts(): array;
 }

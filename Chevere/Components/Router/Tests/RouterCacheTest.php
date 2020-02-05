@@ -13,9 +13,20 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
+use Chevere\Components\Regex\Regex;
 use Chevere\Components\Router\Exceptions\RouterCacheNotFoundException;
+use Chevere\Components\Router\Interfaces\RouterCacheInterface;
+use Chevere\Components\Router\Interfaces\RouterGroupsInterface;
+use Chevere\Components\Router\Interfaces\RouterIndexInterface;
+use Chevere\Components\Router\Interfaces\RouterNamedInterface;
+use Chevere\Components\Router\Interfaces\RouterRegexInterface;
+use Chevere\Components\Router\RouteCache;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;
+use Chevere\Components\Router\RouterGroups;
+use Chevere\Components\Router\RouterIndex;
+use Chevere\Components\Router\RouterNamed;
+use Chevere\Components\Router\RouterRegex;
 use PHPUnit\Framework\TestCase;
 
 final class RouterCacheTest extends TestCase
@@ -65,17 +76,47 @@ final class RouterCacheTest extends TestCase
         $routerCache->getGroups();
     }
 
-    // public function testWorkingCache(): void
-    // {
-    //     // $router = new Router();
-    //     // // $router = $router->withRegex();
+    public function testWorkingCache(): void
+    {
+        $router = new Router(
+            new RouteCache(
+                $this->helper->getWorkingCache()
+            )
+        );
 
-    //     // $routeableCache = new RouteCache($this->helper->getWorkingCache());
-    //     // $id = rand();
-    //     // $routeableCache->put($router);
-    //     // $this->assertTrue($routeableCache->has($id));
-    //     // $this->assertArrayHasKey($id, $routeableCache->puts());
-    //     // $routeableCache->remove();
-    //     // $this->assertArrayNotHasKey($id, $routeableCache->puts());
-    // }
+        $regex = new RouterRegex(
+            new Regex('#^(?|/found/([A-z0-9\\_\\-\\%]+) (*:0)|/ (*:1)|/hello-world (*:2))$#x')
+        );
+        $keys = [
+            RouterCacheInterface::KEY_REGEX,
+            RouterCacheInterface::KEY_INDEX,
+            RouterCacheInterface::KEY_NAMED,
+            RouterCacheInterface::KEY_GROUPS
+        ];
+        $index = (new RouterIndex)->withAdded('/test', 0, '', '');
+        $named = (new RouterNamed)->withAdded('test_name', 1);
+        $groups = (new RouterGroups)->withAdded('test_group', 2);
+        $router = $router
+            ->withRegex($regex)
+            ->withIndex($index)
+            ->withNamed($named)
+            ->withGroups($groups);
+        $routerCache = new RouterCache($this->helper->getWorkingCache());
+        $routerCache->put($router);
+        $this->assertTrue($routerCache->hasRegex());
+        $this->assertTrue($routerCache->hasIndex());
+        $this->assertTrue($routerCache->hasNamed());
+        $this->assertTrue($routerCache->hasGroups());
+        $this->assertInstanceOf(RouterRegexInterface::class, $routerCache->getRegex());
+        $this->assertInstanceOf(RouterIndexInterface::class, $routerCache->getIndex());
+        $this->assertInstanceOf(RouterNamedInterface::class, $routerCache->getNamed());
+        $this->assertInstanceOf(RouterGroupsInterface::class, $routerCache->getGroups());
+        foreach ($keys as $key) {
+            $this->assertArrayHasKey($key, $routerCache->puts());
+        }
+        $routerCache->remove();
+        foreach ($keys as $key) {
+            $this->assertArrayNotHasKey($key, $routerCache->puts());
+        }
+    }
 }

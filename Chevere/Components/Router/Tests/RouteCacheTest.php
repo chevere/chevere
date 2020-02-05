@@ -13,16 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
-use Chevere\Components\Cache\Cache;
-use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Controller\ControllerName;
-use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
-use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
+use Chevere\Components\Route\RouteName;
+use Chevere\Components\Route\Wildcard;
 use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
 use Chevere\Components\Router\Exceptions\RouteCacheTypeException;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
@@ -81,11 +78,14 @@ final class RouteCacheTest extends TestCase
 
     private function getRouteable(): RouteableInterface
     {
-        $route = new Route(new PathUri('/test'));
-        $route = $route->withAddedMethod(
-            new Method('GET'),
-            new ControllerName(TestController::class)
-        );
+        $route = new Route(new PathUri('/test/{var}'));
+        $route = $route
+            ->withAddedMethod(
+                new Method('GET'),
+                new ControllerName(TestController::class)
+            )
+            ->withName(new RouteName('TestName'))
+            ->withAddedWildcard(new Wildcard('var'));
 
         return new Routeable($route);
     }

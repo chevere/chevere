@@ -14,7 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Router\Tests;
 
 use Chevere\Components\Regex\Regex;
+use Chevere\Components\Route\PathUri;
+use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
+use Chevere\Components\Router\Interfaces\RouteCacheInterface;
+use Chevere\Components\Router\Interfaces\RoutedInterface;
+use Chevere\Components\Router\RouteCache;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterGroups;
 use Chevere\Components\Router\RouterIndex;
@@ -25,9 +30,16 @@ use PHPUnit\Framework\TestCase;
 
 final class RouterTest extends TestCase
 {
+    private CacheHelper $helper;
+
+    public function setUp(): void
+    {
+        $this->helper = new CacheHelper(__DIR__);
+    }
+
     public function testConstructor(): void
     {
-        $router = new Router();
+        $router = new Router($this->getEmptyRouteCache());
         $this->assertFalse($router->hasRegex());
         $this->assertFalse($router->hasIndex());
         $this->assertFalse($router->hasNamed());
@@ -37,26 +49,41 @@ final class RouterTest extends TestCase
 
     public function testUnableToResolveException(): void
     {
-        $router = new Router();
+        $router = new Router($this->getEmptyRouteCache());
         $this->expectException(RouterException::class);
         $router->resolve(new Uri('/'));
     }
 
-    public function testRegex(): void
+    public function testRegexNotFound(): void
     {
         $regex = new RouterRegex(
-            new Regex('#^(?|/home/([A-z0-9\\_\\-\\%]+) (*:0)|/ (*:1)|/hello-world (*:2))$#x')
+            new Regex('#^(?|/test (*:0))$#x')
         );
-        $router = (new Router())->withRegex($regex);
+        $router = (new Router($this->getEmptyRouteCache()))->withRegex($regex);
         $this->assertTrue($router->hasRegex());
         $this->assertSame($regex, $router->regex());
         $this->assertTrue($router->canResolve());
+        $this->expectException(RouteNotFoundException::class);
+        $router->resolve(new Uri('/not-found'));
+    }
+
+    public function testRegexFound(): void
+    {
+        $regex = new RouterRegex(
+            new Regex('#^(?|/found/([A-z0-9\\_\\-\\%]+) (*:0)|/ (*:1)|/hello-world (*:2))$#x')
+        );
+        $router = (new Router($this->getCachedRouteCache()))->withRegex($regex);
+        $this->assertTrue($router->hasRegex());
+        $this->assertSame($regex, $router->regex());
+        $this->assertTrue($router->canResolve());
+        $routed = $router->resolve(new Uri('/found/yay'));
+        $this->assertInstanceOf(RoutedInterface::class, $routed);
     }
 
     public function testIndex(): void
     {
         $index = (new RouterIndex)->withAdded('/test', 0, '', '');
-        $router = (new Router)->withIndex($index);
+        $router = (new Router($this->getEmptyRouteCache()))->withIndex($index);
         $this->assertTrue($router->hasIndex());
         $this->assertSame($index, $router->index());
     }
@@ -64,7 +91,7 @@ final class RouterTest extends TestCase
     public function testNamed(): void
     {
         $named = (new RouterNamed)->withAdded('test_name', 1);
-        $router = (new Router)->withNamed($named);
+        $router = (new Router($this->getEmptyRouteCache()))->withNamed($named);
         $this->assertTrue($router->hasNamed());
         $this->assertSame($named, $router->named());
     }
@@ -72,8 +99,18 @@ final class RouterTest extends TestCase
     public function testGroups(): void
     {
         $groups = (new RouterGroups)->withAdded('test_group', 2);
-        $router = (new Router)->withGroups($groups);
+        $router = (new Router($this->getEmptyRouteCache()))->withGroups($groups);
         $this->assertTrue($router->hasGroups());
         $this->assertSame($groups, $router->groups());
+    }
+
+    private function getEmptyRouteCache(): RouteCacheInterface
+    {
+        return new RouteCache($this->helper->getEmptyCache());
+    }
+
+    private function getCachedRouteCache(): RouteCacheInterface
+    {
+        return new RouteCache($this->helper->getCachedCache());
     }
 }
