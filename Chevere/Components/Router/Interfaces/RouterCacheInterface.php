@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Interfaces;
 
-use Chevere\Components\Regex\Interfaces\RegexInterface;
-
 interface RouterCacheInterface
 {
     const KEY_REGEX = 'regex';
@@ -24,6 +22,8 @@ interface RouterCacheInterface
     const KEY_NAMED = 'named';
 
     const KEY_GROUPS = 'groups';
+
+    public function routeCache(): RouteCacheInterface;
 
     public function hasRegex(): bool;
 

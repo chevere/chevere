@@ -68,4 +68,6 @@ interface CacheInterface
      * @return array [key => [checksum => , path =>]]
      */
     public function puts(): array;
+
+    public function getChild(string $path): CacheInterface;
 }

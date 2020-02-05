@@ -19,7 +19,7 @@ final class RouterIndex implements RouterIndexInterface
 {
     private array $array = [];
 
-    public function withAdded(string $path, int $id, string $group, string $name): RouterIndexInterface
+    public function withAdded(string $key, int $id, string $group, string $name): RouterIndexInterface
     {
         $new = clone $this;
         $array = [
@@ -27,13 +27,18 @@ final class RouterIndex implements RouterIndexInterface
             'group' => $group,
             'name' => $name,
         ];
-        if (array_key_exists($path, $this->array)) {
-            $new->array[$path] = [$array];
+        if (array_key_exists($key, $this->array)) {
+            $new->array[$key] = [$array];
         } else {
-            $new->array[$path][] = $array;
+            $new->array[$key][] = $array;
         }
 
         return $new;
+    }
+
+    public function has(string $path): bool
+    {
+        return array_key_exists($path, $this->array);
     }
 
     public function toArray(): array

@@ -45,12 +45,12 @@ final class ResolverTest extends TestCase
                 new ControllerName(TestController::class)
             );
 
-        $routerMaker = (new RouterMaker(new RouterProperties()))
+        $routerMaker = (new RouterMaker())
             ->withAddedRouteable(
                 new Routeable($route),
                 'test'
             );
-        $properties = $routerMaker->properties();
+        // $properties = $routerMaker->properties();
         $router = (new Router())
             ->withProperties($properties)
             ->withRegex()

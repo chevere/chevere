@@ -21,11 +21,6 @@ use Chevere\Components\Router\Exceptions\RouterMakerException;
 interface RouterMakerInterface
 {
     /**
-     * Provides access to the RouterPropertiesInterface instance.
-     */
-    public function properties(): RouterPropertiesInterface;
-
-    /**
      * Return an instance with the specified added RouteableInterface.
      *
      * This method MUST retain the state of the current instance, and return
@@ -37,4 +32,9 @@ interface RouterMakerInterface
      * @throws RouteNameConflictException if $routeable name conflicts with other RouteableInterface
      */
     public function withAddedRouteable(RouteableInterface $routeable, string $group): RouterMakerInterface;
+
+    /**
+     * Provides access to the generated RouterInterface instance.
+     */
+    public function router(): RouterInterface;
 }

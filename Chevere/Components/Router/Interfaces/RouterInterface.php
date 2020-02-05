@@ -62,7 +62,7 @@ interface RouterInterface
      */
     public function withNamed(RouterNamedInterface $name): RouterInterface;
 
-    public function hasnamed(): bool;
+    public function hasNamed(): bool;
 
     /**
      * Provides access to the instance index.

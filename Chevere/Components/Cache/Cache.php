@@ -124,6 +124,12 @@ final class Cache implements CacheInterface
         return $this->puts;
     }
 
+    public function getChild(string $path): CacheInterface
+    {
+
+        return new self($this->dir->getChild($path));
+    }
+
     private function getPath(string $name): PathInterface
     {
         return $this->dir->path()
