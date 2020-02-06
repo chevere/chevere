@@ -75,16 +75,24 @@ final class RouterMaker implements RouterMakerInterface
         $path = $routeable->route()->pathUri()->toString();
         $key = $routeable->route()->pathUri()->key();
         $regex = $routeable->route()->regex();
-        if ($routeable->route()->hasName()) {
-            $new->assertUniqueName($routeable->route());
-            $name = $routeable->route()->name()->toString();
-            $new->named[$name] = $new->id;
-        }
         $new->regexes[$new->id] = $regex;
         $new->paths[$path] = $new->id;
         $new->keys[$key] = $new->id;
         $new->router = $new->router
             ->withRegex($new->getRouterRegex())
+            ->withGroups(
+                $new->router()->groups()->withAdded($group, $new->id)
+            );
+        if ($routeable->route()->hasName()) {
+            $new->assertUniqueName($routeable->route());
+            $name = $routeable->route()->name()->toString();
+            $new->named[$name] = $new->id;
+            $new->router = $new->router
+                ->withNamed(
+                    $new->router()->named()->withAdded($name, $new->id)
+                );
+        }
+        $new->router = $new->router
             ->withIndex(
                 $new->router()->index()->withAdded(
                     $routeable->route()->pathUri(),
@@ -92,12 +100,6 @@ final class RouterMaker implements RouterMakerInterface
                     $group,
                     $name
                 )
-            )
-            ->withGroups(
-                $new->router()->groups()->withAdded($group, $new->id)
-            )
-            ->withNamed(
-                $new->router()->named()->withAdded($name, $new->id)
             );
         $new->routeCache->put($new->id, $routeable);
         $new->routes[$new->id] = $routeable->route();
@@ -169,17 +171,16 @@ final class RouterMaker implements RouterMakerInterface
             return;
         }
         $knownId = $this->named[$route->name()->toString()] ?? null;
-        if ($knownId === null) {
-            return;
+        if ($knownId !== null) {
+            throw new RouteNameConflictException(
+                (new Message('Unable to assign route name %name% for path %path% at %declare% (name assigned to %namedRoutePath% at %register%)'))
+                    ->code('%name%', $route->name()->toString())
+                    ->code('%path%', $route->pathUri()->toString())
+                    ->code('%declare%', $route->maker()['fileLine'])
+                    ->code('%namedRoutePath%', $this->routes[$knownId]->pathUri()->toString())
+                    ->code('%register%', $this->routes[$knownId]->maker()['fileLine'])
+                    ->toString()
+            );
         }
-        throw new RouteNameConflictException(
-            (new Message('Unable to assign route name %name% for path %path% at %declare% (name assigned to %namedRoutePath% at %register%)'))
-                ->code('%name%', $route->name()->toString())
-                ->code('%path%', $route->pathUri()->toString())
-                ->code('%declare%', $route->maker()['fileLine'])
-                ->code('%namedRoutePath%', $this->routes[$knownId]->pathUri()->toString())
-                ->code('%register%', $this->routes[$knownId]->maker()['fileLine'])
-                ->toString()
-        );
     }
 }

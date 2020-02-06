@@ -37,8 +37,9 @@ final class RouterRegex implements RouterRegexInterface
     {
         if (!preg_match(self::MATCHER, $this->regex->toString())) {
             throw new InvalidArgumentException(
-                (new Message('Invalid regex pattern: %regex%'))
+                (new Message('Invalid regex pattern %regex% (validated against %matcher%)'))
                     ->code('%regex%', $this->regex->toString())
+                    ->code('%matcher%', self::MATCHER)
                     ->toString()
             );
         }

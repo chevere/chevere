@@ -24,28 +24,43 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router\Properties;
 
-use Chevere\Components\Router\Properties\NamedProperty;
+use BadMethodCallException;
+use Chevere\Components\Router\RouterNamed;
 use PHPUnit\Framework\TestCase;
 
 final class RouterNamedTest extends TestCase
 {
-    public function testEmpty(): void
+    public function testConstruct(): void
     {
+        $routerNamed = new RouterNamed();
+        $this->assertSame([], $routerNamed->toArray());
+        $this->assertFalse($routerNamed->has('some-name'));
+    }
+
+    public function testGetEmpty(): void
+    {
+        $name = 'some-name';
+        $routerNamed = new RouterNamed();
+        $this->expectException(BadMethodCallException::class);
+        $routerNamed->get($name);
+    }
+
+    public function testGetForIdEmpty(): void
+    {
+        $id = 0;
+        $routerNamed = new RouterNamed();
+        $this->expectException(BadMethodCallException::class);
+        $routerNamed->getForId($id);
     }
 
     public function testWithAdded(): void
     {
-    }
-
-
-    public function testConstructor(): void
-    {
-        $array = [
-            'test-0' => 0,
-            'test-1' => 1,
-            'test-2' => 2,
-        ];
-        $property = new NamedProperty($array);
-        $this->assertSame($array, $property->toArray());
+        $name = 'some-name';
+        $id = 101;
+        $routerNamed = (new RouterNamed())
+                ->withAdded($name, $id);
+        $this->assertTrue($routerNamed->has($name));
+        $this->assertSame($id, $routerNamed->get($name));
+        $this->assertSame($name, $routerNamed->getForId($id));
     }
 }

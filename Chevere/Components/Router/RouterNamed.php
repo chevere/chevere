@@ -36,8 +36,9 @@ final class RouterNamed implements RouterNamedInterface
         return isset($this->array[$name]);
     }
 
-    public function get(string $name): array
+    public function get(string $name): int
     {
+        (new AssertString($name))->notEmpty()->notCtypeSpace();
         $get = $this->array[$name] ?? null;
         if ($get === null) {
             throw new BadMethodCallException(
@@ -54,7 +55,11 @@ final class RouterNamed implements RouterNamedInterface
     {
         $search = array_search($id, $this->array);
         if ($search === false) {
-            return '';
+            throw new BadMethodCallException(
+                (new Message("Id %id% doesn't exists"))
+                    ->code('%id%', (string) $id)
+                    ->toString()
+            );
         }
 
         return $search;

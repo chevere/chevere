@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
+use BadMethodCallException;
+use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\PathUriInterface;
-use Chevere\Components\Route\Interfaces\RouteNameInterface;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
 
@@ -36,12 +37,21 @@ final class RouterIndex implements RouterIndexInterface
 
     public function has(PathUri $pathUri): bool
     {
-        return array_key_exists($pathUri->key(), $this->array);
+        return isset($this->array[$pathUri->key()]);
     }
 
     public function get(PathUri $pathUri): array
     {
-        return $this->array[$pathUri->key()];
+        $get = $this->array[$pathUri->key()] ?? null;
+        if ($get === null) {
+            throw new BadMethodCallException(
+                (new Message("PathUri key %key% doesn't exists"))
+                    ->code('%key%', $pathUri->key())
+                    ->toString()
+            );
+        }
+
+        return $get;
     }
 
     public function toArray(): array

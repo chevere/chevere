@@ -19,7 +19,6 @@ use PHPUnit\Framework\TestCase;
 
 final class RouterGroupsTest extends TestCase
 {
-
     public function testEmpty(): void
     {
         $group = 'some-group';

@@ -17,5 +17,11 @@ interface RouterNamedInterface
 {
     public function withAdded(string $name, int $id): RouterNamedInterface;
 
+    public function has(string $name): bool;
+
+    public function get(string $name): int;
+
+    public function getForId(int $id): string;
+
     public function toArray(): array;
 }

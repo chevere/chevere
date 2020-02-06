@@ -32,7 +32,6 @@ use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
-use Throwable;
 
 final class RouterMakerTest extends TestCase
 {
@@ -65,10 +64,12 @@ final class RouterMakerTest extends TestCase
 
     public function testWithAddedRouteable(): void
     {
-        $routeable = $this->getRouteable('/path', 'PathName');
-        $pathUri = $routeable->route()->pathUri();
+        $routeable1 = $this->getRouteable('/path-1', 'PathName-1');
+        $routeable2 = $this->getRouteable('/path-2', 'PathName-2');
+        $pathUri = $routeable1->route()->pathUri();
         $routerMaker = (new RouterMaker($this->routerCache))
-            ->withAddedRouteable($routeable, 'group');
+            ->withAddedRouteable($routeable1, 'group')
+            ->withAddedRouteable($routeable2, 'group');
         $this->assertTrue($routerMaker->router()->index()->has($pathUri));
     }
 
