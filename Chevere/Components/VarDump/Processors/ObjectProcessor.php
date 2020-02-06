@@ -110,7 +110,6 @@ final class ObjectProcessor extends AbstractProcessor
         if (is_scalar($var)) {
             $deep -= 1;
         }
-        // $deep = is_object($var) || is_iterable($var) ? $this->depth : $this->depth - 1;
         $varFormat = (new VarFormat(new VarDumpeable($var), $this->varFormat->formatter()))
             ->withDepth($deep)
             ->withIndent($this->varFormat->indent() + 1)

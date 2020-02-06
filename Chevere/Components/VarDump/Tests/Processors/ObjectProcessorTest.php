@@ -99,6 +99,10 @@ final class DummyClass
     {
         $new = clone $this;
         $new->public = new stdClass;
+        $new->public->string = 'string';
+        $new->public->array = [];
+        $new->public->int = 1;
+        $new->public->bool = true;
 
         return $new;
     }

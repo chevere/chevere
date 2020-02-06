@@ -90,6 +90,9 @@ final class Bootstrap implements BootstrapInterface
         return $this->isCli;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function withConsole(ConsoleInterface $console): BootstrapInterface
     {
         $new = clone $this;
@@ -103,6 +106,9 @@ final class Bootstrap implements BootstrapInterface
         return isset($this->console);
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function console(): ConsoleInterface
     {
         return $this->console;
