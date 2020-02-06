@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
+use BadMethodCallException;
+use Chevere\Components\Assert\AssertString;
+use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Interfaces\RouterNamedInterface;
 
 final class RouterNamed implements RouterNamedInterface
@@ -21,13 +24,40 @@ final class RouterNamed implements RouterNamedInterface
 
     public function withAdded(string $name, int $id): RouterNamedInterface
     {
+        (new AssertString($name))->notEmpty()->notCtypeSpace();
         $new = clone $this;
-        if ($name === '' || ctype_space($name)) {
-            return $new;
-        }
         $new->array[$name] = $id;
 
         return $new;
+    }
+
+    public function has(string $name): bool
+    {
+        return isset($this->array[$name]);
+    }
+
+    public function get(string $name): array
+    {
+        $get = $this->array[$name] ?? null;
+        if ($get === null) {
+            throw new BadMethodCallException(
+                (new Message("Name %name% doesn't exists"))
+                    ->code('%name%', $name)
+                    ->toString()
+            );
+        }
+
+        return $this->array[$name];
+    }
+
+    public function getForId(int $id): string
+    {
+        $search = array_search($id, $this->array);
+        if ($search === false) {
+            return '';
+        }
+
+        return $search;
     }
 
     public function toArray(): array

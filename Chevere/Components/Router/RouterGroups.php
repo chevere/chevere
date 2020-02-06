@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use BadMethodCallException;
+use Chevere\Components\Assert\AssertString;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Interfaces\RouterGroupsInterface;
 
@@ -23,6 +24,7 @@ final class RouterGroups implements RouterGroupsInterface
 
     public function withAdded(string $group, int $id): RouterGroupsInterface
     {
+        (new AssertString($group))->notEmpty()->notCtypeSpace();
         $new = clone $this;
         if (!array_key_exists($group, $new->array)) {
             $new->array[$group] = [];
@@ -34,7 +36,7 @@ final class RouterGroups implements RouterGroupsInterface
 
     public function has(string $group): bool
     {
-        return array_key_exists($group, $this->array);
+        return isset($this->array[$group]);
     }
 
     public function get(string $group): array
@@ -47,6 +49,7 @@ final class RouterGroups implements RouterGroupsInterface
                     ->toString()
             );
         }
+
         return $this->array[$group];
     }
 
