@@ -18,7 +18,6 @@ use ReflectionMethod;
 use Chevere\Components\ExceptionHandler\Interfaces\TraceEntryInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
-use TypeError;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 
@@ -54,13 +53,9 @@ final class TraceEntry implements TraceEntryInterface
         $this->entry = $entry;
         $this->assertEntry();
         $this->processEntry();
-        if ('' == $this->file && '' != $this->class) {
-            $this->processMissingClassFile();
-        }
-        if (stringStartsWith(VarFormatInterface::_CLASS_ANON, $this->class)) {
-            $this->processAnonClass();
-        }
-        if ('' == $this->file) {
+        $this->handleAnonClass();
+        $this->handleMissingClassFile();
+        if ($this->file === '') {
             $this->fileLine = '';
             $this->line = 0;
         } else {
@@ -132,21 +127,25 @@ final class TraceEntry implements TraceEntryInterface
         }
     }
 
-    private function processMissingClassFile()
+    private function handleMissingClassFile()
     {
-        $reflector = new ReflectionMethod($this->class, $this->function);
-        $filename = $reflector->getFileName();
-        if (false !== $filename) {
-            $this->file = $filename;
-            $this->line = $reflector->getStartLine();
+        if ($this->file === '' && $this->class !== '') {
+            $reflector = new ReflectionMethod($this->class, $this->function);
+            $filename = $reflector->getFileName();
+            if (false !== $filename) {
+                $this->file = $filename;
+                $this->line = $reflector->getStartLine();
+            }
         }
     }
 
-    private function processAnonClass()
+    private function handleAnonClass()
     {
-        $entryFile = stringReplaceFirst(VarFormatInterface::_CLASS_ANON, '', $this->class);
-        $this->file = substr($entryFile, 0, 4 + strpos($entryFile, '.php'));
-        $this->class = VarFormatInterface::_CLASS_ANON;
-        $this->line = 0;
+        if (stringStartsWith(VarFormatInterface::_CLASS_ANON, $this->class)) {
+            preg_match('#^class@anonymous(.*):(\d+)#', $this->class, $matches);
+            $this->class = VarFormatInterface::_CLASS_ANON;
+            $this->file = $matches[1];
+            $this->line = (int) $matches[2];
+        }
     }
 }
