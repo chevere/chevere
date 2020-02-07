@@ -1,0 +1,1 @@
+<?php return 'O:34:"Chevere\\Components\\Filesystem\\Path":1:{s:44:"' . "\0" . 'Chevere\\Components\\Filesystem\\Path' . "\0" . 'absolute";s:81:"/home/rodolfo/git/chevere/components/Cache/Tests/_resources/return-serialized.php";}';

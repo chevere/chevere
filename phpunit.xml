@@ -12,15 +12,15 @@
          stopOnError="false">
     <testsuites>
         <testsuite name="Chevere Framework Test suite">
-            <directory suffix="Test.php">Chevere/Components/</directory>
+            <directory suffix="Test.php">components/</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
-            <directory suffix=".php">Chevere/Components/</directory>
+            <directory suffix=".php">components/</directory>
             <exclude>
-                <directory>Chevere/Components/*/Tests/</directory>
-                <directory>Chevere/Components/*/*/Tests/</directory>
+                <directory>components/*/Tests/</directory>
+                <directory>components/*/*/Tests/</directory>
                 <directory>Chevere/TestApp/</directory>
             </exclude>
         </whitelist>
