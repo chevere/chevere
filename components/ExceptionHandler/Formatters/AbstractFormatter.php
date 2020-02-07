@@ -16,7 +16,6 @@ namespace Chevere\Components\ExceptionHandler\Formatters;
 use Chevere\Components\ExceptionHandler\Interfaces\FormatterInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\TraceFormatterInterface;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface as VarDumpFormatterInterface;
-use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 abstract class AbstractFormatter implements FormatterInterface
 {
