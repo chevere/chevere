@@ -69,8 +69,8 @@ abstract class AbstractFormatter implements FormatterInterface
         return $value;
     }
 
-    public function wrapContent(string $value): string
-    {
-        return $value;
-    }
+    // public function wrapContent(string $value): string
+    // {
+    //     return $value;
+    // }
 }

@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Components\ExceptionHandler\Tests;
 
 use Chevere\Components\ExceptionHandler\Documents\ConsoleDocument;
+use Chevere\Components\ExceptionHandler\Documents\PlainDocument;
 use Chevere\Components\ExceptionHandler\Exception;
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
+use Chevere\Components\ExceptionHandler\Formatters\ConsoleFormatter;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,17 +26,13 @@ final class ConsoleDocumentTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $document =
-            (new ConsoleDocument(
-                new ExceptionHandler(
-                    new Exception(
-                        new LogicException('Ups', 100)
-                    )
-                )
-            ))
-            ->withVerbosity(OutputInterface::VERBOSITY_VERY_VERBOSE)
-            ->toString();
-
-        // echo $document . "\n";
+        $handler = new ExceptionHandler(new Exception(
+            new LogicException('Ups', 100)
+        ));
+        $document = new ConsoleDocument($handler);
+        $this->assertInstanceOf(ConsoleFormatter::class, $document->getFormatter());
+        $sectionTitle = $document->getSectionTitle();
+        $plainDocument = new PlainDocument($handler);
+        $this->assertTrue(strlen($sectionTitle) > $plainDocument->getSectionTitle());
     }
 }

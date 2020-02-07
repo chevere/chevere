@@ -44,5 +44,5 @@ interface FormatterInterface
 
     public function wrapTitle(string $value): string;
 
-    public function wrapContent(string $value): string;
+    // public function wrapContent(string $value): string;
 }

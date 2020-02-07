@@ -57,8 +57,8 @@ final class HtmlFormatter extends AbstractFormatter
         return '<div class="title title--scream">' . $value . '</div>';
     }
 
-    public function wrapContent(string $value): string
-    {
-        return '<div class="content">' . $value . '</div>';
-    }
+    // public function wrapContent(string $value): string
+    // {
+    //     return '<div class="content">' . $value . '</div>';
+    // }
 }
