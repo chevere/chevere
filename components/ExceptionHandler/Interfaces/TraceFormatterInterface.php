@@ -17,7 +17,7 @@ use Chevere\Components\Common\Interfaces\ToArrayInterface;
 use Chevere\Components\Common\Interfaces\ToStringInterface;
 use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
 
-interface TraceInterface extends ToArrayInterface, ToStringInterface
+interface TraceFormatterInterface extends ToArrayInterface, ToStringInterface
 {
     const TAG_ENTRY_FILE = '%file%';
     const TAG_ENTRY_LINE = '%line%';

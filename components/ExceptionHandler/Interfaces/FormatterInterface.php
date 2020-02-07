@@ -30,7 +30,7 @@ interface FormatterInterface
     /**
      * Get the template used for each trace entry.
      *
-     * @see TraceInterface for tag reference
+     * @see TraceFormatterInterface for tag reference
      */
     public function getTraceEntryTemplate(): string;
 

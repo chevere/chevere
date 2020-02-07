@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler;
 
-use Chevere\Components\App\App;
-use Chevere\Components\ExceptionHandler\Interfaces\TraceInterface;
+use Chevere\Components\ExceptionHandler\Interfaces\TraceFormatterInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\FormatterInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\TraceEntryInterface;
 use Chevere\Components\VarDump\VarDumpeable;
 use Chevere\Components\VarDump\VarFormat;
 
-final class Trace implements TraceInterface
+final class TraceFormatter implements TraceFormatterInterface
 {
     private array $trace;
 
@@ -98,7 +97,6 @@ final class Trace implements TraceInterface
             $string .= "\n";
             $aux = 'Arg#' . ($pos + 1) . ' ';
             $varDump = (new VarFormat(new VarDumpeable($var), $this->formatter->varDumpFormatter()))
-                ->withDontDump(App::class)
                 ->withProcess();
             $string .= $aux . $varDump->toString() . "\n";
         }

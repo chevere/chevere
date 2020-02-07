@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler\Formatters;
 
-use Chevere\Components\ExceptionHandler\Interfaces\TraceInterface;
+use Chevere\Components\ExceptionHandler\Interfaces\TraceFormatterInterface;
 use Chevere\Components\VarDump\Formatters\ConsoleFormatter as VarDumpFormatter;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface as VarDumpFormatterInterface;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
@@ -27,9 +27,9 @@ final class ConsoleFormatter extends AbstractFormatter
 
     public function getTraceEntryTemplate(): string
     {
-        return $this->wrapSectionTitle('#' . TraceInterface::TAG_ENTRY_POS) . ' ' . TraceInterface::TAG_ENTRY_FILE_LINE . "\n"
-            . TraceInterface::TAG_ENTRY_CLASS . TraceInterface::TAG_ENTRY_TYPE . TraceInterface::TAG_ENTRY_FUNCTION
-            . '()' . TraceInterface::TAG_ENTRY_ARGUMENTS;
+        return $this->wrapSectionTitle('#' . TraceFormatterInterface::TAG_ENTRY_POS) . ' ' . TraceFormatterInterface::TAG_ENTRY_FILE_LINE . "\n"
+            . TraceFormatterInterface::TAG_ENTRY_CLASS . TraceFormatterInterface::TAG_ENTRY_TYPE . TraceFormatterInterface::TAG_ENTRY_FUNCTION
+            . '()' . TraceFormatterInterface::TAG_ENTRY_ARGUMENTS;
     }
 
     public function getHr(): string

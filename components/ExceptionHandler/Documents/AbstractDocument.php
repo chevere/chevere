@@ -17,7 +17,7 @@ use DateTimeInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\DocumentInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\ExceptionHandlerInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\FormatterInterface;
-use Chevere\Components\ExceptionHandler\Trace;
+use Chevere\Components\ExceptionHandler\TraceFormatter;
 
 abstract class AbstractDocument implements DocumentInterface
 {
@@ -45,11 +45,6 @@ abstract class AbstractDocument implements DocumentInterface
         $this->exceptionHandler = $exceptionHandler;
         $this->formatter = $this->getFormatter();
         $this->template = $this->getTemplate();
-    }
-
-    final public function sections(): array
-    {
-        return $this->sections;
     }
 
     final public function withVerbosity(int $verbosity): DocumentInterface
@@ -90,12 +85,10 @@ abstract class AbstractDocument implements DocumentInterface
             $templated[] = $this->template[$sectionName] ?? null;
         }
 
-        return $this->prepare(
-            strtr(
-                implode($this->formatter->getLineBreak(), array_filter($templated)),
-                $this->tags
-            )
-        );
+        return $this->prepare(strtr(
+            implode($this->formatter->getLineBreak(), array_filter($templated)),
+            $this->tags
+        ));
     }
 
     public function getTemplate(): array
@@ -176,7 +169,7 @@ abstract class AbstractDocument implements DocumentInterface
 
     private function getStackTrace(): string
     {
-        return (new Trace(
+        return (new TraceFormatter(
             $this->exceptionHandler->exception()->trace(),
             $this->formatter
         ))->toString();

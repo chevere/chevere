@@ -68,8 +68,6 @@ interface DocumentInterface
 
     public function __construct(ExceptionHandlerInterface $exceptionHandler);
 
-    public function sections(): array;
-
     /**
      * Return an instance with the specified verbosity.
      *

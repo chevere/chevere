@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler\Tests;
 
+use BadMethodCallException;
 use Chevere\Components\ExceptionHandler\Exception;
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
 use Chevere\Components\ExceptionHandler\Interfaces\ExceptionHandlerInterface;
@@ -41,8 +42,10 @@ final class ExceptionHandlerTest extends TestCase
         $this->assertInstanceOf(Exception::class, $handler->exception());
         $this->assertIsString($handler->id());
         $this->assertSame('/dev/null', $handler->logDestination());
-        $this->assertFalse($handler->hasRequest());
         $this->assertFalse($handler->isDebug());
+        $this->assertFalse($handler->hasRequest());
+        $this->expectException(BadMethodCallException::class);
+        $handler->request();
     }
 
     public function testWithDebug(): void
@@ -51,14 +54,6 @@ final class ExceptionHandlerTest extends TestCase
             ->withIsDebug(true);
         $this->assertTrue($handler->isDebug());
     }
-
-    // public function testWithRuntime(): void
-    // {
-    //     $handler = $this->getExceptionHandler()
-    //         ->withRuntime(new Runtime());
-    //     $this->assertTrue($handler->hasRuntime());
-    //     $this->assertInstanceOf(RuntimeInterface::class, $handler->runtime());
-    // }
 
     public function testWithRequest(): void
     {
