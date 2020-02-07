@@ -13,6 +13,8 @@ cache:
   directories:
     - $HOME/.composer/cache
 
+before_install: phpenv config-add chevere.ini
+
 install:
   - composer install --prefer-dist --ignore-platform-reqs
 
