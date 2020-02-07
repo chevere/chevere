@@ -46,7 +46,7 @@ final class ArrayFile implements ArrayFileInterface
         $this->filePhp = $filePhp;
         $this->filePhp->file()->assertExists();
         $fileReturn = (new FileReturn($this->filePhp))
-            ->withNoStrict();
+            ->withStrict(false);
         try {
             $raw = $fileReturn->raw();
             $this->array = $fileReturn->raw();

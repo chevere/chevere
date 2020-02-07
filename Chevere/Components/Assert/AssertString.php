@@ -30,8 +30,8 @@ final class AssertString implements AssertStringnterface
     {
         if ($this->string === '') {
             throw new AssertStringException(
-                (new Message('Empty %algo% provided'))
-                    ->strong('%algo%', 'string')
+                (new Message('String %algo% provided'))
+                    ->strong('%algo%', 'empty')
                     ->toString()
             );
         }

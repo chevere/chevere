@@ -60,19 +60,28 @@ class Path implements PathInterface
         return is_file($this->absolute);
     }
 
+    /**
+     * @codeCoverageIgnore
+     * @throws PathDoesntExistsException
+     * @throws PathUnableToChmodException
+     */
     public function chmod(int $mode): void
     {
         $this->assertExists();
         if (chmod($this->absolute, $mode) === false) {
             throw new PathUnableToChmodException(
                 (new Message('Unable to chmod %mode% %path%'))
-                    ->strong('%mode%', $mode)
+                    ->strong('%mode%', (string) $mode)
                     ->code('%path%', $this->absolute)
                     ->toString()
             );
         }
     }
 
+    /**
+     * @codeCoverageIgnore
+     * @throws PathDoesntExistsException
+     */
     public function isWriteable(): bool
     {
         $this->assertExists();
@@ -80,6 +89,10 @@ class Path implements PathInterface
         return is_writable($this->absolute);
     }
 
+    /**
+     * @codeCoverageIgnore
+     * @throws PathDoesntExistsException
+     */
     public function isReadable(): bool
     {
         $this->assertExists();
@@ -97,7 +110,7 @@ class Path implements PathInterface
 
     private function assertExists(): void
     {
-        if (!$this->exists()) {
+        if ($this->exists() === false) {
             throw new PathDoesntExistsException(
                 (new Message("Path %path% doesn't exists"))
                     ->code('%path%', $this->absolute)

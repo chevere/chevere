@@ -24,4 +24,8 @@ interface FilePhpInterface
      * Provides access to the FileInterface instance.
      */
     public function file(): FileInterface;
+
+    public function canCompile(): bool;
+
+    public function compile(): void;
 }

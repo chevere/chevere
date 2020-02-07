@@ -15,6 +15,7 @@ namespace Chevere\Components\Filesystem\Path\Tests;
 
 use RuntimeException;
 use Chevere\Components\App\Instances\BootstrapInstance;
+use Chevere\Components\Filesystem\Exceptions\Path\PathDoesntExistsException;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
 use PHPUnit\Framework\TestCase;
@@ -86,5 +87,7 @@ final class PathTest extends TestCase
         }
         $this->assertFalse($path->exists());
         $this->assertFalse($path->isFile());
+        $this->expectException(PathDoesntExistsException::class);
+        $path->isReadable();
     }
 }

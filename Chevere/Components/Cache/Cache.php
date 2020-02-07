@@ -66,7 +66,7 @@ final class Cache implements CacheInterface
         $filePhp = new PhpFile($file);
         $fileReturn = new FileReturn($filePhp);
         $fileReturn->put($variableExport);
-        (new FileCompile($filePhp))->compile();
+        $filePhp->compile();
         $new = clone $this;
         $new->puts[$key->toString()] = [
             'path' => $fileReturn->filePhp()->file()->path()->absolute(),
@@ -83,14 +83,12 @@ final class Cache implements CacheInterface
         if (!$path->exists()) {
             return $new;
         }
-        $fileCompile =
-            new FileCompile(
-                new PhpFile(
-                    new File($path)
-                )
+        $filePhp =
+            new PhpFile(
+                new File($path)
             );
-        $fileCompile->destroy();
-        $fileCompile->filePhp()->file()->remove();
+        $filePhp->destroy();
+        $filePhp->file()->remove();
 
         unset($new->puts[$cacheKey->toString()]);
 
@@ -126,7 +124,6 @@ final class Cache implements CacheInterface
 
     public function getChild(string $path): CacheInterface
     {
-
         return new self($this->dir->getChild($path));
     }
 

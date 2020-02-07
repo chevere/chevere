@@ -25,6 +25,7 @@ use Chevere\Components\Filesystem\Exceptions\Path\PathIsDirException;
 use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
 use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
 use Chevere\Components\Filesystem\Path;
+use Exception;
 use Throwable;
 use function ChevereFn\stringEndsWith;
 
@@ -82,18 +83,29 @@ final class File implements FileInterface
         return hash_file(FileInterface::CHECKSUM_ALGO, $this->path->absolute());
     }
 
+    /**
+     * @codeCoverageIgnoreStart
+     * @throws FileNotFoundException
+     * @throws FileUnableToGetException
+     */
     public function contents(): string
     {
         $this->assertExists();
-        $contents = file_get_contents($this->path->absolute());
-        if (false === $contents) {
-            // @codeCoverageIgnoreStart
+        try {
+            $contents = file_get_contents($this->path->absolute());
+            if (false === $contents) {
+                throw new Exception(
+                    (new Message('Failure in function %functionName%'))
+                        ->code('%functionName%', 'file_get_contents')
+                        ->toString()
+                );
+            }
+        } catch (Throwable $e) {
             throw new FileUnableToGetException(
                 (new Message('Unable to read the contents of the file at %path%'))
                     ->code('%path%', $this->path->absolute())
                     ->toString()
             );
-            // @codeCoverageIgnoreEnd
         }
 
         return $contents;

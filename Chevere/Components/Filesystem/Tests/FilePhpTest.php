@@ -17,6 +17,7 @@ use Chevere\Components\Filesystem\Exceptions\File\FileNotPhpException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\PhpFile;
 use Chevere\Components\Filesystem\AppPath;
+use Chevere\Components\Filesystem\Exceptions\File\FileNotFoundException;
 use PHPUnit\Framework\TestCase;
 
 final class FilePhpTest extends TestCase
@@ -24,7 +25,7 @@ final class FilePhpTest extends TestCase
     public function testNotPhpFile(): void
     {
         $file = new File(
-            new AppPath('var/FileReturnTest_' . uniqid())
+            new AppPath('var/FilePhpTest_' . uniqid())
         );
         $this->expectException(FileNotPhpException::class);
         new PhpFile($file);
@@ -33,9 +34,36 @@ final class FilePhpTest extends TestCase
     public function testConstructor(): void
     {
         $file = new File(
-            new AppPath('var/FileReturnTest_' . uniqid() . '.php')
+            new AppPath('var/FilePhpTest_' . uniqid() . '.php')
         );
         $filePhp = new PhpFile($file);
         $this->assertSame($file, $filePhp->file());
+        $this->assertIsBool($filePhp->canCompile());
+    }
+
+    public function testCompileFileNotExists(): void
+    {
+        $file = new File(
+            new AppPath('var/FilePhpTest_' . uniqid() . '.php')
+        );
+        $filePhp = new PhpFile($file);
+        $this->expectException(FileNotFoundException::class);
+        $filePhp->compile();
+    }
+
+    /**
+     * @requires extension zend-opcache
+     */
+    public function testCompileDestroy(): void
+    {
+        $this->expectNotToPerformAssertions();
+        $file = new File(
+            new AppPath('var/FilePhpTest_' . uniqid() . '.php')
+        );
+        $file->create();
+        $filePhp = new PhpFile($file);
+        $filePhp->compile();
+        $filePhp->destroy();
+        $file->remove();
     }
 }

@@ -20,6 +20,7 @@ use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\PhpFile;
 use Chevere\Components\Filesystem\FileReturn;
 use Chevere\Components\Filesystem\AppPath;
+use Chevere\Components\Filesystem\Exceptions\File\FileUnableToGetException;
 use Chevere\Components\Variable\VariableExport;
 use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
 use Chevere\Components\Filesystem\Interfaces\File\FileReturnInterface;
@@ -69,28 +70,28 @@ final class FileReturnTest extends TestCase
         );
     }
 
-    public function testReturnFileNotFound(): void
+    public function testFileNotFound(): void
     {
         $this->file->remove();
         $this->expectException(FileNotFoundException::class);
         $this->fileReturn->raw();
     }
 
-    public function testReturnEmptyFile(): void
+    public function testEmptyFile(): void
     {
         $this->expectException(FileWithoutContentsException::class);
         $this->fileReturn
             ->raw();
     }
 
-    public function testReturnInvalidContents(): void
+    public function testInvalidContents(): void
     {
         $this->file->put('<?php\n\nreturn "test";');
         $this->expectException(FileInvalidContentsException::class);
         $this->fileReturn->raw();
     }
 
-    public function testReturnContents(): void
+    public function testContents(): void
     {
         $this->file->put(FileReturnInterface::PHP_RETURN . '"test";');
         $this->assertSame('test', $this->fileReturn->raw());
@@ -106,8 +107,9 @@ final class FileReturnTest extends TestCase
     public function testVarEmptyFile(): void
     {
         $this->expectException(FileWithoutContentsException::class);
-        $this->fileReturn
+        $var = $this->fileReturn
             ->var();
+        // xdd($var);
     }
 
     public function testVarInvalidContents(): void
@@ -162,15 +164,16 @@ final class FileReturnTest extends TestCase
     {
         $this->file->put("<?php /* comment */ return 'test';");
         $this->fileReturn = $this->fileReturn
-            ->withNoStrict();
-
+            ->withStrict(false);
         $string = 'test';
         $this->assertSame($string, $this->fileReturn->raw());
         $this->assertSame($string, $this->fileReturn->var());
-
         $array = [1, 1.1, 'test'];
         $this->file->put("<?php return [1, 1.1, 'test'];");
         $this->assertSame($array, $this->fileReturn->raw());
         $this->assertSame($array, $this->fileReturn->var());
+        $this->file->put('<?php $var = __FILE__;');
+        $this->expectException(FileInvalidContentsException::class);
+        $this->fileReturn->raw();
     }
 }

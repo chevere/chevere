@@ -17,10 +17,8 @@ use Chevere\Components\App\Instances\BootstrapInstance;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Filesystem\Exceptions\Path\PathNotAllowedException;
-use Chevere\Components\Filesystem\Interfaces\Path\PathFormatInterface;
 use Chevere\Components\Filesystem\Interfaces\Path\AppPathInterface;
 use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
-use function ChevereFn\stringForwardSlashes;
 use function ChevereFn\stringReplaceFirst;
 use function ChevereFn\stringStartsWith;
 
@@ -67,36 +65,57 @@ class AppPath implements AppPathInterface
         return $this->relative;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function exists(): bool
     {
         return $this->pathContext->exists();
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function isDir(): bool
     {
         return $this->pathContext->isDir();
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function isFile(): bool
     {
         return $this->pathContext->isFile();
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function chmod(int $mode): void
     {
         $this->pathContext->chmod($mode);
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function isWriteable(): bool
     {
         return $this->pathContext->isWriteable();
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function isReadable(): bool
     {
         return $this->pathContext->isReadable();
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function getChild(string $path): PathInterface
     {
         return $this->pathContext->getChild($path);

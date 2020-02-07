@@ -22,6 +22,8 @@ use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Filesystem\Interfaces\File\FilePhpInterface;
 use Chevere\Components\Filesystem\Interfaces\File\FileReturnInterface;
 use Chevere\Components\Variable\Interfaces\VariableExportInterface;
+use LogicException;
+use Throwable;
 
 /**
  * FileReturn interacts with PHP files that return something.
@@ -33,7 +35,7 @@ final class FileReturn implements FileReturnInterface
     private FilePhpInterface $filePhp;
 
     /** @var bool True for strict validation (PHP_RETURN), false for regex validation (return <algo>) */
-    private bool $strict;
+    private bool $strict = true;
 
     /**
      * Creates a new instance.
@@ -42,15 +44,14 @@ final class FileReturn implements FileReturnInterface
      */
     public function __construct(FilePhpInterface $filePhp)
     {
-        $this->strict = true;
         $this->filePhp = $filePhp;
         $this->filePhp()->file()->assertExists();
     }
 
-    public function withNoStrict(): FileReturnInterface
+    public function withStrict(bool $strict): FileReturnInterface
     {
         $new = clone $this;
-        $new->strict = false;
+        $new->strict = $strict;
 
         return $new;
     }
@@ -114,7 +115,7 @@ final class FileReturn implements FileReturnInterface
 
     private function validate(): void
     {
-        if ($this->strict) {
+        if ($this->strict === true) {
             $this->validateStrict();
 
             return;
@@ -157,16 +158,14 @@ final class FileReturn implements FileReturnInterface
         }
     }
 
+    /**
+     * @throws FileNotFoundException    if the file doesn't exists
+     * @throws FileUnableToGetException if unable to read the contents of the file
+     * @throws FileInvalidContentsException
+     */
     private function validateNonStrict(): void
     {
         $contents = $this->filePhp()->file()->contents();
-        if (!$contents) {
-            throw new FileWithoutContentsException(
-                (new Message('Unable to get file %path% contents'))
-                    ->code('%path%', $this->filePhp()->file()->path()->absolute())
-                    ->toString()
-            );
-        }
         if (!preg_match_all('#<\?php([\S\s]*)\s*return\s*[\S\s]*;#', $contents)) {
             throw new FileInvalidContentsException(
                 (new Message('Unexpected contents in %path% (non-strict validation)'))
