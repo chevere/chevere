@@ -25,6 +25,11 @@ use PHPUnit\Framework\TestCase;
 
 final class CacheItemTest extends TestCase
 {
+    public function setUp(): void
+    {
+        $this->resourcesPath = (new Path(__DIR__))->getChild('_resources');
+    }
+
     private function getCacheItem(PathInterface $path): CacheItemInterface
     {
         return
@@ -52,7 +57,7 @@ final class CacheItemTest extends TestCase
 
     public function testNotSerialized(): void
     {
-        $path = new Path(__DIR__ . '/resources/return.php');
+        $path = $this->resourcesPath->getChild('return.php');
         $cacheItem = $this->getCacheItem($path);
         $var = include $path->absolute();
         $this->assertSame($var, $cacheItem->raw());
@@ -62,7 +67,7 @@ final class CacheItemTest extends TestCase
     public function testSerialized(): void
     {
         // TODO: Pass a path for storing on-the-fly stuff
-        $path = new Path(__DIR__ . '/resources/return-serialized.php');
+        $path = $this->resourcesPath->getChild('return-serialized.php');
         $this->writeSerialized($path);
         $cacheItem = $this->getCacheItem($path);
         $var = include $path->absolute();

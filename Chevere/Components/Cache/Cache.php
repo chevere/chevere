@@ -50,8 +50,8 @@ final class Cache implements CacheInterface
     public function __construct(DirInterface $dir)
     {
         $this->dir = $dir;
-        if (!$this->dir->exists()) {
-            $this->dir->create();
+        if ($this->dir->exists() === false) {
+            $this->dir->create(); // @codeCoverageIgnore
         }
         $this->puts = [];
     }
@@ -80,8 +80,8 @@ final class Cache implements CacheInterface
     {
         $new = clone $this;
         $path = $this->getPath($cacheKey->toString());
-        if (!$path->exists()) {
-            return $new;
+        if ($path->exists() === false) {
+            return $new; // @codeCoverageIgnore
         }
         $filePhp =
             new PhpFile(

@@ -21,18 +21,14 @@ use Chevere\Components\Filesystem\AppPath;
 use Chevere\Components\Variable\VariableExport;
 use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Cache\Interfaces\CacheItemInterface;
+use Chevere\Components\Filesystem\Path;
 use PHPUnit\Framework\TestCase;
 
 final class CacheTest extends TestCase
 {
     private function getTestCache(): CacheInterface
     {
-        return
-            new Cache(
-                new Dir(
-                    new AppPath('build')
-                )
-            );
+        return new Cache(new Dir(new AppPath('build')));
     }
 
     public function testConstructor(): void
@@ -52,13 +48,9 @@ final class CacheTest extends TestCase
     {
         $cacheKey = new CacheKey(uniqid());
         $this->expectException(CacheKeyNotFoundException::class);
-        $this->getTestCache()
-            ->get($cacheKey);
+        $this->getTestCache()->get($cacheKey);
     }
 
-    /**
-     * @requires extension zend-opcache
-     */
     public function testWithPutWithRemove(): void
     {
         $key = uniqid();
@@ -67,11 +59,11 @@ final class CacheTest extends TestCase
         $cacheKey = new CacheKey($key);
         $cache = $this->getTestCache()
             ->withPut($cacheKey, $variableExport);
-        $this->assertArrayHasKey($key, $cache->toArray());
+        $this->assertArrayHasKey($key, $cache->puts());
         $this->assertTrue($cache->exists($cacheKey));
         $this->assertInstanceOf(CacheItemInterface::class, $cache->get($cacheKey));
         $cache = $cache->withRemove($cacheKey);
-        $this->assertArrayNotHasKey($key, $cache->toArray());
+        $this->assertArrayNotHasKey($key, $cache->puts());
         $this->assertFalse($cache->exists($cacheKey));
     }
 }

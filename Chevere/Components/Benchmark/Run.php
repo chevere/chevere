@@ -28,6 +28,7 @@ use Chevere\Components\Time\TimeHr;
 
 /**
  * Runs a prepared Benchmark
+ * @codeCoverageIgnore
  */
 final class Run implements RunInterface
 {
@@ -203,7 +204,6 @@ final class Run implements RunInterface
             $this->results[$id] = [
                 'time' => $timeTaken,
                 'runs' => $this->runs,
-                //'ads' => ,
             ];
             $this->timeTaken += $timeTaken;
         }
@@ -221,7 +221,7 @@ final class Run implements RunInterface
                 break;
             }
             try {
-                $callable(...$this->runable->benchmark()->arguments());
+                call_user_func($callable, ...$this->runable->benchmark()->arguments());
             } catch (ArgumentCountError $e) {
                 throw new ArgumentCountException(
                     $this->getErrorMessage($name, $e->getMessage())

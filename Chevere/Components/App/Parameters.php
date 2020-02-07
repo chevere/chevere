@@ -42,9 +42,6 @@ final class Parameters implements ParametersInterface
 
     private array $routes;
 
-    /**
-     *
-     */
     public function __construct(ArrayFileInterface $arrayFile)
     {
         $this->arrayFile = $arrayFile;

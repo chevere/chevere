@@ -39,6 +39,8 @@ interface RunInterface extends ToStringInterface
     public function withTimeLimit(int $timeLimit): RunInterface;
 
     public function timeLimit(): int;
+    
+    public function exec();
 
     /**
      * @return string Formated result summary

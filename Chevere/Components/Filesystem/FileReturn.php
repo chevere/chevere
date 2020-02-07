@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
+use Chevere\Components\Assert\AssertString;
+use Chevere\Components\Assert\Exceptions\AssertStringException;
 use Chevere\Components\Filesystem\Exceptions\File\FileHandleException;
 use Chevere\Components\Filesystem\Exceptions\File\FileInvalidContentsException;
 use Chevere\Components\Filesystem\Exceptions\File\FileWithoutContentsException;
@@ -161,11 +163,21 @@ final class FileReturn implements FileReturnInterface
     /**
      * @throws FileNotFoundException    if the file doesn't exists
      * @throws FileUnableToGetException if unable to read the contents of the file
+     * @throws FileWithoutContentsException
      * @throws FileInvalidContentsException
      */
     private function validateNonStrict(): void
     {
         $contents = $this->filePhp()->file()->contents();
+        try {
+            (new AssertString($contents))->notEmpty()->notCtypeSpace();
+        } catch (AssertStringException $e) {
+            throw new FileWithoutContentsException(
+                (new Message("The file at %path% doesn't have any contents (non-strict validation)"))
+                    ->code('%path%', $this->filePhp()->file()->path()->absolute())
+                    ->toString()
+            );
+        }
         if (!preg_match_all('#<\?php([\S\s]*)\s*return\s*[\S\s]*;#', $contents)) {
             throw new FileInvalidContentsException(
                 (new Message('Unexpected contents in %path% (non-strict validation)'))

@@ -81,11 +81,10 @@ final class RunTest extends TestCase
             ->withAddedCallable(function (int $a, int $b) {
                 return $a * $b;
             }, 'Multiply');
-        (new Run(
-            new Runable($benchmark)
-        ))
-            ->withTimes(1000)
+        $string = (new Run(new Runable($benchmark)))
+            ->withTimes(20)
             ->exec()
             ->toString();
+        // xdd($string);
     }
 }
