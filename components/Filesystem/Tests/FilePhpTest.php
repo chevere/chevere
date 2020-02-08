@@ -52,7 +52,7 @@ final class FilePhpTest extends TestCase
     }
 
     /**
-     * @requires extension zend-opcache
+     * @requires extension Zend OPcache
      */
     public function testCompileDestroy(): void
     {
