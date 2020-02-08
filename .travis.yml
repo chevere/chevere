@@ -14,7 +14,7 @@ cache:
     - $HOME/.composer/cache
 
 before_install:
-  - phpenmod opcache
+  - echo "extension = opcache.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - phpenv config-add chevere.ini
   - composer validate
 
