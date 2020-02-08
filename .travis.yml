@@ -13,10 +13,13 @@ cache:
   directories:
     - $HOME/.composer/cache
 
-before_install: phpenv config-add chevere.ini
+before_install:
+  - phpenmod opcache
+  - phpenv config-add chevere.ini
+  - composer validate
 
 install:
-  - composer install --prefer-dist --ignore-platform-reqs
+  - composer install --prefer-dist --classmap-authoritative
 
 script:
   - vendor/bin/phpunit --coverage-clover=build/coverage/clover.xml
