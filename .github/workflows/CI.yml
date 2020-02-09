@@ -1,0 +1,43 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup PHP Action
+        uses: shivammathur/setup-php@1.8.2
+        with:
+          php-version: 7.4
+          extensions: opcache, mbstring
+          ini-values: opcache.enable_cli = 1, opcache.enable = 1
+          coverage: pcov
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest --classmap-authoritative
+
+      - name: Cache
+        uses: actions/cache@v1.1.2
+        with:
+          path: ~/.composer/cache
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Run tests with phpunit
+        run: vendor/bin/phpunit --coverage-clover=build/coverage/clover.xml
+
+      - name: Send code coverage report to Scrutinizer-CI
+        run: |
+          wget https://scrutinizer-ci.com/ocular.phar
+          php ocular.phar code-coverage:upload --format=php-clover build/coverage/clover.xml
+
+      - name: Send code coverage report to Codecov.io
+        run: bash <(curl -s https://codecov.io/bash) || true
