@@ -20,7 +20,6 @@ use Chevere\Components\ExceptionHandler\ExceptionHandler;
 use Chevere\Components\ExceptionHandler\Formatters\ConsoleFormatter;
 use LogicException;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Console\Output\OutputInterface;
 
 final class ConsoleDocumentTest extends TestCase
 {

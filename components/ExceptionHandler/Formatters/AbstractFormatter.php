@@ -40,7 +40,7 @@ abstract class AbstractFormatter implements FormatterInterface
     {
         return '#' . TraceFormatterInterface::TAG_ENTRY_POS . ' ' . TraceFormatterInterface::TAG_ENTRY_FILE_LINE . "\n"
             . TraceFormatterInterface::TAG_ENTRY_CLASS . TraceFormatterInterface::TAG_ENTRY_TYPE . TraceFormatterInterface::TAG_ENTRY_FUNCTION
-            . '()' . TraceFormatterInterface::TAG_ENTRY_ARGUMENTS;
+            . '()';
     }
 
     public function getHr(): string

@@ -24,8 +24,6 @@ final class ControllerName implements ControllerNameInterface
     private $name;
 
     /**
-     * {@inheritdoc}
-     *
      * @throws InvalidArgumentException if $name doesn't exists or if it doesn't implement a ControllerInterface
      */
     public function __construct(string $name)

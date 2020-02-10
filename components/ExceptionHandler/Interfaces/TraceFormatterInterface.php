@@ -27,7 +27,6 @@ interface TraceFormatterInterface extends ToArrayInterface, ToStringInterface
     const TAG_ENTRY_FUNCTION = '%function%';
     const TAG_ENTRY_CSS_EVEN_CLASS = '%cssEvenClass%';
     const TAG_ENTRY_POS = '%pos%';
-    const TAG_ENTRY_ARGUMENTS = '%arguments%';
 
     const HIGHLIGHT_TAGS = [
         self::TAG_ENTRY_FILE => VarFormatInterface::_FILE,

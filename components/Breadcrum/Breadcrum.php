@@ -70,8 +70,6 @@ final class Breadcrum implements BreadcrumInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * Provides access to the breadcrum as array.
      */
     public function toArray(): array
@@ -80,8 +78,6 @@ final class Breadcrum implements BreadcrumInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * Provides access to the breadcrum string.
      *
      * @return string items string `[item0][item1][itemN]...[itemN+1]`

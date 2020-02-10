@@ -16,8 +16,6 @@ namespace Chevere\Components\ExceptionHandler;
 use Chevere\Components\ExceptionHandler\Interfaces\TraceFormatterInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\FormatterInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\TraceEntryInterface;
-use Chevere\Components\VarDump\VarDumpeable;
-use Chevere\Components\VarDump\VarFormat;
 
 final class TraceFormatter implements TraceFormatterInterface
 {
@@ -46,8 +44,6 @@ final class TraceFormatter implements TraceFormatterInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return array Containing the formatter trace entries
      */
     public function toArray(): array
@@ -56,8 +52,6 @@ final class TraceFormatter implements TraceFormatterInterface
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @return string Containing the formatter trace entries as string ready to screen.
      */
     public function toString(): string
@@ -85,23 +79,8 @@ final class TraceFormatter implements TraceFormatterInterface
             }
             $array[$tag] = $this->formatter->varDumpFormatter()->highlight($key, (string) $trValues[$tag]);
         }
-        $array[self::TAG_ENTRY_ARGUMENTS] = $this->getEntryArguments($entry);
 
         return $array;
-    }
-
-    private function getEntryArguments(TraceEntryInterface $entry): string
-    {
-        $string = '';
-        foreach ($entry->args() as $pos => $var) {
-            $string .= "\n";
-            $aux = 'Arg#' . ($pos + 1) . ' ';
-            $varDump = (new VarFormat(new VarDumpeable($var), $this->formatter->varDumpFormatter()))
-                ->withProcess();
-            $string .= $aux . $varDump->toString() . "\n";
-        }
-
-        return rtrim($string, "\n");
     }
 
     private function wrapStringHr(string $text): string
