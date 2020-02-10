@@ -23,7 +23,8 @@ use LogicException;
 use function ChevereFn\varType;
 
 /**
- * Allows to interact with dumpeable variables.
+ * The Chevere VarDumpeable.
+ * Provides interaction for dumpeable variables.
  */
 final class VarDumpeable implements VarDumpeableInterface
 {

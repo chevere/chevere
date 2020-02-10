@@ -22,8 +22,7 @@ use function ChevereFn\stringStartsWith;
 
 /**
  * The Chevere VarFormat.
- *
- * Analyze a Dumpeable and provide a formated string representation of its type and data.
+ * Analyze a VarDumpeable and provide a formated string representation of its type and data.
  */
 final class VarFormat implements VarFormatInterface
 {
@@ -41,17 +40,12 @@ final class VarFormat implements VarFormatInterface
 
     private int $depth = -1;
 
-    private string $val = '';
+    private string $value = '';
 
     private string $info = '';
 
     public array $known = [];
 
-    /**
-     * Creates a new instance.
-     *
-     * @param FormatterInterface $formatter A VarDump formatter
-     */
     public function __construct(VarDumpeableInterface $dumpeable, FormatterInterface $formatter)
     {
         $this->dumpeable = $dumpeable;
@@ -115,7 +109,7 @@ final class VarFormat implements VarFormatInterface
         $new = clone $this;
 
         $new->setProcessor();
-        $new->val .= $new->processor->value();
+        $new->value .= $new->processor->value();
         $new->setInfo();
         $new->setOutput();
 
@@ -156,11 +150,13 @@ final class VarFormat implements VarFormatInterface
     private function setOutput(): void
     {
         $table = [
-            '%type%' => $this->formatter->highlight($this->dumpeable()->type(), $this->dumpeable()->type()),
-            '%val%' => $this->val,
+            '%type%' => $this->formatter->highlight(
+                $this->dumpeable()->type(),
+                $this->dumpeable()->type()
+            ),
+            '%val%' => $this->value,
             '%info%' => $this->info,
         ];
-
         $template = $this->dumpeable()->template();
         $aux = [];
         foreach ($template as $tagName) {
@@ -171,7 +167,7 @@ final class VarFormat implements VarFormatInterface
             $aux[] = $tagName;
         }
         $message = implode(' ', $aux);
-        if (stringStartsWith("\n", $this->val)) {
+        if (stringStartsWith("\n", $this->value)) {
             $message = str_replace(' %val%', '%val%', $message);
         }
         $this->output = $message;

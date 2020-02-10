@@ -16,10 +16,6 @@ namespace Chevere\Components\VarDump;
 use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 
-/**
- * The Chevere VarDumper.
- * Provides the actual functionality to VarDump.
- */
 final class VarDumper implements VarDumperInterface
 {
     protected FormatterInterface $formatter;
@@ -28,9 +24,6 @@ final class VarDumper implements VarDumperInterface
 
     protected array $debugBacktrace;
 
-    /**
-     * Creates a new instance.
-     */
     public function __construct(FormatterInterface $formatter, ...$vars)
     {
         $this->vars = $vars;
