@@ -4,6 +4,8 @@ build:
       version: 7.4
   nodes:
     analysis:
+      dependencies:
+        override: true # Avoid inferred: yes | pecl install zend-opcache
       tests:
         override:
           - php-scrutinizer-run
