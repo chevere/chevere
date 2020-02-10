@@ -21,8 +21,8 @@ use Chevere\Components\Route\Exceptions\PathUriUnmatchedWildcardsException;
 use Chevere\Components\Route\Exceptions\WildcardRepeatException;
 use Chevere\Components\Route\Exceptions\WildcardReservedException;
 use Chevere\Components\Route\Interfaces\PathUriInterface;
-use function ChevereFn\stringReplaceFirst;
-use function ChevereFn\stringStartsWith;
+use Chevere\Components\Str\Str;
+use Chevere\Components\Str\StrBool;
 
 final class PathUri implements PathUriInterface
 {
@@ -88,7 +88,7 @@ final class PathUri implements PathUriInterface
 
     private function assertFormat(): void
     {
-        if (!stringStartsWith('/', $this->path)) {
+        if ((new StrBool($this->path))->startsWith('/') === false) {
             throw new PathUriForwardSlashException(
                 (new Message('Route path %path% must start with a forward slash'))
                     ->code('%path%', $this->path)
@@ -179,7 +179,7 @@ final class PathUri implements PathUriInterface
         foreach ($this->wildcardsMatch[0] as $key => $val) {
             // Change {wildcard} to {n} (n is the wildcard index)
             if (isset($this->key)) {
-                $this->key = stringReplaceFirst($val, "{{$key}}", $this->key);
+                $this->key = (string) (new Str($this->key))->replaceFirst($val, "{{$key}}");
             }
             $wildcard = $this->wildcardsMatch[1][$key];
             if (in_array($wildcard, $this->wildcards ?? [])) {

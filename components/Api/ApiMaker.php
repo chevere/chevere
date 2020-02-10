@@ -35,16 +35,13 @@ use Chevere\Components\Api\Interfaces\ApiMakerInterface;
 use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Str\Str;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use LogicException;
 use OuterIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Throwable;
-use function ChevereFn\stringForwardSlashes;
-use function ChevereFn\stringLeftTail;
-use function ChevereFn\stringReplaceFirst;
-use function ChevereFn\stringReplaceLast;
 
 final class ApiMaker implements ApiMakerInterface
 {
@@ -224,7 +221,7 @@ final class ApiMaker implements ApiMakerInterface
     private function processRecursiveIterator(): void
     {
         foreach ($this->recursiveIterator as $filename) {
-            $filepathAbsolute = stringForwardSlashes((string) $filename);
+            $filepathAbsolute = (string) (new Str((string) $filename))->forwardSlashes();
             $className = $this->getClassNameFromFilepath($filepathAbsolute);
             $inspected = new Inspect($className);
             // $this->controllersMap[$className] = $inspected;
@@ -248,7 +245,7 @@ final class ApiMaker implements ApiMakerInterface
     {
         foreach ($this->routesMap as $pathComponent => $httpMethods) {
             /** Full qualified route key for $pathComponent like /api/users/{user} */
-            $endpointRouteKey = stringLeftTail($pathComponent, '/');
+            $endpointRouteKey = (string) (new Str($pathComponent))->leftTail('/');
             $this->route = new Route(new PathUri($endpointRouteKey));
             foreach ($httpMethods as $httpMethod => $controller) {
                 $this->route = $this->route
@@ -278,8 +275,8 @@ final class ApiMaker implements ApiMakerInterface
     private function getClassNameFromFilepath(string $filepath): string
     {
         $filepathRelative = (new AppPath($filepath))->relative();
-        $filepathNoExt = stringReplaceLast('.php', '', $filepathRelative);
-        $filepathReplaceNS = stringReplaceFirst('app/src/', 'App\\', $filepathNoExt);
+        $filepathNoExt = (new Str($filepathRelative))->replaceLast('.php', '');
+        $filepathReplaceNS = (string) (new Str($filepathNoExt))->replaceFirst('app/src/', 'App\\');
 
         return str_replace('/', '\\', $filepathReplaceNS);
     }

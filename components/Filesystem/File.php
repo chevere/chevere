@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
+use Chevere\Components\Str\StringAssert;
+use Chevere\Components\Str\Exceptions\StrAssertException;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Exceptions\File\FileExistsException;
 use Chevere\Components\Filesystem\Exceptions\File\FileNotFoundException;
@@ -25,9 +27,9 @@ use Chevere\Components\Filesystem\Exceptions\Path\PathIsDirException;
 use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
 use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
 use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Str\StrBool;
 use Exception;
 use Throwable;
-use function ChevereFn\stringEndsWith;
 
 /**
  * This class provides interactions for a file in the application namespace.
@@ -46,7 +48,7 @@ final class File implements FileInterface
     public function __construct(PathInterface $path)
     {
         $this->path = $path;
-        $this->isPhp = stringEndsWith('.php', $this->path->absolute());
+        $this->isPhp = (new StrBool($this->path->absolute()))->endsWith('.php');
         $this->assertIsNotDir();
     }
 

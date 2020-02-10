@@ -19,7 +19,7 @@ use Chevere\Components\Filesystem\Exceptions\Path\PathDoubleDotsDashException;
 use Chevere\Components\Filesystem\Exceptions\Path\PathExtraSlashesException;
 use Chevere\Components\Filesystem\Exceptions\Path\PathNotAbsoluteException;
 use Chevere\Components\Filesystem\Interfaces\Path\PathFormatInterface;
-use function ChevereFn\stringStartsWith;
+use Chevere\Components\Str\StrBool;
 
 final class PathFormat implements PathFormatInterface
 {
@@ -36,7 +36,7 @@ final class PathFormat implements PathFormatInterface
 
     private function assertAbsolutePath(): void
     {
-        if (!stringStartsWith('/', $this->path)) {
+        if ((new StrBool($this->path))->startsWith('/') === false) {
             throw new PathNotAbsoluteException(
                 (new Message('Path %path% must start with %char%'))
                     ->code('%path%', $this->path)

@@ -15,13 +15,12 @@ namespace Chevere\Components\Time\Tests;
 
 use Chevere\Components\Time\TimeHr;
 use PHPUnit\Framework\TestCase;
-use function ChevereFn\stringEndsWith;
 
 final class TimeHrTest extends TestCase
 {
     public function testConstruct(): void
     {
         $timeHr = new TimeHr((int) hrtime(true));
-        $this->assertTrue(stringEndsWith(' ms', $timeHr->toReadMs()));
+        $this->assertStringEndsWith(' ms', $timeHr->toReadMs());
     }
 }

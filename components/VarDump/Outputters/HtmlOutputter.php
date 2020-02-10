@@ -14,13 +14,15 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Outputters;
 
 use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
-use function ChevereFn\stringStartsWith;
 
 final class HtmlOutputter extends PlainOutputter
 {
+    private bool $hasHeader = false;
+
     public function prepare(string $output): string
     {
         if (headers_sent() === false || headers_list() === []) {
+            $this->hasHeader = true;
             $output .= '<html style="background: ' . VarDumperInterface::BACKGROUND_SHADE . ';"><head></head><body>';
         }
         $output .= '<pre style="' . VarDumperInterface::STYLE . '">';
@@ -30,7 +32,7 @@ final class HtmlOutputter extends PlainOutputter
 
     public function callback(string $output): string
     {
-        if (stringStartsWith('<html', $output)) {
+        if ($this->hasHeader) {
             $output .= '</body></html>';
         }
 

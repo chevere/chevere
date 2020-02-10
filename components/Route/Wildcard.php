@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
+use Chevere\Components\Str\Exceptions\StrAssertException;
 use Chevere\Components\Route\Exceptions\WildcardInvalidCharsException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
@@ -20,7 +21,7 @@ use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
 use Chevere\Components\Route\Interfaces\WildcardMatchInterface;
 use Chevere\Components\Route\Interfaces\PathUriInterface;
 use Chevere\Components\Route\Interfaces\WildcardInterface;
-use function ChevereFn\stringStartsWithNumeric;
+use Chevere\Components\Str\StrAssert;
 
 final class Wildcard implements WildcardInterface
 {
@@ -87,9 +88,11 @@ final class Wildcard implements WildcardInterface
 
     private function assertName(): void
     {
-        if (stringStartsWithNumeric($this->name)) {
+        try {
+            (new StrAssert($this->name))->notStartsWithCtypeDigit();
+        } catch (StrAssertException $e) {
             throw new WildcardStartWithNumberException(
-                (new Message("String %string% shouldn't start with a numeric value"))
+                (new Message('String %string% must not start with a numeric value'))
                     ->code('%string%', $this->name)
                     ->toString()
             );

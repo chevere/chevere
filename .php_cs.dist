@@ -9,8 +9,6 @@
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
-
 $header = <<<'EOF'
 This file is part of Chevere.
 
@@ -70,4 +68,5 @@ return PhpCsFixer\Config::create()
         'unary_operator_spaces' => true,
         'whitespace_after_comma_in_array' => true,
     ])
+    ->setRiskyAllowed(true)
     ->setLineEnding("\n");

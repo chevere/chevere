@@ -14,17 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Bootstrap;
 
 use Chevere\Components\Bootstrap\Exceptions\BootstrapDirException;
-use Chevere\Components\Bootstrap\Exceptions\BootstrapException;
 use Chevere\Components\Bootstrap\Interfaces\BootstrapInterface;
 use Chevere\Components\Console\Interfaces\ConsoleInterface;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
-use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
-use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Message\Message;
 use Exception;
 use Throwable;
-use function ChevereFn\stringReplaceFirst;
-use function ChevereFn\stringStartsWith;
 
 final class Bootstrap implements BootstrapInterface
 {

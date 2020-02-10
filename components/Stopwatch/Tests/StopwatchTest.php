@@ -17,7 +17,6 @@ use BadMethodCallException;
 use Chevere\Components\Stopwatch\Stopwatch;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use function ChevereFn\stringEndsWith;
 
 final class StopwatchTest extends TestCase
 {
@@ -87,7 +86,7 @@ final class StopwatchTest extends TestCase
         $recordsSum = array_sum(array_values($sw->records()));
         $this->assertSame($recordsSum, $sw->timeElapsed());
         $this->assertTrue($recordsSum > $nanoTime * ($marks + 2));
-        $this->assertTrue(stringEndsWith(' ms', $sw->timeElapsedRead()));
+        $this->assertStringEndsWith(' ms', $sw->timeElapsedRead());
         $this->assertSame($keys, array_keys($sw->recordsRead()));
     }
 }

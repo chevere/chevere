@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump;
 
+use Chevere\Components\Str\StrBool;
 use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarDump\Interfaces\VarDumpeableInterface;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
-use function ChevereFn\stringStartsWith;
 
 /**
  * The Chevere VarFormat.
@@ -167,7 +167,7 @@ final class VarFormat implements VarFormatInterface
             $aux[] = $tagName;
         }
         $message = implode(' ', $aux);
-        if (stringStartsWith("\n", $this->value)) {
+        if ((new StrBool($this->value))->startsWith("\n")) {
             $message = str_replace(' %val%', '%val%', $message);
         }
         $this->output = $message;

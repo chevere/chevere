@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Assert\AssertString;
-use Chevere\Components\Assert\Exceptions\AssertStringException;
+use Chevere\Components\Str\Exceptions\StrAssertException;
 use Chevere\Components\Filesystem\Exceptions\File\FileHandleException;
 use Chevere\Components\Filesystem\Exceptions\File\FileInvalidContentsException;
 use Chevere\Components\Filesystem\Exceptions\File\FileWithoutContentsException;
@@ -23,9 +22,8 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Filesystem\Interfaces\File\FilePhpInterface;
 use Chevere\Components\Filesystem\Interfaces\File\FileReturnInterface;
+use Chevere\Components\Str\StrAssert;
 use Chevere\Components\Variable\Interfaces\VariableExportInterface;
-use LogicException;
-use Throwable;
 
 /**
  * FileReturn interacts with PHP files that return something.
@@ -170,8 +168,8 @@ final class FileReturn implements FileReturnInterface
     {
         $contents = $this->filePhp()->file()->contents();
         try {
-            (new AssertString($contents))->notEmpty()->notCtypeSpace();
-        } catch (AssertStringException $e) {
+            (new StrAssert($contents))->notEmpty()->notCtypeSpace();
+        } catch (StrAssertException $e) {
             throw new FileWithoutContentsException(
                 (new Message("The file at %path% doesn't have any contents (non-strict validation)"))
                     ->code('%path%', $this->filePhp()->file()->path()->absolute())

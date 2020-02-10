@@ -16,9 +16,7 @@ namespace Chevere\Components\Filesystem;
 use Chevere\Components\Filesystem\Exceptions\Path\PathUnableToChmodException;
 use Chevere\Components\Filesystem\Exceptions\Path\PathDoesntExistsException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Filesystem\Exceptions\Path\PathInvalidException;
 use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
-use function ChevereFn\stringStartsWith;
 
 /**
  * Handles paths with context.

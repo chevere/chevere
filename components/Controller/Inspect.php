@@ -18,9 +18,7 @@ use ReflectionClass;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Controller\Interfaces\InspectInterface;
-use function ChevereFn\stringForwardSlashes;
-use function ChevereFn\stringReplaceFirst;
-use function ChevereFn\stringReplaceLast;
+use Chevere\Components\Str\Str;
 
 /**
  * Provides information about any Controller implementing ControllerInterface interface.
@@ -259,9 +257,9 @@ final class Inspect implements InspectInterface
     private function getPathComponent(string $className): string
     {
         $classShortName = substr($className, strrpos($className, '\\') + 1);
-        $classNamespace = stringReplaceLast('\\' . $classShortName, '', $className);
-        $classNamespaceNoApp = stringReplaceFirst('App\\', '', $classNamespace);
+        $classNamespace = (string) (new Str($className))->replaceLast('\\' . $classShortName, '');
+        $classNamespaceNoApp = (string) (new Str($classNamespace))->replaceFirst('App\\', '');
 
-        return strtolower(stringForwardSlashes($classNamespaceNoApp));
+        return (string) (new Str($classNamespaceNoApp))->forwardSlashes()->lowercase();
     }
 }

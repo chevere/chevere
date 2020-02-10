@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
-use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Str\StrBool;
 use ReflectionObject;
 use ReflectionProperty;
 use Throwable;
@@ -21,7 +21,6 @@ use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarDump\VarDumpeable;
 use Chevere\Components\VarDump\VarFormat;
 use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
-use function ChevereFn\stringStartsWith;
 
 final class ObjectProcessor extends AbstractProcessor
 {
@@ -120,7 +119,7 @@ final class ObjectProcessor extends AbstractProcessor
 
     private function handleNormalizeClassName(): void
     {
-        if (stringStartsWith(VarFormatInterface::_CLASS_ANON, $this->className)) {
+        if ((new StrBool($this->className))->startsWith(VarFormatInterface::_CLASS_ANON) === true) {
             $this->className = preg_replace('/[[:^print:]]/', '', $this->className);
         }
     }

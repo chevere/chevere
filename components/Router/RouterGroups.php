@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use BadMethodCallException;
-use Chevere\Components\Assert\AssertString;
+use Chevere\Components\Str\StrAssert;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Interfaces\RouterGroupsInterface;
 
@@ -24,7 +24,7 @@ final class RouterGroups implements RouterGroupsInterface
 
     public function withAdded(string $group, int $id): RouterGroupsInterface
     {
-        (new AssertString($group))->notEmpty()->notCtypeSpace();
+        (new StrAssert($group))->notEmpty()->notCtypeSpace();
         $new = clone $this;
         if (!array_key_exists($group, $new->array)) {
             $new->array[$group] = [];

@@ -19,8 +19,8 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Filesystem\Exceptions\Path\PathNotAllowedException;
 use Chevere\Components\Filesystem\Interfaces\Path\AppPathInterface;
 use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
-use function ChevereFn\stringReplaceFirst;
-use function ChevereFn\stringStartsWith;
+use Chevere\Components\Str\Str;
+use Chevere\Components\Str\StrBool;
 
 /**
  * A proxy class to handle paths in the application context.
@@ -123,15 +123,16 @@ class AppPath implements AppPathInterface
 
     private function handleRelative(): void
     {
-        if (stringStartsWith('/', $this->path)) {
+        if ((new StrBool($this->path))->startsWith('/') === true) {
             $this->assertAbsolutePath();
-            $this->relative = ltrim(stringReplaceFirst($this->rootDir->path()->absolute(), '', $this->path), '/');
+            $string = (string) (new Str($this->path))->replaceFirst($this->rootDir->path()->absolute(), '');
+            $this->relative = ltrim($string, '/');
         }
     }
 
     private function assertAbsolutePath(): void
     {
-        if (!stringStartsWith($this->rootDir->path()->absolute(), $this->path)) {
+        if ((new StrBool($this->path))->startsWith($this->rootDir->path()->absolute()) === false) {
             throw new PathNotAllowedException(
                 (new Message('Only absolute paths in the app path %root% are allowed, path %path% provided'))
                     ->code('%root%', $this->rootDir->path()->absolute())

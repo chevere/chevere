@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Traits;
 
-use function ChevereFn\stringReplaceFirst;
+use Chevere\Components\Str\Str;
 
 trait SetTrait
 {
@@ -27,7 +27,7 @@ trait SetTrait
     public function name(): string
     {
         $explode = explode('\\', static::class);
-        $name = stringReplaceFirst('Set', '', end($explode));
+        $name = (string) (new Str(end($explode)))->replaceFirst('Set', '');
 
         return lcfirst($name);
     }

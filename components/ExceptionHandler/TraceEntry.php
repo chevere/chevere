@@ -17,9 +17,8 @@ use InvalidArgumentException;
 use ReflectionMethod;
 use Chevere\Components\ExceptionHandler\Interfaces\TraceEntryInterface;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Str\StrBool;
 use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
-use function ChevereFn\stringReplaceFirst;
-use function ChevereFn\stringStartsWith;
 
 /**
  * Allows to interact with trace entries thrown by Exceptions.
@@ -141,7 +140,7 @@ final class TraceEntry implements TraceEntryInterface
 
     private function handleAnonClass()
     {
-        if (stringStartsWith(VarFormatInterface::_CLASS_ANON, $this->class)) {
+        if ((new StrBool($this->class))->startsWith(VarFormatInterface::_CLASS_ANON) === true) {
             preg_match('#^class@anonymous(.*):(\d+)#', $this->class, $matches);
             $this->class = VarFormatInterface::_CLASS_ANON;
             $this->file = $matches[1];

@@ -11,18 +11,18 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Assert\Tests;
+namespace Chevere\Components\Str\Tests;
 
-use Chevere\Components\Assert\AssertString;
-use Chevere\Components\Assert\Exceptions\AssertStringException;
+use Chevere\Components\Str\StrAssert;
+use Chevere\Components\Str\Exceptions\StrAssertException;
 use PHPUnit\Framework\TestCase;
 
 final class AssertStringTest extends TestCase
 {
     public function testEmpty(): void
     {
-        $this->expectException(AssertStringException::class);
-        (new AssertString(''))->notEmpty();
+        $this->expectException(StrAssertException::class);
+        (new StrAssert(''))->notEmpty();
     }
 
     public function testNotEmpty(): void
@@ -31,14 +31,14 @@ final class AssertStringTest extends TestCase
         foreach ([
             ' ', '0'
         ] as $valid) {
-            (new AssertString($valid))->notEmpty();
+            (new StrAssert($valid))->notEmpty();
         }
     }
 
     public function testCtypeSpace(): void
     {
-        $this->expectException(AssertStringException::class);
-        (new AssertString(" \n\t\r"))->notCtypeSpace();
+        $this->expectException(StrAssertException::class);
+        (new StrAssert(" \n\t\r"))->notCtypeSpace();
     }
 
     public function testNotCtypeSpace(): void
@@ -47,7 +47,7 @@ final class AssertStringTest extends TestCase
         foreach ([
             'like anything', "\n else"
         ] as $valid) {
-            (new AssertString($valid))->notCtypeSpace();
+            (new StrAssert($valid))->notCtypeSpace();
         }
     }
 }

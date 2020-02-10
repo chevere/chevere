@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Assert\Exceptions;
+namespace Chevere\Components\Str\Interfaces;
 
-use Exception;
-
-/**
- * Exception thrown by AssertStringInterface.
- */
-final class AssertStringException extends Exception
+interface StrAssertInterface
 {
+    public function __construct(string $string);
+
+    public function notEmpty(): StrAssertInterface;
+
+    public function notCtypeSpace(): StrAssertInterface;
 }
