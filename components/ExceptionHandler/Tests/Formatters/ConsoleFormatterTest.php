@@ -34,7 +34,6 @@ final class ConsoleFormatterTest extends TestCase
         foreach ($array as $methodName => $args) {
             $plain = $plainFormatter->$methodName(...$args);
             $console = $consoleFormatter->$methodName(...$args);
-            $this->assertTrue(strlen($plain) < strlen($console));
             $this->assertSame(
                 $plain,
                 (string) (new Str($console))->stripANSIColors()
