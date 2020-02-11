@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use Chevere\Components\App\Instances\RequestInstance;
+use Chevere\Components\Instances\RequestInstance;
 use Chevere\Components\App\Interfaces\AppInterface;
 use Chevere\Components\App\Interfaces\ServicesInterface;
 use Chevere\Components\Http\Interfaces\RequestInterface;

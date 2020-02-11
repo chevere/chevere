@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere;
 
-use Chevere\Components\App\Instances\RequestInstance;
-use Chevere\Components\App\Instances\RuntimeInstance;
+use Chevere\Components\Instances\RequestInstance;
+use Chevere\Components\Instances\RuntimeInstance;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Runtime\Runtime;
 use Chevere\Components\Runtime\Sets\SetDebug;

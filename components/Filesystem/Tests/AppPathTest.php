@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Filesystem\Path\Tests;
 
 use RuntimeException;
-use Chevere\Components\App\Instances\BootstrapInstance;
+use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Exceptions\Path\PathDotSlashException;
 use Chevere\Components\Filesystem\Exceptions\Path\PathInvalidException;

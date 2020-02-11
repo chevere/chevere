@@ -1,0 +1,3 @@
+{
+    "phpunit.files": "components/**/Tests/*Test.php"
+}

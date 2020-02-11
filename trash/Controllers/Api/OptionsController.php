@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controllers\Api;
 
-use Chevere\Components\App\Instances\BootstrapInstance;
+use Chevere\Components\Instances\BootstrapInstance;
 use InvalidArgumentException;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Message\Message;

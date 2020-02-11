@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-use Chevere\Components\App\Instances\ScreenContainerInstance;
+use Chevere\Components\Instances\ScreenContainerInstance;
 use Chevere\Components\Screen\Interfaces\ScreenContainerInterface;
 
 function screens(): ScreenContainerInterface

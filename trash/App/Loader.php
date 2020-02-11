@@ -15,7 +15,7 @@ namespace Chevere\Components\App;
 
 use Chevere\Components\Api\Api;
 use Chevere\Components\App\Exceptions\BuildNeededException;
-use Chevere\Components\App\Instances\BootstrapInstance;
+use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
 use Chevere\Components\Filesystem\File;

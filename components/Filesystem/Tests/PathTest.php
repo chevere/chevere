@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Filesystem\Path\Tests;
 
 use RuntimeException;
-use Chevere\Components\App\Instances\BootstrapInstance;
+use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\Filesystem\Exceptions\Path\PathDoesntExistsException;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;

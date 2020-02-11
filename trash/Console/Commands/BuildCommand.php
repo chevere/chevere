@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Console\Commands;
 
-use Chevere\Components\App\Instances\BootstrapInstance;
+use Chevere\Components\Instances\BootstrapInstance;
 use LogicException;
 use Chevere\Components\Console\Command;
 use Chevere\Components\Message\Message;

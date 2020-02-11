@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler\src;
 
-use Chevere\Components\App\Instances\BootstrapInstance;
+use Chevere\Components\Instances\BootstrapInstance;
 use JsonApiPhp\JsonApi\Error;
 use JsonApiPhp\JsonApi\ErrorDocument;
 use JsonApiPhp\JsonApi\Error\Code;

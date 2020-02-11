@@ -32,11 +32,11 @@ final class HtmlOutputterTest extends TestCase
         $line = __LINE__ - 2;
         // $fileReturn = new FileReturn(
         //     new PhpFile(new File(
-        //         new Path(__DIR__ . '/resources/output-html.php')
+        //         new Path(__DIR__ . '/_resources/output-html.php')
         //     ))
         // );
         // $fileReturn->put(new VariableExport($outputter->toString()));
-        $parsed = strtr(include 'resources/output-html.php', [
+        $parsed = strtr(include '_resources/output-html.php', [
             '%className%' => self::class,
             '%functionName%' => __FUNCTION__,
             '%fileLine%' => __FILE__ . ':' . $line

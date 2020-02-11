@@ -110,8 +110,7 @@ final class Str implements StrInterface
     }
 
     /**
-     * Replace the last occurrence of the search string with the replacement
-     * string.
+     * Replace the last occurrence of the search string with the replacement string.
      *
      * @param string $search  value being searched for
      * @param string $replace replacement value that replaces found search values
@@ -124,6 +123,16 @@ final class Str implements StrInterface
         }
 
         $this->string = $subject ?? '';
+
+        return $this;
+    }
+
+    /**
+     * Removes CLI color format.
+     */
+    public function stripANSIColors(): StrInterface
+    {
+        $this->string = preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $this->string);
 
         return $this;
     }

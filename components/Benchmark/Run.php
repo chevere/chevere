@@ -16,7 +16,7 @@ namespace Chevere\Components\Benchmark;
 use ArgumentCountError;
 use TypeError;
 use DateTime;
-use Chevere\Components\App\Instances\BootstrapInstance;
+use Chevere\Components\Instances\BootstrapInstance;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use Chevere\Components\Benchmark\Interfaces\RunInterface;
 use Chevere\Components\Benchmark\Interfaces\RunableInterface;

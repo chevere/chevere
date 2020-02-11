@@ -15,7 +15,7 @@ namespace Chevere\Components\App;
 
 use LogicException;
 use Chevere\Components\App\Exceptions\ResolverException;
-use Chevere\Components\App\Instances\BootstrapInstance;
+use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\Http\Request\RequestException;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Message\Message;

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\App\Instances;
+namespace Chevere\Components\Instances;
 
 use LogicException;
 use Chevere\Components\Http\Interfaces\RequestInterface;

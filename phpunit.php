@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere;
 
-use Chevere\Components\App\Instances\BootstrapInstance;
-use Chevere\Components\App\Instances\ScreenContainerInstance;
+use Chevere\Components\Instances\BootstrapInstance;
+use Chevere\Components\Instances\ScreenContainerInstance;
 use Chevere\Components\Bootstrap\Bootstrap;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
