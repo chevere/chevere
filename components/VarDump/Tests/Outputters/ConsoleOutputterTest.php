@@ -42,7 +42,7 @@ final class ConsoleOutputterTest extends TestCase
         // $fileReturn->put(new VariableExport($outputter->toString()));
         $expected = include '_resources/output-console-color.php';
         if ((new ConsoleColor())->isSupported() === false) {
-            $expected = (new Str($expected))->stripANSIColors();
+            $expected = (string) (new Str($expected))->stripANSIColors();
         }
         $parsed = strtr($expected, [
             '%varDumperClassName%' => VarDumper::class,
