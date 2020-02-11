@@ -37,8 +37,6 @@ final class StrAssert implements StrAssertInterface
                 ->code('%string%', $this->string)
                 ->toString()
         );
-
-        return $this;
     }
 
     public function notEmpty(): StrAssertInterface
@@ -90,8 +88,6 @@ final class StrAssert implements StrAssertInterface
                 ->strong('%algo%', 'ctype digit')
                 ->toString()
         );
-
-        return $this;
     }
 
     public function notStartsWithCtypeDigit(): StrAssertInterface
