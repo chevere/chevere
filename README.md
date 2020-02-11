@@ -1,5 +1,6 @@
 [![Scrutinizer Code
 Quality](https://scrutinizer-ci.com/g/chevere/chevere/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/chevere/chevere/?branch=master)
+[![codecov](https://codecov.io/gh/chevere/chevere/branch/master/graph/badge.svg)](https://codecov.io/gh/chevere/chevere)
 [![CodeFactor](https://www.codefactor.io/repository/github/chevere/chevere/badge)](https://www.codefactor.io/repository/github/chevere/chevere)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b956754f8ff04aaa9ca24a6e4cc21661)](https://www.codacy.com/gh/chevere/chevere?utm_source=github.com&utm_medium=referral&utm_content=chevere/chevere&utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/e096f89454df0538144f/maintainability)](https://codeclimate.com/github/chevere/chevere/maintainability)

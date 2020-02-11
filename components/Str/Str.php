@@ -55,7 +55,7 @@ final class Str implements StrInterface
 
     public function stripNonAlphanumerics(): StrInterface
     {
-        $this->string = preg_replace('/[^[:alnum:][:space:]]/u', '', $this->string) ?? '';
+        $this->string = preg_replace('/[^[:alnum:]]/u', '', $this->string) ?? '';
 
         return $this;
     }
