@@ -40,16 +40,18 @@ final class ConsoleOutputterTest extends TestCase
         //     ))
         // );
         // $fileReturn->put(new VariableExport($outputter->toString()));
-        $expected = include '_resources/output-console-color.php';
-        if ((new ConsoleColor())->isSupported() === false) {
-            $expected = (string) (new Str($expected))->stripANSIColors();
-        }
-        $parsed = strtr($expected, [
+        $template = include '_resources/output-console-color.php';
+        $parsed = strtr($template, [
             '%varDumperClassName%' => VarDumper::class,
             '%className%' => self::class,
             '%functionName%' => __FUNCTION__,
             '%fileLine%' => __FILE__ . ':' . $line
         ]);
-        $this->assertSame($parsed, $outputter->toString());
+        $string = $outputter->toString();
+        if ((new ConsoleColor())->isSupported() === false) {
+            $parsed = (string) (new Str($parsed))->stripANSIColors();
+            $string = (string) (new Str($string))->stripANSIColors();
+        }
+        $this->assertSame($parsed, $string);
     }
 }
