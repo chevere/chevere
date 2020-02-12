@@ -41,6 +41,6 @@ final class HtmlOutputterTest extends TestCase
             '%functionName%' => __FUNCTION__,
             '%fileLine%' => __FILE__ . ':' . $line
         ]);
-        $this->assertSame($parsed, $outputter->toString());
+        $this->assertSame($parsed, $outputter->emit());
     }
 }

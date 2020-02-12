@@ -27,7 +27,17 @@ final class StringProcessor extends AbstractProcessor
     protected function process(): void
     {
         $this->var = $this->varFormat->dumpeable()->var();
-        $this->info = 'length=' . strlen($this->var);
-        $this->value = $this->varFormat->formatter()->filterEncodedChars($this->var);
+        $this->streamWriter->write(
+            $this->varFormat->formatter()->highlight(
+                $this->type(),
+                $this->type()
+            )
+            . ' '
+            . $this->varFormat->formatter()->filterEncodedChars($this->var)
+            . ' '
+            . $this->varFormat->formatter()->emphasis(
+                '(length=' . strlen($this->var) . ')'
+            )
+        );
     }
 }

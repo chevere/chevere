@@ -27,7 +27,17 @@ final class IntegerProcessor extends AbstractProcessor
     protected function process(): void
     {
         $this->var = $this->varFormat->dumpeable()->var();
-        $this->info = 'length=' . strlen((string) $this->var);
-        $this->value = $this->varFormat->formatter()->filterEncodedChars(strval($this->var));
+        $this->streamWriter->write(
+            $this->varFormat->formatter()->highlight(
+                $this->type(),
+                $this->type()
+            )
+            . ' '
+            . $this->varFormat->formatter()->filterEncodedChars(strval($this->var))
+            . ' '
+            . $this->varFormat->formatter()->emphasis(
+                '(length=' . strlen((string) $this->var) . ')'
+            )
+        );
     }
 }

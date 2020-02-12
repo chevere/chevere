@@ -17,23 +17,21 @@ use LogicException;
 use Chevere\Components\Screen\Container;
 use Chevere\Components\Screen\Interfaces\ScreenContainerInterface;
 use Chevere\Components\Screen\ScreenContainer;
+use Chevere\Components\Writers\Interfaces\WritersInterface;
 
-/**
- * A container for the application screens.
- */
-final class ScreenContainerInstance
+final class WritersInstance
 {
-    private static ScreenContainerInterface $instance;
+    private static WritersInterface $instance;
 
-    public function __construct(ScreenContainerInterface $screens)
+    public function __construct(WritersInterface $writers)
     {
-        self::$instance = $screens;
+        self::$instance = $writers;
     }
 
-    public static function get(): ScreenContainerInterface
+    public static function get(): WritersInterface
     {
         if (!isset(self::$instance)) {
-            throw new LogicException('No screen container instance present');
+            throw new LogicException('No writers instance present');
         }
 
         return self::$instance;

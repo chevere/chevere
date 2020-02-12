@@ -13,39 +13,33 @@ declare(strict_types=1);
 
 use Chevere\Components\VarDump\VarDump;
 
-if (!function_exists('varInfo')) {
+if (function_exists('varInfo') === false) {
     /**
      * Returns dump information about one or more variables.
      */
     function varInfo(...$vars)
     {
-        return (new VarDump(...$vars))->toString();
+        return '';// (new VarDump(...$vars))->toString();
     }
 }
 
-if (!function_exists('xdump')) {
+if (function_exists('xd') === false) {
     /**
-     * Dumps information about one or more variables to the runtime screen.
+     * Dumps information about one or more variables to the output stream
      */
-    function xdump(...$vars)
+    function xd(...$vars)
     {
-        screens()->runtime()->addNl(
-            (new VarDump(...$vars))
-                ->toString()
-        )->emit();
+        (new VarDump(writers()->out(), ...$vars))->withShift(1)->stream();
     }
 }
 
-if (!function_exists('xdd')) {
+if (function_exists('xdd') === false) {
     /**
-     * Dumps information about one or more variables to the runtime screen and die().
+     * Dumps information about one or more variables to the output stream and die().
      */
     function xdd(...$vars)
     {
-        screens()->runtime()->addNl(
-            (new VarDump(...$vars))
-                ->toString()
-        )->emit();
+        (new VarDump(writers()->out(), ...$vars))->withShift(1)->stream();
         die(0);
     }
 }

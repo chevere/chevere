@@ -11,10 +11,8 @@
 
 declare(strict_types=1);
 
-use Chevere\Components\Instances\ScreenContainerInstance;
-use Chevere\Components\Screen\Interfaces\ScreenContainerInterface;
+namespace Chevere\Components\Writers\Interfaces;
 
-function screens(): ScreenContainerInterface
+interface WritersInterface
 {
-    return ScreenContainerInstance::get();
 }

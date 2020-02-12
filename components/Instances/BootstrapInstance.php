@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Instances;
 
-use Chevere\Components\Bootstrap\Interfaces\BootstrapInterface;
 use LogicException;
+use Chevere\Components\Bootstrap\Interfaces\BootstrapInterface;
 
 /**
- * A container for the application bootstrap.
+ * A container for the bootstrap.
  */
 final class BootstrapInstance
 {

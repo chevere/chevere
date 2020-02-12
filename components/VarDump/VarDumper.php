@@ -24,11 +24,11 @@ final class VarDumper implements VarDumperInterface
 
     protected array $debugBacktrace;
 
-    public function __construct(FormatterInterface $formatter, ...$vars)
+    public function __construct(array $debugBacktrace, FormatterInterface $formatter, ...$vars)
     {
+        $this->debugBacktrace = $debugBacktrace;
         $this->vars = $vars;
         $this->formatter = $formatter;
-        $this->setDebugBacktrace();
     }
 
     public function formatter(): FormatterInterface
@@ -44,20 +44,5 @@ final class VarDumper implements VarDumperInterface
     public function debugBacktrace(): array
     {
         return $this->debugBacktrace;
-    }
-
-    final private function setDebugBacktrace(): void
-    {
-        $this->debugBacktrace = debug_backtrace(0);
-        array_shift($this->debugBacktrace);
-        if (
-            isset($this->debugBacktrace[1]['class'])
-            && VarDump::class == $this->debugBacktrace[1]['class']
-        ) {
-            // @codeCoverageIgnoreStart
-            array_shift($this->debugBacktrace);
-            array_shift($this->debugBacktrace);
-            // @codeCoverageIgnoreEnd
-        }
     }
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Processors;
 
 use Chevere\Components\Type\Interfaces\TypeInterface;
+use Chevere\Components\VarDump\Interfaces\HighlightInterface;
 
 final class NullProcessor extends AbstractProcessor
 {
@@ -24,7 +25,11 @@ final class NullProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $this->value = '';
-        $this->info = '';
+        $this->streamWriter->write(
+            $this->varFormat->formatter()->highlight(
+                $this->type(),
+                $this->type(),
+            )
+        );
     }
 }

@@ -15,7 +15,7 @@ namespace Chevere\Components\VarDump\Interfaces;
 
 interface ProcessorInterface
 {
-    const MAX_DEPTH = 5;
+    const MAX_DEPTH = 4;
 
     /**
      * Provides access to the instance info.
@@ -27,7 +27,7 @@ interface ProcessorInterface
      * Provides access to the instance value.
      * The dumped variable value.
      */
-    public function value(): string;
+    // public function value(): string;
 
     /**
      * Provides access to the instance type.

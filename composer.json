@@ -29,7 +29,7 @@
         "files": [
             "utils/phpcheck.php",
             "resources/functions/dump.php",
-            "resources/functions/screens.php",
+            "resources/functions/writers.php",
             "resources/functions/ChevereFn/var.php"
         ],
         "psr-4": {

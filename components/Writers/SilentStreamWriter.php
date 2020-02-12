@@ -11,17 +11,17 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Interfaces;
+namespace Chevere\Components\Writers;
 
 use Chevere\Components\Writers\Interfaces\StreamWriterInterface;
 
-interface OutputterInterface
+final class SilentStreamWriter implements StreamWriterInterface
 {
-    public function __construct(VarDumperInterface $dumper, StreamWriterInterface $streamWriter);
+    public function __construct()
+    {
+    }
 
-    public function varDumper(): VarDumperInterface;
-
-    public function prepare(): void;
-
-    public function emit(): void;
+    public function write(string $string): void
+    {
+    }
 }

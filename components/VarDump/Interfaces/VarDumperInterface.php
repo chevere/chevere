@@ -25,7 +25,7 @@ interface VarDumperInterface
 
     const OFFSET = 1;
 
-    public function __construct(FormatterInterface $formatter, ...$vars);
+    public function __construct(array $debugBacktrace, FormatterInterface $formatter, ...$vars);
 
     public function formatter(): FormatterInterface;
 

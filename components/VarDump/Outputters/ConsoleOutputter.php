@@ -22,7 +22,7 @@ final class ConsoleOutputter extends PlainOutputter
 
     private string $outputHr;
 
-    public function prepare(string $output): string
+    public function prepare(): void
     {
         $this->consoleOutput = new ConsoleOutput();
         $this->outputHr = (new ConsoleColor)->apply('blue', self::OUTPUT_HR);
@@ -35,12 +35,14 @@ final class ConsoleOutputter extends PlainOutputter
         if ($bt['function'] ?? null) {
             $maker .= $bt['function'] . '()';
         }
-
-        return $output .= "\n" . (new ConsoleColor)->apply(['bold', 'red'], $maker) . "\n" . $this->outputHr . "\n";
+        $this->streamWriter->write(
+            "\n" . (new ConsoleColor)->apply(['bold', 'red'], $maker)
+            . "\n" . $this->outputHr . "\n"
+        );
     }
 
-    public function callback(string $output): string
+    public function callback(): void
     {
-        return $output . "\n" . $this->outputHr;
+        $this->streamWriter->write("\n" . $this->outputHr);
     }
 }

@@ -113,5 +113,5 @@ interface VarFormatInterface
     /**
      * Provides access to the instance $output.
      */
-    public function toString(): string;
+    // public function toString(): string;
 }

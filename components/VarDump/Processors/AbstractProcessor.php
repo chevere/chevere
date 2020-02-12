@@ -17,12 +17,15 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
 use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
+use Chevere\Components\Writers\Interfaces\StreamWriterInterface;
 use InvalidArgumentException;
 use TypeError;
 use function ChevereFn\varType;
 
 abstract class AbstractProcessor implements ProcessorInterface
 {
+    protected StreamWriterInterface $streamWriter;
+
     protected VarFormatInterface $varFormat;
 
     /** @var string */
@@ -31,8 +34,9 @@ abstract class AbstractProcessor implements ProcessorInterface
     /** @var string */
     protected string $value = '';
 
-    final public function __construct(VarFormatInterface $varFormat)
+    final public function __construct(StreamWriterInterface $streamWriter, VarFormatInterface $varFormat)
     {
+        $this->streamWriter = $streamWriter;
         $this->varFormat = $varFormat;
         $this->assertType();
         $this->process();
@@ -82,10 +86,5 @@ abstract class AbstractProcessor implements ProcessorInterface
     final public function info(): string
     {
         return $this->info;
-    }
-
-    final public function value(): string
-    {
-        return $this->value;
     }
 }

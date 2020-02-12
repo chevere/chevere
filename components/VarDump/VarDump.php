@@ -19,6 +19,9 @@ use Chevere\Components\VarDump\Formatters\ConsoleFormatter;
 use Chevere\Components\VarDump\Formatters\HtmlFormatter;
 use Chevere\Components\VarDump\Outputters\ConsoleOutputter;
 use Chevere\Components\VarDump\Outputters\HtmlOutputter;
+use Chevere\Components\Writers\Interfaces\StreamWriterInterface;
+use Chevere\Components\Writers\Interfaces\WritersInterface;
+use Chevere\Components\Writers\Writers;
 
 /**
  * The Chevere VarDump.
@@ -26,12 +29,37 @@ use Chevere\Components\VarDump\Outputters\HtmlOutputter;
  *
  * @codeCoverageIgnore
  */
-final class VarDump implements ToStringInterface
+final class VarDump
 {
-    private string $dump;
+    private $vars;
 
-    public function __construct(...$vars)
+    private StreamWriterInterface $streamWriter;
+
+    private int $shift = 0;
+
+    public function __construct(StreamWriterInterface $streamWriter, ...$vars)
     {
+        $this->streamWriter = $streamWriter;
+        $this->vars = $vars;
+    }
+
+    // Set the shift int, it will be used to remove self-related traces
+    public function withShift(int $shift): VarDump
+    {
+        $new = clone $this;
+        $new->shift = $shift;
+
+        return $new;
+    }
+
+    public function shift(): int
+    {
+        return $this->shift;
+    }
+
+    public function stream(): void
+    {
+        $this->setDebugBacktrace();
         if (BootstrapInstance::get()->isCli()) {
             $formatter = ConsoleFormatter::class;
             $outputter = ConsoleOutputter::class;
@@ -39,12 +67,38 @@ final class VarDump implements ToStringInterface
             $formatter = HtmlOutputter::class;
             $outputter = HtmlFormatter::class;
         }
-        $dumper = new VarDumper(new $formatter, ...$vars);
-        $this->dump = (new $outputter($dumper))->toString();
+        $dumper = (new VarDumper(
+            $this->debugBacktrace,
+            new $formatter,
+            ...$this->vars
+        ));
+        (new $outputter(
+            $dumper,
+            $this->streamWriter
+        ))->emit();
     }
 
-    public function toString(): string
+    final private function setDebugBacktrace(): void
     {
-        return $this->dump;
+        $this->debugBacktrace = debug_backtrace();
+        for ($i = 0; $i <= $this->shift; $i++) {
+            array_shift($this->debugBacktrace);
+        }
+        while (
+            isset($this->debugBacktrace[1]['class'])
+            && VarDump::class == $this->debugBacktrace[1]['class']
+        ) {
+            // @codeCoverageIgnoreStart
+            array_shift($this->debugBacktrace);
+            // @codeCoverageIgnoreEnd
+        }
+        while (
+            isset($this->debugBacktrace[1]['function'])
+            && in_array($this->debugBacktrace[1]['function'], ['xdump', 'xdd'])
+        ) {
+            // @codeCoverageIgnoreStart
+            array_shift($this->debugBacktrace);
+            // @codeCoverageIgnoreEnd
+        }
     }
 }

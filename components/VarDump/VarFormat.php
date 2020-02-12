@@ -40,10 +40,6 @@ final class VarFormat implements VarFormatInterface
 
     private int $depth = -1;
 
-    private string $value = '';
-
-    private string $info = '';
-
     public array $known = [];
 
     public function __construct(VarDumpeableInterface $dumpeable, FormatterInterface $formatter)
@@ -107,9 +103,7 @@ final class VarFormat implements VarFormatInterface
     public function withProcess(): VarFormatInterface
     {
         $new = clone $this;
-
         $new->setProcessor();
-        $new->value .= $new->processor->value();
         $new->setInfo();
         $new->setOutput();
 
@@ -121,10 +115,10 @@ final class VarFormat implements VarFormatInterface
         return $this->indentString;
     }
 
-    public function toString(): string
-    {
-        return $this->output;
-    }
+    // public function toString(): string
+    // {
+    //     return $this->output;
+    // }
 
     private function setProcessor(): void
     {
@@ -132,45 +126,45 @@ final class VarFormat implements VarFormatInterface
         if (in_array($this->dumpeable()->type(), [TypeInterface::ARRAY, TypeInterface::OBJECT])) {
             ++$this->indent;
         }
-        $this->processor = new $processorName($this);
+        $this->processor = new $processorName(writers()->out(), $this);
     }
 
     private function setInfo(): void
     {
-        $this->info = $this->processor->info();
-        if ('' !== $this->info) {
-            if (strpos($this->info, '=')) {
-                $this->info = $this->formatter->emphasis("($this->info)");
-            } else {
-                $this->info = $this->formatter->highlight(VarFormatInterface::_CLASS, $this->info);
-            }
-        }
+        // $this->info = $this->processor->info();
+        // if ('' !== $this->info) {
+        //     if (strpos($this->info, '=')) {
+        //         $this->info = $this->formatter->emphasis("($this->info)");
+        //     } else {
+        //         $this->info = $this->formatter->highlight(VarFormatInterface::_CLASS, $this->info);
+        //     }
+        // }
     }
 
     private function setOutput(): void
     {
-        $table = [
-            '%type%' => $this->formatter->highlight(
-                $this->dumpeable()->type(),
-                $this->dumpeable()->type()
-            ),
-            '%val%' => $this->value,
-            '%info%' => $this->info,
-        ];
-        $template = $this->dumpeable()->template();
-        $aux = [];
-        foreach ($template as $tagName) {
-            $value = $table[$tagName];
-            if ('' == $value) {
-                continue;
-            }
-            $aux[] = $tagName;
-        }
-        $message = implode(' ', $aux);
-        if ((new StrBool($this->value))->startsWith("\n")) {
-            $message = str_replace(' %val%', '%val%', $message);
-        }
-        $this->output = $message;
-        $this->output = strtr($message, $table);
+        // $table = [
+        //     '%type%' => $this->formatter->highlight(
+        //         $this->dumpeable()->type(),
+        //         $this->dumpeable()->type()
+        //     ),
+        //     '%val%' => $this->value,
+        //     '%info%' => $this->info,
+        // ];
+        // $template = $this->dumpeable()->template();
+        // $aux = [];
+        // foreach ($template as $tagName) {
+        //     $value = $table[$tagName];
+        //     if ('' == $value) {
+        //         continue;
+        //     }
+        //     $aux[] = $tagName;
+        // }
+        // $message = implode(' ', $aux);
+        // if ((new StrBool($this->value))->startsWith("\n")) {
+        //     $message = str_replace(' %val%', '%val%', $message);
+        // }
+        // $this->output = $message;
+        // $this->output = strtr($message, $table);
     }
 }

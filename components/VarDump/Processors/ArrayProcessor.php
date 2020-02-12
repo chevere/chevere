@@ -34,15 +34,30 @@ final class ArrayProcessor extends AbstractProcessor
         $this->var = $this->varFormat->dumpeable()->var();
         $this->depth = $this->varFormat->depth() + 1;
         $count = count($this->var);
-        $this->info = 'size=' . $count;
+        $this->streamWriter->write(
+            $this->varFormat->formatter()->highlight(
+                $this->type(),
+                $this->type()
+            )
+            . ' ' .
+            $this->varFormat->formatter()->emphasis(
+                '(size=' . $count . ')'
+            )
+        );
         if ($this->isCircularRef($this->var)) {
-            $this->value .= $this->highlightOperator($this->circularReference());
+            $this->streamWriter->write(
+                ' ' .
+                $this->highlightOperator($this->circularReference())
+            );
 
             return;
         }
         if ($this->depth > self::MAX_DEPTH) {
             if ($count > 0) {
-                $this->value .= $this->highlightOperator($this->maxDepthReached());
+                $this->streamWriter->write(
+                    ' ' .
+                    $this->highlightOperator($this->maxDepthReached())
+                );
             }
 
             return;
@@ -69,7 +84,9 @@ final class ArrayProcessor extends AbstractProcessor
         $operator = $this->highlightOperator('=>');
         foreach ($this->var as $key => $var) {
             // Appends indent+name+operator `   key => `
-            $this->value .= "\n" . $this->varFormat->indentString() . ' ' . $this->varFormat->formatter()->filterEncodedChars((string) $key) . " $operator ";
+            $this->streamWriter->write(
+                "\n" . $this->varFormat->indentString() . ' ' . $this->varFormat->formatter()->filterEncodedChars((string) $key) . " $operator "
+            );
             // Process the underlying array member value
             $this->handleDepth($var);
         }
@@ -86,6 +103,5 @@ final class ArrayProcessor extends AbstractProcessor
             ->withIndent($this->varFormat->indent() + 1)
             ->withKnownObjects($this->varFormat->known())
             ->withProcess();
-        $this->value .= $varFormat->toString();
     }
 }

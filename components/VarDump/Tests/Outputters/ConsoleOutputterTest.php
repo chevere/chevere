@@ -47,7 +47,7 @@ final class ConsoleOutputterTest extends TestCase
             '%functionName%' => __FUNCTION__,
             '%fileLine%' => __FILE__ . ':' . $line
         ]);
-        $string = $outputter->toString();
+        $string = $outputter->emit();
         if ((new ConsoleColor())->isSupported() === false) {
             $parsed = (string) (new Str($parsed))->stripANSIColors();
             $string = (string) (new Str($string))->stripANSIColors();

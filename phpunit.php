@@ -14,18 +14,11 @@ declare(strict_types=1);
 namespace Chevere;
 
 use Chevere\Components\Instances\BootstrapInstance;
-use Chevere\Components\Instances\ScreenContainerInstance;
+use Chevere\Components\Instances\WritersInstance;
 use Chevere\Components\Bootstrap\Bootstrap;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Screen\Container;
-use Chevere\Components\Screen\Formatters\ConsoleFormatter;
-use Chevere\Components\Screen\Formatters\DebugFormatter;
-use Chevere\Components\Screen\Formatters\RuntimeFormatter;
-use Chevere\Components\Screen\Interfaces\ContainerInterface;
-use Chevere\Components\Screen\RuntimeScreen;
-use Chevere\Components\Screen\Screen;
-use Chevere\Components\Screen\ScreenContainer;
+use Chevere\Components\Writers\Writers;
 
 require 'vendor/autoload.php';
 
@@ -37,16 +30,4 @@ new BootstrapInstance(
         ->withDev(false)
 );
 
-new ScreenContainerInstance(
-    new ScreenContainer(
-        (new Container(
-            new Screen(false, new RuntimeFormatter)
-        ))
-            ->withDebugScreen(
-                new Screen(false, new DebugFormatter)
-            )
-            ->withConsoleScreen(
-                new Screen(false, new DebugFormatter)
-            )
-    )
-);
+new WritersInstance(new Writers());

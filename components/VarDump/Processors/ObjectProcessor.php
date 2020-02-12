@@ -21,6 +21,8 @@ use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarDump\VarDumpeable;
 use Chevere\Components\VarDump\VarFormat;
 use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
+use Reflection;
+use ReflectionClass;
 
 final class ObjectProcessor extends AbstractProcessor
 {
@@ -47,15 +49,23 @@ final class ObjectProcessor extends AbstractProcessor
         $this->depth = $this->varFormat->depth() + 1;
         $this->className = get_class($this->var);
         $this->handleNormalizeClassName();
-        $this->info = $this->className;
+        $this->streamWriter->write(
+            $this->varFormat->formatter()->highlight(VarFormatInterface::_CLASS, $this->className)
+        );
         $objectId = spl_object_id($this->var);
         if (in_array($objectId, $this->knownObjects)) {
-            $this->value .= $this->highlightOperator($this->circularReference() . ' #' . $objectId);
+            $this->streamWriter->write(
+                ' ' .
+                $this->highlightOperator($this->circularReference() . ' #' . $objectId)
+            );
 
             return;
         }
         if ($this->depth > self::MAX_DEPTH) {
-            $this->value .= $this->highlightOperator($this->maxDepthReached());
+            $this->streamWriter->write(
+                ' ' .
+                $this->highlightOperator($this->maxDepthReached())
+            );
 
             return;
         }
@@ -66,40 +76,46 @@ final class ObjectProcessor extends AbstractProcessor
 
     private function setProperties(): void
     {
+        // var_dump($this->reflectionObject->getProperties());
         $this->properties = [];
-        foreach (VarFormatInterface::PROPERTIES_REFLECTION_MAP as $visibility => $filter) {
-            /** @scrutinizer ignore-call */
-            $properties = $this->reflectionObject->getProperties($filter);
-            foreach ($properties as $property) {
-                if (!isset($this->properties[$property->getName()])) {
-                    $this->setProperty($property);
-                }
-                $this->properties[$property->getName()]['visibility'][] = $visibility;
-            }
-        }
-        foreach ($this->properties as $name => $value) {
-            $this->processProperty($name, $value);
-        }
-    }
+        // foreach (VarFormatInterface::PROPERTIES_REFLECTION_MAP as $visibility => $filter) {
 
-    private function setProperty(ReflectionProperty $property): void
-    {
-        $property->setAccessible(true);
-        try {
-            $value = $property->getValue($this->var);
-        } catch (Throwable $e) {
-            // $e;
+        // }
+        $reflectionObject = $this->reflectionObject;
+        do {
+            foreach ($reflectionObject->getProperties() as $property) {
+                if (isset($this->properties[$property->getName()])) {
+                    continue;
+                }
+                $property->setAccessible(true);
+                try {
+                    $value = $property->getValue($this->var);
+                } catch (Throwable $e) {
+                    // $e;
+                }
+                $this->properties[$property->getName()] = [
+                    'value' => $value ?? null,
+                    'visibility' => implode(' ', Reflection::getModifierNames($property->getModifiers())),
+                ];
+            }
+        } while ($reflectionObject = $reflectionObject->getParentClass());
+
+        $keys = array_keys($this->properties);
+
+        foreach ($keys as $name) {
+            $this->processProperty($name, $this->properties[$name]);
         }
-        $this->properties[$property->getName()] = ['value' => $value ?? null];
     }
 
     private function processProperty($name, $value): void
     {
-        $visibility = implode(' ', $value['visibility'] ?? $this->properties['visibility']);
+        $visibility = $value['visibility'];
         $wrappedVisibility = $this->varFormat->formatter()->highlight(VarFormatInterface::_PRIVACY, $visibility);
         $property = '$' . $this->varFormat->formatter()->filterEncodedChars($name);
         $wrappedProperty = $this->varFormat->formatter()->highlight(VarFormatInterface::_VARIABLE, $property);
-        $this->value .= "\n" . $this->varFormat->indentString() . $wrappedVisibility . ' ' . $wrappedProperty . ' ';
+        $this->streamWriter->write(
+            "\n" . $this->varFormat->indentString() . $wrappedVisibility . ' ' . $wrappedProperty . ' '
+        );
         $this->handleDepth($value['value']);
     }
 
@@ -114,7 +130,6 @@ final class ObjectProcessor extends AbstractProcessor
             ->withIndent($this->varFormat->indent() + 1)
             ->withKnownObjects($this->knownObjects)
             ->withProcess();
-        $this->value .= $varFormat->toString();
     }
 
     private function handleNormalizeClassName(): void

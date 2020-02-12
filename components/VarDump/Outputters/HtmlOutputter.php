@@ -19,23 +19,25 @@ final class HtmlOutputter extends PlainOutputter
 {
     private bool $hasHeader = false;
 
-    public function prepare(string $output): string
+    public function prepare(): void
     {
         if (headers_sent() === false || headers_list() === []) {
             $this->hasHeader = true;
-            $output .= '<html style="background: ' . VarDumperInterface::BACKGROUND_SHADE . ';"><head></head><body>';
+            $this->streamWriter->write(
+                '<html style="background: '
+                . VarDumperInterface::BACKGROUND_SHADE
+                . ';"><head></head><body>'
+            );
         }
-        $output .= '<pre style="' . VarDumperInterface::STYLE . '">';
-
-        return $output;
+        $this->streamWriter->write(
+            '<pre style="' . VarDumperInterface::STYLE . '">'
+        );
     }
 
-    public function callback(string $output): string
+    public function callback(): void
     {
         if ($this->hasHeader) {
-            $output .= '</body></html>';
+            $this->streamWriter->write('</body></html>');
         }
-
-        return $output;
     }
 }
