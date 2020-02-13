@@ -46,7 +46,6 @@ final class VarDumpeable implements VarDumpeableInterface
         $this->var = $var;
         $this->type = varType($this->var);
         $this->assertSetProcessorName();
-        $this->setTemplate();
     }
 
     public function var()
@@ -92,18 +91,5 @@ final class VarDumpeable implements VarDumpeableInterface
             // @codeCoverageIgnoreEnd
         }
         $this->processorName = $processorName;
-    }
-
-    private function setTemplate(): void
-    {
-        switch ($this->type) {
-            case TypeInterface::ARRAY:
-            case TypeInterface::OBJECT:
-                $this->template = ['%type%', '%info%', '%val%'];
-                break;
-            default:
-                $this->template = ['%type%', '%val%', '%info%'];
-                break;
-        }
     }
 }

@@ -112,7 +112,7 @@ final class VarDumper implements VarDumperInterface
         if (in_array($new->dumpeable->type(), [TypeInterface::ARRAY, TypeInterface::OBJECT])) {
             ++$new->indent;
         }
-        new $processorName($new);
+        (new $processorName($new))->write();
 
         return $new;
     }

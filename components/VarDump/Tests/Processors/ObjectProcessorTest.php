@@ -28,6 +28,7 @@ final class ObjectProcessorTest extends TestCase
         $varDumper = $this->getVarDumper(new stdClass);
         $processor = new ObjectProcessor($varDumper);
         $this->assertSame(stdClass::class, $processor->info());
+        $processor->write();
         $this->assertSame(stdClass::class, $varDumper->writer()->toString());
     }
 
@@ -36,6 +37,7 @@ final class ObjectProcessorTest extends TestCase
         $varDumper = $this->getVarDumper(new DummyClass);
         $processor = new ObjectProcessor($varDumper);
         $this->assertSame(DummyClass::class, $processor->info());
+        $processor->write();
         $string = $varDumper->writer()->toString();
         $this->assertStringContainsString(
             'public $public null',
@@ -58,7 +60,7 @@ final class ObjectProcessorTest extends TestCase
     public function testObjectProperty(): void
     {
         $varDumper = $this->getVarDumper((new DummyClass)->withPublic());
-        new ObjectProcessor($varDumper);
+        (new ObjectProcessor($varDumper))->write();
         $this->assertStringContainsString(
             'public $public stdClass',
             $varDumper->writer()->toString()
@@ -70,7 +72,7 @@ final class ObjectProcessorTest extends TestCase
         $object = new class() {
         };
         $varDumper = $this->getVarDumper($object);
-        $processor = new ObjectProcessor($varDumper);
+        (new ObjectProcessor($varDumper))->write();
         $this->assertSame('class@anonymous', $varDumper->writer()->toString());
     }
 
@@ -79,6 +81,7 @@ final class ObjectProcessorTest extends TestCase
         $object = (new DummyClass)->withCircularReference();
         $varDumper = $this->getVarDumper($object);
         $processor = new ObjectProcessor($varDumper);
+        $processor->write();
         $this->assertStringContainsString(
             'private $circularReference ' . DummyClass::class . ' ' . $processor->circularReference(),
             $varDumper->writer()->toString()
@@ -90,6 +93,7 @@ final class ObjectProcessorTest extends TestCase
         $object = (new DummyClass)->withDeep(ProcessorInterface::MAX_DEPTH);
         $varDumper = $this->getVarDumper($object);
         $processor = new ObjectProcessor($varDumper);
+        $processor->write();
         $this->assertStringContainsString(
             'public $deep stdClass ' . $processor->maxDepthReached(),
             $varDumper->writer()->toString()

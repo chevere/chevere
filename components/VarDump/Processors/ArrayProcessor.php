@@ -14,26 +14,39 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Processors;
 
 use Chevere\Components\Type\Interfaces\TypeInterface;
+use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 use Chevere\Components\VarDump\VarDumpeable;
 use Chevere\Components\VarDump\VarDumper;
 
-final class ArrayProcessor extends AbstractProcessor
+final class ArrayProcessor implements ProcessorInterface
 {
+    use ProcessorTrait;
+
     private array $var;
 
     private int $depth = 0;
+
+    private int $count = 0;
+
+    public function __construct(VarDumperInterface $varDumper)
+    {
+        $this->varDumper = $varDumper;
+        $this->assertType();
+        $this->var = $this->varDumper->dumpeable()->var();
+        $this->depth = $this->varDumper->depth() + 1;
+        $this->count = count($this->var);
+        $this->info = 'size=' . $this->count;
+    }
 
     public function type(): string
     {
         return TypeInterface::ARRAY;
     }
 
-    protected function process(): void
+    public function write(): void
     {
-        $this->var = $this->varDumper->dumpeable()->var();
-        $this->depth = $this->varDumper->depth() + 1;
-        $count = count($this->var);
-        $this->info = 'size=' . $count;
         $this->varDumper->writer()->write(
             $this->typeHighlighted()
             . ' '
@@ -48,7 +61,7 @@ final class ArrayProcessor extends AbstractProcessor
             return;
         }
         if ($this->depth > self::MAX_DEPTH) {
-            if ($count > 0) {
+            if ($this->count > 0) {
                 $this->varDumper->writer()->write(
                     ' '
                     . $this->highlightOperator($this->maxDepthReached())

@@ -14,21 +14,36 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Processors;
 
 use Chevere\Components\Type\Interfaces\TypeInterface;
+use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 
-final class ResourceProcessor extends AbstractProcessor
+final class ResourceProcessor implements ProcessorInterface
 {
+    use ProcessorTrait;
+
+    private string $stringVar = '';
+
+    public function __construct(VarDumperInterface $varDumper)
+    {
+        $this->varDumper = $varDumper;
+        $this->assertType();
+        $this->info = 'type=' . get_resource_type($this->varDumper->dumpeable()->var());
+        $this->stringVar = (string) $this->varDumper->dumpeable()->var();
+    }
+
     public function type(): string
     {
         return TypeInterface::RESOURCE;
     }
 
-    protected function process(): void
+    public function write(): void
     {
-        $this->info = 'type=' . get_resource_type($this->varDumper->dumpeable()->var());
         $this->varDumper->writer()->write(
-            (string) $this->varDumper->dumpeable()->var()
-            . ' '
-            . $this->highlightParentheses($this->info)
+            implode(' ', [
+                $this->stringVar,
+                $this->highlightParentheses($this->info)
+            ])
         );
     }
 }

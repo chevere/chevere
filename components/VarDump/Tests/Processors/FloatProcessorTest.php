@@ -30,6 +30,7 @@ final class FloatProcessorTest extends TestCase
             $varDumper = $this->getVarDumper($var);
             $processor = new FloatProcessor($varDumper);
             $this->assertSame($expectedInfo, $processor->info());
+            $processor->write();
             $this->assertSame(
                 "float $stringVar ($expectedInfo)",
                 $varDumper->writer()->toString()

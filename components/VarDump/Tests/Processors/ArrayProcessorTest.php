@@ -31,13 +31,14 @@ final class ArrayProcessorTest extends TestCase
         $varProcess = $this->getVarDumper($var);
         $processor = new ArrayProcessor($varProcess);
         $this->assertSame($expectInfo, $processor->info());
+        $processor->write();
         $this->assertSame(
             "array ($expectInfo)",
             $varProcess->writer()->toString()
         );
     }
 
-    public function testConstruct(): void
+    public function testX(): void
     {
         $var = [0, 1, 2, 3];
         $expectInfo = 'size=' . count($var);
@@ -45,6 +46,7 @@ final class ArrayProcessorTest extends TestCase
         $varProcess = $this->getVarDumper($var);
         $processor = new ArrayProcessor($varProcess);
         $this->assertSame($expectInfo, $processor->info());
+        $processor->write();
         foreach ($var as $int) {
             $this->assertStringContainsString(
                 str_replace('%s', $int, $containTpl),
@@ -61,6 +63,7 @@ final class ArrayProcessorTest extends TestCase
         $varProcess = $this->getVarDumper($var);
         $processor = new ArrayProcessor($varProcess);
         $this->assertSame($expectInfo, $processor->info());
+        $processor->write();
         $this->assertSame(
             "array ($expectInfo) " . $processor->circularReference(),
             $varProcess->writer()->toString()
@@ -75,6 +78,7 @@ final class ArrayProcessorTest extends TestCase
         }
         $varProcess = $this->getVarDumper($var);
         $processor = new ArrayProcessor($varProcess);
+        $processor->write();
         $this->assertStringContainsString($processor->maxDepthReached(), $varProcess->writer()->toString());
     }
 

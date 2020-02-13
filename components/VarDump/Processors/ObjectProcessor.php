@@ -17,13 +17,17 @@ use Chevere\Components\Str\StrBool;
 use ReflectionObject;
 use Throwable;
 use Chevere\Components\Type\Interfaces\TypeInterface;
+use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 use Chevere\Components\VarDump\VarDumpeable;
 use Chevere\Components\VarDump\VarDumper;
 use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 use Reflection;
 
-final class ObjectProcessor extends AbstractProcessor
+final class ObjectProcessor implements ProcessorInterface
 {
+    use ProcessorTrait;
+
     private object $var;
 
     private ReflectionObject $reflectionObject;
@@ -35,27 +39,39 @@ final class ObjectProcessor extends AbstractProcessor
     /** @var string[] An array containing object ids */
     private array $knownObjects = [];
 
+    private int $objectId;
+
+    public function __construct(VarDumperInterface $varDumper)
+    {
+        $this->varDumper = $varDumper;
+        $this->assertType();
+        $this->var = $this->varDumper->dumpeable()->var();
+        $this->depth = $this->varDumper->depth() + 1;
+        $this->knownObjects = $this->varDumper->known();
+        $this->className = get_class($this->var);
+        $this->handleNormalizeClassName();
+        $this->info = $this->className;
+        $this->objectId = spl_object_id($this->var);
+    }
+
     public function type(): string
     {
         return TypeInterface::OBJECT;
     }
 
-    protected function process(): void
+    public function write(): void
     {
-        $this->var = $this->varDumper->dumpeable()->var();
-        $this->knownObjects = $this->varDumper->known();
-        $this->depth = $this->varDumper->depth() + 1;
-        $this->className = get_class($this->var);
-        $this->handleNormalizeClassName();
-        $this->info = $this->className;
         $this->varDumper->writer()->write(
-            $this->varDumper->formatter()->highlight(VarDumperInterface::_CLASS, $this->className)
+            $this->varDumper->formatter()->highlight(
+                VarDumperInterface::_CLASS,
+                $this->className
+            )
         );
-        $objectId = spl_object_id($this->var);
-        if (in_array($objectId, $this->knownObjects)) {
+
+        if (in_array($this->objectId, $this->knownObjects)) {
             $this->varDumper->writer()->write(
                 ' ' .
-                $this->highlightOperator($this->circularReference() . ' #' . $objectId)
+                $this->highlightOperator($this->circularReference() . ' #' . $this->objectId)
             );
 
             return;
@@ -68,7 +84,7 @@ final class ObjectProcessor extends AbstractProcessor
 
             return;
         }
-        $this->knownObjects[] = $objectId;
+        $this->knownObjects[] = $this->objectId;
         $this->reflectionObject = new ReflectionObject($this->var);
         $this->setProperties();
     }

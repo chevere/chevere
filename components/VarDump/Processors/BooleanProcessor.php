@@ -14,21 +14,31 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Processors;
 
 use Chevere\Components\Type\Interfaces\TypeInterface;
+use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 
-final class BooleanProcessor extends AbstractProcessor
+final class BooleanProcessor implements ProcessorInterface
 {
+    use ProcessorTrait;
+
+    public function __construct(VarDumperInterface $varDumper)
+    {
+        $this->varDumper = $varDumper;
+        $this->assertType();
+        $this->info = $this->varDumper->dumpeable()->var() ? 'true' : 'false';
+    }
+
     public function type(): string
     {
         return TypeInterface::BOOLEAN;
     }
 
-    protected function process(): void
+    public function write(): void
     {
-        $this->info = $this->varDumper->dumpeable()->var() ? 'true' : 'false';
         $this->varDumper->writer()->write(
             $this->typeHighlighted()
-            . ' '
-            . $this->info
+            . ' ' . $this->info
         );
     }
 }

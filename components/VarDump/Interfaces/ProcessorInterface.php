@@ -23,15 +23,21 @@ interface ProcessorInterface
      */
     public function info(): string;
 
-    /**
-     * Provides access to the instance value.
-     * The dumped variable value.
-     */
-    // public function value(): string;
+    public function typeHighlighted(): string;
+
+    public function highlightOperator(string $string): string;
+
+    public function highlightParentheses(string $string): string;
+
+    public function circularReference(): string;
+
+    public function maxDepthReached(): string;
 
     /**
      * Provides access to the instance type.
      * The information about the variable type like `array` or `object`
      */
     public function type(): string;
+
+    public function write(): void;
 }

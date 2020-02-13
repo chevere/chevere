@@ -24,19 +24,20 @@ final class ResourceProcessorTest extends TestCase
 
     public function testConstruct(): void
     {
-        $resource = fopen('php://temp', 'r');
+        $resource = fopen(__FILE__, 'r');
         $resourceString = (string) $resource;
         $expectedInfo = 'type=' . get_resource_type($resource);
         $varDumper = $this->getVarDumper($resource);
         $processor = new ResourceProcessor($varDumper);
-        if (is_resource($resource)) {
-            fclose($resource);
-        }
         $this->assertSame($expectedInfo, $processor->info());
+        $processor->write();
         $this->assertSame(
             $resourceString . " ($expectedInfo)",
             $varDumper->writer()->toString()
         );
+        if (is_resource($resource)) {
+            fclose($resource);
+        }
     }
 
     public function testInvalidArgument(): void

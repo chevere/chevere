@@ -14,16 +14,27 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Processors;
 
 use Chevere\Components\Type\Interfaces\TypeInterface;
-use Chevere\Components\VarDump\Interfaces\HighlightInterface;
+use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 
-final class NullProcessor extends AbstractProcessor
+final class NullProcessor implements ProcessorInterface
 {
+    use ProcessorTrait;
+
+    public function __construct(VarDumperInterface $varDumper)
+    {
+        $this->varDumper = $varDumper;
+        $this->assertType();
+        $this->info = '';
+    }
+
     public function type(): string
     {
         return TypeInterface::NULL;
     }
 
-    protected function process(): void
+    public function write(): void
     {
         $this->varDumper->writer()->write(
             $this->typeHighlighted()
