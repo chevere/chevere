@@ -16,13 +16,13 @@ namespace Chevere\Components\VarDump;
 use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarDump\Interfaces\VarDumpeableInterface;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
-use Chevere\Components\VarDump\Interfaces\VarProcessInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use Chevere\Components\Writers\Interfaces\WriterInterface;
 
 /**
- * The Chevere VarProcess.
+ * The Chevere VarDumper.
  */
-final class VarProcess implements VarProcessInterface
+final class VarDumper implements VarDumperInterface
 {
     private WriterInterface $writer;
 
@@ -64,7 +64,7 @@ final class VarProcess implements VarProcessInterface
         return $this->formatter;
     }
 
-    public function withIndent(int $indent): VarProcessInterface
+    public function withIndent(int $indent): VarDumperInterface
     {
         $new = clone $this;
         $new->indent = $indent;
@@ -79,7 +79,7 @@ final class VarProcess implements VarProcessInterface
         return $this->indent;
     }
 
-    public function withDepth(int $depth): VarProcessInterface
+    public function withDepth(int $depth): VarDumperInterface
     {
         $new = clone $this;
         $new->depth = $depth;
@@ -92,7 +92,7 @@ final class VarProcess implements VarProcessInterface
         return $this->depth;
     }
 
-    public function withKnownObjects(array $known): VarProcessInterface
+    public function withKnownObjects(array $known): VarDumperInterface
     {
         $new = clone $this;
         $new->known = $known;
@@ -105,7 +105,7 @@ final class VarProcess implements VarProcessInterface
         return $this->known;
     }
 
-    public function withProcessor(): VarProcessInterface
+    public function withProcessor(): VarDumperInterface
     {
         $new = clone $this;
         $processorName = $new->dumpeable->processorName();

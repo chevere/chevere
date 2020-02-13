@@ -15,9 +15,9 @@ namespace Chevere\Components\VarDump\Tests;
 
 use Chevere\Components\VarDump\VarDumpeable;
 use stdClass;
-use Chevere\Components\VarDump\Interfaces\VarProcessInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
-use Chevere\Components\VarDump\VarProcess;
+use Chevere\Components\VarDump\VarDumper;
 use PHPUnit\Framework\TestCase;
 
 // final class VarFormatTest extends TestCase

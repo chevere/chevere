@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Highlighters;
 
 use Chevere\Components\Type\Interfaces\TypeInterface;
-use Chevere\Components\VarDump\Interfaces\VarProcessInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use Chevere\Components\VarDump\Interfaces\HighlightInterface;
 use Chevere\Components\VarDump\Highlighters\Traits\AssertKeyTrait;
 
@@ -47,13 +47,13 @@ final class HtmlHighlight implements HighlightInterface
             TypeInterface::OBJECT => '#e74c3c', // red
             TypeInterface::ARRAY => '#2ecc71', // green
             TypeInterface::RESOURCE => '#3498db', // blue
-            VarProcessInterface::_FILE => 'inherith',
-            VarProcessInterface::_CLASS => '#3498db', // blue
-            VarProcessInterface::_OPERATOR => '#7f8c8d', // grey
-            VarProcessInterface::_FUNCTION => '#9b59b6', // purple
-            VarProcessInterface::_MODIFIERS => '#9b59b6', // purple
-            VarProcessInterface::_VARIABLE => '#e67e22', // orange
-            VarProcessInterface::_EMPHASIS => '#7f8c8d',
+            VarDumperInterface::_FILE => 'inherith',
+            VarDumperInterface::_CLASS => '#3498db', // blue
+            VarDumperInterface::_OPERATOR => '#7f8c8d', // grey
+            VarDumperInterface::_FUNCTION => '#9b59b6', // purple
+            VarDumperInterface::_MODIFIERS => '#9b59b6', // purple
+            VarDumperInterface::_VARIABLE => '#e67e22', // orange
+            VarDumperInterface::_EMPHASIS => '#7f8c8d',
         ];
     }
 }

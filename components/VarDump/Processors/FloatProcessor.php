@@ -24,14 +24,14 @@ final class FloatProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $stringVar = (string) $this->varProcess->dumpeable()->var();
+        $stringVar = (string) $this->varDumper->dumpeable()->var();
         $this->info = 'length=' . strlen($stringVar);
-        $this->varProcess->writer()->write(
-            $this->typeHighlighted()
-            . ' '
-            . $this->varProcess->formatter()->filterEncodedChars($stringVar)
-            . ' '
-            . $this->highlightParentheses($this->info)
+        $this->varDumper->writer()->write(
+            implode(' ', [
+                $this->typeHighlighted(),
+                $this->varDumper->formatter()->filterEncodedChars($stringVar),
+                $this->highlightParentheses($this->info)
+            ])
         );
     }
 }

@@ -24,8 +24,8 @@ final class BooleanProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $this->info = $this->varProcess->dumpeable()->var() ? 'true' : 'false';
-        $this->varProcess->writer()->write(
+        $this->info = $this->varDumper->dumpeable()->var() ? 'true' : 'false';
+        $this->varDumper->writer()->write(
             $this->typeHighlighted()
             . ' '
             . $this->info

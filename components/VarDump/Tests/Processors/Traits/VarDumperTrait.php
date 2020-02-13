@@ -15,19 +15,19 @@ namespace Chevere\Components\VarDump\Tests\Processors\Traits;
 
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
-use Chevere\Components\VarDump\Interfaces\VarProcessInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use Chevere\Components\VarDump\VarDumpeable;
-use Chevere\Components\VarDump\VarProcess;
+use Chevere\Components\VarDump\VarDumper;
 use Chevere\Components\Writers\Interfaces\WriterInterface;
 use Chevere\Components\Writers\StreamWriter;
 use GuzzleHttp\Psr7\BufferStream;
 use function GuzzleHttp\Psr7\stream_for;
 
-trait VarProcessTrait
+trait VarDumperTrait
 {
-    private function getVarProcess($var): VarProcessInterface
+    private function getVarDumper($var): VarDumperInterface
     {
-        return new VarProcess(
+        return new VarDumper(
             new StreamWriter(stream_for('')),
             new VarDumpeable($var),
             new PlainFormatter

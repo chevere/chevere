@@ -24,12 +24,12 @@ final class StringProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $this->info = 'length=' . mb_strlen($this->varProcess->dumpeable()->var());
-        $this->varProcess->writer()->write(
+        $this->info = 'length=' . mb_strlen($this->varDumper->dumpeable()->var());
+        $this->varDumper->writer()->write(
             implode(' ', [
                 $this->typeHighlighted(),
-                $this->varProcess->formatter()->filterEncodedChars(
-                    $this->varProcess->dumpeable()->var()
+                $this->varDumper->formatter()->filterEncodedChars(
+                    $this->varDumper->dumpeable()->var()
                 ),
                 $this->highlightParentheses($this->info)
             ])

@@ -25,7 +25,7 @@ final class NullProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $this->varProcess->writer()->write(
+        $this->varDumper->writer()->write(
             $this->typeHighlighted()
         );
     }

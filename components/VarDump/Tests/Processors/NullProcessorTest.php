@@ -14,24 +14,26 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Tests\Processors;
 
 use Chevere\Components\VarDump\Processors\NullProcessor;
-use Chevere\Components\VarDump\Tests\Processors\Traits\VarProcessTrait;
+use Chevere\Components\VarDump\Tests\Processors\Traits\VarDumperTrait;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class NullProcessorTest extends TestCase
 {
-    use VarProcessTrait;
+    use VarDumperTrait;
 
     public function testConstruct(): void
     {
         $var = null;
-        $processor = new NullProcessor($this->getVarProcess($var));
+        $varDumper = $this->getVarDumper($var);
+        $processor = new NullProcessor($varDumper);
         $this->assertSame('', $processor->info());
+        $this->assertSame('null', $varDumper->writer()->toString());
     }
 
     public function testInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new NullProcessor($this->getVarProcess(''));
+        new NullProcessor($this->getVarDumper(''));
     }
 }

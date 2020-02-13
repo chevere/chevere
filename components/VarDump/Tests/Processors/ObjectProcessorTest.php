@@ -13,56 +13,87 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Tests\Processors;
 
+use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 use Chevere\Components\VarDump\Processors\ObjectProcessor;
-use Chevere\Components\VarDump\Tests\AbstractProcessorTest;
-use Chevere\Components\VarDump\Tests\Processors\Traits\VarProcessTrait;
+use Chevere\Components\VarDump\Tests\Processors\Traits\VarDumperTrait;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
 final class ObjectProcessorTest extends TestCase
 {
-    use VarProcessTrait;
-
-    protected function getInvalidConstructArgument()
-    {
-        return [];
-    }
+    use VarDumperTrait;
 
     public function testEmptyObject(): void
     {
-        $processor = new ObjectProcessor($this->getVarProcess(new stdClass));
+        $varDumper = $this->getVarDumper(new stdClass);
+        $processor = new ObjectProcessor($varDumper);
         $this->assertSame(stdClass::class, $processor->info());
-        // $this->assertSame('', $processor->value());
+        $this->assertSame(stdClass::class, $varDumper->writer()->toString());
     }
 
     public function testUnsetObject(): void
     {
-        $processor = new ObjectProcessor($this->getVarProcess(new DummyClass));
+        $varDumper = $this->getVarDumper(new DummyClass);
+        $processor = new ObjectProcessor($varDumper);
         $this->assertSame(DummyClass::class, $processor->info());
-        // $this->assertStringContainsString('public $public null', $processor->value());
-        // $this->assertStringContainsString('protected $protected null', $processor->value());
-        // $this->assertStringContainsString('private $private null', $processor->value());
-        // $this->assertStringContainsString('private $circularReference null', $processor->value());
+        $string = $varDumper->writer()->toString();
+        $this->assertStringContainsString(
+            'public $public null',
+            $string
+        );
+        $this->assertStringContainsString(
+            'protected $protected null',
+            $string
+        );
+        $this->assertStringContainsString(
+            'private $private null',
+            $string
+        );
+        $this->assertStringContainsString(
+            'private $circularReference null',
+            $string
+        );
     }
 
     public function testObjectProperty(): void
     {
-        $processor = new ObjectProcessor($this->getVarProcess((new DummyClass)->withPublic()));
-        // $this->assertStringContainsString('public $public object stdClass', $processor->value());
+        $varDumper = $this->getVarDumper((new DummyClass)->withPublic());
+        new ObjectProcessor($varDumper);
+        $this->assertStringContainsString(
+            'public $public stdClass',
+            $varDumper->writer()->toString()
+        );
+    }
+
+    public function testAnonClass(): void
+    {
+        $object = new class() {
+        };
+        $varDumper = $this->getVarDumper($object);
+        $processor = new ObjectProcessor($varDumper);
+        $this->assertSame('class@anonymous', $varDumper->writer()->toString());
     }
 
     public function testCircularReference(): void
     {
         $object = (new DummyClass)->withCircularReference();
-        $processor = new ObjectProcessor($this->getVarProcess($object));
-        // $this->assertStringContainsString('private $circularReference object ' . DummyClass::class . ' ' . $processor->circularReference(), $processor->value());
+        $varDumper = $this->getVarDumper($object);
+        $processor = new ObjectProcessor($varDumper);
+        $this->assertStringContainsString(
+            'private $circularReference ' . DummyClass::class . ' ' . $processor->circularReference(),
+            $varDumper->writer()->toString()
+        );
     }
 
     public function testDeep(): void
     {
-        $object = (new DummyClass)->withDeep();
-        $processor = new ObjectProcessor($this->getVarProcess($object));
-        // $this->assertStringContainsString('public $deep object stdClass ' . $processor->maxDepthReached(), $processor->value());
+        $object = (new DummyClass)->withDeep(ProcessorInterface::MAX_DEPTH);
+        $varDumper = $this->getVarDumper($object);
+        $processor = new ObjectProcessor($varDumper);
+        $this->assertStringContainsString(
+            'public $deep stdClass ' . $processor->maxDepthReached(),
+            $varDumper->writer()->toString()
+        );
     }
 }
 
@@ -114,14 +145,15 @@ final class DummyClass
         return $new;
     }
 
-    public function withDeep(): self
+    public function withDeep(int $deep): self
     {
         $new = clone $this;
-        $new->deep = new stdClass;
-        $new->deep->deep = new stdClass;
-        $new->deep->deep->deep = new stdClass;
-        $new->deep->deep->deep->deep = new stdClass;
-        $new->deep->deep->deep->deep->deep = new stdClass;
+        $array = ['deep' => []];
+        for ($i = 0; $i <= $deep; $i++) {
+            $array = ['deep' => $array];
+        }
+        $object = json_encode($array);
+        $new->deep = json_decode($object);
 
         return $new;
     }

@@ -14,33 +14,34 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Tests\Processors;
 
 use Chevere\Components\VarDump\Processors\ResourceProcessor;
-use Chevere\Components\VarDump\Tests\Processors\Traits\VarProcessTrait;
+use Chevere\Components\VarDump\Tests\Processors\Traits\VarDumperTrait;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class ResourceProcessorTest extends TestCase
 {
-    use VarProcessTrait;
-
-    protected function getInvalidConstructArgument()
-    {
-        return false;
-    }
+    use VarDumperTrait;
 
     public function testConstruct(): void
     {
-        $resource = fopen(__FILE__, 'r');
-        $processor = new ResourceProcessor($this->getVarProcess($resource));
+        $resource = fopen('php://temp', 'r');
+        $resourceString = (string) $resource;
+        $expectedInfo = 'type=' . get_resource_type($resource);
+        $varDumper = $this->getVarDumper($resource);
+        $processor = new ResourceProcessor($varDumper);
         if (is_resource($resource)) {
             fclose($resource);
         }
-        $this->assertSame('type=stream', $processor->info());
-        // $this->assertStringStartsWith('Resource id #', $processor->value());
+        $this->assertSame($expectedInfo, $processor->info());
+        $this->assertSame(
+            $resourceString . " ($expectedInfo)",
+            $varDumper->writer()->toString()
+        );
     }
 
     public function testInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new ResourceProcessor($this->getVarProcess(null));
+        new ResourceProcessor($this->getVarDumper(null));
     }
 }

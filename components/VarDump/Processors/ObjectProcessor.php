@@ -18,10 +18,9 @@ use ReflectionObject;
 use Throwable;
 use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarDump\VarDumpeable;
-use Chevere\Components\VarDump\VarProcess;
-use Chevere\Components\VarDump\Interfaces\VarProcessInterface;
+use Chevere\Components\VarDump\VarDumper;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use Reflection;
-use function DeepCopy\deep_copy;
 
 final class ObjectProcessor extends AbstractProcessor
 {
@@ -43,18 +42,18 @@ final class ObjectProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $this->var = $this->varProcess->dumpeable()->var();
-        $this->knownObjects = $this->varProcess->known();
-        $this->depth = $this->varProcess->depth() + 1;
+        $this->var = $this->varDumper->dumpeable()->var();
+        $this->knownObjects = $this->varDumper->known();
+        $this->depth = $this->varDumper->depth() + 1;
         $this->className = get_class($this->var);
         $this->handleNormalizeClassName();
         $this->info = $this->className;
-        $this->varProcess->writer()->write(
-            $this->varProcess->formatter()->highlight(VarProcessInterface::_CLASS, $this->className)
+        $this->varDumper->writer()->write(
+            $this->varDumper->formatter()->highlight(VarDumperInterface::_CLASS, $this->className)
         );
         $objectId = spl_object_id($this->var);
         if (in_array($objectId, $this->knownObjects)) {
-            $this->varProcess->writer()->write(
+            $this->varDumper->writer()->write(
                 ' ' .
                 $this->highlightOperator($this->circularReference() . ' #' . $objectId)
             );
@@ -62,7 +61,7 @@ final class ObjectProcessor extends AbstractProcessor
             return;
         }
         if ($this->depth > self::MAX_DEPTH) {
-            $this->varProcess->writer()->write(
+            $this->varDumper->writer()->write(
                 ' ' .
                 $this->highlightOperator($this->maxDepthReached())
             );
@@ -80,9 +79,6 @@ final class ObjectProcessor extends AbstractProcessor
         $reflectionObject = $this->reflectionObject;
         do {
             foreach ($reflectionObject->getProperties() as $property) {
-                if (isset($this->properties[$property->getName()])) {
-                    continue;
-                }
                 $property->setAccessible(true);
                 try {
                     $value = $property->getValue($this->var);
@@ -104,37 +100,39 @@ final class ObjectProcessor extends AbstractProcessor
 
     private function processProperty($name, $modifiers, $var): void
     {
-        $this->varProcess->writer()->write(
-            "\n" . $this->varProcess->indentString()
-            . $this->varProcess->formatter()
-                ->highlight(VarProcessInterface::_MODIFIERS, $modifiers)
-            . ' '
-            . $this->varProcess->formatter()
-                ->highlight(
-                    VarProcessInterface::_VARIABLE,
-                    '$' . $this->varProcess->formatter()->filterEncodedChars($name)
-                )
-            . ' '
+        $this->varDumper->writer()->write(
+            implode(' ', [
+                "\n" . $this->varDumper->indentString(),
+                $this->varDumper->formatter()->highlight(
+                    VarDumperInterface::_MODIFIERS,
+                    $modifiers
+                ),
+                $this->varDumper->formatter()
+                    ->highlight(
+                        VarDumperInterface::_VARIABLE,
+                        '$' . $this->varDumper->formatter()->filterEncodedChars($name)
+                    ), ''
+            ])
         );
-        (new VarProcess(
-            $this->varProcess->writer(),
+        (new VarDumper(
+            $this->varDumper->writer(),
             new VarDumpeable($var),
-            $this->varProcess->formatter()
+            $this->varDumper->formatter()
         ))
             ->withDepth(
                 is_scalar($var)
                 ? $this->depth - 1
                 : $this->depth
             )
-            ->withIndent($this->varProcess->indent() + 1)
+            ->withIndent($this->varDumper->indent() + 1)
             ->withKnownObjects($this->knownObjects)
             ->withProcessor();
     }
 
     private function handleNormalizeClassName(): void
     {
-        if ((new StrBool($this->className))->startsWith(VarProcessInterface::_CLASS_ANON) === true) {
-            $this->className = preg_replace('/[[:^print:]]/', '', $this->className);
+        if ((new StrBool($this->className))->startsWith(VarDumperInterface::_CLASS_ANON) === true) {
+            $this->className = VarDumperInterface::_CLASS_ANON;
         }
     }
 }

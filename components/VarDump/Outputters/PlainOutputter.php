@@ -16,7 +16,7 @@ namespace Chevere\Components\VarDump\Outputters;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 use Chevere\Components\VarDump\VarDumpeable;
 use Chevere\Components\VarDump\Interfaces\OutputterInterface;
-use Chevere\Components\VarDump\VarProcess;
+use Chevere\Components\VarDump\VarDumper;
 use Chevere\Components\Writers\Interfaces\WriterInterface;
 
 class PlainOutputter implements OutputterInterface
@@ -90,7 +90,7 @@ class PlainOutputter implements OutputterInterface
     {
         $pos = 1;
         foreach ($this->vars as $value) {
-            $varProcess = new VarProcess(
+            $varProcess = new VarDumper(
                 $this->streamWriter,
                 new VarDumpeable($value),
                 $this->formatter

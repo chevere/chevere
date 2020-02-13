@@ -13,31 +13,43 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Tests\Processors;
 
+use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 use Chevere\Components\VarDump\Processors\ArrayProcessor;
-use Chevere\Components\VarDump\Tests\Processors\Traits\VarProcessTrait;
+use Chevere\Components\VarDump\Tests\Processors\Traits\VarDumperTrait;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function GuzzleHttp\Psr7\stream_for;
 
 final class ArrayProcessorTest extends TestCase
 {
-    use VarProcessTrait;
+    use VarDumperTrait;
 
     public function testConstructEmpty(): void
     {
-        $processor = new ArrayProcessor($this->getVarProcess([]));
-        $this->assertSame('size=0', $processor->info());
-        // $this->assertSame('', $processor->value());
+        $var = [];
+        $expectInfo = 'size=' . count($var);
+        $varProcess = $this->getVarDumper($var);
+        $processor = new ArrayProcessor($varProcess);
+        $this->assertSame($expectInfo, $processor->info());
+        $this->assertSame(
+            "array ($expectInfo)",
+            $varProcess->writer()->toString()
+        );
     }
 
     public function testConstruct(): void
     {
         $var = [0, 1, 2, 3];
+        $expectInfo = 'size=' . count($var);
         $containTpl = '%s => integer %s (length=1)';
-        $processor = new ArrayProcessor($this->getVarProcess($var));
-        $this->assertSame('size=' . count($var), $processor->info());
+        $varProcess = $this->getVarDumper($var);
+        $processor = new ArrayProcessor($varProcess);
+        $this->assertSame($expectInfo, $processor->info());
         foreach ($var as $int) {
-            // $this->assertStringContainsString(str_replace('%s', $int, $containTpl), $processor->value());
+            $this->assertStringContainsString(
+                str_replace('%s', $int, $containTpl),
+                $varProcess->writer()->toString()
+            );
         }
     }
 
@@ -46,7 +58,7 @@ final class ArrayProcessorTest extends TestCase
         $var = [];
         $var[] = &$var;
         $expectInfo = 'size=' . count($var);
-        $varProcess = $this->getVarProcess($var);
+        $varProcess = $this->getVarDumper($var);
         $processor = new ArrayProcessor($varProcess);
         $this->assertSame($expectInfo, $processor->info());
         $this->assertSame(
@@ -57,15 +69,18 @@ final class ArrayProcessorTest extends TestCase
 
     public function testMaxDepth(): void
     {
-        $var = [[[]]];
-        $var[] = &$var;
-        $processor = new ArrayProcessor($this->getVarProcess($var));
-        // $this->assertStringContainsString($processor->maxDepthReached(), $processor->value());
+        $var = [];
+        for ($i = 0; $i <= ProcessorInterface::MAX_DEPTH; $i++) {
+            $var = [$var];
+        }
+        $varProcess = $this->getVarDumper($var);
+        $processor = new ArrayProcessor($varProcess);
+        $this->assertStringContainsString($processor->maxDepthReached(), $varProcess->writer()->toString());
     }
 
     public function testInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new ArrayProcessor($this->getVarProcess(null));
+        new ArrayProcessor($this->getVarDumper(null));
     }
 }

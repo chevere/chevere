@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Highlighters;
 
 use Chevere\Components\Type\Interfaces\TypeInterface;
-use Chevere\Components\VarDump\Interfaces\VarProcessInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use Chevere\Components\VarDump\Interfaces\HighlightInterface;
 use Chevere\Components\VarDump\Highlighters\Traits\AssertKeyTrait;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
@@ -52,13 +52,13 @@ final class ConsoleHighlight implements HighlightInterface
             TypeInterface::OBJECT => 'color_39',
             TypeInterface::ARRAY => 'color_41',
             TypeInterface::RESOURCE => 'color_147',
-            VarProcessInterface::_FILE => 'default',
-            VarProcessInterface::_CLASS => 'color_147',
-            VarProcessInterface::_OPERATOR => 'color_245',
-            VarProcessInterface::_FUNCTION => 'color_39',
-            VarProcessInterface::_MODIFIERS => 'color_133',
-            VarProcessInterface::_VARIABLE => 'color_208',
-            VarProcessInterface::_EMPHASIS => ['color_245', 'italic']
+            VarDumperInterface::_FILE => 'default',
+            VarDumperInterface::_CLASS => 'color_147',
+            VarDumperInterface::_OPERATOR => 'color_245',
+            VarDumperInterface::_FUNCTION => 'color_39',
+            VarDumperInterface::_MODIFIERS => 'color_133',
+            VarDumperInterface::_VARIABLE => 'color_208',
+            VarDumperInterface::_EMPHASIS => ['color_245', 'italic']
         ];
     }
 }

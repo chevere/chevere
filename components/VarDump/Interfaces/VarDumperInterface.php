@@ -24,7 +24,7 @@ use Chevere\Components\VarDump\Processors\ResourceProcessor;
 use Chevere\Components\VarDump\Processors\StringProcessor;
 use Chevere\Components\Writers\Interfaces\WriterInterface;
 
-interface VarProcessInterface
+interface VarDumperInterface
 {
     const _FILE = '_file';
     const _CLASS = '_class';
@@ -62,7 +62,7 @@ interface VarProcessInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified $indent.
      */
-    public function withIndent(int $indent): VarProcessInterface;
+    public function withIndent(int $indent): VarDumperInterface;
 
     /**
      * Provides access to the instance $indent.
@@ -80,7 +80,7 @@ interface VarProcessInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified $depth.
      */
-    public function withDepth(int $depth): VarProcessInterface;
+    public function withDepth(int $depth): VarDumperInterface;
 
     /**
      * Provides access to the instance $depth.
@@ -93,12 +93,12 @@ interface VarProcessInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified known object IDs.
      */
-    public function withKnownObjects(array $known): VarProcessInterface;
+    public function withKnownObjects(array $known): VarDumperInterface;
 
     public function known(): array;
 
     /**
      * Process the var dump operation.
      */
-    public function withProcessor(): VarProcessInterface;
+    public function withProcessor(): VarDumperInterface;
 }
