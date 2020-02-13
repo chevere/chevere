@@ -20,31 +20,17 @@ use Chevere\Components\VarDump\VarDumpeable;
 use Chevere\Components\VarDump\VarProcess;
 use Chevere\Components\Writers\Interfaces\WriterInterface;
 use Chevere\Components\Writers\StreamWriter;
+use GuzzleHttp\Psr7\BufferStream;
 use function GuzzleHttp\Psr7\stream_for;
 
 trait VarProcessTrait
 {
-    private WriterInterface $writer;
-
-    private FormatterInterface $formater;
-
-    public function setUp(): void
-    {
-        $this->writer = new StreamWriter(stream_for(''));
-        $this->formater = new PlainFormatter;
-    }
-
-    private function getWriter(): WriterInterface
-    {
-        return $this->writer;
-    }
-
     private function getVarProcess($var): VarProcessInterface
     {
         return new VarProcess(
-            $this->writer,
+            new StreamWriter(stream_for('')),
             new VarDumpeable($var),
-            $this->formater
+            new PlainFormatter
         );
     }
 }

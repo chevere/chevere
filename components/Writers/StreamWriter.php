@@ -33,16 +33,6 @@ final class StreamWriter implements WriterInterface
 
     public function toString(): string
     {
-        $new = clone $this;
-        $stream = stream_for($this->stream);
-        $string = '';
-        if ($stream->isSeekable()) {
-            $stream->rewind();
-        }
-        while ($stream->eof() === false) {
-            $string .= $stream->read(1024 * 8);
-        }
-
-        return $string;
+        return $this->stream->__toString();
     }
 }

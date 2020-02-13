@@ -17,6 +17,7 @@ use Chevere\Components\VarDump\Processors\ArrayProcessor;
 use Chevere\Components\VarDump\Tests\Processors\Traits\VarProcessTrait;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use function GuzzleHttp\Psr7\stream_for;
 
 final class ArrayProcessorTest extends TestCase
 {
@@ -45,11 +46,12 @@ final class ArrayProcessorTest extends TestCase
         $var = [];
         $var[] = &$var;
         $expectInfo = 'size=' . count($var);
-        $processor = new ArrayProcessor($this->getVarProcess($var));
+        $varProcess = $this->getVarProcess($var);
+        $processor = new ArrayProcessor($varProcess);
         $this->assertSame($expectInfo, $processor->info());
         $this->assertSame(
             "array ($expectInfo) " . $processor->circularReference(),
-            $this->getWriter()->toString()
+            $varProcess->writer()->toString()
         );
     }
 
