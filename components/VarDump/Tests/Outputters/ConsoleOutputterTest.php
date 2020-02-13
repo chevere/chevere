@@ -27,31 +27,31 @@ use Chevere\Components\Variable\VariableExport;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 use PHPUnit\Framework\TestCase;
 
-final class ConsoleOutputterTest extends TestCase
-{
-    public function testEmpty(): void
-    {
-        $varDumper = new VarDumper(new PlainFormatter);
-        $outputter = new ConsoleOutputter($varDumper);
-        $line = __LINE__ - 2;
-        // $fileReturn = new FileReturn(
-        //     new PhpFile(new File(
-        //         new Path(__DIR__ . '/_resources/output-console.php')
-        //     ))
-        // );
-        // $fileReturn->put(new VariableExport($outputter->toString()));
-        $template = include '_resources/output-console-color.php';
-        $parsed = strtr($template, [
-            '%varDumperClassName%' => VarDumper::class,
-            '%className%' => self::class,
-            '%functionName%' => __FUNCTION__,
-            '%fileLine%' => __FILE__ . ':' . $line
-        ]);
-        $string = $outputter->emit();
-        if ((new ConsoleColor())->isSupported() === false) {
-            $parsed = (string) (new Str($parsed))->stripANSIColors();
-            $string = (string) (new Str($string))->stripANSIColors();
-        }
-        $this->assertSame($parsed, $string);
-    }
-}
+// final class ConsoleOutputterTest extends TestCase
+// {
+//     public function testEmpty(): void
+//     {
+//         $varDumper = new VarDumper(new PlainFormatter);
+//         $outputter = new ConsoleOutputter($varDumper);
+//         $line = __LINE__ - 2;
+//         // $fileReturn = new FileReturn(
+//         //     new PhpFile(new File(
+//         //         new Path(__DIR__ . '/_resources/output-console.php')
+//         //     ))
+//         // );
+//         // $fileReturn->put(new VariableExport($outputter->toString()));
+//         $template = include '_resources/output-console-color.php';
+//         $parsed = strtr($template, [
+//             '%varDumperClassName%' => VarDumper::class,
+//             '%className%' => self::class,
+//             '%functionName%' => __FUNCTION__,
+//             '%fileLine%' => __FILE__ . ':' . $line
+//         ]);
+//         $string = $outputter->emit();
+//         if ((new ConsoleColor())->isSupported() === false) {
+//             $parsed = (string) (new Str($parsed))->stripANSIColors();
+//             $string = (string) (new Str($string))->stripANSIColors();
+//         }
+//         $this->assertSame($parsed, $string);
+//     }
+// }

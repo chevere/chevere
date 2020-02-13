@@ -15,14 +15,13 @@ namespace Chevere\Components\VarDump\Tests\Processors;
 
 use stdClass;
 use Chevere\Components\VarDump\Processors\BooleanProcessor;
-use Chevere\Components\VarDump\Tests\AbstractProcessorTest;
+use Chevere\Components\VarDump\Tests\Processors\Traits\VarProcessTrait;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
-final class BooleanProcessorTest extends AbstractProcessorTest
+final class BooleanProcessorTest extends TestCase
 {
-    protected function getProcessorName(): string
-    {
-        return BooleanProcessor::class;
-    }
+    use VarProcessTrait;
 
     protected function getInvalidConstructArgument()
     {
@@ -34,10 +33,15 @@ final class BooleanProcessorTest extends AbstractProcessorTest
         foreach ([
             'true' => true,
             'false' => false
-        ] as $val => $var) {
-            $processor = new BooleanProcessor($this->getVarFormat($var));
-            $this->assertSame('', $processor->info());
-            $this->assertSame($val, $processor->value());
+        ] as $info => $var) {
+            $processor = new BooleanProcessor($this->getVarProcess($var));
+            $this->assertSame($info, $processor->info(), 'info');
         }
+    }
+
+    public function testInvalidArgument(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new BooleanProcessor($this->getVarProcess(null));
     }
 }

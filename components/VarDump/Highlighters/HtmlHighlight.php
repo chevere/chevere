@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Highlighters;
 
 use Chevere\Components\Type\Interfaces\TypeInterface;
-use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
+use Chevere\Components\VarDump\Interfaces\VarProcessInterface;
 use Chevere\Components\VarDump\Interfaces\HighlightInterface;
 use Chevere\Components\VarDump\Highlighters\Traits\AssertKeyTrait;
 
@@ -28,7 +28,7 @@ final class HtmlHighlight implements HighlightInterface
     {
         $this->assertKey($key);
         $this->key = $key;
-        $this->color = $this->pallete[$this->key] ?? 'inherith';
+        $this->color = $this->pallete()[$this->key] ?? 'inherith';
     }
 
     public function wrap(string $dump): string
@@ -47,13 +47,13 @@ final class HtmlHighlight implements HighlightInterface
             TypeInterface::OBJECT => '#e74c3c', // red
             TypeInterface::ARRAY => '#2ecc71', // green
             TypeInterface::RESOURCE => '#3498db', // blue
-            VarFormatInterface::_FILE => 'inherith',
-            VarFormatInterface::_CLASS => '#3498db', // blue
-            VarFormatInterface::_OPERATOR => '#7f8c8d', // grey
-            VarFormatInterface::_FUNCTION => '#9b59b6', // purple
-            VarFormatInterface::_PRIVACY => '#9b59b6', // purple
-            VarFormatInterface::_VARIABLE => '#e67e22', // orange
-            VarFormatInterface::_EMPHASIS => '#7f8c8d',
+            VarProcessInterface::_FILE => 'inherith',
+            VarProcessInterface::_CLASS => '#3498db', // blue
+            VarProcessInterface::_OPERATOR => '#7f8c8d', // grey
+            VarProcessInterface::_FUNCTION => '#9b59b6', // purple
+            VarProcessInterface::_MODIFIERS => '#9b59b6', // purple
+            VarProcessInterface::_VARIABLE => '#e67e22', // orange
+            VarProcessInterface::_EMPHASIS => '#7f8c8d',
         ];
     }
 }

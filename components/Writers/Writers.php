@@ -13,32 +13,32 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Writers;
 
-use Chevere\Components\Writers\Interfaces\StreamWriterInterface;
+use Chevere\Components\Writers\Interfaces\WriterInterface;
 use Chevere\Components\Writers\Interfaces\WritersInterface;
 use function GuzzleHttp\Psr7\stream_for;
 
 final class Writers implements WritersInterface
 {
-    private StreamWriterInterface $error;
+    private WriterInterface $error;
 
-    private StreamWriterInterface $out;
+    private WriterInterface $out;
 
-    private StreamWriterInterface $debug;
+    private WriterInterface $debug;
 
-    private StreamWriterInterface $log;
+    private WriterInterface $log;
 
     public function __construct()
     {
         // $this->error = new StreamWriter(stream_for(fopen('php://stderr', 'w')));
-        // $this->out = new StreamWriter(stream_for(fopen(__DIR__ . '/out', 'w')));
-        $this->error = new SilentStreamWriter();
-        $this->out = new SilentStreamWriter();
-        $this->debug = new SilentStreamWriter();
-        $this->log = new SilentStreamWriter();
+        // $this->out = new StreamWriter(stream_for(fopen(__DIR__ . '/out.html', 'w')));
+        $this->error = new SilentWriter();
+        // $this->out = new SilentStreamWriter();
+        $this->debug = new SilentWriter();
+        $this->log = new SilentWriter();
         $this->out = new StreamWriter(stream_for(fopen('php://stdout', 'w')));
     }
 
-    public function withError(StreamWriterInterface $streamWritter): WritersInterface
+    public function withError(WriterInterface $streamWritter): WritersInterface
     {
         $new = clone $this;
         $new->error = $streamWritter;
@@ -46,12 +46,12 @@ final class Writers implements WritersInterface
         return $new;
     }
 
-    public function error(): StreamWriterInterface
+    public function error(): WriterInterface
     {
         return $this->error;
     }
 
-    public function withOut(StreamWriterInterface $streamWritter): WritersInterface
+    public function withOut(WriterInterface $streamWritter): WritersInterface
     {
         $new = clone $this;
         $new->out = $streamWritter;
@@ -59,12 +59,12 @@ final class Writers implements WritersInterface
         return $new;
     }
 
-    public function out(): StreamWriterInterface
+    public function out(): WriterInterface
     {
         return $this->out;
     }
 
-    public function withDebug(StreamWriterInterface $streamWritter): WritersInterface
+    public function withDebug(WriterInterface $streamWritter): WritersInterface
     {
         $new = clone $this;
         $new->debug = $streamWritter;
@@ -72,12 +72,12 @@ final class Writers implements WritersInterface
         return $new;
     }
 
-    public function debug(): StreamWriterInterface
+    public function debug(): WriterInterface
     {
         return $this->debug;
     }
 
-    public function withLog(StreamWriterInterface $streamWritter): WritersInterface
+    public function withLog(WriterInterface $streamWritter): WritersInterface
     {
         $new = clone $this;
         $new->log = $streamWritter;
@@ -85,7 +85,7 @@ final class Writers implements WritersInterface
         return $new;
     }
 
-    public function log(): StreamWriterInterface
+    public function log(): WriterInterface
     {
         return $this->log;
     }

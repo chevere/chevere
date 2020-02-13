@@ -22,26 +22,18 @@ use Chevere\Components\VarDump\Processors\NullProcessor;
 use Chevere\Components\VarDump\Processors\ObjectProcessor;
 use Chevere\Components\VarDump\Processors\ResourceProcessor;
 use Chevere\Components\VarDump\Processors\StringProcessor;
-use Chevere\Components\VarDump\VarDumpeable;
-use ReflectionProperty;
+use Chevere\Components\Writers\Interfaces\WriterInterface;
 
-interface VarFormatInterface
+interface VarProcessInterface
 {
     const _FILE = '_file';
     const _CLASS = '_class';
     const _CLASS_ANON = 'class@anonymous';
     const _OPERATOR = '_operator';
     const _FUNCTION = '_function';
-    const _PRIVACY = '_privacy';
+    const _MODIFIERS = '_modifiers';
     const _VARIABLE = '_variable';
     const _EMPHASIS = '_emphasis';
-
-    const PROPERTIES_REFLECTION_MAP = [
-        'public' => ReflectionProperty::IS_PUBLIC,
-        'protected' => ReflectionProperty::IS_PROTECTED,
-        'private' => ReflectionProperty::IS_PRIVATE,
-        'static' => ReflectionProperty::IS_STATIC,
-    ];
 
     /** @var array [ProcessorInterface $processor,] */
     const PROCESSORS = [
@@ -55,7 +47,7 @@ interface VarFormatInterface
         TypeInterface::RESOURCE => ResourceProcessor::class,
     ];
 
-    public function __construct(VarDumpeableInterface $dumpeable, FormatterInterface $formatter);
+    public function writer(): WriterInterface;
 
     public function dumpeable(): VarDumpeableInterface;
 
@@ -70,7 +62,7 @@ interface VarFormatInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified $indent.
      */
-    public function withIndent(int $indent): VarFormatInterface;
+    public function withIndent(int $indent): VarProcessInterface;
 
     /**
      * Provides access to the instance $indent.
@@ -88,7 +80,7 @@ interface VarFormatInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified $depth.
      */
-    public function withDepth(int $depth): VarFormatInterface;
+    public function withDepth(int $depth): VarProcessInterface;
 
     /**
      * Provides access to the instance $depth.
@@ -101,17 +93,12 @@ interface VarFormatInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified known object IDs.
      */
-    public function withKnownObjects(array $known): VarFormatInterface;
+    public function withKnownObjects(array $known): VarProcessInterface;
 
     public function known(): array;
 
     /**
      * Process the var dump operation.
      */
-    public function withProcess(): VarFormatInterface;
-
-    /**
-     * Provides access to the instance $output.
-     */
-    // public function toString(): string;
+    public function withProcessor(): VarProcessInterface;
 }

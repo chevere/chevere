@@ -13,15 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Interfaces;
 
-use Chevere\Components\Writers\Interfaces\StreamWriterInterface;
-
 interface OutputterInterface
 {
-    public function __construct(VarDumperInterface $dumper, StreamWriterInterface $streamWriter);
-
-    public function varDumper(): VarDumperInterface;
-
     public function prepare(): void;
 
-    public function emit(): void;
+    public function callback(): void;
 }

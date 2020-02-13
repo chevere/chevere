@@ -26,13 +26,13 @@ interface HighlightInterface
         TypeInterface::OBJECT,
         TypeInterface::ARRAY,
         TypeInterface::RESOURCE,
-        VarFormatInterface::_FILE,
-        VarFormatInterface::_CLASS,
-        VarFormatInterface::_OPERATOR,
-        VarFormatInterface::_FUNCTION,
-        VarFormatInterface::_PRIVACY,
-        VarFormatInterface::_VARIABLE,
-        VarFormatInterface::_EMPHASIS,
+        VarProcessInterface::_FILE,
+        VarProcessInterface::_CLASS,
+        VarProcessInterface::_OPERATOR,
+        VarProcessInterface::_FUNCTION,
+        VarProcessInterface::_MODIFIERS,
+        VarProcessInterface::_VARIABLE,
+        VarProcessInterface::_EMPHASIS,
     ];
 
     public function __construct(string $key);

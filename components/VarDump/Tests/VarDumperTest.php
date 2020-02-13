@@ -28,54 +28,54 @@ use Chevere\Components\Variable\VariableExport;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-final class VarDumperTest extends TestCase
-{
-    private function getVars(): array
-    {
-        return [null, true, 1, '', [], new stdClass];
-    }
+// final class VarDumperTest extends TestCase
+// {
+//     private function getVars(): array
+//     {
+//         return [null, true, 1, '', [], new stdClass];
+//     }
 
-    private function getDumpers(): array
-    {
-        return [];
-    }
+//     private function getDumpers(): array
+//     {
+//         return [];
+//     }
 
-    // private function createResources(): void
-    // {
-    //     $dumpers = $this->getDumpers();
-    //     foreach ($dumpers as $shortName => $dumper) {
-    //         $file = new File(
-    //             new Path(
-    //                 __DIR__ . '/' .
-    //                 sprintf('resources/%s-dumped.php', $shortName)
-    //             )
-    //         );
-    //         try {
-    //             $file->remove();
-    //         } catch (FileNotFoundException | FileUnableToRemoveException $e) {
-    //             // $e silence
-    //         }
-    //         $file->create();
-    //         $fr =
-    //             new FileReturn(
-    //                 new FilePhp($file)
-    //             );
-    //         $dumper = $dumper->withVars(...$this->getVars());
-    //         $fr->put(new VariableExport($dumper->outputter()->toString()));
-    //     }
-    // }
+//     // private function createResources(): void
+//     // {
+//     //     $dumpers = $this->getDumpers();
+//     //     foreach ($dumpers as $shortName => $dumper) {
+//     //         $file = new File(
+//     //             new Path(
+//     //                 __DIR__ . '/' .
+//     //                 sprintf('resources/%s-dumped.php', $shortName)
+//     //             )
+//     //         );
+//     //         try {
+//     //             $file->remove();
+//     //         } catch (FileNotFoundException | FileUnableToRemoveException $e) {
+//     //             // $e silence
+//     //         }
+//     //         $file->create();
+//     //         $fr =
+//     //             new FileReturn(
+//     //                 new FilePhp($file)
+//     //             );
+//     //         $dumper = $dumper->withVars(...$this->getVars());
+//     //         $fr->put(new VariableExport($dumper->outputter()->toString()));
+//     //     }
+//     // }
 
-    public function testConstruct(): void
-    {
-        $formatter = new PlainFormatter;
-        $varDumper = new VarDumper($formatter);
-        $this->assertSame($formatter, $varDumper->formatter());
-        $this->assertSame([], $varDumper->vars());
-        // xdd($varDumper->debugBacktrace());
-    }
+//     public function testConstruct(): void
+//     {
+//         $formatter = new PlainFormatter;
+//         $varDumper = new VarDumper($formatter);
+//         $this->assertSame($formatter, $varDumper->formatter());
+//         $this->assertSame([], $varDumper->vars());
+//         // xdd($varDumper->debugBacktrace());
+//     }
 
-    // public function testXdd(): void
-    // {
-    //     xdd(...$this->getVars());
-    // }
-}
+//     // public function testXdd(): void
+//     // {
+//     //     xdd(...$this->getVars());
+//     // }
+// }

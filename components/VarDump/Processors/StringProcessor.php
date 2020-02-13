@@ -17,8 +17,6 @@ use Chevere\Components\Type\Interfaces\TypeInterface;
 
 final class StringProcessor extends AbstractProcessor
 {
-    private string $var;
-
     public function type(): string
     {
         return TypeInterface::STRING;
@@ -26,18 +24,15 @@ final class StringProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $this->var = $this->varFormat->dumpeable()->var();
-        $this->streamWriter->write(
-            $this->varFormat->formatter()->highlight(
-                $this->type(),
-                $this->type()
-            )
-            . ' '
-            . $this->varFormat->formatter()->filterEncodedChars($this->var)
-            . ' '
-            . $this->varFormat->formatter()->emphasis(
-                '(length=' . strlen($this->var) . ')'
-            )
+        $this->info = 'length=' . mb_strlen($this->varProcess->dumpeable()->var());
+        $this->varProcess->writer()->write(
+            implode(' ', [
+                $this->typeHighlighted(),
+                $this->varProcess->formatter()->filterEncodedChars(
+                    $this->varProcess->dumpeable()->var()
+                ),
+                $this->highlightParentheses($this->info)
+            ])
         );
     }
 }

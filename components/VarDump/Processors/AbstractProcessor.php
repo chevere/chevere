@@ -16,28 +16,21 @@ namespace Chevere\Components\VarDump\Processors;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
 use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
-use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
-use Chevere\Components\Writers\Interfaces\StreamWriterInterface;
+use Chevere\Components\VarDump\Interfaces\VarProcessInterface;
 use InvalidArgumentException;
 use TypeError;
 use function ChevereFn\varType;
 
 abstract class AbstractProcessor implements ProcessorInterface
 {
-    protected StreamWriterInterface $streamWriter;
-
-    protected VarFormatInterface $varFormat;
+    protected VarProcessInterface $varProcess;
 
     /** @var string */
     protected string $info = '';
 
-    /** @var string */
-    protected string $value = '';
-
-    final public function __construct(StreamWriterInterface $streamWriter, VarFormatInterface $varFormat)
+    final public function __construct(VarProcessInterface $varProcess)
     {
-        $this->streamWriter = $streamWriter;
-        $this->varFormat = $varFormat;
+        $this->varProcess = $varProcess;
         $this->assertType();
         $this->process();
     }
@@ -47,30 +40,41 @@ abstract class AbstractProcessor implements ProcessorInterface
      */
     abstract protected function process(): void;
 
-    abstract public function type(): string;
+    // abstract public function type(): string;
 
     final private function assertType(): void
     {
         $type = new Type($this->type());
-        if (!$type->validate($this->varFormat->dumpeable()->var())) {
+        if (!$type->validate($this->varProcess->dumpeable()->var())) {
             throw new InvalidArgumentException(
                 (new Message('Instance of %className% expects a type %expected% for the return value of %method%, type %provided% returned'))
                     ->code('%className%', static::class)
                     ->code('%expected%', $this->type())
-                    ->code('%method%', get_class($this->varFormat) . '::var()')
-                    ->code('%provided%', varType($this->varFormat->dumpeable()->var()))
+                    ->code('%method%', get_class($this->varProcess) . '::var()')
+                    ->code('%provided%', varType($this->varProcess->dumpeable()->var()))
                     ->toString()
             );
         }
     }
 
+    final public function typeHighlighted(): string
+    {
+        return $this->varProcess->formatter()
+                ->highlight($this->type(), $this->type());
+    }
+
     final public function highlightOperator(string $string): string
     {
-        return $this->varFormat->formatter()
+        return $this->varProcess->formatter()
                 ->highlight(
-                    VarFormatInterface::_OPERATOR,
+                    VarProcessInterface::_OPERATOR,
                     $string
                 );
+    }
+
+    final public function highlightParentheses(string $string): string
+    {
+        return $this->varProcess->formatter()->emphasis("($string)");
     }
 
     final public function circularReference(): string

@@ -14,25 +14,24 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Tests\Processors;
 
 use Chevere\Components\VarDump\Processors\NullProcessor;
-use Chevere\Components\VarDump\Tests\AbstractProcessorTest;
+use Chevere\Components\VarDump\Tests\Processors\Traits\VarProcessTrait;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
-final class NullProcessorTest extends AbstractProcessorTest
+final class NullProcessorTest extends TestCase
 {
-    protected function getProcessorName(): string
-    {
-        return NullProcessor::class;
-    }
-
-    protected function getInvalidConstructArgument()
-    {
-        return true;
-    }
+    use VarProcessTrait;
 
     public function testConstruct(): void
     {
         $var = null;
-        $processor = new NullProcessor($this->getVarFormat($var));
+        $processor = new NullProcessor($this->getVarProcess($var));
         $this->assertSame('', $processor->info());
-        $this->assertSame('', $processor->value());
+    }
+
+    public function testInvalidArgument(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new NullProcessor($this->getVarProcess(''));
     }
 }

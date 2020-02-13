@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Writers\Interfaces;
 
-interface StreamWriterInterface
+use Chevere\Components\Common\Interfaces\ToStringInterface;
+
+interface WriterInterface extends ToStringInterface
 {
     public function write(string $string): void;
 }

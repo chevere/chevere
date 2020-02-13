@@ -24,11 +24,11 @@ final class ResourceProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $info = '(type=' . get_resource_type($this->varFormat->dumpeable()->var()) . ')';
-        $this->streamWriter->write(
-            (string) $this->varFormat->dumpeable()->var()
+        $this->info = 'type=' . get_resource_type($this->varProcess->dumpeable()->var());
+        $this->varProcess->writer()->write(
+            (string) $this->varProcess->dumpeable()->var()
             . ' '
-            . $this->varFormat->formatter()->emphasis($info)
+            . $this->highlightParentheses($this->info)
         );
     }
 }

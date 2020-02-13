@@ -14,26 +14,25 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Tests\Processors;
 
 use Chevere\Components\VarDump\Processors\StringProcessor;
-use Chevere\Components\VarDump\Tests\AbstractProcessorTest;
+use Chevere\Components\VarDump\Tests\Processors\Traits\VarProcessTrait;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
-final class StringProcessorTest extends AbstractProcessorTest
+final class StringProcessorTest extends TestCase
 {
-    protected function getProcessorName(): string
-    {
-        return StringProcessor::class;
-    }
-
-    protected function getInvalidConstructArgument()
-    {
-        return [];
-    }
+    use VarProcessTrait;
 
     public function testConstruct(): void
     {
-        foreach (['', 'string', 'another string', '100', 'false'] as $var) {
-            $processor = new StringProcessor($this->getVarFormat($var));
-            $this->assertSame('length=' . strlen($var), $processor->info());
-            $this->assertSame($var, $processor->value());
+        foreach (['', 'string', 'cádena', 'another string', '100', 'false'] as $var) {
+            $processor = new StringProcessor($this->getVarProcess($var));
+            $this->assertSame('length=' . mb_strlen($var), $processor->info(), $var);
         }
+    }
+
+    public function testInvalidArgument(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new StringProcessor($this->getVarProcess(null));
     }
 }

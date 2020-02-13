@@ -102,7 +102,7 @@ final class Str implements StrInterface
     {
         $pos = strpos($this->string, $search);
         if (false !== $pos) {
-            $subject = substr_replace($this->string, $replace, $pos, strlen($search));
+            $subject = substr_replace($this->string, $replace, $pos, mb_strlen($search));
         }
         $this->string = $subject ?? '';
 
@@ -119,7 +119,7 @@ final class Str implements StrInterface
     {
         $pos = strrpos($this->string, $search);
         if (false !== $pos) {
-            $subject = substr_replace($this->string, $replace, $pos, strlen($search));
+            $subject = substr_replace($this->string, $replace, $pos, mb_strlen($search));
         }
 
         $this->string = $subject ?? '';

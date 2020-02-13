@@ -17,6 +17,12 @@ use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 
 final class HtmlOutputter extends PlainOutputter
 {
+    const BACKGROUND = '#132537';
+    const BACKGROUND_SHADE = '#132537';
+    /** @var string Dump style, no double quotes. */
+    const STYLE = "font: 14px 'Fira Code Retina', 'Operator Mono', Inconsolata, Consolas,
+    monospace, sans-serif, sans-serif; line-height: 1.2; color: #ecf0f1; padding: 15px; margin: 10px 0; word-break: break-word; white-space: pre-wrap; background: " . self::BACKGROUND . '; display: block; text-align: left; border: none; border-radius: 4px;';
+
     private bool $hasHeader = false;
 
     public function prepare(): void
@@ -25,12 +31,12 @@ final class HtmlOutputter extends PlainOutputter
             $this->hasHeader = true;
             $this->streamWriter->write(
                 '<html style="background: '
-                . VarDumperInterface::BACKGROUND_SHADE
+                . self::BACKGROUND_SHADE
                 . ';"><head></head><body>'
             );
         }
         $this->streamWriter->write(
-            '<pre style="' . VarDumperInterface::STYLE . '">'
+            '<pre style="' . self::STYLE . '">'
         );
     }
 

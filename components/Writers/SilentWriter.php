@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Writers;
 
-use Chevere\Components\Writers\Interfaces\StreamWriterInterface;
+use Chevere\Components\Writers\Interfaces\WriterInterface;
 
-final class SilentStreamWriter implements StreamWriterInterface
+final class SilentWriter implements WriterInterface
 {
     public function __construct()
     {
@@ -23,5 +23,10 @@ final class SilentStreamWriter implements StreamWriterInterface
 
     public function write(string $string): void
     {
+    }
+
+    public function toString(): string
+    {
+        return '';
     }
 }

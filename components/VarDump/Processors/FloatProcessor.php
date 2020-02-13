@@ -17,8 +17,6 @@ use Chevere\Components\Type\Interfaces\TypeInterface;
 
 final class FloatProcessor extends AbstractProcessor
 {
-    private float $var;
-
     public function type(): string
     {
         return TypeInterface::FLOAT;
@@ -26,18 +24,14 @@ final class FloatProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $this->var = $this->varFormat->dumpeable()->var();
-        $this->streamWriter->write(
-            $this->varFormat->formatter()->highlight(
-                $this->type(),
-                $this->type()
-            )
-            . ' ' .
-            $this->varFormat->formatter()->filterEncodedChars(strval($this->var))
-            . ' ' .
-            $this->varFormat->formatter()->emphasis(
-                '(length=' . strlen((string) $this->var) . ')'
-            )
+        $stringVar = (string) $this->varProcess->dumpeable()->var();
+        $this->info = 'length=' . strlen($stringVar);
+        $this->varProcess->writer()->write(
+            $this->typeHighlighted()
+            . ' '
+            . $this->varProcess->formatter()->filterEncodedChars($stringVar)
+            . ' '
+            . $this->highlightParentheses($this->info)
         );
     }
 }

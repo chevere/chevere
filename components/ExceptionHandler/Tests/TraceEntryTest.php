@@ -15,7 +15,7 @@ namespace Chevere\Components\ExceptionHandler\Tests;
 
 use InvalidArgumentException;
 use Chevere\Components\ExceptionHandler\TraceEntry;
-use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
+use Chevere\Components\VarDump\Interfaces\VarProcessInterface;
 use PHPUnit\Framework\TestCase;
 
 final class TraceEntryTest extends TestCase
@@ -82,14 +82,15 @@ final class TraceEntryTest extends TestCase
             'file' => null,
             'line' => null,
             'function' => 'method',
-            'class' => VarFormatInterface::_CLASS_ANON . $fileLine . '$a3',
+            'class' => VarProcessInterface::_CLASS_ANON . $fileLine . '$a3',
             'type' => '->',
             'args' => []
         ];
         $traceEntry = new TraceEntry($entry);
-        $this->assertSame(VarFormatInterface::_CLASS_ANON, $traceEntry->class());
+        $this->assertSame(VarProcessInterface::_CLASS_ANON, $traceEntry->class());
         $this->assertSame($fileLine, $traceEntry->fileLine());
     }
+
     public function testMissingClassFile(): void
     {
         $line = __LINE__ - 2; // Refers to the line of declaring __FUNCTION__

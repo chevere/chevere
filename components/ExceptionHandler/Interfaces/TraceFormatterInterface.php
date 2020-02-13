@@ -15,7 +15,7 @@ namespace Chevere\Components\ExceptionHandler\Interfaces;
 
 use Chevere\Components\Common\Interfaces\ToArrayInterface;
 use Chevere\Components\Common\Interfaces\ToStringInterface;
-use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
+use Chevere\Components\VarDump\Interfaces\VarProcessInterface;
 
 interface TraceFormatterInterface extends ToArrayInterface, ToStringInterface
 {
@@ -29,12 +29,12 @@ interface TraceFormatterInterface extends ToArrayInterface, ToStringInterface
     const TAG_ENTRY_POS = '%pos%';
 
     const HIGHLIGHT_TAGS = [
-        self::TAG_ENTRY_FILE => VarFormatInterface::_FILE,
-        self::TAG_ENTRY_LINE => VarFormatInterface::_FILE,
-        self::TAG_ENTRY_FILE_LINE => VarFormatInterface::_FILE,
-        self::TAG_ENTRY_CLASS => VarFormatInterface::_CLASS,
-        self::TAG_ENTRY_TYPE => VarFormatInterface::_OPERATOR,
-        self::TAG_ENTRY_FUNCTION => VarFormatInterface::_FUNCTION,
+        self::TAG_ENTRY_FILE => VarProcessInterface::_FILE,
+        self::TAG_ENTRY_LINE => VarProcessInterface::_FILE,
+        self::TAG_ENTRY_FILE_LINE => VarProcessInterface::_FILE,
+        self::TAG_ENTRY_CLASS => VarProcessInterface::_CLASS,
+        self::TAG_ENTRY_TYPE => VarProcessInterface::_OPERATOR,
+        self::TAG_ENTRY_FUNCTION => VarProcessInterface::_FUNCTION,
     ];
 
     public function __construct(array $trace, FormatterInterface $formatter);

@@ -18,31 +18,30 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 
 final class ConsoleOutputter extends PlainOutputter
 {
-    const OUTPUT_HR = '------------------------------------------------------------';
-
     private string $outputHr;
 
     public function prepare(): void
     {
-        $this->consoleOutput = new ConsoleOutput();
-        $this->outputHr = (new ConsoleColor)->apply('blue', self::OUTPUT_HR);
-        $aux = 0;
-        $bt = $this->varDumper->debugBacktrace()[$aux];
-        $maker = '';
+        $this->outputHr = (new ConsoleColor)->apply(
+            'blue',
+            '------------------------------------------------------------'
+        );
+        $bt = $this->debugBacktrace[0];
+        $caller = '';
         if ($bt['class'] ?? null) {
-            $maker .= $bt['class'] . $bt['type'];
+            $caller .= $bt['class'] . $bt['type'];
         }
         if ($bt['function'] ?? null) {
-            $maker .= $bt['function'] . '()';
+            $caller .= $bt['function'] . '()';
         }
         $this->streamWriter->write(
-            "\n" . (new ConsoleColor)->apply(['bold', 'red'], $maker)
+            "\n" . (new ConsoleColor)->apply(['bold', 'red'], $caller)
             . "\n" . $this->outputHr . "\n"
         );
     }
 
     public function callback(): void
     {
-        $this->streamWriter->write("\n" . $this->outputHr);
+        $this->streamWriter->write("\n" . $this->outputHr . "\n");
     }
 }

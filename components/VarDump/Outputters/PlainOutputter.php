@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputters;
 
+use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 use Chevere\Components\VarDump\VarDumpeable;
-use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use Chevere\Components\VarDump\Interfaces\OutputterInterface;
-use Chevere\Components\VarDump\VarFormat;
-use Chevere\Components\Writers\Interfaces\StreamWriterInterface;
+use Chevere\Components\VarDump\VarProcess;
+use Chevere\Components\Writers\Interfaces\WriterInterface;
 
 class PlainOutputter implements OutputterInterface
 {
-    protected VarDumperInterface $varDumper;
+    const OFFSET = 1;
 
-    protected StreamWriterInterface $streamWriter;
+    protected WriterInterface $streamWriter;
 
     public function prepare(): void
     {
@@ -33,48 +33,38 @@ class PlainOutputter implements OutputterInterface
     {
     }
 
-    final public function __construct(VarDumperInterface $varDumper, StreamWriterInterface $streamWriter)
-    {
-        $this->varDumper = $varDumper;
+    final public function __construct(
+        WriterInterface $streamWriter,
+        array $debugBacktrace,
+        FormatterInterface $formatter,
+        ...$vars
+    ) {
         $this->streamWriter = $streamWriter;
-    }
-
-    final public function varDumper(): VarDumperInterface
-    {
-        return $this->varDumper;
-    }
-
-    final public function streamWriter(): StreamWriterInterface
-    {
-        return $this->streamWriter;
-    }
-
-    final public function emit(): void
-    {
-        $new = clone $this;
-        $new->prepare();
-        $new->handleClass();
-        $new->streamWriter->write(
-            $new->varDumper->formatter()
+        $this->debugBacktrace = $debugBacktrace;
+        $this->formatter = $formatter;
+        $this->vars = $vars;
+        $this->prepare();
+        $this->handleClass();
+        $this->streamWriter->write(
+            $this->formatter
                 ->highlight(
                     '_function',
-                    $new->varDumper->debugBacktrace()[VarDumperInterface::OFFSET]['function'] . '()'
+                    $this->debugBacktrace[self::OFFSET]['function'] . '()'
                 )
         );
-        $new->handleFile();
-        // $new->streamWriter->write("\n\n");
-        $new->handleArgs();
-        $new->callback();
+        $this->handleFile();
+        $this->handleArgs();
+        $this->callback();
     }
 
     final private function handleClass(): void
     {
-        $item = $this->varDumper->debugBacktrace()[VarDumperInterface::OFFSET];
+        $item = $this->debugBacktrace[self::OFFSET];
         $class = $item['class'] ?? null;
         if ($class !== null) {
             $type = $item['type'];
             $this->streamWriter->write(
-                $this->varDumper->formatter()
+                $this->formatter
                     ->highlight('_class', $class) . $type
             );
         }
@@ -82,12 +72,12 @@ class PlainOutputter implements OutputterInterface
 
     final private function handleFile(): void
     {
-        $pos = VarDumperInterface::OFFSET - 1;
-        $item = $this->varDumper->debugBacktrace()[$pos];
+        $pos = self::OFFSET - 1;
+        $item = $this->debugBacktrace[$pos];
         if ($item !== null && isset($item['file'])) {
             $this->streamWriter->write(
                 "\n"
-                . $this->varDumper->formatter()
+                . $this->formatter
                     ->highlight(
                         '_file',
                         $item['file'] . ':' . $item['line']
@@ -99,20 +89,15 @@ class PlainOutputter implements OutputterInterface
     final private function handleArgs(): void
     {
         $pos = 1;
-        foreach ($this->varDumper->vars() as $value) {
-            $this->appendArg($pos, $value);
+        foreach ($this->vars as $value) {
+            $varProcess = new VarProcess(
+                $this->streamWriter,
+                new VarDumpeable($value),
+                $this->formatter
+            );
+            $this->streamWriter->write("\n\nArg#" . $pos . ' ');
+            $varProcess->withProcessor();
             ++$pos;
         }
-    }
-
-    final private function appendArg(int $pos, $value): void
-    {
-        $varDumpeable = new VarDumpeable($value);
-        $varFormat = new VarFormat($varDumpeable, $this->varDumper->formatter());
-        $this->streamWriter->write(
-            'Arg#' . $pos . ' '
-        );
-        $varFormat->withProcess();
-        $this->streamWriter->write("\n\n");
     }
 }

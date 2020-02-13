@@ -25,16 +25,6 @@ final class WritersTest extends TestCase
 {
     public function testConstruct(): void
     {
-        xdd($this);
-    }
-}
-
-final class TryWea
-{
-    private FileInterface $file;
-
-    public function __construct()
-    {
-        $this->file = new File(new Path(__FILE__));
+        // xdd(new Path(__DIR__));
     }
 }

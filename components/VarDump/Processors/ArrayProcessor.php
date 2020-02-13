@@ -15,8 +15,7 @@ namespace Chevere\Components\VarDump\Processors;
 
 use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarDump\VarDumpeable;
-use Chevere\Components\VarDump\VarFormat;
-use Chevere\Components\VarDump\Interfaces\VarFormatInterface;
+use Chevere\Components\VarDump\VarProcess;
 
 final class ArrayProcessor extends AbstractProcessor
 {
@@ -31,32 +30,28 @@ final class ArrayProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $this->var = $this->varFormat->dumpeable()->var();
-        $this->depth = $this->varFormat->depth() + 1;
+        $this->var = $this->varProcess->dumpeable()->var();
+        $this->depth = $this->varProcess->depth() + 1;
         $count = count($this->var);
-        $this->streamWriter->write(
-            $this->varFormat->formatter()->highlight(
-                $this->type(),
-                $this->type()
-            )
-            . ' ' .
-            $this->varFormat->formatter()->emphasis(
-                '(size=' . $count . ')'
-            )
+        $this->info = 'size=' . $count;
+        $this->varProcess->writer()->write(
+            $this->typeHighlighted()
+            . ' '
+            . $this->highlightParentheses($this->info)
         );
         if ($this->isCircularRef($this->var)) {
-            $this->streamWriter->write(
-                ' ' .
-                $this->highlightOperator($this->circularReference())
+            $this->varProcess->writer()->write(
+                ' '
+                . $this->highlightOperator($this->circularReference())
             );
 
             return;
         }
         if ($this->depth > self::MAX_DEPTH) {
             if ($count > 0) {
-                $this->streamWriter->write(
-                    ' ' .
-                    $this->highlightOperator($this->maxDepthReached())
+                $this->varProcess->writer()->write(
+                    ' '
+                    . $this->highlightOperator($this->maxDepthReached())
                 );
             }
 
@@ -83,11 +78,12 @@ final class ArrayProcessor extends AbstractProcessor
     {
         $operator = $this->highlightOperator('=>');
         foreach ($this->var as $key => $var) {
-            // Appends indent+name+operator `   key => `
-            $this->streamWriter->write(
-                "\n" . $this->varFormat->indentString() . ' ' . $this->varFormat->formatter()->filterEncodedChars((string) $key) . " $operator "
+            $this->varProcess->writer()->write(
+                "\n"
+                . $this->varProcess->indentString() . ' '
+                . $this->varProcess->formatter()->filterEncodedChars((string) $key)
+                . " $operator "
             );
-            // Process the underlying array member value
             $this->handleDepth($var);
         }
     }
@@ -98,10 +94,14 @@ final class ArrayProcessor extends AbstractProcessor
         if (is_scalar($var)) {
             $deep -= 1;
         }
-        $varFormat = (new VarFormat(new VarDumpeable($var), $this->varFormat->formatter()))
+        (new VarProcess(
+            $this->varProcess->writer(),
+            new VarDumpeable($var),
+            $this->varProcess->formatter()
+        ))
             ->withDepth($deep)
-            ->withIndent($this->varFormat->indent() + 1)
-            ->withKnownObjects($this->varFormat->known())
-            ->withProcess();
+            ->withIndent($this->varProcess->indent() + 1)
+            ->withKnownObjects($this->varProcess->known())
+            ->withProcessor();
     }
 }

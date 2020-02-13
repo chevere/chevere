@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Writers;
 
-use Chevere\Components\Writers\Interfaces\StreamWriterInterface;
+use Chevere\Components\Writers\Interfaces\WriterInterface;
 use Psr\Http\Message\StreamInterface;
+use function GuzzleHttp\Psr7\stream_for;
 
-final class StreamWriter implements StreamWriterInterface
+final class StreamWriter implements WriterInterface
 {
     private StreamInterface $stream;
 
@@ -28,5 +29,20 @@ final class StreamWriter implements StreamWriterInterface
     public function write(string $string): void
     {
         $this->stream->write($string);
+    }
+
+    public function toString(): string
+    {
+        $new = clone $this;
+        $stream = stream_for($this->stream);
+        $string = '';
+        if ($stream->isSeekable()) {
+            $stream->rewind();
+        }
+        while ($stream->eof() === false) {
+            $string .= $stream->read(1024 * 8);
+        }
+
+        return $string;
     }
 }

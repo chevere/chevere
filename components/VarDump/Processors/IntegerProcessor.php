@@ -17,8 +17,6 @@ use Chevere\Components\Type\Interfaces\TypeInterface;
 
 final class IntegerProcessor extends AbstractProcessor
 {
-    private int $var;
-
     public function type(): string
     {
         return TypeInterface::INTEGER;
@@ -26,18 +24,14 @@ final class IntegerProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $this->var = $this->varFormat->dumpeable()->var();
-        $this->streamWriter->write(
-            $this->varFormat->formatter()->highlight(
-                $this->type(),
-                $this->type()
-            )
+        $stringVar = (string) $this->varProcess->dumpeable()->var();
+        $this->info = 'length=' . strlen($stringVar);
+        $this->varProcess->writer()->write(
+            $this->typeHighlighted()
             . ' '
-            . $this->varFormat->formatter()->filterEncodedChars(strval($this->var))
+            . $this->varProcess->formatter()->filterEncodedChars($stringVar)
             . ' '
-            . $this->varFormat->formatter()->emphasis(
-                '(length=' . strlen((string) $this->var) . ')'
-            )
+            . $this->highlightParentheses($this->info)
         );
     }
 }

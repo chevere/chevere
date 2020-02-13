@@ -17,8 +17,6 @@ use Chevere\Components\Type\Interfaces\TypeInterface;
 
 final class BooleanProcessor extends AbstractProcessor
 {
-    private bool $var;
-
     public function type(): string
     {
         return TypeInterface::BOOLEAN;
@@ -26,14 +24,11 @@ final class BooleanProcessor extends AbstractProcessor
 
     protected function process(): void
     {
-        $this->var = $this->varFormat->dumpeable()->var();
-        $this->streamWriter->write(
-            $this->varFormat->formatter()->highlight(
-                $this->type(),
-                $this->type()
-            )
+        $this->info = $this->varProcess->dumpeable()->var() ? 'true' : 'false';
+        $this->varProcess->writer()->write(
+            $this->typeHighlighted()
             . ' '
-            . ($this->var ? 'true' : 'false')
+            . $this->info
         );
     }
 }

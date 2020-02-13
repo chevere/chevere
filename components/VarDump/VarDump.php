@@ -19,7 +19,7 @@ use Chevere\Components\VarDump\Formatters\ConsoleFormatter;
 use Chevere\Components\VarDump\Formatters\HtmlFormatter;
 use Chevere\Components\VarDump\Outputters\ConsoleOutputter;
 use Chevere\Components\VarDump\Outputters\HtmlOutputter;
-use Chevere\Components\Writers\Interfaces\StreamWriterInterface;
+use Chevere\Components\Writers\Interfaces\WriterInterface;
 use Chevere\Components\Writers\Interfaces\WritersInterface;
 use Chevere\Components\Writers\Writers;
 
@@ -33,13 +33,13 @@ final class VarDump
 {
     private $vars;
 
-    private StreamWriterInterface $streamWriter;
+    private WriterInterface $writer;
 
     private int $shift = 0;
 
-    public function __construct(StreamWriterInterface $streamWriter, ...$vars)
+    public function __construct(WriterInterface $writer, ...$vars)
     {
-        $this->streamWriter = $streamWriter;
+        $this->writer = $writer;
         $this->vars = $vars;
     }
 
@@ -64,18 +64,15 @@ final class VarDump
             $formatter = ConsoleFormatter::class;
             $outputter = ConsoleOutputter::class;
         } else {
-            $formatter = HtmlOutputter::class;
-            $outputter = HtmlFormatter::class;
+            $outputter = HtmlOutputter::class;
+            $formatter = HtmlFormatter::class;
         }
-        $dumper = (new VarDumper(
+        (new $outputter(
+            $this->writer,
             $this->debugBacktrace,
             new $formatter,
             ...$this->vars
         ));
-        (new $outputter(
-            $dumper,
-            $this->streamWriter
-        ))->emit();
     }
 
     final private function setDebugBacktrace(): void
@@ -84,21 +81,19 @@ final class VarDump
         for ($i = 0; $i <= $this->shift; $i++) {
             array_shift($this->debugBacktrace);
         }
+        // @codeCoverageIgnoreStart
         while (
             isset($this->debugBacktrace[1]['class'])
             && VarDump::class == $this->debugBacktrace[1]['class']
         ) {
-            // @codeCoverageIgnoreStart
             array_shift($this->debugBacktrace);
-            // @codeCoverageIgnoreEnd
         }
         while (
             isset($this->debugBacktrace[1]['function'])
             && in_array($this->debugBacktrace[1]['function'], ['xdump', 'xdd'])
         ) {
-            // @codeCoverageIgnoreStart
             array_shift($this->debugBacktrace);
-            // @codeCoverageIgnoreEnd
         }
+        // @codeCoverageIgnoreEnd
     }
 }

@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Tests\Processors;
 
 use Chevere\Components\VarDump\Processors\ResourceProcessor;
-use Chevere\Components\VarDump\Tests\AbstractProcessorTest;
+use Chevere\Components\VarDump\Tests\Processors\Traits\VarProcessTrait;
+use InvalidArgumentException;
+use PHPUnit\Framework\TestCase;
 
-final class ResourceProcessorTest extends AbstractProcessorTest
+final class ResourceProcessorTest extends TestCase
 {
-    protected function getProcessorName(): string
-    {
-        return ResourceProcessor::class;
-    }
+    use VarProcessTrait;
 
     protected function getInvalidConstructArgument()
     {
@@ -31,11 +30,17 @@ final class ResourceProcessorTest extends AbstractProcessorTest
     public function testConstruct(): void
     {
         $resource = fopen(__FILE__, 'r');
-        $processor = new ResourceProcessor($this->getVarFormat($resource));
+        $processor = new ResourceProcessor($this->getVarProcess($resource));
         if (is_resource($resource)) {
             fclose($resource);
         }
         $this->assertSame('type=stream', $processor->info());
-        $this->assertStringStartsWith('Resource id #', $processor->value());
+        // $this->assertStringStartsWith('Resource id #', $processor->value());
+    }
+
+    public function testInvalidArgument(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new ResourceProcessor($this->getVarProcess(null));
     }
 }
