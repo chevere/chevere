@@ -29,8 +29,8 @@ trait VarDumperTrait
     {
         return new VarDumper(
             new StreamWriter(stream_for('')),
-            new VarDumpeable($var),
-            new PlainFormatter
+            new PlainFormatter,
+            new VarDumpeable($var)
         );
     }
 }

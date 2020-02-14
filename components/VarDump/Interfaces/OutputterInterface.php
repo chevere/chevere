@@ -13,9 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Interfaces;
 
+use Chevere\Components\Writers\Interfaces\WriterInterface;
+
 interface OutputterInterface
 {
+    public function setUp(WriterInterface $writer, array $backtrace);
+
+    public function writer(): WriterInterface;
+
     public function prepare(): void;
 
     public function callback(): void;
+
+    public function caller(): string;
 }

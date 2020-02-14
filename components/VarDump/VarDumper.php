@@ -21,6 +21,7 @@ use Chevere\Components\Writers\Interfaces\WriterInterface;
 
 /**
  * The Chevere VarDumper.
+ * Provides dumping for for variables of any kind of deep.
  */
 final class VarDumper implements VarDumperInterface
 {
@@ -40,8 +41,8 @@ final class VarDumper implements VarDumperInterface
 
     public function __construct(
         WriterInterface $writer,
-        VarDumpeableInterface $dumpeable,
-        FormatterInterface $formatter
+        FormatterInterface $formatter,
+        VarDumpeableInterface $dumpeable
     ) {
         $this->writer = $writer;
         $this->dumpeable = $dumpeable;

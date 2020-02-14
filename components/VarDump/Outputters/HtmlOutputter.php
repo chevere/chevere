@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputters;
 
-use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Components\VarDump\Interfaces\OutputterInterface;
+use Chevere\Components\VarDump\Outputters\Traits\OutputterTrait;
 
-final class HtmlOutputter extends PlainOutputter
+final class HtmlOutputter implements OutputterInterface
 {
+    use OutputterTrait;
+
     const BACKGROUND = '#132537';
     const BACKGROUND_SHADE = '#132537';
     /** @var string Dump style, no double quotes. */
@@ -29,21 +32,26 @@ final class HtmlOutputter extends PlainOutputter
     {
         if (headers_sent() === false || headers_list() === []) {
             $this->hasHeader = true;
-            $this->writer->write(
+            $this->writer()->write(
                 '<html style="background: '
                 . self::BACKGROUND_SHADE
                 . ';"><head></head><body>'
             );
         }
-        $this->writer->write(
-            '<pre style="' . self::STYLE . '">'
+        $this->writer()->write(
+            implode('', [
+                $this->caller(),
+                '<hr>',
+                '<pre style="' . self::STYLE . '">'
+            ])
         );
     }
 
     public function callback(): void
     {
+        $this->writer()->write('</pre>');
         if ($this->hasHeader) {
-            $this->writer->write('</body></html>');
+            $this->writer()->write('</body></html>');
         }
     }
 }

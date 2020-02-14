@@ -37,8 +37,7 @@ final class BooleanProcessor implements ProcessorInterface
     public function write(): void
     {
         $this->varDumper->writer()->write(
-            $this->typeHighlighted()
-            . ' ' . $this->info
+            $this->typeHighlighted() . ' ' . $this->info
         );
     }
 }

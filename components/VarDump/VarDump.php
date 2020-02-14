@@ -14,14 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump;
 
 use Chevere\Components\Instances\BootstrapInstance;
-use Chevere\Components\Common\Interfaces\ToStringInterface;
 use Chevere\Components\VarDump\Formatters\ConsoleFormatter;
 use Chevere\Components\VarDump\Formatters\HtmlFormatter;
 use Chevere\Components\VarDump\Outputters\ConsoleOutputter;
 use Chevere\Components\VarDump\Outputters\HtmlOutputter;
 use Chevere\Components\Writers\Interfaces\WriterInterface;
-use Chevere\Components\Writers\Interfaces\WritersInterface;
-use Chevere\Components\Writers\Writers;
 
 /**
  * The Chevere VarDump.
@@ -67,12 +64,12 @@ final class VarDump
             $outputter = HtmlOutputter::class;
             $formatter = HtmlFormatter::class;
         }
-        (new $outputter(
+        (new VarOutputter(
             $this->writer,
             $this->debugBacktrace,
             new $formatter,
             ...$this->vars
-        ))->process();
+        ))->process(new $outputter);
     }
 
     final private function setDebugBacktrace(): void
@@ -82,19 +79,5 @@ final class VarDump
         for ($i = 0; $i <= $this->shift; $i++) {
             array_shift($this->debugBacktrace);
         }
-        // @codeCoverageIgnoreStart
-        // while (
-        //     isset($this->debugBacktrace[1]['class'])
-        //     && VarDump::class == $this->debugBacktrace[1]['class']
-        // ) {
-        //     array_shift($this->debugBacktrace);
-        // }
-        // while (
-        //     isset($this->debugBacktrace[1]['function'])
-        //     && in_array($this->debugBacktrace[1]['function'], ['xdump', 'xdd'])
-        // ) {
-        //     array_shift($this->debugBacktrace);
-        // }
-        // @codeCoverageIgnoreEnd
     }
 }

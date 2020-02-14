@@ -19,9 +19,9 @@ trait DebugBacktraceTrait
     {
         return [
             0 => [
-                'file' => 'file@caller',
+                'file' => 'file@handler',
                 'line' => 101,
-                'function' => 'function@caller',
+                'function' => 'function@handler',
                 'class' => 'class@handler',
                 'type' => '->',
                 'args' => []

@@ -11,8 +11,8 @@
 
 declare(strict_types=1);
 
-return '[1;31m%varDumperClassName%->__construct()[0m
-[34m------------------------------------------------------------[0m
-%className%->%functionName%()
-%fileLine%
-[34m------------------------------------------------------------[0m';
+namespace Chevere\Components\VarDump\Interfaces;
+
+interface VarOutputterInterface
+{
+}

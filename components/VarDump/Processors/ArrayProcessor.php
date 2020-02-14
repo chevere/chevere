@@ -111,8 +111,8 @@ final class ArrayProcessor implements ProcessorInterface
         }
         (new VarDumper(
             $this->varDumper->writer(),
+            $this->varDumper->formatter(),
             new VarDumpeable($var),
-            $this->varDumper->formatter()
         ))
             ->withDepth($deep)
             ->withIndent($this->varDumper->indent() + 1)

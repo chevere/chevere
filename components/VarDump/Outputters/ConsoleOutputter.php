@@ -13,10 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputters;
 
+use Chevere\Components\VarDump\Interfaces\OutputterInterface;
+use Chevere\Components\VarDump\Outputters\Traits\OutputterTrait;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
-final class ConsoleOutputter extends PlainOutputter
+final class ConsoleOutputter implements OutputterInterface
 {
+    use OutputterTrait;
+
     private string $outputHr;
 
     public function prepare(): void
@@ -25,22 +29,18 @@ final class ConsoleOutputter extends PlainOutputter
             'blue',
             '------------------------------------------------------------'
         );
-        $bt = $this->debugBacktrace[0];
-        $caller = '';
-        if ($bt['class'] ?? null) {
-            $caller .= $bt['class'] . $bt['type'];
-        }
-        if ($bt['function'] ?? null) {
-            $caller .= $bt['function'] . '()';
-        }
-        $this->writer->write(
-            "\n" . (new ConsoleColor)->apply(['bold', 'red'], $caller)
-            . "\n" . $this->outputHr . "\n"
+        $this->writer()->write(
+            implode("\n", [
+                '',
+                (new ConsoleColor)->apply(['bold', 'red'], $this->caller()),
+                $this->outputHr,
+                ''
+            ])
         );
     }
 
     public function callback(): void
     {
-        $this->writer->write("\n" . $this->outputHr . "\n");
+        $this->writer()->write("\n" . $this->outputHr . "\n");
     }
 }

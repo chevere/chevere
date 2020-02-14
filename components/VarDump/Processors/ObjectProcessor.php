@@ -132,8 +132,8 @@ final class ObjectProcessor implements ProcessorInterface
         );
         (new VarDumper(
             $this->varDumper->writer(),
-            new VarDumpeable($var),
-            $this->varDumper->formatter()
+            $this->varDumper->formatter(),
+            new VarDumpeable($var)
         ))
             ->withDepth(
                 is_scalar($var)
