@@ -19,4 +19,5 @@ use Exception;
  * Exception thrown when passing an invalid parameter key.
  */
 final class ParametersWrongKeyException extends Exception
-{ }
+{
+}

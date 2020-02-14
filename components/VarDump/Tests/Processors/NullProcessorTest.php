@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Tests\Processors;
 
 use Chevere\Components\VarDump\Processors\NullProcessor;
-use Chevere\Components\VarDump\Tests\Processors\Traits\VarDumperTrait;
+use Chevere\Components\VarDump\Tests\Traits\VarDumperTrait;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

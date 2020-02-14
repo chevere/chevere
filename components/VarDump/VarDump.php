@@ -72,28 +72,29 @@ final class VarDump
             $this->debugBacktrace,
             new $formatter,
             ...$this->vars
-        ));
+        ))->process();
     }
 
     final private function setDebugBacktrace(): void
     {
+        // 0: helper or maker (like xdd), 1: where 0 got called
         $this->debugBacktrace = debug_backtrace();
         for ($i = 0; $i <= $this->shift; $i++) {
             array_shift($this->debugBacktrace);
         }
         // @codeCoverageIgnoreStart
-        while (
-            isset($this->debugBacktrace[1]['class'])
-            && VarDump::class == $this->debugBacktrace[1]['class']
-        ) {
-            array_shift($this->debugBacktrace);
-        }
-        while (
-            isset($this->debugBacktrace[1]['function'])
-            && in_array($this->debugBacktrace[1]['function'], ['xdump', 'xdd'])
-        ) {
-            array_shift($this->debugBacktrace);
-        }
+        // while (
+        //     isset($this->debugBacktrace[1]['class'])
+        //     && VarDump::class == $this->debugBacktrace[1]['class']
+        // ) {
+        //     array_shift($this->debugBacktrace);
+        // }
+        // while (
+        //     isset($this->debugBacktrace[1]['function'])
+        //     && in_array($this->debugBacktrace[1]['function'], ['xdump', 'xdd'])
+        // ) {
+        //     array_shift($this->debugBacktrace);
+        // }
         // @codeCoverageIgnoreEnd
     }
 }

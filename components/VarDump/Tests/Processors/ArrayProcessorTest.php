@@ -15,7 +15,7 @@ namespace Chevere\Components\VarDump\Tests\Processors;
 
 use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 use Chevere\Components\VarDump\Processors\ArrayProcessor;
-use Chevere\Components\VarDump\Tests\Processors\Traits\VarDumperTrait;
+use Chevere\Components\VarDump\Tests\Traits\VarDumperTrait;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use function GuzzleHttp\Psr7\stream_for;

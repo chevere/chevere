@@ -19,4 +19,5 @@ use Exception;
  * Exception thrown when passing a parameter twice.
  */
 final class ParametersDuplicatedException extends Exception
-{ }
+{
+}

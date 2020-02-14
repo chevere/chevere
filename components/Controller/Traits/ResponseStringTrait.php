@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of Chevereto\Core.
+ * This file is part of Chevere.
  *
  * (c) Rodolfo Berrios <rodolfo@chevere.org>
  *

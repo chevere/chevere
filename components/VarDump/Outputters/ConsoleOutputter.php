@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Outputters;
 
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
-use Symfony\Component\Console\Output\ConsoleOutput;
 
 final class ConsoleOutputter extends PlainOutputter
 {
@@ -34,7 +33,7 @@ final class ConsoleOutputter extends PlainOutputter
         if ($bt['function'] ?? null) {
             $caller .= $bt['function'] . '()';
         }
-        $this->streamWriter->write(
+        $this->writer->write(
             "\n" . (new ConsoleColor)->apply(['bold', 'red'], $caller)
             . "\n" . $this->outputHr . "\n"
         );
@@ -42,6 +41,6 @@ final class ConsoleOutputter extends PlainOutputter
 
     public function callback(): void
     {
-        $this->streamWriter->write("\n" . $this->outputHr . "\n");
+        $this->writer->write("\n" . $this->outputHr . "\n");
     }
 }

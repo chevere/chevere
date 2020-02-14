@@ -15,18 +15,13 @@ namespace Chevere\Components\VarDump\Tests\Processors;
 
 use stdClass;
 use Chevere\Components\VarDump\Processors\BooleanProcessor;
-use Chevere\Components\VarDump\Tests\Processors\Traits\VarDumperTrait;
+use Chevere\Components\VarDump\Tests\Traits\VarDumperTrait;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class BooleanProcessorTest extends TestCase
 {
     use VarDumperTrait;
-
-    protected function getInvalidConstructArgument()
-    {
-        return new stdClass;
-    }
 
     public function testConstruct(): void
     {

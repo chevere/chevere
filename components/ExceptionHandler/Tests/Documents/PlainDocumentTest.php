@@ -36,6 +36,7 @@ final class PlainDocumentTest extends TestCase
             new LogicException('Ups', 100)
         ));
     }
+
     public function testConstruct(): void
     {
         $document = new PlainDocument($this->exceptionHandler);

@@ -77,7 +77,6 @@ final class Message implements MessageInterface
         return $new->wrap($search, $replace);
     }
 
-
     public function toString(): string
     {
         $message = $this->message;

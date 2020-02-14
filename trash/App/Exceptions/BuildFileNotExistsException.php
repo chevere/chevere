@@ -19,4 +19,5 @@ use Exception;
  * Exception thrown when the build file doesn't exists.
  */
 final class BuildFileNotExistsException extends Exception
-{ }
+{
+}

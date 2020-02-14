@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Tests\Processors\Traits;
+namespace Chevere\Components\VarDump\Tests\Traits;
 
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;

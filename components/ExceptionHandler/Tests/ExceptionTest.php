@@ -59,7 +59,6 @@ final class ExceptionTest extends TestCase
     }
 }
 
-
 /**
  * A dummy ErrorException that allows to inject severity values.
  */

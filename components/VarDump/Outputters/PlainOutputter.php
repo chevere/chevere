@@ -23,7 +23,7 @@ class PlainOutputter implements OutputterInterface
 {
     const OFFSET = 1;
 
-    protected WriterInterface $streamWriter;
+    protected WriterInterface $writer;
 
     public function prepare(): void
     {
@@ -34,48 +34,51 @@ class PlainOutputter implements OutputterInterface
     }
 
     final public function __construct(
-        WriterInterface $streamWriter,
+        WriterInterface $writer,
         array $debugBacktrace,
         FormatterInterface $formatter,
         ...$vars
     ) {
-        $this->streamWriter = $streamWriter;
+        $this->writer = $writer;
         $this->debugBacktrace = $debugBacktrace;
         $this->formatter = $formatter;
         $this->vars = $vars;
+    }
+
+    final public function process(): void
+    {
         $this->prepare();
         $this->handleClass();
-        $this->streamWriter->write(
+        $this->writer->write(
             $this->formatter
                 ->highlight(
                     '_function',
-                    $this->debugBacktrace[self::OFFSET]['function'] . '()'
+                    $this->debugBacktrace[1]['function'] . '()'
                 )
         );
-        $this->handleFile();
+        $this->writeCallerFile();
         $this->handleArgs();
         $this->callback();
     }
 
     final private function handleClass(): void
     {
-        $item = $this->debugBacktrace[self::OFFSET];
+        $item = $this->debugBacktrace[1];
         $class = $item['class'] ?? null;
         if ($class !== null) {
             $type = $item['type'];
-            $this->streamWriter->write(
+            $this->writer->write(
                 $this->formatter
                     ->highlight('_class', $class) . $type
             );
         }
     }
 
-    final private function handleFile(): void
+    final private function writeCallerFile(): void
     {
-        $pos = self::OFFSET - 1;
-        $item = $this->debugBacktrace[$pos];
+        $item = $this->debugBacktrace[0];
         if ($item !== null && isset($item['file'])) {
-            $this->streamWriter->write(
+            $this->writer->write(
                 "\n"
                 . $this->formatter
                     ->highlight(
@@ -91,11 +94,11 @@ class PlainOutputter implements OutputterInterface
         $pos = 1;
         foreach ($this->vars as $value) {
             $varProcess = new VarDumper(
-                $this->streamWriter,
+                $this->writer,
                 new VarDumpeable($value),
                 $this->formatter
             );
-            $this->streamWriter->write("\n\nArg#" . $pos . ' ');
+            $this->writer->write("\n\nArg#" . $pos . ' ');
             $varProcess->withProcessor();
             ++$pos;
         }

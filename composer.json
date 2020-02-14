@@ -20,6 +20,7 @@
         "symfony/console": "^4.0"
     },
     "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.16",
         "nunomaduro/phpinsights": "^1",
         "phpunit/phpunit": "^8",
         "symfony/var-dumper": "^5.0",

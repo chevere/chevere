@@ -29,13 +29,13 @@ final class HtmlOutputter extends PlainOutputter
     {
         if (headers_sent() === false || headers_list() === []) {
             $this->hasHeader = true;
-            $this->streamWriter->write(
+            $this->writer->write(
                 '<html style="background: '
                 . self::BACKGROUND_SHADE
                 . ';"><head></head><body>'
             );
         }
-        $this->streamWriter->write(
+        $this->writer->write(
             '<pre style="' . self::STYLE . '">'
         );
     }
@@ -43,7 +43,7 @@ final class HtmlOutputter extends PlainOutputter
     public function callback(): void
     {
         if ($this->hasHeader) {
-            $this->streamWriter->write('</body></html>');
+            $this->writer->write('</body></html>');
         }
     }
 }

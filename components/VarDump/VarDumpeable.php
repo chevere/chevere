@@ -34,8 +34,6 @@ final class VarDumpeable implements VarDumpeableInterface
 
     private string $processorName;
 
-    private array $template;
-
     /**
      * Creates a new instance.
      *
@@ -56,11 +54,6 @@ final class VarDumpeable implements VarDumpeableInterface
     public function type(): string
     {
         return $this->type;
-    }
-
-    public function template(): array
-    {
-        return $this->template;
     }
 
     public function processorName(): string

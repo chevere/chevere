@@ -15,7 +15,7 @@ namespace Chevere\Components\VarDump\Tests\Processors;
 
 use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 use Chevere\Components\VarDump\Processors\ObjectProcessor;
-use Chevere\Components\VarDump\Tests\Processors\Traits\VarDumperTrait;
+use Chevere\Components\VarDump\Tests\Traits\VarDumperTrait;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
