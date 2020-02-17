@@ -15,9 +15,15 @@ namespace Chevere\Components\Writers\Interfaces;
 
 use Chevere\Components\Common\Interfaces\ToStringInterface;
 
-interface WriterInterface
+interface WriterInterface extends ToStringInterface
 {
+    /**
+     * Writes the given string.
+     */
     public function write(string $string): void;
 
+    /**
+     * Returns the contents written. Should not alter the file cursor.
+     */
     public function toString(): string;
 }

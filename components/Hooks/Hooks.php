@@ -15,18 +15,17 @@ namespace Chevere\Components\Hooks;
 
 final class Hooks
 {
-    private object $that;
+    private object $object;
 
     private array $anchor;
 
     private array $trace;
 
-    public function __construct(object $that, string $anchor)
+    public function __construct(object $object, string $anchor)
     {
-        $this->that = $that;
-        $this->trace = [];
+        $this->object = $object;
         $this->anchor = (new Container())
-            ->getAnchor($that, $anchor);
+            ->getAnchor($object, $anchor);
     }
 
     public function withTrace(): Hooks
@@ -43,7 +42,7 @@ final class Hooks
             return;
         }
         if (null !== $this->trace) {
-            $this->trace['base'] = $this->that;
+            $this->trace['base'] = $this->object;
         }
         $this->runner();
     }
@@ -63,9 +62,9 @@ final class Hooks
         foreach ($this->anchor as $entries) {
             foreach ($entries as $entry) {
                 $hook = new $entry['callable'];
-                $hook($this->that);
+                $hook($this->object);
                 if (null !== $this->trace) {
-                    $this->trace[$entry['callable']] = $this->that;
+                    $this->trace[$entry['callable']] = $this->object;
                 }
             }
         }

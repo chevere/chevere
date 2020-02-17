@@ -13,18 +13,32 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Writer\Tests;
 
-use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
-use Chevere\Components\Filesystem\Path;
-use Chevere\Components\VarDump\VarDump;
+use Chevere\Components\Writers\Interfaces\WriterInterface;
+use Chevere\Components\Writers\StreamWriter;
 use Chevere\Components\Writers\Writers;
-use Exception;
 use PHPUnit\Framework\TestCase;
+use function GuzzleHttp\Psr7\stream_for;
 
 final class WritersTest extends TestCase
 {
-    public function testConstruct(): void
+    public function testConstruct()
     {
-        // xdd(new Path(__DIR__));
+        $writers = new Writers();
+        foreach (['out', 'error', 'debug', 'log'] as $fnName) {
+            $this->assertInstanceOf(
+                WriterInterface::class,
+                $writers->$fnName()
+            );
+        }
+    }
+
+    public function testWith(): void
+    {
+        foreach (['out', 'error', 'debug', 'log']  as $name) {
+            $writer = new StreamWriter(stream_for(''));
+            $withFn = 'with' . ucfirst($name);
+            $writers = (new Writers())->$withFn($writer);
+            $this->assertSame($writer, $writers->$name());
+        }
     }
 }

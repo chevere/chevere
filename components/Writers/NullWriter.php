@@ -15,7 +15,7 @@ namespace Chevere\Components\Writers;
 
 use Chevere\Components\Writers\Interfaces\WriterInterface;
 
-final class SilentWriter implements WriterInterface
+final class NullWriter implements WriterInterface
 {
     public function __construct()
     {

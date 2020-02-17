@@ -15,7 +15,6 @@ namespace Chevere\Components\Writers;
 
 use Chevere\Components\Writers\Interfaces\WriterInterface;
 use Psr\Http\Message\StreamInterface;
-use function GuzzleHttp\Psr7\stream_for;
 
 final class StreamWriter implements WriterInterface
 {

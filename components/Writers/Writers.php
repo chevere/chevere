@@ -19,9 +19,9 @@ use function GuzzleHttp\Psr7\stream_for;
 
 final class Writers implements WritersInterface
 {
-    private WriterInterface $error;
-
     private WriterInterface $out;
+
+    private WriterInterface $error;
 
     private WriterInterface $debug;
 
@@ -29,32 +29,16 @@ final class Writers implements WritersInterface
 
     public function __construct()
     {
-        // $this->error = new StreamWriter(stream_for(fopen('php://stderr', 'w')));
-        // $this->out = new StreamWriter(stream_for(fopen(__DIR__ . '/out.html', 'w')));
-        $this->error = new SilentWriter();
-        // $this->out = new SilentStreamWriter();
-        $this->debug = new SilentWriter();
-        $this->log = new SilentWriter();
         $this->out = new StreamWriter(stream_for(fopen('php://stdout', 'w')));
+        $this->error = new StreamWriter(stream_for(fopen('php://stderr', 'w')));
+        $this->debug = new NullWriter();
+        $this->log = new NullWriter();
     }
 
-    public function withError(WriterInterface $streamWritter): WritersInterface
+    public function withOut(WriterInterface $writter): WritersInterface
     {
         $new = clone $this;
-        $new->error = $streamWritter;
-
-        return $new;
-    }
-
-    public function error(): WriterInterface
-    {
-        return $this->error;
-    }
-
-    public function withOut(WriterInterface $streamWritter): WritersInterface
-    {
-        $new = clone $this;
-        $new->out = $streamWritter;
+        $new->out = $writter;
 
         return $new;
     }
@@ -64,10 +48,23 @@ final class Writers implements WritersInterface
         return $this->out;
     }
 
-    public function withDebug(WriterInterface $streamWritter): WritersInterface
+    public function withError(WriterInterface $writter): WritersInterface
     {
         $new = clone $this;
-        $new->debug = $streamWritter;
+        $new->error = $writter;
+
+        return $new;
+    }
+
+    public function error(): WriterInterface
+    {
+        return $this->error;
+    }
+
+    public function withDebug(WriterInterface $writter): WritersInterface
+    {
+        $new = clone $this;
+        $new->debug = $writter;
 
         return $new;
     }
@@ -77,10 +74,10 @@ final class Writers implements WritersInterface
         return $this->debug;
     }
 
-    public function withLog(WriterInterface $streamWritter): WritersInterface
+    public function withLog(WriterInterface $writter): WritersInterface
     {
         $new = clone $this;
-        $new->log = $streamWritter;
+        $new->log = $writter;
 
         return $new;
     }

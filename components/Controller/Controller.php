@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
-use Chevere\Components\Hooks\Traits\HookTrait;
+use Chevere\Components\Hooks\Traits\HookableTrait;
 use Chevere\Components\App\Interfaces\AppInterface;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Hooks\Interfaces\HookableInterface;
@@ -34,7 +34,7 @@ use Chevere\Components\Hooks\Interfaces\HookableInterface;
  */
 abstract class Controller implements ControllerInterface, HookableInterface
 {
-    use HookTrait;
+    use HookableTrait;
 
     const TYPE_DECLARATIONS = ['array', 'callable', 'bool', 'float', 'int', 'string', 'iterable'];
     const OPTIONS = [];

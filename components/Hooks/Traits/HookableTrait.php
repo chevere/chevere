@@ -15,7 +15,7 @@ namespace Chevere\Components\Hooks\Traits;
 
 use Chevere\Components\Hooks\Hooks;
 
-trait HookTrait
+trait HookableTrait
 {
     public function hook(string $anchor): void
     {
