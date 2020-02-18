@@ -18,6 +18,9 @@ use Chevere\Components\Instances\WritersInstance;
 use Chevere\Components\Bootstrap\Bootstrap;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Hooks\Hooks;
+use Chevere\Components\Instances\HooksInstance;
+use Chevere\Components\Instances\RegisteredHooks;
 use Chevere\Components\Writers\Writers;
 
 require 'vendor/autoload.php';
@@ -31,3 +34,6 @@ new BootstrapInstance(
 );
 
 new WritersInstance(new Writers());
+// new HooksInstance(
+//     new Hooks(include 'hooks_classmap.php')
+// );

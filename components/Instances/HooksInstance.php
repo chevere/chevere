@@ -13,25 +13,25 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Instances;
 
+use Chevere\Components\Hooks\Hooks;
 use LogicException;
-use Chevere\Components\Writers\Interfaces\WritersInterface;
 
-final class WritersInstance
+final class HooksInstance
 {
-    private static WritersInterface $instance;
+    private static Hooks $instance;
 
-    public function __construct(WritersInterface $writers)
+    public function __construct(Hooks $hooks)
     {
         if (isset(self::$instance)) {
             throw new LogicException('This instance can be only created once');
         }
-        self::$instance = $writers;
+        self::$instance = $hooks;
     }
 
-    public static function get(): WritersInterface
+    public static function get(): Hooks
     {
         if (!isset(self::$instance)) {
-            throw new LogicException('No writers instance present');
+            throw new LogicException('No hook instance present');
         }
 
         return self::$instance;

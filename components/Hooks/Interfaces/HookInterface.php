@@ -13,15 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks\Interfaces;
 
-interface HookableInterface
+interface HookInterface
 {
-    /**
-    * Returns an array with the known hook anchors
-    */
-    public function anchors(): array;
+    public function anchor(): string;
 
-    // /**
-    //  * Run the hooks (if any) for the given anchor.
-    //  */
-    // public function hook(string $anchor): void;
+    public function className(): string;
 }

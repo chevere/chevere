@@ -114,7 +114,7 @@ final class ExceptionHandler implements ExceptionHandlerInterface
 
     private function assertPropertyMethod(): void
     {
-        $propertyName = debug_backtrace(0, 2)[1]['function'];
+        $propertyName = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1]['function'];
         if (!isset($this->$propertyName)) {
             throw new BadMethodCallException(
                 (new Message('The method %method% must be called only if the property %propertyName% exists in the instance'))

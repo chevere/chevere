@@ -222,7 +222,7 @@ final class Route implements RouteInterface
 
     private function setMaker(): void
     {
-        $this->maker = debug_backtrace(0, 2)[1];
+        $this->maker = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[1];
         $this->maker['file'] = $this->maker['file'];
         $this->maker['fileLine'] = $this->maker['file'] . ':' . $this->maker['line'];
     }

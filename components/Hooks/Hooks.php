@@ -13,60 +13,39 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks;
 
+use Chevere\Components\Message\Message;
+use LogicException;
+
+/**
+ * Provides interaction for registered hooks.
+ */
 final class Hooks
 {
-    private object $object;
+    /** @var array ClassName, */
+    private array $classMap;
 
-    private array $anchor;
-
-    private array $trace;
-
-    public function __construct(object $object, string $anchor)
+    public function __construct(array $classMap)
     {
-        $this->object = $object;
-        $this->anchor = (new Container())
-            ->getAnchor($object, $anchor);
+        $this->classMap = $classMap;
     }
 
-    public function withTrace(): Hooks
+    public function has(string $className): bool
     {
-        $new = clone $this;
-        $this->trace = [];
-
-        return $new;
+        return isset($this->classMap[$className]);
     }
 
-    public function exec(): void
+    public function queue(string $className): Queue
     {
-        if (null == $this->anchor) {
-            return;
+        $hooks_file = $this->classMap[$className] ?? null;
+        $hooks = include $hooks_file ?? null;
+        if ($hooks === null) {
+            return new LogicException(
+                (new Message('Unable to load hook for %locator%'))
+                    ->code('%locator%', $locator)
+                    ->toString()
+            );
         }
-        if (null !== $this->trace) {
-            $this->trace['base'] = $this->object;
-        }
-        $this->runner();
-    }
 
-    public function hasTrace(): bool
-    {
-        return isset($this->trace);
-    }
-
-    public function trace(): array
-    {
-        return $this->trace;
-    }
-
-    private function runner(): void
-    {
-        foreach ($this->anchor as $entries) {
-            foreach ($entries as $entry) {
-                $hook = new $entry['callable'];
-                $hook($this->object);
-                if (null !== $this->trace) {
-                    $this->trace[$entry['callable']] = $this->object;
-                }
-            }
-        }
+        return new Queue($hooks);
     }
 }

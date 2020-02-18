@@ -32,7 +32,7 @@ use Chevere\Components\Hooks\Interfaces\HookableInterface;
 /**
  * Controller is the defacto controller in Chevere.
  */
-abstract class Controller implements ControllerInterface, HookableInterface
+abstract class Controller implements ControllerInterface
 {
     use HookableTrait;
 

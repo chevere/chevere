@@ -34,7 +34,7 @@ final class DirTest extends TestCase
 
     protected function setUp(): void
     {
-        $bt = debug_backtrace(0, 1)[0]['line'];
+        $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0]['line'];
 
         $this->dir = new Dir(new Path(__DIR__ . '/DirTest_' . uniqid() . '_' . $bt));
     }
