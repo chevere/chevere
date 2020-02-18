@@ -26,6 +26,15 @@ class Path implements PathInterface
     /** @var string Absolute path */
     private string $absolute;
 
+    /**
+     * Creates a new instance.
+     *
+     * @param string $absolute An absolute filesystem path
+     * @throws PathNotAbsoluteException
+     * @throws PathDoubleDotsDashException
+     * @throws PathDotSlashException
+     * @throws PathExtraSlashesException
+     */
     public function __construct(string $absolute)
     {
         new PathFormat($absolute);

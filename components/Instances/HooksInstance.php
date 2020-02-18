@@ -23,7 +23,7 @@ final class HooksInstance
     public function __construct(Hooks $hooks)
     {
         if (isset(self::$instance)) {
-            throw new LogicException('This instance can be only created once');
+            // throw new LogicException('This instance can be only created once');
         }
         self::$instance = $hooks;
     }

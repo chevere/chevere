@@ -14,7 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Hooks;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Hooks\Exceptions\HooksClassNotRegisteredException;
+use Chevere\Components\Hooks\Exceptions\HooksFileNotFoundException;
+use Chevere\Components\Hooks\Interfaces\HookableInterface;
 use LogicException;
+use RuntimeException;
+use Throwable;
 
 /**
  * Provides interaction for registered hooks.
@@ -34,18 +39,48 @@ final class Hooks
         return isset($this->classMap[$className]);
     }
 
-    public function queue(string $className): Queue
+    /**
+     *
+     * @throws HooksClassNotRegisteredException
+     * @throws HooksFileNotFoundException
+     * @throws RuntimeException if unable to load the hooks file
+     * @throws LogicException if the contents of the hooks file are invalid
+     */
+    public function queue(string $className): HooksQueue
     {
-        $hooks_file = $this->classMap[$className] ?? null;
-        $hooks = include $hooks_file ?? null;
-        if ($hooks === null) {
-            return new LogicException(
-                (new Message('Unable to load hook for %locator%'))
-                    ->code('%locator%', $locator)
+        $hooksPath = $this->classMap[$className] ?? null;
+        if ($hooksPath === null) {
+            throw new HooksClassNotRegisteredException(
+                (new Message("Class %className% doesn't exists in the class map"))
+                    ->code('%className%', $className)
+                    ->toString()
+            );
+        }
+        if (stream_resolve_include_path($hooksPath) === false) {
+            throw new HooksFileNotFoundException(
+                (new Message("File %fileName% doesn't exists"))
+                    ->code('%fileName%', $hooksPath)
+                    ->toString()
+            );
+        }
+        // @codeCoverageIgnoreStart
+        try {
+            $hooks = include $hooksPath;
+        } catch (Throwable $e) {
+            throw new RuntimeException($e->getMessage());
+        }
+        // @codeCoverageIgnoreEnd
+        if (is_array($hooks) === false) {
+            throw new LogicException(
+                (new Message('Expecting type %expectedType%, type %type% at %fileName% hooks for %className%'))
+                    ->code('%expectedType%', 'array')
+                    ->code('%type%', gettype($hooks))
+                    ->code('%className%', $className)
+                    ->code('%fileName%', $hooksPath)
                     ->toString()
             );
         }
 
-        return new Queue($hooks);
+        return new HooksQueue($hooks);
     }
 }

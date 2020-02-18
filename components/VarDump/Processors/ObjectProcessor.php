@@ -99,6 +99,7 @@ final class ObjectProcessor implements ProcessorInterface
                 try {
                     $value = $property->getValue($this->var);
                 } catch (Throwable $e) {
+                    $value = null;
                     // $e;
                 }
                 $this->properties[$property->getName()] = [

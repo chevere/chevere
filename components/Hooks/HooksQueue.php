@@ -14,49 +14,28 @@ declare(strict_types=1);
 namespace Chevere\Components\Hooks;
 
 use Chevere\Components\Hooks\Interfaces\HookInterface;
+use Chevere\Components\Hooks\Interfaces\HooksQueueInterface;
 
 /**
- * Queue handler for Hooks registered in HookeableInterface.
+ * Queue handler for Hooks registered for a given HookeableInterface.
  */
-final class Queue
+final class HooksQueue implements HooksQueueInterface
 {
     /** @var array anchor => [0 => [HookInterface,]] */
-    private array $queue = [];
+    private array $anchors = [];
 
-    private array $trace;
-
-    private HookInterface $hook;
-
-    public function __construct(array $queue)
+    public function __construct(array $anchors)//, $observer
     {
-        $this->queue = $queue;
-    }
-
-    public function withTrace(): Queue
-    {
-        $new = clone $this;
-        $this->trace = [];
-
-        return $new;
-    }
-
-    public function hasTrace(): bool
-    {
-        return isset($this->trace);
-    }
-
-    public function trace(): array
-    {
-        return $this->trace;
+        $this->anchors = $anchors;
     }
 
     /**
      * Run the registred hooks at the given anchor.
      */
-    public function run(object $object, string $anchor)
+    public function run(object $object, string $anchor): void
     {
-        $anchor = $this->queue[$anchor] ?? null;
-        if ($this->queue === null) {
+        $anchor = $this->anchors[$anchor] ?? null;
+        if ($anchor === null) {
             return;
         }
         // if ($this->trace !== null) {
@@ -64,8 +43,10 @@ final class Queue
         // }
         foreach ($anchor as $entries) {
             foreach ($entries as $entry) {
-                $this->hook = new $entry;
-                ($this->hook)($object);
+                if (is_a($entry, HookInterface::class, true)) {
+                    $hook = new $entry;
+                    $hook($object);
+                }
                 // if (null !== $this->trace) {
                 //     $this->trace[$entry['callable']] = $object;
                 // }

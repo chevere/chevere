@@ -21,17 +21,6 @@ use Chevere\Components\Filesystem\Exceptions\Path\PathExtraSlashesException;
 interface PathInterface
 {
     /**
-     * Creates a new instance.
-     *
-     * @param string $absolute An absolute filesystem path
-     * @throws PathNotAbsoluteException
-     * @throws PathDoubleDotsDashException
-     * @throws PathDotSlashException
-     * @throws PathExtraSlashesException
-     */
-    public function __construct(string $absolute);
-
-    /**
      * Return absolute path
      */
     public function absolute(): string;

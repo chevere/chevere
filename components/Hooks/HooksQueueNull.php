@@ -13,17 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks;
 
-final class RegisterHook
+use Chevere\Components\Hooks\Interfaces\HooksQueueInterface;
+
+/**
+ * Null queue handler for HookableInterface without any registered hooks.
+ */
+final class HooksQueueNull implements HooksQueueInterface
 {
-    public function add(
-        string $className,
-        string $anchor,
-        int $priority,
-        string $file
-    )
+    public function run(object $object, string $anchor): void
     {
     }
 }
-
-$registerHooks = new RegisterHook();
-$registerHooks->add('className', 'anchor', 0, )
