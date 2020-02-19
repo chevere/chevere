@@ -1,18 +1,23 @@
-build:
-  environment:
-    php:
-      version: 7.4
-  nodes:
-    analysis:
-      #   dependencies:
-      #     override: true # Avoid inferred: yes | pecl install zend-opcache
-      tests:
-        override:
-          - php-scrutinizer-run
-
-checks:
-  php: true
-# tools:
-#   external_code_coverage:
-#     timeout: 600
-#     runs: 3
+filter:
+    excluded_paths:
+      - "vendor/*"
+  
+  build:
+    environment:
+      php:
+        version: 7.4
+    nodes:
+      analysis:
+        dependencies:
+          override:
+            - "composer install --prefer-dist --classmap-authoritative"
+        tests:
+          override:
+            - php-scrutinizer-run
+  
+  checks:
+    php: true
+  # tools:
+  #   external_code_coverage:
+  #     timeout: 600
+  #     runs: 3
