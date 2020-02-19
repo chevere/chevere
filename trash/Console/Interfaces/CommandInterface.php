@@ -15,7 +15,6 @@ namespace Chevere\Components\Console\Interfaces;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use Chevere\Components\Console\Console;
 use Chevere\Components\App\Interfaces\BuilderInterface;
 
 interface CommandInterface

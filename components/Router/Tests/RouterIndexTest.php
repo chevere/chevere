@@ -47,15 +47,11 @@ final class RouterIndexTest extends TestCase
 
     public function testWithAdded(): void
     {
-        $args = [
-            new PathUri('/path'),
-            0,
-            'some-group',
-            'some-name'
-        ];
+        $patUri = new PathUri('/path');
+        $id = 0;
         $routerIndex = (new RouterIndex())
-            ->withAdded(/** @scrutinizer ignore-type */...$args);
-        $this->assertTrue($routerIndex->has($args[0]));
-        $this->assertIsArray($routerIndex->get($args[0]));
+            ->withAdded($patUri, $id, 'some-group', 'some-name');
+        $this->assertTrue($routerIndex->has($patUri));
+        $this->assertIsArray($routerIndex->get($patUri));
     }
 }

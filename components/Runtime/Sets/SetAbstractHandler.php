@@ -76,7 +76,7 @@ abstract class SetAbstractHandler implements SetInterface
         $this->handler = $setFn(fn () => '');
         try {
             $this->value = (string) $this->handler;
-        } catch (Throwable $e) {/** @scrutinizer ignore-call */
+        } catch (Throwable $e) {
             $this->value = '@';
         }
         $restoreFn();

@@ -23,11 +23,10 @@ final class RequestTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $request =
-            new Request(
-                new Method('GET'),
-                new PathUri('/')
-            );
+        $request = new Request(
+            new Method('GET'),
+            new PathUri('/')
+        );
         $globals = new Globals([]);
         $this->assertSame($globals->globals(), $request->globals()->globals());
     }
@@ -42,15 +41,14 @@ final class RequestTest extends TestCase
             'cookie' => ['cookie'],
             'session' => ['session'],
         ];
-        $request =
-            new Request(
-                new Method('GET'),
-                new PathUri('/'),
-                ['headers'],
-                'body request',
-                '1.1',
-                $globs['server']
-            );
+        new Request(
+            new Method('GET'),
+            new PathUri('/'),
+            ['headers'],
+            'body request',
+            '1.1',
+            $globs['server']
+        );
         // $globals = $request->globals();
         // xdd($globals);
         // $this->assertSame();

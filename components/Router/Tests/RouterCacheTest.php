@@ -42,7 +42,7 @@ final class RouterCacheTest extends TestCase
 
     public function testEmptyCache(): void
     {
-        $routerCache = new RouterCache($this->helper->getEmptyCache());
+        $routerCache = new RouterCache($this->cacheHelper->getEmptyCache());
         $this->assertEmpty($routerCache->puts());
         $this->assertFalse($routerCache->hasRegex());
         $this->assertFalse($routerCache->hasIndex());
@@ -54,28 +54,28 @@ final class RouterCacheTest extends TestCase
 
     public function testGetEmptyRegex(): void
     {
-        $routerCache = new RouterCache($this->helper->getEmptyCache());
+        $routerCache = new RouterCache($this->cacheHelper->getEmptyCache());
         $this->expectException(RouterCacheNotFoundException::class);
         $routerCache->getRegex();
     }
 
     public function testGetEmptyIndex(): void
     {
-        $routerCache = new RouterCache($this->helper->getEmptyCache());
+        $routerCache = new RouterCache($this->cacheHelper->getEmptyCache());
         $this->expectException(RouterCacheNotFoundException::class);
         $routerCache->getIndex();
     }
 
     public function testGetEmptyNamed(): void
     {
-        $routerCache = new RouterCache($this->helper->getEmptyCache());
+        $routerCache = new RouterCache($this->cacheHelper->getEmptyCache());
         $this->expectException(RouterCacheNotFoundException::class);
         $routerCache->getNamed();
     }
 
     public function testGetEmptyGroups(): void
     {
-        $routerCache = new RouterCache($this->helper->getEmptyCache());
+        $routerCache = new RouterCache($this->cacheHelper->getEmptyCache());
         $this->expectException(RouterCacheNotFoundException::class);
         $routerCache->getGroups();
     }
@@ -84,7 +84,7 @@ final class RouterCacheTest extends TestCase
     {
         $router = new Router(
             new RouteCache(
-                $this->helper->getWorkingCache()
+                $this->cacheHelper->getWorkingCache()
             )
         );
         $regex = new RouterRegex(
@@ -104,7 +104,7 @@ final class RouterCacheTest extends TestCase
             ->withIndex($index)
             ->withNamed($named)
             ->withGroups($groups);
-        $routerCache = new RouterCache($this->helper->getWorkingCache());
+        $routerCache = new RouterCache($this->cacheHelper->getWorkingCache());
         $routerCache->put($router);
         $this->assertTrue($routerCache->hasRegex());
         $this->assertTrue($routerCache->hasIndex());

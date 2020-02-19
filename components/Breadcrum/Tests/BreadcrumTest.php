@@ -61,6 +61,7 @@ final class BreadcrumTest extends TestCase
     {
         $items = $this->getiItems();
         $breadcrum = new Breadcrum();
+        $pos = 0;
         foreach ($items as $pos => $item) {
             $breadcrum = $breadcrum
                 ->withAddedItem($item)

@@ -35,5 +35,5 @@ if ($isCli) {
 new BootstrapInstance($bootstrap);
 
 require 'runtime.php';
-require $bootstrap->appDir() . 'app.php';
-require $bootstrap->appDir() . 'loader.php';
+require $bootstrap->appDir()->path()->absolute() . 'app.php';
+require $bootstrap->appDir()->path()->absolute() . 'loader.php';

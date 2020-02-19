@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks;
 
-final class HooksRegister
-{
-    public function add(
-        string $className,
-        string $anchor,
-        int $priority,
-        string $file
-    ) {
-    }
-}
+// final class HooksRegister
+// {
+//     public function add(
+//         string $className,
+//         string $anchor,
+//         int $priority,
+//         string $file
+//     ) {
+//     }
+// }
 
 // $registerHooks = new HooksRegister();
 // $registerHooks->add('className', 'anchor', 0, )

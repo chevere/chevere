@@ -49,7 +49,7 @@ final class RouteableTest extends TestCase
     public function testNotExportable(): void
     {
         $route = new Route(new PathUri('/test'));
-        /** @scrutinizer ignore-call */ $route->resource = fopen('php://output', 'r');
+        $route->resource = fopen('php://output', 'r');
         $this->expectException(RouteNotRouteableException::class);
         new Routeable($route);
     }
