@@ -33,9 +33,11 @@ use PHPUnit\Framework\TestCase;
 
 final class RouterCacheTest extends TestCase
 {
+    private CacheHelper $cacheHelper;
+
     public function setUp(): void
     {
-        $this->helper = new CacheHelper(__DIR__);
+        $this->cacheHelper = new CacheHelper(__DIR__);
     }
 
     public function testEmptyCache(): void

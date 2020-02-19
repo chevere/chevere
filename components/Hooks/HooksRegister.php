@@ -20,10 +20,9 @@ final class HooksRegister
         string $anchor,
         int $priority,
         string $file
-    )
-    {
+    ) {
     }
 }
 
-$registerHooks = new HooksRegister();
-$registerHooks->add('className', 'anchor', 0, )
+// $registerHooks = new HooksRegister();
+// $registerHooks->add('className', 'anchor', 0, )

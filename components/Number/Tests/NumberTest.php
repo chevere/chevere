@@ -96,6 +96,9 @@ final class NumberTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
         $resource = fopen(__FILE__, 'r');
+        if (is_resource($resource) === false) {
+            $this->markTestIncomplete('Unable to fopen ' . __FILE__);
+        }
         new Number($resource);
         if (is_resource($resource)) {
             fclose($resource);

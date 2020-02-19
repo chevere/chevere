@@ -65,7 +65,7 @@ final class VariableExport implements VariableExportInterface
     }
 
     /**
-     * @throws VariableIsResourceException 
+     * @throws VariableIsResourceException
      */
     private function assertExportable($var): void
     {
@@ -78,7 +78,7 @@ final class VariableExport implements VariableExportInterface
     }
 
     /**
-     * @throws VariableIsResourceException 
+     * @throws VariableIsResourceException
      */
     private function assertIsNotResource($var): void
     {
@@ -96,7 +96,7 @@ final class VariableExport implements VariableExportInterface
     }
 
     /**
-     * @throws VariableIsResourceException 
+     * @throws VariableIsResourceException
      */
     private function breadcrumIterable($var): void
     {

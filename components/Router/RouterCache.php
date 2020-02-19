@@ -111,15 +111,23 @@ final class RouterCache implements RouterCacheInterface
 
     public function put(RouterInterface $router): RouterCacheInterface
     {
-        foreach ([
-            [$this->keyRegex, new VariableExport($router->regex())],
-            [$this->keyIndex, new VariableExport($router->index())],
-            [$this->keyNamed, new VariableExport($router->named())],
-            [$this->keyGroups, new VariableExport($router->groups())],
-        ] as $pos => $args) {
-            $this->cache = $this->cache
-                ->withPut(...$args);
-        }
+        $this->cache = $this->cache
+            ->withPut(
+                $this->keyRegex,
+                new VariableExport($router->regex())
+            )
+            ->withPut(
+                $this->keyIndex,
+                new VariableExport($router->index())
+            )
+            ->withPut(
+                $this->keyNamed,
+                new VariableExport($router->named())
+            )
+            ->withPut(
+                $this->keyGroups,
+                new VariableExport($router->groups())
+            );
 
         return $this;
     }

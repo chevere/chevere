@@ -71,12 +71,6 @@ final class TraceEntryTest extends TestCase
 
     public function testAnonClass(): void
     {
-        $anonClass = new class() {
-            public function method(): void
-            {
-                return;
-            }
-        };
         $fileLine = __FILE__ . ':' . __LINE__;
         $entry = [
             'file' => null,

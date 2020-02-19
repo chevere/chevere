@@ -25,6 +25,9 @@ final class ResourceProcessorTest extends TestCase
     public function testConstruct(): void
     {
         $resource = fopen(__FILE__, 'r');
+        if (is_resource($resource) === false) {
+            $this->markTestIncomplete('Unable to fopen ' . __FILE__);
+        }
         $resourceString = (string) $resource;
         $expectedInfo = 'type=' . get_resource_type($resource);
         $varDumper = $this->getVarDumper($resource);

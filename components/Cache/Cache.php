@@ -15,7 +15,6 @@ namespace Chevere\Components\Cache;
 
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
 use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\FileCompile;
 use Chevere\Components\Filesystem\PhpFile;
 use Chevere\Components\Filesystem\FileReturn;
 use Chevere\Components\Cache\Interfaces\CacheInterface;

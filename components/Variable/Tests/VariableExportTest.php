@@ -24,6 +24,9 @@ final class VariableExportTest extends TestCase
     {
         $this->expectException(VariableNotExportableException::class);
         $resource = fopen(__FILE__, 'r');
+        if (is_resource($resource) === false) {
+            $this->markTestIncomplete('Unable to fopen ' . __FILE__);
+        }
         new VariableExport($resource);
         if (is_resource($resource)) {
             fclose($resource);
@@ -34,6 +37,9 @@ final class VariableExportTest extends TestCase
     {
         $object = new stdClass();
         $resource = fopen(__FILE__, 'r');
+        if (is_resource($resource) === false) {
+            $this->markTestIncomplete('Unable to fopen ' . __FILE__);
+        }
         $object->array = [1, 2, 3, $resource];
         $this->expectException(VariableNotExportableException::class);
         new VariableExport($object);

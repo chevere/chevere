@@ -70,9 +70,9 @@ final class VarOutputterTest extends TestCase
         $parsed = $this->getParsed($backtrace, 'output-console-color');
         $string = $writer->toString();
         if ((new ConsoleColor())->isSupported() === false) {
-            $parsed = (string) (new Str($parsed))->stripANSIColors();
-            $string = (string) (new Str($string))->stripANSIColors();
         }
+        $parsed = (string) (new Str($parsed))->stripANSIColors();
+        $string = (string) (new Str($string))->stripANSIColors();
         $this->assertSame($parsed, $string);
     }
 

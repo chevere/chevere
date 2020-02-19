@@ -30,16 +30,16 @@ use PHPUnit\Framework\TestCase;
 
 final class RouteCacheTest extends TestCase
 {
-    private CacheHelper $helper;
+    private CacheHelper $cacheHelper;
 
     public function setUp(): void
     {
-        $this->helper = new CacheHelper(__DIR__);
+        $this->cacheHelper = new CacheHelper(__DIR__);
     }
 
     public function testEmptyCache(): void
     {
-        $routeableCache = new RouteCache($this->helper->getEmptyCache());
+        $routeableCache = new RouteCache($this->cacheHelper->getEmptyCache());
         $this->assertEmpty($routeableCache->puts());
         $this->assertFalse($routeableCache->has(0));
         $this->expectException(RouteCacheNotFoundException::class);
@@ -49,7 +49,7 @@ final class RouteCacheTest extends TestCase
     public function testWorkingCache(): void
     {
         $routeable = $this->getRouteable();
-        $routeableCache = new RouteCache($this->helper->getWorkingCache());
+        $routeableCache = new RouteCache($this->cacheHelper->getWorkingCache());
         $id = rand();
         $routeableCache->put($id, $routeable);
         $this->assertTrue($routeableCache->has($id));
@@ -62,7 +62,7 @@ final class RouteCacheTest extends TestCase
     public function testCachedCache(): void
     {
         $id = 0;
-        $routeableCache = new RouteCache($this->helper->getCachedCache());
+        $routeableCache = new RouteCache($this->cacheHelper->getCachedCache());
         $this->assertTrue($routeableCache->has($id));
         $this->assertInstanceOf(RouteInterface::class, $routeableCache->get($id));
     }
@@ -70,7 +70,7 @@ final class RouteCacheTest extends TestCase
     public function testCachedCacheTypeError(): void
     {
         $id = 1;
-        $routeableCache = new RouteCache($this->helper->getCachedCache());
+        $routeableCache = new RouteCache($this->cacheHelper->getCachedCache());
         $this->assertTrue($routeableCache->has($id));
         $this->expectException(RouteCacheTypeException::class);
         $routeableCache->get($id);

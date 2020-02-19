@@ -54,7 +54,7 @@ final class RouterIndexTest extends TestCase
             'some-name'
         ];
         $routerIndex = (new RouterIndex())
-            ->withAdded(...$args);
+            ->withAdded(/** @scrutinizer ignore-type */...$args);
         $this->assertTrue($routerIndex->has($args[0]));
         $this->assertIsArray($routerIndex->get($args[0]));
     }

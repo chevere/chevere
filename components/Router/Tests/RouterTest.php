@@ -31,11 +31,11 @@ use PHPUnit\Framework\TestCase;
 
 final class RouterTest extends TestCase
 {
-    private CacheHelper $helper;
+    private CacheHelper $cacheHelper;
 
     public function setUp(): void
     {
-        $this->helper = new CacheHelper(__DIR__);
+        $this->cacheHelper = new CacheHelper(__DIR__);
     }
 
     public function testConstructor(): void
@@ -107,11 +107,11 @@ final class RouterTest extends TestCase
 
     private function getEmptyRouteCache(): RouteCacheInterface
     {
-        return new RouteCache($this->helper->getEmptyCache());
+        return new RouteCache($this->cacheHelper->getEmptyCache());
     }
 
     private function getCachedRouteCache(): RouteCacheInterface
     {
-        return new RouteCache($this->helper->getCachedCache());
+        return new RouteCache($this->cacheHelper->getCachedCache());
     }
 }

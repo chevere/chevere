@@ -22,6 +22,8 @@ final class HtmlHighlight implements HighlightInterface
 {
     use AssertKeyTrait;
 
+    private string $key;
+
     private string $color;
 
     public function __construct(string $key)

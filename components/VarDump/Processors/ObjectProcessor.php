@@ -30,6 +30,8 @@ final class ObjectProcessor implements ProcessorInterface
 
     private object $var;
 
+    private int $depth = 0;
+
     private ReflectionObject $reflectionObject;
 
     private array $properties;
@@ -115,7 +117,7 @@ final class ObjectProcessor implements ProcessorInterface
         }
     }
 
-    private function processProperty($name, $modifiers, $var): void
+    private function processProperty(string $name, string $modifiers, $var): void
     {
         $this->varDumper->writer()->write(
             implode(' ', [

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Str\StringAssert;
-use Chevere\Components\Str\Exceptions\StrAssertException;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Exceptions\File\FileExistsException;
 use Chevere\Components\Filesystem\Exceptions\File\FileNotFoundException;

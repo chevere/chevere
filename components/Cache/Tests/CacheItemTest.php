@@ -25,6 +25,8 @@ use PHPUnit\Framework\TestCase;
 
 final class CacheItemTest extends TestCase
 {
+    private PathInterface $resourcesPath;
+
     public function setUp(): void
     {
         $this->resourcesPath = (new Path(__DIR__))->getChild('_resources');

@@ -34,6 +34,8 @@ final class VarDump
 
     private int $shift = 0;
 
+    private array $debugBacktrace = [];
+
     public function __construct(WriterInterface $writer, ...$vars)
     {
         $this->writer = $writer;

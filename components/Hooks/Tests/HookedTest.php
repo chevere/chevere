@@ -18,13 +18,14 @@ use Chevere\Components\Hooks\Exceptions\HooksFileNotFoundException;
 use Chevere\Components\Hooks\Hooks;
 use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Instances\HooksInstance;
-use Chevere\Components\Stopwatch\Stopwatch;
 use Go\ParserReflection\ReflectionFile;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 
 final class HookedTest extends TestCase
 {
+    private Hooks $hooks;
+
     public function setUp(): void
     {
         $this->hooks = new Hooks(include __DIR__ . '/_resources/hookables_classmap.php');

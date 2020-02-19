@@ -37,9 +37,6 @@ class AppPath implements AppPathInterface
 
     private PathInterface $pathContext;
 
-    /** @var string Absolute path */
-    private string $absolute;
-
     /** @var string Relative path (to project root) */
     private string $relative;
 

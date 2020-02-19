@@ -114,7 +114,7 @@ final class Inspect implements InspectInterface
                 (new Message($e->getMessage()))
                     ->code('%interfaceController%', self::INTERFACE_CONTROLLER)
                     ->code('%reflectionName%', $this->reflection->getName())
-                    ->code('%interfaceControllerResource%', self::INTERFACE_CONTROLLER_RESOURCE)
+                    // ->code('%interfaceControllerResource%', self::INTERFACE_CONTROLLER_RESOURCE)
                     ->code('%reflectionFilename%', $this->reflection->getFileName())
                     ->code('%endpoint%', $this->httpMethod . ' api/users')
                     ->code('%className%', $this->className)

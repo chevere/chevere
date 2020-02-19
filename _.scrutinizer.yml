@@ -1,11 +1,16 @@
 filter:
   excluded_paths:
-    - vendor/*
+    - vendor/
+    - trash/
 
 build:
   environment:
     php:
       version: 7.4
+      ini:
+        "date.timezone": "UTC"
+        "opcache.enable_cli": 1
+        "opcache.enable": 1
   dependencies:
     override:
       - composer install --prefer-dist --classmap-authoritative

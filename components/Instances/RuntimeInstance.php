@@ -29,7 +29,7 @@ final class RuntimeInstance
         self::$instance = $runtime;
     }
 
-    public static function get(): Runtime
+    public static function get(): RuntimeInterface
     {
         if (!isset(self::$instance)) {
             throw new LogicException('No runtime instance present');

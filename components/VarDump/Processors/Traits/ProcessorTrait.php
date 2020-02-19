@@ -60,6 +60,8 @@ trait ProcessorTrait
         return '*max depth reached*';
     }
 
+    abstract public function type(): string;
+
     private function assertType(): void
     {
         $type = new Type($this->type());

@@ -18,6 +18,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Interfaces\SetInterface;
 use Error;
+use Throwable;
 
 /**
  * Sets the abstract handler using `getSetHandler`
@@ -75,7 +76,7 @@ abstract class SetAbstractHandler implements SetInterface
         $this->handler = $setFn(fn () => '');
         try {
             $this->value = (string) $this->handler;
-        } catch (Error $e) {
+        } catch (Throwable $e) {/** @scrutinizer ignore-call */
             $this->value = '@';
         }
         $restoreFn();
