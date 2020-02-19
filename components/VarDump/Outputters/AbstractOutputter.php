@@ -11,11 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Outputters\Traits;
+namespace Chevere\Components\VarDump\Outputters;
 
+use Chevere\Components\VarDump\Interfaces\OutputterInterface;
 use Chevere\Components\Writers\Interfaces\WriterInterface;
 
-trait OutputterTrait
+abstract class AbstractOutputter implements OutputterInterface
 {
     private WriterInterface $writer;
 
@@ -23,7 +24,7 @@ trait OutputterTrait
 
     private string $caller;
 
-    public function setUp(WriterInterface $writer, array $backtrace)
+    final public function setUp(WriterInterface $writer, array $backtrace)
     {
         $this->writer = $writer;
         $this->backtrace = $backtrace;
@@ -37,18 +38,21 @@ trait OutputterTrait
         }
     }
 
-    public function writer(): WriterInterface
+    /**
+     * @codeCoverageIgnore
+     */
+    final public function backtrace(): array
     {
-        return $this->writer;
+        return $this->backtrace;
     }
 
-    // public function backtrace(): array
-    // {
-    //     return $this->backtrace;
-    // }
-
-    public function caller(): string
+    final public function caller(): string
     {
         return $this->caller;
+    }
+
+    final protected function writer(): WriterInterface
+    {
+        return $this->writer;
     }
 }

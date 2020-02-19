@@ -13,13 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputters;
 
-use Chevere\Components\VarDump\Interfaces\OutputterInterface;
-use Chevere\Components\VarDump\Outputters\Traits\OutputterTrait;
-
-final class HtmlOutputter implements OutputterInterface
+final class HtmlOutputter extends AbstractOutputter
 {
-    use OutputterTrait;
-
     const BACKGROUND = '#132537';
     const BACKGROUND_SHADE = '#132537';
     /** @var string Dump style, no double quotes. */

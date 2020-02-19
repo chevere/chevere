@@ -19,8 +19,6 @@ interface OutputterInterface
 {
     public function setUp(WriterInterface $writer, array $backtrace);
 
-    public function writer(): WriterInterface;
-
     public function prepare(): void;
 
     public function callback(): void;

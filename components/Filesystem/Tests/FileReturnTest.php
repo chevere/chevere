@@ -20,7 +20,6 @@ use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\PhpFile;
 use Chevere\Components\Filesystem\FileReturn;
 use Chevere\Components\Filesystem\AppPath;
-use Chevere\Components\Filesystem\Exceptions\File\FileUnableToGetException;
 use Chevere\Components\Variable\VariableExport;
 use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
 use Chevere\Components\Filesystem\Interfaces\File\FileReturnInterface;
@@ -107,9 +106,7 @@ final class FileReturnTest extends TestCase
     public function testVarEmptyFile(): void
     {
         $this->expectException(FileWithoutContentsException::class);
-        $var = $this->fileReturn
-            ->var();
-        // xdd($var);
+        $this->fileReturn->var();
     }
 
     public function testVarInvalidContents(): void
@@ -160,11 +157,18 @@ final class FileReturnTest extends TestCase
         }
     }
 
+    public function testFileWithoutContentsException(): void
+    {
+        $this->file->put('');
+        $this->fileReturn = $this->fileReturn->withStrict(false);
+        $this->expectException(FileWithoutContentsException::class);
+        $this->fileReturn->raw();
+    }
+
     public function testWithNoStrict(): void
     {
         $this->file->put("<?php /* comment */ return 'test';");
-        $this->fileReturn = $this->fileReturn
-            ->withStrict(false);
+        $this->fileReturn = $this->fileReturn->withStrict(false);
         $string = 'test';
         $this->assertSame($string, $this->fileReturn->raw());
         $this->assertSame($string, $this->fileReturn->var());

@@ -13,14 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputters;
 
-use Chevere\Components\VarDump\Interfaces\OutputterInterface;
-use Chevere\Components\VarDump\Outputters\Traits\OutputterTrait;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
-final class ConsoleOutputter implements OutputterInterface
+final class ConsoleOutputter extends AbstractOutputter
 {
-    use OutputterTrait;
-
     private string $outputHr;
 
     public function prepare(): void

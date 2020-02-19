@@ -13,13 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputters;
 
-use Chevere\Components\VarDump\Interfaces\OutputterInterface;
-use Chevere\Components\VarDump\Outputters\Traits\OutputterTrait;
-
-final class PlainOutputter implements OutputterInterface
+final class PlainOutputter extends AbstractOutputter
 {
-    use OutputterTrait;
-
     private string $outputHr = '------------------------------------------------------------';
 
     public function prepare(): void

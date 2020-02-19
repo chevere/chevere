@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler\Tests;
 
-use Chevere\Components\ExceptionHandler\Formatters\ConsoleFormatter;
-use Chevere\Components\ExceptionHandler\Formatters\HtmlFormatter;
 use Chevere\Components\ExceptionHandler\Formatters\PlainFormatter;
 use Chevere\Components\ExceptionHandler\TraceFormatter;
 use Exception;
