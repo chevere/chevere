@@ -37,7 +37,7 @@ use Chevere\Components\App\Interfaces\ParametersInterface;
 use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
-use Chevere\Components\Filesystem\Interfaces\File\FilePhpInterface;
+use Chevere\Components\Filesystem\Interfaces\File\PhpFileInterface;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Interfaces\RouterCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
@@ -52,7 +52,7 @@ final class Build implements BuildInterface
 {
     private AppInterface $app;
 
-    private FilePhpInterface $filePhp;
+    private PhpFileInterface $filePhp;
 
     private DirInterface $dir;
 

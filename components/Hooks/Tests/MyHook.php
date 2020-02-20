@@ -15,7 +15,7 @@ namespace Chevere\Components\Hooks\Tests;
 
 use Chevere\Components\Hooks\Tests\Interfaces\MyHookableHookInterface;
 
-final class MyHook implements MyHookableHookInterface
+class MyHook implements MyHookableHookInterface
 {
     public function __invoke(MyHookable $hookable)
     {
@@ -28,7 +28,7 @@ final class MyHook implements MyHookableHookInterface
         return MyHookable::HOOK_SET_STRING;
     }
 
-    public static function forClassName(): string
+    public static function hookableClassName(): string
     {
         return MyHookable::class;
     }

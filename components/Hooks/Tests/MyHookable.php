@@ -27,7 +27,7 @@ class MyHookable implements HookableInterface
 
     private string $string = '';
 
-    public function anchors(): array
+    public static function anchors(): array
     {
         return [
             self::HOOK_CONSTRUCT,

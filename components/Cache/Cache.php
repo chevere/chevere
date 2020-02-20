@@ -16,7 +16,7 @@ namespace Chevere\Components\Cache;
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\PhpFile;
-use Chevere\Components\Filesystem\FileReturn;
+use Chevere\Components\Filesystem\PhpFileReturn;
 use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Cache\Interfaces\CacheItemInterface;
 use Chevere\Components\Cache\Interfaces\CacheKeyInterface;
@@ -63,9 +63,9 @@ final class Cache implements CacheInterface
             $file->create();
         }
         $filePhp = new PhpFile($file);
-        $fileReturn = new FileReturn($filePhp);
+        $fileReturn = new PhpFileReturn($filePhp);
         $fileReturn->put($variableExport);
-        $filePhp->compile();
+        $filePhp->cache();
         $new = clone $this;
         $new->puts[$key->toString()] = [
             'path' => $fileReturn->filePhp()->file()->path()->absolute(),
@@ -82,13 +82,9 @@ final class Cache implements CacheInterface
         if ($path->exists() === false) {
             return $new; // @codeCoverageIgnore
         }
-        $filePhp =
-            new PhpFile(
-                new File($path)
-            );
-        $filePhp->destroy();
+        $filePhp = new PhpFile(new File($path));
+        $filePhp->flush();
         $filePhp->file()->remove();
-
         unset($new->puts[$cacheKey->toString()]);
 
         return $new;
@@ -96,8 +92,7 @@ final class Cache implements CacheInterface
 
     public function exists(CacheKeyInterface $cacheKey): bool
     {
-        return $this->getPath($cacheKey->toString())
-            ->exists();
+        return $this->getPath($cacheKey->toString())->exists();
     }
 
     public function get(CacheKeyInterface $cacheKey): CacheItemInterface
@@ -108,10 +103,8 @@ final class Cache implements CacheInterface
         }
 
         return new CacheItem(
-            new FileReturn(
-                new PhpFile(
-                    new File($path)
-                )
+            new PhpFileReturn(
+                new PhpFile(new File($path))
             )
         );
     }

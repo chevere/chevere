@@ -16,11 +16,11 @@ namespace Chevere\Components\ArrayFile;
 use TypeError;
 use Chevere\Components\ArrayFile\Exceptions\ArrayFileTypeException;
 use Chevere\Components\Filesystem\Exceptions\File\FileReturnInvalidTypeException;
-use Chevere\Components\Filesystem\FileReturn;
+use Chevere\Components\Filesystem\PhpFileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\ArrayFile\Interfaces\ArrayFileInterface;
 use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
-use Chevere\Components\Filesystem\Interfaces\File\FilePhpInterface;
+use Chevere\Components\Filesystem\Interfaces\File\PhpFileInterface;
 use Chevere\Components\Type\Interfaces\TypeInterface;
 
 /**
@@ -31,7 +31,7 @@ final class ArrayFile implements ArrayFileInterface
     /** @var array The array returned by the file */
     private array $array;
 
-    private FilePhpInterface $filePhp;
+    private PhpFileInterface $filePhp;
 
     private TypeInterface $type;
 
@@ -41,11 +41,11 @@ final class ArrayFile implements ArrayFileInterface
      * @throws FileNotFoundException          if the $filePhp doesn't exists
      * @throws FileReturnInvalidTypeException if the actual file return isn't type array
      */
-    public function __construct(FilePhpInterface $filePhp)
+    public function __construct(PhpFileInterface $filePhp)
     {
         $this->filePhp = $filePhp;
         $this->filePhp->file()->assertExists();
-        $fileReturn = (new FileReturn($this->filePhp))
+        $fileReturn = (new PhpFileReturn($this->filePhp))
             ->withStrict(false);
         try {
             $raw = $fileReturn->raw();

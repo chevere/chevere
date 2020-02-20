@@ -20,19 +20,19 @@ use Chevere\Components\Filesystem\Exceptions\File\FileWithoutContentsException;
 use Chevere\Components\Serialize\Exceptions\UnserializeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Serialize\Unserialize;
-use Chevere\Components\Filesystem\Interfaces\File\FilePhpInterface;
-use Chevere\Components\Filesystem\Interfaces\File\FileReturnInterface;
+use Chevere\Components\Filesystem\Interfaces\File\PhpFileInterface;
+use Chevere\Components\Filesystem\Interfaces\File\PhpFileReturnInterface;
 use Chevere\Components\Str\StrAssert;
 use Chevere\Components\Variable\Interfaces\VariableExportInterface;
 
 /**
- * FileReturn interacts with PHP files that return something.
+ * PhpFileReturn interacts with .php files that return a variable.
  *
  * <?php return 'Hello World!';
  */
-final class FileReturn implements FileReturnInterface
+final class PhpFileReturn implements PhpFileReturnInterface
 {
-    private FilePhpInterface $filePhp;
+    private PhpFileInterface $phpFile;
 
     /** @var bool True for strict validation (PHP_RETURN), false for regex validation (return <algo>) */
     private bool $strict = true;
@@ -42,13 +42,13 @@ final class FileReturn implements FileReturnInterface
      *
      * @throws FileNotFoundException if the file doesn't exists
      */
-    public function __construct(FilePhpInterface $filePhp)
+    public function __construct(PhpFileInterface $phpFile)
     {
-        $this->filePhp = $filePhp;
-        $this->filePhp()->file()->assertExists();
+        $this->phpFile = $phpFile;
+        $this->phpFile->file()->assertExists();
     }
 
-    public function withStrict(bool $strict): FileReturnInterface
+    public function withStrict(bool $strict): PhpFileReturnInterface
     {
         $new = clone $this;
         $new->strict = $strict;
@@ -56,16 +56,16 @@ final class FileReturn implements FileReturnInterface
         return $new;
     }
 
-    public function filePhp(): FilePhpInterface
+    public function filePhp(): PhpFileInterface
     {
-        return $this->filePhp;
+        return $this->phpFile;
     }
 
     public function raw()
     {
         $this->validate();
 
-        return include $this->filePhp()->file()->path()->absolute();
+        return include $this->phpFile->file()->path()->absolute();
     }
 
     public function var()
@@ -94,8 +94,8 @@ final class FileReturn implements FileReturnInterface
             $var = $this->getFileReturnVar($var);
         }
         $varExport = var_export($var, true);
-        $this->filePhp()->file()->put(
-            FileReturnInterface::PHP_RETURN . $varExport . ';'
+        $this->phpFile->file()->put(
+            PhpFileReturnInterface::PHP_RETURN . $varExport . ';'
         );
     }
 
@@ -125,8 +125,8 @@ final class FileReturn implements FileReturnInterface
 
     private function validateStrict(): void
     {
-        $this->filePhp()->file()->assertExists();
-        $filename = $this->filePhp()->file()->path()->absolute();
+        $this->phpFile->file()->assertExists();
+        $filename = $this->phpFile->file()->path()->absolute();
         $handle = fopen($filename, 'r');
         if (false === $handle) {
             // @codeCoverageIgnoreStart
@@ -139,7 +139,7 @@ final class FileReturn implements FileReturnInterface
             );
             // @codeCoverageIgnoreEnd
         }
-        $contents = fread($handle, FileReturnInterface::PHP_RETURN_CHARS);
+        $contents = fread($handle, PhpFileReturnInterface::PHP_RETURN_CHARS);
         fclose($handle);
         if ('' == $contents) {
             throw new FileWithoutContentsException(
@@ -148,11 +148,11 @@ final class FileReturn implements FileReturnInterface
                     ->toString()
             );
         }
-        if (FileReturnInterface::PHP_RETURN !== $contents) {
+        if (PhpFileReturnInterface::PHP_RETURN !== $contents) {
             throw new FileInvalidContentsException(
                 (new Message('Unexpected contents in %path%, strict validation requires a file return in the form of %expected%'))
                     ->code('%path%', $filename)
-                    ->code('%expected%', FileReturnInterface::PHP_RETURN . '$var;')
+                    ->code('%expected%', PhpFileReturnInterface::PHP_RETURN . '$var;')
                     ->toString()
             );
         }
@@ -166,20 +166,20 @@ final class FileReturn implements FileReturnInterface
      */
     private function validateNonStrict(): void
     {
-        $contents = $this->filePhp()->file()->contents();
+        $contents = $this->phpFile->file()->contents();
         try {
             (new StrAssert($contents))->notEmpty()->notCtypeSpace();
         } catch (StrAssertException $e) {
             throw new FileWithoutContentsException(
                 (new Message("The file at %path% doesn't have any contents (non-strict validation)"))
-                    ->code('%path%', $this->filePhp()->file()->path()->absolute())
+                    ->code('%path%', $this->phpFile->file()->path()->absolute())
                     ->toString()
             );
         }
         if (!preg_match_all('#<\?php([\S\s]*)\s*return\s*[\S\s]*;#', $contents)) {
             throw new FileInvalidContentsException(
                 (new Message('Unexpected contents in %path% (non-strict validation)'))
-                    ->code('%path%', $this->filePhp()->file()->path()->absolute())
+                    ->code('%path%', $this->phpFile->file()->path()->absolute())
                     ->toString()
             );
         }

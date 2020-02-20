@@ -11,12 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks\Interfaces;
+namespace Chevere\Components\Hooks\Exceptions;
 
-interface HookableInterface
+use Exception;
+
+/**
+ * Exception thrown when a hookable doesn't implement the hookable interface.
+ */
+final class HookableInterfaceException extends Exception
 {
-    /**
-    * Returns an array with the known hook anchors
-    */
-    public static function anchors(): array;
 }

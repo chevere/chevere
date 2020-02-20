@@ -38,7 +38,7 @@ final class FilePhpTest extends TestCase
         );
         $filePhp = new PhpFile($file);
         $this->assertSame($file, $filePhp->file());
-        $this->assertIsBool($filePhp->canCompile());
+        // $this->assertIsBool($filePhp->isCompileable());
     }
 
     public function testCompileFileNotExists(): void
@@ -48,7 +48,7 @@ final class FilePhpTest extends TestCase
         );
         $filePhp = new PhpFile($file);
         $this->expectException(FileNotFoundException::class);
-        $filePhp->compile();
+        $filePhp->cache();
     }
 
     /**
@@ -62,8 +62,8 @@ final class FilePhpTest extends TestCase
         );
         $file->create();
         $filePhp = new PhpFile($file);
-        $filePhp->compile();
-        $filePhp->destroy();
+        $filePhp->cache();
+        $filePhp->flush();
         $file->remove();
     }
 }

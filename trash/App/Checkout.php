@@ -15,12 +15,12 @@ namespace Chevere\Components\App;
 
 use InvalidArgumentException;
 use Chevere\Components\Filesystem\PhpFile;
-use Chevere\Components\Filesystem\FileReturn;
+use Chevere\Components\Filesystem\PhpFileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Variable\VariableExport;
 use Chevere\Components\App\Interfaces\BuildInterface;
 use Chevere\Components\App\Interfaces\CheckoutInterface;
-use Chevere\Components\Filesystem\Interfaces\File\FileReturnInterface;
+use Chevere\Components\Filesystem\Interfaces\File\PhpFileReturnInterface;
 
 /**
  * Checkout the application build.
@@ -30,7 +30,7 @@ final class Checkout implements CheckoutInterface
 {
     private BuildInterface $build;
 
-    private FileReturnInterface $fileReturn;
+    private PhpFileReturnInterface $phpFileReturn;
 
     /**
      * Creates a new instance.
@@ -44,22 +44,22 @@ final class Checkout implements CheckoutInterface
             $file->remove();
         }
         $file->create();
-        $this->fileReturn = new FileReturn(
+        $this->phpFileReturn = new PhpFileReturn(
             new PhpFile($file)
         );
-        $this->fileReturn->put(
+        $this->phpFileReturn->put(
             new VariableExport($this->build->checksums())
         );
     }
 
-    public function fileReturn(): FileReturnInterface
+    public function fileReturn(): PhpFileReturnInterface
     {
-        return $this->fileReturn;
+        return $this->phpFileReturn;
     }
 
     public function checksum(): string
     {
-        return $this->fileReturn->filePhp()->file()->checksum();
+        return $this->phpFileReturn->filePhp()->file()->checksum();
     }
 
     /**
