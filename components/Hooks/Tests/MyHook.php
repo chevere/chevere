@@ -23,13 +23,18 @@ final class MyHook implements MyHookableHookInterface
         $hookable->setString("(hooked $string)");
     }
 
-    public function anchor(): string
+    public static function anchor(): string
     {
         return MyHookable::HOOK_SET_STRING;
     }
 
-    public function className(): string
+    public static function forClassName(): string
     {
         return MyHookable::class;
+    }
+
+    public static function priority(): int
+    {
+        return 0;
     }
 }

@@ -15,7 +15,18 @@ namespace Chevere\Components\Hooks\Interfaces;
 
 interface HookInterface
 {
-    public function anchor(): string;
+    /**
+     * Returns the applicable hook anchor.
+     */
+    public static function anchor(): string;
 
-    public function className(): string;
+    /**
+     * Returns the target class name.
+     */
+    public static function forClassName(): string;
+
+    /**
+     * Returns the priority order.
+     */
+    public static function priority(): int;
 }
