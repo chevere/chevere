@@ -13,11 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
-use Chevere\Components\Cache\Cache;
 use Chevere\Components\Controller\ControllerName;
-use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
@@ -36,21 +32,19 @@ use PHPUnit\Framework\TestCase;
 
 final class RouterMakerTest extends TestCase
 {
+    private CacheHelper $cacheHelper;
+
     private RouterCacheInterface $routerCache;
 
     public function setUp(): void
     {
-        $this->routerCache = new RouterCache(
-            new Cache(
-                new Dir(
-                    (new Path(__DIR__))->getChild('_resources')->getChild('working')
-                )
-            )
-        );
+        $this->cacheHelper = new CacheHelper(__DIR__);
+        $this->routerCache = new RouterCache($this->cacheHelper->getWorkingCache());
     }
 
     public function tearDown(): void
     {
+        $this->cacheHelper->tearDown();
         $this->routerCache->remove();
         foreach (array_keys($this->routerCache->routeCache()->puts()) as $pos) {
             $this->routerCache->routeCache()->remove($pos);

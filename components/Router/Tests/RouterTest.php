@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
+use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
@@ -36,6 +37,11 @@ final class RouterTest extends TestCase
     public function setUp(): void
     {
         $this->cacheHelper = new CacheHelper(__DIR__);
+    }
+
+    public function tearDown(): void
+    {
+        $this->cacheHelper->tearDown();
     }
 
     public function testConstructor(): void

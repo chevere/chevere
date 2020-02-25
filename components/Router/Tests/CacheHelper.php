@@ -27,33 +27,52 @@ final class CacheHelper
     public function __construct(string $dir)
     {
         $this->path = new Path($dir);
+        if ($this->getWorkingDir()->exists() === false) {
+            $this->getWorkingDir()->create();
+        }
     }
 
-    public function getResourcesChildDir(string $child): DirInterface
+    public function tearDown(): void
     {
-        return new Dir(
-            $this->path->getChild('_resources')->getChild($child)
-        );
+        if ($this->getWorkingDir()->exists()) {
+            $this->getWorkingDir()->remove();
+        }
+    }
+
+    public function getEmptyDir(): DirInterface
+    {
+        return $this->getResourcesChildDir('empty');
     }
 
     public function getEmptyCache(): CacheInterface
     {
-        return new Cache(
-            $this->getResourcesChildDir('empty')
-        );
+        return new Cache($this->getEmptyDir());
+    }
+
+    public function getWorkingDir(): DirInterface
+    {
+        return $this->getResourcesChildDir('working');
     }
 
     public function getWorkingCache(): CacheInterface
     {
-        return new Cache(
-            $this->getResourcesChildDir('working')
-        );
+        return new Cache($this->getWorkingDir());
+    }
+
+    public function getCachedDir(): DirInterface
+    {
+        return $this->getResourcesChildDir('cached');
     }
 
     public function getCachedCache(): CacheInterface
     {
-        return new Cache(
-            $this->getResourcesChildDir('cached')
+        return new Cache($this->getCachedDir());
+    }
+
+    private function getResourcesChildDir(string $child): DirInterface
+    {
+        return new Dir(
+            $this->path->getChild('_resources')->getChild($child)
         );
     }
 }
