@@ -53,12 +53,12 @@ final class AppPathTest extends TestCase
         $child = $this->getAppDir()->getChild('dir');
         $path = new AppPath('dir');
         $this->assertSame('dir', $path->relative());
-        $this->assertSame($child->path()->absolute(), $path->absolute());
+        $this->assertSame($child->path()->absolute(), $path->absolute() . '/');
     }
 
     public function testWithAbsolutePath(): void
     {
-        $absolute = $this->getAppDir()->path()->absolute() . '/dir';
+        $absolute = $this->getAppDir()->path()->absolute() . 'dir';
         $path = new AppPath($absolute);
         $this->assertSame('dir', $path->relative());
         $this->assertSame($absolute, $path->absolute());
@@ -66,7 +66,7 @@ final class AppPathTest extends TestCase
 
     public function testWithRelativePathTrailing(): void
     {
-        $absolute = $this->getAppDir()->path()->absolute() . '/dir/';
+        $absolute = $this->getAppDir()->getChild('dir')->path()->absolute();
         $path = new AppPath('dir/');
         $this->assertSame('dir/', $path->relative());
         $this->assertSame($absolute, $path->absolute());
@@ -74,7 +74,7 @@ final class AppPathTest extends TestCase
 
     public function testWithAbsolutePathTrailing(): void
     {
-        $absolute = $this->getAppDir()->path()->absolute() . '/dir/';
+        $absolute = $this->getAppDir()->getChild('dir')->path()->absolute();
         $path = new AppPath($absolute);
         $this->assertSame('dir/', $path->relative());
         $this->assertSame($absolute, $path->absolute());

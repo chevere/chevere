@@ -14,27 +14,27 @@ declare(strict_types=1);
 namespace Chevere\Components\Cache;
 
 use Chevere\Components\Cache\Interfaces\CacheItemInterface;
-use Chevere\Components\Filesystem\Interfaces\File\FileReturnInterface;
+use Chevere\Components\Filesystem\Interfaces\File\PhpFileReturnInterface;
 
 final class CacheItem implements CacheItemInterface
 {
-    private FileReturnInterface $fileReturn;
+    private PhpFileReturnInterface $phpFileReturn;
 
     /**
      * Creates a new instance.
      */
-    public function __construct(FileReturnInterface $fileReturn)
+    public function __construct(PhpFileReturnInterface $phpFileReturn)
     {
-        $this->fileReturn = $fileReturn;
+        $this->phpFileReturn = $phpFileReturn;
     }
 
     public function raw()
     {
-        return $this->fileReturn->raw();
+        return $this->phpFileReturn->raw();
     }
 
     public function var()
     {
-        return $this->fileReturn->var();
+        return $this->phpFileReturn->var();
     }
 }

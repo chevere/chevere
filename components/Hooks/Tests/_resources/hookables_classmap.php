@@ -11,9 +11,8 @@
 
 declare(strict_types=1);
 
-/** @var array hookableClassName => hooksFile */
 return [
-    'Chevere\Components\Hooks\Tests\MyHookable' => '/home/rodolfo/git/chevere/components/Hooks/Tests/_resources/hooks/Chevere/Components/Hooks/Tests/MyHookable/hooks.php',
-    'Chevere\Components\Hooks\Tests\MyHookableWithCorruptedHooks' => '/home/rodolfo/git/chevere/components/Hooks/Tests/_resources/hooks/Chevere/Components/Hooks/Tests/MyHookableWithCorruptedHooks/hooks.php',
+    'Chevere\Components\Hooks\Tests\MyHookable' => '%hooksPath%Chevere/Components/Hooks/Tests/MyHookable/hooks.php',
+    'Chevere\Components\Hooks\Tests\MyHookableWithCorruptedHooks' => '%hooksPath%Chevere/Components/Hooks/Tests/MyHookableWithCorruptedHooks/hooks.php',
     'Chevere\Components\Hooks\Tests\MyHookableWithMissingHooks' => 'error.php'
 ];

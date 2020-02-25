@@ -16,7 +16,7 @@ namespace Chevere\Components\Cache\Tests;
 use Chevere\Components\Cache\CacheItem;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\PhpFile;
-use Chevere\Components\Filesystem\FileReturn;
+use Chevere\Components\Filesystem\PhpFileReturn;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Cache\Interfaces\CacheItemInterface;
 use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
@@ -34,24 +34,22 @@ final class CacheItemTest extends TestCase
 
     private function getCacheItem(PathInterface $path): CacheItemInterface
     {
-        return
-            new CacheItem(
-                new FileReturn(
-                    new PhpFile(
-                        new File($path)
-                    )
+        return new CacheItem(
+            new PhpFileReturn(
+                new PhpFile(
+                    new File($path)
                 )
-            );
+            )
+        );
     }
 
     private function writeSerialized(PathInterface $path): void
     {
-        $fileReturn =
-            new FileReturn(
-                new PhpFile(
-                    new File($path)
-                )
-            );
+        $fileReturn = new PhpFileReturn(
+            new PhpFile(
+                new File($path)
+            )
+        );
         $fileReturn->put(
             new VariableExport($path)
         );
@@ -68,12 +66,10 @@ final class CacheItemTest extends TestCase
 
     public function testSerialized(): void
     {
-        // TODO: Pass a path for storing on-the-fly stuff
         $path = $this->resourcesPath->getChild('return-serialized.php');
         $this->writeSerialized($path);
         $cacheItem = $this->getCacheItem($path);
         $var = include $path->absolute();
-        // xdd($cacheItem);
         $this->assertSame($var, $cacheItem->raw());
         $this->assertEquals(unserialize($var), $cacheItem->var());
     }

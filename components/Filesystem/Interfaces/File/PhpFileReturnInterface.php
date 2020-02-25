@@ -20,12 +20,12 @@ use Chevere\Components\Filesystem\Exceptions\File\FileInvalidContentsException;
 use Chevere\Components\Filesystem\Exceptions\File\FileUnableToPutException;
 use Chevere\Components\Variable\Interfaces\VariableExportInterface;
 
-interface FileReturnInterface
+interface PhpFileReturnInterface
 {
     const PHP_RETURN = '<?php return ';
     const PHP_RETURN_CHARS = 13;
 
-    public function __construct(FilePhpInterface $file);
+    public function __construct(PhpFileInterface $phpFile);
 
     /**
      * Return an instance with no-strict flag.
@@ -36,12 +36,12 @@ interface FileReturnInterface
      * By default, a FileReturn must match the PHP_RETURN. The no-strict flag will allow to work with any PHP file
      * long as it returns something.
      */
-    public function withStrict(bool $strict): FileReturnInterface;
+    public function withStrict(bool $strict): PhpFileReturnInterface;
 
     /**
      * Provides access to the FilePhpInterface instance.
      */
-    public function filePhp(): FilePhpInterface;
+    public function filePhp(): PhpFileInterface;
 
     /**
      * Retrieves the file return (as-is).

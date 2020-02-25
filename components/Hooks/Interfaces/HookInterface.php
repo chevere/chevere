@@ -23,7 +23,7 @@ interface HookInterface
     /**
      * Returns the target class name.
      */
-    public static function forClassName(): string;
+    public static function hookableClassName(): string;
 
     /**
      * Returns the priority order.

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem\Interfaces\File;
 
-interface FilePhpInterface
+interface PhpFileInterface
 {
     /**
      * @throws FileNotPhpException if $file doesn't represent a PHP filepath.
@@ -25,7 +25,7 @@ interface FilePhpInterface
      */
     public function file(): FileInterface;
 
-    public function canCompile(): bool;
+    // public function isCompileable(): bool;
 
-    public function compile(): void;
+    public function cache(): void;
 }

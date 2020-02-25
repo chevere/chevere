@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks\Tests;
 
+use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Hooks\Exceptions\HooksClassNotRegisteredException;
 use Chevere\Components\Hooks\Exceptions\HooksFileNotFoundException;
 use Chevere\Components\Hooks\Hooks;
@@ -28,7 +30,16 @@ final class HookedTest extends TestCase
 
     public function setUp(): void
     {
-        $this->hooks = new Hooks(include __DIR__ . '/_resources/hookables_classmap.php');
+        $resourcespath = (new Path(__DIR__))->getChild('_resources');
+        $hookablesClassmap = $resourcespath->getChild('hookables_classmap.php');
+        $hookables = include $hookablesClassmap->absolute();
+        foreach ($hookables as $k => &$v) {
+            $v = strtr($v, [
+                '%hooksPath%' => (new Dir($resourcespath))->getChild('hooks')
+                    ->path()->absolute()
+            ]);
+        }
+        $this->hooks = new Hooks($hookables);
         new HooksInstance($this->hooks);
         include_once 'MyHookable.php';
     }

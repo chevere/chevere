@@ -117,7 +117,7 @@ final class Dir implements DirInterface
     public function getChild(string $path): DirInterface
     {
         return new Dir(
-            $this->path->getChild($path)
+            $this->path->getChild(rtrim($path, '/') . '/')
         );
     }
 

@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\ArrayFile\Interfaces;
 
 use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
-use Chevere\Components\Filesystem\Interfaces\File\FilePhpInterface;
+use Chevere\Components\Filesystem\Interfaces\File\PhpFileInterface;
 use Chevere\Components\Type\Interfaces\TypeInterface;
 
 interface ArrayFileInterface
 {
-    public function __construct(FilePhpInterface $filePhp);
+    public function __construct(PhpFileInterface $filePhp);
 
     /**
      * Return an instance with the specified ServicesInterface.

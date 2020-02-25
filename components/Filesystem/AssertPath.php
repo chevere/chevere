@@ -21,7 +21,7 @@ use Chevere\Components\Filesystem\Exceptions\Path\PathNotAbsoluteException;
 use Chevere\Components\Filesystem\Interfaces\Path\PathFormatInterface;
 use Chevere\Components\Str\StrBool;
 
-final class PathFormat implements PathFormatInterface
+final class AssertPath implements PathFormatInterface
 {
     private string $path;
 
