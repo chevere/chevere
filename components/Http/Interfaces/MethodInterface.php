@@ -13,35 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Http\Interfaces;
 
-use Chevere\Components\Common\Interfaces\ToStringInterface;
-
-interface MethodInterface extends ToStringInterface
+interface MethodInterface
 {
-    /** Array containing all the known HTTP methods. */
-    const ACCEPT_METHOD_NAMES = [
-        'GET',
-        'POST',
-        'PUT',
-        'PATCH',
-        'DELETE',
-        'COPY',
-        'HEAD',
-        'OPTIONS',
-        'LINK',
-        'UNLINK',
-        'PURGE',
-        'LOCK',
-        'UNLOCK',
-        'PROPFIND',
-        'VIEW',
-        'TRACE',
-        'CONNECT'
-    ];
-
-    public function __construct(string $name);
+    /**
+     * @return string Method name RFC 7231.
+     */
+    public static function name(): string;
 
     /**
-     * @return string Method name.
+     * @return string Method description RFC 7231.
      */
-    public function toString(): string;
+    public static function description(): string;
 }

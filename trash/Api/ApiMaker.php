@@ -35,6 +35,9 @@ use Chevere\Components\Api\Interfaces\ApiMakerInterface;
 use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Http\Methods\GetMethod;
+use Chevere\Components\Http\Methods\HeadMethod;
+use Chevere\Components\Http\Methods\OptionsMethod;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use LogicException;
@@ -91,15 +94,15 @@ final class ApiMaker implements ApiMakerInterface
         $new->basePath = strtolower(basename($new->path->absolute()));
         $methodControllerCollection = new MethodControllerNameCollection(
             new MethodControllerName(
-                new Method('HEAD'),
+                new HeadMethod(),
                 new ControllerName(HeadController::class)
             ),
             new MethodControllerName(
-                new Method('OPTIONS'),
+                new OptionsMethod(),
                 new ControllerName(OptionsController::class)
             ),
             new MethodControllerName(
-                new Method('GET'),
+                new GetMethod(),
                 new ControllerName(GetController::class)
             )
         );

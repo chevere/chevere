@@ -15,7 +15,6 @@ namespace Chevere\Components\Router\Tests;
 
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\PathUri;
-use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Exceptions\RouterCacheNotFoundException;
 use Chevere\Components\Router\Interfaces\RouterCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterGroupsInterface;

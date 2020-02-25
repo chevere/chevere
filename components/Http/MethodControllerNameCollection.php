@@ -54,16 +54,16 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
 
     public function has(MethodInterface $method): bool
     {
-        return in_array($method->toString(), $this->index);
+        return in_array($method::name(), $this->index);
     }
 
     public function get(MethodInterface $method): MethodControllerNameInterface
     {
-        $pos = array_search($method->toString(), $this->index);
+        $pos = array_search($method::name(), $this->index);
         if (false === $pos) {
             throw new MethodNotFoundException(
                 (new Message('Method %method% not found'))
-                    ->code('%method%', $method->toString())
+                    ->code('%method%', $method::name())
                     ->toString()
             );
         }
@@ -78,7 +78,7 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
 
     private function addMethodControllerName(MethodControllerNameInterface $methodControllerName): void
     {
-        $name = $methodControllerName->method()->toString();
+        $name = $methodControllerName->method()::name();
         $pos = array_search($name, $this->index);
         if (false !== $pos) {
             $this->array[$pos] = $methodControllerName;

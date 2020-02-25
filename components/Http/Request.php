@@ -45,7 +45,7 @@ final class Request extends GuzzleHttpServerRequest implements RequestInterface
         array $serverParams = []
     ) {
         parent::__construct(
-            $method->toString(),
+            $method::name(),
             $uri->toString(),
             $headers,
             $body,

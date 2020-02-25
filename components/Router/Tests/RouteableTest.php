@@ -15,6 +15,7 @@ namespace Chevere\Components\Router\Tests;
 
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Http\Method;
+use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Exceptions\RouteableException;
@@ -39,7 +40,7 @@ final class RouteableTest extends TestCase
     {
         $route = (new Route(new PathUri('/test')))
             ->withAddedMethod(
-                new Method('GET'),
+                new GetMethod(),
                 new ControllerName(TestController::class)
             );
         $routeable = new Routeable($route);

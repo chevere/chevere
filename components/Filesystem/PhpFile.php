@@ -28,7 +28,7 @@ use Throwable;
 final class PhpFile implements FilePhpInterface
 {
     private FileInterface $file;
-    
+
     private bool $canCompile = false;
 
     private array $canCompileErrors = [];
@@ -128,6 +128,7 @@ final class PhpFile implements FilePhpInterface
         }
         if ($this->canCompileErrors === []) {
             $this->canCompile = true;
+
             return;
         }
     }

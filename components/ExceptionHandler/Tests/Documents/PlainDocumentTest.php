@@ -19,7 +19,7 @@ use Chevere\Components\ExceptionHandler\ExceptionHandler;
 use Chevere\Components\ExceptionHandler\Formatters\PlainFormatter;
 use Chevere\Components\ExceptionHandler\Interfaces\DocumentInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\ExceptionHandlerInterface;
-use Chevere\Components\Http\Method;
+use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Route\PathUri;
 use PHPUnit\Framework\TestCase;
@@ -55,7 +55,7 @@ final class PlainDocumentTest extends TestCase
     public function testHandlerWithRequest(): void
     {
         $pathUri = new PathUri('/' . uniqid('', true));
-        $request = new Request(new Method('GET'), $pathUri);
+        $request = new Request(new GetMethod, $pathUri);
         $this->exceptionHandler = $this->exceptionHandler
             ->withRequest($request);
         $document = new PlainDocument($this->exceptionHandler);

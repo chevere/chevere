@@ -16,6 +16,8 @@ namespace Chevere\Components\Route\Tests;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\Method;
+use Chevere\Components\Http\Methods\GetMethod;
+use Chevere\Components\Http\Methods\PostMethod;
 use Chevere\Components\Middleware\MiddlewareName;
 use Chevere\Components\Route\WildcardMatch;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
@@ -48,7 +50,7 @@ final class RouteTest extends TestCase
         $this->assertFalse($route->hasWildcardCollection());
         $this->assertFalse($route->hasName());
         $this->expectException(MethodNotFoundException::class);
-        $route->controllerName(new Method('GET'));
+        $route->controllerName(new GetMethod);
     }
 
     public function testConstructWithWildcard(): void
@@ -110,7 +112,7 @@ final class RouteTest extends TestCase
 
     public function testWithAddedMethod(): void
     {
-        $method = new Method('GET');
+        $method = new GetMethod();
         $route = $this->getRoute('/test')
             ->withAddedMethod(
                 $method,
@@ -118,7 +120,7 @@ final class RouteTest extends TestCase
             );
         $this->assertSame(TestController::class, $route->controllerName($method)->toString());
         $this->expectException(MethodNotFoundException::class);
-        $route->controllerName(new Method('POST'));
+        $route->controllerName(new PostMethod());
     }
 
     public function testWithAddedMiddleware(): void

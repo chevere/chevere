@@ -19,6 +19,7 @@ use Chevere\Components\ExceptionHandler\ExceptionHandler;
 use Chevere\Components\ExceptionHandler\Interfaces\ExceptionHandlerInterface;
 use Chevere\Components\Http\Interfaces\RequestInterface;
 use Chevere\Components\Http\Method;
+use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Route\PathUri;
 use DateTimeInterface;
@@ -58,7 +59,7 @@ final class ExceptionHandlerTest extends TestCase
     public function testWithRequest(): void
     {
         $handler = $this->getExceptionHandler()
-            ->withRequest(new Request(new Method('GET'), new PathUri('/')));
+            ->withRequest(new Request(new GetMethod, new PathUri('/')));
         $this->assertTrue($handler->hasRequest());
         $this->assertInstanceOf(RequestInterface::class, $handler->request());
     }

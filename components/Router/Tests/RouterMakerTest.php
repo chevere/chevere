@@ -18,6 +18,7 @@ use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Http\Method;
+use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteName;
@@ -109,7 +110,7 @@ final class RouterMakerTest extends TestCase
         $route = new Route(new PathUri($path));
         $route = $route
             ->withAddedMethod(
-                new Method('GET'),
+                new GetMethod(),
                 new ControllerName(TestController::class)
             );
         if ($name !== null) {

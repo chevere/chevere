@@ -13,10 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use Chevere\Components\Controller\ControllerName;
-use Chevere\Components\Controllers\HeadController;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
-use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Http\MethodControllerNameCollection;
 use Chevere\Components\Message\Message;
@@ -169,7 +166,7 @@ final class Route implements RouteInterface
             throw new MethodNotFoundException(
                 (new Message("Instance of %className% doesn't define a controller for HTTP method %method%"))
                     ->code('%className%', MethodControllerNameCollectionInterface::class)
-                    ->code('%method%', $method->toString())
+                    ->code('%method%', $method::name())
                     ->toString()
             );
         }

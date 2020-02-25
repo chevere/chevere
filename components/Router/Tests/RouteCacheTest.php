@@ -15,6 +15,7 @@ namespace Chevere\Components\Router\Tests;
 
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Http\Method;
+use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
@@ -81,7 +82,7 @@ final class RouteCacheTest extends TestCase
         $route = new Route(new PathUri('/test/{var}'));
         $route = $route
             ->withAddedMethod(
-                new Method('GET'),
+                new GetMethod(),
                 new ControllerName(TestController::class)
             )
             ->withName(new RouteName('TestName'))
