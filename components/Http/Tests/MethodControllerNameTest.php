@@ -19,14 +19,14 @@ use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
-final class MethodControllerNameTest extends TestCase
-{
-    public function testConstruct(): void
-    {
-        $method = new GetMethod();
-        $controllerName = new ControllerName(TestController::class);
-        $methodControllerName = new MethodControllerName($method, $controllerName);
-        $this->assertSame($method, $methodControllerName->method());
-        $this->assertSame($controllerName, $methodControllerName->controllerName());
-    }
-}
+// final class MethodControllerNameTest extends TestCase
+// {
+//     public function testConstruct(): void
+//     {
+//         $method = new GetMethod();
+//         $controllerName = new ControllerName(TestController::class);
+//         $methodControllerName = new MethodControllerName($method, $controllerName);
+//         $this->assertSame($method, $methodControllerName->method());
+//         $this->assertSame($controllerName, $methodControllerName->controllerName());
+//     }
+// }

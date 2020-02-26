@@ -57,47 +57,47 @@ final class RouterMakerTest extends TestCase
         $this->assertInstanceOf(RouterInterface::class, $routerMaker->router());
     }
 
-    public function testWithAddedRouteable(): void
-    {
-        $routeable1 = $this->getRouteable('/path-1', 'PathName-1');
-        $routeable2 = $this->getRouteable('/path-2', 'PathName-2');
-        $pathUri = $routeable1->route()->pathUri();
-        $routerMaker = (new RouterMaker($this->routerCache))
-            ->withAddedRouteable($routeable1, 'group')
-            ->withAddedRouteable($routeable2, 'group');
-        $this->assertTrue($routerMaker->router()->index()->has($pathUri));
-    }
+    // public function testWithAddedRouteable(): void
+    // {
+    //     $routeable1 = $this->getRouteable('/path-1', 'PathName-1');
+    //     $routeable2 = $this->getRouteable('/path-2', 'PathName-2');
+    //     $pathUri = $routeable1->route()->pathUri();
+    //     $routerMaker = (new RouterMaker($this->routerCache))
+    //         ->withAddedRouteable($routeable1, 'group')
+    //         ->withAddedRouteable($routeable2, 'group');
+    //     $this->assertTrue($routerMaker->router()->index()->has($pathUri));
+    // }
 
-    public function testWithAlreadyAddedPath(): void
-    {
-        $routeable = $this->getRouteable('/path', 'PathName');
-        $this->expectException(RoutePathExistsException::class);
-        (new RouterMaker($this->routerCache))
-            ->withAddedRouteable($routeable, 'group')
-            ->withAddedRouteable($routeable, 'another-group');
-    }
+    // public function testWithAlreadyAddedPath(): void
+    // {
+    //     $routeable = $this->getRouteable('/path', 'PathName');
+    //     $this->expectException(RoutePathExistsException::class);
+    //     (new RouterMaker($this->routerCache))
+    //         ->withAddedRouteable($routeable, 'group')
+    //         ->withAddedRouteable($routeable, 'another-group');
+    // }
 
-    public function testWithAlreadyAddedKey(): void
-    {
-        $routeable1 = $this->getRouteable('/path/{foo}', 'FooName');
-        $routeable2 = $this->getRouteable('/path/{bar}', 'BarName');
-        $this->expectException(RouteKeyConflictException::class);
-        (new RouterMaker($this->routerCache))
-            ->withAddedRouteable($routeable1, 'group')
-            ->withAddedRouteable($routeable2, 'another-group');
-    }
+    // public function testWithAlreadyAddedKey(): void
+    // {
+    //     $routeable1 = $this->getRouteable('/path/{foo}', 'FooName');
+    //     $routeable2 = $this->getRouteable('/path/{bar}', 'BarName');
+    //     $this->expectException(RouteKeyConflictException::class);
+    //     (new RouterMaker($this->routerCache))
+    //         ->withAddedRouteable($routeable1, 'group')
+    //         ->withAddedRouteable($routeable2, 'another-group');
+    // }
 
-    public function testWithAlreadyAddedName(): void
-    {
-        $routeable1 = $this->getRouteable('/path1', 'SomeName');
-        $routeable2 = $this->getRouteable('/path2', 'SomeName');
-        $routeable3 = $this->getRouteable('/path3', 'SameName');
-        $this->expectException(RouteNameConflictException::class);
-        (new RouterMaker($this->routerCache))
-            ->withAddedRouteable($routeable1, 'group1')
-            ->withAddedRouteable($routeable2, 'group2')
-            ->withAddedRouteable($routeable3, 'group3');
-    }
+    // public function testWithAlreadyAddedName(): void
+    // {
+    //     $routeable1 = $this->getRouteable('/path1', 'SomeName');
+    //     $routeable2 = $this->getRouteable('/path2', 'SomeName');
+    //     $routeable3 = $this->getRouteable('/path3', 'SameName');
+    //     $this->expectException(RouteNameConflictException::class);
+    //     (new RouterMaker($this->routerCache))
+    //         ->withAddedRouteable($routeable1, 'group1')
+    //         ->withAddedRouteable($routeable2, 'group2')
+    //         ->withAddedRouteable($routeable3, 'group3');
+    // }
 
     private function getRouteable(string $path, string $name = null): RouteableInterface
     {

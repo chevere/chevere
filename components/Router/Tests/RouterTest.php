@@ -74,18 +74,18 @@ final class RouterTest extends TestCase
         $router->resolve(new Uri('/not-found'));
     }
 
-    public function testRegexFound(): void
-    {
-        $regex = new RouterRegex(
-            new Regex('#^(?|/found/([A-z0-9\\_\\-\\%]+) (*:0)|/ (*:1)|/hello-world (*:2))$#x')
-        );
-        $router = (new Router($this->getCachedRouteCache()))->withRegex($regex);
-        $this->assertTrue($router->hasRegex());
-        $this->assertSame($regex, $router->regex());
-        $this->assertTrue($router->canResolve());
-        $routed = $router->resolve(new Uri('/found/yay'));
-        $this->assertInstanceOf(RoutedInterface::class, $routed);
-    }
+    // public function testRegexFound(): void
+    // {
+    //     $regex = new RouterRegex(
+    //         new Regex('#^(?|/found/([A-z0-9\\_\\-\\%]+) (*:0)|/ (*:1)|/hello-world (*:2))$#x')
+    //     );
+    //     $router = (new Router($this->getCachedRouteCache()))->withRegex($regex);
+    //     $this->assertTrue($router->hasRegex());
+    //     $this->assertSame($regex, $router->regex());
+    //     $this->assertTrue($router->canResolve());
+    //     $routed = $router->resolve(new Uri('/found/yay'));
+    //     $this->assertInstanceOf(RoutedInterface::class, $routed);
+    // }
 
     public function testIndex(): void
     {

@@ -110,25 +110,25 @@ final class RouteTest extends TestCase
         }
     }
 
-    public function testWithAddedMethod(): void
-    {
-        $method = new GetMethod();
-        $route = $this->getRoute('/test')
-            ->withAddedMethod(
-                $method,
-                new ControllerName(TestController::class)
-            );
-        $this->assertSame(TestController::class, $route->controllerName($method)->toString());
-        $this->expectException(MethodNotFoundException::class);
-        $route->controllerName(new PostMethod());
-    }
+    // public function testWithAddedMethod(): void
+    // {
+    //     $method = new GetMethod();
+    //     $route = $this->getRoute('/test')
+    //         ->withAddedMethod(
+    //             $method,
+    //             new ControllerName(TestController::class)
+    //         );
+    //     $this->assertSame(TestController::class, $route->controllerName($method)->toString());
+    //     $this->expectException(MethodNotFoundException::class);
+    //     $route->controllerName(new PostMethod());
+    // }
 
-    public function testWithAddedMiddleware(): void
-    {
-        $middlewareName = new MiddlewareName(TestMiddlewareVoid::class);
-        $route = $this->getRoute('/test')
-            ->withAddedMiddlewareName($middlewareName);
-        $this->assertTrue($route->middlewareNameCollection()->hasAny());
-        $this->assertTrue($route->middlewareNameCollection()->has($middlewareName));
-    }
+    // public function testWithAddedMiddleware(): void
+    // {
+    //     $middlewareName = new MiddlewareName(TestMiddlewareVoid::class);
+    //     $route = $this->getRoute('/test')
+    //         ->withAddedMiddlewareName($middlewareName);
+    //     $this->assertTrue($route->middlewareNameCollection()->hasAny());
+    //     $this->assertTrue($route->middlewareNameCollection()->has($middlewareName));
+    // }
 }

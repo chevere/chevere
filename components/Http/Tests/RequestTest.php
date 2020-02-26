@@ -32,28 +32,28 @@ final class RequestTest extends TestCase
         $this->assertSame($globals->globals(), $request->globals()->globals());
     }
 
-    public function testConstructAllArguments(): void
-    {
-        $globs = [
-            'server' => ['server'],
-            'get' => ['get'],
-            'post' => ['post'],
-            'files' => ['files'],
-            'cookie' => ['cookie'],
-            'session' => ['session'],
-        ];
-        new Request(
-            new GetMethod(),
-            new PathUri('/'),
-            ['headers'],
-            'body request',
-            '1.1',
-            $globs['server']
-        );
-        // $globals = $request->globals();
-        // xdd($globals);
-        // $this->assertSame();
-    }
+    // public function testConstructAllArguments(): void
+    // {
+    //     $globs = [
+    //         'server' => ['server'],
+    //         'get' => ['get'],
+    //         'post' => ['post'],
+    //         'files' => ['files'],
+    //         'cookie' => ['cookie'],
+    //         'session' => ['session'],
+    //     ];
+    //     new Request(
+    //         new GetMethod(),
+    //         new PathUri('/'),
+    //         ['headers'],
+    //         'body request',
+    //         '1.1',
+    //         $globs['server']
+    //     );
+    //     // $globals = $request->globals();
+    //     // xdd($globals);
+    //     // $this->assertSame();
+    // }
 
     // public function testFromGlobals(): void
     // {

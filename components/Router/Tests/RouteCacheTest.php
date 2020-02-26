@@ -47,26 +47,26 @@ final class RouteCacheTest extends TestCase
         $this->assertFalse($routeableCache->get(0));
     }
 
-    public function testWorkingCache(): void
-    {
-        $routeable = $this->getRouteable();
-        $routeableCache = new RouteCache($this->cacheHelper->getWorkingCache());
-        $id = rand();
-        $routeableCache->put($id, $routeable);
-        $this->assertTrue($routeableCache->has($id));
-        $this->assertEquals($routeable->route(), $routeableCache->get($id));
-        $this->assertArrayHasKey($id, $routeableCache->puts());
-        $routeableCache->remove($id);
-        $this->assertArrayNotHasKey($id, $routeableCache->puts());
-    }
+    // public function testWorkingCache(): void
+    // {
+    //     $routeable = $this->getRouteable();
+    //     $routeableCache = new RouteCache($this->cacheHelper->getWorkingCache());
+    //     $id = rand();
+    //     $routeableCache->put($id, $routeable);
+    //     $this->assertTrue($routeableCache->has($id));
+    //     $this->assertEquals($routeable->route(), $routeableCache->get($id));
+    //     $this->assertArrayHasKey($id, $routeableCache->puts());
+    //     $routeableCache->remove($id);
+    //     $this->assertArrayNotHasKey($id, $routeableCache->puts());
+    // }
 
-    public function testCachedCache(): void
-    {
-        $id = 0;
-        $routeableCache = new RouteCache($this->cacheHelper->getCachedCache());
-        $this->assertTrue($routeableCache->has($id));
-        $this->assertInstanceOf(RouteInterface::class, $routeableCache->get($id));
-    }
+    // public function testCachedCache(): void
+    // {
+    //     $id = 0;
+    //     $routeableCache = new RouteCache($this->cacheHelper->getCachedCache());
+    //     $this->assertTrue($routeableCache->has($id));
+    //     $this->assertInstanceOf(RouteInterface::class, $routeableCache->get($id));
+    // }
 
     public function testCachedCacheTypeError(): void
     {
