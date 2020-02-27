@@ -28,17 +28,43 @@ interface PathUriInterface extends ToStringInterface
     public function toString(): string;
 
     /**
-     * Provides access to the key string.
+     * Provides access to the key string, which is a representation of the path
+     * with placeholders converting `/api/articles/{wildcard}` to `/api/articles/{0}`
      */
     public function key(): string;
 
     /**
-     * Returns a boolean indicating whether the instance has handlebars `{}`.
+     * Provides access to the path uri regex pattern.
      */
-    public function hasWildcards(): bool;
+    public function regex(): string;
 
     /**
-     * Provides acess to the wildcards array.
+     * Returns a boolean indicating whether the instance has a WildcardCollectionInterface.
      */
-    public function wildcards(): array;
+    public function hasWildcardCollection(): bool;
+
+    /**
+     * Provides access to the WildcardCollectionInterface instance.
+     */
+    public function wildcardCollection(): WildcardCollectionInterface;
+
+    /**
+     * Return an instance with the specified WildcardInterface.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified WildcardInterface.
+     */
+    public function withWildcard(WildcardInterface $wildcard): PathUriInterface;
+
+    /**
+     * Provides an array matching wildcards for the given request uri.
+     *
+     * @return array [wildcardName => matchedValue,]
+     */
+    public function matchFor(string $requestUri): array;
+
+    /**
+     * Provide a request uri for the given explicit wildcards.
+     */
+    public function uriFor(array $wildcards): string;
 }

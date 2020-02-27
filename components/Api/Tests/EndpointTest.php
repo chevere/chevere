@@ -23,6 +23,6 @@ final class EndpointTest extends TestCase
         $path = (new Path(__DIR__))->getChild('_resources');
         $method = include $path->getChild('api/articles/{id}/Get.php')->absolute();
         $method = $method->withRoot($path);
-        xdd($method());
+        // xdd($method());
     }
 }

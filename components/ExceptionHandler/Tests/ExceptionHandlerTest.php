@@ -56,13 +56,13 @@ final class ExceptionHandlerTest extends TestCase
         $this->assertTrue($handler->isDebug());
     }
 
-    public function testWithRequest(): void
-    {
-        $handler = $this->getExceptionHandler()
-            ->withRequest(new Request(new GetMethod, new PathUri('/')));
-        $this->assertTrue($handler->hasRequest());
-        $this->assertInstanceOf(RequestInterface::class, $handler->request());
-    }
+    // public function testWithRequest(): void
+    // {
+    //     $handler = $this->getExceptionHandler()
+    //         ->withRequest(new Request(new GetMethod, new PathUri('/')));
+    //     $this->assertTrue($handler->hasRequest());
+    //     $this->assertInstanceOf(RequestInterface::class, $handler->request());
+    // }
 
     public function testWithLogDestination(): void
     {

@@ -26,6 +26,6 @@ return new class() extends EndpointMethod {
 
     public function __invoke(): void
     {
-        xdd($this);
+        // xdd($this);
     }
 };

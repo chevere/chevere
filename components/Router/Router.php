@@ -154,9 +154,9 @@ final class Router implements RouterInterface
         array_shift($matches);
         $route = $this->cache->get($id);
         $wildcards = [];
-        if ($route->hasWildcardCollection()) {
+        if ($route->pathUri()->hasWildcardCollection()) {
             foreach ($matches as $pos => $val) {
-                $wildcards[$route->wildcardCollection()->getPos($pos)->name()] = $val;
+                $wildcards[$route->pathUri()->wildcardCollection()->getPos($pos)->name()] = $val;
             }
         }
 

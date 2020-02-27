@@ -15,13 +15,11 @@ namespace Chevere\Components\Route\Interfaces;
 
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
 use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
-use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Http\Interfaces\MethodControllerNameCollectionInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
-use Chevere\Components\Regex\Interfaces\RegexInterface;
 
 interface RouteInterface
 {
@@ -36,11 +34,6 @@ interface RouteInterface
      * Provides access to the file maker array.
      */
     public function maker(): array;
-
-    /**
-     * Provides access to the regex compontent string.
-     */
-    public function regex(): string;
 
     /**
      * Return an instance with the specified name.
@@ -61,26 +54,6 @@ interface RouteInterface
      * Provides access to the route name (if any).
      */
     public function name(): RouteNameInterface;
-
-    /**
-     * Return an instance with the specified added WildcardInterface.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified added WildcardInterface.
-     *
-     * @throws WildcardNotFoundException if the wildcard doesn't exists in the instance
-     */
-    public function withAddedWildcard(WildcardInterface $wildcard): RouteInterface;
-
-    /**
-     * Returns a boolean indicating whether the instance a WildcardCollectionInterface.
-     */
-    public function hasWildcardCollection(): bool;
-
-    /**
-     * Provides access to the WildcardCollectionInterface instance.
-     */
-    public function wildcardCollection(): WildcardCollectionInterface;
 
     /**
      * Return an instance with the specified added MethodInterface ControllerNameInterface.

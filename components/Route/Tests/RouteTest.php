@@ -47,22 +47,18 @@ final class RouteTest extends TestCase
         $this->assertSame($pathUri, $route->pathUri());
         $this->assertSame(__FILE__, $route->maker()['file']);
         $this->assertFalse($route->hasMiddlewareNameCollection());
-        $this->assertFalse($route->hasWildcardCollection());
         $this->assertFalse($route->hasName());
         $this->expectException(MethodNotFoundException::class);
         $route->controllerName(new GetMethod);
     }
 
-    public function testConstructWithWildcard(): void
-    {
-        $wildcard = new Wildcard('test');
-        $route = $this->getRoute('/' . $wildcard->toString());
-        // xdd($route);
-        $this->assertTrue($route->hasWildcardCollection());
-        $this->assertTrue($route->wildcardCollection()->has($wildcard));
-        $this->assertEquals($wildcard, $route->wildcardCollection()->get($wildcard));
-        $this->assertStringContainsString(WildcardInterface::REGEX_MATCH_DEFAULT, $route->regex());
-    }
+    // public function testConstructWithWildcard(): void
+    // {
+    //     $wildcard = new Wildcard('test');
+    //     $route = $this->getRoute('/' . $wildcard->toString());
+    //     $this->assertEquals($wildcard, $route->wildcardCollection()->get($wildcard));
+    //     $this->assertStringContainsString(WildcardInterface::REGEX_MATCH_DEFAULT, $route->regex());
+    // }
 
     public function testWithName(): void
     {
@@ -73,42 +69,42 @@ final class RouteTest extends TestCase
         $this->assertSame($name, $route->name());
     }
 
-    public function testWithNoApplicableWildcard(): void
-    {
-        $this->expectException(WildcardNotFoundException::class);
-        $this->getRoute('/test')
-            ->withAddedWildcard(new Wildcard('test'));
-    }
+    // public function testWithNoApplicableWildcard(): void
+    // {
+    //     $this->expectException(WildcardNotFoundException::class);
+    //     $this->getRoute('/test')
+    //         ->withAddedWildcard(new Wildcard('test'));
+    // }
 
-    public function testWithAddedWildcards(): void
-    {
-        $wildcards = [
-            (new Wildcard('test1'))->withMatch(
-                new WildcardMatch('[0-9]+')
-            ),
-            (new Wildcard('test2'))->withMatch(
-                new WildcardMatch('[A-Z]*')
-            ),
-            (new Wildcard('test3'))->withMatch(
-                new WildcardMatch('.*')
-            ),
-        ];
-        $path = '/test/';
-        foreach ($wildcards as $wildcard) {
-            $path .= $wildcard->toString();
-        }
-        $route = $this->getRoute($path);
-        foreach ($wildcards as $wildcard) {
-            $route = $route
-                ->withAddedWildcard($wildcard);
-        }
-        $this->assertTrue($route->hasWildcardCollection());
-        foreach ($wildcards as $wildcard) {
-            $this->assertTrue($route->wildcardCollection()->has($wildcard));
-            $this->assertSame($wildcard, $route->wildcardCollection()->get($wildcard));
-            // $this->assertStringContainsString($wildcard->match(), $route->regex());
-        }
-    }
+    // public function testWithAddedWildcards(): void
+    // {
+    //     $wildcards = [
+    //         (new Wildcard('test1'))->withMatch(
+    //             new WildcardMatch('[0-9]+')
+    //         ),
+    //         (new Wildcard('test2'))->withMatch(
+    //             new WildcardMatch('[A-Z]*')
+    //         ),
+    //         (new Wildcard('test3'))->withMatch(
+    //             new WildcardMatch('.*')
+    //         ),
+    //     ];
+    //     $path = '/test/';
+    //     foreach ($wildcards as $wildcard) {
+    //         $path .= $wildcard->toString();
+    //     }
+    //     $route = $this->getRoute($path);
+    //     foreach ($wildcards as $wildcard) {
+    //         $route = $route
+    //             ->withAddedWildcard($wildcard);
+    //     }
+    //     $this->assertTrue($route->hasWildcardCollection());
+    //     foreach ($wildcards as $wildcard) {
+    //         $this->assertTrue($route->wildcardCollection()->has($wildcard));
+    //         $this->assertSame($wildcard, $route->wildcardCollection()->get($wildcard));
+    //         // $this->assertStringContainsString($wildcard->match(), $route->regex());
+    //     }
+    // }
 
     // public function testWithAddedMethod(): void
     // {

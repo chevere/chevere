@@ -29,7 +29,7 @@ final class Wildcard implements WildcardInterface
     private string $name;
 
     /** @var string */
-    private string $wildcard;
+    private string $string;
 
     private WildcardMatchInterface $match;
 
@@ -37,7 +37,6 @@ final class Wildcard implements WildcardInterface
      * Creates a new instance.
      *
      * @param string $name  The wildcard name
-     * @param string $regex The regex patter, without delimeters
      *
      * @throws WildcardStartWithNumberException if $name starts with a number
      * @throws WildcardInvalidCharsException    if $name contains invalid chars
@@ -45,7 +44,7 @@ final class Wildcard implements WildcardInterface
     public function __construct(string $name)
     {
         $this->name = $name;
-        $this->wildcard = "{{$this->name}}";
+        $this->string = "{{$this->name}}";
         $this->assertName();
         $this->match = new WildcardMatch(WildcardInterface::REGEX_MATCH_DEFAULT);
     }
@@ -65,7 +64,7 @@ final class Wildcard implements WildcardInterface
 
     public function toString(): string
     {
-        return $this->wildcard;
+        return $this->string;
     }
 
     public function match(): WildcardMatchInterface
@@ -75,11 +74,11 @@ final class Wildcard implements WildcardInterface
 
     public function assertPathUri(PathUriInterface $pathUri): void
     {
-        $noWildcard = false === strpos($pathUri->toString(), $this->wildcard);
+        $noWildcard = false === strpos($pathUri->toString(), $this->string);
         if ($noWildcard) {
             throw new WildcardNotFoundException(
                 (new Message("Wildcard %wildcard% doesn't exists in route %toString%"))
-                    ->code('%wildcard%', $this->wildcard)
+                    ->code('%wildcard%', $this->string)
                     ->code('%path%', $pathUri->toString())
                     ->toString()
             );

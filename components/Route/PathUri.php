@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
+use BadMethodCallException;
 use Chevere\Components\Route\Exceptions\PathUriUnmatchedBracesException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Exceptions\PathUriForwardSlashException;
@@ -21,6 +22,8 @@ use Chevere\Components\Route\Exceptions\PathUriUnmatchedWildcardsException;
 use Chevere\Components\Route\Exceptions\WildcardRepeatException;
 use Chevere\Components\Route\Exceptions\WildcardReservedException;
 use Chevere\Components\Route\Interfaces\PathUriInterface;
+use Chevere\Components\Route\Interfaces\WildcardCollectionInterface;
+use Chevere\Components\Route\Interfaces\WildcardInterface;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Str\StrBool;
 
@@ -29,20 +32,22 @@ use Chevere\Components\Str\StrBool;
  */
 final class PathUri implements PathUriInterface
 {
-    /** @var string */
+    /** @var string Passed on construct */
     private string $path;
 
     /** @var string Path key set representation ({wildcards} replaced by {n}) */
     private string $key;
 
-    /** @var int */
     private int $wildcardBracesCount;
 
-    /** @var array */
     private array $wildcardsMatch;
+
+    private WildcardCollectionInterface $wildcardCollection;
 
     /** @var array string[] */
     private array $wildcards;
+
+    private string $regex;
 
     /**
      * Creates a new instance.
@@ -62,11 +67,16 @@ final class PathUri implements PathUriInterface
         $this->assertFormat();
         $this->key = $this->path;
         if ($this->hasHandlebars()) {
+            $this->wildcards = [];
             $this->wildcardsMatch = [];
             $this->wildcardBracesCount = 0;
-            $this->assertWildcards();
+            $this->assertMatchingBraces();
+            $this->assertReservedWildcards();
+            $this->assertMatchingWildcards();
             $this->handleWildcards();
+            $this->handleSetWildcardCollection();
         }
+        $this->handleSetRegex();
     }
 
     public function toString(): string
@@ -79,14 +89,82 @@ final class PathUri implements PathUriInterface
         return $this->key;
     }
 
-    public function hasWildcards(): bool
+    public function regex(): string
     {
-        return isset($this->wildcards);
+        return $this->regex;
     }
 
-    public function wildcards(): array
+    public function hasWildcardCollection(): bool
     {
-        return $this->wildcards;
+        return isset($this->wildcardCollection);
+    }
+
+    public function wildcardCollection(): WildcardCollectionInterface
+    {
+        return $this->wildcardCollection;
+    }
+
+    /**
+     * Return an instance with the specified added WildcardInterface.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified added WildcardInterface.
+     *
+     * @throws WildcardNotFoundException if the wildcard doesn't exists in the instance
+     */
+    public function withWildcard(WildcardInterface $wildcard): PathUriInterface
+    {
+        $new = clone $this;
+        $wildcard->assertPathUri($new);
+        $new->wildcardCollection = $new->wildcardCollection
+            ->withAddedWildcard($wildcard);
+        $new->handleSetRegex();
+
+        return $new;
+    }
+
+    public function matchFor(string $requestUri): array
+    {
+        if (preg_match('#' . $this->regex . '#', $requestUri, $matches)) {
+            array_shift($matches);
+            $return = [];
+            foreach ($this->wildcards as $pos => $name) {
+                $return[$name] = $matches[$pos];
+            }
+        }
+
+        return $return ?? [];
+    }
+
+    public function uriFor(array $wildcards): string
+    {
+        if (!isset($this->wildcards)) {
+            throw new BadMethodCallException(
+                (new Message('This method should be called only if the %className% instance contains wildcards'))
+                    ->code('%className%', __CLASS__)
+                    ->toString()
+            );
+        }
+        $keys = array_keys($wildcards);
+        $requiredKeys = $this->wildcards;
+        $diff = array_diff($requiredKeys, $keys);
+        if ($diff !== []) {
+            throw new PathUriUnmatchedBracesException(
+                (new Message("Provided %provided% doesn't strictly map known wildcard names to its corresponding values"))
+                    ->code('%provided%', 'array')
+                    ->toString()
+            );
+        }
+        $uri = $this->path;
+        foreach ($wildcards as $name => $value) {
+            $uri = str_replace(
+                "{{$name}}",
+                (string) $value,
+                $uri
+            );
+        }
+
+        return $uri;
     }
 
     private function assertFormat(): void
@@ -140,9 +218,6 @@ final class PathUri implements PathUriInterface
         }
     }
 
-    /**
-     * @return array [n => '<code>character</code> name]
-     */
     private function getIllegalChars(): array
     {
         $illegalChars = [
@@ -179,16 +254,16 @@ final class PathUri implements PathUriInterface
 
     private function handleWildcards(): void
     {
-        foreach ($this->wildcardsMatch[0] as $key => $val) {
+        foreach ($this->wildcardsMatch[0] as $pos => $braced) {
             // Change {wildcard} to {n} (n is the wildcard index)
             if (isset($this->key)) {
-                $this->key = (string) (new Str($this->key))->replaceFirst($val, "{{$key}}");
+                $this->key = (string) (new Str($this->key))->replaceFirst($braced, "{{$pos}}");
             }
-            $wildcard = $this->wildcardsMatch[1][$key];
-            if (in_array($wildcard, $this->wildcards ?? [])) {
+            $wildcard = $this->wildcardsMatch[1][$pos];
+            if (in_array($wildcard, $this->wildcards)) {
                 throw new WildcardRepeatException(
                     (new Message('Duplicated wildcard %wildcard% in path uri %path%'))
-                        ->code('%wildcard%', $this->wildcardsMatch[0][$key])
+                        ->code('%wildcard%', $this->wildcardsMatch[0][$pos])
                         ->code('%path%', $this->path)
                         ->toString()
                 );
@@ -202,15 +277,27 @@ final class PathUri implements PathUriInterface
         return false !== strpos($this->path, '{') || false !== strpos($this->path, '}');
     }
 
-    /**
-     * @throws PathUriUnmatchedBracesException
-     * @throws PathUriUnmatchedWildcardsException
-     * @throws WildcardReservedException
-     */
-    private function assertWildcards(): void
+    private function handleSetWildcardCollection(): void
     {
-        $this->assertMatchingBraces();
-        $this->assertReservedWildcards();
-        $this->assertMatchingWildcards();
+        $this->wildcardCollection = new WildcardCollection();
+        foreach ($this->wildcards as $wildcardName) {
+            $this->wildcardCollection = $this->wildcardCollection
+                ->withAddedWildcard(new Wildcard($wildcardName));
+        }
+    }
+
+    private function handleSetRegex(): void
+    {
+        $regex = '^' . $this->key . '$';
+        if (isset($this->wildcardCollection)) {
+            foreach ($this->wildcardCollection->toArray() as $pos => $wildcard) {
+                $regex = str_replace(
+                    "{{$pos}}",
+                    '(' . $wildcard->match()->toString() . ')',
+                    $regex
+                );
+            }
+        }
+        $this->regex = $regex;
     }
 }

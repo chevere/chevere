@@ -22,15 +22,15 @@ use PHPUnit\Framework\TestCase;
 
 final class RequestTest extends TestCase
 {
-    public function testConstruct(): void
-    {
-        $request = new Request(
-            new GetMethod(),
-            new PathUri('/')
-        );
-        $globals = new Globals([]);
-        $this->assertSame($globals->globals(), $request->globals()->globals());
-    }
+    // public function testConstruct(): void
+    // {
+    //     $request = new Request(
+    //         new GetMethod(),
+    //         new PathUri('/')
+    //     );
+    //     $globals = new Globals([]);
+    //     $this->assertSame($globals->globals(), $request->globals()->globals());
+    // }
 
     // public function testConstructAllArguments(): void
     // {

@@ -41,7 +41,7 @@ final class Route implements RouteInterface
 
     private string $regex;
 
-    private WildcardCollectionInterface $wildcardCollection;
+    // private WildcardCollectionInterface $wildcardCollection;
 
     private RouteNameInterface $name;
 
@@ -57,10 +57,6 @@ final class Route implements RouteInterface
         $this->pathUri = $pathUri;
         $this->key = $this->pathUri->toString();
         $this->setMaker();
-        if ($this->pathUri->hasWildcards()) {
-            $this->handleSetWildcardCollection();
-        }
-        $this->handleSetRegex();
     }
 
     public function pathUri(): PathUriInterface
@@ -71,11 +67,6 @@ final class Route implements RouteInterface
     public function maker(): array
     {
         return $this->maker;
-    }
-
-    public function regex(): string
-    {
-        return $this->regex;
     }
 
     public function withName(RouteNameInterface $name): RouteInterface
@@ -94,29 +85,6 @@ final class Route implements RouteInterface
     public function name(): RouteNameInterface
     {
         return $this->name;
-    }
-
-    public function withAddedWildcard(WildcardInterface $wildcard): RouteInterface
-    {
-        $new = clone $this;
-        $wildcard->assertPathUri(
-            $new->pathUri()
-        );
-        $new->wildcardCollection = $new->wildcardCollection
-            ->withAddedWildcard($wildcard);
-        $new->handleSetRegex();
-
-        return $new;
-    }
-
-    public function hasWildcardCollection(): bool
-    {
-        return isset($this->wildcardCollection);
-    }
-
-    public function wildcardCollection(): WildcardCollectionInterface
-    {
-        return $this->wildcardCollection;
     }
 
     public function withAddedMethod(MethodInterface $method, ControllerNameInterface $controllerName): RouteInterface
@@ -195,26 +163,6 @@ final class Route implements RouteInterface
     public function middlewareNameCollection(): MiddlewareNameCollectionInterface
     {
         return $this->middlewareNameCollection;
-    }
-
-    private function handleSetWildcardCollection(): void
-    {
-        $this->wildcardCollection = new WildcardCollection();
-        foreach ($this->pathUri->wildcards() as $wildcardName) {
-            $this->wildcardCollection = $this->wildcardCollection
-                ->withAddedWildcard(new Wildcard($wildcardName));
-        }
-    }
-
-    private function handleSetRegex(): void
-    {
-        $regex = '^' . $this->pathUri->key() . '$';
-        if (isset($this->wildcardCollection)) {
-            foreach ($this->wildcardCollection->toArray() as $key => $wildcard) {
-                $regex = str_replace("{{$key}}", '(' . $wildcard->match()->toString() . ')', $regex);
-            }
-        }
-        $this->regex = $regex;
     }
 
     private function setMaker(): void

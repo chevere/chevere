@@ -74,7 +74,7 @@ final class RouterMaker implements RouterMakerInterface
         $name = '';
         $path = $routeable->route()->pathUri()->toString();
         $key = $routeable->route()->pathUri()->key();
-        $regex = $routeable->route()->regex();
+        $regex = $routeable->route()->pathUri()->regex();
         $new->regexes[$new->id] = $regex;
         $new->paths[$path] = $new->id;
         $new->keys[$key] = $new->id;

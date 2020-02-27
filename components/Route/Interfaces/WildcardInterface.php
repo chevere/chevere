@@ -27,10 +27,10 @@ interface WildcardInterface
     public function __construct(string $name);
 
     /**
-     * Return an instance with the specified RegexMatchInterface.
+     * Return an instance with the specified WildcardMatchInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified RegexMatchInterface.
+     * an instance that contains the specified WildcardMatchInterface.
      *
      * @throws WildcardInvalidRegexException if $match is an invalid regex match
      */

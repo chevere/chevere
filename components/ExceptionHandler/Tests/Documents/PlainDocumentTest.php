@@ -52,13 +52,13 @@ final class PlainDocumentTest extends TestCase
         $document->toString();
     }
 
-    public function testHandlerWithRequest(): void
-    {
-        $pathUri = new PathUri('/' . uniqid('', true));
-        $request = new Request(new GetMethod, $pathUri);
-        $this->exceptionHandler = $this->exceptionHandler
-            ->withRequest($request);
-        $document = new PlainDocument($this->exceptionHandler);
-        $this->assertStringContainsString($pathUri->toString(), $document->toString());
-    }
+    // public function testHandlerWithRequest(): void
+    // {
+    //     $pathUri = new PathUri('/' . uniqid('', true));
+    //     $request = new Request(new GetMethod, $pathUri);
+    //     $this->exceptionHandler = $this->exceptionHandler
+    //         ->withRequest($request);
+    //     $document = new PlainDocument($this->exceptionHandler);
+    //     $this->assertStringContainsString($pathUri->toString(), $document->toString());
+    // }
 }
