@@ -24,6 +24,9 @@ use Chevere\Components\Route\Interfaces\PathUriInterface;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Str\StrBool;
 
+/**
+ * Provides interaction for route paths which may accept wildcards `/api/articles/{id}`
+ */
 final class PathUri implements PathUriInterface
 {
     /** @var string */

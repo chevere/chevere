@@ -11,9 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Api;
+use Chevere\Components\Api\EndpointMethod;
 
-abstract class CacheKeys
-{
-    const API = 'api';
-}
+return new class() extends EndpointMethod {
+};
