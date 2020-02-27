@@ -17,8 +17,10 @@ use Chevere\Components\Common\Interfaces\ToStringInterface;
 
 interface PathUriInterface extends ToStringInterface
 {
-    /** string Regex pattern used to catch {wildcard} */
-    const REGEX_WILDCARD_SEARCH = '/{' . WildcardInterface::ACCEPT_CHARS . '}/i';
+    const REGEX_DELIMITER_CHAR = '/';
+
+    /** Regex pattern used to catch {wildcard} */
+    const REGEX_WILDCARD_SEARCH = self::REGEX_DELIMITER_CHAR . '{' . WildcardInterface::ACCEPT_CHARS . '}' . self::REGEX_DELIMITER_CHAR . 'i';
 
     public function __construct(string $path);
 

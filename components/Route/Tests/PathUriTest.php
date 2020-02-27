@@ -18,9 +18,10 @@ use Chevere\Components\Route\Exceptions\PathUriUnmatchedBracesException;
 use Chevere\Components\Route\Exceptions\PathUriForwardSlashException;
 use Chevere\Components\Route\Exceptions\PathUriInvalidCharsException;
 use Chevere\Components\Route\Exceptions\PathUriUnmatchedWildcardsException;
+use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardRepeatException;
 use Chevere\Components\Route\Exceptions\WildcardReservedException;
-use Chevere\Components\Route\Interfaces\WildcardInterface;
+use Chevere\Components\Route\Interfaces\PathUriInterface;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Wildcard;
 use Chevere\Components\Route\WildcardMatch;
@@ -67,7 +68,7 @@ final class PathUriTest extends TestCase
     public function testConstruct(): void
     {
         $path = '/test';
-        $regex = '^' . $path . '$';
+        $regex = $this->wrapRegex('^' . $path . '$');
         $pathUri = new PathUri($path);
         $this->assertSame($path, $pathUri->toString());
         $this->assertSame($path, $pathUri->key());
@@ -80,9 +81,9 @@ final class PathUriTest extends TestCase
     public function testConstructWithWildcard(): void
     {
         $wildcard = new Wildcard('wildcard');
-        $path = '/test/{wildcard}/test';
+        $path = '/test/' . $wildcard->toString() . '/test';
         $key = '/test/{0}/test';
-        $regex = '^' . str_replace('{0}', '(' . $wildcard->match()->toString() . ')', $key) . '$';
+        $regex = $this->wrapRegex('^' . str_replace('{0}', '(' . $wildcard->match()->toString() . ')', $key) . '$');
         $pathUri = new PathUri($path);
         $this->assertSame($path, $pathUri->toString());
         $this->assertSame($key, $pathUri->key());
@@ -93,26 +94,35 @@ final class PathUriTest extends TestCase
 
     public function testConstructWithWildcards(): void
     {
-        $captureDefault = '(' . WildcardInterface::REGEX_MATCH_DEFAULT . ')';
-        $path = '/test/{wildcard1}/test/{wildcard2}';
+        $wildcard1 = new Wildcard('wildcard1');
+        $wildcard2 = new Wildcard('wildcard2');
+        $path = '/test/' . $wildcard1->toString() . '/test/' . $wildcard2->toString();
         $key = '/test/{0}/test/{1}';
-        $regex = '^' . strtr($key, [
-            '{0}' => $captureDefault,
-            '{1}' => $captureDefault,
-        ]) . '$';
+        $regex = $this->wrapRegex('^' . strtr($key, [
+            '{0}' => '(' . $wildcard1->match()->toString() . ')',
+            '{1}' => '(' . $wildcard2->match()->toString() . ')',
+        ]) . '$');
         $pathUri = new PathUri($path);
         $this->assertSame($path, $pathUri->toString());
         $this->assertSame($key, $pathUri->key());
         $this->assertSame($regex, $pathUri->regex());
         $this->assertTrue($pathUri->hasWildcardCollection());
-        // $this->assertSame(['wildcard1', 'wildcard2'], $pathUri->wildcards());
+        $this->assertTrue($pathUri->wildcardCollection()->has($wildcard1));
+        $this->assertTrue($pathUri->wildcardCollection()->has($wildcard2));
+    }
+
+    public function testWithNoApplicableWildcard(): void
+    {
+        $this->expectException(WildcardNotFoundException::class);
+        (new PathUri('/test'))
+            ->withWildcard(new Wildcard('wildcard'));
     }
 
     public function testRegex(): void
     {
         $match = '[a-z]+';
         $path = '/test/{id}';
-        $regex = '^' . str_replace('{id}', "($match)", $path) . '$';
+        $regex = $this->wrapRegex('^' . str_replace('{id}', "($match)", $path) . '$');
         $pathUri = (new PathUri($path))
             ->withWildcard(
                 (new Wildcard('id'))
@@ -156,5 +166,15 @@ final class PathUriTest extends TestCase
         );
         $this->expectException(PathUriUnmatchedBracesException::class);
         $pathUri->uriFor([]);
+    }
+
+    private function wrapRegex(string $pattern): string
+    {
+        return PathUriInterface::REGEX_DELIMITER_CHAR . $this->escapeRegex($pattern) . PathUriInterface::REGEX_DELIMITER_CHAR;
+    }
+
+    private function escapeRegex(string $pattern): string
+    {
+        return str_replace('/', '\/', $pattern);
     }
 }

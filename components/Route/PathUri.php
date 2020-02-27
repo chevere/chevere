@@ -16,6 +16,7 @@ namespace Chevere\Components\Route;
 use BadMethodCallException;
 use Chevere\Components\Route\Exceptions\PathUriUnmatchedBracesException;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\PathUriForwardSlashException;
 use Chevere\Components\Route\Exceptions\PathUriInvalidCharsException;
 use Chevere\Components\Route\Exceptions\PathUriUnmatchedWildcardsException;
@@ -26,6 +27,8 @@ use Chevere\Components\Route\Interfaces\WildcardCollectionInterface;
 use Chevere\Components\Route\Interfaces\WildcardInterface;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Str\StrBool;
+use LogicException;
+use Throwable;
 
 /**
  * Provides interaction for route paths which may accept wildcards `/api/articles/{id}`
@@ -125,12 +128,21 @@ final class PathUri implements PathUriInterface
 
     public function matchFor(string $requestUri): array
     {
-        if (preg_match('#' . $this->regex . '#', $requestUri, $matches)) {
-            array_shift($matches);
-            $return = [];
-            foreach ($this->wildcards as $pos => $name) {
-                $return[$name] = $matches[$pos];
+        try {
+            if (preg_match($this->regex, $requestUri, $matches)) {
+                array_shift($matches);
+                $return = [];
+                foreach ($this->wildcards as $pos => $name) {
+                    $return[$name] = $matches[$pos];
+                }
             }
+        } catch (Throwable $e) {
+            throw new LogicException(
+                (new Message('Unable to find matches for %requestUri% by matching %regex%. Error thrown: %thrown%'))
+                    ->code('%requestUri%', $requestUri)
+                    ->code('%regex%', $this->regex)
+                    ->toString()
+            );
         }
 
         return $return ?? [];
@@ -288,7 +300,8 @@ final class PathUri implements PathUriInterface
 
     private function handleSetRegex(): void
     {
-        $regex = '^' . $this->key . '$';
+        $pseudoRegex = str_replace('/', '\/', $this->key);
+        $regex = self::REGEX_DELIMITER_CHAR . '^' . $pseudoRegex . '$' . self::REGEX_DELIMITER_CHAR;
         if (isset($this->wildcardCollection)) {
             foreach ($this->wildcardCollection->toArray() as $pos => $wildcard) {
                 $regex = str_replace(
