@@ -30,12 +30,12 @@ final class HookedTest extends TestCase
 
     public function setUp(): void
     {
-        $resourcespath = (new Path(__DIR__))->getChild('_resources');
+        $resourcespath = (new Path(__DIR__ . '/'))->getChild('_resources/');
         $hookablesClassmap = $resourcespath->getChild('hookables_classmap.php');
         $hookables = include $hookablesClassmap->absolute();
         foreach ($hookables as $k => &$v) {
             $v = strtr($v, [
-                '%hooksPath%' => (new Dir($resourcespath))->getChild('hooks')
+                '%hooksPath%' => (new Dir($resourcespath))->getChild('hooks/')
                     ->path()->absolute()
             ]);
         }

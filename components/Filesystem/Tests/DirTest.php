@@ -36,7 +36,7 @@ final class DirTest extends TestCase
     {
         $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0]['line'];
 
-        $this->dir = new Dir(new Path(__DIR__ . '/DirTest_' . uniqid() . '_' . $bt));
+        $this->dir = new Dir(new Path(__DIR__ . '/DirTest_' . uniqid() . '_' . $bt . '/'));
     }
 
     protected function tearDown(): void
@@ -69,7 +69,7 @@ final class DirTest extends TestCase
     public function testCreateCreateUnable(): void
     {
         $this->expectException(DirUnableToCreateException::class);
-        (new Dir(new Path(__DIR__)))
+        (new Dir(new Path(__DIR__ . '/')))
             ->create();
     }
 
@@ -101,7 +101,7 @@ final class DirTest extends TestCase
     public function testRmdirNotEmpty(): void
     {
         $this->dir->create();
-        $child = $this->dir->getChild('child');
+        $child = $this->dir->getChild('child/');
         $child->create();
         $this->expectException(DirUnableToRemoveException::class);
         $this->dir->rmdir();

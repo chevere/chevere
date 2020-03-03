@@ -25,7 +25,7 @@ use ReflectionClass;
 
 final class HooksRegister
 {
-    const HOOKS_FOLDER = 'hooks';
+    const HOOKS_DIR = 'hooks/';
     const HOOKS_FILENAME = 'hooks.php';
     const HOOKABLES_CLASSMAP_FILENAME = 'hookables_classmap.php';
 
@@ -58,11 +58,11 @@ final class HooksRegister
             );
             // @codeCoverageIgnoreEnd
         }
-        $hooksDir = $dir->getChild(self::HOOKS_FOLDER);
+        $hooksDir = $dir->getChild(self::HOOKS_DIR);
         $new = clone $this;
         foreach ($new->map as $className => $hooks) {
             $nsPath = (string) (new Str($className))->forwardSlashes();
-            $hooksNsDir = $hooksDir->getChild($nsPath);
+            $hooksNsDir = $hooksDir->getChild($nsPath . '/');
             $filePath = $hooksNsDir->path()->getChild(self::HOOKS_FILENAME);
             if ($filePath->exists() && $filePath->isWriteable() === false) {
                 // @codeCoverageIgnoreStart

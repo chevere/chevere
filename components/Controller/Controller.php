@@ -11,13 +11,17 @@
 
 declare(strict_types=1);
 
-use Chevere\Components\Api\EndpointMethod;
-use Chevere\Components\Api\Tests\_resources\controllers\GetArticleController;
+namespace Chevere\Components\Controller;
+
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 
-return new class() extends EndpointMethod {
-    public function controller(): ControllerInterface
+abstract class Controller implements ControllerInterface
+{
+    public function setUp(): void
     {
-        return new GetArticleController;
     }
-};
+
+    public function tearDown(): void
+    {
+    }
+}

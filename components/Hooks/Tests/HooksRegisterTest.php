@@ -29,7 +29,7 @@ final class HooksRegisterTest extends TestCase
 
     public function setUp(): void
     {
-        $this->tempDir = (new Dir(new Path(__DIR__)))->getChild('_resources/temp');
+        $this->tempDir = (new Dir(new Path(__DIR__ . '/')))->getChild('_resources/temp/');
         if ($this->tempDir->exists()) {
             $this->tempDir->removeContents();
         } else {

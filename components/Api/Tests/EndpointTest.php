@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Api\Tests;
 
+use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
 use PHPUnit\Framework\TestCase;
 
@@ -20,9 +21,15 @@ final class EndpointTest extends TestCase
 {
     public function testWea(): void
     {
-        $path = (new Path(__DIR__))->getChild('_resources');
-        $method = include $path->getChild('api/articles/{id}/Get.php')->absolute();
-        $method = $method->withRoot($path);
-        xdd($method());
+        // $path = new Path(__DIR__ . '/');
+        // xdd($path);
+        // $root = (new Dir(new Path(__DIR__ . '/')))->getChild('_resources/');
+        // $method = include $root->path()->getChild('api/articles/{id}/Get.php')->absolute();
+        // $method = $method->withRootDir($root);
+        // xdd($method->path());
+        // xdd($method->controller()('le gusta el ñé'));
+        // $controller = new GetArticleController();
+        // xdd($controller, $controller('al 🦖 le gusta el pico'));
+        // xdd($method);
     }
 }

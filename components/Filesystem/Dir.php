@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
+use Chevere\Components\Filesystem\Exceptions\Dir\DirTailException;
 use Chevere\Components\Filesystem\Exceptions\Dir\DirUnableToCreateException;
 use Chevere\Components\Filesystem\Exceptions\Dir\DirUnableToRemoveException;
 use Chevere\Components\Message\Message;
@@ -33,12 +34,25 @@ final class Dir implements DirInterface
     /**
      * Creates a new instance.
      *
+     * PathInterface for
+     *
      * @throws PathIsFileException if the PathInterface represents a file
+     * @throws DirTailException if the path doesn't ends with a trailing slash.
      */
     public function __construct(PathInterface $path)
     {
         $this->path = $path;
         $this->assertIsNotFile();
+        $absolute = $path->absolute();
+        if ($absolute[-1] !== '/') {
+            throw new DirTailException(
+                (new Message('Instance of %className% must provide an absolute path ending with %tailChar%, path %provided% provided'))
+                    ->code('%className%', get_class($path))
+                    ->code('%tailChar%', '/')
+                    ->code('%provided%', $absolute)
+                    ->toString()
+            );
+        }
     }
 
     public function path(): PathInterface
@@ -101,11 +115,13 @@ final class Dir implements DirInterface
         );
         $removed = [];
         foreach ($files as $fileinfo) {
-            $path = new Path($fileinfo->getRealPath());
             if ($fileinfo->isDir()) {
+                $path = new Path(rtrim($fileinfo->getRealPath(), '/') . '/');
                 (new Dir($path))->rmdir();
                 $removed[] = $path->absolute();
                 continue;
+            } else {
+                $path = new Path($fileinfo->getRealPath());
             }
             (new File($path))->remove();
             $removed[] = $path->absolute();
@@ -117,7 +133,7 @@ final class Dir implements DirInterface
     public function getChild(string $path): DirInterface
     {
         return new Dir(
-            $this->path->getChild(rtrim($path, '/') . '/')
+            $this->path->getChild($path)
         );
     }
 

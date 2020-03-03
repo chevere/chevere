@@ -41,7 +41,7 @@ final class CacheHelper
 
     public function getEmptyDir(): DirInterface
     {
-        return $this->getResourcesChildDir('empty');
+        return $this->getResourcesChildDir('empty/');
     }
 
     public function getEmptyCache(): CacheInterface
@@ -51,7 +51,7 @@ final class CacheHelper
 
     public function getWorkingDir(): DirInterface
     {
-        return $this->getResourcesChildDir('working');
+        return $this->getResourcesChildDir('working/');
     }
 
     public function getWorkingCache(): CacheInterface
@@ -61,7 +61,7 @@ final class CacheHelper
 
     public function getCachedDir(): DirInterface
     {
-        return $this->getResourcesChildDir('cached');
+        return $this->getResourcesChildDir('cached/');
     }
 
     public function getCachedCache(): CacheInterface
@@ -72,7 +72,7 @@ final class CacheHelper
     private function getResourcesChildDir(string $child): DirInterface
     {
         return new Dir(
-            $this->path->getChild('_resources')->getChild($child)
+            $this->path->getChild('_resources/')->getChild($child)
         );
     }
 }

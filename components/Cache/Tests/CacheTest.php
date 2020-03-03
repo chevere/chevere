@@ -28,7 +28,7 @@ final class CacheTest extends TestCase
 {
     private function getTestCache(): CacheInterface
     {
-        return new Cache(new Dir(new AppPath('build')));
+        return new Cache(new Dir(new AppPath('build/')));
     }
 
     public function testConstructor(): void

@@ -11,7 +11,13 @@
 
 declare(strict_types=1);
 
-use Chevere\Components\Api\EndpointMethod;
+namespace Chevere\Components\Controller\Interfaces;
 
-return new class() extends EndpointMethod {
-};
+use Chevere\Components\App\Interfaces\AppInterface;
+
+interface ControllerInterface
+{
+    public function setUp(): void;
+
+    public function tearDown(): void;
+}

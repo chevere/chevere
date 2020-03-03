@@ -49,7 +49,7 @@ final class RouterCache implements RouterCacheInterface
     public function __construct(CacheInterface $cache)
     {
         $this->cache = $cache;
-        $this->routeCache = new RouteCache($this->cache->getChild('routes'));
+        $this->routeCache = new RouteCache($this->cache->getChild('routes/'));
         $this->keyRegex = new CacheKey(self::KEY_REGEX);
         $this->keyIndex = new CacheKey(self::KEY_INDEX);
         $this->keyNamed = new CacheKey(self::KEY_NAMED);

@@ -13,12 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem\Path\Tests;
 
-use RuntimeException;
 use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Exceptions\Path\PathDotSlashException;
-use Chevere\Components\Filesystem\Exceptions\Path\PathInvalidException;
-use Chevere\Components\Filesystem\Exceptions\Path\PathOmitRelativeException;
 use Chevere\Components\Filesystem\Exceptions\Path\PathNotAllowedException;
 use Chevere\Components\Filesystem\AppPath;
 use PHPUnit\Framework\TestCase;
@@ -50,7 +47,7 @@ final class AppPathTest extends TestCase
 
     public function testWithRelativePath(): void
     {
-        $child = $this->getAppDir()->getChild('dir');
+        $child = $this->getAppDir()->getChild('dir/');
         $path = new AppPath('dir');
         $this->assertSame('dir', $path->relative());
         $this->assertSame($child->path()->absolute(), $path->absolute() . '/');
@@ -66,7 +63,7 @@ final class AppPathTest extends TestCase
 
     public function testWithRelativePathTrailing(): void
     {
-        $absolute = $this->getAppDir()->getChild('dir')->path()->absolute();
+        $absolute = $this->getAppDir()->getChild('dir/')->path()->absolute();
         $path = new AppPath('dir/');
         $this->assertSame('dir/', $path->relative());
         $this->assertSame($absolute, $path->absolute());
@@ -74,7 +71,7 @@ final class AppPathTest extends TestCase
 
     public function testWithAbsolutePathTrailing(): void
     {
-        $absolute = $this->getAppDir()->getChild('dir')->path()->absolute();
+        $absolute = $this->getAppDir()->getChild('dir/')->path()->absolute();
         $path = new AppPath($absolute);
         $this->assertSame('dir/', $path->relative());
         $this->assertSame($absolute, $path->absolute());

@@ -166,7 +166,7 @@ final class File implements FileInterface
     private function createPath(): void
     {
         $dirname = dirname($this->path->absolute());
-        $path = new Path($dirname);
+        $path = new Path($dirname . '/');
         if (!$path->exists()) {
             (new Dir($path))->create();
         }

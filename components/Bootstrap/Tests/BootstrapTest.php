@@ -25,12 +25,12 @@ final class BootstrapTest extends TestCase
 {
     private function getRootDir(): DirInterface
     {
-        return (new Dir(new Path(__DIR__)))->getChild('resources/root');
+        return (new Dir(new Path(__DIR__ . '/')))->getChild('resources/root/');
     }
 
     private function getAppDir(DirInterface $rootDir): DirInterface
     {
-        return $rootDir->getChild('app');
+        return $rootDir->getChild('app/');
     }
 
     private function getBootstrap(): BootstrapInterface
@@ -57,7 +57,7 @@ final class BootstrapTest extends TestCase
     public function testWithNonExistentDirs(): void
     {
         $rootDir = $this->getRootDir();
-        $appDir = $this->getAppDir($rootDir)->getChild(uniqid());
+        $appDir = $this->getAppDir($rootDir)->getChild(uniqid() . '/');
         $this->expectException(BootstrapDirException::class);
         new Bootstrap($rootDir, $appDir);
     }

@@ -32,7 +32,7 @@ final class FileTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->dir = new Dir(new Path(__DIR__ . '/FileTest_' . uniqid()));
+        $this->dir = new Dir(new Path(__DIR__ . '/FileTest_' . uniqid() . '/'));
     }
 
     protected function tearDown(): void

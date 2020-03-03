@@ -14,47 +14,35 @@ declare(strict_types=1);
 namespace Chevere\Components\Api;
 
 use Chevere\Components\Api\Interfaces\EndpointMethodInterface;
-use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Controller\Interfaces\ControllerInterface;
+use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Http\Interfaces\MethodInterface;
-use Chevere\Components\Http\Interfaces\RequestInterface;
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Route\PathUri;
 use Chevere\Components\Str\Str;
 use ReflectionClass;
 
 abstract class EndpointMethod implements EndpointMethodInterface
 {
-    private RequestInterface $request;
-
     private string $whereIs;
 
     private MethodInterface $method;
 
-    private PathInterface $root;
+    private DirInterface $root;
 
-    private array $wildcards = [];
-
-    abstract public function __invoke();
-
-    public function setUp(): void
-    {
-    }
-
-    public function tearDown(): void
-    {
-    }
+    abstract public function controller(): ControllerInterface;
 
     final public function __construct()
     {
         $this->whereIs = (new ReflectionClass($this))->getFileName();
+        $this->root = new Dir(new Path(__DIR__ . '/'));
+        $this->handleSetPath();
         $name = basename($this->whereIs, '.php');
         $knownMethods = [
             'Get' => GetMethod::class,
         ];
         $this->method = new $knownMethods[$name];
-        // $this->pathUri = new PathUri($pathUri);
-        $this->setUp();
-        $this->tearDown();
     }
 
     final public function whereIs(): string
@@ -62,52 +50,36 @@ abstract class EndpointMethod implements EndpointMethodInterface
         return $this->whereIs;
     }
 
+    final public function root(): DirInterface
+    {
+        return $this->root;
+    }
+
+    final public function path(): string
+    {
+        return $this->path;
+    }
+
     final public function method(): MethodInterface
     {
         return $this->method;
     }
 
-    final public function withRoot(PathInterface $root): EndpointMethodInterface
+    final public function withRootDir(DirInterface $root): EndpointMethodInterface
     {
         $new = clone $this;
         $new->root = $root;
-        $pathUri = (string) (new Str(dirname($this->whereIs)))
-            ->replaceFirst($root->absolute(), '');
-        $new->pathUri = new PathUri($pathUri);
+        $new->handleSetPath();
 
         return $new;
     }
 
-    final public function hasRoot(): bool
+    private function handleSetPath(): void
     {
-        return isset($this->root);
-    }
-
-    final public function root(): PathInterface
-    {
-        return $this->root;
-    }
-
-    // final public function wildcards(): array
-    // {
-    //     return $this->wildcards;
-    // }
-
-    final public function withRequest(RequestInterface $request): EndpointMethodInterface
-    {
-        $new = clone $this;
-        $new->request = $request;
-
-        return $new;
-    }
-
-    final public function hasRequest(): bool
-    {
-        return isset($this->request);
-    }
-
-    final public function request(): RequestInterface
-    {
-        return $this->request;
+        $this->path = (string) (new Str(dirname($this->whereIs)))
+            ->replaceFirst(
+                rtrim($this->root->path()->absolute(), '/'),
+                ''
+            );
     }
 }

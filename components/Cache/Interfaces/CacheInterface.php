@@ -69,5 +69,8 @@ interface CacheInterface
      */
     public function puts(): array;
 
+    /**
+     * Proxy for DirInterface getChild.
+     */
     public function getChild(string $path): CacheInterface;
 }

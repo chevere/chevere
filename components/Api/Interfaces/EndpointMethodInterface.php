@@ -13,24 +13,31 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Api\Interfaces;
 
+use Chevere\Components\Controller\Interfaces\ControllerInterface;
+use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Http\Interfaces\RequestInterface;
 
 interface EndpointMethodInterface
 {
-    public function __construct();
-
-    public function __invoke();
+    public function controller(): ControllerInterface;
 
     /**
-     * Returns the absolute path to the class file.
+     * Provides access to the absolute path to the class file.
      */
     public function whereIs(): string;
 
-    public function setUp(): void;
+    /**
+     * Provides access to the MethodInterface instance.
+     */
+    public function method(): MethodInterface;
 
-    public function tearDown(): void;
-
-    // public function withEndpoint(EndpointInterface $endpoint): MethodInterface;
-
-    // public function endpoint(): EndpointInterface;
+    /**
+     * Return an instance with the specified root DirInterface.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified root DirInterface.
+     */
+    public function withRootDir(DirInterface $root): EndpointMethodInterface;
 }
