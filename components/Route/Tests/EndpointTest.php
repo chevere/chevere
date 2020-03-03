@@ -1,0 +1,65 @@
+<?php
+
+/*
+ * This file is part of Chevere.
+ *
+ * (c) Rodolfo Berrios <rodolfo@chevere.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+namespace Chevere\Components\Route\Tests;
+
+use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Http\Methods\GetMethod;
+use Chevere\Components\Route\Exceptions\EndpointException;
+use Chevere\Components\Route\Interfaces\WildcardCollectionInterface;
+use Chevere\Components\Route\Wildcard;
+use Chevere\Components\Str\Str;
+use PHPUnit\Framework\TestCase;
+
+final class EndpointTest extends TestCase
+{
+    private DirInterface $resourcesDir;
+
+    public function setUp(): void
+    {
+        $this->resourcesDir = (new Dir(new Path(__DIR__ . '/')))->getChild('_resources/');
+    }
+
+    public function testPath(): void
+    {
+        $absolute = $this->resourcesDir->path()->getChild('api/articles/Get.php')->absolute();
+        $endpoint = include $absolute;
+        $this->assertSame($absolute, $endpoint->whereIs());
+        $this->assertSame('', $endpoint->path());
+        $this->assertInstanceOf(WildcardCollectionInterface::class, $endpoint->wildcards());
+        $this->assertInstanceOf(GetMethod::class, $endpoint->method());
+    }
+
+    public function testPathWildcard(): void
+    {
+        $endpoint = include $this->resourcesDir->path()->getChild('api/articles/{id}/Get.php')->absolute();
+        $wildcards = $endpoint->wildcards();
+        $this->assertTrue($wildcards->has(new Wildcard('id')));
+    }
+
+    public function testWithRoot(): void
+    {
+        $locator = 'api/articles/{id}';
+        $endpoint = include $this->resourcesDir->path()->getChild($locator . '/Get.php')->absolute();
+        $endpoint = $endpoint->withRootDir($this->resourcesDir);
+        $this->assertSame('/' . $locator, $endpoint->path());
+    }
+
+    public function testWrongFilename(): void
+    {
+        $this->expectException(EndpointException::class);
+        include $this->resourcesDir->path()->getChild('api/articles/Wrong.php')->absolute();
+    }
+}

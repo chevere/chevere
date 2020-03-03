@@ -11,15 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Controller\Interfaces;
+namespace Chevere\Components\Route\Exceptions;
 
-use Chevere\Components\App\Interfaces\AppInterface;
+use Exception;
 
-interface ControllerInterface
+/**
+ * Exception thrown by EndpointInterface.
+ */
+final class EndpointException extends Exception
 {
-    public function __construct(): void;
-
-    public function setUp(): void;
-
-    public function tearDown(): void;
 }

@@ -11,19 +11,21 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Api;
+namespace Chevere\Components\Route;
 
-use Chevere\Components\Api\Interfaces\EndpointMethodInterface;
+use Chevere\Components\Api\Interfaces\EndpointInterface;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Http\Interfaces\MethodInterface;
-use Chevere\Components\Http\Methods\GetMethod;
+use Chevere\Components\Message\Message;
+use Chevere\Components\Route\Exceptions\EndpointException;
+use Chevere\Components\Route\Interfaces\WildcardCollectionInterface;
 use Chevere\Components\Str\Str;
 use ReflectionClass;
 
-abstract class EndpointMethod implements EndpointMethodInterface
+abstract class Endpoint implements EndpointInterface
 {
     private string $whereIs;
 
@@ -31,28 +33,33 @@ abstract class EndpointMethod implements EndpointMethodInterface
 
     private DirInterface $root;
 
+    private WildcardCollectionInterface $wildcards;
+
     abstract public function controller(): ControllerInterface;
 
     final public function __construct()
     {
         $this->whereIs = (new ReflectionClass($this))->getFileName();
-        $this->root = new Dir(new Path(__DIR__ . '/'));
-        $this->handleSetPath();
+        $dirWhereIs = dirname($this->whereIs);
+        $this->root = new Dir(new Path($dirWhereIs . '/'));
         $name = basename($this->whereIs, '.php');
-        $knownMethods = [
-            'Get' => GetMethod::class,
-        ];
-        $this->method = new $knownMethods[$name];
+        $method = self::KNOWN_METHODS[$name] ?? null;
+        if ($method === null) {
+            throw new EndpointException(
+                (new Message('Unknown method name %provided% provided (inherithed from %basename%)'))
+                    ->code('%provided%', $name)
+                    ->code('%basename%', basename($this->whereIs))
+                    ->toString()
+            );
+        }
+        $this->handleSetPath();
+        $this->method = new $method;
+        $this->wildcards = new WildcardCollection();
     }
 
     final public function whereIs(): string
     {
         return $this->whereIs;
-    }
-
-    final public function root(): DirInterface
-    {
-        return $this->root;
     }
 
     final public function path(): string
@@ -65,7 +72,12 @@ abstract class EndpointMethod implements EndpointMethodInterface
         return $this->method;
     }
 
-    final public function withRootDir(DirInterface $root): EndpointMethodInterface
+    public function wildcards(): WildcardCollectionInterface
+    {
+        return $this->wildcards;
+    }
+
+    final public function withRootDir(DirInterface $root): EndpointInterface
     {
         $new = clone $this;
         $new->root = $root;

@@ -11,15 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Controller\Interfaces;
+namespace Chevere\Components\Route\Tests\_resources\controllers;
 
-use Chevere\Components\App\Interfaces\AppInterface;
+use Chevere\Components\Controller\Controller;
 
-interface ControllerInterface
+final class GetArticlesController extends Controller
 {
-    public function __construct(): void;
-
-    public function setUp(): void;
-
-    public function tearDown(): void;
+    public function __invoke(string $id): void
+    {
+        echo 'Get articles';
+    }
 }

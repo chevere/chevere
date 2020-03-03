@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Api\Tests\_resources\controllers;
+namespace Chevere\Components\Route\Tests\_resources\controllers;
 
 use Chevere\Components\Controller\Controller;
 
@@ -19,6 +19,6 @@ final class GetArticleController extends Controller
 {
     public function __invoke(string $id): void
     {
-        echo 'Vimos la id ' . $id;
+        echo 'Get article: ' . $id;
     }
 }

@@ -13,13 +13,53 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Api\Interfaces;
 
+use Chevere\Components\Controller\Interfaces\ControllerInterface;
+use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Http\Interfaces\MethodInterface;
+use Chevere\Components\Http\Methods\ConnectMethod;
+use Chevere\Components\Http\Methods\DeleteMethod;
+use Chevere\Components\Http\Methods\GetMethod;
+use Chevere\Components\Http\Methods\HeadMethod;
+use Chevere\Components\Http\Methods\OptionsMethod;
+use Chevere\Components\Http\Methods\PatchMethod;
+use Chevere\Components\Http\Methods\PostMethod;
+use Chevere\Components\Http\Methods\PutMethod;
+use Chevere\Components\Http\Methods\TraceMethod;
+
 interface EndpointInterface
 {
-    // /api/articles/{id}
-    public function key(): string;
+    const KNOWN_METHODS = [
+        'Connect' => ConnectMethod::class,
+        'Delete' => DeleteMethod::class,
+        'Get' => GetMethod::class,
+        'Head' => HeadMethod::class,
+        'Options' => OptionsMethod::class,
+        'Patch' => PatchMethod::class,
+        'Post' => PostMethod::class,
+        'Put' => PutMethod::class,
+        'Trace' => TraceMethod::class,
+    ];
 
-    // /api/articles/{id} -> id ?? ''
-    public function id(): string;
+    /**
+     * Provides access to the ControllerInterface instance.
+     */
+    public function controller(): ControllerInterface;
 
-    public function withMethod(EndpointMethodInterface $method): EndpointInterface;
+    /**
+     * Provides access to the absolute path to the class file.
+     */
+    public function whereIs(): string;
+
+    /**
+     * Provides access to the MethodInterface instance.
+     */
+    public function method(): MethodInterface;
+
+    /**
+     * Return an instance with the specified root DirInterface.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified root DirInterface.
+     */
+    public function withRootDir(DirInterface $root): EndpointInterface;
 }
