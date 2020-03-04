@@ -18,6 +18,7 @@ use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
+use Chevere\Components\Route\RouteName;
 use Chevere\Components\Router\Exceptions\RouteableException;
 use Chevere\Components\Router\Exceptions\RouteNotRouteableException;
 use Chevere\Components\Router\Routeable;
@@ -31,6 +32,7 @@ final class RouteableTest extends TestCase
         $this->expectException(RouteableException::class);
         new Routeable(
             new Route(
+                new RouteName('test'),
                 new PathUri('/test')
             )
         );
@@ -49,7 +51,7 @@ final class RouteableTest extends TestCase
 
     public function testNotExportable(): void
     {
-        $route = new Route(new PathUri('/test'));
+        $route = new Route(new RouteName('test'), new PathUri('/test'));
         $route->resource = fopen('php://output', 'r');
         $this->expectException(RouteNotRouteableException::class);
         new Routeable($route);

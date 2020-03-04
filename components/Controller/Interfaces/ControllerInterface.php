@@ -17,8 +17,6 @@ use Chevere\Components\App\Interfaces\AppInterface;
 
 interface ControllerInterface
 {
-    public function __construct(): void;
-
     public function setUp(): void;
 
     public function tearDown(): void;

@@ -15,71 +15,62 @@ namespace Chevere\Components\Route\Tests;
 
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
-use Chevere\Components\Http\Method;
+use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PostMethod;
 use Chevere\Components\Middleware\MiddlewareName;
-use Chevere\Components\Route\WildcardMatch;
-use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteName;
-use Chevere\Components\Route\Wildcard;
 use Chevere\Components\Route\Interfaces\RouteInterface;
-use Chevere\Components\Route\Interfaces\WildcardInterface;
 use Chevere\TestApp\App\Controllers\TestController;
 use Chevere\TestApp\App\Middlewares\TestMiddlewareVoid;
 use PHPUnit\Framework\TestCase;
 
 final class RouteTest extends TestCase
 {
-    private function getRoute(string $path): RouteInterface
+    private function getRoute(string $name, string $path): RouteInterface
     {
         return new Route(
+            new RouteName($name),
             new PathUri($path)
         );
     }
 
     public function testConstruct(): void
     {
+        $routeName = new RouteName('name');
         $pathUri = new PathUri('/');
-        $route = new Route($pathUri);
+        $route = new Route($routeName, $pathUri);
+        $this->assertSame($routeName, $route->name());
         $this->assertSame($pathUri, $route->pathUri());
         $this->assertSame(__FILE__, $route->maker()['file']);
         $this->assertFalse($route->hasMiddlewareNameCollection());
-        $this->assertFalse($route->hasName());
         $this->expectException(MethodNotFoundException::class);
         $route->controllerName(new GetMethod);
     }
 
-    public function testWithName(): void
+    public function testWithAddedMethodControllerName(): void
     {
-        $name = new RouteName('name-test');
-        $route = $this->getRoute('/test')
-            ->withName($name);
-        $this->assertTrue($route->hasName());
-        $this->assertSame($name, $route->name());
+        $method = new GetMethod();
+        $route = $this->getRoute('test', '/test')
+            ->withAddedMethodControllerName(
+                new MethodControllerName(
+                    new GetMethod,
+                    new ControllerName(TestController::class)
+                )
+            );
+        $this->assertSame(TestController::class, $route->controllerName($method)->toString());
+        $this->expectException(MethodNotFoundException::class);
+        $route->controllerName(new PostMethod());
     }
 
-    // public function testWithAddedMethod(): void
-    // {
-    //     $method = new GetMethod();
-    //     $route = $this->getRoute('/test')
-    //         ->withAddedMethod(
-    //             $method,
-    //             new ControllerName(TestController::class)
-    //         );
-    //     $this->assertSame(TestController::class, $route->controllerName($method)->toString());
-    //     $this->expectException(MethodNotFoundException::class);
-    //     $route->controllerName(new PostMethod());
-    // }
-
-    // public function testWithAddedMiddleware(): void
-    // {
-    //     $middlewareName = new MiddlewareName(TestMiddlewareVoid::class);
-    //     $route = $this->getRoute('/test')
-    //         ->withAddedMiddlewareName($middlewareName);
-    //     $this->assertTrue($route->middlewareNameCollection()->hasAny());
-    //     $this->assertTrue($route->middlewareNameCollection()->has($middlewareName));
-    // }
+    public function testWithAddedMiddleware(): void
+    {
+        $middlewareName = new MiddlewareName(TestMiddlewareVoid::class);
+        $route = $this->getRoute('test', '/test')
+            ->withAddedMiddlewareName($middlewareName);
+        $this->assertTrue($route->middlewareNameCollection()->hasAny());
+        $this->assertTrue($route->middlewareNameCollection()->has($middlewareName));
+    }
 }

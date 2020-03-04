@@ -17,6 +17,10 @@ use Chevere\Components\Controller\Interfaces\ControllerInterface;
 
 abstract class Controller implements ControllerInterface
 {
+    final public function __construct()
+    {
+    }
+
     public function setUp(): void
     {
     }

@@ -35,14 +35,14 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
         $this->array = [];
         $this->index = [];
         foreach ($methodControllerName as $method) {
-            $this->addMethodControllerName($method);
+            $this->storeMethodControllerName($method);
         }
     }
 
     public function withAddedMethodControllerName(MethodControllerNameInterface $methodControllerName): MethodControllerNameCollectionInterface
     {
         $new = clone $this;
-        $new->addMethodControllerName($methodControllerName);
+        $new->storeMethodControllerName($methodControllerName);
 
         return $new;
     }
@@ -76,7 +76,7 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
         return $this->array;
     }
 
-    private function addMethodControllerName(MethodControllerNameInterface $methodControllerName): void
+    private function storeMethodControllerName(MethodControllerNameInterface $methodControllerName): void
     {
         $name = $methodControllerName->method()::name();
         $pos = array_search($name, $this->index);

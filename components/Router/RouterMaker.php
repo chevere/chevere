@@ -83,15 +83,13 @@ final class RouterMaker implements RouterMakerInterface
             ->withGroups(
                 $new->router()->groups()->withAdded($group, $new->id)
             );
-        if ($routeable->route()->hasName()) {
-            $new->assertUniqueName($routeable->route());
-            $name = $routeable->route()->name()->toString();
-            $new->named[$name] = $new->id;
-            $new->router = $new->router
-                ->withNamed(
-                    $new->router()->named()->withAdded($name, $new->id)
-                );
-        }
+        $new->assertUniqueName($routeable->route());
+        $name = $routeable->route()->name()->toString();
+        $new->named[$name] = $new->id;
+        $new->router = $new->router
+            ->withNamed(
+                $new->router()->named()->withAdded($name, $new->id)
+            );
         $new->router = $new->router
             ->withIndex(
                 $new->router()->index()->withAdded(

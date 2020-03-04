@@ -21,10 +21,12 @@ interface MethodControllerNameCollectionInterface extends ToArrayInterface
     public function __construct(MethodControllerNameInterface ...$methodControllerName);
 
     /**
-     * Return an instance with the specified MethodControllerNameInterface.
+     * Return an instance with the specified added MethodControllerNameInterface.
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified MethodControllerNameInterface.
+     *
+     * Note: This method overrides any method already added.
      */
     public function withAddedMethodControllerName(MethodControllerNameInterface $methodControllerName): MethodControllerNameCollectionInterface;
 
