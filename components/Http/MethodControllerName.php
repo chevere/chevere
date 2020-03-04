@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Http;
 
+use Chevere\Components\Controller\ControllerName;
+use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
@@ -23,13 +25,10 @@ final class MethodControllerName implements MethodControllerNameInterface
 
     private ControllerNameInterface $controllerName;
 
-    /**
-     * Creates a new instance.
-     */
-    public function __construct(MethodInterface $method, ControllerNameInterface $controllerName)
+    public function __construct(MethodInterface $method, ControllerInterface $controller)
     {
         $this->method = $method;
-        $this->controllerName = $controllerName;
+        $this->controllerName = new ControllerName(get_class($controller));
     }
 
     public function method(): MethodInterface

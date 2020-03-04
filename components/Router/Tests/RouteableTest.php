@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
-use Chevere\Components\Controller\ControllerName;
-use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\PathUri;
 use Chevere\Components\Route\Route;
@@ -38,16 +36,19 @@ final class RouteableTest extends TestCase
         );
     }
 
-    // public function testConstruct(): void
-    // {
-    //     $route = (new Route(new PathUri('/test')))
-    //         ->withAddedMethod(
-    //             new GetMethod(),
-    //             new ControllerName(TestController::class)
-    //         );
-    //     $routeable = new Routeable($route);
-    //     $this->assertSame($route, $routeable->route());
-    // }
+    public function testConstruct(): void
+    {
+        $route = (new Route(
+            new RouteName('test'),
+            new PathUri('/test')
+        ))
+            ->withAddedMethodController(
+                new GetMethod(),
+                new TestController()
+            );
+        $routeable = new Routeable($route);
+        $this->assertSame($route, $routeable->route());
+    }
 
     public function testNotExportable(): void
     {

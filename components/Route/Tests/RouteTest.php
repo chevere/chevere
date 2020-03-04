@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route\Tests;
 
-use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
-use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PostMethod;
 use Chevere\Components\Middleware\MiddlewareName;
@@ -47,22 +45,20 @@ final class RouteTest extends TestCase
         $this->assertSame(__FILE__, $route->maker()['file']);
         $this->assertFalse($route->hasMiddlewareNameCollection());
         $this->expectException(MethodNotFoundException::class);
-        $route->controllerName(new GetMethod);
+        $route->controllerNameFor(new GetMethod);
     }
 
     public function testWithAddedMethodControllerName(): void
     {
         $method = new GetMethod();
         $route = $this->getRoute('test', '/test')
-            ->withAddedMethodControllerName(
-                new MethodControllerName(
-                    new GetMethod,
-                    new ControllerName(TestController::class)
-                )
+            ->withAddedMethodController(
+                new GetMethod,
+                new TestController
             );
-        $this->assertSame(TestController::class, $route->controllerName($method)->toString());
+        $this->assertSame(TestController::class, $route->controllerNameFor($method)->toString());
         $this->expectException(MethodNotFoundException::class);
-        $route->controllerName(new PostMethod());
+        $route->controllerNameFor(new PostMethod());
     }
 
     public function testWithAddedMiddleware(): void

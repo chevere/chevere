@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
+use Chevere\Components\Controller\ControllerName;
+use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\Interfaces\MethodControllerNameCollectionInterface;
-use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
+use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Http\MethodControllerNameCollection;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
@@ -65,11 +67,13 @@ final class Route implements RouteInterface
         return $this->name;
     }
 
-    public function withAddedMethodControllerName(MethodControllerNameInterface $methodControllerName): RouteInterface
+    public function withAddedMethodController(MethodInterface $method, ControllerInterface $controller): RouteInterface
     {
         $new = clone $this;
         $new->methodControllerNameCollection = $new->methodControllerNameCollection
-            ->withAddedMethodControllerName($methodControllerName);
+            ->withAddedMethodControllerName(
+                new MethodControllerName($method, $controller)
+            );
 
         return $new;
     }
@@ -79,7 +83,7 @@ final class Route implements RouteInterface
         return $this->methodControllerNameCollection;
     }
 
-    public function controllerName(MethodInterface $method): ControllerNameInterface
+    public function controllerNameFor(MethodInterface $method): ControllerNameInterface
     {
         if (!$this->methodControllerNameCollection->has($method)) {
             throw new MethodNotFoundException(

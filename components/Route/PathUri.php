@@ -136,14 +136,17 @@ final class PathUri implements PathUriInterface
                     $return[$name] = $matches[$pos];
                 }
             }
+            // @codeCoverageIgnoreStart
         } catch (Throwable $e) {
             throw new LogicException(
                 (new Message('Unable to find matches for %requestUri% by matching %regex%. Error thrown: %thrown%'))
                     ->code('%requestUri%', $requestUri)
                     ->code('%regex%', $this->regex)
+                    ->strtr('%thrown%', $e->getMessage())
                     ->toString()
             );
         }
+        // @codeCoverageIgnoreEnd
 
         return $return ?? [];
     }
