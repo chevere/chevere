@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use Chevere\Components\Api\Interfaces\EndpointInterface;
+use Chevere\Components\Route\Interfaces\EndpointInterface;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
@@ -33,9 +33,9 @@ abstract class Endpoint implements EndpointInterface
 
     private DirInterface $root;
 
-    private WildcardCollectionInterface $wildcards;
+    private WildcardCollectionInterface $wildcardCollection;
 
-    abstract public function controller(): ControllerInterface;
+    abstract public function getController(): ControllerInterface;
 
     final public function __construct()
     {
@@ -54,7 +54,7 @@ abstract class Endpoint implements EndpointInterface
         }
         $this->handleSetPath();
         $this->method = new $method;
-        $this->wildcards = new WildcardCollection();
+        $this->wildcardCollection = new WildcardCollection();
     }
 
     final public function whereIs(): string
@@ -72,9 +72,9 @@ abstract class Endpoint implements EndpointInterface
         return $this->method;
     }
 
-    public function wildcards(): WildcardCollectionInterface
+    public function wildcardCollection(): WildcardCollectionInterface
     {
-        return $this->wildcards;
+        return $this->wildcardCollection;
     }
 
     final public function withRootDir(DirInterface $root): EndpointInterface

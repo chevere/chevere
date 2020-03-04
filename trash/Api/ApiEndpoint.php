@@ -18,10 +18,10 @@ use Chevere\Components\Controllers\Api\HeadController;
 use Chevere\Components\Controllers\Api\OptionsController;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodControllerName;
-use Chevere\Components\Api\Interfaces\EndpointInterface;
+use Chevere\Components\Route\Interfaces\EndpointInterface;
 use Chevere\Components\Http\Interfaces\MethodControllerNameCollectionInterface;
 
-final class Endpoint implements EndpointInterface
+final class ApiEndpoint implements EndpointInterface
 {
     /** @var array */
     private $array;

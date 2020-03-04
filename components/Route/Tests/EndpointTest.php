@@ -20,7 +20,6 @@ use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Exceptions\EndpointException;
 use Chevere\Components\Route\Interfaces\WildcardCollectionInterface;
 use Chevere\Components\Route\Wildcard;
-use Chevere\Components\Str\Str;
 use PHPUnit\Framework\TestCase;
 
 final class EndpointTest extends TestCase
@@ -34,24 +33,24 @@ final class EndpointTest extends TestCase
 
     public function testPath(): void
     {
-        $absolute = $this->resourcesDir->path()->getChild('api/articles/Get.php')->absolute();
+        $absolute = $this->resourcesDir->path()->getChild('routes/articles/Get.php')->absolute();
         $endpoint = include $absolute;
         $this->assertSame($absolute, $endpoint->whereIs());
         $this->assertSame('', $endpoint->path());
-        $this->assertInstanceOf(WildcardCollectionInterface::class, $endpoint->wildcards());
+        $this->assertInstanceOf(WildcardCollectionInterface::class, $endpoint->wildcardCollection());
         $this->assertInstanceOf(GetMethod::class, $endpoint->method());
     }
 
     public function testPathWildcard(): void
     {
-        $endpoint = include $this->resourcesDir->path()->getChild('api/articles/{id}/Get.php')->absolute();
-        $wildcards = $endpoint->wildcards();
-        $this->assertTrue($wildcards->has(new Wildcard('id')));
+        $endpoint = include $this->resourcesDir->path()->getChild('routes/articles/{id}/Get.php')->absolute();
+        $collection = $endpoint->wildcardCollection();
+        $this->assertTrue($collection->has(new Wildcard('id')));
     }
 
     public function testWithRoot(): void
     {
-        $locator = 'api/articles/{id}';
+        $locator = 'routes/articles/{id}';
         $endpoint = include $this->resourcesDir->path()->getChild($locator . '/Get.php')->absolute();
         $endpoint = $endpoint->withRootDir($this->resourcesDir);
         $this->assertSame('/' . $locator, $endpoint->path());
@@ -60,6 +59,6 @@ final class EndpointTest extends TestCase
     public function testWrongFilename(): void
     {
         $this->expectException(EndpointException::class);
-        include $this->resourcesDir->path()->getChild('api/articles/Wrong.php')->absolute();
+        include $this->resourcesDir->path()->getChild('routes/articles/Wrong.php')->absolute();
     }
 }

@@ -106,7 +106,7 @@ final class ApiMaker implements ApiMakerInterface
                 new ControllerName(GetController::class)
             )
         );
-        $new->register(new Endpoint($methodControllerCollection));
+        $new->register(new ApiEndpoint($methodControllerCollection));
 
         return $new;
     }
@@ -143,7 +143,7 @@ final class ApiMaker implements ApiMakerInterface
         return $this->path;
     }
 
-    private function register(Endpoint $endpoint): void
+    private function register(ApiEndpoint $endpoint): void
     {
         $this->routesMap = [];
         $this->resourcesMap = [];
@@ -257,7 +257,7 @@ final class ApiMaker implements ApiMakerInterface
                         new ControllerName($controller)
                     );
             }
-            $endpoint = new Endpoint($this->route->methodControllerNameCollection());
+            $endpoint = new ApiEndpoint($this->route->methodControllerNameCollection());
             $this->routerMaker = $this->routerMaker
                 ->withAddedRouteable(
                     new Routeable($this->route),

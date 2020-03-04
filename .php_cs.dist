@@ -60,6 +60,7 @@ return PhpCsFixer\Config::create()
         ],
         'braces' => [
             'allow_single_line_closure' => true,
+            'position_after_anonymous_constructs' => 'next'
         ],
         'concat_space' => ['spacing' => 'one'],
         'hash_to_slash_comment' => true,

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Api\Interfaces;
+namespace Chevere\Components\Route\Interfaces;
 
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
@@ -41,9 +41,9 @@ interface EndpointInterface
     ];
 
     /**
-     * Provides access to the ControllerInterface instance.
+     * Provides access to a new ControllerInterface instance.
      */
-    public function controller(): ControllerInterface;
+    public function getController(): ControllerInterface;
 
     /**
      * Provides access to the absolute path to the class file.

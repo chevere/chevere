@@ -20,12 +20,12 @@ use Chevere\Components\Route\WildcardCollection;
 use Chevere\Components\Route\WildcardMatch;
 
 return new class() extends Endpoint {
-    public function controller(): ControllerInterface
+    public function getController(): ControllerInterface
     {
         return new GetArticleController;
     }
 
-    public function wildcards(): WildcardCollectionInterface
+    public function wildcardCollection(): WildcardCollectionInterface
     {
         return new WildcardCollection(
             (new Wildcard('id'))

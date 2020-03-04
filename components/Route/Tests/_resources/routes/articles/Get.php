@@ -16,7 +16,7 @@ use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Route\Tests\_resources\controllers\GetArticlesController;
 
 return new class() extends Endpoint {
-    public function controller(): ControllerInterface
+    public function getController(): ControllerInterface
     {
         return new GetArticlesController();
     }
