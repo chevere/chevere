@@ -16,8 +16,8 @@ namespace Chevere\Components\Route\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when the path uri wildcards doesn't match the wildcard pattern.
+ * Exception thrown when the wildcard is reserved.
  */
-final class PathUriUnmatchedWildcardsException extends Exception
+final class RouteWildcardReservedException extends Exception
 {
 }

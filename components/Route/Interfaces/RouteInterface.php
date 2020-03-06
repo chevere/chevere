@@ -15,7 +15,7 @@ namespace Chevere\Components\Route\Interfaces;
 
 use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
-use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
+use Chevere\Components\Route\Exceptions\RouteNameInvalidException;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Http\Interfaces\MethodControllerNameCollectionInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
@@ -25,7 +25,7 @@ use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
 interface RouteInterface
 {
     /**
-     * @throws RouteInvalidNameException if $name doesn't match REGEX_NAME
+     * @throws RouteNameInvalidException if $name doesn't match REGEX_NAME
      */
     public function __construct(RouteNameInterface $name, RoutePathInterface $routePath);
 

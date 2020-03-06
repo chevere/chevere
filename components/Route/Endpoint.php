@@ -21,19 +21,22 @@ use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Exceptions\EndpointException;
 use Chevere\Components\Route\Interfaces\EndpointInterface;
-use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
 use Chevere\Components\Str\Str;
 use ReflectionClass;
 
 abstract class Endpoint implements EndpointInterface
 {
+    /** @var string Absoltue path to the endpoint file */
     private string $whereIs;
 
+    /** @var string The path, like `/api/articles/{id}` */
+    private string $path;
+
+    /** @var MethodInterface The inherithed method, taken from the file basename */
     private MethodInterface $method;
 
+    /** @var DirInterface The root dir, used to determine $path */
     private DirInterface $root;
-
-    private RouteWildcardsInterface $routeWildcards;
 
     abstract public function getController(): ControllerInterface;
 
@@ -54,7 +57,6 @@ abstract class Endpoint implements EndpointInterface
         }
         $this->handleSetPath();
         $this->method = new $method;
-        $this->routeWildcards = new RouteWildcards();
     }
 
     final public function whereIs(): string
@@ -70,11 +72,6 @@ abstract class Endpoint implements EndpointInterface
     final public function method(): MethodInterface
     {
         return $this->method;
-    }
-
-    public function routeWildcards(): RouteWildcardsInterface
-    {
-        return $this->routeWildcards;
     }
 
     final public function withRootDir(DirInterface $root): EndpointInterface

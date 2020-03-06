@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route\Interfaces;
 
-use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
-use Chevere\Components\Route\Exceptions\WildcardInvalidRegexException;
+use Chevere\Components\Route\Exceptions\RouteWildcardNotFoundException;
+use Chevere\Components\Route\Exceptions\RouteWildcardInvalidRegexException;
 
 interface RouteWildcardInterface
 {
@@ -32,7 +32,7 @@ interface RouteWildcardInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified WildcardMatchInterface.
      *
-     * @throws WildcardInvalidRegexException if $match is an invalid regex match
+     * @throws RouteWildcardInvalidRegexException if $match is an invalid regex match
      */
     public function withMatch(RouteWildcardMatchInterface $regexMatch): RouteWildcardInterface;
 
@@ -51,7 +51,7 @@ interface RouteWildcardInterface
      *
      * @param string $routePath A path including the wildcard, like `/{wildcard}`
      *
-     * @throws WildcardNotFoundException if the wildcard doesn't exists in the path
+     * @throws RouteWildcardNotFoundException if the wildcard doesn't exists in the path
      */
     public function assertRoutePath(RoutePathInterface $routePath): void;
 }

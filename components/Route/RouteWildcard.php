@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use Chevere\Components\Str\Exceptions\StrAssertException;
-use Chevere\Components\Route\Exceptions\WildcardInvalidCharsException;
+use Chevere\Components\Route\Exceptions\RouteWildcardInvalidCharsException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
-use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
+use Chevere\Components\Route\Exceptions\RouteWildcardNotFoundException;
+use Chevere\Components\Route\Exceptions\RouteWildcardStartWithNumberException;
 use Chevere\Components\Route\Interfaces\RouteWildcardMatchInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
@@ -38,8 +38,8 @@ final class RouteWildcard implements RouteWildcardInterface
      *
      * @param string $name  The wildcard name
      *
-     * @throws WildcardStartWithNumberException if $name starts with a number
-     * @throws WildcardInvalidCharsException    if $name contains invalid chars
+     * @throws RouteWildcardStartWithNumberException if $name starts with a number
+     * @throws RouteWildcardInvalidCharsException    if $name contains invalid chars
      */
     public function __construct(string $name)
     {
@@ -76,7 +76,7 @@ final class RouteWildcard implements RouteWildcardInterface
     {
         $noWildcard = false === strpos($routePath->toString(), $this->string);
         if ($noWildcard) {
-            throw new WildcardNotFoundException(
+            throw new RouteWildcardNotFoundException(
                 (new Message("Wildcard %wildcard% doesn't exists in route %toString%"))
                     ->code('%wildcard%', $this->string)
                     ->code('%path%', $routePath->toString())
@@ -90,14 +90,14 @@ final class RouteWildcard implements RouteWildcardInterface
         try {
             (new StrAssert($this->name))->notStartsWithCtypeDigit();
         } catch (StrAssertException $e) {
-            throw new WildcardStartWithNumberException(
+            throw new RouteWildcardStartWithNumberException(
                 (new Message('String %string% must not start with a numeric value'))
                     ->code('%string%', $this->name)
                     ->toString()
             );
         }
         if (!preg_match(RouteWildcardInterface::ACCEPT_CHARS_REGEX, $this->name)) {
-            throw new WildcardInvalidCharsException(
+            throw new RouteWildcardInvalidCharsException(
                 (new Message('String %string% must contain only alphanumeric and underscore characters'))
                     ->code('%string%', $this->name)
                     ->toString()

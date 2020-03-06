@@ -16,8 +16,8 @@ namespace Chevere\Components\Route\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when the path uri braces doesn't match.
+ * Exception thrown when the route path contains invalid chars.
  */
-final class PathUriUnmatchedBracesException extends Exception
+final class RoutePathInvalidCharsException extends Exception
 {
 }

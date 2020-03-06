@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use BadMethodCallException;
-use Chevere\Components\Route\Exceptions\PathUriUnmatchedBracesException;
+use Chevere\Components\Route\Exceptions\RoutePathUnmatchedBracesException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
-use Chevere\Components\Route\Exceptions\PathUriForwardSlashException;
-use Chevere\Components\Route\Exceptions\PathUriInvalidCharsException;
-use Chevere\Components\Route\Exceptions\PathUriUnmatchedWildcardsException;
-use Chevere\Components\Route\Exceptions\WildcardRepeatException;
-use Chevere\Components\Route\Exceptions\WildcardReservedException;
+use Chevere\Components\Route\Exceptions\RouteWildcardNotFoundException;
+use Chevere\Components\Route\Exceptions\RoutePathForwardSlashException;
+use Chevere\Components\Route\Exceptions\RoutePathInvalidCharsException;
+use Chevere\Components\Route\Exceptions\RoutePathUnmatchedWildcardsException as RoutePathUnmatchedWildcardsCountException;
+use Chevere\Components\Route\Exceptions\RouteWildcardRepeatException;
+use Chevere\Components\Route\Exceptions\RouteWildcardReservedException;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
 use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
@@ -57,12 +57,12 @@ final class RoutePath implements RoutePathInterface
      *
      * @param string $path a path uri like `/path/{wildcard}`
      *
-     * @throws PathUriForwardSlashException       if $path doesn't start with forward slash
-     * @throws PathUriInvalidCharsException       if $path contains invalid chars
-     * @throws PathUriUnmatchedBracesException    if $path contains unmatched braces (must be paired)
-     * @throws PathUriUnmatchedWildcardsException if $path contains wildcards that don't match the number of braces
-     * @throws WildcardReservedException          if $path contains reserved wildcards
-     * @throws WildcardRepeatException            if $path contains repeated wildcards
+     * @throws RoutePathForwardSlashException       if $path doesn't start with forward slash
+     * @throws RoutePathInvalidCharsException       if $path contains invalid chars
+     * @throws RoutePathUnmatchedBracesException    if $path contains unmatched braces (must be paired)
+     * @throws RoutePathUnmatchedWildcardsException if $path contains wildcards that don't match the number of braces
+     * @throws RouteWildcardReservedException          if $path contains reserved wildcards
+     * @throws RouteWildcardRepeatException            if $path contains repeated wildcards
      */
     public function __construct(string $path)
     {
@@ -113,7 +113,7 @@ final class RoutePath implements RoutePathInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified added WildcardInterface.
      *
-     * @throws WildcardNotFoundException if the wildcard doesn't exists in the instance
+     * @throws RouteWildcardNotFoundException if the wildcard doesn't exists in the instance
      */
     public function withWildcard(RouteWildcardInterface $routeWildcard): RoutePathInterface
     {
@@ -164,7 +164,7 @@ final class RoutePath implements RoutePathInterface
         $requiredKeys = $this->wildcards;
         $diff = array_diff($requiredKeys, $keys);
         if ($diff !== []) {
-            throw new PathUriUnmatchedBracesException(
+            throw new RoutePathUnmatchedBracesException(
                 (new Message("Provided %provided% doesn't strictly map known wildcard names to its corresponding values"))
                     ->code('%provided%', 'array')
                     ->toString()
@@ -185,7 +185,7 @@ final class RoutePath implements RoutePathInterface
     private function assertFormat(): void
     {
         if ((new StrBool($this->path))->startsWith('/') === false) {
-            throw new PathUriForwardSlashException(
+            throw new RoutePathForwardSlashException(
                 (new Message('Route path %path% must start with a forward slash'))
                     ->code('%path%', $this->path)
                     ->toString()
@@ -193,7 +193,7 @@ final class RoutePath implements RoutePathInterface
         }
         $illegals = $this->getIllegalChars();
         if ($illegals) {
-            throw new PathUriInvalidCharsException(
+            throw new RoutePathInvalidCharsException(
                 (new Message('Route path %path% must not contain illegal characters (' . implode(' ', $illegals) . ')'))
                     ->code('%path%', $this->path)
                     ->toString()
@@ -206,7 +206,7 @@ final class RoutePath implements RoutePathInterface
         $countOpen = substr_count($this->path, '{');
         $countClose = substr_count($this->path, '}');
         if ($countOpen !== $countClose) {
-            throw new PathUriUnmatchedBracesException(
+            throw new RoutePathUnmatchedBracesException(
                 (new Message('Route path %path% contains unmatched wildcard braces (%countOpen% open, %countClose% close)'))
                     ->code('%path%', $this->path)
                     ->strtr('%countOpen%', (string) $countOpen)
@@ -222,7 +222,7 @@ final class RoutePath implements RoutePathInterface
         preg_match_all(RoutePathInterface::REGEX_WILDCARD_SEARCH, $this->path, $this->wildcardsMatch);
         $countMatches = count($this->wildcardsMatch[0]);
         if ($this->wildcardBracesCount !== $countMatches) {
-            throw new PathUriUnmatchedWildcardsException(
+            throw new RoutePathUnmatchedWildcardsCountException(
                 (new Message('Route path %path% contains invalid wildcard declarations (pattern %pattern% matches %countMatches%)'))
                     ->code('%path%', $this->path)
                     ->strtr('%wildcardsCount%', (string) $this->wildcardBracesCount)
@@ -258,7 +258,7 @@ final class RoutePath implements RoutePathInterface
     private function assertReservedWildcards(): void
     {
         if (!(0 === preg_match_all('/{([0-9]+)}/', $this->path, $matches))) {
-            throw new WildcardReservedException(
+            throw new RouteWildcardReservedException(
                 (new Message('Path %path% contain system reserved wildcards %list%'))
                     ->code('%path%', $this->path)
                     ->code('%list%', implode(' ', $matches[0]))
@@ -276,7 +276,7 @@ final class RoutePath implements RoutePathInterface
             }
             $wildcard = $this->wildcardsMatch[1][$pos];
             if (in_array($wildcard, $this->wildcards)) {
-                throw new WildcardRepeatException(
+                throw new RouteWildcardRepeatException(
                     (new Message('Duplicated wildcard %wildcard% in path uri %path%'))
                         ->code('%wildcard%', $this->wildcardsMatch[0][$pos])
                         ->code('%path%', $this->path)

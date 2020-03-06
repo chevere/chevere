@@ -16,8 +16,8 @@ namespace Chevere\Components\Route\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when the path uri contains invalid chars.
+ * Exception thrown when the route name is invalid.
  */
-final class PathUriInvalidCharsException extends Exception
+final class RouteNameInvalidException extends Exception
 {
 }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
+use Chevere\Components\Route\Exceptions\RouteNameInvalidException;
 use Chevere\Components\Route\Interfaces\RouteNameInterface;
 use Chevere\Components\Str\StrAssert;
 
@@ -25,7 +25,7 @@ final class RouteName implements RouteNameInterface
 
     /**
      * @throws StrAssertException If $name is empty or if it is ctype-space.
-     * @throws RouteInvalidNameException if $name doesn't match RouteNameInterface::REGEX
+     * @throws RouteNameInvalidException if $name doesn't match RouteNameInterface::REGEX
      */
     public function __construct(string $name)
     {
@@ -42,7 +42,7 @@ final class RouteName implements RouteNameInterface
     public function assertFormat(): void
     {
         if (!preg_match(RouteNameInterface::REGEX, $this->name)) {
-            throw new RouteInvalidNameException(
+            throw new RouteNameInvalidException(
                 (new Message('Expecting at least one alphanumeric, underscore, hypen or dot character, string %string% provided (regex %regex%)'))
                     ->code('%string%', $this->name === '' ? '(empty)' : $this->name)
                     ->code('%regex%', RouteNameInterface::REGEX)

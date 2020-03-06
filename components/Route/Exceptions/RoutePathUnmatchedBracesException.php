@@ -16,8 +16,8 @@ namespace Chevere\Components\Route\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when a wildcard is duplicated.
+ * Exception thrown when the route path paired braces doesn't match
  */
-final class WildcardRepeatException extends Exception
+final class RoutePathUnmatchedBracesException extends Exception
 {
 }

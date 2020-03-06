@@ -16,8 +16,8 @@ namespace Chevere\Components\Route\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when a wildcard starts with a number.
+ * Exception thrown when the wildcard contains invalid chars.
  */
-final class WildcardStartWithNumberException extends Exception
+final class RouteWildcardInvalidCharsException extends Exception
 {
 }

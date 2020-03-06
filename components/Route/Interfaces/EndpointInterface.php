@@ -46,9 +46,14 @@ interface EndpointInterface
     public function getController(): ControllerInterface;
 
     /**
-     * Provides access to the absolute path to the class file.
+     * Provides access to the absolute path to the endpoint file.
      */
     public function whereIs(): string;
+
+    /**
+     * Provides access to the endpoint path string, like `/api/articles/{id}`
+     */
+    public function path(): string;
 
     /**
      * Provides access to the MethodInterface instance.

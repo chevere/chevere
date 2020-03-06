@@ -16,8 +16,8 @@ namespace Chevere\Components\Route\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when the route name is invalid.
+ * Exception thrown when the route path wildcards count doesn't match the expected count (from braces).
  */
-final class RouteInvalidNameException extends Exception
+final class RoutePathUnmatchedWildcardsException extends Exception
 {
 }

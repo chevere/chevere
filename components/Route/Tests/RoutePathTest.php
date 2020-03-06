@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\Route\Tests;
 
 use BadMethodCallException;
-use Chevere\Components\Route\Exceptions\PathUriUnmatchedBracesException;
-use Chevere\Components\Route\Exceptions\PathUriForwardSlashException;
-use Chevere\Components\Route\Exceptions\PathUriInvalidCharsException;
-use Chevere\Components\Route\Exceptions\PathUriUnmatchedWildcardsException;
-use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
-use Chevere\Components\Route\Exceptions\WildcardRepeatException;
-use Chevere\Components\Route\Exceptions\WildcardReservedException;
+use Chevere\Components\Route\Exceptions\RoutePathUnmatchedBracesException;
+use Chevere\Components\Route\Exceptions\RoutePathForwardSlashException;
+use Chevere\Components\Route\Exceptions\RoutePathInvalidCharsException;
+use Chevere\Components\Route\Exceptions\RoutePathUnmatchedWildcardsException;
+use Chevere\Components\Route\Exceptions\RouteWildcardNotFoundException;
+use Chevere\Components\Route\Exceptions\RouteWildcardRepeatException;
+use Chevere\Components\Route\Exceptions\RouteWildcardReservedException;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\RouteWildcard;
@@ -31,37 +31,37 @@ final class RoutePathTest extends TestCase
 {
     public function testConstructNoForwardSlash(): void
     {
-        $this->expectException(PathUriForwardSlashException::class);
+        $this->expectException(RoutePathForwardSlashException::class);
         new RoutePath('test');
     }
 
     public function testConstructIllegalChars(): void
     {
-        $this->expectException(PathUriInvalidCharsException::class);
+        $this->expectException(RoutePathInvalidCharsException::class);
         new RoutePath('//{{\\}} ');
     }
 
     public function testConstructNotMatchingBraces(): void
     {
-        $this->expectException(PathUriUnmatchedBracesException::class);
+        $this->expectException(RoutePathUnmatchedBracesException::class);
         new RoutePath('/test/{test/}/}/test');
     }
 
     public function testConstructWithInvalidWildcard(): void
     {
-        $this->expectException(PathUriUnmatchedWildcardsException::class);
+        $this->expectException(RoutePathUnmatchedWildcardsException::class);
         new RoutePath('/{wild-card}');
     }
 
     public function testConstructWithWildcardReserved(): void
     {
-        $this->expectException(WildcardReservedException::class);
+        $this->expectException(RouteWildcardReservedException::class);
         new RoutePath('/{0}');
     }
 
     public function testConstructWithWildcardTwiceSame(): void
     {
-        $this->expectException(WildcardRepeatException::class);
+        $this->expectException(RouteWildcardRepeatException::class);
         new RoutePath('/test/{wildcard}/{wildcard}');
     }
 
@@ -113,7 +113,7 @@ final class RoutePathTest extends TestCase
 
     public function testWithNoApplicableWildcard(): void
     {
-        $this->expectException(WildcardNotFoundException::class);
+        $this->expectException(RouteWildcardNotFoundException::class);
         (new RoutePath('/test'))
             ->withWildcard(new RouteWildcard('wildcard'));
     }
@@ -164,7 +164,7 @@ final class RoutePathTest extends TestCase
                 'wildcard' => 'abc'
             ])
         );
-        $this->expectException(PathUriUnmatchedBracesException::class);
+        $this->expectException(RoutePathUnmatchedBracesException::class);
         $routePath->uriFor([]);
     }
 

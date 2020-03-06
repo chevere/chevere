@@ -16,8 +16,8 @@ namespace Chevere\Components\Route\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when the wildcard is reserved.
+ * Exception thrown when a wildcard regex is invalid.
  */
-final class WildcardReservedException extends Exception
+final class RouteWildcardInvalidRegexException extends Exception
 {
 }

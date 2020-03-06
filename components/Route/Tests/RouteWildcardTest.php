@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Route\Tests;
 
 use Chevere\Components\Route\RouteWildcardMatch;
-use Chevere\Components\Route\Exceptions\WildcardInvalidCharsException;
-use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
-use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
+use Chevere\Components\Route\Exceptions\RouteWildcardInvalidCharsException;
+use Chevere\Components\Route\Exceptions\RouteWildcardNotFoundException;
+use Chevere\Components\Route\Exceptions\RouteWildcardStartWithNumberException;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\RouteWildcard;
 use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
@@ -26,13 +26,13 @@ final class RouteWildcardTest extends TestCase
 {
     public function testConstructWildcardStartsWithInvalidChar(): void
     {
-        $this->expectException(WildcardStartWithNumberException::class);
+        $this->expectException(RouteWildcardStartWithNumberException::class);
         new RouteWildcard('0test');
     }
 
     public function testConstructWildcardInvalidChars(): void
     {
-        $this->expectException(WildcardInvalidCharsException::class);
+        $this->expectException(RouteWildcardInvalidCharsException::class);
         new RouteWildcard('t{e/s}t');
     }
 
@@ -58,7 +58,7 @@ final class RouteWildcardTest extends TestCase
 
     public function testAssertPathWildcardNotExists(): void
     {
-        $this->expectException(WildcardNotFoundException::class);
+        $this->expectException(RouteWildcardNotFoundException::class);
         (new RouteWildcard('test'))
             ->assertRoutePath(
                 new RoutePath('/')

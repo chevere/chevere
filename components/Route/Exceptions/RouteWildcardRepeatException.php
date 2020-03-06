@@ -16,8 +16,8 @@ namespace Chevere\Components\Route\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when the path uri doesn't start with a forward slash.
+ * Exception thrown when a wildcard is duplicated.
  */
-final class PathUriForwardSlashException extends Exception
+final class RouteWildcardRepeatException extends Exception
 {
 }

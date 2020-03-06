@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route\Tests;
 
-use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
+use Chevere\Components\Route\Exceptions\RouteNameInvalidException;
 use PHPUnit\Framework\TestCase;
 use Chevere\Components\Route\RouteName;
 
@@ -21,7 +21,7 @@ final class RouteNameTest extends TestCase
 {
     public function testConstructWithInvalidName(): void
     {
-        $this->expectException(RouteInvalidNameException::class);
+        $this->expectException(RouteNameInvalidException::class);
         new RouteName('$');
     }
 

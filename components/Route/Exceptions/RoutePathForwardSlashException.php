@@ -16,8 +16,8 @@ namespace Chevere\Components\Route\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when the path uri is invalid.
+ * Exception thrown when the route path doesn't start with a forward slash.
  */
-final class PathUriInvalidException extends Exception
+final class RoutePathForwardSlashException extends Exception
 {
 }

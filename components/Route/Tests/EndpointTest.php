@@ -37,16 +37,16 @@ final class EndpointTest extends TestCase
         $endpoint = include $absolute;
         $this->assertSame($absolute, $endpoint->whereIs());
         $this->assertSame('', $endpoint->path());
-        $this->assertInstanceOf(RouteWildcardsInterface::class, $endpoint->routeWildcards());
+        // $this->assertInstanceOf(RouteWildcardsInterface::class, $endpoint->routeWildcards());
         $this->assertInstanceOf(GetMethod::class, $endpoint->method());
     }
 
-    public function testPathWildcard(): void
-    {
-        $endpoint = include $this->resourcesDir->path()->getChild('routes/articles/{id}/Get.php')->absolute();
-        $collection = $endpoint->routeWildcards();
-        $this->assertTrue($collection->has(new RouteWildcard('id')));
-    }
+    // public function testPathWildcard(): void
+    // {
+    //     $endpoint = include $this->resourcesDir->path()->getChild('routes/articles/{id}/Get.php')->absolute();
+    //     $collection = $endpoint->routeWildcards();
+    //     $this->assertTrue($collection->has(new RouteWildcard('id')));
+    // }
 
     public function testWithRoot(): void
     {
