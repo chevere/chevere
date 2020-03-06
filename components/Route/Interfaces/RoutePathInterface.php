@@ -15,7 +15,7 @@ namespace Chevere\Components\Route\Interfaces;
 
 use Chevere\Components\Common\Interfaces\ToStringInterface;
 
-interface PathUriInterface extends ToStringInterface
+interface RoutePathInterface extends ToStringInterface
 {
     const REGEX_DELIMITER_CHAR = '/';
 
@@ -56,7 +56,7 @@ interface PathUriInterface extends ToStringInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified WildcardInterface.
      */
-    public function withWildcard(WildcardInterface $wildcard): PathUriInterface;
+    public function withWildcard(WildcardInterface $wildcard): RoutePathInterface;
 
     /**
      * Provides an array matching wildcards for the given request uri.

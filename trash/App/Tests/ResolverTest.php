@@ -24,7 +24,7 @@ use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
-use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\Router;
@@ -42,7 +42,7 @@ final class ResolverTest extends TestCase
 {
     private function getResolvable(RequestInterface $request): ResolvableInterface
     {
-        $route = (new Route(new PathUri('/resolver')))
+        $route = (new Route(new RoutePath('/resolver')))
             ->withAddedMethod(
                 new Method('GET'),
                 new ControllerName(TestController::class)
@@ -72,7 +72,7 @@ final class ResolverTest extends TestCase
         $resolvable = $this->getResolvable(
             new Request(
                 new Method('GET'),
-                new PathUri('/not-found')
+                new RoutePath('/not-found')
             )
         );
         $this->expectExceptionCode(404);
@@ -85,7 +85,7 @@ final class ResolverTest extends TestCase
         $resolvable = $this->getResolvable(
             new Request(
                 new Method('POST'),
-                new PathUri('/resolver')
+                new RoutePath('/resolver')
             )
         );
         $this->expectExceptionCode(405);

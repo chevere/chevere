@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use Chevere\Components\Route\Interfaces\EndpointInterface;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
@@ -21,6 +20,7 @@ use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Exceptions\EndpointException;
+use Chevere\Components\Route\Interfaces\EndpointInterface;
 use Chevere\Components\Route\Interfaces\WildcardCollectionInterface;
 use Chevere\Components\Str\Str;
 use ReflectionClass;

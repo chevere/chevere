@@ -15,7 +15,7 @@ namespace Chevere\Components\Router\Tests;
 
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
@@ -101,7 +101,7 @@ final class RouterMakerTest extends TestCase
 
     private function getRouteable(string $path, string $name = null): RouteableInterface
     {
-        $route = new Route(new PathUri($path));
+        $route = new Route(new RoutePath($path));
         $route = $route
             ->withAddedMethod(
                 new GetMethod(),

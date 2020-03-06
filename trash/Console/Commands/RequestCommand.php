@@ -22,7 +22,7 @@ use Chevere\Components\Http\Response;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Message\Message;
 use Chevere\Components\App\Interfaces\BuilderInterface;
-use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RoutePath;
 
 /**
  * The RequestCommand allows to pass a forged request to the App instance.
@@ -126,11 +126,11 @@ final class RequestCommand extends Command
         $this->setParsedOptions();
 
         $method = new Method($this->getArgumentString('method'));
-        $pathUri = new PathUri($this->getArgumentString('uri'));
+        $routePath = new RoutePath($this->getArgumentString('uri'));
 
         $request = new Request(
             $method,
-            $pathUri,
+            $routePath,
             $this->getOptionArray('headers'),
             isset($this->options['body']) ? $this->getOptionString('body') : null,
         );

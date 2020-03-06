@@ -17,7 +17,7 @@ use Chevere\Components\Globals\Globals;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Request;
-use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RoutePath;
 use PHPUnit\Framework\TestCase;
 
 final class RequestTest extends TestCase

@@ -47,11 +47,11 @@ interface WildcardInterface
     public function match(): WildcardMatchInterface;
 
     /**
-     * Asserts that a given PathUriInterface contains the wildcard.
+     * Asserts that a given RoutePathInterface contains the wildcard.
      *
-     * @param string $pathUri A path including the wildcard, like `/{wildcard}`
+     * @param string $routePath A path including the wildcard, like `/{wildcard}`
      *
      * @throws WildcardNotFoundException if the wildcard doesn't exists in the path
      */
-    public function assertPathUri(PathUriInterface $pathUri): void;
+    public function assertRoutePath(RoutePathInterface $routePath): void;
 }

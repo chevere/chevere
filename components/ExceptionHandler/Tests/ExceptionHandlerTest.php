@@ -21,7 +21,7 @@ use Chevere\Components\Http\Interfaces\RequestInterface;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Request;
-use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RoutePath;
 use DateTimeInterface;
 use LogicException;
 use PHPUnit\Framework\TestCase;

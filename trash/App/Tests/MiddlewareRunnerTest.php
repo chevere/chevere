@@ -24,7 +24,7 @@ use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Middleware\MiddlewareName;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
-use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RoutePath;
 use Chevere\TestApp\App\Middlewares\TestMiddlewareVoid;
 use PHPUnit\Framework\TestCase;
 
@@ -35,7 +35,7 @@ final class MiddlewareRunnerTest extends TestCase
         return
             new Request(
                 new Method('GET'),
-                new PathUri('/')
+                new RoutePath('/')
             );
     }
 

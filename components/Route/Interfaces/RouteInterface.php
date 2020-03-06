@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route\Interfaces;
 
-use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
 use Chevere\Components\Route\Exceptions\RouteInvalidNameException;
@@ -21,23 +20,14 @@ use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Http\Interfaces\MethodControllerNameCollectionInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
+use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
 
 interface RouteInterface
 {
     /**
      * @throws RouteInvalidNameException if $name doesn't match REGEX_NAME
      */
-    public function __construct(RouteNameInterface $name, PathUriInterface $pathUri);
-
-    /**
-     * Provides access to the PathUriInterface instance.
-     */
-    public function pathUri(): PathUriInterface;
-
-    /**
-     * Provides access to the file maker array.
-     */
-    public function maker(): array;
+    public function __construct(RouteNameInterface $name, RoutePathInterface $routePath);
 
     /**
      * Provides access to the route name (if any).
@@ -45,14 +35,24 @@ interface RouteInterface
     public function name(): RouteNameInterface;
 
     /**
-     * Return an instance with the specified added MethodInterface & ControllerInterface.
+     * Provides access to the RoutePathInterface instance.
+     */
+    public function path(): RoutePathInterface;
+
+    /**
+     * Provides access to the file maker array.
+     */
+    public function maker(): array;
+
+    /**
+     * Return an instance with the specified added MethodControllerNameInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified added MethodInterface & ControllerInterface.
+     * an instance that contains the specified added MethodControllerNameInterface.
      *
      * Note: This method overrides any method already added.
      */
-    public function withAddedMethodController(MethodInterface $method, ControllerInterface $controller): RouteInterface;
+    public function withAddedMethodControllerName(MethodControllerNameInterface $methodControllerName): RouteInterface;
 
     /**
      * Provides access to the MethodControllerNameCollectionInterface instance.
@@ -73,11 +73,6 @@ interface RouteInterface
      * an instance that contains the specified added MiddlewareNameInterface.
      */
     public function withAddedMiddlewareName(MiddlewareNameInterface $middlewareName): RouteInterface;
-
-    /**
-     * Returns a boolean indicating whether the instance a MiddlewareNameCollectionInterface.
-     */
-    public function hasMiddlewareNameCollection(): bool;
 
     /**
      * Provides access to the MiddlewareNameCollectionInterface instance.

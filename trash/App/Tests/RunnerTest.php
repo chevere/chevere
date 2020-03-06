@@ -34,7 +34,7 @@ use Chevere\Components\Cache\Cache;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Http\Method;
-use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\RouteCache;
 use Chevere\Components\Router\RouterCache;
 use PHPUnit\Framework\TestCase;

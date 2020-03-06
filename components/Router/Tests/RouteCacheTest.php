@@ -17,7 +17,7 @@ use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Interfaces\RouteInterface;
-use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\Wildcard;
@@ -79,7 +79,7 @@ final class RouteCacheTest extends TestCase
 
     private function getRouteable(): RouteableInterface
     {
-        $route = new Route(new PathUri('/test/{var}'));
+        $route = new Route(new RoutePath('/test/{var}'));
         $route = $route
             ->withAddedMethod(
                 new GetMethod(),

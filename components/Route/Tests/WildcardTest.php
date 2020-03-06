@@ -17,7 +17,7 @@ use Chevere\Components\Route\WildcardMatch;
 use Chevere\Components\Route\Exceptions\WildcardInvalidCharsException;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
-use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\Wildcard;
 use Chevere\Components\Route\Interfaces\WildcardInterface;
 use PHPUnit\Framework\TestCase;
@@ -60,8 +60,8 @@ final class WildcardTest extends TestCase
     {
         $this->expectException(WildcardNotFoundException::class);
         (new Wildcard('test'))
-            ->assertPathUri(
-                new PathUri('/')
+            ->assertRoutePath(
+                new RoutePath('/')
             );
     }
 
@@ -69,8 +69,8 @@ final class WildcardTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
         (new Wildcard('test'))
-            ->assertPathUri(
-                new PathUri('/{test}')
+            ->assertRoutePath(
+                new RoutePath('/{test}')
             );
     }
 }

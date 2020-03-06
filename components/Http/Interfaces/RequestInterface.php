@@ -15,13 +15,13 @@ namespace Chevere\Components\Http\Interfaces;
 
 use Psr\Http\Message\RequestInterface as BaseInterface;
 use Chevere\Components\Globals\Interfaces\GlobalsInterface;
-use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RoutePath;
 
 interface RequestInterface extends BaseInterface
 {
     public function __construct(
         MethodInterface $method,
-        PathUri $uri,
+        RoutePath $uri,
         array $headers = [],
         $body = null,
         $version = '1.1',

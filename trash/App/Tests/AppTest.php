@@ -18,7 +18,7 @@ use Chevere\Components\App\Services;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
-use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Routed;
 use PHPUnit\Framework\TestCase;
@@ -58,7 +58,7 @@ final class AppTest extends TestCase
         $request =
             new Request(
                 new Method('GET'),
-                new PathUri('/')
+                new RoutePath('/')
             );
         $app = $app
             ->withRequest($request);
@@ -68,7 +68,7 @@ final class AppTest extends TestCase
 
     public function testWithRouted(): void
     {
-        $route = new Route(new PathUri('/home'));
+        $route = new Route(new RoutePath('/home'));
         $routed = new Routed($route, []);
         $app = (new App(new Services(), new Response()))
             ->withRouted($routed);

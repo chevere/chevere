@@ -16,7 +16,7 @@ namespace App;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\Wildcard;
 

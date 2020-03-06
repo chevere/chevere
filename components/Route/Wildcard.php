@@ -19,7 +19,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
 use Chevere\Components\Route\Interfaces\WildcardMatchInterface;
-use Chevere\Components\Route\Interfaces\PathUriInterface;
+use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Route\Interfaces\WildcardInterface;
 use Chevere\Components\Str\StrAssert;
 
@@ -72,14 +72,14 @@ final class Wildcard implements WildcardInterface
         return $this->match;
     }
 
-    public function assertPathUri(PathUriInterface $pathUri): void
+    public function assertRoutePath(RoutePathInterface $routePath): void
     {
-        $noWildcard = false === strpos($pathUri->toString(), $this->string);
+        $noWildcard = false === strpos($routePath->toString(), $this->string);
         if ($noWildcard) {
             throw new WildcardNotFoundException(
                 (new Message("Wildcard %wildcard% doesn't exists in route %toString%"))
                     ->code('%wildcard%', $this->string)
-                    ->code('%path%', $pathUri->toString())
+                    ->code('%path%', $routePath->toString())
                     ->toString()
             );
         }

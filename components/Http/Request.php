@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Components\Http;
 
 use Chevere\Components\Http\Interfaces\MethodInterface;
-use Chevere\Components\Route\Interfaces\PathUriInterface;
+use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use GuzzleHttp\Psr7\ServerRequest;
 
 final class Request
 {
     private MethodInterface $method;
 
-    private PathUriInterface $pathUri;
+    private RoutePathInterface $routePath;
 
     private array $headers = [];
 
@@ -33,14 +33,14 @@ final class Request
 
     public function __construct(
         MethodInterface $method,
-        PathUriInterface $pathUri, // /path, /path/{wea}, /path/123 -> pero como saber si {wea}<=>123?
+        RoutePathInterface $routePath, // /path, /path/{wea}, /path/123 -> pero como saber si {wea}<=>123?
         array $headers = [],
         string $body = '',
         string $version = '1.1',
         array $serverParams = []
     ) {
         $this->method = $method;
-        $this->pathUri = $pathUri;
+        $this->routePath = $routePath;
         $this->headers = $headers;
         $this->body = $body;
         $this->version = $version;
@@ -52,9 +52,9 @@ final class Request
         return $this->method;
     }
 
-    public function pathUri(): PathUriInterface
+    public function pathUri(): RoutePathInterface
     {
-        return $this->pathUri;
+        return $this->routePath;
     }
 
     public function headers(): array

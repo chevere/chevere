@@ -26,7 +26,7 @@ use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Http\MethodControllerNameCollection;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Filesystem\AppPath;
-use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\RouterMaker;
@@ -161,7 +161,7 @@ final class ApiMaker implements ApiMakerInterface
         $path = '/' . $this->basePath;
         $this->api[$this->basePath][''] = $endpoint->toArray();
 
-        $route = new Route(new PathUri($path));
+        $route = new Route(new RoutePath($path));
         foreach ($endpoint->methodControllerNameCollection()->toArray() as $method) {
             $route = $route->withAddedMethod($method->method(), $method->controllerName());
         }
@@ -249,7 +249,7 @@ final class ApiMaker implements ApiMakerInterface
         foreach ($this->routesMap as $pathComponent => $httpMethods) {
             /** Full qualified route key for $pathComponent like /api/users/{user} */
             $endpointRouteKey = (string) (new Str($pathComponent))->leftTail('/');
-            $this->route = new Route(new PathUri($endpointRouteKey));
+            $this->route = new Route(new RoutePath($endpointRouteKey));
             foreach ($httpMethods as $httpMethod => $controller) {
                 $this->route = $this->route
                     ->withAddedMethod(

@@ -38,10 +38,10 @@ final class RouterMaker implements RouterMakerInterface
 
     private RouterInterface $router;
 
-    /** @var array [(string) $pathUri => (int) $id] */
+    /** @var array [(string) $routePath => (int) $id] */
     private array $paths;
 
-    /** @var array [(string) $pathUriKey => (int) $id] */
+    /** @var array [(string) $routePathKey => (int) $id] */
     private array $keys;
 
     /** @var array [(string) $name => (int) $id] */
@@ -72,9 +72,9 @@ final class RouterMaker implements RouterMakerInterface
         $new->assertUniquePath($routeable->route());
         $new->assertUniqueKey($routeable->route());
         $name = '';
-        $path = $routeable->route()->pathUri()->toString();
-        $key = $routeable->route()->pathUri()->key();
-        $regex = $routeable->route()->pathUri()->regex();
+        $path = $routeable->route()->path()->toString();
+        $key = $routeable->route()->path()->key();
+        $regex = $routeable->route()->path()->regex();
         $new->regexes[$new->id] = $regex;
         $new->paths[$path] = $new->id;
         $new->keys[$key] = $new->id;
@@ -93,7 +93,7 @@ final class RouterMaker implements RouterMakerInterface
         $new->router = $new->router
             ->withIndex(
                 $new->router()->index()->withAdded(
-                    $routeable->route()->pathUri(),
+                    $routeable->route()->path(),
                     $new->id,
                     $group,
                     $name
@@ -130,7 +130,7 @@ final class RouterMaker implements RouterMakerInterface
         if (!isset($this->routes)) {
             return;
         }
-        $path = $route->pathUri()->toString();
+        $path = $route->path()->toString();
         $knownId = $this->paths[$path] ?? null;
         if ($knownId === null) {
             return;
@@ -149,15 +149,15 @@ final class RouterMaker implements RouterMakerInterface
         if (!isset($this->routes)) {
             return;
         }
-        $knownId = $this->keys[$route->pathUri()->key()] ?? null;
+        $knownId = $this->keys[$route->path()->key()] ?? null;
         if ($knownId === null) {
             return;
         }
         throw new RouteKeyConflictException(
             (new Message('Router conflict detected for %path% at %declare% (self-assigned internal key %key% is already reserved by %register%)'))
-                ->code('%path%', $route->pathUri()->toString())
+                ->code('%path%', $route->path()->toString())
                 ->code('%declare%', $route->maker()['fileLine'])
-                ->code('%key%', $route->pathUri()->key())
+                ->code('%key%', $route->path()->key())
                 ->code('%register%', $this->routes[$knownId]->maker()['fileLine'])
                 ->toString()
         );
@@ -173,7 +173,7 @@ final class RouterMaker implements RouterMakerInterface
             throw new RouteNameConflictException(
                 (new Message('Unable to assign route name %name% for path %path% at %declare% (name assigned to %namedRoutePath% at %register%)'))
                     ->code('%name%', $route->name()->toString())
-                    ->code('%path%', $route->pathUri()->toString())
+                    ->code('%path%', $route->path()->toString())
                     ->code('%declare%', $route->maker()['fileLine'])
                     ->code('%namedRoutePath%', $this->routes[$knownId]->pathUri()->toString())
                     ->code('%register%', $this->routes[$knownId]->maker()['fileLine'])

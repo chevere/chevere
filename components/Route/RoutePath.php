@@ -22,7 +22,7 @@ use Chevere\Components\Route\Exceptions\PathUriInvalidCharsException;
 use Chevere\Components\Route\Exceptions\PathUriUnmatchedWildcardsException;
 use Chevere\Components\Route\Exceptions\WildcardRepeatException;
 use Chevere\Components\Route\Exceptions\WildcardReservedException;
-use Chevere\Components\Route\Interfaces\PathUriInterface;
+use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Route\Interfaces\WildcardCollectionInterface;
 use Chevere\Components\Route\Interfaces\WildcardInterface;
 use Chevere\Components\Str\Str;
@@ -31,9 +31,9 @@ use LogicException;
 use Throwable;
 
 /**
- * Provides interaction for route paths which may accept wildcards `/api/articles/{id}`
+ * Provides interaction for route paths, which may accept wildcards `/api/articles/{id}`
  */
-final class PathUri implements PathUriInterface
+final class RoutePath implements RoutePathInterface
 {
     /** @var string Passed on construct */
     private string $path;
@@ -115,10 +115,10 @@ final class PathUri implements PathUriInterface
      *
      * @throws WildcardNotFoundException if the wildcard doesn't exists in the instance
      */
-    public function withWildcard(WildcardInterface $wildcard): PathUriInterface
+    public function withWildcard(WildcardInterface $wildcard): RoutePathInterface
     {
         $new = clone $this;
-        $wildcard->assertPathUri($new);
+        $wildcard->assertRoutePath($new);
         $new->wildcardCollection = $new->wildcardCollection
             ->withAddedWildcard($wildcard);
         $new->handleSetRegex();
@@ -219,7 +219,7 @@ final class PathUri implements PathUriInterface
 
     private function assertMatchingWildcards(): void
     {
-        preg_match_all(PathUriInterface::REGEX_WILDCARD_SEARCH, $this->path, $this->wildcardsMatch);
+        preg_match_all(RoutePathInterface::REGEX_WILDCARD_SEARCH, $this->path, $this->wildcardsMatch);
         $countMatches = count($this->wildcardsMatch[0]);
         if ($this->wildcardBracesCount !== $countMatches) {
             throw new PathUriUnmatchedWildcardsException(
@@ -227,7 +227,7 @@ final class PathUri implements PathUriInterface
                     ->code('%path%', $this->path)
                     ->strtr('%wildcardsCount%', (string) $this->wildcardBracesCount)
                     ->strtr('%countMatches%', (string) $countMatches)
-                    ->code('%pattern%', PathUriInterface::REGEX_WILDCARD_SEARCH)
+                    ->code('%pattern%', RoutePathInterface::REGEX_WILDCARD_SEARCH)
                     ->toString()
             );
         }

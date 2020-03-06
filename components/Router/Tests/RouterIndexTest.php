@@ -26,7 +26,7 @@ namespace Chevere\Tests\Router\Properties;
 
 use BadMethodCallException;
 use Chevere\Components\Regex\Regex;
-use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\RouterIndex;
 use Chevere\Components\Router\RouterNamed;
 use Chevere\Components\Router\RouterRegex;
@@ -37,17 +37,17 @@ final class RouterIndexTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $pathUri = new PathUri('/path');
+        $routePath = new RoutePath('/path');
         $routerIndex = new RouterIndex();
         $this->assertSame([], $routerIndex->toArray());
-        $this->assertFalse($routerIndex->has($pathUri));
+        $this->assertFalse($routerIndex->has($routePath));
         $this->expectException(BadMethodCallException::class);
-        $routerIndex->get($pathUri);
+        $routerIndex->get($routePath);
     }
 
     public function testWithAdded(): void
     {
-        $patUri = new PathUri('/path');
+        $patUri = new RoutePath('/path');
         $id = 0;
         $routerIndex = (new RouterIndex())
             ->withAdded($patUri, $id, 'some-group', 'some-name');

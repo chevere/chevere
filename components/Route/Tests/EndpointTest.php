@@ -59,6 +59,6 @@ final class EndpointTest extends TestCase
     public function testWrongFilename(): void
     {
         $this->expectException(EndpointException::class);
-        include $this->resourcesDir->path()->getChild('routes/articles/Wrong.php')->absolute();
+        include $this->resourcesDir->path()->getChild('routes/articles/NonExistentMethod.php')->absolute();
     }
 }

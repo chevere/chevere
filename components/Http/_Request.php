@@ -21,7 +21,7 @@ use Chevere\Components\Http\Traits\RequestTrait;
 use Chevere\Components\Http\Interfaces\RequestInterface;
 use Chevere\Components\Globals\Interfaces\GlobalsInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
-use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RoutePath;
 use Psr\Http\Message\StreamInterface;
 
 // final class Request extends GuzzleHttpServerRequest implements RequestInterface

@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
+use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Router\Exceptions\RouteableException;
@@ -31,7 +32,7 @@ final class RouteableTest extends TestCase
         new Routeable(
             new Route(
                 new RouteName('test'),
-                new PathUri('/test')
+                new RoutePath('/test')
             )
         );
     }
@@ -40,11 +41,13 @@ final class RouteableTest extends TestCase
     {
         $route = (new Route(
             new RouteName('test'),
-            new PathUri('/test')
+            new RoutePath('/test')
         ))
-            ->withAddedMethodController(
-                new GetMethod(),
-                new TestController()
+            ->withAddedMethodControllerName(
+                new MethodControllerName(
+                    new GetMethod(),
+                    new TestController()
+                )
             );
         $routeable = new Routeable($route);
         $this->assertSame($route, $routeable->route());
@@ -52,7 +55,7 @@ final class RouteableTest extends TestCase
 
     public function testNotExportable(): void
     {
-        $route = new Route(new RouteName('test'), new PathUri('/test'));
+        $route = new Route(new RouteName('test'), new RoutePath('/test'));
         $route->resource = fopen('php://output', 'r');
         $this->expectException(RouteNotRouteableException::class);
         new Routeable($route);

@@ -15,18 +15,18 @@ namespace Chevere\Components\Router;
 
 use BadMethodCallException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Interfaces\PathUriInterface;
-use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\Interfaces\RoutePathInterface;
+use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
 
 final class RouterIndex implements RouterIndexInterface
 {
     private array $array = [];
 
-    public function withAdded(PathUriInterface $pathUri, int $id, string $group, string $name): RouterIndexInterface
+    public function withAdded(RoutePathInterface $routePath, int $id, string $group, string $name): RouterIndexInterface
     {
         $new = clone $this;
-        $new->array[$pathUri->key()] = [
+        $new->array[$routePath->key()] = [
             'id' => $id,
             'group' => $group,
             'name' => $name,
@@ -35,18 +35,18 @@ final class RouterIndex implements RouterIndexInterface
         return $new;
     }
 
-    public function has(PathUri $pathUri): bool
+    public function has(RoutePath $routePath): bool
     {
-        return isset($this->array[$pathUri->key()]);
+        return isset($this->array[$routePath->key()]);
     }
 
-    public function get(PathUri $pathUri): array
+    public function get(RoutePath $routePath): array
     {
-        $get = $this->array[$pathUri->key()] ?? null;
+        $get = $this->array[$routePath->key()] ?? null;
         if ($get === null) {
             throw new BadMethodCallException(
                 (new Message("PathUri key %key% doesn't exists"))
-                    ->code('%key%', $pathUri->key())
+                    ->code('%key%', $routePath->key())
                     ->toString()
             );
         }

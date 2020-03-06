@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
-use Chevere\Components\Route\PathUri;
+use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Router\Routed;
@@ -23,7 +23,7 @@ final class RoutedTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $route = new Route(new RouteName('test'), new PathUri('/path'));
+        $route = new Route(new RouteName('test'), new RoutePath('/path'));
         $wildcards = [];
         $routed = new Routed($route, $wildcards);
         $this->assertSame($route, $routed->route());
