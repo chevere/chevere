@@ -23,8 +23,8 @@ use Chevere\Components\Route\Exceptions\WildcardRepeatException;
 use Chevere\Components\Route\Exceptions\WildcardReservedException;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Components\Route\Wildcard;
-use Chevere\Components\Route\WildcardMatch;
+use Chevere\Components\Route\RouteWildcard;
+use Chevere\Components\Route\RouteWildcardMatch;
 use PHPUnit\Framework\TestCase;
 
 final class RoutePathTest extends TestCase
@@ -73,49 +73,49 @@ final class RoutePathTest extends TestCase
         $this->assertSame($path, $routePath->toString());
         $this->assertSame($path, $routePath->key());
         $this->assertSame($regex, $routePath->regex());
-        $this->assertFalse($routePath->hasWildcardCollection());
+        $this->assertFalse($routePath->hasRouteWildcards());
         $this->expectException(BadMethodCallException::class);
         $routePath->uriFor([]);
     }
 
     public function testConstructWithWildcard(): void
     {
-        $wildcard = new Wildcard('wildcard');
-        $path = '/test/' . $wildcard->toString() . '/test';
+        $routeWildcard = new RouteWildcard('wildcard');
+        $path = '/test/' . $routeWildcard->toString() . '/test';
         $key = '/test/{0}/test';
-        $regex = $this->wrapRegex('^' . str_replace('{0}', '(' . $wildcard->match()->toString() . ')', $key) . '$');
+        $regex = $this->wrapRegex('^' . str_replace('{0}', '(' . $routeWildcard->match()->toString() . ')', $key) . '$');
         $routePath = new RoutePath($path);
         $this->assertSame($path, $routePath->toString());
         $this->assertSame($key, $routePath->key());
         $this->assertSame($regex, $routePath->regex());
-        $this->assertTrue($routePath->hasWildcardCollection());
-        $this->assertTrue($routePath->wildcardCollection()->has($wildcard));
+        $this->assertTrue($routePath->hasRouteWildcards());
+        $this->assertTrue($routePath->routeWildcards()->has($routeWildcard));
     }
 
     public function testConstructWithWildcards(): void
     {
-        $wildcard1 = new Wildcard('wildcard1');
-        $wildcard2 = new Wildcard('wildcard2');
-        $path = '/test/' . $wildcard1->toString() . '/test/' . $wildcard2->toString();
+        $routeWildcard1 = new RouteWildcard('wildcard1');
+        $routeWildcard2 = new RouteWildcard('wildcard2');
+        $path = '/test/' . $routeWildcard1->toString() . '/test/' . $routeWildcard2->toString();
         $key = '/test/{0}/test/{1}';
         $regex = $this->wrapRegex('^' . strtr($key, [
-            '{0}' => '(' . $wildcard1->match()->toString() . ')',
-            '{1}' => '(' . $wildcard2->match()->toString() . ')',
+            '{0}' => '(' . $routeWildcard1->match()->toString() . ')',
+            '{1}' => '(' . $routeWildcard2->match()->toString() . ')',
         ]) . '$');
         $routePath = new RoutePath($path);
         $this->assertSame($path, $routePath->toString());
         $this->assertSame($key, $routePath->key());
         $this->assertSame($regex, $routePath->regex());
-        $this->assertTrue($routePath->hasWildcardCollection());
-        $this->assertTrue($routePath->wildcardCollection()->has($wildcard1));
-        $this->assertTrue($routePath->wildcardCollection()->has($wildcard2));
+        $this->assertTrue($routePath->hasRouteWildcards());
+        $this->assertTrue($routePath->routeWildcards()->has($routeWildcard1));
+        $this->assertTrue($routePath->routeWildcards()->has($routeWildcard2));
     }
 
     public function testWithNoApplicableWildcard(): void
     {
         $this->expectException(WildcardNotFoundException::class);
         (new RoutePath('/test'))
-            ->withWildcard(new Wildcard('wildcard'));
+            ->withWildcard(new RouteWildcard('wildcard'));
     }
 
     public function testRegex(): void
@@ -125,8 +125,8 @@ final class RoutePathTest extends TestCase
         $regex = $this->wrapRegex('^' . str_replace('{id}', "($match)", $path) . '$');
         $routePath = (new RoutePath($path))
             ->withWildcard(
-                (new Wildcard('id'))
-                    ->withMatch(new WildcardMatch($match))
+                (new RouteWildcard('id'))
+                    ->withMatch(new RouteWildcardMatch($match))
             );
         $this->assertSame($regex, $routePath->regex());
     }

@@ -11,30 +11,30 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Regex\Tests;
+namespace Chevere\Components\Route\Tests;
 
 use Chevere\Components\Regex\Exceptions\RegexException;
-use Chevere\Components\Route\WildcardMatch;
+use Chevere\Components\Route\RouteWildcardMatch;
 use PHPUnit\Framework\TestCase;
 
-final class RegexMatchTest extends TestCase
+final class RouteWildcardMatchTest extends TestCase
 {
     public function testConstructInvalidArgument(): void
     {
         $this->expectException(RegexException::class);
-        new WildcardMatch('#');
+        new RouteWildcardMatch('#');
     }
 
     public function testConstructInvalidArgument2(): void
     {
         $this->expectException(RegexException::class);
-        new WildcardMatch('te(s)t');
+        new RouteWildcardMatch('te(s)t');
     }
 
     public function testConstruct(): void
     {
         $regexMatchString = '[a-z]+';
-        $regexMath = new WildcardMatch($regexMatchString);
+        $regexMath = new RouteWildcardMatch($regexMatchString);
         $this->assertSame($regexMatchString, $regexMath->toString());
     }
 }

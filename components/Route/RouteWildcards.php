@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use Chevere\Components\Route\Interfaces\WildcardCollectionInterface;
-use Chevere\Components\Route\Interfaces\WildcardInterface;
+use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
+use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
 
-final class WildcardCollection implements WildcardCollectionInterface
+final class RouteWildcards implements RouteWildcardsInterface
 {
     /** @param array WildcardInterface[] */
     private array $array;
@@ -24,10 +24,7 @@ final class WildcardCollection implements WildcardCollectionInterface
     /** @param array ['METHOD' => key,]*/
     private array $index;
 
-    /**
-     * Creates a new instance.
-     */
-    public function __construct(WildcardInterface ...$wildcards)
+    public function __construct(RouteWildcardInterface ...$wildcards)
     {
         $this->array = [];
         $this->index = [];
@@ -36,10 +33,10 @@ final class WildcardCollection implements WildcardCollectionInterface
         }
     }
 
-    public function withAddedWildcard(WildcardInterface $wildcard): WildcardCollectionInterface
+    public function withAddedWildcard(RouteWildcardInterface $routeWildcard): RouteWildcardsInterface
     {
         $new = clone $this;
-        $new->addWildcard($wildcard);
+        $new->addWildcard($routeWildcard);
 
         return $new;
     }
@@ -49,14 +46,14 @@ final class WildcardCollection implements WildcardCollectionInterface
         return $this->index !== [];
     }
 
-    public function has(WildcardInterface $wildcard): bool
+    public function has(RouteWildcardInterface $routeWildcard): bool
     {
-        return in_array($wildcard->name(), $this->index);
+        return in_array($routeWildcard->name(), $this->index);
     }
 
-    public function get(WildcardInterface $wildcard): WildcardInterface
+    public function get(RouteWildcardInterface $routeWildcard): RouteWildcardInterface
     {
-        $pos = array_search($wildcard->name(), $this->index);
+        $pos = array_search($routeWildcard->name(), $this->index);
 
         return $this->array[$pos];
     }
@@ -66,7 +63,7 @@ final class WildcardCollection implements WildcardCollectionInterface
         return isset($this->array[$pos]);
     }
 
-    public function getPos(int $pos): WildcardInterface
+    public function getPos(int $pos): RouteWildcardInterface
     {
         return $this->array[$pos];
     }
@@ -76,17 +73,17 @@ final class WildcardCollection implements WildcardCollectionInterface
         return $this->array;
     }
 
-    private function addWildcard(WildcardInterface $wildcard): void
+    private function addWildcard(RouteWildcardInterface $routeWildcard): void
     {
-        $name = $wildcard->name();
+        $name = $routeWildcard->name();
         $pos = array_search($name, $this->index);
         if (false !== $pos) {
-            $this->array[$pos] = $wildcard;
+            $this->array[$pos] = $routeWildcard;
             $this->index[$pos] = $name;
 
             return;
         }
-        $this->array[] = $wildcard;
+        $this->array[] = $routeWildcard;
         $this->index[] = $name;
     }
 }

@@ -18,12 +18,12 @@ use Chevere\Components\Route\Exceptions\WildcardInvalidCharsException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Exceptions\WildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\WildcardStartWithNumberException;
-use Chevere\Components\Route\Interfaces\WildcardMatchInterface;
+use Chevere\Components\Route\Interfaces\RouteWildcardMatchInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
-use Chevere\Components\Route\Interfaces\WildcardInterface;
+use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
 use Chevere\Components\Str\StrAssert;
 
-final class Wildcard implements WildcardInterface
+final class RouteWildcard implements RouteWildcardInterface
 {
     /** @var string */
     private string $name;
@@ -31,7 +31,7 @@ final class Wildcard implements WildcardInterface
     /** @var string */
     private string $string;
 
-    private WildcardMatchInterface $match;
+    private RouteWildcardMatchInterface $match;
 
     /**
      * Creates a new instance.
@@ -46,13 +46,13 @@ final class Wildcard implements WildcardInterface
         $this->name = $name;
         $this->string = "{{$this->name}}";
         $this->assertName();
-        $this->match = new WildcardMatch(WildcardInterface::REGEX_MATCH_DEFAULT);
+        $this->match = new RouteWildcardMatch(RouteWildcardInterface::REGEX_MATCH_DEFAULT);
     }
 
-    public function withMatch(WildcardMatchInterface $regexMatch): WildcardInterface
+    public function withMatch(RouteWildcardMatchInterface $wildcardMatch): RouteWildcardInterface
     {
         $new = clone $this;
-        $new->match = $regexMatch;
+        $new->match = $wildcardMatch;
 
         return $new;
     }
@@ -67,7 +67,7 @@ final class Wildcard implements WildcardInterface
         return $this->string;
     }
 
-    public function match(): WildcardMatchInterface
+    public function match(): RouteWildcardMatchInterface
     {
         return $this->match;
     }
@@ -96,7 +96,7 @@ final class Wildcard implements WildcardInterface
                     ->toString()
             );
         }
-        if (!preg_match(WildcardInterface::ACCEPT_CHARS_REGEX, $this->name)) {
+        if (!preg_match(RouteWildcardInterface::ACCEPT_CHARS_REGEX, $this->name)) {
             throw new WildcardInvalidCharsException(
                 (new Message('String %string% must contain only alphanumeric and underscore characters'))
                     ->code('%string%', $this->name)

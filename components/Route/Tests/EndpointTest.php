@@ -18,8 +18,8 @@ use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Exceptions\EndpointException;
-use Chevere\Components\Route\Interfaces\WildcardCollectionInterface;
-use Chevere\Components\Route\Wildcard;
+use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
+use Chevere\Components\Route\RouteWildcard;
 use PHPUnit\Framework\TestCase;
 
 final class EndpointTest extends TestCase
@@ -37,15 +37,15 @@ final class EndpointTest extends TestCase
         $endpoint = include $absolute;
         $this->assertSame($absolute, $endpoint->whereIs());
         $this->assertSame('', $endpoint->path());
-        $this->assertInstanceOf(WildcardCollectionInterface::class, $endpoint->wildcardCollection());
+        $this->assertInstanceOf(RouteWildcardsInterface::class, $endpoint->routeWildcards());
         $this->assertInstanceOf(GetMethod::class, $endpoint->method());
     }
 
     public function testPathWildcard(): void
     {
         $endpoint = include $this->resourcesDir->path()->getChild('routes/articles/{id}/Get.php')->absolute();
-        $collection = $endpoint->wildcardCollection();
-        $this->assertTrue($collection->has(new Wildcard('id')));
+        $collection = $endpoint->routeWildcards();
+        $this->assertTrue($collection->has(new RouteWildcard('id')));
     }
 
     public function testWithRoot(): void

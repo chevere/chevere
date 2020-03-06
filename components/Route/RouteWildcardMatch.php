@@ -15,18 +15,13 @@ namespace Chevere\Components\Route;
 
 use Chevere\Components\Regex\Exceptions\RegexException;
 use Chevere\Components\Regex\Regex;
-use Chevere\Components\Route\Interfaces\WildcardMatchInterface;
+use Chevere\Components\Route\Interfaces\RouteWildcardMatchInterface;
 
-final class WildcardMatch implements WildcardMatchInterface
+final class RouteWildcardMatch implements RouteWildcardMatchInterface
 {
     /** @var string a regular expresion match statement */
     private string $match;
 
-    /**
-     * Creates a new instance.
-     *
-     * @throws RegexException if $match is an invalid regex matcher
-     */
     public function __construct(string $match)
     {
         $this->match = $match;

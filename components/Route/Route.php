@@ -13,20 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use Chevere\Components\Controller\ControllerName;
-use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\Interfaces\MethodControllerNameCollectionInterface;
 use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
-use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Http\MethodControllerNameCollection;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Middleware\Interfaces\MiddlewareInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
-use Chevere\Components\Middleware\MiddlewareName;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Route\Interfaces\RouteInterface;
@@ -56,6 +51,11 @@ final class Route implements RouteInterface
         $this->middlewareNameCollection = new MiddlewareNameCollection();
     }
 
+    public function name(): RouteNameInterface
+    {
+        return $this->name;
+    }
+
     public function path(): RoutePathInterface
     {
         return $this->routePath;
@@ -64,11 +64,6 @@ final class Route implements RouteInterface
     public function maker(): array
     {
         return $this->maker;
-    }
-
-    public function name(): RouteNameInterface
-    {
-        return $this->name;
     }
 
     public function withAddedMethodControllerName(MethodControllerNameInterface $methodControllerName): RouteInterface

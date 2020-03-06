@@ -15,12 +15,16 @@ namespace Chevere\Components\Route\Interfaces;
 
 use Chevere\Components\Common\Interfaces\ToStringInterface;
 
-interface WildcardMatchInterface extends ToStringInterface
+interface RouteWildcardMatchInterface extends ToStringInterface
 {
+    /**
+     * @param string Regex match (without delimiters).
+     * @throws RegexException if $match is an invalid regex matcher
+     */
     public function __construct(string $match);
 
     /**
-     * @return string Match.
+     * @return string Regex match (without delimiters).
      */
     public function toString(): string;
 }

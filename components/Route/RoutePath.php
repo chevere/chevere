@@ -23,8 +23,8 @@ use Chevere\Components\Route\Exceptions\PathUriUnmatchedWildcardsException;
 use Chevere\Components\Route\Exceptions\WildcardRepeatException;
 use Chevere\Components\Route\Exceptions\WildcardReservedException;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
-use Chevere\Components\Route\Interfaces\WildcardCollectionInterface;
-use Chevere\Components\Route\Interfaces\WildcardInterface;
+use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
+use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Str\StrBool;
 use LogicException;
@@ -45,7 +45,7 @@ final class RoutePath implements RoutePathInterface
 
     private array $wildcardsMatch;
 
-    private WildcardCollectionInterface $wildcardCollection;
+    private RouteWildcardsInterface $routeWildcards;
 
     /** @var array string[] */
     private array $wildcards;
@@ -77,7 +77,7 @@ final class RoutePath implements RoutePathInterface
             $this->assertReservedWildcards();
             $this->assertMatchingWildcards();
             $this->handleWildcards();
-            $this->handleSetWildcardCollection();
+            $this->handleSetRouteWildcards();
         }
         $this->handleSetRegex();
     }
@@ -97,14 +97,14 @@ final class RoutePath implements RoutePathInterface
         return $this->regex;
     }
 
-    public function hasWildcardCollection(): bool
+    public function hasRouteWildcards(): bool
     {
-        return isset($this->wildcardCollection);
+        return isset($this->routeWildcards);
     }
 
-    public function wildcardCollection(): WildcardCollectionInterface
+    public function routeWildcards(): RouteWildcardsInterface
     {
-        return $this->wildcardCollection;
+        return $this->routeWildcards;
     }
 
     /**
@@ -115,12 +115,12 @@ final class RoutePath implements RoutePathInterface
      *
      * @throws WildcardNotFoundException if the wildcard doesn't exists in the instance
      */
-    public function withWildcard(WildcardInterface $wildcard): RoutePathInterface
+    public function withWildcard(RouteWildcardInterface $routeWildcard): RoutePathInterface
     {
         $new = clone $this;
-        $wildcard->assertRoutePath($new);
-        $new->wildcardCollection = $new->wildcardCollection
-            ->withAddedWildcard($wildcard);
+        $routeWildcard->assertRoutePath($new);
+        $new->routeWildcards = $new->routeWildcards
+            ->withAddedWildcard($routeWildcard);
         $new->handleSetRegex();
 
         return $new;
@@ -292,12 +292,12 @@ final class RoutePath implements RoutePathInterface
         return false !== strpos($this->path, '{') || false !== strpos($this->path, '}');
     }
 
-    private function handleSetWildcardCollection(): void
+    private function handleSetRouteWildcards(): void
     {
-        $this->wildcardCollection = new WildcardCollection();
+        $this->routeWildcards = new RouteWildcards();
         foreach ($this->wildcards as $wildcardName) {
-            $this->wildcardCollection = $this->wildcardCollection
-                ->withAddedWildcard(new Wildcard($wildcardName));
+            $this->routeWildcards = $this->routeWildcards
+                ->withAddedWildcard(new RouteWildcard($wildcardName));
         }
     }
 
@@ -305,8 +305,8 @@ final class RoutePath implements RoutePathInterface
     {
         $pseudoRegex = str_replace('/', '\/', $this->key);
         $regex = self::REGEX_DELIMITER_CHAR . '^' . $pseudoRegex . '$' . self::REGEX_DELIMITER_CHAR;
-        if (isset($this->wildcardCollection)) {
-            foreach ($this->wildcardCollection->toArray() as $pos => $wildcard) {
+        if (isset($this->routeWildcards)) {
+            foreach ($this->routeWildcards->toArray() as $pos => $wildcard) {
                 $regex = str_replace(
                     "{{$pos}}",
                     '(' . $wildcard->match()->toString() . ')',

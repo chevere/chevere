@@ -18,7 +18,7 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\RouteName;
-use Chevere\Components\Route\Wildcard;
+use Chevere\Components\Route\RouteWildcard;
 
 // return [
 //     (new Route(new RouteName('test'), new PathUri('/test')))

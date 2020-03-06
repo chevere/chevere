@@ -20,7 +20,7 @@ interface RoutePathInterface extends ToStringInterface
     const REGEX_DELIMITER_CHAR = '/';
 
     /** Regex pattern used to catch {wildcard} */
-    const REGEX_WILDCARD_SEARCH = self::REGEX_DELIMITER_CHAR . '{' . WildcardInterface::ACCEPT_CHARS . '}' . self::REGEX_DELIMITER_CHAR . 'i';
+    const REGEX_WILDCARD_SEARCH = self::REGEX_DELIMITER_CHAR . '{' . RouteWildcardInterface::ACCEPT_CHARS . '}' . self::REGEX_DELIMITER_CHAR . 'i';
 
     public function __construct(string $path);
 
@@ -41,14 +41,14 @@ interface RoutePathInterface extends ToStringInterface
     public function regex(): string;
 
     /**
-     * Returns a boolean indicating whether the instance has a WildcardCollectionInterface.
+     * Returns a boolean indicating whether the instance has a RouteWildcardsInterface.
      */
-    public function hasWildcardCollection(): bool;
+    public function hasRouteWildcards(): bool;
 
     /**
-     * Provides access to the WildcardCollectionInterface instance.
+     * Provides access to the RouteWildcardsInterface instance.
      */
-    public function wildcardCollection(): WildcardCollectionInterface;
+    public function routeWildcards(): RouteWildcardsInterface;
 
     /**
      * Return an instance with the specified WildcardInterface.
@@ -56,7 +56,7 @@ interface RoutePathInterface extends ToStringInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified WildcardInterface.
      */
-    public function withWildcard(WildcardInterface $wildcard): RoutePathInterface;
+    public function withWildcard(RouteWildcardInterface $wildcard): RoutePathInterface;
 
     /**
      * Provides an array matching wildcards for the given request uri.

@@ -20,7 +20,7 @@ use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteName;
-use Chevere\Components\Route\Wildcard;
+use Chevere\Components\Route\RouteWildcard;
 use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
 use Chevere\Components\Router\Exceptions\RouteCacheTypeException;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
@@ -77,17 +77,17 @@ final class RouteCacheTest extends TestCase
         $routeableCache->get($id);
     }
 
-    private function getRouteable(): RouteableInterface
-    {
-        $route = new Route(new RoutePath('/test/{var}'));
-        $route = $route
-            ->withAddedMethod(
-                new GetMethod(),
-                new ControllerName(TestController::class)
-            )
-            ->withName(new RouteName('TestName'))
-            ->withAddedWildcard(new Wildcard('var'));
+    // private function getRouteable(): RouteableInterface
+    // {
+    //     $route = new Route(new RoutePath('/test/{var}'));
+    //     $route = $route
+    //         ->withAddedMethod(
+    //             new GetMethod(),
+    //             new ControllerName(TestController::class)
+    //         )
+    //         ->withName(new RouteName('TestName'))
+    //         ->withAddedWildcard(new RouteWildcard('var'));
 
-        return new Routeable($route);
-    }
+    //     return new Routeable($route);
+    // }
 }

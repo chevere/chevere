@@ -21,7 +21,7 @@ use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Exceptions\EndpointException;
 use Chevere\Components\Route\Interfaces\EndpointInterface;
-use Chevere\Components\Route\Interfaces\WildcardCollectionInterface;
+use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
 use Chevere\Components\Str\Str;
 use ReflectionClass;
 
@@ -33,7 +33,7 @@ abstract class Endpoint implements EndpointInterface
 
     private DirInterface $root;
 
-    private WildcardCollectionInterface $wildcardCollection;
+    private RouteWildcardsInterface $routeWildcards;
 
     abstract public function getController(): ControllerInterface;
 
@@ -54,7 +54,7 @@ abstract class Endpoint implements EndpointInterface
         }
         $this->handleSetPath();
         $this->method = new $method;
-        $this->wildcardCollection = new WildcardCollection();
+        $this->routeWildcards = new RouteWildcards();
     }
 
     final public function whereIs(): string
@@ -72,9 +72,9 @@ abstract class Endpoint implements EndpointInterface
         return $this->method;
     }
 
-    public function wildcardCollection(): WildcardCollectionInterface
+    public function routeWildcards(): RouteWildcardsInterface
     {
-        return $this->wildcardCollection;
+        return $this->routeWildcards;
     }
 
     final public function withRootDir(DirInterface $root): EndpointInterface
