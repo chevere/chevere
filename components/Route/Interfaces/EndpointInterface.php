@@ -51,11 +51,6 @@ interface EndpointInterface
     public function whereIs(): string;
 
     /**
-     * Provides access to the endpoint path string, like `/api/articles/{id}`
-     */
-    public function path(): string;
-
-    /**
      * Provides access to the MethodInterface instance.
      */
     public function method(): MethodInterface;

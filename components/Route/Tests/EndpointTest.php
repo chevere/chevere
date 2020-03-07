@@ -18,8 +18,6 @@ use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Exceptions\EndpointException;
-use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
-use Chevere\Components\Route\RouteWildcard;
 use PHPUnit\Framework\TestCase;
 
 final class EndpointTest extends TestCase
@@ -36,24 +34,7 @@ final class EndpointTest extends TestCase
         $absolute = $this->resourcesDir->path()->getChild('routes/articles/Get.php')->absolute();
         $endpoint = include $absolute;
         $this->assertSame($absolute, $endpoint->whereIs());
-        $this->assertSame('', $endpoint->path());
-        // $this->assertInstanceOf(RouteWildcardsInterface::class, $endpoint->routeWildcards());
         $this->assertInstanceOf(GetMethod::class, $endpoint->method());
-    }
-
-    // public function testPathWildcard(): void
-    // {
-    //     $endpoint = include $this->resourcesDir->path()->getChild('routes/articles/{id}/Get.php')->absolute();
-    //     $collection = $endpoint->routeWildcards();
-    //     $this->assertTrue($collection->has(new RouteWildcard('id')));
-    // }
-
-    public function testWithRoot(): void
-    {
-        $locator = 'routes/articles/{id}';
-        $endpoint = include $this->resourcesDir->path()->getChild($locator . '/Get.php')->absolute();
-        $endpoint = $endpoint->withRootDir($this->resourcesDir);
-        $this->assertSame('/' . $locator, $endpoint->path());
     }
 
     public function testWrongFilename(): void

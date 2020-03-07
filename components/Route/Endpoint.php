@@ -15,13 +15,11 @@ namespace Chevere\Components\Route;
 
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Exceptions\EndpointException;
 use Chevere\Components\Route\Interfaces\EndpointInterface;
-use Chevere\Components\Str\Str;
 use ReflectionClass;
 
 abstract class Endpoint implements EndpointInterface
@@ -29,14 +27,8 @@ abstract class Endpoint implements EndpointInterface
     /** @var string Absoltue path to the endpoint file */
     private string $whereIs;
 
-    /** @var string The path, like `/api/articles/{id}` */
-    private string $path;
-
     /** @var MethodInterface The inherithed method, taken from the file basename */
     private MethodInterface $method;
-
-    /** @var DirInterface The root dir, used to determine $path */
-    private DirInterface $root;
 
     abstract public function getController(): ControllerInterface;
 
@@ -55,7 +47,6 @@ abstract class Endpoint implements EndpointInterface
                     ->toString()
             );
         }
-        $this->handleSetPath();
         $this->method = new $method;
     }
 
@@ -64,31 +55,8 @@ abstract class Endpoint implements EndpointInterface
         return $this->whereIs;
     }
 
-    final public function path(): string
-    {
-        return $this->path;
-    }
-
     final public function method(): MethodInterface
     {
         return $this->method;
-    }
-
-    final public function withRootDir(DirInterface $root): EndpointInterface
-    {
-        $new = clone $this;
-        $new->root = $root;
-        $new->handleSetPath();
-
-        return $new;
-    }
-
-    private function handleSetPath(): void
-    {
-        $this->path = (string) (new Str(dirname($this->whereIs)))
-            ->replaceFirst(
-                rtrim($this->root->path()->absolute(), '/'),
-                ''
-            );
     }
 }
