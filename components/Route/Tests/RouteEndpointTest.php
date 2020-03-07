@@ -20,7 +20,7 @@ use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Exceptions\EndpointException;
 use PHPUnit\Framework\TestCase;
 
-final class EndpointTest extends TestCase
+final class RouteEndpointTest extends TestCase
 {
     private DirInterface $resourcesDir;
 

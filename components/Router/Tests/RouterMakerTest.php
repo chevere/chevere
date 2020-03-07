@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
-use Chevere\Components\Controller\ControllerName;
+use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteName;
+use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
 use Chevere\Components\Router\Exceptions\RouteNameConflictException;
 use Chevere\Components\Router\Exceptions\RoutePathExistsException;
@@ -57,59 +57,58 @@ final class RouterMakerTest extends TestCase
         $this->assertInstanceOf(RouterInterface::class, $routerMaker->router());
     }
 
-    // public function testWithAddedRouteable(): void
-    // {
-    //     $routeable1 = $this->getRouteable('/path-1', 'PathName-1');
-    //     $routeable2 = $this->getRouteable('/path-2', 'PathName-2');
-    //     $pathUri = $routeable1->route()->pathUri();
-    //     $routerMaker = (new RouterMaker($this->routerCache))
-    //         ->withAddedRouteable($routeable1, 'group')
-    //         ->withAddedRouteable($routeable2, 'group');
-    //     $this->assertTrue($routerMaker->router()->index()->has($pathUri));
-    // }
-
-    // public function testWithAlreadyAddedPath(): void
-    // {
-    //     $routeable = $this->getRouteable('/path', 'PathName');
-    //     $this->expectException(RoutePathExistsException::class);
-    //     (new RouterMaker($this->routerCache))
-    //         ->withAddedRouteable($routeable, 'group')
-    //         ->withAddedRouteable($routeable, 'another-group');
-    // }
-
-    // public function testWithAlreadyAddedKey(): void
-    // {
-    //     $routeable1 = $this->getRouteable('/path/{foo}', 'FooName');
-    //     $routeable2 = $this->getRouteable('/path/{bar}', 'BarName');
-    //     $this->expectException(RouteKeyConflictException::class);
-    //     (new RouterMaker($this->routerCache))
-    //         ->withAddedRouteable($routeable1, 'group')
-    //         ->withAddedRouteable($routeable2, 'another-group');
-    // }
-
-    // public function testWithAlreadyAddedName(): void
-    // {
-    //     $routeable1 = $this->getRouteable('/path1', 'SomeName');
-    //     $routeable2 = $this->getRouteable('/path2', 'SomeName');
-    //     $routeable3 = $this->getRouteable('/path3', 'SameName');
-    //     $this->expectException(RouteNameConflictException::class);
-    //     (new RouterMaker($this->routerCache))
-    //         ->withAddedRouteable($routeable1, 'group1')
-    //         ->withAddedRouteable($routeable2, 'group2')
-    //         ->withAddedRouteable($routeable3, 'group3');
-    // }
-
-    private function getRouteable(string $path, string $name = null): RouteableInterface
+    public function testWithAddedRouteable(): void
     {
-        $route = new Route(new RoutePath($path));
+        $routeable1 = $this->getRouteable('/path-1', 'PathName-1');
+        $routeable2 = $this->getRouteable('/path-2', 'PathName-2');
+        $routePath = $routeable1->route()->path();
+        $routerMaker = (new RouterMaker($this->routerCache))
+            ->withAddedRouteable($routeable1, 'group')
+            ->withAddedRouteable($routeable2, 'group');
+        $this->assertTrue($routerMaker->router()->index()->has($routePath));
+    }
+
+    public function testWithAlreadyAddedPath(): void
+    {
+        $routeable = $this->getRouteable('/path', 'PathName');
+        $this->expectException(RoutePathExistsException::class);
+        (new RouterMaker($this->routerCache))
+            ->withAddedRouteable($routeable, 'group')
+            ->withAddedRouteable($routeable, 'another-group');
+    }
+
+    public function testWithAlreadyAddedKey(): void
+    {
+        $routeable1 = $this->getRouteable('/path/{foo}', 'FooName');
+        $routeable2 = $this->getRouteable('/path/{bar}', 'BarName');
+        $this->expectException(RouteKeyConflictException::class);
+        (new RouterMaker($this->routerCache))
+            ->withAddedRouteable($routeable1, 'group')
+            ->withAddedRouteable($routeable2, 'another-group');
+    }
+
+    public function testWithAlreadyAddedName(): void
+    {
+        $routeable1 = $this->getRouteable('/path1', 'SomeName');
+        $routeable2 = $this->getRouteable('/path2', 'SomeName');
+        $routeable3 = $this->getRouteable('/path3', 'SameName');
+        $this->expectException(RouteNameConflictException::class);
+        (new RouterMaker($this->routerCache))
+            ->withAddedRouteable($routeable1, 'group1')
+            ->withAddedRouteable($routeable2, 'group2')
+            ->withAddedRouteable($routeable3, 'group3');
+    }
+
+    private function getRouteable(string $path, string $name): RouteableInterface
+    {
+        $route = new Route(new RouteName($name), new RoutePath($path));
         $route = $route
-            ->withAddedMethod(
-                new GetMethod(),
-                new ControllerName(TestController::class)
+            ->withAddedMethodControllerName(
+                new MethodControllerName(
+                    new GetMethod,
+                    new TestController
+                )
             );
-        if ($name !== null) {
-            $route = $route->withName(new RouteName($name));
-        }
 
         return new Routeable($route);
     }

@@ -11,11 +11,12 @@
 
 declare(strict_types=1);
 
-use Chevere\Components\Route\Endpoint;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
+use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\Tests\_resources\controllers\GetArticlesController;
 
-return new class() extends Endpoint {
+return new class() extends RouteEndpoint
+{
     public function getController(): ControllerInterface
     {
         return new GetArticlesController();

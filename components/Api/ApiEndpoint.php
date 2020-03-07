@@ -15,10 +15,10 @@ namespace Chevere\Components\Api;
 
 use Chevere\Components\Api\Interfaces\ApiEndpointInterface;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
-use Chevere\Components\Route\Endpoint;
+use Chevere\Components\Route\RouteEndpoint;
 
 // @codeCoverageIgnore
-abstract class ApiEndpoint extends Endpoint implements ApiEndpointInterface
+abstract class ApiEndpoint extends RouteEndpoint implements ApiEndpointInterface
 {
     abstract public function getController(): ControllerInterface;
 

@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Route\Tests;
 
 use BadMethodCallException;
-use Chevere\Components\Route\Exceptions\RoutePathUnmatchedBracesException;
 use Chevere\Components\Route\Exceptions\RoutePathForwardSlashException;
 use Chevere\Components\Route\Exceptions\RoutePathInvalidCharsException;
+use Chevere\Components\Route\Exceptions\RoutePathUnmatchedBracesException;
 use Chevere\Components\Route\Exceptions\RoutePathUnmatchedWildcardsException;
 use Chevere\Components\Route\Exceptions\RouteWildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\RouteWildcardRepeatException;

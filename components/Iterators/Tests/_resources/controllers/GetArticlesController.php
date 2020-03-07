@@ -11,9 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Route\Interfaces;
+namespace Chevere\Components\Route\Tests\_resources\controllers;
 
-interface RoutePathIteratorInterface
+use Chevere\Components\Controller\Controller;
+
+final class GetArticlesController extends Controller
 {
-    const ROUTE_NAME_BASENAME = 'RouteName.php';
+    public function __invoke(string $id): void
+    {
+        echo 'Get articles';
+    }
 }

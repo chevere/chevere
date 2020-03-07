@@ -19,10 +19,10 @@ use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Exceptions\EndpointException;
-use Chevere\Components\Route\Interfaces\EndpointInterface;
+use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use ReflectionClass;
 
-abstract class Endpoint implements EndpointInterface
+abstract class RouteEndpoint implements RouteEndpointInterface
 {
     /** @var string Absoltue path to the endpoint file */
     private string $whereIs;

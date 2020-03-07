@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Components\Router\Exceptions\RoutePathExistsException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
+use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
 use Chevere\Components\Router\Exceptions\RouteNameConflictException;
+use Chevere\Components\Router\Exceptions\RoutePathExistsException;
 use Chevere\Components\Router\Exceptions\RouterMakerException;
-use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
 use Chevere\Components\Router\Interfaces\RouteCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterCacheInterface;
@@ -138,8 +138,8 @@ final class RouterMaker implements RouterMakerInterface
         throw new RoutePathExistsException(
             (new Message('Unable to register route path %path% at %declare% (path already registered at %register%)'))
                 ->code('%path%', $path)
-                ->code('%declare%', $route->maker()['fileLine'])
-                ->code('%register%', $this->routes[$knownId]->maker()['fileLine'])
+                ->code('%declare%', $this->getFileLine($route->maker()))
+                ->code('%register%', $this->getFileLine($this->routes[$knownId]->maker()))
                 ->toString()
         );
     }
@@ -156,9 +156,9 @@ final class RouterMaker implements RouterMakerInterface
         throw new RouteKeyConflictException(
             (new Message('Router conflict detected for %path% at %declare% (self-assigned internal key %key% is already reserved by %register%)'))
                 ->code('%path%', $route->path()->toString())
-                ->code('%declare%', $route->maker()['fileLine'])
+                ->code('%declare%', $this->getFileLine($route->maker()))
                 ->code('%key%', $route->path()->key())
-                ->code('%register%', $this->routes[$knownId]->maker()['fileLine'])
+                ->code('%register%', $this->getFileLine($this->routes[$knownId]->maker()))
                 ->toString()
         );
     }
@@ -174,11 +174,16 @@ final class RouterMaker implements RouterMakerInterface
                 (new Message('Unable to assign route name %name% for path %path% at %declare% (name assigned to %namedRoutePath% at %register%)'))
                     ->code('%name%', $route->name()->toString())
                     ->code('%path%', $route->path()->toString())
-                    ->code('%declare%', $route->maker()['fileLine'])
-                    ->code('%namedRoutePath%', $this->routes[$knownId]->pathUri()->toString())
-                    ->code('%register%', $this->routes[$knownId]->maker()['fileLine'])
+                    ->code('%declare%', $this->getFileLine($route->maker()))
+                    ->code('%namedRoutePath%', $this->routes[$knownId]->path()->toString())
+                    ->code('%register%', $this->getFileLine($this->routes[$knownId]->maker()))
                     ->toString()
             );
         }
+    }
+
+    private function getFileLine(array $maker): string
+    {
+        return $maker['file'] . ':' . $maker['line'];
     }
 }
