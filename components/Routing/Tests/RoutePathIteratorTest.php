@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Iterators\Tests;
+namespace Chevere\Components\Routing\Tests;
 
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Iterators\Interfaces\RoutePathIteratorInterface;
-use Chevere\Components\Iterators\RoutePathIterator;
 use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
+use Chevere\Components\Routing\Interfaces\RoutePathIteratorInterface;
+use Chevere\Components\Routing\RoutePathIterator;
 use PHPUnit\Framework\TestCase;
 
 final class RoutePathIteratorTest extends TestCase
@@ -47,14 +47,26 @@ final class RoutePathIteratorTest extends TestCase
         $this->assertCount(2, $objectStorage);
         $objectStorage->rewind();
         while ($objectStorage->valid()) {
+            $routePath = $objectStorage->current();
+            $routeDecorator = $objectStorage->getInfo();
             $this->assertInstanceOf(
                 RoutePathInterface::class,
-                $objectStorage->current()
+                $routePath
             );
             $this->assertInstanceOf(
                 RouteDecoratorInterface::class,
-                $objectStorage->getInfo()
+                $routeDecorator
             );
+            // $routeWildcards = $routeDecorator->wildcards();
+            // if ($routeWildcards->hasAny()) {
+            //     foreach ($routeWildcards->toArray() as $pos => $routeWildcard) {
+            //         $routePath = $routePath->withWildcard($routeWildcard);
+            //     }
+            // }
+            // $route = new Route(
+            //     $routeDecorator->name(),
+            //     $routePath
+            // );
             $objectStorage->next();
         }
     }

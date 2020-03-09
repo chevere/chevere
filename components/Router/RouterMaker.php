@@ -71,7 +71,6 @@ final class RouterMaker implements RouterMakerInterface
         ++$new->id;
         $new->assertUniquePath($routeable->route());
         $new->assertUniqueKey($routeable->route());
-        $name = '';
         $path = $routeable->route()->path()->toString();
         $key = $routeable->route()->path()->key();
         $regex = $routeable->route()->path()->regex();

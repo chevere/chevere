@@ -34,10 +34,9 @@ abstract class RouteEndpoint implements RouteEndpointInterface
 
     final public function __construct()
     {
-        $this->whereIs = (new ReflectionClass($this))->getFileName();
-        $dirWhereIs = dirname($this->whereIs);
+        $dirWhereIs = dirname($this->whereIs());
         $this->root = new Dir(new Path($dirWhereIs . '/'));
-        $name = basename($this->whereIs, '.php');
+        $name = basename($this->whereIs(), '.php');
         $method = self::KNOWN_METHODS[$name] ?? null;
         if ($method === null) {
             throw new EndpointException(
@@ -52,7 +51,7 @@ abstract class RouteEndpoint implements RouteEndpointInterface
 
     final public function whereIs(): string
     {
-        return $this->whereIs;
+        return $this->whereIs ??= (new ReflectionClass($this))->getFileName();
     }
 
     final public function method(): MethodInterface

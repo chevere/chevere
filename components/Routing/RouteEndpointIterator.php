@@ -11,17 +11,17 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Iterators;
+namespace Chevere\Components\Routing;
 
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
 use Chevere\Components\Filesystem\PhpFile;
 use Chevere\Components\Filesystem\PhpFileReturn;
-use Chevere\Components\Iterators\Interfaces\RouteEndpointIteratorInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
+use Chevere\Components\Routing\Interfaces\RouteEndpointIteratorInterface;
 use Chevere\Components\Type\Type;
 use LogicException;
 use SplObjectStorage;

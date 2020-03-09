@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Iterators\Interfaces;
+namespace Chevere\Components\Routing\Interfaces;
 
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use SplObjectStorage;

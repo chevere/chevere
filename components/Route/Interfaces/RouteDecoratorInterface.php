@@ -18,4 +18,6 @@ interface RouteDecoratorInterface
     public function name(): RouteNameInterface;
 
     public function wildcards(): RouteWildcardsInterface;
+
+    public function whereIs(): string;
 }

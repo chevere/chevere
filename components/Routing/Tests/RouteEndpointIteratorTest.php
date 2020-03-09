@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Iterators\Tests;
+namespace Chevere\Components\Routing\Tests;
 
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Iterators\RouteEndpointIterator;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
+use Chevere\Components\Routing\RouteEndpointIterator;
 use PHPUnit\Framework\TestCase;
 
 final class RouteEndpointIteratorTest extends TestCase

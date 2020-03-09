@@ -17,13 +17,22 @@ use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\Interfaces\RouteNameInterface;
 use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
 use Chevere\Components\Route\RouteWildcards;
+use ReflectionClass;
 
 abstract class RouteDecorator implements RouteDecoratorInterface
 {
+    /** @var string Absoltue path to the decorator file */
+    private string $whereIs;
+
     abstract public function name(): RouteNameInterface;
 
     public function wildcards(): RouteWildcardsInterface
     {
         return new RouteWildcards();
+    }
+
+    final public function whereIs(): string
+    {
+        return $this->whereIs ??= (new ReflectionClass($this))->getFileName();
     }
 }
