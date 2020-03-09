@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\Filesystem\Exceptions\File\FileNotPhpException;
-use Chevere\Components\Message\Message;
 use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
 use Chevere\Components\Filesystem\Interfaces\File\PhpFileInterface;
+use Chevere\Components\Instances\BootstrapInstance;
+use Chevere\Components\Message\Message;
 use LogicException;
 use RuntimeException;
 use Throwable;
@@ -28,10 +28,6 @@ use Throwable;
 final class PhpFile implements PhpFileInterface
 {
     private FileInterface $file;
-
-    // private bool $isCompileable = true;
-
-    // private array $compileableErrors = [];
 
     public function __construct(FileInterface $file)
     {
@@ -44,11 +40,6 @@ final class PhpFile implements PhpFileInterface
     {
         return $this->file;
     }
-
-    // public function isCompileable(): bool
-    // {
-    //     return $this->isCompileable;
-    // }
 
     /**
      * Applies OPCache.

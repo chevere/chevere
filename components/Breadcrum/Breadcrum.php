@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Chevere\Components\Breadcrum;
 
 use Chevere\Components\Breadcrum\Exceptions\BreadcrumException;
-use Chevere\Components\Message\Message;
 use Chevere\Components\Breadcrum\Interfaces\BreadcrumInterface;
+use Chevere\Components\Message\Message;
 
 /**
  * A general purpose iterator companion.
  */
 final class Breadcrum implements BreadcrumInterface
 {
-    /** @vvar arrau [pos => $item] */
+    /** @var array [pos => $item] */
     private array $items = [];
 
     private int $pos = -1;

@@ -28,11 +28,11 @@ use SplObjectStorage;
 
 final class RouteEndpointIterator implements RouteEndpointIteratorInterface
 {
-    private SplObjectStorage $objects;
+    private RouteEndpointObjects $objects;
 
     public function __construct(DirInterface $dir)
     {
-        $this->objects = new SplObjectStorage;
+        $this->objects = new RouteEndpointObjects();
         $path = $dir->path();
         foreach (array_keys(RouteEndpointInterface::KNOWN_METHODS) as $name) {
             $endpointPath = $path->getChild($name . '.php');
@@ -52,7 +52,7 @@ final class RouteEndpointIterator implements RouteEndpointIteratorInterface
         }
     }
 
-    public function objects(): SplObjectStorage
+    public function objects(): RouteEndpointObjects
     {
         return $this->objects;
     }

@@ -39,7 +39,7 @@ final class RoutePathIterator implements RoutePathIteratorInterface
 
     private RecursiveIteratorIterator $recursiveIterator;
 
-    private SplObjectStorage $objects;
+    private RoutePathObjects $objects;
 
     public function __construct(DirInterface $dir)
     {
@@ -49,7 +49,7 @@ final class RoutePathIterator implements RoutePathIteratorInterface
             | RecursiveDirectoryIterator::KEY_AS_PATHNAME
         );
         $this->recursiveIterator = new RecursiveIteratorIterator($this->recursiveFilterIterator());
-        $this->objects = new SplObjectStorage;
+        $this->objects = new RoutePathObjects;
         $this->recursiveIterator->rewind();
         while ($this->recursiveIterator->valid()) {
             $pathName = $this->recursiveIterator->current()->getPathName();
@@ -80,7 +80,7 @@ final class RoutePathIterator implements RoutePathIteratorInterface
         return $this->recursiveIterator;
     }
 
-    final public function objects(): SplObjectStorage
+    final public function objects(): RoutePathObjects
     {
         return $this->objects;
     }

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Routing\Interfaces;
 
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Routing\RoutePathObjects;
 use RecursiveIteratorIterator;
-use SplObjectStorage;
 
 interface RoutePathIteratorInterface
 {
@@ -25,10 +25,5 @@ interface RoutePathIteratorInterface
 
     public function recursiveIterator(): RecursiveIteratorIterator;
 
-    /**
-     * Provides access to the SplObjectStorage instance.
-     *
-     * @return SplObjectStorage RoutePathInterface objects, with RouteDecorator as data (getInfo)
-     */
-    public function objects(): SplObjectStorage;
+    public function objects(): RoutePathObjects;
 }

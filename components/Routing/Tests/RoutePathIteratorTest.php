@@ -47,26 +47,14 @@ final class RoutePathIteratorTest extends TestCase
         $this->assertCount(2, $objectStorage);
         $objectStorage->rewind();
         while ($objectStorage->valid()) {
-            $routePath = $objectStorage->current();
-            $routeDecorator = $objectStorage->getInfo();
             $this->assertInstanceOf(
                 RoutePathInterface::class,
-                $routePath
+                $objectStorage->current()
             );
             $this->assertInstanceOf(
                 RouteDecoratorInterface::class,
-                $routeDecorator
+                $objectStorage->routeDecorator()
             );
-            // $routeWildcards = $routeDecorator->wildcards();
-            // if ($routeWildcards->hasAny()) {
-            //     foreach ($routeWildcards->toArray() as $pos => $routeWildcard) {
-            //         $routePath = $routePath->withWildcard($routeWildcard);
-            //     }
-            // }
-            // $route = new Route(
-            //     $routeDecorator->name(),
-            //     $routePath
-            // );
             $objectStorage->next();
         }
     }
