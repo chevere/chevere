@@ -23,7 +23,5 @@ interface RoutePathIteratorInterface
 
     public function __construct(DirInterface $dir);
 
-    public function recursiveIterator(): RecursiveIteratorIterator;
-
     public function objects(): RoutePathObjects;
 }

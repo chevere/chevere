@@ -116,7 +116,7 @@ final class RouterCacheTest extends TestCase
             RouterCacheInterface::KEY_GROUPS
         ];
         $route = new Route(new RouteName('some-name'), new RoutePath('/test'));
-        $index = (new RouterIndex)->withAdded($route, 0, '', '');
+        $index = (new RouterIndex)->withAdded($route, 0, 'test_group');
         $named = (new RouterNamed)->withAdded('test_name', 1);
         $groups = (new RouterGroups)->withAdded('test_group', 2);
         $router = $router

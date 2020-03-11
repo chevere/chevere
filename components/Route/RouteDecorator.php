@@ -21,14 +21,14 @@ use ReflectionClass;
 
 abstract class RouteDecorator implements RouteDecoratorInterface
 {
-    /** @var string Absoltue path to the decorator file */
+    /** @var string Absolute path to the decorator file */
     private string $whereIs;
 
     abstract public function name(): RouteNameInterface;
 
     public function wildcards(): RouteWildcardsInterface
     {
-        return new RouteWildcards();
+        return new RouteWildcards(); // @codeCoverageIgnore
     }
 
     final public function whereIs(): string

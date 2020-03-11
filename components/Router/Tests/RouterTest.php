@@ -89,7 +89,7 @@ final class RouterTest extends TestCase
     public function testIndex(): void
     {
         $route = new Route(new RouteName('some-name'), new RoutePath('/test'));
-        $index = (new RouterIndex)->withAdded($route, 0, '', '');
+        $index = (new RouterIndex)->withAdded($route, 0, 'some-group');
         $router = (new Router($this->getEmptyRouteCache()))->withIndex($index);
         $this->assertTrue($router->hasIndex());
         $this->assertSame($index, $router->index());

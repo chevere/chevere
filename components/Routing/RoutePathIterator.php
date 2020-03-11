@@ -76,11 +76,6 @@ final class RoutePathIterator implements RoutePathIteratorInterface
         }
     }
 
-    final public function recursiveIterator(): RecursiveIteratorIterator
-    {
-        return $this->recursiveIterator;
-    }
-
     final public function objects(): RoutePathObjects
     {
         return $this->objects;

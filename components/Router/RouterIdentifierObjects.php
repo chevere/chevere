@@ -18,9 +18,9 @@ use SplObjectStorage;
 
 final class RouterIdentifierObjects extends SplObjectStorage
 {
-    public function attach(RouteIdentifierInterface $routeIdentifier)
+    public function append(RouteIdentifierInterface $routeIdentifier, string $key)
     {
-        return parent::attach($routeIdentifier);
+        return parent::attach($routeIdentifier, $key);
     }
 
     public function current(): RouteIdentifierInterface

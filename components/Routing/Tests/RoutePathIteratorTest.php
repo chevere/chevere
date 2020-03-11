@@ -17,6 +17,7 @@ use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
+use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
 use Chevere\Components\Routing\Exceptions\ExpectingRouteDecoratorException;
 use Chevere\Components\Routing\Interfaces\RoutePathIteratorInterface;
 use Chevere\Components\Routing\RoutePathIterator;
@@ -24,22 +25,6 @@ use PHPUnit\Framework\TestCase;
 
 final class RoutePathIteratorTest extends TestCase
 {
-    public function testRecursiveIterator(): void
-    {
-        $rootDir = new Dir(new Path(__DIR__ . '/_resources/routes/'));
-        $routePathIterator = new RoutePathIterator($rootDir);
-        $recursiveIterator = $routePathIterator->recursiveIterator();
-        $this->assertCount(2, $recursiveIterator);
-        $recursiveIterator->rewind();
-        while ($recursiveIterator->valid()) {
-            $this->assertStringEndsWith(
-                RoutePathIteratorInterface::ROUTE_DECORATOR_BASENAME,
-                $recursiveIterator->current()->getPathName()
-            );
-            $recursiveIterator->next();
-        }
-    }
-
     public function testObjects(): void
     {
         $dir = new Dir(new Path(__DIR__ . '/_resources/routes/'));
@@ -48,6 +33,10 @@ final class RoutePathIteratorTest extends TestCase
         $this->assertCount(2, $objectStorage);
         $objectStorage->rewind();
         while ($objectStorage->valid()) {
+            $this->assertStringEndsWith(
+                RoutePathIteratorInterface::ROUTE_DECORATOR_BASENAME,
+                $objectStorage->routeDecorator()->whereIs()
+            );
             $this->assertInstanceOf(
                 RoutePathInterface::class,
                 $objectStorage->current()

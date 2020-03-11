@@ -16,14 +16,12 @@ namespace Chevere\Components\Router;
 use BadMethodCallException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteInterface;
-use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Interfaces\RouteIdentifierInterface;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
-use SplObjectStorage;
 
 final class RouterIndex implements RouterIndexInterface
 {
-    private SplObjectStorage $objects;
+    private RouterIdentifierObjects $objects;
 
     /** @var array key => id */
     private array $index;
@@ -32,7 +30,7 @@ final class RouterIndex implements RouterIndexInterface
 
     public function __construct()
     {
-        $this->objects = new SplObjectStorage();
+        $this->objects = new RouterIdentifierObjects();
     }
 
     public function withAdded(RouteInterface $route, int $id, string $group): RouterIndexInterface
@@ -40,7 +38,7 @@ final class RouterIndex implements RouterIndexInterface
         $new = clone $this;
         $new->count++;
         $new->index[$route->path()->toString()] = $new->count;
-        $new->objects->attach(
+        $new->objects->append(
             new RouteIdentifier($id, $group, $route->name()->toString()),
             $route->path()->toString()
         );

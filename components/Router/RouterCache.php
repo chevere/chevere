@@ -106,6 +106,7 @@ final class RouterCache implements RouterCacheInterface
         return $item->var();
     }
 
+    // TODO: "FilledRouter"
     public function put(RouterInterface $router): RouterCacheInterface
     {
         $this->cache = $this->cache
