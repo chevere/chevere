@@ -23,9 +23,9 @@ interface RouterIndexInterface
 {
     public function withAdded(RouteInterface $route, int $id, string $group): RouterIndexInterface;
 
-    public function has(RoutePath $routePath): bool;
+    public function has(string $key): bool;
 
-    public function get(RoutePath $routePath): RouteIdentifierInterface;
+    public function get(string $key): RouteIdentifierInterface;
 
     public function toArray(): array;
 }

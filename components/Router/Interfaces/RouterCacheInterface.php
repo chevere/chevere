@@ -23,7 +23,7 @@ interface RouterCacheInterface
 
     const KEY_GROUPS = 'groups';
 
-    public function routeCache(): RouteCacheInterface;
+    public function routesCache(): RoutesCacheInterface;
 
     public function hasRegex(): bool;
 

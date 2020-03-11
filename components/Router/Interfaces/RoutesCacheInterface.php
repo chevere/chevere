@@ -18,15 +18,15 @@ use Chevere\Components\Route\Interfaces\RouteInterface;
 /**
  * Provides a type-hinted Cache.
  */
-interface RouteCacheInterface
+interface RoutesCacheInterface
 {
     public function has(int $id): bool;
 
     public function get(int $id): RouteInterface;
 
-    public function put(int $id, RouteableInterface $routeable): RouteCacheInterface;
+    public function put(int $id, RouteableInterface $routeable): RoutesCacheInterface;
 
-    public function remove(int $id): RouteCacheInterface;
+    public function remove(int $id): RoutesCacheInterface;
 
     public function puts(): array;
 }

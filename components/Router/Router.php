@@ -17,19 +17,19 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
-use Chevere\Components\Router\Interfaces\RouteCacheInterface;
 use Chevere\Components\Router\Interfaces\RoutedInterface;
 use Chevere\Components\Router\Interfaces\RouterGroupsInterface;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Interfaces\RouterNamedInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
+use Chevere\Components\Router\Interfaces\RoutesCacheInterface;
 use Psr\Http\Message\UriInterface;
 use Throwable;
 
 final class Router implements RouterInterface
 {
-    private RouteCacheInterface $cache;
+    private RoutesCacheInterface $routesCache;
 
     private RouterRegexInterface $regex;
 
@@ -39,9 +39,9 @@ final class Router implements RouterInterface
 
     private RouterGroupsInterface $groups;
 
-    public function __construct(RouteCacheInterface $cache)
+    public function __construct(RoutesCacheInterface $routesCache)
     {
-        $this->cache = $cache;
+        $this->routesCache = $routesCache;
     }
 
     public function withRegex(RouterRegexInterface $regex): RouterInterface
@@ -149,7 +149,7 @@ final class Router implements RouterInterface
         $id = (int) $matches['MARK'];
         unset($matches['MARK']);
         array_shift($matches);
-        $route = $this->cache->get($id);
+        $route = $this->routesCache->get($id);
         $arguments = [];
         if ($route->path()->hasRouteWildcards()) {
             foreach ($matches as $pos => $val) {

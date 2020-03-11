@@ -46,8 +46,8 @@ final class RouterMakerTest extends TestCase
     {
         $this->cacheHelper->tearDown();
         $this->routerCache->remove();
-        foreach (array_keys($this->routerCache->routeCache()->puts()) as $pos) {
-            $this->routerCache->routeCache()->remove($pos);
+        foreach (array_keys($this->routerCache->routesCache()->puts()) as $pos) {
+            $this->routerCache->routesCache()->remove($pos);
         }
     }
 
@@ -65,7 +65,7 @@ final class RouterMakerTest extends TestCase
         $routerMaker = (new RouterMaker($this->routerCache))
             ->withAddedRouteable($routeable1, 'group')
             ->withAddedRouteable($routeable2, 'group');
-        $this->assertTrue($routerMaker->router()->index()->has($routePath));
+        $this->assertTrue($routerMaker->router()->index()->has($routePath->key()));
     }
 
     public function testWithAlreadyAddedPath(): void

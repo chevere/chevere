@@ -18,8 +18,8 @@ use Chevere\Components\App\Services;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Router\RouteCache;
 use Chevere\Components\Router\Router;
+use Chevere\Components\Router\RoutesCache;
 use PHPUnit\Framework\TestCase;
 
 final class ServicesTest extends TestCase
@@ -42,7 +42,7 @@ final class ServicesTest extends TestCase
 
     public function testWithRouter(): void
     {
-        $router = new Router(new RouteCache(new Cache(new Dir(new Path(__DIR__)))));
+        $router = new Router(new RoutesCache(new Cache(new Dir(new Path(__DIR__)))));
         $services = (new Services())
           ->withRouter($router);
 

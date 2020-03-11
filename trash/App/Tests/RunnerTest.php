@@ -18,25 +18,25 @@ use Chevere\Components\App\Build;
 use Chevere\Components\App\Builder;
 use Chevere\Components\App\Exceptions\RouterCantResolveException;
 use Chevere\Components\App\Exceptions\RouterRequiredException;
+use Chevere\Components\App\Interfaces\BuildInterface;
 use Chevere\Components\App\Parameters;
 use Chevere\Components\App\Runner;
 use Chevere\Components\App\Services;
 use Chevere\Components\ArrayFile\ArrayFile;
+use Chevere\Components\Cache\Cache;
+use Chevere\Components\Filesystem\AppPath;
+use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Filesystem\PhpFile;
+use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
-use Chevere\Components\Filesystem\AppPath;
-use Chevere\Components\Router\RouterMaker;
-use Chevere\Components\Router\Router;
-use Chevere\Components\App\Interfaces\BuildInterface;
-use Chevere\Components\Cache\Cache;
-use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Http\Method;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Components\Router\RouteCache;
+use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;
+use Chevere\Components\Router\RouterMaker;
+use Chevere\Components\Router\RoutesCache;
 use PHPUnit\Framework\TestCase;
 
 final class RunnerTest extends TestCase
@@ -95,7 +95,7 @@ final class RunnerTest extends TestCase
 
     public function testWithRunWithRouterUnableToResolve(): void
     {
-        $routeCache = new RouteCache(new Cache(new Dir(new Path(__DIR__))));
+        $routeCache = new RoutesCache(new Cache(new Dir(new Path(__DIR__))));
         $router = new Router($routeCache);
         $services = (new Services())
             ->withRouter($router);

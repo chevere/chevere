@@ -35,30 +35,30 @@ final class RouterIndexTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $routePath = new RoutePath('/path');
+        $key = '/path';
         $routerIndex = new RouterIndex();
         $this->assertSame([], $routerIndex->toArray());
-        $this->assertFalse($routerIndex->has($routePath));
+        $this->assertFalse($routerIndex->has($key));
         $this->expectException(BadMethodCallException::class);
-        $routerIndex->get($routePath);
+        $routerIndex->get($key);
     }
 
     public function testWithAdded(): void
     {
-        $path = '/path';
+        $key = '/path';
         $id = 0;
         $group = 'some-group';
         $name = 'some-name';
-        $routePath = new RoutePath($path);
+        $routePath = new RoutePath($key);
         $route = new Route(
             new RouteName($name),
             $routePath
         );
         $routerIndex = (new RouterIndex())
             ->withAdded($route, $id, $group);
-        $this->assertTrue($routerIndex->has($routePath));
+        $this->assertTrue($routerIndex->has($key));
         $this->assertSame([
-            $path => [
+            $key => [
                 'id' => $id,
                 'group' => $group,
                 'name' => $name,

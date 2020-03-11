@@ -24,9 +24,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router\Properties;
 
-use BadMethodCallException;
 use Chevere\Components\Regex\Regex;
-use Chevere\Components\Router\RouterNamed;
 use Chevere\Components\Router\RouterRegex;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;

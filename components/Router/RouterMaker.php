@@ -21,11 +21,11 @@ use Chevere\Components\Router\Exceptions\RouteNameConflictException;
 use Chevere\Components\Router\Exceptions\RoutePathExistsException;
 use Chevere\Components\Router\Exceptions\RouterMakerException;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
-use Chevere\Components\Router\Interfaces\RouteCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
+use Chevere\Components\Router\Interfaces\RoutesCacheInterface;
 
 /**
  * RouterMaker takes a bunch of routes and generates a cache-ready routing table.
@@ -34,7 +34,7 @@ final class RouterMaker implements RouterMakerInterface
 {
     private RouterCacheInterface $routerCache;
 
-    private RouteCacheInterface $routeCache;
+    private RoutesCacheInterface $routesCache;
 
     private RouterInterface $router;
 
@@ -58,8 +58,8 @@ final class RouterMaker implements RouterMakerInterface
     public function __construct(RouterCacheInterface $routerCache)
     {
         $this->routerCache = $routerCache;
-        $this->routeCache = $this->routerCache->routeCache();
-        $this->router = (new Router($this->routeCache))
+        $this->routesCache = $this->routerCache->routesCache();
+        $this->router = (new Router($this->routesCache))
             ->withIndex(new RouterIndex())
             ->withNamed(new RouterNamed())
             ->withGroups(new RouterGroups());
@@ -97,7 +97,7 @@ final class RouterMaker implements RouterMakerInterface
                     $group
                 )
             );
-        $new->routeCache->put($new->id, $routeable);
+        $new->routesCache->put($new->id, $routeable);
         $new->routes[$new->id] = $routeable->route();
 
         return $new;

@@ -19,13 +19,13 @@ use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
-use Chevere\Components\Router\Interfaces\RouteCacheInterface;
-use Chevere\Components\Router\RouteCache;
+use Chevere\Components\Router\Interfaces\RoutesCacheInterface;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterGroups;
 use Chevere\Components\Router\RouterIndex;
 use Chevere\Components\Router\RouterNamed;
 use Chevere\Components\Router\RouterRegex;
+use Chevere\Components\Router\RoutesCache;
 use GuzzleHttp\Psr7\Uri;
 use PHPUnit\Framework\TestCase;
 
@@ -46,7 +46,7 @@ final class RouterTest extends TestCase
     public function testConstructor(): void
     {
         $router = new Router($this->getEmptyRouteCache());
-        // $this->assertFalse($router->hasRegex());
+        $this->assertFalse($router->hasRegex());
         $this->assertFalse($router->hasIndex());
         $this->assertFalse($router->hasNamed());
         $this->assertFalse($router->hasGroups());
@@ -111,13 +111,13 @@ final class RouterTest extends TestCase
         $this->assertSame($groups, $router->groups());
     }
 
-    private function getEmptyRouteCache(): RouteCacheInterface
+    private function getEmptyRouteCache(): RoutesCacheInterface
     {
-        return new RouteCache($this->cacheHelper->getEmptyCache());
+        return new RoutesCache($this->cacheHelper->getEmptyCache());
     }
 
-    private function getCachedRouteCache(): RouteCacheInterface
+    private function getCachedRouteCache(): RoutesCacheInterface
     {
-        return new RouteCache($this->cacheHelper->getCachedCache());
+        return new RoutesCache($this->cacheHelper->getCachedCache());
     }
 }

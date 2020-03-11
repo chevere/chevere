@@ -19,13 +19,13 @@ use Chevere\Components\Cache\Interfaces\CacheItemInterface;
 use Chevere\Components\Cache\Interfaces\CacheKeyInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouterCacheNotFoundException;
-use Chevere\Components\Router\Interfaces\RouteCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterGroupsInterface;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Interfaces\RouterNamedInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
+use Chevere\Components\Router\Interfaces\RoutesCacheInterface;
 use Chevere\Components\Variable\VariableExport;
 use Throwable;
 
@@ -33,7 +33,7 @@ final class RouterCache implements RouterCacheInterface
 {
     private CacheInterface $cache;
 
-    private RouteCacheInterface $routeCache;
+    private RoutesCacheInterface $routesCache;
 
     private CacheKeyInterface $keyRegex;
 
@@ -43,22 +43,19 @@ final class RouterCache implements RouterCacheInterface
 
     private CacheKeyInterface $keyGroups;
 
-    /**
-     * Creates a new instance.
-     */
     public function __construct(CacheInterface $cache)
     {
         $this->cache = $cache;
-        $this->routeCache = new RouteCache($this->cache->getChild('routes/'));
+        $this->routesCache = new RoutesCache($this->cache->getChild('routes/'));
         $this->keyRegex = new CacheKey(self::KEY_REGEX);
         $this->keyIndex = new CacheKey(self::KEY_INDEX);
         $this->keyNamed = new CacheKey(self::KEY_NAMED);
         $this->keyGroups = new CacheKey(self::KEY_GROUPS);
     }
 
-    public function routeCache(): RouteCacheInterface
+    public function routesCache(): RoutesCacheInterface
     {
-        return $this->routeCache;
+        return $this->routesCache;
     }
 
     public function hasRegex(): bool

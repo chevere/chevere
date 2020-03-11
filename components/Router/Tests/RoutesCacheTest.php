@@ -17,19 +17,19 @@ use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Interfaces\RouteInterface;
-use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteName;
+use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\RouteWildcard;
 use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
 use Chevere\Components\Router\Exceptions\RouteCacheTypeException;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
 use Chevere\Components\Router\Routeable;
-use Chevere\Components\Router\RouteCache;
+use Chevere\Components\Router\RoutesCache;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
-final class RouteCacheTest extends TestCase
+final class RoutesCacheTest extends TestCase
 {
     private CacheHelper $cacheHelper;
 
@@ -40,7 +40,7 @@ final class RouteCacheTest extends TestCase
 
     public function testEmptyCache(): void
     {
-        $routeableCache = new RouteCache($this->cacheHelper->getEmptyCache());
+        $routeableCache = new RoutesCache($this->cacheHelper->getEmptyCache());
         $this->assertEmpty($routeableCache->puts());
         $this->assertFalse($routeableCache->has(0));
         $this->expectException(RouteCacheNotFoundException::class);
@@ -70,8 +70,8 @@ final class RouteCacheTest extends TestCase
 
     public function testCachedCacheTypeError(): void
     {
-        $id = 1;
-        $routeableCache = new RouteCache($this->cacheHelper->getCachedCache());
+        $id = 0;
+        $routeableCache = new RoutesCache($this->cacheHelper->getCachedCache()->getChild('wrong_routes/'));
         $this->assertTrue($routeableCache->has($id));
         $this->expectException(RouteCacheTypeException::class);
         $routeableCache->get($id);

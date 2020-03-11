@@ -19,13 +19,13 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
 use Chevere\Components\Router\Exceptions\RouteCacheTypeException;
-use Chevere\Components\Router\Interfaces\RouteCacheInterface;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
+use Chevere\Components\Router\Interfaces\RoutesCacheInterface;
 use Chevere\Components\Type\Type;
 use Chevere\Components\Variable\VariableExport;
 use Throwable;
 
-final class RouteCache implements RouteCacheInterface
+final class RoutesCache implements RoutesCacheInterface
 {
     private CacheInterface $cache;
 
@@ -64,7 +64,7 @@ final class RouteCache implements RouteCacheInterface
         return $item->var()->route();
     }
 
-    public function put(int $id, RouteableInterface $routeable): RouteCache
+    public function put(int $id, RouteableInterface $routeable): RoutesCache
     {
         $this->cache = $this->cache
             ->withPut(
@@ -75,7 +75,7 @@ final class RouteCache implements RouteCacheInterface
         return $this;
     }
 
-    public function remove(int $id): RouteCacheInterface
+    public function remove(int $id): RoutesCacheInterface
     {
         $this->cache = $this->cache
             ->withRemove(

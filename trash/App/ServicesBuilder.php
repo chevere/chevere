@@ -13,16 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use Chevere\Components\App\Interfaces\ParametersInterface;
-use Chevere\Components\App\Interfaces\ServicesInterface;
-use Chevere\Components\Cache\Cache;
 use Chevere\Components\Api\Api;
-use Chevere\Components\Router\Router;
-use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Api\Interfaces\ApiInterface;
 use Chevere\Components\App\Interfaces\BuildInterface;
+use Chevere\Components\App\Interfaces\ParametersInterface;
 use Chevere\Components\App\Interfaces\ServicesBuilderInterface;
-use Chevere\Components\Router\Interfaces\RouterInterface;
+use Chevere\Components\App\Interfaces\ServicesInterface;
+use Chevere\Components\Cache\Cache;
+use Chevere\Components\Router\Router;
+use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Router\RouterMaker;
 
 final class ServicesBuilder implements ServicesBuilderInterface

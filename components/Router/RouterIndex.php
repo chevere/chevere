@@ -39,7 +39,7 @@ final class RouterIndex implements RouterIndexInterface
     {
         $new = clone $this;
         $new->count++;
-        $new->index[$route->path()->toString()] = $this->count;
+        $new->index[$route->path()->toString()] = $new->count;
         $new->objects->attach(
             new RouteIdentifier($id, $group, $route->name()->toString()),
             $route->path()->toString()
@@ -48,22 +48,22 @@ final class RouterIndex implements RouterIndexInterface
         return $new;
     }
 
-    public function has(RoutePath $routePath): bool
+    public function has(string $key): bool
     {
-        return isset($this->index[$routePath->key()]);
+        return isset($this->index[$key]);
     }
 
-    public function get(RoutePath $routePath): RouteIdentifierInterface
+    public function get(string $key): RouteIdentifierInterface
     {
-        if (!$this->has($routePath)) {
+        if (!$this->has($key)) {
             throw new BadMethodCallException(
                 (new Message("PathUri key %key% doesn't exists"))
-                    ->code('%key%', $routePath->key())
+                    ->code('%key%', $key)
                     ->toString()
             );
         }
 
-        return $this->objects->offsetGet($this->index[$routePath->key()]);
+        return $this->objects->offsetGet($this->index[$key]);
     }
 
     public function toArray(): array
