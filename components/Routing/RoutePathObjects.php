@@ -19,6 +19,11 @@ use SplObjectStorage;
 
 final class RoutePathObjects extends SplObjectStorage
 {
+    public function append(RoutePathInterface $routePath, RouteDecoratorInterface $routeDecorator)
+    {
+        return parent::attach($routePath, $routeDecorator);
+    }
+
     public function current(): RoutePathInterface
     {
         return parent::current();

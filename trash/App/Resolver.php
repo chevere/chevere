@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use Chevere\Components\App\Interfaces\ResolverInterface;
 use Chevere\Components\App\Exceptions\ResolverException;
+use Chevere\Components\App\Interfaces\BuilderInterface;
+use Chevere\Components\App\Interfaces\ResolvableInterface;
+use Chevere\Components\App\Interfaces\ResolverInterface;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
-use Chevere\Components\App\Interfaces\BuilderInterface;
-use Chevere\Components\App\Interfaces\ResolvableInterface;
 
 /**
  * Resolves a builder against routing
@@ -56,7 +56,7 @@ final class Resolver implements ResolverInterface
         $this->builder = $this->builder
             ->withControllerName($controllerName)
             ->withControllerArguments(
-                $routed->wildcards()
+                $routed->arguments()
             )
             ->withBuild(
                 $this->builder->build()

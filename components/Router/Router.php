@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
-use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
 use Chevere\Components\Router\Interfaces\RouteCacheInterface;
 use Chevere\Components\Router\Interfaces\RoutedInterface;
 use Chevere\Components\Router\Interfaces\RouterGroupsInterface;
@@ -27,9 +27,6 @@ use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 use Psr\Http\Message\UriInterface;
 use Throwable;
 
-/**
- * The Chevere Router
- */
 final class Router implements RouterInterface
 {
     private RouteCacheInterface $cache;
@@ -153,13 +150,13 @@ final class Router implements RouterInterface
         unset($matches['MARK']);
         array_shift($matches);
         $route = $this->cache->get($id);
-        $wildcards = [];
+        $arguments = [];
         if ($route->path()->hasRouteWildcards()) {
             foreach ($matches as $pos => $val) {
-                $wildcards[$route->path()->routeWildcards()->getPos($pos)->name()] = $val;
+                $arguments[$route->path()->routeWildcards()->getPos($pos)->name()] = $val;
             }
         }
 
-        return new Routed($route, $wildcards);
+        return new Routed($route, $arguments);
     }
 }

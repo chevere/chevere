@@ -23,15 +23,15 @@ final class Routed implements RoutedInterface
 {
     private RouteInterface $route;
 
-    private array $wildcards;
+    private array $arguments;
 
     /**
      * Creates a new instance.
      */
-    public function __construct(RouteInterface $route, array $wildcards)
+    public function __construct(RouteInterface $route, array $arguments)
     {
         $this->route = $route;
-        $this->wildcards = $wildcards;
+        $this->arguments = $arguments;
     }
 
     public function route(): RouteInterface
@@ -39,8 +39,8 @@ final class Routed implements RoutedInterface
         return $this->route;
     }
 
-    public function wildcards(): array
+    public function arguments(): array
     {
-        return $this->wildcards;
+        return $this->arguments;
     }
 }

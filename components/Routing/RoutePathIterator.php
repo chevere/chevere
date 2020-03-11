@@ -21,6 +21,7 @@ use Chevere\Components\Filesystem\PhpFileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\RoutePath;
+use Chevere\Components\Routing\Exceptions\ExpectingRouteDecoratorException;
 use Chevere\Components\Routing\Interfaces\RoutePathIteratorInterface;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Type\Type;
@@ -55,10 +56,10 @@ final class RoutePathIterator implements RoutePathIteratorInterface
             $pathName = $this->recursiveIterator->current()->getPathName();
             $routeDecorator = $this->getVar($pathName);
             if (!(new Type(RouteDecoratorInterface::class))->validate($routeDecorator)) {
-                throw new LogicException(
-                    (new Message('Expecting file return implementing interface %interfaceName%, type %provided% provided'))
-                        ->code('%expected%', RouteDecoratorInterface::class)
-                        ->code('%provided%', gettype($routeDecorator))
+                throw new ExpectingRouteDecoratorException(
+                    (new Message('Expecting file return object implementing interface %interfaceName%, something else provided in %fileName%'))
+                        ->code('%interfaceName%', RouteDecoratorInterface::class)
+                        ->strong('%fileName%', $pathName)
                         ->toString()
                 );
             }
@@ -67,7 +68,7 @@ final class RoutePathIterator implements RoutePathIteratorInterface
                     rtrim($dir->path()->absolute(), '/'),
                     ''
                 );
-            $this->objects->attach(
+            $this->objects->append(
                 new RoutePath($routePath),
                 $routeDecorator
             );

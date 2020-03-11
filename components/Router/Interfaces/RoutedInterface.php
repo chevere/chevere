@@ -29,5 +29,5 @@ interface RoutedInterface
      *
      * @return array [wildcardName => matchedValue]
      */
-    public function wildcards(): array;
+    public function arguments(): array;
 }

@@ -15,6 +15,9 @@ namespace Chevere\Components\Router\Interfaces;
 
 use Chevere\Components\Route\Interfaces\RouteInterface;
 
+/**
+ * Provides a type-hinted Cache.
+ */
 interface RouteCacheInterface
 {
     public function has(int $id): bool;

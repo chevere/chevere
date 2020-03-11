@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Router\Tests;
 
 use Chevere\Components\Regex\Regex;
+use Chevere\Components\Route\Route;
+use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Exceptions\RouterCacheNotFoundException;
 use Chevere\Components\Router\Interfaces\RouterCacheInterface;
@@ -95,7 +97,8 @@ final class RouterCacheTest extends TestCase
             RouterCacheInterface::KEY_NAMED,
             RouterCacheInterface::KEY_GROUPS
         ];
-        $index = (new RouterIndex)->withAdded(new RoutePath('/test'), 0, '', '');
+        $route = new Route(new RouteName('some-name'), new RoutePath('/test'));
+        $index = (new RouterIndex)->withAdded($route, 0, '', '');
         $named = (new RouterNamed)->withAdded('test_name', 1);
         $groups = (new RouterGroups)->withAdded('test_group', 2);
         $router = $router

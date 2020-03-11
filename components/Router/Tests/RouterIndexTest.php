@@ -25,12 +25,10 @@ declare(strict_types=1);
 namespace Chevere\Tests\Router\Properties;
 
 use BadMethodCallException;
-use Chevere\Components\Regex\Regex;
+use Chevere\Components\Route\Route;
+use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\RouterIndex;
-use Chevere\Components\Router\RouterNamed;
-use Chevere\Components\Router\RouterRegex;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class RouterIndexTest extends TestCase
@@ -47,11 +45,24 @@ final class RouterIndexTest extends TestCase
 
     public function testWithAdded(): void
     {
-        $patUri = new RoutePath('/path');
+        $path = '/path';
         $id = 0;
+        $group = 'some-group';
+        $name = 'some-name';
+        $routePath = new RoutePath($path);
+        $route = new Route(
+            new RouteName($name),
+            $routePath
+        );
         $routerIndex = (new RouterIndex())
-            ->withAdded($patUri, $id, 'some-group', 'some-name');
-        $this->assertTrue($routerIndex->has($patUri));
-        $this->assertIsArray($routerIndex->get($patUri));
+            ->withAdded($route, $id, $group);
+        $this->assertTrue($routerIndex->has($routePath));
+        $this->assertSame([
+            $path => [
+                'id' => $id,
+                'group' => $group,
+                'name' => $name,
+            ]
+        ], $routerIndex->toArray());
     }
 }

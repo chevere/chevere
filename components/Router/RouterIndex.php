@@ -15,35 +15,47 @@ namespace Chevere\Components\Router;
 
 use BadMethodCallException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Interfaces\RoutePathInterface;
+use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Route\RoutePath;
+use Chevere\Components\Router\Interfaces\RouteIdentifierInterface;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
+use SplObjectStorage;
 
 final class RouterIndex implements RouterIndexInterface
 {
-    private array $array = [];
+    private SplObjectStorage $objects;
 
-    public function withAdded(RoutePathInterface $routePath, int $id, string $group, string $name): RouterIndexInterface
+    /** @var array key => id */
+    private array $index;
+
+    private int $count = -1;
+
+    public function __construct()
+    {
+        $this->objects = new SplObjectStorage();
+    }
+
+    public function withAdded(RouteInterface $route, int $id, string $group): RouterIndexInterface
     {
         $new = clone $this;
-        $new->array[$routePath->key()] = [
-            'id' => $id,
-            'group' => $group,
-            'name' => $name,
-        ];
+        $new->count++;
+        $new->index[$route->path()->toString()] = $this->count;
+        $new->objects->attach(
+            new RouteIdentifier($id, $group, $route->name()->toString()),
+            $route->path()->toString()
+        );
 
         return $new;
     }
 
     public function has(RoutePath $routePath): bool
     {
-        return isset($this->array[$routePath->key()]);
+        return isset($this->index[$routePath->key()]);
     }
 
-    public function get(RoutePath $routePath): array
+    public function get(RoutePath $routePath): RouteIdentifierInterface
     {
-        $get = $this->array[$routePath->key()] ?? null;
-        if ($get === null) {
+        if (!$this->has($routePath)) {
             throw new BadMethodCallException(
                 (new Message("PathUri key %key% doesn't exists"))
                     ->code('%key%', $routePath->key())
@@ -51,11 +63,18 @@ final class RouterIndex implements RouterIndexInterface
             );
         }
 
-        return $get;
+        return $this->objects->offsetGet($this->index[$routePath->key()]);
     }
 
     public function toArray(): array
     {
-        return $this->array;
+        $array = [];
+        $this->objects->rewind();
+        while ($this->objects->valid()) {
+            $array[$this->objects->getInfo()] = $this->objects->current()->toArray();
+            $this->objects->next();
+        }
+
+        return $array;
     }
 }

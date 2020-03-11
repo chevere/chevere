@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Regex\Regex;
-use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\Route;
+use Chevere\Components\Route\RouteName;
+use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
 use Chevere\Components\Router\Interfaces\RouteCacheInterface;
-use Chevere\Components\Router\Interfaces\RoutedInterface;
 use Chevere\Components\Router\RouteCache;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterGroups;
@@ -47,7 +46,7 @@ final class RouterTest extends TestCase
     public function testConstructor(): void
     {
         $router = new Router($this->getEmptyRouteCache());
-        $this->assertFalse($router->hasRegex());
+        // $this->assertFalse($router->hasRegex());
         $this->assertFalse($router->hasIndex());
         $this->assertFalse($router->hasNamed());
         $this->assertFalse($router->hasGroups());
@@ -89,7 +88,8 @@ final class RouterTest extends TestCase
 
     public function testIndex(): void
     {
-        $index = (new RouterIndex)->withAdded(new RoutePath('/test'), 0, '', '');
+        $route = new Route(new RouteName('some-name'), new RoutePath('/test'));
+        $index = (new RouterIndex)->withAdded($route, 0, '', '');
         $router = (new Router($this->getEmptyRouteCache()))->withIndex($index);
         $this->assertTrue($router->hasIndex());
         $this->assertSame($index, $router->index());

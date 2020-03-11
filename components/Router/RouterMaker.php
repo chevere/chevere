@@ -61,8 +61,8 @@ final class RouterMaker implements RouterMakerInterface
         $this->routeCache = $this->routerCache->routeCache();
         $this->router = (new Router($this->routeCache))
             ->withIndex(new RouterIndex())
-            ->withGroups(new RouterGroups())
-            ->withNamed(new RouterNamed());
+            ->withNamed(new RouterNamed())
+            ->withGroups(new RouterGroups());
     }
 
     public function withAddedRouteable(RouteableInterface $routeable, string $group): RouterMakerInterface
@@ -92,10 +92,9 @@ final class RouterMaker implements RouterMakerInterface
         $new->router = $new->router
             ->withIndex(
                 $new->router()->index()->withAdded(
-                    $routeable->route()->path(),
+                    $routeable->route(),
                     $new->id,
-                    $group,
-                    $name
+                    $group
                 )
             );
         $new->routeCache->put($new->id, $routeable);

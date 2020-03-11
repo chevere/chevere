@@ -15,6 +15,9 @@ namespace Chevere\Components\Router\Interfaces;
 
 use Chevere\Components\Regex\Interfaces\RegexInterface;
 
+/**
+ * Provides regular expression formatting.
+ */
 interface RouterRegexInterface
 {
     /** @var string template pattern used for the regex property, %s gets replaced */

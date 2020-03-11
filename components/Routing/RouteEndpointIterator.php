@@ -21,6 +21,7 @@ use Chevere\Components\Filesystem\PhpFileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
+use Chevere\Components\Routing\Exceptions\ExpectingRouteDecoratorException;
 use Chevere\Components\Routing\Interfaces\RouteEndpointIteratorInterface;
 use Chevere\Components\Type\Type;
 use LogicException;
@@ -41,14 +42,15 @@ final class RouteEndpointIterator implements RouteEndpointIteratorInterface
             }
             $endpoint = $this->getVar($endpointPath);
             if (!(new Type(RouteEndpointInterface::class))->validate($endpoint)) {
-                throw new LogicException(
-                    (new Message('Expecting file return implementing interface %interfaceName%, type %provided% provided'))
-                        ->code('%expected%', RouteDecoratorInterface::class)
+                throw new ExpectingRouteDecoratorException(
+                    (new Message('Expecting file return object implementing interface %interfaceName%, something else provided in %fileName%'))
+                        ->code('%interfaceName%', RouteDecoratorInterface::class)
                         ->code('%provided%', gettype($endpoint))
+                        ->strong('%fileName%', $endpointPath->absolute())
                         ->toString()
                 );
             }
-            $this->objects->attach($endpoint);
+            $this->objects->append($endpoint);
         }
     }
 

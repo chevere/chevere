@@ -18,6 +18,11 @@ use SplObjectStorage;
 
 final class RouteEndpointObjects extends SplObjectStorage
 {
+    public function append(RouteEndpointInterface $routeEndpoint)
+    {
+        return parent::attach($routeEndpoint);
+    }
+
     public function current(): RouteEndpointInterface
     {
         return parent::current();
