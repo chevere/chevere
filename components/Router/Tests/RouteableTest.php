@@ -15,9 +15,9 @@ namespace Chevere\Components\Router\Tests;
 
 use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteName;
+use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Exceptions\RouteableException;
 use Chevere\Components\Router\Exceptions\RouteNotRouteableException;
 use Chevere\Components\Router\Routeable;

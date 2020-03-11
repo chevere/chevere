@@ -116,7 +116,14 @@ final class RouterCacheTest extends TestCase
             RouterCacheInterface::KEY_GROUPS
         ];
         $route = new Route(new RouteName('some-name'), new RoutePath('/test'));
-        $index = (new RouterIndex)->withAdded($route, 0, 'test_group');
+        $route = $route->withAddedMethodControllerName(
+            new MethodControllerName(
+                new GetMethod,
+                new TestController
+            )
+        );
+        $routeable = new Routeable($route);
+        $index = (new RouterIndex)->withAdded($routeable, 0, 'test_group');
         $named = (new RouterNamed)->withAdded('test_name', 1);
         $groups = (new RouterGroups)->withAdded('test_group', 2);
         $router = $router
@@ -158,8 +165,9 @@ final class RouterCacheTest extends TestCase
         $regex = $routerCache->getRegex();
         $this->assertTrue($groups->has($group));
         foreach ($this->routes as $pos => $route) {
+            $this->assertTrue($groups->has($group));
             $this->assertSame($group, $groups->getForId($pos));
-            $this->assertTrue($index->has($route->path()->toString()));
+            $this->assertTrue($index->has($pos));
             $this->assertTrue($named->has($route->name()->toString()));
             $this->assertStringContainsString(
                 str_replace(['/^', '$/'], '', $route->path()->regex()),
@@ -168,7 +176,7 @@ final class RouterCacheTest extends TestCase
         }
     }
 
-    public function _testGenerateCached(): void
+    public function __testGenerateCached(): void
     {
         $this->expectNotToPerformAssertions();
         $group = 'some-group';

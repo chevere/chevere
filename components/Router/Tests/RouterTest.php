@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
+use Chevere\Components\Http\MethodControllerName;
+use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteName;
@@ -20,14 +22,17 @@ use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
 use Chevere\Components\Router\Interfaces\RoutesCacheInterface;
+use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterGroups;
 use Chevere\Components\Router\RouterIndex;
 use Chevere\Components\Router\RouterNamed;
 use Chevere\Components\Router\RouterRegex;
 use Chevere\Components\Router\RoutesCache;
+use Chevere\TestApp\App\Controllers\TestController;
 use GuzzleHttp\Psr7\Uri;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Util\Test;
 
 final class RouterTest extends TestCase
 {
@@ -89,7 +94,14 @@ final class RouterTest extends TestCase
     public function testIndex(): void
     {
         $route = new Route(new RouteName('some-name'), new RoutePath('/test'));
-        $index = (new RouterIndex)->withAdded($route, 0, 'some-group');
+        $route = $route->withAddedMethodControllerName(
+            new MethodControllerName(
+                new GetMethod,
+                new TestController
+            )
+        );
+        $routeable = new Routeable($route);
+        $index = (new RouterIndex)->withAdded($routeable, 0, 'some-group');
         $router = (new Router($this->getEmptyRouteCache()))->withIndex($index);
         $this->assertTrue($router->hasIndex());
         $this->assertSame($index, $router->index());

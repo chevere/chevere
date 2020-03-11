@@ -65,7 +65,7 @@ final class RouterMakerTest extends TestCase
         $routerMaker = (new RouterMaker($this->routerCache))
             ->withAddedRouteable($routeable1, 'group')
             ->withAddedRouteable($routeable2, 'group');
-        $this->assertTrue($routerMaker->router()->index()->has($routePath->key()));
+        $this->assertTrue($routerMaker->router()->index()->hasKey($routePath->key()));
     }
 
     public function testWithAlreadyAddedPath(): void

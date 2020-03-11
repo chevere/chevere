@@ -19,8 +19,6 @@ use Chevere\Components\Spec\Exceptions\SpecInvalidArgumentException;
 use Chevere\Components\Spec\Interfaces\SpecInterface;
 
 /**
- * The Chevere Spec
- *
  * A collection of application routes and its endpoints.
  */
 final class Spec implements SpecInterface
@@ -31,6 +29,14 @@ final class Spec implements SpecInterface
     {
         $this->router = $router;
         $this->assertRouter();
+    }
+
+    public function toArray(): array
+    {
+        $index = $this->router->index();
+        $spec = [
+            'groups' => $this->router->groups()->toArray(),
+        ];
     }
 
     private function assertRouter(): void

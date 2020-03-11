@@ -80,7 +80,7 @@ interface RouterInterface
     public function hasGroups(): bool;
 
     /**
-     * Provides access to the instance group.
+     * Provides access to the router groups.
      */
     public function groups(): RouterGroupsInterface;
 

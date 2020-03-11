@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Interfaces;
 
-interface SpecInterface
+use Chevere\Components\Common\Interfaces\ToArrayInterface;
+
+interface SpecInterface extends ToArrayInterface
 {
 }

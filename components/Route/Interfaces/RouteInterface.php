@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\Route\Interfaces;
 
 use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
-use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
-use Chevere\Components\Route\Exceptions\RouteNameInvalidException;
-use Chevere\Components\Http\Interfaces\MethodInterface;
-use Chevere\Components\Http\Interfaces\MethodControllerNameCollectionInterface;
-use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
+use Chevere\Components\Http\Interfaces\MethodControllerNameCollectionInterface;
 use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
+use Chevere\Components\Http\Interfaces\MethodInterface;
+use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
+use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
+use Chevere\Components\Route\Exceptions\RouteNameInvalidException;
 
 interface RouteInterface
 {

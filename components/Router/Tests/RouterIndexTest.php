@@ -25,10 +25,14 @@ declare(strict_types=1);
 namespace Chevere\Tests\Router\Properties;
 
 use BadMethodCallException;
+use Chevere\Components\Http\MethodControllerName;
+use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
+use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\RouterIndex;
+use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
 final class RouterIndexTest extends TestCase
@@ -38,9 +42,9 @@ final class RouterIndexTest extends TestCase
         $key = '/path';
         $routerIndex = new RouterIndex();
         $this->assertSame([], $routerIndex->toArray());
-        $this->assertFalse($routerIndex->has($key));
+        $this->assertFalse($routerIndex->hasKey($key));
         $this->expectException(BadMethodCallException::class);
-        $routerIndex->get($key);
+        $routerIndex->get(404);
     }
 
     public function testWithAdded(): void
@@ -50,13 +54,17 @@ final class RouterIndexTest extends TestCase
         $group = 'some-group';
         $name = 'some-name';
         $routePath = new RoutePath($key);
-        $route = new Route(
-            new RouteName($name),
-            $routePath
+        $route = new Route(new RouteName($name), $routePath);
+        $route = $route->withAddedMethodControllerName(
+            new MethodControllerName(
+                new GetMethod,
+                new TestController
+            )
         );
+        $routeable = new Routeable($route);
         $routerIndex = (new RouterIndex())
-            ->withAdded($route, $id, $group);
-        $this->assertTrue($routerIndex->has($key));
+            ->withAdded($routeable, $id, $group);
+        $this->assertTrue($routerIndex->hasKey($key));
         $this->assertSame([
             $key => [
                 'id' => $id,

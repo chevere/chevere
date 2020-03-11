@@ -14,22 +14,27 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use BadMethodCallException;
-use Chevere\Components\Str\StrAssert;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Interfaces\RouterGroupsInterface;
+use Chevere\Components\Str\StrAssert;
 
 final class RouterGroups implements RouterGroupsInterface
 {
+    /** @var array <string>$group => [$id,]  */
     private array $array = [];
+
+    /** @var array <int>$id => <string>$group */
+    private array $index = [];
 
     public function withAdded(string $group, int $id): RouterGroupsInterface
     {
         (new StrAssert($group))->notEmpty()->notCtypeSpace();
         $new = clone $this;
-        if (!array_key_exists($group, $new->array)) {
+        if (!isset($this->array[$group])) {
             $new->array[$group] = [];
         }
         $new->array[$group][] = $id;
+        $new->index[$id] = $group;
 
         return $new;
     }
@@ -50,18 +55,12 @@ final class RouterGroups implements RouterGroupsInterface
             );
         }
 
-        return $this->array[$group];
+        return $get;
     }
 
     public function getForId(int $id): string
     {
-        foreach ($this->array as $group => $routesId) {
-            if (in_array($id, $routesId)) {
-                return $group;
-            }
-        }
-
-        return '';
+        return $this->index[$id] ?? '';
     }
 
     public function toArray(): array

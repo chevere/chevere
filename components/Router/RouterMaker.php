@@ -92,7 +92,7 @@ final class RouterMaker implements RouterMakerInterface
         $new->router = $new->router
             ->withIndex(
                 $new->router()->index()->withAdded(
-                    $routeable->route(),
+                    $routeable,
                     $new->id,
                     $group
                 )

@@ -23,9 +23,9 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
-use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Route\Interfaces\RouteNameInterface;
+use Chevere\Components\Route\Interfaces\RoutePathInterface;
 
 final class Route implements RouteInterface
 {
