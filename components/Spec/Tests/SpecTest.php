@@ -16,13 +16,16 @@ namespace Chevere\Components\Spec\Tests;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Regex\Regex;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterGroups;
 use Chevere\Components\Router\RouterIndex;
 use Chevere\Components\Router\RouterNamed;
+use Chevere\Components\Router\RouterRegex;
 use Chevere\Components\Router\RoutesCache;
-use Chevere\Components\Spec\Exceptions\RouterMissingPropertyException;
+use Chevere\Components\Spec\Exceptions\SpecInvalidArgumentException;
+use Chevere\Components\Spec\Interfaces\SpecInterface;
 use Chevere\Components\Spec\Spec;
 use PHPUnit\Framework\TestCase;
 
@@ -30,15 +33,23 @@ final class SpecTest extends TestCase
 {
     public function testInvalidArgument(): void
     {
-        $this->expectException(RouterMissingPropertyException::class);
+        $this->expectException(SpecInvalidArgumentException::class);
         new Spec($this->getEmptyRouter());
     }
 
-    // public function testConstruct(): void
-    // {
-    //     $router = $this->getCachedRouter();
-    //     // xdd($router);
-    // }
+    public function testConstruct(): void
+    {
+        $spec = new Spec(
+            $this->getEmptyRouter()
+                ->withGroups(new RouterGroups())
+                ->withIndex(new RouterIndex())
+                ->withNamed(new RouterNamed())
+                ->withRegex(
+                    new RouterRegex(new Regex('#^(?|/test (*:0))$#x'))
+                )
+        );
+        $this->assertInstanceOf(SpecInterface::class, $spec);
+    }
 
     private function getEmptyRouter(): RouterInterface
     {

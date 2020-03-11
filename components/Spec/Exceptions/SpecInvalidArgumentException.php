@@ -16,8 +16,8 @@ namespace Chevere\Components\Spec\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when the router misses a property.
+ * Exception thrown when passing an invalid argument.
  */
-final class RouterMissingPropertyException extends Exception
+final class SpecInvalidArgumentException extends Exception
 {
 }

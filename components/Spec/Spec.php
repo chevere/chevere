@@ -15,7 +15,7 @@ namespace Chevere\Components\Spec;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Interfaces\RouterInterface;
-use Chevere\Components\Spec\Exceptions\RouterMissingPropertyException;
+use Chevere\Components\Spec\Exceptions\SpecInvalidArgumentException;
 use Chevere\Components\Spec\Interfaces\SpecInterface;
 
 /**
@@ -35,20 +35,21 @@ final class Spec implements SpecInterface
 
     private function assertRouter(): void
     {
-        foreach ([
+        $checks = [
             'groups' => $this->router->hasGroups(),
             'index' => $this->router->hasIndex(),
             'named' => $this->router->hasNamed(),
             'regex' => $this->router->hasRegex(),
-        ] as $prop => $has) {
-            if (!$has) {
-                throw new RouterMissingPropertyException(
-                    (new Message('Missing %interfaceName% %property% property(s).'))
-                        ->code('%interfaceName%', RouterInterface::class)
-                        ->code('%property%', $prop)
-                        ->toString()
-                );
-            }
+        ];
+        $missing = array_filter($checks, fn (bool $bool) => $bool === false);
+        $keys = array_keys($missing);
+        if (!empty($keys)) {
+            throw new SpecInvalidArgumentException(
+                (new Message('Missing %interfaceName% %propertyName% property(s).'))
+                    ->code('%interfaceName%', RouterInterface::class)
+                    ->code('%propertyName%', implode(',', $keys))
+                    ->toString()
+            );
         }
     }
 }
