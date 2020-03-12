@@ -15,8 +15,6 @@ namespace Chevere\Components\Router;
 
 use BadMethodCallException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Interfaces\RouteInterface;
-use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
 use Chevere\Components\Router\Interfaces\RouteIdentifierInterface;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
@@ -38,6 +36,11 @@ final class RouterIndex implements RouterIndexInterface
         $this->objects = new RouterIdentifierObjects();
     }
 
+    public function count(): int
+    {
+        return $this->count + 1;
+    }
+
     public function withAdded(RouteableInterface $routeable, int $id, string $group): RouterIndexInterface
     {
         $new = clone $this;
@@ -47,7 +50,7 @@ final class RouterIndex implements RouterIndexInterface
         $new->index[$new->count] = $key;
         $new->objects->append(
             new RouteIdentifier($id, $group, $routeable->route()->name()->toString()),
-            $routeable->route()->path()->toString()
+            $routeable->route()->path()
         );
 
         return $new;
@@ -88,7 +91,7 @@ final class RouterIndex implements RouterIndexInterface
         $array = [];
         $this->objects->rewind();
         while ($this->objects->valid()) {
-            $array[$this->objects->getInfo()] = $this->objects->current()->toArray();
+            $array[$this->objects->getInfo()->toString()] = $this->objects->current()->toArray();
             $this->objects->next();
         }
 

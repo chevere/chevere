@@ -35,7 +35,7 @@ final class RoutePathIteratorTest extends TestCase
         while ($objectStorage->valid()) {
             $this->assertStringEndsWith(
                 RoutePathIteratorInterface::ROUTE_DECORATOR_BASENAME,
-                $objectStorage->routeDecorator()->whereIs()
+                $objectStorage->getInfo()->whereIs()
             );
             $this->assertInstanceOf(
                 RoutePathInterface::class,
@@ -43,7 +43,7 @@ final class RoutePathIteratorTest extends TestCase
             );
             $this->assertInstanceOf(
                 RouteDecoratorInterface::class,
-                $objectStorage->routeDecorator()
+                $objectStorage->getInfo()
             );
             $objectStorage->next();
         }

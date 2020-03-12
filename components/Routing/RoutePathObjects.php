@@ -29,7 +29,7 @@ final class RoutePathObjects extends SplObjectStorage
         return parent::current();
     }
 
-    public function routeDecorator(): RouteDecoratorInterface
+    public function getInfo(): RouteDecoratorInterface
     {
         return parent::getInfo();
     }

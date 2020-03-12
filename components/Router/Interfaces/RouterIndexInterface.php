@@ -21,6 +21,11 @@ use Chevere\Components\Route\Interfaces\RouteInterface;
 interface RouterIndexInterface
 {
     /**
+     * Returns the number of items indexed
+     */
+    public function count(): int;
+
+    /**
      * Return an instance with the specified values.
      *
      * This method MUST retain the state of the current instance, and return

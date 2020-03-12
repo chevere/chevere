@@ -27,7 +27,7 @@ final class CacheHelper
     public function __construct(string $dir)
     {
         $this->path = new Path($dir);
-        if ($this->getWorkingDir()->exists() === false) {
+        if (!$this->getWorkingDir()->exists()) {
             $this->getWorkingDir()->create();
         }
     }

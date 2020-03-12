@@ -33,10 +33,7 @@ final class Spec implements SpecInterface
 
     public function toArray(): array
     {
-        $index = $this->router->index();
-        $spec = [
-            'groups' => $this->router->groups()->toArray(),
-        ];
+        return $this->router->index()->toArray();
     }
 
     private function assertRouter(): void

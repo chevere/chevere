@@ -13,18 +13,24 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
+use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Router\Interfaces\RouteIdentifierInterface;
 use SplObjectStorage;
 
 final class RouterIdentifierObjects extends SplObjectStorage
 {
-    public function append(RouteIdentifierInterface $routeIdentifier, string $key)
+    public function append(RouteIdentifierInterface $routeIdentifier, RoutePathInterface $routePath)
     {
-        return parent::attach($routeIdentifier, $key);
+        return parent::attach($routeIdentifier, $routePath);
     }
 
     public function current(): RouteIdentifierInterface
     {
         return parent::current();
+    }
+
+    public function getInfo(): RoutePathInterface
+    {
+        return  parent::getInfo();
     }
 }
