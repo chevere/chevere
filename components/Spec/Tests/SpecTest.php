@@ -35,7 +35,7 @@ use Chevere\Components\Router\RouterRegex;
 use Chevere\Components\Router\RoutesCache;
 use Chevere\Components\Router\Tests\CacheHelper;
 use Chevere\Components\Spec\Exceptions\SpecInvalidArgumentException;
-use Chevere\Components\Spec\Spec;
+use Chevere\Components\Spec\SpecCache;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
@@ -58,25 +58,25 @@ final class SpecTest extends TestCase
         $this->cacheHelper->tearDown();
     }
 
-    public function testInvalidArgument(): void
-    {
-        $this->expectException(SpecInvalidArgumentException::class);
-        new Spec($this->getEmptyRouter());
-    }
+    // public function testInvalidArgument(): void
+    // {
+    //     $this->expectException(SpecInvalidArgumentException::class);
+    //     new SpecCache($this->getEmptyRouter());
+    // }
 
-    public function testConstruct(): void
-    {
-        $this->expectNotToPerformAssertions();
-        $spec = new Spec(
-            $this->getEmptyRouter()
-                ->withGroups(new RouterGroups())
-                ->withIndex(new RouterIndex())
-                ->withNamed(new RouterNamed())
-                ->withRegex(
-                    new RouterRegex(new Regex('#^(?|/test (*:0))$#x'))
-                )
-        );
-    }
+    // public function testConstruct(): void
+    // {
+    //     $this->expectNotToPerformAssertions();
+    //     $spec = new SpecCache(
+    //         $this->getEmptyRouter()
+    //             ->withGroups(new RouterGroups())
+    //             ->withIndex(new RouterIndex())
+    //             ->withNamed(new RouterNamed())
+    //             ->withRegex(
+    //                 new RouterRegex(new Regex('#^(?|/test (*:0))$#x'))
+    //             )
+    //     );
+    // }
 
     public function testGenerateCached(): void
     {
@@ -99,7 +99,7 @@ final class SpecTest extends TestCase
                 $group
             );
         }
-        $spec = new Spec($routerMaker->router());
+        // $spec = new SpecCache($routerMaker->router());
 
         // xdd($spec->toArray());
     }

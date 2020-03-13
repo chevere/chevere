@@ -125,6 +125,7 @@ final class RouterCache implements RouterCacheInterface
                 new VariableExport($router->groups())
             );
         $routeables = $router->routeables();
+        $routeables->rewind();
         while ($routeables->valid()) {
             $this->routesCache()->put(
                 $routeables->getInfo(),
@@ -143,6 +144,9 @@ final class RouterCache implements RouterCacheInterface
             ->withRemove($this->keyIndex)
             ->withRemove($this->keyNamed)
             ->withRemove($this->keyGroups);
+        foreach (array_keys($this->routesCache()->puts()) as $pos) {
+            $this->routesCache()->remove($pos);
+        }
 
         return $this;
     }

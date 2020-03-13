@@ -15,8 +15,9 @@ namespace Chevere\Components\Http\Interfaces;
 
 use Chevere\Components\Common\Interfaces\ToArrayInterface;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
+use Chevere\Components\Http\MethodControllerNameObjects;
 
-interface MethodControllerNameCollectionInterface extends ToArrayInterface
+interface MethodControllerNameCollectionInterface
 {
     public function __construct(MethodControllerNameInterface ...$methodControllerName);
 
@@ -38,15 +39,15 @@ interface MethodControllerNameCollectionInterface extends ToArrayInterface
     /**
      * Returns a boolean indicating whether the instance has the given MethodInterface.
      */
-    public function has(MethodInterface $method): bool;
+    public function hasMethod(MethodInterface $method): bool;
 
     /**
      * @throws MethodNotFoundException
      */
-    public function get(MethodInterface $method): MethodControllerNameInterface;
+    public function getMethod(MethodInterface $method): MethodControllerNameInterface;
 
     /**
      * @return array MethodControllerNameInterface[]
      */
-    public function toArray(): array;
+    public function objects(): MethodControllerNameObjects;
 }

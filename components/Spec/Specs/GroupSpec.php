@@ -11,10 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Spec\Interfaces;
+namespace Chevere\Components\Spec;
 
-use Chevere\Components\Common\Interfaces\ToArrayInterface;
-
-interface SpecInterface
+final class GroupSpec
 {
+    // 'name' => 'api',
+    // 'spec' => '/spec/api/routes.json',
+    // 'routes' => [...]
 }

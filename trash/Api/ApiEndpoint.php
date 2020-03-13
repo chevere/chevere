@@ -79,7 +79,7 @@ final class ApiEndpoint implements RouteEndpointInterface
                 ],
             ],
         ] as $k => $v) {
-            if (!$this->methodControllerNameCollection->has(new Method($k))) {
+            if (!$this->methodControllerNameCollection->hasMethod(new Method($k))) {
                 $this->methodControllerNameCollection = $this->methodControllerNameCollection
                     ->withAddedMethodControllerName(
                         new MethodControllerName(

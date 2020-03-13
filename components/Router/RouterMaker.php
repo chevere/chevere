@@ -25,16 +25,12 @@ use Chevere\Components\Router\Interfaces\RouterCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
-use Chevere\Components\Router\Interfaces\RoutesCacheInterface;
-use Chevere\Components\Spec\Interfaces\SpecInterface;
 
 /**
  * RouterMaker takes a bunch of routes and generates a cache-ready routing table.
  */
 final class RouterMaker implements RouterMakerInterface
 {
-    private RouterCacheInterface $routerCache;
-
     private RouterInterface $router;
 
     /** @var array [(string) $routePath => (int) $id] */
@@ -58,7 +54,6 @@ final class RouterMaker implements RouterMakerInterface
 
     public function __construct(RouterCacheInterface $routerCache)
     {
-        $this->routerCache = $routerCache;
         $this->router = (new Router($routerCache->routesCache()))
             ->withIndex(new RouterIndex())
             ->withNamed(new RouterNamed())
@@ -96,8 +91,6 @@ final class RouterMaker implements RouterMakerInterface
                     $group
                 )
             );
-
-        // $new->routesCache->put($new->id, $routeable);
         $new->routes[$new->id] = $route;
 
         return $new;
@@ -106,11 +99,6 @@ final class RouterMaker implements RouterMakerInterface
     public function router(): RouterInterface
     {
         return $this->router;
-    }
-
-    public function routeObjects(): RouteableObjects
-    {
-        return $this->routeableObjects;
     }
 
     /**

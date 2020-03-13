@@ -11,10 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Spec\Interfaces;
+namespace Chevere\Components\Spec;
 
-use Chevere\Components\Common\Interfaces\ToArrayInterface;
-
-interface SpecInterface
+final class RouteSpec
 {
+    // 'name' => 'articles-repo',
+    // 'spec' => '/spec/api/articles-repo/endpoints.json',
+    // 'path' => '/api/articles',
+    // 'wildcards' => [],
+    // 'endpoints' => [...]
 }

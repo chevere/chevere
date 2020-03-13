@@ -84,7 +84,7 @@ final class Route implements RouteInterface
 
     public function controllerNameFor(MethodInterface $method): ControllerNameInterface
     {
-        if (!$this->methodControllerNameCollection->has($method)) {
+        if (!$this->methodControllerNameCollection->hasMethod($method)) {
             throw new MethodNotFoundException(
                 (new Message("Instance of %className% doesn't define a controller for HTTP method %method%"))
                     ->code('%className%', MethodControllerNameCollectionInterface::class)
@@ -93,7 +93,7 @@ final class Route implements RouteInterface
             );
         }
 
-        return $this->methodControllerNameCollection->get($method)
+        return $this->methodControllerNameCollection->getMethod($method)
             ->controllerName();
     }
 

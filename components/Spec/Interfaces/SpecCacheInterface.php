@@ -15,6 +15,6 @@ namespace Chevere\Components\Spec\Interfaces;
 
 use Chevere\Components\Common\Interfaces\ToArrayInterface;
 
-interface SpecInterface
+interface SpecCacheInterface extends ToArrayInterface
 {
 }
