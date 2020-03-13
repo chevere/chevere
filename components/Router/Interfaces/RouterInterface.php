@@ -16,6 +16,7 @@ namespace Chevere\Components\Router\Interfaces;
 use Chevere\Components\Regex\Interfaces\RegexInterface;
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
+use Chevere\Components\Router\RouteableObjects;
 use Chevere\Components\Serialize\Exceptions\UnserializeException;
 use Psr\Http\Message\UriInterface;
 use TypeError;
@@ -23,6 +24,12 @@ use TypeError;
 interface RouterInterface
 {
     const CACHE_ID = 'router';
+
+    public function withRouteables(RouteableObjects $routeables): RouterInterface;
+
+    public function hasRouteables(): bool;
+
+    public function routeables(): RouteableObjects;
 
     /**
      * Return an instance with the specified RegexInterface.

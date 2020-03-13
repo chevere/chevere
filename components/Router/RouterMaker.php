@@ -26,6 +26,7 @@ use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 use Chevere\Components\Router\Interfaces\RoutesCacheInterface;
+use Chevere\Components\Spec\Interfaces\SpecInterface;
 
 /**
  * RouterMaker takes a bunch of routes and generates a cache-ready routing table.
@@ -33,8 +34,6 @@ use Chevere\Components\Router\Interfaces\RoutesCacheInterface;
 final class RouterMaker implements RouterMakerInterface
 {
     private RouterCacheInterface $routerCache;
-
-    private RoutesCacheInterface $routesCache;
 
     private RouterInterface $router;
 
@@ -53,43 +52,43 @@ final class RouterMaker implements RouterMakerInterface
     /** @var array [(int) $id => $routeInterface] */
     private array $routes;
 
+    private RouteableObjects $routeableObjects;
+
     private int $id = -1;
 
     public function __construct(RouterCacheInterface $routerCache)
     {
         $this->routerCache = $routerCache;
-        $this->routesCache = $this->routerCache->routesCache();
-        $this->router = (new Router($this->routesCache))
+        $this->router = (new Router($routerCache->routesCache()))
             ->withIndex(new RouterIndex())
             ->withNamed(new RouterNamed())
             ->withGroups(new RouterGroups());
+        $this->routeableObjects = new RouteableObjects();
     }
 
     public function withAddedRouteable(RouteableInterface $routeable, string $group): RouterMakerInterface
     {
         $new = clone $this;
         ++$new->id;
-        $new->assertUniquePath($routeable->route());
-        $new->assertUniqueKey($routeable->route());
-        $path = $routeable->route()->path()->toString();
-        $key = $routeable->route()->path()->key();
-        $regex = $routeable->route()->path()->regex();
-        $new->regexes[$new->id] = $regex;
-        $new->paths[$path] = $new->id;
-        $new->keys[$key] = $new->id;
+        $route = $routeable->route();
+        $new->assertUniquePath($route);
+        $new->assertUniqueName($route);
+        $new->assertUniqueKey($route);
+        $new->routeableObjects->append($routeable, $new->id);
+        $new->regexes[$new->id] = $route->path()->regex();
+        $new->paths[$route->path()->toString()] = $new->id;
+        $new->keys[$route->path()->key()] = $new->id;
+        $name = $route->name()->toString();
+        $new->named[$name] = $new->id;
         $new->router = $new->router
+            ->withRouteables($new->routeableObjects)
             ->withRegex($new->getRouterRegex())
             ->withGroups(
                 $new->router()->groups()->withAdded($group, $new->id)
-            );
-        $new->assertUniqueName($routeable->route());
-        $name = $routeable->route()->name()->toString();
-        $new->named[$name] = $new->id;
-        $new->router = $new->router
+            )
             ->withNamed(
                 $new->router()->named()->withAdded($name, $new->id)
-            );
-        $new->router = $new->router
+            )
             ->withIndex(
                 $new->router()->index()->withAdded(
                     $routeable,
@@ -97,8 +96,9 @@ final class RouterMaker implements RouterMakerInterface
                     $group
                 )
             );
-        $new->routesCache->put($new->id, $routeable);
-        $new->routes[$new->id] = $routeable->route();
+
+        // $new->routesCache->put($new->id, $routeable);
+        $new->routes[$new->id] = $route;
 
         return $new;
     }
@@ -106,6 +106,11 @@ final class RouterMaker implements RouterMakerInterface
     public function router(): RouterInterface
     {
         return $this->router;
+    }
+
+    public function routeObjects(): RouteableObjects
+    {
+        return $this->routeableObjects;
     }
 
     /**
@@ -152,7 +157,7 @@ final class RouterMaker implements RouterMakerInterface
             return;
         }
         throw new RouteKeyConflictException(
-            (new Message('Router conflict detected for %path% at %declare% (self-assigned internal key %key% is already reserved by %register%)'))
+            (new Message('Router conflict detected for key %path% at %declare% (self-assigned internal key %key% is already reserved by %register%)'))
                 ->code('%path%', $route->path()->toString())
                 ->code('%declare%', $this->getFileLine($route->maker()))
                 ->code('%key%', $route->path()->key())

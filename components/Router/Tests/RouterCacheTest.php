@@ -34,7 +34,6 @@ use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Router\RouterNamed;
 use Chevere\Components\Router\RouterRegex;
 use Chevere\Components\Router\RoutesCache;
-use Chevere\Components\Str\Str;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
@@ -176,7 +175,7 @@ final class RouterCacheTest extends TestCase
         }
     }
 
-    public function __testGenerateCached(): void
+    public function testGenerateCached(): void
     {
         $this->expectNotToPerformAssertions();
         $group = 'some-group';

@@ -24,6 +24,7 @@ use Chevere\Components\Router\Exceptions\RoutePathExistsException;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
 use Chevere\Components\Router\Interfaces\RouterCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
+use Chevere\Components\Router\Interfaces\RoutesCacheInterface;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Router\RouterMaker;
@@ -35,6 +36,8 @@ final class RouterMakerTest extends TestCase
     private CacheHelper $cacheHelper;
 
     private RouterCacheInterface $routerCache;
+
+    private RoutesCacheInterface $routesCache;
 
     public function setUp(): void
     {
@@ -70,11 +73,16 @@ final class RouterMakerTest extends TestCase
 
     public function testWithAlreadyAddedPath(): void
     {
-        $routeable = $this->getRouteable('/path', 'PathName');
         $this->expectException(RoutePathExistsException::class);
         (new RouterMaker($this->routerCache))
-            ->withAddedRouteable($routeable, 'group')
-            ->withAddedRouteable($routeable, 'another-group');
+            ->withAddedRouteable(
+                $this->getRouteable('/path', 'PathName'),
+                'group'
+            )
+            ->withAddedRouteable(
+                $this->getRouteable('/path', 'PathName2'),
+                'another-group'
+            );
     }
 
     public function testWithAlreadyAddedKey(): void

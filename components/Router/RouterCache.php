@@ -46,7 +46,6 @@ final class RouterCache implements RouterCacheInterface
     public function __construct(CacheInterface $cache)
     {
         $this->cache = $cache;
-        $this->routesCache = new RoutesCache($this->cache->getChild('routes/'));
         $this->keyRegex = new CacheKey(self::KEY_REGEX);
         $this->keyIndex = new CacheKey(self::KEY_INDEX);
         $this->keyNamed = new CacheKey(self::KEY_NAMED);
@@ -55,7 +54,7 @@ final class RouterCache implements RouterCacheInterface
 
     public function routesCache(): RoutesCacheInterface
     {
-        return $this->routesCache;
+        return $this->routesCache ??= new RoutesCache($this->cache->getChild('routes/'));
     }
 
     public function hasRegex(): bool
@@ -106,7 +105,6 @@ final class RouterCache implements RouterCacheInterface
         return $item->var();
     }
 
-    // TODO: "FilledRouter"
     public function put(RouterInterface $router): RouterCacheInterface
     {
         $this->cache = $this->cache
@@ -126,6 +124,14 @@ final class RouterCache implements RouterCacheInterface
                 $this->keyGroups,
                 new VariableExport($router->groups())
             );
+        $routeables = $router->routeables();
+        while ($routeables->valid()) {
+            $this->routesCache()->put(
+                $routeables->getInfo(),
+                $routeables->current()
+            );
+            $routeables->next();
+        }
 
         return $this;
     }

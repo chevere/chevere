@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Interfaces;
 
-use Chevere\Components\Router\Exceptions\RoutePathExistsException;
 use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
 use Chevere\Components\Router\Exceptions\RouteNameConflictException;
+use Chevere\Components\Router\Exceptions\RoutePathExistsException;
 use Chevere\Components\Router\Exceptions\RouterMakerException;
 
 interface RouterMakerInterface
 {
+    public function __construct(RouterCacheInterface $routerCache);
+
     /**
      * Return an instance with the specified added RouteableInterface.
      *

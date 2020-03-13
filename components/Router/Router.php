@@ -31,6 +31,8 @@ final class Router implements RouterInterface
 {
     private RoutesCacheInterface $routesCache;
 
+    private RouteableObjects $routeables;
+
     private RouterRegexInterface $regex;
 
     private RouterIndexInterface $index;
@@ -42,6 +44,25 @@ final class Router implements RouterInterface
     public function __construct(RoutesCacheInterface $routesCache)
     {
         $this->routesCache = $routesCache;
+        $this->routeables = new RouteableObjects();
+    }
+
+    public function withRouteables(RouteableObjects $routeables): RouterInterface
+    {
+        $new = clone $this;
+        $new->routeables = $routeables;
+
+        return $new;
+    }
+
+    public function hasRouteables(): bool
+    {
+        return isset($this->routeables);
+    }
+
+    public function routeables(): RouteableObjects
+    {
+        return $this->routeables;
     }
 
     public function withRegex(RouterRegexInterface $regex): RouterInterface
