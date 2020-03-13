@@ -78,31 +78,31 @@ final class SpecTest extends TestCase
         );
     }
 
-    // public function testGenerateCached(): void
-    // {
-    //     $this->expectNotToPerformAssertions();
-    //     $group = 'some-group';
-    //     $cache = new Cache($this->cacheHelper->getWorkingDir());
-    //     $routerCache = new RouterCache($cache);
-    //     $routerMaker = new RouterMaker($routerCache);
-    //     $routes = $this->routes;
-    //     foreach ($routes as $route) {
-    //         $routerMaker = $routerMaker->withAddedRouteable(
-    //             new Routeable(
-    //                 $route->withAddedMethodControllerName(
-    //                     new MethodControllerName(
-    //                         new GetMethod,
-    //                         new TestController
-    //                     )
-    //                 )
-    //             ),
-    //             $group
-    //         );
-    //     }
-    //     $spec = new Spec($routerMaker->router());
+    public function testGenerateCached(): void
+    {
+        $this->expectNotToPerformAssertions();
+        $group = 'some-group';
+        $cache = new Cache($this->cacheHelper->getWorkingDir());
+        $routerCache = new RouterCache($cache);
+        $routerMaker = new RouterMaker($routerCache);
+        $routes = $this->routes;
+        foreach ($routes as $route) {
+            $routerMaker = $routerMaker->withAddedRouteable(
+                new Routeable(
+                    $route->withAddedMethodControllerName(
+                        new MethodControllerName(
+                            new GetMethod,
+                            new TestController
+                        )
+                    )
+                ),
+                $group
+            );
+        }
+        $spec = new Spec($routerMaker->router());
 
-    //     // xdd($spec->toArray());
-    // }
+        // xdd($spec->toArray());
+    }
 
     private function getEmptyRouter(): RouterInterface
     {

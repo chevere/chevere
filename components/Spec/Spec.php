@@ -33,7 +33,99 @@ final class Spec implements SpecInterface
 
     public function toArray(): array
     {
-        return $this->router->index()->toArray();
+        $spec = [];
+        $groups = [];
+        $groups[] = [
+            'name' => 'api',
+            'spec' => '/spec/api/routes.json',
+            'routes' => [
+                [
+                    'name' => 'articles-repo',
+                    'spec' => '/spec/api/articles-repo/endpoints.json',
+                    'path' => '/api/articles',
+                    'wildcards' => [],
+                    'endpoints' => [
+                        [
+                            'method' => 'GET',
+                            'spec' => '/spec/api/articles-repo/GET.json',
+                            'description' => 'Retrieves articles',
+                            'parameters' => [],
+                        ],
+                        [
+                            'method' => 'POST',
+                            'spec' => '/spec/api/articles-repo/POST.json',
+                            'description' => 'Creates a new article',
+                            'parameters' => [],
+                        ]
+                    ]
+                ],
+                [
+                    'name' => 'article-entity',
+                    'spec' => '/spec/api/article-entity/endpoints.json',
+                    'path' => '/api/article/{id}',
+                    'wildcards' => [
+                        [
+                            'name' => 'id',
+                            'match' => '\d+',
+                        ]
+                    ],
+                    'endpoints' => [
+                        [
+                            'method' => 'GET',
+                            'spec' => '/spec/api/article-entity/GET.json',
+                            'description' => 'Retrieves an article',
+                        ],
+                    ]
+                ]
+            ]
+        ];
+        $groups[] = [
+            'name' => 'web',
+            'spec' => '/spec/web/routes.json',
+            'routes' => [
+                [
+                    'name' => 'articles-repo',
+                    'spec' => '/spec/web/articles/endpoints.json',
+                    'path' => '/articles',
+                    'wildcards' => [],
+                    'endpoints' => [
+                        [
+                            'method' => 'GET',
+                            'spec' => '/spec/web/articles-repo/GET.json',
+                            'description' => 'Retrieves articles',
+                            'parameters' => [],
+                        ],
+                        [
+                            'method' => 'POST',
+                            'spec' => '/spec/web/articles-repo/POST.json',
+                            'description' => 'Creates a new article',
+                            'parameters' => [],
+                        ]
+                    ]
+                ],
+            ]
+        ];
+        $spec['index.json'] = $groups;
+        $spec['files.json'] = [
+            [
+                './index.json',
+                './files.json',
+                './api/routes.json',
+                './api/articles-repo/endpoints.json',
+                './api/articles-repo/GET.json',
+                './api/articles-repo/POST.json',
+                './api/article-entity/endpoints.json',
+                './api/article-entity/GET.json',
+                './web/routes.json',
+                './web/articles/endpoints.json',
+                './web/articles-repo/GET.json',
+                './web/articles-repo/POST.json',
+            ],
+        ];
+
+        return $spec;
+
+        // return $this->router->index()->toArray();
     }
 
     private function assertRouter(): void
