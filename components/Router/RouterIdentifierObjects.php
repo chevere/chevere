@@ -17,6 +17,7 @@ use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Router\Interfaces\RouteIdentifierInterface;
 use SplObjectStorage;
 
+// TODO: Read-only proxy
 final class RouterIdentifierObjects extends SplObjectStorage
 {
     public function append(RouteIdentifierInterface $routeIdentifier, RoutePathInterface $routePath)

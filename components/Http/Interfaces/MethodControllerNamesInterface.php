@@ -17,7 +17,7 @@ use Chevere\Components\Common\Interfaces\ToArrayInterface;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\MethodControllerNameObjects;
 
-interface MethodControllerNameCollectionInterface
+interface MethodControllerNamesInterface
 {
     public function __construct(MethodControllerNameInterface ...$methodControllerName);
 
@@ -29,7 +29,7 @@ interface MethodControllerNameCollectionInterface
      *
      * Note: This method overrides any method already added.
      */
-    public function withAddedMethodControllerName(MethodControllerNameInterface $methodControllerName): MethodControllerNameCollectionInterface;
+    public function withAddedMethodControllerName(MethodControllerNameInterface $methodControllerName): MethodControllerNamesInterface;
 
     /**
      * Returns a boolean indicating whether the instance has any MethodInterface.

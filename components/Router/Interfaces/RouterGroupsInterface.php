@@ -15,6 +15,15 @@ namespace Chevere\Components\Router\Interfaces;
 
 interface RouterGroupsInterface
 {
+    /**
+     * Return an instance with the specified added group and route id.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified added group and route id.
+     *
+     * @param string $group The group name
+     * @param int $id A route id associated to $group
+     */
     public function withAdded(string $group, int $id): RouterGroupsInterface;
 
     public function has(string $group): bool;

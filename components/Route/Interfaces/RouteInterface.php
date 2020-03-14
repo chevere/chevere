@@ -15,8 +15,8 @@ namespace Chevere\Components\Route\Interfaces;
 
 use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
-use Chevere\Components\Http\Interfaces\MethodControllerNameCollectionInterface;
 use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
+use Chevere\Components\Http\Interfaces\MethodControllerNamesInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
@@ -55,14 +55,14 @@ interface RouteInterface
     public function withAddedMethodControllerName(MethodControllerNameInterface $methodControllerName): RouteInterface;
 
     /**
-     * Provides access to the MethodControllerNameCollectionInterface instance.
+     * Provides access to the MethodControllerNamesInterface instance.
      */
-    public function methodControllerNameCollection(): MethodControllerNameCollectionInterface;
+    public function methodControllerNames(): MethodControllerNamesInterface;
 
     /**
      * Get the controller name for the given MethodInterface.
      *
-     * @throws MethodNotFoundException if $method doesn't exists in the MethodControllerNameCollectionInterface
+     * @throws MethodNotFoundException if $method doesn't exists in the MethodControllerNamesInterface
      */
     public function controllerNameFor(MethodInterface $method): ControllerNameInterface;
 

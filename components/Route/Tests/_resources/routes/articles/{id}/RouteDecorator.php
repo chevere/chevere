@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\Interfaces\RouteNameInterface;
 use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
+use Chevere\Components\Route\RouteDecorator;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RouteWildcard;
 use Chevere\Components\Route\RouteWildcardMatch;
 use Chevere\Components\Route\RouteWildcards;
 
-return new class() implements RouteDecoratorInterface
+return new class() extends RouteDecorator
 {
     public function name(): RouteNameInterface
     {

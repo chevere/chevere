@@ -13,33 +13,33 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Api;
 
+use Chevere\Components\Api\Interfaces\ApiMakerInterface;
 use Chevere\Components\Api\src\FilterIterator;
 use Chevere\Components\Cache\CacheKey;
+use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Cache\Traits\CacheAccessTrait;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controller\Inspect;
 use Chevere\Components\Controllers\Api\GetController;
 use Chevere\Components\Controllers\Api\HeadController;
 use Chevere\Components\Controllers\Api\OptionsController;
+use Chevere\Components\Filesystem\AppPath;
+use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodControllerName;
-use Chevere\Components\Http\MethodControllerNameCollection;
-use Chevere\Components\Message\Message;
-use Chevere\Components\Filesystem\AppPath;
-use Chevere\Components\Route\RoutePath;
-use Chevere\Components\Route\Route;
-use Chevere\Components\Router\Routeable;
-use Chevere\Components\Router\RouterMaker;
-use Chevere\Components\Variable\VariableExport;
-use Chevere\Components\Api\Interfaces\ApiMakerInterface;
-use Chevere\Components\Cache\Interfaces\CacheInterface;
-use Chevere\Components\Http\Interfaces\MethodInterface;
-use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Http\MethodControllerNames;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\HeadMethod;
 use Chevere\Components\Http\Methods\OptionsMethod;
-use Chevere\Components\Str\Str;
+use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteInterface;
+use Chevere\Components\Route\Route;
+use Chevere\Components\Route\RoutePath;
+use Chevere\Components\Router\Routeable;
+use Chevere\Components\Router\RouterMaker;
+use Chevere\Components\Str\Str;
+use Chevere\Components\Variable\VariableExport;
 use LogicException;
 use OuterIterator;
 use RecursiveDirectoryIterator;
@@ -92,7 +92,7 @@ final class ApiMaker implements ApiMakerInterface
         $new->assertNoDuplicates();
         $new->assertPath();
         $new->basePath = strtolower(basename($new->path->absolute()));
-        $methodControllerCollection = new MethodControllerNameCollection(
+        $methodControllerCollection = new MethodControllerNames(
             new MethodControllerName(
                 new HeadMethod(),
                 new ControllerName(HeadController::class)

@@ -86,6 +86,11 @@ final class RouterIndex implements RouterIndexInterface
         );
     }
 
+    public function objects(): RouterIdentifierObjects
+    {
+        return $this->objects;
+    }
+
     public function toArray(): array
     {
         $array = [];

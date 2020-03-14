@@ -16,6 +16,7 @@ namespace Chevere\Components\Routing;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use SplObjectStorage;
 
+// TODO: Read-only proxy
 final class RouteEndpointObjects extends SplObjectStorage
 {
     public function append(RouteEndpointInterface $routeEndpoint)

@@ -15,10 +15,10 @@ namespace Chevere\Components\Http\Tests;
 
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
-use Chevere\Components\Http\MethodControllerName;
-use Chevere\Components\Http\MethodControllerNameCollection;
-use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
+use Chevere\Components\Http\Interfaces\MethodInterface;
+use Chevere\Components\Http\MethodControllerName;
+use Chevere\Components\Http\MethodControllerNames;
 use Chevere\Components\Http\Methods\ConnectMethod;
 use Chevere\Components\Http\Methods\DeleteMethod;
 use Chevere\Components\Http\Methods\GetMethod;

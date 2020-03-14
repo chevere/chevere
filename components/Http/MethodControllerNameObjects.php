@@ -16,6 +16,7 @@ namespace Chevere\Components\Http;
 use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
 use SplObjectStorage;
 
+// TODO: Read-only proxy
 final class MethodControllerNameObjects extends SplObjectStorage
 {
     public function append(MethodControllerNameInterface $methodControllerName, int $id)

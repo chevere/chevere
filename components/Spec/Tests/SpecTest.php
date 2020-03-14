@@ -35,7 +35,7 @@ use Chevere\Components\Router\RouterRegex;
 use Chevere\Components\Router\RoutesCache;
 use Chevere\Components\Router\Tests\CacheHelper;
 use Chevere\Components\Spec\Exceptions\SpecInvalidArgumentException;
-use Chevere\Components\Spec\SpecCache;
+use Chevere\Components\Spec\SpecIndexCache;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 

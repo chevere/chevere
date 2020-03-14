@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Http;
 
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
-use Chevere\Components\Http\Interfaces\MethodControllerNameCollectionInterface;
 use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
+use Chevere\Components\Http\Interfaces\MethodControllerNamesInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Message\Message;
 
-final class MethodControllerNameCollection implements MethodControllerNameCollectionInterface
+final class MethodControllerNames implements MethodControllerNamesInterface
 {
     private MethodControllerNameObjects $objects;
 
@@ -41,7 +41,7 @@ final class MethodControllerNameCollection implements MethodControllerNameCollec
         return $this->count + 1;
     }
 
-    public function withAddedMethodControllerName(MethodControllerNameInterface $methodControllerName): MethodControllerNameCollectionInterface
+    public function withAddedMethodControllerName(MethodControllerNameInterface $methodControllerName): MethodControllerNamesInterface
     {
         $new = clone $this;
         $new->storeMethodControllerName($methodControllerName);

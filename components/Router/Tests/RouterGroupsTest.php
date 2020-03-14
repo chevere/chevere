@@ -39,8 +39,7 @@ final class RouterGroupsTest extends TestCase
         $routerGroups = new RouterGroups();
         foreach ($array as $group => $ids) {
             foreach ($ids as $id) {
-                $routerGroups = $routerGroups
-                    ->withAdded($group, $id);
+                $routerGroups = $routerGroups->withAdded($group, $id);
                 $this->assertSame($group, $routerGroups->getForId($id));
             }
             $this->assertTrue($routerGroups->has($group));

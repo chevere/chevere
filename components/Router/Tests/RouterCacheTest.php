@@ -175,7 +175,7 @@ final class RouterCacheTest extends TestCase
         }
     }
 
-    public function testGenerateCached(): void
+    public function __testGenerateCached(): void
     {
         $this->expectNotToPerformAssertions();
         $group = 'some-group';

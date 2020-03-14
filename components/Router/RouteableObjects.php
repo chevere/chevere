@@ -16,6 +16,7 @@ namespace Chevere\Components\Router;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
 use SplObjectStorage;
 
+// TODO: Read-only proxy
 final class RouteableObjects extends SplObjectStorage
 {
     public function append(RouteableInterface $routeable, int $id)

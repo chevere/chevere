@@ -16,7 +16,7 @@ namespace Chevere\Components\Api;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controllers\Api\HeadController;
 use Chevere\Components\Controllers\Api\OptionsController;
-use Chevere\Components\Http\Interfaces\MethodControllerNameCollectionInterface;
+use Chevere\Components\Http\Interfaces\MethodControllerNamesInterface;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodControllerName;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
@@ -26,13 +26,13 @@ final class ApiEndpoint implements RouteEndpointInterface
     /** @var array */
     private $array;
 
-    /** @var MethodControllerNameCollectionInterface */
+    /** @var MethodControllerNamesInterface */
     private $methodControllerNameCollection;
 
     /**
      *
      */
-    public function __construct(MethodControllerNameCollectionInterface $collection)
+    public function __construct(MethodControllerNamesInterface $collection)
     {
         $this->array = [];
         $this->methodControllerNameCollection = $collection;
@@ -40,7 +40,7 @@ final class ApiEndpoint implements RouteEndpointInterface
         $this->autofillMissingOptionsHead();
     }
 
-    public function methodControllerNameCollection(): MethodControllerNameCollectionInterface
+    public function methodControllerNameCollection(): MethodControllerNamesInterface
     {
         return $this->methodControllerNameCollection;
     }
