@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use BadMethodCallException;
-use Chevere\Components\Route\Exceptions\RoutePathUnmatchedBracesException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Exceptions\RouteWildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\RoutePathForwardSlashException;
 use Chevere\Components\Route\Exceptions\RoutePathInvalidCharsException;
+use Chevere\Components\Route\Exceptions\RoutePathUnmatchedBracesException;
 use Chevere\Components\Route\Exceptions\RoutePathUnmatchedWildcardsException as RoutePathUnmatchedWildcardsCountException;
+use Chevere\Components\Route\Exceptions\RouteWildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\RouteWildcardRepeatException;
 use Chevere\Components\Route\Exceptions\RouteWildcardReservedException;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
-use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
 use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
+use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Str\StrBool;
 use LogicException;
@@ -69,10 +69,11 @@ final class RoutePath implements RoutePathInterface
         $this->path = $path;
         $this->assertFormat();
         $this->key = $this->path;
+        $this->routeWildcards = new RouteWildcards();
+        $this->wildcards = [];
+        $this->wildcardsMatch = [];
+        $this->wildcardBracesCount = 0;
         if ($this->hasHandlebars()) {
-            $this->wildcards = [];
-            $this->wildcardsMatch = [];
-            $this->wildcardBracesCount = 0;
             $this->assertMatchingBraces();
             $this->assertReservedWildcards();
             $this->assertMatchingWildcards();
@@ -95,11 +96,6 @@ final class RoutePath implements RoutePathInterface
     public function regex(): string
     {
         return $this->regex;
-    }
-
-    public function hasRouteWildcards(): bool
-    {
-        return isset($this->routeWildcards);
     }
 
     public function routeWildcards(): RouteWildcardsInterface
@@ -153,7 +149,7 @@ final class RoutePath implements RoutePathInterface
 
     public function uriFor(array $wildcards): string
     {
-        if (!isset($this->wildcards)) {
+        if (!$this->routeWildcards->hasAny()) {
             throw new BadMethodCallException(
                 (new Message('This method should be called only if the %className% instance contains wildcards'))
                     ->code('%className%', __CLASS__)
@@ -294,7 +290,6 @@ final class RoutePath implements RoutePathInterface
 
     private function handleSetRouteWildcards(): void
     {
-        $this->routeWildcards = new RouteWildcards();
         foreach ($this->wildcards as $wildcardName) {
             $this->routeWildcards = $this->routeWildcards
                 ->withAddedWildcard(new RouteWildcard($wildcardName));

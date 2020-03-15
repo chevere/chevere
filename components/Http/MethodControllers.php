@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\Http;
 
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
-use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
-use Chevere\Components\Http\Interfaces\MethodControllerNamesInterface;
+use Chevere\Components\Http\Interfaces\MethodControllerInterface;
+use Chevere\Components\Http\Interfaces\MethodControllersInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Message\Message;
 use SplObjectStorage;
 
-final class MethodControllerNames implements MethodControllerNamesInterface
+final class MethodControllers implements MethodControllersInterface
 {
     private SplObjectStorage $objects;
 
@@ -29,11 +29,11 @@ final class MethodControllerNames implements MethodControllerNamesInterface
 
     private int $count = -1;
 
-    public function __construct(MethodControllerNameInterface ...$methodControllerName)
+    public function __construct(MethodControllerInterface ...$methodController)
     {
         $this->objects = new SplObjectStorage();
-        foreach ($methodControllerName as $method) {
-            $this->storeMethodControllerName($method);
+        foreach ($methodController as $method) {
+            $this->storeMethodController($method);
         }
     }
 
@@ -42,10 +42,10 @@ final class MethodControllerNames implements MethodControllerNamesInterface
         return $this->count + 1;
     }
 
-    public function withAddedMethodControllerName(MethodControllerNameInterface $methodControllerName): MethodControllerNamesInterface
+    public function withAddedMethodController(MethodControllerInterface $methodController): MethodControllersInterface
     {
         $new = clone $this;
-        $new->storeMethodControllerName($methodControllerName);
+        $new->storeMethodController($methodController);
 
         return $new;
     }
@@ -60,7 +60,7 @@ final class MethodControllerNames implements MethodControllerNamesInterface
         return in_array($method::name(), $this->index);
     }
 
-    public function getMethod(MethodInterface $method): MethodControllerNameInterface
+    public function getMethod(MethodInterface $method): MethodControllerInterface
     {
         $pos = array_search($method::name(), $this->index);
         if (false === $pos) {
@@ -78,18 +78,18 @@ final class MethodControllerNames implements MethodControllerNamesInterface
         return $this->objects->current();
     }
 
-    public function objects(): MethodControllerNameObjectsRead
+    public function objects(): MethodControllerObjectsRead
     {
-        return new MethodControllerNameObjectsRead($this->objects);
+        return new MethodControllerObjectsRead($this->objects);
     }
 
-    private function storeMethodControllerName(MethodControllerNameInterface $methodControllerName): void
+    private function storeMethodController(MethodControllerInterface $methodController): void
     {
-        $name = $methodControllerName->method()::name();
+        $name = $methodController->method()::name();
         $pos = array_search($name, $this->index);
         if (false !== $pos) {
             $this->objects->attach(
-                $methodControllerName,
+                $methodController,
                 $pos
             );
             $this->index[$pos] = $name;
@@ -98,7 +98,7 @@ final class MethodControllerNames implements MethodControllerNamesInterface
         }
         $this->count++;
         $this->objects->attach(
-            $methodControllerName,
+            $methodController,
             $this->count
         );
         $this->index[$this->count] = $name;

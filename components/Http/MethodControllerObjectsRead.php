@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Components\Http;
 
 use Chevere\Components\DataStructures\SplObjectStorageRead;
-use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
+use Chevere\Components\Http\Interfaces\MethodControllerInterface;
 
-final class MethodControllerNameObjectsRead extends SplObjectStorageRead
+final class MethodControllerObjectsRead extends SplObjectStorageRead
 {
     /**
      * @return RoutePathInterface
      */
-    public function current(): MethodControllerNameInterface
+    public function current(): MethodControllerInterface
     {
         return $this->objects->current();
     }

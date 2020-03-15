@@ -13,8 +13,26 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec;
 
-final class GroupSpec
+use Chevere\Components\Common\Interfaces\ToArrayInterface;
+
+final class GroupSpec implements ToArrayInterface
 {
+    private $array = [];
+
+    public function __construct(RouteEndpointInterface $endpoint, string $spec)
+    {
+        $this->array = [
+            // 'name' => $endpoint->method()->name(),
+            'spec' => $spec,
+            // 'routes' => $endpoint->method()->description(),
+        ];
+    }
+
+    public function toArray(): array
+    {
+        return $this->array;
+    }
+
     // 'name' => 'api',
     // 'spec' => '/spec/api/routes.json',
     // 'routes' => [...]

@@ -173,7 +173,7 @@ final class Router implements RouterInterface
         array_shift($matches);
         $route = $this->routesCache->get($id);
         $arguments = [];
-        if ($route->path()->hasRouteWildcards()) {
+        if ($route->path()->routeWildcards()->hasAny()) {
             foreach ($matches as $pos => $val) {
                 $arguments[$route->path()->routeWildcards()->getPos($pos)->name()] = $val;
             }

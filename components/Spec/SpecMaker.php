@@ -21,6 +21,10 @@ use Chevere\Components\Spec\Exceptions\SpecInvalidArgumentException;
 use Chevere\Components\Spec\Interfaces\SpecIndexInterface;
 use LogicException;
 
+/**
+ * Makes the application spec, which is a distributed json-fileset describing
+ * the routing groups, routes and endpoints.
+ */
 final class SpecMaker
 {
     private string $basePath;
@@ -42,95 +46,6 @@ final class SpecMaker
         $this->router = $router;
         $this->assertRouter();
         $this->specIndex = new SpecIndexInterface();
-
-        $groups = [];
-        $groups[] = [
-            'name' => 'api',
-            'spec' => '/spec/api/routes.json',
-            'routes' => [
-                [
-                    'name' => 'articles-repo',
-                    'spec' => '/spec/api/articles-repo/endpoints.json',
-                    'path' => '/api/articles',
-                    'wildcards' => [],
-                    'endpoints' => [
-                        [
-                            'method' => 'GET',
-                            'spec' => '/spec/api/articles-repo/GET.json',
-                            'description' => 'Retrieves articles',
-                            'parameters' => [],
-                        ],
-                        [
-                            'method' => 'POST',
-                            'spec' => '/spec/api/articles-repo/POST.json',
-                            'description' => 'Creates a new article',
-                            'parameters' => [],
-                        ]
-                    ]
-                ],
-                [
-                    'name' => 'article-entity',
-                    'spec' => '/spec/api/article-entity/endpoints.json',
-                    'path' => '/api/article/{id}',
-                    'wildcards' => [
-                        [
-                            'name' => 'id',
-                            'match' => '\d+',
-                        ]
-                    ],
-                    'endpoints' => [
-                        [
-                            'method' => 'GET',
-                            'spec' => '/spec/api/article-entity/GET.json',
-                            'description' => 'Retrieves an article',
-                        ],
-                    ]
-                ]
-            ]
-        ];
-        $groups[] = [
-            'name' => 'web',
-            'spec' => '/spec/web/routes.json',
-            'routes' => [
-                [
-                    'name' => 'articles-repo',
-                    'spec' => '/spec/web/articles/endpoints.json',
-                    'path' => '/articles',
-                    'wildcards' => [],
-                    'endpoints' => [
-                        [
-                            'method' => 'GET',
-                            'spec' => '/spec/web/articles-repo/GET.json',
-                            'description' => 'Retrieves articles',
-                            'parameters' => [],
-                        ],
-                        [
-                            'method' => 'POST',
-                            'spec' => '/spec/web/articles-repo/POST.json',
-                            'description' => 'Creates a new article',
-                            'parameters' => [],
-                        ]
-                    ]
-                ],
-            ]
-        ];
-        $this->array['index.json'] = $groups;
-        $this->array['files.json'] = [
-            [
-                './index.json',
-                './files.json',
-                './api/routes.json',
-                './api/articles-repo/endpoints.json',
-                './api/articles-repo/GET.json',
-                './api/articles-repo/POST.json',
-                './api/article-entity/endpoints.json',
-                './api/article-entity/GET.json',
-                './web/routes.json',
-                './web/articles/endpoints.json',
-                './web/articles-repo/GET.json',
-                './web/articles-repo/POST.json',
-            ],
-        ];
     }
 
     public function specIndex(): SpecIndexInterface

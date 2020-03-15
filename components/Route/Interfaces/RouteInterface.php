@@ -15,8 +15,8 @@ namespace Chevere\Components\Route\Interfaces;
 
 use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
-use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
-use Chevere\Components\Http\Interfaces\MethodControllerNamesInterface;
+use Chevere\Components\Http\Interfaces\MethodControllerInterface;
+use Chevere\Components\Http\Interfaces\MethodControllersInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
@@ -45,26 +45,19 @@ interface RouteInterface
     public function maker(): array;
 
     /**
-     * Return an instance with the specified added MethodControllerNameInterface.
+     * Return an instance with the specified added MethodControllerInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified added MethodControllerNameInterface.
+     * an instance that contains the specified added MethodControllerInterface.
      *
      * Note: This method overrides any method already added.
      */
-    public function withAddedMethodControllerName(MethodControllerNameInterface $methodControllerName): RouteInterface;
+    public function withAddedMethodController(MethodControllerInterface $methodController): RouteInterface;
 
     /**
-     * Provides access to the MethodControllerNamesInterface instance.
+     * Provides access to the MethodControllersInterface instance.
      */
-    public function methodControllerNames(): MethodControllerNamesInterface;
-
-    /**
-     * Get the controller name for the given MethodInterface.
-     *
-     * @throws MethodNotFoundException if $method doesn't exists in the MethodControllerNamesInterface
-     */
-    public function controllerNameFor(MethodInterface $method): ControllerNameInterface;
+    public function methodControllers(): MethodControllersInterface;
 
     /**
      * Return an instance with the specified added MiddlewareNameInterface.

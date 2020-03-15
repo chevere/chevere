@@ -15,10 +15,10 @@ namespace Chevere\Components\Http\Tests;
 
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
-use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
+use Chevere\Components\Http\Interfaces\MethodControllerInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
-use Chevere\Components\Http\MethodControllerName;
-use Chevere\Components\Http\MethodControllerNames;
+use Chevere\Components\Http\MethodController;
+use Chevere\Components\Http\MethodControllers;
 use Chevere\Components\Http\Methods\ConnectMethod;
 use Chevere\Components\Http\Methods\DeleteMethod;
 use Chevere\Components\Http\Methods\GetMethod;
@@ -54,7 +54,7 @@ use PHPUnit\Framework\TestCase;
 //         $collection->get($method);
 //     }
 
-//     public function testwithAddedMethodControllerName(): void
+//     public function testwithAddedMethodController(): void
 //     {
 //         $collection = new MethodControllerNameCollection();
 //         $aux = [];
@@ -71,7 +71,7 @@ use PHPUnit\Framework\TestCase;
 //         ] as $method) {
 //             $methodControllerName = $this->getMethodControllerName($method);
 //             $collection = $collection
-//                 ->withAddedMethodControllerName($methodControllerName);
+//                 ->withAddedMethodController($methodControllerName);
 //             $this->assertTrue($collection->has($method));
 //             $this->assertSame($methodControllerName, $collection->get($method));
 //             $aux[] = $methodControllerName;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
-use Chevere\Components\Http\MethodControllerName;
+use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
@@ -94,8 +94,8 @@ final class RouterTest extends TestCase
     public function testIndex(): void
     {
         $route = new Route(new RouteName('some-name'), new RoutePath('/test'));
-        $route = $route->withAddedMethodControllerName(
-            new MethodControllerName(
+        $route = $route->withAddedMethodController(
+            new MethodController(
                 new GetMethod,
                 new TestController
             )

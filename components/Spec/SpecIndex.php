@@ -15,9 +15,11 @@ namespace Chevere\Components\Spec;
 
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Spec\Interfaces\SpecIndexInterface;
-use Chevere\Components\Spec\Interfaces\SpecInterface;
 use SplDoublyLinkedList;
 
+/**
+ * Maps route id (internal) to endpoint method spec paths.
+ */
 final class SpecIndex implements SpecIndexInterface
 {
     private SplDoublyLinkedList $list;

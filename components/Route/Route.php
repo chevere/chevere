@@ -13,13 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
-use Chevere\Components\Http\Exceptions\MethodNotFoundException;
-use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
-use Chevere\Components\Http\Interfaces\MethodControllerNamesInterface;
-use Chevere\Components\Http\Interfaces\MethodInterface;
-use Chevere\Components\Http\MethodControllerNames;
-use Chevere\Components\Message\Message;
+use Chevere\Components\Http\Interfaces\MethodControllerInterface;
+use Chevere\Components\Http\Interfaces\MethodControllersInterface;
+use Chevere\Components\Http\MethodControllers;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
@@ -39,7 +35,7 @@ final class Route implements RouteInterface
 
     private MiddlewareNameCollectionInterface $middlewareNameCollection;
 
-    private MethodControllerNamesInterface $methodControllerNames;
+    private MethodControllersInterface $methodControllers;
 
     public function __construct(RouteNameInterface $name, RoutePathInterface $routePath)
     {
@@ -47,8 +43,8 @@ final class Route implements RouteInterface
         $this->routePath = $routePath;
         $this->key = $this->routePath->toString();
         $this->maker = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[0];
-        $this->methodControllerNames = new MethodControllerNames();
-        $this->middlewareNameCollection = new MiddlewareNameCollection();
+        $this->methodControllers = new MethodControllers;
+        $this->middlewareNameCollection = new MiddlewareNameCollection;
     }
 
     public function name(): RouteNameInterface
@@ -66,35 +62,20 @@ final class Route implements RouteInterface
         return $this->maker;
     }
 
-    public function withAddedMethodControllerName(MethodControllerNameInterface $methodControllerName): RouteInterface
+    public function withAddedMethodController(MethodControllerInterface $methodController): RouteInterface
     {
         $new = clone $this;
-        $new->methodControllerNames = $new->methodControllerNames
-            ->withAddedMethodControllerName(
-                $methodControllerName
+        $new->methodControllers = $new->methodControllers
+            ->withAddedMethodController(
+                $methodController
             );
 
         return $new;
     }
 
-    public function methodControllerNames(): MethodControllerNamesInterface
+    public function methodControllers(): MethodControllersInterface
     {
-        return $this->methodControllerNames;
-    }
-
-    public function controllerNameFor(MethodInterface $method): ControllerNameInterface
-    {
-        if (!$this->methodControllerNames->hasMethod($method)) {
-            throw new MethodNotFoundException(
-                (new Message("Instance of %className% doesn't define a controller for HTTP method %method%"))
-                    ->code('%className%', MethodControllerNamesInterface::class)
-                    ->code('%method%', $method::name())
-                    ->toString()
-            );
-        }
-
-        return $this->methodControllerNames->getMethod($method)
-            ->controllerName();
+        return $this->methodControllers;
     }
 
     public function withAddedMiddlewareName(MiddlewareNameInterface $middlewareName): RouteInterface

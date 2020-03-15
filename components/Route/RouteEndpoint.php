@@ -14,15 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
-use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Http\Interfaces\MethodInterface;
-use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Exceptions\EndpointException;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use ReflectionClass;
 
-abstract class RouteEndpoint implements RouteEndpointInterface
+final class RouteEndpoint implements RouteEndpointInterface
 {
     /** @var string Absoltue path to the endpoint file */
     private string $whereIs;
@@ -30,32 +26,49 @@ abstract class RouteEndpoint implements RouteEndpointInterface
     /** @var MethodInterface The inherithed method, taken from the file basename */
     private MethodInterface $method;
 
-    abstract public function getController(): ControllerInterface;
+    private string $description = '';
 
-    final public function __construct()
+    private array $parameters = [];
+
+    public function __construct(MethodInterface $method, ControllerInterface $controller)
     {
-        $dirWhereIs = dirname($this->whereIs());
-        $this->root = new Dir(new Path($dirWhereIs . '/'));
-        $name = basename($this->whereIs(), '.php');
-        $method = self::KNOWN_METHODS[$name] ?? null;
-        if ($method === null) {
-            throw new EndpointException(
-                (new Message('Unknown method name %provided% provided (inherithed from %basename%)'))
-                    ->code('%provided%', $name)
-                    ->code('%basename%', basename($this->whereIs))
-                    ->toString()
-            );
-        }
-        $this->method = new $method;
+        $this->method = $method;
+        $this->controller = $controller;
     }
 
-    final public function whereIs(): string
-    {
-        return $this->whereIs ??= (new ReflectionClass($this))->getFileName();
-    }
-
-    final public function method(): MethodInterface
+    public function method(): MethodInterface
     {
         return $this->method;
+    }
+
+    public function controller(): ControllerInterface
+    {
+        return $this->controller;
+    }
+
+    public function withDescription(string $description): RouteEndpointInterface
+    {
+        $new = clone $this;
+        $new->description = $description;
+
+        return $new;
+    }
+
+    public function description(): string
+    {
+        return $this->description;
+    }
+
+    public function withParameters(array $parameters): RouteEndpointInterface
+    {
+        $new = clone $this;
+        $new->parameters = $parameters;
+
+        return $new;
+    }
+
+    public function parameters(): array
+    {
+        return $this->array;
     }
 }

@@ -14,21 +14,21 @@ declare(strict_types=1);
 namespace Chevere\Components\Http\Interfaces;
 
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
-use Chevere\Components\Http\MethodControllerNameObjectsRead;
+use Chevere\Components\Http\MethodControllerObjectsRead;
 
-interface MethodControllerNamesInterface
+interface MethodControllersInterface
 {
-    public function __construct(MethodControllerNameInterface ...$methodControllerName);
+    public function __construct(MethodControllerInterface ...$methodController);
 
     /**
-     * Return an instance with the specified added MethodControllerNameInterface.
+     * Return an instance with the specified added MethodControllerInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified MethodControllerNameInterface.
+     * an instance that contains the specified MethodControllerInterface.
      *
      * Note: This method overrides any method already added.
      */
-    public function withAddedMethodControllerName(MethodControllerNameInterface $methodControllerName): MethodControllerNamesInterface;
+    public function withAddedMethodController(MethodControllerInterface $methodController): MethodControllersInterface;
 
     /**
      * Returns a boolean indicating whether the instance has any MethodInterface.
@@ -43,7 +43,7 @@ interface MethodControllerNamesInterface
     /**
      * @throws MethodNotFoundException
      */
-    public function getMethod(MethodInterface $method): MethodControllerNameInterface;
+    public function getMethod(MethodInterface $method): MethodControllerInterface;
 
-    public function objects(): MethodControllerNameObjectsRead;
+    public function objects(): MethodControllerObjectsRead;
 }

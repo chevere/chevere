@@ -13,14 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec;
 
-use BadMethodCallException;
 use Chevere\Components\Cache\Interfaces\CacheInterface;
-use Chevere\Components\Message\Message;
-use Chevere\Components\Router\Interfaces\RouterInterface;
-use Chevere\Components\Spec\Exceptions\SpecInvalidArgumentException;
 use Chevere\Components\Spec\Interfaces\SpecIndexCacheInterface;
 use Chevere\Components\Spec\Interfaces\SpecIndexInterface;
-use LogicException;
 
 final class SpecIndexCache implements SpecIndexCacheInterface
 {

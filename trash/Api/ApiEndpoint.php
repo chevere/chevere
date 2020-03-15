@@ -16,9 +16,9 @@ namespace Chevere\Components\Api;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controllers\Api\HeadController;
 use Chevere\Components\Controllers\Api\OptionsController;
-use Chevere\Components\Http\Interfaces\MethodControllerNamesInterface;
+use Chevere\Components\Http\Interfaces\MethodControllersInterface;
 use Chevere\Components\Http\Method;
-use Chevere\Components\Http\MethodControllerName;
+use Chevere\Components\Http\MethodController;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 
 final class ApiEndpoint implements RouteEndpointInterface
@@ -26,13 +26,13 @@ final class ApiEndpoint implements RouteEndpointInterface
     /** @var array */
     private $array;
 
-    /** @var MethodControllerNamesInterface */
+    /** @var MethodControllersInterface */
     private $methodControllerNameCollection;
 
     /**
      *
      */
-    public function __construct(MethodControllerNamesInterface $collection)
+    public function __construct(MethodControllersInterface $collection)
     {
         $this->array = [];
         $this->methodControllerNameCollection = $collection;
@@ -40,7 +40,7 @@ final class ApiEndpoint implements RouteEndpointInterface
         $this->autofillMissingOptionsHead();
     }
 
-    public function methodControllerNameCollection(): MethodControllerNamesInterface
+    public function methodControllerNameCollection(): MethodControllersInterface
     {
         return $this->methodControllerNameCollection;
     }
@@ -81,8 +81,8 @@ final class ApiEndpoint implements RouteEndpointInterface
         ] as $k => $v) {
             if (!$this->methodControllerNameCollection->hasMethod(new Method($k))) {
                 $this->methodControllerNameCollection = $this->methodControllerNameCollection
-                    ->withAddedMethodControllerName(
-                        new MethodControllerName(
+                    ->withAddedMethodController(
+                        new MethodController(
                             new Method($k),
                             new ControllerName($v[0])
                         )

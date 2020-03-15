@@ -11,13 +11,8 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Spec;
+use Chevere\Components\Http\Methods\GetMethod;
+use Chevere\Components\Route\RouteEndpoint;
+use Chevere\TestApp\App\Controllers\TestController;
 
-final class RouteSpec
-{
-    // 'name' => 'articles-repo',
-    // 'spec' => '/spec/api/articles-repo/endpoints.json',
-    // 'path' => '/api/articles',
-    // 'wildcards' => [],
-    // 'endpoints' => [...]
-}
+return new RouteEndpoint(new GetMethod, new TestController);

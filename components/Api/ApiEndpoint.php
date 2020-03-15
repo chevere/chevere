@@ -17,10 +17,9 @@ use Chevere\Components\Api\Interfaces\ApiEndpointInterface;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Route\RouteEndpoint;
 
-// @codeCoverageIgnore
 abstract class ApiEndpoint extends RouteEndpoint implements ApiEndpointInterface
 {
-    abstract public function getController(): ControllerInterface;
+    abstract public function controller(): ControllerInterface;
 
     public function description(): string
     {

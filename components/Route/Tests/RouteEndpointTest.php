@@ -28,18 +28,4 @@ final class RouteEndpointTest extends TestCase
     {
         $this->resourcesDir = (new Dir(new Path(__DIR__ . '/')))->getChild('_resources/');
     }
-
-    public function testPath(): void
-    {
-        $absolute = $this->resourcesDir->path()->getChild('routes/articles/Get.php')->absolute();
-        $endpoint = include $absolute;
-        $this->assertSame($absolute, $endpoint->whereIs());
-        $this->assertInstanceOf(GetMethod::class, $endpoint->method());
-    }
-
-    public function testWrongFilename(): void
-    {
-        $this->expectException(EndpointException::class);
-        include $this->resourcesDir->path()->getChild('routes/articles/NonExistentMethod.php')->absolute();
-    }
 }

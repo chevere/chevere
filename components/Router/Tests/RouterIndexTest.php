@@ -11,21 +11,10 @@
 
 declare(strict_types=1);
 
-/*
- * This file is part of Chevere.
- *
- * (c) Rodolfo Berrios <rodolfo@chevere.org>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-declare(strict_types=1);
-
 namespace Chevere\Tests\Router\Properties;
 
 use BadMethodCallException;
-use Chevere\Components\Http\MethodControllerName;
+use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteName;
@@ -55,8 +44,8 @@ final class RouterIndexTest extends TestCase
         $name = 'some-name';
         $routePath = new RoutePath($key);
         $route = new Route(new RouteName($name), $routePath);
-        $route = $route->withAddedMethodControllerName(
-            new MethodControllerName(
+        $route = $route->withAddedMethodController(
+            new MethodController(
                 new GetMethod,
                 new TestController
             )

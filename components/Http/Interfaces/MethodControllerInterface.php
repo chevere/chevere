@@ -16,17 +16,11 @@ namespace Chevere\Components\Http\Interfaces;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
 
-interface MethodControllerNameInterface
+interface MethodControllerInterface
 {
     public function __construct(MethodInterface $method, ControllerInterface $controller);
 
-    /**
-     * Provides access to the MethodInterface instance.
-     */
     public function method(): MethodInterface;
 
-    /**
-     * Provides access to the controller name.
-     */
-    public function controllerName(): ControllerNameInterface;
+    public function controller(): ControllerInterface;
 }

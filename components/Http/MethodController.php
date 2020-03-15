@@ -13,22 +13,22 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Http;
 
-use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
-use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
+use Chevere\Components\Http\Interfaces\MethodControllerInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
-use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
 
-final class MethodControllerName implements MethodControllerNameInterface
+final class MethodController implements MethodControllerInterface
 {
     private MethodInterface $method;
 
-    private ControllerNameInterface $controllerName;
+    private ControllerInterface $controller;
 
-    public function __construct(MethodInterface $method, ControllerInterface $controller)
-    {
+    public function __construct(
+        MethodInterface $method,
+        ControllerInterface $controller
+    ) {
         $this->method = $method;
-        $this->controllerName = new ControllerName(get_class($controller));
+        $this->controller = $controller;
     }
 
     public function method(): MethodInterface
@@ -36,8 +36,8 @@ final class MethodControllerName implements MethodControllerNameInterface
         return $this->method;
     }
 
-    public function controllerName(): ControllerNameInterface
+    public function controller(): ControllerInterface
     {
-        return $this->controllerName;
+        return $this->controller;
     }
 }

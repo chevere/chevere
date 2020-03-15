@@ -29,7 +29,7 @@ return new class() extends ApiEndpoint
         ];
     }
 
-    public function getController(): ControllerInterface
+    public function controller(): ControllerInterface
     {
         return new GetArticleController();
     }

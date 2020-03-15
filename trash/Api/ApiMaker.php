@@ -27,8 +27,8 @@ use Chevere\Components\Filesystem\AppPath;
 use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Http\Method;
-use Chevere\Components\Http\MethodControllerName;
-use Chevere\Components\Http\MethodControllerNames;
+use Chevere\Components\Http\MethodController;
+use Chevere\Components\Http\MethodControllers;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\HeadMethod;
 use Chevere\Components\Http\Methods\OptionsMethod;
@@ -92,16 +92,16 @@ final class ApiMaker implements ApiMakerInterface
         $new->assertNoDuplicates();
         $new->assertPath();
         $new->basePath = strtolower(basename($new->path->absolute()));
-        $methodControllerCollection = new MethodControllerNames(
-            new MethodControllerName(
+        $methodControllerCollection = new MethodControllers(
+            new MethodController(
                 new HeadMethod(),
                 new ControllerName(HeadController::class)
             ),
-            new MethodControllerName(
+            new MethodController(
                 new OptionsMethod(),
                 new ControllerName(OptionsController::class)
             ),
-            new MethodControllerName(
+            new MethodController(
                 new GetMethod(),
                 new ControllerName(GetController::class)
             )

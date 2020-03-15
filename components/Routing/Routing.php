@@ -15,7 +15,7 @@ namespace Chevere\Components\Routing;
 
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Http\MethodControllerName;
+use Chevere\Components\Http\MethodController;
 use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
@@ -59,14 +59,13 @@ final class Routing implements RoutingInterface
             $route = new Route($this->routeDecorator->name(), $this->routePath);
             while ($endpoints->valid()) {
                 $this->routeEndpoint = $endpoints->current();
-                $route = $route->withAddedMethodControllerName(
-                    new MethodControllerName(
+                $route = $route->withAddedMethodController(
+                    new MethodController(
                         $this->routeEndpoint->method(),
-                        $this->routeEndpoint->getController()
+                        $this->routeEndpoint->controller()
                     )
                 );
                 $routeable = new Routeable($route);
-                $info[] = $endpoints->current()->whereIs();
                 $endpoints->next();
             }
             $this->routerMaker = $this->routerMaker

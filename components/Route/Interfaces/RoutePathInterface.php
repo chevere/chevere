@@ -41,11 +41,6 @@ interface RoutePathInterface extends ToStringInterface
     public function regex(): string;
 
     /**
-     * Returns a boolean indicating whether the instance has a RouteWildcardsInterface.
-     */
-    public function hasRouteWildcards(): bool;
-
-    /**
      * Provides access to the RouteWildcardsInterface instance.
      */
     public function routeWildcards(): RouteWildcardsInterface;

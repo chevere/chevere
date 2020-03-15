@@ -38,7 +38,7 @@ final class Routeable implements RouteableInterface
     {
         $this->route = $route;
         $this->assertExportable();
-        $this->assertMethodControllerNames();
+        $this->assertMethodControllers();
     }
 
     public function route(): RouteInterface
@@ -58,9 +58,9 @@ final class Routeable implements RouteableInterface
         }
     }
 
-    private function assertMethodControllerNames(): void
+    private function assertMethodControllers(): void
     {
-        if (!$this->route->methodControllerNames()->hasAny()) {
+        if (!$this->route->methodControllers()->hasAny()) {
             throw new RouteableException(
                 (new Message("Instance of %className% doesn't contain any method controller"))
                     ->code('%className%', RouteInterface::class)

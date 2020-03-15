@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Route\Tests;
 
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
-use Chevere\Components\Http\MethodControllerName;
+use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PostMethod;
 use Chevere\Components\Middleware\MiddlewareName;
@@ -36,33 +36,19 @@ final class RouteTest extends TestCase
         );
     }
 
-    public function testConstruct(): void
-    {
-        $routeName = new RouteName('name');
-        $routePath = new RoutePath('/');
-        $route = new Route($routeName, $routePath);
-        $this->assertSame($routeName, $route->name());
-        $this->assertSame($routePath, $route->path());
-        $this->assertSame(__FILE__, $route->maker()['file']);
-        $this->assertFalse($route->middlewareNameCollection()->hasAny());
-        $this->expectException(MethodNotFoundException::class);
-        $route->controllerNameFor(new GetMethod);
-    }
-
-    public function testWithAddedMethodControllerName(): void
-    {
-        $method = new GetMethod();
-        $route = $this->getRoute('test', '/test')
-            ->withAddedMethodControllerName(
-                new MethodControllerName(
-                    new GetMethod,
-                    new TestController
-                )
-            );
-        $this->assertSame(TestController::class, $route->controllerNameFor($method)->toString());
-        $this->expectException(MethodNotFoundException::class);
-        $route->controllerNameFor(new PostMethod());
-    }
+    // public function testWithAddedMethodController(): void
+    // {
+    //     $method = new GetMethod();
+    //     $route = $this->getRoute('test', '/test')
+    //         ->withAddedMethodController(
+    //             new MethodControllerName(
+    //                 new GetMethod,
+    //                 new TestController
+    //             )
+    //         );
+    //     $this->assertSame(TestController::class, $route->controllerFor($method)->toString());
+    //     $this->expectException(MethodNotFoundException::class);
+    // }
 
     public function testWithAddedMiddleware(): void
     {

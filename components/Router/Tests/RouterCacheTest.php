@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
-use Chevere\Components\Http\MethodControllerName;
+use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
@@ -115,8 +115,8 @@ final class RouterCacheTest extends TestCase
             RouterCacheInterface::KEY_GROUPS
         ];
         $route = new Route(new RouteName('some-name'), new RoutePath('/test'));
-        $route = $route->withAddedMethodControllerName(
-            new MethodControllerName(
+        $route = $route->withAddedMethodController(
+            new MethodController(
                 new GetMethod,
                 new TestController
             )
@@ -186,8 +186,8 @@ final class RouterCacheTest extends TestCase
         foreach ($routes as $route) {
             $routerMaker = $routerMaker->withAddedRouteable(
                 new Routeable(
-                    $route->withAddedMethodControllerName(
-                        new MethodControllerName(
+                    $route->withAddedMethodController(
+                        new MethodController(
                             new GetMethod,
                             new TestController
                         )

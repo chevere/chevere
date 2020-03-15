@@ -39,18 +39,20 @@ interface RouteEndpointInterface
         'Trace' => TraceMethod::class,
     ];
 
-    /**
-     * Provides access to a new ControllerInterface instance.
-     */
-    public function getController(): ControllerInterface;
+    public function __construct(
+        MethodInterface $method,
+        ControllerInterface $controller
+    );
 
-    /**
-     * Provides access to the absolute path to the endpoint file.
-     */
-    public function whereIs(): string;
-
-    /**
-     * Provides access to the MethodInterface instance.
-     */
     public function method(): MethodInterface;
+
+    public function controller(): ControllerInterface;
+
+    public function withDescription(string $description): RouteEndpointInterface;
+
+    public function description(): string;
+
+    public function withParameters(array $parameters): RouteEndpointInterface;
+
+    public function parameters(): array;
 }

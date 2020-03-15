@@ -17,7 +17,7 @@ use Chevere\Components\Cache\Cache;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Http\MethodControllerName;
+use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
@@ -89,8 +89,8 @@ final class SpecTest extends TestCase
         foreach ($routes as $route) {
             $routerMaker = $routerMaker->withAddedRouteable(
                 new Routeable(
-                    $route->withAddedMethodControllerName(
-                        new MethodControllerName(
+                    $route->withAddedMethodController(
+                        new MethodController(
                             new GetMethod,
                             new TestController
                         )

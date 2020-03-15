@@ -73,7 +73,7 @@ final class RoutePathTest extends TestCase
         $this->assertSame($path, $routePath->toString());
         $this->assertSame($path, $routePath->key());
         $this->assertSame($regex, $routePath->regex());
-        $this->assertFalse($routePath->hasRouteWildcards());
+        $this->assertFalse($routePath->routeWildcards()->hasAny());
         $this->expectException(BadMethodCallException::class);
         $routePath->uriFor([]);
     }
@@ -88,7 +88,7 @@ final class RoutePathTest extends TestCase
         $this->assertSame($path, $routePath->toString());
         $this->assertSame($key, $routePath->key());
         $this->assertSame($regex, $routePath->regex());
-        $this->assertTrue($routePath->hasRouteWildcards());
+        $this->assertTrue($routePath->routeWildcards()->hasAny());
         $this->assertTrue($routePath->routeWildcards()->has($routeWildcard));
     }
 
@@ -106,7 +106,7 @@ final class RoutePathTest extends TestCase
         $this->assertSame($path, $routePath->toString());
         $this->assertSame($key, $routePath->key());
         $this->assertSame($regex, $routePath->regex());
-        $this->assertTrue($routePath->hasRouteWildcards());
+        $this->assertTrue($routePath->routeWildcards()->hasAny());
         $this->assertTrue($routePath->routeWildcards()->has($routeWildcard1));
         $this->assertTrue($routePath->routeWildcards()->has($routeWildcard2));
     }

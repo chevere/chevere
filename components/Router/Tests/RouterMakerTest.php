@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
-use Chevere\Components\Http\MethodControllerName;
+use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteName;
@@ -111,8 +111,8 @@ final class RouterMakerTest extends TestCase
     {
         $route = new Route(new RouteName($name), new RoutePath($path));
         $route = $route
-            ->withAddedMethodControllerName(
-                new MethodControllerName(
+            ->withAddedMethodController(
+                new MethodController(
                     new GetMethod,
                     new TestController
                 )
