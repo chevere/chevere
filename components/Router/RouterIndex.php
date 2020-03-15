@@ -18,10 +18,11 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
 use Chevere\Components\Router\Interfaces\RouteIdentifierInterface;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
+use SplObjectStorage;
 
 final class RouterIndex implements RouterIndexInterface
 {
-    private RouterIdentifierObjects $objects;
+    private SplObjectStorage $objects;
 
     /** @var array <string>$key => <int>$id */
     private array $array = [];
@@ -33,7 +34,7 @@ final class RouterIndex implements RouterIndexInterface
 
     public function __construct()
     {
-        $this->objects = new RouterIdentifierObjects();
+        $this->objects = new SplObjectStorage();
     }
 
     public function count(): int
@@ -48,7 +49,7 @@ final class RouterIndex implements RouterIndexInterface
         $key = $routeable->route()->path()->toString();
         $new->array[$key] = $new->count;
         $new->index[$new->count] = $key;
-        $new->objects->append(
+        $new->objects->attach(
             new RouteIdentifier($id, $group, $routeable->route()->name()->toString()),
             $routeable->route()->path()
         );
@@ -86,9 +87,9 @@ final class RouterIndex implements RouterIndexInterface
         );
     }
 
-    public function objects(): RouterIdentifierObjects
+    public function objects(): RouterIdentifierObjectsRead
     {
-        return $this->objects;
+        return new RouterIdentifierObjectsRead($this->objects);
     }
 
     public function toArray(): array

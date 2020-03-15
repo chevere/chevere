@@ -14,18 +14,15 @@ declare(strict_types=1);
 namespace Chevere\Components\Filesystem\Dir\Tests;
 
 use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\Exceptions\Dir\DirExistsException;
+use Chevere\Components\Filesystem\Exceptions\Dir\DirTailException;
 use Chevere\Components\Filesystem\Exceptions\Dir\DirUnableToCreateException;
 use Chevere\Components\Filesystem\Exceptions\Dir\DirUnableToRemoveException;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
-use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\Exceptions\Path\PathIsFileException;
 use Chevere\Components\Filesystem\Exceptions\Path\PathIsNotDirectoryException;
-use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Path;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
-use RuntimeException;
 use Throwable;
 
 final class DirTest extends TestCase
@@ -46,6 +43,12 @@ final class DirTest extends TestCase
         } catch (Throwable $e) {
             // $e
         }
+    }
+
+    public function testInvalidPath(): void
+    {
+        $this->expectException(DirTailException::class);
+        new Dir(new Path(__DIR__));
     }
 
     public function testWithFilePath(): void

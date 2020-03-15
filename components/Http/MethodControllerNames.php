@@ -18,10 +18,11 @@ use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
 use Chevere\Components\Http\Interfaces\MethodControllerNamesInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Message\Message;
+use SplObjectStorage;
 
 final class MethodControllerNames implements MethodControllerNamesInterface
 {
-    private MethodControllerNameObjects $objects;
+    private SplObjectStorage $objects;
 
     /** @param array ['METHOD' => key,]*/
     private array $index = [];
@@ -30,7 +31,7 @@ final class MethodControllerNames implements MethodControllerNamesInterface
 
     public function __construct(MethodControllerNameInterface ...$methodControllerName)
     {
-        $this->objects = new MethodControllerNameObjects();
+        $this->objects = new SplObjectStorage();
         foreach ($methodControllerName as $method) {
             $this->storeMethodControllerName($method);
         }
@@ -77,9 +78,9 @@ final class MethodControllerNames implements MethodControllerNamesInterface
         return $this->objects->current();
     }
 
-    public function objects(): MethodControllerNameObjects
+    public function objects(): MethodControllerNameObjectsRead
     {
-        return $this->objects;
+        return new MethodControllerNameObjectsRead($this->objects);
     }
 
     private function storeMethodControllerName(MethodControllerNameInterface $methodControllerName): void
@@ -87,7 +88,7 @@ final class MethodControllerNames implements MethodControllerNamesInterface
         $name = $methodControllerName->method()::name();
         $pos = array_search($name, $this->index);
         if (false !== $pos) {
-            $this->objects->append(
+            $this->objects->attach(
                 $methodControllerName,
                 $pos
             );
@@ -96,7 +97,7 @@ final class MethodControllerNames implements MethodControllerNamesInterface
             return;
         }
         $this->count++;
-        $this->objects->append(
+        $this->objects->attach(
             $methodControllerName,
             $this->count
         );

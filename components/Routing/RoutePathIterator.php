@@ -25,7 +25,6 @@ use Chevere\Components\Routing\Exceptions\ExpectingRouteDecoratorException;
 use Chevere\Components\Routing\Interfaces\RoutePathIteratorInterface;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Type\Type;
-use LogicException;
 use RecursiveDirectoryIterator;
 use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
@@ -40,7 +39,7 @@ final class RoutePathIterator implements RoutePathIteratorInterface
 
     private RecursiveIteratorIterator $recursiveIterator;
 
-    private RoutePathObjects $objects;
+    private SplObjectStorage $objects;
 
     public function __construct(DirInterface $dir)
     {
@@ -50,7 +49,7 @@ final class RoutePathIterator implements RoutePathIteratorInterface
             | RecursiveDirectoryIterator::KEY_AS_PATHNAME
         );
         $this->recursiveIterator = new RecursiveIteratorIterator($this->recursiveFilterIterator());
-        $this->objects = new RoutePathObjects;
+        $this->objects = new SplObjectStorage();
         $this->recursiveIterator->rewind();
         while ($this->recursiveIterator->valid()) {
             $pathName = $this->recursiveIterator->current()->getPathName();
@@ -68,7 +67,7 @@ final class RoutePathIterator implements RoutePathIteratorInterface
                     rtrim($dir->path()->absolute(), '/'),
                     ''
                 );
-            $this->objects->append(
+            $this->objects->attach(
                 new RoutePath($routePath),
                 $routeDecorator
             );
@@ -76,9 +75,9 @@ final class RoutePathIterator implements RoutePathIteratorInterface
         }
     }
 
-    final public function objects(): RoutePathObjects
+    final public function objects(): RoutePathObjectsRead
     {
-        return $this->objects;
+        return new RoutePathObjectsRead($this->objects);
     }
 
     private function getVar(string $pathName)

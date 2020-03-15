@@ -19,6 +19,7 @@ use Chevere\Components\Cache\Interfaces\CacheItemInterface;
 use Chevere\Components\Cache\Interfaces\CacheKeyInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouterCacheNotFoundException;
+use Chevere\Components\Router\Exceptions\RouterCacheTypeException;
 use Chevere\Components\Router\Interfaces\RouterCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterGroupsInterface;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
@@ -79,28 +80,40 @@ final class RouterCache implements RouterCacheInterface
 
     public function getRegex(): RouterRegexInterface
     {
-        $item = $this->assertGetItem($this->keyRegex);
+        $item = $this->assertGetItem(
+            $this->keyRegex,
+            RouterRegexInterface::class
+        );
 
         return $item->var();
     }
 
     public function getIndex(): RouterIndexInterface
     {
-        $item = $this->assertGetItem($this->keyIndex);
+        $item = $this->assertGetItem(
+            $this->keyIndex,
+            RouterIndexInterface::class
+        );
 
         return $item->var();
     }
 
     public function getNamed(): RouterNamedInterface
     {
-        $item = $this->assertGetItem($this->keyNamed);
+        $item = $this->assertGetItem(
+            $this->keyNamed,
+            RouterNamedInterface::class
+        );
 
         return $item->var();
     }
 
     public function getGroups(): RouterGroupsInterface
     {
-        $item = $this->assertGetItem($this->keyGroups);
+        $item = $this->assertGetItem(
+            $this->keyGroups,
+            RouterGroupsInterface::class
+        );
 
         return $item->var();
     }
@@ -124,14 +137,11 @@ final class RouterCache implements RouterCacheInterface
                 $this->keyGroups,
                 new VariableExport($router->groups())
             );
-        $routeables = $router->routeables();
-        $routeables->rewind();
-        while ($routeables->valid()) {
-            $this->routesCache()->put(
-                $routeables->getInfo(),
-                $routeables->current()
-            );
-            $routeables->next();
+        $objects = $router->objects();
+        $objects->rewind();
+        while ($objects->valid()) {
+            $this->routesCache()->put($objects->key(), $objects->current());
+            $objects->next();
         }
 
         return $this;
@@ -156,10 +166,10 @@ final class RouterCache implements RouterCacheInterface
         return $this->cache->puts();
     }
 
-    private function assertGetItem(CacheKeyInterface $cacheKey): CacheItemInterface
+    private function assertGetItem(CacheKeyInterface $cacheKey, string $interfaceName): CacheItemInterface
     {
         try {
-            return $this->cache->get($cacheKey);
+            $item = $this->cache->get($cacheKey);
         } catch (Throwable $e) {
             throw new RouterCacheNotFoundException(
                 (new Message('Cache not found for router %key%'))
@@ -167,5 +177,14 @@ final class RouterCache implements RouterCacheInterface
                     ->toString()
             );
         }
+        if (!is_object($item)) {
+            throw new RouterCacheTypeException(
+                (new Message('Expecting a cached object, type %type% found'))
+                    ->code('%type%', gettype($item))
+                    ->toString()
+            );
+        }
+
+        return $item;
     }
 }

@@ -13,19 +13,22 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing;
 
+use Chevere\Components\DataStructures\SplObjectStorageRead;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use SplObjectStorage;
 
-// TODO: Read-only proxy
-final class RouteEndpointObjects extends SplObjectStorage
+final class RouteEndpointObjectsRead extends SplObjectStorageRead
 {
-    public function append(RouteEndpointInterface $routeEndpoint)
-    {
-        return parent::attach($routeEndpoint);
-    }
-
+    /**
+     * @return RouteEndpointInterface
+     */
     public function current(): RouteEndpointInterface
     {
-        return parent::current();
+        return $this->objects->current();
+    }
+
+    public function getInfo()
+    {
+        return null;
     }
 }

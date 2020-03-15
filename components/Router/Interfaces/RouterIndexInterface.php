@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Router\Interfaces;
 
 use Chevere\Components\Route\Interfaces\RouteInterface;
+use Chevere\Components\Router\RouterIdentifierObjectsRead;
 
 /**
  * Provides access to the router index.
@@ -52,6 +53,8 @@ interface RouterIndexInterface
      * Provides access to the RouteIdentifier instance identified by its internal id.
      */
     public function get(int $id): RouteIdentifierInterface;
+
+    public function objects(): RouterIdentifierObjectsRead;
 
     public function toArray(): array;
 }

@@ -24,16 +24,15 @@ use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use Chevere\Components\Routing\Exceptions\ExpectingRouteDecoratorException;
 use Chevere\Components\Routing\Interfaces\RouteEndpointIteratorInterface;
 use Chevere\Components\Type\Type;
-use LogicException;
 use SplObjectStorage;
 
 final class RouteEndpointIterator implements RouteEndpointIteratorInterface
 {
-    private RouteEndpointObjects $objects;
+    private SplObjectStorage $objects;
 
     public function __construct(DirInterface $dir)
     {
-        $this->objects = new RouteEndpointObjects();
+        $this->objects = new SplObjectStorage();
         $path = $dir->path();
         foreach (array_keys(RouteEndpointInterface::KNOWN_METHODS) as $name) {
             $endpointPath = $path->getChild($name . '.php');
@@ -50,13 +49,13 @@ final class RouteEndpointIterator implements RouteEndpointIteratorInterface
                         ->toString()
                 );
             }
-            $this->objects->append($endpoint);
+            $this->objects->attach($endpoint);
         }
     }
 
-    public function objects(): RouteEndpointObjects
+    public function objects(): RouteEndpointObjectsRead
     {
-        return $this->objects;
+        return new RouteEndpointObjectsRead($this->objects);
     }
 
     private function getVar(PathInterface $path)

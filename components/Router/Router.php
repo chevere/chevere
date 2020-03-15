@@ -25,13 +25,14 @@ use Chevere\Components\Router\Interfaces\RouterNamedInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 use Chevere\Components\Router\Interfaces\RoutesCacheInterface;
 use Psr\Http\Message\UriInterface;
+use SplObjectStorage;
 use Throwable;
 
 final class Router implements RouterInterface
 {
     private RoutesCacheInterface $routesCache;
 
-    private RouteableObjects $routeables;
+    private SplObjectStorage $objects;
 
     private RouterRegexInterface $regex;
 
@@ -44,25 +45,25 @@ final class Router implements RouterInterface
     public function __construct(RoutesCacheInterface $routesCache)
     {
         $this->routesCache = $routesCache;
-        $this->routeables = new RouteableObjects();
+        $this->objects = new SplObjectStorage();
     }
 
-    public function withRouteables(RouteableObjects $routeables): RouterInterface
+    public function withRouteables(RouteableObjectsRead $objects): RouterInterface
     {
         $new = clone $this;
-        $new->routeables = $routeables;
+        $new->objects = $objects;
 
         return $new;
     }
 
     public function hasRouteables(): bool
     {
-        return isset($this->routeables);
+        return isset($this->objects);
     }
 
-    public function routeables(): RouteableObjects
+    public function objects(): RouteableObjectsRead
     {
-        return $this->routeables;
+        return new RouteableObjectsRead($this->objects);
     }
 
     public function withRegex(RouterRegexInterface $regex): RouterInterface

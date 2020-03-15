@@ -13,24 +13,21 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Http;
 
+use Chevere\Components\DataStructures\SplObjectStorageRead;
 use Chevere\Components\Http\Interfaces\MethodControllerNameInterface;
-use SplObjectStorage;
 
-// TODO: Read-only proxy
-final class MethodControllerNameObjects extends SplObjectStorage
+final class MethodControllerNameObjectsRead extends SplObjectStorageRead
 {
-    public function append(MethodControllerNameInterface $methodControllerName, int $id)
-    {
-        return parent::attach($methodControllerName, $id);
-    }
-
+    /**
+     * @return RoutePathInterface
+     */
     public function current(): MethodControllerNameInterface
     {
-        return parent::current();
+        return $this->objects->current();
     }
 
     public function getInfo(): int
     {
-        return  parent::getInfo();
+        return $this->objects->getInfo();
     }
 }

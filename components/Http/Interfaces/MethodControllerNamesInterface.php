@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Http\Interfaces;
 
-use Chevere\Components\Common\Interfaces\ToArrayInterface;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
-use Chevere\Components\Http\MethodControllerNameObjects;
+use Chevere\Components\Http\MethodControllerNameObjectsRead;
 
 interface MethodControllerNamesInterface
 {
@@ -46,8 +45,5 @@ interface MethodControllerNamesInterface
      */
     public function getMethod(MethodInterface $method): MethodControllerNameInterface;
 
-    /**
-     * @return array MethodControllerNameInterface[]
-     */
-    public function objects(): MethodControllerNameObjects;
+    public function objects(): MethodControllerNameObjectsRead;
 }

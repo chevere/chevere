@@ -25,6 +25,7 @@ use Chevere\Components\Router\Interfaces\RouterCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
+use SplObjectStorage;
 
 /**
  * RouterMaker takes a bunch of routes and generates a cache-ready routing table.
@@ -32,6 +33,8 @@ use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 final class RouterMaker implements RouterMakerInterface
 {
     private RouterInterface $router;
+
+    private SplObjectStorage $objects;
 
     /** @var array [(string) $routePath => (int) $id] */
     private array $paths;
@@ -48,8 +51,6 @@ final class RouterMaker implements RouterMakerInterface
     /** @var array [(int) $id => $routeInterface] */
     private array $routes;
 
-    private RouteableObjects $routeableObjects;
-
     private int $id = -1;
 
     public function __construct(RouterCacheInterface $routerCache)
@@ -58,7 +59,7 @@ final class RouterMaker implements RouterMakerInterface
             ->withIndex(new RouterIndex())
             ->withNamed(new RouterNamed())
             ->withGroups(new RouterGroups());
-        $this->routeableObjects = new RouteableObjects();
+        $this->objects = new SplObjectStorage();
     }
 
     public function withAddedRouteable(RouteableInterface $routeable, string $group): RouterMakerInterface
@@ -69,14 +70,16 @@ final class RouterMaker implements RouterMakerInterface
         $new->assertUniquePath($route);
         $new->assertUniqueName($route);
         $new->assertUniqueKey($route);
-        $new->routeableObjects->append($routeable, $new->id);
+        $new->objects->attach($routeable);
         $new->regexes[$new->id] = $route->path()->regex();
         $new->paths[$route->path()->toString()] = $new->id;
         $new->keys[$route->path()->key()] = $new->id;
         $name = $route->name()->toString();
         $new->named[$name] = $new->id;
         $new->router = $new->router
-            ->withRouteables($new->routeableObjects)
+            ->withRouteables(
+                new RouteableObjectsRead($new->objects)
+            )
             ->withRegex($new->getRouterRegex())
             ->withGroups(
                 $new->router()->groups()->withAdded($group, $new->id)

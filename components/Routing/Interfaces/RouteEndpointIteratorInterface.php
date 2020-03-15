@@ -14,16 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Routing\Interfaces;
 
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Routing\RouteEndpointObjectsRead;
 use SplObjectStorage;
 
 interface RouteEndpointIteratorInterface
 {
     public function __construct(DirInterface $dir);
 
-    /**
-     * Provides access to the SplObjectStorage instance.
-     *
-     * @return SplObjectStorage EndpointInterface objects
-     */
-    public function objects(): SplObjectStorage;
+    public function objects(): RouteEndpointObjectsRead;
 }
