@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Spec\Tests;
+namespace Chevere\Components\Spec\Specs\Tests;
 
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Route;
@@ -22,7 +22,6 @@ use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\RouteableObjectsRead;
 use Chevere\Components\Spec\GroupSpec;
 use Chevere\Components\Spec\IndexSpec;
-use Chevere\Components\Spec\RouteableSpec;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 use SplObjectStorage;

@@ -17,6 +17,7 @@ use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Spec\Interfaces\SpecIndexCacheInterface;
 use Chevere\Components\Spec\Interfaces\SpecIndexInterface;
 
+// Add this header to all responses: Link: </spec/api/routes.json>; rel="describedby"
 final class SpecIndexCache implements SpecIndexCacheInterface
 {
     private CacheInterface $cache;
@@ -30,6 +31,5 @@ final class SpecIndexCache implements SpecIndexCacheInterface
 
     public function put(SpecIndexInterface $spec): void
     {
-        // Add this header to all responses: Link: </spec/api/routes.json>; rel="describedby"
     }
 }

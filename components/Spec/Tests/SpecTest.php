@@ -15,11 +15,8 @@ namespace Chevere\Components\Spec\Tests;
 
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
@@ -28,15 +25,9 @@ use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;
-use Chevere\Components\Router\RouterGroups;
-use Chevere\Components\Router\RouterIndex;
 use Chevere\Components\Router\RouterMaker;
-use Chevere\Components\Router\RouterNamed;
-use Chevere\Components\Router\RouterRegex;
 use Chevere\Components\Router\RoutesCache;
 use Chevere\Components\Router\Tests\CacheHelper;
-use Chevere\Components\Spec\Exceptions\SpecInvalidArgumentException;
-use Chevere\Components\Spec\SpecIndexCache;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 

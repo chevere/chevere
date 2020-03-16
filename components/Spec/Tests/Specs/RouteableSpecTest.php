@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Spec\Tests;
+namespace Chevere\Components\Spec\Specs\Tests;
 
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Route;
@@ -32,12 +32,12 @@ final class RouteableSpecTest extends TestCase
         $routePath = new RoutePath('/route/path');
         $specPath = '/spec/group/' . $routeName->toString() . '/';
         $routeSpecPath = $specPath . 'route.json';
-        $route = new Route($routeName, $routePath);
         $method = new GetMethod;
         $routeEndpoint = (new RouteEndpoint($method, new TestController))
             ->withDescription('Test endpoint')
             ->withParameters(['name' => 'Test name']);
-        $route = $route->withAddedEndpoint($routeEndpoint);
+        $route = (new Route($routeName, $routePath))
+            ->withAddedEndpoint($routeEndpoint);
         $routeable = new Routeable($route);
         $spec = new RouteableSpec($specPath, $routeable);
         $specPathJson = $specPath . $method->name() . '.json';
