@@ -14,10 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec;
 
 use Chevere\Components\Common\Interfaces\ToArrayInterface;
-use Chevere\Components\Route\Route;
-use Chevere\Components\Route\RouteEndpoint;
-use Chevere\Components\Router\Routeable;
-use Chevere\Components\Router\RouteableObjectsRead;
+use Chevere\Components\Spec\Specs\RouteableSpecObjectsRead;
 use SplObjectStorage;
 
 final class GroupSpec implements ToArrayInterface
@@ -26,26 +23,33 @@ final class GroupSpec implements ToArrayInterface
 
     private $array = [];
 
+    /**
+     * @var string $specPath /spec/group-name/
+     */
     public function __construct(
-        string $specPath,
-        RouteableObjectsRead $objects
+        string $specPath
     ) {
+        $this->jsonPath = $specPath . 'routes.json';
         $this->objects = new SplObjectStorage;
         $this->array = [
             'name' => basename($specPath),
             'spec' => $specPath . 'routes.json',
             'routes' => [],
         ];
-        $objects->rewind();
-        while ($objects->valid()) {
-            $routeableSpec = new RouteableSpec(
-                $specPath . $objects->current()->route()->name()->toString() . '/',
-                $objects->current()
-            );
-            $this->objects->attach($routeableSpec);
-            $this->array['routes'][] = $routeableSpec->toArray();
-            $objects->next();
-        }
+    }
+
+    public function withAddedRouteable(RouteableSpec $routeableSpec): GroupSpec
+    {
+        $new = clone $this;
+        $this->objects->attach($routeableSpec);
+        $new->array['routes'][] = $routeableSpec->toArray();
+
+        return $new;
+    }
+
+    public function jsonPath(): string
+    {
+        return $this->jsonPath;
     }
 
     public function toArray(): array
@@ -53,5 +57,8 @@ final class GroupSpec implements ToArrayInterface
         return $this->array;
     }
 
-    // public function objects():
+    public function objects(): RouteableSpecObjectsRead
+    {
+        return new RouteableSpecObjectsRead($this->objects);
+    }
 }

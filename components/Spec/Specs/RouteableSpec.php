@@ -27,7 +27,9 @@ final class RouteableSpec implements ToArrayInterface
 
     private $array = [];
 
-    // $specPath = '/spec/group/route-name/';
+    /**
+     * @var string $specPath /spec/group/route-name/
+     */
     public function __construct(
         string $specPath,
         RouteableInterface $routeable

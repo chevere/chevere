@@ -11,27 +11,28 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Spec\Specs\Tests;
+namespace Chevere\Components\Spec\Tests;
 
-use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
+use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Spec\RouteEndpointSpec;
+use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
 final class RouteEndpointSpecTest extends TestCase
 {
-    private RouteEndpoint $routeEndpoint;
-
     public function testConstruct(): void
     {
         $specPath = '/spec/group/route-name/';
-        $this->routeEndpoint = include dirname(__DIR__) . '/_resources/endpoints/Get.php';
-        $spec = new RouteEndpointSpec($specPath, $this->routeEndpoint);
+        $routeEndpoint = new RouteEndpoint(new GetMethod, new TestController);
+        $spec = new RouteEndpointSpec($specPath, $routeEndpoint);
+        $specPathJson = $specPath . $routeEndpoint->method()->name() . '.json';
+        $this->assertSame($specPathJson, $spec->jsonPath());
         $this->assertSame(
             [
-                'method' => $this->routeEndpoint->method()->name(),
-                'spec' => $specPath . $this->routeEndpoint->method()->name() . '.json',
-                'description' => $this->routeEndpoint->method()->description(),
+                'method' => $routeEndpoint->method()->name(),
+                'spec' => $specPath . $routeEndpoint->method()->name() . '.json',
+                'description' => $routeEndpoint->method()->description(),
                 'parameters' => [],
             ],
             $spec->toArray()

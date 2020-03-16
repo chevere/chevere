@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Spec\Specs\Tests;
+namespace Chevere\Components\Spec\Tests;
 
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Route;
@@ -20,6 +20,7 @@ use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Spec\RouteableSpec;
+use Chevere\Components\Spec\RouteEndpointSpec;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
@@ -39,27 +40,23 @@ final class RouteableSpecTest extends TestCase
         $route = $route->withAddedEndpoint($routeEndpoint);
         $routeable = new Routeable($route);
         $spec = new RouteableSpec($specPath, $routeable);
-        $endpointSpecPath = $specPath . $method->name() . '.json';
-        $expectedEndpoint = [
-            'method' => $method->name(),
-            'spec' => $endpointSpecPath,
-            'description' => $routeEndpoint->description(),
-            'parameters' => $routeEndpoint->parameters()
-        ];
+        $specPathJson = $specPath . $method->name() . '.json';
+        $routeEndpoint = new RouteEndpointSpec($specPath, $routeEndpoint);
         $this->assertSame($routeSpecPath, $spec->jsonPath());
         $this->assertSame(
             [
                 'name' => $routeName->toString(),
                 'spec' => $routeSpecPath,
                 'path' => $routePath->toString(),
-                'wildcards' => [],
-                'endpoints' => [$expectedEndpoint]
+                'wildcards' => $routePath->routeWildcards()->toArray(),
+                'endpoints' => [$routeEndpoint->toArray()]
             ],
             $spec->toArray()
         );
         $spec->objects()->rewind();
         $object = $spec->objects()->current();
-        $this->assertSame($endpointSpecPath, $object->jsonPath());
-        $this->assertSame($expectedEndpoint, $object->toArray());
+        $this->assertNull($spec->objects()->getInfo());
+        $this->assertSame($specPathJson, $object->jsonPath());
+        $this->assertSame($routeEndpoint->toArray(), $object->toArray());
     }
 }
