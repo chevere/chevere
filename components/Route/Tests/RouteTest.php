@@ -13,10 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route\Tests;
 
-use Chevere\Components\Http\Exceptions\MethodNotFoundException;
-use Chevere\Components\Http\MethodController;
-use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Http\Methods\PostMethod;
 use Chevere\Components\Middleware\MiddlewareName;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Route\Route;

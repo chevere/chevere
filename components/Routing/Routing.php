@@ -20,6 +20,7 @@ use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Route\Route;
+use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
 use Chevere\Components\Router\Routeable;
@@ -59,8 +60,8 @@ final class Routing implements RoutingInterface
             $route = new Route($this->routeDecorator->name(), $this->routePath);
             while ($endpoints->valid()) {
                 $this->routeEndpoint = $endpoints->current();
-                $route = $route->withAddedMethodController(
-                    new MethodController(
+                $route = $route->withAddedEndpoint(
+                    new RouteEndpoint(
                         $this->routeEndpoint->method(),
                         $this->routeEndpoint->controller()
                     )

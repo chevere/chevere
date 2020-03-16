@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use Chevere\Components\Http\Interfaces\MethodControllerInterface;
-use Chevere\Components\Http\Interfaces\MethodControllersInterface;
-use Chevere\Components\Http\MethodControllers;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
+use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
+use Chevere\Components\Route\Interfaces\RouteEndpointsInterface;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Route\Interfaces\RouteNameInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
@@ -35,7 +34,7 @@ final class Route implements RouteInterface
 
     private MiddlewareNameCollectionInterface $middlewareNameCollection;
 
-    private MethodControllersInterface $methodControllers;
+    private RouteEndpointsInterface $endpoints;
 
     public function __construct(RouteNameInterface $name, RoutePathInterface $routePath)
     {
@@ -43,7 +42,7 @@ final class Route implements RouteInterface
         $this->routePath = $routePath;
         $this->key = $this->routePath->toString();
         $this->maker = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[0];
-        $this->methodControllers = new MethodControllers;
+        $this->endpoints = new RouteEndpoints();
         $this->middlewareNameCollection = new MiddlewareNameCollection;
     }
 
@@ -62,20 +61,20 @@ final class Route implements RouteInterface
         return $this->maker;
     }
 
-    public function withAddedMethodController(MethodControllerInterface $methodController): RouteInterface
+    public function withAddedEndpoint(RouteEndpointInterface $routeEndpoint): RouteInterface
     {
         $new = clone $this;
-        $new->methodControllers = $new->methodControllers
-            ->withAddedMethodController(
-                $methodController
+        $new->endpoints = $new->endpoints
+            ->withAddedRouteEndpoint(
+                $routeEndpoint
             );
 
         return $new;
     }
 
-    public function methodControllers(): MethodControllersInterface
+    public function endpoints(): RouteEndpointsInterface
     {
-        return $this->methodControllers;
+        return $this->endpoints;
     }
 
     public function withAddedMiddlewareName(MiddlewareNameInterface $middlewareName): RouteInterface

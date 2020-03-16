@@ -16,23 +16,24 @@ namespace Chevere\Components\Api;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controllers\Api\HeadController;
 use Chevere\Components\Controllers\Api\OptionsController;
-use Chevere\Components\Http\Interfaces\MethodControllersInterface;
+use Chevere\Components\Http\Interfaces\RouteEndpointsInterface;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\MethodController;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
+use Chevere\Components\Route\RouteEndpoint;
 
 final class ApiEndpoint implements RouteEndpointInterface
 {
     /** @var array */
     private $array;
 
-    /** @var MethodControllersInterface */
+    /** @var RouteEndpointsInterface */
     private $methodControllerNameCollection;
 
     /**
      *
      */
-    public function __construct(MethodControllersInterface $collection)
+    public function __construct(RouteEndpointsInterface $collection)
     {
         $this->array = [];
         $this->methodControllerNameCollection = $collection;
@@ -40,7 +41,7 @@ final class ApiEndpoint implements RouteEndpointInterface
         $this->autofillMissingOptionsHead();
     }
 
-    public function methodControllerNameCollection(): MethodControllersInterface
+    public function methodControllerNameCollection(): RouteEndpointsInterface
     {
         return $this->methodControllerNameCollection;
     }
@@ -81,8 +82,8 @@ final class ApiEndpoint implements RouteEndpointInterface
         ] as $k => $v) {
             if (!$this->methodControllerNameCollection->hasMethod(new Method($k))) {
                 $this->methodControllerNameCollection = $this->methodControllerNameCollection
-                    ->withAddedMethodController(
-                        new MethodController(
+                    ->withAddedRouteEndpoint(
+                        new RouteEndpoint(
                             new Method($k),
                             new ControllerName($v[0])
                         )

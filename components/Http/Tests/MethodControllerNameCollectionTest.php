@@ -17,8 +17,6 @@ use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\Interfaces\MethodControllerInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
-use Chevere\Components\Http\MethodController;
-use Chevere\Components\Http\MethodControllers;
 use Chevere\Components\Http\Methods\ConnectMethod;
 use Chevere\Components\Http\Methods\DeleteMethod;
 use Chevere\Components\Http\Methods\GetMethod;

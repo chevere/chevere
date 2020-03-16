@@ -24,13 +24,13 @@ final class RouteEndpointSpecTest extends TestCase
 
     public function testConstruct(): void
     {
-        $specPath = '/spec/group/route-name/GET.json';
+        $specPath = '/spec/group/route-name/';
         $this->routeEndpoint = include dirname(__DIR__) . '/_resources/endpoints/Get.php';
-        $spec = new RouteEndpointSpec($this->routeEndpoint, $specPath);
+        $spec = new RouteEndpointSpec($specPath, $this->routeEndpoint);
         $this->assertSame(
             [
                 'method' => $this->routeEndpoint->method()->name(),
-                'spec' => $specPath,
+                'spec' => $specPath . $this->routeEndpoint->method()->name() . '.json',
                 'description' => $this->routeEndpoint->method()->description(),
                 'parameters' => [],
             ],

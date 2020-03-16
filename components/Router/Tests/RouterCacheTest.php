@@ -17,6 +17,7 @@ use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
+use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Exceptions\RouterCacheNotFoundException;
@@ -115,8 +116,8 @@ final class RouterCacheTest extends TestCase
             RouterCacheInterface::KEY_GROUPS
         ];
         $route = new Route(new RouteName('some-name'), new RoutePath('/test'));
-        $route = $route->withAddedMethodController(
-            new MethodController(
+        $route = $route->withAddedEndpoint(
+            new RouteEndpoint(
                 new GetMethod,
                 new TestController
             )
@@ -186,8 +187,8 @@ final class RouterCacheTest extends TestCase
         foreach ($routes as $route) {
             $routerMaker = $routerMaker->withAddedRouteable(
                 new Routeable(
-                    $route->withAddedMethodController(
-                        new MethodController(
+                    $route->withAddedEndpoint(
+                        new RouteEndpoint(
                             new GetMethod,
                             new TestController
                         )

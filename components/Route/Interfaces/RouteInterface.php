@@ -13,11 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route\Interfaces;
 
-use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
-use Chevere\Components\Http\Exceptions\MethodNotFoundException;
-use Chevere\Components\Http\Interfaces\MethodControllerInterface;
-use Chevere\Components\Http\Interfaces\MethodControllersInterface;
-use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
 use Chevere\Components\Route\Exceptions\RouteNameInvalidException;
@@ -45,19 +40,19 @@ interface RouteInterface
     public function maker(): array;
 
     /**
-     * Return an instance with the specified added MethodControllerInterface.
+     * Return an instance with the specified added RouteEndpointInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified added MethodControllerInterface.
+     * an instance that contains the specified added RouteEndpointInterface.
      *
      * Note: This method overrides any method already added.
      */
-    public function withAddedMethodController(MethodControllerInterface $methodController): RouteInterface;
+    public function withAddedEndpoint(RouteEndpointInterface $routeEndpoint): RouteInterface;
 
     /**
      * Provides access to the MethodControllersInterface instance.
      */
-    public function methodControllers(): MethodControllersInterface;
+    public function endpoints(): RouteEndpointsInterface;
 
     /**
      * Return an instance with the specified added MiddlewareNameInterface.

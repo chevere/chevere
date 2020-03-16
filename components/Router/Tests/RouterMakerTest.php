@@ -16,6 +16,7 @@ namespace Chevere\Components\Router\Tests;
 use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Route;
+use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
@@ -111,8 +112,8 @@ final class RouterMakerTest extends TestCase
     {
         $route = new Route(new RouteName($name), new RoutePath($path));
         $route = $route
-            ->withAddedMethodController(
-                new MethodController(
+            ->withAddedEndpoint(
+                new RouteEndpoint(
                     new GetMethod,
                     new TestController
                 )

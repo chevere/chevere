@@ -17,6 +17,7 @@ use BadMethodCallException;
 use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Route;
+use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routeable;
@@ -44,8 +45,8 @@ final class RouterIndexTest extends TestCase
         $name = 'some-name';
         $routePath = new RoutePath($key);
         $route = new Route(new RouteName($name), $routePath);
-        $route = $route->withAddedMethodController(
-            new MethodController(
+        $route = $route->withAddedEndpoint(
+            new RouteEndpoint(
                 new GetMethod,
                 new TestController
             )

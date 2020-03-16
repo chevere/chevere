@@ -16,39 +16,61 @@ namespace Chevere\Components\Spec;
 use Chevere\Components\Common\Interfaces\ToArrayInterface;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
+use Chevere\Components\Routing\RouteEndpointObjectsRead;
+use Chevere\Components\Spec\Specs\RouteEndpointSpecObjectsRead;
+use SplObjectStorage;
 
 final class RouteableSpec implements ToArrayInterface
 {
+    private SplObjectStorage $objects;
+
+    private string $jsonPath;
+
     private $array = [];
 
-    // $filePath = '/spec/group/route-name/route.json'
-    public function __construct(RouteableInterface $routeable, string $filePath)
-    {
+    // $filePath = '/spec/group/route-name/';
+    public function __construct(
+        string $specPath,
+        RouteableInterface $routeable
+    ) {
+        $this->objects = new SplObjectStorage;
+        $this->jsonPath = $specPath . 'route.json';
         $this->array = [
             'name' => $routeable->route()->name()->toString(),
-            'spec' => $filePath,
+            'spec' => $this->jsonPath,
             'path' => $routeable->route()->path()->toString(),
             'wildcards' => $routeable->route()->path()->routeWildcards()->toArray(),
         ];
-        $objects = $routeable->route()->methodControllers()->objects();
+        $objects = $routeable->route()->endpoints()->objects();
         $objects->rewind();
-        $endpoints = [];
         while ($objects->valid()) {
-            $routeEndpoint = new RouteEndpoint(
-                $objects->current()->method(),
-                $objects->current()->controller()
+            $routeEndpointSpec = new RouteEndpointSpec(
+                $specPath,
+                (new RouteEndpoint(
+                    $objects->current()->method(),
+                    $objects->current()->controller()
+                ))
+                    ->withDescription($objects->current()->description())
+                    ->withParameters($objects->current()->parameters())
             );
-            $endpoints[] = (new RouteEndpointSpec($routeEndpoint, '/eeee/'))
-                ->toArray();
+            $this->objects->attach($routeEndpointSpec);
+            $this->array['endpoints'][] = $routeEndpointSpec->toArray();
             $objects->next();
         }
-        $this->array['endpoints'] = $endpoints;
+    }
 
-        // xdd($this->array);
+    public function jsonPath(): string
+    {
+        return $this->jsonPath;
     }
 
     public function toArray(): array
     {
         return $this->array;
+    }
+
+    public function objects(): RouteEndpointSpecObjectsRead
+    {
+        return new RouteEndpointSpecObjectsRead($this->objects);
     }
 }

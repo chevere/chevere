@@ -45,7 +45,7 @@ final class Resolver implements ResolverInterface
         }
         $app = $app
             ->withRouted($routed);
-        $collection = $routed->route()->methodControllers();
+        $collection = $routed->route()->endpoints();
         $requestMethod = new Method($app->request()->getMethod());
         try {
             $controllerName = $collection->getMethod($requestMethod)->controller()->toString();

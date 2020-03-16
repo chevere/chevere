@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Http\Tests;
 
 use Chevere\Components\Controller\ControllerName;
-use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;

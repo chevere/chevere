@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
-use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Route;
+use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Exceptions\RouteableException;
@@ -43,8 +43,8 @@ final class RouteableTest extends TestCase
             new RouteName('test'),
             new RoutePath('/test')
         ))
-            ->withAddedMethodController(
-                new MethodController(
+            ->withAddedEndpoint(
+                new RouteEndpoint(
                     new GetMethod(),
                     new TestController()
                 )

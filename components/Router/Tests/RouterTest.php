@@ -17,6 +17,7 @@ use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
+use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
@@ -94,8 +95,8 @@ final class RouterTest extends TestCase
     public function testIndex(): void
     {
         $route = new Route(new RouteName('some-name'), new RoutePath('/test'));
-        $route = $route->withAddedMethodController(
-            new MethodController(
+        $route = $route->withAddedEndpoint(
+            new RouteEndpoint(
                 new GetMethod,
                 new TestController
             )

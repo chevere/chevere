@@ -16,13 +16,9 @@ namespace Chevere\Components\Route;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
-use ReflectionClass;
 
 final class RouteEndpoint implements RouteEndpointInterface
 {
-    /** @var string Absoltue path to the endpoint file */
-    private string $whereIs;
-
     /** @var MethodInterface The inherithed method, taken from the file basename */
     private MethodInterface $method;
 
@@ -34,6 +30,7 @@ final class RouteEndpoint implements RouteEndpointInterface
     {
         $this->method = $method;
         $this->controller = $controller;
+        $this->description = $method->description();
     }
 
     public function method(): MethodInterface
@@ -69,6 +66,6 @@ final class RouteEndpoint implements RouteEndpointInterface
 
     public function parameters(): array
     {
-        return $this->array;
+        return $this->parameters;
     }
 }

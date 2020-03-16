@@ -16,6 +16,7 @@ namespace Chevere\Components\Spec\Specs\Tests;
 use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Route;
+use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routeable;
@@ -28,23 +29,32 @@ final class RouteableSpecTest extends TestCase
     public function testConstruct(): void
     {
         $routeName = new RouteName('route-name');
-        $specPath = '/spec/group/' . $routeName->toString() . '/route.json';
-        $route = new Route(
-            $routeName,
-            new RoutePath('/route/path')
+        $routePath = new RoutePath('/route/path');
+        $specPath = '/spec/group/' . $routeName->toString() . '/';
+        $route = new Route($routeName, $routePath);
+        $method = new GetMethod;
+        $routeEndpoint = (new RouteEndpoint($method, new TestController))
+            ->withDescription('Test endpoint')
+            ->withParameters(['name' => 'Test name']);
+        $route = $route->withAddedEndpoint($routeEndpoint);
+        $routeable = new Routeable($route);
+        $spec = new RouteableSpec($specPath, $routeable);
+        $this->assertSame(
+            [
+                'name' => $routeName->toString(),
+                'spec' => $specPath . 'route.json',
+                'path' => $routePath->toString(),
+                'wildcards' => [],
+                'endpoints' => [
+                    [
+                        'method' => $method->name(),
+                        'spec' => $specPath . $method->name() . '.json',
+                        'description' => $routeEndpoint->description(),
+                        'parameters' => $routeEndpoint->parameters()
+                    ]
+                ]
+            ],
+            $spec->toArray()
         );
-        $route = $route->withAddedMethodController(
-            new MethodController(
-                new GetMethod(),
-                new TestController
-            )
-        );
-        $spec = new RouteableSpec(new Routeable($route), $specPath);
-        // xdd($spec);
-        // $this->assertSame(
-        //     [
-        //     ],
-        //     $spec->toArray()
-        // );
     }
 }
