@@ -15,5 +15,5 @@ namespace Chevere\Components\Spec;
 
 final class IndexSpec
 {
-    // [group,...],
+    // [groups => [], files => []],
 }

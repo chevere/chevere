@@ -45,13 +45,18 @@ final class Router implements RouterInterface
     public function __construct(RoutesCacheInterface $routesCache)
     {
         $this->routesCache = $routesCache;
-        $this->objects = new SplObjectStorage();
+        $this->objects = new SplObjectStorage;
     }
 
-    public function withRouteables(RouteableObjectsRead $objects): RouterInterface
+    public function withRouteables(RouteableObjectsRead $routeableObjects): RouterInterface
     {
         $new = clone $this;
-        $new->objects = $objects;
+        $this->objects = new SplObjectStorage;
+        $routeableObjects->rewind();
+        while ($routeableObjects->valid()) {
+            $this->objects->attach($routeableObjects->current());
+            $routeableObjects->next();
+        }
 
         return $new;
     }

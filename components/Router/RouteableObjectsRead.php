@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
+use Chevere\Components\DataStructures\SplObjectStorageRead;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
-use SplObjectStorage;
 
-final class RouteableObjectsRead extends SplObjectStorage
+final class RouteableObjectsRead extends SplObjectStorageRead
 {
     public function current(): RouteableInterface
     {
-        return $this->current();
+        return $this->objects->current();
     }
 
     public function getInfo()

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Specs\Tests;
 
-use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
@@ -31,6 +30,7 @@ final class RouteableSpecTest extends TestCase
         $routeName = new RouteName('route-name');
         $routePath = new RoutePath('/route/path');
         $specPath = '/spec/group/' . $routeName->toString() . '/';
+        $routeSpecPath = $specPath . 'route.json';
         $route = new Route($routeName, $routePath);
         $method = new GetMethod;
         $routeEndpoint = (new RouteEndpoint($method, new TestController))
@@ -39,22 +39,27 @@ final class RouteableSpecTest extends TestCase
         $route = $route->withAddedEndpoint($routeEndpoint);
         $routeable = new Routeable($route);
         $spec = new RouteableSpec($specPath, $routeable);
+        $endpointSpecPath = $specPath . $method->name() . '.json';
+        $expectedEndpoint = [
+            'method' => $method->name(),
+            'spec' => $endpointSpecPath,
+            'description' => $routeEndpoint->description(),
+            'parameters' => $routeEndpoint->parameters()
+        ];
+        $this->assertSame($routeSpecPath, $spec->jsonPath());
         $this->assertSame(
             [
                 'name' => $routeName->toString(),
-                'spec' => $specPath . 'route.json',
+                'spec' => $routeSpecPath,
                 'path' => $routePath->toString(),
                 'wildcards' => [],
-                'endpoints' => [
-                    [
-                        'method' => $method->name(),
-                        'spec' => $specPath . $method->name() . '.json',
-                        'description' => $routeEndpoint->description(),
-                        'parameters' => $routeEndpoint->parameters()
-                    ]
-                ]
+                'endpoints' => [$expectedEndpoint]
             ],
             $spec->toArray()
         );
+        $spec->objects()->rewind();
+        $object = $spec->objects()->current();
+        $this->assertSame($endpointSpecPath, $object->jsonPath());
+        $this->assertSame($expectedEndpoint, $object->toArray());
     }
 }
