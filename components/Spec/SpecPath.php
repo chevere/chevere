@@ -1,0 +1,107 @@
+<?php
+
+/*
+ * This file is part of Chevere.
+ *
+ * (c) Rodolfo Berrios <rodolfo@chevere.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
+declare(strict_types=1);
+
+namespace Chevere\Components\Spec;
+
+use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Message\Message;
+use Chevere\Components\Spec\Interfaces\SpecPathInterface;
+use Chevere\Components\Str\Exceptions\StrAssertException;
+use Chevere\Components\Str\Exceptions\StrContainsException;
+use Chevere\Components\Str\Exceptions\StrEmptyException;
+use Chevere\Components\Str\Exceptions\StrNotStartsWithException;
+use Chevere\Components\Str\Exceptions\StrStartsWithException;
+use Chevere\Components\Str\StrAssert;
+use InvalidArgumentException;
+use Throwable;
+
+final class SpecPath implements SpecPathInterface
+{
+    private PathInterface $path;
+
+    private string $pub;
+
+    /**
+     * @param string $pub /spec
+     * @param PathInterface $path The filesystem path for $pub
+     * @throws StrAssertException If invalid $pub format provided
+     */
+    public function __construct(string $pub, PathInterface $path)
+    {
+        $this->pub = $pub;
+        $this->assertPub();
+        $this->path = $path;
+    }
+
+    public function pub(): string
+    {
+        return $this->pub;
+    }
+
+    public function path(): PathInterface
+    {
+        return $this->path;
+    }
+
+    /**
+     * @throws StrEmptyException if $child is empty
+     * @throws StrContainsException if $child contains spaces, // or \
+     * @throws StrStartsWithException if $child starts with /
+     * @throws StrEndsWithException if $child ends with /
+     * @throws InvalidArgumentException $if unable to getChild on PathInterface
+     */
+    public function getChild(string $child): SpecPathInterface
+    {
+        (new StrAssert($child))
+            ->notEmpty()
+            ->notContains(' ')
+            ->notStartsWith('/')
+            ->notContains('//')
+            ->notContains('\\')
+            ->notEndsWith('/');
+        // @codeCoverageIgnoreStart
+        try {
+            $childPath = $this->path->getChild($child);
+        } catch (Throwable $e) {
+            throw new InvalidArgumentException(
+                (new Message('Unable to get child for %child%: %thrown%'))
+                    ->code('%child%', $child)
+                    ->code('%thrown%', $e->getMessage())
+                    ->toString()
+            );
+        }
+        // @codeCoverageIgnoreEnd
+
+        return new self(rtrim($this->pub, '/') . '/' . $child, $childPath);
+    }
+
+    /**
+     *
+     * @throws StrEmptyException if $pub is empty
+     * @throws StrContainsException if $pub contains spaces, // or \
+     * @throws StrNotStartsWithException if $pub not starts with /
+     * @throws StrEndsWithException if $pub ends with /
+     */
+    private function assertPub(): void
+    {
+        if ($this->pub !== '/') {
+            (new StrAssert($this->pub))
+                ->notEmpty()
+                ->notContains(' ')
+                ->startsWith('/')
+                ->notContains('//')
+                ->notContains('\\')
+                ->notEndsWith('/');
+        }
+    }
+}

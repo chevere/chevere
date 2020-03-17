@@ -34,7 +34,7 @@ final class StrBool implements StrBoolInterface
         return ctype_space($this->string) === true;
     }
 
-    public function firstCharCtypeDigit(): bool
+    public function startsWithCtypeDigit(): bool
     {
         return strlen($this->string) > 0 && ctype_digit(mb_substr($this->string, 0, 1));
     }
@@ -66,5 +66,10 @@ final class StrBool implements StrBoolInterface
         }
 
         return $result === 0;
+    }
+
+    public function contains(string $string): bool
+    {
+        return strpos($this->string, $string) !== false;
     }
 }

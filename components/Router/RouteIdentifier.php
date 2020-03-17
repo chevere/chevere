@@ -18,6 +18,7 @@ use Chevere\Components\Router\Exceptions\RouteIdentifierException;
 use Chevere\Components\Router\Interfaces\RouteIdentifierInterface;
 use Chevere\Components\Str\Exceptions\StrAssertException;
 use Chevere\Components\Str\StrAssert;
+use Throwable;
 
 final class RouteIdentifier implements RouteIdentifierInterface
 {
@@ -82,7 +83,7 @@ final class RouteIdentifier implements RouteIdentifierInterface
             (new StrAssert($this->$argumentName))
                 ->notEmpty()
                 ->notCtypeSpace();
-        } catch (StrAssertException $e) {
+        } catch (Throwable $e) {
             throw new RouteIdentifierException(
                 (new Message('Argument %argumentName% must not be empty neither ctype-space.'))
                     ->code('%argumentName%', '$' . $argumentName)

@@ -231,15 +231,8 @@ final class RoutePath implements RoutePathInterface
 
     private function getIllegalChars(): array
     {
-        $illegalChars = [
-            '//' => 'extra-slashes',
-            '\\' => 'backslash',
-            '{{' => 'double-braces',
-            '}}' => 'double-braces',
-            ' ' => 'whitespace',
-        ];
         $illegals = [];
-        foreach ($illegalChars as $character => $name) {
+        foreach (self::ILLEGAL_CHARS as $character => $name) {
             if (false !== strpos($this->path, $character)) {
                 $illegals[] = (new Message('%character% %name%'))
                     ->code('%character%', $character)

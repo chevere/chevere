@@ -13,15 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use Chevere\Components\Str\Exceptions\StrAssertException;
-use Chevere\Components\Route\Exceptions\RouteWildcardInvalidCharsException;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Route\Exceptions\RouteWildcardInvalidCharsException;
 use Chevere\Components\Route\Exceptions\RouteWildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\RouteWildcardStartWithNumberException;
-use Chevere\Components\Route\Interfaces\RouteWildcardMatchInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
+use Chevere\Components\Route\Interfaces\RouteWildcardMatchInterface;
+use Chevere\Components\Str\Exceptions\StrAssertException;
 use Chevere\Components\Str\StrAssert;
+use Chevere\Components\Str\StrBool;
 
 final class RouteWildcard implements RouteWildcardInterface
 {
@@ -87,9 +88,7 @@ final class RouteWildcard implements RouteWildcardInterface
 
     private function assertName(): void
     {
-        try {
-            (new StrAssert($this->name))->notStartsWithCtypeDigit();
-        } catch (StrAssertException $e) {
+        if ((new StrBool($this->name))->startsWithCtypeDigit()) {
             throw new RouteWildcardStartWithNumberException(
                 (new Message('String %string% must not start with a numeric value'))
                     ->code('%string%', $this->name)

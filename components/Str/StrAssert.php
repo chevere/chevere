@@ -13,9 +13,22 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Str;
 
-use Chevere\Components\Str\Exceptions\StrAssertException;
-use Chevere\Components\Str\Interfaces\StrAssertInterface;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Str\Exceptions\StrContainsException;
+use Chevere\Components\Str\Exceptions\StrCtypeSpaceException;
+use Chevere\Components\Str\Exceptions\StrEmptyException;
+use Chevere\Components\Str\Exceptions\StrEndsWithException;
+use Chevere\Components\Str\Exceptions\StrNotContainsException;
+use Chevere\Components\Str\Exceptions\StrNotCtypeSpaceException;
+use Chevere\Components\Str\Exceptions\StrNotEmptyException;
+use Chevere\Components\Str\Exceptions\StrNotEndsWithException;
+use Chevere\Components\Str\Exceptions\StrNotSameException;
+use Chevere\Components\Str\Exceptions\StrNotStartsWithCtypeDigitException;
+use Chevere\Components\Str\Exceptions\StrNotStartsWithException;
+use Chevere\Components\Str\Exceptions\StrSameException;
+use Chevere\Components\Str\Exceptions\StrStartsWithCtypeDigitException;
+use Chevere\Components\Str\Exceptions\StrStartsWithException;
+use Chevere\Components\Str\Interfaces\StrAssertInterface;
 use Chevere\Components\Str\StrBool;
 
 final class StrAssert implements StrAssertInterface
@@ -27,22 +40,28 @@ final class StrAssert implements StrAssertInterface
         $this->string = $string;
     }
 
+    /**
+     * @throws StrNotEmptyException
+     */
     public function empty(): StrAssertInterface
     {
         if ((new StrBool($this->string))->empty()) {
             return $this;
         }
-        throw new StrAssertException(
+        throw new StrNotEmptyException(
             (new Message('String %string% is not empty'))
                 ->code('%string%', $this->string)
                 ->toString()
         );
     }
 
+    /**
+     * @throws StrEmptyException
+     */
     public function notEmpty(): StrAssertInterface
     {
         if ((new StrBool($this->string))->empty()) {
-            throw new StrAssertException(
+            throw new StrEmptyException(
                 (new Message('String is empty'))
                     ->toString()
             );
@@ -51,12 +70,15 @@ final class StrAssert implements StrAssertInterface
         return $this;
     }
 
+    /**
+     * @throws StrNotCtypeSpaceException
+     */
     public function ctypeSpace(): StrAssertInterface
     {
         if ((new StrBool($this->string))->ctypeSpace()) {
             return $this;
         }
-        throw new StrAssertException(
+        throw new StrNotCtypeSpaceException(
             (new Message('String %string% is not %algo%'))
                 ->code('%string%', $this->string)
                 ->strong('%algo%', 'ctype space')
@@ -64,10 +86,13 @@ final class StrAssert implements StrAssertInterface
         );
     }
 
+    /**
+     * @throws StrCtypeSpaceException
+     */
     public function notCtypeSpace(): StrAssertInterface
     {
         if ((new StrBool($this->string))->ctypeSpace()) {
-            throw new StrAssertException(
+            throw new StrCtypeSpaceException(
                 (new Message('String %algo% provided'))
                     ->strong('%algo%', 'ctype space')
                     ->toString()
@@ -77,25 +102,31 @@ final class StrAssert implements StrAssertInterface
         return $this;
     }
 
+    /**
+     * @throws StrNotStartsWithCtypeDigitException
+     */
     public function startsWithCtypeDigit(): StrAssertInterface
     {
-        if ((new StrBool($this->string))->firstCharCtypeDigit()) {
+        if ((new StrBool($this->string))->startsWithCtypeDigit()) {
             return $this;
         }
-        throw new StrAssertException(
+        throw new StrNotStartsWithCtypeDigitException(
             (new Message('String %string% does not starts with a %algo% character'))
-                ->strong('%string%', $this->string)
+                ->code('%string%', $this->string)
                 ->strong('%algo%', 'ctype digit')
                 ->toString()
         );
     }
 
+    /**
+     * @throws StrStartsWithCtypeDigitException
+     */
     public function notStartsWithCtypeDigit(): StrAssertInterface
     {
-        if ((new StrBool($this->string))->firstCharCtypeDigit()) {
-            throw new StrAssertException(
+        if ((new StrBool($this->string))->startsWithCtypeDigit()) {
+            throw new StrStartsWithCtypeDigitException(
                 (new Message('String %string% starts with a %algo% character'))
-                    ->strong('%string%', $this->string)
+                    ->code('%string%', $this->string)
                     ->strong('%algo%', 'ctype digit')
                     ->toString()
             );
@@ -105,28 +136,31 @@ final class StrAssert implements StrAssertInterface
     }
 
     /**
-     * Detects if a string begins with the given needle.
-     *
-     * @param string $needle value being searched for
+     * @throws StrNotStartsWithException
      */
     public function startsWith(string $needle): StrAssertInterface
     {
         if ((new StrBool($this->string))->startsWith($needle)) {
             return $this;
         }
-        throw new StrAssertException(
-            (new Message('String does not starts with %needle%'))
-                ->strong('%needle%', $needle)
+        throw new StrNotStartsWithException(
+            (new Message('String %string% does not starts with %needle%'))
+                ->code('%string%', $this->string)
+                ->code('%needle%', $needle)
                 ->toString()
         );
     }
 
+    /**
+     * @throws StrStartsWithException
+     */
     public function notStartsWith(string $needle): StrAssertInterface
     {
         if ((new StrBool($this->string))->startsWith($needle)) {
-            throw new StrAssertException(
-                (new Message('String starts with a %needle%'))
-                    ->strong('%needle%', $needle)
+            throw new StrStartsWithException(
+                (new Message('String %string% starts with %needle%'))
+                    ->code('%string%', $this->string)
+                    ->code('%needle%', $needle)
                     ->toString()
             );
         }
@@ -135,30 +169,31 @@ final class StrAssert implements StrAssertInterface
     }
 
     /**
-     * Detects if a string ends with the given needle.
-     *
-     * @param string $needle value being searched for
+     * @throws StrNotEndsWithException
      */
     public function endsWith(string $needle): StrAssertInterface
     {
         if ((new StrBool($this->string))->endsWith($needle)) {
             return $this;
         }
-        throw new StrAssertException(
+        throw new StrNotEndsWithException(
             (new Message('String %string% does not ends with %needle%'))
-                ->strong('%string%', $this->string)
-                ->strong('%needle%', $needle)
+                ->code('%string%', $this->string)
+                ->code('%needle%', $needle)
                 ->toString()
         );
     }
 
+    /**
+     * @throws StrEndsWithException
+     */
     public function notEndsWith(string $needle): StrAssertInterface
     {
         if ((new StrBool($this->string))->endsWith($needle)) {
-            throw new StrAssertException(
+            throw new StrEndsWithException(
                 (new Message('String %string% ends with %needle%'))
-                    ->strong('%string%', $this->string)
-                    ->strong('%needle%', $needle)
+                    ->code('%string%', $this->string)
+                    ->code('%needle%', $needle)
                     ->toString()
             );
         }
@@ -167,28 +202,64 @@ final class StrAssert implements StrAssertInterface
     }
 
     /**
-     * Assert timing safe string equals comparison.
-     *
-     * @param string $string user submitted (unsafe) value
+     * @throws StrNotSameException
      */
     public function same(string $string): StrAssertInterface
     {
         if ((new StrBool($this->string))->same($string)) {
             return $this;
         }
-        throw new StrAssertException(
-            (new Message('String %string% is not the same'))
-                ->strong('%string%', $string)
+        throw new StrNotSameException(
+            (new Message('Provided string %provided% is not the same as %string%'))
+                ->code('%provided%', $string)
+                ->code('%string%', $this->string)
                 ->toString()
         );
     }
 
+    /**
+     * @throws StrSameException
+     */
     public function notSame(string $string): StrAssertInterface
     {
         if ((new StrBool($this->string))->same($string)) {
-            throw new StrAssertException(
-                (new Message('String is the same as %string%'))
-                    ->strong('%string%', $this->string)
+            throw new StrSameException(
+                (new Message('Provided string %provided% is the same as %string%'))
+                    ->code('%provided%', $string)
+                    ->code('%string%', $this->string)
+                    ->toString()
+            );
+        }
+
+        return $this;
+    }
+
+    /**
+     * @throws StrNotContainsException
+     */
+    public function contains(string $string): StrAssertInterface
+    {
+        if ((new StrBool($this->string))->contains($string)) {
+            return $this;
+        }
+        throw new StrNotContainsException(
+            (new Message('String %string% not contains %provided%'))
+                ->code('%provided%', $string)
+                ->code('%string%', $this->string)
+                ->toString()
+        );
+    }
+
+    /**
+     * @throws StrContainsException
+     */
+    public function notContains(string $string): StrAssertInterface
+    {
+        if ((new StrBool($this->string))->contains($string)) {
+            throw new StrContainsException(
+                (new Message('String %string% contains %provided%'))
+                    ->code('%provided%', $string)
+                    ->code('%string%', $this->string)
                     ->toString()
             );
         }

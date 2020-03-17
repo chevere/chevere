@@ -13,22 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem\Interfaces\Path;
 
-use Chevere\Components\Filesystem\Exceptions\Path\PathNotAbsoluteException;
-use Chevere\Components\Filesystem\Exceptions\Path\PathDoubleDotsDashException;
-use Chevere\Components\Filesystem\Exceptions\Path\PathDotSlashException;
-use Chevere\Components\Filesystem\Exceptions\Path\PathExtraSlashesException;
-
 interface PathInterface
 {
     /**
      * Return absolute path
      */
     public function absolute(): string;
-
-    // /**
-    //  * Returns a boolean indicating whether the path is a stream.
-    //  */
-    // public function isStream(): bool;
 
     /**
      * Returns a boolean indicating whether the path exists.
@@ -67,5 +57,5 @@ interface PathInterface
     /**
      * Get a child path as a PathInterface
      */
-    public function getChild(string $path): PathInterface;
+    public function getChild(string $child): PathInterface;
 }

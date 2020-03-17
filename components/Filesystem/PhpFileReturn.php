@@ -13,17 +13,19 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Str\Exceptions\StrAssertException;
 use Chevere\Components\Filesystem\Exceptions\File\FileHandleException;
 use Chevere\Components\Filesystem\Exceptions\File\FileInvalidContentsException;
+use Chevere\Components\Filesystem\Exceptions\File\FileNotFoundException;
+use Chevere\Components\Filesystem\Exceptions\File\FileUnableToGetException;
 use Chevere\Components\Filesystem\Exceptions\File\FileWithoutContentsException;
-use Chevere\Components\Serialize\Exceptions\UnserializeException;
-use Chevere\Components\Message\Message;
-use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Filesystem\Interfaces\File\PhpFileInterface;
 use Chevere\Components\Filesystem\Interfaces\File\PhpFileReturnInterface;
+use Chevere\Components\Message\Message;
+use Chevere\Components\Serialize\Exceptions\UnserializeException;
+use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Str\StrAssert;
 use Chevere\Components\Variable\Interfaces\VariableExportInterface;
+use Throwable;
 
 /**
  * PhpFileReturn interacts with .php files that return a variable.
@@ -169,7 +171,7 @@ final class PhpFileReturn implements PhpFileReturnInterface
         $contents = $this->phpFile->file()->contents();
         try {
             (new StrAssert($contents))->notEmpty()->notCtypeSpace();
-        } catch (StrAssertException $e) {
+        } catch (Throwable $e) {
             throw new FileWithoutContentsException(
                 (new Message("The file at %path% doesn't have any contents (non-strict validation)"))
                     ->code('%path%', $this->phpFile->file()->path()->absolute())

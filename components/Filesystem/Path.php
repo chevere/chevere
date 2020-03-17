@@ -13,10 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Filesystem\Exceptions\Path\PathUnableToChmodException;
 use Chevere\Components\Filesystem\Exceptions\Path\PathDoesntExistsException;
-use Chevere\Components\Message\Message;
+use Chevere\Components\Filesystem\Exceptions\Path\PathDotSlashException;
+use Chevere\Components\Filesystem\Exceptions\Path\PathDoubleDotsDashException;
+use Chevere\Components\Filesystem\Exceptions\Path\PathExtraSlashesException;
+use Chevere\Components\Filesystem\Exceptions\Path\PathNotAbsoluteException;
+use Chevere\Components\Filesystem\Exceptions\Path\PathUnableToChmodException;
 use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Message\Message;
 
 /**
  * Handles paths with context.
@@ -27,8 +31,6 @@ class Path implements PathInterface
     private string $absolute;
 
     /**
-     * Creates a new instance.
-     *
      * @param string $absolute An absolute filesystem path
      * @throws PathNotAbsoluteException
      * @throws PathDoubleDotsDashException
@@ -107,12 +109,12 @@ class Path implements PathInterface
         return is_readable($this->absolute);
     }
 
-    public function getChild(string $path): PathInterface
+    public function getChild(string $child): PathInterface
     {
         $parent = $this->absolute;
         $childrenPath = rtrim($parent, '/');
 
-        return new Path($childrenPath . '/' . $path);
+        return new Path($childrenPath . '/' . $child);
     }
 
     private function assertExists(): void

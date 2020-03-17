@@ -22,6 +22,14 @@ interface RoutePathInterface extends ToStringInterface
     /** Regex pattern used to catch {wildcard} */
     const REGEX_WILDCARD_SEARCH = self::REGEX_DELIMITER_CHAR . '{' . RouteWildcardInterface::ACCEPT_CHARS . '}' . self::REGEX_DELIMITER_CHAR . 'i';
 
+    const ILLEGAL_CHARS = [
+        '//' => 'extra-slashes',
+        '\\' => 'backslash',
+        '{{' => 'double-braces',
+        '}}' => 'double-braces',
+        ' ' => 'whitespace',
+    ];
+
     public function __construct(string $path);
 
     /**
