@@ -13,19 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Interfaces;
 
-use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\RouterIdentifierObjectsRead;
 
-/**
- * Provides access to the router index.
- */
 interface RouterIndexInterface
 {
-    /**
-     * Returns the number of items indexed
-     */
-    public function count(): int;
-
     /**
      * Return an instance with the specified values.
      *

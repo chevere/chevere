@@ -28,6 +28,22 @@ final class GroupsSpecTest extends TestCase
 {
     public function testConstruct(): void
     {
+        $specPath = '/spec/';
+        $groupName = 'group-name';
+        $specGroupPath = $specPath . $groupName . '/';
+        $specGroupPathJson = $specGroupPath . 'routes.json';
+        $spec = new GroupSpec($specGroupPath);
+        $this->assertSame($specGroupPathJson, $spec->jsonPath());
+        $this->assertSame([
+            'name' => $groupName,
+            'spec' => $specGroupPathJson,
+            'routes' => []
+        ], $spec->toArray());
+        $this->assertCount(0, $spec->objects());
+    }
+
+    public function testWithAddedRouteable(): void
+    {
         $routeName = new RouteName('route-name');
         $specPath = '/spec/';
         $groupName = 'group-name';

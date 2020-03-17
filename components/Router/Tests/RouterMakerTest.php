@@ -57,8 +57,10 @@ final class RouterMakerTest extends TestCase
 
     public function testConstruct(): void
     {
-        $routerMaker = new RouterMaker($this->routerCache);
-        $this->assertInstanceOf(RouterInterface::class, $routerMaker->router());
+        $this->assertInstanceOf(
+            RouterInterface::class,
+            (new RouterMaker)->router()
+        );
     }
 
     public function testWithAddedRouteable(): void
@@ -66,16 +68,18 @@ final class RouterMakerTest extends TestCase
         $routeable1 = $this->getRouteable('/path-1', 'PathName-1');
         $routeable2 = $this->getRouteable('/path-2', 'PathName-2');
         $routePath = $routeable1->route()->path();
-        $routerMaker = (new RouterMaker($this->routerCache))
+        $routerMaker = (new RouterMaker)
             ->withAddedRouteable($routeable1, 'group')
             ->withAddedRouteable($routeable2, 'group');
+        $this->assertCount(2, $routerMaker->router()->routeables());
+        // xdd(->count());
         $this->assertTrue($routerMaker->router()->index()->hasKey($routePath->key()));
     }
 
     public function testWithAlreadyAddedPath(): void
     {
         $this->expectException(RoutePathExistsException::class);
-        (new RouterMaker($this->routerCache))
+        (new RouterMaker)
             ->withAddedRouteable(
                 $this->getRouteable('/path', 'PathName'),
                 'group'
@@ -91,7 +95,7 @@ final class RouterMakerTest extends TestCase
         $routeable1 = $this->getRouteable('/path/{foo}', 'FooName');
         $routeable2 = $this->getRouteable('/path/{bar}', 'BarName');
         $this->expectException(RouteKeyConflictException::class);
-        (new RouterMaker($this->routerCache))
+        (new RouterMaker)
             ->withAddedRouteable($routeable1, 'group')
             ->withAddedRouteable($routeable2, 'another-group');
     }
@@ -102,7 +106,7 @@ final class RouterMakerTest extends TestCase
         $routeable2 = $this->getRouteable('/path2', 'SomeName');
         $routeable3 = $this->getRouteable('/path3', 'SameName');
         $this->expectException(RouteNameConflictException::class);
-        (new RouterMaker($this->routerCache))
+        (new RouterMaker)
             ->withAddedRouteable($routeable1, 'group1')
             ->withAddedRouteable($routeable2, 'group2')
             ->withAddedRouteable($routeable3, 'group3');

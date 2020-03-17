@@ -20,7 +20,7 @@ use Chevere\Components\Router\Exceptions\RouterMakerException;
 
 interface RouterMakerInterface
 {
-    public function __construct(RouterCacheInterface $routerCache);
+    public function __construct();
 
     /**
      * Return an instance with the specified added RouteableInterface.

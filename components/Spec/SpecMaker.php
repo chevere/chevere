@@ -17,6 +17,7 @@ use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
+use Chevere\Components\Router\RouteableObjectsRead;
 use Chevere\Components\Spec\Exceptions\SpecInvalidArgumentException;
 use Chevere\Components\Spec\Interfaces\SpecIndexInterface;
 use LogicException;
@@ -45,7 +46,22 @@ final class SpecMaker
         $this->assertDir();
         $this->router = $router;
         $this->assertRouter();
-        $this->specIndex = new SpecIndexInterface();
+        $this->specIndex = new SpecIndex();
+        // $routeIdentifiers = $router->index()->objects();
+        // $routeIdentifiers->rewind();
+        // while ($routeIdentifiers->valid()) {
+        //     xdd($routeIdentifiers->current());
+        //     $routeIdentifiers->next();
+        // }
+        $routeables = $router->routeables();
+        $routeables->rewind();
+        // $routeableSpec = new RouteableSpec();
+        xdd($routeables->current()->route());
+        while ($routeables->valid()) {
+            $routeables->next();
+        }
+        // xdd($router->objects());
+        // xdd($router->groups()->toArray());
     }
 
     public function specIndex(): SpecIndexInterface
@@ -55,13 +71,13 @@ final class SpecMaker
 
     private function assertDir(): void
     {
-        if (!$this->cache->exists()) {
-            $this->cache->create(0777);
+        if (!$this->dir->exists()) {
+            $this->dir->create(0777);
         }
-        if (!$this->cache->path()->isWriteable()) {
+        if (!$this->dir->path()->isWriteable()) {
             throw new LogicException(
                 (new Message('Directory %pathName% is not writeable'))
-                    ->code('%pathName%', $this->cache->path()->absolute())
+                    ->code('%pathName%', $this->dir->path()->absolute())
                     ->toString()
             );
         }
@@ -79,9 +95,16 @@ final class SpecMaker
         $keys = array_keys($missing);
         if (!empty($keys)) {
             throw new SpecInvalidArgumentException(
-                (new Message('Missing %interfaceName% %propertyName% property(s).'))
+                (new Message('Instance of %interfaceName% missing %propertyName% property(s).'))
                     ->code('%interfaceName%', RouterInterface::class)
-                    ->code('%propertyName%', implode(',', $keys))
+                    ->code('%propertyName%', implode(', ', $keys))
+                    ->toString()
+            );
+        }
+        if ($this->router->routeables()->count() == 0) {
+            throw new SpecInvalidArgumentException(
+                (new Message('Instance of %interfaceName% does not contain any routeable.'))
+                    ->code('%interfaceName%', RouterInterface::class)
                     ->toString()
             );
         }

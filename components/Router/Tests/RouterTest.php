@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
-use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
@@ -22,18 +21,17 @@ use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
-use Chevere\Components\Router\Interfaces\RoutesCacheInterface;
 use Chevere\Components\Router\Routeable;
+use Chevere\Components\Router\RouteableObjectsRead;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterGroups;
 use Chevere\Components\Router\RouterIndex;
 use Chevere\Components\Router\RouterNamed;
 use Chevere\Components\Router\RouterRegex;
-use Chevere\Components\Router\RoutesCache;
 use Chevere\TestApp\App\Controllers\TestController;
 use GuzzleHttp\Psr7\Uri;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\Test;
+use SplObjectStorage;
 
 final class RouterTest extends TestCase
 {
@@ -51,7 +49,7 @@ final class RouterTest extends TestCase
 
     public function testConstructor(): void
     {
-        $router = new Router($this->getEmptyRouteCache());
+        $router = new Router();
         $this->assertFalse($router->hasRegex());
         $this->assertFalse($router->hasIndex());
         $this->assertFalse($router->hasNamed());
@@ -61,36 +59,21 @@ final class RouterTest extends TestCase
 
     public function testUnableToResolveException(): void
     {
-        $router = new Router($this->getEmptyRouteCache());
+        $router = new Router();
         $this->expectException(RouterException::class);
         $router->resolve(new Uri('/'));
     }
 
     public function testRegexNotFound(): void
     {
-        $regex = new RouterRegex(
-            new Regex('#^(?|/test (*:0))$#x')
-        );
-        $router = (new Router($this->getEmptyRouteCache()))->withRegex($regex);
+        $regex = new RouterRegex(new Regex('#^(?|/test (*:0))$#x'));
+        $router = (new Router())->withRegex($regex);
         $this->assertTrue($router->hasRegex());
         $this->assertSame($regex, $router->regex());
         $this->assertTrue($router->canResolve());
         $this->expectException(RouteNotFoundException::class);
         $router->resolve(new Uri('/not-found'));
     }
-
-    // public function testRegexFound(): void
-    // {
-    //     $regex = new RouterRegex(
-    //         new Regex('#^(?|/found/([A-z0-9\\_\\-\\%]+) (*:0)|/ (*:1)|/hello-world (*:2))$#x')
-    //     );
-    //     $router = (new Router($this->getCachedRouteCache()))->withRegex($regex);
-    //     $this->assertTrue($router->hasRegex());
-    //     $this->assertSame($regex, $router->regex());
-    //     $this->assertTrue($router->canResolve());
-    //     $routed = $router->resolve(new Uri('/found/yay'));
-    //     $this->assertInstanceOf(RoutedInterface::class, $routed);
-    // }
 
     public function testIndex(): void
     {
@@ -103,7 +86,7 @@ final class RouterTest extends TestCase
         );
         $routeable = new Routeable($route);
         $index = (new RouterIndex)->withAdded($routeable, 0, 'some-group');
-        $router = (new Router($this->getEmptyRouteCache()))->withIndex($index);
+        $router = (new Router)->withIndex($index);
         $this->assertTrue($router->hasIndex());
         $this->assertSame($index, $router->index());
     }
@@ -111,7 +94,7 @@ final class RouterTest extends TestCase
     public function testNamed(): void
     {
         $named = (new RouterNamed)->withAdded('test_name', 1);
-        $router = (new Router($this->getEmptyRouteCache()))->withNamed($named);
+        $router = (new Router)->withNamed($named);
         $this->assertTrue($router->hasNamed());
         $this->assertSame($named, $router->named());
     }
@@ -119,18 +102,28 @@ final class RouterTest extends TestCase
     public function testGroups(): void
     {
         $groups = (new RouterGroups)->withAdded('test_group', 2);
-        $router = (new Router($this->getEmptyRouteCache()))->withGroups($groups);
+        $router = (new Router)->withGroups($groups);
         $this->assertTrue($router->hasGroups());
         $this->assertSame($groups, $router->groups());
     }
 
-    private function getEmptyRouteCache(): RoutesCacheInterface
+    public function testRouteables(): void
     {
-        return new RoutesCache($this->cacheHelper->getEmptyCache());
-    }
-
-    private function getCachedRouteCache(): RoutesCacheInterface
-    {
-        return new RoutesCache($this->cacheHelper->getCachedCache());
+        $route = new Route(new RouteName('some-name'), new RoutePath('/test'));
+        $route = $route->withAddedEndpoint(
+            new RouteEndpoint(
+                new GetMethod,
+                new TestController
+            )
+        );
+        $routeable = new Routeable($route);
+        $objectStorage = new SplObjectStorage;
+        $objectStorage->attach($routeable);
+        $router = (new Router)->withRouteables(
+            new RouteableObjectsRead($objectStorage)
+        );
+        $this->assertCount(1, $router->routeables());
+        $router->routeables()->rewind();
+        $this->assertSame($routeable, $router->routeables()->current());
     }
 }

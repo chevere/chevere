@@ -26,10 +26,10 @@ final class SpecIndex implements SpecIndexInterface
 
     public function __construct()
     {
-        $this->list = new SplDoublyLinkedList();
+        $this->list = new SplDoublyLinkedList;
     }
 
-    public function withAdded(
+    public function withOffset(
         int $id,
         MethodInterface $method,
         string $specPath
@@ -50,11 +50,6 @@ final class SpecIndex implements SpecIndexInterface
     public function count(): int
     {
         return $this->list->count();
-    }
-
-    public function hasAny(): bool
-    {
-        return $this->list->count() > 0;
     }
 
     public function has(int $id, MethodInterface $method): bool

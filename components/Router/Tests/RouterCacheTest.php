@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
-use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
@@ -34,7 +33,6 @@ use Chevere\Components\Router\RouterIndex;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Router\RouterNamed;
 use Chevere\Components\Router\RouterRegex;
-use Chevere\Components\Router\RoutesCache;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
@@ -101,11 +99,7 @@ final class RouterCacheTest extends TestCase
 
     public function testWorkingCache(): void
     {
-        $router = new Router(
-            new RoutesCache(
-                $this->cacheHelper->getWorkingCache()
-            )
-        );
+        $router = new Router;
         $regex = new RouterRegex(
             new Regex('#^(?|/found/([A-z0-9\\_\\-\\%]+) (*:0)|/ (*:1)|/hello-world (*:2))$#x')
         );
@@ -117,10 +111,7 @@ final class RouterCacheTest extends TestCase
         ];
         $route = new Route(new RouteName('some-name'), new RoutePath('/test'));
         $route = $route->withAddedEndpoint(
-            new RouteEndpoint(
-                new GetMethod,
-                new TestController
-            )
+            new RouteEndpoint(new GetMethod, new TestController)
         );
         $routeable = new Routeable($route);
         $index = (new RouterIndex)->withAdded($routeable, 0, 'test_group');
@@ -182,7 +173,7 @@ final class RouterCacheTest extends TestCase
         $group = 'some-group';
         $cache = $this->cacheHelper->getCachedCache();
         $routerCache = new RouterCache($cache);
-        $routerMaker = new RouterMaker($routerCache);
+        $routerMaker = new RouterMaker;
         $routes = $this->routes;
         foreach ($routes as $route) {
             $routerMaker = $routerMaker->withAddedRouteable(

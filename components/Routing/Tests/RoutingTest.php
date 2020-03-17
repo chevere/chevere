@@ -50,8 +50,7 @@ final class RoutingTest extends TestCase
     public function testConstruct(): void
     {
         $routePathIterator = new RoutePathIterator($this->routesDir);
-        $routerCache = new RouterCache(new Cache($this->cacheDir));
-        $routerMaker = new RouterMaker($routerCache);
+        $routerMaker = new RouterMaker;
         $routing = new Routing($routePathIterator, $routerMaker);
         $this->assertInstanceOf(RouterInterface::class, $routing->routeMaker()->router());
     }

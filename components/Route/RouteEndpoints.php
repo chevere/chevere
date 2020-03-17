@@ -28,7 +28,7 @@ final class RouteEndpoints implements RouteEndpointsInterface
     /** @param array ['METHOD' => key,]*/
     private array $index = [];
 
-    private int $count = -1;
+    private int $pos = -1;
 
     public function __construct(RouteEndpointInterface ...$routeEndpoint)
     {
@@ -82,8 +82,8 @@ final class RouteEndpoints implements RouteEndpointsInterface
 
             return;
         }
-        $this->count++;
-        $this->objects->attach($routeEndpoint, $this->count);
-        $this->index[$this->count] = $name;
+        $this->pos++;
+        $this->objects->attach($routeEndpoint, $this->pos);
+        $this->index[$this->pos] = $name;
     }
 }

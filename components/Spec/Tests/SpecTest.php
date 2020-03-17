@@ -96,22 +96,4 @@ final class SpecTest extends TestCase
 
         // xdd($spec->toArray());
     }
-
-    private function getEmptyRouter(): RouterInterface
-    {
-        $dir = new Dir(new Path(__DIR__ . '/_resources/empty/'));
-        $cache = new Cache($dir);
-        $routesCache = new RoutesCache($cache);
-
-        return new Router($routesCache);
-    }
-
-    private function getCachedRouter(): RouterInterface
-    {
-        $dir = new Dir(new Path(__DIR__ . '/_resources/cached/'));
-        $cache = new Cache($dir);
-        $routesCache = new RoutesCache($cache);
-
-        return new Router($routesCache);
-    }
 }

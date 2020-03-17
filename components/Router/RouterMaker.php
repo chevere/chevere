@@ -53,13 +53,13 @@ final class RouterMaker implements RouterMakerInterface
 
     private int $id = -1;
 
-    public function __construct(RouterCacheInterface $routerCache)
+    public function __construct()
     {
-        $this->router = (new Router($routerCache->routesCache()))
-            ->withIndex(new RouterIndex())
-            ->withNamed(new RouterNamed())
-            ->withGroups(new RouterGroups());
-        $this->objects = new SplObjectStorage();
+        $this->router = (new Router)
+            ->withIndex(new RouterIndex)
+            ->withNamed(new RouterNamed)
+            ->withGroups(new RouterGroups);
+        $this->objects = new SplObjectStorage;
     }
 
     public function withAddedRouteable(RouteableInterface $routeable, string $group): RouterMakerInterface

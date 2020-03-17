@@ -30,7 +30,7 @@ final class RouterIndex implements RouterIndexInterface
     /** @var array <int>$id => <string>$key */
     private array $index = [];
 
-    private int $count = -1;
+    private int $pos = -1;
 
     public function __construct()
     {
@@ -39,16 +39,16 @@ final class RouterIndex implements RouterIndexInterface
 
     public function count(): int
     {
-        return $this->count + 1;
+        return $this->pos + 1;
     }
 
     public function withAdded(RouteableInterface $routeable, int $id, string $group): RouterIndexInterface
     {
         $new = clone $this;
-        $new->count++;
+        $new->pos++;
         $key = $routeable->route()->path()->toString();
-        $new->array[$key] = $new->count;
-        $new->index[$new->count] = $key;
+        $new->array[$key] = $new->pos;
+        $new->index[$new->pos] = $key;
         $new->objects->attach(
             new RouteIdentifier($id, $group, $routeable->route()->name()->toString()),
             $routeable->route()->path()

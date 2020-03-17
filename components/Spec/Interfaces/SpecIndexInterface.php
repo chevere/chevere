@@ -17,11 +17,13 @@ use Chevere\Components\Http\Interfaces\MethodInterface;
 
 interface SpecIndexInterface
 {
-    public function withAdded(int $id, MethodInterface $method, string $specPath): SpecIndexInterface;
+    public function withOffset(
+        int $id,
+        MethodInterface $method,
+        string $specPath
+    ): SpecIndexInterface;
 
     public function count(): int;
-
-    public function hasAny(): bool;
 
     public function has(int $id, MethodInterface $method): bool;
 
