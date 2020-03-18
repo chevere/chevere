@@ -25,9 +25,4 @@ final class RouteEndpointSpecObjectsRead extends SplObjectStorageRead
     {
         return $this->objects->current();
     }
-
-    public function getInfo()
-    {
-        return $this->objects->getInfo();
-    }
 }

@@ -16,11 +16,9 @@ namespace Chevere\Components\Route\Tests;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Route\Exceptions\EndpointException;
 use PHPUnit\Framework\TestCase;
 
-final class RouteEndpointTest extends TestCase
+final class RouteEndpointsTest extends TestCase
 {
     private DirInterface $resourcesDir;
 

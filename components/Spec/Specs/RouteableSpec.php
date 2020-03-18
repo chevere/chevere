@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec;
 
 use Chevere\Components\Common\Interfaces\ToArrayInterface;
-use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
 use Chevere\Components\Spec\Interfaces\SpecPathInterface;
 use Chevere\Components\Spec\Specs\RouteEndpointSpecObjectsRead;
@@ -43,21 +42,15 @@ final class RouteableSpec implements ToArrayInterface
             'path' => $routeable->route()->path()->toString(),
             'wildcards' => $routeable->route()->path()->routeWildcards()->toArray(),
         ];
-        $objects = $routeable->route()->endpoints()->objects();
-        $objects->rewind();
-        while ($objects->valid()) {
+        $routeEndpointsMap = $routeable->route()->endpoints()->routeEndpointsMap();
+        // @var RouteEndpointInterface $routeEndpoint
+        foreach ($routeEndpointsMap->map() as $routeEndpoint) {
             $routeEndpointSpec = new RouteEndpointSpec(
                 $specPath,
-                (new RouteEndpoint(
-                    $objects->current()->method(),
-                    $objects->current()->controller()
-                ))
-                    ->withDescription($objects->current()->description())
-                    ->withParameters($objects->current()->parameters())
+                $routeEndpoint
             );
             $this->objects->attach($routeEndpointSpec);
             $this->array['endpoints'][] = $routeEndpointSpec->toArray();
-            $objects->next();
         }
     }
 
@@ -71,7 +64,7 @@ final class RouteableSpec implements ToArrayInterface
         return $this->array;
     }
 
-    public function objects(): RouteEndpointSpecObjectsRead
+    public function routeEndpointSpecs(): RouteEndpointSpecObjectsRead
     {
         return new RouteEndpointSpecObjectsRead($this->objects);
     }

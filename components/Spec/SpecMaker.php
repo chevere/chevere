@@ -35,6 +35,8 @@ final class SpecMaker
 
     private RouterInterface $router;
 
+    private SpecIndex $specIndex;
+
     private IndexSpec $indexSpec;
 
     public function __construct(
@@ -47,30 +49,38 @@ final class SpecMaker
         $this->assertDir();
         $this->router = $router;
         $this->assertRouter();
+        $this->specIndex = new SpecIndex;
         $this->indexSpec = new IndexSpec($this->specPath);
-        $routeableObjects = $router->routeables();
-        $routeableObjects->rewind();
+        $routeables = $router->routeables();
+        $routeables->rewind();
         $groups = [];
-        while ($routeableObjects->valid()) {
-            $id = $routeableObjects->getInfo();
-            $routeable = $routeableObjects->current();
+        while ($routeables->valid()) {
+            $id = $routeables->getInfo();
+            $routeable = $routeables->current();
             $group = $router->groups()->getForId($id);
             $groupSpecPath = $specPath->getChild($group);
             if (!isset($group[$group])) {
                 $groups[$group] = new GroupSpec($groupSpecPath);
             }
+            $routeableSpec = new RouteableSpec(
+                $groupSpecPath->getChild(
+                    $router->index()->get($id)->name()
+                ),
+                $routeable
+            );
             /** @var GroupSpec $groupSpec */
-            $groupSpec = $groups[$group]
-                ->withAddedRouteable(
-                    new RouteableSpec(
-                        $groupSpecPath->getChild(
-                            $router->named()->getForId($id)
-                        ),
-                        $routeable
-                    )
-                );
+            $groupSpec = ($groups[$group])->withAddedRouteable($routeableSpec);
             $groups[$group] = $groupSpec;
-            $routeableObjects->next();
+            $routeEndpointSpecs = $routeableSpec->routeEndpointSpecs();
+            $routeEndpointSpecs->rewind();
+            while ($routeEndpointSpecs->valid()) {
+                $this->specIndex = $this->specIndex->withOffset(
+                    $id,
+                    $routeEndpointSpecs->current()
+                );
+                $routeEndpointSpecs->next();
+            }
+            $routeables->next();
         }
         foreach ($groups as $groupSpec) {
             $this->indexSpec = $this->indexSpec->withAddedGroup($groupSpec);

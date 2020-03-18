@@ -31,8 +31,7 @@ final class SpecIndex implements SpecIndexInterface
 
     public function withOffset(
         int $id,
-        MethodInterface $method,
-        string $specPath
+        RouteEndpointSpec $routeEndpointSpec
     ): SpecIndexInterface {
         $new = clone $this;
         $methods = [];
@@ -41,7 +40,7 @@ final class SpecIndex implements SpecIndexInterface
         } else {
             $new->list->add($id, $methods);
         }
-        $methods[$method->name()] = $specPath;
+        $methods[$routeEndpointSpec->method()] = $routeEndpointSpec->jsonPath();
         $new->list->offsetSet($id, $methods);
 
         return $new;

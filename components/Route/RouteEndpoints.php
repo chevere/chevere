@@ -13,22 +13,20 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
+use Chevere\Components\Http\Exceptions\MethodNotFoundException;
+use Chevere\Components\Http\Interfaces\MethodInterface;
+use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointsInterface;
-use SplObjectStorage;
+use Ds\Map;
 
 final class RouteEndpoints implements RouteEndpointsInterface
 {
-    private SplObjectStorage $objects;
-
-    /** @param array ['METHOD' => key,]*/
-    private array $index = [];
-
-    private int $pos = -1;
+    private Map $map;
 
     public function __construct(RouteEndpointInterface ...$routeEndpoint)
     {
-        $this->objects = new SplObjectStorage();
+        $this->map = new Map;
         foreach ($routeEndpoint as $object) {
             $this->storeRouteEndpoint($object);
         }
@@ -42,44 +40,31 @@ final class RouteEndpoints implements RouteEndpointsInterface
         return $new;
     }
 
-    // public function getMethod(MethodInterface $method): MethodControllerInterface
-    // {
-    //     $pos = array_search($method::name(), $this->index);
-    //     if (false === $pos) {
-    //         throw new MethodNotFoundException(
-    //             (new Message('Method %method% not found'))
-    //                 ->code('%method%', $method::name())
-    //                 ->toString()
-    //         );
-    //     }
-    //     $this->objects->rewind();
-    //     for ($i = 0; $i < $pos; $i++) {
-    //         $this->objects->next();
-    //     }
-
-    //     return $this->objects->current();
-    // }
-
-    public function objects(): RouteEndpointObjectsRead
+    public function hasMethod(MethodInterface $method): bool
     {
-        return new RouteEndpointObjectsRead($this->objects);
+        return $this->map->hasKey($method::name());
+    }
+
+    public function getMethod(MethodInterface $method): RouteEndpointInterface
+    {
+        if (!$this->map->hasKey($method::name())) {
+            throw new MethodNotFoundException(
+                (new Message('Method %method% not found'))
+                    ->code('%method%', $method::name())
+                    ->toString()
+            );
+        }
+
+        return $this->map->get($method::name());
+    }
+
+    public function routeEndpointsMap(): RouteEndpointsMap
+    {
+        return new RouteEndpointsMap($this->map);
     }
 
     private function storeRouteEndpoint(RouteEndpointInterface $routeEndpoint): void
     {
-        $name = $routeEndpoint->method()::name();
-        $pos = array_search($name, $this->index);
-        if (false !== $pos) {
-            $this->objects->attach(
-                $routeEndpoint,
-                $pos
-            );
-            $this->index[$pos] = $name;
-
-            return;
-        }
-        $this->pos++;
-        $this->objects->attach($routeEndpoint, $this->pos);
-        $this->index[$this->pos] = $name;
+        $this->map->put($routeEndpoint->method()->name(), $routeEndpoint);
     }
 }

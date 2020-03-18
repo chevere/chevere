@@ -54,7 +54,7 @@ final class RouterIndexTest extends TestCase
         $routerIndex = (new RouterIndex())
             ->withAdded($routeable, $id, $group);
         $this->assertTrue($routerIndex->hasKey($key));
-        $this->assertCount(1, $routerIndex->objects());
+        $this->assertCount(1, $routerIndex->routeIdentifiers());
         $this->assertSame([
             $key => [
                 'id' => $id,

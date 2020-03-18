@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route\Interfaces;
 
-use Chevere\Components\Http\Exceptions\MethodNotFoundException;
 use Chevere\Components\Http\Interfaces\MethodInterface;
-use Chevere\Components\Route\RouteEndpointObjectsRead;
+use Chevere\Components\Route\RouteEndpointsMap;
 
 interface RouteEndpointsInterface
 {
@@ -31,5 +30,9 @@ interface RouteEndpointsInterface
      */
     public function withAddedRouteEndpoint(RouteEndpointInterface $routeEndpoint): RouteEndpointsInterface;
 
-    public function objects(): RouteEndpointObjectsRead;
+    public function hasMethod(MethodInterface $method): bool;
+
+    public function getMethod(MethodInterface $method): RouteEndpointInterface;
+
+    public function routeEndpointsMap(): RouteEndpointsMap;
 }

@@ -54,9 +54,9 @@ final class RouteableSpecTest extends TestCase
             ],
             $spec->toArray()
         );
-        $spec->objects()->rewind();
-        $object = $spec->objects()->current();
-        $this->assertNull($spec->objects()->getInfo());
+        $spec->routeEndpointSpecs()->rewind();
+        $object = $spec->routeEndpointSpecs()->current();
+        $this->assertNull($spec->routeEndpointSpecs()->getInfo());
         $this->assertSame($specPathJson, $object->jsonPath());
         $this->assertSame($routeEndpoint->toArray(), $object->toArray());
     }

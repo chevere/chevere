@@ -51,7 +51,7 @@ final class RouterIndex implements RouterIndexInterface
         $new->index[$new->pos] = $key;
         $new->objects->attach(
             new RouteIdentifier($id, $group, $routeable->route()->name()->toString()),
-            $routeable->route()->path()
+            $key
         );
 
         return $new;
@@ -81,13 +81,17 @@ final class RouterIndex implements RouterIndexInterface
                     ->toString()
             );
         }
+        $pos = 0;
+        $this->objects->rewind();
+        while ($id !== $pos) {
+            $pos++;
+            $this->objects->next();
+        }
 
-        return $this->objects->offsetGet(
-            $this->array[$this->index[$id]]
-        );
+        return $this->objects->current();
     }
 
-    public function objects(): RouterIdentifierObjectsRead
+    public function routeIdentifiers(): RouterIdentifierObjectsRead
     {
         return new RouterIdentifierObjectsRead($this->objects);
     }
@@ -97,7 +101,7 @@ final class RouterIndex implements RouterIndexInterface
         $array = [];
         $this->objects->rewind();
         while ($this->objects->valid()) {
-            $array[$this->objects->getInfo()->toString()] = $this->objects->current()->toArray();
+            $array[$this->objects->getInfo()] = $this->objects->current()->toArray();
             $this->objects->next();
         }
 

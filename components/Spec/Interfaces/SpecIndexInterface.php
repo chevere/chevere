@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Interfaces;
 
 use Chevere\Components\Http\Interfaces\MethodInterface;
+use Chevere\Components\Spec\RouteEndpointSpec;
 
 interface SpecIndexInterface
 {
     public function withOffset(
         int $id,
-        MethodInterface $method,
-        string $specPath
+        RouteEndpointSpec $routeEndpointSpec
     ): SpecIndexInterface;
 
     public function count(): int;

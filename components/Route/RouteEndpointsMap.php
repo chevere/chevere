@@ -13,18 +13,26 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use Chevere\Components\DataStructures\SplObjectStorageRead;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
+use Countable;
+use Ds\Map;
 
-final class RouteEndpointObjectsRead extends SplObjectStorageRead
+final class RouteEndpointsMap
 {
-    public function current(): RouteEndpointInterface
+    private Map $map;
+
+    public function __construct(Map $map)
     {
-        return $this->objects->current();
+        $this->map = $map;
     }
 
-    public function getInfo(): int
+    public function map(): Map
     {
-        return $this->objects->getInfo();
+        return $this->map;
+    }
+
+    public function get(string $methodName): RouteEndpointInterface
+    {
+        return $this->map->get($methodName);
     }
 }

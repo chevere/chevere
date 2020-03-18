@@ -16,21 +16,15 @@ namespace Chevere\Components\Router;
 use Chevere\Components\DataStructures\SplObjectStorageRead;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Router\Interfaces\RouteIdentifierInterface;
-use SplObjectStorage;
 
 final class RouterIdentifierObjectsRead extends SplObjectStorageRead
 {
-    public function append(RouteIdentifierInterface $routeIdentifier, RoutePathInterface $routePath)
-    {
-        $this->objects->attach($routeIdentifier, $routePath);
-    }
-
     public function current(): RouteIdentifierInterface
     {
         return $this->objects->current();
     }
 
-    public function getInfo(): RoutePathInterface
+    public function getInfo(): string
     {
         return $this->objects->getInfo();
     }

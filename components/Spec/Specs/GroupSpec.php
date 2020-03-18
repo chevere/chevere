@@ -43,7 +43,7 @@ final class GroupSpec implements ToArrayInterface
     public function withAddedRouteable(RouteableSpec $routeableSpec): GroupSpec
     {
         $new = clone $this;
-        $this->objects->attach($routeableSpe);
+        $this->objects->attach($routeableSpec);
         $new->array['routes'][] = $routeableSpec->toArray();
 
         return $new;

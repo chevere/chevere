@@ -28,7 +28,10 @@ abstract class SplObjectStorageRead implements Countable, Iterator
 
     abstract public function current(): object;
 
-    abstract public function getInfo();
+    public function getInfo()
+    {
+        return $this->objects->getInfo();
+    }
 
     final public function __construct(SplObjectStorage $objects)
     {

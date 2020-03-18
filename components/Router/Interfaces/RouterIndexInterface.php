@@ -45,7 +45,7 @@ interface RouterIndexInterface
      */
     public function get(int $id): RouteIdentifierInterface;
 
-    public function objects(): RouterIdentifierObjectsRead;
+    public function routeIdentifiers(): RouterIdentifierObjectsRead;
 
     public function toArray(): array;
 }
