@@ -18,8 +18,8 @@ use Chevere\Components\Common\Interfaces\ToStringInterface;
 interface RouteWildcardMatchInterface extends ToStringInterface
 {
     /**
-     * @param string Regex match (without delimiters).
-     * @throws RegexException if $match is an invalid regex matcher
+     * @param string $match Regex match (without delimiters).
+     * @throws RegexException If $match is an invalid regex matcher
      */
     public function __construct(string $match);
 

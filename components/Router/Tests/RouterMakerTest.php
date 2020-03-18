@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
-use Chevere\Components\Http\MethodController;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;

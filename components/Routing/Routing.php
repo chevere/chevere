@@ -15,13 +15,11 @@ namespace Chevere\Components\Routing;
 
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Http\MethodController;
 use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
-use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Routing\Interfaces\RoutePathIteratorInterface;

@@ -33,6 +33,8 @@ final class SpecMaker
 
     private DirInterface $dir;
 
+    private RouterInterface $router;
+
     private IndexSpec $indexSpec;
 
     public function __construct(
@@ -121,9 +123,5 @@ final class SpecMaker
                     ->toString()
             );
         }
-    }
-
-    private function processGroup(): void
-    {
     }
 }

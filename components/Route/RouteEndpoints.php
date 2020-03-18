@@ -13,10 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use Chevere\Components\Http\Exceptions\MethodNotFoundException;
-use Chevere\Components\Http\Interfaces\MethodControllerInterface;
-use Chevere\Components\Http\Interfaces\MethodInterface;
-use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointsInterface;
 use SplObjectStorage;

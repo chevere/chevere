@@ -19,8 +19,9 @@ use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 
 final class RouteEndpoint implements RouteEndpointInterface
 {
-    /** @var MethodInterface The inherithed method, taken from the file basename */
     private MethodInterface $method;
+
+    private ControllerInterface $controller;
 
     private string $description = '';
 

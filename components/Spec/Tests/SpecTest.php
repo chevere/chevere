@@ -35,6 +35,8 @@ final class SpecTest extends TestCase
 {
     private CacheHelper $cacheHelper;
 
+    private array $routes;
+
     public function setUp(): void
     {
         $this->cacheHelper = new CacheHelper(__DIR__);

@@ -20,6 +20,8 @@ use SplObjectStorage;
 
 final class GroupSpec implements ToArrayInterface
 {
+    private string $jsonPath;
+
     private SplObjectStorage $objects;
 
     private $array = [];
@@ -41,7 +43,7 @@ final class GroupSpec implements ToArrayInterface
     public function withAddedRouteable(RouteableSpec $routeableSpec): GroupSpec
     {
         $new = clone $this;
-        $this->objects->attach($routeableSpec);
+        $this->objects->attach($routeableSpe);
         $new->array['routes'][] = $routeableSpec->toArray();
 
         return $new;
