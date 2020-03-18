@@ -15,16 +15,16 @@ namespace Chevere\Components\Spec\Interfaces;
 
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Spec\RouteEndpointSpec;
-use Countable;
+use Chevere\Components\Spec\SpecIndexMap;
 
-interface SpecIndexInterface extends Countable
+interface SpecIndexInterface
 {
     public function withOffset(
         int $id,
         RouteEndpointSpec $routeEndpointSpec
     ): SpecIndexInterface;
 
-    public function has(int $id, MethodInterface $method): bool;
+    public function specIndexMap(): SpecIndexMap;
 
     public function get(int $id, MethodInterface $method): string;
 }

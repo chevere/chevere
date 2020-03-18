@@ -26,7 +26,7 @@ interface RouterInterface
 
     public function withRouteables(RouteableObjectsRead $routeables): RouterInterface;
 
-    public function routeables(): RouteableObjectsRead;
+    public function routeableObjects(): RouteableObjectsRead;
 
     /**
      * Return an instance with the specified RegexInterface.

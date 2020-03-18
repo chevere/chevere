@@ -13,8 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Interfaces;
 
-use Chevere\Components\Common\Interfaces\ToArrayInterface;
+use Chevere\Components\Cache\Interfaces\CacheInterface;
+use Chevere\Components\Spec\SpecMethods;
 
 interface SpecIndexCacheInterface
 {
+    public function has(int $id): bool;
+
+    public function get(int $id): SpecMethods;
+
+    public function put(SpecIndexInterface $specIndex): void;
 }

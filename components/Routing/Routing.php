@@ -43,7 +43,7 @@ final class Routing implements RoutingInterface
     ) {
         $this->routePathIterator = $routePathIterator;
         $this->routerMaker = $routerMaker;
-        $routePaths = $this->routePathIterator->objects();
+        $routePaths = $this->routePathIterator->routePathObjects();
         $routePaths->rewind();
         while ($routePaths->valid()) {
             $this->routePath = $routePaths->current();
@@ -53,8 +53,8 @@ final class Routing implements RoutingInterface
             }
             $dir = new Dir(new Path(dirname($this->routeDecorator->whereIs()) . '/'));
             $routeEndpointIterator = new RouteEndpointIterator($dir);
-            $endpoints = $routeEndpointIterator->objects();
-            $routeEndpointIterator->objects()->rewind();
+            $endpoints = $routeEndpointIterator->routeEndpointObjects();
+            $routeEndpointIterator->routeEndpointObjects()->rewind();
             $route = new Route($this->routeDecorator->name(), $this->routePath);
             while ($endpoints->valid()) {
                 $this->routeEndpoint = $endpoints->current();

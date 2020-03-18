@@ -21,5 +21,5 @@ interface RouteEndpointIteratorInterface
 {
     public function __construct(DirInterface $dir);
 
-    public function objects(): RouteEndpointObjectsRead;
+    public function routeEndpointObjects(): RouteEndpointObjectsRead;
 }

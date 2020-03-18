@@ -20,7 +20,7 @@ use Chevere\Components\Spec\Interfaces\SpecPathInterface;
 
 final class RouteEndpointSpec implements ToArrayInterface
 {
-    private string $method;
+    private MethodInterface $method;
 
     private string $jsonPath;
 
@@ -30,17 +30,17 @@ final class RouteEndpointSpec implements ToArrayInterface
         SpecPathInterface $specPath,
         RouteEndpointInterface $routeEndpoint
     ) {
-        $this->method = $routeEndpoint->method()->name();
-        $this->jsonPath = $specPath->getChild($this->method . '.json')->pub();
+        $this->method = $routeEndpoint->method();
+        $this->jsonPath = $specPath->getChild($this->method::name() . '.json')->pub();
         $this->array = [
-            'method' => $this->method,
+            'method' => $this->method::name(),
             'spec' => $this->jsonPath,
             'description' => $routeEndpoint->description(),
             'parameters' => $routeEndpoint->parameters()
         ];
     }
 
-    public function method(): string
+    public function method(): MethodInterface
     {
         return $this->method;
     }

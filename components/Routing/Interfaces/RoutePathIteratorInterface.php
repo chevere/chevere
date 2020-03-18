@@ -22,5 +22,5 @@ interface RoutePathIteratorInterface
 
     public function __construct(DirInterface $dir);
 
-    public function objects(): RoutePathObjectsRead;
+    public function routePathObjects(): RoutePathObjectsRead;
 }

@@ -63,7 +63,7 @@ final class Router implements RouterInterface
         return $new;
     }
 
-    public function routeables(): RouteableObjectsRead
+    public function routeableObjects(): RouteableObjectsRead
     {
         return new RouteableObjectsRead($this->objects);
     }

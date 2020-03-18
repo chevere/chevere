@@ -53,7 +53,7 @@ final class RouteEndpointIterator implements RouteEndpointIteratorInterface
         }
     }
 
-    public function objects(): RouteEndpointObjectsRead
+    public function routeEndpointObjects(): RouteEndpointObjectsRead
     {
         return new RouteEndpointObjectsRead($this->objects);
     }

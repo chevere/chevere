@@ -23,10 +23,7 @@ use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\Router;
-use Chevere\Components\Router\RouterGroups;
-use Chevere\Components\Router\RouterIndex;
 use Chevere\Components\Router\RouterMaker;
-use Chevere\Components\Router\RouterNamed;
 use Chevere\Components\Spec\Exceptions\SpecInvalidArgumentException;
 use Chevere\Components\Spec\SpecMaker;
 use Chevere\Components\Spec\SpecPath;
@@ -38,7 +35,7 @@ final class SpecMakerTest extends TestCase
     public function testConstructInvalidArgument(): void
     {
         $this->expectException(SpecInvalidArgumentException::class);
-        $specMaker = new SpecMaker(
+        new SpecMaker(
             new SpecPath('/spec'),
             new Dir(new Path(__DIR__ . '/_resources/spec/')),
             new Router

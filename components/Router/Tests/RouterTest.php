@@ -122,8 +122,8 @@ final class RouterTest extends TestCase
         $router = (new Router)->withRouteables(
             new RouteableObjectsRead($objectStorage)
         );
-        $this->assertCount(1, $router->routeables());
-        $router->routeables()->rewind();
-        $this->assertSame($routeable, $router->routeables()->current());
+        $this->assertCount(1, $router->routeableObjects());
+        $router->routeableObjects()->rewind();
+        $this->assertSame($routeable, $router->routeableObjects()->current());
     }
 }

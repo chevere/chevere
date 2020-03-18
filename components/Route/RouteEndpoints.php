@@ -19,14 +19,15 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointsInterface;
 use Ds\Map;
+use function DeepCopy\deep_copy;
 
 final class RouteEndpoints implements RouteEndpointsInterface
 {
-    private Map $map;
+    private RouteEndpointsMap $routeEndpointsMap;
 
     public function __construct(RouteEndpointInterface ...$routeEndpoint)
     {
-        $this->map = new Map;
+        $this->routeEndpointsMap = new RouteEndpointsMap(new Map);
         foreach ($routeEndpoint as $object) {
             $this->storeRouteEndpoint($object);
         }
@@ -42,12 +43,12 @@ final class RouteEndpoints implements RouteEndpointsInterface
 
     public function hasMethod(MethodInterface $method): bool
     {
-        return $this->map->hasKey($method::name());
+        return $this->routeEndpointsMap->hasKey($method);
     }
 
     public function getMethod(MethodInterface $method): RouteEndpointInterface
     {
-        if (!$this->map->hasKey($method::name())) {
+        if (!$this->routeEndpointsMap->hasKey($method)) {
             throw new MethodNotFoundException(
                 (new Message('Method %method% not found'))
                     ->code('%method%', $method::name())
@@ -55,16 +56,16 @@ final class RouteEndpoints implements RouteEndpointsInterface
             );
         }
 
-        return $this->map->get($method::name());
+        return $this->routeEndpointsMap->get($method);
     }
 
     public function routeEndpointsMap(): RouteEndpointsMap
     {
-        return new RouteEndpointsMap($this->map);
+        return deep_copy($this->routeEndpointsMap);
     }
 
     private function storeRouteEndpoint(RouteEndpointInterface $routeEndpoint): void
     {
-        $this->map->put($routeEndpoint->method()->name(), $routeEndpoint);
+        $this->routeEndpointsMap->put($routeEndpoint->method(), $routeEndpoint);
     }
 }

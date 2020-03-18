@@ -16,17 +16,19 @@ namespace Chevere\Components\Spec;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Spec\Interfaces\SpecIndexInterface;
 use Ds\Map;
+use OutOfBoundsException;
+use function DeepCopy\deep_copy;
 
 /**
  * Maps route id (internal) to endpoint method spec paths.
  */
 final class SpecIndex implements SpecIndexInterface
 {
-    private Map $map;
+    private SpecIndexMap $specIndexMap;
 
     public function __construct()
     {
-        $this->map = new Map;
+        $this->specIndexMap = new SpecIndexMap(new Map);
     }
 
     public function withOffset(
@@ -34,31 +36,32 @@ final class SpecIndex implements SpecIndexInterface
         RouteEndpointSpec $routeEndpointSpec
     ): SpecIndexInterface {
         $new = clone $this;
-        $methods = [];
-        if ($new->map->hasKey($id)) {
-            $methods = $new->map->get($id);
+        $specMethods = new SpecMethods;
+        if ($new->specIndexMap->hasKey($id)) {
+            $specMethods = $new->specIndexMap->get($id);
         } else {
-            $new->map->put($id, $methods);
+            $new->specIndexMap->put($id, $specMethods);
         }
-        $methods[$routeEndpointSpec->method()] = $routeEndpointSpec->jsonPath();
-        $new->map->put($id, $methods);
+        $specMethods = $specMethods
+            ->withMethodJsonSpecPath(
+                $routeEndpointSpec->method(),
+                $routeEndpointSpec->jsonPath()
+            );
+        $new->specIndexMap->put($id, $specMethods);
 
         return $new;
     }
 
-    public function count(): int
+    public function specIndexMap(): SpecIndexMap
     {
-        return $this->map->count();
+        return deep_copy($this->specIndexMap);
     }
 
-    public function has(int $id, MethodInterface $method): bool
-    {
-        return $this->map->hasKey($id)
-            && isset($this->map->get($id)[$method->name()]);
-    }
-
+    /**
+     * @throws OutOfBoundsException if $id and $method doesn't match the index
+     */
     public function get(int $id, MethodInterface $method): string
     {
-        return $this->map->get($id)[$method->name()];
+        return $this->specIndexMap->get($id)->get($method);
     }
 }

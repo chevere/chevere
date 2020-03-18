@@ -26,7 +26,7 @@ final class RouteEndpointIteratorTest extends TestCase
     {
         $dir = new Dir(new Path(__DIR__ . '/_resources/routes/articles/{id}/'));
         $endpointIterator = new RouteEndpointIterator($dir);
-        $objects = $endpointIterator->objects();
+        $objects = $endpointIterator->routeEndpointObjects();
         $this->assertCount(1, $objects);
         $objects->rewind();
         while ($objects->valid()) {

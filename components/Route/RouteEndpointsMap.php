@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
+use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
-use Countable;
 use Ds\Map;
 
+/**
+ * A type-hinted proxy for Ds\Map storing MethodInterface => RouteEndpointInterface
+ */
 final class RouteEndpointsMap
 {
     private Map $map;
@@ -31,8 +34,18 @@ final class RouteEndpointsMap
         return $this->map;
     }
 
-    public function get(string $methodName): RouteEndpointInterface
+    public function hasKey(MethodInterface $method): bool
     {
-        return $this->map->get($methodName);
+        return $this->map->hasKey($method::name());
+    }
+
+    public function get(MethodInterface $method): RouteEndpointInterface
+    {
+        return $this->map->get($method::name());
+    }
+
+    public function put(MethodInterface $method, RouteEndpointInterface $routeEndpoint): void
+    {
+        $this->map->put($method::name(), $routeEndpoint);
     }
 }

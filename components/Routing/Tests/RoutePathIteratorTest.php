@@ -33,7 +33,7 @@ final class RoutePathIteratorTest extends TestCase
     {
         $dir = new Dir(new Path(__DIR__ . '/_resources/routes/'));
         $routePathIterator = new RoutePathIterator($dir);
-        $objectStorage = $routePathIterator->objects();
+        $objectStorage = $routePathIterator->routePathObjects();
         $this->assertCount(2, $objectStorage);
         $objectStorage->rewind();
         while ($objectStorage->valid()) {

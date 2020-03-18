@@ -70,7 +70,7 @@ final class RouterMakerTest extends TestCase
         $routerMaker = (new RouterMaker)
             ->withAddedRouteable($routeable1, 'group')
             ->withAddedRouteable($routeable2, 'group');
-        $this->assertCount(2, $routerMaker->router()->routeables());
+        $this->assertCount(2, $routerMaker->router()->routeableObjects());
         // xdd(->count());
         $this->assertTrue($routerMaker->router()->index()->hasKey($routePath->key()));
     }

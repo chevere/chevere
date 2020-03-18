@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\DataStructures\SplObjectStorageRead;
-use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Router\Interfaces\RouteIdentifierInterface;
 
 final class RouterIdentifierObjectsRead extends SplObjectStorageRead
@@ -24,6 +23,9 @@ final class RouterIdentifierObjectsRead extends SplObjectStorageRead
         return $this->objects->current();
     }
 
+    /**
+     * @return string Route path key
+     */
     public function getInfo(): string
     {
         return $this->objects->getInfo();

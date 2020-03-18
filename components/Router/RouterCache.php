@@ -137,7 +137,7 @@ final class RouterCache implements RouterCacheInterface
                 $this->keyGroups,
                 new VariableExport($router->groups())
             );
-        $objects = $router->routeables();
+        $objects = $router->routeableObjects();
         $objects->rewind();
         while ($objects->valid()) {
             $this->routesCache()->put($objects->key(), $objects->current());

@@ -1,0 +1,1 @@
+<?php return 'O:35:"Chevere\\Components\\Spec\\SpecMethods":1:{s:40:"' . "\0" . 'Chevere\\Components\\Spec\\SpecMethods' . "\0" . 'map";C:6:"Ds\\Map":52:{s:7:"CONNECT";s:30:"/spec/group/route/CONNECT.json";}}';

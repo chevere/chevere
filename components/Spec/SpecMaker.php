@@ -51,7 +51,7 @@ final class SpecMaker
         $this->assertRouter();
         $this->specIndex = new SpecIndex;
         $this->indexSpec = new IndexSpec($this->specPath);
-        $routeables = $router->routeables();
+        $routeables = $router->routeableObjects();
         $routeables->rewind();
         $groups = [];
         while ($routeables->valid()) {
@@ -94,6 +94,10 @@ final class SpecMaker
         return $this->specIndex;
     }
 
+    /**
+     * @codeCoverageIgnore
+     * @throws LogicException
+     */
     private function assertDir(): void
     {
         if (!$this->dir->exists()) {
@@ -126,7 +130,7 @@ final class SpecMaker
                     ->toString()
             );
         }
-        if ($this->router->routeables()->count() == 0) {
+        if ($this->router->routeableObjects()->count() == 0) {
             throw new SpecInvalidArgumentException(
                 (new Message('Instance of %interfaceName% does not contain any routeable.'))
                     ->code('%interfaceName%', RouterInterface::class)

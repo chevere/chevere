@@ -75,7 +75,7 @@ final class RoutePathIterator implements RoutePathIteratorInterface
         }
     }
 
-    final public function objects(): RoutePathObjectsRead
+    final public function routePathObjects(): RoutePathObjectsRead
     {
         return new RoutePathObjectsRead($this->objects);
     }
