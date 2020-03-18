@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Router\Interfaces;
 
 use Chevere\Components\Router\RouterIdentifierObjectsRead;
+use Countable;
 
-interface RouterIndexInterface
+interface RouterIndexInterface extends Countable
 {
     /**
      * Return an instance with the specified values.

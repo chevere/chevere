@@ -15,15 +15,14 @@ namespace Chevere\Components\Spec\Interfaces;
 
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Spec\RouteEndpointSpec;
+use Countable;
 
-interface SpecIndexInterface
+interface SpecIndexInterface extends Countable
 {
     public function withOffset(
         int $id,
         RouteEndpointSpec $routeEndpointSpec
     ): SpecIndexInterface;
-
-    public function count(): int;
 
     public function has(int $id, MethodInterface $method): bool;
 

@@ -15,18 +15,18 @@ namespace Chevere\Components\Spec;
 
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Spec\Interfaces\SpecIndexInterface;
-use SplDoublyLinkedList;
+use Ds\Map;
 
 /**
  * Maps route id (internal) to endpoint method spec paths.
  */
 final class SpecIndex implements SpecIndexInterface
 {
-    private SplDoublyLinkedList $list;
+    private Map $map;
 
     public function __construct()
     {
-        $this->list = new SplDoublyLinkedList;
+        $this->map = new Map;
     }
 
     public function withOffset(
@@ -35,30 +35,30 @@ final class SpecIndex implements SpecIndexInterface
     ): SpecIndexInterface {
         $new = clone $this;
         $methods = [];
-        if ($new->list->offsetExists($id)) {
-            $methods = $new->list->offsetGet($id);
+        if ($new->map->hasKey($id)) {
+            $methods = $new->map->get($id);
         } else {
-            $new->list->add($id, $methods);
+            $new->map->put($id, $methods);
         }
         $methods[$routeEndpointSpec->method()] = $routeEndpointSpec->jsonPath();
-        $new->list->offsetSet($id, $methods);
+        $new->map->put($id, $methods);
 
         return $new;
     }
 
     public function count(): int
     {
-        return $this->list->count();
+        return $this->map->count();
     }
 
     public function has(int $id, MethodInterface $method): bool
     {
-        return isset($this->list[$id])
-            && isset($this->list[$id][$method->name()]);
+        return $this->map->hasKey($id)
+            && isset($this->map->get($id)[$method->name()]);
     }
 
     public function get(int $id, MethodInterface $method): string
     {
-        return $this->list[$id][$method->name()];
+        return $this->map->get($id)[$method->name()];
     }
 }
