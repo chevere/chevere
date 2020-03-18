@@ -23,6 +23,7 @@ use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\RouterIndex;
 use Chevere\TestApp\App\Controllers\TestController;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class RouterIndexTest extends TestCase
@@ -33,7 +34,7 @@ final class RouterIndexTest extends TestCase
         $routerIndex = new RouterIndex();
         $this->assertSame([], $routerIndex->toArray());
         $this->assertFalse($routerIndex->hasKey($key));
-        $this->expectException(BadMethodCallException::class);
+        $this->expectException(InvalidArgumentException::class);
         $routerIndex->get(404);
     }
 

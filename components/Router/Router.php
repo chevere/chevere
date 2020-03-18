@@ -39,6 +39,8 @@ final class Router implements RouterInterface
 
     private RouterGroupsInterface $groups;
 
+    private int $pos = -1;
+
     public function __construct()
     {
         $this->objects = new SplObjectStorage;
@@ -50,7 +52,11 @@ final class Router implements RouterInterface
         $new->objects = new SplObjectStorage;
         $routeableObjects->rewind();
         while ($routeableObjects->valid()) {
-            $new->objects->attach($routeableObjects->current());
+            $new->pos++;
+            $new->objects->attach(
+                $routeableObjects->current(),
+                $new->pos
+            );
             $routeableObjects->next();
         }
 

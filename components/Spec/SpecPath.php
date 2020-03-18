@@ -27,8 +27,6 @@ use Throwable;
 
 final class SpecPath implements SpecPathInterface
 {
-    private PathInterface $path;
-
     private string $pub;
 
     /**
@@ -36,21 +34,15 @@ final class SpecPath implements SpecPathInterface
      * @param PathInterface $path The filesystem path for $pub
      * @throws StrAssertException If invalid $pub format provided
      */
-    public function __construct(string $pub, PathInterface $path)
+    public function __construct(string $pub)
     {
         $this->pub = $pub;
         $this->assertPub();
-        $this->path = $path;
     }
 
     public function pub(): string
     {
         return $this->pub;
-    }
-
-    public function path(): PathInterface
-    {
-        return $this->path;
     }
 
     /**
@@ -69,20 +61,8 @@ final class SpecPath implements SpecPathInterface
             ->notContains('//')
             ->notContains('\\')
             ->notEndsWith('/');
-        // @codeCoverageIgnoreStart
-        try {
-            $childPath = $this->path->getChild($child);
-        } catch (Throwable $e) {
-            throw new InvalidArgumentException(
-                (new Message('Unable to get child for %child%: %thrown%'))
-                    ->code('%child%', $child)
-                    ->code('%thrown%', $e->getMessage())
-                    ->toString()
-            );
-        }
-        // @codeCoverageIgnoreEnd
 
-        return new self(rtrim($this->pub, '/') . '/' . $child, $childPath);
+        return new self(rtrim($this->pub, '/') . '/' . $child);
     }
 
     /**

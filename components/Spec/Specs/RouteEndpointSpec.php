@@ -15,19 +15,21 @@ namespace Chevere\Components\Spec;
 
 use Chevere\Components\Common\Interfaces\ToArrayInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
+use Chevere\Components\Spec\Interfaces\SpecPathInterface;
 
 final class RouteEndpointSpec implements ToArrayInterface
 {
-    /** @var string /spec/group/route-name/ */
     private string $jsonPath;
 
     private $array = [];
 
     public function __construct(
-        string $specPath,
+        SpecPathInterface $specPath,
         RouteEndpointInterface $routeEndpoint
     ) {
-        $this->jsonPath = $specPath . $routeEndpoint->method()->name() . '.json';
+        $this->jsonPath = $specPath->getChild(
+            $routeEndpoint->method()->name() . '.json'
+        )->pub();
         $this->array = [
             'method' => $routeEndpoint->method()->name(),
             'spec' => $this->jsonPath,

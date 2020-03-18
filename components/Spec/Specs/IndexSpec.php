@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec;
 
 use Chevere\Components\Common\Interfaces\ToArrayInterface;
+use Chevere\Components\Spec\Interfaces\SpecPathInterface;
 use Chevere\Components\Spec\Specs\GroupSpecObjectsRead;
 use SplObjectStorage;
 
@@ -27,9 +28,9 @@ final class IndexSpec implements ToArrayInterface
         'groups' => [],
     ];
 
-    public function __construct(string $specPath)
+    public function __construct(SpecPathInterface $specPath)
     {
-        $this->jsonPath = $specPath . 'index.json';
+        $this->jsonPath = $specPath->getChild('index.json')->pub();
         $this->objects = new SplObjectStorage;
     }
 
@@ -52,7 +53,7 @@ final class IndexSpec implements ToArrayInterface
         return $this->array;
     }
 
-    public function objects(): GroupSpecObjectsRead
+    public function groupSpecs(): GroupSpecObjectsRead
     {
         return new GroupSpecObjectsRead($this->objects);
     }

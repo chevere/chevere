@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec;
 
 use Chevere\Components\Common\Interfaces\ToArrayInterface;
+use Chevere\Components\Spec\Interfaces\SpecPathInterface;
 use Chevere\Components\Spec\Specs\RouteableSpecObjectsRead;
 use SplObjectStorage;
 
@@ -24,16 +25,15 @@ final class GroupSpec implements ToArrayInterface
     private $array = [];
 
     /**
-     * @var string $specPath /spec/group-name/
+     * @var string SpecPathInterface /spec/group-name
      */
-    public function __construct(
-        string $specPath
-    ) {
-        $this->jsonPath = $specPath . 'routes.json';
+    public function __construct(SpecPathInterface $specPath)
+    {
+        $this->jsonPath = $specPath->getChild('routes.json')->pub();
         $this->objects = new SplObjectStorage;
         $this->array = [
-            'name' => basename($specPath),
-            'spec' => $specPath . 'routes.json',
+            'name' => basename($specPath->pub()),
+            'spec' => $this->jsonPath,
             'routes' => [],
         ];
     }
@@ -57,7 +57,7 @@ final class GroupSpec implements ToArrayInterface
         return $this->array;
     }
 
-    public function objects(): RouteableSpecObjectsRead
+    public function routeableSpecs(): RouteableSpecObjectsRead
     {
         return new RouteableSpecObjectsRead($this->objects);
     }

@@ -29,52 +29,50 @@ final class SpecPathTest extends TestCase
 
     public function setUp(): void
     {
-        $this->specPath = new SpecPath('/spec', new Path(__DIR__));
+        $this->specPath = new SpecPath('/spec');
     }
 
     public function testPubEmpty(): void
     {
         $this->expectException(StrEmptyException::class);
-        new SpecPath('', new Path(__DIR__));
+        new SpecPath('');
     }
 
     public function testPubSpace(): void
     {
         $this->expectException(StrContainsException::class);
-        new SpecPath(' ', new Path(__DIR__));
+        new SpecPath(' ');
     }
 
     public function testPubInvalidFirstChar(): void
     {
         $this->expectException(StrNotStartsWithException::class);
-        new SpecPath('spec', new Path(__DIR__));
+        new SpecPath('spec');
     }
 
     public function testPubDoubleForwardSlashes(): void
     {
         $this->expectException(StrContainsException::class);
-        new SpecPath('/sp//ec', new Path(__DIR__));
+        new SpecPath('/sp//ec');
     }
 
     public function testPubBackwardSlashes(): void
     {
         $this->expectException(StrContainsException::class);
-        new SpecPath('/sp\ec', new Path(__DIR__));
+        new SpecPath('/sp\ec');
     }
 
     public function testPubEndswithSlash(): void
     {
         $this->expectException(StrEndsWithException::class);
-        new SpecPath('/spec/', new Path(__DIR__));
+        new SpecPath('/spec/');
     }
 
     public function testConstruct(): void
     {
         $pub = '/spec';
-        $path = new Path(__DIR__);
-        $specPath = new SpecPath($pub, $path);
+        $specPath = new SpecPath($pub);
         $this->assertSame($pub, $specPath->pub());
-        $this->assertSame($path, $specPath->path());
     }
 
     public function testGetChildEmpty(): void
@@ -116,11 +114,10 @@ final class SpecPathTest extends TestCase
     public function testGetChild(): void
     {
         $pub = '/spec';
-        $path = new Path(__DIR__);
         $child = 'chiquillo';
-        $specPath = new SpecPath($pub, $path);
+        $specPath = new SpecPath($pub);
         $getChild = $specPath->getChild($child);
         $this->assertSame($pub . '/' . $child, $getChild->pub());
-        $this->assertSame($child, basename($getChild->path()->absolute()));
+        $this->assertSame($child, basename($getChild->pub()));
     }
 }

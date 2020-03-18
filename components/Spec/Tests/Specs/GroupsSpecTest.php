@@ -21,6 +21,7 @@ use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Spec\GroupSpec;
 use Chevere\Components\Spec\RouteableSpec;
+use Chevere\Components\Spec\SpecPath;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
@@ -28,10 +29,10 @@ final class GroupsSpecTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $specPath = '/spec/';
+        $specPath = new SpecPath('/spec');
         $groupName = 'group-name';
-        $specGroupPath = $specPath . $groupName . '/';
-        $specGroupPathJson = $specGroupPath . 'routes.json';
+        $specGroupPath = $specPath->getChild($groupName);
+        $specGroupPathJson = $specGroupPath->getChild('routes.json')->pub();
         $spec = new GroupSpec($specGroupPath);
         $this->assertSame($specGroupPathJson, $spec->jsonPath());
         $this->assertSame([
@@ -39,22 +40,22 @@ final class GroupsSpecTest extends TestCase
             'spec' => $specGroupPathJson,
             'routes' => []
         ], $spec->toArray());
-        $this->assertCount(0, $spec->objects());
+        $this->assertCount(0, $spec->routeableSpecs());
     }
 
     public function testWithAddedRouteable(): void
     {
         $routeName = new RouteName('route-name');
-        $specPath = '/spec/';
+        $specPath = new SpecPath('/spec');
         $groupName = 'group-name';
-        $groupSpecPath = $specPath . $groupName . '/';
-        $routesSpecPathJson = $groupSpecPath . 'routes.json';
+        $groupSpecPath = $specPath->getChild($groupName);
+        $routesSpecPathJson = $groupSpecPath->getChild('routes.json')->pub();
         $route = (new Route($routeName, new RoutePath('/route/path')))
             ->withAddedEndpoint(
                 new RouteEndpoint(new GetMethod, new TestController)
             );
         $routeableSpec = new RouteableSpec(
-            $groupSpecPath . $routeName->toString() . '/',
+            $groupSpecPath->getChild($routeName->toString()),
             new Routeable($route)
         );
         $spec = (new GroupSpec($groupSpecPath))
@@ -67,9 +68,9 @@ final class GroupsSpecTest extends TestCase
             ],
             $spec->toArray()
         );
-        $spec->objects()->rewind();
-        $object = $spec->objects()->current();
-        $this->assertNull($spec->objects()->getInfo());
+        $spec->routeableSpecs()->rewind();
+        $object = $spec->routeableSpecs()->current();
+        $this->assertNull($spec->routeableSpecs()->getInfo());
         $this->assertSame($routeableSpec->jsonPath(), $object->jsonPath());
         $this->assertSame($routeableSpec->toArray(), $object->toArray());
     }

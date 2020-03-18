@@ -23,8 +23,8 @@ final class RouteableObjectsRead extends SplObjectStorageRead
         return $this->objects->current();
     }
 
-    public function getInfo()
+    public function getInfo(): int
     {
-        return null;
+        return $this->objects->getInfo();
     }
 }

@@ -17,10 +17,11 @@ use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
-use Chevere\Components\Router\RouteableObjectsRead;
 use Chevere\Components\Spec\Exceptions\SpecInvalidArgumentException;
 use Chevere\Components\Spec\Interfaces\SpecIndexInterface;
+use Chevere\Components\Spec\Interfaces\SpecPathInterface;
 use LogicException;
+use SplObjectStorage;
 
 /**
  * Makes the application spec, which is a distributed json-fileset describing
@@ -28,40 +29,52 @@ use LogicException;
  */
 final class SpecMaker
 {
-    private string $basePath;
+    private SpecPathInterface $specPath;
 
     private DirInterface $dir;
 
-    private RouterInterface $router;
-
-    private SpecIndexInterface $specIndex;
+    private IndexSpec $indexSpec;
 
     public function __construct(
-        RoutePathInterface $path,
+        SpecPathInterface $specPath,
         DirInterface $dir,
         RouterInterface $router
     ) {
-        $this->basePath = $path->toString() . '/';
+        $this->specPath = $specPath;
         $this->dir = $dir;
         $this->assertDir();
         $this->router = $router;
         $this->assertRouter();
-        $this->specIndex = new SpecIndex();
-        // $routeIdentifiers = $router->index()->objects();
-        // $routeIdentifiers->rewind();
-        // while ($routeIdentifiers->valid()) {
-        //     xdd($routeIdentifiers->current());
-        //     $routeIdentifiers->next();
-        // }
-        $routeables = $router->routeables();
-        $routeables->rewind();
-        // $routeableSpec = new RouteableSpec();
-        xdd($routeables->current()->route());
-        while ($routeables->valid()) {
-            $routeables->next();
+        $this->indexSpec = new IndexSpec($this->specPath);
+        $routeableObjects = $router->routeables();
+        $routeableObjects->rewind();
+        $groups = [];
+        while ($routeableObjects->valid()) {
+            $id = $routeableObjects->getInfo();
+            $routeable = $routeableObjects->current();
+            $group = $router->groups()->getForId($id);
+            $groupSpecPath = $specPath->getChild($group);
+            if (!isset($group[$group])) {
+                $groups[$group] = new GroupSpec($groupSpecPath);
+            }
+            /** @var GroupSpec $groupSpec */
+            $groupSpec = $groups[$group]
+                ->withAddedRouteable(
+                    new RouteableSpec(
+                        $groupSpecPath->getChild(
+                            $router->named()->getForId($id)
+                        ),
+                        $routeable
+                    )
+                );
+            $groups[$group] = $groupSpec;
+            $routeableObjects->next();
         }
-        // xdd($router->objects());
-        // xdd($router->groups()->toArray());
+        foreach ($groups as $groupSpec) {
+            $this->indexSpec = $this->indexSpec->withAddedGroup($groupSpec);
+        }
+
+        // xdd($this->indexSpec->toArray());
     }
 
     public function specIndex(): SpecIndexInterface
@@ -108,5 +121,9 @@ final class SpecMaker
                     ->toString()
             );
         }
+    }
+
+    private function processGroup(): void
+    {
     }
 }

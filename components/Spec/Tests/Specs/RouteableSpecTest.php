@@ -21,6 +21,7 @@ use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Spec\RouteableSpec;
 use Chevere\Components\Spec\RouteEndpointSpec;
+use Chevere\Components\Spec\SpecPath;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
@@ -30,8 +31,8 @@ final class RouteableSpecTest extends TestCase
     {
         $routeName = new RouteName('route-name');
         $routePath = new RoutePath('/route/path');
-        $specPath = '/spec/group/' . $routeName->toString() . '/';
-        $routeSpecPath = $specPath . 'route.json';
+        $specPath = new SpecPath('/spec/group/' . $routeName->toString());
+        $routeSpecPath = $specPath->getChild('route.json')->pub();
         $method = new GetMethod;
         $routeEndpoint = (new RouteEndpoint($method, new TestController))
             ->withDescription('Test endpoint')
@@ -40,7 +41,7 @@ final class RouteableSpecTest extends TestCase
             ->withAddedEndpoint($routeEndpoint);
         $routeable = new Routeable($route);
         $spec = new RouteableSpec($specPath, $routeable);
-        $specPathJson = $specPath . $method->name() . '.json';
+        $specPathJson = $specPath->getChild($method->name() . '.json')->pub();
         $routeEndpoint = new RouteEndpointSpec($specPath, $routeEndpoint);
         $this->assertSame($routeSpecPath, $spec->jsonPath());
         $this->assertSame(

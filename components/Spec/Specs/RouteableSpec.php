@@ -16,6 +16,7 @@ namespace Chevere\Components\Spec;
 use Chevere\Components\Common\Interfaces\ToArrayInterface;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
+use Chevere\Components\Spec\Interfaces\SpecPathInterface;
 use Chevere\Components\Spec\Specs\RouteEndpointSpecObjectsRead;
 use SplObjectStorage;
 
@@ -28,14 +29,14 @@ final class RouteableSpec implements ToArrayInterface
     private $array = [];
 
     /**
-     * @var string $specPath /spec/group/route-name/
+     * @var SpecPathInterface $specPath /spec/group/route-name
      */
     public function __construct(
-        string $specPath,
+        SpecPathInterface $specPath,
         RouteableInterface $routeable
     ) {
         $this->objects = new SplObjectStorage;
-        $this->jsonPath = $specPath . 'route.json';
+        $this->jsonPath = $specPath->getChild('route.json')->pub();
         $this->array = [
             'name' => $routeable->route()->name()->toString(),
             'spec' => $this->jsonPath,

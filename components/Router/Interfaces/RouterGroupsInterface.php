@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Interfaces;
 
+use ArrayIterator;
+
 interface RouterGroupsInterface
 {
     /**
@@ -31,6 +33,8 @@ interface RouterGroupsInterface
     public function get(string $group): array;
 
     public function getForId(int $id): string;
+
+    public function iterator(): ArrayIterator;
 
     public function toArray(): array;
 }

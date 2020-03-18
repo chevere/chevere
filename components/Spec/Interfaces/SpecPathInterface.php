@@ -17,8 +17,6 @@ use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
 
 interface SpecPathInterface
 {
-    public function path(): PathInterface;
-
     public function pub(): string;
 
     public function getChild(string $child): SpecPathInterface;

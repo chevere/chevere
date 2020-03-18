@@ -22,6 +22,7 @@ use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\RouteableObjectsRead;
 use Chevere\Components\Spec\GroupSpec;
 use Chevere\Components\Spec\IndexSpec;
+use Chevere\Components\Spec\SpecPath;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 use SplObjectStorage;
@@ -30,20 +31,20 @@ final class IndexSpecTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $spec = new IndexSpec('/spec/');
+        $spec = new IndexSpec(new SpecPath('/spec'));
         $this->assertSame([
             'groups' => []
         ], $spec->toArray());
-        $this->assertCount(0, $spec->objects());
+        $this->assertCount(0, $spec->groupSpecs());
     }
 
     public function testWithAddedGroup(): void
     {
         $routeName = new RouteName('route-name');
         $routePath = new RoutePath('/route/path');
-        $specPath = '/spec/';
+        $specPath = new SpecPath('/spec');
         $groupName = 'group-name';
-        $groupSpecPath = $specPath . $groupName . '/';
+        $groupSpecPath = $specPath->getChild($groupName);
         $route = (new Route($routeName, $routePath))
             ->withAddedEndpoint(
                 new RouteEndpoint(new GetMethod, new TestController)
@@ -53,17 +54,17 @@ final class IndexSpecTest extends TestCase
         $objects = new RouteableObjectsRead($objectStorage);
         $groupSpec = new GroupSpec($groupSpecPath, $objects);
         $spec = (new IndexSpec($specPath))->withAddedGroup($groupSpec);
-        $this->assertSame($specPath . 'index.json', $spec->jsonPath());
+        $this->assertSame($specPath->getChild('index.json')->pub(), $spec->jsonPath());
         $this->assertSame(
             [
                 'groups' => [$groupSpec->toArray()],
             ],
             $spec->toArray()
         );
-        $this->assertCount(1, $spec->objects());
-        $spec->objects()->rewind();
-        $object = $spec->objects()->current();
-        $this->assertNull($spec->objects()->getInfo());
+        $this->assertCount(1, $spec->groupSpecs());
+        $spec->groupSpecs()->rewind();
+        $object = $spec->groupSpecs()->current();
+        $this->assertNull($spec->groupSpecs()->getInfo());
         $this->assertSame($groupSpec->jsonPath(), $object->jsonPath());
         $this->assertSame($groupSpec->toArray(), $object->toArray());
     }

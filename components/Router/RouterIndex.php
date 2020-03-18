@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use BadMethodCallException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
 use Chevere\Components\Router\Interfaces\RouteIdentifierInterface;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
+use InvalidArgumentException;
 use SplObjectStorage;
 
 final class RouterIndex implements RouterIndexInterface
@@ -75,7 +75,7 @@ final class RouterIndex implements RouterIndexInterface
     public function get(int $id): RouteIdentifierInterface
     {
         if (!$this->has($id)) {
-            throw new BadMethodCallException(
+            throw new InvalidArgumentException(
                 (new Message("Id %id% doesn't exists"))
                     ->code('%id%', (string) $id)
                     ->toString()
