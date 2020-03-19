@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec;
 
-use Chevere\Components\Common\Interfaces\ToArrayInterface;
+use Chevere\Components\Spec\Interfaces\SpecInterface;
 use Chevere\Components\Spec\Interfaces\SpecPathInterface;
 use Chevere\Components\Spec\Specs\RouteableSpecObjectsRead;
 use SplObjectStorage;
 
-final class GroupSpec implements ToArrayInterface
+final class GroupSpec implements SpecInterface
 {
     private string $jsonPath;
 

@@ -29,6 +29,7 @@ final class SpecIndexTest extends TestCase
     {
         $specIndex = new SpecIndex;
         $method = new GetMethod;
+        $this->assertFalse($specIndex->has(0, $method));
         $this->assertCount(0, $specIndex->specIndexMap()->map());
         $this->assertFalse($specIndex->specIndexMap()->hasKey(0));
         $this->expectException(OutOfBoundsException::class);
@@ -42,12 +43,9 @@ final class SpecIndexTest extends TestCase
         $specPath = new SpecPath('/spec/group/route');
         $routeEndpointSpec = new RouteEndpointSpec($specPath, $routeEndpoint);
         $specIndex = (new SpecIndex)->withOffset(1, $routeEndpointSpec);
-        $specIndexMap = $specIndex->specIndexMap();
-        $specMethods = $specIndexMap->map()->get(1);
-        $this->assertCount(1, $specIndexMap->map());
-        $this->assertFalse($specIndexMap->map()->hasKey(0));
-        $this->assertTrue($specIndexMap->map()->hasKey(1));
-        $this->assertTrue($specMethods->hasKey($method));
+        $this->assertFalse($specIndex->has(0, $method));
+        $this->assertTrue($specIndex->has(1, $method));
+        $this->assertCount(1, $specIndex->specIndexMap()->map());
         $this->assertSame(
             $specPath->getChild($method->name() . '.json')->pub(),
             $specIndex->get(1, $method)
@@ -57,11 +55,9 @@ final class SpecIndexTest extends TestCase
         $routeEndpoint2 = new RouteEndpoint($method2, new TestController);
         $routeEndpointSpec2 = new RouteEndpointSpec($specPath, $routeEndpoint2);
         $specIndex = $specIndex->withOffset(1, $routeEndpointSpec2);
-        $specIndexMap = $specIndex->specIndexMap();
-        $this->assertTrue($specIndexMap->map()->hasKey(1));
-        $specMethods = $specIndexMap->map()->get(1);
-        $this->assertTrue($specMethods->hasKey($method));
-        $this->assertTrue($specMethods->hasKey($method2));
+        $this->assertTrue($specIndex->has(1, $method));
+        $this->assertTrue($specIndex->has(1, $method2));
+        $this->assertCount(1, $specIndex->specIndexMap()->map());
         $this->assertSame(
             $specPath->getChild($method2->name() . '.json')->pub(),
             $specIndex->get(1, $method2)

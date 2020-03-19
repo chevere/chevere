@@ -14,9 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\Str\Tests;
 
 use Chevere\Components\Str\Exceptions\StrAssertException;
+use Chevere\Components\Str\Exceptions\StrContainsException;
 use Chevere\Components\Str\Exceptions\StrCtypeSpaceException;
 use Chevere\Components\Str\Exceptions\StrEmptyException;
 use Chevere\Components\Str\Exceptions\StrEndsWithException;
+use Chevere\Components\Str\Exceptions\StrNotContainsException;
 use Chevere\Components\Str\Exceptions\StrNotCtypeSpaceException;
 use Chevere\Components\Str\Exceptions\StrNotEmptyException;
 use Chevere\Components\Str\Exceptions\StrNotEndsWithException;
@@ -114,5 +116,19 @@ final class StrAssertTest extends TestCase
         (new StrAssert('string'))->notSame('algo');
         $this->expectException(StrSameException::class);
         (new StrAssert('string'))->notSame('string');
+    }
+
+    public function testContains(): void
+    {
+        (new StrAssert('string'))->contains('trin');
+        $this->expectException(StrNotContainsException::class);
+        (new StrAssert('string'))->contains('foo');
+    }
+
+    public function testNotContains(): void
+    {
+        (new StrAssert('string'))->notContains('algo');
+        $this->expectException(StrContainsException::class);
+        (new StrAssert('string'))->notContains('trin');
     }
 }

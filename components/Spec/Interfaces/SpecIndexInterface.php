@@ -26,5 +26,7 @@ interface SpecIndexInterface
 
     public function specIndexMap(): SpecIndexMap;
 
+    public function has(int $id, MethodInterface $method): bool;
+
     public function get(int $id, MethodInterface $method): string;
 }

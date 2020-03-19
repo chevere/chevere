@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec;
 
 use Ds\Map;
+use OutOfBoundsException;
 
 /**
  * A type-hinted proxy for Ds\Map storing (int) routeId => [(string) methodName => (string) specJsonPath,]
@@ -39,6 +40,7 @@ final class SpecIndexMap
 
     /**
      * @return SpecMethods
+     * @throws OutOfBoundsException if $id not found
      */
     public function get(int $id): SpecMethods
     {

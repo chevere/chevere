@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec;
 
-use Chevere\Components\Common\Interfaces\ToArrayInterface;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
+use Chevere\Components\Spec\Interfaces\SpecInterface;
 use Chevere\Components\Spec\Interfaces\SpecPathInterface;
 use Chevere\Components\Spec\Specs\RouteEndpointSpecObjectsRead;
 use SplObjectStorage;
 
-final class RouteableSpec implements ToArrayInterface
+final class RouteableSpec implements SpecInterface
 {
     private SplObjectStorage $objects;
 

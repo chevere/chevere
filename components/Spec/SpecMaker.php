@@ -13,15 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec;
 
+use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Spec\Exceptions\SpecInvalidArgumentException;
 use Chevere\Components\Spec\Interfaces\SpecIndexInterface;
+use Chevere\Components\Spec\Interfaces\SpecInterface;
 use Chevere\Components\Spec\Interfaces\SpecPathInterface;
+use Chevere\Components\Str\Str;
+use Ds\Map;
 use LogicException;
-use SplObjectStorage;
 
 /**
  * Makes the application spec, which is a distributed json-fileset describing
@@ -39,6 +42,8 @@ final class SpecMaker
 
     private IndexSpec $indexSpec;
 
+    private Map $files;
+
     public function __construct(
         SpecPathInterface $specPath,
         DirInterface $dir,
@@ -51,6 +56,7 @@ final class SpecMaker
         $this->assertRouter();
         $this->specIndex = new SpecIndex;
         $this->indexSpec = new IndexSpec($this->specPath);
+        $this->files = new Map;
         $routeables = $router->routeableObjects();
         $routeables->rewind();
         $groups = [];
@@ -68,6 +74,7 @@ final class SpecMaker
                 ),
                 $routeable
             );
+            $this->makeJsonFile($routeableSpec);
             /** @var GroupSpec $groupSpec */
             $groupSpec = ($groups[$group])->withAddedRouteable($routeableSpec);
             $groups[$group] = $groupSpec;
@@ -78,20 +85,26 @@ final class SpecMaker
                     $id,
                     $routeEndpointSpecs->current()
                 );
+                $this->makeJsonFile($routeEndpointSpecs->current());
                 $routeEndpointSpecs->next();
             }
             $routeables->next();
         }
         foreach ($groups as $groupSpec) {
+            $this->makeJsonFile($groupSpec);
             $this->indexSpec = $this->indexSpec->withAddedGroup($groupSpec);
         }
-
-        // xdd($this->indexSpec->toArray());
+        $this->makeJsonFile($this->indexSpec);
     }
 
     public function specIndex(): SpecIndexInterface
     {
         return $this->specIndex;
+    }
+
+    public function files(): Map
+    {
+        return $this->files->copy();
     }
 
     /**
@@ -110,6 +123,7 @@ final class SpecMaker
                     ->toString()
             );
         }
+        $this->dir->removeContents();
     }
 
     private function assertRouter(): void
@@ -130,12 +144,41 @@ final class SpecMaker
                     ->toString()
             );
         }
+        // @codeCoverageIgnoreStart
         if ($this->router->routeableObjects()->count() == 0) {
-            throw new SpecInvalidArgumentException(
+            throw new LogicException(
                 (new Message('Instance of %interfaceName% does not contain any routeable.'))
                     ->code('%interfaceName%', RouterInterface::class)
                     ->toString()
             );
         }
+        // @codeCoverageIgnoreEnd
+    }
+
+    private function makeJsonFile(SpecInterface $spec): void
+    {
+        $filePath = $this->getPathFor($spec->jsonPath());
+        $this->files[$spec->jsonPath()] = $filePath;
+        $file = new File($filePath);
+        if ($file->exists()) {
+            $file->remove(); // @codeCoverageIgnore
+        }
+        $file->create();
+        $file->put($this->toJson($spec->toArray()));
+    }
+
+    private function getPathFor(string $jsonPath): PathInterface
+    {
+        $dirPath = $this->dir->path(); // /home/weas/spec/
+        $child = (string) (new Str($jsonPath))
+            ->replaceFirst($this->specPath->pub(), '');
+        $child = ltrim($child, '/');
+
+        return $dirPath->getChild($child);
+    }
+
+    private function toJson(array $array): string
+    {
+        return json_encode($array, JSON_PRETTY_PRINT);
     }
 }

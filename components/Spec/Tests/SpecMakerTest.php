@@ -24,6 +24,7 @@ use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterMaker;
+use Chevere\Components\Router\Tests\CacheHelper;
 use Chevere\Components\Spec\Exceptions\SpecInvalidArgumentException;
 use Chevere\Components\Spec\SpecMaker;
 use Chevere\Components\Spec\SpecPath;
@@ -32,6 +33,18 @@ use PHPUnit\Framework\TestCase;
 
 final class SpecMakerTest extends TestCase
 {
+    private CacheHelper $cacheHelper;
+
+    public function setUp(): void
+    {
+        $this->cacheHelper = new CacheHelper(__DIR__);
+    }
+
+    public function tearDown(): void
+    {
+        $this->cacheHelper->tearDown();
+    }
+
     public function testConstructInvalidArgument(): void
     {
         $this->expectException(SpecInvalidArgumentException::class);
@@ -44,13 +57,16 @@ final class SpecMakerTest extends TestCase
 
     public function testConstruct(): void
     {
+        $putMethod = new PutMethod;
+        $getMethod = new GetMethod;
+        $testController = new TestController;
         $route = new Route(new RouteName('route-name'), new RoutePath('/route-path'));
         $route = $route
             ->withAddedEndpoint(
-                new RouteEndpoint(new PutMethod, new TestController)
+                new RouteEndpoint($putMethod, $testController)
             )
             ->withAddedEndpoint(
-                new RouteEndpoint(new GetMethod, new TestController)
+                new RouteEndpoint($getMethod, $testController)
             );
         $routerMaker = (new RouterMaker)
             ->withAddedRouteable(
@@ -59,9 +75,17 @@ final class SpecMakerTest extends TestCase
             );
         $specMaker = new SpecMaker(
             new SpecPath('/spec'),
-            new Dir(new Path(__DIR__ . '/_resources/spec/')),
+            $this->cacheHelper->getWorkingDir()->getChild('spec/'),
             $routerMaker->router()
         );
-        // xdd($specMaker);
+        $cachedPath = $this->cacheHelper->getCachedDir()->path();
+        foreach ($specMaker->files() as $jsonPath => $path) {
+            $this->assertFileEquals(
+                $cachedPath->getChild(ltrim($jsonPath, '/'))->absolute(),
+                $path->absolute()
+            );
+        }
+        $this->assertTrue($specMaker->specIndex()->has(0, $putMethod));
+        $this->assertTrue($specMaker->specIndex()->has(0, $getMethod));
     }
 }

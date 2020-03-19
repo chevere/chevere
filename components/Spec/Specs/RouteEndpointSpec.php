@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec;
 
-use Chevere\Components\Common\Interfaces\ToArrayInterface;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
+use Chevere\Components\Spec\Interfaces\SpecInterface;
 use Chevere\Components\Spec\Interfaces\SpecPathInterface;
 
-final class RouteEndpointSpec implements ToArrayInterface
+final class RouteEndpointSpec implements SpecInterface
 {
     private MethodInterface $method;
 

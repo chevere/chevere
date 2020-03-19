@@ -17,18 +17,17 @@ use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Spec\Interfaces\SpecIndexInterface;
 use Ds\Map;
 use OutOfBoundsException;
-use function DeepCopy\deep_copy;
 
 /**
  * Maps route id (internal) to endpoint method spec paths.
  */
 final class SpecIndex implements SpecIndexInterface
 {
-    private SpecIndexMap $specIndexMap;
+    private Map $map;
 
     public function __construct()
     {
-        $this->specIndexMap = new SpecIndexMap(new Map);
+        $this->map = new Map;
     }
 
     public function withOffset(
@@ -37,24 +36,30 @@ final class SpecIndex implements SpecIndexInterface
     ): SpecIndexInterface {
         $new = clone $this;
         $specMethods = new SpecMethods;
-        if ($new->specIndexMap->hasKey($id)) {
-            $specMethods = $new->specIndexMap->get($id);
+        if ($new->map->hasKey($id)) {
+            $specMethods = $new->map->get($id);
         } else {
-            $new->specIndexMap->put($id, $specMethods);
+            $new->map->put($id, $specMethods);
         }
         $specMethods = $specMethods
             ->withMethodJsonSpecPath(
                 $routeEndpointSpec->method(),
                 $routeEndpointSpec->jsonPath()
             );
-        $new->specIndexMap->put($id, $specMethods);
+        $new->map->put($id, $specMethods);
 
         return $new;
     }
 
     public function specIndexMap(): SpecIndexMap
     {
-        return deep_copy($this->specIndexMap);
+        return new SpecIndexMap($this->map);
+    }
+
+    public function has(int $id, MethodInterface $method): bool
+    {
+        return $this->map->hasKey($id)
+            && $this->map->get($id)->hasKey($method);
     }
 
     /**
@@ -62,6 +67,6 @@ final class SpecIndex implements SpecIndexInterface
      */
     public function get(int $id, MethodInterface $method): string
     {
-        return $this->specIndexMap->get($id)->get($method);
+        return $this->map->get($id)->get($method);
     }
 }
