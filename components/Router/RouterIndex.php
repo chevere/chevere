@@ -17,41 +17,35 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
 use Chevere\Components\Router\Interfaces\RouteIdentifierInterface;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
+use Ds\Map;
 use InvalidArgumentException;
-use SplObjectStorage;
 
 final class RouterIndex implements RouterIndexInterface
 {
-    private SplObjectStorage $objects;
+    private RouterIdentifiers $routerIdentifiers;
 
-    /** @var array <string>$key => <int>$id */
-    private array $array = [];
-
-    /** @var array <int>$id => <string>$key */
-    private array $index = [];
-
-    private int $pos = -1;
+    /** @var Map <int>$id => <string>$key */
+    private Map $index;
 
     public function __construct()
     {
-        $this->objects = new SplObjectStorage();
-    }
-
-    public function count(): int
-    {
-        return $this->pos + 1;
+        $this->routerIdentifiers = new RouterIdentifiers(new Map);
+        $this->index = new Map;
     }
 
     public function withAdded(RouteableInterface $routeable, int $id, string $group): RouterIndexInterface
     {
         $new = clone $this;
-        $new->pos++;
         $key = $routeable->route()->path()->toString();
-        $new->array[$key] = $new->pos;
-        $new->index[$new->pos] = $key;
-        $new->objects->attach(
-            new RouteIdentifier($id, $group, $routeable->route()->name()->toString()),
-            $key
+        $new->index = $new->index->copy();
+        $new->index->put($id, $key);
+        $new->routerIdentifiers->put(
+            $key,
+            new RouteIdentifier(
+                $id,
+                $group,
+                $routeable->route()->name()->toString()
+            )
         );
 
         return $new;
@@ -59,50 +53,33 @@ final class RouterIndex implements RouterIndexInterface
 
     public function has(int $id): bool
     {
-        return isset($this->index[$id]);
+        return $this->index->hasKey($id);
     }
 
-    public function hasKey(string $key): bool
+    public function hasKey(string $pathKey): bool
     {
-        return isset($this->array[$key]);
-    }
-
-    public function idForKey(string $key): int
-    {
-        return $this->array[$key];
+        return $this->routerIdentifiers->hasKey($pathKey);
     }
 
     public function get(int $id): RouteIdentifierInterface
     {
-        if (!$this->has($id)) {
+        if (!$this->index->hasKey($id)) {
             throw new InvalidArgumentException(
                 (new Message("Id %id% doesn't exists"))
                     ->code('%id%', (string) $id)
                     ->toString()
             );
         }
-        $pos = 0;
-        $this->objects->rewind();
-        while ($id !== $pos) {
-            $pos++;
-            $this->objects->next();
-        }
 
-        return $this->objects->current();
-    }
-
-    public function routeIdentifiers(): RouterIdentifierObjectsRead
-    {
-        return new RouterIdentifierObjectsRead($this->objects);
+        return $this->routerIdentifiers->get($this->index->get($id));
     }
 
     public function toArray(): array
     {
         $array = [];
-        $this->objects->rewind();
-        while ($this->objects->valid()) {
-            $array[$this->objects->getInfo()] = $this->objects->current()->toArray();
-            $this->objects->next();
+        /** @var RouteIdentifierInterface $routeIdentifier */
+        foreach ($this->routerIdentifiers->map() as $pathKey => $routeIdentifier) {
+            $array[$pathKey] = $routeIdentifier->toArray();
         }
 
         return $array;

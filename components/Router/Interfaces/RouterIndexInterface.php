@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Interfaces;
 
-use Chevere\Components\Router\RouterIdentifierObjectsRead;
-use Countable;
+use Chevere\Components\Common\Interfaces\ToArrayInterface;
 
-interface RouterIndexInterface extends Countable
+interface RouterIndexInterface extends ToArrayInterface
 {
     /**
      * Return an instance with the specified values.
@@ -37,16 +36,7 @@ interface RouterIndexInterface extends Countable
     public function hasKey(string $key): bool;
 
     /**
-     * Retrieves the id for the given key (RoutePath string)
-     */
-    public function idForKey(string $key): int;
-
-    /**
      * Provides access to the RouteIdentifier instance identified by its internal id.
      */
     public function get(int $id): RouteIdentifierInterface;
-
-    public function routeIdentifiers(): RouterIdentifierObjectsRead;
-
-    public function toArray(): array;
 }

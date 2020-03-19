@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
+use Chevere\Components\DataStructures\DsMap;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use Ds\Map;
@@ -20,20 +21,8 @@ use Ds\Map;
 /**
  * A type-hinted proxy for Ds\Map storing MethodInterface => RouteEndpointInterface
  */
-final class RouteEndpointsMap
+final class RouteEndpointsMap extends DsMap
 {
-    private Map $map;
-
-    public function __construct(Map $map)
-    {
-        $this->map = $map;
-    }
-
-    public function map(): Map
-    {
-        return $this->map;
-    }
-
     public function hasKey(MethodInterface $method): bool
     {
         return $this->map->hasKey($method::name());
