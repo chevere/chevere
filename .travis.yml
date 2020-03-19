@@ -14,6 +14,7 @@ cache:
     - $HOME/.composer/cache
 
 before_install:
+  - pecl install ds
   - phpenv config-add chevere.ini
   - composer validate
 

@@ -7,10 +7,13 @@ build:
   environment:
     php:
       version: 7.4
+      pecl_extensions:
+        - ds
       ini:
         "date.timezone": "UTC"
         "opcache.enable_cli": 1
         "opcache.enable": 1
+        "extension": "ds.so"
   dependencies:
     override:
       - composer install --prefer-dist --classmap-authoritative

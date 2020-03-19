@@ -14,8 +14,8 @@ jobs:
         uses: shivammathur/setup-php@1.8.2
         with:
           php-version: 7.4
-          extensions: opcache, mbstring
-          ini-values: opcache.enable_cli = 1, opcache.enable = 1
+          extensions: opcache, mbstring, ds
+          ini-values: opcache.enable_cli = 1, opcache.enable = 1, extension="ds.so"
           coverage: pcov
 
       - name: Validate composer.json and composer.lock
