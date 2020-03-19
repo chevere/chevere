@@ -17,37 +17,27 @@ use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use Chevere\Components\Spec\Interfaces\SpecInterface;
 use Chevere\Components\Spec\Interfaces\SpecPathInterface;
+use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
 
 final class RouteEndpointSpec implements SpecInterface
 {
-    private MethodInterface $method;
+    use SpecsTrait;
 
-    private string $jsonPath;
-
-    private $array = [];
-
+    /**
+     * @var SpecPathInterface $specRoutePath /spec/group/route
+     */
     public function __construct(
-        SpecPathInterface $specPath,
+        SpecPathInterface $specRoutePath,
         RouteEndpointInterface $routeEndpoint
     ) {
-        $this->method = $routeEndpoint->method();
-        $this->jsonPath = $specPath->getChild($this->method::name() . '.json')->pub();
+        $this->key = $routeEndpoint->method()->name();
+        $this->jsonPath = $specRoutePath->getChild($this->key . '.json')->pub();
         $this->array = [
-            'method' => $this->method::name(),
+            'method' => $this->key,
             'spec' => $this->jsonPath,
             'description' => $routeEndpoint->description(),
             'parameters' => $routeEndpoint->parameters()
         ];
-    }
-
-    public function method(): MethodInterface
-    {
-        return $this->method;
-    }
-
-    public function jsonPath(): string
-    {
-        return $this->jsonPath;
     }
 
     public function toArray(): array

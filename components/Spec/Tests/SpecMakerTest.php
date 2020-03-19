@@ -85,7 +85,7 @@ final class SpecMakerTest extends TestCase
                 $path->absolute()
             );
         }
-        $this->assertTrue($specMaker->specIndex()->has(0, $putMethod));
-        $this->assertTrue($specMaker->specIndex()->has(0, $getMethod));
+        $this->assertTrue($specMaker->specIndex()->has(0, $putMethod->name()));
+        $this->assertTrue($specMaker->specIndex()->has(0, $getMethod->name()));
     }
 }

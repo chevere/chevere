@@ -66,10 +66,10 @@ final class SpecIndexCacheTest extends TestCase
         );
         $this->assertTrue($specIndexCache->has($id));
         $specMethods = $specIndexCache->get($id);
-        $this->assertTrue($specMethods->hasKey($method));
+        $this->assertTrue($specMethods->hasKey($method->name()));
         $this->assertSame(
             $specPath->getChild($method->name() . '.json')->pub(),
-            $specMethods->get($method)
+            $specMethods->get($method->name())
         );
     }
 
@@ -81,10 +81,10 @@ final class SpecIndexCacheTest extends TestCase
         $specIndexCache = new SpecIndexCache($this->cacheHelper->getCachedCache());
         $this->assertTrue($specIndexCache->has($id));
         $specMethods = $specIndexCache->get($id);
-        $this->assertTrue($specMethods->hasKey($method));
+        $this->assertTrue($specMethods->hasKey($method->name()));
         $this->assertSame(
             $specPath->getChild($method->name() . '.json')->pub(),
-            $specMethods->get($method)
+            $specMethods->get($method->name())
         );
     }
 }

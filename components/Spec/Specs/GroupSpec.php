@@ -15,52 +15,49 @@ namespace Chevere\Components\Spec;
 
 use Chevere\Components\Spec\Interfaces\SpecInterface;
 use Chevere\Components\Spec\Interfaces\SpecPathInterface;
-use Chevere\Components\Spec\Specs\RouteableSpecObjectsRead;
-use SplObjectStorage;
+use Chevere\Components\Spec\Specs\RouteableSpecs;
+use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
+use function DeepCopy\deep_copy;
 
 final class GroupSpec implements SpecInterface
 {
-    private string $jsonPath;
+    use SpecsTrait;
 
-    private SplObjectStorage $objects;
-
-    private $array = [];
+    private RouteableSpecs $routeableSpecs;
 
     /**
-     * @var string SpecPathInterface /spec/group-name
+     * @var SpecPathInterface $specRoot /spec
      */
-    public function __construct(SpecPathInterface $specPath)
+    public function __construct(SpecPathInterface $specRoot, string $groupName)
     {
-        $this->jsonPath = $specPath->getChild('routes.json')->pub();
-        $this->objects = new SplObjectStorage;
-        $this->array = [
-            'name' => basename($specPath->pub()),
-            'spec' => $this->jsonPath,
-            'routes' => [],
-        ];
+        $this->jsonPath = $specRoot->getChild("$groupName/routes.json")->pub();
+        $this->key = $groupName;
+        $this->routeableSpecs = new RouteableSpecs;
     }
 
-    public function withAddedRouteable(RouteableSpec $routeableSpec): GroupSpec
+    public function withAddedRouteableSpec(RouteableSpec $routeableSpec): GroupSpec
     {
         $new = clone $this;
-        $this->objects->attach($routeableSpec);
-        $new->array['routes'][] = $routeableSpec->toArray();
+        $new->routeableSpecs = $this->routeableSpecs->withPut($routeableSpec);
 
         return $new;
     }
 
-    public function jsonPath(): string
-    {
-        return $this->jsonPath;
-    }
-
     public function toArray(): array
     {
-        return $this->array;
-    }
+        $routes = [];
+        /**
+         * @var string $key
+         * @var RouteableSpec $routeableSpec
+         */
+        foreach ($this->routeableSpecs->map() as $key => $routeableSpec) {
+            $routes[$key] = $routeableSpec->toArray();
+        }
 
-    public function routeableSpecs(): RouteableSpecObjectsRead
-    {
-        return new RouteableSpecObjectsRead($this->objects);
+        return [
+            'name' => $this->key,
+            'spec' => $this->jsonPath,
+            'routes' => $routes,
+        ];
     }
 }

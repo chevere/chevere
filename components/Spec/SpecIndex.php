@@ -13,60 +13,59 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec;
 
-use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Spec\Interfaces\SpecIndexInterface;
-use Ds\Map;
 use OutOfBoundsException;
+use function DeepCopy\deep_copy;
 
 /**
  * Maps route id (internal) to endpoint method spec paths.
  */
 final class SpecIndex implements SpecIndexInterface
 {
-    private Map $map;
+    private SpecIndexMap $specIndexMap;
 
     public function __construct()
     {
-        $this->map = new Map;
+        $this->specIndexMap = new SpecIndexMap;
     }
 
     public function withOffset(
-        int $id,
+        int $routeId,
         RouteEndpointSpec $routeEndpointSpec
     ): SpecIndexInterface {
         $new = clone $this;
-        $specMethods = new SpecMethods;
-        if ($new->map->hasKey($id)) {
-            $specMethods = $new->map->get($id);
+        if ($new->specIndexMap->hasKey($routeId)) {
+            $specMethods = $new->specIndexMap->get($routeId);
         } else {
-            $new->map->put($id, $specMethods);
+            $specMethods = new SpecMethods;
+            $new->specIndexMap = $new->specIndexMap->withPut($routeId, $specMethods);
         }
         $specMethods = $specMethods
-            ->withMethodJsonSpecPath(
-                $routeEndpointSpec->method(),
+            ->withPut(
+                $routeEndpointSpec->key(),
                 $routeEndpointSpec->jsonPath()
             );
-        $new->map->put($id, $specMethods);
+        $new->specIndexMap = $new->specIndexMap->withPut($routeId, $specMethods);
 
         return $new;
     }
 
     public function specIndexMap(): SpecIndexMap
     {
-        return new SpecIndexMap($this->map);
+        return deep_copy($this->specIndexMap);
     }
 
-    public function has(int $id, MethodInterface $method): bool
+    public function has(int $id, string $methodName): bool
     {
-        return $this->map->hasKey($id)
-            && $this->map->get($id)->hasKey($method);
+        return $this->specIndexMap->hasKey($id)
+            && $this->specIndexMap->get($id)->hasKey($methodName);
     }
 
     /**
      * @throws OutOfBoundsException if $id and $method doesn't match the index
      */
-    public function get(int $id, MethodInterface $method): string
+    public function get(int $id, string $methodName): string
     {
-        return $this->map->get($id)->get($method);
+        return $this->specIndexMap->get($id)->get($methodName);
     }
 }

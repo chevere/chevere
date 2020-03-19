@@ -25,7 +25,7 @@ final class SpecIndexMapTest extends TestCase
     {
         $map = new Map;
         $specIndexMap = new SpecIndexMap($map);
-        $this->assertSame($map, $specIndexMap->map());
+        $this->assertSame($map->toArray(), $specIndexMap->map()->toArray());
         $this->assertFalse($specIndexMap->hasKey(0));
         $this->expectException(OutOfBoundsException::class);
         $specIndexMap->get(0);
@@ -35,8 +35,7 @@ final class SpecIndexMapTest extends TestCase
     {
         $id = 100;
         $specMethods = new SpecMethods;
-        $specIndexMap = new SpecIndexMap(new Map);
-        $specIndexMap->put($id, $specMethods);
+        $specIndexMap = (new SpecIndexMap(new Map))->withPut($id, $specMethods);
         $this->assertTrue($specIndexMap->hasKey($id));
         $this->assertSame($specMethods, $specIndexMap->get($id));
     }

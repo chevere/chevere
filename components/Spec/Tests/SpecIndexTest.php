@@ -29,11 +29,11 @@ final class SpecIndexTest extends TestCase
     {
         $specIndex = new SpecIndex;
         $method = new GetMethod;
-        $this->assertFalse($specIndex->has(0, $method));
+        $this->assertFalse($specIndex->has(0, $method::name()));
         $this->assertCount(0, $specIndex->specIndexMap()->map());
         $this->assertFalse($specIndex->specIndexMap()->hasKey(0));
         $this->expectException(OutOfBoundsException::class);
-        $specIndex->get(0, $method);
+        $specIndex->get(0, $method::name());
     }
 
     public function testWithOffset(): void
@@ -43,24 +43,24 @@ final class SpecIndexTest extends TestCase
         $specPath = new SpecPath('/spec/group/route');
         $routeEndpointSpec = new RouteEndpointSpec($specPath, $routeEndpoint);
         $specIndex = (new SpecIndex)->withOffset(1, $routeEndpointSpec);
-        $this->assertFalse($specIndex->has(0, $method));
-        $this->assertTrue($specIndex->has(1, $method));
+        $this->assertFalse($specIndex->has(0, $method->name()));
+        $this->assertTrue($specIndex->has(1, $method->name()));
         $this->assertCount(1, $specIndex->specIndexMap()->map());
         $this->assertSame(
             $specPath->getChild($method->name() . '.json')->pub(),
-            $specIndex->get(1, $method)
+            $specIndex->get(1, $method->name())
         );
         //
         $method2 = new PutMethod;
         $routeEndpoint2 = new RouteEndpoint($method2, new TestController);
         $routeEndpointSpec2 = new RouteEndpointSpec($specPath, $routeEndpoint2);
         $specIndex = $specIndex->withOffset(1, $routeEndpointSpec2);
-        $this->assertTrue($specIndex->has(1, $method));
-        $this->assertTrue($specIndex->has(1, $method2));
+        $this->assertTrue($specIndex->has(1, $method->name()));
+        $this->assertTrue($specIndex->has(1, $method2->name()));
         $this->assertCount(1, $specIndex->specIndexMap()->map());
         $this->assertSame(
             $specPath->getChild($method2->name() . '.json')->pub(),
-            $specIndex->get(1, $method2)
+            $specIndex->get(1, $method2->name())
         );
     }
 }

@@ -15,46 +15,40 @@ namespace Chevere\Components\Spec;
 
 use Chevere\Components\Spec\Interfaces\SpecInterface;
 use Chevere\Components\Spec\Interfaces\SpecPathInterface;
-use Chevere\Components\Spec\Specs\GroupSpecObjectsRead;
-use SplObjectStorage;
+use Chevere\Components\Spec\Specs\GroupSpecs;
+use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
 
 final class IndexSpec implements SpecInterface
 {
-    private SplObjectStorage $objects;
+    use SpecsTrait;
 
-    private string $jsonPath;
-
-    private $array = [
-        'groups' => [],
-    ];
+    private GroupSpecs $groupSpecs;
 
     public function __construct(SpecPathInterface $specPath)
     {
         $this->jsonPath = $specPath->getChild('index.json')->pub();
-        $this->objects = new SplObjectStorage;
+        $this->groupSpecs = new GroupSpecs;
     }
 
     public function withAddedGroup(GroupSpec $groupSpec): IndexSpec
     {
         $new = clone $this;
-        $this->objects->attach($groupSpec);
-        $new->array['groups'][] = $groupSpec->toArray();
+        $new->groupSpecs = $new->groupSpecs->withPut($groupSpec);
 
         return $new;
     }
 
-    public function jsonPath(): string
-    {
-        return $this->jsonPath;
-    }
-
     public function toArray(): array
     {
-        return $this->array;
-    }
+        $groups = [];
+        /**
+         * @var string $key
+         * @var GroupSpec $groupSpec
+         */
+        foreach ($this->groupSpecs->map() as $key => $groupSpec) {
+            $groups[$key] = $groupSpec->toArray();
+        }
 
-    public function groupSpecs(): GroupSpecObjectsRead
-    {
-        return new GroupSpecObjectsRead($this->objects);
+        return ['groups' => $groups];
     }
 }

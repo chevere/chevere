@@ -26,22 +26,22 @@ final class SpecMethods
         $this->map = new Map;
     }
 
-    public function withMethodJsonSpecPath(MethodInterface $method, string $jsonPath): SpecMethods
+    public function withPut(string $methodName, string $jsonPath): SpecMethods
     {
         $new = clone $this;
         $new->map = deep_copy($this->map);
-        $new->map->put($method::name(), $jsonPath);
+        $new->map->put($methodName, $jsonPath);
 
         return $new;
     }
 
-    public function hasKey(MethodInterface $method): bool
+    public function hasKey(string $methodName): bool
     {
-        return $this->map->hasKey($method::name());
+        return $this->map->hasKey($methodName);
     }
 
-    public function get(MethodInterface $method): string
+    public function get(string $methodName): string
     {
-        return $this->map->get($method::name());
+        return $this->map->get($methodName);
     }
 }

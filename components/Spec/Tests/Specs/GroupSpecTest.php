@@ -25,22 +25,24 @@ use Chevere\Components\Spec\SpecPath;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
-final class GroupsSpecTest extends TestCase
+final class GroupSpecTest extends TestCase
 {
     public function testConstruct(): void
     {
         $specPath = new SpecPath('/spec');
         $groupName = 'group-name';
-        $specGroupPath = $specPath->getChild($groupName);
-        $specGroupPathJson = $specGroupPath->getChild('routes.json')->pub();
-        $spec = new GroupSpec($specGroupPath);
+        $specGroupPathJson = $specPath->getChild($groupName)
+            ->getChild('routes.json')->pub();
+        $spec = new GroupSpec($specPath, $groupName);
         $this->assertSame($specGroupPathJson, $spec->jsonPath());
-        $this->assertSame([
-            'name' => $groupName,
-            'spec' => $specGroupPathJson,
-            'routes' => []
-        ], $spec->toArray());
-        $this->assertCount(0, $spec->routeableSpecs());
+        $this->assertSame(
+            [
+                'name' => $groupName,
+                'spec' => $specGroupPathJson,
+                'routes' => []
+            ],
+            $spec->toArray()
+        );
     }
 
     public function testWithAddedRouteable(): void
@@ -58,20 +60,15 @@ final class GroupsSpecTest extends TestCase
             $groupSpecPath->getChild($routeName->toString()),
             new Routeable($route)
         );
-        $spec = (new GroupSpec($groupSpecPath))
-            ->withAddedRouteable($routeableSpec);
+        $spec = (new GroupSpec($specPath, $groupName))
+            ->withAddedRouteableSpec($routeableSpec);
         $this->assertSame(
             [
                 'name' => $groupName,
                 'spec' => $routesSpecPathJson,
-                'routes' => [$routeableSpec->toArray()],
+                'routes' => [$routeableSpec->key() => $routeableSpec->toArray()],
             ],
             $spec->toArray()
         );
-        $spec->routeableSpecs()->rewind();
-        $object = $spec->routeableSpecs()->current();
-        $this->assertNull($spec->routeableSpecs()->getInfo());
-        $this->assertSame($routeableSpec->jsonPath(), $object->jsonPath());
-        $this->assertSame($routeableSpec->toArray(), $object->toArray());
     }
 }

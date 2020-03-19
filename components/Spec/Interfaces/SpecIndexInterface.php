@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Interfaces;
 
-use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Spec\RouteEndpointSpec;
 use Chevere\Components\Spec\SpecIndexMap;
 
@@ -26,7 +25,7 @@ interface SpecIndexInterface
 
     public function specIndexMap(): SpecIndexMap;
 
-    public function has(int $id, MethodInterface $method): bool;
+    public function has(int $id, string $methodName): bool;
 
-    public function get(int $id, MethodInterface $method): string;
+    public function get(int $id, string $methodName): string;
 }

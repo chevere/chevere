@@ -11,16 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Spec;
+namespace Chevere\Components\Spec\Specs;
 
+use Chevere\Components\Spec\RouteableSpec;
 use Ds\Map;
-use OutOfBoundsException;
 use function DeepCopy\deep_copy;
 
-/**
- * A type-hinted proxy for Ds\Map storing (int) routeId => [(string) methodName => (string) specJsonPath,]
- */
-final class SpecIndexMap
+final class RouteableSpecs
 {
     private Map $map;
 
@@ -34,22 +31,22 @@ final class SpecIndexMap
         return $this->map;
     }
 
-    public function withPut(int $routeId, SpecMethods $specMethods): SpecIndexMap
+    public function withPut(RouteableSpec $routeableSpec): RouteableSpecs
     {
         $new = clone $this;
         $new->map = deep_copy($new->map);
-        $new->map->put($routeId, $specMethods);
+        $new->map->put($routeableSpec->key(), $routeableSpec);
 
         return $new;
     }
 
-    public function hasKey(int $routeId): bool
+    public function hasKey(string $key): bool
     {
-        return $this->map->hasKey($routeId);
+        return $this->map->hasKey($key);
     }
 
-    public function get(int $routeId): SpecMethods
+    public function get(string $key): RouteableSpec
     {
-        return $this->map->get($routeId);
+        return $this->map->get($key);
     }
 }

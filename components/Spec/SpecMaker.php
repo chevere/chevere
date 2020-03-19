@@ -22,6 +22,7 @@ use Chevere\Components\Spec\Exceptions\SpecInvalidArgumentException;
 use Chevere\Components\Spec\Interfaces\SpecIndexInterface;
 use Chevere\Components\Spec\Interfaces\SpecInterface;
 use Chevere\Components\Spec\Interfaces\SpecPathInterface;
+use Chevere\Components\Spec\RouteEndpointSpec;
 use Chevere\Components\Str\Str;
 use Ds\Map;
 use LogicException;
@@ -45,11 +46,11 @@ final class SpecMaker
     private Map $files;
 
     public function __construct(
-        SpecPathInterface $specPath,
+        SpecPathInterface $specRoot,
         DirInterface $dir,
         RouterInterface $router
     ) {
-        $this->specPath = $specPath;
+        $this->specPath = $specRoot;
         $this->dir = $dir;
         $this->assertDir();
         $this->router = $router;
@@ -63,30 +64,27 @@ final class SpecMaker
         while ($routeables->valid()) {
             $id = $routeables->getInfo();
             $routeable = $routeables->current();
-            $group = $router->groups()->getForId($id);
-            $groupSpecPath = $specPath->getChild($group);
-            if (!isset($group[$group])) {
-                $groups[$group] = new GroupSpec($groupSpecPath);
+            $groupName = $router->groups()->getForId($id);
+            if (!isset($groupName[$groupName])) {
+                $groups[$groupName] = new GroupSpec($specRoot, $groupName);
             }
             $routeableSpec = new RouteableSpec(
-                $groupSpecPath->getChild(
-                    $router->index()->get($id)->name()
-                ),
+                $specRoot->getChild($groupName),
                 $routeable
             );
             $this->makeJsonFile($routeableSpec);
             /** @var GroupSpec $groupSpec */
-            $groupSpec = ($groups[$group])->withAddedRouteable($routeableSpec);
-            $groups[$group] = $groupSpec;
+            $groupSpec = $groups[$groupName];
+            $groupSpec = $groupSpec->withAddedRouteableSpec($routeableSpec);
+            $groups[$groupName] = $groupSpec;
             $routeEndpointSpecs = $routeableSpec->routeEndpointSpecs();
-            $routeEndpointSpecs->rewind();
-            while ($routeEndpointSpecs->valid()) {
+            /** @var RouteEndpointSpec $routeEndpointSpec */
+            foreach ($routeEndpointSpecs->map() as $routeEndpointSpec) {
                 $this->specIndex = $this->specIndex->withOffset(
                     $id,
-                    $routeEndpointSpecs->current()
+                    $routeEndpointSpec
                 );
-                $this->makeJsonFile($routeEndpointSpecs->current());
-                $routeEndpointSpecs->next();
+                $this->makeJsonFile($routeEndpointSpec);
             }
             $routeables->next();
         }

@@ -46,7 +46,7 @@ final class RouteEndpoints implements RouteEndpointsInterface
         return $this->routeEndpointsMap->hasKey($method);
     }
 
-    public function getMethod(MethodInterface $method): RouteEndpointInterface
+    public function getRouteEndpoint(MethodInterface $method): RouteEndpointInterface
     {
         if (!$this->routeEndpointsMap->hasKey($method)) {
             throw new MethodNotFoundException(

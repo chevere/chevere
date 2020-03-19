@@ -35,7 +35,6 @@ final class IndexSpecTest extends TestCase
         $this->assertSame([
             'groups' => []
         ], $spec->toArray());
-        $this->assertCount(0, $spec->groupSpecs());
     }
 
     public function testWithAddedGroup(): void
@@ -44,28 +43,22 @@ final class IndexSpecTest extends TestCase
         $routePath = new RoutePath('/route/path');
         $specPath = new SpecPath('/spec');
         $groupName = 'group-name';
-        $groupSpecPath = $specPath->getChild($groupName);
         $route = (new Route($routeName, $routePath))
             ->withAddedEndpoint(
                 new RouteEndpoint(new GetMethod, new TestController)
             );
         $objectStorage = new SplObjectStorage;
         $objectStorage->attach(new Routeable($route));
-        $objects = new RouteableObjectsRead($objectStorage);
-        $groupSpec = new GroupSpec($groupSpecPath, $objects);
+        $groupSpec = new GroupSpec($specPath, $groupName);
         $spec = (new IndexSpec($specPath))->withAddedGroup($groupSpec);
         $this->assertSame($specPath->getChild('index.json')->pub(), $spec->jsonPath());
         $this->assertSame(
             [
-                'groups' => [$groupSpec->toArray()],
+                'groups' => [
+                    $groupSpec->key() => $groupSpec->toArray()
+                ],
             ],
             $spec->toArray()
         );
-        $this->assertCount(1, $spec->groupSpecs());
-        $spec->groupSpecs()->rewind();
-        $object = $spec->groupSpecs()->current();
-        $this->assertNull($spec->groupSpecs()->getInfo());
-        $this->assertSame($groupSpec->jsonPath(), $object->jsonPath());
-        $this->assertSame($groupSpec->toArray(), $object->toArray());
     }
 }

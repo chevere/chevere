@@ -18,4 +18,6 @@ use Chevere\Components\Common\Interfaces\ToArrayInterface;
 interface SpecInterface extends ToArrayInterface
 {
     public function jsonPath(): string;
+
+    public function key(): string;
 }

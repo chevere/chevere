@@ -13,59 +13,71 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec;
 
+use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
 use Chevere\Components\Spec\Interfaces\SpecInterface;
 use Chevere\Components\Spec\Interfaces\SpecPathInterface;
-use Chevere\Components\Spec\Specs\RouteEndpointSpecObjectsRead;
-use SplObjectStorage;
+use Chevere\Components\Spec\Specs\RouteEndpointSpecs;
+use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
+use function DeepCopy\deep_copy;
 
 final class RouteableSpec implements SpecInterface
 {
-    private SplObjectStorage $objects;
+    use SpecsTrait;
 
-    private string $jsonPath;
+    private RouteEndpointSpecs $routeEndpointSpecs;
 
-    private $array = [];
+    private string $path;
+
+    private array $wildcards;
 
     /**
-     * @var SpecPathInterface $specPath /spec/group/route-name
+     * @var SpecPathInterface $specGroupPath /spec/group
      */
     public function __construct(
-        SpecPathInterface $specPath,
+        SpecPathInterface $specGroupPath,
         RouteableInterface $routeable
     ) {
-        $this->objects = new SplObjectStorage;
-        $this->jsonPath = $specPath->getChild('route.json')->pub();
-        $this->array = [
-            'name' => $routeable->route()->name()->toString(),
-            'spec' => $this->jsonPath,
-            'path' => $routeable->route()->path()->toString(),
-            'wildcards' => $routeable->route()->path()->routeWildcards()->toArray(),
-        ];
+        $this->key = $routeable->route()->name()->toString();
+        $this->routeEndpointSpecs = new RouteEndpointSpecs;
+        $specGroupRoute = $specGroupPath->getChild($this->key);
+        $this->jsonPath = $specGroupRoute->getChild('route.json')->pub();
+        $this->path = $routeable->route()->path()->toString();
+        $this->wildcards = $routeable->route()->path()->routeWildcards()->toArray();
         $routeEndpointsMap = $routeable->route()->endpoints()->routeEndpointsMap();
-        // @var RouteEndpointInterface $routeEndpoint
+        /** @var RouteEndpointInterface $routeEndpoint */
         foreach ($routeEndpointsMap->map() as $routeEndpoint) {
             $routeEndpointSpec = new RouteEndpointSpec(
-                $specPath,
+                $specGroupRoute,
                 $routeEndpoint
             );
-            $this->objects->attach($routeEndpointSpec);
-            $this->array['endpoints'][] = $routeEndpointSpec->toArray();
+            $this->routeEndpointSpecs = $this->routeEndpointSpecs
+                ->withPut($routeEndpointSpec);
         }
     }
 
-    public function jsonPath(): string
+    public function routeEndpointSpecs(): RouteEndpointSpecs
     {
-        return $this->jsonPath;
+        return deep_copy($this->routeEndpointSpecs);
     }
 
     public function toArray(): array
     {
-        return $this->array;
-    }
+        $endpoints = [];
+        /**
+         * @var string $key
+         * @var RouteEndpointSpec $routeEndpointSpec
+         */
+        foreach ($this->routeEndpointSpecs->map() as $key => $routeEndpointSpec) {
+            $endpoints[$key] = $routeEndpointSpec->toArray();
+        }
 
-    public function routeEndpointSpecs(): RouteEndpointSpecObjectsRead
-    {
-        return new RouteEndpointSpecObjectsRead($this->objects);
+        return [
+            'name' => $this->key,
+            'spec' => $this->jsonPath,
+            'path' => $this->path,
+            'wildcards' => $this->wildcards,
+            'endpoints' => $endpoints
+        ];
     }
 }

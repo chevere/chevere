@@ -32,6 +32,9 @@ interface RouterGroupsInterface
 
     public function get(string $group): array;
 
+    /**
+     * @return string Group name
+     */
     public function getForId(int $id): string;
 
     public function iterator(): ArrayIterator;

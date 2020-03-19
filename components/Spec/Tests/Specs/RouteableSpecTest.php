@@ -31,8 +31,8 @@ final class RouteableSpecTest extends TestCase
     {
         $routeName = new RouteName('route-name');
         $routePath = new RoutePath('/route/path');
-        $specPath = new SpecPath('/spec/group/' . $routeName->toString());
-        $routeSpecPath = $specPath->getChild('route.json')->pub();
+        $specPath = new SpecPath('/spec/group');
+        $routeSpecPath = $specPath->getChild($routeName->toString() . '/route.json')->pub();
         $method = new GetMethod;
         $routeEndpoint = (new RouteEndpoint($method, new TestController))
             ->withDescription('Test endpoint')
@@ -41,8 +41,10 @@ final class RouteableSpecTest extends TestCase
             ->withAddedEndpoint($routeEndpoint);
         $routeable = new Routeable($route);
         $spec = new RouteableSpec($specPath, $routeable);
-        $specPathJson = $specPath->getChild($method->name() . '.json')->pub();
-        $routeEndpoint = new RouteEndpointSpec($specPath, $routeEndpoint);
+        $routeEndpoint = new RouteEndpointSpec(
+            $specPath->getChild($routeName->toString()),
+            $routeEndpoint
+        );
         $this->assertSame($routeSpecPath, $spec->jsonPath());
         $this->assertSame(
             [
@@ -50,14 +52,11 @@ final class RouteableSpecTest extends TestCase
                 'spec' => $routeSpecPath,
                 'path' => $routePath->toString(),
                 'wildcards' => $routePath->routeWildcards()->toArray(),
-                'endpoints' => [$routeEndpoint->toArray()]
+                'endpoints' => [
+                    $method->name() => $routeEndpoint->toArray()
+                ]
             ],
             $spec->toArray()
         );
-        $spec->routeEndpointSpecs()->rewind();
-        $object = $spec->routeEndpointSpecs()->current();
-        $this->assertNull($spec->routeEndpointSpecs()->getInfo());
-        $this->assertSame($specPathJson, $object->jsonPath());
-        $this->assertSame($routeEndpoint->toArray(), $object->toArray());
     }
 }

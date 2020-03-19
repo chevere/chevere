@@ -32,7 +32,7 @@ interface RouteEndpointsInterface
 
     public function hasMethod(MethodInterface $method): bool;
 
-    public function getMethod(MethodInterface $method): RouteEndpointInterface;
+    public function getRouteEndpoint(MethodInterface $method): RouteEndpointInterface;
 
     public function routeEndpointsMap(): RouteEndpointsMap;
 }
