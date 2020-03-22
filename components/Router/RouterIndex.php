@@ -13,65 +13,54 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Components\Message\Message;
-use Chevere\Components\Router\Interfaces\RouteableInterface;
+use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Interfaces\RouteIdentifierInterface;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
 use Ds\Map;
-use InvalidArgumentException;
+use OutOfBoundsException;
 
 final class RouterIndex implements RouterIndexInterface
 {
     private RouterIdentifiers $routerIdentifiers;
 
-    /** @var Map <int>$id => <string>$key */
+    /** @var Map [<string>routeName => <string>routePath,] */
     private Map $index;
 
     public function __construct()
     {
-        $this->routerIdentifiers = new RouterIdentifiers(new Map);
+        $this->routerIdentifiers = new RouterIdentifiers;
         $this->index = new Map;
     }
 
-    public function withAdded(RouteableInterface $routeable, int $id, string $group): RouterIndexInterface
+    public function withAdded(RouteInterface $route, string $group): RouterIndexInterface
     {
         $new = clone $this;
-        $key = $routeable->route()->path()->toString();
+        $routeName = $route->name()->toString();
+        $routePath = $route->path()->toString();
         $new->index = $new->index->copy();
-        $new->index->put($id, $key);
+        $new->index->put($routeName, $routePath);
         $new->routerIdentifiers->put(
-            $key,
+            $routePath,
             new RouteIdentifier(
-                $id,
                 $group,
-                $routeable->route()->name()->toString()
+                $route->name()->toString()
             )
         );
 
         return $new;
     }
 
-    public function has(int $id): bool
+    public function has(string $routeName): bool
     {
-        return $this->index->hasKey($id);
+        return $this->index->hasKey($routeName);
     }
 
-    public function hasKey(string $pathKey): bool
+    /**
+     * @throws OutOfBoundsException
+     */
+    public function get(string $routeName): RouteIdentifierInterface
     {
-        return $this->routerIdentifiers->hasKey($pathKey);
-    }
-
-    public function get(int $id): RouteIdentifierInterface
-    {
-        if (!$this->index->hasKey($id)) {
-            throw new InvalidArgumentException(
-                (new Message("Id %id% doesn't exists"))
-                    ->code('%id%', (string) $id)
-                    ->toString()
-            );
-        }
-
-        return $this->routerIdentifiers->get($this->index->get($id));
+        return $this->routerIdentifiers->get($this->index->get($routeName));
     }
 
     public function toArray(): array

@@ -22,11 +22,10 @@ use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
 use Chevere\Components\Router\Routeable;
-use Chevere\Components\Router\RouteableObjectsRead;
+use Chevere\Components\Router\Routeables;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterGroups;
 use Chevere\Components\Router\RouterIndex;
-use Chevere\Components\Router\RouterNamed;
 use Chevere\Components\Router\RouterRegex;
 use Chevere\TestApp\App\Controllers\TestController;
 use GuzzleHttp\Psr7\Uri;
@@ -52,7 +51,6 @@ final class RouterTest extends TestCase
         $router = new Router();
         $this->assertFalse($router->hasRegex());
         $this->assertFalse($router->hasIndex());
-        $this->assertFalse($router->hasNamed());
         $this->assertFalse($router->hasGroups());
         $this->assertFalse($router->canResolve());
     }
@@ -77,31 +75,22 @@ final class RouterTest extends TestCase
 
     public function testIndex(): void
     {
-        $route = new Route(new RouteName('some-name'), new RoutePath('/test'));
+        $route = new Route(new RouteName('test-name'), new RoutePath('/test'));
         $route = $route->withAddedEndpoint(
             new RouteEndpoint(
                 new GetMethod,
                 new TestController
             )
         );
-        $routeable = new Routeable($route);
-        $index = (new RouterIndex)->withAdded($routeable, 0, 'some-group');
+        $index = (new RouterIndex)->withAdded($route, 'test-group');
         $router = (new Router)->withIndex($index);
         $this->assertTrue($router->hasIndex());
         $this->assertSame($index, $router->index());
     }
 
-    public function testNamed(): void
-    {
-        $named = (new RouterNamed)->withAdded('test_name', 1);
-        $router = (new Router)->withNamed($named);
-        $this->assertTrue($router->hasNamed());
-        $this->assertSame($named, $router->named());
-    }
-
     public function testGroups(): void
     {
-        $groups = (new RouterGroups)->withAdded('test_group', 2);
+        $groups = (new RouterGroups)->withAdded('test-group', 'test-name');
         $router = (new Router)->withGroups($groups);
         $this->assertTrue($router->hasGroups());
         $this->assertSame($groups, $router->groups());
@@ -117,13 +106,9 @@ final class RouterTest extends TestCase
             )
         );
         $routeable = new Routeable($route);
-        $objectStorage = new SplObjectStorage;
-        $objectStorage->attach($routeable);
-        $router = (new Router)->withRouteables(
-            new RouteableObjectsRead($objectStorage)
-        );
-        $this->assertCount(1, $router->routeableObjects());
-        $router->routeableObjects()->rewind();
-        $this->assertSame($routeable, $router->routeableObjects()->current());
+        $routeables = (new Routeables)->withPut($routeable);
+        $router = (new Router)->withRouteables($routeables);
+        $this->assertCount(1, $router->routeables()->map());
+        $this->assertTrue($router->routeables()->hasKey($route->name()->toString()));
     }
 }

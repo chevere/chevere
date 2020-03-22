@@ -19,8 +19,6 @@ interface RouterCacheInterface
 
     const KEY_INDEX = 'index';
 
-    const KEY_NAMED = 'named';
-
     const KEY_GROUPS = 'groups';
 
     public function routesCache(): RoutesCacheInterface;
@@ -29,15 +27,11 @@ interface RouterCacheInterface
 
     public function hasIndex(): bool;
 
-    public function hasNamed(): bool;
-
     public function hasGroups(): bool;
 
     public function getRegex(): RouterRegexInterface;
 
     public function getIndex(): RouterIndexInterface;
-
-    public function getNamed(): RouterNamedInterface;
 
     public function getGroups(): RouterGroupsInterface;
 

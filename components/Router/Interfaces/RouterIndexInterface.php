@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Router\Interfaces;
 
 use Chevere\Components\Common\Interfaces\ToArrayInterface;
+use Chevere\Components\Route\Interfaces\RouteInterface;
 
 interface RouterIndexInterface extends ToArrayInterface
 {
@@ -23,20 +24,9 @@ interface RouterIndexInterface extends ToArrayInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified values.
      */
-    public function withAdded(RouteableInterface $routeable, int $id, string $group): RouterIndexInterface;
+    public function withAdded(RouteInterface $route, string $group): RouterIndexInterface;
 
-    /**
-     * Returns a boolean indicating whether the instance has the given index.
-     */
-    public function has(int $id): bool;
+    public function has(string $routeName): bool;
 
-    /**
-     * Returns a boolean indicating whether the instance has the given key indexed.
-     */
-    public function hasKey(string $key): bool;
-
-    /**
-     * Provides access to the RouteIdentifier instance identified by its internal id.
-     */
-    public function get(int $id): RouteIdentifierInterface;
+    public function get(string $routeName): RouteIdentifierInterface;
 }

@@ -19,7 +19,7 @@ use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routeable;
-use Chevere\Components\Router\RouteableObjectsRead;
+use Chevere\Components\Router\Routeables;
 use Chevere\Components\Spec\GroupSpec;
 use Chevere\Components\Spec\IndexSpec;
 use Chevere\Components\Spec\SpecPath;

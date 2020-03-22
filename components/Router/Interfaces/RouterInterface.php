@@ -15,7 +15,7 @@ namespace Chevere\Components\Router\Interfaces;
 
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
-use Chevere\Components\Router\RouteableObjectsRead;
+use Chevere\Components\Router\Routeables;
 use Chevere\Components\Serialize\Exceptions\UnserializeException;
 use Psr\Http\Message\UriInterface;
 use TypeError;
@@ -24,9 +24,9 @@ interface RouterInterface
 {
     const CACHE_ID = 'router';
 
-    public function withRouteables(RouteableObjectsRead $routeables): RouterInterface;
+    public function withRouteables(Routeables $routes): RouterInterface;
 
-    public function routeableObjects(): RouteableObjectsRead;
+    public function routeables(): Routeables;
 
     /**
      * Return an instance with the specified RegexInterface.
@@ -57,21 +57,6 @@ interface RouterInterface
      * Provides access to the instance index.
      */
     public function index(): RouterIndexInterface;
-
-    /**
-     * Return an instance with the specified named.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified named.
-     */
-    public function withNamed(RouterNamedInterface $name): RouterInterface;
-
-    public function hasNamed(): bool;
-
-    /**
-     * Provides access to the instance index.
-     */
-    public function named(): RouterNamedInterface;
 
     /**
      * Return an instance with the specified group.

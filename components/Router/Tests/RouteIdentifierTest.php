@@ -21,47 +21,38 @@ final class RouteIdentifierTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $id = 1;
         $group = 'some-group';
         $name = 'some-name';
-        $routeIdentifier = new RouteIdentifier($id, $group, $name);
-        $this->assertSame($id, $routeIdentifier->id());
+        $routeIdentifier = new RouteIdentifier($group, $name);
         $this->assertSame($group, $routeIdentifier->group());
         $this->assertSame($name, $routeIdentifier->name());
         $this->assertSame([
-            'id' => $id,
             'group' => $group,
             'name' => $name,
         ], $routeIdentifier->toArray());
     }
 
-    public function testInvalidId(): void
-    {
-        $this->expectException(RouteIdentifierException::class);
-        new RouteIdentifier(-1, 'some-group', 'some-name');
-    }
-
     public function testEmptyGroup(): void
     {
         $this->expectException(RouteIdentifierException::class);
-        new RouteIdentifier(1, '', 'some-name');
+        new RouteIdentifier('', 'some-name');
     }
 
     public function testCtypeSpaceGroup(): void
     {
         $this->expectException(RouteIdentifierException::class);
-        new RouteIdentifier(1, '   ', 'some-name');
+        new RouteIdentifier('   ', 'some-name');
     }
 
     public function testEmptyName(): void
     {
         $this->expectException(RouteIdentifierException::class);
-        new RouteIdentifier(1, 'some-group', '');
+        new RouteIdentifier('some-group', '');
     }
 
     public function testCtypeSpaceName(): void
     {
         $this->expectException(RouteIdentifierException::class);
-        new RouteIdentifier(1, 'some-group', '  ');
+        new RouteIdentifier('some-group', '  ');
     }
 }

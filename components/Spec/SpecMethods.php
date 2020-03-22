@@ -13,18 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec;
 
+use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Ds\Map;
 use function DeepCopy\deep_copy;
 
 final class SpecMethods
 {
-    private Map $map;
-
-    public function __construct()
-    {
-        $this->map = new Map;
-    }
+    use DsMapTrait;
 
     public function withPut(string $methodName, string $jsonPath): SpecMethods
     {

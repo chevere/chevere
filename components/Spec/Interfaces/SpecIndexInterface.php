@@ -19,13 +19,13 @@ use Chevere\Components\Spec\SpecIndexMap;
 interface SpecIndexInterface
 {
     public function withOffset(
-        int $id,
+        string $routeName,
         RouteEndpointSpec $routeEndpointSpec
     ): SpecIndexInterface;
 
     public function specIndexMap(): SpecIndexMap;
 
-    public function has(int $id, string $methodName): bool;
+    public function has(string $routeName, string $methodName): bool;
 
-    public function get(int $id, string $methodName): string;
+    public function get(string $routeName, string $methodName): string;
 }

@@ -18,6 +18,7 @@ use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Interfaces\RouterInterface;
+use Chevere\Components\Router\Routeable;
 use Chevere\Components\Spec\Exceptions\SpecInvalidArgumentException;
 use Chevere\Components\Spec\Interfaces\SpecIndexInterface;
 use Chevere\Components\Spec\Interfaces\SpecInterface;
@@ -58,13 +59,14 @@ final class SpecMaker
         $this->specIndex = new SpecIndex;
         $this->indexSpec = new IndexSpec($this->specPath);
         $this->files = new Map;
-        $routeables = $router->routeableObjects();
-        $routeables->rewind();
+        $routes = $router->routeables();
         $groups = [];
-        while ($routeables->valid()) {
-            $id = $routeables->getInfo();
-            $routeable = $routeables->current();
-            $groupName = $router->groups()->getForId($id);
+        /**
+         * @var string $routeName
+         * @var Routeable $routeabe
+         */
+        foreach ($routes->map() as $routeName => $routeable) {
+            $groupName = $router->groups()->getForRouteName($routeName);
             if (!isset($groupName[$groupName])) {
                 $groups[$groupName] = new GroupSpec($specRoot, $groupName);
             }
@@ -81,12 +83,11 @@ final class SpecMaker
             /** @var RouteEndpointSpec $routeEndpointSpec */
             foreach ($routeEndpointSpecs->map() as $routeEndpointSpec) {
                 $this->specIndex = $this->specIndex->withOffset(
-                    $id,
+                    $routeName,
                     $routeEndpointSpec
                 );
                 $this->makeJsonFile($routeEndpointSpec);
             }
-            $routeables->next();
         }
         foreach ($groups as $groupSpec) {
             $this->makeJsonFile($groupSpec);
@@ -129,7 +130,6 @@ final class SpecMaker
         $checks = [
             'groups' => $this->router->hasGroups(),
             'index' => $this->router->hasIndex(),
-            'named' => $this->router->hasNamed(),
             'regex' => $this->router->hasRegex(),
         ];
         $missing = array_filter($checks, fn (bool $bool) => $bool === false);
@@ -143,7 +143,7 @@ final class SpecMaker
             );
         }
         // @codeCoverageIgnoreStart
-        if ($this->router->routeableObjects()->count() == 0) {
+        if ($this->router->routeables()->map()->count() == 0) {
             throw new LogicException(
                 (new Message('Instance of %interfaceName% does not contain any routeable.'))
                     ->code('%interfaceName%', RouterInterface::class)

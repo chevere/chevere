@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace Chevere\Components\Benchmark;
 
 use ArgumentCountError;
-use TypeError;
-use DateTime;
-use Chevere\Components\Instances\BootstrapInstance;
-use JakubOnderka\PhpConsoleColor\ConsoleColor;
-use Chevere\Components\Benchmark\Interfaces\RunInterface;
-use Chevere\Components\Benchmark\Interfaces\RunableInterface;
 use Chevere\Components\Benchmark\Exceptions\ArgumentCountException;
 use Chevere\Components\Benchmark\Exceptions\ArgumentTypeException;
+use Chevere\Components\Benchmark\Interfaces\RunableInterface;
+use Chevere\Components\Benchmark\Interfaces\RunInterface;
+use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Number\Number;
 use Chevere\Components\Time\TimeHr;
+use DateTime;
+use JakubOnderka\PhpConsoleColor\ConsoleColor;
+use TypeError;
 
 /**
  * Runs a prepared Benchmark
@@ -91,7 +91,7 @@ final class Run implements RunInterface
     private string $timeTakenReadable;
 
     /** @var string Human-readable result summary */
-    private string $printable;
+    private string $printable = '';
 
     /**
      * Creates a new instance.
@@ -107,11 +107,15 @@ final class Run implements RunInterface
         $this->constructTime = (int) hrtime(true);
         $this->times = 1;
         $this->timeTaken = 0;
-        if (BootstrapInstance::get()->isCli()) {
-            $this->consoleColor = new ConsoleColor();
-        }
         $this->requestTime = BootstrapInstance::get()->time();
-        $this->printable = '';
+    }
+
+    public function withCli(): RunInterface
+    {
+        $new = clone $this;
+        $new->consoleColor = new ConsoleColor();
+
+        return $new;
     }
 
     public function withTimes(int $times): RunInterface

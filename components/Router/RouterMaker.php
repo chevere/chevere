@@ -21,11 +21,10 @@ use Chevere\Components\Router\Exceptions\RouteNameConflictException;
 use Chevere\Components\Router\Exceptions\RoutePathExistsException;
 use Chevere\Components\Router\Exceptions\RouterMakerException;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
-use Chevere\Components\Router\Interfaces\RouterCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
-use SplObjectStorage;
+use Ds\Map;
 
 /**
  * RouterMaker takes a bunch of routes and generates a cache-ready routing table.
@@ -34,67 +33,57 @@ final class RouterMaker implements RouterMakerInterface
 {
     private RouterInterface $router;
 
-    private SplObjectStorage $objects;
+    private Routeables $routeables;
 
-    /** @var array [(string) $routePath => (int) $id] */
-    private array $paths;
+    /** @var Map [<string>routePath => <int>id] */
+    private Map $paths;
 
-    /** @var array [(string) $routePathKey => (int) $id] */
-    private array $keys;
+    /** @var Map [<string>routePathKey => <int>id] */
+    private Map $keys;
 
-    /** @var array [(string) $name => (int) $id] */
-    private array $named;
+    /** @var Map [<string>name => <int>id] */
+    private Map $regexIndex;
 
-    /** @var array [(int) $id => (string) $regex,] */
-    private array $regexes;
+    /** @var Map [(<int>id => [<string>regex,]] */
+    private Map $regexes;
 
-    /** @var array [(int) $id => $routeInterface] */
-    private array $routes;
-
-    private int $id = -1;
+    private int $pos = -1;
 
     public function __construct()
     {
         $this->router = (new Router)
             ->withIndex(new RouterIndex)
-            ->withNamed(new RouterNamed)
             ->withGroups(new RouterGroups);
-        $this->objects = new SplObjectStorage;
+        $this->routeables = new Routeables;
+        $this->paths = new Map;
+        $this->keys = new Map;
+        $this->regexIndex = new Map;
+        $this->regexes = new Map;
     }
 
     public function withAddedRouteable(RouteableInterface $routeable, string $group): RouterMakerInterface
     {
         $new = clone $this;
-        ++$new->id;
+        ++$new->pos;
         $route = $routeable->route();
         $new->assertUniquePath($route);
         $new->assertUniqueName($route);
-        $new->assertUniqueKey($route);
-        $new->objects->attach($routeable);
-        $new->regexes[$new->id] = $route->path()->regex();
-        $new->paths[$route->path()->toString()] = $new->id;
-        $new->keys[$route->path()->key()] = $new->id;
-        $name = $route->name()->toString();
-        $new->named[$name] = $new->id;
+        $new->assertUniqueRoutePathKey($route);
+        $routeName = $route->name()->toString();
+        $new->routeables = $new->routeables->withPut($routeable);
+        $new->regexes->put($new->pos, $route->path()->regex());
+        $new->regexIndex->put($new->pos, $routeName);
+        $new->paths->put($route->path()->toString(), $routeName);
+        $new->keys->put($route->path()->key(), $routeName);
         $new->router = $new->router
-            ->withRouteables(
-                new RouteableObjectsRead($new->objects)
-            )
+            ->withRouteables($new->routeables)
             ->withRegex($new->getRouterRegex())
             ->withGroups(
-                $new->router()->groups()->withAdded($group, $new->id)
-            )
-            ->withNamed(
-                $new->router()->named()->withAdded($name, $new->id)
+                $new->router()->groups()->withAdded($group, $routeName)
             )
             ->withIndex(
-                $new->router()->index()->withAdded(
-                    $routeable,
-                    $new->id,
-                    $group
-                )
+                $new->router()->index()->withAdded($route, $group)
             );
-        $new->routes[$new->id] = $route;
 
         return $new;
     }
@@ -110,67 +99,76 @@ final class RouterMaker implements RouterMakerInterface
     private function getRouterRegex(): RouterRegexInterface
     {
         $array = [];
-        foreach ($this->regexes as $id => $string) {
-            preg_match('#\^(.*)\$#', $string, $matches);
-            $array[] = sprintf(RouterRegexInterface::TEMPLATE_ENTRY, $matches[1], $id);
+        /**
+         * @var int $pos
+         * @var string $regex
+         */
+        foreach ($this->regexes as $pos => $regex) {
+            preg_match('#\^(.*)\$#', $regex, $matches);
+            $array[] = sprintf(
+                RouterRegexInterface::TEMPLATE_ENTRY,
+                $matches[1],
+                $pos
+            );
         }
-        $regex = new Regex(sprintf(RouterRegexInterface::TEMPLATE, implode('', $array)));
 
-        return new RouterRegex($regex);
+        return new RouterRegex(
+            new Regex(
+                sprintf(RouterRegexInterface::TEMPLATE, implode('', $array))
+            )
+        );
     }
 
     private function assertUniquePath(RouteInterface $route): void
     {
-        if (!isset($this->routes)) {
-            return;
-        }
         $path = $route->path()->toString();
-        $knownId = $this->paths[$path] ?? null;
-        if ($knownId === null) {
-            return;
+        if ($this->paths->hasKey($path)) {
+            /**
+             * @var string $knownName
+             */
+            $knownName = $this->paths->get($path);
+            $knownRoute = $this->routeables->get($knownName)->route();
+            throw new RoutePathExistsException(
+                (new Message('Unable to register route path %path% at %declare% (path already registered at %register%)'))
+                    ->code('%path%', $path)
+                    ->code('%declare%', $this->getFileLine($route->maker()))
+                    ->code('%register%', $this->getFileLine($knownRoute->maker()))
+                    ->toString()
+            );
         }
-        throw new RoutePathExistsException(
-            (new Message('Unable to register route path %path% at %declare% (path already registered at %register%)'))
-                ->code('%path%', $path)
-                ->code('%declare%', $this->getFileLine($route->maker()))
-                ->code('%register%', $this->getFileLine($this->routes[$knownId]->maker()))
-                ->toString()
-        );
     }
 
-    private function assertUniqueKey(RouteInterface $route): void
+    private function assertUniqueRoutePathKey(RouteInterface $route): void
     {
-        if (!isset($this->routes)) {
-            return;
+        if ($this->keys->hasKey($route->path()->key())) {
+            /**
+             * @var string $knownName
+             */
+            $knownName = $this->keys->get($route->path()->key());
+            $knownRoute = $this->routeables->get($knownName)->route();
+            throw new RouteKeyConflictException(
+                (new Message('Router conflict detected for key %path% at %declare% (self-assigned internal key %key% is already reserved by %register%)'))
+                    ->code('%path%', $route->path()->toString())
+                    ->code('%declare%', $this->getFileLine($route->maker()))
+                    ->code('%key%', $route->path()->key())
+                    ->code('%register%', $this->getFileLine($knownRoute->maker()))
+                    ->toString()
+            );
         }
-        $knownId = $this->keys[$route->path()->key()] ?? null;
-        if ($knownId === null) {
-            return;
-        }
-        throw new RouteKeyConflictException(
-            (new Message('Router conflict detected for key %path% at %declare% (self-assigned internal key %key% is already reserved by %register%)'))
-                ->code('%path%', $route->path()->toString())
-                ->code('%declare%', $this->getFileLine($route->maker()))
-                ->code('%key%', $route->path()->key())
-                ->code('%register%', $this->getFileLine($this->routes[$knownId]->maker()))
-                ->toString()
-        );
     }
 
     private function assertUniqueName(RouteInterface $route): void
     {
-        if (!isset($this->routes)) {
-            return;
-        }
-        $knownId = $this->named[$route->name()->toString()] ?? null;
-        if ($knownId !== null) {
+        if ($this->routeables->hasKey($route->name()->toString())) {
+            $routeName = $route->name()->toString();
+            $knownRoute = $this->routeables->get($routeName)->route();
             throw new RouteNameConflictException(
-                (new Message('Unable to assign route name %name% for path %path% at %declare% (name assigned to %namedRoutePath% at %register%)'))
-                    ->code('%name%', $route->name()->toString())
+                (new Message('Unable to re-assign route name %routeName% for path %routePath% at %declare% (name assigned to %namedRoutePath% at %register%)'))
+                    ->code('%routeName%', $route->name()->toString())
                     ->code('%path%', $route->path()->toString())
                     ->code('%declare%', $this->getFileLine($route->maker()))
-                    ->code('%namedRoutePath%', $this->routes[$knownId]->path()->toString())
-                    ->code('%register%', $this->getFileLine($this->routes[$knownId]->maker()))
+                    ->code('%namedRoutePath%', $knownRoute->path()->toString())
+                    ->code('%register%', $this->getFileLine($knownRoute->maker()))
                     ->toString()
             );
         }

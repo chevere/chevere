@@ -34,20 +34,19 @@ final class RoutesCache implements RoutesCacheInterface
         $this->cache = $cache;
     }
 
-    public function has(int $id): bool
+    public function has(string $routeName): bool
     {
-        return $this->cache->exists(new CacheKey((string) $id));
+        return $this->cache->exists(new CacheKey($routeName));
     }
 
-    public function get(int $id): RouteInterface
+    public function get(string $routeName): RouteInterface
     {
-        $idString = (string) $id;
         try {
-            $item = $this->cache->get(new CacheKey($idString));
+            $item = $this->cache->get(new CacheKey($routeName));
         } catch (Throwable $e) {
             throw new RouteCacheNotFoundException(
-                (new Message('Cache not found for route %id%'))
-                    ->strong('%id%', $idString)
+                (new Message('Cache not found for route %routeName%'))
+                    ->strong('%routeName%', $routeName)
                     ->toString()
             );
         }
@@ -56,7 +55,7 @@ final class RoutesCache implements RoutesCacheInterface
                 (new Message('Expecting object implementing %expected%, %provided% provided in route %id%'))
                     ->code('%expected%', RouteableInterface::class)
                     ->code('%provided%', gettype($item->raw()))
-                    ->strong('%id%', $idString)
+                    ->strong('%id%', $routeName)
                     ->toString()
             );
         }
@@ -64,22 +63,22 @@ final class RoutesCache implements RoutesCacheInterface
         return $item->var()->route();
     }
 
-    public function put(int $id, RouteableInterface $routeable): RoutesCache
+    public function put(RouteableInterface $routeable): RoutesCache
     {
         $this->cache = $this->cache
             ->withPut(
-                new CacheKey((string) $id),
+                new CacheKey($routeable->route()->name()->toString()),
                 new VariableExport($routeable)
             );
 
         return $this;
     }
 
-    public function remove(int $id): RoutesCacheInterface
+    public function remove(string $routeName): RoutesCacheInterface
     {
         $this->cache = $this->cache
             ->withRemove(
-                new CacheKey((string) $id)
+                new CacheKey($routeName)
             );
 
         return $this;

@@ -31,7 +31,6 @@ use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Router\RouterGroups;
 use Chevere\Components\Router\RouterIndex;
 use Chevere\Components\Router\RouterMaker;
-use Chevere\Components\Router\RouterNamed;
 use Chevere\Components\Router\RouterRegex;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
@@ -63,7 +62,6 @@ final class RouterCacheTest extends TestCase
         $this->assertEmpty($routerCache->puts());
         $this->assertFalse($routerCache->hasRegex());
         $this->assertFalse($routerCache->hasIndex());
-        $this->assertFalse($routerCache->hasNamed());
         $this->assertFalse($routerCache->hasGroups());
         $this->expectException(RouterCacheNotFoundException::class);
         $routerCache->getRegex();
@@ -83,13 +81,6 @@ final class RouterCacheTest extends TestCase
         $routerCache->getIndex();
     }
 
-    public function testGetEmptyNamed(): void
-    {
-        $routerCache = new RouterCache($this->cacheHelper->getEmptyCache());
-        $this->expectException(RouterCacheNotFoundException::class);
-        $routerCache->getNamed();
-    }
-
     public function testGetEmptyGroups(): void
     {
         $routerCache = new RouterCache($this->cacheHelper->getEmptyCache());
@@ -106,31 +97,25 @@ final class RouterCacheTest extends TestCase
         $keys = [
             RouterCacheInterface::KEY_REGEX,
             RouterCacheInterface::KEY_INDEX,
-            RouterCacheInterface::KEY_NAMED,
             RouterCacheInterface::KEY_GROUPS
         ];
-        $route = new Route(new RouteName('some-name'), new RoutePath('/test'));
+        $route = new Route(new RouteName('test-name'), new RoutePath('/test'));
         $route = $route->withAddedEndpoint(
             new RouteEndpoint(new GetMethod, new TestController)
         );
-        $routeable = new Routeable($route);
-        $index = (new RouterIndex)->withAdded($routeable, 0, 'test_group');
-        $named = (new RouterNamed)->withAdded('test_name', 1);
-        $groups = (new RouterGroups)->withAdded('test_group', 2);
+        $index = (new RouterIndex)->withAdded($route, 'test-group');
+        $groups = (new RouterGroups)->withAdded('test-group', 'test-name');
         $router = $router
             ->withRegex($regex)
             ->withIndex($index)
-            ->withNamed($named)
             ->withGroups($groups);
         $routerCache = new RouterCache($this->cacheHelper->getWorkingCache());
         $routerCache->put($router);
         $this->assertTrue($routerCache->hasRegex());
         $this->assertTrue($routerCache->hasIndex());
-        $this->assertTrue($routerCache->hasNamed());
         $this->assertTrue($routerCache->hasGroups());
         $this->assertInstanceOf(RouterRegexInterface::class, $routerCache->getRegex());
         $this->assertInstanceOf(RouterIndexInterface::class, $routerCache->getIndex());
-        $this->assertInstanceOf(RouterNamedInterface::class, $routerCache->getNamed());
         $this->assertInstanceOf(RouterGroupsInterface::class, $routerCache->getGroups());
         foreach ($keys as $key) {
             $this->assertArrayHasKey($key, $routerCache->puts());
@@ -148,18 +133,13 @@ final class RouterCacheTest extends TestCase
         $routerCache = new RouterCache($cache);
         $this->assertTrue($routerCache->hasGroups());
         $this->assertTrue($routerCache->hasIndex());
-        $this->assertTrue($routerCache->hasNamed());
         $this->assertTrue($routerCache->hasRegex());
         $groups = $routerCache->getGroups();
         $index = $routerCache->getIndex();
-        $named = $routerCache->getNamed();
         $regex = $routerCache->getRegex();
         $this->assertTrue($groups->has($group));
         foreach ($this->routes as $pos => $route) {
             $this->assertTrue($groups->has($group));
-            $this->assertSame($group, $groups->getForId($pos));
-            $this->assertTrue($index->has($pos));
-            $this->assertTrue($named->has($route->name()->toString()));
             $this->assertStringContainsString(
                 str_replace(['/^', '$/'], '', $route->path()->regex()),
                 $regex->regex()->toString()

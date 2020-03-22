@@ -18,9 +18,9 @@ use Chevere\Components\Spec\SpecMethods;
 
 interface SpecIndexCacheInterface
 {
-    public function has(int $id): bool;
+    public function has(string $routeName): bool;
 
-    public function get(int $id): SpecMethods;
+    public function get(string $routeName): SpecMethods;
 
     public function put(SpecIndexInterface $specIndex): void;
 }

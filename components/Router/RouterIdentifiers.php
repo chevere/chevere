@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Components\DataStructures\DsMap;
+use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use Chevere\Components\Router\Interfaces\RouteIdentifierInterface;
 
-final class RouterIdentifiers extends DsMap
+final class RouterIdentifiers
 {
+    use DsMapTrait;
+
     public function hasKey(string $pathKey): bool
     {
         return $this->map->hasKey($pathKey);

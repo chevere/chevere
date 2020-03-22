@@ -15,6 +15,7 @@ namespace Chevere\Tests\Router\Properties;
 
 use BadMethodCallException;
 use Chevere\Components\Router\RouterGroups;
+use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
 final class RouterGroupsTest extends TestCase
@@ -25,22 +26,20 @@ final class RouterGroupsTest extends TestCase
         $routerGroups = new RouterGroups();
         $this->assertSame([], $routerGroups->toArray());
         $this->assertFalse($routerGroups->has($group));
-        $this->assertSame('', $routerGroups->getForId(0));
-        $this->expectException(BadMethodCallException::class);
+        $this->expectException(OutOfBoundsException::class);
         $routerGroups->get($group);
     }
 
     public function testWithAdded(): void
     {
         $array = [
-            'group-1' => [0, 2],
-            'group-2' => [1],
+            'group-1' => ['name-1', 'name-2'],
+            'group-2' => ['name-3'],
         ];
         $routerGroups = new RouterGroups();
         foreach ($array as $group => $ids) {
             foreach ($ids as $id) {
                 $routerGroups = $routerGroups->withAdded($group, $id);
-                $this->assertSame($group, $routerGroups->getForId($id));
             }
             $this->assertTrue($routerGroups->has($group));
             $this->assertSame($ids, $routerGroups->get($group));

@@ -14,85 +14,75 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use ArrayIterator;
-use BadMethodCallException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Interfaces\RouterGroupsInterface;
 use Chevere\Components\Str\StrAssert;
+use Ds\Map;
 use LogicException;
+use OutOfBoundsException;
 
 final class RouterGroups implements RouterGroupsInterface
 {
-    /** @var ArrayIterator <string>$group => [$id,]  */
-    private ArrayIterator $iterator;
+    /** @var Map <string>$groupName => [$routeName,]  */
+    private Map $iterator;
 
-    /** @var ArrayIterator <int>$id => <string>$group */
-    private ArrayIterator $index;
+    /** @var Map <string>$routeName => <string>$group */
+    private Map $index;
 
     public function __construct()
     {
-        $this->iterator = new ArrayIterator();
-        $this->index = new ArrayIterator();
+        $this->iterator = new Map;
+        $this->index = new Map;
     }
 
-    public function withAdded(string $group, int $id): RouterGroupsInterface
+    public function withAdded(string $group, string $routeName): RouterGroupsInterface
     {
         (new StrAssert($group))->notEmpty()->notCtypeSpace();
+        (new StrAssert($routeName))->notEmpty()->notCtypeSpace();
         $new = clone $this;
-        if ($new->index->offsetExists($id)) {
+        if ($new->index->hasKey($routeName)) {
             throw new LogicException(
-                (new Message('Id %id% is already bound to group %groupName%'))
-                    ->code('%id%', (string) $id)
-                    ->code('%groupName%', $new->index->offsetGet($id))
+                (new Message('Route name %routeName% is already bound to group %groupName%'))
+                    ->code('%routeName%', $routeName)
+                    ->code('%groupName%', $new->index->get($routeName))
                     ->toString()
             );
         }
-        if ($new->iterator->offsetExists($group)) {
-            $ids = $new->iterator->offsetGet($group);
+        if ($new->iterator->hasKey($group)) {
+            $names = $new->iterator->get($group);
         }
-        $ids[] = $id;
-        $new->iterator->offsetSet($group, $ids);
-        $new->index->offsetSet($id, $group);
+        $names[] = $routeName;
+        $new->iterator->put($group, $names);
+        $new->index->put($routeName, $group);
 
         return $new;
     }
 
     public function has(string $group): bool
     {
-        return $this->iterator->offsetExists($group);
+        return $this->iterator->hasKey($group);
     }
 
+    /**
+     * @throws OutOfBoundsException
+     */
     public function get(string $group): array
     {
-        if (!$this->iterator->offsetExists($group)) {
-            throw new BadMethodCallException(
-                (new Message("Group %group% doesn't exists"))
-                    ->code('%group%', $group)
-                    ->toString()
-            );
-        }
-
-        return $this->iterator->offsetGet($group);
+        return $this->iterator->get($group);
     }
 
-    public function getForId(int $id): string
+    public function getForRouteName(string $routeName): string
     {
-        return $this->index->offsetExists($id)
-            ? $this->index->offsetGet($id)
+        return $this->index->hasKey($routeName)
+            ? $this->index->get($routeName)
             : '';
-    }
-
-    public function iterator(): ArrayIterator
-    {
-        return new ArrayIterator($this->iterator->getArrayCopy());
     }
 
     public function toArray(): array
     {
         $array = [];
-        $this->iterator->rewind();
-        while ($this->iterator->valid()) {
-            $array[$this->iterator->key()] = $this->iterator->current();
-            $this->iterator->next();
+        foreach ($this->iterator as $group => $routeNames) {
+            $array[$group] = $routeNames;
         }
 
         return $array;

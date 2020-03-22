@@ -13,31 +13,27 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Interfaces;
 
-use ArrayIterator;
-
 interface RouterGroupsInterface
 {
     /**
-     * Return an instance with the specified added group and route id.
+     * Return an instance with the specified added $group and $routeName.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified added group and route id.
+     * an instance that contains the specified added $group and $routeName.
      *
      * @param string $group The group name
-     * @param int $id A route id associated to $group
+     * @param string $routeName A route name associated to $group
      */
-    public function withAdded(string $group, int $id): RouterGroupsInterface;
+    public function withAdded(string $group, string $routeName): RouterGroupsInterface;
 
     public function has(string $group): bool;
 
+    /**
+     * @return array An array containing the routes for $group [routeName,]
+     */
     public function get(string $group): array;
 
-    /**
-     * @return string Group name
-     */
-    public function getForId(int $id): string;
-
-    public function iterator(): ArrayIterator;
+    public function getForRouteName(string $routeName): string;
 
     public function toArray(): array;
 }

@@ -29,16 +29,16 @@ final class SpecIndexCache implements SpecIndexCacheInterface
         $this->cache = $cache;
     }
 
-    public function has(int $id): bool
+    public function has(string $routeName): bool
     {
-        $cacheKey = new CacheKey((string) $id);
+        $cacheKey = new CacheKey($routeName);
 
         return $this->cache->exists($cacheKey);
     }
 
-    public function get(int $id): SpecMethods
+    public function get(string $routeName): SpecMethods
     {
-        $cacheKey = new CacheKey((string) $id);
+        $cacheKey = new CacheKey($routeName);
 
         return $this->cache->get($cacheKey)->var();
     }
@@ -46,12 +46,12 @@ final class SpecIndexCache implements SpecIndexCacheInterface
     public function put(SpecIndexInterface $specIndex): void
     {
         /**
-         * @var int $routeId
-         * @var SpecMethods
+         * @var string $routeName
+         * @var SpecMethods $specMethods
          */
-        foreach ($specIndex->specIndexMap()->map() as $routeId => $specMethods) {
+        foreach ($specIndex->specIndexMap()->map() as $routeName => $specMethods) {
             $this->cache->withPut(
-                new CacheKey((string) $routeId),
+                new CacheKey($routeName),
                 new VariableExport($specMethods)
             );
         }

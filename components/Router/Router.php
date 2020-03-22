@@ -21,21 +21,21 @@ use Chevere\Components\Router\Interfaces\RoutedInterface;
 use Chevere\Components\Router\Interfaces\RouterGroupsInterface;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
-use Chevere\Components\Router\Interfaces\RouterNamedInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 use Psr\Http\Message\UriInterface;
 use SplObjectStorage;
 use Throwable;
+use function DeepCopy\deep_copy;
 
 final class Router implements RouterInterface
 {
-    private SplObjectStorage $objects;
+    private Routeables $routeables;
 
     private RouterRegexInterface $regex;
 
     private RouterIndexInterface $index;
 
-    private RouterNamedInterface $named;
+    // private RouterNamedInterface $named;
 
     private RouterGroupsInterface $groups;
 
@@ -43,29 +43,20 @@ final class Router implements RouterInterface
 
     public function __construct()
     {
-        $this->objects = new SplObjectStorage;
+        $this->routeables = new Routeables;
     }
 
-    public function withRouteables(RouteableObjectsRead $routeableObjects): RouterInterface
+    public function withRouteables(Routeables $routes): RouterInterface
     {
         $new = clone $this;
-        $new->objects = new SplObjectStorage;
-        $routeableObjects->rewind();
-        while ($routeableObjects->valid()) {
-            $new->pos++;
-            $new->objects->attach(
-                $routeableObjects->current(),
-                $new->pos
-            );
-            $routeableObjects->next();
-        }
+        $new->routeables = $routes;
 
         return $new;
     }
 
-    public function routeableObjects(): RouteableObjectsRead
+    public function routeables(): Routeables
     {
-        return new RouteableObjectsRead($this->objects);
+        return deep_copy($this->routeables);
     }
 
     public function withRegex(RouterRegexInterface $regex): RouterInterface
@@ -102,24 +93,6 @@ final class Router implements RouterInterface
     public function index(): RouterIndexInterface
     {
         return $this->index;
-    }
-
-    public function withNamed(RouterNamedInterface $name): RouterInterface
-    {
-        $new = clone $this;
-        $new->named = $name;
-
-        return $new;
-    }
-
-    public function hasNamed(): bool
-    {
-        return isset($this->named);
-    }
-
-    public function named(): RouterNamedInterface
-    {
-        return $this->named;
     }
 
     public function withGroups(RouterGroupsInterface $groups): RouterInterface

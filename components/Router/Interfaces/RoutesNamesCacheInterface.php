@@ -14,16 +14,17 @@ declare(strict_types=1);
 namespace Chevere\Components\Router\Interfaces;
 
 use Chevere\Components\Route\Interfaces\RouteInterface;
+use Chevere\Components\Router\RoutesNamesCache;
 
-interface RoutesCacheInterface
+interface RoutesNamesCacheInterface
 {
     public function has(string $routeName): bool;
 
-    public function get(string $routeName): RouteInterface;
+    public function get(int $id): RouteInterface;
 
-    public function put(RouteableInterface $routeable): RoutesCacheInterface;
+    public function put(int $id, string $routeName): RoutesNamesCache;
 
-    public function remove(string $routeName): RoutesCacheInterface;
+    public function remove(string $routeName): RoutesNamesCache;
 
     public function puts(): array;
 }

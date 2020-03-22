@@ -16,6 +16,7 @@ namespace Chevere\Components\Spec\Tests;
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
 use Chevere\Components\Http\Methods\ConnectMethod;
 use Chevere\Components\Route\RouteEndpoint;
+use Chevere\Components\Route\RouteName;
 use Chevere\Components\Router\Tests\CacheHelper;
 use Chevere\Components\Spec\RouteEndpointSpec;
 use Chevere\Components\Spec\SpecIndex;
@@ -41,20 +42,20 @@ final class SpecIndexCacheTest extends TestCase
     public function testEmptyCache(): void
     {
         $specIndexCache = new SpecIndexCache($this->cacheHelper->getEmptyCache());
-        $this->assertFalse($specIndexCache->has(0));
+        $this->assertFalse($specIndexCache->has('404'));
         $this->expectException(CacheKeyNotFoundException::class);
-        $this->assertFalse($specIndexCache->get(0));
+        $this->assertFalse($specIndexCache->get('404'));
     }
 
     public function testWorkingCache(): void
     {
-        $id = 0;
+        $routeName = new RouteName('route-name');
         $method = new ConnectMethod;
         $specPath = new SpecPath('/spec/group/route');
         $specIndexCache = new SpecIndexCache($this->cacheHelper->getWorkingCache());
         $specIndexCache->put(
             (new SpecIndex)->withOffset(
-                $id,
+                $routeName->toString(),
                 new RouteEndpointSpec(
                     $specPath,
                     new RouteEndpoint(
@@ -64,8 +65,8 @@ final class SpecIndexCacheTest extends TestCase
                 )
             )
         );
-        $this->assertTrue($specIndexCache->has($id));
-        $specMethods = $specIndexCache->get($id);
+        $this->assertTrue($specIndexCache->has($routeName->toString()));
+        $specMethods = $specIndexCache->get($routeName->toString());
         $this->assertTrue($specMethods->hasKey($method->name()));
         $this->assertSame(
             $specPath->getChild($method->name() . '.json')->pub(),
@@ -75,12 +76,12 @@ final class SpecIndexCacheTest extends TestCase
 
     public function testCachedCache(): void
     {
-        $id = 0;
+        $routeName = new RouteName('route-name');
         $method = new ConnectMethod;
         $specPath = new SpecPath('/spec/group/route');
         $specIndexCache = new SpecIndexCache($this->cacheHelper->getCachedCache());
-        $this->assertTrue($specIndexCache->has($id));
-        $specMethods = $specIndexCache->get($id);
+        $this->assertTrue($specIndexCache->has($routeName->toString()));
+        $specMethods = $specIndexCache->get($routeName->toString());
         $this->assertTrue($specMethods->hasKey($method->name()));
         $this->assertSame(
             $specPath->getChild($method->name() . '.json')->pub(),

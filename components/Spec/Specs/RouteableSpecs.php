@@ -13,23 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Specs;
 
+use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use Chevere\Components\Spec\RouteableSpec;
 use Ds\Map;
 use function DeepCopy\deep_copy;
 
 final class RouteableSpecs
 {
-    private Map $map;
-
-    public function __construct()
-    {
-        $this->map = new Map;
-    }
-
-    public function map(): Map
-    {
-        return $this->map;
-    }
+    use DsMapTrait;
 
     public function withPut(RouteableSpec $routeableSpec): RouteableSpecs
     {

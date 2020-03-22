@@ -11,17 +11,17 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\DataStructures;
+namespace Chevere\Components\DataStructures\Traits;
 
 use Ds\Map;
 
-abstract class DsMap
+trait DsMapTrait
 {
-    protected Map $map;
+    private Map $map;
 
-    final public function __construct(Map $map)
+    final public function __construct()
     {
-        $this->map = $map;
+        $this->map = new Map;
     }
 
     final public function map(): Map

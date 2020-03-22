@@ -37,8 +37,6 @@ final class RouterMakerTest extends TestCase
 
     private RouterCacheInterface $routerCache;
 
-    private RoutesCacheInterface $routesCache;
-
     public function setUp(): void
     {
         $this->cacheHelper = new CacheHelper(__DIR__);
@@ -49,8 +47,8 @@ final class RouterMakerTest extends TestCase
     {
         $this->cacheHelper->tearDown();
         $this->routerCache->remove();
-        foreach (array_keys($this->routerCache->routesCache()->puts()) as $pos) {
-            $this->routerCache->routesCache()->remove($pos);
+        foreach (array_keys($this->routerCache->routesCache()->puts()) as $routeName) {
+            $this->routerCache->routesCache()->remove($routeName);
         }
     }
 
@@ -64,15 +62,15 @@ final class RouterMakerTest extends TestCase
 
     public function testWithAddedRouteable(): void
     {
-        $routeable1 = $this->getRouteable('/path-1', 'PathName-1');
-        $routeable2 = $this->getRouteable('/path-2', 'PathName-2');
-        $routePath = $routeable1->route()->path();
+        $routeable1 = $this->getRouteable('/path-1', 'route-name-1');
+        $routeable2 = $this->getRouteable('/path-2', 'route-name-2');
         $routerMaker = (new RouterMaker)
             ->withAddedRouteable($routeable1, 'group')
             ->withAddedRouteable($routeable2, 'group');
-        $this->assertCount(2, $routerMaker->router()->routeableObjects());
-        // xdd(->count());
-        $this->assertTrue($routerMaker->router()->index()->hasKey($routePath->key()));
+        $this->assertCount(2, $routerMaker->router()->routeables()->map());
+        $this->assertTrue($routerMaker->router()->groups()->has('group'));
+        $this->assertTrue($routerMaker->router()->index()->has('route-name-1'));
+        $this->assertTrue($routerMaker->router()->index()->has('route-name-2'));
     }
 
     public function testWithAlreadyAddedPath(): void
@@ -80,11 +78,11 @@ final class RouterMakerTest extends TestCase
         $this->expectException(RoutePathExistsException::class);
         (new RouterMaker)
             ->withAddedRouteable(
-                $this->getRouteable('/path', 'PathName'),
+                $this->getRouteable('/path', 'route-name'),
                 'group'
             )
             ->withAddedRouteable(
-                $this->getRouteable('/path', 'PathName2'),
+                $this->getRouteable('/path', 'route-name2'),
                 'another-group'
             );
     }
@@ -111,9 +109,9 @@ final class RouterMakerTest extends TestCase
             ->withAddedRouteable($routeable3, 'group3');
     }
 
-    private function getRouteable(string $path, string $name): RouteableInterface
+    private function getRouteable(string $routePath, string $routeName): RouteableInterface
     {
-        $route = new Route(new RouteName($name), new RoutePath($path));
+        $route = new Route(new RouteName($routeName), new RoutePath($routePath));
         $route = $route
             ->withAddedEndpoint(
                 new RouteEndpoint(

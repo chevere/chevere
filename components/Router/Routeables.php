@@ -11,23 +11,22 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Spec;
+namespace Chevere\Components\Router;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Components\Route\Interfaces\RouteInterface;
+use Chevere\Components\Router\Interfaces\RouteableInterface;
 use function DeepCopy\deep_copy;
 
-/**
- * A type-hinted proxy for Ds\Map storing (int) routeId => [(string) methodName => (string) specJsonPath,]
- */
-final class SpecIndexMap
+final class Routeables
 {
     use DsMapTrait;
 
-    public function withPut(string $routeName, SpecMethods $specMethods): SpecIndexMap
+    public function withPut(RouteableInterface $routeable): Routeables
     {
         $new = clone $this;
         $new->map = deep_copy($new->map);
-        $new->map->put($routeName, $specMethods);
+        $new->map->put($routeable->route()->name()->toString(), $routeable);
 
         return $new;
     }
@@ -37,7 +36,10 @@ final class SpecIndexMap
         return $this->map->hasKey($routeName);
     }
 
-    public function get(string $routeName): SpecMethods
+    /**
+     * @throws OutOfBoundsException
+     */
+    public function get(string $routeName): RouteableInterface
     {
         return $this->map->get($routeName);
     }

@@ -22,24 +22,22 @@ use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\RouterIndex;
 use Chevere\TestApp\App\Controllers\TestController;
 use InvalidArgumentException;
+use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
 final class RouterIndexTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $key = '/path';
         $routerIndex = new RouterIndex();
         $this->assertSame([], $routerIndex->toArray());
-        $this->assertFalse($routerIndex->hasKey($key));
-        $this->expectException(InvalidArgumentException::class);
-        $routerIndex->get(404);
+        $this->expectException(OutOfBoundsException::class);
+        $routerIndex->get('404');
     }
 
     public function testWithAdded(): void
     {
         $key = '/path';
-        $id = 0;
         $group = 'some-group';
         $name = 'some-name';
         $routePath = new RoutePath($key);
@@ -50,13 +48,9 @@ final class RouterIndexTest extends TestCase
                 new TestController
             )
         );
-        $routeable = new Routeable($route);
-        $routerIndex = (new RouterIndex())
-            ->withAdded($routeable, $id, $group);
-        $this->assertTrue($routerIndex->hasKey($key));
+        $routerIndex = (new RouterIndex())->withAdded($route, $group);
         $this->assertSame([
             $key => [
-                'id' => $id,
                 'group' => $group,
                 'name' => $name,
             ]

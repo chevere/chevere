@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Interfaces;
 
-interface RouteIdentifierInterface
-{
-    public function id(): int;
+use Chevere\Components\Common\Interfaces\ToArrayInterface;
 
+interface RouteIdentifierInterface extends ToArrayInterface
+{
     public function group(): string;
 
     public function name(): string;
-
-    public function toArray(): array;
 }

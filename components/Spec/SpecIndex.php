@@ -18,7 +18,7 @@ use OutOfBoundsException;
 use function DeepCopy\deep_copy;
 
 /**
- * Maps route id (internal) to endpoint method spec paths.
+ * Maps route name to endpoint method spec paths.
  */
 final class SpecIndex implements SpecIndexInterface
 {
@@ -30,22 +30,22 @@ final class SpecIndex implements SpecIndexInterface
     }
 
     public function withOffset(
-        int $routeId,
+        string $routeName,
         RouteEndpointSpec $routeEndpointSpec
     ): SpecIndexInterface {
         $new = clone $this;
-        if ($new->specIndexMap->hasKey($routeId)) {
-            $specMethods = $new->specIndexMap->get($routeId);
+        if ($new->specIndexMap->hasKey($routeName)) {
+            $specMethods = $new->specIndexMap->get($routeName);
         } else {
             $specMethods = new SpecMethods;
-            $new->specIndexMap = $new->specIndexMap->withPut($routeId, $specMethods);
+            $new->specIndexMap = $new->specIndexMap->withPut($routeName, $specMethods);
         }
         $specMethods = $specMethods
             ->withPut(
                 $routeEndpointSpec->key(),
                 $routeEndpointSpec->jsonPath()
             );
-        $new->specIndexMap = $new->specIndexMap->withPut($routeId, $specMethods);
+        $new->specIndexMap = $new->specIndexMap->withPut($routeName, $specMethods);
 
         return $new;
     }
@@ -55,17 +55,17 @@ final class SpecIndex implements SpecIndexInterface
         return deep_copy($this->specIndexMap);
     }
 
-    public function has(int $id, string $methodName): bool
+    public function has(string $routeName, string $methodName): bool
     {
-        return $this->specIndexMap->hasKey($id)
-            && $this->specIndexMap->get($id)->hasKey($methodName);
+        return $this->specIndexMap->hasKey($routeName)
+            && $this->specIndexMap->get($routeName)->hasKey($methodName);
     }
 
     /**
-     * @throws OutOfBoundsException if $id and $method doesn't match the index
+     * @throws OutOfBoundsException
      */
-    public function get(int $id, string $methodName): string
+    public function get(string $routeName, string $methodName): string
     {
-        return $this->specIndexMap->get($id)->get($methodName);
+        return $this->specIndexMap->get($routeName)->get($methodName);
     }
 }
