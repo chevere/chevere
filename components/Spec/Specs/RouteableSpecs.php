@@ -15,20 +15,14 @@ namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use Chevere\Components\Spec\RouteableSpec;
-use Ds\Map;
-use function DeepCopy\deep_copy;
 
 final class RouteableSpecs
 {
     use DsMapTrait;
 
-    public function withPut(RouteableSpec $routeableSpec): RouteableSpecs
+    public function put(RouteableSpec $routeableSpec): void
     {
-        $new = clone $this;
-        $new->map = deep_copy($new->map);
-        $new->map->put($routeableSpec->key(), $routeableSpec);
-
-        return $new;
+        $this->map->put($routeableSpec->key(), $routeableSpec);
     }
 
     public function hasKey(string $key): bool

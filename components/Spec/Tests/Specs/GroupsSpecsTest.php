@@ -33,15 +33,14 @@ final class GroupsSpecsTest extends TestCase
 
     public function testWithPut(): void
     {
-        $inmutable = new GroupSpecs;
+        $specs = new GroupSpecs;
         $spec = new GroupSpec(
             new SpecPath('/spec'),
             'group-name'
         );
-        $muted = $inmutable->withPut($spec);
-        $this->assertCount(0, $inmutable->map());
-        $this->assertCount(1, $muted->map());
-        $this->assertTrue($muted->hasKey($spec->key()));
-        $this->assertSame($spec, $muted->get($spec->key()));
+        $specs->put($spec);
+        $this->assertCount(1, $specs->map());
+        $this->assertTrue($specs->hasKey($spec->key()));
+        $this->assertSame($spec, $specs->get($spec->key()));
     }
 }

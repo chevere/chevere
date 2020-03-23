@@ -33,7 +33,7 @@ final class IndexSpec implements SpecInterface
     public function withAddedGroup(GroupSpec $groupSpec): IndexSpec
     {
         $new = clone $this;
-        $new->groupSpecs = $new->groupSpecs->withPut($groupSpec);
+        $new->groupSpecs->put($groupSpec);
 
         return $new;
     }

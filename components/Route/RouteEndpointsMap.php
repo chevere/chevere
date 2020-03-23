@@ -18,24 +18,24 @@ use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 
 /**
- * A type-hinted proxy for Ds\Map storing MethodInterface => RouteEndpointInterface
+ * A type-hinted proxy for Ds\Map storing methodName => RouteEndpointInterface
  */
 final class RouteEndpointsMap
 {
     use DsMapTrait;
 
-    public function hasKey(MethodInterface $method): bool
+    public function put(RouteEndpointInterface $routeEndpoint): void
     {
-        return $this->map->hasKey($method::name());
+        $this->map->put($routeEndpoint->method()->name(), $routeEndpoint);
+    }
+
+    public function hasKey(string $methodName): bool
+    {
+        return $this->map->hasKey($methodName);
     }
 
     public function get(MethodInterface $method): RouteEndpointInterface
     {
         return $this->map->get($method::name());
-    }
-
-    public function put(MethodInterface $method, RouteEndpointInterface $routeEndpoint): void
-    {
-        $this->map->put($method::name(), $routeEndpoint);
     }
 }

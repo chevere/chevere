@@ -18,16 +18,16 @@ use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointsInterface;
-use Ds\Map;
 use function DeepCopy\deep_copy;
 
 final class RouteEndpoints implements RouteEndpointsInterface
 {
+    /** @Var RouteEndpointsMap [<string>methodName => RouteEndpointInterface] */
     private RouteEndpointsMap $routeEndpointsMap;
 
     public function __construct(RouteEndpointInterface ...$routeEndpoint)
     {
-        $this->routeEndpointsMap = new RouteEndpointsMap(new Map);
+        $this->routeEndpointsMap = new RouteEndpointsMap;
         foreach ($routeEndpoint as $object) {
             $this->storeRouteEndpoint($object);
         }
@@ -66,6 +66,6 @@ final class RouteEndpoints implements RouteEndpointsInterface
 
     private function storeRouteEndpoint(RouteEndpointInterface $routeEndpoint): void
     {
-        $this->routeEndpointsMap->put($routeEndpoint->method(), $routeEndpoint);
+        $this->routeEndpointsMap->put($routeEndpoint);
     }
 }

@@ -106,7 +106,8 @@ final class RouterTest extends TestCase
             )
         );
         $routeable = new Routeable($route);
-        $routeables = (new Routeables)->withPut($routeable);
+        $routeables = new Routeables;
+        $routeables->put($routeable);
         $router = (new Router)->withRouteables($routeables);
         $this->assertCount(1, $router->routeables()->map());
         $this->assertTrue($router->routeables()->hasKey($route->name()->toString()));

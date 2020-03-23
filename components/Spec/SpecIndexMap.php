@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
-use function DeepCopy\deep_copy;
 
 /**
  * A type-hinted proxy for Ds\Map storing (int) routeId => [(string) methodName => (string) specJsonPath,]
@@ -23,13 +22,9 @@ final class SpecIndexMap
 {
     use DsMapTrait;
 
-    public function withPut(string $routeName, SpecMethods $specMethods): SpecIndexMap
+    public function put(string $routeName, SpecMethods $specMethods): void
     {
-        $new = clone $this;
-        $new->map = deep_copy($new->map);
-        $new->map->put($routeName, $specMethods);
-
-        return $new;
+        $this->map->put($routeName, $specMethods);
     }
 
     public function hasKey(string $routeName): bool

@@ -55,7 +55,7 @@ final class RoutePathIteratorTest extends TestCase
 
     public function testWrongObjects(): void
     {
-        $dir = new Dir(new Path(__DIR__ . '/_resources/wrong_routes/'));
+        $dir = new Dir(new Path(__DIR__ . '/_resources/wrong-routes/'));
         $this->expectException(ExpectingRouteDecoratorException::class);
         new RoutePathIterator($dir);
     }

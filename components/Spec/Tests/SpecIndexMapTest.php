@@ -24,9 +24,8 @@ final class SpecIndexMapTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $map = new Map;
-        $specIndexMap = new SpecIndexMap($map);
-        $this->assertSame($map->toArray(), $specIndexMap->map()->toArray());
+        $specIndexMap = new SpecIndexMap;
+        $this->assertSame([], $specIndexMap->map()->toArray());
         $this->assertFalse($specIndexMap->hasKey('404'));
         $this->expectException(OutOfBoundsException::class);
         $specIndexMap->get('404');
@@ -36,10 +35,8 @@ final class SpecIndexMapTest extends TestCase
     {
         $routeName = new RouteName('route-name');
         $specMethods = new SpecMethods;
-        $specIndexMap = (new SpecIndexMap(new Map))->withPut(
-            $routeName->toString(),
-            $specMethods
-        );
+        $specIndexMap = new SpecIndexMap;
+        $specIndexMap->put($routeName->toString(), $specMethods);
         $this->assertTrue($specIndexMap->hasKey($routeName->toString()));
         $this->assertSame(
             $specMethods,

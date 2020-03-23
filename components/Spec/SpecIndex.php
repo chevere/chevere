@@ -38,14 +38,13 @@ final class SpecIndex implements SpecIndexInterface
             $specMethods = $new->specIndexMap->get($routeName);
         } else {
             $specMethods = new SpecMethods;
-            $new->specIndexMap = $new->specIndexMap->withPut($routeName, $specMethods);
+            $new->specIndexMap->put($routeName, $specMethods);
         }
-        $specMethods = $specMethods
-            ->withPut(
-                $routeEndpointSpec->key(),
-                $routeEndpointSpec->jsonPath()
-            );
-        $new->specIndexMap = $new->specIndexMap->withPut($routeName, $specMethods);
+        $specMethods->put(
+            $routeEndpointSpec->key(),
+            $routeEndpointSpec->jsonPath()
+        );
+        $new->specIndexMap->put($routeName, $specMethods);
 
         return $new;
     }

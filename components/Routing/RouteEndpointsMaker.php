@@ -21,41 +21,42 @@ use Chevere\Components\Filesystem\PhpFileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
+use Chevere\Components\Route\RouteEndpointsMap;
 use Chevere\Components\Routing\Exceptions\ExpectingRouteDecoratorException;
 use Chevere\Components\Routing\Interfaces\RouteEndpointIteratorInterface;
 use Chevere\Components\Type\Type;
-use SplObjectStorage;
+use function DeepCopy\deep_copy;
 
-final class RouteEndpointIterator implements RouteEndpointIteratorInterface
+final class RouteEndpointsMaker implements RouteEndpointIteratorInterface
 {
-    private SplObjectStorage $objects;
+    private RouteEndpointsMap $routeEndpointsMap;
 
     public function __construct(DirInterface $dir)
     {
-        $this->objects = new SplObjectStorage();
+        $this->routeEndpointsMap = new RouteEndpointsMap;
         $path = $dir->path();
-        foreach (array_keys(RouteEndpointInterface::KNOWN_METHODS) as $name) {
-            $endpointPath = $path->getChild($name . '.php');
-            if (!$endpointPath->exists()) {
+        foreach (array_keys(RouteEndpointInterface::KNOWN_METHODS) as $methodName) {
+            $routeEndpointPath = $path->getChild($methodName . '.php');
+            if (!$routeEndpointPath->exists()) {
                 continue;
             }
-            $endpoint = $this->getVar($endpointPath);
-            if (!(new Type(RouteEndpointInterface::class))->validate($endpoint)) {
+            $routeEndpoint = $this->getVar($routeEndpointPath);
+            if (!(new Type(RouteEndpointInterface::class))->validate($routeEndpoint)) {
                 throw new ExpectingRouteDecoratorException(
                     (new Message('Expecting file return object implementing interface %interfaceName%, something else provided in %fileName%'))
                         ->code('%interfaceName%', RouteDecoratorInterface::class)
-                        ->code('%provided%', gettype($endpoint))
-                        ->strong('%fileName%', $endpointPath->absolute())
+                        ->code('%provided%', gettype($routeEndpoint))
+                        ->strong('%fileName%', $routeEndpointPath->absolute())
                         ->toString()
                 );
             }
-            $this->objects->attach($endpoint);
+            $this->routeEndpointsMap->put($routeEndpoint);
         }
     }
 
-    public function routeEndpointObjects(): RouteEndpointObjectsRead
+    public function routeEndpointsMap(): RouteEndpointsMap
     {
-        return new RouteEndpointObjectsRead($this->objects);
+        return deep_copy($this->routeEndpointsMap);
     }
 
     private function getVar(PathInterface $path)

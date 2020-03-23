@@ -14,21 +14,15 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
-use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
-use function DeepCopy\deep_copy;
 
 final class Routeables
 {
     use DsMapTrait;
 
-    public function withPut(RouteableInterface $routeable): Routeables
+    public function put(RouteableInterface $routeable): void
     {
-        $new = clone $this;
-        $new->map = deep_copy($new->map);
-        $new->map->put($routeable->route()->name()->toString(), $routeable);
-
-        return $new;
+        $this->map->put($routeable->route()->name()->toString(), $routeable);
     }
 
     public function hasKey(string $routeName): bool

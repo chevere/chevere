@@ -20,6 +20,11 @@ final class RouterIdentifiers
 {
     use DsMapTrait;
 
+    public function put(string $pathKey, RouteIdentifierInterface $routeIdentifier): void
+    {
+        $this->map->put($pathKey, $routeIdentifier);
+    }
+
     public function hasKey(string $pathKey): bool
     {
         return $this->map->hasKey($pathKey);
@@ -28,10 +33,5 @@ final class RouterIdentifiers
     public function get(string $pathKey): RouteIdentifierInterface
     {
         return $this->map->get($pathKey);
-    }
-
-    public function put(string $pathKey, RouteIdentifierInterface $routeIdentifier): void
-    {
-        $this->map->put($pathKey, $routeIdentifier);
     }
 }

@@ -52,23 +52,16 @@ final class Routing implements RoutingInterface
                 $this->routePath = $this->routePath->withWildcard($routeWildcard);
             }
             $dir = new Dir(new Path(dirname($this->routeDecorator->whereIs()) . '/'));
-            $routeEndpointIterator = new RouteEndpointIterator($dir);
-            $endpoints = $routeEndpointIterator->routeEndpointObjects();
-            $routeEndpointIterator->routeEndpointObjects()->rewind();
+            $routeEndpointsMaker = new RouteEndpointsMaker($dir);
+            $routeEndpointsMap = $routeEndpointsMaker->routeEndpointsMap();
             $route = new Route($this->routeDecorator->name(), $this->routePath);
-            while ($endpoints->valid()) {
-                $this->routeEndpoint = $endpoints->current();
-                $route = $route->withAddedEndpoint(
-                    new RouteEndpoint(
-                        $this->routeEndpoint->method(),
-                        $this->routeEndpoint->controller()
-                    )
-                );
+            /** @var RouteEndpoint $routeEndpoint */
+            foreach ($routeEndpointsMap->map() as $routeEndpoint) {
+                $route = $route->withAddedEndpoint($routeEndpoint);
                 $routeable = new Routeable($route);
-                $endpoints->next();
             }
             $this->routerMaker = $this->routerMaker
-                ->withAddedRouteable($routeable, 'campos');
+                ->withAddedRouteable($routeable, 'CAMPOS');
             $routePaths->next();
         }
     }

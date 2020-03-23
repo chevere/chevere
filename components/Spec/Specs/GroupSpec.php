@@ -38,7 +38,7 @@ final class GroupSpec implements SpecInterface
     public function withAddedRouteableSpec(RouteableSpec $routeableSpec): GroupSpec
     {
         $new = clone $this;
-        $new->routeableSpecs = $this->routeableSpecs->withPut($routeableSpec);
+        $new->routeableSpecs->put($routeableSpec);
 
         return $new;
     }

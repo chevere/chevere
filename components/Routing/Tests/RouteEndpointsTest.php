@@ -17,31 +17,30 @@ use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use Chevere\Components\Routing\Exceptions\ExpectingRouteDecoratorException;
-use Chevere\Components\Routing\RouteEndpointIterator;
+use Chevere\Components\Routing\RouteEndpointsMaker;
 use PHPUnit\Framework\TestCase;
 
-final class RouteEndpointIteratorTest extends TestCase
+final class RouteEndpointsTest extends TestCase
 {
     public function testObjects(): void
     {
         $dir = new Dir(new Path(__DIR__ . '/_resources/routes/articles/{id}/'));
-        $endpointIterator = new RouteEndpointIterator($dir);
-        $objects = $endpointIterator->routeEndpointObjects();
-        $this->assertCount(1, $objects);
-        $objects->rewind();
-        while ($objects->valid()) {
+        $endpointIterator = new RouteEndpointsMaker($dir);
+        $routeEndpoints = $endpointIterator->routeEndpointsMap();
+        $this->assertCount(1, $routeEndpoints->map());
+        /** @var RouteEndpoint $routeEndpoint */
+        foreach ($routeEndpoints->map() as $routeEndpoint) {
             $this->assertInstanceOf(
                 RouteEndpointInterface::class,
-                $objects->current()
+                $routeEndpoint
             );
-            $objects->next();
         }
     }
 
     public function testWrongObjects(): void
     {
-        $dir = new Dir(new Path(__DIR__ . '/_resources/wrong_routes/articles/'));
+        $dir = new Dir(new Path(__DIR__ . '/_resources/wrong-routes/articles/'));
         $this->expectException(ExpectingRouteDecoratorException::class);
-        new RouteEndpointIterator($dir);
+        new RouteEndpointsMaker($dir);
     }
 }

@@ -41,7 +41,7 @@ final class Route implements RouteInterface
         $this->name = $name;
         $this->routePath = $routePath;
         $this->maker = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[0];
-        $this->endpoints = new RouteEndpoints();
+        $this->endpoints = new RouteEndpoints;
         $this->middlewareNameCollection = new MiddlewareNameCollection;
     }
 

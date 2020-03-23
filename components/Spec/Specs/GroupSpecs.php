@@ -15,20 +15,14 @@ namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use Chevere\Components\Spec\GroupSpec;
-use Ds\Map;
-use function DeepCopy\deep_copy;
 
 final class GroupSpecs
 {
     use DsMapTrait;
 
-    public function withPut(GroupSpec $groupSpec): GroupSpecs
+    public function put(GroupSpec $groupSpec): void
     {
-        $new = clone $this;
-        $new->map = deep_copy($new->map);
-        $new->map->put($groupSpec->key(), $groupSpec);
-
-        return $new;
+        $this->map->put($groupSpec->key(), $groupSpec);
     }
 
     public function hasKey(string $key): bool

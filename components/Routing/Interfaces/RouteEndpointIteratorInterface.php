@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\Routing\Interfaces;
 
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
-use Chevere\Components\Routing\RouteEndpointObjectsRead;
-use SplObjectStorage;
+use Chevere\Components\Route\RouteEndpointsMap;
 
 interface RouteEndpointIteratorInterface
 {
     public function __construct(DirInterface $dir);
 
-    public function routeEndpointObjects(): RouteEndpointObjectsRead;
+    public function routeEndpointsMap(): RouteEndpointsMap;
 }
