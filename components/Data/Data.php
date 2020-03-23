@@ -23,9 +23,6 @@ class Data implements DataInterface
     /** @var array */
     private array $data;
 
-    /**
-     * Creates a new instance.
-     */
     public function __construct(array $data)
     {
         $this->data = $data;

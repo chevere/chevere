@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use InvalidArgumentException;
+use Chevere\Components\App\Interfaces\BuildInterface;
+use Chevere\Components\App\Interfaces\CheckoutInterface;
+use Chevere\Components\Filesystem\Interfaces\File\PhpFileReturnInterface;
 use Chevere\Components\Filesystem\PhpFile;
 use Chevere\Components\Filesystem\PhpFileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Variable\VariableExport;
-use Chevere\Components\App\Interfaces\BuildInterface;
-use Chevere\Components\App\Interfaces\CheckoutInterface;
-use Chevere\Components\Filesystem\Interfaces\File\PhpFileReturnInterface;
+use InvalidArgumentException;
 
 /**
  * Checkout the application build.
@@ -32,9 +32,6 @@ final class Checkout implements CheckoutInterface
 
     private PhpFileReturnInterface $phpFileReturn;
 
-    /**
-     * Creates a new instance.
-     */
     public function __construct(BuildInterface $build)
     {
         $this->build = $build;

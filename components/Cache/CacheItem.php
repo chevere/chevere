@@ -20,9 +20,6 @@ final class CacheItem implements CacheItemInterface
 {
     private PhpFileReturnInterface $phpFileReturn;
 
-    /**
-     * Creates a new instance.
-     */
     public function __construct(PhpFileReturnInterface $phpFileReturn)
     {
         $this->phpFileReturn = $phpFileReturn;

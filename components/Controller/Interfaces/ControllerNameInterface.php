@@ -17,9 +17,6 @@ use Chevere\Components\Common\Interfaces\ToStringInterface;
 
 interface ControllerNameInterface extends ToStringInterface
 {
-    /**
-     * Creates a new instance.
-     */
     public function __construct(string $name);
 
     /**

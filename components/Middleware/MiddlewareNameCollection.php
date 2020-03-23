@@ -25,9 +25,6 @@ final class MiddlewareNameCollection implements MiddlewareNameCollectionInterfac
 
     private array $index;
 
-    /**
-     * Creates a new instance.
-     */
     public function __construct(MiddlewareNameInterface ...$middlewareNames)
     {
         $this->array = [];

@@ -45,10 +45,10 @@ final class Resolver implements ResolverInterface
         }
         $app = $app
             ->withRouted($routed);
-        $collection = $routed->route()->endpoints();
+        $routeEndpoints = $routed->routeName()->endpoints();
         $requestMethod = new Method($app->request()->getMethod());
         try {
-            $controllerName = $collection->getRouteEndpoint($requestMethod)->controller()->toString();
+            $controllerName = $routeEndpoints->getRouteEndpoint($requestMethod)->controller()->toString();
         } catch (MethodNotFoundException $e) {
             // HTTP 405: Method Not Allowed
             throw new ResolverException($e->getMessage(), 405, $e);
@@ -56,7 +56,7 @@ final class Resolver implements ResolverInterface
         $this->builder = $this->builder
             ->withControllerName($controllerName)
             ->withControllerArguments(
-                $routed->arguments()
+                $routed->wildcards()
             )
             ->withBuild(
                 $this->builder->build()

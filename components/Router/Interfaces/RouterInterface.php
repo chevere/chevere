@@ -24,7 +24,7 @@ interface RouterInterface
 {
     const CACHE_ID = 'router';
 
-    public function withRouteables(Routeables $routes): RouterInterface;
+    public function withRouteables(Routeables $routeables): RouterInterface;
 
     public function routeables(): Routeables;
 
@@ -51,40 +51,8 @@ interface RouterInterface
      */
     public function withIndex(RouterIndexInterface $index): RouterInterface;
 
-    public function hasIndex(): bool;
-
     /**
      * Provides access to the instance index.
      */
     public function index(): RouterIndexInterface;
-
-    /**
-     * Return an instance with the specified group.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified group.
-     */
-    public function withGroups(RouterGroupsInterface $groups): RouterInterface;
-
-    public function hasGroups(): bool;
-
-    /**
-     * Provides access to the router groups.
-     */
-    public function groups(): RouterGroupsInterface;
-
-    /**
-     * Returns a boolean indicating whether the instance can try to resolve routing.
-     */
-    public function canResolve(): bool;
-
-    /**
-     * Returns a RoutedInterface for the given UriInterface.
-     *
-     * @throws RouterException        if the router encounters any fatal error
-     * @throws UnserializeException   if the route string object can't be unserialized
-     * @throws TypeError              if the found route doesn't implement the RouteInterface
-     * @throws RouteNotFoundException if no route resolves the given UriInterface
-     */
-    public function resolve(UriInterface $uri): RoutedInterface;
 }

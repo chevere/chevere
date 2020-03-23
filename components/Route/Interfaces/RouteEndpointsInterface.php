@@ -13,13 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route\Interfaces;
 
-use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Route\RouteEndpointsMap;
 
 interface RouteEndpointsInterface
 {
-    public function __construct(RouteEndpointInterface ...$routeEndpoint);
-
     /**
      * Return an instance with the specified added MethodControllerInterface.
      *
@@ -29,10 +26,6 @@ interface RouteEndpointsInterface
      * Note: This method overrides any method already added.
      */
     public function withAddedRouteEndpoint(RouteEndpointInterface $routeEndpoint): RouteEndpointsInterface;
-
-    public function hasMethod(MethodInterface $method): bool;
-
-    public function getRouteEndpoint(MethodInterface $method): RouteEndpointInterface;
 
     public function routeEndpointsMap(): RouteEndpointsMap;
 }

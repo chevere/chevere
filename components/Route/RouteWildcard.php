@@ -20,8 +20,6 @@ use Chevere\Components\Route\Exceptions\RouteWildcardStartWithNumberException;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
 use Chevere\Components\Route\Interfaces\RouteWildcardMatchInterface;
-use Chevere\Components\Str\Exceptions\StrAssertException;
-use Chevere\Components\Str\StrAssert;
 use Chevere\Components\Str\StrBool;
 
 final class RouteWildcard implements RouteWildcardInterface

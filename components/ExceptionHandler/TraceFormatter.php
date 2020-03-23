@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler;
 
-use Chevere\Components\ExceptionHandler\Interfaces\TraceFormatterInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\FormatterInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\TraceEntryInterface;
+use Chevere\Components\ExceptionHandler\Interfaces\TraceFormatterInterface;
 
 final class TraceFormatter implements TraceFormatterInterface
 {
@@ -27,9 +27,6 @@ final class TraceFormatter implements TraceFormatterInterface
 
     private string $string = '';
 
-    /**
-     * Creates a new instance.
-     */
     public function __construct(array $trace, FormatterInterface $formatter)
     {
         $this->trace = $trace;

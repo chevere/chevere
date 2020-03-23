@@ -27,6 +27,7 @@ use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\RoutesCache;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
+use TypeError;
 
 final class RoutesCacheTest extends TestCase
 {
@@ -59,7 +60,7 @@ final class RoutesCacheTest extends TestCase
         $routeable = $this->getRouteable();
         $routesCache = new RoutesCache($this->cacheHelper->getWorkingCache());
         $routeName = $routeable->route()->name()->toString();
-        $routesCache->put($routeable);
+        $routesCache->put($routeable->route());
         $this->assertTrue($routesCache->has($routeName));
         $this->assertEquals($routeable->route(), $routesCache->get($routeName));
         $this->assertArrayHasKey($routeName, $routesCache->puts());
@@ -86,8 +87,16 @@ final class RoutesCacheTest extends TestCase
             $this->cacheHelper->getCachedCache()->getChild('wrong-type/')
         );
         $this->assertTrue($routesCache->has($id));
-        $this->expectException(RouteCacheTypeException::class);
+        $this->expectException(TypeError::class);
         $routesCache->get($id);
+    }
+
+    public function __testGenerateCachedRoute(): void
+    {
+        $this->expectNotToPerformAssertions();
+        $routeable = $this->getRouteable();
+        $routesCache = new RoutesCache($this->cacheHelper->getCachedCache()->getChild('routes/'));
+        $routesCache->put($routeable->route());
     }
 
     private function getRouteable(): RouteableInterface

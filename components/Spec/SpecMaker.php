@@ -66,7 +66,7 @@ final class SpecMaker
          * @var Routeable $routeabe
          */
         foreach ($routes->map() as $routeName => $routeable) {
-            $groupName = $router->groups()->getForRouteName($routeName);
+            $groupName = $router->index()->getRouteGroup($routeName);
             if (!isset($groupName[$groupName])) {
                 $groups[$groupName] = new GroupSpec($specRoot, $groupName);
             }
@@ -128,8 +128,6 @@ final class SpecMaker
     private function assertRouter(): void
     {
         $checks = [
-            'groups' => $this->router->hasGroups(),
-            'index' => $this->router->hasIndex(),
             'regex' => $this->router->hasRegex(),
         ];
         $missing = array_filter($checks, fn (bool $bool) => $bool === false);

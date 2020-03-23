@@ -19,12 +19,10 @@ use Chevere\Components\Cache\Interfaces\CacheItemInterface;
 use Chevere\Components\Cache\Interfaces\CacheKeyInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouterCacheNotFoundException;
-use Chevere\Components\Router\Exceptions\RouterCacheTypeException;
+use Chevere\Components\Router\Interfaces\RouteableInterface;
 use Chevere\Components\Router\Interfaces\RouterCacheInterface;
-use Chevere\Components\Router\Interfaces\RouterGroupsInterface;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
-use Chevere\Components\Router\Interfaces\RouterNamedInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 use Chevere\Components\Router\Interfaces\RoutesCacheInterface;
 use Chevere\Components\Variable\VariableExport;
@@ -36,23 +34,29 @@ final class RouterCache implements RouterCacheInterface
 
     private RoutesCacheInterface $routesCache;
 
+    private ResolveCache $resolveCache;
+
     private CacheKeyInterface $keyRegex;
 
     private CacheKeyInterface $keyIndex;
 
-    private CacheKeyInterface $keyGroups;
-
     public function __construct(CacheInterface $cache)
     {
         $this->cache = $cache;
+        $this->routesCache = new RoutesCache($this->cache->getChild('routes/'));
+        $this->resolveCache = new ResolveCache($this->cache->getChild('resolve/'));
         $this->keyRegex = new CacheKey(self::KEY_REGEX);
         $this->keyIndex = new CacheKey(self::KEY_INDEX);
-        $this->keyGroups = new CacheKey(self::KEY_GROUPS);
     }
 
     public function routesCache(): RoutesCacheInterface
     {
-        return $this->routesCache ??= new RoutesCache($this->cache->getChild('routes/'));
+        return $this->routesCache;
+    }
+
+    public function resolveCache(): ResolveCache
+    {
+        return $this->resolveCache;
     }
 
     public function hasRegex(): bool
@@ -63,11 +67,6 @@ final class RouterCache implements RouterCacheInterface
     public function hasIndex(): bool
     {
         return $this->cache->exists($this->keyIndex);
-    }
-
-    public function hasGroups(): bool
-    {
-        return $this->cache->exists($this->keyGroups);
     }
 
     public function getRegex(): RouterRegexInterface
@@ -90,16 +89,6 @@ final class RouterCache implements RouterCacheInterface
         return $item->var();
     }
 
-    public function getGroups(): RouterGroupsInterface
-    {
-        $item = $this->assertGetItem(
-            $this->keyGroups,
-            RouterGroupsInterface::class
-        );
-
-        return $item->var();
-    }
-
     public function put(RouterInterface $router): RouterCacheInterface
     {
         $this->cache = $this->cache
@@ -110,14 +99,22 @@ final class RouterCache implements RouterCacheInterface
             ->withPut(
                 $this->keyIndex,
                 new VariableExport($router->index())
-            )
-            ->withPut(
-                $this->keyGroups,
-                new VariableExport($router->groups())
             );
-        $routes = $router->routeables();
-        foreach ($routes->map() as $routeName => $route) {
-            $this->routesCache()->put($route);
+        $pos = -1;
+        /**
+         * @var RouteableInterface $routeable
+         */
+        foreach ($router->routeables()->map() as $routeable) {
+            $route = $routeable->route();
+            $pos++;
+            $this->routesCache->put($route);
+            $this->resolveCache->put(
+                $pos,
+                new RouteResolve(
+                    $route->name()->toString(),
+                    $route->path()->routeWildcards()
+                )
+            );
         }
 
         return $this;
@@ -127,10 +124,9 @@ final class RouterCache implements RouterCacheInterface
     {
         $this->cache = $this->cache
             ->withRemove($this->keyRegex)
-            ->withRemove($this->keyIndex)
-            ->withRemove($this->keyGroups);
-        foreach (array_keys($this->routesCache()->puts()) as $routeName) {
-            $this->routesCache()->remove($routeName);
+            ->withRemove($this->keyIndex);
+        foreach (array_keys($this->routesCache->puts()) as $routeName) {
+            $this->routesCache->remove($routeName);
         }
 
         return $this;
@@ -149,13 +145,6 @@ final class RouterCache implements RouterCacheInterface
             throw new RouterCacheNotFoundException(
                 (new Message('Cache not found for router %key%'))
                     ->strong('%key%', $cacheKey->toString())
-                    ->toString()
-            );
-        }
-        if (!is_object($item)) {
-            throw new RouterCacheTypeException(
-                (new Message('Expecting a cached object, type %type% found'))
-                    ->code('%type%', gettype($item))
                     ->toString()
             );
         }

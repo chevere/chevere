@@ -13,43 +13,29 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Components\Message\Message;
-use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
-use Chevere\Components\Router\Exceptions\RouteNotFoundException;
-use Chevere\Components\Router\Exceptions\RouterException;
-use Chevere\Components\Router\Interfaces\RoutedInterface;
-use Chevere\Components\Router\Interfaces\RouterGroupsInterface;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
-use Psr\Http\Message\UriInterface;
-use SplObjectStorage;
-use Throwable;
 use function DeepCopy\deep_copy;
 
 final class Router implements RouterInterface
 {
     private Routeables $routeables;
 
-    private RouterRegexInterface $regex;
+    private RouterRegexInterface $routerRegex;
 
-    private RouterIndexInterface $index;
-
-    // private RouterNamedInterface $named;
-
-    private RouterGroupsInterface $groups;
-
-    private int $pos = -1;
+    private RouterIndexInterface $routerIndex;
 
     public function __construct()
     {
         $this->routeables = new Routeables;
+        $this->routerIndex = new RouterIndex;
     }
 
-    public function withRouteables(Routeables $routes): RouterInterface
+    public function withRouteables(Routeables $routeables): RouterInterface
     {
         $new = clone $this;
-        $new->routeables = $routes;
+        $new->routeables = $routeables;
 
         return $new;
     }
@@ -62,98 +48,31 @@ final class Router implements RouterInterface
     public function withRegex(RouterRegexInterface $regex): RouterInterface
     {
         $new = clone $this;
-        $new->regex = $regex;
+        $new->routerRegex = $regex;
 
         return $new;
     }
 
     public function hasRegex(): bool
     {
-        return isset($this->regex);
+        return isset($this->routerRegex);
     }
 
     public function regex(): RouterRegexInterface
     {
-        return $this->regex;
+        return $this->routerRegex;
     }
 
     public function withIndex(RouterIndexInterface $index): RouterInterface
     {
         $new = clone $this;
-        $new->index = $index;
+        $new->routerIndex = $index;
 
         return $new;
-    }
-
-    public function hasIndex(): bool
-    {
-        return isset($this->index);
     }
 
     public function index(): RouterIndexInterface
     {
-        return $this->index;
-    }
-
-    public function withGroups(RouterGroupsInterface $groups): RouterInterface
-    {
-        $new = clone $this;
-        $new->groups = $groups;
-
-        return $new;
-    }
-
-    public function hasGroups(): bool
-    {
-        return isset($this->groups);
-    }
-
-    public function groups(): RouterGroupsInterface
-    {
-        return $this->groups;
-    }
-
-    public function canResolve(): bool
-    {
-        return isset($this->regex);
-    }
-
-    /**
-     * @throws RouterException
-     * @throws RouteNotFoundException
-     */
-    public function resolve(UriInterface $uri): RoutedInterface
-    {
-        try {
-            if (preg_match($this->regex->regex()->toString(), $uri->getPath(), $matches)) {
-                return $this->resolver($matches);
-            }
-        } catch (Throwable $e) {
-            throw new RouterException($e->getMessage(), $e->getCode(), $e);
-        }
-        throw new RouteNotFoundException(
-            (new Message('No route defined for %path%'))
-                ->code('%path%', $uri->getPath())
-                ->toString()
-        );
-    }
-
-    /**
-     * @throws RouteCacheNotFoundException
-     */
-    private function resolver(array $matches): RoutedInterface
-    {
-        $id = (int) $matches['MARK'];
-        unset($matches['MARK']);
-        array_shift($matches);
-        $route = $this->routesCache->get($id);
-        $arguments = [];
-        if ($route->path()->routeWildcards()->hasAny()) {
-            foreach ($matches as $pos => $val) {
-                $arguments[$route->path()->routeWildcards()->getPos($pos)->name()] = $val;
-            }
-        }
-
-        return new Routed($route, $arguments);
+        return $this->routerIndex;
     }
 }

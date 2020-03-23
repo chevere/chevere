@@ -21,14 +21,12 @@ use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Exceptions\RouterCacheNotFoundException;
 use Chevere\Components\Router\Interfaces\RouterCacheInterface;
-use Chevere\Components\Router\Interfaces\RouterGroupsInterface;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
-use Chevere\Components\Router\Interfaces\RouterNamedInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 use Chevere\Components\Router\Routeable;
+use Chevere\Components\Router\Routeables;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;
-use Chevere\Components\Router\RouterGroups;
 use Chevere\Components\Router\RouterIndex;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Router\RouterRegex;
@@ -62,7 +60,6 @@ final class RouterCacheTest extends TestCase
         $this->assertEmpty($routerCache->puts());
         $this->assertFalse($routerCache->hasRegex());
         $this->assertFalse($routerCache->hasIndex());
-        $this->assertFalse($routerCache->hasGroups());
         $this->expectException(RouterCacheNotFoundException::class);
         $routerCache->getRegex();
     }
@@ -81,13 +78,6 @@ final class RouterCacheTest extends TestCase
         $routerCache->getIndex();
     }
 
-    public function testGetEmptyGroups(): void
-    {
-        $routerCache = new RouterCache($this->cacheHelper->getEmptyCache());
-        $this->expectException(RouterCacheNotFoundException::class);
-        $routerCache->getGroups();
-    }
-
     public function testWorkingCache(): void
     {
         $router = new Router;
@@ -97,26 +87,26 @@ final class RouterCacheTest extends TestCase
         $keys = [
             RouterCacheInterface::KEY_REGEX,
             RouterCacheInterface::KEY_INDEX,
-            RouterCacheInterface::KEY_GROUPS
         ];
         $route = new Route(new RouteName('test-name'), new RoutePath('/test'));
         $route = $route->withAddedEndpoint(
             new RouteEndpoint(new GetMethod, new TestController)
         );
-        $index = (new RouterIndex)->withAdded($route, 'test-group');
-        $groups = (new RouterGroups)->withAdded('test-group', 'test-name');
+        $routeable = new Routeable($route);
+        $index = (new RouterIndex)->withAdded($routeable, 'test-group');
+        $routeable = new Routeable($route);
+        $routeables = new Routeables;
+        $routeables->put($routeable);
         $router = $router
+            ->withRouteables($routeables)
             ->withRegex($regex)
-            ->withIndex($index)
-            ->withGroups($groups);
+            ->withIndex($index);
         $routerCache = new RouterCache($this->cacheHelper->getWorkingCache());
         $routerCache->put($router);
         $this->assertTrue($routerCache->hasRegex());
         $this->assertTrue($routerCache->hasIndex());
-        $this->assertTrue($routerCache->hasGroups());
         $this->assertInstanceOf(RouterRegexInterface::class, $routerCache->getRegex());
         $this->assertInstanceOf(RouterIndexInterface::class, $routerCache->getIndex());
-        $this->assertInstanceOf(RouterGroupsInterface::class, $routerCache->getGroups());
         foreach ($keys as $key) {
             $this->assertArrayHasKey($key, $routerCache->puts());
         }
@@ -131,15 +121,12 @@ final class RouterCacheTest extends TestCase
         $group = 'some-group';
         $cache = $this->cacheHelper->getCachedCache();
         $routerCache = new RouterCache($cache);
-        $this->assertTrue($routerCache->hasGroups());
         $this->assertTrue($routerCache->hasIndex());
         $this->assertTrue($routerCache->hasRegex());
-        $groups = $routerCache->getGroups();
         $index = $routerCache->getIndex();
         $regex = $routerCache->getRegex();
-        $this->assertTrue($groups->has($group));
-        foreach ($this->routes as $pos => $route) {
-            $this->assertTrue($groups->has($group));
+        $this->assertTrue($index->hasGroup($group));
+        foreach ($this->routes as $route) {
             $this->assertStringContainsString(
                 str_replace(['/^', '$/'], '', $route->path()->regex()),
                 $regex->regex()->toString()
@@ -159,10 +146,7 @@ final class RouterCacheTest extends TestCase
             $routerMaker = $routerMaker->withAddedRouteable(
                 new Routeable(
                     $route->withAddedEndpoint(
-                        new RouteEndpoint(
-                            new GetMethod,
-                            new TestController
-                        )
+                        new RouteEndpoint(new GetMethod, new TestController)
                     )
                 ),
                 $group

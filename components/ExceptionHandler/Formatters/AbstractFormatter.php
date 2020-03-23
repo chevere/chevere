@@ -21,9 +21,6 @@ abstract class AbstractFormatter implements FormatterInterface
 {
     protected VarDumpFormatterInterface $varDumpFormatter;
 
-    /**
-     * Creates a new instance.
-     */
     final public function __construct()
     {
         $this->varDumpFormatter = $this->getVarDumpFormatter();

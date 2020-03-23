@@ -18,11 +18,14 @@ use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
+use Chevere\Components\Router\Exceptions\RouteCacheTypeException;
+use Chevere\Components\Router\Interfaces\RouteableInterface;
 use Chevere\Components\Router\Interfaces\RoutesCacheInterface;
+use Chevere\Components\Type\Type;
 use Chevere\Components\Variable\VariableExport;
 use Throwable;
 
-final class RoutesCache implements RoutesCacheInterface
+final class ResolveCache
 {
     private CacheInterface $cache;
 
@@ -31,19 +34,29 @@ final class RoutesCache implements RoutesCacheInterface
         $this->cache = $cache;
     }
 
-    public function has(string $routeName): bool
+    public function has(int $id): bool
     {
-        return $this->cache->exists(new CacheKey($routeName));
+        return $this->cache->exists(new CacheKey((string) $id));
     }
 
-    public function get(string $routeName): RouteInterface
+    public function get(int $id): RouteResolve
     {
+        $idString = (string) $id;
         try {
-            $item = $this->cache->get(new CacheKey($routeName));
+            $item = $this->cache->get(new CacheKey($idString));
         } catch (Throwable $e) {
             throw new RouteCacheNotFoundException(
                 (new Message('Cache not found for route %routeName%'))
-                    ->strong('%routeName%', $routeName)
+                    ->strong('%routeName%', $idString)
+                    ->toString()
+            );
+        }
+        if ((new Type(RouteResolve::class))->validate($item->var()) === false) {
+            throw new RouteCacheTypeException(
+                (new Message('Expecting object implementing %expected%, %provided% provided in route %id%'))
+                    ->code('%expected%', RouteableInterface::class)
+                    ->code('%provided%', gettype($item->raw()))
+                    ->strong('%id%', $idString)
                     ->toString()
             );
         }
@@ -51,22 +64,22 @@ final class RoutesCache implements RoutesCacheInterface
         return $item->var();
     }
 
-    public function put(RouteInterface $route): RoutesCache
+    public function put(int $id, RouteResolve $routeResolve): ResolveCache
     {
         $this->cache = $this->cache
             ->withPut(
-                new CacheKey($route->name()->toString()),
-                new VariableExport($route)
+                new CacheKey((string) $id),
+                new VariableExport($routeResolve)
             );
 
         return $this;
     }
 
-    public function remove(string $routeName): RoutesCacheInterface
+    public function remove(int $id): ResolveCache
     {
         $this->cache = $this->cache
             ->withRemove(
-                new CacheKey($routeName)
+                new CacheKey((string) $id)
             );
 
         return $this;

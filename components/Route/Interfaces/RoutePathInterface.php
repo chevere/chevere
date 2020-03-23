@@ -44,7 +44,7 @@ interface RoutePathInterface extends ToStringInterface
     public function key(): string;
 
     /**
-     * Provides access to the path uri regex pattern.
+     * @return string Regex string like `/^\/path$/`
      */
     public function regex(): string;
 

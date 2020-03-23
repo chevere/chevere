@@ -51,9 +51,7 @@ final class RouterMaker implements RouterMakerInterface
 
     public function __construct()
     {
-        $this->router = (new Router)
-            ->withIndex(new RouterIndex)
-            ->withGroups(new RouterGroups);
+        $this->router = (new Router)->withIndex(new RouterIndex);
         $this->routeables = new Routeables;
         $this->paths = new Map;
         $this->keys = new Map;
@@ -78,11 +76,8 @@ final class RouterMaker implements RouterMakerInterface
         $new->router = $new->router
             ->withRouteables($new->routeables)
             ->withRegex($new->getRouterRegex())
-            ->withGroups(
-                $new->router()->groups()->withAdded($group, $routeName)
-            )
             ->withIndex(
-                $new->router()->index()->withAdded($route, $group)
+                $new->router()->index()->withAdded($routeable, $group)
             );
 
         return $new;

@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Components\Stopwatch;
 
 use BadMethodCallException;
-use InvalidArgumentException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Stopwatch\Interfaces\StopwatchInterface;
 use Chevere\Components\Time\TimeHr;
+use InvalidArgumentException;
 
 /**
  * A simple stopwatch, useful for userland execution time measurement.
@@ -51,9 +51,6 @@ final class Stopwatch implements StopwatchInterface
     /** @var string The time elapsed, in miliseconds with its unit like `100 ms` */
     private string $timeElapsedRead;
 
-    /**
-     * Creates a new instance.
-     */
     public function __construct()
     {
         $this->timeStart = (int) hrtime(true);

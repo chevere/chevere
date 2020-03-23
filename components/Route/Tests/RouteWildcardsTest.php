@@ -21,7 +21,7 @@ final class RouteWildcardsTest extends TestCase
 {
     public function testConstructEmpty(): void
     {
-        $routeWildcards = new RouteWildcards();
+        $routeWildcards = new RouteWildcards;
         $this->assertFalse($routeWildcards->hasAny());
         $this->assertSame([], $routeWildcards->toArray());
     }
@@ -29,7 +29,7 @@ final class RouteWildcardsTest extends TestCase
     public function testConstruct(): void
     {
         $routeWildcard = new RouteWildcard('test');
-        $routeWilcards = new RouteWildcards($routeWildcard);
+        $routeWilcards = (new RouteWildcards)->withAddedWildcard($routeWildcard);
         $this->assertTrue($routeWilcards->hasAny());
         $this->assertTrue($routeWilcards->hasPos(0));
         $this->assertSame($routeWildcard, $routeWilcards->getPos(0));
@@ -41,7 +41,7 @@ final class RouteWildcardsTest extends TestCase
     public function testWithAddedWildcard(): void
     {
         $wildcards = [new RouteWildcard('test1'), new RouteWildcard('test2')];
-        $routeWilcards = new RouteWildcards();
+        $routeWilcards = new RouteWildcards;
         foreach ($wildcards as $wildcard) {
             $routeWilcards = $routeWilcards
                 ->withAddedWildcard($wildcard);

@@ -13,21 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Interfaces;
 
-use Chevere\Components\Route\Interfaces\RouteInterface;
-
 interface RoutedInterface
 {
-    public function __construct(RouteInterface $route, array $matches);
+    public function __construct(string $routeName, array $wildcards);
+
+    public function routeName(): string;
 
     /**
-     * Provides access to the RouteInterface instance.
-     */
-    public function route(): RouteInterface;
-
-    /**
-     * Provides access to the wildcard matches array.
-     *
      * @return array [wildcardName => matchedValue]
      */
-    public function arguments(): array;
+    public function wildcards(): array;
 }

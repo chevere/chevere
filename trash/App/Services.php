@@ -26,9 +26,6 @@ final class Services implements ServicesInterface
 
     private RouterInterface $router;
 
-    /**
-     * Creates a new instance.
-     */
     public function __construct()
     {
     }

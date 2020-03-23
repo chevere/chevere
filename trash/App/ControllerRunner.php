@@ -93,7 +93,7 @@ final class ControllerRunner implements ControllerRunnerInterface
 
     private function handleRouteMiddleware(): void
     {
-        $route = $this->app->routed()->route();
+        $route = $this->app->routed()->routeName();
         if (!$route->hasMiddlewareNameCollection()) {
             return;
         }

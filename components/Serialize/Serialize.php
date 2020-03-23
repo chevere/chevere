@@ -21,9 +21,6 @@ final class Serialize implements SerializeInterface
     /** @var string */
     private string $serialized;
 
-    /**
-     * Creates a new instance.
-     */
     public function __construct(VariableExportInterface $variableExport)
     {
         $this->serialized = $variableExport->toSerialize();

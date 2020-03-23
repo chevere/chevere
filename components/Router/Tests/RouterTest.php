@@ -19,26 +19,29 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Components\Router\Exceptions\RouteNotFoundException;
-use Chevere\Components\Router\Exceptions\RouterException;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\Routeables;
 use Chevere\Components\Router\Router;
-use Chevere\Components\Router\RouterGroups;
 use Chevere\Components\Router\RouterIndex;
 use Chevere\Components\Router\RouterRegex;
 use Chevere\TestApp\App\Controllers\TestController;
-use GuzzleHttp\Psr7\Uri;
 use PHPUnit\Framework\TestCase;
-use SplObjectStorage;
 
 final class RouterTest extends TestCase
 {
     private CacheHelper $cacheHelper;
 
+    private Routeable $routeable;
+
     public function setUp(): void
     {
         $this->cacheHelper = new CacheHelper(__DIR__);
+        $this->routeable = new Routeable(
+            (new Route(new RouteName('test-name'), new RoutePath('/test')))
+                ->withAddedEndpoint(
+                    new RouteEndpoint(new GetMethod, new TestController)
+                )
+        );
     }
 
     public function tearDown(): void
@@ -50,66 +53,33 @@ final class RouterTest extends TestCase
     {
         $router = new Router();
         $this->assertFalse($router->hasRegex());
-        $this->assertFalse($router->hasIndex());
-        $this->assertFalse($router->hasGroups());
-        $this->assertFalse($router->canResolve());
+        $this->assertCount(0, $router->routeables()->map());
+        $this->assertSame([], $router->index()->toArray());
     }
 
-    public function testUnableToResolveException(): void
-    {
-        $router = new Router();
-        $this->expectException(RouterException::class);
-        $router->resolve(new Uri('/'));
-    }
-
-    public function testRegexNotFound(): void
+    public function testWithRegex(): void
     {
         $regex = new RouterRegex(new Regex('#^(?|/test (*:0))$#x'));
         $router = (new Router())->withRegex($regex);
         $this->assertTrue($router->hasRegex());
         $this->assertSame($regex, $router->regex());
-        $this->assertTrue($router->canResolve());
-        $this->expectException(RouteNotFoundException::class);
-        $router->resolve(new Uri('/not-found'));
     }
 
-    public function testIndex(): void
+    public function testWithIndex(): void
     {
-        $route = new Route(new RouteName('test-name'), new RoutePath('/test'));
-        $route = $route->withAddedEndpoint(
-            new RouteEndpoint(
-                new GetMethod,
-                new TestController
-            )
-        );
-        $index = (new RouterIndex)->withAdded($route, 'test-group');
+        $index = (new RouterIndex)->withAdded($this->routeable, 'test-group');
         $router = (new Router)->withIndex($index);
-        $this->assertTrue($router->hasIndex());
         $this->assertSame($index, $router->index());
     }
 
-    public function testGroups(): void
+    public function testWithRouteables(): void
     {
-        $groups = (new RouterGroups)->withAdded('test-group', 'test-name');
-        $router = (new Router)->withGroups($groups);
-        $this->assertTrue($router->hasGroups());
-        $this->assertSame($groups, $router->groups());
-    }
-
-    public function testRouteables(): void
-    {
-        $route = new Route(new RouteName('some-name'), new RoutePath('/test'));
-        $route = $route->withAddedEndpoint(
-            new RouteEndpoint(
-                new GetMethod,
-                new TestController
-            )
-        );
-        $routeable = new Routeable($route);
         $routeables = new Routeables;
-        $routeables->put($routeable);
+        $routeables->put($this->routeable);
         $router = (new Router)->withRouteables($routeables);
         $this->assertCount(1, $router->routeables()->map());
-        $this->assertTrue($router->routeables()->hasKey($route->name()->toString()));
+        $this->assertTrue($router->routeables()->hasKey(
+            $this->routeable->route()->name()->toString()
+        ));
     }
 }

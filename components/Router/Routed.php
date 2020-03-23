@@ -21,25 +21,22 @@ use Chevere\Components\Router\Interfaces\RoutedInterface;
  */
 final class Routed implements RoutedInterface
 {
-    private RouteInterface $route;
+    private string $routeName;
 
     private array $arguments;
 
-    /**
-     * Creates a new instance.
-     */
-    public function __construct(RouteInterface $route, array $arguments)
+    public function __construct(string $routeName, array $arguments)
     {
-        $this->route = $route;
+        $this->routeName = $routeName;
         $this->arguments = $arguments;
     }
 
-    public function route(): RouteInterface
+    public function routeName(): string
     {
-        return $this->route;
+        return $this->routeName;
     }
 
-    public function arguments(): array
+    public function wildcards(): array
     {
         return $this->arguments;
     }

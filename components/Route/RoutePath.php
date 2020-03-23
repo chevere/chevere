@@ -69,7 +69,7 @@ final class RoutePath implements RoutePathInterface
         $this->path = $path;
         $this->assertFormat();
         $this->key = $this->path;
-        $this->routeWildcards = new RouteWildcards();
+        $this->routeWildcards = new RouteWildcards;
         $this->wildcards = [];
         $this->wildcardsMatch = [];
         $this->wildcardBracesCount = 0;

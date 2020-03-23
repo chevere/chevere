@@ -19,21 +19,15 @@ interface RouterCacheInterface
 
     const KEY_INDEX = 'index';
 
-    const KEY_GROUPS = 'groups';
-
     public function routesCache(): RoutesCacheInterface;
 
     public function hasRegex(): bool;
 
     public function hasIndex(): bool;
 
-    public function hasGroups(): bool;
-
     public function getRegex(): RouterRegexInterface;
 
     public function getIndex(): RouterIndexInterface;
-
-    public function getGroups(): RouterGroupsInterface;
 
     public function put(RouterInterface $router): RouterCacheInterface;
 

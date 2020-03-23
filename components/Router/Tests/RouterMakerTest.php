@@ -68,9 +68,13 @@ final class RouterMakerTest extends TestCase
             ->withAddedRouteable($routeable1, 'group')
             ->withAddedRouteable($routeable2, 'group');
         $this->assertCount(2, $routerMaker->router()->routeables()->map());
-        $this->assertTrue($routerMaker->router()->groups()->has('group'));
-        $this->assertTrue($routerMaker->router()->index()->has('route-name-1'));
-        $this->assertTrue($routerMaker->router()->index()->has('route-name-2'));
+        $routerIndex = $routerMaker->router()->index();
+        $this->assertTrue($routerIndex->hasRouteName(
+            $routeable1->route()->name()->toString()
+        ));
+        $this->assertTrue($routerIndex->hasRouteName(
+            $routeable2->route()->name()->toString()
+        ));
     }
 
     public function testWithAlreadyAddedPath(): void

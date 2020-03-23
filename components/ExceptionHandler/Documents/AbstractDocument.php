@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler\Documents;
 
-use DateTimeInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\DocumentInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\ExceptionHandlerInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\FormatterInterface;
 use Chevere\Components\ExceptionHandler\TraceFormatter;
+use DateTimeInterface;
 
 abstract class AbstractDocument implements DocumentInterface
 {
@@ -37,9 +37,6 @@ abstract class AbstractDocument implements DocumentInterface
 
     abstract public function getFormatter(): FormatterInterface;
 
-    /**
-     * Creates a new instance.
-     */
     final public function __construct(ExceptionHandlerInterface $exceptionHandler)
     {
         $this->exceptionHandler = $exceptionHandler;

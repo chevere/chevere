@@ -26,6 +26,6 @@ return new class() extends RouteDecorator
 
     public function wildcards(): RouteWildcardsInterface
     {
-        return new RouteWildcards();
+        return new RouteWildcards;
     }
 };

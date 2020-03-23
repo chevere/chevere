@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Globals;
 
-use TypeError;
 use Chevere\Components\Globals\Exceptions\GlobalsTypeException;
-use Chevere\Components\Message\Message;
 use Chevere\Components\Globals\Interfaces\GlobalsInterface;
+use Chevere\Components\Message\Message;
+use TypeError;
 
 /**
  * Provides read-only access for superglobals.
@@ -41,9 +41,6 @@ final class Globals implements GlobalsInterface
 
     private array $globals;
 
-    /**
-     * Creates a new instance.
-     */
     public function __construct(array $globals)
     {
         $this->globals = [];

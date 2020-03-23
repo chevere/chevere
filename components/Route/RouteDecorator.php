@@ -28,7 +28,7 @@ abstract class RouteDecorator implements RouteDecoratorInterface
 
     public function wildcards(): RouteWildcardsInterface
     {
-        return new RouteWildcards(); // @codeCoverageIgnore
+        return new RouteWildcards; // @codeCoverageIgnore
     }
 
     final public function whereIs(): string

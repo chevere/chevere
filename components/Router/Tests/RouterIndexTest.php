@@ -18,10 +18,12 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
+use Chevere\Components\Router\Interfaces\RouteIdentifierInterface;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\RouterIndex;
 use Chevere\TestApp\App\Controllers\TestController;
 use InvalidArgumentException;
+use LogicException;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
@@ -31,29 +33,52 @@ final class RouterIndexTest extends TestCase
     {
         $routerIndex = new RouterIndex();
         $this->assertSame([], $routerIndex->toArray());
-        $this->expectException(OutOfBoundsException::class);
-        $routerIndex->get('404');
     }
 
     public function testWithAdded(): void
     {
-        $key = '/path';
-        $group = 'some-group';
-        $name = 'some-name';
-        $routePath = new RoutePath($key);
-        $route = new Route(new RouteName($name), $routePath);
+        $groupName = 'some-group';
+        $routeName = 'some-name';
+        $route = new Route(new RouteName($routeName), new RoutePath('/path'));
         $route = $route->withAddedEndpoint(
-            new RouteEndpoint(
-                new GetMethod,
-                new TestController
-            )
+            new RouteEndpoint(new GetMethod, new TestController)
         );
-        $routerIndex = (new RouterIndex())->withAdded($route, $group);
+        $routeable = new Routeable($route);
+        $routerIndex = (new RouterIndex)->withAdded($routeable, $groupName);
+        $this->assertTrue($routerIndex->hasRouteName($routeName));
+        $this->assertInstanceOf(
+            RouteIdentifierInterface::class,
+            $routerIndex->getRouteIdentifier($routeName)
+        );
+        $this->assertTrue($routerIndex->hasGroup($groupName));
+        $this->assertSame([$routeName], $routerIndex->getGroupRouteNames($groupName));
+        $this->assertSame($groupName, $routerIndex->getRouteGroup($routeName));
         $this->assertSame([
-            $key => [
-                'group' => $group,
-                'name' => $name,
+            $routeName => [
+                'group' => $groupName,
+                'name' => $routeName,
             ]
         ], $routerIndex->toArray());
+        $routeName2 = 'route-name-2';
+        $route2 = new Route(new RouteName($routeName2), new RoutePath('/path-2'));
+        $route2 = $route2->withAddedEndpoint(
+            new RouteEndpoint(new GetMethod, new TestController)
+        );
+        $routeable2 = new Routeable($route2);
+        $routerIndex = $routerIndex->withAdded($routeable2, $groupName);
+        $this->assertSame([$routeName, $routeName2], $routerIndex->getGroupRouteNames($groupName));
+    }
+
+    public function testWithAddedAlready(): void
+    {
+        $group = 'group-name';
+        $route = (new Route(new RouteName('route-name'), new RoutePath('/path')))
+            ->withAddedEndpoint(
+                new RouteEndpoint(new GetMethod, new TestController)
+            );
+        $routeable = new Routeable($route);
+        $routerIndex = (new RouterIndex())->withAdded($routeable, $group);
+        $this->expectException(LogicException::class);
+        $routerIndex = $routerIndex->withAdded($routeable, 'other-group');
     }
 }

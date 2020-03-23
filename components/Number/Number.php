@@ -26,9 +26,6 @@ final class Number implements NumberInterface
     /** @var int */
     private int $precision = 0;
 
-    /**
-     * Creates a new instance.
-     */
     public function __construct($number)
     {
         $this->number = $number;

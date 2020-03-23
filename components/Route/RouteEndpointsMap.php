@@ -29,13 +29,13 @@ final class RouteEndpointsMap
         $this->map->put($routeEndpoint->method()->name(), $routeEndpoint);
     }
 
-    public function hasKey(string $methodName): bool
+    public function hasKey(MethodInterface $method): bool
     {
-        return $this->map->hasKey($methodName);
+        return $this->map->hasKey($method->name());
     }
 
     public function get(MethodInterface $method): RouteEndpointInterface
     {
-        return $this->map->get($method::name());
+        return $this->map->get($method->name());
     }
 }

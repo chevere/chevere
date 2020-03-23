@@ -23,10 +23,13 @@ final class RoutedTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $route = new Route(new RouteName('test'), new RoutePath('/path'));
-        $arguments = [];
-        $routed = new Routed($route, $arguments);
-        $this->assertSame($route, $routed->route());
-        $this->assertSame($arguments, $routed->arguments());
+        $routeName = new RouteName('test');
+        $wildcards = [
+            'name' => 'some-name',
+            'id' => 'some-id',
+        ];
+        $routed = new Routed($routeName->toString(), $wildcards);
+        $this->assertSame($routeName->toString(), $routed->routeName());
+        $this->assertSame($wildcards, $routed->wildcards());
     }
 }
