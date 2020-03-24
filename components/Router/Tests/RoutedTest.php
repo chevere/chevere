@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
-use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteName;
-use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routed;
 use PHPUnit\Framework\TestCase;
 
@@ -24,12 +22,12 @@ final class RoutedTest extends TestCase
     public function testConstruct(): void
     {
         $routeName = new RouteName('test');
-        $wildcards = [
-            'name' => 'some-name',
-            'id' => 'some-id',
+        $arguments = [
+            'name' => 'name-value',
+            'id' => 'id-value',
         ];
-        $routed = new Routed($routeName->toString(), $wildcards);
+        $routed = new Routed($routeName->toString(), $arguments);
         $this->assertSame($routeName->toString(), $routed->routeName());
-        $this->assertSame($wildcards, $routed->wildcards());
+        $this->assertSame($arguments, $routed->arguments());
     }
 }

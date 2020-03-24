@@ -23,7 +23,6 @@ use Throwable;
 
 /**
  * Determines if a RouteInterface is able to be routed.
- * @package Chevere\Components\Router
  */
 final class Routeable implements RouteableInterface
 {

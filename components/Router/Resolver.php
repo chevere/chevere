@@ -25,7 +25,7 @@ use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 use Psr\Http\Message\UriInterface;
 use Throwable;
 
-final class RouterResolver
+final class Resolver
 {
     private RouterRegexInterface $routerRegex;
 
@@ -50,7 +50,7 @@ final class RouterResolver
     public function resolve(UriInterface $uri): RoutedInterface
     {
         try {
-            if (preg_match($this->regex->toString(), $uri->getPath(), $matches)) {
+            if (preg_match($this->routerRegex->regex()->toString(), $uri->getPath(), $matches)) {
                 return $this->resolver($matches);
             }
         } catch (Throwable $e) {

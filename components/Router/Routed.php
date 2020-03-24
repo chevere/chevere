@@ -13,30 +13,26 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Interfaces\RoutedInterface;
 
-/**
- * An instance for routed RouteInterfaces routed by RouterInterface.
- */
 final class Routed implements RoutedInterface
 {
-    private string $routeName;
+    private string $name;
 
     private array $arguments;
 
-    public function __construct(string $routeName, array $arguments)
+    public function __construct(string $name, array $arguments)
     {
-        $this->routeName = $routeName;
+        $this->name = $name;
         $this->arguments = $arguments;
     }
 
     public function routeName(): string
     {
-        return $this->routeName;
+        return $this->name;
     }
 
-    public function wildcards(): array
+    public function arguments(): array
     {
         return $this->arguments;
     }
