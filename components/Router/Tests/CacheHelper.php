@@ -67,6 +67,16 @@ final class CacheHelper
         return new Cache($this->getWorkingDir());
     }
 
+    public function getWrongDir(): DirInterface
+    {
+        return $this->getChildDir('wrong/');
+    }
+
+    public function getWrongCache(): CacheInterface
+    {
+        return new Cache($this->getWrongDir());
+    }
+
     public function getCachedDir(): DirInterface
     {
         return $this->getChildDir('cached/');

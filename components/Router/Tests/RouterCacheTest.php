@@ -57,7 +57,6 @@ final class RouterCacheTest extends TestCase
     public function testEmptyCache(): void
     {
         $routerCache = new RouterCache($this->cacheHelper->getEmptyCache());
-        // xdd($routerCache->routesCache()->);
         $this->assertEmpty($routerCache->puts());
         $this->assertFalse($routerCache->hasRegex());
         $this->assertFalse($routerCache->hasIndex());
@@ -111,6 +110,8 @@ final class RouterCacheTest extends TestCase
         foreach ($keys as $key) {
             $this->assertArrayHasKey($key, $routerCache->puts());
         }
+        $this->assertTrue($routerCache->routesCache()->has($route->name()->toString()));
+        $this->assertTrue($routerCache->resolverCache()->has(0));
         $routerCache->remove();
         foreach ($keys as $key) {
             $this->assertArrayNotHasKey($key, $routerCache->puts());
@@ -120,8 +121,7 @@ final class RouterCacheTest extends TestCase
     public function testCachedCache(): void
     {
         $group = 'some-group';
-        $cache = $this->cacheHelper->getCachedCache();
-        $routerCache = new RouterCache($cache);
+        $routerCache = new RouterCache($this->cacheHelper->getCachedCache());
         $this->assertTrue($routerCache->hasIndex());
         $this->assertTrue($routerCache->hasRegex());
         $index = $routerCache->getIndex();

@@ -31,19 +31,19 @@ final class RoutesCache implements RoutesCacheInterface
         $this->cache = $cache;
     }
 
-    public function has(string $routeName): bool
+    public function has(string $name): bool
     {
-        return $this->cache->exists(new CacheKey($routeName));
+        return $this->cache->exists(new CacheKey($name));
     }
 
-    public function get(string $routeName): RouteInterface
+    public function get(string $name): RouteInterface
     {
         try {
-            $item = $this->cache->get(new CacheKey($routeName));
+            $item = $this->cache->get(new CacheKey($name));
         } catch (Throwable $e) {
             throw new RouteCacheNotFoundException(
                 (new Message('Cache not found for route %routeName%'))
-                    ->strong('%routeName%', $routeName)
+                    ->strong('%routeName%', $name)
                     ->toString()
             );
         }
@@ -60,11 +60,11 @@ final class RoutesCache implements RoutesCacheInterface
             );
     }
 
-    public function remove(string $routeName): void
+    public function remove(string $name): void
     {
         $this->cache = $this->cache
             ->withRemove(
-                new CacheKey($routeName)
+                new CacheKey($name)
             );
     }
 

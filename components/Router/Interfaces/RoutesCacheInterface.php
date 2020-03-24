@@ -17,13 +17,13 @@ use Chevere\Components\Route\Interfaces\RouteInterface;
 
 interface RoutesCacheInterface
 {
-    public function has(string $routeName): bool;
+    public function has(string $name): bool;
 
-    public function get(string $routeName): RouteInterface;
+    public function get(string $name): RouteInterface;
 
     public function put(RouteInterface $route): void;
 
-    public function remove(string $routeName): void;
+    public function remove(string $name): void;
 
     public function puts(): array;
 }

@@ -13,12 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Components\App\Interfaces\ResolverInterface;
-use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
 use Chevere\Components\Router\Interfaces\ResolverCacheInterface;
+use Chevere\Components\Router\Interfaces\ResolverInterface;
 use Chevere\Components\Router\Interfaces\RoutedInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 use OutOfBoundsException;
@@ -33,10 +32,10 @@ final class Resolver implements ResolverInterface
 
     public function __construct(
         RouterRegexInterface $routerRegex,
-        ResolverCacheInterface $resolveCache
+        ResolverCacheInterface $resolverCache
     ) {
         $this->routerRegex = $routerRegex;
-        $this->resolverCache = $resolveCache;
+        $this->resolverCache = $resolverCache;
     }
 
     /**
@@ -67,17 +66,18 @@ final class Resolver implements ResolverInterface
      */
     private function resolver(array $matches): RoutedInterface
     {
-        $id = $matches['MARK'];
+        $idString = (string) $matches['MARK'];
+        $idInt = (int) $idString;
         unset($matches['MARK']);
         array_shift($matches);
-        if (!$this->resolverCache->has($id)) {
+        if (!$this->resolverCache->has($idInt)) {
             throw new OutOfBoundsException(
                 (new Message('No cache for regex tag id %id%'))
-                    ->code('%id%', (string) $id)
+                    ->code('%id%', $idString)
                     ->toString()
             );
         }
-        $routeResolve = $this->getRouteResolve($id);
+        $routeResolve = $this->getRouteResolve($idInt);
         $name = $routeResolve->name();
         $routeWildcards = $routeResolve->routeWildcards();
         $arguments = [];
