@@ -1,1 +1,0 @@
-<?php return 'O:37:"Chevere\\Components\\Router\\RouterNamed":1:{s:44:"' . "\0" . 'Chevere\\Components\\Router\\RouterNamed' . "\0" . 'array";a:3:{s:7:"route-1";i:0;s:7:"route-2";i:1;s:7:"route-3";i:2;}}';

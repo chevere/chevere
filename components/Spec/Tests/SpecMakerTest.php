@@ -30,6 +30,7 @@ use Chevere\Components\Spec\SpecMaker;
 use Chevere\Components\Spec\SpecPath;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
+use ReflectionObject;
 
 final class SpecMakerTest extends TestCase
 {
@@ -37,7 +38,7 @@ final class SpecMakerTest extends TestCase
 
     public function setUp(): void
     {
-        $this->cacheHelper = new CacheHelper(__DIR__);
+        $this->cacheHelper = new CacheHelper(__DIR__, $this);
     }
 
     public function tearDown(): void
@@ -47,10 +48,11 @@ final class SpecMakerTest extends TestCase
 
     public function testConstructInvalidArgument(): void
     {
+        $shortName = (new ReflectionObject($this))->getShortName();
         $this->expectException(SpecInvalidArgumentException::class);
         new SpecMaker(
             new SpecPath('/spec'),
-            new Dir(new Path(__DIR__ . '/_resources/spec/')),
+            new Dir(new Path(__DIR__ . "/_resources/$shortName/spec/")),
             new Router
         );
     }

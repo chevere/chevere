@@ -41,7 +41,7 @@ final class RouterCacheTest extends TestCase
 
     public function setUp(): void
     {
-        $this->cacheHelper = new CacheHelper(__DIR__);
+        $this->cacheHelper = new CacheHelper(__DIR__, $this);
         $this->routes = [
             new Route(new RouteName('route-1'), new RoutePath('/test')),
             new Route(new RouteName('route-2'), new RoutePath('/test/{id}')),

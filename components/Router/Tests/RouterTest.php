@@ -29,24 +29,16 @@ use PHPUnit\Framework\TestCase;
 
 final class RouterTest extends TestCase
 {
-    private CacheHelper $cacheHelper;
-
     private Routeable $routeable;
 
     public function setUp(): void
     {
-        $this->cacheHelper = new CacheHelper(__DIR__);
         $this->routeable = new Routeable(
             (new Route(new RouteName('test-name'), new RoutePath('/test')))
                 ->withAddedEndpoint(
                     new RouteEndpoint(new GetMethod, new TestController)
                 )
         );
-    }
-
-    public function tearDown(): void
-    {
-        $this->cacheHelper->tearDown();
     }
 
     public function testConstructor(): void

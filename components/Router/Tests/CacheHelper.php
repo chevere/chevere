@@ -19,16 +19,24 @@ use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
 use Chevere\Components\Filesystem\Path;
+use PHPUnit\Framework\TestCase;
+use ReflectionObject;
 
 final class CacheHelper
 {
     private PathInterface $path;
 
-    public function __construct(string $dir)
+    public function __construct(string $dir, TestCase $object)
     {
-        $this->path = new Path($dir);
+        $this->path = new Path(
+            $dir . '/_resources/' . (new ReflectionObject($object))->getShortName()
+            . '/'
+        );
         if (!$this->getWorkingDir()->exists()) {
             $this->getWorkingDir()->create();
+        }
+        if (!$this->getEmptyDir()->exists()) {
+            $this->getEmptyDir()->create();
         }
     }
 
@@ -41,7 +49,7 @@ final class CacheHelper
 
     public function getEmptyDir(): DirInterface
     {
-        return $this->getResourcesChildDir('empty/');
+        return $this->getChildDir('empty/');
     }
 
     public function getEmptyCache(): CacheInterface
@@ -51,7 +59,7 @@ final class CacheHelper
 
     public function getWorkingDir(): DirInterface
     {
-        return $this->getResourcesChildDir('working/');
+        return $this->getChildDir('working/');
     }
 
     public function getWorkingCache(): CacheInterface
@@ -61,7 +69,7 @@ final class CacheHelper
 
     public function getCachedDir(): DirInterface
     {
-        return $this->getResourcesChildDir('cached/');
+        return $this->getChildDir('cached/');
     }
 
     public function getCachedCache(): CacheInterface
@@ -69,10 +77,8 @@ final class CacheHelper
         return new Cache($this->getCachedDir());
     }
 
-    private function getResourcesChildDir(string $child): DirInterface
+    private function getChildDir(string $child): DirInterface
     {
-        return new Dir(
-            $this->path->getChild('_resources/')->getChild($child)
-        );
+        return new Dir($this->path->getChild($child));
     }
 }

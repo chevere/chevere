@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RouteWildcards;
-use Chevere\Components\Router\Interfaces\RouteableInterface;
 
 final class RouteResolve
 {

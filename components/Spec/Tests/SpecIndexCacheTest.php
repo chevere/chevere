@@ -31,7 +31,7 @@ final class SpecIndexCacheTest extends TestCase
 
     public function setUp(): void
     {
-        $this->cacheHelper = new CacheHelper(__DIR__);
+        $this->cacheHelper = new CacheHelper(__DIR__, $this);
     }
 
     public function tearDown(): void
@@ -58,10 +58,7 @@ final class SpecIndexCacheTest extends TestCase
                 $routeName->toString(),
                 new RouteEndpointSpec(
                     $specPath,
-                    new RouteEndpoint(
-                        $method,
-                        new TestController
-                    )
+                    new RouteEndpoint($method, new TestController)
                 )
             )
         );

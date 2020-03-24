@@ -39,7 +39,7 @@ final class SpecTest extends TestCase
 
     public function setUp(): void
     {
-        $this->cacheHelper = new CacheHelper(__DIR__);
+        $this->cacheHelper = new CacheHelper(__DIR__, $this);
         $this->routes = [
             new Route(new RouteName('route-1'), new RoutePath('/test')),
             new Route(new RouteName('route-2'), new RoutePath('/test/{id}')),
@@ -94,8 +94,5 @@ final class SpecTest extends TestCase
                 $group
             );
         }
-        // $spec = new SpecCache($routerMaker->router());
-
-        // xdd($spec->toArray());
     }
 }

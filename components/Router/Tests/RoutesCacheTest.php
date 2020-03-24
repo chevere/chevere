@@ -38,7 +38,7 @@ final class RoutesCacheTest extends TestCase
     public function setUp(): void
     {
         $this->routeName = new RouteName('route-name');
-        $this->cacheHelper = new CacheHelper(__DIR__);
+        $this->cacheHelper = new CacheHelper(__DIR__, $this);
     }
 
     public function tearDown(): void
@@ -95,22 +95,18 @@ final class RoutesCacheTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
         $routeable = $this->getRouteable();
-        $routesCache = new RoutesCache($this->cacheHelper->getCachedCache()->getChild('routes/'));
+        $routesCache = new RoutesCache(
+            $this->cacheHelper->getCachedCache()->getChild('routes/')
+        );
         $routesCache->put($routeable->route());
     }
 
     private function getRouteable(): RouteableInterface
     {
-        $route = new Route(
-            $this->routeName,
-            new RoutePath('/test/{var}')
-        );
+        $route = new Route($this->routeName, new RoutePath('/test/{var}'));
         $route = $route
             ->withAddedEndpoint(
-                new RouteEndpoint(
-                    new GetMethod(),
-                    new TestController
-                )
+                new RouteEndpoint(new GetMethod, new TestController)
             );
 
         return new Routeable($route);

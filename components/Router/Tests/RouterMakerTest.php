@@ -33,33 +33,6 @@ use PHPUnit\Framework\TestCase;
 
 final class RouterMakerTest extends TestCase
 {
-    private CacheHelper $cacheHelper;
-
-    private RouterCacheInterface $routerCache;
-
-    public function setUp(): void
-    {
-        $this->cacheHelper = new CacheHelper(__DIR__);
-        $this->routerCache = new RouterCache($this->cacheHelper->getWorkingCache());
-    }
-
-    public function tearDown(): void
-    {
-        $this->cacheHelper->tearDown();
-        $this->routerCache->remove();
-        foreach (array_keys($this->routerCache->routesCache()->puts()) as $routeName) {
-            $this->routerCache->routesCache()->remove($routeName);
-        }
-    }
-
-    public function testConstruct(): void
-    {
-        $this->assertInstanceOf(
-            RouterInterface::class,
-            (new RouterMaker)->router()
-        );
-    }
-
     public function testWithAddedRouteable(): void
     {
         $routeable1 = $this->getRouteable('/path-1', 'route-name-1');
