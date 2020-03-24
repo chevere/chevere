@@ -15,12 +15,12 @@ namespace Chevere\Components\App;
 
 use Chevere\Components\App\Exceptions\ControllerInterfaceException;
 use Chevere\Components\App\Exceptions\ControllerNotExistsException;
-use Chevere\Components\Controller\ArgumentsWrap;
-use Chevere\Components\Message\Message;
 use Chevere\Components\App\Interfaces\AppInterface;
 use Chevere\Components\App\Interfaces\ControllerRunnerInterface;
 use Chevere\Components\App\Interfaces\MiddlewareRunnerInterface;
+use Chevere\Components\Controller\ArgumentsWrap;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
+use Chevere\Components\Message\Message;
 
 /**
  * Application container ControllerInterface runner.
@@ -93,7 +93,7 @@ final class ControllerRunner implements ControllerRunnerInterface
 
     private function handleRouteMiddleware(): void
     {
-        $route = $this->app->routed()->routeName();
+        $route = $this->app->routed()->name();
         if (!$route->hasMiddlewareNameCollection()) {
             return;
         }

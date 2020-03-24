@@ -34,7 +34,7 @@ final class RouterCache implements RouterCacheInterface
 
     private RoutesCacheInterface $routesCache;
 
-    private ResolveCache $resolveCache;
+    private ResolverCache $resolverCache;
 
     private CacheKeyInterface $keyRegex;
 
@@ -44,7 +44,7 @@ final class RouterCache implements RouterCacheInterface
     {
         $this->cache = $cache;
         $this->routesCache = new RoutesCache($this->cache->getChild('routes/'));
-        $this->resolveCache = new ResolveCache($this->cache->getChild('resolve/'));
+        $this->resolverCache = new ResolverCache($this->cache->getChild('resolve/'));
         $this->keyRegex = new CacheKey(self::KEY_REGEX);
         $this->keyIndex = new CacheKey(self::KEY_INDEX);
     }
@@ -54,9 +54,9 @@ final class RouterCache implements RouterCacheInterface
         return $this->routesCache;
     }
 
-    public function resolveCache(): ResolveCache
+    public function resolverCache(): ResolverCache
     {
-        return $this->resolveCache;
+        return $this->resolverCache;
     }
 
     public function hasRegex(): bool
@@ -89,7 +89,7 @@ final class RouterCache implements RouterCacheInterface
         return $item->var();
     }
 
-    public function put(RouterInterface $router): RouterCacheInterface
+    public function put(RouterInterface $router): void
     {
         $this->cache = $this->cache
             ->withPut(
@@ -108,7 +108,7 @@ final class RouterCache implements RouterCacheInterface
             $route = $routeable->route();
             $pos++;
             $this->routesCache->put($route);
-            $this->resolveCache->put(
+            $this->resolverCache->put(
                 $pos,
                 new RouteResolve(
                     $route->name()->toString(),
@@ -116,11 +116,9 @@ final class RouterCache implements RouterCacheInterface
                 )
             );
         }
-
-        return $this;
     }
 
-    public function remove(): RouterCacheInterface
+    public function remove(): void
     {
         $this->cache = $this->cache
             ->withRemove($this->keyRegex)
@@ -128,8 +126,6 @@ final class RouterCache implements RouterCacheInterface
         foreach (array_keys($this->routesCache->puts()) as $routeName) {
             $this->routesCache->remove($routeName);
         }
-
-        return $this;
     }
 
     public function puts(): array

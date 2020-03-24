@@ -27,7 +27,7 @@ final class Routed implements RoutedInterface
         $this->arguments = $arguments;
     }
 
-    public function routeName(): string
+    public function name(): string
     {
         return $this->name;
     }

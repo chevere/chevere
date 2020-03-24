@@ -13,36 +13,36 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
+use Chevere\Components\App\Interfaces\ResolverInterface;
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
+use Chevere\Components\Router\Interfaces\ResolverCacheInterface;
 use Chevere\Components\Router\Interfaces\RoutedInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 use OutOfBoundsException;
 use Psr\Http\Message\UriInterface;
 use Throwable;
 
-final class Resolver
+final class Resolver implements ResolverInterface
 {
     private RouterRegexInterface $routerRegex;
 
-    private ResolveCache $resolveCache;
+    private ResolverCacheInterface $resolverCache;
 
     public function __construct(
         RouterRegexInterface $routerRegex,
-        ResolveCache $resolveCache
+        ResolverCacheInterface $resolveCache
     ) {
         $this->routerRegex = $routerRegex;
-        $this->resolveCache = $resolveCache;
+        $this->resolverCache = $resolveCache;
     }
 
     /**
      * Returns a RoutedInterface for the given UriInterface.
      *
-     * @throws RouterException        if the router encounters any fatal error
-     * @throws UnserializeException   if the route string object can't be unserialized
-     * @throws TypeError              if the found route doesn't implement the RouteInterface
+     * @throws RouterException        if the router encounters any fatal error (UnserializeException, TypeError, etc)
      * @throws RouteNotFoundException if no route resolves the given UriInterface
      */
     public function resolve(UriInterface $uri): RoutedInterface
@@ -55,8 +55,8 @@ final class Resolver
             throw new RouterException($e->getMessage(), $e->getCode(), $e);
         }
         throw new RouteNotFoundException(
-            (new Message('No route found for %path%'))
-                ->code('%path%', $uri->getPath())
+            (new Message('No route found for %uriPath%'))
+                ->code('%uriPath%', $uri->getPath())
                 ->toString()
         );
     }
@@ -70,7 +70,7 @@ final class Resolver
         $id = $matches['MARK'];
         unset($matches['MARK']);
         array_shift($matches);
-        if (!$this->resolveCache->has($id)) {
+        if (!$this->resolverCache->has($id)) {
             throw new OutOfBoundsException(
                 (new Message('No cache for regex tag id %id%'))
                     ->code('%id%', (string) $id)
@@ -90,6 +90,6 @@ final class Resolver
 
     private function getRouteResolve(int $id): RouteResolve
     {
-        return $this->resolveCache->get($id);
+        return $this->resolverCache->get($id);
     }
 }

@@ -57,6 +57,7 @@ final class RouterCacheTest extends TestCase
     public function testEmptyCache(): void
     {
         $routerCache = new RouterCache($this->cacheHelper->getEmptyCache());
+        // xdd($routerCache->routesCache()->);
         $this->assertEmpty($routerCache->puts());
         $this->assertFalse($routerCache->hasRegex());
         $this->assertFalse($routerCache->hasIndex());

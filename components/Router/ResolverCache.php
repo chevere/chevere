@@ -18,12 +18,13 @@ use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
 use Chevere\Components\Router\Exceptions\RouteCacheTypeException;
+use Chevere\Components\Router\Interfaces\ResolverCacheInterface;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
 use Chevere\Components\Type\Type;
 use Chevere\Components\Variable\VariableExport;
 use Throwable;
 
-final class ResolveCache
+final class ResolverCache implements ResolverCacheInterface
 {
     private CacheInterface $cache;
 
@@ -62,25 +63,21 @@ final class ResolveCache
         return $item->var();
     }
 
-    public function put(int $id, RouteResolve $routeResolve): ResolveCache
+    public function put(int $id, RouteResolve $routeResolve): void
     {
         $this->cache = $this->cache
             ->withPut(
                 new CacheKey((string) $id),
                 new VariableExport($routeResolve)
             );
-
-        return $this;
     }
 
-    public function remove(int $id): ResolveCache
+    public function remove(int $id): void
     {
         $this->cache = $this->cache
             ->withRemove(
                 new CacheKey((string) $id)
             );
-
-        return $this;
     }
 
     public function puts(): array

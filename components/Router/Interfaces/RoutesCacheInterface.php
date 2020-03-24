@@ -21,9 +21,9 @@ interface RoutesCacheInterface
 
     public function get(string $routeName): RouteInterface;
 
-    public function put(RouteInterface $route): RoutesCacheInterface;
+    public function put(RouteInterface $route): void;
 
-    public function remove(string $routeName): RoutesCacheInterface;
+    public function remove(string $routeName): void;
 
     public function puts(): array;
 }

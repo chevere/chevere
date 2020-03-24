@@ -27,7 +27,7 @@ final class RoutedTest extends TestCase
             'id' => 'id-value',
         ];
         $routed = new Routed($routeName->toString(), $arguments);
-        $this->assertSame($routeName->toString(), $routed->routeName());
+        $this->assertSame($routeName->toString(), $routed->name());
         $this->assertSame($arguments, $routed->arguments());
     }
 }

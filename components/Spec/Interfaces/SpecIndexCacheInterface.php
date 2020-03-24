@@ -23,4 +23,6 @@ interface SpecIndexCacheInterface
     public function get(string $routeName): SpecMethods;
 
     public function put(SpecIndexInterface $specIndex): void;
+
+    public function puts(): array;
 }

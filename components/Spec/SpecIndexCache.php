@@ -56,4 +56,9 @@ final class SpecIndexCache implements SpecIndexCacheInterface
             );
         }
     }
+
+    public function puts(): array
+    {
+        return $this->cache->puts();
+    }
 }

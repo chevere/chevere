@@ -51,25 +51,21 @@ final class RoutesCache implements RoutesCacheInterface
         return $item->var();
     }
 
-    public function put(RouteInterface $route): RoutesCache
+    public function put(RouteInterface $route): void
     {
         $this->cache = $this->cache
             ->withPut(
                 new CacheKey($route->name()->toString()),
                 new VariableExport($route)
             );
-
-        return $this;
     }
 
-    public function remove(string $routeName): RoutesCacheInterface
+    public function remove(string $routeName): void
     {
         $this->cache = $this->cache
             ->withRemove(
                 new CacheKey($routeName)
             );
-
-        return $this;
     }
 
     public function puts(): array
