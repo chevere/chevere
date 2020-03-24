@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
+use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
 use Chevere\Components\Route\RouteWildcards;
 
 final class RouteResolve
@@ -21,7 +22,7 @@ final class RouteResolve
 
     private RouteWildcards $routeWildcards;
 
-    public function __construct(string $name, RouteWildcards $routeWildcards)
+    public function __construct(string $name, RouteWildcardsInterface $routeWildcards)
     {
         $this->name = $name;
         $this->routeWildcards = $routeWildcards;
@@ -32,7 +33,7 @@ final class RouteResolve
         return $this->name;
     }
 
-    public function routeWildcards(): RouteWildcards
+    public function routeWildcards(): RouteWildcardsInterface
     {
         return $this->routeWildcards;
     }

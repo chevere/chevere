@@ -13,15 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Components\Cache\CacheItem;
 use Chevere\Components\Cache\CacheKey;
-use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
 use Chevere\Components\Router\Interfaces\RoutedInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
+use OutOfBoundsException;
 use Psr\Http\Message\UriInterface;
 use Throwable;
 
@@ -29,14 +27,14 @@ final class Resolver
 {
     private RouterRegexInterface $routerRegex;
 
-    private CacheInterface $cache;
+    private ResolveCache $resolveCache;
 
     public function __construct(
         RouterRegexInterface $routerRegex,
-        CacheInterface $cache
+        ResolveCache $resolveCache
     ) {
         $this->routerRegex = $routerRegex;
-        $this->cache = $cache;
+        $this->resolveCache = $resolveCache;
     }
 
     /**
@@ -64,21 +62,34 @@ final class Resolver
     }
 
     /**
-     * @throws RouteCacheNotFoundException
+     * @throws OutOfBoundsException if no cache for matched tag id
+     * @throws TypeError if the cache var doesn't match the expected type
      */
     private function resolver(array $matches): RoutedInterface
     {
-        $id = (string) $matches['MARK'];
+        $id = $matches['MARK'];
         unset($matches['MARK']);
         array_shift($matches);
-        $routeResolve = $this->cache->get(new CacheKey($id))->var();
-        $routeName = $routeResolve->name();
-        $routeWildcards = $routeResolve->wildcards();
-        $wildcards = [];
-        foreach ($routeWildcards as $pos => $val) {
-            $wildcards[$routeWildcards->getPos($pos)->name()] = $val;
+        if (!$this->resolveCache->has($id)) {
+            throw new OutOfBoundsException(
+                (new Message('No cache for regex tag id %id%'))
+                    ->code('%id%', (string) $id)
+                    ->toString()
+            );
+        }
+        $routeResolve = $this->getRouteResolve($id);
+        $name = $routeResolve->name();
+        $routeWildcards = $routeResolve->routeWildcards();
+        $arguments = [];
+        foreach ($matches as $pos => $val) {
+            $arguments[$routeWildcards->getPos($pos)->name()] = $val;
         }
 
-        return new Routed($routeName, $wildcards);
+        return new Routed($name, $arguments);
+    }
+
+    private function getRouteResolve(int $id): RouteResolve
+    {
+        return $this->resolveCache->get($id);
     }
 }

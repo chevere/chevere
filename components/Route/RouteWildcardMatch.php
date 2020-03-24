@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use Chevere\Components\Regex\Exceptions\RegexException;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Interfaces\RouteWildcardMatchInterface;
 
@@ -25,8 +24,7 @@ final class RouteWildcardMatch implements RouteWildcardMatchInterface
     public function __construct(string $match)
     {
         $this->match = $match;
-        (new Regex('#' . $this->match . '#'))
-            ->assertNoCapture();
+        (new Regex('#' . $this->match . '#'))->assertNoCapture();
     }
 
     public function toString(): string
