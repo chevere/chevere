@@ -51,7 +51,7 @@ final class RouteableSpecTest extends TestCase
                 'name' => $routeName->toString(),
                 'spec' => $routeSpecPath,
                 'path' => $routePath->toString(),
-                'wildcards' => $routePath->routeWildcards()->toArray(),
+                'wildcards' => $routePath->wildcards()->toArray(),
                 'endpoints' => [
                     $method->name() => $routeEndpoint->toArray()
                 ]

@@ -43,7 +43,7 @@ final class RouteableSpec implements SpecInterface
         $specGroupRoute = $specGroupPath->getChild($this->key);
         $this->jsonPath = $specGroupRoute->getChild('route.json')->pub();
         $this->path = $routeable->route()->path()->toString();
-        $this->wildcards = $routeable->route()->path()->routeWildcards()->toArray();
+        $this->wildcards = $routeable->route()->path()->wildcards()->toArray();
         $routeEndpointsMap = $routeable->route()->endpoints()->routeEndpointsMap();
         /** @var RouteEndpointInterface $routeEndpoint */
         foreach ($routeEndpointsMap->map() as $routeEndpoint) {

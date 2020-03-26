@@ -112,7 +112,7 @@ final class RouterCache implements RouterCacheInterface
                 $pos,
                 new RouteResolve(
                     $route->name()->toString(),
-                    $route->path()->routeWildcards()
+                    $route->path()->wildcards()
                 )
             );
         }

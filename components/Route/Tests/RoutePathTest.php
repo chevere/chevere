@@ -73,7 +73,7 @@ final class RoutePathTest extends TestCase
         $this->assertSame($path, $routePath->toString());
         $this->assertSame($path, $routePath->key());
         $this->assertSame($regex, $routePath->regex());
-        $this->assertFalse($routePath->routeWildcards()->hasAny());
+        $this->assertFalse($routePath->wildcards()->hasAny());
         $this->expectException(BadMethodCallException::class);
         $routePath->uriFor([]);
     }
@@ -88,8 +88,8 @@ final class RoutePathTest extends TestCase
         $this->assertSame($path, $routePath->toString());
         $this->assertSame($key, $routePath->key());
         $this->assertSame($regex, $routePath->regex());
-        $this->assertTrue($routePath->routeWildcards()->hasAny());
-        $this->assertTrue($routePath->routeWildcards()->has($routeWildcard));
+        $this->assertTrue($routePath->wildcards()->hasAny());
+        $this->assertTrue($routePath->wildcards()->has($routeWildcard));
     }
 
     public function testConstructWithWildcards(): void
@@ -106,9 +106,9 @@ final class RoutePathTest extends TestCase
         $this->assertSame($path, $routePath->toString());
         $this->assertSame($key, $routePath->key());
         $this->assertSame($regex, $routePath->regex());
-        $this->assertTrue($routePath->routeWildcards()->hasAny());
-        $this->assertTrue($routePath->routeWildcards()->has($routeWildcard1));
-        $this->assertTrue($routePath->routeWildcards()->has($routeWildcard2));
+        $this->assertTrue($routePath->wildcards()->hasAny());
+        $this->assertTrue($routePath->wildcards()->has($routeWildcard1));
+        $this->assertTrue($routePath->wildcards()->has($routeWildcard2));
     }
 
     public function testWithNoApplicableWildcard(): void
@@ -129,23 +129,6 @@ final class RoutePathTest extends TestCase
                     ->withMatch(new RouteWildcardMatch($match))
             );
         $this->assertSame($regex, $routePath->regex());
-    }
-
-    public function testMatchFor(): void
-    {
-        $expected = [
-            'id' => '123',
-            'wildcard' => 'abc'
-        ];
-        $path = '/test/{id}/{wildcard}';
-        $routePath = new RoutePath($path);
-        $this->assertSame(
-            $expected,
-            $routePath->matchFor(
-                strtr('/test/id/wildcard', $expected)
-            )
-        );
-        $this->assertSame([], $routePath->matchFor('duh'));
     }
 
     public function testUriFor(): void

@@ -66,7 +66,7 @@ final class ResolverCacheTest extends TestCase
         foreach ($this->routes as $pos => $route) {
             $routeResolve = new RouteResolve(
                 $route->name()->toString(),
-                $route->path()->routeWildcards()
+                $route->path()->wildcards()
             );
             $resolverCache->put($pos, $routeResolve);
             $this->assertArrayHasKey($pos, $resolverCache->puts());
@@ -87,7 +87,7 @@ final class ResolverCacheTest extends TestCase
             $this->assertTrue($resolverCache->has($pos));
             $routeResolve = new RouteResolve(
                 $route->name()->toString(),
-                $route->path()->routeWildcards()
+                $route->path()->wildcards()
             );
             $this->assertEquals($routeResolve, $resolverCache->get($pos));
         }
@@ -113,7 +113,7 @@ final class ResolverCacheTest extends TestCase
         foreach ($this->routes as $pos => $route) {
             $routeResolve = new RouteResolve(
                 $route->name()->toString(),
-                $route->path()->routeWildcards()
+                $route->path()->wildcards()
             );
             $resolverCache->put($pos, $routeResolve);
         }

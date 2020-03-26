@@ -51,7 +51,7 @@ interface RoutePathInterface extends ToStringInterface
     /**
      * Provides access to the RouteWildcardsInterface instance.
      */
-    public function routeWildcards(): RouteWildcardsInterface;
+    public function wildcards(): RouteWildcardsInterface;
 
     /**
      * Return an instance with the specified WildcardInterface.
@@ -62,14 +62,8 @@ interface RoutePathInterface extends ToStringInterface
     public function withWildcard(RouteWildcardInterface $wildcard): RoutePathInterface;
 
     /**
-     * Provides an array matching wildcards for the given request uri.
-     *
-     * @return array [wildcardName => matchedValue,]
-     */
-    public function matchFor(string $requestUri): array;
-
-    /**
-     * Provide a request uri for the given explicit wildcards.
+     * Provide a request uri for the given wildcards.
+     * @param array $wildcards [<string>wildcardName => <string>wildcardValue,]
      */
     public function uriFor(array $wildcards): string;
 }

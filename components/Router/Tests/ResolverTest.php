@@ -70,7 +70,7 @@ final class ResolverTest extends TestCase
             );
             $this->routesResolves[] = new RouteResolve(
                 $route->name()->toString(),
-                $route->path()->routeWildcards()
+                $route->path()->wildcards()
             );
         }
         $this->routerRegex = $routerMaker->router()->regex();

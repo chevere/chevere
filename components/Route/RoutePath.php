@@ -98,7 +98,7 @@ final class RoutePath implements RoutePathInterface
         return $this->regex;
     }
 
-    public function routeWildcards(): RouteWildcardsInterface
+    public function wildcards(): RouteWildcardsInterface
     {
         return $this->routeWildcards;
     }
@@ -120,31 +120,6 @@ final class RoutePath implements RoutePathInterface
         $new->handleSetRegex();
 
         return $new;
-    }
-
-    public function matchFor(string $requestUri): array
-    {
-        try {
-            if (preg_match($this->regex, $requestUri, $matches)) {
-                array_shift($matches);
-                $return = [];
-                foreach ($this->wildcards as $pos => $name) {
-                    $return[$name] = $matches[$pos];
-                }
-            }
-            // @codeCoverageIgnoreStart
-        } catch (Throwable $e) {
-            throw new LogicException(
-                (new Message('Unable to find matches for %requestUri% by matching %regex%. Error thrown: %thrown%'))
-                    ->code('%requestUri%', $requestUri)
-                    ->code('%regex%', $this->regex)
-                    ->strtr('%thrown%', $e->getMessage())
-                    ->toString()
-            );
-        }
-        // @codeCoverageIgnoreEnd
-
-        return $return ?? [];
     }
 
     public function uriFor(array $wildcards): string
