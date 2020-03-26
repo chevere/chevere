@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Controller;
 
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
+use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
+use Chevere\Components\Regex\Regex;
 
 abstract class Controller implements ControllerInterface
 {
@@ -27,5 +29,16 @@ abstract class Controller implements ControllerInterface
 
     public function tearDown(): void
     {
+    }
+
+    public function parameters(): ControllerParametersInterface
+    {
+        return (new ControllerParameters)
+            ->put(
+                new ControllerParameter('id', new Regex('/^[0-9]+$/'))
+            )
+            ->put(
+                new ControllerParameter('name', new Regex('/^[\w]+$/'))
+            );
     }
 }

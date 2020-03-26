@@ -11,11 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Controller\Interfaces;
+namespace Chevere\Components\Controller\Exceptions;
 
-use Chevere\Components\Common\Interfaces\ToStringInterface;
+use Exception;
 
-interface ControllerNameInterface
+/**
+ * Exception thrown when a controller doesn't exists.
+ */
+final class ControllerNotExistsException extends Exception
 {
-    public function name(): string;
 }

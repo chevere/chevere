@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller\Interfaces;
 
-use Chevere\Components\Common\Interfaces\ToStringInterface;
-
-interface ControllerNameInterface
+interface ControllerParametersInterface
 {
-    public function name(): string;
+    public function withParameter(ControllerParameterInterface $parameter): ControllerParametersInterface;
+
+    public function parameters();
 }

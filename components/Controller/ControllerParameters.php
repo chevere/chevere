@@ -11,17 +11,19 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Spec;
+namespace Chevere\Components\Controller;
 
+use Chevere\Components\Controller\Interfaces\ControllerParameterInterface;
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use OutOfBoundsException;
 
-final class SpecMethods
+final class ControllerParameters
 {
     use DsMapTrait;
 
-    public function put(string $name, string $jsonPath): void
+    public function put(ControllerParameterInterface $controllerParameter): void
     {
-        $this->map->put($name, $jsonPath);
+        $this->map->put($controllerParameter->name(), $controllerParameter);
     }
 
     public function hasKey(string $name): bool
@@ -29,7 +31,10 @@ final class SpecMethods
         return $this->map->hasKey($name);
     }
 
-    public function get(string $name): string
+    /**
+     * @throws OutOfBoundsException if the parameter doesn't exists
+     */
+    public function get(string $name): ControllerParameterInterface
     {
         return $this->map->get($name);
     }

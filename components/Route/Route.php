@@ -17,10 +17,10 @@ use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
-use Chevere\Components\Route\Interfaces\RouteEndpointsInterface;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Route\Interfaces\RouteNameInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
+use function DeepCopy\deep_copy;
 
 final class Route implements RouteInterface
 {
@@ -34,7 +34,7 @@ final class Route implements RouteInterface
 
     private MiddlewareNameCollectionInterface $middlewareNameCollection;
 
-    private RouteEndpointsInterface $endpoints;
+    private RouteEndpoints $endpoints;
 
     public function __construct(RouteNameInterface $name, RoutePathInterface $routePath)
     {
@@ -63,17 +63,14 @@ final class Route implements RouteInterface
     public function withAddedEndpoint(RouteEndpointInterface $routeEndpoint): RouteInterface
     {
         $new = clone $this;
-        $new->endpoints = $new->endpoints
-            ->withAddedRouteEndpoint(
-                $routeEndpoint
-            );
+        $new->endpoints->put($routeEndpoint);
 
         return $new;
     }
 
-    public function endpoints(): RouteEndpointsInterface
+    public function endpoints(): RouteEndpoints
     {
-        return $this->endpoints;
+        return deep_copy($this->endpoints);
     }
 
     public function withAddedMiddlewareName(MiddlewareNameInterface $middlewareName): RouteInterface

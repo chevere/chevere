@@ -21,7 +21,7 @@ use Chevere\Components\Filesystem\PhpFileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
-use Chevere\Components\Route\RouteEndpointsMap;
+use Chevere\Components\Route\RouteEndpoints;
 use Chevere\Components\Routing\Exceptions\ExpectingRouteDecoratorException;
 use Chevere\Components\Routing\Interfaces\RouteEndpointIteratorInterface;
 use Chevere\Components\Type\Type;
@@ -29,11 +29,11 @@ use function DeepCopy\deep_copy;
 
 final class RouteEndpointsMaker implements RouteEndpointIteratorInterface
 {
-    private RouteEndpointsMap $routeEndpointsMap;
+    private RouteEndpoints $routeEndpoints;
 
     public function __construct(DirInterface $dir)
     {
-        $this->routeEndpointsMap = new RouteEndpointsMap;
+        $this->routeEndpoints = new RouteEndpoints;
         $path = $dir->path();
         foreach (array_keys(RouteEndpointInterface::KNOWN_METHODS) as $methodName) {
             $routeEndpointPath = $path->getChild($methodName . '.php');
@@ -50,13 +50,13 @@ final class RouteEndpointsMaker implements RouteEndpointIteratorInterface
                         ->toString()
                 );
             }
-            $this->routeEndpointsMap->put($routeEndpoint);
+            $this->routeEndpoints->put($routeEndpoint);
         }
     }
 
-    public function routeEndpointsMap(): RouteEndpointsMap
+    public function routeEndpointsMap(): RouteEndpoints
     {
-        return deep_copy($this->routeEndpointsMap);
+        return deep_copy($this->routeEndpoints);
     }
 
     private function getVar(PathInterface $path)

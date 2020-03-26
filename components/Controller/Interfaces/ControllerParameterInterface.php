@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller\Interfaces;
 
-use Chevere\Components\Common\Interfaces\ToStringInterface;
+use Chevere\Components\Type\Interfaces\TypeInterface;
 
-interface ControllerNameInterface
+interface ControllerParameterInterface
 {
     public function name(): string;
+
+    public function regex(): string;
 }

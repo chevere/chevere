@@ -24,12 +24,25 @@ use PHPUnit\Framework\TestCase;
 
 final class RouteTest extends TestCase
 {
-    private function getRoute(string $name, string $path): RouteInterface
+    public function testConstruct(): void
     {
-        return new Route(
-            new RouteName($name),
-            new RoutePath($path)
-        );
+        $routeName = new RouteName('test');
+        $routePath = new RoutePath('/test');
+        $route = new Route($routeName, $routePath);
+        $line = __LINE__ - 1;
+        $this->assertSame($routeName, $route->name());
+        $this->assertSame($routePath, $route->path());
+        $this->assertSame([
+            'file' => __FILE__,
+            'line' => $line,
+            'function' => '__construct',
+            'class' => Route::class,
+            'type' => '->'
+        ], $route->maker());
+    }
+
+    public function testWithAddedEndpoint(): void
+    {
     }
 
     // public function testWithAddedMethodController(): void
@@ -53,5 +66,10 @@ final class RouteTest extends TestCase
             ->withAddedMiddlewareName($middlewareName);
         $this->assertTrue($route->middlewareNameCollection()->hasAny());
         $this->assertTrue($route->middlewareNameCollection()->has($middlewareName));
+    }
+
+    private function getRoute(string $name, string $path): RouteInterface
+    {
+        return new Route(new RouteName($name), new RoutePath($path));
     }
 }

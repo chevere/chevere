@@ -13,35 +13,26 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
+use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
-use Chevere\Components\Route\Interfaces\RouteEndpointsInterface;
-use function DeepCopy\deep_copy;
 
-final class RouteEndpoints implements RouteEndpointsInterface
+final class RouteEndpoints
 {
-    /** @Var RouteEndpointsMap [<string>methodName => RouteEndpointInterface] */
-    private RouteEndpointsMap $routeEndpointsMap;
+    use DsMapTrait;
 
-    public function __construct()
+    public function put(RouteEndpointInterface $routeEndpoint): void
     {
-        $this->routeEndpointsMap = new RouteEndpointsMap;
+        $this->map->put($routeEndpoint->method()->name(), $routeEndpoint);
     }
 
-    public function withAddedRouteEndpoint(RouteEndpointInterface $routeEndpoint): RouteEndpointsInterface
+    public function hasKey(MethodInterface $method): bool
     {
-        $new = clone $this;
-        $new->storeRouteEndpoint($routeEndpoint);
-
-        return $new;
+        return $this->map->hasKey($method->name());
     }
 
-    public function routeEndpointsMap(): RouteEndpointsMap
+    public function get(MethodInterface $method): RouteEndpointInterface
     {
-        return deep_copy($this->routeEndpointsMap);
-    }
-
-    private function storeRouteEndpoint(RouteEndpointInterface $routeEndpoint): void
-    {
-        $this->routeEndpointsMap->put($routeEndpoint);
+        return $this->map->get($method->name());
     }
 }

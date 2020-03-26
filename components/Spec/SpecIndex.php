@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec;
 
+use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use Chevere\Components\Spec\Interfaces\SpecIndexInterface;
 use OutOfBoundsException;
 use function DeepCopy\deep_copy;
@@ -22,6 +23,8 @@ use function DeepCopy\deep_copy;
  */
 final class SpecIndex implements SpecIndexInterface
 {
+    use DsMapTrait;
+
     private SpecIndexMap $specIndexMap;
 
     public function __construct()

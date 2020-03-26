@@ -91,7 +91,7 @@ final class RoutesCacheTest extends TestCase
         $routesCache->get($id);
     }
 
-    public function __testGenerateCachedRoute(): void
+    public function _testGenerateCachedRoute(): void
     {
         $this->expectNotToPerformAssertions();
         $routeable = $this->getRouteable();

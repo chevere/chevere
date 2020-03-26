@@ -53,10 +53,10 @@ final class Routing implements RoutingInterface
             }
             $dir = new Dir(new Path(dirname($this->routeDecorator->whereIs()) . '/'));
             $routeEndpointsMaker = new RouteEndpointsMaker($dir);
-            $routeEndpointsMap = $routeEndpointsMaker->routeEndpointsMap();
+            $routeEndpoints = $routeEndpointsMaker->routeEndpointsMap();
             $route = new Route($this->routeDecorator->name(), $this->routePath);
             /** @var RouteEndpoint $routeEndpoint */
-            foreach ($routeEndpointsMap->map() as $routeEndpoint) {
+            foreach ($routeEndpoints->map() as $routeEndpoint) {
                 $route = $route->withAddedEndpoint($routeEndpoint);
                 $routeable = new Routeable($route);
             }
