@@ -27,18 +27,17 @@ final class ControllerArgumentsTest extends TestCase
         new ControllerArguments([1 => 'value']);
     }
 
-    public function testsFloatKey(): void
+    public function testsIntegerValue(): void
     {
         $this->expectException(LogicException::class);
-        new ControllerArguments([1.1 => 'value']);
+        new ControllerArguments(['name' => 1]);
     }
 
     public function testConstruct(): void
     {
         $array = [
             'id' => '1',
-            'array' => [0, 1, 2],
-            'object' => new stdClass,
+            'name' => 'some-name',
         ];
         $controllerArguments = new ControllerArguments($array);
         foreach ($array as $key => $value) {

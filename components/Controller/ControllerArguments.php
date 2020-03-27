@@ -25,6 +25,7 @@ final class ControllerArguments implements ControllerArgumentsInterface
 
     /**
      * @param array $map [<string>name => <mixed>value,]
+     * @throws LogicException
      */
     public function __construct(array $array)
     {
@@ -41,24 +42,39 @@ final class ControllerArguments implements ControllerArgumentsInterface
     /**
      * @throws OutOfBoundsException
      */
-    public function get(string $name)
+    public function get(string $name): string
     {
-        /** @var \Ds\TKey $name */
-        return $this->map->get($name);
+        /**
+         * @var \Ds\TKey $name
+         * @var string $return
+         */
+        $return = $this->map->get($name);
+
+        return $return;
     }
 
     private function assertArray(array $array): void
     {
         $pos = -1;
-        foreach (array_keys($array) as $key) {
+        foreach ($array as $key => $value) {
             $pos++;
-            $type = gettype($key);
-            if ($type !== 'string') {
+            $keyType = gettype($key);
+            if ($keyType !== 'string') {
                 throw new LogicException(
                     (new Message('Expecting %expected% type keys, type %gettype% provided at index position %pos%'))
                         ->code('%expected%', 'string')
-                        ->code('%gettype%', $type)
+                        ->code('%gettype%', $keyType)
                         ->code('%pos%', (string) $pos)
+                        ->toString()
+                );
+            }
+            $valType = gettype($value);
+            if ($valType !== 'string') {
+                throw new LogicException(
+                    (new Message('Expecting %expected% type values, type %gettype% provided at key %name%'))
+                        ->code('%expected%', 'string')
+                        ->code('%gettype%', $valType)
+                        ->code('%name%', $key)
                         ->toString()
                 );
             }

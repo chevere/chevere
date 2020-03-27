@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Message;
 
 use Chevere\Components\Message\Interfaces\MessageInterface;
+use Chevere\Components\Str\StrBool;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 /*
@@ -61,6 +62,15 @@ final class Message implements MessageInterface
         $new->message = strtr($new->message, $new->trTable);
 
         return $new;
+    }
+
+    public function implodeTag(string $search, string $tag, array $array): MessageInterface
+    {
+        $new = clone $this;
+        $oTag = "<$tag>";
+        $cTag = "</$tag>";
+
+        return $new->strtr($search, $oTag . implode("$cTag, $oTag", $array) . $cTag);
     }
 
     public function code(string $search, string $replace): MessageInterface

@@ -17,6 +17,9 @@ use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
 
+/**
+ * @codeCoverageIgnore
+ */
 abstract class Controller implements ControllerInterface
 {
     private ControllerParametersInterface $parameters;
