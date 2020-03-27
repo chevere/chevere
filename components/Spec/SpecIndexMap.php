@@ -22,18 +22,26 @@ final class SpecIndexMap
 {
     use DsMapTrait;
 
-    public function put(string $routeName, SpecMethods $specMethods): void
+    public function put(string $name, SpecMethods $specMethods): void
     {
-        $this->map->put($routeName, $specMethods);
+        /** @var \Ds\TKey $name */
+        $this->map->put($name, $specMethods);
     }
 
-    public function hasKey(string $routeName): bool
+    public function hasKey(string $name): bool
     {
-        return $this->map->hasKey($routeName);
+        /** @var \Ds\TKey $name */
+        return $this->map->hasKey($name);
     }
 
-    public function get(string $routeName): SpecMethods
+    public function get(string $name): SpecMethods
     {
-        return $this->map->get($routeName);
+        /**
+         * @var SpecMethods
+         * @var \Ds\TKey $name
+         */
+        $return = $this->map->get($name);
+
+        return $return;
     }
 }

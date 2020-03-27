@@ -19,8 +19,17 @@ use Chevere\Components\Regex\Regex;
 
 abstract class Controller implements ControllerInterface
 {
+    private ControllerParametersInterface $parameters;
+
     final public function __construct()
     {
+        $this->parameters = (new ControllerParameters)
+            ->withPut(
+                new ControllerParameter('id', new Regex('/^[0-9]+$/'))
+            )
+            ->withPut(
+                new ControllerParameter('name', new Regex('/^[\w]+$/'))
+            );
     }
 
     public function setUp(): void
@@ -33,12 +42,6 @@ abstract class Controller implements ControllerInterface
 
     public function parameters(): ControllerParametersInterface
     {
-        return (new ControllerParameters)
-            ->put(
-                new ControllerParameter('id', new Regex('/^[0-9]+$/'))
-            )
-            ->put(
-                new ControllerParameter('name', new Regex('/^[\w]+$/'))
-            );
+        return $this->parameters;
     }
 }

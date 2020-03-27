@@ -22,19 +22,28 @@ final class Routeables
 
     public function put(RouteableInterface $routeable): void
     {
-        $this->map->put($routeable->route()->name()->toString(), $routeable);
+        /** @var \Ds\TKey */
+        $key = $routeable->route()->name()->toString();
+        $this->map->put($key, $routeable);
     }
 
-    public function hasKey(string $routeName): bool
+    public function hasKey(string $name): bool
     {
-        return $this->map->hasKey($routeName);
+        /** @var \Ds\TKey $name */
+        return $this->map->hasKey($name);
     }
 
     /**
      * @throws OutOfBoundsException
      */
-    public function get(string $routeName): RouteableInterface
+    public function get(string $name): RouteableInterface
     {
-        return $this->map->get($routeName);
+        /**
+         * @var RouteableInterface
+         * @var \Ds\TKey $name
+         */
+        $return = $this->map->get($name);
+
+        return $return;
     }
 }

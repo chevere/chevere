@@ -22,16 +22,25 @@ final class GroupSpecs
 
     public function put(GroupSpec $groupSpec): void
     {
-        $this->map->put($groupSpec->key(), $groupSpec);
+        /** @var \Ds\TKey */
+        $key = $groupSpec->key();
+        $this->map->put($key, $groupSpec);
     }
 
     public function hasKey(string $key): bool
     {
+        /** @var \Ds\TKey $key */
         return $this->map->hasKey($key);
     }
 
     public function get(string $key): GroupSpec
     {
-        return $this->map->get($key);
+        /**
+         * @var GroupSpec
+         * @var \Ds\TKey $key
+         */
+        $return = $this->map->get($key);
+
+        return $return;
     }
 }

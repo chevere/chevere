@@ -23,6 +23,8 @@ final class RouteEndpointSpec implements SpecInterface
 {
     use SpecsTrait;
 
+    private array $array;
+
     /**
      * @var SpecPathInterface $specRoutePath /spec/group/route
      */

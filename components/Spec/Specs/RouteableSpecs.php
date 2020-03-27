@@ -22,16 +22,25 @@ final class RouteableSpecs
 
     public function put(RouteableSpec $routeableSpec): void
     {
-        $this->map->put($routeableSpec->key(), $routeableSpec);
+        /** @var \Ds\TKey */
+        $key = $routeableSpec->key();
+        $this->map->put($key, $routeableSpec);
     }
 
     public function hasKey(string $key): bool
     {
+        /** @var \Ds\TKey $key */
         return $this->map->hasKey($key);
     }
 
     public function get(string $key): RouteableSpec
     {
-        return $this->map->get($key);
+        /**
+         * @var RouteableSpec
+         * @var \Ds\TKey $key
+         */
+        $return = $this->map->get($key);
+
+        return $return;
     }
 }

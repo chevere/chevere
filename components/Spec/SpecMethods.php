@@ -21,16 +21,25 @@ final class SpecMethods
 
     public function put(string $name, string $jsonPath): void
     {
-        $this->map->put($name, $jsonPath);
+        /** @var \Ds\TKey */
+        $key = $name;
+        $this->map->put($key, $jsonPath);
     }
 
     public function hasKey(string $name): bool
     {
+        /** @var \Ds\TKey $name */
         return $this->map->hasKey($name);
     }
 
     public function get(string $name): string
     {
-        return $this->map->get($name);
+        /**
+         * @var string
+         * @var \Ds\TKey $name
+         */
+        $return = $this->map->get($name);
+
+        return $return;
     }
 }

@@ -14,20 +14,27 @@ declare(strict_types=1);
 namespace Chevere\Components\Controller;
 
 use Chevere\Components\Controller\Interfaces\ControllerParameterInterface;
+use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use OutOfBoundsException;
+use function DeepCopy\deep_copy;
 
-final class ControllerParameters
+final class ControllerParameters implements ControllerParametersInterface
 {
     use DsMapTrait;
 
-    public function put(ControllerParameterInterface $controllerParameter): void
+    public function withPut(ControllerParameterInterface $controllerParameter): ControllerParametersInterface
     {
-        $this->map->put($controllerParameter->name(), $controllerParameter);
+        $new = clone $this;
+        $new->map = deep_copy($new->map);
+        $new->map->put($controllerParameter->name(), $controllerParameter);
+
+        return $new;
     }
 
     public function hasKey(string $name): bool
     {
+        /** @var \Ds\TKey $name */
         return $this->map->hasKey($name);
     }
 
@@ -36,6 +43,12 @@ final class ControllerParameters
      */
     public function get(string $name): ControllerParameterInterface
     {
-        return $this->map->get($name);
+        /**
+         * @var ControllerParameterInterface
+         * @var \Ds\TKey $name
+         */
+        $return = $this->map->get($name);
+
+        return $return;
     }
 }

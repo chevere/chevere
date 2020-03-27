@@ -13,24 +13,21 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
-use Chevere\Components\App\Exceptions\ControllerInterfaceException;
-use Chevere\Components\App\Exceptions\ControllerNotExistsException;
+use Chevere\Components\Controller\Exceptions\ControllerInterfaceException;
+use Chevere\Components\Controller\Exceptions\ControllerNotExistsException;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrAssert;
-use InvalidArgumentException;
 
 final class ControllerName implements ControllerNameInterface
 {
     private string $name;
 
-    /**
-     * @throws InvalidArgumentException if $name doesn't exists or if it doesn't implement a ControllerInterface
-     */
     public function __construct(string $name)
     {
         $this->name = $name;
+        $this->assertName();
         $this->assertController();
     }
 

@@ -23,16 +23,26 @@ final class RouteEndpoints
 
     public function put(RouteEndpointInterface $routeEndpoint): void
     {
-        $this->map->put($routeEndpoint->method()->name(), $routeEndpoint);
+        /** @var \Ds\TKey */
+        $key = $routeEndpoint->method()->name();
+        $this->map->put($key, $routeEndpoint);
     }
 
     public function hasKey(MethodInterface $method): bool
     {
-        return $this->map->hasKey($method->name());
+        /** @var \Ds\TKey */
+        $key = $method->name();
+
+        return $this->map->hasKey($key);
     }
 
     public function get(MethodInterface $method): RouteEndpointInterface
     {
-        return $this->map->get($method->name());
+        /** @var \Ds\TKey */
+        $key = $method->name();
+        /** @var RouteEndpointInterface */
+        $return = $this->map->get($key);
+
+        return $return;
     }
 }

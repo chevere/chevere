@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller\Interfaces;
 
-use Chevere\Components\App\Interfaces\AppInterface;
-
 interface ControllerInterface
 {
     public function setUp(): void;
 
     public function tearDown(): void;
+
+    public function parameters(): ControllerParametersInterface;
 }

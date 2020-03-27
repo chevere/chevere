@@ -13,9 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller\Interfaces;
 
+use Ds\Map;
+
 interface ControllerParametersInterface
 {
-    public function withParameter(ControllerParameterInterface $parameter): ControllerParametersInterface;
+    /**
+     * @return Map [<string>name => <string>regex,]
+     */
+    public function map(): Map;
 
-    public function parameters();
+    public function withPut(ControllerParameterInterface $controllerParameter): ControllerParametersInterface;
+
+    public function hasKey(string $name): bool;
+
+    public function get(string $name): ControllerParameterInterface;
 }
