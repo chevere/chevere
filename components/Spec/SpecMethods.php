@@ -21,9 +21,8 @@ final class SpecMethods
 
     public function put(string $name, string $jsonPath): void
     {
-        /** @var \Ds\TKey */
-        $key = $name;
-        $this->map->put($key, $jsonPath);
+        /** @var \Ds\TKey $name */
+        $this->map->put($name, $jsonPath);
     }
 
     public function hasKey(string $name): bool
@@ -35,8 +34,8 @@ final class SpecMethods
     public function get(string $name): string
     {
         /**
-         * @var string
          * @var \Ds\TKey $name
+         * @var string $return
          */
         $return = $this->map->get($name);
 

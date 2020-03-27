@@ -44,8 +44,8 @@ final class ControllerParameters implements ControllerParametersInterface
     public function get(string $name): ControllerParameterInterface
     {
         /**
-         * @var ControllerParameterInterface
          * @var \Ds\TKey $name
+         * @var ControllerParameterInterface $return
          */
         $return = $this->map->get($name);
 

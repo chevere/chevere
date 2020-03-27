@@ -22,7 +22,7 @@ final class Routeables
 
     public function put(RouteableInterface $routeable): void
     {
-        /** @var \Ds\TKey */
+        /** @var \Ds\TKey $key */
         $key = $routeable->route()->name()->toString();
         $this->map->put($key, $routeable);
     }
@@ -39,7 +39,7 @@ final class Routeables
     public function get(string $name): RouteableInterface
     {
         /**
-         * @var RouteableInterface
+         * @var RouteableInterface $return
          * @var \Ds\TKey $name
          */
         $return = $this->map->get($name);

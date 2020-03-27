@@ -22,7 +22,7 @@ final class GroupSpecs
 
     public function put(GroupSpec $groupSpec): void
     {
-        /** @var \Ds\TKey */
+        /** @var \Ds\TKey $key */
         $key = $groupSpec->key();
         $this->map->put($key, $groupSpec);
     }
@@ -36,8 +36,8 @@ final class GroupSpecs
     public function get(string $key): GroupSpec
     {
         /**
-         * @var GroupSpec
          * @var \Ds\TKey $key
+         * @var GroupSpec $return
          */
         $return = $this->map->get($key);
 

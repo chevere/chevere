@@ -35,7 +35,7 @@ final class RouteEndpointSpecs
     {
         $new = clone $this;
         $new->map = deep_copy($new->map);
-        /** @var \Ds\TKey */
+        /** @var \Ds\TKey $key */
         $key = $routeEndpointSpec->key();
         $new->map->put($key, $routeEndpointSpec);
 
@@ -51,8 +51,8 @@ final class RouteEndpointSpecs
     public function get(string $key): RouteEndpointSpec
     {
         /**
-         * @var RouteEndpointSpec
          * @var \Ds\TKey $key
+         * @var RouteEndpointSpec $return
          */
         $return = $this->map->get($key);
 

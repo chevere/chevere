@@ -22,7 +22,7 @@ final class RouteableSpecs
 
     public function put(RouteableSpec $routeableSpec): void
     {
-        /** @var \Ds\TKey */
+        /** @var \Ds\TKey $key */
         $key = $routeableSpec->key();
         $this->map->put($key, $routeableSpec);
     }
@@ -36,8 +36,8 @@ final class RouteableSpecs
     public function get(string $key): RouteableSpec
     {
         /**
-         * @var RouteableSpec
          * @var \Ds\TKey $key
+         * @var RouteableSpec $return
          */
         $return = $this->map->get($key);
 

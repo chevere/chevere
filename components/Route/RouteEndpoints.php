@@ -38,9 +38,9 @@ final class RouteEndpoints
 
     public function get(MethodInterface $method): RouteEndpointInterface
     {
-        /** @var \Ds\TKey */
+        /** @var \Ds\TKey $key */
         $key = $method->name();
-        /** @var RouteEndpointInterface */
+        /** @var RouteEndpointInterface $return */
         $return = $this->map->get($key);
 
         return $return;

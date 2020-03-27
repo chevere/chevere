@@ -37,8 +37,8 @@ final class SpecIndexMap
     public function get(string $name): SpecMethods
     {
         /**
-         * @var SpecMethods
          * @var \Ds\TKey $name
+         * @var SpecMethods $return
          */
         $return = $this->map->get($name);
 
