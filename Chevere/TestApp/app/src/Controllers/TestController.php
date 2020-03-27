@@ -14,7 +14,12 @@ declare(strict_types=1);
 namespace Chevere\TestApp\App\Controllers;
 
 use Chevere\Components\Controller\Controller;
+use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
 
 class TestController extends Controller
 {
+    public function run(ControllerArgumentsInterface $arguments): void
+    {
+        // does nothing
+    }
 }

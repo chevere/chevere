@@ -16,7 +16,6 @@ namespace Chevere\Components\Controller\Tests;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Str\Exceptions\StrContainsException;
-use Chevere\Components\Str\Exceptions\StrCtypeDigitException;
 use Chevere\Components\Str\Exceptions\StrCtypeSpaceException;
 use Chevere\Components\Str\Exceptions\StrEmptyException;
 use PHPUnit\Framework\TestCase;
