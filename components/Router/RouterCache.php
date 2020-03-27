@@ -71,20 +71,14 @@ final class RouterCache implements RouterCacheInterface
 
     public function getRegex(): RouterRegexInterface
     {
-        $item = $this->assertGetItem(
-            $this->keyRegex,
-            RouterRegexInterface::class
-        );
+        $item = $this->assertGetItem($this->keyRegex);
 
         return $item->var();
     }
 
     public function getIndex(): RouterIndexInterface
     {
-        $item = $this->assertGetItem(
-            $this->keyIndex,
-            RouterIndexInterface::class
-        );
+        $item = $this->assertGetItem($this->keyIndex);
 
         return $item->var();
     }
@@ -133,7 +127,7 @@ final class RouterCache implements RouterCacheInterface
         return $this->cache->puts();
     }
 
-    private function assertGetItem(CacheKeyInterface $cacheKey, string $interfaceName): CacheItemInterface
+    private function assertGetItem(CacheKeyInterface $cacheKey): CacheItemInterface
     {
         try {
             $item = $this->cache->get($cacheKey);

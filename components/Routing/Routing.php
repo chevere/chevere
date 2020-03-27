@@ -35,8 +35,6 @@ final class Routing implements RoutingInterface
 
     private RouteDecoratorInterface $routeDecorator;
 
-    private RouteEndpointInterface $routeEndpoint;
-
     public function __construct(
         RoutePathIteratorInterface $routePathIterator,
         RouterMakerInterface $routerMaker
@@ -58,10 +56,9 @@ final class Routing implements RoutingInterface
             /** @var RouteEndpoint $routeEndpoint */
             foreach ($routeEndpoints->map() as $routeEndpoint) {
                 $route = $route->withAddedEndpoint($routeEndpoint);
-                $routeable = new Routeable($route);
             }
             $this->routerMaker = $this->routerMaker
-                ->withAddedRouteable($routeable, 'CAMPOS');
+                ->withAddedRouteable(new Routeable($route), 'CAMPOS');
             $routePaths->next();
         }
     }

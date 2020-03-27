@@ -45,25 +45,32 @@ final class RouterIndex implements RouterIndexInterface
         (new StrAssert($group))->notEmpty()->notCtypeSpace();
         $new = clone $this;
         $routeName = $routeable->route()->name()->toString();
+        /** @var \Ds\TKey $routeKey */
+        $routeKey = $routeName;
         if ($new->groupsIndex->hasKey($routeName)) {
+            /** @var string  $groupName*/
+            $groupName = $new->groupsIndex->get(/** @scrutinizer ignore-type */ $routeName);
             throw new LogicException(
                 (new Message('Route name %routeName% is already bound to group %groupName%'))
                     ->code('%routeName%', $routeName)
-                    ->code('%groupName%', $new->groupsIndex->get($routeName))
+                    ->code('%groupName%', $groupName)
                     ->toString()
             );
         }
+        /** @var \Ds\TKey $groups */
+        $groupKey = $group;
         $new->identifiersMap->put(
-            $routeName,
+            $routeKey,
             new RouteIdentifier($group, $routeName)
         );
-        $new->groupsIndex->put($routeName, $group);
+        $new->groupsIndex->put($routeKey, $groupKey);
         $names = [];
-        if ($new->groupsMap->hasKey($group)) {
-            $names = $new->groupsMap->get($group);
+        if ($new->groupsMap->hasKey($groupKey)) {
+            $names = $new->groupsMap->get($groupKey);
         }
+        /** @var \Ds\TValue $names */
         $names[] = $routeName;
-        $new->groupsMap->put($group, $names);
+        $new->groupsMap->put($groupKey, $names);
 
         return $new;
     }
@@ -75,7 +82,13 @@ final class RouterIndex implements RouterIndexInterface
 
     public function getRouteIdentifier(string $routeName): RouteIdentifierInterface
     {
-        return $this->identifiersMap->get($routeName);
+        /**
+         * @var \Ds\TKey $routeName
+         * @var RouteIdentifierInterface $return
+         */
+        $return = $this->identifiersMap->get($routeName);
+
+        return $return;
     }
 
     public function hasGroup(string $group): bool
@@ -85,12 +98,24 @@ final class RouterIndex implements RouterIndexInterface
 
     public function getGroupRouteNames(string $group): array
     {
-        return $this->groupsMap->get($group);
+        /**
+         * @var \Ds\TKey $group
+         * @var array $return
+         */
+        $return = $this->groupsMap->get($group);
+
+        return $return;
     }
 
     public function getRouteGroup(string $routeName): string
     {
-        return $this->groupsIndex->get($routeName);
+        /**
+         * @var \Ds\TKey $routeName
+         * @var string $return
+         */
+        $return = $this->groupsIndex->get($routeName);
+
+        return $return;
     }
 
     public function toArray(): array

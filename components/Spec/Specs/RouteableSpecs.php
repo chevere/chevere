@@ -29,8 +29,7 @@ final class RouteableSpecs
 
     public function hasKey(string $key): bool
     {
-        /** @var \Ds\TKey $key */
-        return $this->map->hasKey($key);
+        return $this->map->hasKey(/** @scrutinizer ignore-type */ $key);
     }
 
     public function get(string $key): RouteableSpec

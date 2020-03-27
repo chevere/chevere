@@ -30,8 +30,7 @@ final class SpecIndexMap
 
     public function hasKey(string $name): bool
     {
-        /** @var \Ds\TKey $name */
-        return $this->map->hasKey($name);
+        return $this->map->hasKey(/** @scrutinizer ignore-type */ $name);
     }
 
     public function get(string $name): SpecMethods

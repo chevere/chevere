@@ -69,10 +69,20 @@ final class RouterMaker implements RouterMakerInterface
         $new->assertUniqueRoutePathKey($route);
         $routeName = $route->name()->toString();
         $new->routeables->put($routeable);
-        $new->regexes->put($new->pos, $route->path()->regex());
+        /** @var \Ds\TValue $routeNameKey */
+        $routeNameKey = $routeName;
+        /** @var \Ds\TKey $regexKey */
+        $regexKey = $new->pos;
+        /** @var \Ds\TValue $regexValue */
+        $regexValue = $route->path()->regex();
+        $new->regexes->put($regexKey, $regexValue);
         $new->regexIndex->put($new->pos, $routeName);
-        $new->paths->put($route->path()->toString(), $routeName);
-        $new->keys->put($route->path()->key(), $routeName);
+        /** @var \Ds\TKey $pathKey */
+        $pathKey = $route->path()->toString();
+        $new->paths->put($pathKey, $routeNameKey);
+        /** @var \Ds\TKey $pathKey */
+        $pathKeyKey = $route->path()->key();
+        $new->keys->put($pathKeyKey, $routeNameKey);
         $new->router = $new->router
             ->withRouteables($new->routeables)
             ->withRegex($new->getRouterRegex())
@@ -118,10 +128,8 @@ final class RouterMaker implements RouterMakerInterface
     {
         $path = $route->path()->toString();
         if ($this->paths->hasKey($path)) {
-            /**
-             * @var string $knownName
-             */
-            $knownName = $this->paths->get($path);
+            /** @var string $knownName */
+            $knownName = $this->paths->get(/** @scrutinizer ignore-type */ $path);
             $knownRoute = $this->routeables->get($knownName)->route();
             throw new RoutePathExistsException(
                 (new Message('Unable to register route path %path% at %declare% (path already registered at %register%)'))
@@ -135,11 +143,11 @@ final class RouterMaker implements RouterMakerInterface
 
     private function assertUniqueRoutePathKey(RouteInterface $route): void
     {
-        if ($this->keys->hasKey($route->path()->key())) {
-            /**
-             * @var string $knownName
-             */
-            $knownName = $this->keys->get($route->path()->key());
+        /** @var \Ds\TKey */
+        $key = $route->path()->key();
+        if ($this->keys->hasKey($key)) {
+            /** @var string $knownName */
+            $knownName = $this->keys->get($key);
             $knownRoute = $this->routeables->get($knownName)->route();
             throw new RouteKeyConflictException(
                 (new Message('Router conflict detected for key %path% at %declare% (self-assigned internal key %key% is already reserved by %register%)'))

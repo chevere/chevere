@@ -22,13 +22,12 @@ final class SpecMethods
     public function put(string $name, string $jsonPath): void
     {
         /** @var \Ds\TKey $name */
-        $this->map->put($name, $jsonPath);
+        $this->map->put($name, /** @scrutinizer ignore-type */ $jsonPath);
     }
 
     public function hasKey(string $name): bool
     {
-        /** @var \Ds\TKey $name */
-        return $this->map->hasKey($name);
+        return $this->map->hasKey(/** @scrutinizer ignore-type */ $name);
     }
 
     public function get(string $name): string

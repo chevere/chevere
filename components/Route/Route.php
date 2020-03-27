@@ -24,7 +24,6 @@ use function DeepCopy\deep_copy;
 
 final class Route implements RouteInterface
 {
-    /** @var string The named identifier */
     private RouteNameInterface $name;
 
     private RoutePathInterface $routePath;
