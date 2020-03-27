@@ -69,20 +69,20 @@ final class RouterMaker implements RouterMakerInterface
         $new->assertUniqueRoutePathKey($route);
         $routeName = $route->name()->toString();
         $new->routeables->put($routeable);
-        /** @var \Ds\TValue $routeNameKey */
-        $routeNameKey = $routeName;
+        /** @var \Ds\TValue $routeNameValue */
+        $routeNameValue = $routeName;
         /** @var \Ds\TKey $regexKey */
         $regexKey = $new->pos;
         /** @var \Ds\TValue $regexValue */
         $regexValue = $route->path()->regex();
         $new->regexes->put($regexKey, $regexValue);
-        $new->regexIndex->put($new->pos, $routeName);
+        $new->regexIndex->put($regexKey, $routeName);
         /** @var \Ds\TKey $pathKey */
         $pathKey = $route->path()->toString();
-        $new->paths->put($pathKey, $routeNameKey);
-        /** @var \Ds\TKey $pathKey */
+        $new->paths->put($pathKey, $routeNameValue);
+        /** @var \Ds\TKey $pathKeyKey */
         $pathKeyKey = $route->path()->key();
-        $new->keys->put($pathKeyKey, $routeNameKey);
+        $new->keys->put($pathKeyKey, $routeNameValue);
         $new->router = $new->router
             ->withRouteables($new->routeables)
             ->withRegex($new->getRouterRegex())
@@ -143,7 +143,7 @@ final class RouterMaker implements RouterMakerInterface
 
     private function assertUniqueRoutePathKey(RouteInterface $route): void
     {
-        /** @var \Ds\TKey */
+        /** @var \Ds\TKey $key */
         $key = $route->path()->key();
         if ($this->keys->hasKey($key)) {
             /** @var string $knownName */

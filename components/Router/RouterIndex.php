@@ -57,13 +57,15 @@ final class RouterIndex implements RouterIndexInterface
                     ->toString()
             );
         }
-        /** @var \Ds\TKey $groups */
+        /** @var \Ds\TKey $groupKey */
         $groupKey = $group;
+        /** @var \Ds\TValue $groupValue */
+        $groupValue = $group;
         $new->identifiersMap->put(
             $routeKey,
             new RouteIdentifier($group, $routeName)
         );
-        $new->groupsIndex->put($routeKey, $groupKey);
+        $new->groupsIndex->put($routeKey, $groupValue);
         $names = [];
         if ($new->groupsMap->hasKey($groupKey)) {
             $names = $new->groupsMap->get($groupKey);
