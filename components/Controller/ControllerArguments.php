@@ -17,6 +17,7 @@ use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
 use Chevere\Components\Message\Message;
 use Ds\Map;
 use LogicException;
+use OutOfBoundsException;
 
 final class ControllerArguments implements ControllerArgumentsInterface
 {
@@ -37,6 +38,9 @@ final class ControllerArguments implements ControllerArgumentsInterface
         return $this->map->hasKey($name);
     }
 
+    /**
+     * @throws OutOfBoundsException
+     */
     public function get(string $name)
     {
         /** @var \Ds\TKey $name */

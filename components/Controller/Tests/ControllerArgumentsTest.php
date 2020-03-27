@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Controller\Tests;
 
 use Chevere\Components\Controller\ControllerArguments;
-use Chevere\Components\Str\Exceptions\StrCtypeDigitException;
-use Chevere\Components\Str\Exceptions\StrCtypeSpaceException;
-use Chevere\Components\Str\Exceptions\StrEmptyException;
 use LogicException;
+use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -47,5 +45,9 @@ final class ControllerArgumentsTest extends TestCase
             $this->assertTrue($controllerArguments->hasKey($key));
             $this->assertSame($value, $controllerArguments->get($key));
         }
+        $notFoundKey = '404';
+        $this->assertFalse($controllerArguments->hasKey($notFoundKey));
+        $this->expectException(OutOfBoundsException::class);
+        $controllerArguments->get($notFoundKey);
     }
 }
