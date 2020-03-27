@@ -21,6 +21,8 @@ interface StrBoolInterface
 
     public function ctypeSpace(): bool;
 
+    public function ctypeDigit(): bool;
+
     public function startsWithCtypeDigit(): bool;
 
     public function startsWith(string $needle): bool;

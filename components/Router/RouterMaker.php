@@ -76,7 +76,7 @@ final class RouterMaker implements RouterMakerInterface
         /** @var \Ds\TValue $regexValue */
         $regexValue = $route->path()->regex();
         $new->regexes->put($regexKey, $regexValue);
-        $new->regexIndex->put($regexKey, $routeName);
+        $new->regexIndex->put($regexKey, $routeNameValue);
         /** @var \Ds\TKey $pathKey */
         $pathKey = $route->path()->toString();
         $new->paths->put($pathKey, $routeNameValue);

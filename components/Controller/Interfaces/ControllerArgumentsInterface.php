@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller\Interfaces;
 
-use Chevere\Components\Common\Interfaces\ToStringInterface;
-
-interface ControllerNameInterface extends ToStringInterface
+interface ControllerArgumentsInterface
 {
-    public function toString(): string;
+    public function hasKey(string $name): bool;
+
+    public function get(string $name);
 }

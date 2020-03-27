@@ -15,10 +15,12 @@ namespace Chevere\Components\Str;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\Exceptions\StrContainsException;
+use Chevere\Components\Str\Exceptions\StrCtypeDigitException;
 use Chevere\Components\Str\Exceptions\StrCtypeSpaceException;
 use Chevere\Components\Str\Exceptions\StrEmptyException;
 use Chevere\Components\Str\Exceptions\StrEndsWithException;
 use Chevere\Components\Str\Exceptions\StrNotContainsException;
+use Chevere\Components\Str\Exceptions\StrNotCtypeDigitException;
 use Chevere\Components\Str\Exceptions\StrNotCtypeSpaceException;
 use Chevere\Components\Str\Exceptions\StrNotEmptyException;
 use Chevere\Components\Str\Exceptions\StrNotEndsWithException;
@@ -95,6 +97,38 @@ final class StrAssert implements StrAssertInterface
             throw new StrCtypeSpaceException(
                 (new Message('String %algo% provided'))
                     ->strong('%algo%', 'ctype space')
+                    ->toString()
+            );
+        }
+
+        return $this;
+    }
+
+    /**
+     * @throws StrNotCtypeDigitException
+     */
+    public function ctypeDigit(): StrAssertInterface
+    {
+        if ((new StrBool($this->string))->ctypeSpace()) {
+            return $this;
+        }
+        throw new StrNotCtypeDigitException(
+            (new Message('String %string% is not %algo%'))
+                ->code('%string%', $this->string)
+                ->strong('%algo%', 'ctype digit')
+                ->toString()
+        );
+    }
+
+    /**
+     * @throws StrCtypeDigitException
+     */
+    public function notCtypeDigit(): StrAssertInterface
+    {
+        if ((new StrBool($this->string))->ctypeSpace()) {
+            throw new StrCtypeDigitException(
+                (new Message('String %algo% provided'))
+                    ->strong('%algo%', 'ctype digit')
                     ->toString()
             );
         }

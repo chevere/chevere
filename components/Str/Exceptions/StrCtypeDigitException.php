@@ -11,11 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Controller\Interfaces;
+namespace Chevere\Components\Str\Exceptions;
 
-use Chevere\Components\Common\Interfaces\ToStringInterface;
+use Exception;
 
-interface ControllerNameInterface extends ToStringInterface
+/**
+ * Exception thrown when the string is ctype digit.
+ */
+final class StrCtypeDigitException extends Exception
 {
-    public function toString(): string;
 }

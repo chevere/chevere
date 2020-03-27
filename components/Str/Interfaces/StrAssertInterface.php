@@ -14,10 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Str\Interfaces;
 
 use Chevere\Components\Str\Exceptions\StrContainsException;
+use Chevere\Components\Str\Exceptions\StrCtypeDigitException;
 use Chevere\Components\Str\Exceptions\StrCtypeSpaceException;
 use Chevere\Components\Str\Exceptions\StrEmptyException;
 use Chevere\Components\Str\Exceptions\StrEndsWithException;
 use Chevere\Components\Str\Exceptions\StrNotContainsException;
+use Chevere\Components\Str\Exceptions\StrNotCtypeDigitException;
 use Chevere\Components\Str\Exceptions\StrNotCtypeSpaceException;
 use Chevere\Components\Str\Exceptions\StrNotEmptyException;
 use Chevere\Components\Str\Exceptions\StrNotEndsWithException;
@@ -51,6 +53,16 @@ interface StrAssertInterface
      * @throws StrCtypeSpaceException
      */
     public function notCtypeSpace(): StrAssertInterface;
+
+    /**
+     * @throws StrNotCtypeDigitException
+     */
+    public function ctypeDigit(): StrAssertInterface;
+
+    /**
+     * @throws StrCtypeDigitException
+     */
+    public function notCtypeDigit(): StrAssertInterface;
 
     /**
      * @throws StrNotStartsWithCtypeDigitException

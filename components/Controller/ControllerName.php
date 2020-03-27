@@ -22,23 +22,23 @@ use Chevere\Components\Str\StrAssert;
 
 final class ControllerName implements ControllerNameInterface
 {
-    private string $name;
+    private string $string;
 
     public function __construct(string $name)
     {
-        $this->name = $name;
+        $this->string = $name;
         $this->assertName();
         $this->assertController();
     }
 
-    public function name(): string
+    public function toString(): string
     {
-        return $this->name;
+        return $this->string;
     }
 
     private function assertName(): void
     {
-        (new StrAssert($this->name))
+        (new StrAssert($this->string))
             ->notEmpty()
             ->notCtypeSpace()
             ->notContains(' ');
@@ -46,17 +46,17 @@ final class ControllerName implements ControllerNameInterface
 
     private function assertController(): void
     {
-        if (!class_exists($this->name)) {
+        if (!class_exists($this->string)) {
             throw new ControllerNotExistsException(
                 (new Message("Controller %controllerName% doesn't exists"))
-                    ->code('%controllerName%', $this->name)
+                    ->code('%controllerName%', $this->string)
                     ->toString()
             );
         }
-        if (!is_subclass_of($this->name, ControllerInterface::class)) {
+        if (!is_subclass_of($this->string, ControllerInterface::class)) {
             throw new ControllerInterfaceException(
                 (new Message('Controller %controllerName% must implement the %interface% interface'))
-                    ->code('%controllerName%', $this->name)
+                    ->code('%controllerName%', $this->string)
                     ->code('%interface%', ControllerInterface::class)
                     ->toString()
             );

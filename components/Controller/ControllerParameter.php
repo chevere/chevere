@@ -31,9 +31,9 @@ final class ControllerParameter implements ControllerParameterInterface
      */
     public function __construct(string $name, RegexInterface $regex)
     {
+        $this->assertName($name);
         $this->name = $name;
         $this->regex = $regex->toString();
-        $this->assertName();
     }
 
     public function name(): string
@@ -46,9 +46,9 @@ final class ControllerParameter implements ControllerParameterInterface
         return $this->regex;
     }
 
-    private function assertName(): void
+    private function assertName(string $name): void
     {
-        (new StrAssert($this->name))
+        (new StrAssert($name))
             ->notEmpty()
             ->notCtypeSpace()
             ->notContains(' ');

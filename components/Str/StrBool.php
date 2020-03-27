@@ -34,6 +34,11 @@ final class StrBool implements StrBoolInterface
         return ctype_space($this->string) === true;
     }
 
+    public function ctypeDigit(): bool
+    {
+        return ctype_digit($this->string) === true;
+    }
+
     public function startsWithCtypeDigit(): bool
     {
         return strlen($this->string) > 0 && ctype_digit(mb_substr($this->string, 0, 1));

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
+use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
 use Chevere\Components\Regex\Regex;
@@ -23,7 +24,12 @@ abstract class Controller implements ControllerInterface
 
     final public function __construct()
     {
-        $this->parameters = (new ControllerParameters)
+        $this->parameters = new ControllerParameters;
+    }
+
+    public function parameters(): ControllerParametersInterface
+    {
+        return $this->parameters
             ->withPut(
                 new ControllerParameter('id', new Regex('/^[0-9]+$/'))
             )
@@ -40,8 +46,8 @@ abstract class Controller implements ControllerInterface
     {
     }
 
-    public function parameters(): ControllerParametersInterface
+    public function run(ControllerArgumentsInterface $arguments): void
     {
-        return $this->parameters;
+        // $user = new User($arguments->get('id'));
     }
 }
