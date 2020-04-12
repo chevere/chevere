@@ -27,9 +27,13 @@ final class ControllerParameters implements ControllerParametersInterface
     {
         $new = clone $this;
         $new->map = deep_copy($new->map);
-        /** @var \Ds\TKey $key */
-        $key = $controllerParameter;
-        $new->map->put($controllerParameter->name(), $key);
+        /**
+         * @var \Ds\TKey $key
+         * @var \Ds\TValue $value
+         */
+        $key = $controllerParameter->name();
+        $value = $controllerParameter;
+        $new->map->put($key, $value);
 
         return $new;
     }

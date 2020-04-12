@@ -50,6 +50,7 @@ final class TypeTest extends TestCase
             $this->assertSame($key, $type->typeHinting());
             $this->assertTrue($type->validate($val));
         }
+        /** @var resource $resource */
         fclose($resource);
     }
 

@@ -38,6 +38,7 @@ final class ResourceProcessorTest extends TestCase
             $resourceString . " ($expectedInfo)",
             $varDumper->writer()->toString()
         );
+        /** @var resource $resource */
         fclose($resource);
     }
 

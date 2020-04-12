@@ -99,6 +99,7 @@ final class NumberTest extends TestCase
         if (is_resource($resource) === false) {
             $this->markTestIncomplete('Unable to fopen ' . __FILE__);
         }
+        /** @var resource $resource */
         new Number($resource);
         fclose($resource);
     }

@@ -77,7 +77,7 @@ final class SpecTest extends TestCase
         $this->expectNotToPerformAssertions();
         $group = 'some-group';
         $cache = new Cache($this->cacheHelper->getWorkingDir());
-        $routerCache = new RouterCache($cache);
+        // $routerCache = new RouterCache($cache);
         $routerMaker = new RouterMaker;
         $routes = $this->routes;
         /** @var RouteInterface $route */
