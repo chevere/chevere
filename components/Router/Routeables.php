@@ -29,8 +29,10 @@ final class Routeables
 
     public function hasKey(string $name): bool
     {
-        /** @var \Ds\TKey $name */
-        return $this->map->hasKey($name);
+        /** @var \Ds\TKey $key */
+        $key = $name;
+
+        return $this->map->hasKey($key);
     }
 
     /**

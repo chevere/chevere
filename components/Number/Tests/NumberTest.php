@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Number\Tests;
 
-use InvalidArgumentException;
 use Chevere\Components\Number\Number;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -100,9 +100,7 @@ final class NumberTest extends TestCase
             $this->markTestIncomplete('Unable to fopen ' . __FILE__);
         }
         new Number($resource);
-        if (is_resource($resource)) {
-            fclose($resource);
-        }
+        fclose($resource);
     }
 
     public function testZero(): void

@@ -38,9 +38,7 @@ final class ResourceProcessorTest extends TestCase
             $resourceString . " ($expectedInfo)",
             $varDumper->writer()->toString()
         );
-        if (is_resource($resource)) {
-            fclose($resource);
-        }
+        fclose($resource);
     }
 
     public function testInvalidArgument(): void

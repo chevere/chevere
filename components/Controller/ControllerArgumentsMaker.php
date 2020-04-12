@@ -71,7 +71,7 @@ final class ControllerArgumentsMaker
     private function assertMatchingKeys(): void
     {
         $diff = $this->parameters->map()->diff($this->map);
-        if ($diff->isEmpty() === false) {
+        if ($diff->/** @scrutinizer ignore-call */ isEmpty() === false) {
             throw new ControllerArgumentKeyNotExistsException(
                 (new Message('Missing argument key(s): %keysMissing%'))
                     ->implodeTag('%keysMissing%', 'code', $diff->keys()->toArray())

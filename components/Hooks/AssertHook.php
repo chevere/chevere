@@ -14,12 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\Hooks;
 
 use Chevere\Components\Hooks\Exceptions\AnchorNotFoundException;
-use Chevere\Components\Hooks\Exceptions\AssertHookException;
 use Chevere\Components\Hooks\Exceptions\HookableInterfaceException;
+use Chevere\Components\Hooks\Exceptions\HookableNotFoundException;
 use Chevere\Components\Hooks\Interfaces\HookableInterface;
 use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Hooks\Exceptions\HookableNotFoundException;
 
 final class AssertHook
 {

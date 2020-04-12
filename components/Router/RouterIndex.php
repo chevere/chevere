@@ -47,7 +47,7 @@ final class RouterIndex implements RouterIndexInterface
         $routeName = $routeable->route()->name()->toString();
         /** @var \Ds\TKey $routeKey */
         $routeKey = $routeName;
-        if ($new->groupsIndex->hasKey($routeName)) {
+        if ($new->groupsIndex->hasKey($routeKey)) {
             /** @var string  $groupName*/
             $groupName = $new->groupsIndex->get(/** @scrutinizer ignore-type */ $routeName);
             throw new LogicException(
@@ -79,7 +79,10 @@ final class RouterIndex implements RouterIndexInterface
 
     public function hasRouteName(string $routeName): bool
     {
-        return $this->identifiersMap->hasKey($routeName);
+        /** @var \Ds\TKey $key */
+        $key = $routeName;
+
+        return $this->identifiersMap->hasKey($key);
     }
 
     public function getRouteIdentifier(string $routeName): RouteIdentifierInterface
@@ -95,7 +98,13 @@ final class RouterIndex implements RouterIndexInterface
 
     public function hasGroup(string $group): bool
     {
-        return $this->groupsMap->hasKey($group);
+        /**
+         * @var \Ds\TKey $group
+         * @var bool $return
+         */
+        $return = $this->groupsMap->hasKey($group);
+
+        return $return;
     }
 
     public function getGroupRouteNames(string $group): array

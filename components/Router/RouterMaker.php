@@ -127,7 +127,11 @@ final class RouterMaker implements RouterMakerInterface
     private function assertUniquePath(RouteInterface $route): void
     {
         $path = $route->path()->toString();
-        if ($this->paths->hasKey($path)) {
+        /**
+         * @var \Ds\TKey $key
+         */
+        $key = $path;
+        if ($this->paths->hasKey($key)) {
             /** @var string $knownName */
             $knownName = $this->paths->get(/** @scrutinizer ignore-type */ $path);
             $knownRoute = $this->routeables->get($knownName)->route();

@@ -70,7 +70,10 @@ final class ResolverCacheTest extends TestCase
             );
             $resolverCache->put($pos, $routeResolve);
             $this->assertArrayHasKey($pos, $resolverCache->puts());
-            $this->assertEquals($routeResolve, $resolverCache->get($pos));
+            $this->assertEquals(
+                $routeResolve,
+                $resolverCache->get(/** @scrutinizer ignore-type */$pos)
+            );
             $resolverCache->remove($pos);
             $this->assertArrayNotHasKey($pos, $resolverCache->puts());
         }

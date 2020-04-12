@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Variable;
 
+use Chevere\Components\Breadcrum\Breadcrum;
+use Chevere\Components\Breadcrum\Interfaces\BreadcrumInterface;
+use Chevere\Components\Message\Message;
+use Chevere\Components\Variable\Exceptions\VariableIsResourceException;
+use Chevere\Components\Variable\Exceptions\VariableNotExportableException;
+use Chevere\Components\Variable\Interfaces\VariableExportInterface;
 use ReflectionObject;
 use Throwable;
-use Chevere\Components\Breadcrum\Breadcrum;
-use Chevere\Components\Message\Message;
-use Chevere\Components\Variable\Exceptions\VariableNotExportableException;
-use Chevere\Components\Variable\Exceptions\VariableIsResourceException;
-use Chevere\Components\Variable\Interfaces\VariableExportInterface;
-use Chevere\Components\Breadcrum\Interfaces\BreadcrumInterface;
 
 /**
  * Allows to interact with exportable variables.
@@ -123,6 +123,9 @@ final class VariableExport implements VariableExportInterface
         $objectKey = $this->breadcrum->pos();
         $reflection = new ReflectionObject($var);
         $properties = $reflection->getProperties();
+        /**
+         * @var \ReflectionProperty $property
+         */
         foreach ($properties as $property) {
             $property->setAccessible(true);
             $this->breadcrum = $this->breadcrum

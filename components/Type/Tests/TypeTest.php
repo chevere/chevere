@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Type\Tests;
 
 use Chevere\Components\Type\Exceptions\TypeNotFoundException;
-use Chevere\Components\Type\Type;
 use Chevere\Components\Type\Interfaces\TypeInterface;
+use Chevere\Components\Type\Type;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -50,9 +50,7 @@ final class TypeTest extends TestCase
             $this->assertSame($key, $type->typeHinting());
             $this->assertTrue($type->validate($val));
         }
-        if (is_resource($resource)) {
-            fclose($resource);
-        }
+        fclose($resource);
     }
 
     public function testClassName(): void

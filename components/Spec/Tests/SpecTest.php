@@ -78,7 +78,7 @@ final class SpecTest extends TestCase
         $group = 'some-group';
         $cache = new Cache($this->cacheHelper->getWorkingDir());
         $routerCache = new RouterCache($cache);
-        $routerMaker = new RouterMaker($routerCache);
+        $routerMaker = new RouterMaker;
         $routes = $this->routes;
         /** @var RouteInterface $route */
         foreach ($routes as $route) {

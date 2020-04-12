@@ -79,6 +79,6 @@ final class RouterIndexTest extends TestCase
         $routeable = new Routeable($route);
         $routerIndex = (new RouterIndex())->withAdded($routeable, $group);
         $this->expectException(LogicException::class);
-        $routerIndex = $routerIndex->withAdded($routeable, 'other-group');
+        $routerIndex->withAdded($routeable, 'other-group');
     }
 }
