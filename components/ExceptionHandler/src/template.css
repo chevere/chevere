@@ -113,7 +113,7 @@ main {
     border: 1px solid hsl(204, 8.2%, 76.1%);
     font-size: 0.9em;
     font-family: "Fira Code Retina", "Operator Mono", Inconsolata, Consolas,
-        monospace, sans-serif, sans-serif;
+        monospace, sans-serif;
     line-height: 1;
 }
 
