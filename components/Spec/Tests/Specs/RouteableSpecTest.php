@@ -35,8 +35,7 @@ final class RouteableSpecTest extends TestCase
         $routeSpecPath = $specPath->getChild($routeName->toString() . '/route.json')->pub();
         $method = new GetMethod;
         $routeEndpoint = (new RouteEndpoint($method, new TestController))
-            ->withDescription('Test endpoint')
-            ->withParameters(['name' => 'Test name']);
+            ->withDescription('Test endpoint');
         $route = (new Route($routeName, $routePath))
             ->withAddedEndpoint($routeEndpoint);
         $routeable = new Routeable($route);

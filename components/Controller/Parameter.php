@@ -19,7 +19,7 @@ use Chevere\Components\Str\Exceptions\StrCtypeSpaceException;
 use Chevere\Components\Str\Exceptions\StrEmptyException;
 use Chevere\Components\Str\StrAssert;
 
-final class ControllerParameter implements ControllerParameterInterface
+final class Parameter implements ControllerParameterInterface
 {
     private string $name;
 

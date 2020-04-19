@@ -19,11 +19,11 @@ use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use OutOfBoundsException;
 use function DeepCopy\deep_copy;
 
-final class ControllerParameters implements ControllerParametersInterface
+final class Parameters implements ControllerParametersInterface
 {
     use DsMapTrait;
 
-    public function withPut(ControllerParameterInterface $controllerParameter): ControllerParametersInterface
+    public function withParameter(ControllerParameterInterface $controllerParameter): ControllerParametersInterface
     {
         $new = clone $this;
         $new->map = deep_copy($new->map);

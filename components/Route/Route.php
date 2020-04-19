@@ -59,10 +59,14 @@ final class Route implements RouteInterface
         return $this->maker;
     }
 
-    public function withAddedEndpoint(RouteEndpointInterface $routeEndpoint): RouteInterface
+    public function withAddedEndpoint(RouteEndpointInterface $endpoint): RouteInterface
     {
         $new = clone $this;
-        $new->endpoints->put($routeEndpoint);
+        /** @var RouteWildcard $wildcard */
+        foreach ($new->routePath->wildcards()->toArray() as $wildcard) {
+            $endpoint = $endpoint->withoutParameter($wildcard->name());
+        }
+        $new->endpoints->put($endpoint);
 
         return $new;
     }

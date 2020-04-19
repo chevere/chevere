@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route\Tests;
 
+use Chevere\Components\Controller\Parameter;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\TestApp\App\Controllers\TestController;
@@ -28,7 +29,10 @@ final class RouteEndpointTest extends TestCase
         $this->assertSame($method, $routeEndpoint->method());
         $this->assertSame($controller, $routeEndpoint->controller());
         $this->assertSame($method->description(), $routeEndpoint->description());
-        $this->assertSame([], $routeEndpoint->parameters());
+        /** @var string $name */
+        foreach (array_keys($routeEndpoint->parameters()) as $name) {
+            $this->assertTrue($controller->parameters()->hasKey($name));
+        }
     }
 
     public function testWithDescription(): void
@@ -37,13 +41,5 @@ final class RouteEndpointTest extends TestCase
         $routeEndpoint = (new RouteEndpoint(new GetMethod, new TestController))
             ->withDescription($description);
         $this->assertSame($description, $routeEndpoint->description());
-    }
-
-    public function testWithParameters(): void
-    {
-        $parameters = ['some' => 'parameter'];
-        $routeEndpoint = (new RouteEndpoint(new GetMethod, new TestController))
-            ->withParameters($parameters);
-        $this->assertSame($parameters, $routeEndpoint->parameters());
     }
 }

@@ -2,5 +2,7 @@
     "method": "PUT",
     "spec": "\/spec\/group-name\/route-name\/PUT.json",
     "description": "Replace all current representations of the target resource with the request payload",
-    "parameters": []
+    "parameters": {
+        "name": "\/^[\\w]+$\/"
+    }
 }

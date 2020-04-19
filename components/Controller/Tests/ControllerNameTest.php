@@ -15,12 +15,12 @@ namespace Chevere\Components\Controller\Tests;
 
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerName;
-use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\Exceptions\ControllerInterfaceException;
 use Chevere\Components\Controller\Exceptions\ControllerNotExistsException;
 use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
+use Chevere\Components\Controller\Parameters;
 use Chevere\Components\Str\Exceptions\StrContainsException;
 use Chevere\Components\Str\Exceptions\StrCtypeSpaceException;
 use Chevere\Components\Str\Exceptions\StrEmptyException;

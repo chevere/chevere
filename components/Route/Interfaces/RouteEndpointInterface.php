@@ -52,7 +52,7 @@ interface RouteEndpointInterface
 
     public function description(): string;
 
-    public function withParameters(array $parameters): RouteEndpointInterface;
+    public function withoutParameter(string $parameter): RouteEndpointInterface;
 
     public function parameters(): array;
 }

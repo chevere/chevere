@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
+use Chevere\Components\Controller\Parameter;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 
@@ -32,6 +33,10 @@ final class RouteEndpoint implements RouteEndpointInterface
         $this->method = $method;
         $this->controller = $controller;
         $this->description = $method->description();
+        /** @var Parameter $parameter */
+        foreach ($controller->parameters()->map() as $parameter) {
+            $this->parameters[$parameter->name()] = $parameter->regex();
+        }
     }
 
     public function method(): MethodInterface
@@ -57,10 +62,10 @@ final class RouteEndpoint implements RouteEndpointInterface
         return $this->description;
     }
 
-    public function withParameters(array $parameters): RouteEndpointInterface
+    public function withoutParameter(string $parameter): RouteEndpointInterface
     {
         $new = clone $this;
-        $new->parameters = $parameters;
+        unset($new->parameters[$parameter]);
 
         return $new;
     }

@@ -36,7 +36,7 @@ abstract class Controller implements ControllerInterface
 
     public function getParameters(): ControllerParametersInterface
     {
-        return new ControllerParameters;
+        return new Parameters;
     }
 
     public function setUp(): void

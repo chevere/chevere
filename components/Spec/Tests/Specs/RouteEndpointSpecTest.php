@@ -34,7 +34,7 @@ final class RouteEndpointSpecTest extends TestCase
                 'method' => $routeEndpoint->method()->name(),
                 'spec' => $specPath->getChild($routeEndpoint->method()->name() . '.json')->pub(),
                 'description' => $routeEndpoint->method()->description(),
-                'parameters' => [],
+                'parameters' => $routeEndpoint->parameters(),
             ],
             $spec->toArray()
         );

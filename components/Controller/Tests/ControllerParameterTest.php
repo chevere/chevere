@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller\Tests;
 
-use Chevere\Components\Controller\ControllerParameter;
+use Chevere\Components\Controller\Parameter;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Str\Exceptions\StrContainsException;
 use Chevere\Components\Str\Exceptions\StrCtypeSpaceException;
@@ -25,26 +25,26 @@ final class ControllerParameterTest extends TestCase
     public function testEmptyName(): void
     {
         $this->expectException(StrEmptyException::class);
-        new ControllerParameter('', new Regex('/.*/'));
+        new Parameter('', new Regex('/.*/'));
     }
 
     public function testCtypeSpaceName(): void
     {
         $this->expectException(StrCtypeSpaceException::class);
-        new ControllerParameter(' ', new Regex('/.*/'));
+        new Parameter(' ', new Regex('/.*/'));
     }
 
     public function testSpaceInName(): void
     {
         $this->expectException(StrContainsException::class);
-        new ControllerParameter('some name', new Regex('/.*/'));
+        new Parameter('some name', new Regex('/.*/'));
     }
 
     public function testConstruct(): void
     {
         $name = 'id';
         $regex = new Regex('/^[0-9+]$/');
-        $controllerParameter = new ControllerParameter('id', $regex);
+        $controllerParameter = new Parameter('id', $regex);
         $this->assertSame($name, $controllerParameter->name());
         $this->assertSame($regex->toString(), $controllerParameter->regex());
     }

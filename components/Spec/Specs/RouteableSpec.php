@@ -30,7 +30,7 @@ final class RouteableSpec implements SpecInterface
 
     private string $path;
 
-    private array $routeWildcards;
+    private array $wildcards;
 
     /**
      * @var SpecPathInterface $specGroupPath /spec/group
@@ -44,7 +44,7 @@ final class RouteableSpec implements SpecInterface
         $specGroupRoute = $specGroupPath->getChild($this->key);
         $this->jsonPath = $specGroupRoute->getChild('route.json')->pub();
         $this->path = $routeable->route()->path()->toString();
-        $this->routeWildcards = $routeable->route()->path()->wildcards()->toArray();
+        $this->wildcards = $routeable->route()->path()->wildcards()->toArray();
         $routeEndpoints = $routeable->route()->endpoints();
         /** @var RouteEndpointInterface $routeEndpoint */
         foreach ($routeEndpoints->map() as $routeEndpoint) {
@@ -74,7 +74,7 @@ final class RouteableSpec implements SpecInterface
         }
         $wildcards = [];
         /** @var RouteWildcardInterface $routeWildcard */
-        foreach ($this->routeWildcards as $routeWildcard) {
+        foreach ($this->wildcards as $routeWildcard) {
             $wildcards[$routeWildcard->toString()] = $routeWildcard->match()->toString();
         }
 
