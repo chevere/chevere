@@ -15,6 +15,8 @@ namespace Chevere\Components\Controller\Interfaces;
 
 interface ControllerInterface
 {
+    public function getParameters(): ControllerParametersInterface;
+
     public function setUp(): void;
 
     public function tearDown(): void;

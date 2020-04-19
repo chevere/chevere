@@ -18,6 +18,7 @@ use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\Exceptions\ControllerInterfaceException;
 use Chevere\Components\Controller\Exceptions\ControllerNotExistsException;
+use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
 use Chevere\Components\Str\Exceptions\StrContainsException;
@@ -65,18 +66,9 @@ final class ControllerNameTest extends TestCase
     }
 }
 
-final class TestController implements ControllerInterface
+final class TestController extends Controller
 {
-    public function setUp(): void
+    public function run(ControllerArgumentsInterface $arguments): void
     {
-    }
-
-    public function tearDown(): void
-    {
-    }
-
-    public function parameters(): ControllerParametersInterface
-    {
-        return new ControllerParameters;
     }
 }

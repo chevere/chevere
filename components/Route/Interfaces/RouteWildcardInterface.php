@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route\Interfaces;
 
-use Chevere\Components\Route\Exceptions\RouteWildcardNotFoundException;
+use Chevere\Components\Common\Interfaces\ToStringInterface;
 use Chevere\Components\Route\Exceptions\RouteWildcardInvalidRegexException;
+use Chevere\Components\Route\Exceptions\RouteWildcardNotFoundException;
 
-interface RouteWildcardInterface
+interface RouteWildcardInterface extends ToStringInterface
 {
     /** Regex pattern used by default (no explicit where). */
     const REGEX_MATCH_DEFAULT = '[A-z0-9\\_\\-\\%]+';
@@ -40,6 +41,11 @@ interface RouteWildcardInterface
      * Provides access to the name.
      */
     public function name(): string;
+
+    /**
+     * Provides access to the braced name `{name}`
+     */
+    public function toString(): string;
 
     /**
      * Provides access to the WildcardMatchInterface instance.

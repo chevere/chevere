@@ -7,20 +7,26 @@
                 "route-name": {
                     "name": "route-name",
                     "spec": "\/spec\/group-name\/route-name\/route.json",
-                    "path": "\/route-path",
-                    "wildcards": [],
+                    "path": "\/route-path\/{id}",
+                    "wildcards": {
+                        "{id}": "[A-z0-9\\_\\-\\%]+"
+                    },
                     "endpoints": {
                         "PUT": {
                             "method": "PUT",
                             "spec": "\/spec\/group-name\/route-name\/PUT.json",
                             "description": "Replace all current representations of the target resource with the request payload",
-                            "parameters": []
+                            "parameters": {
+                                "id": "[A-z0-9\\_\\-\\%]+"
+                            }
                         },
                         "GET": {
                             "method": "GET",
                             "spec": "\/spec\/group-name\/route-name\/GET.json",
                             "description": "Transfer a current representation of the target resource",
-                            "parameters": []
+                            "parameters": {
+                                "id": "[A-z0-9\\_\\-\\%]+"
+                            }
                         }
                     }
                 }

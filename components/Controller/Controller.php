@@ -22,16 +22,21 @@ use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
  */
 abstract class Controller implements ControllerInterface
 {
-    private ControllerParametersInterface $parameters;
+    protected ControllerParametersInterface $parameters;
 
     final public function __construct()
     {
-        $this->parameters = new ControllerParameters;
+        $this->parameters = $this->getParameters();
     }
 
     final public function parameters(): ControllerParametersInterface
     {
         return $this->parameters;
+    }
+
+    public function getParameters(): ControllerParametersInterface
+    {
+        return new ControllerParameters;
     }
 
     public function setUp(): void
