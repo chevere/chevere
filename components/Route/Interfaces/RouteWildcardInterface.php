@@ -17,7 +17,7 @@ use Chevere\Components\Common\Interfaces\ToStringInterface;
 use Chevere\Components\Route\Exceptions\RouteWildcardInvalidRegexException;
 use Chevere\Components\Route\Exceptions\RouteWildcardNotFoundException;
 
-interface RouteWildcardInterface extends ToStringInterface
+interface RouteWildcardInterface
 {
     /** Regex pattern used by default (no explicit where). */
     const REGEX_MATCH_DEFAULT = '[A-z0-9\\_\\-\\%]+';

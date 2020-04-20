@@ -13,7 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
+use Chevere\Components\Controller\Controller;
+use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
+use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
+use Chevere\Components\Controller\Parameter;
+use Chevere\Components\Controller\Parameters;
 use Chevere\Components\Http\Methods\GetMethod;
+use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
@@ -22,13 +28,8 @@ use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
 use Chevere\Components\Router\Exceptions\RouteNameConflictException;
 use Chevere\Components\Router\Exceptions\RoutePathExistsException;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
-use Chevere\Components\Router\Interfaces\RouterCacheInterface;
-use Chevere\Components\Router\Interfaces\RouterInterface;
-use Chevere\Components\Router\Interfaces\RoutesCacheInterface;
 use Chevere\Components\Router\Routeable;
-use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Router\RouterMaker;
-use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
 final class RouterMakerTest extends TestCase
@@ -66,8 +67,8 @@ final class RouterMakerTest extends TestCase
 
     public function testWithAlreadyAddedKey(): void
     {
-        $routeable1 = $this->getRouteable('/path/{foo}', 'FooName');
-        $routeable2 = $this->getRouteable('/path/{bar}', 'BarName');
+        $routeable1 = $this->getRouteable('/path/{name}', 'FooName');
+        $routeable2 = $this->getRouteable('/path/{id}', 'BarName');
         $this->expectException(RouteKeyConflictException::class);
         (new RouterMaker)
             ->withAddedRouteable($routeable1, 'group')
@@ -91,12 +92,24 @@ final class RouterMakerTest extends TestCase
         $route = new Route(new RouteName($routeName), new RoutePath($routePath));
         $route = $route
             ->withAddedEndpoint(
-                new RouteEndpoint(
-                    new GetMethod,
-                    new TestController
-                )
+                new RouteEndpoint(new GetMethod, new RouterMakerTestController)
             );
 
         return new Routeable($route);
+    }
+}
+
+final class RouterMakerTestController extends Controller
+{
+    public function getParameters(): ControllerParametersInterface
+    {
+        return (new Parameters)
+            ->withParameter(new Parameter('name', new Regex('/^[\w]+$/')))
+            ->withParameter(new Parameter('id', new Regex('/^[0-9]+$/')));
+    }
+
+    public function run(ControllerArgumentsInterface $arguments): void
+    {
+        // does nothing
     }
 }

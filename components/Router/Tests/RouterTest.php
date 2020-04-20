@@ -43,7 +43,7 @@ final class RouterTest extends TestCase
 
     public function testConstructor(): void
     {
-        $router = new Router();
+        $router = new Router;
         $this->assertFalse($router->hasRegex());
         $this->assertCount(0, $router->routeables()->map());
         $this->assertSame([], $router->index()->toArray());

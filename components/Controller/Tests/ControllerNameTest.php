@@ -60,13 +60,13 @@ final class ControllerNameTest extends TestCase
 
     public function testConstruct(): void
     {
-        $className = TestController::class;
+        $className = ControllerNameTestController::class;
         $controllerName = new ControllerName($className);
         $this->assertSame($className, $controllerName->toString());
     }
 }
 
-final class TestController extends Controller
+final class ControllerNameTestController extends Controller
 {
     public function run(ControllerArgumentsInterface $arguments): void
     {

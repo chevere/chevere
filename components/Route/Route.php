@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
+use Chevere\Components\Message\Message;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
@@ -20,6 +21,9 @@ use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Route\Interfaces\RouteNameInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
+use Chevere\Components\Router\Exceptions\RouterException;
+use LogicException;
+use OutOfBoundsException;
 use function DeepCopy\deep_copy;
 
 final class Route implements RouteInterface
@@ -59,11 +63,24 @@ final class Route implements RouteInterface
         return $this->maker;
     }
 
+    /**
+     * @throws LogicException If using a route wildcard but no parameter is accepted by the controller
+     * @throws OutOfBoundsException If the route wildcard parameter is unknown for the controller
+     */
     public function withAddedEndpoint(RouteEndpointInterface $endpoint): RouteInterface
     {
         $new = clone $this;
         /** @var RouteWildcard $wildcard */
         foreach ($new->routePath->wildcards()->toArray() as $wildcard) {
+            $this->assertWildcardEndpoint($wildcard, $endpoint);
+            $regex = $endpoint->controller()->parameters()->get($wildcard->name())->regex();
+            $delimiter = $regex[0];
+            $regex = trim($regex, $delimiter);
+            $regex = preg_replace('#^\^(.*)\$$#', '$1', $regex);
+            $new->routePath = $new->routePath
+                ->withWildcard($wildcard->withMatch(
+                    new RouteWildcardMatch($regex)
+                ));
             $endpoint = $endpoint->withoutParameter($wildcard->name());
         }
         $new->endpoints->put($endpoint);
@@ -88,5 +105,27 @@ final class Route implements RouteInterface
     public function middlewareNameCollection(): MiddlewareNameCollectionInterface
     {
         return $this->middlewareNameCollection;
+    }
+
+    private function assertWildcardEndpoint(RouteWildcard $wildcard, RouteEndpoint $endpoint): void
+    {
+        if ($endpoint->controller()->parameters()->map()->count() === 0) {
+            throw new LogicException(
+                (new Message("Controller %controller% doesn't accept any parameter (route wildcard %wildcard%)"))
+                    ->code('%controller%', get_class($endpoint->controller()))
+                    ->code('%wildcard%', $wildcard->toString())
+                    ->toString()
+            );
+        }
+        if (array_key_exists($wildcard->name(), $endpoint->parameters()) === false) {
+            $parameters = array_keys($endpoint->parameters());
+            throw new OutOfBoundsException(
+                (new Message('Wildcard parameter %wildcard% must bind to a one of the known %controller% parameters: %parameters%'))
+                    ->code('%wildcard%', $wildcard->toString())
+                    ->code('%controller%', get_class($endpoint->controller()))
+                    ->code('%parameters%', implode(', ', $parameters))
+                    ->toString()
+            );
+        }
     }
 }

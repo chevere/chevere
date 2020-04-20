@@ -73,9 +73,9 @@ final class RouteableSpec implements SpecInterface
             $endpoints[$key] = $routeEndpointSpec->toArray();
         }
         $wildcards = [];
-        /** @var RouteWildcardInterface $routeWildcard */
-        foreach ($this->wildcards as $routeWildcard) {
-            $wildcards[$routeWildcard->toString()] = $routeWildcard->match()->toString();
+        /** @var RouteWildcardInterface $wildcard */
+        foreach ($this->wildcards as $wildcard) {
+            $wildcards[$wildcard->toString()] = '^' . $wildcard->match()->toString() . '$';
         }
 
         return [

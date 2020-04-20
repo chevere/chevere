@@ -13,7 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
+use Chevere\Components\Controller\Controller;
+use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
+use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
+use Chevere\Components\Controller\Parameter;
+use Chevere\Components\Controller\Parameters;
 use Chevere\Components\Http\Methods\GetMethod;
+use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Route\Interfaces\RouteNameInterface;
 use Chevere\Components\Route\Route;
@@ -21,11 +27,9 @@ use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
-use Chevere\Components\Router\Exceptions\RouteCacheTypeException;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\RoutesCache;
-use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
@@ -103,12 +107,26 @@ final class RoutesCacheTest extends TestCase
 
     private function getRouteable(): RouteableInterface
     {
-        $route = new Route($this->routeName, new RoutePath('/test/{var}'));
+        $route = new Route($this->routeName, new RoutePath('/test/{name}'));
         $route = $route
             ->withAddedEndpoint(
-                new RouteEndpoint(new GetMethod, new TestController)
+                new RouteEndpoint(new GetMethod, new RoutesCacheTestController)
             );
 
         return new Routeable($route);
+    }
+}
+
+final class RoutesCacheTestController extends Controller
+{
+    public function getParameters(): ControllerParametersInterface
+    {
+        return (new Parameters)
+            ->withParameter(new Parameter('name', new Regex('/^[\w]+$/')));
+    }
+
+    public function run(ControllerArgumentsInterface $arguments): void
+    {
+        // does nothing
     }
 }

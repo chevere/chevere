@@ -30,5 +30,12 @@ final class RegexTest extends TestCase
         $regexString = '/test/';
         $regex = new Regex($regexString);
         $this->assertSame($regexString, $regex->toString());
+        $regex->assertNoCapture();
+    }
+
+    public function testAssertNoCapture(): void
+    {
+        $this->expectException(RegexException::class);
+        (new Regex('/^(.*)$/'))->assertNoCapture();
     }
 }

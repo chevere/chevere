@@ -20,15 +20,6 @@ use Chevere\Components\Controller\Parameter;
 use Chevere\Components\Controller\Parameters;
 use Chevere\Components\Regex\Regex;
 
-/**
- * Note to self
- *
- * Los parametros de ruta deben ser tomados desde (este) controlador hasta la
- * la definicion de endpoint (RouteEndpoint). La ruta no deberia permitir definir
- * wildcards matches ya que se deben respetar los parametros del controlador al
- * cual esta enchufado.
- *
- */
 class TestController extends Controller
 {
     public function getParameters(): ControllerParametersInterface

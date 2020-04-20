@@ -20,18 +20,17 @@ use Chevere\Components\Controller\Parameter;
 use Chevere\Components\Controller\Parameters;
 use Chevere\Components\Regex\Regex;
 
-final class GetArticleController extends Controller
+final class TestController extends Controller
 {
     public function getParameters(): ControllerParametersInterface
     {
         return (new Parameters)
-            ->withParameter(
-                new Parameter('id', new Regex('/^d+$/'))
-            );
+            ->withParameter(new Parameter('name', new Regex('/^[\w]+$/')))
+            ->withParameter(new Parameter('id', new Regex('/^[0-9]+$/')));
     }
 
     public function run(ControllerArgumentsInterface $arguments): void
     {
-        echo 'Get article: ' . $arguments->get('id');
+        // does nothing
     }
 }

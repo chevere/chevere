@@ -13,8 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
+use Chevere\Components\Controller\Controller;
+use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
+use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
+use Chevere\Components\Controller\Parameter;
+use Chevere\Components\Controller\Parameters;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Regex\Regex;
+use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
@@ -30,7 +36,6 @@ use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Router\RouterIndex;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Router\RouterRegex;
-use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
 final class RouterCacheTest extends TestCase
@@ -90,7 +95,7 @@ final class RouterCacheTest extends TestCase
         ];
         $route = new Route(new RouteName('test-name'), new RoutePath('/test'));
         $route = $route->withAddedEndpoint(
-            new RouteEndpoint(new GetMethod, new TestController)
+            new RouteEndpoint(new GetMethod, new RouterCacheTestController)
         );
         $routeable = new Routeable($route);
         $index = (new RouterIndex)->withAdded($routeable, 'test-group');
@@ -135,7 +140,7 @@ final class RouterCacheTest extends TestCase
         }
     }
 
-    public function __testGenerateCached(): void
+    public function _testGenerateCached(): void
     {
         $this->expectNotToPerformAssertions();
         $group = 'some-group';
@@ -147,12 +152,26 @@ final class RouterCacheTest extends TestCase
             $routerMaker = $routerMaker->withAddedRouteable(
                 new Routeable(
                     $route->withAddedEndpoint(
-                        new RouteEndpoint(new GetMethod, new TestController)
+                        new RouteEndpoint(new GetMethod, new RouterCacheTestController)
                     )
                 ),
                 $group
             );
         }
         $routerCache->put($routerMaker->router());
+    }
+}
+
+class RouterCacheTestController extends Controller
+{
+    public function getParameters(): ControllerParametersInterface
+    {
+        return (new Parameters)
+            ->withParameter(new Parameter('id', new Regex('/^' . RouteWildcardInterface::REGEX_MATCH_DEFAULT . '$/')));
+    }
+
+    public function run(ControllerArgumentsInterface $arguments): void
+    {
+        // does nothing
     }
 }

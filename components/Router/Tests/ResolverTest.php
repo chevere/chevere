@@ -13,7 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
+use Chevere\Components\Controller\Controller;
+use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
+use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
+use Chevere\Components\Controller\Parameter;
+use Chevere\Components\Controller\Parameters;
 use Chevere\Components\Http\Methods\GetMethod;
+use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
@@ -29,7 +35,6 @@ use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\Routed;
 use Chevere\Components\Router\RouteResolve;
 use Chevere\Components\Router\RouterMaker;
-use Chevere\TestApp\App\Controllers\TestController;
 use GuzzleHttp\Psr7\Uri;
 use PHPUnit\Framework\TestCase;
 
@@ -47,17 +52,10 @@ final class ResolverTest extends TestCase
     {
         $this->cacheHelper = new CacheHelper(__DIR__, $this);
         $routerMaker = new RouterMaker;
-        $routeEndpoint = new RouteEndpoint(new GetMethod, new TestController);
+        $routeEndpoint = new RouteEndpoint(new GetMethod, new ResolverTestController);
         $this->routes = [
             new Route(new RouteName('route-1'), new RoutePath('/test')),
-            new Route(
-                new RouteName('route-2'),
-                (new RoutePath('/test/{id}'))
-                    ->withWildcard(
-                        (new RouteWildcard('id'))
-                            ->withMatch(new RouteWildcardMatch('[0-9]+'))
-                    )
-            ),
+            new Route(new RouteName('route-2'), new RoutePath('/test/{id}')),
             new Route(new RouteName('route-3'), new RoutePath('/test/path')),
         ];
         $this->routesResolves = [];
@@ -140,5 +138,21 @@ final class ResolverTest extends TestCase
         foreach ($this->routesResolves as $pos => $routeResolve) {
             $resolverCache->put($pos, $routeResolve);
         }
+    }
+}
+
+class ResolverTestController extends Controller
+{
+    public function getParameters(): ControllerParametersInterface
+    {
+        new RouteWildcardMatch('[0-9]+');
+
+        return (new Parameters)
+            ->withParameter(new Parameter('id', new Regex('/^[0-9]+$/')));
+    }
+
+    public function run(ControllerArgumentsInterface $arguments): void
+    {
+        // does nothing
     }
 }

@@ -48,10 +48,10 @@ final class RouteWildcard implements RouteWildcardInterface
         $this->match = new RouteWildcardMatch(RouteWildcardInterface::REGEX_MATCH_DEFAULT);
     }
 
-    public function withMatch(RouteWildcardMatchInterface $wildcardMatch): RouteWildcardInterface
+    public function withMatch(RouteWildcardMatchInterface $match): RouteWildcardInterface
     {
         $new = clone $this;
-        $new->match = $wildcardMatch;
+        $new->match = $match;
 
         return $new;
     }

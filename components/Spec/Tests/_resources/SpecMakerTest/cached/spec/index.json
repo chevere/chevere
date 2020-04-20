@@ -9,7 +9,7 @@
                     "spec": "\/spec\/group-name\/route-name\/route.json",
                     "path": "\/route-path\/{id}",
                     "wildcards": {
-                        "{id}": "[A-z0-9\\_\\-\\%]+"
+                        "{id}": "^[0-9]+$"
                     },
                     "endpoints": {
                         "PUT": {

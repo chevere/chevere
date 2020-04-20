@@ -13,10 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route\Tests;
 
+use Chevere\Components\Controller\Controller;
+use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
+use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
 use Chevere\Components\Controller\Parameter;
+use Chevere\Components\Controller\Parameters;
 use Chevere\Components\Http\Methods\GetMethod;
+use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\RouteEndpoint;
-use Chevere\TestApp\App\Controllers\TestController;
+use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
 final class RouteEndpointTest extends TestCase
@@ -24,7 +29,7 @@ final class RouteEndpointTest extends TestCase
     public function testConstruct(): void
     {
         $method = new GetMethod;
-        $controller = new TestController;
+        $controller = new RouteEndpointTestController;
         $routeEndpoint = new RouteEndpoint($method, $controller);
         $this->assertSame($method, $routeEndpoint->method());
         $this->assertSame($controller, $routeEndpoint->controller());
@@ -38,8 +43,40 @@ final class RouteEndpointTest extends TestCase
     public function testWithDescription(): void
     {
         $description = 'Some description';
-        $routeEndpoint = (new RouteEndpoint(new GetMethod, new TestController))
+        $routeEndpoint = (new RouteEndpoint(new GetMethod, new RouteEndpointTestController))
             ->withDescription($description);
         $this->assertSame($description, $routeEndpoint->description());
+    }
+
+    public function testWithoutWrongParameter(): void
+    {
+        $controller = new RouteEndpointTestController;
+        $this->expectException(OutOfBoundsException::class);
+        (new RouteEndpoint(new GetMethod, $controller))
+            ->withoutParameter('0x0');
+    }
+
+    public function testWithoutParameter(): void
+    {
+        $controller = new RouteEndpointTestController;
+        $key = $controller->parameters()->map()->first()->toArray()['key'];
+        $routeEndpoint = (new RouteEndpoint(new GetMethod, $controller))
+            ->withoutParameter($key);
+        $this->assertArrayNotHasKey($key, $routeEndpoint->parameters());
+    }
+}
+
+final class RouteEndpointTestController extends Controller
+{
+    public function getParameters(): ControllerParametersInterface
+    {
+        return (new Parameters)
+            ->withParameter(new Parameter('name', new Regex('/^[\w]+$/')))
+            ->withParameter(new Parameter('id', new Regex('/^[0-9]+$/')));
+    }
+
+    public function run(ControllerArgumentsInterface $arguments): void
+    {
+        // does nothing
     }
 }

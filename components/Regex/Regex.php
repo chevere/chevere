@@ -13,34 +13,31 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Regex;
 
-use Throwable;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Exceptions\RegexException;
 use Chevere\Components\Regex\Interfaces\RegexInterface;
+use Throwable;
 
 final class Regex implements RegexInterface
 {
-    /** @var string */
-    private string $regex;
+    private string $string;
 
     /**
-     * Creates a new instance.
-     *
      * @throws RegexException if $regex is not a valid regular expresion
      */
-    public function __construct(string $regex)
+    public function __construct(string $string)
     {
-        $this->regex = $regex;
+        $this->string = $string;
         $this->assertRegex();
     }
 
     public function assertNoCapture(): void
     {
-        $regex = str_replace(['\(', '\)'], null, $this->regex);
+        $regex = str_replace(['\(', '\)'], null, $this->string);
         if (false !== strpos($regex, '(') || false !== strpos($regex, ')')) {
             throw new RegexException(
                 (new Message('Provided expresion %match% contains capture groups (remove any capture group)'))
-                    ->code('%match%', $this->regex)
+                    ->code('%match%', $this->string)
                     ->toString()
             );
         }
@@ -48,18 +45,19 @@ final class Regex implements RegexInterface
 
     public function toString(): string
     {
-        return $this->regex;
+        return $this->string;
     }
 
     private function assertRegex(): void
     {
         try {
-            preg_match($this->regex, '');
+            preg_match($this->string, '');
         } catch (Throwable $e) {
             throw new RegexException(
-                (new Message('Invalid regex string %regex% provided %error%'))
-                    ->code('%regex%', $this->regex)
+                (new Message('Invalid regex string %regex% provided %error% [%preg%]'))
+                    ->code('%regex%', $this->string)
                     ->code('%error%', $e->getMessage())
+                    ->strtr('%preg%', static::ERRORS[preg_last_error()])
                     ->toString(),
                 0,
                 $e

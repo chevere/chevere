@@ -15,13 +15,8 @@ namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Interfaces\RegexInterface;
-use Chevere\Components\Router\Exceptions\RouteNotFoundException;
-use Chevere\Components\Router\Exceptions\RouterException;
-use Chevere\Components\Router\Interfaces\RoutedInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 use InvalidArgumentException;
-use Psr\Http\Message\UriInterface;
-use Throwable;
 
 final class RouterRegex implements RouterRegexInterface
 {
