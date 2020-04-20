@@ -74,12 +74,9 @@ final class Route implements RouteInterface
         foreach ($new->routePath->wildcards()->toArray() as $wildcard) {
             $this->assertWildcardEndpoint($wildcard, $endpoint);
             $regex = $endpoint->controller()->parameters()->get($wildcard->name())->regex();
-            $delimiter = $regex[0];
-            $regex = trim($regex, $delimiter);
-            $regex = preg_replace('#^\^(.*)\$$#', '$1', $regex);
             $new->routePath = $new->routePath
                 ->withWildcard($wildcard->withMatch(
-                    new RouteWildcardMatch($regex)
+                    new RouteWildcardMatch($regex->toNoDelimitersNoAnchors())
                 ));
             $endpoint = $endpoint->withoutParameter($wildcard->name());
         }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Regex\Interfaces\RegexInterface;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
@@ -106,10 +107,10 @@ final class RouterMaker implements RouterMakerInterface
         $array = [];
         /**
          * @var int $pos
-         * @var string $regex
+         * @var RegexInterface $regex
          */
         foreach ($this->regexes as $pos => $regex) {
-            preg_match('#\^(.*)\$#', $regex, $matches);
+            preg_match('#\^(.*)\$#', $regex->toString(), $matches);
             $array[] = sprintf(
                 RouterRegexInterface::TEMPLATE_ENTRY,
                 $matches[1],

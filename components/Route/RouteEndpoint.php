@@ -37,7 +37,7 @@ final class RouteEndpoint implements RouteEndpointInterface
         $this->description = $method->description();
         /** @var Parameter $parameter */
         foreach ($controller->parameters()->map() as $parameter) {
-            $this->parameters[$parameter->name()] = $parameter->regex();
+            $this->parameters[$parameter->name()] = $parameter->regex()->toNoDelimiters();
         }
     }
 

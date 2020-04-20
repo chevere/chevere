@@ -20,6 +20,7 @@ use Chevere\Components\Controller\Parameter;
 use Chevere\Components\Controller\Parameters;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Regex\Regex;
+use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
@@ -132,9 +133,10 @@ final class RouterCacheTest extends TestCase
         $index = $routerCache->getIndex();
         $regex = $routerCache->getRegex();
         $this->assertTrue($index->hasGroup($group));
+        /** @var RouteInterface $route */
         foreach ($this->routes as $route) {
             $this->assertStringContainsString(
-                str_replace(['/^', '$/'], '', $route->path()->regex()),
+                $route->path()->regex()->toNoDelimitersNoAnchors(),
                 $regex->regex()->toString()
             );
         }

@@ -46,6 +46,6 @@ final class ControllerParameterTest extends TestCase
         $regex = new Regex('/^[0-9+]$/');
         $controllerParameter = new Parameter('id', $regex);
         $this->assertSame($name, $controllerParameter->name());
-        $this->assertSame($regex->toString(), $controllerParameter->regex());
+        $this->assertSame($regex->toString(), $controllerParameter->regex()->toString());
     }
 }

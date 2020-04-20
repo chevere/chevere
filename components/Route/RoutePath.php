@@ -15,6 +15,8 @@ namespace Chevere\Components\Route;
 
 use BadMethodCallException;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Regex\Interfaces\RegexInterface;
+use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Exceptions\RoutePathForwardSlashException;
 use Chevere\Components\Route\Exceptions\RoutePathInvalidCharsException;
 use Chevere\Components\Route\Exceptions\RoutePathUnmatchedBracesException;
@@ -50,7 +52,7 @@ final class RoutePath implements RoutePathInterface
     /** @var array string[] */
     private array $wildcards;
 
-    private string $regex;
+    private RegexInterface $regex;
 
     /**
      * Creates a new instance.
@@ -93,7 +95,7 @@ final class RoutePath implements RoutePathInterface
         return $this->key;
     }
 
-    public function regex(): string
+    public function regex(): RegexInterface
     {
         return $this->regex;
     }
@@ -277,6 +279,6 @@ final class RoutePath implements RoutePathInterface
                 );
             }
         }
-        $this->regex = $regex;
+        $this->regex = new Regex($regex);
     }
 }

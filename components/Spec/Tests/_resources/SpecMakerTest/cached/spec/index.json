@@ -8,6 +8,7 @@
                     "name": "route-name",
                     "spec": "\/spec\/group-name\/route-name\/route.json",
                     "path": "\/route-path\/{id}",
+                    "regex": "^\\\/route-path\\\/([0-9]+)$",
                     "wildcards": {
                         "{id}": "^[0-9]+$"
                     },
@@ -17,7 +18,7 @@
                             "spec": "\/spec\/group-name\/route-name\/PUT.json",
                             "description": "Replace all current representations of the target resource with the request payload",
                             "parameters": {
-                                "name": "\/^[\\w]+$\/"
+                                "name": "^[\\w]+$"
                             }
                         },
                         "GET": {
@@ -25,7 +26,7 @@
                             "spec": "\/spec\/group-name\/route-name\/GET.json",
                             "description": "Transfer a current representation of the target resource",
                             "parameters": {
-                                "name": "\/^[\\w]+$\/"
+                                "name": "^[\\w]+$"
                             }
                         }
                     }

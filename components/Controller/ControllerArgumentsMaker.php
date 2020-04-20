@@ -85,8 +85,8 @@ final class ControllerArgumentsMaker
         $failures = [];
         /** @var ControllerParameterInterface $parameter */
         foreach ($this->parameters->map() as $name => $parameter) {
-            if (preg_match($parameter->regex(), $this->map->get($name)) !== 1) {
-                $failures[] = $name . ':' . $parameter->regex();
+            if (preg_match($parameter->regex()->toString(), $this->map->get($name)) !== 1) {
+                $failures[] = $name . ':' . $parameter->regex()->toString();
             }
         }
         if ($failures !== []) {

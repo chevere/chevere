@@ -27,10 +27,22 @@ interface RegexInterface extends ToStringInterface
         PREG_JIT_STACKLIMIT_ERROR => 'PREG_JIT_STACKLIMIT_ERROR',
     ];
 
-    public function __construct(string $regex);
+    public function __construct(string $string);
+
+    public function assertNoCapture(): void;
 
     /**
-     * @return string Regex
+     * @return string The regex string used to create the object
      */
     public function toString(): string;
+
+    /**
+     * @return string The regex string without delimeter char
+     */
+    public function toNoDelimiters(): string;
+
+    /**
+     * @return string The regex string without delimiter char, without anchors (^, $)
+     */
+    public function toNoDelimitersNoAnchors(): string;
 }

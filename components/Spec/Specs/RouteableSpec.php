@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec;
 
+use Chevere\Components\Regex\Interfaces\RegexInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
@@ -30,6 +31,8 @@ final class RouteableSpec implements SpecInterface
 
     private string $path;
 
+    private string $regex;
+
     private array $wildcards;
 
     /**
@@ -44,6 +47,7 @@ final class RouteableSpec implements SpecInterface
         $specGroupRoute = $specGroupPath->getChild($this->key);
         $this->jsonPath = $specGroupRoute->getChild('route.json')->pub();
         $this->path = $routeable->route()->path()->toString();
+        $this->regex = $routeable->route()->path()->regex()->toNoDelimiters();
         $this->wildcards = $routeable->route()->path()->wildcards()->toArray();
         $routeEndpoints = $routeable->route()->endpoints();
         /** @var RouteEndpointInterface $routeEndpoint */
@@ -82,6 +86,7 @@ final class RouteableSpec implements SpecInterface
             'name' => $this->key,
             'spec' => $this->jsonPath,
             'path' => $this->path,
+            'regex' => $this->regex,
             'wildcards' => $wildcards,
             'endpoints' => $endpoints
         ];

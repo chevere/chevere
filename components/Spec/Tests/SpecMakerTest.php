@@ -62,7 +62,6 @@ final class SpecMakerTest extends TestCase
         $putMethod = new PutMethod;
         $getMethod = new GetMethod;
         $testController = new TestController;
-        // xdd($testController->parameters()->map()->toArray());
         $route = new Route(new RouteName('route-name'), new RoutePath('/route-path/{id}'));
         $route = $route
             ->withAddedEndpoint(

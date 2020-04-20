@@ -93,7 +93,7 @@ final class RouteTest extends TestCase
         $key = $pair['key'];
         $this->assertSame(
             [
-                $key => $controller->parameters()->get($key)->regex()
+                $key => $controller->parameters()->get($key)->regex()->toNoDelimiters()
             ],
             $route->endpoints()->get($method)->parameters()
         );

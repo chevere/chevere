@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Route\Tests;
 
 use BadMethodCallException;
+use Chevere\Components\Regex\Interfaces\RegexInterface;
+use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Exceptions\RoutePathForwardSlashException;
 use Chevere\Components\Route\Exceptions\RoutePathInvalidCharsException;
 use Chevere\Components\Route\Exceptions\RoutePathUnmatchedBracesException;
@@ -72,7 +74,7 @@ final class RoutePathTest extends TestCase
         $routePath = new RoutePath($path);
         $this->assertSame($path, $routePath->toString());
         $this->assertSame($path, $routePath->key());
-        $this->assertSame($regex, $routePath->regex());
+        $this->assertEquals($regex, $routePath->regex());
         $this->assertFalse($routePath->wildcards()->hasAny());
         $this->expectException(BadMethodCallException::class);
         $routePath->uriFor([]);
@@ -87,7 +89,7 @@ final class RoutePathTest extends TestCase
         $routePath = new RoutePath($path);
         $this->assertSame($path, $routePath->toString());
         $this->assertSame($key, $routePath->key());
-        $this->assertSame($regex, $routePath->regex());
+        $this->assertEquals($regex, $routePath->regex());
         $this->assertTrue($routePath->wildcards()->hasAny());
         $this->assertTrue($routePath->wildcards()->has($routeWildcard));
     }
@@ -105,7 +107,7 @@ final class RoutePathTest extends TestCase
         $routePath = new RoutePath($path);
         $this->assertSame($path, $routePath->toString());
         $this->assertSame($key, $routePath->key());
-        $this->assertSame($regex, $routePath->regex());
+        $this->assertEquals($regex, $routePath->regex());
         $this->assertTrue($routePath->wildcards()->hasAny());
         $this->assertTrue($routePath->wildcards()->has($routeWildcard1));
         $this->assertTrue($routePath->wildcards()->has($routeWildcard2));
@@ -128,7 +130,7 @@ final class RoutePathTest extends TestCase
                 (new RouteWildcard('id'))
                     ->withMatch(new RouteWildcardMatch($match))
             );
-        $this->assertSame($regex, $routePath->regex());
+        $this->assertEquals($regex, $routePath->regex());
     }
 
     public function testUriFor(): void
@@ -151,9 +153,11 @@ final class RoutePathTest extends TestCase
         $routePath->uriFor([]);
     }
 
-    private function wrapRegex(string $pattern): string
+    private function wrapRegex(string $pattern): RegexInterface
     {
-        return RoutePathInterface::REGEX_DELIMITER_CHAR . $this->escapeRegex($pattern) . RoutePathInterface::REGEX_DELIMITER_CHAR;
+        return new Regex(
+            RoutePathInterface::REGEX_DELIMITER_CHAR . $this->escapeRegex($pattern) . RoutePathInterface::REGEX_DELIMITER_CHAR
+        );
     }
 
     private function escapeRegex(string $pattern): string

@@ -23,7 +23,7 @@ final class Parameter implements ControllerParameterInterface
 {
     private string $name;
 
-    private string $regex;
+    private RegexInterface $regex;
 
     /**
      * @throws StrCtypeSpaceException if $name contains ctype space
@@ -33,7 +33,7 @@ final class Parameter implements ControllerParameterInterface
     {
         $this->assertName($name);
         $this->name = $name;
-        $this->regex = $regex->toString();
+        $this->regex = $regex;
     }
 
     public function name(): string
@@ -41,7 +41,7 @@ final class Parameter implements ControllerParameterInterface
         return $this->name;
     }
 
-    public function regex(): string
+    public function regex(): RegexInterface
     {
         return $this->regex;
     }

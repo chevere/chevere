@@ -22,6 +22,10 @@ final class Regex implements RegexInterface
 {
     private string $string;
 
+    private string $noDelimiters;
+
+    private string $noDelimitersNoAnchors;
+
     /**
      * @throws RegexException if $regex is not a valid regular expresion
      */
@@ -29,14 +33,20 @@ final class Regex implements RegexInterface
     {
         $this->string = $string;
         $this->assertRegex();
+        $delimiter = $this->string[0];
+        $this->noDelimiters = trim($this->string, $delimiter);
+        $this->noDelimitersNoAnchors = preg_replace('#^\^(.*)\$$#', '$1', $this->noDelimiters);
     }
 
+    /**
+     * @throws RegexException If provided regex contains capture groups
+     */
     public function assertNoCapture(): void
     {
         $regex = str_replace(['\(', '\)'], null, $this->string);
         if (false !== strpos($regex, '(') || false !== strpos($regex, ')')) {
             throw new RegexException(
-                (new Message('Provided expresion %match% contains capture groups (remove any capture group)'))
+                (new Message('Provided expresion %match% contains capture groups'))
                     ->code('%match%', $this->string)
                     ->toString()
             );
@@ -46,6 +56,16 @@ final class Regex implements RegexInterface
     public function toString(): string
     {
         return $this->string;
+    }
+
+    public function toNoDelimiters(): string
+    {
+        return $this->noDelimiters;
+    }
+
+    public function toNoDelimitersNoAnchors(): string
+    {
+        return $this->noDelimitersNoAnchors;
     }
 
     private function assertRegex(): void

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller\Interfaces;
 
-use Chevere\Components\Type\Interfaces\TypeInterface;
+use Chevere\Components\Regex\Interfaces\RegexInterface;
 
 interface ControllerParameterInterface
 {
     public function name(): string;
 
-    public function regex(): string;
+    public function regex(): RegexInterface;
 }

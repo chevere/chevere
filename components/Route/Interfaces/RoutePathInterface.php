@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Route\Interfaces;
 
 use Chevere\Components\Common\Interfaces\ToStringInterface;
+use Chevere\Components\Regex\Interfaces\RegexInterface;
 
 interface RoutePathInterface extends ToStringInterface
 {
@@ -44,9 +45,9 @@ interface RoutePathInterface extends ToStringInterface
     public function key(): string;
 
     /**
-     * @return string Regex string like `/^\/path$/`
+     * @return RegexInterface Regex string like `/^\/path$/`
      */
-    public function regex(): string;
+    public function regex(): RegexInterface;
 
     /**
      * Provides access to the RouteWildcardsInterface instance.
