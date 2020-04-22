@@ -19,7 +19,7 @@ use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use OutOfBoundsException;
 use function DeepCopy\deep_copy;
 
-final class Parameters implements ControllerParametersInterface
+final class ControllerParameters implements ControllerParametersInterface
 {
     use DsMapTrait;
 

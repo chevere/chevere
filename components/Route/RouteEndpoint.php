@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
+use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
-use Chevere\Components\Controller\Parameter;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
@@ -35,7 +35,7 @@ final class RouteEndpoint implements RouteEndpointInterface
         $this->method = $method;
         $this->controller = $controller;
         $this->description = $method->description();
-        /** @var Parameter $parameter */
+        /** @var ControllerParameter $parameter */
         foreach ($controller->parameters()->map() as $parameter) {
             $this->parameters[$parameter->name()] = $parameter->regex()->toNoDelimiters();
         }

@@ -17,6 +17,8 @@ use Chevere\Components\Regex\Interfaces\RegexInterface;
 
 interface ControllerParameterInterface
 {
+    public function withIsRequired(bool $bool): ControllerParameterInterface;
+
     public function name(): string;
 
     public function regex(): RegexInterface;

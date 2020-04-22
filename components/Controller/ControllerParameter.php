@@ -19,11 +19,13 @@ use Chevere\Components\Str\Exceptions\StrCtypeSpaceException;
 use Chevere\Components\Str\Exceptions\StrEmptyException;
 use Chevere\Components\Str\StrAssert;
 
-final class Parameter implements ControllerParameterInterface
+final class ControllerParameter implements ControllerParameterInterface
 {
     private string $name;
 
     private RegexInterface $regex;
+
+    private bool $isRequired;
 
     /**
      * @throws StrCtypeSpaceException if $name contains ctype space
@@ -34,6 +36,15 @@ final class Parameter implements ControllerParameterInterface
         $this->assertName($name);
         $this->name = $name;
         $this->regex = $regex;
+        $this->isRequired = true;
+    }
+
+    public function withIsRequired(bool $bool): ControllerParameterInterface
+    {
+        $new = clone $this;
+        $new->isRequired = $bool;
+
+        return $new;
     }
 
     public function name(): string
@@ -44,6 +55,11 @@ final class Parameter implements ControllerParameterInterface
     public function regex(): RegexInterface
     {
         return $this->regex;
+    }
+
+    public function isRequired(): bool
+    {
+        return $this->isRequired;
     }
 
     private function assertName(string $name): void

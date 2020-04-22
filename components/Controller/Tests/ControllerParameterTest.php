@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller\Tests;
 
-use Chevere\Components\Controller\Parameter;
+use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Str\Exceptions\StrContainsException;
 use Chevere\Components\Str\Exceptions\StrCtypeSpaceException;
@@ -25,27 +25,35 @@ final class ControllerParameterTest extends TestCase
     public function testEmptyName(): void
     {
         $this->expectException(StrEmptyException::class);
-        new Parameter('', new Regex('/.*/'));
+        new ControllerParameter('', new Regex('/.*/'));
     }
 
     public function testCtypeSpaceName(): void
     {
         $this->expectException(StrCtypeSpaceException::class);
-        new Parameter(' ', new Regex('/.*/'));
+        new ControllerParameter(' ', new Regex('/.*/'));
     }
 
     public function testSpaceInName(): void
     {
         $this->expectException(StrContainsException::class);
-        new Parameter('some name', new Regex('/.*/'));
+        new ControllerParameter('some name', new Regex('/.*/'));
     }
 
     public function testConstruct(): void
     {
         $name = 'id';
         $regex = new Regex('/^[0-9+]$/');
-        $controllerParameter = new Parameter('id', $regex);
+        $controllerParameter = new ControllerParameter('id', $regex);
         $this->assertSame($name, $controllerParameter->name());
         $this->assertSame($regex->toString(), $controllerParameter->regex()->toString());
+    }
+
+    public function testWithIsRequired(): void
+    {
+        $controllerParameter = new ControllerParameter('test', new Regex('/.*/'));
+        $this->assertTrue($controllerParameter->isRequired());
+        $controllerParameter = $controllerParameter->withIsRequired(false);
+        $this->assertFalse($controllerParameter->isRequired());
     }
 }
