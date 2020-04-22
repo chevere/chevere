@@ -25,7 +25,9 @@ final class ControllerParameter implements ControllerParameterInterface
 
     private RegexInterface $regex;
 
-    private bool $isRequired;
+    private string $description = '';
+
+    private bool $isRequired = true;
 
     /**
      * @throws StrCtypeSpaceException if $name contains ctype space
@@ -33,10 +35,17 @@ final class ControllerParameter implements ControllerParameterInterface
      */
     public function __construct(string $name, RegexInterface $regex)
     {
-        $this->assertName($name);
         $this->name = $name;
+        $this->assertName();
         $this->regex = $regex;
-        $this->isRequired = true;
+    }
+
+    public function withDescription(string $description): ControllerParameterInterface
+    {
+        $new = clone $this;
+        $new->description = $description;
+
+        return $new;
     }
 
     public function withIsRequired(bool $bool): ControllerParameterInterface
@@ -45,6 +54,11 @@ final class ControllerParameter implements ControllerParameterInterface
         $new->isRequired = $bool;
 
         return $new;
+    }
+
+    public function isRequired(): bool
+    {
+        return $this->isRequired;
     }
 
     public function name(): string
@@ -57,14 +71,14 @@ final class ControllerParameter implements ControllerParameterInterface
         return $this->regex;
     }
 
-    public function isRequired(): bool
+    public function description(): string
     {
-        return $this->isRequired;
+        return $this->description;
     }
 
-    private function assertName(string $name): void
+    private function assertName(): void
     {
-        (new StrAssert($name))
+        (new StrAssert($this->name))
             ->notEmpty()
             ->notCtypeSpace()
             ->notContains(' ');

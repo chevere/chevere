@@ -89,12 +89,8 @@ final class RouteTest extends TestCase
         $endpoint = new RouteEndpoint($method, $controller);
         $route = $route->withAddedEndpoint($endpoint);
         $this->assertTrue($route->endpoints()->hasKey($method));
-        $pair = $controller->parameters()->map()->first()->toArray();
-        $key = $pair['key'];
         $this->assertSame(
-            [
-                $key => $controller->parameters()->get($key)->regex()->toNoDelimiters()
-            ],
+            [],
             $route->endpoints()->get($method)->parameters()
         );
     }
@@ -119,7 +115,6 @@ final class RouteTestController extends Controller
     public function getParameters(): ControllerParametersInterface
     {
         return (new ControllerParameters)
-            ->withParameter(new ControllerParameter('name', new Regex('/^[\w]+$/')))
             ->withParameter(new ControllerParameter('id', new Regex('/^[0-9]+$/')));
     }
 

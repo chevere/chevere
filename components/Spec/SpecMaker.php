@@ -175,6 +175,6 @@ final class SpecMaker
 
     private function toJson(array $array): string
     {
-        return json_encode($array, JSON_PRETTY_PRINT);
+        return json_encode($array, JSON_PRETTY_PRINT | JSON_FORCE_OBJECT);
     }
 }

@@ -12,16 +12,19 @@
             "spec": "\/spec\/group-name\/route-name\/PUT.json",
             "description": "Replace all current representations of the target resource with the request payload",
             "parameters": {
-                "name": "^[\\w]+$"
+                "name": {
+                    "name": "name",
+                    "regex": "^[\\w]+$",
+                    "description": "The user name",
+                    "isRequired": false
+                }
             }
         },
         "GET": {
             "method": "GET",
             "spec": "\/spec\/group-name\/route-name\/GET.json",
             "description": "Transfer a current representation of the target resource",
-            "parameters": {
-                "name": "^[\\w]+$"
-            }
+            "parameters": {}
         }
     }
 }

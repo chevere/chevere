@@ -49,6 +49,15 @@ final class ControllerParameterTest extends TestCase
         $this->assertSame($regex->toString(), $controllerParameter->regex()->toString());
     }
 
+    public function testWithDescription(): void
+    {
+        $description = 'ola k ase';
+        $controllerParameter = new ControllerParameter('test', new Regex('/.*/'));
+        $this->assertSame('', $controllerParameter->description());
+        $controllerParameter = $controllerParameter->withDescription($description);
+        $this->assertSame($description, $controllerParameter->description());
+    }
+
     public function testWithIsRequired(): void
     {
         $controllerParameter = new ControllerParameter('test', new Regex('/.*/'));
