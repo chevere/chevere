@@ -38,7 +38,7 @@ final class ControllerParameters implements ControllerParametersInterface
         return $new;
     }
 
-    public function hasKey(string $name): bool
+    public function hasParameter(string $name): bool
     {
         return $this->map->hasKey(/** @scrutinizer ignore-type */ $name);
     }

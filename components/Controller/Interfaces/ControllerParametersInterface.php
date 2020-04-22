@@ -24,7 +24,7 @@ interface ControllerParametersInterface
 
     public function withParameter(ControllerParameterInterface $controllerParameter): ControllerParametersInterface;
 
-    public function hasKey(string $name): bool;
+    public function hasParameter(string $name): bool;
 
     public function get(string $name): ControllerParameterInterface;
 }

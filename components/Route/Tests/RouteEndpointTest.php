@@ -36,7 +36,7 @@ final class RouteEndpointTest extends TestCase
         $this->assertSame($method->description(), $routeEndpoint->description());
         /** @var string $name */
         foreach (array_keys($routeEndpoint->parameters()) as $name) {
-            $this->assertTrue($controller->parameters()->hasKey($name));
+            $this->assertTrue($controller->parameters()->hasParameter($name));
         }
     }
 

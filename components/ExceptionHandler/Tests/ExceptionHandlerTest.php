@@ -23,8 +23,13 @@ use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Route\RoutePath;
 use DateTimeInterface;
+use Error;
 use LogicException;
+use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\NullLogger;
+use TypeError;
 
 final class ExceptionHandlerTest extends TestCase
 {
@@ -42,18 +47,17 @@ final class ExceptionHandlerTest extends TestCase
         $this->assertInstanceOf(DateTimeInterface::class, $handler->dateTimeUtc());
         $this->assertInstanceOf(Exception::class, $handler->exception());
         $this->assertIsString($handler->id());
-        $this->assertSame('/dev/null', $handler->logDestination());
         $this->assertFalse($handler->isDebug());
         $this->assertFalse($handler->hasRequest());
-        $this->expectException(BadMethodCallException::class);
+        $this->expectException(Error::class);
         $handler->request();
     }
 
     public function testWithDebug(): void
     {
-        $handler = $this->getExceptionHandler()
-            ->withIsDebug(true);
-        $this->assertTrue($handler->isDebug());
+        $this->assertTrue(
+            $this->getExceptionHandler()->withIsDebug(true)->isDebug()
+        );
     }
 
     // public function testWithRequest(): void
@@ -64,11 +68,16 @@ final class ExceptionHandlerTest extends TestCase
     //     $this->assertInstanceOf(RequestInterface::class, $handler->request());
     // }
 
-    public function testWithLogDestination(): void
+    public function testWithLogger(): void
     {
-        $destination = 'A logger destination string';
-        $handler = $this->getExceptionHandler()
-            ->withLogDestination($destination);
-        $this->assertSame($destination, $handler->logDestination());
+        $locations = ['php://stderr', 'php://stdout'];
+        $logger = new Logger('name');
+        /**
+         * @var string $location
+         */
+        foreach ($locations as $location) {
+            $logger->pushHandler(new StreamHandler($location));
+        }
+        $handler = $this->getExceptionHandler()->withLogger($logger);
     }
 }

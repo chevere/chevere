@@ -16,8 +16,8 @@ namespace Chevere\Components\Controller\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when the argument count doesn't match.
+ * Exception thrown when missing required arguments.
  */
-final class ControllerArgumentCountException extends Exception
+final class ControllerArgumentRequiredException extends Exception
 {
 }

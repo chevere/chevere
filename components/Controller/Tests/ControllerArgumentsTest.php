@@ -21,31 +21,20 @@ use stdClass;
 
 final class ControllerArgumentsTest extends TestCase
 {
-    public function testsIntegerKey(): void
-    {
-        $this->expectException(LogicException::class);
-        new ControllerArguments([1 => 'value']);
-    }
-
-    public function testsIntegerValue(): void
-    {
-        $this->expectException(LogicException::class);
-        new ControllerArguments(['name' => 1]);
-    }
-
     public function testConstruct(): void
     {
         $array = [
             'id' => '1',
-            'name' => 'some-name',
+            'name' => 'some-value',
         ];
-        $controllerArguments = new ControllerArguments($array);
-        foreach ($array as $key => $value) {
-            $this->assertTrue($controllerArguments->hasKey($key));
-            $this->assertSame($value, $controllerArguments->get($key));
+        $controllerArguments = new ControllerArguments;
+        foreach ($array as $name => $value) {
+            $controllerArguments->put($name, $value);
+            $this->assertTrue($controllerArguments->has($name));
+            $this->assertSame($value, $controllerArguments->get($name));
         }
         $notFoundKey = '404';
-        $this->assertFalse($controllerArguments->hasKey($notFoundKey));
+        $this->assertFalse($controllerArguments->has($notFoundKey));
         $this->expectException(OutOfBoundsException::class);
         $controllerArguments->get($notFoundKey);
     }

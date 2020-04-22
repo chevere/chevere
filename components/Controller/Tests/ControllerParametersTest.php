@@ -26,7 +26,7 @@ final class ControllerParametersTest extends TestCase
         $key = 'name';
         $parameters = new ControllerParameters;
         $this->assertCount(0, $parameters->map());
-        $this->assertFalse($parameters->hasKey($key));
+        $this->assertFalse($parameters->hasParameter($key));
         $this->expectException(OutOfBoundsException::class);
         $parameters->get($key);
     }
@@ -37,7 +37,7 @@ final class ControllerParametersTest extends TestCase
         $parameter = new ControllerParameter($key, new Regex('/.*/'));
         $parameters = (new ControllerParameters)->withParameter($parameter);
         $this->assertCount(1, $parameters->map());
-        $this->assertTrue($parameters->hasKey($key));
+        $this->assertTrue($parameters->hasParameter($key));
         $this->assertSame($parameter, $parameters->get($key));
     }
 }

@@ -72,7 +72,6 @@ abstract class AbstractDocument implements DocumentInterface
             static::TAG_ID => $this->exceptionHandler->id(),
             static::TAG_DATE_TIME_UTC_ATOM => $dateTimeUtc->format(DateTimeInterface::ATOM),
             static::TAG_TIMESTAMP => $dateTimeUtc->getTimestamp(),
-            static::TAG_LOG_DESTINATION => $this->exceptionHandler->logDestination(),
             static::TAG_STACK => $this->getStackTrace(),
             static::TAG_PHP_UNAME => php_uname(),
         ];
@@ -114,8 +113,7 @@ abstract class AbstractDocument implements DocumentInterface
 
     public function getSectionId(): string
     {
-        return $this->formatter->wrapSectionTitle('# Incident ID:' . static::TAG_ID)
-            . "\n" . 'Logged at ' . $this->formatter->wrapLink(static::TAG_LOG_DESTINATION);
+        return $this->formatter->wrapSectionTitle('# Incident ID:' . static::TAG_ID);
     }
 
     public function getSectionTime(): string
@@ -203,22 +201,3 @@ abstract class AbstractDocument implements DocumentInterface
         }
     }
 }
-
-//     private function processContentGlobals()
-//     {
-//         // $globals = $this->exceptionHandler->request()->globals()->globals();
-//         $globals = $GLOBALS;
-//         foreach (['_GET', '_POST', '_FILES', '_COOKIE', '_SESSION', '_SERVER'] as $global) {
-//             $val = $globals[$global] ?? null;
-//             if (!empty($val)) {
-//                 $dumperVarDump = (new VarDump(new Dumpeable($val), new DumperFormatter()))->withProcess();
-//                 $plainVarDump = (new VarDump(new Dumpeable($val), new PlainFormatter()))->withProcess();
-//                 $wrapped = $dumperVarDump->toString();
-//                 if (!BootstrapInstance::get()->isCli()) {
-//                     $wrapped = '<pre>' . $wrapped . '</pre>';
-//                 }
-//                 $this->setRichContentSection($global, ['$' . $global, $this->wrapStringHr($wrapped)]);
-//                 $this->setPlainContentSection($global, ['$' . $global, strip_tags($this->wrapStringHr($plainVarDump->toString()))]);
-//             }
-//         }
-//     }

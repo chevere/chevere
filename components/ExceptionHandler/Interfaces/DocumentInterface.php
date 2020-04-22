@@ -33,7 +33,6 @@ interface DocumentInterface
     const TAG_FILE_LINE = '%fileLine%';
     const TAG_DATE_TIME_UTC_ATOM = '%dateTimeUtcAtom%';
     const TAG_TIMESTAMP = '%timestamp%';
-    const TAG_LOG_DESTINATION = '%logDestination%';
     const TAG_STACK = '%stack%';
     const TAG_CLIENT_IP = '%clientIp%';
     const TAG_CLIENT_USER_AGENT = '%clientUserAgent%';

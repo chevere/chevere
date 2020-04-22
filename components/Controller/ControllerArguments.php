@@ -14,26 +14,24 @@ declare(strict_types=1);
 namespace Chevere\Components\Controller;
 
 use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
-use Chevere\Components\Message\Message;
 use Ds\Map;
-use LogicException;
 use OutOfBoundsException;
 
 final class ControllerArguments implements ControllerArgumentsInterface
 {
     private Map $map;
 
-    /**
-     * @param array $map [<string>name => <mixed>value,]
-     * @throws LogicException
-     */
-    public function __construct(array $array)
+    public function __construct()
     {
-        $this->assertArray($array);
-        $this->map = new Map($array);
+        $this->map = new Map;
     }
 
-    public function hasKey(string $name): bool
+    public function put(string $name, string $value): void
+    {
+        $this->map->put($name, $value);
+    }
+
+    public function has(string $name): bool
     {
         /** @var \Ds\TKey $key */
         $key = $name;
@@ -53,33 +51,5 @@ final class ControllerArguments implements ControllerArgumentsInterface
         $return = $this->map->get($name);
 
         return $return;
-    }
-
-    private function assertArray(array $array): void
-    {
-        $pos = -1;
-        foreach ($array as $key => $value) {
-            $pos++;
-            $keyType = gettype($key);
-            if ($keyType !== 'string') {
-                throw new LogicException(
-                    (new Message('Expecting %expected% type keys, type %gettype% provided at index position %pos%'))
-                        ->code('%expected%', 'string')
-                        ->code('%gettype%', $keyType)
-                        ->code('%pos%', (string) $pos)
-                        ->toString()
-                );
-            }
-            $valType = gettype($value);
-            if ($valType !== 'string') {
-                throw new LogicException(
-                    (new Message('Expecting %expected% type values, type %gettype% provided at key %name%'))
-                        ->code('%expected%', 'string')
-                        ->code('%gettype%', $valType)
-                        ->code('%name%', $key)
-                        ->toString()
-                );
-            }
-        }
     }
 }

@@ -15,7 +15,9 @@ namespace Chevere\Components\Controller\Interfaces;
 
 interface ControllerArgumentsInterface
 {
-    public function hasKey(string $name): bool;
+    public function put(string $name, string $value): void;
+
+    public function has(string $name): bool;
 
     public function get(string $name);
 }
