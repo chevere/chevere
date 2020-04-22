@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Str\Tests;
 
-use Chevere\Components\Str\Exceptions\StrAssertException;
 use Chevere\Components\Str\Exceptions\StrContainsException;
+use Chevere\Components\Str\Exceptions\StrCtypeDigitException;
 use Chevere\Components\Str\Exceptions\StrCtypeSpaceException;
 use Chevere\Components\Str\Exceptions\StrEmptyException;
 use Chevere\Components\Str\Exceptions\StrEndsWithException;
 use Chevere\Components\Str\Exceptions\StrNotContainsException;
+use Chevere\Components\Str\Exceptions\StrNotCtypeDigitException;
 use Chevere\Components\Str\Exceptions\StrNotCtypeSpaceException;
 use Chevere\Components\Str\Exceptions\StrNotEmptyException;
 use Chevere\Components\Str\Exceptions\StrNotEndsWithException;
@@ -60,6 +61,20 @@ final class StrAssertTest extends TestCase
         (new StrAssert("\n valid"))->notCtypeSpace();
         $this->expectException(StrCtypeSpaceException::class);
         (new StrAssert(" \n\t\r"))->notCtypeSpace();
+    }
+
+    public function testCtypeDigit(): void
+    {
+        (new StrAssert(" \n\t\r"))->ctypeDigit();
+        $this->expectException(StrNotCtypeDigitException::class);
+        (new StrAssert('string'))->ctypeDigit();
+    }
+
+    public function testNotCtypeDigit(): void
+    {
+        (new StrAssert('string'))->notCtypeDigit();
+        $this->expectException(StrCtypeDigitException::class);
+        (new StrAssert('101'))->notCtypeDigit();
     }
 
     public function testStartsWithCtypeDigit(): void

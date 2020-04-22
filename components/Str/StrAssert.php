@@ -125,7 +125,7 @@ final class StrAssert implements StrAssertInterface
      */
     public function notCtypeDigit(): StrAssertInterface
     {
-        if ((new StrBool($this->string))->ctypeSpace()) {
+        if ((new StrBool($this->string))->ctypeDigit()) {
             throw new StrCtypeDigitException(
                 (new Message('String %algo% provided'))
                     ->strong('%algo%', 'ctype digit')
