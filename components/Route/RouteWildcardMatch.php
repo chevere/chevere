@@ -16,8 +16,8 @@ namespace Chevere\Components\Route;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Interfaces\RouteWildcardMatchInterface;
-use Chevere\Components\Str\StrAssert;
 use Chevere\Components\Str\StrBool;
+use InvalidArgumentException;
 use LogicException;
 
 final class RouteWildcardMatch implements RouteWildcardMatchInterface
@@ -37,7 +37,7 @@ final class RouteWildcardMatch implements RouteWildcardMatchInterface
         return $this->string;
     }
 
-    public function pattern(): string
+    public function toAnchored(): string
     {
         return '^' . $this->string . '$';
     }
@@ -45,7 +45,7 @@ final class RouteWildcardMatch implements RouteWildcardMatchInterface
     private function assertFormat(): void
     {
         if ((new StrBool($this->string))->startsWith('^')) {
-            throw new LogicException(
+            throw new InvalidArgumentException(
                 (new Message('String %string% must omit the starting anchor %char%'))
                     ->code('%string%', $this->string)
                     ->code('%char%', '^')
@@ -53,7 +53,7 @@ final class RouteWildcardMatch implements RouteWildcardMatchInterface
             );
         }
         if ((new StrBool($this->string))->endsWith('$')) {
-            throw new LogicException(
+            throw new InvalidArgumentException(
                 (new Message('String %string% must omit the ending anchor %char%'))
                     ->code('%string%', $this->string)
                     ->code('%char%', '$')

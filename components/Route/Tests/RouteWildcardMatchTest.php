@@ -15,6 +15,7 @@ namespace Chevere\Components\Route\Tests;
 
 use Chevere\Components\Regex\Exceptions\RegexException;
 use Chevere\Components\Route\RouteWildcardMatch;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class RouteWildcardMatchTest extends TestCase
@@ -31,10 +32,23 @@ final class RouteWildcardMatchTest extends TestCase
         new RouteWildcardMatch('te(s)t');
     }
 
+    public function testConstructWithAnchorStart(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new RouteWildcardMatch('^error');
+    }
+
+    public function testConstructWithAnchorEnd(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        new RouteWildcardMatch('error$');
+    }
+
     public function testConstruct(): void
     {
-        $regexMatchString = '[a-z]+';
-        $regexMath = new RouteWildcardMatch($regexMatchString);
-        $this->assertSame($regexMatchString, $regexMath->toString());
+        $string = '[a-z]+';
+        $routeWildcardMatch = new RouteWildcardMatch($string);
+        $this->assertSame($string, $routeWildcardMatch->toString());
+        $this->assertSame('^' . $string . '$', $routeWildcardMatch->toAnchored());
     }
 }

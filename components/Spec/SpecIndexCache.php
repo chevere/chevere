@@ -50,7 +50,7 @@ final class SpecIndexCache implements SpecIndexCacheInterface
          * @var SpecMethods $specMethods
          */
         foreach ($specIndex->specIndexMap()->map() as $routeName => $specMethods) {
-            $this->cache->withPut(
+            $this->cache = $this->cache->withPut(
                 new CacheKey($routeName),
                 new VariableExport($specMethods)
             );

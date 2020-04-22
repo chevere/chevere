@@ -62,6 +62,7 @@ final class SpecIndexCacheTest extends TestCase
                 )
             )
         );
+        $this->assertIsArray($specIndexCache->puts()[$routeName->toString()]);
         $this->assertTrue($specIndexCache->has($routeName->toString()));
         $specMethods = $specIndexCache->get($routeName->toString());
         $this->assertTrue($specMethods->hasKey($method->name()));
