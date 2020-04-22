@@ -14,15 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Tests\Specs;
 
 use Chevere\Components\Http\Methods\PatchMethod;
-use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
-use Chevere\Components\Route\RouteName;
-use Chevere\Components\Route\RoutePath;
-use Chevere\Components\Router\Routeable;
-use Chevere\Components\Spec\RouteableSpec;
-use Chevere\Components\Spec\RouteEndpointSpec;
 use Chevere\Components\Spec\SpecPath;
-use Chevere\Components\Spec\Specs\RouteableSpecs;
+use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Components\Spec\Specs\RouteEndpointSpecs;
 use Chevere\TestApp\App\Controllers\TestController;
 use OutOfBoundsException;

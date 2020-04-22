@@ -11,9 +11,8 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Spec;
+namespace Chevere\Components\Spec\Specs;
 
-use Chevere\Components\Regex\Interfaces\RegexInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
 use Chevere\Components\Router\Interfaces\RouteableInterface;

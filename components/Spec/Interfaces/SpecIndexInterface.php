@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Interfaces;
 
-use Chevere\Components\Spec\RouteEndpointSpec;
 use Chevere\Components\Spec\SpecIndexMap;
+use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 
 interface SpecIndexInterface
 {

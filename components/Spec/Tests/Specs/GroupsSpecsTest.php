@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Tests\Specs;
 
-use Chevere\Components\Spec\GroupSpec;
 use Chevere\Components\Spec\SpecPath;
+use Chevere\Components\Spec\Specs\GroupSpec;
 use Chevere\Components\Spec\Specs\GroupSpecs;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;

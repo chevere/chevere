@@ -18,10 +18,10 @@ use Chevere\Components\Http\Methods\ConnectMethod;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Router\Tests\CacheHelper;
-use Chevere\Components\Spec\RouteEndpointSpec;
 use Chevere\Components\Spec\SpecIndex;
 use Chevere\Components\Spec\SpecIndexCache;
 use Chevere\Components\Spec\SpecPath;
+use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 

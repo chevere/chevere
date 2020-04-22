@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
-use Chevere\Components\Spec\RouteableSpec;
+use Chevere\Components\Spec\Specs\RouteableSpec;
 
 final class RouteableSpecs
 {

@@ -14,11 +14,24 @@ declare(strict_types=1);
 namespace Chevere\Components\Route\Tests\_resources\controllers;
 
 use Chevere\Components\Controller\Controller;
+use Chevere\Components\Controller\ControllerParameter;
+use Chevere\Components\Controller\ControllerParameters;
+use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
+use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
+use Chevere\Components\Regex\Regex;
 
 final class GetArticleController extends Controller
 {
-    public function __invoke(string $id): void
+    public function getParameters(): ControllerParametersInterface
     {
-        echo 'Get article: ' . $id;
+        return (new ControllerParameters)
+            ->withParameter(
+                new ControllerParameter('id', new Regex('/^d+$/'))
+            );
+    }
+
+    public function run(ControllerArgumentsInterface $arguments): void
+    {
+        // does nothing
     }
 }

@@ -19,9 +19,9 @@ use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routeable;
-use Chevere\Components\Spec\RouteableSpec;
-use Chevere\Components\Spec\RouteEndpointSpec;
 use Chevere\Components\Spec\SpecPath;
+use Chevere\Components\Spec\Specs\RouteableSpec;
+use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 

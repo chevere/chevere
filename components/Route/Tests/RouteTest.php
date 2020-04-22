@@ -115,7 +115,9 @@ final class RouteTestController extends Controller
     public function getParameters(): ControllerParametersInterface
     {
         return (new ControllerParameters)
-            ->withParameter(new ControllerParameter('id', new Regex('/^[0-9]+$/')));
+            ->withParameter(
+                new ControllerParameter('id', new Regex('/^[0-9]+$/'))
+            );
     }
 
     public function run(ControllerArgumentsInterface $arguments): void

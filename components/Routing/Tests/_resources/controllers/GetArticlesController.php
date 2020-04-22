@@ -11,15 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Route\Tests\_resources\controllers;
+namespace Chevere\Components\Routing\Tests\_resources\controllers;
 
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
 
 final class GetArticlesController extends Controller
 {
-    public function run(ControllerArgumentsInterface $arguments): void
-    {
-        echo 'Get articles';
-    }
 }

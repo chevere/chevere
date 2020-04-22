@@ -11,13 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Spec;
+namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\Spec\Interfaces\SpecInterface;
 use Chevere\Components\Spec\Interfaces\SpecPathInterface;
 use Chevere\Components\Spec\Specs\RouteableSpecs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
-use function DeepCopy\deep_copy;
 
 final class GroupSpec implements SpecInterface
 {

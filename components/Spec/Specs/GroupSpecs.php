@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
-use Chevere\Components\Spec\GroupSpec;
+use Chevere\Components\Spec\Specs\GroupSpec;
 
 final class GroupSpecs
 {

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Specs;
 
-use Chevere\Components\Spec\RouteEndpointSpec;
+use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Ds\Map;
 use function DeepCopy\deep_copy;
 
