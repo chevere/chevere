@@ -16,8 +16,10 @@ namespace Chevere\Components\Router\Tests;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
+use Chevere\Components\Controller\ControllerResponse;
 use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
 use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
+use Chevere\Components\Controller\Interfaces\ControllerResponseInterface;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
@@ -108,8 +110,8 @@ final class RouterMakerTestController extends Controller
             ->withParameter(new ControllerParameter('id', new Regex('/^[0-9]+$/')));
     }
 
-    public function run(ControllerArgumentsInterface $arguments): void
+    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        // does nothing
+        return new ControllerResponse(true);
     }
 }

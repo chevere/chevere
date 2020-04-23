@@ -16,6 +16,7 @@ namespace Chevere\Components\Controller;
 use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
+use Chevere\Components\Controller\Interfaces\ControllerResponseInterface;
 
 /**
  * @codeCoverageIgnore
@@ -47,5 +48,5 @@ abstract class Controller implements ControllerInterface
     {
     }
 
-    abstract public function run(ControllerArgumentsInterface $arguments): void;
+    abstract public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface;
 }

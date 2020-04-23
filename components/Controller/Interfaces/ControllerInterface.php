@@ -17,9 +17,11 @@ interface ControllerInterface
 {
     public function getParameters(): ControllerParametersInterface;
 
+    public function parameters(): ControllerParametersInterface;
+
     public function setUp(): void;
 
     public function tearDown(): void;
 
-    public function parameters(): ControllerParametersInterface;
+    public function run(ControllerArgumentsInterface $controllerArguments): ControllerResponseInterface;
 }

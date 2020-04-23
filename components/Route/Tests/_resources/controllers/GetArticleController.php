@@ -16,8 +16,10 @@ namespace Chevere\Components\Route\Tests\_resources\controllers;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
+use Chevere\Components\Controller\ControllerResponse;
 use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
 use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
+use Chevere\Components\Controller\Interfaces\ControllerResponseInterface;
 use Chevere\Components\Regex\Regex;
 
 final class GetArticleController extends Controller
@@ -30,8 +32,8 @@ final class GetArticleController extends Controller
             );
     }
 
-    public function run(ControllerArgumentsInterface $arguments): void
+    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        // does nothing
+        return new ControllerResponse(true);
     }
 }

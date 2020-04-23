@@ -14,12 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Components\Route\Tests\_resources\controllers;
 
 use Chevere\Components\Controller\Controller;
+use Chevere\Components\Controller\ControllerResponse;
 use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
+use Chevere\Components\Controller\Interfaces\ControllerResponseInterface;
 
 final class GetArticlesController extends Controller
 {
-    public function run(ControllerArgumentsInterface $arguments): void
+    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        // does nothing
+        return new ControllerResponse(true);
     }
 }

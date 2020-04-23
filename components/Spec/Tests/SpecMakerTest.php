@@ -16,8 +16,10 @@ namespace Chevere\Components\Spec\Tests;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
+use Chevere\Components\Controller\ControllerResponse;
 use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
 use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
+use Chevere\Components\Controller\Interfaces\ControllerResponseInterface;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Http\Methods\GetMethod;
@@ -110,9 +112,9 @@ class SpecMakerTestGetController extends Controller
             );
     }
 
-    public function run(ControllerArgumentsInterface $arguments): void
+    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        // does nothing
+        return new ControllerResponse(true);
     }
 }
 
@@ -132,8 +134,8 @@ class SpecMakerTestPutController extends Controller
             );
     }
 
-    public function run(ControllerArgumentsInterface $arguments): void
+    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        // does nothing
+        return new ControllerResponse(true);
     }
 }
