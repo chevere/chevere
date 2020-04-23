@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router\Tests;
 
+use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RouteWildcards;
 use Chevere\Components\Router\RouteResolve;
 use PHPUnit\Framework\TestCase;
@@ -21,10 +22,10 @@ final class RouteResolveTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $name = 'route-name';
-        $routeWildcards = new RouteWildcards;
-        $routeResolve = new RouteResolve($name, $routeWildcards);
-        $this->assertSame($name, $routeResolve->name());
-        $this->assertSame($routeWildcards, $routeResolve->routeWildcards());
+        $name = new RouteName('route-name');
+        $wildcards = new RouteWildcards;
+        $resolve = new RouteResolve($name, $wildcards);
+        $this->assertSame($name, $resolve->name());
+        $this->assertSame($wildcards, $resolve->wildcards());
     }
 }

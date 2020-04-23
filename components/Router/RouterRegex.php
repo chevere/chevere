@@ -35,7 +35,7 @@ final class RouterRegex implements RouterRegexInterface
 
     private function assertFormat(): void
     {
-        if (!preg_match(self::MATCHER, $this->regex->toString())) {
+        if (preg_match(self::MATCHER, $this->regex->toString()) === 0) {
             throw new InvalidArgumentException(
                 (new Message('Invalid regex pattern %regex% (validated against %matcher%)'))
                     ->code('%regex%', $this->regex->toString())

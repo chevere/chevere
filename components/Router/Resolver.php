@@ -79,10 +79,10 @@ final class Resolver implements ResolverInterface
         }
         $routeResolve = $this->getRouteResolve($idInt);
         $name = $routeResolve->name();
-        $routeWildcards = $routeResolve->routeWildcards();
+        $wildcards = $routeResolve->wildcards();
         $arguments = [];
         foreach ($matches as $pos => $val) {
-            $arguments[$routeWildcards->getPos($pos)->name()] = $val;
+            $arguments[$wildcards->getPos($pos)->name()] = $val;
         }
 
         return new Routed($name, $arguments);

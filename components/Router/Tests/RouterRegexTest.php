@@ -31,9 +31,9 @@ use PHPUnit\Framework\TestCase;
 
 final class RouterRegexTest extends TestCase
 {
-    public function testBadConstruct(): void
+    public function testConstructInvalidArgument(): void
     {
-        $regex = new Regex('#/^regex*#');
+        $regex = new Regex('#eee#');
         $this->expectException(InvalidArgumentException::class);
         new RouterRegex($regex);
     }

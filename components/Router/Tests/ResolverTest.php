@@ -67,7 +67,7 @@ final class ResolverTest extends TestCase
                 'grupian'
             );
             $this->routesResolves[] = new RouteResolve(
-                $route->name()->toString(),
+                $route->name(),
                 $route->path()->wildcards()
             );
         }

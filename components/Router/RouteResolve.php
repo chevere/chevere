@@ -13,28 +13,29 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
+use Chevere\Components\Route\Interfaces\RouteNameInterface;
 use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
 use Chevere\Components\Route\RouteWildcards;
 
 final class RouteResolve
 {
-    private string $name;
+    private RouteNameInterface $name;
 
-    private RouteWildcards $routeWildcards;
+    private RouteWildcards $wildcards;
 
-    public function __construct(string $name, RouteWildcardsInterface $routeWildcards)
+    public function __construct(RouteNameInterface $name, RouteWildcardsInterface $wildcards)
     {
         $this->name = $name;
-        $this->routeWildcards = $routeWildcards;
+        $this->wildcards = $wildcards;
     }
 
-    public function name(): string
+    public function name(): RouteNameInterface
     {
         return $this->name;
     }
 
-    public function routeWildcards(): RouteWildcardsInterface
+    public function wildcards(): RouteWildcardsInterface
     {
-        return $this->routeWildcards;
+        return $this->wildcards;
     }
 }
