@@ -68,16 +68,16 @@ final class ExceptionHandlerTest extends TestCase
     //     $this->assertInstanceOf(RequestInterface::class, $handler->request());
     // }
 
-    public function testWithLogger(): void
-    {
-        $locations = ['php://stderr', 'php://stdout'];
-        $logger = new Logger('name');
-        /**
-         * @var string $location
-         */
-        foreach ($locations as $location) {
-            $logger->pushHandler(new StreamHandler($location));
-        }
-        $handler = $this->getExceptionHandler()->withLogger($logger);
-    }
+    // public function testWithLogger(): void
+    // {
+    //     $locations = ['php://stderr', 'php://stdout'];
+    //     $logger = new Logger('name');
+    //     /**
+    //      * @var string $location
+    //      */
+    //     foreach ($locations as $location) {
+    //         $logger->pushHandler(new StreamHandler($location));
+    //     }
+    //     $handler = $this->getExceptionHandler()->withLogger($logger);
+    // }
 }

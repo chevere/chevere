@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ResolveCacheTest extends TestCase
 {
-    public function testConstruct(): void
-    {
-    }
+    // public function testConstruct(): void
+    // {
+    // }
 }

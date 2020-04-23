@@ -13,15 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
-use Chevere\Components\Controller\Exceptions\ControllerArgumentRegexException;
-use Chevere\Components\Controller\Exceptions\ControllerArgumentRequiredException;
+use Chevere\Components\Controller\Exceptions\ControllerArgumentRegexMatchException;
+use Chevere\Components\Controller\Exceptions\ControllerArgumentsRequiredException;
 use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
 use Chevere\Components\Controller\Interfaces\ControllerParameterInterface;
 use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
 use Chevere\Components\Message\Message;
-use Ds\Map;
 use Ds\Set;
-use InvalidArgumentException;
 use LogicException;
 use OutOfBoundsException;
 
@@ -35,7 +33,7 @@ final class ControllerArgumentsMaker
 
     /**
      * @param array $array [<string>name => <string>value,]
-     * @throws ControllerArgumentRegexException
+     * @throws ControllerArgumentRegexMatchException
      * @throws LogicException if $array doesn't meet the expected types (key=>value)
      */
     public function __construct(ControllerParametersInterface $parameters)
@@ -65,7 +63,7 @@ final class ControllerArgumentsMaker
         $parameter = $this->parameters->get($name);
         $regexString = $parameter->regex()->toString();
         if (preg_match($regexString, $value) !== 1) {
-            throw new ControllerArgumentRegexException(
+            throw new ControllerArgumentRegexMatchException(
                 (new Message("Argument for parameter %parameter% doesn't match the regex %regex%"))
                     ->code('%parameter%', $name)
                     ->code('%regex%', $regexString)
@@ -78,28 +76,33 @@ final class ControllerArgumentsMaker
         return $new;
     }
 
-    public function assertRequired(): void
+    /**
+     * @throws ControllerArgumentsRequiredException
+     */
+    public function arguments(): ControllerArgumentsInterface
+    {
+        $this->assertRequired();
+
+        return $this->arguments;
+    }
+
+    private function assertRequired(): void
     {
         $failed = [];
         /**
          * @var string $name
          */
         foreach ($this->required as $name) {
-            if ($this->arguments->has($name)) {
+            if ($this->arguments->has($name) === false) {
                 $failed[] = $name;
             }
         }
         if ($failed !== []) {
-            throw new ControllerArgumentRequiredException(
+            throw new ControllerArgumentsRequiredException(
                 (new Message('Missing required argument(s): %message%'))
                     ->implodeTag('%message%', 'code', $failed)
                     ->toString()
             );
         }
-    }
-
-    public function arguments(): ControllerArgumentsInterface
-    {
-        return $this->arguments;
     }
 }

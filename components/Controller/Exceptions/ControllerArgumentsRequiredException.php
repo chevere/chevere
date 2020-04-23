@@ -16,8 +16,8 @@ namespace Chevere\Components\Controller\Exceptions;
 use Exception;
 
 /**
- * Exception thrown when the controller argument fails to regex.
+ * Exception thrown when missing required arguments.
  */
-final class ControllerArgumentRegexException extends Exception
+final class ControllerArgumentsRequiredException extends Exception
 {
 }
