@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere;
 
-use Chevere\Components\Instances\BootstrapInstance;
-use Chevere\Components\Instances\WritersInstance;
 use Chevere\Components\Bootstrap\Bootstrap;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Instances\BootstrapInstance;
+use Chevere\Components\Instances\WritersInstance;
 use Chevere\Components\Writers\Writers;
 
 require 'vendor/autoload.php';
@@ -30,7 +30,8 @@ new BootstrapInstance(
         ->withDev(false)
 );
 
-new WritersInstance(new Writers());
+new WritersInstance(new Writers);
+
 // new HooksInstance(
 //     new Hooks(include 'hooks_classmap.php')
 // );

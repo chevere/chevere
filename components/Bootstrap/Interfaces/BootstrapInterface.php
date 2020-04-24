@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Bootstrap\Interfaces;
 
-use Chevere\Components\Console\Interfaces\ConsoleInterface;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 
 interface BootstrapInterface
@@ -55,24 +54,6 @@ interface BootstrapInterface
      * Returns a boolean indicating whether the instance has the cli flag.
      */
     public function isCli(): bool;
-
-    /**
-     * Return an instance with the specified ConsoleInterface.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified ConsoleInterface.
-     */
-    public function withConsole(ConsoleInterface $console): BootstrapInterface;
-
-    /**
-     * Returns a boolean indicating whether the instance has a ConsoleInterface.
-     */
-    public function hasConsole(): bool;
-
-    /**
-     * Provides access to the ConsoleInterface instance.
-     */
-    public function console(): ConsoleInterface;
 
     /**
      * Return an instance with the specified dev flag.

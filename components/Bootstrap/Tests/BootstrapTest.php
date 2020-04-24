@@ -51,7 +51,6 @@ final class BootstrapTest extends TestCase
         $this->assertIsInt($bootstrap->hrtime());
         $this->assertFalse($bootstrap->isCli());
         $this->assertFalse($bootstrap->isDev());
-        $this->assertFalse($bootstrap->hasConsole());
     }
 
     public function testWithNonExistentDirs(): void

@@ -15,7 +15,6 @@ namespace Chevere\Components\Bootstrap;
 
 use Chevere\Components\Bootstrap\Exceptions\BootstrapDirException;
 use Chevere\Components\Bootstrap\Interfaces\BootstrapInterface;
-use Chevere\Components\Console\Interfaces\ConsoleInterface;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Message\Message;
 use Exception;
@@ -34,11 +33,7 @@ final class Bootstrap implements BootstrapInterface
     /** @var DirInterface Path to the application */
     private DirInterface $appDir;
 
-    private ConsoleInterface $console;
-
     private bool $isCli = false;
-
-    private bool $isConsole = false;
 
     private bool $isDev = false;
 
@@ -83,30 +78,6 @@ final class Bootstrap implements BootstrapInterface
     public function isCli(): bool
     {
         return $this->isCli;
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function withConsole(ConsoleInterface $console): BootstrapInterface
-    {
-        $new = clone $this;
-        $new->console = $console;
-
-        return $new;
-    }
-
-    public function hasConsole(): bool
-    {
-        return isset($this->console);
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    public function console(): ConsoleInterface
-    {
-        return $this->console;
     }
 
     public function withDev(bool $bool): BootstrapInterface
