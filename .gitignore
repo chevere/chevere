@@ -3,4 +3,7 @@
 /.phpunit.result.cache
 /build/
 /Chevere/TestApp/app/
-.php_cs.cache
+/.php_cs.cache
+/rr
+/.rr.yaml
+/http.php

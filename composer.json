@@ -11,22 +11,16 @@
     }],
     "require": {
         "php": ">=7.4",
-        "ext-zend-opcache": "*",
         "ext-ds": "*",
+        "ext-zend-opcache": "*",
         "goaop/parser-reflection": "^2.1",
-        "guzzlehttp/psr7": "^1.6",
         "jakub-onderka/php-console-color": "^0.2.0",
-        "json-api-php/json-api": "^2.1",
         "monolog/monolog": "^2.0",
-        "psr/simple-cache": "^1.0",
-        "symfony/console": "^4.0"
+        "spiral/roadrunner": "^1.7"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",
-        "nunomaduro/phpinsights": "^1",
-        "phpunit/phpunit": "^8",
-        "symfony/var-dumper": "^5.0",
-        "vimeo/psalm": "^3.8"
+        "phpunit/phpunit": "^8"
     },
     "autoload": {
         "files": [

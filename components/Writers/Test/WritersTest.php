@@ -16,8 +16,8 @@ namespace Chevere\Components\Writer\Tests;
 use Chevere\Components\Writers\Interfaces\WriterInterface;
 use Chevere\Components\Writers\StreamWriter;
 use Chevere\Components\Writers\Writers;
+use Laminas\Diactoros\StreamFactory;
 use PHPUnit\Framework\TestCase;
-use function GuzzleHttp\Psr7\stream_for;
 
 final class WritersTest extends TestCase
 {
@@ -35,7 +35,7 @@ final class WritersTest extends TestCase
     public function testWith(): void
     {
         foreach (['out', 'error', 'debug', 'log']  as $name) {
-            $writer = new StreamWriter(stream_for(''));
+            $writer = new StreamWriter((new StreamFactory)->createStream(''));
             $withFn = 'with' . ucfirst($name);
             $writers = (new Writers())->$withFn($writer);
             $this->assertSame($writer, $writers->$name());

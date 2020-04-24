@@ -15,6 +15,7 @@ namespace Chevere\Components\Writers;
 
 use Chevere\Components\Writers\Interfaces\WriterInterface;
 use Chevere\Components\Writers\Interfaces\WritersInterface;
+use Laminas\Diactoros\Stream;
 use function GuzzleHttp\Psr7\stream_for;
 
 final class Writers implements WritersInterface
@@ -29,8 +30,8 @@ final class Writers implements WritersInterface
 
     public function __construct()
     {
-        $this->out = new StreamWriter(stream_for(fopen('php://stdout', 'w')));
-        $this->error = new StreamWriter(stream_for(fopen('php://stderr', 'w')));
+        $this->out = new StreamWriter(new Stream(fopen('php://stdout', 'w')));
+        $this->error = new StreamWriter(new Stream(fopen('php://stderr', 'w')));
         $this->debug = new NullWriter();
         $this->log = new NullWriter();
     }

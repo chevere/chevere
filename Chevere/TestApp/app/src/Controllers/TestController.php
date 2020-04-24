@@ -33,6 +33,10 @@ class TestController extends Controller
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        return new ControllerResponse(true);
+        return (new ControllerResponse(true))
+            ->withData([
+                'userName' => $arguments->get('name'),
+                'userId' => $arguments->get('id')
+            ]);
     }
 }

@@ -24,6 +24,8 @@ use Chevere\Components\VarDump\Tests\Traits\DebugBacktraceTrait;
 use Chevere\Components\VarDump\VarOutputter;
 use Chevere\Components\Writers\StreamWriter;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
+use Laminas\Diactoros\Stream;
+use Laminas\Diactoros\StreamFactory;
 use PHPUnit\Framework\TestCase;
 use function GuzzleHttp\Psr7\stream_for;
 
@@ -45,7 +47,7 @@ final class VarOutputterTest extends TestCase
     public function testPlainOutputter(): void
     {
         $backtrace = $this->getDebugBacktrace();
-        $writer = new StreamWriter(stream_for(''));
+        $writer = new StreamWriter((new StreamFactory)->createStream(''));
         $varOutputter = new VarOutputter(
             $writer,
             $backtrace,
@@ -59,7 +61,7 @@ final class VarOutputterTest extends TestCase
     public function testConsoleOutputter(): void
     {
         $backtrace = $this->getDebugBacktrace();
-        $writer = new StreamWriter(stream_for(''));
+        $writer = new StreamWriter((new StreamFactory)->createStream(''));
         $varOutputter = new VarOutputter(
             $writer,
             $backtrace,
@@ -79,7 +81,7 @@ final class VarOutputterTest extends TestCase
     public function testHtmlOutputter(): void
     {
         $backtrace = $this->getDebugBacktrace();
-        $writer = new StreamWriter(stream_for(''));
+        $writer = new StreamWriter((new StreamFactory)->createStream(''));
         $varOutputter = new VarOutputter(
             $writer,
             $backtrace,

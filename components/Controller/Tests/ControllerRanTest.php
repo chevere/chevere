@@ -16,9 +16,7 @@ namespace Chevere\Components\Controller\Tests;
 use Chevere\Components\Controller\ControllerRan;
 use Error;
 use Exception;
-use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
-use TypeError;
 
 final class ControllerRanTest extends TestCase
 {

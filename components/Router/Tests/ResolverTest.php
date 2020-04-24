@@ -26,7 +26,6 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Components\Route\RouteWildcard;
 use Chevere\Components\Route\RouteWildcardMatch;
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
@@ -37,7 +36,7 @@ use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\Routed;
 use Chevere\Components\Router\RouteResolve;
 use Chevere\Components\Router\RouterMaker;
-use GuzzleHttp\Psr7\Uri;
+use Laminas\Diactoros\Uri;
 use PHPUnit\Framework\TestCase;
 
 final class ResolverTest extends TestCase

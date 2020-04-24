@@ -15,6 +15,9 @@ namespace Chevere\Components\Http\Methods;
 
 use Chevere\Components\Http\Interfaces\MethodInterface;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class PostMethod implements MethodInterface
 {
     public static function name(): string

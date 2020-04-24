@@ -21,6 +21,8 @@ use Chevere\Components\VarDump\VarDumper;
 use Chevere\Components\Writers\Interfaces\WriterInterface;
 use Chevere\Components\Writers\StreamWriter;
 use GuzzleHttp\Psr7\BufferStream;
+use Laminas\Diactoros\Stream;
+use Laminas\Diactoros\StreamFactory;
 use function GuzzleHttp\Psr7\stream_for;
 
 trait VarDumperTrait
@@ -28,7 +30,7 @@ trait VarDumperTrait
     private function getVarDumper($var): VarDumperInterface
     {
         return new VarDumper(
-            new StreamWriter(stream_for('')),
+            new StreamWriter((new StreamFactory)->createStream('')),
             new PlainFormatter,
             new VarDumpeable($var)
         );
