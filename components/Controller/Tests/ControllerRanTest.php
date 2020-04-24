@@ -14,29 +14,31 @@ declare(strict_types=1);
 namespace Chevere\Components\Controller\Tests;
 
 use Chevere\Components\Controller\ControllerRan;
+use Error;
+use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
+use TypeError;
 
 final class ControllerRanTest extends TestCase
 {
-    public function testConstructInvalidArgumentMin(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        new ControllerRan(-1, []);
-    }
-
-    public function testConstructInvalidArgumentMax(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        new ControllerRan(255, []);
-    }
-
     public function testConstruct(): void
     {
-        $code = (int) range(1, 254);
         $data = ['The data'];
-        $controllerRan = new ControllerRan($code, $data);
-        $this->assertSame($code, $controllerRan->code());
-        $this->assertSame($data, $controllerRan->data());
+        $ran = new ControllerRan($data);
+        $this->assertSame(0, $ran->code());
+        $this->assertSame($data, $ran->data());
+        $this->assertFalse($ran->hasThrowable());
+        $this->expectException(Error::class);
+        $ran->throwable();
+    }
+
+    public function testWithThrowable(): void
+    {
+        $ran = new ControllerRan([]);
+        $throwable = new Exception;
+        $ran = $ran->withThrowable($throwable);
+        $this->assertTrue($ran->hasThrowable());
+        $this->assertSame($throwable, $ran->throwable());
     }
 }

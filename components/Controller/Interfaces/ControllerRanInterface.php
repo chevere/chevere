@@ -13,9 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller\Interfaces;
 
+use Throwable;
+
 interface ControllerRanInterface
 {
+    public function withThrowable(Throwable $throwable): ControllerRanInterface;
+
     public function code(): int;
 
     public function data(): array;
+
+    public function hasThrowable(): bool;
+
+    public function throwable(): Throwable;
 }

@@ -53,17 +53,18 @@ final class ControllerRunner
                 throw new Exception('tearDown');
             }
             $data = $response->data();
+
+            return new ControllerRan($data);
         } catch (Exception $e) {
-            $code = 1;
             $data = [
-                (new Message('Throwable %throwable% catched when calling %method%: %message%'))
+                (new Message('Throwable %throwable% catched when running %method%'))
                     ->code('%throwable%', get_class($t))
                     ->code('%method%', $this->controllerName . '::' . $e->getMessage())
-                    ->strtr('%message%', $t->getMessage())
                     ->toString()
             ];
-        }
 
-        return new ControllerRan($code, $data);
+            return (new ControllerRan($data))
+                ->withThrowable($t);
+        }
     }
 }

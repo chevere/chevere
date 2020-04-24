@@ -14,20 +14,28 @@ declare(strict_types=1);
 namespace Chevere\Components\Controller;
 
 use Chevere\Components\Controller\Interfaces\ControllerRanInterface;
-use Chevere\Components\Message\Message;
-use InvalidArgumentException;
+use Throwable;
 
 final class ControllerRan implements ControllerRanInterface
 {
-    private int $code;
+    private int $code = 0;
 
     private array $data;
 
-    public function __construct(int $code, array $data)
+    private Throwable $throwable;
+
+    public function __construct(array $data = [])
     {
-        $this->code = $code;
-        $this->assertCode();
         $this->data = $data;
+    }
+
+    public function withThrowable(Throwable $throwable): ControllerRanInterface
+    {
+        $new = clone $this;
+        $new->throwable = $throwable;
+        $new->code = 1;
+
+        return $new;
     }
 
     public function code(): int
@@ -40,16 +48,13 @@ final class ControllerRan implements ControllerRanInterface
         return $this->data;
     }
 
-    private function assertCode(): void
+    public function hasThrowable(): bool
     {
-        $range = [0, 254];
-        if ($this->code < $range[0] || $this->code > $range[1]) {
-            throw new InvalidArgumentException(
-                (new Message('Code value %used% is not in the accepted range %range%'))
-                    ->code('%used%', (string) $this->code)
-                    ->code('%range%', implode('-', $range))
-                    ->toString()
-            );
-        }
+        return isset($this->throwable);
+    }
+
+    public function throwable(): Throwable
+    {
+        return $this->throwable;
     }
 }
