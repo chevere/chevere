@@ -48,7 +48,7 @@ final class ControllerRunnerTest extends TestCase
         $controller = new ControllerRunnerTestControllerSetupFail;
         $ran = $this->getFailedRan($controller);
         $this->assertSame(1, $ran->code());
-        $this->assertStringContainsString($this->getControllerMethod($controller, 'setUp'), $ran->data()[0]);
+        // $this->assertStringContainsString($this->getControllerMethod($controller, 'setUp'), $ran->data()[0]);
         $this->assertTrue($ran->hasThrowable());
         $this->assertSame('Something went wrong', $ran->throwable()->getMessage());
     }
@@ -58,7 +58,6 @@ final class ControllerRunnerTest extends TestCase
         $controller = new ControllerRunnerTestControllerRunFail;
         $ran = $this->getFailedRan($controller);
         $this->assertSame(1, $ran->code());
-        $this->assertStringContainsString($this->getControllerMethod($controller, 'run'), $ran->data()[0]);
         $this->assertTrue($ran->hasThrowable());
         $this->assertSame('Something went wrong', $ran->throwable()->getMessage());
     }
@@ -68,7 +67,6 @@ final class ControllerRunnerTest extends TestCase
         $controller = new ControllerRunnerTestControllerTearDownFail;
         $ran = $this->getFailedRan($controller);
         $this->assertSame(1, $ran->code());
-        $this->assertStringContainsString($this->getControllerMethod($controller, 'tearDown'), $ran->data()[0]);
         $this->assertTrue($ran->hasThrowable());
         $this->assertSame('Something went wrong', $ran->throwable()->getMessage());
     }

@@ -19,6 +19,10 @@ interface ControllerInterface
 
     public function parameters(): ControllerParametersInterface;
 
+    public function getDescription(): string;
+
+    public function description(): string;
+
     public function setUp(): void;
 
     public function tearDown(): void;

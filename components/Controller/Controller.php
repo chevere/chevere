@@ -25,19 +25,16 @@ abstract class Controller implements ControllerInterface
 {
     protected ControllerParametersInterface $parameters;
 
-    final public function __construct()
-    {
-        $this->parameters = $this->getParameters();
-    }
-
-    final public function parameters(): ControllerParametersInterface
-    {
-        return $this->parameters;
-    }
+    protected string $description;
 
     public function getParameters(): ControllerParametersInterface
     {
         return new ControllerParameters;
+    }
+
+    public function getDescription(): string
+    {
+        return '';
     }
 
     public function setUp(): void
@@ -49,4 +46,19 @@ abstract class Controller implements ControllerInterface
     }
 
     abstract public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface;
+
+    final public function __construct()
+    {
+        $this->parameters = $this->getParameters();
+    }
+
+    final public function parameters(): ControllerParametersInterface
+    {
+        return $this->parameters;
+    }
+
+    final public function description(): string
+    {
+        return $this->description;
+    }
 }
