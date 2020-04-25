@@ -18,6 +18,7 @@
         "jakub-onderka/php-console-color": "^0.2.0",
         "monolog/monolog": "^2.0",
         "myclabs/deep-copy": "^1.9",
+        "php-ds/php-ds": "^1.2",
         "spiral/roadrunner": "^1.7"
     },
     "require-dev": {
