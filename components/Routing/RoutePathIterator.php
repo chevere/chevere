@@ -35,8 +35,6 @@ use SplObjectStorage;
  */
 final class RoutePathIterator implements RoutePathIteratorInterface
 {
-    private RecursiveDirectoryIterator $directoryIterator;
-
     private RecursiveIteratorIterator $recursiveIterator;
 
     private SplObjectStorage $objects;
