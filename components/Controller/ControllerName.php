@@ -19,6 +19,7 @@ use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrAssert;
+use Throwable;
 
 final class ControllerName implements ControllerNameInterface
 {

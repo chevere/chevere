@@ -50,6 +50,7 @@ abstract class Controller implements ControllerInterface
     final public function __construct()
     {
         $this->parameters = $this->getParameters();
+        $this->description = $this->getDescription();
     }
 
     final public function parameters(): ControllerParametersInterface

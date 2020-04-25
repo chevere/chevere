@@ -17,7 +17,10 @@ use Ahc\Cli\Input\Command;
 use Ahc\Cli\Output\Writer;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controller\ControllerParameter;
+use Chevere\Components\Controller\Exceptions\ControllerInterfaceException;
+use Chevere\Components\Controller\Exceptions\ControllerNotExistsException;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
+use Chevere\Components\Str\Exceptions\StrAssertException;
 use Throwable;
 
 final class ControllerInspectCommand extends Command
@@ -28,7 +31,6 @@ final class ControllerInspectCommand extends Command
 
         $this
             ->argument('<fqn>', 'Controller full-qualified name')
-            ->option('-n --no-hooks', 'No hooks', 'boolval', false)
             ->usage(
                 '<bold>  $0 coninspect</end> <comment>"App\Controllers\TheController"</end><eol/>'
             );
@@ -36,31 +38,28 @@ final class ControllerInspectCommand extends Command
 
     public function execute()
     {
-        try {
-            $controllerName = (new ControllerName($this->fqn))->toString();
-        } catch (Throwable $e) {
-            return 1;
-        }
+        $controllerName = (new ControllerName($this->fqn))->toString();
         /**
          * @var ControllerInterface $controller
          */
         $controller = new $controllerName;
         $parametersMap = $controller->parameters()->map();
-        if ($parametersMap->count() == 0) {
-        } else {
-        }
-
-        $this->writer()->colors('<bold>Controller arguments</end>', true);
-        $this->writer()->colors('<blue>+------------------+</end>', true);
-        /**
-         * @var ControllerParameter $parameter
-         */
-        foreach ($parametersMap as $parameter) {
-            $this->writer()->colors('Name ' . $parameter->name() . '<eol>');
-            $this->writer()->colors('Regex ' . $parameter->regex()->toString() . '<eol>');
-            $required = ($parameter->isRequired() ? '<purple>true' : '<comment>false') . '</end>';
-            $this->writer()->colors('Required ' . $required . '<eol>');
-            $this->writer()->colors('<blue>+------------------+</end>', true);
+        $this->writer()->colors('<green>' . $controllerName . '</end>', true);
+        $this->writer()->colors('<comment>' . $controller->description() . '</end>', true);
+        $this->writer()->colors('', true);
+        if ($parametersMap->count() > 0) {
+            $this->writer()->colors('<bold>Controller parameters</end>', true);
+            $this->writer()->colors('<blue>+-----------------------+</end>', true);
+            /**
+             * @var ControllerParameter $parameter
+             */
+            foreach ($parametersMap as $parameter) {
+                $this->writer()->colors('Name ' . $parameter->name() . '<eol>');
+                $this->writer()->colors('Regex ' . $parameter->regex()->toString() . '<eol>');
+                $required = ($parameter->isRequired() ? '<purple>true' : '<comment>false') . '</end>';
+                $this->writer()->colors('Required ' . $required . '<eol>');
+                $this->writer()->colors('<blue>+-----------------------+</end>', true);
+            }
         }
     }
 }
