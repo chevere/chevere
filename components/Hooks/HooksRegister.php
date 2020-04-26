@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Hooks;
 
 use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\PhpFileReturn;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\PhpFile;
+use Chevere\Components\Filesystem\PhpFileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Variable\VariableExport;
@@ -41,7 +41,7 @@ final class HooksRegister
         $hook = $assertHook->hook();
         $reflection = new ReflectionClass($hook);
         $new = clone $this;
-        $new->map[$hook::hookableClassName()][$hook::anchor()][$hook::priority()][] = $reflection->getName();
+        $new->map[$hook::hooksClassName()][$hook::anchor()][$hook::priority()][] = $reflection->getName();
         // $new->hooksClassMap[$reflection->getName()] = $reflection->getFileName();
 
         return $new;

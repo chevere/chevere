@@ -16,7 +16,12 @@ namespace Chevere\Components\Hooks\Interfaces;
 interface HookableInterface
 {
     /**
-    * Returns an array with the known hook anchors
-    */
-    public static function anchors(): array;
+     * Returns an array with the known hook anchors
+     */
+    public function anchors(): array;
+
+    /**
+     * Run the hooks queue for the given anchor (if-any).
+     */
+    public function hook(string $anchor): void;
 }

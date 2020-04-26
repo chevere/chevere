@@ -11,10 +11,8 @@
 
 declare(strict_types=1);
 
-return [
-    'setString:after' => [
-        0 => [
-            'Chevere\Components\Hooks\Tests\MyHook'
-        ],
-    ],
-];
+namespace Chevere\Components\Controller;
+
+final class ControllerMiddleware
+{
+}

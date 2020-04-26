@@ -22,27 +22,20 @@ use Chevere\Components\Instances\HooksInstance;
 
 trait HookableTrait
 {
-    private HooksQueueInterface $hooksQueue;
+    private HooksQueueInterface $queue;
 
-    private function prepareHooks(Hooks $hooks)
+    public function hook(string $anchor): void
     {
-        $this->hooksQueue = $hooks->has(static::class)
-            ? $hooks->queue(static::class)
-            : new HooksQueueNull();
+        if (isset($this->queue) === false) {
+            $this->setQueue();
+        }
+        $this->queue->run($this, $anchor);
     }
 
-    /**
-     * Run the hooks queue for the given anchor (if-any).
-     */
-    private function hook(string $anchor): void
+    private function setQueue()
     {
-        if (isset($this->hooksQueue) === false) {
-            return; // @codeCoverageIgnore
-        }
-        $class = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2]['class'];
-        if (is_a($class, HookInterface::class, true) === true) {
-            return;
-        }
-        $this->hooksQueue->run($this, $anchor);
+        $this->queue = HooksInstance::get()->has(static::class)
+            ? HooksInstance::get()->queue(static::class)
+            : new HooksQueueNull();
     }
 }

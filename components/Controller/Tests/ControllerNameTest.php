@@ -20,6 +20,9 @@ use Chevere\Components\Controller\Exceptions\ControllerInterfaceException;
 use Chevere\Components\Controller\Exceptions\ControllerNotExistsException;
 use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
 use Chevere\Components\Controller\Interfaces\ControllerResponseInterface;
+use Chevere\Components\Hooks\Traits\HookableTrait;
+use Chevere\Components\Middleware\MiddlewareName;
+use Chevere\Components\Middleware\MiddlewareNameCollection;
 use Chevere\Components\Str\Exceptions\StrContainsException;
 use Chevere\Components\Str\Exceptions\StrCtypeSpaceException;
 use Chevere\Components\Str\Exceptions\StrEmptyException;
@@ -67,8 +70,27 @@ final class ControllerNameTest extends TestCase
 
 final class ControllerNameTestController extends Controller
 {
+    // use HookableTrait;
+
+    // public function runMiddlewares(ControllerArgumentsInterface $arguments)
+    // {
+    //     $middleware = (new UserMiddleware($arguments->get('id')))
+    //         ->assertValidId()
+    //         ->assertExists()
+    //         ->assertIsEnabled()
+    //         ->assertNotOverQuota('upload.quota')
+    //         ->assertHasAccessToService('upload.service');
+    //     $this->hook()
+    // }
+
+    // public function getMiddlewares(): array
+    // {
+    // }
+
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
+        // $user = (new UserMiddleware($arguments->get('id')))->get();
+
         return new ControllerResponse(true);
     }
 }

@@ -20,31 +20,27 @@ use Chevere\Components\Instances\HooksInstance;
 
 class MyHookable implements HookableInterface
 {
-    const HOOK_CONSTRUCT = 'construct';
-    const HOOK_SET_STRING = 'setString';
-
     use HookableTrait;
 
     private string $string = '';
 
-    public static function anchors(): array
+    public function anchors(): array
     {
         return [
-            self::HOOK_CONSTRUCT,
-            self::HOOK_SET_STRING
+            'construct:before',
+            'setString:after'
         ];
     }
 
     public function __construct()
     {
-        $this->prepareHooks(HooksInstance::get());
-        $this->hook(self::HOOK_CONSTRUCT);
+        $this->hook('construct:before');
     }
 
     public function setString(string $string): void
     {
         $this->string = $string;
-        $this->hook(self::HOOK_SET_STRING);
+        $this->hook('setString:after');
     }
 
     public function string(): string

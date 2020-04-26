@@ -34,6 +34,9 @@ final class HooksQueue implements HooksQueueInterface
      */
     public function run(object $object, string $anchor): void
     {
+        if ($this->isLooping()) {
+            return;
+        }
         $anchor = $this->anchors[$anchor] ?? null;
         if ($anchor === null) {
             return;
@@ -52,5 +55,14 @@ final class HooksQueue implements HooksQueueInterface
                 // }
             }
         }
+    }
+
+    private function isLooping(): bool
+    {
+        return is_a(
+            debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5)[4]['class'],
+            HookInterface::class,
+            true
+        );
     }
 }

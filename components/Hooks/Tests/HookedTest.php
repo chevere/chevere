@@ -54,14 +54,6 @@ final class HookedTest extends TestCase
 
     public function testHooked(): void
     {
-        // $reflectionFile = new ReflectionFile('/home/rodolfo/git/chevere/components/Hooks/Tests/MyHook.php');
-        // $namespaces = $reflectionFile->getFileNamespaces();
-        // foreach ($namespaces as $namespace) {
-        //     $classes = $namespace->getClasses();
-        //     foreach ($classes as $class) {
-        //         xdd($class->getName(), $class->implementsInterface(HookInterface::class));
-        //     }
-        // }
         $string = 'string';
         $myHookable = new MyHookable();
         $myHookable->setString($string);

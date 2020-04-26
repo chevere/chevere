@@ -54,6 +54,6 @@ final class HooksRegisterTest extends TestCase
         $hooksRegister = (new HooksRegister())
             ->withAddedHook(new AssertHook($hook))
             ->withHookablesClassMap($this->tempDir);
-        $this->assertArrayHasKey($hook::hookableClassName(), $hooksRegister->hookablesClassMap());
+        $this->assertArrayHasKey($hook::hooksClassName(), $hooksRegister->hookablesClassMap());
     }
 }

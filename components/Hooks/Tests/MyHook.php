@@ -13,28 +13,31 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks\Tests;
 
-use Chevere\Components\Hooks\Tests\Interfaces\MyHookableHookInterface;
+use Chevere\Components\Hooks\Interfaces\HookInterface;
 
-class MyHook implements MyHookableHookInterface
+class MyHook implements HookInterface
 {
-    public function __invoke(MyHookable $hookable)
+    public function anchor(): string
     {
-        $string = $hookable->string();
-        $hookable->setString("(hooked $string)");
+        return 'setString:after';
     }
 
-    public static function anchor(): string
-    {
-        return MyHookable::HOOK_SET_STRING;
-    }
-
-    public static function hookableClassName(): string
+    public function hooksClassName(): string
     {
         return MyHookable::class;
     }
 
-    public static function priority(): int
+    public function priority(): int
     {
         return 0;
+    }
+
+    public function __invoke(object $hookable)
+    {
+        /**
+         * @var MyHookable $hookable
+         */
+        $string = $hookable->string();
+        $hookable->setString("(hooked $string)");
     }
 }

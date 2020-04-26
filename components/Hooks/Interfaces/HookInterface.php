@@ -18,15 +18,17 @@ interface HookInterface
     /**
      * Returns the applicable hook anchor.
      */
-    public static function anchor(): string;
+    public function anchor(): string;
 
     /**
      * Returns the target class name.
      */
-    public static function hookableClassName(): string;
+    public function hooksClassName(): string;
 
     /**
      * Returns the priority order.
      */
-    public static function priority(): int;
+    public function priority(): int;
+
+    public function __invoke(object $object);
 }
