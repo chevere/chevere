@@ -45,7 +45,11 @@ final class ControllerInspectCommand extends Command
         $controller = new $controllerName;
         $parametersMap = $controller->parameters()->map();
         $this->writer()->colors('<green>' . $controllerName . '</end>', true);
-        $this->writer()->colors('<comment>' . $controller->description() . '</end>', true);
+        $description = $controller->description();
+        if ($description === '') {
+            $description = '*no description*';
+        }
+        $this->writer()->colors('<comment>' . $description . '</end>', true);
         $this->writer()->colors('', true);
         if ($parametersMap->count() > 0) {
             $this->writer()->colors('<bold>Controller parameters</end>', true);

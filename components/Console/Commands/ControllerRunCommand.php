@@ -17,7 +17,9 @@ use Ahc\Cli\Input\Command;
 use Chevere\Components\Controller\ControllerArguments;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controller\ControllerRunner;
+use Chevere\Components\Controller\Exceptions\ControllerArgumentsRequiredException;
 use Chevere\Components\Controller\Interfaces\ControllerInterface;
+use Chevere\Components\Controller\Interfaces\ControllerParameterInterface;
 use Ds\Map;
 
 final class ControllerRunCommand extends Command
@@ -53,7 +55,23 @@ final class ControllerRunCommand extends Command
                 return 127;
             }
         }
-        $arguments = new ControllerArguments($controller->parameters(), new Map($args ?? []));
+        try {
+            $arguments = new ControllerArguments($controller->parameters(), new Map($args ?? []));
+        } catch (ControllerArgumentsRequiredException $e) {
+            $this->writer()->error('Missing arguments', true);
+            $params = [];
+            /**
+             * @var ControllerParameterInterface $parameter
+             */
+            foreach ($controller->parameters()->map() as $parameter) {
+                $brackets = $parameter->isRequired()
+                    ? ['<', '>'] : '["[", "]"]';
+                $params[$parameter->name()] = $brackets[0] . 'value' . $brackets[1];
+            }
+            $this->writer()->colors('<blackBgYellow>' . json_encode($params) . '</end>', true);
+
+            return 127;
+        }
         $this->writer()->colors('<green>Run ' . $controllerName . '</end>', true);
         $runner = new ControllerRunner($controller);
         $ran = $runner->run($arguments);
