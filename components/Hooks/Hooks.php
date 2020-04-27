@@ -39,7 +39,6 @@ final class Hooks
     }
 
     /**
-     *
      * @throws HooksClassNotRegisteredException
      * @throws HooksFileNotFoundException
      * @throws RuntimeException if unable to load the hooks file

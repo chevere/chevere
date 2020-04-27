@@ -14,13 +14,19 @@ declare(strict_types=1);
 namespace Chevere\Components\Hooks\Interfaces;
 
 use Chevere\Components\Hooks\HookAnchors;
+use Chevere\Components\Hooks\Hooks;
 
 interface HookableInterface
 {
     /**
-     * Returns the declared known hook anchors
+     * Returns the declared hook anchors
      */
     public static function getHookAnchors(): HookAnchors;
+
+    /**
+     * Attach the hooks queue for this hookable.
+     */
+    public function withHooksQueue(HooksQueueInterface $hooksQueue): HookableInterface;
 
     /**
      * Run the hooks queue for the given anchor (if-any).

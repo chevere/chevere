@@ -20,7 +20,8 @@ use Chevere\Components\Hooks\Interfaces\HooksQueueInterface;
  */
 final class HooksQueueNull implements HooksQueueInterface
 {
-    public function run(object $object, string $anchor): void
+    public function run(object $object, string $anchor): object
     {
+        return $object;
     }
 }

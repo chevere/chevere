@@ -14,8 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\Hooks\Tests;
 
 use Chevere\Components\Hooks\HookAnchors;
+use Chevere\Components\Hooks\Hooks;
 use Chevere\Components\Hooks\Interfaces\HookableInterface;
+use Chevere\Components\Hooks\Interfaces\HooksQueueInterface;
 use Chevere\Components\Hooks\Traits\HookableTrait;
+use Chevere\Components\Instances\HooksInstance;
 
 class MyHookable implements HookableInterface
 {
@@ -58,19 +61,5 @@ final class MyHookableWithoutHooks extends MyHookable
  * Same as MyHookable but the hookable isn't registered.
  */
 final class MyHookableWithNotRegisteredClass extends MyHookable
-{
-}
-
-/**
- * Same as MyHookable but hooks file is missing.
- */
-final class MyHookableWithMissingHooks extends MyHookable
-{
-}
-
-/**
- * Same as MyHookable but hooks file is corrupted.
- */
-final class MyHookableWithCorruptedHooks extends MyHookable
 {
 }

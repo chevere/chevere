@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks\Traits;
 
+use Chevere\Components\Hooks\Hooks;
+use Chevere\Components\Hooks\HooksQueue;
 use Chevere\Components\Hooks\HooksQueueNull;
 use Chevere\Components\Hooks\Interfaces\HooksQueueInterface;
 use Chevere\Components\Instances\HooksInstance;
@@ -20,22 +22,36 @@ use LogicException;
 
 trait HookableTrait
 {
-    private HooksQueueInterface $queue;
+    private HooksQueueInterface $hooksQueue;
+
+    public function withHooksQueue(HooksQueueInterface $hooksQueue): self
+    {
+        $new = clone $this;
+        $new->hooksQueue = $hooksQueue;
+
+        return $new;
+    }
 
     public function hook(string $anchor): void
     {
-        if (isset($this->queue) === false) {
-            $this->setQueue();
+        if (isset($this->hooksQueue) === false) {
+            return;
         }
-        $this->queue->run($this, $anchor);
+        $this->hooksQueue->run($this, $anchor);
     }
 
-    private function setQueue()
-    {
-        $this->queue = new HooksQueueNull();
-        $hooks = HooksInstance::get();
-        if ($hooks->has(static::class)) {
-            $this->queue = $hooks->queue(static::class);
-        }
-    }
+    // public function getHooksQueue(): HooksQueueInterface
+    // {
+    //     $hooksQueue = new HooksQueueNull;
+    //     try {
+    //         $hooks = HooksInstance::get();
+    //     } catch (LogicException $e) {
+    //         return $hooksQueue;
+    //     }
+    //     if (isset($hooks) && $hooks->has(static::class)) {
+    //         return $hooks->queue(static::class);
+    //     }
+
+    //     return $hooksQueue;
+    // }
 }

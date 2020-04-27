@@ -15,5 +15,5 @@ namespace Chevere\Components\Hooks\Interfaces;
 
 interface HooksQueueInterface
 {
-    public function run(object $object, string $anchor): void;
+    public function run(object $object, string $anchor): object;
 }

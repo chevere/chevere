@@ -24,7 +24,7 @@ final class HooksQueue implements HooksQueueInterface
     /** @var array anchor => [0 => [HookInterface,]] */
     private array $anchors = [];
 
-    public function __construct(array $anchors)//, $observer
+    public function __construct(array $anchors)
     {
         $this->anchors = $anchors;
     }
@@ -32,29 +32,38 @@ final class HooksQueue implements HooksQueueInterface
     /**
      * Run the registred hooks at the given anchor.
      */
-    public function run(object $object, string $anchor): void
+    public function run(object $object, string $anchor): object
     {
         if ($this->isLooping()) {
-            return;
+            return $object;
         }
-        $anchor = $this->anchors[$anchor] ?? null;
-        if ($anchor === null) {
-            return;
+        $queue = $this->anchors[$anchor] ?? null;
+        if ($queue === null) {
+            return $object;
         }
         // if ($this->trace !== null) {
         //     $this->trace['base'] = $object;
         // }
-        foreach ($anchor as $entries) {
+        foreach ($queue as $entries) {
             foreach ($entries as $entry) {
                 if (is_a($entry, HookInterface::class, true)) {
+                    /**
+                     * @var HookInterface $entry
+                     */
                     $hook = new $entry;
-                    $hook($object);
+                    $object = $hook($object);
+                    // xd($entry);
+                    // if ($object === null) {
+                    //     xdd($queue, $anchor);
+                    // }
                 }
                 // if (null !== $this->trace) {
                 //     $this->trace[$entry['callable']] = $object;
                 // }
             }
         }
+
+        return $object;
     }
 
     private function isLooping(): bool

@@ -53,7 +53,11 @@ final class HookedTest extends TestCase
     public function testHooked(): void
     {
         $string = 'string';
-        $myHookable = new MyHookable();
+        /**
+         * @var MyHookable $myHookable
+         */
+        $myHookable = (new MyHookable)
+            ->withHooksQueue(HooksInstance::get()->queue(MyHookable::class));
         $myHookable->setString($string);
         $this->assertSame("(hooked $string)", $myHookable->string());
     }
@@ -70,17 +74,5 @@ final class HookedTest extends TestCase
     {
         $this->expectException(HooksClassNotRegisteredException::class);
         $this->hooks->queue(MyHookableWithNotRegisteredClass::class);
-    }
-
-    public function testHooksFileNotFound(): void
-    {
-        $this->expectException(HooksFileNotFoundException::class);
-        new MyHookableWithMissingHooks();
-    }
-
-    public function testHooksFileCorrupted(): void
-    {
-        $this->expectException(LogicException::class);
-        new MyHookableWithCorruptedHooks();
     }
 }
