@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks\Interfaces;
 
-use Chevere\Components\Hooks\HookAnchor;
-
 interface HookInterface
 {
     /**

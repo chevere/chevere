@@ -15,7 +15,6 @@ use Chevere\Components\Bootstrap\Bootstrap;
 use Chevere\Components\Console\Commands\ControllerInspectCommand;
 use Chevere\Components\Console\Commands\ControllerListCommand;
 use Chevere\Components\Console\Commands\ControllerRunCommand;
-use Chevere\Components\Controller\Tests\ControllerNameTestController;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Instances\BootstrapInstance;

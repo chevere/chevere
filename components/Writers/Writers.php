@@ -16,7 +16,6 @@ namespace Chevere\Components\Writers;
 use Chevere\Components\Writers\Interfaces\WriterInterface;
 use Chevere\Components\Writers\Interfaces\WritersInterface;
 use Laminas\Diactoros\Stream;
-use function GuzzleHttp\Psr7\stream_for;
 
 final class Writers implements WritersInterface
 {

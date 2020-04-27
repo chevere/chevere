@@ -16,6 +16,7 @@ namespace Chevere\Components\Hooks\Traits;
 use Chevere\Components\Hooks\HooksQueueNull;
 use Chevere\Components\Hooks\Interfaces\HooksQueueInterface;
 use Chevere\Components\Instances\HooksInstance;
+use LogicException;
 
 trait HookableTrait
 {
@@ -31,8 +32,10 @@ trait HookableTrait
 
     private function setQueue()
     {
-        $this->queue = HooksInstance::get()->has(static::class)
-            ? HooksInstance::get()->queue(static::class)
-            : new HooksQueueNull();
+        $this->queue = new HooksQueueNull();
+        $hooks = HooksInstance::get();
+        if ($hooks->has(static::class)) {
+            $this->queue = $hooks->queue(static::class);
+        }
     }
 }

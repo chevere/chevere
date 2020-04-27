@@ -43,7 +43,6 @@ final class ControllerInspectCommand extends Command
          * @var ControllerInterface $controller
          */
         $controller = new $controllerName;
-        $parametersMap = $controller->parameters()->map();
         $this->writer()->colors('<green>' . $controllerName . '</end>', true);
         $description = $controller->description();
         if ($description === '') {
@@ -51,13 +50,13 @@ final class ControllerInspectCommand extends Command
         }
         $this->writer()->colors('<comment>' . $description . '</end>', true);
         $this->writer()->colors('', true);
-        if ($parametersMap->count() > 0) {
-            $this->writer()->colors('<bold>Controller parameters</end>', true);
+        if ($controller->parameters()->map()->count() > 0) {
+            $this->writer()->colors('<bold>Parameters</end>', true);
             $this->writer()->colors('<blue>+-----------------------+</end>', true);
             /**
              * @var ControllerParameter $parameter
              */
-            foreach ($parametersMap as $parameter) {
+            foreach ($controller->parameters()->map() as $parameter) {
                 $this->writer()->colors('Name ' . $parameter->name() . '<eol>');
                 $this->writer()->colors('Regex ' . $parameter->regex()->toString() . '<eol>');
                 $required = ($parameter->isRequired() ? '<purple>true' : '<comment>false') . '</end>';

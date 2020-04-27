@@ -23,6 +23,7 @@ use Chevere\Components\Controller\Interfaces\ControllerResponseInterface;
 use Chevere\Components\Hooks\HookAnchors;
 use Chevere\Components\Hooks\Interfaces\HookableInterface;
 use Chevere\Components\Hooks\Traits\HookableTrait;
+use Chevere\Components\Instances\WritersInstance;
 use Chevere\Components\Regex\Regex;
 
 class TestController extends Controller implements HookableInterface

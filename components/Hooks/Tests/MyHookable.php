@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks\Tests;
 
-use Chevere\Components\Hooks\HookAnchor;
 use Chevere\Components\Hooks\HookAnchors;
 use Chevere\Components\Hooks\Interfaces\HookableInterface;
 use Chevere\Components\Hooks\Traits\HookableTrait;
