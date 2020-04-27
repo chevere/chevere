@@ -18,10 +18,7 @@ use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Hooks\AssertHook;
 use Chevere\Components\Hooks\HooksRegister;
-use Error;
 use PHPUnit\Framework\TestCase;
-use Throwable;
-use TypeError;
 
 final class HooksRegisterTest extends TestCase
 {

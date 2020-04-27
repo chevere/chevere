@@ -40,10 +40,10 @@ final class AssertHook
 
     private function assertHookableExists(): void
     {
-        if (class_exists($this->hook::hooksClassName()) === false) {
+        if (class_exists($this->hook->hooksClassName()) === false) {
             throw new HookableNotFoundException(
                 (new Message("Class %ClassName% doesn't exists"))
-                    ->code('%ClassName%', $this->hook::hooksClassName())
+                    ->code('%ClassName%', $this->hook->hooksClassName())
                     ->toString()
             );
         }
@@ -51,10 +51,10 @@ final class AssertHook
 
     private function assertHookableInterface(): void
     {
-        if (is_a($this->hook::hooksClassName(), HookableInterface::class, true) === false) {
+        if (is_a($this->hook->hooksClassName(), HookableInterface::class, true) === false) {
             throw new HookableInterfaceException(
                 (new Message('Class %ClassName% must implement the %interfaceName% interface'))
-                    ->code('%ClassName%', $this->hook::hooksClassName())
+                    ->code('%ClassName%', $this->hook->hooksClassName())
                     ->code('%interfaceName%', HookableInterface::class)
                     ->toString()
             );
