@@ -16,6 +16,7 @@ namespace Chevere\Components\Hooks;
 use Chevere\Components\Hooks\Exceptions\AnchorNotFoundException;
 use Chevere\Components\Hooks\Exceptions\HookableInterfaceException;
 use Chevere\Components\Hooks\Exceptions\HookableNotFoundException;
+use Chevere\Components\Hooks\HookAnchors;
 use Chevere\Components\Hooks\Interfaces\HookableInterface;
 use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Message\Message;
@@ -62,11 +63,15 @@ final class AssertHook
 
     private function assertAnchor(): void
     {
-        if (!in_array($this->hook::anchor(), $this->hook::hooksClassName()::anchors())) {
+        /**
+         * @var HookAnchors $anchors
+         */
+        $anchors = $this->hook->hooksClassName()::anchors();
+        if ($anchors->has($this->hook->anchor()) === false) {
             throw new AnchorNotFoundException(
                 (new Message('Anchor %anchor% is not declared by %ClassName%'))
-                    ->code('%anchor%', $this->hook::anchor())
-                    ->code('%ClassName%', $this->hook::anchor())
+                    ->code('%anchor%', $this->hook->anchor())
+                    ->code('%ClassName%', $this->hook->hooksClassName())
                     ->toString()
             );
         }

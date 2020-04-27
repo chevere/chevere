@@ -18,9 +18,7 @@ use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Hooks\Exceptions\HooksClassNotRegisteredException;
 use Chevere\Components\Hooks\Exceptions\HooksFileNotFoundException;
 use Chevere\Components\Hooks\Hooks;
-use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Instances\HooksInstance;
-use Go\ParserReflection\ReflectionFile;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 

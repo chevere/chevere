@@ -41,8 +41,10 @@ final class HooksRegister
         $hook = $assertHook->hook();
         $reflection = new ReflectionClass($hook);
         $new = clone $this;
-        $new->map[$hook::hooksClassName()][$hook::anchor()][$hook::priority()][] = $reflection->getName();
-        // $new->hooksClassMap[$reflection->getName()] = $reflection->getFileName();
+        $to = $hook->hooksClassName();
+        $anchor = $hook->anchor();
+        $priority = (string) $hook->priority();
+        $new->map[$to][$anchor][$priority][] = $reflection->getName();
 
         return $new;
     }

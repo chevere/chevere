@@ -64,6 +64,6 @@ final class MyHookInvalidAnchor extends MyHook
 {
     public function anchor(): string
     {
-        return uniqid();
+        return uniqid() . ':after';
     }
 }

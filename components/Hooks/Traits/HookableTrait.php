@@ -13,10 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks\Traits;
 
-use Chevere\Components\Hooks\Hooks;
-use Chevere\Components\Hooks\HooksQueue;
 use Chevere\Components\Hooks\HooksQueueNull;
-use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Hooks\Interfaces\HooksQueueInterface;
 use Chevere\Components\Instances\HooksInstance;
 

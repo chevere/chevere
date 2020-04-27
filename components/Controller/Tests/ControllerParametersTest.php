@@ -35,7 +35,7 @@ final class ControllerParametersTest extends TestCase
     {
         $key = 'name';
         $parameter = new ControllerParameter($key, new Regex('/.*/'));
-        $parameters = (new ControllerParameters)->withParameter($parameter);
+        $parameters = (new ControllerParameters)->withPut($parameter);
         $this->assertCount(1, $parameters->map());
         $this->assertTrue($parameters->hasParameter($key));
         $this->assertSame($parameter, $parameters->get($key));

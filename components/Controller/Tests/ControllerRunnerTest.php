@@ -89,7 +89,7 @@ final class ControllerRunnerTestController extends Controller
     public function getParameters(): ControllerParametersInterface
     {
         return (new ControllerParameters)
-            ->withParameter(
+            ->withPut(
                 new ControllerParameter('name', new Regex('/^\w+$/'))
             );
     }

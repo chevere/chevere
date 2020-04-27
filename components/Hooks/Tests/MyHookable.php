@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks\Tests;
 
-use Chevere\Components\Hooks\HooksQueueNull;
+use Chevere\Components\Hooks\HookAnchor;
+use Chevere\Components\Hooks\HookAnchors;
 use Chevere\Components\Hooks\Interfaces\HookableInterface;
 use Chevere\Components\Hooks\Traits\HookableTrait;
-use Chevere\Components\Instances\HooksInstance;
 
 class MyHookable implements HookableInterface
 {
@@ -24,12 +24,11 @@ class MyHookable implements HookableInterface
 
     private string $string = '';
 
-    public function anchors(): array
+    public static function anchors(): HookAnchors
     {
-        return [
-            'construct:before',
-            'setString:after'
-        ];
+        return (new HookAnchors)
+            ->withPut('construct:before')
+            ->withPut('setString:after');
     }
 
     public function __construct()

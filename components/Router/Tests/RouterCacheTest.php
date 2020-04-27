@@ -171,7 +171,7 @@ class RouterCacheTestController extends Controller
     public function getParameters(): ControllerParametersInterface
     {
         return (new ControllerParameters)
-            ->withParameter(new ControllerParameter('id', new Regex('/^' . RouteWildcardInterface::REGEX_MATCH_DEFAULT . '$/')));
+            ->withPut(new ControllerParameter('id', new Regex('/^' . RouteWildcardInterface::REGEX_MATCH_DEFAULT . '$/')));
     }
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface

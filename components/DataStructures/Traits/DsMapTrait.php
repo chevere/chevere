@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\DataStructures\Traits;
 
 use Ds\Map;
+use function DeepCopy\deep_copy;
 
 trait DsMapTrait
 {
@@ -26,7 +27,7 @@ trait DsMapTrait
 
     final public function map(): Map
     {
-        return $this->map;
+        return deep_copy($this->map);
     }
 
     // public function put($key, $value): void;

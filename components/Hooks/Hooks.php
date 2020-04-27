@@ -13,10 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks;
 
-use Chevere\Components\Message\Message;
 use Chevere\Components\Hooks\Exceptions\HooksClassNotRegisteredException;
 use Chevere\Components\Hooks\Exceptions\HooksFileNotFoundException;
-use Chevere\Components\Hooks\Interfaces\HookableInterface;
+use Chevere\Components\Message\Message;
 use LogicException;
 use RuntimeException;
 use Throwable;

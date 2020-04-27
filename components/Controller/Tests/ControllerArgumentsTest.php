@@ -32,10 +32,10 @@ final class ControllerArgumentsTest extends TestCase
             'name' => 'someValue',
         ];
         $parameters = (new ControllerParameters)
-            ->withParameter(
+            ->withPut(
                 new ControllerParameter('id', new Regex('/^\d+$/'))
             )
-            ->withParameter(
+            ->withPut(
                 new ControllerParameter('name', new Regex('/^\w+$/'))
             );
         $arguments = new Map($array);
@@ -60,7 +60,7 @@ final class ControllerArgumentsTest extends TestCase
     public function testInvalidRegexArgument(): void
     {
         $parameters = (new ControllerParameters)
-            ->withParameter(
+            ->withPut(
                 new ControllerParameter('id', new Regex('/^[0-9]+$/'))
             );
         $this->expectException(ControllerArgumentRegexMatchException::class);
@@ -74,7 +74,7 @@ final class ControllerArgumentsTest extends TestCase
         $valueAlt = '321';
         $controllerArguments = new ControllerArguments(
             (new ControllerParameters)
-                ->withParameter(
+                ->withPut(
                     new ControllerParameter($name, new Regex('/^[0-9]+$/'))
                 ),
             new Map([$name => $value])
@@ -92,7 +92,7 @@ final class ControllerArgumentsTest extends TestCase
         $this->expectException(ControllerArgumentsRequiredException::class);
         new ControllerArguments(
             (new ControllerParameters)
-                ->withParameter(
+                ->withPut(
                     new ControllerParameter('id', new Regex('/^[0-9]+$/'))
                 ),
             new Map
@@ -105,10 +105,10 @@ final class ControllerArgumentsTest extends TestCase
         $paramName = 'name';
         $controllerArguments = new ControllerArguments(
             (new ControllerParameters)
-                ->withParameter(
+                ->withPut(
                     new ControllerParameter($paramId, new Regex('/^[0-9]+$/'))
                 )
-                ->withParameter(
+                ->withPut(
                     (new ControllerParameter($paramName, new Regex('/^\w+$/')))
                         ->withIsRequired(false)
                 ),

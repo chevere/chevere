@@ -23,9 +23,9 @@ use Chevere\Components\Controller\Interfaces\ControllerResponseInterface;
  */
 abstract class Controller implements ControllerInterface
 {
-    protected ControllerParametersInterface $parameters;
+    private ControllerParametersInterface $parameters;
 
-    protected string $description;
+    private string $description;
 
     public function getParameters(): ControllerParametersInterface
     {

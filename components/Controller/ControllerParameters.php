@@ -23,10 +23,9 @@ final class ControllerParameters implements ControllerParametersInterface
 {
     use DsMapTrait;
 
-    public function withParameter(ControllerParameterInterface $controllerParameter): ControllerParametersInterface
+    public function withPut(ControllerParameterInterface $controllerParameter): ControllerParametersInterface
     {
         $new = clone $this;
-        $new->map = (new DeepCopy)->copy($new->map);
         /**
          * @var \Ds\TKey $key
          * @var \Ds\TValue $value
