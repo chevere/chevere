@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\TestApp\App\Controllers;
 
 use Chevere\Components\Controller\Controller;
+use Chevere\Components\Controller\ControllerArguments;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponse;
@@ -33,6 +34,10 @@ class TestController extends Controller implements HookableInterface
 
     protected ControllerResponse $_response;
 
+    protected ControllerArguments $_arguments;
+
+    protected array $_data;
+
     public static function getHookAnchors(): HookAnchors
     {
         return (new HookAnchors)
@@ -44,14 +49,12 @@ class TestController extends Controller implements HookableInterface
     public function getParameters(): ControllerParametersInterface
     {
         $this->_paremeters = (new ControllerParameters)
-            ->withPut(new ControllerParameter(
-                'name',
-                new Regex('/^[\w]+$/')
-            ))
-            ->withPut(new ControllerParameter(
-                'id',
-                new Regex('/^[0-9]+$/')
-            ));
+            ->withPut(
+                new ControllerParameter('name', new Regex('/^[\w]+$/'))
+            )
+            ->withPut(
+                new ControllerParameter('id', new Regex('/^[0-9]+$/'))
+            );
         $this->hook('getParameters:after');
 
         return $this->_paremeters;
@@ -59,12 +62,14 @@ class TestController extends Controller implements HookableInterface
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
+        $this->_arguments = $arguments;
         $this->hook('run:before');
-        $this->_response = (new ControllerResponse(true))
-            ->withData([
-                'userName' => $arguments->get('name'),
-                'userId' => $arguments->get('id')
-            ]);
+        $this->_response = new ControllerResponse(true);
+        $this->_data = [
+            'userName' => $this->_arguments->get('name'),
+            'userId' => $this->_arguments->get('id')
+        ];
+        $this->_response = $this->_response->withData($this->_data);
         $this->hook('run:after');
 
         return $this->_response;
