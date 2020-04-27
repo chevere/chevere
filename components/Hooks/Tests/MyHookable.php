@@ -23,7 +23,7 @@ class MyHookable implements HookableInterface
 
     private string $string = '';
 
-    public static function anchors(): HookAnchors
+    public static function getHookAnchors(): HookAnchors
     {
         return (new HookAnchors)
             ->withPut('construct:before')

@@ -20,7 +20,7 @@ interface HookableInterface
     /**
      * Returns the declared known hook anchors
      */
-    public static function anchors(): HookAnchors;
+    public static function getHookAnchors(): HookAnchors;
 
     /**
      * Run the hooks queue for the given anchor (if-any).

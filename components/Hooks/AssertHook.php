@@ -66,7 +66,7 @@ final class AssertHook
         /**
          * @var HookAnchors $anchors
          */
-        $anchors = $this->hook->hooksClassName()::anchors();
+        $anchors = $this->hook->hooksClassName()::getHookAnchors();
         if ($anchors->has($this->hook->anchor()) === false) {
             throw new AnchorNotFoundException(
                 (new Message('Anchor %anchor% is not declared by %ClassName%'))
