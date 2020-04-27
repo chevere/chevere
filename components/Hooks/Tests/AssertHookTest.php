@@ -46,7 +46,7 @@ final class AssertHookTest extends TestCase
 
 final class MyHookClassNotFound extends MyHook
 {
-    public function hooksClassName(): string
+    public function className(): string
     {
         return uniqid();
     }
@@ -54,7 +54,7 @@ final class MyHookClassNotFound extends MyHook
 
 final class MyHookClassNoInterface extends MyHook
 {
-    public function hooksClassName(): string
+    public function className(): string
     {
         return Path::class;
     }

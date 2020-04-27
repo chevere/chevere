@@ -104,7 +104,7 @@ final class Bootstrap implements BootstrapInterface
                         ->toString()
                 );
             }
-            if ($dir->path()->isWriteable() === false) {
+            if ($dir->path()->isWritable() === false) {
                 $dir->path()->chmod(0777); // @codeCoverageIgnore
             }
         } catch (Throwable $e) {

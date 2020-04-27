@@ -14,64 +14,47 @@ declare(strict_types=1);
 namespace Chevere\Components\Hooks;
 
 use Chevere\Components\Hooks\Interfaces\HookInterface;
-use Chevere\Components\Hooks\Interfaces\HooksQueueInterface;
+use Chevere\Components\Message\Message;
+use Ds\Set;
+use LogicException;
 
-/**
- * Queue handler for Hooks registered for a given HookeableInterface.
- */
-final class HooksQueue implements HooksQueueInterface
+final class HooksQueue
 {
-    /** @var array anchor => [0 => [HookInterface,]] */
-    private array $anchors = [];
+    private array $array = [];
 
-    public function __construct(array $anchors)
+    private Set $set;
+
+    public function __construct()
     {
-        $this->anchors = $anchors;
+        $this->set = new Set;
+    }
+
+    public function withHook(HookInterface $hook): HooksQueue
+    {
+        $hookName = get_class($hook);
+        if ($this->set->contains($hookName)) {
+            throw new LogicException(
+                (new Message('Hook %hook% is already registered'))
+                    ->code('%hook%', $hookName)
+                    ->toString()
+            );
+        }
+        new AssertHook($hook);
+        $to = $hook->className();
+        $anchor = $hook->anchor();
+        $priority = (string) $hook->priority();
+        $new = clone $this;
+        $new->array[$anchor][$priority][] = $hookName;
+        $new->set->add($hookName);
+
+        return $new;
     }
 
     /**
-     * Run the registred hooks at the given anchor.
+     * @return array [anchor => [0 => HookName,],]
      */
-    public function run(object $object, string $anchor): object
+    public function toArray(): array
     {
-        if ($this->isLooping()) {
-            return $object;
-        }
-        $queue = $this->anchors[$anchor] ?? null;
-        if ($queue === null) {
-            return $object;
-        }
-        // if ($this->trace !== null) {
-        //     $this->trace['base'] = $object;
-        // }
-        foreach ($queue as $entries) {
-            foreach ($entries as $entry) {
-                if (is_a($entry, HookInterface::class, true)) {
-                    /**
-                     * @var HookInterface $entry
-                     */
-                    $hook = new $entry;
-                    $object = $hook($object);
-                    // xd($entry);
-                    // if ($object === null) {
-                    //     xdd($queue, $anchor);
-                    // }
-                }
-                // if (null !== $this->trace) {
-                //     $this->trace[$entry['callable']] = $object;
-                // }
-            }
-        }
-
-        return $object;
-    }
-
-    private function isLooping(): bool
-    {
-        return is_a(
-            debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5)[4]['class'],
-            HookInterface::class,
-            true
-        );
+        return $this->array;
     }
 }

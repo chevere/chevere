@@ -21,9 +21,9 @@ interface HookInterface
     public function anchor(): string;
 
     /**
-     * Returns the target class name.
+     * Returns the target hookable class name.
      */
-    public function hooksClassName(): string;
+    public function className(): string;
 
     /**
      * Returns the priority order.

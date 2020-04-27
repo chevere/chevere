@@ -91,7 +91,7 @@ class Path implements PathInterface
      * @codeCoverageIgnore
      * @throws PathDoesntExistsException
      */
-    public function isWriteable(): bool
+    public function isWritable(): bool
     {
         $this->assertExists();
 

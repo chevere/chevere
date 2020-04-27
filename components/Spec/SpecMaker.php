@@ -118,7 +118,7 @@ final class SpecMaker
         if (!$this->dir->exists()) {
             $this->dir->create(0777);
         }
-        if (!$this->dir->path()->isWriteable()) {
+        if (!$this->dir->path()->isWritable()) {
             throw new LogicException(
                 (new Message('Directory %pathName% is not writeable'))
                     ->code('%pathName%', $this->dir->path()->absolute())

@@ -17,11 +17,14 @@ use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\PhpFile;
 use Chevere\Components\Filesystem\PhpFileReturn;
+use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Variable\VariableExport;
+use Ds\Map;
+use Ds\Set;
 use LogicException;
-use ReflectionClass;
+use SplObjectStorage;
 
 final class HooksRegister
 {
@@ -29,29 +32,37 @@ final class HooksRegister
     const HOOKS_FILENAME = 'hooks.php';
     const HOOKABLES_CLASSMAP_FILENAME = 'hookables_classmap.php';
 
-    /** @var array hookableClassName => [anchor => [priority => hookClassName]], */
-    private array $map = [];
+    private Set $set;
+
+    private Map $queues;
 
     private array $hookablesClassMap = [];
 
-    // private array $hooksClassMap = [];
-
-    public function withAddedHook(AssertHook $assertHook): HooksRegister
+    public function __construct()
     {
-        $hook = $assertHook->hook();
-        $reflection = new ReflectionClass($hook);
+        $this->set = new Set;
+        $this->queues = new Map;
+    }
+
+    public function withAddedHook(HookInterface $hook): HooksRegister
+    {
+        $hookClassName = get_class($hook);
+        if ($this->set->contains($hookClassName)) {
+            throw new LogicException(
+                (new Message('Hook %hook% has been already registered'))
+                    ->code('%hook%', $hookClassName)
+                    ->toString()
+            );
+        }
         $new = clone $this;
-        $to = $hook->hooksClassName();
-        $anchor = $hook->anchor();
-        $priority = (string) $hook->priority();
-        $new->map[$to][$anchor][$priority][] = $reflection->getName();
+        $new->queues->put($hook->className(), (new HooksQueue)->withHook($hook));
 
         return $new;
     }
 
     public function withHookablesClassMap(DirInterface $dir): HooksRegister
     {
-        if ($dir->path()->isWriteable() === false) {
+        if ($dir->path()->isWritable() === false) {
             // @codeCoverageIgnoreStart
             throw new LogicException(
                 (new Message('Path %path% is not writeable'))
@@ -62,35 +73,39 @@ final class HooksRegister
         }
         $hooksDir = $dir->getChild(self::HOOKS_DIR);
         $new = clone $this;
-        foreach ($new->map as $className => $hooks) {
-            $nsPath = (string) (new Str($className))->forwardSlashes();
+        foreach ($new->queues as $hookableClassName => $queue) {
+            $nsPath = (string) (new Str($hookableClassName))->forwardSlashes();
             $hooksNsDir = $hooksDir->getChild($nsPath . '/');
-            $filePath = $hooksNsDir->path()->getChild(self::HOOKS_FILENAME);
-            if ($filePath->exists() && $filePath->isWriteable() === false) {
+            $hooksPath = $hooksNsDir->path()->getChild(self::HOOKS_FILENAME);
+            if ($hooksPath->exists() && $hooksPath->isWritable() === false) {
                 // @codeCoverageIgnoreStart
                 throw new LogicException(
-                    (new Message('Path %path% is not writeable'))
-                        ->code('%path%', $filePath->absolute())
+                    (new Message('Path %path% is not writable'))
+                        ->code('%path%', $hooksPath->absolute())
                         ->toString()
                 );
                 // @codeCoverageIgnoreEnd
             }
-            $file = new File($filePath);
-            if ($file->exists() === false) {
-                $file->create();
+            $fileHooks = new File($hooksPath);
+            if ($fileHooks->exists() === false) {
+                $fileHooks->create();
             }
-            $phpFile = new PhpFile($file);
-            (new PhpFileReturn($phpFile))->put(new VariableExport($hooks));
-            $phpFile->cache();
-            $new->hookablesClassMap[$className] = $filePath->absolute();
+            $phpFileHooks = new PhpFile($fileHooks);
+            (new PhpFileReturn($phpFileHooks))->put(
+                new VariableExport($queue)
+            );
+            $phpFileHooks->cache();
+            $new->hookablesClassMap[$hookableClassName] = $hooksPath->absolute();
         }
-        $file = new File($dir->path()->getChild(self::HOOKABLES_CLASSMAP_FILENAME));
-        if ($file->exists() === false) {
-            $file->create();
+        $fileClassMap = new File($dir->path()
+            ->getChild(self::HOOKABLES_CLASSMAP_FILENAME));
+        if ($fileClassMap->exists() === false) {
+            $fileClassMap->create();
         }
-        $phpFile = new PhpFile($file);
-        (new PhpFileReturn($phpFile))->put(new VariableExport($new->hookablesClassMap));
-        $phpFile->cache();
+        $phpFileClassMap = new PhpFile($fileClassMap);
+        (new PhpFileReturn($phpFileClassMap))
+            ->put(new VariableExport($new->hookablesClassMap));
+        $phpFileClassMap->cache();
 
         return $new;
     }

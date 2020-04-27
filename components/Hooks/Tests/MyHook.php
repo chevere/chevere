@@ -22,7 +22,7 @@ class MyHook implements HookInterface
         return 'setString:after';
     }
 
-    public function hooksClassName(): string
+    public function className(): string
     {
         return MyHookable::class;
     }

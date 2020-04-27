@@ -24,13 +24,20 @@ final class HooksRegisterTest extends TestCase
 {
     private DirInterface $tempDir;
 
+    private DirInterface $cacheDir;
+
     public function setUp(): void
     {
-        $this->tempDir = (new Dir(new Path(__DIR__ . '/')))->getChild('_resources/temp/');
+        $_resources = (new Dir(new Path(__DIR__ . '/')))->getChild('_resources/');
+        $this->tempDir = $_resources->getChild('temp/');
+        $this->cacheDir = $_resources->getChild('cache/');
         if ($this->tempDir->exists()) {
             $this->tempDir->removeContents();
         } else {
             $this->tempDir->create();
+        }
+        if (!$this->cacheDir->exists()) {
+            $this->cacheDir->create();
         }
     }
 
@@ -41,16 +48,16 @@ final class HooksRegisterTest extends TestCase
 
     public function testConstrut(): void
     {
-        $hooksRegister = new HooksRegister();
+        $hooksRegister = new HooksRegister;
         $this->assertSame([], $hooksRegister->hookablesClassMap());
     }
 
     public function testWithHookablesClassmap(): void
     {
-        $hook = new MyHook();
-        $hooksRegister = (new HooksRegister())
-            ->withAddedHook(new AssertHook($hook))
+        $hook = new MyHook;
+        $hooksRegister = (new HooksRegister)
+            ->withAddedHook($hook)
             ->withHookablesClassMap($this->tempDir);
-        $this->assertArrayHasKey($hook->hooksClassName(), $hooksRegister->hookablesClassMap());
+        $this->assertArrayHasKey($hook->className(), $hooksRegister->hookablesClassMap());
     }
 }

@@ -11,10 +11,7 @@
 
 declare(strict_types=1);
 
-return [
-    'setString:after' => [
-        0 => [
-            'Chevere\Components\Hooks\Tests\MyHook'
-        ],
-    ],
-];
+use Chevere\Components\Hooks\HooksQueue;
+use Chevere\Components\Hooks\Tests\MyHook;
+
+return (new HooksQueue)->withHook(new MyHook);

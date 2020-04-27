@@ -16,10 +16,8 @@ namespace Chevere\Components\Hooks\Tests;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Hooks\Exceptions\HooksClassNotRegisteredException;
-use Chevere\Components\Hooks\Exceptions\HooksFileNotFoundException;
 use Chevere\Components\Hooks\Hooks;
 use Chevere\Components\Instances\HooksInstance;
-use LogicException;
 use PHPUnit\Framework\TestCase;
 
 final class HookedTest extends TestCase
@@ -57,7 +55,7 @@ final class HookedTest extends TestCase
          * @var MyHookable $myHookable
          */
         $myHookable = (new MyHookable)
-            ->withHooksQueue(HooksInstance::get()->queue(MyHookable::class));
+            ->withHooksRunner(HooksInstance::get()->getRunner(MyHookable::class));
         $myHookable->setString($string);
         $this->assertSame("(hooked $string)", $myHookable->string());
     }
@@ -73,6 +71,6 @@ final class HookedTest extends TestCase
     public function testClassNotRegistered(): void
     {
         $this->expectException(HooksClassNotRegisteredException::class);
-        $this->hooks->queue(MyHookableWithNotRegisteredClass::class);
+        $this->hooks->getRunner(MyHookableWithNotRegisteredClass::class);
     }
 }

@@ -40,10 +40,10 @@ final class AssertHook
 
     private function assertHookableExists(): void
     {
-        if (class_exists($this->hook->hooksClassName()) === false) {
+        if (class_exists($this->hook->className()) === false) {
             throw new HookableNotFoundException(
                 (new Message("Class %ClassName% doesn't exists"))
-                    ->code('%ClassName%', $this->hook->hooksClassName())
+                    ->code('%ClassName%', $this->hook->className())
                     ->toString()
             );
         }
@@ -51,10 +51,10 @@ final class AssertHook
 
     private function assertHookableInterface(): void
     {
-        if (is_a($this->hook->hooksClassName(), HookableInterface::class, true) === false) {
+        if (is_a($this->hook->className(), HookableInterface::class, true) === false) {
             throw new HookableInterfaceException(
                 (new Message('Class %ClassName% must implement the %interfaceName% interface'))
-                    ->code('%ClassName%', $this->hook->hooksClassName())
+                    ->code('%ClassName%', $this->hook->className())
                     ->code('%interfaceName%', HookableInterface::class)
                     ->toString()
             );
@@ -66,12 +66,12 @@ final class AssertHook
         /**
          * @var HookAnchors $anchors
          */
-        $anchors = $this->hook->hooksClassName()::getHookAnchors();
+        $anchors = $this->hook->className()::getHookAnchors();
         if ($anchors->has($this->hook->anchor()) === false) {
             throw new AnchorNotFoundException(
                 (new Message('Anchor %anchor% is not declared by %ClassName%'))
                     ->code('%anchor%', $this->hook->anchor())
-                    ->code('%ClassName%', $this->hook->hooksClassName())
+                    ->code('%ClassName%', $this->hook->className())
                     ->toString()
             );
         }

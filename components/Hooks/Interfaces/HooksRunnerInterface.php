@@ -13,7 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks\Interfaces;
 
-interface HooksQueueInterface
+use Chevere\Components\Hooks\HooksQueue;
+
+interface HooksRunnerInterface
 {
+    public function __construct(HooksQueue $queue);
+
     public function run(object $object, string $anchor): object;
 }

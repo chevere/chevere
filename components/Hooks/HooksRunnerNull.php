@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks;
 
-use Chevere\Components\Hooks\Interfaces\HooksQueueInterface;
+use Chevere\Components\Hooks\Interfaces\HooksRunnerInterface;
 
 /**
  * Null queue handler for HookableInterface without any registered hooks.
  */
-final class HooksQueueNull implements HooksQueueInterface
+final class HooksRunnerNull implements HooksRunnerInterface
 {
     public function run(object $object, string $anchor): object
     {

@@ -14,11 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Hooks\Tests;
 
 use Chevere\Components\Hooks\HookAnchors;
-use Chevere\Components\Hooks\Hooks;
 use Chevere\Components\Hooks\Interfaces\HookableInterface;
-use Chevere\Components\Hooks\Interfaces\HooksQueueInterface;
 use Chevere\Components\Hooks\Traits\HookableTrait;
-use Chevere\Components\Instances\HooksInstance;
 
 class MyHookable implements HookableInterface
 {

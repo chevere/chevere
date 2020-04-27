@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Instances\BootstrapInstance;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
-use Chevere\Components\Message\Message;
 use Chevere\Components\Filesystem\Exceptions\Path\PathNotAllowedException;
+use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Interfaces\Path\AppPathInterface;
 use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Instances\BootstrapInstance;
+use Chevere\Components\Message\Message;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Str\StrBool;
 
@@ -97,9 +97,9 @@ class AppPath implements AppPathInterface
     /**
      * @codeCoverageIgnore
      */
-    public function isWriteable(): bool
+    public function isWritable(): bool
     {
-        return $this->pathContext->isWriteable();
+        return $this->pathContext->isWritable();
     }
 
     /**

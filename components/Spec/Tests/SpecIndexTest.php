@@ -61,7 +61,6 @@ final class SpecIndexTest extends TestCase
                 $method->name()
             )
         );
-        //
         $method2 = new PutMethod;
         $routeEndpoint2 = new RouteEndpoint($method2, new TestController);
         $routeEndpointSpec2 = new RouteEndpointSpec($specPath, $routeEndpoint2);

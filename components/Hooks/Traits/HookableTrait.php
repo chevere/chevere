@@ -13,31 +13,26 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks\Traits;
 
-use Chevere\Components\Hooks\Hooks;
-use Chevere\Components\Hooks\HooksQueue;
-use Chevere\Components\Hooks\HooksQueueNull;
-use Chevere\Components\Hooks\Interfaces\HooksQueueInterface;
-use Chevere\Components\Instances\HooksInstance;
-use LogicException;
+use Chevere\Components\Hooks\Interfaces\HooksRunnerInterface;
 
 trait HookableTrait
 {
-    private HooksQueueInterface $hooksQueue;
+    private HooksRunnerInterface $hooksRunner;
 
-    public function withHooksQueue(HooksQueueInterface $hooksQueue): self
+    public function withHooksRunner(HooksRunnerInterface $hooksRunner): self
     {
         $new = clone $this;
-        $new->hooksQueue = $hooksQueue;
+        $new->hooksRunner = $hooksRunner;
 
         return $new;
     }
 
     public function hook(string $anchor): void
     {
-        if (isset($this->hooksQueue) === false) {
+        if (isset($this->hooksRunner) === false) {
             return;
         }
-        $this->hooksQueue->run($this, $anchor);
+        $this->hooksRunner->run($this, $anchor);
     }
 
     // public function getHooksQueue(): HooksQueueInterface

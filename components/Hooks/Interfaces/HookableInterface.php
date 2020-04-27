@@ -26,7 +26,7 @@ interface HookableInterface
     /**
      * Attach the hooks queue for this hookable.
      */
-    public function withHooksQueue(HooksQueueInterface $hooksQueue): HookableInterface;
+    public function withHooksRunner(HooksRunnerInterface $hooksRunner): HookableInterface;
 
     /**
      * Run the hooks queue for the given anchor (if-any).

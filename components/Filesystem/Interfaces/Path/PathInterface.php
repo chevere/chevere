@@ -46,7 +46,7 @@ interface PathInterface
      * Wrapper for \is_writeable.
      * @throws PathIsNotDirectoryException
      */
-    public function isWriteable(): bool;
+    public function isWritable(): bool;
 
     /**
      * Wrapper for \is_writeable.
