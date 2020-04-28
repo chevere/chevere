@@ -16,6 +16,7 @@ namespace Chevere\Components\Hooks\Tests;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Hooks\Exceptions\HooksClassNotRegisteredException;
+use Chevere\Components\Hooks\HookablesMap;
 use Chevere\Components\Hooks\Hooks;
 use Chevere\Components\Instances\HooksInstance;
 use PHPUnit\Framework\TestCase;
@@ -27,15 +28,23 @@ final class HookedTest extends TestCase
     public function setUp(): void
     {
         $resourcespath = (new Path(__DIR__ . '/'))->getChild('_resources/');
-        $hookablesClassmap = $resourcespath->getChild('hookables_classmap.php');
-        $hookables = include $hookablesClassmap->absolute();
-        foreach ($hookables as $k => &$v) {
-            $v = strtr($v, [
-                '%hooksPath%' => (new Dir($resourcespath))->getChild('hooks/')
-                    ->path()->absolute()
-            ]);
-        }
-        $this->hooks = new Hooks($hookables);
+        $hooksPath = (new Dir($resourcespath))->getChild('hooks/')->path()->absolute();
+        $this->hooks = new Hooks(
+            (new HookablesMap)
+                ->withPut(
+                    'Chevere\Components\Hooks\Tests\MyHookable',
+                    $hooksPath . 'Chevere/Components/Hooks/Tests/MyHookable/hooks.php'
+                )
+                ->withPut(
+                    'Chevere\Components\Hooks\Tests\MyHookableWithCorruptedHooks',
+                    $hooksPath . 'Chevere/Components/Hooks/Tests/MyHookableWithCorruptedHooks/hooks.php'
+                )
+                ->withPut(
+                    'Chevere\Components\Hooks\Tests\MyHookableWithMissingHooks',
+                    'error.php'
+                )
+        );
+
         new HooksInstance($this->hooks);
         include_once 'MyHookable.php';
     }

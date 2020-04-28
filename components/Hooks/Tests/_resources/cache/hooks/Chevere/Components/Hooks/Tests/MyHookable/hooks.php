@@ -1,0 +1,1 @@
+<?php return 'O:35:"Chevere\\Components\\Hooks\\HooksQueue":2:{s:42:"' . "\0" . 'Chevere\\Components\\Hooks\\HooksQueue' . "\0" . 'array";a:1:{s:15:"setString:after";a:1:{i:0;a:1:{i:0;s:37:"Chevere\\Components\\Hooks\\Tests\\MyHook";}}}s:40:"' . "\0" . 'Chevere\\Components\\Hooks\\HooksQueue' . "\0" . 'set";C:6:"Ds\\Set":45:{s:37:"Chevere\\Components\\Hooks\\Tests\\MyHook";}}';

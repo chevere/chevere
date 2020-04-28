@@ -24,7 +24,6 @@ use Chevere\Components\Variable\VariableExport;
 use Ds\Map;
 use Ds\Set;
 use LogicException;
-use SplObjectStorage;
 
 final class HooksRegister
 {
@@ -36,12 +35,13 @@ final class HooksRegister
 
     private Map $queues;
 
-    private array $hookablesClassMap = [];
+    private HookablesMap $map;
 
     public function __construct()
     {
         $this->set = new Set;
         $this->queues = new Map;
+        $this->map = new HookablesMap;
     }
 
     public function withAddedHook(HookInterface $hook): HooksRegister
@@ -95,7 +95,7 @@ final class HooksRegister
                 new VariableExport($queue)
             );
             $phpFileHooks->cache();
-            $new->hookablesClassMap[$hookableClassName] = $hooksPath->absolute();
+            $new->map = $new->map->withPut($hookableClassName, $hooksPath->absolute());
         }
         $fileClassMap = new File($dir->path()
             ->getChild(self::HOOKABLES_CLASSMAP_FILENAME));
@@ -104,14 +104,14 @@ final class HooksRegister
         }
         $phpFileClassMap = new PhpFile($fileClassMap);
         (new PhpFileReturn($phpFileClassMap))
-            ->put(new VariableExport($new->hookablesClassMap));
+            ->put(new VariableExport($new->map));
         $phpFileClassMap->cache();
 
         return $new;
     }
 
-    public function hookablesClassMap(): array
+    public function hookablesMap(): HookablesMap
     {
-        return $this->hookablesClassMap;
+        return $this->map;
     }
 }

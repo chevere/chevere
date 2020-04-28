@@ -1,18 +1,1 @@
-<?php
-
-/*
- * This file is part of Chevere.
- *
- * (c) Rodolfo Berrios <rodolfo@chevere.org>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
-declare(strict_types=1);
-
-return [
-    'Chevere\Components\Hooks\Tests\MyHookable' => '%hooksPath%Chevere/Components/Hooks/Tests/MyHookable/hooks.php',
-    'Chevere\Components\Hooks\Tests\MyHookableWithCorruptedHooks' => '%hooksPath%Chevere/Components/Hooks/Tests/MyHookableWithCorruptedHooks/hooks.php',
-    'Chevere\Components\Hooks\Tests\MyHookableWithMissingHooks' => 'error.php'
-];
+<?php return 'O:37:"Chevere\\Components\\Hooks\\HookablesMap":3:{s:44:"' . "\0" . 'Chevere\\Components\\Hooks\\HookablesMap' . "\0" . 'array";a:1:{s:41:"Chevere\\Components\\Hooks\\Tests\\MyHookable";s:123:"%hooksPath%Chevere/Components/Hooks/Tests/MyHookable/hooks.php";}s:3:"set";C:6:"Ds\\Set":0:{}s:3:"dir";O:33:"Chevere\\Components\\Filesystem\\Dir":1:{s:39:"' . "\0" . 'Chevere\\Components\\Filesystem\\Dir' . "\0" . 'path";O:34:"Chevere\\Components\\Filesystem\\Path":1:{s:44:"' . "\0" . 'Chevere\\Components\\Filesystem\\Path' . "\0" . 'absolute";s:72:"%hooksPath%";}}}';

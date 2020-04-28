@@ -27,21 +27,18 @@ use LogicException;
 use RuntimeException;
 use Throwable;
 
-/**
- * Provides interaction for registered hooks.
- */
 final class Hooks
 {
-    private Map $classMap;
+    private HookablesMap $map;
 
-    public function __construct(array $classMap)
+    public function __construct(HookablesMap $map)
     {
-        $this->classMap = new Map($classMap);
+        $this->map = $map;
     }
 
     public function has(string $className): bool
     {
-        return $this->classMap->hasKey($className);
+        return $this->map->has($className);
     }
 
     /**
@@ -59,7 +56,7 @@ final class Hooks
                     ->toString()
             );
         }
-        $hooksPath = $this->classMap->get($className);
+        $hooksPath = $this->map->get($className);
         if (stream_resolve_include_path($hooksPath) === false) {
             throw new HooksFileNotFoundException(
                 (new Message("File %fileName% doesn't exists"))
