@@ -27,7 +27,7 @@ final class ControllerRunner
         $this->controller = $controller;
     }
 
-    public function run(ControllerArgumentsInterface $arguments): ControllerRanInterface
+    public function ran(ControllerArgumentsInterface $arguments): ControllerRanInterface
     {
         try {
             $this->controller->setUp();

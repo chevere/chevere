@@ -124,7 +124,7 @@ final class RoutesCacheTestController extends Controller
     public function getParameters(): ControllerParametersInterface
     {
         return (new ControllerParameters)
-            ->withPut(
+            ->with(
                 new ControllerParameter('name', new Regex('/^[\w]+$/'))
             );
     }

@@ -16,14 +16,13 @@ namespace Chevere\Components\Controller;
 use Chevere\Components\Controller\Interfaces\ControllerParameterInterface;
 use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
-use DeepCopy\DeepCopy;
 use OutOfBoundsException;
 
 final class ControllerParameters implements ControllerParametersInterface
 {
     use DsMapTrait;
 
-    public function withPut(ControllerParameterInterface $controllerParameter): ControllerParametersInterface
+    public function with(ControllerParameterInterface $controllerParameter): ControllerParametersInterface
     {
         $new = clone $this;
         /**
@@ -37,7 +36,7 @@ final class ControllerParameters implements ControllerParametersInterface
         return $new;
     }
 
-    public function hasParameter(string $name): bool
+    public function hasName(string $name): bool
     {
         return $this->map->hasKey(/** @scrutinizer ignore-type */ $name);
     }

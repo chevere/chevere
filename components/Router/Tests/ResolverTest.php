@@ -149,7 +149,7 @@ class ResolverTestController extends Controller
         new RouteWildcardMatch('[0-9]+');
 
         return (new ControllerParameters)
-            ->withPut(new ControllerParameter('id', new Regex('/^[0-9]+$/')));
+            ->with(new ControllerParameter('id', new Regex('/^[0-9]+$/')));
     }
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface

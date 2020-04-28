@@ -56,7 +56,7 @@ final class RouteableTest extends TestCase
     public function testNotExportable(): void
     {
         $route = new Route(new RouteName('test'), new RoutePath('/test'));
-        $route->resource = fopen('php://output', 'r');
+        $route->resource = fopen('php://output', 'r+');
         $this->expectException(RouteNotRouteableException::class);
         new Routeable($route);
     }

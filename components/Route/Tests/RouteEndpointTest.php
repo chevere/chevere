@@ -38,7 +38,7 @@ final class RouteEndpointTest extends TestCase
         $this->assertSame($method->description(), $routeEndpoint->description());
         /** @var string $name */
         foreach (array_keys($routeEndpoint->parameters()) as $name) {
-            $this->assertTrue($controller->parameters()->hasParameter($name));
+            $this->assertTrue($controller->parameters()->hasName($name));
         }
     }
 
@@ -73,8 +73,8 @@ final class RouteEndpointTestController extends Controller
     public function getParameters(): ControllerParametersInterface
     {
         return (new ControllerParameters)
-            ->withPut(new ControllerParameter('name', new Regex('/^[\w]+$/')))
-            ->withPut(new ControllerParameter('id', new Regex('/^[0-9]+$/')));
+            ->with(new ControllerParameter('name', new Regex('/^[\w]+$/')))
+            ->with(new ControllerParameter('id', new Regex('/^[0-9]+$/')));
     }
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface

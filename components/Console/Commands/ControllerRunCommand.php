@@ -74,7 +74,7 @@ final class ControllerRunCommand extends Command
         }
         $this->writer()->colors('<green>Run ' . $controllerName . '</end>', true);
         $runner = new ControllerRunner($controller);
-        $ran = $runner->run($arguments);
+        $ran = $runner->ran($arguments);
         $this->writer()->write(implode('', $ran->data()));
 
         return $ran->code();

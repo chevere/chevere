@@ -33,9 +33,9 @@ final class ControllerRunnerTest extends TestCase
 {
     private function getFailedRan(ControllerInterface $controller): ControllerRanInterface
     {
-        $arguments = new ControllerArguments($controller->parameters(), new Map);
+        $arguments = new ControllerArguments($controller->parameters(), []);
 
-        return (new ControllerRunner($controller))->run($arguments);
+        return (new ControllerRunner($controller))->ran($arguments);
     }
 
     private function getControllerMethod(ControllerInterface $controller, string $method): string
@@ -76,9 +76,9 @@ final class ControllerRunnerTest extends TestCase
         $parameter = 'name';
         $value = 'PeterPoison';
         $controller = new ControllerRunnerTestController;
-        $arguments = new Map([$parameter => $value]);
+        $arguments = [$parameter => $value];
         $arguments = new ControllerArguments($controller->parameters(), $arguments);
-        $ran = (new ControllerRunner($controller))->run($arguments);
+        $ran = (new ControllerRunner($controller))->ran($arguments);
         $this->assertSame(0, $ran->code());
         $this->assertSame(['user' => $value], $ran->data());
     }
@@ -89,15 +89,15 @@ final class ControllerRunnerTestController extends Controller
     public function getParameters(): ControllerParametersInterface
     {
         return (new ControllerParameters)
-            ->withPut(
+            ->with(
                 new ControllerParameter('name', new Regex('/^\w+$/'))
             );
     }
 
-    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
+    public function run(ControllerArgumentsInterface $args): ControllerResponseInterface
     {
         return (new ControllerResponse(true))
-            ->withData(['user' => $arguments->get('name')]);
+            ->withData(['user' => $args->get('name')]);
     }
 }
 
@@ -108,7 +108,7 @@ final class ControllerRunnerTestControllerSetupFail extends Controller
         throw new Exception('Something went wrong');
     }
 
-    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
+    public function run(ControllerArgumentsInterface $args): ControllerResponseInterface
     {
         return new ControllerResponse(true);
     }
@@ -116,7 +116,7 @@ final class ControllerRunnerTestControllerSetupFail extends Controller
 
 final class ControllerRunnerTestControllerRunFail extends Controller
 {
-    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
+    public function run(ControllerArgumentsInterface $args): ControllerResponseInterface
     {
         throw new Exception('Something went wrong');
 
@@ -131,7 +131,7 @@ final class ControllerRunnerTestControllerTearDownFail extends Controller
         throw new Exception('Something went wrong');
     }
 
-    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
+    public function run(ControllerArgumentsInterface $args): ControllerResponseInterface
     {
         return new ControllerResponse(true);
     }

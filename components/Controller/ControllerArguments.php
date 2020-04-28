@@ -27,20 +27,23 @@ final class ControllerArguments implements ControllerArgumentsInterface
 
     private Map $arguments;
 
-    public function __construct(ControllerParameters $parameters, Map $arguments)
+    public function __construct(ControllerParameters $parameters, array $arguments)
     {
         $this->parameters = $parameters;
-        $this->arguments = $arguments;
+        $this->arguments = new Map($arguments);
         $this->assertRequired();
         foreach ($this->arguments as $name => $value) {
             $this->assertParameter($name, $value);
         }
     }
 
-    public function put(string $name, string $value): void
+    public function with(string $name, string $value): ControllerArgumentsInterface
     {
         $this->assertParameter($name, $value);
-        $this->arguments->put($name, $value);
+        $new = clone $this;
+        $new->arguments->put($name, $value);
+
+        return $new;
     }
 
     public function has(string $name): bool
@@ -67,7 +70,7 @@ final class ControllerArguments implements ControllerArgumentsInterface
 
     private function assertParameter(string $name, string $value): void
     {
-        if ($this->parameters->hasParameter($name) === false) {
+        if ($this->parameters->hasName($name) === false) {
             throw new OutOfBoundsException(
                 (new Message('Unknown parameter %parameter%'))
                     ->code('%parameter%', $name)

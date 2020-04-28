@@ -27,20 +27,19 @@ final class ControllerArgumentsTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $array = [
+        $arguments = [
             'id' => '1',
             'name' => 'someValue',
         ];
         $parameters = (new ControllerParameters)
-            ->withPut(
+            ->with(
                 new ControllerParameter('id', new Regex('/^\d+$/'))
             )
-            ->withPut(
+            ->with(
                 new ControllerParameter('name', new Regex('/^\w+$/'))
             );
-        $arguments = new Map($array);
         $controllerArguments = new ControllerArguments($parameters, $arguments);
-        foreach ($array as $name => $value) {
+        foreach ($arguments as $name => $value) {
             $this->assertTrue($controllerArguments->has($name));
             $this->assertSame($value, $controllerArguments->get($name));
         }
@@ -54,17 +53,17 @@ final class ControllerArgumentsTest extends TestCase
     {
         $parameters = new ControllerParameters;
         $this->expectException(OutOfBoundsException::class);
-        new ControllerArguments($parameters, new Map(['id' => '123']));
+        new ControllerArguments($parameters, ['id' => '123']);
     }
 
     public function testInvalidRegexArgument(): void
     {
         $parameters = (new ControllerParameters)
-            ->withPut(
+            ->with(
                 new ControllerParameter('id', new Regex('/^[0-9]+$/'))
             );
         $this->expectException(ControllerArgumentRegexMatchException::class);
-        (new ControllerArguments($parameters, new Map(['id' => 'abc'])));
+        (new ControllerArguments($parameters, ['id' => 'abc']));
     }
 
     public function testPut(): void
@@ -74,17 +73,17 @@ final class ControllerArgumentsTest extends TestCase
         $valueAlt = '321';
         $controllerArguments = new ControllerArguments(
             (new ControllerParameters)
-                ->withPut(
+                ->with(
                     new ControllerParameter($name, new Regex('/^[0-9]+$/'))
                 ),
-            new Map([$name => $value])
+            [$name => $value]
         );
         $this->assertTrue($controllerArguments->has($name));
         $this->assertSame($value, $controllerArguments->get($name));
-        $controllerArguments->put($name, $valueAlt);
+        $controllerArguments = $controllerArguments->with($name, $valueAlt);
         $this->assertSame($valueAlt, $controllerArguments->get($name));
         $this->expectException(ControllerArgumentRegexMatchException::class);
-        $controllerArguments->put($name, 'invalid');
+        $controllerArguments->with($name, 'invalid');
     }
 
     public function testArgumentsRequiredException(): void
@@ -92,10 +91,10 @@ final class ControllerArgumentsTest extends TestCase
         $this->expectException(ControllerArgumentsRequiredException::class);
         new ControllerArguments(
             (new ControllerParameters)
-                ->withPut(
+                ->with(
                     new ControllerParameter('id', new Regex('/^[0-9]+$/'))
                 ),
-            new Map
+            []
         );
     }
 
@@ -105,14 +104,14 @@ final class ControllerArgumentsTest extends TestCase
         $paramName = 'name';
         $controllerArguments = new ControllerArguments(
             (new ControllerParameters)
-                ->withPut(
+                ->with(
                     new ControllerParameter($paramId, new Regex('/^[0-9]+$/'))
                 )
-                ->withPut(
+                ->with(
                     (new ControllerParameter($paramName, new Regex('/^\w+$/')))
                         ->withIsRequired(false)
                 ),
-            new Map([$paramId => '123'])
+            [$paramId => '123']
         );
         $this->assertFalse($controllerArguments->has($paramName));
     }
