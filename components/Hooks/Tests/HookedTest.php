@@ -18,7 +18,6 @@ use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Hooks\Exceptions\HooksClassNotRegisteredException;
 use Chevere\Components\Hooks\HookablesMap;
 use Chevere\Components\Hooks\Hooks;
-use Chevere\Components\Instances\HooksInstance;
 use PHPUnit\Framework\TestCase;
 
 final class HookedTest extends TestCase
@@ -45,7 +44,6 @@ final class HookedTest extends TestCase
                 )
         );
 
-        new HooksInstance($this->hooks);
         include_once 'MyHookable.php';
     }
 
@@ -64,7 +62,7 @@ final class HookedTest extends TestCase
          * @var MyHookable $myHookable
          */
         $myHookable = (new MyHookable)
-            ->withHooksRunner(HooksInstance::get()->getRunner(MyHookable::class));
+            ->withHooksRunner($this->hooks->getRunner(MyHookable::class));
         $myHookable->setString($string);
         $this->assertSame("(hooked $string)", $myHookable->string());
     }

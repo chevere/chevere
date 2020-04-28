@@ -36,9 +36,9 @@ final class Hooks
         $this->map = $map;
     }
 
-    public function has(string $className): bool
+    public function has(string $hookable): bool
     {
-        return $this->map->has($className);
+        return $this->map->has($hookable);
     }
 
     /**
@@ -49,7 +49,7 @@ final class Hooks
      */
     public function getRunner(string $className): HooksRunner
     {
-        if (!$this->has($className)) {
+        if (!$this->map->has($className)) {
             throw new HooksClassNotRegisteredException(
                 (new Message("Class %className% doesn't exists in the class map"))
                     ->code('%className%', $className)
