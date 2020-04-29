@@ -30,15 +30,15 @@ use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
 use SplObjectStorage;
 
-/**
- * Iterates over the target dir for files matching RouteName.php
- */
 final class RoutePathIterator implements RoutePathIteratorInterface
 {
     private RecursiveIteratorIterator $recursiveIterator;
 
     private SplObjectStorage $objects;
 
+    /**
+     * Iterates over the target dir for files matching RouteName.php
+     */
     public function __construct(DirInterface $dir)
     {
         $this->directoryIterator = new RecursiveDirectoryIterator(
@@ -47,7 +47,7 @@ final class RoutePathIterator implements RoutePathIteratorInterface
             | RecursiveDirectoryIterator::KEY_AS_PATHNAME
         );
         $this->recursiveIterator = new RecursiveIteratorIterator($this->recursiveFilterIterator());
-        $this->objects = new SplObjectStorage();
+        $this->objects = new SplObjectStorage;
         $this->recursiveIterator->rewind();
         while ($this->recursiveIterator->valid()) {
             $pathName = $this->recursiveIterator->current()->getPathName();
@@ -73,7 +73,7 @@ final class RoutePathIterator implements RoutePathIteratorInterface
         }
     }
 
-    final public function routePathObjects(): RoutePathObjectsRead
+    public function routePathObjects(): RoutePathObjectsRead
     {
         return new RoutePathObjectsRead($this->objects);
     }
