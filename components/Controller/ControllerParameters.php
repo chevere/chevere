@@ -22,7 +22,7 @@ final class ControllerParameters implements ControllerParametersInterface
 {
     use DsMapTrait;
 
-    public function with(ControllerParameterInterface $controllerParameter): ControllerParametersInterface
+    public function withParameter(ControllerParameterInterface $controllerParameter): ControllerParametersInterface
     {
         $new = clone $this;
         /**
@@ -36,7 +36,7 @@ final class ControllerParameters implements ControllerParametersInterface
         return $new;
     }
 
-    public function hasName(string $name): bool
+    public function hasParameterName(string $name): bool
     {
         return $this->map->hasKey(/** @scrutinizer ignore-type */ $name);
     }

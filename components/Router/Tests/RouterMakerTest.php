@@ -106,8 +106,8 @@ final class RouterMakerTestController extends Controller
     public function getParameters(): ControllerParametersInterface
     {
         return (new ControllerParameters)
-            ->with(new ControllerParameter('name', new Regex('/^[\w]+$/')))
-            ->with(new ControllerParameter('id', new Regex('/^[0-9]+$/')));
+            ->withParameter(new ControllerParameter('name', new Regex('/^[\w]+$/')))
+            ->withParameter(new ControllerParameter('id', new Regex('/^[0-9]+$/')));
     }
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface

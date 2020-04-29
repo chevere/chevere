@@ -37,7 +37,7 @@ final class ControllerArguments implements ControllerArgumentsInterface
         }
     }
 
-    public function with(string $name, string $value): ControllerArgumentsInterface
+    public function withArgument(string $name, string $value): ControllerArgumentsInterface
     {
         $this->assertParameter($name, $value);
         $new = clone $this;
@@ -70,7 +70,7 @@ final class ControllerArguments implements ControllerArgumentsInterface
 
     private function assertParameter(string $name, string $value): void
     {
-        if ($this->parameters->hasName($name) === false) {
+        if ($this->parameters->hasParameterName($name) === false) {
             throw new OutOfBoundsException(
                 (new Message('Unknown parameter %parameter%'))
                     ->code('%parameter%', $name)

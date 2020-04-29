@@ -22,9 +22,9 @@ interface ControllerParametersInterface
      */
     public function map(): Map;
 
-    public function with(ControllerParameterInterface $controllerParameter): ControllerParametersInterface;
+    public function withParameter(ControllerParameterInterface $controllerParameter): ControllerParametersInterface;
 
-    public function hasName(string $name): bool;
+    public function hasParameterName(string $name): bool;
 
     public function get(string $name): ControllerParameterInterface;
 }

@@ -27,7 +27,7 @@ final class GetArticleController extends Controller
     public function getParameters(): ControllerParametersInterface
     {
         return (new ControllerParameters)
-            ->with(
+            ->withParameter(
                 new ControllerParameter('id', new Regex('/^d+$/'))
             );
     }

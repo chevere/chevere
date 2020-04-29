@@ -32,10 +32,10 @@ final class ControllerArgumentsTest extends TestCase
             'name' => 'someValue',
         ];
         $parameters = (new ControllerParameters)
-            ->with(
+            ->withParameter(
                 new ControllerParameter('id', new Regex('/^\d+$/'))
             )
-            ->with(
+            ->withParameter(
                 new ControllerParameter('name', new Regex('/^\w+$/'))
             );
         $controllerArguments = new ControllerArguments($parameters, $arguments);
@@ -59,7 +59,7 @@ final class ControllerArgumentsTest extends TestCase
     public function testInvalidRegexArgument(): void
     {
         $parameters = (new ControllerParameters)
-            ->with(
+            ->withParameter(
                 new ControllerParameter('id', new Regex('/^[0-9]+$/'))
             );
         $this->expectException(ControllerArgumentRegexMatchException::class);
@@ -73,17 +73,17 @@ final class ControllerArgumentsTest extends TestCase
         $valueAlt = '321';
         $controllerArguments = new ControllerArguments(
             (new ControllerParameters)
-                ->with(
+                ->withParameter(
                     new ControllerParameter($name, new Regex('/^[0-9]+$/'))
                 ),
             [$name => $value]
         );
         $this->assertTrue($controllerArguments->has($name));
         $this->assertSame($value, $controllerArguments->get($name));
-        $controllerArguments = $controllerArguments->with($name, $valueAlt);
+        $controllerArguments = $controllerArguments->withArgument($name, $valueAlt);
         $this->assertSame($valueAlt, $controllerArguments->get($name));
         $this->expectException(ControllerArgumentRegexMatchException::class);
-        $controllerArguments->with($name, 'invalid');
+        $controllerArguments->withArgument($name, 'invalid');
     }
 
     public function testArgumentsRequiredException(): void
@@ -91,7 +91,7 @@ final class ControllerArgumentsTest extends TestCase
         $this->expectException(ControllerArgumentsRequiredException::class);
         new ControllerArguments(
             (new ControllerParameters)
-                ->with(
+                ->withParameter(
                     new ControllerParameter('id', new Regex('/^[0-9]+$/'))
                 ),
             []
@@ -104,10 +104,10 @@ final class ControllerArgumentsTest extends TestCase
         $paramName = 'name';
         $controllerArguments = new ControllerArguments(
             (new ControllerParameters)
-                ->with(
+                ->withParameter(
                     new ControllerParameter($paramId, new Regex('/^[0-9]+$/'))
                 )
-                ->with(
+                ->withParameter(
                     (new ControllerParameter($paramName, new Regex('/^\w+$/')))
                         ->withIsRequired(false)
                 ),

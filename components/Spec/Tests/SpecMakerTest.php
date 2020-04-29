@@ -106,7 +106,7 @@ class SpecMakerTestGetController extends Controller
     public function getParameters(): ControllerParametersInterface
     {
         return (new ControllerParameters)
-            ->with(
+            ->withParameter(
                 (new ControllerParameter('id', new Regex('/^[0-9]+$/')))
                     ->withDescription('The user integer id')
             );
@@ -123,11 +123,11 @@ class SpecMakerTestPutController extends Controller
     public function getParameters(): ControllerParametersInterface
     {
         return (new ControllerParameters)
-            ->with(
+            ->withParameter(
                 (new ControllerParameter('id', new Regex('/^[0-9]+$/')))
                     ->withDescription('The user integer id')
             )
-            ->with(
+            ->withParameter(
                 (new ControllerParameter('name', new Regex('/^[\w]+$/')))
                     ->withDescription('The user name')
                     ->withIsRequired(false)
