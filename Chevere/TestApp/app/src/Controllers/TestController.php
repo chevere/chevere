@@ -30,48 +30,41 @@ class TestController extends Controller implements HookableInterface
 {
     use HookableTrait;
 
-    protected ControllerParameters $_parameters;
-
-    protected ControllerResponse $_response;
-
-    protected ControllerArguments $_arguments;
-
     protected array $_data;
 
     public static function getHookAnchors(): HookAnchors
     {
         return (new HookAnchors)
-            ->withPut('getParameters:after')
-            ->withPut('run:before')
-            ->withPut('run:after');
+            ->withAnchor('getParameters:after')
+            ->withAnchor('run:before')
+            ->withAnchor('run:after');
     }
 
     public function getParameters(): ControllerParametersInterface
     {
-        $this->_paremeters = (new ControllerParameters)
+        $paremeters = (new ControllerParameters)
             ->with(
                 new ControllerParameter('name', new Regex('/^[\w]+$/'))
             )
             ->with(
                 new ControllerParameter('id', new Regex('/^[0-9]+$/'))
             );
-        $this->hook('getParameters:after');
+        $this->hook('getParameters:after', $paremeters);
 
-        return $this->_paremeters;
+        return $paremeters;
     }
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        $this->_arguments = $arguments;
-        $this->hook('run:before');
-        $this->_response = new ControllerResponse(true);
-        $this->_data = [
-            'userName' => $this->_arguments->get('name'),
-            'userId' => $this->_arguments->get('id')
+        $this->hook('run:before', $arguments);
+        $response = new ControllerResponse(true);
+        $data = [
+            'userName' => $arguments->get('name'),
+            'userId' => $arguments->get('id')
         ];
-        $this->_response = $this->_response->withData($this->_data);
-        $this->hook('run:after');
+        $response = $response->withData($data);
+        $this->hook('run:after', $response);
 
-        return $this->_response;
+        return $response;
     }
 }

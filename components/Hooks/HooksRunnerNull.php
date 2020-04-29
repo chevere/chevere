@@ -20,8 +20,8 @@ use Chevere\Components\Hooks\Interfaces\HooksRunnerInterface;
  */
 final class HooksRunnerNull implements HooksRunnerInterface
 {
-    public function run(object $object, string $anchor): object
+    public function run(string $anchor, &$argument): void
     {
-        return $object;
+        return;
     }
 }

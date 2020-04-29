@@ -31,5 +31,5 @@ interface HookableInterface
     /**
      * Run the hooks queue for the given anchor (if-any).
      */
-    public function hook(string $anchor): void;
+    public function hook(string $anchor, &$argument): void;
 }

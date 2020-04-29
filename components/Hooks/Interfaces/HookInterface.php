@@ -30,5 +30,5 @@ interface HookInterface
      */
     public function priority(): int;
 
-    public function __invoke(object $object): object;
+    public function __invoke(&$argument): void;
 }

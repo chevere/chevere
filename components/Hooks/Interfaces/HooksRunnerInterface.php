@@ -19,5 +19,5 @@ interface HooksRunnerInterface
 {
     public function __construct(HooksQueue $queue);
 
-    public function run(object $object, string $anchor): object;
+    public function run(string $anchor, &$argument): void;
 }

@@ -32,14 +32,8 @@ class MyHook implements HookInterface
         return 0;
     }
 
-    public function __invoke(object $hookable): object
+    public function __invoke(&$argument): void
     {
-        /**
-         * @var MyHookable $hookable
-         */
-        $string = $hookable->string();
-        $hookable->setString("(hooked $string)");
-
-        return $hookable;
+        $argument = "(hooked $argument)";
     }
 }

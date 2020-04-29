@@ -25,7 +25,7 @@ final class HookAnchors
         $this->set = new Set;
     }
 
-    public function withPut(string $anchor): HookAnchors
+    public function withAnchor(string $anchor): HookAnchors
     {
         $new = clone $this;
         $new->set->add($anchor);

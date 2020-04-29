@@ -21,24 +21,27 @@ class MyHookable implements HookableInterface
 {
     use HookableTrait;
 
-    private string $string = '';
+    private string $string;
 
     public static function getHookAnchors(): HookAnchors
     {
         return (new HookAnchors)
-            ->withPut('construct:before')
-            ->withPut('setString:after');
+            ->withAnchor('construct:before')
+            ->withAnchor('setString:after');
     }
 
     public function __construct()
     {
-        $this->hook('construct:before');
+        $string = '';
+        $this->hook('construct:before', $string);
+        $this->string = $string;
     }
 
     public function setString(string $string): void
     {
         $this->string = $string;
-        $this->hook('setString:after');
+        $this->hook('setString:after', $string);
+        $this->string = $string;
     }
 
     public function string(): string

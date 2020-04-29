@@ -27,12 +27,12 @@ trait HookableTrait
         return $new;
     }
 
-    public function hook(string $anchor): void
+    public function hook(string $anchor, &$argument): void
     {
         if (isset($this->hooksRunner) === false) {
             return;
         }
-        $this->hooksRunner->run($this, $anchor);
+        $this->hooksRunner->run($anchor, $argument);
     }
 
     // public function getHooksQueue(): HooksQueueInterface

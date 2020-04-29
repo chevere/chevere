@@ -31,14 +31,14 @@ final class HooksRunner implements HooksRunnerInterface
     /**
      * Run the registred hooks at the given anchor.
      */
-    public function run(object $object, string $anchor): object
+    public function run(string $anchor, &$argument): void
     {
         if ($this->isLooping()) {
-            return $object;
+            return;
         }
         $queue = $this->queue->toArray()[$anchor] ?? null;
         if ($queue === null) {
-            return $object;
+            return;
         }
         // if ($this->trace !== null) {
         //     $this->trace['base'] = $object;
@@ -50,7 +50,7 @@ final class HooksRunner implements HooksRunnerInterface
                      * @var HookInterface $entry
                      */
                     $hook = new $entry;
-                    $object = $hook($object);
+                    $hook($argument);
                     // xd($entry);
                     // if ($object === null) {
                     //     xdd($queue, $anchor);
@@ -61,8 +61,6 @@ final class HooksRunner implements HooksRunnerInterface
                 // }
             }
         }
-
-        return $object;
     }
 
     private function isLooping(): bool
