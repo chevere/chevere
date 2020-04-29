@@ -13,16 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks\Traits;
 
+use Chevere\Components\Hooks\HooksQueue;
+use Chevere\Components\Hooks\HooksRunner;
 use Chevere\Components\Hooks\Interfaces\HooksRunnerInterface;
 
 trait HookableTrait
 {
     private HooksRunnerInterface $hooksRunner;
 
-    public function withHooksRunner(HooksRunnerInterface $hooksRunner): self
+    public function withHooksQueue(HooksQueue $hooksQueue): self
     {
         $new = clone $this;
-        $new->hooksRunner = $hooksRunner;
+        $new->hooksRunner = new HooksRunner($hooksQueue);
 
         return $new;
     }

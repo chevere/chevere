@@ -62,7 +62,7 @@ final class HookedTest extends TestCase
          * @var MyHookable $myHookable
          */
         $myHookable = (new MyHookable)
-            ->withHooksRunner($this->hooks->getRunner(MyHookable::class));
+            ->withHooksQueue($this->hooks->getQueue(MyHookable::class));
         $myHookable->setString($string);
         $this->assertSame("(hooked $string)", $myHookable->string());
     }
@@ -78,6 +78,6 @@ final class HookedTest extends TestCase
     public function testClassNotRegistered(): void
     {
         $this->expectException(HooksClassNotRegisteredException::class);
-        $this->hooks->getRunner(MyHookableWithNotRegisteredClass::class);
+        $this->hooks->getQueue(MyHookableWithNotRegisteredClass::class);
     }
 }

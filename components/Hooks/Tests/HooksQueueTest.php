@@ -22,8 +22,8 @@ final class HooksQueueTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $hooksMap = new HooksQueue;
-        $this->assertSame([], $hooksMap->toArray());
+        $hooksQueue = new HooksQueue;
+        $this->assertSame([], $hooksQueue->toArray());
     }
 
     public function testWithHook(): void

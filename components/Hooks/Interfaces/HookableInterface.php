@@ -15,6 +15,7 @@ namespace Chevere\Components\Hooks\Interfaces;
 
 use Chevere\Components\Hooks\HookAnchors;
 use Chevere\Components\Hooks\Hooks;
+use Chevere\Components\Hooks\HooksQueue;
 
 interface HookableInterface
 {
@@ -26,7 +27,7 @@ interface HookableInterface
     /**
      * Attach the hooks queue for this hookable.
      */
-    public function withHooksRunner(HooksRunnerInterface $hooksRunner): HookableInterface;
+    public function withHooksQueue(HooksQueue $hooksQueue): HookableInterface;
 
     /**
      * Run the hooks queue for the given anchor (if-any).

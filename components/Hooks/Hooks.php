@@ -47,7 +47,7 @@ final class Hooks
      * @throws RuntimeException if unable to load the hooks file
      * @throws LogicException if the contents of the hooks file are invalid
      */
-    public function getRunner(string $className): HooksRunner
+    public function getQueue(string $className): HooksQueue
     {
         if (!$this->map->has($className)) {
             throw new HooksClassNotRegisteredException(
@@ -69,10 +69,10 @@ final class Hooks
             $fileReturn = new PhpFileReturn(new PhpFile(new File(new Path($hooksPath))));
             $fileReturn = $fileReturn->withStrict(false);
             /**
-             * @var HooksQueue $hooks
+             * @var HooksQueue $queue
              */
-            $hooks = $fileReturn->var();
-            if (!(new Type(HooksQueue::class))->validate($hooks)) {
+            $queue = $fileReturn->var();
+            if (!(new Type(HooksQueue::class))->validate($queue)) {
                 throw new LogicException(
                     (new Message('Return value of %filePath% is not of type %type%'))
                         ->code('%filePath%', $hooksPath)
@@ -85,6 +85,6 @@ final class Hooks
         }
         // @codeCoverageIgnoreEnd
 
-        return new HooksRunner($hooks);
+        return $queue;
     }
 }

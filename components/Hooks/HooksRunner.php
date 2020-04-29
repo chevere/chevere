@@ -15,6 +15,9 @@ namespace Chevere\Components\Hooks;
 
 use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Hooks\Interfaces\HooksRunnerInterface;
+use Chevere\Components\Message\Message;
+use Chevere\Components\Type\Type;
+use RuntimeException;
 
 /**
  * Queue handler for Hooks registered for a given HookeableInterface.
@@ -40,9 +43,11 @@ final class HooksRunner implements HooksRunnerInterface
         if ($queue === null) {
             return;
         }
-        // if ($this->trace !== null) {
-        //     $this->trace['base'] = $object;
-        // }
+        $gettype = gettype($argument);
+        if ($gettype === 'object') {
+            $gettype = get_class($argument);
+        }
+        $type = new Type($gettype);
         foreach ($queue as $entries) {
             foreach ($entries as $entry) {
                 if (is_a($entry, HookInterface::class, true)) {
@@ -51,14 +56,16 @@ final class HooksRunner implements HooksRunnerInterface
                      */
                     $hook = new $entry;
                     $hook($argument);
-                    // xd($entry);
-                    // if ($object === null) {
-                    //     xdd($queue, $anchor);
-                    // }
+                    if (!$type->validate($argument)) {
+                        throw new RuntimeException(
+                            (new Message('Hook argument %passed% has been altered to %altered% by hook %hook%'))
+                                ->code('%passed%', $gettype)
+                                ->code('%altered%', gettype($argument))
+                                ->code('%hook%', get_class($entry))
+                                ->toString()
+                        );
+                    }
                 }
-                // if (null !== $this->trace) {
-                //     $this->trace[$entry['callable']] = $object;
-                // }
             }
         }
     }
