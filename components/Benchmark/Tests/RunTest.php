@@ -15,9 +15,10 @@ namespace Chevere\Components\Benchmark\Tests;
 
 use Chevere\Components\Benchmark\Benchmark;
 use Chevere\Components\Benchmark\Exceptions\ArgumentTypeException;
+use Chevere\Components\Benchmark\Interfaces\RunableInterface;
 use Chevere\Components\Benchmark\Run;
 use Chevere\Components\Benchmark\Runable;
-use Chevere\Components\Benchmark\Interfaces\RunableInterface;
+use Chevere\Components\Str\Str;
 use PHPUnit\Framework\TestCase;
 
 final class RunTest extends TestCase
@@ -59,7 +60,8 @@ final class RunTest extends TestCase
         $argument = 'string';
         $this->expectException(ArgumentTypeException::class);
         $benchmark = (new Benchmark($argument))
-            ->withAddedCallable(function (int $int) {
+            ->withAddedCallable(function (int $int)
+            {
                 return $int;
             }, 'int?');
         (new Run(
@@ -72,13 +74,16 @@ final class RunTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
         $benchmark = (new Benchmark(500, 3000))
-            ->withAddedCallable(function (int $a, int $b) {
+            ->withAddedCallable(function (int $a, int $b)
+            {
                 return $a + $b;
             }, 'Add')
-            ->withAddedCallable(function (int $a, int $b) {
+            ->withAddedCallable(function (int $a, int $b)
+            {
                 return $a / $b;
             }, 'Divide')
-            ->withAddedCallable(function (int $a, int $b) {
+            ->withAddedCallable(function (int $a, int $b)
+            {
                 return $a * $b;
             }, 'Multiply');
         (new Run(new Runable($benchmark)))

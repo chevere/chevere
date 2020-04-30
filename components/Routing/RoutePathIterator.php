@@ -60,11 +60,12 @@ final class RoutePathIterator implements RoutePathIteratorInterface
                         ->toString()
                 );
             }
-            $routePath = (string) (new Str(dirname($pathName) . '/'))
+            $routePath = (new Str(dirname($pathName) . '/'))
                 ->replaceFirst(
                     rtrim($dir->path()->absolute(), '/'),
                     ''
-                );
+                )
+                ->toString();
             $this->objects->attach(
                 new RoutePath($routePath),
                 $routeDecorator

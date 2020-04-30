@@ -238,7 +238,9 @@ final class RoutePath implements RoutePathInterface
         foreach ($this->wildcardsMatch[0] as $pos => $braced) {
             // Change {wildcard} to {n} (n is the wildcard index)
             if (isset($this->key)) {
-                $this->key = (string) (new Str($this->key))->replaceFirst($braced, "{{$pos}}");
+                $this->key = (new Str($this->key))
+                    ->replaceFirst($braced, "{{$pos}}")
+                    ->toString();
             }
             $wildcard = $this->wildcardsMatch[1][$pos];
             if (in_array($wildcard, $this->wildcards)) {

@@ -16,7 +16,7 @@ namespace Chevere\Components\Str;
 use Chevere\Components\Str\Interfaces\StrInterface;
 
 /**
- * The Chevere mutable string.
+ * The Chevere string manipulation.
  */
 final class Str implements StrInterface
 {
@@ -27,44 +27,57 @@ final class Str implements StrInterface
         $this->string = $string;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->string;
     }
 
     public function lowercase(): StrInterface
     {
-        $this->string = mb_strtolower($this->string, 'UTF-8');
+        $new = clone $this;
+        $new->string = mb_strtolower($new->string, 'UTF-8');
 
-        return $this;
+        return $new;
+    }
+
+    public function uppercase(): StrInterface
+    {
+        $new = clone $this;
+        $new->string = mb_strtoupper($new->string, 'UTF-8');
+
+        return $new;
     }
 
     public function stripWhitespace(): StrInterface
     {
-        $this->string = preg_replace('/\s+/', '', $this->string) ?? '';
+        $new = clone $this;
+        $new->string = preg_replace('/\s+/', '', $new->string) ?? '';
 
-        return $this;
+        return $new;
     }
 
     public function stripExtraWhitespace(): StrInterface
     {
-        $this->string = preg_replace('/\s+/', ' ', $this->string) ?? '';
+        $new = clone $this;
+        $new->string = preg_replace('/\s+/', ' ', $new->string) ?? '';
 
-        return $this;
+        return $new;
     }
 
     public function stripNonAlphanumerics(): StrInterface
     {
-        $this->string = preg_replace('/[^[:alnum:]]/u', '', $this->string) ?? '';
+        $new = clone $this;
+        $new->string = preg_replace('/[^[:alnum:]]/u', '', $new->string) ?? '';
 
-        return $this;
+        return $new;
     }
 
     public function forwardSlashes(): StrInterface
     {
-        $this->string = str_replace('\\', '/', $this->string);
+        $new = clone $this;
+        $new->string = str_replace('\\', '/', $new->string);
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -74,9 +87,10 @@ final class Str implements StrInterface
      */
     public function leftTail(string $tail): StrInterface
     {
-        $this->string = $tail . ltrim($this->string, $tail);
+        $new = clone $this;
+        $new->string = $tail . ltrim($new->string, $tail);
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -86,9 +100,10 @@ final class Str implements StrInterface
      */
     public function rightTail(string $tail): StrInterface
     {
-        $this->string = rtrim($this->string, $tail) . $tail;
+        $new = clone $this;
+        $new->string = rtrim($new->string, $tail) . $tail;
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -100,13 +115,14 @@ final class Str implements StrInterface
      */
     public function replaceFirst(string $search, string $replace): StrInterface
     {
-        $pos = strpos($this->string, $search);
+        $new = clone $this;
+        $pos = strpos($new->string, $search);
         if (false !== $pos) {
-            $subject = substr_replace($this->string, $replace, $pos, mb_strlen($search));
+            $subject = substr_replace($new->string, $replace, $pos, mb_strlen($search));
         }
-        $this->string = $subject ?? '';
+        $new->string = $subject ?? '';
 
-        return $this;
+        return $new;
     }
 
     /**
@@ -117,14 +133,14 @@ final class Str implements StrInterface
      */
     public function replaceLast(string $search, string $replace): StrInterface
     {
-        $pos = strrpos($this->string, $search);
+        $new = clone $this;
+        $pos = strrpos($new->string, $search);
         if (false !== $pos) {
-            $subject = substr_replace($this->string, $replace, $pos, mb_strlen($search));
+            $subject = substr_replace($new->string, $replace, $pos, mb_strlen($search));
         }
+        $new->string = $subject ?? '';
 
-        $this->string = $subject ?? '';
-
-        return $this;
+        return $new;
     }
 
     /**
@@ -132,8 +148,9 @@ final class Str implements StrInterface
      */
     public function stripANSIColors(): StrInterface
     {
-        $this->string = preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $this->string);
+        $new = clone $this;
+        $new->string = preg_replace('#\\x1b[[][^A-Za-z]*[A-Za-z]#', '', $new->string);
 
-        return $this;
+        return $new;
     }
 }

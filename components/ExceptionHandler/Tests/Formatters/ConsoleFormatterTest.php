@@ -36,7 +36,7 @@ final class ConsoleFormatterTest extends TestCase
             $console = $consoleFormatter->$methodName(...$args);
             $this->assertSame(
                 $plain,
-                (string) (new Str($console))->stripANSIColors()
+                (new Str($console))->stripANSIColors()->toString()
             );
         }
     }

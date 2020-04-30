@@ -169,8 +169,9 @@ final class SpecMaker
     private function getPathFor(string $jsonPath): PathInterface
     {
         $dirPath = $this->dir->path(); // /home/weas/spec/
-        $child = (string) (new Str($jsonPath))
-            ->replaceFirst($this->specPath->pub(), '');
+        $child = (new Str($jsonPath))
+            ->replaceFirst($this->specPath->pub(), '')
+            ->toString();
         $child = ltrim($child, '/');
 
         return $dirPath->getChild($child);

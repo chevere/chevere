@@ -122,7 +122,9 @@ class AppPath implements AppPathInterface
     {
         if ((new StrBool($this->path))->startsWith('/') === true) {
             $this->assertAbsolutePath();
-            $string = (string) (new Str($this->path))->replaceFirst($this->rootDir->path()->absolute(), '');
+            $string = (new Str($this->path))
+                ->replaceFirst($this->rootDir->path()->absolute(), '')
+                ->toString();
             $this->relative = ltrim($string, '/');
         }
     }

@@ -17,12 +17,17 @@ interface StrInterface
 {
     public function __construct(string $string);
 
-    public function __toString(): string;
+    public function toString(): string;
 
     /**
-     * Lowercase string
+     * Lowercase string UTF-8
      */
     public function lowercase(): StrInterface;
+
+    /**
+     * Uppercase string UTF-8
+     */
+    public function uppercase(): StrInterface;
 
     /**
      * Strip whitespaces from string.

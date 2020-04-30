@@ -21,7 +21,7 @@ final class StrTest extends TestCase
     public function testToString(): void
     {
         $string = 'string';
-        $this->assertSame($string, (string) new Str($string));
+        $this->assertSame($string, (new Str($string))->toString());
     }
 
     public function testLowercase(): void
@@ -30,7 +30,7 @@ final class StrTest extends TestCase
         $expected = 'stríng';
         $this->assertSame(
             $expected,
-            (string) (new Str($string))->lowercase()
+            (new Str($string))->lowercase()->toString()
         );
     }
 
@@ -40,7 +40,7 @@ final class StrTest extends TestCase
         $expected = 'string';
         $this->assertSame(
             $expected,
-            (string) (new Str($string))->stripWhitespace()
+            (new Str($string))->stripWhitespace()->toString()
         );
     }
 
@@ -50,7 +50,7 @@ final class StrTest extends TestCase
         $expected = 'str in g';
         $this->assertSame(
             $expected,
-            (string) (new Str($string))->stripExtraWhitespace()
+            (new Str($string))->stripExtraWhitespace()->toString()
         );
     }
 
@@ -60,7 +60,7 @@ final class StrTest extends TestCase
         $expected = '7rng';
         $this->assertSame(
             $expected,
-            (string) (new Str($string))->stripNonAlphanumerics()
+            (new Str($string))->stripNonAlphanumerics()->toString()
         );
     }
 
@@ -70,7 +70,7 @@ final class StrTest extends TestCase
         $expected = '/str/in//g';
         $this->assertSame(
             $expected,
-            (string) (new Str($string))->forwardSlashes()
+            (new Str($string))->forwardSlashes()->toString()
         );
     }
 
@@ -81,7 +81,7 @@ final class StrTest extends TestCase
         $expected = $tail . $string;
         $this->assertSame(
             $expected,
-            (string) (new Str($tail . $tail . $string))->leftTail($tail)
+            (new Str($tail . $tail . $string))->leftTail($tail)->toString()
         );
     }
 
@@ -92,7 +92,7 @@ final class StrTest extends TestCase
         $expected = $string . $tail;
         $this->assertSame(
             $expected,
-            (string) (new Str($string . $tail . $tail))->rightTail($tail)
+            (new Str($string . $tail . $tail))->rightTail($tail)->toString()
         );
     }
 
@@ -104,7 +104,7 @@ final class StrTest extends TestCase
         $expected = 'the string';
         $this->assertSame(
             $expected,
-            (string) (new Str($string))->replaceFirst($search, $replace)
+            (new Str($string))->replaceFirst($search, $replace)->toString()
         );
     }
 
@@ -116,7 +116,7 @@ final class StrTest extends TestCase
         $expected = 'stringo';
         $this->assertSame(
             $expected,
-            (string) (new Str($string))->replaceLast($search, $replace)
+            (new Str($string))->replaceLast($search, $replace)->toString()
         );
     }
 }

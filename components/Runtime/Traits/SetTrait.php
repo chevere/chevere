@@ -27,7 +27,9 @@ trait SetTrait
     public function name(): string
     {
         $explode = explode('\\', static::class);
-        $name = (string) (new Str(end($explode)))->replaceFirst('Set', '');
+        $name = (new Str(end($explode)))
+            ->replaceFirst('Set', '')
+            ->toString();
 
         return lcfirst($name);
     }
