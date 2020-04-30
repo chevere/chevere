@@ -21,24 +21,22 @@ use Chevere\Components\Hooks\Exceptions\HooksClassNotRegisteredException;
 use Chevere\Components\Hooks\Exceptions\HooksFileNotFoundException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
-use Ds\Map;
-use Exception;
 use LogicException;
 use RuntimeException;
 use Throwable;
 
 final class Hooks
 {
-    private HookablesMap $map;
+    private HookablesMap $hookablesMap;
 
     public function __construct(HookablesMap $map)
     {
-        $this->map = $map;
+        $this->hookablesMap = $map;
     }
 
     public function has(string $hookable): bool
     {
-        return $this->map->has($hookable);
+        return $this->hookablesMap->has($hookable);
     }
 
     /**
@@ -49,14 +47,14 @@ final class Hooks
      */
     public function getQueue(string $className): HooksQueue
     {
-        if (!$this->map->has($className)) {
+        if (!$this->hookablesMap->has($className)) {
             throw new HooksClassNotRegisteredException(
                 (new Message("Class %className% doesn't exists in the class map"))
                     ->code('%className%', $className)
                     ->toString()
             );
         }
-        $hooksPath = $this->map->get($className);
+        $hooksPath = $this->hookablesMap->get($className);
         if (stream_resolve_include_path($hooksPath) === false) {
             throw new HooksFileNotFoundException(
                 (new Message("File %fileName% doesn't exists"))

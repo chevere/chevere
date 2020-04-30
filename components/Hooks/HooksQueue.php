@@ -40,7 +40,6 @@ final class HooksQueue
             );
         }
         new AssertHook($hook);
-        $to = $hook->className();
         $anchor = $hook->anchor();
         $priority = (string) $hook->priority();
         $new = clone $this;

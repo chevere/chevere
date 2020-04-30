@@ -41,7 +41,6 @@ final class HooksRegister
     {
         $this->set = new Set;
         $this->hooksQueueMap = new Map;
-        $this->hookablesMap = new HookablesMap;
     }
 
     public function withAddedHook(HookInterface $hook): HooksRegister
@@ -76,6 +75,7 @@ final class HooksRegister
         }
         $hooksDir = $dir->getChild(self::HOOKS_DIR);
         $new = clone $this;
+        $new->hookablesMap = new HookablesMap;
         foreach ($new->hooksQueueMap as $hookableClassName => $queue) {
             $nsPath = (string) (new Str($hookableClassName))->forwardSlashes();
             $hooksNsDir = $hooksDir->getChild($nsPath . '/');
