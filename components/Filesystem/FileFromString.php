@@ -13,9 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
+use Chevere\Components\Filesystem\Interfaces\FileFromStringInterface;
 use Chevere\Components\Filesystem\Interfaces\FileInterface;
 
-final class FileFromString
+/**
+ * @codeCoverageIgnore
+ */
+final class FileFromString implements FileFromStringInterface
 {
     private FileInterface $file;
 

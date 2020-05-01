@@ -16,6 +16,9 @@ namespace Chevere\Components\Filesystem;
 use Chevere\Components\Filesystem\Interfaces\FilePhpReturnFromStringInterface;
 use Chevere\Components\Filesystem\Interfaces\FilePhpReturnInterface;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class FilePhpReturnFromString implements FilePhpReturnFromStringInterface
 {
     private FilePhpReturnInterface $filePhpReturn;

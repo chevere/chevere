@@ -34,6 +34,16 @@ final class StrTest extends TestCase
         );
     }
 
+    public function testUppercase(): void
+    {
+        $string = 'sTrÍnG';
+        $expected = 'STRÍNG';
+        $this->assertSame(
+            $expected,
+            (new Str($string))->uppercase()->toString()
+        );
+    }
+
     public function testStripWhitespace(): void
     {
         $string = 'st ri ng';

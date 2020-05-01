@@ -16,6 +16,9 @@ namespace Chevere\Components\Filesystem;
 use Chevere\Components\Filesystem\Interfaces\FilePhpFromStringInterface;
 use Chevere\Components\Filesystem\Interfaces\FilePhpInterface;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class FilePhpFromString implements FilePhpFromStringInterface
 {
     private FilePhpInterface $filePhp;

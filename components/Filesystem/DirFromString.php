@@ -16,6 +16,9 @@ namespace Chevere\Components\Filesystem;
 use Chevere\Components\Filesystem\Interfaces\DirFromStringInterface;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class DirFromString implements DirFromStringInterface
 {
     public function __construct(string $absolute)
