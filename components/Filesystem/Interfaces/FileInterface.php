@@ -34,7 +34,7 @@ interface FileInterface
     public function path(): PathInterface;
 
     /**
-     * Returns a boolean indicating whether the file represents a PHP file.
+     * Returns a boolean indicating whether the file name is a PHP file.
      */
     public function isPhp(): bool;
 

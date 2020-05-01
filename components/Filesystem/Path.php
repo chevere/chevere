@@ -109,9 +109,9 @@ final class Path implements PathInterface
     public function getChild(string $child): PathInterface
     {
         $parent = $this->absolute;
-        $childrenPath = rtrim($parent, '/');
+        $childPath = rtrim($parent, '/');
 
-        return new Path($childrenPath . '/' . $child);
+        return new Path($childPath . '/' . $child);
     }
 
     private function assertExists(): void
