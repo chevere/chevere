@@ -15,15 +15,15 @@ namespace Chevere\Components\App\Tests;
 
 use Chevere\Components\App\App;
 use Chevere\Components\App\Build;
+use Chevere\Components\App\Interfaces\ServicesInterface;
 use Chevere\Components\App\Parameters;
 use Chevere\Components\App\Services;
 use Chevere\Components\App\ServicesBuilder;
 use Chevere\Components\ArrayFile\ArrayFile;
-use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\PhpFile;
-use Chevere\Components\Http\Response;
 use Chevere\Components\Filesystem\AppPath;
-use Chevere\Components\App\Interfaces\ServicesInterface;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\FilePhp;
+use Chevere\Components\Http\Response;
 use PHPUnit\Framework\TestCase;
 
 final class ServicesBuilderTest extends TestCase
@@ -35,7 +35,7 @@ final class ServicesBuilderTest extends TestCase
         $app = new App($services, $response);
         $build = new Build($app);
         $arrayFile = new ArrayFile(
-            new PhpFile(
+            new FilePhp(
                 new File(
                     new AppPath('parameters/empty.php')
                 )

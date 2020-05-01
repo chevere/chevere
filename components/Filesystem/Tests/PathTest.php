@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem\Path\Tests;
 
-use RuntimeException;
-use Chevere\Components\Instances\BootstrapInstance;
-use Chevere\Components\Filesystem\Exceptions\Path\PathDoesntExistsException;
+use Chevere\Components\Filesystem\Exceptions\PathDoesntExistsException;
+use Chevere\Components\Filesystem\Interfaces\PathInterface;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Instances\BootstrapInstance;
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 final class PathTest extends TestCase
 {

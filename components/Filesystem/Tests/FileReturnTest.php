@@ -13,18 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem\Tests;
 
-use Chevere\Components\Filesystem\AppPath;
-use Chevere\Components\Filesystem\Exceptions\File\FileInvalidContentsException;
-use Chevere\Components\Filesystem\Exceptions\File\FileNotFoundException;
-use Chevere\Components\Filesystem\Exceptions\File\FileWithoutContentsException;
+use Chevere\Components\Filesystem\Exceptions\FileInvalidContentsException;
+use Chevere\Components\Filesystem\Exceptions\FileNotFoundException;
+use Chevere\Components\Filesystem\Exceptions\FileWithoutContentsException;
 use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
-use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
-use Chevere\Components\Filesystem\Interfaces\File\PhpFileReturnInterface;
-use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Filesystem\FilePhp;
+use Chevere\Components\Filesystem\FilePhpReturn;
+use Chevere\Components\Filesystem\Interfaces\FileInterface;
+use Chevere\Components\Filesystem\Interfaces\FilePhpReturnInterface;
+use Chevere\Components\Filesystem\Interfaces\PathInterface;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Filesystem\PhpFile;
-use Chevere\Components\Filesystem\PhpFileReturn;
 use Chevere\Components\Variable\VariableExport;
 use PHPUnit\Framework\TestCase;
 
@@ -35,8 +33,8 @@ final class FileReturnTest extends TestCase
     /** @var FileInterface */
     private FileInterface $file;
 
-    /** @var PhpFileReturnInterface */
-    private PhpFileReturnInterface $phpFileReturn;
+    /** @var FilePhpReturnInterface */
+    private FilePhpReturnInterface $phpFileReturn;
 
     private function getFileName(): string
     {
@@ -50,8 +48,8 @@ final class FileReturnTest extends TestCase
             $this->path->getChild($this->getFileName())
         );
         $this->file->create();
-        $this->phpFileReturn = new PhpFileReturn(
-            new PhpFile($this->file)
+        $this->phpFileReturn = new FilePhpReturn(
+            new FilePhp($this->file)
         );
         $this->assertSame($this->file, $this->phpFileReturn->filePhp()->file());
     }
@@ -66,8 +64,8 @@ final class FileReturnTest extends TestCase
     public function testConstructFileNotFound(): void
     {
         $this->expectException(FileNotFoundException::class);
-        new PhpFileReturn(
-            new PhpFile(
+        new FilePhpReturn(
+            new FilePhp(
                 new File(
                     $this->path->getChild($this->getFileName())
                 )
@@ -98,7 +96,7 @@ final class FileReturnTest extends TestCase
 
     public function testContents(): void
     {
-        $this->file->put(PhpFileReturnInterface::PHP_RETURN . '"test";');
+        $this->file->put(FilePhpReturnInterface::PHP_RETURN . '"test";');
         $this->assertSame('test', $this->phpFileReturn->raw());
     }
 
@@ -124,7 +122,7 @@ final class FileReturnTest extends TestCase
 
     public function testVarContents(): void
     {
-        $this->file->put(PhpFileReturnInterface::PHP_RETURN . '["test", 1];');
+        $this->file->put(FilePhpReturnInterface::PHP_RETURN . '["test", 1];');
         $this->assertSame(['test', 1], $this->phpFileReturn->var());
     }
 

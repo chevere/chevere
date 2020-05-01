@@ -17,7 +17,7 @@ use Chevere\Components\Bootstrap\Bootstrap;
 use Chevere\Components\Bootstrap\Exceptions\BootstrapDirException;
 use Chevere\Components\Bootstrap\Interfaces\BootstrapInterface;
 use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Filesystem\Path;
 use PHPUnit\Framework\TestCase;
 

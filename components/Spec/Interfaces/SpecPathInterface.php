@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Interfaces;
 
-use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
-
 interface SpecPathInterface
 {
     public function pub(): string;

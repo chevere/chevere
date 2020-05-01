@@ -18,10 +18,10 @@ use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Cache\Interfaces\CacheItemInterface;
 use Chevere\Components\Cache\Interfaces\CacheKeyInterface;
 use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
-use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
-use Chevere\Components\Filesystem\PhpFile;
-use Chevere\Components\Filesystem\PhpFileReturn;
+use Chevere\Components\Filesystem\FilePhp;
+use Chevere\Components\Filesystem\FilePhpReturn;
+use Chevere\Components\Filesystem\Interfaces\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\PathInterface;
 use Chevere\Components\Variable\Interfaces\VariableExportInterface;
 
 /**
@@ -62,8 +62,8 @@ final class Cache implements CacheInterface
         if (!$file->exists()) {
             $file->create();
         }
-        $filePhp = new PhpFile($file);
-        $fileReturn = new PhpFileReturn($filePhp);
+        $filePhp = new FilePhp($file);
+        $fileReturn = new FilePhpReturn($filePhp);
         $fileReturn->put($variableExport);
         $filePhp->cache();
         $new = clone $this;
@@ -82,7 +82,7 @@ final class Cache implements CacheInterface
         if ($path->exists() === false) {
             return $new; // @codeCoverageIgnore
         }
-        $filePhp = new PhpFile(new File($path));
+        $filePhp = new FilePhp(new File($path));
         $filePhp->flush();
         $filePhp->file()->remove();
         unset($new->puts[$cacheKey->toString()]);
@@ -103,8 +103,8 @@ final class Cache implements CacheInterface
         }
 
         return new CacheItem(
-            new PhpFileReturn(
-                new PhpFile(new File($path))
+            new FilePhpReturn(
+                new FilePhp(new File($path))
             )
         );
     }

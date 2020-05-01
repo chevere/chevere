@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Filesystem\Interfaces\Dir\DirFromStringInterface;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\DirFromStringInterface;
+use Chevere\Components\Filesystem\Interfaces\DirInterface;
 
 final class DirFromString implements DirFromStringInterface
 {

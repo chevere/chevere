@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Hooks;
 
 use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
-use Chevere\Components\Filesystem\PhpFile;
-use Chevere\Components\Filesystem\PhpFileReturn;
+use Chevere\Components\Filesystem\FilePhp;
+use Chevere\Components\Filesystem\FilePhpReturn;
+use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\Str;
@@ -94,8 +94,8 @@ final class HooksRegister
             if ($fileHooks->exists() === false) {
                 $fileHooks->create();
             }
-            $phpFileHooks = new PhpFile($fileHooks);
-            (new PhpFileReturn($phpFileHooks))
+            $phpFileHooks = new FilePhp($fileHooks);
+            (new FilePhpReturn($phpFileHooks))
                 ->put(new VariableExport($queue));
             $phpFileHooks->cache();
             $new->hookablesMap = $new->hookablesMap->withPut($hookableClassName, $hooksPath->absolute());
@@ -105,8 +105,8 @@ final class HooksRegister
         if ($fileClassMap->exists() === false) {
             $fileClassMap->create();
         }
-        $phpFileClassMap = new PhpFile($fileClassMap);
-        (new PhpFileReturn($phpFileClassMap))
+        $phpFileClassMap = new FilePhp($fileClassMap);
+        (new FilePhpReturn($phpFileClassMap))
             ->put(new VariableExport($new->hookablesMap));
         $phpFileClassMap->cache();
 

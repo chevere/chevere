@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Components\Filesystem\Path\Tests;
 
 use Chevere\Components\Filesystem\AssertPathString;
-use Chevere\Components\Filesystem\Exceptions\Path\PathDotSlashException;
-use Chevere\Components\Filesystem\Exceptions\Path\PathDoubleDotsDashException;
-use Chevere\Components\Filesystem\Exceptions\Path\PathExtraSlashesException;
-use Chevere\Components\Filesystem\Exceptions\Path\PathInvalidException;
-use Chevere\Components\Filesystem\Exceptions\Path\PathNotAbsoluteException;
+use Chevere\Components\Filesystem\Exceptions\PathDotSlashException;
+use Chevere\Components\Filesystem\Exceptions\PathDoubleDotsDashException;
+use Chevere\Components\Filesystem\Exceptions\PathExtraSlashesException;
+use Chevere\Components\Filesystem\Exceptions\PathNotAbsoluteException;
 use PHPUnit\Framework\TestCase;
 
 final class AssertPathStringTest extends TestCase

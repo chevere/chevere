@@ -13,19 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Filesystem\Exceptions\Path\PathDoesntExistsException;
-use Chevere\Components\Filesystem\Exceptions\Path\PathDotSlashException;
-use Chevere\Components\Filesystem\Exceptions\Path\PathDoubleDotsDashException;
-use Chevere\Components\Filesystem\Exceptions\Path\PathExtraSlashesException;
-use Chevere\Components\Filesystem\Exceptions\Path\PathNotAbsoluteException;
-use Chevere\Components\Filesystem\Exceptions\Path\PathUnableToChmodException;
-use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Filesystem\Exceptions\PathDoesntExistsException;
+use Chevere\Components\Filesystem\Exceptions\PathDotSlashException;
+use Chevere\Components\Filesystem\Exceptions\PathDoubleDotsDashException;
+use Chevere\Components\Filesystem\Exceptions\PathExtraSlashesException;
+use Chevere\Components\Filesystem\Exceptions\PathNotAbsoluteException;
+use Chevere\Components\Filesystem\Exceptions\PathUnableToChmodException;
+use Chevere\Components\Filesystem\Interfaces\PathInterface;
 use Chevere\Components\Message\Message;
 
-/**
- * Handles paths with context.
- */
-class Path implements PathInterface
+final class Path implements PathInterface
 {
     /** @var string Absolute path */
     private string $absolute;

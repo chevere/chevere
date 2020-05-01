@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Hooks;
 
 use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\FilePhp;
+use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Filesystem\PhpFile;
-use Chevere\Components\Filesystem\PhpFileReturn;
 use Chevere\Components\Hooks\Exceptions\HooksClassNotRegisteredException;
 use Chevere\Components\Hooks\Exceptions\HooksFileNotFoundException;
 use Chevere\Components\Message\Message;
@@ -64,7 +64,7 @@ final class Hooks
         }
         // @codeCoverageIgnoreStart
         try {
-            $fileReturn = new PhpFileReturn(new PhpFile(new File(new Path($hooksPath))));
+            $fileReturn = new FilePhpReturn(new FilePhp(new File(new Path($hooksPath))));
             $fileReturn = $fileReturn->withStrict(false);
             /**
              * @var HooksQueue $queue

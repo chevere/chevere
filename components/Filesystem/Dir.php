@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Filesystem\Exceptions\Dir\DirTailException;
-use Chevere\Components\Filesystem\Exceptions\Dir\DirUnableToCreateException;
-use Chevere\Components\Filesystem\Exceptions\Dir\DirUnableToRemoveException;
-use Chevere\Components\Message\Message;
-use Chevere\Components\Filesystem\Exceptions\Path\PathIsFileException;
-use Chevere\Components\Filesystem\Exceptions\Path\PathIsNotDirectoryException;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Filesystem\Exceptions\DirTailException;
+use Chevere\Components\Filesystem\Exceptions\DirUnableToCreateException;
+use Chevere\Components\Filesystem\Exceptions\DirUnableToRemoveException;
+use Chevere\Components\Filesystem\Exceptions\PathIsFileException;
+use Chevere\Components\Filesystem\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Filesystem\Interfaces\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\PathInterface;
 use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Message\Message;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Throwable;

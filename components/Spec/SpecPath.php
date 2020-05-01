@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec;
 
-use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
-use Chevere\Components\Message\Message;
+use Chevere\Components\Filesystem\Interfaces\PathInterface;
 use Chevere\Components\Spec\Interfaces\SpecPathInterface;
 use Chevere\Components\Str\Exceptions\StrAssertException;
 use Chevere\Components\Str\Exceptions\StrContainsException;
@@ -23,7 +22,6 @@ use Chevere\Components\Str\Exceptions\StrNotStartsWithException;
 use Chevere\Components\Str\Exceptions\StrStartsWithException;
 use Chevere\Components\Str\StrAssert;
 use InvalidArgumentException;
-use Throwable;
 
 final class SpecPath implements SpecPathInterface
 {

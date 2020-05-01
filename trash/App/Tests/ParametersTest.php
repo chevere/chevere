@@ -16,13 +16,13 @@ namespace Chevere\Components\App\Tests;
 use Chevere\Components\App\Exceptions\ParametersDuplicatedException;
 use Chevere\Components\App\Exceptions\ParametersWrongKeyException;
 use Chevere\Components\App\Exceptions\ParametersWrongTypeException;
+use Chevere\Components\App\Interfaces\ParametersInterface;
 use Chevere\Components\App\Parameters;
 use Chevere\Components\ArrayFile\ArrayFile;
-use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\PhpFile;
-use Chevere\Components\Filesystem\AppPath;
-use Chevere\Components\App\Interfaces\ParametersInterface;
 use Chevere\Components\ArrayFile\Interfaces\ArrayFileInterface;
+use Chevere\Components\Filesystem\AppPath;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -32,7 +32,7 @@ final class ParametersTest extends TestCase
     {
         return
             new ArrayFile(
-                new PhpFile(
+                new FilePhp(
                     new File($path)
                 )
             );

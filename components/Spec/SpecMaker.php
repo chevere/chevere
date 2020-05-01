@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec;
 
 use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
-use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Filesystem\Interfaces\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\PathInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Routeable;

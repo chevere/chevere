@@ -14,9 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Hooks\Tests;
 
 use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Hooks\AssertHook;
 use Chevere\Components\Hooks\HooksRegister;
 use PHPUnit\Framework\TestCase;
 

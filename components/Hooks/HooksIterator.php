@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks;
 
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrBool;

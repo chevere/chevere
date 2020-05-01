@@ -13,24 +13,22 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Tests;
 
-use Error;
-use LogicException;
 use Chevere\Components\App\App;
 use Chevere\Components\App\Build;
 use Chevere\Components\App\Exceptions\BuildFileNotExistsException;
+use Chevere\Components\App\Interfaces\BuildInterface;
+use Chevere\Components\App\Interfaces\ParametersInterface;
 use Chevere\Components\App\Parameters;
 use Chevere\Components\App\Services;
 use Chevere\Components\ArrayFile\ArrayFile;
-use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\PhpFile;
-use Chevere\Components\Http\Response;
 use Chevere\Components\Filesystem\AppPath;
-use Chevere\Components\Router\RouterMaker;
-use Chevere\Components\App\Interfaces\BuildInterface;
-use Chevere\Components\App\Interfaces\CheckoutInterface;
-use Chevere\Components\App\Interfaces\ParametersInterface;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
-use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\FilePhp;
+use Chevere\Components\Filesystem\Interfaces\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\FileInterface;
+use Chevere\Components\Http\Response;
+use Error;
+use LogicException;
 use PHPUnit\Framework\TestCase;
 
 final class BuildTest extends TestCase
@@ -47,7 +45,7 @@ final class BuildTest extends TestCase
         return
             new Parameters(
                 new ArrayFile(
-                    new PhpFile(
+                    new FilePhp(
                         new File(
                             new AppPath('parameters.php')
                         )

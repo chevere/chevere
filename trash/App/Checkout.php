@@ -15,9 +15,9 @@ namespace Chevere\Components\App;
 
 use Chevere\Components\App\Interfaces\BuildInterface;
 use Chevere\Components\App\Interfaces\CheckoutInterface;
-use Chevere\Components\Filesystem\Interfaces\File\PhpFileReturnInterface;
-use Chevere\Components\Filesystem\PhpFile;
-use Chevere\Components\Filesystem\PhpFileReturn;
+use Chevere\Components\Filesystem\FilePhp;
+use Chevere\Components\Filesystem\FilePhpReturn;
+use Chevere\Components\Filesystem\Interfaces\FilePhpReturnInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Variable\VariableExport;
 use InvalidArgumentException;
@@ -30,7 +30,7 @@ final class Checkout implements CheckoutInterface
 {
     private BuildInterface $build;
 
-    private PhpFileReturnInterface $phpFileReturn;
+    private FilePhpReturnInterface $phpFileReturn;
 
     public function __construct(BuildInterface $build)
     {
@@ -41,15 +41,15 @@ final class Checkout implements CheckoutInterface
             $file->remove();
         }
         $file->create();
-        $this->phpFileReturn = new PhpFileReturn(
-            new PhpFile($file)
+        $this->phpFileReturn = new FilePhpReturn(
+            new FilePhp($file)
         );
         $this->phpFileReturn->put(
             new VariableExport($this->build->checksums())
         );
     }
 
-    public function fileReturn(): PhpFileReturnInterface
+    public function fileReturn(): FilePhpReturnInterface
     {
         return $this->phpFileReturn;
     }

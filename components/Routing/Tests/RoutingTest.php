@@ -13,12 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing\Tests;
 
-use Chevere\Components\Cache\Cache;
 use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Router\Interfaces\RouterInterface;
-use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Routing\RoutePathIterator;
 use Chevere\Components\Routing\Routing;

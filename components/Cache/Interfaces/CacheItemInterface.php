@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Cache\Interfaces;
 
-use Chevere\Components\Filesystem\Interfaces\File\PhpFileReturnInterface;
+use Chevere\Components\Filesystem\Interfaces\FilePhpReturnInterface;
 
 interface CacheItemInterface
 {
-    public function __construct(PhpFileReturnInterface $phpFileReturn);
+    public function __construct(FilePhpReturnInterface $phpFileReturn);
 
     /**
      * Provides raw access to the FileReturnInterface "as-is"

@@ -15,23 +15,23 @@ namespace Chevere\Components\App;
 
 use Chevere\Components\Api\Api;
 use Chevere\Components\App\Exceptions\BuildNeededException;
-use Chevere\Components\Instances\BootstrapInstance;
-use Chevere\Components\ArrayFile\ArrayFile;
-use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
-use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\PhpFile;
-use Chevere\Components\Http\Response;
-use Chevere\Components\Message\Message;
-use Chevere\Components\Filesystem\AppPath;
-use Chevere\Components\Router\RouterMaker;
-use Chevere\Components\Router\Router;
 use Chevere\Components\App\Interfaces\AppInterface;
-use Chevere\Components\App\Interfaces\BuildInterface;
 use Chevere\Components\App\Interfaces\BuilderInterface;
-use Chevere\Components\App\Interfaces\ServicesInterface;
+use Chevere\Components\App\Interfaces\BuildInterface;
 use Chevere\Components\App\Interfaces\LoaderInterface;
 use Chevere\Components\App\Interfaces\ParametersInterface;
+use Chevere\Components\App\Interfaces\ServicesInterface;
+use Chevere\Components\ArrayFile\ArrayFile;
+use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
+use Chevere\Components\Filesystem\AppPath;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\FilePhp;
+use Chevere\Components\Http\Response;
+use Chevere\Components\Instances\BootstrapInstance;
+use Chevere\Components\Message\Message;
+use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;
+use Chevere\Components\Router\RouterMaker;
 
 /**
  * Loads the application, by handling its builder.
@@ -51,7 +51,7 @@ final class Loader implements LoaderInterface
         $this->parameters =
             new Parameters(
                 new ArrayFile(
-                    new PhpFile(
+                    new FilePhp(
                         new File(
                             new AppPath(AppInterface::FILE_PARAMETERS)
                         )

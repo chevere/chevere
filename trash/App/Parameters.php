@@ -16,12 +16,11 @@ namespace Chevere\Components\App;
 use Chevere\Components\App\Exceptions\ParametersDuplicatedException;
 use Chevere\Components\App\Exceptions\ParametersWrongKeyException;
 use Chevere\Components\App\Exceptions\ParametersWrongTypeException;
-use Chevere\Components\Message\Message;
-use Chevere\Components\Filesystem\AppPath;
 use Chevere\Components\App\Interfaces\ParametersInterface;
 use Chevere\Components\ArrayFile\Interfaces\ArrayFileInterface;
-use Chevere\Components\Filesystem\Interfaces\Path\AppPathInterface;
-use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Filesystem\AppPath;
+use Chevere\Components\Filesystem\Interfaces\AppPathInterface;
+use Chevere\Components\Message\Message;
 
 /**
  * Application parameters container.

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing\Interfaces;
 
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Routing\RoutePathObjectsRead;
 
 interface RoutePathIteratorInterface

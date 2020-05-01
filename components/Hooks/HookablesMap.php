@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks;
 
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Ds\Set;
 
 final class HookablesMap

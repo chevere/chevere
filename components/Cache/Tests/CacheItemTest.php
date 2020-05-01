@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Cache\Tests;
 
 use Chevere\Components\Cache\CacheItem;
-use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\PhpFile;
-use Chevere\Components\Filesystem\PhpFileReturn;
-use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Cache\Interfaces\CacheItemInterface;
-use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\FilePhp;
+use Chevere\Components\Filesystem\FilePhpReturn;
+use Chevere\Components\Filesystem\Interfaces\PathInterface;
+use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Variable\VariableExport;
 use PHPUnit\Framework\TestCase;
 
@@ -35,8 +35,8 @@ final class CacheItemTest extends TestCase
     private function getCacheItem(PathInterface $path): CacheItemInterface
     {
         return new CacheItem(
-            new PhpFileReturn(
-                new PhpFile(
+            new FilePhpReturn(
+                new FilePhp(
                     new File($path)
                 )
             )
@@ -45,8 +45,8 @@ final class CacheItemTest extends TestCase
 
     private function writeSerialized(PathInterface $path): void
     {
-        $fileReturn = new PhpFileReturn(
-            new PhpFile(
+        $fileReturn = new FilePhpReturn(
+            new FilePhp(
                 new File($path)
             )
         );

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Cache\Interfaces;
 
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
-use Chevere\Components\Filesystem\Exceptions\File\FileUnableToRemoveException;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Filesystem\Exceptions\FileUnableToRemoveException;
+use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Variable\Interfaces\VariableExportInterface;
 
 interface CacheInterface

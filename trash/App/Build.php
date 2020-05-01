@@ -15,34 +15,32 @@ namespace Chevere\Components\App;
 
 use Chevere\Components\Api\Api;
 use Chevere\Components\Api\ApiMaker;
+use Chevere\Components\Api\Interfaces\ApiInterface;
 use Chevere\Components\App\Exceptions\BuildAlreadyMakedException;
 use Chevere\Components\App\Exceptions\BuildFileNotExistsException;
-use Chevere\Components\ArrayFile\ArrayFile;
-use Chevere\Components\Cache\Cache;
-use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\PhpFile;
-use Chevere\Components\Message\Message;
-use Chevere\Components\Filesystem\Exceptions\Path\PathIsNotDirectoryException;
-use Chevere\Components\Filesystem\AppPath;
-use Chevere\Components\Router\Routeable;
-use Chevere\Components\Router\Router;
-use Chevere\Components\Router\RouterCache;
-use Chevere\Components\Type\Type;
-use Chevere\Components\Api\Interfaces\ApiInterface;
 use Chevere\Components\App\Interfaces\AppInterface;
 use Chevere\Components\App\Interfaces\BuildInterface;
 use Chevere\Components\App\Interfaces\CheckoutInterface;
 use Chevere\Components\App\Interfaces\ParametersInterface;
-use Chevere\Components\Cache\Interfaces\CacheInterface;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
-use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
-use Chevere\Components\Filesystem\Interfaces\File\PhpFileInterface;
+use Chevere\Components\ArrayFile\ArrayFile;
+use Chevere\Components\Cache\Cache;
+use Chevere\Components\Filesystem\AppPath;
+use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\Exceptions\PathIsNotDirectoryException;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\FilePhp;
+use Chevere\Components\Filesystem\Interfaces\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\FileInterface;
+use Chevere\Components\Filesystem\Interfaces\FilePhpInterface;
+use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Interfaces\RouterCacheInterface;
-use Chevere\Components\Router\Interfaces\RouterMakerInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
+use Chevere\Components\Router\Interfaces\RouterMakerInterface;
+use Chevere\Components\Router\Routeable;
+use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Router\RouterMaker;
+use Chevere\Components\Type\Type;
 use LogicException;
 
 /**
@@ -52,7 +50,7 @@ final class Build implements BuildInterface
 {
     private AppInterface $app;
 
-    private PhpFileInterface $filePhp;
+    private FilePhpInterface $filePhp;
 
     private DirInterface $dir;
 
@@ -88,7 +86,7 @@ final class Build implements BuildInterface
         $this->isMaked = false;
         $this->checksums = [];
         $this->app = $app;
-        $this->filePhp = new PhpFile(
+        $this->filePhp = new FilePhp(
             new File(
                 $path->getChild('build.php')
             )
@@ -267,7 +265,7 @@ final class Build implements BuildInterface
         foreach ($this->parameters->routes() as $fileHandleString) {
             $arrayFile =
                 (new ArrayFile(
-                    new PhpFile(
+                    new FilePhp(
                         new File(
                             new AppPath($fileHandleString)
                         )

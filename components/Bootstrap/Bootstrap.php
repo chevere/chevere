@@ -15,7 +15,7 @@ namespace Chevere\Components\Bootstrap;
 
 use Chevere\Components\Bootstrap\Exceptions\BootstrapDirException;
 use Chevere\Components\Bootstrap\Interfaces\BootstrapInterface;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Message\Message;
 use Exception;
 use Throwable;

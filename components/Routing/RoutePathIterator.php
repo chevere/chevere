@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Components\Routing;
 
 use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
+use Chevere\Components\Filesystem\FilePhp;
+use Chevere\Components\Filesystem\FilePhpReturn;
+use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Filesystem\PhpFile;
-use Chevere\Components\Filesystem\PhpFileReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\RoutePath;
@@ -82,7 +82,7 @@ final class RoutePathIterator implements RoutePathIteratorInterface
     private function getVar(string $pathName)
     {
         return (
-            new PhpFileReturn(new PhpFile(new File(new Path($pathName))))
+            new FilePhpReturn(new FilePhp(new File(new Path($pathName))))
         )->withStrict(false)->var();
     }
 
