@@ -11,9 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Filesystem\Interfaces\Path;
+namespace Chevere\Components\Filesystem\Interfaces\Dir;
 
-interface AppPathInterface extends PathInterface, RelativePathInterface
+interface DirFromStringInterface
 {
-    public function __construct(string $path);
+    public function __construct(string $absolute);
+
+    public function dir(): DirInterface;
 }

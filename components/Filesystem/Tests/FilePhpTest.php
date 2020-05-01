@@ -13,19 +13,27 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem\Tests;
 
+use Chevere\Components\Filesystem\Exceptions\File\FileNotFoundException;
 use Chevere\Components\Filesystem\Exceptions\File\FileNotPhpException;
 use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Filesystem\PhpFile;
-use Chevere\Components\Filesystem\AppPath;
-use Chevere\Components\Filesystem\Exceptions\File\FileNotFoundException;
 use PHPUnit\Framework\TestCase;
 
 final class FilePhpTest extends TestCase
 {
+    private PathInterface $path;
+
+    public function setUp(): void
+    {
+        $this->path = new Path(__DIR__ . '/_resources/FilePhpTest/');
+    }
+
     public function testNotPhpFile(): void
     {
         $file = new File(
-            new AppPath('var/FilePhpTest_' . uniqid())
+            $this->path->getChild('var/FilePhpTest_' . uniqid())
         );
         $this->expectException(FileNotPhpException::class);
         new PhpFile($file);
@@ -34,7 +42,7 @@ final class FilePhpTest extends TestCase
     public function testConstructor(): void
     {
         $file = new File(
-            new AppPath('var/FilePhpTest_' . uniqid() . '.php')
+            $this->path->getChild('var/FilePhpTest_' . uniqid() . '.php')
         );
         $filePhp = new PhpFile($file);
         $this->assertSame($file, $filePhp->file());
@@ -44,7 +52,7 @@ final class FilePhpTest extends TestCase
     public function testCompileFileNotExists(): void
     {
         $file = new File(
-            new AppPath('var/FilePhpTest_' . uniqid() . '.php')
+            $this->path->getChild('var/FilePhpTest_' . uniqid() . '.php')
         );
         $filePhp = new PhpFile($file);
         $this->expectException(FileNotFoundException::class);
@@ -58,7 +66,7 @@ final class FilePhpTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
         $file = new File(
-            new AppPath('var/FilePhpTest_' . uniqid() . '.php')
+            $this->path->getChild('var/FilePhpTest_' . uniqid() . '.php')
         );
         $file->create();
         $filePhp = new PhpFile($file);

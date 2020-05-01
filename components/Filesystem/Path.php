@@ -39,7 +39,7 @@ class Path implements PathInterface
      */
     public function __construct(string $absolute)
     {
-        new AssertPath($absolute);
+        new AssertPathString($absolute);
         $this->absolute = $absolute;
     }
 

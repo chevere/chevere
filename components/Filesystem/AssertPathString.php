@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Message\Message;
 use Chevere\Components\Filesystem\Exceptions\Path\PathDotSlashException;
 use Chevere\Components\Filesystem\Exceptions\Path\PathDoubleDotsDashException;
 use Chevere\Components\Filesystem\Exceptions\Path\PathExtraSlashesException;
 use Chevere\Components\Filesystem\Exceptions\Path\PathNotAbsoluteException;
-use Chevere\Components\Filesystem\Interfaces\Path\PathFormatInterface;
+use Chevere\Components\Filesystem\Interfaces\Path\AssertPathFormatInterface;
+use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrBool;
 
-final class AssertPath implements PathFormatInterface
+final class AssertPathString implements AssertPathFormatInterface
 {
     private string $path;
 

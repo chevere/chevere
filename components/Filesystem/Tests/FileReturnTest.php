@@ -13,20 +13,25 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem\Tests;
 
+use Chevere\Components\Filesystem\AppPath;
 use Chevere\Components\Filesystem\Exceptions\File\FileInvalidContentsException;
 use Chevere\Components\Filesystem\Exceptions\File\FileNotFoundException;
 use Chevere\Components\Filesystem\Exceptions\File\FileWithoutContentsException;
 use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\PhpFile;
-use Chevere\Components\Filesystem\PhpFileReturn;
-use Chevere\Components\Filesystem\AppPath;
-use Chevere\Components\Variable\VariableExport;
+use Chevere\Components\Filesystem\Interfaces\Dir\DirInterface;
 use Chevere\Components\Filesystem\Interfaces\File\FileInterface;
 use Chevere\Components\Filesystem\Interfaces\File\PhpFileReturnInterface;
+use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Filesystem\PhpFile;
+use Chevere\Components\Filesystem\PhpFileReturn;
+use Chevere\Components\Variable\VariableExport;
 use PHPUnit\Framework\TestCase;
 
 final class FileReturnTest extends TestCase
 {
+    private PathInterface $path;
+
     /** @var FileInterface */
     private FileInterface $file;
 
@@ -40,8 +45,9 @@ final class FileReturnTest extends TestCase
 
     public function setUp(): void
     {
+        $this->path = new Path(__DIR__ . '/_resources/FileReturnTest/');
         $this->file = new File(
-            new AppPath($this->getFileName())
+            $this->path->getChild($this->getFileName())
         );
         $this->file->create();
         $this->phpFileReturn = new PhpFileReturn(
@@ -63,7 +69,7 @@ final class FileReturnTest extends TestCase
         new PhpFileReturn(
             new PhpFile(
                 new File(
-                    new AppPath($this->getFileName())
+                    $this->path->getChild($this->getFileName())
                 )
             )
         );
@@ -147,8 +153,8 @@ final class FileReturnTest extends TestCase
         }
 
         foreach ([
-            new AppPath('test'),
-            ['test', [1, false], new AppPath('test')],
+            $this->path->getChild('test'),
+            ['test', [1, false], $this->path->getChild('test')],
         ] as $val) {
             $this->phpFileReturn->put(
                 new VariableExport($val)

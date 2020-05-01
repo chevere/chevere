@@ -15,7 +15,7 @@ namespace Chevere\Components\Filesystem\Interfaces\Path;
 
 use Chevere\Components\Filesystem\Exceptions\Path\PathInvalidException;
 
-interface PathFormatInterface
+interface AssertPathFormatInterface
 {
     /**
      * @throws PathInvalidException if the $path format is invalid

@@ -16,19 +16,27 @@ namespace Chevere\Components\Cache\Tests;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
-use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\AppPath;
-use Chevere\Components\Variable\VariableExport;
 use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Cache\Interfaces\CacheItemInterface;
+use Chevere\Components\Filesystem\AppPath;
+use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
 use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Variable\VariableExport;
 use PHPUnit\Framework\TestCase;
 
 final class CacheTest extends TestCase
 {
+    private PathInterface $path;
+
+    public function setUp(): void
+    {
+        $this->path = new Path(__DIR__ . '/_resources/CacheTest/');
+    }
+
     private function getTestCache(): CacheInterface
     {
-        return new Cache(new Dir(new AppPath('build/')));
+        return new Cache(new Dir($this->path->getChild('build/')));
     }
 
     public function testConstructor(): void
@@ -54,7 +62,7 @@ final class CacheTest extends TestCase
     public function testWithPutWithRemove(): void
     {
         $key = uniqid();
-        $var = [time(), false, 'test', new AppPath('test'), 13.13];
+        $var = [time(), false, 'test', $this->path->getChild('test'), 13.13];
         $variableExport = new VariableExport($var);
         $cacheKey = new CacheKey($key);
         $cache = $this->getTestCache()
