@@ -15,7 +15,7 @@ namespace Chevere\Components\Filesystem\Tests;
 
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Exceptions\FileExistsException;
-use Chevere\Components\Filesystem\Exceptions\FileNotFoundException;
+use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
 use Chevere\Components\Filesystem\Exceptions\PathIsDirException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
@@ -84,7 +84,7 @@ final class FileTest extends TestCase
     public function testRemoveNonExistentPath(): void
     {
         $file = $this->getChildFile('.php');
-        $this->expectException(FileNotFoundException::class);
+        $this->expectException(FileNotExistsException::class);
         $file->remove();
     }
 

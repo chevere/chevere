@@ -15,7 +15,7 @@ namespace Chevere\Components\Filesystem;
 
 use Chevere\Components\Filesystem\Exceptions\FileHandleException;
 use Chevere\Components\Filesystem\Exceptions\FileInvalidContentsException;
-use Chevere\Components\Filesystem\Exceptions\FileNotFoundException;
+use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
 use Chevere\Components\Filesystem\Exceptions\FileUnableToGetException;
 use Chevere\Components\Filesystem\Exceptions\FileWithoutContentsException;
 use Chevere\Components\Filesystem\Interfaces\FilePhpInterface;
@@ -36,13 +36,11 @@ final class FilePhpReturn implements FilePhpReturnInterface
 {
     private FilePhpInterface $filePhp;
 
-    /** @var bool True for strict validation (PHP_RETURN), false for regex validation (return <algo>) */
+    /** @var bool True for strict validation (self::PHP_RETURN_CHARS), false for regex validation (return <algo>) */
     private bool $strict = true;
 
     /**
-     * Creates a new instance.
-     *
-     * @throws FileNotFoundException if the file doesn't exists
+     * @throws FileNotExistsException if the file doesn't exists
      */
     public function __construct(FilePhpInterface $filePhp)
     {
@@ -73,14 +71,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
     public function var()
     {
         $var = $this->raw();
-
-        if (is_array($var)) {
-            foreach ($var as &$v) {
-                $v = $this->getReturnVar($v);
-            }
-        } else {
-            $var = $this->getReturnVar($var);
-        }
+        $var = $this->getReturnVar($var);
 
         return $var;
     }
@@ -88,13 +79,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
     public function put(VariableExportInterface $variableExport): void
     {
         $var = $variableExport->var();
-        if (is_array($var)) {
-            foreach ($var as &$v) {
-                $v = $this->getFileReturnVar($v);
-            }
-        } else {
-            $var = $this->getFileReturnVar($var);
-        }
+        $var = $this->getFileReturnVar($var);
         $varExport = var_export($var, true);
         $this->filePhp->file()->put(
             FilePhpReturnInterface::PHP_RETURN . $varExport . ';'
@@ -161,7 +146,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
     }
 
     /**
-     * @throws FileNotFoundException    if the file doesn't exists
+     * @throws FileNotExistsException    if the file doesn't exists
      * @throws FileUnableToGetException if unable to read the contents of the file
      * @throws FileWithoutContentsException
      * @throws FileInvalidContentsException

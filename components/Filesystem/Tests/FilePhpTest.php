@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem\Tests;
 
-use Chevere\Components\Filesystem\Exceptions\FileNotFoundException;
+use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
 use Chevere\Components\Filesystem\Exceptions\FileNotPhpException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
@@ -55,7 +55,7 @@ final class FilePhpTest extends TestCase
             $this->path->getChild('var/FilePhpTest_' . uniqid() . '.php')
         );
         $filePhp = new FilePhp($file);
-        $this->expectException(FileNotFoundException::class);
+        $this->expectException(FileNotExistsException::class);
         $filePhp->cache();
     }
 

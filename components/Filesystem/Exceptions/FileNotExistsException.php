@@ -11,11 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Filesystem\Interfaces;
+namespace Chevere\Components\Filesystem\Exceptions;
 
-interface DirFromStringInterface
+use Exception;
+
+/**
+ * Exception thrown when a file doesn't exists.
+ */
+final class FileNotExistsException extends Exception
 {
-    public function __construct(string $absolute);
-
-    public function dir(): DirInterface;
 }

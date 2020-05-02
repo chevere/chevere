@@ -100,13 +100,4 @@ final class DirTest extends TestCase
         $this->assertNotContainsEquals($this->dir->path()->absolute(), $removed);
         $this->assertContainsEquals($childFile->path()->absolute(), $removed);
     }
-
-    public function testRmdirNotEmpty(): void
-    {
-        $this->dir->create();
-        $child = $this->dir->getChild('child/');
-        $child->create();
-        $this->expectException(DirUnableToRemoveException::class);
-        $this->dir->rmdir();
-    }
 }

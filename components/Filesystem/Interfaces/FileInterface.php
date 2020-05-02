@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Filesystem\Interfaces;
 
 use Chevere\Components\Filesystem\Exceptions\FileExistsException;
-use Chevere\Components\Filesystem\Exceptions\FileNotFoundException;
+use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
 use Chevere\Components\Filesystem\Exceptions\FileUnableToCreateException;
 use Chevere\Components\Filesystem\Exceptions\FileUnableToGetException;
 use Chevere\Components\Filesystem\Exceptions\FileUnableToPutException;
@@ -46,21 +46,21 @@ interface FileInterface
     /**
      * Throws an exception if the file doesn't exists.
      *
-     * @throws FileNotFoundException if the file doesn't exists
+     * @throws FileNotExistsException if the file doesn't exists
      */
     public function assertExists(): void;
 
     /**
      * Retrieves the file checksum using the CHECKSUM_ALGO algorithm.
      *
-     * @throws FileNotFoundException if the file doesn't exists
+     * @throws FileNotExistsException if the file doesn't exists
      */
     public function checksum(): string;
 
     /**
      * Retrieves the file contents.
      *
-     * @throws FileNotFoundException    if the file doesn't exists
+     * @throws FileNotExistsException    if the file doesn't exists
      * @throws FileUnableToGetException if unable to read the contents of the file
      */
     public function contents(): string;
@@ -68,7 +68,7 @@ interface FileInterface
     /**
      * Remove the file.
      *
-     * @throws FileNotFoundException       if the file doesn't exists
+     * @throws FileNotExistsException       if the file doesn't exists
      * @throws FileUnableToRemoveException if unable to remove the file
      */
     public function remove(): void;
@@ -84,7 +84,7 @@ interface FileInterface
     /**
      * Put contents to the file. If the file doesn't exists it will be created.
      *
-     * @throws FileNotFoundException    if the file doesn't exists
+     * @throws FileNotExistsException    if the file doesn't exists
      * @throws FileUnableToPutException if unable to put the file content
      */
     public function put(string $contents): void;

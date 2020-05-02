@@ -15,7 +15,7 @@ namespace Chevere\Components\Filesystem\Interfaces;
 
 use Chevere\Components\Filesystem\Exceptions\FileHandleException;
 use Chevere\Components\Filesystem\Exceptions\FileInvalidContentsException;
-use Chevere\Components\Filesystem\Exceptions\FileNotFoundException;
+use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
 use Chevere\Components\Filesystem\Exceptions\FileUnableToPutException;
 use Chevere\Components\Filesystem\Exceptions\FileWithoutContentsException;
 use Chevere\Components\Variable\Interfaces\VariableExportInterface;
@@ -28,13 +28,13 @@ interface FilePhpReturnInterface
     public function __construct(FilePhpInterface $phpFile);
 
     /**
-     * Return an instance with no-strict flag.
+     * Return an instance with the strict flag.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified no-strict flag.
+     * an instance that contains the specified the strict flag.
      *
-     * By default, a FileReturn must match the PHP_RETURN. The no-strict flag will allow to work with any PHP file
-     * long as it returns something.
+     * Strict validation refers to match the beginning of the file contents
+     * against FilePhpReturnInterface::PHP_RETURN
      */
     public function withStrict(bool $strict): FilePhpReturnInterface;
 
@@ -46,7 +46,7 @@ interface FilePhpReturnInterface
     /**
      * Retrieves the file return (as-is).
      *
-     * @throws FileNotFoundException        if the file doesn't exists
+     * @throws FileNotExistsException        if the file doesn't exists
      * @throws FileHandleException          if unable to handle the file
      * @throws FileWithoutContentsException if the file doesn't contain anything
      * @throws FileInvalidContentsException if the file content is invalid
@@ -56,7 +56,7 @@ interface FilePhpReturnInterface
     /**
      * Retrieves the usable variable after appling unserialize to all objects (if any).
      *
-     * @throws FileNotFoundException        if the file doesn't exists
+     * @throws FileNotExistsException        if the file doesn't exists
      * @throws FileHandleException          if unable to handle the file
      * @throws FileWithoutContentsException if the file doesn't contain anything
      * @throws FileInvalidContentsException if the file content is invalid
@@ -64,9 +64,9 @@ interface FilePhpReturnInterface
     public function var();
 
     /**
-     * Put $var into the file using var_export return.
+     * Put $var into the file using var_export return and strict format.
      *
-     * @throws FileNotFoundException    if the file doesn't exists
+     * @throws FileNotExistsException    if the file doesn't exists
      * @throws FileUnableToPutException if unable to put the contents in the file
      */
     public function put(VariableExportInterface $variableExport): void;

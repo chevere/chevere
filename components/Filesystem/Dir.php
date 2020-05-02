@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
+use Chevere\Components\Filesystem\Exceptions\DirNotExistsException;
 use Chevere\Components\Filesystem\Exceptions\DirTailException;
 use Chevere\Components\Filesystem\Exceptions\DirUnableToCreateException;
 use Chevere\Components\Filesystem\Exceptions\DirUnableToRemoveException;
@@ -65,10 +66,21 @@ final class Dir implements DirInterface
         return $this->path->exists() && $this->path->isDir();
     }
 
-    public function create(int $mode = 0777): void
+    public function assertExists(): void
+    {
+        if (!$this->exists()) {
+            throw new DirNotExistsException(
+                (new Message("File %path% doesn't exists"))
+                    ->code('%path%', $this->path->absolute())
+                    ->toString()
+            );
+        }
+    }
+
+    public function create(int $mode = 0755): void
     {
         try {
-            !mkdir($this->path->absolute(), $mode, true);
+            mkdir($this->path->absolute(), $mode, true);
         } catch (Throwable $e) {
             throw new DirUnableToCreateException(
                 (new Message('Unable to create directory %path% %thrown%'))
@@ -87,20 +99,6 @@ final class Dir implements DirInterface
         $array[] = $this->path->absolute();
 
         return $array;
-    }
-
-    public function rmdir(): void
-    {
-        try {
-            rmdir($this->path->absolute());
-        } catch (Throwable $e) {
-            throw new DirUnableToRemoveException(
-                (new Message('Unable to remove directory %path% %thrown%'))
-                    ->code('%path%', $this->path->absolute())
-                    ->code('%thrown%', '[' . $e->getMessage() . ']')
-                    ->toString()
-            );
-        }
     }
 
     public function removeContents(): array
@@ -132,9 +130,7 @@ final class Dir implements DirInterface
 
     public function getChild(string $path): DirInterface
     {
-        return new Dir(
-            $this->path->getChild($path)
-        );
+        return new Dir($this->path->getChild($path));
     }
 
     private function assertIsNotFile(): void
@@ -157,6 +153,20 @@ final class Dir implements DirInterface
             throw new PathIsNotDirectoryException(
                 (new Message('Path %path% is not a directory'))
                     ->code('%path%', $this->path->absolute())
+                    ->toString()
+            );
+        }
+    }
+
+    private function rmdir(): void
+    {
+        try {
+            rmdir($this->path->absolute());
+        } catch (Throwable $e) {
+            throw new DirUnableToRemoveException(
+                (new Message('Unable to remove directory %path% %thrown%'))
+                    ->code('%path%', $this->path->absolute())
+                    ->code('%thrown%', '[' . $e->getMessage() . ']')
                     ->toString()
             );
         }

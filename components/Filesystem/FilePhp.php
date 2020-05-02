@@ -33,7 +33,6 @@ final class FilePhp implements FilePhpInterface
     {
         $this->file = $file;
         $this->assertFilePhp();
-        // $this->handleCompileable();
     }
 
     public function file(): FileInterface
@@ -80,7 +79,6 @@ final class FilePhp implements FilePhpInterface
      */
     public function flush(): void
     {
-        // $this->assertCompile();
         if (!opcache_is_script_cached($this->file->path()->absolute())) {
             return;
         }
@@ -103,44 +101,4 @@ final class FilePhp implements FilePhpInterface
             );
         }
     }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    // private function handleCompileable(): void
-    // {
-    //     if (!extension_loaded('Zend OPcache')) {
-    //         $this->compileableErrors[] = (new Message('Extension %extension% is not loaded'))
-    //             ->code('%extension%', 'Zend OPcache')
-    //             ->toString();
-    //     }
-    //     foreach (['opcache.enable', 'opcache.enable_cli'] as $setting) {
-    //         if (ini_get($setting) !== '1') {
-    //             $this->compileableErrors[] = (new Message('Missing ini setting %ini%'))
-    //                 ->code('%ini%', $setting . '=1')
-    //                 ->toString();
-    //         }
-    //     }
-    //     if ($this->compileableErrors === []) {
-    //         $this->isCompileable = true;
-
-    //         return;
-    //     }
-    // }
-
-    /**
-     * @codeCoverageIgnore
-     * @throws RuntimeException
-     */
-    // private function assertCompile(): void
-    // {
-    //     if ($this->isCompileable === true) {
-    //         return;
-    //     }
-    //     throw new RuntimeException(
-    //         (new Message('Unable to compile: %errors%'))
-    //             ->code('%errors%', implode('; ', $this->compileableErrors))
-    //             ->toString()
-    //     );
-    // }
 }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Filesystem\Tests;
 
 use Chevere\Components\Filesystem\Exceptions\FileInvalidContentsException;
-use Chevere\Components\Filesystem\Exceptions\FileNotFoundException;
+use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
 use Chevere\Components\Filesystem\Exceptions\FileWithoutContentsException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
@@ -63,7 +63,7 @@ final class FileReturnTest extends TestCase
 
     public function testConstructFileNotFound(): void
     {
-        $this->expectException(FileNotFoundException::class);
+        $this->expectException(FileNotExistsException::class);
         new FilePhpReturn(
             new FilePhp(
                 new File(
@@ -76,7 +76,7 @@ final class FileReturnTest extends TestCase
     public function testFileNotFound(): void
     {
         $this->file->remove();
-        $this->expectException(FileNotFoundException::class);
+        $this->expectException(FileNotExistsException::class);
         $this->phpFileReturn->raw();
     }
 
@@ -103,7 +103,7 @@ final class FileReturnTest extends TestCase
     public function testVarFileNotFound(): void
     {
         $this->file->remove();
-        $this->expectException(FileNotFoundException::class);
+        $this->expectException(FileNotExistsException::class);
         $this->phpFileReturn->var();
     }
 
@@ -129,7 +129,7 @@ final class FileReturnTest extends TestCase
     public function testPutFileNotFound(): void
     {
         $this->file->remove();
-        $this->expectException(FileNotFoundException::class);
+        $this->expectException(FileNotExistsException::class);
         $this->phpFileReturn->put(new VariableExport('test'));
     }
 
@@ -152,7 +152,7 @@ final class FileReturnTest extends TestCase
 
         foreach ([
             $this->path->getChild('test'),
-            ['test', [1, false], $this->path->getChild('test')],
+            ['test', [1, false], 1.1, null],
         ] as $val) {
             $this->phpFileReturn->put(
                 new VariableExport($val)

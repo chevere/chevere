@@ -11,11 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Filesystem\Interfaces;
+namespace Chevere\Components\Filesystem\Exceptions;
 
-interface FilePhpReturnFromStringInterface
+use Exception;
+
+/**
+ * Exception thrown when the directoy doesn't exists.
+ */
+final class DirNotExistsException extends Exception
 {
-    public function __construct(string $absolute);
-
-    public function filePhpReturn(): FilePhpReturnInterface;
 }

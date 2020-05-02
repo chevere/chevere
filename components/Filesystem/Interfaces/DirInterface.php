@@ -28,27 +28,20 @@ interface DirInterface
     public function path(): PathInterface;
 
     /**
-     * Returns a boolean indicating whether the directory exists.
-     */
-    public function exists(): bool;
-
-    /**
      * Creates the directory.
      *
      * @param int $mode Octal mask
      *
      * @throws DirUnableToCreateException if unable to create the directoy
      */
-    public function create(int $mode = 0777): void;
+    public function create(int $mode = 0755): void;
 
     /**
-     * Removes the directory.
-     *
-     * @return array An array with all the elements removed
-     *
-     * @throws DirUnableToRemoveException if unable to remove the directory
+     * Returns a boolean indicating whether the directory exists.
      */
-    public function remove(): array;
+    public function exists(): bool;
+
+    public function assertExists(): void;
 
     /**
      * Removes the contents from a path without deleting the path.
@@ -61,11 +54,13 @@ interface DirInterface
     public function removeContents(): array;
 
     /**
-     * Wrapper for \rmdir.
+     * Removes the directory.
      *
-     * @throws DirUnableToRemoveException if rmdir failure
+     * @return array An array with all the elements removed
+     *
+     * @throws DirUnableToRemoveException if unable to remove the directory
      */
-    public function rmdir(): void;
+    public function remove(): array;
 
     /**
      * Gets a child DirInterface for the added path.

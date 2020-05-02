@@ -15,7 +15,7 @@ namespace Chevere\Components\Filesystem;
 
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Exceptions\FileExistsException;
-use Chevere\Components\Filesystem\Exceptions\FileNotFoundException;
+use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
 use Chevere\Components\Filesystem\Exceptions\FileUnableToCreateException;
 use Chevere\Components\Filesystem\Exceptions\FileUnableToGetException;
 use Chevere\Components\Filesystem\Exceptions\FileUnableToPutException;
@@ -68,7 +68,7 @@ final class File implements FileInterface
     public function assertExists(): void
     {
         if (!$this->exists()) {
-            throw new FileNotFoundException(
+            throw new FileNotExistsException(
                 (new Message("File %path% doesn't exists"))
                     ->code('%path%', $this->path->absolute())
                     ->toString()
@@ -85,7 +85,7 @@ final class File implements FileInterface
 
     /**
      * @codeCoverageIgnoreStart
-     * @throws FileNotFoundException
+     * @throws FileNotExistsException
      * @throws FileUnableToGetException
      */
     public function contents(): string
