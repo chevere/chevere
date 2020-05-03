@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Chevere\Components\ExceptionHandler\Tests;
 
 use Chevere\Components\ExceptionHandler\Documents\PlainDocument;
-use Chevere\Components\ExceptionHandler\Exception;
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
+use Chevere\Components\ExceptionHandler\ExceptionRead;
 use Chevere\Components\ExceptionHandler\Formatters\PlainFormatter;
 use Chevere\Components\ExceptionHandler\Interfaces\DocumentInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\ExceptionHandlerInterface;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Route\RoutePath;
-use PHPUnit\Framework\TestCase;
 use LogicException;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final class PlainDocumentTest extends TestCase
@@ -32,7 +32,7 @@ final class PlainDocumentTest extends TestCase
 
     public function setUp(): void
     {
-        $this->exceptionHandler = new ExceptionHandler(new Exception(
+        $this->exceptionHandler = new ExceptionHandler(new ExceptionRead(
             new LogicException('Ups', 100)
         ));
     }

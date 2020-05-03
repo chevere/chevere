@@ -13,15 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler;
 
-use ErrorException;
+use Chevere\Components\ExceptionHandler\Exceptions\ErrorException;
+use Chevere\Components\Message\Message;
 
 /**
  * The Chevere errors-as-exception handler.
  */
 final class ErrorHandler
 {
-    public static function error($severity, $message, $file, $line): void
+    public static function error(int $severity, string $message, string $file, int $line): void
     {
-        throw new ErrorException($message, 0, $severity, $file, $line);
+        throw new ErrorException(new Message($message), 0, $severity, $file, $line);
     }
 }

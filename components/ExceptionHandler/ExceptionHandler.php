@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\ExceptionHandler;
 
 use Chevere\Components\ExceptionHandler\Interfaces\ExceptionHandlerInterface;
-use Chevere\Components\ExceptionHandler\Interfaces\ExceptionInterface;
+use Chevere\Components\ExceptionHandler\Interfaces\ExceptionReadInterface;
 use Chevere\Components\Http\Interfaces\RequestInterface;
 use DateTimeImmutable;
 use DateTimeInterface;
@@ -32,7 +32,7 @@ final class ExceptionHandler implements ExceptionHandlerInterface
 {
     private DateTimeInterface $dateTimeUtc;
 
-    private ExceptionInterface $exception;
+    private ExceptionReadInterface $exception;
 
     private string $id;
 
@@ -42,7 +42,7 @@ final class ExceptionHandler implements ExceptionHandlerInterface
 
     private Logger $logger;
 
-    public function __construct(ExceptionInterface $exception)
+    public function __construct(ExceptionReadInterface $exception)
     {
         $timezone = new DateTimeZone('UTC');
         $this->dateTimeUtc = new DateTimeImmutable('now', $timezone);
@@ -85,7 +85,7 @@ final class ExceptionHandler implements ExceptionHandlerInterface
         return $this->dateTimeUtc;
     }
 
-    public function exception(): ExceptionInterface
+    public function exception(): ExceptionReadInterface
     {
         return $this->exception;
     }

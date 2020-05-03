@@ -15,8 +15,8 @@ namespace Chevere\Components\ExceptionHandler\Tests;
 
 use Chevere\Components\ExceptionHandler\Documents\ConsoleDocument;
 use Chevere\Components\ExceptionHandler\Documents\PlainDocument;
-use Chevere\Components\ExceptionHandler\Exception;
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
+use Chevere\Components\ExceptionHandler\ExceptionRead;
 use Chevere\Components\ExceptionHandler\Formatters\ConsoleFormatter;
 use LogicException;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +25,7 @@ final class ConsoleDocumentTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $handler = new ExceptionHandler(new Exception(
+        $handler = new ExceptionHandler(new ExceptionRead(
             new LogicException('Ups', 100)
         ));
         $document = new ConsoleDocument($handler);

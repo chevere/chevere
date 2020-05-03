@@ -13,15 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler;
 
-use ErrorException;
-use LogicException;
 use Chevere\Components\ExceptionHandler\Interfaces\ExceptionInterface;
+use Chevere\Components\ExceptionHandler\Interfaces\ExceptionReadInterface;
+use Chevere\Components\Message\Interfaces\MessageInterface;
 use Chevere\Components\Message\Message;
+use ErrorException;
+use Exception;
+use LogicException;
 
 /**
  * Class used to make Exceptions readable (normalized).
  */
-final class Exception implements ExceptionInterface
+final class ExceptionRead implements ExceptionReadInterface
 {
     private string $className;
 
@@ -33,7 +36,7 @@ final class Exception implements ExceptionInterface
 
     private string $type;
 
-    private string $message;
+    private MessageInterface $message;
 
     private string $file;
 
@@ -42,11 +45,9 @@ final class Exception implements ExceptionInterface
     private array $trace;
 
     /**
-     * Creates a new instance.
-     *
      * @throws LogicException if the exception severity is unknown.
      */
-    public function __construct(\Exception $exception)
+    public function __construct(Exception $exception)
     {
         $this->className = get_class($exception);
         $this->code = $exception->getCode();
@@ -56,12 +57,16 @@ final class Exception implements ExceptionInterface
                 $this->code = $this->severity;
             }
         } else {
-            $this->severity = ExceptionInterface::DEFAULT_ERROR_TYPE;
+            $this->severity = ExceptionReadInterface::DEFAULT_ERROR_TYPE;
         }
         $this->assertSeverity();
-        $this->loggerLevel = ExceptionInterface::ERROR_LEVELS[$this->severity];
-        $this->type = ExceptionInterface::ERROR_TYPES[$this->severity];
-        $this->message = $exception->getMessage();
+        $this->loggerLevel = ExceptionReadInterface::ERROR_LEVELS[$this->severity];
+        $this->type = ExceptionReadInterface::ERROR_TYPES[$this->severity];
+        if ($exception instanceof ExceptionInterface) {
+            $this->message = $exception->message();
+        } else {
+            $this->message = new Message($exception->getMessage());
+        }
         $this->file = $exception->getFile();
         $this->line = $exception->getLine();
         $this->trace = $exception->getTrace();
@@ -92,7 +97,7 @@ final class Exception implements ExceptionInterface
         return $this->type;
     }
 
-    public function message(): string
+    public function message(): MessageInterface
     {
         return $this->message;
     }
@@ -114,7 +119,7 @@ final class Exception implements ExceptionInterface
 
     private function assertSeverity(): void
     {
-        foreach ([ExceptionInterface::ERROR_TYPES, ExceptionInterface::ERROR_LEVELS] as $array) {
+        foreach ([ExceptionReadInterface::ERROR_TYPES, ExceptionReadInterface::ERROR_LEVELS] as $array) {
             if (!array_key_exists($this->severity, $array)) {
                 $accepted = array_keys($array);
                 throw new LogicException(

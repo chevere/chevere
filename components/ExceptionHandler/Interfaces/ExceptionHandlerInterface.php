@@ -29,7 +29,7 @@ interface ExceptionHandlerInterface
 
     public function dateTimeUtc(): DateTimeInterface;
 
-    public function exception(): ExceptionInterface;
+    public function exception(): ExceptionReadInterface;
 
     public function id(): string;
 

@@ -15,12 +15,12 @@ namespace Chevere\Components\ExceptionHandler\Tests;
 
 use Chevere\Components\ExceptionHandler\Documents\HtmlDocument;
 use Chevere\Components\ExceptionHandler\Documents\PlainDocument;
-use Chevere\Components\ExceptionHandler\Exception;
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
+use Chevere\Components\ExceptionHandler\ExceptionRead;
 use Chevere\Components\ExceptionHandler\Formatters\HtmlFormatter;
 use Chevere\Components\ExceptionHandler\Interfaces\ExceptionHandlerInterface;
-use PHPUnit\Framework\TestCase;
 use LogicException;
+use PHPUnit\Framework\TestCase;
 
 final class HtmlDocumentTest extends TestCase
 {
@@ -28,7 +28,7 @@ final class HtmlDocumentTest extends TestCase
 
     public function setUp(): void
     {
-        $this->exceptionHandler = new ExceptionHandler(new Exception(
+        $this->exceptionHandler = new ExceptionHandler(new ExceptionRead(
             new LogicException('Ups', 100)
         ));
     }

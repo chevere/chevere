@@ -82,6 +82,11 @@ final class Message implements MessageInterface
         return strtr($this->template, $tr);
     }
 
+    public function __toString(): string
+    {
+        return $this->toString();
+    }
+
     public function strtr(string $search, string $replace): MessageInterface
     {
         $new = clone $this;
