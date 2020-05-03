@@ -96,7 +96,6 @@ final class ControllerArguments implements ControllerArgumentsInterface
     private function assertRequired(): void
     {
         $failed = [];
-
         /**
          * @var string $name
          * @var ControllerParameterInterface $parameter
@@ -112,7 +111,7 @@ final class ControllerArguments implements ControllerArgumentsInterface
         if ($failed !== []) {
             throw new ControllerArgumentsRequiredException(
                 (new Message('Missing required argument(s): %message%'))
-                    ->implodeTag('%message%', 'code', $failed)
+                    ->code('%message%', implode(', ', $failed))
                     ->toString()
             );
         }
