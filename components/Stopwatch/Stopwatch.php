@@ -133,7 +133,7 @@ final class Stopwatch implements StopwatchInterface
             throw new BadMethodCallException(
                 (new Message('The method %method% must be called after calling the %stop% method'))
                     ->code('%method%', $method)
-                    ->code('%before%', self::class . '::stop')
+                    ->code('%stop%', self::class . '::stop')
                     ->toString()
             );
         }

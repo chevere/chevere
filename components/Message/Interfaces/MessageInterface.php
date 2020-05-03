@@ -17,9 +17,7 @@ use Ahc\Cli\Output\Color;
 use Chevere\Components\Common\Interfaces\ToStringInterface;
 
 /**
- * The Chevere Message
- *
- * Creates rich system messages for CLI and HTML.
+ * Rich system messages for CLI and HTML.
  */
 interface MessageInterface extends ToStringInterface
 {

@@ -43,7 +43,7 @@ final class RouteEndpointsMaker implements RouteEndpointIteratorInterface
             $routeEndpoint = $this->getVar($routeEndpointPath);
             if (!(new Type(RouteEndpointInterface::class))->validate($routeEndpoint)) {
                 throw new ExpectingRouteDecoratorException(
-                    (new Message('Expecting file return object implementing interface %interfaceName%, something else provided in %fileName%'))
+                    (new Message('Expecting file return object implementing interface %interfaceName%, type %provided% provided in %fileName%'))
                         ->code('%interfaceName%', RouteDecoratorInterface::class)
                         ->code('%provided%', gettype($routeEndpoint))
                         ->strong('%fileName%', $routeEndpointPath->absolute())

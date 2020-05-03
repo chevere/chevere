@@ -76,7 +76,7 @@ final class RouteWildcard implements RouteWildcardInterface
         $noWildcard = false === strpos($routePath->toString(), $this->string);
         if ($noWildcard) {
             throw new RouteWildcardNotFoundException(
-                (new Message("Wildcard %wildcard% doesn't exists in route %toString%"))
+                (new Message("Wildcard %wildcard% doesn't exists in route path %path%"))
                     ->code('%wildcard%', $this->string)
                     ->code('%path%', $routePath->toString())
                     ->toString()

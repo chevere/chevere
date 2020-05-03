@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route\Tests;
 
-use Chevere\Components\Route\RouteWildcardMatch;
 use Chevere\Components\Route\Exceptions\RouteWildcardInvalidCharsException;
 use Chevere\Components\Route\Exceptions\RouteWildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\RouteWildcardStartWithNumberException;
+use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\RouteWildcard;
-use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
+use Chevere\Components\Route\RouteWildcardMatch;
 use PHPUnit\Framework\TestCase;
 
 final class RouteWildcardTest extends TestCase
@@ -60,17 +60,13 @@ final class RouteWildcardTest extends TestCase
     {
         $this->expectException(RouteWildcardNotFoundException::class);
         (new RouteWildcard('test'))
-            ->assertRoutePath(
-                new RoutePath('/')
-            );
+            ->assertRoutePath(new RoutePath('/'));
     }
 
     public function testAssertPath(): void
     {
         $this->expectNotToPerformAssertions();
         (new RouteWildcard('test'))
-            ->assertRoutePath(
-                new RoutePath('/{test}')
-            );
+            ->assertRoutePath(new RoutePath('/{test}'));
     }
 }

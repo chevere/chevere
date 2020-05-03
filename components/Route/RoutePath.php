@@ -198,9 +198,8 @@ final class RoutePath implements RoutePathInterface
             throw new RoutePathUnmatchedWildcardsCountException(
                 (new Message('Route path %path% contains invalid wildcard declarations (pattern %pattern% matches %countMatches%)'))
                     ->code('%path%', $this->path)
-                    ->strtr('%wildcardsCount%', (string) $this->wildcardBracesCount)
-                    ->strtr('%countMatches%', (string) $countMatches)
                     ->code('%pattern%', RoutePathInterface::REGEX_WILDCARD_SEARCH)
+                    ->strtr('%countMatches%', (string) $countMatches)
                     ->toString()
             );
         }

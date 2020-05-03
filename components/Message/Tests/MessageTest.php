@@ -23,15 +23,22 @@ final class MessageTest extends TestCase
     {
         $var = 'message';
         $message = new Message($var);
+        $this->assertSame($var, $message->template());
+        $this->assertSame([], $message->trTable());
         $this->assertSame($var, $message->toString());
     }
 
     public function testTranslate(): void
     {
-        $var = 'lorem %translate%';
-        $args = ['%translate%', '1'];
-        $message = (new Message($var))->strtr(...$args);
-        $varTr = strtr($var, [$args[0] => $args[1]]);
+        $search = '%translate%';
+        $replace = '1';
+        $var = 'lorem ' . $search;
+        $message = (new Message($var))->strtr($search, $replace);
+        $varTr = strtr($var, [$search => $replace]);
+        $this->assertSame($var, $message->template());
+        $this->assertSame([
+            '%translate%' => ['', $replace]
+        ], $message->trTable());
         $this->assertSame($varTr, $message->toString());
     }
 
@@ -51,16 +58,21 @@ final class MessageTest extends TestCase
             $tag = MessageInterface::HTML_TABLE[$tag] ?? $tag;
             $tr[$value[0]] = "<$tag>" . $value[1] . "</$tag>";
         }
-        $this->assertSame(strtr($var, $tr), $message->toHtml());
+        $this->assertSame($var, $message->template());
+        $html = strtr($var, $tr);
+        $this->assertSame($html, $message->toHtml());
+        $plain = strip_tags($html);
+        $this->assertSame($plain, $message->toString());
+        $this->assertNotSame($plain, $message->toConsole());
     }
 
-    public function testWithCli(): void
-    {
-        $search = '%message%';
-        $replace = 'word';
-        $string = "A $search for CLI awareness";
-        $plain = str_replace($search, $replace, $string);
-        $message = (new Message($string))->code($search, $replace);
-        $this->assertTrue(strlen($plain) == strlen($message->toString()));
-    }
+    // public function testWithCli(): void
+    // {
+    //     $search = '%message%';
+    //     $replace = 'word';
+    //     $string = "A $search for CLI awareness";
+    //     $plain = str_replace($search, $replace, $string);
+    //     $message = (new Message($string))->code($search, $replace);
+    //     $this->assertTrue(strlen($plain) == strlen($message->toString()));
+    // }
 }

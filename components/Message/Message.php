@@ -14,7 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\Message;
 
 use Ahc\Cli\Output\Color;
+use Chevere\Components\Message\Exceptions\MessageSearchNotExistsException;
 use Chevere\Components\Message\Interfaces\MessageInterface;
+use Chevere\Components\Str\Interfaces\StrAssertInterface;
+use Chevere\Components\Str\Interfaces\StrInterface;
+use Chevere\Components\Str\StrAssert;
 
 final class Message implements MessageInterface
 {
@@ -26,7 +30,6 @@ final class Message implements MessageInterface
     public function __construct(string $template)
     {
         $this->template = $template;
-        $this->string = $template;
     }
 
     public function template(): string
@@ -82,6 +85,9 @@ final class Message implements MessageInterface
         return strtr($this->template, $tr);
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public function __toString(): string
     {
         return $this->toString();
@@ -89,10 +95,8 @@ final class Message implements MessageInterface
 
     public function strtr(string $search, string $replace): MessageInterface
     {
-        $new = clone $this;
-        $new->trTable[$search] = ['', $replace];
-
-        return $new;
+        return (clone $this)
+            ->put('', $search, $replace);
     }
 
     public function emphasis(string $search, string $replace): MessageInterface
@@ -121,6 +125,12 @@ final class Message implements MessageInterface
 
     private function put(string $format, string $search, string $replace): MessageInterface
     {
+        if (strpos($this->template, $search) === false) {
+            throw new MessageSearchNotExistsException(
+                (new Message("Search string %search% doesn't exists in the template"))
+                    ->code('%search%', $search)
+            );
+        }
         $new = clone $this;
         $new->trTable[$search] = [$format, $replace];
 

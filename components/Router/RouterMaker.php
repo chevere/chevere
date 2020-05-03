@@ -171,7 +171,7 @@ final class RouterMaker implements RouterMakerInterface
             $routeName = $route->name()->toString();
             $knownRoute = $this->routeables->get($routeName)->route();
             throw new RouteNameConflictException(
-                (new Message('Unable to re-assign route name %routeName% for path %routePath% at %declare% (name assigned to %namedRoutePath% at %register%)'))
+                (new Message('Unable to re-assign route name %routeName% for path %path% at %declare% (name assigned to %namedRoutePath% at %register%)'))
                     ->code('%routeName%', $route->name()->toString())
                     ->code('%path%', $route->path()->toString())
                     ->code('%declare%', $this->getFileLine($route->maker()))
