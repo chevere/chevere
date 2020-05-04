@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Chevere\Components\Serialize;
 
 use Chevere\Components\Serialize\Interfaces\SerializeInterface;
-use Chevere\Components\Variable\Interfaces\VariableExportInterface;
+use Chevere\Components\VarExportable\Interfaces\VarExportableInterface;
 
 final class Serialize implements SerializeInterface
 {
     /** @var string */
     private string $serialized;
 
-    public function __construct(VariableExportInterface $variableExport)
+    public function __construct(VarExportableInterface $varExportable)
     {
-        $this->serialized = $variableExport->toSerialize();
+        $this->serialized = $varExportable->toSerialize();
     }
 
     public function toString(): string

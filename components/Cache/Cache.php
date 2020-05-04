@@ -22,7 +22,7 @@ use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Filesystem\Interfaces\PathInterface;
-use Chevere\Components\Variable\Interfaces\VariableExportInterface;
+use Chevere\Components\VarExportable\Interfaces\VarExportableInterface;
 
 /**
  * A simple PHP based cache system.
@@ -55,7 +55,7 @@ final class Cache implements CacheInterface
         $this->puts = [];
     }
 
-    public function withPut(CacheKeyInterface $key, VariableExportInterface $variableExport): CacheInterface
+    public function withPut(CacheKeyInterface $key, VarExportableInterface $varExportable): CacheInterface
     {
         $path = $this->getPath($key->toString());
         $file = new File($path);
@@ -64,7 +64,7 @@ final class Cache implements CacheInterface
         }
         $filePhp = new FilePhp($file);
         $fileReturn = new FilePhpReturn($filePhp);
-        $fileReturn->put($variableExport);
+        $fileReturn->put($varExportable);
         $filePhp->cache();
         $new = clone $this;
         $new->puts[$key->toString()] = [

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Serialize\Interfaces;
 
-use Chevere\Components\Variable\Interfaces\VariableExportInterface;
+use Chevere\Components\VarExportable\Interfaces\VarExportableInterface;
 
 interface SerializeInterface
 {
-    public function __construct(VariableExportInterface $variableExport);
+    public function __construct(VarExportableInterface $varExportable);
 
     /**
      * Provides access to the serialized string.

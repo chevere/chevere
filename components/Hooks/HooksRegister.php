@@ -20,7 +20,7 @@ use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\Str;
-use Chevere\Components\Variable\VariableExport;
+use Chevere\Components\VarExportable\VarExportable;
 use Ds\Map;
 use Ds\Set;
 use LogicException;
@@ -96,7 +96,7 @@ final class HooksRegister
             }
             $phpFileHooks = new FilePhp($fileHooks);
             (new FilePhpReturn($phpFileHooks))
-                ->put(new VariableExport($queue));
+                ->put(new VarExportable($queue));
             $phpFileHooks->cache();
             $new->hookablesMap = $new->hookablesMap->withPut($hookableClassName, $hooksPath->absolute());
         }
@@ -107,7 +107,7 @@ final class HooksRegister
         }
         $phpFileClassMap = new FilePhp($fileClassMap);
         (new FilePhpReturn($phpFileClassMap))
-            ->put(new VariableExport($new->hookablesMap));
+            ->put(new VarExportable($new->hookablesMap));
         $phpFileClassMap->cache();
 
         return $new;

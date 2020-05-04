@@ -11,24 +11,24 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Variable\Tests;
+namespace Chevere\Components\VarExportable\Tests;
 
-use Chevere\Components\Variable\Exceptions\VariableNotExportableException;
-use Chevere\Components\Variable\VariableExport;
+use Chevere\Components\VarExportable\Exceptions\VarNotExportableException;
+use Chevere\Components\VarExportable\VarExportable;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-final class VariableExportTest extends TestCase
+final class VarExportableTest extends TestCase
 {
     public function testNotExportable(): void
     {
-        $this->expectException(VariableNotExportableException::class);
+        $this->expectException(VarNotExportableException::class);
         $resource = fopen(__FILE__, 'r');
         if (is_resource($resource) === false) {
             $this->markTestIncomplete('Unable to fopen ' . __FILE__);
         }
         /** @var resource $resource */
-        new VariableExport($resource);
+        new VarExportable($resource);
         fclose($resource);
     }
 
@@ -40,8 +40,8 @@ final class VariableExportTest extends TestCase
             $this->markTestIncomplete('Unable to fopen ' . __FILE__);
         }
         $object->array = [1, 2, 3, $resource];
-        $this->expectException(VariableNotExportableException::class);
-        new VariableExport($object);
+        $this->expectException(VarNotExportableException::class);
+        new VarExportable($object);
         /** @var resource $resource */
         fclose($resource);
     }
@@ -59,10 +59,10 @@ final class VariableExportTest extends TestCase
             new stdClass(),
             ['test', [1, false], new stdClass()],
         ] as $val) {
-            $variableExport = new VariableExport($val);
-            $this->assertSame($val, $variableExport->var());
-            $this->assertSame(serialize($val), $variableExport->toSerialize());
-            $this->assertSame(var_export($val, true), $variableExport->toExport());
+            $varExportable = new VarExportable($val);
+            $this->assertSame($val, $varExportable->var());
+            $this->assertSame(serialize($val), $varExportable->toSerialize());
+            $this->assertSame(var_export($val, true), $varExportable->toExport());
         }
     }
 }

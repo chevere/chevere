@@ -20,7 +20,7 @@ use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Filesystem\Interfaces\PathInterface;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Variable\VariableExport;
+use Chevere\Components\VarExportable\VarExportable;
 use PHPUnit\Framework\TestCase;
 
 final class CacheItemTest extends TestCase
@@ -51,7 +51,7 @@ final class CacheItemTest extends TestCase
             )
         );
         $fileReturn->put(
-            new VariableExport($path)
+            new VarExportable($path)
         );
     }
 

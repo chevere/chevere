@@ -16,8 +16,13 @@ namespace Chevere\Components\Regex;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Exceptions\RegexException;
 use Chevere\Components\Regex\Interfaces\RegexInterface;
+use Exception;
+use InvalidArgumentException;
 use Throwable;
 
+/**
+ * Regex expression (PCRE).
+ */
 final class Regex implements RegexInterface
 {
     private string $string;
@@ -71,7 +76,9 @@ final class Regex implements RegexInterface
     private function assertRegex(): void
     {
         try {
-            preg_match($this->string, '');
+            if (preg_match($this->string, '') === false) {
+                throw new Exception;
+            }
         } catch (Throwable $e) {
             throw new RegexException(
                 (new Message('Invalid regex string %regex% provided %error% [%preg%]'))

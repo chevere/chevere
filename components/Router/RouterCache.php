@@ -25,7 +25,7 @@ use Chevere\Components\Router\Interfaces\RouterIndexInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 use Chevere\Components\Router\Interfaces\RoutesCacheInterface;
-use Chevere\Components\Variable\VariableExport;
+use Chevere\Components\VarExportable\VarExportable;
 use Throwable;
 
 final class RouterCache implements RouterCacheInterface
@@ -88,11 +88,11 @@ final class RouterCache implements RouterCacheInterface
         $this->cache = $this->cache
             ->withPut(
                 $this->keyRegex,
-                new VariableExport($router->regex())
+                new VarExportable($router->regex())
             )
             ->withPut(
                 $this->keyIndex,
-                new VariableExport($router->index())
+                new VarExportable($router->index())
             );
         $pos = -1;
         /**

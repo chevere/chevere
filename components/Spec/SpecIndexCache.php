@@ -17,7 +17,7 @@ use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Spec\Interfaces\SpecIndexCacheInterface;
 use Chevere\Components\Spec\Interfaces\SpecIndexInterface;
-use Chevere\Components\Variable\VariableExport;
+use Chevere\Components\VarExportable\VarExportable;
 
 // Add this header to all responses: Link: </spec/api/routes.json>; rel="describedby"
 final class SpecIndexCache implements SpecIndexCacheInterface
@@ -52,7 +52,7 @@ final class SpecIndexCache implements SpecIndexCacheInterface
         foreach ($specIndex->specIndexMap()->map() as $routeName => $specMethods) {
             $this->cache = $this->cache->withPut(
                 new CacheKey($routeName),
-                new VariableExport($specMethods)
+                new VarExportable($specMethods)
             );
         }
     }

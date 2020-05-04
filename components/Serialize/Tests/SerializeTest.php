@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Serialize\Tests;
 
-use stdClass;
 use Chevere\Components\Serialize\Serialize;
 use Chevere\Components\Serialize\Unserialize;
-use Chevere\Components\Variable\VariableExport;
 use Chevere\Components\Type\Interfaces\TypeInterface;
+use Chevere\Components\VarExportable\VarExportable;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 final class SerializeTest extends TestCase
 {
@@ -36,7 +36,7 @@ final class SerializeTest extends TestCase
             TypeInterface::NULL => null,
         ] as $k => $v) {
             $serialize = new Serialize(
-                new VariableExport($v)
+                new VarExportable($v)
             );
             $unserialize = new Unserialize($serialize->toString());
             if (TypeInterface::OBJECT == $k) {

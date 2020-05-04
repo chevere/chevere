@@ -19,7 +19,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
 use Chevere\Components\Router\Interfaces\RoutesCacheInterface;
-use Chevere\Components\Variable\VariableExport;
+use Chevere\Components\VarExportable\VarExportable;
 use Throwable;
 
 final class RoutesCache implements RoutesCacheInterface
@@ -56,7 +56,7 @@ final class RoutesCache implements RoutesCacheInterface
         $this->cache = $this->cache
             ->withPut(
                 new CacheKey($route->name()->toString()),
-                new VariableExport($route)
+                new VarExportable($route)
             );
     }
 

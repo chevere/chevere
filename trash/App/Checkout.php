@@ -19,7 +19,7 @@ use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Filesystem\Interfaces\FilePhpReturnInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Variable\VariableExport;
+use Chevere\Components\VarExportable\VarExportable;
 use InvalidArgumentException;
 
 /**
@@ -45,7 +45,7 @@ final class Checkout implements CheckoutInterface
             new FilePhp($file)
         );
         $this->phpFileReturn->put(
-            new VariableExport($this->build->checksums())
+            new VarExportable($this->build->checksums())
         );
     }
 

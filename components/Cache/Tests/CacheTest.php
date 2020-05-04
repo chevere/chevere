@@ -21,7 +21,7 @@ use Chevere\Components\Cache\Interfaces\CacheItemInterface;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Interfaces\PathInterface;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Variable\VariableExport;
+use Chevere\Components\VarExportable\VarExportable;
 use PHPUnit\Framework\TestCase;
 
 final class CacheTest extends TestCase
@@ -62,10 +62,10 @@ final class CacheTest extends TestCase
     {
         $key = uniqid();
         $var = [time(), false, 'test', $this->path->getChild('test'), 13.13];
-        $variableExport = new VariableExport($var);
+        $varExportable = new VarExportable($var);
         $cacheKey = new CacheKey($key);
         $cache = $this->getTestCache()
-            ->withPut($cacheKey, $variableExport);
+            ->withPut($cacheKey, $varExportable);
         $this->assertArrayHasKey($key, $cache->puts());
         $this->assertTrue($cache->exists($cacheKey));
         $this->assertInstanceOf(CacheItemInterface::class, $cache->get($cacheKey));

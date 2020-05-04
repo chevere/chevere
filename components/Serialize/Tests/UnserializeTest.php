@@ -15,7 +15,7 @@ namespace Chevere\Components\Serialize\Tests;
 
 use Chevere\Components\Serialize\Serialize;
 use Chevere\Components\Serialize\Unserialize;
-use Chevere\Components\Variable\VariableExport;
+use Chevere\Components\VarExportable\VarExportable;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -34,7 +34,7 @@ final class UnserializeTest extends TestCase
     {
         $object = $this->getStdClass();
         $objectClass = get_class($object);
-        $serialized = new Serialize(new VariableExport($object));
+        $serialized = new Serialize(new VarExportable($object));
         $unserialize = new Unserialize($serialized->toString());
         $this->assertEquals($objectClass, $unserialize->type()->typeHinting());
         $this->assertEquals($object, $unserialize->var());

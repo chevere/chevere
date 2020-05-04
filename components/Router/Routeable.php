@@ -18,7 +18,7 @@ use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Exceptions\RouteableException;
 use Chevere\Components\Router\Exceptions\RouteNotRouteableException;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
-use Chevere\Components\Variable\VariableExport;
+use Chevere\Components\VarExportable\VarExportable;
 use Throwable;
 
 /**
@@ -48,7 +48,7 @@ final class Routeable implements RouteableInterface
     private function assertExportable(): void
     {
         try {
-            new VariableExport($this->route);
+            new VarExportable($this->route);
         } catch (Throwable $e) {
             throw new RouteNotRouteableException(
                 $e->getMessage(),

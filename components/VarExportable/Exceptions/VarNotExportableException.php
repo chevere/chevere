@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Variable\Exceptions;
+namespace Chevere\Components\VarExportable\Exceptions;
 
 use Exception;
 
 /**
  * Exception thrown when a variable is not exportable.
  */
-final class VariableNotExportableException extends Exception
+final class VarNotExportableException extends Exception
 {
 }

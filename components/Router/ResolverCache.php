@@ -21,7 +21,7 @@ use Chevere\Components\Router\Exceptions\RouteCacheTypeException;
 use Chevere\Components\Router\Interfaces\ResolverCacheInterface;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
 use Chevere\Components\Type\Type;
-use Chevere\Components\Variable\VariableExport;
+use Chevere\Components\VarExportable\VarExportable;
 use Throwable;
 
 final class ResolverCache implements ResolverCacheInterface
@@ -68,7 +68,7 @@ final class ResolverCache implements ResolverCacheInterface
         $this->cache = $this->cache
             ->withPut(
                 new CacheKey((string) $id),
-                new VariableExport($routeResolve)
+                new VarExportable($routeResolve)
             );
     }
 

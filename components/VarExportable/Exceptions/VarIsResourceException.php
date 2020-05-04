@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Variable\Exceptions;
+namespace Chevere\Components\VarExportable\Exceptions;
 
 use Exception;
 
 /**
  * Exception thrown when the var is a resource.
  */
-final class VariableIsResourceException extends Exception
+final class VarIsResourceException extends Exception
 {
 }

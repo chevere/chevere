@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Variable\Interfaces;
+namespace Chevere\Components\VarExportable\Interfaces;
 
-interface VariableExportInterface
+interface VarExportableInterface
 {
     public function __construct($var);
 

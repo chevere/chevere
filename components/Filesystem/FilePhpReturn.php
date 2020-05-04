@@ -24,7 +24,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Serialize\Exceptions\UnserializeException;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Str\StrAssert;
-use Chevere\Components\Variable\Interfaces\VariableExportInterface;
+use Chevere\Components\VarExportable\Interfaces\VarExportableInterface;
 use Throwable;
 
 /**
@@ -73,9 +73,9 @@ final class FilePhpReturn implements FilePhpReturnInterface
         return $var;
     }
 
-    public function put(VariableExportInterface $variableExport): void
+    public function put(VarExportableInterface $varExportable): void
     {
-        $var = $variableExport->var();
+        $var = $varExportable->var();
         $var = $this->getFileReturnVar($var);
         $varExport = var_export($var, true);
         $this->filePhp->file()->put(

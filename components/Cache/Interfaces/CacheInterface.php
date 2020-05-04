@@ -16,7 +16,7 @@ namespace Chevere\Components\Cache\Interfaces;
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
 use Chevere\Components\Filesystem\Exceptions\FileUnableToRemoveException;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
-use Chevere\Components\Variable\Interfaces\VariableExportInterface;
+use Chevere\Components\VarExportable\Interfaces\VarExportableInterface;
 
 interface CacheInterface
 {
@@ -30,12 +30,12 @@ interface CacheInterface
      * Return an instance with the specified CacheKeyInterface put.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified CacheKeyInterface VariableExportInterface.
+     * an instance that contains the specified CacheKeyInterface VarExportableInterface.
      *
      * @param CacheKeyInterface       $cacheKey       Cache key
-     * @param VariableExportInterface $variableExport an export variable
+     * @param VarExportableInterface $varExportable an export variable
      */
-    public function withPut(CacheKeyInterface $cacheKey, VariableExportInterface $variableExport): CacheInterface;
+    public function withPut(CacheKeyInterface $cacheKey, VarExportableInterface $varExportable): CacheInterface;
 
     /**
      * Remove item from cache.

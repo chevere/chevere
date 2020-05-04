@@ -20,7 +20,7 @@ use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Message\Exceptions\MessageSearchNotExistsException;
 use Chevere\Components\Message\Interfaces\MessageInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Variable\VariableExport;
+use Chevere\Components\VarExportable\VarExportable;
 use PHPUnit\Framework\TestCase;
 
 final class MessageTest extends TestCase

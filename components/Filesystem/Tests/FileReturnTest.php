@@ -23,7 +23,7 @@ use Chevere\Components\Filesystem\Interfaces\FileInterface;
 use Chevere\Components\Filesystem\Interfaces\FilePhpReturnInterface;
 use Chevere\Components\Filesystem\Interfaces\PathInterface;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Variable\VariableExport;
+use Chevere\Components\VarExportable\VarExportable;
 use PHPUnit\Framework\TestCase;
 
 final class FileReturnTest extends TestCase
@@ -130,7 +130,7 @@ final class FileReturnTest extends TestCase
     {
         $this->file->remove();
         $this->expectException(FileNotExistsException::class);
-        $this->phpFileReturn->put(new VariableExport('test'));
+        $this->phpFileReturn->put(new VarExportable('test'));
     }
 
     public function testPut(): void
@@ -145,7 +145,7 @@ final class FileReturnTest extends TestCase
             [[1, 1.1, true, 'test']],
         ] as $val) {
             $this->phpFileReturn->put(
-                new VariableExport($val)
+                new VarExportable($val)
             );
             $this->assertSame($val, $this->phpFileReturn->var());
         }
@@ -155,7 +155,7 @@ final class FileReturnTest extends TestCase
             ['test', [1, false], 1.1, null],
         ] as $val) {
             $this->phpFileReturn->put(
-                new VariableExport($val)
+                new VarExportable($val)
             );
             $this->assertEquals($val, $this->phpFileReturn->var());
         }

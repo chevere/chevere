@@ -11,21 +11,21 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Variable;
+namespace Chevere\Components\VarExportable;
 
 use Chevere\Components\Breadcrum\Breadcrum;
 use Chevere\Components\Breadcrum\Interfaces\BreadcrumInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Variable\Exceptions\VariableIsResourceException;
-use Chevere\Components\Variable\Exceptions\VariableNotExportableException;
-use Chevere\Components\Variable\Interfaces\VariableExportInterface;
+use Chevere\Components\VarExportable\Exceptions\VarIsResourceException;
+use Chevere\Components\VarExportable\Exceptions\VarNotExportableException;
+use Chevere\Components\VarExportable\Interfaces\VarExportableInterface;
 use ReflectionObject;
 use Throwable;
 
 /**
  * Allows to interact with exportable variables.
  */
-final class VariableExport implements VariableExportInterface
+final class VarExportable implements VarExportableInterface
 {
     /** @var mixed */
     private $var;
@@ -36,7 +36,7 @@ final class VariableExport implements VariableExportInterface
      * Creates a new instance.
      *
      * @psalm-suppress PossiblyInvalidArgument
-     * @throws VariableIsResourceException if $var contains resource
+     * @throws VarIsResourceException if $var contains resource
      */
     public function __construct($var)
     {
@@ -45,7 +45,7 @@ final class VariableExport implements VariableExportInterface
         try {
             $this->assertExportable($this->var);
         } catch (Throwable $e) {
-            throw new VariableNotExportableException($e->getMessage(), $e->getCode(), $e);
+            throw new VarNotExportableException($e->getMessage(), $e->getCode(), $e);
         }
     }
 
@@ -65,7 +65,7 @@ final class VariableExport implements VariableExportInterface
     }
 
     /**
-     * @throws VariableIsResourceException
+     * @throws VarIsResourceException
      */
     private function assertExportable($var): void
     {
@@ -78,7 +78,7 @@ final class VariableExport implements VariableExportInterface
     }
 
     /**
-     * @throws VariableIsResourceException
+     * @throws VarIsResourceException
      */
     private function assertIsNotResource($var): void
     {
@@ -89,14 +89,14 @@ final class VariableExport implements VariableExportInterface
             } else {
                 $message = new Message("Argument is a resource which can't be exported");
             }
-            throw new VariableIsResourceException(
+            throw new VarIsResourceException(
                 $message->toString()
             );
         }
     }
 
     /**
-     * @throws VariableIsResourceException
+     * @throws VarIsResourceException
      */
     private function breadcrumIterable($var): void
     {

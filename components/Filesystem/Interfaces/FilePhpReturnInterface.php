@@ -18,7 +18,7 @@ use Chevere\Components\Filesystem\Exceptions\FileInvalidContentsException;
 use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
 use Chevere\Components\Filesystem\Exceptions\FileUnableToPutException;
 use Chevere\Components\Filesystem\Exceptions\FileWithoutContentsException;
-use Chevere\Components\Variable\Interfaces\VariableExportInterface;
+use Chevere\Components\VarExportable\Interfaces\VarExportableInterface;
 
 interface FilePhpReturnInterface
 {
@@ -72,5 +72,5 @@ interface FilePhpReturnInterface
      * @throws FileNotExistsException    if the file doesn't exists
      * @throws FileUnableToPutException if unable to put the contents in the file
      */
-    public function put(VariableExportInterface $variableExport): void;
+    public function put(VarExportableInterface $varExportable): void;
 }
