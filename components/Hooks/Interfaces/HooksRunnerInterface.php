@@ -19,5 +19,10 @@ interface HooksRunnerInterface
 {
     public function __construct(HooksQueue $queue);
 
+    /**
+     * Run the registred hooks at the given ancshor.
+     *
+     * @throws RuntimeException If the $argument type changes.
+     */
     public function run(string $anchor, &$argument): void;
 }

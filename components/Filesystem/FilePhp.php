@@ -41,15 +41,10 @@ final class FilePhp implements FilePhpInterface
     }
 
     /**
-     * Applies OPCache.
-     *
      * @codeCoverageIgnore
-     * @throws RuntimeException
-     * @throws LogicException
      */
     public function cache(): void
     {
-        // $this->assertCompile();
         $this->file->assertExists();
         $path = $this->file->path()->absolute();
         $past = BootstrapInstance::get()->time() - 10;

@@ -19,6 +19,7 @@ use Chevere\Components\Filesystem\Exceptions\FileUnableToCreateException;
 use Chevere\Components\Filesystem\Exceptions\FileUnableToGetException;
 use Chevere\Components\Filesystem\Exceptions\FileUnableToPutException;
 use Chevere\Components\Filesystem\Exceptions\FileUnableToRemoveException;
+use Chevere\Components\Filesystem\Exceptions\PathIsDirException;
 use Chevere\Components\Filesystem\Interfaces\PathInterface;
 
 interface FileInterface
@@ -26,6 +27,9 @@ interface FileInterface
     const CHECKSUM_ALGO = 'sha256';
     const CHECKSUM_LENGTH = 64;
 
+    /**
+     * @throws PathIsDirException if the $path represents a directory
+     */
     public function __construct(PathInterface $path);
 
     /**

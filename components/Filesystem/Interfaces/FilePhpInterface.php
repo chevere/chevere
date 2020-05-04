@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem\Interfaces;
 
+use Chevere\Components\Filesystem\Exceptions\FileNotPhpException;
+
 interface FilePhpInterface
 {
     /**
@@ -25,7 +27,10 @@ interface FilePhpInterface
      */
     public function file(): FileInterface;
 
-    // public function isCompileable(): bool;
-
+    /**
+     * Applies OPCache.
+     *
+     * @throws RuntimeException If unable to cache file.
+     */
     public function cache(): void;
 }

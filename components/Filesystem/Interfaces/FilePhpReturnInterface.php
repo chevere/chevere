@@ -25,6 +25,9 @@ interface FilePhpReturnInterface
     const PHP_RETURN = '<?php return ';
     const PHP_RETURN_CHARS = 13;
 
+    /**
+     * @throws FileNotExistsException if the file doesn't exists
+     */
     public function __construct(FilePhpInterface $phpFile);
 
     /**

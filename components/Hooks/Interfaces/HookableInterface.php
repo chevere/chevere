@@ -21,7 +21,7 @@ use Chevere\Components\Hooks\HooksRunner;
 interface HookableInterface
 {
     /**
-     * Returns the declared hook anchors
+     * Returns the declared hook anchors.
      */
     public static function getHookAnchors(): HookAnchors;
 

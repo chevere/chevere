@@ -15,6 +15,7 @@ namespace Chevere\Components\Hooks;
 
 use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Hooks\Interfaces\HooksRunnerInterface;
+use Chevere\Components\Message\Exceptions\MessageSearchNotExistsException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
 use RuntimeException;
@@ -31,9 +32,6 @@ final class HooksRunner implements HooksRunnerInterface
         $this->queue = $queue;
     }
 
-    /**
-     * Run the registred hooks at the given anchor.
-     */
     public function run(string $anchor, &$argument): void
     {
         if ($this->isLooping()) {

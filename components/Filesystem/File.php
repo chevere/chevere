@@ -38,11 +38,6 @@ final class File implements FileInterface
 
     private bool $isPhp;
 
-    /**
-     * Creates a new instance.
-     *
-     * @throws PathIsDirException if the PathInterface represents a directory
-     */
     public function __construct(PathInterface $path)
     {
         $this->path = $path;
@@ -85,8 +80,6 @@ final class File implements FileInterface
 
     /**
      * @codeCoverageIgnoreStart
-     * @throws FileNotExistsException
-     * @throws FileUnableToGetException
      */
     public function contents(): string
     {
