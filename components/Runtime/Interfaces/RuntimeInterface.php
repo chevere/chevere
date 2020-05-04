@@ -13,17 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Interfaces;
 
-use Chevere\Components\Data\Interfaces\DataInterface;
-use Chevere\Components\Data\Interfaces\DataMethodInterface;
+use Ds\Map;
 
-interface RuntimeInterface extends DataMethodInterface
+interface RuntimeInterface
 {
-    public function __construct(SetInterface ...$set);
+    public function withSet(SetInterface $set): RuntimeInterface;
 
-    /**
-     * Provides access to the DataInterface instance.
-     *
-     * @return DataInterface A data contract with set names as keys.
-     */
-    public function data(): DataInterface;
+    public function data(): Map;
 }

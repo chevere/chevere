@@ -39,11 +39,12 @@ final class RuntimeTest extends TestCase
             new SetUriScheme('https'),
             new SetTimeZone('UTC')
         ];
+        $runtime = new Runtime;
         $data = [];
         foreach ($sets as $set) {
+            $runtime = $runtime->withSet($set);
             $data[$set->name()] = $set->value();
         }
-        $runtime = new Runtime(...$sets);
         $this->assertSame($data, $runtime->data()->toArray());
     }
 }

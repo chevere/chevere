@@ -13,34 +13,33 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime;
 
-use Chevere\Components\Data\Data;
-use Chevere\Components\Data\Traits\DataMethodTrait;
 use Chevere\Components\Runtime\Interfaces\RuntimeInterface;
 use Chevere\Components\Runtime\Interfaces\SetInterface;
+use Ds\Map;
+use function DeepCopy\deep_copy;
 
 /**
  * Runtime applies runtime config and provide data about the App Runtime.
  */
 final class Runtime implements RuntimeInterface
 {
-    use DataMethodTrait;
+    private Map $data;
 
-    /**
-     * Creates a new instance.
-     *
-     * @param SetInterface $sets
-     */
-    public function __construct(SetInterface ...$sets)
+    public function __construct()
     {
-        $this->data = new Data([]);
-        foreach ($sets as $set) {
-            $this->data = $this->data
-                ->withAddedKey(
-                    $set->name(),
-                    $set->value()
-                );
-        }
-        // $this->data = $this->data
-        //     ->withAddedKey('errorReportingLevel', error_reporting());
+        $this->data = new Map;
+    }
+
+    public function withSet(SetInterface $set): RuntimeInterface
+    {
+        $new = clone $this;
+        $new->data->put($set->name(), $set->value());
+
+        return $new;
+    }
+
+    public function data(): Map
+    {
+        return deep_copy($this->data);
     }
 }
