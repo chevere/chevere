@@ -13,8 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Message\Tests;
 
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\FilePhp;
+use Chevere\Components\Filesystem\FilePhpReturn;
+use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Message\Exceptions\MessageSearchNotExistsException;
 use Chevere\Components\Message\Interfaces\MessageInterface;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Variable\VariableExport;
 use PHPUnit\Framework\TestCase;
 
 final class MessageTest extends TestCase
@@ -66,13 +72,10 @@ final class MessageTest extends TestCase
         $this->assertNotSame($plain, $message->toConsole());
     }
 
-    // public function testWithCli(): void
-    // {
-    //     $search = '%message%';
-    //     $replace = 'word';
-    //     $string = "A $search for CLI awareness";
-    //     $plain = str_replace($search, $replace, $string);
-    //     $message = (new Message($string))->code($search, $replace);
-    //     $this->assertTrue(strlen($plain) == strlen($message->toString()));
-    // }
+    public function testWithWrongSearch(): void
+    {
+        $message = new Message('Hello, World!');
+        $this->expectException(MessageSearchNotExistsException::class);
+        $message->code('%search%', 'replace');
+    }
 }

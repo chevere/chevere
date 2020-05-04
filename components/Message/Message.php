@@ -16,9 +16,6 @@ namespace Chevere\Components\Message;
 use Ahc\Cli\Output\Color;
 use Chevere\Components\Message\Exceptions\MessageSearchNotExistsException;
 use Chevere\Components\Message\Interfaces\MessageInterface;
-use Chevere\Components\Str\Interfaces\StrAssertInterface;
-use Chevere\Components\Str\Interfaces\StrInterface;
-use Chevere\Components\Str\StrAssert;
 
 final class Message implements MessageInterface
 {
@@ -46,12 +43,12 @@ final class Message implements MessageInterface
     {
         $tr = [];
         $color = new Color;
-        $styles = [];
+        $colorStyles = [];
         foreach ($this->trTable as $search => $formatting) {
             $format = $formatting[0];
-            if (!isset($styles[$format])) {
+            if (!in_array($format, $colorStyles)) {
+                array_push($colorStyles, $format);
                 Color::style($format, self::CLI_TABLE[$format]);
-                array_push($styles, $format);
             }
             $tr[$search] = $color->$format($formatting[1]);
         }
