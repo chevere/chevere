@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Benchmark\Exceptions;
 
-use Exception;
+use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 
 /**
  * Exception thrown when the callable name has been already declared.

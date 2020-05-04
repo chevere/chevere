@@ -19,7 +19,6 @@ use Chevere\Components\Controller\Interfaces\ControllerInterface;
 use Chevere\Components\Controller\Interfaces\ControllerNameInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrAssert;
-use Throwable;
 
 final class ControllerName implements ControllerNameInterface
 {
@@ -51,7 +50,6 @@ final class ControllerName implements ControllerNameInterface
             throw new ControllerNotExistsException(
                 (new Message("Controller %controllerName% doesn't exists"))
                     ->code('%controllerName%', $this->string)
-                    ->toString()
             );
         }
         if (!is_subclass_of($this->string, ControllerInterface::class)) {
@@ -59,7 +57,6 @@ final class ControllerName implements ControllerNameInterface
                 (new Message('Controller %controllerName% must implement the %interface% interface'))
                     ->code('%controllerName%', $this->string)
                     ->code('%interface%', ControllerInterface::class)
-                    ->toString()
             );
         }
     }

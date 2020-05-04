@@ -22,6 +22,7 @@ use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Filesystem\Interfaces\PathInterface;
+use Chevere\Components\Message\Message;
 use Chevere\Components\VarExportable\Interfaces\VarExportableInterface;
 
 /**
@@ -99,7 +100,10 @@ final class Cache implements CacheInterface
     {
         $path = $this->getPath($cacheKey->toString());
         if (!$path->exists()) {
-            throw new CacheKeyNotFoundException('No cache for key ' . $cacheKey->toString());
+            throw new CacheKeyNotFoundException(
+                (new Message('No cache for key %key%'))
+                    ->code('%key%', $cacheKey->toString())
+            );
         }
 
         return new CacheItem(

@@ -79,7 +79,6 @@ final class Path implements PathInterface
                 (new Message('Unable to chmod %mode% %path%'))
                     ->strong('%mode%', (string) $mode)
                     ->code('%path%', $this->absolute)
-                    ->toString()
             );
         }
     }
@@ -120,7 +119,6 @@ final class Path implements PathInterface
             throw new PathDoesntExistsException(
                 (new Message("Path %path% doesn't exists"))
                     ->code('%path%', $this->absolute)
-                    ->toString()
             );
         }
     }

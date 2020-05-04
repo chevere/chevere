@@ -140,7 +140,6 @@ final class RoutePath implements RoutePathInterface
             throw new RoutePathUnmatchedBracesException(
                 (new Message("Provided %provided% doesn't strictly map known wildcard names to its corresponding values"))
                     ->code('%provided%', 'array')
-                    ->toString()
             );
         }
         $uri = $this->path;
@@ -161,7 +160,6 @@ final class RoutePath implements RoutePathInterface
             throw new RoutePathForwardSlashException(
                 (new Message('Route path %path% must start with a forward slash'))
                     ->code('%path%', $this->path)
-                    ->toString()
             );
         }
         $illegals = $this->getIllegalChars();
@@ -169,7 +167,6 @@ final class RoutePath implements RoutePathInterface
             throw new RoutePathInvalidCharsException(
                 (new Message('Route path %path% must not contain illegal characters (' . implode(' ', $illegals) . ')'))
                     ->code('%path%', $this->path)
-                    ->toString()
             );
         }
     }
@@ -184,7 +181,6 @@ final class RoutePath implements RoutePathInterface
                     ->code('%path%', $this->path)
                     ->strtr('%countOpen%', (string) $countOpen)
                     ->strtr('%countClose%', (string) $countClose)
-                    ->toString()
             );
         }
         $this->wildcardBracesCount = $countOpen;
@@ -200,7 +196,6 @@ final class RoutePath implements RoutePathInterface
                     ->code('%path%', $this->path)
                     ->code('%pattern%', RoutePathInterface::REGEX_WILDCARD_SEARCH)
                     ->strtr('%countMatches%', (string) $countMatches)
-                    ->toString()
             );
         }
     }
@@ -227,7 +222,6 @@ final class RoutePath implements RoutePathInterface
                 (new Message('Path %path% contain system reserved wildcards %list%'))
                     ->code('%path%', $this->path)
                     ->code('%list%', implode(' ', $matches[0]))
-                    ->toString()
             );
         }
     }
@@ -247,7 +241,6 @@ final class RoutePath implements RoutePathInterface
                     (new Message('Duplicated wildcard %wildcard% in path uri %path%'))
                         ->code('%wildcard%', $this->wildcardsMatch[0][$pos])
                         ->code('%path%', $this->path)
-                        ->toString()
                 );
             }
             $this->wildcards[] = $wildcard;

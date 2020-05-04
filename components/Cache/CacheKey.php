@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Cache;
 
 use Chevere\Components\Cache\Exceptions\CacheInvalidKeyException;
-use Chevere\Components\Message\Message;
 use Chevere\Components\Cache\Interfaces\CacheKeyInterface;
+use Chevere\Components\Message\Message;
 
 final class CacheKey implements CacheKeyInterface
 {
@@ -46,7 +46,6 @@ final class CacheKey implements CacheKeyInterface
             throw new CacheInvalidKeyException(
                 (new Message('Use of forbidden character(s) %character%'))
                     ->code('%character%', $forbidden)
-                    ->toString()
             );
         }
     }

@@ -25,7 +25,6 @@ use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
 use Chevere\Components\Controller\Interfaces\ControllerRanInterface;
 use Chevere\Components\Controller\Interfaces\ControllerResponseInterface;
 use Chevere\Components\Regex\Regex;
-use Ds\Map;
 use Exception;
 use PHPUnit\Framework\TestCase;
 

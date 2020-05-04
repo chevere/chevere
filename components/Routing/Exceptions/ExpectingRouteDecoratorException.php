@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing\Exceptions;
 
-use Exception;
+use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 
 /**
  * Exception thrown when failing to provide a RouteDecoratorInterface.

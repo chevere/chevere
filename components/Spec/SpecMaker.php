@@ -140,7 +140,6 @@ final class SpecMaker
                 (new Message('Instance of %interfaceName% missing %propertyName% property(s).'))
                     ->code('%interfaceName%', RouterInterface::class)
                     ->code('%propertyName%', implode(', ', $keys))
-                    ->toString()
             );
         }
         // @codeCoverageIgnoreStart

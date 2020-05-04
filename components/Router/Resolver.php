@@ -51,12 +51,11 @@ final class Resolver implements ResolverInterface
                 return $this->resolver($matches);
             }
         } catch (Throwable $e) {
-            throw new RouterException($e->getMessage(), $e->getCode(), $e);
+            throw new RouterException(new Message($e->getMessage()), $e->getCode(), $e);
         }
         throw new RouteNotFoundException(
             (new Message('No route found for %uriPath%'))
                 ->code('%uriPath%', $uri->getPath())
-                ->toString()
         );
     }
 

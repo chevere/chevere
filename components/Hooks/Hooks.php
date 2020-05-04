@@ -51,7 +51,6 @@ final class Hooks
             throw new HooksClassNotRegisteredException(
                 (new Message("Class %className% doesn't exists in the class map"))
                     ->code('%className%', $className)
-                    ->toString()
             );
         }
         $hooksPath = $this->hookablesMap->get($className);
@@ -59,7 +58,6 @@ final class Hooks
             throw new HooksFileNotFoundException(
                 (new Message("File %fileName% doesn't exists"))
                     ->code('%fileName%', $hooksPath)
-                    ->toString()
             );
         }
         // @codeCoverageIgnoreStart

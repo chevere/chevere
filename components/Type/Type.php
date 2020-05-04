@@ -118,7 +118,6 @@ final class Type implements TypeInterface
             throw new TypeNotFoundException(
                 (new Message('Type %type% not found'))
                     ->code('%type%', $this->type)
-                    ->toString()
             );
         }
     }

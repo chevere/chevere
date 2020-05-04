@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem\Exceptions;
 
-use Exception;
+use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 
 /**
  * Exception thrown when unable to create a file.

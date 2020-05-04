@@ -119,7 +119,6 @@ final class FilePhpReturn implements FilePhpReturnInterface
                     ->code('%fn%', 'fopen')
                     ->code('%path%', $filename)
                     ->code('%mode%', 'r')
-                    ->toString()
             );
             // @codeCoverageIgnoreEnd
         }
@@ -129,7 +128,6 @@ final class FilePhpReturn implements FilePhpReturnInterface
             throw new FileWithoutContentsException(
                 (new Message("The file %path% doesn't have any contents"))
                     ->code('%path%', $filename)
-                    ->toString()
             );
         }
         if (FilePhpReturnInterface::PHP_RETURN !== $contents) {
@@ -137,7 +135,6 @@ final class FilePhpReturn implements FilePhpReturnInterface
                 (new Message('Unexpected contents in %path%, strict validation requires a file return in the form of %expected%'))
                     ->code('%path%', $filename)
                     ->code('%expected%', FilePhpReturnInterface::PHP_RETURN . '$var;')
-                    ->toString()
             );
         }
     }
@@ -157,14 +154,12 @@ final class FilePhpReturn implements FilePhpReturnInterface
             throw new FileWithoutContentsException(
                 (new Message("The file at %path% doesn't have any contents (non-strict validation)"))
                     ->code('%path%', $this->filePhp->file()->path()->absolute())
-                    ->toString()
             );
         }
         if (!preg_match_all('#<\?php([\S\s]*)\s*return\s*[\S\s]*;#', $contents)) {
             throw new FileInvalidContentsException(
                 (new Message('Unexpected contents in %path% (non-strict validation)'))
                     ->code('%path%', $this->filePhp->file()->path()->absolute())
-                    ->toString()
             );
         }
     }

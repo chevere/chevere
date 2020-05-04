@@ -44,7 +44,6 @@ final class AssertHook
             throw new HookableNotFoundException(
                 (new Message("Class %ClassName% doesn't exists"))
                     ->code('%ClassName%', $this->hook->className())
-                    ->toString()
             );
         }
     }
@@ -56,7 +55,6 @@ final class AssertHook
                 (new Message('Class %ClassName% must implement the %interfaceName% interface'))
                     ->code('%ClassName%', $this->hook->className())
                     ->code('%interfaceName%', HookableInterface::class)
-                    ->toString()
             );
         }
     }
@@ -72,7 +70,6 @@ final class AssertHook
                 (new Message('Anchor %anchor% is not declared by %ClassName%'))
                     ->code('%anchor%', $this->hook->anchor())
                     ->code('%ClassName%', $this->hook->className())
-                    ->toString()
             );
         }
     }

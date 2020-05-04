@@ -41,7 +41,6 @@ final class AssertPathString implements AssertPathFormatInterface
                 (new Message('Path %path% must start with %char%'))
                     ->code('%path%', $this->path)
                     ->code('%char%', '/')
-                    ->toString()
             );
         }
     }
@@ -53,7 +52,6 @@ final class AssertPathString implements AssertPathFormatInterface
                 (new Message('Must omit %chars% for path %path%'))
                     ->code('%chars%', '../')
                     ->code('%path%', $this->path)
-                    ->toString()
             );
         }
     }
@@ -65,7 +63,6 @@ final class AssertPathString implements AssertPathFormatInterface
                 (new Message('Must omit %chars% for path %path%'))
                     ->code('%chars%', './')
                     ->code('%path%', $this->path)
-                    ->toString()
             );
         }
     }
@@ -76,7 +73,6 @@ final class AssertPathString implements AssertPathFormatInterface
             throw new PathExtraSlashesException(
                 (new Message('Path %path% contains extra-slashes'))
                     ->code('%path%', $this->path)
-                    ->toString()
             );
         }
     }

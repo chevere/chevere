@@ -15,6 +15,7 @@ namespace Chevere\Components\ExceptionHandler\Exceptions;
 
 use Chevere\Components\ExceptionHandler\Traits\ExceptionTrait;
 use Chevere\Components\Message\Interfaces\MessageInterface;
+use Chevere\Components\Message\Message;
 use Throwable;
 
 /**
@@ -24,9 +25,9 @@ class Exception extends \Exception
 {
     use ExceptionTrait;
 
-    public function __construct(MessageInterface $message, int $code = 0, Throwable $previous = null)
+    public function __construct(MessageInterface $message = null, int $code = 0, Throwable $previous = null)
     {
-        $this->_message = $message;
-        parent::__construct($message->toString(), $code, $previous);
+        $this->_message = $message ?? new Message('');
+        parent::__construct($this->_message->toString(), $code, $previous);
     }
 }

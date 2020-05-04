@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Middleware;
 
-use InvalidArgumentException;
-use Chevere\Components\Middleware\Exceptions\MiddlewareInterfaceException;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Middleware\Exceptions\MiddlewareInterfaceException;
 use Chevere\Components\Middleware\Interfaces\MiddlewareInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
+use InvalidArgumentException;
 
 final class MiddlewareName implements MiddlewareNameInterface
 {
@@ -57,7 +57,6 @@ final class MiddlewareName implements MiddlewareNameInterface
                 (new Message('Middleware %middleware% must implement the %contract% contract'))
                     ->code('%middleware%', $this->name)
                     ->code('%contract%', MiddlewareInterface::class)
-                    ->toString()
             );
         }
     }

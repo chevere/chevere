@@ -19,6 +19,7 @@ use Chevere\Components\Benchmark\Exceptions\ArgumentTypeException;
 use Chevere\Components\Benchmark\Interfaces\RunableInterface;
 use Chevere\Components\Benchmark\Interfaces\RunInterface;
 use Chevere\Components\Instances\BootstrapInstance;
+use Chevere\Components\Message\Interfaces\MessageInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Number\Number;
 use Chevere\Components\Time\TimeHr;
@@ -239,12 +240,11 @@ final class Run implements RunInterface
         }
     }
 
-    private function getErrorMessage(string $name, string $message): string
+    private function getErrorMessage(string $name, string $message): MessageInterface
     {
         return (new Message('[Callable named %name%] %message%'))
             ->code('%name%', $name)
-            ->strtr('%message%', $message)
-            ->toString();
+            ->strtr('%message%', $message);
     }
 
     private function processCallablesStats(): void

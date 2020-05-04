@@ -58,7 +58,7 @@
             "<?php",
             "namespace Chevere\\Components\\X\\Exceptions;",
             "",
-            "use Exception;",
+            "use Chevere\\Components\\ExceptionHandler\\Exceptions\\Exception;",
             "",
             "/**",
             " * Exception thrown when _____.",

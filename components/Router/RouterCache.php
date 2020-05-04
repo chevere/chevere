@@ -135,7 +135,6 @@ final class RouterCache implements RouterCacheInterface
             throw new RouterCacheNotFoundException(
                 (new Message('Cache not found for router %key%'))
                     ->strong('%key%', $cacheKey->toString())
-                    ->toString()
             );
         }
 

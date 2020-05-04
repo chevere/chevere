@@ -64,7 +64,6 @@ final class RouteIdentifier implements RouteIdentifierInterface
             throw new RouteIdentifierException(
                 (new Message('Argument %argumentName% must not be empty neither ctype-space.'))
                     ->code('%argumentName%', '$' . $argumentName)
-                    ->toString()
             );
         }
     }

@@ -46,7 +46,6 @@ final class RouteName implements RouteNameInterface
                 (new Message('Expecting at least one alphanumeric, underscore, hypen or dot character, string %string% provided (regex %regex%)'))
                     ->code('%string%', $this->name === '' ? '(empty)' : $this->name)
                     ->code('%regex%', RouteNameInterface::REGEX)
-                    ->toString()
             );
         }
     }

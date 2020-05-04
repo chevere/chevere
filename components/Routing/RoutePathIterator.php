@@ -57,7 +57,6 @@ final class RoutePathIterator implements RoutePathIteratorInterface
                     (new Message('Expecting file return object implementing interface %interfaceName%, something else provided in %fileName%'))
                         ->code('%interfaceName%', RouteDecoratorInterface::class)
                         ->strong('%fileName%', $pathName)
-                        ->toString()
                 );
             }
             $routePath = (new Str(dirname($pathName) . '/'))

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Exceptions;
 
-use Exception;
+use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 
 /**
  * Exception thrown when the build file doesn't exists.

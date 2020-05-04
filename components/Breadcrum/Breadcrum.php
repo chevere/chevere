@@ -60,7 +60,6 @@ final class Breadcrum implements BreadcrumInterface
             throw new BreadcrumException(
                 (new Message('Pos %pos% not found'))
                     ->code('%pos%', (string) $pos)
-                    ->toString()
             );
         }
         $new = clone $this;

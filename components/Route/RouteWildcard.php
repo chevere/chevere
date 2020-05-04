@@ -79,7 +79,6 @@ final class RouteWildcard implements RouteWildcardInterface
                 (new Message("Wildcard %wildcard% doesn't exists in route path %path%"))
                     ->code('%wildcard%', $this->string)
                     ->code('%path%', $routePath->toString())
-                    ->toString()
             );
         }
     }
@@ -90,14 +89,12 @@ final class RouteWildcard implements RouteWildcardInterface
             throw new RouteWildcardStartWithNumberException(
                 (new Message('String %string% must not start with a numeric value'))
                     ->code('%string%', $this->name)
-                    ->toString()
             );
         }
         if (!preg_match(RouteWildcardInterface::ACCEPT_CHARS_REGEX, $this->name)) {
             throw new RouteWildcardInvalidCharsException(
                 (new Message('String %string% must contain only alphanumeric and underscore characters'))
                     ->code('%string%', $this->name)
-                    ->toString()
             );
         }
     }

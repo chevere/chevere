@@ -44,7 +44,6 @@ final class RoutesCache implements RoutesCacheInterface
             throw new RouteCacheNotFoundException(
                 (new Message('Cache not found for route %routeName%'))
                     ->strong('%routeName%', $name)
-                    ->toString()
             );
         }
 

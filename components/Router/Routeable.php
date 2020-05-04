@@ -51,7 +51,7 @@ final class Routeable implements RouteableInterface
             new VarExportable($this->route);
         } catch (Throwable $e) {
             throw new RouteNotRouteableException(
-                $e->getMessage(),
+                new Message($e->getMessage()),
                 $e->getCode(),
             );
         }
@@ -63,7 +63,6 @@ final class Routeable implements RouteableInterface
             throw new RouteableException(
                 (new Message("Instance of %className% doesn't contain any method controller"))
                     ->code('%className%', RouteInterface::class)
-                    ->toString()
             );
         }
     }

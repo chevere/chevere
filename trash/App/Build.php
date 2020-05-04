@@ -206,7 +206,6 @@ final class Build implements BuildInterface
             throw new PathIsNotDirectoryException(
                 (new Message('The application needs a cache directory at %path%'))
                     ->code('%path%', $this->dir->path()->absolute())
-                    ->toString()
             );
         }
     }

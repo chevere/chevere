@@ -141,7 +141,6 @@ final class RouterMaker implements RouterMakerInterface
                     ->code('%path%', $path)
                     ->code('%declare%', $this->getFileLine($route->maker()))
                     ->code('%register%', $this->getFileLine($knownRoute->maker()))
-                    ->toString()
             );
         }
     }
@@ -160,7 +159,6 @@ final class RouterMaker implements RouterMakerInterface
                     ->code('%declare%', $this->getFileLine($route->maker()))
                     ->code('%key%', $route->path()->key())
                     ->code('%register%', $this->getFileLine($knownRoute->maker()))
-                    ->toString()
             );
         }
     }
@@ -177,7 +175,6 @@ final class RouterMaker implements RouterMakerInterface
                     ->code('%declare%', $this->getFileLine($route->maker()))
                     ->code('%namedRoutePath%', $knownRoute->path()->toString())
                     ->code('%register%', $this->getFileLine($knownRoute->maker()))
-                    ->toString()
             );
         }
     }

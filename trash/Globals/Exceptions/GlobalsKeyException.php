@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Globals\Exceptions;
 
-use Exception;
+use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 
 final class GlobalsKeyException extends Exception
 {

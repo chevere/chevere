@@ -18,7 +18,6 @@ use Chevere\Components\Filesystem\Interfaces\FileInterface;
 use Chevere\Components\Filesystem\Interfaces\FilePhpInterface;
 use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\Message\Message;
-use LogicException;
 use RuntimeException;
 use Throwable;
 
@@ -92,7 +91,6 @@ final class FilePhp implements FilePhpInterface
                 (new Message('Instance of %className% must represents a PHP script in the path %path%'))
                     ->code('%className%', get_class($this->file))
                     ->code('%path%', $this->file->path()->absolute())
-                    ->toString()
             );
         }
     }

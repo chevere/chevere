@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Benchmark;
 
 use Chevere\Components\Benchmark\Exceptions\NoCallablesException;
-use Chevere\Components\Message\Message;
 use Chevere\Components\Benchmark\Interfaces\BenchmarkInterface;
 use Chevere\Components\Benchmark\Interfaces\RunableInterface;
+use Chevere\Components\Message\Message;
 
 /**
  * Determine if a BenchmarkInterface can run
@@ -47,7 +47,6 @@ final class Runable implements RunableInterface
                 (new Message('No callables defined for object of class %className%, declare callables using the %method% method'))
                     ->code('%className%', $className)
                     ->code('%method%', $className . '::withAddedCallable')
-                    ->toString()
             );
         }
     }

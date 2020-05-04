@@ -84,7 +84,6 @@ final class ControllerArguments implements ControllerArgumentsInterface
                 (new Message("Argument for parameter %parameter% doesn't match the regex %regex%"))
                     ->code('%parameter%', $name)
                     ->code('%regex%', $regexString)
-                    ->toString()
             );
         }
         $this->arguments->put($name, $value);
@@ -112,7 +111,6 @@ final class ControllerArguments implements ControllerArgumentsInterface
             throw new ControllerArgumentsRequiredException(
                 (new Message('Missing required argument(s): %message%'))
                     ->code('%message%', implode(', ', $failed))
-                    ->toString()
             );
         }
     }

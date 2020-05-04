@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Exceptions;
 
-use Exception;
+use Chevere\Components\ExceptionHandler\Exceptions\Exception;
+use Chevere\Components\Http\Interfaces\HttpStatusInterface;
+use Chevere\Components\Message\Message;
 use InvalidArgumentException;
 use Throwable;
-use Chevere\Components\Message\Message;
-use Chevere\Components\Http\Interfaces\HttpStatusInterface;
 
 /**
  * Exception thrown when unable to resolve.

@@ -47,7 +47,6 @@ final class ResolverCache implements ResolverCacheInterface
             throw new RouteCacheNotFoundException(
                 (new Message('Cache not found for route %routeName%'))
                     ->strong('%routeName%', $idString)
-                    ->toString()
             );
         }
         if ((new Type(RouteResolve::class))->validate($item->var()) === false) {
@@ -56,7 +55,6 @@ final class ResolverCache implements ResolverCacheInterface
                     ->code('%expected%', RouteableInterface::class)
                     ->code('%provided%', gettype($item->raw()))
                     ->strong('%id%', $idString)
-                    ->toString()
             );
         }
 

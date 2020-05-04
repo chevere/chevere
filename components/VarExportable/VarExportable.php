@@ -45,7 +45,11 @@ final class VarExportable implements VarExportableInterface
         try {
             $this->assertExportable($this->var);
         } catch (Throwable $e) {
-            throw new VarNotExportableException($e->getMessage(), $e->getCode(), $e);
+            throw new VarNotExportableException(
+                new Message($e->getMessage()),
+                $e->getCode(),
+                $e
+            );
         }
     }
 
@@ -89,9 +93,7 @@ final class VarExportable implements VarExportableInterface
             } else {
                 $message = new Message("Argument is a resource which can't be exported");
             }
-            throw new VarIsResourceException(
-                $message->toString()
-            );
+            throw new VarIsResourceException($message);
         }
     }
 

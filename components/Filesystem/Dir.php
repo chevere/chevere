@@ -51,7 +51,6 @@ final class Dir implements DirInterface
                     ->code('%className%', get_class($path))
                     ->code('%tailChar%', '/')
                     ->code('%provided%', $absolute)
-                    ->toString()
             );
         }
     }
@@ -72,7 +71,6 @@ final class Dir implements DirInterface
             throw new DirNotExistsException(
                 (new Message("File %path% doesn't exists"))
                     ->code('%path%', $this->path->absolute())
-                    ->toString()
             );
         }
     }
@@ -86,7 +84,6 @@ final class Dir implements DirInterface
                 (new Message('Unable to create directory %path% %thrown%'))
                     ->code('%path%', $this->path->absolute())
                     ->code('%thrown%', '[' . $e->getMessage() . ']')
-                    ->toString()
             );
         }
     }
@@ -139,7 +136,6 @@ final class Dir implements DirInterface
             throw new PathIsFileException(
                 (new Message('Path %path% is a file'))
                     ->code('%path%', $this->path->absolute())
-                    ->toString()
             );
         }
     }
@@ -153,7 +149,6 @@ final class Dir implements DirInterface
             throw new PathIsNotDirectoryException(
                 (new Message('Path %path% is not a directory'))
                     ->code('%path%', $this->path->absolute())
-                    ->toString()
             );
         }
     }
@@ -167,7 +162,6 @@ final class Dir implements DirInterface
                 (new Message('Unable to remove directory %path% %thrown%'))
                     ->code('%path%', $this->path->absolute())
                     ->code('%thrown%', '[' . $e->getMessage() . ']')
-                    ->toString()
             );
         }
     }

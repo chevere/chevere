@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Regex;
 
+use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Exceptions\RegexException;
 use Chevere\Components\Regex\Interfaces\RegexInterface;
-use Exception;
-use InvalidArgumentException;
 use Throwable;
 
 /**
@@ -53,7 +52,6 @@ final class Regex implements RegexInterface
             throw new RegexException(
                 (new Message('Provided expresion %match% contains capture groups'))
                     ->code('%match%', $this->string)
-                    ->toString()
             );
         }
     }
@@ -77,15 +75,14 @@ final class Regex implements RegexInterface
     {
         try {
             if (preg_match($this->string, '') === false) {
-                throw new Exception;
+                throw new Exception; // @codeCoverageIgnore
             }
         } catch (Throwable $e) {
             throw new RegexException(
                 (new Message('Invalid regex string %regex% provided %error% [%preg%]'))
                     ->code('%regex%', $this->string)
                     ->code('%error%', $e->getMessage())
-                    ->strtr('%preg%', static::ERRORS[preg_last_error()])
-                    ->toString(),
+                    ->strtr('%preg%', static::ERRORS[preg_last_error()]),
                 0,
                 $e
             );

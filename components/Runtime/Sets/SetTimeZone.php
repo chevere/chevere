@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Sets;
 
+use Chevere\Components\Message\Message;
+use Chevere\Components\Runtime\Interfaces\SetInterface;
+use Chevere\Components\Runtime\Traits\SetTrait;
 use InvalidArgumentException;
 use RuntimeException;
-use Chevere\Components\Message\Message;
-use Chevere\Components\Runtime\Traits\SetTrait;
-use Chevere\Components\Runtime\Interfaces\SetInterface;
-use Exception;
-use Throwable;
 
 /**
  * Sets the default timezone

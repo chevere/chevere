@@ -47,7 +47,6 @@ final class RouteEndpointsMaker implements RouteEndpointIteratorInterface
                         ->code('%interfaceName%', RouteDecoratorInterface::class)
                         ->code('%provided%', gettype($routeEndpoint))
                         ->strong('%fileName%', $routeEndpointPath->absolute())
-                        ->toString()
                 );
             }
             $this->routeEndpoints->put($routeEndpoint);

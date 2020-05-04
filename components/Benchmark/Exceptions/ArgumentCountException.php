@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Benchmark\Exceptions;
 
-use ArgumentCountError;
+use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 
 /**
  * Exception thrown when the argument count doesn't match the callable parameters.
  */
-final class ArgumentCountException extends ArgumentCountError
+final class ArgumentCountException extends Exception
 {
 }

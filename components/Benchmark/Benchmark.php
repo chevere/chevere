@@ -15,8 +15,8 @@ namespace Chevere\Components\Benchmark;
 
 use Chevere\Components\Benchmark\Exceptions\ArgumentCountException;
 use Chevere\Components\Benchmark\Exceptions\DuplicatedCallableException;
-use Chevere\Components\Message\Message;
 use Chevere\Components\Benchmark\Interfaces\BenchmarkInterface;
+use Chevere\Components\Message\Message;
 use ReflectionFunction;
 
 /**
@@ -90,7 +90,6 @@ final class Benchmark implements BenchmarkInterface
             throw new DuplicatedCallableException(
                 (new Message('Duplicate callable declaration %name%'))
                     ->code('%name%', $this->callableName)
-                    ->toString()
             );
         }
     }
@@ -105,7 +104,6 @@ final class Benchmark implements BenchmarkInterface
                     ->code('%argumentsCount%', (string) $this->argumentsCount)
                     ->code('%parametersCount%', (string) $parametersCount)
                     ->code('%callableName%', $this->callableName)
-                    ->toString()
             );
         }
     }

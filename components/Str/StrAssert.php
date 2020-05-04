@@ -53,7 +53,6 @@ final class StrAssert implements StrAssertInterface
         throw new StrNotEmptyException(
             (new Message('String %string% is not empty'))
                 ->code('%string%', $this->string)
-                ->toString()
         );
     }
 
@@ -65,7 +64,6 @@ final class StrAssert implements StrAssertInterface
         if ((new StrBool($this->string))->empty()) {
             throw new StrEmptyException(
                 (new Message('String is empty'))
-                    ->toString()
             );
         }
 
@@ -84,7 +82,6 @@ final class StrAssert implements StrAssertInterface
             (new Message('String %string% is not %algo%'))
                 ->code('%string%', $this->string)
                 ->strong('%algo%', 'ctype space')
-                ->toString()
         );
     }
 
@@ -97,7 +94,6 @@ final class StrAssert implements StrAssertInterface
             throw new StrCtypeSpaceException(
                 (new Message('String %algo% provided'))
                     ->strong('%algo%', 'ctype space')
-                    ->toString()
             );
         }
 
@@ -116,7 +112,6 @@ final class StrAssert implements StrAssertInterface
             (new Message('String %string% is not %algo%'))
                 ->code('%string%', $this->string)
                 ->strong('%algo%', 'ctype digit')
-                ->toString()
         );
     }
 
@@ -129,7 +124,6 @@ final class StrAssert implements StrAssertInterface
             throw new StrCtypeDigitException(
                 (new Message('String %algo% provided'))
                     ->strong('%algo%', 'ctype digit')
-                    ->toString()
             );
         }
 
@@ -148,7 +142,6 @@ final class StrAssert implements StrAssertInterface
             (new Message('String %string% does not starts with a %algo% character'))
                 ->code('%string%', $this->string)
                 ->strong('%algo%', 'ctype digit')
-                ->toString()
         );
     }
 
@@ -162,7 +155,6 @@ final class StrAssert implements StrAssertInterface
                 (new Message('String %string% starts with a %algo% character'))
                     ->code('%string%', $this->string)
                     ->strong('%algo%', 'ctype digit')
-                    ->toString()
             );
         }
 
@@ -181,7 +173,6 @@ final class StrAssert implements StrAssertInterface
             (new Message('String %string% does not starts with %needle%'))
                 ->code('%string%', $this->string)
                 ->code('%needle%', $needle)
-                ->toString()
         );
     }
 
@@ -195,7 +186,6 @@ final class StrAssert implements StrAssertInterface
                 (new Message('String %string% starts with %needle%'))
                     ->code('%string%', $this->string)
                     ->code('%needle%', $needle)
-                    ->toString()
             );
         }
 
@@ -214,7 +204,6 @@ final class StrAssert implements StrAssertInterface
             (new Message('String %string% does not ends with %needle%'))
                 ->code('%string%', $this->string)
                 ->code('%needle%', $needle)
-                ->toString()
         );
     }
 
@@ -228,7 +217,6 @@ final class StrAssert implements StrAssertInterface
                 (new Message('String %string% ends with %needle%'))
                     ->code('%string%', $this->string)
                     ->code('%needle%', $needle)
-                    ->toString()
             );
         }
 
@@ -247,7 +235,6 @@ final class StrAssert implements StrAssertInterface
             (new Message('Provided string %provided% is not the same as %string%'))
                 ->code('%provided%', $string)
                 ->code('%string%', $this->string)
-                ->toString()
         );
     }
 
@@ -261,7 +248,6 @@ final class StrAssert implements StrAssertInterface
                 (new Message('Provided string %provided% is the same as %string%'))
                     ->code('%provided%', $string)
                     ->code('%string%', $this->string)
-                    ->toString()
             );
         }
 
@@ -280,7 +266,6 @@ final class StrAssert implements StrAssertInterface
             (new Message('String %string% not contains %provided%'))
                 ->code('%provided%', $string)
                 ->code('%string%', $this->string)
-                ->toString()
         );
     }
 
@@ -294,7 +279,6 @@ final class StrAssert implements StrAssertInterface
                 (new Message('String %string% contains %provided%'))
                     ->code('%provided%', $string)
                     ->code('%string%', $this->string)
-                    ->toString()
             );
         }
 
