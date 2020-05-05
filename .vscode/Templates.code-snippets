@@ -83,7 +83,7 @@
     "docblock-construct": {
         "description": "inserts a docblock construct",
         "prefix": "docblock-construct",
-        "body": ["/**", " * Creates a new instance.", " */"]
+        "body": ["/**", " * Does?", " */"]
     },
     "docblock-inherith": {
         "description": "inserts a docblock @inherith",

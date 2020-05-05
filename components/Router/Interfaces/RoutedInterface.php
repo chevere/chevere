@@ -15,6 +15,9 @@ namespace Chevere\Components\Router\Interfaces;
 
 use Chevere\Components\Route\Interfaces\RouteNameInterface;
 
+/**
+ * Describes name (RouteNameInterface) and arguments for a resolved route.
+ */
 interface RoutedInterface
 {
     public function __construct(RouteNameInterface $routeName, array $wildcards);
@@ -22,7 +25,7 @@ interface RoutedInterface
     public function name(): RouteNameInterface;
 
     /**
-     * @return array [wildcardName => matchedValue]
+     * @return array [wildcardName => resolvedValue]
      */
     public function arguments(): array;
 }

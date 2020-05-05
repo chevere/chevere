@@ -18,6 +18,10 @@ use Chevere\Components\Regex\Interfaces\RegexInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 use InvalidArgumentException;
 
+/**
+ * Provides the regex string to match routing.
+ */
+//
 final class RouterRegex implements RouterRegexInterface
 {
     private RegexInterface $regex;

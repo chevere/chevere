@@ -126,7 +126,7 @@ final class Loader implements LoaderInterface
         if (BootstrapInstance::get()->hasConsole() && BootstrapInstance::get()->console()->isBuilding()) {
             return (new Services())
                 ->withApi(new Api())
-                ->withRouter(new Router());
+                ->withRouter(new Router);
         }
         try {
             return (new ServicesBuilder($this->builder->build(), $this->parameters))

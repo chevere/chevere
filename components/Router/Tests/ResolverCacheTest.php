@@ -18,8 +18,8 @@ use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
 use Chevere\Components\Router\Exceptions\RouteCacheTypeException;
-use Chevere\Components\Router\ResolverCache;
 use Chevere\Components\Router\RouteResolve;
+use Chevere\Components\Router\RouteResolvesCache;
 use PHPUnit\Framework\TestCase;
 
 final class ResolverCacheTest extends TestCase
@@ -45,7 +45,7 @@ final class ResolverCacheTest extends TestCase
 
     public function testEmptyCache(): void
     {
-        $resolverCache = new ResolverCache($this->cacheHelper->getEmptyCache());
+        $resolverCache = new RouteResolvesCache($this->cacheHelper->getEmptyCache());
         /** @var int $id */
         $keys = array_keys($this->routes);
         foreach ($keys as $id) {
@@ -58,7 +58,7 @@ final class ResolverCacheTest extends TestCase
 
     public function testWorkingCache(): void
     {
-        $resolverCache = new ResolverCache($this->cacheHelper->getWorkingCache());
+        $resolverCache = new RouteResolvesCache($this->cacheHelper->getWorkingCache());
         /**
          * @var int $pos
          * @var Route $route
@@ -81,7 +81,7 @@ final class ResolverCacheTest extends TestCase
 
     public function testCachedCache(): void
     {
-        $resolverCache = new ResolverCache($this->cacheHelper->getCachedCache());
+        $resolverCache = new RouteResolvesCache($this->cacheHelper->getCachedCache());
         /**
          * @var int $pos
          * @var Route $route
@@ -99,7 +99,7 @@ final class ResolverCacheTest extends TestCase
     public function testWrongCachedCache(): void
     {
         $pos = 0;
-        $resolverCache = new ResolverCache($this->cacheHelper->getWrongCache());
+        $resolverCache = new RouteResolvesCache($this->cacheHelper->getWrongCache());
         $this->assertTrue($resolverCache->has($pos));
         $this->expectException(RouteCacheTypeException::class);
         $resolverCache->get($pos);
@@ -108,7 +108,7 @@ final class ResolverCacheTest extends TestCase
     public function _testGenerateCached(): void
     {
         $this->expectNotToPerformAssertions();
-        $resolverCache = new ResolverCache($this->cacheHelper->getCachedCache());
+        $resolverCache = new RouteResolvesCache($this->cacheHelper->getCachedCache());
         /**
          * @var int $pos
          * @var Route $route

@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Router\Interfaces;
 
 use Chevere\Components\Cache\Interfaces\CacheInterface;
-use Chevere\Components\Router\ResolverCache;
 use Chevere\Components\Router\RouteResolve;
 
-interface ResolverCacheInterface
+interface RouteResolvesCacheInterface
 {
     public function __construct(CacheInterface $cache);
 

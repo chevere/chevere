@@ -52,7 +52,7 @@ final class RouterTest extends TestCase
     public function testWithRegex(): void
     {
         $regex = new RouterRegex(new Regex('#^(?|/test (*:0))$#x'));
-        $router = (new Router())->withRegex($regex);
+        $router = (new Router)->withRegex($regex);
         $this->assertTrue($router->hasRegex());
         $this->assertSame($regex, $router->regex());
     }

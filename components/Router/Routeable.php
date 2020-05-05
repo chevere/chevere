@@ -15,24 +15,17 @@ namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteInterface;
-use Chevere\Components\Router\Exceptions\RouteableException;
 use Chevere\Components\Router\Exceptions\RouteNotRouteableException;
+use Chevere\Components\Router\Exceptions\RouteWithoutEndpointsException;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
 use Chevere\Components\VarExportable\VarExportable;
 use Throwable;
 
-/**
- * Determines if a RouteInterface is able to be routed.
- */
+//
 final class Routeable implements RouteableInterface
 {
     private RouteInterface $route;
 
-    /**
-     * Creates a new instance.
-     *
-     * @throws RouteableException if $route is not routeable
-     */
     public function __construct(RouteInterface $route)
     {
         $this->route = $route;
@@ -45,6 +38,10 @@ final class Routeable implements RouteableInterface
         return $this->route;
     }
 
+    /**
+     *
+     * @throws RouteNotRouteableException
+     */
     private function assertExportable(): void
     {
         try {
@@ -60,8 +57,8 @@ final class Routeable implements RouteableInterface
     private function assertMethodControllers(): void
     {
         if ($this->route->endpoints()->count() == 0) {
-            throw new RouteableException(
-                (new Message("Instance of %className% doesn't contain any method controller"))
+            throw new RouteWithoutEndpointsException(
+                (new Message("Instance of %className% doesn't contain any endpoint"))
                     ->code('%className%', RouteInterface::class)
             );
         }

@@ -22,9 +22,7 @@ use Chevere\Components\Router\Interfaces\RouteIdentifierInterface;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\RouterIndex;
 use Chevere\TestApp\App\Controllers\TestController;
-use InvalidArgumentException;
 use LogicException;
-use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
 final class RouterIndexTest extends TestCase

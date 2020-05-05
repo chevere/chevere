@@ -33,9 +33,6 @@ final class VarExportable implements VarExportableInterface
     private BreadcrumInterface $breadcrum;
 
     /**
-     * Creates a new instance.
-     *
-     * @psalm-suppress PossiblyInvalidArgument
      * @throws VarIsResourceException if $var contains resource
      */
     public function __construct($var)

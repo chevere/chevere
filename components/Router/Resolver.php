@@ -16,26 +16,27 @@ namespace Chevere\Components\Router;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
-use Chevere\Components\Router\Interfaces\ResolverCacheInterface;
 use Chevere\Components\Router\Interfaces\ResolverInterface;
 use Chevere\Components\Router\Interfaces\RoutedInterface;
+use Chevere\Components\Router\Interfaces\RouteResolvesCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 use OutOfBoundsException;
 use Psr\Http\Message\UriInterface;
 use Throwable;
 
+//
 final class Resolver implements ResolverInterface
 {
     private RouterRegexInterface $routerRegex;
 
-    private ResolverCacheInterface $resolverCache;
+    private RouteResolvesCacheInterface $resolverCache;
 
     public function __construct(
         RouterRegexInterface $routerRegex,
-        ResolverCacheInterface $resolverCache
+        RouteResolvesCacheInterface $routeResolveCache
     ) {
         $this->routerRegex = $routerRegex;
-        $this->resolverCache = $resolverCache;
+        $this->resolverCache = $routeResolveCache;
     }
 
     /**
@@ -77,14 +78,12 @@ final class Resolver implements ResolverInterface
             );
         }
         $routeResolve = $this->getRouteResolve($idInt);
-        $name = $routeResolve->name();
-        $wildcards = $routeResolve->wildcards();
         $arguments = [];
         foreach ($matches as $pos => $val) {
-            $arguments[$wildcards->getPos($pos)->name()] = $val;
+            $arguments[$routeResolve->wildcards()->getPos($pos)->name()] = $val;
         }
 
-        return new Routed($name, $arguments);
+        return new Routed($routeResolve->name(), $arguments);
     }
 
     private function getRouteResolve(int $id): RouteResolve

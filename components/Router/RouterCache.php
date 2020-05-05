@@ -34,7 +34,7 @@ final class RouterCache implements RouterCacheInterface
 
     private RoutesCacheInterface $routesCache;
 
-    private ResolverCache $resolverCache;
+    private RouteResolvesCache $routeResolvesCache;
 
     private CacheKeyInterface $keyRegex;
 
@@ -44,7 +44,9 @@ final class RouterCache implements RouterCacheInterface
     {
         $this->cache = $cache;
         $this->routesCache = new RoutesCache($this->cache->getChild('routes/'));
-        $this->resolverCache = new ResolverCache($this->cache->getChild('resolve/'));
+        $this->routeResolvesCache = new RouteResolvesCache(
+            $this->cache->getChild('resolve/')
+        );
         $this->keyRegex = new CacheKey(self::KEY_REGEX);
         $this->keyIndex = new CacheKey(self::KEY_INDEX);
     }
@@ -54,9 +56,9 @@ final class RouterCache implements RouterCacheInterface
         return $this->routesCache;
     }
 
-    public function resolverCache(): ResolverCache
+    public function resolverCache(): RouteResolvesCache
     {
-        return $this->resolverCache;
+        return $this->routeResolvesCache;
     }
 
     public function hasRegex(): bool
@@ -102,7 +104,7 @@ final class RouterCache implements RouterCacheInterface
             $route = $routeable->route();
             $pos++;
             $this->routesCache->put($route);
-            $this->resolverCache->put(
+            $this->routeResolvesCache->put(
                 $pos,
                 new RouteResolve(
                     $route->name(),

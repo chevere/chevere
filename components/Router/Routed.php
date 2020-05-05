@@ -16,6 +16,7 @@ namespace Chevere\Components\Router;
 use Chevere\Components\Route\Interfaces\RouteNameInterface;
 use Chevere\Components\Router\Interfaces\RoutedInterface;
 
+//
 final class Routed implements RoutedInterface
 {
     private RouteNameInterface $name;

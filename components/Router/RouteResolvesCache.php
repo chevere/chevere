@@ -18,13 +18,13 @@ use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
 use Chevere\Components\Router\Exceptions\RouteCacheTypeException;
-use Chevere\Components\Router\Interfaces\ResolverCacheInterface;
 use Chevere\Components\Router\Interfaces\RouteableInterface;
+use Chevere\Components\Router\Interfaces\RouteResolvesCacheInterface;
 use Chevere\Components\Type\Type;
 use Chevere\Components\VarExportable\VarExportable;
 use Throwable;
 
-final class ResolverCache implements ResolverCacheInterface
+final class RouteResolvesCache implements RouteResolvesCacheInterface
 {
     private CacheInterface $cache;
 

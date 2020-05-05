@@ -19,14 +19,14 @@ use Chevere\Components\App\Builder;
 use Chevere\Components\App\Exceptions\RequestRequiredException;
 use Chevere\Components\App\Exceptions\RouterCantResolveException;
 use Chevere\Components\App\Exceptions\RouterRequiredException;
+use Chevere\Components\App\Interfaces\AppInterface;
 use Chevere\Components\App\Resolvable;
 use Chevere\Components\App\Services;
+use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
-use Chevere\Components\Router\Router;
-use Chevere\Components\App\Interfaces\AppInterface;
-use Chevere\Components\Http\Method;
 use Chevere\Components\Route\RoutePath;
+use Chevere\Components\Router\Router;
 use PHPUnit\Framework\TestCase;
 
 final class ResolvableTest extends TestCase
@@ -87,7 +87,7 @@ final class ResolvableTest extends TestCase
     //                     ->withServices(
     //                         (new Services())
     //                             ->withRouter(
-    //                                 new Router()
+    //                                 new Router
     //                             )
     //                     )
     //             )
@@ -99,7 +99,7 @@ final class ResolvableTest extends TestCase
     // {
     //     $properties = (new RouterProperties())
     //         ->withRegex('*');
-    //     $router = (new Router())
+    //     $router = (new Router)
     //         ->withProperties($properties)
     //         ->withRegex()
     //         ->withIndex()

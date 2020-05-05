@@ -31,10 +31,10 @@ use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 use Chevere\Components\Router\Resolver;
-use Chevere\Components\Router\ResolverCache;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Router\Routed;
 use Chevere\Components\Router\RouteResolve;
+use Chevere\Components\Router\RouteResolvesCache;
 use Chevere\Components\Router\RouterMaker;
 use Laminas\Diactoros\Uri;
 use PHPUnit\Framework\TestCase;
@@ -84,7 +84,7 @@ final class ResolverTest extends TestCase
     {
         $resolver = new Resolver(
             $this->routerRegex,
-            new ResolverCache($this->cacheHelper->getEmptyCache())
+            new RouteResolvesCache($this->cacheHelper->getEmptyCache())
         );
         $this->expectException(RouteNotFoundException::class);
         $resolver->resolve(new Uri('/404'));
@@ -94,7 +94,7 @@ final class ResolverTest extends TestCase
     {
         $resolver = new Resolver(
             $this->routerRegex,
-            new ResolverCache($this->cacheHelper->getEmptyCache())
+            new RouteResolvesCache($this->cacheHelper->getEmptyCache())
         );
         $this->expectException(RouterException::class);
         $resolver->resolve(new Uri('/test'));
@@ -104,7 +104,7 @@ final class ResolverTest extends TestCase
     {
         $resolver = new Resolver(
             $this->routerRegex,
-            new ResolverCache($this->cacheHelper->getCachedCache())
+            new RouteResolvesCache($this->cacheHelper->getCachedCache())
         );
         $uris = [
             new Uri('/test'),
@@ -131,7 +131,7 @@ final class ResolverTest extends TestCase
     public function _testGenerateCached(): void
     {
         $this->expectNotToPerformAssertions();
-        $resolverCache = new ResolverCache($this->cacheHelper->getCachedCache());
+        $resolverCache = new RouteResolvesCache($this->cacheHelper->getCachedCache());
         /**
          * @var int $pos
          * @var RouteResolve $routeResolve

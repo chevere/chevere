@@ -16,8 +16,8 @@ namespace Chevere\Components\Router\Exceptions;
 use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 
 /**
- * Exception thrown by the RouteableInterface.
+ * Exception thrown when the route doesn't have any endpoint.
  */
-final class RouteableException extends Exception
+final class RouteWithoutEndpointsException extends Exception
 {
 }

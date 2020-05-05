@@ -35,11 +35,6 @@ final class RouteDecoratorIterator implements RoutePathIteratorInterface
 
     private DecoratedRoutes $decoratedRoutes;
 
-    /**
-     * Iterates the target dir for files matching RouteDecorator.php
-     *
-     * It generates a collection of RouthePathInterface instances.
-     */
     public function __construct(DirInterface $dir)
     {
         $this->directoryIterator = new RecursiveDirectoryIterator(
