@@ -15,6 +15,12 @@ namespace Chevere\Components\Route\Interfaces;
 
 use Chevere\Components\Common\Interfaces\ToStringInterface;
 use Chevere\Components\Regex\Interfaces\RegexInterface;
+use Chevere\Components\Route\Exceptions\RoutePathForwardSlashException;
+use Chevere\Components\Route\Exceptions\RoutePathInvalidCharsException;
+use Chevere\Components\Route\Exceptions\RoutePathUnmatchedBracesException;
+use Chevere\Components\Route\Exceptions\RoutePathUnmatchedWildcardsException;
+use Chevere\Components\Route\Exceptions\RouteWildcardRepeatException;
+use Chevere\Components\Route\Exceptions\RouteWildcardReservedException;
 
 interface RoutePathInterface extends ToStringInterface
 {
@@ -31,6 +37,16 @@ interface RoutePathInterface extends ToStringInterface
         ' ' => 'whitespace',
     ];
 
+    /**
+     * @param string $path a path uri like `/path/{wildcard}`
+     *
+     * @throws RoutePathForwardSlashException       if $path doesn't start with forward slash
+     * @throws RoutePathInvalidCharsException       if $path contains invalid chars
+     * @throws RoutePathUnmatchedBracesException    if $path contains unmatched braces (must be paired)
+     * @throws RoutePathUnmatchedWildcardsException if $path contains wildcards that don't match the number of braces
+     * @throws RouteWildcardReservedException          if $path contains reserved wildcards
+     * @throws RouteWildcardRepeatException            if $path contains repeated wildcards
+     */
     public function __construct(string $path);
 
     /**

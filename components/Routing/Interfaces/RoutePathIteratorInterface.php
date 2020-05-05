@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Routing\Interfaces;
 
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
-use Chevere\Components\Routing\RoutePathObjectsRead;
+use Chevere\Components\Routing\DecoratedRoutes;
 
 interface RoutePathIteratorInterface
 {
@@ -22,5 +22,5 @@ interface RoutePathIteratorInterface
 
     public function __construct(DirInterface $dir);
 
-    public function routePathObjects(): RoutePathObjectsRead;
+    public function decoratedRoutes(): DecoratedRoutes;
 }

@@ -16,7 +16,6 @@ namespace Chevere\Components\Route\Interfaces;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
 use Chevere\Components\Route\Exceptions\RouteNameInvalidException;
-use Chevere\Components\Route\RouteEndpoints;
 
 interface RouteInterface
 {
@@ -51,9 +50,9 @@ interface RouteInterface
     public function withAddedEndpoint(RouteEndpointInterface $routeEndpoint): RouteInterface;
 
     /**
-     * Provides access to the RouteEndpointsMap instance.
+     * Provides access to the RouteEndpointsInterface instance.
      */
-    public function endpoints(): RouteEndpoints;
+    public function endpoints(): RouteEndpointsInterface;
 
     /**
      * Return an instance with the specified added MiddlewareNameInterface.

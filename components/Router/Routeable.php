@@ -59,7 +59,7 @@ final class Routeable implements RouteableInterface
 
     private function assertMethodControllers(): void
     {
-        if ($this->route->endpoints()->map()->count() == 0) {
+        if ($this->route->endpoints()->count() == 0) {
             throw new RouteableException(
                 (new Message("Instance of %className% doesn't contain any method controller"))
                     ->code('%className%', RouteInterface::class)

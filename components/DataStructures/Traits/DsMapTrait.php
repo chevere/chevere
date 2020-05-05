@@ -25,6 +25,16 @@ trait DsMapTrait
         $this->map = new Map;
     }
 
+    final public function keys(): array
+    {
+        return $this->map->keys()->toArray();
+    }
+
+    final public function count(): int
+    {
+        return $this->map->count();
+    }
+
     final public function map(): Map
     {
         return deep_copy($this->map);

@@ -16,8 +16,9 @@ namespace Chevere\Components\Route;
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use Chevere\Components\Http\Interfaces\MethodInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
+use Chevere\Components\Route\Interfaces\RouteEndpointsInterface;
 
-final class RouteEndpoints
+final class RouteEndpoints implements RouteEndpointsInterface
 {
     use DsMapTrait;
 
@@ -28,19 +29,18 @@ final class RouteEndpoints
         $this->map->put($key, $routeEndpoint);
     }
 
-    public function hasKey(MethodInterface $method): bool
+    public function hasKey(string $key): bool
     {
         /** @var \Ds\TKey $key */
-        $key = $method->name();
-
         return $this->map->hasKey($key);
     }
 
-    public function get(MethodInterface $method): RouteEndpointInterface
+    public function get(string $key): RouteEndpointInterface
     {
-        /** @var \Ds\TKey $key */
-        $key = $method->name();
-        /** @var RouteEndpointInterface $return */
+        /**
+         * @var \Ds\TKey $key
+         * @var RouteEndpointInterface $return
+         */
         $return = $this->map->get($key);
 
         return $return;

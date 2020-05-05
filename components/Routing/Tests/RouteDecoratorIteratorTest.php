@@ -16,40 +16,34 @@ namespace Chevere\Components\Routing\Tests;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
-use Chevere\Components\Route\Interfaces\RouteNameInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
-use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
-use Chevere\Components\Route\RouteDecorator;
-use Chevere\Components\Route\RouteName;
-use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Routing\Exceptions\ExpectingRouteDecoratorException;
 use Chevere\Components\Routing\Interfaces\RoutePathIteratorInterface;
-use Chevere\Components\Routing\RoutePathIterator;
+use Chevere\Components\Routing\RouteDecoratorIterator;
 use PHPUnit\Framework\TestCase;
 
-final class RoutePathIteratorTest extends TestCase
+final class RouteDecoratorIteratorTest extends TestCase
 {
     public function testObjects(): void
     {
         $dir = new Dir(new Path(__DIR__ . '/_resources/routes/'));
-        $routePathIterator = new RoutePathIterator($dir);
-        $objectStorage = $routePathIterator->routePathObjects();
-        $this->assertCount(2, $objectStorage);
-        $objectStorage->rewind();
-        while ($objectStorage->valid()) {
-            $this->assertStringEndsWith(
-                RoutePathIteratorInterface::ROUTE_DECORATOR_BASENAME,
-                $objectStorage->getInfo()->whereIs()
-            );
+        $iterator = new RouteDecoratorIterator($dir);
+        $decoratedRoutes = $iterator->decoratedRoutes();
+        $this->assertCount(2, $decoratedRoutes);
+        for ($i = 0; $i < $decoratedRoutes->count(); ++$i) {
+            $decoratedRoute = $decoratedRoutes->get($i);
             $this->assertInstanceOf(
                 RoutePathInterface::class,
-                $objectStorage->current()
+                $decoratedRoute->routePath()
             );
             $this->assertInstanceOf(
                 RouteDecoratorInterface::class,
-                $objectStorage->getInfo()
+                $decoratedRoute->routeDecorator()
             );
-            $objectStorage->next();
+            $this->assertStringEndsWith(
+                RoutePathIteratorInterface::ROUTE_DECORATOR_BASENAME,
+                $decoratedRoute->routeDecorator()->whereIs()
+            );
         }
     }
 
@@ -57,6 +51,6 @@ final class RoutePathIteratorTest extends TestCase
     {
         $dir = new Dir(new Path(__DIR__ . '/_resources/wrong-routes/'));
         $this->expectException(ExpectingRouteDecoratorException::class);
-        new RoutePathIterator($dir);
+        new RouteDecoratorIterator($dir);
     }
 }

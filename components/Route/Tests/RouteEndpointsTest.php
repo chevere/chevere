@@ -27,17 +27,18 @@ final class RouteEndpointsTest extends TestCase
         $method = new GetMethod;
         $routeEndpoints = new RouteEndpoints;
         $this->assertCount(0, $routeEndpoints->map());
-        $this->assertFalse($routeEndpoints->hasKey($method));
+        $this->assertFalse($routeEndpoints->hasKey($method->name()));
         $this->expectException(OutOfBoundsException::class);
-        $routeEndpoints->get($method);
+        $routeEndpoints->get($method->name());
     }
 
     public function testPut(): void
     {
         $method = new GetMethod;
+        $routeEndpoint = new RouteEndpoint($method, new TestController);
         $routeEndpoints = new RouteEndpoints;
-        $routeEndpoints->put(new RouteEndpoint($method, new TestController));
-        $this->assertTrue($routeEndpoints->hasKey($method));
-        $this->assertTrue($routeEndpoints->hasKey(new GetMethod));
+        $routeEndpoints->put($routeEndpoint);
+        $this->assertTrue($routeEndpoints->hasKey($method->name()));
+        $this->assertSame($routeEndpoints->get($method->name()), $routeEndpoint);
     }
 }

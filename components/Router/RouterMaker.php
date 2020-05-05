@@ -28,7 +28,7 @@ use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 use Ds\Map;
 
 /**
- * RouterMaker takes a bunch of routes and generates a cache-ready routing table.
+ * RouterMaker takes routeables and generates a Router.
  */
 final class RouterMaker implements RouterMakerInterface
 {
@@ -52,7 +52,7 @@ final class RouterMaker implements RouterMakerInterface
 
     public function __construct()
     {
-        $this->router = (new Router)->withIndex(new RouterIndex);
+        $this->router = new Router;
         $this->routeables = new Routeables;
         $this->paths = new Map;
         $this->keys = new Map;

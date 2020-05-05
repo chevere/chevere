@@ -18,7 +18,7 @@ use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Route\Route;
-use Chevere\Components\Route\RouteEndpoint;
+use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
 use Chevere\Components\Router\Routeable;
 use Chevere\Components\Routing\Interfaces\RoutePathIteratorInterface;
@@ -40,30 +40,31 @@ final class Routing implements RoutingInterface
     ) {
         $this->routePathIterator = $routePathIterator;
         $this->routerMaker = $routerMaker;
-        $routePaths = $this->routePathIterator->routePathObjects();
-        $routePaths->rewind();
-        while ($routePaths->valid()) {
-            $this->routePath = $routePaths->current();
-            $this->routeDecorator = $routePaths->getInfo();
+        $decoratedRoutes = $this->routePathIterator->decoratedRoutes();
+        for ($i = 0; $i < $decoratedRoutes->count(); ++$i) {
+            $decoratedRoute = $decoratedRoutes->get($i);
+            $this->routePath = $decoratedRoute->routePath();
+            $this->routeDecorator = $decoratedRoute->routeDecorator();
             foreach ($this->routeDecorator->wildcards()->toArray() as $routeWildcard) {
                 $this->routePath = $this->routePath->withWildcard($routeWildcard);
             }
             $dir = new Dir(new Path(dirname($this->routeDecorator->whereIs()) . '/'));
-            $routeEndpointsMaker = new RouteEndpointsMaker($dir);
-            $routeEndpoints = $routeEndpointsMaker->routeEndpointsMap();
+            $routeEndpointsMaker = new RouteEndpointsIterator($dir);
+            $routeEndpoints = $routeEndpointsMaker->routeEndpoints();
             $route = new Route($this->routeDecorator->name(), $this->routePath);
-            /** @var RouteEndpoint $routeEndpoint */
-            foreach ($routeEndpoints->map() as $routeEndpoint) {
-                $route = $route->withAddedEndpoint($routeEndpoint);
+            /** @var string $key */
+            foreach ($routeEndpoints->keys() as $key) {
+                $route = $route->withAddedEndpoint(
+                    $routeEndpoints->get($key)
+                );
             }
             $this->routerMaker = $this->routerMaker
-                ->withAddedRouteable(new Routeable($route), 'CAMPOS');
-            $routePaths->next();
+                ->withAddedRouteable(new Routeable($route), 'routing');
         }
     }
 
-    public function routeMaker(): RouterMakerInterface
+    public function router(): RouterInterface
     {
-        return $this->routerMaker;
+        return $this->routerMaker->router();
     }
 }

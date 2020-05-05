@@ -18,6 +18,7 @@ use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
 use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
+use Chevere\Components\Route\Interfaces\RouteEndpointsInterface;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Route\Interfaces\RouteNameInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
@@ -85,9 +86,9 @@ final class Route implements RouteInterface
         return $new;
     }
 
-    public function endpoints(): RouteEndpoints
+    public function endpoints(): RouteEndpointsInterface
     {
-        return deep_copy($this->endpoints);
+        return $this->endpoints;
     }
 
     public function withAddedMiddlewareName(MiddlewareNameInterface $middlewareName): RouteInterface

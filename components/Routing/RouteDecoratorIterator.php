@@ -28,16 +28,17 @@ use Chevere\Components\Type\Type;
 use RecursiveDirectoryIterator;
 use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
-use SplObjectStorage;
 
-final class RoutePathIterator implements RoutePathIteratorInterface
+final class RouteDecoratorIterator implements RoutePathIteratorInterface
 {
     private RecursiveIteratorIterator $recursiveIterator;
 
-    private SplObjectStorage $objects;
+    private DecoratedRoutes $decoratedRoutes;
 
     /**
-     * Iterates over the target dir for files matching RouteName.php
+     * Iterates the target dir for files matching RouteDecorator.php
+     *
+     * It generates a collection of RouthePathInterface instances.
      */
     public function __construct(DirInterface $dir)
     {
@@ -47,7 +48,7 @@ final class RoutePathIterator implements RoutePathIteratorInterface
             | RecursiveDirectoryIterator::KEY_AS_PATHNAME
         );
         $this->recursiveIterator = new RecursiveIteratorIterator($this->recursiveFilterIterator());
-        $this->objects = new SplObjectStorage;
+        $this->decoratedRoutes = new DecoratedRoutes;
         $this->recursiveIterator->rewind();
         while ($this->recursiveIterator->valid()) {
             $pathName = $this->recursiveIterator->current()->getPathName();
@@ -65,17 +66,19 @@ final class RoutePathIterator implements RoutePathIteratorInterface
                     ''
                 )
                 ->toString();
-            $this->objects->attach(
-                new RoutePath($routePath),
-                $routeDecorator
+            $this->decoratedRoutes = $this->decoratedRoutes->withAdd(
+                new DecoratedRoute(
+                    new RoutePath($routePath),
+                    $routeDecorator
+                )
             );
             $this->recursiveIterator->next();
         }
     }
 
-    public function routePathObjects(): RoutePathObjectsRead
+    public function decoratedRoutes(): DecoratedRoutes
     {
-        return new RoutePathObjectsRead($this->objects);
+        return $this->decoratedRoutes;
     }
 
     private function getVar(string $pathName)
@@ -95,7 +98,7 @@ final class RoutePathIterator implements RoutePathIteratorInterface
                     return true;
                 }
 
-                return $this->current()->getFilename() === RoutePathIterator::ROUTE_DECORATOR_BASENAME;
+                return $this->current()->getFilename() === RouteDecoratorIterator::ROUTE_DECORATOR_BASENAME;
             }
         };
     }

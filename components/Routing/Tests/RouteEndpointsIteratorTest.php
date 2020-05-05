@@ -17,22 +17,22 @@ use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use Chevere\Components\Routing\Exceptions\ExpectingRouteDecoratorException;
-use Chevere\Components\Routing\RouteEndpointsMaker;
+use Chevere\Components\Routing\RouteEndpointsIterator;
 use PHPUnit\Framework\TestCase;
 
-final class RouteEndpointsTest extends TestCase
+final class RouteEndpointsIteratorTest extends TestCase
 {
     public function testObjects(): void
     {
         $dir = new Dir(new Path(__DIR__ . '/_resources/routes/articles/{id}/'));
-        $endpointIterator = new RouteEndpointsMaker($dir);
-        $routeEndpoints = $endpointIterator->routeEndpointsMap();
-        $this->assertCount(1, $routeEndpoints->map());
-        /** @var RouteEndpoint $routeEndpoint */
-        foreach ($routeEndpoints->map() as $routeEndpoint) {
+        $endpointIterator = new RouteEndpointsIterator($dir);
+        $routeEndpoints = $endpointIterator->routeEndpoints();
+        $this->assertCount(1, $routeEndpoints);
+        /** @var string $key */
+        foreach ($routeEndpoints->keys() as $key) {
             $this->assertInstanceOf(
                 RouteEndpointInterface::class,
-                $routeEndpoint
+                $routeEndpoints->get($key)
             );
         }
     }
@@ -41,6 +41,6 @@ final class RouteEndpointsTest extends TestCase
     {
         $dir = new Dir(new Path(__DIR__ . '/_resources/wrong-routes/articles/'));
         $this->expectException(ExpectingRouteDecoratorException::class);
-        new RouteEndpointsMaker($dir);
+        new RouteEndpointsIterator($dir);
     }
 }

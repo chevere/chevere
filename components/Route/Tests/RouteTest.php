@@ -59,8 +59,8 @@ final class RouteTest extends TestCase
         $controller = new RouteTestController;
         $endpoint = new RouteEndpoint($method, $controller);
         $route = $route->withAddedEndpoint($endpoint);
-        $this->assertTrue($route->endpoints()->hasKey($method));
-        $this->assertSame($endpoint, $route->endpoints()->get($method));
+        $this->assertTrue($route->endpoints()->hasKey($method->name()));
+        $this->assertSame($endpoint, $route->endpoints()->get($method->name()));
     }
 
     public function testWithEndpointWrongWildcard(): void
@@ -90,10 +90,10 @@ final class RouteTest extends TestCase
         $controller = new RouteTestController;
         $endpoint = new RouteEndpoint($method, $controller);
         $route = $route->withAddedEndpoint($endpoint);
-        $this->assertTrue($route->endpoints()->hasKey($method));
+        $this->assertTrue($route->endpoints()->hasKey($method->name()));
         $this->assertSame(
             [],
-            $route->endpoints()->get($method)->parameters()
+            $route->endpoints()->get($method->name())->parameters()
         );
     }
 

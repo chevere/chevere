@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing\Interfaces;
 
+use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
 
 interface RoutingInterface
@@ -22,5 +23,5 @@ interface RoutingInterface
         RouterMakerInterface $routerMaker
     );
 
-    public function routeMaker(): RouterMakerInterface;
+    public function router(): RouterInterface;
 }

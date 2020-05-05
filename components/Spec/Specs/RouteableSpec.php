@@ -49,11 +49,11 @@ final class RouteableSpec implements SpecInterface
         $this->regex = $routeable->route()->path()->regex()->toNoDelimiters();
         $this->wildcards = $routeable->route()->path()->wildcards()->toArray();
         $routeEndpoints = $routeable->route()->endpoints();
-        /** @var RouteEndpointInterface $routeEndpoint */
-        foreach ($routeEndpoints->map() as $routeEndpoint) {
+        /** @var string $key */
+        foreach ($routeEndpoints->keys() as $key) {
             $routeEndpointSpec = new RouteEndpointSpec(
                 $specGroupRoute,
-                $routeEndpoint
+                $routeEndpoints->get($key)
             );
             $this->routeEndpointSpecs = $this->routeEndpointSpecs
                 ->withPut($routeEndpointSpec);
