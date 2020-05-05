@@ -15,8 +15,12 @@ namespace Chevere\Components\Routing;
 
 use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
+use Chevere\Components\Routing\Interfaces\DecoratedRouteInterface;
 
-final class DecoratedRoute
+/**
+ * @codeCoverageIgnore
+ */
+final class DecoratedRoute implements DecoratedRouteInterface
 {
     private RoutePathInterface $path;
 

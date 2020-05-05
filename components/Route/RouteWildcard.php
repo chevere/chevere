@@ -73,8 +73,7 @@ final class RouteWildcard implements RouteWildcardInterface
 
     public function assertRoutePath(RoutePathInterface $routePath): void
     {
-        $noWildcard = false === strpos($routePath->toString(), $this->string);
-        if ($noWildcard) {
+        if (strpos($routePath->toString(), $this->string) === false) {
             throw new RouteWildcardNotFoundException(
                 (new Message("Wildcard %wildcard% doesn't exists in route path %path%"))
                     ->code('%wildcard%', $this->string)

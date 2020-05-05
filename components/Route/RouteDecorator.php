@@ -19,6 +19,9 @@ use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
 use Chevere\Components\Route\RouteWildcards;
 use ReflectionClass;
 
+/**
+ * @codeCoverageIgnore
+ */
 abstract class RouteDecorator implements RouteDecoratorInterface
 {
     /** @var string Absolute path to the decorator file */
@@ -28,7 +31,7 @@ abstract class RouteDecorator implements RouteDecoratorInterface
 
     public function wildcards(): RouteWildcardsInterface
     {
-        return new RouteWildcards; // @codeCoverageIgnore
+        return new RouteWildcards;
     }
 
     final public function whereIs(): string

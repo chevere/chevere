@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
 use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
+use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
 
 final class RouteWildcards implements RouteWildcardsInterface
 {
@@ -24,13 +24,10 @@ final class RouteWildcards implements RouteWildcardsInterface
     /** @param array ['METHOD' => key,]*/
     private array $index;
 
-    public function __construct(RouteWildcardInterface ...$wildcards)
+    public function __construct()
     {
         $this->array = [];
         $this->index = [];
-        foreach ($wildcards as $wildcard) {
-            $this->addWildcard($wildcard);
-        }
     }
 
     public function withAddedWildcard(RouteWildcardInterface $routeWildcard): RouteWildcardsInterface

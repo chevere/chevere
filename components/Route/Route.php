@@ -22,10 +22,8 @@ use Chevere\Components\Route\Interfaces\RouteEndpointsInterface;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Route\Interfaces\RouteNameInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
-use Chevere\Components\Router\Exceptions\RouterException;
 use LogicException;
 use OutOfBoundsException;
-use function DeepCopy\deep_copy;
 
 final class Route implements RouteInterface
 {

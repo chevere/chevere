@@ -45,7 +45,7 @@ final class RouterMaker implements RouterMakerInterface
     /** @var Map [<string>name => <int>id] */
     private Map $regexIndex;
 
-    /** @var Map [(<int>id => [<string>regex,]] */
+    /** @var Map [<int>id => [<string>regex,]] */
     private Map $regexes;
 
     private int $pos = -1;

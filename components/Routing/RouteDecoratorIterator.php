@@ -61,7 +61,7 @@ final class RouteDecoratorIterator implements RoutePathIteratorInterface
                     ''
                 )
                 ->toString();
-            $this->decoratedRoutes = $this->decoratedRoutes->withAdd(
+            $this->decoratedRoutes = $this->decoratedRoutes->withDecorated(
                 new DecoratedRoute(
                     new RoutePath($routePath),
                     $routeDecorator

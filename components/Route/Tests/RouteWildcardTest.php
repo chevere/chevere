@@ -59,14 +59,14 @@ final class RouteWildcardTest extends TestCase
     public function testAssertPathWildcardNotExists(): void
     {
         $this->expectException(RouteWildcardNotFoundException::class);
-        (new RouteWildcard('test'))
-            ->assertRoutePath(new RoutePath('/'));
+        $routeWildcard = new RouteWildcard('test');
+        $routeWildcard->assertRoutePath(new RoutePath('/'));
     }
 
     public function testAssertPath(): void
     {
+        $routeWildcard = new RouteWildcard('test');
         $this->expectNotToPerformAssertions();
-        (new RouteWildcard('test'))
-            ->assertRoutePath(new RoutePath('/{test}'));
+        $routeWildcard->assertRoutePath(new RoutePath('/{test}'));
     }
 }

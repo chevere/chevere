@@ -20,7 +20,7 @@ use Chevere\Components\Common\Interfaces\ToArrayInterface;
  */
 interface RouteWildcardsInterface extends ToArrayInterface
 {
-    public function __construct(RouteWildcardInterface ...$wildcards);
+    public function __construct();
 
     /**
      * Return an instance with the specified WildcardInterface.

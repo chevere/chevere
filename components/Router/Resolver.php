@@ -29,14 +29,14 @@ final class Resolver implements ResolverInterface
 {
     private RouterRegexInterface $routerRegex;
 
-    private RouteResolvesCacheInterface $resolverCache;
+    private RouteResolvesCacheInterface $routeResolvesCache;
 
     public function __construct(
         RouterRegexInterface $routerRegex,
-        RouteResolvesCacheInterface $routeResolveCache
+        RouteResolvesCacheInterface $routeResolvesCache
     ) {
         $this->routerRegex = $routerRegex;
-        $this->resolverCache = $routeResolveCache;
+        $this->routeResolvesCache = $routeResolvesCache;
     }
 
     /**
@@ -70,7 +70,7 @@ final class Resolver implements ResolverInterface
         $idInt = (int) $idString;
         unset($matches['MARK']);
         array_shift($matches);
-        if (!$this->resolverCache->has($idInt)) {
+        if (!$this->routeResolvesCache->has($idInt)) {
             throw new OutOfBoundsException(
                 (new Message('No cache for regex tag id %id%'))
                     ->code('%id%', $idString)
@@ -88,6 +88,6 @@ final class Resolver implements ResolverInterface
 
     private function getRouteResolve(int $id): RouteResolve
     {
-        return $this->resolverCache->get($id);
+        return $this->routeResolvesCache->get($id);
     }
 }

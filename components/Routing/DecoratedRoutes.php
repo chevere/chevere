@@ -15,57 +15,58 @@ namespace Chevere\Components\Routing;
 
 use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 use Chevere\Components\Message\Message;
-use Countable;
+use Chevere\Components\Routing\Exceptions\DecoratedRouteAlreadyAddedException;
+use Chevere\Components\Routing\Exceptions\RouteDecoratorFileAlreadyAddedException;
+use Chevere\Components\Routing\Exceptions\RouteNameAlreadyAddedException;
+use Chevere\Components\Routing\Exceptions\RoutePathAlreadyAddedException;
+use Chevere\Components\Routing\Exceptions\RouteRegexAlreadyAddedException;
+use Chevere\Components\Routing\Interfaces\DecoratedRouteInterface;
+use Chevere\Components\Routing\Interfaces\DecoratedRoutesInterface;
 use Ds\Set;
-use function DeepCopy\deep_copy;
+use OutOfRangeException;
 
-final class DecoratedRoutes implements Countable
+final class DecoratedRoutes implements DecoratedRoutesInterface
 {
     private Set $set;
 
-    private Set $routesPath;
+    private array $routesPath = [];
 
-    private Set $routesPathRegex;
+    private array $routesName = [];
 
-    private Set $decoratorFiles;
+    private array $routesPathRegex = [];
+
+    private array $decoratorFiles = [];
+
+    private int $pos = -1;
 
     public function __construct()
     {
         $this->set = new Set;
-        $this->routesPath = new Set;
-        $this->routesPathRegex = new Set;
-        $this->decoratorFiles = new Set;
     }
 
-    public function withAdd(DecoratedRoute $decoratedRoute): DecoratedRoutes
+    public function withDecorated(DecoratedRouteInterface $decoratedRoute): DecoratedRoutesInterface
     {
         if ($this->set->contains($decoratedRoute)) {
-            throw new Exception(
-                new Message('Instance of object %insterface% has been already added')
+            throw new DecoratedRouteAlreadyAddedException(
+                (new Message('Instance of object %object% has been already added'))
+                    ->code('%object%', get_class($decoratedRoute) . '#' . spl_object_id($decoratedRoute))
             );
         }
-        $routePathString = $decoratedRoute->routePath()->toString();
-        $routePathRegexString = $decoratedRoute->routePath()->regex()->toString();
-        $decoratorFile = $decoratedRoute->routeDecorator()->whereIs();
-        if ($this->routesPath->contains($routePathString)) {
-            throw new Exception(
-                (new Message('Route path %path% has been already added'))
-                    ->code('%path%', $routePathString)
-            );
-        }
-        if ($this->routesPathRegex->contains($routePathRegexString)) {
-            throw new Exception(
-                new Message('Route regex conflict detected, regex %regex% is already registered')
-            );
-        }
-
-        if ($this->decoratorFiles->contains($routePathString)) {
-        }
-
         $new = clone $this;
+        $new->decoratedRoute = $decoratedRoute;
+        $new->pos++;
+        $new->assertPushDecoratorFile($decoratedRoute->routeDecorator()->whereIs());
+        try {
+            $new->assertPushPath($decoratedRoute->routePath()->toString());
+            $new->assertPushName($decoratedRoute->routeDecorator()->name()->toString());
+            $new->assertPushRegex($decoratedRoute->routePath()->regex()->toString());
+        } catch (Exception $e) {
+            throw new $e(
+                $e->message()->code('%by%', $this->get($e->getCode())->routeDecorator()->whereIs())
+            );
+        }
+
         $new->set->add($decoratedRoute);
-        $new->routesPath->add($routePathString);
-        $new->decoratorFiles->add($decoratorFile);
 
         return $new;
     }
@@ -75,18 +76,68 @@ final class DecoratedRoutes implements Countable
         return $this->set->count();
     }
 
-    public function contains(DecoratedRoute $decoratedRoute): bool
+    public function contains(DecoratedRouteInterface $decoratedRoute): bool
     {
         return $this->set->contains($decoratedRoute);
     }
 
-    public function get(int $position): DecoratedRoute
+    /**
+     * @throws OutOfRangeException
+     */
+    public function get(int $position): DecoratedRouteInterface
     {
         return $this->set->get($position);
     }
 
-    public function set(): Set
+    private function assertPushPath(string $path): void
     {
-        return deep_copy($this->set);
+        $pos = $this->routesPath[$path] ?? null;
+        if (isset($pos)) {
+            throw new RoutePathAlreadyAddedException(
+                (new Message('Route path %path% has been already added by %by%'))
+                    ->code('%path%', $path),
+                $pos
+            );
+        }
+        $this->routesPath[$path] = $this->pos;
+    }
+
+    private function assertPushName(string $name): void
+    {
+        $pos = $this->routesName[$name] ?? null;
+        if (isset($pos)) {
+            throw new RouteNameAlreadyAddedException(
+                (new Message('Route %name% has been already added by %by%'))
+                    ->code('%name%', $name),
+                $pos
+            );
+        }
+        $this->routesName[$name] = $this->pos;
+    }
+
+    private function assertPushRegex(string $regex): void
+    {
+        $pos = $this->routesPathRegex[$regex] ?? null;
+        if (isset($pos)) {
+            throw new RouteRegexAlreadyAddedException(
+                (new Message('Route regex %regex% has been already added by %by%'))
+                    ->code('%regex%', $regex),
+                $pos
+            );
+        }
+        $this->routesPathRegex[$regex] = $this->pos;
+    }
+
+    private function assertPushDecoratorFile(string $file): void
+    {
+        $pos = $this->decoratorFiles[$file] ?? null;
+        if (isset($pos)) {
+            throw new RouteDecoratorFileAlreadyAddedException(
+                (new Message('Route decorator file %path% has been already added'))
+                    ->code('%path%', $file),
+                $pos
+            );
+        }
+        $this->decoratorFiles[$file] = $this->pos;
     }
 }
