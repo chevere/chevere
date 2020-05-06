@@ -79,9 +79,12 @@ final class FilePhpReturn implements FilePhpReturnInterface
     {
         $var = $this->var();
         if ($type->validate($var) === false) {
+            $typeReturn = is_object($var)
+                ? get_class($var)
+                : gettype($var);
             throw new FileReturnInvalidTypeException(
                 (new Message("Return type %return% doesn't match the expected type %expected%"))
-                    ->code('%return%', gettype($var))
+                    ->code('%return%', $typeReturn)
                     ->code('%expected%', $type->typeHinting())
             );
         }

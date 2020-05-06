@@ -22,6 +22,7 @@ use Chevere\Components\Route\Interfaces\RouteEndpointsInterface;
 use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Route\Interfaces\RouteNameInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
+use InvalidArgumentException;
 use LogicException;
 use OutOfBoundsException;
 
@@ -31,8 +32,11 @@ final class Route implements RouteInterface
 
     private RoutePathInterface $routePath;
 
-    /** @var array An array containg details about the instance maker */
+    /** @var array details about the instance maker */
     private array $maker;
+
+    /** @var array [wildcardName => $endpoint] */
+    private array $wildcards;
 
     private MiddlewareNameCollectionInterface $middlewareNameCollection;
 
@@ -63,20 +67,36 @@ final class Route implements RouteInterface
     }
 
     /**
-     * @throws LogicException If using a route wildcard but no parameter is accepted by the controller
-     * @throws OutOfBoundsException If the route wildcard parameter is unknown for the controller
+     * @throws InvalidArgumentException If the controller doesn't take parameters
+     * @throws OutOfBoundsException If wildcard binds to unexistant controller parameter name
      */
     public function withAddedEndpoint(RouteEndpointInterface $endpoint): RouteInterface
     {
         $new = clone $this;
         /** @var RouteWildcard $wildcard */
         foreach ($new->routePath->wildcards()->toArray() as $wildcard) {
-            $this->assertWildcardEndpoint($wildcard, $endpoint);
-            $regex = $endpoint->controller()->parameters()->get($wildcard->name())->regex();
-            $new->routePath = $new->routePath
-                ->withWildcard($wildcard->withMatch(
-                    new RouteWildcardMatch($regex->toNoDelimitersNoAnchors())
-                ));
+            $new->assertWildcardEndpoint($wildcard, $endpoint);
+            $wildcardMustRegex = $new->wildcards[$wildcard->name()] ?? null;
+            $regex = $endpoint->controller()->parameters()
+                ->get($wildcard->name())->regex();
+            if (isset($wildcardMustRegex)) {
+                if ($regex->toString() !== $wildcardMustRegex) {
+                    throw new LogicException(
+                        (new Message('Wildcard %wildcard% parameter regex %regex% (fist defined by %controller%) must be the same for all controllers in this route, regex %regexProvided% by %controllerProvided%'))
+                            ->code('%wildcard%', $wildcard->toString())
+                            ->code('%regex%', $wildcardMustRegex)
+                            ->code('%controller%', $wildcard->toString())
+                            ->code('%regexProvided%', $regex->toString())
+                            ->code('%controllerProvided%', get_class($endpoint->controller()))
+                    );
+                }
+            } else {
+                $new->routePath = $new->routePath
+                    ->withWildcard($wildcard->withMatch(
+                        new RouteWildcardMatch($regex->toNoDelimitersNoAnchors())
+                    ));
+                $new->wildcards[$wildcard->name()] = $regex->toString();
+            }
             $endpoint = $endpoint->withoutParameter($wildcard->name());
         }
         $new->endpoints->put($endpoint);
@@ -103,10 +123,14 @@ final class Route implements RouteInterface
         return $this->middlewareNameCollection;
     }
 
+    /**
+     * @throws InvalidArgumentException If the controller doesn't take parameters
+     * @throws OutOfBoundsException If wildcard binds to unexistant controller parameter name
+     */
     private function assertWildcardEndpoint(RouteWildcard $wildcard, RouteEndpoint $endpoint): void
     {
         if ($endpoint->controller()->parameters()->map()->count() === 0) {
-            throw new LogicException(
+            throw new InvalidArgumentException(
                 (new Message("Controller %controller% doesn't accept any parameter (route wildcard %wildcard%)"))
                     ->code('%controller%', get_class($endpoint->controller()))
                     ->code('%wildcard%', $wildcard->toString())

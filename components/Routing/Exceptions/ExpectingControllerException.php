@@ -11,6 +11,13 @@
 
 declare(strict_types=1);
 
-use Chevere\Components\Route\Tests\_resources\controllers\GetArticlesController;
+namespace Chevere\Components\Routing\Exceptions;
 
-return new GetArticlesController;
+use Chevere\Components\ExceptionHandler\Exceptions\Exception;
+
+/**
+ * Exception thrown when failing to provide a ControllerInterface.
+ */
+final class ExpectingControllerException extends Exception
+{
+}

@@ -16,6 +16,7 @@ namespace Chevere\Components\Routing\Tests;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
+use Chevere\Components\Routing\Exceptions\ExpectingControllerException;
 use Chevere\Components\Routing\Exceptions\ExpectingRouteNameException;
 use Chevere\Components\Routing\RouteEndpointsIterator;
 use PHPUnit\Framework\TestCase;
@@ -40,7 +41,7 @@ final class RouteEndpointsIteratorTest extends TestCase
     public function testWrongObjects(): void
     {
         $dir = new Dir(new Path(__DIR__ . '/_resources/wrong-routes/articles/'));
-        $this->expectException(ExpectingRouteNameException::class);
+        $this->expectException(ExpectingControllerException::class);
         new RouteEndpointsIterator($dir);
     }
 }

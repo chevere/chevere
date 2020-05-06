@@ -85,9 +85,11 @@ final class SpecMakerTest extends TestCase
         );
         $cachedPath = $this->cacheHelper->getCachedDir()->path();
         foreach ($specMaker->files() as $jsonPath => $path) {
+            $cachedFile = $cachedPath->getChild(ltrim($jsonPath, '/'))->absolute();
             $this->assertFileEquals(
-                $cachedPath->getChild(ltrim($jsonPath, '/'))->absolute(),
-                $path->absolute()
+                $cachedFile,
+                $path->absolute(),
+                $cachedFile
             );
         }
         $this->assertTrue($specMaker->specIndex()->has(

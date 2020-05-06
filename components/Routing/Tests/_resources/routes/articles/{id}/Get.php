@@ -11,8 +11,6 @@
 
 declare(strict_types=1);
 
-use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\Tests\_resources\controllers\GetArticleController;
 
-return new RouteEndpoint(new GetMethod, new GetArticleController);
+return new GetArticleController;

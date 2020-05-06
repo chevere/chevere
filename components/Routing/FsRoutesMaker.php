@@ -83,11 +83,7 @@ final class FsRoutesMaker implements FsRoutesMakerInterface
                 ->withStrict(false)
                 ->varType(new Type(RouteNameInterface::class));
         } catch (FileReturnInvalidTypeException $e) {
-            throw new ExpectingRouteNameException(
-                (new Message('Expecting file return object implementing interface %interfaceName%, something else provided in %fileName%'))
-                    ->code('%interfaceName%', RouteNameInterface::class)
-                    ->strong('%fileName%', $path)
-            );
+            throw new ExpectingRouteNameException($e->message());
         }
     }
 
