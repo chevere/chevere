@@ -28,15 +28,15 @@ use Chevere\Components\Http\Methods\TraceMethod;
 interface RouteEndpointInterface
 {
     const KNOWN_METHODS = [
-        'Connect' => ConnectMethod::class,
-        'Delete' => DeleteMethod::class,
-        'Get' => GetMethod::class,
-        'Head' => HeadMethod::class,
-        'Options' => OptionsMethod::class,
-        'Patch' => PatchMethod::class,
-        'Post' => PostMethod::class,
-        'Put' => PutMethod::class,
-        'Trace' => TraceMethod::class,
+        'CONNECT' => ConnectMethod::class,
+        'DELETE' => DeleteMethod::class,
+        'GET' => GetMethod::class,
+        'HEAD' => HeadMethod::class,
+        'OPTIONS' => OptionsMethod::class,
+        'PATCH' => PatchMethod::class,
+        'POST' => PostMethod::class,
+        'PUT' => PutMethod::class,
+        'TRACE' => TraceMethod::class,
     ];
 
     public function __construct(
