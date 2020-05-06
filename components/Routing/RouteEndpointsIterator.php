@@ -23,7 +23,7 @@ use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use Chevere\Components\Route\Interfaces\RouteEndpointsInterface;
 use Chevere\Components\Route\RouteEndpoints;
-use Chevere\Components\Routing\Exceptions\ExpectingRouteDecoratorException;
+use Chevere\Components\Routing\Exceptions\ExpectingRouteNameException;
 use Chevere\Components\Routing\Interfaces\RouteEndpointIteratorInterface;
 use Chevere\Components\Type\Type;
 
@@ -46,7 +46,7 @@ final class RouteEndpointsIterator implements RouteEndpointIteratorInterface
             }
             $routeEndpoint = $this->getVar($routeEndpointPath);
             if (!(new Type(RouteEndpointInterface::class))->validate($routeEndpoint)) {
-                throw new ExpectingRouteDecoratorException(
+                throw new ExpectingRouteNameException(
                     (new Message('Expecting file return object implementing interface %interfaceName%, type %provided% provided in %fileName%'))
                         ->code('%interfaceName%', RouteDecoratorInterface::class)
                         ->code('%provided%', gettype($routeEndpoint))

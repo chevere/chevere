@@ -16,6 +16,7 @@ namespace Chevere\Components\Filesystem;
 use Chevere\Components\Filesystem\Exceptions\FileHandleException;
 use Chevere\Components\Filesystem\Exceptions\FileInvalidContentsException;
 use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
+use Chevere\Components\Filesystem\Exceptions\FileReturnInvalidTypeException;
 use Chevere\Components\Filesystem\Exceptions\FileUnableToGetException;
 use Chevere\Components\Filesystem\Exceptions\FileWithoutContentsException;
 use Chevere\Components\Filesystem\Interfaces\FilePhpInterface;
@@ -24,6 +25,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Serialize\Exceptions\UnserializeException;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Str\StrAssert;
+use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarExportable\Interfaces\VarExportableInterface;
 use Throwable;
 
@@ -73,13 +75,27 @@ final class FilePhpReturn implements FilePhpReturnInterface
         return $var;
     }
 
+    public function varType(TypeInterface $type)
+    {
+        $var = $this->var();
+        if ($type->validate($var) === false) {
+            throw new FileReturnInvalidTypeException(
+                (new Message("Return type %return% doesn't match the expected type %expected%"))
+                    ->code('%return%', gettype($var))
+                    ->code('%expected%', $type->typeHinting())
+            );
+        }
+
+        return $var;
+    }
+
     public function put(VarExportableInterface $varExportable): void
     {
         $var = $varExportable->var();
         $var = $this->getFileReturnVar($var);
         $varExport = var_export($var, true);
         $this->filePhp->file()->put(
-            FilePhpReturnInterface::PHP_RETURN . $varExport . ';'
+            self::PHP_RETURN . $varExport . ';'
         );
     }
 
@@ -122,7 +138,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
             );
             // @codeCoverageIgnoreEnd
         }
-        $contents = fread($handle, FilePhpReturnInterface::PHP_RETURN_CHARS);
+        $contents = fread($handle, self::PHP_RETURN_CHARS);
         fclose($handle);
         if ('' == $contents) {
             throw new FileWithoutContentsException(
@@ -130,18 +146,18 @@ final class FilePhpReturn implements FilePhpReturnInterface
                     ->code('%path%', $filename)
             );
         }
-        if (FilePhpReturnInterface::PHP_RETURN !== $contents) {
+        if (self::PHP_RETURN !== $contents) {
             throw new FileInvalidContentsException(
                 (new Message('Unexpected contents in %path%, strict validation requires a file return in the form of %expected%'))
                     ->code('%path%', $filename)
-                    ->code('%expected%', FilePhpReturnInterface::PHP_RETURN . '$var;')
+                    ->code('%expected%', self::PHP_RETURN . '$var;')
             );
         }
     }
 
     /**
-     * @throws FileNotExistsException    if the file doesn't exists
-     * @throws FileUnableToGetException if unable to read the contents of the file
+     * @throws FileNotExistsException
+     * @throws FileUnableToGetException
      * @throws FileWithoutContentsException
      * @throws FileInvalidContentsException
      */

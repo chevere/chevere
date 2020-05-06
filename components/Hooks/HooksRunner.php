@@ -15,7 +15,6 @@ namespace Chevere\Components\Hooks;
 
 use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Hooks\Interfaces\HooksRunnerInterface;
-use Chevere\Components\Message\Exceptions\MessageSearchNotExistsException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
 use RuntimeException;

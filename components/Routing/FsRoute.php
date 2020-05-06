@@ -13,23 +13,35 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing;
 
+use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
-use Chevere\Components\Routing\Interfaces\DecoratedRouteInterface;
+use Chevere\Components\Routing\Interfaces\FsRouteInterface;
 
 /**
  * @codeCoverageIgnore
  */
-final class DecoratedRoute implements DecoratedRouteInterface
+final class FsRoute implements FsRouteInterface
 {
+    private DirInterface $dir;
+
     private RoutePathInterface $path;
 
     private RouteDecoratorInterface $decorator;
 
-    public function __construct(RoutePathInterface $path, RouteDecoratorInterface $decorator)
-    {
+    public function __construct(
+        DirInterface $dir,
+        RoutePathInterface $path,
+        RouteDecoratorInterface $decorator
+    ) {
+        $this->dir = $dir;
         $this->path = $path;
         $this->decorator = $decorator;
+    }
+
+    public function dir(): DirInterface
+    {
+        return $this->dir;
     }
 
     public function routePath(): RoutePathInterface

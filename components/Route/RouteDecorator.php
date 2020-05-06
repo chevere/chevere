@@ -16,26 +16,34 @@ namespace Chevere\Components\Route;
 use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\Interfaces\RouteNameInterface;
 use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
-use Chevere\Components\Route\RouteWildcards;
-use ReflectionClass;
 
-/**
- * @codeCoverageIgnore
- */
-abstract class RouteDecorator implements RouteDecoratorInterface
+final class RouteDecorator implements RouteDecoratorInterface
 {
-    /** @var string Absolute path to the decorator file */
-    private string $whereIs;
+    private RouteNameInterface $name;
 
-    abstract public function name(): RouteNameInterface;
+    private RouteWildcardsInterface $wildcards;
+
+    public function __construct(RouteNameInterface $name)
+    {
+        $this->name = $name;
+        $this->wildcards = new RouteWildcards;
+    }
+
+    public function withWildcards(RouteWildcardsInterface $wildcards): RouteDecoratorInterface
+    {
+        $new = clone $this;
+        $new->wildcards = $wildcards;
+
+        return $new;
+    }
+
+    public function name(): RouteNameInterface
+    {
+        return $this->name;
+    }
 
     public function wildcards(): RouteWildcardsInterface
     {
-        return new RouteWildcards;
-    }
-
-    final public function whereIs(): string
-    {
-        return $this->whereIs ??= (new ReflectionClass($this))->getFileName();
+        return $this->wildcards;
     }
 }

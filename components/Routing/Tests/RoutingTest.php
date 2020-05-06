@@ -18,7 +18,7 @@ use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\RouterMaker;
-use Chevere\Components\Routing\RouteDecoratorIterator;
+use Chevere\Components\Routing\FsRoutesMaker;
 use Chevere\Components\Routing\Routing;
 use PHPUnit\Framework\TestCase;
 
@@ -47,9 +47,9 @@ final class RoutingTest extends TestCase
 
     public function testConstruct(): void
     {
-        $routePathIterator = new RouteDecoratorIterator($this->routesDir);
+        $fsRoutesMaker = new FsRoutesMaker($this->routesDir);
         $routerMaker = new RouterMaker;
-        $routing = new Routing($routePathIterator, $routerMaker);
+        $routing = new Routing($fsRoutesMaker, $routerMaker);
         $this->assertInstanceOf(RouterInterface::class, $routing->router());
     }
 }

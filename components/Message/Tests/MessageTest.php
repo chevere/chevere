@@ -13,14 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Message\Tests;
 
-use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\FilePhp;
-use Chevere\Components\Filesystem\FilePhpReturn;
-use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Message\Exceptions\MessageSearchNotExistsException;
 use Chevere\Components\Message\Interfaces\MessageInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\VarExportable\VarExportable;
 use PHPUnit\Framework\TestCase;
 
 final class MessageTest extends TestCase
@@ -72,10 +67,10 @@ final class MessageTest extends TestCase
         $this->assertNotSame($plain, $message->toConsole());
     }
 
-    public function testWithWrongSearch(): void
-    {
-        $message = new Message('Hello, World!');
-        $this->expectException(MessageSearchNotExistsException::class);
-        $message->code('%search%', 'replace');
-    }
+    // public function testWithWrongSearch(): void
+    // {
+    //     $message = new Message('Hello, World!');
+    //     $this->expectException(MessageSearchNotExistsException::class);
+    //     $message->code('%search%', 'replace');
+    // }
 }

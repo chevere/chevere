@@ -14,17 +14,16 @@ declare(strict_types=1);
 namespace Chevere\Components\Routing\Interfaces;
 
 use Countable;
-use Ds\Set;
 
-interface DecoratedRoutesInterface extends Countable
+interface FsRoutesInterface extends Countable
 {
     public function __construct();
 
-    public function withDecorated(DecoratedRouteInterface $decoratedRoute): DecoratedRoutesInterface;
+    public function withDecorated(FsRouteInterface $decoratedRoute): FsRoutesInterface;
 
     public function count(): int;
 
-    public function contains(DecoratedRouteInterface $decoratedRoute): bool;
+    public function contains(FsRouteInterface $decoratedRoute): bool;
 
-    public function get(int $position): DecoratedRouteInterface;
+    public function get(int $position): FsRouteInterface;
 }

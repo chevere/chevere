@@ -18,6 +18,7 @@ use Chevere\Components\Filesystem\Exceptions\FileInvalidContentsException;
 use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
 use Chevere\Components\Filesystem\Exceptions\FileUnableToPutException;
 use Chevere\Components\Filesystem\Exceptions\FileWithoutContentsException;
+use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarExportable\Interfaces\VarExportableInterface;
 
 interface FilePhpReturnInterface
@@ -26,7 +27,7 @@ interface FilePhpReturnInterface
     const PHP_RETURN_CHARS = 13;
 
     /**
-     * @throws FileNotExistsException if the file doesn't exists
+     * @throws FileNotExistsException
      */
     public function __construct(FilePhpInterface $phpFile);
 
@@ -49,27 +50,38 @@ interface FilePhpReturnInterface
     /**
      * Retrieves the file return (as-is).
      *
-     * @throws FileNotExistsException        if the file doesn't exists
-     * @throws FileHandleException          if unable to handle the file
-     * @throws FileWithoutContentsException if the file doesn't contain anything
-     * @throws FileInvalidContentsException if the file content is invalid
+     * @throws FileNotExistsException
+     * @throws FileHandleException
+     * @throws FileWithoutContentsException
+     * @throws FileInvalidContentsException
      */
     public function raw();
 
     /**
-     * Retrieves the usable variable after appling unserialize to all objects (if any).
+     * Retrieves a PHP variable, appling unserialize to objects (if any).
      *
-     * @throws FileNotExistsException        if the file doesn't exists
-     * @throws FileHandleException          if unable to handle the file
-     * @throws FileWithoutContentsException if the file doesn't contain anything
-     * @throws FileInvalidContentsException if the file content is invalid
+     * @throws FileNotExistsException
+     * @throws FileHandleException
+     * @throws FileWithoutContentsException
+     * @throws FileInvalidContentsException
      */
     public function var();
 
     /**
+     * Same as var, but checking the variable $type.
+     *
+     * @throws FileNotExistsException
+     * @throws FileHandleException
+     * @throws FileWithoutContentsException
+     * @throws FileInvalidContentsException
+     * @throws FileReturnInvalidTypeException
+     */
+    public function varType(TypeInterface $type);
+
+    /**
      * Put $var into the file using var_export return and strict format.
      *
-     * @throws FileNotExistsException    if the file doesn't exists
+     * @throws FileNotExistsException
      * @throws FileUnableToPutException if unable to put the contents in the file
      */
     public function put(VarExportableInterface $varExportable): void;

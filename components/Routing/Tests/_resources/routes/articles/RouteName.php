@@ -11,11 +11,6 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Route\Interfaces;
+use Chevere\Components\Route\RouteName;
 
-interface RouteDecoratorInterface
-{
-    public function name(): RouteNameInterface;
-
-    public function wildcards(): RouteWildcardsInterface;
-}
+return new RouteName('articles');

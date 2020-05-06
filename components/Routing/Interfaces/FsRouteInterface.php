@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Components\Routing\Interfaces;
 
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
-use Chevere\Components\Routing\DecoratedRoutes;
+use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
+use Chevere\Components\Route\Interfaces\RoutePathInterface;
 
-interface RoutePathIteratorInterface
+interface FsRouteInterface
 {
-    const ROUTE_DECORATOR_BASENAME = 'RouteDecorator.php';
+    public function dir(): DirInterface;
 
-    public function __construct(DirInterface $dir);
+    public function routePath(): RoutePathInterface;
 
-    public function decoratedRoutes(): DecoratedRoutes;
+    public function routeDecorator(): RouteDecoratorInterface;
 }

@@ -11,11 +11,4 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Route\Interfaces;
-
-interface RouteDecoratorInterface
-{
-    public function name(): RouteNameInterface;
-
-    public function wildcards(): RouteWildcardsInterface;
-}
+return new stdClass();

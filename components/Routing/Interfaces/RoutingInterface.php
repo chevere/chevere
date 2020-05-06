@@ -19,7 +19,7 @@ use Chevere\Components\Router\Interfaces\RouterMakerInterface;
 interface RoutingInterface
 {
     public function __construct(
-        RoutePathIteratorInterface $routePathIterator,
+        FsRoutesMakerInterface $routePathIterator,
         RouterMakerInterface $routerMaker
     );
 

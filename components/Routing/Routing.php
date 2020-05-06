@@ -21,37 +21,34 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
 use Chevere\Components\Router\Routeable;
-use Chevere\Components\Routing\Interfaces\RoutePathIteratorInterface;
+use Chevere\Components\Routing\Interfaces\FsRoutesMakerInterface;
 use Chevere\Components\Routing\Interfaces\RoutingInterface;
 
 final class Routing implements RoutingInterface
 {
-    private RoutePathIteratorInterface $routePathIterator;
+    private FsRoutesMakerInterface $routePathIterator;
 
     private RouterMakerInterface $routerMaker;
 
     private RoutePathInterface $routePath;
 
-    private RouteDecoratorInterface $routeDecorator;
-
     public function __construct(
-        RoutePathIteratorInterface $routePathIterator,
+        FsRoutesMakerInterface $routePathIterator,
         RouterMakerInterface $routerMaker
     ) {
         $this->routePathIterator = $routePathIterator;
         $this->routerMaker = $routerMaker;
-        $decoratedRoutes = $this->routePathIterator->decoratedRoutes();
-        for ($i = 0; $i < $decoratedRoutes->count(); ++$i) {
-            $decoratedRoute = $decoratedRoutes->get($i);
-            $this->routePath = $decoratedRoute->routePath();
-            $this->routeDecorator = $decoratedRoute->routeDecorator();
-            foreach ($this->routeDecorator->wildcards()->toArray() as $routeWildcard) {
-                $this->routePath = $this->routePath->withWildcard($routeWildcard);
+        $fsRoutes = $this->routePathIterator->fsRoutes();
+        for ($i = 0; $i < $fsRoutes->count(); ++$i) {
+            $fsRoute = $fsRoutes->get($i);
+            $routePath = $fsRoute->routePath();
+            $routeDecorator = $fsRoute->routeDecorator();
+            foreach ($routeDecorator->wildcards()->toArray() as $routeWildcard) {
+                $routePath = $routePath->withWildcard($routeWildcard);
             }
-            $dir = new Dir(new Path(dirname($this->routeDecorator->whereIs()) . '/'));
-            $routeEndpointsMaker = new RouteEndpointsIterator($dir);
+            $routeEndpointsMaker = new RouteEndpointsIterator($fsRoute->dir());
             $routeEndpoints = $routeEndpointsMaker->routeEndpoints();
-            $route = new Route($this->routeDecorator->name(), $this->routePath);
+            $route = new Route($routeDecorator->name(), $routePath);
             /** @var string $key */
             foreach ($routeEndpoints->keys() as $key) {
                 $route = $route->withAddedEndpoint(

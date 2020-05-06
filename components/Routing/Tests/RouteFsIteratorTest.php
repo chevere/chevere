@@ -17,32 +17,28 @@ use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
 use Chevere\Components\Route\Interfaces\RoutePathInterface;
-use Chevere\Components\Routing\Exceptions\ExpectingRouteDecoratorException;
-use Chevere\Components\Routing\Interfaces\RoutePathIteratorInterface;
-use Chevere\Components\Routing\RouteDecoratorIterator;
+use Chevere\Components\Routing\Exceptions\ExpectingRouteNameException;
+use Chevere\Components\Routing\FsRoutesMaker;
+use Chevere\Components\Routing\Interfaces\FsRoutesMakerInterface;
 use PHPUnit\Framework\TestCase;
 
-final class RouteDecoratorIteratorTest extends TestCase
+final class RouteFsIteratorTest extends TestCase
 {
     public function testObjects(): void
     {
         $dir = new Dir(new Path(__DIR__ . '/_resources/routes/'));
-        $iterator = new RouteDecoratorIterator($dir);
-        $decoratedRoutes = $iterator->decoratedRoutes();
-        $this->assertCount(2, $decoratedRoutes);
-        for ($i = 0; $i < $decoratedRoutes->count(); ++$i) {
-            $decoratedRoute = $decoratedRoutes->get($i);
+        $fsRoutesMaker = new FsRoutesMaker($dir);
+        $fsRoutes = $fsRoutesMaker->fsRoutes();
+        $this->assertCount(2, $fsRoutes);
+        for ($i = 0; $i < $fsRoutes->count(); ++$i) {
+            $fsRoute = $fsRoutes->get($i);
             $this->assertInstanceOf(
                 RoutePathInterface::class,
-                $decoratedRoute->routePath()
+                $fsRoute->routePath()
             );
             $this->assertInstanceOf(
                 RouteDecoratorInterface::class,
-                $decoratedRoute->routeDecorator()
-            );
-            $this->assertStringEndsWith(
-                RoutePathIteratorInterface::ROUTE_DECORATOR_BASENAME,
-                $decoratedRoute->routeDecorator()->whereIs()
+                $fsRoute->routeDecorator()
             );
         }
     }
@@ -50,7 +46,7 @@ final class RouteDecoratorIteratorTest extends TestCase
     public function testWrongObjects(): void
     {
         $dir = new Dir(new Path(__DIR__ . '/_resources/wrong-routes/'));
-        $this->expectException(ExpectingRouteDecoratorException::class);
-        new RouteDecoratorIterator($dir);
+        $this->expectException(ExpectingRouteNameException::class);
+        new FsRoutesMaker($dir);
     }
 }

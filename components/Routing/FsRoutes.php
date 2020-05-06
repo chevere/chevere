@@ -16,16 +16,15 @@ namespace Chevere\Components\Routing;
 use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Routing\Exceptions\DecoratedRouteAlreadyAddedException;
-use Chevere\Components\Routing\Exceptions\RouteDecoratorFileAlreadyAddedException;
 use Chevere\Components\Routing\Exceptions\RouteNameAlreadyAddedException;
 use Chevere\Components\Routing\Exceptions\RoutePathAlreadyAddedException;
 use Chevere\Components\Routing\Exceptions\RouteRegexAlreadyAddedException;
-use Chevere\Components\Routing\Interfaces\DecoratedRouteInterface;
-use Chevere\Components\Routing\Interfaces\DecoratedRoutesInterface;
+use Chevere\Components\Routing\Interfaces\FsRouteInterface;
+use Chevere\Components\Routing\Interfaces\FsRoutesInterface;
 use Ds\Set;
 use OutOfRangeException;
 
-final class DecoratedRoutes implements DecoratedRoutesInterface
+final class FsRoutes implements FsRoutesInterface
 {
     private Set $set;
 
@@ -35,8 +34,6 @@ final class DecoratedRoutes implements DecoratedRoutesInterface
 
     private array $routesPathRegex = [];
 
-    private array $decoratorFiles = [];
-
     private int $pos = -1;
 
     public function __construct()
@@ -44,7 +41,7 @@ final class DecoratedRoutes implements DecoratedRoutesInterface
         $this->set = new Set;
     }
 
-    public function withDecorated(DecoratedRouteInterface $decoratedRoute): DecoratedRoutesInterface
+    public function withDecorated(FsRouteInterface $decoratedRoute): FsRoutesInterface
     {
         if ($this->set->contains($decoratedRoute)) {
             throw new DecoratedRouteAlreadyAddedException(
@@ -55,14 +52,16 @@ final class DecoratedRoutes implements DecoratedRoutesInterface
         $new = clone $this;
         $new->decoratedRoute = $decoratedRoute;
         $new->pos++;
-        $new->assertPushDecoratorFile($decoratedRoute->routeDecorator()->whereIs());
         try {
             $new->assertPushPath($decoratedRoute->routePath()->toString());
             $new->assertPushName($decoratedRoute->routeDecorator()->name()->toString());
             $new->assertPushRegex($decoratedRoute->routePath()->regex()->toString());
         } catch (Exception $e) {
             throw new $e(
-                $e->message()->code('%by%', $this->get($e->getCode())->routeDecorator()->whereIs())
+                $e->message()->code(
+                    '%by%',
+                    $this->get($e->getCode())->dir()->path()->absolute()
+                )
             );
         }
 
@@ -76,7 +75,7 @@ final class DecoratedRoutes implements DecoratedRoutesInterface
         return $this->set->count();
     }
 
-    public function contains(DecoratedRouteInterface $decoratedRoute): bool
+    public function contains(FsRouteInterface $decoratedRoute): bool
     {
         return $this->set->contains($decoratedRoute);
     }
@@ -84,7 +83,7 @@ final class DecoratedRoutes implements DecoratedRoutesInterface
     /**
      * @throws OutOfRangeException
      */
-    public function get(int $position): DecoratedRouteInterface
+    public function get(int $position): FsRouteInterface
     {
         return $this->set->get($position);
     }
@@ -126,18 +125,5 @@ final class DecoratedRoutes implements DecoratedRoutesInterface
             );
         }
         $this->routesPathRegex[$regex] = $this->pos;
-    }
-
-    private function assertPushDecoratorFile(string $file): void
-    {
-        $pos = $this->decoratorFiles[$file] ?? null;
-        if (isset($pos)) {
-            throw new RouteDecoratorFileAlreadyAddedException(
-                (new Message('Route decorator file %path% has been already added'))
-                    ->code('%path%', $file),
-                $pos
-            );
-        }
-        $this->decoratorFiles[$file] = $this->pos;
     }
 }

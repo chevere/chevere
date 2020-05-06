@@ -16,8 +16,8 @@ namespace Chevere\Components\Routing\Exceptions;
 use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 
 /**
- * Exception thrown when the route decorator file has been already added.
+ * Exception thrown when failing to provide a RouteNameInterface.
  */
-final class RouteDecoratorFileAlreadyAddedException extends Exception
+final class ExpectingRouteNameException extends Exception
 {
 }

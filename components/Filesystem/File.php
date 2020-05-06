@@ -79,6 +79,8 @@ final class File implements FileInterface
 
     /**
      * @codeCoverageIgnoreStart
+     * @throws FileNotExistsException
+     * @throws FileUnableToGetException
      */
     public function contents(): string
     {
