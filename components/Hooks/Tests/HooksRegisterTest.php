@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks\Tests;
 
-use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
-use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Hooks\HooksRegister;
+use Chevere\Components\Hooks\Tests\_resources\TestHook;
 use PHPUnit\Framework\TestCase;
 
 final class HooksRegisterTest extends TestCase
@@ -48,7 +47,7 @@ final class HooksRegisterTest extends TestCase
 
     public function testWithHookablesClassmap(): void
     {
-        $hook = new MyHook;
+        $hook = new TestHook;
         $hooksRegister = (new HooksRegister)
             ->withAddedHook($hook)
             ->withHookablesClassMap($this->tempDir);

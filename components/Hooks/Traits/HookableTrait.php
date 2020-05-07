@@ -27,7 +27,7 @@ trait HookableTrait
         return $new;
     }
 
-    public function hook(string $anchor, &$argument): void
+    public function anchor(string $anchor, &$argument): void
     {
         if (isset($this->hooksRunner) === false) {
             return;

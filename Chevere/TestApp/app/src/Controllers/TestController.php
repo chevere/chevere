@@ -49,21 +49,21 @@ class TestController extends Controller implements HookableInterface
             ->withParameter(
                 new ControllerParameter('id', new Regex('/^[0-9]+$/'))
             );
-        $this->hook('getParameters:after', $paremeters);
+        $this->anchor('getParameters:after', $paremeters);
 
         return $paremeters;
     }
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        $this->hook('run:before', $arguments);
+        $this->anchor('run:before', $arguments);
         $response = new ControllerResponse(true);
         $data = [
             'userName' => $arguments->get('name'),
             'userId' => $arguments->get('id')
         ];
         $response = $response->withData($data);
-        $this->hook('run:after', $response);
+        $this->anchor('run:after', $response);
 
         return $response;
     }

@@ -33,14 +33,14 @@ class TestHookable implements HookableInterface
     public function __construct()
     {
         $string = '';
-        $this->hook('construct:before', $string);
+        $this->anchor('construct:before', $string);
         $this->string = $string;
     }
 
     public function setString(string $string): void
     {
         $this->string = $string;
-        $this->hook('setString:after', $string);
+        $this->anchor('setString:after', $string);
         $this->string = $string;
     }
 

@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks\Tests;
+namespace Chevere\Components\Hooks\Tests\_resources;
 
 use Chevere\Components\Hooks\Interfaces\HookInterface;
 
-class MyHook implements HookInterface
+class TestHook implements HookInterface
 {
     public function anchor(): string
     {
@@ -24,7 +24,7 @@ class MyHook implements HookInterface
 
     public function className(): string
     {
-        return MyHookable::class;
+        return TestHookable::class;
     }
 
     public function priority(): int

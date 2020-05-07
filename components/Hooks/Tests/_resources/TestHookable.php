@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks\Tests;
+namespace Chevere\Components\Hooks\Tests\_resources;
 
 use Chevere\Components\Hooks\HookAnchors;
 use Chevere\Components\Hooks\Interfaces\HookableInterface;
 use Chevere\Components\Hooks\Traits\HookableTrait;
 
-class MyHookable implements HookableInterface
+class TestHookable implements HookableInterface
 {
     use HookableTrait;
 
@@ -33,14 +33,14 @@ class MyHookable implements HookableInterface
     public function __construct()
     {
         $string = '';
-        $this->hook('construct:before', $string);
+        $this->anchor('construct:before', $string);
         $this->string = $string;
     }
 
     public function setString(string $string): void
     {
         $this->string = $string;
-        $this->hook('setString:after', $string);
+        $this->anchor('setString:after', $string);
         $this->string = $string;
     }
 
@@ -48,18 +48,4 @@ class MyHookable implements HookableInterface
     {
         return $this->string;
     }
-}
-
-/**
- * Same as MyHookable but no hooks are registered for this class.
- */
-final class MyHookableWithoutHooks extends MyHookable
-{
-}
-
-/**
- * Same as MyHookable but the hookable isn't registered.
- */
-final class MyHookableWithNotRegisteredClass extends MyHookable
-{
 }

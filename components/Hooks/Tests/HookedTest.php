@@ -19,6 +19,9 @@ use Chevere\Components\Hooks\Exceptions\HooksClassNotRegisteredException;
 use Chevere\Components\Hooks\HookablesMap;
 use Chevere\Components\Hooks\Hooks;
 use Chevere\Components\Hooks\HooksRunner;
+use Chevere\Components\Hooks\Tests\_resources\TestHookable;
+use Chevere\Components\Hooks\Tests\_resources\TestHookableNoRegister;
+use Chevere\Components\Hooks\Tests\_resources\TestHookableWithoutHooks;
 use PHPUnit\Framework\TestCase;
 
 final class HookedTest extends TestCase
@@ -27,61 +30,61 @@ final class HookedTest extends TestCase
 
     public function setUp(): void
     {
-        $resourcespath = (new Path(__DIR__ . '/'))->getChild('_resources/');
-        $hooksPath = (new Dir($resourcespath))->getChild('hooks-reg/')->path()->absolute();
+        $resourcespath = (new Path(__DIR__ . '/'))
+            ->getChild('_resources/HookedTest/');
+        $hooksPath = (new Dir($resourcespath))->getChild('hooks-reg/')
+            ->path()->absolute();
         $this->hooks = new Hooks(
             (new HookablesMap)
                 ->withPut(
-                    'Chevere\Components\Hooks\Tests\MyHookable',
-                    $hooksPath . 'Chevere/Components/Hooks/Tests/MyHookable/hooks.php'
+                    'Chevere\Components\Hooks\Tests\_resources\TestHookable',
+                    $hooksPath . 'Chevere/Components/Hooks/Tests/TestHookable/hooks.php'
                 )
                 ->withPut(
-                    'Chevere\Components\Hooks\Tests\MyHookableWithCorruptedHooks',
+                    'Chevere\Components\Hooks\Tests\_resources\TestHookableWithCorruptedHooks',
                     $hooksPath . 'Chevere/Components/Hooks/Tests/MyHookableWithCorruptedHooks/hooks.php'
                 )
                 ->withPut(
-                    'Chevere\Components\Hooks\Tests\MyHookableWithMissingHooks',
+                    'Chevere\Components\Hooks\Tests\_resources\TestHookableWithMissingHooks',
                     'error.php'
                 )
         );
-
-        include_once 'MyHookable.php';
     }
 
     public function testWithoutHooksQueue(): void
     {
         $string = 'string';
-        $myHookable = new MyHookableWithoutHooks();
-        $myHookable->setString($string);
-        $this->assertSame($string, $myHookable->string());
+        $testHookable = new TestHookableWithoutHooks;
+        $testHookable->setString($string);
+        $this->assertSame($string, $testHookable->string());
     }
 
     public function testHooked(): void
     {
         $string = 'string';
-        $queue = $this->hooks->getQueue(MyHookable::class);
+        $queue = $this->hooks->getQueue(TestHookable::class);
         /**
-         * @var MyHookable $myHookable
+         * @var TestHookable $testHookable
          */
-        $myHookable = (new MyHookable)
+        $testHookable = (new TestHookable)
             ->withHooksRunner(
                 new HooksRunner($queue)
             );
-        $myHookable->setString($string);
-        $this->assertSame("(hooked $string)", $myHookable->string());
+        $testHookable->setString($string);
+        $this->assertSame("(hooked $string)", $testHookable->string());
     }
 
     public function testNotHookedClass(): void
     {
         $string = 'string';
-        $myHookable = new MyHookableWithNotRegisteredClass();
-        $myHookable->setString($string);
-        $this->assertSame($string, $myHookable->string());
+        $testHookable = new TestHookableNoRegister();
+        $testHookable->setString($string);
+        $this->assertSame($string, $testHookable->string());
     }
 
     public function testClassNotRegistered(): void
     {
         $this->expectException(HooksClassNotRegisteredException::class);
-        $this->hooks->getQueue(MyHookableWithNotRegisteredClass::class);
+        $this->hooks->getQueue(TestHookableNoRegister::class);
     }
 }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\X\Tests;
 
 use Chevere\Components\Hooks\HooksQueue;
-use Chevere\Components\Hooks\Tests\MyHook;
+use Chevere\Components\Hooks\Tests\_resources\TestHook;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 
@@ -28,7 +28,7 @@ final class HooksQueueTest extends TestCase
 
     public function testWithHook(): void
     {
-        $hook = new MyHook;
+        $hook = new TestHook;
         $hooksMap = new HooksQueue;
         $hooksMap = $hooksMap->withHook($hook);
         $this->assertSame([
@@ -42,7 +42,7 @@ final class HooksQueueTest extends TestCase
 
     public function testWithAlreadyAddedHook(): void
     {
-        $hook = new MyHook;
+        $hook = new TestHook;
         $hooksMap = (new HooksQueue)->withHook($hook);
         $this->expectException(LogicException::class);
         $hooksMap->withHook($hook);

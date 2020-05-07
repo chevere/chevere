@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing;
 
-use Chevere\Components\Route\Interfaces\RoutePathInterface;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
