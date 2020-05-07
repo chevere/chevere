@@ -20,8 +20,6 @@ use Chevere\Components\Filesystem\Interfaces\PathInterface;
 
 interface DirInterface
 {
-    public function __construct(PathInterface $path);
-
     /**
      * Provides access to the PathInterface instance.
      */
