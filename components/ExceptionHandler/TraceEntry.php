@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler;
 
-use InvalidArgumentException;
-use ReflectionMethod;
 use Chevere\Components\ExceptionHandler\Interfaces\TraceEntryInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrBool;
 use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use InvalidArgumentException;
+use ReflectionMethod;
 
 /**
  * Allows to interact with trace entries thrown by Exceptions.
@@ -42,8 +42,6 @@ final class TraceEntry implements TraceEntryInterface
     private array $args;
 
     /**
-     * Creates a new instance.
-     *
      * @param array $entry An exception trace item.
      * @throws InvalidArgumentException If $entry doesn't contain the required TraceEntryInterface::KEYS.
      */

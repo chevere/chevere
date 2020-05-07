@@ -29,8 +29,6 @@ final class Unserialize implements UnserializeInterface
     private TypeInterface $type;
 
     /**
-     * Creates a new instance.
-     *
      * @throws UnserializeException if $serialized can't be unserialized
      */
     public function __construct(string $serialized)

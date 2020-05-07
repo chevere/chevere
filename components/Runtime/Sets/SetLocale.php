@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Sets;
 
-use RuntimeException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Interfaces\SetInterface;
+use Chevere\Components\Runtime\Traits\SetTrait;
+use RuntimeException;
 
 /**
  * Sets the locale using `setlocale`
@@ -26,8 +26,6 @@ final class SetLocale implements SetInterface
     use SetTrait;
 
     /**
-     * Creates a new instance.
-     *
      * @param string $value Value to pass to `setlocale` like `es_CL.UTF8`
      * @throws RuntimeException If unable to set the locale
      */

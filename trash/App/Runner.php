@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App;
 
-use LogicException;
 use Chevere\Components\App\Exceptions\ResolverException;
-use Chevere\Components\Instances\BootstrapInstance;
-use Chevere\Components\Http\Request\RequestException;
-use Chevere\Components\Http\Request;
-use Chevere\Components\Message\Message;
 use Chevere\Components\App\Interfaces\BuilderInterface;
 use Chevere\Components\App\Interfaces\RunnerInterface;
+use Chevere\Components\Http\Request;
+use Chevere\Components\Http\Request\RequestException;
+use Chevere\Components\Instances\BootstrapInstance;
+use Chevere\Components\Message\Message;
+use LogicException;
 use function GuzzleHttp\Psr7\stream_for;
 
 /**
@@ -41,8 +41,6 @@ final class Runner implements RunnerInterface
     private ?bool $consoleLoop;
 
     /**
-     * Creates a new instance.
-     *
      * @param BuilderInterface $builder The builder to run.
      */
     public function __construct(BuilderInterface $builder)

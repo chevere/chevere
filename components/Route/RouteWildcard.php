@@ -33,8 +33,6 @@ final class RouteWildcard implements RouteWildcardInterface
     private RouteWildcardMatchInterface $match;
 
     /**
-     * Creates a new instance.
-     *
      * @param string $name  The wildcard name
      *
      * @throws RouteWildcardStartWithNumberException if $name starts with a number

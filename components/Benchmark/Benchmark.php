@@ -43,8 +43,6 @@ final class Benchmark implements BenchmarkInterface
     private ReflectionFunction $reflection;
 
     /**
-     * Creates a new instance.
-     *
      * @param array $arguments Arguments to pass to all callables.
      */
     public function __construct(...$arguments)

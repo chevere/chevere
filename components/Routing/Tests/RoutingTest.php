@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing\Tests;
 
-use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
-use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Routing\FsRoutesMaker;
@@ -32,7 +31,7 @@ final class RoutingTest extends TestCase
 
     public function setUp(): void
     {
-        $this->resourcesDir = new Dir(new Path(__DIR__ . '/_resources/'));
+        $this->resourcesDir = new DirFromString(__DIR__ . '/_resources/');
         $this->cacheDir = $this->resourcesDir->getChild('cache/');
         $this->routesDir = $this->resourcesDir->getChild('routes/');
         if (!$this->cacheDir->exists()) {

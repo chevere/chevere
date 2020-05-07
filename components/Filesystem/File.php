@@ -29,10 +29,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrBool;
 use Throwable;
 
-/**
- * This class provides interactions for a file in the application namespace.
- */
-final class File implements FileInterface
+class File implements FileInterface
 {
     private PathInterface $path;
 
@@ -45,22 +42,22 @@ final class File implements FileInterface
         $this->assertIsNotDir();
     }
 
-    public function path(): PathInterface
+    final public function path(): PathInterface
     {
         return $this->path;
     }
 
-    public function isPhp(): bool
+    final public function isPhp(): bool
     {
         return $this->isPhp;
     }
 
-    public function exists(): bool
+    final public function exists(): bool
     {
         return $this->path->exists() && $this->path->isFile();
     }
 
-    public function assertExists(): void
+    final public function assertExists(): void
     {
         if (!$this->exists()) {
             throw new FileNotExistsException(
@@ -70,7 +67,7 @@ final class File implements FileInterface
         }
     }
 
-    public function checksum(): string
+    final public function checksum(): string
     {
         $this->assertExists();
 
@@ -82,7 +79,7 @@ final class File implements FileInterface
      * @throws FileNotExistsException
      * @throws FileUnableToGetException
      */
-    public function contents(): string
+    final public function contents(): string
     {
         $this->assertExists();
         try {
@@ -103,7 +100,7 @@ final class File implements FileInterface
         return $contents;
     }
 
-    public function remove(): void
+    final public function remove(): void
     {
         $this->assertExists();
         // @codeCoverageIgnoreStart
@@ -118,7 +115,7 @@ final class File implements FileInterface
         // @codeCoverageIgnoreEnd
     }
 
-    public function create(): void
+    final public function create(): void
     {
         $this->assertIsNotDir();
         if ($this->path->exists()) {
@@ -138,7 +135,7 @@ final class File implements FileInterface
         }
     }
 
-    public function put(string $contents): void
+    final public function put(string $contents): void
     {
         $this->assertExists();
         if (false === file_put_contents($this->path->absolute(), $contents)) {

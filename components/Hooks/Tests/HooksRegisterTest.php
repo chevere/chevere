@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Hooks\Tests;
 
 use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Hooks\HooksRegister;
@@ -25,7 +26,7 @@ final class HooksRegisterTest extends TestCase
 
     public function setUp(): void
     {
-        $_resources = (new Dir(new Path(__DIR__ . '/')))->getChild('_resources/');
+        $_resources = (new DirFromString(__DIR__ . '/'))->getChild('_resources/');
         $this->tempDir = $_resources->getChild('temp/');
         if ($this->tempDir->exists()) {
             $this->tempDir->removeContents();

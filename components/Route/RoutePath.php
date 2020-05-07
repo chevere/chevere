@@ -55,8 +55,6 @@ final class RoutePath implements RoutePathInterface
     private RegexInterface $regex;
 
     /**
-     * Creates a new instance.
-     *
      * @param string $path a path uri like `/path/{wildcard}`
      *
      * @throws RoutePathForwardSlashException       if $path doesn't start with forward slash

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Sets;
 
-use RuntimeException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Interfaces\SetInterface;
+use Chevere\Components\Runtime\Traits\SetTrait;
 use InvalidArgumentException;
+use RuntimeException;
 
 /**
  * Sets the `precision` ini property
@@ -27,8 +27,6 @@ final class SetPrecision implements SetInterface
     use SetTrait;
 
     /**
-     * Creates a new instance.
-     *
      * @param string $value the precision value to pass to `ini_set`
      * @throws RuntimeException If unable to set the value
      */

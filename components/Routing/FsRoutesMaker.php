@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\Routing;
 
 use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Filesystem\Exceptions\FileReturnInvalidTypeException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteNameInterface;
 use Chevere\Components\Route\RouteDecorator;
 use Chevere\Components\Route\RoutePath;
@@ -32,7 +32,6 @@ use Chevere\Components\Type\Type;
 use RecursiveDirectoryIterator;
 use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
-use TypeError;
 
 final class FsRoutesMaker implements FsRoutesMakerInterface
 {
@@ -62,7 +61,7 @@ final class FsRoutesMaker implements FsRoutesMakerInterface
                 ->toString();
             $this->fsRoutes = $this->fsRoutes->withDecorated(
                 new FsRoute(
-                    new Dir(new Path($current)),
+                    new DirFromString($current),
                     new RoutePath($path),
                     new RouteDecorator($routeName)
                 )

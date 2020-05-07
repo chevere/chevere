@@ -16,6 +16,7 @@ use Chevere\Components\Console\Commands\ControllerInspectCommand;
 use Chevere\Components\Console\Commands\ControllerListCommand;
 use Chevere\Components\Console\Commands\ControllerRunCommand;
 use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\Instances\WritersInstance;
@@ -24,7 +25,7 @@ use Chevere\Components\Writers\Writers;
 $parentDir = dirname(__DIR__) . '/';
 require $parentDir . 'vendor/autoload.php';
 
-$rootDir = new Dir(new Path($parentDir));
+$rootDir = new DirFromString($parentDir);
 
 new BootstrapInstance(
     (new Bootstrap($rootDir, $rootDir))

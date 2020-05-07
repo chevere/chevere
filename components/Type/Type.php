@@ -29,8 +29,6 @@ final class Type implements TypeInterface
     private string $primitive = '';
 
     /**
-     * Creates a new instance.
-     *
      * @var string a primitive type, class name or interface
      *
      * @throws TypeNotFoundException if the type doesn't exists

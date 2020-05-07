@@ -28,15 +28,11 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Throwable;
 
-final class Dir implements DirInterface
+class Dir implements DirInterface
 {
     private PathInterface $path;
 
     /**
-     * Creates a new instance.
-     *
-     * PathInterface for
-     *
      * @throws PathIsFileException if the PathInterface represents a file
      * @throws DirTailException if the path doesn't ends with a trailing slash.
      */
@@ -55,17 +51,22 @@ final class Dir implements DirInterface
         }
     }
 
-    public function path(): PathInterface
+    public function getChild(string $path): DirInterface
+    {
+        return new Dir($this->path->getChild($path));
+    }
+
+    final public function path(): PathInterface
     {
         return $this->path;
     }
 
-    public function exists(): bool
+    final public function exists(): bool
     {
         return $this->path->exists() && $this->path->isDir();
     }
 
-    public function assertExists(): void
+    final public function assertExists(): void
     {
         if (!$this->exists()) {
             throw new DirNotExistsException(
@@ -75,7 +76,7 @@ final class Dir implements DirInterface
         }
     }
 
-    public function create(int $mode = 0755): void
+    final public function create(int $mode = 0755): void
     {
         try {
             mkdir($this->path->absolute(), $mode, true);
@@ -88,7 +89,7 @@ final class Dir implements DirInterface
         }
     }
 
-    public function remove(): array
+    final public function remove(): array
     {
         $this->assertIsDir();
         $array = $this->removeContents();
@@ -98,7 +99,7 @@ final class Dir implements DirInterface
         return $array;
     }
 
-    public function removeContents(): array
+    final public function removeContents(): array
     {
         $this->assertIsDir();
         $files = new RecursiveIteratorIterator(
@@ -123,11 +124,6 @@ final class Dir implements DirInterface
         }
 
         return $removed;
-    }
-
-    public function getChild(string $path): DirInterface
-    {
-        return new Dir($this->path->getChild($path));
     }
 
     private function assertIsNotFile(): void

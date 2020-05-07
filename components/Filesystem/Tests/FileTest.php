@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem\Tests;
 
-use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Filesystem\Exceptions\FileExistsException;
 use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
 use Chevere\Components\Filesystem\Exceptions\PathIsDirException;
@@ -30,7 +30,7 @@ final class FileTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->dir = new Dir(new Path(__DIR__ . '/FileTest_' . uniqid() . '/'));
+        $this->dir = new DirFromString(__DIR__ . '/FileTest_' . uniqid() . '/');
     }
 
     protected function tearDown(): void

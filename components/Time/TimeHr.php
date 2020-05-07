@@ -24,8 +24,6 @@ final class TimeHr implements TimeHrInterface
     private string $hrTimeRead;
 
     /**
-     * Creates a new instance.
-     *
      * @param int $hrTime High-resolution time.
      */
     public function __construct(int $hrTime)

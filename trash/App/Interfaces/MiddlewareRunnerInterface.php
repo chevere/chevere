@@ -13,15 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Interfaces;
 
-use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
 use Chevere\Components\App\Exceptions\AppWithoutRequestException;
 use Chevere\Components\Middleware\Exceptions\MiddlewareNamesEmptyException;
+use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
 
 interface MiddlewareRunnerInterface
 {
     /**
-     * Creates a new instance.
-     *
      * @param MiddlewareNameCollectionInterface $middlewareNameCollection An instance containing at least one middleware
      * @param AppInterface                      $app                      an application container with a RequestInterface
      *

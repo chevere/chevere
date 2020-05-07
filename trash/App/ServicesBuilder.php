@@ -29,8 +29,6 @@ final class ServicesBuilder implements ServicesBuilderInterface
     private ServicesInterface $services;
 
     /**
-     * Creates a new instance.
-     *
      * @param BuildInterface      $build      The build containg AppInterface services (if any)
      * @param ParametersInterface $parameters The application parameters which alter this services builder
      */

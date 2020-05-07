@@ -16,16 +16,15 @@ namespace Chevere\Components\Bootstrap\Tests;
 use Chevere\Components\Bootstrap\Bootstrap;
 use Chevere\Components\Bootstrap\Exceptions\BootstrapDirException;
 use Chevere\Components\Bootstrap\Interfaces\BootstrapInterface;
-use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
-use Chevere\Components\Filesystem\Path;
 use PHPUnit\Framework\TestCase;
 
 final class BootstrapTest extends TestCase
 {
     private function getRootDir(): DirInterface
     {
-        return (new Dir(new Path(__DIR__ . '/')))->getChild('resources/root/');
+        return (new DirFromString(__DIR__ . '/'))->getChild('resources/root/');
     }
 
     private function getAppDir(DirInterface $rootDir): DirInterface

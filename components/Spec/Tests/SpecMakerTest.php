@@ -21,6 +21,7 @@ use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
 use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
 use Chevere\Components\Controller\Interfaces\ControllerResponseInterface;
 use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PutMethod;
@@ -59,7 +60,7 @@ final class SpecMakerTest extends TestCase
         $this->expectException(SpecInvalidArgumentException::class);
         new SpecMaker(
             new SpecPath('/spec'),
-            new Dir(new Path(__DIR__ . "/_resources/$shortName/spec/")),
+            new DirFromString(__DIR__ . "/_resources/$shortName/spec/"),
             new Router
         );
     }

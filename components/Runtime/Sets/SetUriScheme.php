@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Runtime\Sets;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Runtime\Traits\SetTrait;
 use Chevere\Components\Runtime\Interfaces\SetInterface;
+use Chevere\Components\Runtime\Traits\SetTrait;
 use InvalidArgumentException;
 
 /**
@@ -28,8 +28,6 @@ final class SetUriScheme implements SetInterface
     private array $accept = ['http', 'https'];
 
     /**
-     * Creates a new instance.
-     *
      * @param string $value Http scheme, either http or https.
      * @throws InvalidArgumentException If the value passed is not a Http scheme
      */

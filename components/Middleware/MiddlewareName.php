@@ -24,8 +24,6 @@ final class MiddlewareName implements MiddlewareNameInterface
     private string $name;
 
     /**
-     * Creates a new instance.
-     *
      * @param string $name A middleware name implementing the MiddlewareInterface
      *
      * @throws InvalidArgumentException    if $name represents non existent class

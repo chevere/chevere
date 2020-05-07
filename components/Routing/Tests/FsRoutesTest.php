@@ -13,19 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing\Tests;
 
-use Chevere\Components\ExceptionHandler\Exceptions\Exception;
-use Chevere\Components\ExceptionHandler\Interfaces\ExceptionInterface;
-use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
-use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
-use Chevere\Components\Route\Interfaces\RouteNameInterface;
-use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteDecorator;
-use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Routing\Exceptions\DecoratedRouteAlreadyAddedException;
-use Chevere\Components\Routing\Exceptions\RouteDecoratorFileAlreadyAddedException;
 use Chevere\Components\Routing\Exceptions\RouteNameAlreadyAddedException;
 use Chevere\Components\Routing\Exceptions\RoutePathAlreadyAddedException;
 use Chevere\Components\Routing\Exceptions\RouteRegexAlreadyAddedException;
@@ -38,7 +31,7 @@ final class FsRoutesTest extends TestCase
 {
     private function getDir(): DirInterface
     {
-        return new Dir(new Path(__DIR__ . '/'));
+        return new DirFromString(__DIR__ . '/');
     }
 
     private function getRouteDecorator(string $name): RouteDecoratorInterface

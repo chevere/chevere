@@ -95,8 +95,6 @@ final class Run implements RunInterface
     private string $printable = '';
 
     /**
-     * Creates a new instance.
-     *
      * @throws ArgumentCountException if the argument count doesn't match the callable parameters
      * @throws ArgumentTypeException if the argument types doesn't match
      */

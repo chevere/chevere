@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks\Tests;
 
-use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Hooks\HooksIterator;
 use LogicException;
 use PHPUnit\Framework\TestCase;
@@ -23,14 +22,14 @@ final class HooksIteratorTest extends TestCase
 {
     public function testConstructInvalidDir(): void
     {
-        $dir = new Dir(new Path(__DIR__ . '/' . uniqid() . '/'));
+        $dir = new DirFromString(__DIR__ . '/' . uniqid() . '/');
         $this->expectException(LogicException::class);
         new HooksIterator($dir);
     }
 
     public function testConstruct(): void
     {
-        $dir = (new Dir(new Path(__DIR__ . '/')))->getChild('_resources/HooksIteratorTest/hooks/');
+        $dir = (new DirFromString(__DIR__ . '/'))->getChild('_resources/HooksIteratorTest/hooks/');
         $iterator = new HooksIterator($dir);
         $this->assertTrue(
             $iterator->hooksRegister()->hooksQueueMap()

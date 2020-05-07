@@ -41,10 +41,7 @@ final class Cache implements CacheInterface
     private array $puts;
 
     /**
-     * Creates a new instance.
-     *
      * @param DirInterface $dir the directory where cache files will be stored/accesed (must exists)
-     *
      * @throws DirUnableToCreateException if $dir doesn't exists and unable to create
      */
     public function __construct(DirInterface $dir)
@@ -108,7 +105,9 @@ final class Cache implements CacheInterface
 
         return new CacheItem(
             new FilePhpReturn(
-                new FilePhp(new File($path))
+                new FilePhp(
+                    new File($path)
+                )
             )
         );
     }

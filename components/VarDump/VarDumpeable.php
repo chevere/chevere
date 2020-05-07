@@ -15,8 +15,8 @@ namespace Chevere\Components\VarDump;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Interfaces\TypeInterface;
-use Chevere\Components\VarDump\Interfaces\VarDumpeableInterface;
 use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpeableInterface;
 use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use LogicException;
 use function ChevereFn\varType;
@@ -35,8 +35,6 @@ final class VarDumpeable implements VarDumpeableInterface
     private string $processorName;
 
     /**
-     * Creates a new instance.
-     *
      * @throws LogicException if it is not possible to dump the passed variable.
      */
     public function __construct($var)

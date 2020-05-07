@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Filesystem\Dir\Tests;
 
 use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Filesystem\Exceptions\DirTailException;
 use Chevere\Components\Filesystem\Exceptions\DirUnableToCreateException;
-use Chevere\Components\Filesystem\Exceptions\DirUnableToRemoveException;
 use Chevere\Components\Filesystem\Exceptions\PathIsFileException;
 use Chevere\Components\Filesystem\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Filesystem\File;
@@ -33,7 +33,7 @@ final class DirTest extends TestCase
     {
         $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0]['line'];
 
-        $this->dir = new Dir(new Path(__DIR__ . '/DirTest_' . uniqid() . '_' . $bt . '/'));
+        $this->dir = new DirFromString(__DIR__ . '/DirTest_' . uniqid() . '_' . $bt . '/');
     }
 
     protected function tearDown(): void
@@ -48,7 +48,7 @@ final class DirTest extends TestCase
     public function testInvalidPath(): void
     {
         $this->expectException(DirTailException::class);
-        new Dir(new Path(__DIR__));
+        new DirFromString(__DIR__);
     }
 
     public function testWithFilePath(): void
@@ -72,7 +72,7 @@ final class DirTest extends TestCase
     public function testCreateCreateUnable(): void
     {
         $this->expectException(DirUnableToCreateException::class);
-        (new Dir(new Path(__DIR__ . '/')))
+        (new DirFromString(__DIR__ . '/'))
             ->create();
     }
 
