@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks\Tests;
+namespace Chevere\Components\Plugs\Tests;
 
 use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
-use Chevere\Components\Hooks\HooksRegister;
 use Chevere\Components\Hooks\Tests\_resources\TestHook;
+use Chevere\Components\Plugs\PlugsRegister;
 use PHPUnit\Framework\TestCase;
 
-final class HooksRegisterTest extends TestCase
+final class PlugsRegisterTest extends TestCase
 {
     private DirInterface $tempDir;
 
@@ -41,16 +41,16 @@ final class HooksRegisterTest extends TestCase
 
     public function testConstrut(): void
     {
-        $hooksRegister = new HooksRegister;
-        $this->assertSame([], $hooksRegister->classMap()->toArray());
+        $plugsRegister = new PlugsRegister;
+        $this->assertSame([], $plugsRegister->classMap()->toArray());
     }
 
     public function testWithHookablesClassmap(): void
     {
         $hook = new TestHook;
-        $hooksRegister = (new HooksRegister)
-            ->withAddedHook($hook)
-            ->withHookablesClassMap($this->tempDir);
+        $hooksRegister = (new PlugsRegister)
+            ->withAddedPlug($hook)
+            ->withClassMapAt($this->tempDir);
         $this->assertTrue($hooksRegister->classMap()->has($hook->at()));
     }
 }

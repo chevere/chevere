@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Events\Interfaces;
 
-use Chevere\Components\Extend\Interfaces\PluginInterface;
+use Chevere\Components\Plugs\Interfaces\PlugInterface;
 
-interface EventListenerInterface extends PluginInterface
+interface EventListenerInterface extends PlugInterface
 {
     /**
      * @return string Applicable event name.

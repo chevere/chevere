@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks\Tests\_resources\HooksIteratorTest\hookables;
+namespace Chevere\Components\Plugs\Tests\_resources\PlugsIteratorTest\hookables;
 
 use Chevere\Components\Hooks\HookAnchors;
 use Chevere\Components\Hooks\Interfaces\HookableInterface;

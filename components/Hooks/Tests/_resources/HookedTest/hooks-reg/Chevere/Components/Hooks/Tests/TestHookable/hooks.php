@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-use Chevere\Components\Extend\PluginsQueue;
 use Chevere\Components\Hooks\Tests\_resources\TestHook;
+use Chevere\Components\Plugs\PlugsQueue;
 
-return (new PluginsQueue)->withPlugin(new TestHook);
+return (new PlugsQueue)->withPlug(new TestHook);

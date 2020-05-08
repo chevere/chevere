@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Extend\Interfaces;
+namespace Chevere\Components\Plugs\Interfaces;
 
-interface PluginInterface
+interface PlugInterface
 {
     /**
      * @return string for actor

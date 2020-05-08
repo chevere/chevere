@@ -11,29 +11,29 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks\Tests;
+namespace Chevere\Components\Plugs\Tests;
 
 use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Components\Hooks\HooksIterator;
+use Chevere\Components\Plugs\PlugsIterator;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 
-final class HooksIteratorTest extends TestCase
+final class PlugsIteratorTest extends TestCase
 {
     public function testConstructInvalidDir(): void
     {
         $dir = new DirFromString(__DIR__ . '/' . uniqid() . '/');
         $this->expectException(LogicException::class);
-        new HooksIterator($dir);
+        new PlugsIterator($dir);
     }
 
     public function testConstruct(): void
     {
-        $dir = (new DirFromString(__DIR__ . '/'))->getChild('_resources/HooksIteratorTest/hooks/');
-        $iterator = new HooksIterator($dir);
+        $dir = (new DirFromString(__DIR__ . '/'))->getChild('_resources/PlugsIteratorTest/hooks/');
+        $iterator = new PlugsIterator($dir);
         $this->assertTrue(
-            $iterator->hooksRegister()->hooksQueueMap()
-                ->hasKey('Chevere\Components\Hooks\Tests\_resources\HooksIteratorTest\hookables\TestHookable')
+            $iterator->plugsRegister()->map()
+                ->hasKey('Chevere\Components\Plugs\Tests\_resources\PlugsIteratorTest\hookables\TestHookable')
         );
     }
 }

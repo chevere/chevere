@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Extend;
+namespace Chevere\Components\Plugs;
 
-use Chevere\Components\Extend\AssertPlugin;
-use Chevere\Components\Extend\Interfaces\PluginInterface;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Plugs\AssertPlug;
+use Chevere\Components\Plugs\Interfaces\PlugInterface;
 use Ds\Set;
 use LogicException;
 
-final class PluginsQueue
+final class PlugsQueue
 {
     private array $array = [];
 
@@ -30,22 +30,22 @@ final class PluginsQueue
         $this->set = new Set;
     }
 
-    public function withPlugin(PluginInterface $plugin): PluginsQueue
+    public function withPlug(PlugInterface $plug): PlugsQueue
     {
-        $pluginName = get_class($plugin);
-        if ($this->set->contains($pluginName)) {
+        $plugName = get_class($plug);
+        if ($this->set->contains($plugName)) {
             throw new LogicException(
                 (new Message('%pluginName% is already registered'))
-                    ->code('%pluginName%', $pluginName)
+                    ->code('%pluginName%', $plugName)
                     ->toString()
             );
         }
-        new AssertPlugin($plugin);
-        $for = $plugin->for();
-        $priority = (string) $plugin->priority();
+        new AssertPlug($plug);
+        $for = $plug->for();
+        $priority = (string) $plug->priority();
         $new = clone $this;
-        $new->array[$for][$priority][] = $pluginName;
-        $new->set->add($pluginName);
+        $new->array[$for][$priority][] = $plugName;
+        $new->set->add($plugName);
 
         return $new;
     }

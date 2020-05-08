@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\Hooks;
 
 use Chevere\Components\ClassMap\ClassMap;
-use Chevere\Components\Extend\PluginsQueue;
 use Chevere\Components\Filesystem\FileFromString;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Hooks\Exceptions\HooksClassNotRegisteredException;
 use Chevere\Components\Hooks\Exceptions\HooksFileNotFoundException;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Plugs\PlugsQueue;
 use Chevere\Components\Type\Type;
 use LogicException;
 use RuntimeException;
@@ -46,7 +46,7 @@ final class Hooks
      * @throws RuntimeException if unable to load the hooks file
      * @throws LogicException if the contents of the hooks file are invalid
      */
-    public function getQueue(string $className): PluginsQueue
+    public function getQueue(string $className): PlugsQueue
     {
         if (!$this->hookablesToHooks->has($className)) {
             throw new HooksClassNotRegisteredException(
@@ -66,14 +66,14 @@ final class Hooks
             $fileReturn = new FilePhpReturn(new FilePhp(new FileFromString($hooksPath)));
             $fileReturn = $fileReturn->withStrict(false);
             /**
-             * @var PluginsQueue $queue
+             * @var PlugsQueue $queue
              */
             $queue = $fileReturn->var();
-            if (!(new Type(PluginsQueue::class))->validate($queue)) {
+            if (!(new Type(PlugsQueue::class))->validate($queue)) {
                 throw new LogicException(
                     (new Message('Return value of %filePath% is not of type %type%'))
                         ->code('%filePath%', $hooksPath)
-                        ->code('%type%', PluginsQueue::class)
+                        ->code('%type%', PlugsQueue::class)
                         ->toString()
                 );
             }

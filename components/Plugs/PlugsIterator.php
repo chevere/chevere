@@ -11,11 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks;
+namespace Chevere\Components\Plugs;
 
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Plugs\PlugsRegister;
 use Chevere\Components\Str\StrBool;
 use Go\ParserReflection\ReflectionFile;
 use Go\ParserReflection\ReflectionFileNamespace;
@@ -25,14 +26,13 @@ use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
 use ReflectionClass;
 
-final class HooksIterator
+final class PlugsIterator
 {
     const HOOK_TRAILING_NAME = 'Hook.php';
-    const LISTENER_TRAILING_NAME = 'Listener.php';
 
     private DirInterface $dir;
 
-    private HooksRegister $hooksRegister;
+    private PlugsRegister $plugsRegister;
 
     private RecursiveIteratorIterator $recursiveIterator;
 
@@ -50,7 +50,7 @@ final class HooksIterator
             );
         }
         $this->dir = $dir;
-        $this->hooksRegister = new HooksRegister;
+        $this->plugsRegister = new PlugsRegister;
         $this->directoryIterator = $this->getDirectoryIterator();
         $this->recursiveIterator = new RecursiveIteratorIterator(
             $this->recursiveFilterIterator()
@@ -64,9 +64,9 @@ final class HooksIterator
         }
     }
 
-    public function hooksRegister(): HooksRegister
+    public function plugsRegister(): PlugsRegister
     {
-        return $this->hooksRegister;
+        return $this->plugsRegister;
     }
 
     private function getDirectoryIterator(): RecursiveDirectoryIterator
@@ -90,8 +90,8 @@ final class HooksIterator
              */
             foreach ($classes as $class) {
                 if ($class->implementsInterface(HookInterface::class)) {
-                    $this->hooksRegister = $this->hooksRegister
-                        ->withAddedHook($class->newInstance());
+                    $this->plugsRegister = $this->plugsRegister
+                        ->withAddedPlug($class->newInstance());
                 }
             }
         }
@@ -107,7 +107,7 @@ final class HooksIterator
                     return true; // @codeCoverageIgnore
                 }
 
-                return (new StrBool($this->current()->getFilename()))->endsWith(HooksIterator::HOOK_TRAILING_NAME);
+                return (new StrBool($this->current()->getFilename()))->endsWith(PlugsIterator::HOOK_TRAILING_NAME);
             }
         };
     }

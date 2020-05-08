@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks\Interfaces;
 
-use Chevere\Components\Extend\Interfaces\PluginInterface;
+use Chevere\Components\Plugs\Interfaces\PlugInterface;
 
-interface HookInterface extends PluginInterface
+interface HookInterface extends PlugInterface
 {
     /**
      * @return string Applicable hook anchor.

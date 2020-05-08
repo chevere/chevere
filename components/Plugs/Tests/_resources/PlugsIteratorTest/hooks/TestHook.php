@@ -11,10 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks\Tests\_resources\HooksIteratorTest\hooks;
+namespace Chevere\Components\Plugs\Tests\_resources\PlugsIteratorTest\hooks;
 
 use Chevere\Components\Hooks\Interfaces\HookInterface;
-use Chevere\Components\Hooks\Tests\_resources\HooksIteratorTest\hookables\TestHookable;
+use Chevere\Components\Plugs\Tests\_resources\PlugsIteratorTest\hookables\TestHookable;
 
 class TestHook implements HookInterface
 {

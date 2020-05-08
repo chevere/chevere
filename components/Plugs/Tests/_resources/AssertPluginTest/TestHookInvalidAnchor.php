@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Extend\Tests\_resources\AssertPluginTest;
+namespace Chevere\Components\Plugs\Tests\_resources\AssertPluginTest;
 
-use Chevere\Components\Hooks\Tests\_resources\HooksIteratorTest\hooks\TestHook;
+use Chevere\Components\Plugs\Tests\_resources\PlugsIteratorTest\hooks\TestHook;
 
 final class TestHookInvalidAnchor extends TestHook
 {

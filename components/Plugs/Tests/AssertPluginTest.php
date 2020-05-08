@@ -11,16 +11,16 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Extend\Tests;
+namespace Chevere\Components\Plugs\Tests;
 
-use Chevere\Components\Extend\AssertPlugin;
-use Chevere\Components\Extend\Tests\_resources\AssertPluginTest\TestHookClassNoInterface;
-use Chevere\Components\Extend\Tests\_resources\AssertPluginTest\TestHookClassNotFound;
-use Chevere\Components\Extend\Tests\_resources\AssertPluginTest\TestHookInvalidAnchor;
 use Chevere\Components\Hooks\Exceptions\AnchorNotFoundException;
 use Chevere\Components\Hooks\Exceptions\HookableInterfaceException;
 use Chevere\Components\Hooks\Exceptions\HookableNotFoundException;
 use Chevere\Components\Hooks\Tests\_resources\TestHook;
+use Chevere\Components\Plugs\AssertPlug;
+use Chevere\Components\Plugs\Tests\_resources\AssertPluginTest\TestHookClassNoInterface;
+use Chevere\Components\Plugs\Tests\_resources\AssertPluginTest\TestHookClassNotFound;
+use Chevere\Components\Plugs\Tests\_resources\AssertPluginTest\TestHookInvalidAnchor;
 use PHPUnit\Framework\TestCase;
 
 final class AssertPluginTest extends TestCase
@@ -29,27 +29,27 @@ final class AssertPluginTest extends TestCase
     {
         $hook = new TestHookClassNotFound;
         $this->expectException(HookableNotFoundException::class);
-        new AssertPlugin($hook);
+        new AssertPlug($hook);
     }
 
     public function testNoInterface(): void
     {
         $hook = new TestHookClassNoInterface;
         $this->expectException(HookableInterfaceException::class);
-        new AssertPlugin($hook);
+        new AssertPlug($hook);
     }
 
     public function testAnchorNotFound(): void
     {
         $hook = new TestHookInvalidAnchor;
         $this->expectException(AnchorNotFoundException::class);
-        new AssertPlugin($hook);
+        new AssertPlug($hook);
     }
 
     public function testConstruct(): void
     {
         $hook = new TestHook;
-        $assertHook = new AssertPlugin($hook);
-        $this->assertSame($hook, $assertHook->hook());
+        $assertHook = new AssertPlug($hook);
+        $this->assertSame($hook, $assertHook->plug());
     }
 }
