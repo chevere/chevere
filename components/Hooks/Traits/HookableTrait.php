@@ -27,26 +27,11 @@ trait HookableTrait
         return $new;
     }
 
-    public function anchor(string $anchor, &$argument): void
+    public function hook(string $anchor, &$argument): void
     {
         if (isset($this->hooksRunner) === false) {
             return;
         }
         $this->hooksRunner->run($anchor, $argument);
     }
-
-    // public function getHooksQueue(): HooksQueueInterface
-    // {
-    //     $hooksQueue = new HooksQueueNull;
-    //     try {
-    //         $hooks = HooksInstance::get();
-    //     } catch (LogicException $e) {
-    //         return $hooksQueue;
-    //     }
-    //     if (isset($hooks) && $hooks->has(static::class)) {
-    //         return $hooks->queue(static::class);
-    //     }
-
-    //     return $hooksQueue;
-    // }
 }

@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks;
 
+use Chevere\Components\Message\Message;
 use Ds\Set;
+use LogicException;
 use function DeepCopy\deep_copy;
 
 final class HookAnchors
@@ -28,6 +30,12 @@ final class HookAnchors
     public function withAnchor(string $anchor): HookAnchors
     {
         $new = clone $this;
+        if ($new->has($anchor)) {
+            throw new LogicException(
+                (new Message('Anchor %anchor% has been already added'))
+                    ->code('%anchor%', $anchor)
+            );
+        }
         $new->set->add($anchor);
 
         return $new;

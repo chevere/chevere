@@ -29,7 +29,10 @@ interface HookableInterface
     public function withHooksRunner(HooksRunner $hooksRunner): HookableInterface;
 
     /**
-     * Run the hooks queue for the given anchor (if-any).
+     * Run hooks for the given anchor (if-any).
+     *
+     * @param string $anchor Hook anchor
+     * @param string $argument An argument to pass to hooks queue
      */
-    public function anchor(string $anchor, &$argument): void;
+    public function hook(string $anchor, &$argument): void;
 }

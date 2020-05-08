@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\TestApp\App\Controllers;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Controller\ControllerArguments;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponse;
@@ -49,21 +48,21 @@ class TestController extends Controller implements HookableInterface
             ->withParameter(
                 new ControllerParameter('id', new Regex('/^[0-9]+$/'))
             );
-        $this->anchor('getParameters:after', $paremeters);
+        $this->hook('getParameters:after', $paremeters);
 
         return $paremeters;
     }
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        $this->anchor('run:before', $arguments);
+        $this->hook('run:before', $arguments);
         $response = new ControllerResponse(true);
         $data = [
             'userName' => $arguments->get('name'),
             'userId' => $arguments->get('id')
         ];
         $response = $response->withData($data);
-        $this->anchor('run:after', $response);
+        $this->hook('run:after', $response);
 
         return $response;
     }
