@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks;
 
+use Chevere\Components\ClassMap\ClassMap;
+use Chevere\Components\Extend\PluginsQueue;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
@@ -33,15 +35,15 @@ final class HooksRegister
 
     private Set $set;
 
-    private Map $hooksQueueMap;
+    private Map $map;
 
-    private HookablesMap $hookablesMap;
+    private ClassMap $hookablesToHooks;
 
     public function __construct()
     {
         $this->set = new Set;
-        $this->hooksQueueMap = new Map;
-        $this->hookablesMap = new HookablesMap;
+        $this->map = new Map;
+        $this->hookablesToHooks = new ClassMap;
     }
 
     public function withAddedHook(HookInterface $hook): HooksRegister
@@ -54,11 +56,11 @@ final class HooksRegister
                     ->toString()
             );
         }
-        $hooksQueue = $this->hooksQueueMap->hasKey($hook->className())
-            ? $this->hooksQueueMap->get($hook->className())
-            : new HooksQueue;
+        $pluginQueue = $this->map->hasKey($hook->at())
+            ? $this->map->get($hook->at())
+            : new PluginsQueue;
         $new = clone $this;
-        $new->hooksQueueMap->put($hook->className(), $hooksQueue->withHook($hook));
+        $new->map->put($hook->at(), $pluginQueue->withPlugin($hook));
 
         return $new;
     }
@@ -76,7 +78,7 @@ final class HooksRegister
         }
         $hooksDir = $dir->getChild(self::HOOKS_DIR);
         $new = clone $this;
-        foreach ($new->hooksQueueMap as $hookableClassName => $queue) {
+        foreach ($new->map as $hookableClassName => $queue) {
             $nsPath = (new Str($hookableClassName))->forwardSlashes()
                 ->toString();
             $hooksNsDir = $hooksDir->getChild($nsPath . '/');
@@ -98,7 +100,10 @@ final class HooksRegister
             (new FilePhpReturn($phpFileHooks))
                 ->put(new VarExportable($queue));
             $phpFileHooks->cache();
-            $new->hookablesMap = $new->hookablesMap->withPut($hookableClassName, $hooksPath->absolute());
+            $new->hookablesToHooks = $new->hookablesToHooks->withPut(
+                $hookableClassName,
+                $hooksPath->absolute()
+            );
         }
         $fileClassMap = new File($dir->path()
             ->getChild(self::HOOKABLES_CLASSMAP_FILENAME));
@@ -107,7 +112,7 @@ final class HooksRegister
         }
         $phpFileClassMap = new FilePhp($fileClassMap);
         (new FilePhpReturn($phpFileClassMap))
-            ->put(new VarExportable($new->hookablesMap));
+            ->put(new VarExportable($new->hookablesToHooks));
         $phpFileClassMap->cache();
 
         return $new;
@@ -115,11 +120,11 @@ final class HooksRegister
 
     public function hooksQueueMap(): Map
     {
-        return $this->hooksQueueMap;
+        return $this->map;
     }
 
-    public function hookablesMap(): HookablesMap
+    public function classMap(): ClassMap
     {
-        return $this->hookablesMap;
+        return $this->hookablesToHooks;
     }
 }

@@ -11,26 +11,26 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks\Interfaces;
+namespace Chevere\Components\Events\Interfaces;
 
 use Chevere\Components\Extend\Interfaces\PluginInterface;
 
-interface HookInterface extends PluginInterface
+interface EventListenerInterface extends PluginInterface
 {
     /**
-     * @return string Applicable hook anchor.
+     * @return string Applicable event name.
      */
     public function for(): string;
 
     /**
-     * @return string Target hookable class name.
+     * @return string Target eventable class name.
      */
     public function at(): string;
 
     /**
-     * @return string Priority order.
+     * @return String Priority order.
      */
     public function priority(): int;
 
-    public function __invoke(&$argument): void;
+    public function __invoke(array $data): void;
 }

@@ -28,11 +28,6 @@ interface FileInterface
     const CHECKSUM_LENGTH = 64;
 
     /**
-     * @throws PathIsDirException if the $path represents a directory
-     */
-    public function __construct(PathInterface $path);
-
-    /**
      * Provides access to the PathInterface instance.
      */
     public function path(): PathInterface;

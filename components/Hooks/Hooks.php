@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks;
 
-use Chevere\Components\Filesystem\File;
+use Chevere\Components\ClassMap\ClassMap;
+use Chevere\Components\Extend\PluginsQueue;
+use Chevere\Components\Filesystem\FileFromString;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
-use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Hooks\Exceptions\HooksClassNotRegisteredException;
 use Chevere\Components\Hooks\Exceptions\HooksFileNotFoundException;
 use Chevere\Components\Message\Message;
@@ -27,16 +28,16 @@ use Throwable;
 
 final class Hooks
 {
-    private HookablesMap $hookablesMap;
+    private ClassMap $hookablesToHooks;
 
-    public function __construct(HookablesMap $map)
+    public function __construct(ClassMap $classMap)
     {
-        $this->hookablesMap = $map;
+        $this->hookablesToHooks = $classMap;
     }
 
     public function has(string $hookable): bool
     {
-        return $this->hookablesMap->has($hookable);
+        return $this->hookablesToHooks->has($hookable);
     }
 
     /**
@@ -45,15 +46,15 @@ final class Hooks
      * @throws RuntimeException if unable to load the hooks file
      * @throws LogicException if the contents of the hooks file are invalid
      */
-    public function getQueue(string $className): HooksQueue
+    public function getQueue(string $className): PluginsQueue
     {
-        if (!$this->hookablesMap->has($className)) {
+        if (!$this->hookablesToHooks->has($className)) {
             throw new HooksClassNotRegisteredException(
                 (new Message("Class %className% doesn't exists in the class map"))
                     ->code('%className%', $className)
             );
         }
-        $hooksPath = $this->hookablesMap->get($className);
+        $hooksPath = $this->hookablesToHooks->get($className);
         if (stream_resolve_include_path($hooksPath) === false) {
             throw new HooksFileNotFoundException(
                 (new Message("File %fileName% doesn't exists"))
@@ -62,17 +63,17 @@ final class Hooks
         }
         // @codeCoverageIgnoreStart
         try {
-            $fileReturn = new FilePhpReturn(new FilePhp(new File(new Path($hooksPath))));
+            $fileReturn = new FilePhpReturn(new FilePhp(new FileFromString($hooksPath)));
             $fileReturn = $fileReturn->withStrict(false);
             /**
-             * @var HooksQueue $queue
+             * @var PluginsQueue $queue
              */
             $queue = $fileReturn->var();
-            if (!(new Type(HooksQueue::class))->validate($queue)) {
+            if (!(new Type(PluginsQueue::class))->validate($queue)) {
                 throw new LogicException(
                     (new Message('Return value of %filePath% is not of type %type%'))
                         ->code('%filePath%', $hooksPath)
-                        ->code('%type%', HooksQueue::class)
+                        ->code('%type%', PluginsQueue::class)
                         ->toString()
                 );
             }

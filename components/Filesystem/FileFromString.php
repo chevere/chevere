@@ -13,20 +13,19 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
+use Chevere\Components\Filesystem\Exceptions\PathIsDirException;
+
 /**
  * @codeCoverageIgnore
  */
-final class FileFromString
+final class FileFromString extends File
 {
     /**
      * @var string $path Absolute file path.
+     * @throws PathIsDirException if the $path represents a directory
      */
     public function __construct(string $path)
     {
-        parent::__construct(
-            new File(
-                new Path($path)
-            )
-        );
+        parent::__construct(new Path($path));
     }
 }

@@ -17,12 +17,12 @@ use Chevere\Components\Hooks\Interfaces\HookInterface;
 
 class TestHook implements HookInterface
 {
-    public function anchor(): string
+    public function for(): string
     {
         return 'setString:after';
     }
 
-    public function className(): string
+    public function at(): string
     {
         return TestHookable::class;
     }

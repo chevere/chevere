@@ -42,7 +42,7 @@ final class HooksRegisterTest extends TestCase
     public function testConstrut(): void
     {
         $hooksRegister = new HooksRegister;
-        $this->assertSame([], $hooksRegister->hookablesMap()->toArray());
+        $this->assertSame([], $hooksRegister->classMap()->toArray());
     }
 
     public function testWithHookablesClassmap(): void
@@ -51,6 +51,6 @@ final class HooksRegisterTest extends TestCase
         $hooksRegister = (new HooksRegister)
             ->withAddedHook($hook)
             ->withHookablesClassMap($this->tempDir);
-        $this->assertTrue($hooksRegister->hookablesMap()->has($hook->className()));
+        $this->assertTrue($hooksRegister->classMap()->has($hook->at()));
     }
 }

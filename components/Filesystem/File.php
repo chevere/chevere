@@ -35,6 +35,9 @@ class File implements FileInterface
 
     private bool $isPhp;
 
+    /**
+     * @throws PathIsDirException if the $path represents a directory
+     */
     public function __construct(PathInterface $path)
     {
         $this->path = $path;

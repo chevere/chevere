@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\ExceptionHandler\Tests;
+namespace Chevere\Components\ExceptionHandler\Tests\Documents;
 
 use Chevere\Components\ExceptionHandler\Documents\HtmlDocument;
 use Chevere\Components\ExceptionHandler\Documents\PlainDocument;

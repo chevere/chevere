@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Writer\Tests;
+namespace Chevere\Components\Writers\Tests;
 
 use Chevere\Components\Writers\Interfaces\WriterInterface;
 use Chevere\Components\Writers\StreamWriter;

@@ -11,14 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks;
+namespace Chevere\Components\Extend;
 
-use Chevere\Components\Hooks\Interfaces\HookInterface;
+use Chevere\Components\Extend\AssertPlugin;
+use Chevere\Components\Extend\Interfaces\PluginInterface;
 use Chevere\Components\Message\Message;
 use Ds\Set;
 use LogicException;
 
-final class HooksQueue
+final class PluginsQueue
 {
     private array $array = [];
 
@@ -29,28 +30,28 @@ final class HooksQueue
         $this->set = new Set;
     }
 
-    public function withHook(HookInterface $hook): HooksQueue
+    public function withPlugin(PluginInterface $plugin): PluginsQueue
     {
-        $hookName = get_class($hook);
-        if ($this->set->contains($hookName)) {
+        $pluginName = get_class($plugin);
+        if ($this->set->contains($pluginName)) {
             throw new LogicException(
-                (new Message('Hook %hook% is already registered'))
-                    ->code('%hook%', $hookName)
+                (new Message('%pluginName% is already registered'))
+                    ->code('%pluginName%', $pluginName)
                     ->toString()
             );
         }
-        new AssertHook($hook);
-        $anchor = $hook->anchor();
-        $priority = (string) $hook->priority();
+        new AssertPlugin($plugin);
+        $for = $plugin->for();
+        $priority = (string) $plugin->priority();
         $new = clone $this;
-        $new->array[$anchor][$priority][] = $hookName;
-        $new->set->add($hookName);
+        $new->array[$for][$priority][] = $pluginName;
+        $new->set->add($pluginName);
 
         return $new;
     }
 
     /**
-     * @return array [anchor => [0 => HookName,],]
+     * @return array [for => [priority => pluginName,],]
      */
     public function toArray(): array
     {

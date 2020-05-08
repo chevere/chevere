@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Writers\Tests;
 
 use Chevere\Components\Writers\StreamWriter;
-use Laminas\Diactoros\Stream;
 use Laminas\Diactoros\StreamFactory;
 use PHPUnit\Framework\TestCase;
-use function GuzzleHttp\Psr7\stream_for;
 
 final class StreamWriterTest extends TestCase
 {

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Filesystem\Path\Tests;
+namespace Chevere\Components\Filesystem\Tests;
 
 use Chevere\Components\Filesystem\AssertPathString;
 use Chevere\Components\Filesystem\Exceptions\PathDotSlashException;

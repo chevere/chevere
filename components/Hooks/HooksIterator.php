@@ -27,7 +27,8 @@ use ReflectionClass;
 
 final class HooksIterator
 {
-    const FILE_TRAILING_NAME = 'Hook.php';
+    const HOOK_TRAILING_NAME = 'Hook.php';
+    const LISTENER_TRAILING_NAME = 'Listener.php';
 
     private DirInterface $dir;
 
@@ -106,7 +107,7 @@ final class HooksIterator
                     return true; // @codeCoverageIgnore
                 }
 
-                return (new StrBool($this->current()->getFilename()))->endsWith(HooksIterator::FILE_TRAILING_NAME);
+                return (new StrBool($this->current()->getFilename()))->endsWith(HooksIterator::HOOK_TRAILING_NAME);
             }
         };
     }

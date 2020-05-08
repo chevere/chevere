@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\VarDump\Tests;
+namespace Chevere\Components\VarDump\Tests\Formatters;
 
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
 use Chevere\Components\VarDump\Interfaces\HighlightInterface;

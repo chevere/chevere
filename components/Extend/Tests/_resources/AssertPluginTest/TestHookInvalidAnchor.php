@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks\Tests\_resources\AssertHookTest;
+namespace Chevere\Components\Extend\Tests\_resources\AssertPluginTest;
 
 use Chevere\Components\Hooks\Tests\_resources\HooksIteratorTest\hooks\TestHook;
 
 final class TestHookInvalidAnchor extends TestHook
 {
-    public function anchor(): string
+    public function for(): string
     {
         return uniqid() . ':after';
     }

@@ -34,6 +34,7 @@ class TestHookable implements HookableInterface
     {
         $string = '';
         $this->hook('construct:before', $string);
+
         $this->string = $string;
     }
 

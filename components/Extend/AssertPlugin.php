@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks;
+namespace Chevere\Components\Extend;
 
 use Chevere\Components\Hooks\Exceptions\AnchorNotFoundException;
 use Chevere\Components\Hooks\Exceptions\HookableInterfaceException;
@@ -21,7 +21,7 @@ use Chevere\Components\Hooks\Interfaces\HookableInterface;
 use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Message\Message;
 
-final class AssertHook
+final class AssertPlugin
 {
     private HookInterface $hook;
 
@@ -40,20 +40,20 @@ final class AssertHook
 
     private function assertHookableExists(): void
     {
-        if (class_exists($this->hook->className()) === false) {
+        if (class_exists($this->hook->at()) === false) {
             throw new HookableNotFoundException(
                 (new Message("Class %ClassName% doesn't exists"))
-                    ->code('%ClassName%', $this->hook->className())
+                    ->code('%ClassName%', $this->hook->at())
             );
         }
     }
 
     private function assertHookableInterface(): void
     {
-        if (is_a($this->hook->className(), HookableInterface::class, true) === false) {
+        if (is_a($this->hook->at(), HookableInterface::class, true) === false) {
             throw new HookableInterfaceException(
                 (new Message('Class %ClassName% must implement the %interfaceName% interface'))
-                    ->code('%ClassName%', $this->hook->className())
+                    ->code('%ClassName%', $this->hook->at())
                     ->code('%interfaceName%', HookableInterface::class)
             );
         }
@@ -64,12 +64,12 @@ final class AssertHook
         /**
          * @var HookAnchors $anchors
          */
-        $anchors = $this->hook->className()::getHookAnchors();
-        if ($anchors->has($this->hook->anchor()) === false) {
+        $anchors = $this->hook->at()::getHookAnchors();
+        if ($anchors->has($this->hook->for()) === false) {
             throw new AnchorNotFoundException(
                 (new Message('Anchor %anchor% is not declared by %ClassName%'))
-                    ->code('%anchor%', $this->hook->anchor())
-                    ->code('%ClassName%', $this->hook->className())
+                    ->code('%anchor%', $this->hook->for())
+                    ->code('%ClassName%', $this->hook->at())
             );
         }
     }

@@ -11,26 +11,22 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks\Interfaces;
+namespace Chevere\Components\Extend\Interfaces;
 
-use Chevere\Components\Extend\Interfaces\PluginInterface;
-
-interface HookInterface extends PluginInterface
+interface PluginInterface
 {
     /**
-     * @return string Applicable hook anchor.
+     * @return string for actor
      */
     public function for(): string;
 
     /**
-     * @return string Target hookable class name.
+     * @return string at className
      */
     public function at(): string;
 
     /**
-     * @return string Priority order.
+     * @return int execution priority
      */
     public function priority(): int;
-
-    public function __invoke(&$argument): void;
 }

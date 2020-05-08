@@ -15,7 +15,7 @@ namespace Chevere\Components\Console\Commands;
 
 use Ahc\Cli\Input\Command;
 
-final class AppInfoCommand extends Command
+final class InfoCommand extends Command
 {
     public function __construct()
     {

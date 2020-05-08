@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Spec\Specs\Tests;
+namespace Chevere\Components\Spec\Tests\Specs;
 
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Route;

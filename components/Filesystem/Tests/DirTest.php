@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Filesystem\Dir\Tests;
+namespace Chevere\Components\Filesystem\Tests;
 
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\DirFromString;
