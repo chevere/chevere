@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Hooks;
 
 use Chevere\Components\Hooks\Interfaces\HookInterface;
+use Chevere\Components\Plugs\AssertPlug;
 use Chevere\Components\Plugs\PlugsMapper;
 
 final class HooksMapper
@@ -29,8 +30,7 @@ final class HooksMapper
     {
         $new = clone $this;
         $new->plugsMapper = $new->plugsMapper->withAddedPlug(
-            $hook,
-            new HooksQueue
+            new AssertPlug($hook)
         );
 
         return $new;

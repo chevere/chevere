@@ -46,12 +46,13 @@ final class PlugsMapper
         $this->classMap = new ClassMap;
     }
 
-    public function withAddedPlug(PlugInterface $plug, PlugsQueue $plugsQueue): self
+    public function withAddedPlug(AssertPlug $assertPlug): self
     {
+        $plug = $assertPlug->plug();
         $this->assertUnique($plug);
         $queue = $this->map->hasKey($plug->at())
             ? $this->map->get($plug->at())
-            : $plugsQueue;
+            : $assertPlug->type()->getQueue();
         $this->map[$plug->at()] = $queue->withAdded($plug);
 
         return $this;

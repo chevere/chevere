@@ -16,6 +16,7 @@ namespace Chevere\Components\Plugs\Tests;
 use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Hooks\Tests\_resources\TestHook;
+use Chevere\Components\Plugs\AssertPlug;
 use Chevere\Components\Plugs\PlugsMapper;
 use PHPUnit\Framework\TestCase;
 
@@ -49,7 +50,9 @@ final class PlugsRegisterTe_st extends TestCase
     {
         $hook = new TestHook;
         $hooksRegister = (new PlugsMapper)
-            ->withAddedPlug($hook)
+            ->withAddedPlug(
+                new AssertPlug($hook)
+            )
             ->withClassMapAt($this->tempDir);
         $this->assertTrue($hooksRegister->classMap()->has($hook->at()));
     }

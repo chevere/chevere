@@ -89,9 +89,8 @@ final class PlugsIterator
             foreach ($namespace->getClasses() as $class) {
                 if ($class->implementsInterface(PlugInterface::class)) {
                     $plug = $class->newInstance();
-                    $assertPlug = new AssertPlug($plug);
                     $this->plugsMapper = $this->plugsMapper
-                        ->withAddedPlug($plug, $assertPlug->type()->getQueue());
+                        ->withAddedPlug(new AssertPlug($plug));
                 }
             }
         }
