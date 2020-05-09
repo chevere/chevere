@@ -17,9 +17,9 @@ use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Filesystem\FileFromString;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
-use Chevere\Components\Hooks\Exceptions\HooksClassNotRegisteredException;
-use Chevere\Components\Hooks\Exceptions\HooksFileNotFoundException;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Plugs\Exceptions\PlugClassNotRegisteredException;
+use Chevere\Components\Plugs\Exceptions\PlugsFileNoExistsException;
 use Chevere\Components\Plugs\PlugsQueue;
 use LogicException;
 use RuntimeException;
@@ -28,51 +28,51 @@ use TypeError;
 
 final class Plugs
 {
-    private ClassMap $hookablesToHooks;
+    private ClassMap $plugablesToPlugs;
 
-    private PlugsQueue $_plugsQueue;
+    private PlugsQueue $plugsQueue;
 
     public function __construct(ClassMap $classMap)
     {
-        $this->hookablesToHooks = $classMap;
+        $this->plugablesToPlugs = $classMap;
     }
 
     public function has(string $hookable): bool
     {
-        return $this->hookablesToHooks->has($hookable);
+        return $this->plugablesToPlugs->has($hookable);
     }
 
     /**
-     * @throws HooksClassNotRegisteredException
-     * @throws HooksFileNotFoundException
+     * @throws PlugClassNotRegisteredException
+     * @throws PlugsFileNoExistsException
      * @throws RuntimeException if unable to load the hooks file
      * @throws LogicException if the contents of the hooks file are invalid
      */
     public function getQueue(string $className): PlugsQueue
     {
         if (!$this->has($className)) {
-            throw new HooksClassNotRegisteredException(
+            throw new PlugClassNotRegisteredException(
                 (new Message("Class %className% doesn't exists in the class map"))
                     ->code('%className%', $className)
             );
         }
-        $hooksPath = $this->hookablesToHooks->get($className);
-        if (stream_resolve_include_path($hooksPath) === false) {
-            throw new HooksFileNotFoundException(
+        $plugsPath = $this->plugablesToPlugs->get($className);
+        if (stream_resolve_include_path($plugsPath) === false) {
+            throw new PlugsFileNoExistsException(
                 (new Message("File %fileName% doesn't exists"))
-                    ->code('%fileName%', $hooksPath)
+                    ->code('%fileName%', $plugsPath)
             );
         }
         // @codeCoverageIgnoreStart
         try {
-            $fileReturn = new FilePhpReturn(new FilePhp(new FileFromString($hooksPath)));
+            $fileReturn = new FilePhpReturn(new FilePhp(new FileFromString($plugsPath)));
             $fileReturn = $fileReturn->withStrict(false);
             try {
-                $this->_plugsQueue = $fileReturn->var();
+                $this->plugsQueue = $fileReturn->var();
             } catch (TypeError $e) {
                 throw new LogicException(
                     (new Message('Return of %filePath% is not of type %type%'))
-                        ->code('%filePath%', $hooksPath)
+                        ->code('%filePath%', $plugsPath)
                         ->code('%type%', PlugsQueue::class)
                         ->toString()
                 );
@@ -82,6 +82,6 @@ final class Plugs
         }
         // @codeCoverageIgnoreEnd
 
-        return $this->_plugsQueue;
+        return $this->plugsQueue;
     }
 }

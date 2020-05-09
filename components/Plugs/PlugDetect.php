@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs;
 
 use Chevere\Components\Events\Interfaces\EventableInterface;
+use Chevere\Components\Events\Interfaces\EventListenerInterface;
 use Chevere\Components\Hooks\Interfaces\HookableInterface;
+use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugs\Interfaces\PlugInterface;
 use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
@@ -28,22 +30,33 @@ final class PlugDetect
 
     public function __construct(PlugInterface $plug)
     {
-        $at = $plug->at();
+        $accept = $this->accept();
         /**
-         * @var PlugableAnchors $anchors
+         * @var string $plugInterface
+         * @var PlugTypeInterface $plugType
          */
-        if (is_a($at, HookableInterface::class, true)) {
-            $this->type = new HookPlugType;
-        } elseif (is_a($at, EventableInterface::class, true)) {
-            $this->type = new EventListenerPlugType;
+        foreach ($accept as $plugInterface => $plugType) {
+            if (is_a($plug, $plugInterface, true)) {
+                $this->type = $plugType;
+                break;
+            }
         }
         if (!isset($this->type)) {
             throw new LogicException(
-                (new Message('Unknown plug %className%'))
-                    ->code('%className%', $at)
+                (new Message("Plug %className% doesn't implement any of the accepted plug interfaces %interfaces%"))
+                    ->code('%className%', $plug->at())
+                    ->code('%interfaces%', implode(',', array_keys($accept)))
                     ->toString()
             );
         }
+    }
+
+    private function accept(): array
+    {
+        return [
+            HookInterface::class => new HookPlugType,
+            EventListenerInterface::class => new EventListenerPlugType,
+        ];
     }
 
     public function type(): PlugTypeInterface

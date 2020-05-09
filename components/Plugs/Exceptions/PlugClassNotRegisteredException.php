@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks\Exceptions;
+namespace Chevere\Components\Plugs\Exceptions;
 
 use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 
 /**
- * Exception thrown the anchor doesn't exists.
+ * Exception thrown when the plug is not registered.
  */
-final class AnchorNotFoundException extends Exception
+final class PlugClassNotRegisteredException extends Exception
 {
 }

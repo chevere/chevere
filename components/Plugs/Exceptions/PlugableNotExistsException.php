@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks\Exceptions;
+namespace Chevere\Components\Plugs\Exceptions;
 
 use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 
 /**
  * Exception thrown when a hookable doesn't exists.
  */
-final class HookableNotFoundException extends Exception
+final class PlugableNotExistsException extends Exception
 {
 }

@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs\Tests;
 
-use Chevere\Components\Hooks\Exceptions\AnchorNotFoundException;
-use Chevere\Components\Hooks\Exceptions\HookableInterfaceException;
-use Chevere\Components\Hooks\Exceptions\HookableNotFoundException;
 use Chevere\Components\Hooks\Tests\_resources\TestHook;
 use Chevere\Components\Plugs\AssertPlug;
+use Chevere\Components\Plugs\Exceptions\PlugableNotExistsException;
+use Chevere\Components\Plugs\Exceptions\PlugAnchorNotExistsException;
 use Chevere\Components\Plugs\Tests\_resources\AssertPluginTest\TestHookClassNoInterface;
 use Chevere\Components\Plugs\Tests\_resources\AssertPluginTest\TestHookClassNotFound;
 use Chevere\Components\Plugs\Tests\_resources\AssertPluginTest\TestHookInvalidAnchor;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class AssertPlugTest extends TestCase
@@ -28,21 +28,21 @@ final class AssertPlugTest extends TestCase
     public function testClassNotFound(): void
     {
         $hook = new TestHookClassNotFound;
-        $this->expectException(HookableNotFoundException::class);
+        $this->expectException(PlugableNotExistsException::class);
         new AssertPlug($hook);
     }
 
     public function testNoInterface(): void
     {
         $hook = new TestHookClassNoInterface;
-        $this->expectException(HookableInterfaceException::class);
+        $this->expectException(InvalidArgumentException::class);
         new AssertPlug($hook);
     }
 
     public function testAnchorNotFound(): void
     {
         $hook = new TestHookInvalidAnchor;
-        $this->expectException(AnchorNotFoundException::class);
+        $this->expectException(PlugAnchorNotExistsException::class);
         new AssertPlug($hook);
     }
 

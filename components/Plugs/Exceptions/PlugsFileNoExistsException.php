@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks\Exceptions;
+namespace Chevere\Components\Plugs\Exceptions;
 
 use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 
 /**
- * Exception thrown when a hooks file is not found.
+ * Exception thrown when the plugs file doesn't exists.
  */
-final class HooksFileNotFoundException extends Exception
+final class PlugsFileNoExistsException extends Exception
 {
 }

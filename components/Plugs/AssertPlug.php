@@ -13,14 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs;
 
-use Chevere\Components\Hooks\Exceptions\AnchorNotFoundException;
 use Chevere\Components\Hooks\Exceptions\HookableInterfaceException;
-use Chevere\Components\Hooks\Exceptions\HookableNotFoundException;
 use Chevere\Components\Hooks\Interfaces\HookableInterface;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Plugs\Exceptions\PlugableNotExistsException;
+use Chevere\Components\Plugs\Exceptions\PlugAnchorNotExistsException;
 use Chevere\Components\Plugs\Interfaces\PlugInterface;
 use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
 use Chevere\Components\Plugs\PlugableAnchors;
+use Error;
+use InvalidArgumentException;
 use LogicException;
 
 final class AssertPlug
@@ -33,20 +35,21 @@ final class AssertPlug
     {
         $this->plug = $plug;
         $this->assertPlugableExists();
-        $this->assertPlugableInterface();
-        $plugDetect = new PlugDetect($plug);
+        $plugDetect = new PlugDetect($this->plug);
         $anchorsMethod = $plugDetect->type()->plugableAnchorsMethod();
-        $at = $plug->at();
-        $anchors = $at::$anchorsMethod();
-        if (isset($anchors)) {
-            $this->assertAnchors($anchors);
-        } else {
-            throw new LogicException(
-                (new Message('Unsupported unknown plugable %className%'))
+        $at = $this->plug->at();
+        try {
+            $anchors = $at::$anchorsMethod();
+        } catch (Error $e) {
+            throw new InvalidArgumentException(
+                (new Message('Unsupported plugable %className% declared by plug %plug% %message%'))
                     ->code('%className%', $at)
+                    ->code('%plug%', get_class($this->plug))
+                    ->code('%message%', $e->getMessage())
                     ->toString()
             );
         }
+        $this->assertAnchors($anchors);
         $this->type = $plugDetect->type();
     }
 
@@ -63,20 +66,9 @@ final class AssertPlug
     private function assertPlugableExists(): void
     {
         if (class_exists($this->plug->at()) === false) {
-            throw new HookableNotFoundException(
+            throw new PlugableNotExistsException(
                 (new Message("Class %ClassName% doesn't exists"))
                     ->code('%ClassName%', $this->plug->at())
-            );
-        }
-    }
-
-    private function assertPlugableInterface(): void
-    {
-        if (is_a($this->plug->at(), HookableInterface::class, true) === false) {
-            throw new HookableInterfaceException(
-                (new Message('Class %ClassName% must implement the %interfaceName% interface'))
-                    ->code('%ClassName%', $this->plug->at())
-                    ->code('%interfaceName%', HookableInterface::class)
             );
         }
     }
@@ -84,7 +76,7 @@ final class AssertPlug
     private function assertAnchors(PlugableAnchors $anchors): void
     {
         if ($anchors->has($this->plug->for()) === false) {
-            throw new AnchorNotFoundException(
+            throw new PlugAnchorNotExistsException(
                 (new Message('Anchor %anchor% is not declared by %ClassName%'))
                     ->code('%anchor%', $this->plug->for())
                     ->code('%ClassName%', $this->plug->at())

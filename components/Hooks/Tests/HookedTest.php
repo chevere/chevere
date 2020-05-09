@@ -16,11 +16,11 @@ namespace Chevere\Components\Hooks\Tests;
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Hooks\Exceptions\HooksClassNotRegisteredException;
 use Chevere\Components\Hooks\HooksRunner;
 use Chevere\Components\Hooks\Tests\_resources\TestHookable;
 use Chevere\Components\Hooks\Tests\_resources\TestHookableNoRegister;
 use Chevere\Components\Hooks\Tests\_resources\TestHookableWithoutHooks;
+use Chevere\Components\Plugs\Exceptions\PlugClassNotRegisteredException;
 use Chevere\Components\Plugs\Plugs;
 use PHPUnit\Framework\TestCase;
 
@@ -84,7 +84,7 @@ final class HookedTest extends TestCase
 
     public function testClassNotRegistered(): void
     {
-        $this->expectException(HooksClassNotRegisteredException::class);
+        $this->expectException(PlugClassNotRegisteredException::class);
         $this->plugs->getQueue(TestHookableNoRegister::class);
     }
 }
