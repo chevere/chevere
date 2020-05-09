@@ -31,7 +31,7 @@ final class HooksQueueTest extends TestCase
     {
         $hook = new TestHook;
         $hooksQueue = new HooksQueue;
-        $hooksQueue = $hooksQueue->withHook($hook);
+        $hooksQueue = $hooksQueue->withAdded($hook);
         $this->assertSame([
             $hook->for() => [
                 0 => [
@@ -44,8 +44,8 @@ final class HooksQueueTest extends TestCase
     public function testWithAlreadyAddedHook(): void
     {
         $hook = new TestHook;
-        $hooksQueue = (new HooksQueue)->withHook($hook);
+        $hooksQueue = (new HooksQueue)->withAdded($hook);
         $this->expectException(LogicException::class);
-        $hooksQueue->withHook($hook);
+        $hooksQueue->withAdded($hook);
     }
 }

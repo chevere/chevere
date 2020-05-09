@@ -29,7 +29,7 @@ abstract class PlugsQueue
         $this->set = new Set;
     }
 
-    final protected function withPlug(PlugInterface $plug): PlugsQueue
+    final protected function withAddedPlug(PlugInterface $plug): PlugsQueue
     {
         $plugName = get_class($plug);
         if ($this->set->contains($plugName)) {

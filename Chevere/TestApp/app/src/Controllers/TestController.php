@@ -34,9 +34,9 @@ class TestController extends Controller implements HookableInterface
     public static function getHookAnchors(): PlugableAnchors
     {
         return (new PlugableAnchors)
-            ->withAnchor('getParameters:after')
-            ->withAnchor('run:before')
-            ->withAnchor('run:after');
+            ->withAdded('getParameters:after')
+            ->withAdded('run:before')
+            ->withAdded('run:after');
     }
 
     public function getParameters(): ControllerParametersInterface

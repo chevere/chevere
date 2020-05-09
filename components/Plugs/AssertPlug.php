@@ -13,36 +13,46 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs;
 
-use Chevere\Components\Events\Interfaces\EventableInterface;
 use Chevere\Components\Hooks\Exceptions\AnchorNotFoundException;
 use Chevere\Components\Hooks\Exceptions\HookableInterfaceException;
 use Chevere\Components\Hooks\Exceptions\HookableNotFoundException;
 use Chevere\Components\Hooks\Interfaces\HookableInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugs\Interfaces\PlugInterface;
+use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
 use Chevere\Components\Plugs\PlugableAnchors;
+use LogicException;
 
 final class AssertPlug
 {
     private PlugInterface $plug;
+
+    private PlugTypeInterface $type;
 
     public function __construct(PlugInterface $plug)
     {
         $this->plug = $plug;
         $this->assertPlugableExists();
         $this->assertPlugableInterface();
-        /**
-         * @var PlugableAnchors $anchors
-         */
+        $plugDetect = new PlugDetect($plug);
+        $anchorsMethod = $plugDetect->type()->plugableAnchorsMethod();
         $at = $plug->at();
-        if (is_a($at, HookableInterface::class, true)) {
-            $anchors = $at::getHookAnchors();
-        } elseif (is_a($at, EventableInterface::class, true)) {
-            $anchors = $at::getEventAnchors();
-        }
+        $anchors = $at::$anchorsMethod();
         if (isset($anchors)) {
             $this->assertAnchors($anchors);
+        } else {
+            throw new LogicException(
+                (new Message('Unsupported unknown plugable %className%'))
+                    ->code('%className%', $at)
+                    ->toString()
+            );
         }
+        $this->type = $plugDetect->type();
+    }
+
+    public function type(): PlugTypeInterface
+    {
+        return $this->type;
     }
 
     public function plug(): PlugInterface

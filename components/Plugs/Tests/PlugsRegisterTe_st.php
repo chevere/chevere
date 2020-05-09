@@ -16,10 +16,10 @@ namespace Chevere\Components\Plugs\Tests;
 use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Hooks\Tests\_resources\TestHook;
-use Chevere\Components\Plugs\PlugsRegister;
+use Chevere\Components\Plugs\PlugsMapper;
 use PHPUnit\Framework\TestCase;
 
-final class PlugsRegisterTest extends TestCase
+final class PlugsRegisterTe_st extends TestCase
 {
     private DirInterface $tempDir;
 
@@ -39,18 +39,18 @@ final class PlugsRegisterTest extends TestCase
         $this->tempDir->removeContents();
     }
 
-    // public function testConstrut(): void
-    // {
-    //     $plugsRegister = new PlugsRegister;
-    //     $this->assertSame([], $plugsRegister->classMap()->toArray());
-    // }
+    public function testConstrut(): void
+    {
+        $plugsRegister = new PlugsMapper;
+        $this->assertSame([], $plugsRegister->classMap()->toArray());
+    }
 
-    // public function testWithHookablesClassmap(): void
-    // {
-    //     $hook = new TestHook;
-    //     $hooksRegister = (new PlugsRegister)
-    //         ->withAddedPlug($hook)
-    //         ->withClassMapAt($this->tempDir);
-    //     $this->assertTrue($hooksRegister->classMap()->has($hook->at()));
-    // }
+    public function testWithHookablesClassmap(): void
+    {
+        $hook = new TestHook;
+        $hooksRegister = (new PlugsMapper)
+            ->withAddedPlug($hook)
+            ->withClassMapAt($this->tempDir);
+        $this->assertTrue($hooksRegister->classMap()->has($hook->at()));
+    }
 }

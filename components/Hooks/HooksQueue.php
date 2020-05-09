@@ -21,10 +21,10 @@ use Chevere\Components\Plugs\PlugsQueue;
  */
 final class HooksQueue extends PlugsQueue
 {
-    public function withHook(HookInterface $hook): HooksQueue
+    public function withAdded(HookInterface $hook): HooksQueue
     {
         $new = clone $this;
-        $new = $new->withPlug($hook);
+        $new = $new->withAddedPlug($hook);
 
         return $new;
     }

@@ -21,10 +21,10 @@ use Chevere\Components\Plugs\PlugsQueue;
  */
 final class EventsListenerQueue extends PlugsQueue
 {
-    public function withEventListener(EventListenerInterface $eventListener): EventsListenerQueue
+    public function withAdded(EventListenerInterface $eventListener): EventsListenerQueue
     {
         $new = clone $this;
-        $new = $new->withPlug($eventListener);
+        $new = $new->withAddedPlug($eventListener);
 
         return $new;
     }

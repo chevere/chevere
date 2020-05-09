@@ -14,26 +14,22 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs;
 
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
-use Chevere\Components\Hooks\HooksRegister;
-use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Plugs\PlugsRegister;
-use Chevere\Components\Str\StrBool;
+use Chevere\Components\Plugs\Interfaces\PlugInterface;
+use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
+use Chevere\Components\Plugs\PlugsMapper;
 use Go\ParserReflection\ReflectionFile;
 use Go\ParserReflection\ReflectionFileNamespace;
 use LogicException;
 use RecursiveDirectoryIterator;
-use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
 use ReflectionClass;
 
 final class PlugsIterator
 {
-    const HOOK_TRAILING_NAME = 'Hook.php';
-
     private DirInterface $dir;
 
-    private HooksRegister $plugsRegister;
+    private PlugsMapper $plugsMapper;
 
     private RecursiveIteratorIterator $recursiveIterator;
 
@@ -41,7 +37,7 @@ final class PlugsIterator
      * Iterates over the target dir for files matching *Hook.php and implementing
      * HookInterface
      */
-    public function __construct(DirInterface $dir)
+    public function __construct(DirInterface $dir, PlugTypeInterface $plugType)
     {
         if ($dir->exists() === false) {
             throw new LogicException(
@@ -51,10 +47,12 @@ final class PlugsIterator
             );
         }
         $this->dir = $dir;
-        $this->plugsRegister = new HooksRegister;
-        $this->directoryIterator = $this->getDirectoryIterator();
+        $this->plugsMapper = new PlugsMapper;
         $this->recursiveIterator = new RecursiveIteratorIterator(
-            $this->recursiveFilterIterator()
+            new PlugsRecursiveFilterIterator(
+                $this->getRecursiveDirectoryIterator(),
+                $plugType->trailingName()
+            )
         );
         $this->recursiveIterator->rewind();
         while ($this->recursiveIterator->valid()) {
@@ -65,12 +63,12 @@ final class PlugsIterator
         }
     }
 
-    public function plugsRegister(): PlugsRegister
+    public function plugsMapper(): PlugsMapper
     {
-        return $this->plugsRegister;
+        return $this->plugsMapper;
     }
 
-    private function getDirectoryIterator(): RecursiveDirectoryIterator
+    private function getRecursiveDirectoryIterator(): RecursiveDirectoryIterator
     {
         return new RecursiveDirectoryIterator(
             $this->dir->path()->absolute(),
@@ -85,31 +83,17 @@ final class PlugsIterator
          * @var ReflectionFileNamespace $namespace
          */
         foreach ($reflectionFileNamespace as $namespace) {
-            $classes = $namespace->getClasses();
             /**
              * @var ReflectionClass $class
              */
-            foreach ($classes as $class) {
-                if ($class->implementsInterface(HookInterface::class)) {
-                    $this->plugsRegister = $this->plugsRegister
-                        ->withAddedHook($class->newInstance());
+            foreach ($namespace->getClasses() as $class) {
+                if ($class->implementsInterface(PlugInterface::class)) {
+                    $plug = $class->newInstance();
+                    $assertPlug = new AssertPlug($plug);
+                    $this->plugsMapper = $this->plugsMapper
+                        ->withAddedPlug($plug, $assertPlug->type()->getQueue());
                 }
             }
         }
-    }
-
-    private function recursiveFilterIterator(): RecursiveFilterIterator
-    {
-        return new class($this->directoryIterator) extends RecursiveFilterIterator
-        {
-            public function accept(): bool
-            {
-                if ($this->hasChildren()) {
-                    return true; // @codeCoverageIgnore
-                }
-
-                return (new StrBool($this->current()->getFilename()))->endsWith(PlugsIterator::HOOK_TRAILING_NAME);
-            }
-        };
     }
 }

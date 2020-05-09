@@ -27,7 +27,7 @@ final class PlugableAnchors
         $this->set = new Set;
     }
 
-    public function withAnchor(string $anchor): PlugableAnchors
+    public function withAdded(string $anchor): PlugableAnchors
     {
         $new = clone $this;
         if ($new->has($anchor)) {

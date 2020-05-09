@@ -27,7 +27,7 @@ use Ds\Map;
 use Ds\Set;
 use LogicException;
 
-abstract class PlugsRegister
+final class PlugsMapper
 {
     const REGISTRY_DIR = 'hooks-reg/'; // %s-register/
     const PLUGS_FILENAME = 'hooks.php'; // %s.php
@@ -46,7 +46,18 @@ abstract class PlugsRegister
         $this->classMap = new ClassMap;
     }
 
-    protected function assertNoOverride(PlugInterface $plug): void
+    public function withAddedPlug(PlugInterface $plug, PlugsQueue $plugsQueue): self
+    {
+        $this->assertUnique($plug);
+        $queue = $this->map->hasKey($plug->at())
+            ? $this->map->get($plug->at())
+            : $plugsQueue;
+        $this->map[$plug->at()] = $queue->withAdded($plug);
+
+        return $this;
+    }
+
+    protected function assertUnique(PlugInterface $plug): void
     {
         $plugName = get_class($plug);
         if ($this->set->contains($plugName)) {
@@ -58,7 +69,7 @@ abstract class PlugsRegister
         }
     }
 
-    public function withClassMapAt(DirInterface $dir): PlugsRegister
+    public function withClassMapAt(DirInterface $dir): PlugsMapper
     {
         if ($dir->path()->isWritable() === false) {
             // @codeCoverageIgnoreStart

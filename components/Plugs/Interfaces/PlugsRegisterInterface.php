@@ -11,7 +11,8 @@
 
 declare(strict_types=1);
 
-use Chevere\Components\Hooks\HooksQueue;
-use Chevere\Components\Hooks\Tests\_resources\TestHook;
+namespace Chevere\Components\Plugs\Interfaces;
 
-return (new HooksQueue)->withAdded(new TestHook);
+interface PlugsRegisterInterface
+{
+}

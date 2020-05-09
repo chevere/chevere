@@ -14,18 +14,24 @@ declare(strict_types=1);
 namespace Chevere\Components\Hooks;
 
 use Chevere\Components\Hooks\Interfaces\HookInterface;
-use Chevere\Components\Plugs\PlugsRegister;
+use Chevere\Components\Plugs\PlugsMapper;
 
-final class HooksRegister extends PlugsRegister
+final class HooksMapper
 {
-    public function withAddedHook(HookInterface $hook): HooksRegister
+    private PlugsMapper $plugsMapper;
+
+    public function __construct()
     {
-        $this->assertNoOverride($hook);
-        $hooksQueue = $this->map->hasKey($hook->at())
-            ? $this->map->get($hook->at())
-            : new HooksQueue;
+        $this->plugsMapper = new PlugsMapper;
+    }
+
+    public function withAdded(HookInterface $hook): HooksMapper
+    {
         $new = clone $this;
-        $new->map->put($hook->at(), $hooksQueue->withHook($hook));
+        $new->plugsMapper = $new->plugsMapper->withAddedPlug(
+            $hook,
+            new HooksQueue
+        );
 
         return $new;
     }
