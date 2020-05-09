@@ -23,7 +23,7 @@ use Chevere\Components\Plugs\Tests\_resources\AssertPluginTest\TestHookClassNotF
 use Chevere\Components\Plugs\Tests\_resources\AssertPluginTest\TestHookInvalidAnchor;
 use PHPUnit\Framework\TestCase;
 
-final class AssertPluginTest extends TestCase
+final class AssertPlugTest extends TestCase
 {
     public function testClassNotFound(): void
     {

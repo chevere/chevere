@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs;
 
+use Chevere\Components\Events\Interfaces\EventableInterface;
 use Chevere\Components\Hooks\Exceptions\AnchorNotFoundException;
 use Chevere\Components\Hooks\Exceptions\HookableInterfaceException;
 use Chevere\Components\Hooks\Exceptions\HookableNotFoundException;
-use Chevere\Components\Hooks\HookAnchors;
 use Chevere\Components\Hooks\Interfaces\HookableInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugs\Interfaces\PlugInterface;
+use Chevere\Components\Plugs\PlugableAnchors;
 
 final class AssertPlug
 {
@@ -30,7 +31,18 @@ final class AssertPlug
         $this->plug = $plug;
         $this->assertPlugableExists();
         $this->assertPlugableInterface();
-        $this->assertAnchor();
+        /**
+         * @var PlugableAnchors $anchors
+         */
+        $at = $plug->at();
+        if (is_a($at, HookableInterface::class, true)) {
+            $anchors = $at::getHookAnchors();
+        } elseif (is_a($at, EventableInterface::class, true)) {
+            $anchors = $at::getEventAnchors();
+        }
+        if (isset($anchors)) {
+            $this->assertAnchors($anchors);
+        }
     }
 
     public function plug(): PlugInterface
@@ -59,12 +71,8 @@ final class AssertPlug
         }
     }
 
-    private function assertAnchor(): void
+    private function assertAnchors(PlugableAnchors $anchors): void
     {
-        /**
-         * @var HookAnchors $anchors
-         */
-        $anchors = $this->plug->at()::getHookAnchors();
         if ($anchors->has($this->plug->for()) === false) {
             throw new AnchorNotFoundException(
                 (new Message('Anchor %anchor% is not declared by %ClassName%'))

@@ -20,9 +20,9 @@ use Chevere\Components\Controller\ControllerResponse;
 use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
 use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
 use Chevere\Components\Controller\Interfaces\ControllerResponseInterface;
-use Chevere\Components\Hooks\HookAnchors;
 use Chevere\Components\Hooks\Interfaces\HookableInterface;
 use Chevere\Components\Hooks\Traits\HookableTrait;
+use Chevere\Components\Plugs\PlugableAnchors;
 use Chevere\Components\Regex\Regex;
 
 class TestController extends Controller implements HookableInterface
@@ -31,9 +31,9 @@ class TestController extends Controller implements HookableInterface
 
     protected array $_data;
 
-    public static function getHookAnchors(): HookAnchors
+    public static function getHookAnchors(): PlugableAnchors
     {
-        return (new HookAnchors)
+        return (new PlugableAnchors)
             ->withAnchor('getParameters:after')
             ->withAnchor('run:before')
             ->withAnchor('run:after');

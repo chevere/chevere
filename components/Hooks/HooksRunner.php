@@ -27,7 +27,7 @@ final class HooksRunner implements HooksRunnerInterface
 {
     private PlugsQueue $queue;
 
-    public function __construct(PlugsQueue $queue)
+    public function __construct(HooksQueue $queue)
     {
         $this->queue = $queue;
     }

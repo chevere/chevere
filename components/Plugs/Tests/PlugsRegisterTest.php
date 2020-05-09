@@ -39,18 +39,18 @@ final class PlugsRegisterTest extends TestCase
         $this->tempDir->removeContents();
     }
 
-    public function testConstrut(): void
-    {
-        $plugsRegister = new PlugsRegister;
-        $this->assertSame([], $plugsRegister->classMap()->toArray());
-    }
+    // public function testConstrut(): void
+    // {
+    //     $plugsRegister = new PlugsRegister;
+    //     $this->assertSame([], $plugsRegister->classMap()->toArray());
+    // }
 
-    public function testWithHookablesClassmap(): void
-    {
-        $hook = new TestHook;
-        $hooksRegister = (new PlugsRegister)
-            ->withAddedPlug($hook)
-            ->withClassMapAt($this->tempDir);
-        $this->assertTrue($hooksRegister->classMap()->has($hook->at()));
-    }
+    // public function testWithHookablesClassmap(): void
+    // {
+    //     $hook = new TestHook;
+    //     $hooksRegister = (new PlugsRegister)
+    //         ->withAddedPlug($hook)
+    //         ->withClassMapAt($this->tempDir);
+    //     $this->assertTrue($hooksRegister->classMap()->has($hook->at()));
+    // }
 }

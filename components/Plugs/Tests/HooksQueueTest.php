@@ -13,38 +13,39 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs\Tests;
 
+use Chevere\Components\Hooks\HooksQueue;
 use Chevere\Components\Hooks\Tests\_resources\TestHook;
 use Chevere\Components\Plugs\PlugsQueue;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 
-final class PluginsQueueTest extends TestCase
+final class HooksQueueTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $hooksQueue = new PlugsQueue;
+        $hooksQueue = new HooksQueue;
         $this->assertSame([], $hooksQueue->toArray());
     }
 
     public function testWithHook(): void
     {
         $hook = new TestHook;
-        $pluginsQueue = new PlugsQueue;
-        $pluginsQueue = $pluginsQueue->withPlug($hook);
+        $hooksQueue = new HooksQueue;
+        $hooksQueue = $hooksQueue->withHook($hook);
         $this->assertSame([
             $hook->for() => [
                 0 => [
                     get_class($hook)
                 ]
             ]
-        ], $pluginsQueue->toArray());
+        ], $hooksQueue->toArray());
     }
 
     public function testWithAlreadyAddedHook(): void
     {
         $hook = new TestHook;
-        $pluginsQueue = (new PlugsQueue)->withPlug($hook);
+        $hooksQueue = (new HooksQueue)->withHook($hook);
         $this->expectException(LogicException::class);
-        $pluginsQueue->withPlug($hook);
+        $hooksQueue->withHook($hook);
     }
 }

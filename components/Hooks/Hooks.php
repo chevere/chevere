@@ -46,9 +46,9 @@ final class Hooks
      * @throws RuntimeException if unable to load the hooks file
      * @throws LogicException if the contents of the hooks file are invalid
      */
-    public function getQueue(string $className): PlugsQueue
+    public function getQueue(string $className): HooksQueue
     {
-        if (!$this->hookablesToHooks->has($className)) {
+        if (!$this->has($className)) {
             throw new HooksClassNotRegisteredException(
                 (new Message("Class %className% doesn't exists in the class map"))
                     ->code('%className%', $className)
@@ -66,12 +66,12 @@ final class Hooks
             $fileReturn = new FilePhpReturn(new FilePhp(new FileFromString($hooksPath)));
             $fileReturn = $fileReturn->withStrict(false);
             /**
-             * @var PlugsQueue $queue
+             * @var HooksQueue $queue
              */
             $queue = $fileReturn->var();
-            if (!(new Type(PlugsQueue::class))->validate($queue)) {
+            if (!(new Type(HooksQueue::class))->validate($queue)) {
                 throw new LogicException(
-                    (new Message('Return value of %filePath% is not of type %type%'))
+                    (new Message('Return of %filePath% is not of type %type%'))
                         ->code('%filePath%', $hooksPath)
                         ->code('%type%', PlugsQueue::class)
                         ->toString()

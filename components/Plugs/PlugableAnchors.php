@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks;
+namespace Chevere\Components\Plugs;
 
 use Chevere\Components\Message\Message;
 use Ds\Set;
 use LogicException;
 use function DeepCopy\deep_copy;
 
-final class HookAnchors
+final class PlugableAnchors
 {
     private Set $set;
 
@@ -27,7 +27,7 @@ final class HookAnchors
         $this->set = new Set;
     }
 
-    public function withAnchor(string $anchor): HookAnchors
+    public function withAnchor(string $anchor): PlugableAnchors
     {
         $new = clone $this;
         if ($new->has($anchor)) {

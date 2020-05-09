@@ -27,17 +27,17 @@ use Ds\Map;
 use Ds\Set;
 use LogicException;
 
-class PlugsRegister
+abstract class PlugsRegister
 {
     const REGISTRY_DIR = 'hooks-reg/'; // %s-register/
     const PLUGS_FILENAME = 'hooks.php'; // %s.php
     const CLASSMAP_FILENAME = 'hookables_classmap.php'; // %s_classmap.php
 
-    private Set $set;
+    protected Set $set;
 
-    private Map $map;
+    protected Map $map;
 
-    private ClassMap $classMap;
+    protected ClassMap $classMap;
 
     public function __construct()
     {
@@ -46,7 +46,7 @@ class PlugsRegister
         $this->classMap = new ClassMap;
     }
 
-    public function withAddedPlug(PlugInterface $plug): PlugsRegister
+    protected function assertNoOverride(PlugInterface $plug): void
     {
         $plugName = get_class($plug);
         if ($this->set->contains($plugName)) {
@@ -56,13 +56,6 @@ class PlugsRegister
                     ->toString()
             );
         }
-        $plugsQueue = $this->map->hasKey($plug->at())
-            ? $this->map->get($plug->at())
-            : new PlugsQueue;
-        $new = clone $this;
-        $new->map->put($plug->at(), $plugsQueue->withPlug($plug));
-
-        return $new;
     }
 
     public function withClassMapAt(DirInterface $dir): PlugsRegister
@@ -78,9 +71,8 @@ class PlugsRegister
         }
         $plugsDir = $dir->getChild(self::REGISTRY_DIR);
         $new = clone $this;
-        foreach ($new->map as $plugableClassName => $queue) {
-            $nsPath = (new Str($plugableClassName))->forwardSlashes()
-                ->toString();
+        foreach ($new->map as $plugableName => $queue) {
+            $nsPath = (new Str($plugableName))->forwardSlashes()->toString();
             $plugsNsDir = $plugsDir->getChild($nsPath . '/');
             $plugsPath = $plugsNsDir->path()->getChild(self::PLUGS_FILENAME);
             if ($plugsPath->exists() && $plugsPath->isWritable() === false) {
@@ -101,7 +93,7 @@ class PlugsRegister
                 ->put(new VarExportable($queue));
             $phpFilePlugs->cache();
             $new->classMap = $new->classMap->withPut(
-                $plugableClassName,
+                $plugableName,
                 $plugsPath->absolute()
             );
         }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs;
 
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
+use Chevere\Components\Hooks\HooksRegister;
 use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugs\PlugsRegister;
@@ -32,7 +33,7 @@ final class PlugsIterator
 
     private DirInterface $dir;
 
-    private PlugsRegister $plugsRegister;
+    private HooksRegister $plugsRegister;
 
     private RecursiveIteratorIterator $recursiveIterator;
 
@@ -50,7 +51,7 @@ final class PlugsIterator
             );
         }
         $this->dir = $dir;
-        $this->plugsRegister = new PlugsRegister;
+        $this->plugsRegister = new HooksRegister;
         $this->directoryIterator = $this->getDirectoryIterator();
         $this->recursiveIterator = new RecursiveIteratorIterator(
             $this->recursiveFilterIterator()
@@ -91,7 +92,7 @@ final class PlugsIterator
             foreach ($classes as $class) {
                 if ($class->implementsInterface(HookInterface::class)) {
                     $this->plugsRegister = $this->plugsRegister
-                        ->withAddedPlug($class->newInstance());
+                        ->withAddedHook($class->newInstance());
                 }
             }
         }
