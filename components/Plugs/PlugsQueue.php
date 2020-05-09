@@ -18,18 +18,18 @@ use Chevere\Components\Plugs\Interfaces\PlugInterface;
 use Ds\Set;
 use LogicException;
 
-abstract class PlugsQueue
+final class PlugsQueue
 {
     private array $array = [];
 
     private Set $set;
 
-    final public function __construct()
+    public function __construct()
     {
         $this->set = new Set;
     }
 
-    final protected function withAddedPlug(PlugInterface $plug): PlugsQueue
+    public function withAddedPlug(PlugInterface $plug): PlugsQueue
     {
         $plugName = get_class($plug);
         if ($this->set->contains($plugName)) {
@@ -39,10 +39,8 @@ abstract class PlugsQueue
                     ->toString()
             );
         }
-        $for = $plug->for();
-        $priority = (string) $plug->priority();
         $new = clone $this;
-        $new->array[$for][$priority][] = $plugName;
+        $new->array[$plug->for()][(string) $plug->priority()][] = $plugName;
         $new->set->add($plugName);
 
         return $new;

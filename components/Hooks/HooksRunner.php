@@ -19,6 +19,8 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Plugs\PlugsQueue;
 use Chevere\Components\Type\Type;
 use RuntimeException;
+use Throwable;
+use TypeError;
 
 /**
  * Queue handler for Hooks registered for a given HookeableInterface.
@@ -27,7 +29,9 @@ final class HooksRunner implements HooksRunnerInterface
 {
     private PlugsQueue $queue;
 
-    public function __construct(HooksQueue $queue)
+    private HookInterface $hook;
+
+    public function __construct(PlugsQueue $queue)
     {
         $this->queue = $queue;
     }
@@ -48,21 +52,24 @@ final class HooksRunner implements HooksRunnerInterface
         $type = new Type($gettype);
         foreach ($queue as $entries) {
             foreach ($entries as $entry) {
-                if (is_a($entry, HookInterface::class, true)) {
-                    /**
-                     * @var HookInterface $entry
-                     */
-                    $hook = new $entry;
-                    $hook($argument);
-                    if (!$type->validate($argument)) {
-                        throw new RuntimeException(
-                            (new Message('Hook argument %passed% has been altered to %altered% by hook %hook%'))
+                try {
+                    $this->hook = new $entry;
+                } catch (Throwable $e) {
+                    new RuntimeException(
+                        (new Message('Invalid hook type'))
+                            ->toString()
+                    );
+                }
+                $hook = $this->hook;
+                $hook($argument);
+                if (!$type->validate($argument)) {
+                    throw new RuntimeException(
+                        (new Message('Hook argument %passed% has been altered to %altered% by hook %hook%'))
                                 ->code('%passed%', $gettype)
                                 ->code('%altered%', gettype($argument))
                                 ->code('%hook%', get_class($entry))
                                 ->toString()
-                        );
-                    }
+                    );
                 }
             }
         }

@@ -18,6 +18,8 @@ use Chevere\Components\Hooks\Interfaces\HookableInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugs\Interfaces\PlugInterface;
 use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
+use Chevere\Components\Plugs\Types\EventListenerPlugType;
+use Chevere\Components\Plugs\Types\HookPlugType;
 use LogicException;
 
 final class PlugDetect
@@ -31,9 +33,9 @@ final class PlugDetect
          * @var PlugableAnchors $anchors
          */
         if (is_a($at, HookableInterface::class, true)) {
-            $this->type = new PlugTypeHook;
+            $this->type = new HookPlugType;
         } elseif (is_a($at, EventableInterface::class, true)) {
-            $this->type = new PlugTypeEventListener;
+            $this->type = new EventListenerPlugType;
         }
         if (!isset($this->type)) {
             throw new LogicException(

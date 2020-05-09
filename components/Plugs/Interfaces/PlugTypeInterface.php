@@ -13,13 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs\Interfaces;
 
-use Chevere\Components\Plugs\PlugsQueue;
-
 interface PlugTypeInterface
 {
     public function trailingName(): string;
-
-    public function getQueue(): PlugsQueue;
 
     public function plugableAnchorsMethod(): string;
 }

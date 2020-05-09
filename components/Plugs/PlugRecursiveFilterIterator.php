@@ -17,7 +17,7 @@ use Chevere\Components\Str\StrBool;
 use RecursiveFilterIterator;
 use RecursiveIterator;
 
-final class PlugsRecursiveFilterIterator extends RecursiveFilterIterator
+final class PlugRecursiveFilterIterator extends RecursiveFilterIterator
 {
     private string $trailingName;
 

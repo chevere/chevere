@@ -11,21 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Plugs;
+namespace Chevere\Components\Plugs\Types;
 
-use Chevere\Components\Hooks\HooksQueue;
 use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
 
-final class PlugTypeHook implements PlugTypeInterface
+final class HookPlugType implements PlugTypeInterface
 {
     public function trailingName(): string
     {
         return 'Hook.php';
-    }
-
-    public function getQueue(): PlugsQueue
-    {
-        return new HooksQueue;
     }
 
     public function plugableAnchorsMethod(): string

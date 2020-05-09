@@ -25,7 +25,7 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ReflectionClass;
 
-final class PlugsIterator
+final class PlugIterator
 {
     private DirInterface $dir;
 
@@ -49,7 +49,7 @@ final class PlugsIterator
         $this->dir = $dir;
         $this->plugsMapper = new PlugsMapper;
         $this->recursiveIterator = new RecursiveIteratorIterator(
-            new PlugsRecursiveFilterIterator(
+            new PlugRecursiveFilterIterator(
                 $this->getRecursiveDirectoryIterator(),
                 $plugType->trailingName()
             )

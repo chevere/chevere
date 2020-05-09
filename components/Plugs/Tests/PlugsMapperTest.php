@@ -20,7 +20,7 @@ use Chevere\Components\Plugs\AssertPlug;
 use Chevere\Components\Plugs\PlugsMapper;
 use PHPUnit\Framework\TestCase;
 
-final class PlugsRegisterTe_st extends TestCase
+final class PlugsMapperTest extends TestCase
 {
     private DirInterface $tempDir;
 
@@ -42,18 +42,18 @@ final class PlugsRegisterTe_st extends TestCase
 
     public function testConstrut(): void
     {
-        $plugsRegister = new PlugsMapper;
-        $this->assertSame([], $plugsRegister->classMap()->toArray());
+        $plugsMapper = new PlugsMapper;
+        $this->assertSame([], $plugsMapper->map()->toArray());
     }
 
     public function testWithHookablesClassmap(): void
     {
         $hook = new TestHook;
-        $hooksRegister = (new PlugsMapper)
+        $plugsMapper = (new PlugsMapper)
             ->withAddedPlug(
                 new AssertPlug($hook)
-            )
-            ->withClassMapAt($this->tempDir);
-        $this->assertTrue($hooksRegister->classMap()->has($hook->at()));
+            );
+        // ->withClassMapAt($this->tempDir);
+        $this->assertTrue($plugsMapper->map()->hasKey($hook->at()));
     }
 }

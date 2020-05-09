@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks;
+namespace Chevere\Components\Plugs;
 
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Filesystem\FileFromString;
@@ -21,14 +21,16 @@ use Chevere\Components\Hooks\Exceptions\HooksClassNotRegisteredException;
 use Chevere\Components\Hooks\Exceptions\HooksFileNotFoundException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugs\PlugsQueue;
-use Chevere\Components\Type\Type;
 use LogicException;
 use RuntimeException;
 use Throwable;
+use TypeError;
 
-final class Hooks
+final class Plugs
 {
     private ClassMap $hookablesToHooks;
+
+    private PlugsQueue $_plugsQueue;
 
     public function __construct(ClassMap $classMap)
     {
@@ -46,7 +48,7 @@ final class Hooks
      * @throws RuntimeException if unable to load the hooks file
      * @throws LogicException if the contents of the hooks file are invalid
      */
-    public function getQueue(string $className): HooksQueue
+    public function getQueue(string $className): PlugsQueue
     {
         if (!$this->has($className)) {
             throw new HooksClassNotRegisteredException(
@@ -65,11 +67,9 @@ final class Hooks
         try {
             $fileReturn = new FilePhpReturn(new FilePhp(new FileFromString($hooksPath)));
             $fileReturn = $fileReturn->withStrict(false);
-            /**
-             * @var HooksQueue $queue
-             */
-            $queue = $fileReturn->var();
-            if (!(new Type(HooksQueue::class))->validate($queue)) {
+            try {
+                $this->_plugsQueue = $fileReturn->var();
+            } catch (TypeError $e) {
                 throw new LogicException(
                     (new Message('Return of %filePath% is not of type %type%'))
                         ->code('%filePath%', $hooksPath)
@@ -82,6 +82,6 @@ final class Hooks
         }
         // @codeCoverageIgnoreEnd
 
-        return $queue;
+        return $this->_plugsQueue;
     }
 }

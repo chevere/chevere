@@ -11,21 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Plugs;
+namespace Chevere\Components\Plugs\Types;
 
-use Chevere\Components\Events\EventsListenerQueue;
 use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
 
-final class PlugTypeEventListener implements PlugTypeInterface
+final class EventListenerPlugType implements PlugTypeInterface
 {
     public function trailingName(): string
     {
         return 'EventListener.php';
-    }
-
-    public function getQueue(): PlugsQueue
-    {
-        return new EventsListenerQueue;
     }
 
     public function plugableAnchorsMethod(): string
