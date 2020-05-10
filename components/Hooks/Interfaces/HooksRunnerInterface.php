@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks\Interfaces;
 
-use Chevere\Components\Plugs\PlugsQueue;
+use Chevere\Components\Plugs\PlugablePlugsQueue;
 
 interface HooksRunnerInterface
 {
-    public function __construct(PlugsQueue $queue);
+    public function __construct(PlugablePlugsQueue $queue);
 
     /**
      * Run the registred hooks at the given ancshor.

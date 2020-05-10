@@ -36,7 +36,7 @@ final class PlugDetect
          * @var PlugTypeInterface $plugType
          */
         foreach ($accept as $plugInterface => $plugType) {
-            if (is_a($plug, $plugInterface, true)) {
+            if ($plug instanceof $plugInterface) {
                 $this->type = $plugType;
                 break;
             }

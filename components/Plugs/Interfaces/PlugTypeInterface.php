@@ -15,6 +15,8 @@ namespace Chevere\Components\Plugs\Interfaces;
 
 interface PlugTypeInterface
 {
+    public function interface(): string;
+
     public function trailingName(): string;
 
     public function plugableAnchorsMethod(): string;
