@@ -17,6 +17,8 @@ use Chevere\Components\Plugs\Interfaces\PlugInterface;
 
 interface HookInterface extends PlugInterface
 {
+    public function __invoke(&$argument): void;
+
     /**
      * @return string Applicable hook anchor.
      */
@@ -31,6 +33,4 @@ interface HookInterface extends PlugInterface
      * @return string Priority order.
      */
     public function priority(): int;
-
-    public function __invoke(&$argument): void;
 }

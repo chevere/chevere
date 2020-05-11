@@ -13,6 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs\Interfaces;
 
-interface PlugsRegisterInterface
+use Chevere\Components\Plugs\PlugsQueue;
+
+interface TypedPlugsQueueInterface
 {
+    /**
+     * @return string The accepted plugable interface.
+     */
+    public function accept(): string;
+
+    public function queue(): PlugsQueue;
 }

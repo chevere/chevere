@@ -19,7 +19,7 @@ use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Plugs\PlugsMapper;
+use Chevere\Components\Plugs\PlugsMap;
 use Chevere\Components\Str\Str;
 use Chevere\Components\VarExportable\VarExportable;
 use LogicException;
@@ -38,11 +38,11 @@ final class PlugsRegistry
 
     private string $plugablesClassMapFilename;
 
-    private PlugsMapper $plugsMapper;
+    private PlugsMap $plugsMapper;
 
     protected ClassMap $classMap;
 
-    public function __construct(string $name, DirInterface $dir, PlugsMapper $plugsMapper)
+    public function __construct(string $name, DirInterface $dir, PlugsMap $plugsMapper)
     {
         $this->dir = $dir;
         $this->assertDir();

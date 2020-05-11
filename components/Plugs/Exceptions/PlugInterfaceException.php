@@ -16,8 +16,8 @@ namespace Chevere\Components\Plugs\Exceptions;
 use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 
 /**
- * Exception thrown the anchor doesn't exists.
+ * Exception thrown when the plug doesn't implement an accepted interface.
  */
-final class PlugAnchorNotExistsException extends Exception
+final class PlugInterfaceException extends Exception
 {
 }

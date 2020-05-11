@@ -11,14 +11,16 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks\Interfaces;
+namespace Chevere\Components\Plugs\Interfaces;
 
-interface HooksRunnerInterface
+interface PlugDetectInterface
 {
+    public function __construct(PlugInterface $plug);
+
+    public function type(): PlugTypeInterface;
+
     /**
-     * Run the registred hooks at the given ancshor.
-     *
-     * @throws RuntimeException If the $argument type changes.
+     * @return PlugTypeInterface[]
      */
-    public function run(string $anchor, &$argument): void;
+    public function accept(): array;
 }

@@ -17,6 +17,9 @@ use Chevere\Components\Str\StrBool;
 use RecursiveFilterIterator;
 use RecursiveIterator;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class PlugRecursiveFilterIterator extends RecursiveFilterIterator
 {
     private string $trailingName;
@@ -32,7 +35,7 @@ final class PlugRecursiveFilterIterator extends RecursiveFilterIterator
     public function accept(): bool
     {
         if ($this->hasChildren()) {
-            return true; // @codeCoverageIgnore
+            return true;
         }
 
         return (new StrBool($this->current()->getFilename()))

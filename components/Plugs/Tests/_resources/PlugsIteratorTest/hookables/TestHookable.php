@@ -26,8 +26,8 @@ class TestHookable implements HookableInterface
     public static function getHookAnchors(): PlugableAnchors
     {
         return (new PlugableAnchors)
-            ->withAdded('construct:before')
-            ->withAdded('setString:after');
+            ->withAddedAnchor('construct:before')
+            ->withAddedAnchor('setString:after');
     }
 
     public function __construct()

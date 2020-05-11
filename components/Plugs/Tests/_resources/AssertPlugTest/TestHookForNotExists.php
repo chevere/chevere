@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Plugs\Tests\_resources\AssertPluginTest;
+namespace Chevere\Components\Plugs\Tests\_resources\AssertPlugTest;
 
 use Chevere\Components\Plugs\Tests\_resources\PlugsIteratorTest\hooks\TestHook;
 
-final class TestHookClassNoInterface extends TestHook
+final class TestHookForNotExists extends TestHook
 {
-    public function at(): string
+    public function for(): string
     {
-        return TestHook::class;
+        return uniqid() . ':after';
     }
 }

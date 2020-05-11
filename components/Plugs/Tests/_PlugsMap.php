@@ -17,10 +17,10 @@ use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Hooks\Tests\_resources\TestHook;
 use Chevere\Components\Plugs\AssertPlug;
-use Chevere\Components\Plugs\PlugsMapper;
+use Chevere\Components\Plugs\PlugsMap;
 use PHPUnit\Framework\TestCase;
 
-final class PlugsMapperTest extends TestCase
+final class PlugsMapTest extends TestCase
 {
     private DirInterface $tempDir;
 
@@ -42,18 +42,18 @@ final class PlugsMapperTest extends TestCase
 
     public function testConstrut(): void
     {
-        $plugsMapper = new PlugsMapper;
-        $this->assertSame([], $plugsMapper->map()->toArray());
+        $plugsMap = new PlugsMap;
+        $this->assertSame([], $plugsMap->map()->toArray());
     }
 
     public function testWithHookablesClassmap(): void
     {
         $hook = new TestHook;
-        $plugsMapper = (new PlugsMapper)
+        $plugsMap = (new PlugsMap)
             ->withAddedPlug(
                 new AssertPlug($hook)
             );
         // ->withClassMapAt($this->tempDir);
-        $this->assertTrue($plugsMapper->map()->hasKey($hook->at()));
+        $this->assertTrue($plugsMap->map()->hasKey($hook->at()));
     }
 }

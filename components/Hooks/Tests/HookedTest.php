@@ -16,11 +16,12 @@ namespace Chevere\Components\Hooks\Tests;
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Hooks\HooksQueue;
 use Chevere\Components\Hooks\HooksRunner;
 use Chevere\Components\Hooks\Tests\_resources\TestHookable;
 use Chevere\Components\Hooks\Tests\_resources\TestHookableNoRegister;
 use Chevere\Components\Hooks\Tests\_resources\TestHookableWithoutHooks;
-use Chevere\Components\Plugs\Exceptions\PlugClassNotRegisteredException;
+use Chevere\Components\Plugs\Exceptions\PlugableNotRegisteredException;
 use Chevere\Components\Plugs\Plugs;
 use PHPUnit\Framework\TestCase;
 
@@ -62,13 +63,14 @@ final class HookedTest extends TestCase
     public function testHooked(): void
     {
         $string = 'string';
-        $queue = $this->plugs->getQueue(TestHookable::class);
+        $plugsQueue = $this->plugs->getQueue(TestHookable::class);
+        $hooksQueue = new HooksQueue($plugsQueue);
         /**
          * @var TestHookable $testHookable
          */
         $testHookable = (new TestHookable)
             ->withHooksRunner(
-                new HooksRunner($queue)
+                new HooksRunner($hooksQueue)
             );
         $testHookable->setString($string);
         $this->assertSame("(hooked $string)", $testHookable->string());
@@ -84,7 +86,7 @@ final class HookedTest extends TestCase
 
     public function testClassNotRegistered(): void
     {
-        $this->expectException(PlugClassNotRegisteredException::class);
+        $this->expectException(PlugableNotRegisteredException::class);
         $this->plugs->getQueue(TestHookableNoRegister::class);
     }
 }

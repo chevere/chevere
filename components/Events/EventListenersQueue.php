@@ -11,18 +11,18 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Hooks;
+namespace Chevere\Components\Events;
 
-use Chevere\Components\Hooks\Interfaces\HookInterface;
+use Chevere\Components\Events\Interfaces\EventListenerInterface;
 use Chevere\Components\Plugs\Interfaces\TypedPlugsQueueInterface;
 use Chevere\Components\Plugs\Traits\PlugsQueueTrait;
 
-final class HooksQueue implements TypedPlugsQueueInterface
+final class EventListenersQueue implements TypedPlugsQueueInterface
 {
     use PlugsQueueTrait;
 
     public function accept(): string
     {
-        return HookInterface::class;
+        return EventListenerInterface::class;
     }
 }

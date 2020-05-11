@@ -11,9 +11,13 @@
 
 declare(strict_types=1);
 
-use Chevere\Components\Hooks\Tests\_resources\TestHook;
-use Chevere\Components\Plugs\PlugsQueue;
-use Chevere\Components\Plugs\Types\HookPlugType;
+namespace Chevere\Components\Plugs\Exceptions;
 
-return (new PlugsQueue(new HookPlugType))
-    ->withAddedPlug(new TestHook);
+use Chevere\Components\ExceptionHandler\Exceptions\Exception;
+
+/**
+ * Exception thrown when the plugable is not registered.
+ */
+final class PlugableNotRegisteredException extends Exception
+{
+}

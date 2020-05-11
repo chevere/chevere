@@ -21,9 +21,7 @@ trait PlugsQueueTrait
 {
     private PlugsQueue $queue;
 
-    abstract public function accept(): string;
-
-    public function __construct(PlugsQueue $queue)
+    final public function __construct(PlugsQueue $queue)
     {
         $this->queue = $queue;
         if ($queue->plugType()->interface() !== $this->accept()) {
@@ -36,8 +34,10 @@ trait PlugsQueueTrait
         }
     }
 
-    public function toArray(): array
+    abstract public function accept(): string;
+
+    public function queue(): PlugsQueue
     {
-        return $this->queue->toArray();
+        return $this->queue;
     }
 }

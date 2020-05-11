@@ -17,7 +17,7 @@ use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugs\Interfaces\PlugInterface;
 use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
-use Chevere\Components\Plugs\PlugsMapper;
+use Chevere\Components\Plugs\PlugsMap;
 use Go\ParserReflection\ReflectionFile;
 use Go\ParserReflection\ReflectionFileNamespace;
 use LogicException;
@@ -25,11 +25,11 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ReflectionClass;
 
-final class PlugIterator
+final class PlugsIterator
 {
     private DirInterface $dir;
 
-    private PlugsMapper $plugsMapper;
+    private PlugsMap $plugsMap;
 
     private RecursiveIteratorIterator $recursiveIterator;
 
@@ -47,7 +47,7 @@ final class PlugIterator
             );
         }
         $this->dir = $dir;
-        $this->plugsMapper = new PlugsMapper;
+        $this->plugsMap = new PlugsMap;
         $this->recursiveIterator = new RecursiveIteratorIterator(
             new PlugRecursiveFilterIterator(
                 $this->getRecursiveDirectoryIterator(),
@@ -63,9 +63,9 @@ final class PlugIterator
         }
     }
 
-    public function plugsMapper(): PlugsMapper
+    public function plugsMap(): PlugsMap
     {
-        return $this->plugsMapper;
+        return $this->plugsMap;
     }
 
     private function getRecursiveDirectoryIterator(): RecursiveDirectoryIterator
@@ -89,7 +89,7 @@ final class PlugIterator
             foreach ($namespace->getClasses() as $class) {
                 if ($class->implementsInterface(PlugInterface::class)) {
                     $plug = $class->newInstance();
-                    $this->plugsMapper = $this->plugsMapper
+                    $this->plugsMap = $this->plugsMap
                         ->withAddedPlug(new AssertPlug($plug));
                 }
             }

@@ -69,7 +69,7 @@ final class PlugsQueue
         }
     }
 
-    public function assertInterface(PlugInterface $plug): void
+    private function assertInterface(PlugInterface $plug): void
     {
         $instanceof = $this->plugType->interface();
         if (!($plug instanceof $instanceof)) {

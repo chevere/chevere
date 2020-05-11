@@ -18,7 +18,7 @@ use Chevere\Components\Filesystem\FileFromString;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Plugs\Exceptions\PlugClassNotRegisteredException;
+use Chevere\Components\Plugs\Exceptions\PlugableNotRegisteredException;
 use Chevere\Components\Plugs\Exceptions\PlugsFileNoExistsException;
 use Chevere\Components\Plugs\PlugsQueue;
 use LogicException;
@@ -37,26 +37,26 @@ final class Plugs
         $this->plugablesToPlugs = $classMap;
     }
 
-    public function has(string $hookable): bool
+    public function has(string $plugable): bool
     {
-        return $this->plugablesToPlugs->has($hookable);
+        return $this->plugablesToPlugs->has($plugable);
     }
 
     /**
-     * @throws PlugClassNotRegisteredException
+     * @throws PlugableNotRegisteredException
      * @throws PlugsFileNoExistsException
      * @throws RuntimeException if unable to load the hooks file
      * @throws LogicException if the contents of the hooks file are invalid
      */
-    public function getQueue(string $className): PlugsQueue
+    public function getQueue(string $plugable): PlugsQueue
     {
-        if (!$this->has($className)) {
-            throw new PlugClassNotRegisteredException(
+        if (!$this->has($plugable)) {
+            throw new PlugableNotRegisteredException(
                 (new Message("Class %className% doesn't exists in the class map"))
-                    ->code('%className%', $className)
+                    ->code('%className%', $plugable)
             );
         }
-        $plugsPath = $this->plugablesToPlugs->get($className);
+        $plugsPath = $this->plugablesToPlugs->get($plugable);
         if (stream_resolve_include_path($plugsPath) === false) {
             throw new PlugsFileNoExistsException(
                 (new Message("File %fileName% doesn't exists"))

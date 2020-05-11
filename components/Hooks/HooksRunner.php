@@ -30,9 +30,9 @@ final class HooksRunner implements HooksRunnerInterface
 
     private HookInterface $hook;
 
-    public function __construct(PlugsQueue $queue)
+    public function __construct(HooksQueue $queue)
     {
-        $this->queue = $queue;
+        $this->queue = $queue->queue();
     }
 
     public function run(string $anchor, &$argument): void

@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Plugs\Exceptions\PlugableAnchorExistsException;
+use Chevere\Components\Plugs\Interfaces\PlugableAnchorsInterface;
 use Ds\Set;
-use LogicException;
 use function DeepCopy\deep_copy;
 
-final class PlugableAnchors
+final class PlugableAnchors implements PlugableAnchorsInterface
 {
     private Set $set;
 
@@ -27,15 +28,15 @@ final class PlugableAnchors
         $this->set = new Set;
     }
 
-    public function withAdded(string $anchor): PlugableAnchors
+    public function withAddedAnchor(string $anchor): PlugableAnchorsInterface
     {
-        $new = clone $this;
-        if ($new->has($anchor)) {
-            throw new LogicException(
+        if ($this->has($anchor)) {
+            throw new PlugableAnchorExistsException(
                 (new Message('Anchor %anchor% has been already added'))
                     ->code('%anchor%', $anchor)
             );
         }
+        $new = clone $this;
         $new->set->add($anchor);
 
         return $new;

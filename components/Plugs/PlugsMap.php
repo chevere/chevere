@@ -21,7 +21,7 @@ use Ds\Set;
 use LogicException;
 use function DeepCopy\deep_copy;
 
-final class PlugsMapper
+final class PlugsMap
 {
     protected Set $set;
 

@@ -14,26 +14,26 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs\Tests;
 
 use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Components\Plugs\PlugIterator;
+use Chevere\Components\Plugs\PlugsIterator;
 use Chevere\Components\Plugs\Types\HookPlugType;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 
-final class PlugIteratorTest extends TestCase
+final class PlugsIteratorTest extends TestCase
 {
     public function testConstructInvalidDir(): void
     {
         $dir = new DirFromString(__DIR__ . '/' . uniqid() . '/');
         $this->expectException(LogicException::class);
-        new PlugIterator($dir, new HookPlugType);
+        new PlugsIterator($dir, new HookPlugType);
     }
 
     public function testConstruct(): void
     {
         $dir = (new DirFromString(__DIR__ . '/'))->getChild('_resources/PlugsIteratorTest/hooks/');
-        $iterator = new PlugIterator($dir, new HookPlugType);
+        $iterator = new PlugsIterator($dir, new HookPlugType);
         $this->assertTrue(
-            $iterator->plugsMapper()->map()
+            $iterator->plugsMap()->map()
                 ->hasKey('Chevere\Components\Plugs\Tests\_resources\PlugsIteratorTest\hookables\TestHookable')
         );
     }
