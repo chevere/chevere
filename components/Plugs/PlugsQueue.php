@@ -19,7 +19,7 @@ use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
 use Ds\Set;
 use LogicException;
 
-final class PlugablePlugsQueue
+final class PlugsQueue
 {
     private PlugTypeInterface $plugType;
 
@@ -33,7 +33,7 @@ final class PlugablePlugsQueue
         $this->set = new Set;
     }
 
-    public function withAddedPlug(PlugInterface $plug): PlugablePlugsQueue
+    public function withAddedPlug(PlugInterface $plug): PlugsQueue
     {
         $this->assertInterface($plug);
         $plugName = get_class($plug);
@@ -43,6 +43,11 @@ final class PlugablePlugsQueue
         $new->set->add($plugName);
 
         return $new;
+    }
+
+    public function plugType(): PlugTypeInterface
+    {
+        return $this->plugType;
     }
 
     /**

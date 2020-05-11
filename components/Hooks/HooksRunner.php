@@ -16,7 +16,7 @@ namespace Chevere\Components\Hooks;
 use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Hooks\Interfaces\HooksRunnerInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Plugs\PlugablePlugsQueue;
+use Chevere\Components\Plugs\PlugsQueue;
 use Chevere\Components\Type\Type;
 use RuntimeException;
 use Throwable;
@@ -26,11 +26,11 @@ use Throwable;
  */
 final class HooksRunner implements HooksRunnerInterface
 {
-    private PlugablePlugsQueue $queue;
+    private PlugsQueue $queue;
 
     private HookInterface $hook;
 
-    public function __construct(PlugablePlugsQueue $queue)
+    public function __construct(PlugsQueue $queue)
     {
         $this->queue = $queue;
     }

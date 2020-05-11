@@ -20,7 +20,7 @@ use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugs\Exceptions\PlugClassNotRegisteredException;
 use Chevere\Components\Plugs\Exceptions\PlugsFileNoExistsException;
-use Chevere\Components\Plugs\PlugablePlugsQueue;
+use Chevere\Components\Plugs\PlugsQueue;
 use LogicException;
 use RuntimeException;
 use Throwable;
@@ -30,7 +30,7 @@ final class Plugs
 {
     private ClassMap $plugablesToPlugs;
 
-    private PlugablePlugsQueue $plugsQueue;
+    private PlugsQueue $plugsQueue;
 
     public function __construct(ClassMap $classMap)
     {
@@ -48,7 +48,7 @@ final class Plugs
      * @throws RuntimeException if unable to load the hooks file
      * @throws LogicException if the contents of the hooks file are invalid
      */
-    public function getQueue(string $className): PlugablePlugsQueue
+    public function getQueue(string $className): PlugsQueue
     {
         if (!$this->has($className)) {
             throw new PlugClassNotRegisteredException(
@@ -73,7 +73,7 @@ final class Plugs
                 throw new LogicException(
                     (new Message('Return of %filePath% is not of type %type%'))
                         ->code('%filePath%', $plugsPath)
-                        ->code('%type%', PlugablePlugsQueue::class)
+                        ->code('%type%', PlugsQueue::class)
                         ->toString()
                 );
             }

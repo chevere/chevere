@@ -15,9 +15,23 @@ namespace Chevere\Components\Plugs\Interfaces;
 
 interface PlugTypeInterface
 {
+    /**
+     * @return string The interface that the plug must implement
+     */
     public function interface(): string;
 
+    /**
+     * @return string The applicable plugable interface
+     */
+    public function plugsTo(): string;
+
+    /**
+     * @return string Trailing component name, like `Hooks.php` or `EventListener.php`
+     */
     public function trailingName(): string;
 
+    /**
+     * @return string Name of the plugable method wich returns the plug anchors
+     */
     public function plugableAnchorsMethod(): string;
 }

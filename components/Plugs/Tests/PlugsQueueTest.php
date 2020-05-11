@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs\Tests;
 
 use Chevere\Components\Hooks\Tests\_resources\TestHook;
-use Chevere\Components\Plugs\PlugablePlugsQueue;
+use Chevere\Components\Plugs\PlugsQueue;
 use Chevere\Components\Plugs\Types\HookPlugType;
 use LogicException;
 use PHPUnit\Framework\TestCase;
@@ -23,14 +23,14 @@ final class PlugsQueueTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $hooksQueue = new PlugablePlugsQueue(new HookPlugType);
+        $hooksQueue = new PlugsQueue(new HookPlugType);
         $this->assertSame([], $hooksQueue->toArray());
     }
 
     public function testWithHook(): void
     {
         $hook = new TestHook;
-        $hooksQueue = new PlugablePlugsQueue(new HookPlugType);
+        $hooksQueue = new PlugsQueue(new HookPlugType);
         $hooksQueue = $hooksQueue->withAddedPlug($hook);
         $this->assertSame([
             $hook->for() => [
@@ -44,7 +44,7 @@ final class PlugsQueueTest extends TestCase
     public function testWithAlreadyAddedHook(): void
     {
         $hook = new TestHook;
-        $hooksQueue = (new PlugablePlugsQueue(new HookPlugType))
+        $hooksQueue = (new PlugsQueue(new HookPlugType))
             ->withAddedPlug($hook);
         $this->expectException(LogicException::class);
         $hooksQueue->withAddedPlug($hook);

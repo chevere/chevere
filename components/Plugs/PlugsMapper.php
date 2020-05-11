@@ -15,7 +15,7 @@ namespace Chevere\Components\Plugs;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugs\Interfaces\PlugInterface;
-use Chevere\Components\Plugs\PlugablePlugsQueue;
+use Chevere\Components\Plugs\PlugsQueue;
 use Ds\Map;
 use Ds\Set;
 use LogicException;
@@ -39,7 +39,7 @@ final class PlugsMapper
         $this->assertUnique($plug);
         $queue = $this->map->hasKey($plug->at())
             ? $this->map->get($plug->at())
-            : new PlugablePlugsQueue($assertPlug->type());
+            : new PlugsQueue($assertPlug->type());
         $this->map[$plug->at()] = $queue->withAddedPlug($plug);
 
         return $this;
