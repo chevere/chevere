@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs\Tests;
 
 use Chevere\Components\Hooks\Tests\_resources\TestHook;
+use Chevere\Components\Plugs\Exceptions\PlugInterfaceException;
 use Chevere\Components\Plugs\PlugsQueue;
+use Chevere\Components\Plugs\Types\EventListenerPlugType;
 use Chevere\Components\Plugs\Types\HookPlugType;
 use LogicException;
 use PHPUnit\Framework\TestCase;
@@ -23,30 +25,41 @@ final class PlugsQueueTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $hooksQueue = new PlugsQueue(new HookPlugType);
-        $this->assertSame([], $hooksQueue->toArray());
+        $plugType = new HookPlugType;
+        $plugsQueue = new PlugsQueue($plugType);
+        $this->assertSame($plugType, $plugsQueue->plugType());
+        $this->assertSame([], $plugsQueue->toArray());
+    }
+
+    public function testWithWrongPlug(): void
+    {
+        $hook = new TestHook;
+        $plugType = new EventListenerPlugType;
+        $plugsQueue = new PlugsQueue($plugType);
+        $this->expectException(PlugInterfaceException::class);
+        $plugsQueue->withAddedPlug($hook);
     }
 
     public function testWithHook(): void
     {
         $hook = new TestHook;
-        $hooksQueue = new PlugsQueue(new HookPlugType);
-        $hooksQueue = $hooksQueue->withAddedPlug($hook);
+        $plugQueue = new PlugsQueue(new HookPlugType);
+        $plugQueue = $plugQueue->withAddedPlug($hook);
         $this->assertSame([
             $hook->for() => [
                 0 => [
                     get_class($hook)
                 ]
             ]
-        ], $hooksQueue->toArray());
+        ], $plugQueue->toArray());
     }
 
     public function testWithAlreadyAddedHook(): void
     {
         $hook = new TestHook;
-        $hooksQueue = (new PlugsQueue(new HookPlugType))
+        $plugsQueue = (new PlugsQueue(new HookPlugType))
             ->withAddedPlug($hook);
         $this->expectException(LogicException::class);
-        $hooksQueue->withAddedPlug($hook);
+        $plugsQueue->withAddedPlug($hook);
     }
 }

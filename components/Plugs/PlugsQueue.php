@@ -14,12 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Plugs\Exceptions\PlugInterfaceException;
 use Chevere\Components\Plugs\Interfaces\PlugInterface;
+use Chevere\Components\Plugs\Interfaces\PlugsQueueInterface;
 use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
 use Ds\Set;
 use LogicException;
 
-final class PlugsQueue
+final class PlugsQueue implements PlugsQueueInterface
 {
     private PlugTypeInterface $plugType;
 
@@ -50,9 +52,6 @@ final class PlugsQueue
         return $this->plugType;
     }
 
-    /**
-     * @return array [for => [priority => plugName,],]
-     */
     public function toArray(): array
     {
         return $this->array;
@@ -73,11 +72,10 @@ final class PlugsQueue
     {
         $instanceof = $this->plugType->interface();
         if (!($plug instanceof $instanceof)) {
-            throw new LogicException(
+            throw new PlugInterfaceException(
                 (new Message("Plug %provided% doesn't implements the %expected% interface"))
                     ->code('%provided%', get_class($plug))
                     ->code('%expected%', $this->plugType->interface())
-                    ->toString()
             );
         }
     }
