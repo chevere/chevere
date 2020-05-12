@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs\Tests;
 
-use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Plugs\AssertPlug;
 use Chevere\Components\Plugs\Exceptions\PlugRegisteredException;
 use Chevere\Components\Plugs\Interfaces\PlugsQueueInterface;
@@ -47,12 +45,14 @@ final class PlugsMapTest extends TestCase
             ->withAddedPlug(
                 new AssertPlug($hook2)
             );
+        $this->assertTrue($plugsMap->has($hook));
+        $this->assertTrue($plugsMap->has($hook2));
         /**
          * @var PlugsQueueInterface $plugsQueue
          */
         foreach ($plugsMap->getGenerator() as $plugableName => $plugsQueue) {
             $this->assertInstanceOf(PlugsQueueInterface::class, $plugsQueue);
-            $this->assertTrue($plugsMap->hasPlugable($plugableName));
+            $this->assertTrue($plugsMap->hasPlugableName($plugableName));
         }
     }
 

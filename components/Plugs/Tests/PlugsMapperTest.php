@@ -14,27 +14,28 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs\Tests;
 
 use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Components\Plugs\PlugsIterator;
+use Chevere\Components\Filesystem\Exceptions\DirNotExistsException;
+use Chevere\Components\Plugs\PlugsMapper;
 use Chevere\Components\Plugs\Types\HookPlugType;
-use LogicException;
 use PHPUnit\Framework\TestCase;
 
-final class PlugsIteratorTest extends TestCase
+final class PlugsMapperTest extends TestCase
 {
     public function testConstructInvalidDir(): void
     {
         $dir = new DirFromString(__DIR__ . '/' . uniqid() . '/');
-        $this->expectException(LogicException::class);
-        new PlugsIterator($dir, new HookPlugType);
+        $this->expectException(DirNotExistsException::class);
+        new PlugsMapper($dir, new HookPlugType);
     }
 
     public function testConstruct(): void
     {
-        $dir = (new DirFromString(__DIR__ . '/'))->getChild('_resources/PlugsIteratorTest/hooks/');
-        $iterator = new PlugsIterator($dir, new HookPlugType);
+        $dir = (new DirFromString(__DIR__ . '/'))->getChild('_resources/PlugsMapperTest/');
+        $plugsMapper = new PlugsMapper($dir, new HookPlugType);
         $this->assertTrue(
-            $iterator->plugsMap()->map()
-                ->hasKey('Chevere\Components\Plugs\Tests\_resources\PlugsIteratorTest\hookables\TestHookable')
+            $plugsMapper->plugsMap()->hasPlugableName(
+                'Chevere\Components\Plugs\Tests\_resources\PlugsMapperTest\TestMappedHookable'
+            )
         );
     }
 }

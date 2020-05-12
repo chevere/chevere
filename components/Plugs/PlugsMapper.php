@@ -13,41 +13,40 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs;
 
+use Chevere\Components\Filesystem\Exceptions\DirNotExistsException;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugs\Interfaces\PlugInterface;
+use Chevere\Components\Plugs\Interfaces\PlugsMapInterface;
 use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
 use Chevere\Components\Plugs\PlugsMap;
 use Go\ParserReflection\ReflectionFile;
 use Go\ParserReflection\ReflectionFileNamespace;
-use LogicException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ReflectionClass;
 
-final class PlugsIterator
+final class PlugsMapper
 {
     private DirInterface $dir;
 
-    private PlugsMap $plugsMap;
+    private PlugsMapInterface $plugsMap;
 
     private RecursiveIteratorIterator $recursiveIterator;
 
     /**
-     * Iterates over the target dir for files matching *Hook.php and implementing
-     * HookInterface
+     * Iterates over the target $dir for plugs of type $plugType
      */
     public function __construct(DirInterface $dir, PlugTypeInterface $plugType)
     {
+        $this->plugsMap = new PlugsMap;
         if ($dir->exists() === false) {
-            throw new LogicException(
+            throw new DirNotExistsException(
                 (new Message('No dir existst at %path%'))
                     ->code('%path%', $dir->path()->absolute())
-                    ->toString()
             );
         }
         $this->dir = $dir;
-        $this->plugsMap = new PlugsMap;
         $this->recursiveIterator = new RecursiveIteratorIterator(
             new PlugRecursiveFilterIterator(
                 $this->getRecursiveDirectoryIterator(),
@@ -63,7 +62,7 @@ final class PlugsIterator
         }
     }
 
-    public function plugsMap(): PlugsMap
+    public function plugsMap(): PlugsMapInterface
     {
         return $this->plugsMap;
     }

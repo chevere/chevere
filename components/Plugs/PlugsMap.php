@@ -15,15 +15,15 @@ namespace Chevere\Components\Plugs;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugs\Exceptions\PlugRegisteredException;
+use Chevere\Components\Plugs\Interfaces\AssertPlugInterface;
 use Chevere\Components\Plugs\Interfaces\PlugInterface;
+use Chevere\Components\Plugs\Interfaces\PlugsMapInterface;
 use Chevere\Components\Plugs\PlugsQueue;
-use Countable;
 use Ds\Map;
 use Ds\Set;
 use Generator;
-use LogicException;
 
-final class PlugsMap implements Countable
+final class PlugsMap implements PlugsMapInterface
 {
     protected Set $set;
 
@@ -35,7 +35,7 @@ final class PlugsMap implements Countable
         $this->map = new Map;
     }
 
-    public function withAddedPlug(AssertPlug $assertPlug): self
+    public function withAddedPlug(AssertPlugInterface $assertPlug): PlugsMapInterface
     {
         $plug = $assertPlug->plug();
         $this->assertUnique($plug);
@@ -54,14 +54,16 @@ final class PlugsMap implements Countable
         return $this->set->count();
     }
 
-    public function hasPlugable(string $plugableName): bool
+    public function has(PlugInterface $plug): bool
+    {
+        return $this->set->contains(get_class($plug));
+    }
+
+    public function hasPlugableName(string $plugableName): bool
     {
         return $this->map->hasKey($plugableName);
     }
 
-    /**
-     * @return Generator<string , PlugsQueueInterface>
-     */
     public function getGenerator(): Generator
     {
         foreach ($this->map->pairs() as $pair) {
@@ -71,11 +73,10 @@ final class PlugsMap implements Countable
 
     protected function assertUnique(PlugInterface $plug): void
     {
-        $plugName = get_class($plug);
-        if ($this->set->contains($plugName)) {
+        if ($this->has($plug)) {
             throw new PlugRegisteredException(
                 (new Message('%plug% has been already registered'))
-                    ->code('%plug%', $plugName)
+                    ->code('%plug%', get_class($plug))
             );
         }
     }

@@ -10,7 +10,7 @@
          processIsolation="false"
          stopOnFailure="false"
          stopOnError="false"
-         testdox="true">
+         testdox="false">
     <testsuites>
         <testsuite name="Chevere Framework Test suite">
             <directory suffix="Test.php">components/</directory>
