@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Components\Events\Interfaces;
 
 use Chevere\Components\Events\EventRunner;
+use Chevere\Components\Plugs\Interfaces\PlugableAnchorsInterface;
 
 interface EventableInterface
 {
     /**
      * Returns the declared event names.
      */
-    public static function getEventNames(): EventNames;
+    public static function getEventAnchors(): PlugableAnchorsInterface;
 
     /**
      * Attach the hooks runner for this hookable.

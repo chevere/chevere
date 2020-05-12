@@ -14,14 +14,16 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Plugs\Exceptions\PlugRegisteredException;
 use Chevere\Components\Plugs\Interfaces\PlugInterface;
 use Chevere\Components\Plugs\PlugsQueue;
+use Countable;
 use Ds\Map;
 use Ds\Set;
+use Generator;
 use LogicException;
-use function DeepCopy\deep_copy;
 
-final class PlugsMap
+final class PlugsMap implements Countable
 {
     protected Set $set;
 
@@ -40,25 +42,41 @@ final class PlugsMap
         $queue = $this->map->hasKey($plug->at())
             ? $this->map->get($plug->at())
             : new PlugsQueue($assertPlug->type());
-        $this->map[$plug->at()] = $queue->withAddedPlug($plug);
+        $new = clone $this;
+        $new->map[$plug->at()] = $queue->withAddedPlug($plug);
+        $new->set->add(get_class($plug));
 
-        return $this;
+        return $new;
+    }
+
+    public function count(): int
+    {
+        return $this->set->count();
+    }
+
+    public function hasPlugable(string $plugableName): bool
+    {
+        return $this->map->hasKey($plugableName);
+    }
+
+    /**
+     * @return Generator<string , PlugsQueueInterface>
+     */
+    public function getGenerator(): Generator
+    {
+        foreach ($this->map->pairs() as $pair) {
+            yield $pair->key => $pair->value;
+        }
     }
 
     protected function assertUnique(PlugInterface $plug): void
     {
         $plugName = get_class($plug);
         if ($this->set->contains($plugName)) {
-            throw new LogicException(
-                (new Message('%plugName% has been already registered'))
-                    ->code('%plugName%', $plugName)
-                    ->toString()
+            throw new PlugRegisteredException(
+                (new Message('%plug% has been already registered'))
+                    ->code('%plug%', $plugName)
             );
         }
-    }
-
-    public function map(): Map
-    {
-        return deep_copy($this->map);
     }
 }

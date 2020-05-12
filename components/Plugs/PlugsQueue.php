@@ -23,9 +23,9 @@ use LogicException;
 
 final class PlugsQueue implements PlugsQueueInterface
 {
-    private PlugTypeInterface $plugType;
-
     private array $array = [];
+
+    private PlugTypeInterface $plugType;
 
     private Set $set;
 
@@ -35,7 +35,7 @@ final class PlugsQueue implements PlugsQueueInterface
         $this->set = new Set;
     }
 
-    public function withAddedPlug(PlugInterface $plug): PlugsQueue
+    public function withAddedPlug(PlugInterface $plug): PlugsQueueInterface
     {
         $this->assertInterface($plug);
         $plugName = get_class($plug);

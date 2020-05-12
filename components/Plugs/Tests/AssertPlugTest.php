@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs\Tests;
 
-use Chevere\Components\Hooks\Tests\_resources\TestHook;
 use Chevere\Components\Plugs\AssertPlug;
 use Chevere\Components\Plugs\Exceptions\PlugableAnchorNotExistsException;
 use Chevere\Components\Plugs\Exceptions\PlugableAnchorsException;
@@ -23,6 +22,7 @@ use Chevere\Components\Plugs\Tests\_resources\AssertPlugTest\TestHookAtInvalidIn
 use Chevere\Components\Plugs\Tests\_resources\AssertPlugTest\TestHookAtNotExists;
 use Chevere\Components\Plugs\Tests\_resources\AssertPlugTest\TestHookForNotExists;
 use Chevere\Components\Plugs\Tests\_resources\AssertPlugTest\TestUnacceptedPlug;
+use Chevere\Components\Plugs\Tests\_resources\src\TestHook;
 use Chevere\Components\Plugs\Types\HookPlugType;
 use PHPUnit\Framework\TestCase;
 

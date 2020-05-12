@@ -14,14 +14,15 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs\Traits;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Plugs\Interfaces\PlugsQueueInterface;
 use Chevere\Components\Plugs\PlugsQueue;
 use LogicException;
 
 trait PlugsQueueTrait
 {
-    private PlugsQueue $queue;
+    private PlugsQueueInterface $queue;
 
-    final public function __construct(PlugsQueue $queue)
+    final public function __construct(PlugsQueueInterface $queue)
     {
         $this->queue = $queue;
         if ($queue->plugType()->interface() !== $this->accept()) {

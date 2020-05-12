@@ -16,17 +16,17 @@ namespace Chevere\Components\Plugs\Interfaces;
 interface PlugInterface
 {
     /**
-     * @return string for actor
+     * @return string Plug for anchor
      */
     public function for(): string;
 
     /**
-     * @return string at className
+     * @return string Plugs at className
      */
     public function at(): string;
 
     /**
-     * @return int execution priority
+     * @return int Plug execution priority
      */
     public function priority(): int;
 }

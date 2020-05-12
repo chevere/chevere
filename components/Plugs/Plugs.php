@@ -20,6 +20,7 @@ use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugs\Exceptions\PlugableNotRegisteredException;
 use Chevere\Components\Plugs\Exceptions\PlugsFileNoExistsException;
+use Chevere\Components\Plugs\Interfaces\PlugsQueueInterface;
 use Chevere\Components\Plugs\PlugsQueue;
 use LogicException;
 use RuntimeException;
@@ -30,7 +31,7 @@ final class Plugs
 {
     private ClassMap $plugablesToPlugs;
 
-    private PlugsQueue $plugsQueue;
+    private PlugsQueueInterface $plugsQueue;
 
     public function __construct(ClassMap $classMap)
     {

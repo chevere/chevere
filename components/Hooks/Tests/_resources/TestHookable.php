@@ -15,6 +15,7 @@ namespace Chevere\Components\Hooks\Tests\_resources;
 
 use Chevere\Components\Hooks\Interfaces\HookableInterface;
 use Chevere\Components\Hooks\Traits\HookableTrait;
+use Chevere\Components\Plugs\Interfaces\PlugableAnchorsInterface;
 use Chevere\Components\Plugs\PlugableAnchors;
 
 class TestHookable implements HookableInterface
@@ -23,17 +24,11 @@ class TestHookable implements HookableInterface
 
     private string $string;
 
-    public static function getHookAnchors(): PlugableAnchors
+    public static function getHookAnchors(): PlugableAnchorsInterface
     {
         return (new PlugableAnchors)
             ->withAddedAnchor('construct:before')
             ->withAddedAnchor('setString:after');
-    }
-
-    public static function getEventAnchors(): PlugableAnchors
-    {
-        return (new PlugableAnchors)
-            ->withAddedAnchor('onSetString');
     }
 
     public function __construct()

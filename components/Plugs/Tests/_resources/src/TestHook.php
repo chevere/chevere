@@ -11,16 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Plugs\Tests\_resources\PlugsIteratorTest\hooks;
+namespace Chevere\Components\Plugs\Tests\_resources\src;
 
 use Chevere\Components\Hooks\Interfaces\HookInterface;
-use Chevere\Components\Plugs\Tests\_resources\PlugsIteratorTest\hookables\TestHookable;
 
 class TestHook implements HookInterface
 {
     public function for(): string
     {
-        return 'setString:after';
+        return 'hook-anchor-1';
     }
 
     public function at(): string

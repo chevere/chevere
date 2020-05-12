@@ -38,3 +38,21 @@ final class PlugsIteratorTest extends TestCase
         );
     }
 }
+
+// private DirInterface $tempDir;
+
+// public function setUp(): void
+// {
+//     $_resources = (new DirFromString(__DIR__ . '/'))->getChild('_resources/');
+//     $this->tempDir = $_resources->getChild('temp/');
+//     if ($this->tempDir->exists()) {
+//         $this->tempDir->removeContents();
+//     } else {
+//         $this->tempDir->create();
+//     }
+// }
+
+// public function tearDown(): void
+// {
+//     $this->tempDir->removeContents();
+// }

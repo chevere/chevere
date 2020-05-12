@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs\Tests\_resources\AssertPlugTest;
 
-use Chevere\Components\Plugs\Tests\_resources\PlugsIteratorTest\hooks\TestHook;
+use Chevere\Components\Plugs\Tests\_resources\src\TestHook;
 
 final class TestHookAtInvalidInterface extends TestHook
 {

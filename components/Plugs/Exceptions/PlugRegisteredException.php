@@ -11,14 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Plugs\Tests\_resources\AssertPlugTest;
+namespace Chevere\Components\Plugs\Exceptions;
 
-use Chevere\Components\Plugs\Tests\_resources\src\TestHook;
+use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 
-final class TestHookAtNotExists extends TestHook
+/**
+ * Exception thrown when adding an already addd plug.
+ */
+final class PlugRegisteredException extends Exception
 {
-    public function at(): string
-    {
-        return uniqid();
-    }
 }

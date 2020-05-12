@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs\Tests;
 
-use Chevere\Components\Hooks\Tests\_resources\TestHook;
 use Chevere\Components\Plugs\Exceptions\PlugInterfaceException;
 use Chevere\Components\Plugs\PlugsQueue;
+use Chevere\Components\Plugs\Tests\_resources\src\TestHook;
 use Chevere\Components\Plugs\Types\EventListenerPlugType;
 use Chevere\Components\Plugs\Types\HookPlugType;
 use LogicException;

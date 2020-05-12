@@ -38,18 +38,18 @@ final class PlugsRegistry
 
     private string $plugablesClassMapFilename;
 
-    private PlugsMap $plugsMapper;
+    private PlugsMap $plugsMap;
 
     protected ClassMap $classMap;
 
-    public function __construct(string $name, DirInterface $dir, PlugsMap $plugsMapper)
+    public function __construct(string $name, DirInterface $dir, PlugsMap $plugsMap)
     {
         $this->dir = $dir;
         $this->assertDir();
         $this->registryDir = $this->dir->getChild(sprintf(self::REGISTRY_DIR, $name));
         $this->plugsFileName = sprintf(self::PLUGS_FILENAME, $name);
         $this->plugablesClassMapFilename = sprintf(self::PLUGABLES_CLASSMAP_FILENAME, $name);
-        $this->plugsMapper = $plugsMapper;
+        $this->plugsMap = $plugsMap;
         $this->classMap = new ClassMap;
         $this->putPlugs();
         $fileClassMap = new File($this->dir->path()
@@ -85,7 +85,7 @@ final class PlugsRegistry
 
     private function putPlugs(): void
     {
-        foreach ($this->plugsMapper->map() as $plugableName => $queue) {
+        foreach ($this->plugsMap->map() as $plugableName => $queue) {
             $nsPath = (new Str($plugableName))->forwardSlashes()->toString();
             $plugsNsDir = $this->registryDir->getChild($nsPath . '/');
             $plugsPath = $plugsNsDir->path()

@@ -11,10 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Plugs\Tests\_resources\PlugsIteratorTest\hookables;
+namespace Chevere\Components\Plugs\Tests\_resources\src;
 
 use Chevere\Components\Hooks\Interfaces\HookableInterface;
 use Chevere\Components\Hooks\Traits\HookableTrait;
+use Chevere\Components\Plugs\Interfaces\PlugableAnchorsInterface;
 use Chevere\Components\Plugs\PlugableAnchors;
 
 class TestHookable implements HookableInterface
@@ -23,24 +24,25 @@ class TestHookable implements HookableInterface
 
     private string $string;
 
-    public static function getHookAnchors(): PlugableAnchors
+    public static function getHookAnchors(): PlugableAnchorsInterface
     {
         return (new PlugableAnchors)
-            ->withAddedAnchor('construct:before')
-            ->withAddedAnchor('setString:after');
+            ->withAddedAnchor('hook-anchor-1')
+            ->withAddedAnchor('hook-anchor-2');
     }
 
     public function __construct()
     {
         $string = '';
-        $this->hook('construct:before', $string);
+        $this->hook('hook-anchor-1', $string);
+
         $this->string = $string;
     }
 
     public function setString(string $string): void
     {
         $this->string = $string;
-        $this->hook('setString:after', $string);
+        $this->hook('hook-anchor-2', $string);
         $this->string = $string;
     }
 
