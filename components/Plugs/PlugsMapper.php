@@ -39,13 +39,8 @@ final class PlugsMapper
      */
     public function __construct(DirInterface $dir, PlugTypeInterface $plugType)
     {
+        $dir->assertExists();
         $this->plugsMap = new PlugsMap;
-        if ($dir->exists() === false) {
-            throw new DirNotExistsException(
-                (new Message('No dir existst at %path%'))
-                    ->code('%path%', $dir->path()->absolute())
-            );
-        }
         $this->dir = $dir;
         $this->recursiveIterator = new RecursiveIteratorIterator(
             new PlugRecursiveFilterIterator(

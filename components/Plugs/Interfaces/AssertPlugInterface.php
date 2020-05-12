@@ -20,9 +20,4 @@ interface AssertPlugInterface
     public function type(): PlugTypeInterface;
 
     public function plug(): PlugInterface;
-
-    /**
-     * @return PlugTypeInterface[]
-     */
-    public function accept(): array;
 }

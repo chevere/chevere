@@ -22,6 +22,7 @@ use Chevere\Components\Plugs\Interfaces\AssertPlugInterface;
 use Chevere\Components\Plugs\Interfaces\PlugInterface;
 use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
 use Chevere\Components\Plugs\PlugableAnchors;
+use Chevere\Components\Plugs\Types\PlugTypesList;
 use Error;
 
 /**
@@ -29,8 +30,8 @@ use Error;
  */
 final class AssertPlug implements AssertPlugInterface
 {
-    /** @var array PlugTypeInterface[] */
-    private array $accept;
+    /** @var PlugTypesList PlugTypeInterface[] */
+    private PlugTypesList $plugTypesList;
 
     private PlugInterface $plug;
 
@@ -38,12 +39,12 @@ final class AssertPlug implements AssertPlugInterface
 
     public function __construct(PlugInterface $plug)
     {
-        $this->accept = $this->accept();
+        $this->plugTypesList = new PlugTypesList;
         $this->plug = $plug;
         /**
          * @var PlugTypeInterface $plugType
          */
-        foreach ($this->accept as $plugType) {
+        foreach ($this->plugTypesList->getGenerator() as $plugType) {
             $plugInterface = $plugType->interface();
             if ($this->plug instanceof $plugInterface) {
                 $this->type = $plugType;
@@ -77,11 +78,6 @@ final class AssertPlug implements AssertPlugInterface
         return $this->plug;
     }
 
-    public function accept(): array
-    {
-        return include 'Types/list.php';
-    }
-
     private function assertType(): void
     {
         if (!isset($this->type)) {
@@ -89,7 +85,7 @@ final class AssertPlug implements AssertPlugInterface
             /**
              * @var PlugTypeInterface $plugType
              */
-            foreach ($this->accept as $plugType) {
+            foreach ($this->plugTypesList->getGenerator() as $plugType) {
                 $accept[] = $plugType->interface();
             }
             throw new PlugInterfaceException(
