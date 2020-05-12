@@ -11,18 +11,17 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Events;
+namespace Chevere\Components\Plugs\Tests\_resources\TypedPlugsQueueTests;
 
-use Chevere\Components\Events\Interfaces\EventListenerInterface;
 use Chevere\Components\Plugs\Interfaces\TypedPlugsQueueInterface;
 use Chevere\Components\Plugs\Traits\TypedPlugsQueueTrait;
 
-final class EventListenersQueue implements TypedPlugsQueueInterface
+final class TestTypedPlugsQueueInvalidAccept implements TypedPlugsQueueInterface
 {
     use TypedPlugsQueueTrait;
 
     public function accept(): string
     {
-        return EventListenerInterface::class;
+        return 'SomeInvalidInterface';
     }
 }

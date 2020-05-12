@@ -15,11 +15,11 @@ namespace Chevere\Components\Hooks;
 
 use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Plugs\Interfaces\TypedPlugsQueueInterface;
-use Chevere\Components\Plugs\Traits\PlugsQueueTrait;
+use Chevere\Components\Plugs\Traits\TypedPlugsQueueTrait;
 
 final class HooksQueue implements TypedPlugsQueueInterface
 {
-    use PlugsQueueTrait;
+    use TypedPlugsQueueTrait;
 
     public function accept(): string
     {

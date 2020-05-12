@@ -18,7 +18,7 @@ use Chevere\Components\Plugs\PlugsQueue;
 interface TypedPlugsQueueInterface
 {
     /**
-     * @return string The accepted plugable interface.
+     * @return string The accepted plug interface.
      */
     public function accept(): string;
 

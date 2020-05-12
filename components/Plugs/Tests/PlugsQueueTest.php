@@ -40,7 +40,7 @@ final class PlugsQueueTest extends TestCase
         $plugsQueue->withAddedPlug($hook);
     }
 
-    public function testWithHook(): void
+    public function testWithPlug(): void
     {
         $hook = new TestHook;
         $plugQueue = new PlugsQueue(new HookPlugType);
@@ -54,7 +54,7 @@ final class PlugsQueueTest extends TestCase
         ], $plugQueue->toArray());
     }
 
-    public function testWithAlreadyAddedHook(): void
+    public function testWithAlreadyAddedPlug(): void
     {
         $hook = new TestHook;
         $plugsQueue = (new PlugsQueue(new HookPlugType))

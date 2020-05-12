@@ -20,7 +20,6 @@ use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
 use Chevere\Components\Plugs\Types\EventListenerPlugType;
 use Chevere\Components\Plugs\Types\HookPlugType;
-use Chevere\Components\Plugs\Types\PlugTypesList;
 use PHPUnit\Framework\TestCase;
 
 final class PlugTypesTest extends TestCase

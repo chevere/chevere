@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs\Traits;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Plugs\Exceptions\PlugInterfaceException;
 use Chevere\Components\Plugs\Interfaces\PlugsQueueInterface;
 use Chevere\Components\Plugs\PlugsQueue;
-use LogicException;
 
-trait PlugsQueueTrait
+trait TypedPlugsQueueTrait
 {
     private PlugsQueueInterface $queue;
 
@@ -26,15 +26,17 @@ trait PlugsQueueTrait
     {
         $this->queue = $queue;
         if ($queue->plugType()->interface() !== $this->accept()) {
-            throw new LogicException(
-                (new Message('Expecting a queue for plugs of type %accept%, type %provided% provided'))
+            throw new PlugInterfaceException(
+                (new Message('Expecting a plugs queue for plugs of type %accept%, type %plugInterface% provided'))
                     ->code('%accept%', $this->accept())
-                    ->code('%provided%', $queue->plugType()->interface())
-                    ->toString()
+                    ->code('%plugInterface%', $queue->plugType()->interface())
             );
         }
     }
 
+    /**
+     * @return string The accepted plug interface.
+     */
     abstract public function accept(): string;
 
     public function queue(): PlugsQueue
