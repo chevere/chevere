@@ -28,7 +28,6 @@ final class Path implements PathInterface
     private string $absolute;
 
     /**
-     * @param string $absolute An absolute filesystem path
      * @throws PathNotAbsoluteException
      * @throws PathDoubleDotsDashException
      * @throws PathDotSlashException
@@ -36,7 +35,7 @@ final class Path implements PathInterface
      */
     public function __construct(string $absolute)
     {
-        new AssertPathString($absolute);
+        new AssertPathFormat($absolute);
         $this->absolute = $absolute;
     }
 

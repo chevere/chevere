@@ -13,16 +13,25 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ClassMap;
 
+use Chevere\Components\ClassMap\Exceptions\ClassNotMappedException;
+use Chevere\Components\ClassMap\Interfaces\ClassMapInterface;
 use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 use Chevere\Components\Message\Message;
+use Ds\Map;
 
-final class ClassMap
+final class ClassMap implements ClassMapInterface
 {
-    /** @var array [className => string] */
-    private array $classMap = [];
+    /** @var Map [className => string] */
+    private Map $classMap;
 
-    /** @var array [string => className] */
-    private array $flip = [];
+    /** @var Map [string => className] */
+    private Map $flip;
+
+    public function __construct()
+    {
+        $this->classMap = new Map;
+        $this->flip = new Map;
+    }
 
     public function withPut(string $className, string $string): ClassMap
     {
@@ -41,13 +50,25 @@ final class ClassMap
         return $new;
     }
 
+    public function count(): int
+    {
+        return $this->classMap->count();
+    }
+
     public function has(string $className): bool
     {
-        return isset($this->classMap[$className]);
+        return $this->classMap->hasKey($className);
     }
 
     public function get(string $className): string
     {
+        if (!$this->has($className)) {
+            throw new ClassNotMappedException(
+                (new Message("Class %className% doesn't exists in the class map"))
+                    ->code('%className%', $className)
+            );
+        }
+
         return $this->classMap[$className];
     }
 
@@ -56,6 +77,6 @@ final class ClassMap
      */
     public function toArray(): array
     {
-        return $this->classMap;
+        return $this->classMap->toArray();
     }
 }

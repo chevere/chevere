@@ -27,11 +27,6 @@ interface FilePhpReturnInterface
     const PHP_RETURN_CHARS = 13;
 
     /**
-     * @throws FileNotExistsException
-     */
-    public function __construct(FilePhpInterface $phpFile);
-
-    /**
      * Return an instance with the strict flag.
      *
      * This method MUST retain the state of the current instance, and return

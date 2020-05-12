@@ -34,7 +34,7 @@ use Throwable;
  *
  * <?php return 'Hello World!';
  */
-final class FilePhpReturn implements FilePhpReturnInterface
+class FilePhpReturn implements FilePhpReturnInterface
 {
     private FilePhpInterface $filePhp;
 

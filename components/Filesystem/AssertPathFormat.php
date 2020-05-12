@@ -21,7 +21,7 @@ use Chevere\Components\Filesystem\Interfaces\AssertPathFormatInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrBool;
 
-final class AssertPathString implements AssertPathFormatInterface
+final class AssertPathFormat implements AssertPathFormatInterface
 {
     private string $path;
 

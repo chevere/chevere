@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\X;
+namespace Chevere\Components\Plugs;
 
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Filesystem\File;
@@ -20,7 +20,6 @@ use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugs\Interfaces\PlugsMapInterface;
-use Chevere\Components\Plugs\PlugsMap;
 use Chevere\Components\Str\Str;
 use Chevere\Components\VarExportable\VarExportable;
 use LogicException;

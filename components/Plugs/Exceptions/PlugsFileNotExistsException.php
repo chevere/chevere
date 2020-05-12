@@ -18,6 +18,6 @@ use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 /**
  * Exception thrown when the plugs file doesn't exists.
  */
-final class PlugsFileNoExistsException extends Exception
+final class PlugsFileNotExistsException extends Exception
 {
 }

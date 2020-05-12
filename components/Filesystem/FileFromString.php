@@ -13,16 +13,21 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
+use Chevere\Components\Filesystem\Exceptions\PathDotSlashException;
+use Chevere\Components\Filesystem\Exceptions\PathDoubleDotsDashException;
+use Chevere\Components\Filesystem\Exceptions\PathExtraSlashesException;
 use Chevere\Components\Filesystem\Exceptions\PathIsDirException;
+use Chevere\Components\Filesystem\Exceptions\PathNotAbsoluteException;
 
-/**
- * @codeCoverageIgnore
- */
 final class FileFromString extends File
 {
     /**
      * @var string $path Absolute file path.
-     * @throws PathIsDirException if the $path represents a directory
+     * @throws PathDotSlashException
+     * @throws PathDoubleDotsDashException
+     * @throws PathExtraSlashesException
+     * @throws PathNotAbsoluteException
+     * @throws PathIsDirException
      */
     public function __construct(string $path)
     {

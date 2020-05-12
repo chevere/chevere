@@ -13,12 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem\Interfaces;
 
-use Chevere\Components\Filesystem\Exceptions\PathInvalidException;
+use Chevere\Components\Filesystem\Exceptions\PathDotSlashException;
+use Chevere\Components\Filesystem\Exceptions\PathDoubleDotsDashException;
+use Chevere\Components\Filesystem\Exceptions\PathExtraSlashesException;
+use Chevere\Components\Filesystem\Exceptions\PathNotAbsoluteException;
 
 interface AssertPathFormatInterface
 {
     /**
-     * @throws PathInvalidException if the $path format is invalid
+     * @throws PathNotAbsoluteException
+     * @throws PathDoubleDotsDashException
+     * @throws PathDotSlashException
+     * @throws PathExtraSlashesException
      */
     public function __construct(string $path);
 }

@@ -24,7 +24,7 @@ use Throwable;
 /**
  * A wrapper for FileInterface to interact with .php files.
  */
-final class FilePhp implements FilePhpInterface
+class FilePhp implements FilePhpInterface
 {
     private FileInterface $file;
 

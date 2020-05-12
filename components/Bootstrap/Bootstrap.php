@@ -16,7 +16,6 @@ namespace Chevere\Components\Bootstrap;
 use Chevere\Components\Bootstrap\Exceptions\BootstrapDirException;
 use Chevere\Components\Bootstrap\Interfaces\BootstrapInterface;
 use Chevere\Components\ExceptionHandler\Exceptions\Exception;
-use Chevere\Components\ExceptionHandler\Interfaces\ExceptionInterface;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Message\Message;
 use Throwable;
@@ -109,7 +108,7 @@ final class Bootstrap implements BootstrapInterface
             }
         } catch (Throwable $e) {
             throw new BootstrapDirException(
-                $e instanceof ExceptionInterface
+                $e instanceof Exception
                     ? $e->message()
                     : new Message($e->getMessage())
             );

@@ -13,13 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs\Tests;
 
-use Chevere\Components\Events\EventListenersQueue;
-use Chevere\Components\Hooks\HooksQueue;
 use Chevere\Components\Plugs\Exceptions\PlugInterfaceException;
 use Chevere\Components\Plugs\PlugsQueue;
 use Chevere\Components\Plugs\Tests\_resources\TypedPlugsQueueTests\TestTypedPlugsQueueInvalidAccept;
 use Chevere\Components\Plugs\Types\EventListenerPlugType;
-use Chevere\Components\Plugs\Types\HookPlugType;
 use PHPUnit\Framework\TestCase;
 
 final class TypedPlugsQueueTest extends TestCase
@@ -31,17 +28,17 @@ final class TypedPlugsQueueTest extends TestCase
         new TestTypedPlugsQueueInvalidAccept($plugsQueue);
     }
 
-    public function testHooksQueue(): void
-    {
-        $plugsQueue = new PlugsQueue(new HookPlugType);
-        $this->expectNotToPerformAssertions();
-        new HooksQueue($plugsQueue);
-    }
+    // public function testHooksQueue(): void
+    // {
+    //     $plugsQueue = new PlugsQueue(new HookPlugType);
+    //     $this->expectNotToPerformAssertions();
+    //     new HooksQueue($plugsQueue);
+    // }
 
-    public function testEventListenersQueue(): void
-    {
-        $plugsQueue = new PlugsQueue(new EventListenerPlugType);
-        $this->expectNotToPerformAssertions();
-        new EventListenersQueue($plugsQueue);
-    }
+    // public function testEventListenersQueue(): void
+    // {
+    //     $plugsQueue = new PlugsQueue(new EventListenerPlugType);
+    //     $this->expectNotToPerformAssertions();
+    //     new EventListenersQueue($plugsQueue);
+    // }
 }

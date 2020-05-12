@@ -13,42 +13,42 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem\Tests;
 
-use Chevere\Components\Filesystem\AssertPathString;
+use Chevere\Components\Filesystem\AssertPathFormat;
 use Chevere\Components\Filesystem\Exceptions\PathDotSlashException;
 use Chevere\Components\Filesystem\Exceptions\PathDoubleDotsDashException;
 use Chevere\Components\Filesystem\Exceptions\PathExtraSlashesException;
 use Chevere\Components\Filesystem\Exceptions\PathNotAbsoluteException;
 use PHPUnit\Framework\TestCase;
 
-final class AssertPathStringTest extends TestCase
+final class AssertPathFormatTest extends TestCase
 {
     public function testNoAbsolutePath(): void
     {
         $this->expectException(PathNotAbsoluteException::class);
-        (new AssertPathString('path'));
+        (new AssertPathFormat('path'));
     }
 
     public function testExtraSlashesPath(): void
     {
         $this->expectException(PathExtraSlashesException::class);
-        new AssertPathString('/some//dir');
+        new AssertPathFormat('/some//dir');
     }
 
     public function testDotSlashPath(): void
     {
         $this->expectException(PathDotSlashException::class);
-        new AssertPathString('/some/./dir');
+        new AssertPathFormat('/some/./dir');
     }
 
     public function testDotsSlashPath(): void
     {
         $this->expectException(PathDoubleDotsDashException::class);
-        new AssertPathString('/some/../dir');
+        new AssertPathFormat('/some/../dir');
     }
 
     public function testConstruct(): void
     {
         $this->expectNotToPerformAssertions();
-        (new AssertPathString('/path'));
+        (new AssertPathFormat('/path'));
     }
 }

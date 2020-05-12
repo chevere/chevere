@@ -13,22 +13,26 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Filesystem\Exceptions\PathDotSlashException;
-use Chevere\Components\Filesystem\Exceptions\PathDoubleDotsDashException;
-use Chevere\Components\Filesystem\Exceptions\PathExtraSlashesException;
-use Chevere\Components\Filesystem\Exceptions\PathNotAbsoluteException;
+use Chevere\Components\Filesystem\Exceptions\FileNotPhpException;
+use Chevere\Components\Filesystem\Exceptions\PathIsDirException;
 
-final class DirFromString extends Dir
+final class FilePhpReturnFromString extends FilePhpReturn
 {
     /**
-     * @var string $path Absolute dir path.
+     * @var string $path Absolute file path.
      * @throws PathDotSlashException
      * @throws PathDoubleDotsDashException
      * @throws PathExtraSlashesException
      * @throws PathNotAbsoluteException
+     * @throws PathIsDirException
+     * @throws FileNotPhpException
      */
     public function __construct(string $path)
     {
-        parent::__construct(new Path($path));
+        parent::__construct(
+            new FilePhp(
+                new FileFromString($path)
+            )
+        );
     }
 }

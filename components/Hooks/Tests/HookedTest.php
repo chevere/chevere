@@ -22,12 +22,12 @@ use Chevere\Components\Hooks\Tests\_resources\TestHookable;
 use Chevere\Components\Hooks\Tests\_resources\TestHookableNoRegister;
 use Chevere\Components\Hooks\Tests\_resources\TestHookableWithoutHooks;
 use Chevere\Components\Plugs\Exceptions\PlugableNotRegisteredException;
-use Chevere\Components\Plugs\Plugs;
+use Chevere\Components\Plugs\Plugins;
 use PHPUnit\Framework\TestCase;
 
 final class HookedTest extends TestCase
 {
-    private Plugs $plugs;
+    private Plugins $plugs;
 
     public function setUp(): void
     {
@@ -35,7 +35,7 @@ final class HookedTest extends TestCase
             ->getChild('_resources/HookedTest/');
         $hooksPath = (new Dir($resourcespath))->getChild('hooks-reg/')
             ->path()->absolute();
-        $this->plugs = new Plugs(
+        $this->plugs = new Plugins(
             (new ClassMap)
                 ->withPut(
                     'Chevere\Components\Hooks\Tests\_resources\TestHookable',
@@ -63,7 +63,7 @@ final class HookedTest extends TestCase
     public function testHooked(): void
     {
         $string = 'string';
-        $plugsQueue = $this->plugs->getQueue(TestHookable::class);
+        $plugsQueue = $this->plugs->getPlugsQueue(TestHookable::class);
         $hooksQueue = new HooksQueue($plugsQueue);
         /**
          * @var TestHookable $testHookable
@@ -87,6 +87,6 @@ final class HookedTest extends TestCase
     public function testClassNotRegistered(): void
     {
         $this->expectException(PlugableNotRegisteredException::class);
-        $this->plugs->getQueue(TestHookableNoRegister::class);
+        $this->plugs->getPlugsQueue(TestHookableNoRegister::class);
     }
 }
