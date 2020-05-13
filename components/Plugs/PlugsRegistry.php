@@ -19,12 +19,15 @@ use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Cache\Interfaces\CacheKeyInterface;
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\ClassMap\Interfaces\ClassMapInterface;
+use Chevere\Components\ExceptionHandler\Exceptions\Exception;
+use Chevere\Components\ExceptionHandler\Exceptions\RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugs\Interfaces\PlugsMapInterface;
 use Chevere\Components\Plugs\Interfaces\PlugsRegistryInterface;
 use Chevere\Components\Str\Str;
 use Chevere\Components\VarExportable\VarExportable;
 use LogicException;
+use Throwable;
 use TypeError;
 
 final class PlugsRegistry implements PlugsRegistryInterface
@@ -89,7 +92,17 @@ final class PlugsRegistry implements PlugsRegistryInterface
         try {
             return $return->var();
         } catch (TypeError $e) {
-            die('eeeeeeeeeeeeeeeeeeeeee');
+            throw new RuntimeException(
+                (new Message("Return for cache key %key% doesn't match the expected interface %expected%"))
+                    ->code('%key%', $key->toString())
+                    ->code('%expected%', ClassMapInterface::class)
+            );
+        } catch (Throwable $e) {
+            throw new RuntimeException(
+                $e instanceof Exception
+                    ? $e->message()
+                    : new Message($e->getMessage())
+            );
         }
     }
 

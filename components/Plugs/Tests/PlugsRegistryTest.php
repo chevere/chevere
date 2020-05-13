@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs\Tests;
 
 use Chevere\Components\Cache\CacheKey;
+use Chevere\Components\ExceptionHandler\Exceptions\RuntimeException;
 use Chevere\Components\Filesystem\FilePhpFromString;
 use Chevere\Components\Filesystem\FilePhpReturnFromString;
 use Chevere\Components\Plugs\AssertPlug;
@@ -43,8 +44,8 @@ final class PlugsRegistryTest extends TestCase
 
     public function testEmpty(): void
     {
-        $cacheKey = new CacheKey('missing');
         $cache = $this->cacheHelper->getEmptyCache();
+        $cacheKey = new CacheKey('missing');
         $plugsRegistry = new PlugsRegistry($cache);
         $this->assertFalse($plugsRegistry->hasClassMap($cacheKey));
         $this->expectException(LogicException::class);
@@ -53,8 +54,8 @@ final class PlugsRegistryTest extends TestCase
 
     public function testWorkingEmpty(): void
     {
-        $cacheKey = new CacheKey('hooks-empty');
         $cache = $this->cacheHelper->getWorkingCache();
+        $cacheKey = new CacheKey('hooks-empty');
         $plugsMap = new PlugsMap(new HookPlugType);
         $plugsRegistry = (new PlugsRegistry($cache))
             ->withAddedClassMap($cacheKey, $plugsMap);
@@ -65,8 +66,8 @@ final class PlugsRegistryTest extends TestCase
 
     public function testWorking(): void
     {
-        $cacheKey = new CacheKey('hooks-some');
         $cache = $this->cacheHelper->getWorkingCache();
+        $cacheKey = new CacheKey('hooks-some');
         $plugsMap = new PlugsMap(new HookPlugType);
         $hook = new TestHook;
         $plugsMap = $plugsMap->withAddedPlug(
@@ -91,5 +92,25 @@ final class PlugsRegistryTest extends TestCase
                 ]
             ]
         ], $plugsQueue->toArray());
+    }
+
+    public function testCachedInvalid(): void
+    {
+        $cache = $this->cacheHelper->getCachedCache();
+        $cacheKey = new CacheKey('hooks-invalid');
+        $plugsRegistry = new PlugsRegistry($cache);
+        $this->assertTrue($plugsRegistry->hasClassMap($cacheKey));
+        $this->expectException(RuntimeException::class);
+        $plugsRegistry->getClassMap($cacheKey);
+    }
+
+    public function testCachedCorrupted(): void
+    {
+        $cache = $this->cacheHelper->getCachedCache();
+        $cacheKey = new CacheKey('hooks-corrupted');
+        $plugsRegistry = new PlugsRegistry($cache);
+        $this->assertTrue($plugsRegistry->hasClassMap($cacheKey));
+        $this->expectException(RuntimeException::class);
+        $plugsRegistry->getClassMap($cacheKey);
     }
 }
