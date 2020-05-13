@@ -17,7 +17,7 @@ use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\ExceptionHandler\Exceptions\RuntimeException;
 use Chevere\Components\Filesystem\Interfaces\PathInterface;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Plugs\Exceptions\PlugableNotRegisteredException;
+use Chevere\Components\Plugs\Exceptions\PluggableNotRegisteredException;
 use Chevere\Components\Plugs\Exceptions\PlugsFileNotExistsException;
 use Chevere\Components\Plugs\Exceptions\PlugsQueueInterfaceException;
 use Chevere\Components\Plugs\Interfaces\PlugsQueueInterface;
@@ -41,54 +41,54 @@ final class PluginsTest extends TestCase
         $plugins = new Plugins($classMap);
         $this->assertNotSame($classMap, $plugins->classMap());
         $this->assertEquals($classMap, $plugins->classMap());
-        $plugable = 'notRegistered';
-        $this->expectException(PlugableNotRegisteredException::class);
-        $plugins->getPlugsQueue($plugable);
+        $pluggable = 'notRegistered';
+        $this->expectException(PluggableNotRegisteredException::class);
+        $plugins->getPlugsQueue($pluggable);
     }
 
     public function testRegisteredNotExists(): void
     {
-        $plugable = 'registered';
+        $pluggable = 'registered';
         $map = uniqid() . '.php';
         $plugins = new Plugins(
-            (new ClassMap)->withPut($plugable, $map)
+            (new ClassMap)->withPut($pluggable, $map)
         );
         $this->expectException(PlugsFileNotExistsException::class);
-        $plugins->getPlugsQueue($plugable);
+        $plugins->getPlugsQueue($pluggable);
     }
 
     public function testRegisteredWrongReturnType(): void
     {
-        $plugable = 'registered';
+        $pluggable = 'registered';
         $map = $this->resourcesPath->getChild('invalid.php')->absolute();
         $plugins = new Plugins(
-            (new ClassMap)->withPut($plugable, $map)
+            (new ClassMap)->withPut($pluggable, $map)
         );
         $this->expectException(PlugsQueueInterfaceException::class);
-        $plugins->getPlugsQueue($plugable);
+        $plugins->getPlugsQueue($pluggable);
     }
 
     public function testRegisteredCorrupted(): void
     {
-        $plugable = 'registered';
+        $pluggable = 'registered';
         $map = $this->resourcesPath->getChild('corrupted.php')->absolute();
         $plugins = new Plugins(
-            (new ClassMap)->withPut($plugable, $map)
+            (new ClassMap)->withPut($pluggable, $map)
         );
         $this->expectException(RuntimeException::class);
-        $plugins->getPlugsQueue($plugable);
+        $plugins->getPlugsQueue($pluggable);
     }
 
     public function testRegisteredHooks(): void
     {
-        $plugable = 'registered';
+        $pluggable = 'registered';
         $map = $this->resourcesPath->getChild('hooks.php')->absolute();
         $plugins = new Plugins(
-            (new ClassMap)->withPut($plugable, $map)
+            (new ClassMap)->withPut($pluggable, $map)
         );
         $this->assertInstanceOf(
             PlugsQueueInterface::class,
-            $plugins->getPlugsQueue($plugable)
+            $plugins->getPlugsQueue($pluggable)
         );
     }
 }

@@ -18,6 +18,6 @@ use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 /**
  * Exception thrown the anchor doesn't exists.
  */
-final class PlugableAnchorNotExistsException extends Exception
+final class PluggableAnchorNotExistsException extends Exception
 {
 }

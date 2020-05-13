@@ -33,7 +33,7 @@ final class ClassMap implements ClassMapInterface
         $this->flip = new Map;
     }
 
-    public function withPut(string $className, string $string): ClassMap
+    public function withPut(string $className, string $string): ClassMapInterface
     {
         $known = $this->flip[$string] ?? null;
         if ($known && $known !== $className) {

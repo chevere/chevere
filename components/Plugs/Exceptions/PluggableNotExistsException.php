@@ -16,8 +16,8 @@ namespace Chevere\Components\Plugs\Exceptions;
 use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 
 /**
- * Exception thrown when the plugable is not registered.
+ * Exception thrown when a hookable doesn't exists.
  */
-final class PlugableNotRegisteredException extends Exception
+final class PluggableNotExistsException extends Exception
 {
 }

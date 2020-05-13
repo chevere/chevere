@@ -59,7 +59,7 @@ interface CacheInterface
     /**
      * Get a cache item.
      *
-     * @throws CacheKeyNotFoundException If the cache key doesn't exists
+     * @throws CacheKeyNotFoundException
      */
     public function get(CacheKeyInterface $cacheKey): CacheItemInterface;
 
@@ -70,6 +70,8 @@ interface CacheInterface
 
     /**
      * Proxy for DirInterface getChild.
+     *
+     * @throws DirUnableToCreateException
      */
     public function getChild(string $path): CacheInterface;
 }

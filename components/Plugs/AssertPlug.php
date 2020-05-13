@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Plugs\Exceptions\PlugableAnchorNotExistsException;
-use Chevere\Components\Plugs\Exceptions\PlugableAnchorsException;
-use Chevere\Components\Plugs\Exceptions\PlugableNotExistsException;
+use Chevere\Components\Plugs\Exceptions\PluggableAnchorNotExistsException;
+use Chevere\Components\Plugs\Exceptions\PluggableAnchorsException;
+use Chevere\Components\Plugs\Exceptions\PluggableNotExistsException;
 use Chevere\Components\Plugs\Exceptions\PlugInterfaceException;
 use Chevere\Components\Plugs\Interfaces\AssertPlugInterface;
 use Chevere\Components\Plugs\Interfaces\PlugInterface;
 use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
-use Chevere\Components\Plugs\PlugableAnchors;
-use Chevere\Components\Plugs\Types\PlugTypesList;
+use Chevere\Components\Plugs\PluggableAnchors;
+use Chevere\Components\Plugs\PlugTypesList;
 use Error;
 
 /**
@@ -52,14 +52,14 @@ final class AssertPlug implements AssertPlugInterface
             }
         }
         $this->assertType();
-        $this->assertPlugableExists();
-        $anchorsMethod = $this->type()->plugableAnchorsMethod();
+        $this->assertPluggableExists();
+        $anchorsMethod = $this->type()->pluggableAnchorsMethod();
         $at = $this->plug->at();
         try {
             $anchors = $at::$anchorsMethod();
         } catch (Error $e) {
-            throw new PlugableAnchorsException(
-                (new Message('Unable to retrieve %className% plugable anchors declared by plug %plug% %message%'))
+            throw new PluggableAnchorsException(
+                (new Message('Unable to retrieve %className% pluggable anchors declared by plug %plug% %message%'))
                     ->code('%className%', $at)
                     ->code('%plug%', get_class($this->plug))
                     ->code('%message%', $e->getMessage())
@@ -96,20 +96,20 @@ final class AssertPlug implements AssertPlugInterface
         }
     }
 
-    private function assertPlugableExists(): void
+    private function assertPluggableExists(): void
     {
         if (class_exists($this->plug->at()) === false) {
-            throw new PlugableNotExistsException(
+            throw new PluggableNotExistsException(
                 (new Message("Class %ClassName% doesn't exists"))
                     ->code('%ClassName%', $this->plug->at())
             );
         }
     }
 
-    private function assertAnchors(PlugableAnchors $anchors): void
+    private function assertAnchors(PluggableAnchors $anchors): void
     {
         if ($anchors->has($this->plug->for()) === false) {
-            throw new PlugableAnchorNotExistsException(
+            throw new PluggableAnchorNotExistsException(
                 (new Message('Anchor %anchor% is not declared by %ClassName%'))
                     ->code('%anchor%', $this->plug->for())
                     ->code('%ClassName%', $this->plug->at())

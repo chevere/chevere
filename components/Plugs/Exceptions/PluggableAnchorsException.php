@@ -16,8 +16,8 @@ namespace Chevere\Components\Plugs\Exceptions;
 use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 
 /**
- * Exception thrown when a hookable doesn't exists.
+ * Exception thrown when failing to retrieve the pluggable anchors.
  */
-final class PlugableNotExistsException extends Exception
+final class PluggableAnchorsException extends Exception
 {
 }

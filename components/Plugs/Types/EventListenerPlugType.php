@@ -34,7 +34,12 @@ final class EventListenerPlugType implements PlugTypeInterface
         return 'EventListener.php';
     }
 
-    public function plugableAnchorsMethod(): string
+    public function queueName(): string
+    {
+        return 'EventListeners';
+    }
+
+    public function pluggableAnchorsMethod(): string
     {
         return 'getEventAnchors';
     }

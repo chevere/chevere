@@ -47,16 +47,16 @@ final class PlugTypesTest extends TestCase
     private function plugTypeTester(
         PlugTypeInterface $plugType,
         string $plugInterface,
-        string $plugableInterface,
+        string $pluggableInterface,
         string $trailingName
     ): void {
         $plugType = $plugType;
         $this->assertSame($plugInterface, $plugType->interface());
-        $this->assertSame($plugableInterface, $plugType->plugsTo());
+        $this->assertSame($pluggableInterface, $plugType->plugsTo());
         $this->assertSame($trailingName, $plugType->trailingName());
         $this->assertTrue(method_exists(
             $plugType->plugsTo(),
-            $plugType->plugableAnchorsMethod()
+            $plugType->pluggableAnchorsMethod()
         ));
     }
 }

@@ -18,25 +18,43 @@ use Chevere\Components\Plugs\Exceptions\PlugRegisteredException;
 use Chevere\Components\Plugs\Interfaces\AssertPlugInterface;
 use Chevere\Components\Plugs\Interfaces\PlugInterface;
 use Chevere\Components\Plugs\Interfaces\PlugsMapInterface;
+use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
 use Chevere\Components\Plugs\PlugsQueue;
 use Ds\Map;
 use Ds\Set;
 use Generator;
+use InvalidArgumentException;
 
 final class PlugsMap implements PlugsMapInterface
 {
-    protected Set $set;
+    private Set $set;
 
-    protected Map $map;
+    private Map $map;
 
-    public function __construct()
+    private PlugTypeInterface $type;
+
+    public function __construct(PlugTypeInterface $type)
     {
         $this->set = new Set;
         $this->map = new Map;
+        $this->type = $type;
+    }
+
+    public function type(): PlugTypeInterface
+    {
+        return $this->type;
     }
 
     public function withAddedPlug(AssertPlugInterface $assertPlug): PlugsMapInterface
     {
+        if (!($assertPlug->type() instanceof $this->type)) {
+            throw new InvalidArgumentException(
+                (new Message('Argument passed must be an instance of type %type%'))
+                    ->code('%type%', get_class($this->type))
+                    ->toString()
+            );
+        }
+
         $plug = $assertPlug->plug();
         $this->assertUnique($plug);
         $queue = $this->map->hasKey($plug->at())
@@ -59,9 +77,9 @@ final class PlugsMap implements PlugsMapInterface
         return $this->set->contains(get_class($plug));
     }
 
-    public function hasPlugableName(string $plugableName): bool
+    public function hasPluggableName(string $pluggableName): bool
     {
-        return $this->map->hasKey($plugableName);
+        return $this->map->hasKey($pluggableName);
     }
 
     public function getGenerator(): Generator

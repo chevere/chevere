@@ -18,10 +18,9 @@ use Chevere\Components\ClassMap\Exceptions\ClassNotMappedException;
 use Chevere\Components\ClassMap\Interfaces\ClassMapInterface;
 use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 use Chevere\Components\ExceptionHandler\Exceptions\RuntimeException;
-use Chevere\Components\ExceptionHandler\Interfaces\ExceptionInterface;
 use Chevere\Components\Filesystem\FilePhpReturnFromString;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Plugs\Exceptions\PlugableNotRegisteredException;
+use Chevere\Components\Plugs\Exceptions\PluggableNotRegisteredException;
 use Chevere\Components\Plugs\Exceptions\PlugsFileNotExistsException;
 use Chevere\Components\Plugs\Exceptions\PlugsQueueInterfaceException;
 use Chevere\Components\Plugs\Interfaces\PluginsInterface;
@@ -32,7 +31,7 @@ use TypeError;
 use function DeepCopy\deep_copy;
 
 /**
- * Plugable -> plugs.php interaction
+ * Pluggable -> plugs.php interaction
  */
 final class Plugins implements PluginsInterface
 {
@@ -40,9 +39,9 @@ final class Plugins implements PluginsInterface
 
     private PlugsQueueInterface $plugsQueue;
 
-    public function __construct(ClassMapInterface $plugablesToPlugs)
+    public function __construct(ClassMapInterface $pluggablesToPlugs)
     {
-        $this->classMap = $plugablesToPlugs;
+        $this->classMap = $pluggablesToPlugs;
     }
 
     public function classMap(): ClassMapInterface
@@ -51,17 +50,17 @@ final class Plugins implements PluginsInterface
     }
 
     /**
-     * @throws PlugableNotRegisteredException
+     * @throws PluggableNotRegisteredException
      * @throws PlugsFileNotExistsException
      * @throws RuntimeException
      * @throws LogicException
      */
-    public function getPlugsQueue(string $plugableName): PlugsQueueInterface
+    public function getPlugsQueue(string $pluggableName): PlugsQueueInterface
     {
         try {
-            $plugsPath = $this->classMap->get($plugableName);
+            $plugsPath = $this->classMap->get($pluggableName);
         } catch (ClassNotMappedException $e) {
-            throw new PlugableNotRegisteredException($e->message());
+            throw new PluggableNotRegisteredException($e->message());
         }
         if (stream_resolve_include_path($plugsPath) === false) {
             throw new PlugsFileNotExistsException(

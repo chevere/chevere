@@ -16,8 +16,8 @@ namespace Chevere\Components\Plugs\Exceptions;
 use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 
 /**
- * Exception thrown when failing to retrieve the plugable anchors.
+ * Exception thrown when the pluggable is not registered.
  */
-final class PlugableAnchorsException extends Exception
+final class PluggableNotRegisteredException extends Exception
 {
 }

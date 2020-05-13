@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs\Tests;
 
 use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
-use Chevere\Components\Plugs\Types\PlugTypesList;
+use Chevere\Components\Plugs\PlugTypesList;
 use PHPUnit\Framework\TestCase;
 
 final class PlugTypesListTest extends TestCase

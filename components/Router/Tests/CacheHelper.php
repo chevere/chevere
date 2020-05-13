@@ -38,6 +38,9 @@ final class CacheHelper
         if (!$this->getEmptyDir()->exists()) {
             $this->getEmptyDir()->create();
         }
+        if (!$this->getCachedDir()->exists()) {
+            $this->getCachedDir()->create();
+        }
     }
 
     public function tearDown(): void

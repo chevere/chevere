@@ -33,27 +33,9 @@ final class PlugsMapperTest extends TestCase
         $dir = (new DirFromString(__DIR__ . '/'))->getChild('_resources/PlugsMapperTest/');
         $plugsMapper = new PlugsMapper($dir, new HookPlugType);
         $this->assertTrue(
-            $plugsMapper->plugsMap()->hasPlugableName(
+            $plugsMapper->plugsMap()->hasPluggableName(
                 'Chevere\Components\Plugs\Tests\_resources\PlugsMapperTest\TestMappedHookable'
             )
         );
     }
 }
-
-// private DirInterface $tempDir;
-
-// public function setUp(): void
-// {
-//     $_resources = (new DirFromString(__DIR__ . '/'))->getChild('_resources/');
-//     $this->tempDir = $_resources->getChild('temp/');
-//     if ($this->tempDir->exists()) {
-//         $this->tempDir->removeContents();
-//     } else {
-//         $this->tempDir->create();
-//     }
-// }
-
-// public function tearDown(): void
-// {
-//     $this->tempDir->removeContents();
-// }

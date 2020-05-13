@@ -13,11 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs\Interfaces;
 
+use Chevere\Components\Cache\Interfaces\CacheKeyInterface;
 use Chevere\Components\ClassMap\Interfaces\ClassMapInterface;
 
-interface PluginsInterface
+interface PlugsRegistryInterface
 {
-    public function classMap(): ClassMapInterface;
+    public function withAddedClassMap(CacheKeyInterface $key, PlugsMapInterface $plugsMap): PlugsRegistryInterface;
 
-    public function getPlugsQueue(string $pluggableName): PlugsQueueInterface;
+    public function hasClassMap(CacheKeyInterface $key): bool;
+
+    public function getClassMap(CacheKeyInterface $key): ClassMapInterface;
 }

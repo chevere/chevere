@@ -18,11 +18,13 @@ use Generator;
 
 interface PlugsMapInterface extends Countable
 {
+    public function type(): PlugTypeInterface;
+
     public function withAddedPlug(AssertPlugInterface $assertPlug): PlugsMapInterface;
 
     public function has(PlugInterface $plug): bool;
 
-    public function hasPlugableName(string $plugableName): bool;
+    public function hasPluggableName(string $pluggableName): bool;
 
     /**
      * @return Generator<string , PlugsQueueInterface>

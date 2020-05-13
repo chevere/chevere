@@ -40,7 +40,7 @@ final class PlugsMapper
     public function __construct(DirInterface $dir, PlugTypeInterface $plugType)
     {
         $dir->assertExists();
-        $this->plugsMap = new PlugsMap;
+        $this->plugsMap = new PlugsMap($plugType);
         $this->dir = $dir;
         $this->recursiveIterator = new RecursiveIteratorIterator(
             new PlugRecursiveFilterIterator(

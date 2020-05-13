@@ -16,7 +16,7 @@ namespace Chevere\Components\Hooks\Exceptions;
 use Chevere\Components\ExceptionHandler\Exceptions\Exception;
 
 /**
- * Exception thrown when a plugable doesn't implement the hookable interface.
+ * Exception thrown when a pluggable doesn't implement the hookable interface.
  */
 final class HookableInterfaceException extends Exception
 {

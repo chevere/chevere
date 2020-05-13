@@ -17,4 +17,11 @@ use Countable;
 
 interface ClassMapInterface extends Countable
 {
+    public function withPut(string $className, string $string): ClassMapInterface;
+
+    public function has(string $className): bool;
+
+    public function get(string $className): string;
+
+    public function toArray(): array;
 }

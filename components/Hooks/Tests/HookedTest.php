@@ -21,7 +21,7 @@ use Chevere\Components\Hooks\HooksRunner;
 use Chevere\Components\Hooks\Tests\_resources\TestHookable;
 use Chevere\Components\Hooks\Tests\_resources\TestHookableNoRegister;
 use Chevere\Components\Hooks\Tests\_resources\TestHookableWithoutHooks;
-use Chevere\Components\Plugs\Exceptions\PlugableNotRegisteredException;
+use Chevere\Components\Plugs\Exceptions\PluggableNotRegisteredException;
 use Chevere\Components\Plugs\Plugins;
 use PHPUnit\Framework\TestCase;
 
@@ -86,7 +86,7 @@ final class HookedTest extends TestCase
 
     public function testClassNotRegistered(): void
     {
-        $this->expectException(PlugableNotRegisteredException::class);
+        $this->expectException(PluggableNotRegisteredException::class);
         $this->plugs->getPlugsQueue(TestHookableNoRegister::class);
     }
 }

@@ -21,7 +21,7 @@ interface PlugTypeInterface
     public function interface(): string;
 
     /**
-     * @return string The applicable plugable interface
+     * @return string The applicable pluggable interface
      */
     public function plugsTo(): string;
 
@@ -31,7 +31,12 @@ interface PlugTypeInterface
     public function trailingName(): string;
 
     /**
-     * @return string Name of the plugable method wich returns the plug anchors
+     * @return string Name used to cache queues of this PlugType.
      */
-    public function plugableAnchorsMethod(): string;
+    public function queueName(): string;
+
+    /**
+     * @return string Name of the pluggable method wich returns the plug anchors
+     */
+    public function pluggableAnchorsMethod(): string;
 }

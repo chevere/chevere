@@ -18,13 +18,14 @@ use Chevere\Components\Plugs\Exceptions\PlugRegisteredException;
 use Chevere\Components\Plugs\Interfaces\PlugsQueueInterface;
 use Chevere\Components\Plugs\PlugsMap;
 use Chevere\Components\Plugs\Tests\_resources\src\TestHook;
+use Chevere\Components\Plugs\Types\HookPlugType;
 use PHPUnit\Framework\TestCase;
 
 final class PlugsMapTest extends TestCase
 {
     public function testConstrut(): void
     {
-        $plugsMap = new PlugsMap;
+        $plugsMap = new PlugsMap(new HookPlugType);
         $this->assertCount(0, $plugsMap);
     }
 
@@ -38,7 +39,7 @@ final class PlugsMapTest extends TestCase
                 return 'hook-anchor-2';
             }
         };
-        $plugsMap = (new PlugsMap)
+        $plugsMap = (new PlugsMap(new HookPlugType))
             ->withAddedPlug(
                 new AssertPlug($hook)
             )
@@ -50,16 +51,16 @@ final class PlugsMapTest extends TestCase
         /**
          * @var PlugsQueueInterface $plugsQueue
          */
-        foreach ($plugsMap->getGenerator() as $plugableName => $plugsQueue) {
+        foreach ($plugsMap->getGenerator() as $pluggableName => $plugsQueue) {
             $this->assertInstanceOf(PlugsQueueInterface::class, $plugsQueue);
-            $this->assertTrue($plugsMap->hasPlugableName($plugableName));
+            $this->assertTrue($plugsMap->hasPluggableName($pluggableName));
         }
     }
 
     public function testWithAlreadyAddedPlug(): void
     {
         $hook = new TestHook;
-        $plugsMap = (new PlugsMap)
+        $plugsMap = (new PlugsMap(new HookPlugType))
             ->withAddedPlug(
                 new AssertPlug($hook)
             );

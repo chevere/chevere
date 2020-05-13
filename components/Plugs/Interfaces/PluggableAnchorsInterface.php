@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs\Interfaces;
 
-use Chevere\Components\Plugs\Exceptions\PlugableAnchorExistsException;
+use Chevere\Components\Plugs\Exceptions\PluggableAnchorExistsException;
 use Ds\Set;
 
-interface PlugableAnchorsInterface
+interface PluggableAnchorsInterface
 {
     /**
-     * @throws PlugableAnchorExistsException
+     * @throws PluggableAnchorExistsException
      */
-    public function withAddedAnchor(string $anchor): PlugableAnchorsInterface;
+    public function withAddedAnchor(string $anchor): PluggableAnchorsInterface;
 
     public function has(string $anchor): bool;
 

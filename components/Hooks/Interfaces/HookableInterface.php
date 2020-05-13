@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Hooks\Interfaces;
 
-use Chevere\Components\Plugs\Interfaces\PlugableAnchorsInterface;
+use Chevere\Components\Plugs\Interfaces\PluggableAnchorsInterface;
 
 interface HookableInterface
 {
     /**
      * Returns the declared hook anchors.
      */
-    public static function getHookAnchors(): PlugableAnchorsInterface;
+    public static function getHookAnchors(): PluggableAnchorsInterface;
 
     /**
      * Attach the hooks runner for this hookable.

@@ -15,8 +15,8 @@ namespace Chevere\Components\Plugs\Tests\_resources\PlugsMapperTest;
 
 use Chevere\Components\Hooks\Interfaces\HookableInterface;
 use Chevere\Components\Hooks\Traits\HookableTrait;
-use Chevere\Components\Plugs\Interfaces\PlugableAnchorsInterface;
-use Chevere\Components\Plugs\PlugableAnchors;
+use Chevere\Components\Plugs\Interfaces\PluggableAnchorsInterface;
+use Chevere\Components\Plugs\PluggableAnchors;
 
 class TestMappedHookable implements HookableInterface
 {
@@ -24,9 +24,9 @@ class TestMappedHookable implements HookableInterface
 
     private string $string;
 
-    public static function getHookAnchors(): PlugableAnchorsInterface
+    public static function getHookAnchors(): PluggableAnchorsInterface
     {
-        return (new PlugableAnchors)
+        return (new PluggableAnchors)
             ->withAddedAnchor('hook-anchor-1');
     }
 

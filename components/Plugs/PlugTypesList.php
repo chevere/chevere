@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Plugs\Types;
+namespace Chevere\Components\Plugs;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
@@ -26,7 +26,7 @@ final class PlugTypesList implements PlugTypesListInterface
 
     public function __construct()
     {
-        $path = __DIR__ . '/list.php';
+        $path = __DIR__ . '/Types/list.php';
         $list = include $path;
         $this->map = new Map($list);
         foreach ($this->map->pairs() as $pair) {

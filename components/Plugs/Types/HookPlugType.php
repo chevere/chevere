@@ -34,7 +34,12 @@ final class HookPlugType implements PlugTypeInterface
         return 'Hook.php';
     }
 
-    public function plugableAnchorsMethod(): string
+    public function queueName(): string
+    {
+        return 'Hooks';
+    }
+
+    public function pluggableAnchorsMethod(): string
     {
         return 'getHookAnchors';
     }
