@@ -37,8 +37,6 @@ final class Plugins implements PluginsInterface
 {
     private ClassMap $classMap;
 
-    private PlugsQueueInterface $plugsQueue;
-
     public function __construct(ClassMapInterface $pluggablesToPlugs)
     {
         $this->classMap = $pluggablesToPlugs;
@@ -83,7 +81,7 @@ final class Plugins implements PluginsInterface
             );
         }
         try {
-            $this->plugsQueue = $var;
+            return $var;
         } catch (TypeError $e) {
             throw new PlugsQueueInterfaceException(
                 (new Message('Return of %filePath% is not of type %type%'))
@@ -91,7 +89,5 @@ final class Plugins implements PluginsInterface
                     ->code('%type%', PlugsQueueInterface::class)
             );
         }
-
-        return $this->plugsQueue;
     }
 }

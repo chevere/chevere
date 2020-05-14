@@ -5,17 +5,15 @@ Quality](https://scrutinizer-ci.com/g/chevere/chevere/badges/quality-score.png?b
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/b956754f8ff04aaa9ca24a6e4cc21661)](https://www.codacy.com/gh/chevere/chevere?utm_source=github.com&utm_medium=referral&utm_content=chevere/chevere&utm_campaign=Badge_Grade)
 [![Maintainability](https://api.codeclimate.com/v1/badges/e096f89454df0538144f/maintainability)](https://codeclimate.com/github/chevere/chevere/maintainability)
 
-# About Chevere
+# Chevere
 
-Chevere is a framework for building server side applications, like content management systems, websites and APIs.
+This is the main repository of The Chevere Framework.
 
-The main goal is to leverage the work needed to build extensible applications by providing reusable tools like Routing, Hooks, CLI commands, Controllers and automatic API mapping.
+Chevere is a development framework for building pluggable server side applications, following Clean Code principles, with a strongly typed code and a heavy culture on the console. [Learn more](https://github.com/chevere/docs/blob/master/introduction.md).
 
-Chevere provides a layered architecture, easy to customize so you users can distribute plugins with more peace of mind.
+## ⚠ This is a work-in-progress ⚠
 
-## Note: This is a work-in-progress
-
-The project is under development and is not recommended to use it for production yet. You can check the on-going development in the [Chevere + Chevereto V4 Trello board](https://trello.com/b/DCZhECwN/chevere-chevereto-v4).
+The project is under development and is not recommended to use it for production yet.
 
 ## Building
 
