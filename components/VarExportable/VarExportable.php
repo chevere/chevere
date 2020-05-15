@@ -99,8 +99,7 @@ final class VarExportable implements VarExportableInterface
      */
     private function breadcrumIterable($var): void
     {
-        $this->breadcrum = $this->breadcrum
-            ->withAddedItem('(iterable)');
+        $this->breadcrum = $this->breadcrum->withAddedItem('(iterable)');
         $iterableKey = $this->breadcrum->pos();
         foreach ($var as $key => $val) {
             $key = (string) $key;
