@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Exceptions;
 
-use Chevere\Components\ExceptionHandler\Exceptions\Exception;
+use Chevere\Components\Exception\Exception;
 
 final class TypeException extends Exception
 {

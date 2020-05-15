@@ -22,7 +22,7 @@ use Exception;
 use LogicException;
 
 /**
- * Class used to make Exceptions readable (normalized).
+ * Class used to make Exception readable (normalized).
  */
 final class ExceptionRead implements ExceptionReadInterface
 {

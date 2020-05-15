@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Cache\Exceptions;
 
-use Chevere\Components\ExceptionHandler\Exceptions\Exception;
+use Chevere\Components\Exception\Exception;
 
 /**
  * Exception thrown if the cache key contains illegal characters.

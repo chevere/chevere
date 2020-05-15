@@ -21,7 +21,7 @@ use InvalidArgumentException;
 use ReflectionMethod;
 
 /**
- * Allows to interact with trace entries thrown by Exceptions.
+ * Allows to interact with trace entries thrown by Exception.
  */
 final class TraceEntry implements TraceEntryInterface
 {

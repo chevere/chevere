@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\ExceptionHandler\Exceptions\Exception;
+use Chevere\Components\Exception\Exception;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Exceptions\FileExistsException;
 use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;

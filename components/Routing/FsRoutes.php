@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing;
 
-use Chevere\Components\ExceptionHandler\Exceptions\Exception;
+use Chevere\Components\Exception\Exception;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Routing\Exceptions\DecoratedRouteAlreadyAddedException;
 use Chevere\Components\Routing\Exceptions\RouteNameAlreadyAddedException;

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs\Tests;
 
 use Chevere\Components\ClassMap\ClassMap;
-use Chevere\Components\ExceptionHandler\Exceptions\RuntimeException;
+use Chevere\Components\Exception\RuntimeException;
 use Chevere\Components\Filesystem\Interfaces\PathInterface;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Plugs\Exceptions\PluggableNotRegisteredException;

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\ExceptionHandler\Traits;
+namespace Chevere\Components\Exception\Traits;
 
 use Chevere\Components\Message\Interfaces\MessageInterface;
 

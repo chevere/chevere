@@ -15,7 +15,7 @@ namespace Chevere\Components\ClassMap;
 
 use Chevere\Components\ClassMap\Exceptions\ClassNotMappedException;
 use Chevere\Components\ClassMap\Interfaces\ClassMapInterface;
-use Chevere\Components\ExceptionHandler\Exceptions\Exception;
+use Chevere\Components\Exception\Exception;
 use Chevere\Components\Message\Message;
 use Ds\Map;
 

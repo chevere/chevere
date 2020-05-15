@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler;
 
-use Chevere\Components\ExceptionHandler\Exceptions\ErrorException;
+use Chevere\Components\Exception\ErrorException;
 use Chevere\Components\Message\Message;
 
 /**

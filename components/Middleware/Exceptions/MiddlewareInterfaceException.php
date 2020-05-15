@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Middleware\Exceptions;
 
-use Chevere\Components\ExceptionHandler\Exceptions\Exception;
+use Chevere\Components\Exception\Exception;
 
 /**
  * Exception thrown when a MiddlewareInterface is not implemented.

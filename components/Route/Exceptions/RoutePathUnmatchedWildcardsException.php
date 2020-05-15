@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route\Exceptions;
 
-use Chevere\Components\ExceptionHandler\Exceptions\Exception;
+use Chevere\Components\Exception\Exception;
 
 /**
  * Exception thrown when the route path wildcards count doesn't match the expected count (from braces).
