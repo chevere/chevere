@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Breadcrum\Exceptions;
+namespace Chevere\Components\Breadcrumb\Exceptions;
 
 use Chevere\Components\Exception\Exception;
 
 /**
- * Exception thrown by the BreadcrumInterface.
+ * Exception thrown by the BreadcrumbInterface.
  */
-final class BreadcrumException extends Exception
+final class BreadcrumbException extends Exception
 {
 }

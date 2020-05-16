@@ -11,16 +11,16 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Breadcrum;
+namespace Chevere\Components\Breadcrumb;
 
-use Chevere\Components\Breadcrum\Exceptions\BreadcrumException;
-use Chevere\Components\Breadcrum\Interfaces\BreadcrumInterface;
+use Chevere\Components\Breadcrumb\Exceptions\BreadcrumbException;
+use Chevere\Components\Breadcrumb\Interfaces\BreadcrumbInterface;
 use Chevere\Components\Message\Message;
 
 /**
  * A general purpose iterator companion.
  */
-final class Breadcrum implements BreadcrumInterface
+final class Breadcrumb implements BreadcrumbInterface
 {
     /** @var array [pos => $item] */
     private array $items = [];
@@ -44,7 +44,7 @@ final class Breadcrum implements BreadcrumInterface
         return $this->pos;
     }
 
-    public function withAddedItem(string $item): BreadcrumInterface
+    public function withAddedItem(string $item): BreadcrumbInterface
     {
         $new = clone $this;
         ++$new->id;
@@ -54,10 +54,10 @@ final class Breadcrum implements BreadcrumInterface
         return $new;
     }
 
-    public function withRemovedItem(int $pos): BreadcrumInterface
+    public function withRemovedItem(int $pos): BreadcrumbInterface
     {
         if (!array_key_exists($pos, $this->items)) {
-            throw new BreadcrumException(
+            throw new BreadcrumbException(
                 (new Message('Pos %pos% not found'))
                     ->code('%pos%', (string) $pos)
             );
@@ -69,7 +69,7 @@ final class Breadcrum implements BreadcrumInterface
     }
 
     /**
-     * Provides access to the breadcrum as array.
+     * Provides access to the breadcrumb as array.
      */
     public function toArray(): array
     {
@@ -77,7 +77,7 @@ final class Breadcrum implements BreadcrumInterface
     }
 
     /**
-     * Provides access to the breadcrum string.
+     * Provides access to the breadcrumb string.
      *
      * @return string items string `[item0][item1][itemN]...[itemN+1]`
      */

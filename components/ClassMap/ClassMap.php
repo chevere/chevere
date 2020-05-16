@@ -38,7 +38,7 @@ final class ClassMap implements ClassMapInterface
         $known = $this->flip[$string] ?? null;
         if ($known && $known !== $className) {
             throw new Exception(
-                (new Message('Attemping to map %className% to the same mapping of %known% -> %string%'))
+                (new Message('Attempting to map %className% to the same mapping of %known% -> %string%'))
                     ->code('%className%', $className)
                     ->code('%known%', $known)
                     ->code('%string%', $string)

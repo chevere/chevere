@@ -24,7 +24,7 @@ class TestMappedHookable implements HookableInterface
 
     private string $string;
 
-    public static function getHookAnchors(): PluggableAnchorsInterface
+    public static function getHookableAnchors(): PluggableAnchorsInterface
     {
         return (new PluggableAnchors)
             ->withAddedAnchor('hook-anchor-1');

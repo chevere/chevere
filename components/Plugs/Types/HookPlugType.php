@@ -41,6 +41,6 @@ final class HookPlugType implements PlugTypeInterface
 
     public function pluggableAnchorsMethod(): string
     {
-        return 'getHookAnchors';
+        return 'getHookableAnchors';
     }
 }

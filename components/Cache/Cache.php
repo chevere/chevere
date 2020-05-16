@@ -24,6 +24,7 @@ use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Filesystem\Interfaces\PathInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\VarExportable\Interfaces\VarExportableInterface;
+use Chevere\Components\Filesystem\Exceptions\DirUnableToCreateException;
 
 /**
  * A simple PHP based cache system.
@@ -41,7 +42,7 @@ final class Cache implements CacheInterface
     private array $puts;
 
     /**
-     * @param DirInterface $dir the directory where cache files will be stored/accesed (must exists)
+     * @param DirInterface $dir the directory where cache files will be stored/accessed (must exists)
      * @throws DirUnableToCreateException if $dir doesn't exists and unable to create
      */
     public function __construct(DirInterface $dir)

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Bootstrap\Interfaces;
 
+use Chevere\Components\Bootstrap\Exceptions\BootstrapDirException;
 use Chevere\Components\Filesystem\Interfaces\DirInterface;
 
 interface BootstrapInterface

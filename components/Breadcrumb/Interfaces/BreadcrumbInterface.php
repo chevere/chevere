@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Breadcrum\Interfaces;
+namespace Chevere\Components\Breadcrumb\Interfaces;
 
 use Chevere\Components\Common\Interfaces\ToArrayInterface;
 use Chevere\Components\Common\Interfaces\ToStringInterface;
-use Chevere\Components\Breadcrum\Exceptions\BreadcrumException;
+use Chevere\Components\Breadcrumb\Exceptions\BreadcrumbException;
 
-interface BreadcrumInterface extends ToArrayInterface, ToStringInterface
+interface BreadcrumbInterface extends ToArrayInterface, ToStringInterface
 {
     /**
      * Returns a boolean indicating whether the instance has the given position.
@@ -30,9 +30,9 @@ interface BreadcrumInterface extends ToArrayInterface, ToStringInterface
     public function hasAny(): bool;
 
     /**
-     * Returns the current breadcrum position.
+     * Returns the current breadcrumb position.
      *
-     * @throws BreadcrumException if there's no item
+     * @throws BreadcrumbException if there's no item
      */
     public function pos(): int;
 
@@ -42,7 +42,7 @@ interface BreadcrumInterface extends ToArrayInterface, ToStringInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified item.
      */
-    public function withAddedItem(string $item): BreadcrumInterface;
+    public function withAddedItem(string $item): BreadcrumbInterface;
 
     /**
      * Return an instance with the specified waypoint pos removed.
@@ -52,7 +52,7 @@ interface BreadcrumInterface extends ToArrayInterface, ToStringInterface
      *
      * @param int $post the waypoint position to remove
      *
-     * @throws BreadcrumException if the item specified by $pos doesn't exists
+     * @throws BreadcrumbException if the item specified by $pos doesn't exists
      */
-    public function withRemovedItem(int $pos): BreadcrumInterface;
+    public function withRemovedItem(int $pos): BreadcrumbInterface;
 }

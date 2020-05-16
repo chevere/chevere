@@ -31,7 +31,7 @@ class TestController extends Controller implements HookableInterface
 
     protected array $_data;
 
-    public static function getHookAnchors(): PluggableAnchors
+    public static function getHookableAnchors(): PluggableAnchors
     {
         return (new PluggableAnchors)
             ->withAddedAnchor('getParameters:after')

@@ -20,7 +20,7 @@ interface HookableInterface
     /**
      * Returns the declared hook anchors.
      */
-    public static function getHookAnchors(): PluggableAnchorsInterface;
+    public static function getHookableAnchors(): PluggableAnchorsInterface;
 
     /**
      * Attach the hooks runner for this hookable.

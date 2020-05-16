@@ -16,22 +16,22 @@ namespace Chevere\Components\Events\Interfaces;
 use Chevere\Components\Events\EventRunner;
 use Chevere\Components\Plugs\Interfaces\PluggableAnchorsInterface;
 
-interface EventableInterface
+interface EventsInterface
 {
     /**
      * Returns the declared event names.
      */
-    public static function getEventAnchors(): PluggableAnchorsInterface;
+    public static function getEventsAnchors(): PluggableAnchorsInterface;
 
     /**
-     * Attach the hooks runner for this hookable.
+     * Attach the events runner.
      */
-    public function withEventsRunner(EventRunner $runner): EventableInterface;
+    public function withEventsRunner(EventsRunnerInterface $runner): EventsInterface;
 
     /**
      * Run events for the given anchor (if-any).
      *
      * @param string $anchor Event anchor
      */
-    public function hook(string $anchor, array $data = []): void;
+    public function sendEvent(string $anchor, EventInterface $event): void;
 }

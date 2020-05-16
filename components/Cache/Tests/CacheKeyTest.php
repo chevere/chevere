@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\CacheKeyTest;
+namespace Chevere\Components\Cache\Tests;
 
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Cache\Exceptions\CacheInvalidKeyException;

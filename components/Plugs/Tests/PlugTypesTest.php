@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs\Tests;
 
-use Chevere\Components\Events\Interfaces\EventableInterface;
 use Chevere\Components\Events\Interfaces\EventListenerInterface;
+use Chevere\Components\Events\Interfaces\EventsInterface;
 use Chevere\Components\Hooks\Interfaces\HookableInterface;
 use Chevere\Components\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
@@ -39,7 +39,7 @@ final class PlugTypesTest extends TestCase
         $this->plugTypeTester(
             new EventListenerPlugType,
             EventListenerInterface::class,
-            EventableInterface::class,
+            EventsInterface::class,
             'EventListener.php'
         );
     }

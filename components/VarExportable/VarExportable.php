@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarExportable;
 
-use Chevere\Components\Breadcrum\Breadcrum;
-use Chevere\Components\Breadcrum\Interfaces\BreadcrumInterface;
+use Chevere\Components\Breadcrumb\Breadcrumb;
+use Chevere\Components\Breadcrumb\Interfaces\BreadcrumbInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\VarExportable\Exceptions\VarIsResourceException;
 use Chevere\Components\VarExportable\Exceptions\VarNotExportableException;
@@ -30,7 +30,7 @@ final class VarExportable implements VarExportableInterface
     /** @var mixed */
     private $var;
 
-    private BreadcrumInterface $breadcrum;
+    private BreadcrumbInterface $breadcrum;
 
     /**
      * @throws VarIsResourceException if $var contains resource
@@ -38,7 +38,7 @@ final class VarExportable implements VarExportableInterface
     public function __construct($var)
     {
         $this->var = $var;
-        $this->breadcrum = new Breadcrum();
+        $this->breadcrum = new Breadcrumb();
         try {
             $this->assertExportable($this->var);
         } catch (Throwable $e) {
