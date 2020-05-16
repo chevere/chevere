@@ -43,48 +43,46 @@ interface FileInterface
     public function exists(): bool;
 
     /**
-     * Throws an exception if the file doesn't exists.
-     *
-     * @throws FileNotExistsException if the file doesn't exists
+     * @throws FileNotExistsException
      */
     public function assertExists(): void;
 
     /**
      * Retrieves the file checksum using the CHECKSUM_ALGO algorithm.
      *
-     * @throws FileNotExistsException if the file doesn't exists
+     * @throws FileNotExistsException
      */
     public function checksum(): string;
 
     /**
      * Retrieves the file contents.
      *
-     * @throws FileNotExistsException    if the file doesn't exists
-     * @throws FileUnableToGetException if unable to read the contents of the file
+     * @throws FileNotExistsException
+     * @throws FileUnableToGetException
      */
     public function contents(): string;
 
     /**
      * Remove the file.
      *
-     * @throws FileNotExistsException       if the file doesn't exists
-     * @throws FileUnableToRemoveException if unable to remove the file
+     * @throws FileNotExistsException
+     * @throws FileUnableToRemoveException
      */
     public function remove(): void;
 
     /**
      * Create the file.
      *
-     * @throws FileExistsException         if the file alread exists
-     * @throws FileUnableToCreateException if unable to remove the file
+     * @throws FileExistsException
+     * @throws FileUnableToCreateException
      */
     public function create(): void;
 
     /**
      * Put contents to the file. If the file doesn't exists it will be created.
      *
-     * @throws FileNotExistsException    if the file doesn't exists
-     * @throws FileUnableToPutException if unable to put the file content
+     * @throws FileNotExistsException
+     * @throws FileUnableToPutException
      */
     public function put(string $contents): void;
 }

@@ -19,7 +19,7 @@ use Chevere\Components\Cache\Interfaces\CacheItemInterface;
 use Chevere\Components\Cache\Interfaces\CacheKeyInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouterCacheNotFoundException;
-use Chevere\Components\Router\Interfaces\RouteableInterface;
+use Chevere\Components\Router\Interfaces\RoutableInterface;
 use Chevere\Components\Router\Interfaces\RouterCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
@@ -98,10 +98,10 @@ final class RouterCache implements RouterCacheInterface
             );
         $pos = -1;
         /**
-         * @var RouteableInterface $routeable
+         * @var RoutableInterface $routable
          */
-        foreach ($router->routeables()->map() as $routeable) {
-            $route = $routeable->route();
+        foreach ($router->routables()->map() as $routable) {
+            $route = $routable->route();
             $pos++;
             $this->routesCache->put($route);
             $this->routeResolvesCache->put(

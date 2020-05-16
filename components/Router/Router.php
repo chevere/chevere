@@ -20,7 +20,7 @@ use function DeepCopy\deep_copy;
 
 final class Router implements RouterInterface
 {
-    private Routeables $routeables;
+    private Routables $routables;
 
     private RouterRegexInterface $routerRegex;
 
@@ -28,21 +28,21 @@ final class Router implements RouterInterface
 
     public function __construct()
     {
-        $this->routeables = new Routeables;
+        $this->routables = new Routables;
         $this->routerIndex = new RouterIndex;
     }
 
-    public function withRouteables(Routeables $routeables): RouterInterface
+    public function withRoutables(Routables $routables): RouterInterface
     {
         $new = clone $this;
-        $new->routeables = $routeables;
+        $new->routables = $routables;
 
         return $new;
     }
 
-    public function routeables(): Routeables
+    public function routables(): Routables
     {
-        return deep_copy($this->routeables);
+        return deep_copy($this->routables);
     }
 
     public function withRegex(RouterRegexInterface $regex): RouterInterface

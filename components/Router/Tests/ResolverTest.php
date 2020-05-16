@@ -31,7 +31,7 @@ use Chevere\Components\Router\Exceptions\RouteNotFoundException;
 use Chevere\Components\Router\Exceptions\RouterException;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
 use Chevere\Components\Router\Resolver;
-use Chevere\Components\Router\Routeable;
+use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Routed;
 use Chevere\Components\Router\RouteResolve;
 use Chevere\Components\Router\RouteResolvesCache;
@@ -63,9 +63,9 @@ final class ResolverTest extends TestCase
         /** @var Route $route */
         foreach ($this->routes as &$route) {
             $route = $route->withAddedEndpoint($routeEndpoint);
-            $routerMaker = $routerMaker->withAddedRouteable(
-                new Routeable($route),
-                'grupian'
+            $routerMaker = $routerMaker->withAddedRoutable(
+                new Routable($route),
+                'group'
             );
             $this->routesResolves[] = new RouteResolve(
                 $route->name(),

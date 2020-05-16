@@ -17,7 +17,7 @@ use Chevere\Components\Hooks\Interfaces\HookInterface;
 
 class TestHook implements HookInterface
 {
-    public function for(): string
+    public function anchor(): string
     {
         return 'hook-anchor-1';
     }

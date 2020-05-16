@@ -16,7 +16,7 @@ namespace Chevere\Components\Plugs\Exceptions;
 use Chevere\Components\Exception\Exception;
 
 /**
- * Exception thrown when adding an already addd plug.
+ * Exception thrown when adding an already add plug.
  */
 final class PlugRegisteredException extends Exception
 {

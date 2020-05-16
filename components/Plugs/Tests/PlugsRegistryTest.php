@@ -86,7 +86,7 @@ final class PlugsRegistryTest extends TestCase
          */
         $plugsQueue = $phpFileReturn->varType(new Type(PlugsQueueInterface::class));
         $this->assertSame([
-            $hook->for() => [
+            $hook->anchor() => [
                 $hook->priority() => [
                     get_class($hook)
                 ]

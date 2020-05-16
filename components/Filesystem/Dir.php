@@ -110,14 +110,14 @@ class Dir implements DirInterface
             RecursiveIteratorIterator::CHILD_FIRST
         );
         $removed = [];
-        foreach ($files as $fileinfo) {
-            if ($fileinfo->isDir()) {
-                $path = new Path(rtrim($fileinfo->getRealPath(), '/') . '/');
+        foreach ($files as $fileInfo) {
+            if ($fileInfo->isDir()) {
+                $path = new Path(rtrim($fileInfo->getRealPath(), '/') . '/');
                 (new Dir($path))->rmdir();
                 $removed[] = $path->absolute();
                 continue;
             } else {
-                $path = new Path($fileinfo->getRealPath());
+                $path = new Path($fileInfo->getRealPath());
             }
             (new File($path))->remove();
             $removed[] = $path->absolute();

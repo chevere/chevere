@@ -18,18 +18,18 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Components\Router\Exceptions\RouteNotRouteableException;
+use Chevere\Components\Router\Exceptions\RouteNotRoutableException;
 use Chevere\Components\Router\Exceptions\RouteWithoutEndpointsException;
-use Chevere\Components\Router\Routeable;
+use Chevere\Components\Router\Routable;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
-final class RouteableTest extends TestCase
+final class RoutableTest extends TestCase
 {
     public function testConstructInvalidArgument(): void
     {
         $this->expectException(RouteWithoutEndpointsException::class);
-        new Routeable(
+        new Routable(
             new Route(
                 new RouteName('test'),
                 new RoutePath('/test')
@@ -49,15 +49,15 @@ final class RouteableTest extends TestCase
                     new TestController()
                 )
             );
-        $routeable = new Routeable($route);
-        $this->assertSame($route, $routeable->route());
+        $routable = new Routable($route);
+        $this->assertSame($route, $routable->route());
     }
 
     public function testNotExportable(): void
     {
         $route = new Route(new RouteName('test'), new RoutePath('/test'));
         $route->resource = fopen('php://output', 'r+');
-        $this->expectException(RouteNotRouteableException::class);
-        new Routeable($route);
+        $this->expectException(RouteNotRoutableException::class);
+        new Routable($route);
     }
 }

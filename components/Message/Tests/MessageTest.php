@@ -33,7 +33,7 @@ final class MessageTest extends TestCase
     {
         $search = '%translate%';
         $replace = '1';
-        $var = 'lorem ' . $search;
+        $var = 'string ' . $search;
         $message = (new Message($var))->strtr($search, $replace);
         $varTr = strtr($var, [$search => $replace]);
         $this->assertSame($var, $message->template());
@@ -50,7 +50,7 @@ final class MessageTest extends TestCase
             'emphasis' => ['%emphasis%', 'Emphasis,Italic'],
             'strong' => ['%bold%', 'Strong,Bold'],
             'underline' => ['%underline%', 'Underline'],
-            'code' => ['%code%', 'Throw new ThisIsTheThig 100']
+            'code' => ['%code%', 'Throw new ThisIsTheThing 100']
         ];
         $message = new Message($var);
         $tr = [];

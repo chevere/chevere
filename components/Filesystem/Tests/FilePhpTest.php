@@ -46,7 +46,6 @@ final class FilePhpTest extends TestCase
         );
         $filePhp = new FilePhp($file);
         $this->assertSame($file, $filePhp->file());
-        // $this->assertIsBool($filePhp->isCompileable());
     }
 
     public function testCompileFileNotExists(): void

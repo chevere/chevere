@@ -37,7 +37,7 @@ use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Interfaces\RouterCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
-use Chevere\Components\Router\Routeable;
+use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Type\Type;
@@ -273,8 +273,8 @@ final class Build implements BuildInterface
                 ->withMembersType(new Type(RouteInterface::class));
             foreach ($arrayFile->array() as $route) {
                 $this->routerMaker = $this->routerMaker
-                    ->withAddedRouteable(
-                        new Routeable($route),
+                    ->withAddedRoutable(
+                        new Routable($route),
                         $fileHandleString
                     );
             }

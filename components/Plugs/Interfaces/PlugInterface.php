@@ -16,9 +16,9 @@ namespace Chevere\Components\Plugs\Interfaces;
 interface PlugInterface
 {
     /**
-     * @return string Plug for anchor
+     * @return string Plugs at anchor
      */
-    public function for(): string;
+    public function anchor(): string;
 
     /**
      * @return string Plugs at className

@@ -18,7 +18,7 @@ use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
 use Chevere\Components\Router\Exceptions\RouteCacheTypeException;
-use Chevere\Components\Router\Interfaces\RouteableInterface;
+use Chevere\Components\Router\Interfaces\RoutableInterface;
 use Chevere\Components\Router\Interfaces\RouteResolvesCacheInterface;
 use Chevere\Components\Type\Type;
 use Chevere\Components\VarExportable\VarExportable;
@@ -52,7 +52,7 @@ final class RouteResolvesCache implements RouteResolvesCacheInterface
         if ((new Type(RouteResolve::class))->validate($item->var()) === false) {
             throw new RouteCacheTypeException(
                 (new Message('Expecting object implementing %expected%, %provided% provided in route %id%'))
-                    ->code('%expected%', RouteableInterface::class)
+                    ->code('%expected%', RoutableInterface::class)
                     ->code('%provided%', gettype($item->raw()))
                     ->strong('%id%', $idString)
             );

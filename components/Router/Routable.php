@@ -15,14 +15,14 @@ namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Interfaces\RouteInterface;
-use Chevere\Components\Router\Exceptions\RouteNotRouteableException;
+use Chevere\Components\Router\Exceptions\RouteNotRoutableException;
 use Chevere\Components\Router\Exceptions\RouteWithoutEndpointsException;
-use Chevere\Components\Router\Interfaces\RouteableInterface;
+use Chevere\Components\Router\Interfaces\RoutableInterface;
 use Chevere\Components\VarExportable\VarExportable;
 use Throwable;
 
 //
-final class Routeable implements RouteableInterface
+final class Routable implements RoutableInterface
 {
     private RouteInterface $route;
 
@@ -40,14 +40,14 @@ final class Routeable implements RouteableInterface
 
     /**
      *
-     * @throws RouteNotRouteableException
+     * @throws RouteNotRoutableException
      */
     private function assertExportable(): void
     {
         try {
             new VarExportable($this->route);
         } catch (Throwable $e) {
-            throw new RouteNotRouteableException(
+            throw new RouteNotRoutableException(
                 new Message($e->getMessage()),
                 $e->getCode(),
             );

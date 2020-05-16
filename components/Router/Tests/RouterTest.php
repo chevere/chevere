@@ -19,8 +19,8 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Components\Router\Routeable;
-use Chevere\Components\Router\Routeables;
+use Chevere\Components\Router\Routable;
+use Chevere\Components\Router\Routables;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterIndex;
 use Chevere\Components\Router\RouterRegex;
@@ -29,11 +29,11 @@ use PHPUnit\Framework\TestCase;
 
 final class RouterTest extends TestCase
 {
-    private Routeable $routeable;
+    private Routable $routable;
 
     public function setUp(): void
     {
-        $this->routeable = new Routeable(
+        $this->routable = new Routable(
             (new Route(new RouteName('test-name'), new RoutePath('/test')))
                 ->withAddedEndpoint(
                     new RouteEndpoint(new GetMethod, new TestController)
@@ -45,7 +45,7 @@ final class RouterTest extends TestCase
     {
         $router = new Router;
         $this->assertFalse($router->hasRegex());
-        $this->assertCount(0, $router->routeables()->map());
+        $this->assertCount(0, $router->routables()->map());
         $this->assertSame([], $router->index()->toArray());
     }
 
@@ -59,19 +59,19 @@ final class RouterTest extends TestCase
 
     public function testWithIndex(): void
     {
-        $index = (new RouterIndex)->withAdded($this->routeable, 'test-group');
+        $index = (new RouterIndex)->withAdded($this->routable, 'test-group');
         $router = (new Router)->withIndex($index);
         $this->assertSame($index, $router->index());
     }
 
-    public function testWithRouteables(): void
+    public function testWithRoutables(): void
     {
-        $routeables = new Routeables;
-        $routeables->put($this->routeable);
-        $router = (new Router)->withRouteables($routeables);
-        $this->assertCount(1, $router->routeables()->map());
-        $this->assertTrue($router->routeables()->hasKey(
-            $this->routeable->route()->name()->toString()
+        $routables = new Routables;
+        $routables->put($this->routable);
+        $router = (new Router)->withRoutables($routables);
+        $this->assertCount(1, $router->routables()->map());
+        $this->assertTrue($router->routables()->hasKey(
+            $this->routable->route()->name()->toString()
         ));
     }
 }

@@ -22,7 +22,7 @@ use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Interfaces\RouterInterface;
-use Chevere\Components\Router\Routeable;
+use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Router\RouterMaker;
@@ -82,8 +82,8 @@ final class SpecTest extends TestCase
         $routes = $this->routes;
         /** @var RouteInterface $route */
         foreach ($routes as $route) {
-            $routerMaker = $routerMaker->withAddedRouteable(
-                new Routeable(
+            $routerMaker = $routerMaker->withAddedRoutable(
+                new Routable(
                     $route->withAddedEndpoint(
                         new RouteEndpoint(
                             new GetMethod,

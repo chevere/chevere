@@ -30,7 +30,7 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Components\Router\Routeable;
+use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Router\Tests\CacheHelper;
@@ -78,7 +78,7 @@ final class SpecMakerTest extends TestCase
                 new RouteEndpoint($getMethod, new SpecMakerTestGetController)
             );
         $routerMaker = (new RouterMaker)
-            ->withAddedRouteable(new Routeable($route), 'group-name');
+            ->withAddedRoutable(new Routable($route), 'group-name');
         $specMaker = new SpecMaker(
             new SpecPath('/spec'),
             $this->cacheHelper->getWorkingDir()->getChild('spec/'),

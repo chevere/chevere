@@ -108,10 +108,10 @@ final class AssertPlug implements AssertPlugInterface
 
     private function assertAnchors(PluggableAnchors $anchors): void
     {
-        if ($anchors->has($this->plug->for()) === false) {
+        if ($anchors->has($this->plug->anchor()) === false) {
             throw new PluggableAnchorNotExistsException(
                 (new Message('Anchor %anchor% is not declared by %ClassName%'))
-                    ->code('%anchor%', $this->plug->for())
+                    ->code('%anchor%', $this->plug->anchor())
                     ->code('%ClassName%', $this->plug->at())
             );
         }

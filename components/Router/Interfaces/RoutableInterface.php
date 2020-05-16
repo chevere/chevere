@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Chevere\Components\Router\Interfaces;
 
 use Chevere\Components\Route\Interfaces\RouteInterface;
-use Chevere\Components\Router\Exceptions\RouteNotRouteableException;
+use Chevere\Components\Router\Exceptions\RouteNotRoutableException;
 use Chevere\Components\Router\Exceptions\RouteWithoutEndpointsException;
 
 /**
  * Determines if a RouteInterface is able to be routed.
  */
-interface RouteableInterface
+interface RoutableInterface
 {
     /**
-     * @throws RouteNotRouteableException
+     * @throws RouteNotRoutableException
      * @throws RouteWithoutEndpointsException
      */
     public function __construct(RouteInterface $route);

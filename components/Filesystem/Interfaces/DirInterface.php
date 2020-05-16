@@ -30,7 +30,7 @@ interface DirInterface
      *
      * @param int $mode Octal mask
      *
-     * @throws DirUnableToCreateException if unable to create the directoy
+     * @throws DirUnableToCreateException if unable to create the directory
      */
     public function create(int $mode = 0755): void;
 

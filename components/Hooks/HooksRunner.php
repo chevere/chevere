@@ -22,7 +22,7 @@ use RuntimeException;
 use Throwable;
 
 /**
- * Queue handler for Hooks registered for a given HookeableInterface.
+ * Queue handler for Hooks registered for a given HookableInterface.
  */
 final class HooksRunner implements HooksRunnerInterface
 {

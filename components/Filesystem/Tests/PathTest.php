@@ -77,7 +77,7 @@ final class PathTest extends TestCase
     {
         $path = $this->getPath('var/PathTest_file_' . uniqid() . '.jpg');
         $this->assertFalse($path->exists());
-        if (false === file_put_contents($path->absolute(), 'una mona pilucha')) {
+        if (false === file_put_contents($path->absolute(), 'file put contents')) {
             throw new RuntimeException('Unable to create file ' . $path->absolute());
         }
         $this->assertTrue($path->exists());

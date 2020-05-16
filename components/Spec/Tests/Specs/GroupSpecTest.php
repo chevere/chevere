@@ -18,7 +18,7 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Components\Router\Routeable;
+use Chevere\Components\Router\Routable;
 use Chevere\Components\Spec\SpecPath;
 use Chevere\Components\Spec\Specs\GroupSpec;
 use Chevere\Components\Spec\Specs\RouteableSpec;
@@ -58,7 +58,7 @@ final class GroupSpecTest extends TestCase
             );
         $routeableSpec = new RouteableSpec(
             $groupSpecPath->getChild($routeName->toString()),
-            new Routeable($route)
+            new Routable($route)
         );
         $spec = (new GroupSpec($specPath, $groupName))
             ->withAddedRouteableSpec($routeableSpec);

@@ -17,13 +17,15 @@ use Chevere\Components\Plugs\Interfaces\PlugInterface;
 
 interface EventListenerInterface extends PlugInterface
 {
-    /**
-     * @return string Applicable event name.
-     */
-    public function for(): string;
+    public function __invoke(array $data): void;
 
     /**
-     * @return string Target eventable class name.
+     * @return string Applicable event anchor.
+     */
+    public function anchor(): string;
+
+    /**
+     * @return string Target class name implementing EventsInterface.
      */
     public function at(): string;
 
@@ -31,6 +33,4 @@ interface EventListenerInterface extends PlugInterface
      * @return String Priority order.
      */
     public function priority(): int;
-
-    public function __invoke(array $data): void;
 }

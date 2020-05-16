@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Router\Interfaces\RouteableInterface;
+use Chevere\Components\Router\Interfaces\RoutableInterface;
 use Chevere\Components\Router\Interfaces\RouteIdentifierInterface;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
 use Chevere\Components\Str\StrAssert;
@@ -39,11 +39,11 @@ final class RouterIndex implements RouterIndexInterface
         $this->groupsMap = new Map;
     }
 
-    public function withAdded(RouteableInterface $routeable, string $group): RouterIndexInterface
+    public function withAdded(RoutableInterface $routable, string $group): RouterIndexInterface
     {
         (new StrAssert($group))->notEmpty()->notCtypeSpace();
         $new = clone $this;
-        $routeName = $routeable->route()->name()->toString();
+        $routeName = $routable->route()->name()->toString();
         /** @var \Ds\TKey $routeKey */
         $routeKey = $routeName;
         if ($new->groupsIndex->hasKey($routeKey)) {

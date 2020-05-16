@@ -15,7 +15,7 @@ namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
 use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
-use Chevere\Components\Router\Interfaces\RouteableInterface;
+use Chevere\Components\Router\Interfaces\RoutableInterface;
 use Chevere\Components\Spec\Interfaces\SpecInterface;
 use Chevere\Components\Spec\Interfaces\SpecPathInterface;
 use Chevere\Components\Spec\Specs\RouteEndpointSpecs;
@@ -39,7 +39,7 @@ final class RouteableSpec implements SpecInterface
      */
     public function __construct(
         SpecPathInterface $specGroupPath,
-        RouteableInterface $routeable
+        RoutableInterface $routeable
     ) {
         $this->key = $routeable->route()->name()->toString();
         $this->routeEndpointSpecs = new RouteEndpointSpecs;

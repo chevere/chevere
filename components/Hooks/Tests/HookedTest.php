@@ -31,9 +31,9 @@ final class HookedTest extends TestCase
 
     public function setUp(): void
     {
-        $resourcespath = (new Path(__DIR__ . '/'))
+        $resourcesPath = (new Path(__DIR__ . '/'))
             ->getChild('_resources/HookedTest/');
-        $hooksPath = (new Dir($resourcespath))->getChild('hooks-reg/')
+        $hooksPath = (new Dir($resourcesPath))->getChild('hooks-reg/')
             ->path()->absolute();
         $this->plugs = new Plugins(
             (new ClassMap)

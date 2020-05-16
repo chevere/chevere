@@ -17,7 +17,7 @@ use Chevere\Components\Plugs\Interfaces\PlugInterface;
 
 final class TestUnacceptedPlug implements PlugInterface
 {
-    public function for(): string
+    public function anchor(): string
     {
         return '';
     }

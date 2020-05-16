@@ -32,8 +32,8 @@ use Chevere\Components\Router\Exceptions\RouterCacheNotFoundException;
 use Chevere\Components\Router\Interfaces\RouterCacheInterface;
 use Chevere\Components\Router\Interfaces\RouterIndexInterface;
 use Chevere\Components\Router\Interfaces\RouterRegexInterface;
-use Chevere\Components\Router\Routeable;
-use Chevere\Components\Router\Routeables;
+use Chevere\Components\Router\Routable;
+use Chevere\Components\Router\Routables;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Router\RouterIndex;
@@ -100,13 +100,13 @@ final class RouterCacheTest extends TestCase
         $route = $route->withAddedEndpoint(
             new RouteEndpoint(new GetMethod, new RouterCacheTestController)
         );
-        $routeable = new Routeable($route);
-        $index = (new RouterIndex)->withAdded($routeable, 'test-group');
-        $routeable = new Routeable($route);
-        $routeables = new Routeables;
-        $routeables->put($routeable);
+        $routable = new Routable($route);
+        $index = (new RouterIndex)->withAdded($routable, 'test-group');
+        $routable = new Routable($route);
+        $routables = new Routables;
+        $routables->put($routable);
         $router = $router
-            ->withRouteables($routeables)
+            ->withRoutables($routables)
             ->withRegex($regex)
             ->withIndex($index);
         $routerCache = new RouterCache($this->cacheHelper->getWorkingCache());
@@ -153,8 +153,8 @@ final class RouterCacheTest extends TestCase
         $routerMaker = new RouterMaker;
         $routes = $this->routes;
         foreach ($routes as $route) {
-            $routerMaker = $routerMaker->withAddedRouteable(
-                new Routeable(
+            $routerMaker = $routerMaker->withAddedRoutable(
+                new Routable(
                     $route->withAddedEndpoint(
                         new RouteEndpoint(new GetMethod, new RouterCacheTestController)
                     )

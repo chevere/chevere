@@ -39,7 +39,7 @@ final class Regex implements RegexInterface
         $this->assertRegex();
         $delimiter = $this->string[0];
         $this->noDelimiters = trim($this->string, $delimiter);
-        $this->noDelimitersNoAnchors = preg_replace('#^\^(.*)\$$#', '$1', $this->noDelimiters);
+        $this->noDelimitersNoAnchors = (string) preg_replace('#^\^(.*)\$$#', '$1', $this->noDelimiters);
     }
 
     /**

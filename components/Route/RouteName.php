@@ -43,7 +43,7 @@ final class RouteName implements RouteNameInterface
     {
         if (!preg_match(RouteNameInterface::REGEX, $this->name)) {
             throw new RouteNameInvalidException(
-                (new Message('Expecting at least one alphanumeric, underscore, hypen or dot character, string %string% provided (regex %regex%)'))
+                (new Message('Expecting at least one alphanumeric, underscore, hyphen or dot character, string %string% provided (regex %regex%)'))
                     ->code('%string%', $this->name === '' ? '(empty)' : $this->name)
                     ->code('%regex%', RouteNameInterface::REGEX)
             );

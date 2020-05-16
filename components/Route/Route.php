@@ -68,7 +68,7 @@ final class Route implements RouteInterface
 
     /**
      * @throws InvalidArgumentException If the controller doesn't take parameters
-     * @throws OutOfBoundsException If wildcard binds to unexistant controller parameter name
+     * @throws OutOfBoundsException If wildcard binds to inexistent controller parameter name
      */
     public function withAddedEndpoint(RouteEndpointInterface $endpoint): RouteInterface
     {
@@ -125,7 +125,7 @@ final class Route implements RouteInterface
 
     /**
      * @throws InvalidArgumentException If the controller doesn't take parameters
-     * @throws OutOfBoundsException If wildcard binds to unexistant controller parameter name
+     * @throws OutOfBoundsException If wildcard binds to inexistent controller parameter name
      */
     private function assertWildcardEndpoint(RouteWildcard $wildcard, RouteEndpoint $endpoint): void
     {

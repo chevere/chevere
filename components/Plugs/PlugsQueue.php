@@ -41,7 +41,7 @@ final class PlugsQueue implements PlugsQueueInterface
         $plugName = get_class($plug);
         $this->assertUnique($plugName);
         $new = clone $this;
-        $new->array[$plug->for()][(string) $plug->priority()][] = $plugName;
+        $new->array[$plug->anchor()][(string) $plug->priority()][] = $plugName;
         $new->set->add($plugName);
 
         return $new;

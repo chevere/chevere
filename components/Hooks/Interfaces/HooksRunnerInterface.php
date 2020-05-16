@@ -16,7 +16,7 @@ namespace Chevere\Components\Hooks\Interfaces;
 interface HooksRunnerInterface
 {
     /**
-     * Run the registred hooks at the given ancshor.
+     * Run the registered hooks at the given anchor.
      *
      * @throws RuntimeException If the $argument type changes.
      */

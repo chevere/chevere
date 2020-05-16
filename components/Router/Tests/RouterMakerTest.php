@@ -29,27 +29,27 @@ use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
 use Chevere\Components\Router\Exceptions\RouteNameConflictException;
 use Chevere\Components\Router\Exceptions\RoutePathExistsException;
-use Chevere\Components\Router\Interfaces\RouteableInterface;
-use Chevere\Components\Router\Routeable;
+use Chevere\Components\Router\Interfaces\RoutableInterface;
+use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\RouterMaker;
 use PHPUnit\Framework\TestCase;
 
 final class RouterMakerTest extends TestCase
 {
-    public function testWithAddedRouteable(): void
+    public function testWithAddedRoutable(): void
     {
-        $routeable1 = $this->getRouteable('/path-1', 'route-name-1');
-        $routeable2 = $this->getRouteable('/path-2', 'route-name-2');
+        $routable1 = $this->getRoutable('/path-1', 'route-name-1');
+        $routable2 = $this->getRoutable('/path-2', 'route-name-2');
         $routerMaker = (new RouterMaker)
-            ->withAddedRouteable($routeable1, 'group')
-            ->withAddedRouteable($routeable2, 'group');
-        $this->assertCount(2, $routerMaker->router()->routeables()->map());
+            ->withAddedRoutable($routable1, 'group')
+            ->withAddedRoutable($routable2, 'group');
+        $this->assertCount(2, $routerMaker->router()->routables()->map());
         $routerIndex = $routerMaker->router()->index();
         $this->assertTrue($routerIndex->hasRouteName(
-            $routeable1->route()->name()->toString()
+            $routable1->route()->name()->toString()
         ));
         $this->assertTrue($routerIndex->hasRouteName(
-            $routeable2->route()->name()->toString()
+            $routable2->route()->name()->toString()
         ));
     }
 
@@ -57,39 +57,39 @@ final class RouterMakerTest extends TestCase
     {
         $this->expectException(RoutePathExistsException::class);
         (new RouterMaker)
-            ->withAddedRouteable(
-                $this->getRouteable('/path', 'route-name'),
+            ->withAddedRoutable(
+                $this->getRoutable('/path', 'route-name'),
                 'group'
             )
-            ->withAddedRouteable(
-                $this->getRouteable('/path', 'route-name2'),
+            ->withAddedRoutable(
+                $this->getRoutable('/path', 'route-name2'),
                 'another-group'
             );
     }
 
     public function testWithAlreadyAddedKey(): void
     {
-        $routeable1 = $this->getRouteable('/path/{name}', 'FooName');
-        $routeable2 = $this->getRouteable('/path/{id}', 'BarName');
+        $routable1 = $this->getRoutable('/path/{name}', 'FooName');
+        $routable2 = $this->getRoutable('/path/{id}', 'BarName');
         $this->expectException(RouteKeyConflictException::class);
         (new RouterMaker)
-            ->withAddedRouteable($routeable1, 'group')
-            ->withAddedRouteable($routeable2, 'another-group');
+            ->withAddedRoutable($routable1, 'group')
+            ->withAddedRoutable($routable2, 'another-group');
     }
 
     public function testWithAlreadyAddedName(): void
     {
-        $routeable1 = $this->getRouteable('/path1', 'SomeName');
-        $routeable2 = $this->getRouteable('/path2', 'SomeName');
-        $routeable3 = $this->getRouteable('/path3', 'SameName');
+        $routable1 = $this->getRoutable('/path1', 'SomeName');
+        $routable2 = $this->getRoutable('/path2', 'SomeName');
+        $routable3 = $this->getRoutable('/path3', 'SameName');
         $this->expectException(RouteNameConflictException::class);
         (new RouterMaker)
-            ->withAddedRouteable($routeable1, 'group1')
-            ->withAddedRouteable($routeable2, 'group2')
-            ->withAddedRouteable($routeable3, 'group3');
+            ->withAddedRoutable($routable1, 'group1')
+            ->withAddedRoutable($routable2, 'group2')
+            ->withAddedRoutable($routable3, 'group3');
     }
 
-    private function getRouteable(string $routePath, string $routeName): RouteableInterface
+    private function getRoutable(string $routePath, string $routeName): RoutableInterface
     {
         $route = new Route(new RouteName($routeName), new RoutePath($routePath));
         $route = $route
@@ -97,7 +97,7 @@ final class RouterMakerTest extends TestCase
                 new RouteEndpoint(new GetMethod, new RouterMakerTestController)
             );
 
-        return new Routeable($route);
+        return new Routable($route);
     }
 }
 

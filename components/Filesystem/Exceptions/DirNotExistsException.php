@@ -16,7 +16,7 @@ namespace Chevere\Components\Filesystem\Exceptions;
 use Chevere\Components\Exception\Exception;
 
 /**
- * Exception thrown when the directoy doesn't exists.
+ * Exception thrown when the directory doesn't exists.
  */
 final class DirNotExistsException extends Exception
 {

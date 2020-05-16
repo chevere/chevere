@@ -62,13 +62,13 @@ abstract class AbstractDocument implements DocumentInterface
         if ($this->verbosity > 0) {
             $this->handleVerbositySections();
         }
-        $exeption = $this->exceptionHandler->exception();
+        $exception = $this->exceptionHandler->exception();
         $dateTimeUtc = $this->exceptionHandler->dateTimeUtc();
         $this->tags = [
-            static::TAG_TITLE => $exeption->className() . ' thrown',
-            static::TAG_MESSAGE => $exeption->message(),
+            static::TAG_TITLE => $exception->className() . ' thrown',
+            static::TAG_MESSAGE => $exception->message(),
             static::TAG_CODE_WRAP => $this->getExceptionCode(),
-            static::TAG_FILE_LINE => $exeption->file() . ':' . $exeption->line(),
+            static::TAG_FILE_LINE => $exception->file() . ':' . $exception->line(),
             static::TAG_ID => $this->exceptionHandler->id(),
             static::TAG_DATE_TIME_UTC_ATOM => $dateTimeUtc->format(DateTimeInterface::ATOM),
             static::TAG_TIMESTAMP => $dateTimeUtc->getTimestamp(),
@@ -76,13 +76,13 @@ abstract class AbstractDocument implements DocumentInterface
             static::TAG_PHP_UNAME => php_uname(),
         ];
         $this->handleRequestTags();
-        $templated = [];
+        $template = [];
         foreach ($this->sections as $sectionName) {
-            $templated[] = $this->template[$sectionName] ?? null;
+            $template[] = $this->template[$sectionName] ?? null;
         }
 
         return $this->prepare(strtr(
-            implode($this->formatter->getLineBreak(), array_filter($templated)),
+            implode($this->formatter->getLineBreak(), array_filter($template)),
             $this->tags
         ));
     }

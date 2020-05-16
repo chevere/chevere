@@ -53,7 +53,7 @@ interface FilePhpReturnInterface
     public function raw();
 
     /**
-     * Retrieves a PHP variable, appling unserialize to objects (if any).
+     * Retrieves a PHP variable, applying unserialize to objects (if any).
      *
      * @throws FileNotExistsException
      * @throws FileHandleException

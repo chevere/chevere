@@ -36,7 +36,7 @@ interface PlugTypeInterface
     public function queueName(): string;
 
     /**
-     * @return string Name of the pluggable method wich returns the plug anchors
+     * @return string Name of the pluggable method which returns the plug anchors
      */
     public function pluggableAnchorsMethod(): string;
 }

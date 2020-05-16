@@ -24,7 +24,7 @@ interface RouterIndexInterface extends ToArrayInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified values.
      */
-    public function withAdded(RouteableInterface $routeable, string $group): RouterIndexInterface;
+    public function withAdded(RoutableInterface $routable, string $group): RouterIndexInterface;
 
     public function hasRouteName(string $routeName): bool;
 

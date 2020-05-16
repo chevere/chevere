@@ -33,7 +33,7 @@ interface ExceptionReadInterface
         E_USER_ERROR => 'Fatal error',
         E_USER_WARNING => 'Warning',
         E_USER_NOTICE => 'Notice',
-        E_STRICT => 'Strict standars',
+        E_STRICT => 'Strict standards',
         E_RECOVERABLE_ERROR => 'Recoverable error',
         E_DEPRECATED => 'Deprecated',
         E_USER_DEPRECATED => 'Deprecated',

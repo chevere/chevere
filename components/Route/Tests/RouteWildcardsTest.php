@@ -29,29 +29,29 @@ final class RouteWildcardsTest extends TestCase
     public function testConstruct(): void
     {
         $routeWildcard = new RouteWildcard('test');
-        $routeWilcards = (new RouteWildcards)->withAddedWildcard($routeWildcard);
-        $this->assertTrue($routeWilcards->hasAny());
-        $this->assertTrue($routeWilcards->hasPos(0));
-        $this->assertSame($routeWildcard, $routeWilcards->getPos(0));
-        $this->assertTrue($routeWilcards->has($routeWildcard));
-        $this->assertSame($routeWildcard, $routeWilcards->get($routeWildcard));
-        $this->assertSame([$routeWildcard], $routeWilcards->toArray());
+        $routeWildcards = (new RouteWildcards)->withAddedWildcard($routeWildcard);
+        $this->assertTrue($routeWildcards->hasAny());
+        $this->assertTrue($routeWildcards->hasPos(0));
+        $this->assertSame($routeWildcard, $routeWildcards->getPos(0));
+        $this->assertTrue($routeWildcards->has($routeWildcard));
+        $this->assertSame($routeWildcard, $routeWildcards->get($routeWildcard));
+        $this->assertSame([$routeWildcard], $routeWildcards->toArray());
     }
 
     public function testWithAddedWildcard(): void
     {
         $wildcards = [new RouteWildcard('test1'), new RouteWildcard('test2')];
-        $routeWilcards = new RouteWildcards;
+        $routeWildcards = new RouteWildcards;
         foreach ($wildcards as $wildcard) {
-            $routeWilcards = $routeWilcards
+            $routeWildcards = $routeWildcards
                 ->withAddedWildcard($wildcard);
         }
-        $this->assertTrue($routeWilcards->hasAny());
+        $this->assertTrue($routeWildcards->hasAny());
         foreach ($wildcards as $pos => $wildcard) {
-            $this->assertTrue($routeWilcards->hasPos($pos));
-            $this->assertTrue($routeWilcards->has($wildcard));
-            $this->assertSame($wildcard, $routeWilcards->get($wildcard));
+            $this->assertTrue($routeWildcards->hasPos($pos));
+            $this->assertTrue($routeWildcards->has($wildcard));
+            $this->assertSame($wildcard, $routeWildcards->get($wildcard));
         }
-        $this->assertSame($wildcards, $routeWilcards->toArray());
+        $this->assertSame($wildcards, $routeWildcards->toArray());
     }
 }

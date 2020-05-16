@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
+use Chevere\Components\Exception\RuntimeException;
 use Chevere\Components\Filesystem\Exceptions\FileHandleException;
 use Chevere\Components\Filesystem\Exceptions\FileInvalidContentsException;
 use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
@@ -63,8 +64,16 @@ class FilePhpReturn implements FilePhpReturnInterface
     public function raw()
     {
         $this->validate();
-
-        return include $this->filePhp->file()->path()->absolute();
+        $filePath = $this->filePhp->file()->path()->absolute();
+        try {
+            return include $filePath;
+        } catch (Throwable $e) {
+            throw new RuntimeException(
+                (new Message('Thrown %message% when including %path%'))
+                    ->code('%message%', $e->getMessage())
+                    ->code('%path%', $filePath)
+            );
+        }
     }
 
     public function var()
@@ -134,8 +143,7 @@ class FilePhpReturn implements FilePhpReturnInterface
         if (false === $handle) {
             // @codeCoverageIgnoreStart
             throw new FileHandleException(
-                (new Message('Unable to %fn% %path% in %mode% mode'))
-                    ->code('%fn%', 'fopen')
+                (new Message('Unable to open %path% in %mode% mode'))
                     ->code('%path%', $filename)
                     ->code('%mode%', 'r')
             );

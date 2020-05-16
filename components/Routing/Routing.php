@@ -16,7 +16,7 @@ namespace Chevere\Components\Routing;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Interfaces\RouterInterface;
 use Chevere\Components\Router\Interfaces\RouterMakerInterface;
-use Chevere\Components\Router\Routeable;
+use Chevere\Components\Router\Routable;
 use Chevere\Components\Routing\Interfaces\FsRoutesMakerInterface;
 use Chevere\Components\Routing\Interfaces\RoutingInterface;
 
@@ -50,7 +50,7 @@ final class Routing implements RoutingInterface
                 );
             }
             $this->routerMaker = $this->routerMaker
-                ->withAddedRouteable(new Routeable($route), 'routing');
+                ->withAddedRoutable(new Routable($route), 'routing');
         }
     }
 

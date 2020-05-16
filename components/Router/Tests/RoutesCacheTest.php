@@ -29,8 +29,8 @@ use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
-use Chevere\Components\Router\Interfaces\RouteableInterface;
-use Chevere\Components\Router\Routeable;
+use Chevere\Components\Router\Interfaces\RoutableInterface;
+use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\RoutesCache;
 use PHPUnit\Framework\TestCase;
 use TypeError;
@@ -54,21 +54,21 @@ final class RoutesCacheTest extends TestCase
 
     public function testEmptyCache(): void
     {
-        $routeableCache = new RoutesCache($this->cacheHelper->getEmptyCache());
-        $this->assertEmpty($routeableCache->puts());
-        $this->assertFalse($routeableCache->has($this->routeName->toString()));
+        $routableCache = new RoutesCache($this->cacheHelper->getEmptyCache());
+        $this->assertEmpty($routableCache->puts());
+        $this->assertFalse($routableCache->has($this->routeName->toString()));
         $this->expectException(RouteCacheNotFoundException::class);
-        $this->assertFalse($routeableCache->get($this->routeName->toString()));
+        $this->assertFalse($routableCache->get($this->routeName->toString()));
     }
 
     public function testWorkingCache(): void
     {
-        $routeable = $this->getRouteable();
+        $routable = $this->getRoutable();
         $routesCache = new RoutesCache($this->cacheHelper->getWorkingCache());
-        $routeName = $routeable->route()->name()->toString();
-        $routesCache->put($routeable->route());
+        $routeName = $routable->route()->name()->toString();
+        $routesCache->put($routable->route());
         $this->assertTrue($routesCache->has($routeName));
-        $this->assertEquals($routeable->route(), $routesCache->get($routeName));
+        $this->assertEquals($routable->route(), $routesCache->get($routeName));
         $this->assertArrayHasKey($routeName, $routesCache->puts());
         $routesCache->remove($routeName);
         $this->assertArrayNotHasKey($routeName, $routesCache->puts());
@@ -100,14 +100,14 @@ final class RoutesCacheTest extends TestCase
     public function _testGenerateCachedRoute(): void
     {
         $this->expectNotToPerformAssertions();
-        $routeable = $this->getRouteable();
+        $routable = $this->getRoutable();
         $routesCache = new RoutesCache(
             $this->cacheHelper->getCachedCache()->getChild('routes/')
         );
-        $routesCache->put($routeable->route());
+        $routesCache->put($routable->route());
     }
 
-    private function getRouteable(): RouteableInterface
+    private function getRoutable(): RoutableInterface
     {
         $route = new Route($this->routeName, new RoutePath('/test/{name}'));
         $route = $route
@@ -115,7 +115,7 @@ final class RoutesCacheTest extends TestCase
                 new RouteEndpoint(new GetMethod, new RoutesCacheTestController)
             );
 
-        return new Routeable($route);
+        return new Routable($route);
     }
 }
 

@@ -14,21 +14,21 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
-use Chevere\Components\Router\Interfaces\RouteableInterface;
+use Chevere\Components\Router\Interfaces\RoutableInterface;
 
 /**
- * A container for Routeable objects.
+ * A container for Routable objects.
  */
 //
-final class Routeables
+final class Routables
 {
     use DsMapTrait;
 
-    public function put(RouteableInterface $routeable): void
+    public function put(RoutableInterface $routable): void
     {
         /** @var \Ds\TKey $key */
-        $key = $routeable->route()->name()->toString();
-        $this->map->put($key, $routeable);
+        $key = $routable->route()->name()->toString();
+        $this->map->put($key, $routable);
     }
 
     public function hasKey(string $name): bool
@@ -42,10 +42,10 @@ final class Routeables
     /**
      * @throws OutOfBoundsException
      */
-    public function get(string $name): RouteableInterface
+    public function get(string $name): RoutableInterface
     {
         /**
-         * @var RouteableInterface $return
+         * @var RoutableInterface $return
          * @var \Ds\TKey $name
          */
         $return = $this->map->get($name);

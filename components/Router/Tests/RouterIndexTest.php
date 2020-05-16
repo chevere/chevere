@@ -19,7 +19,7 @@ use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Interfaces\RouteIdentifierInterface;
-use Chevere\Components\Router\Routeable;
+use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\RouterIndex;
 use Chevere\TestApp\App\Controllers\TestController;
 use LogicException;
@@ -41,8 +41,8 @@ final class RouterIndexTest extends TestCase
         $route = $route->withAddedEndpoint(
             new RouteEndpoint(new GetMethod, new TestController)
         );
-        $routeable = new Routeable($route);
-        $routerIndex = (new RouterIndex)->withAdded($routeable, $groupName);
+        $routable = new Routable($route);
+        $routerIndex = (new RouterIndex)->withAdded($routable, $groupName);
         $this->assertTrue($routerIndex->hasRouteName($routeName));
         $this->assertInstanceOf(
             RouteIdentifierInterface::class,
@@ -62,8 +62,8 @@ final class RouterIndexTest extends TestCase
         $route2 = $route2->withAddedEndpoint(
             new RouteEndpoint(new GetMethod, new TestController)
         );
-        $routeable2 = new Routeable($route2);
-        $routerIndex = $routerIndex->withAdded($routeable2, $groupName);
+        $routable2 = new Routable($route2);
+        $routerIndex = $routerIndex->withAdded($routable2, $groupName);
         $this->assertSame([$routeName, $routeName2], $routerIndex->getGroupRouteNames($groupName));
     }
 
@@ -74,9 +74,9 @@ final class RouterIndexTest extends TestCase
             ->withAddedEndpoint(
                 new RouteEndpoint(new GetMethod, new TestController)
             );
-        $routeable = new Routeable($route);
-        $routerIndex = (new RouterIndex())->withAdded($routeable, $group);
+        $routable = new Routable($route);
+        $routerIndex = (new RouterIndex())->withAdded($routable, $group);
         $this->expectException(LogicException::class);
-        $routerIndex->withAdded($routeable, 'other-group');
+        $routerIndex->withAdded($routable, 'other-group');
     }
 }

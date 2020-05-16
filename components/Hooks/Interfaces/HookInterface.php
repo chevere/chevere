@@ -22,10 +22,10 @@ interface HookInterface extends PlugInterface
     /**
      * @return string Applicable hook anchor.
      */
-    public function for(): string;
+    public function anchor(): string;
 
     /**
-     * @return string Target hookable class name.
+     * @return string Target class name implementing HookableInterface.
      */
     public function at(): string;
 

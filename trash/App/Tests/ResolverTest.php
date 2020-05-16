@@ -32,7 +32,7 @@ use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Components\Router\Routeable;
+use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Router\RouterMaker;
@@ -50,8 +50,8 @@ final class ResolverTest extends TestCase
             );
         $routerCache = new RouterCache(new Cache(new DirFromString(__DIR__)));
         $routerMaker = (new RouterMaker($routerCache))
-            ->withAddedRouteable(
-                new Routeable($route),
+            ->withAddedRoutable(
+                new Routable($route),
                 'test'
             );
         $router = $routerMaker->router();

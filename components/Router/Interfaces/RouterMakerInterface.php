@@ -23,17 +23,17 @@ interface RouterMakerInterface
     public function __construct();
 
     /**
-     * Return an instance with the specified added RouteableInterface.
+     * Return an instance with the specified added RoutableInterface.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified added RouteableInterface.
+     * an instance that contains the specified added RoutableInterface.
      *
      * @throws RouterMakerException       if unable to process routing
-     * @throws RoutePathExistsException   if $routeable has been already routed
-     * @throws RouteKeyConflictException  if $routeable conflicts with other RouteableInterface
-     * @throws RouteNameConflictException if $routeable name conflicts with other RouteableInterface
+     * @throws RoutePathExistsException   if $routable has been already routed
+     * @throws RouteKeyConflictException  if $routable conflicts with other RoutableInterface
+     * @throws RouteNameConflictException if $routable name conflicts with other RoutableInterface
      */
-    public function withAddedRouteable(RouteableInterface $routeable, string $group): RouterMakerInterface;
+    public function withAddedRoutable(RoutableInterface $routable, string $group): RouterMakerInterface;
 
     /**
      * Provides access to the generated RouterInterface instance.

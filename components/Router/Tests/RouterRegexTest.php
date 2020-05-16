@@ -20,8 +20,6 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-declare(strict_types=1);
-
 namespace Chevere\Tests\Router\Properties;
 
 use Chevere\Components\Regex\Regex;

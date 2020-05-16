@@ -18,7 +18,7 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Components\Router\Routeable;
+use Chevere\Components\Router\Routable;
 use Chevere\Components\Spec\SpecPath;
 use Chevere\Components\Spec\Specs\GroupSpec;
 use Chevere\Components\Spec\Specs\IndexSpec;
@@ -47,7 +47,7 @@ final class IndexSpecTest extends TestCase
                 new RouteEndpoint(new GetMethod, new TestController)
             );
         $objectStorage = new SplObjectStorage;
-        $objectStorage->attach(new Routeable($route));
+        $objectStorage->attach(new Routable($route));
         $groupSpec = new GroupSpec($specPath, $groupName);
         $spec = (new IndexSpec($specPath))->withAddedGroup($groupSpec);
         $this->assertSame($specPath->getChild('index.json')->pub(), $spec->jsonPath());

@@ -17,7 +17,7 @@ use Chevere\Components\Plugs\Tests\_resources\src\TestHook;
 
 final class TestHookForNotExists extends TestHook
 {
-    public function for(): string
+    public function anchor(): string
     {
         return uniqid() . ':after';
     }

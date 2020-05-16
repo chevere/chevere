@@ -25,7 +25,7 @@ final class RouteNameTest extends TestCase
         new RouteName('$');
     }
 
-    public function testconstruct(): void
+    public function testConstruct(): void
     {
         $name = 'test';
         $routeName = new RouteName($name);

@@ -18,7 +18,7 @@ use Chevere\Components\Filesystem\Interfaces\DirInterface;
 use Chevere\Components\Filesystem\Interfaces\PathInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Interfaces\RouterInterface;
-use Chevere\Components\Router\Routeable;
+use Chevere\Components\Router\Routable;
 use Chevere\Components\Spec\Exceptions\SpecInvalidArgumentException;
 use Chevere\Components\Spec\Interfaces\SpecIndexInterface;
 use Chevere\Components\Spec\Interfaces\SpecInterface;
@@ -62,11 +62,11 @@ final class SpecMaker
         $this->specIndex = new SpecIndex;
         $this->indexSpec = new IndexSpec($this->specPath);
         $this->files = new Map;
-        $routes = $router->routeables();
+        $routes = $router->routables();
         $groups = [];
         /**
          * @var string $routeName
-         * @var Routeable $routeabe
+         * @var Routable $routeabe
          */
         foreach ($routes->map() as $routeName => $routeable) {
             $groupName = $router->index()->getRouteGroup($routeName);
@@ -143,7 +143,7 @@ final class SpecMaker
             );
         }
         // @codeCoverageIgnoreStart
-        if ($this->router->routeables()->map()->count() == 0) {
+        if ($this->router->routables()->map()->count() == 0) {
             throw new LogicException(
                 (new Message('Instance of %interfaceName% does not contain any routeable.'))
                     ->code('%interfaceName%', RouterInterface::class)

@@ -37,7 +37,7 @@ interface RegexInterface extends ToStringInterface
     public function toString(): string;
 
     /**
-     * @return string The regex string without delimeter char
+     * @return string The regex string without delimiter char
      */
     public function toNoDelimiters(): string;
 

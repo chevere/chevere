@@ -15,9 +15,6 @@ namespace Chevere\Components\Route\Interfaces;
 
 use Chevere\Components\Common\Interfaces\ToArrayInterface;
 
-/**
- * @method public array toArray() Provides access to the collection array.
- */
 interface RouteWildcardsInterface extends ToArrayInterface
 {
     public function __construct();

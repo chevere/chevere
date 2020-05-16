@@ -18,6 +18,6 @@ use Chevere\Components\Exception\Exception;
 /**
  * Exception thrown when a route can't be routed.
  */
-final class RouteNotRouteableException extends Exception
+final class RouteNotRoutableException extends Exception
 {
 }

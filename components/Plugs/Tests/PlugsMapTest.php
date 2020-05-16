@@ -23,7 +23,7 @@ use PHPUnit\Framework\TestCase;
 
 final class PlugsMapTest extends TestCase
 {
-    public function testConstrut(): void
+    public function testConstruct(): void
     {
         $plugsMap = new PlugsMap(new HookPlugType);
         $this->assertCount(0, $plugsMap);
@@ -34,7 +34,7 @@ final class PlugsMapTest extends TestCase
         $hook = new TestHook;
         $hook2 = new class extends TestHook
         {
-            public function for(): string
+            public function anchor(): string
             {
                 return 'hook-anchor-2';
             }
