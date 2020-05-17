@@ -65,13 +65,13 @@ trait ProcessorTrait
     private function assertType(): void
     {
         $type = new Type($this->type());
-        if (!$type->validate($this->varDumper->dumpeable()->var())) {
+        if (!$type->validate($this->varDumper->dumpable()->var())) {
             throw new InvalidArgumentException(
                 (new Message('Instance of %className% expects a type %expected% for the return value of %method%, type %provided% returned'))
                     ->code('%className%', static::class)
                     ->code('%expected%', $this->type())
                     ->code('%method%', get_class($this->varDumper) . '::var()')
-                    ->code('%provided%', varType($this->varDumper->dumpeable()->var()))
+                    ->code('%provided%', varType($this->varDumper->dumpable()->var()))
                     ->toString()
             );
         }

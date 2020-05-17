@@ -61,7 +61,7 @@ final class SpecPathTest extends TestCase
         new SpecPath('/sp\ec');
     }
 
-    public function testPubEndswithSlash(): void
+    public function testPubEndsWithSlash(): void
     {
         $this->expectException(StrEndsWithException::class);
         new SpecPath('/spec/');
@@ -113,7 +113,7 @@ final class SpecPathTest extends TestCase
     public function testGetChild(): void
     {
         $pub = '/spec';
-        $child = 'chiquillo';
+        $child = 'child';
         $specPath = new SpecPath($pub);
         $getChild = $specPath->getChild($child);
         $this->assertSame($pub . '/' . $child, $getChild->pub());

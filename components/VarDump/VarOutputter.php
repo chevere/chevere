@@ -16,7 +16,7 @@ namespace Chevere\Components\VarDump;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 use Chevere\Components\VarDump\Interfaces\OutputterInterface;
 use Chevere\Components\VarDump\Interfaces\VarOutputterInterface;
-use Chevere\Components\VarDump\VarDumpeable;
+use Chevere\Components\VarDump\VarDumpable;
 use Chevere\Components\VarDump\VarDumper;
 use Chevere\Components\Writers\Interfaces\WriterInterface;
 
@@ -32,7 +32,7 @@ final class VarOutputter implements VarOutputterInterface
 
     private FormatterInterface $formatter;
 
-    private $vars;
+    private array $vars;
 
     public function __construct(
         WriterInterface $writer,
@@ -98,7 +98,7 @@ final class VarOutputter implements VarOutputterInterface
             $varDumper = new VarDumper(
                 $this->writer,
                 $this->formatter,
-                new VarDumpeable($value)
+                new VarDumpable($value)
             );
             $this->writer->write("\n\nArg#" . $pos . ' ');
             $varDumper->withProcessor();

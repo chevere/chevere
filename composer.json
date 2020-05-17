@@ -19,7 +19,8 @@
         "monolog/monolog": "^2.0",
         "myclabs/deep-copy": "^1.9",
         "php-ds/php-ds": "^1.2",
-        "spiral/roadrunner": "^1.7"
+        "spiral/roadrunner": "^1.7",
+      "ext-json": "*"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",

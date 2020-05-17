@@ -20,12 +20,12 @@ use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Spec\SpecPath;
-use Chevere\Components\Spec\Specs\RouteableSpec;
+use Chevere\Components\Spec\Specs\RoutableSpec;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
-final class RouteableSpecTest extends TestCase
+final class RoutableSpecTest extends TestCase
 {
     public function testConstruct(): void
     {
@@ -38,8 +38,8 @@ final class RouteableSpecTest extends TestCase
             ->withDescription('Test endpoint');
         $route = (new Route($routeName, $routePath))
             ->withAddedEndpoint($routeEndpoint);
-        $routeable = new Routable($route);
-        $spec = new RouteableSpec($specPath, $routeable);
+        $routable = new Routable($route);
+        $spec = new RoutableSpec($specPath, $routable);
         $routeEndpoint = new RouteEndpointSpec(
             $specPath->getChild($routeName->toString()),
             $routeEndpoint

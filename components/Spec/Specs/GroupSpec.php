@@ -15,14 +15,14 @@ namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\Spec\Interfaces\SpecInterface;
 use Chevere\Components\Spec\Interfaces\SpecPathInterface;
-use Chevere\Components\Spec\Specs\RouteableSpecs;
+use Chevere\Components\Spec\Specs\RoutableSpecs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
 
 final class GroupSpec implements SpecInterface
 {
     use SpecsTrait;
 
-    private RouteableSpecs $routeableSpecs;
+    private RoutableSpecs $routableSpecs;
 
     /**
      * @var SpecPathInterface $specRoot /spec
@@ -31,13 +31,13 @@ final class GroupSpec implements SpecInterface
     {
         $this->jsonPath = $specRoot->getChild("$groupName/routes.json")->pub();
         $this->key = $groupName;
-        $this->routeableSpecs = new RouteableSpecs;
+        $this->routableSpecs = new RoutableSpecs;
     }
 
-    public function withAddedRouteableSpec(RouteableSpec $routeableSpec): GroupSpec
+    public function withAddedRoutableSpec(RoutableSpec $routableSpec): GroupSpec
     {
         $new = clone $this;
-        $new->routeableSpecs->put($routeableSpec);
+        $new->routableSpecs->put($routableSpec);
 
         return $new;
     }
@@ -47,10 +47,10 @@ final class GroupSpec implements SpecInterface
         $routes = [];
         /**
          * @var string $key
-         * @var RouteableSpec $routeableSpec
+         * @var RoutableSpec $routableSpec
          */
-        foreach ($this->routeableSpecs->map() as $key => $routeableSpec) {
-            $routes[$key] = $routeableSpec->toArray();
+        foreach ($this->routableSpecs->map() as $key => $routableSpec) {
+            $routes[$key] = $routableSpec->toArray();
         }
 
         return [

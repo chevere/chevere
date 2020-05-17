@@ -31,7 +31,7 @@ final class ConsoleHighlight implements HighlightInterface
     {
         $this->assertKey($key);
         $this->consoleColor = new ConsoleColor();
-        $color = $this->pallete()[$key] ?? 'default';
+        $color = $this->pallet()[$key] ?? 'default';
         $this->color = is_string($color) ? [$color] : $color;
     }
 
@@ -41,7 +41,7 @@ final class ConsoleHighlight implements HighlightInterface
             ->apply($this->color, $dump);
     }
 
-    public function pallete(): array
+    public function pallet(): array
     {
         return [
             TypeInterface::STRING => 'color_11',

@@ -20,15 +20,15 @@ trait AssertKeyTrait
 {
     protected function assertKey(string $key): void
     {
-        if (!array_key_exists($key, $this->pallete())) {
+        if (!array_key_exists($key, $this->pallet())) {
             throw new InvalidArgumentException(
-                (new Message('Invalid key %keyName%, expecting one of the following pallete keys: %keys%'))
+                (new Message('Invalid key %keyName%, expecting one of the following pallet keys: %keys%'))
                     ->code('%keyName%', $key)
-                    ->code('%keys%', implode(', ', array_keys($this->pallete())))
+                    ->code('%keys%', implode(', ', array_keys($this->pallet())))
                     ->toString()
             );
         }
     }
 
-    abstract public function pallete(): array;
+    abstract public function pallet(): array;
 }

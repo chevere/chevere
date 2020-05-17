@@ -30,7 +30,7 @@ final class VarExportable implements VarExportableInterface
     /** @var mixed */
     private $var;
 
-    private BreadcrumbInterface $breadcrum;
+    private BreadcrumbInterface $breadcrumb;
 
     /**
      * @throws VarIsResourceException if $var contains resource
@@ -38,7 +38,7 @@ final class VarExportable implements VarExportableInterface
     public function __construct($var)
     {
         $this->var = $var;
-        $this->breadcrum = new Breadcrumb();
+        $this->breadcrumb = new Breadcrumb();
         try {
             $this->assertExportable($this->var);
         } catch (Throwable $e) {
@@ -72,9 +72,9 @@ final class VarExportable implements VarExportableInterface
     {
         $this->assertIsNotResource($var);
         if (is_iterable($var)) {
-            $this->breadcrumIterable($var);
+            $this->breadcrumbIterable($var);
         } elseif (is_object($var)) {
-            $this->breadcrumObject($var);
+            $this->breadcrumbObject($var);
         }
     }
 
@@ -84,9 +84,9 @@ final class VarExportable implements VarExportableInterface
     private function assertIsNotResource($var): void
     {
         if (is_resource($var)) {
-            if ($this->breadcrum->hasAny()) {
+            if ($this->breadcrumb->hasAny()) {
                 $message = (new Message("Passed argument contains a resource which can't be exported at %at%"))
-                    ->code('%at%', $this->breadcrum->toString());
+                    ->code('%at%', $this->breadcrumb->toString());
             } else {
                 $message = new Message("Argument is a resource which can't be exported");
             }
@@ -97,45 +97,42 @@ final class VarExportable implements VarExportableInterface
     /**
      * @throws VarIsResourceException
      */
-    private function breadcrumIterable($var): void
+    private function breadcrumbIterable($var): void
     {
-        $this->breadcrum = $this->breadcrum->withAddedItem('(iterable)');
-        $iterableKey = $this->breadcrum->pos();
+        $this->breadcrumb = $this->breadcrumb->withAddedItem('(iterable)');
+        $iterableKey = $this->breadcrumb->pos();
         foreach ($var as $key => $val) {
             $key = (string) $key;
-            $this->breadcrum = $this->breadcrum
+            $this->breadcrumb = $this->breadcrumb
                 ->withAddedItem('key:' . $key);
-            $memberKey = $this->breadcrum->pos();
+            $memberKey = $this->breadcrumb->pos();
             $this->assertExportable($val);
-            $this->breadcrum = $this->breadcrum
+            $this->breadcrumb = $this->breadcrumb
                 ->withRemovedItem($memberKey);
         }
-        $this->breadcrum = $this->breadcrum
+        $this->breadcrumb = $this->breadcrumb
             ->withRemovedItem($iterableKey);
     }
 
-    private function breadcrumObject(object $var): void
+    private function breadcrumbObject(object $var): void
     {
-        $this->breadcrum = $this->breadcrum
+        $this->breadcrumb = $this->breadcrumb
             ->withAddedItem('object:' . get_class($var));
-        $objectKey = $this->breadcrum->pos();
+        $objectKey = $this->breadcrumb->pos();
         $reflection = new ReflectionObject($var);
         $properties = $reflection->getProperties();
-        /**
-         * @var \ReflectionProperty $property
-         */
         foreach ($properties as $property) {
             $property->setAccessible(true);
-            $this->breadcrum = $this->breadcrum
+            $this->breadcrumb = $this->breadcrumb
                 ->withAddedItem('property:$' . $property->getName());
-            $propertyKey = $this->breadcrum->pos();
+            $propertyKey = $this->breadcrumb->pos();
             if ($property->isInitialized($var)) {
                 $this->assertExportable($property->getValue($var));
             }
-            $this->breadcrum = $this->breadcrum
+            $this->breadcrumb = $this->breadcrumb
                 ->withRemovedItem($propertyKey);
         }
-        $this->breadcrum = $this->breadcrum
+        $this->breadcrumb = $this->breadcrumb
             ->withRemovedItem($objectKey);
     }
 }

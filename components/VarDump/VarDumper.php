@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump;
 
 use Chevere\Components\Type\Interfaces\TypeInterface;
-use Chevere\Components\VarDump\Interfaces\VarDumpeableInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpableInterface;
 use Chevere\Components\VarDump\Interfaces\FormatterInterface;
 use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use Chevere\Components\Writers\Interfaces\WriterInterface;
@@ -27,7 +27,7 @@ final class VarDumper implements VarDumperInterface
 {
     private WriterInterface $writer;
 
-    private VarDumpeableInterface $dumpeable;
+    private VarDumpableInterface $dumpable;
 
     private FormatterInterface $formatter;
 
@@ -42,10 +42,10 @@ final class VarDumper implements VarDumperInterface
     public function __construct(
         WriterInterface $writer,
         FormatterInterface $formatter,
-        VarDumpeableInterface $dumpeable
+        VarDumpableInterface $dumpable
     ) {
         $this->writer = $writer;
-        $this->dumpeable = $dumpeable;
+        $this->dumpable = $dumpable;
         $this->formatter = $formatter;
         ++$this->depth;
     }
@@ -55,9 +55,9 @@ final class VarDumper implements VarDumperInterface
         return $this->writer;
     }
 
-    public function dumpeable(): VarDumpeableInterface
+    public function dumpable(): VarDumpableInterface
     {
-        return $this->dumpeable;
+        return $this->dumpable;
     }
 
     public function formatter(): FormatterInterface
@@ -109,8 +109,8 @@ final class VarDumper implements VarDumperInterface
     public function withProcessor(): VarDumperInterface
     {
         $new = clone $this;
-        $processorName = $new->dumpeable->processorName();
-        if (in_array($new->dumpeable->type(), [TypeInterface::ARRAY, TypeInterface::OBJECT])) {
+        $processorName = $new->dumpable->processorName();
+        if (in_array($new->dumpable->type(), [TypeInterface::ARRAY, TypeInterface::OBJECT])) {
             ++$new->indent;
         }
         (new $processorName($new))->write();

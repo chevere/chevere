@@ -49,7 +49,7 @@ interface VarDumperInterface
 
     public function writer(): WriterInterface;
 
-    public function dumpeable(): VarDumpeableInterface;
+    public function dumpable(): VarDumpableInterface;
 
     /**
      * Provides access to the FormatterInterface instance.

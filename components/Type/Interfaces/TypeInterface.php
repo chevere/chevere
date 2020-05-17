@@ -57,7 +57,7 @@ interface TypeInterface
     public function __construct(string $type);
 
     /**
-     * Returns the type primitive (array, bool, object, ..., clasName, interfaceName).
+     * Returns the type primitive (array, bool, object, ..., className, interfaceName).
      */
     public function primitive(): string;
 
@@ -69,7 +69,7 @@ interface TypeInterface
     public function typeHinting(): string;
 
     /**
-     * Returns a boolean indicating if $var validates agains the type.
+     * Returns a boolean indicating if $var validates against the type.
      */
     public function validate($var): bool;
 

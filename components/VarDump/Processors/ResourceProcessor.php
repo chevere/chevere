@@ -28,8 +28,8 @@ final class ResourceProcessor implements ProcessorInterface
     {
         $this->varDumper = $varDumper;
         $this->assertType();
-        $this->info = 'type=' . get_resource_type($this->varDumper->dumpeable()->var());
-        $this->stringVar = (string) $this->varDumper->dumpeable()->var();
+        $this->info = 'type=' . get_resource_type($this->varDumper->dumpable()->var());
+        $this->stringVar = (string) $this->varDumper->dumpable()->var();
     }
 
     public function type(): string

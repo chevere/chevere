@@ -20,17 +20,17 @@ use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Spec\SpecPath;
-use Chevere\Components\Spec\Specs\RouteableSpec;
-use Chevere\Components\Spec\Specs\RouteableSpecs;
+use Chevere\Components\Spec\Specs\RoutableSpec;
+use Chevere\Components\Spec\Specs\RoutableSpecs;
 use Chevere\TestApp\App\Controllers\TestController;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
-final class RouteableSpecsTest extends TestCase
+final class RoutableSpecsTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $specs = new RouteableSpecs;
+        $specs = new RoutableSpecs;
         $key = 'key';
         $this->assertCount(0, $specs->map());
         $this->assertFalse($specs->hasKey($key));
@@ -40,8 +40,8 @@ final class RouteableSpecsTest extends TestCase
 
     public function testWithPut(): void
     {
-        $specs = new RouteableSpecs;
-        $spec = new RouteableSpec(
+        $specs = new RoutableSpecs;
+        $spec = new RoutableSpec(
             new SpecPath('/spec/group'),
             new Routable(
                 (new Route(new RouteName('name'), new RoutePath('/path')))

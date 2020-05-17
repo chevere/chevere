@@ -12,7 +12,7 @@
 declare(strict_types=1);
 
 return '<pre style="font: 14px Consolas, monospace, sans-serif; line-height: 1.2; color: #ecf0f1; padding: 15px; margin: 10px 0; word-break: break-word; white-space: pre-wrap; background: #132537; display: block; text-align: left; border: none; border-radius: 4px;"><span style="color:#3498db">Chevere\\Components\\VarDump\\Tests\\DumperTest</span>-><span style="color:#9b59b6">testDumpers()</span>
-<span style="color:inherith">%fileLine%</span>
+<span style="color:inherit">%fileLine%</span>
 
 Arg#1 <span style="color:#7f8c8d">null</span>
 

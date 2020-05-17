@@ -35,10 +35,10 @@ final class Writers implements WritersInterface
         $this->log = new NullWriter();
     }
 
-    public function withOut(WriterInterface $writter): WritersInterface
+    public function withOut(WriterInterface $writer): WritersInterface
     {
         $new = clone $this;
-        $new->out = $writter;
+        $new->out = $writer;
 
         return $new;
     }
@@ -48,10 +48,10 @@ final class Writers implements WritersInterface
         return $this->out;
     }
 
-    public function withError(WriterInterface $writter): WritersInterface
+    public function withError(WriterInterface $writer): WritersInterface
     {
         $new = clone $this;
-        $new->error = $writter;
+        $new->error = $writer;
 
         return $new;
     }
@@ -61,10 +61,10 @@ final class Writers implements WritersInterface
         return $this->error;
     }
 
-    public function withDebug(WriterInterface $writter): WritersInterface
+    public function withDebug(WriterInterface $writer): WritersInterface
     {
         $new = clone $this;
-        $new->debug = $writter;
+        $new->debug = $writer;
 
         return $new;
     }
@@ -74,10 +74,10 @@ final class Writers implements WritersInterface
         return $this->debug;
     }
 
-    public function withLog(WriterInterface $writter): WritersInterface
+    public function withLog(WriterInterface $writer): WritersInterface
     {
         $new = clone $this;
-        $new->log = $writter;
+        $new->log = $writer;
 
         return $new;
     }

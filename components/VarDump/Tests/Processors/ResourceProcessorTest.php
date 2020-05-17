@@ -26,7 +26,7 @@ final class ResourceProcessorTest extends TestCase
     {
         $resource = fopen(__FILE__, 'r');
         if (is_resource($resource) === false) {
-            $this->markTestIncomplete('Unable to fopen ' . __FILE__);
+            $this->markTestIncomplete('Unable to open ' . __FILE__);
         }
         $resourceString = (string) $resource;
         $expectedInfo = 'type=' . get_resource_type($resource);

@@ -15,6 +15,7 @@ namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use Chevere\Components\Spec\Specs\GroupSpec;
+use Ds\TKey;
 
 final class GroupSpecs
 {
@@ -22,7 +23,7 @@ final class GroupSpecs
 
     public function put(GroupSpec $groupSpec): void
     {
-        /** @var \Ds\TKey $key */
+        /** @var TKey $key */
         $key = $groupSpec->key();
         $this->map->put($key, $groupSpec);
     }
@@ -35,7 +36,7 @@ final class GroupSpecs
     public function get(string $key): GroupSpec
     {
         /**
-         * @var \Ds\TKey $key
+         * @var TKey $key
          * @var GroupSpec $return
          */
         $return = $this->map->get($key);

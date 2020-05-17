@@ -22,7 +22,7 @@ use Chevere\Components\Spec\Specs\RouteEndpointSpecs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
 use function DeepCopy\deep_copy;
 
-final class RouteableSpec implements SpecInterface
+final class RoutableSpec implements SpecInterface
 {
     use SpecsTrait;
 
@@ -39,16 +39,16 @@ final class RouteableSpec implements SpecInterface
      */
     public function __construct(
         SpecPathInterface $specGroupPath,
-        RoutableInterface $routeable
+        RoutableInterface $routable
     ) {
-        $this->key = $routeable->route()->name()->toString();
+        $this->key = $routable->route()->name()->toString();
         $this->routeEndpointSpecs = new RouteEndpointSpecs;
         $specGroupRoute = $specGroupPath->getChild($this->key);
         $this->jsonPath = $specGroupRoute->getChild('route.json')->pub();
-        $this->path = $routeable->route()->path()->toString();
-        $this->regex = $routeable->route()->path()->regex()->toNoDelimiters();
-        $this->wildcards = $routeable->route()->path()->wildcards()->toArray();
-        $routeEndpoints = $routeable->route()->endpoints();
+        $this->path = $routable->route()->path()->toString();
+        $this->regex = $routable->route()->path()->regex()->toNoDelimiters();
+        $this->wildcards = $routable->route()->path()->wildcards()->toArray();
+        $routeEndpoints = $routable->route()->endpoints();
         /** @var string $key */
         foreach ($routeEndpoints->keys() as $key) {
             $routeEndpointSpec = new RouteEndpointSpec(

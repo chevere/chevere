@@ -29,7 +29,7 @@ final class Unserialize implements UnserializeInterface
     private TypeInterface $type;
 
     /**
-     * @throws UnserializeException if $serialized can't be unserialized
+     * @throws UnserializeException
      */
     public function __construct(string $serialized)
     {

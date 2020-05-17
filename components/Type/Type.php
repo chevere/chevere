@@ -18,14 +18,14 @@ use Chevere\Components\Type\Exceptions\TypeNotFoundException;
 use Chevere\Components\Type\Interfaces\TypeInterface;
 
 /**
- * Type provides type validation toolchain. Usefull to set dynamic types as parameters.
+ * Type provides type validation toolchain. Useful to set dynamic types as parameters.
  */
 final class Type implements TypeInterface
 {
     /** @var string The passed argument in construct */
     private string $type;
 
-    /** @var string The dectected primitive type */
+    /** @var string The detected primitive type */
     private string $primitive = '';
 
     /**

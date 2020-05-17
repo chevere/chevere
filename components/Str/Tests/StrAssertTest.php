@@ -114,7 +114,7 @@ final class StrAssertTest extends TestCase
 
     public function testNotEndsWith(): void
     {
-        (new StrAssert('string'))->notEndsWith('otro');
+        (new StrAssert('string'))->notEndsWith('other');
         $this->expectException(StrEndsWithException::class);
         (new StrAssert('string'))->notEndsWith('ing');
     }

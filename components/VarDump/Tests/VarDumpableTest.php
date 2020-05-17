@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Tests;
 
 use Chevere\Components\Type\Interfaces\TypeInterface;
-use Chevere\Components\VarDump\VarDumpeable;
+use Chevere\Components\VarDump\VarDumpable;
 use Chevere\Components\VarDump\Processors\ArrayProcessor;
 use Chevere\Components\VarDump\Processors\BooleanProcessor;
 use Chevere\Components\VarDump\Processors\FloatProcessor;
@@ -26,7 +26,7 @@ use Chevere\Components\VarDump\Processors\StringProcessor;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-final class VarDumpeableTest extends TestCase
+final class VarDumpableTest extends TestCase
 {
     public function testConstruct(): void
     {
@@ -59,7 +59,7 @@ final class VarDumpeableTest extends TestCase
             ],
         ];
         foreach ($variables as $type => $var) {
-            $variableDump = new VarDumpeable($var[0]);
+            $variableDump = new VarDumpable($var[0]);
             $this->assertSame($var[0], $variableDump->var());
             $this->assertSame($type, $variableDump->type());
         }

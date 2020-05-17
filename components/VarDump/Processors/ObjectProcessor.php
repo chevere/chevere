@@ -18,7 +18,7 @@ use ReflectionObject;
 use Throwable;
 use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
-use Chevere\Components\VarDump\VarDumpeable;
+use Chevere\Components\VarDump\VarDumpable;
 use Chevere\Components\VarDump\VarDumper;
 use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
@@ -34,8 +34,6 @@ final class ObjectProcessor implements ProcessorInterface
 
     private ReflectionObject $reflectionObject;
 
-    private array $properties;
-
     private string $className;
 
     /** @var string[] An array containing object ids */
@@ -47,7 +45,7 @@ final class ObjectProcessor implements ProcessorInterface
     {
         $this->varDumper = $varDumper;
         $this->assertType();
-        $this->var = $this->varDumper->dumpeable()->var();
+        $this->var = $this->varDumper->dumpable()->var();
         $this->depth = $this->varDumper->depth() + 1;
         $this->knownObjects = $this->varDumper->known();
         $this->className = get_class($this->var);
@@ -93,7 +91,7 @@ final class ObjectProcessor implements ProcessorInterface
 
     private function setProperties(): void
     {
-        $this->properties = [];
+        $properties = [];
         $reflectionObject = $this->reflectionObject;
         do {
             foreach ($reflectionObject->getProperties() as $property) {
@@ -104,16 +102,16 @@ final class ObjectProcessor implements ProcessorInterface
                     $value = null;
                     // $e;
                 }
-                $this->properties[$property->getName()] = [
+                $properties[$property->getName()] = [
                     $property->getName(),
                     implode(' ', Reflection::getModifierNames($property->getModifiers())),
                     $value ?? null,
                 ];
             }
         } while ($reflectionObject = $reflectionObject->getParentClass());
-        $keys = array_keys($this->properties);
+        $keys = array_keys($properties);
         foreach ($keys as $name) {
-            $this->processProperty(...$this->properties[$name]);
+            $this->processProperty(...$properties[$name]);
         }
     }
 
@@ -136,7 +134,7 @@ final class ObjectProcessor implements ProcessorInterface
         (new VarDumper(
             $this->varDumper->writer(),
             $this->varDumper->formatter(),
-            new VarDumpeable($var)
+            new VarDumpable($var)
         ))
             ->withDepth(
                 is_scalar($var)

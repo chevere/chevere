@@ -28,7 +28,7 @@ use Chevere\Components\Writers\Interfaces\WriterInterface;
  */
 final class VarDump
 {
-    private $vars;
+    private array $vars;
 
     private WriterInterface $writer;
 

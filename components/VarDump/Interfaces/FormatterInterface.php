@@ -21,7 +21,7 @@ interface FormatterInterface
     public function indent(int $indent): string;
 
     /**
-     * @param string $string String to emphatize
+     * @param string $string String to emphasize
      */
     public function emphasis(string $string): string;
 

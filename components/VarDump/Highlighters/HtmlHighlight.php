@@ -30,7 +30,7 @@ final class HtmlHighlight implements HighlightInterface
     {
         $this->assertKey($key);
         $this->key = $key;
-        $this->color = $this->pallete()[$this->key] ?? 'inherith';
+        $this->color = $this->pallet()[$this->key] ?? 'inherit';
     }
 
     public function wrap(string $dump): string
@@ -38,7 +38,7 @@ final class HtmlHighlight implements HighlightInterface
         return '<span style="color:' . $this->color . '">' . $dump . '</span>';
     }
 
-    public function pallete(): array
+    public function pallet(): array
     {
         return [
             TypeInterface::STRING => '#e67e22', // orange
@@ -49,7 +49,7 @@ final class HtmlHighlight implements HighlightInterface
             TypeInterface::OBJECT => '#e74c3c', // red
             TypeInterface::ARRAY => '#2ecc71', // green
             TypeInterface::RESOURCE => '#3498db', // blue
-            VarDumperInterface::_FILE => 'inherith',
+            VarDumperInterface::_FILE => 'inherit',
             VarDumperInterface::_CLASS => '#3498db', // blue
             VarDumperInterface::_OPERATOR => '#7f8c8d', // grey
             VarDumperInterface::_FUNCTION => '#9b59b6', // purple

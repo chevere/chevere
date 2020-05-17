@@ -24,14 +24,14 @@ final class TypeTest extends TestCase
     public function testInvalidArgument(): void
     {
         $this->expectException(TypeNotFoundException::class);
-        new Type('Tipo');
+        new Type('TypeSome');
     }
 
     public function testTypes(): void
     {
         $resource = fopen(__FILE__, 'r');
         if (is_resource($resource) === false) {
-            $this->markTestIncomplete('Unable to fopen ' . __FILE__);
+            $this->markTestIncomplete('Unable to open ' . __FILE__);
         }
         foreach ([
             TypeInterface::BOOLEAN => true,

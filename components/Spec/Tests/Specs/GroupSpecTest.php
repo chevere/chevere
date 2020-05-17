@@ -21,7 +21,7 @@ use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Spec\SpecPath;
 use Chevere\Components\Spec\Specs\GroupSpec;
-use Chevere\Components\Spec\Specs\RouteableSpec;
+use Chevere\Components\Spec\Specs\RoutableSpec;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
@@ -45,7 +45,7 @@ final class GroupSpecTest extends TestCase
         );
     }
 
-    public function testWithAddedRouteable(): void
+    public function testWithAddedRoutable(): void
     {
         $routeName = new RouteName('route-name');
         $specPath = new SpecPath('/spec');
@@ -56,17 +56,17 @@ final class GroupSpecTest extends TestCase
             ->withAddedEndpoint(
                 new RouteEndpoint(new GetMethod, new TestController)
             );
-        $routeableSpec = new RouteableSpec(
+        $routableSpec = new RoutableSpec(
             $groupSpecPath->getChild($routeName->toString()),
             new Routable($route)
         );
         $spec = (new GroupSpec($specPath, $groupName))
-            ->withAddedRouteableSpec($routeableSpec);
+            ->withAddedRoutableSpec($routableSpec);
         $this->assertSame(
             [
                 'name' => $groupName,
                 'spec' => $routesSpecPathJson,
-                'routes' => [$routeableSpec->key() => $routeableSpec->toArray()],
+                'routes' => [$routableSpec->key() => $routableSpec->toArray()],
             ],
             $spec->toArray()
         );

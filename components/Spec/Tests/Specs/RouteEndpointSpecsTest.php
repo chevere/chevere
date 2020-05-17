@@ -36,7 +36,7 @@ final class RouteEndpointSpecsTest extends TestCase
 
     public function testWithPut(): void
     {
-        $inmutable = new RouteEndpointSpecs;
+        $immutable = new RouteEndpointSpecs;
         $spec = new RouteEndpointSpec(
             new SpecPath('/spec'),
             new RouteEndpoint(
@@ -44,8 +44,8 @@ final class RouteEndpointSpecsTest extends TestCase
                 new TestController
             )
         );
-        $muted = $inmutable->withPut($spec);
-        $this->assertCount(0, $inmutable->map());
+        $muted = $immutable->withPut($spec);
+        $this->assertCount(0, $immutable->map());
         $this->assertCount(1, $muted->map());
         $this->assertTrue($muted->hasKey($spec->key()));
         $this->assertSame($spec, $muted->get($spec->key()));

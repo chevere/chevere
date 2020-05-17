@@ -16,16 +16,16 @@ namespace Chevere\Components\VarDump;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
-use Chevere\Components\VarDump\Interfaces\VarDumpeableInterface;
+use Chevere\Components\VarDump\Interfaces\VarDumpableInterface;
 use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use LogicException;
 use function ChevereFn\varType;
 
 /**
- * The Chevere VarDumpeable.
- * Provides interaction for dumpeable variables.
+ * The Chevere VarDumpable.
+ * Provides interaction for dumpable variables.
  */
-final class VarDumpeable implements VarDumpeableInterface
+final class VarDumpable implements VarDumpableInterface
 {
     /** @var mixed */
     private $var;

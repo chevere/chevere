@@ -26,7 +26,7 @@ final class BooleanProcessor implements ProcessorInterface
     {
         $this->varDumper = $varDumper;
         $this->assertType();
-        $this->info = $this->varDumper->dumpeable()->var() ? 'true' : 'false';
+        $this->info = $this->varDumper->dumpable()->var() ? 'true' : 'false';
     }
 
     public function type(): string

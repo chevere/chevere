@@ -20,7 +20,7 @@ use InvalidArgumentException;
 use RuntimeException;
 
 /**
- * Sets the `default_charset` ini propery
+ * Sets the `default_charset` ini property
  */
 final class SetDefaultCharset implements SetInterface
 {

@@ -17,7 +17,7 @@ use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
 use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
 use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
-use Chevere\Components\VarDump\VarDumpeable;
+use Chevere\Components\VarDump\VarDumpable;
 use Chevere\Components\VarDump\VarDumper;
 
 final class ArrayProcessor implements ProcessorInterface
@@ -34,7 +34,7 @@ final class ArrayProcessor implements ProcessorInterface
     {
         $this->varDumper = $varDumper;
         $this->assertType();
-        $this->var = $this->varDumper->dumpeable()->var();
+        $this->var = $this->varDumper->dumpable()->var();
         $this->depth = $this->varDumper->depth() + 1;
         $this->count = count($this->var);
         $this->info = 'size=' . $this->count;
@@ -112,7 +112,7 @@ final class ArrayProcessor implements ProcessorInterface
         (new VarDumper(
             $this->varDumper->writer(),
             $this->varDumper->formatter(),
-            new VarDumpeable($var),
+            new VarDumpable($var),
         ))
             ->withDepth($deep)
             ->withIndent($this->varDumper->indent() + 1)

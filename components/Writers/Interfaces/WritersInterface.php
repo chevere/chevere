@@ -21,7 +21,7 @@ interface WritersInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified out WriterInterface.
      */
-    public function withOut(WriterInterface $writter): WritersInterface;
+    public function withOut(WriterInterface $writer): WritersInterface;
 
     public function out(): WriterInterface;
 
@@ -31,7 +31,7 @@ interface WritersInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified error WriterInterface.
      */
-    public function withError(WriterInterface $writter): WritersInterface;
+    public function withError(WriterInterface $writer): WritersInterface;
 
     public function error(): WriterInterface;
 
@@ -41,7 +41,7 @@ interface WritersInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified debug WriterInterface.
      */
-    public function withDebug(WriterInterface $writter): WritersInterface;
+    public function withDebug(WriterInterface $writer): WritersInterface;
 
     public function debug(): WriterInterface;
 
@@ -51,7 +51,7 @@ interface WritersInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified log WriterInterface.
      */
-    public function withLog(WriterInterface $writter): WritersInterface;
+    public function withLog(WriterInterface $writer): WritersInterface;
 
     public function log(): WriterInterface;
 }

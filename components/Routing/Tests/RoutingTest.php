@@ -23,7 +23,6 @@ use PHPUnit\Framework\TestCase;
 
 final class RoutingTest extends TestCase
 {
-    private DirInterface $resourcesDir;
 
     private DirInterface $cacheDir;
 
@@ -31,9 +30,9 @@ final class RoutingTest extends TestCase
 
     public function setUp(): void
     {
-        $this->resourcesDir = new DirFromString(__DIR__ . '/_resources/');
-        $this->cacheDir = $this->resourcesDir->getChild('cache/');
-        $this->routesDir = $this->resourcesDir->getChild('routes/');
+        $resourcesDir = new DirFromString(__DIR__ . '/_resources/');
+        $this->cacheDir = $resourcesDir->getChild('cache/');
+        $this->routesDir = $resourcesDir->getChild('routes/');
         if (!$this->cacheDir->exists()) {
             $this->cacheDir->create(0777);
         }

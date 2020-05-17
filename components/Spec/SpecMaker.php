@@ -25,7 +25,7 @@ use Chevere\Components\Spec\Interfaces\SpecInterface;
 use Chevere\Components\Spec\Interfaces\SpecPathInterface;
 use Chevere\Components\Spec\Specs\GroupSpec;
 use Chevere\Components\Spec\Specs\IndexSpec;
-use Chevere\Components\Spec\Specs\RouteableSpec;
+use Chevere\Components\Spec\Specs\RoutableSpec;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Components\Str\Str;
 use Ds\Map;
@@ -68,21 +68,21 @@ final class SpecMaker
          * @var string $routeName
          * @var Routable $routeabe
          */
-        foreach ($routes->map() as $routeName => $routeable) {
+        foreach ($routes->map() as $routeName => $routable) {
             $groupName = $router->index()->getRouteGroup($routeName);
             if (!isset($groupName[$groupName])) {
                 $groups[$groupName] = new GroupSpec($specRoot, $groupName);
             }
-            $routeableSpec = new RouteableSpec(
+            $routableSpec = new RoutableSpec(
                 $specRoot->getChild($groupName),
-                $routeable
+                $routable
             );
-            $this->makeJsonFile($routeableSpec);
+            $this->makeJsonFile($routableSpec);
             /** @var GroupSpec $groupSpec */
             $groupSpec = $groups[$groupName];
-            $groupSpec = $groupSpec->withAddedRouteableSpec($routeableSpec);
+            $groupSpec = $groupSpec->withAddedRoutableSpec($routableSpec);
             $groups[$groupName] = $groupSpec;
-            $routeEndpointSpecs = $routeableSpec->routeEndpointSpecs();
+            $routeEndpointSpecs = $routableSpec->routeEndpointSpecs();
             /** @var RouteEndpointSpec $routeEndpointSpec */
             foreach ($routeEndpointSpecs->map() as $routeEndpointSpec) {
                 $this->specIndex = $this->specIndex->withOffset(
@@ -145,7 +145,7 @@ final class SpecMaker
         // @codeCoverageIgnoreStart
         if ($this->router->routables()->map()->count() == 0) {
             throw new LogicException(
-                (new Message('Instance of %interfaceName% does not contain any routeable.'))
+                (new Message('Instance of %interfaceName% does not contain any routable.'))
                     ->code('%interfaceName%', RouterInterface::class)
                     ->toString()
             );
@@ -167,7 +167,7 @@ final class SpecMaker
 
     private function getPathFor(string $jsonPath): PathInterface
     {
-        $dirPath = $this->dir->path(); // /home/weas/spec/
+        $dirPath = $this->dir->path();
         $child = (new Str($jsonPath))
             ->replaceFirst($this->specPath->pub(), '')
             ->toString();

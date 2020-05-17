@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
-use Chevere\Components\Spec\Specs\RouteableSpec;
+use Chevere\Components\Spec\Specs\RoutableSpec;
 
-final class RouteableSpecs
+final class RoutableSpecs
 {
     use DsMapTrait;
 
-    public function put(RouteableSpec $routeableSpec): void
+    public function put(RoutableSpec $routableSpec): void
     {
         /** @var \Ds\TKey $key */
-        $key = $routeableSpec->key();
-        $this->map->put($key, $routeableSpec);
+        $key = $routableSpec->key();
+        $this->map->put($key, $routableSpec);
     }
 
     public function hasKey(string $key): bool
@@ -32,11 +32,11 @@ final class RouteableSpecs
         return $this->map->hasKey(/** @scrutinizer ignore-type */ $key);
     }
 
-    public function get(string $key): RouteableSpec
+    public function get(string $key): RoutableSpec
     {
         /**
          * @var \Ds\TKey $key
-         * @var RouteableSpec $return
+         * @var RoutableSpec $return
          */
         $return = $this->map->get($key);
 
