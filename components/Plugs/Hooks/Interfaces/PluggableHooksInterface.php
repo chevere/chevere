@@ -18,7 +18,7 @@ use Chevere\Components\Plugin\Interfaces\PluggableAnchorsInterface;
 interface PluggableHooksInterface
 {
     /**
-     * Returns the declared hook anchors.
+     * @return PluggableAnchorsInterface declared hook anchors.
      */
     public static function getHookAnchors(): PluggableAnchorsInterface;
 

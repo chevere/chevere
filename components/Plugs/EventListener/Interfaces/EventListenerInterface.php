@@ -17,7 +17,7 @@ use Chevere\Components\Plugin\Interfaces\PlugInterface;
 
 interface EventListenerInterface extends PlugInterface
 {
-    public function __invoke(array $data): void;
+    public function __invoke(string $anchor, EventInterface $event): void;
 
     /**
      * @return string Applicable event anchor.

@@ -17,7 +17,7 @@ use Chevere\Components\Plugin\Interfaces\PlugTypeInterface;
 use Chevere\Components\Plugin\Types\EventListenerPlugType;
 use Chevere\Components\Plugin\Types\HookPlugType;
 use Chevere\Components\Plugs\EventListener\Interfaces\EventListenerInterface;
-use Chevere\Components\Plugs\EventListener\Interfaces\EventsInterface;
+use Chevere\Components\Plugs\EventListener\Interfaces\PluggableEventsInterface;
 use Chevere\Components\Plugs\Hooks\Interfaces\HookInterface;
 use Chevere\Components\Plugs\Hooks\Interfaces\PluggableHooksInterface;
 use PHPUnit\Framework\TestCase;
@@ -39,7 +39,7 @@ final class PlugTypesTest extends TestCase
         $this->plugTypeTester(
             new EventListenerPlugType,
             EventListenerInterface::class,
-            EventsInterface::class,
+            PluggableEventsInterface::class,
             'EventListener.php'
         );
     }
@@ -57,6 +57,6 @@ final class PlugTypesTest extends TestCase
         $this->assertTrue(method_exists(
             $plugType->plugsTo(),
             $plugType->pluggableAnchorsMethod()
-        ));
+        ), $plugType->plugsTo() . '::' . $plugType->pluggableAnchorsMethod());
     }
 }

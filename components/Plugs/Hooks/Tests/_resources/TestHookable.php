@@ -16,11 +16,11 @@ namespace Chevere\Components\Plugs\Hooks\Tests\_resources;
 use Chevere\Components\Plugin\Interfaces\PluggableAnchorsInterface;
 use Chevere\Components\Plugin\PluggableAnchors;
 use Chevere\Components\Plugs\Hooks\Interfaces\PluggableHooksInterface;
-use Chevere\Components\Plugs\Hooks\Traits\PluggableHookTrait;
+use Chevere\Components\Plugs\Hooks\Traits\PluggableHooksTrait;
 
 class TestHookable implements PluggableHooksInterface
 {
-    use PluggableHookTrait;
+    use PluggableHooksTrait;
 
     private string $string;
 

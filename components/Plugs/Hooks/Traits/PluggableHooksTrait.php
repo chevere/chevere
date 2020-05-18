@@ -15,7 +15,7 @@ namespace Chevere\Components\Plugs\Hooks\Traits;
 
 use Chevere\Components\Plugs\Hooks\Interfaces\HooksRunnerInterface;
 
-trait PluggableHookTrait
+trait PluggableHooksTrait
 {
     private HooksRunnerInterface $hooksRunner;
 

@@ -23,12 +23,12 @@ use Chevere\Components\Controller\Interfaces\ControllerResponseInterface;
 use Chevere\Components\Plugin\Interfaces\PluggableAnchorsInterface;
 use Chevere\Components\Plugin\PluggableAnchors;
 use Chevere\Components\Plugs\Hooks\Interfaces\PluggableHooksInterface;
-use Chevere\Components\Plugs\Hooks\Traits\PluggableHookTrait;
+use Chevere\Components\Plugs\Hooks\Traits\PluggableHooksTrait;
 use Chevere\Components\Regex\Regex;
 
 class TestController extends Controller implements PluggableHooksInterface
 {
-    use PluggableHookTrait;
+    use PluggableHooksTrait;
 
     protected array $_data;
 

@@ -15,22 +15,22 @@ namespace Chevere\Components\Plugs\EventListener\Interfaces;
 
 use Chevere\Components\Plugin\Interfaces\PluggableAnchorsInterface;
 
-interface EventsInterface
+interface PluggableEventsInterface
 {
     /**
-     * Returns the declared event names.
+     * @return PluggableAnchorsInterface declared event anchors.
      */
-    public static function getEventsAnchors(): PluggableAnchorsInterface;
+    public static function getEventAnchors(): PluggableAnchorsInterface;
 
     /**
      * Attach the events runner.
      */
-    public function withEventsRunner(EventsRunnerInterface $runner): EventsInterface;
+    public function withEventsRunner(EventsRunnerInterface $runner): PluggableEventsInterface;
 
     /**
      * Run events for the given anchor (if-any).
      *
      * @param string $anchor Event anchor
      */
-    public function sendEvent(string $anchor, EventInterface $event): void;
+    public function event(string $anchor, EventInterface $event): void;
 }

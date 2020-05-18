@@ -15,7 +15,7 @@ namespace Chevere\Components\Plugin\Types;
 
 use Chevere\Components\Plugin\Interfaces\PlugTypeInterface;
 use Chevere\Components\Plugs\EventListener\Interfaces\EventListenerInterface;
-use Chevere\Components\Plugs\EventListener\Interfaces\EventsInterface;
+use Chevere\Components\Plugs\EventListener\Interfaces\PluggableEventsInterface;
 
 final class EventListenerPlugType implements PlugTypeInterface
 {
@@ -26,7 +26,7 @@ final class EventListenerPlugType implements PlugTypeInterface
 
     public function plugsTo(): string
     {
-        return EventsInterface::class;
+        return PluggableEventsInterface::class;
     }
 
     public function trailingName(): string
@@ -41,6 +41,6 @@ final class EventListenerPlugType implements PlugTypeInterface
 
     public function pluggableAnchorsMethod(): string
     {
-        return 'getEventsAnchors';
+        return 'getEventAnchors';
     }
 }
