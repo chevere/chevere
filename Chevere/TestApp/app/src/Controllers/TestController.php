@@ -20,18 +20,19 @@ use Chevere\Components\Controller\ControllerResponse;
 use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
 use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
 use Chevere\Components\Controller\Interfaces\ControllerResponseInterface;
-use Chevere\Components\Hooks\Interfaces\HookableInterface;
-use Chevere\Components\Hooks\Traits\HookableTrait;
-use Chevere\Components\Plugs\PluggableAnchors;
+use Chevere\Components\Plugin\Interfaces\PluggableAnchorsInterface;
+use Chevere\Components\Plugin\PluggableAnchors;
+use Chevere\Components\Plugs\Hooks\Interfaces\PluggableHooksInterface;
+use Chevere\Components\Plugs\Hooks\Traits\PluggableHookTrait;
 use Chevere\Components\Regex\Regex;
 
-class TestController extends Controller implements HookableInterface
+class TestController extends Controller implements PluggableHooksInterface
 {
-    use HookableTrait;
+    use PluggableHookTrait;
 
     protected array $_data;
 
-    public static function getHookableAnchors(): PluggableAnchors
+    public static function getHookAnchors(): PluggableAnchorsInterface
     {
         return (new PluggableAnchors)
             ->withAddedAnchor('getParameters:after')
