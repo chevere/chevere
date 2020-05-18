@@ -19,7 +19,7 @@ use Chevere\Components\Message\Message;
 use Throwable;
 
 /**
- * Extends \LengthException with Message support.
+ * Exception thrown if a length is invalid.
  */
 class LengthException extends \LengthException
 {

@@ -19,7 +19,7 @@ use Chevere\Components\Message\Message;
 use Throwable;
 
 /**
- * Extends \RuntimeException with Message support.
+ * Exception thrown if an error which can only be found on runtime occurs.
  */
 class RuntimeException extends \RuntimeException
 {

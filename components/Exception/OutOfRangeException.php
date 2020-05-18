@@ -19,7 +19,7 @@ use Chevere\Components\Message\Message;
 use Throwable;
 
 /**
- * Extends \OutOfRangeException with Message support.
+ * Exception thrown when an illegal index was requested. This represents errors that should be detected at compile time.
  */
 class OutOfRangeException extends \OutOfRangeException
 {

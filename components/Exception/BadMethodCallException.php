@@ -19,7 +19,7 @@ use Chevere\Components\Message\Message;
 use Throwable;
 
 /**
- * Extends \BadMethodCallException with Message support.
+ * Exception thrown if a callback refers to an undefined method or if some arguments are missing.
  */
 class BadMethodCallException extends \BadMethodCallException
 {

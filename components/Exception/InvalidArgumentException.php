@@ -19,7 +19,7 @@ use Chevere\Components\Message\Message;
 use Throwable;
 
 /**
- * Extends \InvalidArgumentException with Message support.
+ * Exception thrown if an argument is not of the expected value.
  */
 class InvalidArgumentException extends \InvalidArgumentException
 {

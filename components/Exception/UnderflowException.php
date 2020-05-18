@@ -19,7 +19,7 @@ use Chevere\Components\Message\Message;
 use Throwable;
 
 /**
- * Extends \UnderflowException with Message support.
+ * Exception thrown when performing an invalid operation on an empty container, such as removing an element.
  */
 class UnderflowException extends \UnderflowException
 {

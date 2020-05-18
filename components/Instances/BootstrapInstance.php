@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Instances;
 
-use LogicException;
 use Chevere\Components\Bootstrap\Interfaces\BootstrapInterface;
+use Chevere\Components\Exception\LogicException;
+use Chevere\Components\Message\Message;
 
 /**
  * A container for the bootstrap.
@@ -31,7 +32,9 @@ final class BootstrapInstance
     public static function get(): BootstrapInterface
     {
         if (!isset(self::$instance)) {
-            throw new LogicException('No bootstrap instance present');
+            throw new LogicException(
+                new Message('No bootstrap instance present')
+            );
         }
 
         return self::$instance;

@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Instances;
 
-use LogicException;
+use Chevere\Components\Exception\LogicException;
 use Chevere\Components\Http\Interfaces\RequestInterface;
+use Chevere\Components\Message\Message;
 
 /**
  * A container for the request instance.
@@ -41,7 +42,9 @@ final class RequestInstance
     public static function get(): RequestInterface
     {
         if (!isset(self::$instance)) {
-            throw new LogicException('No request instance present');
+            throw new LogicException(
+                (new Message('No request instance present'))
+            );
         }
 
         return self::$instance;

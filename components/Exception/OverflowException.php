@@ -19,7 +19,7 @@ use Chevere\Components\Message\Message;
 use Throwable;
 
 /**
- * Extends \OverflowException with Message support.
+ * Exception thrown when adding an element to a full container.
  */
 class OverflowException extends \OverflowException
 {

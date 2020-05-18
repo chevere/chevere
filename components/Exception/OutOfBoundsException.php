@@ -19,7 +19,7 @@ use Chevere\Components\Message\Message;
 use Throwable;
 
 /**
- * Extends \OutOfBoundsException with Message support.
+ * Exception thrown if a value is not a valid key. This represents errors that cannot be detected at compile time.
  */
 class OutOfBoundsException extends \OutOfBoundsException
 {

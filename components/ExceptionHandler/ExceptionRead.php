@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler;
 
+use Chevere\Components\Exception\DomainException;
+use Chevere\Components\Exception\LogicException;
 use Chevere\Components\ExceptionHandler\Interfaces\ExceptionInterface;
 use Chevere\Components\ExceptionHandler\Interfaces\ExceptionReadInterface;
 use Chevere\Components\Message\Interfaces\MessageInterface;
 use Chevere\Components\Message\Message;
 use ErrorException;
 use Exception;
-use LogicException;
 
 /**
  * Class used to make Exception readable (normalized).
@@ -117,16 +118,19 @@ final class ExceptionRead implements ExceptionReadInterface
         return $this->trace;
     }
 
+    /**
+     *
+     * @throws DomainException
+     */
     private function assertSeverity(): void
     {
         foreach ([ExceptionReadInterface::ERROR_TYPES, ExceptionReadInterface::ERROR_LEVELS] as $array) {
             if (!array_key_exists($this->severity, $array)) {
                 $accepted = array_keys($array);
-                throw new LogicException(
+                throw new DomainException(
                     (new Message('Unknown severity value of %severity%, accepted values are: %accepted%'))
                         ->code('%severity%', (string) $this->severity)
                         ->code('%accepted%', implode(', ', $accepted))
-                        ->toString()
                 );
             }
         }

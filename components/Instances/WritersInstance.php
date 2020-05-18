@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Instances;
 
-use LogicException;
+use Chevere\Components\Exception\LogicException;
+use Chevere\Components\Message\Message;
 use Chevere\Components\Writers\Interfaces\WritersInterface;
 
 final class WritersInstance
@@ -23,7 +24,9 @@ final class WritersInstance
     public function __construct(WritersInterface $writers)
     {
         if (isset(self::$instance)) {
-            throw new LogicException('This instance can be only created once');
+            throw new LogicException(
+                (new Message('This instance can be only created once'))
+            );
         }
         self::$instance = $writers;
     }
@@ -31,7 +34,9 @@ final class WritersInstance
     public static function get(): WritersInterface
     {
         if (!isset(self::$instance)) {
-            throw new LogicException('No writers instance present');
+            throw new LogicException(
+                new Message('No writers instance present')
+            );
         }
 
         return self::$instance;

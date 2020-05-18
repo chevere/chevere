@@ -19,7 +19,7 @@ use Chevere\Components\Message\Message;
 use Throwable;
 
 /**
- * Extends \LogicException with Message support.
+ * Exception that represents error in the program logic. This kind of exception should lead directly to a fix in your code.
  */
 class LogicException extends \LogicException
 {

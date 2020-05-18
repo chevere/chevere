@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs;
 
+use Chevere\Components\Exception\InvalidArgumentException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugs\Exceptions\PlugInterfaceException;
 use Chevere\Components\Plugs\Interfaces\PlugInterface;
 use Chevere\Components\Plugs\Interfaces\PlugsQueueInterface;
 use Chevere\Components\Plugs\Interfaces\PlugTypeInterface;
 use Ds\Set;
-use LogicException;
 
 final class PlugsQueue implements PlugsQueueInterface
 {
@@ -60,10 +60,9 @@ final class PlugsQueue implements PlugsQueueInterface
     private function assertUnique(string $plugName): void
     {
         if ($this->set->contains($plugName)) {
-            throw new LogicException(
+            throw new InvalidArgumentException(
                 (new Message('Plug %provided% is already registered'))
                     ->code('%provided%', $plugName)
-                    ->toString()
             );
         }
     }
