@@ -13,7 +13,7 @@
          testdox="true">
     <testsuites>
         <testsuite name="Chevere Framework Test suite">
-            <directory suffix="Test.php">components/</directory>
+            <directory suffix="Test.php">Tests/</directory>
         </testsuite>
     </testsuites>
     <filter>

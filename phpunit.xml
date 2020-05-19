@@ -12,20 +12,10 @@
          stopOnError="false"
          testdox="false">
     <testsuites>
-        <testsuite name="Chevere Framework Test suite">
-            <directory suffix="Test.php">components/</directory>
+        <testsuite name="Chevere Tests">
+            <directory suffix="Test.php">Tests/</directory>
         </testsuite>
     </testsuites>
-    <filter>
-        <whitelist>
-            <directory suffix=".php">components/</directory>
-            <exclude>
-                <directory>components/*/Tests/</directory>
-                <directory>components/*/*/Tests/</directory>
-                <directory>Chevere/TestApp/</directory>
-            </exclude>
-        </whitelist>
-    </filter>
     <!-- <logging>
         <log type="coverage-html" target="build/coverage/html"/>
         <log type="coverage-clover" target="build/coverage/clover.xml"/>
