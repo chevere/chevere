@@ -15,7 +15,7 @@ namespace Chevere\Components\Router;
 
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
+use Chevere\Exceptions\Router\RouteCacheNotFoundException;
 use Chevere\Components\VarExportable\VarExportable;
 use Chevere\Interfaces\Cache\CacheInterface;
 use Chevere\Interfaces\Route\RouteInterface;

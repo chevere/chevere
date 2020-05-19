@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Cache;
 
-use Chevere\Components\Cache\Exceptions\CacheInvalidKeyException;
+use Chevere\Exceptions\Cache\CacheInvalidKeyException;
 use Chevere\Interfaces\Cache\CacheKeyInterface;
 use Chevere\Components\Message\Message;
 

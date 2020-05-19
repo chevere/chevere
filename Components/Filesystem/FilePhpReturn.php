@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Exception\RuntimeException;
-use Chevere\Components\Filesystem\Exceptions\FileHandleException;
-use Chevere\Components\Filesystem\Exceptions\FileInvalidContentsException;
-use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
-use Chevere\Components\Filesystem\Exceptions\FileReturnInvalidTypeException;
-use Chevere\Components\Filesystem\Exceptions\FileUnableToGetException;
-use Chevere\Components\Filesystem\Exceptions\FileWithoutContentsException;
+use Chevere\Exceptions\Core\RuntimeException;
+use Chevere\Exceptions\Filesystem\FileHandleException;
+use Chevere\Exceptions\Filesystem\FileInvalidContentsException;
+use Chevere\Exceptions\Filesystem\FileNotExistsException;
+use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
+use Chevere\Exceptions\Filesystem\FileUnableToGetException;
+use Chevere\Exceptions\Filesystem\FileWithoutContentsException;
 use Chevere\Interfaces\Filesystem\FilePhpInterface;
 use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Serialize\Exceptions\UnserializeException;
+use Chevere\Exceptions\Serialize\UnserializeException;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Str\StrAssert;
 use Chevere\Interfaces\Type\TypeInterface;

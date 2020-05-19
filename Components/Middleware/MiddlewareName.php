@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Middleware;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Middleware\Exceptions\MiddlewareInterfaceException;
+use Chevere\Exceptions\Middleware\MiddlewareInterfaceException;
 use Chevere\Interfaces\Middleware\MiddlewareInterface;
 use Chevere\Interfaces\Middleware\MiddlewareNameInterface;
 use InvalidArgumentException;

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Router;
 
-use Chevere\Components\Router\Exceptions\RouteNotFoundException;
-use Chevere\Components\Router\Exceptions\RouterException;
+use Chevere\Exceptions\Router\RouteNotFoundException;
+use Chevere\Exceptions\Router\RouterException;
 use Psr\Http\Message\UriInterface;
 
 interface ResolverInterface

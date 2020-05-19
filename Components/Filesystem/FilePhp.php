@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Filesystem\Exceptions\FileNotPhpException;
+use Chevere\Exceptions\Filesystem\FileNotPhpException;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use Chevere\Interfaces\Filesystem\FilePhpInterface;
 use Chevere\Components\Instances\BootstrapInstance;

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Routing;
 
 use Chevere\Interfaces\Controller\ControllerInterface;
-use Chevere\Components\Filesystem\Exceptions\FileReturnInvalidTypeException;
+use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
@@ -26,8 +26,8 @@ use Chevere\Interfaces\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Route\RouteEndpointsInterface;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteEndpoints;
-use Chevere\Components\Routing\Exceptions\ExpectingControllerException;
-use Chevere\Components\Routing\Exceptions\ExpectingRouteNameException;
+use Chevere\Exceptions\Routing\ExpectingControllerException;
+use Chevere\Exceptions\Routing\ExpectingRouteNameException;
 use Chevere\Interfaces\Routing\RouteEndpointIteratorInterface;
 use Chevere\Components\Type\Type;
 

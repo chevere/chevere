@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Filesystem;
 
-use Chevere\Components\Filesystem\Exceptions\FileInvalidContentsException;
-use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
-use Chevere\Components\Filesystem\Exceptions\FileWithoutContentsException;
+use Chevere\Exceptions\Filesystem\FileInvalidContentsException;
+use Chevere\Exceptions\Filesystem\FileNotExistsException;
+use Chevere\Exceptions\Filesystem\FileWithoutContentsException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;

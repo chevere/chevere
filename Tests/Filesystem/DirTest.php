@@ -15,10 +15,10 @@ namespace Chevere\Tests\Filesystem;
 
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Components\Filesystem\Exceptions\DirTailException;
-use Chevere\Components\Filesystem\Exceptions\DirUnableToCreateException;
-use Chevere\Components\Filesystem\Exceptions\PathIsFileException;
-use Chevere\Components\Filesystem\Exceptions\PathIsNotDirectoryException;
+use Chevere\Exceptions\Filesystem\DirTailException;
+use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
+use Chevere\Exceptions\Filesystem\PathIsFileException;
+use Chevere\Exceptions\Filesystem\PathIsNotDirectoryException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Components\Filesystem\Path;

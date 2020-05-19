@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Route;
 
-use Chevere\Components\Route\Exceptions\RouteNameInvalidException;
+use Chevere\Exceptions\Route\RouteNameInvalidException;
 use Chevere\Interfaces\Middleware\MiddlewareNameCollectionInterface;
 use Chevere\Interfaces\Middleware\MiddlewareNameInterface;
 

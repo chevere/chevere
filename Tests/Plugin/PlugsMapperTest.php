@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Plugin;
 
 use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Components\Filesystem\Exceptions\DirNotExistsException;
+use Chevere\Exceptions\Filesystem\DirNotExistsException;
 use Chevere\Components\Plugin\PlugsMapper;
 use Chevere\Components\Plugin\Types\HookPlugType;
 use PHPUnit\Framework\TestCase;

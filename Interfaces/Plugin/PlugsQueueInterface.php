@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Plugin;
 
-use Chevere\Components\Plugin\Exceptions\PlugInterfaceException;
+use Chevere\Exceptions\Plugin\PlugInterfaceException;
 
 interface PlugsQueueInterface
 {

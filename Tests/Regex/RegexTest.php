@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Regex;
 
-use Chevere\Components\Regex\Exceptions\RegexException;
+use Chevere\Exceptions\Regex\RegexException;
 use Chevere\Components\Regex\Regex;
 use PHPUnit\Framework\TestCase;
 

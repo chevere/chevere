@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Plugin;
 
 use Chevere\Components\Cache\CacheKey;
-use Chevere\Components\Exception\RuntimeException;
+use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Components\Filesystem\FilePhpReturnFromString;
 use Chevere\Components\Plugin\AssertPlug;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;

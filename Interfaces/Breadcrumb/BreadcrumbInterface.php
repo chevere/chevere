@@ -15,7 +15,7 @@ namespace Chevere\Interfaces\Breadcrumb;
 
 use Chevere\Interfaces\To\ToArrayInterface;
 use Chevere\Interfaces\To\ToStringInterface;
-use Chevere\Components\Breadcrumb\Exceptions\BreadcrumbException;
+use Chevere\Exceptions\Breadcrumb\BreadcrumbException;
 
 interface BreadcrumbInterface extends ToArrayInterface, ToStringInterface
 {

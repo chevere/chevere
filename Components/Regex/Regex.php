@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Regex;
 
-use Chevere\Components\Exception\Exception;
+use Chevere\Exceptions\Core\Exception;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Regex\Exceptions\RegexException;
+use Chevere\Exceptions\Regex\RegexException;
 use Chevere\Interfaces\Regex\RegexInterface;
 use Throwable;
 

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Filesystem;
 
-use Chevere\Components\Filesystem\Exceptions\FileHandleException;
-use Chevere\Components\Filesystem\Exceptions\FileInvalidContentsException;
-use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
-use Chevere\Components\Filesystem\Exceptions\FileUnableToPutException;
-use Chevere\Components\Filesystem\Exceptions\FileWithoutContentsException;
+use Chevere\Exceptions\Filesystem\FileHandleException;
+use Chevere\Exceptions\Filesystem\FileInvalidContentsException;
+use Chevere\Exceptions\Filesystem\FileNotExistsException;
+use Chevere\Exceptions\Filesystem\FileUnableToPutException;
+use Chevere\Exceptions\Filesystem\FileWithoutContentsException;
 use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Interfaces\VarExportable\VarExportableInterface;
 

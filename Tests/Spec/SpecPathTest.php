@@ -15,11 +15,11 @@ namespace Chevere\Tests\Spec;
 
 use Chevere\Interfaces\Spec\SpecPathInterface;
 use Chevere\Components\Spec\SpecPath;
-use Chevere\Components\Str\Exceptions\StrContainsException;
-use Chevere\Components\Str\Exceptions\StrEmptyException;
-use Chevere\Components\Str\Exceptions\StrEndsWithException;
-use Chevere\Components\Str\Exceptions\StrNotStartsWithException;
-use Chevere\Components\Str\Exceptions\StrStartsWithException;
+use Chevere\Exceptions\Str\StrContainsException;
+use Chevere\Exceptions\Str\StrEmptyException;
+use Chevere\Exceptions\Str\StrEndsWithException;
+use Chevere\Exceptions\Str\StrNotStartsWithException;
+use Chevere\Exceptions\Str\StrStartsWithException;
 use PHPUnit\Framework\TestCase;
 
 final class SpecPathTest extends TestCase

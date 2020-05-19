@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Type;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Type\Exceptions\TypeNotFoundException;
+use Chevere\Exceptions\Type\TypeNotFoundException;
 use Chevere\Interfaces\Type\TypeInterface;
 
 /**

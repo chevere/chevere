@@ -17,7 +17,7 @@ use Ahc\Cli\Input\Command;
 use Chevere\Components\Controller\ControllerArguments;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controller\ControllerRunner;
-use Chevere\Components\Controller\Exceptions\ControllerArgumentsRequiredException;
+use Chevere\Exceptions\Controller\ControllerArgumentsRequiredException;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Controller\ControllerParameterInterface;
 use Ds\Map;

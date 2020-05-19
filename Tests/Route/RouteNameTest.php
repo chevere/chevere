@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Route;
 
-use Chevere\Components\Route\Exceptions\RouteNameInvalidException;
+use Chevere\Exceptions\Route\RouteNameInvalidException;
 use PHPUnit\Framework\TestCase;
 use Chevere\Components\Route\RouteName;
 

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Router;
 
 use Chevere\Interfaces\Route\RouteInterface;
-use Chevere\Components\Router\Exceptions\RouteNotRoutableException;
-use Chevere\Components\Router\Exceptions\RouteWithoutEndpointsException;
+use Chevere\Exceptions\Router\RouteNotRoutableException;
+use Chevere\Exceptions\Router\RouteWithoutEndpointsException;
 
 /**
  * Determines if a RouteInterface is able to be routed.

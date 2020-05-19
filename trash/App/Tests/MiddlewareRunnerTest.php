@@ -15,7 +15,7 @@ namespace Chevere\Components\App\Tests;
 
 use Chevere\Components\App\App;
 use Chevere\Components\App\Exceptions\AppWithoutRequestException;
-use Chevere\Components\Middleware\Exceptions\MiddlewareNamesEmptyException;
+use Chevere\Exceptions\Middleware\MiddlewareNamesEmptyException;
 use Chevere\Components\App\MiddlewareRunner;
 use Chevere\Components\App\Services;
 use Chevere\Interfaces\Http\RequestInterface;

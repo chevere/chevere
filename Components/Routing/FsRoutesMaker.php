@@ -15,14 +15,14 @@ namespace Chevere\Components\Routing;
 
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Components\Filesystem\Exceptions\FileReturnInvalidTypeException;
+use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Route\RouteDecorator;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Components\Routing\Exceptions\ExpectingRouteNameException;
+use Chevere\Exceptions\Routing\ExpectingRouteNameException;
 use Chevere\Interfaces\Routing\FsRoutesInterface;
 use Chevere\Interfaces\Routing\FsRoutesMakerInterface;
 use Chevere\Components\Str\Str;

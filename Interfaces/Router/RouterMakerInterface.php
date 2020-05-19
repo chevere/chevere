@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Router;
 
-use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
-use Chevere\Components\Router\Exceptions\RouteNameConflictException;
-use Chevere\Components\Router\Exceptions\RoutePathExistsException;
-use Chevere\Components\Router\Exceptions\RouterMakerException;
+use Chevere\Exceptions\Router\RouteKeyConflictException;
+use Chevere\Exceptions\Router\RouteNameConflictException;
+use Chevere\Exceptions\Router\RoutePathExistsException;
+use Chevere\Exceptions\Router\RouterMakerException;
 
 interface RouterMakerInterface
 {

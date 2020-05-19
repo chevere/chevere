@@ -15,11 +15,11 @@ namespace Chevere\Components\Spec;
 
 use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Interfaces\Spec\SpecPathInterface;
-use Chevere\Components\Str\Exceptions\StrAssertException;
-use Chevere\Components\Str\Exceptions\StrContainsException;
-use Chevere\Components\Str\Exceptions\StrEmptyException;
-use Chevere\Components\Str\Exceptions\StrNotStartsWithException;
-use Chevere\Components\Str\Exceptions\StrStartsWithException;
+use Chevere\Exceptions\Str\StrAssertException;
+use Chevere\Exceptions\Str\StrContainsException;
+use Chevere\Exceptions\Str\StrEmptyException;
+use Chevere\Exceptions\Str\StrNotStartsWithException;
+use Chevere\Exceptions\Str\StrStartsWithException;
 use Chevere\Components\Str\StrAssert;
 use InvalidArgumentException;
 

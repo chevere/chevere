@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Tests\Plugin;
 
 use Chevere\Components\Plugin\AssertPlug;
-use Chevere\Components\Plugin\Exceptions\PluggableAnchorNotExistsException;
-use Chevere\Components\Plugin\Exceptions\PluggableAnchorsException;
-use Chevere\Components\Plugin\Exceptions\PluggableNotExistsException;
-use Chevere\Components\Plugin\Exceptions\PlugInterfaceException;
+use Chevere\Exceptions\Plugin\PluggableAnchorNotExistsException;
+use Chevere\Exceptions\Plugin\PluggableAnchorsException;
+use Chevere\Exceptions\Plugin\PluggableNotExistsException;
+use Chevere\Exceptions\Plugin\PlugInterfaceException;
 use Chevere\Tests\Plugin\_resources\AssertPlugTest\TestHookAtInvalidInterface;
 use Chevere\Tests\Plugin\_resources\AssertPlugTest\TestHookAtNotExists;
 use Chevere\Tests\Plugin\_resources\AssertPlugTest\TestHookForNotExists;

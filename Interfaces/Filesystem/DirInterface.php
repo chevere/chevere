@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Filesystem;
 
-use Chevere\Components\Filesystem\Exceptions\DirUnableToCreateException;
-use Chevere\Components\Filesystem\Exceptions\DirUnableToRemoveException;
-use Chevere\Components\Filesystem\Exceptions\FileUnableToRemoveException;
+use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
+use Chevere\Exceptions\Filesystem\DirUnableToRemoveException;
+use Chevere\Exceptions\Filesystem\FileUnableToRemoveException;
 use Chevere\Interfaces\Filesystem\PathInterface;
 
 interface DirInterface

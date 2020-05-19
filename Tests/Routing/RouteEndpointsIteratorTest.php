@@ -17,7 +17,7 @@ use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
-use Chevere\Components\Routing\Exceptions\ExpectingControllerException;
+use Chevere\Exceptions\Routing\ExpectingControllerException;
 use Chevere\Components\Routing\RouteEndpointsIterator;
 use PHPUnit\Framework\TestCase;
 

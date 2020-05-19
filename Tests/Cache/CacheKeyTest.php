@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Cache;
 
 use Chevere\Components\Cache\CacheKey;
-use Chevere\Components\Cache\Exceptions\CacheInvalidKeyException;
+use Chevere\Exceptions\Cache\CacheInvalidKeyException;
 use PHPUnit\Framework\TestCase;
 
 final class CacheKeyTest extends TestCase

@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Filesystem\Exceptions\DirNotExistsException;
-use Chevere\Components\Filesystem\Exceptions\DirTailException;
-use Chevere\Components\Filesystem\Exceptions\DirUnableToCreateException;
-use Chevere\Components\Filesystem\Exceptions\DirUnableToRemoveException;
-use Chevere\Components\Filesystem\Exceptions\PathIsFileException;
-use Chevere\Components\Filesystem\Exceptions\PathIsNotDirectoryException;
+use Chevere\Exceptions\Filesystem\DirNotExistsException;
+use Chevere\Exceptions\Filesystem\DirTailException;
+use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
+use Chevere\Exceptions\Filesystem\DirUnableToRemoveException;
+use Chevere\Exceptions\Filesystem\PathIsFileException;
+use Chevere\Exceptions\Filesystem\PathIsNotDirectoryException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;

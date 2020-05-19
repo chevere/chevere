@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Exceptions\RouteWildcardInvalidCharsException;
-use Chevere\Components\Route\Exceptions\RouteWildcardNotFoundException;
-use Chevere\Components\Route\Exceptions\RouteWildcardStartWithNumberException;
+use Chevere\Exceptions\Route\RouteWildcardInvalidCharsException;
+use Chevere\Exceptions\Route\RouteWildcardNotFoundException;
+use Chevere\Exceptions\Route\RouteWildcardStartWithNumberException;
 use Chevere\Interfaces\Route\RoutePathInterface;
 use Chevere\Interfaces\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Route\RouteWildcardMatchInterface;

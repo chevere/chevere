@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing;
 
-use Chevere\Components\Exception\Exception;
+use Chevere\Exceptions\Core\Exception;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Routing\Exceptions\DecoratedRouteAlreadyAddedException;
-use Chevere\Components\Routing\Exceptions\RouteNameAlreadyAddedException;
-use Chevere\Components\Routing\Exceptions\RoutePathAlreadyAddedException;
-use Chevere\Components\Routing\Exceptions\RouteRegexAlreadyAddedException;
+use Chevere\Exceptions\Routing\DecoratedRouteAlreadyAddedException;
+use Chevere\Exceptions\Routing\RouteNameAlreadyAddedException;
+use Chevere\Exceptions\Routing\RoutePathAlreadyAddedException;
+use Chevere\Exceptions\Routing\RouteRegexAlreadyAddedException;
 use Chevere\Interfaces\Routing\FsRouteInterface;
 use Chevere\Interfaces\Routing\FsRoutesInterface;
 use Ds\Set;

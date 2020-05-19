@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router;
 
-use Chevere\Components\Router\Exceptions\RouteIdentifierException;
+use Chevere\Exceptions\Router\RouteIdentifierException;
 use Chevere\Components\Router\RouteIdentifier;
 use PHPUnit\Framework\TestCase;
 

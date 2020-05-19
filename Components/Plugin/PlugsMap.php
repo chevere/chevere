@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin;
 
-use Chevere\Components\Exception\InvalidArgumentException;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Plugin\Exceptions\PlugRegisteredException;
+use Chevere\Exceptions\Plugin\PlugRegisteredException;
 use Chevere\Interfaces\Plugin\AssertPlugInterface;
 use Chevere\Interfaces\Plugin\PlugInterface;
 use Chevere\Interfaces\Plugin\PlugsMapInterface;

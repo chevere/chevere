@@ -15,7 +15,7 @@ namespace Chevere\Tests\ExceptionHandler;
 
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
 use Chevere\Components\ExceptionHandler\ExceptionRead;
-use Chevere\Components\Exception\Exception;
+use Chevere\Exceptions\Core\Exception;
 use Chevere\Interfaces\ExceptionHandler\ExceptionHandlerInterface;
 use Chevere\Components\Message\Message;
 use DateTimeInterface;

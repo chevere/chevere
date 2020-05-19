@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Breadcrumb;
 
-use Chevere\Components\Breadcrumb\Exceptions\BreadcrumbException;
+use Chevere\Exceptions\Breadcrumb\BreadcrumbException;
 use Chevere\Interfaces\Breadcrumb\BreadcrumbInterface;
 use Chevere\Components\Message\Message;
 

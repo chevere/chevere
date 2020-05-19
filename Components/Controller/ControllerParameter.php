@@ -15,8 +15,8 @@ namespace Chevere\Components\Controller;
 
 use Chevere\Interfaces\Controller\ControllerParameterInterface;
 use Chevere\Interfaces\Regex\RegexInterface;
-use Chevere\Components\Str\Exceptions\StrCtypeSpaceException;
-use Chevere\Components\Str\Exceptions\StrEmptyException;
+use Chevere\Exceptions\Str\StrCtypeSpaceException;
+use Chevere\Exceptions\Str\StrEmptyException;
 use Chevere\Components\Str\StrAssert;
 
 final class ControllerParameter implements ControllerParameterInterface

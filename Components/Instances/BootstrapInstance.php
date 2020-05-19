@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Instances;
 
 use Chevere\Interfaces\Bootstrap\BootstrapInterface;
-use Chevere\Components\Exception\LogicException;
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Components\Message\Message;
 
 /**

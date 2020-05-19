@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugin;
 
-use Chevere\Components\Plugin\Exceptions\PlugInterfaceException;
+use Chevere\Exceptions\Plugin\PlugInterfaceException;
 use Chevere\Components\Plugin\PlugsQueue;
 use Chevere\Tests\Plugin\_resources\src\TestHook;
 use Chevere\Components\Plugin\Types\EventListenerPlugType;

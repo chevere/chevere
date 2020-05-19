@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugin\Traits;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Plugin\Exceptions\PlugInterfaceException;
+use Chevere\Exceptions\Plugin\PlugInterfaceException;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use Chevere\Components\Plugin\PlugsQueue;
 

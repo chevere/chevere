@@ -15,9 +15,9 @@ namespace Chevere\Tests\Controller;
 
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Regex\Regex;
-use Chevere\Components\Str\Exceptions\StrContainsException;
-use Chevere\Components\Str\Exceptions\StrCtypeSpaceException;
-use Chevere\Components\Str\Exceptions\StrEmptyException;
+use Chevere\Exceptions\Str\StrContainsException;
+use Chevere\Exceptions\Str\StrCtypeSpaceException;
+use Chevere\Exceptions\Str\StrEmptyException;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerParameterTest extends TestCase

@@ -28,7 +28,7 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Components\Router\Exceptions\RouterCacheNotFoundException;
+use Chevere\Exceptions\Router\RouterCacheNotFoundException;
 use Chevere\Interfaces\Router\RouterCacheInterface;
 use Chevere\Interfaces\Router\RouterIndexInterface;
 use Chevere\Interfaces\Router\RouterRegexInterface;

@@ -17,9 +17,9 @@ use Ahc\Cli\Input\Command;
 use Ahc\Cli\Output\Writer;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controller\ControllerParameter;
-use Chevere\Components\Controller\Exceptions\ControllerInterfaceException;
-use Chevere\Components\Controller\Exceptions\ControllerNotExistsException;
-use Chevere\Components\Str\Exceptions\StrAssertException;
+use Chevere\Exceptions\Controller\ControllerInterfaceException;
+use Chevere\Exceptions\Controller\ControllerNotExistsException;
+use Chevere\Exceptions\Str\StrAssertException;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Throwable;
 

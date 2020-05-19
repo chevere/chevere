@@ -16,13 +16,13 @@ namespace Chevere\Tests\Controller;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controller\ControllerResponse;
-use Chevere\Components\Controller\Exceptions\ControllerInterfaceException;
-use Chevere\Components\Controller\Exceptions\ControllerNotExistsException;
+use Chevere\Exceptions\Controller\ControllerInterfaceException;
+use Chevere\Exceptions\Controller\ControllerNotExistsException;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
-use Chevere\Components\Str\Exceptions\StrContainsException;
-use Chevere\Components\Str\Exceptions\StrCtypeSpaceException;
-use Chevere\Components\Str\Exceptions\StrEmptyException;
+use Chevere\Exceptions\Str\StrContainsException;
+use Chevere\Exceptions\Str\StrCtypeSpaceException;
+use Chevere\Exceptions\Str\StrEmptyException;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerNameTest extends TestCase

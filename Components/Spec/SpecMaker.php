@@ -16,7 +16,7 @@ namespace Chevere\Components\Spec;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Router\Routable;
-use Chevere\Components\Spec\Exceptions\SpecInvalidArgumentException;
+use Chevere\Exceptions\Spec\SpecInvalidArgumentException;
 use Chevere\Components\Spec\Specs\GroupSpec;
 use Chevere\Components\Spec\Specs\IndexSpec;
 use Chevere\Components\Spec\Specs\RoutableSpec;

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Filesystem\Exceptions\FileNotPhpException;
-use Chevere\Components\Filesystem\Exceptions\PathIsDirException;
+use Chevere\Exceptions\Filesystem\FileNotPhpException;
+use Chevere\Exceptions\Filesystem\PathIsDirException;
 
 /**
  * @codeCoverageIgnore

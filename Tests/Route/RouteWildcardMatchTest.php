@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Route;
 
-use Chevere\Components\Regex\Exceptions\RegexException;
+use Chevere\Exceptions\Regex\RegexException;
 use Chevere\Components\Route\RouteWildcardMatch;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;

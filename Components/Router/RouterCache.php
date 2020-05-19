@@ -18,7 +18,7 @@ use Chevere\Interfaces\Cache\CacheInterface;
 use Chevere\Interfaces\Cache\CacheItemInterface;
 use Chevere\Interfaces\Cache\CacheKeyInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Router\Exceptions\RouterCacheNotFoundException;
+use Chevere\Exceptions\Router\RouterCacheNotFoundException;
 use Chevere\Interfaces\Router\RoutableInterface;
 use Chevere\Interfaces\Router\RouterCacheInterface;
 use Chevere\Interfaces\Router\RouterIndexInterface;

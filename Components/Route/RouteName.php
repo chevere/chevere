@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Exceptions\RouteNameInvalidException;
+use Chevere\Exceptions\Route\RouteNameInvalidException;
 use Chevere\Interfaces\Route\RouteNameInterface;
 use Chevere\Components\Str\StrAssert;
 

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Route;
 
 use Chevere\Interfaces\To\ToStringInterface;
-use Chevere\Components\Route\Exceptions\RouteWildcardInvalidRegexException;
-use Chevere\Components\Route\Exceptions\RouteWildcardNotFoundException;
+use Chevere\Exceptions\Route\RouteWildcardInvalidRegexException;
+use Chevere\Exceptions\Route\RouteWildcardNotFoundException;
 
 interface RouteWildcardInterface
 {

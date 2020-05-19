@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarExportable;
 
-use Chevere\Components\VarExportable\Exceptions\VarNotExportableException;
+use Chevere\Exceptions\VarExportable\VarNotExportableException;
 use Chevere\Components\VarExportable\VarExportable;
 use PHPUnit\Framework\TestCase;
 use stdClass;

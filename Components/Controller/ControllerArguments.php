@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
-use Chevere\Components\Controller\Exceptions\ControllerArgumentRegexMatchException;
-use Chevere\Components\Controller\Exceptions\ControllerArgumentsRequiredException;
+use Chevere\Exceptions\Controller\ControllerArgumentRegexMatchException;
+use Chevere\Exceptions\Controller\ControllerArgumentsRequiredException;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerParameterInterface;
 use Chevere\Components\Message\Message;

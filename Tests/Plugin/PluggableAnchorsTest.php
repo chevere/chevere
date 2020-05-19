@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugin;
 
-use Chevere\Components\Plugin\Exceptions\PluggableAnchorExistsException;
+use Chevere\Exceptions\Plugin\PluggableAnchorExistsException;
 use Chevere\Components\Plugin\PluggableAnchors;
 use PHPUnit\Framework\TestCase;
 

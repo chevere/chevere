@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ExceptionHandler;
 
-use Chevere\Components\Exception\ErrorException;
+use Chevere\Exceptions\Core\ErrorException;
 use Chevere\Components\ExceptionHandler\ExceptionRead;
-use Chevere\Components\Exception\Exception;
+use Chevere\Exceptions\Core\Exception;
 use Chevere\Interfaces\ExceptionHandler\ExceptionReadInterface;
 use Chevere\Components\Message\Message;
 use LogicException;

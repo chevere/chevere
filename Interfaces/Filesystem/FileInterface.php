@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Filesystem;
 
-use Chevere\Components\Filesystem\Exceptions\FileExistsException;
-use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
-use Chevere\Components\Filesystem\Exceptions\FileUnableToCreateException;
-use Chevere\Components\Filesystem\Exceptions\FileUnableToGetException;
-use Chevere\Components\Filesystem\Exceptions\FileUnableToPutException;
-use Chevere\Components\Filesystem\Exceptions\FileUnableToRemoveException;
-use Chevere\Components\Filesystem\Exceptions\PathIsDirException;
+use Chevere\Exceptions\Filesystem\FileExistsException;
+use Chevere\Exceptions\Filesystem\FileNotExistsException;
+use Chevere\Exceptions\Filesystem\FileUnableToCreateException;
+use Chevere\Exceptions\Filesystem\FileUnableToGetException;
+use Chevere\Exceptions\Filesystem\FileUnableToPutException;
+use Chevere\Exceptions\Filesystem\FileUnableToRemoveException;
+use Chevere\Exceptions\Filesystem\PathIsDirException;
 use Chevere\Interfaces\Filesystem\PathInterface;
 
 interface FileInterface

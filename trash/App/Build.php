@@ -26,7 +26,7 @@ use Chevere\Components\ArrayFile\ArrayFile;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Filesystem\AppPath;
 use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\Exceptions\PathIsNotDirectoryException;
+use Chevere\Exceptions\Filesystem\PathIsNotDirectoryException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Interfaces\Filesystem\DirInterface;

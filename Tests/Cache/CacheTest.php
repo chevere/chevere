@@ -15,7 +15,7 @@ namespace Chevere\Tests\Cache;
 
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\CacheKey;
-use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
+use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
 use Chevere\Interfaces\Cache\CacheInterface;
 use Chevere\Interfaces\Cache\CacheItemInterface;
 use Chevere\Components\Filesystem\Dir;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Cache;
 
-use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
+use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
 use Chevere\Interfaces\Cache\CacheInterface;
 use Chevere\Interfaces\Cache\CacheItemInterface;
 use Chevere\Interfaces\Cache\CacheKeyInterface;
@@ -24,7 +24,7 @@ use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Interfaces\VarExportable\VarExportableInterface;
-use Chevere\Components\Filesystem\Exceptions\DirUnableToCreateException;
+use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 
 /**
  * A simple PHP based cache system.

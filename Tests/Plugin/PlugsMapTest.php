@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugin;
 
-use Chevere\Components\Exception\InvalidArgumentException;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Components\Plugin\AssertPlug;
-use Chevere\Components\Plugin\Exceptions\PlugRegisteredException;
+use Chevere\Exceptions\Plugin\PlugRegisteredException;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use Chevere\Components\Plugin\PlugsMap;
 use Chevere\Tests\Plugin\_resources\src\TestHook;

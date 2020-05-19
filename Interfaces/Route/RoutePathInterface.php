@@ -15,12 +15,12 @@ namespace Chevere\Interfaces\Route;
 
 use Chevere\Interfaces\To\ToStringInterface;
 use Chevere\Interfaces\Regex\RegexInterface;
-use Chevere\Components\Route\Exceptions\RoutePathForwardSlashException;
-use Chevere\Components\Route\Exceptions\RoutePathInvalidCharsException;
-use Chevere\Components\Route\Exceptions\RoutePathUnmatchedBracesException;
-use Chevere\Components\Route\Exceptions\RoutePathUnmatchedWildcardsException;
-use Chevere\Components\Route\Exceptions\RouteWildcardRepeatException;
-use Chevere\Components\Route\Exceptions\RouteWildcardReservedException;
+use Chevere\Exceptions\Route\RoutePathForwardSlashException;
+use Chevere\Exceptions\Route\RoutePathInvalidCharsException;
+use Chevere\Exceptions\Route\RoutePathUnmatchedBracesException;
+use Chevere\Exceptions\Route\RoutePathUnmatchedWildcardsException;
+use Chevere\Exceptions\Route\RouteWildcardRepeatException;
+use Chevere\Exceptions\Route\RouteWildcardReservedException;
 
 interface RoutePathInterface extends ToStringInterface
 {

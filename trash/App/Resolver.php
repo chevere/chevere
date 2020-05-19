@@ -17,9 +17,9 @@ use Chevere\Components\App\Exceptions\ResolverException;
 use Chevere\Components\App\Interfaces\BuilderInterface;
 use Chevere\Components\App\Interfaces\ResolvableInterface;
 use Chevere\Components\App\Interfaces\ResolverInterface;
-use Chevere\Components\Http\Exceptions\MethodNotFoundException;
+use Chevere\Exceptions\Http\MethodNotFoundException;
 use Chevere\Components\Http\Method;
-use Chevere\Components\Router\Exceptions\RouteNotFoundException;
+use Chevere\Exceptions\Router\RouteNotFoundException;
 
 /**
  * Resolves a builder against routing

@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugin;
 
 use Chevere\Components\Cache\CacheKey;
-use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
+use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
 use Chevere\Interfaces\Cache\CacheInterface;
 use Chevere\Interfaces\Cache\CacheKeyInterface;
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
-use Chevere\Components\Exception\Exception;
-use Chevere\Components\Exception\RuntimeException;
+use Chevere\Exceptions\Core\Exception;
+use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Components\Message\Message;
 use Chevere\Interfaces\Plugin\PlugsMapInterface;
 use Chevere\Interfaces\Plugin\PlugsRegistryInterface;

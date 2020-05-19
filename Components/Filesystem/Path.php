@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Filesystem\Exceptions\PathDoesntExistsException;
-use Chevere\Components\Filesystem\Exceptions\PathDotSlashException;
-use Chevere\Components\Filesystem\Exceptions\PathDoubleDotsDashException;
-use Chevere\Components\Filesystem\Exceptions\PathExtraSlashesException;
-use Chevere\Components\Filesystem\Exceptions\PathNotAbsoluteException;
-use Chevere\Components\Filesystem\Exceptions\PathUnableToChmodException;
+use Chevere\Exceptions\Filesystem\PathDoesntExistsException;
+use Chevere\Exceptions\Filesystem\PathDotSlashException;
+use Chevere\Exceptions\Filesystem\PathDoubleDotsDashException;
+use Chevere\Exceptions\Filesystem\PathExtraSlashesException;
+use Chevere\Exceptions\Filesystem\PathNotAbsoluteException;
+use Chevere\Exceptions\Filesystem\PathUnableToChmodException;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Components\Message\Message;
 

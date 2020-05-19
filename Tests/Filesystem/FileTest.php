@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Tests\Filesystem;
 
 use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Components\Filesystem\Exceptions\FileExistsException;
-use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
-use Chevere\Components\Filesystem\Exceptions\PathIsDirException;
+use Chevere\Exceptions\Filesystem\FileExistsException;
+use Chevere\Exceptions\Filesystem\FileNotExistsException;
+use Chevere\Exceptions\Filesystem\PathIsDirException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\FileInterface;

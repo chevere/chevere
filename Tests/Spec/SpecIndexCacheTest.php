@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Spec;
 
-use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
+use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
 use Chevere\Components\Http\Methods\ConnectMethod;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;

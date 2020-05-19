@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler;
 
-use Chevere\Components\Exception\DomainException;
+use Chevere\Exceptions\Core\DomainException;
 use Chevere\Interfaces\ExceptionHandler\ExceptionInterface;
 use Chevere\Interfaces\ExceptionHandler\ExceptionReadInterface;
 use Chevere\Interfaces\Message\MessageInterface;

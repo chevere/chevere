@@ -16,7 +16,7 @@ namespace Chevere\Tests\Plugs\Hooks;
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Plugin\Exceptions\PluggableNotRegisteredException;
+use Chevere\Exceptions\Plugin\PluggableNotRegisteredException;
 use Chevere\Components\Plugin\Plugins;
 use Chevere\Components\Plugs\Hooks\HooksQueue;
 use Chevere\Components\Plugs\Hooks\HooksRunner;

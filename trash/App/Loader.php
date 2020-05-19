@@ -22,7 +22,7 @@ use Chevere\Components\App\Interfaces\LoaderInterface;
 use Chevere\Components\App\Interfaces\ParametersInterface;
 use Chevere\Components\App\Interfaces\ServicesInterface;
 use Chevere\Components\ArrayFile\ArrayFile;
-use Chevere\Components\Cache\Exceptions\CacheNotFoundException;
+use Chevere\Exceptions\Cache\CacheNotFoundException;
 use Chevere\Components\Filesystem\AppPath;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;

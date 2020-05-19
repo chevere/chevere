@@ -18,7 +18,7 @@ use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Interfaces\Route\RouteDecoratorInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
-use Chevere\Components\Routing\Exceptions\ExpectingRouteNameException;
+use Chevere\Exceptions\Routing\ExpectingRouteNameException;
 use Chevere\Components\Routing\FsRoutesMaker;
 use PHPUnit\Framework\TestCase;
 

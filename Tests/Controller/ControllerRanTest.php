@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Controller;
 
 use Chevere\Components\Controller\ControllerRan;
-use Chevere\Components\Exception\Exception;
+use Chevere\Exceptions\Core\Exception;
 use Error;
 use PHPUnit\Framework\TestCase;
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Filesystem;
 
-use Chevere\Components\Filesystem\Exceptions\PathDoesntExistsException;
+use Chevere\Exceptions\Filesystem\PathDoesntExistsException;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Instances\BootstrapInstance;

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Serialize;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Serialize\Exceptions\UnserializeException;
+use Chevere\Exceptions\Serialize\UnserializeException;
 use Chevere\Interfaces\Serialize\UnserializeInterface;
 use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Components\Type\Type;

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\App\Interfaces;
 
 use Chevere\Components\App\Exceptions\AppWithoutRequestException;
-use Chevere\Components\Middleware\Exceptions\MiddlewareNamesEmptyException;
+use Chevere\Exceptions\Middleware\MiddlewareNamesEmptyException;
 use Chevere\Interfaces\Middleware\MiddlewareNameCollectionInterface;
 
 interface MiddlewareRunnerInterface

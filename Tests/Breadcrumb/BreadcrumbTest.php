@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Breadcrumb;
 
 use Chevere\Components\Breadcrumb\Breadcrumb;
-use Chevere\Components\Breadcrumb\Exceptions\BreadcrumbException;
+use Chevere\Exceptions\Breadcrumb\BreadcrumbException;
 use PHPUnit\Framework\TestCase;
 
 final class BreadcrumbTest extends TestCase

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Bootstrap;
 
 use Chevere\Components\Bootstrap\Bootstrap;
-use Chevere\Components\Bootstrap\Exceptions\BootstrapDirException;
+use Chevere\Exceptions\Bootstrap\BootstrapDirException;
 use Chevere\Interfaces\Bootstrap\BootstrapInterface;
 use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Interfaces\Filesystem\DirInterface;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Instances;
 
-use Chevere\Components\Exception\LogicException;
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Components\Message\Message;
 use Chevere\Interfaces\Writers\WritersInterface;
 
