@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Specs;
 
-use Chevere\Components\Spec\Interfaces\SpecInterface;
-use Chevere\Components\Spec\Interfaces\SpecPathInterface;
+use Chevere\Interfaces\Spec\SpecInterface;
+use Chevere\Interfaces\Spec\SpecPathInterface;
 use Chevere\Components\Spec\Specs\GroupSpecs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
 

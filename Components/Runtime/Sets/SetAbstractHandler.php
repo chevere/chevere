@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Sets;
 
-use InvalidArgumentException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
-use Chevere\Components\Runtime\Interfaces\SetInterface;
-use Error;
+use Chevere\Interfaces\Runtime\SetInterface;
+use InvalidArgumentException;
 use Throwable;
 
 /**

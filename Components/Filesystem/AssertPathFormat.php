@@ -17,7 +17,7 @@ use Chevere\Components\Filesystem\Exceptions\PathDotSlashException;
 use Chevere\Components\Filesystem\Exceptions\PathDoubleDotsDashException;
 use Chevere\Components\Filesystem\Exceptions\PathExtraSlashesException;
 use Chevere\Components\Filesystem\Exceptions\PathNotAbsoluteException;
-use Chevere\Components\Filesystem\Interfaces\AssertPathFormatInterface;
+use Chevere\Interfaces\Filesystem\AssertPathFormatInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrBool;
 

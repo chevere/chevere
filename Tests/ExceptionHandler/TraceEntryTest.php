@@ -15,7 +15,7 @@ namespace Chevere\Tests\ExceptionHandler;
 
 use InvalidArgumentException;
 use Chevere\Components\ExceptionHandler\TraceEntry;
-use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Interfaces\VarDump\VarDumperInterface;
 use PHPUnit\Framework\TestCase;
 
 final class TraceEntryTest extends TestCase

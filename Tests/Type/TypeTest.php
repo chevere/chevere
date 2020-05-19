@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Type;
 
 use Chevere\Components\Type\Exceptions\TypeNotFoundException;
-use Chevere\Components\Type\Interfaces\TypeInterface;
+use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Components\Type\Type;
 use PHPUnit\Framework\TestCase;
 use stdClass;

@@ -18,8 +18,8 @@ use Chevere\Components\Controller\ControllerArguments;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controller\ControllerRunner;
 use Chevere\Components\Controller\Exceptions\ControllerArgumentsRequiredException;
-use Chevere\Components\Controller\Interfaces\ControllerInterface;
-use Chevere\Components\Controller\Interfaces\ControllerParameterInterface;
+use Chevere\Interfaces\Controller\ControllerInterface;
+use Chevere\Interfaces\Controller\ControllerParameterInterface;
 use Ds\Map;
 
 final class ControllerRunCommand extends Command

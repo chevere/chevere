@@ -15,7 +15,7 @@ namespace Chevere\Components\Runtime\Sets;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
-use Chevere\Components\Runtime\Interfaces\SetInterface;
+use Chevere\Interfaces\Runtime\SetInterface;
 use InvalidArgumentException;
 use RuntimeException;
 

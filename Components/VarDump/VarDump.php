@@ -18,7 +18,7 @@ use Chevere\Components\VarDump\Formatters\ConsoleFormatter;
 use Chevere\Components\VarDump\Formatters\HtmlFormatter;
 use Chevere\Components\VarDump\Outputters\ConsoleOutputter;
 use Chevere\Components\VarDump\Outputters\HtmlOutputter;
-use Chevere\Components\Writers\Interfaces\WriterInterface;
+use Chevere\Interfaces\Writersrface;
 
 /**
  * The Chevere VarDump.

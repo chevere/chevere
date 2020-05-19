@@ -18,7 +18,7 @@ use Chevere\Components\ExceptionHandler\Documents\PlainDocument;
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
 use Chevere\Components\ExceptionHandler\ExceptionRead;
 use Chevere\Components\ExceptionHandler\Formatters\HtmlFormatter;
-use Chevere\Components\ExceptionHandler\Interfaces\ExceptionHandlerInterface;
+use Chevere\Interfaces\ExceptionHandler\ExceptionHandlerInterface;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 

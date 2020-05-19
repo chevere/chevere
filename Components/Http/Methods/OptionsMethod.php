@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Http\Methods;
 
-use Chevere\Components\Http\Interfaces\MethodInterface;
+use Chevere\Interfaces\Http\MethodInterface;
 
 /**
  * @codeCoverageIgnore

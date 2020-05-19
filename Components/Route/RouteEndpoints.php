@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
-use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
-use Chevere\Components\Route\Interfaces\RouteEndpointsInterface;
+use Chevere\Interfaces\Route\RouteEndpointInterface;
+use Chevere\Interfaces\Route\RouteEndpointsInterface;
 
 final class RouteEndpoints implements RouteEndpointsInterface
 {

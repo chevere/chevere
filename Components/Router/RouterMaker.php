@@ -14,17 +14,17 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Regex\Interfaces\RegexInterface;
+use Chevere\Interfaces\Regex\RegexInterface;
 use Chevere\Components\Regex\Regex;
-use Chevere\Components\Route\Interfaces\RouteInterface;
+use Chevere\Interfaces\Route\RouteInterface;
 use Chevere\Components\Router\Exceptions\RouteKeyConflictException;
 use Chevere\Components\Router\Exceptions\RouteNameConflictException;
 use Chevere\Components\Router\Exceptions\RoutePathExistsException;
 use Chevere\Components\Router\Exceptions\RouterMakerException;
-use Chevere\Components\Router\Interfaces\RoutableInterface;
-use Chevere\Components\Router\Interfaces\RouterInterface;
-use Chevere\Components\Router\Interfaces\RouterMakerInterface;
-use Chevere\Components\Router\Interfaces\RouterRegexInterface;
+use Chevere\Interfaces\Router\RoutableInterface;
+use Chevere\Interfaces\Router\RouterInterface;
+use Chevere\Interfaces\Router\RouterMakerInterface;
+use Chevere\Interfaces\Router\RouterRegexInterface;
 use Ds\Map;
 
 /**

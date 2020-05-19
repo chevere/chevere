@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin;
 
-use Chevere\Components\Filesystem\Interfaces\DirInterface;
-use Chevere\Components\Plugin\Interfaces\PlugInterface;
-use Chevere\Components\Plugin\Interfaces\PlugsMapInterface;
-use Chevere\Components\Plugin\Interfaces\PlugTypeInterface;
+use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Plugin\PlugInterface;
+use Chevere\Interfaces\Plugin\PlugsMapInterface;
+use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use Chevere\Components\Plugin\PlugsMap;
 use Go\ParserReflection\ReflectionFile;
 use Go\ParserReflection\ReflectionFileNamespace;

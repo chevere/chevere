@@ -19,8 +19,8 @@ use Chevere\Components\Routing\Exceptions\DecoratedRouteAlreadyAddedException;
 use Chevere\Components\Routing\Exceptions\RouteNameAlreadyAddedException;
 use Chevere\Components\Routing\Exceptions\RoutePathAlreadyAddedException;
 use Chevere\Components\Routing\Exceptions\RouteRegexAlreadyAddedException;
-use Chevere\Components\Routing\Interfaces\FsRouteInterface;
-use Chevere\Components\Routing\Interfaces\FsRoutesInterface;
+use Chevere\Interfaces\Routing\FsRouteInterface;
+use Chevere\Interfaces\Routing\FsRoutesInterface;
 use Ds\Set;
 use OutOfRangeException;
 

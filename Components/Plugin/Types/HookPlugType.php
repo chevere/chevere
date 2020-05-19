@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin\Types;
 
-use Chevere\Components\Plugin\Interfaces\PlugTypeInterface;
-use Chevere\Components\Plugs\Hooks\Interfaces\HookInterface;
-use Chevere\Components\Plugs\Hooks\Interfaces\PluggableHooksInterface;
+use Chevere\Interfaces\Plugin\PlugTypeInterface;
+use Chevere\Interfaces\Plugs\Hooks\HookInterface;
+use Chevere\Interfaces\Plugs\Hooks\PluggableHooksInterface;
 
 final class HookPlugType implements PlugTypeInterface
 {

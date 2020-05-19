@@ -16,7 +16,7 @@ namespace Chevere\Components\Regex;
 use Chevere\Components\Exception\Exception;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Exceptions\RegexException;
-use Chevere\Components\Regex\Interfaces\RegexInterface;
+use Chevere\Interfaces\Regex\RegexInterface;
 use Throwable;
 
 /**

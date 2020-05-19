@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler;
 
-use Chevere\Components\ExceptionHandler\Interfaces\FormatterInterface;
-use Chevere\Components\ExceptionHandler\Interfaces\TraceEntryInterface;
-use Chevere\Components\ExceptionHandler\Interfaces\TraceFormatterInterface;
+use Chevere\Interfaces\ExceptionHandler\FormatterInterface;
+use Chevere\Interfaces\ExceptionHandler\TraceEntryInterface;
+use Chevere\Interfaces\ExceptionHandler\TraceFormatterInterface;
 
 final class TraceFormatter implements TraceFormatterInterface
 {

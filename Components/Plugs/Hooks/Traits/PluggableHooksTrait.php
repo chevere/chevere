@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs\Hooks\Traits;
 
-use Chevere\Components\Plugs\Hooks\Interfaces\HooksRunnerInterface;
+use Chevere\Interfaces\Plugs\Hooks\HooksRunnerInterface;
 
 trait PluggableHooksTrait
 {

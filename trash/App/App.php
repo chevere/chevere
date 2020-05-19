@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Components\App;
 
 use Chevere\Components\App\Interfaces\ServicesInterface;
-use Chevere\Components\Http\Interfaces\RequestInterface;
-use Chevere\Components\Http\Interfaces\ResponseInterface;
+use Chevere\Interfaces\Http\RequestInterface;
+use Chevere\Interfaces\Http\ResponseInterface;
 use Chevere\Components\Instances\RequestInstance;
-use Chevere\Components\Router\Interfaces\RoutedInterface;
+use Chevere\Interfaces\Router\RoutedInterface;
 
 /**
  * The application container.

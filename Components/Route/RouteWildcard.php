@@ -17,9 +17,9 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Route\Exceptions\RouteWildcardInvalidCharsException;
 use Chevere\Components\Route\Exceptions\RouteWildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\RouteWildcardStartWithNumberException;
-use Chevere\Components\Route\Interfaces\RoutePathInterface;
-use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
-use Chevere\Components\Route\Interfaces\RouteWildcardMatchInterface;
+use Chevere\Interfaces\Route\RoutePathInterface;
+use Chevere\Interfaces\Route\RouteWildcardInterface;
+use Chevere\Interfaces\Route\RouteWildcardMatchInterface;
 use Chevere\Components\Str\StrBool;
 
 final class RouteWildcard implements RouteWildcardInterface

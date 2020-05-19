@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\Processors;
 
-use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
+use Chevere\Interfaces\VarDump\ProcessorInterface;
 use Chevere\Components\VarDump\Processors\ObjectProcessor;
 use Chevere\Tests\VarDump\Traits\VarDumperTrait;
 use PHPUnit\Framework\TestCase;

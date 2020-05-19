@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Str;
 
-use Chevere\Components\Str\Interfaces\StrBoolInterface;
+use Chevere\Interfaces\Str\StrBoolInterface;
 
 final class StrBool implements StrBoolInterface
 {

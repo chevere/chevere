@@ -19,11 +19,11 @@ use Chevere\Components\Filesystem\Exceptions\FileWithoutContentsException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
-use Chevere\Components\Filesystem\Interfaces\FileInterface;
-use Chevere\Components\Filesystem\Interfaces\FilePhpReturnInterface;
-use Chevere\Components\Filesystem\Interfaces\PathInterface;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\VarExportable\VarExportable;
+use Chevere\Interfaces\Filesystem\FileInterface;
+use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
+use Chevere\Interfaces\Filesystem\PathInterface;
 use PHPUnit\Framework\TestCase;
 
 final class FileReturnTest extends TestCase

@@ -13,22 +13,22 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing;
 
-use Chevere\Components\Controller\Interfaces\ControllerInterface;
+use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Components\Filesystem\Exceptions\FileReturnInvalidTypeException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
-use Chevere\Components\Filesystem\Interfaces\DirInterface;
-use Chevere\Components\Filesystem\Interfaces\PathInterface;
+use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
-use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
-use Chevere\Components\Route\Interfaces\RouteEndpointsInterface;
+use Chevere\Interfaces\Route\RouteDecoratorInterface;
+use Chevere\Interfaces\Route\RouteEndpointInterface;
+use Chevere\Interfaces\Route\RouteEndpointsInterface;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteEndpoints;
 use Chevere\Components\Routing\Exceptions\ExpectingControllerException;
 use Chevere\Components\Routing\Exceptions\ExpectingRouteNameException;
-use Chevere\Components\Routing\Interfaces\RouteEndpointIteratorInterface;
+use Chevere\Interfaces\Routing\RouteEndpointIteratorInterface;
 use Chevere\Components\Type\Type;
 
 final class RouteEndpointsIterator implements RouteEndpointIteratorInterface

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Time;
 
-use Chevere\Components\Time\Interfaces\TimeHrInterface;
+use Chevere\Interfaces\Time\TimeHrInterface;
 
 final class TimeHr implements TimeHrInterface
 {

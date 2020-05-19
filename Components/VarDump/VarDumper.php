@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump;
 
-use Chevere\Components\Type\Interfaces\TypeInterface;
-use Chevere\Components\VarDump\Interfaces\VarDumpableInterface;
-use Chevere\Components\VarDump\Interfaces\FormatterInterface;
-use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
-use Chevere\Components\Writers\Interfaces\WriterInterface;
+use Chevere\Interfaces\Type\TypeInterface;
+use Chevere\Interfaces\VarDump\VarDumpableInterface;
+use Chevere\Interfaces\VarDump\FormatterInterface;
+use Chevere\Interfaces\VarDump\VarDumperInterface;
+use Chevere\Interfaces\Writers\WriterInterface;
 
 /**
  * The Chevere VarDumper.

@@ -15,9 +15,9 @@ namespace Chevere\Tests\Bootstrap;
 
 use Chevere\Components\Bootstrap\Bootstrap;
 use Chevere\Components\Bootstrap\Exceptions\BootstrapDirException;
-use Chevere\Components\Bootstrap\Interfaces\BootstrapInterface;
+use Chevere\Interfaces\Bootstrap\BootstrapInterface;
 use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Components\Filesystem\Interfaces\DirInterface;
+use Chevere\Interfaces\Filesystem\DirInterface;
 use PHPUnit\Framework\TestCase;
 
 final class BootstrapTest extends TestCase

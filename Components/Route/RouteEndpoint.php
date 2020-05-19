@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use Chevere\Components\Controller\ControllerParameter;
-use Chevere\Components\Controller\Interfaces\ControllerInterface;
-use Chevere\Components\Http\Interfaces\MethodInterface;
+use Chevere\Interfaces\Controller\ControllerInterface;
+use Chevere\Interfaces\Http\MethodInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
+use Chevere\Interfaces\Route\RouteEndpointInterface;
 use OutOfBoundsException;
 
 final class RouteEndpoint implements RouteEndpointInterface

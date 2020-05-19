@@ -15,8 +15,8 @@ namespace Chevere\Tests\Serialize;
 
 use Chevere\Components\Serialize\Serialize;
 use Chevere\Components\Serialize\Unserialize;
-use Chevere\Components\Type\Interfaces\TypeInterface;
 use Chevere\Components\VarExportable\VarExportable;
+use Chevere\Interfaces\Type\TypeInterface;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

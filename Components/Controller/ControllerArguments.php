@@ -15,8 +15,8 @@ namespace Chevere\Components\Controller;
 
 use Chevere\Components\Controller\Exceptions\ControllerArgumentRegexMatchException;
 use Chevere\Components\Controller\Exceptions\ControllerArgumentsRequiredException;
-use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
-use Chevere\Components\Controller\Interfaces\ControllerParameterInterface;
+use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
+use Chevere\Interfaces\Controller\ControllerParameterInterface;
 use Chevere\Components\Message\Message;
 use Ds\Map;
 use OutOfBoundsException;

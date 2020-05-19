@@ -15,7 +15,7 @@ namespace Chevere\Components\Instances;
 
 use Chevere\Components\Exception\LogicException;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Runtime\Interfaces\RuntimeInterface;
+use Chevere\Interfaces\Runtime\RuntimeInterface;
 
 /**
  * A container for the Runtime.

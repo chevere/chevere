@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Interfaces;
 
-use Chevere\Components\Http\Interfaces\RequestInterface;
-use Chevere\Components\Http\Interfaces\ResponseInterface;
-use Chevere\Components\Router\Interfaces\RoutedInterface;
+use Chevere\Interfaces\Http\RequestInterface;
+use Chevere\Interfaces\Http\ResponseInterface;
+use Chevere\Interfaces\Router\RoutedInterface;
 
 interface AppInterface
 {

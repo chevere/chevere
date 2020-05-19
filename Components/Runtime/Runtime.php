@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime;
 
-use Chevere\Components\Runtime\Interfaces\RuntimeInterface;
-use Chevere\Components\Runtime\Interfaces\SetInterface;
+use Chevere\Interfaces\Runtime\RuntimeInterface;
+use Chevere\Interfaces\Runtime\SetInterface;
 use Ds\Map;
 use function DeepCopy\deep_copy;
 

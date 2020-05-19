@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler\Formatters;
 
-use Chevere\Components\ExceptionHandler\Interfaces\TraceFormatterInterface;
-use Chevere\Components\VarDump\Interfaces\FormatterInterface as VarDumpFormatterInterface;
+use Chevere\Interfaces\ExceptionHandler\TraceFormatterInterface;
+use Chevere\Interfaces\VarDump\FormatterInterface as VarDumpFormatterInterface;
 use Chevere\Components\VarDump\Formatters\HtmlFormatter as VarDumpFormatter;
 
 final class HtmlFormatter extends AbstractFormatter

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\App\Exceptions;
 
 use Chevere\Components\Exception\Exception;
-use Chevere\Components\Http\Interfaces\HttpStatusInterface;
+use Chevere\Interfaces\Http\HttpStatusInterface;
 use Chevere\Components\Message\Message;
 use InvalidArgumentException;
 use Throwable;

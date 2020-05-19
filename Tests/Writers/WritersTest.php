@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Writers;
 
-use Chevere\Components\Writers\Interfaces\WriterInterface;
+use Chevere\Interfaces\Writers\WriterInterface;
 use Chevere\Components\Writers\StreamWriter;
 use Chevere\Components\Writers\Writers;
 use Laminas\Diactoros\StreamFactory;

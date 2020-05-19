@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\App\Interfaces;
 
 use Chevere\Components\ArrayFile\Interfaces\ArrayFileInterface;
-use Chevere\Components\Filesystem\Interfaces\AppPathInterface;
+use Chevere\Interfaces\Filesystem\AppPathInterface;
 
 interface ParametersInterface
 {

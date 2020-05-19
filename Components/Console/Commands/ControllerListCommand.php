@@ -15,7 +15,7 @@ namespace Chevere\Components\Console\Commands;
 
 use Ahc\Cli\Input\Command;
 use Chevere\Components\Controller\ControllerName;
-use Chevere\Components\Controller\Interfaces\ControllerInterface;
+use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Str\StrBool;

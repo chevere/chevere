@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler\Documents;
 
-use Chevere\Components\ExceptionHandler\Interfaces\DocumentInterface;
-use Chevere\Components\ExceptionHandler\Interfaces\ExceptionHandlerInterface;
-use Chevere\Components\ExceptionHandler\Interfaces\FormatterInterface;
+use Chevere\Interfaces\ExceptionHandler\DocumentInterface;
+use Chevere\Interfaces\ExceptionHandler\ExceptionHandlerInterface;
+use Chevere\Interfaces\ExceptionHandler\FormatterInterface;
 use Chevere\Components\ExceptionHandler\TraceFormatter;
 use DateTimeInterface;
 

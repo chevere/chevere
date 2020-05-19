@@ -19,7 +19,7 @@ use Chevere\Components\App\Interfaces\AppInterface;
 use Chevere\Components\App\Interfaces\ControllerRunnerInterface;
 use Chevere\Components\App\Interfaces\MiddlewareRunnerInterface;
 use Chevere\Components\Controller\ArgumentsWrap;
-use Chevere\Components\Controller\Interfaces\ControllerInterface;
+use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Components\Message\Message;
 
 /**

@@ -19,9 +19,9 @@ use Chevere\Components\App\Exceptions\RouterRequiredException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\App\Interfaces\BuilderInterface;
 use Chevere\Components\App\Interfaces\ResolvableInterface;
-use Chevere\Components\Http\Interfaces\RequestInterface;
-use Chevere\Components\Route\Interfaces\RouteInterface;
-use Chevere\Components\Router\Interfaces\RouterInterface;
+use Chevere\Interfaces\Http\RequestInterface;
+use Chevere\Interfaces\Route\RouteInterface;
+use Chevere\Interfaces\Router\RouterInterface;
 
 /**
  * Determines if the builder can resolve the build request

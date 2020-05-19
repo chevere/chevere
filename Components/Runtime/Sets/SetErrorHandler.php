@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Sets;
 
-use Chevere\Components\Runtime\Interfaces\Sets\SetErrorHandlerInterface;
+use Chevere\Interfaces\Runtime\Sets\SetErrorHandlerInterface;
 
 /**
  * Sets and restores the error handler using `set_error_handler` and `restore_error_handler`

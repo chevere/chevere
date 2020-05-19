@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Runtime\Sets;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Runtime\Interfaces\SetInterface;
+use Chevere\Interfaces\Runtime\SetInterface;
 use Chevere\Components\Runtime\Traits\SetTrait;
 use RuntimeException;
 

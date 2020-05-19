@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Writers;
 
-use Chevere\Components\Writers\Interfaces\WriterInterface;
-use Chevere\Components\Writers\Interfaces\WritersInterface;
+use Chevere\Interfaces\Writers\WriterInterface;
+use Chevere\Interfaces\Writers\WritersInterface;
 use Laminas\Diactoros\Stream;
 
 final class Writers implements WritersInterface

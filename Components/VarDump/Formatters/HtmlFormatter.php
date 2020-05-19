@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Formatters;
 
-use Chevere\Components\VarDump\Interfaces\FormatterInterface;
-use Chevere\Components\VarDump\Interfaces\TemplateInterface;
-use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Interfaces\VarDump\FormatterInterface;
+use Chevere\Interfaces\VarDump\TemplateInterface;
+use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Components\VarDump\Highlighters\HtmlHighlight;
 
 /**

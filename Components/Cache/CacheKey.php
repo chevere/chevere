@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Cache;
 
 use Chevere\Components\Cache\Exceptions\CacheInvalidKeyException;
-use Chevere\Components\Cache\Interfaces\CacheKeyInterface;
+use Chevere\Interfaces\Cache\CacheKeyInterface;
 use Chevere\Components\Message\Message;
 
 final class CacheKey implements CacheKeyInterface

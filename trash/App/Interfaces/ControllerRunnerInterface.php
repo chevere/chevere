@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Interfaces;
 
-use Chevere\Components\Controller\Interfaces\ControllerInterface;
+use Chevere\Interfaces\Controller\ControllerInterface;
 
 interface ControllerRunnerInterface
 {

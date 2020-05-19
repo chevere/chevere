@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\ExceptionHandler;
 
 use Chevere\Components\Exception\DomainException;
-use Chevere\Components\ExceptionHandler\Interfaces\ExceptionInterface;
-use Chevere\Components\ExceptionHandler\Interfaces\ExceptionReadInterface;
-use Chevere\Components\Message\Interfaces\MessageInterface;
+use Chevere\Interfaces\ExceptionHandler\ExceptionInterface;
+use Chevere\Interfaces\ExceptionHandler\ExceptionReadInterface;
+use Chevere\Interfaces\Message\MessageInterface;
 use Chevere\Components\Message\Message;
 use ErrorException;
 use Exception;

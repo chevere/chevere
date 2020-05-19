@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Exception\Traits;
 
-use Chevere\Components\Message\Interfaces\MessageInterface;
+use Chevere\Interfaces\Message\MessageInterface;
 
 trait ExceptionTrait
 {

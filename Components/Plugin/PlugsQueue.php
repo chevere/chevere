@@ -16,9 +16,9 @@ namespace Chevere\Components\Plugin;
 use Chevere\Components\Exception\InvalidArgumentException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugin\Exceptions\PlugInterfaceException;
-use Chevere\Components\Plugin\Interfaces\PlugInterface;
-use Chevere\Components\Plugin\Interfaces\PlugsQueueInterface;
-use Chevere\Components\Plugin\Interfaces\PlugTypeInterface;
+use Chevere\Interfaces\Plugin\PlugInterface;
+use Chevere\Interfaces\Plugin\PlugsQueueInterface;
+use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use Ds\Set;
 
 final class PlugsQueue implements PlugsQueueInterface

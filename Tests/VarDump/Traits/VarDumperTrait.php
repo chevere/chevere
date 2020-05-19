@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Tests\VarDump\Traits;
 
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
-use Chevere\Components\VarDump\Interfaces\FormatterInterface;
-use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Interfaces\VarDump\FormatterInterface;
+use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Components\VarDump\VarDumpable;
 use Chevere\Components\VarDump\VarDumper;
-use Chevere\Components\Writers\Interfaces\WriterInterface;
+use Chevere\Interfaces\Writers\WriterInterface;
 use Chevere\Components\Writers\StreamWriter;
 use GuzzleHttp\Psr7\BufferStream;
 use Laminas\Diactoros\Stream;

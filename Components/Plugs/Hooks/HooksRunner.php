@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs\Hooks;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Plugin\Interfaces\PlugsQueueInterface;
-use Chevere\Components\Plugs\Hooks\Interfaces\HookInterface;
-use Chevere\Components\Plugs\Hooks\Interfaces\HooksRunnerInterface;
+use Chevere\Interfaces\Plugin\PlugsQueueInterface;
+use Chevere\Interfaces\Plugs\Hooks\HookInterface;
+use Chevere\Interfaces\Plugs\Hooks\HooksRunnerInterface;
 use Chevere\Components\Type\Type;
 use RuntimeException;
 use Throwable;

@@ -19,7 +19,7 @@ use Chevere\Components\Filesystem\Exceptions\PathDoubleDotsDashException;
 use Chevere\Components\Filesystem\Exceptions\PathExtraSlashesException;
 use Chevere\Components\Filesystem\Exceptions\PathNotAbsoluteException;
 use Chevere\Components\Filesystem\Exceptions\PathUnableToChmodException;
-use Chevere\Components\Filesystem\Interfaces\PathInterface;
+use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Components\Message\Message;
 
 final class Path implements PathInterface

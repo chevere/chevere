@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing;
 
-use Chevere\Components\Filesystem\Interfaces\DirInterface;
-use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
-use Chevere\Components\Route\Interfaces\RoutePathInterface;
-use Chevere\Components\Routing\Interfaces\FsRouteInterface;
+use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Route\RouteDecoratorInterface;
+use Chevere\Interfaces\Route\RoutePathInterface;
+use Chevere\Interfaces\Routing\FsRouteInterface;
 
 /**
  * @codeCoverageIgnore

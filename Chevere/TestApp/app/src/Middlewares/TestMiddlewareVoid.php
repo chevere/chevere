@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\TestApp\App\Middlewares;
 
 use Chevere\Components\Middleware\Middleware;
-use Chevere\Components\Http\Interfaces\RequestInterface;
+use Chevere\Interfaces\Http\RequestInterface;
 
 class TestMiddlewareVoid extends Middleware
 {

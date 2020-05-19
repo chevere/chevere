@@ -15,7 +15,7 @@ namespace Chevere\Components\App;
 
 use Chevere\Components\Api\Interfaces\ApiInterface;
 use Chevere\Components\App\Interfaces\ServicesInterface;
-use Chevere\Components\Router\Interfaces\RouterInterface;
+use Chevere\Interfaces\Router\RouterInterface;
 
 /**
  * A container for the application base services (Router & API).

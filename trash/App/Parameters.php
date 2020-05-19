@@ -19,7 +19,7 @@ use Chevere\Components\App\Exceptions\ParametersWrongTypeException;
 use Chevere\Components\App\Interfaces\ParametersInterface;
 use Chevere\Components\ArrayFile\Interfaces\ArrayFileInterface;
 use Chevere\Components\Filesystem\AppPath;
-use Chevere\Components\Filesystem\Interfaces\AppPathInterface;
+use Chevere\Interfaces\Filesystem\AppPathInterface;
 use Chevere\Components\Message\Message;
 
 /**

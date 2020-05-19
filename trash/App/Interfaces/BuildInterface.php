@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\App\Interfaces;
 
-use Chevere\Components\Filesystem\Interfaces\DirInterface;
-use Chevere\Components\Filesystem\Interfaces\FileInterface;
-use Chevere\Components\Router\Interfaces\RouterCacheInterface;
-use Chevere\Components\Router\Interfaces\RouterMakerInterface;
+use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Filesystem\FileInterface;
+use Chevere\Interfaces\Router\RouterCacheInterface;
+use Chevere\Interfaces\Router\RouterMakerInterface;
 
 interface BuildInterface
 {

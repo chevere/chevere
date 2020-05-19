@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\ExceptionHandler\Documents;
 
 use Chevere\Components\ExceptionHandler\Formatters\PlainFormatter;
-use Chevere\Components\ExceptionHandler\Interfaces\FormatterInterface;
+use Chevere\Interfaces\ExceptionHandler\FormatterInterface;
 
 final class PlainDocument extends AbstractDocument
 {

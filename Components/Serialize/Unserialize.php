@@ -15,8 +15,8 @@ namespace Chevere\Components\Serialize;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Serialize\Exceptions\UnserializeException;
-use Chevere\Components\Serialize\Interfaces\UnserializeInterface;
-use Chevere\Components\Type\Interfaces\TypeInterface;
+use Chevere\Interfaces\Serialize\UnserializeInterface;
+use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Components\Type\Type;
 use Throwable;
 use function ChevereFn\varType;

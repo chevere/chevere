@@ -20,7 +20,7 @@ use Chevere\Components\Filesystem\Exceptions\DirUnableToCreateException;
 use Chevere\Components\Filesystem\Exceptions\PathIsFileException;
 use Chevere\Components\Filesystem\Exceptions\PathIsNotDirectoryException;
 use Chevere\Components\Filesystem\File;
-use Chevere\Components\Filesystem\Interfaces\DirInterface;
+use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Components\Filesystem\Path;
 use PHPUnit\Framework\TestCase;
 use Throwable;

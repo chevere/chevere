@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
-use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
-use Chevere\Components\Controller\Interfaces\ControllerInterface;
-use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
-use Chevere\Components\Controller\Interfaces\ControllerResponseInterface;
+use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
+use Chevere\Interfaces\Controller\ControllerInterface;
+use Chevere\Interfaces\Controller\ControllerParametersInterface;
+use Chevere\Interfaces\Controller\ControllerResponseInterface;
 
 /**
  * @codeCoverageIgnore

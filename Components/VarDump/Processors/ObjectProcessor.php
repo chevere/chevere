@@ -16,11 +16,11 @@ namespace Chevere\Components\VarDump\Processors;
 use Chevere\Components\Str\StrBool;
 use ReflectionObject;
 use Throwable;
-use Chevere\Components\Type\Interfaces\TypeInterface;
-use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
+use Chevere\Interfaces\Type\TypeInterface;
+use Chevere\Interfaces\VarDump\ProcessorInterface;
 use Chevere\Components\VarDump\VarDumpable;
 use Chevere\Components\VarDump\VarDumper;
-use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 use Reflection;
 

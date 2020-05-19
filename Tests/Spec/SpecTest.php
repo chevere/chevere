@@ -21,7 +21,7 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Components\Router\Interfaces\RouterInterface;
+use Chevere\Interfaces\Routerrface;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;

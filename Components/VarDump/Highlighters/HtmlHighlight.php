@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Highlighters;
 
-use Chevere\Components\Type\Interfaces\TypeInterface;
-use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
-use Chevere\Components\VarDump\Interfaces\HighlightInterface;
+use Chevere\Interfaces\Type\TypeInterface;
+use Chevere\Interfaces\VarDump\VarDumperInterface;
+use Chevere\Interfaces\VarDump\HighlightInterface;
 use Chevere\Components\VarDump\Highlighters\Traits\AssertKeyTrait;
 
 final class HtmlHighlight implements HighlightInterface

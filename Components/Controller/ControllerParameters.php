@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
-use Chevere\Components\Controller\Interfaces\ControllerParameterInterface;
-use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
+use Chevere\Interfaces\Controller\ControllerParameterInterface;
+use Chevere\Interfaces\Controller\ControllerParametersInterface;
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use OutOfBoundsException;
 

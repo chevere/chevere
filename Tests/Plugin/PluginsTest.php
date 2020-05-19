@@ -15,12 +15,12 @@ namespace Chevere\Tests\Plugin;
 
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Exception\RuntimeException;
-use Chevere\Components\Filesystem\Interfaces\PathInterface;
+use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Plugin\Exceptions\PluggableNotRegisteredException;
 use Chevere\Components\Plugin\Exceptions\PlugsFileNotExistsException;
 use Chevere\Components\Plugin\Exceptions\PlugsQueueInterfaceException;
-use Chevere\Components\Plugin\Interfaces\PlugsQueueInterface;
+use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use Chevere\Components\Plugin\Plugins;
 use PHPUnit\Framework\TestCase;
 

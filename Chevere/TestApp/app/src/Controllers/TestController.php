@@ -17,14 +17,14 @@ use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponse;
-use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
-use Chevere\Components\Controller\Interfaces\ControllerParametersInterface;
-use Chevere\Components\Controller\Interfaces\ControllerResponseInterface;
-use Chevere\Components\Plugin\Interfaces\PluggableAnchorsInterface;
 use Chevere\Components\Plugin\PluggableAnchors;
-use Chevere\Components\Plugs\Hooks\Interfaces\PluggableHooksInterface;
 use Chevere\Components\Plugs\Hooks\Traits\PluggableHooksTrait;
 use Chevere\Components\Regex\Regex;
+use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
+use Chevere\Interfaces\Controller\ControllerParametersInterface;
+use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Interfaces\Plugin\PluggableAnchorsInterface;
+use Chevere\Interfaces\Plugs\Hooks\PluggableHooksInterface;
 
 class TestController extends Controller implements PluggableHooksInterface
 {

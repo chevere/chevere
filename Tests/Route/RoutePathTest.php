@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Route;
 
 use BadMethodCallException;
-use Chevere\Components\Regex\Interfaces\RegexInterface;
+use Chevere\Interfaces\Regex\RegexInterface;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Exceptions\RoutePathForwardSlashException;
 use Chevere\Components\Route\Exceptions\RoutePathInvalidCharsException;
@@ -23,7 +23,7 @@ use Chevere\Components\Route\Exceptions\RoutePathUnmatchedWildcardsException;
 use Chevere\Components\Route\Exceptions\RouteWildcardNotFoundException;
 use Chevere\Components\Route\Exceptions\RouteWildcardRepeatException;
 use Chevere\Components\Route\Exceptions\RouteWildcardReservedException;
-use Chevere\Components\Route\Interfaces\RoutePathInterface;
+use Chevere\Interfaces\Route\RoutePathInterface;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\RouteWildcard;
 use Chevere\Components\Route\RouteWildcardMatch;

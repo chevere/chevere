@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\Routing;
 
 use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Components\Filesystem\Interfaces\DirInterface;
-use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
+use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Route\RouteDecoratorInterface;
 use Chevere\Components\Route\RouteDecorator;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Routing\Exceptions\DecoratedRouteAlreadyAddedException;

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
-use Chevere\Components\Controller\Interfaces\ControllerRanInterface;
+use Chevere\Interfaces\Controller\ControllerRanInterface;
 use Throwable;
 
 final class ControllerRan implements ControllerRanInterface

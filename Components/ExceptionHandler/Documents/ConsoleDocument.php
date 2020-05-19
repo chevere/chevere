@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\ExceptionHandler\Documents;
 
 use Chevere\Components\ExceptionHandler\Formatters\ConsoleFormatter;
-use Chevere\Components\ExceptionHandler\Interfaces\FormatterInterface;
+use Chevere\Interfaces\ExceptionHandler\FormatterInterface;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 final class ConsoleDocument extends AbstractDocument

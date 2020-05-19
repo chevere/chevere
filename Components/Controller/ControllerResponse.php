@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
-use Chevere\Components\Controller\Interfaces\ControllerResponseInterface;
+use Chevere\Interfaces\Controller\ControllerResponseInterface;
 
 final class ControllerResponse implements ControllerResponseInterface
 {

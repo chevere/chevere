@@ -15,7 +15,7 @@ namespace Chevere\Components\VarDump\Formatters;
 
 use Chevere\Components\VarDump\Formatters\Traits\FilterEncodedCharsTrait;
 use Chevere\Components\VarDump\Formatters\Traits\IndentTrait;
-use Chevere\Components\VarDump\Interfaces\FormatterInterface;
+use Chevere\Interfaces\VarDump\FormatterInterface;
 
 /**
  * Provide plain text VarDump representation.

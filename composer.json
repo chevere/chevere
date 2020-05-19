@@ -34,7 +34,9 @@
             "resources/functions/ChevereFn/var.php"
         ],
         "psr-4": {
-            "Chevere\\Components\\": "Components/"
+            "Chevere\\Components\\": "Components/",
+            "Chevere\\Interfaces\\": "Interfaces/",
+            "Chevere\\Exceptions\\": "Exceptions/"
         }
     },
     "autoload-dev": {

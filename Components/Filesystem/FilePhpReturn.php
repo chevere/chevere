@@ -20,14 +20,14 @@ use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
 use Chevere\Components\Filesystem\Exceptions\FileReturnInvalidTypeException;
 use Chevere\Components\Filesystem\Exceptions\FileUnableToGetException;
 use Chevere\Components\Filesystem\Exceptions\FileWithoutContentsException;
-use Chevere\Components\Filesystem\Interfaces\FilePhpInterface;
-use Chevere\Components\Filesystem\Interfaces\FilePhpReturnInterface;
+use Chevere\Interfaces\Filesystem\FilePhpInterface;
+use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Serialize\Exceptions\UnserializeException;
 use Chevere\Components\Serialize\Unserialize;
 use Chevere\Components\Str\StrAssert;
-use Chevere\Components\Type\Interfaces\TypeInterface;
-use Chevere\Components\VarExportable\Interfaces\VarExportableInterface;
+use Chevere\Interfaces\Type\TypeInterface;
+use Chevere\Interfaces\VarExportable\VarExportableInterface;
 use Throwable;
 
 /**

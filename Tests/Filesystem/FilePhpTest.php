@@ -17,7 +17,7 @@ use Chevere\Components\Filesystem\Exceptions\FileNotExistsException;
 use Chevere\Components\Filesystem\Exceptions\FileNotPhpException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
-use Chevere\Components\Filesystem\Interfaces\PathInterface;
+use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Components\Filesystem\Path;
 use PHPUnit\Framework\TestCase;
 

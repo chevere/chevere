@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugs\Hooks\_resources;
 
-use Chevere\Components\Plugs\Hooks\Interfaces\HookInterface;
+use Chevere\Interfaces\Plugs\Hooks\HookInterface;
 
 class TestHook implements HookInterface
 {

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Spec;
 
-use Chevere\Components\Spec\Interfaces\SpecPathInterface;
+use Chevere\Interfaces\Spec\SpecPathInterface;
 use Chevere\Components\Spec\SpecPath;
 use Chevere\Components\Str\Exceptions\StrContainsException;
 use Chevere\Components\Str\Exceptions\StrEmptyException;

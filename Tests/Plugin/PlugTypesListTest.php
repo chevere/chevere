@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugin;
 
-use Chevere\Components\Plugin\Interfaces\PlugTypeInterface;
+use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use Chevere\Components\Plugin\PlugTypesList;
 use PHPUnit\Framework\TestCase;
 

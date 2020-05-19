@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use Chevere\Components\Route\Interfaces\RouteDecoratorInterface;
-use Chevere\Components\Route\Interfaces\RouteNameInterface;
-use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
+use Chevere\Interfaces\Route\RouteDecoratorInterface;
+use Chevere\Interfaces\Route\RouteNameInterface;
+use Chevere\Interfaces\Route\RouteWildcardsInterface;
 
 final class RouteDecorator implements RouteDecoratorInterface
 {

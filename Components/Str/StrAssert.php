@@ -30,7 +30,7 @@ use Chevere\Components\Str\Exceptions\StrNotStartsWithException;
 use Chevere\Components\Str\Exceptions\StrSameException;
 use Chevere\Components\Str\Exceptions\StrStartsWithCtypeDigitException;
 use Chevere\Components\Str\Exceptions\StrStartsWithException;
-use Chevere\Components\Str\Interfaces\StrAssertInterface;
+use Chevere\Interfaces\Str\StrAssertInterface;
 use Chevere\Components\Str\StrBool;
 
 final class StrAssert implements StrAssertInterface

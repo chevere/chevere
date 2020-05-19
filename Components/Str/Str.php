@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Str;
 
-use Chevere\Components\Str\Interfaces\StrInterface;
+use Chevere\Interfaces\Str\StrInterface;
 
 /**
  * The Chevere string manipulation.

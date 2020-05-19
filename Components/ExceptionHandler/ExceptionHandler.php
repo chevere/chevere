@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler;
 
-use Chevere\Components\ExceptionHandler\Interfaces\ExceptionHandlerInterface;
-use Chevere\Components\ExceptionHandler\Interfaces\ExceptionReadInterface;
-use Chevere\Components\Http\Interfaces\RequestInterface;
+use Chevere\Interfaces\ExceptionHandler\ExceptionHandlerInterface;
+use Chevere\Interfaces\ExceptionHandler\ExceptionReadInterface;
+use Chevere\Interfaces\Http\RequestInterface;
 use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;

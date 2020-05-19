@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\VarDump\Formatters;
 
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
-use Chevere\Components\VarDump\Interfaces\HighlightInterface;
+use Chevere\Interfaces\VarDump\HighlightInterface;
 use PHPUnit\Framework\TestCase;
 
 final class PlainFormatterTest extends TestCase

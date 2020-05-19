@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Writers;
 
-use Chevere\Components\Writers\Interfaces\WriterInterface;
+use Chevere\Interfaces\Writers\WriterInterface;
 
 final class NullWriter implements WriterInterface
 {

@@ -14,10 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Type\Interfaces\TypeInterface;
-use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
-use Chevere\Components\VarDump\Interfaces\VarDumpableInterface;
-use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Interfaces\VarDump\ProcessorInterface;
+use Chevere\Interfaces\VarDump\VarDumpableInterface;
+use Chevere\Interfaces\VarDump\VarDumperInterface;
 use LogicException;
 use function ChevereFn\varType;
 

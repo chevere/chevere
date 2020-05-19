@@ -15,7 +15,7 @@ namespace Chevere\Components\Route;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
-use Chevere\Components\Route\Interfaces\RouteWildcardMatchInterface;
+use Chevere\Interfaces\Route\RouteWildcardMatchInterface;
 use Chevere\Components\Str\StrBool;
 use InvalidArgumentException;
 use LogicException;

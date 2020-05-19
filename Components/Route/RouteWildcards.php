@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
-use Chevere\Components\Route\Interfaces\RouteWildcardsInterface;
+use Chevere\Interfaces\Route\RouteWildcardInterface;
+use Chevere\Interfaces\Route\RouteWildcardsInterface;
 
 final class RouteWildcards implements RouteWildcardsInterface
 {

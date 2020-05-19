@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Serialize;
 
-use Chevere\Components\Serialize\Interfaces\SerializeInterface;
-use Chevere\Components\VarExportable\Interfaces\VarExportableInterface;
+use Chevere\Interfaces\Serialize\SerializeInterface;
+use Chevere\Interfaces\VarExportable\VarExportableInterface;
 
 final class Serialize implements SerializeInterface
 {

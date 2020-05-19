@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Filesystem;
 
 use Chevere\Components\Filesystem\Exceptions\FileNotPhpException;
-use Chevere\Components\Filesystem\Interfaces\FileInterface;
-use Chevere\Components\Filesystem\Interfaces\FilePhpInterface;
+use Chevere\Interfaces\Filesystem\FileInterface;
+use Chevere\Interfaces\Filesystem\FilePhpInterface;
 use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\Message\Message;
 use RuntimeException;

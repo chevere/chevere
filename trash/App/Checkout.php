@@ -17,7 +17,7 @@ use Chevere\Components\App\Interfaces\BuildInterface;
 use Chevere\Components\App\Interfaces\CheckoutInterface;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
-use Chevere\Components\Filesystem\Interfaces\FilePhpReturnInterface;
+use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\VarExportable\VarExportable;
 use InvalidArgumentException;

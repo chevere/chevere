@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
-use Chevere\Components\Type\Interfaces\TypeInterface;
-use Chevere\Components\VarDump\Interfaces\ProcessorInterface;
-use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Interfaces\Type\TypeInterface;
+use Chevere\Interfaces\VarDump\ProcessorInterface;
+use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 
 final class IntegerProcessor implements ProcessorInterface

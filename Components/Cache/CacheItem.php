@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Cache;
 
-use Chevere\Components\Cache\Interfaces\CacheItemInterface;
-use Chevere\Components\Filesystem\Interfaces\FilePhpReturnInterface;
+use Chevere\Interfaces\Cache\CacheItemInterface;
+use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
 
 final class CacheItem implements CacheItemInterface
 {

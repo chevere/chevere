@@ -26,7 +26,7 @@ use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Http\Interfaces\RequestInterface;
+use Chevere\Interfaces\Http\RequestInterface;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;

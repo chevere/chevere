@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs\Hooks;
 
-use Chevere\Components\Plugin\Interfaces\TypedPlugsQueueInterface;
+use Chevere\Interfaces\Plugin\TypedPlugsQueueInterface;
 use Chevere\Components\Plugin\Traits\TypedPlugsQueueTrait;
-use Chevere\Components\Plugs\Hooks\Interfaces\HookInterface;
+use Chevere\Interfaces\Plugs\Hooks\HookInterface;
 
 final class HooksQueue implements TypedPlugsQueueInterface
 {

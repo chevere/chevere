@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Components\Router\Interfaces\RouterIndexInterface;
-use Chevere\Components\Router\Interfaces\RouterInterface;
-use Chevere\Components\Router\Interfaces\RouterRegexInterface;
+use Chevere\Interfaces\Router\RouterIndexInterface;
+use Chevere\Interfaces\Router\RouterInterface;
+use Chevere\Interfaces\Router\RouterRegexInterface;
 use function DeepCopy\deep_copy;
 
 final class Router implements RouterInterface

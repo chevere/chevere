@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler;
 
-use Chevere\Components\ExceptionHandler\Interfaces\TraceEntryInterface;
+use Chevere\Interfaces\ExceptionHandler\TraceEntryInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrBool;
-use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Interfaces\VarDump\VarDumperInterface;
 use InvalidArgumentException;
 use ReflectionMethod;
 

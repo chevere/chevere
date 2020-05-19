@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugin;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Plugin\Interfaces\PlugTypeInterface;
-use Chevere\Components\Plugin\Interfaces\PlugTypesListInterface;
+use Chevere\Interfaces\Plugin\PlugTypeInterface;
+use Chevere\Interfaces\Plugin\PlugTypesListInterface;
 use Ds\Map;
 use Generator;
 use RuntimeException;

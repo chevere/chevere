@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\VarExportable;
 
 use Chevere\Components\Breadcrumb\Breadcrumb;
-use Chevere\Components\Breadcrumb\Interfaces\BreadcrumbInterface;
+use Chevere\Interfaces\Breadcrumb\BreadcrumbInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\VarExportable\Exceptions\VarIsResourceException;
 use Chevere\Components\VarExportable\Exceptions\VarNotExportableException;
-use Chevere\Components\VarExportable\Interfaces\VarExportableInterface;
+use Chevere\Interfaces\VarExportable\VarExportableInterface;
 use ReflectionObject;
 use Throwable;
 

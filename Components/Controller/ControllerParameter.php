@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
-use Chevere\Components\Controller\Interfaces\ControllerParameterInterface;
-use Chevere\Components\Regex\Interfaces\RegexInterface;
+use Chevere\Interfaces\Controller\ControllerParameterInterface;
+use Chevere\Interfaces\Regex\RegexInterface;
 use Chevere\Components\Str\Exceptions\StrCtypeSpaceException;
 use Chevere\Components\Str\Exceptions\StrEmptyException;
 use Chevere\Components\Str\StrAssert;

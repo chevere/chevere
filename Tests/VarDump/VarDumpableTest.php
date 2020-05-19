@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump;
 
-use Chevere\Components\Type\Interfaces\TypeInterface;
+use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Components\VarDump\VarDumpable;
 use Chevere\Components\VarDump\Processors\ArrayProcessor;
 use Chevere\Components\VarDump\Processors\BooleanProcessor;

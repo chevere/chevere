@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs\EventListener;
 
-use Chevere\Components\Plugin\Interfaces\TypedPlugsQueueInterface;
+use Chevere\Interfaces\Plugin\TypedPlugsQueueInterface;
 use Chevere\Components\Plugin\Traits\TypedPlugsQueueTrait;
-use Chevere\Components\Plugs\EventListener\Interfaces\EventListenerInterface;
+use Chevere\Interfaces\Plugs\EventListenernerInterface;
 
 final class EventListenersQueue implements TypedPlugsQueueInterface
 {

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Message;
 
 use Ahc\Cli\Output\Color;
-use Chevere\Components\Message\Interfaces\MessageInterface;
+use Chevere\Interfaces\Message\MessageInterface;
 
 final class Message implements MessageInterface
 {

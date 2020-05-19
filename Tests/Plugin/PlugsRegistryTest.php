@@ -17,7 +17,7 @@ use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Exception\RuntimeException;
 use Chevere\Components\Filesystem\FilePhpReturnFromString;
 use Chevere\Components\Plugin\AssertPlug;
-use Chevere\Components\Plugin\Interfaces\PlugsQueueInterface;
+use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use Chevere\Components\Plugin\PlugsMap;
 use Chevere\Components\Plugin\PlugsRegistry;
 use Chevere\Tests\Plugin\_resources\src\TestHook;

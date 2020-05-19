@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Exception;
 
 use Chevere\Components\Exception\Traits\ExceptionTrait;
-use Chevere\Components\Message\Interfaces\MessageInterface;
+use Chevere\Interfaces\Message\MessageInterface;
 use Throwable;
 
 /**

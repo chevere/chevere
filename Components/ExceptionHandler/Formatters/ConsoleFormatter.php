@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler\Formatters;
 
-use Chevere\Components\ExceptionHandler\Interfaces\TraceFormatterInterface;
+use Chevere\Interfaces\ExceptionHandler\TraceFormatterInterface;
 use Chevere\Components\VarDump\Formatters\ConsoleFormatter as VarDumpFormatter;
-use Chevere\Components\VarDump\Interfaces\FormatterInterface as VarDumpFormatterInterface;
+use Chevere\Interfaces\VarDump\FormatterInterface as VarDumpFormatterInterface;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 final class ConsoleFormatter extends AbstractFormatter

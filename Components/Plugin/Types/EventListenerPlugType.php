@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin\Types;
 
-use Chevere\Components\Plugin\Interfaces\PlugTypeInterface;
-use Chevere\Components\Plugs\EventListener\Interfaces\EventListenerInterface;
-use Chevere\Components\Plugs\EventListener\Interfaces\PluggableEventsInterface;
+use Chevere\Interfaces\Plugin\PlugTypeInterface;
+use Chevere\Interfaces\Plugs\EventListener\EventListenerInterface;
+use Chevere\Interfaces\Plugs\EventListener\PluggableEventsInterface;
 
 final class EventListenerPlugType implements PlugTypeInterface
 {

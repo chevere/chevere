@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Chevere\Components\Cache;
 
 use Chevere\Components\Cache\Exceptions\CacheKeyNotFoundException;
-use Chevere\Components\Cache\Interfaces\CacheInterface;
-use Chevere\Components\Cache\Interfaces\CacheItemInterface;
-use Chevere\Components\Cache\Interfaces\CacheKeyInterface;
+use Chevere\Interfaces\Cache\CacheInterface;
+use Chevere\Interfaces\Cache\CacheItemInterface;
+use Chevere\Interfaces\Cache\CacheKeyInterface;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
-use Chevere\Components\Filesystem\Interfaces\DirInterface;
-use Chevere\Components\Filesystem\Interfaces\PathInterface;
+use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\VarExportable\Interfaces\VarExportableInterface;
+use Chevere\Interfaces\VarExportable\VarExportableInterface;
 use Chevere\Components\Filesystem\Exceptions\DirUnableToCreateException;
 
 /**

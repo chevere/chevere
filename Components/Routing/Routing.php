@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\Routing;
 
 use Chevere\Components\Route\Route;
-use Chevere\Components\Router\Interfaces\RouterInterface;
-use Chevere\Components\Router\Interfaces\RouterMakerInterface;
+use Chevere\Interfaces\Router\RouterInterface;
+use Chevere\Interfaces\Router\RouterMakerInterface;
 use Chevere\Components\Router\Routable;
-use Chevere\Components\Routing\Interfaces\FsRoutesMakerInterface;
-use Chevere\Components\Routing\Interfaces\RoutingInterface;
+use Chevere\Interfaces\Routing\FsRoutesMakerInterface;
+use Chevere\Interfaces\Routing\RoutingInterface;
 
 final class Routing implements RoutingInterface
 {

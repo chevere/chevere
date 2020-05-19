@@ -23,7 +23,7 @@ use Chevere\Components\ArrayFile\Interfaces\ArrayFileInterface;
 use Chevere\Components\Filesystem\AppPath;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
-use Chevere\Components\Filesystem\Interfaces\Path\PathInterface;
+use Chevere\Interfaces\Filesystem\Path\PathInterface;
 use PHPUnit\Framework\TestCase;
 
 final class ParametersTest extends TestCase

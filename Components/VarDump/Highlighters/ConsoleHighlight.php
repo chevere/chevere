@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Highlighters;
 
-use Chevere\Components\Type\Interfaces\TypeInterface;
-use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
-use Chevere\Components\VarDump\Interfaces\HighlightInterface;
 use Chevere\Components\VarDump\Highlighters\Traits\AssertKeyTrait;
+use Chevere\Interfaces\Type\TypeInterface;
+use Chevere\Interfaces\VarDump\HighlightInterface;
+use Chevere\Interfaces\VarDump\VarDumperInterface;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 final class ConsoleHighlight implements HighlightInterface

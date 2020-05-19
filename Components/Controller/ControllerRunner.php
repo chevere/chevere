@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
-use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
-use Chevere\Components\Controller\Interfaces\ControllerInterface;
-use Chevere\Components\Controller\Interfaces\ControllerRanInterface;
+use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
+use Chevere\Interfaces\Controller\ControllerInterface;
+use Chevere\Interfaces\Controller\ControllerRanInterface;
 use Throwable;
 
 final class ControllerRunner

@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugin;
 
-use Chevere\Components\Plugin\Interfaces\PlugTypeInterface;
+use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use Chevere\Components\Plugin\Types\EventListenerPlugType;
 use Chevere\Components\Plugin\Types\HookPlugType;
-use Chevere\Components\Plugs\EventListener\Interfaces\EventListenerInterface;
-use Chevere\Components\Plugs\EventListener\Interfaces\PluggableEventsInterface;
-use Chevere\Components\Plugs\Hooks\Interfaces\HookInterface;
-use Chevere\Components\Plugs\Hooks\Interfaces\PluggableHooksInterface;
+use Chevere\Interfaces\Plugs\EventListener\EventListenerInterface;
+use Chevere\Interfaces\Plugs\EventListener\PluggableEventsInterface;
+use Chevere\Interfaces\Plugs\Hooks\HookInterface;
+use Chevere\Interfaces\Plugs\Hooks\PluggableHooksInterface;
 use PHPUnit\Framework\TestCase;
 
 final class PlugTypesTest extends TestCase

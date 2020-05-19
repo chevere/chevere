@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\App\Interfaces;
 
 use Chevere\Components\Api\Interfaces\ApiInterface;
-use Chevere\Components\Router\Interfaces\RouterInterface;
+use Chevere\Interfaces\Router\RouterInterface;
 
 interface ServicesInterface
 {

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Runtime\Sets;
 
-use Chevere\Components\Runtime\Interfaces\Sets\SetExceptionHandlerInterface;
+use Chevere\Interfaces\Runtime\Sets\SetExceptionHandlerInterface;
 use Chevere\Components\Runtime\Traits\SetTrait;
 
 /**

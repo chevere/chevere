@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Exceptions\RouteNotRoutableException;
 use Chevere\Components\Router\Exceptions\RouteWithoutEndpointsException;
-use Chevere\Components\Router\Interfaces\RoutableInterface;
 use Chevere\Components\VarExportable\VarExportable;
+use Chevere\Interfaces\Route\RouteInterface;
+use Chevere\Interfaces\Router\RoutableInterface;
 use Throwable;
 
 //

@@ -15,7 +15,7 @@ namespace Chevere\Components\Type;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Exceptions\TypeNotFoundException;
-use Chevere\Components\Type\Interfaces\TypeInterface;
+use Chevere\Interfaces\Type\TypeInterface;
 
 /**
  * Type provides type validation toolchain. Useful to set dynamic types as parameters.

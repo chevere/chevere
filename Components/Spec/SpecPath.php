@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec;
 
-use Chevere\Components\Filesystem\Interfaces\PathInterface;
-use Chevere\Components\Spec\Interfaces\SpecPathInterface;
+use Chevere\Interfaces\Filesystem\PathInterface;
+use Chevere\Interfaces\Spec\SpecPathInterface;
 use Chevere\Components\Str\Exceptions\StrAssertException;
 use Chevere\Components\Str\Exceptions\StrContainsException;
 use Chevere\Components\Str\Exceptions\StrEmptyException;

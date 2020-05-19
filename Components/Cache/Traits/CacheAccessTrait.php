@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 // namespace Chevere\Components\Cache\Traits;
 
-// use Chevere\Components\Cache\Interfaces\CacheInterface;
+// use Chevere\Interfaces\Cache\CacheInterface;
 
 // trait CacheAccessTrait
 // {

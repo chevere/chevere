@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Regex\Interfaces\RegexInterface;
-use Chevere\Components\Router\Interfaces\RouterRegexInterface;
+use Chevere\Interfaces\Regex\RegexInterface;
+use Chevere\Interfaces\Router\RouterRegexInterface;
 use InvalidArgumentException;
 
 /**

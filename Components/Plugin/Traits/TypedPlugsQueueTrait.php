@@ -15,7 +15,7 @@ namespace Chevere\Components\Plugin\Traits;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugin\Exceptions\PlugInterfaceException;
-use Chevere\Components\Plugin\Interfaces\PlugsQueueInterface;
+use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use Chevere\Components\Plugin\PlugsQueue;
 
 trait TypedPlugsQueueTrait

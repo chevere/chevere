@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec;
 
 use Chevere\Components\Cache\CacheKey;
-use Chevere\Components\Cache\Interfaces\CacheInterface;
-use Chevere\Components\Spec\Interfaces\SpecIndexCacheInterface;
-use Chevere\Components\Spec\Interfaces\SpecIndexInterface;
+use Chevere\Interfaces\Cache\CacheInterface;
+use Chevere\Interfaces\Spec\SpecIndexCacheInterface;
+use Chevere\Interfaces\Spec\SpecIndexInterface;
 use Chevere\Components\VarExportable\VarExportable;
 
 // Add this header to all responses: Link: </spec/api/routes.json>; rel="describedby"

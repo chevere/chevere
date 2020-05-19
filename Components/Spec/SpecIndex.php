@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
-use Chevere\Components\Spec\Interfaces\SpecIndexInterface;
+use Chevere\Interfaces\Spec\SpecIndexInterface;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use OutOfBoundsException;
 use function DeepCopy\deep_copy;

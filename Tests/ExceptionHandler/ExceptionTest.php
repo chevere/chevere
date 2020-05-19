@@ -16,7 +16,7 @@ namespace Chevere\Tests\ExceptionHandler;
 use Chevere\Components\Exception\ErrorException;
 use Chevere\Components\ExceptionHandler\ExceptionRead;
 use Chevere\Components\Exception\Exception;
-use Chevere\Components\ExceptionHandler\Interfaces\ExceptionReadInterface;
+use Chevere\Interfaces\ExceptionHandler\ExceptionReadInterface;
 use Chevere\Components\Message\Message;
 use LogicException;
 use PHPUnit\Framework\TestCase;

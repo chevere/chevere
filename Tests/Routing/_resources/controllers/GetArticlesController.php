@@ -15,8 +15,8 @@ namespace Chevere\Tests\Routing\_resources\controllers;
 
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerResponse;
-use Chevere\Components\Controller\Interfaces\ControllerArgumentsInterface;
-use Chevere\Components\Controller\Interfaces\ControllerResponseInterface;
+use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
+use Chevere\Interfaces\Controller\ControllerResponseInterface;
 
 final class GetArticlesController extends Controller
 {

@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Router\Interfaces\RoutableInterface;
-use Chevere\Components\Router\Interfaces\RouteIdentifierInterface;
-use Chevere\Components\Router\Interfaces\RouterIndexInterface;
+use Chevere\Interfaces\Router\RoutableInterface;
+use Chevere\Interfaces\Router\RouteIdentifierInterface;
+use Chevere\Interfaces\Router\RouterIndexInterface;
 use Chevere\Components\Str\StrAssert;
 use Ds\Map;
 use LogicException;

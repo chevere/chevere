@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\VarDump\Highlighters;
 
 use Chevere\Components\VarDump\Highlighters\ConsoleHighlight;
-use Chevere\Components\VarDump\Interfaces\HighlightInterface;
+use Chevere\Interfaces\VarDump\HighlightInterface;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

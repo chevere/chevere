@@ -16,7 +16,7 @@ namespace Chevere\Tests\Plugin;
 use Chevere\Components\Exception\InvalidArgumentException;
 use Chevere\Components\Plugin\AssertPlug;
 use Chevere\Components\Plugin\Exceptions\PlugRegisteredException;
-use Chevere\Components\Plugin\Interfaces\PlugsQueueInterface;
+use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use Chevere\Components\Plugin\PlugsMap;
 use Chevere\Tests\Plugin\_resources\src\TestHook;
 use Chevere\Components\Plugin\Types\EventListenerPlugType;

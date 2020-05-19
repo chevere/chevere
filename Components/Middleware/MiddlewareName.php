@@ -15,8 +15,8 @@ namespace Chevere\Components\Middleware;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Middleware\Exceptions\MiddlewareInterfaceException;
-use Chevere\Components\Middleware\Interfaces\MiddlewareInterface;
-use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
+use Chevere\Interfaces\Middleware\MiddlewareInterface;
+use Chevere\Interfaces\Middleware\MiddlewareNameInterface;
 use InvalidArgumentException;
 
 final class MiddlewareName implements MiddlewareNameInterface

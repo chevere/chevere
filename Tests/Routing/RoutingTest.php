@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\Routing;
 
 use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Components\Filesystem\Interfaces\DirInterface;
-use Chevere\Components\Router\Interfaces\RouterInterface;
+use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Router\RouterInterface;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Routing\FsRoutesMaker;
 use Chevere\Components\Routing\Routing;

@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Tests\Router;
 
 use Chevere\Components\Cache\Cache;
-use Chevere\Components\Cache\Interfaces\CacheInterface;
+use Chevere\Interfaces\Cache\CacheInterface;
 use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\Interfaces\DirInterface;
-use Chevere\Components\Filesystem\Interfaces\PathInterface;
+use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Components\Filesystem\Path;
 use PHPUnit\Framework\TestCase;
 use ReflectionObject;

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Middleware;
 
-use Chevere\Components\Middleware\Interfaces\MiddlewareNameCollectionInterface;
-use Chevere\Components\Middleware\Interfaces\MiddlewareNameInterface;
+use Chevere\Interfaces\Middleware\MiddlewareNameCollectionInterface;
+use Chevere\Interfaces\Middleware\MiddlewareNameInterface;
 
 /**
  * A collection of MiddlewareInterface names.

@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\Cache\CacheKey;
-use Chevere\Components\Cache\Interfaces\CacheInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Route\Interfaces\RouteInterface;
 use Chevere\Components\Router\Exceptions\RouteCacheNotFoundException;
-use Chevere\Components\Router\Interfaces\RoutesCacheInterface;
 use Chevere\Components\VarExportable\VarExportable;
+use Chevere\Interfaces\Cache\CacheInterface;
+use Chevere\Interfaces\Route\RouteInterface;
+use Chevere\Interfaces\Router\RoutesCacheInterface;
 use Throwable;
 
 final class RoutesCache implements RoutesCacheInterface

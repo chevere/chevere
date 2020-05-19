@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
-use Chevere\Components\Router\Interfaces\RoutableInterface;
+use Chevere\Interfaces\Router\RoutableInterface;
 
 /**
  * A container for Routable objects.

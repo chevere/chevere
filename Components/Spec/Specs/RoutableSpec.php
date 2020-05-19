@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Specs;
 
-use Chevere\Components\Route\Interfaces\RouteEndpointInterface;
-use Chevere\Components\Route\Interfaces\RouteWildcardInterface;
-use Chevere\Components\Router\Interfaces\RoutableInterface;
-use Chevere\Components\Spec\Interfaces\SpecInterface;
-use Chevere\Components\Spec\Interfaces\SpecPathInterface;
+use Chevere\Interfaces\Route\RouteEndpointInterface;
+use Chevere\Interfaces\Route\RouteWildcardInterface;
+use Chevere\Interfaces\Router\RoutableInterface;
+use Chevere\Interfaces\Spec\SpecInterface;
+use Chevere\Interfaces\Spec\SpecPathInterface;
 use Chevere\Components\Spec\Specs\RouteEndpointSpecs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
 use function DeepCopy\deep_copy;

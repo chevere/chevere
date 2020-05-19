@@ -18,7 +18,7 @@ use Chevere\Components\App\Exceptions\AppWithoutRequestException;
 use Chevere\Components\Middleware\Exceptions\MiddlewareNamesEmptyException;
 use Chevere\Components\App\MiddlewareRunner;
 use Chevere\Components\App\Services;
-use Chevere\Components\Http\Interfaces\RequestInterface;
+use Chevere\Interfaces\Http\RequestInterface;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;

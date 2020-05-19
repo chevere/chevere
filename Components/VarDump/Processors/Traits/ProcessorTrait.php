@@ -15,7 +15,7 @@ namespace Chevere\Components\VarDump\Processors\Traits;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
-use Chevere\Components\VarDump\Interfaces\VarDumperInterface;
+use Chevere\Interfaces\VarDump\VarDumperInterface;
 use InvalidArgumentException;
 use function ChevereFn\varType;
 

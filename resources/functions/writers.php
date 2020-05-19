@@ -12,7 +12,7 @@
 declare(strict_types=1);
 
 use Chevere\Components\Instances\WritersInstance;
-use Chevere\Components\Writers\Interfaces\WritersInterface;
+use Chevere\Interfaces\Writers\WritersInterface;
 
 function writers(): WritersInterface
 {

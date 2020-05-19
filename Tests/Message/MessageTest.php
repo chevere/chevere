@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Message;
 
-use Chevere\Components\Message\Interfaces\MessageInterface;
+use Chevere\Interfaces\Message\MessageInterface;
 use Chevere\Components\Message\Message;
 use PHPUnit\Framework\TestCase;
 
