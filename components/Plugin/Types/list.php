@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin\Types;
 
+/**
+ * @codeCoverageIgnore
+ */
 return [
     new HookPlugType,
     new EventListenerPlugType

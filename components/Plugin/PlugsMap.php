@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin;
 
+use Chevere\Components\Exception\InvalidArgumentException;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugin\Exceptions\PlugRegisteredException;
 use Chevere\Components\Plugin\Interfaces\AssertPlugInterface;
@@ -23,7 +24,6 @@ use Chevere\Components\Plugin\PlugsQueue;
 use Ds\Map;
 use Ds\Set;
 use Generator;
-use InvalidArgumentException;
 
 final class PlugsMap implements PlugsMapInterface
 {
@@ -51,7 +51,6 @@ final class PlugsMap implements PlugsMapInterface
             throw new InvalidArgumentException(
                 (new Message('Argument passed must be an instance of type %type%'))
                     ->code('%type%', get_class($this->type))
-                    ->toString()
             );
         }
 

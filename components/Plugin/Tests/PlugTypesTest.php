@@ -30,7 +30,8 @@ final class PlugTypesTest extends TestCase
             new HookPlugType,
             HookInterface::class,
             PluggableHooksInterface::class,
-            'Hook.php'
+            'Hook.php',
+            'Hooks'
         );
     }
 
@@ -40,7 +41,8 @@ final class PlugTypesTest extends TestCase
             new EventListenerPlugType,
             EventListenerInterface::class,
             PluggableEventsInterface::class,
-            'EventListener.php'
+            'EventListener.php',
+            'EventListeners'
         );
     }
 
@@ -48,12 +50,13 @@ final class PlugTypesTest extends TestCase
         PlugTypeInterface $plugType,
         string $plugInterface,
         string $pluggableInterface,
-        string $trailingName
+        string $trailingName,
+        string $queueName
     ): void {
-        $plugType = $plugType;
         $this->assertSame($plugInterface, $plugType->interface());
         $this->assertSame($pluggableInterface, $plugType->plugsTo());
         $this->assertSame($trailingName, $plugType->trailingName());
+        $this->assertSame($queueName, $plugType->queueName());
         $this->assertTrue(method_exists(
             $plugType->plugsTo(),
             $plugType->pluggableAnchorsMethod()
