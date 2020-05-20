@@ -18,7 +18,7 @@ use Chevere\Interfaces\VarDump\ProcessorInterface;
 use Chevere\Interfaces\VarDump\VarDumpableInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 use LogicException;
-use function ChevereFn\varType;
+use function Chevere\Components\Type\varType;
 
 /**
  * The Chevere VarDumpable.

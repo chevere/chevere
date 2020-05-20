@@ -12,6 +12,7 @@
 declare(strict_types=1);
 
 use Chevere\Components\VarDump\VarDump;
+use function Chevere\Components\Writers\writers;
 
 if (function_exists('varInfo') === false) {
     /**

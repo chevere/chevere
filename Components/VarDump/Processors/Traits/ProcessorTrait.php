@@ -17,7 +17,7 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 use InvalidArgumentException;
-use function ChevereFn\varType;
+use function Chevere\Components\Type\varType;
 
 trait ProcessorTrait
 {

@@ -11,14 +11,12 @@
 
 declare(strict_types=1);
 
-namespace ChevereFn;
+namespace Chevere\Components\Writers;
 
-function varType($var): string
+use Chevere\Components\Instances\WritersInstance;
+use Chevere\Interfaces\Writers\WritersInterface;
+
+function writers(): WritersInterface
 {
-    $type = strtolower(gettype($var));
-    if ($type === 'double') {
-        return 'float';
-    }
-
-    return $type;
+    return WritersInstance::get();
 }

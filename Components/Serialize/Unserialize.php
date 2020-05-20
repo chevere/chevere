@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Serialize;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Serialize\UnserializeException;
 use Chevere\Interfaces\Serialize\UnserializeInterface;
 use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Components\Type\Type;
 use Throwable;
-use function ChevereFn\varType;
+use function Chevere\Components\Type\varType;
 
 final class Unserialize implements UnserializeInterface
 {

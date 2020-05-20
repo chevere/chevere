@@ -29,9 +29,9 @@
     "autoload": {
         "files": [
             "utils/phpcheck.php",
-            "resources/functions/dump.php",
-            "resources/functions/writers.php",
-            "resources/functions/ChevereFn/var.php"
+            "Components/Type/functions.php",
+            "Components/VarDump/functions.php",
+            "Components/Writers/functions.php"
         ],
         "psr-4": {
             "Chevere\\Components\\": "Components/",
