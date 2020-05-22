@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\Processors;
 
-use Chevere\Interfaces\VarDump\ProcessorInterface;
 use Chevere\Components\VarDump\Processors\ObjectProcessor;
+use Chevere\Interfaces\VarDump\ProcessorInterface;
 use Chevere\Tests\VarDump\Traits\VarDumperTrait;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -25,18 +25,22 @@ final class ObjectProcessorTest extends TestCase
 
     public function testEmptyObject(): void
     {
-        $varDumper = $this->getVarDumper(new stdClass);
+        $object = new stdClass;
+        $id = (string) spl_object_id($object);
+        $varDumper = $this->getVarDumper($object);
         $processor = new ObjectProcessor($varDumper);
-        $this->assertSame(stdClass::class, $processor->info());
+        $this->assertSame(stdClass::class . '#' . $id, $processor->info());
         $processor->write();
-        $this->assertSame(stdClass::class, $varDumper->writer()->toString());
+        $this->assertSame(stdClass::class . '#' . $id, $varDumper->writer()->toString());
     }
 
     public function testUnsetObject(): void
     {
-        $varDumper = $this->getVarDumper(new DummyClass);
+        $object = new DummyClass;
+        $id = (string) spl_object_id($object);
+        $varDumper = $this->getVarDumper($object);
         $processor = new ObjectProcessor($varDumper);
-        $this->assertSame(DummyClass::class, $processor->info());
+        $this->assertSame(DummyClass::class . '#' . $id, $processor->info());
         $processor->write();
         $string = $varDumper->writer()->toString();
         $this->assertStringContainsString(
@@ -69,21 +73,24 @@ final class ObjectProcessorTest extends TestCase
 
     public function testAnonClass(): void
     {
-        $object = new class() {
+        $object = new class()
+        {
         };
+        $id = (string) spl_object_id($object);
         $varDumper = $this->getVarDumper($object);
         (new ObjectProcessor($varDumper))->write();
-        $this->assertSame('class@anonymous', $varDumper->writer()->toString());
+        $this->assertSame('class@anonymous#' . $id, $varDumper->writer()->toString());
     }
 
     public function testCircularReference(): void
     {
         $object = (new DummyClass)->withCircularReference();
+        $id = (string) spl_object_id($object);
         $varDumper = $this->getVarDumper($object);
         $processor = new ObjectProcessor($varDumper);
         $processor->write();
         $this->assertStringContainsString(
-            'private $circularReference ' . DummyClass::class . ' ' . $processor->circularReference(),
+            'private $circularReference ' . DummyClass::class . '#' . $id . ' ' . $processor->circularReference(),
             $varDumper->writer()->toString()
         );
     }
@@ -95,7 +102,7 @@ final class ObjectProcessorTest extends TestCase
         $processor = new ObjectProcessor($varDumper);
         $processor->write();
         $this->assertStringContainsString(
-            'public $deep stdClass ' . $processor->maxDepthReached(),
+            $processor->maxDepthReached(),
             $varDumper->writer()->toString()
         );
     }

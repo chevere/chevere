@@ -14,15 +14,15 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Processors;
 
 use Chevere\Components\Str\StrBool;
-use ReflectionObject;
-use Throwable;
-use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Interfaces\VarDump\ProcessorInterface;
+use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 use Chevere\Components\VarDump\VarDumpable;
 use Chevere\Components\VarDump\VarDumper;
+use Chevere\Interfaces\Type\TypeInterface;
+use Chevere\Interfaces\VarDump\ProcessorInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
-use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 use Reflection;
+use ReflectionObject;
+use Throwable;
 
 final class ObjectProcessor implements ProcessorInterface
 {
@@ -50,8 +50,8 @@ final class ObjectProcessor implements ProcessorInterface
         $this->knownObjects = $this->varDumper->known();
         $this->className = get_class($this->var);
         $this->handleNormalizeClassName();
-        $this->info = $this->className;
         $this->objectId = spl_object_id($this->var);
+        $this->info = $this->className . '#' . $this->objectId;
     }
 
     public function type(): string
@@ -62,10 +62,16 @@ final class ObjectProcessor implements ProcessorInterface
     public function write(): void
     {
         $this->varDumper->writer()->write(
-            $this->varDumper->formatter()->highlight(
-                VarDumperInterface::_CLASS,
-                $this->className
-            )
+            $this->varDumper->formatter()
+                ->highlight(
+                    VarDumperInterface::_CLASS,
+                    $this->className
+                ) .
+            $this->varDumper->formatter()
+                ->highlight(
+                    VarDumperInterface::_OPERATOR,
+                    '#' . (string) $this->objectId
+                )
         );
 
         if (in_array($this->objectId, $this->knownObjects)) {
