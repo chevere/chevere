@@ -38,6 +38,11 @@ final class RouteWildcards implements RouteWildcardsInterface
         return $new;
     }
 
+    public function count(): int
+    {
+        return count($this->index);
+    }
+
     public function hasAny(): bool
     {
         return $this->index !== [];

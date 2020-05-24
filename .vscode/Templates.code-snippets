@@ -4,7 +4,7 @@
         "prefix": "interface",
         "body": [
             "<?php",
-            "namespace Chevere\\Components\\X\\Interfaces;",
+            "namespace Chevere\\Interfaces\\X;",
             "",
             "interface NameInterface",
             "{",
@@ -16,7 +16,7 @@
         "prefix": "test",
         "body": [
             "<?php",
-            "namespace Chevere\\Components\\X\\Tests;",
+            "namespace Chevere\\Tests\\X;",
             "",
             "use PHPUnit\\Framework\\TestCase;",
             "",
@@ -35,8 +35,8 @@
         ]
     },
     "class": {
-        "description": "inserts a new class",
-        "prefix": "class",
+        "description": "inserts a new component",
+        "prefix": "component",
         "body": [
             "<?php",
             "namespace Chevere\\Components\\X;",

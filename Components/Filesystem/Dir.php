@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Filesystem\DirNotExistsException;
 use Chevere\Exceptions\Filesystem\DirTailException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 use Chevere\Exceptions\Filesystem\DirUnableToRemoveException;
 use Chevere\Exceptions\Filesystem\PathIsFileException;
 use Chevere\Exceptions\Filesystem\PathIsNotDirectoryException;
-use Chevere\Components\Filesystem\File;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
-use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Message\Message;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Throwable;
@@ -151,8 +151,10 @@ class Dir implements DirInterface
 
     private function rmdir(): void
     {
+        $dir = $this->path->absolute();
+        // @codeCoverageIgnoreStart
         try {
-            rmdir($this->path->absolute());
+            rmdir($dir);
         } catch (Throwable $e) {
             throw new DirUnableToRemoveException(
                 (new Message('Unable to remove directory %path% %thrown%'))
@@ -160,5 +162,6 @@ class Dir implements DirInterface
                     ->code('%thrown%', '[' . $e->getMessage() . ']')
             );
         }
+        // @codeCoverageIgnoreEnd
     }
 }

@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
+use Chevere\Components\Message\Message;
+use Chevere\Components\Serialize\Unserialize;
+use Chevere\Components\Str\StrAssert;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Filesystem\FileHandleException;
 use Chevere\Exceptions\Filesystem\FileInvalidContentsException;
@@ -20,12 +23,9 @@ use Chevere\Exceptions\Filesystem\FileNotExistsException;
 use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
 use Chevere\Exceptions\Filesystem\FileUnableToGetException;
 use Chevere\Exceptions\Filesystem\FileWithoutContentsException;
+use Chevere\Exceptions\Serialize\UnserializeException;
 use Chevere\Interfaces\Filesystem\FilePhpInterface;
 use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
-use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Serialize\UnserializeException;
-use Chevere\Components\Serialize\Unserialize;
-use Chevere\Components\Str\StrAssert;
 use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Interfaces\VarExportable\VarExportableInterface;
 use Throwable;
@@ -65,6 +65,7 @@ class FilePhpReturn implements FilePhpReturnInterface
     {
         $this->validate();
         $filePath = $this->filePhp->file()->path()->absolute();
+        // @codeCoverageIgnoreStart
         try {
             return include $filePath;
         } catch (Throwable $e) {
@@ -74,6 +75,7 @@ class FilePhpReturn implements FilePhpReturnInterface
                     ->code('%path%', $filePath)
             );
         }
+        // @codeCoverageIgnoreEnd
     }
 
     public function var()

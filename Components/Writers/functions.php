@@ -16,6 +16,9 @@ namespace Chevere\Components\Writers;
 use Chevere\Components\Instances\WritersInstance;
 use Chevere\Interfaces\Writers\WritersInterface;
 
+/**
+ * @codeCoverageIgnore
+ */
 function writers(): WritersInterface
 {
     return WritersInstance::get();

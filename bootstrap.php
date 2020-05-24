@@ -15,9 +15,7 @@ namespace Chevere;
 
 use Chevere\Components\Bootstrap\Bootstrap;
 use Chevere\Components\Console\Console;
-use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Instances\BootstrapInstance;
 
 require 'vendor/autoload.php';
