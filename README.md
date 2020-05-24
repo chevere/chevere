@@ -9,9 +9,9 @@ Quality](https://scrutinizer-ci.com/g/chevere/chevere/badges/quality-score.png?b
 
 This is the main repository of The Chevere Framework.
 
-Chevere is a development framework for building pluggable server side applications, following Clean Code principles, with a strongly typed code and a heavy culture on the console. [Learn more](https://github.com/chevere/docs/blob/master/introduction.md).
+Chevere is a development framework for building pluggable server side applications, following Clean Code principles, with a strongly typed code and a heavy culture on the console. [Documentation](https://github.com/chevere/docs).
 
-## ⚠ This is a work-in-progress ⚠
+## ⚠ This is a work-in-progress
 
 The project is under development and is not recommended to use it for production yet.
 
