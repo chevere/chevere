@@ -11,36 +11,41 @@
 
 declare(strict_types=1);
 
+use Chevere\Components\VarDump\Formatters\ConsoleFormatter;
+use Chevere\Components\VarDump\Outputters\ConsoleOutputter;
 use Chevere\Components\VarDump\VarDump;
+use Chevere\Interfaces\VarDump\VarDumpInterface;
 use function Chevere\Components\Writers\writers;
 
-if (function_exists('varInfo') === false) {
-    /**
-     * Returns dump information about one or more variables.
-     */
-    function varInfo(...$vars)
-    {
-        return '';// (new VarDump(...$vars))->toString();
-    }
+// @codeCoverageIgnoreStart
+function varDump(...$vars): VarDumpInterface
+{
+    return
+        (new VarDump(
+            writers()->out(),
+            new ConsoleFormatter,
+            new ConsoleOutputter
+        ))
+            ->withVars(...$vars)
+            ->withShift(1);
 }
-
 if (function_exists('xd') === false) {
     /**
      * Dumps information about one or more variables to the output stream
      */
     function xd(...$vars)
     {
-        (new VarDump(writers()->out(), ...$vars))->withShift(1)->stream();
+        varDump(...$vars)->stream();
     }
 }
-
 if (function_exists('xdd') === false) {
     /**
      * Dumps information about one or more variables to the output stream and die().
      */
     function xdd(...$vars)
     {
-        (new VarDump(writers()->out(), ...$vars))->withShift(1)->stream();
+        varDump(...$vars)->stream();
         die(0);
     }
 }
+// @codeCoverageIgnoreEnd

@@ -14,13 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump;
 
 use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Interfaces\VarDump\VarDumpableInterface;
 use Chevere\Interfaces\VarDump\FormatterInterface;
+use Chevere\Interfaces\VarDump\VarDumpableInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Interfaces\Writers\WriterInterface;
 
 /**
- * The Chevere VarDumper.
  * Provides dumping for for variables of any kind of deep.
  */
 final class VarDumper implements VarDumperInterface

@@ -15,13 +15,12 @@ namespace Chevere\Components\VarDump;
 
 use Chevere\Components\VarDump\VarDumpable;
 use Chevere\Components\VarDump\VarDumper;
-use Chevere\Interfaces\Writers\WriterInterface;
 use Chevere\Interfaces\VarDump\FormatterInterface;
 use Chevere\Interfaces\VarDump\OutputterInterface;
 use Chevere\Interfaces\VarDump\VarOutputterInterface;
+use Chevere\Interfaces\Writers\WriterInterface;
 
 /**
- * The Chevere VarOutputter.
  * Writes information about a variable.
  */
 final class VarOutputter implements VarOutputterInterface

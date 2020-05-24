@@ -21,7 +21,6 @@ use LogicException;
 use function Chevere\Components\Type\varType;
 
 /**
- * The Chevere VarDumpable.
  * Provides interaction for dumpable variables.
  */
 final class VarDumpable implements VarDumpableInterface

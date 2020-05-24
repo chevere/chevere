@@ -13,37 +13,45 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump;
 
-use Chevere\Components\Instances\BootstrapInstance;
-use Chevere\Components\VarDump\Formatters\ConsoleFormatter;
-use Chevere\Components\VarDump\Formatters\HtmlFormatter;
-use Chevere\Components\VarDump\Outputters\ConsoleOutputter;
-use Chevere\Components\VarDump\Outputters\HtmlOutputter;
+use Chevere\Interfaces\VarDump\FormatterInterface;
+use Chevere\Interfaces\VarDump\OutputterInterface;
+use Chevere\Interfaces\VarDump\VarDumpInterface;
 use Chevere\Interfaces\Writers\WriterInterface;
 
-/**
- * The Chevere VarDump.
- * A context-aware VarDumper.
- *
- * @codeCoverageIgnore
- */
-final class VarDump
+final class VarDump implements VarDumpInterface
 {
-    private array $vars;
+    private array $vars = [];
 
     private WriterInterface $writer;
+
+    private FormatterInterface $formatter;
+
+    private OutputterInterface $outputter;
 
     private int $shift = 0;
 
     private array $debugBacktrace = [];
 
-    public function __construct(WriterInterface $writer, ...$vars)
-    {
+    public function __construct(
+        WriterInterface $writer,
+        FormatterInterface $formatter,
+        OutputterInterface $outputter
+    ) {
         $this->writer = $writer;
-        $this->vars = $vars;
+        $this->formatter = $formatter;
+        $this->outputter = $outputter;
+    }
+
+    public function withVars(...$vars): VarDumpInterface
+    {
+        $new = clone $this;
+        $new->vars = $vars;
+
+        return $new;
     }
 
     // Set the shift int, it will be used to remove self-related traces
-    public function withShift(int $shift): VarDump
+    public function withShift(int $shift): VarDumpInterface
     {
         $new = clone $this;
         $new->shift = $shift;
@@ -51,27 +59,18 @@ final class VarDump
         return $new;
     }
 
-    public function shift(): int
-    {
-        return $this->shift;
-    }
-
     public function stream(): void
     {
-        $this->setDebugBacktrace();
-        if (BootstrapInstance::get()->isCli()) {
-            $formatter = ConsoleFormatter::class;
-            $outputter = ConsoleOutputter::class;
-        } else {
-            $outputter = HtmlOutputter::class;
-            $formatter = HtmlFormatter::class;
+        if (empty($this->vars)) {
+            return;
         }
+        $this->setDebugBacktrace();
         (new VarOutputter(
             $this->writer,
             $this->debugBacktrace,
-            new $formatter,
+            $this->formatter,
             ...$this->vars
-        ))->process(new $outputter);
+        ))->process($this->outputter);
     }
 
     final private function setDebugBacktrace(): void
