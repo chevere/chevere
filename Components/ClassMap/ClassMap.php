@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ClassMap;
 
-use Chevere\Exceptions\ClassMap\ClassNotMappedException;
-use Chevere\Interfaces\ClassMap\ClassMapInterface;
-use Chevere\Exceptions\Core\Exception;
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\ClassMap\ClassNotMappedException;
+use Chevere\Exceptions\Core\Exception;
+use Chevere\Interfaces\ClassMap\ClassMapInterface;
 use Ds\Map;
 
 final class ClassMap implements ClassMapInterface
@@ -73,7 +73,7 @@ final class ClassMap implements ClassMapInterface
     }
 
     /**
-     * @return array [classname => string, ]
+     * @return array [className => string, ]
      */
     public function toArray(): array
     {

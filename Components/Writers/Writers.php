@@ -43,22 +43,12 @@ final class Writers implements WritersInterface
         return $new;
     }
 
-    public function out(): WriterInterface
-    {
-        return $this->out;
-    }
-
     public function withError(WriterInterface $writer): WritersInterface
     {
         $new = clone $this;
         $new->error = $writer;
 
         return $new;
-    }
-
-    public function error(): WriterInterface
-    {
-        return $this->error;
     }
 
     public function withDebug(WriterInterface $writer): WritersInterface
@@ -69,17 +59,27 @@ final class Writers implements WritersInterface
         return $new;
     }
 
-    public function debug(): WriterInterface
-    {
-        return $this->debug;
-    }
-
     public function withLog(WriterInterface $writer): WritersInterface
     {
         $new = clone $this;
         $new->log = $writer;
 
         return $new;
+    }
+
+    public function out(): WriterInterface
+    {
+        return $this->out;
+    }
+
+    public function error(): WriterInterface
+    {
+        return $this->error;
+    }
+
+    public function debug(): WriterInterface
+    {
+        return $this->debug;
     }
 
     public function log(): WriterInterface

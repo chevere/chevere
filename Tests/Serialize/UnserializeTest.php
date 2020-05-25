@@ -34,8 +34,8 @@ final class UnserializeTest extends TestCase
     {
         $object = $this->getStdClass();
         $objectClass = get_class($object);
-        $serialized = new Serialize(new VarExportable($object));
-        $unserialize = new Unserialize($serialized->toString());
+        $serialized = serialize($object);
+        $unserialize = new Unserialize($serialized);
         $this->assertEquals($objectClass, $unserialize->type()->typeHinting());
         $this->assertEquals($object, $unserialize->var());
         $this->assertInstanceOf($objectClass, $unserialize->var());

@@ -15,20 +15,23 @@ namespace Chevere\Interfaces\VarExportable;
 
 interface VarExportableInterface
 {
+    /**
+     * @param mixed $var
+     */
     public function __construct($var);
 
     /**
-     * Provides access to $var.
+     * @return mixed Provides access to $var
      */
     public function var();
 
     /**
-     * Returns var_export($var, true).
+     * @return string var_export($var, true)
      */
     public function toExport();
 
     /**
-     * Returns serialize() on $var.
+     * @return string serialize($var)
      */
     public function toSerialize(): string;
 }
