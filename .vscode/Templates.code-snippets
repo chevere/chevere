@@ -4,78 +4,74 @@
         "prefix": "interface",
         "body": [
             "<?php",
-            "namespace Chevere\\Interfaces\\X;",
+            "namespace Chevere\\Interfaces\\\\${TM_DIRECTORY/(^.+\\/(.*)$)/$2/};",
             "",
-            "interface NameInterface",
+            "interface $TM_FILENAME_BASE",
             "{",
             "}"
         ]
     },
     "test": {
-        "description": "inserts a new test",
+        "description": "creates a new test",
         "prefix": "test",
         "body": [
             "<?php",
-            "namespace Chevere\\Tests\\X;",
+            "namespace Chevere\\Tests\\\\${TM_DIRECTORY/(^.+\\/(.*)$)/$2/};",
             "",
             "use PHPUnit\\Framework\\TestCase;",
             "",
-            "final class NameTest extends TestCase",
+            "final class $TM_FILENAME_BASE extends TestCase",
             "{",
             "}"
         ]
     },
     "test-method": {
-        "description": "inserts a new test method",
+        "description": "creates a new test method",
         "prefix": "test-method",
         "body": [
-            "public function testX(): void",
+            "public function test${1:Name}(): void",
             "{",
             "}"
         ]
     },
-    "class": {
-        "description": "inserts a new component",
+    "component": {
+        "description": "creates a new component",
         "prefix": "component",
         "body": [
             "<?php",
-            "namespace Chevere\\Components\\X;",
+            "namespace Chevere\\Components\\\\${TM_DIRECTORY/(^.+\\/(.*)$)/$2/};",
             "",
-            "final class Name",
+            "final class $TM_FILENAME_BASE",
             "{",
             "}"
         ]
     },
-    "constructor": {
-        "description": "inserts a constructor",
-        "prefix": "constructor",
-        "body": ["\tpublic function __construct()", "\t{", "\t", "\t}"]
-    },
     "exception": {
-        "description": "inserts a exception",
+        "description": "creates a exception",
         "prefix": "exception",
         "body": [
             "<?php",
-            "namespace Chevere\\Components\\X\\Exceptions;",
+            "namespace Chevere\\Exceptions\\\\${TM_DIRECTORY/(^.+\\/(.*)$)/$2/};",
             "",
             "use Chevere\\Components\\ExceptionHandler\\Exceptions\\Exception;",
             "",
             "/**",
-            " * Exception thrown when _____.",
+            " * Exception thrown when ${1:description}.",
             " */",
-            "final class NameException extends Exception",
+            "final class $TM_FILENAME_BASE extends Exception",
             "{",
             "}"
         ]
     },
     "trait": {
-        "description": "inserts a trait",
+        "description": "creates a trait",
         "prefix": "trait",
         "body": [
             "<?php",
-            "namespace Chevere\\Components\\X\\Traits;",
+            "namespace Chevere\\Components\\\\${TM_DIRECTORY/(^.+\\/(.*)$)/$2/}\\\\Traits;",
+
             "",
-            "trait NameTrait",
+            "trait $TM_FILENAME_BASE",
             "{",
             "}"
         ]
@@ -85,25 +81,20 @@
         "prefix": "docblock-construct",
         "body": ["/**", " * Does?", " */"]
     },
-    "docblock-inherith": {
-        "description": "inserts a docblock @inherith",
-        "prefix": "docblock-inherith",
-        "body": ["/**", " * {@inheritdoc}", " */"]
-    },
     "docblock-instance": {
         "description": "inserts a docblock instance",
         "prefix": "docblock-instance",
-        "body": ["/**", " * Provides access to the X instance.", " */"]
+        "body": ["/**", " * Provides access to the ${1:name} instance.", " */"]
     },
-    "docblock-inmutable": {
-        "description": "inserts a docblock inmutable",
-        "prefix": "docblock-inmutable",
+    "docblock-immutable": {
+        "description": "inserts a docblock immutable",
+        "prefix": "docblock-immutable",
         "body": [
             "/**",
-            " * Return an instance with the specified X.",
+            " * Return an instance with the specified ${1:name}.",
             " *",
             " * This method MUST retain the state of the current instance, and return",
-            " * an instance that contains the specified X.",
+            " * an instance that contains the specified ${1:name}.",
             " */"
         ]
     },
@@ -112,7 +103,7 @@
         "prefix": "docblock-boolean",
         "body": [
             "/**",
-            " * Returns a boolean indicating whether the instance has a X.",
+            " * Returns a boolean indicating whether the instance has a ${1:name}.",
             " */"
         ]
     }

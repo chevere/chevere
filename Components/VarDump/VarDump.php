@@ -50,7 +50,6 @@ final class VarDump implements VarDumpInterface
         return $new;
     }
 
-    // Set the shift int, it will be used to remove self-related traces
     public function withShift(int $shift): VarDumpInterface
     {
         $new = clone $this;
@@ -70,7 +69,8 @@ final class VarDump implements VarDumpInterface
             $this->debugBacktrace,
             $this->formatter,
             ...$this->vars
-        ))->process($this->outputter);
+        ))
+            ->process($this->outputter);
     }
 
     final private function setDebugBacktrace(): void
