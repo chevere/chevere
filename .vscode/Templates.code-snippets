@@ -1,6 +1,6 @@
 {
     "interface": {
-        "description": "inserts a new interface",
+        "description": "Create an interface",
         "prefix": "interface",
         "body": [
             "<?php",
@@ -12,7 +12,7 @@
         ]
     },
     "test": {
-        "description": "creates a new test",
+        "description": "Create a test",
         "prefix": "test",
         "body": [
             "<?php",
@@ -26,7 +26,7 @@
         ]
     },
     "test-method": {
-        "description": "creates a new test method",
+        "description": "Create a test method",
         "prefix": "test-method",
         "body": [
             "public function test${1:Name}(): void",
@@ -35,7 +35,7 @@
         ]
     },
     "component": {
-        "description": "creates a new component",
+        "description": "Create a component",
         "prefix": "component",
         "body": [
             "<?php",
@@ -47,7 +47,7 @@
         ]
     },
     "exception": {
-        "description": "creates a exception",
+        "description": "Create an exception",
         "prefix": "exception",
         "body": [
             "<?php",
@@ -64,7 +64,7 @@
         ]
     },
     "trait": {
-        "description": "creates a trait",
+        "description": "Create a trait",
         "prefix": "trait",
         "body": [
             "<?php",
@@ -77,17 +77,17 @@
         ]
     },
     "docblock-construct": {
-        "description": "inserts a docblock construct",
+        "description": "Insert a docblock construct",
         "prefix": "docblock-construct",
         "body": ["/**", " * Does?", " */"]
     },
     "docblock-instance": {
-        "description": "inserts a docblock instance",
+        "description": "Insert a docblock instance",
         "prefix": "docblock-instance",
         "body": ["/**", " * Provides access to the ${1:name} instance.", " */"]
     },
     "docblock-immutable": {
-        "description": "inserts a docblock immutable",
+        "description": "Insert a docblock immutable",
         "prefix": "docblock-immutable",
         "body": [
             "/**",
@@ -99,7 +99,7 @@
         ]
     },
     "docblock-boolean": {
-        "description": "inserts a docblock boolean",
+        "description": "Insert a docblock boolean",
         "prefix": "docblock-boolean",
         "body": [
             "/**",
