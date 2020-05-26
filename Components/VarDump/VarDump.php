@@ -17,6 +17,7 @@ use Chevere\Interfaces\VarDump\FormatterInterface;
 use Chevere\Interfaces\VarDump\OutputterInterface;
 use Chevere\Interfaces\VarDump\VarDumpInterface;
 use Chevere\Interfaces\Writers\WriterInterface;
+use function DeepCopy\deep_copy;
 
 final class VarDump implements VarDumpInterface
 {
@@ -73,7 +74,17 @@ final class VarDump implements VarDumpInterface
             ->process($this->outputter);
     }
 
-    final private function setDebugBacktrace(): void
+    public function vars(): array
+    {
+        return deep_copy($this->vars);
+    }
+
+    public function shift(): int
+    {
+        return $this->shift;
+    }
+
+    private function setDebugBacktrace(): void
     {
         // 0: helper or maker (like xdd), 1: where 0 got called
         $this->debugBacktrace = debug_backtrace();

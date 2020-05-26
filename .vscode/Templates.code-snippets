@@ -34,6 +34,21 @@
             "}"
         ]
     },
+    "immutable-method": {
+        "description": "Create a immutable method",
+        "prefix": "immutable-method",
+        "body": [
+            "private ${2|int,string,bool,array,object,resource|} \\$${3:argument};",
+            "",
+            "public function with${1:Name}(${2|int,string,bool,array,object,resource|} \\$${3:argument}): ${4:self}",
+            "{",
+            "\t\\$new = clone \\$this;",
+            "\t\\$new->${3:argument} = \\$${3:argument};",
+            "",
+            "\treturn \\$new;",
+            "}"
+        ]
+    },
     "component": {
         "description": "Create a component",
         "prefix": "component",
@@ -53,7 +68,7 @@
             "<?php",
             "namespace Chevere\\Exceptions\\\\${TM_DIRECTORY/(^.+\\/(.*)$)/$2/};",
             "",
-            "use Chevere\\Components\\ExceptionHandler\\Exceptions\\Exception;",
+            "use Chevere\\Exceptions\\Core\\Exception;",
             "",
             "/**",
             " * Exception thrown when ${1:description}.",
@@ -69,7 +84,6 @@
         "body": [
             "<?php",
             "namespace Chevere\\Components\\\\${TM_DIRECTORY/(^.+\\/(.*)$)/$2/}\\\\Traits;",
-
             "",
             "trait $TM_FILENAME_BASE",
             "{",

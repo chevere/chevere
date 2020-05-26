@@ -23,14 +23,14 @@ interface VarDumpInterface
     public function __construct(
         WriterInterface $writer,
         FormatterInterface $formatter,
-        OutputterInterface $outpuStter
+        OutputterInterface $outputter
     );
 
     /**
-     * Return an instance with the specified X.
+     * Return an instance with the specified vars.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified X.
+     * an instance that contains the specified vars.
      */
     public function withVars(...$vars): VarDumpInterface;
 
@@ -48,4 +48,15 @@ interface VarDumpInterface
      * Streams the dump to the $writer
      */
     public function stream(): void;
+
+    /**
+     * @return array the vars array.
+     * @immutable
+     */
+    public function vars(): array;
+
+    /**
+     * @return int the shift value.
+     */
+    public function shift(): int;
 }

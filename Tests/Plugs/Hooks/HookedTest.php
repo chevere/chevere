@@ -16,10 +16,10 @@ namespace Chevere\Tests\Plugs\Hooks;
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Exceptions\Plugin\PluggableNotRegisteredException;
 use Chevere\Components\Plugin\Plugins;
 use Chevere\Components\Plugs\Hooks\HooksQueue;
 use Chevere\Components\Plugs\Hooks\HooksRunner;
+use Chevere\Exceptions\Plugin\PluggableNotRegisteredException;
 use Chevere\Tests\Plugs\Hooks\_resources\TestHookable;
 use Chevere\Tests\Plugs\Hooks\_resources\TestHookableNoRegister;
 use Chevere\Tests\Plugs\Hooks\_resources\TestHookableWithoutHooks;
@@ -36,6 +36,7 @@ final class HookedTest extends TestCase
             ->path()->absolute();
         $this->plugs = new Plugins(
             (new ClassMap)
+                ->withStrict(false)
                 ->withPut(
                     'Chevere\Tests\Plugs\Hooks\_resources\TestHookable',
                     $hooksPath . 'Chevere/Components/Hooks/Tests/TestHookable/hooks.php'

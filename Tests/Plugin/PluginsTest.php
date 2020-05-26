@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Tests\Plugin;
 
 use Chevere\Components\ClassMap\ClassMap;
-use Chevere\Exceptions\Core\RuntimeException;
-use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Plugin\Plugins;
+use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Plugin\PluggableNotRegisteredException;
 use Chevere\Exceptions\Plugin\PlugsFileNotExistsException;
 use Chevere\Exceptions\Plugin\PlugsQueueInterfaceException;
+use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
-use Chevere\Components\Plugin\Plugins;
 use PHPUnit\Framework\TestCase;
 
 final class PluginsTest extends TestCase
@@ -51,7 +51,9 @@ final class PluginsTest extends TestCase
         $pluggable = 'registered';
         $map = uniqid() . '.php';
         $plugins = new Plugins(
-            (new ClassMap)->withPut($pluggable, $map)
+            (new ClassMap)
+                ->withStrict(false)
+                ->withPut($pluggable, $map)
         );
         $this->expectException(PlugsFileNotExistsException::class);
         $plugins->getPlugsQueue($pluggable);
@@ -62,7 +64,9 @@ final class PluginsTest extends TestCase
         $pluggable = 'registered';
         $map = $this->resourcesPath->getChild('invalid.php')->absolute();
         $plugins = new Plugins(
-            (new ClassMap)->withPut($pluggable, $map)
+            (new ClassMap)
+                ->withStrict(false)
+                ->withPut($pluggable, $map)
         );
         $this->expectException(PlugsQueueInterfaceException::class);
         $plugins->getPlugsQueue($pluggable);
@@ -73,7 +77,9 @@ final class PluginsTest extends TestCase
         $pluggable = 'registered';
         $map = $this->resourcesPath->getChild('corrupted.php')->absolute();
         $plugins = new Plugins(
-            (new ClassMap)->withPut($pluggable, $map)
+            (new ClassMap)
+                ->withStrict(false)
+                ->withPut($pluggable, $map)
         );
         $this->expectException(RuntimeException::class);
         $plugins->getPlugsQueue($pluggable);
@@ -84,7 +90,9 @@ final class PluginsTest extends TestCase
         $pluggable = 'registered';
         $map = $this->resourcesPath->getChild('hooks.php')->absolute();
         $plugins = new Plugins(
-            (new ClassMap)->withPut($pluggable, $map)
+            (new ClassMap)
+                ->withStrict(false)
+                ->withPut($pluggable, $map)
         );
         $this->assertInstanceOf(
             PlugsQueueInterface::class,
