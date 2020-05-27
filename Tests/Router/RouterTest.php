@@ -66,8 +66,7 @@ final class RouterTest extends TestCase
 
     public function testWithRoutables(): void
     {
-        $routables = new Routables;
-        $routables->put($this->routable);
+        $routables = (new Routables)->withPut($this->routable);
         $router = (new Router)->withRoutables($routables);
         $this->assertCount(1, $router->routables()->map());
         $this->assertTrue($router->routables()->hasKey(

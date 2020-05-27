@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec;
 
 use Chevere\Components\Cache\CacheKey;
+use Chevere\Components\VarExportable\VarExportable;
 use Chevere\Interfaces\Cache\CacheInterface;
 use Chevere\Interfaces\Spec\SpecIndexCacheInterface;
 use Chevere\Interfaces\Spec\SpecIndexInterface;
-use Chevere\Components\VarExportable\VarExportable;
+use Chevere\Interfaces\Spec\SpecMethodsInterface;
 
 // Add this header to all responses: Link: </spec/api/routes.json>; rel="describedby"
 final class SpecIndexCache implements SpecIndexCacheInterface
@@ -36,7 +37,7 @@ final class SpecIndexCache implements SpecIndexCacheInterface
         return $this->cache->exists($cacheKey);
     }
 
-    public function get(string $routeName): SpecMethods
+    public function get(string $routeName): SpecMethodsInterface
     {
         $cacheKey = new CacheKey($routeName);
 
@@ -47,7 +48,7 @@ final class SpecIndexCache implements SpecIndexCacheInterface
     {
         /**
          * @var string $routeName
-         * @var SpecMethods $specMethods
+         * @var SpecMethodsInterface $specMethods
          */
         foreach ($specIndex->specIndexMap()->map() as $routeName => $specMethods) {
             $this->cache = $this->cache->withPut(

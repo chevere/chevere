@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Middleware\MiddlewareNameCollection;
 use Chevere\Interfaces\Middleware\MiddlewareNameCollectionInterface;
 use Chevere\Interfaces\Middleware\MiddlewareNameInterface;
-use Chevere\Components\Middleware\MiddlewareNameCollection;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Route\RouteEndpointsInterface;
 use Chevere\Interfaces\Route\RouteInterface;
@@ -99,7 +99,7 @@ final class Route implements RouteInterface
             }
             $endpoint = $endpoint->withoutParameter($wildcard->name());
         }
-        $new->endpoints->put($endpoint);
+        $new->endpoints = $new->endpoints->withPut($endpoint);
 
         return $new;
     }

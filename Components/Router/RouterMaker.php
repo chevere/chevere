@@ -14,13 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
-use Chevere\Interfaces\Regex\RegexInterface;
 use Chevere\Components\Regex\Regex;
-use Chevere\Interfaces\Route\RouteInterface;
 use Chevere\Exceptions\Router\RouteKeyConflictException;
 use Chevere\Exceptions\Router\RouteNameConflictException;
 use Chevere\Exceptions\Router\RoutePathExistsException;
 use Chevere\Exceptions\Router\RouterMakerException;
+use Chevere\Interfaces\Regex\RegexInterface;
+use Chevere\Interfaces\Route\RouteInterface;
 use Chevere\Interfaces\Router\RoutableInterface;
 use Chevere\Interfaces\Router\RouterInterface;
 use Chevere\Interfaces\Router\RouterMakerInterface;
@@ -69,7 +69,7 @@ final class RouterMaker implements RouterMakerInterface
         $new->assertUniqueName($route);
         $new->assertUniqueRoutePathKey($route);
         $routeName = $route->name()->toString();
-        $new->routables->put($routable);
+        $new->routables = $new->routables->withPut($routable);
         /** @var \Ds\TValue $routeNameValue */
         $routeNameValue = $routeName;
         /** @var \Ds\TKey $regexKey */

@@ -14,15 +14,19 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Interfaces\Spec\SpecMethodsInterface;
 
-final class SpecMethods
+final class SpecMethods implements SpecMethodsInterface
 {
     use DsMapTrait;
 
-    public function put(string $name, string $jsonPath): void
+    public function withPut(string $name, string $jsonPath): SpecMethodsInterface
     {
+        $new = clone $this;
         /** @var \Ds\TKey $name */
-        $this->map->put($name, /** @scrutinizer ignore-type */ $jsonPath);
+        $new->map->put($name, /** @scrutinizer ignore-type */ $jsonPath);
+
+        return $new;
     }
 
     public function hasKey(string $name): bool

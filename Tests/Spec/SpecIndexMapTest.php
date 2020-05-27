@@ -16,7 +16,6 @@ namespace Chevere\Tests\Spec;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Spec\SpecIndexMap;
 use Chevere\Components\Spec\SpecMethods;
-use Ds\Map;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
@@ -35,8 +34,7 @@ final class SpecIndexMapTest extends TestCase
     {
         $routeName = new RouteName('route-name');
         $specMethods = new SpecMethods;
-        $specIndexMap = new SpecIndexMap;
-        $specIndexMap->put($routeName->toString(), $specMethods);
+        $specIndexMap = (new SpecIndexMap)->withPut($routeName->toString(), $specMethods);
         $this->assertTrue($specIndexMap->hasKey($routeName->toString()));
         $this->assertSame(
             $specMethods,

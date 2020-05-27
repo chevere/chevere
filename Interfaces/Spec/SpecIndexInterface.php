@@ -15,8 +15,9 @@ namespace Chevere\Interfaces\Spec;
 
 use Chevere\Components\Spec\SpecIndexMap;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
+use Chevere\Interfaces\DataStructures\DsMapInterface;
 
-interface SpecIndexInterface
+interface SpecIndexInterface extends DsMapInterface
 {
     public function withOffset(
         string $routeName,

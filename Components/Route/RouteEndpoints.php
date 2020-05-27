@@ -21,11 +21,14 @@ final class RouteEndpoints implements RouteEndpointsInterface
 {
     use DsMapTrait;
 
-    public function put(RouteEndpointInterface $routeEndpoint): void
+    public function withPut(RouteEndpointInterface $routeEndpoint): RouteEndpointsInterface
     {
         /** @var \Ds\TKey $key */
         $key = $routeEndpoint->method()->name();
-        $this->map->put($key, $routeEndpoint);
+        $new = clone $this;
+        $new->map->put($key, $routeEndpoint);
+
+        return $new;
     }
 
     public function hasKey(string $key): bool

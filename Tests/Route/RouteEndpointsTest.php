@@ -32,12 +32,11 @@ final class RouteEndpointsTest extends TestCase
         $routeEndpoints->get($method->name());
     }
 
-    public function testPut(): void
+    public function testWithPut(): void
     {
         $method = new GetMethod;
         $routeEndpoint = new RouteEndpoint($method, new TestController);
-        $routeEndpoints = new RouteEndpoints;
-        $routeEndpoints->put($routeEndpoint);
+        $routeEndpoints = (new RouteEndpoints)->withPut($routeEndpoint);
         $this->assertTrue($routeEndpoints->hasKey($method->name()));
         $this->assertSame($routeEndpoints->get($method->name()), $routeEndpoint);
     }

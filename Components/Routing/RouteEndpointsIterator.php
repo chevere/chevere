@@ -13,23 +13,20 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing;
 
-use Chevere\Interfaces\Controller\ControllerInterface;
-use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
-use Chevere\Interfaces\Filesystem\DirInterface;
-use Chevere\Interfaces\Filesystem\PathInterface;
-use Chevere\Components\Message\Message;
-use Chevere\Interfaces\Route\RouteDecoratorInterface;
-use Chevere\Interfaces\Route\RouteEndpointInterface;
-use Chevere\Interfaces\Route\RouteEndpointsInterface;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteEndpoints;
-use Chevere\Exceptions\Routing\ExpectingControllerException;
-use Chevere\Exceptions\Routing\ExpectingRouteNameException;
-use Chevere\Interfaces\Routing\RouteEndpointIteratorInterface;
 use Chevere\Components\Type\Type;
+use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
+use Chevere\Exceptions\Routing\ExpectingControllerException;
+use Chevere\Interfaces\Controller\ControllerInterface;
+use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Filesystem\PathInterface;
+use Chevere\Interfaces\Route\RouteEndpointInterface;
+use Chevere\Interfaces\Route\RouteEndpointsInterface;
+use Chevere\Interfaces\Routing\RouteEndpointIteratorInterface;
 
 final class RouteEndpointsIterator implements RouteEndpointIteratorInterface
 {
@@ -49,22 +46,11 @@ final class RouteEndpointsIterator implements RouteEndpointIteratorInterface
                 continue;
             }
             $method = RouteEndpointInterface::KNOWN_METHODS[$name];
-            $controller = $this->getVar($controllerPath);
-            $routeEndpoint = new RouteEndpoint(new $method, $controller);
-            if (!(new Type(RouteEndpointInterface::class))->validate($routeEndpoint)) {
-                $provided = is_object($routeEndpoint)
-                    ? get_class($routeEndpoint)
-                    : gettype($routeEndpoint);
-                if ($provided === 'object') {
-                    throw new ExpectingRouteNameException(
-                        (new Message('Expecting file return object implementing interface %interfaceName%, type %provided% provided in %fileName%'))
-                        ->code('%interfaceName%', RouteDecoratorInterface::class)
-                        ->code('%provided%', $provided)
-                        ->strong('%fileName%', $controllerPath->absolute())
-                    );
-                }
-            }
-            $this->routeEndpoints->put($routeEndpoint);
+            $controller = $this->getController($controllerPath);
+            $this->routeEndpoints = $this->routeEndpoints
+                ->withPut(
+                    new RouteEndpoint(new $method, $controller)
+                );
         }
     }
 
@@ -73,7 +59,7 @@ final class RouteEndpointsIterator implements RouteEndpointIteratorInterface
         return $this->routeEndpoints;
     }
 
-    private function getVar(PathInterface $path): ControllerInterface
+    private function getController(PathInterface $path): ControllerInterface
     {
         try {
             return (new FilePhpReturn(new FilePhp(new File($path))))

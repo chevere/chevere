@@ -13,9 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Route;
 
+use Chevere\Interfaces\DataStructures\DsMapInterface;
 use Countable;
 
-interface RouteEndpointsInterface extends Countable
+interface RouteEndpointsInterface extends DsMapInterface
 {
     /**
      * @return string[] The known keys.
@@ -23,14 +24,12 @@ interface RouteEndpointsInterface extends Countable
     public function keys(): array;
 
     /**
-     * @return int The number of entries.
+     * Return an instance with the specified RouteEndpoint.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified RouteEndpoint.
      */
-    public function count(): int;
-
-    /**
-     * Put the $routeEndpoint in the stock. It will be mapped by $method name.
-     */
-    public function put(RouteEndpointInterface $routeEndpoint): void;
+    public function withPut(RouteEndpointInterface $routeEndpoint): RouteEndpointsInterface;
 
     /**
      * Returns a boolean indicating whether the instance has $key.

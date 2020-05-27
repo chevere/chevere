@@ -17,21 +17,12 @@ use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponse;
-use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
-use Chevere\Interfaces\Controller\ControllerParametersInterface;
-use Chevere\Interfaces\Controller\ControllerResponseInterface;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Regex\Regex;
-use Chevere\Interfaces\Route\RouteInterface;
-use Chevere\Interfaces\Route\RouteWildcardInterface;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Exceptions\Router\RouterCacheNotFoundException;
-use Chevere\Interfaces\Router\RouterCacheInterface;
-use Chevere\Interfaces\Router\RouterIndexInterface;
-use Chevere\Interfaces\Router\RouterRegexInterface;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Routables;
 use Chevere\Components\Router\Router;
@@ -39,6 +30,15 @@ use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Router\RouterIndex;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Router\RouterRegex;
+use Chevere\Exceptions\Router\RouterCacheNotFoundException;
+use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
+use Chevere\Interfaces\Controller\ControllerParametersInterface;
+use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Interfaces\Route\RouteInterface;
+use Chevere\Interfaces\Route\RouteWildcardInterface;
+use Chevere\Interfaces\Router\RouterCacheInterface;
+use Chevere\Interfaces\Router\RouterIndexInterface;
+use Chevere\Interfaces\Router\RouterRegexInterface;
 use PHPUnit\Framework\TestCase;
 
 final class RouterCacheTest extends TestCase
@@ -103,8 +103,7 @@ final class RouterCacheTest extends TestCase
         $routable = new Routable($route);
         $index = (new RouterIndex)->withAdded($routable, 'test-group');
         $routable = new Routable($route);
-        $routables = new Routables;
-        $routables->put($routable);
+        $routables = (new Routables)->withPut($routable);
         $router = $router
             ->withRoutables($routables)
             ->withRegex($regex)

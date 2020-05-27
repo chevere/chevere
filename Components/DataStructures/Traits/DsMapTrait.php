@@ -20,22 +20,27 @@ trait DsMapTrait
 {
     private Map $map;
 
-    final public function __construct()
+    public function __construct()
     {
         $this->map = new Map;
     }
 
-    final public function keys(): array
+    public function __clone()
+    {
+        $this->map = $this->map();
+    }
+
+    public function keys(): array
     {
         return $this->map->keys()->toArray();
     }
 
-    final public function count(): int
+    public function count(): int
     {
         return $this->map->count();
     }
 
-    final public function map(): Map
+    public function map(): Map
     {
         return deep_copy($this->map);
     }

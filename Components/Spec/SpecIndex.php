@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
-use Chevere\Interfaces\Spec\SpecIndexInterface;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
+use Chevere\Interfaces\Spec\SpecIndexInterface;
+use Ds\Map;
 use OutOfBoundsException;
 use function DeepCopy\deep_copy;
 
@@ -30,6 +31,7 @@ final class SpecIndex implements SpecIndexInterface
 
     public function __construct()
     {
+        $this->map = new Map;
         $this->specIndexMap = new SpecIndexMap;
     }
 
@@ -42,13 +44,16 @@ final class SpecIndex implements SpecIndexInterface
             $specMethods = $new->specIndexMap->get($routeName);
         } else {
             $specMethods = new SpecMethods;
-            $new->specIndexMap->put($routeName, $specMethods);
+            $new->specIndexMap = $new->specIndexMap
+                ->withPut($routeName, $specMethods);
         }
-        $specMethods->put(
-            $routeEndpointSpec->key(),
-            $routeEndpointSpec->jsonPath()
-        );
-        $new->specIndexMap->put($routeName, $specMethods);
+        $specMethods = $specMethods
+            ->withPut(
+                $routeEndpointSpec->key(),
+                $routeEndpointSpec->jsonPath()
+            );
+        $new->specIndexMap = $new->specIndexMap
+            ->withPut($routeName, $specMethods);
 
         return $new;
     }

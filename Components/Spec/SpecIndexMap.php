@@ -14,18 +14,23 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Interfaces\Spec\SpecIndexMapInterface;
+use Chevere\Interfaces\Spec\SpecMethodsInterface;
 
 /**
  * A type-hinted proxy for Ds\Map storing (int) routeId => [(string) methodName => (string) specJsonPath,]
  */
-final class SpecIndexMap
+final class SpecIndexMap implements SpecIndexMapInterface
 {
     use DsMapTrait;
 
-    public function put(string $name, SpecMethods $specMethods): void
+    public function withPut(string $name, SpecMethodsInterface $specMethods): SpecIndexMapInterface
     {
+        $new = clone $this;
         /** @var \Ds\TKey $name */
-        $this->map->put($name, $specMethods);
+        $new->map->put($name, $specMethods);
+
+        return $new;
     }
 
     public function hasKey(string $name): bool
@@ -33,11 +38,11 @@ final class SpecIndexMap
         return $this->map->hasKey(/** @scrutinizer ignore-type */ $name);
     }
 
-    public function get(string $name): SpecMethods
+    public function get(string $name): SpecMethodsInterface
     {
         /**
          * @var \Ds\TKey $name
-         * @var SpecMethods $return
+         * @var SpecMethodsInterface $return
          */
         $return = $this->map->get($name);
 

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
+use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use Chevere\Interfaces\Controller\ControllerParameterInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
-use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use OutOfBoundsException;
 
 final class ControllerParameters implements ControllerParametersInterface

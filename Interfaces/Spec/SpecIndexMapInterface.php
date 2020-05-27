@@ -13,13 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Spec;
 
-interface SpecIndexCacheInterface
+use Chevere\Interfaces\DataStructures\DsMapInterface;
+
+interface SpecIndexMapInterface extends DsMapInterface
 {
-    public function has(string $routeName): bool;
-
-    public function get(string $routeName): SpecMethodsInterface;
-
-    public function put(SpecIndexInterface $specIndex): void;
-
-    public function puts(): array;
 }

@@ -15,20 +15,24 @@ namespace Chevere\Components\Router;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use Chevere\Interfaces\Router\RoutableInterface;
+use Chevere\Interfaces\Router\RoutablesInterface;
 
 /**
  * A container for Routable objects.
  */
 //
-final class Routables
+final class Routables implements RoutablesInterface
 {
     use DsMapTrait;
 
-    public function put(RoutableInterface $routable): void
+    public function withPut(RoutableInterface $routable): RoutablesInterface
     {
+        $new = clone $this;
         /** @var \Ds\TKey $key */
         $key = $routable->route()->name()->toString();
-        $this->map->put($key, $routable);
+        $new->map->put($key, $routable);
+
+        return $new;
     }
 
     public function hasKey(string $name): bool

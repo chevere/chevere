@@ -13,15 +13,22 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Controller;
 
+use Chevere\Interfaces\DataStructures\DsMapInterface;
 use Ds\Map;
 
-interface ControllerParametersInterface
+interface ControllerParametersInterface extends DsMapInterface
 {
     /**
      * @return Map [<string>name => <string>regex,]
      */
     public function map(): Map;
 
+    /**
+     * Return an instance with the specified Controller Parameter.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified Controller Parameter.
+     */
     public function withParameter(ControllerParameterInterface $controllerParameter): ControllerParametersInterface;
 
     public function hasParameterName(string $name): bool;
