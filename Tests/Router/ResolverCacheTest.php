@@ -16,10 +16,10 @@ namespace Chevere\Tests\Router;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Exceptions\Router\RouteCacheNotFoundException;
-use Chevere\Exceptions\Router\RouteCacheTypeException;
 use Chevere\Components\Router\RouteResolve;
 use Chevere\Components\Router\RouteResolvesCache;
+use Chevere\Exceptions\Router\RouteCacheNotFoundException;
+use Chevere\Exceptions\Router\RouteCacheTypeException;
 use PHPUnit\Framework\TestCase;
 
 final class ResolverCacheTest extends TestCase

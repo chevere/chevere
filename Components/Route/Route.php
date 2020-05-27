@@ -22,6 +22,7 @@ use Chevere\Interfaces\Route\RouteEndpointsInterface;
 use Chevere\Interfaces\Route\RouteInterface;
 use Chevere\Interfaces\Route\RouteNameInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
+use Chevere\Interfaces\Route\RouteWildcardInterface;
 use InvalidArgumentException;
 use LogicException;
 use OutOfBoundsException;
@@ -73,8 +74,7 @@ final class Route implements RouteInterface
     public function withAddedEndpoint(RouteEndpointInterface $endpoint): RouteInterface
     {
         $new = clone $this;
-        /** @var RouteWildcard $wildcard */
-        foreach ($new->routePath->wildcards()->toArray() as $wildcard) {
+        foreach ($new->routePath->wildcards()->getGenerator() as $wildcard) {
             $new->assertWildcardEndpoint($wildcard, $endpoint);
             $wildcardMustRegex = $new->wildcards[$wildcard->name()] ?? null;
             $regex = $endpoint->controller()->parameters()
@@ -127,7 +127,7 @@ final class Route implements RouteInterface
      * @throws InvalidArgumentException If the controller doesn't take parameters
      * @throws OutOfBoundsException If wildcard binds to inexistent controller parameter name
      */
-    private function assertWildcardEndpoint(RouteWildcard $wildcard, RouteEndpoint $endpoint): void
+    private function assertWildcardEndpoint(RouteWildcardInterface $wildcard, RouteEndpointInterface $endpoint): void
     {
         if ($endpoint->controller()->parameters()->map()->count() === 0) {
             throw new InvalidArgumentException(

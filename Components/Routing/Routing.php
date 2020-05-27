@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Routing;
 
 use Chevere\Components\Route\Route;
+use Chevere\Components\Router\Routable;
 use Chevere\Interfaces\Router\RouterInterface;
 use Chevere\Interfaces\Router\RouterMakerInterface;
-use Chevere\Components\Router\Routable;
 use Chevere\Interfaces\Routing\FsRoutesMakerInterface;
 use Chevere\Interfaces\Routing\RoutingInterface;
 
@@ -37,7 +37,7 @@ final class Routing implements RoutingInterface
             $fsRoute = $fsRoutes->get($i);
             $routePath = $fsRoute->routePath();
             $routeDecorator = $fsRoute->routeDecorator();
-            foreach ($routeDecorator->wildcards()->toArray() as $routeWildcard) {
+            foreach ($routeDecorator->wildcards()->getGenerator() as $routeWildcard) {
                 $routePath = $routePath->withWildcard($routeWildcard);
             }
             $routeEndpointsMaker = new RouteEndpointsIterator($fsRoute->dir());

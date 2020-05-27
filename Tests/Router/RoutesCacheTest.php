@@ -17,21 +17,21 @@ use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponse;
-use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
-use Chevere\Interfaces\Controller\ControllerParametersInterface;
-use Chevere\Interfaces\Controller\ControllerResponseInterface;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Regex\Regex;
-use Chevere\Interfaces\Route\RouteInterface;
-use Chevere\Interfaces\Route\RouteNameInterface;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Exceptions\Router\RouteCacheNotFoundException;
-use Chevere\Interfaces\Router\RoutableInterface;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\RoutesCache;
+use Chevere\Exceptions\Router\RouteCacheNotFoundException;
+use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
+use Chevere\Interfaces\Controller\ControllerParametersInterface;
+use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Interfaces\Route\RouteInterface;
+use Chevere\Interfaces\Route\RouteNameInterface;
+use Chevere\Interfaces\Router\RoutableInterface;
 use PHPUnit\Framework\TestCase;
 use TypeError;
 
@@ -97,7 +97,7 @@ final class RoutesCacheTest extends TestCase
         $routesCache->get($id);
     }
 
-    public function _testGenerateCachedRoute(): void
+    public function testGenerateCachedRoute(): void
     {
         $this->expectNotToPerformAssertions();
         $routable = $this->getRoutable();

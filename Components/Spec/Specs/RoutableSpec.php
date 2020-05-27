@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Specs;
 
+use Chevere\Components\Spec\Specs\RouteEndpointSpecs;
+use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Router\RoutableInterface;
 use Chevere\Interfaces\Spec\SpecInterface;
 use Chevere\Interfaces\Spec\SpecPathInterface;
-use Chevere\Components\Spec\Specs\RouteEndpointSpecs;
-use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
 use function DeepCopy\deep_copy;
 
 final class RoutableSpec implements SpecInterface
@@ -47,7 +47,7 @@ final class RoutableSpec implements SpecInterface
         $this->jsonPath = $specGroupRoute->getChild('route.json')->pub();
         $this->path = $routable->route()->path()->toString();
         $this->regex = $routable->route()->path()->regex()->toNoDelimiters();
-        $this->wildcards = $routable->route()->path()->wildcards()->toArray();
+        $this->wildcards = $routable->route()->path()->wildcards()->map()->toArray();
         $routeEndpoints = $routable->route()->endpoints();
         /** @var string $key */
         foreach ($routeEndpoints->keys() as $key) {

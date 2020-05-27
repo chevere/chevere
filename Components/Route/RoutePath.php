@@ -15,8 +15,9 @@ namespace Chevere\Components\Route;
 
 use BadMethodCallException;
 use Chevere\Components\Message\Message;
-use Chevere\Interfaces\Regex\RegexInterface;
 use Chevere\Components\Regex\Regex;
+use Chevere\Components\Str\Str;
+use Chevere\Components\Str\StrBool;
 use Chevere\Exceptions\Route\RoutePathForwardSlashException;
 use Chevere\Exceptions\Route\RoutePathInvalidCharsException;
 use Chevere\Exceptions\Route\RoutePathUnmatchedBracesException;
@@ -24,11 +25,10 @@ use Chevere\Exceptions\Route\RoutePathUnmatchedWildcardsException as RoutePathUn
 use Chevere\Exceptions\Route\RouteWildcardNotFoundException;
 use Chevere\Exceptions\Route\RouteWildcardRepeatException;
 use Chevere\Exceptions\Route\RouteWildcardReservedException;
+use Chevere\Interfaces\Regex\RegexInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
 use Chevere\Interfaces\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Route\RouteWildcardsInterface;
-use Chevere\Components\Str\Str;
-use Chevere\Components\Str\StrBool;
 use LogicException;
 use Throwable;
 
@@ -124,7 +124,7 @@ final class RoutePath implements RoutePathInterface
 
     public function uriFor(array $wildcards): string
     {
-        if (!$this->routeWildcards->hasAny()) {
+        if ($this->routeWildcards->count() == 0) {
             throw new BadMethodCallException(
                 (new Message('This method should be called only if the %className% instance contains wildcards'))
                     ->code('%className%', __CLASS__)
@@ -263,7 +263,7 @@ final class RoutePath implements RoutePathInterface
         $pseudoRegex = str_replace('/', '\/', $this->key);
         $regex = self::REGEX_DELIMITER_CHAR . '^' . $pseudoRegex . '$' . self::REGEX_DELIMITER_CHAR;
         if (isset($this->routeWildcards)) {
-            foreach ($this->routeWildcards->toArray() as $pos => $wildcard) {
+            foreach ($this->routeWildcards->getGenerator() as $pos => $wildcard) {
                 $regex = str_replace(
                     "{{$pos}}",
                     '(' . $wildcard->match()->toString() . ')',

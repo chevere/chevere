@@ -13,79 +13,72 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
+use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Route\RouteWildcardsInterface;
+use Ds\Map;
+use Ds\Set;
+use function DeepCopy\deep_copy;
 
 final class RouteWildcards implements RouteWildcardsInterface
 {
-    /** @param array WildcardInterface[] */
-    private array $array;
+    use DsMapTrait;
 
-    /** @param array ['METHOD' => key,]*/
-    private array $index;
+    /** @param Map [pos => RouteWildcard,]*/
+    private Map $map;
+
+    /** @param Map [wildcardName => pos,]*/
+    private Map $index;
+
+    private int $pos = -1;
 
     public function __construct()
     {
-        $this->array = [];
-        $this->index = [];
+        $this->map = new Map;
+        $this->index = new Map;
+    }
+
+    public function __clone()
+    {
+        $this->map = deep_copy($this->map);
+        $this->index = deep_copy($this->index);
     }
 
     public function withAddedWildcard(RouteWildcardInterface $routeWildcard): RouteWildcardsInterface
     {
         $new = clone $this;
-        $new->addWildcard($routeWildcard);
+        if ($new->index->hasKey($routeWildcard->name())) {
+            $new->pos = $new->index->get($routeWildcard->name());
+        } else {
+            $new->pos++;
+        }
+        $new->index->put($routeWildcard->name(), $new->pos);
+        $new->map->put($new->pos, $routeWildcard);
 
         return $new;
     }
 
-    public function count(): int
+    public function has(string $wildcardName): bool
     {
-        return count($this->index);
+        return $this->index->hasKey($wildcardName);
     }
 
-    public function hasAny(): bool
+    public function get(string $wildcardName): RouteWildcardInterface
     {
-        return $this->index !== [];
-    }
+        $pos = $this->index->get($wildcardName);
 
-    public function has(RouteWildcardInterface $routeWildcard): bool
-    {
-        return in_array($routeWildcard->name(), $this->index);
-    }
-
-    public function get(RouteWildcardInterface $routeWildcard): RouteWildcardInterface
-    {
-        $pos = array_search($routeWildcard->name(), $this->index);
-
-        return $this->array[$pos];
+        return $this->map->get($pos);
     }
 
     public function hasPos(int $pos): bool
     {
-        return isset($this->array[$pos]);
+        return $this->map->hasKey($pos);
     }
 
     public function getPos(int $pos): RouteWildcardInterface
     {
-        return $this->array[$pos];
-    }
-
-    public function toArray(): array
-    {
-        return $this->array;
-    }
-
-    private function addWildcard(RouteWildcardInterface $routeWildcard): void
-    {
-        $name = $routeWildcard->name();
-        $pos = array_search($name, $this->index);
-        if (false !== $pos) {
-            $this->array[$pos] = $routeWildcard;
-            $this->index[$pos] = $name;
-
-            return;
-        }
-        $this->array[] = $routeWildcard;
-        $this->index[] = $name;
+        return $this->map[$pos];
     }
 }

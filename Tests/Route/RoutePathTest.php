@@ -14,8 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Tests\Route;
 
 use BadMethodCallException;
-use Chevere\Interfaces\Regex\RegexInterface;
 use Chevere\Components\Regex\Regex;
+use Chevere\Components\Route\RoutePath;
+use Chevere\Components\Route\RouteWildcard;
+use Chevere\Components\Route\RouteWildcardMatch;
 use Chevere\Exceptions\Route\RoutePathForwardSlashException;
 use Chevere\Exceptions\Route\RoutePathInvalidCharsException;
 use Chevere\Exceptions\Route\RoutePathUnmatchedBracesException;
@@ -23,10 +25,8 @@ use Chevere\Exceptions\Route\RoutePathUnmatchedWildcardsException;
 use Chevere\Exceptions\Route\RouteWildcardNotFoundException;
 use Chevere\Exceptions\Route\RouteWildcardRepeatException;
 use Chevere\Exceptions\Route\RouteWildcardReservedException;
+use Chevere\Interfaces\Regex\RegexInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
-use Chevere\Components\Route\RoutePath;
-use Chevere\Components\Route\RouteWildcard;
-use Chevere\Components\Route\RouteWildcardMatch;
 use PHPUnit\Framework\TestCase;
 
 final class RoutePathTest extends TestCase
@@ -75,14 +75,15 @@ final class RoutePathTest extends TestCase
         $this->assertSame($path, $routePath->toString());
         $this->assertSame($path, $routePath->key());
         $this->assertEquals($regex, $routePath->regex());
-        $this->assertFalse($routePath->wildcards()->hasAny());
+        $this->assertCount(0, $routePath->wildcards());
         $this->expectException(BadMethodCallException::class);
         $routePath->uriFor([]);
     }
 
-    public function testConstructWithWildcard(): void
+    public function testWithWildcard(): void
     {
-        $routeWildcard = new RouteWildcard('wildcard');
+        $wildcardName = 'wildcard';
+        $routeWildcard = new RouteWildcard($wildcardName);
         $path = '/test/' . $routeWildcard->toString() . '/test';
         $key = '/test/{0}/test';
         $regex = $this->wrapRegex('^' . str_replace('{0}', '(' . $routeWildcard->match()->toString() . ')', $key) . '$');
@@ -90,14 +91,16 @@ final class RoutePathTest extends TestCase
         $this->assertSame($path, $routePath->toString());
         $this->assertSame($key, $routePath->key());
         $this->assertEquals($regex, $routePath->regex());
-        $this->assertTrue($routePath->wildcards()->hasAny());
-        $this->assertTrue($routePath->wildcards()->has($routeWildcard));
+        $this->assertCount(1, $routePath->wildcards());
+        $this->assertTrue($routePath->wildcards()->has($wildcardName));
     }
 
-    public function testConstructWithWildcards(): void
+    public function testWithWildcards(): void
     {
-        $routeWildcard1 = new RouteWildcard('wildcard1');
-        $routeWildcard2 = new RouteWildcard('wildcard2');
+        $wildcardName1 = 'wildcard1';
+        $wildcardName2 = 'wildcard2';
+        $routeWildcard1 = new RouteWildcard($wildcardName1);
+        $routeWildcard2 = new RouteWildcard($wildcardName2);
         $path = '/test/' . $routeWildcard1->toString() . '/test/' . $routeWildcard2->toString();
         $key = '/test/{0}/test/{1}';
         $regex = $this->wrapRegex('^' . strtr($key, [
@@ -108,9 +111,9 @@ final class RoutePathTest extends TestCase
         $this->assertSame($path, $routePath->toString());
         $this->assertSame($key, $routePath->key());
         $this->assertEquals($regex, $routePath->regex());
-        $this->assertTrue($routePath->wildcards()->hasAny());
-        $this->assertTrue($routePath->wildcards()->has($routeWildcard1));
-        $this->assertTrue($routePath->wildcards()->has($routeWildcard2));
+        $this->assertCount(2, $routePath->wildcards());
+        $this->assertTrue($routePath->wildcards()->has($wildcardName1));
+        $this->assertTrue($routePath->wildcards()->has($wildcardName2));
     }
 
     public function testWithNoApplicableWildcard(): void
@@ -120,7 +123,7 @@ final class RoutePathTest extends TestCase
             ->withWildcard(new RouteWildcard('wildcard'));
     }
 
-    public function testRegex(): void
+    public function testWithWildcardRegex(): void
     {
         $match = '[a-z]+';
         $path = '/test/{id}';
