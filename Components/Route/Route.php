@@ -15,6 +15,8 @@ namespace Chevere\Components\Route;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Middleware\MiddlewareNameCollection;
+use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Exceptions\Core\RangeException;
 use Chevere\Interfaces\Middleware\MiddlewareNameCollectionInterface;
 use Chevere\Interfaces\Middleware\MiddlewareNameInterface;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
@@ -24,7 +26,6 @@ use Chevere\Interfaces\Route\RouteNameInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
 use Chevere\Interfaces\Route\RouteWildcardInterface;
 use InvalidArgumentException;
-use LogicException;
 use OutOfBoundsException;
 
 final class Route implements RouteInterface
@@ -67,12 +68,14 @@ final class Route implements RouteInterface
         return $this->maker;
     }
 
-    /**
-     * @throws InvalidArgumentException If the controller doesn't take parameters
-     * @throws OutOfBoundsException If wildcard binds to inexistent controller parameter name
-     */
     public function withAddedEndpoint(RouteEndpointInterface $endpoint): RouteInterface
     {
+        if ($this->endpoints->hasKey($endpoint->method()->name())) {
+            throw new OverflowException(
+                (new Message('Endpoint for method %method% has been already added'))
+                    ->code('%method%', $endpoint->method()->name())
+            );
+        }
         $new = clone $this;
         foreach ($new->routePath->wildcards()->getGenerator() as $wildcard) {
             $new->assertWildcardEndpoint($wildcard, $endpoint);
@@ -81,7 +84,7 @@ final class Route implements RouteInterface
                 ->get($wildcard->name())->regex();
             if (isset($wildcardMustRegex)) {
                 if ($regex->toString() !== $wildcardMustRegex) {
-                    throw new LogicException(
+                    throw new RangeException(
                         (new Message('Wildcard %wildcard% parameter regex %regex% (fist defined by %controller%) must be the same for all controllers in this route, regex %regexProvided% by %controllerProvided%'))
                             ->code('%wildcard%', $wildcard->toString())
                             ->code('%regex%', $wildcardMustRegex)

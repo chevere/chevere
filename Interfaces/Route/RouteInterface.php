@@ -40,12 +40,12 @@ interface RouteInterface
     public function maker(): array;
 
     /**
-     * Return an instance with the specified added RouteEndpointInterface.
+     * Return an instance with the specified added $routeEndpoint.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified added RouteEndpointInterface.
+     * an instance that contains the specified added $routeEndpoint.
      *
-     * Note: This method overrides any method already added.
+     * This method should allow to override any previous $routeEndpoint.
      */
     public function withAddedEndpoint(RouteEndpointInterface $routeEndpoint): RouteInterface;
 

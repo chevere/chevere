@@ -38,7 +38,7 @@ final class Routing implements RoutingInterface
             $routePath = $fsRoute->routePath();
             $routeDecorator = $fsRoute->routeDecorator();
             foreach ($routeDecorator->wildcards()->getGenerator() as $routeWildcard) {
-                $routePath = $routePath->withWildcard($routeWildcard);
+                $routePath = $routePath->withWildcard($routeWildcard); // @codeCoverageIgnore
             }
             $routeEndpointsMaker = new RouteEndpointsIterator($fsRoute->dir());
             $routeEndpoints = $routeEndpointsMaker->routeEndpoints();

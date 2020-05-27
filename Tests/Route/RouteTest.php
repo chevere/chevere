@@ -17,17 +17,20 @@ use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponse;
-use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
-use Chevere\Interfaces\Controller\ControllerParametersInterface;
-use Chevere\Interfaces\Controller\ControllerResponseInterface;
 use Chevere\Components\Http\Methods\GetMethod;
+use Chevere\Components\Http\Methods\PostMethod;
 use Chevere\Components\Middleware\MiddlewareName;
 use Chevere\Components\Regex\Regex;
-use Chevere\Interfaces\Route\RouteInterface;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
+use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Exceptions\Core\RangeException;
+use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
+use Chevere\Interfaces\Controller\ControllerParametersInterface;
+use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Interfaces\Route\RouteInterface;
 use Chevere\TestApp\App\Middlewares\TestMiddlewareVoid;
 use LogicException;
 use OutOfBoundsException;
@@ -52,7 +55,7 @@ final class RouteTest extends TestCase
         ], $route->maker());
     }
 
-    public function testWithEndpoint(): void
+    public function testWithAddedEndpoint(): void
     {
         $route = new Route(new RouteName('test'), new RoutePath('/test'));
         $method = new GetMethod;
@@ -63,7 +66,7 @@ final class RouteTest extends TestCase
         $this->assertSame($endpoint, $route->endpoints()->get($method->name()));
     }
 
-    public function testWithEndpointWrongWildcard(): void
+    public function testWithAddedEndpointWrongWildcard(): void
     {
         $route = new Route(new RouteName('test'), new RoutePath('/test/{foo}'));
         $method = new GetMethod;
@@ -73,7 +76,7 @@ final class RouteTest extends TestCase
         $route = $route->withAddedEndpoint($endpoint);
     }
 
-    public function testWildcardWrongParameterWithEndpoint(): void
+    public function testWithAddedEndpointWildcardWrongParameter(): void
     {
         $route = new Route(new RouteName('test'), new RoutePath('/test/{foo}'));
         $method = new GetMethod;
@@ -83,7 +86,7 @@ final class RouteTest extends TestCase
         $route = $route->withAddedEndpoint($endpoint);
     }
 
-    public function testWildcardParameterWithEndpoint(): void
+    public function testWithAddedEndpointWildcardParameter(): void
     {
         $route = new Route(new RouteName('test'), new RoutePath('/test/{id}'));
         $method = new GetMethod;
@@ -94,6 +97,27 @@ final class RouteTest extends TestCase
         $this->assertSame(
             [],
             $route->endpoints()->get($method->name())->parameters()
+        );
+    }
+
+    public function testWithAddedEnpointOverride(): void
+    {
+        $route = new Route(new RouteName('test'), new RoutePath('/test/{id}'));
+        $endpoint = new RouteEndpoint(new GetMethod, new RouteTestController);
+        $route = $route->withAddedEndpoint($endpoint);
+        $this->expectException(OverflowException::class);
+        $route->withAddedEndpoint($endpoint);
+    }
+
+    public function testWithAddedEndpointRegexConflict(): void
+    {
+        $route = new Route(new RouteName('test'), new RoutePath('/test/{id}'));
+        $route = $route->withAddedEndpoint(
+            new RouteEndpoint(new GetMethod, new RouteTestController)
+        );
+        $this->expectException(RangeException::class);
+        $route = $route->withAddedEndpoint(
+            new RouteEndpoint(new PostMethod, new RouteTestControllerRegexConflict)
         );
     }
 
@@ -130,6 +154,22 @@ final class RouteTestController extends Controller
 
 final class RouteTestControllerNoParams extends Controller
 {
+    public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
+    {
+        return new ControllerResponse(true);
+    }
+}
+
+final class RouteTestControllerRegexConflict extends Controller
+{
+    public function getParameters(): ControllerParametersInterface
+    {
+        return (new ControllerParameters)
+            ->withParameter(
+                new ControllerParameter('id', new Regex('/^\W+$/'))
+            );
+    }
+
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
         return new ControllerResponse(true);
