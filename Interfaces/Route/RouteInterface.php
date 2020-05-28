@@ -14,8 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Route;
 
 use Chevere\Exceptions\Route\RouteNameInvalidException;
-use Chevere\Interfaces\Middleware\MiddlewareNameCollectionInterface;
 use Chevere\Interfaces\Middleware\MiddlewareNameInterface;
+use Chevere\Interfaces\Middleware\MiddlewaresInterface;
+use Psr\Http\Server\MiddlewareInterface;
 
 interface RouteInterface
 {
@@ -55,15 +56,15 @@ interface RouteInterface
     public function endpoints(): RouteEndpointsInterface;
 
     /**
-     * Return an instance with the specified added MiddlewareNameInterface.
+     * Return an instance with the specified added $middleware.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified added MiddlewareNameInterface.
+     * an instance that contains the specified added $middleware.
      */
-    public function withAddedMiddlewareName(MiddlewareNameInterface $middlewareName): RouteInterface;
+    public function withAddedMiddleware(MiddlewareInterface $middleware): RouteInterface;
 
     /**
      * Provides access to the MiddlewareNameCollectionInterface instance.
      */
-    public function middlewareNameCollection(): MiddlewareNameCollectionInterface;
+    public function middlewareNameCollection(): MiddlewaresInterface;
 }

@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere;
 
-use Chevere\Components\Http\Request;
-use Chevere\Components\Instances\RequestInstance;
 use Chevere\Components\Instances\RuntimeInstance;
 use Chevere\Components\Runtime\Runtime;
 use Chevere\Components\Runtime\Sets\SetDebug;
@@ -25,10 +23,6 @@ use Chevere\Components\Runtime\Sets\SetLocale;
 use Chevere\Components\Runtime\Sets\SetPrecision;
 use Chevere\Components\Runtime\Sets\SetTimeZone;
 use Chevere\Components\Runtime\Sets\SetUriScheme;
-
-new RequestInstance(
-    Request::fromGlobals()
-);
 
 new RuntimeInstance(
     new Runtime(

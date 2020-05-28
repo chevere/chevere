@@ -91,7 +91,7 @@ final class FsRoutes implements FsRoutesInterface
     {
         $return = $this->set->get($position);
         if ($return === null) {
-            throw new RangeException;
+            throw new RangeException; // @codeCoverageIgnore
         }
 
         return $return;

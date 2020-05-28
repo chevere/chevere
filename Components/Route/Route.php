@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Middleware\MiddlewareNameCollection;
+use Chevere\Components\Middleware\Middlewares;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Core\RangeException;
-use Chevere\Interfaces\Middleware\MiddlewareNameCollectionInterface;
 use Chevere\Interfaces\Middleware\MiddlewareNameInterface;
+use Chevere\Interfaces\Middleware\MiddlewaresInterface;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Route\RouteEndpointsInterface;
 use Chevere\Interfaces\Route\RouteInterface;
@@ -27,6 +27,7 @@ use Chevere\Interfaces\Route\RoutePathInterface;
 use Chevere\Interfaces\Route\RouteWildcardInterface;
 use InvalidArgumentException;
 use OutOfBoundsException;
+use Psr\Http\Server\MiddlewareInterface;
 
 final class Route implements RouteInterface
 {
@@ -40,7 +41,7 @@ final class Route implements RouteInterface
     /** @var array [wildcardName => $endpoint] */
     private array $wildcards;
 
-    private MiddlewareNameCollectionInterface $middlewareNameCollection;
+    private MiddlewaresInterface $middlewareNameCollection;
 
     private RouteEndpoints $endpoints;
 
@@ -50,7 +51,7 @@ final class Route implements RouteInterface
         $this->routePath = $routePath;
         $this->maker = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 2)[0];
         $this->endpoints = new RouteEndpoints;
-        $this->middlewareNameCollection = new MiddlewareNameCollection;
+        $this->middlewareNameCollection = new Middlewares;
     }
 
     public function name(): RouteNameInterface
@@ -112,16 +113,16 @@ final class Route implements RouteInterface
         return $this->endpoints;
     }
 
-    public function withAddedMiddlewareName(MiddlewareNameInterface $middlewareName): RouteInterface
+    public function withAddedMiddleware(MiddlewareInterface $middleware): RouteInterface
     {
         $new = clone $this;
         $new->middlewareNameCollection = $new->middlewareNameCollection
-            ->withAddedMiddlewareName($middlewareName);
+            ->withAddedMiddleware($middleware);
 
         return $new;
     }
 
-    public function middlewareNameCollection(): MiddlewareNameCollectionInterface
+    public function middlewareNameCollection(): MiddlewaresInterface
     {
         return $this->middlewareNameCollection;
     }

@@ -43,7 +43,7 @@ final class RouteWildcards implements RouteWildcardsInterface
 
     public function __clone()
     {
-        $this->map = deep_copy($this->map);
+        $this->map = $this->map();
         $this->index = deep_copy($this->index);
     }
 
@@ -70,7 +70,7 @@ final class RouteWildcards implements RouteWildcardsInterface
     {
         $pos = $this->index->get($wildcardName);
         if ($pos === null) {
-            throw new RangeException;
+            throw new RangeException; // @codeCoverageIgnore
         }
 
         return $this->map->get($pos);

@@ -15,16 +15,16 @@ namespace Chevere\Components\App\Tests;
 
 use Chevere\Components\App\App;
 use Chevere\Components\App\Exceptions\AppWithoutRequestException;
-use Chevere\Exceptions\Middleware\MiddlewareNamesEmptyException;
 use Chevere\Components\App\MiddlewareRunner;
 use Chevere\Components\App\Services;
-use Chevere\Interfaces\Http\RequestInterface;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Middleware\MiddlewareName;
-use Chevere\Components\Middleware\MiddlewareNameCollection;
+use Chevere\Components\Middleware\Middlewares;
 use Chevere\Components\Route\RoutePath;
+use Chevere\Exceptions\Middleware\MiddlewareNamesEmptyException;
+use Chevere\Interfaces\Http\RequestInterface;
 use Chevere\TestApp\App\Middlewares\TestMiddlewareVoid;
 use PHPUnit\Framework\TestCase;
 
@@ -43,7 +43,7 @@ final class MiddlewareRunnerTest extends TestCase
     {
         $app = new App(new Services(), new Response());
         $this->expectException(AppWithoutRequestException::class);
-        new MiddlewareRunner(new MiddlewareNameCollection(), $app);
+        new MiddlewareRunner(new Middlewares, $app);
     }
 
     public function testConstructorMiddlewareNamesEmpty(): void
@@ -53,7 +53,7 @@ final class MiddlewareRunnerTest extends TestCase
                 $this->getRequest()
             );
         $this->expectException(MiddlewareNamesEmptyException::class);
-        new MiddlewareRunner(new MiddlewareNameCollection(), $app);
+        new MiddlewareRunner(new Middlewares, $app);
     }
 
     public function testConstructor(): void
@@ -63,8 +63,8 @@ final class MiddlewareRunnerTest extends TestCase
             ->withRequest(
                 $this->getRequest()
             );
-        $middlewareNameCollection = (new MiddlewareNameCollection())
-            ->withAddedMiddlewareName(
+        $middlewareNameCollection = (new Middlewares())
+            ->withAddedMiddleware(
                 new MiddlewareName(TestMiddlewareVoid::class)
             );
         new MiddlewareRunner($middlewareNameCollection, $app);
@@ -76,7 +76,7 @@ final class MiddlewareRunnerTest extends TestCase
             ->withRequest(
                 $this->getRequest()
             );
-        $middlewareNameCollection = new MiddlewareNameCollection(
+        $middlewareNameCollection = new Middlewares(
             new MiddlewareName(TestMiddlewareVoid::class)
         );
         $middlewareRunner = new MiddlewareRunner($middlewareNameCollection, $app);

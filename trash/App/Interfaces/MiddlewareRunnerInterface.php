@@ -15,18 +15,18 @@ namespace Chevere\Components\App\Interfaces;
 
 use Chevere\Components\App\Exceptions\AppWithoutRequestException;
 use Chevere\Exceptions\Middleware\MiddlewareNamesEmptyException;
-use Chevere\Interfaces\Middleware\MiddlewareNameCollectionInterface;
+use Chevere\Interfaces\Middleware\MiddlewaresInterface;
 
 interface MiddlewareRunnerInterface
 {
     /**
-     * @param MiddlewareNameCollectionInterface $middlewareNameCollection An instance containing at least one middleware
+     * @param MiddlewaresInterface $middlewareNameCollection An instance containing at least one middleware
      * @param AppInterface                      $app                      an application container with a RequestInterface
      *
      * @throws AppWithoutRequestException    if the $app doesn't contain a RequestInterface
      * @throws MiddlewareNamesEmptyException if the $middlewareNames are empty
      */
-    public function __construct(MiddlewareNameCollectionInterface $middlewareNameCollection, AppInterface $app);
+    public function __construct(MiddlewaresInterface $middlewareNameCollection, AppInterface $app);
 
     /**
      * Return an instance with the run property.

@@ -14,19 +14,19 @@ declare(strict_types=1);
 namespace Chevere\Components\App;
 
 use Chevere\Components\App\Exceptions\AppWithoutRequestException;
-use Chevere\Exceptions\Middleware\MiddlewareNamesEmptyException;
-use Chevere\Components\Message\Message;
 use Chevere\Components\App\Interfaces\AppInterface;
 use Chevere\Components\App\Interfaces\MiddlewareRunnerInterface;
+use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Middleware\MiddlewareNamesEmptyException;
 use Chevere\Interfaces\Http\RequestInterface;
-use Chevere\Interfaces\Middleware\MiddlewareNameCollectionInterface;
 use Chevere\Interfaces\Middleware\MiddlewareNameInterface;
+use Chevere\Interfaces\Middleware\MiddlewaresInterface;
 
 final class MiddlewareRunner implements MiddlewareRunnerInterface
 {
     private AppInterface $app;
 
-    private MiddlewareNameCollectionInterface $middlewareNameCollection;
+    private MiddlewaresInterface $middlewareNameCollection;
 
     /** @var bool */
     private bool $hasRun;
@@ -34,7 +34,7 @@ final class MiddlewareRunner implements MiddlewareRunnerInterface
     /** @var array An array containg the middlewares that have ran */
     private array $record;
 
-    public function __construct(MiddlewareNameCollectionInterface $middlewareNameCollection, AppInterface $app)
+    public function __construct(MiddlewaresInterface $middlewareNameCollection, AppInterface $app)
     {
         $this->app = $app;
         $this->assertAppWithRequest();
@@ -76,10 +76,10 @@ final class MiddlewareRunner implements MiddlewareRunnerInterface
 
     private function assertMiddlewareNamesNotEmpty(): void
     {
-        if (!$this->middlewareNameCollection->hasAny()) {
+        if ($this->middlewareNameCollection->count() === 0) {
             throw new MiddlewareNamesEmptyException(
                 (new Message("Instance of %className% doesn't contain any %contract% contract"))
-                    ->code('%className%', MiddlewareNameCollectionInterface::class)
+                    ->code('%className%', MiddlewaresInterface::class)
                     ->code('%contract%', MiddlewareNameInterface::class)
                     ->toString()
             );

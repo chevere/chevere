@@ -34,6 +34,7 @@ final class Writers implements WritersInterface
         $stdout = fopen('php://stdout', 'w');
         $stderr = fopen('php://stderr', 'w');
         $errors = [];
+        // @codeCoverageIgnoreStart
         if ($stdout === false) {
             $errors[] = 'php://stdout';
         }
@@ -43,13 +44,14 @@ final class Writers implements WritersInterface
         if ($errors !== []) {
             throw new RuntimeException(
                 (new Message('Unable to open %list%'))
-                    ->code('%list%', implode('; ', $errors))
+                ->code('%list%', implode('; ', $errors))
             );
         }
+        // @codeCoverageIgnoreEnd
         $this->out = new StreamWriter(new Stream($stdout));
         $this->error = new StreamWriter(new Stream($stderr));
-        $this->debug = new NullWriter();
-        $this->log = new NullWriter();
+        $this->debug = new NullWriter;
+        $this->log = new NullWriter;
     }
 
     public function withOut(WriterInterface $writer): WritersInterface

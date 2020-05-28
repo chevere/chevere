@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\App;
 
 use Chevere\Components\App\Interfaces\ServicesInterface;
-use Chevere\Components\Instances\RequestInstance;
 use Chevere\Interfaces\Http\ResponseInterface;
 use Chevere\Interfaces\Router\RoutedInterface;
 use Psr\Http\Message\RequestInterface;
@@ -76,7 +75,6 @@ final class App implements AppInterface
     {
         $new = clone $this;
         $new->request = $request;
-        RequestInstance::set($request);
 
         return $new;
     }

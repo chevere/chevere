@@ -32,9 +32,14 @@ use Chevere\Interfaces\Controller\ControllerParametersInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
 use Chevere\Interfaces\Route\RouteInterface;
 use Chevere\TestApp\App\Middlewares\TestMiddlewareVoid;
+use Laminas\Diactoros\Response;
 use LogicException;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
+use Psr\Http\Server\RequestHandlerInterface;
 
 final class RouteTest extends TestCase
 {
@@ -123,11 +128,11 @@ final class RouteTest extends TestCase
 
     public function testWithAddedMiddleware(): void
     {
-        $middlewareName = new MiddlewareName(TestMiddlewareVoid::class);
+        $middleware = new RouteTestTestMiddleware;
         $route = $this->getRoute('test', '/test')
-            ->withAddedMiddlewareName($middlewareName);
-        $this->assertTrue($route->middlewareNameCollection()->hasAny());
-        $this->assertTrue($route->middlewareNameCollection()->has($middlewareName));
+            ->withAddedMiddleware($middleware);
+        $this->assertCount(1, $route->middlewareNameCollection());
+        $this->assertTrue($route->middlewareNameCollection()->has($middleware));
     }
 
     private function getRoute(string $name, string $path): RouteInterface
@@ -173,5 +178,13 @@ final class RouteTestControllerRegexConflict extends Controller
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
         return new ControllerResponse(true);
+    }
+}
+
+final class RouteTestTestMiddleware implements MiddlewareInterface
+{
+    public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
+    {
+        return new Response('OK', 200, []);
     }
 }
