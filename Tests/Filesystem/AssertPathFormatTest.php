@@ -48,7 +48,8 @@ final class AssertPathFormatTest extends TestCase
 
     public function testConstruct(): void
     {
-        $this->expectNotToPerformAssertions();
-        (new AssertPathFormat('/path'));
+        $path = '/path';
+        $assert = new AssertPathFormat($path);
+        $this->assertSame($path, $assert->path());
     }
 }

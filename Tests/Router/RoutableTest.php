@@ -18,9 +18,9 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
+use Chevere\Components\Router\Routable;
 use Chevere\Exceptions\Router\RouteNotRoutableException;
 use Chevere\Exceptions\Router\RouteWithoutEndpointsException;
-use Chevere\Components\Router\Routable;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
 
@@ -28,13 +28,12 @@ final class RoutableTest extends TestCase
 {
     public function testConstructInvalidArgument(): void
     {
-        $this->expectException(RouteWithoutEndpointsException::class);
-        new Routable(
-            new Route(
-                new RouteName('test'),
-                new RoutePath('/test')
-            )
+        $route = new Route(
+            new RouteName('test'),
+            new RoutePath('/test')
         );
+        $this->expectException(RouteWithoutEndpointsException::class);
+        new Routable($route);
     }
 
     public function testConstruct(): void

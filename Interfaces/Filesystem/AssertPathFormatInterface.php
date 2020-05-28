@@ -27,4 +27,6 @@ interface AssertPathFormatInterface
      * @throws PathExtraSlashesException
      */
     public function __construct(string $path);
+
+    public function path(): string;
 }

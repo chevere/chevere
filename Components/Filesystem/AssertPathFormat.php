@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
+use Chevere\Components\Message\Message;
+use Chevere\Components\Str\StrBool;
 use Chevere\Exceptions\Filesystem\PathDotSlashException;
 use Chevere\Exceptions\Filesystem\PathDoubleDotsDashException;
 use Chevere\Exceptions\Filesystem\PathExtraSlashesException;
 use Chevere\Exceptions\Filesystem\PathNotAbsoluteException;
 use Chevere\Interfaces\Filesystem\AssertPathFormatInterface;
-use Chevere\Components\Message\Message;
-use Chevere\Components\Str\StrBool;
 
 final class AssertPathFormat implements AssertPathFormatInterface
 {
@@ -32,6 +32,11 @@ final class AssertPathFormat implements AssertPathFormatInterface
         $this->assertNoDoubleDots();
         $this->assertNoDots();
         $this->assertNoExtraSlashes();
+    }
+
+    public function path(): string
+    {
+        return $this->path;
     }
 
     private function assertAbsolutePath(): void

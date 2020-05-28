@@ -53,7 +53,7 @@ final class HooksRunner implements HooksRunnerInterface
                 try {
                     $this->hook = new $entry;
                 } catch (Throwable $e) {
-                    new RuntimeException(
+                    throw new RuntimeException(
                         (new Message('Invalid hook type'))
                     );
                 }

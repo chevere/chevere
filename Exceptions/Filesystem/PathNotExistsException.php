@@ -18,6 +18,6 @@ use Chevere\Exceptions\Core\Exception;
 /**
  * Exception thrown when a path doesn't exists.
  */
-final class PathDoesntExistsException extends Exception
+final class PathNotExistsException extends Exception
 {
 }

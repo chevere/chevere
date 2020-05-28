@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Exceptions\Filesystem\PathDoesntExistsException;
+use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Filesystem\PathDotSlashException;
 use Chevere\Exceptions\Filesystem\PathDoubleDotsDashException;
 use Chevere\Exceptions\Filesystem\PathExtraSlashesException;
 use Chevere\Exceptions\Filesystem\PathNotAbsoluteException;
+use Chevere\Exceptions\Filesystem\PathNotExistsException;
 use Chevere\Exceptions\Filesystem\PathUnableToChmodException;
 use Chevere\Interfaces\Filesystem\PathInterface;
-use Chevere\Components\Message\Message;
 
 final class Path implements PathInterface
 {
@@ -35,8 +35,8 @@ final class Path implements PathInterface
      */
     public function __construct(string $absolute)
     {
-        new AssertPathFormat($absolute);
-        $this->absolute = $absolute;
+        $assert = new AssertPathFormat($absolute);
+        $this->absolute = $assert->path();
     }
 
     public function absolute(): string
@@ -67,7 +67,7 @@ final class Path implements PathInterface
 
     /**
      * @codeCoverageIgnore
-     * @throws PathDoesntExistsException
+     * @throws PathNotExistsException
      * @throws PathUnableToChmodException
      */
     public function chmod(int $mode): void
@@ -84,7 +84,7 @@ final class Path implements PathInterface
 
     /**
      * @codeCoverageIgnore
-     * @throws PathDoesntExistsException
+     * @throws PathNotExistsException
      */
     public function isWritable(): bool
     {
@@ -95,7 +95,7 @@ final class Path implements PathInterface
 
     /**
      * @codeCoverageIgnore
-     * @throws PathDoesntExistsException
+     * @throws PathNotExistsException
      */
     public function isReadable(): bool
     {
@@ -115,7 +115,7 @@ final class Path implements PathInterface
     private function assertExists(): void
     {
         if ($this->exists() === false) {
-            throw new PathDoesntExistsException(
+            throw new PathNotExistsException(
                 (new Message("Path %path% doesn't exists"))
                     ->code('%path%', $this->absolute)
             );

@@ -16,9 +16,9 @@ namespace Chevere\Tests\Controller;
 use Chevere\Components\Controller\ControllerArguments;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
+use Chevere\Components\Regex\Regex;
 use Chevere\Exceptions\Controller\ControllerArgumentRegexMatchException;
 use Chevere\Exceptions\Controller\ControllerArgumentsRequiredException;
-use Chevere\Components\Regex\Regex;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
@@ -87,14 +87,13 @@ final class ControllerArgumentsTest extends TestCase
 
     public function testArgumentsRequiredException(): void
     {
+        $parameters = (new ControllerParameters)
+            ->withParameter(
+                new ControllerParameter('id', new Regex('/^[0-9]+$/'))
+            );
+        $arguments = [];
         $this->expectException(ControllerArgumentsRequiredException::class);
-        new ControllerArguments(
-            (new ControllerParameters)
-                ->withParameter(
-                    new ControllerParameter('id', new Regex('/^[0-9]+$/'))
-                ),
-            []
-        );
+        new ControllerArguments($parameters, $arguments);
     }
 
     public function testOptionalArgument(): void

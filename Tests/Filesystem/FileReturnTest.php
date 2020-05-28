@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Filesystem;
 
-use Chevere\Exceptions\Filesystem\FileInvalidContentsException;
-use Chevere\Exceptions\Filesystem\FileNotExistsException;
-use Chevere\Exceptions\Filesystem\FileWithoutContentsException;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\VarExportable\VarExportable;
+use Chevere\Exceptions\Filesystem\FileInvalidContentsException;
+use Chevere\Exceptions\Filesystem\FileNotExistsException;
+use Chevere\Exceptions\Filesystem\FileWithoutContentsException;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
@@ -63,14 +63,13 @@ final class FileReturnTest extends TestCase
 
     public function testConstructFileNotFound(): void
     {
-        $this->expectException(FileNotExistsException::class);
-        new FilePhpReturn(
-            new FilePhp(
-                new File(
-                    $this->path->getChild($this->getFileName())
-                )
+        $filePhp = new FilePhp(
+            new File(
+                $this->path->getChild($this->getFileName())
             )
         );
+        $this->expectException(FileNotExistsException::class);
+        new FilePhpReturn($filePhp);
     }
 
     public function testFileNotFound(): void
