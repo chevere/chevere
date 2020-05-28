@@ -15,19 +15,18 @@ namespace Chevere\Components\Console\Commands;
 
 use Ahc\Cli\Input\Command;
 use Chevere\Components\Controller\ControllerName;
-use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Components\Instances\BootstrapInstance;
-use Chevere\Components\Str\Str;
 use Chevere\Components\Str\StrBool;
 use Go\ParserReflection\ReflectionFile;
 use RecursiveDirectoryIterator;
 use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
-use ReflectionClass;
 use Throwable;
 
 final class ControllerListCommand extends Command
 {
+    private RecursiveDirectoryIterator $directoryIterator;
+
     public function __construct()
     {
         parent::__construct('conlist', 'List controllers');

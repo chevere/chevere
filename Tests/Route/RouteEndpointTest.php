@@ -17,12 +17,12 @@ use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponse;
-use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
-use Chevere\Interfaces\Controller\ControllerParametersInterface;
-use Chevere\Interfaces\Controller\ControllerResponseInterface;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\RouteEndpoint;
+use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
+use Chevere\Interfaces\Controller\ControllerParametersInterface;
+use Chevere\Interfaces\Controller\ControllerResponseInterface;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
@@ -61,7 +61,7 @@ final class RouteEndpointTest extends TestCase
     public function testWithoutParameter(): void
     {
         $controller = new RouteEndpointTestController;
-        $key = $controller->parameters()->map()->first()->toArray()['key'];
+        $key = $controller->parameters()->map()->first()->toArray()['key'] ?? 'name';
         $routeEndpoint = (new RouteEndpoint(new GetMethod, $controller))
             ->withoutParameter($key);
         $this->assertArrayNotHasKey($key, $routeEndpoint->parameters());

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Writers;
 
+use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Writers\WriterInterface;
 use Chevere\Interfaces\Writers\WritersInterface;
 use Laminas\Diactoros\Stream;
@@ -29,8 +31,23 @@ final class Writers implements WritersInterface
 
     public function __construct()
     {
-        $this->out = new StreamWriter(new Stream(fopen('php://stdout', 'w')));
-        $this->error = new StreamWriter(new Stream(fopen('php://stderr', 'w')));
+        $stdout = fopen('php://stdout', 'w');
+        $stderr = fopen('php://stderr', 'w');
+        $errors = [];
+        if ($stdout === false) {
+            $errors[] = 'php://stdout';
+        }
+        if ($stderr === false) {
+            $errors[] = 'php://stderr';
+        }
+        if ($errors !== []) {
+            throw new RuntimeException(
+                (new Message('Unable to open %list%'))
+                    ->code('%list%', implode('; ', $errors))
+            );
+        }
+        $this->out = new StreamWriter(new Stream($stdout));
+        $this->error = new StreamWriter(new Stream($stderr));
         $this->debug = new NullWriter();
         $this->log = new NullWriter();
     }

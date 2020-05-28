@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Middleware;
 
-use Chevere\Interfaces\Http\RequestInterface;
 use Chevere\Interfaces\Middleware\MiddlewareInterface;
+use Psr\Http\Message\RequestInterface;
 
 abstract class Middleware implements MiddlewareInterface
 {

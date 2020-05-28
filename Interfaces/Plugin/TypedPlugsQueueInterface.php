@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Plugin;
 
-use Chevere\Components\Plugin\PlugsQueue;
-
 interface TypedPlugsQueueInterface
 {
     /**
@@ -22,5 +20,5 @@ interface TypedPlugsQueueInterface
      */
     public function accept(): string;
 
-    public function queue(): PlugsQueue;
+    public function queue(): PlugsQueueInterface;
 }

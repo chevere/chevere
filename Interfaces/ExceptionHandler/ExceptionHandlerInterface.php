@@ -13,11 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\ExceptionHandler;
 
-use Chevere\Interfaces\Http\RequestInterface;
 use DateTimeInterface;
 use Ds\Set;
-use Monolog\Handler\HandlerInterface;
 use Monolog\Logger;
+use Psr\Http\Message\RequestInterface;
 
 interface ExceptionHandlerInterface
 {

@@ -20,6 +20,7 @@ use Chevere\Interfaces\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Route\RouteWildcardsInterface;
 use Ds\Map;
 use Ds\Set;
+use RangeException;
 use function DeepCopy\deep_copy;
 
 final class RouteWildcards implements RouteWildcardsInterface
@@ -68,6 +69,9 @@ final class RouteWildcards implements RouteWildcardsInterface
     public function get(string $wildcardName): RouteWildcardInterface
     {
         $pos = $this->index->get($wildcardName);
+        if ($pos === null) {
+            throw new RangeException;
+        }
 
         return $this->map->get($pos);
     }

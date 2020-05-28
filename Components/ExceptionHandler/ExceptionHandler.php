@@ -15,7 +15,6 @@ namespace Chevere\Components\ExceptionHandler;
 
 use Chevere\Interfaces\ExceptionHandler\ExceptionHandlerInterface;
 use Chevere\Interfaces\ExceptionHandler\ExceptionReadInterface;
-use Chevere\Interfaces\Http\RequestInterface;
 use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
@@ -23,6 +22,7 @@ use Ds\Set;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
+use Psr\Http\Message\RequestInterface;
 use function DeepCopy\deep_copy;
 
 /**
@@ -112,6 +112,6 @@ final class ExceptionHandler implements ExceptionHandlerInterface
 
     public function loggers(): Set
     {
-        return deep_copy($this->loggers);
+        return $this->loggers;
     }
 }

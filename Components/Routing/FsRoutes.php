@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing;
 
-use Chevere\Exceptions\Core\Exception;
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\Exception;
+use Chevere\Exceptions\Core\RangeException;
 use Chevere\Exceptions\Routing\DecoratedRouteAlreadyAddedException;
 use Chevere\Exceptions\Routing\RouteNameAlreadyAddedException;
 use Chevere\Exceptions\Routing\RoutePathAlreadyAddedException;
@@ -34,6 +35,8 @@ final class FsRoutes implements FsRoutesInterface
 
     private array $routesPathRegex = [];
 
+    private FsRouteInterface $fsRoute;
+
     private int $pos = -1;
 
     public function __construct()
@@ -41,21 +44,21 @@ final class FsRoutes implements FsRoutesInterface
         $this->set = new Set;
     }
 
-    public function withDecorated(FsRouteInterface $decoratedRoute): FsRoutesInterface
+    public function withDecorated(FsRouteInterface $fsRoute): FsRoutesInterface
     {
-        if ($this->set->contains($decoratedRoute)) {
+        if ($this->set->contains($fsRoute)) {
             throw new DecoratedRouteAlreadyAddedException(
                 (new Message('Instance of object %object% has been already added'))
-                    ->code('%object%', get_class($decoratedRoute) . '#' . spl_object_id($decoratedRoute))
+                    ->code('%object%', get_class($fsRoute) . '#' . spl_object_id($fsRoute))
             );
         }
         $new = clone $this;
-        $new->decoratedRoute = $decoratedRoute;
+        $new->fsRoute = $fsRoute;
         $new->pos++;
         try {
-            $new->assertPushPath($decoratedRoute->routePath()->toString());
-            $new->assertPushName($decoratedRoute->routeDecorator()->name()->toString());
-            $new->assertPushRegex($decoratedRoute->routePath()->regex()->toString());
+            $new->assertPushPath($fsRoute->routePath()->toString());
+            $new->assertPushName($fsRoute->routeDecorator()->name()->toString());
+            $new->assertPushRegex($fsRoute->routePath()->regex()->toString());
         } catch (Exception $e) {
             throw new $e(
                 $e->message()->code(
@@ -65,7 +68,7 @@ final class FsRoutes implements FsRoutesInterface
             );
         }
 
-        $new->set->add($decoratedRoute);
+        $new->set->add($fsRoute);
 
         return $new;
     }
@@ -82,10 +85,16 @@ final class FsRoutes implements FsRoutesInterface
 
     /**
      * @throws OutOfRangeException
+     * @throws RangeException
      */
     public function get(int $position): FsRouteInterface
     {
-        return $this->set->get($position);
+        $return = $this->set->get($position);
+        if ($return === null) {
+            throw new RangeException;
+        }
+
+        return $return;
     }
 
     private function assertPushPath(string $path): void

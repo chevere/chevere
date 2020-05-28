@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Serialize;
 
-use Chevere\Components\Serialize\Serialize;
 use Chevere\Components\Serialize\Unserialize;
-use Chevere\Components\VarExportable\VarExportable;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

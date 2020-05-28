@@ -17,13 +17,13 @@ use Chevere\Components\ExceptionHandler\Documents\PlainDocument;
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
 use Chevere\Components\ExceptionHandler\ExceptionRead;
 use Chevere\Components\ExceptionHandler\Formatters\PlainFormatter;
+use Chevere\Components\Http\Methods\GetMethod;
+use Chevere\Components\Route\RoutePath;
 use Chevere\Interfaces\ExceptionHandler\DocumentInterface;
 use Chevere\Interfaces\ExceptionHandler\ExceptionHandlerInterface;
-use Chevere\Components\Http\Methods\GetMethod;
-use Chevere\Components\Http\Request;
-use Chevere\Components\Route\RoutePath;
 use LogicException;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\RequestInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final class PlainDocumentTest extends TestCase

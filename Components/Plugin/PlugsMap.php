@@ -13,14 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin;
 
-use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Plugin\PlugsQueue;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Plugin\PlugRegisteredException;
 use Chevere\Interfaces\Plugin\AssertPlugInterface;
 use Chevere\Interfaces\Plugin\PlugInterface;
 use Chevere\Interfaces\Plugin\PlugsMapInterface;
+use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use Chevere\Interfaces\Plugin\PlugTypeInterface;
-use Chevere\Components\Plugin\PlugsQueue;
 use Ds\Map;
 use Ds\Set;
 use Generator;
@@ -56,6 +57,9 @@ final class PlugsMap implements PlugsMapInterface
 
         $plug = $assertPlug->plug();
         $this->assertUnique($plug);
+        /**
+         * @var PlugsQueueInterface $queue
+         */
         $queue = $this->map->hasKey($plug->at())
             ? $this->map->get($plug->at())
             : new PlugsQueue($assertPlug->type());

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Instances;
 
-use Chevere\Exceptions\Core\LogicException;
-use Chevere\Interfaces\Http\RequestInterface;
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\LogicException;
+use Psr\Http\Message\RequestInterface;
 
 /**
  * A container for the request instance.

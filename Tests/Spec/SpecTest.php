@@ -14,21 +14,15 @@ declare(strict_types=1);
 namespace Chevere\Tests\Spec;
 
 use Chevere\Components\Cache\Cache;
-use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Interfaces\Routerrface;
 use Chevere\Components\Router\Routable;
-use Chevere\Components\Router\Router;
-use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Router\RouterMaker;
-use Chevere\Components\Router\RoutesCache;
-use Chevere\Tests\Router\CacheHelper;
 use Chevere\TestApp\App\Controllers\TestController;
+use Chevere\Tests\Router\CacheHelper;
 use PHPUnit\Framework\TestCase;
 
 final class SpecTest extends TestCase

@@ -23,21 +23,18 @@ use Chevere\Components\App\Resolver;
 use Chevere\Components\App\Services;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Controller\ControllerName;
-use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Components\Filesystem\Path;
-use Chevere\Interfaces\Http\RequestInterface;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
-use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\TestApp\App\Controllers\TestController;
 use PHPUnit\Framework\TestCase;
+use Psr\Http\Message\RequestInterface;
 
 final class ResolverTest extends TestCase
 {

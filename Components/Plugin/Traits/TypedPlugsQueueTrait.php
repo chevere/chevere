@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugin\Traits;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Plugin\PlugsQueue;
 use Chevere\Exceptions\Plugin\PlugInterfaceException;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
-use Chevere\Components\Plugin\PlugsQueue;
 
 trait TypedPlugsQueueTrait
 {
@@ -39,7 +39,7 @@ trait TypedPlugsQueueTrait
      */
     abstract public function accept(): string;
 
-    public function queue(): PlugsQueue
+    public function queue(): PlugsQueueInterface
     {
         return $this->queue;
     }
