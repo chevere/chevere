@@ -11,14 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Plugs\Hooks;
+namespace Chevere\Interfaces\Plugs\Hooks;
 
-use Chevere\Interfaces\Plugs\Hooks\HooksRunnerInterface;
+use Chevere\Interfaces\Plugin\TypedPlugsQueueInterface;
 
-final class HooksRunnerNull implements HooksRunnerInterface
+interface HooksQueueInterface extends TypedPlugsQueueInterface
 {
-    public function run(string $anchor, &$argument): void
-    {
-        return;
-    }
 }

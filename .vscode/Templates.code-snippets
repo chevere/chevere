@@ -8,6 +8,7 @@
             "",
             "interface $TM_FILENAME_BASE",
             "{",
+            "\t$0",
             "}"
         ]
     },
@@ -22,6 +23,7 @@
             "",
             "final class $TM_FILENAME_BASE extends TestCase",
             "{",
+            "\t$0",
             "}"
         ]
     },
@@ -31,6 +33,7 @@
         "body": [
             "public function test${1:Name}(): void",
             "{",
+            "\t$0",
             "}"
         ]
     },
@@ -58,6 +61,7 @@
             "",
             "final class $TM_FILENAME_BASE",
             "{",
+            "\t$0",
             "}"
         ]
     },
@@ -87,6 +91,7 @@
             "",
             "trait $TM_FILENAME_BASE",
             "{",
+            "\t$0",
             "}"
         ]
     },

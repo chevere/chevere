@@ -13,10 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Instances;
 
-use Chevere\Exceptions\Core\LogicException;
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Writers\WritersInterface;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class WritersInstance
 {
     private static WritersInterface $instance;

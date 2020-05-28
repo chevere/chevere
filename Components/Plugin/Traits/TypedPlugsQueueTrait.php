@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugin\Traits;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\Plugin\PlugsQueue;
 use Chevere\Exceptions\Plugin\PlugInterfaceException;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 
@@ -22,7 +21,7 @@ trait TypedPlugsQueueTrait
 {
     private PlugsQueueInterface $queue;
 
-    final public function __construct(PlugsQueueInterface $queue)
+    public function __construct(PlugsQueueInterface $queue)
     {
         $this->queue = $queue;
         if ($queue->plugType()->interface() !== $this->accept()) {

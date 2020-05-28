@@ -15,6 +15,8 @@ namespace Chevere\Interfaces\Plugin;
 
 interface TypedPlugsQueueInterface
 {
+    public function __construct(PlugsQueueInterface $queue);
+
     /**
      * @return string The accepted plug interface.
      */
