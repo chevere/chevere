@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Spec;
 
-use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
 use Chevere\Components\Http\Methods\ConnectMethod;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
-use Chevere\Tests\Router\CacheHelper;
 use Chevere\Components\Spec\SpecIndex;
 use Chevere\Components\Spec\SpecIndexCache;
 use Chevere\Components\Spec\SpecPath;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
-use Chevere\TestApp\App\Controllers\TestController;
+use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
+use Chevere\Tests\Router\CacheHelper;
+use Chevere\Tests\Spec\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
 
 final class SpecIndexCacheTest extends TestCase

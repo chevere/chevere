@@ -22,7 +22,7 @@ use Chevere\Components\Router\Routable;
 use Chevere\Components\Spec\SpecPath;
 use Chevere\Components\Spec\Specs\GroupSpec;
 use Chevere\Components\Spec\Specs\RoutableSpec;
-use Chevere\TestApp\App\Controllers\TestController;
+use Chevere\Tests\Spec\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
 
 final class GroupSpecTest extends TestCase

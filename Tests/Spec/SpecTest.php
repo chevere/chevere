@@ -21,8 +21,8 @@ use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\RouterMaker;
-use Chevere\TestApp\App\Controllers\TestController;
 use Chevere\Tests\Router\CacheHelper;
+use Chevere\Tests\Spec\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
 
 final class SpecTest extends TestCase

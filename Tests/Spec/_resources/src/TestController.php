@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\TestApp\App\Controllers;
+namespace Chevere\Tests\Spec\_resources\src;
 
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameter;
@@ -42,16 +42,16 @@ class TestController extends Controller implements PluggableHooksInterface
 
     public function getParameters(): ControllerParametersInterface
     {
-        $paremeters = (new ControllerParameters)
+        $parameters = (new ControllerParameters)
             ->withParameter(
                 new ControllerParameter('name', new Regex('/^[\w]+$/'))
             )
             ->withParameter(
                 new ControllerParameter('id', new Regex('/^[0-9]+$/'))
             );
-        $this->hook('getParameters:after', $paremeters);
+        $this->hook('getParameters:after', $parameters);
 
-        return $paremeters;
+        return $parameters;
     }
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface

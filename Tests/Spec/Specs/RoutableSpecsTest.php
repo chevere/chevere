@@ -22,7 +22,7 @@ use Chevere\Components\Router\Routable;
 use Chevere\Components\Spec\SpecPath;
 use Chevere\Components\Spec\Specs\RoutableSpec;
 use Chevere\Components\Spec\Specs\RoutableSpecs;
-use Chevere\TestApp\App\Controllers\TestController;
+use Chevere\Tests\Spec\_resources\src\TestController;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 

@@ -13,10 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Middleware;
 
-use Chevere\Components\Middleware\MiddlewareName;
 use Chevere\Components\Middleware\Middlewares;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\TestApp\App\Middlewares\TestMiddlewareVoid;
 use Laminas\Diactoros\Response;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;

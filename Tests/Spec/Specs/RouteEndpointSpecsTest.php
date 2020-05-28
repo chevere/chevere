@@ -18,7 +18,7 @@ use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Spec\SpecPath;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Components\Spec\Specs\RouteEndpointSpecs;
-use Chevere\TestApp\App\Controllers\TestController;
+use Chevere\Tests\Spec\_resources\src\TestController;
 use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 

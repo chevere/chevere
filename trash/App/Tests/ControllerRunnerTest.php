@@ -17,10 +17,10 @@ use Chevere\Components\App\App;
 use Chevere\Components\App\ControllerRunner;
 use Chevere\Components\App\Exceptions\ControllerInterfaceException;
 use Chevere\Components\App\Exceptions\ControllerNotExistsException;
+use Chevere\Components\App\Interfaces\ControllerRunnerInterface;
 use Chevere\Components\App\Services;
 use Chevere\Components\Http\Response;
-use Chevere\Components\App\Interfaces\ControllerRunnerInterface;
-use Chevere\TestApp\App\Controllers\TestController;
+use Chevere\Tests\Spec\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerRunnerTest extends TestCase

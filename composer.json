@@ -44,7 +44,6 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Chevere\\TestApp\\App\\": "Chevere/TestApp/app/src/",
             "Chevere\\Tests\\": "Tests/"
         }
     },

@@ -11,27 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Route\_resources\controllers;
+namespace Chevere\Tests\Route\_resources\src;
 
 use Chevere\Components\Controller\Controller;
-use Chevere\Components\Controller\ControllerParameter;
-use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponse;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
-use Chevere\Interfaces\Controller\ControllerParametersInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
-use Chevere\Components\Regex\Regex;
 
-final class GetArticleController extends Controller
+final class TestController extends Controller
 {
-    public function getParameters(): ControllerParametersInterface
-    {
-        return (new ControllerParameters)
-            ->withParameter(
-                new ControllerParameter('id', new Regex('/^d+$/'))
-            );
-    }
-
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
         return new ControllerResponse(true);

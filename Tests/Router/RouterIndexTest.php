@@ -18,10 +18,10 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
-use Chevere\Interfaces\Router\RouteIdentifierInterface;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\RouterIndex;
-use Chevere\TestApp\App\Controllers\TestController;
+use Chevere\Interfaces\Router\RouteIdentifierInterface;
+use Chevere\Tests\Router\_resources\src\TestController;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 

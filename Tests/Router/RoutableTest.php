@@ -21,7 +21,7 @@ use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
 use Chevere\Exceptions\Router\RouteNotRoutableException;
 use Chevere\Exceptions\Router\RouteWithoutEndpointsException;
-use Chevere\TestApp\App\Controllers\TestController;
+use Chevere\Tests\Router\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
 
 final class RoutableTest extends TestCase
@@ -44,8 +44,8 @@ final class RoutableTest extends TestCase
         ))
             ->withAddedEndpoint(
                 new RouteEndpoint(
-                    new GetMethod(),
-                    new TestController()
+                    new GetMethod,
+                    new TestController
                 )
             );
         $routable = new Routable($route);

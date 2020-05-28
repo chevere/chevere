@@ -21,10 +21,10 @@ use Chevere\Components\Writers\Writers;
 
 require 'vendor/autoload.php';
 
-$rootDir = new DirFromString(__DIR__ . '/Chevere/TestApp/');
+$rootDir = new DirFromString(__DIR__ . '/');
 
 new BootstrapInstance(
-    (new Bootstrap($rootDir, $rootDir->getChild('app/')))
+    (new Bootstrap($rootDir, $rootDir))
         ->withCli(true)
         ->withDev(false)
 );

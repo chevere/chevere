@@ -31,7 +31,6 @@ use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
 use Chevere\Interfaces\Route\RouteInterface;
-use Chevere\TestApp\App\Middlewares\TestMiddlewareVoid;
 use Laminas\Diactoros\Response;
 use LogicException;
 use OutOfBoundsException;

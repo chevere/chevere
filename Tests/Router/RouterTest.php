@@ -24,7 +24,7 @@ use Chevere\Components\Router\Routables;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterIndex;
 use Chevere\Components\Router\RouterRegex;
-use Chevere\TestApp\App\Controllers\TestController;
+use Chevere\Tests\Router\_resources\src\TestController;
 use PHPUnit\Framework\TestCase;
 
 final class RouterTest extends TestCase
