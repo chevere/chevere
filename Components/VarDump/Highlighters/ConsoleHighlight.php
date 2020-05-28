@@ -52,13 +52,13 @@ final class ConsoleHighlight implements HighlightInterface
             TypeInterface::OBJECT => 'color_39',
             TypeInterface::ARRAY => 'color_41',
             TypeInterface::RESOURCE => 'color_147',
-            VarDumperInterface::_FILE => 'default',
-            VarDumperInterface::_CLASS => 'color_147',
-            VarDumperInterface::_OPERATOR => 'color_245',
-            VarDumperInterface::_FUNCTION => 'color_39',
-            VarDumperInterface::_MODIFIERS => 'color_133',
-            VarDumperInterface::_VARIABLE => 'color_208',
-            VarDumperInterface::_EMPHASIS => ['color_245', 'italic']
+            VarDumperInterface::FILE => 'default',
+            VarDumperInterface::CLASS_REG => 'color_147',
+            VarDumperInterface::OPERATOR => 'color_245',
+            VarDumperInterface::FUNCTION => 'color_39',
+            VarDumperInterface::MODIFIERS => 'color_133',
+            VarDumperInterface::VARIABLE => 'color_208',
+            VarDumperInterface::EMPHASIS => ['color_245', 'italic']
         ];
     }
 }

@@ -40,7 +40,7 @@ trait ProcessorTrait
     {
         return $this->varDumper->formatter()
                 ->highlight(
-                    VarDumperInterface::_OPERATOR,
+                    VarDumperInterface::OPERATOR,
                     $string
                 );
     }

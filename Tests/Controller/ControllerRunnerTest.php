@@ -19,12 +19,12 @@ use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponse;
 use Chevere\Components\Controller\ControllerRunner;
+use Chevere\Components\Regex\Regex;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
 use Chevere\Interfaces\Controller\ControllerRanInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
-use Chevere\Components\Regex\Regex;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -37,17 +37,11 @@ final class ControllerRunnerTest extends TestCase
         return (new ControllerRunner($controller))->ran($arguments);
     }
 
-    private function getControllerMethod(ControllerInterface $controller, string $method): string
-    {
-        return get_class($controller) . '::' . $method;
-    }
-
     public function testControllerSetUpFailure(): void
     {
         $controller = new ControllerRunnerTestControllerSetupFail;
         $ran = $this->getFailedRan($controller);
         $this->assertSame(1, $ran->code());
-        // $this->assertStringContainsString($this->getControllerMethod($controller, 'setUp'), $ran->data()[0]);
         $this->assertTrue($ran->hasThrowable());
         $this->assertSame('Something went wrong', $ran->throwable()->getMessage());
     }

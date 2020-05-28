@@ -64,12 +64,12 @@ final class ObjectProcessor implements ProcessorInterface
         $this->varDumper->writer()->write(
             $this->varDumper->formatter()
                 ->highlight(
-                    VarDumperInterface::_CLASS,
+                    VarDumperInterface::CLASS_REG,
                     $this->className
                 ) .
             $this->varDumper->formatter()
                 ->highlight(
-                    VarDumperInterface::_OPERATOR,
+                    VarDumperInterface::OPERATOR,
                     '#' . (string) $this->objectId
                 )
         );
@@ -127,12 +127,12 @@ final class ObjectProcessor implements ProcessorInterface
             implode(' ', [
                 "\n" . $this->varDumper->indentString(),
                 $this->varDumper->formatter()->highlight(
-                    VarDumperInterface::_MODIFIERS,
+                    VarDumperInterface::MODIFIERS,
                     $modifiers
                 ),
                 $this->varDumper->formatter()
                     ->highlight(
-                        VarDumperInterface::_VARIABLE,
+                        VarDumperInterface::VARIABLE,
                         '$' . $this->varDumper->formatter()->filterEncodedChars($name)
                     ), ''
             ])
@@ -154,8 +154,8 @@ final class ObjectProcessor implements ProcessorInterface
 
     private function handleNormalizeClassName(): void
     {
-        if ((new StrBool($this->className))->startsWith(VarDumperInterface::_CLASS_ANON) === true) {
-            $this->className = VarDumperInterface::_CLASS_ANON;
+        if ((new StrBool($this->className))->startsWith(VarDumperInterface::CLASS_ANON) === true) {
+            $this->className = VarDumperInterface::CLASS_ANON;
         }
     }
 }

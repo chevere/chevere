@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\VarDump;
 
-use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Components\VarDump\Processors\ArrayProcessor;
 use Chevere\Components\VarDump\Processors\BooleanProcessor;
 use Chevere\Components\VarDump\Processors\FloatProcessor;
@@ -22,18 +21,19 @@ use Chevere\Components\VarDump\Processors\NullProcessor;
 use Chevere\Components\VarDump\Processors\ObjectProcessor;
 use Chevere\Components\VarDump\Processors\ResourceProcessor;
 use Chevere\Components\VarDump\Processors\StringProcessor;
+use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Interfaces\Writers\WriterInterface;
 
 interface VarDumperInterface
 {
-    const _FILE = '_file';
-    const _CLASS = '_class';
-    const _CLASS_ANON = 'class@anonymous';
-    const _OPERATOR = '_operator';
-    const _FUNCTION = '_function';
-    const _MODIFIERS = '_modifiers';
-    const _VARIABLE = '_variable';
-    const _EMPHASIS = '_emphasis';
+    const FILE = '_file';
+    const CLASS_REG = '_class';
+    const CLASS_ANON = 'class@anonymous';
+    const OPERATOR = '_operator';
+    const FUNCTION = '_function';
+    const MODIFIERS = '_modifiers';
+    const VARIABLE = '_variable';
+    const EMPHASIS = '_emphasis';
 
     /** @var array [ProcessorInterface $processor,] */
     const PROCESSORS = [

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Message;
 
-use Chevere\Interfaces\Message\MessageInterface;
 use Chevere\Components\Message\Message;
+use Chevere\Interfaces\Message\MessageInterface;
 use PHPUnit\Framework\TestCase;
 
 final class MessageTest extends TestCase
@@ -65,11 +65,4 @@ final class MessageTest extends TestCase
         $this->assertSame($plain, $message->toString());
         $this->assertNotSame($plain, $message->toConsole());
     }
-
-    // public function testWithWrongSearch(): void
-    // {
-    //     $message = new Message('Hello, World!');
-    //     $this->expectException(MessageSearchNotExistsException::class);
-    //     $message->code('%search%', 'replace');
-    // }
 }

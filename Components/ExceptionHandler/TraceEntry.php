@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler;
 
-use Chevere\Interfaces\ExceptionHandler\TraceEntryInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrBool;
+use Chevere\Interfaces\ExceptionHandler\TraceEntryInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 use InvalidArgumentException;
 use ReflectionMethod;
@@ -138,9 +138,9 @@ final class TraceEntry implements TraceEntryInterface
 
     private function handleAnonClass()
     {
-        if ((new StrBool($this->class))->startsWith(VarDumperInterface::_CLASS_ANON) === true) {
+        if ((new StrBool($this->class))->startsWith(VarDumperInterface::CLASS_ANON) === true) {
             preg_match('#^class@anonymous(.*):(\d+)#', $this->class, $matches);
-            $this->class = VarDumperInterface::_CLASS_ANON;
+            $this->class = VarDumperInterface::CLASS_ANON;
             $this->file = $matches[1];
             $this->line = (int) $matches[2];
         }
