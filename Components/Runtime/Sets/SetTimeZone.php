@@ -75,10 +75,9 @@ final class SetTimeZone implements SetInterface
         if (!@date_default_timezone_set($this->value)) {
             // @codeCoverageIgnoreStart
             throw new RuntimeException(
-                (new Message('False return on %s(%v) %thrown%'))
-                    ->code('%s', 'date_default_timezone_set')
-                    ->code('%v', $this->value)
-                    ->code('%thrown%', $e->getMessage())
+                (new Message('False return on %fn%(%val%)'))
+                    ->code('%fn%', 'date_default_timezone_set')
+                    ->code('%val%', $this->value)
             );
             // @codeCoverageIgnoreEnd
         }

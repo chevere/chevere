@@ -1,3 +1,4 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=chevere_chevere&metric=alert_status)](https://sonarcloud.io/dashboard?id=chevere_chevere)
 [![Scrutinizer Code
 Quality](https://scrutinizer-ci.com/g/chevere/chevere/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/chevere/chevere/?branch=master)
 [![codecov](https://codecov.io/gh/chevere/chevere/branch/master/graph/badge.svg)](https://codecov.io/gh/chevere/chevere)
