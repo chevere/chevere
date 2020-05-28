@@ -1,10 +1,10 @@
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=chevere_chevere&metric=alert_status)](https://sonarcloud.io/dashboard?id=chevere_chevere)
 [![Scrutinizer Code
-Quality](https://scrutinizer-ci.com/g/chevere/chevere/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/chevere/chevere/?branch=master)
-[![codecov](https://codecov.io/gh/chevere/chevere/branch/master/graph/badge.svg)](https://codecov.io/gh/chevere/chevere)
-[![CodeFactor](https://www.codefactor.io/repository/github/chevere/chevere/badge)](https://www.codefactor.io/repository/github/chevere/chevere)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b956754f8ff04aaa9ca24a6e4cc21661)](https://www.codacy.com/gh/chevere/chevere?utm_source=github.com&utm_medium=referral&utm_content=chevere/chevere&utm_campaign=Badge_Grade)
-[![Maintainability](https://api.codeclimate.com/v1/badges/e096f89454df0538144f/maintainability)](https://codeclimate.com/github/chevere/chevere/maintainability)
+Quality](https://img.shields.io/scrutinizer/quality/g/chevere/chevere?style=flat-square)](https://scrutinizer-ci.com/g/chevere/chevere/?branch=master)
+[![codecov](https://img.shields.io/codecov/c/github/chevere/chevere?style=flat-square)](https://codecov.io/gh/chevere/chevere)
+[![CodeFactor](https://img.shields.io/codefactor/grade/github/chevere/chevere?style=flat-square)](https://www.codefactor.io/repository/github/chevere/chevere)
+[![Codacy Badge](https://img.shields.io/codacy/grade/b956754f8ff04aaa9ca24a6e4cc21661?style=flat-square)](https://www.codacy.com/gh/chevere/chevere?utm_source=github.com&utm_medium=referral&utm_content=chevere/chevere&utm_campaign=Badge_Grade)
+[![Maintainability](https://img.shields.io/codeclimate/maintainability/chevere/chevere?style=flat-square)](https://codeclimate.com/github/chevere/chevere)
+[![Tech Debt](https://img.shields.io/codeclimate/tech-debt/chevere/chevere?style=flat-square)](https://codeclimate.com/github/chevere/chevere)
 
 # Chevere
 
