@@ -15,9 +15,9 @@ namespace Chevere\Components\Runtime\Sets;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Runtime\Traits\SetTrait;
+use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Runtime\SetInterface;
-use InvalidArgumentException;
-use RuntimeException;
 
 /**
  * Sets the `default_charset` ini property
@@ -48,7 +48,6 @@ final class SetDefaultCharset implements SetInterface
                     ->code('%className%', __CLASS__)
                     ->code('%value%', $this->value)
                     ->strtr('%accepted%', '[' . implode(', ', $accepted) . ']')
-                    ->toString()
             );
         }
     }
@@ -61,7 +60,6 @@ final class SetDefaultCharset implements SetInterface
                 (new Message('Unable to set ini property %property% value %value%'))
                     ->code('%property%', 'default_charset')
                     ->code('%value%', $this->value)
-                    ->toString()
             );
             // @codeCoverageIgnoreEnd
         }

@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Components\Runtime\Sets;
 
 use Chevere\Components\Message\Message;
-use Chevere\Interfaces\Runtime\SetInterface;
 use Chevere\Components\Runtime\Traits\SetTrait;
-use InvalidArgumentException;
-use RuntimeException;
+use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\RuntimeException;
+use Chevere\Interfaces\Runtime\SetInterface;
 
 /**
  * Sets the `precision` ini property
@@ -43,7 +43,6 @@ final class SetPrecision implements SetInterface
             throw new InvalidArgumentException(
                 (new Message('Value must be a string integer, value %value% provided'))
                     ->code('%value%', $this->value)
-                    ->toString()
             );
         }
     }
@@ -56,7 +55,6 @@ final class SetPrecision implements SetInterface
                 (new Message('Unable to set ini property %property% value %value%'))
                     ->code('%property%', 'default_charset')
                     ->code('%value%', $this->value)
-                    ->toString()
             );
             // @codeCoverageIgnoreEnd
         }

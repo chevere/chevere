@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Runtime\Sets;
 
 use Chevere\Components\Message\Message;
-use Chevere\Interfaces\Runtime\SetInterface;
 use Chevere\Components\Runtime\Traits\SetTrait;
-use RuntimeException;
+use Chevere\Exceptions\Core\RuntimeException;
+use Chevere\Interfaces\Runtime\SetInterface;
 
 /**
  * Sets the locale using `setlocale`
@@ -37,7 +37,6 @@ final class SetLocale implements SetInterface
                 (new Message('The locale functionality is not implemented on your platform, the specified locale %locale% does not exist or the category name %category% is invalid'))
                     ->code('%category%', 'LC_ALL')
                     ->code('%locale%', $this->value)
-                    ->toString()
             );
         }
     }

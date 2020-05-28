@@ -33,7 +33,7 @@ final class VarDumpTest extends TestCase
         return new VarDump($writer, new PlainFormatter, new PlainOutputter);
     }
 
-    private function getStream(string $for = ''): StreamInterface
+    private function getStream(): StreamInterface
     {
         return (new StreamFactory)->createStream('');
     }

@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Components\Runtime\Sets;
 
 use Chevere\Components\Message\Message;
-use Chevere\Interfaces\Runtime\SetInterface;
 use Chevere\Components\Runtime\Traits\SetTrait;
-use InvalidArgumentException;
-use RuntimeException;
+use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\RuntimeException;
+use Chevere\Interfaces\Runtime\SetInterface;
 
 /**
  * Sets the default timezone
@@ -49,7 +49,6 @@ final class SetTimeZone implements SetInterface
             throw new InvalidArgumentException(
                 (new Message('Invalid timezone value %timezone%'))
                     ->code('%timezone%', $this->value)
-                    ->toString()
             );
         }
     }
@@ -79,8 +78,7 @@ final class SetTimeZone implements SetInterface
                 (new Message('False return on %s(%v) %thrown%'))
                     ->code('%s', 'date_default_timezone_set')
                     ->code('%v', $this->value)
-                    // ->code('%thrown%', $e->getMessage())
-                    ->toString()
+                    ->code('%thrown%', $e->getMessage())
             );
             // @codeCoverageIgnoreEnd
         }

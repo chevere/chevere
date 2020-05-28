@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugin;
 
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\RangeException;
 use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use Chevere\Interfaces\Plugin\PlugTypesListInterface;
 use Ds\Map;
 use Generator;
-use RuntimeException;
 
 final class PlugTypesList implements PlugTypesListInterface
 {
@@ -32,12 +32,11 @@ final class PlugTypesList implements PlugTypesListInterface
         foreach ($this->map->pairs() as $pair) {
             // @codeCoverageIgnoreStart
             if (!($pair->value instanceof PlugTypeInterface)) {
-                throw new RuntimeException(
+                throw new RangeException(
                     (new Message('List source (%path%) contains an invalid type not implementing %interface% at %pos% index'))
                         ->code('%path%', $path)
                         ->code('%interface%', PlugTypeInterface::class)
                         ->code('%pos%', (string) $pair->key)
-                        ->toString()
                 );
             }
             // @codeCoverageIgnoreEnd

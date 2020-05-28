@@ -13,12 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
+use Chevere\Components\Instances\BootstrapInstance;
+use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\RangeException;
+use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Filesystem\FileNotPhpException;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use Chevere\Interfaces\Filesystem\FilePhpInterface;
-use Chevere\Components\Instances\BootstrapInstance;
-use Chevere\Components\Message\Message;
-use RuntimeException;
 use Throwable;
 
 /**
@@ -50,9 +51,8 @@ class FilePhp implements FilePhpInterface
         touch($path, $past);
         try {
             if (!opcache_compile_file($path)) {
-                throw new RuntimeException(
+                throw new RangeException(
                     (new Message('Zend OPcache is disabled'))
-                        ->toString()
                 );
             }
         } catch (Throwable $e) {
@@ -60,7 +60,6 @@ class FilePhp implements FilePhpInterface
                 (new Message('Unable to compile cache for file %path%'))
                     ->code('%path%', $path)
                     ->code('%thrown%', $e->getMessage())
-                    ->toString()
             );
         }
     }
