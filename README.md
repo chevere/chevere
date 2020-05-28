@@ -1,16 +1,18 @@
+# Chevere
+
+This is the repository of The Chevere Framework.
+
+[![Quality Gate Status](https://img.shields.io/sonar/alert_status/chevere_chevere?server=https%3A%2F%2Fsonarcloud.io&style=flat-square
+)](https://sonarcloud.io/dashboard?id=chevere_chevere)
 [![Scrutinizer Code
 Quality](https://img.shields.io/scrutinizer/quality/g/chevere/chevere?style=flat-square)](https://scrutinizer-ci.com/g/chevere/chevere/?branch=master)
 [![codecov](https://img.shields.io/codecov/c/github/chevere/chevere?style=flat-square)](https://codecov.io/gh/chevere/chevere)
-[![CodeFactor](https://img.shields.io/codefactor/grade/github/chevere/chevere?style=flat-square)](https://www.codefactor.io/repository/github/chevere/chevere)
+[![CodeFactor](https://img.shields.io/codefactor/grade/github/chevere/chevere?label=code%20grade&style=flat-square)](https://www.codefactor.io/repository/github/chevere/chevere)
 [![Codacy Badge](https://img.shields.io/codacy/grade/b956754f8ff04aaa9ca24a6e4cc21661?style=flat-square)](https://www.codacy.com/gh/chevere/chevere?utm_source=github.com&utm_medium=referral&utm_content=chevere/chevere&utm_campaign=Badge_Grade)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/chevere/chevere?style=flat-square)](https://codeclimate.com/github/chevere/chevere)
 [![Tech Debt](https://img.shields.io/codeclimate/tech-debt/chevere/chevere?style=flat-square)](https://codeclimate.com/github/chevere/chevere)
 
-# Chevere
-
-This is the main repository of The Chevere Framework.
-
-Chevere is a development framework for building pluggable server side applications, following Clean Code principles, with a strongly typed code and a heavy culture on the console. [Documentation](https://github.com/chevere/docs).
+Chevere is a development framework for building pluggable server side applications, following Clean Code principles, with a strongly typed code and a heavy culture on the console. [Learn more](https://github.com/chevere/docs).
 
 ## ⚠ This is a work-in-progress
 
@@ -26,8 +28,6 @@ foo@bar:~$ cd ~/chevere
 foo@bar:~$ git clone git@github.com:chevere/chevere.git
 foo@bar:~$ composer install
 ```
-
-This is an unreleased work in progress. Check the tests at `Chevere/Components/**/Tests` for more details.
 
 ## License
 
