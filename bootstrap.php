@@ -24,12 +24,7 @@ $rootDir = new DirFromString(__DIR__ . '/build');
 $isCli = php_sapi_name() === 'cli';
 
 $bootstrap = (new Bootstrap($rootDir, $rootDir))
-    ->withCli($isCli)
-    ->withDev((bool) include($bootstrap->appPath() . 'options/dev.php'));
-
-if ($isCli) {
-    $bootstrap = $bootstrap->withConsole(new Console);
-}
+    ->withCli($isCli);
 
 new BootstrapInstance($bootstrap);
 

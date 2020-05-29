@@ -21,12 +21,11 @@ use Chevere\Components\Writers\Writers;
 
 require 'vendor/autoload.php';
 
-$rootDir = new DirFromString(__DIR__ . '/');
+$dir = new DirFromString(__DIR__ . '/');
 
 new BootstrapInstance(
-    (new Bootstrap($rootDir, $rootDir))
+    (new Bootstrap($dir))
         ->withCli(true)
-        ->withDev(false)
 );
 
 new WritersInstance(new Writers);

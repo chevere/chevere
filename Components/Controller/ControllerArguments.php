@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
+use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Controller\ControllerArgumentRegexMatchException;
 use Chevere\Exceptions\Controller\ControllerArgumentsRequiredException;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerParameterInterface;
-use Chevere\Components\Message\Message;
+use Chevere\Interfaces\Controller\ControllerParametersInterface;
 use Ds\Map;
 use OutOfBoundsException;
 
@@ -27,7 +28,7 @@ final class ControllerArguments implements ControllerArgumentsInterface
 
     private Map $arguments;
 
-    public function __construct(ControllerParameters $parameters, array $arguments)
+    public function __construct(ControllerParametersInterface $parameters, array $arguments)
     {
         $this->parameters = $parameters;
         $this->arguments = new Map($arguments);
@@ -35,6 +36,11 @@ final class ControllerArguments implements ControllerArgumentsInterface
         foreach ($this->arguments as $name => $value) {
             $this->assertParameter($name, $value);
         }
+    }
+
+    public function arguments(): array
+    {
+        return $this->array;
     }
 
     public function withArgument(string $name, string $value): ControllerArgumentsInterface

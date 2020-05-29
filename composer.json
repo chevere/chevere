@@ -31,7 +31,6 @@
     },
     "autoload": {
         "files": [
-            "utils/phpcheck.php",
             "Components/Type/functions.php",
             "Components/VarDump/functions.php",
             "Components/Writers/functions.php"

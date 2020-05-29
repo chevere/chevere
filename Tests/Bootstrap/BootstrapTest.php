@@ -14,65 +14,42 @@ declare(strict_types=1);
 namespace Chevere\Tests\Bootstrap;
 
 use Chevere\Components\Bootstrap\Bootstrap;
+use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Exceptions\Bootstrap\BootstrapDirException;
 use Chevere\Interfaces\Bootstrap\BootstrapInterface;
-use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use PHPUnit\Framework\TestCase;
 
 final class BootstrapTest extends TestCase
 {
-    private function getRootDir(): DirInterface
+    private function getBootDir(string $child): DirInterface
     {
-        return new DirFromString(__DIR__ . '/_resources/root/');
-    }
-
-    private function getAppDir(DirInterface $rootDir): DirInterface
-    {
-        return $rootDir->getChild('app/');
-    }
-
-    private function getBootstrap(): BootstrapInterface
-    {
-        $rootDir = $this->getRootDir();
-
-        return new Bootstrap($rootDir, $this->getAppDir($rootDir));
+        return new DirFromString(__DIR__ . '/_resources/root/' . $child);
     }
 
     public function testConstruct(): void
     {
-        $rootDir = $this->getRootDir();
-        $appDir = $this->getAppDir($rootDir);
-        $bootstrap = new Bootstrap($rootDir, $appDir);
-        $this->assertSame($rootDir, $bootstrap->rootDir());
-        $this->assertSame($appDir, $bootstrap->appDir());
+        $dir = $this->getBootDir('');
+        $bootstrap = new Bootstrap($dir);
+        $this->assertSame($dir, $bootstrap->dir());
         $this->assertIsInt($bootstrap->time());
         $this->assertIsInt($bootstrap->hrtime());
         $this->assertFalse($bootstrap->isCli());
-        $this->assertFalse($bootstrap->isDev());
     }
 
     public function testWithNonExistentDirs(): void
     {
-        $rootDir = $this->getRootDir();
-        $appDir = $this->getAppDir($rootDir)->getChild(uniqid() . '/');
+        $dir = $this->getBootDir(uniqid() . '/');
         $this->expectException(BootstrapDirException::class);
-        new Bootstrap($rootDir, $appDir);
+        new Bootstrap($dir);
     }
 
     public function testWithCli(): void
     {
-        $bootstrap = $this->getBootstrap()->withCli(true);
+        $dir = $this->getBootDir('');
+        $bootstrap = (new Bootstrap($dir))->withCli(true);
         $this->assertTrue($bootstrap->isCli());
         $bootstrap = $bootstrap->withCli(false);
         $this->assertFalse($bootstrap->isCli());
-    }
-
-    public function testWithDev(): void
-    {
-        $bootstrap = $this->getBootstrap()->withDev(true);
-        $this->assertTrue($bootstrap->isDev());
-        $bootstrap = $bootstrap->withDev(false);
-        $this->assertFalse($bootstrap->isDev());
     }
 }

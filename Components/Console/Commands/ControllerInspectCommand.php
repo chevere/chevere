@@ -16,7 +16,8 @@ namespace Chevere\Components\Console\Commands;
 use Ahc\Cli\Input\Command;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controller\ControllerParameter;
-use Chevere\Interfaces\Controller\ControllerInterface;
+use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Controller\ControllerNotExistsException;
 
 final class ControllerInspectCommand extends Command
 {
@@ -31,9 +32,20 @@ final class ControllerInspectCommand extends Command
             );
     }
 
-    public function execute()
+    public function execute(): int
     {
-        $controllerName = (new ControllerName($this->fqn))->toString();
+        try {
+            $controllerName = (new ControllerName($this->fqn))->toString();
+        } catch (ControllerNotExistsException $e) {
+            $this->writer()->error(
+                (new Message("Controller %controllerName% doesn't exists"))
+                    ->code('%controllerName%', $this->fqn)
+                    ->toString(),
+                true
+            );
+
+            return 127;
+        }
         /**
          * @var ControllerInterface $controller
          */
@@ -59,5 +71,7 @@ final class ControllerInspectCommand extends Command
                 $this->writer()->colors('<blue>+-----------------------+</end>', true);
             }
         }
+
+        return 0;
     }
 }

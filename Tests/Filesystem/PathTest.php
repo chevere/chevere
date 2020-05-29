@@ -24,7 +24,7 @@ final class PathTest extends TestCase
 {
     public function getPath(string $child): PathInterface
     {
-        return BootstrapInstance::get()->appDir()->path()->getChild($child);
+        return BootstrapInstance::get()->dir()->path()->getChild($child);
     }
 
     public function testFilesystemPath(): void

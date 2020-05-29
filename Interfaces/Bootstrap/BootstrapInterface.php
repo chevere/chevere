@@ -21,7 +21,7 @@ interface BootstrapInterface
     /**
      * @throws BootstrapDirException
      */
-    public function __construct(DirInterface $rootDir, DirInterface $app);
+    public function __construct(DirInterface $dir);
 
     /**
      * Provides access to the time() registered on instance creation.
@@ -36,12 +36,7 @@ interface BootstrapInterface
     /**
      * Provides access to the rootDir used on instance creation.
      */
-    public function rootDir(): DirInterface;
-
-    /**
-     * Provides access to the appDir used on instance creation.
-     */
-    public function appDir(): DirInterface;
+    public function dir(): DirInterface;
 
     /**
      * Return an instance with the specified cli flag.
@@ -55,17 +50,4 @@ interface BootstrapInterface
      * Returns a boolean indicating whether the instance has the cli flag.
      */
     public function isCli(): bool;
-
-    /**
-     * Return an instance with the specified dev flag.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified dev flag.
-     */
-    public function withDev(bool $bool): BootstrapInterface;
-
-    /**
-     * Returns a boolean indicating whether the instance has a the dev flag.
-     */
-    public function isDev(): bool;
 }

@@ -34,7 +34,7 @@ final class ControllerListCommand extends Command
 
     public function execute()
     {
-        $dir = BootstrapInstance::get()->appDir();
+        $dir = BootstrapInstance::get()->dir();
         $this->directoryIterator = new RecursiveDirectoryIterator(
             $dir->path()->absolute(),
             RecursiveDirectoryIterator::SKIP_DOTS

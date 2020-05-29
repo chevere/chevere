@@ -15,6 +15,8 @@ namespace Chevere\Interfaces\Controller;
 
 interface ControllerArgumentsInterface
 {
+    public function arguments(): array;
+
     public function withArgument(string $name, string $value): ControllerArgumentsInterface;
 
     public function has(string $name): bool;

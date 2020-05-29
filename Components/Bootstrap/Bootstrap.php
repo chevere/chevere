@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Bootstrap;
 
-use Chevere\Exceptions\Bootstrap\BootstrapDirException;
-use Chevere\Interfaces\Bootstrap\BootstrapInterface;
-use Chevere\Exceptions\Core\Exception;
-use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Bootstrap\BootstrapDirException;
+use Chevere\Exceptions\Core\Exception;
+use Chevere\Interfaces\Bootstrap\BootstrapInterface;
+use Chevere\Interfaces\Filesystem\DirInterface;
 use Throwable;
 
 final class Bootstrap implements BootstrapInterface
@@ -28,23 +28,16 @@ final class Bootstrap implements BootstrapInterface
     private int $hrTime;
 
     /** @var DirInterface Path to the document root (html) */
-    private DirInterface $rootDir;
-
-    /** @var DirInterface Path to the application */
-    private DirInterface $appDir;
+    private DirInterface $dir;
 
     private bool $isCli = false;
 
-    private bool $isDev = false;
-
-    public function __construct(DirInterface $rootDir, DirInterface $app)
+    public function __construct(DirInterface $dir)
     {
         $this->time = time();
         $this->hrTime = hrtime(true);
-        $this->handleDirectory($rootDir, '$rootDir');
-        $this->handleDirectory($app, '$app');
-        $this->rootDir = $rootDir;
-        $this->appDir = $app;
+        $this->handleDirectory($dir, '$dir');
+        $this->dir = $dir;
     }
 
     public function time(): int
@@ -57,14 +50,9 @@ final class Bootstrap implements BootstrapInterface
         return $this->hrTime;
     }
 
-    public function rootDir(): DirInterface
+    public function dir(): DirInterface
     {
-        return $this->rootDir;
-    }
-
-    public function appDir(): DirInterface
-    {
-        return $this->appDir;
+        return $this->dir;
     }
 
     public function withCli(bool $bool): BootstrapInterface
@@ -78,19 +66,6 @@ final class Bootstrap implements BootstrapInterface
     public function isCli(): bool
     {
         return $this->isCli;
-    }
-
-    public function withDev(bool $bool): BootstrapInterface
-    {
-        $new = clone $this;
-        $new->isDev = $bool;
-
-        return $new;
-    }
-
-    public function isDev(): bool
-    {
-        return $this->isDev;
     }
 
     private function handleDirectory(DirInterface $dir, string $argumentName): void

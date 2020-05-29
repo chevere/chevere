@@ -15,31 +15,47 @@ use Chevere\Components\Bootstrap\Bootstrap;
 use Chevere\Components\Console\Commands\ControllerInspectCommand;
 use Chevere\Components\Console\Commands\ControllerListCommand;
 use Chevere\Components\Console\Commands\ControllerRunCommand;
-use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\Instances\WritersInstance;
 use Chevere\Components\Writers\Writers;
 
-$parentDir = dirname(__DIR__) . '/';
-require $parentDir . 'vendor/autoload.php';
+foreach ([
+    __DIR__ . '/../../../autoload.php',
+    __DIR__ . '/../vendor/autoload.php'
+] as $file) {
+    if (file_exists($file)) {
+        $autoload = $file;
+        require $autoload;
+        break;
+    }
+}
 
-$rootDir = new DirFromString($parentDir);
+if (!isset($autoload)) {
+    fwrite(
+        STDERR,
+        'You need to set up the project dependencies using Composer:' . PHP_EOL . PHP_EOL .
+        '    composer install' . PHP_EOL . PHP_EOL .
+        'You can learn all about Composer on https://getcomposer.org/.' . PHP_EOL
+    );
+    die(1);
+}
+
+$appDir = realpath(dirname($autoload)) . '/';
+
+$dir = new DirFromString($appDir);
 
 new BootstrapInstance(
-    (new Bootstrap($rootDir, $rootDir))
-        ->withCli(true)
-        ->withDev(false)
+    (new Bootstrap($dir))->withCli(true)
 );
 
 new WritersInstance(new Writers);
 
 (new Application(
     'chevere',
-    trim(file_get_contents($parentDir . 'VERSION'))
+    trim(file_get_contents(dirname(__DIR__) . '/' . 'VERSION'))
 ))
-    ->logo(file_get_contents($parentDir . 'LOGO'))
+    ->logo(file_get_contents(dirname(__DIR__) . '/' . 'LOGO'))
     ->add(new ControllerInspectCommand, 'ci')
     ->add(new ControllerListCommand, 'cl')
     ->add(new ControllerRunCommand, 'cr')

@@ -14,13 +14,17 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs\Hooks\Traits;
 
 use Chevere\Interfaces\Plugs\Hooks\HooksRunnerInterface;
+use Chevere\Interfaces\Plugs\Hooks\PluggableHooksInterface;
 
 trait PluggableHooksTrait
 {
     private HooksRunnerInterface $hooksRunner;
 
-    public function withHooksRunner(HooksRunnerInterface $hooksRunner): self
+    public function withHooksRunner(HooksRunnerInterface $hooksRunner): PluggableHooksInterface
     {
+        /**
+         * @var PluggableHooksInterface $new
+         */
         $new = clone $this;
         $new->hooksRunner = $hooksRunner;
 

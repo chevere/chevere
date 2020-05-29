@@ -36,7 +36,6 @@ $rootDir = new Dir(new Path(__DIR__ . '/Chevere/TestApp/'));
 new BootstrapInstance(
     (new Bootstrap($rootDir, $rootDir->getChild('app/')))
         ->withCli(true)
-        ->withDev(false)
 );
 
 new WritersInstance(new Writers());
