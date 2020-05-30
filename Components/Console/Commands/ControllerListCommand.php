@@ -15,8 +15,9 @@ namespace Chevere\Components\Console\Commands;
 
 use Ahc\Cli\Input\Command;
 use Chevere\Components\Controller\ControllerName;
-use Chevere\Components\Instances\BootstrapInstance;
+use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Str\StrBool;
+use Chevere\Exceptions\Core\Exception;
 use Go\ParserReflection\ReflectionFile;
 use RecursiveDirectoryIterator;
 use RecursiveFilterIterator;
@@ -29,12 +30,34 @@ final class ControllerListCommand extends Command
 
     public function __construct()
     {
-        parent::__construct('conlist', 'List controllers');
+        parent::__construct('conlist', 'List controllers in a given path');
+        $this
+            ->argument('<path>', sprintf('A trailing slash absolute directory path'))
+            ->usage(
+                '<bold>  conlist</end> <comment>/var/</end> ## List controllers at <comment>/var/</end><eol/>'
+            );
     }
 
-    public function execute()
+    public function execute(): int
     {
-        $dir = BootstrapInstance::get()->dir();
+        try {
+            $dir = new DirFromString($this->path);
+            $dir->assertExists();
+        } catch (Throwable $e) {
+            $this->writer()
+                ->error(get_class($e))
+                ->eol()
+                ->raw(
+                    $e instanceof Exception
+                    ? $e->message()->toConsole()
+                    : $e->getMessage()
+                )
+                ->eol();
+
+            return 1;
+        }
+
+        $this->writer()->ok('List controllers @' . $dir->path()->absolute())->eol()->eol();
         $this->directoryIterator = new RecursiveDirectoryIterator(
             $dir->path()->absolute(),
             RecursiveDirectoryIterator::SKIP_DOTS
@@ -42,24 +65,37 @@ final class ControllerListCommand extends Command
         );
         $this->recursiveIterator = new RecursiveIteratorIterator($this->recursiveFilterIterator());
         $this->recursiveIterator->rewind();
+        $hit = 0;
         while ($this->recursiveIterator->valid()) {
             $pathName = $this->recursiveIterator->current()->getPathName();
-            $parsedFile = new ReflectionFile($pathName);
+            try {
+                $parsedFile = new ReflectionFile($pathName);
+            } catch (Throwable $e) {
+                $this->recursiveIterator->next();
+                continue;
+            }
             $fileNameSpaces = $parsedFile->getFileNamespaces();
             foreach ($fileNameSpaces as $namespace) {
                 $classes = $namespace->getClasses();
-
                 foreach ($classes as $class) {
                     try {
-                        @(new ControllerName($class->getName()));
-                        $this->writer()->colors('<green>•' . $class->getName() . '</end>', true);
-                        $this->writer()->colors('<white>' . $pathName . '</end>', true);
+                        new ControllerName($class->getName());
+                        $hit++;
+                        $this->writer()
+                            ->red('* ')
+                            ->write($class->getName(), true)
+                            ->blue('  ' . $pathName, true)
+                            ->eol();
                     } catch (Throwable $e) {
+                        continue;
                     }
                 }
             }
             $this->recursiveIterator->next();
         }
+        $this->writer()->yellow(sprintf('Found %s controllers', (string) $hit))->eol();
+
+        return 0;
     }
 
     private function recursiveFilterIterator(): RecursiveFilterIterator
@@ -73,7 +109,7 @@ final class ControllerListCommand extends Command
                 }
 
                 return (new StrBool($this->current()->getFilename()))
-                    ->endsWith('.php');
+                    ->endsWith('Controller.php');
             }
         };
     }

@@ -10,8 +10,8 @@
  * file that was distributed with this source code.
  */
 
-use Ahc\Cli\Application;
 use Chevere\Components\Bootstrap\Bootstrap;
+use Chevere\Components\Console\Application;
 use Chevere\Components\Console\Commands\ControllerInspectCommand;
 use Chevere\Components\Console\Commands\ControllerListCommand;
 use Chevere\Components\Console\Commands\ControllerRunCommand;
@@ -21,7 +21,7 @@ use Chevere\Components\Instances\WritersInstance;
 use Chevere\Components\Writers\Writers;
 
 foreach ([
-    __DIR__ . '/../../../autoload.php',
+    __DIR__ . '/../../../../vendor/autoload.php',
     __DIR__ . '/../vendor/autoload.php'
 ] as $file) {
     if (file_exists($file)) {
@@ -30,7 +30,6 @@ foreach ([
         break;
     }
 }
-
 if (!isset($autoload)) {
     fwrite(
         STDERR,
@@ -40,15 +39,11 @@ if (!isset($autoload)) {
     );
     die(1);
 }
-
-$appDir = realpath(dirname($autoload)) . '/';
-
-$dir = new DirFromString($appDir);
-
+$autoloadParentDir = stream_resolve_include_path(dirname(dirname($autoload))) . '/';
+$dir = new DirFromString($autoloadParentDir);
 new BootstrapInstance(
     (new Bootstrap($dir))->withCli(true)
 );
-
 new WritersInstance(new Writers);
 
 (new Application(

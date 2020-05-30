@@ -28,7 +28,7 @@ final class ControllerInspectCommand extends Command
         $this
             ->argument('<fqn>', 'Controller full-qualified name')
             ->usage(
-                '<bold>  $0 coninspect</end> <comment>"App\Controllers\TheController"</end><eol/>'
+                '<bold>  coninspect</end> <comment>"App\Controllers\TheController"</end><eol/>'
             );
     }
 
@@ -50,26 +50,24 @@ final class ControllerInspectCommand extends Command
          * @var ControllerInterface $controller
          */
         $controller = new $controllerName;
-        $this->writer()->colors('<green>' . $controllerName . '</end>', true);
         $description = $controller->description();
-        if ($description === '') {
-            $description = '*no description*';
-        }
-        $this->writer()->colors('<comment>' . $description . '</end>', true);
-        $this->writer()->colors('', true);
-        if ($controller->parameters()->map()->count() > 0) {
-            $this->writer()->colors('<bold>Parameters</end>', true);
-            $this->writer()->colors('<blue>+-----------------------+</end>', true);
+        $this->writer()
+            ->ok('Inspect ' . $controllerName, true)
+            ->eol()
+            ->bold('Description', true)
+            ->comment($description !== '' ? $description : 'no description', true)
+            ->eol();
+        if (count($controller->parameters()->map()) > 0) {
+            $this->writer()->bold('Parameters', true);
             /**
              * @var ControllerParameter $parameter
              */
+            $table = [];
             foreach ($controller->parameters()->map() as $parameter) {
-                $this->writer()->colors('Name ' . $parameter->name() . '<eol>');
-                $this->writer()->colors('Regex ' . $parameter->regex()->toString() . '<eol>');
-                $required = ($parameter->isRequired() ? '<purple>true' : '<comment>false') . '</end>';
-                $this->writer()->colors('Required ' . $required . '<eol>');
-                $this->writer()->colors('<blue>+-----------------------+</end>', true);
+                $required = ($parameter->isRequired() ? 'true' : 'false');
+                $table[] = ['Name' => $parameter->name(), 'Regex' => $parameter->regex()->toString(), 'Required' => $required];
             }
+            $this->writer()->table($table);
         }
 
         return 0;

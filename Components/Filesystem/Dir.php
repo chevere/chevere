@@ -70,7 +70,7 @@ class Dir implements DirInterface
     {
         if (!$this->exists()) {
             throw new DirNotExistsException(
-                (new Message("File %path% doesn't exists"))
+                (new Message("Dir %path% doesn't exists"))
                     ->code('%path%', $this->path->absolute())
             );
         }

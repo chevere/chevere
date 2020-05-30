@@ -19,7 +19,7 @@ use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controller\ControllerRunner;
 use Chevere\Exceptions\Controller\ControllerArgumentsRequiredException;
 use Chevere\Exceptions\Core\Exception;
-use Chevere\Interfaces\Controller\ControllerParameterInterface;
+use Chevere\Interfaces\Controller\ControllerInterface;
 
 final class ControllerRunCommand extends Command
 {
@@ -70,20 +70,10 @@ final class ControllerRunCommand extends Command
             $arguments = new ControllerArguments($controller->parameters(), $args ?? []);
         } catch (ControllerArgumentsRequiredException $e) {
             $this->writer()->error('Missing arguments', true);
-            $params = [];
-            /**
-             * @var ControllerParameterInterface $parameter
-             */
-            foreach ($controller->parameters()->map() as $parameter) {
-                $brackets = $parameter->isRequired()
-                    ? ['<', '>'] : '["[", "]"]';
-                $params[$parameter->name()] = $brackets[0] . 'value' . $brackets[1];
-            }
-            $this->writer()->colors('<blackBgYellow>' . json_encode($params) . '</end>', true);
 
             return 127;
         }
-        $this->writer()->colors('<green>Run ' . $controllerNameStr . '</end>', true);
+        $this->writer()->ok('Run ' . $controllerNameStr, true);
         $runner = new ControllerRunner($controller);
         $ran = $runner->ran($arguments);
         $this->writer()->write(implode('', $ran->data()));
