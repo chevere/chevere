@@ -19,6 +19,9 @@ use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Controller\ControllerNotExistsException;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class ControllerInspectCommand extends Command
 {
     public function __construct()

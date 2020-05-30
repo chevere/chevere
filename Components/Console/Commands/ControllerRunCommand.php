@@ -21,6 +21,9 @@ use Chevere\Exceptions\Controller\ControllerArgumentsRequiredException;
 use Chevere\Exceptions\Core\Exception;
 use Chevere\Interfaces\Controller\ControllerInterface;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class ControllerRunCommand extends Command
 {
     public function __construct()
@@ -45,7 +48,7 @@ final class ControllerRunCommand extends Command
         } catch (Exception $e) {
             $this->writer()->error($e->getMessage(), true);
 
-            return 127;
+            return 255;
         }
         $controllerNameStr = $controllerName->toString();
         /**
@@ -57,13 +60,13 @@ final class ControllerRunCommand extends Command
             if ($controller->parameters()->map()->count() == 0) {
                 $this->writer()->error('This controller takes no arguments', true);
 
-                return 127;
+                return 255;
             }
             $args = json_decode($this->args, true);
             if ($args === null) {
                 $this->writer()->error('Invalid arguments JSON string passed', true);
 
-                return 127;
+                return 255;
             }
         }
         try {
@@ -71,7 +74,7 @@ final class ControllerRunCommand extends Command
         } catch (ControllerArgumentsRequiredException $e) {
             $this->writer()->error('Missing arguments', true);
 
-            return 127;
+            return 255;
         }
         $this->writer()->ok('Run ' . $controllerNameStr, true);
         $runner = new ControllerRunner($controller);

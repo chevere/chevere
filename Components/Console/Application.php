@@ -19,11 +19,7 @@ use Ahc\Cli\Exception\RuntimeException;
 final class Application extends CliApplication
 {
     /**
-     * Handle the request, invoke action and call exit handler.
-     *
-     * @param array $argv
-     *
-     * @return mixed
+     * @codeCoverageIgnore
      */
     public function handle(array $argv)
     {

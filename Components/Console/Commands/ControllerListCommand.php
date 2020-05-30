@@ -24,6 +24,9 @@ use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
 use Throwable;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class ControllerListCommand extends Command
 {
     private RecursiveDirectoryIterator $directoryIterator;
