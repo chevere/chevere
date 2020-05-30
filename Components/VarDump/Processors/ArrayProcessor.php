@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
-use Chevere\Interfaces\VarDump\ProcessorInterface;
-use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 use Chevere\Components\VarDump\VarDumpable;
 use Chevere\Components\VarDump\VarDumper;
 use Chevere\Interfaces\Type\TypeInterface;
+use Chevere\Interfaces\VarDump\ProcessorInterface;
+use Chevere\Interfaces\VarDump\VarDumperInterface;
 
 final class ArrayProcessor implements ProcessorInterface
 {
@@ -93,7 +93,7 @@ final class ArrayProcessor implements ProcessorInterface
         foreach ($this->var as $key => $var) {
             $this->varDumper->writer()->write(
                 implode(' ', [
-                    "\n" . $this->varDumper->indentString(),
+                    "\n" . $this->varDumper->indentString() .
                     $this->varDumper->formatter()->filterEncodedChars((string) $key),
                     $operator,
                     ''
@@ -115,7 +115,7 @@ final class ArrayProcessor implements ProcessorInterface
             new VarDumpable($var),
         ))
             ->withDepth($deep)
-            ->withIndent($this->varDumper->indent() + 1)
+            ->withIndent($this->varDumper->indent())
             ->withKnownObjects($this->varDumper->known())
             ->withProcessor();
     }

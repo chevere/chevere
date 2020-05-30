@@ -16,6 +16,7 @@ namespace Chevere\Tests\VarDump\Processors;
 use Chevere\Components\VarDump\Processors\ObjectProcessor;
 use Chevere\Interfaces\VarDump\ProcessorInterface;
 use Chevere\Tests\VarDump\Traits\VarDumperTrait;
+use Ds\Map;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -103,6 +104,20 @@ final class ObjectProcessorTest extends TestCase
         $processor->write();
         $this->assertStringContainsString(
             $processor->maxDepthReached(),
+            $varDumper->writer()->toString()
+        );
+    }
+
+    public function testDsCollection(): void
+    {
+        $key = 'key';
+        $value = 'value';
+        $object = new Map([$key => $value]);
+        $varDumper = $this->getVarDumper($object);
+        $processor = new ObjectProcessor($varDumper);
+        $processor->write();
+        $this->assertStringContainsString(
+            "$key => string $value",
             $varDumper->writer()->toString()
         );
     }

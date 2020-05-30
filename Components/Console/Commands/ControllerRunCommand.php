@@ -18,29 +18,40 @@ use Chevere\Components\Controller\ControllerArguments;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controller\ControllerRunner;
 use Chevere\Exceptions\Controller\ControllerArgumentsRequiredException;
-use Chevere\Interfaces\Controller\ControllerInterface;
+use Chevere\Exceptions\Core\Exception;
 use Chevere\Interfaces\Controller\ControllerParameterInterface;
-use Ds\Map;
 
 final class ControllerRunCommand extends Command
 {
     public function __construct()
     {
-        parent::__construct('conrun', 'Runs a controller');
+        parent::__construct('conrun', 'Run a controller');
 
         $this
-            ->argument('<fqn>', 'Controller full-qualified name')
-            ->option('-a --args', 'Controller arguments <json>')
-            ->option('-n --no-hooks', 'No hooks', 'boolval', null);
+            ->argument('<controller>', 'The controller full-qualified name')
+            ->option('-a --args', 'Controller arguments as JSON')
+            ->option('-p --plugs', 'A list of full-qualified plugs to implement [plug...]', 'is_array', [])
+            ->usage(
+                '<bold>  conrun</end> <comment><controller></end> ## Without anything<eol/>' .
+                '<bold>  conrun</end> <comment><controller> -a \'{"parameter": "argument"}\'</end> ## With arguments<eol/>' .
+                '<bold>  conrun</end> <comment><controller> -p App\Plugs\SomePlug App\Plugs\OtherPlug</end> ## With plugs<eol/>'
+            );
     }
 
     public function execute()
     {
-        $controllerName = (new ControllerName($this->fqn))->toString();
+        try {
+            $controllerName = new ControllerName($this->controller);
+        } catch (Exception $e) {
+            $this->writer()->error($e->getMessage(), true);
+
+            return 127;
+        }
+        $controllerNameStr = $controllerName->toString();
         /**
          * @var ControllerInterface $controller
          */
-        $controller = new $controllerName;
+        $controller = new $controllerNameStr;
         $args = $this->args;
         if ($args !== null) {
             if ($controller->parameters()->map()->count() == 0) {
@@ -56,7 +67,7 @@ final class ControllerRunCommand extends Command
             }
         }
         try {
-            $arguments = new ControllerArguments($controller->parameters(), new Map($args ?? []));
+            $arguments = new ControllerArguments($controller->parameters(), $args ?? []);
         } catch (ControllerArgumentsRequiredException $e) {
             $this->writer()->error('Missing arguments', true);
             $params = [];
@@ -72,7 +83,7 @@ final class ControllerRunCommand extends Command
 
             return 127;
         }
-        $this->writer()->colors('<green>Run ' . $controllerName . '</end>', true);
+        $this->writer()->colors('<green>Run ' . $controllerNameStr . '</end>', true);
         $runner = new ControllerRunner($controller);
         $ran = $runner->ran($arguments);
         $this->writer()->write(implode('', $ran->data()));

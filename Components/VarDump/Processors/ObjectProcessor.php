@@ -20,7 +20,12 @@ use Chevere\Components\VarDump\VarDumper;
 use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Interfaces\VarDump\ProcessorInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
+use Ds\Collection;
+use Ds\Map;
+use IteratorAggregate;
 use Reflection;
+use ReflectionClass;
+use ReflectionMethod;
 use ReflectionObject;
 use Throwable;
 
@@ -92,21 +97,36 @@ final class ObjectProcessor implements ProcessorInterface
         }
         $this->knownObjects[] = $this->objectId;
         $this->reflectionObject = new ReflectionObject($this->var);
+        if ($this->reflectionObject->implementsInterface(Collection::class)) {
+            $this->varDumper->writer()->write(' ');
+            (new VarDumper(
+                $this->varDumper->writer(),
+                $this->varDumper->formatter(),
+                new VarDumpable($this->var->toArray())
+            ))
+                ->withDepth($this->depth)
+                ->withIndent(
+                    $this->varDumper->indent() > 1
+                    ? $this->varDumper->indent() - 1
+                    : $this->varDumper->indent()
+                )
+                ->withKnownObjects($this->knownObjects)
+                ->withProcessor();
+        }
         $this->setProperties();
     }
 
     private function setProperties(): void
     {
         $properties = [];
-        $reflectionObject = $this->reflectionObject;
+        $reflectionClass = $this->reflectionObject;
         do {
-            foreach ($reflectionObject->getProperties() as $property) {
+            foreach ($reflectionClass->getProperties() as $property) {
                 $property->setAccessible(true);
                 try {
                     $value = $property->getValue($this->var);
                 } catch (Throwable $e) {
                     $value = null;
-                    // $e;
                 }
                 $properties[$property->getName()] = [
                     $property->getName(),
@@ -114,7 +134,7 @@ final class ObjectProcessor implements ProcessorInterface
                     $value ?? null,
                 ];
             }
-        } while ($reflectionObject = $reflectionObject->getParentClass());
+        } while ($reflectionClass = $reflectionClass->getParentClass());
         $keys = array_keys($properties);
         foreach ($keys as $name) {
             $this->processProperty(...$properties[$name]);
@@ -147,7 +167,7 @@ final class ObjectProcessor implements ProcessorInterface
                 ? $this->depth - 1
                 : $this->depth
             )
-            ->withIndent($this->varDumper->indent() + 1)
+            ->withIndent($this->varDumper->indent())
             ->withKnownObjects($this->knownObjects)
             ->withProcessor();
     }

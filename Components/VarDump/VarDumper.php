@@ -68,8 +68,7 @@ final class VarDumper implements VarDumperInterface
     {
         $new = clone $this;
         $new->indent = $indent;
-        $new->indentString = $new->formatter
-            ->indent($indent);
+        $new->indentString = $new->formatter->indent($indent);
 
         return $new;
     }
