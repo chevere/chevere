@@ -26,10 +26,15 @@ use Throwable;
 
 /**
  * @codeCoverageIgnore
+ * @property string $path
  */
 final class ControllerListCommand extends Command
 {
     private RecursiveDirectoryIterator $directoryIterator;
+
+    private RecursiveIteratorIterator $recursiveIterator;
+
+    private int $hit;
 
     public function __construct()
     {
@@ -44,7 +49,7 @@ final class ControllerListCommand extends Command
     public function execute(): int
     {
         try {
-            $dir = new DirFromString($this->path);
+            $dir = new DirFromString($this->path ?? '');
             $dir->assertExists();
         } catch (Throwable $e) {
             $this->writer()
@@ -68,35 +73,9 @@ final class ControllerListCommand extends Command
         );
         $this->recursiveIterator = new RecursiveIteratorIterator($this->recursiveFilterIterator());
         $this->recursiveIterator->rewind();
-        $hit = 0;
-        while ($this->recursiveIterator->valid()) {
-            $pathName = $this->recursiveIterator->current()->getPathName();
-            try {
-                $parsedFile = new ReflectionFile($pathName);
-            } catch (Throwable $e) {
-                $this->recursiveIterator->next();
-                continue;
-            }
-            $fileNameSpaces = $parsedFile->getFileNamespaces();
-            foreach ($fileNameSpaces as $namespace) {
-                $classes = $namespace->getClasses();
-                foreach ($classes as $class) {
-                    try {
-                        new ControllerName($class->getName());
-                        $hit++;
-                        $this->writer()
-                            ->red('* ')
-                            ->write($class->getName(), true)
-                            ->blue('  ' . $pathName, true)
-                            ->eol();
-                    } catch (Throwable $e) {
-                        continue;
-                    }
-                }
-            }
-            $this->recursiveIterator->next();
-        }
-        $this->writer()->yellow(sprintf('Found %s controllers', (string) $hit))->eol();
+        $this->hit = 0;
+        $this->iterate();
+        $this->writer()->yellow(sprintf('Found %s controllers', (string) $this->hit))->eol();
 
         return 0;
     }
@@ -115,5 +94,36 @@ final class ControllerListCommand extends Command
                     ->endsWith('Controller.php');
             }
         };
+    }
+
+    private function iterate(): void
+    {
+        while ($this->recursiveIterator->valid()) {
+            $pathName = $this->recursiveIterator->current()->getPathName();
+            try {
+                $parsedFile = new ReflectionFile($pathName);
+            } catch (Throwable $e) {
+                $this->recursiveIterator->next();
+                continue;
+            }
+            $fileNameSpaces = $parsedFile->getFileNamespaces();
+            foreach ($fileNameSpaces as $namespace) {
+                $classes = $namespace->getClasses();
+                foreach ($classes as $class) {
+                    try {
+                        new ControllerName($class->getName());
+                        $this->hit++;
+                        $this->writer()
+                            ->red('* ')
+                            ->write($class->getName(), true)
+                            ->blue('  ' . $pathName, true)
+                            ->eol();
+                    } catch (Throwable $e) {
+                        continue;
+                    }
+                }
+            }
+            $this->recursiveIterator->next();
+        }
     }
 }
