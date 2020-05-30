@@ -19,9 +19,11 @@ use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Str\StrBool;
 use Chevere\Exceptions\Core\Exception;
 use Go\ParserReflection\ReflectionFile;
+use Go\ParserReflection\ReflectionFileNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
+use ReflectionClass;
 use Throwable;
 
 /**
@@ -99,31 +101,42 @@ final class ControllerListCommand extends Command
     private function iterate(): void
     {
         while ($this->recursiveIterator->valid()) {
-            $pathName = $this->recursiveIterator->current()->getPathName();
             try {
-                $parsedFile = new ReflectionFile($pathName);
+                $parsedFile = new ReflectionFile(
+                    $this->recursiveIterator->current()->getPathName()
+                );
             } catch (Throwable $e) {
                 $this->recursiveIterator->next();
                 continue;
             }
-            $fileNameSpaces = $parsedFile->getFileNamespaces();
-            foreach ($fileNameSpaces as $namespace) {
-                $classes = $namespace->getClasses();
-                foreach ($classes as $class) {
-                    try {
-                        new ControllerName($class->getName());
-                        $this->hit++;
-                        $this->writer()
-                            ->red('* ')
-                            ->write($class->getName(), true)
-                            ->blue('  ' . $pathName, true)
-                            ->eol();
-                    } catch (Throwable $e) {
-                        continue;
-                    }
-                }
+            /**
+             * @var ReflectionFileNamespace $namespace
+             */
+            foreach ($parsedFile->getFileNamespaces() as $namespace) {
+                $this->iterateClassesInNamespace($namespace);
             }
             $this->recursiveIterator->next();
+        }
+    }
+
+    private function iterateClassesInNamespace(ReflectionFileNamespace $namespace): void
+    {
+        $classes = $namespace->getClasses();
+        /**
+         * @var ReflectionClass $class
+         */
+        foreach ($classes as $class) {
+            try {
+                new ControllerName($class->getName());
+                $this->hit++;
+                $this->writer()
+                    ->red('* ')
+                    ->write($class->getName(), true)
+                    ->blue('  ' . $class->getFileName(), true)
+                    ->eol();
+            } catch (Throwable $e) {
+                continue;
+            }
         }
     }
 }
