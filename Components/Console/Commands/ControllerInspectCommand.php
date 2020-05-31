@@ -31,7 +31,7 @@ final class ControllerInspectCommand extends Command
         $this
             ->argument('<fqn>', 'Controller full-qualified name')
             ->usage(
-                '<bold>  coninspect</end> <comment>"App\Controllers\TheController"</end><eol/>'
+                '<bold>  coninspect</end> <comment>App\Controllers\TheController</end><eol/>'
             );
     }
 
@@ -55,7 +55,7 @@ final class ControllerInspectCommand extends Command
         $controller = new $controllerName;
         $description = $controller->description();
         $this->writer()
-            ->ok('Inspect ' . $controllerName, true)
+            ->okBold('Inspect ' . $controllerName, true)
             ->eol()
             ->bold('Description', true)
             ->comment($description !== '' ? $description : 'no description', true)

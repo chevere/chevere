@@ -15,6 +15,9 @@ namespace Chevere\Components\Console;
 
 use Ahc\Cli\Application as CliApplication;
 use Ahc\Cli\Exception\RuntimeException;
+use Chevere\Components\ExceptionHandler\Documents\ConsoleDocument;
+use Chevere\Components\ExceptionHandler\ExceptionHandler;
+use Chevere\Components\ExceptionHandler\ExceptionRead;
 
 final class Application extends CliApplication
 {
@@ -33,6 +36,10 @@ final class Application extends CliApplication
             $exitCode = is_int($result) ? $result : 0;
         } catch (RuntimeException $e) {
             $this->io()->writer()->error($e->getMessage())->eol();
+        } catch (\Exception $e) {
+            $handler = new ExceptionHandler(new ExceptionRead($e));
+            $document = new ConsoleDocument($handler);
+            $this->io()->writer()->error($document->toString())->eol();
         } catch (\Throwable $e) {
             $this->outputHelper()->printTrace($e);
         }

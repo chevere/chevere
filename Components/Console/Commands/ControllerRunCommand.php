@@ -35,7 +35,6 @@ final class ControllerRunCommand extends Command
             ->option('-a --args', 'Controller arguments as JSON')
             ->option('-p --plugs', 'A list of full-qualified plugs to implement [plug...]', 'is_array', [])
             ->usage(
-                '<bold>  conrun</end> <comment><controller></end> ## Without anything<eol/>' .
                 '<bold>  conrun</end> <comment><controller> -a \'{"parameter": "argument"}\'</end> ## With arguments<eol/>' .
                 '<bold>  conrun</end> <comment><controller> -p App\Plugs\SomePlug App\Plugs\OtherPlug</end> ## With plugs<eol/>'
             );
@@ -76,7 +75,7 @@ final class ControllerRunCommand extends Command
 
             return 255;
         }
-        $this->writer()->ok('Run ' . $controllerNameStr, true);
+        $this->writer()->okBold('Run ' . $controllerNameStr, true);
         $runner = new ControllerRunner($controller);
         $ran = $runner->ran($arguments);
         $this->writer()->write(implode('', $ran->data()));
