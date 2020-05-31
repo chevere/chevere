@@ -10,6 +10,7 @@
  * file that was distributed with this source code.
  */
 
+use Ahc\Cli\IO\Interactor;
 use Chevere\Components\Bootstrap\Bootstrap;
 use Chevere\Components\Console\Application;
 use Chevere\Components\Console\Commands\ControllerInspectCommand;
@@ -18,7 +19,9 @@ use Chevere\Components\Console\Commands\ControllerRunCommand;
 use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\Instances\WritersInstance;
+use Chevere\Components\Writers\StreamWriter;
 use Chevere\Components\Writers\Writers;
+use Laminas\Diactoros\StreamFactory;
 
 foreach ([
     __DIR__ . '/../../../../vendor/autoload.php',
@@ -45,12 +48,22 @@ new BootstrapInstance(
     (new Bootstrap($dir))->withCli(true)
 );
 new WritersInstance(new Writers);
+// $output = __DIR__ . '/output';
+// file_put_contents($output, '');
+// new WritersInstance(
+//     (new Writers)->withOut(
+//         new StreamWriter(
+//             (new StreamFactory)->createStreamFromFile($output, 'w+')
+//         )
+//     )
+// );
 
 (new Application(
     'chevere',
     trim(file_get_contents(dirname(__DIR__) . '/' . 'VERSION'))
 ))
     ->logo(file_get_contents(dirname(__DIR__) . '/' . 'LOGO'))
+    // ->io(new Interactor(null, $output))
     ->add(new ControllerInspectCommand, 'ci')
     ->add(new ControllerListCommand, 'cl')
     ->add(new ControllerRunCommand, 'cr')
