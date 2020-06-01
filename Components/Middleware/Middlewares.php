@@ -19,7 +19,6 @@ use Chevere\Interfaces\Middleware\MiddlewaresInterface;
 use Ds\Map;
 use Ds\Set;
 use Psr\Http\Server\MiddlewareInterface;
-use function DeepCopy\deep_copy;
 
 /**
  * A collection of MiddlewareInterface names.
@@ -33,8 +32,6 @@ final class Middlewares implements MiddlewaresInterface
 
     /** @var Set [MiddlewareInterface,] */
     private Set $set;
-
-    private int $pos = -1;
 
     public function __construct()
     {

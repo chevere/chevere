@@ -26,7 +26,6 @@ final class MiddlewaresTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $middleware = new MiddlewaresTestMiddleware;
         $middlewares = new Middlewares;
         $this->assertCount(0, $middlewares);
     }

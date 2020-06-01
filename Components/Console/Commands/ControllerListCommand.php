@@ -161,11 +161,11 @@ final class ControllerListCommand extends Command
          */
         foreach ($classes as $class) {
             try {
-                new ControllerName($class->getName());
+                $controllerName = new ControllerName($class->getName());
                 $this->hit++;
                 $this->writer()
                     ->red('* ')
-                    ->write($class->getName(), true)
+                    ->write($controllerName->toString(), true)
                     ->blue('  ' . $class->getFileName())
                     ->eol(2);
             } catch (Throwable $e) {

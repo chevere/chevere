@@ -41,8 +41,6 @@ final class ControllerInspectCommand extends Command
             $controllerName = (new ControllerName($this->fqn))->toString();
         } catch (ControllerNotExistsException $e) {
             throw new RuntimeException("Controller doesn't exists");
-
-            return 127;
         }
         /**
          * @var ControllerInterface $controller
