@@ -14,13 +14,10 @@ declare(strict_types=1);
 use Chevere\Components\VarDump\Formatters\ConsoleFormatter;
 use Chevere\Components\VarDump\Outputters\ConsoleOutputter;
 use Chevere\Components\VarDump\VarDump;
-use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\VarDump\VarDumpInterface;
 use function Chevere\Components\Writers\writers;
 
-/**
- * @codeCoverageIgnore
- */
+// @codeCoverageIgnoreStart
 function varDump(...$vars): VarDumpInterface
 {
     return
@@ -32,10 +29,7 @@ function varDump(...$vars): VarDumpInterface
             ->withVars(...$vars)
             ->withShift(1);
 }
-/**
- * @codeCoverageIgnore
- */
-if (function_exists('xd') === false) {
+if (function_exists('xd') === false) { // @codeCoverageIgnore
     /**
      * Dumps information about one or more variables to the output stream
      * @codeCoverageIgnore
@@ -45,9 +39,6 @@ if (function_exists('xd') === false) {
         varDump(...$vars)->stream();
     }
 }
-/**
- * @codeCoverageIgnore
- */
 if (function_exists('xdd') === false) {
     /**
      * Dumps information about one or more variables to the output stream and die()
@@ -59,3 +50,4 @@ if (function_exists('xdd') === false) {
         die(0);
     }
 }
+// @codeCoverageIgnoreEnd
