@@ -17,7 +17,9 @@ use Chevere\Components\VarDump\VarDump;
 use Chevere\Interfaces\VarDump\VarDumpInterface;
 use function Chevere\Components\Writers\writers;
 
-// @codeCoverageIgnoreStart
+/**
+ * @codeCoverageIgnore
+ */
 function varDump(...$vars): VarDumpInterface
 {
     return
@@ -39,7 +41,7 @@ if (function_exists('xd') === false) { // @codeCoverageIgnore
         varDump(...$vars)->stream();
     }
 }
-if (function_exists('xdd') === false) {
+if (function_exists('xdd') === false) { // @codeCoverageIgnore
     /**
      * Dumps information about one or more variables to the output stream and die()
      * @codeCoverageIgnore
@@ -50,4 +52,3 @@ if (function_exists('xdd') === false) {
         die(0);
     }
 }
-// @codeCoverageIgnoreEnd
