@@ -16,15 +16,10 @@ namespace Chevere\Interfaces\ExceptionHandler;
 use DateTimeInterface;
 use Ds\Set;
 use Monolog\Logger;
-use Psr\Http\Message\RequestInterface;
 
 interface ExceptionHandlerInterface
 {
     public function withIsDebug(bool $isDebug): ExceptionHandlerInterface;
-
-    public function withRequest(RequestInterface $request): ExceptionHandlerInterface;
-
-    public function withLogger(Logger $logger): ExceptionHandlerInterface;
 
     public function dateTimeUtc(): DateTimeInterface;
 
@@ -33,10 +28,4 @@ interface ExceptionHandlerInterface
     public function id(): string;
 
     public function isDebug(): bool;
-
-    public function hasRequest(): bool;
-
-    public function request(): RequestInterface;
-
-    public function loggers(): Set;
 }

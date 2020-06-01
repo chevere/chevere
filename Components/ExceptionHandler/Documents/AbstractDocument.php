@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler\Documents;
 
+use Chevere\Components\ExceptionHandler\TraceFormatter;
 use Chevere\Interfaces\ExceptionHandler\DocumentInterface;
 use Chevere\Interfaces\ExceptionHandler\ExceptionHandlerInterface;
 use Chevere\Interfaces\ExceptionHandler\FormatterInterface;
-use Chevere\Components\ExceptionHandler\TraceFormatter;
 use DateTimeInterface;
 
 abstract class AbstractDocument implements DocumentInterface
@@ -75,7 +75,6 @@ abstract class AbstractDocument implements DocumentInterface
             static::TAG_STACK => $this->getStackTrace(),
             static::TAG_PHP_UNAME => php_uname(),
         ];
-        $this->handleRequestTags();
         $template = [];
         foreach ($this->sections as $sectionName) {
             $template[] = $this->template[$sectionName] ?? null;
@@ -168,25 +167,6 @@ abstract class AbstractDocument implements DocumentInterface
             $this->exceptionHandler->exception()->trace(),
             $this->formatter
         ))->toString();
-    }
-
-    private function handleRequestTags(): void
-    {
-        if ($this->exceptionHandler->hasRequest()) {
-            $request = $this->exceptionHandler->request();
-            $this->tags = array_merge($this->tags, [
-                static::TAG_CLIENT_IP => '*MISSING CLIENT IP*',
-                static::TAG_CLIENT_USER_AGENT => $request->getHeaderLine('User-Agent'),
-                static::TAG_SERVER_PROTOCOL => $request->protocolString(),
-                static::TAG_REQUEST_METHOD => $request->getMethod(),
-                static::TAG_URI => $request->getUri()->getPath(),
-                static::TAG_SERVER_HOST => $request->getHeaderLine('Host'),
-            ]);
-        } else {
-            $keyRequest = array_search(static::SECTION_REQUEST, $this->sections);
-            $keyClient = array_search(static::SECTION_CLIENT, $this->sections);
-            unset($this->sections[$keyRequest], $this->sections[$keyClient]);
-        }
     }
 
     private function handleVerbositySections(): void

@@ -18,12 +18,9 @@ use Chevere\Interfaces\ExceptionHandler\ExceptionReadInterface;
 use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
-use Ds\Set;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
-use Psr\Http\Message\RequestInterface;
-use function DeepCopy\deep_copy;
 
 /**
  * The Chevere exception handler.
@@ -36,11 +33,7 @@ final class ExceptionHandler implements ExceptionHandlerInterface
 
     private string $id;
 
-    private RequestInterface $request;
-
     private bool $isDebug = false;
-
-    private Logger $logger;
 
     public function __construct(ExceptionReadInterface $exception)
     {
@@ -64,22 +57,6 @@ final class ExceptionHandler implements ExceptionHandlerInterface
         return $new;
     }
 
-    public function withRequest(RequestInterface $request): ExceptionHandlerInterface
-    {
-        $new = clone $this;
-        $new->request = $request;
-
-        return $new;
-    }
-
-    public function withLogger(Logger $logger): ExceptionHandlerInterface
-    {
-        $new = clone $this;
-        $new->logger = $logger;
-
-        return $new;
-    }
-
     public function dateTimeUtc(): DateTimeInterface
     {
         return $this->dateTimeUtc;
@@ -98,20 +75,5 @@ final class ExceptionHandler implements ExceptionHandlerInterface
     public function isDebug(): bool
     {
         return $this->isDebug;
-    }
-
-    public function hasRequest(): bool
-    {
-        return isset($this->request);
-    }
-
-    public function request(): RequestInterface
-    {
-        return $this->request;
-    }
-
-    public function loggers(): Set
-    {
-        return $this->loggers;
     }
 }

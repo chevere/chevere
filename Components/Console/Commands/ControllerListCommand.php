@@ -70,16 +70,9 @@ final class ControllerListCommand extends Command
                 $dir = $this->cwd->getChild($dir);
             }
             $dir->assertExists();
-            if (!$dir->path()->isReadable()) {
-                throw new RangeException(
-                    (new Message('Directory %dir% is not readable by this process'))
-                        ->code('%dir%', $dir->path()->absolute())
-                );
-            }
         } catch (Throwable $e) {
             $this->writer()
-                ->error(get_class($e))
-                ->eol()
+                ->error(get_class($e), true)
                 ->raw(
                     $e instanceof Exception
                     ? $e->message()->toConsole()
@@ -98,8 +91,7 @@ final class ControllerListCommand extends Command
             $this->writer()
                 ->error('Unable to rewind iterator: ')
                 ->comment($e->getMessage())->eol(2)
-                ->bold('🤔 Maybe try with user privileges?')
-                ->eol();
+                ->bold('🤔 Maybe try with user privileges?', true);
 
             return 255;
         }
@@ -174,8 +166,8 @@ final class ControllerListCommand extends Command
                 $this->writer()
                     ->red('* ')
                     ->write($class->getName(), true)
-                    ->blue('  ' . $class->getFileName(), true)
-                    ->eol();
+                    ->blue('  ' . $class->getFileName())
+                    ->eol(2);
             } catch (Throwable $e) {
                 continue;
             }

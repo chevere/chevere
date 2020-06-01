@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler;
 
+use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\DomainException;
-use Chevere\Interfaces\ExceptionHandler\ExceptionInterface;
+use Chevere\Exceptions\Core\Exception as CoreException;
 use Chevere\Interfaces\ExceptionHandler\ExceptionReadInterface;
 use Chevere\Interfaces\Message\MessageInterface;
-use Chevere\Components\Message\Message;
 use ErrorException;
 use Exception;
 use LogicException;
@@ -63,7 +63,7 @@ final class ExceptionRead implements ExceptionReadInterface
         $this->assertSeverity();
         $this->loggerLevel = ExceptionReadInterface::ERROR_LEVELS[$this->severity];
         $this->type = ExceptionReadInterface::ERROR_TYPES[$this->severity];
-        if ($exception instanceof ExceptionInterface) {
+        if ($exception instanceof CoreException) {
             $this->message = $exception->message();
         } else {
             $this->message = new Message($exception->getMessage());
@@ -122,11 +122,13 @@ final class ExceptionRead implements ExceptionReadInterface
     {
         $accepted = array_keys(ExceptionReadInterface::ERROR_TYPES);
         if (!array_key_exists($this->severity, $accepted)) {
+            // @codeCoverageIgnoreStart
             throw new DomainException(
                 (new Message('Unknown severity value of %severity%, accepted values are: %accepted%'))
                     ->code('%severity%', (string) $this->severity)
                     ->code('%accepted%', implode(', ', $accepted))
             );
+            // @codeCoverageIgnoreEnd
         }
     }
 }

@@ -15,9 +15,9 @@ namespace Chevere\Tests\ExceptionHandler;
 
 use Chevere\Components\ExceptionHandler\ExceptionHandler;
 use Chevere\Components\ExceptionHandler\ExceptionRead;
+use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\Exception;
 use Chevere\Interfaces\ExceptionHandler\ExceptionHandlerInterface;
-use Chevere\Components\Message\Message;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -40,7 +40,6 @@ final class ExceptionHandlerTest extends TestCase
         $this->assertInstanceOf(ExceptionRead::class, $handler->exception());
         $this->assertIsString($handler->id());
         $this->assertFalse($handler->isDebug());
-        $this->assertFalse($handler->hasRequest());
     }
 
     public function testWithDebug(): void
@@ -49,17 +48,4 @@ final class ExceptionHandlerTest extends TestCase
             $this->getExceptionHandler()->withIsDebug(true)->isDebug()
         );
     }
-
-    // public function testWithLogger(): void
-    // {
-    //     $locations = ['php://stderr', 'php://stdout'];
-    //     $logger = new Logger('name');
-    //     /**
-    //      * @var string $location
-    //      */
-    //     foreach ($locations as $location) {
-    //         $logger->pushHandler(new StreamHandler($location));
-    //     }
-    //     $handler = $this->getExceptionHandler()->withLogger($logger);
-    // }
 }

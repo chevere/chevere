@@ -16,22 +16,22 @@ namespace Chevere\Components\Controller;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Controller\ControllerArgumentRegexMatchException;
 use Chevere\Exceptions\Controller\ControllerArgumentsRequiredException;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerParameterInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
-use Ds\Map;
-use OutOfBoundsException;
+use Exception;
 
 final class ControllerArguments implements ControllerArgumentsInterface
 {
     private ControllerParameters $parameters;
 
-    private Map $arguments;
+    private array $arguments;
 
     public function __construct(ControllerParametersInterface $parameters, array $arguments)
     {
         $this->parameters = $parameters;
-        $this->arguments = new Map($arguments);
+        $this->arguments = $arguments;
         $this->assertRequired();
         foreach ($this->arguments as $name => $value) {
             $this->assertParameter($name, $value);
@@ -40,24 +40,21 @@ final class ControllerArguments implements ControllerArgumentsInterface
 
     public function arguments(): array
     {
-        return $this->array;
+        return $this->arguments;
     }
 
     public function withArgument(string $name, string $value): ControllerArgumentsInterface
     {
         $this->assertParameter($name, $value);
         $new = clone $this;
-        $new->arguments->put($name, $value);
+        $new->arguments[$name] = $value;
 
         return $new;
     }
 
     public function has(string $name): bool
     {
-        /** @var \Ds\TKey $key */
-        $key = $name;
-
-        return $this->arguments->hasKey($key);
+        return isset($this->arguments[$name]);
     }
 
     /**
@@ -65,13 +62,11 @@ final class ControllerArguments implements ControllerArgumentsInterface
      */
     public function get(string $name): string
     {
-        /**
-         * @var \Ds\TKey $name
-         * @var string $return
-         */
-        $return = $this->arguments->get($name);
-
-        return $return;
+        try {
+            return $this->arguments[$name];
+        } catch (Exception $e) {
+            throw new OutOfBoundsException;
+        }
     }
 
     private function assertParameter(string $name, string $value): void
@@ -80,7 +75,6 @@ final class ControllerArguments implements ControllerArgumentsInterface
             throw new OutOfBoundsException(
                 (new Message('Unknown parameter %parameter%'))
                     ->code('%parameter%', $name)
-                    ->toString()
             );
         }
         $parameter = $this->parameters->get($name);
@@ -92,7 +86,6 @@ final class ControllerArguments implements ControllerArgumentsInterface
                     ->code('%regex%', $regexString)
             );
         }
-        $this->arguments->put($name, $value);
     }
 
     /**
@@ -108,7 +101,7 @@ final class ControllerArguments implements ControllerArgumentsInterface
         foreach ($this->parameters->map() as $name => $parameter) {
             if (
                 $parameter->isRequired()
-                && $this->arguments->hasKey($name) === false
+                && $this->has($name) === false
             ) {
                 $failed[] = $name;
             }

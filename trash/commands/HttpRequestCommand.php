@@ -37,7 +37,6 @@ final class HttpRequestCommand extends Command
     public function execute()
     {
         $io = $this->app()->io();
-
         $io->write('method ' . $this->method, true);
         $io->write('uri ' . $this->uri, true);
         $io->write('requester ' . $this->requester, true);
