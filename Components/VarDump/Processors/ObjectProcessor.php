@@ -106,9 +106,7 @@ final class ObjectProcessor implements ProcessorInterface
             ))
                 ->withDepth($this->depth)
                 ->withIndent(
-                    $this->varDumper->indent() > 1
-                    ? $this->varDumper->indent() - 1
-                    : $this->varDumper->indent()
+                    $this->varDumper->indent() > 1 ? $this->varDumper->indent() - 1 : $this->varDumper->indent()
                 )
                 ->withKnownObjects($this->knownObjects)
                 ->withProcessor();
