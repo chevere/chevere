@@ -32,6 +32,9 @@ function varDump(...$vars): VarDumpInterface
             ->withVars(...$vars)
             ->withShift(1);
 }
+/**
+ * @codeCoverageIgnore
+ */
 if (function_exists('xd') === false) {
     /**
      * Dumps information about one or more variables to the output stream
@@ -42,6 +45,9 @@ if (function_exists('xd') === false) {
         varDump(...$vars)->stream();
     }
 }
+/**
+ * @codeCoverageIgnore
+ */
 if (function_exists('xdd') === false) {
     /**
      * Dumps information about one or more variables to the output stream and die()
