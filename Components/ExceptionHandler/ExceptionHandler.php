@@ -41,12 +41,8 @@ final class ExceptionHandler implements ExceptionHandlerInterface
         $this->dateTimeUtc = new DateTimeImmutable('now', $timezone);
         $this->exception = $exception;
         $this->id = uniqid('', true);
-        $this->logger = new Logger(__CLASS__);
         $streamHandler = new StreamHandler('php://stderr');
         $streamHandler->setFormatter(new LineFormatter(null, null, true, true));
-        $this->logger
-            ->setTimezone($timezone)
-            ->pushHandler($streamHandler);
     }
 
     public function withIsDebug(bool $isDebug): ExceptionHandlerInterface

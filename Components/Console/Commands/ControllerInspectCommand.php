@@ -17,11 +17,12 @@ use Ahc\Cli\Exception\RuntimeException;
 use Ahc\Cli\Input\Command;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controller\ControllerParameter;
-use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Controller\ControllerNotExistsException;
 
 /**
  * @codeCoverageIgnore
+ *
+ * @property string $fqn
  */
 final class ControllerInspectCommand extends Command
 {

@@ -15,13 +15,10 @@ namespace Chevere\Components\Console\Commands;
 
 use Ahc\Cli\Input\Command;
 use Chevere\Components\Controller\ControllerName;
-use Chevere\Components\Filesystem\AssertPathFormat;
 use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Components\Message\Message;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Str\StrBool;
 use Chevere\Exceptions\Core\Exception;
-use Chevere\Exceptions\Core\RangeException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Go\ParserReflection\ReflectionFile;
 use Go\ParserReflection\ReflectionFileNamespace;
@@ -34,12 +31,11 @@ use UnexpectedValueException;
 
 /**
  * @codeCoverageIgnore
- * @property string $path
+ *
+ * @property string $dir
  */
 final class ControllerListCommand extends Command
 {
-    private RecursiveDirectoryIterator $directoryIterator;
-
     private RecursiveIteratorIterator $recursiveIterator;
 
     private DirInterface $cwd;
@@ -62,12 +58,11 @@ final class ControllerListCommand extends Command
 
     public function execute(): int
     {
-        $dir = $this->dir ?? '';
         try {
-            if ((new StrBool($dir))->startsWith('/')) {
-                $dir = new DirFromString($dir);
+            if ((new StrBool($this->dir))->startsWith('/')) {
+                $dir = new DirFromString($this->dir);
             } else {
-                $dir = $this->cwd->getChild($dir);
+                $dir = $this->cwd->getChild($this->dir);
             }
             $dir->assertExists();
         } catch (Throwable $e) {
@@ -84,7 +79,9 @@ final class ControllerListCommand extends Command
         }
         $this->hit = 0;
         $this->writer()->okBold('List controllers @' . $dir->path()->absolute())->eol(2);
-        $this->recursiveIterator = new RecursiveIteratorIterator($this->recursiveFilterIterator($dir));
+        $dirIterator = $this->getRecursiveDirectoryIterator($dir);
+        $filterIterator = $this->getRecursiveFilterIterator($dirIterator);
+        $this->recursiveIterator = new RecursiveIteratorIterator($filterIterator);
         try {
             $this->recursiveIterator->rewind();
         } catch (UnexpectedValueException $e) {
@@ -110,15 +107,18 @@ final class ControllerListCommand extends Command
         }
     }
 
-    private function recursiveFilterIterator(DirInterface $dir): RecursiveFilterIterator
+    private function getRecursiveDirectoryIterator(DirInterface $dir): RecursiveDirectoryIterator
     {
-        $this->directoryIterator = new RecursiveDirectoryIterator(
+        return new RecursiveDirectoryIterator(
             $dir->path()->absolute(),
             RecursiveDirectoryIterator::SKIP_DOTS
             | RecursiveDirectoryIterator::KEY_AS_PATHNAME
         );
+    }
 
-        return new class($this->directoryIterator) extends RecursiveFilterIterator
+    private function getRecursiveFilterIterator(RecursiveDirectoryIterator $dirIterator): RecursiveFilterIterator
+    {
+        return new class($dirIterator) extends RecursiveFilterIterator
         {
             public function accept(): bool
             {

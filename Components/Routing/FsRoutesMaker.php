@@ -34,22 +34,17 @@ use RecursiveIteratorIterator;
 
 final class FsRoutesMaker implements FsRoutesMakerInterface
 {
-    private RecursiveIteratorIterator $recursiveIterator;
-
     private FsRoutesInterface $fsRoutes;
 
     public function __construct(DirInterface $dir)
     {
-        $this->directoryIterator = new RecursiveDirectoryIterator(
-            $dir->path()->absolute(),
-            RecursiveDirectoryIterator::SKIP_DOTS
-            | RecursiveDirectoryIterator::KEY_AS_PATHNAME
-        );
-        $this->recursiveIterator = new RecursiveIteratorIterator($this->recursiveFilterIterator());
+        $dirIterator = $this->getRecursiveDirectoryIterator($dir);
+        $filterIterator = $this->getRecursiveFilterIterator($dirIterator);
+        $iteratorIterator = new RecursiveIteratorIterator($filterIterator);
         $this->fsRoutes = new FsRoutes;
-        $this->recursiveIterator->rewind();
-        while ($this->recursiveIterator->valid()) {
-            $pathName = $this->recursiveIterator->current()->getPathName();
+        $iteratorIterator->rewind();
+        while ($iteratorIterator->valid()) {
+            $pathName = $iteratorIterator->current()->getPathName();
             $routeName = $this->getVar($pathName);
             $current = dirname($pathName) . '/';
             $path = (new Str($current))
@@ -65,7 +60,7 @@ final class FsRoutesMaker implements FsRoutesMakerInterface
                     new RouteDecorator($routeName)
                 )
             );
-            $this->recursiveIterator->next();
+            $iteratorIterator->next();
         }
     }
 
@@ -85,9 +80,18 @@ final class FsRoutesMaker implements FsRoutesMakerInterface
         }
     }
 
-    private function recursiveFilterIterator(): RecursiveFilterIterator
+    private function getRecursiveDirectoryIterator(DirInterface $dir): RecursiveDirectoryIterator
     {
-        return new class($this->directoryIterator) extends RecursiveFilterIterator
+        return new RecursiveDirectoryIterator(
+            $dir->path()->absolute(),
+            RecursiveDirectoryIterator::SKIP_DOTS
+            | RecursiveDirectoryIterator::KEY_AS_PATHNAME
+        );
+    }
+
+    private function getRecursiveFilterIterator(RecursiveDirectoryIterator $recursiveDirectoryIterator): RecursiveFilterIterator
+    {
+        return new class($recursiveDirectoryIterator) extends RecursiveFilterIterator
         {
             public function accept(): bool
             {

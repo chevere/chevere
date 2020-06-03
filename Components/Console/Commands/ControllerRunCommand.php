@@ -23,6 +23,8 @@ use Chevere\Interfaces\Controller\ControllerInterface;
 
 /**
  * @codeCoverageIgnore
+ *
+ * @property string $controller
  */
 final class ControllerRunCommand extends Command
 {

@@ -69,11 +69,12 @@ final class RouteWildcards implements RouteWildcardsInterface
     public function get(string $wildcardName): RouteWildcardInterface
     {
         $pos = $this->index->get($wildcardName);
-        if ($pos === null) {
+        $get = $this->map->get($pos);
+        if ($get === null) {
             throw new RangeException; // @codeCoverageIgnore
         }
 
-        return $this->map->get($pos);
+        return $get;
     }
 
     public function hasPos(int $pos): bool
