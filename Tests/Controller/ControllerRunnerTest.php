@@ -112,8 +112,6 @@ final class ControllerRunnerTestControllerRunFail extends Controller
     public function run(ControllerArgumentsInterface $args): ControllerResponseInterface
     {
         throw new Exception('Something went wrong');
-
-        return new ControllerResponse(true);
     }
 }
 

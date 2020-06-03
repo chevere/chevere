@@ -19,7 +19,6 @@ use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponse;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PostMethod;
-use Chevere\Components\Middleware\MiddlewareName;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
@@ -77,7 +76,7 @@ final class RouteTest extends TestCase
         $controller = new RouteTestController;
         $endpoint = new RouteEndpoint($method, $controller);
         $this->expectException(OutOfBoundsException::class);
-        $route = $route->withAddedEndpoint($endpoint);
+        $route->withAddedEndpoint($endpoint);
     }
 
     public function testWithAddedEndpointWildcardWrongParameter(): void
@@ -87,7 +86,7 @@ final class RouteTest extends TestCase
         $controller = new RouteTestControllerNoParams;
         $endpoint = new RouteEndpoint($method, $controller);
         $this->expectException(LogicException::class);
-        $route = $route->withAddedEndpoint($endpoint);
+        $route->withAddedEndpoint($endpoint);
     }
 
     public function testWithAddedEndpointWildcardParameter(): void
@@ -120,7 +119,7 @@ final class RouteTest extends TestCase
             new RouteEndpoint(new GetMethod, new RouteTestController)
         );
         $this->expectException(RangeException::class);
-        $route = $route->withAddedEndpoint(
+        $route->withAddedEndpoint(
             new RouteEndpoint(new PostMethod, new RouteTestControllerRegexConflict)
         );
     }

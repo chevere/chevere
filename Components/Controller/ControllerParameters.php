@@ -25,10 +25,6 @@ final class ControllerParameters implements ControllerParametersInterface
     public function withParameter(ControllerParameterInterface $controllerParameter): ControllerParametersInterface
     {
         $new = clone $this;
-        /**
-         * @var \Ds\TKey $key
-         * @var \Ds\TValue $value
-         */
         $key = $controllerParameter->name();
         $value = $controllerParameter;
         $new->map->put($key, $value);
@@ -47,7 +43,6 @@ final class ControllerParameters implements ControllerParametersInterface
     public function get(string $name): ControllerParameterInterface
     {
         /**
-         * @var \Ds\TKey $name
          * @var ControllerParameterInterface $return
          */
         $return = $this->map->get($name);

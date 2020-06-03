@@ -19,7 +19,6 @@ use Chevere\Components\App\Interfaces\MiddlewareRunnerInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Middleware\MiddlewareNamesEmptyException;
 use Chevere\Interfaces\Http\RequestInterface;
-use Chevere\Interfaces\Middleware\MiddlewareNameInterface;
 use Chevere\Interfaces\Middleware\MiddlewaresInterface;
 
 final class MiddlewareRunner implements MiddlewareRunnerInterface

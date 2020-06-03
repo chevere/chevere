@@ -20,14 +20,11 @@ use Chevere\Components\VarDump\Formatters\PlainFormatter;
 use Chevere\Components\VarDump\Outputters\ConsoleOutputter;
 use Chevere\Components\VarDump\Outputters\HtmlOutputter;
 use Chevere\Components\VarDump\Outputters\PlainOutputter;
-use Chevere\Tests\VarDump\Traits\DebugBacktraceTrait;
 use Chevere\Components\VarDump\VarOutputter;
 use Chevere\Components\Writers\StreamWriter;
-use JakubOnderka\PhpConsoleColor\ConsoleColor;
-use Laminas\Diactoros\Stream;
+use Chevere\Tests\VarDump\Traits\DebugBacktraceTrait;
 use Laminas\Diactoros\StreamFactory;
 use PHPUnit\Framework\TestCase;
-use function GuzzleHttp\Psr7\stream_for;
 
 final class VarOutputterTest extends TestCase
 {

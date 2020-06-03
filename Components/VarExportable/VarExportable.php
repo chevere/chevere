@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\VarExportable;
 
 use Chevere\Components\Breadcrumb\Breadcrumb;
-use Chevere\Interfaces\Breadcrumb\BreadcrumbInterface;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\VarExportable\VarIsResourceException;
 use Chevere\Exceptions\VarExportable\VarNotExportableException;
+use Chevere\Interfaces\Breadcrumb\BreadcrumbInterface;
 use Chevere\Interfaces\VarExportable\VarExportableInterface;
 use ReflectionObject;
+use ReflectionProperty;
 use Throwable;
 
 /**
@@ -121,6 +122,9 @@ final class VarExportable implements VarExportableInterface
         $objectKey = $this->breadcrumb->pos();
         $reflection = new ReflectionObject($var);
         $properties = $reflection->getProperties();
+        /**
+         * @var ReflectionProperty $property
+         */
         foreach ($properties as $property) {
             $property->setAccessible(true);
             $this->breadcrumb = $this->breadcrumb

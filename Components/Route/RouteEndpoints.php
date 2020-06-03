@@ -23,7 +23,6 @@ final class RouteEndpoints implements RouteEndpointsInterface
 
     public function withPut(RouteEndpointInterface $routeEndpoint): RouteEndpointsInterface
     {
-        /** @var \Ds\TKey $key */
         $key = $routeEndpoint->method()->name();
         $new = clone $this;
         $new->map->put($key, $routeEndpoint);
@@ -33,14 +32,12 @@ final class RouteEndpoints implements RouteEndpointsInterface
 
     public function hasKey(string $key): bool
     {
-        /** @var \Ds\TKey $key */
         return $this->map->hasKey($key);
     }
 
     public function get(string $key): RouteEndpointInterface
     {
         /**
-         * @var \Ds\TKey $key
          * @var RouteEndpointInterface $return
          */
         $return = $this->map->get($key);

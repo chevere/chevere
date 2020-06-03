@@ -16,7 +16,7 @@ namespace Chevere\Interfaces\Filesystem;
 interface PathInterface
 {
     /**
-     * Return absolute path
+     * @return string filesystem path
      */
     public function absolute(): string;
 

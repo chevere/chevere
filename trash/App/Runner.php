@@ -21,7 +21,6 @@ use Chevere\Components\Http\Request\RequestException;
 use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\Message\Message;
 use LogicException;
-use function GuzzleHttp\Psr7\stream_for;
 
 /**
  * Application builder runner.

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugs\Hooks\Traits;
 
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Plugs\Hooks\HooksRunnerInterface;
 use Chevere\Interfaces\Plugs\Hooks\PluggableHooksInterface;
 
@@ -22,6 +23,9 @@ trait PluggableHooksTrait
 
     public function withHooksRunner(HooksRunnerInterface $hooksRunner): PluggableHooksInterface
     {
+        if (!($this instanceof PluggableHooksInterface)) {
+            throw new LogicException; // @codeCoverageIgnore
+        }
         /**
          * @var PluggableHooksInterface $new
          */

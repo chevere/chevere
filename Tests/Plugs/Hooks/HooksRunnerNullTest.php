@@ -13,9 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Hooks;
 
-use Chevere\Components\Plugin\PlugsQueue;
-use Chevere\Components\Plugin\Types\HookPlugType;
-use Chevere\Components\Plugs\Hooks\HooksQueue;
 use Chevere\Components\Plugs\Hooks\HooksRunnerNull;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -24,9 +21,7 @@ final class HooksRunnerNullTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $plugsQueue = new PlugsQueue(new HookPlugType);
-        $hooksQueue = new HooksQueue($plugsQueue);
-        $runner = new HooksRunnerNull($hooksQueue);
+        $runner = new HooksRunnerNull;
         $argument = new stdClass;
         $same = $argument;
         $runner->run('anchor', $argument);

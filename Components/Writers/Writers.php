@@ -48,8 +48,8 @@ final class Writers implements WritersInterface
             );
         }
         // @codeCoverageIgnoreEnd
-        $this->out = new StreamWriter(new Stream($stdout), 'w');
-        $this->error = new StreamWriter(new Stream($stderr), 'w');
+        $this->out = new StreamWriter(new Stream($stdout));
+        $this->error = new StreamWriter(new Stream($stderr));
         $this->debug = new NullWriter;
         $this->log = new NullWriter;
     }

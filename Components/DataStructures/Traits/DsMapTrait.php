@@ -52,9 +52,4 @@ trait DsMapTrait
             yield $pair->key => $pair->value;
         }
     }
-
-    // public function put($key, $value): void;
-    // public function withPut($key, $value): self;
-    // public function hasKey($key): bool;
-    // public function get($key);
 }

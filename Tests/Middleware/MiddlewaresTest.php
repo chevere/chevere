@@ -37,7 +37,7 @@ final class MiddlewaresTest extends TestCase
         $this->assertCount(1, $middlewares);
         $this->assertTrue($middlewares->has($middleware));
         $this->expectException(OverflowException::class);
-        $middlewares = $middlewares->withAddedMiddleware($middleware);
+        $middlewares->withAddedMiddleware($middleware);
     }
 }
 

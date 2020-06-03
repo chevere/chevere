@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugin;
 
-use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Components\Plugin\AssertPlug;
-use Chevere\Exceptions\Plugin\PlugRegisteredException;
-use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use Chevere\Components\Plugin\PlugsMap;
-use Chevere\Tests\Plugin\_resources\src\TestHook;
 use Chevere\Components\Plugin\Types\EventListenerPlugType;
 use Chevere\Components\Plugin\Types\HookPlugType;
+use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Plugin\PlugRegisteredException;
+use Chevere\Interfaces\Plugin\PlugsQueueInterface;
+use Chevere\Tests\Plugin\_resources\src\TestHook;
 use PHPUnit\Framework\TestCase;
 
 final class PlugsMapTest extends TestCase
@@ -39,9 +39,7 @@ final class PlugsMapTest extends TestCase
         $plugsMap = new PlugsMap($plugType);
         $hook = new TestHook;
         $this->expectException(InvalidArgumentException::class);
-        $plugsMap = $plugsMap->withAddedPlug(
-            new AssertPlug($hook)
-        );
+        $plugsMap->withAddedPlug(new AssertPlug($hook));
     }
 
     public function testWithAlreadyAddedPlug(): void

@@ -20,7 +20,6 @@ use Chevere\Components\App\Services;
 use Chevere\Components\Http\Method;
 use Chevere\Components\Http\Request;
 use Chevere\Components\Http\Response;
-use Chevere\Components\Middleware\MiddlewareName;
 use Chevere\Components\Middleware\Middlewares;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Exceptions\Middleware\MiddlewareNamesEmptyException;

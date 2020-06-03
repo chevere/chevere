@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Route;
 
 use Chevere\Exceptions\Route\RouteNameInvalidException;
-use Chevere\Interfaces\Middleware\MiddlewareNameInterface;
 use Chevere\Interfaces\Middleware\MiddlewaresInterface;
 use Psr\Http\Server\MiddlewareInterface;
 

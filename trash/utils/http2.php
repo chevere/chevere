@@ -34,7 +34,7 @@ $psr7 = new RoadRunner\PSR7Client($roadRunnerWorker);
 $rootDir = new Dir(new Path(__DIR__ . '/Chevere/TestApp/'));
 
 new BootstrapInstance(
-    (new Bootstrap($rootDir, $rootDir->getChild('app/')))
+    (new Bootstrap($rootDir))
         ->withCli(true)
 );
 

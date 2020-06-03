@@ -19,7 +19,6 @@ use Chevere\Components\VarDump\VarDumper;
 use Chevere\Components\Writers\StreamWriter;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Laminas\Diactoros\StreamFactory;
-use function GuzzleHttp\Psr7\stream_for;
 
 trait VarDumperTrait
 {

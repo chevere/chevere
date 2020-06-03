@@ -17,7 +17,6 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Middleware\Middlewares;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Core\RangeException;
-use Chevere\Interfaces\Middleware\MiddlewareNameInterface;
 use Chevere\Interfaces\Middleware\MiddlewaresInterface;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Route\RouteEndpointsInterface;

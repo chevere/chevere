@@ -25,6 +25,8 @@ use Chevere\Interfaces\Controller\ControllerInterface;
  * @codeCoverageIgnore
  *
  * @property string $controller
+ * @property string|null $args
+ * @property plugs|null $plugs
  */
 final class ControllerRunCommand extends Command
 {

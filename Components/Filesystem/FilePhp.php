@@ -78,7 +78,6 @@ class FilePhp implements FilePhpInterface
         if (!opcache_invalidate($this->file->path()->absolute())) {
             throw new RuntimeException(
                 (new Message('Opcode cache is disabled'))
-                    ->toString()
             );
         }
     }
