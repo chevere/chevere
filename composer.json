@@ -11,8 +11,8 @@
     }],
     "require": {
         "php": ">=7.4",
-        "ext-ds": "*",
         "ext-json": "*",
+        "ext-ds": "*",
         "ext-zend-opcache": "*",
         "adhocore/cli": "^0.8.3",
         "goaop/parser-reflection": "^2.1",
