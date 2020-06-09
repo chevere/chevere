@@ -27,6 +27,7 @@ use Chevere\Components\Route\RouteWildcardMatch;
 use Chevere\Components\Router\Resolver;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Routed;
+use Chevere\Components\Router\RouterCache;
 use Chevere\Components\Router\RouteResolve;
 use Chevere\Components\Router\RouteResolvesCache;
 use Chevere\Components\Router\RouterMaker;
@@ -35,6 +36,7 @@ use Chevere\Exceptions\Router\RouterException;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Interfaces\Router\RouterInterface;
 use Chevere\Interfaces\Router\RouterRegexInterface;
 use Laminas\Diactoros\Uri;
 use PHPUnit\Framework\TestCase;
@@ -45,9 +47,7 @@ final class ResolverTest extends TestCase
 
     private array $routes;
 
-    private array $routesResolves;
-
-    private RouterRegexInterface $routerRegex;
+    private RouterInterface $router;
 
     public function setUp(): void
     {
@@ -59,7 +59,6 @@ final class ResolverTest extends TestCase
             new Route(new RouteName('route-2'), new RoutePath('/test/{id}')),
             new Route(new RouteName('route-3'), new RoutePath('/test/path')),
         ];
-        $this->routesResolves = [];
         /** @var Route $route */
         foreach ($this->routes as &$route) {
             $route = $route->withAddedEndpoint($routeEndpoint);
@@ -67,12 +66,8 @@ final class ResolverTest extends TestCase
                 new Routable($route),
                 'group'
             );
-            $this->routesResolves[] = new RouteResolve(
-                $route->name(),
-                $route->path()->wildcards()
-            );
         }
-        $this->routerRegex = $routerMaker->router()->regex();
+        $this->router = $routerMaker->router();
     }
 
     public function tearDown(): void
@@ -83,8 +78,7 @@ final class ResolverTest extends TestCase
     public function testRouteNotFound(): void
     {
         $resolver = new Resolver(
-            $this->routerRegex,
-            new RouteResolvesCache($this->cacheHelper->getEmptyCache())
+            new RouterCache($this->cacheHelper->getCachedCache())
         );
         $this->expectException(RouteNotFoundException::class);
         $resolver->resolve(new Uri('/404'));
@@ -93,8 +87,7 @@ final class ResolverTest extends TestCase
     public function testUnableToResolve(): void
     {
         $resolver = new Resolver(
-            $this->routerRegex,
-            new RouteResolvesCache($this->cacheHelper->getEmptyCache())
+            new RouterCache($this->cacheHelper->getEmptyCache())
         );
         $this->expectException(RouterException::class);
         $resolver->resolve(new Uri('/test'));
@@ -103,8 +96,7 @@ final class ResolverTest extends TestCase
     public function testResolver(): void
     {
         $resolver = new Resolver(
-            $this->routerRegex,
-            new RouteResolvesCache($this->cacheHelper->getCachedCache())
+            new RouterCache($this->cacheHelper->getCachedCache())
         );
         $uris = [
             new Uri('/test'),
@@ -118,11 +110,11 @@ final class ResolverTest extends TestCase
         ];
         /**
          * @var int $pos
-         * @var RouteResolve $routeResolve
+         * @var RouteInterface $route
          */
-        foreach ($this->routesResolves as $pos => $routeResolve) {
+        foreach ($this->routes as $pos => $route) {
             $this->assertEquals(
-                new Routed($routeResolve->name(), $arguments[$pos]),
+                new Routed($route->name(), $arguments[$pos]),
                 $resolver->resolve($uris[$pos])
             );
         }
@@ -131,14 +123,8 @@ final class ResolverTest extends TestCase
     public function _testGenerateCached(): void
     {
         $this->expectNotToPerformAssertions();
-        $resolverCache = new RouteResolvesCache($this->cacheHelper->getCachedCache());
-        /**
-         * @var int $pos
-         * @var RouteResolve $routeResolve
-         */
-        foreach ($this->routesResolves as $pos => $routeResolve) {
-            $resolverCache->put($pos, $routeResolve);
-        }
+        $cache = new RouterCache($this->cacheHelper->getCachedCache());
+        $cache->put($this->router);
     }
 }
 

@@ -118,7 +118,7 @@ final class RouterCacheTest extends TestCase
             $this->assertArrayHasKey($key, $routerCache->puts());
         }
         $this->assertTrue($routerCache->routesCache()->has($route->name()->toString()));
-        $this->assertTrue($routerCache->resolverCache()->has(0));
+        $this->assertTrue($routerCache->routeResolvesCache()->has(0));
         $routerCache->remove();
         foreach ($keys as $key) {
             $this->assertArrayNotHasKey($key, $routerCache->puts());

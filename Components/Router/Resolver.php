@@ -18,25 +18,17 @@ use Chevere\Exceptions\Router\RouteNotFoundException;
 use Chevere\Exceptions\Router\RouterException;
 use Chevere\Interfaces\Router\ResolverInterface;
 use Chevere\Interfaces\Router\RoutedInterface;
-use Chevere\Interfaces\Router\RouteResolvesCacheInterface;
-use Chevere\Interfaces\Router\RouterRegexInterface;
+use Chevere\Interfaces\Router\RouterCacheInterface;
 use OutOfBoundsException;
 use Psr\Http\Message\UriInterface;
 use Throwable;
 
-//
 final class Resolver implements ResolverInterface
 {
-    private RouterRegexInterface $routerRegex;
+    private RouterCacheInterface $cache;
 
-    private RouteResolvesCacheInterface $routeResolvesCache;
-
-    public function __construct(
-        RouterRegexInterface $routerRegex,
-        RouteResolvesCacheInterface $routeResolvesCache
-    ) {
-        $this->routerRegex = $routerRegex;
-        $this->routeResolvesCache = $routeResolvesCache;
+    public function __construct(RouterCacheInterface $cache) {
+        $this->cache = $cache;
     }
 
     /**
@@ -48,7 +40,7 @@ final class Resolver implements ResolverInterface
     public function resolve(UriInterface $uri): RoutedInterface
     {
         try {
-            if (preg_match($this->routerRegex->regex()->toString(), $uri->getPath(), $matches)) {
+            if (preg_match($this->cache->getRegex()->regex()->toString(), $uri->getPath(), $matches)) {
                 return $this->resolver($matches);
             }
         } catch (Throwable $e) {
@@ -70,7 +62,7 @@ final class Resolver implements ResolverInterface
         $idInt = (int) $idString;
         unset($matches['MARK']);
         array_shift($matches);
-        if (!$this->routeResolvesCache->has($idInt)) {
+        if (!$this->cache->routeResolvesCache()->has($idInt)) {
             throw new OutOfBoundsException(
                 (new Message('No cache for regex tag id %id%'))
                     ->code('%id%', $idString)
@@ -88,6 +80,6 @@ final class Resolver implements ResolverInterface
 
     private function getRouteResolve(int $id): RouteResolve
     {
-        return $this->routeResolvesCache->get($id);
+        return $this->cache->routeResolvesCache()->get($id);
     }
 }

@@ -19,6 +19,8 @@ use Psr\Http\Message\UriInterface;
 
 interface ResolverInterface
 {
+    public function __construct(RouterCacheInterface $cache);
+
     /**
      * Returns a RoutedInterface for the given UriInterface.
      *

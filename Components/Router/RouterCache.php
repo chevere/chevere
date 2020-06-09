@@ -56,7 +56,7 @@ final class RouterCache implements RouterCacheInterface
         return $this->routesCache;
     }
 
-    public function resolverCache(): RouteResolvesCache
+    public function routeResolvesCache(): RouteResolvesCache
     {
         return $this->routeResolvesCache;
     }

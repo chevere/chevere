@@ -13,13 +13,19 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Router;
 
+use Chevere\Interfaces\Cache\CacheInterface;
+
 interface RouterCacheInterface
 {
     const KEY_REGEX = 'regex';
 
     const KEY_INDEX = 'index';
 
+    public function __construct(CacheInterface $cache);
+
     public function routesCache(): RoutesCacheInterface;
+
+    public function routeResolvesCache(): RouteResolvesCacheInterface;
 
     public function hasRegex(): bool;
 
