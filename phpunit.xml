@@ -13,12 +13,12 @@
          testdox="false">
     <testsuites>
         <testsuite name="Chevere Tests">
-            <directory suffix="Test.php">Tests/</directory>
+            <directory suffix="Test.php">tests/</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
-            <directory suffix=".php">Components/</directory>
+            <directory suffix=".php">components/</directory>
         </whitelist>
     </filter>
 </phpunit>

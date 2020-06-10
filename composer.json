@@ -31,19 +31,19 @@
     },
     "autoload": {
         "files": [
-            "Components/Type/functions.php",
-            "Components/VarDump/functions.php",
-            "Components/Writers/functions.php"
+            "components/Type/functions.php",
+            "components/VarDump/functions.php",
+            "components/Writers/functions.php"
         ],
         "psr-4": {
-            "Chevere\\Components\\": "Components/",
-            "Chevere\\Interfaces\\": "Interfaces/",
-            "Chevere\\Exceptions\\": "Exceptions/"
+            "Chevere\\Components\\": "components/",
+            "Chevere\\Interfaces\\": "interfaces/",
+            "Chevere\\Exceptions\\": "exceptions/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Chevere\\Tests\\": "Tests/"
+            "Chevere\\Tests\\": "tests/"
         }
     },
     "config": {
