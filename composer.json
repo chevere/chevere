@@ -38,7 +38,8 @@
         "psr-4": {
             "Chevere\\Components\\": "components/",
             "Chevere\\Interfaces\\": "interfaces/",
-            "Chevere\\Exceptions\\": "exceptions/"
+            "Chevere\\Exceptions\\": "exceptions/",
+            "Chevere\\Examples\\": "examples/src/"
         }
     },
     "autoload-dev": {

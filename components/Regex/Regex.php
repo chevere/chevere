@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Regex;
 
-use Chevere\Exceptions\Core\Exception;
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Regex\RegexException;
 use Chevere\Interfaces\Regex\RegexInterface;
 use Throwable;
@@ -74,10 +74,10 @@ final class Regex implements RegexInterface
     private function assertRegex(): void
     {
         try {
-            if (preg_match($this->string, '') === false) {
+            if (@preg_match($this->string, '') === false) {
                 throw new Exception; // @codeCoverageIgnore
             }
-        } catch (Throwable $e) {
+        } catch (Exception $e) {
             throw new RegexException(
                 (new Message('Invalid regex string %regex% provided %error% [%preg%]'))
                     ->code('%regex%', $this->string)

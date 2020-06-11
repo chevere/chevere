@@ -38,10 +38,7 @@ final class HooksRunner implements HooksRunnerInterface
         // if ($this->isLooping()) {
         //     return;
         // }
-        $queue = $this->queue->toArray()[$anchor] ?? null;
-        if ($queue === null) {
-            return;
-        }
+        $queue = $this->queue->toArray()[$anchor] ?? [];
         $gettype = gettype($argument);
         if ($gettype === 'object') {
             $gettype = get_class($argument);

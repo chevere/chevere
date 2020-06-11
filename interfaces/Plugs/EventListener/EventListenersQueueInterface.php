@@ -13,14 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Plugs\EventListener;
 
-use Chevere\Components\Plugs\EventListeners\EventListenersQueue;
+use Chevere\Interfaces\Plugin\TypedPlugsQueueInterface;
 
-interface EventsRunnerInterface
+interface EventListenersQueueInterface extends TypedPlugsQueueInterface
 {
-    public function __construct(EventListenersQueue $queue);
-
-    /**
-     * Run registered event listeners for the target event name.
-     */
-    public function run(string $name, array $data = []): void;
 }

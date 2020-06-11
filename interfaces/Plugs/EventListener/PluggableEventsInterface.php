@@ -25,12 +25,12 @@ interface PluggableEventsInterface
     /**
      * Attach the events runner.
      */
-    public function withEventsRunner(EventsRunnerInterface $runner): PluggableEventsInterface;
+    public function withEventListenersRunner(EventListenersRunnerInterface $runner): PluggableEventsInterface;
 
     /**
      * Run events for the given anchor (if-any).
      *
      * @param string $anchor Event anchor
      */
-    public function event(string $anchor, EventInterface $event): void;
+    public function event(string $anchor, array $data = []): void;
 }

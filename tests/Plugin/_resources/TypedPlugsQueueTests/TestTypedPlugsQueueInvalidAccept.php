@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugin\_resources\TypedPlugsQueueTests;
 
-use Chevere\Interfaces\Plugin\TypedPlugsQueueInterface;
 use Chevere\Components\Plugin\Traits\TypedPlugsQueueTrait;
+use Chevere\Components\Plugin\Types\HookPlugType;
+use Chevere\Interfaces\Plugin\PlugTypeInterface;
+use Chevere\Interfaces\Plugin\TypedPlugsQueueInterface;
 
 final class TestTypedPlugsQueueInvalidAccept implements TypedPlugsQueueInterface
 {
@@ -23,5 +25,10 @@ final class TestTypedPlugsQueueInvalidAccept implements TypedPlugsQueueInterface
     public function accept(): string
     {
         return 'SomeInvalidInterface';
+    }
+
+    public function getPlugType(): PlugTypeInterface
+    {
+        return new HookPlugType;
     }
 }

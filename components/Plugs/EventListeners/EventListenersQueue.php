@@ -14,15 +14,30 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugs\EventListeners;
 
 use Chevere\Components\Plugin\Traits\TypedPlugsQueueTrait;
-use Chevere\Interfaces\Plugin\TypedPlugsQueueInterface;
+use Chevere\Components\Plugin\Types\EventListenerPlugType;
+use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use Chevere\Interfaces\Plugs\EventListener\EventListenerInterface;
+use Chevere\Interfaces\Plugs\EventListener\EventListenersQueueInterface;
 
-final class EventListenersQueue implements TypedPlugsQueueInterface
+final class EventListenersQueue implements EventListenersQueueInterface
 {
     use TypedPlugsQueueTrait;
 
     public function accept(): string
     {
         return EventListenerInterface::class;
+    }
+
+    public function getPlugType(): PlugTypeInterface
+    {
+        return new EventListenerPlugType;
+    }
+
+    public function withAddedEventListener(EventListenerInterface $eventListener): EventListenersQueueInterface
+    {
+        $new = clone $this;
+        $new->queue = $new->queue->withAddedPlug($eventListener);
+
+        return $new;
     }
 }
