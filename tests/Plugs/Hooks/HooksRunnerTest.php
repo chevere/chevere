@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\Plugs\Hooks;
 
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Plugin\PlugsQueue;
-use Chevere\Components\Plugin\Types\HookPlugType;
 use Chevere\Components\Plugs\Hooks\HooksQueue;
 use Chevere\Components\Plugs\Hooks\HooksRunner;
 use Chevere\Exceptions\Core\RuntimeException;
@@ -29,8 +27,7 @@ final class HooksRunnerTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $plugsQueue = new PlugsQueue(new HookPlugType);
-        $hooksQueue = new HooksQueue($plugsQueue);
+        $hooksQueue = new HooksQueue;
         $runner = new HooksRunner($hooksQueue);
         $argument = new stdClass;
         $same = $argument;
@@ -40,9 +37,7 @@ final class HooksRunnerTest extends TestCase
 
     public function testRunHookedString(): void
     {
-        $plugsQueue = new PlugsQueue(new HookPlugType);
-        $plugsQueue = $plugsQueue->withAddedPlug(new TestHookString);
-        $hooksQueue = new HooksQueue($plugsQueue);
+        $hooksQueue = (new HooksQueue)->withAddedHook(new TestHookString);
         $runner = new HooksRunner($hooksQueue);
         $argument = 'string';
         $same = $argument;
@@ -52,9 +47,7 @@ final class HooksRunnerTest extends TestCase
 
     public function testRunHookedObject(): void
     {
-        $plugsQueue = new PlugsQueue(new HookPlugType);
-        $plugsQueue = $plugsQueue->withAddedPlug(new TestHookPath);
-        $hooksQueue = new HooksQueue($plugsQueue);
+        $hooksQueue = (new HooksQueue)->withAddedHook(new TestHookPath);
         $runner = new HooksRunner($hooksQueue);
         $argument = new Path(__DIR__);
         $runner->run('path', $argument);
@@ -63,9 +56,7 @@ final class HooksRunnerTest extends TestCase
 
     public function testRunHookedTypeChange(): void
     {
-        $plugsQueue = new PlugsQueue(new HookPlugType);
-        $plugsQueue = $plugsQueue->withAddedPlug(new TestHookTypeChange);
-        $hooksQueue = new HooksQueue($plugsQueue);
+        $hooksQueue = (new HooksQueue)->withAddedHook(new TestHookTypeChange);
         $runner = new HooksRunner($hooksQueue);
         $argument = 'string';
         $this->expectException(RuntimeException::class);

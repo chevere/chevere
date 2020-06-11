@@ -20,6 +20,7 @@ use Chevere\Components\Plugin\Plugins;
 use Chevere\Components\Plugs\Hooks\HooksQueue;
 use Chevere\Components\Plugs\Hooks\HooksRunner;
 use Chevere\Exceptions\Plugin\PluggableNotRegisteredException;
+use Chevere\Tests\Plugs\Hooks\_resources\TestHook;
 use Chevere\Tests\Plugs\Hooks\_resources\TestHookable;
 use Chevere\Tests\Plugs\Hooks\_resources\TestHookableNoRegister;
 use Chevere\Tests\Plugs\Hooks\_resources\TestHookableWithoutHooks;
@@ -63,8 +64,7 @@ final class HookedTest extends TestCase
     public function testHooked(): void
     {
         $string = 'string';
-        $plugsQueue = $this->plugs->getPlugsQueue(TestHookable::class);
-        $hooksQueue = new HooksQueue($plugsQueue);
+        $hooksQueue = (new HooksQueue)->withAddedHook(new TestHook);
         /**
          * @var TestHookable $testHookable
          */

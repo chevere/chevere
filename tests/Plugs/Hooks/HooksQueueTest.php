@@ -23,9 +23,7 @@ final class HooksQueueTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $plugsQueue = new PlugsQueue(new HookPlugType);
-        $hooksQueue = new HooksQueue($plugsQueue);
+        $hooksQueue = new HooksQueue;
         $this->assertSame($hooksQueue->accept(), HookInterface::class);
-        $this->assertSame($plugsQueue, $hooksQueue->queue());
     }
 }
