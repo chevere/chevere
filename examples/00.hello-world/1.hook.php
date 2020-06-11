@@ -20,6 +20,7 @@ use Chevere\Examples\HookHelloWorldController;
 use Chevere\Interfaces\Controller\ControllerInterface;
 
 require 'vendor/autoload.php';
+
 $controller = new HookHelloWorldController;
 $controller = $controller->withHooksRunner(
     new HooksRunner(

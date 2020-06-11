@@ -31,13 +31,16 @@ final class TraceFormatter implements TraceFormatterInterface
     {
         $this->trace = $trace;
         $this->formatter = $formatter;
+        $this->string = '{main}';
         foreach ($this->trace as $pos => $entry) {
             $this->array[] = strtr(
                 $this->formatter->getTraceEntryTemplate(),
                 $this->getTrTable($pos, new TraceEntry($entry))
             );
         }
-        $this->string = $this->wrapStringHr($this->glueString($this->array));
+        if ($this->array !== []) {
+            $this->string = $this->wrapStringHr($this->glueString($this->array));
+        }
     }
 
     /**

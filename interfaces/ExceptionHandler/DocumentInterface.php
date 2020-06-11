@@ -22,8 +22,6 @@ interface DocumentInterface
     const SECTION_ID = 'id';
     const SECTION_TIME = 'time';
     const SECTION_STACK = 'stack';
-    const SECTION_CLIENT = 'client';
-    const SECTION_REQUEST = 'request';
     const SECTION_SERVER = 'server';
 
     const TAG_TITLE = '%title%';
@@ -34,14 +32,7 @@ interface DocumentInterface
     const TAG_DATE_TIME_UTC_ATOM = '%dateTimeUtcAtom%';
     const TAG_TIMESTAMP = '%timestamp%';
     const TAG_STACK = '%stack%';
-    const TAG_CLIENT_IP = '%clientIp%';
-    const TAG_CLIENT_USER_AGENT = '%clientUserAgent%';
-    const TAG_SERVER_PROTOCOL = '%serverProtocol%';
-    const TAG_REQUEST_METHOD = '%requestMethod%';
-    const TAG_URI = '%uri%';
     const TAG_PHP_UNAME = '%phpUname%';
-    const TAG_SERVER_HOST = '%serverHost%';
-    const TAG_SERVER_SOFTWARE = '%serverSoftware%';
 
     const SECTIONS = [
         self::SECTION_TITLE,
@@ -49,8 +40,6 @@ interface DocumentInterface
         self::SECTION_ID,
         self::SECTION_TIME,
         self::SECTION_STACK,
-        self::SECTION_CLIENT,
-        self::SECTION_REQUEST,
         self::SECTION_SERVER,
     ];
 
@@ -60,8 +49,6 @@ interface DocumentInterface
         self::SECTION_ID => OutputInterface::VERBOSITY_QUIET,
         self::SECTION_TIME => OutputInterface::VERBOSITY_VERBOSE,
         self::SECTION_STACK => OutputInterface::VERBOSITY_VERY_VERBOSE,
-        self::SECTION_CLIENT => OutputInterface::VERBOSITY_VERBOSE,
-        self::SECTION_REQUEST => OutputInterface::VERBOSITY_VERBOSE,
         self::SECTION_SERVER => OutputInterface::VERBOSITY_VERBOSE,
     ];
 
@@ -106,16 +93,6 @@ interface DocumentInterface
      * Returns the document stack section.
      */
     public function getSectionStack(): string;
-
-    /**
-     * Returns the document client section.
-     */
-    public function getSectionClient(): string;
-
-    /**
-     * Returns the document request section.
-     */
-    public function getSectionRequest(): string;
 
     /**
      * Returns the document server section.

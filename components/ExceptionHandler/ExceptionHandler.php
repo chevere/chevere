@@ -18,31 +18,23 @@ use Chevere\Interfaces\ExceptionHandler\ExceptionReadInterface;
 use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
-use Monolog\Formatter\LineFormatter;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 
-/**
- * The Chevere exception handler.
- */
 final class ExceptionHandler implements ExceptionHandlerInterface
 {
     private DateTimeInterface $dateTimeUtc;
 
-    private ExceptionReadInterface $exception;
+    private ExceptionReadInterface $exceptionRead;
 
     private string $id;
 
     private bool $isDebug = false;
 
-    public function __construct(ExceptionReadInterface $exception)
+    public function __construct(ExceptionReadInterface $exceptionRead)
     {
         $timezone = new DateTimeZone('UTC');
         $this->dateTimeUtc = new DateTimeImmutable('now', $timezone);
-        $this->exception = $exception;
+        $this->exceptionRead = $exceptionRead;
         $this->id = uniqid('', true);
-        $streamHandler = new StreamHandler('php://stderr');
-        $streamHandler->setFormatter(new LineFormatter(null, null, true, true));
     }
 
     public function withIsDebug(bool $isDebug): ExceptionHandlerInterface
@@ -58,9 +50,9 @@ final class ExceptionHandler implements ExceptionHandlerInterface
         return $this->dateTimeUtc;
     }
 
-    public function exception(): ExceptionReadInterface
+    public function exceptionRead(): ExceptionReadInterface
     {
-        return $this->exception;
+        return $this->exceptionRead;
     }
 
     public function id(): string

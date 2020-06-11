@@ -14,8 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\ExceptionHandler;
 
 use DateTimeInterface;
-use Ds\Set;
-use Monolog\Logger;
 
 interface ExceptionHandlerInterface
 {
@@ -23,7 +21,7 @@ interface ExceptionHandlerInterface
 
     public function dateTimeUtc(): DateTimeInterface;
 
-    public function exception(): ExceptionReadInterface;
+    public function exceptionRead(): ExceptionReadInterface;
 
     public function id(): string;
 

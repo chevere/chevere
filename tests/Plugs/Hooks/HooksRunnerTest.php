@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Hooks;
+namespace Chevere\Tests\Plugs\Hooks;
 
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Plugin\PlugsQueue;

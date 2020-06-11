@@ -62,7 +62,7 @@ abstract class AbstractDocument implements DocumentInterface
         if ($this->verbosity > 0) {
             $this->handleVerbositySections();
         }
-        $exception = $this->exceptionHandler->exception();
+        $exception = $this->exceptionHandler->exceptionRead();
         $dateTimeUtc = $this->exceptionHandler->dateTimeUtc();
         $this->tags = [
             static::TAG_TITLE => $exception->className() . ' thrown',
@@ -94,8 +94,6 @@ abstract class AbstractDocument implements DocumentInterface
             static::SECTION_ID => $this->getSectionId(),
             static::SECTION_TIME => $this->getSectionTime(),
             static::SECTION_STACK => $this->getSectionStack(),
-            static::SECTION_CLIENT => $this->getSectionClient(),
-            static::SECTION_REQUEST => $this->getSectionRequest(),
             static::SECTION_SERVER => $this->getSectionServer(),
         ];
     }
@@ -126,22 +124,9 @@ abstract class AbstractDocument implements DocumentInterface
         return $this->formatter->wrapSectionTitle('# Stack trace') . "\n" . static::TAG_STACK;
     }
 
-    public function getSectionClient(): string
-    {
-        return $this->formatter->wrapSectionTitle('# Client') . "\n" . static::TAG_CLIENT_IP . ' '
-            . static::TAG_CLIENT_USER_AGENT;
-    }
-
-    public function getSectionRequest(): string
-    {
-        return $this->formatter->wrapSectionTitle('# Request') . "\n" . static::TAG_SERVER_PROTOCOL . ' '
-            . static::TAG_REQUEST_METHOD . ' ' . static::TAG_URI;
-    }
-
     public function getSectionServer(): string
     {
-        return $this->formatter->wrapSectionTitle('# Server') . "\n" . static::TAG_PHP_UNAME . ' '
-            . static::TAG_SERVER_SOFTWARE;
+        return $this->formatter->wrapSectionTitle('# Server') . "\n" . static::TAG_PHP_UNAME;
     }
 
     /**
@@ -156,15 +141,15 @@ abstract class AbstractDocument implements DocumentInterface
 
     private function getExceptionCode(): string
     {
-        return $this->exceptionHandler->exception()->code() > 0
-            ? '[Code #' . $this->exceptionHandler->exception()->code() . ']'
+        return $this->exceptionHandler->exceptionRead()->code() > 0
+            ? '[Code #' . $this->exceptionHandler->exceptionRead()->code() . ']'
             : '';
     }
 
     private function getStackTrace(): string
     {
         return (new TraceFormatter(
-            $this->exceptionHandler->exception()->trace(),
+            $this->exceptionHandler->exceptionRead()->trace(),
             $this->formatter
         ))->toString();
     }

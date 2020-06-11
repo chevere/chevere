@@ -20,7 +20,7 @@ final class HelloWorldEvent implements EventListenerInterface
 {
     public function __invoke(array $data): void
     {
-        writers()->out()->write('event:greetSet ' . implode(' ', $data));
+        echo __CLASS__ . '>>>' . implode(' ', $data);
     }
 
     public function anchor(): string

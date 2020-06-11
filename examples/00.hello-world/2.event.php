@@ -13,16 +13,14 @@ declare(strict_types=1);
 
 use Chevere\Components\Controller\ControllerArguments;
 use Chevere\Components\Controller\ControllerRunner;
-use Chevere\Components\Instances\WritersInstance;
 use Chevere\Components\Plugs\EventListeners\EventListenersQueue;
 use Chevere\Components\Plugs\EventListeners\EventListenersRunner;
-use Chevere\Components\Writers\Writers;
 use Chevere\Examples\EventHelloWorldController;
 use Chevere\Examples\HelloWorldEvent;
 use Chevere\Interfaces\Controller\ControllerInterface;
 
 require 'vendor/autoload.php';
-new WritersInstance(new Writers);
+
 $controller = new EventHelloWorldController;
 $controller = $controller->withEventListenersRunner(
     new EventListenersRunner(
@@ -42,6 +40,6 @@ $ran = $runner->ran($arguments);
 echo "\n-----\n";
 echo implode(' ', $ran->data());
 
-// event:greetSet Hello, World
+// Chevere\Examples\HelloWorldEvent>>>Hello, World
 // -----
 // Hello, World

@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ExceptionHandler;
 
-use Chevere\Components\ExceptionHandler\ErrorHandler;
+use Chevere\Components\ExceptionHandler\Handle;
 use ErrorException;
 use PHPUnit\Framework\TestCase;
 
-final class ErrorHandlerTest extends TestCase
+final class HandleTest extends TestCase
 {
-    public function testStaticError(): void
+    public function testError(): void
     {
         $this->expectException(ErrorException::class);
-        ErrorHandler::error(1, 'Error', __FILE__, __LINE__);
+        Handle::errorsAsExceptions(1, 'Error', __FILE__, __LINE__);
     }
 }

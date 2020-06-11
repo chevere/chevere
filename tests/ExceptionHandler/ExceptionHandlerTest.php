@@ -37,7 +37,7 @@ final class ExceptionHandlerTest extends TestCase
     {
         $handler = $this->getExceptionHandler();
         $this->assertInstanceOf(DateTimeInterface::class, $handler->dateTimeUtc());
-        $this->assertInstanceOf(ExceptionRead::class, $handler->exception());
+        $this->assertInstanceOf(ExceptionRead::class, $handler->exceptionRead());
         $this->assertIsString($handler->id());
         $this->assertFalse($handler->isDebug());
     }
