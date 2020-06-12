@@ -20,6 +20,9 @@ use Chevere\Exceptions\Core\ErrorException;
 use Exception;
 use function Chevere\Components\Writers\writers;
 
+/**
+ * @codeCoverageIgnore
+ */
 final class Handle
 {
     public static function errorsAsExceptions(int $severity, string $message, string $file, int $line): void

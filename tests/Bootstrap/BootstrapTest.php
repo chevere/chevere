@@ -34,7 +34,6 @@ final class BootstrapTest extends TestCase
         $this->assertSame($dir, $bootstrap->dir());
         $this->assertIsInt($bootstrap->time());
         $this->assertIsInt($bootstrap->hrtime());
-        $this->assertFalse($bootstrap->isCli());
     }
 
     public function testWithNonExistentDirs(): void
@@ -42,14 +41,5 @@ final class BootstrapTest extends TestCase
         $dir = $this->getBootDir(uniqid() . '/');
         $this->expectException(BootstrapDirException::class);
         new Bootstrap($dir);
-    }
-
-    public function testWithCli(): void
-    {
-        $dir = $this->getBootDir('');
-        $bootstrap = (new Bootstrap($dir))->withCli(true);
-        $this->assertTrue($bootstrap->isCli());
-        $bootstrap = $bootstrap->withCli(false);
-        $this->assertFalse($bootstrap->isCli());
     }
 }

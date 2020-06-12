@@ -30,8 +30,6 @@ final class Bootstrap implements BootstrapInterface
     /** @var DirInterface Path to the document root (html) */
     private DirInterface $dir;
 
-    private bool $isCli = false;
-
     public function __construct(DirInterface $dir)
     {
         $this->time = time();
@@ -53,19 +51,6 @@ final class Bootstrap implements BootstrapInterface
     public function dir(): DirInterface
     {
         return $this->dir;
-    }
-
-    public function withCli(bool $bool): BootstrapInterface
-    {
-        $new = clone $this;
-        $new->isCli = $bool;
-
-        return $new;
-    }
-
-    public function isCli(): bool
-    {
-        return $this->isCli;
     }
 
     private function handleDirectory(DirInterface $dir, string $argumentName): void

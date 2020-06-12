@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Plugs\EventListener;
 
 use Chevere\Components\Plugs\EventListeners\EventListenersQueue;
+use Chevere\Interfaces\Writers\WritersInterface;
 
 interface EventListenersRunnerInterface
 {
-    public function __construct(EventListenersQueue $queue);
+    public function __construct(EventListenersQueue $queue, WritersInterface $writers);
 
     /**
      * Run registered event listeners for the target event name.

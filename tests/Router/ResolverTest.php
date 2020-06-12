@@ -28,8 +28,6 @@ use Chevere\Components\Router\Resolver;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Routed;
 use Chevere\Components\Router\RouterCache;
-use Chevere\Components\Router\RouteResolve;
-use Chevere\Components\Router\RouteResolvesCache;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Exceptions\Router\RouteNotFoundException;
 use Chevere\Exceptions\Router\RouterException;
@@ -37,7 +35,6 @@ use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
 use Chevere\Interfaces\Router\RouterInterface;
-use Chevere\Interfaces\Router\RouterRegexInterface;
 use Laminas\Diactoros\Uri;
 use PHPUnit\Framework\TestCase;
 

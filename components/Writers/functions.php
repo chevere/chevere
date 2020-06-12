@@ -15,6 +15,7 @@ namespace Chevere\Components\Writers;
 
 use Chevere\Components\Instances\WritersInstance;
 use Chevere\Interfaces\Writers\WritersInterface;
+use Exception;
 
 /**
  * @codeCoverageIgnore

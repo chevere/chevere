@@ -16,6 +16,14 @@ namespace Chevere\Interfaces\Writers;
 interface WritersInterface
 {
     /**
+     * Return an instance with the specified $writer for all writers.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified $writer for all writers.
+     */
+    public function with(WriterInterface $writer): WritersInterface;
+
+    /**
      * Return an instance with the specified out WriterInterface.
      *
      * This method MUST retain the state of the current instance, and return

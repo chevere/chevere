@@ -16,18 +16,21 @@ namespace Chevere\Components\Plugs\EventListeners;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
-use Chevere\Interfaces\Plugs\EventListener\EventListenerInterface;
 use Chevere\Interfaces\Plugs\EventListener\EventListenersQueueInterface;
 use Chevere\Interfaces\Plugs\EventListener\EventListenersRunnerInterface;
+use Chevere\Interfaces\Writers\WritersInterface;
 use Throwable;
 
 final class EventListenersRunner implements EventListenersRunnerInterface
 {
     private PlugsQueueInterface $queue;
 
-    public function __construct(EventListenersQueueInterface $queue)
+    private WritersInterface $writers;
+
+    public function __construct(EventListenersQueueInterface $queue, WritersInterface $writers)
     {
         $this->queue = $queue->queue();
+        $this->writers = $writers;
     }
 
     public function run(string $anchor, array $data): void
@@ -45,7 +48,7 @@ final class EventListenersRunner implements EventListenersRunnerInterface
                 }
                 // @codeCoverageIgnoreEnd
                 $eventListener = $this->eventListener;
-                $eventListener($data);
+                $eventListener($data, $this->writers);
             }
         }
     }

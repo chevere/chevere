@@ -37,17 +37,4 @@ interface BootstrapInterface
      * Provides access to the rootDir used on instance creation.
      */
     public function dir(): DirInterface;
-
-    /**
-     * Return an instance with the specified cli flag.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified cli flag.
-     */
-    public function withCli(bool $bool): BootstrapInterface;
-
-    /**
-     * Returns a boolean indicating whether the instance has the cli flag.
-     */
-    public function isCli(): bool;
 }

@@ -27,7 +27,8 @@ final class Resolver implements ResolverInterface
 {
     private RouterCacheInterface $cache;
 
-    public function __construct(RouterCacheInterface $cache) {
+    public function __construct(RouterCacheInterface $cache)
+    {
         $this->cache = $cache;
     }
 
@@ -63,11 +64,13 @@ final class Resolver implements ResolverInterface
         unset($matches['MARK']);
         array_shift($matches);
         if (!$this->cache->routeResolvesCache()->has($idInt)) {
+            // @codeCoverageIgnoreStart
             throw new OutOfBoundsException(
                 (new Message('No cache for regex tag id %id%'))
                     ->code('%id%', $idString)
                     ->toString()
             );
+            // @codeCoverageIgnoreEnd
         }
         $routeResolve = $this->getRouteResolve($idInt);
         $arguments = [];

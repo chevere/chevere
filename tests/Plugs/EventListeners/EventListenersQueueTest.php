@@ -13,18 +13,32 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugs\EventListeners;
 
-use Chevere\Components\Plugin\PlugsQueue;
 use Chevere\Components\Plugin\Types\EventListenerPlugType;
 use Chevere\Components\Plugs\EventListeners\EventListenersQueue;
 use Chevere\Interfaces\Plugs\EventListener\EventListenerInterface;
+use Chevere\Tests\Plugs\EventListeners\_resources\TestEventListener;
 use PHPUnit\Framework\TestCase;
 
 final class EventListenersQueueTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $plugsQueue = new PlugsQueue(new EventListenerPlugType);
         $eventListenersQueue = new EventListenersQueue;
         $this->assertSame($eventListenersQueue->accept(), EventListenerInterface::class);
+        $this->assertEquals(new EventListenerPlugType, $eventListenersQueue->getPlugType());
+    }
+
+    public function testWithAddedEventListener(): void
+    {
+        $eventListener = new TestEventListener;
+        $eventListenersQueue = (new EventListenersQueue)
+            ->withAddedEventListener($eventListener);
+        $this->assertSame([
+            $eventListener->anchor() => [
+                [
+                    get_class($eventListener)
+                ]
+            ]
+        ], $eventListenersQueue->queue()->toArray());
     }
 }

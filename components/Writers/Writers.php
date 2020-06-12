@@ -31,27 +31,23 @@ final class Writers implements WritersInterface
 
     public function __construct()
     {
-        $stdout = fopen('php://stdout', 'w');
-        $stderr = fopen('php://stderr', 'w');
-        $errors = [];
-        // @codeCoverageIgnoreStart
-        if ($stdout === false) {
-            $errors[] = 'php://stdout';
-        }
-        if ($stderr === false) {
-            $errors[] = 'php://stderr';
-        }
-        if ($errors !== []) {
-            throw new RuntimeException(
-                (new Message('Unable to open %list%'))
-                ->code('%list%', implode('; ', $errors))
-            );
-        }
-        // @codeCoverageIgnoreEnd
-        $this->out = new StreamWriter(new Stream($stdout));
-        $this->error = new StreamWriter(new Stream($stderr));
+        // $this->out = new StreamWriter(new Stream('php://stdout', 'w'));
+        // $this->error = new StreamWriter(new Stream('php://stderr', 'w'));
+        $this->out = new NullWriter;
+        $this->error = new NullWriter;
         $this->debug = new NullWriter;
         $this->log = new NullWriter;
+    }
+
+    public function with(WriterInterface $writer): WritersInterface
+    {
+        $new = clone $this;
+        $new->out = $writer;
+        $new->error = $writer;
+        $new->debug = $writer;
+        $new->log = $writer;
+
+        return $new;
     }
 
     public function withOut(WriterInterface $writer): WritersInterface

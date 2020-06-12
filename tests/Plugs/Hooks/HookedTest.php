@@ -79,14 +79,14 @@ final class HookedTest extends TestCase
     public function testNotHookedClass(): void
     {
         $string = 'string';
-        $testHookable = new TestHookableNoRegister();
+        $testHookable = new TestHookable();
         $testHookable->setString($string);
         $this->assertSame($string, $testHookable->string());
     }
 
-    public function testClassNotRegistered(): void
-    {
-        $this->expectException(PluggableNotRegisteredException::class);
-        $this->plugs->getPlugsQueue(TestHookableNoRegister::class);
-    }
+    // public function testClassNotRegistered(): void
+    // {
+    //     $this->expectException(PluggableNotRegisteredException::class);
+    //     $this->plugs->getPlugsQueue(TestHookableNoRegister::class);
+    // }
 }

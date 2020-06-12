@@ -22,8 +22,7 @@ require 'vendor/autoload.php';
 $rootDir = new DirFromString(__DIR__ . '/build');
 $isCli = php_sapi_name() === 'cli';
 
-$bootstrap = (new Bootstrap($rootDir))
-    ->withCli($isCli);
+$bootstrap = (new Bootstrap($rootDir));
 
 new BootstrapInstance($bootstrap);
 

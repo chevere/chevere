@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Plugs\EventListener;
 
 use Chevere\Interfaces\Plugin\PlugInterface;
+use Chevere\Interfaces\Writers\WritersInterface;
 
 interface EventListenerInterface extends PlugInterface
 {
-    public function __invoke(array $data): void;
+    public function __invoke(array $data, WritersInterface $writers): void;
 
     /**
      * @return string Applicable event anchor.

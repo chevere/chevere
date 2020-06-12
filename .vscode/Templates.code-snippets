@@ -217,8 +217,8 @@
         ]
     },
     "event": {
-        "description": "Create event",
-        "prefix": "event",
+        "description": "Create event listener",
+        "prefix": "event-listener",
         "body": [
             "<?php",
             "",

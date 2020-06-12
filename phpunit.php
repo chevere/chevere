@@ -16,8 +16,6 @@ namespace Chevere;
 use Chevere\Components\Bootstrap\Bootstrap;
 use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Instances\BootstrapInstance;
-use Chevere\Components\Instances\WritersInstance;
-use Chevere\Components\Writers\Writers;
 
 require 'vendor/autoload.php';
 
@@ -25,7 +23,4 @@ $dir = new DirFromString(__DIR__ . '/');
 
 new BootstrapInstance(
     (new Bootstrap($dir))
-        ->withCli(true)
 );
-
-new WritersInstance(new Writers);
