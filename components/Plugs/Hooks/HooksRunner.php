@@ -39,22 +39,11 @@ final class HooksRunner implements HooksRunnerInterface
         //     return;
         // }
         $queue = $this->queue->toArray()[$anchor] ?? [];
-        $gettype = gettype($argument);
-        if ($gettype === 'object') {
-            $gettype = get_class($argument);
-        }
+        $gettype = $this->getType($argument);
         $type = new Type($gettype);
         foreach ($queue as $entries) {
             foreach ($entries as $entry) {
-                // @codeCoverageIgnoreStart
-                try {
-                    $this->hook = new $entry;
-                } catch (Throwable $e) {
-                    throw new RuntimeException(
-                        (new Message('Invalid hook type'))
-                    );
-                }
-                // @codeCoverageIgnoreEnd
+                $this->setHook($entry);
                 $hook = $this->hook;
                 $hook($argument);
                 if (!$type->validate($argument)) {
@@ -66,6 +55,31 @@ final class HooksRunner implements HooksRunnerInterface
                     );
                 }
             }
+        }
+    }
+
+    private function getType($argument): string
+    {
+        $gettype = gettype($argument);
+        if ($gettype === 'object') {
+            return get_class($argument);
+        }
+
+        return $gettype;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     * @throws RuntimeException
+     */
+    private function setHook(string $entry): void
+    {
+        try {
+            $this->hook = new $entry;
+        } catch (Throwable $e) {
+            throw new RuntimeException(
+                (new Message('Invalid hook type'))
+            );
         }
     }
 
