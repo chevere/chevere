@@ -31,10 +31,10 @@ final class Writers implements WritersInterface
 
     public function __construct()
     {
-        // $this->out = new StreamWriter(new Stream('php://stdout', 'w'));
-        // $this->error = new StreamWriter(new Stream('php://stderr', 'w'));
-        $this->out = new NullWriter;
-        $this->error = new NullWriter;
+        $this->out = new StreamWriter(new Stream('php://stdout', 'w'));
+        $this->error = new StreamWriter(new Stream('php://stderr', 'w'));
+        // $this->out = new NullWriter;
+        // $this->error = new NullWriter;
         $this->debug = new NullWriter;
         $this->log = new NullWriter;
     }

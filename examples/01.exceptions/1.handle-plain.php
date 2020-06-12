@@ -11,6 +11,7 @@
 
 declare(strict_types=1);
 
+use Chevere\Components\ExceptionHandler\Handle;
 use Chevere\Components\Instances\RuntimeInstance;
 use Chevere\Components\Instances\WritersInstance;
 use Chevere\Components\Runtime\Runtime;
@@ -22,7 +23,7 @@ require 'vendor/autoload.php';
 new WritersInstance(new Writers);
 new RuntimeInstance(
     (new Runtime)
-        ->withSet(new SetExceptionHandler('Chevere\Components\ExceptionHandler\Handle::html'))
+        ->withSet(new SetExceptionHandler(Handle::class . '::plain'))
 );
 
 throw new Exception('Whoops...');

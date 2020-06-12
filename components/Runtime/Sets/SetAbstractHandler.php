@@ -60,8 +60,9 @@ abstract class SetAbstractHandler implements SetInterface
     {
         if (!is_callable($this->value)) {
             throw new InvalidArgumentException(
-                (new Message('Runtime value must be a valid callable for %subject%'))
+                (new Message('Runtime value must be a valid callable for %subject%, string %provided% provided'))
                     ->code('%subject%', strval($this->getSetHandler()))
+                    ->code('%provided%', $this->value)
                     ->toString()
             );
         }
