@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputters;
 
-use JakubOnderka\PhpConsoleColor\ConsoleColor;
+use Colors\Color;
 
 final class ConsoleOutputter extends AbstractOutputter
 {
@@ -21,16 +21,13 @@ final class ConsoleOutputter extends AbstractOutputter
 
     public function prepare(): void
     {
-        $this->outputHr = (new ConsoleColor)->apply(
-            'blue',
-            '------------------------------------------------------------'
-        );
+        $color = new Color;
+        $this->outputHr = $color->fg('blue', str_repeat('-', 60));
         $this->writer()->write(
             implode("\n", [
                 '',
-                (new ConsoleColor)->apply(['bold', 'red'], $this->caller()),
+                $color->fg('red', $color->bold($this->caller())),
                 $this->outputHr,
-                ''
             ])
         );
     }

@@ -37,7 +37,7 @@ final class HtmlOutputter extends AbstractOutputter
             implode('', [
                 $this->caller(),
                 '<hr>',
-                '<pre style="' . self::STYLE . '">'
+                '<pre style="' . self::STYLE . '">',
             ])
         );
     }

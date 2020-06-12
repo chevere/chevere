@@ -24,7 +24,6 @@ final class PlainOutputter extends AbstractOutputter
                 '',
                 $this->caller(),
                 $this->outputHr,
-                ''
             ])
         );
     }

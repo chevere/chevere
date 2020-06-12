@@ -68,8 +68,6 @@ final class VarOutputterTest extends TestCase
         $varOutputter->process(new ConsoleOutputter);
         $parsed = $this->getParsed($backtrace, 'output-console-color');
         $string = $writer->toString();
-        // if ((new ConsoleColor())->isSupported() === false) {
-        // }
         $parsed = (new Str($parsed))->stripANSIColors()->toString();
         $string = (new Str($string))->stripANSIColors()->toString();
         $this->assertSame($parsed, $string);
@@ -87,6 +85,7 @@ final class VarOutputterTest extends TestCase
         );
         $varOutputter->process(new HtmlOutputter);
         $parsed = $this->getParsed($backtrace, 'output-html');
+
         $this->assertSame($parsed, $writer->toString());
     }
 }

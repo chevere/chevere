@@ -17,6 +17,7 @@ use Chevere\Components\VarDump\VarDumpable;
 use Chevere\Components\VarDump\VarDumper;
 use Chevere\Interfaces\VarDump\FormatterInterface;
 use Chevere\Interfaces\VarDump\OutputterInterface;
+use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Interfaces\VarDump\VarOutputterInterface;
 use Chevere\Interfaces\Writers\WriterInterface;
 
@@ -49,28 +50,32 @@ final class VarOutputter implements VarOutputterInterface
     {
         $outputter->setUp($this->writer, $this->debugBacktrace);
         $outputter->prepare();
-        $this->handleClass();
-        $debugFn = $this->debugBacktrace[1]['function'] ?? null;
-        if ($debugFn !== null) {
-            $debugFn .= '()';
-        }
-        $this->writer->write(
-            $this->formatter->highlight('_function', (string) $debugFn)
-        );
+        $this->handleClassFunction();
         $this->writeCallerFile();
         $this->handleArgs();
         $outputter->callback();
     }
 
-    private function handleClass(): void
+    private function handleClassFunction(): void
     {
         $item = $this->debugBacktrace[1] ?? null;
         $class = $item['class'] ?? null;
         if ($class !== null) {
+            $this->writer->write("\n");
             $type = $item['type'];
             $this->writer->write(
-                $this->formatter
-                    ->highlight('_class', $class) . $type
+                $this->formatter->highlight(VarDumperInterface::CLASS_REG, $class)
+                . $type
+            );
+        }
+        $debugFn = $this->debugBacktrace[1]['function'] ?? null;
+        if ($debugFn !== null) {
+            $debugFn .= '()';
+            if ($class === null) {
+                $this->writer->write("\n");
+            }
+            $this->writer->write(
+                $this->formatter->highlight(VarDumperInterface::FUNCTION, (string) $debugFn)
             );
         }
     }

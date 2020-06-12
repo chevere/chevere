@@ -17,48 +17,51 @@ use Chevere\Components\VarDump\Highlighters\Traits\AssertKeyTrait;
 use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Interfaces\VarDump\HighlightInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
-use JakubOnderka\PhpConsoleColor\ConsoleColor;
+use Colors\Color;
 
 final class ConsoleHighlight implements HighlightInterface
 {
     use AssertKeyTrait;
 
-    private ConsoleColor $consoleColor;
+    private Color $color;
 
-    private array $color;
+    private array $style;
 
     public function __construct(string $key)
     {
         $this->assertKey($key);
-        $this->consoleColor = new ConsoleColor();
-        $color = $this->pallet()[$key] ?? 'default';
-        $this->color = is_string($color) ? [$color] : $color;
+        $this->color = new Color;
+        $color = $this->pallet()[$key] ?? 'reset';
+        $this->style = is_string($color) ? [$color] : $color;
     }
 
     public function wrap(string $dump): string
     {
-        return $this->consoleColor
-            ->apply($this->color, $dump);
+        foreach ($this->style as $style) {
+            $dump = $this->color->apply("color[$style]", $dump);
+        }
+
+        return $dump;
     }
 
     public function pallet(): array
     {
         return [
-            TypeInterface::STRING => 'color_11',
-            TypeInterface::FLOAT => 'color_11',
-            TypeInterface::INTEGER => 'color_11',
-            TypeInterface::BOOLEAN => 'color_163',
-            TypeInterface::NULL => 'color_245',
-            TypeInterface::OBJECT => 'color_39',
-            TypeInterface::ARRAY => 'color_41',
-            TypeInterface::RESOURCE => 'color_147',
-            VarDumperInterface::FILE => 'default',
-            VarDumperInterface::CLASS_REG => 'color_147',
-            VarDumperInterface::OPERATOR => 'color_245',
-            VarDumperInterface::FUNCTION => 'color_39',
-            VarDumperInterface::MODIFIERS => 'color_133',
-            VarDumperInterface::VARIABLE => 'color_208',
-            VarDumperInterface::EMPHASIS => ['color_245', 'italic']
+            TypeInterface::STRING => '208', // orange
+            TypeInterface::FLOAT => '208',
+            TypeInterface::INTEGER => '208',
+            TypeInterface::BOOLEAN => '208',
+            TypeInterface::NULL => '208',
+            TypeInterface::OBJECT => '220', // yellow
+            TypeInterface::ARRAY => '41', // green
+            TypeInterface::RESOURCE => '196', // red
+            VarDumperInterface::FILE => '4', // blue
+            VarDumperInterface::CLASS_REG => '221', // light yellow
+            VarDumperInterface::OPERATOR => '242', // dark gray
+            VarDumperInterface::FUNCTION => '39',
+            VarDumperInterface::MODIFIERS => '207', // purple
+            VarDumperInterface::VARIABLE => '208',
+            VarDumperInterface::EMPHASIS => ['242', '3'] // dark gray italic
         ];
     }
 }

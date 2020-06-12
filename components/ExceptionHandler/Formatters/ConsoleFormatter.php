@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ExceptionHandler\Formatters;
 
-use Chevere\Interfaces\ExceptionHandler\TraceFormatterInterface;
 use Chevere\Components\VarDump\Formatters\ConsoleFormatter as VarDumpFormatter;
+use Chevere\Interfaces\ExceptionHandler\TraceFormatterInterface;
 use Chevere\Interfaces\VarDump\FormatterInterface as VarDumpFormatterInterface;
-use JakubOnderka\PhpConsoleColor\ConsoleColor;
+use Colors\Color;
 
 final class ConsoleFormatter extends AbstractFormatter
 {
@@ -34,16 +34,16 @@ final class ConsoleFormatter extends AbstractFormatter
 
     public function getHr(): string
     {
-        return (new ConsoleColor)->apply('blue', '------------------------------------------------------------');
+        return (string) (new Color(str_repeat('-', 60)))->blue();
     }
 
     public function wrapLink(string $value): string
     {
-        return (new ConsoleColor)->apply(['underline', 'blue'], $value);
+        return (string) (new Color($value))->underline()->fg('blue');
     }
 
     public function wrapSectionTitle(string $value): string
     {
-        return (new ConsoleColor)->apply('green', $value);
+        return (string) (new Color($value))->green();
     }
 }

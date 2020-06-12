@@ -15,6 +15,7 @@ namespace Chevere\Components\ExceptionHandler\Documents;
 
 use Chevere\Components\ExceptionHandler\Formatters\ConsoleFormatter;
 use Chevere\Interfaces\ExceptionHandler\FormatterInterface;
+use Colors\Color;
 use JakubOnderka\PhpConsoleColor\ConsoleColor;
 
 final class ConsoleDocument extends AbstractDocument
@@ -26,7 +27,9 @@ final class ConsoleDocument extends AbstractDocument
 
     public function getSectionTitle(): string
     {
-        return (new ConsoleColor)->apply(['red', 'bold'], self::TAG_TITLE . ' in ')
-            . $this->formatter->wrapLink(self::TAG_FILE_LINE);
+        return strtr('%t in %f', [
+            '%t' => (string) (new Color(self::TAG_TITLE))->bold()->red(),
+            '%f' => $this->formatter->wrapLink(self::TAG_FILE_LINE)
+        ]);
     }
 }

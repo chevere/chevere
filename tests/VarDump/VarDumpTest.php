@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump;
 
-use Chevere\Components\VarDump\Formatters\ConsoleFormatter;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
-use Chevere\Components\VarDump\Outputters\ConsoleOutputter;
 use Chevere\Components\VarDump\Outputters\PlainOutputter;
 use Chevere\Components\VarDump\VarDump;
 use Chevere\Components\Writers\StreamWriter;

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\EventListeners;
+namespace Chevere\Tests\Plugs\EventListeners;
 
 use Chevere\Components\Plugs\EventListeners\EventListenersQueue;
 use Chevere\Components\Plugs\EventListeners\EventListenersRunner;

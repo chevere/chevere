@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
+use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Interfaces\VarDump\ProcessorInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
-use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 
 final class ResourceProcessor implements ProcessorInterface
 {
@@ -29,7 +29,10 @@ final class ResourceProcessor implements ProcessorInterface
         $this->varDumper = $varDumper;
         $this->assertType();
         $this->info = 'type=' . get_resource_type($this->varDumper->dumpable()->var());
-        $this->stringVar = (string) $this->varDumper->dumpable()->var();
+        $this->stringVar = $this->varDumper->formatter()->highlight(
+            $this->type(),
+            (string) $this->varDumper->dumpable()->var()
+        );
     }
 
     public function type(): string
