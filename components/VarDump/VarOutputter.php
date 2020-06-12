@@ -71,11 +71,9 @@ final class VarOutputter implements VarOutputterInterface
         $debugFn = $this->debugBacktrace[1]['function'] ?? null;
         if ($debugFn !== null) {
             $debugFn .= '()';
-            if ($class === null) {
-                $this->writer->write("\n");
-            }
             $this->writer->write(
-                $this->formatter->highlight(VarDumperInterface::FUNCTION, (string) $debugFn)
+                ($class === null ? "\n" : '')
+                . $this->formatter->highlight(VarDumperInterface::FUNCTION, (string) $debugFn)
             );
         }
     }
