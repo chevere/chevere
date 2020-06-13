@@ -11,25 +11,27 @@
 
 declare(strict_types=1);
 
-use Chevere\Components\VarDump\Formatters\ConsoleFormatter;
-use Chevere\Components\VarDump\Outputters\ConsoleOutputter;
-use Chevere\Components\VarDump\VarDump;
+use Chevere\Components\Instances\VarDumpInstance;
+use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\VarDump\VarDumpInterface;
-use function Chevere\Components\Writers\writers;
 
 /**
  * @codeCoverageIgnore
  */
 function varDump(...$vars): VarDumpInterface
 {
-    return
-        (new VarDump(
-            writers()->out(),
-            new ConsoleFormatter,
-            new ConsoleOutputter
-        ))
-            ->withVars(...$vars)
-            ->withShift(1);
+    try {
+        $varDump = VarDumpInstance::get();
+    } catch (LogicException $e) {
+        throw new LogicException(
+            (new Message('Missing %instance% instance (initiate it with %code%)'))
+                ->strong('%instance%', VarDumpInstance::class)
+                ->code('%code%', 'new VarDumpInstance')
+        );
+    }
+
+    return $varDump->withVars(...$vars)->withShift(1);
 }
 if (function_exists('xd') === false) { // @codeCoverageIgnore
     /**
