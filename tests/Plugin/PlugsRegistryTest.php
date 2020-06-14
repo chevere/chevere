@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Chevere\Tests\Plugin;
 
 use Chevere\Components\Cache\CacheKey;
-use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Components\Filesystem\FilePhpReturnFromString;
 use Chevere\Components\Plugin\AssertPlug;
-use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use Chevere\Components\Plugin\PlugsMap;
 use Chevere\Components\Plugin\PlugsRegistry;
-use Chevere\Tests\Plugin\_resources\src\TestHook;
 use Chevere\Components\Plugin\Types\HookPlugType;
-use Chevere\Tests\Router\CacheHelper;
 use Chevere\Components\Type\Type;
+use Chevere\Exceptions\Core\RuntimeException;
+use Chevere\Interfaces\Plugin\PlugsQueueInterface;
+use Chevere\Tests\Plugin\_resources\src\TestHook;
+use Chevere\Tests\Router\CacheHelper;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 
@@ -69,7 +69,7 @@ final class PlugsRegistryTest extends TestCase
         $cacheKey = new CacheKey('hooks-some');
         $plugsMap = new PlugsMap(new HookPlugType);
         $hook = new TestHook;
-        $plugsMap = $plugsMap->withAddedPlug(
+        $plugsMap = $plugsMap->withAdded(
             new AssertPlug($hook)
         );
         $plugsRegistry = (new PlugsRegistry($cache))

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin;
 
+use Chevere\Components\Plugin\PlugsMap;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Plugin\PlugInterface;
 use Chevere\Interfaces\Plugin\PlugsMapInterface;
 use Chevere\Interfaces\Plugin\PlugTypeInterface;
-use Chevere\Components\Plugin\PlugsMap;
 use Go\ParserReflection\ReflectionFile;
 use Go\ParserReflection\ReflectionFileNamespace;
 use RecursiveDirectoryIterator;
@@ -82,7 +82,7 @@ final class PlugsMapper
                 if ($class->implementsInterface(PlugInterface::class)) {
                     $plug = $class->newInstance();
                     $this->plugsMap = $this->plugsMap
-                        ->withAddedPlug(new AssertPlug($plug));
+                        ->withAdded(new AssertPlug($plug));
                 }
             }
         }

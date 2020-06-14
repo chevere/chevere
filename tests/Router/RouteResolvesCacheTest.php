@@ -22,7 +22,7 @@ use Chevere\Exceptions\Router\RouteCacheNotFoundException;
 use Chevere\Exceptions\Router\RouteCacheTypeException;
 use PHPUnit\Framework\TestCase;
 
-final class ResolverCacheTest extends TestCase
+final class RouteResolvesCacheTest extends TestCase
 {
     private CacheHelper $cacheHelper;
 
@@ -58,7 +58,7 @@ final class ResolverCacheTest extends TestCase
 
     public function testWorkingCache(): void
     {
-        $resolverCache = new RouteResolvesCache($this->cacheHelper->getWorkingCache());
+        $resolvesCache = new RouteResolvesCache($this->cacheHelper->getWorkingCache());
         /**
          * @var int $pos
          * @var Route $route
@@ -68,14 +68,14 @@ final class ResolverCacheTest extends TestCase
                 $route->name(),
                 $route->path()->wildcards()
             );
-            $resolverCache->put($pos, $routeResolve);
-            $this->assertArrayHasKey($pos, $resolverCache->puts());
+            $resolvesCache->put($pos, $routeResolve);
+            $this->assertArrayHasKey($pos, $resolvesCache->puts());
             $this->assertEquals(
                 $routeResolve,
-                $resolverCache->get(/** @scrutinizer ignore-type */$pos)
+                $resolvesCache->get(/** @scrutinizer ignore-type */$pos)
             );
-            $resolverCache->remove($pos);
-            $this->assertArrayNotHasKey($pos, $resolverCache->puts());
+            $resolvesCache->remove($pos);
+            $this->assertArrayNotHasKey($pos, $resolvesCache->puts());
         }
     }
 

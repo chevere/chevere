@@ -39,18 +39,18 @@ final class PlugsMapTest extends TestCase
         $plugsMap = new PlugsMap($plugType);
         $hook = new TestHook;
         $this->expectException(InvalidArgumentException::class);
-        $plugsMap->withAddedPlug(new AssertPlug($hook));
+        $plugsMap->withAdded(new AssertPlug($hook));
     }
 
     public function testWithAlreadyAddedPlug(): void
     {
         $hook = new TestHook;
         $plugsMap = (new PlugsMap(new HookPlugType))
-            ->withAddedPlug(
+            ->withAdded(
                 new AssertPlug($hook)
             );
         $this->expectException(PlugRegisteredException::class);
-        $plugsMap->withAddedPlug(
+        $plugsMap->withAdded(
             new AssertPlug($hook)
         );
     }
@@ -66,10 +66,10 @@ final class PlugsMapTest extends TestCase
             }
         };
         $plugsMap = (new PlugsMap(new HookPlugType))
-            ->withAddedPlug(
+            ->withAdded(
                 new AssertPlug($hook)
             )
-            ->withAddedPlug(
+            ->withAdded(
                 new AssertPlug($hook2)
             );
         $this->assertTrue($plugsMap->has($hook));
@@ -79,7 +79,7 @@ final class PlugsMapTest extends TestCase
          */
         foreach ($plugsMap->getGenerator() as $pluggableName => $plugsQueue) {
             $this->assertInstanceOf(PlugsQueueInterface::class, $plugsQueue);
-            $this->assertTrue($plugsMap->hasPluggableName($pluggableName));
+            $this->assertTrue($plugsMap->hasPlugsQueueFor($pluggableName));
         }
     }
 }

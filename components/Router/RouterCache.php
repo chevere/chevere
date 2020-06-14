@@ -14,18 +14,18 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\Cache\CacheKey;
+use Chevere\Components\Message\Message;
+use Chevere\Components\VarExportable\VarExportable;
+use Chevere\Exceptions\Router\RouterCacheNotFoundException;
 use Chevere\Interfaces\Cache\CacheInterface;
 use Chevere\Interfaces\Cache\CacheItemInterface;
 use Chevere\Interfaces\Cache\CacheKeyInterface;
-use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Router\RouterCacheNotFoundException;
 use Chevere\Interfaces\Router\RoutableInterface;
 use Chevere\Interfaces\Router\RouterCacheInterface;
 use Chevere\Interfaces\Router\RouterIndexInterface;
 use Chevere\Interfaces\Router\RouterInterface;
 use Chevere\Interfaces\Router\RouterRegexInterface;
 use Chevere\Interfaces\Router\RoutesCacheInterface;
-use Chevere\Components\VarExportable\VarExportable;
 use Throwable;
 
 final class RouterCache implements RouterCacheInterface
@@ -108,7 +108,7 @@ final class RouterCache implements RouterCacheInterface
                 $pos,
                 new RouteResolve(
                     $route->name(),
-                    $route->path()->wildcards()
+                    $route->path()->wildcards(),
                 )
             );
         }

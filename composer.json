@@ -17,13 +17,13 @@
         "adhocore/cli": "^0.8.3",
         "goaop/parser-reflection": "^2.1",
         "kevinlebrun/colors.php": "^1.0",
+        "laminas/laminas-diactoros": "^2.3",
         "monolog/monolog": "^2.0",
         "myclabs/deep-copy": "^1.9",
         "php-ds/php-ds": "^1.2",
         "psr/http-message": "^1.0",
         "psr/http-server-handler": "^1.0",
-        "psr/http-server-middleware": "^1.0",
-        "spiral/roadrunner": "^1.7"
+        "psr/http-server-middleware": "^1.0"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",

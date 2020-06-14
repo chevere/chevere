@@ -20,11 +20,13 @@ interface PlugsMapInterface extends Countable
 {
     public function type(): PlugTypeInterface;
 
-    public function withAddedPlug(AssertPlugInterface $assertPlug): PlugsMapInterface;
+    public function withAdded(AssertPlugInterface $assertPlug): PlugsMapInterface;
 
     public function has(PlugInterface $plug): bool;
 
-    public function hasPluggableName(string $pluggableName): bool;
+    public function hasPlugsQueueFor(string $pluggable): bool;
+
+    public function getPlugQueueFor(string $pluggable): PlugsQueueInterface;
 
     /**
      * @return Generator<string , PlugsQueueInterface>

@@ -46,7 +46,7 @@ final class PlugsMap implements PlugsMapInterface
         return $this->type;
     }
 
-    public function withAddedPlug(AssertPlugInterface $assertPlug): PlugsMapInterface
+    public function withAdded(AssertPlugInterface $assertPlug): PlugsMapInterface
     {
         if (!($assertPlug->type() instanceof $this->type)) {
             throw new InvalidArgumentException(
@@ -54,7 +54,6 @@ final class PlugsMap implements PlugsMapInterface
                     ->code('%type%', get_class($this->type))
             );
         }
-
         $plug = $assertPlug->plug();
         $this->assertUnique($plug);
         /**
@@ -65,7 +64,7 @@ final class PlugsMap implements PlugsMapInterface
             : new PlugsQueue($assertPlug->type());
         $new = clone $this;
         $new->map[$plug->at()] = $queue->withAddedPlug($plug);
-        $new->set->add(get_class($plug));
+        $new->set->add($plug);
 
         return $new;
     }
@@ -77,12 +76,17 @@ final class PlugsMap implements PlugsMapInterface
 
     public function has(PlugInterface $plug): bool
     {
-        return $this->set->contains(get_class($plug));
+        return $this->set->contains($plug);
     }
 
-    public function hasPluggableName(string $pluggableName): bool
+    public function hasPlugsQueueFor(string $pluggable): bool
     {
-        return $this->map->hasKey($pluggableName);
+        return $this->map->hasKey($pluggable);
+    }
+
+    public function getPlugQueueFor(string $pluggable): PlugsQueueInterface
+    {
+        return $this->map->get($pluggable);
     }
 
     public function getGenerator(): Generator

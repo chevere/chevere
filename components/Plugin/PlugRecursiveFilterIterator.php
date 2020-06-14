@@ -22,7 +22,7 @@ use RecursiveIterator;
  */
 final class PlugRecursiveFilterIterator extends RecursiveFilterIterator
 {
-    private string $trailingName;
+    protected string $trailingName;
 
     public function __construct(
         RecursiveIterator $recursiveIterator,
@@ -40,5 +40,10 @@ final class PlugRecursiveFilterIterator extends RecursiveFilterIterator
 
         return (new StrBool($this->current()->getFilename()))
             ->endsWith($this->trailingName);
+    }
+
+    public function getChildren(): RecursiveFilterIterator
+    {
+        return new self($this->getInnerIterator()->getChildren(), $this->trailingName);
     }
 }

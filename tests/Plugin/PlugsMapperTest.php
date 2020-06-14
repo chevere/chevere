@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Tests\Plugin;
 
 use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Exceptions\Filesystem\DirNotExistsException;
 use Chevere\Components\Plugin\PlugsMapper;
 use Chevere\Components\Plugin\Types\HookPlugType;
+use Chevere\Exceptions\Filesystem\DirNotExistsException;
 use PHPUnit\Framework\TestCase;
 
 final class PlugsMapperTest extends TestCase
@@ -33,7 +33,7 @@ final class PlugsMapperTest extends TestCase
         $dir = (new DirFromString(__DIR__ . '/_resources/PlugsMapperTest/'));
         $plugsMapper = new PlugsMapper($dir, new HookPlugType);
         $this->assertTrue(
-            $plugsMapper->plugsMap()->hasPluggableName(
+            $plugsMapper->plugsMap()->hasPlugsQueueFor(
                 'Chevere\Tests\Plugin\_resources\PlugsMapperTest\TestMappedHookable'
             )
         );

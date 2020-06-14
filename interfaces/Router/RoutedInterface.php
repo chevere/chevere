@@ -16,7 +16,7 @@ namespace Chevere\Interfaces\Router;
 use Chevere\Interfaces\Route\RouteNameInterface;
 
 /**
- * Describes name (RouteNameInterface) and arguments for a resolved route.
+ * Describes a resolved route.
  */
 interface RoutedInterface
 {

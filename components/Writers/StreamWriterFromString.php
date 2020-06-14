@@ -15,6 +15,7 @@ namespace Chevere\Components\Writers;
 
 use Chevere\Interfaces\Writers\WriterInterface;
 use Laminas\Diactoros\Stream;
+use Laminas\Diactoros\StreamFactory;
 use Psr\Http\Message\StreamInterface;
 
 /**
@@ -26,7 +27,11 @@ final class StreamWriterFromString implements WriterInterface
 
     public function __construct(string $string, string $mode)
     {
-        $this->stream = new Stream($string, $mode);
+        if ($string == '') {
+            $this->stream = (new StreamFactory)->createStream('');
+        } else {
+            $this->stream = new Stream($string, $mode);
+        }
     }
 
     public function write(string $string): void

@@ -47,7 +47,7 @@ class FilePhp implements FilePhpInterface
     {
         $this->file->assertExists();
         $path = $this->file->path()->absolute();
-        $past = BootstrapInstance::get()->time() - 10;
+        $past = stat($path)['mtime'] - 10;
         touch($path, $past);
         try {
             if (!opcache_compile_file($path)) {
