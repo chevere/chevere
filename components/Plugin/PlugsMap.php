@@ -79,12 +79,12 @@ final class PlugsMap implements PlugsMapInterface
         return $this->set->contains($plug);
     }
 
-    public function hasPlugsQueueFor(string $pluggable): bool
+    public function hasPlugsFor(string $pluggable): bool
     {
         return $this->map->hasKey($pluggable);
     }
 
-    public function getPlugQueueFor(string $pluggable): PlugsQueueInterface
+    public function getPlugsFor(string $pluggable): PlugsQueueInterface
     {
         return $this->map->get($pluggable);
     }

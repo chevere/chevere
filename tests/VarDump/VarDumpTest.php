@@ -52,7 +52,7 @@ final class VarDumpTest extends TestCase
         $var = new stdClass;
         $varDump = $this->getVarDump($writer)->withVars($var);
         $this->assertEquals([$var], $varDump->vars());
-        $varDump->stream();
+        $varDump->process();
     }
 
     public function testWithShift(): void
@@ -61,6 +61,6 @@ final class VarDumpTest extends TestCase
         $writer = new StreamWriter($stream);
         $varDump = $this->getVarDump($writer)->withShift(1);
         $this->assertEquals(1, $varDump->shift());
-        $varDump->stream();
+        $varDump->process();
     }
 }

@@ -45,9 +45,9 @@ interface VarDumpInterface
     public function withShift(int $shift): VarDumpInterface;
 
     /**
-     * Streams the dump to the $writer
+     * Process the dump writing
      */
-    public function stream(): void;
+    public function process(): void;
 
     /**
      * @return array the vars array.

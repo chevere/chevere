@@ -80,7 +80,7 @@ final class VarOutputter implements VarOutputterInterface
 
     private function writeCallerFile(): void
     {
-        $item = $this->debugBacktrace[0];
+        $item = $this->debugBacktrace[0] ?? null;
         if ($item !== null && isset($item['file'])) {
             $this->writer->write(
                 "\n"

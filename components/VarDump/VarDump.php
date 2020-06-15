@@ -59,7 +59,7 @@ final class VarDump implements VarDumpInterface
         return $new;
     }
 
-    public function stream(): void
+    public function process(): void
     {
         if (empty($this->vars)) {
             return;

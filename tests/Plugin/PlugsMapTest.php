@@ -79,7 +79,7 @@ final class PlugsMapTest extends TestCase
          */
         foreach ($plugsMap->getGenerator() as $pluggableName => $plugsQueue) {
             $this->assertInstanceOf(PlugsQueueInterface::class, $plugsQueue);
-            $this->assertTrue($plugsMap->hasPlugsQueueFor($pluggableName));
+            $this->assertTrue($plugsMap->hasPlugsFor($pluggableName));
         }
     }
 }

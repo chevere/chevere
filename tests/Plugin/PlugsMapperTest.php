@@ -33,7 +33,7 @@ final class PlugsMapperTest extends TestCase
         $dir = (new DirFromString(__DIR__ . '/_resources/PlugsMapperTest/'));
         $plugsMapper = new PlugsMapper($dir, new HookPlugType);
         $this->assertTrue(
-            $plugsMapper->plugsMap()->hasPlugsQueueFor(
+            $plugsMapper->plugsMap()->hasPlugsFor(
                 'Chevere\Tests\Plugin\_resources\PlugsMapperTest\TestMappedHookable'
             )
         );
