@@ -16,7 +16,7 @@ namespace Chevere\Tests\Plugs\EventListeners\_resources;
 use Chevere\Components\Plugin\PluggableAnchors;
 use Chevere\Components\Plugin\Plugs\EventListeners\Traits\PluggableEventsTrait;
 use Chevere\Interfaces\Plugin\PluggableAnchorsInterface;
-use Chevere\Interfaces\Plugs\EventListener\PluggableEventsInterface;
+use Chevere\Interfaces\Plugin\Plugs\EventListener\PluggableEventsInterface;
 
 class TestEventable implements PluggableEventsInterface
 {

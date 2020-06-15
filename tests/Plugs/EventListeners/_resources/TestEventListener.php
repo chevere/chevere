@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugs\EventListeners\_resources;
 
-use Chevere\Interfaces\Plugs\EventListener\EventListenerInterface;
+use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenerInterface;
 use Chevere\Interfaces\Writers\WritersInterface;
 use Chevere\Tests\Plugs\EventListeners\_resources\TestEventable;
 

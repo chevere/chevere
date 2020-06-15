@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugin\Plugs\EventListeners\Traits;
 
 use Chevere\Exceptions\Core\LogicException;
-use Chevere\Interfaces\Plugs\EventListener\EventListenersRunnerInterface;
-use Chevere\Interfaces\Plugs\EventListener\PluggableEventsInterface;
+use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenersRunnerInterface;
+use Chevere\Interfaces\Plugin\Plugs\EventListener\PluggableEventsInterface;
 
 trait PluggableEventsTrait
 {

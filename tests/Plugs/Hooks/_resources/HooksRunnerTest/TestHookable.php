@@ -18,7 +18,7 @@ use Chevere\Components\Plugin\PluggableAnchors;
 use Chevere\Components\Plugin\Plugs\Hooks\Traits\PluggableHooksTrait;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Interfaces\Plugin\PluggableAnchorsInterface;
-use Chevere\Interfaces\Plugs\Hooks\PluggableHooksInterface;
+use Chevere\Interfaces\Plugin\Plugs\Hooks\PluggableHooksInterface;
 
 class TestHookable implements PluggableHooksInterface
 {

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Plugs\EventListener;
+namespace Chevere\Interfaces\Plugin\Plugs\EventListener;
 
 use Chevere\Interfaces\Plugin\TypedPlugsQueueInterface;
 

@@ -24,7 +24,7 @@ use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
 use Chevere\Interfaces\Plugin\PluggableAnchorsInterface;
-use Chevere\Interfaces\Plugs\Hooks\PluggableHooksInterface;
+use Chevere\Interfaces\Plugin\Plugs\Hooks\PluggableHooksInterface;
 
 class TestController extends Controller implements PluggableHooksInterface
 {

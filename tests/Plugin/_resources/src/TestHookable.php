@@ -15,7 +15,7 @@ namespace Chevere\Tests\Plugin\_resources\src;
 
 use Chevere\Interfaces\Plugin\PluggableAnchorsInterface;
 use Chevere\Components\Plugin\PluggableAnchors;
-use Chevere\Interfaces\Plugs\Hooks\PluggableHooksInterface;
+use Chevere\Interfaces\Plugin\Plugs\Hooks\PluggableHooksInterface;
 use Chevere\Components\Plugin\Plugs\Hooks\Traits\PluggableHooksTrait;
 
 class TestHookable implements PluggableHooksInterface

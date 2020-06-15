@@ -17,9 +17,9 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
-use Chevere\Interfaces\Plugs\Hooks\HookInterface;
-use Chevere\Interfaces\Plugs\Hooks\HooksQueueInterface;
-use Chevere\Interfaces\Plugs\Hooks\HooksRunnerInterface;
+use Chevere\Interfaces\Plugin\Plugs\Hooks\HookInterface;
+use Chevere\Interfaces\Plugin\Plugs\Hooks\HooksQueueInterface;
+use Chevere\Interfaces\Plugin\Plugs\Hooks\HooksRunnerInterface;
 use Throwable;
 
 final class HooksRunner implements HooksRunnerInterface

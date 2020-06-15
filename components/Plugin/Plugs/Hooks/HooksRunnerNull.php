@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin\Plugs\Hooks;
 
-use Chevere\Interfaces\Plugs\Hooks\HooksRunnerInterface;
+use Chevere\Interfaces\Plugin\Plugs\Hooks\HooksRunnerInterface;
 
 final class HooksRunnerNull implements HooksRunnerInterface
 {

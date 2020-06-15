@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Plugs\Hooks;
+namespace Chevere\Interfaces\Plugin\Plugs\Hooks;
 
 use Chevere\Interfaces\Plugin\TypedPlugsQueueInterface;
 

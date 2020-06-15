@@ -15,7 +15,7 @@ namespace Chevere\Tests\Plugs\Hooks;
 
 use Chevere\Components\Plugin\Types\HookPlugType;
 use Chevere\Components\Plugin\Plugs\Hooks\HooksQueue;
-use Chevere\Interfaces\Plugs\Hooks\HookInterface;
+use Chevere\Interfaces\Plugin\Plugs\Hooks\HookInterface;
 use Chevere\Tests\Plugs\Hooks\_resources\TestHook;
 use PHPUnit\Framework\TestCase;
 

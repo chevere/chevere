@@ -11,27 +11,26 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Plugs\EventListener;
+namespace Chevere\Interfaces\Plugin\Plugs\Hooks;
 
 use Chevere\Interfaces\Plugin\PlugInterface;
-use Chevere\Interfaces\Writers\WritersInterface;
 
-interface EventListenerInterface extends PlugInterface
+interface HookInterface extends PlugInterface
 {
-    public function __invoke(array $data, WritersInterface $writers): void;
+    public function __invoke(&$argument): void;
 
     /**
-     * @return string Applicable event anchor.
+     * @return string Applicable hook anchor.
      */
     public function anchor(): string;
 
     /**
-     * @return string Target class name implementing EventsInterface.
+     * @return string Target class name implementing HookableInterface.
      */
     public function at(): string;
 
     /**
-     * @return String Priority order.
+     * @return string Priority order.
      */
     public function priority(): int;
 }

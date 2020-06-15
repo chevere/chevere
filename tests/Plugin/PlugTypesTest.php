@@ -16,10 +16,10 @@ namespace Chevere\Tests\Plugin;
 use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use Chevere\Components\Plugin\Types\EventListenerPlugType;
 use Chevere\Components\Plugin\Types\HookPlugType;
-use Chevere\Interfaces\Plugs\EventListener\EventListenerInterface;
-use Chevere\Interfaces\Plugs\EventListener\PluggableEventsInterface;
-use Chevere\Interfaces\Plugs\Hooks\HookInterface;
-use Chevere\Interfaces\Plugs\Hooks\PluggableHooksInterface;
+use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenerInterface;
+use Chevere\Interfaces\Plugin\Plugs\EventListener\PluggableEventsInterface;
+use Chevere\Interfaces\Plugin\Plugs\Hooks\HookInterface;
+use Chevere\Interfaces\Plugin\Plugs\Hooks\PluggableHooksInterface;
 use PHPUnit\Framework\TestCase;
 
 final class PlugTypesTest extends TestCase

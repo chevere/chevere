@@ -16,8 +16,8 @@ namespace Chevere\Components\Plugin\Plugs\Hooks;
 use Chevere\Components\Plugin\Traits\TypedPlugsQueueTrait;
 use Chevere\Components\Plugin\Types\HookPlugType;
 use Chevere\Interfaces\Plugin\PlugTypeInterface;
-use Chevere\Interfaces\Plugs\Hooks\HookInterface;
-use Chevere\Interfaces\Plugs\Hooks\HooksQueueInterface;
+use Chevere\Interfaces\Plugin\Plugs\Hooks\HookInterface;
+use Chevere\Interfaces\Plugin\Plugs\Hooks\HooksQueueInterface;
 
 final class HooksQueue implements HooksQueueInterface
 {

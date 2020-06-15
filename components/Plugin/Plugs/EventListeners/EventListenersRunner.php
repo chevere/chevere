@@ -16,8 +16,8 @@ namespace Chevere\Components\Plugin\Plugs\EventListeners;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
-use Chevere\Interfaces\Plugs\EventListener\EventListenersQueueInterface;
-use Chevere\Interfaces\Plugs\EventListener\EventListenersRunnerInterface;
+use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenersQueueInterface;
+use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenersRunnerInterface;
 use Chevere\Interfaces\Writers\WritersInterface;
 use Throwable;
 
