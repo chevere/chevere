@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\Plugs\Hooks;
 
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Plugs\Hooks\HooksQueue;
-use Chevere\Components\Plugs\Hooks\HooksRunner;
+use Chevere\Components\Plugin\Plugs\Hooks\HooksQueue;
+use Chevere\Components\Plugin\Plugs\Hooks\HooksRunner;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Tests\Plugs\Hooks\_resources\HooksRunnerTest\TestHookPath;
 use Chevere\Tests\Plugs\Hooks\_resources\HooksRunnerTest\TestHookString;

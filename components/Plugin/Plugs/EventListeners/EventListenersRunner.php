@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Plugs\EventListeners;
+namespace Chevere\Components\Plugin\Plugs\EventListeners;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\RuntimeException;

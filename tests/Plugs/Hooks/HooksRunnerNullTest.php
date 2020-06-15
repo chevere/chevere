@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugs\Hooks;
 
-use Chevere\Components\Plugs\Hooks\HooksRunnerNull;
+use Chevere\Components\Plugin\Plugs\Hooks\HooksRunnerNull;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

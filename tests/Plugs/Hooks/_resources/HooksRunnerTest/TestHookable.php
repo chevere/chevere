@@ -15,7 +15,7 @@ namespace Chevere\Tests\Plugs\Hooks\_resources\HooksRunnerTest;
 
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Plugin\PluggableAnchors;
-use Chevere\Components\Plugs\Hooks\Traits\PluggableHooksTrait;
+use Chevere\Components\Plugin\Plugs\Hooks\Traits\PluggableHooksTrait;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Interfaces\Plugin\PluggableAnchorsInterface;
 use Chevere\Interfaces\Plugs\Hooks\PluggableHooksInterface;

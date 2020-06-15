@@ -137,7 +137,7 @@
             "use Chevere\\Components\\Controller\\ControllerParameters;",
             "use Chevere\\Components\\Controller\\ControllerResponse;",
             "use Chevere\\Components\\Plugin\\PluggableAnchors;",
-            "use Chevere\\Components\\Plugs\\Hooks\\Traits\\PluggableHooksTrait;",
+            "use Chevere\\Components\\Plugin\\Plugs\\Hooks\\Traits\\PluggableHooksTrait;",
             "use Chevere\\Interfaces\\Controller\\ControllerArgumentsInterface;",
             "use Chevere\\Interfaces\\Controller\\ControllerParametersInterface;",
             "use Chevere\\Interfaces\\Controller\\ControllerResponseInterface;",

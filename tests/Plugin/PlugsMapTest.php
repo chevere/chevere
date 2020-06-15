@@ -78,6 +78,7 @@ final class PlugsMapTest extends TestCase
          * @var PlugsQueueInterface $plugsQueue
          */
         foreach ($plugsMap->getGenerator() as $pluggableName => $plugsQueue) {
+            $this->assertSame($plugsMap->getPlugsFor($pluggableName), $plugsQueue);
             $this->assertInstanceOf(PlugsQueueInterface::class, $plugsQueue);
             $this->assertTrue($plugsMap->hasPlugsFor($pluggableName));
         }

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Plugs\Hooks\Traits;
+namespace Chevere\Components\Plugin\Plugs\Hooks\Traits;
 
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Plugs\Hooks\HooksRunnerInterface;

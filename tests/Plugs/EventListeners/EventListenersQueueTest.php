@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Plugs\EventListeners;
 
 use Chevere\Components\Plugin\Types\EventListenerPlugType;
-use Chevere\Components\Plugs\EventListeners\EventListenersQueue;
+use Chevere\Components\Plugin\Plugs\EventListeners\EventListenersQueue;
 use Chevere\Interfaces\Plugs\EventListener\EventListenerInterface;
 use Chevere\Tests\Plugs\EventListeners\_resources\TestEventListener;
 use PHPUnit\Framework\TestCase;

@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Plugs\EventListeners\Traits;
+namespace Chevere\Components\Plugin\Plugs\EventListeners\Traits;
 
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Plugs\EventListener\EventListenersRunnerInterface;

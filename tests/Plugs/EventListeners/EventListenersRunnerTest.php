@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugs\EventListeners;
 
-use Chevere\Components\Plugs\EventListeners\EventListenersQueue;
-use Chevere\Components\Plugs\EventListeners\EventListenersRunner;
+use Chevere\Components\Plugin\Plugs\EventListeners\EventListenersQueue;
+use Chevere\Components\Plugin\Plugs\EventListeners\EventListenersRunner;
 use Chevere\Components\Writers\StreamWriter;
 use Chevere\Components\Writers\Writers;
 use Chevere\Tests\Plugs\EventListeners\_resources\TestEventListener;
