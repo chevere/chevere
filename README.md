@@ -12,7 +12,7 @@ Quality](https://img.shields.io/scrutinizer/quality/g/chevere/chevere?style=flat
 
 This is the repository of Chevere, a development framework for building **pluggable** server side applications, following Clean Code principles, with a strongly typed coding and a heavy culture on the console. [Documentation](https://github.com/chevere/docs).
 
-## 🥋 This is almost ready
+## 🥋 This is almost ready...
 
 The project is under development and is not recommended to use it for production yet. It is almost there, thanks for waiting.
 
