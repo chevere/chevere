@@ -1,7 +1,5 @@
 # Chevere
 
-This is the repository of The Chevere Framework.
-
 [![Quality Gate Status](https://img.shields.io/sonar/alert_status/chevere_chevere?server=https%3A%2F%2Fsonarcloud.io&style=flat-square
 )](https://sonarcloud.io/dashboard?id=chevere_chevere)
 [![Scrutinizer Code
@@ -12,21 +10,18 @@ Quality](https://img.shields.io/scrutinizer/quality/g/chevere/chevere?style=flat
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/chevere/chevere?style=flat-square)](https://codeclimate.com/github/chevere/chevere)
 [![Tech Debt](https://img.shields.io/codeclimate/tech-debt/chevere/chevere?style=flat-square)](https://codeclimate.com/github/chevere/chevere)
 
-Chevere is a development framework for building pluggable server side applications, following Clean Code principles, with a strongly typed code and a heavy culture on the console. [Learn more](https://github.com/chevere/docs).
+This is the repository of Chevere, a development framework for building **pluggable** server side applications, following Clean Code principles, with a strongly typed coding and a heavy culture on the console. [Documentation](https://github.com/chevere/docs).
 
-## ⚠ This is a work-in-progress
+## 🥋 This is almost ready
 
-The project is under development and is not recommended to use it for production yet.
+The project is under development and is not recommended to use it for production yet. It is almost there, thanks for waiting.
 
-## Building
+## Install
 
-After cloning this repo, you will need to install the vendor dependencies using
-[Composer](https://getcomposer.org/). Assuming that you want to clone it to `~/chevere`:
+Install using [Composer](https://getcomposer.org/).
 
 ```console
-foo@bar:~$ cd ~/chevere
-foo@bar:~$ git clone git@github.com:chevere/chevere.git
-foo@bar:~$ composer install
+composer install
 ```
 
 ## License
