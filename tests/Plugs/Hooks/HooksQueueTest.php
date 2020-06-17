@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugs\Hooks;
 
-use Chevere\Components\Plugin\Types\HookPlugType;
 use Chevere\Components\Plugin\Plugs\Hooks\HooksQueue;
+use Chevere\Components\Plugin\Types\HookPlugType;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\HookInterface;
 use Chevere\Tests\Plugs\Hooks\_resources\TestHook;
 use PHPUnit\Framework\TestCase;
@@ -31,13 +31,13 @@ final class HooksQueueTest extends TestCase
     public function testWithAddedHook(): void
     {
         $hook = new TestHook;
-        $hooksQueue = (new HooksQueue)->withAddedHook($hook);
+        $hooksQueue = (new HooksQueue)->withAdded($hook);
         $this->assertSame([
             $hook->anchor() => [
                 [
                     get_class($hook)
                 ]
             ]
-        ], $hooksQueue->queue()->toArray());
+        ], $hooksQueue->plugsQueue()->toArray());
     }
 }

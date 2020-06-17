@@ -109,7 +109,7 @@ final class RouterCacheTest extends TestCase
             ->withRegex($regex)
             ->withIndex($index);
         $routerCache = new RouterCache($this->cacheHelper->getWorkingCache());
-        $routerCache->put($router);
+        $routerCache = $routerCache->withPut($router);
         $this->assertTrue($routerCache->hasRegex());
         $this->assertTrue($routerCache->hasIndex());
         $this->assertInstanceOf(RouterRegexInterface::class, $routerCache->getRegex());
@@ -161,7 +161,7 @@ final class RouterCacheTest extends TestCase
                 $group
             );
         }
-        $routerCache->put($routerMaker->router());
+        $routerCache->withPut($routerMaker->router());
     }
 }
 

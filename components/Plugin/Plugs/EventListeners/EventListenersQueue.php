@@ -15,9 +15,9 @@ namespace Chevere\Components\Plugin\Plugs\EventListeners;
 
 use Chevere\Components\Plugin\Traits\TypedPlugsQueueTrait;
 use Chevere\Components\Plugin\Types\EventListenerPlugType;
-use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenerInterface;
 use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenersQueueInterface;
+use Chevere\Interfaces\Plugin\PlugTypeInterface;
 
 final class EventListenersQueue implements EventListenersQueueInterface
 {
@@ -31,13 +31,5 @@ final class EventListenersQueue implements EventListenersQueueInterface
     public function getPlugType(): PlugTypeInterface
     {
         return new EventListenerPlugType;
-    }
-
-    public function withAddedEventListener(EventListenerInterface $eventListener): EventListenersQueueInterface
-    {
-        $new = clone $this;
-        $new->queue = $new->queue->withAddedPlug($eventListener);
-
-        return $new;
     }
 }

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugin;
 
-use Chevere\Exceptions\Plugin\PlugInterfaceException;
 use Chevere\Components\Plugin\PlugsQueue;
-use Chevere\Tests\Plugin\_resources\src\TestHook;
 use Chevere\Components\Plugin\Types\EventListenerPlugType;
 use Chevere\Components\Plugin\Types\HookPlugType;
+use Chevere\Exceptions\Plugin\PlugInterfaceException;
+use Chevere\Tests\Plugin\_resources\src\TestHook;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 
@@ -37,14 +37,14 @@ final class PlugsQueueTest extends TestCase
         $plugType = new EventListenerPlugType;
         $plugsQueue = new PlugsQueue($plugType);
         $this->expectException(PlugInterfaceException::class);
-        $plugsQueue->withAddedPlug($hook);
+        $plugsQueue->withAdded($hook);
     }
 
     public function testWithPlug(): void
     {
         $hook = new TestHook;
         $plugQueue = new PlugsQueue(new HookPlugType);
-        $plugQueue = $plugQueue->withAddedPlug($hook);
+        $plugQueue = $plugQueue->withAdded($hook);
         $this->assertSame([
             $hook->anchor() => [
                 0 => [
@@ -58,8 +58,8 @@ final class PlugsQueueTest extends TestCase
     {
         $hook = new TestHook;
         $plugsQueue = (new PlugsQueue(new HookPlugType))
-            ->withAddedPlug($hook);
+            ->withAdded($hook);
         $this->expectException(LogicException::class);
-        $plugsQueue->withAddedPlug($hook);
+        $plugsQueue->withAdded($hook);
     }
 }

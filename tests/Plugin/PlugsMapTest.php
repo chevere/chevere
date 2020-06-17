@@ -19,6 +19,7 @@ use Chevere\Components\Plugin\Types\EventListenerPlugType;
 use Chevere\Components\Plugin\Types\HookPlugType;
 use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Plugin\PlugRegisteredException;
+use Chevere\Interfaces\Plugin\Plugs\Hooks\HooksQueueInterface;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use Chevere\Tests\Plugin\_resources\src\TestHook;
 use PHPUnit\Framework\TestCase;
@@ -74,12 +75,9 @@ final class PlugsMapTest extends TestCase
             );
         $this->assertTrue($plugsMap->has($hook));
         $this->assertTrue($plugsMap->has($hook2));
-        /**
-         * @var PlugsQueueInterface $plugsQueue
-         */
         foreach ($plugsMap->getGenerator() as $pluggableName => $plugsQueue) {
             $this->assertSame($plugsMap->getPlugsFor($pluggableName), $plugsQueue);
-            $this->assertInstanceOf(PlugsQueueInterface::class, $plugsQueue);
+            $this->assertInstanceOf(HooksQueueInterface::class, $plugsQueue);
             $this->assertTrue($plugsMap->hasPlugsFor($pluggableName));
         }
     }

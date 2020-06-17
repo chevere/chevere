@@ -37,7 +37,7 @@ final class EventedTest extends TestCase
         $writer = new StreamWriter((new StreamFactory)->createStream(''));
         $writers = (new Writers)->with($writer);
         $string = 'string';
-        $eventListenersQueue = (new EventListenersQueue)->withAddedEventListener(new TestEventListener);
+        $eventListenersQueue = (new EventListenersQueue)->withAdded(new TestEventListener);
         /**
          * @var TestEventable $testEventable
          */

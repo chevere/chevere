@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin\Types;
 
-use Chevere\Interfaces\Plugin\PlugTypeInterface;
+use Chevere\Components\Plugin\Plugs\EventListeners\EventListenersQueue;
+use Chevere\Components\Plugin\Plugs\Hooks\HooksQueue;
 use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenerInterface;
+use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenersQueueInterface;
 use Chevere\Interfaces\Plugin\Plugs\EventListener\PluggableEventsInterface;
+use Chevere\Interfaces\Plugin\PlugTypeInterface;
 
 final class EventListenerPlugType implements PlugTypeInterface
 {
@@ -37,6 +40,11 @@ final class EventListenerPlugType implements PlugTypeInterface
     public function queueName(): string
     {
         return 'EventListeners';
+    }
+
+    public function getPlugsQueue(): EventListenersQueueInterface
+    {
+        return new EventListenersQueue;
     }
 
     public function pluggableAnchorsMethod(): string

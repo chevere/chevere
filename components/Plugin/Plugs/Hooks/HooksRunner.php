@@ -16,21 +16,21 @@ namespace Chevere\Components\Plugin\Plugs\Hooks;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\RuntimeException;
-use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\HookInterface;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\HooksQueueInterface;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\HooksRunnerInterface;
+use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use Throwable;
 
 final class HooksRunner implements HooksRunnerInterface
 {
-    private PlugsQueueInterface $queue;
+    private PlugsQueueInterface $plugsQueue;
 
     private HookInterface $hook;
 
-    public function __construct(HooksQueueInterface $queue)
+    public function __construct(HooksQueueInterface $hooksQueue)
     {
-        $this->queue = $queue->queue();
+        $this->plugsQueue = $hooksQueue->plugsQueue();
     }
 
     public function run(string $anchor, &$argument): void
@@ -38,7 +38,7 @@ final class HooksRunner implements HooksRunnerInterface
         // if ($this->isLooping()) {
         //     return;
         // }
-        $queue = $this->queue->toArray()[$anchor] ?? [];
+        $queue = $this->plugsQueue->toArray()[$anchor] ?? [];
         $gettype = $this->getType($argument);
         $type = new Type($gettype);
         foreach ($queue as $entries) {

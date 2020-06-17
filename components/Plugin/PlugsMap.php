@@ -21,6 +21,7 @@ use Chevere\Interfaces\Plugin\AssertPlugInterface;
 use Chevere\Interfaces\Plugin\PlugInterface;
 use Chevere\Interfaces\Plugin\PlugsMapInterface;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
+use Chevere\Interfaces\Plugin\PlugsQueueTypedInterface;
 use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use Ds\Map;
 use Ds\Set;
@@ -28,8 +29,14 @@ use Generator;
 
 final class PlugsMap implements PlugsMapInterface
 {
+    /**
+     * @var Set [PlugsQueueInterface]
+     */
     private Set $set;
 
+    /**
+     * @var Map [pluggableClassName => PlugsQueueInterface,]
+     */
     private Map $map;
 
     private PlugTypeInterface $type;
@@ -61,9 +68,9 @@ final class PlugsMap implements PlugsMapInterface
          */
         $queue = $this->map->hasKey($plug->at())
             ? $this->map->get($plug->at())
-            : new PlugsQueue($assertPlug->type());
+            : $assertPlug->type()->getPlugsQueue();
         $new = clone $this;
-        $new->map[$plug->at()] = $queue->withAddedPlug($plug);
+        $new->map[$plug->at()] = $queue->withAdded($plug);
         $new->set->add($plug);
 
         return $new;
@@ -84,7 +91,7 @@ final class PlugsMap implements PlugsMapInterface
         return $this->map->hasKey($pluggable);
     }
 
-    public function getPlugsFor(string $pluggable): PlugsQueueInterface
+    public function getPlugsFor(string $pluggable): PlugsQueueTypedInterface
     {
         return $this->map->get($pluggable);
     }

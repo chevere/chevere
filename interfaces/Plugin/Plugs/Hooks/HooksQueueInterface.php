@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Plugin\Plugs\Hooks;
 
-use Chevere\Interfaces\Plugin\TypedPlugsQueueInterface;
+use Chevere\Interfaces\Plugin\PlugsQueueTypedInterface;
 
-interface HooksQueueInterface extends TypedPlugsQueueInterface
+interface HooksQueueInterface extends PlugsQueueTypedInterface
 {
 }

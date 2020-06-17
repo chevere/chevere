@@ -26,10 +26,5 @@ interface PlugsMapInterface extends Countable
 
     public function hasPlugsFor(string $pluggable): bool;
 
-    public function getPlugsFor(string $pluggable): PlugsQueueInterface;
-
-    /**
-     * @return Generator<string , PlugsQueueInterface>
-     */
-    public function getGenerator(): Generator;
+    public function getPlugsFor(string $pluggable): PlugsQueueTypedInterface;
 }

@@ -13,13 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin;
 
-use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Plugin\PlugInterfaceException;
 use Chevere\Interfaces\Plugin\PlugInterface;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use Ds\Set;
+use Generator;
 
 final class PlugsQueue implements PlugsQueueInterface
 {
@@ -35,7 +36,7 @@ final class PlugsQueue implements PlugsQueueInterface
         $this->set = new Set;
     }
 
-    public function withAddedPlug(PlugInterface $plug): PlugsQueueInterface
+    public function withAdded(PlugInterface $plug): PlugsQueueInterface
     {
         $this->assertInterface($plug);
         $plugName = get_class($plug);

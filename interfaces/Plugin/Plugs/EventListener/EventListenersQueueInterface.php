@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Plugin\Plugs\EventListener;
 
-use Chevere\Interfaces\Plugin\TypedPlugsQueueInterface;
+use Chevere\Interfaces\Plugin\PlugsQueueTypedInterface;
 
-interface EventListenersQueueInterface extends TypedPlugsQueueInterface
+interface EventListenersQueueInterface extends PlugsQueueTypedInterface
 {
 }

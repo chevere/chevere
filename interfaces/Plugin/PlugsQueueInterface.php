@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Plugin;
 
 use Chevere\Exceptions\Plugin\PlugInterfaceException;
+use Generator;
 
 interface PlugsQueueInterface
 {
@@ -24,7 +25,7 @@ interface PlugsQueueInterface
      * @return PlugsQueueInterface
      * @throws PlugInterfaceException if $plug doesn't implement the expected plugType
      */
-    public function withAddedPlug(PlugInterface $plug): PlugsQueueInterface;
+    public function withAdded(PlugInterface $plug): PlugsQueueInterface;
 
     public function plugType(): PlugTypeInterface;
 

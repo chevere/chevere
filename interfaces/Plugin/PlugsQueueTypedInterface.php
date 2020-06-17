@@ -13,8 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Plugin;
 
-interface TypedPlugsQueueInterface
+interface PlugsQueueTypedInterface
 {
+    public function withAdded(PlugInterface $plug): PlugsQueueTypedInterface;
+
     /**
      * @return string The accepted plug interface.
      */
@@ -22,5 +24,5 @@ interface TypedPlugsQueueInterface
 
     public function getPlugType(): PlugTypeInterface;
 
-    public function queue(): PlugsQueueInterface;
+    public function plugsQueue(): PlugsQueueInterface;
 }

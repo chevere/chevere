@@ -15,10 +15,10 @@ namespace Chevere\Tests\Plugin\_resources\TypedPlugsQueueTests;
 
 use Chevere\Components\Plugin\Traits\TypedPlugsQueueTrait;
 use Chevere\Components\Plugin\Types\HookPlugType;
+use Chevere\Interfaces\Plugin\PlugsQueueTypedInterface;
 use Chevere\Interfaces\Plugin\PlugTypeInterface;
-use Chevere\Interfaces\Plugin\TypedPlugsQueueInterface;
 
-final class TestTypedPlugsQueueInvalidAccept implements TypedPlugsQueueInterface
+final class TestTypedPlugsQueueInvalidAccept implements PlugsQueueTypedInterface
 {
     use TypedPlugsQueueTrait;
 

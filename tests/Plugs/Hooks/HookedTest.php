@@ -64,7 +64,7 @@ final class HookedTest extends TestCase
     public function testHooked(): void
     {
         $string = 'string';
-        $hooksQueue = (new HooksQueue)->withAddedHook(new TestHook);
+        $hooksQueue = (new HooksQueue)->withAdded(new TestHook);
         /**
          * @var TestHookable $testHookable
          */

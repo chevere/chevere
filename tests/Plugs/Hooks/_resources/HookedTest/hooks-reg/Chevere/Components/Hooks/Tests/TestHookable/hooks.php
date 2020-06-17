@@ -16,4 +16,4 @@ use Chevere\Components\Plugin\Types\HookPlugType;
 use Chevere\Tests\Plugs\Hooks\_resources\TestHook;
 
 return (new PlugsQueue(new HookPlugType))
-    ->withAddedPlug(new TestHook);
+    ->withAdded(new TestHook);

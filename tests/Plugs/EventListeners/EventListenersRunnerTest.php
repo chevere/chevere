@@ -37,7 +37,7 @@ final class EventListenersRunnerTest extends TestCase
         $writers = (new Writers)->with($writer);
         $eventListener = new TestEventListener;
         $eventListenersQueue = (new EventListenersQueue)
-            ->withAddedEventListener($eventListener);
+            ->withAdded($eventListener);
         $runner = new EventListenersRunner($eventListenersQueue, $writers);
         $data = ['data'];
         $runner->run($eventListener->anchor(), $data);

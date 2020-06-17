@@ -35,7 +35,7 @@ interface RouterCacheInterface
 
     public function getIndex(): RouterIndexInterface;
 
-    public function put(RouterInterface $router): void;
+    public function withPut(RouterInterface $router): RouterCacheInterface;
 
     public function remove(): void;
 

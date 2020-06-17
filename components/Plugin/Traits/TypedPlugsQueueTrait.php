@@ -14,16 +14,25 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugin\Traits;
 
 use Chevere\Components\Plugin\PlugsQueue;
+use Chevere\Interfaces\Plugin\PlugInterface;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use Chevere\Interfaces\Plugin\PlugTypeInterface;
 
 trait TypedPlugsQueueTrait
 {
-    private PlugsQueueInterface $queue;
+    private PlugsQueueInterface $plugsQueue;
 
     public function __construct()
     {
-        $this->queue = new PlugsQueue($this->getPlugType());
+        $this->plugsQueue = new PlugsQueue($this->getPlugType());
+    }
+
+    public function withAdded(PlugInterface $plug): self
+    {
+        $new = clone $this;
+        $new->plugsQueue = $new->plugsQueue->withAdded($plug);
+
+        return $new;
     }
 
     /**
@@ -33,8 +42,8 @@ trait TypedPlugsQueueTrait
 
     abstract public function getPlugType(): PlugTypeInterface;
 
-    public function queue(): PlugsQueueInterface
+    public function plugsQueue(): PlugsQueueInterface
     {
-        return $this->queue;
+        return $this->plugsQueue;
     }
 }

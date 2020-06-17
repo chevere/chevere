@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin\Types;
 
-use Chevere\Interfaces\Plugin\PlugTypeInterface;
+use Chevere\Components\Plugin\Plugs\Hooks\HooksQueue;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\HookInterface;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\PluggableHooksInterface;
+use Chevere\Interfaces\Plugin\PlugsQueueTypedInterface;
+use Chevere\Interfaces\Plugin\PlugTypeInterface;
 
 final class HookPlugType implements PlugTypeInterface
 {
@@ -37,6 +39,11 @@ final class HookPlugType implements PlugTypeInterface
     public function queueName(): string
     {
         return 'Hooks';
+    }
+
+    public function getPlugsQueue(): PlugsQueueTypedInterface
+    {
+        return new HooksQueue;
     }
 
     public function pluggableAnchorsMethod(): string

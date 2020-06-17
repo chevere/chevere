@@ -21,9 +21,14 @@ namespace Chevere\Components\VarDump {
     use Chevere\Components\VarDump\Outputters\HtmlOutputter;
     use Chevere\Components\VarDump\Outputters\PlainOutputter;
     use Chevere\Components\VarDump\VarDump;
+    use Chevere\Components\Writers\StreamWriterFromString;
     use Chevere\Exceptions\Core\LogicException;
     use Chevere\Interfaces\VarDump\VarDumpInterface;
     use Chevere\Interfaces\Writers\WriterInterface;
+
+    const TYPE_PLAIN = 0;
+    const TYPE_CONSOLE = 1;
+    const TYPE_HTML = 2;
 
     /**
      * @codeCoverageIgnore
@@ -73,17 +78,41 @@ namespace Chevere\Components\VarDump {
             $varDump = VarDumpInstance::get();
         } catch (LogicException $e) {
             throw new LogicException(
-                (new Message('Missing %instance% instance (initiate it with %code%)'))
+                (new Message('Missing %instance% instance (initiate it with %code%) or %fn%'))
                     ->strong('%instance%', VarDumpInstance::class)
                     ->code('%code%', 'new VarDumpInstance')
+                    ->code('%fn%', 'setVarDump()')
             );
         }
 
         return $varDump->withVars(...$vars)->withShift(1);
     }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    function setVarDump(int $enum = TYPE_CONSOLE, string $string = 'php://stdout', string $mode = 'w'): void
+    {
+        $writer = new StreamWriterFromString($string, $mode);
+        switch ($enum) {
+            case TYPE_PLAIN:
+                    $varDump = getVarDumpPlain($writer);
+                break;
+            case TYPE_HTML:
+                    $varDump = getVarDumpHtml($writer);
+                break;
+            case TYPE_CONSOLE:
+            default:
+                    $varDump = getVarDumpConsole($writer);
+                break;
+        }
+        new VarDumpInstance($varDump);
+    }
 }
 
 namespace {
+    use Chevere\Components\Instances\VarDumpInstance;
+    use function Chevere\Components\VarDump\setVarDump;
     use function Chevere\Components\VarDump\varDump;
 
     if (function_exists('xd') === false) { // @codeCoverageIgnore
@@ -93,6 +122,11 @@ namespace {
          */
         function xd(...$vars)
         {
+            try {
+                VarDumpInstance::get();
+            } catch (LogicException $e) {
+                setVarDump();
+            }
             varDump(...$vars)->process();
         }
     }
@@ -103,6 +137,11 @@ namespace {
          */
         function xdd(...$vars)
         {
+            try {
+                VarDumpInstance::get();
+            } catch (LogicException $e) {
+                setVarDump();
+            }
             varDump(...$vars)->process();
             die(0);
         }

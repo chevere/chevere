@@ -85,15 +85,16 @@ final class RouterCache implements RouterCacheInterface
         return $item->var();
     }
 
-    public function put(RouterInterface $router): void
+    public function withPut(RouterInterface $router): RouterCacheInterface
     {
-        $this->cache = $this->cache
+        $new = clone $this;
+        $new->cache = $new->cache
             ->withPut(
-                $this->keyRegex,
+                $new->keyRegex,
                 new VarExportable($router->regex())
             )
             ->withPut(
-                $this->keyIndex,
+                $new->keyIndex,
                 new VarExportable($router->index())
             );
         $pos = -1;
@@ -103,8 +104,8 @@ final class RouterCache implements RouterCacheInterface
         foreach ($router->routables()->map() as $routable) {
             $route = $routable->route();
             $pos++;
-            $this->routesCache->put($route);
-            $this->routeResolvesCache->put(
+            $new->routesCache->put($route);
+            $new->routeResolvesCache->put(
                 $pos,
                 new RouteResolve(
                     $route->name(),
@@ -112,6 +113,8 @@ final class RouterCache implements RouterCacheInterface
                 )
             );
         }
+
+        return $new;
     }
 
     public function remove(): void

@@ -15,9 +15,9 @@ namespace Chevere\Components\Plugin\Plugs\Hooks;
 
 use Chevere\Components\Plugin\Traits\TypedPlugsQueueTrait;
 use Chevere\Components\Plugin\Types\HookPlugType;
-use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\HookInterface;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\HooksQueueInterface;
+use Chevere\Interfaces\Plugin\PlugTypeInterface;
 
 final class HooksQueue implements HooksQueueInterface
 {
@@ -31,13 +31,5 @@ final class HooksQueue implements HooksQueueInterface
     public function getPlugType(): PlugTypeInterface
     {
         return new HookPlugType;
-    }
-
-    public function withAddedHook(HookInterface $hook): HooksQueueInterface
-    {
-        $new = clone $this;
-        $new->queue = $new->queue->withAddedPlug($hook);
-
-        return $new;
     }
 }

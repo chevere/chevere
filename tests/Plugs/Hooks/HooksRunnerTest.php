@@ -37,7 +37,7 @@ final class HooksRunnerTest extends TestCase
 
     public function testRunHookedString(): void
     {
-        $hooksQueue = (new HooksQueue)->withAddedHook(new TestHookString);
+        $hooksQueue = (new HooksQueue)->withAdded(new TestHookString);
         $runner = new HooksRunner($hooksQueue);
         $argument = 'string';
         $same = $argument;
@@ -47,7 +47,7 @@ final class HooksRunnerTest extends TestCase
 
     public function testRunHookedObject(): void
     {
-        $hooksQueue = (new HooksQueue)->withAddedHook(new TestHookPath);
+        $hooksQueue = (new HooksQueue)->withAdded(new TestHookPath);
         $runner = new HooksRunner($hooksQueue);
         $argument = new Path(__DIR__);
         $runner->run('path', $argument);
@@ -56,7 +56,7 @@ final class HooksRunnerTest extends TestCase
 
     public function testRunHookedTypeChange(): void
     {
-        $hooksQueue = (new HooksQueue)->withAddedHook(new TestHookTypeChange);
+        $hooksQueue = (new HooksQueue)->withAdded(new TestHookTypeChange);
         $runner = new HooksRunner($hooksQueue);
         $argument = 'string';
         $this->expectException(RuntimeException::class);

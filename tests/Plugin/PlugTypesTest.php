@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugin;
 
-use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use Chevere\Components\Plugin\Types\EventListenerPlugType;
 use Chevere\Components\Plugin\Types\HookPlugType;
 use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenerInterface;
+use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenersQueueInterface;
 use Chevere\Interfaces\Plugin\Plugs\EventListener\PluggableEventsInterface;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\HookInterface;
+use Chevere\Interfaces\Plugin\Plugs\Hooks\HooksQueueInterface;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\PluggableHooksInterface;
+use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use PHPUnit\Framework\TestCase;
 
 final class PlugTypesTest extends TestCase
@@ -30,8 +32,9 @@ final class PlugTypesTest extends TestCase
             new HookPlugType,
             HookInterface::class,
             PluggableHooksInterface::class,
+            HooksQueueInterface::class,
             'Hook.php',
-            'Hooks'
+            'Hooks',
         );
     }
 
@@ -41,8 +44,9 @@ final class PlugTypesTest extends TestCase
             new EventListenerPlugType,
             EventListenerInterface::class,
             PluggableEventsInterface::class,
+            EventListenersQueueInterface::class,
             'EventListener.php',
-            'EventListeners'
+            'EventListeners',
         );
     }
 
@@ -50,6 +54,7 @@ final class PlugTypesTest extends TestCase
         PlugTypeInterface $plugType,
         string $plugInterface,
         string $pluggableInterface,
+        string $plugQueueTypedInterface,
         string $trailingName,
         string $queueName
     ): void {
@@ -57,6 +62,7 @@ final class PlugTypesTest extends TestCase
         $this->assertSame($pluggableInterface, $plugType->plugsTo());
         $this->assertSame($trailingName, $plugType->trailingName());
         $this->assertSame($queueName, $plugType->queueName());
+        $this->assertInstanceOf($plugQueueTypedInterface, $plugType->getPlugsQueue());
         $this->assertTrue(method_exists(
             $plugType->plugsTo(),
             $plugType->pluggableAnchorsMethod()

@@ -121,7 +121,7 @@ final class ResolverTest extends TestCase
     {
         $this->expectNotToPerformAssertions();
         $cache = new RouterCache($this->cacheHelper->getCachedCache());
-        $cache->put($this->router);
+        $cache->withPut($this->router);
     }
 }
 
