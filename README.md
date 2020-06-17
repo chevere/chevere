@@ -20,7 +20,7 @@ The project is under development and is not recommended to use it for production
 
 Install using [Composer](https://getcomposer.org/).
 
-```console
+```shell
 composer install
 ```
 
