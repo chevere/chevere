@@ -13,17 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Controller;
 
-use Throwable;
-
-interface ControllerRanInterface
+interface ControllerRunnerInterface
 {
-    public function withThrowable(Throwable $throwable): ControllerRanInterface;
+    public function __construct(ControllerInterface $controller);
 
-    public function code(): int;
-
-    public function data(): array;
-
-    public function hasThrowable(): bool;
-
-    public function throwable(): Throwable;
+    public function execute(ControllerArgumentsInterface $arguments): ControllerExecutedInterface;
 }

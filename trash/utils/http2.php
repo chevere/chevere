@@ -47,7 +47,7 @@ while ($serverRequest = $psr7->acceptRequest()) {
             $controller->parameters(),
             new Map(['name' => 'PeterPoison', 'id' => '123'])
         );
-        $ran = $runner->ran($controllerArguments);
+        $ran = $runner->execute($controllerArguments);
         $response = new Response();
         $response->getBody()->write(json_encode($ran->data()));
 

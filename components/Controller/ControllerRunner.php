@@ -14,11 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Controller;
 
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
+use Chevere\Interfaces\Controller\ControllerExecutedInterface;
 use Chevere\Interfaces\Controller\ControllerInterface;
-use Chevere\Interfaces\Controller\ControllerRanInterface;
+use Chevere\Interfaces\Controller\ControllerRunnerInterface;
 use Throwable;
 
-final class ControllerRunner
+final class ControllerRunner implements ControllerRunnerInterface
 {
     private ControllerInterface $controller;
 
@@ -27,17 +28,17 @@ final class ControllerRunner
         $this->controller = $controller;
     }
 
-    public function ran(ControllerArgumentsInterface $arguments): ControllerRanInterface
+    public function execute(ControllerArgumentsInterface $arguments): ControllerExecutedInterface
     {
         try {
             $this->controller->setUp();
             $response = $this->controller->run($arguments);
             $this->controller->tearDown();
         } catch (Throwable $e) {
-            return (new ControllerRan)->withThrowable($e);
+            return (new ControllerExecuted)->withThrowable($e);
         }
         $data = $response->data();
 
-        return new ControllerRan($data);
+        return new ControllerExecuted($data);
     }
 }

@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Controller;
 
-use Chevere\Components\Controller\ControllerRan;
+use Chevere\Components\Controller\ControllerExecuted;
 use Chevere\Exceptions\Core\Exception;
 use Error;
 use PHPUnit\Framework\TestCase;
 
-final class ControllerRanTest extends TestCase
+final class ControllerExecutedTest extends TestCase
 {
     public function testConstruct(): void
     {
         $data = ['The data'];
-        $ran = new ControllerRan($data);
+        $ran = new ControllerExecuted($data);
         $this->assertSame(0, $ran->code());
         $this->assertSame($data, $ran->data());
         $this->assertFalse($ran->hasThrowable());
@@ -33,7 +33,7 @@ final class ControllerRanTest extends TestCase
 
     public function testWithThrowable(): void
     {
-        $ran = new ControllerRan([]);
+        $ran = new ControllerExecuted([]);
         $throwable = new Exception;
         $ran = $ran->withThrowable($throwable);
         $this->assertTrue($ran->hasThrowable());

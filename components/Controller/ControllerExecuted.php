@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
-use Chevere\Interfaces\Controller\ControllerRanInterface;
+use Chevere\Interfaces\Controller\ControllerExecutedInterface;
 use Throwable;
 
-final class ControllerRan implements ControllerRanInterface
+final class ControllerExecuted implements ControllerExecutedInterface
 {
     private int $code = 0;
 
@@ -29,7 +29,7 @@ final class ControllerRan implements ControllerRanInterface
         $this->data = $data;
     }
 
-    public function withThrowable(Throwable $throwable): ControllerRanInterface
+    public function withThrowable(Throwable $throwable): ControllerExecutedInterface
     {
         $new = clone $this;
         $new->throwable = $throwable;

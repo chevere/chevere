@@ -21,20 +21,20 @@ use Chevere\Components\Controller\ControllerResponse;
 use Chevere\Components\Controller\ControllerRunner;
 use Chevere\Components\Regex\Regex;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
+use Chevere\Interfaces\Controller\ControllerExecutedInterface;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
-use Chevere\Interfaces\Controller\ControllerRanInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerRunnerTest extends TestCase
 {
-    private function getFailedRan(ControllerInterface $controller): ControllerRanInterface
+    private function getFailedRan(ControllerInterface $controller): ControllerExecutedInterface
     {
         $arguments = new ControllerArguments($controller->parameters(), []);
 
-        return (new ControllerRunner($controller))->ran($arguments);
+        return (new ControllerRunner($controller))->execute($arguments);
     }
 
     public function testControllerSetUpFailure(): void
@@ -71,7 +71,7 @@ final class ControllerRunnerTest extends TestCase
         $controller = new ControllerRunnerTestController;
         $arguments = [$parameter => $value];
         $arguments = new ControllerArguments($controller->parameters(), $arguments);
-        $ran = (new ControllerRunner($controller))->ran($arguments);
+        $ran = (new ControllerRunner($controller))->execute($arguments);
         $this->assertSame(0, $ran->code());
         $this->assertSame(['user' => $value], $ran->data());
     }
