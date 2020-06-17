@@ -15,7 +15,6 @@ namespace Chevere\Exceptions\Core;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\Traits\ExceptionTrait;
-use Chevere\Interfaces\ExceptionHandler\ExceptionInterface;
 use Chevere\Interfaces\Message\MessageInterface;
 use Throwable;
 

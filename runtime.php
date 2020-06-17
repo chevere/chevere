@@ -32,6 +32,6 @@ new RuntimeInstance(
         ->withSet(new SetPrecision('16'))
         ->withSet(new SetUriScheme('https'))
         ->withSet(new SetTimeZone('UTC'))
-        //->withSet(new SetErrorHandler('Chevere\Components\ExceptionHandler\ErrorHandler::error')),
-        //->withSet(new SetExceptionHandler('Chevere\Components\ExceptionHandler\ExceptionHandler::exception')),
+        //->withSet(new SetErrorHandler('Chevere\Components\ThrowableHandler\ErrorHandler::error')),
+        //->withSet(new SetExceptionHandler('Chevere\Components\ThrowableHandler\ExceptionHandler::exception')),
 );

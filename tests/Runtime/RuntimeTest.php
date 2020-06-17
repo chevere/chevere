@@ -31,8 +31,8 @@ final class RuntimeTest extends TestCase
         $sets = [
             new SetDebug('1'),
             //FIXME:
-            // new SetErrorHandler('Chevere\Components\ExceptionHandler\ErrorHandler::error'),
-            // new SetExceptionHandler('Chevere\Components\ExceptionHandler\ExceptionHandler::function'),
+            // new SetErrorHandler('Chevere\Components\ThrowableHandler\ErrorHandler::error'),
+            // new SetExceptionHandler('Chevere\Components\ThrowableHandler\ExceptionHandler::function'),
             new SetLocale('en_US.UTF8'),
             new SetDefaultCharset('UTF-8'),
             new SetPrecision('16'),
