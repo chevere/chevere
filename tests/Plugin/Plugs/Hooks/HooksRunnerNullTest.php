@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Plugs\Hooks;
+namespace Chevere\Tests\Plugin\Plugs\Hooks;
 
 use Chevere\Components\Plugin\Plugs\Hooks\HooksRunnerNull;
 use PHPUnit\Framework\TestCase;

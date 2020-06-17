@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Plugs\Hooks\_resources;
+namespace Chevere\Tests\Plugin\Plugs\Hooks\_resources;
 
 use Chevere\Interfaces\Plugin\PluggableAnchorsInterface;
 use Chevere\Components\Plugin\PluggableAnchors;

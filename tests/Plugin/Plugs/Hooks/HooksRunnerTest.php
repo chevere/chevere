@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Plugs\Hooks;
+namespace Chevere\Tests\Plugin\Plugs\Hooks;
 
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Plugin\Plugs\Hooks\HooksQueue;
 use Chevere\Components\Plugin\Plugs\Hooks\HooksRunner;
 use Chevere\Exceptions\Core\RuntimeException;
-use Chevere\Tests\Plugs\Hooks\_resources\HooksRunnerTest\TestHookPath;
-use Chevere\Tests\Plugs\Hooks\_resources\HooksRunnerTest\TestHookString;
-use Chevere\Tests\Plugs\Hooks\_resources\HooksRunnerTest\TestHookTypeChange;
+use Chevere\Tests\Plugin\Plugs\Hooks\_resources\HooksRunnerTest\TestHookPath;
+use Chevere\Tests\Plugin\Plugs\Hooks\_resources\HooksRunnerTest\TestHookString;
+use Chevere\Tests\Plugin\Plugs\Hooks\_resources\HooksRunnerTest\TestHookTypeChange;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 

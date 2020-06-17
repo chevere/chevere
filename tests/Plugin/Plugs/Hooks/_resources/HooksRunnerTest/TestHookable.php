@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Plugs\Hooks\_resources\HooksRunnerTest;
+namespace Chevere\Tests\Plugin\Plugs\Hooks\_resources\HooksRunnerTest;
 
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Plugin\PluggableAnchors;

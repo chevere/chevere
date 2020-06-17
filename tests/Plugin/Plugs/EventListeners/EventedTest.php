@@ -11,14 +11,14 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Plugs\EventListeners;
+namespace Chevere\Tests\Plugin\Plugs\EventListeners;
 
 use Chevere\Components\Plugin\Plugs\EventListeners\EventListenersQueue;
 use Chevere\Components\Plugin\Plugs\EventListeners\EventListenersRunner;
 use Chevere\Components\Writers\StreamWriter;
 use Chevere\Components\Writers\Writers;
-use Chevere\Tests\Plugs\EventListeners\_resources\TestEventable;
-use Chevere\Tests\Plugs\EventListeners\_resources\TestEventListener;
+use Chevere\Tests\Plugin\Plugs\EventListeners\_resources\TestEventable;
+use Chevere\Tests\Plugin\Plugs\EventListeners\_resources\TestEventListener;
 use Laminas\Diactoros\StreamFactory;
 use PHPUnit\Framework\TestCase;
 

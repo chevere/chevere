@@ -11,16 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Plugs\Hooks\_resources\HooksRunnerTest;
+namespace Chevere\Tests\Plugin\Plugs\Hooks\_resources\HooksRunnerTest;
 
-use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\HookInterface;
 
-class TestHookPath implements HookInterface
+class TestHookString implements HookInterface
 {
     public function anchor(): string
     {
-        return 'path';
+        return 'string';
     }
 
     public function at(): string
@@ -33,11 +32,8 @@ class TestHookPath implements HookInterface
         return 0;
     }
 
-    /**
-     * @param PathInterface $argument
-     */
     public function __invoke(&$argument): void
     {
-        $argument = $argument->getChild('hooked/');
+        $argument = "(hooked $argument)";
     }
 }

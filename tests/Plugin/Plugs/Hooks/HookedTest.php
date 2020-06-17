@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Plugs\Hooks;
+namespace Chevere\Tests\Plugin\Plugs\Hooks;
 
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Filesystem\Dir;
@@ -20,10 +20,10 @@ use Chevere\Components\Plugin\Plugins;
 use Chevere\Components\Plugin\Plugs\Hooks\HooksQueue;
 use Chevere\Components\Plugin\Plugs\Hooks\HooksRunner;
 use Chevere\Exceptions\Plugin\PluggableNotRegisteredException;
-use Chevere\Tests\Plugs\Hooks\_resources\TestHook;
-use Chevere\Tests\Plugs\Hooks\_resources\TestHookable;
-use Chevere\Tests\Plugs\Hooks\_resources\TestHookableNoRegister;
-use Chevere\Tests\Plugs\Hooks\_resources\TestHookableWithoutHooks;
+use Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHook;
+use Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHookable;
+use Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHookableNoRegister;
+use Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHookableWithoutHooks;
 use PHPUnit\Framework\TestCase;
 
 final class HookedTest extends TestCase
@@ -39,15 +39,15 @@ final class HookedTest extends TestCase
             (new ClassMap)
                 ->withStrict(false)
                 ->withPut(
-                    'Chevere\Tests\Plugs\Hooks\_resources\TestHookable',
+                    'Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHookable',
                     $hooksPath . 'Chevere/Components/Hooks/Tests/TestHookable/hooks.php'
                 )
                 ->withPut(
-                    'Chevere\Tests\Plugs\Hooks\_resources\TestHookableWithCorruptedHooks',
+                    'Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHookableWithCorruptedHooks',
                     $hooksPath . 'Chevere/Components/Hooks/Tests/MyHookableWithCorruptedHooks/hooks.php'
                 )
                 ->withPut(
-                    'Chevere\Tests\Plugs\Hooks\_resources\TestHookableWithMissingHooks',
+                    'Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHookableWithMissingHooks',
                     'error.php'
                 )
         );

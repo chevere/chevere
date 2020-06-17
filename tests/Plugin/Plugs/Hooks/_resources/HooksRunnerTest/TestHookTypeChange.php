@@ -11,15 +11,15 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Plugs\Hooks\_resources\HooksRunnerTest;
+namespace Chevere\Tests\Plugin\Plugs\Hooks\_resources\HooksRunnerTest;
 
 use Chevere\Interfaces\Plugin\Plugs\Hooks\HookInterface;
 
-class TestHookString implements HookInterface
+class TestHookTypeChange implements HookInterface
 {
     public function anchor(): string
     {
-        return 'string';
+        return 'type';
     }
 
     public function at(): string
@@ -34,6 +34,6 @@ class TestHookString implements HookInterface
 
     public function __invoke(&$argument): void
     {
-        $argument = "(hooked $argument)";
+        $argument = 123;
     }
 }

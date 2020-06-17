@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Plugs\EventListeners\_resources;
+namespace Chevere\Tests\Plugin\Plugs\EventListeners\_resources;
 
 use Chevere\Components\Plugin\PluggableAnchors;
 use Chevere\Components\Plugin\Plugs\EventListeners\Traits\PluggableEventsTrait;

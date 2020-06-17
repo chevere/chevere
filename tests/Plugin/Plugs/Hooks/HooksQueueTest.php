@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Plugs\Hooks;
+namespace Chevere\Tests\Plugin\Plugs\Hooks;
 
 use Chevere\Components\Plugin\Plugs\Hooks\HooksQueue;
 use Chevere\Components\Plugin\Types\HookPlugType;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\HookInterface;
-use Chevere\Tests\Plugs\Hooks\_resources\TestHook;
+use Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHook;
 use PHPUnit\Framework\TestCase;
 
 final class HooksQueueTest extends TestCase

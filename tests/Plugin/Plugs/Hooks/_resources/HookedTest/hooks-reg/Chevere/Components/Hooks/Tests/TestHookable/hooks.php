@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 use Chevere\Components\Plugin\PlugsQueue;
 use Chevere\Components\Plugin\Types\HookPlugType;
-use Chevere\Tests\Plugs\Hooks\_resources\TestHook;
+use Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHook;
 
 return (new PlugsQueue(new HookPlugType))
     ->withAdded(new TestHook);

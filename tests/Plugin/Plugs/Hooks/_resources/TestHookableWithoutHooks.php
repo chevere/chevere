@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Plugs\Hooks\_resources;
+namespace Chevere\Tests\Plugin\Plugs\Hooks\_resources;
 
 /**
  * Same as TestHookable but this hookable shouldn't register any hooks.
