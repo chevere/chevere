@@ -11,12 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Writers;
+namespace Chevere\Components\Writer;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\RuntimeException;
-use Chevere\Interfaces\Writers\WriterInterface;
-use Chevere\Interfaces\Writers\WritersInterface;
+use Chevere\Interfaces\Writer\WriterInterface;
+use Chevere\Interfaces\Writer\WritersInterface;
 use Laminas\Diactoros\Stream;
 
 final class Writers implements WritersInterface

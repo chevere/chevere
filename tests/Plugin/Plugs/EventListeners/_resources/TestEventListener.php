@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Plugin\Plugs\EventListeners\_resources;
 
 use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenerInterface;
-use Chevere\Interfaces\Writers\WritersInterface;
+use Chevere\Interfaces\Writer\WritersInterface;
 use Chevere\Tests\Plugin\Plugs\EventListeners\_resources\TestEventable;
 
 final class TestEventListener implements EventListenerInterface

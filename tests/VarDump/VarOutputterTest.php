@@ -21,7 +21,7 @@ use Chevere\Components\VarDump\Outputters\ConsoleOutputter;
 use Chevere\Components\VarDump\Outputters\HtmlOutputter;
 use Chevere\Components\VarDump\Outputters\PlainOutputter;
 use Chevere\Components\VarDump\VarOutputter;
-use Chevere\Components\Writers\StreamWriter;
+use Chevere\Components\Writer\StreamWriter;
 use Chevere\Tests\VarDump\Traits\DebugBacktraceTrait;
 use Laminas\Diactoros\StreamFactory;
 use PHPUnit\Framework\TestCase;

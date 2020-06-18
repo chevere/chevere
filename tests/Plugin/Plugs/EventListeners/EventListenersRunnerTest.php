@@ -15,8 +15,8 @@ namespace Chevere\Tests\Plugin\Plugs\EventListeners;
 
 use Chevere\Components\Plugin\Plugs\EventListeners\EventListenersQueue;
 use Chevere\Components\Plugin\Plugs\EventListeners\EventListenersRunner;
-use Chevere\Components\Writers\StreamWriter;
-use Chevere\Components\Writers\Writers;
+use Chevere\Components\Writer\StreamWriter;
+use Chevere\Components\Writer\Writers;
 use Chevere\Tests\Plugin\Plugs\EventListeners\_resources\TestEventListener;
 use Laminas\Diactoros\StreamFactory;
 use PHPUnit\Framework\TestCase;

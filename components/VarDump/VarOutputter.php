@@ -19,7 +19,7 @@ use Chevere\Interfaces\VarDump\FormatterInterface;
 use Chevere\Interfaces\VarDump\OutputterInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Interfaces\VarDump\VarOutputterInterface;
-use Chevere\Interfaces\Writers\WriterInterface;
+use Chevere\Interfaces\Writer\WriterInterface;
 
 /**
  * Writes information about a variable.

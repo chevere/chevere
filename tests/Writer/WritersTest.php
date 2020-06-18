@@ -11,11 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Writers;
+namespace Chevere\Tests\Writer;
 
-use Chevere\Interfaces\Writers\WriterInterface;
-use Chevere\Components\Writers\StreamWriter;
-use Chevere\Components\Writers\Writers;
+use Chevere\Interfaces\Writer\WriterInterface;
+use Chevere\Components\Writer\StreamWriter;
+use Chevere\Components\Writer\Writers;
 use Laminas\Diactoros\StreamFactory;
 use PHPUnit\Framework\TestCase;
 

@@ -18,7 +18,7 @@ use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\Instances\WritersInstance;
-use Chevere\Components\Writers\Writers;
+use Chevere\Components\Writer\Writers;
 use Chevere\TestApp\App\Controllers\TestController;
 use Ds\Map;
 use Spiral\Goridge;

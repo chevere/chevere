@@ -62,7 +62,7 @@ namespace Chevere\Components\VarDump {
 namespace {
     use Chevere\Components\Instances\VarDumpInstance;
     use Chevere\Components\Instances\WritersInstance;
-    use Chevere\Components\Writers\Writers;
+    use Chevere\Components\Writer\Writers;
     use function Chevere\Components\VarDump\getVarDumpConsole;
 
     if (function_exists('xd') === false) { // @codeCoverageIgnore

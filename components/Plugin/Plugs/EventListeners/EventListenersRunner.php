@@ -18,7 +18,7 @@ use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenersQueueInterface;
 use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenersRunnerInterface;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
-use Chevere\Interfaces\Writers\WritersInterface;
+use Chevere\Interfaces\Writer\WritersInterface;
 use Throwable;
 
 final class EventListenersRunner implements EventListenersRunnerInterface

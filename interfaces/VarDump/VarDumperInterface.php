@@ -22,7 +22,7 @@ use Chevere\Components\VarDump\Processors\ObjectProcessor;
 use Chevere\Components\VarDump\Processors\ResourceProcessor;
 use Chevere\Components\VarDump\Processors\StringProcessor;
 use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Interfaces\Writers\WriterInterface;
+use Chevere\Interfaces\Writer\WriterInterface;
 
 interface VarDumperInterface
 {

@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Writers;
+namespace Chevere\Components\Writer;
 
-use Chevere\Interfaces\Writers\WriterInterface;
+use Chevere\Interfaces\Writer\WriterInterface;
 use Laminas\Diactoros\Stream;
 use Laminas\Diactoros\StreamFactory;
 use Psr\Http\Message\StreamInterface;

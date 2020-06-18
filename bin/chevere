@@ -19,8 +19,8 @@ use Chevere\Components\Console\Commands\ControllerRunCommand;
 use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\Instances\WritersInstance;
-use Chevere\Components\Writers\StreamWriter;
-use Chevere\Components\Writers\Writers;
+use Chevere\Components\Writer\StreamWriter;
+use Chevere\Components\Writer\Writers;
 use Laminas\Diactoros\StreamFactory;
 
 foreach ([

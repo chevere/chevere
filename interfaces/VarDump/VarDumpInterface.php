@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\VarDump;
 
-use Chevere\Interfaces\Writers\WriterInterface;
+use Chevere\Interfaces\Writer\WriterInterface;
 
 interface VarDumpInterface
 {

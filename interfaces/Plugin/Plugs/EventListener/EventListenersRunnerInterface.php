@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Plugin\Plugs\EventListener;
 
 use Chevere\Components\Plugin\Plugs\EventListeners\EventListenersQueue;
-use Chevere\Interfaces\Writers\WritersInterface;
+use Chevere\Interfaces\Writer\WritersInterface;
 
 interface EventListenersRunnerInterface
 {

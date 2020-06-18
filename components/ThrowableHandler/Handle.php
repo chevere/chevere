@@ -21,7 +21,7 @@ use Chevere\Exceptions\Core\ErrorException;
 use Chevere\Interfaces\ThrowableHandler\DocumentInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
 use Exception;
-use function Chevere\Components\Writers\writers;
+use function Chevere\Components\Writer\writers;
 
 /**
  * @codeCoverageIgnore

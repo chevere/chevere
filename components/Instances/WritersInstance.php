@@ -15,7 +15,7 @@ namespace Chevere\Components\Instances;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\LogicException;
-use Chevere\Interfaces\Writers\WritersInterface;
+use Chevere\Interfaces\Writer\WritersInterface;
 
 /**
  * @codeCoverageIgnore

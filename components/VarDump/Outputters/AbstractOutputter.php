@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump\Outputters;
 
 use Chevere\Interfaces\VarDump\OutputterInterface;
-use Chevere\Interfaces\Writers\WriterInterface;
+use Chevere\Interfaces\Writer\WriterInterface;
 
 abstract class AbstractOutputter implements OutputterInterface
 {

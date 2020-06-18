@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Writers;
+namespace Chevere\Tests\Writer;
 
-use Chevere\Components\Writers\StreamWriter;
+use Chevere\Components\Writer\StreamWriter;
 use Laminas\Diactoros\StreamFactory;
 use PHPUnit\Framework\TestCase;
 

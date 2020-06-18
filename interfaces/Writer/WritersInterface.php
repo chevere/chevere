@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Writers;
+namespace Chevere\Interfaces\Writer;
 
 interface WritersInterface
 {

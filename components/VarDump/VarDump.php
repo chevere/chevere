@@ -16,7 +16,7 @@ namespace Chevere\Components\VarDump;
 use Chevere\Interfaces\VarDump\FormatterInterface;
 use Chevere\Interfaces\VarDump\OutputterInterface;
 use Chevere\Interfaces\VarDump\VarDumpInterface;
-use Chevere\Interfaces\Writers\WriterInterface;
+use Chevere\Interfaces\Writer\WriterInterface;
 use function DeepCopy\deep_copy;
 
 final class VarDump implements VarDumpInterface

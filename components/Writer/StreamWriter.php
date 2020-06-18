@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Writers;
+namespace Chevere\Components\Writer;
 
-use Chevere\Interfaces\Writers\WriterInterface;
+use Chevere\Interfaces\Writer\WriterInterface;
 use Psr\Http\Message\StreamInterface;
 
 final class StreamWriter implements WriterInterface

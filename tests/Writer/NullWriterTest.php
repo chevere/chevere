@@ -11,9 +11,9 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Tests\Writers;
+namespace Chevere\Tests\Writer;
 
-use Chevere\Components\Writers\NullWriter;
+use Chevere\Components\Writer\NullWriter;
 use PHPUnit\Framework\TestCase;
 
 final class NullWriterTest extends TestCase

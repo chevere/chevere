@@ -11,11 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Writers;
+namespace Chevere\Components\Writer;
 
 use Chevere\Components\Instances\WritersInstance;
-use Chevere\Interfaces\Writers\WritersInterface;
-use Exception;
+use Chevere\Interfaces\Writer\WritersInterface;
 
 /**
  * @codeCoverageIgnore

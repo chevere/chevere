@@ -16,7 +16,7 @@ namespace Chevere\Tests\VarDump\Traits;
 use Chevere\Components\VarDump\Formatters\PlainFormatter;
 use Chevere\Components\VarDump\VarDumpable;
 use Chevere\Components\VarDump\VarDumper;
-use Chevere\Components\Writers\StreamWriter;
+use Chevere\Components\Writer\StreamWriter;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Laminas\Diactoros\StreamFactory;
 
