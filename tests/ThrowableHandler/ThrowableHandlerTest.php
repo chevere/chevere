@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler;
 
+use Chevere\Components\Message\Message;
 use Chevere\Components\ThrowableHandler\ThrowableHandler;
 use Chevere\Components\ThrowableHandler\ThrowableRead;
-use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\Exception;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
 use DateTimeInterface;
@@ -39,7 +39,7 @@ final class ThrowableHandlerTest extends TestCase
         $this->assertInstanceOf(DateTimeInterface::class, $handler->dateTimeUtc());
         $this->assertInstanceOf(ThrowableRead::class, $handler->throwableRead());
         $this->assertIsString($handler->id());
-        $this->assertFalse($handler->isDebug());
+        $this->assertTrue($handler->isDebug());
     }
 
     public function testWithDebug(): void

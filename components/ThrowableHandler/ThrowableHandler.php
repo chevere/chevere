@@ -27,7 +27,7 @@ final class ThrowableHandler implements ThrowableHandlerInterface
 
     private string $id;
 
-    private bool $isDebug = false;
+    private bool $isDebug = true;
 
     public function __construct(ThrowableReadInterface $throwableRead)
     {
