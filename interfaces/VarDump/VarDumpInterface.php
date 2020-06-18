@@ -15,13 +15,9 @@ namespace Chevere\Interfaces\VarDump;
 
 use Chevere\Interfaces\Writers\WriterInterface;
 
-/**
- * A context-aware var dump utility
- */
 interface VarDumpInterface
 {
     public function __construct(
-        WriterInterface $writer,
         FormatterInterface $formatter,
         OutputterInterface $outputter
     );
@@ -47,7 +43,7 @@ interface VarDumpInterface
     /**
      * Process the dump writing
      */
-    public function process(): void;
+    public function process(WriterInterface $writer): void;
 
     /**
      * @return array the vars array.

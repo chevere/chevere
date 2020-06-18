@@ -23,8 +23,6 @@ final class VarDump implements VarDumpInterface
 {
     private array $vars = [];
 
-    private WriterInterface $writer;
-
     private FormatterInterface $formatter;
 
     private OutputterInterface $outputter;
@@ -34,11 +32,9 @@ final class VarDump implements VarDumpInterface
     private array $debugBacktrace = [];
 
     public function __construct(
-        WriterInterface $writer,
         FormatterInterface $formatter,
         OutputterInterface $outputter
     ) {
-        $this->writer = $writer;
         $this->formatter = $formatter;
         $this->outputter = $outputter;
     }
@@ -59,14 +55,14 @@ final class VarDump implements VarDumpInterface
         return $new;
     }
 
-    public function process(): void
+    public function process(WriterInterface $writer): void
     {
         if (empty($this->vars)) {
             return;
         }
         $this->setDebugBacktrace();
         (new VarOutputter(
-            $this->writer,
+            $writer,
             $this->debugBacktrace,
             $this->formatter,
             ...$this->vars

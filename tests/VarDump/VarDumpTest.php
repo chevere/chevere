@@ -26,9 +26,9 @@ use stdClass;
 
 final class VarDumpTest extends TestCase
 {
-    private function getVarDump(WriterInterface $writer): VarDumpInterface
+    private function getVarDump(): VarDumpInterface
     {
-        return new VarDump($writer, new PlainFormatter, new PlainOutputter);
+        return new VarDump(new PlainFormatter, new PlainOutputter);
     }
 
     private function getStream(): StreamInterface
@@ -38,9 +38,7 @@ final class VarDumpTest extends TestCase
 
     public function testConstruct(): void
     {
-        $stream = $this->getStream();
-        $writer = new StreamWriter($stream);
-        $varDump = $this->getVarDump($writer);
+        $varDump = $this->getVarDump();
         $this->assertSame(0, $varDump->shift());
         $this->assertSame([], $varDump->vars());
     }
@@ -50,17 +48,17 @@ final class VarDumpTest extends TestCase
         $stream = $this->getStream();
         $writer = new StreamWriter($stream);
         $var = new stdClass;
-        $varDump = $this->getVarDump($writer)->withVars($var);
+        $varDump = $this->getVarDump()->withVars($var);
         $this->assertEquals([$var], $varDump->vars());
-        $varDump->process();
+        $varDump->process($writer);
     }
 
     public function testWithShift(): void
     {
         $stream = $this->getStream();
         $writer = new StreamWriter($stream);
-        $varDump = $this->getVarDump($writer)->withShift(1);
+        $varDump = $this->getVarDump()->withShift(1);
         $this->assertEquals(1, $varDump->shift());
-        $varDump->process();
+        $varDump->process($writer);
     }
 }
