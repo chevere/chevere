@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\Filesystem;
 
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Exceptions\Filesystem\PathNotExistsException;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +23,7 @@ final class PathTest extends TestCase
 {
     public function getPath(string $child): PathInterface
     {
-        return BootstrapInstance::get()->dir()->path()->getChild($child);
+        return (new Path(__DIR__ . '/'))->getChild($child);
     }
 
     public function testFilesystemPath(): void
