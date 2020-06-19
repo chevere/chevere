@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Writer;
 
-use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Writer\WriterInterface;
 use Chevere\Interfaces\Writer\WritersInterface;
 use Laminas\Diactoros\Stream;
