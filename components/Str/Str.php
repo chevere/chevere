@@ -138,7 +138,7 @@ final class Str implements StrInterface
         if (false !== $pos) {
             $subject = substr_replace($new->string, $replace, $pos, mb_strlen($search));
         }
-        $new->string = $subject ?? '';
+        $new->string = $subject ?? $new->string;
 
         return $new;
     }

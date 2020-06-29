@@ -120,13 +120,17 @@ final class StrTest extends TestCase
 
     public function testReplaceLast(): void
     {
-        $string = 'stringg';
-        $search = 'g';
-        $replace = 'o';
-        $expected = 'stringo';
+        $string = 'string.php';
+        $search = '.php';
+        $replace = '.md';
+        $expected = 'string.md';
         $this->assertSame(
             $expected,
             (new Str($string))->replaceLast($search, $replace)->toString()
+        );
+        $this->assertSame(
+            'eee',
+            (new Str('eee'))->replaceLast($search, $replace)->toString()
         );
     }
 }
