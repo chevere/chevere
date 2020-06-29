@@ -80,11 +80,6 @@ final class Str implements StrInterface
         return $new;
     }
 
-    /**
-     * Prepends a string with a tail string, without repeats.
-     *
-     * @param string $tail string tail
-     */
     public function leftTail(string $tail): StrInterface
     {
         $new = clone $this;
@@ -93,11 +88,6 @@ final class Str implements StrInterface
         return $new;
     }
 
-    /**
-     * Appends a tail to string, without repeats.
-     *
-     * @param string $tail string tail
-     */
     public function rightTail(string $tail): StrInterface
     {
         $new = clone $this;
@@ -106,13 +96,6 @@ final class Str implements StrInterface
         return $new;
     }
 
-    /**
-     * Replace the first occurrence of the search string with the replacement
-     * string.
-     *
-     * @param string $search  value being searched for
-     * @param string $replace replacement value that replaces found search values
-     */
     public function replaceFirst(string $search, string $replace): StrInterface
     {
         $new = clone $this;
@@ -125,12 +108,6 @@ final class Str implements StrInterface
         return $new;
     }
 
-    /**
-     * Replace the last occurrence of the search string with the replacement string.
-     *
-     * @param string $search  value being searched for
-     * @param string $replace replacement value that replaces found search values
-     */
     public function replaceLast(string $search, string $replace): StrInterface
     {
         $new = clone $this;
@@ -143,9 +120,6 @@ final class Str implements StrInterface
         return $new;
     }
 
-    /**
-     * Removes CLI color format.
-     */
     public function stripANSIColors(): StrInterface
     {
         $new = clone $this;
