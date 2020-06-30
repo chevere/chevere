@@ -41,6 +41,9 @@ final class Unserialize implements UnserializeInterface
                     ->code('%message%', $e->getMessage())
             );
         }
+        if ($this->var === false) {
+            $this->var = $serialized;
+        }
         $type = is_object($this->var) ? get_class($this->var) : varType($this->var);
         $this->type = new Type($type);
     }
