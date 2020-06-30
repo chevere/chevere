@@ -3,6 +3,3 @@
 /.phpunit.result.cache
 /build/
 /.php_cs.cache
-/rr
-/.rr.yaml
-/http.php

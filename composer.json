@@ -11,8 +11,10 @@
     }],
     "require": {
         "php": ">=7.4",
+        "ext-ctype": "*",
         "ext-ds": "*",
         "ext-json": "*",
+        "ext-mbstring": "*",
         "ext-zend-opcache": "*",
         "adhocore/cli": "^0.8.3",
         "goaop/parser-reflection": "^2.1",
@@ -38,8 +40,7 @@
         "psr-4": {
             "Chevere\\Components\\": "components/",
             "Chevere\\Interfaces\\": "interfaces/",
-            "Chevere\\Exceptions\\": "exceptions/",
-            "Chevere\\Examples\\": "examples/src/"
+            "Chevere\\Exceptions\\": "exceptions/"
         }
     },
     "autoload-dev": {

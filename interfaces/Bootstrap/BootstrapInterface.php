@@ -34,7 +34,7 @@ interface BootstrapInterface
     public function hrTime(): int;
 
     /**
-     * Provides access to the rootDir used on instance creation.
+     * Provides access to the dir used on instance creation.
      */
     public function dir(): DirInterface;
 }

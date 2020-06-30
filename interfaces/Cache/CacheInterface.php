@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Cache;
 
 use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
+use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 use Chevere\Exceptions\Filesystem\FileUnableToRemoveException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\VarExportable\VarExportableInterface;
-use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 
 interface CacheInterface
 {
@@ -35,7 +35,6 @@ interface CacheInterface
      *
      * @param CacheKeyInterface $cacheKey Cache key
      * @param VarExportableInterface $varExportable an export variable
-     * @return CacheInterface
      */
     public function withPut(CacheKeyInterface $cacheKey, VarExportableInterface $varExportable): CacheInterface;
 
@@ -48,7 +47,6 @@ interface CacheInterface
      * an instance that contains the specified CacheKeyInterface removed.
      *
      * @param CacheKeyInterface $cacheKey Cache key
-     * @return CacheInterface
      * @throws FileUnableToRemoveException if unable to remove the cache file
      */
     public function withRemove(CacheKeyInterface $cacheKey): CacheInterface;
@@ -66,7 +64,16 @@ interface CacheInterface
     public function get(CacheKeyInterface $cacheKey): CacheItemInterface;
 
     /**
-     * @return array [key => [checksum => , path =>]]
+     * Provides access to the array containing puts.
+     *
+     * ```php
+     * return [
+     *      'key' => [
+     *              'checksum' => '<file_checksum>',
+     *              'path' => '<the_file_path>'
+     *      ],
+     * ];
+     * ```
      */
     public function puts(): array;
 

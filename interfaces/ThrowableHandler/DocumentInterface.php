@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\ThrowableHandler;
 
-use Symfony\Component\Console\Output\OutputInterface;
-
 interface DocumentInterface
 {
     const SECTION_TITLE = 'title';
@@ -44,12 +42,12 @@ interface DocumentInterface
     ];
 
     const SECTIONS_VERBOSITY = [
-        self::SECTION_TITLE => OutputInterface::VERBOSITY_QUIET,
-        self::SECTION_MESSAGE => OutputInterface::VERBOSITY_QUIET,
-        self::SECTION_ID => OutputInterface::VERBOSITY_QUIET,
-        self::SECTION_TIME => OutputInterface::VERBOSITY_VERBOSE,
-        self::SECTION_STACK => OutputInterface::VERBOSITY_VERY_VERBOSE,
-        self::SECTION_SERVER => OutputInterface::VERBOSITY_VERBOSE,
+        self::SECTION_TITLE => 16,
+        self::SECTION_MESSAGE => 16,
+        self::SECTION_ID => 16,
+        self::SECTION_TIME => 64,
+        self::SECTION_STACK => 128,
+        self::SECTION_SERVER => 64,
     ];
 
     public function __construct(ThrowableHandlerInterface $exceptionHandler);
