@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Plugin\Plugs\Hooks\Exceptions;
+namespace Chevere\Exceptions\Plugs\Hooks\Exceptions;
 
 use Chevere\Exceptions\Core\Exception;
 
