@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Route;
 
-use Chevere\Interfaces\To\ToStringInterface;
+use Chevere\Exceptions\Regex\RegexException;
 
 interface RouteWildcardMatchInterface
 {

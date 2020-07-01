@@ -16,6 +16,7 @@ namespace Chevere\Interfaces\Filesystem;
 use Chevere\Exceptions\Filesystem\FileHandleException;
 use Chevere\Exceptions\Filesystem\FileInvalidContentsException;
 use Chevere\Exceptions\Filesystem\FileNotExistsException;
+use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
 use Chevere\Exceptions\Filesystem\FileUnableToPutException;
 use Chevere\Exceptions\Filesystem\FileWithoutContentsException;
 use Chevere\Interfaces\Type\TypeInterface;

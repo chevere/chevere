@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Middleware;
 
+use Chevere\Exceptions\Middleware\MiddlewareInterfaceException;
 use Chevere\Interfaces\DataStructures\DsMapInterface;
-use Chevere\Interfaces\To\ToArrayInterface;
 use Psr\Http\Server\MiddlewareInterface;
 
 interface MiddlewaresInterface extends DsMapInterface

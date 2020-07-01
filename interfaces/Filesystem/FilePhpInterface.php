@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Filesystem;
 
-use Chevere\Exceptions\Filesystem\FileNotPhpException;
+use Chevere\Exceptions\Core\RuntimeException;
 
 interface FilePhpInterface
 {

@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Filesystem;
 
+use Chevere\Exceptions\Filesystem\PathIsNotDirectoryException;
+use Chevere\Exceptions\Filesystem\PathUnableToChmodException;
+
 interface PathInterface
 {
     /**

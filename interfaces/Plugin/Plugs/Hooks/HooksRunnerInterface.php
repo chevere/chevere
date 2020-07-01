@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Plugin\Plugs\Hooks;
 
+use Chevere\Exceptions\Core\RuntimeException;
+
 interface HooksRunnerInterface
 {
     /**
