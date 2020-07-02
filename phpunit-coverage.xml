@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-    <phpunit bootstrap="./phpunit.php"
-         backupGlobals="false"
-         backupStaticAttributes="false"
-         colors="true"
-         verbose="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stopOnFailure="false"
-         stopOnError="false"
-         testdox="true">
+<phpunit backupGlobals="false" backupStaticAttributes="false" colors="true" verbose="true" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false" stopOnFailure="false" stopOnError="false" testdox="true">
     <testsuites>
         <testsuite name="Chevere Framework Test suite">
             <directory suffix="Test.php">tests/</directory>
@@ -22,7 +11,7 @@
         </whitelist>
     </filter>
     <logging>
-        <log type="coverage-html" target="build/coverage/html"/>
-        <log type="coverage-clover" target="build/coverage/clover.xml"/>
+        <log type="coverage-html" target="build/coverage/html" />
+        <log type="coverage-clover" target="build/coverage/clover.xml" />
     </logging>
 </phpunit>
