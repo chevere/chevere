@@ -3,15 +3,7 @@
 $finder = PhpCsFixer\Finder::create()
     ->notPath('_resources')
     ->in(__DIR__);
-
-$header = <<<'EOF'
-This file is part of Chevere.
-
-(c) Rodolfo Berrios <rodolfo@chevere.org>
-
-For the full copyright and license information, please view the LICENSE
-file that was distributed with this source code.
-EOF;
+$header = file_get_contents(__DIR__ . '/.header');
 
 return PhpCsFixer\Config::create()
     ->setRules([
