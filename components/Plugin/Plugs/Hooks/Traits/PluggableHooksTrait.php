@@ -26,12 +26,11 @@ trait PluggableHooksTrait
         if (!($this instanceof PluggableHooksInterface)) {
             throw new LogicException; // @codeCoverageIgnore
         }
+        $new = clone $this;
+        $new->hooksRunner = $hooksRunner;
         /**
          * @var PluggableHooksInterface $new
          */
-        $new = clone $this;
-        $new->hooksRunner = $hooksRunner;
-
         return $new;
     }
 

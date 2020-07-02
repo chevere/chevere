@@ -16,6 +16,7 @@ namespace Chevere\Components\Plugin;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugin\PlugsQueue;
 use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\RangeException;
 use Chevere\Exceptions\Plugin\PlugRegisteredException;
 use Chevere\Interfaces\Plugin\AssertPlugInterface;
 use Chevere\Interfaces\Plugin\PlugInterface;
@@ -91,9 +92,12 @@ final class PlugsMap implements PlugsMapInterface
         return $this->map->hasKey($pluggable);
     }
 
+    /**
+     * @throws RangeException
+     */
     public function getPlugsFor(string $pluggable): PlugsQueueTypedInterface
     {
-        return $this->map->get($pluggable);
+        return $this->map->get($pluggable, new PlugsQueue($this->type));
     }
 
     public function getGenerator(): Generator

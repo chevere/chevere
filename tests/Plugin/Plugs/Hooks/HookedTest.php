@@ -19,17 +19,13 @@ use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Plugin\Plugins;
 use Chevere\Components\Plugin\Plugs\Hooks\HooksQueue;
 use Chevere\Components\Plugin\Plugs\Hooks\HooksRunner;
-use Chevere\Exceptions\Plugin\PluggableNotRegisteredException;
 use Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHook;
 use Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHookable;
-use Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHookableNoRegister;
 use Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHookableWithoutHooks;
 use PHPUnit\Framework\TestCase;
 
 final class HookedTest extends TestCase
 {
-    private Plugins $plugs;
-
     public function setUp(): void
     {
         $resourcesPath = (new Path(__DIR__ . '/_resources/HookedTest/'));
@@ -83,10 +79,4 @@ final class HookedTest extends TestCase
         $testHookable->setString($string);
         $this->assertSame($string, $testHookable->string());
     }
-
-    // public function testClassNotRegistered(): void
-    // {
-    //     $this->expectException(PluggableNotRegisteredException::class);
-    //     $this->plugs->getPlugsQueue(TestHookableNoRegister::class);
-    // }
 }

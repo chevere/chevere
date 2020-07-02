@@ -26,12 +26,11 @@ trait PluggableEventsTrait
         if (!($this instanceof PluggableEventsInterface)) {
             throw new LogicException; // @codeCoverageIgnore
         }
+        $new = clone $this;
+        $new->eventsRunner = $eventsRunner;
         /**
          * @var PluggableEventsInterface $new
          */
-        $new = clone $this;
-        $new->eventsRunner = $eventsRunner;
-
         return $new;
     }
 

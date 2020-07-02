@@ -15,17 +15,21 @@ namespace Chevere\Components\Plugin\Plugs\EventListeners;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\RuntimeException;
+use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenerInterface;
 use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenersQueueInterface;
 use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenersRunnerInterface;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use Chevere\Interfaces\Writer\WritersInterface;
 use Throwable;
+use TypeError;
 
 final class EventListenersRunner implements EventListenersRunnerInterface
 {
     private PlugsQueueInterface $queue;
 
     private WritersInterface $writers;
+
+    private EventListenerInterface $eventListener;
 
     public function __construct(EventListenersQueueInterface $queue, WritersInterface $writers)
     {
@@ -41,7 +45,7 @@ final class EventListenersRunner implements EventListenersRunnerInterface
                 // @codeCoverageIgnoreStart
                 try {
                     $this->eventListener = new $entry;
-                } catch (Throwable $e) {
+                } catch (TypeError $e) {
                     throw new RuntimeException(
                         (new Message('Invalid event listener type'))
                     );
