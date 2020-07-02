@@ -78,7 +78,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
             return false;
         }
         try {
-            return $this->getClassMap()->has($className);
+            return $this->getClassMapFromCache()->has($className);
         } catch (Throwable $e) {
             return false;
         }
@@ -89,23 +89,8 @@ final class PlugsMapCache implements PlugsMapCacheInterface
      */
     public function getPlugsQueueFor(string $className): PlugsQueueTypedInterface
     {
-        if (!$this->cache->exists($this->classMapKey)) {
-            throw new OutOfBoundsException(
-                (new Message('No cache exists at %key% cache key'))
-                    ->code('%key%', $this->classMapKey->toString()),
-                1
-            );
-        }
-        try {
-            $classMap = $this->getClassMap();
-        } catch (Throwable $e) {
-            throw new OutOfBoundsException(
-                ($e instanceof Exception
-                    ? $e->message()
-                    : new Message($e->getMessage())),
-                2
-            );
-        }
+        $this->assertClassMap();
+        $classMap = $this->getClassMapFromCache();
         if (!$classMap->has($className)) {
             throw new OutOfBoundsException(
                 (new Message('Class name %className% is not mapped'))
@@ -113,7 +98,6 @@ final class PlugsMapCache implements PlugsMapCacheInterface
                 3
             );
         }
-
         try {
             $path = $classMap->get($className);
 
@@ -128,8 +112,28 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         }
     }
 
-    private function getClassMap(): ClassMapInterface
+    private function getClassMapFromCache(): ClassMapInterface
     {
-        return $this->cache->get($this->classMapKey)->var();
+        try {
+            return $this->cache->get($this->classMapKey)->var();
+        } catch (Throwable $e) {
+            throw new OutOfBoundsException(
+                ($e instanceof Exception
+                    ? $e->message()
+                    : new Message($e->getMessage())),
+                2
+            );
+        }
+    }
+
+    private function assertClassMap(): void
+    {
+        if (!$this->cache->exists($this->classMapKey)) {
+            throw new OutOfBoundsException(
+                (new Message('No cache exists at %key% cache key'))
+                    ->code('%key%', $this->classMapKey->toString()),
+                1
+            );
+        }
     }
 }

@@ -34,7 +34,7 @@ final class Unserialize implements UnserializeInterface
     public function __construct(string $serialized)
     {
         try {
-            $this->var = unserialize($serialized);
+            $this->var = @unserialize($serialized);
         } catch (Throwable $e) {
             throw new UnserializeException(
                 (new Message('String provided is unable to unserialize: %message%'))
