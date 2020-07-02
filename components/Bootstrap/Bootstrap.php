@@ -13,9 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Bootstrap;
 
-use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Bootstrap\BootstrapDirException;
-use Chevere\Exceptions\Core\Exception;
+use Chevere\Exceptions\Filesystem\DirNotExistsException;
+use Chevere\Exceptions\Filesystem\DirNotWritableException;
 use Chevere\Interfaces\Bootstrap\BootstrapInterface;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Throwable;
@@ -53,25 +52,14 @@ final class Bootstrap implements BootstrapInterface
         return $this->dir;
     }
 
-    private function handleDirectory(DirInterface $dir, string $argumentName): void
+    /** @codeCoverageIgnore */
+    private function handleDirectory(DirInterface $dir): void
     {
-        try {
-            if ($dir->exists() === false) {
-                throw new Exception(
-                    (new Message("Directory %directory% (%argumentName% argument) doesn't exists"))
-                        ->code('%directory%', $dir->path()->absolute())
-                        ->strong('%argumentName%', $argumentName)
-                );
-            }
-            if ($dir->path()->isWritable() === false) {
-                $dir->path()->chmod(0777); // @codeCoverageIgnore
-            }
-        } catch (Throwable $e) {
-            throw new BootstrapDirException(
-                $e instanceof Exception
-                    ? $e->message()
-                    : new Message($e->getMessage())
-            );
+        if ($dir->exists() === false) {
+            throw new DirNotExistsException;
+        }
+        if ($dir->path()->isWritable() === false) {
+            throw new DirNotWritableException;
         }
     }
 }

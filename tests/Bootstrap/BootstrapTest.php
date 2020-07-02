@@ -15,8 +15,8 @@ namespace Chevere\Tests\Bootstrap;
 
 use Chevere\Components\Bootstrap\Bootstrap;
 use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Exceptions\Bootstrap\BootstrapDirException;
-use Chevere\Interfaces\Bootstrap\BootstrapInterface;
+use Chevere\Exceptions\Filesystem\DirNotExistsException;
+use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -34,12 +34,5 @@ final class BootstrapTest extends TestCase
         $this->assertSame($dir, $bootstrap->dir());
         $this->assertIsInt($bootstrap->time());
         $this->assertIsInt($bootstrap->hrtime());
-    }
-
-    public function testWithNonExistentDirs(): void
-    {
-        $dir = $this->getBootDir(uniqid() . '/');
-        $this->expectException(BootstrapDirException::class);
-        new Bootstrap($dir);
     }
 }

@@ -24,6 +24,8 @@ use Chevere\Exceptions\Filesystem\PathIsFileException;
 use Chevere\Exceptions\Filesystem\PathIsNotDirectoryException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
+use Exception;
+use OutOfRangeException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Throwable;
@@ -79,7 +81,9 @@ class Dir implements DirInterface
     final public function create(int $mode = 0755): void
     {
         try {
-            mkdir($this->path->absolute(), $mode, true);
+            if (!mkdir($this->path->absolute(), $mode, true)) {
+                throw new OutOfRangeException;
+            }
         } catch (Throwable $e) {
             throw new DirUnableToCreateException(
                 (new Message('Unable to create directory %path% %thrown%'))

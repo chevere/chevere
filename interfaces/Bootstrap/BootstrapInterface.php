@@ -13,28 +13,31 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Bootstrap;
 
-use Chevere\Exceptions\Bootstrap\BootstrapDirException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 
+/**
+ * Describes a bootstrap component, providing access to its directory and time-related properties.
+ */
 interface BootstrapInterface
 {
     /**
-     * @throws BootstrapDirException
+     * @throws DirNotExistsException
+     * @throws DirNotWritableException
      */
     public function __construct(DirInterface $dir);
 
     /**
-     * Provides access to the time() registered on instance creation.
+     * Provides access to the time registered on instance creation.
      */
     public function time(): int;
 
     /**
-     * Provides access to the hrtime(true) registered on instance creation.
+     * Provides access to the high-resolution time on instance creation.
      */
     public function hrTime(): int;
 
     /**
-     * Provides access to the dir used on instance creation.
+     * Provides access to dir.
      */
     public function dir(): DirInterface;
 }

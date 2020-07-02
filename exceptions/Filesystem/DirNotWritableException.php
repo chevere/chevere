@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Bootstrap;
+namespace Chevere\Exceptions\Filesystem;
 
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown if the directories have issues.
+ * Exception thrown when the directory is not writable.
  */
-final class BootstrapDirException extends Exception
+final class DirNotWritableException extends Exception
 {
 }

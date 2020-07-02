@@ -14,25 +14,17 @@ declare(strict_types=1);
 namespace Chevere\Components\Filesystem;
 
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Filesystem\PathDotSlashException;
-use Chevere\Exceptions\Filesystem\PathDoubleDotsDashException;
-use Chevere\Exceptions\Filesystem\PathExtraSlashesException;
-use Chevere\Exceptions\Filesystem\PathNotAbsoluteException;
+use Chevere\Exceptions\Filesystem\PathInvalidException;
 use Chevere\Exceptions\Filesystem\PathNotExistsException;
 use Chevere\Exceptions\Filesystem\PathUnableToChmodException;
 use Chevere\Interfaces\Filesystem\PathInterface;
+use Throwable;
 
 final class Path implements PathInterface
 {
     /** @var string Absolute path */
     private string $absolute;
 
-    /**
-     * @throws PathNotAbsoluteException
-     * @throws PathDoubleDotsDashException
-     * @throws PathDotSlashException
-     * @throws PathExtraSlashesException
-     */
     public function __construct(string $absolute)
     {
         $assert = new AssertPathFormat($absolute);
@@ -67,8 +59,6 @@ final class Path implements PathInterface
 
     /**
      * @codeCoverageIgnore
-     * @throws PathNotExistsException
-     * @throws PathUnableToChmodException
      */
     public function chmod(int $mode): void
     {
@@ -84,7 +74,6 @@ final class Path implements PathInterface
 
     /**
      * @codeCoverageIgnore
-     * @throws PathNotExistsException
      */
     public function isWritable(): bool
     {
@@ -95,7 +84,6 @@ final class Path implements PathInterface
 
     /**
      * @codeCoverageIgnore
-     * @throws PathNotExistsException
      */
     public function isReadable(): bool
     {
@@ -104,12 +92,18 @@ final class Path implements PathInterface
         return is_readable($this->absolute);
     }
 
-    public function getChild(string $child): PathInterface
+    public function getChild(string $path): PathInterface
     {
         $parent = $this->absolute;
         $childPath = rtrim($parent, '/');
-
-        return new Path($childPath . '/' . $child);
+        try {
+            return new Path($childPath . '/' . $path);
+        } catch (Throwable $e) {
+            throw new PathInvalidException(
+                (new Message('Invalid path provided %thrown%'))
+                    ->code('%thrown%', $e->getMessage())
+            );
+        }
     }
 
     private function assertExists(): void

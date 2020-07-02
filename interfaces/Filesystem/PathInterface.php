@@ -13,52 +13,71 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Filesystem;
 
+use Chevere\Exceptions\Filesystem\PathDotSlashException;
+use Chevere\Exceptions\Filesystem\PathDoubleDotsDashException;
+use Chevere\Exceptions\Filesystem\PathExtraSlashesException;
+use Chevere\Exceptions\Filesystem\PathInvalidException;
 use Chevere\Exceptions\Filesystem\PathIsNotDirectoryException;
+use Chevere\Exceptions\Filesystem\PathNotAbsoluteException;
+use Chevere\Exceptions\Filesystem\PathNotExistsException;
 use Chevere\Exceptions\Filesystem\PathUnableToChmodException;
 
 interface PathInterface
 {
+    /**
+     * @throws PathDotSlashException
+     * @throws PathDoubleDotsDashException
+     * @throws PathExtraSlashesException
+     * @throws PathNotAbsoluteException
+     */
+    public function __construct(string $absolute);
+
     /**
      * @return string filesystem path
      */
     public function absolute(): string;
 
     /**
-     * Returns a boolean indicating whether the path exists.
+     * Indicates whether the path exists.
      */
     public function exists(): bool;
 
     /**
-     * Returns a boolean indicating whether the path is a directory and exists.
+     * Indicates whether the path is a directory and exists.
      */
     public function isDir(): bool;
 
     /**
-     * Returns a boolean indicating whether the path is a file and exists.
+     * Indicates whether the path is a file and exists.
      */
     public function isFile(): bool;
 
     /**
-     * Wrapper for \chmod.
+     * Wrapper for `\chmod`.
+     *
      * @throws PathIsNotDirectoryException
      * @throws PathUnableToChmodException
      */
     public function chmod(int $mode): void;
 
     /**
-     * Wrapper for \is_writeable.
-     * @throws PathIsNotDirectoryException
+     * Wrapper for `\is_writeable`.
+     *
+     * @throws PathNotExistsException
      */
     public function isWritable(): bool;
 
     /**
-     * Wrapper for \is_writeable.
-     * @throws PathIsNotDirectoryException
+     * Wrapper for `\is_readable`.
+     *
+     * @throws PathNotExistsException
      */
     public function isReadable(): bool;
 
     /**
-     * Get a child path as a PathInterface
+     * Get a child instance for the target child path.
+     *
+     * @throws PathInvalidException
      */
-    public function getChild(string $child): PathInterface;
+    public function getChild(string $path): PathInterface;
 }
