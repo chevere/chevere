@@ -85,7 +85,7 @@ final class VarExportable implements VarExportableInterface
     private function assertIsNotResource($var): void
     {
         if (is_resource($var)) {
-            if ($this->breadcrumb->hasAny()) {
+            if ($this->breadcrumb->count() > 0) {
                 $message = (new Message("Passed argument contains a resource which can't be exported at %at%"))
                     ->code('%at%', $this->breadcrumb->toString());
             } else {

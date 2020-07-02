@@ -13,10 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Bootstrap;
 
+use Chevere\Exceptions\Filesystem\DirNotExistsException;
+use Chevere\Exceptions\Filesystem\DirNotWritableException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 
 /**
- * Describes a bootstrap component, providing access to its directory and time-related properties.
+ * Describes a bootstrap providing access to its directory and time-related properties.
  */
 interface BootstrapInterface
 {

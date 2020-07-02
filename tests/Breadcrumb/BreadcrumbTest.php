@@ -15,6 +15,7 @@ namespace Chevere\Tests\Breadcrumb;
 
 use Chevere\Components\Breadcrumb\Breadcrumb;
 use Chevere\Exceptions\Breadcrumb\BreadcrumbException;
+use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
 final class BreadcrumbTest extends TestCase
@@ -33,7 +34,7 @@ final class BreadcrumbTest extends TestCase
         $breadcrumb = new Breadcrumb();
         $this->assertEmpty($breadcrumb->toArray());
         $this->assertEmpty($breadcrumb->toString());
-        $this->assertFalse($breadcrumb->hasAny());
+        $this->assertCount(0, $breadcrumb);
         $this->assertFalse($breadcrumb->has(0));
         $this->assertSame(-1, $breadcrumb->pos());
     }
@@ -70,10 +71,10 @@ final class BreadcrumbTest extends TestCase
             $this->assertNotContains($item, $breadcrumb->toArray());
             $this->assertStringNotContainsString($item, $breadcrumb->toString());
         }
-        $this->assertFalse($breadcrumb->hasAny());
+        $this->assertCount(0, $breadcrumb);
         $this->assertEmpty($breadcrumb->toArray());
         $this->assertEmpty($breadcrumb->toString());
-        $this->expectException(BreadcrumbException::class);
+        $this->expectException(OutOfBoundsException::class);
         $breadcrumb->withRemovedItem($pos);
     }
 }

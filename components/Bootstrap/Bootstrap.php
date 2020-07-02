@@ -17,7 +17,6 @@ use Chevere\Exceptions\Filesystem\DirNotExistsException;
 use Chevere\Exceptions\Filesystem\DirNotWritableException;
 use Chevere\Interfaces\Bootstrap\BootstrapInterface;
 use Chevere\Interfaces\Filesystem\DirInterface;
-use Throwable;
 
 final class Bootstrap implements BootstrapInterface
 {

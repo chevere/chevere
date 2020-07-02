@@ -13,13 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Breadcrumb;
 
-use Chevere\Exceptions\Breadcrumb\BreadcrumbException;
-use Chevere\Interfaces\Breadcrumb\BreadcrumbInterface;
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Breadcrumb\BreadcrumbException;
+use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Interfaces\Breadcrumb\BreadcrumbInterface;
 
-/**
- * A general purpose iterator companion.
- */
 final class Breadcrumb implements BreadcrumbInterface
 {
     /** @var array [pos => $item] */
@@ -34,9 +32,9 @@ final class Breadcrumb implements BreadcrumbInterface
         return array_key_exists($pos, $this->items);
     }
 
-    public function hasAny(): bool
+    public function count(): int
     {
-        return !empty($this->items);
+        return count($this->items);
     }
 
     public function pos(): int
@@ -57,7 +55,7 @@ final class Breadcrumb implements BreadcrumbInterface
     public function withRemovedItem(int $pos): BreadcrumbInterface
     {
         if (!array_key_exists($pos, $this->items)) {
-            throw new BreadcrumbException(
+            throw new OutOfBoundsException(
                 (new Message('Pos %pos% not found'))
                     ->code('%pos%', (string) $pos)
             );
@@ -68,19 +66,11 @@ final class Breadcrumb implements BreadcrumbInterface
         return $new;
     }
 
-    /**
-     * Provides access to the breadcrumb as array.
-     */
     public function toArray(): array
     {
         return $this->items;
     }
 
-    /**
-     * Provides access to the breadcrumb string.
-     *
-     * @return string items string `[item0][item1][itemN]...[itemN+1]`
-     */
     public function toString(): string
     {
         if (0 == count($this->items)) {

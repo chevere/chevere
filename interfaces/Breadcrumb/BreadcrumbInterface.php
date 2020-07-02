@@ -13,46 +13,59 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Breadcrumb;
 
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\To\ToArrayInterface;
 use Chevere\Interfaces\To\ToStringInterface;
-use Chevere\Exceptions\Breadcrumb\BreadcrumbException;
+use Countable;
 
-interface BreadcrumbInterface extends ToArrayInterface, ToStringInterface
+/**
+ * Describe a general purpose iterator companion.
+ */
+interface BreadcrumbInterface extends ToArrayInterface, ToStringInterface, Countable
 {
     /**
-     * Returns a boolean indicating whether the instance has the given position.
+     * Indicates whether the instance has the given position.
      */
     public function has(int $pos): bool;
 
     /**
-     * Returns a boolean indicating whether the instance has any items.
-     */
-    public function hasAny(): bool;
-
-    /**
      * Returns the current breadcrumb position.
-     *
-     * @throws BreadcrumbException if there's no item
      */
     public function pos(): int;
 
     /**
-     * Return an instance with the specified string item added.
+     * Return an instance with the specified added item.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified item.
+     * an instance that contains the specified added item.
      */
     public function withAddedItem(string $item): BreadcrumbInterface;
 
     /**
-     * Return an instance with the specified waypoint pos removed.
+     * Return an instance with the specified pos removed.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified waypoint pos removed.
+     * an instance that contains the specified pos removed.
      *
-     * @param int $post the waypoint position to remove
-     *
-     * @throws BreadcrumbException if the item specified by $pos doesn't exists
+     * @throws OutOfBoundsException
      */
     public function withRemovedItem(int $pos): BreadcrumbInterface;
+
+    /**
+     * Returns an array representation of the object.
+     *
+     * ```php
+     * return [0 => 'item',];
+     * ```
+     */
+    public function toArray(): array;
+
+    /**
+     * Returns an string representation of the object.
+     *
+     * ```php
+     * return '[item0][item1][itemN]...[itemN+1]';
+     * ```
+     */
+    public function toString(): string;
 }
