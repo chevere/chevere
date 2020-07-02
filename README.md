@@ -10,19 +10,15 @@ Quality](https://img.shields.io/scrutinizer/quality/g/chevere/chevere?style=flat
 [![Maintainability](https://img.shields.io/codeclimate/maintainability/chevere/chevere?style=flat-square)](https://codeclimate.com/github/chevere/chevere)
 [![Tech Debt](https://img.shields.io/codeclimate/tech-debt/chevere/chevere?style=flat-square)](https://codeclimate.com/github/chevere/chevere)
 
-This is the repository of Chevere, a development framework for building **pluggable** server side applications, following Clean Code principles, with a strongly typed coding and a heavy culture on the console. [Documentation](https://github.com/chevere/docs).
+This is the Chevere Framework for building **pluggable** applications, following Clean Code principles, with a strongly typed coding and a heavy culture on the console. [Documentation](https://chevere.org).
 
-## 🥋 This is almost ready...
+## Under Development
 
-The project is under development and is not recommended to use it for production yet. It is almost there, thanks for waiting.
+The project is under beta development and is not recommended to use it for production yet.
 
 ## Install
 
-Install using [Composer](https://getcomposer.org/).
-
-```shell
-composer install
-```
+Refer to [Installation documentation](https://chevere.org/get-started/installation.html).
 
 ## License
 
