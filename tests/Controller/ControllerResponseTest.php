@@ -20,20 +20,20 @@ final class ControllerResponseTest extends TestCase
 {
     public function testConstructSuccess(): void
     {
-        $controllerResponse = new ControllerResponse(true);
+        $controllerResponse = new ControllerResponse(true, []);
         $this->assertTrue($controllerResponse->isSuccess());
     }
 
     public function testConstructFailure(): void
     {
-        $controllerResponse = new ControllerResponse(false);
+        $controllerResponse = new ControllerResponse(false, []);
         $this->assertFalse($controllerResponse->isSuccess());
     }
 
     public function testWithData(): void
     {
         $data = ['The data'];
-        $controllerResponse = new ControllerResponse(true);
+        $controllerResponse = new ControllerResponse(true, []);
         $this->assertSame([], $controllerResponse->data());
         $controllerResponse = $controllerResponse->withData($data);
         $this->assertSame($data, $controllerResponse->data());

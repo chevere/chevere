@@ -89,7 +89,7 @@ final class ControllerRunnerTestController extends Controller
 
     public function run(ControllerArgumentsInterface $args): ControllerResponseInterface
     {
-        return (new ControllerResponse(true))
+        return (new ControllerResponse(true, []))
             ->withData(['user' => $args->get('name')]);
     }
 }
@@ -103,7 +103,7 @@ final class ControllerRunnerTestControllerSetupFail extends Controller
 
     public function run(ControllerArgumentsInterface $args): ControllerResponseInterface
     {
-        return new ControllerResponse(true);
+        return new ControllerResponse(true, []);
     }
 }
 
@@ -124,6 +124,6 @@ final class ControllerRunnerTestControllerTearDownFail extends Controller
 
     public function run(ControllerArgumentsInterface $args): ControllerResponseInterface
     {
-        return new ControllerResponse(true);
+        return new ControllerResponse(true, []);
     }
 }

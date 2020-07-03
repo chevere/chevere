@@ -86,6 +86,6 @@ final class ControllerNameTestController extends Controller
     {
         // $user = (new UserMiddleware($arguments->get('id')))->get();
 
-        return new ControllerResponse(true);
+        return new ControllerResponse(true, []);
     }
 }

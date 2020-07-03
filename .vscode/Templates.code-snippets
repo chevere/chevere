@@ -122,7 +122,7 @@
             "",
             "\tpublic function run(ControllerArgumentsInterface \\$controllerArguments): ControllerResponseInterface",
             "\t{",
-            "\t\treturn ${3:new ControllerResponse(true)};",
+            "\t\treturn ${3:new ControllerResponse(true, [])};",
             "\t}",
             "}"
         ]
@@ -166,7 +166,7 @@
             "",
             "\tpublic function run(ControllerArgumentsInterface \\$controllerArguments): ControllerResponseInterface",
             "\t{",
-            "\t\treturn ${3:new ControllerResponse(true)};",
+            "\t\treturn ${3:new ControllerResponse(true, [])};",
             "\t}",
             "}"
         ]

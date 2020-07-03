@@ -19,19 +19,12 @@ final class ControllerResponse implements ControllerResponseInterface
 {
     private bool $isSuccess;
 
-    private array $data = [];
+    private array $data;
 
-    public function __construct(bool $isSuccess)
+    public function __construct(bool $isSuccess, array $data)
     {
         $this->isSuccess = $isSuccess;
-    }
-
-    public function withData(array $data): ControllerResponseInterface
-    {
-        $new = clone $this;
-        $new->data = $data;
-
-        return $new;
+        $this->data = $data;
     }
 
     public function isSuccess(): bool
@@ -42,5 +35,21 @@ final class ControllerResponse implements ControllerResponseInterface
     public function data(): array
     {
         return $this->data;
+    }
+
+    public function withIsSuccess(bool $isSuccess): ControllerResponseInterface
+    {
+        $new = clone $this;
+        $new->isSuccess = $isSuccess;
+
+        return $new;
+    }
+
+    public function withData(array $data): ControllerResponseInterface
+    {
+        $new = clone $this;
+        $new->data = $data;
+
+        return $new;
     }
 }

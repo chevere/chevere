@@ -18,6 +18,9 @@ use Chevere\Exceptions\Controller\ControllerNameException;
 use Chevere\Exceptions\Controller\ControllerNotExistsException;
 use Chevere\Interfaces\To\ToStringInterface;
 
+/**
+ * Describes the component in charge of handling the controller name.
+ */
 interface ControllerNameInterface extends ToStringInterface
 {
     /**
