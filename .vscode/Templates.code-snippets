@@ -275,7 +275,7 @@
         "prefix": "docblock-boolean",
         "body": [
             "/**",
-            " * Returns a boolean indicating whether the instance has a ${1:name}.",
+            " * Indicates whether the instance has a ${1:name}.",
             " */"
         ]
     }

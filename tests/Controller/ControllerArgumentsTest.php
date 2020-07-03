@@ -18,7 +18,7 @@ use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Regex\Regex;
 use Chevere\Exceptions\Controller\ControllerArgumentRegexMatchException;
-use Chevere\Exceptions\Controller\ControllerArgumentsRequiredException;
+use Chevere\Exceptions\Controller\ControllerArgumentRequiredException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
@@ -38,7 +38,7 @@ final class ControllerArgumentsTest extends TestCase
                 new ControllerParameter('name', new Regex('/^\w+$/'))
             );
         $controllerArguments = new ControllerArguments($parameters, $arguments);
-        $this->assertSame($arguments, $controllerArguments->arguments());
+        $this->assertSame($arguments, $controllerArguments->toArray());
         foreach ($arguments as $name => $value) {
             $this->assertTrue($controllerArguments->has($name));
             $this->assertSame($value, $controllerArguments->get($name));
@@ -93,7 +93,7 @@ final class ControllerArgumentsTest extends TestCase
                 new ControllerParameter('id', new Regex('/^[0-9]+$/'))
             );
         $arguments = [];
-        $this->expectException(ControllerArgumentsRequiredException::class);
+        $this->expectException(ControllerArgumentRequiredException::class);
         new ControllerArguments($parameters, $arguments);
     }
 

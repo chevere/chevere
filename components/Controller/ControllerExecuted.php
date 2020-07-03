@@ -24,18 +24,9 @@ final class ControllerExecuted implements ControllerExecutedInterface
 
     private Throwable $throwable;
 
-    public function __construct(array $data = [])
+    public function __construct(array $data)
     {
         $this->data = $data;
-    }
-
-    public function withThrowable(Throwable $throwable): ControllerExecutedInterface
-    {
-        $new = clone $this;
-        $new->throwable = $throwable;
-        $new->code = 1;
-
-        return $new;
     }
 
     public function code(): int
@@ -46,6 +37,15 @@ final class ControllerExecuted implements ControllerExecutedInterface
     public function data(): array
     {
         return $this->data;
+    }
+
+    public function withThrowable(Throwable $throwable, int $code): ControllerExecutedInterface
+    {
+        $new = clone $this;
+        $new->throwable = $throwable;
+        $new->code = $code;
+
+        return $new;
     }
 
     public function hasThrowable(): bool

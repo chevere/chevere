@@ -17,7 +17,7 @@ use Ahc\Cli\Input\Command;
 use Chevere\Components\Controller\ControllerArguments;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controller\ControllerRunner;
-use Chevere\Exceptions\Controller\ControllerArgumentsRequiredException;
+use Chevere\Exceptions\Controller\ControllerArgumentRequiredException;
 use Chevere\Exceptions\Core\Exception;
 use Chevere\Interfaces\Controller\ControllerInterface;
 
@@ -74,7 +74,7 @@ final class ControllerRunCommand extends Command
         }
         try {
             $arguments = new ControllerArguments($controller->parameters(), $args ?? []);
-        } catch (ControllerArgumentsRequiredException $e) {
+        } catch (ControllerArgumentRequiredException $e) {
             $this->writer()->error('Missing arguments', true);
 
             return 255;

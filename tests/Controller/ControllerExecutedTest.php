@@ -23,20 +23,21 @@ final class ControllerExecutedTest extends TestCase
     public function testConstruct(): void
     {
         $data = ['The data'];
-        $ran = new ControllerExecuted($data);
-        $this->assertSame(0, $ran->code());
-        $this->assertSame($data, $ran->data());
-        $this->assertFalse($ran->hasThrowable());
+        $executed = new ControllerExecuted($data);
+        $this->assertSame(0, $executed->code());
+        $this->assertSame($data, $executed->data());
+        $this->assertFalse($executed->hasThrowable());
         $this->expectException(Error::class);
-        $ran->throwable();
+        $executed->throwable();
     }
 
     public function testWithThrowable(): void
     {
-        $ran = new ControllerExecuted([]);
+        $executed = new ControllerExecuted([]);
         $throwable = new Exception;
-        $ran = $ran->withThrowable($throwable);
-        $this->assertTrue($ran->hasThrowable());
-        $this->assertSame($throwable, $ran->throwable());
+        $executed = $executed->withThrowable($throwable, 1);
+        $this->assertTrue($executed->hasThrowable());
+        $this->assertSame($throwable, $executed->throwable());
+        $this->assertSame(1, $executed->code());
     }
 }

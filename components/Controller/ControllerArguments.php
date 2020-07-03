@@ -15,12 +15,12 @@ namespace Chevere\Components\Controller;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Controller\ControllerArgumentRegexMatchException;
-use Chevere\Exceptions\Controller\ControllerArgumentsRequiredException;
+use Chevere\Exceptions\Controller\ControllerArgumentRequiredException;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerParameterInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
-use Exception;
+use Throwable;
 
 final class ControllerArguments implements ControllerArgumentsInterface
 {
@@ -38,7 +38,7 @@ final class ControllerArguments implements ControllerArgumentsInterface
         }
     }
 
-    public function arguments(): array
+    public function toArray(): array
     {
         return $this->arguments;
     }
@@ -57,14 +57,11 @@ final class ControllerArguments implements ControllerArgumentsInterface
         return isset($this->arguments[$name]);
     }
 
-    /**
-     * @throws OutOfBoundsException
-     */
     public function get(string $name): string
     {
         try {
             return $this->arguments[$name];
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             throw new OutOfBoundsException;
         }
     }
@@ -88,9 +85,6 @@ final class ControllerArguments implements ControllerArgumentsInterface
         }
     }
 
-    /**
-     * @throws ControllerArgumentsRequiredException
-     */
     private function assertRequired(): void
     {
         $failed = [];
@@ -107,7 +101,7 @@ final class ControllerArguments implements ControllerArgumentsInterface
             }
         }
         if ($failed !== []) {
-            throw new ControllerArgumentsRequiredException(
+            throw new ControllerArgumentRequiredException(
                 (new Message('Missing required argument(s): %message%'))
                     ->code('%message%', implode(', ', $failed))
             );

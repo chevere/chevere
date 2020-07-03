@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Controller;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Controller\ControllerParameterInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
-use OutOfBoundsException;
 
 final class ControllerParameters implements ControllerParametersInterface
 {
@@ -42,11 +42,15 @@ final class ControllerParameters implements ControllerParametersInterface
      */
     public function get(string $name): ControllerParameterInterface
     {
-        /**
-         * @var ControllerParameterInterface $return
-         */
-        $return = $this->map->get($name);
+        try {
+            /**
+             * @var ControllerParameterInterface $return
+             */
+            $return = $this->map->get($name);
 
-        return $return;
+            return $return;
+        } catch (\OutOfBoundsException $e) {
+            throw new OutOfBoundsException;
+        }
     }
 }

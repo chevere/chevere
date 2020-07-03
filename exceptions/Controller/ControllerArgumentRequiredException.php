@@ -18,6 +18,6 @@ use Chevere\Exceptions\Core\Exception;
 /**
  * Exception thrown when missing required arguments.
  */
-final class ControllerArgumentsRequiredException extends Exception
+final class ControllerArgumentRequiredException extends Exception
 {
 }

@@ -35,7 +35,7 @@ final class ControllerRunner implements ControllerRunnerInterface
             $response = $this->controller->run($arguments);
             $this->controller->tearDown();
         } catch (Throwable $e) {
-            return (new ControllerExecuted)->withThrowable($e);
+            return (new ControllerExecuted([]))->withThrowable($e, 1);
         }
         $data = $response->data();
 
