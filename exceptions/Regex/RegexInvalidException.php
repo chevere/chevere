@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Middleware;
+namespace Chevere\Exceptions\Regex;
 
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown when MiddlewareNames are empty.
+ * Exception thrown when providing an invalid regex string.
  */
-final class MiddlewareNamesEmptyException extends Exception
+final class RegexInvalidException extends Exception
 {
 }

@@ -16,12 +16,9 @@ namespace Chevere\Components\Regex;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Regex\RegexException;
+use Chevere\Exceptions\Regex\RegexInvalidException;
 use Chevere\Interfaces\Regex\RegexInterface;
-use Throwable;
 
-/**
- * Regex expression (PCRE).
- */
 final class Regex implements RegexInterface
 {
     private string $string;
@@ -30,9 +27,6 @@ final class Regex implements RegexInterface
 
     private string $noDelimitersNoAnchors;
 
-    /**
-     * @throws RegexException if $regex is not a valid regular expresion
-     */
     public function __construct(string $string)
     {
         $this->string = $string;
@@ -42,15 +36,12 @@ final class Regex implements RegexInterface
         $this->noDelimitersNoAnchors = (string) preg_replace('#^\^(.*)\$$#', '$1', $this->noDelimiters);
     }
 
-    /**
-     * @throws RegexException If provided regex contains capture groups
-     */
     public function assertNoCapture(): void
     {
         $regex = str_replace(['\(', '\)'], null, $this->string);
         if (false !== strpos($regex, '(') || false !== strpos($regex, ')')) {
             throw new RegexException(
-                (new Message('Provided expresion %match% contains capture groups'))
+                (new Message('Provided expression %match% contains capture groups'))
                     ->code('%match%', $this->string)
             );
         }
@@ -78,7 +69,7 @@ final class Regex implements RegexInterface
                 throw new Exception; // @codeCoverageIgnore
             }
         } catch (Exception $e) {
-            throw new RegexException(
+            throw new RegexInvalidException(
                 (new Message('Invalid regex string %regex% provided %error% [%preg%]'))
                     ->code('%regex%', $this->string)
                     ->code('%error%', $e->getMessage())

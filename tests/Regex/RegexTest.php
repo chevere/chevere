@@ -13,15 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Regex;
 
-use Chevere\Exceptions\Regex\RegexException;
 use Chevere\Components\Regex\Regex;
+use Chevere\Exceptions\Regex\RegexException;
+use Chevere\Exceptions\Regex\RegexInvalidException;
 use PHPUnit\Framework\TestCase;
 
 final class RegexTest extends TestCase
 {
     public function testConstructInvalidArgument(): void
     {
-        $this->expectException(RegexException::class);
+        $this->expectException(RegexInvalidException::class);
         new Regex('#');
     }
 

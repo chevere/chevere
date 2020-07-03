@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Regex;
 
+use Chevere\Exceptions\Regex\RegexInvalidException;
 use Chevere\Interfaces\To\ToStringInterface;
 
+/**
+ * Describes the component that interacts with PCRE - Perl Compatible Regular Expressions.
+ */
 interface RegexInterface extends ToStringInterface
 {
     const ERRORS = [
@@ -27,22 +31,23 @@ interface RegexInterface extends ToStringInterface
         PREG_JIT_STACKLIMIT_ERROR => 'PREG_JIT_STACKLIMIT_ERROR',
     ];
 
+    /**
+     * @throws RegexInvalidException
+     */
     public function __construct(string $string);
 
+    /**
+     * @throws RegexException If provided regex contains capture groups
+     */
     public function assertNoCapture(): void;
 
     /**
-     * @return string The regex string used to create the object
-     */
-    public function toString(): string;
-
-    /**
-     * @return string The regex string without delimiter char
+     * Provides access to the the regex string without delimiters.
      */
     public function toNoDelimiters(): string;
 
     /**
-     * @return string The regex string without delimiter char, without anchors (^, $)
+     * Provides access to the regex string without delimiters and without anchors (`^`, `$`).
      */
     public function toNoDelimitersNoAnchors(): string;
 }

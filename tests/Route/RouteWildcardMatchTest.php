@@ -13,8 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Route;
 
-use Chevere\Exceptions\Regex\RegexException;
 use Chevere\Components\Route\RouteWildcardMatch;
+use Chevere\Exceptions\Regex\RegexException;
+use Chevere\Exceptions\Regex\RegexInvalidException;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -22,7 +23,7 @@ final class RouteWildcardMatchTest extends TestCase
 {
     public function testConstructInvalidArgument(): void
     {
-        $this->expectException(RegexException::class);
+        $this->expectException(RegexInvalidException::class);
         new RouteWildcardMatch('#');
     }
 
