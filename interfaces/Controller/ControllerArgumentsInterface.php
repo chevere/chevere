@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Controller;
 
+/**
+ * Describes the component in charge of handling controller arguments.
+ */
 interface ControllerArgumentsInterface
 {
+    // TODO: Should be a sequence.
     public function arguments(): array;
 
     public function withArgument(string $name, string $value): ControllerArgumentsInterface;
