@@ -28,32 +28,17 @@ final class ClassMap implements ClassMapInterface
     /** @var Map [string => className] */
     private Map $flip;
 
-    private bool $isStrict = true;
-
     public function __construct()
     {
         $this->classMap = new Map;
         $this->flip = new Map;
     }
 
-    public function isStrict(): bool
-    {
-        return $this->isStrict;
-    }
-
-    public function withStrict(bool $isStrict): ClassMapInterface
-    {
-        $new = clone $this;
-        $new->isStrict = $isStrict;
-
-        return $new;
-    }
-
     public function withPut(string $className, string $string): ClassMapInterface
     {
-        if ($this->isStrict && !class_exists($className)) {
+        if (!class_exists($className)) {
             throw new ClassNotExistsException(
-                (new Message("Strict standards: Class name %className% doesn't exists"))
+                (new Message("Class name %className% doesn't exists"))
                     ->strong('%className%', $className)
             );
         }

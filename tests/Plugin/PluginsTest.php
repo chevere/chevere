@@ -48,11 +48,10 @@ final class PluginsTest extends TestCase
 
     public function testRegisteredNotExists(): void
     {
-        $pluggable = 'registered';
+        $pluggable = 'stdClass';
         $map = uniqid() . '.php';
         $plugins = new Plugins(
             (new ClassMap)
-                ->withStrict(false)
                 ->withPut($pluggable, $map)
         );
         $this->expectException(PlugsFileNotExistsException::class);
@@ -61,11 +60,10 @@ final class PluginsTest extends TestCase
 
     public function testRegisteredWrongReturnType(): void
     {
-        $pluggable = 'registered';
+        $pluggable = 'stdClass';
         $map = $this->resourcesPath->getChild('invalid.php')->absolute();
         $plugins = new Plugins(
             (new ClassMap)
-                ->withStrict(false)
                 ->withPut($pluggable, $map)
         );
         $this->expectException(PlugsQueueInterfaceException::class);
@@ -74,11 +72,10 @@ final class PluginsTest extends TestCase
 
     public function testRegisteredCorrupted(): void
     {
-        $pluggable = 'registered';
+        $pluggable = 'stdClass';
         $map = $this->resourcesPath->getChild('corrupted.php')->absolute();
         $plugins = new Plugins(
             (new ClassMap)
-                ->withStrict(false)
                 ->withPut($pluggable, $map)
         );
         $this->expectException(RuntimeException::class);
@@ -87,11 +84,10 @@ final class PluginsTest extends TestCase
 
     public function testRegisteredHooks(): void
     {
-        $pluggable = 'registered';
+        $pluggable = 'stdClass';
         $map = $this->resourcesPath->getChild('hooks.php')->absolute();
         $plugins = new Plugins(
             (new ClassMap)
-                ->withStrict(false)
                 ->withPut($pluggable, $map)
         );
         $this->assertInstanceOf(

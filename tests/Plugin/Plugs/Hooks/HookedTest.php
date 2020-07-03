@@ -28,25 +28,23 @@ final class HookedTest extends TestCase
 {
     public function setUp(): void
     {
-        $resourcesPath = (new Path(__DIR__ . '/_resources/HookedTest/'));
-        $hooksPath = (new Dir($resourcesPath))->getChild('hooks-reg/')
+        $resources = (new Path(__DIR__ . '/_resources/'));
+        $hooksPath = (new Dir($resources))->getChild('HookedTest/hooks-reg/')
             ->path()->absolute();
-        $this->plugs = new Plugins(
-            (new ClassMap)
-                ->withStrict(false)
-                ->withPut(
-                    'Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHookable',
-                    $hooksPath . 'Chevere/Components/Hooks/Tests/TestHookable/hooks.php'
-                )
-                ->withPut(
-                    'Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHookableWithCorruptedHooks',
-                    $hooksPath . 'Chevere/Components/Hooks/Tests/MyHookableWithCorruptedHooks/hooks.php'
-                )
-                ->withPut(
-                    'Chevere\Tests\Plugin\Plugs\Hooks\_resources\TestHookableWithMissingHooks',
-                    'error.php'
-                )
-        );
+        $srcAt = $resources->absolute();
+        $nsHookable = 'Chevere\Tests\Plugin\Plugs\Hooks\_resources';
+        $fsHooks = 'Chevere/Components/Hooks/Tests/';
+        $classMap = new ClassMap;
+        foreach ([
+            'TestHookable' => $hooksPath . "$fsHooks/TestHookable/hooks.php",
+            'TestHookableWithCorruptedHooks' => $hooksPath . "$fsHooks/MyHookableWithCorruptedHooks/hooks.php",
+            'TestHookableWithMissingHooks' => 'error.php'
+        ] as $name => $path) {
+            require_once $srcAt . $name . '.php';
+            $fqn = "$nsHookable\\$name";
+            $classMap = $classMap->withPut($fqn, $path);
+        }
+        $this->plugs = new Plugins($classMap);
     }
 
     public function testWithoutHooksQueue(): void

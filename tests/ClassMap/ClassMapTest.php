@@ -25,7 +25,6 @@ final class ClassMapTest extends TestCase
     {
         $test = 'test';
         $classMap = new ClassMap;
-        $this->assertTrue($classMap->isStrict());
         $this->assertSame([], $classMap->toArray());
         $this->assertCount(0, $classMap);
         $this->assertFalse($classMap->has($test));
@@ -57,12 +56,5 @@ final class ClassMapTest extends TestCase
     {
         $this->expectException(ClassNotExistsException::class);
         (new ClassMap)->withPut(uniqid(), 'test');
-    }
-
-    public function testWithStrictFalse(): void
-    {
-        $classMap = (new ClassMap)->withStrict(false);
-        $this->assertFalse($classMap->isStrict());
-        $classMap->withPut(uniqid(), 'test');
     }
 }

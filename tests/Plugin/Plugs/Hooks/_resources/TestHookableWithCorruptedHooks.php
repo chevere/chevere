@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Tests\Plugin\Plugs\Hooks\_resources;
 
 /**
- * Same as TestHookable but this shouldn't register any hooks.
+ * Same as TestHookable but this register corrupted hooks.
  */
-final class TestHookableWithoutHooks extends TestHookable
+final class TestHookableWithCorruptedHooks extends TestHookable
 {
 }

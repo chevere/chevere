@@ -25,33 +25,18 @@ use Countable;
 interface ClassMapInterface extends Countable, ToArrayInterface
 {
     /**
-     * Indicates whether the instance is in strict mode.
-     *
-     * In strict mode the classes must exists.
-     */
-    public function isStrict(): bool;
-
-    /**
-     * Return an instance with the specified strict flag.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified strict flag.
-     */
-    public function withStrict(bool $isStrict): ClassMapInterface;
-
-    /**
      * Return an instance with the specified className mapping.
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified className mapping.
      *
-     * @throws ClassNotExistsException in strict mode.
+     * @throws ClassNotExistsException
      * @throws StringMappedException
      */
     public function withPut(string $className, string $string): ClassMapInterface;
 
     /**
-     * Indicates whether the instance has a name.
+     * Indicates whether the instance is mapping the given class name.
      */
     public function has(string $className): bool;
 
@@ -66,7 +51,9 @@ interface ClassMapInterface extends Countable, ToArrayInterface
      * Provides access to the class map.
      *
      * ```php
-     * return ['className' => 'string', ]
+     * return [
+     *     'className' => 'string',
+     * ]
      * ```
      */
     public function toArray(): array;
