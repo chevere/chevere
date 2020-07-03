@@ -11,8 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Controller;
+namespace Chevere\Exceptions\Controller;
 
-final class ControllerMiddleware
+use Chevere\Exceptions\Core\Exception;
+
+/**
+ * Exception thrown when parameter name is invalid.
+ */
+final class ControllerParameterNameInvalidException extends Exception
 {
 }

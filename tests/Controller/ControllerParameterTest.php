@@ -15,6 +15,7 @@ namespace Chevere\Tests\Controller;
 
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Regex\Regex;
+use Chevere\Exceptions\Controller\ControllerParameterNameInvalidException;
 use Chevere\Exceptions\Str\StrContainsException;
 use Chevere\Exceptions\Str\StrCtypeSpaceException;
 use Chevere\Exceptions\Str\StrEmptyException;
@@ -24,19 +25,19 @@ final class ControllerParameterTest extends TestCase
 {
     public function testEmptyName(): void
     {
-        $this->expectException(StrEmptyException::class);
+        $this->expectException(ControllerParameterNameInvalidException::class);
         new ControllerParameter('', new Regex('/.*/'));
     }
 
     public function testCtypeSpaceName(): void
     {
-        $this->expectException(StrCtypeSpaceException::class);
+        $this->expectException(ControllerParameterNameInvalidException::class);
         new ControllerParameter(' ', new Regex('/.*/'));
     }
 
     public function testSpaceInName(): void
     {
-        $this->expectException(StrContainsException::class);
+        $this->expectException(ControllerParameterNameInvalidException::class);
         new ControllerParameter('some name', new Regex('/.*/'));
     }
 

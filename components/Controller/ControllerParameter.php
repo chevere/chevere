@@ -13,47 +13,27 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Controller;
 
+use Chevere\Components\Str\StrAssert;
+use Chevere\Exceptions\Controller\ControllerParameterNameInvalidException;
+use Chevere\Exceptions\Core\Exception;
 use Chevere\Interfaces\Controller\ControllerParameterInterface;
 use Chevere\Interfaces\Regex\RegexInterface;
-use Chevere\Exceptions\Str\StrCtypeSpaceException;
-use Chevere\Exceptions\Str\StrEmptyException;
-use Chevere\Components\Str\StrAssert;
 
 final class ControllerParameter implements ControllerParameterInterface
 {
+    private bool $isRequired = true;
+
     private string $name;
 
     private RegexInterface $regex;
 
     private string $description = '';
 
-    private bool $isRequired = true;
-
-    /**
-     * @throws StrCtypeSpaceException if $name contains ctype space
-     * @throws StrEmptyException if $name is empty
-     */
     public function __construct(string $name, RegexInterface $regex)
     {
         $this->name = $name;
         $this->assertName();
         $this->regex = $regex;
-    }
-
-    public function withDescription(string $description): ControllerParameterInterface
-    {
-        $new = clone $this;
-        $new->description = $description;
-
-        return $new;
-    }
-
-    public function withIsRequired(bool $bool): ControllerParameterInterface
-    {
-        $new = clone $this;
-        $new->isRequired = $bool;
-
-        return $new;
     }
 
     public function isRequired(): bool
@@ -76,11 +56,35 @@ final class ControllerParameter implements ControllerParameterInterface
         return $this->description;
     }
 
+    public function withDescription(string $description): ControllerParameterInterface
+    {
+        $new = clone $this;
+        $new->description = $description;
+
+        return $new;
+    }
+
+    public function withIsRequired(bool $bool): ControllerParameterInterface
+    {
+        $new = clone $this;
+        $new->isRequired = $bool;
+
+        return $new;
+    }
+
     private function assertName(): void
     {
-        (new StrAssert($this->name))
-            ->notEmpty()
-            ->notCtypeSpace()
-            ->notContains(' ');
+        try {
+            (new StrAssert($this->name))
+                ->notEmpty()
+                ->notCtypeSpace()
+                ->notContains(' ');
+        } catch (Exception $e) {
+            throw new ControllerParameterNameInvalidException(
+                $e->message(),
+                $e->getCode(),
+                $e
+            );
+        }
     }
 }
