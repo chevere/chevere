@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Http;
 
+/**
+ * Describes the component that defines an HTTP method according to RFC 7231.
+ */
 interface MethodInterface
 {
     /**

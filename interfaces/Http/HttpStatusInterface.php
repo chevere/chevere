@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Http;
 
+/**
+ * Describes the known HTTP status codes.
+ */
 interface HttpStatusInterface
 {
     const STATUSES = [
