@@ -13,9 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Controller;
 
+use Chevere\Exceptions\Controller\ControllerInterfaceException;
+use Chevere\Exceptions\Controller\ControllerNameException;
+use Chevere\Exceptions\Controller\ControllerNotExistsException;
 use Chevere\Interfaces\To\ToStringInterface;
 
 interface ControllerNameInterface extends ToStringInterface
 {
-    public function toString(): string;
+    /**
+     * @throws ControllerNameException
+     * @throws ControllerNotExistsException
+     * @throws ControllerInterfaceException
+     */
+    public function __construct(string $name);
 }

@@ -17,31 +17,29 @@ use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Controller\ControllerResponse;
 use Chevere\Exceptions\Controller\ControllerInterfaceException;
+use Chevere\Exceptions\Controller\ControllerNameException;
 use Chevere\Exceptions\Controller\ControllerNotExistsException;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
-use Chevere\Exceptions\Str\StrContainsException;
-use Chevere\Exceptions\Str\StrCtypeSpaceException;
-use Chevere\Exceptions\Str\StrEmptyException;
 use PHPUnit\Framework\TestCase;
 
 final class ControllerNameTest extends TestCase
 {
     public function testEmpty(): void
     {
-        $this->expectException(StrEmptyException::class);
+        $this->expectException(ControllerNameException::class);
         new ControllerName('');
     }
 
     public function testCtypeSpace(): void
     {
-        $this->expectException(StrCtypeSpaceException::class);
+        $this->expectException(ControllerNameException::class);
         new ControllerName(' ');
     }
 
     public function testContainSpaces(): void
     {
-        $this->expectException(StrContainsException::class);
+        $this->expectException(ControllerNameException::class);
         new ControllerName('a name');
     }
 
