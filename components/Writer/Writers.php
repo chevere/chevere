@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Writer;
 
+use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Writer\WriterInterface;
 use Chevere\Interfaces\Writer\WritersInterface;
+use Laminas\Diactoros\Exception\InvalidArgumentException;
 use Laminas\Diactoros\Stream;
 
 final class Writers implements WritersInterface
@@ -29,10 +32,16 @@ final class Writers implements WritersInterface
 
     public function __construct()
     {
-        $this->out = new StreamWriter(new Stream('php://stdout', 'w'));
-        $this->error = new StreamWriter(new Stream('php://stderr', 'w'));
-        // $this->out = new NullWriter;
-        // $this->error = new NullWriter;
+        try {
+            $this->out = new StreamWriter(new Stream('php://stdout', 'w'));
+            $this->error = new StreamWriter(new Stream('php://stderr', 'w'));
+        } catch (InvalidArgumentException $e) {
+            throw new RuntimeException(
+                new Message($e->getMessage()),
+                $e->getCode(),
+                $e
+            );
+        }
         $this->debug = new NullWriter;
         $this->log = new NullWriter;
     }

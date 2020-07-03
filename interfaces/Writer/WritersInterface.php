@@ -13,8 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Writer;
 
+use Chevere\Exceptions\Core\RuntimeException;
+
 interface WritersInterface
 {
+    /**
+     * @throws RuntimeException
+     */
+    public function __construct();
+
     /**
      * Return an instance with the specified $writer for all writers.
      *
