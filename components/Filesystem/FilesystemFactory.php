@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
+use Chevere\Exceptions\Core\Exception;
+use Chevere\Exceptions\Filesystem\FilesystemFactoryException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use Chevere\Interfaces\Filesystem\FilePhpInterface;
@@ -29,21 +31,53 @@ final class FilesystemFactory implements FilesystemFactoryInterface
 
     public function getDirFromString(string $path): DirInterface
     {
-        return new Dir(new Path($path));
+        try {
+            return new Dir(new Path($path));
+        } catch (Exception $e) {
+            throw new FilesystemFactoryException(
+                $e->message(),
+                $e->getCode(),
+                $e
+            );
+        }
     }
 
     public function getFileFromString(string $path): FileInterface
     {
-        return new File(new Path($path));
+        try {
+            return new File(new Path($path));
+        } catch (Exception $e) {
+            throw new FilesystemFactoryException(
+                $e->message(),
+                $e->getCode(),
+                $e
+            );
+        }
     }
 
     public function getFilePhpFromString(string $path): FilePhpInterface
     {
-        return new FilePhp($this->getFileFromString($path));
+        try {
+            return new FilePhp($this->getFileFromString($path));
+        } catch (Exception $e) {
+            throw new FilesystemFactoryException(
+                $e->message(),
+                $e->getCode(),
+                $e
+            );
+        }
     }
 
     public function getFilePhpReturnFromString(string $path): FilePhpReturn
     {
-        return new FilePhpReturn($this->getFilePhpFromString($path));
+        try {
+            return new FilePhpReturn($this->getFilePhpFromString($path));
+        } catch (Exception $e) {
+            throw new FilesystemFactoryException(
+                $e->message(),
+                $e->getCode(),
+                $e
+            );
+        }
     }
 }

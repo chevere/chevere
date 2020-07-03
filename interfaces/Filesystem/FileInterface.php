@@ -22,6 +22,9 @@ use Chevere\Exceptions\Filesystem\FileUnableToRemoveException;
 use Chevere\Exceptions\Filesystem\PathIsDirException;
 use Chevere\Interfaces\Filesystem\PathInterface;
 
+/**
+ * Describes the component in charge of interacting with filesystem files.
+ */
 interface FileInterface
 {
     const CHECKSUM_ALGO = 'sha256';

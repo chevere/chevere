@@ -25,7 +25,7 @@ use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Interfaces\VarExportable\VarExportableInterface;
 
 /**
- * Describes a component that interacts with `.php` files that return a variable.
+ * Describes the component in charge of interact with `.php` files that return a variable.
  *
  * ```php
  * <?php return 'Hello World!';

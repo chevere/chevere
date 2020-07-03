@@ -19,6 +19,7 @@ use Chevere\Components\Filesystem\FilesystemFactory;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Exceptions\Filesystem\DirTailException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
+use Chevere\Exceptions\Filesystem\FilesystemFactoryException;
 use Chevere\Exceptions\Filesystem\PathIsFileException;
 use Chevere\Exceptions\Filesystem\PathIsNotDirectoryException;
 use Chevere\Interfaces\Filesystem\DirInterface;
@@ -45,12 +46,6 @@ final class DirTest extends TestCase
         } catch (Throwable $e) {
             // $e
         }
-    }
-
-    public function testInvalidPath(): void
-    {
-        $this->expectException(DirTailException::class);
-        (new FilesystemFactory)->getDirFromString(__DIR__);
     }
 
     public function testWithFilePath(): void

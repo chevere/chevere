@@ -22,6 +22,9 @@ use Chevere\Exceptions\Filesystem\PathNotAbsoluteException;
 use Chevere\Exceptions\Filesystem\PathNotExistsException;
 use Chevere\Exceptions\Filesystem\PathUnableToChmodException;
 
+/**
+ * Describes the component in charge of interact with filesystem paths.
+ */
 interface PathInterface
 {
     /**
