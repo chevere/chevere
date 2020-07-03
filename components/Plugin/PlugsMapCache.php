@@ -13,9 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Plugin;
 
+use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\ClassMap\ClassMap;
+use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\FilesystemFactory;
+use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\Str;
 use Chevere\Components\VarExportable\VarExportable;
@@ -53,10 +56,10 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         $new = clone $this;
         $new->classMap = new ClassMap;
         foreach ($plugsMap->getGenerator() as $pluggableName => $plugsQueueTyped) {
-            $classNameAsPath = (new Str($pluggableName))->forwardSlashes()->toString();
-            $cacheAt = $new->cache->getChild($classNameAsPath . '/');
+            $classNameAsPath = (new Str($pluggableName))->forwardSlashes()->toString() . '/';
+            $cacheAt = new Cache($new->cache->dir()->getChild($classNameAsPath));
             $queueName = (new ReflectionClass($plugsQueueTyped))->getShortName();
-            $cacheAt = $cacheAt->withPut(new CacheKey($queueName), new VarExportable($plugsQueueTyped));
+            $cacheAt = $cacheAt->withAddedItem(new CacheKey($queueName), new VarExportable($plugsQueueTyped));
             $new->classMap = $new->classMap
                 ->withPut(
                     $pluggableName,
@@ -64,7 +67,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
                 );
         }
         $new->cache = $new->cache
-            ->withPut(
+            ->withAddedItem(
                 $new->classMapKey,
                 new VarExportable($new->classMap)
             );

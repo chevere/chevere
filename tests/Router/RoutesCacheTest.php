@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Router;
 
+use Chevere\Components\Cache\Cache;
 use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
@@ -76,9 +77,9 @@ final class RoutesCacheTest extends TestCase
 
     public function testCachedCache(): void
     {
-        $routesCache = new RoutesCache(
-            $this->cacheHelper->getCachedCache()->getChild('routes/')
-        );
+        $cachedCache = $this->cacheHelper->getCachedCache();
+        $cache = new Cache($cachedCache->dir()->getChild('routes/'));
+        $routesCache = new RoutesCache($cache);
         $this->assertTrue($routesCache->has($this->routeName->toString()));
         $this->assertInstanceOf(
             RouteInterface::class,
@@ -89,9 +90,8 @@ final class RoutesCacheTest extends TestCase
     public function testCachedCacheTypeError(): void
     {
         $id = 'wrong';
-        $routesCache = new RoutesCache(
-            $this->cacheHelper->getCachedCache()->getChild('wrong-type/')
-        );
+        $cache = new Cache($this->cacheHelper->getCachedCache()->dir()->getChild('wrong-type/'));
+        $routesCache = new RoutesCache($cache);
         $this->assertTrue($routesCache->has($id));
         $this->expectException(TypeError::class);
         $routesCache->get($id);
@@ -102,7 +102,7 @@ final class RoutesCacheTest extends TestCase
         $this->expectNotToPerformAssertions();
         $routable = $this->getRoutable();
         $routesCache = new RoutesCache(
-            $this->cacheHelper->getCachedCache()->getChild('routes/')
+            new Cache($this->cacheHelper->getCachedCache()->dir()->getChild('routes/'))
         );
         $routesCache->put($routable->route());
     }

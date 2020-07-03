@@ -15,13 +15,13 @@ namespace Chevere\Tests\Cache;
 
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\CacheKey;
+use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\Path;
+use Chevere\Components\VarExportable\VarExportable;
 use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
 use Chevere\Interfaces\Cache\CacheInterface;
 use Chevere\Interfaces\Cache\CacheItemInterface;
-use Chevere\Components\Filesystem\Dir;
 use Chevere\Interfaces\Filesystem\PathInterface;
-use Chevere\Components\Filesystem\Path;
-use Chevere\Components\VarExportable\VarExportable;
 use PHPUnit\Framework\TestCase;
 
 final class CacheTest extends TestCase
@@ -65,11 +65,11 @@ final class CacheTest extends TestCase
         $varExportable = new VarExportable($var);
         $cacheKey = new CacheKey($key);
         $cache = $this->getTestCache()
-            ->withPut($cacheKey, $varExportable);
+            ->withAddedItem($cacheKey, $varExportable);
         $this->assertArrayHasKey($key, $cache->puts());
         $this->assertTrue($cache->exists($cacheKey));
         $this->assertInstanceOf(CacheItemInterface::class, $cache->get($cacheKey));
-        $cache = $cache->withRemove($cacheKey);
+        $cache = $cache->withoutItem($cacheKey);
         $this->assertArrayNotHasKey($key, $cache->puts());
         $this->assertFalse($cache->exists($cacheKey));
     }

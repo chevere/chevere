@@ -16,8 +16,8 @@ namespace Chevere\Exceptions\ClassMap;
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown when the class is already mapped.
+ * Exception thrown when the string is already mapped.
  */
-final class ClassMappedException extends Exception
+final class StringMappedException extends Exception
 {
 }

@@ -20,6 +20,7 @@ use Chevere\Exceptions\Filesystem\DirNotExistsException;
 use Chevere\Exceptions\Filesystem\DirTailException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 use Chevere\Exceptions\Filesystem\DirUnableToRemoveException;
+use Chevere\Exceptions\Filesystem\PathInvalidException;
 use Chevere\Exceptions\Filesystem\PathIsFileException;
 use Chevere\Exceptions\Filesystem\PathIsNotDirectoryException;
 use Chevere\Interfaces\Filesystem\DirInterface;

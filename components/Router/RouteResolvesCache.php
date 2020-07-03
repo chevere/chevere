@@ -14,14 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\Cache\CacheKey;
-use Chevere\Interfaces\Cache\CacheInterface;
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Router\RouteCacheNotFoundException;
-use Chevere\Exceptions\Router\RouteCacheTypeException;
-use Chevere\Interfaces\Router\RoutableInterface;
-use Chevere\Interfaces\Router\RouteResolvesCacheInterface;
 use Chevere\Components\Type\Type;
 use Chevere\Components\VarExportable\VarExportable;
+use Chevere\Exceptions\Router\RouteCacheNotFoundException;
+use Chevere\Exceptions\Router\RouteCacheTypeException;
+use Chevere\Interfaces\Cache\CacheInterface;
+use Chevere\Interfaces\Router\RoutableInterface;
+use Chevere\Interfaces\Router\RouteResolvesCacheInterface;
 use Throwable;
 
 final class RouteResolvesCache implements RouteResolvesCacheInterface
@@ -64,7 +64,7 @@ final class RouteResolvesCache implements RouteResolvesCacheInterface
     public function put(int $id, RouteResolve $routeResolve): void
     {
         $this->cache = $this->cache
-            ->withPut(
+            ->withAddedItem(
                 new CacheKey((string) $id),
                 new VarExportable($routeResolve)
             );
@@ -73,7 +73,7 @@ final class RouteResolvesCache implements RouteResolvesCacheInterface
     public function remove(int $id): void
     {
         $this->cache = $this->cache
-            ->withRemove(
+            ->withoutItem(
                 new CacheKey((string) $id)
             );
     }

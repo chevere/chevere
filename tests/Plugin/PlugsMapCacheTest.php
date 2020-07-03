@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugin;
 
+use Chevere\Components\Cache\Cache;
 use Chevere\Components\Plugin\AssertPlug;
 use Chevere\Components\Plugin\Plugs\Hooks\HooksQueue;
 use Chevere\Components\Plugin\PlugsMap;
@@ -49,7 +50,8 @@ final class PlugsMapCacheTest extends TestCase
 
     public function testInvalidClassMap(): void
     {
-        $cache = $this->cacheHelper->getCachedCache()->getChild('corrupted-classmap/');
+        $cachedCache = $this->cacheHelper->getCachedCache();
+        $cache = new Cache($cachedCache->dir()->getChild('corrupted-classmap/'));
         $plugsMapCache = new PlugsMapCache($cache);
         $this->assertFalse($plugsMapCache->hasPlugsQueueFor('nothing'));
         $this->expectException(OutOfBoundsException::class);
@@ -59,7 +61,8 @@ final class PlugsMapCacheTest extends TestCase
 
     public function testPluggableNotMapped(): void
     {
-        $cache = $this->cacheHelper->getWorkingCache()->getChild('empty/');
+        $workingCache = $this->cacheHelper->getWorkingCache();
+        $cache = new Cache($workingCache->dir()->getChild('empty/'));
         $plugsMap = new PlugsMap(new HookPlugType);
         $plugsMapCache = (new PlugsMapCache($cache))
             ->withPut($plugsMap);
@@ -69,7 +72,8 @@ final class PlugsMapCacheTest extends TestCase
 
     public function testClassMapCorruptedQueue(): void
     {
-        $cache = $this->cacheHelper->getCachedCache()->getChild('corrupted-queue/');
+        $cachedCache = $this->cacheHelper->getCachedCache();
+        $cache = new Cache($cachedCache->dir()->getChild('corrupted-queue/'));
         $plugsMapCache = new PlugsMapCache($cache);
         $hookableClassName = (new TestHook)->at();
         $this->assertTrue($plugsMapCache->hasPlugsQueueFor($hookableClassName));

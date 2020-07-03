@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Controller;
 
+/**
+ * Describes the component in charge of handling input instructions.
+ */
 interface ControllerInterface
 {
     public function getParameters(): ControllerParametersInterface;

@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\ClassMap;
 
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\ClassMap\ClassMappedException;
 use Chevere\Exceptions\ClassMap\ClassNotExistsException;
 use Chevere\Exceptions\ClassMap\ClassNotMappedException;
+use Chevere\Exceptions\ClassMap\StringMappedException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
 use Ds\Map;
 
@@ -28,13 +28,12 @@ final class ClassMap implements ClassMapInterface
     /** @var Map [string => className] */
     private Map $flip;
 
-    private bool $isStrict;
+    private bool $isStrict = true;
 
     public function __construct()
     {
         $this->classMap = new Map;
         $this->flip = new Map;
-        $this->isStrict = true;
     }
 
     public function isStrict(): bool
@@ -60,7 +59,7 @@ final class ClassMap implements ClassMapInterface
         }
         $known = $this->flip[$string] ?? null;
         if ($known && $known !== $className) {
-            throw new ClassMappedException(
+            throw new StringMappedException(
                 (new Message('Attempting to map %className% to the same mapping of %known% -> %string%'))
                     ->code('%className%', $className)
                     ->code('%known%', $known)
@@ -96,9 +95,6 @@ final class ClassMap implements ClassMapInterface
         return $this->classMap[$className];
     }
 
-    /**
-     * @return array [className => string, ]
-     */
     public function toArray(): array
     {
         return $this->classMap->toArray();

@@ -19,12 +19,10 @@ use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Cache\CacheInvalidKeyException;
 use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
+use Chevere\Exceptions\Core\Exception;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
-use Chevere\Exceptions\Filesystem\FileExistsException;
-use Chevere\Exceptions\Filesystem\FileNotExistsException;
-use Chevere\Exceptions\Filesystem\FileUnableToCreateException;
-use Chevere\Exceptions\Filesystem\FileUnableToPutException;
 use Chevere\Exceptions\Filesystem\PathInvalidException;
 use Chevere\Exceptions\Filesystem\PathIsDirException;
 use Chevere\Interfaces\Cache\CacheInterface;
@@ -34,13 +32,6 @@ use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Interfaces\VarExportable\VarExportableInterface;
 
-/**
- * A simple PHP based cache system.
- *
- * Using FileReturn, it provides cache by using php files that return a single variable.
- *
- * cached.php >>> <?php return 'my cached data';
- */
 final class Cache implements CacheInterface
 {
     private DirInterface $dir;
@@ -48,6 +39,9 @@ final class Cache implements CacheInterface
     /** @var array An array [key => [checksum => , path =>]] containing information about the cache items */
     private array $puts;
 
+    /**
+     * @throws DirUnableToCreateException
+     */
     public function __construct(DirInterface $dir)
     {
         $this->dir = $dir;
@@ -57,57 +51,83 @@ final class Cache implements CacheInterface
         $this->puts = [];
     }
 
+    public function dir(): DirInterface
+    {
+        return $this->dir;
+    }
+
     /**
-     *
-     * @throws PathInvalidException
-     * @throws PathIsDirException
-     * @throws FileExistsException
-     * @throws DirUnableToCreateException
-     * @throws FileUnableToCreateException
-     * @throws FileNotExistsException
-     * @throws FileUnableToPutException
-     * @throws RuntimeException
+     * @throws OutOfBoundsException
+     * @throws RuntimeException If theres an system failure
      */
-    public function withPut(CacheKeyInterface $key, VarExportableInterface $varExportable): CacheInterface
+    public function withAddedItem(CacheKeyInterface $key, VarExportableInterface $varExportable): CacheInterface
     {
         $path = $this->getPath($key->toString());
-        $file = new File($path);
-        if (!$file->exists()) {
-            $file->create();
+        try {
+            $file = new File($path);
+            if (!$file->exists()) {
+                $file->create();
+            }
+            $file->assertExists();
+            $filePhp = new FilePhp($file);
+            $fileReturn = new FilePhpReturn($filePhp);
+            $fileReturn->put($varExportable);
+            $filePhp->cache();
+            $new = clone $this;
+            $new->puts[$key->toString()] = [
+                'path' => $fileReturn->filePhp()->file()->path()->absolute(),
+                'checksum' => $fileReturn->filePhp()->file()->checksum(),
+            ];
+        } catch (Exception $e) {
+            throw new RuntimeException(
+                $e->message(),
+                $e->getCode(),
+                $e
+            );
         }
-        $filePhp = new FilePhp($file);
-        $fileReturn = new FilePhpReturn($filePhp);
-        $fileReturn->put($varExportable);
-        $filePhp->cache();
-        $new = clone $this;
-        $new->puts[$key->toString()] = [
-            'path' => $fileReturn->filePhp()->file()->path()->absolute(),
-            'checksum' => $fileReturn->filePhp()->file()->checksum(),
-        ];
 
         return $new;
     }
 
-    public function withRemove(CacheKeyInterface $cacheKey): CacheInterface
+    /**
+     * @throws CacheInvalidKeyException
+     * @throws RuntimeException
+     */
+    public function withoutItem(CacheKeyInterface $cacheKey): CacheInterface
     {
         $new = clone $this;
         $path = $this->getPath($cacheKey->toString());
-        if ($path->exists() === false) {
-            return $new; // @codeCoverageIgnore
+        try {
+            if ($path->exists() === false) {
+                return $new; // @codeCoverageIgnore
+            }
+            $filePhp = new FilePhp(new File($path));
+            $filePhp->flush();
+            $filePhp->file()->remove();
+        } catch (Exception $e) {
+            throw new RuntimeException(
+                $e->message(),
+                $e->getCode(),
+                $e
+            );
         }
-        $filePhp = new FilePhp(new File($path));
-        $filePhp->flush();
-        $filePhp->file()->remove();
         unset($new->puts[$cacheKey->toString()]);
 
         return $new;
     }
 
+    /**
+     * @throws OutOfBoundsException
+     */
     public function exists(CacheKeyInterface $cacheKey): bool
     {
         return $this->getPath($cacheKey->toString())->exists();
     }
 
+    /**
+     * @throws OutOfBoundsException
+     * @throws CacheKeyNotFoundException
+     */
     public function get(CacheKeyInterface $cacheKey): CacheItemInterface
     {
         $path = $this->getPath($cacheKey->toString());
@@ -132,24 +152,18 @@ final class Cache implements CacheInterface
         return $this->puts;
     }
 
-    public function getChild(string $path): CacheInterface
-    {
-        return new self($this->dir->getChild($path));
-    }
-
     /**
-     * @throws CacheInvalidKeyException
+     * @throws OutOfBoundsException
      */
     private function getPath(string $name): PathInterface
     {
         try {
-            return $this->dir->path()
-                ->getChild($name . '.php');
+            return $this->dir->path()->getChild($name . '.php');
         } catch (PathIsDirException | PathInvalidException $e) {
-            throw new CacheInvalidKeyException(
+            throw new OutOfBoundsException(
                 $e->message(),
                 $e->getCode(),
-                $e->getPrevious()
+                $e
             );
         }
     }

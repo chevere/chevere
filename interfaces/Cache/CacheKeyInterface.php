@@ -13,16 +13,23 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Cache;
 
+use Chevere\Exceptions\Cache\CacheInvalidKeyException;
 use Chevere\Interfaces\To\ToStringInterface;
 
+/**
+ * Describes a component in charge of defining a cache key.
+ */
 interface CacheKeyInterface extends ToStringInterface
 {
     const ILLEGAL_KEY_CHARACTERS = '\.\/\\\~\:';
 
+    /**
+    * @throws CacheInvalidKeyException
+    */
     public function __construct(string $key);
 
     /**
-     * @return string cache key string.
+     * Provides access to `$key`.
      */
     public function toString(): string;
 }

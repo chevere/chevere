@@ -17,6 +17,7 @@ use Chevere\Exceptions\Filesystem\DirTailException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 use Chevere\Exceptions\Filesystem\DirUnableToRemoveException;
 use Chevere\Exceptions\Filesystem\FileUnableToRemoveException;
+use Chevere\Exceptions\Filesystem\PathInvalidException;
 use Chevere\Exceptions\Filesystem\PathIsFileException;
 use Chevere\Interfaces\Filesystem\PathInterface;
 

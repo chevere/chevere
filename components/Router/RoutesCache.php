@@ -55,7 +55,7 @@ final class RoutesCache implements RoutesCacheInterface
     public function put(RouteInterface $route): void
     {
         $this->cache = $this->cache
-            ->withPut(
+            ->withAddedItem(
                 new CacheKey($route->name()->toString()),
                 new VarExportable($route)
             );
@@ -64,7 +64,7 @@ final class RoutesCache implements RoutesCacheInterface
     public function remove(string $name): void
     {
         $this->cache = $this->cache
-            ->withRemove(
+            ->withoutItem(
                 new CacheKey($name)
             );
     }

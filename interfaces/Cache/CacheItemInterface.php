@@ -15,19 +15,25 @@ namespace Chevere\Interfaces\Cache;
 
 use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
 
+/**
+ * Describes a component that defines a cache item.
+ *
+ */
 interface CacheItemInterface
 {
     public function __construct(FilePhpReturnInterface $phpFileReturn);
 
     /**
-     * Provides raw access to the FileReturnInterface "as-is"
-     * @return mixed
+     * Provides raw access to the cache value "as-is".
+     *
+     * @throws RuntimeException
      */
     public function raw();
 
     /**
-     * Provides access to the FileReturnInterface file return variable
-     * @return mixed
+     * Provides access to the cache PHP variable.
+     *
+     * @throws RuntimeException
      */
     public function var();
 }

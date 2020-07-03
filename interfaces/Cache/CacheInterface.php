@@ -19,6 +19,11 @@ use Chevere\Exceptions\Filesystem\FileUnableToRemoveException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\VarExportable\VarExportableInterface;
 
+/**
+ * Describes a component in charge of caching PHP variables.
+ *
+ * `cached.php >>> <?php return 'my cached data';`
+ */
 interface CacheInterface
 {
     const ILLEGAL_KEY_CHARACTERS = '\.\/\\\~\:';
@@ -30,6 +35,11 @@ interface CacheInterface
     public function __construct(DirInterface $dir);
 
     /**
+     * Provides access to the cache directory.
+     */
+    public function dir(): DirInterface;
+
+    /**
      * Put item in cache.
      *
      * Return an instance with the specified put.
@@ -37,7 +47,7 @@ interface CacheInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified put.
      */
-    public function withPut(CacheKeyInterface $cacheKey, VarExportableInterface $varExportable): CacheInterface;
+    public function withAddedItem(CacheKeyInterface $cacheKey, VarExportableInterface $varExportable): CacheInterface;
 
     /**
      * Remove item from cache.
@@ -49,7 +59,7 @@ interface CacheInterface
      *
      * @throws FileUnableToRemoveException if unable to remove the cache file
      */
-    public function withRemove(CacheKeyInterface $cacheKey): CacheInterface;
+    public function withoutItem(CacheKeyInterface $cacheKey): CacheInterface;
 
     /**
      * Indicates whether the cache exists for the given key.
@@ -76,11 +86,4 @@ interface CacheInterface
      * ```
      */
     public function puts(): array;
-
-    /**
-     * Proxy for `DirInterface::getChild`.
-     *
-     * @throws DirUnableToCreateException
-     */
-    public function getChild(string $path): CacheInterface;
 }

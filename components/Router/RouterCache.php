@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
+use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\Message\Message;
 use Chevere\Components\VarExportable\VarExportable;
@@ -43,9 +44,11 @@ final class RouterCache implements RouterCacheInterface
     public function __construct(CacheInterface $cache)
     {
         $this->cache = $cache;
-        $this->routesCache = new RoutesCache($this->cache->getChild('routes/'));
+        $this->routesCache = new RoutesCache(
+            new Cache($this->cache->dir()->getChild('routes/'))
+        );
         $this->routeResolvesCache = new RouteResolvesCache(
-            $this->cache->getChild('resolve/')
+            new Cache($this->cache->dir()->getChild('resolve/'))
         );
         $this->keyRegex = new CacheKey(self::KEY_REGEX);
         $this->keyIndex = new CacheKey(self::KEY_INDEX);
@@ -89,11 +92,11 @@ final class RouterCache implements RouterCacheInterface
     {
         $new = clone $this;
         $new->cache = $new->cache
-            ->withPut(
+            ->withAddedItem(
                 $new->keyRegex,
                 new VarExportable($router->regex())
             )
-            ->withPut(
+            ->withAddedItem(
                 $new->keyIndex,
                 new VarExportable($router->index())
             );
@@ -120,8 +123,8 @@ final class RouterCache implements RouterCacheInterface
     public function remove(): void
     {
         $this->cache = $this->cache
-            ->withRemove($this->keyRegex)
-            ->withRemove($this->keyIndex);
+            ->withoutItem($this->keyRegex)
+            ->withoutItem($this->keyIndex);
         foreach (array_keys($this->routesCache->puts()) as $routeName) {
             $this->routesCache->remove($routeName);
         }

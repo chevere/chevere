@@ -13,24 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Cache;
 
+use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Cache\CacheInvalidKeyException;
 use Chevere\Interfaces\Cache\CacheKeyInterface;
-use Chevere\Components\Message\Message;
 
 final class CacheKey implements CacheKeyInterface
 {
-    /** @var string */
     private string $key;
 
-    /**
-     * @param string $key Cache key entry
-     *
-     * @throws CacheInvalidKeyException if $name contains illegal characters
-     */
     public function __construct(string $key)
     {
         $this->key = $key;
-        $this->assertKeyName();
+        $this->assertKey();
     }
 
     public function toString(): string
@@ -38,7 +32,7 @@ final class CacheKey implements CacheKeyInterface
         return $this->key;
     }
 
-    private function assertKeyName(): void
+    private function assertKey(): void
     {
         if (preg_match_all('#[' . CacheKeyInterface::ILLEGAL_KEY_CHARACTERS . ']#', $this->key, $matches)) {
             $matches = array_unique($matches[0]);

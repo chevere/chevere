@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Cache;
 
+use Chevere\Exceptions\Core\Exception;
+use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Cache\CacheItemInterface;
 use Chevere\Interfaces\Filesystem\FilePhpReturnInterface;
 
@@ -27,11 +29,27 @@ final class CacheItem implements CacheItemInterface
 
     public function raw()
     {
-        return $this->phpFileReturn->raw();
+        try {
+            return $this->phpFileReturn->raw();
+        } catch (Exception $e) {
+            throw new RuntimeException(
+                $e->message(),
+                $e->getCode(),
+                $e
+            );
+        }
     }
 
     public function var()
     {
-        return $this->phpFileReturn->var();
+        try {
+            return $this->phpFileReturn->var();
+        } catch (Exception $e) {
+            throw new RuntimeException(
+                $e->message(),
+                $e->getCode(),
+                $e
+            );
+        }
     }
 }
