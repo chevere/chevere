@@ -18,6 +18,9 @@ use Chevere\Exceptions\Filesystem\PathDoubleDotsDashException;
 use Chevere\Exceptions\Filesystem\PathExtraSlashesException;
 use Chevere\Exceptions\Filesystem\PathNotAbsoluteException;
 
+/**
+ * Describes the component in charge of asserting filesystem path format.
+ */
 interface AssertPathFormatInterface
 {
     /**
