@@ -124,15 +124,6 @@ final class RouteTest extends TestCase
         );
     }
 
-    public function testWithAddedMiddleware(): void
-    {
-        $middleware = new RouteTestTestMiddleware;
-        $route = $this->getRoute('test', '/test')
-            ->withAddedMiddleware($middleware);
-        $this->assertCount(1, $route->middlewareNameCollection());
-        $this->assertTrue($route->middlewareNameCollection()->has($middleware));
-    }
-
     private function getRoute(string $name, string $path): RouteInterface
     {
         return new Route(new RouteName($name), new RoutePath($path));

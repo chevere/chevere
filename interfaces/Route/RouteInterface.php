@@ -53,17 +53,4 @@ interface RouteInterface
      * Provides access to the RouteEndpointsInterface instance.
      */
     public function endpoints(): RouteEndpointsInterface;
-
-    /**
-     * Return an instance with the specified added $middleware.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified added $middleware.
-     */
-    public function withAddedMiddleware(MiddlewareInterface $middleware): RouteInterface;
-
-    /**
-     * Provides access to the MiddlewareNameCollectionInterface instance.
-     */
-    public function middlewareNameCollection(): MiddlewaresInterface;
 }
