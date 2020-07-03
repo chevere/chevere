@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Routing;
 
-use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Interfaces\Filesystem\DirInterface;
-use Chevere\Interfaces\Route\RouteDecoratorInterface;
+use Chevere\Components\Filesystem\FilesystemFactory;
 use Chevere\Components\Route\RouteDecorator;
 use Chevere\Components\Route\RoutePath;
+use Chevere\Components\Routing\FsRoute;
+use Chevere\Components\Routing\FsRoutes;
 use Chevere\Exceptions\Routing\DecoratedRouteAlreadyAddedException;
 use Chevere\Exceptions\Routing\RouteNameAlreadyAddedException;
 use Chevere\Exceptions\Routing\RoutePathAlreadyAddedException;
 use Chevere\Exceptions\Routing\RouteRegexAlreadyAddedException;
-use Chevere\Components\Routing\FsRoute;
-use Chevere\Components\Routing\FsRoutes;
+use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Route\RouteDecoratorInterface;
 use OutOfRangeException;
 use PHPUnit\Framework\TestCase;
 
@@ -31,7 +31,7 @@ final class FsRoutesTest extends TestCase
 {
     private function getDir(): DirInterface
     {
-        return new DirFromString(__DIR__ . '/');
+        return (new FilesystemFactory)->getDirFromString(__DIR__ . '/');
     }
 
     private function getRouteDecorator(string $name): RouteDecoratorInterface

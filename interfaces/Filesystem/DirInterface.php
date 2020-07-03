@@ -13,13 +13,21 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Filesystem;
 
+use Chevere\Exceptions\Filesystem\DirTailException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 use Chevere\Exceptions\Filesystem\DirUnableToRemoveException;
 use Chevere\Exceptions\Filesystem\FileUnableToRemoveException;
+use Chevere\Exceptions\Filesystem\PathIsFileException;
 use Chevere\Interfaces\Filesystem\PathInterface;
 
 interface DirInterface
 {
+    /**
+     * @throws PathIsFileException
+     * @throws DirTailException
+     */
+    public function __construct(PathInterface $path);
+
     /**
      * Provides access to the PathInterface instance.
      */
@@ -61,7 +69,9 @@ interface DirInterface
     public function remove(): array;
 
     /**
-     * Gets a child DirInterface for the added path.
+     * Gets a child `DirInterface` for the added path.
+     *
+     * @throws PathInvalidException
      */
     public function getChild(string $path): DirInterface;
 }

@@ -17,12 +17,7 @@ use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponse;
-use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
-use Chevere\Interfaces\Controller\ControllerParametersInterface;
-use Chevere\Interfaces\Controller\ControllerResponseInterface;
-use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Filesystem\FilesystemFactory;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Http\Methods\PutMethod;
 use Chevere\Components\Regex\Regex;
@@ -33,10 +28,13 @@ use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterMaker;
-use Chevere\Tests\Router\CacheHelper;
-use Chevere\Exceptions\Spec\SpecInvalidArgumentException;
 use Chevere\Components\Spec\SpecMaker;
 use Chevere\Components\Spec\SpecPath;
+use Chevere\Exceptions\Spec\SpecInvalidArgumentException;
+use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
+use Chevere\Interfaces\Controller\ControllerParametersInterface;
+use Chevere\Interfaces\Controller\ControllerResponseInterface;
+use Chevere\Tests\Router\CacheHelper;
 use PHPUnit\Framework\TestCase;
 use ReflectionObject;
 
@@ -60,7 +58,7 @@ final class SpecMakerTest extends TestCase
         $this->expectException(SpecInvalidArgumentException::class);
         new SpecMaker(
             new SpecPath('/spec'),
-            new DirFromString(__DIR__ . "/_resources/$shortName/spec/"),
+            (new FilesystemFactory)->getDirFromString(__DIR__ . "/_resources/$shortName/spec/"),
             new Router
         );
     }

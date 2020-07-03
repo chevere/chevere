@@ -14,22 +14,15 @@ declare(strict_types=1);
 namespace Chevere\Tests\Bootstrap;
 
 use Chevere\Components\Bootstrap\Bootstrap;
-use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Exceptions\Filesystem\DirNotExistsException;
-use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
-use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Components\Filesystem\FilesystemFactory;
 use PHPUnit\Framework\TestCase;
 
 final class BootstrapTest extends TestCase
 {
-    private function getBootDir(string $child): DirInterface
-    {
-        return new DirFromString(__DIR__ . '/_resources/root/' . $child);
-    }
-
     public function testConstruct(): void
     {
-        $dir = $this->getBootDir('');
+        $dir = (new FilesystemFactory)
+            ->getDirFromString(__DIR__ . '/_resources/root/');
         $bootstrap = new Bootstrap($dir);
         $this->assertSame($dir, $bootstrap->dir());
         $this->assertIsInt($bootstrap->time());

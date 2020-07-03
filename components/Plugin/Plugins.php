@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugin;
 
 use Chevere\Components\ClassMap\ClassMap;
-use Chevere\Components\Filesystem\FilePhpReturnFromString;
+use Chevere\Components\Filesystem\FilesystemFactory;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\ClassMap\ClassNotMappedException;
 use Chevere\Exceptions\Core\Exception;
@@ -60,7 +60,8 @@ final class Plugins implements PluginsInterface
         $this->assertSetPlugsPath($pluggableName);
         $this->assertPlugsPath();
         try {
-            $fileReturn = (new FilePhpReturnFromString($this->plugsPath))
+            $fileReturn = (new FilesystemFactory)
+                ->getFilePhpReturnFromString($this->plugsPath)
                 ->withStrict(false);
             /**
              * @var PlugsQueueInterface $var

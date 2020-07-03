@@ -13,19 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Components\Instances\BootstrapInstance;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\RangeException;
 use Chevere\Exceptions\Core\RuntimeException;
+use Chevere\Exceptions\Filesystem\FileNotExistsException;
 use Chevere\Exceptions\Filesystem\FileNotPhpException;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use Chevere\Interfaces\Filesystem\FilePhpInterface;
 use Throwable;
 
-/**
- * A wrapper for FileInterface to interact with .php files.
- */
-class FilePhp implements FilePhpInterface
+final class FilePhp implements FilePhpInterface
 {
     private FileInterface $file;
 
@@ -52,7 +49,7 @@ class FilePhp implements FilePhpInterface
         try {
             if (!opcache_compile_file($path)) {
                 throw new RangeException(
-                    (new Message('Zend OPcache is disabled'))
+                    (new Message('OPcache is disabled'))
                 );
             }
         } catch (Throwable $e) {
@@ -65,10 +62,7 @@ class FilePhp implements FilePhpInterface
     }
 
     /**
-     * Flushes OPCache.
-     *
      * @codeCoverageIgnore
-     * @throws RuntimeException
      */
     public function flush(): void
     {
@@ -77,7 +71,7 @@ class FilePhp implements FilePhpInterface
         }
         if (!opcache_invalidate($this->file->path()->absolute())) {
             throw new RuntimeException(
-                (new Message('Opcode cache is disabled'))
+                (new Message('OPCache is disabled'))
             );
         }
     }

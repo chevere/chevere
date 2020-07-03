@@ -14,32 +14,34 @@ declare(strict_types=1);
 namespace Chevere\Tests\Filesystem;
 
 use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\DirFromString;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\FilesystemFactory;
+use Chevere\Components\Filesystem\Path;
 use Chevere\Exceptions\Filesystem\DirTailException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 use Chevere\Exceptions\Filesystem\PathIsFileException;
 use Chevere\Exceptions\Filesystem\PathIsNotDirectoryException;
-use Chevere\Components\Filesystem\File;
 use Chevere\Interfaces\Filesystem\DirInterface;
-use Chevere\Components\Filesystem\Path;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 
 final class DirTest extends TestCase
 {
-    private DirInterface $dir;
+    private DirInterface $testDir;
 
     protected function setUp(): void
     {
         $bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1)[0]['line'];
 
-        $this->dir = new DirFromString(__DIR__ . '/DirTest_' . uniqid() . '_' . $bt . '/');
+        $this->testDir = (new FilesystemFactory)->getDirFromString(
+            __DIR__ . '/DirTest_' . uniqid() . '_' . $bt . '/'
+        );
     }
 
     protected function tearDown(): void
     {
         try {
-            $this->dir->remove();
+            $this->testDir->remove();
         } catch (Throwable $e) {
             // $e
         }
@@ -48,7 +50,7 @@ final class DirTest extends TestCase
     public function testInvalidPath(): void
     {
         $this->expectException(DirTailException::class);
-        new DirFromString(__DIR__);
+        (new FilesystemFactory)->getDirFromString(__DIR__);
     }
 
     public function testWithFilePath(): void
@@ -60,44 +62,45 @@ final class DirTest extends TestCase
 
     public function testWithNonExistentPath(): void
     {
-        $this->assertFalse($this->dir->exists());
+        $this->assertFalse($this->testDir->exists());
     }
 
     public function testCreate(): void
     {
-        $this->dir->create();
-        $this->assertTrue($this->dir->exists());
+        $this->testDir->create();
+        $this->assertTrue($this->testDir->exists());
     }
 
     public function testCreateCreateUnable(): void
     {
         $this->expectException(DirUnableToCreateException::class);
-        (new DirFromString(__DIR__ . '/'))
+        (new FilesystemFactory)
+            ->getDirFromString(__DIR__ . '/')
             ->create();
     }
 
     public function testRemoveNonExistentPath(): void
     {
         $this->expectException(PathIsNotDirectoryException::class);
-        $this->dir->remove();
+        $this->testDir->remove();
     }
 
     public function testRemove(): void
     {
-        $this->dir->create();
-        $removed = $this->dir->remove();
-        $this->assertContainsEquals($this->dir->path()->absolute(), $removed);
-        $this->assertFalse($this->dir->exists());
+        $this->testDir->create();
+        $removed = $this->testDir->remove();
+        $this->assertContainsEquals($this->testDir->path()->absolute(), $removed);
+        $this->assertFalse($this->testDir->exists());
     }
 
     public function testRemoveContents(): void
     {
-        $this->dir->create();
-        $childPath = $this->dir->path()->getChild('file');
+        $this->testDir->create();
+        $childPath = $this->testDir->path()->getChild('file');
         $childFile = new File($childPath);
         $childFile->create();
-        $removed = $this->dir->removeContents();
-        $this->assertNotContainsEquals($this->dir->path()->absolute(), $removed);
+        $removed = $this->testDir->removeContents();
+        $this->assertNotContainsEquals($this->testDir->path()->absolute(), $removed);
         $this->assertContainsEquals($childFile->path()->absolute(), $removed);
     }
 }

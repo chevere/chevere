@@ -22,6 +22,7 @@ use Chevere\Exceptions\Filesystem\FileInvalidContentsException;
 use Chevere\Exceptions\Filesystem\FileNotExistsException;
 use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
 use Chevere\Exceptions\Filesystem\FileUnableToGetException;
+use Chevere\Exceptions\Filesystem\FileUnableToPutException;
 use Chevere\Exceptions\Filesystem\FileWithoutContentsException;
 use Chevere\Exceptions\Serialize\UnserializeException;
 use Chevere\Interfaces\Filesystem\FilePhpInterface;
@@ -30,12 +31,7 @@ use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Interfaces\VarExportable\VarExportableInterface;
 use Throwable;
 
-/**
- * PhpFileReturn interacts with .php files that return a variable.
- *
- * <?php return 'Hello World!';
- */
-class FilePhpReturn implements FilePhpReturnInterface
+final class FilePhpReturn implements FilePhpReturnInterface
 {
     private FilePhpInterface $filePhp;
 
@@ -63,7 +59,7 @@ class FilePhpReturn implements FilePhpReturnInterface
 
     public function raw()
     {
-        $this->validate();
+        $this->assert();
         $filePath = $this->filePhp->file()->path()->absolute();
         // @codeCoverageIgnoreStart
         try {
@@ -127,17 +123,17 @@ class FilePhpReturn implements FilePhpReturnInterface
         return $var;
     }
 
-    private function validate(): void
+    private function assert(): void
     {
         if ($this->strict === true) {
-            $this->validateStrict();
+            $this->assertStrict();
 
             return;
         }
-        $this->validateNonStrict();
+        $this->assertNonStrict();
     }
 
-    private function validateStrict(): void
+    private function assertStrict(): void
     {
         $this->filePhp->file()->assertExists();
         $filename = $this->filePhp->file()->path()->absolute();
@@ -174,7 +170,7 @@ class FilePhpReturn implements FilePhpReturnInterface
      * @throws FileWithoutContentsException
      * @throws FileInvalidContentsException
      */
-    private function validateNonStrict(): void
+    private function assertNonStrict(): void
     {
         $contents = $this->filePhp->file()->contents();
         try {

@@ -13,18 +13,26 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Cache;
 
-use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
-use Chevere\Interfaces\Cache\CacheInterface;
-use Chevere\Interfaces\Cache\CacheItemInterface;
-use Chevere\Interfaces\Cache\CacheKeyInterface;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
+use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Cache\CacheInvalidKeyException;
+use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
+use Chevere\Exceptions\Core\RuntimeException;
+use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
+use Chevere\Exceptions\Filesystem\FileExistsException;
+use Chevere\Exceptions\Filesystem\FileNotExistsException;
+use Chevere\Exceptions\Filesystem\FileUnableToCreateException;
+use Chevere\Exceptions\Filesystem\FileUnableToPutException;
+use Chevere\Exceptions\Filesystem\PathInvalidException;
+use Chevere\Exceptions\Filesystem\PathIsDirException;
+use Chevere\Interfaces\Cache\CacheInterface;
+use Chevere\Interfaces\Cache\CacheItemInterface;
+use Chevere\Interfaces\Cache\CacheKeyInterface;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
-use Chevere\Components\Message\Message;
 use Chevere\Interfaces\VarExportable\VarExportableInterface;
-use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
 
 /**
  * A simple PHP based cache system.
@@ -35,16 +43,11 @@ use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
  */
 final class Cache implements CacheInterface
 {
-    /** @var DirInterface */
     private DirInterface $dir;
 
     /** @var array An array [key => [checksum => , path =>]] containing information about the cache items */
     private array $puts;
 
-    /**
-     * @param DirInterface $dir the directory where cache files will be stored/accessed (must exists)
-     * @throws DirUnableToCreateException if $dir doesn't exists and unable to create
-     */
     public function __construct(DirInterface $dir)
     {
         $this->dir = $dir;
@@ -54,6 +57,17 @@ final class Cache implements CacheInterface
         $this->puts = [];
     }
 
+    /**
+     *
+     * @throws PathInvalidException
+     * @throws PathIsDirException
+     * @throws FileExistsException
+     * @throws DirUnableToCreateException
+     * @throws FileUnableToCreateException
+     * @throws FileNotExistsException
+     * @throws FileUnableToPutException
+     * @throws RuntimeException
+     */
     public function withPut(CacheKeyInterface $key, VarExportableInterface $varExportable): CacheInterface
     {
         $path = $this->getPath($key->toString());
@@ -123,9 +137,20 @@ final class Cache implements CacheInterface
         return new self($this->dir->getChild($path));
     }
 
+    /**
+     * @throws CacheInvalidKeyException
+     */
     private function getPath(string $name): PathInterface
     {
-        return $this->dir->path()
-            ->getChild($name . '.php');
+        try {
+            return $this->dir->path()
+                ->getChild($name . '.php');
+        } catch (PathIsDirException | PathInvalidException $e) {
+            throw new CacheInvalidKeyException(
+                $e->message(),
+                $e->getCode(),
+                $e->getPrevious()
+            );
+        }
     }
 }

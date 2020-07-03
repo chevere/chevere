@@ -14,9 +14,18 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Filesystem;
 
 use Chevere\Exceptions\Core\RuntimeException;
+use Chevere\Exceptions\Filesystem\FileNotPhpException;
 
+/**
+ * Describes a component that interact with `.php` files.
+ */
 interface FilePhpInterface
 {
+    /**
+     * @throws FileNotPhpException
+     */
+    public function __construct(FileInterface $file);
+
     /**
      * Provides access to the FileInterface instance.
      */
@@ -25,7 +34,15 @@ interface FilePhpInterface
     /**
      * Applies OPCache.
      *
-     * @throws RuntimeException If unable to cache file.
+     * @throws FileNotExistsException
+     * @throws RuntimeException If OPCache is disabled.
      */
     public function cache(): void;
+
+    /**
+     * Flushes OPCache.
+     *
+     * @throws RuntimeException If OPCache is disabled.
+     */
+    public function flush(): void;
 }

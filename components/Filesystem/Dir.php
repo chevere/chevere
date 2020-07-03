@@ -24,20 +24,15 @@ use Chevere\Exceptions\Filesystem\PathIsFileException;
 use Chevere\Exceptions\Filesystem\PathIsNotDirectoryException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
-use Exception;
 use OutOfRangeException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Throwable;
 
-class Dir implements DirInterface
+final class Dir implements DirInterface
 {
     private PathInterface $path;
 
-    /**
-     * @throws PathIsFileException if the PathInterface represents a file
-     * @throws DirTailException if the path doesn't ends with a trailing slash.
-     */
     public function __construct(PathInterface $path)
     {
         $this->path = $path;
@@ -58,17 +53,17 @@ class Dir implements DirInterface
         return new Dir($this->path->getChild($path));
     }
 
-    final public function path(): PathInterface
+    public function path(): PathInterface
     {
         return $this->path;
     }
 
-    final public function exists(): bool
+    public function exists(): bool
     {
         return $this->path->exists() && $this->path->isDir();
     }
 
-    final public function assertExists(): void
+    public function assertExists(): void
     {
         if (!$this->exists()) {
             throw new DirNotExistsException(
@@ -78,7 +73,7 @@ class Dir implements DirInterface
         }
     }
 
-    final public function create(int $mode = 0755): void
+    public function create(int $mode = 0755): void
     {
         try {
             if (!mkdir($this->path->absolute(), $mode, true)) {
@@ -93,7 +88,7 @@ class Dir implements DirInterface
         }
     }
 
-    final public function remove(): array
+    public function remove(): array
     {
         $this->assertIsDir();
         $array = $this->removeContents();
@@ -103,7 +98,7 @@ class Dir implements DirInterface
         return $array;
     }
 
-    final public function removeContents(): array
+    public function removeContents(): array
     {
         $this->assertIsDir();
         $files = new RecursiveIteratorIterator(
@@ -153,6 +148,9 @@ class Dir implements DirInterface
         }
     }
 
+    /**
+     * @throws DirUnableToRemoveException
+     */
     private function rmdir(): void
     {
         $dir = $this->path->absolute();

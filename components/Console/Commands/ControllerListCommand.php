@@ -15,7 +15,7 @@ namespace Chevere\Components\Console\Commands;
 
 use Ahc\Cli\Input\Command;
 use Chevere\Components\Controller\ControllerName;
-use Chevere\Components\Filesystem\DirFromString;
+use Chevere\Components\Filesystem\FilesystemFactory;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Str\StrBool;
 use Chevere\Exceptions\Core\Exception;
@@ -46,7 +46,7 @@ final class ControllerListCommand extends Command
     {
         parent::__construct('conlist', 'Recursive list controllers in a given directory');
         $cwd = (new Str(getcwd()))->rightTail('/')->toString();
-        $this->cwd = new DirFromString($cwd);
+        $this->cwd = (new FilesystemFactory)->getDirFromString($cwd);
         $this
             ->argument('<dir>', sprintf('A file system directory path'))
             ->usage(
@@ -60,7 +60,7 @@ final class ControllerListCommand extends Command
     {
         try {
             if ((new StrBool($this->dir))->startsWith('/')) {
-                $dir = new DirFromString($this->dir);
+                $dir = (new FilesystemFactory)->getDirFromString($this->dir);
             } else {
                 $dir = $this->cwd->getChild($this->dir);
             }

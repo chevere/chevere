@@ -13,15 +13,24 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Filesystem;
 
+use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Filesystem\FileHandleException;
 use Chevere\Exceptions\Filesystem\FileInvalidContentsException;
 use Chevere\Exceptions\Filesystem\FileNotExistsException;
 use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
+use Chevere\Exceptions\Filesystem\FileUnableToGetException;
 use Chevere\Exceptions\Filesystem\FileUnableToPutException;
 use Chevere\Exceptions\Filesystem\FileWithoutContentsException;
 use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Interfaces\VarExportable\VarExportableInterface;
 
+/**
+ * Describes a component that interacts with `.php` files that return a variable.
+ *
+ * ```php
+ * <?php return 'Hello World!';
+ * ```;
+ */
 interface FilePhpReturnInterface
 {
     const PHP_RETURN = '<?php return ';
@@ -34,7 +43,7 @@ interface FilePhpReturnInterface
      * an instance that contains the specified the strict flag.
      *
      * Strict validation refers to match the beginning of the file contents
-     * against FilePhpReturnInterface::PHP_RETURN
+     * against `FilePhpReturnInterface::PHP_RETURN`
      */
     public function withStrict(bool $strict): FilePhpReturnInterface;
 
@@ -50,6 +59,8 @@ interface FilePhpReturnInterface
      * @throws FileHandleException
      * @throws FileWithoutContentsException
      * @throws FileInvalidContentsException
+     * @throws FileUnableToGetException
+     * @throws RuntimeException
      */
     public function raw();
 
@@ -60,25 +71,29 @@ interface FilePhpReturnInterface
      * @throws FileHandleException
      * @throws FileWithoutContentsException
      * @throws FileInvalidContentsException
+     * @throws FileUnableToGetException
+     * @throws RuntimeException
      */
     public function var();
 
     /**
-     * Same as var, but checking the variable $type.
+     * Same as `var()`, but checking the variable `$type`.
      *
      * @throws FileNotExistsException
      * @throws FileHandleException
      * @throws FileWithoutContentsException
      * @throws FileInvalidContentsException
+     * @throws FileUnableToGetException
+     * @throws RuntimeException
      * @throws FileReturnInvalidTypeException
      */
     public function varType(TypeInterface $type);
 
     /**
-     * Put $var into the file using var_export return and strict format.
+     * Put `$var` into the file using var_export return and strict format.
      *
      * @throws FileNotExistsException
-     * @throws FileUnableToPutException if unable to put the contents in the file
+     * @throws FileUnableToPutException
      */
     public function put(VarExportableInterface $varExportable): void;
 }

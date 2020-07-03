@@ -23,36 +23,36 @@ interface CacheInterface
 {
     const ILLEGAL_KEY_CHARACTERS = '\.\/\\\~\:';
 
+    /**
+     * @param DirInterface $dir Directory for working cache
+     * @throws DirUnableToCreateException if $dir doesn't exists and unable to create
+     */
     public function __construct(DirInterface $dir);
 
     /**
      * Put item in cache.
      *
-     * Return an instance with the specified CacheKeyInterface put.
+     * Return an instance with the specified put.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified CacheKeyInterface VarExportableInterface.
-     *
-     * @param CacheKeyInterface $cacheKey Cache key
-     * @param VarExportableInterface $varExportable an export variable
+     * an instance that contains the specified put.
      */
     public function withPut(CacheKeyInterface $cacheKey, VarExportableInterface $varExportable): CacheInterface;
 
     /**
      * Remove item from cache.
      *
-     * Return an instance with the specified CacheKeyInterface removed.
+     * Return an instance with the specified removed.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified CacheKeyInterface removed.
+     * an instance that contains the specified removed.
      *
-     * @param CacheKeyInterface $cacheKey Cache key
      * @throws FileUnableToRemoveException if unable to remove the cache file
      */
     public function withRemove(CacheKeyInterface $cacheKey): CacheInterface;
 
     /**
-     * Returns a boolean indicating whether the cache exists for the given key.
+     * Indicates whether the cache exists for the given key.
      */
     public function exists(CacheKeyInterface $cacheKey): bool;
 
@@ -78,7 +78,7 @@ interface CacheInterface
     public function puts(): array;
 
     /**
-     * Proxy for DirInterface getChild.
+     * Proxy for `DirInterface::getChild`.
      *
      * @throws DirUnableToCreateException
      */

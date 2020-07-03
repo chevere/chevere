@@ -13,30 +13,31 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Filesystem;
 
-use Chevere\Components\Filesystem\DirFromString;
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\FilesystemFactory;
+use Chevere\Components\Filesystem\Path;
 use Chevere\Exceptions\Filesystem\FileExistsException;
 use Chevere\Exceptions\Filesystem\FileNotExistsException;
 use Chevere\Exceptions\Filesystem\PathIsDirException;
-use Chevere\Components\Filesystem\File;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\FileInterface;
-use Chevere\Components\Filesystem\Path;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 
 final class FileTest extends TestCase
 {
-    private DirInterface $dir;
+    private DirInterface $testDir;
 
     protected function setUp(): void
     {
-        $this->dir = new DirFromString(__DIR__ . '/FileTest_' . uniqid() . '/');
+        $this->testDir = (new FilesystemFactory)
+            ->getDirFromString(__DIR__ . '/FileTest_' . uniqid() . '/');
     }
 
     protected function tearDown(): void
     {
         try {
-            $this->dir->remove();
+            $this->testDir->remove();
         } catch (Throwable $e) {
             //$e
         }
@@ -44,7 +45,7 @@ final class FileTest extends TestCase
 
     public function getChildFile(string $filename): FileInterface
     {
-        $child = $this->dir->path()->getChild($filename);
+        $child = $this->testDir->path()->getChild($filename);
 
         return new File($child);
     }
@@ -58,7 +59,7 @@ final class FileTest extends TestCase
 
     public function testWithNonExistentPath(): void
     {
-        $path = $this->dir->path();
+        $path = $this->testDir->path();
         $file = new File($path);
         $this->assertSame($path, $file->path());
         $this->assertFalse($file->exists());

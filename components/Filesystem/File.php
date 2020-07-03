@@ -13,8 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Filesystem;
 
-use Chevere\Exceptions\Core\Exception;
 use Chevere\Components\Filesystem\Dir;
+use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Message\Message;
+use Chevere\Components\Str\StrBool;
+use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Filesystem\FileExistsException;
 use Chevere\Exceptions\Filesystem\FileNotExistsException;
 use Chevere\Exceptions\Filesystem\FileUnableToCreateException;
@@ -24,20 +27,14 @@ use Chevere\Exceptions\Filesystem\FileUnableToRemoveException;
 use Chevere\Exceptions\Filesystem\PathIsDirException;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
-use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Message\Message;
-use Chevere\Components\Str\StrBool;
 use Throwable;
 
-class File implements FileInterface
+final class File implements FileInterface
 {
     private PathInterface $path;
 
     private bool $isPhp;
 
-    /**
-     * @throws PathIsDirException if the $path represents a directory
-     */
     public function __construct(PathInterface $path)
     {
         $this->path = $path;
@@ -45,22 +42,22 @@ class File implements FileInterface
         $this->assertIsNotDir();
     }
 
-    final public function path(): PathInterface
+    public function path(): PathInterface
     {
         return $this->path;
     }
 
-    final public function isPhp(): bool
+    public function isPhp(): bool
     {
         return $this->isPhp;
     }
 
-    final public function exists(): bool
+    public function exists(): bool
     {
         return $this->path->exists() && $this->path->isFile();
     }
 
-    final public function assertExists(): void
+    public function assertExists(): void
     {
         if (!$this->exists()) {
             throw new FileNotExistsException(
@@ -70,7 +67,7 @@ class File implements FileInterface
         }
     }
 
-    final public function checksum(): string
+    public function checksum(): string
     {
         $this->assertExists();
 
@@ -82,7 +79,7 @@ class File implements FileInterface
      * @throws FileNotExistsException
      * @throws FileUnableToGetException
      */
-    final public function contents(): string
+    public function contents(): string
     {
         $this->assertExists();
         try {
@@ -103,7 +100,7 @@ class File implements FileInterface
         return $contents;
     }
 
-    final public function remove(): void
+    public function remove(): void
     {
         $this->assertExists();
         // @codeCoverageIgnoreStart
@@ -118,7 +115,7 @@ class File implements FileInterface
         // @codeCoverageIgnoreEnd
     }
 
-    final public function create(): void
+    public function create(): void
     {
         $this->assertIsNotDir();
         if ($this->path->exists()) {
@@ -138,7 +135,7 @@ class File implements FileInterface
         }
     }
 
-    final public function put(string $contents): void
+    public function put(string $contents): void
     {
         $this->assertExists();
         if (false === file_put_contents($this->path->absolute(), $contents)) {

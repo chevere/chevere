@@ -13,20 +13,19 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Routing;
 
-use Chevere\Components\Filesystem\Dir;
-use Chevere\Components\Filesystem\DirFromString;
-use Chevere\Components\Filesystem\Path;
+use Chevere\Components\Filesystem\FilesystemFactory;
+use Chevere\Components\Routing\FsRoutesMaker;
+use Chevere\Exceptions\Routing\ExpectingRouteNameException;
 use Chevere\Interfaces\Route\RouteDecoratorInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
-use Chevere\Exceptions\Routing\ExpectingRouteNameException;
-use Chevere\Components\Routing\FsRoutesMaker;
 use PHPUnit\Framework\TestCase;
 
 final class RouteFsIteratorTest extends TestCase
 {
     public function testObjects(): void
     {
-        $dir = new DirFromString(__DIR__ . '/_resources/routes/');
+        $dir = (new FilesystemFactory)
+            ->getDirFromString(__DIR__ . '/_resources/routes/');
         $fsRoutesMaker = new FsRoutesMaker($dir);
         $fsRoutes = $fsRoutesMaker->fsRoutes();
         $this->assertCount(2, $fsRoutes);
@@ -45,7 +44,8 @@ final class RouteFsIteratorTest extends TestCase
 
     public function testWrongObjects(): void
     {
-        $dir = new DirFromString(__DIR__ . '/_resources/wrong-routes/');
+        $dir = (new FilesystemFactory)
+            ->getDirFromString(__DIR__ . '/_resources/wrong-routes/');
         $this->expectException(ExpectingRouteNameException::class);
         new FsRoutesMaker($dir);
     }

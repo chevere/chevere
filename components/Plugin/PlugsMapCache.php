@@ -15,7 +15,7 @@ namespace Chevere\Components\Plugin;
 
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\ClassMap\ClassMap;
-use Chevere\Components\Filesystem\FilePhpReturnFromString;
+use Chevere\Components\Filesystem\FilesystemFactory;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\Str;
 use Chevere\Components\VarExportable\VarExportable;
@@ -101,7 +101,8 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         try {
             $path = $classMap->get($className);
 
-            return (new FilePhpReturnFromString($path))->withStrict(false)->var();
+            return (new FilesystemFactory)->getFilePhpReturnFromString($path)
+                ->withStrict(false)->var();
         } catch (Exception $e) {
             throw new OutOfBoundsException(
                 ($e instanceof Exception

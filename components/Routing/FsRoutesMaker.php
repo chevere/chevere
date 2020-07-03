@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing;
 
-use Chevere\Components\Filesystem\DirFromString;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
+use Chevere\Components\Filesystem\FilesystemFactory;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Route\RouteDecorator;
 use Chevere\Components\Route\RoutePath;
@@ -55,7 +55,7 @@ final class FsRoutesMaker implements FsRoutesMakerInterface
                 ->toString();
             $this->fsRoutes = $this->fsRoutes->withDecorated(
                 new FsRoute(
-                    new DirFromString($current),
+                    (new FilesystemFactory)->getDirFromString($current),
                     new RoutePath($path),
                     new RouteDecorator($routeName)
                 )
