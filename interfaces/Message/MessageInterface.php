@@ -17,7 +17,7 @@ use Ahc\Cli\Output\Color;
 use Chevere\Interfaces\To\ToStringInterface;
 
 /**
- * Rich system messages for CLI and HTML.
+ * Describes the component in charge of handling rich system messages for CLI and HTML.
  */
 interface MessageInterface extends ToStringInterface
 {
@@ -48,27 +48,27 @@ interface MessageInterface extends ToStringInterface
     public function __construct(string $template);
 
     /**
-     * Provides access to the template property.
+     * Provides access to the message template.
      */
     public function template(): string;
 
     /**
-     * Provides access to the trTable property.
+     * Provides access to the message translation table.
      */
     public function trTable(): array;
 
     /**
-     * @return string A CLI version of the message
+     * Returns a console message representation.
      */
     public function toConsole(): string;
 
     /**
-     *  @return string A HTML version of the message
+     * Returns a HTML message representation.
      */
     public function toHtml(): string;
 
     /**
-     *  @return string A text version of the message.
+     *  Returns a text message representation.
      */
     public function toString(): string;
 
@@ -77,31 +77,22 @@ interface MessageInterface extends ToStringInterface
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified string translation.
-     *
-     * @param string $search The search string
-     * @param string $replace The new value
      */
     public function strtr(string $search, string $replace): MessageInterface;
 
     /**
-     * Return an instance with the specified emphasis.
+     * Return an instance with the specified `$search` replaced with `$replace` emphasis tag.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified emphasis.
-     *
-     * @param string $search The search string
-     * @param string $replace The new value
+     * an instance that contains the specified `$search` replaced with `$replace` emphasis tag.
      */
     public function emphasis(string $search, string $replace): MessageInterface;
 
     /**
-     * Return an instance with the specified strong.
+     * Return an instance with the specified `$search` replaced with `$replace` as strong tag.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified strong.
-     *
-     * @param string $search The search string
-     * @param string $replace The new value
+     * an instance that contains the specified `$search` replaced with `$replace` as strong tag.
      */
     public function strong(string $search, string $replace): MessageInterface;
 
@@ -110,20 +101,14 @@ interface MessageInterface extends ToStringInterface
      *
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified underline.
-     *
-     * @param string $search The search string
-     * @param string $replace The new value
      */
     public function underline(string $search, string $replace): MessageInterface;
 
     /**
-     * Return an instance with the specified code.
+     * Return an instance with the specified `$search` replaced with `$replace` as code tag.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified code.
-     *
-     * @param string $search The search string
-     * @param string $replace The new value
+     * an instance that contains the specified `$search` replaced with `$replace` as code tag.
      */
     public function code(string $search, string $replace): MessageInterface;
 }

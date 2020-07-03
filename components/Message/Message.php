@@ -121,12 +121,6 @@ final class Message implements MessageInterface
 
     private function put(string $format, string $search, string $replace): MessageInterface
     {
-        // if (strpos($this->template, $search) === false) {
-        //     throw new MessageSearchNotExistsException(
-        //         (new Message("Search string %search% doesn't exists in the template"))
-        //             ->code('%search%', $search)
-        //     );
-        // }
         $new = clone $this;
         $new->trTable[$search] = [$format, $replace];
 
