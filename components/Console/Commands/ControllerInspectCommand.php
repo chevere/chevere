@@ -54,13 +54,10 @@ final class ControllerInspectCommand extends Command
             ->infoBold('Description', true)
             ->comment($description !== '' ? $description : 'no description')
             ->eol(2);
-        if (count($controller->parameters()->map()) > 0) {
+        if (count($controller->parameters()->count()) > 0) {
             $this->writer()->infoBold('Parameters', true);
-            /**
-             * @var ControllerParameter $parameter
-             */
             $table = [];
-            foreach ($controller->parameters()->map() as $parameter) {
+            foreach ($controller->parameters()->getGenerator() as $name => $parameter) {
                 $required = ($parameter->isRequired() ? 'true' : 'false');
                 $table[] = [
                     'Name' => $parameter->name(),

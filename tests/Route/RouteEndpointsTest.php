@@ -26,7 +26,7 @@ final class RouteEndpointsTest extends TestCase
     {
         $method = new GetMethod;
         $routeEndpoints = new RouteEndpoints;
-        $this->assertCount(0, $routeEndpoints->map());
+        $this->assertCount(0, $routeEndpoints->mapCopy());
         $this->assertFalse($routeEndpoints->hasKey($method->name()));
         $this->expectException(OutOfBoundsException::class);
         $routeEndpoints->get($method->name());

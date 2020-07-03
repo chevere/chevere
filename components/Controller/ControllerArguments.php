@@ -24,7 +24,7 @@ use Throwable;
 
 final class ControllerArguments implements ControllerArgumentsInterface
 {
-    private ControllerParameters $parameters;
+    private ControllerParametersInterface $parameters;
 
     private array $arguments;
 
@@ -88,11 +88,7 @@ final class ControllerArguments implements ControllerArgumentsInterface
     private function assertRequired(): void
     {
         $failed = [];
-        /**
-         * @var string $name
-         * @var ControllerParameterInterface $parameter
-         */
-        foreach ($this->parameters->map() as $name => $parameter) {
+        foreach ($this->parameters->getGenerator() as $name => $parameter) {
             if (
                 $parameter->isRequired()
                 && $this->has($name) === false

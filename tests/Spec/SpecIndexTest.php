@@ -31,7 +31,7 @@ final class SpecIndexTest extends TestCase
         $specIndex = new SpecIndex;
         $method = new GetMethod;
         $this->assertFalse($specIndex->has('404', $method::name()));
-        $this->assertCount(0, $specIndex->specIndexMap()->map());
+        $this->assertCount(0, $specIndex->specIndexMap()->mapCopy());
         $this->assertFalse($specIndex->specIndexMap()->hasKey('404'));
         $this->expectException(OutOfBoundsException::class);
         $specIndex->get('404', $method::name());
@@ -53,7 +53,7 @@ final class SpecIndexTest extends TestCase
             $routeName->toString(),
             $method->name()
         ));
-        $this->assertCount(1, $specIndex->specIndexMap()->map());
+        $this->assertCount(1, $specIndex->specIndexMap()->mapCopy());
         $this->assertSame(
             $specPath->getChild($method->name() . '.json')->pub(),
             $specIndex->get(
@@ -76,7 +76,7 @@ final class SpecIndexTest extends TestCase
             $routeName->toString(),
             $method2->name()
         ));
-        $this->assertCount(1, $specIndex->specIndexMap()->map());
+        $this->assertCount(1, $specIndex->specIndexMap()->mapCopy());
         $this->assertSame(
             $specPath->getChild($method2->name() . '.json')->pub(),
             $specIndex->get($routeName->toString(), $method2->name())

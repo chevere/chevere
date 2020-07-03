@@ -17,21 +17,21 @@ use Chevere\Components\Controller\Controller;
 use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Controller\ControllerResponse;
-use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
-use Chevere\Interfaces\Controller\ControllerParametersInterface;
-use Chevere\Interfaces\Controller\ControllerResponseInterface;
 use Chevere\Components\Http\Methods\GetMethod;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
+use Chevere\Components\Router\Routable;
+use Chevere\Components\Router\RouterMaker;
 use Chevere\Exceptions\Router\RouteKeyConflictException;
 use Chevere\Exceptions\Router\RouteNameConflictException;
 use Chevere\Exceptions\Router\RoutePathExistsException;
+use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
+use Chevere\Interfaces\Controller\ControllerParametersInterface;
+use Chevere\Interfaces\Controller\ControllerResponseInterface;
 use Chevere\Interfaces\Router\RoutableInterface;
-use Chevere\Components\Router\Routable;
-use Chevere\Components\Router\RouterMaker;
 use PHPUnit\Framework\TestCase;
 
 final class RouterMakerTest extends TestCase
@@ -43,7 +43,7 @@ final class RouterMakerTest extends TestCase
         $routerMaker = (new RouterMaker)
             ->withAddedRoutable($routable1, 'group')
             ->withAddedRoutable($routable2, 'group');
-        $this->assertCount(2, $routerMaker->router()->routables()->map());
+        $this->assertCount(2, $routerMaker->router()->routables()->mapCopy());
         $routerIndex = $routerMaker->router()->index();
         $this->assertTrue($routerIndex->hasRouteName(
             $routable1->route()->name()->toString()

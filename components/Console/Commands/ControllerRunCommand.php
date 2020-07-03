@@ -60,7 +60,7 @@ final class ControllerRunCommand extends Command
         $controller = new $controllerNameStr;
         $args = $this->args;
         if ($args !== null) {
-            if ($controller->parameters()->map()->count() == 0) {
+            if ($controller->parameters()->count() == 0) {
                 $this->writer()->error('This controller takes no arguments', true);
 
                 return 255;

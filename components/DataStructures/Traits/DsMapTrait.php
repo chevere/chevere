@@ -28,7 +28,7 @@ trait DsMapTrait
 
     public function __clone()
     {
-        $this->map = $this->map();
+        $this->map = $this->mapCopy();
     }
 
     public function keys(): array
@@ -41,7 +41,7 @@ trait DsMapTrait
         return $this->map->count();
     }
 
-    public function map(): Map
+    public function mapCopy(): Map
     {
         return deep_copy($this->map);
     }

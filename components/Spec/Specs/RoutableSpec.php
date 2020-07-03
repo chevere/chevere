@@ -47,7 +47,7 @@ final class RoutableSpec implements SpecInterface
         $this->jsonPath = $specGroupRoute->getChild('route.json')->pub();
         $this->path = $routable->route()->path()->toString();
         $this->regex = $routable->route()->path()->regex()->toNoDelimiters();
-        $this->wildcards = $routable->route()->path()->wildcards()->map()->toArray();
+        $this->wildcards = $routable->route()->path()->wildcards()->mapCopy()->toArray();
         $routeEndpoints = $routable->route()->endpoints();
         /** @var string $key */
         foreach ($routeEndpoints->keys() as $key) {

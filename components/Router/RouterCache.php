@@ -104,7 +104,7 @@ final class RouterCache implements RouterCacheInterface
         /**
          * @var RoutableInterface $routable
          */
-        foreach ($router->routables()->map() as $routable) {
+        foreach ($router->routables()->mapCopy() as $routable) {
             $route = $routable->route();
             $pos++;
             $new->routesCache->put($route);

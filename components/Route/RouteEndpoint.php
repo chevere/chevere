@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use Chevere\Components\Controller\ControllerParameter;
+use Chevere\Components\Message\Message;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Http\MethodInterface;
-use Chevere\Components\Message\Message;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
 use OutOfBoundsException;
 
@@ -35,8 +35,7 @@ final class RouteEndpoint implements RouteEndpointInterface
         $this->method = $method;
         $this->controller = $controller;
         $this->description = $method->description();
-        /** @var ControllerParameter $parameter */
-        foreach ($controller->parameters()->map() as $parameter) {
+        foreach ($controller->parameters()->getGenerator() as $parameter) {
             $this->parameters[$parameter->name()] = [
                 'name' => $parameter->name(),
                 'regex' => $parameter->regex()->toNoDelimiters(),

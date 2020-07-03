@@ -23,5 +23,5 @@ interface DsMapInterface extends Countable
     /**
      * @return Map A deep copied map
      */
-    public function map(): Map;
+    public function mapCopy(): Map;
 }

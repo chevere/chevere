@@ -68,7 +68,7 @@ final class SpecMaker
          * @var string $routeName
          * @var Routable $routeabe
          */
-        foreach ($routes->map() as $routeName => $routable) {
+        foreach ($routes->mapCopy() as $routeName => $routable) {
             $groupName = $router->index()->getRouteGroup($routeName);
             if (!isset($groupName[$groupName])) {
                 $groups[$groupName] = new GroupSpec($specRoot, $groupName);
@@ -143,7 +143,7 @@ final class SpecMaker
             );
         }
         // @codeCoverageIgnoreStart
-        if ($this->router->routables()->map()->count() == 0) {
+        if ($this->router->routables()->mapCopy()->count() == 0) {
             throw new LogicException(
                 (new Message('Instance of %interfaceName% does not contain any routable.'))
                     ->code('%interfaceName%', RouterInterface::class)

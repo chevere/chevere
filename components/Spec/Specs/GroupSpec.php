@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Specs;
 
-use Chevere\Interfaces\Spec\SpecInterface;
-use Chevere\Interfaces\Spec\SpecPathInterface;
 use Chevere\Components\Spec\Specs\RoutableSpecs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
+use Chevere\Interfaces\Spec\SpecInterface;
+use Chevere\Interfaces\Spec\SpecPathInterface;
 
 final class GroupSpec implements SpecInterface
 {
@@ -49,7 +49,7 @@ final class GroupSpec implements SpecInterface
          * @var string $key
          * @var RoutableSpec $routableSpec
          */
-        foreach ($this->routableSpecs->map() as $key => $routableSpec) {
+        foreach ($this->routableSpecs->mapCopy() as $key => $routableSpec) {
             $routes[$key] = $routableSpec->toArray();
         }
 

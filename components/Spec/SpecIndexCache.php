@@ -50,7 +50,7 @@ final class SpecIndexCache implements SpecIndexCacheInterface
          * @var string $routeName
          * @var SpecMethodsInterface $specMethods
          */
-        foreach ($specIndex->specIndexMap()->map() as $routeName => $specMethods) {
+        foreach ($specIndex->specIndexMap()->mapCopy() as $routeName => $specMethods) {
             $this->cache = $this->cache->withAddedItem(
                 new CacheKey($routeName),
                 new VarExportable($specMethods)

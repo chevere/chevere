@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Specs;
 
-use Chevere\Interfaces\Spec\SpecInterface;
-use Chevere\Interfaces\Spec\SpecPathInterface;
 use Chevere\Components\Spec\Specs\GroupSpecs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
+use Chevere\Interfaces\Spec\SpecInterface;
+use Chevere\Interfaces\Spec\SpecPathInterface;
 
 final class IndexSpec implements SpecInterface
 {
@@ -45,7 +45,7 @@ final class IndexSpec implements SpecInterface
          * @var string $key
          * @var GroupSpec $groupSpec
          */
-        foreach ($this->groupSpecs->map() as $key => $groupSpec) {
+        foreach ($this->groupSpecs->mapCopy() as $key => $groupSpec) {
             $groups[$key] = $groupSpec->toArray();
         }
 

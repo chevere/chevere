@@ -22,12 +22,18 @@ final class ControllerParameters implements ControllerParametersInterface
 {
     use DsMapTrait;
 
+    public function toArray(): array
+    {
+        return $this->map->toArray();
+    }
+
     public function withParameter(ControllerParameterInterface $controllerParameter): ControllerParametersInterface
     {
         $new = clone $this;
-        $key = $controllerParameter->name();
-        $value = $controllerParameter;
-        $new->map->put($key, $value);
+        $new->map->put(
+            $controllerParameter->name(),
+            $controllerParameter
+        );
 
         return $new;
     }
@@ -37,9 +43,6 @@ final class ControllerParameters implements ControllerParametersInterface
         return $this->map->hasKey(/** @scrutinizer ignore-type */ $name);
     }
 
-    /**
-     * @throws OutOfBoundsException if the parameter doesn't exists
-     */
     public function get(string $name): ControllerParameterInterface
     {
         try {

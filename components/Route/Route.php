@@ -132,7 +132,7 @@ final class Route implements RouteInterface
      */
     private function assertWildcardEndpoint(RouteWildcardInterface $wildcard, RouteEndpointInterface $endpoint): void
     {
-        if ($endpoint->controller()->parameters()->map()->count() === 0) {
+        if ($endpoint->controller()->parameters()->count() === 0) {
             throw new InvalidArgumentException(
                 (new Message("Controller %controller% doesn't accept any parameter (route wildcard %wildcard%)"))
                     ->code('%controller%', get_class($endpoint->controller()))

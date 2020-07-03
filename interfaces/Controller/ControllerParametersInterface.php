@@ -13,25 +13,46 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Controller;
 
-use Chevere\Interfaces\DataStructures\DsMapInterface;
-use Ds\Map;
+use Chevere\Interfaces\Controller\ControllerParameterInterface;
+use Countable;
+use Generator;
 
-interface ControllerParametersInterface extends DsMapInterface
+/**
+ * Describes the component in charge of collecting objects implementing `ControllerParameterInterface`.
+ */
+interface ControllerParametersInterface extends Countable
 {
     /**
-     * @return Map [<string>name => <string>regex,]
+     * @return Generator<string, ControllerParameterInterface> getGenerator()
      */
-    public function map(): Map;
+    public function getGenerator(): Generator;
 
     /**
-     * Return an instance with the specified Controller Parameter.
+     * Provides access to an array representation.
+     *
+     * ```php
+     * return [
+     *     'name' => $controllerParameter,
+     * ];
+     * ```
+     */
+    public function toArray(): array;
+
+    /**
+     * Return an instance with the specified controller parameter instance.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified Controller Parameter.
+     * an instance that contains the specified controller parameter instance.
      */
     public function withParameter(ControllerParameterInterface $controllerParameter): ControllerParametersInterface;
 
+    /**
+     * Indicates whether the instance has a parameter identified by `$name`.
+     */
     public function hasParameterName(string $name): bool;
 
+    /**
+     * @throws OutOfBoundsException
+     */
     public function get(string $name): ControllerParameterInterface;
 }
