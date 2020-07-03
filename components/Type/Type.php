@@ -17,27 +17,31 @@ use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Type\TypeNotFoundException;
 use Chevere\Interfaces\Type\TypeInterface;
 
-/**
- * Type provides type validation toolchain. Useful to set dynamic types as parameters.
- */
 final class Type implements TypeInterface
 {
-    /** @var string The passed argument in construct */
     private string $type;
 
-    /** @var string The detected primitive type */
+    private string $validator;
+
     private string $primitive = '';
 
-    /**
-     * @var string a primitive type, class name or interface
-     *
-     * @throws TypeNotFoundException if the type doesn't exists
-     */
+    private string $typeHinting;
+
     public function __construct(string $type)
     {
         $this->type = $type;
         $this->setPrimitive();
         $this->assertHasPrimitive();
+        $this->validator = TypeInterface::TYPE_VALIDATORS[$this->primitive];
+        $this->typeHinting = $this->primitive;
+        if (in_array($this->primitive, [TypeInterface::CLASS_NAME, TypeInterface::INTERFACE_NAME])) {
+            $this->typeHinting = $this->type;
+        }
+    }
+
+    public function validator(): callable
+    {
+        return $this->validator;
     }
 
     public function primitive(): string
@@ -47,11 +51,7 @@ final class Type implements TypeInterface
 
     public function typeHinting(): string
     {
-        if (in_array($this->primitive, [TypeInterface::CLASS_NAME, TypeInterface::INTERFACE_NAME])) {
-            return $this->type;
-        }
-
-        return $this->primitive;
+        return $this->typeHinting;
     }
 
     public function validate($var): bool
@@ -61,11 +61,6 @@ final class Type implements TypeInterface
         }
 
         return $this->validator()($var);
-    }
-
-    public function validator(): callable
-    {
-        return TypeInterface::TYPE_VALIDATORS[$this->primitive];
     }
 
     private function isAbleToValidateObjects(): bool

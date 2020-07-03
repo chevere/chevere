@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarExportable;
 
-use Chevere\Exceptions\VarExportable\VarNotExportableException;
 use Chevere\Components\VarExportable\VarExportable;
+use Chevere\Exceptions\VarExportable\VarExportableException;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
@@ -22,7 +22,7 @@ final class VarExportableTest extends TestCase
 {
     public function testNotExportable(): void
     {
-        $this->expectException(VarNotExportableException::class);
+        $this->expectException(VarExportableException::class);
         $resource = fopen(__FILE__, 'r');
         if (is_resource($resource) === false) {
             $this->markTestIncomplete('Unable to open ' . __FILE__);
@@ -40,7 +40,7 @@ final class VarExportableTest extends TestCase
             $this->markTestIncomplete('Unable to open ' . __FILE__);
         }
         $object->array = [1, 2, 3, $resource];
-        $this->expectException(VarNotExportableException::class);
+        $this->expectException(VarExportableException::class);
         new VarExportable($object);
         /** @var resource $resource */
         fclose($resource);

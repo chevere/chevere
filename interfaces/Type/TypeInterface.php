@@ -13,6 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Type;
 
+use Chevere\Exceptions\Type\TypeNotFoundException;
+
+/**
+ * Describes the component in charge of dynamic type validation.
+ */
 interface TypeInterface
 {
     /** Scalar */
@@ -20,17 +25,14 @@ interface TypeInterface
     const INTEGER = 'integer';
     const FLOAT = 'float';
     const STRING = 'string';
-
     /** Compound */
     const ARRAY = 'array';
     const OBJECT = 'object';
     const CALLABLE = 'callable';
     const ITERABLE = 'iterable';
-
     /** Special */
     const RESOURCE = 'resource';
     const NULL = 'null';
-
     /** Pseudo-types */
     const CLASS_NAME = 'className';
     const INTERFACE_NAME = 'interfaceName';
@@ -54,6 +56,9 @@ interface TypeInterface
         self::INTERFACE_NAME => 'is_object',
     ];
 
+    /**
+     * @throws TypeNotFoundException if the type doesn't exists
+     */
     public function __construct(string $type);
 
     /**
@@ -64,17 +69,17 @@ interface TypeInterface
     /**
      * Returns the type hinting.
      *
-     * It will return either the class name, interface, or simply the primitive.
+     * It will return either the class name, interface, or the primitive.
      */
     public function typeHinting(): string;
 
     /**
-     * Returns a boolean indicating if $var validates against the type.
+     * Returns a boolean indicating if `$var` validates against the type.
      */
     public function validate($var): bool;
 
     /**
-     * Returns the type validator callable.
+     * Returns the validator callable.
      */
     public function validator(): callable;
 }

@@ -16,8 +16,8 @@ namespace Chevere\Exceptions\VarExportable;
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown when the var is a resource.
+ * Exception thrown when the var exportable is a resource.
  */
-final class VarIsResourceException extends Exception
+final class VarExportableIsResourceException extends Exception
 {
 }

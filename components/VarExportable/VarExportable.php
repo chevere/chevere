@@ -15,17 +15,14 @@ namespace Chevere\Components\VarExportable;
 
 use Chevere\Components\Breadcrumb\Breadcrumb;
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\VarExportable\VarIsResourceException;
-use Chevere\Exceptions\VarExportable\VarNotExportableException;
+use Chevere\Exceptions\VarExportable\VarExportableException;
+use Chevere\Exceptions\VarExportable\VarExportableIsResourceException;
 use Chevere\Interfaces\Breadcrumb\BreadcrumbInterface;
 use Chevere\Interfaces\VarExportable\VarExportableInterface;
 use ReflectionObject;
 use ReflectionProperty;
 use Throwable;
 
-/**
- * Allows to interact with exportable variables.
- */
 final class VarExportable implements VarExportableInterface
 {
     /** @var mixed */
@@ -33,9 +30,6 @@ final class VarExportable implements VarExportableInterface
 
     private BreadcrumbInterface $breadcrumb;
 
-    /**
-     * @throws VarIsResourceException if $var contains resource
-     */
     public function __construct($var)
     {
         $this->var = $var;
@@ -43,7 +37,7 @@ final class VarExportable implements VarExportableInterface
         try {
             $this->assertExportable($this->var);
         } catch (Throwable $e) {
-            throw new VarNotExportableException(
+            throw new VarExportableException(
                 new Message($e->getMessage()),
                 $e->getCode(),
                 $e
@@ -66,9 +60,6 @@ final class VarExportable implements VarExportableInterface
         return serialize($this->var);
     }
 
-    /**
-     * @throws VarIsResourceException
-     */
     private function assertExportable($var): void
     {
         $this->assertIsNotResource($var);
@@ -80,7 +71,7 @@ final class VarExportable implements VarExportableInterface
     }
 
     /**
-     * @throws VarIsResourceException
+     * @throws VarExportableIsResourceException
      */
     private function assertIsNotResource($var): void
     {
@@ -91,12 +82,12 @@ final class VarExportable implements VarExportableInterface
             } else {
                 $message = new Message("Argument is a resource which can't be exported");
             }
-            throw new VarIsResourceException($message);
+            throw new VarExportableIsResourceException($message);
         }
     }
 
     /**
-     * @throws VarIsResourceException
+     * @throws VarExportableIsResourceException
      */
     private function breadcrumbIterable($var): void
     {

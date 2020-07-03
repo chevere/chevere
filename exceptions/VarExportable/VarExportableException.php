@@ -16,8 +16,8 @@ namespace Chevere\Exceptions\VarExportable;
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown when a variable is not exportable.
+ * Exception thrown by the component implementing `VarExportableInterface`.
  */
-final class VarNotExportableException extends Exception
+final class VarExportableException extends Exception
 {
 }
