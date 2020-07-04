@@ -15,10 +15,10 @@ namespace Chevere\Components\VarDump\Highlighters;
 
 use Chevere\Components\VarDump\Highlighters\Traits\AssertKeyTrait;
 use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Interfaces\VarDump\HighlightInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
+use Chevere\Interfaces\VarDump\VarDumpHighlightInterface;
 
-final class HtmlHighlight implements HighlightInterface
+final class VarDumpHtmlHighlight implements VarDumpHighlightInterface
 {
     use AssertKeyTrait;
 

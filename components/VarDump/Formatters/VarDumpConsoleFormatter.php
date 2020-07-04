@@ -15,14 +15,14 @@ namespace Chevere\Components\VarDump\Formatters;
 
 use Chevere\Components\VarDump\Formatters\Traits\FilterEncodedCharsTrait;
 use Chevere\Components\VarDump\Formatters\Traits\IndentTrait;
-use Chevere\Components\VarDump\Highlighters\ConsoleHighlight;
-use Chevere\Interfaces\VarDump\FormatterInterface;
+use Chevere\Components\VarDump\Highlighters\VarDumpConsoleHighlight;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
+use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 
 /**
  * Provide console VarDump representation.
  */
-final class ConsoleFormatter implements FormatterInterface
+final class VarDumpConsoleFormatter implements VarDumpFormatterInterface
 {
     use IndentTrait;
     use FilterEncodedCharsTrait;
@@ -30,14 +30,14 @@ final class ConsoleFormatter implements FormatterInterface
     public function emphasis(string $string): string
     {
         return
-            (new ConsoleHighlight(VarDumperInterface::EMPHASIS))
+            (new VarDumpConsoleHighlight(VarDumperInterface::EMPHASIS))
                 ->wrap($string);
     }
 
     public function highlight(string $key, string $string): string
     {
         return
-            (new ConsoleHighlight($key))
+            (new VarDumpConsoleHighlight($key))
                 ->wrap($string);
     }
 }

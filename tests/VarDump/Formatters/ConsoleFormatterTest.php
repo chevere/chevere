@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\Formatters;
 
-use Chevere\Components\VarDump\Formatters\ConsoleFormatter;
-use Chevere\Interfaces\VarDump\HighlightInterface;
+use Chevere\Components\VarDump\Formatters\VarDumpConsoleFormatter;
+use Chevere\Interfaces\VarDump\VarDumpHighlightInterface;
 use PHPUnit\Framework\TestCase;
 
 final class ConsoleFormatterTest extends TestCase
@@ -22,28 +22,28 @@ final class ConsoleFormatterTest extends TestCase
     public function testIndent(): void
     {
         $indent = 5;
-        $indented = (new ConsoleFormatter)->indent($indent);
+        $indented = (new VarDumpConsoleFormatter)->indent($indent);
         $this->assertTrue(strlen($indented) == $indent);
     }
 
     public function testEmphasis(): void
     {
         $string = 'string';
-        $emphasized = (new ConsoleFormatter)->emphasis($string);
+        $emphasized = (new VarDumpConsoleFormatter)->emphasis($string);
         $this->assertTrue(strlen($emphasized) >= $string);
     }
 
     public function testFilterEncodedChars(): void
     {
         $string = 'string</a>';
-        $filtered = (new ConsoleFormatter)->filterEncodedChars($string);
+        $filtered = (new VarDumpConsoleFormatter)->filterEncodedChars($string);
         $this->assertSame($string, $filtered);
     }
 
     public function testHighlight(): void
     {
         $string = 'string';
-        $highlighted = (new ConsoleFormatter)->highlight(HighlightInterface::KEYS[0], $string);
+        $highlighted = (new VarDumpConsoleFormatter)->highlight(VarDumpHighlightInterface::KEYS[0], $string);
         $this->assertTrue(strlen($highlighted) >= $string);
     }
 }

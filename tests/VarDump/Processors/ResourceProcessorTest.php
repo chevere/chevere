@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\Processors;
 
-use Chevere\Components\VarDump\Processors\ResourceProcessor;
+use Chevere\Components\VarDump\Processors\VarDumpResourceProcessor;
 use Chevere\Tests\VarDump\Traits\VarDumperTrait;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -31,7 +31,7 @@ final class ResourceProcessorTest extends TestCase
         $resourceString = (string) $resource;
         $expectedInfo = 'type=' . get_resource_type($resource);
         $varDumper = $this->getVarDumper($resource);
-        $processor = new ResourceProcessor($varDumper);
+        $processor = new VarDumpResourceProcessor($varDumper);
         $this->assertSame($expectedInfo, $processor->info());
         $processor->write();
         $this->assertSame(
@@ -45,6 +45,6 @@ final class ResourceProcessorTest extends TestCase
     public function testInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new ResourceProcessor($this->getVarDumper(null));
+        new VarDumpResourceProcessor($this->getVarDumper(null));
     }
 }

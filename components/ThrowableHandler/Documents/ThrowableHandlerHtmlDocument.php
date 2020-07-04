@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ThrowableHandler\Documents;
 
-use Chevere\Components\ThrowableHandler\Formatters\HtmlFormatter;
+use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerHtmlFormatter;
 use Chevere\Interfaces\ThrowableHandler\FormatterInterface;
 
-final class HtmlDocument extends AbstractDocument
+final class ThrowableHandlerHtmlDocument extends ThrowableHandlerAbstractDocument
 {
     /** @var string Title used when debug=0 */
     const NO_DEBUG_TITLE_PLAIN = 'Something went wrong';
@@ -35,7 +35,7 @@ final class HtmlDocument extends AbstractDocument
 
     public function getFormatter(): FormatterInterface
     {
-        return new HtmlFormatter;
+        return new ThrowableHandlerHtmlFormatter;
     }
 
     public function getTemplate(): array

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\Processors;
 
-use Chevere\Components\VarDump\Processors\IntegerProcessor;
+use Chevere\Components\VarDump\Processors\VarDumpIntegerProcessor;
 use Chevere\Tests\VarDump\Traits\VarDumperTrait;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -28,7 +28,7 @@ final class IntegerProcessorTest extends TestCase
             $stringVar = (string) $var;
             $expectedInfo = 'length=' . strlen($stringVar);
             $varDumper = $this->getVarDumper($var);
-            $processor = new IntegerProcessor($varDumper);
+            $processor = new VarDumpIntegerProcessor($varDumper);
             $this->assertSame($expectedInfo, $processor->info());
             $processor->write();
             $this->assertSame(
@@ -41,6 +41,6 @@ final class IntegerProcessorTest extends TestCase
     public function testInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new IntegerProcessor($this->getVarDumper(1.1));
+        new VarDumpIntegerProcessor($this->getVarDumper(1.1));
     }
 }

@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump;
 
-use Chevere\Interfaces\VarDump\FormatterInterface;
-use Chevere\Interfaces\VarDump\OutputterInterface;
+use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 use Chevere\Interfaces\VarDump\VarDumpInterface;
+use Chevere\Interfaces\VarDump\VarDumpOutputterInterface;
 use Chevere\Interfaces\Writer\WriterInterface;
 use function DeepCopy\deep_copy;
 
@@ -23,17 +23,17 @@ final class VarDump implements VarDumpInterface
 {
     private array $vars = [];
 
-    private FormatterInterface $formatter;
+    private VarDumpFormatterInterface $formatter;
 
-    private OutputterInterface $outputter;
+    private VarDumpOutputterInterface $outputter;
 
     private int $shift = 0;
 
     private array $debugBacktrace = [];
 
     public function __construct(
-        FormatterInterface $formatter,
-        OutputterInterface $outputter
+        VarDumpFormatterInterface $formatter,
+        VarDumpOutputterInterface $outputter
     ) {
         $this->formatter = $formatter;
         $this->outputter = $outputter;

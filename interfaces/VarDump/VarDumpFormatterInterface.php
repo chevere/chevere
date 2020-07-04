@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\VarDump;
 
-interface FormatterInterface
+interface VarDumpFormatterInterface
 {
     /**
      * @param int $indent Number of spaces to prefix

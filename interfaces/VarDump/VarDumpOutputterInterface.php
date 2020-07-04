@@ -13,11 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\VarDump;
 
-/**
- * The template strings used by VarDump*.
- */
-interface TemplateInterface
+use Chevere\Interfaces\Writer\WriterInterface;
+
+interface VarDumpOutputterInterface
 {
-    const HTML_INLINE_PREFIX = ' <span style="border-left: 1px solid rgba(236,240,241,.1);"></span>  ';
-    const HTML_EMPHASIS = '<em>%s</em>';
+    public function setUp(WriterInterface $writer, array $backtrace);
+
+    public function prepare(): void;
+
+    public function callback(): void;
+
+    public function caller(): string;
 }

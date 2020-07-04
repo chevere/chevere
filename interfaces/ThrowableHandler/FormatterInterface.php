@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\ThrowableHandler;
 
-use Chevere\Interfaces\VarDump\FormatterInterface as VarDumpFormatterInterface;
+use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 
 interface FormatterInterface
 {

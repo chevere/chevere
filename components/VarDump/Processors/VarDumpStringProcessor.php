@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
-use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Interfaces\VarDump\ProcessorInterface;
-use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
+use Chevere\Interfaces\Type\TypeInterface;
+use Chevere\Interfaces\VarDump\VarDumperInterface;
+use Chevere\Interfaces\VarDump\VarDumpProcessorInterface;
 
-final class NullProcessor implements ProcessorInterface
+final class VarDumpStringProcessor implements VarDumpProcessorInterface
 {
     use ProcessorTrait;
 
@@ -26,18 +26,24 @@ final class NullProcessor implements ProcessorInterface
     {
         $this->varDumper = $varDumper;
         $this->assertType();
-        $this->info = '';
+        $this->info = 'length=' . mb_strlen($this->varDumper->dumpable()->var());
     }
 
     public function type(): string
     {
-        return TypeInterface::NULL;
+        return TypeInterface::STRING;
     }
 
     public function write(): void
     {
         $this->varDumper->writer()->write(
-            $this->typeHighlighted()
+            implode(' ', [
+                $this->typeHighlighted(),
+                $this->varDumper->formatter()->filterEncodedChars(
+                    $this->varDumper->dumpable()->var()
+                ),
+                $this->highlightParentheses($this->info)
+            ])
         );
     }
 }

@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ThrowableHandler\Formatters;
 
-use Chevere\Interfaces\VarDump\FormatterInterface as VarDumpFormatterInterface;
-use Chevere\Components\VarDump\Formatters\PlainFormatter as VarDumpFormatter;
+use Chevere\Components\VarDump\Formatters\VarDumpPlainFormatter as VarDumpFormatter;
+use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 
 final class PlainFormatter extends AbstractFormatter
 {

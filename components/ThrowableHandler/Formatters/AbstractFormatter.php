@@ -15,7 +15,7 @@ namespace Chevere\Components\ThrowableHandler\Formatters;
 
 use Chevere\Interfaces\ThrowableHandler\FormatterInterface;
 use Chevere\Interfaces\ThrowableHandler\TraceFormatterInterface;
-use Chevere\Interfaces\VarDump\FormatterInterface as VarDumpFormatterInterface;
+use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 
 abstract class AbstractFormatter implements FormatterInterface
 {

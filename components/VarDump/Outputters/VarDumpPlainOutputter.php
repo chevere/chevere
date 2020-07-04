@@ -13,20 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputters;
 
-use Colors\Color;
-
-final class ConsoleOutputter extends AbstractOutputter
+final class VarDumpPlainOutputter extends VarDumpAbstractOutputter
 {
-    private string $outputHr;
+    private string $outputHr = '------------------------------------------------------------';
 
     public function prepare(): void
     {
-        $color = new Color;
-        $this->outputHr = $color->fg('blue', str_repeat('-', 60));
         $this->writer()->write(
             implode("\n", [
                 '',
-                $color->fg('red', $color->bold($this->caller())),
+                $this->caller(),
                 $this->outputHr,
             ])
         );

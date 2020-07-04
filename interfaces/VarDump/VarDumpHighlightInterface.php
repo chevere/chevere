@@ -15,7 +15,7 @@ namespace Chevere\Interfaces\VarDump;
 
 use Chevere\Interfaces\Type\TypeInterface;
 
-interface HighlightInterface
+interface VarDumpHighlightInterface
 {
     const KEYS = [
         TypeInterface::STRING,

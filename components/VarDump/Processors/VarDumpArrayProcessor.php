@@ -17,10 +17,10 @@ use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 use Chevere\Components\VarDump\VarDumpable;
 use Chevere\Components\VarDump\VarDumper;
 use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Interfaces\VarDump\ProcessorInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
+use Chevere\Interfaces\VarDump\VarDumpProcessorInterface;
 
-final class ArrayProcessor implements ProcessorInterface
+final class VarDumpArrayProcessor implements VarDumpProcessorInterface
 {
     use ProcessorTrait;
 

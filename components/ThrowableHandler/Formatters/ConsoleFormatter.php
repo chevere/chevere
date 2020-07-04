@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ThrowableHandler\Formatters;
 
-use Chevere\Components\VarDump\Formatters\ConsoleFormatter as VarDumpFormatter;
+use Chevere\Components\VarDump\Formatters\VarDumpConsoleFormatter as VarDumpFormatter;
 use Chevere\Interfaces\ThrowableHandler\TraceFormatterInterface;
-use Chevere\Interfaces\VarDump\FormatterInterface as VarDumpFormatterInterface;
+use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 use Colors\Color;
 
 final class ConsoleFormatter extends AbstractFormatter

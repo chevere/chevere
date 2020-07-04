@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\Highlighters;
 
-use Chevere\Components\VarDump\Highlighters\ConsoleHighlight;
-use Chevere\Interfaces\VarDump\HighlightInterface;
+use Chevere\Components\VarDump\Highlighters\VarDumpConsoleHighlight;
+use Chevere\Interfaces\VarDump\VarDumpHighlightInterface;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -23,15 +23,15 @@ final class ConsoleHighlightTest extends TestCase
     public function testInvalidArgumentConstruct(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new ConsoleHighlight('invalid-argument');
+        new VarDumpConsoleHighlight('invalid-argument');
     }
 
     public function testConstruct(): void
     {
         $dump = 'string';
         $weas = [];
-        foreach (HighlightInterface::KEYS as $key) {
-            $highlight = new ConsoleHighlight($key);
+        foreach (VarDumpHighlightInterface::KEYS as $key) {
+            $highlight = new VarDumpConsoleHighlight($key);
             $wrapped = $highlight->wrap($dump);
             $weas[] = [strlen($wrapped), strlen($dump)];
             // >= because the target console may not support color

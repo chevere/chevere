@@ -14,12 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Tests\VarDump;
 
 use Chevere\Components\Str\Str;
-use Chevere\Components\VarDump\Formatters\ConsoleFormatter;
-use Chevere\Components\VarDump\Formatters\HtmlFormatter;
-use Chevere\Components\VarDump\Formatters\PlainFormatter;
-use Chevere\Components\VarDump\Outputters\ConsoleOutputter;
-use Chevere\Components\VarDump\Outputters\HtmlOutputter;
-use Chevere\Components\VarDump\Outputters\PlainOutputter;
+use Chevere\Components\VarDump\Formatters\VarDumpConsoleFormatter;
+use Chevere\Components\VarDump\Formatters\VarDumpHtmlFormatter;
+use Chevere\Components\VarDump\Formatters\VarDumpPlainFormatter;
+use Chevere\Components\VarDump\Outputters\VarDumpConsoleOutputter;
+use Chevere\Components\VarDump\Outputters\VarDumpHtmlOutputter;
+use Chevere\Components\VarDump\Outputters\VarDumpPlainOutputter;
 use Chevere\Components\VarDump\VarOutputter;
 use Chevere\Components\Writer\StreamWriter;
 use Chevere\Tests\VarDump\Traits\DebugBacktraceTrait;
@@ -48,10 +48,10 @@ final class VarOutputterTest extends TestCase
         $varOutputter = new VarOutputter(
             $writer,
             $backtrace,
-            new PlainFormatter,
+            new VarDumpPlainFormatter,
             null,
         );
-        $varOutputter->process(new PlainOutputter);
+        $varOutputter->process(new VarDumpPlainOutputter);
         $this->assertSame($this->getParsed($backtrace, 'output-plain'), $writer->toString());
     }
 
@@ -62,10 +62,10 @@ final class VarOutputterTest extends TestCase
         $varOutputter = new VarOutputter(
             $writer,
             $backtrace,
-            new ConsoleFormatter,
+            new VarDumpConsoleFormatter,
             null,
         );
-        $varOutputter->process(new ConsoleOutputter);
+        $varOutputter->process(new VarDumpConsoleOutputter);
         $parsed = $this->getParsed($backtrace, 'output-console-color');
         $string = $writer->toString();
         $parsed = (new Str($parsed))->withStripANSIColors()->toString();
@@ -80,10 +80,10 @@ final class VarOutputterTest extends TestCase
         $varOutputter = new VarOutputter(
             $writer,
             $backtrace,
-            new HtmlFormatter,
+            new VarDumpHtmlFormatter,
             null,
         );
-        $varOutputter->process(new HtmlOutputter);
+        $varOutputter->process(new VarDumpHtmlOutputter);
         $parsed = $this->getParsed($backtrace, 'output-html');
 
         $this->assertSame($parsed, $writer->toString());

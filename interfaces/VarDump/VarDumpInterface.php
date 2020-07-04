@@ -18,8 +18,8 @@ use Chevere\Interfaces\Writer\WriterInterface;
 interface VarDumpInterface
 {
     public function __construct(
-        FormatterInterface $formatter,
-        OutputterInterface $outputter
+        VarDumpFormatterInterface $formatter,
+        VarDumpOutputterInterface $outputter
     );
 
     /**

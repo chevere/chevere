@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\Highlighters;
 
-use Chevere\Components\VarDump\Highlighters\HtmlHighlight;
-use Chevere\Interfaces\VarDump\HighlightInterface;
+use Chevere\Components\VarDump\Highlighters\VarDumpHtmlHighlight;
+use Chevere\Interfaces\VarDump\VarDumpHighlightInterface;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -23,14 +23,14 @@ final class HtmlHighlightTest extends TestCase
     public function testInvalidArgumentConstruct(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new HtmlHighlight('invalid-argument');
+        new VarDumpHtmlHighlight('invalid-argument');
     }
 
     public function testConstruct(): void
     {
         $dump = 'string';
-        foreach (HighlightInterface::KEYS as $key) {
-            $wrapper = new HtmlHighlight($key);
+        foreach (VarDumpHighlightInterface::KEYS as $key) {
+            $wrapper = new VarDumpHtmlHighlight($key);
             $wrapped = $wrapper->wrap($dump);
             $this->assertTrue(strlen($wrapped) > strlen($dump));
         }

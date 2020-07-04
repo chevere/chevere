@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputters;
 
-final class HtmlOutputter extends AbstractOutputter
+final class VarDumpHtmlOutputter extends VarDumpAbstractOutputter
 {
     const BACKGROUND = '#132537';
     const BACKGROUND_SHADE = '#132537';

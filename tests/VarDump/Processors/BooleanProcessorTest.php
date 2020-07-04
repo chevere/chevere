@@ -13,8 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\VarDump\Processors;
 
-use stdClass;
-use Chevere\Components\VarDump\Processors\BooleanProcessor;
+use Chevere\Components\VarDump\Processors\VarDumpBooleanProcessor;
 use Chevere\Tests\VarDump\Traits\VarDumperTrait;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +29,7 @@ final class BooleanProcessorTest extends TestCase
             'false' => false
         ] as $info => $var) {
             $varDumper = $this->getVarDumper($var);
-            $processor = new BooleanProcessor($varDumper);
+            $processor = new VarDumpBooleanProcessor($varDumper);
             $this->assertSame($info, $processor->info(), 'info');
             $processor->write();
             $this->assertSame(
@@ -43,6 +42,6 @@ final class BooleanProcessorTest extends TestCase
     public function testInvalidArgument(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new BooleanProcessor($this->getVarDumper(null));
+        new VarDumpBooleanProcessor($this->getVarDumper(null));
     }
 }

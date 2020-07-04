@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler\Documents;
 
-use Chevere\Components\ThrowableHandler\Documents\HtmlDocument;
 use Chevere\Components\ThrowableHandler\Documents\PlainDocument;
-use Chevere\Components\ThrowableHandler\Formatters\HtmlFormatter;
+use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerHtmlDocument;
+use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerHtmlFormatter;
 use Chevere\Components\ThrowableHandler\ThrowableHandler;
 use Chevere\Components\ThrowableHandler\ThrowableRead;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 
-final class HtmlDocumentTest extends TestCase
+final class ThrowableHandlerHtmlDocumentTest extends TestCase
 {
     private ThrowableHandlerInterface $exceptionHandler;
 
@@ -36,8 +36,8 @@ final class HtmlDocumentTest extends TestCase
     public function testHandlerDebugOn(): void
     {
         $this->exceptionHandler = $this->exceptionHandler->withIsDebug(true);
-        $document = new HtmlDocument($this->exceptionHandler);
-        $this->assertInstanceOf(HtmlFormatter::class, $document->getFormatter());
+        $document = new ThrowableHandlerHtmlDocument($this->exceptionHandler);
+        $this->assertInstanceOf(ThrowableHandlerHtmlFormatter::class, $document->getFormatter());
         $sectionTitle = $document->getSectionTitle();
         $plainDocument = new PlainDocument($this->exceptionHandler);
         $this->assertTrue(strlen($sectionTitle) > $plainDocument->getSectionTitle());
@@ -49,8 +49,8 @@ final class HtmlDocumentTest extends TestCase
     public function testHandlerDebugOff(): void
     {
         $this->exceptionHandler = $this->exceptionHandler->withIsDebug(false);
-        $document = new HtmlDocument($this->exceptionHandler);
-        $this->assertInstanceOf(HtmlFormatter::class, $document->getFormatter());
+        $document = new ThrowableHandlerHtmlDocument($this->exceptionHandler);
+        $this->assertInstanceOf(ThrowableHandlerHtmlFormatter::class, $document->getFormatter());
         $sectionTitle = $document->getSectionTitle();
         $plainDocument = new PlainDocument($this->exceptionHandler);
         $this->assertTrue(strlen($sectionTitle) > $plainDocument->getSectionTitle());

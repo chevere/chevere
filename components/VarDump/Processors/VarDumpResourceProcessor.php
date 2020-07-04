@@ -13,31 +13,40 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Processors;
 
-use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Interfaces\VarDump\ProcessorInterface;
-use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
+use Chevere\Interfaces\Type\TypeInterface;
+use Chevere\Interfaces\VarDump\VarDumperInterface;
+use Chevere\Interfaces\VarDump\VarDumpProcessorInterface;
 
-final class BooleanProcessor implements ProcessorInterface
+final class VarDumpResourceProcessor implements VarDumpProcessorInterface
 {
     use ProcessorTrait;
+
+    private string $stringVar = '';
 
     public function __construct(VarDumperInterface $varDumper)
     {
         $this->varDumper = $varDumper;
         $this->assertType();
-        $this->info = $this->varDumper->dumpable()->var() ? 'true' : 'false';
+        $this->info = 'type=' . get_resource_type($this->varDumper->dumpable()->var());
+        $this->stringVar = $this->varDumper->formatter()->highlight(
+            $this->type(),
+            (string) $this->varDumper->dumpable()->var()
+        );
     }
 
     public function type(): string
     {
-        return TypeInterface::BOOLEAN;
+        return TypeInterface::RESOURCE;
     }
 
     public function write(): void
     {
         $this->varDumper->writer()->write(
-            $this->typeHighlighted() . ' ' . $this->info
+            implode(' ', [
+                $this->stringVar,
+                $this->highlightParentheses($this->info)
+            ])
         );
     }
 }

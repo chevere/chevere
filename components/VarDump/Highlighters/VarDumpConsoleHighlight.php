@@ -15,11 +15,11 @@ namespace Chevere\Components\VarDump\Highlighters;
 
 use Chevere\Components\VarDump\Highlighters\Traits\AssertKeyTrait;
 use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Interfaces\VarDump\HighlightInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
+use Chevere\Interfaces\VarDump\VarDumpHighlightInterface;
 use Colors\Color;
 
-final class ConsoleHighlight implements HighlightInterface
+final class VarDumpConsoleHighlight implements VarDumpHighlightInterface
 {
     use AssertKeyTrait;
 

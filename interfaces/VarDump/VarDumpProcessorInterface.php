@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\VarDump;
 
-interface ProcessorInterface
+interface VarDumpProcessorInterface
 {
     const MAX_DEPTH = 10;
 

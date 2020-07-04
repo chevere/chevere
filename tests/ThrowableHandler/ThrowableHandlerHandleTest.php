@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler;
 
-use Chevere\Components\ThrowableHandler\Handle;
+use Chevere\Components\ThrowableHandler\ThrowableHandlerHandle;
 use ErrorException;
 use PHPUnit\Framework\TestCase;
 
-final class HandleTest extends TestCase
+final class ThrowableHandlerHandleTest extends TestCase
 {
     public function testError(): void
     {
         $this->expectException(ErrorException::class);
-        Handle::errorsAsExceptions(1, 'Error', __FILE__, __LINE__);
+        ThrowableHandlerHandle::errorsAsExceptions(1, 'Error', __FILE__, __LINE__);
     }
 }

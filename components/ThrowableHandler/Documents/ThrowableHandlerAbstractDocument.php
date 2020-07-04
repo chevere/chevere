@@ -19,7 +19,7 @@ use Chevere\Interfaces\ThrowableHandler\FormatterInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
 use DateTimeInterface;
 
-abstract class AbstractDocument implements DocumentInterface
+abstract class ThrowableHandlerAbstractDocument implements DocumentInterface
 {
     protected ThrowableHandlerInterface $exceptionHandler;
 

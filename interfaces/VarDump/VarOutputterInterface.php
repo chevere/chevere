@@ -13,6 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\VarDump;
 
+use Chevere\Interfaces\Writer\WriterInterface;
+
 interface VarOutputterInterface
 {
+    public function __construct(
+        WriterInterface $writer,
+        array $debugBacktrace,
+        VarDumpFormatterInterface $formatter,
+        ...$vars
+    );
+
+    public function process(VarDumpOutputterInterface $outputter): void;
 }

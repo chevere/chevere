@@ -18,18 +18,14 @@ use Chevere\Components\VarDump\Processors\Traits\ProcessorTrait;
 use Chevere\Components\VarDump\VarDumpable;
 use Chevere\Components\VarDump\VarDumper;
 use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Interfaces\VarDump\ProcessorInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
+use Chevere\Interfaces\VarDump\VarDumpProcessorInterface;
 use Ds\Collection;
-use Ds\Map;
-use IteratorAggregate;
 use Reflection;
-use ReflectionClass;
-use ReflectionMethod;
 use ReflectionObject;
 use Throwable;
 
-final class ObjectProcessor implements ProcessorInterface
+final class VarDumpObjectProcessor implements VarDumpProcessorInterface
 {
     use ProcessorTrait;
 

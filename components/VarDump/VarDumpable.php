@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump;
 
 use Chevere\Components\Message\Message;
-use Chevere\Interfaces\VarDump\ProcessorInterface;
 use Chevere\Interfaces\VarDump\VarDumpableInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
+use Chevere\Interfaces\VarDump\VarDumpProcessorInterface;
 use LogicException;
 use function Chevere\Components\Type\varType;
 
@@ -69,12 +69,12 @@ final class VarDumpable implements VarDumpableInterface
             );
             // @codeCoverageIgnoreEnd
         }
-        if (!is_subclass_of($processorName, ProcessorInterface::class, true)) {
+        if (!is_subclass_of($processorName, VarDumpProcessorInterface::class, true)) {
             // @codeCoverageIgnoreStart
             throw new LogicException(
                 (new Message('Processor %processorName% must implement the %interfaceName% interface'))
                     ->code('%processorName%', $processorName)
-                    ->code('%interfaceName%', ProcessorInterface::class)
+                    ->code('%interfaceName%', VarDumpProcessorInterface::class)
                     ->toString()
             );
             // @codeCoverageIgnoreEnd

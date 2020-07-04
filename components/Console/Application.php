@@ -15,7 +15,7 @@ namespace Chevere\Components\Console;
 
 use Ahc\Cli\Application as CliApplication;
 use Ahc\Cli\Exception\RuntimeException;
-use Chevere\Components\ThrowableHandler\Documents\ConsoleDocument;
+use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerConsoleDocument;
 use Chevere\Components\ThrowableHandler\ThrowableHandler;
 use Chevere\Components\ThrowableHandler\ThrowableRead;
 
@@ -38,7 +38,7 @@ final class Application extends CliApplication
             $this->io()->writer()->error($e->getMessage())->eol();
         } catch (\Exception $e) {
             $handler = new ThrowableHandler(new ThrowableRead($e));
-            $document = new ConsoleDocument($handler);
+            $document = new ThrowableHandlerConsoleDocument($handler);
             $this->io()->writer()->error($document->toString())->eol();
         } catch (\Throwable $e) {
             $this->outputHelper()->printTrace($e);

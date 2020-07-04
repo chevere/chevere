@@ -14,9 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Components\VarDump;
 
 use Chevere\Interfaces\Type\TypeInterface;
-use Chevere\Interfaces\VarDump\FormatterInterface;
 use Chevere\Interfaces\VarDump\VarDumpableInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
+use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 use Chevere\Interfaces\Writer\WriterInterface;
 
 /**
@@ -28,7 +28,7 @@ final class VarDumper implements VarDumperInterface
 
     private VarDumpableInterface $dumpable;
 
-    private FormatterInterface $formatter;
+    private VarDumpFormatterInterface $formatter;
 
     private int $indent = 0;
 
@@ -40,7 +40,7 @@ final class VarDumper implements VarDumperInterface
 
     public function __construct(
         WriterInterface $writer,
-        FormatterInterface $formatter,
+        VarDumpFormatterInterface $formatter,
         VarDumpableInterface $dumpable
     ) {
         $this->writer = $writer;
@@ -59,7 +59,7 @@ final class VarDumper implements VarDumperInterface
         return $this->dumpable;
     }
 
-    public function formatter(): FormatterInterface
+    public function formatter(): VarDumpFormatterInterface
     {
         return $this->formatter;
     }

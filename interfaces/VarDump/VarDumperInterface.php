@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\VarDump;
 
-use Chevere\Components\VarDump\Processors\ArrayProcessor;
-use Chevere\Components\VarDump\Processors\BooleanProcessor;
-use Chevere\Components\VarDump\Processors\FloatProcessor;
-use Chevere\Components\VarDump\Processors\IntegerProcessor;
-use Chevere\Components\VarDump\Processors\NullProcessor;
-use Chevere\Components\VarDump\Processors\ObjectProcessor;
-use Chevere\Components\VarDump\Processors\ResourceProcessor;
-use Chevere\Components\VarDump\Processors\StringProcessor;
+use Chevere\Components\VarDump\Processors\VarDumpArrayProcessor;
+use Chevere\Components\VarDump\Processors\VarDumpBooleanProcessor;
+use Chevere\Components\VarDump\Processors\VarDumpFloatProcessor;
+use Chevere\Components\VarDump\Processors\VarDumpIntegerProcessor;
+use Chevere\Components\VarDump\Processors\VarDumpNullProcessor;
+use Chevere\Components\VarDump\Processors\VarDumpObjectProcessor;
+use Chevere\Components\VarDump\Processors\VarDumpResourceProcessor;
+use Chevere\Components\VarDump\Processors\VarDumpStringProcessor;
 use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Interfaces\Writer\WriterInterface;
 
@@ -37,14 +37,14 @@ interface VarDumperInterface
 
     /** @var array [ProcessorInterface $processor,] */
     const PROCESSORS = [
-        TypeInterface::BOOLEAN => BooleanProcessor::class,
-        TypeInterface::ARRAY => ArrayProcessor::class,
-        TypeInterface::OBJECT => ObjectProcessor::class,
-        TypeInterface::INTEGER => IntegerProcessor::class,
-        TypeInterface::STRING => StringProcessor::class,
-        TypeInterface::FLOAT => FloatProcessor::class,
-        TypeInterface::NULL => NullProcessor::class,
-        TypeInterface::RESOURCE => ResourceProcessor::class,
+        TypeInterface::BOOLEAN => VarDumpBooleanProcessor::class,
+        TypeInterface::ARRAY => VarDumpArrayProcessor::class,
+        TypeInterface::OBJECT => VarDumpObjectProcessor::class,
+        TypeInterface::INTEGER => VarDumpIntegerProcessor::class,
+        TypeInterface::STRING => VarDumpStringProcessor::class,
+        TypeInterface::FLOAT => VarDumpFloatProcessor::class,
+        TypeInterface::NULL => VarDumpNullProcessor::class,
+        TypeInterface::RESOURCE => VarDumpResourceProcessor::class,
     ];
 
     public function writer(): WriterInterface;
@@ -54,7 +54,7 @@ interface VarDumperInterface
     /**
      * Provides access to the FormatterInterface instance.
      */
-    public function formatter(): FormatterInterface;
+    public function formatter(): VarDumpFormatterInterface;
 
     /**
      * Return an instance with the specified $indent.

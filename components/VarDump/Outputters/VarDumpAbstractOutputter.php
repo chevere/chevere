@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Components\VarDump\Outputters;
 
-use Chevere\Interfaces\VarDump\OutputterInterface;
+use Chevere\Interfaces\VarDump\VarDumpOutputterInterface;
 use Chevere\Interfaces\Writer\WriterInterface;
 
-abstract class AbstractOutputter implements OutputterInterface
+abstract class VarDumpAbstractOutputter implements VarDumpOutputterInterface
 {
     private WriterInterface $writer;
 

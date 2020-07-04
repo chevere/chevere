@@ -15,12 +15,12 @@ namespace Chevere\Components\VarDump\Formatters;
 
 use Chevere\Components\VarDump\Formatters\Traits\FilterEncodedCharsTrait;
 use Chevere\Components\VarDump\Formatters\Traits\IndentTrait;
-use Chevere\Interfaces\VarDump\FormatterInterface;
+use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 
 /**
  * Provide plain text VarDump representation.
  */
-final class PlainFormatter implements FormatterInterface
+final class VarDumpPlainFormatter implements VarDumpFormatterInterface
 {
     use IndentTrait;
     use FilterEncodedCharsTrait;
