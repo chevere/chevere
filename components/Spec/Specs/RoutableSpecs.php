@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
-use Chevere\Components\Spec\Specs\RoutableSpec;
+use Chevere\Interfaces\Spec\RoutableSpecInterface;
+use Chevere\Interfaces\Spec\RoutableSpecsInterface;
 
-final class RoutableSpecs
+final class RoutableSpecs implements RoutableSpecsInterface
 {
     use DsMapTrait;
 
-    public function put(RoutableSpec $routableSpec): void
+    public function put(RoutableSpecInterface $routableSpec): void
     {
         /** @var \Ds\TKey $key */
         $key = $routableSpec->key();
@@ -32,11 +33,11 @@ final class RoutableSpecs
         return $this->map->hasKey(/** @scrutinizer ignore-type */ $key);
     }
 
-    public function get(string $key): RoutableSpec
+    public function get(string $key): RoutableSpecInterface
     {
         /**
          * @var \Ds\TKey $key
-         * @var RoutableSpec $return
+         * @var RoutableSpecInterface $return
          */
         $return = $this->map->get($key);
 

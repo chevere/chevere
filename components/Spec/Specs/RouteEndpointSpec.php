@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Specs;
 
-use Chevere\Interfaces\Route\RouteEndpointInterface;
-use Chevere\Interfaces\Spec\SpecInterface;
-use Chevere\Interfaces\Spec\SpecPathInterface;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
+use Chevere\Interfaces\Route\RouteEndpointInterface;
+use Chevere\Interfaces\Spec\RouteEndpointSpecInterface;
+use Chevere\Interfaces\Spec\SpecPathInterface;
 
-final class RouteEndpointSpec implements SpecInterface
+final class RouteEndpointSpec implements RouteEndpointSpecInterface
 {
     use SpecsTrait;
 
@@ -27,10 +27,8 @@ final class RouteEndpointSpec implements SpecInterface
     /**
      * @var SpecPathInterface $specRoutePath /spec/group/route
      */
-    public function __construct(
-        SpecPathInterface $specRoutePath,
-        RouteEndpointInterface $routeEndpoint
-    ) {
+    public function __construct(SpecPathInterface $specRoutePath, RouteEndpointInterface $routeEndpoint)
+    {
         $this->key = $routeEndpoint->method()->name();
         $this->jsonPath = $specRoutePath->getChild($this->key . '.json')->pub();
         $this->array = [

@@ -45,7 +45,7 @@ final class RouterTest extends TestCase
     {
         $router = new Router;
         $this->assertFalse($router->hasRegex());
-        $this->assertCount(0, $router->routables()->mapCopy());
+        $this->assertCount(0, $router->routables());
         $this->assertSame([], $router->index()->toArray());
     }
 
@@ -68,7 +68,7 @@ final class RouterTest extends TestCase
     {
         $routables = (new Routables)->withPut($this->routable);
         $router = (new Router)->withRoutables($routables);
-        $this->assertCount(1, $router->routables()->mapCopy());
+        $this->assertCount(1, $router->routables());
         $this->assertTrue($router->routables()->hasKey(
             $this->routable->route()->name()->toString()
         ));

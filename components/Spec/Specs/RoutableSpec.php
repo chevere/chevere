@@ -15,14 +15,13 @@ namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\Spec\Specs\RouteEndpointSpecs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
-use Chevere\Interfaces\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Router\RoutableInterface;
-use Chevere\Interfaces\Spec\SpecInterface;
+use Chevere\Interfaces\Spec\RoutableSpecInterface;
 use Chevere\Interfaces\Spec\SpecPathInterface;
 use function DeepCopy\deep_copy;
 
-final class RoutableSpec implements SpecInterface
+final class RoutableSpec implements RoutableSpecInterface
 {
     use SpecsTrait;
 
@@ -34,13 +33,8 @@ final class RoutableSpec implements SpecInterface
 
     private array $wildcards;
 
-    /**
-     * @var SpecPathInterface $specGroupPath /spec/group
-     */
-    public function __construct(
-        SpecPathInterface $specGroupPath,
-        RoutableInterface $routable
-    ) {
+    public function __construct(SpecPathInterface $specGroupPath, RoutableInterface $routable)
+    {
         $this->key = $routable->route()->name()->toString();
         $this->routeEndpointSpecs = new RouteEndpointSpecs;
         $specGroupRoute = $specGroupPath->getChild($this->key);
@@ -68,11 +62,7 @@ final class RoutableSpec implements SpecInterface
     public function toArray(): array
     {
         $endpoints = [];
-        /**
-         * @var string $key
-         * @var RouteEndpointSpec $routeEndpointSpec
-         */
-        foreach ($this->routeEndpointSpecs->map() as $key => $routeEndpointSpec) {
+        foreach ($this->routeEndpointSpecs->getGenerator() as $key => $routeEndpointSpec) {
             $endpoints[$key] = $routeEndpointSpec->toArray();
         }
         $wildcards = [];

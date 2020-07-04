@@ -23,7 +23,7 @@ use Generator;
 interface ControllerParametersInterface extends Countable
 {
     /**
-     * @return Generator<string, ControllerParameterInterface> getGenerator()
+     * @return Generator<string, ControllerParameterInterface>
      */
     public function getGenerator(): Generator;
 

@@ -15,6 +15,8 @@ namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\Spec\Specs\GroupSpecs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
+use Chevere\Interfaces\Spec\GroupSpecInterface;
+use Chevere\Interfaces\Spec\GroupSpecsInterface;
 use Chevere\Interfaces\Spec\SpecInterface;
 use Chevere\Interfaces\Spec\SpecPathInterface;
 
@@ -22,7 +24,7 @@ final class IndexSpec implements SpecInterface
 {
     use SpecsTrait;
 
-    private GroupSpecs $groupSpecs;
+    private GroupSpecsInterface $groupSpecs;
 
     public function __construct(SpecPathInterface $specPath)
     {
@@ -30,7 +32,7 @@ final class IndexSpec implements SpecInterface
         $this->groupSpecs = new GroupSpecs;
     }
 
-    public function withAddedGroup(GroupSpec $groupSpec): IndexSpec
+    public function withAddedGroup(GroupSpecInterface $groupSpec): IndexSpec
     {
         $new = clone $this;
         $new->groupSpecs->put($groupSpec);
@@ -41,11 +43,7 @@ final class IndexSpec implements SpecInterface
     public function toArray(): array
     {
         $groups = [];
-        /**
-         * @var string $key
-         * @var GroupSpec $groupSpec
-         */
-        foreach ($this->groupSpecs->mapCopy() as $key => $groupSpec) {
+        foreach ($this->groupSpecs->getGenerator() as $key => $groupSpec) {
             $groups[$key] = $groupSpec->toArray();
         }
 

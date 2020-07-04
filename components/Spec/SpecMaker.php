@@ -83,8 +83,7 @@ final class SpecMaker
             $groupSpec = $groupSpec->withAddedRoutableSpec($routableSpec);
             $groups[$groupName] = $groupSpec;
             $routeEndpointSpecs = $routableSpec->routeEndpointSpecs();
-            /** @var RouteEndpointSpec $routeEndpointSpec */
-            foreach ($routeEndpointSpecs->map() as $routeEndpointSpec) {
+            foreach ($routeEndpointSpecs->getGenerator() as $routeEndpointSpec) {
                 $this->specIndex = $this->specIndex->withOffset(
                     $routeName,
                     $routeEndpointSpec

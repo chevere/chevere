@@ -43,7 +43,7 @@ final class RouterMakerTest extends TestCase
         $routerMaker = (new RouterMaker)
             ->withAddedRoutable($routable1, 'group')
             ->withAddedRoutable($routable2, 'group');
-        $this->assertCount(2, $routerMaker->router()->routables()->mapCopy());
+        $this->assertCount(2, $routerMaker->router()->routables());
         $routerIndex = $routerMaker->router()->index();
         $this->assertTrue($routerIndex->hasRouteName(
             $routable1->route()->name()->toString()

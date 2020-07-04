@@ -32,7 +32,7 @@ final class RoutableSpecsTest extends TestCase
     {
         $specs = new RoutableSpecs;
         $key = 'key';
-        $this->assertCount(0, $specs->mapCopy());
+        $this->assertCount(0, $specs);
         $this->assertFalse($specs->hasKey($key));
         $this->expectException(OutOfBoundsException::class);
         $specs->get($key);
@@ -54,7 +54,7 @@ final class RoutableSpecsTest extends TestCase
             )
         );
         $specs->put($spec);
-        $this->assertCount(1, $specs->mapCopy());
+        $this->assertCount(1, $specs);
         $this->assertTrue($specs->hasKey($spec->key()));
         $this->assertSame($spec, $specs->get($spec->key()));
     }

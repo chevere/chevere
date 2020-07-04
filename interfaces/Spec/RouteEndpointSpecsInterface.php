@@ -14,19 +14,18 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Spec;
 
 use Chevere\Interfaces\DataStructures\DsMapInterface;
-use Chevere\Interfaces\Spec\SpecMethodsInterface;
 use Generator;
 
-interface SpecIndexMapInterface extends DsMapInterface
+interface RouteEndpointSpecsInterface extends DsMapInterface
 {
     /**
-     * @return Generator<string, SpecMethodsInterface>
+     * @return Generator<string, RouteEndpointSpecInterface>
      */
     public function getGenerator(): Generator;
 
-    public function withPut(string $name, SpecMethodsInterface $specMethods): SpecIndexMapInterface;
+    public function withPut(RouteEndpointSpecInterface $routeEndpointSpec): RouteEndpointSpecsInterface;
 
-    public function hasKey(string $name): bool;
+    public function hasKey(string $key): bool;
 
-    public function get(string $name): SpecMethodsInterface;
+    public function get(string $key): RouteEndpointSpecInterface;
 }

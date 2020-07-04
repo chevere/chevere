@@ -13,15 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Router;
 
-use Chevere\Components\Router\Routables;
-
 interface RouterInterface
 {
     const CACHE_ID = 'router';
 
-    public function withRoutables(Routables $routables): RouterInterface;
+    public function withRoutables(RoutablesInterface $routables): RouterInterface;
 
-    public function routables(): Routables;
+    public function routables(): RoutablesInterface;
 
     /**
      * Return an instance with the specified RegexInterface.

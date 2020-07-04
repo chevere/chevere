@@ -15,14 +15,16 @@ namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\Spec\Specs\RoutableSpecs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
-use Chevere\Interfaces\Spec\SpecInterface;
+use Chevere\Interfaces\Spec\GroupSpecInterface;
+use Chevere\Interfaces\Spec\RoutableSpecInterface;
+use Chevere\Interfaces\Spec\RoutableSpecsInterface;
 use Chevere\Interfaces\Spec\SpecPathInterface;
 
-final class GroupSpec implements SpecInterface
+final class GroupSpec implements GroupSpecInterface
 {
     use SpecsTrait;
 
-    private RoutableSpecs $routableSpecs;
+    private RoutableSpecsInterface $routableSpecs;
 
     /**
      * @var SpecPathInterface $specRoot /spec
@@ -34,7 +36,7 @@ final class GroupSpec implements SpecInterface
         $this->routableSpecs = new RoutableSpecs;
     }
 
-    public function withAddedRoutableSpec(RoutableSpec $routableSpec): GroupSpec
+    public function withAddedRoutableSpec(RoutableSpecInterface $routableSpec): GroupSpecInterface
     {
         $new = clone $this;
         $new->routableSpecs->put($routableSpec);
@@ -45,11 +47,7 @@ final class GroupSpec implements SpecInterface
     public function toArray(): array
     {
         $routes = [];
-        /**
-         * @var string $key
-         * @var RoutableSpec $routableSpec
-         */
-        foreach ($this->routableSpecs->mapCopy() as $key => $routableSpec) {
+        foreach ($this->routableSpecs->getGenerator() as $key => $routableSpec) {
             $routes[$key] = $routableSpec->toArray();
         }
 

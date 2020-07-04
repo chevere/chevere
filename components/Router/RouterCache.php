@@ -101,10 +101,7 @@ final class RouterCache implements RouterCacheInterface
                 new VarExportable($router->index())
             );
         $pos = -1;
-        /**
-         * @var RoutableInterface $routable
-         */
-        foreach ($router->routables()->mapCopy() as $routable) {
+        foreach ($router->routables()->getGenerator() as $routable) {
             $route = $routable->route();
             $pos++;
             $new->routesCache->put($route);

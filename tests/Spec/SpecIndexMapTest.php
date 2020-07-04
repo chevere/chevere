@@ -24,7 +24,7 @@ final class SpecIndexMapTest extends TestCase
     public function testConstruct(): void
     {
         $specIndexMap = new SpecIndexMap;
-        $this->assertSame([], $specIndexMap->mapCopy()->toArray());
+        $this->assertCount(0, $specIndexMap);
         $this->assertFalse($specIndexMap->hasKey('404'));
         $this->expectException(OutOfBoundsException::class);
         $specIndexMap->get('404');

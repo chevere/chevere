@@ -13,25 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec\Specs;
 
+use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
-use Ds\Map;
+use Chevere\Interfaces\Spec\RouteEndpointSpecInterface;
+use Chevere\Interfaces\Spec\RouteEndpointSpecsInterface;
 use function DeepCopy\deep_copy;
 
-final class RouteEndpointSpecs
+final class RouteEndpointSpecs implements RouteEndpointSpecsInterface
 {
-    private Map $map;
+    use DsMapTrait;
 
-    public function __construct()
-    {
-        $this->map = new Map;
-    }
-
-    public function map(): Map
-    {
-        return $this->map;
-    }
-
-    public function withPut(RouteEndpointSpec $routeEndpointSpec): RouteEndpointSpecs
+    public function withPut(RouteEndpointSpecInterface $routeEndpointSpec): RouteEndpointSpecsInterface
     {
         $new = clone $this;
         $new->map = deep_copy($new->map);
@@ -47,7 +39,7 @@ final class RouteEndpointSpecs
         return $this->map->hasKey(/** @scrutinizer ignore-type */ $key);
     }
 
-    public function get(string $key): RouteEndpointSpec
+    public function get(string $key): RouteEndpointSpecInterface
     {
         /**
          * @var \Ds\TKey $key

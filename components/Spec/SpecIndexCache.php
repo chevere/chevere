@@ -46,11 +46,7 @@ final class SpecIndexCache implements SpecIndexCacheInterface
 
     public function put(SpecIndexInterface $specIndex): void
     {
-        /**
-         * @var string $routeName
-         * @var SpecMethodsInterface $specMethods
-         */
-        foreach ($specIndex->specIndexMap()->mapCopy() as $routeName => $specMethods) {
+        foreach ($specIndex->specIndexMap()->getGenerator() as $routeName => $specMethods) {
             $this->cache = $this->cache->withAddedItem(
                 new CacheKey($routeName),
                 new VarExportable($specMethods)

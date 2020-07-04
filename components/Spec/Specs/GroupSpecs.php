@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
-use Chevere\Components\Spec\Specs\GroupSpec;
+use Chevere\Interfaces\Spec\GroupSpecInterface;
+use Chevere\Interfaces\Spec\GroupSpecsInterface;
 
-final class GroupSpecs
+final class GroupSpecs implements GroupSpecsInterface
 {
     use DsMapTrait;
 
-    public function put(GroupSpec $groupSpec): void
+    public function put(GroupSpecInterface $groupSpec): void
     {
         $key = $groupSpec->key();
         $this->map->put($key, $groupSpec);
@@ -31,10 +32,10 @@ final class GroupSpecs
         return $this->map->hasKey(/** @scrutinizer ignore-type */ $key);
     }
 
-    public function get(string $key): GroupSpec
+    public function get(string $key): GroupSpecInterface
     {
         /**
-         * @var GroupSpec $return
+         * @var GroupSpecInterface $return
          */
         $return = $this->map->get($key);
 
