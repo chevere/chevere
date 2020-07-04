@@ -23,14 +23,10 @@ use function Chevere\Components\Type\varType;
 
 final class Unserialize implements UnserializeInterface
 {
-    /** @var mixed */
     private $var;
 
     private TypeInterface $type;
 
-    /**
-     * @throws UnserializeException
-     */
     public function __construct(string $serialized)
     {
         try {

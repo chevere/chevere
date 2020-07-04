@@ -13,10 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Serialize;
 
+use Chevere\Exceptions\Serialize\UnserializeException;
 use Chevere\Interfaces\Type\TypeInterface;
 
+/**
+ * Describes the component in charge of handling unserialize.
+ */
 interface UnserializeInterface
 {
+    /**
+     * @throws UnserializeException
+     */
     public function __construct(string $serialized);
 
     /**

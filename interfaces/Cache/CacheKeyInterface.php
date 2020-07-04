@@ -17,7 +17,7 @@ use Chevere\Exceptions\Cache\CacheInvalidKeyException;
 use Chevere\Interfaces\To\ToStringInterface;
 
 /**
- * Describes a component in charge of defining a cache key.
+ * Describes the component in charge of defining a cache key.
  */
 interface CacheKeyInterface extends ToStringInterface
 {

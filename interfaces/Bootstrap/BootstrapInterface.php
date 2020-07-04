@@ -18,7 +18,7 @@ use Chevere\Exceptions\Filesystem\DirNotWritableException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 
 /**
- * Describes a bootstrap providing access to its directory and time-related properties.
+ * Describes the component in charge of providing access to its directory and time-related properties.
  */
 interface BootstrapInterface
 {

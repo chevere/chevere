@@ -17,7 +17,7 @@ use Chevere\Exceptions\Regex\RegexInvalidException;
 use Chevere\Interfaces\To\ToStringInterface;
 
 /**
- * Describes the component that interacts with PCRE - Perl Compatible Regular Expressions.
+ * Describes the component in charge of interacting with PCRE - Perl Compatible Regular Expressions.
  */
 interface RegexInterface extends ToStringInterface
 {

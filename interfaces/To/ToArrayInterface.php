@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\To;
 
+/**
+ * Describes the component that implements `toArray()` method.
+ */
 interface ToArrayInterface
 {
     /**

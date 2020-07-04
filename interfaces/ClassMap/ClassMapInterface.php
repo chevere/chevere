@@ -20,7 +20,7 @@ use Chevere\Interfaces\To\ToArrayInterface;
 use Countable;
 
 /**
- * Describes a component in charge of mapping classes to strings.
+ * Describes the component in charge of mapping classes to strings.
  */
 interface ClassMapInterface extends Countable, ToArrayInterface
 {
