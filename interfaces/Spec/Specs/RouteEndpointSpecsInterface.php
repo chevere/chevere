@@ -11,7 +11,7 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Spec;
+namespace Chevere\Interfaces\Spec\Specs;
 
 use Chevere\Interfaces\DataStructures\DsMapInterface;
 use Generator;

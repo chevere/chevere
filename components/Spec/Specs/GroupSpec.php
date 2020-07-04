@@ -15,10 +15,10 @@ namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\Spec\Specs\RoutableSpecs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
-use Chevere\Interfaces\Spec\GroupSpecInterface;
-use Chevere\Interfaces\Spec\RoutableSpecInterface;
-use Chevere\Interfaces\Spec\RoutableSpecsInterface;
 use Chevere\Interfaces\Spec\SpecPathInterface;
+use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
+use Chevere\Interfaces\Spec\Specs\RoutableSpecInterface;
+use Chevere\Interfaces\Spec\Specs\RoutableSpecsInterface;
 
 final class GroupSpec implements GroupSpecInterface
 {

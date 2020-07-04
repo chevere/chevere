@@ -15,8 +15,8 @@ namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
-use Chevere\Interfaces\Spec\RouteEndpointSpecInterface;
 use Chevere\Interfaces\Spec\SpecPathInterface;
+use Chevere\Interfaces\Spec\Specs\RouteEndpointSpecInterface;
 
 final class RouteEndpointSpec implements RouteEndpointSpecInterface
 {

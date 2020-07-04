@@ -15,10 +15,10 @@ namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\Spec\Specs\GroupSpecs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
-use Chevere\Interfaces\Spec\GroupSpecInterface;
-use Chevere\Interfaces\Spec\GroupSpecsInterface;
 use Chevere\Interfaces\Spec\SpecInterface;
 use Chevere\Interfaces\Spec\SpecPathInterface;
+use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
+use Chevere\Interfaces\Spec\Specs\GroupSpecsInterface;
 
 final class IndexSpec implements SpecInterface
 {

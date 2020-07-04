@@ -17,8 +17,8 @@ use Chevere\Components\Spec\Specs\RouteEndpointSpecs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
 use Chevere\Interfaces\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Router\RoutableInterface;
-use Chevere\Interfaces\Spec\RoutableSpecInterface;
 use Chevere\Interfaces\Spec\SpecPathInterface;
+use Chevere\Interfaces\Spec\Specs\RoutableSpecInterface;
 use function DeepCopy\deep_copy;
 
 final class RoutableSpec implements RoutableSpecInterface

@@ -11,21 +11,22 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Spec;
+namespace Chevere\Interfaces\Spec\Specs;
 
 use Chevere\Interfaces\DataStructures\DsMapInterface;
+use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
 use Generator;
 
-interface RoutableSpecsInterface extends DsMapInterface
+interface GroupSpecsInterface extends DsMapInterface
 {
     /**
-     * @return Generator<string, RoutableSpecInterface>
+     * @return Generator<string, GroupSpecInterface>
      */
     public function getGenerator(): Generator;
 
-    public function put(RoutableSpecInterface $routableSpec): void;
+    public function put(GroupSpecInterface $groupSpec): void;
 
     public function hasKey(string $key): bool;
 
-    public function get(string $key): RoutableSpecInterface;
+    public function get(string $key): GroupSpecInterface;
 }

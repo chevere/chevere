@@ -15,8 +15,8 @@ namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
-use Chevere\Interfaces\Spec\RouteEndpointSpecInterface;
-use Chevere\Interfaces\Spec\RouteEndpointSpecsInterface;
+use Chevere\Interfaces\Spec\Specs\RouteEndpointSpecInterface;
+use Chevere\Interfaces\Spec\Specs\RouteEndpointSpecsInterface;
 use function DeepCopy\deep_copy;
 
 final class RouteEndpointSpecs implements RouteEndpointSpecsInterface

@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
-use Chevere\Interfaces\Spec\GroupSpecInterface;
-use Chevere\Interfaces\Spec\GroupSpecsInterface;
+use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
+use Chevere\Interfaces\Spec\Specs\GroupSpecsInterface;
 
 final class GroupSpecs implements GroupSpecsInterface
 {

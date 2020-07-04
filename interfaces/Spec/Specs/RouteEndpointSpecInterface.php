@@ -11,9 +11,11 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Spec;
+namespace Chevere\Interfaces\Spec\Specs;
 
 use Chevere\Interfaces\Route\RouteEndpointInterface;
+use Chevere\Interfaces\Spec\SpecInterface;
+use Chevere\Interfaces\Spec\SpecPathInterface;
 
 interface RouteEndpointSpecInterface extends SpecInterface
 {

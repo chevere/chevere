@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
-use Chevere\Interfaces\Spec\RoutableSpecInterface;
-use Chevere\Interfaces\Spec\RoutableSpecsInterface;
+use Chevere\Interfaces\Spec\Specs\RoutableSpecInterface;
+use Chevere\Interfaces\Spec\Specs\RoutableSpecsInterface;
 
 final class RoutableSpecs implements RoutableSpecsInterface
 {

@@ -11,10 +11,12 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Spec;
+namespace Chevere\Interfaces\Spec\Specs;
 
 use Chevere\Components\Spec\Specs\RouteEndpointSpecs;
 use Chevere\Interfaces\Router\RoutableInterface;
+use Chevere\Interfaces\Spec\SpecInterface;
+use Chevere\Interfaces\Spec\SpecPathInterface;
 use Chevere\Interfaces\To\ToArrayInterface;
 
 interface RoutableSpecInterface extends SpecInterface, ToArrayInterface
