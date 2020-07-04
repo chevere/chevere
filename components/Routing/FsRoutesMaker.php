@@ -48,7 +48,7 @@ final class FsRoutesMaker implements FsRoutesMakerInterface
             $routeName = $this->getVar($pathName);
             $current = dirname($pathName) . '/';
             $path = (new Str($current))
-                ->replaceFirst(
+                ->withReplaceFirst(
                     rtrim($dir->path()->absolute(), '/'),
                     ''
                 )

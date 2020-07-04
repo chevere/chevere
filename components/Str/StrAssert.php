@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Str;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Str\StrBool;
 use Chevere\Exceptions\Str\StrContainsException;
 use Chevere\Exceptions\Str\StrCtypeDigitException;
 use Chevere\Exceptions\Str\StrCtypeSpaceException;
@@ -31,7 +32,6 @@ use Chevere\Exceptions\Str\StrSameException;
 use Chevere\Exceptions\Str\StrStartsWithCtypeDigitException;
 use Chevere\Exceptions\Str\StrStartsWithException;
 use Chevere\Interfaces\Str\StrAssertInterface;
-use Chevere\Components\Str\StrBool;
 
 final class StrAssert implements StrAssertInterface
 {
@@ -42,9 +42,6 @@ final class StrAssert implements StrAssertInterface
         $this->string = $string;
     }
 
-    /**
-     * @throws StrNotEmptyException
-     */
     public function empty(): StrAssertInterface
     {
         if ((new StrBool($this->string))->empty()) {
@@ -56,9 +53,6 @@ final class StrAssert implements StrAssertInterface
         );
     }
 
-    /**
-     * @throws StrEmptyException
-     */
     public function notEmpty(): StrAssertInterface
     {
         if ((new StrBool($this->string))->empty()) {
@@ -70,9 +64,6 @@ final class StrAssert implements StrAssertInterface
         return $this;
     }
 
-    /**
-     * @throws StrNotCtypeSpaceException
-     */
     public function ctypeSpace(): StrAssertInterface
     {
         if ((new StrBool($this->string))->ctypeSpace()) {
@@ -85,9 +76,6 @@ final class StrAssert implements StrAssertInterface
         );
     }
 
-    /**
-     * @throws StrCtypeSpaceException
-     */
     public function notCtypeSpace(): StrAssertInterface
     {
         if ((new StrBool($this->string))->ctypeSpace()) {
@@ -100,9 +88,6 @@ final class StrAssert implements StrAssertInterface
         return $this;
     }
 
-    /**
-     * @throws StrNotCtypeDigitException
-     */
     public function ctypeDigit(): StrAssertInterface
     {
         if ((new StrBool($this->string))->ctypeSpace()) {
@@ -115,9 +100,6 @@ final class StrAssert implements StrAssertInterface
         );
     }
 
-    /**
-     * @throws StrCtypeDigitException
-     */
     public function notCtypeDigit(): StrAssertInterface
     {
         if ((new StrBool($this->string))->ctypeDigit()) {
@@ -130,9 +112,6 @@ final class StrAssert implements StrAssertInterface
         return $this;
     }
 
-    /**
-     * @throws StrNotStartsWithCtypeDigitException
-     */
     public function startsWithCtypeDigit(): StrAssertInterface
     {
         if ((new StrBool($this->string))->startsWithCtypeDigit()) {
@@ -145,9 +124,6 @@ final class StrAssert implements StrAssertInterface
         );
     }
 
-    /**
-     * @throws StrStartsWithCtypeDigitException
-     */
     public function notStartsWithCtypeDigit(): StrAssertInterface
     {
         if ((new StrBool($this->string))->startsWithCtypeDigit()) {
@@ -161,9 +137,6 @@ final class StrAssert implements StrAssertInterface
         return $this;
     }
 
-    /**
-     * @throws StrNotStartsWithException
-     */
     public function startsWith(string $needle): StrAssertInterface
     {
         if ((new StrBool($this->string))->startsWith($needle)) {
@@ -176,9 +149,6 @@ final class StrAssert implements StrAssertInterface
         );
     }
 
-    /**
-     * @throws StrStartsWithException
-     */
     public function notStartsWith(string $needle): StrAssertInterface
     {
         if ((new StrBool($this->string))->startsWith($needle)) {
@@ -192,9 +162,6 @@ final class StrAssert implements StrAssertInterface
         return $this;
     }
 
-    /**
-     * @throws StrNotEndsWithException
-     */
     public function endsWith(string $needle): StrAssertInterface
     {
         if ((new StrBool($this->string))->endsWith($needle)) {
@@ -207,9 +174,6 @@ final class StrAssert implements StrAssertInterface
         );
     }
 
-    /**
-     * @throws StrEndsWithException
-     */
     public function notEndsWith(string $needle): StrAssertInterface
     {
         if ((new StrBool($this->string))->endsWith($needle)) {
@@ -223,9 +187,6 @@ final class StrAssert implements StrAssertInterface
         return $this;
     }
 
-    /**
-     * @throws StrNotSameException
-     */
     public function same(string $string): StrAssertInterface
     {
         if ((new StrBool($this->string))->same($string)) {
@@ -238,9 +199,6 @@ final class StrAssert implements StrAssertInterface
         );
     }
 
-    /**
-     * @throws StrSameException
-     */
     public function notSame(string $string): StrAssertInterface
     {
         if ((new StrBool($this->string))->same($string)) {
@@ -254,9 +212,6 @@ final class StrAssert implements StrAssertInterface
         return $this;
     }
 
-    /**
-     * @throws StrNotContainsException
-     */
     public function contains(string $string): StrAssertInterface
     {
         if ((new StrBool($this->string))->contains($string)) {
@@ -269,9 +224,6 @@ final class StrAssert implements StrAssertInterface
         );
     }
 
-    /**
-     * @throws StrContainsException
-     */
     public function notContains(string $string): StrAssertInterface
     {
         if ((new StrBool($this->string))->contains($string)) {

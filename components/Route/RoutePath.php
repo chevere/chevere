@@ -230,7 +230,7 @@ final class RoutePath implements RoutePathInterface
             // Change {wildcard} to {n} (n is the wildcard index)
             if (isset($this->key)) {
                 $this->key = (new Str($this->key))
-                    ->replaceFirst($braced, "{{$pos}}")
+                    ->withReplaceFirst($braced, "{{$pos}}")
                     ->toString();
             }
             $wildcard = $this->wildcardsMatch[1][$pos];

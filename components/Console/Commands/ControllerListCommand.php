@@ -45,7 +45,7 @@ final class ControllerListCommand extends Command
     public function __construct()
     {
         parent::__construct('conlist', 'Recursive list controllers in a given directory');
-        $cwd = (new Str(getcwd()))->rightTail('/')->toString();
+        $cwd = (new Str(getcwd()))->withRightTail('/')->toString();
         $this->cwd = (new FilesystemFactory)->getDirFromString($cwd);
         $this
             ->argument('<dir>', sprintf('A file system directory path'))

@@ -56,7 +56,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         $new = clone $this;
         $new->classMap = new ClassMap;
         foreach ($plugsMap->getGenerator() as $pluggableName => $plugsQueueTyped) {
-            $classNameAsPath = (new Str($pluggableName))->forwardSlashes()->toString() . '/';
+            $classNameAsPath = (new Str($pluggableName))->withForwardSlashes()->toString() . '/';
             $cacheAt = new Cache($new->cache->dir()->getChild($classNameAsPath));
             $queueName = (new ReflectionClass($plugsQueueTyped))->getShortName();
             $cacheAt = $cacheAt->withAddedItem(new CacheKey($queueName), new VarExportable($plugsQueueTyped));

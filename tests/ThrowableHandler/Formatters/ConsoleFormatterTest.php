@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler\Formatters;
 
+use Chevere\Components\Str\Str;
 use Chevere\Components\ThrowableHandler\Formatters\ConsoleFormatter;
 use Chevere\Components\ThrowableHandler\Formatters\PlainFormatter;
-use Chevere\Components\Str\Str;
 use PHPUnit\Framework\TestCase;
 
 final class ConsoleFormatterTest extends TestCase
@@ -36,7 +36,7 @@ final class ConsoleFormatterTest extends TestCase
             $console = $consoleFormatter->$methodName(...$args);
             $this->assertSame(
                 $plain,
-                (new Str($console))->stripANSIColors()->toString()
+                (new Str($console))->withStripANSIColors()->toString()
             );
         }
     }

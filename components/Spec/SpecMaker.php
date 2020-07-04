@@ -169,7 +169,7 @@ final class SpecMaker
     {
         $dirPath = $this->dir->path();
         $child = (new Str($jsonPath))
-            ->replaceFirst($this->specPath->pub(), '')
+            ->withReplaceFirst($this->specPath->pub(), '')
             ->toString();
         $child = ltrim($child, '/');
 
