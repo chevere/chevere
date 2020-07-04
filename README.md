@@ -1,7 +1,7 @@
 # Chevere
 
-[![Quality Gate Status](https://img.shields.io/sonar/alert_status/chevere_chevere?server=https%3A%2F%2Fsonarcloud.io&style=flat-square
-)](https://sonarcloud.io/dashboard?id=chevere_chevere)
+<!-- [![Quality Gate Status](https://img.shields.io/sonar/alert_status/chevere_chevere?server=https%3A%2F%2Fsonarcloud.io&style=flat-square
+)](https://sonarcloud.io/dashboard?id=chevere_chevere) -->
 [![Scrutinizer Code
 Quality](https://img.shields.io/scrutinizer/quality/g/chevere/chevere?style=flat-square)](https://scrutinizer-ci.com/g/chevere/chevere/?branch=master)
 [![codecov](https://img.shields.io/codecov/c/github/chevere/chevere?style=flat-square)](https://codecov.io/gh/chevere/chevere)
