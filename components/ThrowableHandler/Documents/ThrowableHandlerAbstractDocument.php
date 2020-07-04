@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ThrowableHandler\Documents;
 
-use Chevere\Components\ThrowableHandler\TraceFormatter;
-use Chevere\Interfaces\ThrowableHandler\DocumentInterface;
-use Chevere\Interfaces\ThrowableHandler\FormatterInterface;
+use Chevere\Components\ThrowableHandler\ThrowableTraceFormatter;
+use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerDocumentInterface;
+use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatterInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
 use DateTimeInterface;
 
-abstract class ThrowableHandlerAbstractDocument implements DocumentInterface
+abstract class ThrowableHandlerAbstractDocument implements ThrowableHandlerDocumentInterface
 {
     protected ThrowableHandlerInterface $exceptionHandler;
 
-    protected FormatterInterface $formatter;
+    protected ThrowableHandlerFormatterInterface $formatter;
 
     protected array $sections = self::SECTIONS;
 
@@ -35,7 +35,7 @@ abstract class ThrowableHandlerAbstractDocument implements DocumentInterface
 
     private int $verbosity = 0;
 
-    abstract public function getFormatter(): FormatterInterface;
+    abstract public function getFormatter(): ThrowableHandlerFormatterInterface;
 
     final public function __construct(ThrowableHandlerInterface $exceptionHandler)
     {
@@ -44,7 +44,7 @@ abstract class ThrowableHandlerAbstractDocument implements DocumentInterface
         $this->template = $this->getTemplate();
     }
 
-    final public function withVerbosity(int $verbosity): DocumentInterface
+    final public function withVerbosity(int $verbosity): ThrowableHandlerDocumentInterface
     {
         $new = clone $this;
         $new->verbosity = $verbosity;
@@ -148,7 +148,7 @@ abstract class ThrowableHandlerAbstractDocument implements DocumentInterface
 
     private function getStackTrace(): string
     {
-        return (new TraceFormatter(
+        return (new ThrowableTraceFormatter(
             $this->exceptionHandler->throwableRead()->trace(),
             $this->formatter
         ))->toString();

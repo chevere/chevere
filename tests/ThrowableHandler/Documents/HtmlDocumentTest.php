@@ -13,8 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler\Documents;
 
-use Chevere\Components\ThrowableHandler\Documents\PlainDocument;
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerHtmlDocument;
+use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerPlainDocument;
 use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerHtmlFormatter;
 use Chevere\Components\ThrowableHandler\ThrowableHandler;
 use Chevere\Components\ThrowableHandler\ThrowableRead;
@@ -22,7 +22,7 @@ use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 
-final class ThrowableHandlerHtmlDocumentTest extends TestCase
+final class HtmlDocumentTest extends TestCase
 {
     private ThrowableHandlerInterface $exceptionHandler;
 
@@ -39,7 +39,7 @@ final class ThrowableHandlerHtmlDocumentTest extends TestCase
         $document = new ThrowableHandlerHtmlDocument($this->exceptionHandler);
         $this->assertInstanceOf(ThrowableHandlerHtmlFormatter::class, $document->getFormatter());
         $sectionTitle = $document->getSectionTitle();
-        $plainDocument = new PlainDocument($this->exceptionHandler);
+        $plainDocument = new ThrowableHandlerPlainDocument($this->exceptionHandler);
         $this->assertTrue(strlen($sectionTitle) > $plainDocument->getSectionTitle());
         $string = $document->toString();
         $this->assertStringContainsString('<html><head><meta charset="utf-8">', $string);
@@ -52,7 +52,7 @@ final class ThrowableHandlerHtmlDocumentTest extends TestCase
         $document = new ThrowableHandlerHtmlDocument($this->exceptionHandler);
         $this->assertInstanceOf(ThrowableHandlerHtmlFormatter::class, $document->getFormatter());
         $sectionTitle = $document->getSectionTitle();
-        $plainDocument = new PlainDocument($this->exceptionHandler);
+        $plainDocument = new ThrowableHandlerPlainDocument($this->exceptionHandler);
         $this->assertTrue(strlen($sectionTitle) > $plainDocument->getSectionTitle());
         $string = $document->toString();
         $this->assertStringContainsString('<html><head><meta charset="utf-8">', $string);

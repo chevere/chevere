@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\ThrowableHandler;
 
 use Chevere\Components\Message\Message;
-use Chevere\Components\ThrowableHandler\Documents\PlainDocument;
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerConsoleDocument;
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerHtmlDocument;
+use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerPlainDocument;
 use Chevere\Exceptions\Core\ErrorException;
-use Chevere\Interfaces\ThrowableHandler\DocumentInterface;
+use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerDocumentInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
 use Exception;
 use function Chevere\Components\Writer\writers;
@@ -26,7 +26,7 @@ use function Chevere\Components\Writer\writers;
 /**
  * @codeCoverageIgnore
  */
-final class ThrowableHandlerHandle
+final class ThrowableHandlerFactory
 {
     public static function errorsAsExceptions(int $severity, string $message, string $file, int $line): void
     {
@@ -35,7 +35,7 @@ final class ThrowableHandlerHandle
 
     public static function plain(Exception $exception): void
     {
-        self::write(new PlainDocument(self::getHandler($exception)));
+        self::write(new ThrowableHandlerPlainDocument(self::getHandler($exception)));
     }
 
     public static function console(Exception $exception): void
@@ -50,7 +50,7 @@ final class ThrowableHandlerHandle
         self::write(new ThrowableHandlerHtmlDocument(self::getHandler($exception)));
     }
 
-    private static function write(DocumentInterface $document): void
+    private static function write(ThrowableHandlerDocumentInterface $document): void
     {
         writers()->out()->write($document->toString() . "\n");
     }

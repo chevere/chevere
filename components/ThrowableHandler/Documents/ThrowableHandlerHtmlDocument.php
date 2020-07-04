@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\ThrowableHandler\Documents;
 
 use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerHtmlFormatter;
-use Chevere\Interfaces\ThrowableHandler\FormatterInterface;
+use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatterInterface;
 
 final class ThrowableHandlerHtmlDocument extends ThrowableHandlerAbstractDocument
 {
@@ -33,7 +33,7 @@ final class ThrowableHandlerHtmlDocument extends ThrowableHandlerAbstractDocumen
     /** @var string HTML body used when debug=1 */
     const BODY_DEBUG_1_HTML = '<main class="main--stack"><div>%content%</div></main>';
 
-    public function getFormatter(): FormatterInterface
+    public function getFormatter(): ThrowableHandlerFormatterInterface
     {
         return new ThrowableHandlerHtmlFormatter;
     }

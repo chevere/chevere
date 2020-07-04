@@ -13,9 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler\Documents;
 
-use Chevere\Components\ThrowableHandler\Documents\PlainDocument;
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerConsoleDocument;
-use Chevere\Components\ThrowableHandler\Formatters\ConsoleFormatter;
+use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerPlainDocument;
+use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerConsoleFormatter;
 use Chevere\Components\ThrowableHandler\ThrowableHandler;
 use Chevere\Components\ThrowableHandler\ThrowableRead;
 use LogicException;
@@ -29,9 +29,9 @@ final class ConsoleDocumentTest extends TestCase
             new LogicException('Ups', 100)
         ));
         $document = new ThrowableHandlerConsoleDocument($handler);
-        $this->assertInstanceOf(ConsoleFormatter::class, $document->getFormatter());
+        $this->assertInstanceOf(ThrowableHandlerConsoleFormatter::class, $document->getFormatter());
         $sectionTitle = $document->getSectionTitle();
-        $plainDocument = new PlainDocument($handler);
+        $plainDocument = new ThrowableHandlerPlainDocument($handler);
         $this->assertTrue(strlen($sectionTitle) > $plainDocument->getSectionTitle());
     }
 }

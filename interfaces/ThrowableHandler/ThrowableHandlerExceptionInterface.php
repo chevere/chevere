@@ -16,7 +16,7 @@ namespace Chevere\Interfaces\ThrowableHandler;
 use Chevere\Interfaces\Message\MessageInterface;
 use Throwable;
 
-interface ExceptionInterface
+interface ThrowableHandlerExceptionInterface
 {
     public function message(): MessageInterface;
 

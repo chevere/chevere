@@ -13,15 +13,15 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ThrowableHandler\Documents;
 
-use Chevere\Components\ThrowableHandler\Formatters\ConsoleFormatter;
-use Chevere\Interfaces\ThrowableHandler\FormatterInterface;
+use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerConsoleFormatter;
+use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatterInterface;
 use Colors\Color;
 
 final class ThrowableHandlerConsoleDocument extends ThrowableHandlerAbstractDocument
 {
-    public function getFormatter(): FormatterInterface
+    public function getFormatter(): ThrowableHandlerFormatterInterface
     {
-        return new ConsoleFormatter;
+        return new ThrowableHandlerConsoleFormatter;
     }
 
     public function getSectionTitle(): string

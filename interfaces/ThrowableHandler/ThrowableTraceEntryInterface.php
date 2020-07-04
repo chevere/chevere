@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\ThrowableHandler;
 
-interface TraceEntryInterface
+interface ThrowableTraceEntryInterface
 {
     const KEYS = ['file', 'line', 'function', 'class', 'type'];
 

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ThrowableHandler\Formatters;
 
-use Chevere\Interfaces\ThrowableHandler\FormatterInterface;
-use Chevere\Interfaces\ThrowableHandler\TraceFormatterInterface;
+use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatterInterface;
+use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatterInterface;
 use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 
-abstract class AbstractFormatter implements FormatterInterface
+abstract class ThrowableHandlerAbstractFormatter implements ThrowableHandlerFormatterInterface
 {
     protected VarDumpFormatterInterface $varDumpFormatter;
 
@@ -35,9 +35,11 @@ abstract class AbstractFormatter implements FormatterInterface
 
     public function getTraceEntryTemplate(): string
     {
-        return '#' . TraceFormatterInterface::TAG_ENTRY_POS . ' ' . TraceFormatterInterface::TAG_ENTRY_FILE_LINE . "\n"
-            . TraceFormatterInterface::TAG_ENTRY_CLASS . TraceFormatterInterface::TAG_ENTRY_TYPE . TraceFormatterInterface::TAG_ENTRY_FUNCTION
-            . '()';
+        return '#' . ThrowableTraceFormatterInterface::TAG_ENTRY_POS .
+            ' ' . ThrowableTraceFormatterInterface::TAG_ENTRY_FILE_LINE . "\n" .
+            ThrowableTraceFormatterInterface::TAG_ENTRY_CLASS .
+            ThrowableTraceFormatterInterface::TAG_ENTRY_TYPE .
+            ThrowableTraceFormatterInterface::TAG_ENTRY_FUNCTION . '()';
     }
 
     public function getHr(): string
@@ -64,9 +66,4 @@ abstract class AbstractFormatter implements FormatterInterface
     {
         return $value;
     }
-
-    // public function wrapContent(string $value): string
-    // {
-    //     return $value;
-    // }
 }

@@ -15,7 +15,7 @@ namespace Chevere\Components\ThrowableHandler;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrBool;
-use Chevere\Interfaces\ThrowableHandler\TraceEntryInterface;
+use Chevere\Interfaces\ThrowableHandler\ThrowableTraceEntryInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 use InvalidArgumentException;
 use ReflectionMethod;
@@ -23,7 +23,7 @@ use ReflectionMethod;
 /**
  * Allows to interact with trace entries thrown by Exception.
  */
-final class TraceEntry implements TraceEntryInterface
+final class ThrowableTraceEntry implements ThrowableTraceEntryInterface
 {
     private array $entry;
 

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\ThrowableHandler;
 
-interface DocumentInterface
+interface ThrowableHandlerDocumentInterface
 {
     const SECTION_TITLE = 'title';
     const SECTION_MESSAGE = 'message';
@@ -60,7 +60,7 @@ interface DocumentInterface
      *
      * Calling this method will reset the document sections to fit the target verbosity.
      */
-    public function withVerbosity(int $verbosity): DocumentInterface;
+    public function withVerbosity(int $verbosity): ThrowableHandlerDocumentInterface;
 
     /**
      * Provides access to the instance verbosity.
@@ -101,5 +101,5 @@ interface DocumentInterface
 
     public function getTemplate(): array;
 
-    public function getFormatter(): FormatterInterface;
+    public function getFormatter(): ThrowableHandlerFormatterInterface;
 }

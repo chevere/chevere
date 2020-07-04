@@ -13,21 +13,21 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ThrowableHandler;
 
-use Chevere\Interfaces\ThrowableHandler\FormatterInterface;
-use Chevere\Interfaces\ThrowableHandler\TraceEntryInterface;
-use Chevere\Interfaces\ThrowableHandler\TraceFormatterInterface;
+use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerFormatterInterface;
+use Chevere\Interfaces\ThrowableHandler\ThrowableTraceEntryInterface;
+use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatterInterface;
 
-final class TraceFormatter implements TraceFormatterInterface
+final class ThrowableTraceFormatter implements ThrowableTraceFormatterInterface
 {
     private array $trace;
 
-    private FormatterInterface $formatter;
+    private ThrowableHandlerFormatterInterface $formatter;
 
     private array $array = [];
 
     private string $string = '';
 
-    public function __construct(array $trace, FormatterInterface $formatter)
+    public function __construct(array $trace, ThrowableHandlerFormatterInterface $formatter)
     {
         $this->trace = $trace;
         $this->formatter = $formatter;
@@ -35,7 +35,7 @@ final class TraceFormatter implements TraceFormatterInterface
         foreach ($this->trace as $pos => $entry) {
             $this->array[] = strtr(
                 $this->formatter->getTraceEntryTemplate(),
-                $this->getTrTable($pos, new TraceEntry($entry))
+                $this->getTrTable($pos, new ThrowableTraceEntry($entry))
             );
         }
         if ($this->array !== []) {
@@ -59,7 +59,7 @@ final class TraceFormatter implements TraceFormatterInterface
         return $this->string;
     }
 
-    private function getTrTable(int $pos, TraceEntryInterface $entry): array
+    private function getTrTable(int $pos, ThrowableTraceEntryInterface $entry): array
     {
         $trValues = [
             self::TAG_ENTRY_CSS_EVEN_CLASS => $pos & 1 ? 'entry--even' : '',

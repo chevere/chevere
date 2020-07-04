@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler\Documents;
 
-use Chevere\Components\ThrowableHandler\Documents\PlainDocument;
-use Chevere\Components\ThrowableHandler\Formatters\PlainFormatter;
+use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerPlainDocument;
+use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerPlainFormatter;
 use Chevere\Components\ThrowableHandler\ThrowableHandler;
 use Chevere\Components\ThrowableHandler\ThrowableRead;
-use Chevere\Interfaces\ThrowableHandler\DocumentInterface;
+use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerDocumentInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
 use LogicException;
 use PHPUnit\Framework\TestCase;
@@ -36,16 +36,16 @@ final class PlainDocumentTest extends TestCase
 
     public function testConstruct(): void
     {
-        $document = new PlainDocument($this->exceptionHandler);
+        $document = new ThrowableHandlerPlainDocument($this->exceptionHandler);
         $verbosity = 0;
-        $this->assertInstanceOf(PlainFormatter::class, $document->getFormatter());
+        $this->assertInstanceOf(ThrowableHandlerPlainFormatter::class, $document->getFormatter());
         $this->assertSame($verbosity, $document->verbosity());
         $verbosity = OutputInterface::VERBOSITY_QUIET;
         $document = $document->withVerbosity($verbosity);
         $this->assertSame($verbosity, $document->verbosity());
         $getTemplate = $document->getTemplate();
         $this->assertIsArray($getTemplate);
-        $this->assertSame(DocumentInterface::SECTIONS, array_keys($getTemplate));
+        $this->assertSame(ThrowableHandlerDocumentInterface::SECTIONS, array_keys($getTemplate));
         $document->toString();
     }
 

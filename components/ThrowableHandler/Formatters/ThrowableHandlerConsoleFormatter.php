@@ -14,11 +14,11 @@ declare(strict_types=1);
 namespace Chevere\Components\ThrowableHandler\Formatters;
 
 use Chevere\Components\VarDump\Formatters\VarDumpConsoleFormatter as VarDumpFormatter;
-use Chevere\Interfaces\ThrowableHandler\TraceFormatterInterface;
+use Chevere\Interfaces\ThrowableHandler\ThrowableTraceFormatterInterface;
 use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 use Colors\Color;
 
-final class ConsoleFormatter extends AbstractFormatter
+final class ThrowableHandlerConsoleFormatter extends ThrowableHandlerAbstractFormatter
 {
     public function getVarDumpFormatter(): VarDumpFormatterInterface
     {
@@ -27,8 +27,8 @@ final class ConsoleFormatter extends AbstractFormatter
 
     public function getTraceEntryTemplate(): string
     {
-        return $this->wrapSectionTitle('#' . TraceFormatterInterface::TAG_ENTRY_POS) . ' ' . TraceFormatterInterface::TAG_ENTRY_FILE_LINE . "\n"
-            . TraceFormatterInterface::TAG_ENTRY_CLASS . TraceFormatterInterface::TAG_ENTRY_TYPE . TraceFormatterInterface::TAG_ENTRY_FUNCTION
+        return $this->wrapSectionTitle('#' . ThrowableTraceFormatterInterface::TAG_ENTRY_POS) . ' ' . ThrowableTraceFormatterInterface::TAG_ENTRY_FILE_LINE . "\n"
+            . ThrowableTraceFormatterInterface::TAG_ENTRY_CLASS . ThrowableTraceFormatterInterface::TAG_ENTRY_TYPE . ThrowableTraceFormatterInterface::TAG_ENTRY_FUNCTION
             . '()';
     }
 

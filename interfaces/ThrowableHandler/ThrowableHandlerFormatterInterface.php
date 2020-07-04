@@ -15,7 +15,7 @@ namespace Chevere\Interfaces\ThrowableHandler;
 
 use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 
-interface FormatterInterface
+interface ThrowableHandlerFormatterInterface
 {
     /**
      * Provides access to the VarDumpFormatterInterface instance.
@@ -30,7 +30,7 @@ interface FormatterInterface
     /**
      * Get the template used for each trace entry.
      *
-     * @see TraceFormatterInterface for tag reference
+     * @see ThrowableTraceFormatterInterface for tag reference
      */
     public function getTraceEntryTemplate(): string;
 

@@ -17,7 +17,7 @@ use Chevere\Interfaces\To\ToArrayInterface;
 use Chevere\Interfaces\To\ToStringInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 
-interface TraceFormatterInterface extends ToArrayInterface, ToStringInterface
+interface ThrowableTraceFormatterInterface extends ToArrayInterface, ToStringInterface
 {
     const TAG_ENTRY_FILE = '%file%';
     const TAG_ENTRY_LINE = '%line%';
@@ -37,5 +37,5 @@ interface TraceFormatterInterface extends ToArrayInterface, ToStringInterface
         self::TAG_ENTRY_FUNCTION => VarDumperInterface::FUNCTION,
     ];
 
-    public function __construct(array $trace, FormatterInterface $formatter);
+    public function __construct(array $trace, ThrowableHandlerFormatterInterface $formatter);
 }

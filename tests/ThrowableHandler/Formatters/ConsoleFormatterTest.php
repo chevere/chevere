@@ -14,16 +14,16 @@ declare(strict_types=1);
 namespace Chevere\Tests\ThrowableHandler\Formatters;
 
 use Chevere\Components\Str\Str;
-use Chevere\Components\ThrowableHandler\Formatters\ConsoleFormatter;
-use Chevere\Components\ThrowableHandler\Formatters\PlainFormatter;
+use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerConsoleFormatter;
+use Chevere\Components\ThrowableHandler\Formatters\ThrowableHandlerPlainFormatter;
 use PHPUnit\Framework\TestCase;
 
 final class ConsoleFormatterTest extends TestCase
 {
     public function testConstruct(): void
     {
-        $plainFormatter = new PlainFormatter();
-        $consoleFormatter = new ConsoleFormatter();
+        $plainFormatter = new ThrowableHandlerPlainFormatter();
+        $consoleFormatter = new ThrowableHandlerConsoleFormatter();
 
         $array = [
             'getTraceEntryTemplate' => [],
