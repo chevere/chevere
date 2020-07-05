@@ -33,7 +33,7 @@ final class VarDumpHtmlHighlight implements VarDumpHighlightInterface
         $this->color = $this->pallet()[$this->key] ?? 'inherit';
     }
 
-    public function wrap(string $dump): string
+    public function highlight(string $dump): string
     {
         return '<span style="color:' . $this->color . '">' . $dump . '</span>';
     }

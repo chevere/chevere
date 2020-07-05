@@ -15,6 +15,9 @@ namespace Chevere\Interfaces\VarDump;
 
 use Chevere\Interfaces\Writer\WriterInterface;
 
+/**
+ * Describes the component in charge of writing information about a variable.
+ */
 interface VarOutputterInterface
 {
     public function __construct(

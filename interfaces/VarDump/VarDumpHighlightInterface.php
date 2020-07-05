@@ -13,8 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\VarDump;
 
+use Chevere\Exceptions\Core\OutOfRangeException;
 use Chevere\Interfaces\Type\TypeInterface;
 
+/**
+ * Describes the component in charge of highlight the var dump strings.
+ */
 interface VarDumpHighlightInterface
 {
     const KEYS = [
@@ -35,7 +39,28 @@ interface VarDumpHighlightInterface
         VarDumperInterface::EMPHASIS,
     ];
 
+    /**
+     * Constructs a highlight instance specified by `$key`.
+     *
+     * @see `VarDumpHighlightInterface::KEYS`
+     * @throws OutOfRangeException
+     */
     public function __construct(string $key);
 
-    public function wrap(string $dump): string;
+    /**
+     * Highlights `$string`.
+     */
+    public function highlight(string $string): string;
+
+    /**
+     * Provide access to the color pallet.
+     *
+     * ```php
+     * return [
+     *     'string' => '<color_for_string>',
+     *     'float' => '<color_for_float>',
+     * ];
+     * ```
+     */
+    public function pallet(): array;
 }

@@ -13,13 +13,30 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\VarDump;
 
+use Chevere\Exceptions\Core\LogicException;
+
+/**
+ * Describes the component in charge of handling dumpable variables.
+ */
 interface VarDumpableInterface
 {
+    /**
+     * @throws LogicException if unable to process `$var` type.
+     */
     public function __construct($var);
 
+    /**
+     * Provides access to the variable.
+     */
     public function var();
 
+    /**
+     * Provides access to the variable type.
+     */
     public function type(): string;
 
+    /**
+     * Provides access to the processor name used for handling.
+     */
     public function processorName(): string;
 }

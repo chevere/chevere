@@ -13,26 +13,32 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\VarDump;
 
+use Chevere\Interfaces\VarDump\VarDumpHighlightInterface;
+
+/**
+ * Describes the component in charge of formatting the var dump strings.
+ */
 interface VarDumpFormatterInterface
 {
     /**
-     * @param int $indent Number of spaces to prefix
+     * Get indent for the given `$indent` size.
      */
     public function indent(int $indent): string;
 
     /**
-     * @param string $string String to emphasize
+     * Get emphasis for the given `$string`.
      */
     public function emphasis(string $string): string;
 
     /**
-     * @param string $string String to encode its chars
+     * Get `$string` without encoded chars.
      */
     public function filterEncodedChars(string $string): string;
 
     /**
-     * @param string $key A highlight key, from HighlightInterface::KEYS
-     * @param string $string String to highlight
+     * Get highlighted `$string` identified by `$key`.
+     *
+     * @see VarDumpHighlightInterface
      */
     public function highlight(string $key, string $string): string;
 }

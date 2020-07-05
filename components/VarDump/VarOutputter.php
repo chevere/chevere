@@ -21,9 +21,6 @@ use Chevere\Interfaces\VarDump\VarDumpOutputterInterface;
 use Chevere\Interfaces\VarDump\VarOutputterInterface;
 use Chevere\Interfaces\Writer\WriterInterface;
 
-/**
- * Writes information about a variable.
- */
 final class VarOutputter implements VarOutputterInterface
 {
     private WriterInterface $writer;
@@ -103,7 +100,7 @@ final class VarOutputter implements VarOutputterInterface
                 new VarDumpable($value)
             );
             $this->writer->write("\n\nArg#" . $pos . ' ');
-            $varDumper->withProcessor();
+            $varDumper->withProcess();
             ++$pos;
         }
     }

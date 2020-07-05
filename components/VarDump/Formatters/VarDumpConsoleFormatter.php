@@ -19,9 +19,6 @@ use Chevere\Components\VarDump\Highlighters\VarDumpConsoleHighlight;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 
-/**
- * Provide console VarDump representation.
- */
 final class VarDumpConsoleFormatter implements VarDumpFormatterInterface
 {
     use IndentTrait;
@@ -31,13 +28,13 @@ final class VarDumpConsoleFormatter implements VarDumpFormatterInterface
     {
         return
             (new VarDumpConsoleHighlight(VarDumperInterface::EMPHASIS))
-                ->wrap($string);
+                ->highlight($string);
     }
 
     public function highlight(string $key, string $string): string
     {
         return
             (new VarDumpConsoleHighlight($key))
-                ->wrap($string);
+                ->highlight($string);
     }
 }

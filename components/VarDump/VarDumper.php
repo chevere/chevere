@@ -18,17 +18,15 @@ use Chevere\Interfaces\VarDump\VarDumpableInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 use Chevere\Interfaces\Writer\WriterInterface;
+use Ds\Set;
 
-/**
- * Provides dumping for for variables of any kind of deep.
- */
 final class VarDumper implements VarDumperInterface
 {
     private WriterInterface $writer;
 
-    private VarDumpableInterface $dumpable;
-
     private VarDumpFormatterInterface $formatter;
+
+    private VarDumpableInterface $dumpable;
 
     private int $indent = 0;
 
@@ -36,7 +34,7 @@ final class VarDumper implements VarDumperInterface
 
     private int $depth = -1;
 
-    public array $known = [];
+    public Set $known;
 
     public function __construct(
         WriterInterface $writer,
@@ -46,6 +44,7 @@ final class VarDumper implements VarDumperInterface
         $this->writer = $writer;
         $this->dumpable = $dumpable;
         $this->formatter = $formatter;
+        $this->known = new Set;
         ++$this->depth;
     }
 
@@ -54,14 +53,14 @@ final class VarDumper implements VarDumperInterface
         return $this->writer;
     }
 
-    public function dumpable(): VarDumpableInterface
-    {
-        return $this->dumpable;
-    }
-
     public function formatter(): VarDumpFormatterInterface
     {
         return $this->formatter;
+    }
+
+    public function dumpable(): VarDumpableInterface
+    {
+        return $this->dumpable;
     }
 
     public function withIndent(int $indent): VarDumperInterface
@@ -78,6 +77,11 @@ final class VarDumper implements VarDumperInterface
         return $this->indent;
     }
 
+    public function indentString(): string
+    {
+        return $this->indentString;
+    }
+
     public function withDepth(int $depth): VarDumperInterface
     {
         $new = clone $this;
@@ -91,7 +95,7 @@ final class VarDumper implements VarDumperInterface
         return $this->depth;
     }
 
-    public function withKnownObjects(array $known): VarDumperInterface
+    public function withKnownObjects(Set $known): VarDumperInterface
     {
         $new = clone $this;
         $new->known = $known;
@@ -99,12 +103,12 @@ final class VarDumper implements VarDumperInterface
         return $new;
     }
 
-    public function known(): array
+    public function known(): Set
     {
         return $this->known;
     }
 
-    public function withProcessor(): VarDumperInterface
+    public function withProcess(): VarDumperInterface
     {
         $new = clone $this;
         $processorName = $new->dumpable->processorName();
@@ -114,10 +118,5 @@ final class VarDumper implements VarDumperInterface
         (new $processorName($new))->write();
 
         return $new;
-    }
-
-    public function indentString(): string
-    {
-        return $this->indentString;
     }
 }

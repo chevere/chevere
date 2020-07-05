@@ -6,6 +6,9 @@
             "<?php",
             "namespace Chevere\\Interfaces\\\\${TM_DIRECTORY/(^.+\\/(.*)$)/$2/};",
             "",
+            "/**",
+            " * Describes the component in charge of ${1:doing}.",
+            " */",
             "interface $TM_FILENAME_BASE",
             "{",
             "\t$0",
@@ -251,12 +254,20 @@
     "docblock-construct": {
         "description": "Insert a docblock construct",
         "prefix": "docblock-construct",
-        "body": ["/**", " * Does?", " */"]
+        "body": [
+            "/**",
+            " * Does?",
+            " */"
+        ]
     },
     "docblock-instance": {
         "description": "Insert a docblock instance",
         "prefix": "docblock-instance",
-        "body": ["/**", " * Provides access to the ${1:name} instance.", " */"]
+        "body": [
+            "/**",
+            " * Provides access to the ${1:name} instance.",
+            " */"
+        ]
     },
     "docblock-immutable": {
         "description": "Insert a docblock immutable",
@@ -275,7 +286,16 @@
         "prefix": "docblock-boolean",
         "body": [
             "/**",
-            " * Indicates whether the instance has a ${1:name}.",
+            " * Indicates whether the instance has ${1:name}.",
+            " */"
+        ]
+    },
+    "docblock-interface": {
+        "description": "Insert a docblock interface",
+        "prefix": "docblock-interface",
+        "body": [
+            "/**",
+            " * Describes the component in charge of ${1:doing}.",
             " */"
         ]
     }

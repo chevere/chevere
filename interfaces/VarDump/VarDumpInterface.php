@@ -15,6 +15,9 @@ namespace Chevere\Interfaces\VarDump;
 
 use Chevere\Interfaces\Writer\WriterInterface;
 
+/**
+ * Describes the component in charge of providing a `\var_dump()` replacement.
+ */
 interface VarDumpInterface
 {
     public function __construct(
@@ -23,20 +26,20 @@ interface VarDumpInterface
     );
 
     /**
-     * Return an instance with the specified vars.
+     * Return an instance with the specified `$vars`.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified vars.
+     * an instance that contains the specified `$vars`.
      */
     public function withVars(...$vars): VarDumpInterface;
 
     /**
-     * Return an instance with the specified shift.
+     * Return an instance with the specified `$shift` traces shifted.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified shift.
+     * an instance that contains the specified `$shift` traces shifted.
      *
-     * Shift removes $shift traces from debug_backtrace()
+     * This method removes `$shift` traces from `\debug_backtrace()`
      */
     public function withShift(int $shift): VarDumpInterface;
 
@@ -46,13 +49,12 @@ interface VarDumpInterface
     public function process(WriterInterface $writer): void;
 
     /**
-     * @return array the vars array.
-     * @immutable
+     * Provides access to the instance vars.
      */
     public function vars(): array;
 
     /**
-     * @return int the shift value.
+     * Provides access to the shift value.
      */
     public function shift(): int;
 }

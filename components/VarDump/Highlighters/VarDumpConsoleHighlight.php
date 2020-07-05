@@ -35,7 +35,7 @@ final class VarDumpConsoleHighlight implements VarDumpHighlightInterface
         $this->style = is_string($color) ? [$color] : $color;
     }
 
-    public function wrap(string $dump): string
+    public function highlight(string $dump): string
     {
         foreach ($this->style as $style) {
             $dump = $this->color->apply("color[$style]", $dump);

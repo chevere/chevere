@@ -117,6 +117,6 @@ final class VarDumpArrayProcessor implements VarDumpProcessorInterface
             ->withDepth($deep)
             ->withIndent($this->varDumper->indent())
             ->withKnownObjects($this->varDumper->known())
-            ->withProcessor();
+            ->withProcess();
     }
 }

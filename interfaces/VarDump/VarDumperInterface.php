@@ -23,7 +23,11 @@ use Chevere\Components\VarDump\Processors\VarDumpResourceProcessor;
 use Chevere\Components\VarDump\Processors\VarDumpStringProcessor;
 use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Interfaces\Writer\WriterInterface;
+use Ds\Set;
 
+/**
+ * Describes the component in charge of handling variable dumping process.
+ */
 interface VarDumperInterface
 {
     const FILE = '_file';
@@ -47,58 +51,73 @@ interface VarDumperInterface
         TypeInterface::RESOURCE => VarDumpResourceProcessor::class,
     ];
 
-    public function writer(): WriterInterface;
-
-    public function dumpable(): VarDumpableInterface;
+    public function __construct(
+        WriterInterface $writer,
+        VarDumpFormatterInterface $formatter,
+        VarDumpableInterface $dumpable
+    );
 
     /**
-     * Provides access to the FormatterInterface instance.
+     * Provides access to the `$writer` instance.
+     */
+    public function writer(): WriterInterface;
+
+    /**
+     * Provides access to the `$formatter` instance.
      */
     public function formatter(): VarDumpFormatterInterface;
 
     /**
-     * Return an instance with the specified $indent.
+     * Provides access to the `$dumpable` instance.
+     */
+    public function dumpable(): VarDumpableInterface;
+
+    /**
+     * Return an instance with the specified `$indent`.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified $indent.
+     * an instance that contains the specified `$indent`.
      */
     public function withIndent(int $indent): VarDumperInterface;
 
     /**
-     * Provides access to the instance $indent.
+     * Provides access to the instance indent value.
      */
     public function indent(): int;
 
     /**
-     * Provides access to the instance $indentString.
+     * Provides access to the instance indent string.
      */
     public function indentString(): string;
 
     /**
-     * Return an instance with the specified $depth.
+     * Return an instance with the specified `$depth`.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified $depth.
+     * an instance that contains the specified `$depth`.
      */
     public function withDepth(int $depth): VarDumperInterface;
 
     /**
-     * Provides access to the instance $depth.
+     * Provides access to the instance `$depth`.
      */
     public function depth(): int;
 
     /**
-     * Return an instance with the specified known object IDs.
+     * Return an instance with the specified `$known` object IDs.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified known object IDs.
+     * an instance that contains the specified `$known` object IDs.
      */
-    public function withKnownObjects(array $known): VarDumperInterface;
-
-    public function known(): array;
+    public function withKnownObjects(Set $known): VarDumperInterface;
 
     /**
-     * Process the var dump operation.
+     * Provides access to the known object ids.
      */
-    public function withProcessor(): VarDumperInterface;
+    public function known(): Set;
+
+    /**
+     * Process the dump.
+     */
+    public function withProcess(): VarDumperInterface;
 }

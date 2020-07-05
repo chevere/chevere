@@ -21,6 +21,7 @@ use Chevere\Interfaces\Type\TypeInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Interfaces\VarDump\VarDumpProcessorInterface;
 use Ds\Collection;
+use Ds\Set;
 use Reflection;
 use ReflectionObject;
 use Throwable;
@@ -37,8 +38,7 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
 
     private string $className;
 
-    /** @var string[] An array containing object ids */
-    private array $knownObjects = [];
+    private Set $known;
 
     private int $objectId;
 
@@ -48,7 +48,7 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
         $this->assertType();
         $this->var = $this->varDumper->dumpable()->var();
         $this->depth = $this->varDumper->depth() + 1;
-        $this->knownObjects = $this->varDumper->known();
+        $this->known = $this->varDumper->known();
         $this->className = get_class($this->var);
         $this->handleNormalizeClassName();
         $this->objectId = spl_object_id($this->var);
@@ -74,8 +74,7 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
                     '#' . (string) $this->objectId
                 )
         );
-
-        if (in_array($this->objectId, $this->knownObjects)) {
+        if ($this->known->contains($this->objectId)) {
             $this->varDumper->writer()->write(
                 ' ' .
                 $this->highlightOperator($this->circularReference() . ' #' . $this->objectId)
@@ -91,7 +90,7 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
 
             return;
         }
-        $this->knownObjects[] = $this->objectId;
+        $this->known[] = $this->objectId;
         $this->reflectionObject = new ReflectionObject($this->var);
         if ($this->reflectionObject->implementsInterface(Collection::class)) {
             $this->varDumper->writer()->write(' ');
@@ -104,8 +103,8 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
                 ->withIndent(
                     $this->varDumper->indent() > 1 ? $this->varDumper->indent() - 1 : $this->varDumper->indent()
                 )
-                ->withKnownObjects($this->knownObjects)
-                ->withProcessor();
+                ->withKnownObjects($this->known)
+                ->withProcess();
         }
         $this->setProperties();
     }
@@ -162,8 +161,8 @@ final class VarDumpObjectProcessor implements VarDumpProcessorInterface
                 : $this->depth
             )
             ->withIndent($this->varDumper->indent())
-            ->withKnownObjects($this->knownObjects)
-            ->withProcessor();
+            ->withKnownObjects($this->known)
+            ->withProcess();
     }
 
     private function handleNormalizeClassName(): void

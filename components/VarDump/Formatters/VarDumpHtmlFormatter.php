@@ -18,9 +18,6 @@ use Chevere\Interfaces\VarDump\VarDumperInterface;
 use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 use Chevere\Interfaces\VarDump\VarDumpTemplateInterface;
 
-/**
- * Provide HTML VarDump representation.
- */
 final class VarDumpHtmlFormatter implements VarDumpFormatterInterface
 {
     public function indent(int $indent): string
@@ -33,7 +30,7 @@ final class VarDumpHtmlFormatter implements VarDumpFormatterInterface
         return sprintf(
             VarDumpTemplateInterface::HTML_EMPHASIS,
             (new VarDumpHtmlHighlight(VarDumperInterface::EMPHASIS))
-                ->wrap($string)
+                ->highlight($string)
         );
     }
 
@@ -46,6 +43,6 @@ final class VarDumpHtmlFormatter implements VarDumpFormatterInterface
     {
         return
             (new VarDumpHtmlHighlight($key))
-                ->wrap($string);
+                ->highlight($string);
     }
 }
