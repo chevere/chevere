@@ -15,13 +15,25 @@ namespace Chevere\Interfaces\DataStructures;
 
 use Countable;
 use Ds\Map;
+use Generator;
 
+/**
+ * Describes the component in charge of easing the work around `Ds\Map`.
+ */
 interface DsMapInterface extends Countable
 {
+    /**
+     * Provides access to the map keys.
+     */
     public function keys(): array;
 
     /**
-     * @return Map A deep copied map
+     * Provides a deep copy of the internal map.
      */
     public function mapCopy(): Map;
+
+    /**
+     * Provides the generator.
+     */
+    public function getGenerator(): Generator;
 }
