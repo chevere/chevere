@@ -50,7 +50,7 @@ final class VarOutputter implements VarOutputterInterface
         $this->handleClassFunction();
         $this->writeCallerFile();
         $this->handleArgs();
-        $outputter->callback();
+        $outputter->tearDown();
     }
 
     private function handleClassFunction(): void

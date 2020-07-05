@@ -15,13 +15,33 @@ namespace Chevere\Interfaces\VarDump;
 
 use Chevere\Interfaces\Writer\WriterInterface;
 
+/**
+ * Describes the component in charge of orchestrating the var dump output processing.
+ */
 interface VarDumpOutputterInterface
 {
+    /**
+     * This method is executed before `prepare()`.
+     */
     public function setUp(WriterInterface $writer, array $backtrace);
 
+    /**
+     * Provides access to the instance backtrace.
+     */
+    public function backtrace(): array;
+
+    /**
+     * Provides access to the instance caller.
+     */
+    public function caller(): string;
+
+    /**
+     * This method is executed before `tearDown()`.
+     */
     public function prepare(): void;
 
-    public function callback(): void;
-
-    public function caller(): string;
+    /**
+     * Ends the outputter.
+     */
+    public function tearDown(): void;
 }

@@ -42,7 +42,7 @@ final class VarDumpHtmlOutputter extends VarDumpAbstractOutputter
         );
     }
 
-    public function callback(): void
+    public function tearDown(): void
     {
         $this->writer()->write('</pre>');
         if ($this->hasHeader) {

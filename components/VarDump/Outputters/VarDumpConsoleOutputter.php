@@ -32,7 +32,7 @@ final class VarDumpConsoleOutputter extends VarDumpAbstractOutputter
         );
     }
 
-    public function callback(): void
+    public function tearDown(): void
     {
         $this->writer()->write("\n" . $this->outputHr . "\n");
     }

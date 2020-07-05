@@ -13,31 +13,55 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\VarDump;
 
+/**
+ * Describes the component in charge of processing a variable of a known type.
+ */
 interface VarDumpProcessorInterface
 {
     const MAX_DEPTH = 10;
 
     /**
-     * Provides access to the instance info.
-     * The information about the variable like `size=1` or `length=6`
-     */
-    public function info(): string;
-
-    public function typeHighlighted(): string;
-
-    public function highlightOperator(string $string): string;
-
-    public function highlightParentheses(string $string): string;
-
-    public function circularReference(): string;
-
-    public function maxDepthReached(): string;
+    * @throws InvalidArgumentException
+    */
+    public function __construct(VarDumperInterface $varDumper);
 
     /**
-     * Provides access to the instance type.
-     * The information about the variable type like `array` or `object`
+     * Provides the variable type (primitive).
      */
     public function type(): string;
 
+    /**
+     * Provides info about the variable like `size=1`, `length=6`, 'Object #id'
+     */
+    public function info(): string;
+
+    /**
+     * Provides a highlighted type.
+     */
+    public function typeHighlighted(): string;
+
+    /**
+     * Highlights the given operator `$string`.
+     */
+    public function highlightOperator(string $string): string;
+
+    /**
+     * Highlights and wraps in parentheses the given `$string`.
+     */
+    public function highlightParentheses(string $string): string;
+
+    /**
+     * Provides the `*circular reference*` flag.
+     */
+    public function circularReference(): string;
+
+    /**
+     * Provides the `*max depth reached*` flag.
+     */
+    public function maxDepthReached(): string;
+
+    /**
+     * Write the dump to the stream.
+     */
     public function write(): void;
 }

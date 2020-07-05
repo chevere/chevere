@@ -15,8 +15,8 @@ namespace Chevere\Components\VarDump\Processors\Traits;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
-use InvalidArgumentException;
 use function Chevere\Components\Type\varType;
 
 trait ProcessorTrait
@@ -24,6 +24,8 @@ trait ProcessorTrait
     private VarDumperInterface $varDumper;
 
     private string $info = '';
+
+    abstract public function type(): string;
 
     public function info(): string
     {
@@ -60,8 +62,6 @@ trait ProcessorTrait
         return '*max depth reached*';
     }
 
-    abstract public function type(): string;
-
     private function assertType(): void
     {
         $type = new Type($this->type());
@@ -72,7 +72,6 @@ trait ProcessorTrait
                     ->code('%expected%', $this->type())
                     ->code('%method%', get_class($this->varDumper) . '::var()')
                     ->code('%provided%', varType($this->varDumper->dumpable()->var()))
-                    ->toString()
             );
         }
     }

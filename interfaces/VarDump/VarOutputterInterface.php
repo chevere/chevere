@@ -27,5 +27,8 @@ interface VarOutputterInterface
         ...$vars
     );
 
+    /**
+     * Process the var output streaming.
+     */
     public function process(VarDumpOutputterInterface $outputter): void;
 }
