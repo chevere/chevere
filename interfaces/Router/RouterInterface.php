@@ -15,37 +15,4 @@ namespace Chevere\Interfaces\Router;
 
 interface RouterInterface
 {
-    const CACHE_ID = 'router';
-
-    public function withRoutables(RoutablesInterface $routables): RouterInterface;
-
-    public function routables(): RoutablesInterface;
-
-    /**
-     * Return an instance with the specified RegexInterface.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified RegexInterface.
-     */
-    public function withRegex(RouterRegexInterface $regex): RouterInterface;
-
-    public function hasRegex(): bool;
-
-    /**
-     * Provides access to the instance regex.
-     */
-    public function regex(): RouterRegexInterface;
-
-    /**
-     * Return an instance with the specified index.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified index.
-     */
-    public function withIndex(RouterIndexInterface $index): RouterInterface;
-
-    /**
-     * Provides access to the instance index.
-     */
-    public function index(): RouterIndexInterface;
 }

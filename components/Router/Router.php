@@ -13,67 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Interfaces\Router\RoutablesInterface;
-use Chevere\Interfaces\Router\RouterIndexInterface;
 use Chevere\Interfaces\Router\RouterInterface;
-use Chevere\Interfaces\Router\RouterRegexInterface;
-use function DeepCopy\deep_copy;
 
 final class Router implements RouterInterface
 {
-    private RoutablesInterface $routables;
-
-    private RouterRegexInterface $routerRegex;
-
-    private RouterIndexInterface $routerIndex;
-
-    public function __construct()
-    {
-        $this->routables = new Routables;
-        $this->routerIndex = new RouterIndex;
-    }
-
-    public function withRoutables(RoutablesInterface $routables): RouterInterface
-    {
-        $new = clone $this;
-        $new->routables = $routables;
-
-        return $new;
-    }
-
-    public function routables(): RoutablesInterface
-    {
-        return deep_copy($this->routables);
-    }
-
-    public function withRegex(RouterRegexInterface $regex): RouterInterface
-    {
-        $new = clone $this;
-        $new->routerRegex = $regex;
-
-        return $new;
-    }
-
-    public function hasRegex(): bool
-    {
-        return isset($this->routerRegex);
-    }
-
-    public function regex(): RouterRegexInterface
-    {
-        return $this->routerRegex;
-    }
-
-    public function withIndex(RouterIndexInterface $index): RouterInterface
-    {
-        $new = clone $this;
-        $new->routerIndex = $index;
-
-        return $new;
-    }
-
-    public function index(): RouterIndexInterface
-    {
-        return $this->routerIndex;
-    }
 }

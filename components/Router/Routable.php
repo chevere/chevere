@@ -21,7 +21,6 @@ use Chevere\Interfaces\Route\RouteInterface;
 use Chevere\Interfaces\Router\RoutableInterface;
 use Throwable;
 
-//
 final class Routable implements RoutableInterface
 {
     private RouteInterface $route;
