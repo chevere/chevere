@@ -113,7 +113,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
     {
         if (is_string($var) && !ctype_space($var)) {
             try {
-                $unserialize = @new Unserialize($var);
+                $unserialize = new Unserialize($var);
                 $var = $unserialize->var();
             } catch (UnserializeException $e) {
                 // $e

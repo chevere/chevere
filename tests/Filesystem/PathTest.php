@@ -38,11 +38,14 @@ final class PathTest extends TestCase
         $this->assertFalse($path->exists());
         $this->assertFalse($path->isDir());
         $this->assertFalse($path->isFile());
+        $this->expectException(PathNotExistsException::class);
+        $path->assertExists();
     }
 
     public function testExistentDirPath(): void
     {
         $path = new Path(__DIR__);
+        $path->assertExists();
         $this->assertTrue($path->exists());
         $this->assertTrue($path->isDir());
         $this->assertFalse($path->isFile());
@@ -51,6 +54,7 @@ final class PathTest extends TestCase
     public function testExistentFilePath(): void
     {
         $path = new Path(__FILE__);
+        $path->assertExists();
         $this->assertTrue($path->exists());
         $this->assertTrue($path->isFile());
         $this->assertFalse($path->isDir());

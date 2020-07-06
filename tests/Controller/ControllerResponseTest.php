@@ -38,4 +38,11 @@ final class ControllerResponseTest extends TestCase
         $controllerResponse = $controllerResponse->withData($data);
         $this->assertSame($data, $controllerResponse->data());
     }
+
+    public function testWithIsSuccess(): void
+    {
+        $controllerResponse = new ControllerResponse(false, []);
+        $controllerResponse = $controllerResponse->withIsSuccess(true);
+        $this->assertTrue($controllerResponse->isSuccess());
+    }
 }

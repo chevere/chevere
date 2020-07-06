@@ -24,10 +24,11 @@ use Chevere\Exceptions\Filesystem\PathIsFileException;
 use Chevere\Exceptions\Filesystem\PathIsNotDirectoryException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
-use OutOfRangeException;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Throwable;
+use function Safe\mkdir;
+use function Safe\rmdir;
 
 final class Dir implements DirInterface
 {
@@ -37,15 +38,7 @@ final class Dir implements DirInterface
     {
         $this->path = $path;
         $this->assertIsNotFile();
-        $absolute = $path->absolute();
-        if ($absolute[-1] !== '/') {
-            throw new DirTailException(
-                (new Message('Instance of %className% must provide an absolute path ending with %tailChar%, path %provided% provided'))
-                    ->code('%className%', get_class($path))
-                    ->code('%tailChar%', '/')
-                    ->code('%provided%', $absolute)
-            );
-        }
+        $this->assertTailDir();
     }
 
     public function getChild(string $path): DirInterface
@@ -76,14 +69,12 @@ final class Dir implements DirInterface
     public function create(int $mode = 0755): void
     {
         try {
-            if (!mkdir($this->path->absolute(), $mode, true)) {
-                throw new OutOfRangeException;
-            }
+            mkdir($this->path->absolute(), $mode, true);
         } catch (Throwable $e) {
             throw new DirUnableToCreateException(
-                (new Message('Unable to create directory %path% %thrown%'))
-                    ->code('%path%', $this->path->absolute())
-                    ->code('%thrown%', '[' . $e->getMessage() . ']')
+                (new Message($e->getMessage())),
+                $e->getCode(),
+                $e
             );
         }
     }
@@ -135,9 +126,19 @@ final class Dir implements DirInterface
         }
     }
 
-    /**
-     * @throws PathIsNotDirectoryException if the directory doesn't exists
-     */
+    private function assertTailDir(): void
+    {
+        $absolute = $this->path->absolute();
+        if ($absolute[-1] !== '/') {
+            throw new DirTailException(
+                (new Message('Instance of %className% must provide an absolute path ending with %tailChar%, path %provided% provided'))
+                    ->code('%className%', get_class($this->path))
+                    ->code('%tailChar%', '/')
+                    ->code('%provided%', $absolute)
+            );
+        }
+    }
+
     private function assertIsDir(): void
     {
         if (!$this->path->isDir()) {
@@ -149,21 +150,18 @@ final class Dir implements DirInterface
     }
 
     /**
-     * @throws DirUnableToRemoveException
+     * @codeCoverageIgnore
      */
     private function rmdir(): void
     {
-        $dir = $this->path->absolute();
-        // @codeCoverageIgnoreStart
         try {
-            rmdir($dir);
+            rmdir($this->path->absolute());
         } catch (Throwable $e) {
             throw new DirUnableToRemoveException(
-                (new Message('Unable to remove directory %path% %thrown%'))
-                    ->code('%path%', $this->path->absolute())
-                    ->code('%thrown%', '[' . $e->getMessage() . ']')
+                (new Message($e->getMessage())),
+                $e->getCode(),
+                $e
             );
         }
-        // @codeCoverageIgnoreEnd
     }
 }

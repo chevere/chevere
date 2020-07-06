@@ -26,7 +26,8 @@
         "php-ds/php-ds": "^1.2",
         "psr/http-message": "^1.0",
         "psr/http-server-handler": "^1.0",
-        "psr/http-server-middleware": "^1.0"
+        "psr/http-server-middleware": "^1.0",
+        "thecodingmachine/safe": "^1.1"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16",

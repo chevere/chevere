@@ -31,25 +31,31 @@ final class CacheItem implements CacheItemInterface
     {
         try {
             return $this->phpFileReturn->raw();
-        } catch (Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (Exception $e) {
             throw new RuntimeException(
                 $e->message(),
                 $e->getCode(),
                 $e
             );
         }
+        // @codeCoverageIgnoreEnd
     }
 
     public function var()
     {
         try {
             return $this->phpFileReturn->var();
-        } catch (Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (Exception $e) {
             throw new RuntimeException(
                 $e->message(),
                 $e->getCode(),
                 $e
             );
         }
+        // @codeCoverageIgnoreEnd
     }
 }

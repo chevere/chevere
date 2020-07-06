@@ -14,15 +14,12 @@ declare(strict_types=1);
 namespace Chevere\Components\Filesystem;
 
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Filesystem\PathInvalidException;
 use Chevere\Exceptions\Filesystem\PathNotExistsException;
 use Chevere\Exceptions\Filesystem\PathUnableToChmodException;
 use Chevere\Interfaces\Filesystem\PathInterface;
-use Throwable;
 
 final class Path implements PathInterface
 {
-    /** @var string Absolute path */
     private string $absolute;
 
     public function __construct(string $absolute)
@@ -41,6 +38,16 @@ final class Path implements PathInterface
         $this->clearStatCache();
 
         return false !== stream_resolve_include_path($this->absolute);
+    }
+
+    public function assertExists(): void
+    {
+        if (!$this->exists()) {
+            throw new PathNotExistsException(
+                (new Message("Path %path% doesn't exists"))
+                    ->code('%path%', $this->absolute)
+            );
+        }
     }
 
     public function isDir(): bool
@@ -96,24 +103,8 @@ final class Path implements PathInterface
     {
         $parent = $this->absolute;
         $childPath = rtrim($parent, '/');
-        try {
-            return new Path($childPath . '/' . $path);
-        } catch (Throwable $e) {
-            throw new PathInvalidException(
-                (new Message('Invalid path provided %thrown%'))
-                    ->code('%thrown%', $e->getMessage())
-            );
-        }
-    }
 
-    private function assertExists(): void
-    {
-        if ($this->exists() === false) {
-            throw new PathNotExistsException(
-                (new Message("Path %path% doesn't exists"))
-                    ->code('%path%', $this->absolute)
-            );
-        }
+        return new Path($childPath . '/' . $path);
     }
 
     private function clearStatCache(): void

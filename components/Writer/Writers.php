@@ -35,13 +35,16 @@ final class Writers implements WritersInterface
         try {
             $this->out = new StreamWriter(new Stream('php://stdout', 'w'));
             $this->error = new StreamWriter(new Stream('php://stderr', 'w'));
-        } catch (InvalidArgumentException $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (InvalidArgumentException $e) {
             throw new RuntimeException(
                 new Message($e->getMessage()),
                 $e->getCode(),
                 $e
             );
         }
+        // @codeCoverageIgnoreEnd
         $this->debug = new NullWriter;
         $this->log = new NullWriter;
     }

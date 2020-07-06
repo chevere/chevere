@@ -17,7 +17,6 @@ use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Cache\CacheInvalidKeyException;
 use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
 use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\OutOfBoundsException;
@@ -56,10 +55,6 @@ final class Cache implements CacheInterface
         return $this->dir;
     }
 
-    /**
-     * @throws OutOfBoundsException
-     * @throws RuntimeException If theres an system failure
-     */
     public function withAddedItem(CacheKeyInterface $key, VarExportableInterface $varExportable): CacheInterface
     {
         $path = $this->getPath($key->toString());
@@ -78,21 +73,20 @@ final class Cache implements CacheInterface
                 'path' => $fileReturn->filePhp()->file()->path()->absolute(),
                 'checksum' => $fileReturn->filePhp()->file()->checksum(),
             ];
-        } catch (Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (Exception $e) {
             throw new RuntimeException(
                 $e->message(),
                 $e->getCode(),
                 $e
             );
         }
+        // @codeCoverageIgnoreEnd
 
         return $new;
     }
 
-    /**
-     * @throws CacheInvalidKeyException
-     * @throws RuntimeException
-     */
     public function withoutItem(CacheKeyInterface $cacheKey): CacheInterface
     {
         $new = clone $this;
@@ -104,30 +98,26 @@ final class Cache implements CacheInterface
             $filePhp = new FilePhp(new File($path));
             $filePhp->flush();
             $filePhp->file()->remove();
-        } catch (Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (Exception $e) {
             throw new RuntimeException(
                 $e->message(),
                 $e->getCode(),
                 $e
             );
         }
+        // @codeCoverageIgnoreEnd
         unset($new->puts[$cacheKey->toString()]);
 
         return $new;
     }
 
-    /**
-     * @throws OutOfBoundsException
-     */
     public function exists(CacheKeyInterface $cacheKey): bool
     {
         return $this->getPath($cacheKey->toString())->exists();
     }
 
-    /**
-     * @throws OutOfBoundsException
-     * @throws CacheKeyNotFoundException
-     */
     public function get(CacheKeyInterface $cacheKey): CacheItemInterface
     {
         $path = $this->getPath($cacheKey->toString());
@@ -152,19 +142,19 @@ final class Cache implements CacheInterface
         return $this->puts;
     }
 
-    /**
-     * @throws OutOfBoundsException
-     */
     private function getPath(string $name): PathInterface
     {
         try {
             return $this->dir->path()->getChild($name . '.php');
-        } catch (PathIsDirException | PathInvalidException $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (PathIsDirException | PathInvalidException $e) {
             throw new OutOfBoundsException(
                 $e->message(),
                 $e->getCode(),
                 $e
             );
         }
+        // @codeCoverageIgnoreEnd
     }
 }

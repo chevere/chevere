@@ -29,16 +29,11 @@ final class Unserialize implements UnserializeInterface
 
     public function __construct(string $serialized)
     {
-        try {
-            $this->var = @unserialize($serialized);
-        } catch (Throwable $e) {
-            throw new UnserializeException(
-                (new Message('String provided is unable to unserialize: %message%'))
-                    ->code('%message%', $e->getMessage())
-            );
-        }
+        $this->var = @unserialize($serialized);
         if ($this->var === false) {
-            $this->var = $serialized;
+            throw new UnserializeException(
+                (new Message('String provided is unable to unserialize.'))
+            );
         }
         $type = is_object($this->var) ? get_class($this->var) : varType($this->var);
         $this->type = new Type($type);

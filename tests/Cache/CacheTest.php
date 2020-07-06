@@ -21,32 +21,30 @@ use Chevere\Components\VarExportable\VarExportable;
 use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
 use Chevere\Interfaces\Cache\CacheInterface;
 use Chevere\Interfaces\Cache\CacheItemInterface;
+use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use PHPUnit\Framework\TestCase;
 
 final class CacheTest extends TestCase
 {
-    private PathInterface $path;
+    private DirInterface $path;
 
     public function setUp(): void
     {
-        $this->path = new Path(__DIR__ . '/_resources/CacheTest/');
-    }
-
-    private function getTestCache(): CacheInterface
-    {
-        return new Cache(new Dir($this->path->getChild('build/')));
+        $this->dir = new Dir(
+            new Path(__DIR__ . '/_resources/CacheTest/cache/')
+        );
     }
 
     public function testConstructor(): void
     {
-        $this->expectNotToPerformAssertions();
-        $this->getTestCache();
+        $cache = new Cache($this->dir);
+        $this->assertSame($cache->dir(), $this->dir);
     }
 
     public function testKeyNotExists(): void
     {
-        $cache = $this->getTestCache();
+        $cache = new Cache($this->dir);
         $cacheKey = new CacheKey(uniqid());
         $this->assertFalse($cache->exists($cacheKey));
     }
@@ -55,16 +53,16 @@ final class CacheTest extends TestCase
     {
         $cacheKey = new CacheKey(uniqid());
         $this->expectException(CacheKeyNotFoundException::class);
-        $this->getTestCache()->get($cacheKey);
+        (new Cache($this->dir))->get($cacheKey);
     }
 
     public function testWithPutWithRemove(): void
     {
         $key = uniqid();
-        $var = [time(), false, 'test', $this->path->getChild('test'), 13.13];
+        $var = [time(), false, 'test', $this->dir->getChild('test/'), 13.13];
         $varExportable = new VarExportable($var);
         $cacheKey = new CacheKey($key);
-        $cache = $this->getTestCache()
+        $cache = (new Cache($this->dir))
             ->withAddedItem($cacheKey, $varExportable);
         $this->assertArrayHasKey($key, $cache->puts());
         $this->assertTrue($cache->exists($cacheKey));

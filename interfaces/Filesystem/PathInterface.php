@@ -80,7 +80,10 @@ interface PathInterface
     /**
      * Get a child instance for the target child path.
      *
-     * @throws PathInvalidException
+     * @throws PathDotSlashException
+     * @throws PathDoubleDotsDashException
+     * @throws PathExtraSlashesException
+     * @throws PathNotAbsoluteException
      */
     public function getChild(string $path): PathInterface;
 }
