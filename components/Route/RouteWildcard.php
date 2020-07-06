@@ -14,21 +14,16 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Str\StrBool;
 use Chevere\Exceptions\Route\RouteWildcardInvalidCharsException;
-use Chevere\Exceptions\Route\RouteWildcardNotFoundException;
 use Chevere\Exceptions\Route\RouteWildcardStartWithNumberException;
-use Chevere\Interfaces\Route\RoutePathInterface;
 use Chevere\Interfaces\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Route\RouteWildcardMatchInterface;
-use Chevere\Components\Str\StrBool;
 
 final class RouteWildcard implements RouteWildcardInterface
 {
     /** @var string */
     private string $name;
-
-    /** @var string */
-    private string $string;
 
     private RouteWildcardMatchInterface $match;
 
@@ -38,20 +33,11 @@ final class RouteWildcard implements RouteWildcardInterface
      * @throws RouteWildcardStartWithNumberException if $name starts with a number
      * @throws RouteWildcardInvalidCharsException    if $name contains invalid chars
      */
-    public function __construct(string $name)
+    public function __construct(string $name, RouteWildcardMatchInterface $match)
     {
         $this->name = $name;
-        $this->string = "{{$this->name}}";
         $this->assertName();
-        $this->match = new RouteWildcardMatch(RouteWildcardInterface::REGEX_MATCH_DEFAULT);
-    }
-
-    public function withMatch(RouteWildcardMatchInterface $match): RouteWildcardInterface
-    {
-        $new = clone $this;
-        $new->match = $match;
-
-        return $new;
+        $this->match = $match;
     }
 
     public function name(): string
@@ -59,25 +45,9 @@ final class RouteWildcard implements RouteWildcardInterface
         return $this->name;
     }
 
-    public function toString(): string
-    {
-        return $this->string;
-    }
-
     public function match(): RouteWildcardMatchInterface
     {
         return $this->match;
-    }
-
-    public function assertRoutePath(RoutePathInterface $routePath): void
-    {
-        if (strpos($routePath->toString(), $this->string) === false) {
-            throw new RouteWildcardNotFoundException(
-                (new Message("Wildcard %wildcard% doesn't exists in route path %path%"))
-                    ->code('%wildcard%', $this->string)
-                    ->code('%path%', $routePath->toString())
-            );
-        }
     }
 
     private function assertName(): void

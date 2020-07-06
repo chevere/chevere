@@ -19,7 +19,6 @@ use Chevere\Components\Router\Routable;
 use Chevere\Components\Spec\Specs\GroupSpec;
 use Chevere\Components\Spec\Specs\IndexSpec;
 use Chevere\Components\Spec\Specs\RoutableSpec;
-use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Components\Str\Str;
 use Chevere\Exceptions\Spec\SpecInvalidArgumentException;
 use Chevere\Interfaces\Filesystem\DirInterface;

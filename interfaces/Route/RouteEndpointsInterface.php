@@ -15,9 +15,15 @@ namespace Chevere\Interfaces\Route;
 
 use Chevere\Interfaces\DataStructures\DsMapInterface;
 use Countable;
+use Generator;
 
 interface RouteEndpointsInterface extends DsMapInterface
 {
+    /**
+    * @return Generator<string, RouteEndpointInterface>
+    */
+    public function getGenerator(): Generator;
+
     /**
      * @return string[] The known keys.
      */

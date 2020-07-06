@@ -91,21 +91,28 @@ final class RouteTest extends TestCase
 
     public function testWithAddedEndpointWildcardParameter(): void
     {
-        $route = new Route(new RouteName('test'), new RoutePath('/test/{id}'));
+        $route = new Route(new RouteName('test'), new RoutePath('/test/{id:[0-9]+}'));
         $method = new GetMethod;
         $controller = new RouteTestController;
         $endpoint = new RouteEndpoint($method, $controller);
         $route = $route->withAddedEndpoint($endpoint);
         $this->assertTrue($route->endpoints()->hasKey($method->name()));
         $this->assertSame(
-            [],
+            [
+                'id' => [
+                    'name' => 'id',
+                    'regex' => '/^[0-9]+$/',
+                    'description' => '',
+                    'isRequired' => true,
+                ]
+            ],
             $route->endpoints()->get($method->name())->parameters()
         );
     }
 
-    public function testWithAddedEnpointOverride(): void
+    public function testWithAddedEndpointOverride(): void
     {
-        $route = new Route(new RouteName('test'), new RoutePath('/test/{id}'));
+        $route = new Route(new RouteName('test'), new RoutePath('/test/{id:[0-9]+}'));
         $endpoint = new RouteEndpoint(new GetMethod, new RouteTestController);
         $route = $route->withAddedEndpoint($endpoint);
         $this->expectException(OverflowException::class);
@@ -114,7 +121,7 @@ final class RouteTest extends TestCase
 
     public function testWithAddedEndpointRegexConflict(): void
     {
-        $route = new Route(new RouteName('test'), new RoutePath('/test/{id}'));
+        $route = new Route(new RouteName('test'), new RoutePath('/test/{id:[0-9]+}'));
         $route = $route->withAddedEndpoint(
             new RouteEndpoint(new GetMethod, new RouteTestController)
         );

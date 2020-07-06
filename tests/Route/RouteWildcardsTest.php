@@ -14,7 +14,9 @@ declare(strict_types=1);
 namespace Chevere\Tests\Route;
 
 use Chevere\Components\Route\RouteWildcard;
+use Chevere\Components\Route\RouteWildcardMatch;
 use Chevere\Components\Route\RouteWildcards;
+use FastRoute\RouteParser\Std;
 use PHPUnit\Framework\TestCase;
 
 final class RouteWildcardsTest extends TestCase
@@ -28,7 +30,10 @@ final class RouteWildcardsTest extends TestCase
     public function testConstruct(): void
     {
         $wildcardName = 'test';
-        $routeWildcard = new RouteWildcard($wildcardName);
+        $routeWildcard = new RouteWildcard(
+            $wildcardName,
+            new RouteWildcardMatch(Std::DEFAULT_DISPATCH_REGEX)
+        );
         $routeWildcards = (new RouteWildcards)->withAddedWildcard($routeWildcard);
         $this->assertCount(1, $routeWildcards);
         $this->assertTrue($routeWildcards->hasPos(0));
@@ -39,7 +44,8 @@ final class RouteWildcardsTest extends TestCase
 
     public function testWithAddedWildcard(): void
     {
-        $wildcards = [new RouteWildcard('test1'), new RouteWildcard('test2')];
+        $match = new RouteWildcardMatch(Std::DEFAULT_DISPATCH_REGEX);
+        $wildcards = [new RouteWildcard('test1', $match), new RouteWildcard('test2', $match)];
         $routeWildcards = new RouteWildcards;
         foreach ($wildcards as $wildcard) {
             $routeWildcards = $routeWildcards

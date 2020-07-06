@@ -13,74 +13,25 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Route;
 
+use Chevere\Interfaces\To\ToArrayInterface;
 use Chevere\Interfaces\To\ToStringInterface;
-use Chevere\Interfaces\Regex\RegexInterface;
-use Chevere\Exceptions\Route\RoutePathForwardSlashException;
-use Chevere\Exceptions\Route\RoutePathInvalidCharsException;
-use Chevere\Exceptions\Route\RoutePathUnmatchedBracesException;
-use Chevere\Exceptions\Route\RoutePathUnmatchedWildcardsException;
-use Chevere\Exceptions\Route\RouteWildcardRepeatException;
-use Chevere\Exceptions\Route\RouteWildcardReservedException;
 
-interface RoutePathInterface extends ToStringInterface
+/**
+ * Describes the component in charge of handling route paths.
+ */
+interface RoutePathInterface extends ToStringInterface, ToArrayInterface
 {
-    const REGEX_DELIMITER_CHAR = '/';
-
-    /** Regex pattern used to catch {wildcard} */
-    const REGEX_WILDCARD_SEARCH = self::REGEX_DELIMITER_CHAR . '{' . RouteWildcardInterface::ACCEPT_CHARS . '}' . self::REGEX_DELIMITER_CHAR . 'i';
-
-    const ILLEGAL_CHARS = [
-        '//' => 'extra-slashes',
-        '\\' => 'backslash',
-        '{{' => 'double-braces',
-        '}}' => 'double-braces',
-        ' ' => 'whitespace',
-    ];
-
-    /**
-     * @param string $path a path uri like `/path/{wildcard}`
-     *
-     * @throws RoutePathForwardSlashException       if $path doesn't start with forward slash
-     * @throws RoutePathInvalidCharsException       if $path contains invalid chars
-     * @throws RoutePathUnmatchedBracesException    if $path contains unmatched braces (must be paired)
-     * @throws RoutePathUnmatchedWildcardsException if $path contains wildcards that don't match the number of braces
-     * @throws RouteWildcardReservedException          if $path contains reserved wildcards
-     * @throws RouteWildcardRepeatException            if $path contains repeated wildcards
-     */
     public function __construct(string $path);
 
+    public function wildcards(): RouteWildcardsInterface;
+
     /**
-     * @return string Uri path.
+     * Provides access to the uri path.
      */
     public function toString(): string;
 
     /**
-     * Provides access to the key string, which is a representation of the path
-     * with placeholders converting `/api/articles/{wildcard}` to `/api/articles/{0}`
+     * Provides access to the parsed uri path data.
      */
-    public function key(): string;
-
-    /**
-     * @return RegexInterface Regex string like `/^\/path$/`
-     */
-    public function regex(): RegexInterface;
-
-    /**
-     * Provides access to the RouteWildcardsInterface instance.
-     */
-    public function wildcards(): RouteWildcardsInterface;
-
-    /**
-     * Return an instance with the specified WildcardInterface.
-     *
-     * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified WildcardInterface.
-     */
-    public function withWildcard(RouteWildcardInterface $wildcard): RoutePathInterface;
-
-    /**
-     * Provide a request uri for the given wildcards.
-     * @param array $wildcards [<string>wildcardName => <string>wildcardValue,]
-     */
-    public function uriFor(array $wildcards): string;
+    public function toArray(): array;
 }

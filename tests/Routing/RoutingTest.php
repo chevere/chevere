@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Routing;
 
 use Chevere\Components\Filesystem\FilesystemFactory;
+use Chevere\Components\Router\Router;
 use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Routing\FsRoutesMaker;
 use Chevere\Components\Routing\Routing;
@@ -46,8 +47,7 @@ final class RoutingTest extends TestCase
     public function testConstruct(): void
     {
         $fsRoutesMaker = new FsRoutesMaker($this->routesDir);
-        $routerMaker = new RouterMaker;
-        $routing = new Routing($fsRoutesMaker, $routerMaker);
+        $routing = new Routing($fsRoutesMaker, new Router);
         $this->assertInstanceOf(RouterInterface::class, $routing->router());
     }
 }

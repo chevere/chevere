@@ -14,14 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Routing;
 
 use Chevere\Interfaces\Router\RouterInterface;
-use Chevere\Interfaces\Router\RouterMakerInterface;
 
 interface RoutingInterface
 {
-    public function __construct(
-        FsRoutesMakerInterface $routePathIterator,
-        RouterMakerInterface $routerMaker
-    );
+    public function __construct(FsRoutesMakerInterface $fsRoutesMaker, RouterInterface $router);
 
     public function router(): RouterInterface;
 }

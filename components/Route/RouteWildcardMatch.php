@@ -15,14 +15,14 @@ namespace Chevere\Components\Route;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
-use Chevere\Interfaces\Route\RouteWildcardMatchInterface;
 use Chevere\Components\Str\StrBool;
+use Chevere\Interfaces\Route\RouteWildcardMatchInterface;
 use InvalidArgumentException;
 use LogicException;
 
 final class RouteWildcardMatch implements RouteWildcardMatchInterface
 {
-    /** @var string a regular expresion match statement */
+    /** @var string a regular expression match statement */
     private string $string;
 
     public function __construct(string $string)

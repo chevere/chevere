@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Core\RangeException;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
@@ -22,8 +24,6 @@ use Chevere\Interfaces\Route\RouteInterface;
 use Chevere\Interfaces\Route\RouteNameInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
 use Chevere\Interfaces\Route\RouteWildcardInterface;
-use InvalidArgumentException;
-use OutOfBoundsException;
 
 final class Route implements RouteInterface
 {
@@ -73,28 +73,33 @@ final class Route implements RouteInterface
         $new = clone $this;
         foreach ($new->routePath->wildcards()->getGenerator() as $wildcard) {
             $new->assertWildcardEndpoint($wildcard, $endpoint);
-            $wildcardMustRegex = $new->wildcards[$wildcard->name()] ?? null;
-            $regex = $endpoint->controller()->parameters()
-                ->get($wildcard->name())->regex();
-            if (isset($wildcardMustRegex)) {
-                if ($regex->toString() !== $wildcardMustRegex) {
+            $knownWildcardMatch = $new->wildcards[$wildcard->name()] ?? null;
+            $controllerMatchString = $endpoint->controller()->parameters()
+                ->get($wildcard->name())->regex()->toNoDelimitersNoAnchors();
+            if (isset($knownWildcardMatch)) {
+                if ($controllerMatchString !== $knownWildcardMatch) {
                     throw new RangeException(
-                        (new Message('Wildcard %wildcard% parameter regex %regex% (fist defined by %controller%) must be the same for all controllers in this route, regex %regexProvided% by %controllerProvided%'))
-                            ->code('%wildcard%', $wildcard->toString())
-                            ->code('%regex%', $wildcardMustRegex)
-                            ->code('%controller%', $wildcard->toString())
-                            ->code('%regexProvided%', $regex->toString())
-                            ->code('%controllerProvided%', get_class($endpoint->controller()))
+                        (new Message('Wildcard %parameter% regex %regex% (fist defined by %controller%) must be the same for all controllers in this route, regex %regexProvided% by %controller%'))
+                            ->code('%parameter%', $wildcard->name())
+                            ->code('%regex%', $knownWildcardMatch)
+                            ->code('%controller%', $wildcard->name())
+                            ->code('%regexProvided%', $controllerMatchString)
+                            ->code('%controller%', get_class($endpoint->controller()))
                     );
                 }
             } else {
-                $new->routePath = $new->routePath
-                    ->withWildcard($wildcard->withMatch(
-                        new RouteWildcardMatch($regex->toNoDelimitersNoAnchors())
-                    ));
-                $new->wildcards[$wildcard->name()] = $regex->toString();
+                if ($controllerMatchString !== $wildcard->match()->toString()) {
+                    throw new RangeException(
+                        (new Message('Wildcard %parameter% matches against %match% which is incompatible with the match %controllerMatch% defined for %controller%'))
+                            ->code('%parameter%', $wildcard->name())
+                            ->code('%match%', $wildcard->match()->toString())
+                            ->code('%controllerMatch%', $controllerMatchString)
+                            ->code('%controller%', get_class($endpoint->controller()))
+                    );
+                }
+                $new->wildcards[$wildcard->name()] = $controllerMatchString;
             }
-            $endpoint = $endpoint->withoutParameter($wildcard->name());
+            // $endpoint = $endpoint->withoutParameter($wildcard->name());
         }
         $new->endpoints = $new->endpoints->withPut($endpoint);
 
@@ -116,18 +121,16 @@ final class Route implements RouteInterface
             throw new InvalidArgumentException(
                 (new Message("Controller %controller% doesn't accept any parameter (route wildcard %wildcard%)"))
                     ->code('%controller%', get_class($endpoint->controller()))
-                    ->code('%wildcard%', $wildcard->toString())
-                    ->toString()
+                    ->code('%wildcard%', $wildcard->name())
             );
         }
         if (array_key_exists($wildcard->name(), $endpoint->parameters()) === false) {
             $parameters = array_keys($endpoint->parameters());
             throw new OutOfBoundsException(
                 (new Message('Wildcard parameter %wildcard% must bind to a one of the known %controller% parameters: %parameters%'))
-                    ->code('%wildcard%', $wildcard->toString())
+                    ->code('%wildcard%', $wildcard->name())
                     ->code('%controller%', get_class($endpoint->controller()))
                     ->code('%parameters%', implode(', ', $parameters))
-                    ->toString()
             );
         }
     }

@@ -33,23 +33,21 @@ final class RouteEndpointsIterator implements RouteEndpointIteratorInterface
     private RouteEndpointsInterface $routeEndpoints;
 
     /**
-     * Iterates over the target dir for files matching KNOWN_METHODS filenames
-     * as GET.php
+     * Iterates over the target dir for files matching `RouteEndpointInterface::KNOWN_METHODS` filenames.
      */
     public function __construct(DirInterface $dir)
     {
         $this->routeEndpoints = new RouteEndpoints;
         $path = $dir->path();
-        foreach (array_keys(RouteEndpointInterface::KNOWN_METHODS) as $name) {
+        foreach (RouteEndpointInterface::KNOWN_METHODS as $name => $methodClass) {
             $controllerPath = $path->getChild($name . '.php');
             if (!$controllerPath->exists()) {
                 continue;
             }
-            $method = RouteEndpointInterface::KNOWN_METHODS[$name];
             $controller = $this->getController($controllerPath);
             $this->routeEndpoints = $this->routeEndpoints
                 ->withPut(
-                    new RouteEndpoint(new $method, $controller)
+                    new RouteEndpoint(new $methodClass, $controller)
                 );
         }
     }

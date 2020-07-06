@@ -38,7 +38,7 @@ final class RouteEndpoint implements RouteEndpointInterface
         foreach ($controller->parameters()->getGenerator() as $parameter) {
             $this->parameters[$parameter->name()] = [
                 'name' => $parameter->name(),
-                'regex' => $parameter->regex()->toNoDelimiters(),
+                'regex' => $parameter->regex()->toString(),
                 'description' => $parameter->description(),
                 'isRequired' => $parameter->isRequired(),
             ];
