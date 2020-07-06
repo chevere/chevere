@@ -181,7 +181,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
                     ->code('%path%', $this->filePhp->file()->path()->absolute())
             );
         }
-        if (!preg_match_all('#<\?php([\S\s]*)\s*return\s*[\S\s]*;#', $contents)) {
+        if (preg_match('#<?php[\S\s]*\s*return\s*[\S\s]*;#', $contents) !== 1) {
             throw new FileInvalidContentsException(
                 (new Message('Unexpected contents in %path% (non-strict validation)'))
                     ->code('%path%', $this->filePhp->file()->path()->absolute())
