@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Tests\Plugin;
 
 use Chevere\Components\Cache\Cache;
-use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Plugin\AssertPlug;
 use Chevere\Components\Plugin\Plugs\Hooks\HooksQueue;
 use Chevere\Components\Plugin\PlugsMap;
@@ -25,7 +24,6 @@ use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Tests\Plugin\_resources\src\TestHook;
-use Chevere\Tests\Router\CacheHelper;
 use Chevere\Tests\src\DirHelper;
 use PHPUnit\Framework\TestCase;
 use Throwable;
@@ -41,18 +39,21 @@ final class PlugsMapCacheTest extends TestCase
     public function setUp(): void
     {
         $this->dirHelper = new DirHelper($this);
+        $this->emptyDir = $this->dirHelper->dir()->getChild('empty/');
         $this->workingDir = $this->dirHelper->dir()->getChild('working/');
         $this->cachedDir = $this->dirHelper->dir()->getChild('cached/');
     }
 
     public function tearDown(): void
     {
-        $this->workingDir->removeContents();
+        if ($this->workingDir->exists()) {
+            $this->workingDir->removeContents();
+        }
     }
 
     public function testEmpty(): void
     {
-        $cache = new Cache($this->dirHelper->dir()->getChild('empty/'));
+        $cache = new Cache($this->emptyDir);
         $plugsMapCache = new PlugsMapCache($cache);
         $this->assertFalse($plugsMapCache->hasPlugsQueueFor('empty'));
         $this->expectException(OutOfBoundsException::class);
