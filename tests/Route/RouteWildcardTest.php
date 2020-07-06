@@ -13,13 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Route;
 
-use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Route\RouteWildcard;
 use Chevere\Components\Route\RouteWildcardMatch;
 use Chevere\Exceptions\Route\RouteWildcardInvalidCharsException;
-use Chevere\Exceptions\Route\RouteWildcardNotFoundException;
 use Chevere\Exceptions\Route\RouteWildcardStartWithNumberException;
-use Chevere\Interfaces\Route\RouteWildcardInterface;
 use FastRoute\RouteParser\Std;
 use PHPUnit\Framework\TestCase;
 

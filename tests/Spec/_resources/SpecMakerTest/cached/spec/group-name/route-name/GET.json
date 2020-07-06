@@ -1,6 +1,0 @@
-{
-    "method": "GET",
-    "spec": "\/spec\/group-name\/route-name\/GET.json",
-    "description": "Transfer a current representation of the target resource",
-    "parameters": {}
-}

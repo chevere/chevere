@@ -97,14 +97,7 @@ final class RouteTest extends TestCase
         $route = $route->withAddedEndpoint($endpoint);
         $this->assertTrue($route->endpoints()->hasKey($method->name()));
         $this->assertSame(
-            [
-                'id' => [
-                    'name' => 'id',
-                    'regex' => '/^[0-9]+$/',
-                    'description' => '',
-                    'isRequired' => true,
-                ]
-            ],
+            [],
             $route->endpoints()->get($method->name())->parameters()
         );
     }

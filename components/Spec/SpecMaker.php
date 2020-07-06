@@ -20,7 +20,7 @@ use Chevere\Components\Spec\Specs\GroupSpec;
 use Chevere\Components\Spec\Specs\IndexSpec;
 use Chevere\Components\Spec\Specs\RoutableSpec;
 use Chevere\Components\Str\Str;
-use Chevere\Exceptions\Spec\SpecInvalidArgumentException;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Interfaces\Router\RouterInterface;
@@ -49,11 +49,11 @@ final class SpecMaker
     private Map $files;
 
     public function __construct(
-        SpecPathInterface $specRoot,
+        SpecPathInterface $specPath,
         DirInterface $dir,
         RouterInterface $router
     ) {
-        $this->specPath = $specRoot;
+        $this->specPath = $specPath;
         $this->dir = $dir;
         $this->assertDir();
         $this->router = $router;
@@ -70,10 +70,10 @@ final class SpecMaker
         foreach ($routes->mapCopy() as $routeName => $routable) {
             $groupName = $router->index()->getRouteGroup($routeName);
             if (!isset($groupName[$groupName])) {
-                $groups[$groupName] = new GroupSpec($specRoot, $groupName);
+                $groups[$groupName] = new GroupSpec($specPath, $groupName);
             }
             $routableSpec = new RoutableSpec(
-                $specRoot->getChild($groupName),
+                $specPath->getChild($groupName),
                 $routable
             );
             $this->makeJsonFile($routableSpec);
@@ -128,24 +128,11 @@ final class SpecMaker
 
     private function assertRouter(): void
     {
-        $checks = [
-            'regex' => $this->router->hasRegex(),
-        ];
-        $missing = array_filter($checks, fn (bool $bool) => $bool === false);
-        $keys = array_keys($missing);
-        if (!empty($keys)) {
-            throw new SpecInvalidArgumentException(
-                (new Message('Instance of %interfaceName% missing %propertyName% property(s).'))
-                    ->code('%interfaceName%', RouterInterface::class)
-                    ->code('%propertyName%', implode(', ', $keys))
-            );
-        }
         // @codeCoverageIgnoreStart
         if ($this->router->routables()->mapCopy()->count() == 0) {
-            throw new LogicException(
+            throw new InvalidArgumentException(
                 (new Message('Instance of %interfaceName% does not contain any routable.'))
                     ->code('%interfaceName%', RouterInterface::class)
-                    ->toString()
             );
         }
         // @codeCoverageIgnoreEnd

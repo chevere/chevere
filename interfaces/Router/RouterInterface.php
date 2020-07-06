@@ -16,4 +16,8 @@ namespace Chevere\Interfaces\Router;
 interface RouterInterface
 {
     public function withAddedRoutable(RoutableInterface $routable, string $group): RouterInterface;
+
+    public function index(): RouterIndexInterface;
+
+    public function routables(): RoutablesInterface;
 }

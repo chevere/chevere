@@ -11,11 +11,10 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Router\RouteParser;
+namespace Chevere\Components\Router\RouteParsers;
 
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Core\LogicException;
-use FastRoute\BadRouteException;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use FastRoute\RouteParser\Std;
 
 /**
@@ -25,14 +24,14 @@ final class StrictStd extends Std
 {
     public function parse($route)
     {
-        $routeDatas = parent::parse($route);
-        if (count($routeDatas) > 1) {
-            throw new LogicException(
+        $datas = parent::parse($route);
+        if (count($datas) > 1) {
+            throw new InvalidArgumentException(
                 (new Message('Optional routing for route %route% is forbidden'))
                     ->code('%route%', $route)
             );
         }
 
-        return $routeDatas;
+        return $datas;
     }
 }

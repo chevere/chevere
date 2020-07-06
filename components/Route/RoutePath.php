@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use Chevere\Components\Regex\Regex;
-use Chevere\Components\Router\RouteParser\StrictStd;
+use Chevere\Components\Router\RouteParsers\StrictStd;
 use Chevere\Interfaces\Regex\RegexInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
 use Chevere\Interfaces\Route\RouteWildcardsInterface;

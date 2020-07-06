@@ -13,20 +13,20 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing;
 
-use Chevere\Components\Controller\ControllerParameter;
-use Chevere\Components\Controller\ControllerParameters;
 use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Filesystem\FilesystemFactory;
 use Chevere\Components\Filesystem\Path;
-use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
+use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteDecorator;
+use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Type\Type;
+use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
 use Chevere\Exceptions\Routing\ExpectingRouteNameException;
@@ -35,7 +35,6 @@ use Chevere\Interfaces\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Route\RouteNameInterface;
 use Chevere\Interfaces\Routing\FsRoutesInterface;
 use Chevere\Interfaces\Routing\FsRoutesMakerInterface;
-use Ds\Map;
 use RecursiveDirectoryIterator;
 use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
@@ -59,27 +58,33 @@ final class FsRoutesMaker implements FsRoutesMakerInterface
                 new Dir(new Path($current))
             );
             $generator = $endpointsIterator->routeEndpoints()->getGenerator();
-            $known = $generator->current();
-            $knownParameters = $known->parameters();
-            foreach ($endpointsIterator->routeEndpoints()->getGenerator() as $key => $routeEndpoint) {
-                $parameters = $routeEndpoint->parameters();
-                if ($knownParameters !== $parameters) {
-                    throw new LogicException(
-                        (new Message("Controller parameters defined at %endpoint% doesn't match with the parameters found at %conflict%"))
-                            ->code('%endpoint%', get_class($known))
-                            ->code('%conflict%', 'eee')
-                    );
-                }
-            }
+            /** @var RouteEndpointInterface $routeEndpoint */
+            $routeEndpoint = $generator->current();
             $path = (new Str($current))
                 ->withReplaceFirst(
                     rtrim($dir->path()->absolute(), '/'),
                     ''
                 );
             foreach ($routeEndpoint->parameters() as $key => $param) {
-                $path = $path->withReplaceAll("{$key}", (new Regex($param['regex']))->toNoDelimitersNoAnchors());
+                $regex = (new Regex($param['regex']))->toNoDelimitersNoAnchors();
+                $path = $path->withReplaceAll("{$key}", "$key:$regex");
             }
             $path = $path->toString();
+            $route = new Route(new RouteName('name'), new RoutePath($path));
+            try {
+                foreach ($generator as $key => $routeEndpoint) {
+                    $route = $route->withAddedEndpoint($routeEndpoint);
+                }
+            }
+            // @codeCoverageIgnoreStart
+            catch (Exception $e) {
+                throw new LogicException(
+                    $e->message(),
+                    $e->getCode(),
+                    $e
+                );
+            }
+            // @codeCoverageIgnoreEnd
             $this->fsRoutes = $this->fsRoutes->withDecorated(
                 new FsRoute(
                     (new FilesystemFactory)->getDirFromString($current),

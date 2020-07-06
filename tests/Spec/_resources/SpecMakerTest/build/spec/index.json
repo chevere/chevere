@@ -4,23 +4,23 @@
             "name": "group-name",
             "spec": "\/spec\/group-name\/routes.json",
             "routes": {
-                "route-name": {
-                    "name": "route-name",
-                    "spec": "\/spec\/group-name\/route-name\/route.json",
-                    "path": "\/route-path\/{id}",
-                    "regex": "^\\\/route-path\\\/([0-9]+)$",
+                "MyRoute": {
+                    "name": "MyRoute",
+                    "spec": "\/spec\/group-name\/MyRoute\/route.json",
+                    "path": "\/route-path\/{id:[0-9]+}",
+                    "regex": "~^(?|\/route\\-path\/([0-9]+))$~",
                     "wildcards": {
-                        "{id}": "^[0-9]+$"
+                        "id": "^[0-9]+$"
                     },
                     "endpoints": {
                         "PUT": {
                             "method": "PUT",
-                            "spec": "\/spec\/group-name\/route-name\/PUT.json",
+                            "spec": "\/spec\/group-name\/MyRoute\/PUT.json",
                             "description": "Replace all current representations of the target resource with the request payload",
                             "parameters": {
                                 "name": {
                                     "name": "name",
-                                    "regex": "^[\\w]+$",
+                                    "regex": "\/^[\\w]+$\/",
                                     "description": "The user name",
                                     "isRequired": false
                                 }
@@ -28,9 +28,16 @@
                         },
                         "GET": {
                             "method": "GET",
-                            "spec": "\/spec\/group-name\/route-name\/GET.json",
+                            "spec": "\/spec\/group-name\/MyRoute\/GET.json",
                             "description": "Transfer a current representation of the target resource",
-                            "parameters": {}
+                            "parameters": {
+                                "name": {
+                                    "name": "name",
+                                    "regex": "\/^[\\w]+$\/",
+                                    "description": "The user name",
+                                    "isRequired": false
+                                }
+                            }
                         }
                     }
                 }

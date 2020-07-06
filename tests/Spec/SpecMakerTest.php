@@ -27,47 +27,47 @@ use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Router;
-use Chevere\Components\Router\RouterMaker;
 use Chevere\Components\Spec\SpecMaker;
 use Chevere\Components\Spec\SpecPath;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Spec\SpecInvalidArgumentException;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
-use Chevere\Tests\Router\CacheHelper;
+use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Tests\src\DirHelper;
 use PHPUnit\Framework\TestCase;
 use ReflectionObject;
 
 final class SpecMakerTest extends TestCase
 {
-    private CacheHelper $cacheHelper;
+    private DirHelper $dirHelper;
+
+    private DirInterface $tempDir;
+
+    private DirInterface $buildDir;
 
     public function setUp(): void
     {
-        $this->cacheHelper = new CacheHelper(__DIR__, $this);
-    }
-
-    public function tearDown(): void
-    {
-        $this->cacheHelper->tearDown();
+        $this->dirHelper = new DirHelper($this);
+        $this->buildDir = $this->dirHelper->dir()->getChild('build/');
     }
 
     public function testConstructInvalidArgument(): void
     {
-        $shortName = (new ReflectionObject($this))->getShortName();
-        $this->expectException(SpecInvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         new SpecMaker(
             new SpecPath('/spec'),
-            (new FilesystemFactory)->getDirFromString(__DIR__ . "/_resources/$shortName/spec/"),
+            $this->buildDir->getChild('spec/'),
             new Router
         );
     }
 
-    public function testConstruct(): void
+    public function testBuild(): void
     {
         $putMethod = new PutMethod;
         $getMethod = new GetMethod;
-        $route = new Route(new RouteName('route-name'), new RoutePath('/route-path/{id}'));
+        $route = new Route(new RouteName('MyRoute'), new RoutePath('/route-path/{id:[0-9]+}'));
         $route = $route
             ->withAddedEndpoint(
                 new RouteEndpoint($putMethod, new SpecMakerTestPutController)
@@ -75,16 +75,16 @@ final class SpecMakerTest extends TestCase
             ->withAddedEndpoint(
                 new RouteEndpoint($getMethod, new SpecMakerTestGetController)
             );
-        $routerMaker = (new RouterMaker)
+        $router = (new Router)
             ->withAddedRoutable(new Routable($route), 'group-name');
         $specMaker = new SpecMaker(
             new SpecPath('/spec'),
-            $this->cacheHelper->getWorkingDir()->getChild('spec/'),
-            $routerMaker->router()
+            $this->buildDir->getChild('spec/'),
+            $router
         );
-        $cachedPath = $this->cacheHelper->getCachedDir()->path();
+        $buildPath = $this->buildDir->path();
         foreach ($specMaker->files() as $jsonPath => $path) {
-            $cachedFile = $cachedPath->getChild(ltrim($jsonPath, '/'))->absolute();
+            $cachedFile = $buildPath->getChild(ltrim($jsonPath, '/'))->absolute();
             $this->assertFileEquals(
                 $cachedFile,
                 $path->absolute(),
@@ -110,12 +110,17 @@ class SpecMakerTestGetController extends Controller
             ->withParameter(
                 (new ControllerParameter('id', new Regex('/^[0-9]+$/')))
                     ->withDescription('The user integer id')
+            )
+            ->withParameter(
+                (new ControllerParameter('name', new Regex('/^[\w]+$/')))
+                    ->withDescription('The user name')
+                    ->withIsRequired(false)
             );
     }
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        return new ControllerResponse(true);
+        return new ControllerResponse(true, []);
     }
 }
 
@@ -137,6 +142,6 @@ class SpecMakerTestPutController extends Controller
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        return new ControllerResponse(true);
+        return new ControllerResponse(true, []);
     }
 }

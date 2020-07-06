@@ -1,0 +1,13 @@
+{
+    "method": "GET",
+    "spec": "\/spec\/group-name\/MyRoute\/GET.json",
+    "description": "Transfer a current representation of the target resource",
+    "parameters": {
+        "name": {
+            "name": "name",
+            "regex": "\/^[\\w]+$\/",
+            "description": "The user name",
+            "isRequired": false
+        }
+    }
+}

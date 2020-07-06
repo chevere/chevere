@@ -40,7 +40,7 @@ final class RoutableSpec implements RoutableSpecInterface
         $specGroupRoute = $specGroupPath->getChild($this->key);
         $this->jsonPath = $specGroupRoute->getChild('route.json')->pub();
         $this->path = $routable->route()->path()->toString();
-        $this->regex = $routable->route()->path()->regex()->toNoDelimiters();
+        $this->regex = $routable->route()->path()->regex()->toString();
         $this->wildcards = $routable->route()->path()->wildcards()->mapCopy()->toArray();
         $routeEndpoints = $routable->route()->endpoints();
         /** @var string $key */
@@ -68,7 +68,7 @@ final class RoutableSpec implements RoutableSpecInterface
         $wildcards = [];
         /** @var RouteWildcardInterface $wildcard */
         foreach ($this->wildcards as $wildcard) {
-            $wildcards[$wildcard->toString()] = '^' . $wildcard->match()->toString() . '$';
+            $wildcards[$wildcard->name()] = '^' . $wildcard->match()->toString() . '$';
         }
 
         return [

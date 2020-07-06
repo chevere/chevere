@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Route;
 
-use Chevere\Components\Controller\ControllerParameter;
 use Chevere\Components\Message\Message;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Http\MethodInterface;

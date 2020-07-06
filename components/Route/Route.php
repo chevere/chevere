@@ -100,7 +100,7 @@ final class Route implements RouteInterface
                 }
                 $new->wildcards[$wildcard->name()] = $controllerParamMatch;
             }
-            // $endpoint = $endpoint->withoutParameter($wildcard->name());
+            $endpoint = $endpoint->withoutParameter($wildcard->name());
         }
         $new->endpoints = $new->endpoints->withPut($endpoint);
 

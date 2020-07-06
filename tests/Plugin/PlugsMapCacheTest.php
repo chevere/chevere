@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Plugin;
 
 use Chevere\Components\Cache\Cache;
+use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Plugin\AssertPlug;
 use Chevere\Components\Plugin\Plugs\Hooks\HooksQueue;
 use Chevere\Components\Plugin\PlugsMap;
@@ -22,28 +23,36 @@ use Chevere\Components\Plugin\Types\HookPlugType;
 use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\RuntimeException;
+use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Tests\Plugin\_resources\src\TestHook;
 use Chevere\Tests\Router\CacheHelper;
+use Chevere\Tests\src\DirHelper;
 use PHPUnit\Framework\TestCase;
 use Throwable;
 
 final class PlugsMapCacheTest extends TestCase
 {
-    private CacheHelper $cacheHelper;
+    private DirHelper $dirHelper;
+
+    private DirInterface $workingDir;
+
+    private DirInterface $cachedDir;
 
     public function setUp(): void
     {
-        $this->cacheHelper = new CacheHelper(__DIR__, $this);
+        $this->dirHelper = new DirHelper($this);
+        $this->workingDir = $this->dirHelper->dir()->getChild('working/');
+        $this->cachedDir = $this->dirHelper->dir()->getChild('cached/');
     }
 
     public function tearDown(): void
     {
-        $this->cacheHelper->tearDown();
+        $this->workingDir->removeContents();
     }
 
     public function testEmpty(): void
     {
-        $cache = $this->cacheHelper->getEmptyCache();
+        $cache = new Cache($this->dirHelper->dir()->getChild('empty/'));
         $plugsMapCache = new PlugsMapCache($cache);
         $this->assertFalse($plugsMapCache->hasPlugsQueueFor('empty'));
         $this->expectException(OutOfBoundsException::class);
@@ -53,7 +62,7 @@ final class PlugsMapCacheTest extends TestCase
 
     public function testInvalidClassMap(): void
     {
-        $cachedCache = $this->cacheHelper->getCachedCache();
+        $cachedCache = new Cache($this->cachedDir);
         $cache = new Cache($cachedCache->dir()->getChild('corrupted-classmap/'));
         $plugsMapCache = new PlugsMapCache($cache);
         $this->assertFalse($plugsMapCache->hasPlugsQueueFor('nothing'));
@@ -63,7 +72,7 @@ final class PlugsMapCacheTest extends TestCase
 
     public function testPluggableNotMapped(): void
     {
-        $workingCache = $this->cacheHelper->getWorkingCache();
+        $workingCache = new Cache($this->workingDir);
         $cache = new Cache($workingCache->dir()->getChild('empty/'));
         $plugsMap = new PlugsMap(new HookPlugType);
         $plugsMapCache = (new PlugsMapCache($cache))
@@ -74,7 +83,7 @@ final class PlugsMapCacheTest extends TestCase
 
     public function testClassMapCorruptedQueue(): void
     {
-        $cachedCache = $this->cacheHelper->getCachedCache();
+        $cachedCache = new Cache($this->cachedDir);
         $cache = new Cache($cachedCache->dir()->getChild('corrupted-queue/'));
         $plugsMapCache = new PlugsMapCache($cache);
         $hookableClassName = (new TestHook)->at();
@@ -85,7 +94,7 @@ final class PlugsMapCacheTest extends TestCase
 
     public function testWorking(): void
     {
-        $cache = $this->cacheHelper->getWorkingCache();
+        $cache = new Cache($this->workingDir);
         $plugsMap = new PlugsMap(new HookPlugType);
         $hook = new TestHook;
         $hookableClassName = $hook->at();

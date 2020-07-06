@@ -69,9 +69,6 @@ final class Dir implements DirInterface
 
     public function create(int $mode = 0755): void
     {
-        if ($this->path()->exists()) {
-            throw new DirExistsException;
-        }
         try {
             mkdir($this->path->absolute(), $mode, true);
         } catch (Throwable $e) {

@@ -26,17 +26,21 @@ final class RegexTest extends TestCase
         new Regex('#');
     }
 
-    public function testConstruct(): void
-    {
-        $regexString = '/test/';
-        $regex = new Regex($regexString);
-        $this->assertSame($regexString, $regex->toString());
-        $regex->assertNoCapture();
-    }
-
     public function testAssertNoCapture(): void
     {
         $this->expectException(RegexException::class);
         (new Regex('/^(.*)$/'))->assertNoCapture();
+    }
+
+    public function testConstruct(): void
+    {
+        $pattern = '\w+';
+        $patternAnchors = "^$pattern$";
+        $patternDelimitersAnchors = "/$patternAnchors/";
+        $regex = new Regex($patternDelimitersAnchors);
+        $this->assertSame($patternDelimitersAnchors, $regex->toString());
+        $regex->assertNoCapture();
+        $this->assertSame($patternAnchors, $regex->toNoDelimiters());
+        $this->assertSame($pattern, $regex->toNoDelimitersNoAnchors());
     }
 }

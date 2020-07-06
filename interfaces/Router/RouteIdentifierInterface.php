@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Router;
+namespace Chevere\Interfaces\Router;
 
-use Chevere\Exceptions\Core\Exception;
+use Chevere\Interfaces\To\ToArrayInterface;
 
-/**
- * Exception thrown when a RouteInterface name conflict with other.
- */
-final class RouteNameConflictException extends Exception
+interface RouteIdentifierInterface extends ToArrayInterface
 {
+    public function group(): string;
+
+    public function name(): string;
 }
