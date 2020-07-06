@@ -20,7 +20,6 @@ use Chevere\Interfaces\Route\RoutePathInterface;
 use Chevere\Interfaces\Route\RouteWildcardsInterface;
 use FastRoute\BadRouteException;
 use FastRoute\DataGenerator\GroupCountBased as DataGenerator;
-use FastRoute\RouteParser\Std;
 
 final class RoutePath implements RoutePathInterface
 {
@@ -69,10 +68,5 @@ final class RoutePath implements RoutePathInterface
     public function toString(): string
     {
         return $this->path;
-    }
-
-    public function toArray(): array
-    {
-        return $this->data;
     }
 }

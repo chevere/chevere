@@ -19,7 +19,7 @@ use Chevere\Interfaces\To\ToStringInterface;
 /**
  * Describes the component in charge of handling route paths.
  */
-interface RoutePathInterface extends ToStringInterface, ToArrayInterface
+interface RoutePathInterface extends ToStringInterface
 {
     public function __construct(string $path);
 
@@ -29,9 +29,4 @@ interface RoutePathInterface extends ToStringInterface, ToArrayInterface
      * Provides access to the uri path.
      */
     public function toString(): string;
-
-    /**
-     * Provides access to the parsed uri path data.
-     */
-    public function toArray(): array;
 }

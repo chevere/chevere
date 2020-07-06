@@ -49,6 +49,7 @@ final class RouteWildcardsTest extends TestCase
         $routeWildcards = new RouteWildcards;
         foreach ($wildcards as $wildcard) {
             $routeWildcards = $routeWildcards
+                ->withAddedWildcard($wildcard)
                 ->withAddedWildcard($wildcard);
         }
         $this->assertCount(2, $routeWildcards);

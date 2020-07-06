@@ -16,6 +16,7 @@ namespace Chevere\Components\Filesystem;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Filesystem\DirExistsException;
 use Chevere\Exceptions\Filesystem\DirNotExistsException;
 use Chevere\Exceptions\Filesystem\DirTailException;
 use Chevere\Exceptions\Filesystem\DirUnableToCreateException;
@@ -68,6 +69,9 @@ final class Dir implements DirInterface
 
     public function create(int $mode = 0755): void
     {
+        if ($this->path()->exists()) {
+            throw new DirExistsException;
+        }
         try {
             mkdir($this->path->absolute(), $mode, true);
         } catch (Throwable $e) {

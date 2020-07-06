@@ -24,15 +24,14 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteEndpoint;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
+use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Exceptions\Core\RangeException;
+use Chevere\Exceptions\Route\RouteEndpointConflictException;
+use Chevere\Exceptions\Route\RouteWildcardConflictException;
 use Chevere\Interfaces\Controller\ControllerArgumentsInterface;
 use Chevere\Interfaces\Controller\ControllerParametersInterface;
 use Chevere\Interfaces\Controller\ControllerResponseInterface;
-use Chevere\Interfaces\Route\RouteInterface;
-use Laminas\Diactoros\Response;
-use LogicException;
-use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -79,13 +78,13 @@ final class RouteTest extends TestCase
         $route->withAddedEndpoint($endpoint);
     }
 
-    public function testWithAddedEndpointWildcardWrongParameter(): void
+    public function testWithAddedEndpointNoParams(): void
     {
         $route = new Route(new RouteName('test'), new RoutePath('/test/{foo}'));
         $method = new GetMethod;
         $controller = new RouteTestControllerNoParams;
         $endpoint = new RouteEndpoint($method, $controller);
-        $this->expectException(LogicException::class);
+        $this->expectException(InvalidArgumentException::class);
         $route->withAddedEndpoint($endpoint);
     }
 
@@ -119,21 +118,22 @@ final class RouteTest extends TestCase
         $route->withAddedEndpoint($endpoint);
     }
 
-    public function testWithAddedEndpointRegexConflict(): void
+    public function testWithAddedEndpointConflict(): void
     {
         $route = new Route(new RouteName('test'), new RoutePath('/test/{id:[0-9]+}'));
-        $route = $route->withAddedEndpoint(
-            new RouteEndpoint(new GetMethod, new RouteTestController)
-        );
-        $this->expectException(RangeException::class);
-        $route->withAddedEndpoint(
-            new RouteEndpoint(new PostMethod, new RouteTestControllerRegexConflict)
-        );
+        $endpoint1 = new RouteEndpoint(new GetMethod, new RouteTestController);
+        $endpoint2 = new RouteEndpoint(new PostMethod, new RouteTestControllerRegexConflict);
+        $route = $route->withAddedEndpoint($endpoint1);
+        $this->expectException(RouteEndpointConflictException::class);
+        $route->withAddedEndpoint($endpoint2);
     }
 
-    private function getRoute(string $name, string $path): RouteInterface
+    public function testWithAddedEndpointWildcardConflict(): void
     {
-        return new Route(new RouteName($name), new RoutePath($path));
+        $route = new Route(new RouteName('test'), new RoutePath('/test/{id:\w+}'));
+        $endpoint = new RouteEndpoint(new GetMethod, new RouteTestController);
+        $this->expectException(RouteWildcardConflictException::class);
+        $route = $route->withAddedEndpoint($endpoint);
     }
 }
 
@@ -157,7 +157,7 @@ final class RouteTestControllerNoParams extends Controller
 {
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        return new ControllerResponse(true);
+        return new ControllerResponse(true, []);
     }
 }
 
@@ -173,7 +173,7 @@ final class RouteTestControllerRegexConflict extends Controller
 
     public function run(ControllerArgumentsInterface $arguments): ControllerResponseInterface
     {
-        return new ControllerResponse(true);
+        return new ControllerResponse(true, []);
     }
 }
 

@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Filesystem;
+namespace Chevere\Exceptions\Route;
 
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown when the directory is not writable.
+ * Exception thrown when detecting a route endpoint conflict.
  */
-final class DirNotWritableException extends Exception
+final class RouteEndpointConflictException extends Exception
 {
 }

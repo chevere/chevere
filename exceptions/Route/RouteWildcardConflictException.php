@@ -16,8 +16,8 @@ namespace Chevere\Exceptions\Route;
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown by EndpointInterface.
+ * Exception thrown when detecting a route wildcard conflict.
  */
-final class EndpointException extends Exception
+final class RouteWildcardConflictException extends Exception
 {
 }
