@@ -16,14 +16,14 @@ namespace Chevere\Components\Plugin;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\ClassMap\ClassMap;
-use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\FilesystemFactory;
-use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\Str;
 use Chevere\Components\VarExportable\VarExportable;
+use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
 use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Cache\CacheInterface;
 use Chevere\Interfaces\Cache\CacheKeyInterface;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
@@ -88,7 +88,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
     }
 
     /**
-     * @throws DirUnableToCreateException
+     * @throws OutOfBoundsException
      */
     public function getPlugsQueueFor(string $className): PlugsQueueTypedInterface
     {
@@ -106,28 +106,38 @@ final class PlugsMapCache implements PlugsMapCacheInterface
 
             return (new FilesystemFactory)->getFilePhpReturnFromString($path)
                 ->withStrict(false)->var();
-        } catch (Exception $e) {
+        }
+        // @codeCoverageIgnoreStart
+        catch (Exception $e) {
             throw new OutOfBoundsException(
-                ($e instanceof Exception
-                    ? $e->message()
-                    : new Message($e->getMessage())),
-                4
+                $e->message(),
+                $e->getCode(),
+                $e
             );
         }
+        // @codeCoverageIgnoreEnd
     }
 
+    /**
+     * @throws RuntimeException
+     * @throws OutOfBoundsException
+     */
     private function getClassMapFromCache(): ClassMapInterface
     {
         try {
-            return $this->cache->get($this->classMapKey)->var();
-        } catch (Throwable $e) {
+            $var = $this->cache->get($this->classMapKey);
+
+            return $var->var();
+        }
+        // @codeCoverageIgnoreStart
+        catch (Exception $e) {
             throw new OutOfBoundsException(
-                ($e instanceof Exception
-                    ? $e->message()
-                    : new Message($e->getMessage())),
-                2
+                $e->message(),
+                $e->getCode(),
+                $e
             );
         }
+        // @codeCoverageIgnoreEnd
     }
 
     private function assertClassMap(): void

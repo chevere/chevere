@@ -57,6 +57,15 @@ final class FilePhpReturn implements FilePhpReturnInterface
         return $this->filePhp;
     }
 
+    /**
+     *
+     * @throws FileNotExistsException
+     * @throws FileHandleException
+     * @throws FileWithoutContentsException
+     * @throws FileInvalidContentsException
+     * @throws FileUnableToGetException
+     * @throws RuntimeException
+     */
     public function raw()
     {
         $this->assert();
