@@ -18,7 +18,6 @@ use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Writer\WriterInterface;
 use Chevere\Interfaces\Writer\WritersInterface;
 use Laminas\Diactoros\Exception\InvalidArgumentException;
-use Laminas\Diactoros\Stream;
 
 final class Writers implements WritersInterface
 {
@@ -33,8 +32,8 @@ final class Writers implements WritersInterface
     public function __construct()
     {
         try {
-            $this->out = new StreamWriter(new Stream('php://stdout', 'w'));
-            $this->error = new StreamWriter(new Stream('php://stderr', 'w'));
+            $this->out = new StreamWriterFromString('', 'w');
+            $this->error = new StreamWriterFromString('', 'w');
         }
         // @codeCoverageIgnoreStart
         catch (InvalidArgumentException $e) {
