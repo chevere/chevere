@@ -13,26 +13,24 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugin;
 
-use Chevere\Components\Filesystem\FilesystemFactory;
 use Chevere\Components\Plugin\PlugsMapper;
 use Chevere\Components\Plugin\Types\HookPlugType;
 use Chevere\Exceptions\Filesystem\DirNotExistsException;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Components\Filesystem\getDirFromString;
 
 final class PlugsMapperTest extends TestCase
 {
     public function testConstructInvalidDir(): void
     {
-        $dir = (new FilesystemFactory)
-            ->getDirFromString(__DIR__ . '/' . uniqid() . '/');
+        $dir = getDirFromString(__DIR__ . '/' . uniqid() . '/');
         $this->expectException(DirNotExistsException::class);
         new PlugsMapper($dir, new HookPlugType);
     }
 
     public function testConstruct(): void
     {
-        $dir = (new FilesystemFactory)
-            ->getDirFromString(__DIR__ . '/_resources/PlugsMapperTest/');
+        $dir = getDirFromString(__DIR__ . '/_resources/PlugsMapperTest/');
         $plugsMapper = new PlugsMapper($dir, new HookPlugType);
         $this->assertTrue(
             $plugsMapper->plugsMap()->hasPlugsFor(

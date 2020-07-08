@@ -16,11 +16,9 @@ namespace Chevere\Components\Plugin;
 use Chevere\Components\Cache\Cache;
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\ClassMap\ClassMap;
-use Chevere\Components\Filesystem\FilesystemFactory;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\Str;
 use Chevere\Components\VarExportable\VarExportable;
-use Chevere\Exceptions\Cache\CacheKeyNotFoundException;
 use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Exceptions\Core\RuntimeException;
@@ -32,7 +30,7 @@ use Chevere\Interfaces\Plugin\PlugsMapInterface;
 use Chevere\Interfaces\Plugin\PlugsQueueTypedInterface;
 use ReflectionClass;
 use Throwable;
-use TypeError;
+use function Chevere\Components\Filesystem\getFilePhpReturnFromString;
 
 final class PlugsMapCache implements PlugsMapCacheInterface
 {
@@ -104,7 +102,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         try {
             $path = $classMap->get($className);
 
-            return (new FilesystemFactory)->getFilePhpReturnFromString($path)
+            return getFilePhpReturnFromString($path)
                 ->withStrict(false)->var();
         }
         // @codeCoverageIgnoreStart

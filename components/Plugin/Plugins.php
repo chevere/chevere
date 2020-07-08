@@ -28,6 +28,7 @@ use Chevere\Interfaces\Plugin\PlugsQueueInterface;
 use LogicException;
 use Throwable;
 use TypeError;
+use function Chevere\Components\Filesystem\getFilePhpReturnFromString;
 use function DeepCopy\deep_copy;
 
 /**
@@ -60,8 +61,7 @@ final class Plugins implements PluginsInterface
         $this->assertSetPlugsPath($pluggableName);
         $this->assertPlugsPath();
         try {
-            $fileReturn = (new FilesystemFactory)
-                ->getFilePhpReturnFromString($this->plugsPath)
+            $fileReturn = getFilePhpReturnFromString($this->plugsPath)
                 ->withStrict(false);
             /**
              * @var PlugsQueueInterface $var

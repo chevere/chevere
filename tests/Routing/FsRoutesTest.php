@@ -26,12 +26,13 @@ use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Route\RouteDecoratorInterface;
 use OutOfRangeException;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Components\Filesystem\getDirFromString;
 
 final class FsRoutesTest extends TestCase
 {
     private function getDir(): DirInterface
     {
-        return (new FilesystemFactory)->getDirFromString(__DIR__ . '/');
+        return getDirFromString(__DIR__ . '/');
     }
 
     private function getRouteDecorator(string $name): RouteDecoratorInterface

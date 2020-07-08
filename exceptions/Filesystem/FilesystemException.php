@@ -16,8 +16,8 @@ namespace Chevere\Exceptions\Filesystem;
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown by `FilesystemFactory`.
+ * Exception thrown by the filesystem components.
  */
-final class FilesystemFactoryException extends Exception
+final class FilesystemException extends Exception
 {
 }

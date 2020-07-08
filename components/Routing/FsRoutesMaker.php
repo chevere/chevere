@@ -38,6 +38,7 @@ use Chevere\Interfaces\Routing\FsRoutesMakerInterface;
 use RecursiveDirectoryIterator;
 use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
+use function Chevere\Components\Filesystem\getDirFromString;
 
 final class FsRoutesMaker implements FsRoutesMakerInterface
 {
@@ -87,7 +88,7 @@ final class FsRoutesMaker implements FsRoutesMakerInterface
             // @codeCoverageIgnoreEnd
             $this->fsRoutes = $this->fsRoutes->withDecorated(
                 new FsRoute(
-                    (new FilesystemFactory)->getDirFromString($current),
+                    getDirFromString($current),
                     new RoutePath($path),
                     new RouteDecorator($routeName)
                 )

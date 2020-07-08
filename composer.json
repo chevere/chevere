@@ -35,8 +35,9 @@
     },
     "autoload": {
         "files": [
-            "components/Type/functions.php",
+            "components/Filesystem/functions.php",
             "components/ThrowableHandler/functions.php",
+            "components/Type/functions.php",
             "components/VarDump/functions.php",
             "components/Writer/functions.php"
         ],

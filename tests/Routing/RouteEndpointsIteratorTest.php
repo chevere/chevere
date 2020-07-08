@@ -18,13 +18,13 @@ use Chevere\Components\Routing\RouteEndpointsIterator;
 use Chevere\Exceptions\Routing\ExpectingControllerException;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
 use PHPUnit\Framework\TestCase;
+use function Chevere\Components\Filesystem\getDirFromString;
 
 final class RouteEndpointsIteratorTest extends TestCase
 {
     public function testObjects(): void
     {
-        $dir = (new FilesystemFactory)
-            ->getDirFromString(__DIR__ . '/_resources/routes/articles/{id}/');
+        $dir = getDirFromString(__DIR__ . '/_resources/routes/articles/{id}/');
         $endpointIterator = new RouteEndpointsIterator($dir);
         $routeEndpoints = $endpointIterator->routeEndpoints();
         $this->assertCount(1, $routeEndpoints);
@@ -39,8 +39,7 @@ final class RouteEndpointsIteratorTest extends TestCase
 
     public function testWrongObjects(): void
     {
-        $dir = (new FilesystemFactory)
-            ->getDirFromString(__DIR__ . '/_resources/wrong-routes/articles/');
+        $dir = getDirFromString(__DIR__ . '/_resources/wrong-routes/articles/');
         $this->expectException(ExpectingControllerException::class);
         new RouteEndpointsIterator($dir);
     }
