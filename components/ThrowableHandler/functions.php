@@ -24,28 +24,29 @@ use Chevere\Exceptions\Core\LogicException as CoreLogicException;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerDocumentInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
 use ReflectionClass;
+use Throwable;
 
 function errorsAsExceptions(int $severity, string $message, string $file, int $line): void
 {
     throw new ErrorException(new Message($message), 0, $severity, $file, $line);
 }
 
-function plainHandler(\Exception $exception): void
+function plainHandler(Throwable $throwable): void
 {
-    handleExceptionAs($exception, ThrowableHandlerPlainDocument::class);
+    handleExceptionAs($throwable, ThrowableHandlerPlainDocument::class);
 }
 
-function consoleHandler(\Exception $exception): void
+function consoleHandler(Throwable $throwable): void
 {
-    handleExceptionAs($exception, ThrowableHandlerConsoleDocument::class);
+    handleExceptionAs($throwable, ThrowableHandlerConsoleDocument::class);
 }
 
-function htmlHandler(\Exception $exception): void
+function htmlHandler(Throwable $throwable): void
 {
-    handleExceptionAs($exception, ThrowableHandlerHtmlDocument::class);
+    handleExceptionAs($throwable, ThrowableHandlerHtmlDocument::class);
 }
 
-function handleExceptionAs(\Exception $exception, string $document): ThrowableHandlerInterface
+function handleExceptionAs(Throwable $throwable, string $document): ThrowableHandlerInterface
 {
     $reflection = new ReflectionClass($document);
     if (!$reflection->implementsInterface(ThrowableHandlerDocumentInterface::class)) {
@@ -58,7 +59,7 @@ function handleExceptionAs(\Exception $exception, string $document): ThrowableHa
     }
     /** @var ThrowableHandlerDocumentInterface $document */
     $document = new $document(
-        new ThrowableHandler(new ThrowableRead($exception))
+        new ThrowableHandler(new ThrowableRead($throwable))
     );
     try {
         $writer = WritersInstance::get()->error();

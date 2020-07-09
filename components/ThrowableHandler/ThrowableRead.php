@@ -121,7 +121,7 @@ final class ThrowableRead implements ThrowableReadInterface
     private function assertSeverity(): void
     {
         $accepted = array_keys(ThrowableReadInterface::ERROR_TYPES);
-        if (!array_key_exists($this->severity, $accepted)) {
+        if (!in_array($this->severity, $accepted)) {
             // @codeCoverageIgnoreStart
             throw new DomainException(
                 (new Message('Unknown severity value of %severity%, accepted values are: %accepted%'))
