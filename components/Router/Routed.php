@@ -13,25 +13,24 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Interfaces\Route\RouteNameInterface;
+use Chevere\Interfaces\Controller\ControllerNameInterface;
 use Chevere\Interfaces\Router\RoutedInterface;
 
-//
 final class Routed implements RoutedInterface
 {
-    private RouteNameInterface $name;
+    private ControllerNameInterface $controller;
 
     private array $arguments;
 
-    public function __construct(RouteNameInterface $name, array $arguments)
+    public function __construct(ControllerNameInterface $controller, array $arguments)
     {
-        $this->name = $name;
+        $this->controller = $controller;
         $this->arguments = $arguments;
     }
 
-    public function name(): RouteNameInterface
+    public function controllerName(): ControllerNameInterface
     {
-        return $this->name;
+        return $this->controller;
     }
 
     public function arguments(): array

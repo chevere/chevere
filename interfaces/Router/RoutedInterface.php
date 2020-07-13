@@ -13,16 +13,16 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Router;
 
-use Chevere\Interfaces\Route\RouteNameInterface;
+use Chevere\Interfaces\Controller\ControllerNameInterface;
 
 /**
  * Describes the component in charge of defining a resolved route.
  */
 interface RoutedInterface
 {
-    public function __construct(RouteNameInterface $routeName, array $wildcards);
+    public function __construct(ControllerNameInterface $controller, array $wildcards);
 
-    public function name(): RouteNameInterface;
+    public function controllerName(): ControllerNameInterface;
 
     /**
      * @return array [wildcardName => resolvedValue]

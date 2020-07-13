@@ -15,6 +15,7 @@ namespace Chevere\Components\Routing;
 
 use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Routable;
+use Chevere\Components\Router\Router;
 use Chevere\Interfaces\Router\RouterInterface;
 use Chevere\Interfaces\Routing\FsRoutesMakerInterface;
 use Chevere\Interfaces\Routing\RoutingInterface;
@@ -25,10 +26,10 @@ final class Routing implements RoutingInterface
 
     private RouterInterface $router;
 
-    public function __construct(FsRoutesMakerInterface $fsRoutesMaker, RouterInterface $router)
+    public function __construct(FsRoutesMakerInterface $fsRoutesMaker)
     {
         $this->routePathIterator = $fsRoutesMaker;
-        $this->router = $router;
+        $this->router = new Router;
         $fsRoutes = $this->routePathIterator->fsRoutes();
         for ($i = 0; $i < $fsRoutes->count(); ++$i) {
             $fsRoute = $fsRoutes->get($i);

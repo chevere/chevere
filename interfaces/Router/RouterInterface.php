@@ -20,4 +20,6 @@ interface RouterInterface
     public function index(): RouterIndexInterface;
 
     public function routables(): RoutablesInterface;
+
+    public function dispatch(string $httpMethod, string $uri): RoutedInterface;
 }

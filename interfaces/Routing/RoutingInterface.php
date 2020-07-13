@@ -17,7 +17,7 @@ use Chevere\Interfaces\Router\RouterInterface;
 
 interface RoutingInterface
 {
-    public function __construct(FsRoutesMakerInterface $fsRoutesMaker, RouterInterface $router);
+    public function __construct(FsRoutesMakerInterface $fsRoutesMaker);
 
     public function router(): RouterInterface;
 }
