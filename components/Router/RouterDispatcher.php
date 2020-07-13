@@ -15,13 +15,19 @@ namespace Chevere\Components\Router;
 
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Http\MethodNotAllowedException;
+use Chevere\Exceptions\Router\RouteNotFoundException;
 use Chevere\Exceptions\Router\RouterException;
 use Chevere\Interfaces\Router\RoutedInterface;
+use Chevere\Interfaces\Router\RouterDispatcherInterface;
 use FastRoute\Dispatcher\GroupCountBased as Dispatcher;
 use FastRoute\RouteCollector;
 use LogicException;
 
-final class RouterDispatcher
+/**
+ * @codeCoverageIgnore
+ */
+final class RouterDispatcher implements RouterDispatcherInterface
 {
     private RouteCollector $routeCollector;
 
@@ -36,17 +42,13 @@ final class RouterDispatcher
             ->dispatch($httpMethod, $uri);
         switch ($info[0]) {
             case Dispatcher::NOT_FOUND:
-                throw new RouterException(
-                    (new Message('Not found')),
-                    Dispatcher::NOT_FOUND
-                );
+                throw new RouteNotFoundException;
                 break;
             case Dispatcher::METHOD_NOT_ALLOWED:
-                throw new RouterException(
+                throw new MethodNotAllowedException(
                     (new Message('Method %method% is not in the list of allowed methods: %allowed%'))
                         ->code('%method%', $httpMethod)
-                        ->code('%allowed%', implode(', ', $info[1])),
-                    Dispatcher::METHOD_NOT_ALLOWED
+                        ->code('%allowed%', implode(', ', $info[1]))
                 );
                 break;
             case Dispatcher::FOUND:

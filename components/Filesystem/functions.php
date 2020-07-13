@@ -19,6 +19,10 @@ use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use Chevere\Interfaces\Filesystem\FilePhpInterface;
 
+/**
+ * @codeCoverageIgnore
+ * @throws FilesystemException
+ */
 function getDirFromString(string $path): DirInterface
 {
     try {
@@ -32,6 +36,10 @@ function getDirFromString(string $path): DirInterface
     }
 }
 
+/**
+ * @codeCoverageIgnore
+ * @throws FilesystemException
+ */
 function getFileFromString(string $path): FileInterface
 {
     try {
@@ -45,6 +53,10 @@ function getFileFromString(string $path): FileInterface
     }
 }
 
+/**
+ * @codeCoverageIgnore
+ * @throws FilesystemException
+ */
 function getFilePhpFromString(string $path): FilePhpInterface
 {
     try {
@@ -58,6 +70,10 @@ function getFilePhpFromString(string $path): FilePhpInterface
     }
 }
 
+/**
+ * @codeCoverageIgnore
+ * @throws FilesystemException
+ */
 function getFilePhpReturnFromString(string $path): FilePhpReturn
 {
     try {

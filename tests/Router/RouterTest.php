@@ -21,13 +21,13 @@ use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Router;
 use Chevere\Tests\Router\_resources\src\TestController;
+use FastRoute\RouteCollector;
 use PHPUnit\Framework\TestCase;
 
 final class RouterTest extends TestCase
 {
     public function testRouter(): void
     {
-        $this->expectNotToPerformAssertions();
         $router = new Router;
         $routeName = new RouteName('my-route');
         $routePath = new RoutePath('/user/{id:\d+}/{name:\w+}/');
@@ -40,6 +40,6 @@ final class RouterTest extends TestCase
         );
         $routable = new Routable($route);
         $router = $router->withAddedRoutable($routable, 'my-group');
-        $router->dispatch('GET', '/user/123/rodolfo/');
+        $this->assertInstanceOf(RouteCollector::class, $router->routeCollector());
     }
 }

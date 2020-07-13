@@ -55,6 +55,7 @@ final class PlugsMapCacheTest extends TestCase
     {
         $cache = new Cache($this->emptyDir);
         $plugsMapCache = new PlugsMapCache($cache);
+        $this->assertEquals($cache, $plugsMapCache->cache());
         $this->assertFalse($plugsMapCache->hasPlugsQueueFor('empty'));
         $this->expectException(OutOfBoundsException::class);
         $this->expectExceptionCode(1);

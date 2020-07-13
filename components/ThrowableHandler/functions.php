@@ -24,28 +24,49 @@ use Chevere\Exceptions\Core\LogicException as CoreLogicException;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerDocumentInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
 use ReflectionClass;
+use RuntimeException;
 use Throwable;
 
+/**
+ * @codeCoverageIgnore
+ * @throws ErrorException
+ */
 function errorsAsExceptions(int $severity, string $message, string $file, int $line): void
 {
     throw new ErrorException(new Message($message), 0, $severity, $file, $line);
 }
 
+/**
+ * @codeCoverageIgnore
+ * @throws RuntimeException
+ */
 function plainHandler(Throwable $throwable): void
 {
     handleExceptionAs($throwable, ThrowableHandlerPlainDocument::class);
 }
 
+/**
+ * @codeCoverageIgnore
+ * @throws RuntimeException
+ */
 function consoleHandler(Throwable $throwable): void
 {
     handleExceptionAs($throwable, ThrowableHandlerConsoleDocument::class);
 }
 
+/**
+ * @codeCoverageIgnore
+ * @throws RuntimeException
+ */
 function htmlHandler(Throwable $throwable): void
 {
     handleExceptionAs($throwable, ThrowableHandlerHtmlDocument::class);
 }
 
+/**
+ * @codeCoverageIgnore
+ * @throws RuntimeException
+ */
 function handleExceptionAs(Throwable $throwable, string $document): ThrowableHandlerInterface
 {
     $reflection = new ReflectionClass($document);

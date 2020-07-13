@@ -11,13 +11,13 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Exceptions\Http;
+namespace Chevere\Exceptions\Router;
 
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown when a method doesn't exists.
+ * Exception thrown when requesting a method not allowed.
  */
-final class MethodNotFoundException extends Exception
+final class MethodNotAllowedException extends Exception
 {
 }
