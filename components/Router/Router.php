@@ -24,7 +24,6 @@ use Chevere\Interfaces\Router\RoutedInterface;
 use Chevere\Interfaces\Router\RouterIndexInterface;
 use Chevere\Interfaces\Router\RouterInterface;
 use FastRoute\DataGenerator\GroupCountBased as DataGenerator;
-use FastRoute\Dispatcher\GroupCountBased as Dispatcher;
 use FastRoute\RouteCollector;
 
 final class Router implements RouterInterface
@@ -69,32 +68,8 @@ final class Router implements RouterInterface
         return $this->routables;
     }
 
-    public function dispatch(string $httpMethod, string $uri): RoutedInterface
+    public function routeCollector(): RouteCollector
     {
-        $info = (new Dispatcher($this->routeCollector->getData()))
-            ->dispatch($httpMethod, $uri);
-        switch ($info[0]) {
-            case Dispatcher::NOT_FOUND:
-                throw new RouterException(
-                    (new Message('Not found')),
-                    Dispatcher::NOT_FOUND
-                );
-                break;
-            case Dispatcher::METHOD_NOT_ALLOWED:
-                throw new RouterException(
-                    (new Message('Method %method% is not in the list of allowed methods: %allowed%'))
-                        ->code('%method%', $httpMethod)
-                        ->code('%allowed%', implode(', ', $info[1])),
-                    Dispatcher::METHOD_NOT_ALLOWED
-                );
-                break;
-            case Dispatcher::FOUND:
-                return new Routed(new ControllerName($info[1]), $info[2]);
-                break;
-        }
-        throw new LogicException(
-            (new Message('Unexpected response code %code% from route dispatcher'))
-                ->code('%code%', $info[0])
-        );
+        return $this->routeCollector;
     }
 }

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Router;
 
+use FastRoute\RouteCollector;
+
 interface RouterInterface
 {
     public function withAddedRoutable(RoutableInterface $routable, string $group): RouterInterface;
@@ -21,5 +23,5 @@ interface RouterInterface
 
     public function routables(): RoutablesInterface;
 
-    public function dispatch(string $httpMethod, string $uri): RoutedInterface;
+    public function routeCollector(): RouteCollector;
 }

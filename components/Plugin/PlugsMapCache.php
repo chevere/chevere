@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugin;
 
 use Chevere\Components\Cache\Cache;
+use Chevere\Components\Cache\CacheItem;
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Message\Message;
@@ -47,6 +48,11 @@ final class PlugsMapCache implements PlugsMapCacheInterface
     {
         $this->cache = $cache;
         $this->classMapKey = new CacheKey(self::KEY_CLASS_MAP);
+    }
+
+    public function cache(): CacheInterface
+    {
+        return $this->cache;
     }
 
     public function withPut(PlugsMapInterface $plugsMap): PlugsMapCacheInterface
