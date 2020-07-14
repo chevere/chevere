@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Writer;
 
+use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\Writer\WriterInterface;
 use Psr\Http\Message\StreamInterface;
 
@@ -22,6 +24,11 @@ final class StreamWriter implements WriterInterface
 
     public function __construct(StreamInterface $stream)
     {
+        if (!$stream->isWritable()) {
+            throw new LogicException(
+                (new Message('Stream provided is not writable'))
+            );
+        }
         $this->stream = $stream;
     }
 

@@ -65,6 +65,7 @@ namespace {
     use Chevere\Components\Writer\StreamWriterFromString;
     use Chevere\Components\Writer\Writers;
     use function Chevere\Components\VarDump\getVarDumpConsole;
+    use function Chevere\Components\Writer\writerForStream;
 
     if (function_exists('xd') === false) { // @codeCoverageIgnore
         /**
@@ -103,10 +104,10 @@ namespace {
             } catch (LogicException $e) {
                 $writers = (new Writers)
                     ->withOut(
-                        new StreamWriterFromString('php://stdout', 'w')
+                        writerForStream('php://stdout', 'r+')
                     )
                     ->withError(
-                        new StreamWriterFromString('php://stdout', 'w')
+                        writerForStream('php://stderr', 'r+')
                     );
             }
             $varDump->withShift(1)->withVars(...$vars)->process($writers->out());

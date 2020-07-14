@@ -26,6 +26,7 @@ use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
 use ReflectionClass;
 use RuntimeException;
 use Throwable;
+use function Chevere\Components\Writer\writerForStream;
 
 /**
  * @codeCoverageIgnore
@@ -85,7 +86,7 @@ function handleExceptionAs(Throwable $throwable, string $document): ThrowableHan
     try {
         $writer = WritersInstance::get()->error();
     } catch (CoreLogicException $e) {
-        $writer = new StreamWriterFromString('php://stderr', 'w');
+        $writer = writerForStream('php://stderr', 'r+');
     }
     $writer->write($document->toString() . "\n");
 

@@ -32,16 +32,12 @@ final class Writers implements WritersInterface
     public function __construct()
     {
         try {
-            $this->out = new StreamWriterFromString('', 'w');
-            $this->error = new StreamWriterFromString('', 'w');
+            $this->out = new StreamWriter(streamFor(''));
+            $this->error = new StreamWriter(streamFor(''));
         }
         // @codeCoverageIgnoreStart
         catch (InvalidArgumentException $e) {
-            throw new RuntimeException(
-                new Message($e->getMessage()),
-                $e->getCode(),
-                $e
-            );
+            throw new RuntimeException(null, 0, $e);
         }
         // @codeCoverageIgnoreEnd
         $this->debug = new NullWriter;

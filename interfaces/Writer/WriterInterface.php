@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Writer;
 
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Interfaces\To\ToStringInterface;
 
 /**
@@ -22,6 +23,8 @@ interface WriterInterface extends ToStringInterface
 {
     /**
      * Writes the given string.
+     *
+     * @throws LogicException
      */
     public function write(string $string): void;
 
