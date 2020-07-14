@@ -13,17 +13,39 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Routing;
 
+use Chevere\Exceptions\Core\OutOfRangeException;
+use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Exceptions\Routing\RoutingDescriptorAlreadyAddedException;
 use Countable;
 
+/**
+ * Describes the component in charge of collecting objects implementing `RoutingDescriptorInterface`.
+ */
 interface RoutingDescriptorsInterface extends Countable
 {
-    public function __construct();
+    /**
+     * Return an instance with the specified `$descriptor` added.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified `$descriptor` added.
+     *
+     * @throws RoutingDescriptorAlreadyAddedException
+     * @throws OverflowException
+     */
+    public function withAdded(RoutingDescriptorInterface $descriptor): RoutingDescriptorsInterface;
 
-    public function withAdded(RoutingDescriptorInterface $decoratedRoute): RoutingDescriptorsInterface;
-
+    /**
+     * Provides access to the element count.
+     */
     public function count(): int;
 
-    public function contains(RoutingDescriptorInterface $decoratedRoute): bool;
+    /**
+     * Indicates whether the instance has the given `$descriptor`.
+     */
+    public function has(RoutingDescriptorInterface $descriptor): bool;
 
+    /**
+     * @throws OutOfRangeException
+     */
     public function get(int $position): RoutingDescriptorInterface;
 }

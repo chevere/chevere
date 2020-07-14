@@ -17,6 +17,9 @@ use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Route\RouteDecoratorInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
 
+/**
+ * Describes the component in charge of describing a route element.
+ */
 interface RoutingDescriptorInterface
 {
     public function dir(): DirInterface;

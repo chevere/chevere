@@ -16,8 +16,8 @@ namespace Chevere\Exceptions\Routing;
 use Chevere\Exceptions\Core\Exception;
 
 /**
- * Exception thrown when the decorated route has been already added.
+ * Exception thrown when a routing descriptor has been already added.
  */
-final class DecoratedRouteAlreadyAddedException extends Exception
+final class RoutingDescriptorAlreadyAddedException extends Exception
 {
 }

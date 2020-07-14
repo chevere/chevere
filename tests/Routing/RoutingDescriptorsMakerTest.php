@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Routing;
 
 use Chevere\Components\Routing\RoutingDescriptorsMaker;
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Routing\ExpectingRouteNameException;
 use Chevere\Interfaces\Route\RouteDecoratorInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
@@ -44,7 +45,7 @@ final class RoutingDescriptorsMakerTest extends TestCase
     public function testWrongObjects(): void
     {
         $dir = getDirFromString(__DIR__ . '/_resources/wrong-routes/');
-        $this->expectException(ExpectingRouteNameException::class);
+        $this->expectException(LogicException::class);
         new RoutingDescriptorsMaker($dir);
     }
 }

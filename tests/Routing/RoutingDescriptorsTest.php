@@ -17,10 +17,8 @@ use Chevere\Components\Route\RouteDecorator;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Routing\RoutingDescriptor;
 use Chevere\Components\Routing\RoutingDescriptors;
-use Chevere\Exceptions\Routing\DecoratedRouteAlreadyAddedException;
-use Chevere\Exceptions\Routing\RouteNameAlreadyAddedException;
-use Chevere\Exceptions\Routing\RoutePathAlreadyAddedException;
-use Chevere\Exceptions\Routing\RouteRegexAlreadyAddedException;
+use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Exceptions\Routing\RoutingDescriptorAlreadyAddedException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Route\RouteDecoratorInterface;
 use OutOfRangeException;
@@ -49,7 +47,7 @@ final class RoutingDescriptorsTest extends TestCase
         $descriptors->get(0);
     }
 
-    public function testWithDecorated(): void
+    public function testWithAdded(): void
     {
         $descriptors = new RoutingDescriptors;
         $this->assertCount(0, $descriptors);
@@ -68,10 +66,10 @@ final class RoutingDescriptorsTest extends TestCase
                 ->withAdded($objects[$pos]);
             $count++;
             $this->assertCount($count, $descriptors);
-            $this->assertTrue($descriptors->contains($objects[$pos]));
+            $this->assertTrue($descriptors->has($objects[$pos]));
             $this->assertSame($objects[$pos], $descriptors->get($count - 1));
         }
-        $this->expectException(DecoratedRouteAlreadyAddedException::class);
+        $this->expectException(RoutingDescriptorAlreadyAddedException::class);
         $descriptors->withAdded($objects[$pos]);
     }
 
@@ -88,7 +86,7 @@ final class RoutingDescriptorsTest extends TestCase
             $this->getRouteDecorator('name')
         );
         $descriptors = (new RoutingDescriptors)->withAdded($fs1);
-        $this->expectException(RouteNameAlreadyAddedException::class);
+        $this->expectException(OverflowException::class);
         $descriptors->withAdded($fs2);
     }
 
@@ -105,7 +103,7 @@ final class RoutingDescriptorsTest extends TestCase
             $this->getRouteDecorator('name-alt')
         );
         $descriptors = (new RoutingDescriptors)->withAdded($fs1);
-        $this->expectException(RoutePathAlreadyAddedException::class);
+        $this->expectException(OverflowException::class);
         $descriptors->withAdded($fs2);
     }
 
@@ -124,7 +122,7 @@ final class RoutingDescriptorsTest extends TestCase
             new RoutePath('/path-alt'),
             $this->getRouteDecorator('name-dupe')
         );
-        $this->expectException(RouteNameAlreadyAddedException::class);
+        $this->expectException(OverflowException::class);
         $descriptors->withAdded($nameConflict);
     }
 
@@ -143,7 +141,7 @@ final class RoutingDescriptorsTest extends TestCase
             new RoutePath('/path/{name}'),
             $this->getRouteDecorator('name-alt')
         );
-        $this->expectException(RouteRegexAlreadyAddedException::class);
+        $this->expectException(OverflowException::class);
         $descriptors->withAdded($regexConflict);
     }
 }

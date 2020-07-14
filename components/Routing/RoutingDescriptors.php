@@ -15,15 +15,18 @@ namespace Chevere\Components\Routing;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\Exception;
+use Chevere\Exceptions\Core\LogicException;
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Core\RangeException;
-use Chevere\Exceptions\Routing\DecoratedRouteAlreadyAddedException;
 use Chevere\Exceptions\Routing\RouteNameAlreadyAddedException;
 use Chevere\Exceptions\Routing\RoutePathAlreadyAddedException;
 use Chevere\Exceptions\Routing\RouteRegexAlreadyAddedException;
+use Chevere\Exceptions\Routing\RoutingDescriptorAlreadyAddedException;
 use Chevere\Interfaces\Routing\RoutingDescriptorInterface;
 use Chevere\Interfaces\Routing\RoutingDescriptorsInterface;
 use Ds\Set;
 use OutOfRangeException;
+use Throwable;
 
 final class RoutingDescriptors implements RoutingDescriptorsInterface
 {
@@ -47,7 +50,7 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
     public function withAdded(RoutingDescriptorInterface $descriptor): RoutingDescriptorsInterface
     {
         if ($this->set->contains($descriptor)) {
-            throw new DecoratedRouteAlreadyAddedException(
+            throw new RoutingDescriptorAlreadyAddedException(
                 (new Message('Instance of object %object% has been already added'))
                     ->code('%object%', get_class($descriptor) . '#' . spl_object_id($descriptor))
             );
@@ -59,12 +62,15 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
             $new->assertPushPath($descriptor->path()->toString());
             $new->assertPushName($descriptor->decorator()->name()->toString());
             $new->assertPushRegex($descriptor->path()->regex()->toString());
-        } catch (Exception $e) {
-            throw new $e(
-                $e->message()->code(
-                    '%by%',
-                    $this->get($e->getCode())->dir()->path()->absolute()
-                )
+        } catch (Throwable $e) {
+            throw new OverflowException(
+                (new Message('Routing conflict affecting previously declared %route%'))
+                    ->code(
+                        '%route%',
+                        $this->get($e->getCode())->dir()->path()->absolute()
+                    ),
+                $e->getCode(),
+                $e
             );
         }
 
@@ -78,20 +84,16 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
         return $this->set->count();
     }
 
-    public function contains(RoutingDescriptorInterface $descriptor): bool
+    public function has(RoutingDescriptorInterface $descriptor): bool
     {
         return $this->set->contains($descriptor);
     }
 
-    /**
-     * @throws OutOfRangeException
-     * @throws RangeException
-     */
     public function get(int $position): RoutingDescriptorInterface
     {
         $return = $this->set->get($position);
         if ($return === null) {
-            throw new RangeException; // @codeCoverageIgnore
+            throw new OutOfRangeException; // @codeCoverageIgnore
         }
 
         return $return;
@@ -101,8 +103,8 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
     {
         $pos = $this->routesPath[$path] ?? null;
         if (isset($pos)) {
-            throw new RoutePathAlreadyAddedException(
-                (new Message('Route path %path% has been already added by %by%'))
+            throw new Exception(
+                (new Message('Route path %path% has been already added'))
                     ->code('%path%', $path),
                 $pos
             );
@@ -114,8 +116,8 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
     {
         $pos = $this->routesName[$name] ?? null;
         if (isset($pos)) {
-            throw new RouteNameAlreadyAddedException(
-                (new Message('Route %name% has been already added by %by%'))
+            throw new Exception(
+                (new Message('Route %name% has been already added'))
                     ->code('%name%', $name),
                 $pos
             );
@@ -127,8 +129,8 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
     {
         $pos = $this->routesPathRegex[$regex] ?? null;
         if (isset($pos)) {
-            throw new RouteRegexAlreadyAddedException(
-                (new Message('Route regex %regex% has been already added by %by%'))
+            throw new Exception(
+                (new Message('Route regex %regex% has been already added'))
                     ->code('%regex%', $regex),
                 $pos
             );
