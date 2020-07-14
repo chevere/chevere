@@ -28,13 +28,13 @@ use Chevere\Interfaces\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Route\RouteEndpointsInterface;
 use Chevere\Interfaces\Routing\RouteEndpointIteratorInterface;
 
+/**
+ * Iterates over the target dir for files matching `RouteEndpointInterface::KNOWN_METHODS` filenames.
+ */
 final class RouteEndpointsIterator implements RouteEndpointIteratorInterface
 {
     private RouteEndpointsInterface $routeEndpoints;
 
-    /**
-     * Iterates over the target dir for files matching `RouteEndpointInterface::KNOWN_METHODS` filenames.
-     */
     public function __construct(DirInterface $dir)
     {
         $this->routeEndpoints = new RouteEndpoints;

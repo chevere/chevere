@@ -17,11 +17,11 @@ use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Route\RouteDecoratorInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
 
-interface FsRouteInterface
+interface RoutingDescriptorInterface
 {
     public function dir(): DirInterface;
 
-    public function routePath(): RoutePathInterface;
+    public function path(): RoutePathInterface;
 
-    public function routeDecorator(): RouteDecoratorInterface;
+    public function decorator(): RouteDecoratorInterface;
 }

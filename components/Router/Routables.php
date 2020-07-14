@@ -17,10 +17,6 @@ use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use Chevere\Interfaces\Router\RoutableInterface;
 use Chevere\Interfaces\Router\RoutablesInterface;
 
-/**
- * A container for Routable objects.
- */
-//
 final class Routables implements RoutablesInterface
 {
     use DsMapTrait;

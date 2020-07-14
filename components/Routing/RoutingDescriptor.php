@@ -16,12 +16,12 @@ namespace Chevere\Components\Routing;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Route\RouteDecoratorInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
-use Chevere\Interfaces\Routing\FsRouteInterface;
+use Chevere\Interfaces\Routing\RoutingDescriptorInterface;
 
 /**
  * @codeCoverageIgnore
  */
-final class FsRoute implements FsRouteInterface
+final class RoutingDescriptor implements RoutingDescriptorInterface
 {
     private DirInterface $dir;
 
@@ -44,12 +44,12 @@ final class FsRoute implements FsRouteInterface
         return $this->dir;
     }
 
-    public function routePath(): RoutePathInterface
+    public function path(): RoutePathInterface
     {
         return $this->path;
     }
 
-    public function routeDecorator(): RouteDecoratorInterface
+    public function decorator(): RouteDecoratorInterface
     {
         return $this->decorator;
     }

@@ -20,12 +20,12 @@ use Chevere\Exceptions\Routing\DecoratedRouteAlreadyAddedException;
 use Chevere\Exceptions\Routing\RouteNameAlreadyAddedException;
 use Chevere\Exceptions\Routing\RoutePathAlreadyAddedException;
 use Chevere\Exceptions\Routing\RouteRegexAlreadyAddedException;
-use Chevere\Interfaces\Routing\FsRouteInterface;
-use Chevere\Interfaces\Routing\FsRoutesInterface;
+use Chevere\Interfaces\Routing\RoutingDescriptorInterface;
+use Chevere\Interfaces\Routing\RoutingDescriptorsInterface;
 use Ds\Set;
 use OutOfRangeException;
 
-final class FsRoutes implements FsRoutesInterface
+final class RoutingDescriptors implements RoutingDescriptorsInterface
 {
     private Set $set;
 
@@ -35,7 +35,7 @@ final class FsRoutes implements FsRoutesInterface
 
     private array $routesPathRegex = [];
 
-    private FsRouteInterface $fsRoute;
+    private RoutingDescriptorInterface $descriptor;
 
     private int $pos = -1;
 
@@ -44,21 +44,21 @@ final class FsRoutes implements FsRoutesInterface
         $this->set = new Set;
     }
 
-    public function withDecorated(FsRouteInterface $fsRoute): FsRoutesInterface
+    public function withAdded(RoutingDescriptorInterface $descriptor): RoutingDescriptorsInterface
     {
-        if ($this->set->contains($fsRoute)) {
+        if ($this->set->contains($descriptor)) {
             throw new DecoratedRouteAlreadyAddedException(
                 (new Message('Instance of object %object% has been already added'))
-                    ->code('%object%', get_class($fsRoute) . '#' . spl_object_id($fsRoute))
+                    ->code('%object%', get_class($descriptor) . '#' . spl_object_id($descriptor))
             );
         }
         $new = clone $this;
-        $new->fsRoute = $fsRoute;
+        $new->descriptor = $descriptor;
         $new->pos++;
         try {
-            $new->assertPushPath($fsRoute->routePath()->toString());
-            $new->assertPushName($fsRoute->routeDecorator()->name()->toString());
-            $new->assertPushRegex($fsRoute->routePath()->regex()->toString());
+            $new->assertPushPath($descriptor->path()->toString());
+            $new->assertPushName($descriptor->decorator()->name()->toString());
+            $new->assertPushRegex($descriptor->path()->regex()->toString());
         } catch (Exception $e) {
             throw new $e(
                 $e->message()->code(
@@ -68,7 +68,7 @@ final class FsRoutes implements FsRoutesInterface
             );
         }
 
-        $new->set->add($fsRoute);
+        $new->set->add($descriptor);
 
         return $new;
     }
@@ -78,16 +78,16 @@ final class FsRoutes implements FsRoutesInterface
         return $this->set->count();
     }
 
-    public function contains(FsRouteInterface $decoratedRoute): bool
+    public function contains(RoutingDescriptorInterface $descriptor): bool
     {
-        return $this->set->contains($decoratedRoute);
+        return $this->set->contains($descriptor);
     }
 
     /**
      * @throws OutOfRangeException
      * @throws RangeException
      */
-    public function get(int $position): FsRouteInterface
+    public function get(int $position): RoutingDescriptorInterface
     {
         $return = $this->set->get($position);
         if ($return === null) {

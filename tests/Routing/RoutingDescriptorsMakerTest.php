@@ -13,30 +13,30 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Routing;
 
-use Chevere\Components\Routing\FsRoutesMaker;
+use Chevere\Components\Routing\RoutingDescriptorsMaker;
 use Chevere\Exceptions\Routing\ExpectingRouteNameException;
 use Chevere\Interfaces\Route\RouteDecoratorInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
 use PHPUnit\Framework\TestCase;
 use function Chevere\Components\Filesystem\getDirFromString;
 
-final class RouteFsIteratorTest extends TestCase
+final class RoutingDescriptorsMakerTest extends TestCase
 {
     public function testObjects(): void
     {
         $dir = getDirFromString(__DIR__ . '/_resources/routes/');
-        $fsRoutesMaker = new FsRoutesMaker($dir);
-        $fsRoutes = $fsRoutesMaker->fsRoutes();
+        $fsRoutesMaker = new RoutingDescriptorsMaker($dir);
+        $fsRoutes = $fsRoutesMaker->descriptors();
         $this->assertCount(2, $fsRoutes);
         for ($i = 0; $i < $fsRoutes->count(); ++$i) {
             $fsRoute = $fsRoutes->get($i);
             $this->assertInstanceOf(
                 RoutePathInterface::class,
-                $fsRoute->routePath()
+                $fsRoute->path()
             );
             $this->assertInstanceOf(
                 RouteDecoratorInterface::class,
-                $fsRoute->routeDecorator()
+                $fsRoute->decorator()
             );
         }
     }
@@ -45,6 +45,6 @@ final class RouteFsIteratorTest extends TestCase
     {
         $dir = getDirFromString(__DIR__ . '/_resources/wrong-routes/');
         $this->expectException(ExpectingRouteNameException::class);
-        new FsRoutesMaker($dir);
+        new RoutingDescriptorsMaker($dir);
     }
 }

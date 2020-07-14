@@ -15,11 +15,11 @@ namespace Chevere\Interfaces\Routing;
 
 use Chevere\Interfaces\Filesystem\DirInterface;
 
-interface FsRoutesMakerInterface
+interface RoutingDescriptorsMakerInterface
 {
     const ROUTE_NAME_BASENAME = 'RouteName.php';
 
     public function __construct(DirInterface $dir);
 
-    public function fsRoutes(): FsRoutesInterface;
+    public function descriptors(): RoutingDescriptorsInterface;
 }

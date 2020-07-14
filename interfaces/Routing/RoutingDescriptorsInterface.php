@@ -15,15 +15,15 @@ namespace Chevere\Interfaces\Routing;
 
 use Countable;
 
-interface FsRoutesInterface extends Countable
+interface RoutingDescriptorsInterface extends Countable
 {
     public function __construct();
 
-    public function withDecorated(FsRouteInterface $decoratedRoute): FsRoutesInterface;
+    public function withAdded(RoutingDescriptorInterface $decoratedRoute): RoutingDescriptorsInterface;
 
     public function count(): int;
 
-    public function contains(FsRouteInterface $decoratedRoute): bool;
+    public function contains(RoutingDescriptorInterface $decoratedRoute): bool;
 
-    public function get(int $position): FsRouteInterface;
+    public function get(int $position): RoutingDescriptorInterface;
 }

@@ -17,13 +17,13 @@ use Chevere\Components\Filesystem\Dir;
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Filesystem\FilePhp;
 use Chevere\Components\Filesystem\FilePhpReturn;
-use Chevere\Components\Filesystem\FilesystemFactory;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Route\Route;
 use Chevere\Components\Route\RouteDecorator;
 use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
+use Chevere\Components\Routing\RoutingDescriptor as RoutingRoute;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\Exception;
@@ -33,23 +33,23 @@ use Chevere\Exceptions\Routing\ExpectingRouteNameException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Route\RouteNameInterface;
-use Chevere\Interfaces\Routing\FsRoutesInterface;
-use Chevere\Interfaces\Routing\FsRoutesMakerInterface;
+use Chevere\Interfaces\Routing\RoutingDescriptorsInterface;
+use Chevere\Interfaces\Routing\RoutingDescriptorsMakerInterface;
 use RecursiveDirectoryIterator;
 use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
 use function Chevere\Components\Filesystem\getDirFromString;
 
-final class FsRoutesMaker implements FsRoutesMakerInterface
+final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
 {
-    private FsRoutesInterface $fsRoutes;
+    private RoutingDescriptorsInterface $descriptors;
 
     public function __construct(DirInterface $dir)
     {
         $dirIterator = $this->getRecursiveDirectoryIterator($dir);
         $filterIterator = $this->getRecursiveFilterIterator($dirIterator);
         $iteratorIterator = new RecursiveIteratorIterator($filterIterator);
-        $this->fsRoutes = new FsRoutes;
+        $this->descriptors = new RoutingDescriptors;
         $iteratorIterator->rewind();
         while ($iteratorIterator->valid()) {
             $pathName = $iteratorIterator->current()->getPathName();
@@ -86,8 +86,8 @@ final class FsRoutesMaker implements FsRoutesMakerInterface
                 );
             }
             // @codeCoverageIgnoreEnd
-            $this->fsRoutes = $this->fsRoutes->withDecorated(
-                new FsRoute(
+            $this->descriptors = $this->descriptors->withAdded(
+                new RoutingRoute(
                     getDirFromString($current),
                     new RoutePath($path),
                     new RouteDecorator($routeName)
@@ -97,9 +97,9 @@ final class FsRoutesMaker implements FsRoutesMakerInterface
         }
     }
 
-    public function fsRoutes(): FsRoutesInterface
+    public function descriptors(): RoutingDescriptorsInterface
     {
-        return $this->fsRoutes;
+        return $this->descriptors;
     }
 
     private function getVar(string $path): RouteNameInterface
@@ -132,7 +132,7 @@ final class FsRoutesMaker implements FsRoutesMakerInterface
                     return true;
                 }
 
-                return $this->current()->getFilename() === FsRoutesMaker::ROUTE_NAME_BASENAME;
+                return $this->current()->getFilename() === RoutingDescriptorsMaker::ROUTE_NAME_BASENAME;
             }
         };
     }

@@ -17,24 +17,20 @@ use Chevere\Components\Route\Route;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Router;
 use Chevere\Interfaces\Router\RouterInterface;
-use Chevere\Interfaces\Routing\FsRoutesMakerInterface;
+use Chevere\Interfaces\Routing\RoutingDescriptorsInterface;
 use Chevere\Interfaces\Routing\RoutingInterface;
 
 final class Routing implements RoutingInterface
 {
-    private FsRoutesMakerInterface $routePathIterator;
-
     private RouterInterface $router;
 
-    public function __construct(FsRoutesMakerInterface $fsRoutesMaker)
+    public function __construct(RoutingDescriptorsInterface $descriptors)
     {
-        $this->routePathIterator = $fsRoutesMaker;
         $this->router = new Router;
-        $fsRoutes = $this->routePathIterator->fsRoutes();
-        for ($i = 0; $i < $fsRoutes->count(); ++$i) {
-            $fsRoute = $fsRoutes->get($i);
-            $routePath = $fsRoute->routePath();
-            $routeDecorator = $fsRoute->routeDecorator();
+        for ($i = 0; $i < $descriptors->count(); ++$i) {
+            $fsRoute = $descriptors->get($i);
+            $routePath = $fsRoute->path();
+            $routeDecorator = $fsRoute->decorator();
             foreach ($routeDecorator->wildcards()->getGenerator() as $routeWildcard) {
                 $routePath = $routePath->withWildcard($routeWildcard); // @codeCoverageIgnore
             }
