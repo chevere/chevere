@@ -15,7 +15,6 @@ namespace Chevere\Tests\Routing;
 
 use Chevere\Components\Routing\RoutingDescriptorsMaker;
 use Chevere\Exceptions\Core\LogicException;
-use Chevere\Exceptions\Routing\ExpectingRouteNameException;
 use Chevere\Interfaces\Route\RouteDecoratorInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
 use PHPUnit\Framework\TestCase;

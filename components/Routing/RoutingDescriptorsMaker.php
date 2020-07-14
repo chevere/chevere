@@ -25,12 +25,8 @@ use Chevere\Components\Routing\RoutingDescriptor;
 use Chevere\Components\Str\Str;
 use Chevere\Components\Type\Type;
 use Chevere\Exceptions\Core\Exception;
-use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\LogicException;
-use Chevere\Exceptions\Core\OutOfBoundsException;
-use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
-use Chevere\Exceptions\Filesystem\FilesystemException;
 use Chevere\Exceptions\Routing\ExpectingRouteNameException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
@@ -51,20 +47,18 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
 
     public function __construct(DirInterface $dir)
     {
+        $this->descriptors = new RoutingDescriptors;
         try {
             $dirIterator = $this->getRecursiveDirectoryIterator($dir);
             $filterIterator = $this->getRecursiveFilterIterator($dirIterator);
             $iteratorIterator = new RecursiveIteratorIterator($filterIterator);
-            $this->descriptors = new RoutingDescriptors;
             $iteratorIterator->rewind();
             while ($iteratorIterator->valid()) {
                 $pathName = $iteratorIterator->current()->getPathName();
                 $routeName = $this->getVar($pathName);
                 $current = dirname($pathName) . '/';
-                $endpointsIterator = new RouteEndpointsIterator(
-                    new Dir(new Path($current))
-                );
-                $generator = $endpointsIterator->routeEndpoints()->getGenerator();
+                $endpoints = getRouteEndpointsForDir(new Dir(new Path($current)));
+                $generator = $endpoints->getGenerator();
                 /** @var RouteEndpointInterface $routeEndpoint */
                 $routeEndpoint = $generator->current();
                 $path = $this->getPathForParameters(
@@ -91,13 +85,13 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
                 }
                 // @codeCoverageIgnoreEnd
                 $this->descriptors = $this->descriptors
-                ->withAdded(
-                    new RoutingDescriptor(
-                        getDirFromString($current),
-                        new RoutePath($path),
-                        new RouteDecorator($routeName)
-                    )
-                );
+                    ->withAdded(
+                        new RoutingDescriptor(
+                            getDirFromString($current),
+                            new RoutePath($path),
+                            new RouteDecorator($routeName)
+                        )
+                    );
                 $iteratorIterator->next();
             }
         } catch (Throwable $e) {

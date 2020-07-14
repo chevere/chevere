@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Route;
 
-use Chevere\Interfaces\To\ToArrayInterface;
 use Chevere\Interfaces\To\ToStringInterface;
 
 /**

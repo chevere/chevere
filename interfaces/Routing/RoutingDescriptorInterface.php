@@ -22,9 +22,18 @@ use Chevere\Interfaces\Route\RoutePathInterface;
  */
 interface RoutingDescriptorInterface
 {
+    /**
+     * Provides access to the dir instance.
+     */
     public function dir(): DirInterface;
 
+    /**
+     * Provides access to the route path instance.
+     */
     public function path(): RoutePathInterface;
 
+    /**
+     * Provides access to the route decorator instance.
+     */
     public function decorator(): RouteDecoratorInterface;
 }

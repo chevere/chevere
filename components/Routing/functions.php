@@ -13,34 +13,84 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Routing;
 
+use Chevere\Components\Filesystem\File;
+use Chevere\Components\Filesystem\FilePhp;
+use Chevere\Components\Filesystem\FilePhpReturn;
 use Chevere\Components\Route\Route;
+use Chevere\Components\Route\RouteEndpoint;
+use Chevere\Components\Route\RouteEndpoints;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\Router;
+use Chevere\Components\Type\Type;
+use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\OutOfRangeException;
+use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Exceptions\Filesystem\FileReturnInvalidTypeException;
+use Chevere\Exceptions\Route\RouteEndpointConflictException;
+use Chevere\Exceptions\Route\RouteWildcardConflictException;
+use Chevere\Exceptions\Routing\ExpectingControllerException;
+use Chevere\Interfaces\Controller\ControllerInterface;
+use Chevere\Interfaces\Filesystem\DirInterface;
+use Chevere\Interfaces\Route\RouteEndpointInterface;
+use Chevere\Interfaces\Route\RouteEndpointsInterface;
 use Chevere\Interfaces\Router\RouterInterface;
 use Chevere\Interfaces\Routing\RoutingDescriptorsInterface;
 
-function getRouterFromRoutingDescriptors(RoutingDescriptorsInterface $descriptors): RouterInterface
+/**
+ *
+ * @throws OutOfRangeException
+ * @throws OverflowException
+ * @throws RouteEndpointConflictException
+ * @throws InvalidArgumentException
+ * @throws OutOfBoundsException
+ * @throws RouteWildcardConflictException
+ */
+function getRouterFromRoutingDescriptors(RoutingDescriptorsInterface $descriptors, string $group): RouterInterface
 {
     $router = new Router;
     for ($i = 0; $i < $descriptors->count(); ++$i) {
         $descriptor = $descriptors->get($i);
         $routePath = $descriptor->path();
         $routeDecorator = $descriptor->decorator();
-        foreach ($routeDecorator->wildcards()->getGenerator() as $routeWildcard) {
-            $routePath = $routePath->withWildcard($routeWildcard); // @codeCoverageIgnore
-        }
-        $routeEndpointsMaker = new RouteEndpointsIterator($descriptor->dir());
-        $routeEndpoints = $routeEndpointsMaker->routeEndpoints();
+        // foreach ($routeDecorator->wildcards()->getGenerator() as $routeWildcard) {
+        //     $routePath = $routePath->withWildcard($routeWildcard); // @codeCoverageIgnore
+        // }
+        $routeEndpoints = getRouteEndpointsForDir($descriptor->dir());
         $route = new Route($routeDecorator->name(), $routePath);
-        /** @var string $key */
         foreach ($routeEndpoints->keys() as $key) {
             $route = $route->withAddedEndpoint(
                 $routeEndpoints->get($key)
             );
         }
         $router = $router
-            ->withAddedRoutable(new Routable($route), 'routing');
+            ->withAddedRoutable(new Routable($route), $group);
     }
 
     return $router;
+}
+
+function getRouteEndpointsForDir(DirInterface $dir): RouteEndpointsInterface
+{
+    $routeEndpoints = new RouteEndpoints;
+    $path = $dir->path();
+    foreach (RouteEndpointInterface::KNOWN_METHODS as $name => $methodClass) {
+        $controllerPath = $path->getChild($name . '.php');
+        if (!$controllerPath->exists()) {
+            continue;
+        }
+        try {
+            $controller = (new FilePhpReturn(new FilePhp(new File($controllerPath))))
+                ->withStrict(false)
+                ->varType(new Type(ControllerInterface::class));
+        } catch (FileReturnInvalidTypeException $e) {
+            throw new ExpectingControllerException($e->message());
+        }
+        $routeEndpoints = $routeEndpoints
+            ->withPut(
+                new RouteEndpoint(new $methodClass, $controller)
+            );
+    }
+
+    return $routeEndpoints;
 }

@@ -28,5 +28,8 @@ interface RoutingDescriptorsMakerInterface
      */
     public function __construct(DirInterface $dir);
 
+    /**
+     * Provides access to the generated routing descriptors.
+     */
     public function descriptors(): RoutingDescriptorsInterface;
 }

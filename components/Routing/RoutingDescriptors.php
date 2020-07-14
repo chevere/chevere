@@ -15,12 +15,7 @@ namespace Chevere\Components\Routing;
 
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\Core\Exception;
-use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Core\OverflowException;
-use Chevere\Exceptions\Core\RangeException;
-use Chevere\Exceptions\Routing\RouteNameAlreadyAddedException;
-use Chevere\Exceptions\Routing\RoutePathAlreadyAddedException;
-use Chevere\Exceptions\Routing\RouteRegexAlreadyAddedException;
 use Chevere\Exceptions\Routing\RoutingDescriptorAlreadyAddedException;
 use Chevere\Interfaces\Routing\RoutingDescriptorInterface;
 use Chevere\Interfaces\Routing\RoutingDescriptorsInterface;
