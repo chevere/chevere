@@ -15,14 +15,13 @@ namespace Chevere\Components\Router;
 
 use Chevere\Components\Controller\ControllerName;
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\LogicException;
 use Chevere\Exceptions\Http\MethodNotAllowedException;
 use Chevere\Exceptions\Router\RouteNotFoundException;
-use Chevere\Exceptions\Router\RouterException;
 use Chevere\Interfaces\Router\RoutedInterface;
 use Chevere\Interfaces\Router\RouterDispatcherInterface;
 use FastRoute\Dispatcher\GroupCountBased as Dispatcher;
 use FastRoute\RouteCollector;
-use LogicException;
 
 /**
  * @codeCoverageIgnore

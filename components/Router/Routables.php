@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Router;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Router\RoutableInterface;
 use Chevere\Interfaces\Router\RoutablesInterface;
 
@@ -31,7 +32,7 @@ final class Routables implements RoutablesInterface
         return $new;
     }
 
-    public function hasKey(string $name): bool
+    public function has(string $name): bool
     {
         /** @var \Ds\TKey $key */
         $key = $name;
@@ -39,16 +40,17 @@ final class Routables implements RoutablesInterface
         return $this->map->hasKey($key);
     }
 
-    /**
-     * @throws OutOfBoundsException
-     */
     public function get(string $name): RoutableInterface
     {
         /**
          * @var RoutableInterface $return
          * @var \Ds\TKey $name
          */
-        $return = $this->map->get($name);
+        try {
+            $return = $this->map->get($name);
+        } catch (\OutOfBoundsException $e) {
+            throw new OutOfBoundsException(null, 0, $e);
+        }
 
         return $return;
     }

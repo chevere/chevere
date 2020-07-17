@@ -13,11 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Throwable;
-use Chevere\Components\Str\StrAssert;
 use Chevere\Components\Message\Message;
+use Chevere\Components\Str\StrAssert;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Router\RouteIdentifierException;
 use Chevere\Interfaces\Router\RouteIdentifierInterface;
+use Throwable;
 
 final class RouteIdentifier implements RouteIdentifierInterface
 {
@@ -26,7 +27,7 @@ final class RouteIdentifier implements RouteIdentifierInterface
     private string $name;
 
     /**
-     * @throws RouteIdentifierException When passing empty strings.
+     * @throws InvalidArgumentException
      */
     public function __construct(string $group, string $name)
     {
@@ -61,7 +62,7 @@ final class RouteIdentifier implements RouteIdentifierInterface
                 ->notEmpty()
                 ->notCtypeSpace();
         } catch (Throwable $e) {
-            throw new RouteIdentifierException(
+            throw new InvalidArgumentException(
                 (new Message('Argument %argumentName% must not be empty neither ctype-space.'))
                     ->code('%argumentName%', '$' . $argumentName)
             );

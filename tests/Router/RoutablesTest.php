@@ -40,7 +40,7 @@ final class RoutablesTest extends TestCase
         );
         $routable = new Routable($route);
         $routables = (new Routables)->withPut($routable);
-        $this->assertTrue($routables->hasKey($key));
+        $this->assertTrue($routables->has($key));
         $this->assertSame($routable, $routables->get($key));
     }
 }

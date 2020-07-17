@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Router;
 
 use Chevere\Components\Router\RouteIdentifier;
-use Chevere\Exceptions\Router\RouteIdentifierException;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class RouteIdentifierTest extends TestCase
@@ -34,25 +34,25 @@ final class RouteIdentifierTest extends TestCase
 
     public function testEmptyGroup(): void
     {
-        $this->expectException(RouteIdentifierException::class);
+        $this->expectException(InvalidArgumentException::class);
         new RouteIdentifier('', 'some-name');
     }
 
     public function testCtypeSpaceGroup(): void
     {
-        $this->expectException(RouteIdentifierException::class);
+        $this->expectException(InvalidArgumentException::class);
         new RouteIdentifier('   ', 'some-name');
     }
 
     public function testEmptyName(): void
     {
-        $this->expectException(RouteIdentifierException::class);
+        $this->expectException(InvalidArgumentException::class);
         new RouteIdentifier('some-group', '');
     }
 
     public function testCtypeSpaceName(): void
     {
-        $this->expectException(RouteIdentifierException::class);
+        $this->expectException(InvalidArgumentException::class);
         new RouteIdentifier('some-group', '  ');
     }
 }

@@ -20,6 +20,7 @@ use Chevere\Components\Route\RouteName;
 use Chevere\Components\Route\RoutePath;
 use Chevere\Components\Router\Routable;
 use Chevere\Components\Router\RouterIndex;
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Router\RouteIdentifierInterface;
 use Chevere\Tests\Router\_resources\src\TestController;
 use LogicException;
@@ -42,7 +43,7 @@ final class RouterIndexTest extends TestCase
             new RouteEndpoint(new GetMethod, new TestController)
         );
         $routable = new Routable($route);
-        $routerIndex = (new RouterIndex)->withAdded($routable, $groupName);
+        $routerIndex = (new RouterIndex)->withAddedRoutable($routable, $groupName);
         $this->assertTrue($routerIndex->hasRouteName($routeName));
         $this->assertInstanceOf(
             RouteIdentifierInterface::class,
@@ -63,7 +64,7 @@ final class RouterIndexTest extends TestCase
             new RouteEndpoint(new GetMethod, new TestController)
         );
         $routable2 = new Routable($route2);
-        $routerIndex = $routerIndex->withAdded($routable2, $groupName);
+        $routerIndex = $routerIndex->withAddedRoutable($routable2, $groupName);
         $this->assertSame([$routeName, $routeName2], $routerIndex->getGroupRouteNames($groupName));
     }
 
@@ -75,8 +76,8 @@ final class RouterIndexTest extends TestCase
                 new RouteEndpoint(new GetMethod, new TestController)
             );
         $routable = new Routable($route);
-        $routerIndex = (new RouterIndex())->withAdded($routable, $group);
-        $this->expectException(LogicException::class);
-        $routerIndex->withAdded($routable, 'other-group');
+        $routerIndex = (new RouterIndex())->withAddedRoutable($routable, $group);
+        $this->expectException(OverflowException::class);
+        $routerIndex->withAddedRoutable($routable, 'other-group');
     }
 }

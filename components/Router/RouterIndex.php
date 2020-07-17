@@ -15,11 +15,15 @@ namespace Chevere\Components\Router;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrAssert;
+use Chevere\Exceptions\Core\Exception;
+use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Router\RoutableInterface;
 use Chevere\Interfaces\Router\RouteIdentifierInterface;
 use Chevere\Interfaces\Router\RouterIndexInterface;
 use Ds\Map;
-use LogicException;
+use OutOfBoundsException as GlobalOutOfBoundsException;
 
 final class RouterIndex implements RouterIndexInterface
 {
@@ -39,9 +43,17 @@ final class RouterIndex implements RouterIndexInterface
         $this->groupsMap = new Map;
     }
 
-    public function withAdded(RoutableInterface $routable, string $group): RouterIndexInterface
+    public function withAddedRoutable(RoutableInterface $routable, string $group): RouterIndexInterface
     {
-        (new StrAssert($group))->notEmpty()->notCtypeSpace();
+        try {
+            (new StrAssert($group))->notEmpty()->notCtypeSpace();
+        } catch (Exception $e) {
+            throw new InvalidArgumentException(
+                null,
+                $e->getCode(),
+                $e
+            );
+        }
         $new = clone $this;
         $routeName = $routable->route()->name()->toString();
         /** @var \Ds\TKey $routeKey */
@@ -49,11 +61,10 @@ final class RouterIndex implements RouterIndexInterface
         if ($new->groupsIndex->hasKey($routeKey)) {
             /** @var string  $groupName*/
             $groupName = $new->groupsIndex->get(/** @scrutinizer ignore-type */ $routeName);
-            throw new LogicException(
+            throw new OverflowException(
                 (new Message('Route name %routeName% is already bound to group %groupName%'))
                     ->code('%routeName%', $routeName)
                     ->code('%groupName%', $groupName)
-                    ->toString()
             );
         }
         /** @var \Ds\TKey $groupKey */
@@ -76,10 +87,10 @@ final class RouterIndex implements RouterIndexInterface
         return $new;
     }
 
-    public function hasRouteName(string $routeName): bool
+    public function hasRouteName(string $name): bool
     {
         /** @var \Ds\TKey $key */
-        $key = $routeName;
+        $key = $name;
 
         return $this->identifiersMap->hasKey($key);
     }
@@ -90,7 +101,11 @@ final class RouterIndex implements RouterIndexInterface
          * @var \Ds\TKey $routeName
          * @var RouteIdentifierInterface $return
          */
-        $return = $this->identifiersMap->get($routeName);
+        try {
+            $return = $this->identifiersMap->get($routeName);
+        } catch (\OutOfBoundsException $e) {
+            throw new OutOfBoundsException(null, 0, $e);
+        }
 
         return $return;
     }
@@ -106,24 +121,36 @@ final class RouterIndex implements RouterIndexInterface
         return $return;
     }
 
+    /**
+     *
+     * @throws GlobalOutOfBoundsException
+     */
     public function getGroupRouteNames(string $group): array
     {
         /**
          * @var \Ds\TKey $group
          * @var array $return
          */
-        $return = $this->groupsMap->get($group);
+        try {
+            $return = $this->groupsMap->get($group);
+        } catch (\OutOfBoundsException $e) {
+            throw new OutOfBoundsException(null, 0, $e);
+        }
 
         return $return;
     }
 
-    public function getRouteGroup(string $routeName): string
+    public function getRouteGroup(string $name): string
     {
         /**
          * @var \Ds\TKey $routeName
          * @var string $return
          */
-        $return = $this->groupsIndex->get($routeName);
+        try {
+            $return = $this->groupsIndex->get($name);
+        } catch (\OutOfBoundsException $e) {
+            throw new OutOfBoundsException(null, 0, $e);
+        }
 
         return $return;
     }

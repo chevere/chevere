@@ -13,14 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Router;
 
-use Chevere\Components\Controller\ControllerName;
-use Chevere\Components\Message\Message;
 use Chevere\Components\Router\RouteParsers\StrictStd;
-use Chevere\Exceptions\Core\LogicException;
-use Chevere\Exceptions\Router\RouterException;
 use Chevere\Interfaces\Router\RoutableInterface;
 use Chevere\Interfaces\Router\RoutablesInterface;
-use Chevere\Interfaces\Router\RoutedInterface;
 use Chevere\Interfaces\Router\RouterIndexInterface;
 use Chevere\Interfaces\Router\RouterInterface;
 use FastRoute\DataGenerator\GroupCountBased as DataGenerator;
@@ -45,7 +40,7 @@ final class Router implements RouterInterface
     {
         $new = clone $this;
         $route = $routable->route();
-        $new->index = $new->index->withAdded($routable, $group);
+        $new->index = $new->index->withAddedRoutable($routable, $group);
         $new->routables = $new->routables->withPut($routable);
         foreach ($route->endpoints()->getGenerator() as $endpoint) {
             $new->routeCollector->addRoute(
