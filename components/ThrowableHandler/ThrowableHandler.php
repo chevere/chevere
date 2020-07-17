@@ -13,11 +13,13 @@ declare(strict_types=1);
 
 namespace Chevere\Components\ThrowableHandler;
 
+use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableReadInterface;
 use DateTimeImmutable;
 use DateTimeInterface;
 use DateTimeZone;
+use Exception;
 
 final class ThrowableHandler implements ThrowableHandlerInterface
 {
@@ -31,8 +33,16 @@ final class ThrowableHandler implements ThrowableHandlerInterface
 
     public function __construct(ThrowableReadInterface $throwableRead)
     {
-        $timezone = new DateTimeZone('UTC');
-        $this->dateTimeUtc = new DateTimeImmutable('now', $timezone);
+        try {
+            $timezone = new DateTimeZone('UTC');
+            $this->dateTimeUtc = new DateTimeImmutable('now', $timezone);
+        } catch (Exception $e) {
+            throw new RuntimeException(
+                null,
+                $e->getCode(),
+                $e
+            );
+        }
         $this->throwableRead = $throwableRead;
         $this->id = uniqid('', true);
     }
@@ -43,6 +53,11 @@ final class ThrowableHandler implements ThrowableHandlerInterface
         $new->isDebug = $isDebug;
 
         return $new;
+    }
+
+    public function isDebug(): bool
+    {
+        return $this->isDebug;
     }
 
     public function dateTimeUtc(): DateTimeInterface
@@ -58,10 +73,5 @@ final class ThrowableHandler implements ThrowableHandlerInterface
     public function id(): string
     {
         return $this->id;
-    }
-
-    public function isDebug(): bool
-    {
-        return $this->isDebug;
     }
 }

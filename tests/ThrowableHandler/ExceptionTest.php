@@ -19,7 +19,6 @@ use Chevere\Exceptions\Core\ErrorException;
 use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\RangeException;
 use Chevere\Interfaces\ThrowableHandler\ThrowableReadInterface;
-use LogicException;
 use PHPUnit\Framework\TestCase;
 
 final class ExceptionTest extends TestCase

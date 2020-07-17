@@ -43,17 +43,11 @@ final class ThrowableTraceFormatter implements ThrowableTraceFormatterInterface
         }
     }
 
-    /**
-     * @return array Containing the formatter trace entries
-     */
     public function toArray(): array
     {
         return $this->array;
     }
 
-    /**
-     * @return string Containing the formatter trace entries as string ready to screen.
-     */
     public function toString(): string
     {
         return $this->string;

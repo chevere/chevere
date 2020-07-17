@@ -17,6 +17,9 @@ use Chevere\Interfaces\To\ToArrayInterface;
 use Chevere\Interfaces\To\ToStringInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
 
+/**
+ * Describes the component in charge of formatting a throwable trace entry.
+ */
 interface ThrowableTraceFormatterInterface extends ToArrayInterface, ToStringInterface
 {
     const TAG_ENTRY_FILE = '%file%';
