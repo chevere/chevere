@@ -16,13 +16,11 @@ namespace Chevere\Components\Route;
 use Chevere\Components\Message\Message;
 use Chevere\Components\Regex\Regex;
 use Chevere\Components\Str\StrBool;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Route\RouteWildcardMatchInterface;
-use InvalidArgumentException;
-use LogicException;
 
 final class RouteWildcardMatch implements RouteWildcardMatchInterface
 {
-    /** @var string a regular expression match statement */
     private string $string;
 
     public function __construct(string $string)
@@ -49,7 +47,6 @@ final class RouteWildcardMatch implements RouteWildcardMatchInterface
                 (new Message('String %string% must omit the starting anchor %char%'))
                     ->code('%string%', $this->string)
                     ->code('%char%', '^')
-                    ->toString()
             );
         }
         if ((new StrBool($this->string))->endsWith('$')) {
@@ -57,7 +54,6 @@ final class RouteWildcardMatch implements RouteWildcardMatchInterface
                 (new Message('String %string% must omit the ending anchor %char%'))
                     ->code('%string%', $this->string)
                     ->code('%char%', '$')
-                    ->toString()
             );
         }
     }

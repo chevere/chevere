@@ -14,17 +14,21 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Route;
 
 use Chevere\Exceptions\Regex\RegexException;
+use Chevere\Interfaces\To\ToStringInterface;
 
-interface RouteWildcardMatchInterface
+/**
+ * Describes the component in charge of defining a route wildcard match.
+ */
+interface RouteWildcardMatchInterface extends ToStringInterface
 {
     /**
-     * @param string $match Regex match (without delimiters, without starting ^ or ending $).
-     * @throws RegexException If $match is an invalid regex matcher
+     * @param string $string A regular expression match statement.
+     * @throws RegexException If `$string` is an invalid regex matcher.
      */
-    public function __construct(string $match);
+    public function __construct(string $string);
 
     /**
-     * @return string Regex match (without delimiters).
+     * Same as `toString` but with starting `^` and ending `$`.
      */
-    public function toString(): string;
+    public function toAnchored(): string;
 }

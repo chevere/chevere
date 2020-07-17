@@ -15,24 +15,17 @@ namespace Chevere\Components\Route;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrBool;
-use Chevere\Exceptions\Route\RouteWildcardInvalidCharsException;
+use Chevere\Exceptions\Route\RouteWildcardInvalidException;
 use Chevere\Exceptions\Route\RouteWildcardStartWithNumberException;
 use Chevere\Interfaces\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Route\RouteWildcardMatchInterface;
 
 final class RouteWildcard implements RouteWildcardInterface
 {
-    /** @var string */
     private string $name;
 
     private RouteWildcardMatchInterface $match;
 
-    /**
-     * @param string $name  The wildcard name
-     *
-     * @throws RouteWildcardStartWithNumberException if $name starts with a number
-     * @throws RouteWildcardInvalidCharsException    if $name contains invalid chars
-     */
     public function __construct(string $name, RouteWildcardMatchInterface $match)
     {
         $this->name = $name;
@@ -40,7 +33,7 @@ final class RouteWildcard implements RouteWildcardInterface
         $this->match = $match;
     }
 
-    public function name(): string
+    public function toString(): string
     {
         return $this->name;
     }
@@ -53,13 +46,13 @@ final class RouteWildcard implements RouteWildcardInterface
     private function assertName(): void
     {
         if ((new StrBool($this->name))->startsWithCtypeDigit()) {
-            throw new RouteWildcardStartWithNumberException(
+            throw new RouteWildcardInvalidException(
                 (new Message('String %string% must not start with a numeric value'))
                     ->code('%string%', $this->name)
             );
         }
         if (!preg_match(RouteWildcardInterface::ACCEPT_CHARS_REGEX, $this->name)) {
-            throw new RouteWildcardInvalidCharsException(
+            throw new RouteWildcardInvalidException(
                 (new Message('String %string% must contain only alphanumeric and underscore characters'))
                     ->code('%string%', $this->name)
             );

@@ -13,37 +13,37 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Route;
 
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\DataStructures\DsMapInterface;
-use Countable;
 use Generator;
 
+/**
+ * Describes the component in charge of collecting objects implementing `RouteEndpointInterface`.
+ */
 interface RouteEndpointsInterface extends DsMapInterface
 {
     /**
-    * @return Generator<string, RouteEndpointInterface>
-    */
-    public function getGenerator(): Generator;
-
-    /**
-     * @return string[] The known keys.
-     */
-    public function keys(): array;
-
-    /**
-     * Return an instance with the specified RouteEndpoint.
+     * Return an instance with the specified `$routeEndpoint`.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified RouteEndpoint.
+     * an instance that contains the specified `$routeEndpoint`.
      */
     public function withPut(RouteEndpointInterface $routeEndpoint): RouteEndpointsInterface;
 
     /**
-     * Returns a boolean indicating whether the instance has $key.
+     * Returns a boolean indicating whether the instance has `$key`.
      */
     public function hasKey(string $key): bool;
 
     /**
-     * Provides access to the RouteEndpointInterface identified by $key.
+     * Provides access to the RouteEndpointInterface identified by `$key`.
+     *
+     * @throws OutOfBoundsException
      */
     public function get(string $key): RouteEndpointInterface;
+
+    /**
+     * @return Generator<string, RouteEndpointInterface>
+     */
+    public function getGenerator(): Generator;
 }

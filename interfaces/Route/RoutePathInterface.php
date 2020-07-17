@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Route;
 
+use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Interfaces\Regex\RegexInterface;
 use Chevere\Interfaces\To\ToStringInterface;
 
 /**
@@ -20,12 +22,18 @@ use Chevere\Interfaces\To\ToStringInterface;
  */
 interface RoutePathInterface extends ToStringInterface
 {
+    /**
+     * @throws InvalidArgumentException
+     */
     public function __construct(string $path);
 
+    /**
+     * Provides access to the wildcards instance.
+     */
     public function wildcards(): RouteWildcardsInterface;
 
     /**
-     * Provides access to the uri path.
+     * Provides access to the regex instance.
      */
-    public function toString(): string;
+    public function regex(): RegexInterface;
 }

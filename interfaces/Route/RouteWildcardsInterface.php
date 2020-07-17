@@ -16,22 +16,20 @@ namespace Chevere\Interfaces\Route;
 use Chevere\Interfaces\DataStructures\DsMapInterface;
 use Generator;
 
+/**
+ * Describes the component in charge of collecting objects implementing `RouteWildcardInterface`.
+ */
 interface RouteWildcardsInterface extends DsMapInterface
 {
     /**
-     * Return an instance with the specified RouteWildcardInterface.
+     * Return an instance with the specified `$wildcard`.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified RouteWildcardInterface.
+     * an instance that contains the specified `$wildcard`.
      *
-     * This method should allow to override wildcards.
+     * This method should overrides existing wildcards.
      */
     public function withAddedWildcard(RouteWildcardInterface $wildcard): RouteWildcardsInterface;
-
-    /**
-     * @return int The count of RouteWildcardInterface objects
-     */
-    public function count(): int;
 
     /**
      * Returns a boolean indicating whether the instance has a given RouteWildcardInterface.

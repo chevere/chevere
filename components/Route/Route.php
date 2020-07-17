@@ -85,22 +85,22 @@ final class Route implements RouteInterface
         }
         foreach ($new->routePath->wildcards()->getGenerator() as $wildcard) {
             $new->assertWildcardEndpoint($wildcard, $endpoint);
-            $knownWildcardMatch = $new->wildcards[$wildcard->name()] ?? null;
+            $knownWildcardMatch = $new->wildcards[$wildcard->toString()] ?? null;
             $controllerParamMatch = $endpoint->controller()->parameters()
-                ->get($wildcard->name())->regex()->toNoDelimitersNoAnchors();
+                ->get($wildcard->toString())->regex()->toNoDelimitersNoAnchors();
             if (!isset($knownWildcardMatch)) {
                 if ($controllerParamMatch !== $wildcard->match()->toString()) {
                     throw new RouteWildcardConflictException(
                         (new Message('Wildcard %parameter% matches against %match% which is incompatible with the match %controllerMatch% defined for %controller%'))
-                            ->code('%parameter%', $wildcard->name())
+                            ->code('%parameter%', $wildcard->toString())
                             ->code('%match%', $wildcard->match()->toString())
                             ->code('%controllerMatch%', $controllerParamMatch)
                             ->code('%controller%', get_class($endpoint->controller()))
                     );
                 }
-                $new->wildcards[$wildcard->name()] = $controllerParamMatch;
+                $new->wildcards[$wildcard->toString()] = $controllerParamMatch;
             }
-            $endpoint = $endpoint->withoutParameter($wildcard->name());
+            $endpoint = $endpoint->withoutParameter($wildcard->toString());
         }
         $new->endpoints = $new->endpoints->withPut($endpoint);
 
@@ -122,14 +122,14 @@ final class Route implements RouteInterface
             throw new InvalidArgumentException(
                 (new Message("Controller %controller% doesn't accept any parameter (route wildcard %wildcard%)"))
                     ->code('%controller%', get_class($endpoint->controller()))
-                    ->code('%wildcard%', $wildcard->name())
+                    ->code('%wildcard%', $wildcard->toString())
             );
         }
-        if (array_key_exists($wildcard->name(), $endpoint->parameters()) === false) {
+        if (array_key_exists($wildcard->toString(), $endpoint->parameters()) === false) {
             $parameters = array_keys($endpoint->parameters());
             throw new OutOfBoundsException(
                 (new Message('Wildcard parameter %wildcard% must bind to a one of the known %controller% parameters: %parameters%'))
-                    ->code('%wildcard%', $wildcard->name())
+                    ->code('%wildcard%', $wildcard->toString())
                     ->code('%controller%', get_class($endpoint->controller()))
                     ->code('%parameters%', implode(', ', $parameters))
             );

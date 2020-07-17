@@ -68,7 +68,7 @@ final class RoutableSpec implements RoutableSpecInterface
         $wildcards = [];
         /** @var RouteWildcardInterface $wildcard */
         foreach ($this->wildcards as $wildcard) {
-            $wildcards[$wildcard->name()] = '^' . $wildcard->match()->toString() . '$';
+            $wildcards[$wildcard->toString()] = '^' . $wildcard->match()->toString() . '$';
         }
 
         return [

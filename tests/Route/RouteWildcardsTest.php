@@ -55,8 +55,8 @@ final class RouteWildcardsTest extends TestCase
         $this->assertCount(2, $routeWildcards);
         foreach ($wildcards as $pos => $wildcard) {
             $this->assertTrue($routeWildcards->hasPos($pos));
-            $this->assertTrue($routeWildcards->has($wildcard->name()));
-            $this->assertSame($wildcard, $routeWildcards->get($wildcard->name()));
+            $this->assertTrue($routeWildcards->has($wildcard->toString()));
+            $this->assertSame($wildcard, $routeWildcards->get($wildcard->toString()));
         }
     }
 }

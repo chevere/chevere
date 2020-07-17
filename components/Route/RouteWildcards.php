@@ -17,6 +17,7 @@ use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use Chevere\Interfaces\Route\RouteWildcardInterface;
 use Chevere\Interfaces\Route\RouteWildcardsInterface;
 use Ds\Map;
+use OutOfBoundsException;
 use RangeException;
 use function DeepCopy\deep_copy;
 
@@ -47,12 +48,12 @@ final class RouteWildcards implements RouteWildcardsInterface
     public function withAddedWildcard(RouteWildcardInterface $routeWildcard): RouteWildcardsInterface
     {
         $new = clone $this;
-        if ($new->index->hasKey($routeWildcard->name())) {
-            $new->pos = $new->index->get($routeWildcard->name());
+        if ($new->index->hasKey($routeWildcard->toString())) {
+            $new->pos = $new->index->get($routeWildcard->toString());
         } else {
             $new->pos++;
         }
-        $new->index->put($routeWildcard->name(), $new->pos);
+        $new->index->put($routeWildcard->toString(), $new->pos);
         $new->map->put($new->pos, $routeWildcard);
 
         return $new;

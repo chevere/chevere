@@ -15,8 +15,7 @@ namespace Chevere\Tests\Route;
 
 use Chevere\Components\Route\RouteWildcard;
 use Chevere\Components\Route\RouteWildcardMatch;
-use Chevere\Exceptions\Route\RouteWildcardInvalidCharsException;
-use Chevere\Exceptions\Route\RouteWildcardStartWithNumberException;
+use Chevere\Exceptions\Route\RouteWildcardInvalidException;
 use FastRoute\RouteParser\Std;
 use PHPUnit\Framework\TestCase;
 
@@ -24,13 +23,13 @@ final class RouteWildcardTest extends TestCase
 {
     public function testConstructWildcardStartsWithInvalidChar(): void
     {
-        $this->expectException(RouteWildcardStartWithNumberException::class);
+        $this->expectException(RouteWildcardInvalidException::class);
         new RouteWildcard('0test', new RouteWildcardMatch(Std::DEFAULT_DISPATCH_REGEX));
     }
 
     public function testConstructWildcardInvalidChars(): void
     {
-        $this->expectException(RouteWildcardInvalidCharsException::class);
+        $this->expectException(RouteWildcardInvalidException::class);
         new RouteWildcard('t{e/s}t', new RouteWildcardMatch(Std::DEFAULT_DISPATCH_REGEX));
     }
 
@@ -39,7 +38,7 @@ final class RouteWildcardTest extends TestCase
         $name = 'test';
         $match = new RouteWildcardMatch('[a-z]+');
         $routeWildcard = new RouteWildcard($name, $match);
-        $this->assertSame($name, $routeWildcard->name());
+        $this->assertSame($name, $routeWildcard->toString());
         $this->assertSame($match, $routeWildcard->match());
     }
 }

@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use Chevere\Components\Message\Message;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Http\MethodInterface;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
-use OutOfBoundsException;
 
 final class RouteEndpoint implements RouteEndpointInterface
 {
@@ -67,17 +67,12 @@ final class RouteEndpoint implements RouteEndpointInterface
         return $this->description;
     }
 
-    /**
-     *
-     * @throws OutOfBoundsException if $parameter doesn't exists
-     */
     public function withoutParameter(string $parameter): RouteEndpointInterface
     {
         if (array_key_exists($parameter, $this->parameters) === false) {
             throw new OutOfBoundsException(
                 (new Message("Parameter %parameter% doesn't exists"))
                     ->code('%parameter%', $parameter)
-                    ->toString()
             );
         }
         $new = clone $this;

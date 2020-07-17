@@ -13,15 +13,21 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Route;
 
-interface RouteNameInterface
+use Chevere\Exceptions\Route\RouteNameInvalidException;
+use Chevere\Exceptions\Str\StrAssertException;
+use Chevere\Interfaces\To\ToStringInterface;
+
+/**
+ * Describes the component in charge of defining a route name.
+ */
+interface RouteNameInterface extends ToStringInterface
 {
     /** Regex pattern used to validate route name. */
     const REGEX = '/^[\w\-\.]+$/i';
 
-    public function __construct(string $name);
-
     /**
-     * @return string Route name.
+     * @throws StrAssertException If `$name` is empty or if it is ctype-space.
+     * @throws RouteNameInvalidException if `$name` doesn't match `self::REGEX`
      */
-    public function toString(): string;
+    public function __construct(string $name);
 }

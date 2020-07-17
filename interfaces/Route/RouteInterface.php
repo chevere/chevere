@@ -13,44 +13,52 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Route;
 
-use Chevere\Exceptions\Route\RouteNameInvalidException;
-use Chevere\Interfaces\Middleware\MiddlewaresInterface;
-use Psr\Http\Server\MiddlewareInterface;
+use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\OverflowException;
+use Chevere\Exceptions\Route\RouteEndpointConflictException;
+use Chevere\Exceptions\Route\RouteWildcardConflictException;
 
+/**
+ * Describes the component in charge of defining a route.
+ */
 interface RouteInterface
 {
-    /**
-     * @throws RouteNameInvalidException if $name doesn't match REGEX_NAME
-     */
-    public function __construct(RouteNameInterface $name, RoutePathInterface $routePath);
+    public function __construct(RouteNameInterface $name, RoutePathInterface $path);
 
     /**
-     * Provides access to the route name (if any).
+     * Provides access to the `$name` instance.
      */
     public function name(): RouteNameInterface;
 
     /**
-     * Provides access to the RoutePathInterface instance.
+     * Provides access to the `$path` instance.
      */
     public function path(): RoutePathInterface;
 
     /**
-     * Provides access to the file maker array.
+     * Provides access to the file maker.
      */
     public function maker(): array;
 
     /**
-     * Return an instance with the specified added $routeEndpoint.
+     * Return an instance with the specified added `$routeEndpoint`.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified added $routeEndpoint.
+     * an instance that contains the specified added `$routeEndpoint`.
      *
-     * This method should allow to override any previous $routeEndpoint.
+     * This method should allow to override any previous `$routeEndpoint`.
+     *
+     * @throws OverflowException
+     * @throws RouteEndpointConflictException
+     * @throws InvalidArgumentException
+     * @throws OutOfBoundsException
+     * @throws RouteWildcardConflictException
      */
     public function withAddedEndpoint(RouteEndpointInterface $routeEndpoint): RouteInterface;
 
     /**
-     * Provides access to the RouteEndpointsInterface instance.
+     * Provides access to the endpoints instance.
      */
     public function endpoints(): RouteEndpointsInterface;
 }

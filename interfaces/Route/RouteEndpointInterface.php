@@ -22,11 +22,18 @@ use Chevere\Components\Http\Methods\PatchMethod;
 use Chevere\Components\Http\Methods\PostMethod;
 use Chevere\Components\Http\Methods\PutMethod;
 use Chevere\Components\Http\Methods\TraceMethod;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Controller\ControllerInterface;
 use Chevere\Interfaces\Http\MethodInterface;
 
+/**
+ * Describes the component in charge of defining a route endpoint.
+ *
+ * Note: Parameters must be automatically determined from known `$controller` parameters.
+ */
 interface RouteEndpointInterface
 {
+    /** Known HTTP methods */
     const KNOWN_METHODS = [
         'CONNECT' => ConnectMethod::class,
         'DELETE' => DeleteMethod::class,
@@ -44,15 +51,52 @@ interface RouteEndpointInterface
         ControllerInterface $controller
     );
 
+    /**
+     * Provides access to the `$method` instance.
+     */
     public function method(): MethodInterface;
 
+    /**
+     * Provides access to the `$controller` instance.
+     */
     public function controller(): ControllerInterface;
 
+    /**
+     * Return an instance with the specified `$description`.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified `$description`.
+     */
     public function withDescription(string $description): RouteEndpointInterface;
 
+    /**
+     * Provides access to the description.
+     */
     public function description(): string;
 
+    /**
+     * Return an instance with the specified `$parameter` removed.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified `$parameter` removed.
+     *
+     * @throws OutOfBoundsException
+     */
     public function withoutParameter(string $parameter): RouteEndpointInterface;
 
+    /**
+     * Provides access to the parameters.
+     *
+     * ```php
+     * return [
+     *     'name' => [
+     *         'name' => 'name',
+     *         'regex' => '/^\w+$/',
+     *         'description' => 'User name',
+     *         'isRequired' => true,
+     *     ],
+     * ];
+     * ```
+     */
     public function parameters(): array;
 }

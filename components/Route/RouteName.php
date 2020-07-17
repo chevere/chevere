@@ -14,19 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Components\Route;
 
 use Chevere\Components\Message\Message;
+use Chevere\Components\Str\StrAssert;
 use Chevere\Exceptions\Route\RouteNameInvalidException;
 use Chevere\Interfaces\Route\RouteNameInterface;
-use Chevere\Components\Str\StrAssert;
 
 final class RouteName implements RouteNameInterface
 {
-    /** @var string */
     private string $name;
 
-    /**
-     * @throws StrAssertException If $name is empty or if it is ctype-space.
-     * @throws RouteNameInvalidException if $name doesn't match RouteNameInterface::REGEX
-     */
     public function __construct(string $name)
     {
         (new StrAssert($name))->notEmpty()->notCtypeSpace();

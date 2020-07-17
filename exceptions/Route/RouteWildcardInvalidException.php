@@ -18,6 +18,6 @@ use Chevere\Exceptions\Core\Exception;
 /**
  * Exception thrown when the wildcard contains invalid chars.
  */
-final class RouteWildcardInvalidCharsException extends Exception
+final class RouteWildcardInvalidException extends Exception
 {
 }

@@ -13,9 +13,28 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Route;
 
+/**
+ * Describes the component in charge of decorate a route.
+ */
 interface RouteDecoratorInterface
 {
+    public function __construct(RouteNameInterface $name);
+
+    /**
+     * Provides access to the route name.
+     */
     public function name(): RouteNameInterface;
 
+    /**
+     * Return an instance with the specified `$wildcards` instance.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified `$wildcards` instance.
+     */
+    public function withWildcards(RouteWildcardsInterface $wildcards): RouteDecoratorInterface;
+
+    /**
+     * Provides access to the route wildcards.
+     */
     public function wildcards(): RouteWildcardsInterface;
 }
