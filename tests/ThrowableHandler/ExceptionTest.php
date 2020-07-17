@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\ThrowableHandler;
 
-use Chevere\Components\ThrowableHandler\ThrowableRead;
 use Chevere\Components\Message\Message;
+use Chevere\Components\ThrowableHandler\ThrowableRead;
 use Chevere\Exceptions\Core\ErrorException;
 use Chevere\Exceptions\Core\Exception;
+use Chevere\Exceptions\Core\RangeException;
 use Chevere\Interfaces\ThrowableHandler\ThrowableReadInterface;
 use LogicException;
 use PHPUnit\Framework\TestCase;
@@ -56,7 +57,7 @@ final class ExceptionTest extends TestCase
         $exceptionName = TestErrorException::class;
         $exception = new $exceptionName(new Message('test'));
         $exception->setSeverity(12346664321);
-        $this->expectException(LogicException::class);
+        $this->expectException(RangeException::class);
         new ThrowableRead($exception);
     }
 }

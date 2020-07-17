@@ -52,10 +52,10 @@ final class TraceEntryTest extends TestCase
 
     public function testConstructTypes(): void
     {
-        $file = __FILE__;
+        $filename = __FILE__;
         $line = 100;
         $entry = [
-            'file' => $file,
+            'file' => $filename,
             'line' => $line,
             'function' => __FUNCTION__,
             'class' => __CLASS__,
@@ -66,7 +66,7 @@ final class TraceEntryTest extends TestCase
         foreach ($entry as $method => $val) {
             $this->assertSame($val, $traceEntry->$method());
         }
-        $this->assertSame($file . ':' . $line, $traceEntry->fileLine());
+        $this->assertSame($filename . ':' . $line, $traceEntry->fileLine());
     }
 
     public function testAnonClass(): void

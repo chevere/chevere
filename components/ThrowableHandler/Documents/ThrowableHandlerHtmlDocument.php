@@ -41,7 +41,7 @@ final class ThrowableHandlerHtmlDocument extends ThrowableHandlerAbstractDocumen
     public function getTemplate(): array
     {
         $template = parent::getTemplate();
-        if (!$this->exceptionHandler->isDebug()) {
+        if (!$this->handler->isDebug()) {
             $template = [
                 self::SECTION_TITLE => $template[self::SECTION_TITLE],
             ];
@@ -52,7 +52,7 @@ final class ThrowableHandlerHtmlDocument extends ThrowableHandlerAbstractDocumen
 
     public function getSectionTitle(): string
     {
-        if (!$this->exceptionHandler->isDebug()) {
+        if (!$this->handler->isDebug()) {
             return $this->formatter->wrapTitle(self::NO_DEBUG_TITLE_PLAIN) . self::NO_DEBUG_CONTENT_HTML
                 . '<p class="fine-print">' . self::TAG_DATE_TIME_UTC_ATOM . ' • ' . self::TAG_ID . '</p>';
         }
@@ -65,7 +65,7 @@ final class ThrowableHandlerHtmlDocument extends ThrowableHandlerAbstractDocumen
         $preDocument = strtr(self::HTML_TEMPLATE, [
             '%bodyClass%' => !headers_sent() ? 'body--flex' : 'body--block',
             '%css%' => file_get_contents(dirname(__DIR__) . '/src/template.css'),
-            '%body%' => $this->exceptionHandler->isDebug() ? self::BODY_DEBUG_1_HTML : self::BODY_DEBUG_0_HTML,
+            '%body%' => $this->handler->isDebug() ? self::BODY_DEBUG_1_HTML : self::BODY_DEBUG_0_HTML,
         ]);
 
         return str_replace('%content%', $document, $preDocument);

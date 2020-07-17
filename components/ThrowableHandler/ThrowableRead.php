@@ -14,17 +14,13 @@ declare(strict_types=1);
 namespace Chevere\Components\ThrowableHandler;
 
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Core\DomainException;
-use Chevere\Exceptions\Core\Exception as CoreException;
+use Chevere\Exceptions\Core\Exception;
+use Chevere\Exceptions\Core\RangeException;
 use Chevere\Interfaces\Message\MessageInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableReadInterface;
 use ErrorException;
-use LogicException;
 use Throwable;
 
-/**
- * Class used to make Exception readable (normalized).
- */
 final class ThrowableRead implements ThrowableReadInterface
 {
     private string $className;
@@ -45,9 +41,6 @@ final class ThrowableRead implements ThrowableReadInterface
 
     private array $trace;
 
-    /**
-     * @throws LogicException if the exception severity is unknown.
-     */
     public function __construct(Throwable $throwable)
     {
         $this->className = get_class($throwable);
@@ -63,7 +56,7 @@ final class ThrowableRead implements ThrowableReadInterface
         $this->assertSeverity();
         $this->loggerLevel = ThrowableReadInterface::ERROR_LEVELS[$this->severity];
         $this->type = ThrowableReadInterface::ERROR_TYPES[$this->severity];
-        if ($throwable instanceof CoreException) {
+        if ($throwable instanceof Exception) {
             $this->message = $throwable->message();
         } else {
             $this->message = new Message($throwable->getMessage());
@@ -123,7 +116,7 @@ final class ThrowableRead implements ThrowableReadInterface
         $accepted = array_keys(ThrowableReadInterface::ERROR_TYPES);
         if (!in_array($this->severity, $accepted)) {
             // @codeCoverageIgnoreStart
-            throw new DomainException(
+            throw new RangeException(
                 (new Message('Unknown severity value of %severity%, accepted values are: %accepted%'))
                     ->code('%severity%', (string) $this->severity)
                     ->code('%accepted%', implode(', ', $accepted))

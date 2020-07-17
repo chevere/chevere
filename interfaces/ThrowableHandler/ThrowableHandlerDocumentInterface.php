@@ -13,7 +13,12 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\ThrowableHandler;
 
-interface ThrowableHandlerDocumentInterface
+use Chevere\Interfaces\To\ToStringInterface;
+
+/**
+ * Describes the component in charge of defining a throwable handler document.
+ */
+interface ThrowableHandlerDocumentInterface extends ToStringInterface
 {
     const SECTION_TITLE = 'title';
     const SECTION_MESSAGE = 'message';
@@ -50,7 +55,7 @@ interface ThrowableHandlerDocumentInterface
         self::SECTION_SERVER => 64,
     ];
 
-    public function __construct(ThrowableHandlerInterface $exceptionHandler);
+    public function __construct(ThrowableHandlerInterface $throwableHandler);
 
     /**
      * Return an instance with the specified verbosity.
@@ -97,9 +102,19 @@ interface ThrowableHandlerDocumentInterface
      */
     public function getSectionServer(): string;
 
-    public function toString(): string;
-
+    /**
+     * Returns the template used for translating placeholders tags.
+     *
+     * ```php
+     * return [
+     *     'self::::SECTION_TITLE' => $this->getSectionTitle(),
+     * ];
+     * ```
+     */
     public function getTemplate(): array;
 
+    /**
+     * Returns the document formatter.
+     */
     public function getFormatter(): ThrowableHandlerFormatterInterface;
 }

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Str;
 
 /**
- * Describes the component in charge of providing string conditionals.
+ * Describes the component in charge of string conditionals.
  */
 interface StrBoolInterface
 {

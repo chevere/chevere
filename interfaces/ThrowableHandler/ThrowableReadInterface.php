@@ -13,9 +13,14 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\ThrowableHandler;
 
+use Chevere\Exceptions\Core\RangeException;
 use Chevere\Interfaces\Message\MessageInterface;
 use Psr\Log\LogLevel;
+use Throwable;
 
+/**
+ * Describes the component in charge of reading a throwable.
+ */
 interface ThrowableReadInterface
 {
     const DEFAULT_ERROR_TYPE = E_ERROR;
@@ -57,6 +62,11 @@ interface ThrowableReadInterface
         E_DEPRECATED => LogLevel::NOTICE,
         E_USER_DEPRECATED => LogLevel::NOTICE,
     ];
+
+    /**
+     * @throws RangeException If unable to read `$throwable`
+     */
+    public function __construct(Throwable $throwable);
 
     /**
      * Provides access to the exception class name.

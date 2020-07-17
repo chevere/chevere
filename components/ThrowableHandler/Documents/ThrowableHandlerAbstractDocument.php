@@ -21,7 +21,7 @@ use DateTimeInterface;
 
 abstract class ThrowableHandlerAbstractDocument implements ThrowableHandlerDocumentInterface
 {
-    protected ThrowableHandlerInterface $exceptionHandler;
+    protected ThrowableHandlerInterface $handler;
 
     protected ThrowableHandlerFormatterInterface $formatter;
 
@@ -37,9 +37,9 @@ abstract class ThrowableHandlerAbstractDocument implements ThrowableHandlerDocum
 
     abstract public function getFormatter(): ThrowableHandlerFormatterInterface;
 
-    final public function __construct(ThrowableHandlerInterface $exceptionHandler)
+    final public function __construct(ThrowableHandlerInterface $throwableHandler)
     {
-        $this->exceptionHandler = $exceptionHandler;
+        $this->handler = $throwableHandler;
         $this->formatter = $this->getFormatter();
         $this->template = $this->getTemplate();
     }
@@ -62,14 +62,14 @@ abstract class ThrowableHandlerAbstractDocument implements ThrowableHandlerDocum
         if ($this->verbosity > 0) {
             $this->handleVerbositySections();
         }
-        $exception = $this->exceptionHandler->throwableRead();
-        $dateTimeUtc = $this->exceptionHandler->dateTimeUtc();
+        $exception = $this->handler->throwableRead();
+        $dateTimeUtc = $this->handler->dateTimeUtc();
         $this->tags = [
             static::TAG_TITLE => $exception->className() . ' thrown',
             static::TAG_MESSAGE => $exception->message(),
             static::TAG_CODE_WRAP => $this->getExceptionCode(),
             static::TAG_FILE_LINE => $exception->file() . ':' . $exception->line(),
-            static::TAG_ID => $this->exceptionHandler->id(),
+            static::TAG_ID => $this->handler->id(),
             static::TAG_DATE_TIME_UTC_ATOM => $dateTimeUtc->format(DateTimeInterface::ATOM),
             static::TAG_TIMESTAMP => $dateTimeUtc->getTimestamp(),
             static::TAG_STACK => $this->getStackTrace(),
@@ -141,15 +141,15 @@ abstract class ThrowableHandlerAbstractDocument implements ThrowableHandlerDocum
 
     private function getExceptionCode(): string
     {
-        return $this->exceptionHandler->throwableRead()->code() > 0
-            ? '[Code #' . $this->exceptionHandler->throwableRead()->code() . ']'
+        return $this->handler->throwableRead()->code() > 0
+            ? '[Code #' . $this->handler->throwableRead()->code() . ']'
             : '';
     }
 
     private function getStackTrace(): string
     {
         return (new ThrowableTraceFormatter(
-            $this->exceptionHandler->throwableRead()->trace(),
+            $this->handler->throwableRead()->trace(),
             $this->formatter
         ))->toString();
     }

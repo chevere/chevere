@@ -15,6 +15,9 @@ namespace Chevere\Interfaces\ThrowableHandler;
 
 use Chevere\Interfaces\VarDump\VarDumpFormatterInterface;
 
+/**
+ * Describes the component in charge of formatting a throwable handler document.
+ */
 interface ThrowableHandlerFormatterInterface
 {
     /**
@@ -28,19 +31,32 @@ interface ThrowableHandlerFormatterInterface
     public function getVarDumpFormatter(): VarDumpFormatterInterface;
 
     /**
-     * Get the template used for each trace entry.
-     *
-     * @see ThrowableTraceFormatterInterface for tag reference
+     * Returns the template used for each trace entry.
      */
     public function getTraceEntryTemplate(): string;
 
+    /**
+     * Returns formatted horizontal rule.
+     */
     public function getHr(): string;
 
+    /**
+     * Returns formatted line break.
+     */
     public function getLineBreak(): string;
 
+    /**
+     * Returns `$value` formatted as wrapped link.
+     */
     public function wrapLink(string $value): string;
 
+    /**
+     * Returns `$value` formatted as section title.
+     */
     public function wrapSectionTitle(string $value): string;
 
+    /**
+     * Returns `$value` formatted as title.
+     */
     public function wrapTitle(string $value): string;
 }

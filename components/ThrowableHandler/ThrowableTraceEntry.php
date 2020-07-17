@@ -15,14 +15,11 @@ namespace Chevere\Components\ThrowableHandler;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Str\StrBool;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\ThrowableHandler\ThrowableTraceEntryInterface;
 use Chevere\Interfaces\VarDump\VarDumperInterface;
-use InvalidArgumentException;
 use ReflectionMethod;
 
-/**
- * Allows to interact with trace entries thrown by Exception.
- */
 final class ThrowableTraceEntry implements ThrowableTraceEntryInterface
 {
     private array $entry;
@@ -41,10 +38,6 @@ final class ThrowableTraceEntry implements ThrowableTraceEntryInterface
 
     private array $args;
 
-    /**
-     * @param array $entry An exception trace item.
-     * @throws InvalidArgumentException If $entry doesn't contain the required TraceEntryInterface::KEYS.
-     */
     public function __construct(array $entry)
     {
         $this->entry = $entry;
@@ -107,7 +100,6 @@ final class ThrowableTraceEntry implements ThrowableTraceEntryInterface
             throw new InvalidArgumentException(
                 (new Message('Missing key(s) %keyNames%'))
                     ->code('%keyNames%', implode(', ', $missing))
-                    ->toString()
             );
         }
     }
