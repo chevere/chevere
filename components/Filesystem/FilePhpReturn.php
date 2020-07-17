@@ -158,7 +158,7 @@ final class FilePhpReturn implements FilePhpReturnInterface
         }
         $contents = fread($handle, self::PHP_RETURN_CHARS);
         fclose($handle);
-        if ('' == $contents) {
+        if ($contents === '') {
             throw new FileWithoutContentsException(
                 (new Message("The file %path% doesn't have any contents"))
                     ->code('%path%', $filename)

@@ -20,6 +20,7 @@ use Chevere\Exceptions\Routing\RoutingDescriptorAlreadyAddedException;
 use Chevere\Interfaces\Routing\RoutingDescriptorInterface;
 use Chevere\Interfaces\Routing\RoutingDescriptorsInterface;
 use Ds\Set;
+use Generator;
 use OutOfRangeException;
 use Throwable;
 
@@ -71,12 +72,22 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
         return $new;
     }
 
+    /**
+     * @return Generator<int, RoutingDescriptorInterface>
+     */
+    public function getGenerator(): Generator
+    {
+        foreach ($this->set->getIterator() as $key) {
+            yield $key => $this->set->get($key);
+        }
+    }
+
     public function count(): int
     {
         return $this->set->count();
     }
 
-    public function has(RoutingDescriptorInterface $descriptor): bool
+    public function contains(RoutingDescriptorInterface $descriptor): bool
     {
         return $this->set->contains($descriptor);
     }

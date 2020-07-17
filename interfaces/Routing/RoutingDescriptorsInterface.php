@@ -17,12 +17,15 @@ use Chevere\Exceptions\Core\OutOfRangeException;
 use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Routing\RoutingDescriptorAlreadyAddedException;
 use Countable;
+use Generator;
 
 /**
  * Describes the component in charge of collecting objects implementing `RoutingDescriptorInterface`.
  */
 interface RoutingDescriptorsInterface extends Countable
 {
+    public function getGenerator(): Generator;
+
     /**
      * Return an instance with the specified `$descriptor` added.
      *
@@ -35,14 +38,9 @@ interface RoutingDescriptorsInterface extends Countable
     public function withAdded(RoutingDescriptorInterface $descriptor): RoutingDescriptorsInterface;
 
     /**
-     * Provides access to the element count.
-     */
-    public function count(): int;
-
-    /**
      * Indicates whether the instance has the given `$descriptor`.
      */
-    public function has(RoutingDescriptorInterface $descriptor): bool;
+    public function contains(RoutingDescriptorInterface $descriptor): bool;
 
     /**
      * @throws OutOfRangeException

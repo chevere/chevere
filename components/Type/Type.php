@@ -82,7 +82,7 @@ final class Type implements TypeInterface
 
     private function isClassName(string $objectClass): bool
     {
-        return $objectClass == $this->type;
+        return $this->type === $objectClass;
     }
 
     private function isInterfaceImplemented(object $object): bool

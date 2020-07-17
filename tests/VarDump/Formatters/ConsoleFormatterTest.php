@@ -23,7 +23,7 @@ final class ConsoleFormatterTest extends TestCase
     {
         $indent = 5;
         $indented = (new VarDumpConsoleFormatter)->indent($indent);
-        $this->assertTrue(strlen($indented) == $indent);
+        $this->assertTrue(strlen($indented) === $indent);
     }
 
     public function testEmphasis(): void

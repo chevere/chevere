@@ -54,7 +54,7 @@ final class ThrowableRead implements ThrowableReadInterface
         $this->code = $throwable->getCode();
         if ($throwable instanceof ErrorException) {
             $this->severity = $throwable->getSeverity();
-            if (0 == $this->code) {
+            if ($this->code === 0) {
                 $this->code = $this->severity;
             }
         } else {

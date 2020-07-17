@@ -66,7 +66,7 @@ final class RoutingDescriptorsTest extends TestCase
                 ->withAdded($objects[$pos]);
             $count++;
             $this->assertCount($count, $descriptors);
-            $this->assertTrue($descriptors->has($objects[$pos]));
+            $this->assertTrue($descriptors->contains($objects[$pos]));
             $this->assertSame($objects[$pos], $descriptors->get($count - 1));
         }
         $this->expectException(RoutingDescriptorAlreadyAddedException::class);

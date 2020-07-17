@@ -73,7 +73,7 @@ final class Breadcrumb implements BreadcrumbInterface
 
     public function toString(): string
     {
-        if (0 == count($this->items)) {
+        if (count($this->items) === 0) {
             return '';
         }
 

@@ -49,8 +49,7 @@ use Chevere\Interfaces\Routing\RoutingDescriptorsInterface;
 function getRouterForRoutingDescriptors(RoutingDescriptorsInterface $descriptors, string $group): RouterInterface
 {
     $router = new Router;
-    for ($i = 0; $i < $descriptors->count(); ++$i) {
-        $descriptor = $descriptors->get($i);
+    foreach ($descriptors->getGenerator() as $descriptor) {
         $routePath = $descriptor->path();
         $routeDecorator = $descriptor->decorator();
         // foreach ($routeDecorator->wildcards()->getGenerator() as $routeWildcard) {

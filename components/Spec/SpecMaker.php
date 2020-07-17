@@ -129,7 +129,7 @@ final class SpecMaker
     private function assertRouter(): void
     {
         // @codeCoverageIgnoreStart
-        if ($this->router->routables()->mapCopy()->count() == 0) {
+        if ($this->router->routables()->mapCopy()->count() === 0) {
             throw new InvalidArgumentException(
                 (new Message('Instance of %interfaceName% does not contain any routable.'))
                     ->code('%interfaceName%', RouterInterface::class)
