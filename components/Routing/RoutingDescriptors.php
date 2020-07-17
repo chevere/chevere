@@ -31,8 +31,6 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
 
     private array $routesName = [];
 
-    private array $routesPathRegex = [];
-
     private RoutingDescriptorInterface $descriptor;
 
     private int $pos = -1;
@@ -56,7 +54,6 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
         try {
             $new->assertPushPath($descriptor->path()->toString());
             $new->assertPushName($descriptor->decorator()->name()->toString());
-            $new->assertPushRegex($descriptor->path()->regex()->toString());
         } catch (Throwable $e) {
             throw new OverflowException(
                 (new Message('Routing conflict affecting previously declared %route%'))
@@ -118,18 +115,5 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
             );
         }
         $this->routesName[$name] = $this->pos;
-    }
-
-    private function assertPushRegex(string $regex): void
-    {
-        $pos = $this->routesPathRegex[$regex] ?? null;
-        if (isset($pos)) {
-            throw new Exception(
-                (new Message('Route regex %regex% has been already added'))
-                    ->code('%regex%', $regex),
-                $pos
-            );
-        }
-        $this->routesPathRegex[$regex] = $this->pos;
     }
 }

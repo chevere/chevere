@@ -18,7 +18,7 @@ use Chevere\Interfaces\Route\RouteDecoratorInterface;
 use Chevere\Interfaces\Route\RoutePathInterface;
 
 /**
- * Describes the component in charge of describing a route element.
+ * Describes the component in charge of handling a route element.
  */
 interface RoutingDescriptorInterface
 {

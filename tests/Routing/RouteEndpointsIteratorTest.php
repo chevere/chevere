@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Routing;
 
-use Chevere\Components\Routing\RouteEndpointsIterator;
 use Chevere\Exceptions\Routing\ExpectingControllerException;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
 use PHPUnit\Framework\TestCase;

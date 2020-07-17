@@ -125,23 +125,4 @@ final class RoutingDescriptorsTest extends TestCase
         $this->expectException(OverflowException::class);
         $descriptors->withAdded($nameConflict);
     }
-
-    public function testWithDecoratedRegexConflict(): void
-    {
-        $descriptors = (new RoutingDescriptors)
-            ->withAdded(
-                new RoutingDescriptor(
-                    $this->getDir(),
-                    new RoutePath('/path/{id}'),
-                    $this->getRouteDecorator('name')
-                )
-            );
-        $regexConflict = new RoutingDescriptor(
-            $this->getDir(),
-            new RoutePath('/path/{name}'),
-            $this->getRouteDecorator('name-alt')
-        );
-        $this->expectException(OverflowException::class);
-        $descriptors->withAdded($regexConflict);
-    }
 }

@@ -46,7 +46,7 @@ use Chevere\Interfaces\Routing\RoutingDescriptorsInterface;
  * @throws OutOfBoundsException
  * @throws RouteWildcardConflictException
  */
-function getRouterFromRoutingDescriptors(RoutingDescriptorsInterface $descriptors, string $group): RouterInterface
+function getRouterForRoutingDescriptors(RoutingDescriptorsInterface $descriptors, string $group): RouterInterface
 {
     $router = new Router;
     for ($i = 0; $i < $descriptors->count(); ++$i) {
