@@ -13,9 +13,22 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Spec;
 
-interface SpecPathInterface
-{
-    public function pub(): string;
+use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Interfaces\To\ToStringInterface;
 
+/**
+ * Describes the component in charge of handling a spec path.
+ */
+interface SpecPathInterface extends ToStringInterface
+{
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function __construct(string $path);
+
+    /**
+     * Returns a child instance for the given `$child`.
+     * @throws InvalidArgumentException
+     */
     public function getChild(string $child): SpecPathInterface;
 }

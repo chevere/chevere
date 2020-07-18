@@ -13,11 +13,18 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Spec\Specs;
 
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Interfaces\Route\RouteEndpointInterface;
 use Chevere\Interfaces\Spec\SpecInterface;
 use Chevere\Interfaces\Spec\SpecPathInterface;
 
+/**
+ * Describes the component in charge of defining a route endpoint spec.
+ */
 interface RouteEndpointSpecInterface extends SpecInterface
 {
-    public function __construct(SpecPathInterface $specRoutePath, RouteEndpointInterface $routeEndpoint);
+    /**
+     * @throws InvalidArgumentException
+     */
+    public function __construct(SpecPathInterface $specPath, RouteEndpointInterface $routeEndpoint);
 }

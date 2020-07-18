@@ -50,7 +50,7 @@ final class IndexSpecTest extends TestCase
         $objectStorage->attach(new Routable($route));
         $groupSpec = new GroupSpec($specPath, $groupName);
         $spec = (new IndexSpec($specPath))->withAddedGroup($groupSpec);
-        $this->assertSame($specPath->getChild('index.json')->pub(), $spec->jsonPath());
+        $this->assertSame($specPath->getChild('index.json')->toString(), $spec->jsonPath());
         $this->assertSame(
             [
                 'groups' => [

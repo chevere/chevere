@@ -27,12 +27,12 @@ final class RouteEndpointSpecTest extends TestCase
         $specPath = new SpecPath('/spec/group/route-name');
         $routeEndpoint = new RouteEndpoint(new GetMethod, new TestController);
         $spec = new RouteEndpointSpec($specPath, $routeEndpoint);
-        $specPathJson = $specPath->getChild($routeEndpoint->method()->name() . '.json')->pub();
+        $specPathJson = $specPath->getChild($routeEndpoint->method()->name() . '.json')->toString();
         $this->assertSame($specPathJson, $spec->jsonPath());
         $this->assertSame(
             [
                 'method' => $routeEndpoint->method()->name(),
-                'spec' => $specPath->getChild($routeEndpoint->method()->name() . '.json')->pub(),
+                'spec' => $specPath->getChild($routeEndpoint->method()->name() . '.json')->toString(),
                 'description' => $routeEndpoint->method()->description(),
                 'parameters' => $routeEndpoint->parameters(),
             ],

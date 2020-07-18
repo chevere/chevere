@@ -11,38 +11,38 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Components\Spec\Specs;
+namespace Chevere\Components\Spec;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
-use Chevere\Components\Spec\Specs\RouteEndpointSpec;
 use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Interfaces\Spec\SpecEndpointsInterface;
 use Chevere\Interfaces\Spec\Specs\RouteEndpointSpecInterface;
-use Chevere\Interfaces\Spec\Specs\RouteEndpointSpecsInterface;
 
-final class RouteEndpointSpecs implements RouteEndpointSpecsInterface
+final class SpecEndpoints implements SpecEndpointsInterface
 {
     use DsMapTrait;
 
-    public function withPut(RouteEndpointSpecInterface $routeEndpointSpec): RouteEndpointSpecsInterface
+    public function withPut(RouteEndpointSpecInterface $routeEndpointSpec): SpecEndpointsInterface
     {
         $new = clone $this;
-        /** @var \Ds\TKey $key */
-        $key = $routeEndpointSpec->key();
-        $new->map->put($key, $routeEndpointSpec);
+        $new->map->put(
+            $routeEndpointSpec->key(),
+            $routeEndpointSpec->jsonPath()
+        );
 
         return $new;
     }
 
-    public function has(string $methodName): bool
+    public function hasKey(string $methodName): bool
     {
-        return $this->map->hasKey($methodName);
+        return $this->map->hasKey(/** @scrutinizer ignore-type */ $methodName);
     }
 
-    public function get(string $methodName): RouteEndpointSpecInterface
+    public function get(string $methodName): string
     {
         /**
          * @var \Ds\TKey $methodName
-         * @var RouteEndpointSpec $return
+         * @var string $return
          */
         try {
             $return = $this->map->get($methodName);

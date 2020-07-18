@@ -26,12 +26,9 @@ final class GroupSpec implements GroupSpecInterface
 
     private RoutableSpecsInterface $routableSpecs;
 
-    /**
-     * @var SpecPathInterface $specRoot /spec
-     */
-    public function __construct(SpecPathInterface $specRoot, string $groupName)
+    public function __construct(SpecPathInterface $specPath, string $groupName)
     {
-        $this->jsonPath = $specRoot->getChild("$groupName/routes.json")->pub();
+        $this->jsonPath = $specPath->getChild("$groupName/routes.json")->toString();
         $this->key = $groupName;
         $this->routableSpecs = new RoutableSpecs;
     }
@@ -39,7 +36,7 @@ final class GroupSpec implements GroupSpecInterface
     public function withAddedRoutableSpec(RoutableSpecInterface $routableSpec): GroupSpecInterface
     {
         $new = clone $this;
-        $new->routableSpecs->put($routableSpec);
+        $new->routableSpecs = $new->routableSpecs->withPut($routableSpec);
 
         return $new;
     }

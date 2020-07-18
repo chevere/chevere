@@ -11,16 +11,16 @@
 
 declare(strict_types=1);
 
-namespace Chevere\Interfaces\Spec\Specs;
+namespace Chevere\Interfaces\Spec;
 
 use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\DataStructures\DsMapInterface;
-use Generator;
+use Chevere\Interfaces\Spec\Specs\RouteEndpointSpecInterface;
 
 /**
  * Describes the component in charge of collecting objects implementing `RouteEndpointSpecInterface`.
  */
-interface RouteEndpointSpecsInterface extends DsMapInterface
+interface SpecEndpointsInterface extends DsMapInterface
 {
     /**
      * Return an instance with the specified `$routeEndpointSpec`.
@@ -28,21 +28,16 @@ interface RouteEndpointSpecsInterface extends DsMapInterface
      * This method MUST retain the state of the current instance, and return
      * an instance that contains the specified `$routeEndpointSpec`.
      */
-    public function withPut(RouteEndpointSpecInterface $routeEndpointSpec): RouteEndpointSpecsInterface;
+    public function withPut(RouteEndpointSpecInterface $routeEndpointSpec): SpecEndpointsInterface;
 
     /**
-     * Indicates whether the instance has a route endpoint spec identified by its `$methodName`.
+     * Indicates whether the instance has a route endpoint identified by its `$methodName`.
      */
-    public function has(string $methodName): bool;
+    public function hasKey(string $methodName): bool;
 
     /**
-     * Returns the route endpoint spec identified by its `$methodName`.
+     * Returns the group spec identified by its `$methodName`.
      * @throws OutOfBoundsException
      */
-    public function get(string $methodName): RouteEndpointSpecInterface;
-
-    /**
-     * @return Generator<string, RouteEndpointSpecInterface>
-     */
-    public function getGenerator(): Generator;
+    public function get(string $methodName): string;
 }

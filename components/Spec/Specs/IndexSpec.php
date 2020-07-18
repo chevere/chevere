@@ -15,12 +15,12 @@ namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\Spec\Specs\GroupSpecs;
 use Chevere\Components\Spec\Specs\Traits\SpecsTrait;
-use Chevere\Interfaces\Spec\SpecInterface;
 use Chevere\Interfaces\Spec\SpecPathInterface;
 use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
 use Chevere\Interfaces\Spec\Specs\GroupSpecsInterface;
+use Chevere\Interfaces\Spec\Specs\IndexSpecInterface;
 
-final class IndexSpec implements SpecInterface
+final class IndexSpec implements IndexSpecInterface
 {
     use SpecsTrait;
 
@@ -28,14 +28,14 @@ final class IndexSpec implements SpecInterface
 
     public function __construct(SpecPathInterface $specPath)
     {
-        $this->jsonPath = $specPath->getChild('index.json')->pub();
+        $this->jsonPath = $specPath->getChild('index.json')->toString();
         $this->groupSpecs = new GroupSpecs;
     }
 
-    public function withAddedGroup(GroupSpecInterface $groupSpec): IndexSpec
+    public function withAddedGroup(GroupSpecInterface $groupSpec): IndexSpecInterface
     {
         $new = clone $this;
-        $new->groupSpecs->put($groupSpec);
+        $new->groupSpecs = $new->groupSpecs->withPut($groupSpec);
 
         return $new;
     }

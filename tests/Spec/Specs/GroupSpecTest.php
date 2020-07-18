@@ -32,7 +32,7 @@ final class GroupSpecTest extends TestCase
         $specPath = new SpecPath('/spec');
         $groupName = 'group-name';
         $specGroupPathJson = $specPath->getChild($groupName)
-            ->getChild('routes.json')->pub();
+            ->getChild('routes.json')->toString();
         $spec = new GroupSpec($specPath, $groupName);
         $this->assertSame($specGroupPathJson, $spec->jsonPath());
         $this->assertSame(
@@ -51,7 +51,7 @@ final class GroupSpecTest extends TestCase
         $specPath = new SpecPath('/spec');
         $groupName = 'group-name';
         $groupSpecPath = $specPath->getChild($groupName);
-        $routesSpecPathJson = $groupSpecPath->getChild('routes.json')->pub();
+        $routesSpecPathJson = $groupSpecPath->getChild('routes.json')->toString();
         $route = (new Route($routeName, new RoutePath('/route/path')))
             ->withAddedEndpoint(
                 new RouteEndpoint(new GetMethod, new TestController)

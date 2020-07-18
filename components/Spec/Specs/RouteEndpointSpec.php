@@ -24,13 +24,10 @@ final class RouteEndpointSpec implements RouteEndpointSpecInterface
 
     private array $array;
 
-    /**
-     * @var SpecPathInterface $specRoutePath /spec/group/route
-     */
-    public function __construct(SpecPathInterface $specRoutePath, RouteEndpointInterface $routeEndpoint)
+    public function __construct(SpecPathInterface $specPath, RouteEndpointInterface $routeEndpoint)
     {
         $this->key = $routeEndpoint->method()->name();
-        $this->jsonPath = $specRoutePath->getChild($this->key . '.json')->pub();
+        $this->jsonPath = $specPath->getChild($this->key . '.json')->toString();
         $this->array = [
             'method' => $this->key,
             'spec' => $this->jsonPath,

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Spec\Specs\RoutableSpecInterface;
 use Chevere\Interfaces\Spec\Specs\RoutableSpecsInterface;
 
@@ -21,25 +22,32 @@ final class RoutableSpecs implements RoutableSpecsInterface
 {
     use DsMapTrait;
 
-    public function put(RoutableSpecInterface $routableSpec): void
+    public function withPut(RoutableSpecInterface $routableSpec): RoutableSpecsInterface
     {
+        $new = clone $this;
         /** @var \Ds\TKey $key */
         $key = $routableSpec->key();
-        $this->map->put($key, $routableSpec);
+        $new->map->put($key, $routableSpec);
+
+        return $new;
     }
 
-    public function hasKey(string $key): bool
+    public function has(string $routeName): bool
     {
-        return $this->map->hasKey(/** @scrutinizer ignore-type */ $key);
+        return $this->map->hasKey($routeName);
     }
 
-    public function get(string $key): RoutableSpecInterface
+    public function get(string $routeName): RoutableSpecInterface
     {
         /**
-         * @var \Ds\TKey $key
+         * @var \Ds\TKey $routeName
          * @var RoutableSpecInterface $return
          */
-        $return = $this->map->get($key);
+        try {
+            $return = $this->map->get($routeName);
+        } catch (\OutOfBoundsException $e) {
+            throw new OutOfBoundsException(null, 0, $e);
+        }
 
         return $return;
     }

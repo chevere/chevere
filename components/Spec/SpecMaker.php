@@ -15,26 +15,24 @@ namespace Chevere\Components\Spec;
 
 use Chevere\Components\Filesystem\File;
 use Chevere\Components\Message\Message;
-use Chevere\Components\Router\Routable;
 use Chevere\Components\Spec\Specs\GroupSpec;
 use Chevere\Components\Spec\Specs\IndexSpec;
 use Chevere\Components\Spec\Specs\RoutableSpec;
 use Chevere\Components\Str\Str;
+use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Filesystem\FilesystemException;
 use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\PathInterface;
 use Chevere\Interfaces\Router\RouterInterface;
 use Chevere\Interfaces\Spec\SpecIndexInterface;
 use Chevere\Interfaces\Spec\SpecInterface;
+use Chevere\Interfaces\Spec\SpecMakerInterface;
 use Chevere\Interfaces\Spec\SpecPathInterface;
 use Ds\Map;
-use LogicException;
+use Throwable;
 
-/**
- * Makes the application spec, which is a distributed json-fileset describing
- * the routing groups, routes and endpoints.
- */
-final class SpecMaker
+final class SpecMaker implements SpecMakerInterface
 {
     private SpecPathInterface $specPath;
 
@@ -63,11 +61,7 @@ final class SpecMaker
         $this->files = new Map;
         $routes = $router->routables();
         $groups = [];
-        /**
-         * @var string $routeName
-         * @var Routable $routeabe
-         */
-        foreach ($routes->mapCopy() as $routeName => $routable) {
+        foreach ($routes->getGenerator() as $routeName => $routable) {
             $groupName = $router->index()->getRouteGroup($routeName);
             if (!isset($groupName[$groupName])) {
                 $groups[$groupName] = new GroupSpec($specPath, $groupName);
@@ -81,9 +75,9 @@ final class SpecMaker
             $groupSpec = $groups[$groupName];
             $groupSpec = $groupSpec->withAddedRoutableSpec($routableSpec);
             $groups[$groupName] = $groupSpec;
-            $routeEndpointSpecs = $routableSpec->routeEndpointSpecs();
+            $routeEndpointSpecs = $routableSpec->clonedRouteEndpointSpecs();
             foreach ($routeEndpointSpecs->getGenerator() as $routeEndpointSpec) {
-                $this->specIndex = $this->specIndex->withOffset(
+                $this->specIndex = $this->specIndex->withAddedRoute(
                     $routeName,
                     $routeEndpointSpec
                 );
@@ -109,21 +103,24 @@ final class SpecMaker
 
     /**
      * @codeCoverageIgnore
-     * @throws LogicException
      */
     private function assertDir(): void
     {
-        if (!$this->dir->exists()) {
-            $this->dir->create(0777);
+        try {
+            if (!$this->dir->exists()) {
+                $this->dir->create(0777);
+            }
+            $this->dir->assertExists();
+            if (!$this->dir->path()->isWritable()) {
+                throw new Exception(
+                    (new Message('Directory %pathName% is not writable'))
+                        ->code('%pathName%', $this->dir->path()->absolute())
+                );
+            }
+            $this->dir->removeContents();
+        } catch (Throwable $e) {
+            throw new FilesystemException(null, 0, $e);
         }
-        if (!$this->dir->path()->isWritable()) {
-            throw new LogicException(
-                (new Message('Directory %pathName% is not writeable'))
-                    ->code('%pathName%', $this->dir->path()->absolute())
-                    ->toString()
-            );
-        }
-        $this->dir->removeContents();
     }
 
     private function assertRouter(): void
@@ -142,23 +139,31 @@ final class SpecMaker
     {
         $filePath = $this->getPathFor($spec->jsonPath());
         $this->files[$spec->jsonPath()] = $filePath;
-        $file = new File($filePath);
-        if ($file->exists()) {
-            $file->remove(); // @codeCoverageIgnore
+        try {
+            $file = new File($filePath);
+            if ($file->exists()) {
+                $file->remove(); // @codeCoverageIgnore
+            }
+            $file->create();
+            $file->put($this->toJson($spec->toArray()));
+        } catch (Throwable $e) {
+            throw new FilesystemException(null, 0, $e);
         }
-        $file->create();
-        $file->put($this->toJson($spec->toArray()));
     }
 
     private function getPathFor(string $jsonPath): PathInterface
     {
-        $dirPath = $this->dir->path();
-        $child = (new Str($jsonPath))
-            ->withReplaceFirst($this->specPath->pub(), '')
+        try {
+            $dirPath = $this->dir->path();
+            $child = (new Str($jsonPath))
+            ->withReplaceFirst($this->specPath->toString(), '')
             ->toString();
-        $child = ltrim($child, '/');
+            $child = ltrim($child, '/');
 
-        return $dirPath->getChild($child);
+            return $dirPath->getChild($child);
+        } catch (Throwable $e) {
+            throw new FilesystemException(null, 0, $e);
+        }
     }
 
     private function toJson(array $array): string

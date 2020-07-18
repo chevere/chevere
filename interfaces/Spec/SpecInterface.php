@@ -15,9 +15,18 @@ namespace Chevere\Interfaces\Spec;
 
 use Chevere\Interfaces\To\ToArrayInterface;
 
+/**
+ * Describes the component in charge of defining an ambiguous spec.
+ */
 interface SpecInterface extends ToArrayInterface
 {
+    /**
+     * Provides access to the json path.
+     */
     public function jsonPath(): string;
 
+    /**
+     * Provides access to the key.
+     */
     public function key(): string;
 }

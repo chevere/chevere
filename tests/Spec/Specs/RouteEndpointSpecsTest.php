@@ -29,7 +29,7 @@ final class RouteEndpointSpecsTest extends TestCase
         $specs = new RouteEndpointSpecs;
         $key = 'key';
         $this->assertCount(0, $specs);
-        $this->assertFalse($specs->hasKey($key));
+        $this->assertFalse($specs->has($key));
         $this->expectException(OutOfBoundsException::class);
         $specs->get($key);
     }
@@ -47,7 +47,7 @@ final class RouteEndpointSpecsTest extends TestCase
         $muted = $immutable->withPut($spec);
         $this->assertCount(0, $immutable);
         $this->assertCount(1, $muted);
-        $this->assertTrue($muted->hasKey($spec->key()));
+        $this->assertTrue($muted->has($spec->key()));
         $this->assertSame($spec, $muted->get($spec->key()));
     }
 }

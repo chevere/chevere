@@ -15,66 +15,53 @@ namespace Chevere\Components\Spec;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Spec\SpecIndexInterface;
 use Chevere\Interfaces\Spec\SpecIndexMapInterface;
-use Ds\Map;
-use OutOfBoundsException;
-use function DeepCopy\deep_copy;
 
-/**
- * Maps route name to endpoint method spec paths.
- */
 final class SpecIndex implements SpecIndexInterface
 {
     use DsMapTrait;
 
     private SpecIndexMapInterface $specIndexMap;
 
-    public function __construct()
+    public function withAddedRoute(string $routeName, RouteEndpointSpec $routeEndpointSpec): SpecIndexInterface
     {
-        $this->map = new Map;
-        $this->specIndexMap = new SpecIndexMap;
-    }
-
-    public function withOffset(
-        string $routeName,
-        RouteEndpointSpec $routeEndpointSpec
-    ): SpecIndexInterface {
         $new = clone $this;
-        if ($new->specIndexMap->hasKey($routeName)) {
-            $specMethods = $new->specIndexMap->get($routeName);
+        if ($new->map->hasKey($routeName)) {
+            /** @var SpecEndpoints $specEndpoints */
+            $specEndpoints = $new->map->get($routeName);
         } else {
-            $specMethods = new SpecMethods;
-            $new->specIndexMap = $new->specIndexMap
-                ->withPut($routeName, $specMethods);
+            $specEndpoints = new SpecEndpoints;
+            $new->map->put($routeName, $specEndpoints);
         }
-        $specMethods = $specMethods
-            ->withPut(
-                $routeEndpointSpec->key(),
-                $routeEndpointSpec->jsonPath()
-            );
-        $new->specIndexMap = $new->specIndexMap
-            ->withPut($routeName, $specMethods);
+        $specEndpoints = $specEndpoints->withPut($routeEndpointSpec);
+        $new->map->put($routeName, $specEndpoints);
 
         return $new;
     }
 
-    public function specIndexMap(): SpecIndexMapInterface
-    {
-        return deep_copy($this->specIndexMap);
-    }
-
     public function has(string $routeName, string $methodName): bool
     {
-        return $this->specIndexMap->hasKey($routeName)
-            && $this->specIndexMap->get($routeName)->hasKey($methodName);
+        if ($this->map->hasKey($routeName)) {
+            /** @var SpecEndpoints $specEndpoints */
+            $specEndpoints = $this->map->get($routeName);
+
+            return $specEndpoints->hasKey($methodName);
+        }
+
+        return false;
     }
 
-    /**
-     * @throws OutOfBoundsException
-     */
     public function get(string $routeName, string $methodName): string
     {
-        return $this->specIndexMap->get($routeName)->get($methodName);
+        /** @var SpecEndpoints $specEndpoints */
+        try {
+            $specEndpoints = $this->map->get($routeName);
+
+            return $specEndpoints->get($methodName);
+        } catch (\OutOfBoundsException $e) {
+            throw new OutOfBoundsException(null, 0, $e);
+        }
     }
 }

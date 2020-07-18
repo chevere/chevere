@@ -15,19 +15,20 @@ namespace Chevere\Interfaces\Spec\Specs;
 
 use Chevere\Interfaces\Spec\SpecInterface;
 use Chevere\Interfaces\Spec\SpecPathInterface;
+use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
 
 /**
- * Describes the component in charge of defining the group spec.
+ * Describes the component in charge of defining the index spec.
  */
-interface GroupSpecInterface extends SpecInterface
+interface IndexSpecInterface extends SpecInterface
 {
-    public function __construct(SpecPathInterface $specPath, string $group);
+    public function __construct(SpecPathInterface $specPath);
 
     /**
-     * Return an instance with the specified `$routableSpec`.
+     * Return an instance with the specified `$groupSpec`.
      *
      * This method MUST retain the state of the current instance, and return
-     * an instance that contains the specified `$routableSpec`.
+     * an instance that contains the specified `$groupSpec`.
      */
-    public function withAddedRoutableSpec(RoutableSpecInterface $routableSpec): GroupSpecInterface;
+    public function withAddedGroup(GroupSpecInterface $groupSpec): IndexSpecInterface;
 }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Spec\Specs;
 
 use Chevere\Components\DataStructures\Traits\DsMapTrait;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Interfaces\Spec\Specs\GroupSpecInterface;
 use Chevere\Interfaces\Spec\Specs\GroupSpecsInterface;
 
@@ -21,23 +22,29 @@ final class GroupSpecs implements GroupSpecsInterface
 {
     use DsMapTrait;
 
-    public function put(GroupSpecInterface $groupSpec): void
+    public function withPut(GroupSpecInterface $groupSpec): GroupSpecsInterface
     {
-        $key = $groupSpec->key();
-        $this->map->put($key, $groupSpec);
+        $new = clone $this;
+        $new->map->put($groupSpec->key(), $groupSpec);
+
+        return $new;
     }
 
-    public function hasKey(string $key): bool
+    public function has(string $groupName): bool
     {
-        return $this->map->hasKey(/** @scrutinizer ignore-type */ $key);
+        return $this->map->hasKey($groupName);
     }
 
-    public function get(string $key): GroupSpecInterface
+    public function get(string $groupName): GroupSpecInterface
     {
         /**
          * @var GroupSpecInterface $return
          */
-        $return = $this->map->get($key);
+        try {
+            $return = $this->map->get($groupName);
+        } catch (\OutOfBoundsException $e) {
+            throw new OutOfBoundsException(null, 0, $e);
+        }
 
         return $return;
     }

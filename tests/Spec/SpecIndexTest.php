@@ -20,8 +20,8 @@ use Chevere\Components\Route\RouteName;
 use Chevere\Components\Spec\SpecIndex;
 use Chevere\Components\Spec\SpecPath;
 use Chevere\Components\Spec\Specs\RouteEndpointSpec;
+use Chevere\Exceptions\Core\OutOfBoundsException;
 use Chevere\Tests\Spec\_resources\src\TestController;
-use OutOfBoundsException;
 use PHPUnit\Framework\TestCase;
 
 final class SpecIndexTest extends TestCase
@@ -31,8 +31,7 @@ final class SpecIndexTest extends TestCase
         $specIndex = new SpecIndex;
         $method = new GetMethod;
         $this->assertFalse($specIndex->has('404', $method::name()));
-        $this->assertCount(0, $specIndex->specIndexMap());
-        $this->assertFalse($specIndex->specIndexMap()->hasKey('404'));
+        $this->assertCount(0, $specIndex);
         $this->expectException(OutOfBoundsException::class);
         $specIndex->get('404', $method::name());
     }
@@ -44,7 +43,7 @@ final class SpecIndexTest extends TestCase
         $routeEndpoint = new RouteEndpoint($method, new TestController);
         $specPath = new SpecPath('/spec/group/route');
         $routeEndpointSpec = new RouteEndpointSpec($specPath, $routeEndpoint);
-        $specIndex = (new SpecIndex)->withOffset(
+        $specIndex = (new SpecIndex)->withAddedRoute(
             $routeName->toString(),
             $routeEndpointSpec
         );
@@ -53,9 +52,9 @@ final class SpecIndexTest extends TestCase
             $routeName->toString(),
             $method->name()
         ));
-        $this->assertCount(1, $specIndex->specIndexMap());
+        $this->assertCount(1, $specIndex);
         $this->assertSame(
-            $specPath->getChild($method->name() . '.json')->pub(),
+            $specPath->getChild($method->name() . '.json')->toString(),
             $specIndex->get(
                 $routeName->toString(),
                 $method->name()
@@ -64,7 +63,7 @@ final class SpecIndexTest extends TestCase
         $method2 = new PutMethod;
         $routeEndpoint2 = new RouteEndpoint($method2, new TestController);
         $routeEndpointSpec2 = new RouteEndpointSpec($specPath, $routeEndpoint2);
-        $specIndex = $specIndex->withOffset(
+        $specIndex = $specIndex->withAddedRoute(
             $routeName->toString(),
             $routeEndpointSpec2
         );
@@ -76,9 +75,9 @@ final class SpecIndexTest extends TestCase
             $routeName->toString(),
             $method2->name()
         ));
-        $this->assertCount(1, $specIndex->specIndexMap());
+        $this->assertCount(1, $specIndex);
         $this->assertSame(
-            $specPath->getChild($method2->name() . '.json')->pub(),
+            $specPath->getChild($method2->name() . '.json')->toString(),
             $specIndex->get($routeName->toString(), $method2->name())
         );
     }

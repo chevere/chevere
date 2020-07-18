@@ -32,7 +32,7 @@ final class RoutableSpecTest extends TestCase
         $routeName = new RouteName('route-name');
         $routePath = new RoutePath('/route/path');
         $specPath = new SpecPath('/spec/group');
-        $routeSpecPath = $specPath->getChild($routeName->toString() . '/route.json')->pub();
+        $routeSpecPath = $specPath->getChild($routeName->toString() . '/route.json')->toString();
         $method = new GetMethod;
         $routeEndpoint = (new RouteEndpoint($method, new TestController))
             ->withDescription('Test endpoint');

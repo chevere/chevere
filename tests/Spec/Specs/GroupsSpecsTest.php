@@ -26,7 +26,7 @@ final class GroupsSpecsTest extends TestCase
         $spec = new GroupSpecs;
         $key = 'key';
         $this->assertCount(0, $spec);
-        $this->assertFalse($spec->hasKey($key));
+        $this->assertFalse($spec->has($key));
         $this->expectException(OutOfBoundsException::class);
         $spec->get($key);
     }
@@ -38,9 +38,9 @@ final class GroupsSpecsTest extends TestCase
             new SpecPath('/spec'),
             'group-name'
         );
-        $specs->put($spec);
+        $specs = $specs->withPut($spec);
         $this->assertCount(1, $specs);
-        $this->assertTrue($specs->hasKey($spec->key()));
+        $this->assertTrue($specs->has($spec->key()));
         $this->assertSame($spec, $specs->get($spec->key()));
     }
 }

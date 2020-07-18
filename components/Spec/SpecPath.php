@@ -13,67 +13,51 @@ declare(strict_types=1);
 
 namespace Chevere\Components\Spec;
 
-use Chevere\Interfaces\Filesystem\PathInterface;
-use Chevere\Interfaces\Spec\SpecPathInterface;
-use Chevere\Exceptions\Str\StrAssertException;
-use Chevere\Exceptions\Str\StrContainsException;
-use Chevere\Exceptions\Str\StrEmptyException;
-use Chevere\Exceptions\Str\StrNotStartsWithException;
-use Chevere\Exceptions\Str\StrStartsWithException;
 use Chevere\Components\Str\StrAssert;
-use InvalidArgumentException;
+use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Interfaces\Spec\SpecPathInterface;
+use Throwable;
 
 final class SpecPath implements SpecPathInterface
 {
-    private string $pub;
+    private string $path;
 
-    /**
-     * @param string $pub /spec
-     * @param PathInterface $path The filesystem path for $pub
-     * @throws StrAssertException If invalid $pub format provided
-     */
-    public function __construct(string $pub)
+    public function __construct(string $path)
     {
-        $this->pub = $pub;
-        $this->assertPub();
+        $this->path = $path;
+        try {
+            $this->assertPub();
+        } catch (Throwable $e) {
+            throw new InvalidArgumentException(null, 0, $e);
+        }
     }
 
-    public function pub(): string
+    public function toString(): string
     {
-        return $this->pub;
+        return $this->path;
     }
 
-    /**
-     * @throws StrEmptyException if $child is empty
-     * @throws StrContainsException if $child contains spaces, // or \
-     * @throws StrStartsWithException if $child starts with /
-     * @throws StrEndsWithException if $child ends with /
-     * @throws InvalidArgumentException $if unable to getChild on PathInterface
-     */
     public function getChild(string $child): SpecPathInterface
     {
-        (new StrAssert($child))
-            ->notEmpty()
-            ->notContains(' ')
-            ->notStartsWith('/')
-            ->notContains('//')
-            ->notContains('\\')
-            ->notEndsWith('/');
+        try {
+            (new StrAssert($child))
+                ->notEmpty()
+                ->notContains(' ')
+                ->notStartsWith('/')
+                ->notContains('//')
+                ->notContains('\\')
+                ->notEndsWith('/');
+        } catch (Throwable $e) {
+            throw new InvalidArgumentException(null, 0, $e);
+        }
 
-        return new self(rtrim($this->pub, '/') . '/' . $child);
+        return new self(rtrim($this->path, '/') . '/' . $child);
     }
 
-    /**
-     *
-     * @throws StrEmptyException if $pub is empty
-     * @throws StrContainsException if $pub contains spaces, // or \
-     * @throws StrNotStartsWithException if $pub not starts with /
-     * @throws StrEndsWithException if $pub ends with /
-     */
     private function assertPub(): void
     {
-        if ($this->pub !== '/') {
-            (new StrAssert($this->pub))
+        if ($this->path !== '/') {
+            (new StrAssert($this->path))
                 ->notEmpty()
                 ->notContains(' ')
                 ->startsWith('/')

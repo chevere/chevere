@@ -38,10 +38,12 @@ final class RoutableSpec implements RoutableSpecInterface
         $this->key = $routable->route()->name()->toString();
         $this->routeEndpointSpecs = new RouteEndpointSpecs;
         $specGroupRoute = $specGroupPath->getChild($this->key);
-        $this->jsonPath = $specGroupRoute->getChild('route.json')->pub();
-        $this->path = $routable->route()->path()->toString();
-        $this->regex = $routable->route()->path()->regex()->toString();
-        $this->wildcards = $routable->route()->path()->wildcards()->mapCopy()->toArray();
+        $this->jsonPath = $specGroupRoute
+            ->getChild('route.json')->toString();
+        $path = $routable->route()->path();
+        $this->path = $path->toString();
+        $this->regex = $path->regex()->toString();
+        $this->wildcards = $path->wildcards()->mapCopy()->toArray();
         $routeEndpoints = $routable->route()->endpoints();
         /** @var string $key */
         foreach ($routeEndpoints->keys() as $key) {
@@ -54,7 +56,7 @@ final class RoutableSpec implements RoutableSpecInterface
         }
     }
 
-    public function routeEndpointSpecs(): RouteEndpointSpecs
+    public function clonedRouteEndpointSpecs(): RouteEndpointSpecs
     {
         return deep_copy($this->routeEndpointSpecs);
     }

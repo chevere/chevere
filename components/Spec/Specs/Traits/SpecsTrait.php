@@ -15,9 +15,9 @@ namespace Chevere\Components\Spec\Specs\Traits;
 
 trait SpecsTrait
 {
-    private string $jsonPath = '';
+    private string $jsonPath;
 
-    private string $key = '';
+    private string $key;
 
     public function jsonPath(): string
     {
