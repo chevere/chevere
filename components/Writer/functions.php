@@ -38,9 +38,21 @@ function writers(): WritersInterface
 }
 
 /**
+ * @throws LogicException
+ */
+function streamFor(string $stream, string $mode): StreamInterface
+{
+    try {
+        return new Stream(...func_get_args());
+    } catch (Throwable $e) {
+        throw new LogicException(null, 0, $e);
+    }
+}
+
+/**
  * @throws RuntimeException
  */
-function streamFor(string $content = ''): StreamInterface
+function streamForString(string $content = ''): StreamInterface
 {
     $type = 'stream';
     $stream = 'php://temp';
@@ -70,20 +82,6 @@ function streamFor(string $content = ''): StreamInterface
     }
 
     return new Stream($resource);
-}
-
-/**
- * @throws LogicException
- */
-function writerForStream(string $stream, string $mode): WriterInterface
-{
-    try {
-        return new StreamWriter(
-            new Stream($stream, $mode)
-        );
-    } catch (Throwable $e) {
-        throw new LogicException(null, $e->getCode(), $e);
-    }
 }
 
 /**

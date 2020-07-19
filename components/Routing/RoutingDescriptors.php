@@ -77,8 +77,8 @@ final class RoutingDescriptors implements RoutingDescriptorsInterface
      */
     public function getGenerator(): Generator
     {
-        foreach ($this->set->getIterator() as $key) {
-            yield $key => $this->set->get($key);
+        foreach ($this->set as $key => $value) {
+            yield $key => $value;
         }
     }
 
