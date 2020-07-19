@@ -15,6 +15,7 @@ namespace Chevere\Components\Plugin\Plugs\Hooks;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Type\Type;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\HookInterface;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\HooksQueueInterface;
@@ -47,7 +48,7 @@ final class HooksRunner implements HooksRunnerInterface
                 $hook = $this->hook;
                 $hook($argument);
                 if (!$type->validate($argument)) {
-                    throw new RuntimeException(
+                    throw new InvalidArgumentException(
                         (new Message('Hook argument of type %passed% has been altered to type %altered% by %hook%'))
                             ->code('%passed%', $gettype)
                             ->code('%altered%', gettype($argument))
@@ -70,7 +71,6 @@ final class HooksRunner implements HooksRunnerInterface
 
     /**
      * @codeCoverageIgnore
-     * @throws RuntimeException
      */
     private function setHook(string $entry): void
     {

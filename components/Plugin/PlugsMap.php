@@ -69,7 +69,7 @@ final class PlugsMap implements PlugsMapInterface
          */
         $queue = $this->map->hasKey($plug->at())
             ? $this->map->get($plug->at())
-            : $assertPlug->type()->getPlugsQueue();
+            : $assertPlug->type()->getPlugsQueueTyped();
         $new = clone $this;
         $new->map[$plug->at()] = $queue->withAdded($plug);
         $new->set->add($plug);

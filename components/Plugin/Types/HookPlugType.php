@@ -36,12 +36,7 @@ final class HookPlugType implements PlugTypeInterface
         return 'Hook.php';
     }
 
-    public function queueName(): string
-    {
-        return 'Hooks';
-    }
-
-    public function getPlugsQueue(): PlugsQueueTypedInterface
+    public function getPlugsQueueTyped(): PlugsQueueTypedInterface
     {
         return new HooksQueue;
     }

@@ -14,12 +14,14 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugin\Types;
 
 use Chevere\Components\Plugin\Plugs\EventListeners\EventListenersQueue;
-use Chevere\Components\Plugin\Plugs\Hooks\HooksQueue;
 use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenerInterface;
 use Chevere\Interfaces\Plugin\Plugs\EventListener\EventListenersQueueInterface;
 use Chevere\Interfaces\Plugin\Plugs\EventListener\PluggableEventsInterface;
 use Chevere\Interfaces\Plugin\PlugTypeInterface;
 
+/**
+ * Describes the component in charge of defining a plug ot type event listener.
+ */
 final class EventListenerPlugType implements PlugTypeInterface
 {
     public function interface(): string
@@ -37,12 +39,7 @@ final class EventListenerPlugType implements PlugTypeInterface
         return 'EventListener.php';
     }
 
-    public function queueName(): string
-    {
-        return 'EventListeners';
-    }
-
-    public function getPlugsQueue(): EventListenersQueueInterface
+    public function getPlugsQueueTyped(): EventListenersQueueInterface
     {
         return new EventListenersQueue;
     }

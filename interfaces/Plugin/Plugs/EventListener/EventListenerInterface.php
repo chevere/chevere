@@ -16,22 +16,16 @@ namespace Chevere\Interfaces\Plugin\Plugs\EventListener;
 use Chevere\Interfaces\Plugin\PlugInterface;
 use Chevere\Interfaces\Writer\WritersInterface;
 
+/**
+ * Describes the component in charge of defining an event listener plug.
+ */
 interface EventListenerInterface extends PlugInterface
 {
+    /**
+     * Executes the event listener.
+     *
+     * @param array $data The data passed to the event listener.
+     * @param WritersInterface $writers To write to the available writing channels.
+     */
     public function __invoke(array $data, WritersInterface $writers): void;
-
-    /**
-     * @return string Applicable event anchor.
-     */
-    public function anchor(): string;
-
-    /**
-     * @return string Target class name implementing EventsInterface.
-     */
-    public function at(): string;
-
-    /**
-     * @return String Priority order.
-     */
-    public function priority(): int;
 }

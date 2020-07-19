@@ -15,22 +15,31 @@ namespace Chevere\Interfaces\Plugin\Plugs\EventListener;
 
 use Chevere\Interfaces\Plugin\PluggableAnchorsInterface;
 
+/**
+ * Describes the interface for components requiring to implement pluggable events.
+ */
 interface PluggableEventsInterface
 {
     /**
-     * @return PluggableAnchorsInterface declared event anchors.
+     * Returns the declared event anchors able to plug.
      */
     public static function getEventAnchors(): PluggableAnchorsInterface;
 
     /**
-     * Attach the events runner.
+     * Return an instance with the specified `$runner`.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified `$runner`.
+     *
+     * This method should be implemented in the runtime strategy before running events.
      */
     public function withEventListenersRunner(EventListenersRunnerInterface $runner): PluggableEventsInterface;
 
     /**
      * Run events for the given anchor (if-any).
      *
-     * @param string $anchor Event anchor
+     * @param string $anchor Event anchor.
+     * @param array $data Data to pass to the event listeners.
      */
     public function event(string $anchor, array $data = []): void;
 }

@@ -14,14 +14,20 @@ declare(strict_types=1);
 namespace Chevere\Interfaces\Plugin\Plugs\EventListener;
 
 use Chevere\Components\Plugin\Plugs\EventListeners\EventListenersQueue;
+use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Interfaces\Writer\WritersInterface;
 
+/**
+ * Describes the component in charge of running the event listeners queue.
+ */
 interface EventListenersRunnerInterface
 {
     public function __construct(EventListenersQueue $queue, WritersInterface $writers);
 
     /**
-     * Run registered event listeners for the target event name.
+     * Run registered event listeners for the target event anchor.
+     *
+     * @throws RuntimeException
      */
-    public function run(string $name, array $data): void;
+    public function run(string $anchor, array $data): void;
 }

@@ -61,8 +61,7 @@ final class PlugTypesTest extends TestCase
         $this->assertSame($plugInterface, $plugType->interface());
         $this->assertSame($pluggableInterface, $plugType->plugsTo());
         $this->assertSame($trailingName, $plugType->trailingName());
-        $this->assertSame($queueName, $plugType->queueName());
-        $this->assertInstanceOf($plugQueueTypedInterface, $plugType->getPlugsQueue());
+        $this->assertInstanceOf($plugQueueTypedInterface, $plugType->getPlugsQueueTyped());
         $this->assertTrue(method_exists(
             $plugType->plugsTo(),
             $plugType->pluggableAnchorsMethod()

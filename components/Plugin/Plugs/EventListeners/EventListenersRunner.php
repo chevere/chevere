@@ -39,21 +39,19 @@ final class EventListenersRunner implements EventListenersRunnerInterface
 
     public function run(string $anchor, array $data): void
     {
-        $queue = $this->queue->toArray()[$anchor] ?? [];
-        foreach ($queue as $entries) {
-            foreach ($entries as $entry) {
-                // @codeCoverageIgnoreStart
-                try {
+        try {
+            $queue = $this->queue->toArray()[$anchor] ?? [];
+            foreach ($queue as $entries) {
+                foreach ($entries as $entry) {
+                    // @codeCoverageIgnoreStart
                     $this->eventListener = new $entry;
-                } catch (TypeError $e) {
-                    throw new RuntimeException(
-                        (new Message('Invalid event listener type'))
-                    );
+                    // @codeCoverageIgnoreEnd
+                    $eventListener = $this->eventListener;
+                    $eventListener($data, $this->writers);
                 }
-                // @codeCoverageIgnoreEnd
-                $eventListener = $this->eventListener;
-                $eventListener($data, $this->writers);
             }
+        } catch (Throwable $e) {
+            throw new RuntimeException(null, 0, $e);
         }
     }
 }

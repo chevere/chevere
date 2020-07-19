@@ -13,14 +13,17 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Plugin\Plugs\Hooks;
 
-use Chevere\Exceptions\Core\RuntimeException;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 
+/**
+ * Describes the component in charge of running the hooks queue.
+ */
 interface HooksRunnerInterface
 {
     /**
      * Run the registered hooks at the given anchor.
      *
-     * @throws RuntimeException If the $argument type changes.
+     * @throws InvalidArgumentException If the $argument type changes.
      */
     public function run(string $anchor, &$argument): void;
 }

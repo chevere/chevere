@@ -16,7 +16,7 @@ namespace Chevere\Tests\Plugin\Plugs\Hooks;
 use Chevere\Components\Filesystem\Path;
 use Chevere\Components\Plugin\Plugs\Hooks\HooksQueue;
 use Chevere\Components\Plugin\Plugs\Hooks\HooksRunner;
-use Chevere\Exceptions\Core\RuntimeException;
+use Chevere\Exceptions\Core\InvalidArgumentException;
 use Chevere\Tests\Plugin\Plugs\Hooks\_resources\HooksRunnerTest\TestHookPath;
 use Chevere\Tests\Plugin\Plugs\Hooks\_resources\HooksRunnerTest\TestHookString;
 use Chevere\Tests\Plugin\Plugs\Hooks\_resources\HooksRunnerTest\TestHookTypeChange;
@@ -59,7 +59,7 @@ final class HooksRunnerTest extends TestCase
         $hooksQueue = (new HooksQueue)->withAdded(new TestHookTypeChange);
         $runner = new HooksRunner($hooksQueue);
         $argument = 'string';
-        $this->expectException(RuntimeException::class);
+        $this->expectException(InvalidArgumentException::class);
         $runner->run('type', $argument);
     }
 }

@@ -15,6 +15,9 @@ namespace Chevere\Interfaces\Plugin\Plugs\EventListener;
 
 use Chevere\Interfaces\Plugin\PlugsQueueTypedInterface;
 
+/**
+ * Describes the component in charge of type-hint an event listeners queue.
+ */
 interface EventListenersQueueInterface extends PlugsQueueTypedInterface
 {
 }

@@ -15,6 +15,9 @@ namespace Chevere\Interfaces\Plugin\Plugs\Hooks;
 
 use Chevere\Interfaces\Plugin\PlugsQueueTypedInterface;
 
+/**
+ * Describes the component in charge of type-hint a hooks queue.
+ */
 interface HooksQueueInterface extends PlugsQueueTypedInterface
 {
 }

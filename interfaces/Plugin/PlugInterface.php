@@ -13,20 +13,23 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Plugin;
 
+/**
+ * Describes the component in charge of defining a plug.
+ */
 interface PlugInterface
 {
     /**
-     * @return string Plugs at anchor
+     * Plugs at anchor.
      */
     public function anchor(): string;
 
     /**
-     * @return string Plugs at className
+     * Plugs at class name.
      */
     public function at(): string;
 
     /**
-     * @return int Plug execution priority
+     * Plugs at priority.
      */
     public function priority(): int;
 }

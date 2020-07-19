@@ -15,22 +15,15 @@ namespace Chevere\Interfaces\Plugin\Plugs\Hooks;
 
 use Chevere\Interfaces\Plugin\PlugInterface;
 
+/**
+ * Describes the component in charge of defining a hook plug.
+ */
 interface HookInterface extends PlugInterface
 {
+    /**
+     * Executes the hook listener.
+     *
+     * @param mixed $argument The hooked argument.
+     */
     public function __invoke(&$argument): void;
-
-    /**
-     * @return string Applicable hook anchor.
-     */
-    public function anchor(): string;
-
-    /**
-     * @return string Target class name implementing HookableInterface.
-     */
-    public function at(): string;
-
-    /**
-     * @return string Priority order.
-     */
-    public function priority(): int;
 }
