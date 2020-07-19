@@ -16,6 +16,9 @@ namespace Chevere\Interfaces\Plugin;
 use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use Generator;
 
+/**
+ * Describes the component in charge of defining a plugs types list.
+ */
 interface PlugTypesListInterface
 {
     /**

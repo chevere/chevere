@@ -23,7 +23,7 @@ final class HooksQueue implements HooksQueueInterface
 {
     use TypedPlugsQueueTrait;
 
-    public function accept(): string
+    public function interface(): string
     {
         return HookInterface::class;
     }

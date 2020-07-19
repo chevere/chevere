@@ -55,11 +55,10 @@ final class PlugsMapCacheTest extends TestCase
     {
         $cache = new Cache($this->emptyDir);
         $plugsMapCache = new PlugsMapCache($cache);
-        $this->assertEquals($cache, $plugsMapCache->cache());
-        $this->assertFalse($plugsMapCache->hasPlugsQueueFor('empty'));
+        $this->assertFalse($plugsMapCache->hasPlugsQueueTypedFor('empty'));
         $this->expectException(OutOfBoundsException::class);
         $this->expectExceptionCode(1);
-        $plugsMapCache->getPlugsQueueFor('empty');
+        $plugsMapCache->getPlugsQueueTypedFor('empty');
     }
 
     public function testInvalidClassMap(): void
@@ -67,9 +66,9 @@ final class PlugsMapCacheTest extends TestCase
         $cachedCache = new Cache($this->cachedDir);
         $cache = new Cache($cachedCache->dir()->getChild('corrupted-classmap/'));
         $plugsMapCache = new PlugsMapCache($cache);
-        $this->assertFalse($plugsMapCache->hasPlugsQueueFor('nothing'));
+        $this->assertFalse($plugsMapCache->hasPlugsQueueTypedFor('nothing'));
         $this->expectException(RuntimeException::class);
-        $plugsMapCache->getPlugsQueueFor('empty');
+        $plugsMapCache->getPlugsQueueTypedFor('empty');
     }
 
     public function testPluggableNotMapped(): void
@@ -80,7 +79,7 @@ final class PlugsMapCacheTest extends TestCase
         $plugsMapCache = (new PlugsMapCache($cache))
             ->withPut($plugsMap);
         $this->expectException(OutOfBoundsException::class);
-        $plugsMapCache->getPlugsQueueFor('workingEmpty');
+        $plugsMapCache->getPlugsQueueTypedFor('workingEmpty');
     }
 
     public function testClassMapCorruptedQueue(): void
@@ -89,9 +88,9 @@ final class PlugsMapCacheTest extends TestCase
         $cache = new Cache($cachedCache->dir()->getChild('corrupted-queue/'));
         $plugsMapCache = new PlugsMapCache($cache);
         $hookableClassName = (new TestHook)->at();
-        $this->assertTrue($plugsMapCache->hasPlugsQueueFor($hookableClassName));
+        $this->assertTrue($plugsMapCache->hasPlugsQueueTypedFor($hookableClassName));
         $this->expectException(OutOfBoundsException::class);
-        $plugsMapCache->getPlugsQueueFor($hookableClassName);
+        $plugsMapCache->getPlugsQueueTypedFor($hookableClassName);
     }
 
     public function testWorking(): void
@@ -100,12 +99,10 @@ final class PlugsMapCacheTest extends TestCase
         $plugsMap = new PlugsMap(new HookPlugType);
         $hook = new TestHook;
         $hookableClassName = $hook->at();
-        $plugsMap = $plugsMap->withAdded(
-            new AssertPlug($hook)
-        );
+        $plugsMap = $plugsMap->withAdded($hook);
         $plugsMapCache = (new PlugsMapCache($cache))->withPut($plugsMap);
-        $this->assertTrue($plugsMapCache->hasPlugsQueueFor($hookableClassName));
-        $plugsQueueTyped = $plugsMapCache->getPlugsQueueFor($hookableClassName);
+        $this->assertTrue($plugsMapCache->hasPlugsQueueTypedFor($hookableClassName));
+        $plugsQueueTyped = $plugsMapCache->getPlugsQueueTypedFor($hookableClassName);
         $this->assertInstanceOf(HooksQueue::class, $plugsQueueTyped);
         $this->assertSame([
             $hook->anchor() => [

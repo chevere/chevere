@@ -16,6 +16,7 @@ namespace Chevere\Tests\Plugin;
 use Chevere\Components\Plugin\PlugsQueue;
 use Chevere\Components\Plugin\Types\EventListenerPlugType;
 use Chevere\Components\Plugin\Types\HookPlugType;
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Plugin\PlugInterfaceException;
 use Chevere\Tests\Plugin\_resources\src\TestHook;
 use LogicException;
@@ -59,7 +60,7 @@ final class PlugsQueueTest extends TestCase
         $hook = new TestHook;
         $plugsQueue = (new PlugsQueue(new HookPlugType))
             ->withAdded($hook);
-        $this->expectException(LogicException::class);
+        $this->expectException(OverflowException::class);
         $plugsQueue->withAdded($hook);
     }
 }

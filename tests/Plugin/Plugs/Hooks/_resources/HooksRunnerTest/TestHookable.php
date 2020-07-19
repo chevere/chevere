@@ -31,9 +31,9 @@ class TestHookable implements PluggableHooksInterface
     public static function getHookAnchors(): PluggableAnchorsInterface
     {
         return (new PluggableAnchors)
-            ->withAddedAnchor('string')
-            ->withAddedAnchor('path')
-            ->withAddedAnchor('type');
+            ->withAdded('string')
+            ->withAdded('path')
+            ->withAdded('type');
     }
 
     public function __construct()

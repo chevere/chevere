@@ -35,7 +35,7 @@ trait TypedPlugsQueueTrait
         return $new;
     }
 
-    abstract public function accept(): string;
+    abstract public function interface(): string;
 
     abstract public function getPlugType(): PlugTypeInterface;
 

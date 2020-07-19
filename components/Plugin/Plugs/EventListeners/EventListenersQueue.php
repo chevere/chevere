@@ -23,7 +23,7 @@ final class EventListenersQueue implements EventListenersQueueInterface
 {
     use TypedPlugsQueueTrait;
 
-    public function accept(): string
+    public function interface(): string
     {
         return EventListenerInterface::class;
     }

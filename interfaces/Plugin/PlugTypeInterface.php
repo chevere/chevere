@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Plugin;
 
+/**
+ * Describes the component in charge of defining a generic plug type.
+ */
 interface PlugTypeInterface
 {
     /**

@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugin;
 
 use Chevere\Components\Message\Message;
-use Chevere\Exceptions\Plugin\PluggableAnchorExistsException;
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Plugin\PluggableAnchorsInterface;
 use Ds\Set;
 use function DeepCopy\deep_copy;
@@ -28,10 +28,10 @@ final class PluggableAnchors implements PluggableAnchorsInterface
         $this->set = new Set;
     }
 
-    public function withAddedAnchor(string $anchor): PluggableAnchorsInterface
+    public function withAdded(string $anchor): PluggableAnchorsInterface
     {
         if ($this->has($anchor)) {
-            throw new PluggableAnchorExistsException(
+            throw new OverflowException(
                 (new Message('Anchor %anchor% has been already added'))
                     ->code('%anchor%', $anchor)
             );
@@ -47,7 +47,7 @@ final class PluggableAnchors implements PluggableAnchorsInterface
         return $this->set->contains($anchor);
     }
 
-    public function set(): Set
+    public function clonedSet(): Set
     {
         return deep_copy($this->set);
     }

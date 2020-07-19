@@ -13,16 +13,25 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Plugin;
 
+/**
+ * Describes the base interface used by typed plug queues.
+ */
 interface PlugsQueueTypedInterface
 {
     public function withAdded(PlugInterface $plug): PlugsQueueTypedInterface;
 
     /**
-     * @return string The accepted plug interface.
+     * Returns the interface name of plug members.
      */
-    public function accept(): string;
+    public function interface(): string;
 
+    /**
+     * Returns a new instance for the members plug type.
+     */
     public function getPlugType(): PlugTypeInterface;
 
+    /**
+     * Provides access to the plugs queue instance.
+     */
     public function plugsQueue(): PlugsQueueInterface;
 }

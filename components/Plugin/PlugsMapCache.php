@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugin;
 
 use Chevere\Components\Cache\Cache;
-use Chevere\Components\Cache\CacheItem;
 use Chevere\Components\Cache\CacheKey;
 use Chevere\Components\ClassMap\ClassMap;
 use Chevere\Components\Message\Message;
@@ -50,36 +49,39 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         $this->classMapKey = new CacheKey(self::KEY_CLASS_MAP);
     }
 
-    public function cache(): CacheInterface
-    {
-        return $this->cache;
-    }
-
     public function withPut(PlugsMapInterface $plugsMap): PlugsMapCacheInterface
     {
         $new = clone $this;
         $new->classMap = new ClassMap;
-        foreach ($plugsMap->getGenerator() as $pluggableName => $plugsQueueTyped) {
-            $classNameAsPath = (new Str($pluggableName))->withForwardSlashes()->toString() . '/';
-            $cacheAt = new Cache($new->cache->dir()->getChild($classNameAsPath));
-            $queueName = (new ReflectionClass($plugsQueueTyped))->getShortName();
-            $cacheAt = $cacheAt->withAddedItem(new CacheKey($queueName), new VarExportable($plugsQueueTyped));
-            $new->classMap = $new->classMap
-                ->withPut(
-                    $pluggableName,
-                    $cacheAt->puts()[$queueName]['path']
+        try {
+            foreach ($plugsMap->getGenerator() as $pluggableName => $plugsQueueTyped) {
+                $classNameAsPath = (new Str($pluggableName))
+                    ->withForwardSlashes()->toString() . '/';
+                $cacheAt = new Cache($new->cache->dir()->getChild($classNameAsPath));
+                $queueName = (new ReflectionClass($plugsQueueTyped))->getShortName();
+                $cacheAt = $cacheAt->withAddedItem(
+                    new CacheKey($queueName),
+                    new VarExportable($plugsQueueTyped)
                 );
+                $new->classMap = $new->classMap
+                    ->withPut(
+                        $pluggableName,
+                        $cacheAt->puts()[$queueName]['path']
+                    );
+            }
+            $new->cache = $new->cache
+                ->withAddedItem(
+                    $new->classMapKey,
+                    new VarExportable($new->classMap)
+                );
+        } catch (Throwable $e) {
+            throw new RuntimeException(null, 0, $e);
         }
-        $new->cache = $new->cache
-            ->withAddedItem(
-                $new->classMapKey,
-                new VarExportable($new->classMap)
-            );
 
         return $new;
     }
 
-    public function hasPlugsQueueFor(string $className): bool
+    public function hasPlugsQueueTypedFor(string $className): bool
     {
         if (!$this->cache->exists($this->classMapKey)) {
             return false;
@@ -91,10 +93,7 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         }
     }
 
-    /**
-     * @throws OutOfBoundsException
-     */
-    public function getPlugsQueueFor(string $className): PlugsQueueTypedInterface
+    public function getPlugsQueueTypedFor(string $className): PlugsQueueTypedInterface
     {
         $this->assertClassMap();
         $classMap = $this->getClassMapFromCache();
@@ -113,19 +112,11 @@ final class PlugsMapCache implements PlugsMapCacheInterface
         }
         // @codeCoverageIgnoreStart
         catch (Exception $e) {
-            throw new OutOfBoundsException(
-                $e->message(),
-                $e->getCode(),
-                $e
-            );
+            throw new OutOfBoundsException(null, 0, $e);
         }
         // @codeCoverageIgnoreEnd
     }
 
-    /**
-     * @throws RuntimeException
-     * @throws OutOfBoundsException
-     */
     private function getClassMapFromCache(): ClassMapInterface
     {
         try {

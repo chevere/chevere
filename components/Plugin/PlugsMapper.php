@@ -82,7 +82,7 @@ final class PlugsMapper
                 if ($class->implementsInterface(PlugInterface::class)) {
                     $plug = $class->newInstance();
                     $this->plugsMap = $this->plugsMap
-                        ->withAdded(new AssertPlug($plug));
+                        ->withAdded($plug);
                 }
             }
         }

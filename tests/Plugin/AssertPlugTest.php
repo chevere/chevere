@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Chevere\Tests\Plugin;
 
 use Chevere\Components\Plugin\AssertPlug;
+use Chevere\Components\Plugin\Types\HookPlugType;
 use Chevere\Exceptions\Plugin\PluggableAnchorNotExistsException;
 use Chevere\Exceptions\Plugin\PluggableAnchorsException;
 use Chevere\Exceptions\Plugin\PluggableNotExistsException;
@@ -23,7 +24,6 @@ use Chevere\Tests\Plugin\_resources\AssertPlugTest\TestHookAtNotExists;
 use Chevere\Tests\Plugin\_resources\AssertPlugTest\TestHookForNotExists;
 use Chevere\Tests\Plugin\_resources\AssertPlugTest\TestUnacceptedPlug;
 use Chevere\Tests\Plugin\_resources\src\TestHook;
-use Chevere\Components\Plugin\Types\HookPlugType;
 use PHPUnit\Framework\TestCase;
 
 final class AssertPlugTest extends TestCase
@@ -61,6 +61,6 @@ final class AssertPlugTest extends TestCase
         $hook = new TestHook;
         $assertHook = new AssertPlug($hook);
         $this->assertSame($hook, $assertHook->plug());
-        $this->assertEquals(new HookPlugType, $assertHook->type());
+        $this->assertEquals(new HookPlugType, $assertHook->plugType());
     }
 }

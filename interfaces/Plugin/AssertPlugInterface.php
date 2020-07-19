@@ -13,11 +13,31 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Plugin;
 
+use Chevere\Exceptions\Plugin\PluggableAnchorNotExistsException;
+use Chevere\Exceptions\Plugin\PluggableAnchorsException;
+use Chevere\Exceptions\Plugin\PluggableNotExistsException;
+use Chevere\Exceptions\Plugin\PlugInterfaceException;
+
+/**
+ * Describes the component in charge of asserting a plug.
+ */
 interface AssertPlugInterface
 {
+    /**
+     * @throws PlugInterfaceException
+     * @throws PluggableNotExistsException
+     * @throws PluggableAnchorsException
+     * @throws PluggableAnchorNotExistsException
+     */
     public function __construct(PlugInterface $plug);
 
-    public function type(): PlugTypeInterface;
+    /**
+     * Provides access to the plug type instance.
+     */
+    public function plugType(): PlugTypeInterface;
 
+    /**
+     * Provides access to the plug instance.
+     */
     public function plug(): PlugInterface;
 }

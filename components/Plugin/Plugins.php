@@ -14,10 +14,8 @@ declare(strict_types=1);
 namespace Chevere\Components\Plugin;
 
 use Chevere\Components\ClassMap\ClassMap;
-use Chevere\Components\Filesystem\FilesystemFactory;
 use Chevere\Components\Message\Message;
 use Chevere\Exceptions\ClassMap\ClassNotMappedException;
-use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\RuntimeException;
 use Chevere\Exceptions\Plugin\PluggableNotRegisteredException;
 use Chevere\Exceptions\Plugin\PlugsFileNotExistsException;
@@ -25,7 +23,6 @@ use Chevere\Exceptions\Plugin\PlugsQueueInterfaceException;
 use Chevere\Interfaces\ClassMap\ClassMapInterface;
 use Chevere\Interfaces\Plugin\PluginsInterface;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
-use LogicException;
 use Throwable;
 use TypeError;
 use function Chevere\Components\Filesystem\filePhpReturnFromString;
@@ -45,17 +42,11 @@ final class Plugins implements PluginsInterface
         $this->classMap = $pluggablesToPlugs;
     }
 
-    public function classMap(): ClassMapInterface
+    public function clonedClassMap(): ClassMapInterface
     {
         return deep_copy($this->classMap);
     }
 
-    /**
-     * @throws PluggableNotRegisteredException
-     * @throws PlugsFileNotExistsException
-     * @throws RuntimeException
-     * @throws LogicException
-     */
     public function getPlugsQueue(string $pluggableName): PlugsQueueInterface
     {
         $this->assertSetPlugsPath($pluggableName);
@@ -68,11 +59,7 @@ final class Plugins implements PluginsInterface
              */
             $var = $fileReturn->var();
         } catch (Throwable $e) {
-            throw new RuntimeException(
-                $e instanceof Exception
-                    ? $e->message()
-                    : new Message($e->getMessage())
-            );
+            throw new RuntimeException(null, 0, $e);
         }
         try {
             return $var;
@@ -89,8 +76,10 @@ final class Plugins implements PluginsInterface
     {
         try {
             $this->plugsPath = $this->classMap->get($pluggableName);
+        } catch (\OutOfBoundsException $e) {
+            throw new RuntimeException(null, 0, $e);
         } catch (ClassNotMappedException $e) {
-            throw new PluggableNotRegisteredException($e->message());
+            throw new PluggableNotRegisteredException(null, 0, $e);
         }
     }
 

@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Chevere\Tests\Plugin\_resources\PlugsMapperTest;
 
-use Chevere\Interfaces\Plugin\PluggableAnchorsInterface;
 use Chevere\Components\Plugin\PluggableAnchors;
-use Chevere\Interfaces\Plugin\Plugs\Hooks\PluggableHooksInterface;
 use Chevere\Components\Plugin\Plugs\Hooks\Traits\PluggableHooksTrait;
+use Chevere\Interfaces\Plugin\PluggableAnchorsInterface;
+use Chevere\Interfaces\Plugin\Plugs\Hooks\PluggableHooksInterface;
 
 class TestMappedHookable implements PluggableHooksInterface
 {
@@ -27,7 +27,7 @@ class TestMappedHookable implements PluggableHooksInterface
     public static function getHookAnchors(): PluggableAnchorsInterface
     {
         return (new PluggableAnchors)
-            ->withAddedAnchor('hook-anchor-1');
+            ->withAdded('hook-anchor-1');
     }
 
     public function __construct()

@@ -15,10 +15,10 @@ namespace Chevere\Components\Plugin;
 
 use Chevere\Components\Message\Message;
 use Chevere\Components\Plugin\PlugsQueue;
+use Chevere\Exceptions\Core\Exception;
 use Chevere\Exceptions\Core\InvalidArgumentException;
-use Chevere\Exceptions\Core\RangeException;
-use Chevere\Exceptions\Plugin\PlugRegisteredException;
-use Chevere\Interfaces\Plugin\AssertPlugInterface;
+use Chevere\Exceptions\Core\OutOfBoundsException;
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Interfaces\Plugin\PlugInterface;
 use Chevere\Interfaces\Plugin\PlugsMapInterface;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
@@ -27,11 +27,12 @@ use Chevere\Interfaces\Plugin\PlugTypeInterface;
 use Ds\Map;
 use Ds\Set;
 use Generator;
+use Throwable;
 
 final class PlugsMap implements PlugsMapInterface
 {
     /**
-     * @var Set [PlugsQueueInterface]
+     * @var Set [PlugsQueueInterface,]
      */
     private Set $set;
 
@@ -49,27 +50,31 @@ final class PlugsMap implements PlugsMapInterface
         $this->type = $type;
     }
 
-    public function type(): PlugTypeInterface
+    public function plugType(): PlugTypeInterface
     {
         return $this->type;
     }
 
-    public function withAdded(AssertPlugInterface $assertPlug): PlugsMapInterface
+    public function withAdded(PlugInterface $plug): PlugsMapInterface
     {
-        if (!($assertPlug->type() instanceof $this->type)) {
+        try {
+            $assert = new AssertPlug($plug);
+        } catch (Throwable $e) {
+            throw new InvalidArgumentException(null, 0, $e);
+        }
+        if (!($assert->plugType() instanceof $this->type)) {
             throw new InvalidArgumentException(
                 (new Message('Argument passed must be an instance of type %type%'))
                     ->code('%type%', get_class($this->type))
             );
         }
-        $plug = $assertPlug->plug();
         $this->assertUnique($plug);
         /**
          * @var PlugsQueueInterface $queue
          */
         $queue = $this->map->hasKey($plug->at())
             ? $this->map->get($plug->at())
-            : $assertPlug->type()->getPlugsQueueTyped();
+            : $assert->plugType()->getPlugsQueueTyped();
         $new = clone $this;
         $new->map[$plug->at()] = $queue->withAdded($plug);
         $new->set->add($plug);
@@ -92,12 +97,13 @@ final class PlugsMap implements PlugsMapInterface
         return $this->map->hasKey($pluggable);
     }
 
-    /**
-     * @throws RangeException
-     */
-    public function getPlugsFor(string $pluggable): PlugsQueueTypedInterface
+    public function getPlugsQueueTypedFor(string $pluggable): PlugsQueueTypedInterface
     {
-        return $this->map->get($pluggable, new PlugsQueue($this->type));
+        try {
+            return $this->map->get($pluggable, new PlugsQueue($this->type));
+        } catch (\OutOfBoundsException $e) {
+            throw new OutOfBoundsException(null, 0, $e);
+        }
     }
 
     public function getGenerator(): Generator
@@ -110,7 +116,7 @@ final class PlugsMap implements PlugsMapInterface
     protected function assertUnique(PlugInterface $plug): void
     {
         if ($this->has($plug)) {
-            throw new PlugRegisteredException(
+            throw new OverflowException(
                 (new Message('%plug% has been already registered'))
                     ->code('%plug%', get_class($plug))
             );

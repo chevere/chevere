@@ -13,24 +13,40 @@ declare(strict_types=1);
 
 namespace Chevere\Interfaces\Plugin;
 
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Plugin\PlugInterfaceException;
-use Generator;
+use Chevere\Interfaces\To\ToArrayInterface;
 
-interface PlugsQueueInterface
+/**
+ * Describes the component in charge of defining a generic plugs queue.
+ */
+interface PlugsQueueInterface extends ToArrayInterface
 {
     public function __construct(PlugTypeInterface $plugType);
 
     /**
-     * @param PlugInterface $plug
-     * @return PlugsQueueInterface
-     * @throws PlugInterfaceException if $plug doesn't implement the expected plugType
+     * Return an instance with the specified `$plug`.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified `$plug`.
+     *
+     * @throws PlugInterfaceException
+     * @throws OverflowException
      */
     public function withAdded(PlugInterface $plug): PlugsQueueInterface;
 
+    /**
+     * Provides access to the plug type instance.
+     */
     public function plugType(): PlugTypeInterface;
 
     /**
-     * @return array [for => [priority => plugName,],]
+     *
+     * ```php
+     * return [
+     *     'for' => [0 => 'plugName',],
+     * ]
+     * ```
      */
     public function toArray(): array;
 }

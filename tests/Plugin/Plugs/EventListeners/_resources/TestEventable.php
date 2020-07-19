@@ -27,8 +27,8 @@ class TestEventable implements PluggableEventsInterface
     public static function getEventAnchors(): PluggableAnchorsInterface
     {
         return (new PluggableAnchors)
-            ->withAddedAnchor('construct:before')
-            ->withAddedAnchor('setString:after');
+            ->withAdded('construct:before')
+            ->withAdded('setString:after');
     }
 
     public function __construct()

@@ -22,7 +22,7 @@ final class TestTypedPlugsQueueInvalidAccept implements PlugsQueueTypedInterface
 {
     use TypedPlugsQueueTrait;
 
-    public function accept(): string
+    public function interface(): string
     {
         return 'SomeInvalidInterface';
     }

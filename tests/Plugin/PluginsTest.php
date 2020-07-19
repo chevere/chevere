@@ -39,8 +39,8 @@ final class PluginsTest extends TestCase
     {
         $classMap = new ClassMap;
         $plugins = new Plugins($classMap);
-        $this->assertNotSame($classMap, $plugins->classMap());
-        $this->assertEquals($classMap, $plugins->classMap());
+        $this->assertNotSame($classMap, $plugins->clonedClassMap());
+        $this->assertEquals($classMap, $plugins->clonedClassMap());
         $pluggable = 'notRegistered';
         $this->expectException(PluggableNotRegisteredException::class);
         $plugins->getPlugsQueue($pluggable);

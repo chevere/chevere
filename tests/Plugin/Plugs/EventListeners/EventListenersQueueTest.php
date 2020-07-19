@@ -24,7 +24,7 @@ final class EventListenersQueueTest extends TestCase
     public function testConstruct(): void
     {
         $eventListenersQueue = new EventListenersQueue;
-        $this->assertSame($eventListenersQueue->accept(), EventListenerInterface::class);
+        $this->assertSame($eventListenersQueue->interface(), EventListenerInterface::class);
         $this->assertEquals(new EventListenerPlugType, $eventListenersQueue->getPlugType());
     }
 

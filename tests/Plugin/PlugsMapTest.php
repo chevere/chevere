@@ -18,6 +18,7 @@ use Chevere\Components\Plugin\PlugsMap;
 use Chevere\Components\Plugin\Types\EventListenerPlugType;
 use Chevere\Components\Plugin\Types\HookPlugType;
 use Chevere\Exceptions\Core\InvalidArgumentException;
+use Chevere\Exceptions\Core\OverflowException;
 use Chevere\Exceptions\Plugin\PlugRegisteredException;
 use Chevere\Interfaces\Plugin\Plugs\Hooks\HooksQueueInterface;
 use Chevere\Interfaces\Plugin\PlugsQueueInterface;
@@ -31,7 +32,7 @@ final class PlugsMapTest extends TestCase
         $plugType = new HookPlugType;
         $plugsMap = new PlugsMap($plugType);
         $this->assertCount(0, $plugsMap);
-        $this->assertSame($plugType, $plugsMap->type());
+        $this->assertSame($plugType, $plugsMap->plugType());
     }
 
     public function testWithInvalidAddedPlug(): void
@@ -40,20 +41,16 @@ final class PlugsMapTest extends TestCase
         $plugsMap = new PlugsMap($plugType);
         $hook = new TestHook;
         $this->expectException(InvalidArgumentException::class);
-        $plugsMap->withAdded(new AssertPlug($hook));
+        $plugsMap->withAdded($hook);
     }
 
     public function testWithAlreadyAddedPlug(): void
     {
         $hook = new TestHook;
         $plugsMap = (new PlugsMap(new HookPlugType))
-            ->withAdded(
-                new AssertPlug($hook)
-            );
-        $this->expectException(PlugRegisteredException::class);
-        $plugsMap->withAdded(
-            new AssertPlug($hook)
-        );
+            ->withAdded($hook);
+        $this->expectException(OverflowException::class);
+        $plugsMap->withAdded($hook);
     }
 
     public function testWithAddedPlug(): void
@@ -67,16 +64,12 @@ final class PlugsMapTest extends TestCase
             }
         };
         $plugsMap = (new PlugsMap(new HookPlugType))
-            ->withAdded(
-                new AssertPlug($hook)
-            )
-            ->withAdded(
-                new AssertPlug($hook2)
-            );
+            ->withAdded($hook)
+            ->withAdded($hook2);
         $this->assertTrue($plugsMap->has($hook));
         $this->assertTrue($plugsMap->has($hook2));
         foreach ($plugsMap->getGenerator() as $pluggableName => $plugsQueue) {
-            $this->assertSame($plugsMap->getPlugsFor($pluggableName), $plugsQueue);
+            $this->assertSame($plugsMap->getPlugsQueueTypedFor($pluggableName), $plugsQueue);
             $this->assertInstanceOf(HooksQueueInterface::class, $plugsQueue);
             $this->assertTrue($plugsMap->hasPlugsFor($pluggableName));
         }

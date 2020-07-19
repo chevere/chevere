@@ -16,14 +16,28 @@ namespace Chevere\Interfaces\Plugin;
 use Chevere\Exceptions\Plugin\PluggableAnchorExistsException;
 use Ds\Set;
 
+/**
+ * Describes the component in charge of defining pluggable anchors.
+ */
 interface PluggableAnchorsInterface
 {
     /**
-     * @throws PluggableAnchorExistsException
+     * Return an instance with the specified added `$anchor`.
+     *
+     * This method MUST retain the state of the current instance, and return
+     * an instance that contains the specified added `$anchor`.
+     *
+     * @throws OverflowException
      */
-    public function withAddedAnchor(string $anchor): PluggableAnchorsInterface;
+    public function withAdded(string $anchor): PluggableAnchorsInterface;
 
+    /**
+     * Indicates whether the instance has the given `$anchor`.
+     */
     public function has(string $anchor): bool;
 
-    public function set(): Set;
+    /**
+     * Provides access to a cloned set instance.
+     */
+    public function clonedSet(): Set;
 }
