@@ -38,8 +38,8 @@ use RecursiveDirectoryIterator;
 use RecursiveFilterIterator;
 use RecursiveIteratorIterator;
 use Throwable;
-use function Chevere\Components\Filesystem\getDirFromString;
-use function Chevere\Components\Filesystem\getFilePhpReturnFromString;
+use function Chevere\Components\Filesystem\dirFromString;
+use function Chevere\Components\Filesystem\filePhpReturnFromString;
 
 final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
 {
@@ -57,7 +57,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
                 $pathName = $iteratorIterator->current()->getPathName();
                 $routeName = $this->getVar($pathName);
                 $current = dirname($pathName) . '/';
-                $endpoints = getRouteEndpointsForDir(new Dir(new Path($current)));
+                $endpoints = routeEndpointsForDir(new Dir(new Path($current)));
                 $generator = $endpoints->getGenerator();
                 /** @var RouteEndpointInterface $routeEndpoint */
                 $routeEndpoint = $generator->current();
@@ -87,7 +87,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
                 $this->descriptors = $this->descriptors
                     ->withAdded(
                         new RoutingDescriptor(
-                            getDirFromString($current),
+                            dirFromString($current),
                             new RoutePath($path),
                             new RouteDecorator($routeName)
                         )
@@ -121,7 +121,7 @@ final class RoutingDescriptorsMaker implements RoutingDescriptorsMakerInterface
     private function getVar(string $path): RouteNameInterface
     {
         try {
-            return getFilePhpReturnFromString($path)
+            return filePhpReturnFromString($path)
                 ->withStrict(false)
                 ->varType(new Type(RouteNameInterface::class));
         } catch (FileReturnInvalidTypeException $e) {

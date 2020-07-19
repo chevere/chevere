@@ -23,7 +23,7 @@ use Chevere\Interfaces\Filesystem\FilePhpInterface;
  * @codeCoverageIgnore
  * @throws FilesystemException
  */
-function getDirFromString(string $path): DirInterface
+function dirFromString(string $path): DirInterface
 {
     try {
         return new Dir(new Path($path));
@@ -40,7 +40,7 @@ function getDirFromString(string $path): DirInterface
  * @codeCoverageIgnore
  * @throws FilesystemException
  */
-function getFileFromString(string $path): FileInterface
+function fileFromString(string $path): FileInterface
 {
     try {
         return new File(new Path($path));
@@ -57,10 +57,10 @@ function getFileFromString(string $path): FileInterface
  * @codeCoverageIgnore
  * @throws FilesystemException
  */
-function getFilePhpFromString(string $path): FilePhpInterface
+function filePhpFromString(string $path): FilePhpInterface
 {
     try {
-        return new FilePhp(getFileFromString($path));
+        return new FilePhp(fileFromString($path));
     } catch (Exception $e) {
         throw new FilesystemException(
             $e->message(),
@@ -74,10 +74,10 @@ function getFilePhpFromString(string $path): FilePhpInterface
  * @codeCoverageIgnore
  * @throws FilesystemException
  */
-function getFilePhpReturnFromString(string $path): FilePhpReturn
+function filePhpReturnFromString(string $path): FilePhpReturn
 {
     try {
-        return new FilePhpReturn(getFilePhpFromString($path));
+        return new FilePhpReturn(filePhpFromString($path));
     } catch (Exception $e) {
         throw new FilesystemException(
             $e->message(),

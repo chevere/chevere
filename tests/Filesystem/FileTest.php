@@ -23,7 +23,7 @@ use Chevere\Interfaces\Filesystem\DirInterface;
 use Chevere\Interfaces\Filesystem\FileInterface;
 use PHPUnit\Framework\TestCase;
 use Throwable;
-use function Chevere\Components\Filesystem\getDirFromString;
+use function Chevere\Components\Filesystem\dirFromString;
 
 final class FileTest extends TestCase
 {
@@ -31,7 +31,7 @@ final class FileTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->testDir = getDirFromString(__DIR__ . '/FileTest_' . uniqid() . '/');
+        $this->testDir = dirFromString(__DIR__ . '/FileTest_' . uniqid() . '/');
     }
 
     protected function tearDown(): void

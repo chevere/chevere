@@ -18,11 +18,10 @@ use Chevere\Components\Message\Message;
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerConsoleDocument;
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerHtmlDocument;
 use Chevere\Components\ThrowableHandler\Documents\ThrowableHandlerPlainDocument;
-use Chevere\Components\Writer\StreamWriterFromString;
 use Chevere\Exceptions\Core\ErrorException;
-use Chevere\Exceptions\Core\LogicException as CoreLogicException;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerDocumentInterface;
 use Chevere\Interfaces\ThrowableHandler\ThrowableHandlerInterface;
+use LogicException;
 use ReflectionClass;
 use RuntimeException;
 use Throwable;
@@ -85,7 +84,7 @@ function handleExceptionAs(Throwable $throwable, string $document): ThrowableHan
     );
     try {
         $writer = WritersInstance::get()->error();
-    } catch (CoreLogicException $e) {
+    } catch (LogicException $e) {
         $writer = writerForStream('php://stderr', 'r+');
     }
     $writer->write($document->toString() . "\n");

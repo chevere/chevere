@@ -25,7 +25,7 @@ namespace Chevere\Components\VarDump {
     /**
      * @codeCoverageIgnore
      */
-    function getVarDumpPlain(): VarDumpInterface
+    function varDumpPlain(): VarDumpInterface
     {
         return
             new VarDump(
@@ -37,7 +37,7 @@ namespace Chevere\Components\VarDump {
     /**
      * @codeCoverageIgnore
      */
-    function getVarDumpConsole(): VarDumpInterface
+    function varDumpConsole(): VarDumpInterface
     {
         return
             new VarDump(
@@ -49,7 +49,7 @@ namespace Chevere\Components\VarDump {
     /**
      * @codeCoverageIgnore
      */
-    function getVarDumpHtml(): VarDumpInterface
+    function varDumpHtml(): VarDumpInterface
     {
         return
             new VarDump(
@@ -62,9 +62,8 @@ namespace Chevere\Components\VarDump {
 namespace {
     use Chevere\Components\Instances\VarDumpInstance;
     use Chevere\Components\Instances\WritersInstance;
-    use Chevere\Components\Writer\StreamWriterFromString;
     use Chevere\Components\Writer\Writers;
-    use function Chevere\Components\VarDump\getVarDumpConsole;
+    use function Chevere\Components\VarDump\varDumpConsole;
     use function Chevere\Components\Writer\writerForStream;
 
     if (function_exists('xd') === false) { // @codeCoverageIgnore
@@ -77,7 +76,7 @@ namespace {
             try {
                 $varDump = VarDumpInstance::get();
             } catch (LogicException $e) {
-                $varDump = getVarDumpConsole();
+                $varDump = varDumpConsole();
             }
             try {
                 $writers = WritersInstance::get();
@@ -97,7 +96,7 @@ namespace {
             try {
                 $varDump = VarDumpInstance::get();
             } catch (LogicException $e) {
-                $varDump = getVarDumpConsole();
+                $varDump = varDumpConsole();
             }
             try {
                 $writers = WritersInstance::get();

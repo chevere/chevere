@@ -28,7 +28,7 @@ use RecursiveIteratorIterator;
 use ReflectionClass;
 use Throwable;
 use UnexpectedValueException;
-use function Chevere\Components\Filesystem\getDirFromString;
+use function Chevere\Components\Filesystem\dirFromString;
 
 /**
  * @codeCoverageIgnore
@@ -47,7 +47,7 @@ final class ControllerListCommand extends Command
     {
         parent::__construct('conlist', 'Recursive list controllers in a given directory');
         $cwd = (new Str(getcwd()))->withRightTail('/')->toString();
-        $this->cwd = getDirFromString($cwd);
+        $this->cwd = dirFromString($cwd);
         $this
             ->argument('<dir>', sprintf('A file system directory path'))
             ->usage(
@@ -61,7 +61,7 @@ final class ControllerListCommand extends Command
     {
         try {
             if ((new StrBool($this->dir))->startsWith('/')) {
-                $dir = getDirFromString($this->dir);
+                $dir = dirFromString($this->dir);
             } else {
                 $dir = $this->cwd->getChild($this->dir);
             }

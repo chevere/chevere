@@ -46,7 +46,7 @@ use Chevere\Interfaces\Routing\RoutingDescriptorsInterface;
  * @throws OutOfBoundsException
  * @throws RouteWildcardConflictException
  */
-function getRouterForRoutingDescriptors(RoutingDescriptorsInterface $descriptors, string $group): RouterInterface
+function routerForRoutingDescriptors(RoutingDescriptorsInterface $descriptors, string $group): RouterInterface
 {
     $router = new Router;
     foreach ($descriptors->getGenerator() as $descriptor) {
@@ -55,7 +55,7 @@ function getRouterForRoutingDescriptors(RoutingDescriptorsInterface $descriptors
         // foreach ($routeDecorator->wildcards()->getGenerator() as $routeWildcard) {
         //     $routePath = $routePath->withWildcard($routeWildcard); // @codeCoverageIgnore
         // }
-        $routeEndpoints = getRouteEndpointsForDir($descriptor->dir());
+        $routeEndpoints = routeEndpointsForDir($descriptor->dir());
         $route = new Route($routeDecorator->name(), $routePath);
         foreach ($routeEndpoints->keys() as $key) {
             $route = $route->withAddedEndpoint(
@@ -69,7 +69,7 @@ function getRouterForRoutingDescriptors(RoutingDescriptorsInterface $descriptors
     return $router;
 }
 
-function getRouteEndpointsForDir(DirInterface $dir): RouteEndpointsInterface
+function routeEndpointsForDir(DirInterface $dir): RouteEndpointsInterface
 {
     $routeEndpoints = new RouteEndpoints;
     $path = $dir->path();
